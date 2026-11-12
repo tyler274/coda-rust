@@ -25,8 +25,8 @@
   --ref-neutral-45: #64716a;
   --ref-neutral-90: #e5e8e4;
   --ref-neutral-93: #ecefeb;
-  --ref-neutral-95: #f1f3f0;
-  --ref-neutral-97: #f6f7f5;
+  --ref-neutral-96: #f4f6f3;
+  --ref-neutral-98: #f9faf8;
   --ref-neutral-100: #fff;
   --ref-shadow: 23 43 32;
   /* Dark tones: the native dark neutrals, a black base and charcoal layers, and the greens, ambers, reds
@@ -93,9 +93,9 @@
   --muted: var(--ref-neutral-45);
   /* Surfaces by level: the canvas the app stands on; cards and dialogs at the lowest level, white, above it; a panel set
      inside a card one step toward the canvas; tracks and wells set into the canvas darker still. */
-  --surface: var(--ref-neutral-95);
+  --surface: var(--ref-neutral-96);
   --surface-lowest: var(--ref-neutral-100);
-  --surface-low: var(--ref-neutral-97);
+  --surface-low: var(--ref-neutral-98);
   --surface-high: var(--ref-neutral-93);
   --surface-highest: var(--ref-neutral-90);
   --outline: rgb(35 60 46 / .21);
@@ -313,8 +313,9 @@
   --ease-in-out: cubic-bezier(.45,0,.2,1);
   --ease-exit: cubic-bezier(.4,0,1,1);
   /* Springs: each a whole timing, its settle time and curve, sampled from a damped spring (mass 1, stiffness (2pi / response)^2, damping 4pi x damping fraction / response) until it rests
-     within 0.05% of its travel. Send is the person's message rising from the composer (response .35, damping .8, a
-     slight overshoot); arrive is content arriving (smooth, .24); step is a pane or sheet taking its place (smooth, .35).
+     within 0.05% of its travel. Send is a control's mark settling into place, such as a switch's knob (response .35,
+     damping .8, a slight overshoot); arrive is a small mark or surface arriving (smooth, .24); step is a pane or sheet
+     taking its place (smooth, .35). Messages and what arrives in a conversation use --motion-arrive and --ease-out.
      A host names one for a transform, as `transform var(--spring-step)`. Exits keep the shorter eases. */
   --spring-send: 491ms linear(0, 0.022, 0.077, 0.153, 0.241, 0.334, 0.426, 0.515, 0.596, 0.67, 0.736, 0.793, 0.841, 0.881, 0.915, 0.942, 0.963, 0.979, 0.992, 1.001, 1.007, 1.011, 1.014, 1.015, 1.015, 1.015, 1.014, 1.013, 1.011, 1.01, 1.008, 1.007, 1.006, 1.005, 1.004, 1.003, 1.002, 1.002, 1.001, 1.001, 1);
   --spring-arrive: 382ms linear(0, 0.026, 0.09, 0.173, 0.264, 0.355, 0.442, 0.522, 0.594, 0.657, 0.713, 0.76, 0.801, 0.835, 0.864, 0.888, 0.908, 0.925, 0.939, 0.95, 0.96, 0.967, 0.973, 0.978, 0.983, 0.986, 0.989, 0.991, 0.993, 0.994, 0.995, 0.996, 0.997, 0.998, 0.998, 0.998, 0.999, 0.999, 0.999, 0.999, 1);

@@ -2,21 +2,123 @@
 //! speech as it is taken down, and what can be done with a message once it is there. A receipt in
 //! the thread is a `ListRow` in a `RowGroup`; who the conversation is with is the `TopBar`'s title.
 
-use std::rc::Rc;
 use std::sync::atomic::{AtomicUsize, Ordering};
 
-use dioxus::html::geometry::PixelsVector2D;
 use dioxus::prelude::*;
 
-use crate::{Button, ButtonVariant, Icon, IconName, WorkingMark, script};
+use crate::{Avatar, AvatarSize, Button, ButtonVariant, Icon, IconName, WorkingMark, script};
 
-/// How near the end counts as at it: within this, new replies are followed.
-const FOLLOW_PX: f64 = 48.0;
+/// Where a `ChatColumn` stands its queued messages.
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
+pub enum QueuePlace {
+    /// At the end of the transcript, under the answer in progress.
+    #[default]
+    UnderAnswer,
+    /// In the dock, directly above the composer.
+    AboveComposer,
+}
 
-/// The conversation's scrolling region. At its end it
-/// follows each new reply; scrolled back, it leaves the reading where it is and offers `jump_label`
-/// instead. What the person sends always brings them to the end. The host counts its
-/// `replies` and its person's `sent` messages; a change in either is what arrived.
+/// A conversation laid out as a window's main area: an optional `header` at the top, the
+/// transcript in a `ConversationViewport` beneath it, and a dock at the foot holding the
+/// `composer`. The transcript's turns, the `children`, and the dock share one centred column at
+/// the reading measure. The dock never covers the transcript: as it grows upward the transcript
+/// gives up the room, and the composer stays where it is. Queued messages, a `MessageQueue` given
+/// as `queue`, stand where `queue_place` says: at the transcript's end, under the answer in
+/// progress, or in the dock above the composer. `replies`, `sent` and `jump_label` are the
+/// viewport's.
+#[component]
+pub fn ChatColumn(
+    #[props(default)] header: Option<Element>,
+    replies: usize,
+    sent: usize,
+    jump_label: String,
+    #[props(default)] queue: Option<Element>,
+    #[props(default)] queue_place: QueuePlace,
+    composer: Element,
+    children: Element,
+) -> Element {
+    let (under_answer, above_composer) = match queue_place {
+        QueuePlace::UnderAnswer => (queue, None),
+        QueuePlace::AboveComposer => (None, queue),
+    };
+    rsx! {
+        div { class: "chat-column",
+            {header}
+            ConversationViewport { replies, sent, jump_label,
+                div { class: "conversation-feed chat-measure",
+                    {children}
+                    {under_answer}
+                }
+            }
+            div { class: "chat-dock chat-measure",
+                {above_composer}
+                {composer}
+            }
+        }
+    }
+}
+
+/// One fact under a `ChatHeader`'s name: a value, such as `77 years`, or a label and its value,
+/// such as `DOB` and `Mar 3, 1947`.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct HeaderFact {
+    /// The quieter word that names the value, if the value needs one.
+    pub label: Option<String>,
+    /// The fact itself.
+    pub value: String,
+}
+
+/// Who a conversation is about, atop its `ChatColumn`: their initials, their name at title size,
+/// and their `facts` in one quiet row, such as their age, date of birth, sex and record number.
+/// A gap sets the facts apart; each fact wraps whole, its label beside its value and quieter than
+/// it. The header stays at the top while the transcript scrolls, with a hairline under it across
+/// the column, edge to edge where the column fills the width. It has no room of its own above it;
+/// the shell's toolbar row gives that room.
+#[component]
+pub fn ChatHeader(name: String, facts: Vec<HeaderFact>) -> Element {
+    rsx! {
+        header { class: "chat-header",
+            div { class: "chat-header-inner",
+                Avatar { name: name.clone(), size: AvatarSize::Large }
+                div { class: "chat-header-text",
+                    h1 { "{name}" }
+                    if !facts.is_empty() {
+                        p { class: "chat-header-facts",
+                            for (index, fact) in facts.into_iter().enumerate() {
+                                span { key: "{index}", class: "chat-header-fact",
+                                    if let Some(label) = fact.label {
+                                        span { class: "chat-header-fact-label", "{label}" }
+                                        " "
+                                    }
+                                    "{fact.value}"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+/// Messages waiting their turn, given as a `ChatColumn`'s `queue`: each queued `Message`, its
+/// waiting line, such as "Sends after Coda's reply", and its actions in its bubble's own row; or
+/// its `MessageEditor` while it is edited.
+#[component]
+pub fn MessageQueue(children: Element) -> Element {
+    rsx! {
+        div { class: "message-queue", {children} }
+    }
+}
+
+/// The conversation's scrolling region. At its end it stays at the end as replies arrive and as
+/// the region or its content changes size, such as when a source opens beside it or the dock
+/// grows; scrolled back, the first turn in sight stays where it stood, and a new reply offers
+/// `jump_label`, which takes the reader to that reply's top and focus to the reply. What the
+/// person sends always brings them to the end. Its turns are the children of its one child. What
+/// stands in it when it first shows stands at rest; only messages that arrive after run their
+/// entry. The host counts its `replies` and its person's `sent` messages; a change in either is
+/// what arrived.
 #[component]
 pub fn ConversationViewport(
     replies: usize,
@@ -24,52 +126,39 @@ pub fn ConversationViewport(
     jump_label: String,
     children: Element,
 ) -> Element {
+    let id = use_hook(|| format!("conversation-{}", VIEWPORTS.fetch_add(1, Ordering::Relaxed)));
     let mut at_end = use_signal(|| true);
     let mut has_new = use_signal(|| false);
-    let mut region = use_signal(|| None::<Rc<MountedData>>);
     let mut seen = use_signal(|| (replies, sent));
-    // Scrolls only the region itself, never the page around it.
-    let reveal = move |behavior: ScrollBehavior| {
-        if let Some(region) = region.peek().clone() {
-            spawn(async move {
-                if let Ok(size) = region.get_scroll_size().await {
-                    let _ = region
-                        .scroll(PixelsVector2D::new(0.0, size.height), behavior)
-                        .await;
-                }
-            });
-        }
-    };
+    let region = id.clone();
     use_effect(use_reactive!(|replies, sent| {
         let (seen_replies, seen_sent) = *seen.peek();
         seen.set((replies, sent));
         if sent != seen_sent {
             has_new.set(false);
-            reveal(ScrollBehavior::Instant);
-        } else if replies != seen_replies {
-            if *at_end.peek() {
-                reveal(ScrollBehavior::Instant);
-            } else {
-                has_new.set(true);
-            }
+            script::read_to_end(&region);
+        } else if replies != seen_replies && !*at_end.peek() {
+            has_new.set(true);
         }
     }));
+    let watched = id.clone();
+    let jumping = id.clone();
     rsx! {
         div { class: "conversation-viewport",
             div {
+                id: "{id}",
                 class: "conversation-scroll",
-                onmounted: move |event| {
-                    region.set(Some(event.data()));
-                    reveal(ScrollBehavior::Instant);
-                },
-                onscroll: move |event| {
-                    let data = event.data();
-                    let from_end = f64::from(data.scroll_height()) - f64::from(data.client_height()) - data.scroll_top();
-                    let here = from_end <= FOLLOW_PX;
-                    at_end.set(here);
-                    if here {
-                        has_new.set(false);
-                    }
+                onmounted: move |_| {
+                    let reading = script::watch_reading(&watched);
+                    spawn(async move {
+                        // The behaviour finished or failed: the region stops hearing where the reader is.
+                        while let Ok(end) = reading.next().await {
+                            at_end.set(end);
+                            if end {
+                                has_new.set(false);
+                            }
+                        }
+                    });
                 },
                 {children}
             }
@@ -79,12 +168,13 @@ pub fn ConversationViewport(
                     class: "jump-to-latest",
                     onclick: move |_| {
                         has_new.set(false);
+                        let region = jumping.clone();
                         // Scrolling asked for in code ignores the stylesheet's reduced-motion rule,
                         // so the preference is read here.
                         spawn(async move {
                             let reduced = script::reduced_motion().answer().await;
-                            // Unasked, it scrolls without motion, which suits everyone.
-                            reveal(if reduced.unwrap_or(true) { ScrollBehavior::Instant } else { ScrollBehavior::Smooth });
+                            // Unasked, it moves without motion, which suits everyone.
+                            script::jump_to_latest(&region, !reduced.unwrap_or(true));
                         });
                     },
                     "{jump_label}"
@@ -93,6 +183,8 @@ pub fn ConversationViewport(
         }
     }
 }
+
+static VIEWPORTS: AtomicUsize = AtomicUsize::new(0);
 
 /// The day the messages beneath were written, centred in the thread.
 #[component]
@@ -200,9 +292,10 @@ pub fn VersionSwitch(
 
 static SWITCHES: AtomicUsize = AtomicUsize::new(0);
 
-/// What has become of a message on its way, given as its `Message`'s `status`: its icon, its
-/// words, such as "Not sent" or "Sends after this reply", and the host's ways on, such as Try again
-/// or Cancel. When it says the message didn't go, it is `alert`, in red, and announced.
+/// What has become of a message on its way, given as its `Message`'s `status`, or standing once
+/// above a group of messages that share it, such as messages queued together: its icon, its words,
+/// such as "Not sent" or "Sends after Coda's reply", and the host's ways on, such as Try again or
+/// Check again. When it says the message didn't go, it is `alert`, in red, and announced.
 #[component]
 pub fn MessageStatus(
     words: String,

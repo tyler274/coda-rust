@@ -19,23 +19,26 @@ use dioxus::prelude::*;
 use std::time::Duration;
 #[cfg(feature = "web")]
 use ui::{
-    ActionRow, Answer, ApprovalCard, ArtifactCard, AttachButton, Attachment, AttachmentState,
-    Attachments, Author, Avatar, AvatarSize, Button, ButtonVariant, Card, Change, ChartHeader,
-    Checkbox, Choice, CitationChip, CitationPreview, CodeBlock, Column, Combobox, Command,
+    ActionRow, Answer, AnswerEnding, AnswerSources, ApprovalCard, ArtifactCard, AttachButton,
+    Attachment, AttachmentState, Attachments, Author, Avatar, AvatarSize, Basis, Button,
+    ButtonVariant, Card, Change, ChartHeader, ChatColumn, ChatHeader, Checkbox, Choice,
+    CitationChip, CitationPreview, CitedPlace, CodeBlock, Column, Combobox, Command,
     CommandPalette, CompactField, Comparison, ComparisonBars, Composer, ContextChip, ContextMenu,
     ConversationViewport, CopyButton, CopyWords, Count, DateField, DateKind, DateSeparator, Dialog,
     Dictation, Diff, DiffLine, DiffWords, Disclosure, DraftConflict, EmptyLine, EmptyState,
-    FeedbackRating, FooterActions, Icon, IconName, IconTile, KeyHint, ListRow, LiveDot,
+    EndAction, Ending, ExpandSource, FeedbackRating, FieldGroup, FieldValue, FooterActions,
+    HeaderFact, Icon, IconName, IconTile, IndexedSource, KeyHint, ListRow, LiveDot, Located,
     MeasurementTile, Menu, MenuItem, MenuSection, Message, MessageActions, MessageEditor,
-    MessageState, MessageStatus, NavigationControl, NavigationRow, Notice, PageTitle, Paper,
-    PaperSection, Placeholder, PlaceholderShape, Popover, ProgressBar, ProposedChange, Prose,
-    ProseNames, ProsePart, Quote, RadioGroup, RailCard, Rating, RowFrame, RowGroup, RunningChart,
-    SearchField, SectionHeader, Segmented, Select, SeriesChart, SeriesPoint, SeriesShape,
-    SettingRow, Slider, SortOrder, SourceDetails, SourcePane, SourceReading, SourceText,
-    SourcesButton, Sparkline, Spinner, StatePill, StatusLine, StepState, Suggestion, TabBar, Table,
-    TableRow, Task, TaskList, TaskState, TaskWords, TextField, TextKind, Toast, ToggleChip,
-    ToggleRow, Tone, Tooltip, TopBar, TryAgain, Value, VersionSwitch, WorkStep, WorkTrace,
-    WorkingMark, WorkingPresence, use_live_rows,
+    MessageQueue, MessageState, MessageStatus, NavigationControl, NavigationRow, Notice, PageTitle,
+    Paper, PaperSection, Placeholder, PlaceholderShape, Popover, PreviewContent, ProgressBar,
+    ProposedChange, Prose, ProseNames, ProsePart, QueuePlace, Quote, RadioGroup, RailCard, Rating,
+    RawRecord, RecordAbout, RecordBody, RecordField, RecordStatus, RowFrame, RowGroup,
+    RunningChart, SearchField, SectionHeader, Segmented, Select, SeriesChart, SeriesPoint,
+    SeriesShape, SettingRow, Slider, SortOrder, SourceLink, SourcePane, SourceReading,
+    SourceRecord, SourceState, SourceSummary, SourcesButton, Sparkline, Spinner, StatePill,
+    StatusLine, StepState, Suggestion, TabBar, Table, TableRow, Task, TaskList, TaskState,
+    TaskWords, TextField, TextKind, Toast, ToggleChip, ToggleRow, Tone, Tooltip, TopBar, TryAgain,
+    Value, VersionSwitch, WorkStep, WorkTrace, WorkingMark, WorkingPresence, use_live_rows,
 };
 #[cfg(feature = "web")]
 use wasm_bindgen::{JsCast, closure::Closure};
@@ -51,6 +54,9 @@ fn main() {
 }
 
 #[cfg(feature = "web")]
+mod chat_window;
+
+#[cfg(feature = "web")]
 const GALLERY_STYLES: &str = include_str!("../web/gallery.css");
 
 /// Slows every animation and transition that runs on the page by the factor the page sets.
@@ -63,6 +69,11 @@ document.addEventListener('animationstart', pace, true);
 window.gallerySetPace = (factor) => { window.galleryPace = factor; pace(); };
 ";
 
+/// Whether the gallery plays its motion slowly, for what times itself, such as a scripted run.
+#[cfg(feature = "web")]
+#[derive(Clone, Copy)]
+struct SlowMotion(Signal<bool>);
+
 /// One family's place in the gallery: its link, its heading and what it shows.
 #[cfg(feature = "web")]
 struct Family {
@@ -73,7 +84,7 @@ struct Family {
 }
 
 #[cfg(feature = "web")]
-const FAMILIES: [Family; 16] = [
+const FAMILIES: [Family; 17] = [
     Family {
         slug: "type",
         title: "Type",
@@ -232,7 +243,7 @@ const FAMILIES: [Family; 16] = [
                 Part { title: "Conversation frame", note: "Who the conversation is with, the day, a way to begin, a receipt that leads to a thing, and what the person brought in, held above the words.",
                     FrameDemo {}
                 }
-                Part { title: "The thread", note: "Scripted. Send rises on the send spring; the typing mark holds the reply's place; the reply arrives on the arrival spring.",
+                Part { title: "The thread", note: "Scripted. What is sent and the reply arrive alike, fading in as they rise; the typing mark holds the reply's place.",
                     ConversationDemo {}
                 }
                 Part { title: "Composer states", note: "What is happening leads the toolbar: work running, beside its verb, or the draft's state. The actions keep the far edge, a key hint beside the words where there is a keyboard. A draft saved elsewhere opens under the toolbar with the saved words as written.",
@@ -244,7 +255,13 @@ const FAMILIES: [Family; 16] = [
                     AttachmentsDemo {}
                     DictationDemo {}
                 }
-                Part { title: "Following a conversation", note: "At the end, each new reply is followed; scrolled back, the reading stays put and Jump to new response appears. What the person sends always brings them to the end.",
+                Part { title: "How an answer ends", note: "Finished with sources and without, stopped, cut off with and without the words Coda kept, which stand as the answer's words, and not finished, with Try again and, once a later message replaced it, without.",
+                    AnswerEndingDemo {}
+                }
+                Part { title: "Chat column", note: "A conversation as the window's main area: who it is about at the top, the transcript, and the composer docked at the foot, on one centred column. The dock grows upward and the transcript gives way; the composer stays put. Queued messages stand under the answer in progress, or in the dock above the composer.",
+                    ChatColumnDemo {}
+                }
+                Part { title: "Following a conversation", note: "At the end, each new reply is followed, and the end holds as the region or its content changes size. Scrolled back, the first turn in sight stays where it stood and Jump to new response appears; it takes the reader to the top of the new reply. What the person sends always brings them to the end.",
                     ViewportDemo {}
                 }
             }
@@ -253,7 +270,7 @@ const FAMILIES: [Family; 16] = [
     Family {
         slug: "agent-work",
         title: "Agent work",
-        note: "What an agent is doing, as it happens: one line for the turn, its steps beneath while it works, each step's words shimmering while it runs. Done, the steps fold under the line, which says what was done; a step with more opens to show it, such as the reasoning or a tool's result. Its plan checks off as it goes, each check drawing in. Before it acts it asks: answered, the card keeps the question and says the answer, and what came of it is reported apart. Its words fade in as they stream, and what it makes stands as a card that opens it, its title shimmering while it is made. Code stands in its own frame, to copy, and a change to it line by line. Every state comes from the run.",
+        note: "What an agent is doing, as it happens: one line for the turn, saying the step under way, its steps folded beneath it until the line is pressed, each step's words shimmering while it runs. Done, the line says what was done; a step with more opens to show it, such as the reasoning or a tool's result. Its plan checks off as it goes, each check drawing in. Before it acts it asks: answered, the card keeps the question and says the answer, and what came of it is reported apart. Its words fade in as they stream, and what it makes stands as a card that opens it, its title shimmering while it is made. Code stands in its own frame, to copy, and a change to it line by line. Every state comes from the run.",
         body: || {
             rsx! {
                 AgentWorkDemo {}
@@ -266,10 +283,20 @@ const FAMILIES: [Family; 16] = [
     Family {
         slug: "citations-and-sources",
         title: "Citations and sources",
-        note: "Pointing at a citation previews its source beside it; choosing it opens the source beside the reader, or over it with Back where there isn't room. A citation without a source stays a mark; one whose source can't be shown is muted and says so. A source opens at the passage it was cited for, marked.",
+        note: "Pointing at a citation previews its source in its own words: what the record says about itself, then the cited passage, field or page. Choosing it opens the source beside the reader, or over it with Back where there isn't room, at the cited place, marked. Only a source with nothing of its own to show is described in Coda's words, marked as Coda's. A citation whose source can't be shown is muted and says so.",
         body: || {
             rsx! {
                 CitationDemo {}
+            }
+        },
+    },
+    Family {
+        slug: "chat-window",
+        title: "Chat window",
+        note: "The window assembled from the catalog's parts, live. Type in the composer: Enter sends and Shift Enter makes a new line. While Coda works, Enter sends now, taken into the answer under way, and Command or Control Enter sends next, queued until the answer arrives; Stop ends the work and returns what was queued to the composer. One line says the step under way, its steps folded under it until you press it; the answer arrives whole. Point at a citation to preview it, choose one to open its source beside the transcript, or over it where there isn't room.",
+        body: || {
+            rsx! {
+                chat_window::ChatWindowDemo {}
             }
         },
     },
@@ -347,6 +374,7 @@ fn Gallery() -> Element {
     let mut slow = use_signal(|| false);
     let mut replay = use_signal(|| 0u32);
     let mut linked = use_signal(linked_slug);
+    use_context_provider(|| SlowMotion(slow));
     use_hook(|| {
         document::eval(SLOW_MOTION);
         follow_the_link(move || linked.set(linked_slug()));
@@ -955,10 +983,19 @@ fn OverlayDemo() -> Element {
 #[cfg(feature = "web")]
 #[component]
 fn ComposerStatesDemo() -> Element {
+    let mut idle = use_signal(String::new);
     let mut next = use_signal(|| "Also check her potassium trend.".to_string());
     let mut mine = use_signal(|| "Summarize the cardiology note for her visit.".to_string());
     rsx! {
         div { class: "gallery-composers",
+            Composer {
+                label: "Message Coda",
+                placeholder: "Message Coda",
+                value: idle(),
+                on_input: move |text| idle.set(text),
+                on_submit: move |_| idle.set(String::new()),
+                Button { variant: ButtonVariant::Primary, submit: true, "Send", KeyHint { key_label: "↵" } }
+            }
             Composer {
                 label: "Message Coda",
                 value: next(),
@@ -966,8 +1003,8 @@ fn ComposerStatesDemo() -> Element {
                 on_submit: move |_| {},
                 status: rsx! { WorkingPresence { label: "Reviewing the chart", compact: true, announce: false, hint: "Started 9:41 AM" } },
                 Button { variant: ButtonVariant::Quiet, "Stop" }
-                Button { "Update response" }
-                Button { variant: ButtonVariant::Primary, submit: true, "Send next", KeyHint { key_label: "↵" } }
+                Button { "Send next", KeyHint { key_label: "⌘↵" } }
+                Button { variant: ButtonVariant::Primary, submit: true, "Send now", KeyHint { key_label: "↵" } }
             }
             Composer {
                 label: "Message Coda",
@@ -977,7 +1014,7 @@ fn ComposerStatesDemo() -> Element {
                 status: rsx! { span { "Draft changed in another window" } },
                 notices: rsx! {
                     DraftConflict {
-                        message: "Your text is still in the composer. Choose which draft to keep.",
+                        message: "Choose which draft to keep.",
                         label: "Saved draft",
                         saved: "Summarize the cardiology note and the latest echo for her visit.",
                         ActionRow {
@@ -1496,112 +1533,568 @@ fn TableDemo() -> Element {
     }
 }
 
+/// The discharge summary's own text, which the first source shows.
+#[cfg(feature = "web")]
+const DISCHARGE: &str = "Hospital course.\nPresented to the emergency department with three days of worsening dyspnea, orthopnea and leg swelling. Chest radiograph showed pulmonary vascular congestion and small bilateral effusions. BNP was elevated on arrival. Admitted with decompensated heart failure; diuresed 6 kg. Renal function stayed stable through diuresis. Echocardiogram showed an ejection fraction of 35 percent. Discharged on furosemide 40 mg daily with follow-up in cardiology clinic within two weeks.";
+
+/// The passage of the discharge summary the answer cites.
+#[cfg(feature = "web")]
+const DISCHARGE_PASSAGE: &str = "Admitted with decompensated heart failure; diuresed 6 kg.";
+
+#[cfg(feature = "web")]
+const DISCHARGE_RAW: &str = "{\n  \"resourceType\": \"DocumentReference\",\n  \"id\": \"dr-4471-0425\",\n  \"status\": \"current\",\n  \"docStatus\": \"final\",\n  \"type\": { \"text\": \"Discharge summary\" },\n  \"date\": \"2024-04-25T16:20:00-04:00\",\n  \"content\": [{ \"attachment\": { \"contentType\": \"text/plain\" } }]\n}";
+
+#[cfg(feature = "web")]
+const PANEL_RAW: &str = "{\n  \"resourceType\": \"Observation\",\n  \"id\": \"obs-4471-bmp-0425\",\n  \"status\": \"preliminary\",\n  \"code\": { \"text\": \"Basic metabolic panel\" },\n  \"effectiveDateTime\": \"2024-04-25T06:10:00-04:00\",\n  \"component\": [\n    { \"code\": { \"text\": \"Potassium\" }, \"valueQuantity\": { \"value\": 4.0, \"unit\": \"mmol/L\" } },\n    { \"code\": { \"text\": \"Urea\" }, \"valueQuantity\": { \"value\": 4.0, \"unit\": \"mmol/L\" } }\n  ]\n}";
+
+/// The sources the citation samples cite, by their number.
 #[cfg(feature = "web")]
 #[derive(Clone, Copy, PartialEq)]
-struct Cited {
-    index: usize,
-    title: &'static str,
-    metadata: [&'static str; 3],
-    passage: &'static str,
-    content: &'static str,
+enum Cited {
+    Discharge,
+    Panel,
+    Fax,
+    /// An outside document with nothing of its own that can be shown.
+    Outside,
 }
 
 #[cfg(feature = "web")]
-const CITED: [Cited; 2] = [
-    Cited {
-        index: 1,
-        title: "Discharge summary",
-        metadata: ["Hospital course", "April 18", "Final"],
-        passage: "Admitted with decompensated heart failure; diuresed 6 kg.",
-        content: "Hospital course.\nPresented to the emergency department with three days of worsening dyspnea, orthopnea and leg swelling. Chest radiograph showed pulmonary vascular congestion and small bilateral effusions. BNP was elevated on arrival. Admitted with decompensated heart failure; diuresed 6 kg. Renal function stayed stable through diuresis. Echocardiogram showed an ejection fraction of 35 percent. Discharged on furosemide 40 mg daily with follow-up in cardiology clinic within two weeks.",
-    },
-    Cited {
-        index: 2,
-        title: "Cardiology note",
-        metadata: ["Assessment", "October 2", "Signed"],
-        passage: "NYHA II–III, mild congestion on exam.",
-        content: "Assessment. NYHA II–III, mild congestion on exam. Continue spironolactone 25 mg daily. Repeat potassium in one week.",
-    },
+impl Cited {
+    fn index(self) -> usize {
+        match self {
+            Cited::Discharge => 1,
+            Cited::Panel => 2,
+            Cited::Fax => 3,
+            Cited::Outside => 5,
+        }
+    }
+
+    fn title(self) -> &'static str {
+        match self {
+            Cited::Discharge => "Discharge summary",
+            Cited::Panel => "Basic metabolic panel",
+            Cited::Fax => "Outside cardiology consult",
+            Cited::Outside => "Outside records packet",
+        }
+    }
+
+    /// Its row in an answer's Sources list.
+    fn indexed(self) -> IndexedSource {
+        IndexedSource {
+            number: self.index(),
+            title: self.title().into(),
+            detail: self.about().date,
+        }
+    }
+
+    /// What the record says about itself.
+    fn about(self) -> RecordAbout {
+        match self {
+            Cited::Discharge => RecordAbout {
+                kind: None,
+                date: Some("April 25, 2024".into()),
+                status: Some(RecordStatus::Settled("Final".into())),
+            },
+            Cited::Panel => RecordAbout {
+                kind: None,
+                date: Some("April 25, 2024".into()),
+                status: Some(RecordStatus::Flagged("Preliminary".into())),
+            },
+            Cited::Fax => RecordAbout {
+                kind: Some("Fax".into()),
+                date: Some("April 30, 2024".into()),
+                status: None,
+            },
+            Cited::Outside => RecordAbout::default(),
+        }
+    }
+
+    /// What its preview shows: the cited place in the source's own words, or, for the outside
+    /// packet, which has nothing of its own to show, Coda's description.
+    fn content(self) -> PreviewContent {
+        let place = match self {
+            Cited::Discharge => CitedPlace::Passage(DISCHARGE_PASSAGE.into()),
+            Cited::Panel => CitedPlace::Field {
+                name: "Potassium".into(),
+                value: "4.0 mmol/L".into(),
+            },
+            Cited::Fax => CitedPlace::Page("Page 2".into()),
+            Cited::Outside => return PreviewContent::Described(outside_description()),
+        };
+        PreviewContent::Cited {
+            about: self.about(),
+            place,
+        }
+    }
+
+    fn original(self) -> Option<SourceLink> {
+        matches!(self, Cited::Discharge | Cited::Panel).then(|| SourceLink {
+            url: "https://example.org/records/4471".into(),
+            label: "Open in Epic".into(),
+            new_tab_hint: Some("Opens in a new tab".into()),
+        })
+    }
+}
+
+/// Coda's description of the outside packet, the one source with nothing of its own to show.
+#[cfg(feature = "web")]
+fn outside_description() -> SourceSummary {
+    SourceSummary {
+        text: "Records packet from Lakeview Medical Center, scanned without readable text: a 2019 stay for atrial fibrillation, treated with an ablation.".into(),
+        prepared: "Prepared by Coda · as of May 2, 2024".into(),
+    }
+}
+
+/// A citation mark that previews its source, and with `on_expand`, opens it in the pane.
+#[cfg(feature = "web")]
+#[component]
+fn CitedMark(cited: Cited, on_expand: Option<EventHandler>) -> Element {
+    let index = cited.index();
+    let title = cited.title();
+    rsx! {
+        CitationPreview {
+            index,
+            label: title,
+            eyebrow: "Source {index}",
+            citation_label: "Source {index}: {title}. Preview source.",
+            close_label: "Close source preview",
+            content: cited.content(),
+            expand: on_expand.map(|on_expand| ExpandSource { label: "Expand".into(), on_expand }),
+            original: cited.original(),
+        }
+    }
+}
+
+/// Which state of the source pane the citation demo shows.
+#[cfg(feature = "web")]
+#[derive(Clone, Copy, PartialEq)]
+enum PaneSample {
+    Passage,
+    Fields,
+    NotFound,
+    Loading,
+    Failed,
+    Unavailable,
+    Described,
+}
+
+#[cfg(feature = "web")]
+const PANE_SAMPLES: [(PaneSample, &str); 7] = [
+    (PaneSample::Passage, "Passage"),
+    (PaneSample::Fields, "Fields"),
+    (PaneSample::NotFound, "Not found"),
+    (PaneSample::Loading, "Loading"),
+    (PaneSample::Failed, "Couldn’t load"),
+    (PaneSample::Unavailable, "Unavailable"),
+    (PaneSample::Described, "Coda’s description"),
 ];
 
 #[cfg(feature = "web")]
+fn result(
+    key: &str,
+    name: &str,
+    value: &str,
+    unit: Option<&str>,
+    range: &str,
+    status: &str,
+) -> RecordField {
+    RecordField {
+        key: key.into(),
+        name: name.into(),
+        value: FieldValue::Given {
+            value: value.into(),
+            unit: unit.map(Into::into),
+            range: Some(range.into()),
+            status: Some(status.into()),
+        },
+    }
+}
+
+#[cfg(feature = "web")]
+fn plain(key: &str, name: &str, value: &str) -> RecordField {
+    RecordField {
+        key: key.into(),
+        name: name.into(),
+        value: FieldValue::Given {
+            value: value.into(),
+            unit: None,
+            range: None,
+            status: None,
+        },
+    }
+}
+
+#[cfg(feature = "web")]
+fn discharge_record(cited: Located<(usize, usize)>) -> SourceRecord {
+    SourceRecord {
+        about: Cited::Discharge.about(),
+        body: RecordBody::Text {
+            text: DISCHARGE.into(),
+            cited,
+        },
+        original: Cited::Discharge.original(),
+        raw: RawRecord {
+            label: "Technical details".into(),
+            text: DISCHARGE_RAW.into(),
+        },
+    }
+}
+
+#[cfg(feature = "web")]
+fn panel_record(cited: Located<String>) -> SourceRecord {
+    SourceRecord {
+        about: Cited::Panel.about(),
+        body: RecordBody::Fields {
+            groups: vec![
+                FieldGroup {
+                    heading: None,
+                    fields: vec![
+                        result(
+                            "component[0]",
+                            "Potassium",
+                            "4.0",
+                            Some("mmol/L"),
+                            "3.5–5.1 mmol/L",
+                            "Normal",
+                        ),
+                        result(
+                            "component[1]",
+                            "Urea",
+                            "4.0",
+                            Some("mmol/L"),
+                            "2.5–7.1 mmol/L",
+                            "Normal",
+                        ),
+                        result(
+                            "component[2]",
+                            "Sodium",
+                            "138",
+                            Some("mmol/L"),
+                            "136–145 mmol/L",
+                            "Normal",
+                        ),
+                        result(
+                            "component[3]",
+                            "Creatinine",
+                            "124",
+                            Some("µmol/L"),
+                            "60–110 µmol/L",
+                            "High",
+                        ),
+                        result("component[4]", "eGFR", "52", None, ">60", "Low"),
+                        RecordField {
+                            key: "collectedDateTime".into(),
+                            name: "Collected".into(),
+                            value: FieldValue::NotSupplied("Not supplied".into()),
+                        },
+                    ],
+                },
+                FieldGroup {
+                    heading: Some("Other fields".into()),
+                    fields: vec![
+                        plain("extension[0]", "lab-accession-number", "A24-118842"),
+                        plain("extension[1]", "specimen-condition", "SAT"),
+                    ],
+                },
+            ],
+            cited,
+            range_label: "Reference range".into(),
+        },
+        original: Cited::Panel.original(),
+        raw: RawRecord {
+            label: "Technical details".into(),
+            text: PANEL_RAW.into(),
+        },
+    }
+}
+
+/// Where the cited passage sits in the discharge summary's text.
+#[cfg(feature = "web")]
+fn discharge_passage() -> Located<(usize, usize)> {
+    let start = DISCHARGE.find(DISCHARGE_PASSAGE).unwrap_or(0);
+    Located::Found((start, start + DISCHARGE_PASSAGE.len()))
+}
+
+#[cfg(feature = "web")]
 #[component]
-fn CitedDetails(cited: Cited) -> Element {
-    // A source's words arrive a moment after it opens, as a read does; its placeholder holds their place.
-    let mut read = use_signal(|| false);
-    use_hook(|| {
+fn CitationDemo() -> Element {
+    let mut shown = use_signal(|| None::<PaneSample>);
+    // Each opening counts, so a read that settles late never replaces a later opening.
+    let mut openings = use_signal(|| 0u32);
+    let mut read_then_show = move |sample: PaneSample| {
+        let opening = openings() + 1;
+        openings.set(opening);
+        shown.set(Some(PaneSample::Loading));
         spawn(async move {
             futures_timer::Delay::new(Duration::from_millis(600)).await;
-            read.set(true);
-        })
+            if openings() == opening {
+                shown.set(Some(sample));
+            }
+        });
+    };
+    let source = shown().map(|sample| {
+        let (cited, state) = match sample {
+            PaneSample::Passage => (
+                Cited::Discharge,
+                SourceState::Shown(Box::new(discharge_record(discharge_passage()))),
+            ),
+            PaneSample::Fields => (
+                Cited::Panel,
+                SourceState::Shown(Box::new(panel_record(Located::Found(
+                    "component[0]".into(),
+                )))),
+            ),
+            PaneSample::NotFound => (
+                Cited::Discharge,
+                SourceState::Shown(Box::new(discharge_record(Located::NotFound(
+                    "Couldn’t find the cited passage.".into(),
+                )))),
+            ),
+            PaneSample::Loading => (
+                Cited::Discharge,
+                SourceState::Loading("Loading source".into()),
+            ),
+            PaneSample::Failed => (
+                Cited::Discharge,
+                SourceState::Failed {
+                    message: "Couldn’t load this source.".into(),
+                    retry: "Retry".into(),
+                    on_retry: EventHandler::new(move |_| read_then_show(PaneSample::Passage)),
+                },
+            ),
+            PaneSample::Unavailable => (
+                Cited::Discharge,
+                SourceState::Unavailable("Withheld after a wrong-patient correction.".into()),
+            ),
+            PaneSample::Described => (
+                Cited::Outside,
+                SourceState::Described(outside_description()),
+            ),
+        };
+        SourcePane {
+            eyebrow: format!("Source {}", cited.index()),
+            title: cited.title().to_owned(),
+            state,
+            back: "Back".to_owned(),
+            close: "Close source".to_owned(),
+        }
     });
-    if !read() {
-        return rsx! { Placeholder { shape: PlaceholderShape::Reading } };
-    }
     rsx! {
-        SourceDetails {
-            metadata: cited.metadata.iter().map(|value| value.to_string()).collect::<Vec<_>>(),
-            passages: vec![cited.passage.to_owned()],
-            passages_label: "Quoted source passages",
-            p { class: "gallery-copy",
-                SourceText {
-                    text: cited.content,
-                    passages: cited
-                        .content
-                        .find(cited.passage)
-                        .map(|start| (start, start + cited.passage.len()))
-                        .into_iter()
-                        .collect::<Vec<_>>(),
+        div { class: "gallery-row",
+            for (sample, words) in PANE_SAMPLES {
+                Button {
+                    key: "{words}",
+                    compact: true,
+                    aria_pressed: if shown() == Some(sample) { "true" } else { "false" },
+                    onclick: move |_| {
+                        openings.set(openings() + 1);
+                        shown.set(Some(sample));
+                    },
+                    "{words}"
+                }
+            }
+        }
+        div { class: "gallery-reading",
+            SourceReading { source, on_close: move |_| shown.set(None),
+                div { class: "gallery-reader",
+                    p { class: "gallery-copy",
+                        "Following an April admission with decompensated heart failure, she was discharged on furosemide."
+                        CitedMark { cited: Cited::Discharge, on_expand: move |_| read_then_show(PaneSample::Passage) }
+                        " Her potassium was 4.0 mmol/L that morning."
+                        CitedMark { cited: Cited::Panel, on_expand: move |_| read_then_show(PaneSample::Fields) }
+                        " Riverside Cardiology asked for a repeat echocardiogram."
+                        CitedMark { cited: Cited::Fax }
+                        " Genetic testing was not yet back."
+                        CitationChip { index: 4, label: "Source 4 unavailable", unavailable: "unavailable" }
+                        " An outside packet records an ablation in 2019."
+                        CitedMark { cited: Cited::Outside, on_expand: move |_| read_then_show(PaneSample::Described) }
+                    }
                 }
             }
         }
     }
 }
 
+/// Which way the ending samples have been moved on: none yet, or the work taken up again.
+#[cfg(feature = "web")]
+#[derive(Clone, Copy, PartialEq)]
+enum Ended {
+    Finished,
+    NothingCited,
+    Stopped,
+    CutOff,
+    CutOffEmpty,
+    Failed,
+    /// Couldn't finish, and a later message replaced it, so it can't be tried again.
+    FailedReplaced,
+}
+
+/// What Coda had written before the cut-off sample's limit.
+#[cfg(feature = "web")]
+const KEPT_WORDS: &str = "Her potassium was 4.0 mmol/L on the morning of discharge, after diuresis for decompensated heart failure. Since then";
+
 #[cfg(feature = "web")]
 #[component]
-fn CitationDemo() -> Element {
-    let mut open = use_signal(|| None::<Cited>);
-    let source = open().map(|cited| SourcePane {
-        eyebrow: format!("Source {}", cited.index),
-        title: cited.title.to_owned(),
-        content: rsx! { CitedDetails { cited } },
-        back: "Back".to_owned(),
-        close: "Close source".to_owned(),
-    });
+fn AnswerEndingDemo() -> Element {
+    let mut rating = use_signal(|| None::<Rating>);
+    let mut uncited_rating = use_signal(|| None::<Rating>);
+    // The samples whose Resume or Try again was pressed, now working again.
+    let mut resumed = use_signal(Vec::<Ended>::new);
+    let mut take_up = move |ended: Ended| resumed.write().push(ended);
+    let retry = |ended: Ended| {
+        Some(EndAction {
+            label: "Try again".into(),
+            on_press: EventHandler::new(move |_| take_up(ended)),
+        })
+    };
+    let endings = [
+        (
+            Ended::Finished,
+            Ending::Finished {
+                words: rsx! {
+                    p {
+                        "Her potassium was 4.0 mmol/L on the morning of discharge,"
+                        CitedMark { cited: Cited::Panel }
+                        " after diuresis for decompensated heart failure."
+                        CitedMark { cited: Cited::Discharge }
+                    }
+                },
+                sources: Some(AnswerSources {
+                    label: "Sources".into(),
+                    sources: [Cited::Discharge, Cited::Panel]
+                        .map(Cited::indexed)
+                        .to_vec(),
+                }),
+                basis: Basis {
+                    title: "Basis and limitations".into(),
+                    words: rsx! {
+                        p {
+                            "Rests on the discharge summary"
+                            CitedMark { cited: Cited::Discharge }
+                            " and the panel drawn that morning,"
+                            CitedMark { cited: Cited::Panel }
+                            " which is still preliminary. The record holds no potassium after discharge, so a later change would not show here."
+                        }
+                    },
+                },
+                rating: rsx! {
+                    FeedbackRating {
+                        selected: rating(),
+                        label: "Rate this response",
+                        up_label: "Good response",
+                        down_label: "Poor response",
+                        on_rate: move |choice| rating.set(Some(choice)),
+                    }
+                },
+            },
+        ),
+        (
+            Ended::NothingCited,
+            Ending::Finished {
+                words: rsx! {
+                    p { "No bone density scan is on file for her." }
+                },
+                sources: None,
+                basis: Basis {
+                    title: "Basis and limitations".into(),
+                    words: rsx! {
+                        p { "Searched her imaging, radiology reports and outside records back to 2015 for a DXA or bone density result. A scan done elsewhere and never sent to this practice would not show here." }
+                    },
+                },
+                rating: rsx! {
+                    FeedbackRating {
+                        selected: uncited_rating(),
+                        label: "Rate this response",
+                        up_label: "Good response",
+                        down_label: "Poor response",
+                        on_rate: move |choice| uncited_rating.set(Some(choice)),
+                    }
+                },
+            },
+        ),
+        (
+            Ended::Stopped,
+            Ending::Stopped {
+                mark: "Stopped".into(),
+                resume: Some(EndAction {
+                    label: "Resume".into(),
+                    on_press: EventHandler::new(move |_| take_up(Ended::Stopped)),
+                }),
+            },
+        ),
+        (
+            Ended::CutOff,
+            Ending::CutOff {
+                message: "Coda reached a limit before finishing.".into(),
+                retry: retry(Ended::CutOff),
+            },
+        ),
+        (
+            Ended::CutOffEmpty,
+            Ending::CutOff {
+                message: "Coda reached a limit before finishing.".into(),
+                retry: retry(Ended::CutOffEmpty),
+            },
+        ),
+        (
+            Ended::Failed,
+            Ending::Failed {
+                message: "Coda couldn’t finish.".into(),
+                retry: retry(Ended::Failed),
+            },
+        ),
+        (
+            Ended::FailedReplaced,
+            Ending::Failed {
+                message: "Coda couldn’t finish.".into(),
+                retry: None,
+            },
+        ),
+    ];
     rsx! {
-        div { class: "gallery-reading",
-            SourceReading { source, on_close: move |_| open.set(None),
-                div { class: "gallery-reader",
-                    p { class: "gallery-copy",
-                        "Following an April admission with decompensated heart failure, she remained NYHA II–III with mild congestion."
-                        CitationPreview {
-                            index: 1,
-                            label: CITED[0].title,
-                            eyebrow: "Source 1",
-                            citation_label: "Source 1: {CITED[0].title}. Preview source.",
-                            close_label: "Close source preview",
-                            on_expand: move |_| open.set(Some(CITED[0])),
-                            expand_label: "Expand",
-                            original: "https://example.org/records/discharge",
-                            original_label: "Open in Epic",
-                            new_tab_hint: "Opens in a new tab",
-                            CitedDetails { cited: CITED[0] }
+        div { class: "gallery-thread",
+            for (ended, ending) in endings {
+                Message { key: "{ended as u8}", author: Author::Assistant, by: "Coda",
+                    if resumed().contains(&ended) {
+                        WorkTrace { label: "Searching for potassium results", working: true,
+                            WorkStep { icon: IconName::Search, label: "Searching for potassium results" }
                         }
-                        CitationPreview {
-                            index: 2,
-                            label: CITED[1].title,
-                            eyebrow: "Source 2",
-                            citation_label: "Source 2: {CITED[1].title}. Preview source.",
-                            close_label: "Close source preview",
-                            on_expand: move |_| open.set(Some(CITED[1])),
-                            expand_label: "Expand",
-                            CitedDetails { cited: CITED[1] }
+                    } else {
+                        match ended {
+                            Ended::Finished => rsx! {
+                                WorkTrace { label: "Read 2 records", detail: "12s",
+                                    WorkStep { icon: IconName::File, label: "Read the discharge summary", state: StepState::Done, detail: "April 25, 2024" }
+                                    WorkStep { icon: IconName::File, label: "Read the basic metabolic panel", state: StepState::Done, detail: "April 25, 2024" }
+                                }
+                            },
+                            Ended::NothingCited => rsx! {
+                                WorkTrace { label: "Searched 2 places", detail: "9s",
+                                    WorkStep { icon: IconName::Search, label: "Searched her imaging and radiology reports", state: StepState::Done, detail: "None found" }
+                                    WorkStep { icon: IconName::Search, label: "Searched her outside records", state: StepState::Done, detail: "None found" }
+                                }
+                            },
+                            Ended::Stopped => rsx! {
+                                WorkTrace { label: "Read 1 record", detail: "6s",
+                                    WorkStep { icon: IconName::File, label: "Read the discharge summary", state: StepState::Done, detail: "April 25, 2024" }
+                                    WorkStep { icon: IconName::Search, label: "Searching for potassium results", state: StepState::Stopped, detail: "Stopped" }
+                                }
+                            },
+                            // The words Coda kept stand as the answer's words, before the ending.
+                            Ended::CutOff => rsx! {
+                                Prose { names: prose_names(), parts: vec![ProsePart::Words(KEPT_WORDS.to_owned())] }
+                            },
+                            _ => rsx! {},
                         }
-                        " Genetic testing was not yet back."
-                        CitationChip { index: 3, label: "Source 3 unavailable", unavailable: "unavailable" }
+                        AnswerEnding { ending }
                     }
                 }
+            }
+            Button {
+                variant: ButtonVariant::Quiet,
+                compact: true,
+                onclick: move |_| resumed.set(Vec::new()),
+                Icon { name: IconName::Refresh }
+                "Show again"
             }
         }
     }
@@ -1635,8 +2128,14 @@ fn ButtonDemo() -> Element {
 /// The prose specimen.
 #[cfg(feature = "web")]
 const PROSE_BEFORE: &str = "## Recorded measurements\n\nPotassium was **5.4 mmol/L** on Tuesday";
+/// Its table holds a sentence beside its figures and more columns than a phone's column fits, so
+/// there it scrolls across in its frame.
 #[cfg(feature = "web")]
-const PROSE_AFTER: &str = ", up from 4.9 in September. Confirm the current reading with the patient.\n\n- Lisinopril 10 mg daily\n- Spironolactone 25 mg, *held* since October 2\n\n> Feels well, with no palpitations.\n\n| Date | Potassium |\n| --- | --- |\n| September 12 | 4.9 |\n| [October 28](https://example.org/results) | 5.4 |\n\nRecheck with a `BMP` next week.";
+const PROSE_AFTER: &str = ", up from 4.9 in September. Confirm the current reading with the patient.\n\n- Lisinopril 10 mg daily\n- Spironolactone 25 mg, *held* since October 2\n\n> Feels well, with no palpitations.\n\n| Date | Potassium | Sodium | Urea | Creatinine | Note |\n| --- | ---: | ---: | ---: | ---: | --- |\n| September 12 | 4.9 mmol/L | 139 mmol/L | 5.2 mmol/L | 118 µmol/L | Drawn at the clinic before the morning dose. |\n| [October 28](https://example.org/results) | 5.4 mmol/L | 138 mmol/L | 4.0 mmol/L | 124 µmol/L | Drawn on the ward, four hours after the spironolactone dose. |\n\nRecheck with a `BMP` next week.";
+/// A small lab table as an answer writes one, its results marked to line up at the end: in the
+/// prose samples and in the chat window's table answer.
+#[cfg(feature = "web")]
+const LAB_TABLE: &str = "| Measurement | Result |\n| --- | ---: |\n| Sodium | 138 mmol/L |\n| Potassium | 4.0 mmol/L |\n| Urea | 4.0 mmol/L |\n| Creatinine | 124 µmol/L |";
 /// Prose in a message: compact, keeping its line breaks.
 #[cfg(feature = "web")]
 const PROSE_MESSAGE: &str =
@@ -1655,6 +2154,7 @@ fn ProseDemo() -> Element {
                     ProsePart::Words(PROSE_AFTER.to_owned()),
                 ],
             }
+            Prose { names: prose_names(), parts: vec![ProsePart::Words(LAB_TABLE.to_owned())] }
             Message { author: Author::Assistant, by: "Coda",
                 Prose {
                     message: true,
@@ -1846,6 +2346,113 @@ fn ViewportDemo() -> Element {
                     lines.write().push(Line { person: true, text: "And her blood pressure?".into(), sources: false });
                 },
                 "Send a message"
+            }
+        }
+    }
+}
+
+/// The person the conversation samples are about.
+#[cfg(feature = "web")]
+const PATIENT: &str = "Mary Louis";
+
+/// The facts under the patient's name.
+#[cfg(feature = "web")]
+fn patient_facts() -> Vec<HeaderFact> {
+    let fact = |label: Option<&str>, value: &str| HeaderFact {
+        label: label.map(str::to_owned),
+        value: value.to_owned(),
+    };
+    vec![
+        fact(None, "77 years"),
+        fact(Some("DOB"), "Mar 3, 1947"),
+        fact(None, "Female"),
+        fact(Some("MRN"), "00004471"),
+    ]
+}
+
+#[cfg(feature = "web")]
+#[component]
+fn ChatColumnDemo() -> Element {
+    let mut place = use_signal(QueuePlace::default);
+    let mut lines = use_signal(|| {
+        vec![
+            Line {
+                person: true,
+                text: "What changed since her last visit?".into(),
+                sources: false,
+            },
+            Line {
+                person: false,
+                text: REPLIES[0].into(),
+                sources: false,
+            },
+            Line {
+                person: true,
+                text: "Was the dose changed?".into(),
+                sources: false,
+            },
+        ]
+    });
+    let mut queue = use_signal(|| waiting().into_iter().take(1).collect::<Vec<_>>());
+    let editing = use_signal(|| None::<(u32, String)>);
+    let mut draft = use_signal(String::new);
+    let mut keys = use_signal(|| 10u32);
+    let replies = lines.read().iter().filter(|line| !line.person).count();
+    let sent = lines.read().iter().filter(|line| line.person).count();
+    let send_next = move |text: String| {
+        if text.trim().is_empty() {
+            return;
+        }
+        let key = keys() + 1;
+        keys.set(key);
+        queue.write().push(Waiting {
+            key,
+            text,
+            confirming: Confirming::Settled,
+        });
+        draft.set(String::new());
+    };
+    rsx! {
+        Segmented {
+            label: "Queued messages",
+            options: vec!["Under the answer".into(), "Above the composer".into()],
+            selected: match place() { QueuePlace::UnderAnswer => 0, QueuePlace::AboveComposer => 1 },
+            on_select: move |index| place.set(if index == 0 { QueuePlace::UnderAnswer } else { QueuePlace::AboveComposer }),
+        }
+        div { class: "gallery-chat",
+            ChatColumn {
+                header: rsx! { ChatHeader { name: PATIENT, facts: patient_facts() } },
+                replies,
+                sent,
+                jump_label: "Jump to new response",
+                queue: (!queue.read().is_empty()).then(|| rsx! {
+                    QueuedMessages { queue, editing, on_send_now: move |text| lines.write().push(Line { person: true, text, sources: false }) }
+                }),
+                queue_place: place(),
+                composer: rsx! {
+                    Composer {
+                        label: "Message Coda",
+                        placeholder: "Ask a follow-up",
+                        value: draft(),
+                        on_input: move |text| draft.set(text),
+                        on_submit: send_next,
+                        status: rsx! { WorkingPresence { label: "Reading the cardiology note", compact: true, announce: false } },
+                        Button { variant: ButtonVariant::Primary, submit: true, "Send next" }
+                    }
+                },
+                for (index, line) in lines().into_iter().enumerate() {
+                    Message {
+                        key: "{index}",
+                        author: if line.person { Author::Person } else { Author::Assistant },
+                        by: if line.person { "You" } else { "Coda" },
+                        p { "{line.text}" }
+                    }
+                }
+                Message { author: Author::Assistant, by: "Coda",
+                    WorkTrace { label: "Reading the cardiology note", working: true,
+                        WorkStep { icon: IconName::File, label: "Reading the cardiology note" }
+                    }
+                }
             }
         }
     }
@@ -2188,7 +2795,7 @@ fn PaletteDemo() -> Element {
     }
 }
 
-/// A scripted run: each step runs, then is done, and the trace folds once the last is.
+/// A scripted run: each step runs, then is done, and the trace's line says what was done once the last is.
 #[cfg(feature = "web")]
 const RUN: [(IconName, &str, &str, &str); 4] = [
     (IconName::Sparkle, "Thinking", "Thought for 4s", ""),
@@ -2593,27 +3200,72 @@ enum Delivery {
     Sent,
 }
 
+/// Where a queued message's last command stands in the delivery demo.
+#[cfg(feature = "web")]
+#[derive(Clone, PartialEq)]
+enum Confirming {
+    /// Nothing outstanding.
+    Settled,
+    /// Its update never came back, and asking again on its own didn't settle it.
+    Unconfirmed(String),
+    /// Asking again after Check again.
+    Checking(String),
+}
+
+/// A message waiting for Coda's reply in the delivery demo.
+#[cfg(feature = "web")]
+#[derive(Clone, PartialEq)]
+struct Waiting {
+    key: u32,
+    text: String,
+    confirming: Confirming,
+}
+
+#[cfg(feature = "web")]
+fn waiting() -> Vec<Waiting> {
+    vec![
+        Waiting {
+            key: 1,
+            text: "And when was her last ECG?".into(),
+            confirming: Confirming::Settled,
+        },
+        Waiting {
+            key: 2,
+            text: "List her current diuretics.".into(),
+            confirming: Confirming::Settled,
+        },
+        Waiting {
+            key: 3,
+            text: "What was her weight at discharge?".into(),
+            confirming: Confirming::Unconfirmed(
+                "What was her weight at discharge and today?".into(),
+            ),
+        },
+    ]
+}
+
 #[cfg(feature = "web")]
 #[component]
 fn DeliveryDemo() -> Element {
     let mut delivery = use_signal(|| Delivery::Failed);
-    let mut queued = use_signal(|| true);
+    let mut queue = use_signal(waiting);
+    // Queued messages sent now, which the reply under way takes in.
+    let mut steered = use_signal(Vec::<String>::new);
+    // The queued message being edited, by its key, and its words so far.
+    let mut editing = use_signal(|| None::<(u32, String)>);
+    let count = queue.read().len();
     rsx! {
         div { class: "gallery-thread",
             Message { author: Author::Person, by: "You", p { "Summarize her last visit." } }
+            for (index, text) in steered().into_iter().enumerate() {
+                Message { key: "{index}", author: Author::Person, by: "You", p { "{text}" } }
+            }
             Message { author: Author::Assistant,
                 span { class: "sr-only", role: "status", "Coda is responding" }
                 WorkingMark {}
             }
-            if queued() {
-                Message { author: Author::Person, by: "You", state: MessageState::Queued,
-                    status: rsx! {
-                        MessageStatus { words: "Sends after Coda's reply", icon: IconName::Clock,
-                            Button { variant: ButtonVariant::Quiet, compact: true, onclick: move |_| queued.set(false), "Cancel" }
-                        }
-                    },
-                    p { "And when was her last ECG?" }
-                }
+            if count > 0 {
+                QueuedMessages { queue, editing, on_send_now: move |text| steered.write().push(text) }
             }
             Message { author: Author::Person, by: "You",
                 state: match delivery() {
@@ -2648,11 +3300,139 @@ fn DeliveryDemo() -> Element {
                 compact: true,
                 onclick: move |_| {
                     delivery.set(Delivery::Failed);
-                    queued.set(true);
+                    queue.set(waiting());
+                    steered.set(Vec::new());
+                    editing.set(None);
                 },
                 Icon { name: IconName::Refresh }
                 "Show again"
             }
+        }
+    }
+}
+
+/// The queued messages, each queued with its waiting line or, while edited, in its editor. Send
+/// now takes a message off the queue and hands its words to `on_send_now`.
+#[cfg(feature = "web")]
+#[component]
+fn QueuedMessages(
+    queue: Signal<Vec<Waiting>>,
+    editing: Signal<Option<(u32, String)>>,
+    on_send_now: EventHandler<String>,
+) -> Element {
+    let mut queue = queue;
+    let mut editing = editing;
+    let count = queue.read().len();
+    rsx! {
+        MessageQueue {
+            for item in queue() {
+                if let Some((_, words)) = editing().filter(|(key, _)| *key == item.key) {
+                    MessageEditor {
+                        key: "{item.key}",
+                        label: "Edit queued message",
+                        value: words,
+                        on_input: move |text| editing.set(Some((item.key, text))),
+                        on_save: move |text: String| {
+                            if let Some(held) = queue.write().iter_mut().find(|held| held.key == item.key) {
+                                held.text = text;
+                            }
+                            editing.set(None);
+                        },
+                        on_cancel: move |_| editing.set(None),
+                        save_label: "Update",
+                        cancel_label: "Cancel",
+                    }
+                } else {
+                    QueuedMessage {
+                        key: "{item.key}",
+                        item,
+                        line: if count == 1 { "Sends after Coda's reply" } else { "Send together after Coda's reply" },
+                        queue,
+                        editing,
+                        on_send_now,
+                    }
+                }
+            }
+        }
+    }
+}
+
+/// One queued message: outlined, its waiting `line` and Edit, Delete and Send now in its own row,
+/// shown without hover. While its last command is unconfirmed it keeps its words as they were and
+/// offers Check again instead.
+#[cfg(feature = "web")]
+#[component]
+fn QueuedMessage(
+    item: Waiting,
+    line: String,
+    queue: Signal<Vec<Waiting>>,
+    editing: Signal<Option<(u32, String)>>,
+    on_send_now: EventHandler<String>,
+) -> Element {
+    let key = item.key;
+    let mut queue = queue;
+    let mut editing = editing;
+    let status = match item.confirming.clone() {
+        Confirming::Settled => Some(rsx! { MessageStatus { words: line, icon: IconName::Clock } }),
+        Confirming::Unconfirmed(update) => Some(rsx! {
+            MessageStatus { words: "Couldn’t confirm the update.",
+                Button {
+                    variant: ButtonVariant::Quiet,
+                    compact: true,
+                    onclick: move |_| {
+                        let update = update.clone();
+                        if let Some(held) = queue.write().iter_mut().find(|held| held.key == key) {
+                            held.confirming = Confirming::Checking(update.clone());
+                        }
+                        spawn(async move {
+                            futures_timer::Delay::new(Duration::from_millis(900)).await;
+                            if let Some(held) = queue.write().iter_mut().find(|held| held.key == key) {
+                                held.text = update;
+                                held.confirming = Confirming::Settled;
+                            }
+                        });
+                    },
+                    "Check again"
+                }
+            }
+        }),
+        Confirming::Checking(_) => Some(rsx! { MessageStatus { words: "Checking" } }),
+    };
+    let actions = (item.confirming == Confirming::Settled).then(|| {
+        let text = item.text.clone();
+        rsx! {
+            MessageActions { label: "Queued message", shown: true,
+                Button {
+                    variant: ButtonVariant::Quiet,
+                    compact: true,
+                    onclick: {
+                        let text = text.clone();
+                        move |_| editing.set(Some((key, text.clone())))
+                    },
+                    "Edit"
+                }
+                Button {
+                    variant: ButtonVariant::Quiet,
+                    compact: true,
+                    danger: true,
+                    onclick: move |_| queue.write().retain(|held| held.key != key),
+                    "Delete"
+                }
+                Button {
+                    variant: ButtonVariant::Quiet,
+                    compact: true,
+                    onclick: move |_| {
+                        queue.write().retain(|held| held.key != key);
+                        on_send_now.call(text.clone());
+                    },
+                    "Send now"
+                }
+            }
+        }
+    });
+    rsx! {
+        Message { author: Author::Person, by: "You", state: MessageState::Queued, status, actions,
+            p { "{item.text}" }
         }
     }
 }

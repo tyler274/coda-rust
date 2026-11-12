@@ -12,25 +12,21 @@
 #[allow(dead_code)]
 #[path = "../../mobile/tests/common/devtools.rs"]
 mod devtools;
+mod support;
 
-use std::net::TcpStream;
 use std::path::PathBuf;
-use std::process::{Child, Command};
-use std::sync::{Mutex, MutexGuard};
 use std::time::{Duration, Instant};
 
 use base64::Engine;
-use devtools::{Browser, DESKTOP, Key, PHONE, free_port};
+use devtools::{Browser, DESKTOP, Key, PHONE};
 use serde_json::Value;
+use support::Gallery;
 
 /// How long a section's entry motion and first scripted steps get to run.
 const SETTLE: Duration = Duration::from_secs(2);
 
 /// How many presses of Tab a walk gets to reach what it is after, past the page's other stops.
 const TAB_STOPS: usize = 120;
-
-/// Each start rewrites the one built bundle, so a test holds this while it serves it.
-static BUNDLE: Mutex<()> = Mutex::new(());
 
 #[test]
 #[ignore = "browser qualification; run explicitly with --ignored"]
@@ -267,30 +263,74 @@ fn an_unknown_address_opens_the_first_section() {
 #[test]
 #[ignore = "browser qualification; run explicitly with --ignored"]
 fn keys_scroll_a_code_block() {
+    let gallery = Gallery::start();
+    let mut browser = open_at(&gallery, PHONE, "agent-work", "Agent work");
     keys_scroll(
-        "agent-work",
-        "Agent work",
+        &mut browser,
         ".gallery-agent > .code-block:not(.diff) > .code-block-body",
         "code-block",
     );
 }
 
-/// Tab reaches a prose table too wide for its column, shows the ring, and the arrows move it.
+/// A prose table with more columns than a phone's column holds keeps each figure it puts at the
+/// end on one line with its unit, and Tab reaches it, shows the ring, and the arrows move it.
 #[test]
 #[ignore = "browser qualification; run explicitly with --ignored"]
 fn keys_scroll_a_prose_table() {
-    keys_scroll("prose", "Prose", ".prose-table-scroll", "prose-table");
+    let gallery = Gallery::start();
+    let mut browser = open_at(&gallery, PHONE, "prose", "Prose");
+    let figures = browser.page().evaluate(
+        "(() => { const cells = [...document.querySelector('.prose-table-scroll').querySelectorAll('td[data-align=end]')]; \
+         const broken = cells.filter((cell) => { const range = document.createRange(); range.selectNodeContents(cell); \
+           return new Set([...range.getClientRects()].filter((box) => box.width > 0).map((box) => Math.round(box.bottom))).size > 1; }); \
+         return { figures: cells.length, broken: broken.map((cell) => cell.textContent.trim()) }; })()",
+    );
+    assert_eq!(
+        figures,
+        serde_json::json!({ "figures": 8, "broken": [] }),
+        "figures broken over more than one line"
+    );
+    keys_scroll(&mut browser, ".prose-table-scroll", "prose-table");
 }
 
-/// Walks to `selector` with Tab at phone width, where it can't fit, then scrolls it both ways.
-fn keys_scroll(slug: &str, title: &str, selector: &str, picture: &str) {
+/// The chat column's transcript and its composer share their left and right edges at every window
+/// width, with the scrollbar's room kept on the transcript's sides. Read with classic scrollbars,
+/// which take room; overlay scrollbars take none.
+#[test]
+#[ignore = "browser qualification; run explicitly with --ignored"]
+fn the_transcript_and_the_composer_share_their_edges() {
     let gallery = Gallery::start();
+    for width in [600, 768, 1024, 1280] {
+        let mut browser = open_at(&gallery, (width, 900), "conversation", "Conversation");
+        let edges = browser.page().evaluate(
+            "(() => { const column = document.querySelector('.gallery-chat .chat-column'); \
+             const scroller = column.querySelector('.conversation-scroll'); \
+             const words = column.querySelector('.conversation-feed').getBoundingClientRect(); \
+             const composer = column.querySelector('.composer').getBoundingClientRect(); \
+             return { classic: scroller.offsetWidth > scroller.clientWidth, \
+               left: Math.round(words.left - composer.left), right: Math.round(words.right - composer.right) }; })()",
+        );
+        assert_eq!(
+            edges,
+            serde_json::json!({ "classic": true, "left": 0, "right": 0 }),
+            "the transcript's edges against the composer's in a window {width} wide"
+        );
+    }
+}
+
+/// The section `slug`, titled `title`, in a window `size`, settled.
+fn open_at(gallery: &Gallery, size: (u32, u32), slug: &str, title: &str) -> Browser {
     let mut browser = Browser::launch();
-    browser.resize(PHONE);
+    browser.resize(size);
     browser.page().navigate(&format!("{}#{slug}", gallery.url));
     wait_for_heading(&mut browser, title).expect("the section");
     std::thread::sleep(SETTLE);
+    browser
+}
 
+/// Walks to `selector` with Tab, where it can't fit, then scrolls it both ways while the page
+/// around it stays put.
+fn keys_scroll(browser: &mut Browser, selector: &str, picture: &str) {
     let target = format!("document.querySelector({selector:?})");
     let wider = browser
         .page()
@@ -329,13 +369,23 @@ fn keys_scroll(slug: &str, title: &str, selector: &str, picture: &str) {
            && parseFloat(style.outlineWidth) > 0; }})()"
     ));
     assert_eq!(ring.as_bool(), Some(true), "{selector} shows no focus ring");
-    save_picture(&mut browser, picture);
+    save_picture(browser, picture);
 
+    let place = format!("Math.round({target}.getBoundingClientRect().left)");
+    let before = browser.page().evaluate(&place);
     browser.press_key(Key::ARROW_RIGHT);
-    let moved = wait_for_scroll(&mut browser, &target, |left| left > 0.0);
+    let moved = wait_for_scroll(browser, &target, |left| left > 0.0);
     assert!(moved, "ArrowRight did not scroll {selector}");
+    let around = browser.page().evaluate(&format!(
+        "[scrollX, document.documentElement.scrollWidth > document.documentElement.clientWidth, {place}]"
+    ));
+    assert_eq!(
+        around,
+        serde_json::json!([0, false, before]),
+        "the page moved sideways with {selector}"
+    );
     browser.press_key(Key::ARROW_LEFT);
-    let back = wait_for_scroll(&mut browser, &target, |left| left == 0.0);
+    let back = wait_for_scroll(browser, &target, |left| left == 0.0);
     assert!(back, "ArrowLeft did not scroll {selector} back");
 }
 
@@ -919,62 +969,4 @@ fn sideways_overflow(browser: &mut Browser) -> Option<String> {
          return `the page overflows sideways by ${over}px: ${widest.join(', ')}`; })()",
     );
     found.as_str().map(str::to_owned)
-}
-
-/// The documented command, serving on a port of its own.
-struct Gallery {
-    server: Child,
-    url: String,
-    _bundle: MutexGuard<'static, ()>,
-}
-
-impl Gallery {
-    fn start() -> Self {
-        let bundle = BUNDLE
-            .lock()
-            .unwrap_or_else(|poisoned| poisoned.into_inner());
-        let workspace = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../..");
-        let port = free_port().expect("a free local port for the gallery");
-        let mut command = Command::new(workspace.join("scripts/ui-gallery.sh"));
-        // Cargo's own variables for this test would change the inner build's fingerprints.
-        for (key, _) in std::env::vars_os() {
-            let key = key.to_string_lossy().into_owned();
-            let cargo_home = matches!(
-                key.as_str(),
-                "CARGO_HOME" | "CARGO_TARGET_DIR" | "CARGO_NET_OFFLINE"
-            );
-            if key == "LD_LIBRARY_PATH" || (key.starts_with("CARGO_") && !cargo_home) {
-                command.env_remove(key);
-            }
-        }
-        let mut server = command
-            .env("UI_GALLERY_LISTEN_ADDR", format!("127.0.0.1:{port}"))
-            .spawn()
-            .expect("scripts/ui-gallery.sh");
-        // Builds the gallery first, so this allows for a cold WebAssembly build.
-        let deadline = Instant::now() + Duration::from_secs(1200);
-        while TcpStream::connect(("127.0.0.1", port)).is_err() {
-            if let Some(status) = server.try_wait().expect("the gallery command") {
-                panic!("scripts/ui-gallery.sh exited before serving: {status}");
-            }
-            if Instant::now() > deadline {
-                let _ = server.kill();
-                let _ = server.wait();
-                panic!("scripts/ui-gallery.sh never served port {port}");
-            }
-            std::thread::sleep(Duration::from_millis(100));
-        }
-        Self {
-            server,
-            url: format!("http://127.0.0.1:{port}/"),
-            _bundle: bundle,
-        }
-    }
-}
-
-impl Drop for Gallery {
-    fn drop(&mut self) {
-        let _ = self.server.kill();
-        let _ = self.server.wait();
-    }
 }

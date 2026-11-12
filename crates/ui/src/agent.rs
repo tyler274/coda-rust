@@ -11,7 +11,10 @@ use std::sync::atomic::{AtomicUsize, Ordering};
 
 use dioxus::prelude::*;
 
-use crate::{Button, ButtonVariant, Icon, IconName, Spinner, WorkingMark, script};
+use crate::{
+    Button, ButtonVariant, Icon, IconName, ListRow, SourcesButton, Spinner, StatusLine,
+    WorkingMark, script, sources::PlacedPopover,
+};
 
 /// Where one step of an agent's work stands.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
@@ -29,7 +32,8 @@ pub enum StepState {
 
 /// One step of an agent's work, as a row: its icon, its words, and a quieter detail, such as what
 /// it found or how long it took. Running, its words shimmer; failed, its mark turns to the alert
-/// in red. With a `body`, such as the reasoning itself or a tool's input and output, the row is a
+/// in red; stopped before it finished, its mark turns to the stop square and its words go quiet.
+/// With a `body`, such as the reasoning itself or a tool's input and output, the row is a
 /// toggle that opens to show it.
 #[component]
 pub fn WorkStep(
@@ -47,10 +51,10 @@ pub fn WorkStep(
         StepState::Failed => "work-step is-failed",
         StepState::Stopped => "work-step is-stopped",
     };
-    let mark = if state == StepState::Failed {
-        IconName::Alert
-    } else {
-        icon
+    let mark = match state {
+        StepState::Failed => IconName::Alert,
+        StepState::Stopped => IconName::Square,
+        StepState::Running | StepState::Done => icon,
     };
     let line = rsx! {
         span { class: "work-step-mark", Icon { name: mark } }
@@ -93,8 +97,9 @@ static STEPS: AtomicUsize = AtomicUsize::new(0);
 
 /// An agent's work on one turn: its `WorkStep`s under one line that says what it is doing or did,
 /// such as "Read 3 notes and searched twice", with a quieter `detail`, such as how long it took.
-/// While `working`, the line carries the working mark and the steps stand open; once done they
-/// fold away under it. Pressing the line opens or closes them until the work next starts or ends.
+/// While `working` the line also carries the working mark. The steps stay folded under the line,
+/// while working and once done, until the person presses the line; it opens or closes them, and
+/// that choice holds until the work next starts or ends, when they fold again.
 #[component]
 pub fn WorkTrace(
     label: String,
@@ -103,29 +108,29 @@ pub fn WorkTrace(
     children: Element,
 ) -> Element {
     let id = use_hook(|| format!("work-trace-{}", TRACES.fetch_add(1, Ordering::Relaxed)));
-    // The person's own choice holds until the work starts or ends; then the steps follow the work.
-    // Folding away when the work ends brings focus inside the steps back to the line.
-    let mut chosen = use_signal(|| None::<bool>);
+    // Opened only by the person, until the work starts or ends. Folding away when the work ends
+    // brings focus inside the steps back to the line.
+    let mut open = use_signal(|| false);
     let region = id.clone();
     use_effect(use_reactive!(|working| {
-        chosen.set(None);
+        open.set(false);
         if !working {
             script::refocus_line(&region);
         }
     }));
-    let open = chosen().unwrap_or(working);
+    let open_now = open();
     rsx! {
         section {
             class: if working { "work-trace is-working" } else { "work-trace" },
-            "data-state": if open { "open" } else { "closed" },
+            "data-state": if open_now { "open" } else { "closed" },
             aria_busy: working.then_some("true"),
             button {
                 id: "{id}-line",
                 class: "work-trace-line",
                 r#type: "button",
-                aria_expanded: "{open}",
+                aria_expanded: "{open_now}",
                 aria_controls: "{id}",
-                onclick: move |_| chosen.set(Some(!open)),
+                onclick: move |_| open.toggle(),
                 if working {
                     WorkingMark {}
                 }
@@ -137,9 +142,9 @@ pub fn WorkTrace(
             }
             div {
                 id: "{id}",
-                class: if open { "disclosure-region is-open" } else { "disclosure-region" },
-                aria_hidden: if open { "false" } else { "true" },
-                "inert": (!open).then_some("true"),
+                class: if open_now { "disclosure-region is-open" } else { "disclosure-region" },
+                aria_hidden: if open_now { "false" } else { "true" },
+                "inert": (!open_now).then_some("true"),
                 div { class: "disclosure-clip",
                     ol { class: "work-steps", {children} }
                 }
@@ -149,6 +154,194 @@ pub fn WorkTrace(
 }
 
 static TRACES: AtomicUsize = AtomicUsize::new(0);
+
+/// One source in a finished answer's Sources list: its number, as the answer's citations show it,
+/// its title, and a quieter detail, such as its date.
+#[derive(Clone, Debug, PartialEq)]
+pub struct IndexedSource {
+    /// Its number, as the answer's citations show it.
+    pub number: usize,
+    /// Its title: "Discharge summary".
+    pub title: String,
+    /// A quieter detail, such as its date.
+    pub detail: Option<String>,
+}
+
+/// A finished answer's Sources control: its words and the sources the answer cites, each once, in
+/// the order of their numbers. How many there are is what the control counts.
+#[derive(Clone, Debug, PartialEq)]
+pub struct AnswerSources {
+    /// The control's words, and the list's name: "Sources".
+    pub label: String,
+    /// The sources the answer cites.
+    pub sources: Vec<IndexedSource>,
+}
+
+/// Coda's account of what a finished answer rests on and what could change it: its title and its
+/// words, which may carry citation marks with the answer's numbers.
+#[derive(Clone, PartialEq)]
+pub struct Basis {
+    /// The title: "Basis and limitations".
+    pub title: String,
+    /// What the answer rests on and what could change it.
+    pub words: Element,
+}
+
+/// A way on after an answer ended: its words and what it does.
+#[derive(Clone, PartialEq)]
+pub struct EndAction {
+    /// The action's words: "Resume", "Try again".
+    pub label: String,
+    /// What pressing it does.
+    pub on_press: EventHandler,
+}
+
+/// How an answer ended, each ending holding only what it shows. Only a finished answer has words
+/// with citation marks, Sources when it cites any, Basis and limitations, and a rating; only a
+/// stopped one offers Resume; only one cut off or not finished offers Try again, and only while it
+/// can be tried again.
+#[derive(Clone, PartialEq)]
+pub enum Ending {
+    /// Coda completed the answer.
+    Finished {
+        /// The answer's words, with their citation marks.
+        words: Element,
+        /// The Sources control; none when the answer cites no source, and then no control shows.
+        sources: Option<AnswerSources>,
+        /// Basis and limitations, collapsed, ahead of Sources.
+        basis: Basis,
+        /// The host's rating of the answer, a `FeedbackRating`.
+        rating: Element,
+    },
+    /// The person stopped the work: the stopped mark's words, and Resume until the person sends
+    /// something else.
+    Stopped {
+        /// The stopped mark's words: "Stopped".
+        mark: String,
+        /// Resume, while the work waits for it.
+        resume: Option<EndAction>,
+    },
+    /// Coda reached a limit before it finished: the line that says so, and Try again while it can
+    /// be tried again. What Coda had written before the limit is the host's to show, as answer
+    /// words through `Prose` before the ending, as it shows them while Coda works again, once it
+    /// finishes and when stopped.
+    CutOff {
+        /// The line that says the answer was cut off.
+        message: String,
+        /// Try again; none once the answer can't be tried again, such as when a later message
+        /// replaced it.
+        retry: Option<EndAction>,
+    },
+    /// Coda couldn't finish: the line that says so, and Try again while it can be tried again.
+    Failed {
+        /// The line that says Coda couldn't finish.
+        message: String,
+        /// Try again; none once the answer can't be tried again.
+        retry: Option<EndAction>,
+    },
+}
+
+/// An answer as it ended, rising in as it arrives. Finished, its words, then one row: Basis and
+/// limitations as quiet words with a chevron, collapsed; the Sources pill with its count when the
+/// answer cites any; and right after them the rating, which shows as a rating does under any
+/// message: while the answer is hovered or focused, and always on touch. Basis opens in place
+/// beneath the row as plain text. Sources opens a small list of the cited sources beside it,
+/// numbered as in the words, on the side with more room and never over the pill; choosing one
+/// closes the list and chooses that source's first citation in the answer, brought into view, so
+/// the source opens as that citation opens it.
+/// Stopped, the stopped mark with Resume beside it. Cut off or not finished, one line, with Try
+/// again under it while the answer can be tried again; words Coda kept before a limit are the
+/// host's, shown before the ending. A line that ends the wait announces itself.
+#[component]
+pub fn AnswerEnding(ending: Ending) -> Element {
+    let id = use_hook(|| format!("answer-basis-{}", BASES.fetch_add(1, Ordering::Relaxed)));
+    let mut open = use_signal(|| false);
+    match ending {
+        Ending::Finished {
+            words,
+            sources,
+            basis,
+            rating,
+        } => {
+            let answer = format!("{id}-answer");
+            let list = format!("{id}-sources");
+            let control = format!("{id}-sources-control");
+            rsx! {
+                div { id: "{answer}", class: "answer-ending",
+                    div { class: "answer-words", {words} }
+                    div { class: "answer-ending-row",
+                        button {
+                            class: "answer-control",
+                            r#type: "button",
+                            aria_expanded: "{open}",
+                            aria_controls: "{id}",
+                            onclick: move |_| open.toggle(),
+                            "{basis.title}"
+                            Icon { name: IconName::ChevronDown }
+                        }
+                        if let Some(AnswerSources { label, sources }) = sources {
+                            SourcesButton { id: control.clone(), label: label.clone(), count: sources.len(), opens: list.clone() }
+                            PlacedPopover { id: list.clone(), label, control,
+                                ol { class: "row-list sources-index",
+                                    for source in sources {
+                                        li { key: "{source.number}",
+                                            ListRow {
+                                                number: source.number,
+                                                title: source.title,
+                                                detail: source.detail,
+                                                onclick: {
+                                                    let (answer, list) = (answer.clone(), list.clone());
+                                                    move |_| {
+                                                        script::toggle_popover(&list, false);
+                                                        script::open_citation(&answer, source.number);
+                                                    }
+                                                },
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        {rating}
+                    }
+                    div {
+                        id: "{id}",
+                        class: if open() { "disclosure-region is-open" } else { "disclosure-region" },
+                        aria_hidden: if open() { "false" } else { "true" },
+                        "inert": (!open()).then_some("true"),
+                        div { class: "disclosure-clip",
+                            div { class: "answer-basis", {basis.words} }
+                        }
+                    }
+                }
+            }
+        }
+        Ending::Stopped { mark, resume } => rsx! {
+            div { class: "answer-ending answer-stopped",
+                span { class: "answer-stopped-mark",
+                    Icon { name: IconName::Square }
+                    "{mark}"
+                }
+                if let Some(EndAction { label, on_press }) = resume {
+                    Button { compact: true, onclick: move |_| on_press.call(()), "{label}" }
+                }
+            }
+        },
+        Ending::CutOff { message, retry } | Ending::Failed { message, retry } => {
+            let (label, on_retry) = match retry {
+                Some(EndAction { label, on_press }) => (label, Some(on_press)),
+                None => (String::new(), None),
+            };
+            rsx! {
+                div { class: "answer-ending",
+                    StatusLine { message, alert: true, retry: label, on_retry }
+                }
+            }
+        }
+    }
+}
+
+static BASES: AtomicUsize = AtomicUsize::new(0);
 
 /// Where one task of a plan stands.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
@@ -407,6 +600,36 @@ mod tests {
             .into_iter()
             .map(|(_, drawn)| drawn)
             .collect()
+    }
+
+    #[test]
+    fn an_ending_that_cannot_be_tried_again_shows_its_line_and_no_button() {
+        fn app() -> Element {
+            rsx! {
+                AnswerEnding {
+                    ending: Ending::CutOff {
+                        message: "Coda reached a limit before finishing.".into(),
+                        retry: None,
+                    },
+                }
+                AnswerEnding {
+                    ending: Ending::Failed {
+                        message: "Coda couldn’t finish.".into(),
+                        retry: None,
+                    },
+                }
+            }
+        }
+        let mut dom = VirtualDom::new(app);
+        dom.rebuild_in_place();
+        let html = dioxus_ssr::render(&dom);
+        assert!(
+            html.contains("Coda reached a limit before finishing."),
+            "{html}"
+        );
+        assert!(html.contains("Coda couldn’t finish."), "{html}");
+        assert_eq!(html.matches(r#"role="alert""#).count(), 2, "{html}");
+        assert!(!html.contains("<button"), "{html}");
     }
 
     #[test]

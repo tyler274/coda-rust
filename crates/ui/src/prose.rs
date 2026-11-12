@@ -7,13 +7,15 @@
 //! it, so it is never inside a link and keeps its state when the words around it change; a piece
 //! written inside raw HTML or a link's address is not drawn. Code set apart stands as a `CodeBlock`
 //! under its language. Code and tables that don't fit scroll across on their own, each a stop for
-//! the keys so they can scroll it too. While the words are still `streaming` in, each word fades in
-//! as it arrives. A `message`, in a conversation or a card, is set smaller and closer in the host's
-//! colour, and keeps its single newlines as line breaks, as someone writing one means them; a `>`
-//! opening one of its lines stays as written rather than starting a quote.
+//! the keys so they can scroll it too. A table's words stand in each column where its divider row
+//! puts them, so figures marked `---:` line up at the end. While the words are still `streaming`
+//! in, each word fades in as it arrives. A `message`, in a conversation or a card, is set smaller
+//! and closer in the host's colour, and keeps its single newlines as line breaks, as someone
+//! writing one means them; a `>` opening one of its lines stays as written rather than starting a
+//! quote.
 
 use dioxus::prelude::*;
-use pulldown_cmark::{CodeBlockKind, Event, HeadingLevel, Options, Parser, Tag, TagEnd};
+use pulldown_cmark::{Alignment, CodeBlockKind, Event, HeadingLevel, Options, Parser, Tag, TagEnd};
 
 use crate::{CodeBlock, CopyWords, opens};
 
@@ -156,6 +158,7 @@ enum Kind {
     Row,
     Cell {
         head: bool,
+        align: Align,
     },
     Emphasis,
     Strong,
@@ -168,9 +171,39 @@ enum Kind {
     Plain,
 }
 
+/// Where a table column's words stand in its cells, as the table's divider row says: `---:` puts
+/// them at the end, as figures read, and `:---:` in the middle.
+#[derive(Clone, Copy, Debug, PartialEq)]
+enum Align {
+    Start,
+    Center,
+    End,
+}
+
+impl Align {
+    fn of(column: Option<&Alignment>) -> Self {
+        match column {
+            Some(Alignment::Right) => Align::End,
+            Some(Alignment::Center) => Align::Center,
+            Some(Alignment::Left | Alignment::None) | None => Align::Start,
+        }
+    }
+
+    /// The cell's attribute; the start needs none.
+    fn attribute(self) -> Option<&'static str> {
+        match self {
+            Align::Start => None,
+            Align::Center => Some("center"),
+            Align::End => Some("end"),
+        }
+    }
+}
+
 fn parse(source: &str, markers: &[usize]) -> Vec<Node> {
     let mut stack: Vec<(Kind, Vec<Node>)> = vec![(Kind::Plain, Vec::new())];
     let mut in_head = false;
+    let mut columns: Vec<Alignment> = Vec::new();
+    let mut column = 0usize;
     let mut skip = 0usize;
     for (event, range) in Parser::new_ext(source, OPTIONS).into_offset_iter() {
         // The pieces whose markers stand in this event's source, in order. Text decoded from an
@@ -199,13 +232,27 @@ fn parse(source: &str, markers: &[usize]) -> Vec<Node> {
                     Tag::CodeBlock(_) => Kind::CodeBlock(None),
                     Tag::List(start) => Kind::List(start),
                     Tag::Item => Kind::Item,
-                    Tag::Table(_) => Kind::Table,
+                    Tag::Table(alignments) => {
+                        columns = alignments;
+                        Kind::Table
+                    }
                     Tag::TableHead => {
                         in_head = true;
+                        column = 0;
                         Kind::Head
                     }
-                    Tag::TableRow => Kind::Row,
-                    Tag::TableCell => Kind::Cell { head: in_head },
+                    Tag::TableRow => {
+                        column = 0;
+                        Kind::Row
+                    }
+                    Tag::TableCell => {
+                        let align = Align::of(columns.get(column));
+                        column += 1;
+                        Kind::Cell {
+                            head: in_head,
+                            align,
+                        }
+                    }
                     Tag::Emphasis => Kind::Emphasis,
                     Tag::Strong => Kind::Strong,
                     Tag::Strikethrough => Kind::Strikethrough,
@@ -417,7 +464,7 @@ fn draw(node: &Node, drawing: &Drawing) -> Element {
                 Kind::Item => rsx! { li { "data-prose": "", {inner} } },
                 Kind::Table => rsx! {
                     div {
-                        class: "prose-table-scroll",
+                        class: "prose-table-scroll table-frame",
                         role: "region",
                         aria_label: "{drawing.names.table}",
                         tabindex: "0",
@@ -426,8 +473,12 @@ fn draw(node: &Node, drawing: &Drawing) -> Element {
                 },
                 Kind::Head => rsx! { thead { tr { {inner} } } },
                 Kind::Row => rsx! { tr { {inner} } },
-                Kind::Cell { head: true } => rsx! { th { "data-prose": "", {inner} } },
-                Kind::Cell { head: false } => rsx! { td { "data-prose": "", {inner} } },
+                Kind::Cell { head: true, align } => {
+                    rsx! { th { "data-prose": "", "data-align": align.attribute(), {inner} } }
+                }
+                Kind::Cell { head: false, align } => {
+                    rsx! { td { "data-prose": "", "data-align": align.attribute(), {inner} } }
+                }
                 Kind::Emphasis => rsx! { em { "data-prose": "", {inner} } },
                 Kind::Strong => rsx! { strong { "data-prose": "", {inner} } },
                 Kind::Strikethrough => rsx! { del { "data-prose": "", {inner} } },
@@ -775,6 +826,44 @@ mod tests {
                     vec![Node::Block(Kind::Image, vec![text("see "), text("here")])]
                 ),
             ]
+        );
+    }
+
+    #[test]
+    fn a_table_column_keeps_where_its_divider_puts_it() {
+        let cell = |head, align, words| Node::Block(Kind::Cell { head, align }, vec![text(words)]);
+        assert_eq!(
+            parse(
+                "| Test | Result | Flag |\n| --- | ---: | :---: |\n| Sodium | 138 | |",
+                &[]
+            ),
+            vec![Node::Block(
+                Kind::Table,
+                vec![
+                    Node::Block(
+                        Kind::Head,
+                        vec![
+                            cell(true, Align::Start, "Test"),
+                            cell(true, Align::End, "Result"),
+                            cell(true, Align::Center, "Flag"),
+                        ]
+                    ),
+                    Node::Block(
+                        Kind::Row,
+                        vec![
+                            cell(false, Align::Start, "Sodium"),
+                            cell(false, Align::End, "138"),
+                            Node::Block(
+                                Kind::Cell {
+                                    head: false,
+                                    align: Align::Center
+                                },
+                                vec![]
+                            ),
+                        ]
+                    ),
+                ]
+            )]
         );
     }
 

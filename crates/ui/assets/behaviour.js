@@ -358,14 +358,127 @@ function watchFrameExit(id, report) {
   watch();
 }
 
-// Opens a reading surface's own scrolling body, `bodyId`, at the first passage marked in it, once
-// the surface has its size: only that body moves, never the page beneath.
+// Opens a reading surface's own scrolling body, `bodyId`, at its top, or at the passage or field
+// marked in it when the mark would be out of sight there, once the surface has its size: only that
+// body moves, never the page beneath. What stands above the record stays in view when it can.
 function scrollToPassage(bodyId) {
   requestAnimationFrame(() => requestAnimationFrame(() => {
     const body = document.getElementById(bodyId);
-    const passage = body?.querySelector(".source-text mark");
-    if (passage) body.scrollTop += passage.getBoundingClientRect().top - body.getBoundingClientRect().top;
+    if (!body) return;
+    body.scrollTop = 0;
+    const passage = body.querySelector(".source-text mark, .record-fields mark");
+    if (!passage) return;
+    const shown = body.getBoundingClientRect();
+    const at = passage.getBoundingClientRect();
+    if (at.bottom > shown.bottom) body.scrollTop += at.top - shown.top;
   }));
+}
+
+// Holds the reader's place in conversation `scrollerId` while it is watched, in place of the browser's own anchoring.
+// At the end (within 48px of it), the reader stays at the end; scrolled back, the first turn in sight stays where it
+// stood, whatever changes the size of the region or of its content. The turns are the children of its one child.
+// Content that appears at once at the end, such as an answer or an ending, is not followed in one frame: the region
+// eases to the new end, closing the same share of the distance each frame so most of it is covered within
+// `--motion-arrive`, and what was in sight moves with the new content's own entry instead of jumping. While motion is
+// immediate (reduced motion, or driving by keyboard) it sets the end at once. The positions it sets itself are not
+// read as the reader's scrolling; a wheel, touch or key that moves back stops the easing at once.
+// Reports whether the reader is at the end, now and on each change. Two frames after it starts the region is marked
+// settled, so what stood there from the start never runs an entry. Answers how to stop.
+function watchReading(scrollerId, send) {
+  const scroller = document.getElementById(scrollerId);
+  const content = scroller?.firstElementChild;
+  if (!scroller || !content) throw new Error(`no conversation ${scrollerId}`);
+  let place = { end: true };
+  let reported;
+  // The position this watch set last, so its own scrolling isn't read as the reader's.
+  let ours = null;
+  let easing = 0;
+  const pace = parseFloat(getComputedStyle(scroller).getPropertyValue('--motion-arrive')) / 4;
+  const edge = () => scroller.getBoundingClientRect().top;
+  const end = () => scroller.scrollHeight - scroller.clientHeight;
+  const set = (top) => { scroller.scrollTop = top; ours = scroller.scrollTop; };
+  const immediate = () => !('settled' in scroller.dataset) || !(pace > 0) || reducedMotion()
+    || document.documentElement.dataset.interaction === 'keyboard';
+  const stopEasing = () => { cancelAnimationFrame(easing); easing = 0; };
+  const report = () => { if (place.end !== reported) { reported = place.end; send(place.end); } };
+  const capture = () => {
+    if (ours !== null && Math.abs(scroller.scrollTop - ours) <= 1) return;
+    ours = null;
+    stopEasing();
+    if (end() - scroller.scrollTop <= 48) place = { end: true };
+    else {
+      const top = edge();
+      const turn = [...content.children].find((child) => child.getBoundingClientRect().bottom > top);
+      place = { end: false, turn, offset: turn ? turn.getBoundingClientRect().top - top : 0 };
+    }
+    report();
+  };
+  const ease = (then) => {
+    easing = requestAnimationFrame((now) => {
+      const gap = end() - scroller.scrollTop;
+      if (gap <= 0.5) { easing = 0; if (gap > 0) set(end()); return; }
+      // At least a whole pixel a frame: a screen that places scrolling on whole pixels drops a smaller step.
+      set(Math.min(end(), scroller.scrollTop + Math.max(1, gap * (1 - Math.exp(-(now - then) / pace)))));
+      ease(now);
+    });
+  };
+  const restore = () => {
+    if (!place.end) {
+      if (place.turn?.isConnected) set(scroller.scrollTop + place.turn.getBoundingClientRect().top - edge() - place.offset);
+    } else if (immediate()) {
+      stopEasing();
+      set(end());
+    } else if (!easing && end() - scroller.scrollTop > 0.5) {
+      ease(performance.now());
+    }
+  };
+  // Moving back by wheel, touch or key is the reader's, before any frame of it lands.
+  const back = (event) => {
+    if (event.type === 'wheel' ? event.deltaY >= 0 : event.type === 'keydown' && !['ArrowUp', 'PageUp', 'Home'].includes(event.key)) return;
+    ours = null;
+    stopEasing();
+  };
+  const sizes = new ResizeObserver(restore);
+  sizes.observe(scroller);
+  sizes.observe(content);
+  scroller.addEventListener('scroll', capture, { passive: true });
+  for (const kind of ['wheel', 'touchmove', 'keydown']) scroller.addEventListener(kind, back, { passive: true });
+  scroller.codaReading = {
+    toEnd() { place = { end: true }; restore(); report(); },
+    jump(smoothly) {
+      const replies = scroller.querySelectorAll('.message-assistant');
+      const reply = replies[replies.length - 1];
+      if (!reply) return;
+      stopEasing();
+      ours = null;
+      const turn = [...content.children].find((child) => child.contains(reply));
+      place = { end: false, turn, offset: turn ? turn.getBoundingClientRect().top - reply.getBoundingClientRect().top : 0 };
+      scroller.scrollTo({ top: scroller.scrollTop + reply.getBoundingClientRect().top - edge(), behavior: smoothly ? 'smooth' : 'instant' });
+      if (!reply.hasAttribute('tabindex')) reply.setAttribute('tabindex', '-1');
+      reply.focus({ preventScroll: true });
+    },
+  };
+  restore();
+  report();
+  let settling = requestAnimationFrame(() => { settling = requestAnimationFrame(() => { scroller.dataset.settled = ''; }); });
+  return () => {
+    cancelAnimationFrame(settling);
+    stopEasing();
+    sizes.disconnect();
+    scroller.removeEventListener('scroll', capture);
+    for (const kind of ['wheel', 'touchmove', 'keydown']) scroller.removeEventListener(kind, back);
+    delete scroller.codaReading;
+  };
+}
+
+// Brings the reader of conversation `scrollerId` to its end.
+function readToEnd(scrollerId) {
+  document.getElementById(scrollerId)?.codaReading?.toEnd();
+}
+
+// Takes the reader of conversation `scrollerId` to the top of its newest reply, `smoothly` or at once, and focuses it.
+function jumpToLatest(scrollerId, smoothly) {
+  document.getElementById(scrollerId)?.codaReading?.jump(smoothly);
 }
 
 // What the open preview `previewId` hears from the page while it is open, until stopped: the
@@ -396,6 +509,47 @@ function watchPage(citationId, previewId, send) {
     removeEventListener('scroll', report, true);
     removeEventListener('resize', report);
     document.removeEventListener('keydown', escape, true);
+  };
+}
+
+// What popover `popoverId`, which control `controlId` opens, needs to be placed, until stopped: as it
+// opens, and on every scroll or resize while it is open, the control's box, the popover's own width
+// and the window's size; and that it closed. The browser opens and closes it; the control going out
+// of sight, scroll areas included, closes it too.
+function watchPopover(controlId, popoverId, send) {
+  const root = document.documentElement;
+  const control = document.getElementById(controlId);
+  const popover = document.getElementById(popoverId);
+  if (control === null || popover === null) throw new Error(`no popover ${popoverId} opened by ${controlId}`);
+  const report = (kind) => {
+    const box = control.getBoundingClientRect();
+    send({ kind, control: { x: box.left, y: box.top, width: box.width, height: box.height },
+      width: popover.offsetWidth, window: [root.clientWidth, root.clientHeight] });
+  };
+  const moved = () => report('moved');
+  const sight = new IntersectionObserver(([entry]) => {
+    if (entry !== undefined && !entry.isIntersecting && popover.matches(':popover-open')) popover.hidePopover();
+  });
+  const unfollow = () => {
+    sight.disconnect();
+    removeEventListener('scroll', moved, true);
+    removeEventListener('resize', moved);
+  };
+  const toggled = (event) => {
+    if (event.newState === 'open') {
+      report('opened');
+      sight.observe(control);
+      addEventListener('scroll', moved, true);
+      addEventListener('resize', moved);
+    } else {
+      unfollow();
+      send({ kind: 'closed' });
+    }
+  };
+  popover.addEventListener('toggle', toggled);
+  return () => {
+    popover.removeEventListener('toggle', toggled);
+    unfollow();
   };
 }
 
@@ -551,6 +705,16 @@ function togglePopover(id, show) {
   document.getElementById(id)?.togglePopover(show);
 }
 
+// Brings the first citation numbered `number` in answer `answerId` into view, then focuses and
+// chooses it, so its source opens as that citation opens it and focus returns to it after.
+function openCitation(answerId, number) {
+  const citation = document.getElementById(answerId)?.querySelector(`button[data-source-number="${number}"]`);
+  if (!citation) return;
+  citation.scrollIntoView({ block: 'nearest' });
+  citation.focus({ preventScroll: true });
+  citation.click();
+}
+
 // Scrolls element `id` just into view.
 function scrollIntoView(id) {
   document.getElementById(id)?.scrollIntoView({ block: 'nearest' });
@@ -575,11 +739,11 @@ function caretToEnd() {
 
 const fires = {
   motion, menuKeys, tooltips, contextHost, disposeContextHost, reorder, scrollToPassage, fileDrags,
-  sheetDrag, handOff, indeterminate, togglePopover, scrollIntoView, focusElement, refocusLine,
-  caretToEnd,
+  sheetDrag, handOff, indeterminate, togglePopover, openCitation, scrollIntoView, focusElement,
+  refocusLine, caretToEnd, readToEnd, jumpToLatest,
 };
 const asks = { watchExit, modal, copy, reducedMotion };
-const listens = { watchPage };
+const listens = { watchPage, watchPopover, watchReading };
 
 const running = new Map();
 let calls = 0;

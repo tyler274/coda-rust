@@ -32,8 +32,8 @@ mod sources;
 mod tables;
 mod toast;
 pub use agent::{
-    Answer, ApprovalCard, ArtifactCard, StepState, Task, TaskList, TaskState, TaskWords, WorkStep,
-    WorkTrace,
+    Answer, AnswerEnding, AnswerSources, ApprovalCard, ArtifactCard, Basis, EndAction, Ending,
+    IndexedSource, StepState, Task, TaskList, TaskState, TaskWords, WorkStep, WorkTrace,
 };
 pub use attachments::{AttachButton, Attachment, AttachmentState, Attachments};
 pub use cards::{Card, Quote, RailCard};
@@ -45,8 +45,9 @@ pub use code::{
     Change, CodeBlock, CopyButton, CopyFailed, CopyWords, Diff, DiffLine, DiffWords, copy_text,
 };
 pub use conversation::{
-    ContextChip, ConversationViewport, DateSeparator, Dictation, MessageActions, MessageEditor,
-    MessageStatus, Suggestion, VersionSwitch,
+    ChatColumn, ChatHeader, ContextChip, ConversationViewport, DateSeparator, Dictation,
+    HeaderFact, MessageActions, MessageEditor, MessageQueue, MessageStatus, QueuePlace, Suggestion,
+    VersionSwitch,
 };
 pub use documents::{
     FooterActions, Notice, Paper, PaperSection, ProposedChange, SettingRow, TopBar,
@@ -63,7 +64,11 @@ pub use overlays::{
     Command, CommandPalette, ContextMenu, Menu, MenuItem, MenuSection, Popover, Tooltip,
 };
 pub use prose::{Prose, ProseNames, ProsePart};
-pub use sources::{CitationPreview, SourceDetails, SourcePane, SourceReading, SourceText};
+pub use sources::{
+    CitationPreview, CitedPlace, ExpandSource, FieldGroup, FieldValue, Located, PreviewContent,
+    RawRecord, RecordAbout, RecordBody, RecordField, RecordStatus, SourceLink, SourcePane,
+    SourceReading, SourceRecord, SourceState, SourceSummary,
+};
 pub use tables::{Column, SortOrder, Table, TableRow};
 pub use toast::{TOAST_MS, Toast};
 
@@ -707,7 +712,8 @@ pub enum MessageState {
 /// wrote it stays with assistive technology. A message rises in as it appears. On its way it
 /// stands a little quieter; waiting its turn, its bubble is outlined, not filled; when it didn't
 /// go, its outline is red. Its `status`, a `MessageStatus`, and its `actions`, a `MessageActions`
-/// row, stand close under it, at the bubble's edge for the person's words.
+/// row, stand close under it, at the bubble's edge for the person's words; waiting its turn,
+/// they stand in one row inside its bubble, the status first and the actions at the far edge.
 #[component]
 pub fn Message(
     author: Author,
@@ -731,15 +737,19 @@ pub fn Message(
         MessageState::Failed => " is-failed",
     });
     let rest = host_attributes(&mut class, attributes);
+    let inside = state == MessageState::Queued && (status.is_some() || actions.is_some());
     let message = rsx! {
         article { class: "{class}", ..rest,
             if !by.is_empty() {
                 span { class: "sr-only", "{by}" }
             }
             {children}
+            if inside {
+                div { class: "message-queued-row", {status.clone()} {actions.clone()} }
+            }
         }
     };
-    if status.is_none() && actions.is_none() {
+    if inside || (status.is_none() && actions.is_none()) {
         return message;
     }
     rsx! {
@@ -1113,6 +1123,7 @@ pub fn CitationChip(
             button {
                 class: "source-trigger citation-chip",
                 r#type: "button",
+                "data-source-number": "{index}",
                 aria_label: "{label}",
                 onclick: move |event| open.call(event),
                 "[{index}]"
@@ -1125,11 +1136,15 @@ pub fn CitationChip(
 }
 
 /// The one Sources control under a message: a compact pill with its words and how many sources the message has.
+/// It opens the `Popover` named by `opens`, which stands beside it, or acts through `onclick`.
 #[component]
 pub fn SourcesButton(
     label: String,
     count: usize,
-    onclick: EventHandler<MouseEvent>,
+    /// The id of the `Popover` it opens and closes, which stands beside it.
+    #[props(default)]
+    opens: Option<String>,
+    onclick: Option<EventHandler<MouseEvent>>,
     #[props(extends = GlobalAttributes)] attributes: Vec<Attribute>,
 ) -> Element {
     let mut class = String::from("source-trigger sources-button");
@@ -1139,7 +1154,12 @@ pub fn SourcesButton(
             class: "{class}",
             r#type: "button",
             aria_haspopup: "dialog",
-            onclick: move |event| onclick.call(event),
+            popovertarget: opens,
+            onclick: move |event| {
+                if let Some(handler) = &onclick {
+                    handler.call(event);
+                }
+            },
             ..rest,
             Icon { name: IconName::ChevronDown }
             "{label}"

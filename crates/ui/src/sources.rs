@@ -1,16 +1,21 @@
-//! Reading a cited source: a
-//! citation inspects its source in place on hover, and opens the same content beside the reader
-//! when asked. The reader is never replaced; on a narrow page the source covers it, with Back.
+//! Reading a cited source: a citation previews its source in place on hover, in the source's own
+//! words, and opens the source itself beside the reader when asked. Coda's own description of a
+//! source stands in only when nothing of the source's own can be shown, set apart as Coda's. The
+//! reader is never replaced; on a narrow page the source covers it, with Back.
 
 use std::rc::Rc;
 use std::sync::atomic::{AtomicUsize, Ordering};
 use std::time::Duration;
 
-use dioxus::html::geometry::PixelsRect;
+use dioxus::html::geometry::euclid::Point2D;
+use dioxus::html::geometry::{PixelsRect, PixelsSize};
 use dioxus::prelude::*;
 
-use crate::script::{self, PageHeard};
-use crate::{Button, ButtonVariant, EXIT_MS, Icon, IconName, opens};
+use crate::script::{self, Bounds, PageHeard, PopoverHeard};
+use crate::{
+    Button, ButtonVariant, Disclosure, EXIT_MS, Icon, IconName, Placeholder, PlaceholderShape,
+    StatePill, StatusLine, Tone, opens,
+};
 
 static PREVIEWS: AtomicUsize = AtomicUsize::new(0);
 
@@ -31,6 +36,8 @@ struct Placement {
     /// From the window's top when below the citation, from its bottom when above.
     edge: f64,
     below: bool,
+    /// Whether the citation stands nearer the preview's leading edge than its trailing one.
+    leading: bool,
     room: f64,
 }
 
@@ -43,18 +50,105 @@ fn place(citation: PixelsRect, width: f64, window: (f64, f64), side: Option<bool
     let below_room = (window_height - EDGE_PX - citation.max_y() - GAP_PX).max(0.0);
     let above_room = (citation.min_y() - GAP_PX - EDGE_PX).max(0.0);
     let below = side.unwrap_or(below_room >= above_room);
+    let left = citation
+        .min_x()
+        .min(window_width - width - EDGE_PX)
+        .max(EDGE_PX);
     Placement {
-        left: citation
-            .min_x()
-            .min(window_width - width - EDGE_PX)
-            .max(EDGE_PX),
+        left,
         edge: if below {
             citation.max_y() + GAP_PX
         } else {
             window_height - citation.min_y() + GAP_PX
         },
         below,
+        leading: (citation.min_x() + citation.max_x()) / 2.0 <= left + width / 2.0,
         room: if below { below_room } else { above_room },
+    }
+}
+
+impl Placement {
+    /// Which side of its control it is on.
+    fn side(self) -> &'static str {
+        if self.below { "below" } else { "above" }
+    }
+
+    /// The corner it grows from, nearest its control.
+    fn corner(self) -> &'static str {
+        if self.leading { "start" } else { "end" }
+    }
+}
+
+/// The style of a surface `place` puts: unseen until placed, then where it stands and the height it
+/// has. Every property is written each time: a style the renderer merges must never keep a stale
+/// one.
+fn placed_style(placement: Option<Placement>) -> String {
+    match placement {
+        None => "visibility: hidden; left: 0px; top: 0px; bottom: auto".to_owned(),
+        Some(at) => {
+            let (top, bottom) = if at.below {
+                (format!("{}px", at.edge), "auto".to_owned())
+            } else {
+                ("auto".to_owned(), format!("{}px", at.edge))
+            };
+            format!(
+                "visibility: visible; left: {}px; top: {top}; bottom: {bottom}; --popover-available-height: {}px",
+                at.left, at.room
+            )
+        }
+    }
+}
+
+impl Bounds {
+    fn rect(self) -> PixelsRect {
+        PixelsRect::new(
+            Point2D::new(self.x, self.y),
+            PixelsSize::new(self.width, self.height),
+        )
+    }
+}
+
+/// A popover of the host's content that the control named `control` opens, a `Button` whose `opens`
+/// names this `id`, placed as a citation's preview is: on the side of the control with more room,
+/// chosen once per opening, never over the control, its height held to that side, and following the
+/// control as the page moves. It opens and closes as a `Popover` does; the control going out of
+/// sight closes it too. `label` names it.
+#[component]
+pub(crate) fn PlacedPopover(
+    id: String,
+    label: String,
+    control: String,
+    children: Element,
+) -> Element {
+    let mut placement = use_signal(|| None::<Placement>);
+    let popover = id.clone();
+    rsx! {
+        div {
+            id: "{id}",
+            class: "popover is-placed",
+            "popover": "auto",
+            role: "dialog",
+            aria_label: label,
+            "data-side": placement().map(Placement::side),
+            "data-corner": placement().map(Placement::corner),
+            style: "{placed_style(placement())}",
+            onmounted: move |_| {
+                let watch = script::watch_popover(&control, &popover);
+                spawn(async move {
+                    // The behaviour finished or failed: the popover stops being placed.
+                    while let Ok(heard) = watch.next().await {
+                        let (standing, side) = match heard {
+                            PopoverHeard::Opened(standing) => (standing, None),
+                            PopoverHeard::Moved(standing) => (standing, (*placement.peek()).map(|at| at.below)),
+                            // Where it stood holds while it settles away; the next opening places it afresh.
+                            PopoverHeard::Closed => continue,
+                        };
+                        placement.set(Some(place(standing.control.rect(), standing.width, standing.window, side)));
+                    }
+                });
+            },
+            {children}
+        }
     }
 }
 
@@ -62,11 +156,92 @@ fn place(citation: PixelsRect, width: f64, window: (f64, f64), side: Option<bool
 #[derive(Clone, Copy)]
 struct SourceReturn(Signal<Option<Rc<MountedData>>>);
 
+/// Coda's short, dated description of a source, shown only when nothing of the source's own can
+/// be shown, such as an outside document whose content can't be displayed: Coda's words, then the
+/// line that marks them as Coda's with the date Coda read the source for its work, not the
+/// record's own date, such as "Prepared by Coda · as of May 2, 2024". Both are the host's words;
+/// the part sets them apart from the source's own.
+#[derive(Clone, Debug, PartialEq)]
+pub struct SourceSummary {
+    /// Coda's description of the source.
+    pub text: String,
+    /// The line that marks the description as Coda's, with the date Coda read the source.
+    pub prepared: String,
+}
+
+/// What a record says about itself, on one quiet line: its kind, when the title doesn't already say
+/// it, its date and its own status. A record that says none of these has no line.
+#[derive(Clone, Debug, Default, PartialEq)]
+pub struct RecordAbout {
+    /// What kind of record it is, such as "Discharge summary"; none when the title already says it.
+    pub kind: Option<String>,
+    /// The record's date, when it has one.
+    pub date: Option<String>,
+    /// The record's own status, when it has one.
+    pub status: Option<RecordStatus>,
+}
+
+/// What a citation's preview shows of its source: the source's own words, or, only when nothing of
+/// the source's own can be shown, Coda's description of it.
+#[derive(Clone, Debug, PartialEq)]
+pub enum PreviewContent {
+    /// What the record says about itself, then the cited place in its own words.
+    Cited {
+        /// The record's kind, date and status.
+        about: RecordAbout,
+        /// The cited place.
+        place: CitedPlace,
+    },
+    /// Nothing of the source's own can be shown: Coda's description of it, marked as Coda's.
+    Described(SourceSummary),
+}
+
+/// Where in its source a cited claim rests. Every citation names one.
+#[derive(Clone, Debug, PartialEq)]
+pub enum CitedPlace {
+    /// Words quoted from the source's own text.
+    Passage(String),
+    /// One value of a structured record: its name, and its value as the record gives it.
+    Field {
+        /// The field's name.
+        name: String,
+        /// Its value, with its unit when it has one.
+        value: String,
+    },
+    /// A page of a scan that has no text of its own, in the host's words: "Page 2".
+    Page(String),
+}
+
+/// The source in its own system, opened in a new tab: its address, the link's words, and the
+/// hint that it opens in a new tab. An address that can't open as a link is not offered.
+#[derive(Clone, Debug, PartialEq)]
+pub struct SourceLink {
+    /// Where the source opens.
+    pub url: String,
+    /// The link's words: "Open in Epic".
+    pub label: String,
+    /// Says it opens in a new tab.
+    pub new_tab_hint: Option<String>,
+}
+
+/// The way from a citation's preview to its source in the reading pane: the action's words, and
+/// what opens the pane.
+#[derive(Clone, PartialEq)]
+pub struct ExpandSource {
+    /// The action's words: "Expand".
+    pub label: String,
+    /// Opens the same source in the reading pane.
+    pub on_expand: EventHandler,
+}
+
 /// A citation in prose that previews its source. Pointing at it opens the preview beside it, which
-/// stays while the pointer or focus is on either; Escape or Close dismisses it. Choosing it opens
-/// the source beside the reader when the host gives `on_expand`, and otherwise toggles the
-/// preview, as on touch. The preview's actions open the pane and the original record, each shown
-/// with its words; an original whose address can't open as a link is not offered.
+/// stays while the pointer or focus is on either; Escape or Close dismisses it. Under its eyebrow
+/// and title, the preview shows its `content`: one quiet line of what the record says about itself,
+/// then the cited place in the source's own words, never the whole record; or, only when nothing
+/// of the source's own can be shown, Coda's description, marked as Coda's. Choosing the citation
+/// opens the source beside the reader when the host gives `expand`, and otherwise toggles the
+/// preview, as on touch. The preview's actions open the pane and the `original` record, each shown
+/// with its words.
 #[component]
 pub fn CitationPreview(
     index: usize,
@@ -77,24 +252,12 @@ pub fn CitationPreview(
     citation_label: String,
     /// The preview's close button's accessible name.
     close_label: String,
-    /// Opens the same source in the reading pane.
-    #[props(default)]
-    on_expand: Option<EventHandler>,
-    /// The words of the action that opens the pane.
-    #[props(default)]
-    expand_label: Option<String>,
-    /// The original record in its own system, opened in a new tab.
-    #[props(default)]
-    original: Option<String>,
-    /// The words of the link to the original.
-    #[props(default)]
-    original_label: Option<String>,
-    /// Says the original opens in a new tab.
-    #[props(default)]
-    new_tab_hint: Option<String>,
-    children: Element,
+    content: PreviewContent,
+    #[props(default)] expand: Option<ExpandSource>,
+    #[props(default)] original: Option<SourceLink>,
 ) -> Element {
-    let original = original.filter(|url| opens(url));
+    let original = original.filter(|link| opens(&link.url));
+    let on_expand = expand.as_ref().map(|expand| expand.on_expand);
     let id = use_hook(|| PREVIEWS.fetch_add(1, Ordering::Relaxed));
     let mut open = use_signal(|| false);
     let mut hovering = use_signal(|| false);
@@ -126,12 +289,12 @@ pub fn CitationPreview(
         open.set(true);
     };
     // Opening the pane closes the preview and leaves the citation as the place focus returns to.
-    let mut expand = move |expand: EventHandler| {
+    let mut open_pane = move |handler: EventHandler| {
         close(false);
         if let Some(SourceReturn(mut target)) = returns {
             target.set(trigger.peek().clone());
         }
-        expand.call(());
+        handler.call(());
     };
     let citation_id = format!("citation-{id}");
     let preview_id = format!("citation-preview-{id}");
@@ -151,6 +314,7 @@ pub fn CitationPreview(
             button {
                 id: "{citation_id}",
                 class: "source-trigger citation-chip",
+                "data-source-number": "{index}",
                 r#type: "button",
                 aria_label: "{citation_label}",
                 aria_expanded: if open() { "true" } else { "false" },
@@ -163,7 +327,7 @@ pub fn CitationPreview(
                     }
                 },
                 onclick: move |_| match on_expand {
-                    Some(handler) => expand(handler),
+                    Some(handler) => open_pane(handler),
                     None if open() => close(false),
                     None => show(),
                 },
@@ -195,29 +359,28 @@ pub fn CitationPreview(
                             Icon { name: IconName::X }
                         }
                     }
-                    span { id: "{preview_id}-body", class: "citation-preview-body", {children} }
-                    if on_expand.is_some() || original.is_some() {
+                    span { class: "citation-preview-body",
+                        match content {
+                            PreviewContent::Cited { about, place } => rsx! {
+                                AboutLine { about }
+                                PlaceView { place }
+                            },
+                            PreviewContent::Described(summary) => rsx! { SummaryView { summary } },
+                        }
+                    }
+                    if expand.is_some() || original.is_some() {
                         span { class: "citation-preview-actions",
-                            if let (Some(handler), Some(words)) = (on_expand, expand_label) {
+                            if let Some(ExpandSource { label, on_expand: handler }) = expand {
                                 button {
                                     class: "navigation-control",
                                     r#type: "button",
-                                    onclick: move |_| expand(handler),
+                                    onclick: move |_| open_pane(handler),
                                     Icon { name: IconName::Expand }
-                                    "{words}"
+                                    "{label}"
                                 }
                             }
-                            if let (Some(href), Some(words)) = (original, original_label) {
-                                a {
-                                    class: "navigation-control",
-                                    href: "{href}",
-                                    target: "_blank",
-                                    rel: "noopener noreferrer",
-                                    title: new_tab_hint,
-                                    onclick: move |_| close(false),
-                                    span { "{words}" }
-                                    Icon { name: IconName::ExternalLink }
-                                }
+                            if let Some(link) = original {
+                                OriginalLink { link, on_follow: move |_| close(false) }
                             }
                         }
                     }
@@ -243,38 +406,20 @@ fn PreviewSurface(
     children: Element,
 ) -> Element {
     let mut placement = use_signal(|| None::<Placement>);
-    // The preview's body is its passages' surface once the preview is placed and its height held.
-    let PassageSurface(mut surface_body) =
-        use_context_provider(|| PassageSurface(Signal::new(None)));
     let watch = use_hook(|| script::watch_page(&citation_id, &id));
-    // Every property is written each time: a style the renderer merges must never keep a stale one.
-    let style = match placement() {
-        None => "visibility: hidden; left: 0px; top: 0px; bottom: auto".to_owned(),
-        Some(at) => {
-            let (top, bottom) = if at.below {
-                (format!("{}px", at.edge), "auto".to_owned())
-            } else {
-                ("auto".to_owned(), format!("{}px", at.edge))
-            };
-            format!(
-                "visibility: visible; left: {}px; top: {top}; bottom: {bottom}; --popover-available-height: {}px",
-                at.left, at.room
-            )
-        }
-    };
     rsx! {
         span {
             id: "{id}",
             class: "citation-preview",
             role: "dialog",
             aria_label: "{label}",
-            "data-side": placement().map(|at| if at.below { "below" } else { "above" }),
-            style: "{style}",
+            "data-side": placement().map(Placement::side),
+            "data-corner": placement().map(Placement::corner),
+            style: "{placed_style(placement())}",
             onpointerenter: move |_| on_enter.call(()),
             onmounted: move |event| {
                 let surface = event.data();
                 let watch = watch.clone();
-                let id = id.clone();
                 spawn(async move {
                     loop {
                         // The behaviour finished or failed: the preview stops following it.
@@ -287,9 +432,6 @@ fn PreviewSurface(
                                 let (Ok(at), Ok(own)) = rects else { continue };
                                 let side = (*placement.peek()).map(|at| at.below);
                                 placement.set(Some(place(at, own.width(), (width, height), side)));
-                                if side.is_none() {
-                                    surface_body.set(Some(format!("{id}-body")));
-                                }
                             }
                             PageHeard::Escape { inside } => {
                                 on_escape.call(inside);
@@ -308,46 +450,70 @@ fn PreviewSurface(
     }
 }
 
-/// What a source says, shared by its preview and its pane: the source's own metadata, the passages
-/// quoted from it, then its content. `unavailable` says plainly when content can't be shown here.
+/// Coda's description of a source, in Coda's words, closed by the line that marks it as Coda's.
 #[component]
-pub fn SourceDetails(
-    #[props(default)] metadata: Vec<String>,
-    #[props(default)] passages: Vec<String>,
-    /// The quoted passages' accessible name.
-    #[props(default)]
-    passages_label: Option<String>,
-    #[props(default)] unavailable: Option<String>,
-    children: Element,
-) -> Element {
+fn SummaryView(summary: SourceSummary) -> Element {
     rsx! {
-        span { class: "citation-source-details",
-            if !metadata.is_empty() {
-                span { class: "citation-source-metadata",
-                    for (index, value) in metadata.into_iter().enumerate() {
-                        span { key: "{index}", "{value}" }
-                    }
+        span { class: "source-summary",
+            span { class: "source-summary-text", "{summary.text}" }
+            span { class: "source-summary-prepared",
+                Icon { name: IconName::Sparkle }
+                "{summary.prepared}"
+            }
+        }
+    }
+}
+
+/// Where a claim rests, in the source's own words: a passage quoted, a field's name and value, or
+/// the page of a scan named.
+#[component]
+fn PlaceView(place: CitedPlace) -> Element {
+    match place {
+        CitedPlace::Passage(words) => rsx! {
+            span { class: "source-quote", "{words}" }
+        },
+        CitedPlace::Field { name, value } => rsx! {
+            span { class: "source-quote is-field",
+                span { class: "source-quote-name", "{name}" }
+                span { class: "source-quote-value", "{value}" }
+            }
+        },
+        CitedPlace::Page(page) => rsx! {
+            span { class: "source-page",
+                Icon { name: IconName::File }
+                "{page}"
+            }
+        },
+    }
+}
+
+/// A link to the source in its own system, in a new tab; following it tells the host.
+#[component]
+fn OriginalLink(link: SourceLink, #[props(default)] on_follow: Option<EventHandler>) -> Element {
+    rsx! {
+        a {
+            class: "navigation-control source-original",
+            href: "{link.url}",
+            target: "_blank",
+            rel: "noopener noreferrer",
+            title: link.new_tab_hint,
+            onclick: move |_| {
+                if let Some(follow) = on_follow {
+                    follow.call(());
                 }
-            }
-            if !passages.is_empty() {
-                span { class: "citation-selected-passages", aria_label: passages_label,
-                    for (index, quote) in passages.into_iter().enumerate() {
-                        blockquote { key: "{index}", "{quote}" }
-                    }
-                }
-            }
-            if let Some(words) = unavailable {
-                span { class: "citation-unavailable-view", "{words}" }
-            }
-            {children}
+            },
+            span { "{link.label}" }
+            Icon { name: IconName::ExternalLink }
         }
     }
 }
 
 /// A page or dialog with one on-demand source beside it. With room for both, the source takes the
 /// narrower column; without, it covers the reader with a way back. The reader is never remounted.
-/// The host gives the open source's `title`, its `eyebrow` (which source it is), its `content` and
-/// the words of its way back and its close button;
+/// Only the pane's body scrolls, between its heading and, when the source links to its own system,
+/// its foot, each set off by a hairline. The host gives the open source as a `SourcePane`: which
+/// source it is, its title, where its reading stands, and the words of its way back and its close
+/// button;
 /// `on_close` reports once the pane has settled away, and focus returns to the citation that
 /// opened it.
 #[component]
@@ -375,6 +541,10 @@ pub fn SourceReading(
             }
         });
     };
+    let source = source.map(|pane| {
+        let (about, original) = pinned(&pane.state);
+        (pane, about, original)
+    });
     let mut class = String::from("source-reading-layout");
     if open {
         class.push_str(" has-source");
@@ -394,7 +564,7 @@ pub fn SourceReading(
             },
             div { class: "source-reading-frame",
             div { class: "source-reading-main", {children} }
-            if let Some(pane) = source {
+            if let Some((pane, about, original)) = source {
                 aside { class: "source-reading-pane", aria_label: "{pane.eyebrow}",
                     div { class: "source-pane-content",
                         div { class: "source-pane-heading",
@@ -414,6 +584,9 @@ pub fn SourceReading(
                                     },
                                     "{pane.title}"
                                 }
+                                if let Some(about) = about {
+                                    AboutLine { about }
+                                }
                             }
                             Button {
                                 class: "source-pane-close",
@@ -425,7 +598,10 @@ pub fn SourceReading(
                                 Icon { name: IconName::X }
                             }
                         }
-                        PaneBody { id: body.clone(), {pane.content} }
+                        PaneBody { id: body.clone(), SourceView { state: pane.state } }
+                        if let Some(link) = original {
+                            div { class: "citation-preview-actions", OriginalLink { link } }
+                        }
                     }
                 }
             }
@@ -434,50 +610,372 @@ pub fn SourceReading(
     }
 }
 
+/// What of a source shown stands outside the pane's scrolling body: what the record says about
+/// itself, under the title, and the link to it in its own system, at the pane's foot.
+fn pinned(state: &SourceState) -> (Option<RecordAbout>, Option<SourceLink>) {
+    match state {
+        SourceState::Shown(record) => (
+            Some(record.about.clone()),
+            record.original.clone().filter(|link| opens(&link.url)),
+        ),
+        SourceState::Loading(_)
+        | SourceState::Failed { .. }
+        | SourceState::Unavailable(_)
+        | SourceState::Described(_) => (None, None),
+    }
+}
+
 /// The pane's scrolling body, the surface its source's passages are read in.
 #[component]
 fn PaneBody(id: String, children: Element) -> Element {
     let body = id.clone();
-    use_context_provider(move || PassageSurface(Signal::new(Some(body))));
+    use_context_provider(move || PassageSurface(body));
     rsx! { div { id: "{id}", class: "source-pane-body", {children} } }
 }
 
-/// The source a `SourceReading` shows: which source, its title, and what it says.
+/// The source a `SourceReading` shows: which source, its title, where its reading stands, and the
+/// words of its way back and its close button.
 #[derive(Clone, PartialEq)]
 pub struct SourcePane {
     /// Which source it is, such as "Source 2".
     pub eyebrow: String,
     /// The source's title.
     pub title: String,
-    /// What it says, usually a `SourceDetails`.
-    pub content: Element,
+    /// Where the source's reading stands.
+    pub state: SourceState,
     /// The words of the way back to the reader, where the source covers it.
     pub back: String,
     /// The close button's accessible name.
     pub close: String,
 }
 
-/// The reading surface a source's words are read in: the id of its own scrolling body, once the
-/// surface is laid out (a preview once it is placed, a pane at once).
-#[derive(Clone, Copy)]
-struct PassageSurface(Signal<Option<String>>);
+/// Where a source's reading in the pane stands. Each state holds only what it shows, so content
+/// never stands beside "unavailable", and a highlight never stands beside the notice that the
+/// cited place can't be found.
+#[derive(Clone, PartialEq)]
+pub enum SourceState {
+    /// Being read: its shape, with these words for assistive technology.
+    Loading(String),
+    /// The read failed: what failed, and the retry's words and action.
+    Failed {
+        /// What failed.
+        message: String,
+        /// The retry's words.
+        retry: String,
+        /// Reads the source again.
+        on_retry: EventHandler,
+    },
+    /// It can't be read or shown here: the reason, and no content.
+    Unavailable(String),
+    /// Nothing of the source's own can be shown: Coda's description of it, marked as Coda's, and
+    /// nothing else.
+    Described(SourceSummary),
+    /// The version Coda read, boxed as it is far larger than the other states.
+    Shown(Box<SourceRecord>),
+}
 
-/// A source's own words with the passages cited from it marked:
-/// its line breaks kept, long words wrapping, and passages that overlap read as one
-/// mark. The preview or pane it is read in opens at the first once laid out, and again whenever
-/// the words or their passages change, never on other renders. `passages` are byte ranges of
-/// `text`; one that isn't a range of it is left unmarked.
+/// A source as it reads in the pane: under its title, what it says about itself on one quiet line;
+/// under a hairline, scrolling, the record itself, with the cited place highlighted or a notice that
+/// it can't be found, and last, collapsed, the raw record; and pinned at the pane's foot under a
+/// hairline, a link to it in its own system when there is one.
+#[derive(Clone, PartialEq)]
+pub struct SourceRecord {
+    /// Its kind, date and status.
+    pub about: RecordAbout,
+    /// The record itself.
+    pub body: RecordBody,
+    /// The record in its own system, when the source gives a link.
+    pub original: Option<SourceLink>,
+    /// The record as the source gave it.
+    pub raw: RawRecord,
+}
+
+/// A record's own status, in its words. One that is inactive, refuted, entered in error or
+/// preliminary is `Flagged`, and stands out before the record's statement.
+#[derive(Clone, Debug, PartialEq)]
+pub enum RecordStatus {
+    /// A status that changes nothing about how the record reads: "Final", "Signed".
+    Settled(String),
+    /// Inactive, refuted, entered in error or preliminary.
+    Flagged(String),
+}
+
+/// The record as the source gave it, under its disclosure's title: "Technical details".
+#[derive(Clone, Debug, PartialEq)]
+pub struct RawRecord {
+    /// The disclosure's title.
+    pub label: String,
+    /// The raw record.
+    pub text: String,
+}
+
+/// Whether the cited place was found in the record: where it is, or the short notice that says it
+/// can't be found.
+#[derive(Clone, Debug, PartialEq)]
+pub enum Located<T> {
+    /// Where the cited place is.
+    Found(T),
+    /// The notice that it can't be found; the record shows without a highlight.
+    NotFound(String),
+}
+
+/// The record itself: its own text, or, for a record with no text of its own, its fields.
+#[derive(Clone, Debug, PartialEq)]
+pub enum RecordBody {
+    /// The source's own text, and the cited passage as a byte range of it.
+    Text {
+        /// The record's text.
+        text: String,
+        /// The cited passage.
+        cited: Located<(usize, usize)>,
+    },
+    /// Every field under its name, in groups, and the cited field by its key.
+    Fields {
+        /// The groups of fields, in order.
+        groups: Vec<FieldGroup>,
+        /// The cited field's key.
+        cited: Located<String>,
+        /// What a result's reference range is called beside it: "Reference range".
+        range_label: String,
+    },
+}
+
+/// Fields that stand together, under an optional heading such as "Other fields".
+#[derive(Clone, Debug, PartialEq)]
+pub struct FieldGroup {
+    /// The group's heading.
+    pub heading: Option<String>,
+    /// Its fields, in order.
+    pub fields: Vec<RecordField>,
+}
+
+/// One field of a structured record: its stable key, such as its path in the record, which a
+/// citation names; its name, known or the source's own; and its value.
+#[derive(Clone, Debug, PartialEq)]
+pub struct RecordField {
+    /// The field's stable key.
+    pub key: String,
+    /// The field's name.
+    pub name: String,
+    /// Its value.
+    pub value: FieldValue,
+}
+
+/// A field's value, copied from the record.
+#[derive(Clone, Debug, PartialEq)]
+pub enum FieldValue {
+    /// What the record gives: the value, and its unit, reference range and status when it has them.
+    Given {
+        /// The value.
+        value: String,
+        /// Its unit.
+        unit: Option<String>,
+        /// Its reference range.
+        range: Option<String>,
+        /// Its status, such as "High".
+        status: Option<String>,
+    },
+    /// The source says this part is absent: the host's words for that, "Not supplied".
+    NotSupplied(String),
+}
+
+/// What the pane shows for where the source's reading stands.
 #[component]
-pub fn SourceText(text: String, #[props(default)] passages: Vec<(usize, usize)>) -> Element {
+fn SourceView(state: SourceState) -> Element {
+    match state {
+        SourceState::Loading(words) => rsx! {
+            div { class: "source-loading", role: "status",
+                p { class: "sr-only", "{words}" }
+                Placeholder { shape: PlaceholderShape::Reading }
+            }
+        },
+        SourceState::Failed {
+            message,
+            retry,
+            on_retry,
+        } => rsx! {
+            StatusLine { message, alert: true, retry, on_retry }
+        },
+        SourceState::Unavailable(reason) => rsx! {
+            p { class: "source-unavailable", "{reason}" }
+        },
+        SourceState::Described(summary) => rsx! { SummaryView { summary } },
+        SourceState::Shown(record) => {
+            let SourceRecord { body, raw, .. } = *record;
+            rsx! { RecordView { body, raw } }
+        }
+    }
+}
+
+/// A source shown, in the pane's body: the notice when its cited place can't be found, the record,
+/// its raw form.
+#[component]
+fn RecordView(body: RecordBody, raw: RawRecord) -> Element {
+    let notice = match &body {
+        RecordBody::Text {
+            cited: Located::NotFound(notice),
+            ..
+        }
+        | RecordBody::Fields {
+            cited: Located::NotFound(notice),
+            ..
+        } => Some(notice.clone()),
+        _ => None,
+    };
+    rsx! {
+        div { class: "source-record",
+            if let Some(notice) = notice {
+                p { class: "source-notice", role: "status",
+                    Icon { name: IconName::Search }
+                    "{notice}"
+                }
+            }
+            div { class: "source-record-body",
+                match body {
+                    RecordBody::Text { text, cited } => rsx! {
+                        SourceText {
+                            text,
+                            passage: match cited { Located::Found(range) => Some(range), Located::NotFound(_) => None },
+                        }
+                    },
+                    RecordBody::Fields { groups, cited, range_label } => rsx! {
+                        RecordFields {
+                            groups,
+                            cited: match cited { Located::Found(key) => Some(key), Located::NotFound(_) => None },
+                            range_label,
+                        }
+                    },
+                }
+            }
+            Disclosure { title: raw.label, detail: true,
+                pre { class: "source-raw", "{raw.text}" }
+            }
+        }
+    }
+}
+
+/// What a record says about itself on one quiet line, a flagged status standing out as a warning;
+/// nothing when it says none of it.
+#[component]
+fn AboutLine(about: RecordAbout) -> Element {
+    let RecordAbout { kind, date, status } = about;
+    if kind.is_none() && date.is_none() && status.is_none() {
+        return rsx! {};
+    }
+    rsx! {
+        span { class: "source-record-about",
+            if let Some(kind) = kind {
+                span { "{kind}" }
+            }
+            if let Some(date) = date {
+                span { "{date}" }
+            }
+            match status {
+                Some(RecordStatus::Settled(words)) => rsx! { span { "{words}" } },
+                Some(RecordStatus::Flagged(words)) => rsx! {
+                    span { StatePill { tone: Tone::Warning, icon: IconName::Alert, "{words}" } }
+                },
+                None => rsx! {},
+            }
+        }
+    }
+}
+
+/// Every field of a record under its name, group by group, the cited one, named by its key,
+/// highlighted. A result keeps its own unit, reference range and status; a part the source says is
+/// absent reads in its own quieter words. The pane opens at the cited field.
+#[component]
+fn RecordFields(groups: Vec<FieldGroup>, cited: Option<String>, range_label: String) -> Element {
     let surface = try_use_context::<PassageSurface>();
-    use_effect(use_reactive!(|text, passages| {
-        let _ = (&text, &passages);
-        if let Some(PassageSurface(body)) = surface
-            && let Some(body) = body()
-        {
-            script::scroll_to_passage(&body);
+    use_effect(use_reactive!(|cited| {
+        let _ = &cited;
+        if let Some(PassageSurface(body)) = &surface {
+            script::scroll_to_passage(body);
         }
     }));
+    rsx! {
+        div { class: "record-fields",
+            for (index, group) in groups.into_iter().enumerate() {
+                section { key: "{index}", class: "record-field-group",
+                    if let Some(heading) = group.heading {
+                        h3 { class: "record-field-heading", "{heading}" }
+                    }
+                    dl { class: "record-field-list",
+                        for field in group.fields {
+                            FieldRow {
+                                key: "{field.key}",
+                                cited: cited.as_deref() == Some(field.key.as_str()),
+                                field,
+                                range_label: range_label.clone(),
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+/// One field as a row: its name, then its value with its unit, and beneath, its reference range
+/// and status. The cited row's value is marked.
+#[component]
+fn FieldRow(field: RecordField, cited: bool, range_label: String) -> Element {
+    let value = match field.value {
+        FieldValue::Given {
+            value,
+            unit,
+            range,
+            status,
+        } => {
+            let reading = match unit {
+                Some(unit) => format!("{value} {unit}"),
+                None => value,
+            };
+            let range = range.map(|range| format!("{range_label} {range}"));
+            let detail: Vec<String> = range.into_iter().chain(status).collect();
+            rsx! {
+                span { class: "record-field-value", "{reading}" }
+                if !detail.is_empty() {
+                    span { class: "record-field-detail", {detail.join(" · ")} }
+                }
+            }
+        }
+        FieldValue::NotSupplied(words) => rsx! {
+            span { class: "record-field-absent", "{words}" }
+        },
+    };
+    rsx! {
+        div { class: if cited { "record-field is-cited" } else { "record-field" },
+            dt { "{field.name}" }
+            dd {
+                if cited {
+                    mark { {value} }
+                } else {
+                    {value}
+                }
+            }
+        }
+    }
+}
+
+/// The reading surface a source's record is read in: the id of the pane's own scrolling body.
+#[derive(Clone)]
+struct PassageSurface(String);
+
+/// A source's own words with the cited passage marked: its line breaks kept and long words
+/// wrapping. The pane it is read in opens at the passage, and again whenever the words or the
+/// passage change, never on other renders. `passage` is a byte range of `text`; one that isn't a
+/// range of it is left unmarked.
+#[component]
+fn SourceText(text: String, passage: Option<(usize, usize)>) -> Element {
+    let surface = try_use_context::<PassageSurface>();
+    use_effect(use_reactive!(|text, passage| {
+        let _ = (&text, &passage);
+        if let Some(PassageSurface(body)) = &surface {
+            script::scroll_to_passage(body);
+        }
+    }));
+    let passages: Vec<(usize, usize)> = passage.into_iter().collect();
     rsx! {
         span { class: "source-text",
             for (index, (words, cited)) in marked(&text, &passages).into_iter().enumerate() {
@@ -528,9 +1026,6 @@ fn marked(text: &str, passages: &[(usize, usize)]) -> Vec<(String, bool)> {
 
 #[cfg(test)]
 mod tests {
-    use dioxus::html::geometry::PixelsSize;
-    use dioxus::html::geometry::euclid::Point2D;
-
     use super::*;
 
     fn citation(x: f64, y: f64) -> PixelsRect {
@@ -554,6 +1049,11 @@ mod tests {
         let kept = place(citation(900.0, 700.0), 360.0, (1000.0, 800.0), Some(true));
         assert!(kept.below);
         assert_eq!(kept.left, 1000.0 - 360.0 - 12.0);
+        assert!(
+            !kept.leading,
+            "held left of its citation, it grows from its trailing corner"
+        );
+        assert!(place(citation(100.0, 100.0), 360.0, (1000.0, 800.0), None).leading);
         let narrow = place(citation(4.0, 100.0), 360.0, (300.0, 800.0), None);
         assert_eq!(narrow.left, 12.0);
     }

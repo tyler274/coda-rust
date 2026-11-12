@@ -51,6 +51,17 @@ pub(crate) fn scroll_to_passage(body: &str) {
     fire("scrollToPassage", json!([body]));
 }
 
+/// Brings the reader of conversation `scroller` to its end.
+pub(crate) fn read_to_end(scroller: &str) {
+    fire("readToEnd", json!([scroller]));
+}
+
+/// Takes the reader of conversation `scroller` to the top of its newest reply, moving there
+/// `smoothly` or at once, and focuses that reply.
+pub(crate) fn jump_to_latest(scroller: &str, smoothly: bool) {
+    fire("jumpToLatest", json!([scroller, smoothly]));
+}
+
 /// Has composer `id` take only drags that carry files.
 pub(crate) fn file_drags(id: &str) {
     fire("fileDrags", json!([id]));
@@ -74,6 +85,11 @@ pub(crate) fn indeterminate(id: &str, mixed: bool) {
 /// Shows or hides popover `id`.
 pub(crate) fn toggle_popover(id: &str, show: bool) {
     fire("togglePopover", json!([id, show]));
+}
+
+/// Brings the first citation numbered `number` in answer `answer` into view and chooses it.
+pub(crate) fn open_citation(answer: &str, number: usize) {
+    fire("openCitation", json!([answer, number]));
 }
 
 /// Scrolls element `id` just into view.
@@ -122,6 +138,19 @@ pub(crate) fn watch_page(citation: &str, preview: &str) -> Listening<PageHeard> 
     listen("watchPage", json!([citation, preview]))
 }
 
+/// What popover `popover`, opened by control `control`, needs to be placed: as it opens and as the
+/// page moves while it is open, and that it closed, until dropped. The control going out of sight
+/// closes it.
+pub(crate) fn watch_popover(control: &str, popover: &str) -> Listening<PopoverHeard> {
+    listen("watchPopover", json!([control, popover]))
+}
+
+/// Holds the reader's place in conversation `scroller` while its size or content changes, and
+/// reports whether the reader is at its end, now and on each change, until dropped.
+pub(crate) fn watch_reading(scroller: &str) -> Listening<bool> {
+    listen("watchReading", json!([scroller]))
+}
+
 /// One thing `watchPage` reports.
 #[derive(Clone, Copy, Debug, Deserialize, PartialEq)]
 #[serde(tag = "kind", rename_all = "lowercase")]
@@ -140,6 +169,43 @@ pub(crate) enum PageHeard {
     },
     /// The citation is out of sight.
     Away,
+}
+
+/// One thing `watchPopover` reports.
+#[derive(Clone, Copy, Debug, Deserialize, PartialEq)]
+#[serde(tag = "kind", rename_all = "lowercase")]
+pub(crate) enum PopoverHeard {
+    /// It opened, standing so; each opening chooses its side afresh.
+    Opened(Standing),
+    /// The page scrolled or the window resized while it is open.
+    Moved(Standing),
+    /// It closed.
+    Closed,
+}
+
+/// Where an open popover stands: its control's box in the window, its own width, and the window's
+/// width and height.
+#[derive(Clone, Copy, Debug, Deserialize, PartialEq)]
+pub(crate) struct Standing {
+    /// The control's box.
+    pub(crate) control: Bounds,
+    /// The popover's own width.
+    pub(crate) width: f64,
+    /// The window's width and height.
+    pub(crate) window: (f64, f64),
+}
+
+/// A box in the window: its top-left corner and its size.
+#[derive(Clone, Copy, Debug, Deserialize, PartialEq)]
+pub(crate) struct Bounds {
+    /// Its left edge.
+    pub(crate) x: f64,
+    /// Its top edge.
+    pub(crate) y: f64,
+    /// Its width.
+    pub(crate) width: f64,
+    /// Its height.
+    pub(crate) height: f64,
 }
 
 /// Why a behaviour has nothing for its caller.
@@ -444,5 +510,33 @@ mod tests {
             read::<PageHeard>(r#"{"ok":{"kind":"elsewhere"}}"#),
             Err(Unheard::Unreadable(_))
         ));
+    }
+
+    #[test]
+    fn reads_what_a_popover_hears() {
+        let heard = |report: &str| read::<PopoverHeard>(report).unwrap();
+        let standing = Standing {
+            control: Bounds {
+                x: 300.0,
+                y: 640.5,
+                width: 96.0,
+                height: 28.0,
+            },
+            width: 360.0,
+            window: (1280.0, 800.0),
+        };
+        assert_eq!(
+            heard(
+                r#"{"ok":{"kind":"opened","control":{"x":300,"y":640.5,"width":96,"height":28},"width":360,"window":[1280,800]}}"#
+            ),
+            PopoverHeard::Opened(standing)
+        );
+        assert_eq!(
+            heard(
+                r#"{"ok":{"kind":"moved","control":{"x":300,"y":640.5,"width":96,"height":28},"width":360,"window":[1280,800]}}"#
+            ),
+            PopoverHeard::Moved(standing)
+        );
+        assert_eq!(heard(r#"{"ok":{"kind":"closed"}}"#), PopoverHeard::Closed);
     }
 }

@@ -251,18 +251,17 @@ textarea.text-field-input { min-height: 3lh; field-sizing: content; resize: none
 .field[aria-invalid="true"], .field:has([aria-invalid="true"]) { --field-outline: var(--error); }
 .field[aria-invalid="true"]:focus-within, .field:has([aria-invalid="true"]):focus-within { border-color: var(--error); box-shadow: inset 0 0 0 var(--hairline) var(--error); }
 /* A thread's messages: the person's words in a
-   light bubble at the far edge, the assistant's as plain prose. A message rises in as it appears, the person's on the
-   send spring from below, a reply on the arrival spring. */
+   light bubble at the far edge, the assistant's as plain prose. A message arrives as a fade with a rise, the person's
+   and the assistant's alike; one that opens with its work leaves the entry to its work line. */
 .message { box-sizing: border-box; min-width: 0; margin: 0; color: var(--ink); font: var(--type-body-lg); overflow-wrap: anywhere;
-  transition: opacity var(--motion-arrive) var(--ease-out), transform var(--spring-arrive); }
+  transition: opacity var(--motion-arrive) var(--ease-out), transform var(--motion-arrive) var(--ease-out); }
 .message > p { margin: 0; }
 .message > p + p { margin-top: var(--space-2); }
 .message-person { width: fit-content; max-width: 86%; margin-inline-start: auto; padding: var(--space-3) var(--space-4);
-  border-radius: var(--radius-lg); background: var(--surface-low);
-  transition: opacity var(--motion-arrive) var(--ease-out), transform var(--spring-send); }
+  border-radius: var(--radius-lg); background: var(--surface-low); }
 @starting-style {
-  .message { opacity: 0; transform: translateY(var(--rise-small)); }
-  .message-person { transform: translateY(var(--rise)); }
+  .message { opacity: 0; transform: translateY(var(--rise)); }
+  .message:has(> .work-trace) { opacity: 1; transform: none; }
 }
 /* The composer: the one raised text field, holding the words and, under them, a toolbar of the
    host's context and actions at its far edge. The words grow with what is written, up to seven lines, then scroll. */
@@ -444,10 +443,20 @@ button.source-trigger { cursor: pointer; transition: border-color var(--motion-p
 .prose-word { animation: prose-word var(--motion-arrive) var(--ease-out); }
 @keyframes prose-word { from { opacity: 0; } }
 .prose hr:where([data-prose]) { margin: var(--space-5) 0; border: 0; border-top: var(--hairline) solid var(--outline-variant); }
-.prose-table-scroll { max-width: 100%; margin: var(--space-3) 0; overflow-x: auto; }
-.prose table:where([data-prose]) { width: 100%; min-width: 28em; border-collapse: collapse; font: var(--type-body-md); }
-.prose :is(th, td):where([data-prose]) { padding: var(--space-2); overflow-wrap: normal; border: var(--hairline) solid var(--outline-variant); text-align: left; vertical-align: top; }
+/* A table stands in the catalog's table frame, rounded under a hairline, as wide as its column. A cell's words wrap between
+   words, never inside one; a head and a figure the divider row puts at the end stay on one line, so a figure keeps its
+   unit. In a table of four or more columns a cell that wraps keeps at least 8em, so on a phone the table scrolls across
+   in its frame rather than crushing its words into a narrow column. Its head row keeps the tint; a hairline parts its
+   rows, each with room to read; figures take one width, and each column's words stand where the divider row puts them. */
+.prose-table-scroll { max-width: 100%; margin: var(--space-3) 0; }
+.prose table:where([data-prose]) { width: 100%; border-collapse: collapse; font: var(--type-body-md); font-variant-numeric: tabular-nums; }
+.prose :is(th, td):where([data-prose]) { padding: var(--space-3) var(--space-4); overflow-wrap: normal; text-align: start; vertical-align: top; }
+.prose :is(th, [data-align="end"]):where([data-prose]) { white-space: nowrap; }
+.prose table:has(> thead > tr > :nth-child(4)) td:where([data-prose]):not([data-align="end"]) { min-width: 8em; }
+.prose td:where([data-prose]) { border-top: var(--hairline) solid var(--outline-variant); }
 .prose th:where([data-prose]) { color: var(--ink); font-weight: var(--weight-strong); }
+.prose [data-align="center"]:where([data-prose]) { text-align: center; }
+.prose [data-align="end"]:where([data-prose]) { text-align: end; }
 /* A table: things of one kind read across, in a frame that scrolls on its own; its head on the low surface, a hairline
    between rows, and figures on the trailing edge. A heading that sorts takes the whole of its cell, its chevron held in
    place so the sort moves nothing, on the leading side over figures so the words stay above them. A row that opens does
@@ -773,10 +782,46 @@ del > .diff-sign, .diff-removed { color: var(--error); }
 @keyframes spinner-turn { to { transform: rotate(1turn); } }
 /* The conversation's scrolling region and its one way back to the newest reply. */
 .conversation-viewport { position: relative; display: grid; min-height: 0; }
-.conversation-scroll { min-height: 0; overflow-y: auto; overscroll-behavior: contain; }
+.conversation-scroll { min-height: 0; overflow-y: auto; overscroll-behavior: contain; overflow-anchor: none; }
+/* What stood in the conversation when it first showed stands at rest; only what arrives after runs its entry. */
+.conversation-scroll:not([data-settled]) :is(.message, .answer-ending, .work-trace, .work-step) { transition: none; }
+.conversation-scroll .message:focus { outline: none; }
+.conversation-scroll .message:focus-visible { outline: var(--focus-ring-width) solid var(--focus-ring-color); outline-offset: var(--focus-ring-offset); border-radius: var(--radius-md); }
 .jump-to-latest { position: absolute; right: var(--space-row); bottom: var(--space-row); box-shadow: var(--elevation-3);
   transition: opacity var(--motion-arrive) var(--ease-out), transform var(--motion-arrive) var(--ease-out); }
 @starting-style { .jump-to-latest { opacity: 0; transform: translateY(var(--rise)) scale(.98); } }
+/* A conversation as a window's main area: its header, the transcript, and the dock at its foot, in three rows, so the
+   dock takes its room from the transcript and never covers it. The transcript's turns and the dock share one centred
+   column at the reading measure. Both take their width from the column itself, not from the box they stand in, so a
+   scrollbar that takes room inside the scroller narrows neither; the scroller keeps that room on both edges, whether or
+   not it scrolls, so the turns stay centred with the dock and nothing moves sideways as the scrollbar comes and goes. */
+.chat-column { container-type: inline-size; display: grid; grid-template-rows: auto minmax(0, 1fr) auto; min-width: 0; min-height: 0; height: 100%; }
+.source-reading-main > .chat-column { flex: 1 1 auto; height: auto; }
+.chat-measure { box-sizing: border-box; width: min(100cqi - 2 * var(--page-gutter), var(--measure)); margin-inline: auto; }
+.chat-column .conversation-scroll { scrollbar-gutter: stable both-edges; }
+/* Its way back to the newest reply stands at the column's trailing edge, however wide the region. */
+.chat-column .jump-to-latest { right: max(var(--page-gutter), (100% - var(--measure)) / 2); }
+.conversation-feed { display: grid; align-content: start; gap: var(--space-region); min-width: 0; padding-block: var(--space-section); }
+.chat-dock { display: grid; gap: var(--space-2); min-width: 0; padding-block: var(--space-2) max(var(--space-3), env(safe-area-inset-bottom)); }
+/* Who the conversation is about, over the transcript. It has no room of its own above it: the room above is the shell's
+   toolbar row. It and its hairline span the centred column at the reading measure; where the column fills the width, the
+   hairline runs edge to edge and the gutter insets the words, so they keep the transcript's edge. */
+.chat-header-inner { box-sizing: border-box; display: flex; align-items: center; gap: var(--space-4); width: min(100%, var(--measure));
+  margin-inline: auto; padding: var(--space-3) clamp(0px, var(--page-gutter) - (100% - var(--measure)) / 2, var(--page-gutter));
+  border-bottom: var(--hairline) solid var(--outline-variant); }
+.chat-header-text { display: grid; gap: var(--space-hair); min-width: 0; }
+.chat-header-text h1 { margin: 0; color: var(--ink); font: var(--type-title-lg); overflow-wrap: anywhere; }
+.chat-header-facts { display: flex; flex-wrap: wrap; column-gap: var(--space-3); margin: 0; color: var(--body); font: var(--type-body-sm); }
+.chat-header-fact { white-space: nowrap; }
+.chat-header-fact-label { color: var(--muted); }
+/* Messages waiting their turn, each with its own waiting line and actions in its bubble's row. In the dock they scroll on
+   their own past a few, so the composer keeps its place. */
+.message-queue { display: grid; gap: var(--space-2); min-width: 0; }
+.chat-dock > .message-queue { max-height: 40vh; overflow-y: auto; overscroll-behavior: contain; }
+/* A finished answer's Sources list: numbered rows edge to edge in the popover. */
+.sources-index { margin: calc(-1 * var(--space-2)) 0; }
+.sources-index .list-row { padding-block: var(--space-2); }
+.sources-index .list-row-text strong { font: var(--type-body-md); }
 /* Feedback: the rating pair, and reasons as toggle chips. Among a message's actions, the pair shows with the row. */
 .feedback-rating { display: inline-flex; gap: var(--space-hair); transition: opacity var(--motion-control) var(--ease-out); }
 @media (hover: hover) {
@@ -857,6 +902,12 @@ del > .diff-sign, .diff-removed { color: var(--error); }
 .message-status > .icon { width: var(--icon-md); height: var(--icon-md); }
 .message-status.is-alert { color: var(--error); }
 .message-status > .control { margin-inline: calc(-1 * var(--space-1)) 0; }
+/* Waiting its turn, the status and the actions share one row inside the bubble: the status first, the actions at the
+   far edge, close under the words. */
+.message-queued-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0 var(--space-3);
+  margin: var(--space-1) calc(-1 * var(--space-2)) calc(-1 * var(--space-2)) 0; }
+.message-queued-row > .message-status { min-height: 0; justify-content: flex-start; }
+.message-queued-row > .message-actions { margin-inline-start: auto; }
 /* The person's words being edited where they stood: the field at the bubble's edge, as wide as a bubble may be, the
    words on body large growing with them, and under them a note on what saving does, then Cancel and Save. */
 .message-editor { display: grid; gap: var(--space-2); box-sizing: border-box; width: min(100%, var(--message-editor-width)); margin-inline-start: auto; padding: var(--space-3) var(--space-4);
@@ -882,8 +933,11 @@ del > .diff-sign, .diff-removed { color: var(--error); }
 .toast > .icon { color: var(--primary); }
 /* Agent work: one quiet line for the turn's work, its steps in a column beneath, each mark on a hairline that joins
    them. A running step's words shimmer, ink passing through muted, and a step that opens shows its body indented under
-   its words. The steps open and fold as a disclosure does. */
-.work-trace { min-width: 0; color: var(--muted); font: var(--type-body-sm); }
+   its words. The steps open and fold as a disclosure does. The line arrives as a message does; a step arrives with a
+   small rise. */
+.work-trace { min-width: 0; color: var(--muted); font: var(--type-body-sm);
+  transition: opacity var(--motion-arrive) var(--ease-out), transform var(--motion-arrive) var(--ease-out); }
+@starting-style { .work-trace { opacity: 0; transform: translateY(var(--rise)); } }
 .work-trace-line, .work-step-line { position: relative; display: flex; align-items: center; gap: var(--space-2); box-sizing: border-box; width: 100%; min-height: var(--control-height);
   padding: var(--space-1) 0; border: 0; background: transparent; color: inherit; font: inherit; text-align: start; }
 :is(button.work-trace-line, button.work-step-line) { cursor: pointer; -webkit-tap-highlight-color: transparent; }
@@ -894,7 +948,8 @@ del > .diff-sign, .diff-removed { color: var(--error); }
 .work-trace[data-state="open"] > .work-trace-line > .icon, .work-step[data-state="open"] > .work-step-line > .icon { transform: rotate(180deg); }
 .work-trace.is-working .work-trace-label { color: var(--ink); }
 .work-steps { margin: 0; padding: 0 0 var(--space-2); list-style: none; }
-.work-step { position: relative; min-width: 0; }
+.work-step { position: relative; min-width: 0; transition: opacity var(--motion-arrive) var(--ease-out), transform var(--motion-arrive) var(--ease-out); }
+@starting-style { .work-step { opacity: 0; transform: translateY(var(--rise-small)); } }
 .work-step:not(:last-child)::before { content: ""; position: absolute; top: calc(var(--control-height) - var(--space-2)); bottom: calc(-1 * var(--space-1)); left: calc(var(--tile-size-sm) / 2 - var(--hairline));
   border-left: var(--hairline) solid var(--outline-variant); }
 .work-step-mark { display: grid; place-items: center; flex: none; width: var(--tile-size-sm); height: var(--tile-size-sm); border-radius: var(--radius-pill); background: var(--surface-low); color: var(--muted); }
@@ -913,6 +968,29 @@ del > .diff-sign, .diff-removed { color: var(--error); }
 @media (prefers-reduced-motion: reduce) {
   :is(.work-step.is-running .work-step-label, .artifact.is-working .artifact-title) { animation: none; background: none; color: var(--ink); }
 }
+/* How an answer ended. Finished, its words, then one row: Basis and limitations as quiet words with a chevron that turns
+   as it opens in place beneath the row as plain text; the Sources pill, when it cites any, opening its list beside it;
+   and the rating right after, shown as under any message. The ending rises in as it arrives.
+   Stopped, the stop square and its word, quiet, with Resume beside them. Cut off or not finished, the line that says
+   so, with Try again while it can be tried again. Its one column never grows past the message, so a wide table or code
+   scrolls inside it. */
+.answer-ending { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-3); min-width: 0;
+  transition: opacity var(--motion-arrive) var(--ease-out), transform var(--motion-arrive) var(--ease-out); }
+@starting-style { .answer-ending { opacity: 0; transform: translateY(var(--rise)); } }
+/* Words the host shows before an ending, such as what Coda kept before a limit, stand the ending's own step above it. */
+.message > .prose + .answer-ending { margin-top: var(--space-3); }
+.answer-ending-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-1) var(--space-4); }
+.answer-control { display: inline-flex; align-items: center; gap: var(--space-1); box-sizing: border-box; min-height: var(--control-height); padding: var(--space-1) 0;
+  border: 0; background: transparent; color: var(--muted); font: var(--type-body-sm); cursor: pointer; -webkit-tap-highlight-color: transparent; }
+@media (hover: hover) { .answer-control:hover { color: var(--ink); } }
+.answer-control > .icon { width: var(--icon-sm); height: var(--icon-sm); transition: transform var(--motion-arrive) var(--ease-out); }
+.answer-control[aria-expanded="true"] > .icon { transform: rotate(180deg); }
+.answer-basis { color: var(--body); font: var(--type-body-md); }
+.answer-basis > :first-child { margin-top: 0; }
+.answer-basis > :last-child { margin-bottom: 0; }
+.answer-stopped { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3); }
+.answer-stopped-mark { display: inline-flex; align-items: center; gap: var(--space-1); color: var(--muted); font: var(--type-body-sm); }
+.answer-stopped-mark > .icon { width: var(--icon-sm); height: var(--icon-sm); }
 /* An approval: a card at the resting card's depth on the action's outline while it waits, its content set in, the
    answers at its trailing foot. Answered, its outline goes quiet and the answer takes the actions' place. */
 .approval { display: grid; gap: var(--space-3); min-width: 0; padding: var(--space-4); border: var(--hairline) solid var(--primary-outline); border-radius: var(--radius-lg);
@@ -991,6 +1069,13 @@ del > .diff-sign, .diff-removed { color: var(--error); }
 @media (forced-colors: active) { .menu-item:is(:hover, :focus-visible) { outline: var(--focus-ring-width) solid Highlight; outline-offset: calc(-1 * var(--focus-ring-width)); } }
 /* A menu opened at a point stands where its script puts it. */
 .popover.is-at-point { position-area: none; inset: auto; margin: 0; }
+/* A popover its component places stands where it is put, beside its control on the side with more room, its height held
+   to that side, and arrives from its corner nearest the control. */
+.popover.is-placed { position-area: none; position-try-fallbacks: none; inset: auto; margin: 0;
+  max-height: min(var(--popover-max-height), calc(100dvh - 2 * var(--space-3)), var(--popover-available-height, var(--popover-max-height))); }
+.popover.is-placed[data-corner="end"] { transform-origin: top right; }
+.popover.is-placed[data-side="above"] { transform-origin: bottom left; }
+.popover.is-placed[data-side="above"][data-corner="end"] { transform-origin: bottom right; }
 /* A context menu's content shrinks a touch while held; lifted, its copy stands in its place over the blurred page, the
    original hidden beneath. The copy's foot fades where it is cut short. A tap anywhere on the page closes the menu. */
 .context-menu-host { -webkit-touch-callout: none; }
@@ -1048,31 +1133,72 @@ del > .diff-sign, .diff-removed { color: var(--error); }
   width: min(var(--popover-width), calc(100vw - 2 * var(--space-3))); max-height: min(var(--popover-max-height), calc(100dvh - 2 * var(--space-3)), var(--popover-available-height, var(--popover-max-height)));
   margin: 0; padding: var(--space-4); overflow: hidden; border: var(--hairline) solid var(--outline-variant); border-radius: var(--radius-lg);
   background: var(--surface-lowest); color: var(--body); box-shadow: var(--elevation-4); font: var(--type-body-md); text-align: left; white-space: normal; }
-/* It enters once placed, from its citation's side. */
+/* It enters once placed, from the side away from its citation, growing from its corner nearest the citation, so no frame
+   of the motion reaches the citation. */
+.citation-preview { transform-origin: top left; }
+.citation-preview[data-corner="end"] { transform-origin: top right; }
+.citation-preview[data-side="above"] { --preview-from: calc(-1 * var(--rise)); transform-origin: bottom left; }
+.citation-preview[data-side="above"][data-corner="end"] { transform-origin: bottom right; }
 .citation-preview[data-side] { animation: preview-enter var(--motion-arrive) var(--ease-out) both; }
-.citation-preview[data-side="above"] { --preview-from: calc(-1 * var(--rise-small)); }
-@keyframes preview-enter { from { opacity: 0; transform: translateY(calc(-1 * var(--preview-from, var(--rise-small)))); } }
+@keyframes preview-enter { from { opacity: 0; transform: translateY(var(--preview-from, var(--rise))) scale(.98); } }
 .citation-preview-heading { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); }
 .citation-preview-heading > span { display: grid; gap: var(--space-hair); min-width: 0; }
-.citation-preview-heading small, .source-pane-heading small { color: var(--muted); font: var(--type-body-sm); }
+.citation-preview-heading small, .source-pane-heading small { color: var(--muted); font: var(--type-label-md); }
 .citation-preview-heading strong { color: var(--ink); font: var(--type-title-sm); }
-.citation-preview-body { display: block; min-height: 0; overflow-y: auto; overscroll-behavior: contain; }
+.citation-preview-body { display: grid; align-content: start; gap: var(--space-3); min-height: 0; overflow-y: auto; overscroll-behavior: contain; }
+/* A source's actions, at the foot of its preview or its pane, under a hairline. */
 .citation-preview-actions { display: flex; flex-wrap: wrap; gap: var(--space-1) var(--space-4); padding-top: var(--space-1); border-top: var(--hairline) solid var(--outline-variant); }
 .citation-preview-actions .navigation-control { min-height: var(--control-height); padding: var(--space-1) 0; font: var(--type-body-sm); overflow-wrap: anywhere; }
-/* What a source says: its own metadata in a quiet line, quoted passages set off, then its content. */
-.citation-source-details { display: grid; gap: var(--space-3); }
-.citation-source-metadata { display: flex; flex-wrap: wrap; gap: var(--space-hair) var(--space-2); color: var(--muted); font: var(--type-body-sm); }
-.citation-source-metadata > span + span::before { content: "·"; margin-inline-end: var(--space-2); }
-.citation-selected-passages { display: grid; gap: var(--space-2); }
-.citation-selected-passages blockquote { margin: 0; padding: var(--space-2) var(--space-3); border-left: var(--stroke-heavy) solid var(--primary); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; background: var(--highlight); color: var(--ink); }
-.citation-unavailable-view { color: var(--muted); font: var(--type-body-sm); }
+/* Coda's words and the source's never look alike. The source's words are set off on the highlight behind a heavy rule, as
+   its cited place is marked in the record; a scan's page is named on a quiet line. Coda's description, only for a source
+   with nothing of its own to show, sits on the low surface, closed by the quiet line that marks it as Coda's with its
+   date. */
+.source-summary { display: grid; gap: var(--space-1); padding: var(--space-3); border-radius: var(--radius-md); background: var(--surface-low); color: var(--body); }
+.source-summary-text { display: block; }
+.source-summary-prepared { display: flex; align-items: center; gap: var(--space-1); color: var(--muted); font: var(--type-body-sm); }
+.source-summary-prepared > .icon { flex: none; width: var(--icon-sm); height: var(--icon-sm); }
+.source-quote { display: block; margin: 0; padding: var(--space-2) var(--space-3); border-left: var(--stroke-heavy) solid var(--primary); border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  background: var(--highlight); color: var(--ink); overflow-wrap: anywhere; }
+.source-quote.is-field { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 0 var(--space-3); }
+.source-quote-name { color: var(--body); }
+.source-quote-value { font-weight: var(--weight-strong); font-variant-numeric: tabular-nums; }
+.source-page { display: flex; align-items: center; gap: var(--space-2); color: var(--body); font: var(--type-body-sm); }
+.source-page > .icon { flex: none; width: var(--icon-md); height: var(--icon-md); color: var(--muted); }
+/* A source in the pane: under its title, its kind, date and status on one quiet line, a flagged status standing out as
+   a warning; in the body, the notice when the cited place can't be found, the record on the reading surface, its fields
+   as named rows with the cited one marked, and the raw record, collapsed; at the foot, the link to its own system. In a
+   preview the same quiet line stands over the cited place. */
+.source-record { display: grid; gap: var(--space-4); min-width: 0; }
+.source-record-about { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-1) var(--space-2); margin: 0; color: var(--muted); font: var(--type-body-sm); }
+.source-record-about > span + span::before { content: "·"; margin-inline-end: var(--space-2); }
+.source-record-about > span:has(> .state-pill)::before { content: none; }
+.source-notice { display: flex; align-items: flex-start; gap: var(--space-2); margin: 0; color: var(--body); font: var(--type-body-sm); }
+.source-notice > .icon { flex: none; width: var(--icon-md); height: var(--icon-md); margin-top: .1em; color: var(--muted); }
+.source-record-body { min-width: 0; color: var(--ink); font: var(--type-body-lg); }
+.record-fields { display: grid; gap: var(--space-4); }
+.record-field-group { display: grid; gap: var(--space-1); }
+.record-field-heading { margin: 0; color: var(--muted); font: var(--type-label-md); }
+.record-field-list { margin: 0; }
+.record-field { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); gap: var(--space-1) var(--space-3); padding: var(--space-2) 0; border-bottom: var(--hairline) solid var(--outline-variant); }
+.record-field > dt { min-width: 0; color: var(--body); overflow-wrap: anywhere; }
+.record-field > dd { min-width: 0; margin: 0; }
+.record-field > dd, .record-field > dd > mark { display: grid; gap: var(--space-hair); justify-items: start; }
+.record-field > dd > mark { margin: calc(-1 * var(--space-hair)) calc(-1 * var(--space-1)); padding: var(--space-hair) var(--space-1); border-radius: var(--radius-xs); background: var(--highlight); color: inherit; }
+.record-field-value { color: var(--ink); font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.record-field-detail { color: var(--muted); font: var(--type-body-sm); }
+.record-field > dd > mark .record-field-detail { color: var(--body); }
+.record-field-absent { color: var(--muted); font-style: italic; }
+.source-original { justify-self: start; min-height: var(--control-height); font: var(--type-body-sm); }
+.source-raw { margin: 0; padding: var(--space-3); overflow-x: auto; border-radius: var(--radius-sm); background: var(--surface-low); color: var(--body); font: var(--type-code); white-space: pre-wrap; overflow-wrap: anywhere; }
+.source-unavailable { margin: 0; color: var(--muted); font: var(--type-body-md); }
 /* One source beside the reader when both have room (a content fit in font-relative units), over it with Back when
-   not. The pane enters from its own edge and leaves the same way, shorter than it came. */
+   not. The pane enters from its own edge on the step timing, a spatial change with time to settle, and leaves the same
+   way, shorter than it came. */
 .source-reading-layout { container: source-reading / inline-size; min-width: 0; min-height: 0; height: 100%; overflow: hidden; }
 .source-reading-frame { display: grid; grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(0, 1fr); height: 100%; }
 .source-reading-main { grid-column: 1; grid-row: 1; display: flex; flex-direction: column; min-width: 0; min-height: 0; overflow-y: auto; }
 .source-reading-pane { grid-column: 1; grid-row: 1; min-width: 0; min-height: 0; overflow: hidden; background: var(--surface-lowest);
-  animation: source-enter var(--motion-arrive) var(--ease-out) both; }
+  animation: source-enter var(--motion-step) var(--ease-out) both; }
 .source-reading-layout.is-source-closing .source-reading-pane { pointer-events: none; animation: source-exit var(--motion-control) var(--ease-exit) both; }
 .source-reading-layout.has-source .source-reading-main { visibility: hidden; }
 /* Leaving, the source uncovers the reader beneath it, so focus can return to the citation that opened it. */
@@ -1085,11 +1211,14 @@ del > .diff-sign, .diff-removed { color: var(--error); }
   .source-pane-back { display: none; }
   .source-pane-close { display: inline-flex; }
 }
+/* Heading, body and foot: only the body scrolls, set off from the heading by a hairline; the foot, when there is one,
+   takes a row of its own under the body. */
 .source-pane-content { display: grid; grid-template-rows: auto minmax(0, 1fr); row-gap: var(--space-3); box-sizing: border-box; height: 100%; padding: var(--space-4); }
 .source-pane-heading { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: start; gap: var(--space-2); }
 .source-pane-back { grid-column: 1 / -1; justify-self: start; }
 .source-pane-heading h2 { margin: var(--space-2) 0 0; color: var(--ink); font: var(--type-title-lg); }
 .source-pane-heading h2:focus { outline: none; }
-.source-pane-body { min-height: 0; overflow-y: auto; overscroll-behavior: contain; }
+.source-pane-heading .source-record-about { margin-top: var(--space-1); }
+.source-pane-body { min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding-top: var(--space-3); border-top: var(--hairline) solid var(--outline-variant); }
 @keyframes source-enter { from { opacity: 0; transform: translateX(var(--rise)); } }
 @keyframes source-exit { to { opacity: 0; transform: translateX(var(--rise)); } }
