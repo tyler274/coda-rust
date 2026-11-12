@@ -36,7 +36,7 @@ Some concepts below say only what the thing is. Their rules are not decided yet,
 
 **Connection.** One patient and one practice. The roster shows three statuses: Invited, Connected and Ended. A connection ends when the patient leaves, the practice discharges them or the account is deleted. A physician leaving the practice doesn't end it; their patients are reassigned. A patient may connect to more than one practice, each connection separate, and ending one leaves the others alone.
 
-**Practice members.** Anyone signed in to the practice can invite a roster patient from that patient's roster row. To discharge a patient, the practice asks Coda, and Coda ends the connection at once.
+**Practice members.** Anyone signed in to the practice can invite a patient of the practice from that patient's page in Chords. To discharge a patient, the practice asks Coda, and Coda ends the connection at once.
 
 **Invite.** From a practice to one person on its roster. It's sent, then accepted or cancelled. It stays open until the patient joins or the practice cancels it, and practice members can resend it. The patient can accept any invite the practice still holds open, including one being resent, and then both sides show Connected.
 
@@ -60,7 +60,9 @@ Some concepts below say only what the thing is. Their rules are not decided yet,
 
 ### C1.1 Invitation
 
-1. A practice member invites a patient from that patient's roster row.
+The states, steps and rules of an invitation live in [invitation](../verification/connected-care/invitation/README.md).
+
+1. A practice member invites a patient from that patient's page in Chords.
 2. Coda sends the invite by email.
 3. The practice sees Invited on the roster, with no notifications.
 4. The invite stays open until the patient joins or the practice cancels it.
