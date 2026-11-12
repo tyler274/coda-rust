@@ -30,6 +30,8 @@ use uuid::Uuid;
 
 /// Hosted chat drafts: the physician's unsent composer text per chat.
 pub mod chat_draft;
+/// Patient starting context, readability limits, durable memory, source refresh, and chat tool dispatch.
+pub mod chat_operations;
 /// Patient concerns raised, revised, and retired by Coda, and cleared `Done` by physicians.
 pub mod concerns;
 mod control;
@@ -64,7 +66,6 @@ pub mod sources;
 mod tests;
 /// Working notes derived from the authorized product record.
 pub mod working_notes;
-use crate::physician_sources::{ChartRequest, ChartScope, READ_TOOL, SEARCH_TOOL};
 use entities::conversation;
 
 /// Authenticated product scope, supplied by the server, never the command body.
@@ -585,6 +586,8 @@ pub struct Store {
     db: DatabaseConnection,
     clinical_library: crate::clinical_library::ClinicalLibraryClient,
     source_refresh: std::sync::Arc<dyn refresh::PatientSourceRefresh>,
+    refresh_operation: std::sync::Arc<dyn chat_operations::PatientRefreshOperation>,
+    memory_operation: std::sync::Arc<dyn chat_operations::PatientMemoryOperation>,
 }
 
 fn error(message: &str) -> DbErr {
@@ -753,6 +756,8 @@ impl Store {
             db,
             clinical_library: crate::clinical_library::ClinicalLibraryClient::from_env(),
             source_refresh: std::sync::Arc::new(refresh::FixedSourceCheck::new()),
+            refresh_operation: std::sync::Arc::new(chat_operations::RuntimeSourceRefreshOperation),
+            memory_operation: std::sync::Arc::new(chat_operations::PostgresPatientMemoryOperation),
         }
     }
 
@@ -762,6 +767,24 @@ impl Store {
         clinical_library: crate::clinical_library::ClinicalLibraryClient,
     ) -> Self {
         self.clinical_library = clinical_library;
+        self
+    }
+
+    /// Returns a clone bound to an explicit [`chat_operations::PatientRefreshOperation`].
+    pub fn with_refresh_operation(
+        mut self,
+        refresh_operation: std::sync::Arc<dyn chat_operations::PatientRefreshOperation>,
+    ) -> Self {
+        self.refresh_operation = refresh_operation;
+        self
+    }
+
+    /// Returns a clone bound to an explicit [`chat_operations::PatientMemoryOperation`].
+    pub fn with_memory_operation(
+        mut self,
+        memory_operation: std::sync::Arc<dyn chat_operations::PatientMemoryOperation>,
+    ) -> Self {
+        self.memory_operation = memory_operation;
         self
     }
 
@@ -776,6 +799,8 @@ impl Store {
         source_refresh: std::sync::Arc<dyn refresh::PatientSourceRefresh>,
     ) -> Self {
         self.source_refresh = source_refresh;
+        self.refresh_operation =
+            std::sync::Arc::new(chat_operations::RuntimeSourceRefreshOperation);
         self
     }
 
@@ -861,6 +886,12 @@ impl Store {
         if session_hash.len() != 32 {
             return Err(error("invalid session reference").into());
         }
+        Self::validate_accept_fields(scope, input)?;
+        let tx = self.db.begin().await?;
+        Self::accept_in_tx(tx, scope, input, session_hash, skills, recipe).await
+    }
+
+    pub(super) fn validate_accept_fields(scope: &Scope, input: &Input) -> Result<(), RuntimeError> {
         if [
             &input.key,
             &input.text,
@@ -876,7 +907,17 @@ impl Store {
             return Err(error("empty command field").into());
         }
         scope.validate()?;
-        let tx = self.db.begin().await?;
+        Ok(())
+    }
+
+    pub(super) async fn accept_in_tx(
+        tx: sea_orm::DatabaseTransaction,
+        scope: &Scope,
+        input: &Input,
+        session_hash: Vec<u8>,
+        skills: &PhysicianSkills,
+        recipe: &RequestRecipe,
+    ) -> Result<Accepted, RuntimeError> {
         let command = serde_json::json!({"scope": scope, "input": input});
         match receipt::record(&tx, &scope.practice, &scope.physician, &input.key, &command).await? {
             receipt::Receipt::New => {}
@@ -1810,6 +1851,18 @@ impl<A: Authority> Product for PhysicianHost<A> {
                 .map_err(Into::into)
         })
     }
+    fn saved_outcome(
+        &mut self,
+        call: &Invocation,
+    ) -> harness::engine::recipe::ToolFuture<Option<ToolOutcome>> {
+        let store = self.store.clone();
+        let claim = self.claim.clone();
+        let call = call.clone();
+        Box::pin(async move {
+            store.assert_current(&claim).await?;
+            store.saved_chat_tool_outcome(&claim, &call).await
+        })
+    }
     async fn assert_current(&mut self) -> Result<(), engine::Cause> {
         self.store
             .authorize(&self.claim.scope, &mut self.authority)
@@ -1823,24 +1876,6 @@ impl<A: Authority> Product for PhysicianHost<A> {
             .await
             .map_err(persistence_failure)?;
         Ok(())
-    }
-    fn saved_outcome(
-        &mut self,
-        call: &Invocation,
-    ) -> harness::engine::recipe::ToolFuture<Option<ToolOutcome>> {
-        if !refresh::is_refresh_tool(&call.name) {
-            return Box::pin(async { Ok(None) });
-        }
-        let store = self.store.clone();
-        let claim = self.claim.clone();
-        let call = call.clone();
-        Box::pin(async move {
-            store.assert_current(&claim).await?;
-            let (state, _) = store.work_snapshot(&claim.scope).await?;
-            store
-                .saved_physician_refresh_outcome(&claim.scope, &state.work, &call)
-                .await
-        })
     }
     fn execute(
         &mut self,
@@ -1902,37 +1937,9 @@ impl<A: Authority> Product for PhysicianHost<A> {
                 };
                 return Ok(ToolOutcome::History(page));
             }
-            if matches!(call.name.as_str(), SEARCH_TOOL | READ_TOOL) {
-                let chart = match ChartRequest::parse(&call.name, &arguments, ChartScope::Chat) {
-                    Ok(chart) => chart,
-                    Err(reason) => {
-                        return Ok(ToolOutcome::refused(reason.to_string()));
-                    }
-                };
-                let workspace = &claim.scope.workspace;
-                let observation = store.chart_observation(workspace, &chart).await?;
-                return chart
-                    .run(workspace, observation.version, &observation.sources)
-                    .map_err(Into::into);
-            }
-            if refresh::is_refresh_tool(&call.name) {
-                let refresh_call = Invocation {
-                    id: call.id.clone(),
-                    name: call.name.clone(),
-                    arguments,
-                };
-                return store
-                    .execute_claimed_physician_refresh_tool(&claim, &state.work, &refresh_call)
-                    .await;
-            }
-            if crate::clinical_library::is_library_tool(&call.name) {
-                return Ok(store
-                    .clinical_library()
-                    .execute(&call.name, &arguments)
-                    .await);
-            }
-            let skills = store.frozen_skills(&claim.scope, &state.skills).await?;
-            Ok(skills.execute(&call.name, &arguments))
+            store
+                .execute_chat_tool(&claim, &state, &call, arguments)
+                .await
         })
     }
     async fn finish(&mut self, turn: &Turn) -> Result<Finish, engine::Cause> {
@@ -1959,7 +1966,13 @@ impl<A: Authority> Product for PhysicianHost<A> {
         self.assert_current().await?;
         let state = self.store.conversation(&self.claim.scope).await?;
         let start = current_work_start(&state)?;
-        let mut seed: Vec<_> = earlier_messages(start).into_iter().collect();
+        let starting_context = self
+            .store
+            .patient_starting_context(&self.claim.scope)
+            .await
+            .map_err(persistence_failure)?;
+        let mut seed = vec![starting_context.developer_item()];
+        seed.extend(earlier_messages(start));
         seed.extend(state.messages[start..].iter().flat_map(Message::items));
         let note_references =
             working_notes::references(state.attempts.iter().flat_map(|attempt| {
@@ -1999,6 +2012,11 @@ impl<A: Authority> PhysicianHost<A> {
             .await
             .map_err(|cause| engine::Failure::Host(cause.into()))?
             .request(Vec::new());
+        let starting_context = self
+            .store
+            .patient_starting_context(&self.claim.scope)
+            .await
+            .map_err(|cause| engine::Failure::Host(persistence_failure(cause)))?;
         let messages = state.messages.as_slice();
         request.items.clear();
         let mut pending: Vec<engine::AcceptedInput> = Vec::new();
@@ -2006,9 +2024,14 @@ impl<A: Authority> PhysicianHost<A> {
             if let MessageRole::User { id, work, .. } = &message.role
                 && work == &state.work
             {
+                let items = if pending.is_empty() {
+                    vec![starting_context.developer_item()]
+                } else {
+                    Vec::new()
+                };
                 pending.push(engine::AcceptedInput {
                     id: id.clone(),
-                    items: Vec::new(),
+                    items,
                 });
             }
             let target = match pending.last_mut() {
