@@ -934,7 +934,7 @@ fn sort_today(concerns: &mut [Concern]) {
         left.urgency
             .sort_rank()
             .cmp(&right.urgency.sort_rank())
-            .then_with(|| right.updated_at.cmp(&left.updated_at))
+            .then_with(|| left.created_at.cmp(&right.created_at))
             .then_with(|| left.id.cmp(&right.id))
     });
 }
@@ -1577,7 +1577,7 @@ impl Store {
 
     /// Reads open Today concerns for one patient workspace after checking the
     /// signed-in physician's workspace authority. Ordered with [`ConcernUrgency::Now`]
-    /// ahead of [`ConcernUrgency::Today`], then newest update first.
+    /// ahead of [`ConcernUrgency::Today`], then by longest wait (`created_at` ascending).
     pub async fn open_concerns(
         &self,
         access: &WorkspaceAccess<'_>,
@@ -1724,6 +1724,42 @@ mod unit {
                 }),
             )
             .is_err()
+        );
+    }
+
+    #[test]
+    fn sort_today_orders_urgency_then_longest_wait_created_at() {
+        let sample =
+            |id: &str, urgency: ConcernUrgency, created_at: i64, updated_at: i64| Concern {
+                practice: "p1".into(),
+                workspace: "pw-1".into(),
+                id: ConcernId::new(id).unwrap(),
+                urgency,
+                reason: "Check lab.".into(),
+                records: vec![ExactRecordReference::new("c1", "r1").unwrap()],
+                source_work: SourceWork::new("job", "w1", "a1").unwrap(),
+                revision: 1,
+                created_at,
+                updated_at,
+                standing: ConcernStanding::Open,
+            };
+
+        let mut list = vec![
+            sample("a-newer-today", ConcernUrgency::Today, 200, 900),
+            sample("z-older-today", ConcernUrgency::Today, 100, 150),
+            sample("m-newest-now", ConcernUrgency::Now, 500, 500),
+            sample("b-older-now", ConcernUrgency::Now, 300, 300),
+        ];
+        sort_today(&mut list);
+        let ordered_ids: Vec<&str> = list.iter().map(|c| c.id.as_str()).collect();
+        assert_eq!(
+            ordered_ids,
+            vec![
+                "b-older-now",
+                "m-newest-now",
+                "z-older-today",
+                "a-newer-today"
+            ]
         );
     }
 }

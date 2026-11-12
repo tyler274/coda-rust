@@ -412,6 +412,20 @@ async fn raise_revise_and_retire_through_concern_tool_survives_restart_and_popul
                             })
                             .to_string(),
                         }),
+                        Item::Call(Invocation {
+                            id: "raise-a1c".into(),
+                            name: CONCERN_TOOL.into(),
+                            arguments: json!({
+                                "operation": "raise",
+                                "concern_id": "a1c-routine-recheck",
+                                "urgency": "today",
+                                "reason": "Schedule routine quarterly chemistry and glycemic follow-up.",
+                                "records": [
+                                    {"candidate_id": "bmp-2", "revision": "r2"}
+                                ]
+                            })
+                            .to_string(),
+                        }),
                     ],
                     receipt: json!({"job": "revise-retire", "step": 1}),
                     usage: Default::default(),
@@ -472,7 +486,10 @@ async fn raise_revise_and_retire_through_concern_tool_survives_restart_and_popul
     assert_eq!(open_before[1].id.as_str(), "acei-renal-followup");
     assert_eq!(open_before[1].urgency, ConcernUrgency::Today);
 
-    // Follow-up lab arrives; second job revises `acei-renal-followup` and retires `hyperkalemia-bmp`.
+    // Follow-up lab arrives on the next clock second (`now()` uses integer epoch seconds);
+    // second job revises `acei-renal-followup`, retires `hyperkalemia-bmp`, and raises a newer
+    // `Today` concern (`a1c-routine-recheck`, whose ID sorts alphabetically before `acei-renal-followup`).
+    tokio::time::sleep(std::time::Duration::from_millis(1100)).await;
     let lab_2 = seeded_lab(&workspace, "bmp-2", "r2", "2026-11-11", "4.3");
     store.record_source(&lab_2).await.unwrap();
     let work_2 = SourceWork::new("lab_arrival_review", "work-bmp-2", "attempt-1").unwrap();
@@ -494,7 +511,12 @@ async fn raise_revise_and_retire_through_concern_tool_survives_restart_and_popul
         .open_concerns(&access, &mut PostgresWorkspaceAuthority)
         .await
         .unwrap();
-    assert_eq!(open_after.len(), 1);
+    assert_eq!(open_after.len(), 2);
+    assert!(
+        open_after[0].created_at < open_after[1].created_at,
+        "Today must order same-urgency concerns by how long each has waited (oldest created_at first)"
+    );
+    assert_eq!(open_after[1].id.as_str(), "a1c-routine-recheck");
     let revised = &open_after[0];
     assert_eq!(revised.id.as_str(), "acei-renal-followup");
     assert_eq!(revised.urgency, ConcernUrgency::Today);
