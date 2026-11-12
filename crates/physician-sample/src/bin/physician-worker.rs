@@ -664,8 +664,11 @@ impl Worker {
         let wake_skills = local_product::physician_chat::PhysicianSkills::configured(
             configured(&get, "PHYSICIAN_SKILLS_DIR").as_deref(),
             hosted,
-        )
-        .ok();
+        );
+        if let Err(err @ local_product::physician_chat::SkillsError::Package { .. }) = &wake_skills
+        {
+            return Err(err.to_string());
+        }
         let wake_queue: Option<Arc<dyn physician_sample::queue::ChatQueue>> = if let Some(topic) =
             configured(&get, "PHYSICIAN_CHAT_TOPIC")
         {
@@ -846,11 +849,32 @@ trait WakeHandler: Send + Sync {
     async fn wake(&self, tick: &WakeTick) -> Result<WakeReport, WakeError>;
 }
 
+fn clone_skills_error(
+    error: &local_product::physician_chat::SkillsError,
+) -> local_product::physician_chat::SkillsError {
+    match error {
+        local_product::physician_chat::SkillsError::Unconfigured => {
+            local_product::physician_chat::SkillsError::Unconfigured
+        }
+        local_product::physician_chat::SkillsError::Package { root, reason } => {
+            local_product::physician_chat::SkillsError::Package {
+                root: root.clone(),
+                reason: reason.clone(),
+            }
+        }
+    }
+}
+
+const DISPATCH_RETRY_SECONDS: i64 = 60;
+
 struct StoreWakeHandler {
     store: Store,
     auth: PostgresAuthStore,
     roles: local_product::ModelRoles,
-    skills: Option<local_product::physician_chat::PhysicianSkills>,
+    skills: Result<
+        local_product::physician_chat::PhysicianSkills,
+        local_product::physician_chat::SkillsError,
+    >,
     queue: Option<Arc<dyn physician_sample::queue::ChatQueue>>,
 }
 
@@ -867,9 +891,10 @@ impl StoreWakeHandler {
         if practices.is_empty() {
             return Ok((0, 0));
         }
-        let skills = self.skills.as_ref().ok_or_else(|| {
-            WakeError::SkillsUnavailable(local_product::physician_chat::SkillsError::Unconfigured)
-        })?;
+        let skills = self
+            .skills
+            .as_ref()
+            .map_err(|err| WakeError::SkillsUnavailable(clone_skills_error(err)))?;
         let checker =
             local_product::runtime::dispatch::StoredObservationChecker::new(self.store.clone());
         let mut due_patients_checked = 0_usize;
@@ -894,7 +919,24 @@ impl StoreWakeHandler {
             if let Some(queue) = &self.queue {
                 for delivery in deliveries {
                     if queue.publish(&delivery).await.is_ok() {
-                        let _ = self.store.dispatched(&delivery, 60).await;
+                        if self
+                            .store
+                            .dispatched(&delivery, DISPATCH_RETRY_SECONDS)
+                            .await
+                            .is_err()
+                        {
+                            tracing::error!(
+                                event = "physician.queue.dispatch_failed",
+                                error.type = "database",
+                                "accepted patient review dispatch marker unavailable"
+                            );
+                        }
+                    } else {
+                        tracing::error!(
+                            event = "physician.queue.publish_failed",
+                            error.type = "publish",
+                            "accepted patient review awaits queue recovery"
+                        );
                     }
                 }
             }

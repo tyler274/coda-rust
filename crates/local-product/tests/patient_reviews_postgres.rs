@@ -420,50 +420,6 @@ async fn dispatch_changed_periodic_and_physician_reviews_reach_model_with_recipe
     assert_eq!(by_ws[&changed_ws].reason, ReviewReason::NewRecords);
     assert_eq!(by_ws[&periodic_ws].reason, ReviewReason::Periodic);
 
-    // Verify physician-requested review admission & panel authorization enforcement.
-    let (allowed_dr, _allowed_hash) = invite_and_sign_in(&auth, &practice, "dr-allowed").await;
-    let (denied_dr, _denied_hash) = invite_and_sign_in(&auth, &practice, "dr-denied").await;
-    auth.set_membership(&allowed_dr, &periodic_ws, Membership::Allowed)
-        .await
-        .unwrap();
-    auth.set_membership(&denied_dr, &periodic_ws, Membership::Denied)
-        .await
-        .unwrap();
-
-    let unauthorized = store
-        .submit_physician_patient_review(
-            auth.as_ref(),
-            &denied_dr,
-            &periodic_ws,
-            "cmd-denied-dr-review",
-            "Reassess blood pressure trend.",
-            &roles,
-            &skills,
-        )
-        .await
-        .expect_err("non-panel physician must be refused");
-    assert!(matches!(
-        unauthorized,
-        PatientReviewError::PhysicianUnauthorized { .. }
-    ));
-
-    let physician_admitted = store
-        .submit_physician_patient_review(
-            auth.as_ref(),
-            &allowed_dr,
-            &periodic_ws,
-            "cmd-allowed-dr-review",
-            "Reassess blood pressure stability prior to refill.",
-            &roles,
-            &skills,
-        )
-        .await
-        .expect("authorized physician review request admitted");
-    assert!(matches!(
-        physician_admitted.review().triggers.as_slice(),
-        [ReviewTrigger::PhysicianRequest { .. }]
-    ));
-
     // Execute both the changed-record review and the periodic review through PracticeJobHost,
     // asserting the exact Request reaching the model (recipe, background model settings,
     // preloaded retrieval skill, discoverable patient-communication skill, and tools).
@@ -825,6 +781,51 @@ async fn dispatch_changed_periodic_and_physician_reviews_reach_model_with_recipe
             },
             ..
         }
+    ));
+
+    // Verify physician-requested review admission & panel authorization enforcement
+    // after periodic review completes (and verify completed periodic review stays Completed).
+    let (allowed_dr, _allowed_hash) = invite_and_sign_in(&auth, &practice, "dr-allowed").await;
+    let (denied_dr, _denied_hash) = invite_and_sign_in(&auth, &practice, "dr-denied").await;
+    auth.set_membership(&allowed_dr, &periodic_ws, Membership::Allowed)
+        .await
+        .unwrap();
+    auth.set_membership(&denied_dr, &periodic_ws, Membership::Denied)
+        .await
+        .unwrap();
+
+    let unauthorized = store
+        .submit_physician_patient_review(
+            auth.as_ref(),
+            &denied_dr,
+            &periodic_ws,
+            "cmd-denied-dr-review",
+            "Reassess blood pressure trend.",
+            &roles,
+            &skills,
+        )
+        .await
+        .expect_err("non-panel physician must be refused");
+    assert!(matches!(
+        unauthorized,
+        PatientReviewError::PhysicianUnauthorized { .. }
+    ));
+
+    let physician_admitted = store
+        .submit_physician_patient_review(
+            auth.as_ref(),
+            &allowed_dr,
+            &periodic_ws,
+            "cmd-allowed-dr-review",
+            "Reassess blood pressure stability prior to refill.",
+            &roles,
+            &skills,
+        )
+        .await
+        .expect("authorized physician review request admitted");
+    assert!(matches!(
+        physician_admitted.review().triggers.as_slice(),
+        [ReviewTrigger::PhysicianRequest { .. }]
     ));
 }
 
@@ -5046,4 +5047,492 @@ async fn corrected_evidence_revises_outputs_missing_sources_stay_explicit_limits
     );
     assert!(summary.contains("no antiplatelet or statin plan was accepted"));
     assert_eq!(saved_corr_review.unfinished_work.len(), 1);
+}
+
+#[tokio::test]
+async fn new_review_supersedes_incomplete_review_withdrawn_records_fence_recovery_and_completed_sources_baseline_tracks_mid_run_refresh()
+ {
+    let Some(url) = database_url() else {
+        return;
+    };
+    let (store, auth) = connect_stores(&url).await;
+    let skills = load_skills();
+    let roles = distinct_roles();
+
+    let practice = format!("prac-rev-fences-{}", Uuid::new_v4().simple());
+    let workspace = format!("ws-rev-fences-{}", Uuid::new_v4().simple());
+    auth.ensure_practice(&practice, PracticeClock::RealTime)
+        .await
+        .unwrap();
+    auth.register_patient(&practice, &workspace).await.unwrap();
+    let patient = source_patient("pt-fences", "Morgan Ellis");
+
+    // --- 1. Duplicate dispatch does NOT enqueue a second wakeup delivery, and
+    // admitting a new review supersedes an incomplete review (`NewInput`). ---
+    let lab_a = chart_record(ChartRecordSpec {
+        workspace: &workspace,
+        source_id: "quest-labs",
+        candidate_id: "lab-a",
+        revision: "rev-1",
+        record_type: "Observation",
+        title: "Basic Metabolic Panel",
+        date: "2026-11-10",
+        text: "Basic Metabolic Panel (2026-11-10): Potassium 4.1 mmol/L (normal). Creatinine 0.9 mg/dL.",
+    });
+    store
+        .record_chart(
+            &workspace,
+            std::slice::from_ref(&lab_a),
+            &SourcePull {
+                source_id: "quest-labs".into(),
+                source_label: "Quest Diagnostics".into(),
+                pulled_at: 1_700_400_000,
+                patient: patient.clone(),
+            },
+        )
+        .await
+        .unwrap();
+
+    let req_first = patient_work::ReviewRequest {
+        practice_id: practice.clone(),
+        patient_workspace_id: workspace.clone(),
+        reason: ReviewReason::NewRecords,
+        command_key: format!("dispatch:{practice}:{workspace}:new-records:v1"),
+        workspace_version: 1,
+        record_versions: BTreeMap::from([("lab-a".to_owned(), "rev-1".to_owned())]),
+    };
+    let receiver = PatientReviewReceiver::new(&store, &roles, &skills, auth.as_ref());
+    local_product::runtime::dispatch::ReviewReceiver::submit_review(&receiver, &req_first)
+        .await
+        .unwrap();
+    let first_deliveries = receiver.take_deliveries().await;
+    assert_eq!(first_deliveries.len(), 1);
+
+    // Duplicate replay with identical command_key must NOT emit another wakeup delivery!
+    local_product::runtime::dispatch::ReviewReceiver::submit_review(&receiver, &req_first)
+        .await
+        .unwrap();
+    let duplicate_deliveries = receiver.take_deliveries().await;
+    assert!(
+        duplicate_deliveries.is_empty(),
+        "duplicate review admission must not publish a second wakeup delivery"
+    );
+
+    let initial_reviews = store.patient_reviews(&practice, &workspace).await.unwrap();
+    assert_eq!(initial_reviews.len(), 1);
+    let rev_old = initial_reviews[0].clone();
+    let claim_old = store
+        .claim_practice_job(&rev_old.practice_scope(), 60, auth.as_ref())
+        .await
+        .unwrap()
+        .expect("claim old review");
+
+    // Admit a new review while `rev_old` is actively Running -> `rev_old` must become
+    // `Superseded(NewInput { replacement_review_id: Some(rev_mid_id) })` and `claim_old`
+    // must be cancelled/held so it cannot complete!
+    let lab_b = chart_record(ChartRecordSpec {
+        workspace: &workspace,
+        source_id: "quest-labs",
+        candidate_id: "lab-b",
+        revision: "rev-1",
+        record_type: "Observation",
+        title: "Lipid Panel",
+        date: "2026-11-11",
+        text: "Lipid Panel (2026-11-11): LDL 102 mg/dL.",
+    });
+    let req_superseding = patient_work::ReviewRequest {
+        practice_id: practice.clone(),
+        patient_workspace_id: workspace.clone(),
+        reason: ReviewReason::NewRecords,
+        command_key: format!("dispatch:{practice}:{workspace}:new-records:v2-supersede"),
+        workspace_version: 1,
+        record_versions: BTreeMap::from([("lab-a".to_owned(), "rev-1".to_owned())]),
+    };
+    let rev_mid = store
+        .submit_dispatched_patient_review(&req_superseding, &roles, &skills, auth.as_ref())
+        .await
+        .unwrap()
+        .review()
+        .clone();
+
+    let old_after = store
+        .patient_review(&practice, &workspace, &rev_old.review_id)
+        .await
+        .unwrap()
+        .unwrap();
+    assert_eq!(
+        old_after.state,
+        ReviewLifecycleState::Superseded {
+            reason: ReviewSupersededReason::NewInput {
+                replacement_review_id: Some(rev_mid.review_id.clone()),
+            },
+            superseded_at: old_after.updated_at,
+        }
+    );
+    let mut stale_old_host = PracticeJobHost {
+        store: store.clone(),
+        claim: claim_old,
+        authority: auth.as_ref(),
+    };
+    let stale_err = stale_old_host
+        .run(
+            &mut FailIfCalledProvider,
+            engine::RunLimits::default(),
+            &engine::Cancellation::default(),
+        )
+        .await
+        .expect_err("superseded old review claim must not execute or complete");
+    assert_eq!(
+        engine::AttemptFailure::from_error(&stale_err, &engine::Cancellation::default()),
+        engine::AttemptFailure::Interrupted
+    );
+
+    // --- 2. Mid-run record arrival during `rev_mid` (`completed_source_version = 2 > 1`)
+    // updates `completed_sources` so the next changed-record dispatch only reports `lab-c`! ---
+    let claim_mid = store
+        .claim_practice_job(&rev_mid.practice_scope(), 60, auth.as_ref())
+        .await
+        .unwrap()
+        .expect("claim rev_mid");
+    // Deliver `lab_b` mid-run while `rev_mid` is executing (advancing chart v1 -> v2).
+    store
+        .record_chart(
+            &workspace,
+            &[lab_a.clone(), lab_b.clone()],
+            &SourcePull {
+                source_id: "quest-labs".into(),
+                source_label: "Quest Diagnostics".into(),
+                pulled_at: 1_700_400_030,
+                patient: patient.clone(),
+            },
+        )
+        .await
+        .unwrap();
+
+    struct CompleteMidRunArrivalProvider;
+    impl engine::recipe::Provider for CompleteMidRunArrivalProvider {
+        async fn exchange(
+            &mut self,
+            request: &engine::recipe::Request,
+            _: &engine::Cancellation,
+            _: &engine::RunLimits,
+            _: &mut dyn engine::recipe::Observer,
+        ) -> Result<engine::Turn, engine::Cause> {
+            let has_read = request.items.iter().any(|item| {
+                matches!(
+                    item,
+                    engine::Item::MaterializedResult { call_id, .. }
+                        if call_id == "call-read-both"
+                )
+            });
+            let has_staged = request.items.iter().any(|item| {
+                matches!(
+                    item,
+                    engine::Item::MaterializedResult { call_id, .. }
+                        if call_id == "call-complete-mid"
+                )
+            });
+            if !has_read {
+                Ok(engine::Turn {
+                    items: vec![engine::Item::Call(engine::Invocation {
+                        id: "call-read-both".into(),
+                        name: READ_TOOL.into(),
+                        arguments: json!({
+                            "references": [
+                                { "candidate_id": "lab-a", "revision": "rev-1", "cursor": null },
+                                { "candidate_id": "lab-b", "revision": "rev-1", "cursor": null }
+                            ],
+                            "max_result_bytes": 16_384
+                        })
+                        .to_string(),
+                    })],
+                    receipt: json!({"turn": 1}),
+                    usage: engine::recipe::Usage::default(),
+                })
+            } else if !has_staged {
+                Ok(engine::Turn {
+                    items: vec![engine::Item::Call(engine::Invocation {
+                        id: "call-complete-mid".into(),
+                        name: COMPLETE_PATIENT_REVIEW_TOOL.into(),
+                        arguments: json!({
+                            "disposition": "quiet",
+                            "explanation": "BMP and mid-run Lipid Panel are within stable baseline limits.",
+                            "citations": [
+                                { "candidate_id": "lab-a", "revision": "rev-1" },
+                                { "candidate_id": "lab-b", "revision": "rev-1" }
+                            ],
+                            "basis_and_limitations": "Reviewed BMP and Lipid Panel at chart version 2.",
+                            "unfinished_work": []
+                        })
+                        .to_string(),
+                    })],
+                    receipt: json!({"turn": 2}),
+                    usage: engine::recipe::Usage::default(),
+                })
+            } else {
+                Ok(engine::Turn {
+                    items: vec![engine::Item::assistant(
+                        "Completed review at chart version 2.",
+                    )],
+                    receipt: json!({"turn": 3}),
+                    usage: engine::recipe::Usage::default(),
+                })
+            }
+        }
+    }
+
+    let mut host_mid = PracticeJobHost {
+        store: store.clone(),
+        claim: claim_mid,
+        authority: auth.as_ref(),
+    };
+    host_mid
+        .run(
+            &mut CompleteMidRunArrivalProvider,
+            engine::RunLimits::default(),
+            &engine::Cancellation::default(),
+        )
+        .await
+        .expect("rev_mid completes at chart v2");
+
+    let saved_mid = store
+        .patient_review(&practice, &workspace, &rev_mid.review_id)
+        .await
+        .unwrap()
+        .unwrap();
+    assert_eq!(saved_mid.initial_source_version, 1);
+    assert_eq!(saved_mid.completed_source_version, Some(2));
+
+    // Now `lab_c` arrives at chart v3; dispatch a new `NewRecords` review ->
+    // `changed_candidates` MUST contain ONLY `["lab-c"]`, NOT `lab-b`!
+    let lab_c = chart_record(ChartRecordSpec {
+        workspace: &workspace,
+        source_id: "quest-labs",
+        candidate_id: "lab-c",
+        revision: "rev-1",
+        record_type: "Observation",
+        title: "TSH",
+        date: "2026-11-12",
+        text: "TSH (2026-11-12): 2.1 mIU/L (normal).",
+    });
+    store
+        .record_chart(
+            &workspace,
+            &[lab_a.clone(), lab_b.clone(), lab_c.clone()],
+            &SourcePull {
+                source_id: "quest-labs".into(),
+                source_label: "Quest Diagnostics".into(),
+                pulled_at: 1_700_400_060,
+                patient: patient.clone(),
+            },
+        )
+        .await
+        .unwrap();
+
+    let req_v3 = patient_work::ReviewRequest {
+        practice_id: practice.clone(),
+        patient_workspace_id: workspace.clone(),
+        reason: ReviewReason::NewRecords,
+        command_key: format!("dispatch:{practice}:{workspace}:new-records:v3"),
+        workspace_version: 3,
+        record_versions: BTreeMap::from([
+            ("lab-a".to_owned(), "rev-1".to_owned()),
+            ("lab-b".to_owned(), "rev-1".to_owned()),
+            ("lab-c".to_owned(), "rev-1".to_owned()),
+        ]),
+    };
+    let rev_v3 = store
+        .submit_dispatched_patient_review(&req_v3, &roles, &skills, auth.as_ref())
+        .await
+        .unwrap()
+        .review()
+        .clone();
+    assert_eq!(
+        rev_v3.triggers,
+        vec![ReviewTrigger::ChangedRecords {
+            workspace_version: 3,
+            record_versions: BTreeMap::from([
+                ("lab-a".to_owned(), "rev-1".to_owned()),
+                ("lab-b".to_owned(), "rev-1".to_owned()),
+                ("lab-c".to_owned(), "rev-1".to_owned()),
+            ]),
+            changed_candidates: vec!["lab-c".to_owned()],
+        }],
+        "baseline must use prev review's completed_sources so lab-b is not misreported as changed"
+    );
+
+    // --- 3. Pure withdrawn-record recovery (`lab-c` withdrawn with NO added or corrected
+    // records) injects patient-review `SOURCES_CHANGED` feedback naming `complete_patient_review`
+    // and NEVER `finish_reply_revision`! ---
+    let claim_v3_a1 = store
+        .claim_practice_job(&rev_v3.practice_scope(), 60, auth.as_ref())
+        .await
+        .unwrap()
+        .expect("claim v3 attempt 1");
+    let cancel_after_read = engine::Cancellation::default();
+    struct ReadThenInterrupt {
+        cancel: engine::Cancellation,
+    }
+    impl engine::recipe::Provider for ReadThenInterrupt {
+        async fn exchange(
+            &mut self,
+            request: &engine::recipe::Request,
+            _: &engine::Cancellation,
+            _: &engine::RunLimits,
+            _: &mut dyn engine::recipe::Observer,
+        ) -> Result<engine::Turn, engine::Cause> {
+            let has_read = request.items.iter().any(|item| {
+                matches!(
+                    item,
+                    engine::Item::MaterializedResult { call_id, .. }
+                        if call_id == "call-read-c"
+                )
+            });
+            if !has_read {
+                Ok(engine::Turn {
+                    items: vec![engine::Item::Call(engine::Invocation {
+                        id: "call-read-c".into(),
+                        name: READ_TOOL.into(),
+                        arguments: json!({
+                            "references": [
+                                { "candidate_id": "lab-a", "revision": "rev-1", "cursor": null },
+                                { "candidate_id": "lab-c", "revision": "rev-1", "cursor": null }
+                            ],
+                            "max_result_bytes": 16_384
+                        })
+                        .to_string(),
+                    })],
+                    receipt: json!({"turn": 1}),
+                    usage: engine::recipe::Usage::default(),
+                })
+            } else {
+                self.cancel.cancel();
+                std::future::pending::<Result<engine::Turn, engine::Cause>>().await
+            }
+        }
+    }
+    let mut host_v3_a1 = PracticeJobHost {
+        store: store.clone(),
+        claim: claim_v3_a1.clone(),
+        authority: auth.as_ref(),
+    };
+    let int_err = host_v3_a1
+        .run(
+            &mut ReadThenInterrupt {
+                cancel: cancel_after_read.clone(),
+            },
+            engine::RunLimits::default(),
+            &cancel_after_read,
+        )
+        .await
+        .expect_err("cancelled after reading lab-c");
+    store
+        .settle_practice_job_attempt(
+            &claim_v3_a1,
+            engine::AttemptFailure::from_error(&int_err, &cancel_after_read),
+        )
+        .await
+        .unwrap();
+
+    // Withdraw `lab_c` cleanly (chart v3 -> v4: `[lab_a, lab_b]`, zero added or corrected!).
+    store
+        .record_chart(
+            &workspace,
+            &[lab_a, lab_b],
+            &SourcePull {
+                source_id: "quest-labs".into(),
+                source_label: "Quest Diagnostics".into(),
+                pulled_at: 1_700_400_090,
+                patient,
+            },
+        )
+        .await
+        .unwrap();
+
+    let claim_v3_a2 = store
+        .claim_practice_job(&rev_v3.practice_scope(), 60, auth.as_ref())
+        .await
+        .unwrap()
+        .expect("claim v3 recovery attempt after withdrawal");
+
+    struct InspectWithdrawnFeedbackProvider {
+        saw_withdrawn_feedback: bool,
+    }
+    impl engine::recipe::Provider for InspectWithdrawnFeedbackProvider {
+        async fn exchange(
+            &mut self,
+            request: &engine::recipe::Request,
+            _: &engine::Cancellation,
+            _: &engine::RunLimits,
+            _: &mut dyn engine::recipe::Observer,
+        ) -> Result<engine::Turn, engine::Cause> {
+            let rendered_items = serde_json::to_string(&request.items).unwrap();
+            assert!(
+                !rendered_items.contains("finish_reply_revision"),
+                "patient review recovery feedback must never name finish_reply_revision: {rendered_items}"
+            );
+            if rendered_items.contains("lab-c")
+                && rendered_items.contains("complete_patient_review")
+                && rendered_items.contains("withdrawn")
+            {
+                self.saw_withdrawn_feedback = true;
+            }
+            let has_staged = request.items.iter().any(|item| {
+                matches!(
+                    item,
+                    engine::Item::MaterializedResult { call_id, .. }
+                        if call_id == "call-complete-after-withdraw"
+                )
+            });
+            if !has_staged {
+                Ok(engine::Turn {
+                    items: vec![engine::Item::Call(engine::Invocation {
+                        id: "call-complete-after-withdraw".into(),
+                        name: COMPLETE_PATIENT_REVIEW_TOOL.into(),
+                        arguments: json!({
+                            "disposition": "quiet",
+                            "explanation": "TSH record lab-c was withdrawn; remaining BMP and Lipid Panel remain normal.",
+                            "citations": [
+                                { "candidate_id": "lab-a", "revision": "rev-1" }
+                            ],
+                            "basis_and_limitations": "Reviewed current chart version 4 after withdrawal of lab-c.",
+                            "unfinished_work": []
+                        })
+                        .to_string(),
+                    })],
+                    receipt: json!({"turn": 1}),
+                    usage: engine::recipe::Usage::default(),
+                })
+            } else {
+                Ok(engine::Turn {
+                    items: vec![engine::Item::assistant(
+                        "Completed quiet review after withdrawn record.",
+                    )],
+                    receipt: json!({"turn": 2}),
+                    usage: engine::recipe::Usage::default(),
+                })
+            }
+        }
+    }
+
+    let mut inspector = InspectWithdrawnFeedbackProvider {
+        saw_withdrawn_feedback: false,
+    };
+    let mut host_v3_a2 = PracticeJobHost {
+        store: store.clone(),
+        claim: claim_v3_a2,
+        authority: auth.as_ref(),
+    };
+    host_v3_a2
+        .run(
+            &mut inspector,
+            engine::RunLimits::default(),
+            &engine::Cancellation::default(),
+        )
+        .await
+        .expect("recovery after withdrawn record succeeds with complete_patient_review");
+    assert!(
+        inspector.saw_withdrawn_feedback,
+        "recovery after pure record withdrawal must inject patient-review source_feedback naming complete_patient_review"
+    );
 }

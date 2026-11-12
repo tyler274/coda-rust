@@ -989,6 +989,8 @@ pub(super) mod patient_review {
         pub initial_sources: Json,
         pub completed_source_version: Option<i64>,
         #[sea_orm(column_type = "JsonBinary")]
+        pub completed_sources: Option<Json>,
+        #[sea_orm(column_type = "JsonBinary")]
         pub evidence_read: Json,
         #[sea_orm(column_type = "JsonBinary")]
         pub actions: Json,

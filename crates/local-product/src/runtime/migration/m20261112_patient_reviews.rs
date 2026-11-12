@@ -78,6 +78,7 @@ impl MigrationTrait for Migration {
                                         .gte(0)),
                             ),
                     )
+                    .col(ColumnDef::new(patient_review::Column::CompletedSources).json_binary())
                     .col(
                         ColumnDef::new(patient_review::Column::EvidenceRead)
                             .json_binary()

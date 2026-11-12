@@ -441,7 +441,7 @@ mod tests {
                 store: store.clone(),
                 auth: auth.clone(),
                 roles: roles.clone(),
-                skills: Some(skills),
+                skills: Ok(skills),
                 queue: None,
             }),
             clinical_library: None,
@@ -775,7 +775,7 @@ mod tests {
                 store: store.clone(),
                 auth: auth.clone(),
                 roles: roles.clone(),
-                skills: Some(skills),
+                skills: Ok(skills),
                 queue: Some(queue.clone()),
             }),
             clinical_library: None,
@@ -868,5 +868,107 @@ mod tests {
         ));
 
         stub_task.abort();
+    }
+
+    #[tokio::test]
+    async fn wake_skills_error_preserves_package_cause_and_invalid_skills_dir_fails_from_env() {
+        use std::error::Error as _;
+
+        let missing_dir = format!("/tmp/nonexistent-skills-{}", Uuid::new_v4());
+        let from_env_err = crate::Worker::from_env(|key| match key {
+            "PUBSUB_EMULATOR_HOST" => Some("127.0.0.1:8085".into()),
+            "PHYSICIAN_RESPONSES_STUB_PORT" => Some("8080".into()),
+            "CODA_CHAT_MODEL" | "CODA_BACKGROUND_MODEL" => Some("gpt-5.4-mini".into()),
+            "CODA_CHAT_EFFORT" | "CODA_BACKGROUND_EFFORT" => Some("low".into()),
+            "CODA_CHAT_CONTEXT_WINDOW_TOKENS" | "CODA_BACKGROUND_CONTEXT_WINDOW_TOKENS" => {
+                Some("272000".into())
+            }
+            "CODA_CHAT_INPUT_LIMIT_TOKENS" | "CODA_BACKGROUND_INPUT_LIMIT_TOKENS" => {
+                Some("400000".into())
+            }
+            "PHYSICIAN_SKILLS_DIR" => Some(missing_dir.clone()),
+            _ => None,
+        })
+        .await
+        .err()
+        .expect("invalid PHYSICIAN_SKILLS_DIR must fail Worker::from_env");
+        assert!(
+            from_env_err.contains(&missing_dir),
+            "expected package load error cause, got: {from_env_err}"
+        );
+
+        let url = match std::env::var("PHYSICIAN_RUNTIME_TEST_DATABASE_URL")
+            .or_else(|_| std::env::var("PHYSICIAN_DATABASE_URL"))
+        {
+            Ok(v) if !v.trim().is_empty() => v,
+            _ => {
+                assert!(
+                    std::env::var_os("CODA_REQUIRE_POSTGRES_TESTS").is_none(),
+                    "PHYSICIAN_RUNTIME_TEST_DATABASE_URL is required when CODA_REQUIRE_POSTGRES_TESTS=1"
+                );
+                return;
+            }
+        };
+        let store = Store::connect(&url).await.unwrap();
+        store.migrate().await.unwrap();
+        let auth = PostgresAuthStore::connect_with_migrations(&url)
+            .await
+            .unwrap();
+        let practice = format!("prac-wake-skills-err-{}", Uuid::new_v4().simple());
+        let workspace = format!("ws-wake-skills-err-{}", Uuid::new_v4().simple());
+        auth.ensure_practice(&practice, PracticeClock::RealTime)
+            .await
+            .unwrap();
+        auth.register_patient(&practice, &workspace).await.unwrap();
+        store
+            .register_patient_dispatch(&auth, &practice, &workspace, 1_700_000_000)
+            .await
+            .unwrap();
+
+        let broken_skills = PhysicianSkills::load(std::path::Path::new(&missing_dir));
+        assert!(matches!(
+            broken_skills,
+            Err(local_product::physician_chat::SkillsError::Package { .. })
+        ));
+        let handler = crate::StoreWakeHandler {
+            store,
+            auth,
+            roles: ModelRoles {
+                chat: ModelBinding {
+                    model: "chat-interactive-lane".into(),
+                    effort: "low".into(),
+                    context_window_tokens: 128_000,
+                    max_input_tokens: 100_000,
+                    adapter: "openai-responses".into(),
+                },
+                background: ModelBinding {
+                    model: "background-worker-lane".into(),
+                    effort: "high".into(),
+                    context_window_tokens: 272_000,
+                    max_input_tokens: 250_000,
+                    adapter: "openai-responses".into(),
+                },
+            },
+            skills: broken_skills,
+            queue: None,
+        };
+        let wake_err = crate::WakeHandler::wake(
+            &handler,
+            &crate::WakeTick {
+                job_name: None,
+                schedule_time: None,
+                retry_count: 0,
+                directive: crate::WakeDirective::Normal,
+            },
+        )
+        .await
+        .expect_err("wake with broken skills must fail with preserved SkillsError::Package");
+        let source = wake_err
+            .source()
+            .expect("WakeError::SkillsUnavailable must keep original SkillsError source");
+        assert!(
+            source.to_string().contains(&missing_dir),
+            "expected preserved SkillsError::Package source, got: {source}"
+        );
     }
 }

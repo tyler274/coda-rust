@@ -228,8 +228,6 @@ pub enum ReviewSupersededReason {
         /// Access refusal detail.
         detail: String,
     },
-    /// Source records were corrected and superseded an unresumed draft.
-    RecordCorrected,
 }
 
 /// Lifecycle state of a saved patient review.
@@ -597,10 +595,9 @@ impl ReviewReceiver for PatientReviewReceiver<'_> {
                 }
                 other => PracticeJobError::from(error(&other.to_string())),
             })?;
-        self.deliveries
-            .lock()
-            .await
-            .push(admitted.delivery().clone());
+        if let AdmittedPatientReview::New { delivery, .. } = admitted {
+            self.deliveries.lock().await.push(delivery);
+        }
         Ok(())
     }
 }
@@ -792,11 +789,12 @@ fn decode_saved_review(row: patient_review::Model) -> Result<SavedPatientReview,
     })
 }
 
+fn decode_sources_json(raw: Value, field: &'static str) -> Result<Vec<SourceRevision>, DbErr> {
+    serde_json::from_value(raw).map_err(conversion_error(field, "Vec<SourceRevision>"))
+}
+
 fn decode_initial_sources(raw: Value) -> Result<Vec<SourceRevision>, DbErr> {
-    serde_json::from_value(raw).map_err(conversion_error(
-        "patient_review.initial_sources",
-        "Vec<SourceRevision>",
-    ))
+    decode_sources_json(raw, "patient_review.initial_sources")
 }
 
 fn decode_staged(raw: Option<Value>) -> Result<Option<StagedReviewCompletion>, DbErr> {
@@ -930,35 +928,44 @@ pub(super) fn compute_review_usage_and_duration(
     (usage, duration_ms)
 }
 
-/// Single rule owner checking mid-run source record currency, open-concern
-/// coherence, and citation read verification across `complete_patient_review`
-/// and `commit_practice_job`.
-#[allow(clippy::too_many_arguments)]
-fn verify_review_evidence_currency(
+struct OpenWorkConcern {
+    id: String,
+    records: Vec<ExactRecordReference>,
+}
+
+enum SourceFenceContext<'a> {
+    ToolCall,
+    Recovery {
+        staged: Option<&'a StagedReviewCompletion>,
+    },
+    Commit {
+        staged: &'a StagedReviewCompletion,
+    },
+}
+
+/// Single rule owner checking whether patient chart sources were added,
+/// corrected, or withdrawn relative to a patient review's baseline, delivered
+/// `read_patient_sources` receipts, and optional staged completion across live
+/// tool execution, crash/restart recovery, and final commit.
+fn review_source_change_feedback(
     initial_version: u64,
     initial_sources: &[SourceRevision],
     current_version: u64,
     current_sources: &[SourceRevision],
-    pulls: &[SourcePull],
     read_in_work: &BTreeSet<(String, String)>,
-    carried_forward_refs: &BTreeSet<(String, String)>,
-    open_work_concerns: &[concern::Model],
-    args: &CompleteReviewArgs,
-) -> Result<ReviewOutcome, Value> {
+    context: SourceFenceContext<'_>,
+) -> Option<Value> {
     let by_candidate: BTreeMap<&str, &SourceRevision> = current_sources
         .iter()
         .map(|source| (source.candidate_id.as_str(), source))
         .collect();
-
-    // 1. Check whether records were added or corrected since the review's baseline
-    // (or corrected again after an earlier mid-run read) without their current
-    // revision having been read via `read_patient_sources` in this run.
     let refresh = SourceRefresh::between(
         initial_version,
         initial_sources,
         current_version,
         current_sources,
     );
+
     let mut unread_changed: BTreeSet<String> = BTreeSet::new();
     for cid in refresh.to_read() {
         if let Some(current) = by_candidate.get(cid.as_str())
@@ -975,25 +982,94 @@ fn verify_review_evidence_currency(
             unread_changed.insert(read_cid.clone());
         }
     }
-    if !unread_changed.is_empty() {
-        let unread_vec: Vec<String> = unread_changed.into_iter().collect();
-        return Err(json!({
-            "outcome": crate::physician_sources::SOURCES_CHANGED,
-            "message": "Patient records were added or corrected while this review was running, so nothing was published. Read the updated references with read_patient_sources, update or retire any affected concern or summary, and call complete_patient_review again.",
-            "added": refresh.added.iter().map(|s| &s.candidate_id).collect::<Vec<_>>(),
-            "corrected": refresh.corrected.iter().map(|c| &c.current.candidate_id).collect::<Vec<_>>(),
-            "withdrawn": refresh.withdrawn.iter().map(|s| &s.candidate_id).collect::<Vec<_>>(),
-            "unread_references": unread_vec,
-            "workspace_version": current_version,
-        }));
+    if let SourceFenceContext::Recovery {
+        staged: Some(staged),
     }
+    | SourceFenceContext::Commit { staged } = context
+    {
+        for (cid, current) in &by_candidate {
+            if staged.staged_record_versions.get(*cid) != Some(&current.revision)
+                && !read_in_work.contains(&((*cid).to_owned(), current.revision.clone()))
+            {
+                unread_changed.insert((*cid).to_owned());
+            }
+        }
+    }
+
+    let triggered = match context {
+        SourceFenceContext::ToolCall => !unread_changed.is_empty(),
+        SourceFenceContext::Recovery { staged } => {
+            !unread_changed.is_empty()
+                || (!refresh.withdrawn.is_empty()
+                    && staged.is_none_or(|s| {
+                        refresh
+                            .withdrawn
+                            .iter()
+                            .any(|w| s.staged_record_versions.contains_key(&w.candidate_id))
+                    }))
+        }
+        SourceFenceContext::Commit { staged } => {
+            current_version != staged.staged_source_version
+                || record_versions_map(current_sources) != staged.staged_record_versions
+                || !unread_changed.is_empty()
+        }
+    };
+    if !triggered {
+        return None;
+    }
+
+    let unread_vec: Vec<String> = unread_changed.into_iter().collect();
+    let message = if unread_vec.is_empty() {
+        "Patient records were withdrawn or updated while this review was running, so nothing was published. Review the current chart state, update or retire any affected concern or summary, and call complete_patient_review again."
+    } else {
+        "Patient records were added, corrected, or withdrawn while this review was running, so nothing was published. Read the updated references with read_patient_sources, update or retire any affected concern or summary, and call complete_patient_review again."
+    };
+    Some(json!({
+        "outcome": crate::physician_sources::SOURCES_CHANGED,
+        "message": message,
+        "added": refresh.added.iter().map(|s| &s.candidate_id).collect::<Vec<_>>(),
+        "corrected": refresh.corrected.iter().map(|c| &c.current.candidate_id).collect::<Vec<_>>(),
+        "withdrawn": refresh.withdrawn.iter().map(|s| &s.candidate_id).collect::<Vec<_>>(),
+        "unread_references": unread_vec,
+        "workspace_version": current_version,
+    }))
+}
+
+/// Single rule owner checking mid-run source record currency, open-concern
+/// coherence, and citation read verification across `complete_patient_review`
+/// and `commit_practice_job`.
+#[allow(clippy::too_many_arguments)]
+fn verify_review_evidence_currency(
+    initial_version: u64,
+    initial_sources: &[SourceRevision],
+    current_version: u64,
+    current_sources: &[SourceRevision],
+    pulls: &[SourcePull],
+    read_in_work: &BTreeSet<(String, String)>,
+    carried_forward_refs: &BTreeSet<(String, String)>,
+    open_work_concerns: &[OpenWorkConcern],
+    args: &CompleteReviewArgs,
+) -> Result<ReviewOutcome, Value> {
+    if let Some(changed_payload) = review_source_change_feedback(
+        initial_version,
+        initial_sources,
+        current_version,
+        current_sources,
+        read_in_work,
+        SourceFenceContext::ToolCall,
+    ) {
+        return Err(changed_payload);
+    }
+
+    let by_candidate: BTreeMap<&str, &SourceRevision> = current_sources
+        .iter()
+        .map(|source| (source.candidate_id.as_str(), source))
+        .collect();
 
     // 2. Ensure no open concern raised or revised by this review cites a withdrawn
     // record or superseded revision.
     for open in open_work_concerns {
-        let cited: Vec<ExactRecordReference> =
-            serde_json::from_value(open.records.clone()).unwrap_or_default();
-        for ref_item in &cited {
+        for ref_item in &open.records {
             match by_candidate.get(ref_item.candidate_id.as_str()) {
                 None => {
                     return Err(json!({
@@ -1098,7 +1174,7 @@ async fn open_concerns_from_work_in_tx(
     practice: &str,
     workspace: &str,
     work_id: &str,
-) -> Result<Vec<concern::Model>, DbErr> {
+) -> Result<Vec<OpenWorkConcern>, DbErr> {
     let rows = concern::Entity::find()
         .filter(concern::Column::Practice.eq(practice))
         .filter(concern::Column::Workspace.eq(workspace))
@@ -1107,10 +1183,16 @@ async fn open_concerns_from_work_in_tx(
         .await?;
     let mut matched = Vec::new();
     for row in rows {
-        if let Ok(sw) = serde_json::from_value::<SourceWork>(row.source_work.clone())
-            && sw.work_id == work_id
-        {
-            matched.push(row);
+        let sw: SourceWork = serde_json::from_value(row.source_work)
+            .map_err(conversion_error("concern.source_work", "SourceWork"))?;
+        if sw.work_id == work_id {
+            let records: Vec<ExactRecordReference> = serde_json::from_value(row.records).map_err(
+                conversion_error("concern.records", "Vec<ExactRecordReference>"),
+            )?;
+            matched.push(OpenWorkConcern {
+                id: row.id,
+                records,
+            });
         }
     }
     Ok(matched)
@@ -1132,23 +1214,28 @@ async fn collect_review_actions_in_tx(
         .all(tx)
         .await?;
     for row in concerns {
-        let rev = u64::try_from(row.revision.max(0)).unwrap_or(0);
+        let rev =
+            u64::try_from(row.revision).map_err(conversion_error("concern.revision", "u64"))?;
         if row.status == "retired"
             && let Some(retired_by) = row.retired_by_work.clone()
-            && let Ok(sw) = serde_json::from_value::<SourceWork>(retired_by)
-            && sw.work_id == work_id
         {
-            actions.push(RecordedReviewAction::ConcernRetired {
-                concern_id: row.id,
-                retirement_reason: row.retirement_reason.unwrap_or_default(),
-                revision: rev,
-            });
-            continue;
+            let sw: SourceWork = serde_json::from_value(retired_by)
+                .map_err(conversion_error("concern.retired_by_work", "SourceWork"))?;
+            if sw.work_id == work_id {
+                let retirement_reason = row
+                    .retirement_reason
+                    .ok_or_else(|| error("retired concern missing retirement_reason"))?;
+                actions.push(RecordedReviewAction::ConcernRetired {
+                    concern_id: row.id,
+                    retirement_reason,
+                    revision: rev,
+                });
+                continue;
+            }
         }
-        if let Ok(sw) = serde_json::from_value::<SourceWork>(row.source_work)
-            && sw.work_id == work_id
-            && row.status == "open"
-        {
+        let sw: SourceWork = serde_json::from_value(row.source_work)
+            .map_err(conversion_error("concern.source_work", "SourceWork"))?;
+        if sw.work_id == work_id && row.status == "open" {
             let urgency: ConcernUrgency = serde_json::from_value(Value::String(row.urgency))
                 .map_err(conversion_error("concern.urgency", "ConcernUrgency"))?;
             let records: Vec<ExactRecordReference> = serde_json::from_value(row.records).map_err(
@@ -1172,23 +1259,33 @@ async fn collect_review_actions_in_tx(
         .all(tx)
         .await?;
     for row in memories {
-        let rev = u64::try_from(row.revision.max(0)).unwrap_or(0);
+        let rev = u64::try_from(row.revision)
+            .map_err(conversion_error("patient_memory.revision", "u64"))?;
         if row.status == "retired"
             && let Some(retired_by) = row.retired_by.clone()
-            && let Ok(MemoryProvenance::ClinicalSummary { work_id: w, .. }) =
-                serde_json::from_value::<MemoryProvenance>(retired_by)
-            && w == work_id
         {
-            actions.push(RecordedReviewAction::MemoryRetired {
-                memory_id: row.id,
-                reason: row.retirement_reason.unwrap_or_default(),
-                revision: rev,
-            });
-            continue;
+            let retired_prov: MemoryProvenance = serde_json::from_value(retired_by).map_err(
+                conversion_error("patient_memory.retired_by", "MemoryProvenance"),
+            )?;
+            if let MemoryProvenance::ClinicalSummary { work_id: w, .. } = retired_prov
+                && w == work_id
+            {
+                let reason = row
+                    .retirement_reason
+                    .ok_or_else(|| error("retired patient memory missing retirement_reason"))?;
+                actions.push(RecordedReviewAction::MemoryRetired {
+                    memory_id: row.id,
+                    reason,
+                    revision: rev,
+                });
+                continue;
+            }
         }
+        let prov: MemoryProvenance = serde_json::from_value(row.provenance).map_err(
+            conversion_error("patient_memory.provenance", "MemoryProvenance"),
+        )?;
         if row.status == "active"
-            && let Ok(MemoryProvenance::ClinicalSummary { work_id: w, .. }) =
-                serde_json::from_value::<MemoryProvenance>(row.provenance)
+            && let MemoryProvenance::ClinicalSummary { work_id: w, .. } = prov
             && w == work_id
         {
             actions.push(RecordedReviewAction::MemoryRecorded {
@@ -1357,7 +1454,10 @@ impl Store {
         let refresh_statuses = self
             .saved_source_statuses(practice, workspace)
             .await
-            .unwrap_or_default();
+            .map_err(|err| match err {
+                super::refresh::RefreshError::Database(db_err) => db_err,
+                other => error(&other.to_string()),
+            })?;
         let check_standing = self.dispatch_check_standing(practice, workspace).await?;
         let understanding = self
             .patient_understanding_internal(practice, workspace)
@@ -1510,7 +1610,11 @@ impl Store {
                 .and_then(|r| r.completed_at)
                 .or_else(|| dispatch_row.as_ref().and_then(|d| d.last_reviewed_at));
             let baseline = if let Some(prev) = latest_completed {
-                let sources = decode_initial_sources(prev.initial_sources)?;
+                let completed_raw = prev
+                    .completed_sources
+                    .ok_or_else(|| error("completed patient review missing completed_sources"))?;
+                let sources =
+                    decode_sources_json(completed_raw, "patient_review.completed_sources")?;
                 record_versions_map(&sources)
             } else {
                 BTreeMap::new()
@@ -1682,6 +1786,26 @@ impl Store {
         }
 
         let clock = now(&tx).await?;
+        let prior_incomplete = patient_review::Entity::find()
+            .filter(patient_review::Column::Practice.eq(&practice))
+            .filter(patient_review::Column::Workspace.eq(&workspace))
+            .filter(patient_review::Column::ReviewId.ne(&review_id))
+            .filter(patient_review::Column::Status.is_in(["pending", "running", "held", "failed"]))
+            .lock_exclusive()
+            .all(&tx)
+            .await?;
+        for prior_row in prior_incomplete {
+            Self::supersede_review_in_tx(
+                &tx,
+                prior_row,
+                ReviewSupersededReason::NewInput {
+                    replacement_review_id: Some(review_id.clone()),
+                },
+                clock,
+            )
+            .await?;
+        }
+
         let initial_version_i64 = i64::try_from(observation.version)
             .map_err(conversion_error("initial_source_version", "i64"))?;
         let state = ReviewLifecycleState::Pending;
@@ -1709,6 +1833,7 @@ impl Store {
             initial_sources: Set(serde_json::to_value(&observation.sources)
                 .map_err(conversion_error("Vec<SourceRevision>", "json"))?),
             completed_source_version: Set(None),
+            completed_sources: Set(None),
             evidence_read: Set(json!([])),
             actions: Set(json!([])),
             unfinished_work: Set(json!([])),
@@ -1959,6 +2084,7 @@ impl Store {
             initial_sources: Set(serde_json::to_value(&observation.sources)
                 .map_err(conversion_error("Vec<SourceRevision>", "json"))?),
             completed_source_version: Set(None),
+            completed_sources: Set(None),
             evidence_read: Unchanged(rev_row.evidence_read),
             actions: Unchanged(rev_row.actions),
             unfinished_work: Unchanged(rev_row.unfinished_work),
@@ -2248,6 +2374,7 @@ impl Store {
             initial_source_version: Unchanged(rev_row.initial_source_version),
             initial_sources: Unchanged(rev_row.initial_sources),
             completed_source_version: Set(None),
+            completed_sources: Set(None),
             evidence_read: Unchanged(rev_row.evidence_read),
             actions: Unchanged(rev_row.actions),
             unfinished_work: Unchanged(rev_row.unfinished_work),
@@ -2294,25 +2421,42 @@ impl Store {
             tx.commit().await?;
             return Ok(());
         };
-        if rev_row.status == "completed" {
-            tx.commit().await?;
+        Self::supersede_review_in_tx(
+            &tx,
+            rev_row,
+            ReviewSupersededReason::AccessLost {
+                detail: detail.to_owned(),
+            },
+            clock,
+        )
+        .await?;
+        tx.commit().await
+    }
+
+    async fn supersede_review_in_tx(
+        tx: &sea_orm::DatabaseTransaction,
+        rev_row: patient_review::Model,
+        reason: ReviewSupersededReason,
+        clock: i64,
+    ) -> Result<(), DbErr> {
+        if matches!(rev_row.status.as_str(), "completed" | "superseded") {
             return Ok(());
         }
         let scope = PracticeScope {
-            practice: practice.to_owned(),
-            workspace: workspace.to_owned(),
+            practice: rev_row.practice.clone(),
+            workspace: rev_row.workspace.clone(),
             job_id: rev_row.job_id.clone(),
         };
         if let Some(job_row) = practice_job::Entity::find_by_id((
-            practice.to_owned(),
-            workspace.to_owned(),
+            rev_row.practice.clone(),
+            rev_row.workspace.clone(),
             rev_row.job_id.clone(),
         ))
         .lock_exclusive()
-        .one(&tx)
+        .one(tx)
         .await?
         {
-            let mut job = super::jobs::decode_job_for_reviews(&tx, &scope, job_row).await?;
+            let mut job = super::jobs::decode_job_for_reviews(tx, &scope, job_row).await?;
             if let Some(attempt) = job
                 .attempts
                 .last_mut()
@@ -2321,18 +2465,27 @@ impl Store {
                 attempt.status = AttemptStatus::Cancelled;
             }
             if job.status.running() {
-                let _ = job.runs.end(harness::engine::runs::RunOutcome::Held {
-                    reason: harness::engine::runs::HoldReason::Stopped,
-                });
+                job.runs
+                    .end(harness::engine::runs::RunOutcome::Held {
+                        reason: harness::engine::runs::HoldReason::Stopped,
+                    })
+                    .map_err(|err| error(&err.to_string()))?;
             }
+            job.result = None;
+            job.revision += 1;
             job.status = WorkStatus::Held;
             job.updated_at = clock;
-            super::jobs::write_practice_job_in_tx(&tx, &job).await?;
+            super::jobs::write_practice_job_in_tx(tx, &job).await?;
         }
+        let actions = collect_review_actions_in_tx(
+            tx,
+            &rev_row.practice,
+            &rev_row.workspace,
+            &rev_row.work_id,
+        )
+        .await?;
         let superseded = ReviewLifecycleState::Superseded {
-            reason: ReviewSupersededReason::AccessLost {
-                detail: detail.to_owned(),
-            },
+            reason,
             superseded_at: clock,
         };
         patient_review::ActiveModel {
@@ -2350,8 +2503,10 @@ impl Store {
             initial_source_version: Unchanged(rev_row.initial_source_version),
             initial_sources: Unchanged(rev_row.initial_sources),
             completed_source_version: Set(None),
+            completed_sources: Set(None),
             evidence_read: Unchanged(rev_row.evidence_read),
-            actions: Unchanged(rev_row.actions),
+            actions: Set(serde_json::to_value(&actions)
+                .map_err(conversion_error("Vec<RecordedReviewAction>", "json"))?),
             unfinished_work: Unchanged(rev_row.unfinished_work),
             state: Set(serde_json::to_value(&superseded)
                 .map_err(conversion_error("ReviewLifecycleState", "json"))?),
@@ -2363,9 +2518,9 @@ impl Store {
             completed_at: Set(None),
             updated_at: Set(clock),
         }
-        .update(&tx)
+        .update(tx)
         .await?;
-        tx.commit().await
+        Ok(())
     }
 
     async fn refresh_job_binding_in_tx(
@@ -2954,6 +3109,7 @@ impl Store {
                     initial_source_version: Unchanged(rev_row.initial_source_version),
                     initial_sources: Unchanged(rev_row.initial_sources),
                     completed_source_version: Unchanged(rev_row.completed_source_version),
+                    completed_sources: Unchanged(rev_row.completed_sources),
                     evidence_read: Unchanged(rev_row.evidence_read),
                     actions: Unchanged(rev_row.actions),
                     unfinished_work: Unchanged(rev_row.unfinished_work),
@@ -3126,38 +3282,21 @@ impl Store {
         }
 
         let current_obs = self.sources(&job.scope.workspace).await?;
-        let initial_version = u64::try_from(row.initial_source_version.max(0))
+        let initial_version = u64::try_from(row.initial_source_version)
             .map_err(conversion_error("initial_source_version", "u64"))?;
         let initial_sources = decode_initial_sources(row.initial_sources)?;
-        let refresh = SourceRefresh::between(
+        let staged = decode_staged(row.staged_completion)?;
+        let read_in_work = self.delivered_review_revisions(job, ordered).await?;
+        let source_feedback = review_source_change_feedback(
             initial_version,
             &initial_sources,
             current_obs.version,
             &current_obs.sources,
+            &read_in_work,
+            SourceFenceContext::Recovery {
+                staged: staged.as_ref().filter(|s| s.work_id == job.work),
+            },
         );
-        if refresh.is_empty() {
-            return Ok((accepted, None));
-        }
-
-        let messages = self.review_message_sources_for_job(job).await?;
-        let read_in_work =
-            crate::physician_sources::delivered_exact_revisions(ordered.iter(), &messages)
-                .unwrap_or_default();
-        let by_cid: BTreeMap<&str, &SourceRevision> = current_obs
-            .sources
-            .iter()
-            .map(|s| (s.candidate_id.as_str(), s))
-            .collect();
-        let any_unread = refresh.to_read().into_iter().any(|cid| {
-            by_cid
-                .get(cid.as_str())
-                .is_some_and(|s| !read_in_work.contains(&(cid, s.revision.clone())))
-        });
-        let source_feedback = if any_unread {
-            Some(refresh.result(&current_obs.sources))
-        } else {
-            None
-        };
         Ok((accepted, source_feedback))
     }
 
@@ -3185,6 +3324,10 @@ impl Store {
         else {
             return Err(error("patient review row missing"));
         };
+        if rev_row.status == "superseded" {
+            tx.commit().await?;
+            return Err(error("patient review was superseded before commit"));
+        }
         let staged = decode_staged(rev_row.staged_completion.clone())?;
         let Some(staged) = staged.filter(|s| s.work_id == job.work) else {
             tx.commit().await?;
@@ -3195,36 +3338,18 @@ impl Store {
         };
 
         let current_obs = super::sources::observed(&tx, &claim.scope.workspace).await?;
-        let current_map = record_versions_map(&current_obs.sources);
-        if current_obs.version != staged.staged_source_version
-            || current_map != staged.staged_record_versions
-        {
-            let initial_version = u64::try_from(rev_row.initial_source_version.max(0))
-                .map_err(conversion_error("initial_source_version", "u64"))?;
-            let initial_sources = decode_initial_sources(rev_row.initial_sources.clone())?;
-            let refresh = SourceRefresh::between(
-                initial_version,
-                &initial_sources,
-                current_obs.version,
-                &current_obs.sources,
-            );
-            let read_in_work = self.delivered_review_revisions(job, ordered).await?;
-            let by_cid: BTreeMap<&str, &SourceRevision> = current_obs
-                .sources
-                .iter()
-                .map(|s| (s.candidate_id.as_str(), s))
-                .collect();
-            let unread: Vec<String> = current_map
-                .keys()
-                .filter(|cid| {
-                    staged.staged_record_versions.get(*cid) != current_map.get(*cid)
-                        && by_cid.get(cid.as_str()).is_some_and(|s| {
-                            !read_in_work.contains(&((*cid).clone(), s.revision.clone()))
-                        })
-                })
-                .cloned()
-                .collect();
-
+        let initial_version = u64::try_from(rev_row.initial_source_version)
+            .map_err(conversion_error("initial_source_version", "u64"))?;
+        let initial_sources = decode_initial_sources(rev_row.initial_sources.clone())?;
+        let read_in_work = self.delivered_review_revisions(job, ordered).await?;
+        if let Some(changed_payload) = review_source_change_feedback(
+            initial_version,
+            &initial_sources,
+            current_obs.version,
+            &current_obs.sources,
+            &read_in_work,
+            SourceFenceContext::Commit { staged: &staged },
+        ) {
             let clock = now(&tx).await?;
             patient_review::ActiveModel {
                 practice: Unchanged(rev_row.practice),
@@ -3241,6 +3366,7 @@ impl Store {
                 initial_source_version: Unchanged(rev_row.initial_source_version),
                 initial_sources: Unchanged(rev_row.initial_sources),
                 completed_source_version: Unchanged(rev_row.completed_source_version),
+                completed_sources: Unchanged(rev_row.completed_sources),
                 evidence_read: Unchanged(rev_row.evidence_read),
                 actions: Unchanged(rev_row.actions),
                 unfinished_work: Unchanged(rev_row.unfinished_work),
@@ -3257,15 +3383,7 @@ impl Store {
             .await?;
             tx.commit().await?;
 
-            return Ok(ReviewCommitCheck::Continue(json!({
-                "outcome": crate::physician_sources::SOURCES_CHANGED,
-                "message": "Patient records changed while finalizing this review, so the outdated result was not published. Read the updated references with `read_patient_sources`, update any affected concern or summary, and call `complete_patient_review` again.",
-                "added": refresh.added.iter().map(|s| &s.candidate_id).collect::<Vec<_>>(),
-                "corrected": refresh.corrected.iter().map(|c| &c.current.candidate_id).collect::<Vec<_>>(),
-                "withdrawn": refresh.withdrawn.iter().map(|s| &s.candidate_id).collect::<Vec<_>>(),
-                "unread_references": unread,
-                "workspace_version": current_obs.version,
-            })));
+            return Ok(ReviewCommitCheck::Continue(changed_payload));
         }
 
         tx.commit().await?;
@@ -3298,6 +3416,9 @@ impl Store {
         else {
             return Err(error("patient review row missing at commit"));
         };
+        if rev_row.status == "superseded" {
+            return Err(error("patient review was superseded before commit"));
+        }
         let staged = decode_staged(rev_row.staged_completion.clone())?
             .filter(|s| s.work_id == job.work)
             .ok_or_else(|| error("patient review commit missing staged completion"))?;
@@ -3346,6 +3467,10 @@ impl Store {
             completed_source_version: Set(Some(
                 i64::try_from(current_obs.version)
                     .map_err(conversion_error("completed_source_version", "i64"))?,
+            )),
+            completed_sources: Set(Some(
+                serde_json::to_value(&current_obs.sources)
+                    .map_err(conversion_error("Vec<SourceRevision>", "json"))?,
             )),
             evidence_read: Set(serde_json::to_value(&evidence_read)
                 .map_err(conversion_error("Vec<ExactRecordReference>", "json"))?),
@@ -3550,7 +3675,7 @@ async fn update_review_lifecycle_in_tx(
     started_at: Option<i64>,
     clock: i64,
 ) -> Result<(), DbErr> {
-    if rev_row.status == "completed" {
+    if matches!(rev_row.status.as_str(), "completed" | "superseded") {
         return Ok(());
     }
     let actions =
@@ -3570,6 +3695,7 @@ async fn update_review_lifecycle_in_tx(
         initial_source_version: Unchanged(rev_row.initial_source_version),
         initial_sources: Unchanged(rev_row.initial_sources),
         completed_source_version: Unchanged(rev_row.completed_source_version),
+        completed_sources: Unchanged(rev_row.completed_sources),
         evidence_read: Unchanged(rev_row.evidence_read),
         actions: Set(serde_json::to_value(&actions)
             .map_err(conversion_error("Vec<RecordedReviewAction>", "json"))?),
