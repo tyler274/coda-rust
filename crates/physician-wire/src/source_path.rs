@@ -153,14 +153,10 @@ impl SourcePath {
         self.0.starts_with(&prefix.0)
     }
 
-    /// Steps of `self` below `prefix`, or empty when `self` is not a strict descendant of `prefix`.
+    /// Steps of `self` below `prefix`, or empty when `self` is `prefix` or outside `prefix`.
     #[must_use]
     pub fn below<'a>(&'a self, prefix: &Self) -> &'a [Step] {
-        if self.is_under(prefix) {
-            &self.0[prefix.0.len()..]
-        } else {
-            &[]
-        }
+        self.0.strip_prefix(prefix.0.as_slice()).unwrap_or_default()
     }
 
     /// Resolves this path against a JSON document, returning `None` when any step is absent.
@@ -180,30 +176,36 @@ impl SourcePath {
     /// Every value in `record` paired with its exact path, in pre-order traversal.
     #[must_use]
     pub fn nodes(record: &Value) -> Vec<(Self, &Value)> {
-        fn visit<'a>(path: SourcePath, value: &'a Value, out: &mut Vec<(SourcePath, &'a Value)>) {
-            out.push((path.clone(), value));
-            match value {
-                Value::Object(map) => {
-                    for (key, child) in map {
-                        visit(path.member(key), child, out);
-                    }
-                }
-                Value::Array(items) => {
-                    for (index, child) in items.iter().enumerate() {
-                        visit(path.index(index), child, out);
-                    }
-                }
-                Value::Null | Value::Bool(_) | Value::Number(_) | Value::String(_) => {}
-            }
-        }
-        let mut out = Vec::new();
-        visit(Self::root(), record, &mut out);
-        out
+        nodes(record)
     }
 }
 
+/// Every value in `record` paired with its exact path, in pre-order traversal.
+#[must_use]
+pub fn nodes(record: &Value) -> Vec<(SourcePath, &Value)> {
+    fn visit<'a>(path: SourcePath, value: &'a Value, out: &mut Vec<(SourcePath, &'a Value)>) {
+        out.push((path.clone(), value));
+        match value {
+            Value::Object(map) => {
+                for (key, child) in map {
+                    visit(path.member(key), child, out);
+                }
+            }
+            Value::Array(items) => {
+                for (index, child) in items.iter().enumerate() {
+                    visit(path.index(index), child, out);
+                }
+            }
+            Value::Null | Value::Bool(_) | Value::Number(_) | Value::String(_) => {}
+        }
+    }
+    let mut out = Vec::new();
+    visit(SourcePath::root(), record, &mut out);
+    out
+}
+
 fn is_bare_key_char(ch: char) -> bool {
-    ch.is_ascii_alphanumeric() || ch == '_' || ch == '-'
+    !matches!(ch, '.' | '[' | ']' | '"' | '\\')
 }
 
 fn is_bare_key(key: &str) -> bool {
@@ -221,19 +223,7 @@ impl fmt::Display for SourcePath {
                     f.write_str(key)?;
                 }
                 Step::Member(key) => {
-                    f.write_str("[\"")?;
-                    for ch in key.chars() {
-                        match ch {
-                            '"' => f.write_str("\\\"")?,
-                            '\\' => f.write_str("\\\\")?,
-                            '\n' => f.write_str("\\n")?,
-                            '\r' => f.write_str("\\r")?,
-                            '\t' => f.write_str("\\t")?,
-                            c if c.is_control() => write!(f, "\\u{:04x}", c as u32)?,
-                            c => write!(f, "{c}")?,
-                        }
-                    }
-                    f.write_str("\"]")?;
+                    write!(f, "[{}]", Value::from(key.as_str()))?;
                 }
                 Step::Index(index) => {
                     write!(f, "[{index}]")?;
@@ -284,7 +274,9 @@ impl FromStr for SourcePath {
                 steps.push(step);
                 cursor = next;
             } else {
-                let found = remaining.chars().next().unwrap_or('\0');
+                let Some(found) = remaining.chars().next() else {
+                    break;
+                };
                 return Err(SourcePathError::UnexpectedChar {
                     offset: cursor,
                     found,
@@ -330,12 +322,8 @@ fn parse_bracket_step(
         });
     };
     if first == '"' {
-        let mut cursor = content_start + 1;
         let mut escaped = false;
-        let bytes = input.as_bytes();
-        while cursor < bytes.len() {
-            let ch = input[cursor..].chars().next().unwrap_or('\0');
-            cursor += ch.len_utf8();
+        for (rel_offset, ch) in input[content_start + 1..].char_indices() {
             if escaped {
                 escaped = false;
                 continue;
@@ -345,25 +333,25 @@ fn parse_bracket_step(
                 continue;
             }
             if ch == '"' {
-                if input[cursor..].starts_with(']') {
-                    let quoted = &input[content_start..cursor];
+                let after_quote = content_start + 1 + rel_offset + ch.len_utf8();
+                let Some(next_ch) = input[after_quote..].chars().next() else {
+                    return Err(SourcePathError::UnclosedBracket {
+                        offset: bracket_offset,
+                    });
+                };
+                if next_ch == ']' {
+                    let quoted = &input[content_start..after_quote];
                     let decoded = serde_json::from_str::<String>(quoted).map_err(|source| {
                         SourcePathError::InvalidQuotedMember {
                             offset: content_start,
                             source,
                         }
                     })?;
-                    return Ok((Step::Member(decoded), cursor + 1));
-                }
-                let found = input[cursor..].chars().next().unwrap_or('\0');
-                if found == '\0' {
-                    return Err(SourcePathError::UnclosedBracket {
-                        offset: bracket_offset,
-                    });
+                    return Ok((Step::Member(decoded), after_quote + 1));
                 }
                 return Err(SourcePathError::UnexpectedChar {
-                    offset: cursor,
-                    found,
+                    offset: after_quote,
+                    found: next_ch,
                 });
             }
         }
@@ -420,7 +408,7 @@ impl<'de> Deserialize<'de> for SourcePath {
 mod tests {
     use serde_json::json;
 
-    use super::{SourcePath, Step};
+    use super::{SourcePath, SourcePathError, Step, nodes};
 
     #[test]
     fn canonical_paths_roundtrip_and_resolve_values() {
@@ -431,8 +419,10 @@ mod tests {
                 { "code": { "coding": [{ "display": "Systolic" }] }, "valueQuantity": { "value": 128 } },
                 { "code": { "coding": [{ "display": "Diastolic" }] }, "valueQuantity": { "value": 82 } }
             ],
+            "a/b": { "c~d": "slash-tilde" },
+            "space key": { "0": "member-zero" },
             "extension.map": { "quote\"key": ["present"] },
-            "": "empty-member"
+            "": { "q\"]": "escaped-bracket" }
         });
 
         let cases = [
@@ -454,6 +444,16 @@ mod tests {
                 Some(&json!("Diastolic")),
             ),
             (
+                SourcePath::root().member("a/b").member("c~d"),
+                "a/b.c~d",
+                Some(&json!("slash-tilde")),
+            ),
+            (
+                SourcePath::root().member("space key").member("0"),
+                "space key.0",
+                Some(&json!("member-zero")),
+            ),
+            (
                 SourcePath::root()
                     .member("extension.map")
                     .member("quote\"key")
@@ -462,9 +462,9 @@ mod tests {
                 Some(&json!("present")),
             ),
             (
-                SourcePath::root().member(""),
-                r#"[""]"#,
-                Some(&json!("empty-member")),
+                SourcePath::root().member("").member("q\"]"),
+                r#"[""]["q\"]"]"#,
+                Some(&json!("escaped-bracket")),
             ),
         ];
 
@@ -479,12 +479,25 @@ mod tests {
             assert_eq!(path.resolve(&record), expected);
         }
 
+        assert_ne!(
+            "space key[0]".parse::<SourcePath>().unwrap(),
+            "space key.0".parse::<SourcePath>().unwrap()
+        );
+
+        let all_nodes = nodes(&record);
+        assert_eq!(all_nodes, SourcePath::nodes(&record));
+        assert!(all_nodes.iter().any(|(path, value)| {
+            path == &SourcePath::root().member("a/b").member("c~d")
+                && *value == &json!("slash-tilde")
+        }));
+
         let missing = SourcePath::root().member("component").index(5);
         assert_eq!(missing.resolve(&record), None);
 
         let prefix = SourcePath::root().member("component").index(1);
         let child = prefix.member("valueQuantity").member("value");
         assert!(child.is_under(&prefix));
+        assert_eq!(prefix.below(&prefix), &[]);
         assert_eq!(
             child.below(&prefix),
             &[
@@ -506,13 +519,20 @@ mod tests {
             "negative[-1]",
             "unquoted[key]",
             r#"unclosed["key]"#,
+            r#"unclosed_quote["key""#,
             r#"trailing["key"]extra"#,
-            "space key",
+            r#"bare"quote"#,
+            r"bare\slash",
+            "bare]close",
         ] {
             assert!(
                 invalid.parse::<SourcePath>().is_err(),
                 "expected `{invalid}` to fail SourcePath::from_str"
             );
         }
+        assert!(matches!(
+            "[\"key\"\0".parse::<SourcePath>(),
+            Err(SourcePathError::UnexpectedChar { found: '\0', .. })
+        ));
     }
 }

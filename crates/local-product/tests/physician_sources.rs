@@ -51,23 +51,20 @@ fn exact_reader_rejects_corruption_and_cross_workspace_and_never_truncates_conte
     let evidence =
         local_product::citations::WindowEvidence::from_records(events.iter(), &[], "one").unwrap();
     let mut staged = local_product::citations::StagedPublications::default();
-    staged.apply(
-        local_product::citations::PublishCitationsCall {
-            replace: false,
-            previews: vec![local_product::citations::PreviewSubmission {
-                reference: "original-id".into(),
-                revision: "revision-7".into(),
-                preview: "Records potassium 4.1 mmol/L.".into(),
-            }],
-            citations: vec![local_product::citations::CitationSubmission {
-                id: citation_id.clone(),
-                reference: "original-id".into(),
-                revision: "revision-7".into(),
-                locator: None,
-            }],
-        },
-        true,
-    );
+    staged.apply(local_product::citations::PublishCitationsCall {
+        replace: false,
+        previews: vec![local_product::citations::PreviewSubmission {
+            reference: "original-id".into(),
+            revision: "revision-7".into(),
+            preview: "Records potassium 4.1 mmol/L.".into(),
+        }],
+        citations: vec![local_product::citations::CitationSubmission {
+            id: citation_id.clone(),
+            reference: "original-id".into(),
+            revision: "revision-7".into(),
+            locator: None,
+        }],
+    });
     let citations = local_product::citations::publish_job_citations(
         &format!("Claim [[patient_source:{citation_id}]]"),
         local_product::citations::JobCitationMode::InlineMarkers,
@@ -382,6 +379,8 @@ fn only_evidence_delivered_in_the_current_window_publishes_and_answer_text_is_ne
     let fresh_evidence = WindowEvidence::from_records(earlier.iter(), &[], "one").unwrap();
     let fresh_staged = StagedPublications::from_records(earlier.iter());
     assert!(fresh_evidence.whole.is_empty());
+    assert!(fresh_staged.previews.is_empty());
+    assert!(fresh_staged.citations.is_empty());
     assert_eq!(
         publish_job_citations(
             &answer,
@@ -407,6 +406,188 @@ fn only_evidence_delivered_in_the_current_window_publishes_and_answer_text_is_ne
     assert_eq!(partial.text, "Potassium is 4.1 .");
     assert!(partial.citations.is_empty());
 
+    // Moving on to a new record in the fresh window (with default `replace: false`) publishes
+    // cleanly in both InlineMarkers and DeclaredSet modes without stale Window 0 leakage or refusal.
+    let note_content = "Follow-up visit note.";
+    let note = SourceRevision {
+        workspace: "one".into(),
+        source_id: "ehr".into(),
+        candidate_id: "note-2".into(),
+        revision: "r2".into(),
+        record_type: "DocumentReference".into(),
+        dates: vec![],
+        content: note_content.into(),
+        sha256: local_product::sha256_hex(note_content.as_bytes()),
+        readable_parts: vec![],
+        provenance: json!({"native_record":"note-2"}),
+        native: None,
+    };
+    let note_whole = exact_read(std::slice::from_ref(&note), "one", &["note-2".into()], 4096)
+        .unwrap()
+        .text()
+        .unwrap()
+        .to_owned();
+    let mut moved_on = earlier.clone();
+    moved_on.extend([
+        event(
+            6,
+            2,
+            harness::engine::EventKind::ToolReturned {
+                call_id: "read-note".into(),
+                result: harness::engine::results::ToolResult::Original(note_whole.clone()),
+            },
+        ),
+        event(
+            7,
+            3,
+            harness::engine::EventKind::ProviderStarted {
+                dispatched_at_unix_ms: 2,
+                request: harness::engine::SavedRequest {
+                    added: vec![harness::engine::Item::Result {
+                        call_id: "read-note".into(),
+                        output: harness::engine::results::ResultView::whole(
+                            "read-note",
+                            &note_whole,
+                        ),
+                    }],
+                    items: vec![harness::engine::RequestItem::Event {
+                        attempt: "attempt".into(),
+                        sequence: 7,
+                        index: 0,
+                    }],
+                },
+                context: Default::default(),
+            },
+        ),
+        event(
+            8,
+            3,
+            harness::engine::EventKind::ProviderReturned(harness::engine::Turn {
+                items: vec![],
+                receipt: serde_json::Value::Null,
+                usage: Default::default(),
+            }),
+        ),
+    ]);
+    let moved_evidence = WindowEvidence::from_records(moved_on.iter(), &[], "one").unwrap();
+    let note_pub = execute_publish_citations(
+        &json!({
+            "previews": [{"reference": "note-2", "revision": "r2", "preview": "Follow-up visit note recorded."}],
+            "citations": [{"id": "n2", "reference": "note-2", "revision": "r2", "locator": null}]
+        }),
+        &moved_evidence,
+        &[source.clone(), note.clone()],
+    )
+    .text()
+    .unwrap()
+    .to_owned();
+    moved_on.push(event(
+        9,
+        3,
+        harness::engine::EventKind::ToolReturned {
+            call_id: "pub-2".into(),
+            result: harness::engine::results::ToolResult::Original(note_pub),
+        },
+    ));
+    let moved_staged = StagedPublications::from_records(moved_on.iter());
+    let inline_moved = publish_job_citations(
+        "Follow-up [[patient_source:n2]].",
+        JobCitationMode::InlineMarkers,
+        &moved_evidence,
+        &moved_staged,
+        &[source.clone(), note.clone()],
+    )
+    .unwrap();
+    assert_eq!(inline_moved.citations.len(), 1);
+    assert_eq!(inline_moved.citations[0].reference, "note-2");
+    assert_eq!(inline_moved.source_previews.len(), 1);
+
+    let declared_moved = publish_job_citations(
+        "Revised reply grounded in the follow-up note.",
+        JobCitationMode::DeclaredSet,
+        &moved_evidence,
+        &moved_staged,
+        &[source.clone(), note],
+    )
+    .unwrap();
+    assert_eq!(declared_moved.citations.len(), 1);
+    assert_eq!(declared_moved.citations[0].reference, "note-2");
+    assert_eq!(declared_moved.source_previews.len(), 1);
+
+    // Re-reading Window 0's record in Window 1 without calling `publish_citations` in Window 1
+    // does not silently reuse Window 0's preview or citation submission.
+    let mut reread_without_republish = earlier;
+    reread_without_republish.extend([
+        event(
+            6,
+            2,
+            harness::engine::EventKind::ToolReturned {
+                call_id: "reread-lab".into(),
+                result: harness::engine::results::ToolResult::Original(whole.clone()),
+            },
+        ),
+        event(
+            7,
+            3,
+            harness::engine::EventKind::ProviderStarted {
+                dispatched_at_unix_ms: 2,
+                request: harness::engine::SavedRequest {
+                    added: vec![harness::engine::Item::Result {
+                        call_id: "reread-lab".into(),
+                        output: harness::engine::results::ResultView::whole("reread-lab", &whole),
+                    }],
+                    items: vec![harness::engine::RequestItem::Event {
+                        attempt: "attempt".into(),
+                        sequence: 7,
+                        index: 0,
+                    }],
+                },
+                context: Default::default(),
+            },
+        ),
+        event(
+            8,
+            3,
+            harness::engine::EventKind::ProviderReturned(harness::engine::Turn {
+                items: vec![],
+                receipt: serde_json::Value::Null,
+                usage: Default::default(),
+            }),
+        ),
+    ]);
+    let reread_evidence =
+        WindowEvidence::from_records(reread_without_republish.iter(), &[], "one").unwrap();
+    let reread_staged = StagedPublications::from_records(reread_without_republish.iter());
+    assert_eq!(
+        publish_job_citations(
+            &answer,
+            JobCitationMode::InlineMarkers,
+            &reread_evidence,
+            &reread_staged,
+            std::slice::from_ref(&source),
+        )
+        .err(),
+        Some(PublicationError::CitationMissingPreview {
+            id: id.clone(),
+            reference: "lab".into(),
+            revision: "r1".into(),
+        })
+    );
+    assert_eq!(
+        publish_job_citations(
+            "Plain prose after re-read without new preview.",
+            JobCitationMode::DeclaredSet,
+            &reread_evidence,
+            &reread_staged,
+            std::slice::from_ref(&source),
+        )
+        .err(),
+        Some(PublicationError::MissingPreview {
+            reference: "lab".into(),
+            revision: "r1".into(),
+        })
+    );
+
     // A partial passage read grants passage authority only for the delivered byte span,
     // never whole-record authority or unread spans.
     let mut large = source;
@@ -429,23 +610,20 @@ fn only_evidence_delivered_in_the_current_window_publishes_and_answer_text_is_ne
     assert!(passage_evidence.has_record("lab", "r1"));
 
     let mut staged_whole_on_passage = StagedPublications::default();
-    staged_whole_on_passage.apply(
-        local_product::citations::PublishCitationsCall {
-            previews: vec![local_product::citations::PreviewSubmission {
-                reference: "lab".into(),
-                revision: "r1".into(),
-                preview: "Large lab report partial read.".into(),
-            }],
-            citations: vec![local_product::citations::CitationSubmission {
-                id: "whole".into(),
-                reference: "lab".into(),
-                revision: "r1".into(),
-                locator: None,
-            }],
-            replace: false,
-        },
-        true,
-    );
+    staged_whole_on_passage.apply(local_product::citations::PublishCitationsCall {
+        previews: vec![local_product::citations::PreviewSubmission {
+            reference: "lab".into(),
+            revision: "r1".into(),
+            preview: "Large lab report partial read.".into(),
+        }],
+        citations: vec![local_product::citations::CitationSubmission {
+            id: "whole".into(),
+            reference: "lab".into(),
+            revision: "r1".into(),
+            locator: None,
+        }],
+        replace: false,
+    });
     assert_eq!(
         publish_job_citations(
             "Claim [[patient_source:whole]].",
@@ -463,27 +641,24 @@ fn only_evidence_delivered_in_the_current_window_publishes_and_answer_text_is_ne
     );
 
     let mut staged_delivered_passage = StagedPublications::default();
-    staged_delivered_passage.apply(
-        local_product::citations::PublishCitationsCall {
-            previews: vec![local_product::citations::PreviewSubmission {
-                reference: "lab".into(),
-                revision: "r1".into(),
-                preview: "Large lab report partial read.".into(),
-            }],
-            citations: vec![local_product::citations::CitationSubmission {
-                id: "lead".into(),
-                reference: "lab".into(),
-                revision: "r1".into(),
-                locator: Some(local_product::citations::RequestedLocator::Passage {
-                    part: 0,
-                    quote: "Delivered lead sentence.".into(),
-                    start_byte: None,
-                }),
-            }],
-            replace: false,
-        },
-        true,
-    );
+    staged_delivered_passage.apply(local_product::citations::PublishCitationsCall {
+        previews: vec![local_product::citations::PreviewSubmission {
+            reference: "lab".into(),
+            revision: "r1".into(),
+            preview: "Large lab report partial read.".into(),
+        }],
+        citations: vec![local_product::citations::CitationSubmission {
+            id: "lead".into(),
+            reference: "lab".into(),
+            revision: "r1".into(),
+            locator: Some(local_product::citations::RequestedLocator::Passage {
+                part: 0,
+                quote: "Delivered lead sentence.".into(),
+                start_byte: None,
+            }),
+        }],
+        replace: false,
+    });
     let published_passage = publish_job_citations(
         "Lead [[patient_source:lead]].",
         JobCitationMode::InlineMarkers,

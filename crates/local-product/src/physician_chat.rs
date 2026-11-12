@@ -369,23 +369,21 @@ mod tests {
 
         // Citation staged in an earlier window (record absent from current window) refuses with why.
         let mut staged_citation = crate::citations::StagedPublications::default();
-        staged_citation.apply(
-            crate::citations::PublishCitationsCall {
-                previews: vec![crate::citations::PreviewSubmission {
-                    reference: "lab-k".into(),
-                    revision: "r1".into(),
-                    preview: "Potassium 4.1 mmol/L on 2026-03-14.".into(),
-                }],
-                citations: vec![crate::citations::CitationSubmission {
-                    id: "c1".into(),
-                    reference: "lab-k".into(),
-                    revision: "r1".into(),
-                    locator: None,
-                }],
-                replace: false,
-            },
-            false,
-        );
+        staged_citation.apply(crate::citations::PublishCitationsCall {
+            previews: vec![crate::citations::PreviewSubmission {
+                reference: "lab-k".into(),
+                revision: "r1".into(),
+                preview: "Potassium 4.1 mmol/L on 2026-03-14.".into(),
+            }],
+            citations: vec![crate::citations::CitationSubmission {
+                id: "c1".into(),
+                reference: "lab-k".into(),
+                revision: "r1".into(),
+                locator: None,
+            }],
+            replace: false,
+        });
+        staged_citation.open_fresh_window();
         let err = publish_job_citations(
             "Potassium 4.1 [[patient_source:c1]].",
             JobCitationMode::InlineMarkers,
@@ -406,18 +404,15 @@ mod tests {
 
         // Preview staged for evidence not in the current window refuses with why.
         let mut staged_preview = crate::citations::StagedPublications::default();
-        staged_preview.apply(
-            crate::citations::PublishCitationsCall {
-                previews: vec![crate::citations::PreviewSubmission {
-                    reference: "lab-k".into(),
-                    revision: "r1".into(),
-                    preview: "Potassium 4.1 mmol/L on 2026-03-14.".into(),
-                }],
-                citations: vec![],
-                replace: false,
-            },
-            false,
-        );
+        staged_preview.apply(crate::citations::PublishCitationsCall {
+            previews: vec![crate::citations::PreviewSubmission {
+                reference: "lab-k".into(),
+                revision: "r1".into(),
+                preview: "Potassium 4.1 mmol/L on 2026-03-14.".into(),
+            }],
+            citations: vec![],
+            replace: false,
+        });
         let err = publish_job_citations(
             "General answer.",
             JobCitationMode::InlineMarkers,
@@ -460,27 +455,24 @@ mod tests {
                 ),
             );
         let mut staged_passage = crate::citations::StagedPublications::default();
-        staged_passage.apply(
-            crate::citations::PublishCitationsCall {
-                previews: vec![crate::citations::PreviewSubmission {
-                    reference: "note-1".into(),
-                    revision: "r1".into(),
-                    preview: "Clinic note dated 2026-03-14.".into(),
-                }],
-                citations: vec![crate::citations::CitationSubmission {
-                    id: "p-unread".into(),
-                    reference: "note-1".into(),
-                    revision: "r1".into(),
-                    locator: Some(crate::citations::RequestedLocator::Passage {
-                        part: 0,
-                        quote: "Second paragraph never paged.".into(),
-                        start_byte: None,
-                    }),
-                }],
-                replace: false,
-            },
-            true,
-        );
+        staged_passage.apply(crate::citations::PublishCitationsCall {
+            previews: vec![crate::citations::PreviewSubmission {
+                reference: "note-1".into(),
+                revision: "r1".into(),
+                preview: "Clinic note dated 2026-03-14.".into(),
+            }],
+            citations: vec![crate::citations::CitationSubmission {
+                id: "p-unread".into(),
+                reference: "note-1".into(),
+                revision: "r1".into(),
+                locator: Some(crate::citations::RequestedLocator::Passage {
+                    part: 0,
+                    quote: "Second paragraph never paged.".into(),
+                    start_byte: None,
+                }),
+            }],
+            replace: false,
+        });
         let err = publish_job_citations(
             "Claim [[patient_source:p-unread]].",
             JobCitationMode::InlineMarkers,
@@ -531,18 +523,15 @@ mod tests {
 
         // Previewing allergy but omitting the read `note` preview refuses with MissingPreview.
         let mut partial_previews = crate::citations::StagedPublications::default();
-        partial_previews.apply(
-            crate::citations::PublishCitationsCall {
-                previews: vec![crate::citations::PreviewSubmission {
-                    reference: "allergy".into(),
-                    revision: "r1".into(),
-                    preview: "Records NKDA on 2026-03-14.".into(),
-                }],
-                citations: vec![],
-                replace: false,
-            },
-            true,
-        );
+        partial_previews.apply(crate::citations::PublishCitationsCall {
+            previews: vec![crate::citations::PreviewSubmission {
+                reference: "allergy".into(),
+                revision: "r1".into(),
+                preview: "Records NKDA on 2026-03-14.".into(),
+            }],
+            citations: vec![],
+            replace: false,
+        });
         let err = publish_job_citations(
             &format!("No allergies [[patient_source:{allergy_id}]]."),
             JobCitationMode::InlineMarkers,
@@ -571,18 +560,15 @@ mod tests {
         assert!(matches!(refused_tool, ToolOutcome::Refused { .. }));
 
         // Previewing both read records succeeds, and the failed read alone carries Unavailable.
-        partial_previews.apply(
-            crate::citations::PublishCitationsCall {
-                previews: vec![crate::citations::PreviewSubmission {
-                    reference: "note".into(),
-                    revision: "r1".into(),
-                    preview: "Visit note on 2026-03-14 reports patient feels well.".into(),
-                }],
-                citations: vec![],
-                replace: false,
-            },
-            true,
-        );
+        partial_previews.apply(crate::citations::PublishCitationsCall {
+            previews: vec![crate::citations::PreviewSubmission {
+                reference: "note".into(),
+                revision: "r1".into(),
+                preview: "Visit note on 2026-03-14 reports patient feels well.".into(),
+            }],
+            citations: vec![],
+            replace: false,
+        });
         let published = publish_job_citations(
             &format!("No allergies [[patient_source:{allergy_id}]]."),
             JobCitationMode::InlineMarkers,
@@ -663,7 +649,7 @@ mod tests {
         let receipt: crate::citations::RecordedCitationsReceipt =
             serde_json::from_str(&receipt_json).unwrap();
         let mut staged = crate::citations::StagedPublications::default();
-        staged.apply(receipt.call, true);
+        staged.apply(receipt.call);
 
         let answer = "Potassium is 4.1 [[patient_source:val]], without hemolysis [[patient_source:p1]] on a fasting sample [[patient_source:p2]].\n\n[[basis]]\nRests on one potassium observation.\n[[/basis]]";
         let published = publish_job_citations(

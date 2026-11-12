@@ -393,49 +393,78 @@ fn insert_merged_span(spans: &mut Vec<DeliveredSpan>, incoming: DeliveredSpan) {
     *spans = merged;
 }
 
-/// Active model submissions folded across [`PUBLISH_CITATIONS_TOOL`] calls in a run.
+/// Active model submissions in the current working window, plus handles retired by an earlier window.
 #[derive(Clone, Debug, Default)]
 pub struct StagedPublications {
-    /// Latest preview per `(reference, revision)`, paired with whether it was submitted in the current window.
-    pub previews: BTreeMap<(String, String), (PreviewSubmission, bool)>,
-    /// Declared citations in submission order, paired with whether each was submitted in the current window.
-    pub citations: Vec<(CitationSubmission, bool)>,
+    /// Latest preview per `(reference, revision)` submitted in the current window.
+    pub previews: BTreeMap<(String, String), PreviewSubmission>,
+    /// Declared citations submitted in the current window, in submission order.
+    pub citations: Vec<CitationSubmission>,
+    /// Citations submitted only before the latest `WindowOpened`, keyed by model handle
+    /// (and canonical receipt `citation_id` when known), retained solely so an inline marker
+    /// in the new window that still names an earlier-window citation receives a window-specific refusal.
+    pub prior_window_citations: BTreeMap<String, CitationSubmission>,
 }
 
 impl StagedPublications {
-    /// Extracts folded [`PUBLISH_CITATIONS_TOOL`] submissions from the run's replay events.
+    /// Extracts [`PUBLISH_CITATIONS_TOOL`] submissions scoped to the run's latest working window.
     pub fn from_records<'a>(records: impl IntoIterator<Item = impl Into<ReplayEvent<'a>>>) -> Self {
-        let admitted: Vec<_> = harness::engine::recipe::replay_events(records)
-            .filter_map(ReplayEvent::admitted)
-            .collect();
-        let latest_window_start = admitted
-            .iter()
-            .rposition(|event| matches!(event.kind, EventKind::WindowOpened { .. }))
-            .map_or(0, |index| index + 1);
-
         let mut staged = Self::default();
-        for (index, event) in admitted.iter().enumerate() {
-            let EventKind::ToolReturned {
-                result: results::ToolResult::Original(output),
-                ..
-            } = &event.kind
-            else {
-                continue;
-            };
-            let Ok(receipt) = serde_json::from_str::<RecordedCitationsReceipt>(output) else {
-                continue;
-            };
-            if receipt.kind != RECEIPT_KIND {
-                continue;
+        let mut handle_canonicals: BTreeMap<String, String> = BTreeMap::new();
+        for event in
+            harness::engine::recipe::replay_events(records).filter_map(ReplayEvent::admitted)
+        {
+            match &event.kind {
+                EventKind::WindowOpened { .. } => {
+                    for citation in &staged.citations {
+                        if let Some(canonical) = handle_canonicals.get(&citation.id) {
+                            staged
+                                .prior_window_citations
+                                .insert(canonical.clone(), citation.clone());
+                        }
+                    }
+                    handle_canonicals.clear();
+                    staged.open_fresh_window();
+                }
+                EventKind::ToolReturned {
+                    result: results::ToolResult::Original(output),
+                    ..
+                } => {
+                    let Ok(receipt) = serde_json::from_str::<RecordedCitationsReceipt>(output)
+                    else {
+                        continue;
+                    };
+                    if receipt.kind != RECEIPT_KIND {
+                        continue;
+                    }
+                    if receipt.call.replace {
+                        handle_canonicals.clear();
+                    }
+                    for item in &receipt.citations {
+                        if let Some(canonical) = &item.citation_id {
+                            staged.prior_window_citations.remove(canonical);
+                            handle_canonicals.insert(item.id.clone(), canonical.clone());
+                        }
+                    }
+                    staged.apply(receipt.call);
+                }
+                _ => {}
             }
-            let in_current_window = index >= latest_window_start;
-            staged.apply(receipt.call, in_current_window);
         }
         staged
     }
 
-    /// Applies one [`PublishCitationsCall`] tagged with whether it occurred in the current window.
-    pub fn apply(&mut self, call: PublishCitationsCall, in_current_window: bool) {
+    /// Retires the current window's staged previews and citations when a fresh context window opens.
+    pub fn open_fresh_window(&mut self) {
+        self.previews.clear();
+        for citation in self.citations.drain(..) {
+            self.prior_window_citations
+                .insert(citation.id.clone(), citation);
+        }
+    }
+
+    /// Applies one [`PublishCitationsCall`] submitted in the current window.
+    pub fn apply(&mut self, call: PublishCitationsCall) {
         if call.replace {
             self.previews.clear();
             self.citations.clear();
@@ -443,18 +472,19 @@ impl StagedPublications {
         for preview in call.previews {
             self.previews.insert(
                 (preview.reference.clone(), preview.revision.clone()),
-                (preview, in_current_window),
+                preview,
             );
         }
         for citation in call.citations {
+            self.prior_window_citations.remove(&citation.id);
             if let Some(existing) = self
                 .citations
                 .iter_mut()
-                .find(|(saved, _)| saved.id == citation.id)
+                .find(|saved| saved.id == citation.id)
             {
-                *existing = (citation, in_current_window);
+                *existing = citation;
             } else {
-                self.citations.push((citation, in_current_window));
+                self.citations.push(citation);
             }
         }
     }
@@ -489,7 +519,7 @@ pub fn publication_identities(
 ) -> BTreeSet<(String, String)> {
     let mut identities = evidence.read_identities();
     identities.extend(staged.previews.keys().cloned());
-    for (citation, _) in &staged.citations {
+    for citation in &staged.citations {
         identities.insert((citation.reference.clone(), citation.revision.clone()));
     }
     identities
@@ -966,7 +996,7 @@ pub fn publish_job_citations(
     retained_sources: &[SourceRevision],
 ) -> Result<PublishedJob, PublicationError> {
     let mut parsed_previews: BTreeMap<(String, String), PreviewText> = BTreeMap::new();
-    for ((reference, revision), (submission, _in_current_window)) in &staged.previews {
+    for ((reference, revision), submission) in &staged.previews {
         let parsed = PreviewText::parse(&submission.preview).map_err(|reason| {
             PublicationError::InvalidPreview {
                 reference: reference.clone(),
@@ -979,7 +1009,7 @@ pub fn publish_job_citations(
 
     let mut resolved_declarations: Vec<(String, Citation)> =
         Vec::with_capacity(staged.citations.len());
-    for (submission, _in_current_window) in &staged.citations {
+    for submission in &staged.citations {
         let citation =
             resolve_citation_submission(submission, evidence, retained_sources, &parsed_previews)?;
         resolved_declarations.push((submission.id.clone(), citation));
@@ -994,6 +1024,7 @@ pub fn publish_job_citations(
                 retained_sources,
                 &parsed_previews,
                 &resolved_declarations,
+                &staged.prior_window_citations,
             )?;
             (rewritten, basis, cited)
         }
@@ -1062,7 +1093,7 @@ pub fn publish_partial_chat(
     retained_sources: &[SourceRevision],
 ) -> PublishedJob {
     let mut validated_previews: BTreeMap<(String, String), PreviewText> = BTreeMap::new();
-    for ((reference, revision), (submission, _)) in &staged.previews {
+    for ((reference, revision), submission) in &staged.previews {
         if evidence.has_record(reference, revision)
             && let Ok(parsed) = PreviewText::parse(&submission.preview)
         {
@@ -1071,7 +1102,7 @@ pub fn publish_partial_chat(
     }
 
     let mut resolved_declarations: Vec<(String, Citation)> = Vec::new();
-    for (submission, _) in &staged.citations {
+    for submission in &staged.citations {
         if let Ok(citation) =
             resolve_citation_submission(submission, evidence, retained_sources, &validated_previews)
         {
@@ -1095,6 +1126,7 @@ pub fn publish_partial_chat(
             retained_sources,
             &validated_previews,
             &resolved_declarations,
+            &staged.prior_window_citations,
         ) {
             kept.push_str(CITATION_OPEN);
             kept.push_str(&citation.id);
@@ -1580,6 +1612,7 @@ fn resolve_inline_markers(
     retained_sources: &[SourceRevision],
     validated_previews: &BTreeMap<(String, String), PreviewText>,
     resolved_declarations: &[(String, Citation)],
+    prior_window_citations: &BTreeMap<String, CitationSubmission>,
 ) -> Result<(String, Vec<Citation>), PublicationError> {
     let mut rewritten = String::with_capacity(visible.len());
     let mut cited: Vec<Citation> = Vec::new();
@@ -1595,6 +1628,7 @@ fn resolve_inline_markers(
             retained_sources,
             validated_previews,
             resolved_declarations,
+            prior_window_citations,
         )?;
         rewritten.push_str(CITATION_OPEN);
         rewritten.push_str(&citation.id);
@@ -1614,6 +1648,7 @@ fn lookup_marker_citation(
     retained_sources: &[SourceRevision],
     validated_previews: &BTreeMap<(String, String), PreviewText>,
     resolved_declarations: &[(String, Citation)],
+    prior_window_citations: &BTreeMap<String, CitationSubmission>,
 ) -> Result<Citation, PublicationError> {
     if let Some((_, declared)) = resolved_declarations
         .iter()
@@ -1651,7 +1686,84 @@ fn lookup_marker_citation(
             retained_sources,
         ));
     }
+    if let Some(prior) = prior_window_citations.get(token) {
+        return Err(refuse_prior_window_marker(
+            token,
+            prior,
+            evidence,
+            retained_sources,
+            validated_previews,
+        ));
+    }
     Err(PublicationError::NotRead(token.to_owned()))
+}
+
+fn refuse_prior_window_marker(
+    token: &str,
+    prior: &CitationSubmission,
+    evidence: &WindowEvidence,
+    retained_sources: &[SourceRevision],
+    validated_previews: &BTreeMap<(String, String), PreviewText>,
+) -> PublicationError {
+    let key = (prior.reference.clone(), prior.revision.clone());
+    match &prior.locator {
+        Some(RequestedLocator::Passage {
+            part,
+            quote,
+            start_byte,
+        }) => {
+            let delivered_in_window = if evidence.whole.contains_key(&key) {
+                true
+            } else if let Some(passages) = evidence.passages.get(&key) {
+                let retained = find_source(
+                    &prior.reference,
+                    &prior.revision,
+                    evidence,
+                    retained_sources,
+                );
+                !matches!(
+                    resolve_delivered_passage(
+                        &prior.id,
+                        &prior.reference,
+                        &prior.revision,
+                        passages,
+                        retained,
+                        *part,
+                        quote,
+                        *start_byte,
+                    ),
+                    Err(PublicationError::PassageNotInWindow { .. })
+                )
+            } else {
+                false
+            };
+            if !delivered_in_window {
+                return PublicationError::PassageNotInWindow {
+                    id: prior.id.clone(),
+                    reference: prior.reference.clone(),
+                    revision: prior.revision.clone(),
+                    part: *part,
+                };
+            }
+        }
+        None | Some(RequestedLocator::Field { .. }) => {
+            if !evidence.whole.contains_key(&key) {
+                return PublicationError::CitationNotInWindow {
+                    id: prior.id.clone(),
+                    reference: prior.reference.clone(),
+                    revision: prior.revision.clone(),
+                };
+            }
+        }
+    }
+    if !validated_previews.contains_key(&key) {
+        return PublicationError::CitationMissingPreview {
+            id: prior.id.clone(),
+            reference: prior.reference.clone(),
+            revision: prior.revision.clone(),
+        };
+    }
+    PublicationError::NotRead(token.to_owned())
 }
 
 /// Removes the closed `[[basis]]` block. A basis that is blank or carries a
