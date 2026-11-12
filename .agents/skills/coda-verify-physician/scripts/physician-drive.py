@@ -100,23 +100,11 @@ def snapshot(stack, site, session, chat):
     return request("GET", url, bearer=session)
 
 
-<<<<<<< ours
 def resume_line(body):
-||||||| base
-def mechanical(body):
-=======
-def mechanical(body):
     """The line of a turn that ended and can be resumed. A turn still running
     also shows a mechanical line, with a stop target and nothing to resume."""
->>>>>>> theirs
     for item in (body or {}).get("snapshot", {}).get("conversation", []):
-<<<<<<< ours
         if item.get("kind") == "mechanical" and "resume_target" in item:
-||||||| base
-        if item.get("kind") == "mechanical":
-=======
-        if item.get("kind") == "mechanical" and item.get("resume_target"):
->>>>>>> theirs
             return item
     return None
 

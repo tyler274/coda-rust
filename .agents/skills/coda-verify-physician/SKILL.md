@@ -49,23 +49,11 @@ Run the matching [feature](features/README.md) when a change touches:
    scripts/physician-scale-stack.py --bin-dir target/stream-e/debug
    ```
 
-<<<<<<< ours
    The stack starts a loopback Responses stub. For a retry journey, set the number
    of upcoming provider responses that break the stream contract, each failing its attempt, in the file identified by `.worker.failures_file`
    in `stack.json` before sending the message. Run those journeys one at a time.
-||||||| base
-   One stack serves every feature. `--worker-fail-marker` makes a message containing
-   `[fail:K]` fail its first K attempts, counted from the attempts saved on that message (Retry `[fail:1]`, Try
-   again `[fail:5]`). Unmarked messages answer at once. `--worker-failures N` (the first N
-   provider calls of the process fail, whatever the message) is still available.
-=======
-   One stack serves every feature. `--worker-fail-marker` makes a message containing
-   `[fail:K]` fail its first K attempts, counted from the attempts saved on that message (Retry `[fail:1]`, Try
-   again `[fail:5]`). Unmarked messages answer at once. `--worker-failures N` (the first N
-   provider calls of the process fail, whatever the message) is still available.
    The worker waits 1 s after a first failure and doubles it each time, so five failures
    take about 15 s; `--worker-retry-seconds 10` gives the hosted 10 s start.
->>>>>>> theirs
 
    Readiness is these lines, in order:
 
@@ -102,14 +90,8 @@ curl -fsS -o /dev/null -w "%{http_code} page\n" "$(jq -r .sites.a "$RUN/stack.js
 D=.agents/skills/coda-verify-physician/scripts/physician-drive.py
 $D subscribers                       # 3: site A, site B and the worker on physician:workspace-events:v1
 S=$($D sign-in --site a) && echo "${#S}"   # a bearer session; proof sign-in works
-<<<<<<< ours
-jq '.worker | {fixed_failures, failures_file}' "$RUN/stack.json"   # initial count and stub control file
-||||||| base
-jq '.worker | {fixed_failures, fail_marker}' "$RUN/stack.json"   # 0 and true
-=======
-jq '.worker | {fixed_failures, fail_marker, retry_seconds}' "$RUN/stack.json"   # 0, true and 1
+jq '.worker | {fixed_failures, failures_file, retry_seconds}' "$RUN/stack.json"   # initial count, stub control file and 1
 jq 'has("pubsub")' "$RUN/stack.json"   # false: no Pub/Sub process belongs to this stack
->>>>>>> theirs
 ```
 
 `physician-drive.py` reads the newest `physician-scale-stack-*/stack.json` (or `--stack`)
@@ -148,19 +130,9 @@ and survives cleanup:
 
 | Artifact | Written by | Holds |
 | --- | --- | --- |
-<<<<<<< ours
-| `stack.json` | the stack, at start and on each Valkey restart and exit | pids, ports, URLs, `fixed_failures`, `failures_file`, `valkey_restarts`, `ready_at`, `stopped_at` |
-| `logs/{postgres,valkey,pubsub,worker,site-a,site-b}.log` | the stack, copied on exit | full process output |
-| `<feature>/send-<site>.json`, `snapshot-<site>.json`, `resume-<site>.json`, `watch-<site>-<event>.json`, `dead-letters.json` | `physician-drive.py --out` | the request key, HTTP status and full response body |
-||||||| base
-| `stack.json` | the stack, at start and on each Valkey restart and exit | pids, ports, URLs, `fixed_failures`, `fail_marker`, `valkey_restarts`, `ready_at`, `stopped_at` |
-| `logs/{postgres,valkey,pubsub,worker,site-a,site-b}.log` | the stack, copied on exit | full process output |
-| `<feature>/send-<site>.json`, `snapshot-<site>.json`, `resume-<site>.json`, `watch-<site>-<event>.json`, `dead-letters.json` | `physician-drive.py --out` | the request key, HTTP status and full response body |
-=======
-| `stack.json` | the stack, at start and on each Valkey restart and exit | pids, ports, URLs, `fixed_failures`, `fail_marker`, `retry_seconds`, `valkey_restarts`, `ready_at`, `stopped_at` |
+| `stack.json` | the stack, at start and on each Valkey restart and exit | pids, ports, URLs, `fixed_failures`, `failures_file`, `retry_seconds`, `valkey_restarts`, `ready_at`, `stopped_at` |
 | `logs/{postgres,valkey,worker,site-a,site-b}.log` | the stack, copied on exit | full process output |
 | `<feature>/send-<site>.json`, `snapshot-<site>.json`, `resume-<site>.json`, `watch-<site>-<event>.json`, `announce.json` | `physician-drive.py --out` | the request key, HTTP status and full response body |
->>>>>>> theirs
 | `load-numbers.json` | `--load-numbers` | see below |
 | `<feature>/*.png`, `*.aria.txt` | the browser driver | screenshot and accessibility snapshot |
 
@@ -210,13 +182,7 @@ Do not kill processes that belong to another run.
 ## Helpers
 
 - [`scripts/physician-scale-stack.py`](../../../scripts/physician-scale-stack.py):
-<<<<<<< ours
-  `--worker-failures N`, `--load-numbers`, `--idle-seconds`, `--evidence DIR`,
-||||||| base
-  `--worker-fail-marker`, `--worker-failures N`, `--load-numbers`, `--idle-seconds`, `--evidence DIR`,
-=======
-  `--worker-fail-marker`, `--worker-failures N`, `--worker-retry-seconds S`, `--load-numbers`, `--idle-seconds`, `--evidence DIR`,
->>>>>>> theirs
+  `--worker-failures N`, `--worker-retry-seconds S`, `--load-numbers`, `--idle-seconds`, `--evidence DIR`,
   `--site-dir DIR`, `--check`, `--dependencies-only`, `-- <child command>`.
   `kill -USR1 <pid>` restarts Valkey on the same port.
 - [`scripts/physician-drive.py`](scripts/physician-drive.py) (executable):
