@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Starts the synthetic practice's Postgres, Valkey, Pub/Sub, site and worker.
+# Starts the synthetic practice's Postgres, Valkey, site and worker.
 # The practice database persists; the selected model transport uses the same
 # durable job and chart owners as staging.
 set -euo pipefail

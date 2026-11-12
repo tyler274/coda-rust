@@ -1,6 +1,6 @@
 //! Hosted composer drafts through two authenticated site instances and Postgres.
-//! No worker, reply revision, model call, Valkey or Pub/Sub service is needed:
-//! draft saves never publish work. The unused publisher points only at loopback.
+//! No worker, reply revision, model call or Valkey service is needed:
+//! draft saves never publish work.
 use std::path::PathBuf;
 
 use local_product::runtime::{Scope, Store};

@@ -124,12 +124,11 @@ mod tests {
         }
     }
 
-    /// Pub/Sub mechanics, Gmail transport, and the Spruce reader are shared by
-    /// both products, so they reach no product crate, not even through a test
-    /// dependency.
+    /// Gmail transport and the Spruce reader are shared by both products, so
+    /// they reach no product crate, not even through a test dependency.
     #[test]
-    fn pubsub_gmail_and_spruce_are_product_neutral() {
-        let allowed = ["pubsub", "gmail", "spruce"];
+    fn gmail_and_spruce_are_product_neutral() {
+        let allowed = ["gmail", "spruce"];
         for neutral in allowed {
             for dependency in local_closure(neutral) {
                 assert!(
@@ -150,79 +149,6 @@ mod tests {
                 "clinical-library reached local crate {dependency}"
             );
         }
-    }
-
-    /// The disposable emulator is reachable from tests only: every crate that
-    /// enables `pubsub/test-util` does it under `[dev-dependencies]`.
-    #[test]
-    fn the_pubsub_emulator_is_a_dev_dependency_only() {
-        fn enables_test_util(value: Option<&toml::Value>) -> bool {
-            let Some(table) = value.and_then(toml::Value::as_table) else {
-                return false;
-            };
-            table.iter().any(|(name, spec)| {
-                let package = spec
-                    .get("package")
-                    .and_then(toml::Value::as_str)
-                    .unwrap_or(name);
-                package == "pubsub"
-                    && spec
-                        .get("features")
-                        .and_then(toml::Value::as_array)
-                        .is_some_and(|features| {
-                            features
-                                .iter()
-                                .any(|feature| feature.as_str() == Some("test-util"))
-                        })
-            })
-        }
-        let crates = std::fs::read_dir(root().join("crates")).unwrap();
-        let mut dev_users = 0;
-        for entry in crates {
-            let entry = entry.unwrap();
-            if !entry.path().join("Cargo.toml").exists() {
-                continue;
-            }
-            let name = entry.file_name().into_string().unwrap();
-            let document: toml::Table = toml::from_str(&manifest(&name)).unwrap();
-            for section in ["dependencies", "build-dependencies"] {
-                assert!(
-                    !enables_test_util(document.get(section)),
-                    "{name} enables pubsub/test-util in [{section}]"
-                );
-            }
-            if let Some(targets) = document.get("target").and_then(toml::Value::as_table) {
-                for (target, value) in targets {
-                    for section in ["dependencies", "build-dependencies"] {
-                        assert!(
-                            !enables_test_util(value.get(section)),
-                            "{name} enables pubsub/test-util in [target.{target}.{section}]"
-                        );
-                    }
-                }
-            }
-            if enables_test_util(document.get("dev-dependencies")) {
-                dev_users += 1;
-            }
-            if name == "pubsub" {
-                let features = document.get("features").and_then(toml::Value::as_table);
-                let default = features
-                    .and_then(|features| features.get("default"))
-                    .and_then(toml::Value::as_array);
-                assert!(
-                    !default.is_some_and(|default| {
-                        default
-                            .iter()
-                            .any(|feature| feature.as_str() == Some("test-util"))
-                    }),
-                    "pubsub enables test-util by default"
-                );
-            }
-        }
-        assert!(
-            dev_users > 0,
-            "the check found no test users of the emulator"
-        );
     }
 
     /// The `ui` crate's Rust sources, by path relative to its `src`.

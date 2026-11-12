@@ -97,7 +97,6 @@ D=.agents/skills/coda-verify-physician/scripts/physician-drive.py
 $D subscribers                       # 3: site A, site B and the worker on physician:workspace-events:v1
 S=$($D sign-in --site a) && echo "${#S}"   # a bearer session; proof sign-in works
 jq '.worker | {fixed_failures, failures_file, retry_seconds}' "$RUN/stack.json"   # initial count, stub control file and 1
-jq 'has("pubsub")' "$RUN/stack.json"   # false: no Pub/Sub process belongs to this stack
 ```
 
 `physician-drive.py` reads the newest `physician-scale-stack-*/stack.json` (or `--stack`)
@@ -204,6 +203,3 @@ hosted starts at 10 s. Those remain unverified here and are proved only in stagi
 `PHYSICIAN_DURABLE_CHAT=1` is not on this stack; `crates/physician-sample` tests cover it.
 A worker stopped or killed mid-turn, and a worker whose listener is gone, are proved in
 `crates/physician-sample/tests/instance_loss.rs` and `tests/worker.rs`, not here.
-Gmail push wake is proved only as a controlled Pub/Sub emulator test against a Gmail
-stand-in (`crates/gmail/tests/push_wake.rs`), which starts its own emulator.
-It has no feature file: nothing a physician sees changes until the product's Gmail intake exists.

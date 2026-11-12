@@ -345,7 +345,7 @@ jobs:
           CHROMIUM: ${{ steps.chrome.outputs.chrome-path }}
           PUBLIC_SITE_SCREENSHOTS: ${{ runner.temp }}/public-site-screenshots
         # Select browser targets only; other ignored tests have their own jobs.
-        # Nix supplies the Pub/Sub emulator, Valkey and Chromium for hosted chat.
+        # Nix supplies Valkey and Chromium for hosted chat.
         # React comparison still requires a separate practice on port 8787.
         # backend_process is a child-only helper, launched by its parent proof.
         run: |

@@ -1,4 +1,4 @@
-//! W3C trace context over string maps, such as Pub/Sub message attributes.
+//! W3C trace context over string maps, such as the context stored with queued work.
 //!
 //! A broker message carries `traceparent` (and `tracestate` when present)
 //! among its attributes, never in its payload. The publisher injects the
