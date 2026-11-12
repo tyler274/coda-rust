@@ -134,6 +134,8 @@ function (step, ...args) {
         failed: alert?.querySelector("p")?.textContent ?? null,
         retry: alert?.querySelector("button")?.textContent ?? null,
         source: pane.querySelector(".source-record-kind")?.textContent ?? null,
+        summary: pane.querySelector(".source-coda-summary .source-text")?.textContent ?? null,
+        summaryDate: pane.querySelector(".source-coda-summary .reader-provenance")?.textContent ?? null,
         passage: pane.querySelector("blockquote")?.textContent ?? null,
         notice: [...pane.querySelectorAll(".reader-provenance")]
           .some((line) => line.textContent.includes("supporting passage is not identified")),

@@ -1366,8 +1366,12 @@ pub struct CitationInspection {
     pub eyebrow: String,
     /// The source title.
     pub title: String,
-    /// The retained source as read, independent of preview availability.
+    /// The retained source as read, independent of preview availability. A loaded source carries
+    /// no summary; the answer's own is `summary`.
     pub evidence: EvidenceRead,
+    /// Coda's summary and its date from the answer that cited the source, whatever the read's
+    /// state: it came with the answer, so it shows while the record loads or after a read fails.
+    pub summary: Option<physician_wire::SourcePreviewContent>,
     /// Preview paragraphs. Empty when the citation recorded none.
     pub paragraphs: Vec<String>,
     /// `Prepared by Coda · as of {date}` when the preview has a date.
@@ -1381,19 +1385,19 @@ pub struct CitationInspection {
 }
 
 /// Builds the inspection surface from a chip and its evidence read. A source no read was asked for
-/// shows the presentation that came with the chip. A read source carries no summary: the answer's
-/// own, which came with the chip, joins it.
+/// shows the presentation that came with the chip. The summary is always the answer's own, which
+/// came with the chip, in every state of the read.
 pub fn citation_inspection(chip: &SourceChip, evidence: &EvidenceRead) -> CitationInspection {
     let carried = chip.inspection.as_ref();
+    let summary = carried.and_then(|source| source.coda_preview.clone());
+    let without_summary = |source: &physician_wire::SourceInspection| {
+        let mut source = source.clone();
+        source.coda_preview = None;
+        EvidenceRead::Loaded(std::sync::Arc::new(source))
+    };
     let evidence = match (evidence, carried) {
-        (EvidenceRead::NotRead, Some(carried)) => {
-            EvidenceRead::Loaded(std::sync::Arc::new(carried.clone()))
-        }
-        (EvidenceRead::Loaded(read), Some(carried)) if carried.coda_preview.is_some() => {
-            let mut source = (**read).clone();
-            source.coda_preview = carried.coda_preview.clone();
-            EvidenceRead::Loaded(std::sync::Arc::new(source))
-        }
+        (EvidenceRead::NotRead, Some(carried)) => without_summary(carried),
+        (EvidenceRead::Loaded(read), _) => without_summary(read),
         (read, _) => read.clone(),
     };
     let paragraphs = preview_paragraphs(&chip.preview);
@@ -1414,6 +1418,7 @@ pub fn citation_inspection(chip: &SourceChip, evidence: &EvidenceRead) -> Citati
         eyebrow: format!("Source {}", chip.index),
         title,
         evidence,
+        summary,
         paragraphs,
         provenance: if unavailable.is_some() {
             None
@@ -2052,39 +2057,44 @@ mod tests {
     }
 
     #[test]
-    fn a_read_source_shows_the_summary_of_the_answer_that_cited_it() {
-        let summarized = |text: &str| {
-            let mut source = retained("Allergy");
-            source.coda_preview = Some(physician_wire::SourcePreviewContent {
-                text: text.to_owned(),
-                as_of: "2018-09-11".to_owned(),
-                as_of_label: "Recorded".to_owned(),
-            });
-            source
+    fn every_read_state_shows_the_summary_of_the_answer_that_cited_it() {
+        let summary = physician_wire::SourcePreviewContent {
+            text: "This answer's summary".to_owned(),
+            as_of: "2018-09-11".to_owned(),
+            as_of_label: "Recorded".to_owned(),
         };
+        let mut source = retained("Allergy");
+        source.coda_preview = Some(summary.clone());
         let mut chip = source_chip(1, "resolved", Some("c-1"), Some("Allergy"), None, None);
-        chip.inspection = Some(summarized("This answer's summary"));
+        chip.inspection = Some(source);
         // Another answer citing the same revision summarized it differently; the read carries none.
+        let mut other = retained("Allergy");
+        other.coda_preview = Some(physician_wire::SourcePreviewContent {
+            text: "Another answer's summary".to_owned(),
+            ..summary.clone()
+        });
+        let read = EvidenceRead::answered(Ok(physician_wire::SourceEvidence { inspection: other }));
+        let failed = EvidenceRead::answered(Err(physician_client::HttpError::Status {
+            status: 503,
+            body: String::new(),
+        }));
+        for state in [EvidenceRead::NotRead, EvidenceRead::Loading, failed, read] {
+            let shown = citation_inspection(&chip, &state);
+            assert_eq!(shown.summary.as_ref(), Some(&summary), "{state:?}");
+            if let EvidenceRead::Loaded(source) = &shown.evidence {
+                assert!(
+                    source.coda_preview.is_none(),
+                    "one summary shows: {state:?}"
+                );
+            }
+        }
+
+        chip.inspection = Some(retained("Allergy"));
         let read = EvidenceRead::answered(Ok(physician_wire::SourceEvidence {
             inspection: retained("Allergy"),
         }));
-        let EvidenceRead::Loaded(shown) = citation_inspection(&chip, &read).evidence else {
-            panic!("the read loaded");
-        };
-        assert_eq!(
-            shown
-                .coda_preview
-                .as_ref()
-                .map(|preview| preview.text.as_str()),
-            Some("This answer's summary")
-        );
-
-        chip.inspection = Some(retained("Allergy"));
-        let EvidenceRead::Loaded(shown) = citation_inspection(&chip, &read).evidence else {
-            panic!("the read loaded");
-        };
         assert!(
-            shown.coda_preview.is_none(),
+            citation_inspection(&chip, &read).summary.is_none(),
             "an unsummarized answer gains none"
         );
     }

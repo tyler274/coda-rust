@@ -1890,13 +1890,13 @@ const CONTROLS_CHAT: &str = "chat-allergy-controls";
 const ALLERGY_BASIS: &str =
     "Rests on one allergy record from 2018. No reaction history was recorded.";
 
-/// The same answer whose evidence read is slow, fails once, then loads.
+/// The summarized answer whose evidence read is slow, fails once, then loads.
 const EVIDENCE_CHAT: &str = "chat-allergy-evidence";
 /// Evidence reads `EVIDENCE_CHAT` has answered.
 static EVIDENCE_READS: std::sync::atomic::AtomicUsize = std::sync::atomic::AtomicUsize::new(0);
 
 /// The answer's one citation in `chat`: `BANK_ALLERGY` at its exact revision, with the model's
-/// summary in `SUMMARY_CHAT`.
+/// summary in `SUMMARY_CHAT` and `EVIDENCE_CHAT`.
 fn allergy_citation(chat: &str) -> local_product::physician_chat::Citation {
     let mut citation: local_product::physician_chat::Citation =
         serde_json::from_value(serde_json::json!({
@@ -1909,7 +1909,7 @@ fn allergy_citation(chat: &str) -> local_product::physician_chat::Citation {
             "provenance": {"native_record": "AllergyIntolerance/allergy-0493010f2a16"},
         }))
         .unwrap();
-    if chat == SUMMARY_CHAT {
+    if chat == SUMMARY_CHAT || chat == EVIDENCE_CHAT {
         citation.summary = Some(ALLERGY_SUMMARY.into());
     }
     citation
@@ -1931,6 +1931,21 @@ async fn allergy_evidence(chat: &str) -> axum::response::Response {
     axum::Json(physician_wire::SourceEvidence { inspection }).into_response()
 }
 
+/// The answer's one citation in `POTASSIUM_CHAT`: `BANK_POTASSIUM` at its exact revision.
+fn potassium_citation() -> local_product::physician_chat::Citation {
+    serde_json::from_value(serde_json::json!({
+        "id": "potassium-citation", "reference": "Observation/obs-447fdd24f33f",
+        "revision": local_product::sha256_hex(BANK_POTASSIUM.as_bytes()),
+        "record_type": "Observation", "content": BANK_POTASSIUM,
+        "dates": [{"name": "effectiveDateTime", "value": "2019-03-12T14:10:00+00:00"},
+                  {"name": "issued", "value": "2019-03-12T17:32:00+00:00"},
+                  {"name": "meta.lastUpdated", "value": "2019-03-12T00:00:00+00:00"}],
+        "sha256": local_product::sha256_hex(BANK_POTASSIUM.as_bytes()),
+        "provenance": {"native_record": "Observation/obs-447fdd24f33f"},
+    }))
+    .unwrap()
+}
+
 /// Lists chats for the review patient whose answer cites `BANK_ALLERGY`, presented by the same
 /// `source_inspection` the live projection uses, and answers that citation's evidence read.
 async fn with_allergy_citation(
@@ -1938,19 +1953,13 @@ async fn with_allergy_citation(
     next: axum::middleware::Next,
 ) -> axum::response::Response {
     let path = request.uri().path().to_owned();
-    if path == format!("/patient-workspaces/{REVIEW_PATIENT}/chats/{POTASSIUM_CHAT}/snapshot") {
-        let citation: local_product::physician_chat::Citation =
-            serde_json::from_value(serde_json::json!({
-                "id": "potassium-citation", "reference": "Observation/obs-447fdd24f33f",
-                "revision": local_product::sha256_hex(BANK_POTASSIUM.as_bytes()),
-                "record_type": "Observation", "content": BANK_POTASSIUM,
-                "dates": [{"name": "effectiveDateTime", "value": "2019-03-12T14:10:00+00:00"},
-                          {"name": "issued", "value": "2019-03-12T17:32:00+00:00"},
-                          {"name": "meta.lastUpdated", "value": "2019-03-12T00:00:00+00:00"}],
-                "sha256": local_product::sha256_hex(BANK_POTASSIUM.as_bytes()),
-                "provenance": {"native_record": "Observation/obs-447fdd24f33f"},
-            }))
-            .unwrap();
+    let potassium = format!("/patient-workspaces/{REVIEW_PATIENT}/chats/{POTASSIUM_CHAT}");
+    if path == format!("{potassium}/citations/potassium-citation") {
+        let inspection = physician_sample::source_inspection::inspection(&potassium_citation());
+        return axum::Json(physician_wire::SourceEvidence { inspection }).into_response();
+    }
+    if path == format!("{potassium}/snapshot") {
+        let citation = potassium_citation();
         let inspection = physician_sample::source_inspection::inspection(&citation);
         return axum::Json(
             serde_json::json!({"snapshot": {"runs": [], "conversation": [
@@ -2035,7 +2044,7 @@ async fn with_allergy_citation(
 
 /// Opening an answer's citation reads its evidence: the reader says it is opening, says it couldn't
 /// load with a way to try again, then shows the exact retained record, unhighlighted and saying so,
-/// since the citation names no passage.
+/// since the citation names no passage. The answer's summary and its date show throughout.
 #[tokio::test(flavor = "multi_thread", worker_threads = 2)]
 #[ignore = "browser qualification; run explicitly with --ignored"]
 async fn an_opened_citation_reads_its_evidence_and_offers_retry() {
@@ -2078,6 +2087,14 @@ async fn an_opened_citation_reads_its_evidence_and_offers_retry() {
     assert_eq!(loading["loadingWords"], "Opening the source…", "{loading}");
     assert_eq!(loading["source"], serde_json::Value::Null, "{loading}");
     assert_eq!(loading["title"], "No known drug allergies", "{loading}");
+    let summary_date =
+        "Coda wrote this from the record dated September 11, 2018, 12:20:00+00:00 as recorded.";
+    // The answer's own summary and its date came with the answer: no read state hides them.
+    let summarized = |read: &serde_json::Value| {
+        assert_eq!(read["summary"], ALLERGY_SUMMARY, "{read}");
+        assert_eq!(read["summaryDate"], summary_date, "{read}");
+    };
+    summarized(&loading);
     tab.save_picture("evidence-loading");
 
     let failed = evidence(&mut tab, &|read| !read["failed"].is_null(), "failed");
@@ -2088,6 +2105,7 @@ async fn an_opened_citation_reads_its_evidence_and_offers_retry() {
     assert_eq!(failed["retry"], "Try again", "{failed}");
     assert_eq!(failed["loading"], false, "{failed}");
     assert_eq!(failed["source"], serde_json::Value::Null, "{failed}");
+    summarized(&failed);
     tab.save_picture("evidence-failed-retry");
 
     tab.step("citationRetry", serde_json::json!([]));
@@ -2097,6 +2115,7 @@ async fn an_opened_citation_reads_its_evidence_and_offers_retry() {
     assert_eq!(loaded["failed"], serde_json::Value::Null, "{loaded}");
     assert_eq!(loaded["passage"], serde_json::Value::Null, "{loaded}");
     assert_eq!(loaded["notice"], true, "{loaded}");
+    summarized(&loaded);
     assert_eq!(EVIDENCE_READS.load(std::sync::atomic::Ordering::SeqCst), 2);
     let shown = tab.step("citationReading", serde_json::json!([]));
     assert_eq!(shown["original"].as_str().unwrap(), BANK_ALLERGY);

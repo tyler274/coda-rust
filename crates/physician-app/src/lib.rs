@@ -3840,6 +3840,8 @@ fn ConnectionsDialog(lines: Vec<String>, failed: bool, on_close: EventHandler) -
 #[derive(Clone, PartialEq, Eq)]
 struct OpenReading {
     source: Option<physician_wire::SourceInspection>,
+    /// Coda's summary from the answer, shown whether or not `source` has loaded.
+    summary: Option<physician_wire::SourcePreviewContent>,
     eyebrow: Option<String>,
     title: String,
     paragraphs: Vec<String>,
@@ -3852,6 +3854,7 @@ struct OpenReading {
 fn prose_reading(title: String, body: String) -> OpenReading {
     OpenReading {
         source: None,
+        summary: None,
         eyebrow: None,
         title,
         paragraphs: if body.is_empty() {
@@ -3915,6 +3918,7 @@ fn source_reading(chip: &SourceChip, evidence: &EvidenceRead) -> OpenReading {
     };
     OpenReading {
         source,
+        summary: inspection.summary,
         eyebrow: Some(inspection.eyebrow),
         title: inspection.title,
         paragraphs: inspection.paragraphs,
@@ -3973,14 +3977,14 @@ fn SourceReaderContent(reading: OpenReading) -> Element {
             if let (Some(label), Some(uri)) = (reading.link_label, reading.link_uri) {
                 a { class: "citation-open", href: uri, target: "_blank", rel: "noopener noreferrer", title: "Opens in a new tab", "{label}" }
             }
-            if let Some(source) = reading.source {
-                if let Some(preview) = source.coda_preview {
-                    section { class: "source-coda-summary",
-                        h3 { "Coda's summary" }
-                        ui::SourceText { text: preview.text }
-                        p { class: "reader-provenance", "{shell::summary_provenance(&preview.as_of_label, &preview.as_of)}" }
-                    }
+            if let Some(preview) = reading.summary {
+                section { class: "source-coda-summary",
+                    h3 { "Coda's summary" }
+                    ui::SourceText { text: preview.text }
+                    p { class: "reader-provenance", "{shell::summary_provenance(&preview.as_of_label, &preview.as_of)}" }
                 }
+            }
+            if let Some(source) = reading.source {
                 p { class: "source-record-kind", "{source.record_kind}" }
                 if source.dates.is_empty() {
                     p { class: "reader-provenance", "No record date was retained with this citation." }
