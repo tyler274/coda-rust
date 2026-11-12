@@ -35,9 +35,15 @@ Run the matching [feature](features/README.md) when a change touches:
 
    ```bash
    CARGO_TARGET_DIR=target/stream-e cargo build -p physician-sample --bins
-   cargo test -p physician-sample --test site -- --ignored   # also writes target/physician-web
+   PHYSICIAN_RUNTIME_TEST_DATABASE_URL=postgres://... \
+     cargo test -p physician-sample --test site -- --ignored # also writes target/physician-web
    cargo run -p patient-bank -- build                        # writes target/patient-bank/bank
    ```
+
+   The site test needs a disposable Postgres: without `PHYSICIAN_RUNTIME_TEST_DATABASE_URL`
+   (or `PHYSICIAN_DATABASE_URL`) its database-backed tests fail with `browser proof database`.
+   `scripts/physician-scale-stack.py --dependencies-only --evidence <dir> -- cargo test -p
+   physician-sample --test site -- --ignored` runs it against the stack's own Postgres.
 
    The page assets are served from `target/physician-web` (or `--site-dir`). A stale
    page or a stale binary silently drops recent behavior, so rebuild after pulling. A page
@@ -171,7 +177,7 @@ Use a browser driver against `Site A` or `Site B` with a desktop viewport:
 ```bash
 kill -TERM "$(jq -r .pid "$RUN/stack.json")"     # or Ctrl-C in the stack's terminal
 jq .stopped_at "$RUN/stack.json"                  # set
-ls "$RUN/logs"                                    # five logs retained
+ls "$RUN/logs"                                    # six logs retained, including responses.log
 pgrep -af 'physician-sample|physician-worker|valkey-server'   # nothing from this run
 ```
 
