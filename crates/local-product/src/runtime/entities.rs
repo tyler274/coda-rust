@@ -441,3 +441,80 @@ pub(super) mod skill_package {
     pub enum Relation {}
     impl ActiveModelBehavior for ActiveModel {}
 }
+
+/// One patient memory head row per practice and patient workspace.
+pub(super) mod patient_memory {
+    use sea_orm::entity::prelude::*;
+
+    #[derive(Clone, Debug, PartialEq, Eq, DeriveEntityModel)]
+    #[sea_orm(table_name = "physician_runtime_patient_memories")]
+    pub struct Model {
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub practice: String,
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub workspace: String,
+        #[sea_orm(column_type = "Text", unique)]
+        pub memory_id: String,
+        /// Highest version number ever recorded for this patient (`>= 1`).
+        pub latest_version: i64,
+        /// Latest permitted version representing current memory, if any.
+        pub current_version: Option<i64>,
+        /// Version that authored the current physician-facing summary, if any.
+        pub latest_summary_version: Option<i64>,
+        /// Database-clock seconds when the first version was saved.
+        pub created_at: i64,
+        /// Database-clock seconds of the latest mutation.
+        pub updated_at: i64,
+    }
+
+    #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
+    pub enum Relation {}
+
+    impl ActiveModelBehavior for ActiveModel {}
+}
+
+/// One versioned patient memory snapshot per mutation receipt.
+///
+/// `operating_index` is stored in its own column so physician-facing summary
+/// queries never select or deserialize Coda's private working index.
+pub(super) mod patient_memory_version {
+    use sea_orm::entity::prelude::*;
+
+    #[derive(Clone, Debug, PartialEq, Eq, DeriveEntityModel)]
+    #[sea_orm(table_name = "physician_runtime_patient_memory_versions")]
+    pub struct Model {
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub practice: String,
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub workspace: String,
+        #[sea_orm(primary_key, auto_increment = false)]
+        pub version: i64,
+        #[sea_orm(column_type = "Text")]
+        pub memory_id: String,
+        #[sea_orm(column_type = "Text")]
+        pub receipt_physician: String,
+        #[sea_orm(column_type = "Text")]
+        pub receipt_key: String,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub author: Json,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub change_kind: Json,
+        #[sea_orm(column_type = "Text")]
+        pub visibility: String,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub retraction: Option<Json>,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub operating_index: Json,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub corrections: Json,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub summary: Option<Json>,
+        pub summary_version: Option<i64>,
+        pub saved_at: i64,
+    }
+
+    #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
+    pub enum Relation {}
+
+    impl ActiveModelBehavior for ActiveModel {}
+}

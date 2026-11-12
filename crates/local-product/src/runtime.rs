@@ -39,6 +39,8 @@ mod entities;
 pub mod feedback;
 mod frozen;
 pub use frozen::{BindingRef, SkillPackageId};
+/// Durable patient memory, corrections, version history, and saved summary.
+pub mod memory;
 mod migration;
 mod quota;
 /// Command receipts and their 90-day reduction to a salted digest.
@@ -1744,6 +1746,19 @@ impl<A: Authority> Product for PhysicianHost<A> {
         crate::physician_chat::read_only(name)
     }
 
+    fn saved_outcome(
+        &mut self,
+        call: &Invocation,
+    ) -> harness::engine::recipe::ToolFuture<Option<ToolOutcome>> {
+        if !memory::is_mutation_tool(&call.name) {
+            return Box::pin(async { Ok(None) });
+        }
+        let store = self.store.clone();
+        let claim = self.claim.clone();
+        let call = call.clone();
+        Box::pin(async move { store.saved_chat_memory_outcome(&claim, &call).await })
+    }
+
     fn read_result(&mut self, id: &str) -> harness::engine::recipe::ToolFuture<Option<String>> {
         let store = self.store.clone();
         let claim = self.claim.clone();
@@ -1802,6 +1817,11 @@ impl<A: Authority> Product for PhysicianHost<A> {
                     }),
                 )?
                 .ok_or_else(|| "working note tool was not handled".into());
+            }
+            if memory::is_tool(&call.name) {
+                return store
+                    .execute_chat_memory_tool(&claim, &call, arguments)
+                    .await;
             }
             let (state, records) = store.work_snapshot(&claim.scope).await?;
             if engine::history::is_tool(&call.name) {

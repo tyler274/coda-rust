@@ -83,6 +83,7 @@ messages. Communicate completed clinical work, not model identities, tools, sche
 pub fn tools() -> Vec<Tool> {
     let mut offered = work_tools();
     offered.extend(chart_tools());
+    offered.extend(crate::runtime::memory::tools());
     offered
 }
 
@@ -99,7 +100,7 @@ pub fn read_only(name: &str) -> bool {
     matches!(
         name,
         crate::physician_sources::SEARCH_TOOL | crate::physician_sources::READ_TOOL
-    )
+    ) || crate::runtime::memory::is_read_only(name)
 }
 
 fn chart_tools() -> [Tool; 2] {
