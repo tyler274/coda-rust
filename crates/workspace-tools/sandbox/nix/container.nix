@@ -69,7 +69,7 @@ lib.mkIf (cfg.enable && cfg.container.enable) {
         })
         cfg.container.config
       ];
-      environment.systemPackages = [ cfg.package ];
+      environment.systemPackages = [ cfg.package ] ++ lib.optional (cfg.swarm.package != null) cfg.swarm.package;
       environment.etc."coda-sandbox/config.toml".source = cfg.configFile;
     };
   };

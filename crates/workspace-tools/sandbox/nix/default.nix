@@ -138,6 +138,13 @@ in
       description = "SSH public keys that may log in as the container's agent; sshd runs only when there is one.";
     };
 
+    swarm.package = lib.mkOption {
+      type = lib.types.nullOr lib.types.package;
+      default = packages.${pkgs.stdenv.hostPlatform.system}.coda-swarm;
+      defaultText = lib.literalMD "the `coda-swarm` package of this flake";
+      description = "The coda-swarm supervisor to install in the container; null installs none.";
+    };
+
     container = {
       enable = lib.mkOption {
         type = lib.types.bool;

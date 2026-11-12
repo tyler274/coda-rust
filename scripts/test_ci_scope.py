@@ -89,6 +89,8 @@ class ScopeTests(unittest.TestCase):
             # The sandbox flake builds from the root manifest and lockfile.
             "Cargo.lock": (True, True, True),
             "Cargo.toml": (True, True, True),
+            # The sandbox flake also packages coda-swarm.
+            "crates/workspace-tools/swarm/src/main.rs": (True, False, True),
             "crates/workspace-tools/src/main.rs": (True, False, False),
             "crates/app/Cargo.toml": (True, True, False),
             "book/src/page.md": (False, False, False),
