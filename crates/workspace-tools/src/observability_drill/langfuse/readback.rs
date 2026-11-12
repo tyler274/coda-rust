@@ -81,6 +81,14 @@ pub(super) fn session_generations(body: &Value, canary: &str) -> Option<Vec<Lang
         .collect()
 }
 
+/// A span attribute of a v2 observation read with `expandMetadata=attributes`:
+/// Langfuse flattens each one into `metadata` as `attributes.<key>`.
+fn span_attribute(generation: &Value, key: &str) -> Option<String> {
+    generation["metadata"][format!("attributes.{key}")]
+        .as_str()
+        .map(str::to_owned)
+}
+
 /// Reads one generation observation (v2 observations API) as a turn.
 fn langfuse_turn(generation: &Value, canary: &str) -> Option<LangfuseTurn> {
     let text = |value: &Value| value.as_str().map(str::to_owned);
@@ -89,13 +97,11 @@ fn langfuse_turn(generation: &Value, canary: &str) -> Option<LangfuseTurn> {
         trace_id: text(&generation["traceId"])?,
         environment: text(&generation["environment"]),
         session_id: text(&generation["sessionId"]),
-        run_id: attribute(&generation["metadata"], "coda.run_id").map(str::to_owned),
-        scenario_id: attribute(&generation["metadata"], "coda.scenario_id").map(str::to_owned),
+        run_id: span_attribute(generation, "coda.run_id"),
+        scenario_id: span_attribute(generation, "coda.scenario_id"),
         model: text(&generation["model"])
             .or_else(|| text(&generation["providedModelName"]))
-            .or_else(|| {
-                attribute(&generation["metadata"], "gen_ai.request.model").map(str::to_owned)
-            }),
+            .or_else(|| span_attribute(generation, "gen_ai.request.model")),
         level: text(&generation["level"]),
         canary_in_content: content_has("input") || content_has("output"),
     })
@@ -522,11 +528,9 @@ mod tests {
             "input": "canary-123 hello",
             "output": "reply",
             "metadata": {
-                "attributes": {
-                    "coda.run_id": "run-1",
-                    "coda.scenario_id": "langfuse-drill"
-                },
-                "resourceAttributes": { "service.name": "physician-worker" }
+                "attributes.coda.run_id": "run-1",
+                "attributes.coda.scenario_id": "langfuse-drill",
+                "resourceAttributes.service.name": "physician-worker"
             }
         })
     }
