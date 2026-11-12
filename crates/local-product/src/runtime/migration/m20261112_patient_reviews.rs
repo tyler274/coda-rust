@@ -1,0 +1,191 @@
+//! Durable patient review records per `(practice, workspace, review_id)`.
+
+use super::super::entities::patient_review;
+use sea_orm_migration::prelude::*;
+
+/// Creates `physician_runtime_patient_reviews`.
+#[derive(DeriveMigrationName)]
+pub(super) struct Migration;
+
+#[async_trait::async_trait]
+impl MigrationTrait for Migration {
+    async fn up(&self, manager: &SchemaManager) -> Result<(), DbErr> {
+        let non_empty_text = |column: patient_review::Column| {
+            ColumnDef::new(column)
+                .text()
+                .not_null()
+                .check(Expr::col(column).ne(""))
+                .to_owned()
+        };
+
+        manager
+            .create_table(
+                Table::create()
+                    .table(patient_review::Entity)
+                    .col(non_empty_text(patient_review::Column::Practice))
+                    .col(non_empty_text(patient_review::Column::Workspace))
+                    .col(non_empty_text(patient_review::Column::ReviewId))
+                    .col(non_empty_text(patient_review::Column::CommandKey))
+                    .col(non_empty_text(patient_review::Column::JobId))
+                    .col(non_empty_text(patient_review::Column::WorkId))
+                    .col(
+                        ColumnDef::new(patient_review::Column::Status)
+                            .text()
+                            .not_null()
+                            .check(Expr::col(patient_review::Column::Status).is_in([
+                                "pending",
+                                "running",
+                                "held",
+                                "completed",
+                                "failed",
+                                "superseded",
+                            ])),
+                    )
+                    .col(ColumnDef::new(patient_review::Column::PatientSnapshot).json_binary())
+                    .col(
+                        ColumnDef::new(patient_review::Column::Triggers)
+                            .json_binary()
+                            .not_null(),
+                    )
+                    .col(
+                        ColumnDef::new(patient_review::Column::AcceptedInputs)
+                            .json_binary()
+                            .not_null(),
+                    )
+                    .col(
+                        ColumnDef::new(patient_review::Column::RecipeVersion)
+                            .json_binary()
+                            .not_null(),
+                    )
+                    .col(
+                        ColumnDef::new(patient_review::Column::InitialSourceVersion)
+                            .big_integer()
+                            .not_null()
+                            .check(Expr::col(patient_review::Column::InitialSourceVersion).gte(0)),
+                    )
+                    .col(
+                        ColumnDef::new(patient_review::Column::InitialSources)
+                            .json_binary()
+                            .not_null(),
+                    )
+                    .col(
+                        ColumnDef::new(patient_review::Column::CompletedSourceVersion)
+                            .big_integer()
+                            .check(
+                                Expr::col(patient_review::Column::CompletedSourceVersion)
+                                    .is_null()
+                                    .or(Expr::col(patient_review::Column::CompletedSourceVersion)
+                                        .gte(0)),
+                            ),
+                    )
+                    .col(ColumnDef::new(patient_review::Column::CompletedSources).json_binary())
+                    .col(
+                        ColumnDef::new(patient_review::Column::EvidenceRead)
+                            .json_binary()
+                            .not_null(),
+                    )
+                    .col(
+                        ColumnDef::new(patient_review::Column::Actions)
+                            .json_binary()
+                            .not_null(),
+                    )
+                    .col(
+                        ColumnDef::new(patient_review::Column::UnfinishedWork)
+                            .json_binary()
+                            .not_null(),
+                    )
+                    .col(
+                        ColumnDef::new(patient_review::Column::State)
+                            .json_binary()
+                            .not_null(),
+                    )
+                    .col(
+                        ColumnDef::new(patient_review::Column::Usage)
+                            .json_binary()
+                            .not_null(),
+                    )
+                    .col(
+                        ColumnDef::new(patient_review::Column::DurationMs)
+                            .big_integer()
+                            .check(
+                                Expr::col(patient_review::Column::DurationMs)
+                                    .is_null()
+                                    .or(Expr::col(patient_review::Column::DurationMs).gte(0)),
+                            ),
+                    )
+                    .col(ColumnDef::new(patient_review::Column::StagedCompletion).json_binary())
+                    .col(
+                        ColumnDef::new(patient_review::Column::QueuedAt)
+                            .big_integer()
+                            .not_null(),
+                    )
+                    .col(ColumnDef::new(patient_review::Column::StartedAt).big_integer())
+                    .col(ColumnDef::new(patient_review::Column::CompletedAt).big_integer())
+                    .col(
+                        ColumnDef::new(patient_review::Column::UpdatedAt)
+                            .big_integer()
+                            .not_null(),
+                    )
+                    .primary_key(
+                        Index::create()
+                            .name("pk-physician_runtime_patient_reviews")
+                            .col(patient_review::Column::Practice)
+                            .col(patient_review::Column::Workspace)
+                            .col(patient_review::Column::ReviewId),
+                    )
+                    .to_owned(),
+            )
+            .await?;
+
+        manager
+            .create_index(
+                Index::create()
+                    .name("uq-physician_runtime_patient_reviews-command_key")
+                    .table(patient_review::Entity)
+                    .col(patient_review::Column::Practice)
+                    .col(patient_review::Column::Workspace)
+                    .col(patient_review::Column::CommandKey)
+                    .unique()
+                    .to_owned(),
+            )
+            .await?;
+
+        manager
+            .create_index(
+                Index::create()
+                    .name("uq-physician_runtime_patient_reviews-job_id")
+                    .table(patient_review::Entity)
+                    .col(patient_review::Column::Practice)
+                    .col(patient_review::Column::Workspace)
+                    .col(patient_review::Column::JobId)
+                    .unique()
+                    .to_owned(),
+            )
+            .await?;
+
+        manager
+            .create_index(
+                Index::create()
+                    .name("idx-physician_runtime_patient_reviews-workspace-updated")
+                    .table(patient_review::Entity)
+                    .col(patient_review::Column::Practice)
+                    .col(patient_review::Column::Workspace)
+                    .col(patient_review::Column::UpdatedAt)
+                    .to_owned(),
+            )
+            .await?;
+
+        manager
+            .create_index(
+                Index::create()
+                    .name("idx-physician_runtime_patient_reviews-practice-status")
+                    .table(patient_review::Entity)
+                    .col(patient_review::Column::Practice)
+                    .col(patient_review::Column::Status)
+                    .to_owned(),
+            )
+            .await?;
+
+        Ok(())
+    }
+}

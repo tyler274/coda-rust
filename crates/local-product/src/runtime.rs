@@ -58,6 +58,8 @@ mod records;
 pub mod refresh;
 /// Hosted physician reply drafts and their revision work.
 pub mod reply;
+/// Shared-harness execution, fencing, lifecycle controls, and storage for patient reviews.
+pub mod reviews;
 /// Practice schedule reads, patient matching, and versioned saved appointments.
 pub mod schedule;
 /// Versioned patient source observations: a stand-in source owner.
