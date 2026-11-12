@@ -77,12 +77,20 @@ async fn run() -> Result<(), String> {
 }
 
 fn router(worker: Arc<Worker>) -> Router {
+    let wake = worker.wake.clone();
     Router::new()
         .route("/health", get(health))
         .route("/readyz", get(readyz))
         .route("/pubsub/chat-turn", post(chat_turn))
-        .layer(telemetry::http_layer())
         .with_state(worker)
+        .merge(wake_router(wake))
+        .layer(telemetry::http_layer())
+}
+
+fn wake_router(wake: Arc<WakeService>) -> Router {
+    Router::new()
+        .route("/schedule/wake", post(schedule_wake))
+        .with_state(wake)
 }
 
 async fn health() -> Json<Value> {
@@ -550,6 +558,8 @@ struct Worker {
     /// One durable provider cooldown for this product across worker replicas.
     quota: Arc<dyn harness::provider::QuotaGate>,
     verifier: Option<google_cloud_auth::credentials::idtoken::verifier::Verifier>,
+    /// Schedule wake endpoint state (`POST /schedule/wake`) and clinical library client.
+    wake: Arc<WakeService>,
     /// `Simulation` for every turn when the model is the local Responses stub.
     origin: genai::Origin,
     /// Practices whose turns are rehearsal traffic in telemetry.
@@ -575,6 +585,11 @@ impl Worker {
     async fn from_env(get: impl Fn(&str) -> Option<String>) -> Result<Self, String> {
         let hosted = is_hosted(&get);
         let simulation_practices = SimulationPractices::from_env(&get)?;
+        let clinical_library = hosting::ClinicalLibraryConfig::from_env(&get)
+            .map_err(|error| error.to_string())?
+            .map(hosting::ClinicalLibraryClient::new)
+            .transpose()
+            .map_err(|error| error.to_string())?;
         let (transport, origin) = if let Some(port) =
             configured(&get, "PHYSICIAN_RESPONSES_STUB_PORT")
         {
@@ -627,6 +642,13 @@ impl Worker {
             }
         };
         let verifier = push_verifier(&get, hosted)?;
+        let schedule_auth = wake_auth(&get, hosted)?;
+        let wake_mode = if origin == genai::Origin::Simulation || hosting::is_staging_preview(&get)
+        {
+            WakeMode::RehearsalAllowed
+        } else {
+            WakeMode::LiveOnly
+        };
         let owned = role_environment(&get);
         let environment: Vec<_> = owned
             .iter()
@@ -645,6 +667,15 @@ impl Worker {
             .map_err(|_| "physician auth store unavailable".to_string())?;
         let bus = physician_bus::from_env(&get, hosted).await?;
         let quota: Arc<dyn harness::provider::QuotaGate> = Arc::new(store.clone());
+        let wake = Arc::new(WakeService {
+            auth: schedule_auth,
+            mode: wake_mode,
+            handler: Arc::new(StoreWakeHandler {
+                store: store.clone(),
+                auth: auth.clone(),
+            }),
+            clinical_library,
+        });
         Ok(Self {
             store,
             auth,
@@ -652,10 +683,364 @@ impl Worker {
             model,
             quota,
             verifier,
+            wake,
             origin,
             simulation_practices,
         })
     }
+}
+
+/// Shared state for `POST /schedule/wake`.
+struct WakeService {
+    auth: WakeAuth,
+    mode: WakeMode,
+    handler: Arc<dyn WakeHandler>,
+    clinical_library: Option<hosting::ClinicalLibraryClient>,
+}
+
+/// Authentication state for `POST /schedule/wake`.
+enum WakeAuth {
+    /// Verifies Google OIDC signature, issuer, expiry, and audience first (`401`),
+    /// then checks that the verified service-account email equals `principal` (`403`).
+    Verified {
+        verifier: google_cloud_auth::credentials::idtoken::verifier::Verifier,
+        principal: hosting::ServiceAccountEmail,
+    },
+    /// No scheduler principal is configured on this revision: missing/invalid tokens
+    /// still fail `401`, while valid tokens fail `403`.
+    Disabled {
+        verifier: Option<google_cloud_auth::credentials::idtoken::verifier::Verifier>,
+    },
+    /// Unauthenticated local loopback emulator mode.
+    LoopbackEmulator,
+}
+
+/// Whether `POST /schedule/wake` honours a rehearsed failure directive.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+enum WakeMode {
+    /// Simulation or `staging-preview`: allows alert/retry drills.
+    RehearsalAllowed,
+    /// Live non-staging execution: refuses rehearsed failures.
+    LiveOnly,
+}
+
+/// Why `POST /schedule/wake` refused a caller before executing any wake work.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+enum WakeRefusal {
+    /// Missing Bearer header or failed OIDC signature, issuer, audience, or expiry check.
+    Unauthenticated,
+    /// Valid OIDC token for a caller other than `PHYSICIAN_SCHEDULER_SERVICE_ACCOUNT`.
+    ForbiddenPrincipal,
+    /// Schedule wakes are not configured on this worker revision.
+    ScheduleDisabled,
+}
+
+impl WakeRefusal {
+    fn status_code(self) -> StatusCode {
+        match self {
+            Self::Unauthenticated => StatusCode::UNAUTHORIZED,
+            Self::ForbiddenPrincipal | Self::ScheduleDisabled => StatusCode::FORBIDDEN,
+        }
+    }
+
+    fn reason(self) -> &'static str {
+        match self {
+            Self::Unauthenticated => "unauthenticated",
+            Self::ForbiddenPrincipal => "forbidden_principal",
+            Self::ScheduleDisabled => "schedule_disabled",
+        }
+    }
+}
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+enum WakeDirective {
+    Normal,
+    RehearseFailure,
+}
+
+#[derive(Clone, Debug, PartialEq, Eq)]
+struct WakeTick {
+    job_name: Option<String>,
+    schedule_time: Option<String>,
+    retry_count: u32,
+    directive: WakeDirective,
+}
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+struct WakeReport {
+    due_patients_checked: usize,
+}
+
+#[derive(Debug)]
+enum WakeError {
+    Rehearsed,
+    RuntimeStore(sea_orm::DbErr),
+    AuthStore(sea_orm::DbErr),
+}
+
+impl WakeError {
+    fn kind(&self) -> &'static str {
+        match self {
+            Self::Rehearsed => "rehearsed_failure",
+            Self::RuntimeStore(_) => "runtime_store_unavailable",
+            Self::AuthStore(_) => "auth_store_unavailable",
+        }
+    }
+}
+
+impl std::fmt::Display for WakeError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Rehearsed => f.write_str("rehearsed schedule wake failure"),
+            Self::RuntimeStore(source) => write!(f, "runtime store check failed: {source}"),
+            Self::AuthStore(source) => write!(f, "auth store check failed: {source}"),
+        }
+    }
+}
+
+impl std::error::Error for WakeError {
+    fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
+        match self {
+            Self::Rehearsed => None,
+            Self::RuntimeStore(source) | Self::AuthStore(source) => Some(source),
+        }
+    }
+}
+
+/// Typed wake hook invoked on each authenticated Cloud Scheduler tick.
+#[async_trait::async_trait]
+trait WakeHandler: Send + Sync {
+    async fn wake(&self, tick: &WakeTick) -> Result<WakeReport, WakeError>;
+}
+
+struct StoreWakeHandler {
+    store: Store,
+    auth: PostgresAuthStore,
+}
+
+#[async_trait::async_trait]
+impl WakeHandler for StoreWakeHandler {
+    async fn wake(&self, tick: &WakeTick) -> Result<WakeReport, WakeError> {
+        if tick.directive == WakeDirective::RehearseFailure {
+            return Err(WakeError::Rehearsed);
+        }
+        let probe = Scope {
+            practice: "schedule-wake".into(),
+            physician: "schedule-wake".into(),
+            workspace: "schedule-wake".into(),
+            chat: "schedule-wake".into(),
+        };
+        self.store
+            .read(&probe)
+            .await
+            .map_err(WakeError::RuntimeStore)?;
+        self.auth
+            .check_schema()
+            .await
+            .map_err(WakeError::AuthStore)?;
+        Ok(WakeReport {
+            due_patients_checked: 0,
+        })
+    }
+}
+
+#[derive(Default, serde::Deserialize)]
+#[serde(deny_unknown_fields)]
+struct WakePayload {
+    #[serde(default)]
+    rehearse_failure: bool,
+}
+
+fn bounded_header(headers: &axum::http::HeaderMap, name: &str) -> Option<String> {
+    headers
+        .get(name)
+        .and_then(|value| value.to_str().ok())
+        .map(str::trim)
+        .filter(|value| !value.is_empty() && value.len() <= 256)
+        .map(str::to_owned)
+}
+
+async fn schedule_wake(
+    State(wake): State<Arc<WakeService>>,
+    request: Request,
+) -> (StatusCode, Json<Value>) {
+    let auth_header = request
+        .headers()
+        .get(axum::http::header::AUTHORIZATION)
+        .and_then(|value| value.to_str().ok())
+        .map(str::to_owned);
+    if let Err(refusal) = authorize_wake(&wake.auth, auth_header.as_deref()).await {
+        tracing::warn!(
+            event = "physician.worker.schedule_wake_refused",
+            reason = refusal.reason(),
+            status = u64::from(refusal.status_code().as_u16()),
+            "refused physician schedule wake"
+        );
+        return (
+            refusal.status_code(),
+            Json(json!({ "status": "refused", "reason": refusal.reason() })),
+        );
+    }
+    let job_name = bounded_header(request.headers(), "x-cloudscheduler-jobname");
+    let schedule_time = bounded_header(request.headers(), "x-cloudscheduler-scheduletime");
+    let retry_count = bounded_header(request.headers(), "x-cloudscheduler-jobexecutioncount")
+        .and_then(|value| value.parse::<u32>().ok())
+        .unwrap_or(0);
+    let Ok(bytes) = axum::body::to_bytes(request.into_body(), BODY_LIMIT).await else {
+        return (
+            StatusCode::BAD_REQUEST,
+            Json(json!({ "status": "bad_request" })),
+        );
+    };
+    let payload = if bytes.iter().all(u8::is_ascii_whitespace) {
+        WakePayload::default()
+    } else {
+        match serde_json::from_slice::<WakePayload>(&bytes) {
+            Ok(payload) => payload,
+            Err(_) => {
+                return (
+                    StatusCode::BAD_REQUEST,
+                    Json(json!({ "status": "bad_request" })),
+                );
+            }
+        }
+    };
+    let directive = if payload.rehearse_failure {
+        if wake.mode != WakeMode::RehearsalAllowed {
+            tracing::warn!(
+                event = "physician.worker.schedule_wake_refused",
+                reason = "rehearsal_forbidden",
+                status = 403_u64,
+                "refused rehearsed schedule wake outside simulation or staging-preview"
+            );
+            return (
+                StatusCode::FORBIDDEN,
+                Json(json!({ "status": "refused", "reason": "rehearsal_forbidden" })),
+            );
+        }
+        WakeDirective::RehearseFailure
+    } else {
+        WakeDirective::Normal
+    };
+    let tick = WakeTick {
+        job_name,
+        schedule_time,
+        retry_count,
+        directive,
+    };
+    match wake.handler.wake(&tick).await {
+        Ok(report) => {
+            tracing::info!(
+                event = "physician.worker.schedule_wake",
+                scheduler.job = tick.job_name.as_deref().unwrap_or("manual"),
+                scheduler.schedule_time = tick.schedule_time.as_deref().unwrap_or(""),
+                scheduler.retry_count = u64::from(tick.retry_count),
+                due_patients_checked = report.due_patients_checked as u64,
+                clinical_library_configured = wake.clinical_library.is_some(),
+                "accepted physician schedule wake"
+            );
+            (
+                StatusCode::OK,
+                Json(json!({
+                    "status": "ok",
+                    "due_patients_checked": report.due_patients_checked,
+                    "clinical_library_configured": wake.clinical_library.is_some(),
+                })),
+            )
+        }
+        Err(error) => {
+            tracing::error!(
+                event = "physician.worker.schedule_wake_failed",
+                error.kind = error.kind(),
+                scheduler.job = tick.job_name.as_deref().unwrap_or("manual"),
+                scheduler.schedule_time = tick.schedule_time.as_deref().unwrap_or(""),
+                scheduler.retry_count = u64::from(tick.retry_count),
+                "physician schedule wake failed: {error}"
+            );
+            (
+                StatusCode::SERVICE_UNAVAILABLE,
+                Json(json!({
+                    "status": "failed",
+                    "error": error.kind(),
+                })),
+            )
+        }
+    }
+}
+
+fn bearer_token(header: Option<&str>) -> Option<&str> {
+    header
+        .and_then(|value| value.strip_prefix("Bearer "))
+        .map(str::trim)
+        .filter(|token| !token.is_empty())
+}
+
+async fn authorize_wake(auth: &WakeAuth, header: Option<&str>) -> Result<(), WakeRefusal> {
+    match auth {
+        WakeAuth::LoopbackEmulator => Ok(()),
+        WakeAuth::Disabled { verifier } => {
+            let token = bearer_token(header).ok_or(WakeRefusal::Unauthenticated)?;
+            if let Some(verifier) = verifier {
+                verifier
+                    .verify(token)
+                    .await
+                    .map_err(|_| WakeRefusal::Unauthenticated)?;
+            }
+            Err(WakeRefusal::ScheduleDisabled)
+        }
+        WakeAuth::Verified {
+            verifier,
+            principal,
+        } => {
+            let token = bearer_token(header).ok_or(WakeRefusal::Unauthenticated)?;
+            let claims = verifier
+                .verify(token)
+                .await
+                .map_err(|_| WakeRefusal::Unauthenticated)?;
+            let verified = claims.get("email_verified") == Some(&Value::Bool(true));
+            let matches_principal = claims
+                .get("email")
+                .and_then(Value::as_str)
+                .is_some_and(|email| email.eq_ignore_ascii_case(principal.as_str()));
+            if verified && matches_principal {
+                Ok(())
+            } else {
+                Err(WakeRefusal::ForbiddenPrincipal)
+            }
+        }
+    }
+}
+
+fn wake_auth(get: &impl Fn(&str) -> Option<String>, hosted: bool) -> Result<WakeAuth, String> {
+    let audience = configured(get, "PHYSICIAN_WORKER_AUDIENCE");
+    if let Some(raw_principal) = configured(get, "PHYSICIAN_SCHEDULER_SERVICE_ACCOUNT") {
+        let principal = hosting::ServiceAccountEmail::parse(&raw_principal)
+            .map_err(|error| format!("PHYSICIAN_SCHEDULER_SERVICE_ACCOUNT: {error}"))?;
+        let audience = audience
+            .ok_or("PHYSICIAN_SCHEDULER_SERVICE_ACCOUNT requires PHYSICIAN_WORKER_AUDIENCE")?;
+        return Ok(WakeAuth::Verified {
+            verifier: audience_verifier(audience).build(),
+            principal,
+        });
+    }
+    if !hosted && configured(get, "PUBSUB_EMULATOR_HOST").is_some() {
+        let address = listen_addr(get);
+        if !is_loopback_listener(&address) {
+            return Err(format!(
+                "PUBSUB_EMULATOR_HOST disables schedule verification, so the worker must listen on loopback; {address} is not"
+            ));
+        }
+        return Ok(WakeAuth::LoopbackEmulator);
+    }
+    Ok(WakeAuth::Disabled {
+        verifier: audience.map(|aud| audience_verifier(aud).build()),
+    })
+}
+
+fn audience_verifier(
+    audience: String,
+) -> google_cloud_auth::credentials::idtoken::verifier::Builder {
+    google_cloud_auth::credentials::idtoken::verifier::Builder::new([audience])
 }
 
 /// The push route's authentication gate runs before decoding or claiming work.
@@ -666,11 +1051,7 @@ async fn authorize_push(
     let Some(verifier) = verifier else {
         return Ok(());
     };
-    let token = header
-        .and_then(|value| value.strip_prefix("Bearer "))
-        .map(str::trim)
-        .filter(|token| !token.is_empty())
-        .ok_or(StatusCode::UNAUTHORIZED)?;
+    let token = bearer_token(header).ok_or(StatusCode::UNAUTHORIZED)?;
     verifier
         .verify(token)
         .await
@@ -1620,6 +2001,515 @@ mod tests {
         assert_eq!(
             plan.check_source_boundary(&scope(&withdrawn)).await,
             refusal
+        );
+    }
+
+    struct RecordingWakeHandler {
+        ticks: std::sync::Mutex<Vec<WakeTick>>,
+        fail_with_store_error: std::sync::atomic::AtomicBool,
+    }
+
+    impl RecordingWakeHandler {
+        fn new() -> Arc<Self> {
+            Arc::new(Self {
+                ticks: std::sync::Mutex::new(Vec::new()),
+                fail_with_store_error: std::sync::atomic::AtomicBool::new(false),
+            })
+        }
+
+        fn recorded(&self) -> Vec<WakeTick> {
+            self.ticks.lock().unwrap().clone()
+        }
+    }
+
+    #[async_trait::async_trait]
+    impl WakeHandler for RecordingWakeHandler {
+        async fn wake(&self, tick: &WakeTick) -> Result<WakeReport, WakeError> {
+            self.ticks.lock().unwrap().push(tick.clone());
+            if tick.directive == WakeDirective::RehearseFailure {
+                return Err(WakeError::Rehearsed);
+            }
+            if self
+                .fail_with_store_error
+                .load(std::sync::atomic::Ordering::SeqCst)
+            {
+                return Err(WakeError::RuntimeStore(sea_orm::DbErr::Custom(
+                    "database connection pool timed out".into(),
+                )));
+            }
+            Ok(WakeReport {
+                due_patients_checked: 3,
+            })
+        }
+    }
+
+    #[derive(Clone, Default)]
+    struct CapturedEvents(Arc<std::sync::Mutex<Vec<serde_json::Map<String, Value>>>>);
+
+    struct MapVisitor<'a>(&'a mut serde_json::Map<String, Value>);
+
+    impl tracing::field::Visit for MapVisitor<'_> {
+        fn record_str(&mut self, field: &tracing::field::Field, value: &str) {
+            self.0
+                .insert(field.name().to_owned(), Value::String(value.to_owned()));
+        }
+        fn record_bool(&mut self, field: &tracing::field::Field, value: bool) {
+            self.0.insert(field.name().to_owned(), Value::Bool(value));
+        }
+        fn record_u64(&mut self, field: &tracing::field::Field, value: u64) {
+            self.0.insert(field.name().to_owned(), value.into());
+        }
+        fn record_i64(&mut self, field: &tracing::field::Field, value: i64) {
+            self.0.insert(field.name().to_owned(), value.into());
+        }
+        fn record_debug(&mut self, field: &tracing::field::Field, value: &dyn std::fmt::Debug) {
+            self.0
+                .insert(field.name().to_owned(), Value::String(format!("{value:?}")));
+        }
+    }
+
+    impl<S: tracing::Subscriber> tracing_subscriber::Layer<S> for CapturedEvents {
+        fn on_event(
+            &self,
+            event: &tracing::Event<'_>,
+            _ctx: tracing_subscriber::layer::Context<'_, S>,
+        ) {
+            let mut fields = serde_json::Map::new();
+            fields.insert(
+                "level".into(),
+                Value::String(event.metadata().level().to_string()),
+            );
+            event.record(&mut MapVisitor(&mut fields));
+            self.0.lock().unwrap().push(fields);
+        }
+    }
+
+    async fn spawn_jwks_fixture() -> (
+        tokio::task::JoinHandle<()>,
+        String,
+        jsonwebtoken::EncodingKey,
+        jsonwebtoken::Header,
+    ) {
+        use jsonwebtoken::{Algorithm, EncodingKey, Header};
+        let key = EncodingKey::from_rsa_pem(include_bytes!(
+            "../../tests/fixtures/pubsub-test-only-key.pem"
+        ))
+        .unwrap();
+        let jwks: Value = serde_json::from_str(include_str!(
+            "../../tests/fixtures/pubsub-test-only-jwks.json"
+        ))
+        .unwrap();
+        let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+        let endpoint = format!("http://{}/certs", listener.local_addr().unwrap());
+        let handle = tokio::spawn(async move {
+            axum::serve(
+                listener,
+                Router::new().route(
+                    "/certs",
+                    get(move || {
+                        let jwks = jwks.clone();
+                        async move { Json(jwks) }
+                    }),
+                ),
+            )
+            .await
+            .unwrap();
+        });
+        let mut header = Header::new(Algorithm::RS256);
+        header.kid = Some("synthetic-pubsub-proof".into());
+        (handle, endpoint, key, header)
+    }
+
+    #[tokio::test]
+    async fn schedule_wake_accepts_dedicated_scheduler_principal_and_logs_wake_tick() {
+        use tower::ServiceExt;
+        use tracing::instrument::WithSubscriber;
+        use tracing_subscriber::layer::SubscriberExt;
+
+        let (jwks_server, jwks_url, key, header) = spawn_jwks_fixture().await;
+        let audience = "https://physician-worker.codahealth.test";
+        let scheduler_sa = "physician-scheduler@coda-rust-staging.iam.gserviceaccount.com";
+        let verifier = audience_verifier(audience.into())
+            .with_jwks_url(jwks_url)
+            .build();
+        let handler = RecordingWakeHandler::new();
+        let app = wake_router(Arc::new(WakeService {
+            auth: WakeAuth::Verified {
+                verifier,
+                principal: hosting::ServiceAccountEmail::parse(scheduler_sa).unwrap(),
+            },
+            mode: WakeMode::RehearsalAllowed,
+            handler: handler.clone(),
+            clinical_library: None,
+        }));
+
+        let now = std::time::SystemTime::now()
+            .duration_since(std::time::UNIX_EPOCH)
+            .unwrap()
+            .as_secs();
+        let claims = json!({
+            "iss": "https://accounts.google.com",
+            "aud": audience,
+            "sub": "synthetic-scheduler-sa",
+            "email": scheduler_sa,
+            "email_verified": true,
+            "iat": now - 30,
+            "exp": now + 600,
+        });
+        let signed = format!(
+            "Bearer {}",
+            jsonwebtoken::encode(&header, &claims, &key).unwrap()
+        );
+
+        let events = CapturedEvents::default();
+        let subscriber = tracing_subscriber::registry().with(events.clone());
+        let response = async {
+            let request = axum::http::Request::builder()
+                .method("POST")
+                .uri("/schedule/wake")
+                .header(axum::http::header::AUTHORIZATION, &signed)
+                .header(axum::http::header::CONTENT_TYPE, "application/json")
+                .header(
+                    "X-CloudScheduler-JobName",
+                    "projects/coda-rust-staging/locations/us-east1/jobs/physician-schedule",
+                )
+                .header("X-CloudScheduler-ScheduleTime", "2026-11-12T06:00:00Z")
+                .header("X-CloudScheduler-JobExecutionCount", "0")
+                .body(axum::body::Body::from("{}"))
+                .unwrap();
+            app.oneshot(request).await.unwrap()
+        }
+        .with_subscriber(subscriber)
+        .await;
+
+        assert_eq!(response.status(), StatusCode::OK);
+        let body_bytes = axum::body::to_bytes(response.into_body(), BODY_LIMIT)
+            .await
+            .unwrap();
+        let body: Value = serde_json::from_slice(&body_bytes).unwrap();
+        assert_eq!(body["status"], "ok");
+        assert_eq!(body["due_patients_checked"], 3);
+
+        let recorded = handler.recorded();
+        assert_eq!(
+            recorded,
+            vec![WakeTick {
+                job_name: Some(
+                    "projects/coda-rust-staging/locations/us-east1/jobs/physician-schedule".into()
+                ),
+                schedule_time: Some("2026-11-12T06:00:00Z".into()),
+                retry_count: 0,
+                directive: WakeDirective::Normal,
+            }]
+        );
+
+        let captured = events.0.lock().unwrap();
+        let wake_log = captured
+            .iter()
+            .find(|entry| {
+                entry.get("event").and_then(Value::as_str) == Some("physician.worker.schedule_wake")
+            })
+            .expect("structured wake acceptance log emitted");
+        assert_eq!(wake_log["level"], "INFO");
+        assert_eq!(
+            wake_log["scheduler.job"],
+            "projects/coda-rust-staging/locations/us-east1/jobs/physician-schedule"
+        );
+        assert_eq!(wake_log["scheduler.retry_count"], 0);
+
+        jwks_server.abort();
+    }
+
+    #[tokio::test]
+    async fn schedule_wake_refuses_missing_invalid_and_wrong_service_account_tokens_before_dispatch()
+     {
+        use tower::ServiceExt;
+
+        let (jwks_server, jwks_url, key, header) = spawn_jwks_fixture().await;
+        let audience = "https://physician-worker.codahealth.test";
+        let scheduler_sa = "physician-scheduler@coda-rust-staging.iam.gserviceaccount.com";
+        let push_sa = "physician-pubsub-push@coda-rust-staging.iam.gserviceaccount.com";
+        let verifier = audience_verifier(audience.into())
+            .with_jwks_url(jwks_url.clone())
+            .build();
+        let handler = RecordingWakeHandler::new();
+        let app = wake_router(Arc::new(WakeService {
+            auth: WakeAuth::Verified {
+                verifier,
+                principal: hosting::ServiceAccountEmail::parse(scheduler_sa).unwrap(),
+            },
+            mode: WakeMode::RehearsalAllowed,
+            handler: handler.clone(),
+            clinical_library: None,
+        }));
+
+        let now = std::time::SystemTime::now()
+            .duration_since(std::time::UNIX_EPOCH)
+            .unwrap()
+            .as_secs();
+        let base_claims = json!({
+            "iss": "https://accounts.google.com",
+            "aud": audience,
+            "sub": "synthetic-sa",
+            "email": scheduler_sa,
+            "email_verified": true,
+            "iat": now - 30,
+            "exp": now + 600,
+        });
+        let sign = |claims: &Value| {
+            format!(
+                "Bearer {}",
+                jsonwebtoken::encode(&header, claims, &key).unwrap()
+            )
+        };
+        let send = |router: Router, auth: Option<String>| async move {
+            let mut builder = axum::http::Request::builder()
+                .method("POST")
+                .uri("/schedule/wake")
+                .header(axum::http::header::CONTENT_TYPE, "application/json");
+            if let Some(auth) = auth {
+                builder = builder.header(axum::http::header::AUTHORIZATION, auth);
+            }
+            router
+                .oneshot(builder.body(axum::body::Body::from("{}")).unwrap())
+                .await
+                .unwrap()
+                .status()
+        };
+
+        // Missing or unauthenticated tokens -> 401 Unauthorized.
+        assert_eq!(send(app.clone(), None).await, StatusCode::UNAUTHORIZED);
+        assert_eq!(
+            send(app.clone(), Some("Basic dXNlcjpwYXNz".into())).await,
+            StatusCode::UNAUTHORIZED
+        );
+        assert_eq!(
+            send(app.clone(), Some("Bearer not-a-jwt".into())).await,
+            StatusCode::UNAUTHORIZED
+        );
+        for (field, bad_value) in [
+            ("aud", json!("https://other-worker.codahealth.test")),
+            ("iss", json!("https://untrusted.codahealth.test")),
+            ("exp", json!(now - 120)),
+        ] {
+            let mut invalid = base_claims.clone();
+            invalid[field] = bad_value;
+            assert_eq!(
+                send(app.clone(), Some(sign(&invalid))).await,
+                StatusCode::UNAUTHORIZED,
+                "invalid {field} must fail 401"
+            );
+        }
+
+        // Validly signed Google OIDC token for the Pub/Sub push SA (wrong principal) -> 403 Forbidden!
+        let mut wrong_principal = base_claims.clone();
+        wrong_principal["email"] = json!(push_sa);
+        assert_eq!(
+            send(app.clone(), Some(sign(&wrong_principal))).await,
+            StatusCode::FORBIDDEN
+        );
+
+        let mut unverified_email = base_claims.clone();
+        unverified_email["email_verified"] = json!(false);
+        assert_eq!(
+            send(app.clone(), Some(sign(&unverified_email))).await,
+            StatusCode::FORBIDDEN
+        );
+
+        // Disabled schedule: missing token -> 401, valid token -> 403.
+        let disabled_app = wake_router(Arc::new(WakeService {
+            auth: WakeAuth::Disabled {
+                verifier: Some(
+                    audience_verifier(audience.into())
+                        .with_jwks_url(jwks_url)
+                        .build(),
+                ),
+            },
+            mode: WakeMode::LiveOnly,
+            handler: handler.clone(),
+            clinical_library: None,
+        }));
+        assert_eq!(
+            send(disabled_app.clone(), None).await,
+            StatusCode::UNAUTHORIZED
+        );
+        assert_eq!(
+            send(disabled_app, Some(sign(&base_claims))).await,
+            StatusCode::FORBIDDEN
+        );
+
+        assert!(
+            handler.recorded().is_empty(),
+            "no refused request may reach WakeHandler"
+        );
+        jwks_server.abort();
+    }
+
+    #[tokio::test]
+    async fn schedule_wake_forced_failure_returns_503_for_scheduler_retry_and_emits_alert_log() {
+        use std::error::Error as _;
+        use tower::ServiceExt;
+        use tracing::instrument::WithSubscriber;
+        use tracing_subscriber::layer::SubscriberExt;
+
+        let handler = RecordingWakeHandler::new();
+        let rehearsal_app = wake_router(Arc::new(WakeService {
+            auth: WakeAuth::LoopbackEmulator,
+            mode: WakeMode::RehearsalAllowed,
+            handler: handler.clone(),
+            clinical_library: None,
+        }));
+
+        let events = CapturedEvents::default();
+        let subscriber = tracing_subscriber::registry().with(events.clone());
+        let (rehearsed_status, store_status) = async {
+            let rehearsed = rehearsal_app
+                .clone()
+                .oneshot(
+                    axum::http::Request::builder()
+                        .method("POST")
+                        .uri("/schedule/wake")
+                        .header(axum::http::header::CONTENT_TYPE, "application/json")
+                        .header("X-CloudScheduler-JobExecutionCount", "2")
+                        .body(axum::body::Body::from(r#"{"rehearse_failure":true}"#))
+                        .unwrap(),
+                )
+                .await
+                .unwrap()
+                .status();
+
+            handler
+                .fail_with_store_error
+                .store(true, std::sync::atomic::Ordering::SeqCst);
+            let store_failed = rehearsal_app
+                .oneshot(
+                    axum::http::Request::builder()
+                        .method("POST")
+                        .uri("/schedule/wake")
+                        .header(axum::http::header::CONTENT_TYPE, "application/json")
+                        .body(axum::body::Body::from("{}"))
+                        .unwrap(),
+                )
+                .await
+                .unwrap()
+                .status();
+            (rehearsed, store_failed)
+        }
+        .with_subscriber(subscriber)
+        .await;
+
+        assert_eq!(rehearsed_status, StatusCode::SERVICE_UNAVAILABLE);
+        assert_eq!(store_status, StatusCode::SERVICE_UNAVAILABLE);
+
+        let captured = events.0.lock().unwrap().clone();
+        let failure_logs: Vec<_> = captured
+            .iter()
+            .filter(|entry| {
+                entry.get("event").and_then(Value::as_str)
+                    == Some("physician.worker.schedule_wake_failed")
+            })
+            .collect();
+        assert_eq!(failure_logs.len(), 2);
+        assert_eq!(failure_logs[0]["level"], "ERROR");
+        assert_eq!(failure_logs[0]["error.kind"], "rehearsed_failure");
+        assert_eq!(failure_logs[0]["scheduler.retry_count"], 2);
+        assert_eq!(failure_logs[1]["error.kind"], "runtime_store_unavailable");
+
+        // LiveOnly mode refuses rehearsed failures with 403 Forbidden before calling WakeHandler.
+        let live_handler = RecordingWakeHandler::new();
+        let live_app = wake_router(Arc::new(WakeService {
+            auth: WakeAuth::LoopbackEmulator,
+            mode: WakeMode::LiveOnly,
+            handler: live_handler.clone(),
+            clinical_library: None,
+        }));
+        let live_status = live_app
+            .oneshot(
+                axum::http::Request::builder()
+                    .method("POST")
+                    .uri("/schedule/wake")
+                    .header(axum::http::header::CONTENT_TYPE, "application/json")
+                    .body(axum::body::Body::from(r#"{"rehearse_failure":true}"#))
+                    .unwrap(),
+            )
+            .await
+            .unwrap()
+            .status();
+        assert_eq!(live_status, StatusCode::FORBIDDEN);
+        assert!(live_handler.recorded().is_empty());
+
+        let caused = WakeError::RuntimeStore(sea_orm::DbErr::Custom("db down".into()));
+        assert!(caused.source().is_some());
+    }
+
+    #[test]
+    fn wake_auth_validates_scheduler_principal_and_emulator_loopback() {
+        let with_pairs = |pairs: &[(&str, &str)], hosted: bool| {
+            wake_auth(
+                &|name| {
+                    pairs
+                        .iter()
+                        .find(|(key, _)| *key == name)
+                        .map(|(_, value)| (*value).to_owned())
+                },
+                hosted,
+            )
+        };
+        assert!(matches!(
+            with_pairs(
+                &[
+                    (
+                        "PHYSICIAN_WORKER_AUDIENCE",
+                        "https://physician-worker.codahealth.test"
+                    ),
+                    (
+                        "PHYSICIAN_SCHEDULER_SERVICE_ACCOUNT",
+                        "physician-scheduler@coda-rust-staging.iam.gserviceaccount.com"
+                    ),
+                ],
+                true
+            ),
+            Ok(WakeAuth::Verified { .. })
+        ));
+        assert!(
+            with_pairs(
+                &[(
+                    "PHYSICIAN_SCHEDULER_SERVICE_ACCOUNT",
+                    "physician-scheduler@coda-rust-staging.iam.gserviceaccount.com"
+                )],
+                true
+            )
+            .is_err(),
+            "scheduler principal without audience must refuse startup"
+        );
+        assert!(
+            with_pairs(
+                &[
+                    (
+                        "PHYSICIAN_WORKER_AUDIENCE",
+                        "https://physician-worker.codahealth.test"
+                    ),
+                    (
+                        "PHYSICIAN_SCHEDULER_SERVICE_ACCOUNT",
+                        "person@codahealth.test"
+                    ),
+                ],
+                true
+            )
+            .is_err(),
+            "human account must be rejected as scheduler principal"
+        );
+        assert!(matches!(
+            with_pairs(&[("PUBSUB_EMULATOR_HOST", "127.0.0.1:8085")], false),
+            Ok(WakeAuth::LoopbackEmulator)
+        ));
+        assert!(
+            with_pairs(
+                &[("PUBSUB_EMULATOR_HOST", "127.0.0.1:8085"), ("PORT", "8080"),],
+                false
+            )
+            .is_err(),
+            "emulator bypass on non-loopback listener must fail"
         );
     }
 }
