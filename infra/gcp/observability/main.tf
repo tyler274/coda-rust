@@ -10,26 +10,23 @@ locals {
     "iam.googleapis.com",
     "iap.googleapis.com",
     "secretmanager.googleapis.com",
-    "servicenetworking.googleapis.com",
-    "sqladmin.googleapis.com",
-    "storage.googleapis.com",
   ])
 
   manifests_chart = "${path.module}/charts/manifests"
 
   # In-cluster DNS names. Services find the collector here; the collector
-  # finds the Agent's node-local service and the Langfuse web service.
+  # finds the Agent's node-local service.
   collector_service       = "otel-collector"
   collector_host          = "${local.collector_service}.${local.namespace}.svc.cluster.local"
   collector_otlp_http     = "http://${local.collector_host}:4318"
   collector_otlp_grpc     = "${local.collector_host}:4317"
   datadog_agent_name      = "datadog"
   datadog_agent_otlp_grpc = "${local.datadog_agent_name}-agent.${local.namespace}.svc.cluster.local:4317"
-  langfuse_release        = "langfuse"
-  langfuse_web_service    = "${local.langfuse_release}-web"
-  langfuse_base_path      = var.staging_proxy == null ? "" : "/langfuse"
-  langfuse_web_url        = "http://${local.langfuse_web_service}.${local.namespace}.svc.cluster.local:3000${local.langfuse_base_path}"
-  langfuse_otlp_endpoint  = "${local.langfuse_web_url}/api/public/otel"
+
+  # The Langfuse project is outside the cluster. The collector reaches its
+  # OTLP endpoint over HTTPS through the cluster's Cloud NAT.
+  langfuse_enabled       = var.langfuse_host != null
+  langfuse_otlp_endpoint = local.langfuse_enabled ? "${var.langfuse_host}/api/public/otel" : null
 
   # Each selected backend owns its resources; both keeps Datadog primary.
   datadog_backend = contains(["datadog", "both"], var.telemetry_backend)
@@ -71,13 +68,6 @@ data "google_project" "runtime" {
   project_id = var.project_id
 }
 
-# Read only: infra/gcp/rust-environments owns rust-private and its Private
-# Service Access range, which Langfuse's Cloud SQL attaches to.
-data "google_compute_network" "runtime" {
-  project = var.cluster_project
-  name    = var.network_name
-}
-
 resource "google_project_service" "workload" {
   for_each = local.workload_services
 
@@ -87,9 +77,9 @@ resource "google_project_service" "workload" {
   disable_on_destroy = false
 }
 
-# Langfuse, its stores, the collector, and the selected backend (the Datadog
-# Agent or the Grafana stack) share one namespace. Nothing in it is exposed
-# outside the cluster except the optional IAP-gated Grafana edge.
+# The collector and the selected backend (the Datadog Agent or the Grafana
+# stack) share one namespace. Nothing in it is exposed outside the cluster
+# except the optional IAP-gated Grafana edge.
 resource "kubernetes_namespace" "observability" {
   metadata {
     name = local.namespace

@@ -45,34 +45,16 @@ run "observability_mounts_use_the_relay_and_own_identity" {
   }
   variables { observability_relay_url = "https://observability-relay-836508863523.us-east1.run.app" }
   assert {
-    condition     = local.runtime_env.OBSERVABILITY_RELAY_URL == var.observability_relay_url && local.runtime_env.PHYSICIAN_PROXY_SERVICE_ACCOUNT == "public-site-staging@coda-health-staging.iam.gserviceaccount.com" && local.runtime_env.LANGFUSE_SIGN_IN == "password"
-    error_message = "The observability mounts must reach the fixed relay with the site's own signing identity, and pass Langfuse's own login through by default."
+    condition     = local.runtime_env.OBSERVABILITY_RELAY_URL == var.observability_relay_url && local.runtime_env.PHYSICIAN_PROXY_SERVICE_ACCOUNT == "public-site-staging@coda-health-staging.iam.gserviceaccount.com" && !contains(keys(local.runtime_env), "LANGFUSE_SIGN_IN")
+    error_message = "The Grafana mount must reach the fixed relay with the site's own signing identity."
   }
-}
-
-run "langfuse_sso_signs_in_from_iap" {
-  command = plan
-  variables {
-    observability_relay_url = "https://observability-relay-836508863523.us-east1.run.app"
-    langfuse_sso            = true
-  }
-  assert {
-    condition     = local.runtime_env.LANGFUSE_SIGN_IN == "sso"
-    error_message = "With langfuse_sso the site sends Langfuse sign-in through the issuer."
-  }
-}
-
-run "reject_langfuse_sso_without_the_relay" {
-  command = plan
-  variables { langfuse_sso = true }
-  expect_failures = [var.langfuse_sso]
 }
 
 run "no_relay_means_no_observability_mounts" {
   command = plan
   assert {
     condition     = !contains(keys(local.runtime_env), "OBSERVABILITY_RELAY_URL")
-    error_message = "Without a relay URL the site mounts neither /grafana nor /langfuse."
+    error_message = "Without a relay URL the site does not mount /grafana."
   }
 }
 

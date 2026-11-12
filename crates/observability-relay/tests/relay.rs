@@ -54,29 +54,20 @@ async fn upstream(
     (origin, handle)
 }
 
-fn config(grafana: &str, langfuse: &str, langfuse_sso: &str) -> Config {
+fn config(grafana: &str) -> Config {
     Config::from_lookup(|name| match name {
         "RELAY_IAP_AUDIENCE" => Some(AUDIENCE.into()),
         "GRAFANA_UPSTREAM" => Some(grafana.into()),
-        "LANGFUSE_UPSTREAM" => Some(langfuse.into()),
-        "LANGFUSE_SSO_UPSTREAM" => Some(langfuse_sso.into()),
         _ => None,
     })
     .unwrap()
 }
 
 #[tokio::test]
-async fn routes_three_prefixes_unchanged_and_only_with_the_relays_own_assertion() {
+async fn routes_grafana_unchanged_and_only_with_the_relays_own_assertion() {
     let grafana_calls = Arc::new(AtomicUsize::new(0));
-    let langfuse_calls = Arc::new(AtomicUsize::new(0));
-    let sso_calls = Arc::new(AtomicUsize::new(0));
     let (grafana, g) = upstream("grafana", grafana_calls.clone()).await;
-    let (langfuse, l) = upstream("langfuse", langfuse_calls.clone()).await;
-    let (sso, s) = upstream("langfuse-sso", sso_calls.clone()).await;
-    let app = router_with_verifier(
-        config(&grafana, &langfuse, &sso),
-        http::iap::fixture::verifier(AUDIENCE),
-    );
+    let app = router_with_verifier(config(&grafana), http::iap::fixture::verifier(AUDIENCE));
     let send = |path: &str, assertion: Option<String>| {
         let mut request = Request::builder()
             .uri(path)
@@ -103,8 +94,6 @@ async fn routes_three_prefixes_unchanged_and_only_with_the_relays_own_assertion(
     for (path, name) in [
         ("/grafana/api/health?x=%2F", "grafana"),
         ("/grafana", "grafana"),
-        ("/langfuse/api/public/health", "langfuse"),
-        ("/langfuse-sso/authorize?state=s", "langfuse-sso"),
     ] {
         let response = send(path, Some(http::iap::fixture::assertion(AUDIENCE)))
             .await
@@ -126,7 +115,8 @@ async fn routes_three_prefixes_unchanged_and_only_with_the_relays_own_assertion(
         "/",
         "/physician/",
         "/grafanax",
-        "/langfuse-old/",
+        "/langfuse/api/public/health",
+        "/langfuse-sso/authorize?state=s",
         "//evil.test/grafana/",
     ] {
         let response = send(path, Some(http::iap::fixture::assertion(AUDIENCE)))
@@ -135,11 +125,7 @@ async fn routes_three_prefixes_unchanged_and_only_with_the_relays_own_assertion(
         assert_eq!(response.status(), StatusCode::NOT_FOUND, "{path}");
     }
     assert_eq!(grafana_calls.load(Ordering::SeqCst), 2);
-    assert_eq!(langfuse_calls.load(Ordering::SeqCst), 1);
-    assert_eq!(sso_calls.load(Ordering::SeqCst), 1);
     g.abort();
-    l.abort();
-    s.abort();
 }
 
 #[test]
@@ -148,34 +134,9 @@ fn configuration_is_required_and_origin_only() {
         Config::from_lookup(|name| match name {
             "RELAY_IAP_AUDIENCE" => Some(audience.into()),
             "GRAFANA_UPSTREAM" => Some(grafana.into()),
-            "LANGFUSE_UPSTREAM" => Some("http://10.80.0.11:3000".into()),
-            "LANGFUSE_SSO_UPSTREAM" => Some("http://10.80.0.12:3000".into()),
             _ => None,
         })
     };
-    let without_sso = Config::from_lookup(|name| match name {
-        "RELAY_IAP_AUDIENCE" => Some(AUDIENCE.into()),
-        "GRAFANA_UPSTREAM" => Some("http://10.80.0.10:3000".into()),
-        "LANGFUSE_UPSTREAM" => Some("http://10.80.0.11:3000".into()),
-        _ => None,
-    });
-    assert!(
-        without_sso.unwrap().langfuse_sso.is_none(),
-        "a relay released before the issuer exists still starts"
-    );
-    let bad_sso = Config::from_lookup(|name| match name {
-        "RELAY_IAP_AUDIENCE" => Some(AUDIENCE.into()),
-        "GRAFANA_UPSTREAM" => Some("http://10.80.0.10:3000".into()),
-        "LANGFUSE_UPSTREAM" => Some("http://10.80.0.11:3000".into()),
-        "LANGFUSE_SSO_UPSTREAM" => Some("http://10.80.0.12:3000/path".into()),
-        _ => None,
-    });
-    assert!(matches!(
-        bad_sso,
-        Err(ConfigError::NotOrigin {
-            setting: "LANGFUSE_SSO_UPSTREAM"
-        })
-    ));
     assert!(load(AUDIENCE, "http://10.80.0.10:3000").is_ok());
     let audience = |result| {
         matches!(
@@ -221,36 +182,4 @@ fn configuration_is_required_and_origin_only() {
         }
     ));
     assert!(std::error::Error::source(&error).is_some());
-}
-
-#[tokio::test]
-async fn without_the_issuer_langfuse_sso_is_not_found_and_the_rest_still_relays() {
-    let langfuse_calls = Arc::new(AtomicUsize::new(0));
-    let (langfuse, l) = upstream("langfuse", langfuse_calls.clone()).await;
-    let config = Config::from_lookup(|name| match name {
-        "RELAY_IAP_AUDIENCE" => Some(AUDIENCE.into()),
-        "GRAFANA_UPSTREAM" => Some("http://127.0.0.1:9".into()),
-        "LANGFUSE_UPSTREAM" => Some(langfuse.clone()),
-        _ => None,
-    })
-    .unwrap();
-    let app = router_with_verifier(config, http::iap::fixture::verifier(AUDIENCE));
-    let send = |path: &str| {
-        app.clone().oneshot(
-            Request::builder()
-                .uri(path)
-                .header(
-                    "x-goog-iap-jwt-assertion",
-                    http::iap::fixture::assertion(AUDIENCE),
-                )
-                .body(Body::empty())
-                .unwrap(),
-        )
-    };
-    let refused = send("/langfuse-sso/authorize?state=s").await.unwrap();
-    assert_eq!(refused.status(), StatusCode::NOT_FOUND);
-    let relayed = send("/langfuse/api/public/health").await.unwrap();
-    assert_eq!(relayed.status(), StatusCode::OK);
-    assert_eq!(langfuse_calls.load(Ordering::SeqCst), 1);
-    l.abort();
 }

@@ -22,7 +22,6 @@ locals {
     var.observability_relay_url == null ? {} : {
       OBSERVABILITY_RELAY_URL         = var.observability_relay_url
       PHYSICIAN_PROXY_SERVICE_ACCOUNT = google_service_account.site.email
-      LANGFUSE_SIGN_IN                = var.langfuse_sso ? "sso" : "password"
     },
   )
 }

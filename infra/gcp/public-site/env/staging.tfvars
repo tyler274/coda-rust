@@ -14,8 +14,6 @@ release_sha    = "36791a921325e176061c38677475d4921fb7cb64"
 # Before release: operator bootstraps self-signJwt and applies physician's
 # authoritative IAP allowlist. CI reads this file; it does not provision that IAM.
 physician_app_url = "https://physician-836508863523.us-east1.run.app"
-# /grafana/ and /langfuse/ go to the observability relay in coda-rust-staging,
-# behind its own IAP (rust-environments observability-relay.tf).
+# /grafana/ goes to the observability relay in coda-rust-staging, behind its
+# own IAP (rust-environments observability-relay.tf).
 observability_relay_url = "https://observability-relay-836508863523.us-east1.run.app"
-# Langfuse sign-in through the in-cluster IAP issuer (observability langfuse_sso_image).
-langfuse_sso = true

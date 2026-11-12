@@ -25,8 +25,8 @@ sql_tier         = "db-f1-micro"
 # Operator approval/application is required before enabling the public proxy.
 physician_proxy_invokers = ["serviceAccount:public-site-staging@coda-health-staging.iam.gserviceaccount.com"]
 
-# The same public-site principal reaches /grafana/ and /langfuse/ through the
-# observability relay (observability-relay.tf); it gets no other access.
+# The same public-site principal reaches /grafana/ through the observability
+# relay (observability-relay.tf); it gets no other access.
 observability_proxy_invokers = ["serviceAccount:public-site-staging@coda-health-staging.iam.gserviceaccount.com"]
 
 # Staging-preview workloads remain behind direct IAP. SQL grants were
@@ -52,7 +52,7 @@ mail_relay_invokers = ["serviceAccount:workspace-web-staging@coda-gym.iam.gservi
 enable_physician_scale = true
 
 # Private GKE Autopilot cluster for the OpenTelemetry gateway, Datadog Agent and
-# Langfuse (observability-cluster.tf); infra/gcp/observability deploys into it.
+# Grafana stack (observability-cluster.tf); infra/gcp/observability deploys into it.
 observability_cluster_enabled = true
 
 # The observability relay (observability-relay.tf). Set to the first published
@@ -65,8 +65,8 @@ observability_enabled = true
 # Both destinations behind the gateway; must match infra/gcp/observability.
 telemetry_backend = "both"
 # Prompt and completion text on generation spans. The gateway strips it from
-# the Datadog and Grafana pipelines and sends it only to the in-project
-# Langfuse; must match infra/gcp/observability, which requires Langfuse on.
+# the Datadog and Grafana pipelines and sends it only to Langfuse HIPAA cloud;
+# must match infra/gcp/observability, which requires langfuse_host.
 telemetry_content = "full"
 
 # The authenticated availability probe Cloud Run Job (availability.tf), from

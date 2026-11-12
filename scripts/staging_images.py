@@ -19,7 +19,6 @@ REPOSITORIES = {
     "duet-runtime": "coda-duet-api",
     "duet-migration": "coda-duet-migrate",
     "observability-relay": "coda-observability-relay",
-    "langfuse-sso": "coda-langfuse-sso",
 }
 
 

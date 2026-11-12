@@ -25,7 +25,7 @@ NAME = f"coda-shadow-test-{time.time_ns()}"
 IMAGE = "docker.io/grafana/grafana:13.3.0"
 VARS = {
     "environment": "staging", "project_id": "synthetic-test", "cluster_project": "synthetic-test",
-    "cluster_location": "us-east1", "cluster_name": "synthetic", "network_name": "synthetic",
+    "cluster_location": "us-east1", "cluster_name": "synthetic",
     "otel_gateway_ip": "10.82.0.10", "otel_gateway_source_ranges": ["10.80.0.0/24"],
     "otel_gateway_audience": "synthetic", "otel_gateway_allowed_callers": ["synthetic@synthetic-test.iam.gserviceaccount.com"],
     "telemetry_backend": "both",

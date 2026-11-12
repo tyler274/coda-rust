@@ -104,19 +104,15 @@ pub(super) enum ImageRole {
     DuetRuntime,
     DuetMigration,
     ObservabilityRelay,
-    /// Publish-only: the release rolls no service with it; OpenTofu pins its
-    /// digest in the observability root.
-    LangfuseSso,
 }
 impl ImageRole {
-    pub const ALL: [Self; 7] = [
+    pub const ALL: [Self; 6] = [
         Self::PhysicianRuntime,
         Self::PhysicianWorker,
         Self::PhysicianMigration,
         Self::DuetRuntime,
         Self::DuetMigration,
         Self::ObservabilityRelay,
-        Self::LangfuseSso,
     ];
     pub fn key(self) -> &'static str {
         match self {
@@ -126,7 +122,6 @@ impl ImageRole {
             Self::DuetRuntime => "duet-runtime",
             Self::DuetMigration => "duet-migration",
             Self::ObservabilityRelay => "observability-relay",
-            Self::LangfuseSso => "langfuse-sso",
         }
     }
     pub fn repository(self) -> &'static str {
@@ -137,7 +132,6 @@ impl ImageRole {
             Self::DuetRuntime => "coda-duet-api",
             Self::DuetMigration => "coda-duet-migrate",
             Self::ObservabilityRelay => "coda-observability-relay",
-            Self::LangfuseSso => "coda-langfuse-sso",
         }
     }
 }
@@ -265,8 +259,6 @@ pub(super) struct Images {
         deserialize_with = "observability_relay"
     )]
     observability_relay: Option<PublishedImage>,
-    #[serde(rename = "langfuse-sso", deserialize_with = "langfuse_sso")]
-    langfuse_sso: Option<PublishedImage>,
 }
 macro_rules! image_parser {
     ($function:ident, $role:ident) => {
@@ -287,7 +279,6 @@ image_parser!(physician_migration, PhysicianMigration);
 image_parser!(duet_runtime, DuetRuntime);
 image_parser!(duet_migration, DuetMigration);
 image_parser!(observability_relay, ObservabilityRelay);
-image_parser!(langfuse_sso, LangfuseSso);
 impl Images {
     pub fn get(&self, role: ImageRole) -> Option<&PublishedImage> {
         match role {
@@ -297,7 +288,6 @@ impl Images {
             ImageRole::DuetRuntime => self.duet_runtime.as_ref(),
             ImageRole::DuetMigration => self.duet_migration.as_ref(),
             ImageRole::ObservabilityRelay => self.observability_relay.as_ref(),
-            ImageRole::LangfuseSso => self.langfuse_sso.as_ref(),
         }
     }
     pub fn insert(&mut self, image: PublishedImage) {
@@ -308,7 +298,6 @@ impl Images {
             ImageRole::DuetRuntime => &mut self.duet_runtime,
             ImageRole::DuetMigration => &mut self.duet_migration,
             ImageRole::ObservabilityRelay => &mut self.observability_relay,
-            ImageRole::LangfuseSso => &mut self.langfuse_sso,
         };
         *slot = Some(image);
     }

@@ -61,7 +61,8 @@ class QualificationTests(unittest.TestCase):
         self.assertIn("three consecutive", " ".join(result["steps"]["datadog"]))
         self.assertIn("outside-cluster", " ".join(result["steps"]["cloud-monitoring"]))
         self.assertIn("shadow", " ".join(result["steps"]["grafana-test"]))
-        self.assertIn("langfuse-web", " ".join(result["steps"]["langfuse"]))
+        self.assertIn("chat-failure", " ".join(result["steps"]["langfuse"]))
+        self.assertNotIn("langfuse-web", " ".join(result["steps"]["langfuse"]))
 
     def test_live_refused_before_reading_files_or_using_network(self):
         with patch.object(Path, "read_text", side_effect=AssertionError("must gate first")), patch("socket.socket", side_effect=AssertionError("network forbidden")):

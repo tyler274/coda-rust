@@ -3,11 +3,10 @@
 //! operations backends.
 //!
 //! Every check writes `langfuse-<action>-<stamp>.json` with the deployed
-//! revisions it ran against. `fail`, `recover` and `chat-failure` also write
+//! revisions and the Langfuse host it ran against. `chat-failure` also writes
 //! the alert ledger `observations-langfuse-<stamp>.json` for
-//! `qualify-alerts.py`. Every wait
-//! runs under the exercise's 40-minute cap and the operator's interrupt, and
-//! a scaled-down workload is restored on every exit but a passed `fail`.
+//! `qualify-alerts.py`. Every wait runs under the exercise's 40-minute cap
+//! and the operator's interrupt.
 mod chat;
 mod cluster;
 mod readback;
@@ -18,18 +17,16 @@ use std::time::Duration;
 
 use chrono::{DateTime, Utc};
 use reqwest::blocking::Client;
-use reqwest::header::{COOKIE, SET_COOKIE};
 use serde_json::{Value, json};
 use sha2::{Digest, Sha256};
+use url::Url;
 
 use super::live::{STAGING_PROJECT, Secret, fetch_secret};
 use super::model::{DrillRoute, EvalKind, Exercise, SignalError, SignalKind};
 use crate::failure::Failure;
 use chat::{Physician, Turn};
-use cluster::{Forward, Kubectl, Workload};
-use readback::{
-    AttemptSpan, LangfuseTurn, LogIsolation, MonitorGroup, NamedMonitor, OpsSpan, PasswordSignIn,
-};
+use cluster::Forward;
+use readback::{AttemptSpan, LangfuseTurn, LogIsolation, MonitorGroup, NamedMonitor, OpsSpan};
 use watch::Watch;
 
 const USAGE: &str = "\
@@ -50,36 +47,20 @@ ACTION
                      its successor in the same work and its ERROR generation
                      in Langfuse, Datadog holds no canary, and the monitor
                      recovers
-  fail               scale langfuse-web to 0 (needs --confirm); the chat still
-                     answers, the ops trace arrives, the Langfuse exporter fails
-                     and its monitor fires; langfuse-web stays down for recover
-  recover            scale langfuse-web back to its count before fail (needs
-                     --confirm); new turns land in Langfuse and the monitor recovers
-  signin-breakglass  scale langfuse-sso to 0 (needs --confirm) and try the init
-                     admin's password sign-in through a port-forward
 
 The operator runs it with gcloud signed in as a physician_rehearsal_signers
 account and the rust-observability kubeconfig context; kubectl always names
-that context. Langfuse, Tempo and Loki are reached through port-forwards the
-drill opens itself. Doppler coda-rust/stg supplies
-LANGFUSE_INIT_PROJECT_PUBLIC_KEY, LANGFUSE_INIT_PROJECT_SECRET_KEY,
-LANGFUSE_INIT_USER_EMAIL, LANGFUSE_INIT_USER_PASSWORD, DD_API_KEY and
-DD_APP_KEY; none is printed. Ctrl-C restores what the drill scaled down.";
+that context. Tempo and Loki are reached through port-forwards the drill opens
+itself; Langfuse is the hosted project at LANGFUSE_BASE_URL. Doppler
+coda-rust/stg supplies LANGFUSE_BASE_URL, LANGFUSE_PUBLIC_KEY,
+LANGFUSE_SECRET_KEY, DD_API_KEY and DD_APP_KEY; no key is printed.";
 
-const LANGFUSE_EXPORTER: &str = "otlphttp/langfuse";
 const DATADOG_API: &str = "https://api.datadoghq.com";
 const DATADOG_ENV: &str = "staging";
-/// Langfuse's web image carries the `/langfuse` base path in staging.
-const LANGFUSE_BASE_PATH: &str = "/langfuse";
-/// What `fail` leaves for `recover`: the replica count to restore.
-const HANDOFF: &str = "langfuse-web-down.json";
 const REPLY_POLLS: u32 = 60;
 const READBACK_POLLS: u32 = 36;
 const MONITOR_POLLS: u32 = 60;
 const POLL: Duration = Duration::from_secs(10);
-/// How often `recover` sends a turn while it waits for the monitor, so the
-/// exporter keeps reporting healthy delivery through the 5-minute window.
-const RECOVERY_TRAFFIC: u32 = 6;
 /// `chat_generation_errors` in `infra/gcp/observability/datadog.tf`.
 const CHAT_FAILURE_MONITOR: &str = "[staging] physician chat generation errors";
 /// The ledger group of a `chat-failure` exercise, apart from the exporter's.
@@ -137,17 +118,10 @@ pub(super) enum DrillError {
         code: Option<i32>,
         status: String,
     },
-    #[error("{what} printed {text:?}, not a count")]
-    Count {
-        what: &'static str,
-        text: String,
-        #[source]
-        source: std::num::ParseIntError,
-    },
     #[error("kubectl port-forward to {0} printed no local port")]
     NotForwarded(&'static str),
-    #[error("{0} is already at 0 replicas; restore it before drilling")]
-    AlreadyDown(&'static str),
+    #[error("LANGFUSE_BASE_URL is not a bare https origin")]
+    LangfuseHost(#[source] LangfuseHostError),
     #[error("{what} could not run")]
     Tool {
         what: &'static str,
@@ -168,11 +142,6 @@ pub(super) enum DrillError {
     Cap,
     #[error("the operator interrupted the drill")]
     Interrupted,
-    #[error("recover could not read {HANDOFF}, which fail leaves in the output directory")]
-    NoHandoff {
-        #[source]
-        source: Box<dyn std::error::Error + Send + Sync>,
-    },
     #[error("the alert ledger could not be read: {0}")]
     Ledger(String),
     #[error("could not write {}", path.display())]
@@ -181,25 +150,11 @@ pub(super) enum DrillError {
         #[source]
         source: std::io::Error,
     },
-    #[error("{primary}; restoring {workload} also failed: {restore}")]
-    Restore {
-        primary: Box<DrillError>,
-        workload: &'static str,
-        restore: Box<DrillError>,
-    },
     #[error("{primary}; recording it in the alert ledger also failed: {ledger}")]
     Unrecorded {
         #[source]
         primary: Box<DrillError>,
         ledger: Box<DrillError>,
-    },
-    #[error(
-        "the Langfuse exporter monitor resolved at {resolved} before langfuse-web was restored \
-         at {restored}, so its recovery cannot be read back; run recover promptly after fail"
-    )]
-    ResolvedEarly {
-        resolved: DateTime<Utc>,
-        restored: DateTime<Utc>,
     },
 }
 
@@ -218,9 +173,6 @@ enum Action {
     AlertToRun,
     Isolation,
     ChatFailure,
-    Fail,
-    Recover,
-    SigninBreakglass,
 }
 
 impl Action {
@@ -230,9 +182,6 @@ impl Action {
             "alert-to-run" => Self::AlertToRun,
             "isolation" => Self::Isolation,
             "chat-failure" => Self::ChatFailure,
-            "fail" => Self::Fail,
-            "recover" => Self::Recover,
-            "signin-breakglass" => Self::SigninBreakglass,
             _ => return None,
         })
     }
@@ -243,18 +192,12 @@ impl Action {
             Self::AlertToRun => "alert-to-run",
             Self::Isolation => "isolation",
             Self::ChatFailure => "chat-failure",
-            Self::Fail => "fail",
-            Self::Recover => "recover",
-            Self::SigninBreakglass => "signin-breakglass",
         }
     }
 
-    /// Why the action needs `--confirm`, when it changes staging or pages.
+    /// Why the action needs `--confirm`, when it pages.
     fn needs_confirmation(self) -> Option<&'static str> {
         match self {
-            Self::Fail | Self::Recover | Self::SigninBreakglass => {
-                Some("it scales a staging workload to zero")
-            }
             Self::ChatFailure => Some("it pages #engineering-observability"),
             Self::Rehearse | Self::AlertToRun | Self::Isolation => None,
         }
@@ -464,16 +407,12 @@ fn write_json(path: &Path, body: &Value) -> Result<(), DrillError> {
 }
 
 fn run(request: &Request, report: &mut Report, watch: &mut Watch) -> Result<(), DrillError> {
-    let mut kubectl = Kubectl;
     report.put("revisions", cluster::revisions()?);
     match request.action {
         Action::Rehearse => rehearse(request, report, watch),
         Action::AlertToRun => alert_to_run(request, report, watch),
         Action::Isolation => isolation(request, report, watch),
         Action::ChatFailure => chat_failure(request, report, watch),
-        Action::Fail => fail(request, report, &mut kubectl, watch),
-        Action::Recover => recover(request, report, &mut kubectl, watch),
-        Action::SigninBreakglass => signin_breakglass(report, &mut kubectl, watch),
     }
 }
 
@@ -589,20 +528,21 @@ fn send_turn(request: &Request, report: &mut Report, watch: &Watch) -> Result<Se
     Ok(sent)
 }
 
-/// Langfuse over a drill-owned port-forward.
+/// The hosted Langfuse project the collector exports to, at
+/// `LANGFUSE_BASE_URL`.
 struct Langfuse {
     client: Client,
-    base: String,
-    _forward: Forward,
+    base: Url,
 }
 
 impl Langfuse {
-    fn open() -> Result<Self, DrillError> {
-        let forward = Forward::open("langfuse-web", 3000)?;
+    fn open(report: &mut Report) -> Result<Self, DrillError> {
+        let base = secret("LANGFUSE_BASE_URL")?;
+        let base = langfuse_origin(base.expose()).map_err(DrillError::LangfuseHost)?;
+        report.put("langfuse_host", base.origin().ascii_serialization());
         Ok(Self {
             client: client()?,
-            base: format!("{}{LANGFUSE_BASE_PATH}", forward.url()),
-            _forward: forward,
+            base,
         })
     }
 
@@ -610,92 +550,37 @@ impl Langfuse {
     fn api(&self) -> Result<LangfuseApi<'_>, DrillError> {
         Ok(LangfuseApi {
             langfuse: self,
-            public: secret("LANGFUSE_INIT_PROJECT_PUBLIC_KEY")?,
-            secret: secret("LANGFUSE_INIT_PROJECT_SECRET_KEY")?,
+            public: secret("LANGFUSE_PUBLIC_KEY")?,
+            secret: secret("LANGFUSE_SECRET_KEY")?,
         })
-    }
-
-    /// Tries the init admin's password sign-in the way a browser does: CSRF
-    /// token, credentials callback, then the session it left. Cookies are
-    /// carried by hand because NextAuth marks them `Secure` and the
-    /// port-forward is plain HTTP.
-    fn password_sign_in(&self) -> Result<PasswordSignIn, DrillError> {
-        let email = secret("LANGFUSE_INIT_USER_EMAIL")?;
-        let password = secret("LANGFUSE_INIT_USER_PASSWORD")?;
-        let mut jar = Jar::default();
-        let response = self
-            .client
-            .get(format!("{}/api/auth/csrf", self.base))
-            .send()
-            .map_err(|source| DrillError::Request {
-                what: "Langfuse CSRF token",
-                source,
-            })?;
-        jar.take(&response);
-        let csrf: Value = json_body(response, "Langfuse CSRF token")?;
-        let token = csrf["csrfToken"].as_str().ok_or(DrillError::Shape {
-            what: "Langfuse CSRF token",
-            field: "csrfToken",
-        })?;
-        let callback_url = format!("{}/", self.base);
-        let response = self
-            .client
-            .post(format!("{}/api/auth/callback/credentials", self.base))
-            .header(COOKIE, jar.header())
-            .form(&[
-                ("csrfToken", token),
-                ("email", email.expose()),
-                ("password", password.expose()),
-                ("callbackUrl", callback_url.as_str()),
-                ("json", "true"),
-            ])
-            .send()
-            .map_err(|source| DrillError::Request {
-                what: "Langfuse credentials sign-in",
-                source,
-            })?;
-        jar.take(&response);
-        // NextAuth answers a refused sign-in with 401 and an error URL, so the
-        // status alone decides nothing; the URL and the session do.
-        let callback: Value = response.json().map_err(|source| DrillError::Request {
-            what: "Langfuse credentials sign-in",
-            source,
-        })?;
-        let session = chat::send_json(
-            self.client
-                .get(format!("{}/api/auth/session", self.base))
-                .header(COOKIE, jar.header()),
-            "Langfuse session",
-        )?;
-        Ok(readback::password_sign_in(&callback, &session))
     }
 }
 
-/// The NextAuth cookies one sign-in attempt sets, sent back by name.
-#[derive(Default)]
-struct Jar(Vec<(String, String)>);
+/// Why `LANGFUSE_BASE_URL` is not a usable Langfuse origin.
+#[derive(Debug, thiserror::Error)]
+pub(super) enum LangfuseHostError {
+    #[error("it does not parse as a URL")]
+    Parse(#[source] url::ParseError),
+    #[error("it carries more than an https scheme and a domain")]
+    NotBare,
+}
 
-impl Jar {
-    fn take(&mut self, response: &reqwest::blocking::Response) {
-        for value in response.headers().get_all(SET_COOKIE) {
-            let Some(pair) = value.to_str().ok().and_then(|v| v.split(';').next()) else {
-                continue;
-            };
-            let Some((name, value)) = pair.split_once('=') else {
-                continue;
-            };
-            self.0.retain(|(known, _)| known != name);
-            self.0
-                .push((name.trim().to_owned(), value.trim().to_owned()));
-        }
-    }
-
-    fn header(&self) -> String {
-        self.0
-            .iter()
-            .map(|(name, value)| format!("{name}={value}"))
-            .collect::<Vec<_>>()
-            .join("; ")
+/// `value` as a bare https origin, the shape the observability root's
+/// `langfuse_host` takes; a trailing slash is allowed.
+fn langfuse_origin(value: &str) -> Result<Url, LangfuseHostError> {
+    let url = Url::parse(value.trim()).map_err(LangfuseHostError::Parse)?;
+    let bare = url.scheme() == "https"
+        && url.domain().is_some()
+        && url.port().is_none()
+        && url.username().is_empty()
+        && url.password().is_none()
+        && url.path() == "/"
+        && url.query().is_none()
+        && url.fragment().is_none();
+    if bare {
+        Ok(url)
+    } else {
+        Err(LangfuseHostError::NotBare)
     }
 }
 
@@ -724,40 +609,53 @@ struct LangfuseApi<'a> {
 impl LangfuseApi<'_> {
     fn get(
         &self,
-        path: &str,
+        path: &'static str,
         query: &[(&str, &str)],
         what: &'static str,
     ) -> Result<Value, DrillError> {
+        let mut url = self.langfuse.base.clone();
+        url.set_path(path);
         chat::send_json(
             self.langfuse
                 .client
-                .get(format!("{}{path}", self.langfuse.base))
+                .get(url)
                 .basic_auth(self.public.expose(), Some(self.secret.expose()))
                 .query(query),
             what,
         )
     }
 
-    /// Waits for the chat's trace and its generation.
+    /// The chat's generations, newest first, from the observations API: the
+    /// real-time read path, where the trace endpoints lag by minutes.
+    fn session_generations(&self, sent: &Sent) -> Result<Vec<LangfuseTurn>, DrillError> {
+        let observations = self.get(
+            "/api/public/v2/observations",
+            &[
+                ("sessionId", sent.turn.chat.as_str()),
+                ("name", readback::GENERATION),
+                ("fields", "core,basic,io,metadata,model"),
+                ("expandMetadata", "attributes"),
+                ("limit", "20"),
+            ],
+            "Langfuse observations",
+        )?;
+        readback::session_generations(&observations, &sent.canary).ok_or(DrillError::Shape {
+            what: "Langfuse observations",
+            field: "a data list whose generations carry traceId",
+        })
+    }
+
+    /// Waits for the chat's newest generation.
     fn turn(&self, sent: &Sent, watch: &Watch) -> Result<LangfuseTurn, DrillError> {
         watch
             .poll(READBACK_POLLS, POLL, |_| {
-                let traces = self.get(
-                    "/api/public/traces",
-                    &[("sessionId", sent.turn.chat.as_str()), ("limit", "10")],
-                    "Langfuse traces",
-                )?;
-                let Some(id) = readback::session_trace(&traces) else {
-                    return Ok(None);
-                };
-                let trace = self.get(&format!("/api/public/traces/{id}"), &[], "Langfuse trace")?;
-                Ok(readback::langfuse_turn(&trace, &sent.canary))
+                Ok(self.session_generations(sent)?.into_iter().next())
             })?
             .ok_or(readback_timeout("the Langfuse generation"))
     }
 
-    /// Waits for the generation of attempt `run_id` among the chat's traces:
-    /// a redelivered attempt starts a trace of its own.
+    /// Waits for the generation of attempt `run_id` among the chat's
+    /// generations: a redelivered attempt has a trace of its own.
     fn attempt_generation(
         &self,
         sent: &Sent,
@@ -766,21 +664,10 @@ impl LangfuseApi<'_> {
     ) -> Result<LangfuseTurn, DrillError> {
         watch
             .poll(READBACK_POLLS, POLL, |_| {
-                let traces = self.get(
-                    "/api/public/traces",
-                    &[("sessionId", sent.turn.chat.as_str()), ("limit", "10")],
-                    "Langfuse traces",
-                )?;
-                for id in readback::session_traces(&traces) {
-                    let trace =
-                        self.get(&format!("/api/public/traces/{id}"), &[], "Langfuse trace")?;
-                    let turn = readback::langfuse_turn(&trace, &sent.canary)
-                        .filter(|turn| turn.run_id.as_deref() == Some(run_id));
-                    if turn.is_some() {
-                        return Ok(turn);
-                    }
-                }
-                Ok(None)
+                Ok(self
+                    .session_generations(sent)?
+                    .into_iter()
+                    .find(|turn| turn.run_id.as_deref() == Some(run_id)))
             })?
             .ok_or(readback_timeout("the failed attempt's Langfuse generation"))
     }
@@ -929,33 +816,6 @@ impl Datadog {
         }
     }
 
-    fn query(&self, query: &str, from: i64, to: i64) -> Result<Value, DrillError> {
-        let (from, to) = (from.to_string(), to.to_string());
-        chat::send_json(
-            self.authorized(
-                self.client
-                    .get(format!("{DATADOG_API}/api/v1/query"))
-                    .query(&[("query", query), ("from", &from), ("to", &to)]),
-            ),
-            "Datadog metric query",
-        )
-    }
-
-    fn exporter_groups(&self) -> Result<Vec<MonitorGroup>, DrillError> {
-        let monitors = chat::send_json(
-            self.authorized(
-                self.client
-                    .get(format!("{DATADOG_API}/api/v1/monitor"))
-                    .query(&[
-                        ("monitor_tags", "service:otel-collector"),
-                        ("group_states", "all"),
-                    ]),
-            ),
-            "Datadog monitors",
-        )?;
-        Ok(readback::exporter_groups(&monitors, LANGFUSE_EXPORTER))
-    }
-
     /// The physician chat failure monitor (`chat_generation_errors` in
     /// `infra/gcp/observability/datadog.tf`), which must exist.
     fn chat_failure_monitor(&self) -> Result<NamedMonitor, DrillError> {
@@ -1052,7 +912,7 @@ fn attempt_gaps(sent: &Sent, turn: &LangfuseTurn) -> Vec<String> {
 }
 
 fn rehearse(request: &Request, report: &mut Report, watch: &Watch) -> Result<(), DrillError> {
-    let langfuse = Langfuse::open()?;
+    let langfuse = Langfuse::open(report)?;
     let api = langfuse.api()?;
     let sent = send_turn(request, report, watch)?;
     let turn = api.turn(&sent, watch)?;
@@ -1063,7 +923,7 @@ fn rehearse(request: &Request, report: &mut Report, watch: &Watch) -> Result<(),
 }
 
 fn alert_to_run(request: &Request, report: &mut Report, watch: &Watch) -> Result<(), DrillError> {
-    let langfuse = Langfuse::open()?;
+    let langfuse = Langfuse::open(report)?;
     let api = langfuse.api()?;
     let datadog = Datadog::open()?;
     let sent = send_turn(request, report, watch)?;
@@ -1102,7 +962,7 @@ fn alert_to_run(request: &Request, report: &mut Report, watch: &Watch) -> Result
 }
 
 fn isolation(request: &Request, report: &mut Report, watch: &Watch) -> Result<(), DrillError> {
-    let langfuse = Langfuse::open()?;
+    let langfuse = Langfuse::open(report)?;
     let api = langfuse.api()?;
     let datadog = request.backend.datadog().then(Datadog::open).transpose()?;
     let tempo = request
@@ -1225,46 +1085,8 @@ fn loki_isolation(
     })
 }
 
-/// The Langfuse exporter's failures and peak queue over the window.
-fn exporter_pressure(datadog: &Datadog, from: i64, to: i64) -> Result<Value, DrillError> {
-    let scope = format!("env:{DATADOG_ENV},service:otel-collector,exporter:{LANGFUSE_EXPORTER}");
-    let mut measured = serde_json::Map::new();
-    for metric in ["send_failed_spans", "enqueue_failed_spans"] {
-        let body = datadog.query(
-            &format!("sum:coda.collector.exporter.{metric}.count{{{scope}}}.as_count()"),
-            from,
-            to,
-        )?;
-        measured.insert(metric.to_owned(), json!(readback::series_total(&body)));
-    }
-    let queue = datadog.query(
-        &format!("max:coda.collector.exporter.queue_size{{{scope}}}"),
-        from,
-        to,
-    )?;
-    let peak = queue["series"]
-        .as_array()
-        .into_iter()
-        .flatten()
-        .flat_map(|series| series["pointlist"].as_array().into_iter().flatten())
-        .filter_map(|point| point.get(1).and_then(Value::as_f64))
-        .fold(0.0_f64, f64::max);
-    measured.insert("queue_size_peak".to_owned(), json!(peak));
-    Ok(Value::Object(measured))
-}
-
-fn pressure_rose(pressure: &Value) -> bool {
-    [
-        "send_failed_spans",
-        "enqueue_failed_spans",
-        "queue_size_peak",
-    ]
-    .iter()
-    .any(|key| pressure[*key].as_f64().unwrap_or_default() > 0.0)
-}
-
-/// Whether a Langfuse exporter monitor group fired after `since`, or every
-/// group has resolved after it.
+/// Whether a monitor group fired after `since`, or every group has resolved
+/// after it.
 fn monitor_reached(
     groups: &[MonitorGroup],
     alerting: bool,
@@ -1292,45 +1114,6 @@ fn monitor_reached(
         .max_by_key(|(_, at)| *at)
 }
 
-/// When every group is already OK but none resolved after `since`, the
-/// monitor resolved while langfuse-web was still down (on no data, say) and no
-/// later transition will come; returns that resolution.
-fn resolved_before(groups: &[MonitorGroup], since: DateTime<Utc>) -> Option<DateTime<Utc>> {
-    if groups.is_empty() || groups.iter().any(|group| group.status != "OK") {
-        return None;
-    }
-    let latest = groups
-        .iter()
-        .filter_map(|group| DateTime::<Utc>::from_timestamp(group.last_resolved_ts?, 0))
-        .max()?;
-    (latest < since).then_some(latest)
-}
-
-/// Waits for the monitor. `between` runs before each poll, so recovery can
-/// keep traffic flowing while it waits.
-fn await_monitor(
-    datadog: &Datadog,
-    alerting: bool,
-    since: DateTime<Utc>,
-    watch: &Watch,
-    mut between: impl FnMut(u32) -> Result<(), DrillError>,
-) -> Result<Option<(MonitorGroup, DateTime<Utc>)>, DrillError> {
-    watch.poll(MONITOR_POLLS, POLL, |poll| {
-        between(poll)?;
-        let groups = datadog.exporter_groups()?;
-        if let Some(reached) = monitor_reached(&groups, alerting, since) {
-            return Ok(Some(reached));
-        }
-        if let Some(resolved) = resolved_before(&groups, since).filter(|_| !alerting) {
-            return Err(DrillError::ResolvedEarly {
-                resolved,
-                restored: since,
-            });
-        }
-        Ok(None)
-    })
-}
-
 fn ledger(dir: &Path) -> Result<Exercise, DrillError> {
     super::load_open(dir, DrillRoute::Langfuse).map_err(DrillError::Ledger)
 }
@@ -1355,122 +1138,6 @@ fn with_ledger(
             ledger: Box::new(saved),
         }),
     }
-}
-
-/// Scales langfuse-web down and requires, with it down, the chat answer, the
-/// ops trace, exporter pressure and the monitor firing. On success
-/// langfuse-web stays down for `recover`, with its count in [`HANDOFF`]; on
-/// any failure, the cap or Ctrl-C, it is restored first.
-fn fail(
-    request: &Request,
-    report: &mut Report,
-    kubectl: &mut Kubectl,
-    watch: &mut Watch,
-) -> Result<(), DrillError> {
-    let datadog = Datadog::open()?;
-    let mut exercise = ledger(&request.output)?;
-    if exercise.is_open() {
-        return Err(DrillError::Ledger(
-            "an exercise is already open; run recover first".to_owned(),
-        ));
-    }
-    let down = kubectl.scale_down(Workload::LangfuseWeb)?;
-    let failed_at = Utc::now();
-    watch.opened_at(failed_at);
-    report.put("langfuse_web_replicas_before", down.replicas());
-    let file = super::observation_file_name(DrillRoute::Langfuse, failed_at);
-    exercise.record_signal(SignalKind::Failure, failed_at, &file);
-    let handoff = request.output.join(HANDOFF);
-    let checked = write_json(
-        &handoff,
-        &json!({ "replicas": down.replicas(), "failed_at": failed_at.to_rfc3339() }),
-    )
-    .and_then(|()| fail_checks(request, report, &datadog, failed_at, watch));
-    // langfuse-web stays down only once the ledger holds the open exercise;
-    // `recover` needs both it and the handoff.
-    let checked = checked.and_then(|(group, at)| {
-        exercise.record_evaluator(
-            EvalKind::Firing,
-            at,
-            &format!(
-                "Datadog monitor {:?} group exporter:{LANGFUSE_EXPORTER}",
-                group.monitor
-            ),
-        );
-        save_ledger(&request.output, &exercise, failed_at)
-    });
-    let Err(error) = checked else {
-        down.leave_down();
-        return Ok(());
-    };
-    let (error, back) = down.restore_after(error, kubectl);
-    if back {
-        exercise.record_signal(SignalKind::Restored, Utc::now(), &file);
-        if let Err(stale) = remove_handoff(&handoff) {
-            report.put("stale_handoff", stale.to_string());
-        }
-    }
-    report.put("langfuse_web_restored", back);
-    with_ledger(
-        Err(error),
-        save_ledger(&request.output, &exercise, failed_at),
-    )
-}
-
-/// A time `fail` or `recover` wrote into the handoff.
-fn stamp(handoff: &Value, key: &str) -> Option<DateTime<Utc>> {
-    let at = DateTime::parse_from_rfc3339(handoff[key].as_str()?).ok()?;
-    Some(at.with_timezone(&Utc))
-}
-
-/// Removes the handoff once langfuse-web is back; a missing one is fine.
-fn remove_handoff(handoff: &Path) -> Result<(), DrillError> {
-    match std::fs::remove_file(handoff) {
-        Err(source) if source.kind() != std::io::ErrorKind::NotFound => Err(DrillError::Write {
-            path: handoff.to_owned(),
-            source,
-        }),
-        _ => Ok(()),
-    }
-}
-
-fn fail_checks(
-    request: &Request,
-    report: &mut Report,
-    datadog: &Datadog,
-    failed_at: DateTime<Utc>,
-    watch: &Watch,
-) -> Result<(MonitorGroup, DateTime<Utc>), DrillError> {
-    let sent = send_turn(request, report, watch)?;
-    report.put("reply_chars_while_down", sent.reply_chars);
-    let trace = datadog.attempt_trace(&sent.attempt, watch)?;
-    let span = readback::datadog_span(&trace.body, &sent.canary);
-    report.put(
-        "datadog",
-        json!({ "trace_id": trace.trace_id, "generation": span }),
-    );
-    gaps(
-        "the ops trace while Langfuse is down",
-        readback::isolation_gaps(&span, Some(&sent.attempt)),
-    )?;
-    let mut pressure = Value::Null;
-    watch.poll(READBACK_POLLS, POLL, |_| {
-        pressure = exporter_pressure(datadog, failed_at.timestamp() - 60, Utc::now().timestamp())?;
-        Ok(pressure_rose(&pressure).then_some(()))
-    })?;
-    report.put("exporter", &pressure);
-    if !pressure_rose(&pressure) {
-        return Err(DrillError::Gaps {
-            what: "the Langfuse exporter",
-            gaps: vec!["no send failure, enqueue failure or queue was reported".to_owned()],
-        });
-    }
-    let firing = await_monitor(datadog, true, failed_at, watch, |_| Ok(()))?;
-    report.put("monitor_firing", firing.as_ref().map(|(group, _)| group));
-    firing.ok_or(DrillError::Timeout {
-        what: "the Langfuse exporter monitor alert",
-        seconds: u64::from(MONITOR_POLLS) * POLL.as_secs(),
-    })
 }
 
 /// How many marked turns cross a monitor alerting above `threshold`.
@@ -1527,11 +1194,11 @@ fn chat_failure(
     watch: &mut Watch,
 ) -> Result<(), DrillError> {
     let datadog = Datadog::open()?;
-    let langfuse = Langfuse::open()?;
+    let langfuse = Langfuse::open(report)?;
     let api = langfuse.api()?;
     if ledger(&request.output)?.is_open() {
         return Err(DrillError::Ledger(
-            "a Langfuse export exercise is open; run recover first".to_owned(),
+            "an exercise on the Langfuse route is still open in the output directory".to_owned(),
         ));
     }
     let monitor = datadog.chat_failure_monitor()?;
@@ -1726,139 +1393,6 @@ fn follow_failure(
     Ok(found)
 }
 
-/// Restores langfuse-web to the count `fail` recorded, first of all, then
-/// requires new turns in Langfuse and the monitor's recovery while rehearsal
-/// traffic keeps the exporter reporting.
-fn recover(
-    request: &Request,
-    report: &mut Report,
-    kubectl: &mut Kubectl,
-    watch: &mut Watch,
-) -> Result<(), DrillError> {
-    let datadog = Datadog::open()?;
-    let handoff = request.output.join(HANDOFF);
-    let handoff_error =
-        |source: Box<dyn std::error::Error + Send + Sync>| DrillError::NoHandoff { source };
-    let text = std::fs::read_to_string(&handoff).map_err(|error| handoff_error(error.into()))?;
-    let recorded: Value =
-        serde_json::from_str(&text).map_err(|error| handoff_error(error.into()))?;
-    let replicas = recorded["replicas"]
-        .as_u64()
-        .and_then(|count| u32::try_from(count).ok())
-        .filter(|count| *count > 0)
-        .ok_or_else(|| handoff_error("no positive replicas count".into()))?;
-    // A retried recover verifies against the first restore, which the
-    // handoff keeps until verification passes, and continues the exercise
-    // that restore closed in the ledger.
-    let earlier = stamp(&recorded, "restored_at");
-    let mut exercise = match earlier {
-        Some(_) => {
-            super::load_latest(&request.output, DrillRoute::Langfuse).map_err(DrillError::Ledger)?
-        }
-        None => ledger(&request.output)?,
-    };
-    if let Some(opened) = exercise
-        .open_since()
-        .or_else(|| stamp(&recorded, "failed_at"))
-    {
-        watch.opened_at(opened);
-    }
-    kubectl.scale(Workload::LangfuseWeb, replicas)?;
-    report.put("langfuse_web_replicas_restored", replicas);
-    let restored_at = match earlier {
-        Some(at) => at,
-        None => {
-            let now = Utc::now();
-            let mut updated = recorded.clone();
-            updated["restored_at"] = json!(now.to_rfc3339());
-            write_json(&handoff, &updated)?;
-            let file = super::observation_file_name(DrillRoute::Langfuse, now);
-            exercise.record_signal(SignalKind::Restored, now, &file);
-            save_ledger(&request.output, &exercise, now)?;
-            now
-        }
-    };
-    report.put("langfuse_web_restored_at", restored_at.to_rfc3339());
-    let (group, at) = recover_checks(request, report, &datadog, restored_at, watch)?;
-    exercise.record_evaluator(
-        EvalKind::Recovered,
-        at,
-        &format!(
-            "Datadog monitor {:?} group exporter:{LANGFUSE_EXPORTER}",
-            group.monitor
-        ),
-    );
-    save_ledger(&request.output, &exercise, Utc::now())?;
-    remove_handoff(&handoff)
-}
-
-fn recover_checks(
-    request: &Request,
-    report: &mut Report,
-    datadog: &Datadog,
-    restored_at: DateTime<Utc>,
-    watch: &Watch,
-) -> Result<(MonitorGroup, DateTime<Utc>), DrillError> {
-    let langfuse = Langfuse::open()?;
-    let api = langfuse.api()?;
-    let sent = send_turn(request, report, watch)?;
-    let turn = api.turn(&sent, watch)?;
-    report.put("langfuse", &turn);
-    let mut found = readback::rehearsal_gaps(&turn, &sent.turn.chat, &sent.turn.scenario);
-    found.extend(attempt_gaps(&sent, &turn));
-    gaps("the Langfuse generation after recovery", found)?;
-    let mut traffic = 0_u32;
-    let recovered = await_monitor(datadog, false, restored_at, watch, |poll| {
-        if poll > 0 && poll % RECOVERY_TRAFFIC == 0 {
-            let mut scratch = Report::new(Action::Recover, Utc::now());
-            send_turn(request, &mut scratch, watch)?;
-            traffic += 1;
-        }
-        Ok(())
-    })?;
-    report.put("recovery_traffic_turns", traffic);
-    report.put(
-        "monitor_recovered",
-        recovered.as_ref().map(|(group, _)| group),
-    );
-    recovered.ok_or(DrillError::Timeout {
-        what: "the Langfuse exporter monitor recovery",
-        seconds: u64::from(MONITOR_POLLS) * POLL.as_secs(),
-    })
-}
-
-/// Under the SSO issuer, passwords are off on every route
-/// (`AUTH_DISABLE_USERNAME_PASSWORD`). With the issuer down, the break-glass
-/// is real only if the init admin can still sign in by password; the drill
-/// tries it, and restores langfuse-sso on every exit.
-fn signin_breakglass(
-    report: &mut Report,
-    kubectl: &mut Kubectl,
-    watch: &Watch,
-) -> Result<(), DrillError> {
-    let down = kubectl.scale_down(Workload::LangfuseSso)?;
-    report.put("langfuse_sso_replicas_before", down.replicas());
-    let checked = watch.check().and_then(|()| {
-        let langfuse = Langfuse::open()?;
-        let outcome = langfuse.password_sign_in()?;
-        report.put("password_sign_in_with_issuer_down", outcome);
-        match outcome {
-            PasswordSignIn::SignedIn => Ok(()),
-            PasswordSignIn::Refused => Err(DrillError::Gaps {
-                what: "break-glass sign-in",
-                gaps: vec![
-                    "with langfuse-sso down the init admin's password sign-in is refused"
-                        .to_owned(),
-                ],
-            }),
-        }
-    });
-    match checked {
-        Ok(()) => down.restore(kubectl),
-        Err(error) => Err(down.restore_after(error, kubectl).0),
-    }
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -1870,7 +1404,7 @@ mod tests {
     #[test]
     fn actions_and_flags_parse() {
         let request = parse_args(&args(&[
-            "fail",
+            "chat-failure",
             "--output-dir",
             "out",
             "--confirm",
@@ -1880,7 +1414,7 @@ mod tests {
             "s-1",
         ]))
         .unwrap();
-        assert_eq!(request.action, Action::Fail);
+        assert_eq!(request.action, Action::ChatFailure);
         assert!(request.confirmed);
         assert_eq!(request.backend, Backend::Datadog);
         assert_eq!(request.scenario.as_deref(), Some("s-1"));
@@ -1906,17 +1440,53 @@ mod tests {
         );
         assert!(parse_args(&args(&["rehearse", "--output-dir", "o", "--backend", "x"])).is_err());
         assert!(parse_args(&args(&["rehearse", "--output-dir", "o", "extra"])).is_err());
+        for retired in ["fail", "recover", "signin-breakglass"] {
+            assert!(parse_args(&args(&[retired, "--output-dir", "o"])).is_err());
+        }
     }
 
     #[test]
-    fn scaling_and_paging_actions_need_confirmation() {
-        for action in ["fail", "chat-failure"] {
-            let refused =
-                from_args(&args(&[action, "--output-dir", "/nonexistent/x"])).unwrap_err();
-            assert!(refused.message.contains("--confirm"), "{}", refused.message);
+    fn only_the_paging_action_needs_confirmation() {
+        let refused =
+            from_args(&args(&["chat-failure", "--output-dir", "/nonexistent/x"])).unwrap_err();
+        assert!(refused.message.contains("--confirm"), "{}", refused.message);
+        for action in [Action::Rehearse, Action::AlertToRun, Action::Isolation] {
+            assert!(action.needs_confirmation().is_none());
         }
-        assert!(Action::SigninBreakglass.needs_confirmation().is_some());
-        assert!(Action::Isolation.needs_confirmation().is_none());
+    }
+
+    #[test]
+    fn the_langfuse_host_is_a_bare_https_origin() {
+        let origin = |value| {
+            langfuse_origin(value)
+                .ok()
+                .map(|url| url.origin().ascii_serialization())
+        };
+        assert_eq!(
+            origin("https://hipaa.cloud.langfuse.com").as_deref(),
+            Some("https://hipaa.cloud.langfuse.com")
+        );
+        assert_eq!(
+            origin("https://hipaa.cloud.langfuse.com/\n").as_deref(),
+            Some("https://hipaa.cloud.langfuse.com")
+        );
+        assert!(matches!(
+            langfuse_origin("https://"),
+            Err(LangfuseHostError::Parse(_))
+        ));
+        for refused in [
+            "http://hipaa.cloud.langfuse.com",
+            "https://hipaa.cloud.langfuse.com/langfuse",
+            "https://127.0.0.1:3000",
+            "https://hipaa.cloud.langfuse.com:8443",
+            "https://user@hipaa.cloud.langfuse.com",
+            "https://hipaa.cloud.langfuse.com/?x=1",
+        ] {
+            assert!(
+                matches!(langfuse_origin(refused), Err(LangfuseHostError::NotBare)),
+                "{refused}"
+            );
+        }
     }
 
     #[test]
@@ -1959,16 +1529,6 @@ mod tests {
         let both = [group("OK", None, Some(150)), group("OK", None, Some(170))];
         let (_, at) = monitor_reached(&both, false, since).unwrap();
         assert_eq!(at.timestamp(), 170);
-    }
-
-    #[test]
-    fn a_resolution_before_the_restore_is_reported_not_awaited() {
-        let since = DateTime::<Utc>::from_timestamp(100, 0).unwrap();
-        let early = resolved_before(&[group("OK", Some(40), Some(90))], since);
-        assert_eq!(early.map(|at| at.timestamp()), Some(90));
-        assert!(resolved_before(&[group("OK", None, Some(150))], since).is_none());
-        assert!(resolved_before(&[group("Alert", Some(40), Some(90))], since).is_none());
-        assert!(resolved_before(&[], since).is_none());
     }
 
     #[test]

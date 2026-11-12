@@ -1,7 +1,7 @@
 # Local observability stack
 
-Self-hosted Langfuse v3 (web, worker, Postgres, ClickHouse, Valkey, MinIO),
-the shared OpenTelemetry Collector, and selected operations destinations: the
+A local Langfuse v3 (web, worker, Postgres, ClickHouse, Valkey, MinIO) standing
+in for the hosted HIPAA cloud project that staging exports to, the shared OpenTelemetry Collector, and selected operations destinations: the
 Datadog Agent, the Grafana stack (Tempo, Loki, Prometheus, Grafana), or both.
 `--both` selects both compose profiles and `collector.both.yaml`; set the
 product's `CODA_TELEMETRY_BACKEND=both` to retain W3C and Datadog correlation.
@@ -57,8 +57,8 @@ OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318 DD_ENV=local CODA_TELEMETRY_CO
   It requires a Google ID token on both OTLP receivers and keeps only spans
   and log records from the service accounts in `OTEL_GATEWAY_ALLOWED_CALLERS`.
 - `collector.gke-no-langfuse.yaml` is merged after `collector.gke.yaml`, before
-  the backend overlay, while `infra/gcp/observability` has
-  `langfuse_enabled = false`. It sends the generation pipeline to `nop`, so
+  the backend overlay, while `infra/gcp/observability` has no
+  `langfuse_host`. It sends the generation pipeline to `nop`, so
   the gateway needs no Langfuse endpoint or keys; the ops pipelines are
   unchanged.
 - `sidecar.yaml` is the Cloud Run sidecar collector. It forwards the service's
@@ -97,8 +97,7 @@ OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318 DD_ENV=local CODA_TELEMETRY_CO
   `telemetry::testing`. `langfuse.yaml` runs Langfuse web and its stores on
   loopback ports the test picks; its `ingest` profile adds langfuse-worker and
   the collector on `collector.yaml` plus `test/collector.yaml`, which sends the
-  ops pipelines to the test's own OTLP sink. `langfuse-sso.yaml` is the
-  overlay for the issuer's sign-in test. The physician full-path test is
+  ops pipelines to the test's own OTLP sink. The physician full-path test is
   described in the book's
   [content policy](../../book/src/observability.md#content-policy).
 
@@ -125,9 +124,9 @@ print it. Grafana pushes a `fail` or `ok` line through a local Loki
 port-forward. Watchdog pauses or resumes the availability-probe scheduler. The
 command restores the signal when the exercise passes 40 minutes, already has
 more than two reminders, or the provider call fails.
-`workspace-tools observability-drill langfuse fail|recover --confirm --output-dir DIR`
-writes the `langfuse` route's ledger; `recover` restores the replica count
-`fail` recorded in the same directory. The book's
+`workspace-tools observability-drill langfuse chat-failure --confirm --output-dir DIR`
+writes the `langfuse` route's ledger from a failed generation in the hosted
+project. The book's
 [Langfuse drills](../../book/src/observability.md#langfuse-drills) cover it
 and the read-only actions.
 `workspace-tools observability-drill probe --output-dir DIR` runs one

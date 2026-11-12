@@ -1,10 +1,10 @@
 variable "project_id" {
-  description = "Project hosting the observability cluster, the Langfuse stores, and the GCP integration identity. For staging this is the Rust staging project, the same one as cluster_project."
+  description = "Project hosting the observability cluster and the GCP integration identity. For staging this is the Rust staging project, the same one as cluster_project."
   type        = string
 }
 
 variable "region" {
-  description = "Region of the Langfuse database and the blob bucket."
+  description = "Default region of the Google provider."
   type        = string
   default     = "us-east1"
 }
@@ -21,11 +21,6 @@ variable "cluster_location" {
 
 variable "cluster_name" {
   description = "Name of the observability Autopilot cluster, from infra/gcp/rust-environments' observability_cluster output. This root never manages the cluster."
-  type        = string
-}
-
-variable "network_name" {
-  description = "Existing VPC the cluster and Cloud Run share (rust-private in staging), owned by infra/gcp/rust-environments. Read only: Langfuse's Cloud SQL attaches to its Private Service Access range."
   type        = string
 }
 
@@ -216,7 +211,7 @@ variable "doppler_token_secret_version" {
 }
 
 variable "telemetry_content" {
-  description = "CODA_TELEMETRY_CONTENT handed to services: none sends no prompt or completion text anywhere; full sends it to the in-project Langfuse only."
+  description = "CODA_TELEMETRY_CONTENT handed to services: none sends no prompt or completion text anywhere; full sends it to the Langfuse project at langfuse_host only."
   type        = string
   default     = "none"
 
@@ -228,8 +223,8 @@ variable "telemetry_content" {
   # Without Langfuse the generation pipeline goes to nop, so full would only
   # add content nobody may receive.
   validation {
-    condition     = var.telemetry_content == "none" || var.langfuse_enabled
-    error_message = "telemetry_content = full requires langfuse_enabled; content goes only to the in-project Langfuse."
+    condition     = var.telemetry_content == "none" || var.langfuse_host != null
+    error_message = "telemetry_content = full requires langfuse_host; content goes only to that Langfuse project."
   }
 }
 
@@ -332,59 +327,19 @@ variable "service_p95_latency_threshold_seconds" {
   }
 }
 
-variable "langfuse_enabled" {
-  description = "Deploys Langfuse and its stores. Off: the gateway still sends traces and logs to Datadog, and its generation pipeline goes to the nop exporter (collector.gke-no-langfuse.yaml). Turning it on needs the project IAM grants and the HMAC key in Doppler first."
-  type        = bool
-  default     = true
-}
-
-variable "langfuse_ee_trial" {
-  description = "Sets LANGFUSE_EE_LICENSE_KEY on Langfuse web and worker from Doppler's LANGFUSE_EE_LICENSE_KEY, which unlocks the Enterprise features (project roles, audit logs, data retention, protected prompt labels, organization creators, ingestion masking). For a testing trial Doppler holds a langfuse_ee_ placeholder, which ee/LICENSE permits for development and testing only; a real key replaces it in Doppler alone."
-  type        = bool
-  default     = false
-
-  validation {
-    condition     = !var.langfuse_ee_trial || var.langfuse_enabled
-    error_message = "langfuse_ee_trial requires langfuse_enabled."
-  }
-}
-
-variable "langfuse_sql_tier" {
-  description = "Cloud SQL machine tier for the Langfuse Postgres."
+variable "langfuse_host" {
+  description = "Origin of the Langfuse project the gateway sends generation spans to (https://hipaa.cloud.langfuse.com in staging). The collector posts to <host>/api/public/otel with the project key pair Doppler syncs as LANGFUSE_PUBLIC_KEY and LANGFUSE_SECRET_KEY. Null sends the generation pipeline to the nop exporter (collector.gke-no-langfuse.yaml), and no Langfuse key is needed."
   type        = string
-  default     = "db-custom-1-3840"
-}
-
-variable "langfuse_sql_disk_autoresize_limit_gb" {
-  description = "Hard Cloud SQL storage ceiling for Langfuse."
-  type        = number
-  default     = 50
+  default     = null
 
   validation {
-    condition     = var.langfuse_sql_disk_autoresize_limit_gb >= 20
-    error_message = "The storage ceiling must stay at or above the 20 GB initial disk."
+    condition     = var.langfuse_host == null || can(regex("^https://([a-z0-9]([a-z0-9-]*[a-z0-9])?\\.)+[a-z]{2,}$", var.langfuse_host))
+    error_message = "langfuse_host must be a bare https origin without a path, port or trailing slash."
   }
-}
-
-variable "langfuse_retention_days" {
-  description = "Days Langfuse keeps traces and blobs. Langfuse is a copy of Postgres and git, so expiry loses nothing."
-  type        = number
-  default     = 90
-
-  validation {
-    condition     = var.langfuse_retention_days >= 7 && var.langfuse_retention_days <= 730
-    error_message = "langfuse_retention_days must be between 7 and 730."
-  }
-}
-
-variable "clickhouse_disk_gb" {
-  description = "PVC size for the in-cluster ClickHouse."
-  type        = number
-  default     = 50
 }
 
 variable "staging_proxy" {
-  description = "People reach Grafana and Langfuse at <origin>/grafana/ and <origin>/langfuse/ through public-site's mounts and the observability relay (README.md, \"Boundary\"). iap_audience is public-site's IAP audience (infra/gcp/public-site output iap_audience): Grafana signs people in from that verified assertion, which public-site forwards as X-Coda-IAP-Assertion. Null keeps both apps at their root paths for kubectl port-forward."
+  description = "People reach Grafana at <origin>/grafana/ through public-site's mount and the observability relay (README.md, \"Boundary\"). iap_audience is public-site's IAP audience (infra/gcp/public-site output iap_audience): Grafana signs people in from that verified assertion, which public-site forwards as X-Coda-IAP-Assertion. Null keeps Grafana at its root path for kubectl port-forward."
   type = object({
     origin       = string
     iap_audience = string
@@ -403,24 +358,19 @@ variable "staging_proxy" {
 }
 
 variable "observability_web" {
-  description = "Internal passthrough load balancers for grafana:3000, langfuse-web:3000 and langfuse-sso:3000, from infra/gcp/rust-environments' observability_relay output: the reserved INTERNAL addresses and the only source range they admit (the relay's rust-relay subnet). langfuse_sso_ip is needed only with langfuse_sso_image. Null keeps them all ClusterIP-only."
+  description = "Internal passthrough load balancer for grafana:3000, from infra/gcp/rust-environments' observability_relay output: the reserved INTERNAL address and the only source range it admits (the relay's rust-relay subnet). Null keeps Grafana ClusterIP-only."
   type = object({
-    grafana_ip      = string
-    langfuse_ip     = string
-    langfuse_sso_ip = optional(string)
-    source_ranges   = list(string)
+    grafana_ip    = string
+    source_ranges = list(string)
   })
   default = null
 
   validation {
-    condition = var.observability_web == null || alltrue([
-      for ip in concat(
-        [try(var.observability_web.grafana_ip, ""), try(var.observability_web.langfuse_ip, "")],
-        try(var.observability_web.langfuse_sso_ip, null) == null ? [] : [var.observability_web.langfuse_sso_ip],
-      ) :
-      can(cidrhost("${ip}/32", 0)) && can(regex("^(10\\.|172\\.(1[6-9]|2[0-9]|3[01])\\.|192\\.168\\.)", ip))
-    ])
-    error_message = "observability_web addresses must be private RFC1918 IPv4 addresses."
+    condition = var.observability_web == null || try(
+      can(cidrhost("${var.observability_web.grafana_ip}/32", 0)) && can(regex("^(10\\.|172\\.(1[6-9]|2[0-9]|3[01])\\.|192\\.168\\.)", var.observability_web.grafana_ip)),
+      false,
+    )
+    error_message = "observability_web.grafana_ip must be a private RFC1918 IPv4 address."
   }
 
   validation {
@@ -435,38 +385,6 @@ variable "observability_web" {
 
   validation {
     condition     = var.observability_web == null || var.staging_proxy != null
-    error_message = "observability_web requires staging_proxy: the apps it exposes must be configured for their /grafana and /langfuse sub-paths."
-  }
-}
-
-variable "langfuse_web_image" {
-  description = "Digest-pinned Langfuse web image built from the pinned upstream tag with NEXT_PUBLIC_BASE_PATH=/langfuse (.github/workflows/langfuse-web-image.yml). Next.js bakes the base path in at build time, so the stock image cannot serve /langfuse; required with staging_proxy and langfuse_enabled. The worker stays stock."
-  type        = string
-  default     = null
-
-  validation {
-    condition     = var.langfuse_web_image == null || can(regex("^[a-z0-9.-]+-docker\\.pkg\\.dev/[a-z0-9-]+/[a-z0-9-]+/langfuse-web@sha256:[0-9a-f]{64}$", var.langfuse_web_image))
-    error_message = "langfuse_web_image must be an Artifact Registry langfuse-web image pinned by sha256 digest."
-  }
-
-  validation {
-    condition     = var.staging_proxy == null || !var.langfuse_enabled || var.langfuse_web_image != null
-    error_message = "staging_proxy with langfuse_enabled requires langfuse_web_image, the /langfuse base-path build."
-  }
-}
-
-variable "langfuse_sso_image" {
-  description = "Digest-pinned coda-langfuse-sso image (crates/langfuse-sso), published by the staging release. Set, people who passed staging's IAP sign in to Langfuse as their Google account (langfuse-sso.tf). Null leaves Langfuse on its password form."
-  type        = string
-  default     = null
-
-  validation {
-    condition     = var.langfuse_sso_image == null || can(regex("^[a-z0-9.-]+-docker\\.pkg\\.dev/[a-z0-9-]+/[a-z0-9-]+/coda-langfuse-sso@sha256:[0-9a-f]{64}$", var.langfuse_sso_image))
-    error_message = "langfuse_sso_image must be an Artifact Registry coda-langfuse-sso image pinned by sha256 digest."
-  }
-
-  validation {
-    condition     = var.langfuse_sso_image == null || (var.langfuse_enabled && var.staging_proxy != null && try(var.observability_web.langfuse_sso_ip, null) != null)
-    error_message = "langfuse_sso_image requires langfuse_enabled, staging_proxy and observability_web.langfuse_sso_ip: browsers reach its authorize step only through public-site and the relay."
+    error_message = "observability_web requires staging_proxy: Grafana must be configured for its /grafana sub-path."
   }
 }

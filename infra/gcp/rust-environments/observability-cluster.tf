@@ -3,7 +3,7 @@
 # A private GKE Autopilot cluster on rust-private that hosts the shared
 # OpenTelemetry gateway. This root owns the cluster, its subnet and the
 # gateway's reserved internal address; infra/gcp/observability deploys the
-# gateway (and Langfuse) into it through the outputs below and never manages
+# gateway (and the Grafana stack) into it through the outputs below and never manages
 # the cluster or the network.
 #
 # Address plan on rust-private (no range may overlap another):

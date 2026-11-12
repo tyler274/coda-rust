@@ -422,12 +422,6 @@ mod tests {
                     cloud.update_service(ReleaseService::ObservabilityRelay, None, &images),
                     "missing runtime digest",
                 ),
-                // Publish-only: no service or migration job reads it.
-                ImageRole::LangfuseSso => {
-                    assert!(ReleaseService::ALL.iter().all(|s| s.image() != missing));
-                    assert!(Product::ALL.iter().all(|p| p.migration_image() != missing));
-                    continue;
-                }
             };
             assert!(matches!(result, Err(Error::Input(actual)) if actual == message));
             assert!(

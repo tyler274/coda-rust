@@ -14,9 +14,11 @@
 # ID token minted by the calling service's own runtime identity for
 # otel_gateway_audience; the overlay refuses anything else.
 #
-# With langfuse_enabled off, a third file, collector.gke-no-langfuse.yaml,
-# sends the generation pipeline to nop, so the collector needs no Langfuse
-# endpoint or keys.
+# With langfuse_host set, the otlphttp/langfuse exporter posts generation
+# spans to that Langfuse project over HTTPS with Basic auth from the project
+# key pair. Without it, a third file, collector.gke-no-langfuse.yaml, sends
+# the generation pipeline to nop, so the collector needs no Langfuse endpoint
+# or keys.
 locals {
   collector_config_path         = "${path.module}/../../../dev/observability/collector.yaml"
   collector_config              = file(local.collector_config_path)
@@ -31,14 +33,14 @@ locals {
       "collector.gke.yaml"           = local.collector_gateway_config
       (local.collector_backend_file) = local.collector_backend_config
     },
-    var.langfuse_enabled ? {} : { "collector.gke-no-langfuse.yaml" = local.collector_no_langfuse_config },
+    local.langfuse_enabled ? {} : { "collector.gke-no-langfuse.yaml" = local.collector_no_langfuse_config },
     var.collector_self_metrics_enabled ? { "collector.self-metrics.yaml" = file("${path.module}/../../../dev/observability/collector.self-metrics.yaml") } : {},
   )
   # Later files merge over earlier ones, so the order is fixed here: the
   # backend overlay is always last.
   collector_config_files = concat(
     ["collector.yaml", "collector.gke.yaml"],
-    var.langfuse_enabled ? [] : ["collector.gke-no-langfuse.yaml"],
+    local.langfuse_enabled ? [] : ["collector.gke-no-langfuse.yaml"],
     var.collector_self_metrics_enabled ? ["collector.self-metrics.yaml"] : [],
     [local.collector_backend_file],
   )
@@ -177,7 +179,7 @@ resource "kubernetes_deployment_v1" "collector" {
           }
 
           dynamic "env" {
-            for_each = var.langfuse_enabled ? [local.langfuse_otlp_endpoint] : []
+            for_each = local.langfuse_enabled ? [local.langfuse_otlp_endpoint] : []
             content {
               name  = "LANGFUSE_OTLP_ENDPOINT"
               value = env.value
@@ -186,7 +188,7 @@ resource "kubernetes_deployment_v1" "collector" {
 
           # LANGFUSE_PUBLIC_KEY / LANGFUSE_SECRET_KEY, synced from Doppler.
           dynamic "env_from" {
-            for_each = var.langfuse_enabled ? ["otel-collector-langfuse"] : []
+            for_each = local.langfuse_enabled ? ["otel-collector-langfuse"] : []
             content {
               secret_ref {
                 name = env_from.value
