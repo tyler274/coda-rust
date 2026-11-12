@@ -396,15 +396,137 @@ impl Store {
     }
 
     /// Retained data for an authorized chat tool. An exact read only loads
-    /// the requested candidates, including their current withdrawal state.
+    /// the requested candidates, including their current withdrawal state and
+    /// any retained historical revisions explicitly requested on active records.
     pub async fn chart_observation(
         &self,
         workspace: &str,
         request: &crate::physician_sources::ChartRequest,
     ) -> Result<Observation, DbErr> {
         let tx = self.db.begin().await?;
-        let observation = selected(&tx, workspace, request.candidates().as_deref()).await?;
+        let version = pin_version(&tx, workspace).await?;
+        let latest_rows = latest(&tx, workspace, version, request.candidates().as_deref()).await?;
+        let mut withdrawn_candidates = HashSet::new();
+        let mut sources = Vec::new();
+        for row in latest_rows {
+            match decode(&row)? {
+                Some(source) => sources.push(source),
+                None => {
+                    withdrawn_candidates.insert(row.candidate);
+                }
+            }
+        }
+        if let Some(exact_revisions) = request.exact_revisions() {
+            for (candidate_id, requested_revision) in exact_revisions {
+                if withdrawn_candidates.contains(candidate_id) {
+                    continue;
+                }
+                let already_loaded = sources
+                    .iter()
+                    .any(|s| s.candidate_id == candidate_id && s.revision == requested_revision);
+                if already_loaded {
+                    continue;
+                }
+                let history_rows = source::Entity::find()
+                    .filter(source::Column::Workspace.eq(workspace))
+                    .filter(source::Column::Candidate.eq(candidate_id))
+                    .filter(source::Column::ObservedAtVersion.lte(version as i64))
+                    .filter(source::Column::Revision.is_not_null())
+                    .order_by_desc(source::Column::ObservedAtVersion)
+                    .all(&tx)
+                    .await?;
+                for row in history_rows {
+                    if let Some(historical) = decode(&row)?
+                        && historical.revision == requested_revision
+                    {
+                        sources.push(historical);
+                        break;
+                    }
+                }
+            }
+        }
         tx.commit().await?;
-        Ok(observation)
+        Ok(Observation { version, sources })
+    }
+
+    /// Reads a patient record by source, version, and location under transactional [`super::Authority`].
+    ///
+    /// When `authority` denies access, returns [`crate::physician_sources::read::PatientRecordRead::Denied`]
+    /// without reading or creating any workspace source rows.
+    pub async fn read_patient_record(
+        &self,
+        scope: &super::Scope,
+        session_hash: Option<&[u8]>,
+        authority: &mut dyn super::Authority,
+        request: &crate::physician_sources::read::RecordReadRequest,
+        part_reader: &dyn crate::physician_sources::read::RecordPartReader,
+    ) -> Result<
+        crate::physician_sources::read::PatientRecordRead,
+        crate::physician_sources::read::RecordReadError,
+    > {
+        use crate::physician_sources::read::{
+            ObservationEntry, PatientAccess, PatientRecordRead, RecordReadError,
+            VersionedRecordCatalog, read_patient_record,
+        };
+        if [
+            &scope.practice,
+            &scope.physician,
+            &scope.workspace,
+            &scope.chat,
+        ]
+        .iter()
+        .any(|field| field.trim().is_empty())
+        {
+            return Ok(PatientRecordRead::Denied);
+        }
+        let tx = self.db.begin().await?;
+        if authority.check(&tx, scope, session_hash).await.is_err() {
+            tx.rollback().await?;
+            return Ok(PatientRecordRead::Denied);
+        }
+        let version = pin_version(&tx, &scope.workspace).await?;
+        let rows = source::Entity::find()
+            .filter(source::Column::Workspace.eq(scope.workspace.as_str()))
+            .filter(source::Column::Candidate.eq(request.candidate_id.as_str()))
+            .filter(source::Column::ObservedAtVersion.lte(version as i64))
+            .order_by_asc(source::Column::ObservedAtVersion)
+            .all(&tx)
+            .await?;
+        let mut entries = Vec::with_capacity(rows.len());
+        let mut last_source_id: Option<String> = None;
+        for row in rows {
+            let observed_at = version_of(row.observed_at_version)?;
+            match row.revision {
+                Some(value) => {
+                    let revision: SourceRevision =
+                        serde_json::from_value(value).map_err(|source| {
+                            RecordReadError::CorruptStoredObservation {
+                                candidate_id: row.candidate.clone(),
+                                observed_at_version: observed_at,
+                                source,
+                            }
+                        })?;
+                    last_source_id = Some(revision.source_id.clone());
+                    entries.push(ObservationEntry::Present {
+                        observed_at_version: observed_at,
+                        revision,
+                    });
+                }
+                None => {
+                    entries.push(ObservationEntry::Withdrawn {
+                        observed_at_version: observed_at,
+                        candidate_id: row.candidate,
+                        workspace: row.workspace,
+                        source_id: last_source_id.clone(),
+                    });
+                }
+            }
+        }
+        tx.commit().await?;
+        let catalog = VersionedRecordCatalog::from_observations(version, entries);
+        let access = PatientAccess::Allowed {
+            workspace: scope.workspace.clone(),
+        };
+        read_patient_record(&access, request, &catalog, part_reader)
     }
 }

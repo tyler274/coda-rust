@@ -39,6 +39,10 @@ pub(super) struct Exact {
     candidate_id: String,
     revision: String,
     cursor: Option<Position>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    source_id: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    location: Option<super::read::RecordLocation>,
 }
 
 #[derive(Debug, Clone, Deserialize)]
@@ -83,17 +87,63 @@ pub(super) enum RecordReceipt {
         readable_parts: Vec<super::ReadablePart>,
         sha256: String,
         provenance: Value,
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        superseded_by: Option<String>,
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        location_limit: Option<String>,
     },
     Passage {
         reference: String,
         revision: String,
         part: usize,
         label: String,
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        part_identity: Option<super::read::PartIdentity>,
         start_byte: usize,
         end_byte: usize,
         total_bytes: usize,
         content: String,
-        next: Option<Exact>,
+        next: Option<Box<Exact>>,
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        superseded_by: Option<String>,
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        location_limit: Option<String>,
+    },
+    MissingPart {
+        reference: String,
+        revision: String,
+        part: usize,
+        part_identity: super::read::PartIdentity,
+        detail: String,
+        next: Option<Box<Exact>>,
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        superseded_by: Option<String>,
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        location_limit: Option<String>,
+    },
+    UnreadablePart {
+        reference: String,
+        revision: String,
+        part: usize,
+        part_identity: super::read::PartIdentity,
+        reason: String,
+        next: Option<Box<Exact>>,
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        superseded_by: Option<String>,
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        location_limit: Option<String>,
+    },
+    UnavailablePart {
+        reference: String,
+        revision: String,
+        part: usize,
+        part_identity: super::read::PartIdentity,
+        reason: String,
+        next: Option<Box<Exact>>,
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        superseded_by: Option<String>,
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        location_limit: Option<String>,
     },
     Unavailable {
         #[serde(skip_serializing_if = "Option::is_none")]
@@ -120,6 +170,21 @@ impl RecordReceipt {
                 ..
             }
             | Self::Passage {
+                reference,
+                revision,
+                ..
+            }
+            | Self::MissingPart {
+                reference,
+                revision,
+                ..
+            }
+            | Self::UnreadablePart {
+                reference,
+                revision,
+                ..
+            }
+            | Self::UnavailablePart {
                 reference,
                 revision,
                 ..
@@ -212,6 +277,31 @@ impl ChartRequest {
                         "Use the candidate_id and revision returned by chart discovery.",
                     ));
                 }
+                if read.references.iter().any(|r| match r {
+                    Reference::Pinned(_) => false,
+                    Reference::Exact(exact) => exact.cursor.is_some() && exact.location.is_some(),
+                }) {
+                    return Err(ChartInputError::Refused(
+                        "Supply either cursor or location on a reference, not both.",
+                    ));
+                }
+                if read.references.iter().any(|r| match r {
+                    Reference::Pinned(_) => false,
+                    Reference::Exact(exact) => {
+                        exact
+                            .source_id
+                            .as_ref()
+                            .is_some_and(|sid| sid.trim().is_empty())
+                            || exact
+                                .location
+                                .as_ref()
+                                .is_some_and(|loc| !valid_location_identifiers(loc))
+                    }
+                }) {
+                    return Err(ChartInputError::Refused(
+                        "Reference source_id and location identifiers must not be empty.",
+                    ));
+                }
                 Operation::Read(read)
             }
             _ => {
@@ -228,6 +318,25 @@ impl ChartRequest {
         match &self.0 {
             Operation::Search(_) => None,
             Operation::Read(read) => Some(read.references.iter().map(Reference::id).collect()),
+        }
+    }
+
+    /// Exact `(candidate_id, revision)` pairs requested by a read call, so
+    /// retained historical revisions can be loaded alongside current ones.
+    pub(crate) fn exact_revisions(&self) -> Option<Vec<(&str, &str)>> {
+        match &self.0 {
+            Operation::Search(_) => None,
+            Operation::Read(read) => Some(
+                read.references
+                    .iter()
+                    .filter_map(|reference| match reference {
+                        Reference::Pinned(_) => None,
+                        Reference::Exact(exact) => {
+                            Some((exact.candidate_id.as_str(), exact.revision.as_str()))
+                        }
+                    })
+                    .collect(),
+            ),
         }
     }
 
@@ -293,7 +402,7 @@ impl Search {
         let mut results = Vec::new();
         let mut next = None;
         for source in matches.iter().take(SEARCH_PAGE) {
-            let hit = json!({"reference":Exact {candidate_id:source.candidate_id.clone(),revision:source.revision.clone(),cursor:None}, "record_type":source.record_type,"source_id":source.source_id,"dates":source.dates});
+            let hit = json!({"reference":Exact {candidate_id:source.candidate_id.clone(),revision:source.revision.clone(),cursor:None,source_id:None,location:None}, "record_type":source.record_type,"source_id":source.source_id,"dates":source.dates});
             results.push(hit);
             let continuation = After {
                 version,
@@ -331,27 +440,78 @@ impl Read {
             / self.references.len();
         let mut results = Vec::new();
         for reference in &self.references {
-            let source = sources
-                .iter()
-                .find(|s| s.workspace == workspace && s.candidate_id == reference.id());
-            let result = match source {
-                Some(source) => {
-                    source.validate()?;
-                    match reference {
-                        Reference::Exact(r) if r.revision != source.revision => {
-                            RecordReceipt::Unavailable {
-                                reference: Some(r.candidate_id.clone()),
-                                reason: "revision_changed_repeat_discovery".into(),
-                            }
+            let result = match reference {
+                Reference::Pinned(id) => {
+                    match sources
+                        .iter()
+                        .find(|s| s.workspace == workspace && s.candidate_id == *id)
+                    {
+                        Some(source) => {
+                            source.validate()?;
+                            read_record(source, None, &None, None, None, budget)
                         }
-                        Reference::Exact(r) => read_record(source, r.cursor, budget),
-                        Reference::Pinned(_) => read_record(source, None, budget),
+                        None => RecordReceipt::Unavailable {
+                            reference: Some(id.clone()),
+                            reason: "not_in_recorded_observation".into(),
+                        },
                     }
                 }
-                None => RecordReceipt::Unavailable {
-                    reference: Some(reference.id().into()),
-                    reason: "not_in_recorded_observation".into(),
-                },
+                Reference::Exact(exact) => {
+                    let matching: Vec<&SourceRevision> = sources
+                        .iter()
+                        .filter(|s| {
+                            s.workspace == workspace
+                                && s.candidate_id == exact.candidate_id
+                                && exact
+                                    .source_id
+                                    .as_ref()
+                                    .is_none_or(|sid| &s.source_id == sid)
+                        })
+                        .collect();
+                    if let Some(source) = matching
+                        .iter()
+                        .copied()
+                        .find(|s| s.revision == exact.revision)
+                    {
+                        source.validate()?;
+                        let superseded_by = matching
+                            .first()
+                            .copied()
+                            .filter(|head| head.revision != source.revision)
+                            .map(|head| head.revision.clone());
+                        if let Some(location) = &exact.location {
+                            read_selected_location(
+                                source,
+                                location,
+                                &exact.source_id,
+                                superseded_by,
+                                budget,
+                            )?
+                        } else {
+                            read_record(
+                                source,
+                                exact.cursor,
+                                &exact.source_id,
+                                superseded_by,
+                                None,
+                                budget,
+                            )
+                        }
+                    } else if sources
+                        .iter()
+                        .any(|s| s.workspace == workspace && s.candidate_id == exact.candidate_id)
+                    {
+                        RecordReceipt::Unavailable {
+                            reference: Some(exact.candidate_id.clone()),
+                            reason: "revision_changed_repeat_discovery".into(),
+                        }
+                    } else {
+                        RecordReceipt::Unavailable {
+                            reference: Some(exact.candidate_id.clone()),
+                            reason: "not_in_recorded_observation".into(),
+                        }
+                    }
+                }
             };
             if result.encoded_len() > budget {
                 results.push(RecordReceipt::over_budget());
@@ -363,8 +523,69 @@ impl Read {
     }
 }
 
-fn read_record(source: &SourceRevision, cursor: Option<Position>, budget: usize) -> RecordReceipt {
-    if cursor.is_none() && source.content.len() <= budget {
+fn valid_location_identifiers(location: &super::read::RecordLocation) -> bool {
+    use super::read::{PartSelector, RecordLocation, ScanSelector};
+    match location {
+        RecordLocation::Whole => true,
+        RecordLocation::Part { part, slice: _ } => match part {
+            PartSelector::NativeRecord | PartSelector::RetainedIndex(_) => true,
+            PartSelector::Label(value) | PartSelector::AttachmentId(value) => {
+                !value.trim().is_empty()
+            }
+        },
+        RecordLocation::ScanPage {
+            scan,
+            page: _,
+            slice: _,
+        } => match scan {
+            ScanSelector::Primary => true,
+            ScanSelector::Named(scan_id) => !scan_id.trim().is_empty(),
+        },
+        RecordLocation::Continuation(cursor) => {
+            !cursor.source_id.trim().is_empty()
+                && !cursor.candidate_id.trim().is_empty()
+                && !cursor.revision.trim().is_empty()
+        }
+    }
+}
+
+fn part_label(identity: &super::read::PartIdentity) -> String {
+    use super::read::PartIdentity;
+    match identity {
+        PartIdentity::NativeRecord => "native_record".into(),
+        PartIdentity::Retained { label, .. }
+        | PartIdentity::Attachment { label, .. }
+        | PartIdentity::ScanDocument { label, .. } => label.clone(),
+        PartIdentity::ScanPage { label, page, .. } => format!("{label} (page {page})"),
+    }
+}
+
+fn read_selected_location(
+    source: &SourceRevision,
+    location: &super::read::RecordLocation,
+    exact_source_id: &Option<String>,
+    superseded_by: Option<String>,
+    budget: usize,
+) -> Result<RecordReceipt, String> {
+    use super::read::{
+        ContinuationCursor, ContinuationScope, LocationResolution, PartState, ProvenancePartReader,
+        RecordLocation, RecordPartReader as _, resolve_location,
+    };
+    let resolved_parts = ProvenancePartReader
+        .resolve_parts(source)
+        .map_err(|e| e.to_string())?;
+    let window = resolve_location(source, &resolved_parts, location);
+    let location_limit = match window.resolution {
+        LocationResolution::Recovered { .. } => None,
+        LocationResolution::Unrecoverable { stated_limit, .. } => Some(stated_limit),
+    };
+    let inline_only = resolved_parts.len() == 1 + source.readable_parts.len();
+    if inline_only
+        && window.start_ordinal == 0
+        && window.start_byte == 0
+        && matches!(window.scope, ContinuationScope::Document)
+        && source.content.len() <= budget
+    {
         let full = RecordReceipt::Available {
             reference: source.candidate_id.clone(),
             revision: source.revision.clone(),
@@ -375,26 +596,195 @@ fn read_record(source: &SourceRevision, cursor: Option<Position>, budget: usize)
             readable_parts: source.readable_parts.clone(),
             sha256: source.sha256.clone(),
             provenance: source.provenance.clone(),
+            superseded_by: superseded_by.clone(),
+            location_limit: location_limit.clone(),
+        };
+        if full.encoded_len() <= budget {
+            return Ok(full);
+        }
+    }
+
+    let ordinal = window.start_ordinal;
+    let end_ordinal = match window.scope {
+        ContinuationScope::Document => resolved_parts.len(),
+        ContinuationScope::WithinPart { .. } => (ordinal + 1).min(resolved_parts.len()),
+    };
+    let current = resolved_parts
+        .get(ordinal)
+        .expect("resolve_location guarantees start_ordinal is in bounds");
+    let make_continuation = |part_ordinal: usize, byte_offset: usize| {
+        Box::new(Exact {
+            candidate_id: source.candidate_id.clone(),
+            revision: source.revision.clone(),
+            cursor: None,
+            source_id: exact_source_id.clone(),
+            location: Some(RecordLocation::Continuation(ContinuationCursor {
+                source_id: source.source_id.clone(),
+                candidate_id: source.candidate_id.clone(),
+                revision: source.revision.clone(),
+                part_ordinal,
+                byte_offset,
+                scope: window.scope,
+            })),
+        })
+    };
+    let next_part = (ordinal + 1 < end_ordinal).then(|| make_continuation(ordinal + 1, 0));
+
+    match &current.state {
+        PartState::Missing { detail } => {
+            let receipt = RecordReceipt::MissingPart {
+                reference: source.candidate_id.clone(),
+                revision: source.revision.clone(),
+                part: ordinal,
+                part_identity: current.part.clone(),
+                detail: detail.clone(),
+                next: next_part,
+                superseded_by,
+                location_limit,
+            };
+            Ok(if receipt.encoded_len() <= budget {
+                receipt
+            } else {
+                RecordReceipt::over_budget()
+            })
+        }
+        PartState::Unreadable { reason } => {
+            let receipt = RecordReceipt::UnreadablePart {
+                reference: source.candidate_id.clone(),
+                revision: source.revision.clone(),
+                part: ordinal,
+                part_identity: current.part.clone(),
+                reason: reason.clone(),
+                next: next_part,
+                superseded_by,
+                location_limit,
+            };
+            Ok(if receipt.encoded_len() <= budget {
+                receipt
+            } else {
+                RecordReceipt::over_budget()
+            })
+        }
+        PartState::Unavailable { reason } => {
+            let receipt = RecordReceipt::UnavailablePart {
+                reference: source.candidate_id.clone(),
+                revision: source.revision.clone(),
+                part: ordinal,
+                part_identity: current.part.clone(),
+                reason: reason.clone(),
+                next: next_part,
+                superseded_by,
+                location_limit,
+            };
+            Ok(if receipt.encoded_len() <= budget {
+                receipt
+            } else {
+                RecordReceipt::over_budget()
+            })
+        }
+        PartState::Readable { text } => {
+            let start_byte = window.start_byte;
+            let target_end = match window.scope {
+                ContinuationScope::Document => text.len(),
+                ContinuationScope::WithinPart { end_byte } => end_byte.min(text.len()),
+            };
+            let label = part_label(&current.part);
+            let passage = |end: usize| {
+                let next = if end < target_end {
+                    Some(make_continuation(ordinal, end))
+                } else {
+                    next_part.clone()
+                };
+                RecordReceipt::Passage {
+                    reference: source.candidate_id.clone(),
+                    revision: source.revision.clone(),
+                    part: ordinal,
+                    label: label.clone(),
+                    part_identity: Some(current.part.clone()),
+                    start_byte,
+                    end_byte: end,
+                    total_bytes: text.len(),
+                    content: text[start_byte..end].to_owned(),
+                    next,
+                    superseded_by: superseded_by.clone(),
+                    location_limit: location_limit.clone(),
+                }
+            };
+            let remaining = &text[start_byte..target_end];
+            if remaining.is_empty() {
+                let empty_passage = passage(start_byte);
+                return Ok(if empty_passage.encoded_len() <= budget {
+                    empty_passage
+                } else {
+                    RecordReceipt::over_budget()
+                });
+            }
+            let limit = remaining.floor_char_boundary(remaining.len().min(budget));
+            let ends: Vec<usize> = remaining[..limit]
+                .char_indices()
+                .map(|(i, c)| start_byte + i + c.len_utf8())
+                .collect();
+            let candidate = passage(start_byte + limit);
+            if candidate.encoded_len() <= budget {
+                return Ok(candidate);
+            }
+            let count = ends.partition_point(|end| passage(*end).encoded_len() <= budget);
+            Ok(match count.checked_sub(1) {
+                Some(idx) => passage(ends[idx]),
+                None => RecordReceipt::over_budget(),
+            })
+        }
+    }
+}
+
+fn read_record(
+    source: &SourceRevision,
+    cursor: Option<Position>,
+    exact_source_id: &Option<String>,
+    superseded_by: Option<String>,
+    explicit_limit: Option<String>,
+    budget: usize,
+) -> RecordReceipt {
+    let mut effective_cursor = cursor;
+    let mut location_limit = explicit_limit;
+
+    if let Some(requested_pos) = effective_cursor {
+        let valid = match part(source, requested_pos.part) {
+            Some((_, text)) => {
+                text.is_char_boundary(requested_pos.offset)
+                    && !(requested_pos.offset == text.len() && !text.is_empty())
+            }
+            None => false,
+        };
+        if !valid {
+            effective_cursor = None;
+            location_limit = Some(format!(
+                "Requested cursor part {} at byte offset {} could not be recovered on revision '{}'; returning the same source from the start.",
+                requested_pos.part, requested_pos.offset, source.revision
+            ));
+        }
+    }
+
+    if effective_cursor.is_none() && source.content.len() <= budget {
+        let full = RecordReceipt::Available {
+            reference: source.candidate_id.clone(),
+            revision: source.revision.clone(),
+            record_type: source.record_type.clone(),
+            dates: source.dates.clone(),
+            read_representation: ReadRepresentation::NativeRecord,
+            content: source.content.clone(),
+            readable_parts: source.readable_parts.clone(),
+            sha256: source.sha256.clone(),
+            provenance: source.provenance.clone(),
+            superseded_by: superseded_by.clone(),
+            location_limit: location_limit.clone(),
         };
         if full.encoded_len() <= budget {
             return full;
         }
     }
-    let position = cursor.unwrap_or_default();
-    let Some((label, text)) = part(source, position.part) else {
-        return RecordReceipt::Unavailable {
-            reference: None,
-            reason: "invalid_part_use_returned_cursor".into(),
-        };
-    };
-    if !text.is_char_boundary(position.offset)
-        || (position.offset == text.len() && !text.is_empty())
-    {
-        return RecordReceipt::Unavailable {
-            reference: None,
-            reason: "invalid_offset_use_returned_cursor".into(),
-        };
-    }
+    let position = effective_cursor.unwrap_or_default();
+    let (label, text) = part(source, position.part).expect("validated or default part 0");
     let passage = |end| {
         let next = if end < text.len() {
             Some(Position {
@@ -414,15 +804,22 @@ fn read_record(source: &SourceRevision, cursor: Option<Position>, budget: usize)
             revision: source.revision.clone(),
             part: position.part,
             label: label.into(),
+            part_identity: None,
             start_byte: position.offset,
             end_byte: end,
             total_bytes: text.len(),
             content: text[position.offset..end].into(),
-            next: next.map(|cursor| Exact {
-                candidate_id: source.candidate_id.clone(),
-                revision: source.revision.clone(),
-                cursor: Some(cursor),
+            next: next.map(|cursor| {
+                Box::new(Exact {
+                    candidate_id: source.candidate_id.clone(),
+                    revision: source.revision.clone(),
+                    cursor: Some(cursor),
+                    source_id: exact_source_id.clone(),
+                    location: None,
+                })
             }),
+            superseded_by: superseded_by.clone(),
+            location_limit: location_limit.clone(),
         }
     };
     // Search UTF-8 boundaries of at most one page, measuring the encoded
@@ -478,6 +875,146 @@ pub fn search_tool() -> Tool {
 
 /// Reply revisions can also use bare IDs in their existing pinned observation.
 pub fn read_tool(scope: ChartScope) -> Tool {
+    let byte_span = json!({
+        "type":"object",
+        "properties":{
+            "start_byte":{"type":"integer","minimum":0},
+            "end_byte":{"type":"integer","minimum":0}
+        },
+        "required":["start_byte","end_byte"],
+        "additionalProperties":false
+    });
+    let content_slice = json!({
+        "anyOf":[
+            {
+                "type":"object",
+                "properties":{"slice":{"type":"string","enum":["full"]}},
+                "required":["slice"],
+                "additionalProperties":false
+            },
+            {
+                "type":"object",
+                "properties":{
+                    "slice":{"type":"string","enum":["byte_span"]},
+                    "span":byte_span
+                },
+                "required":["slice","span"],
+                "additionalProperties":false
+            }
+        ]
+    });
+    let part_selector = json!({
+        "anyOf":[
+            {
+                "type":"object",
+                "properties":{"kind":{"type":"string","enum":["native_record"]}},
+                "required":["kind"],
+                "additionalProperties":false
+            },
+            {
+                "type":"object",
+                "properties":{
+                    "kind":{"type":"string","enum":["retained_index"]},
+                    "value":{"type":"integer","minimum":0}
+                },
+                "required":["kind","value"],
+                "additionalProperties":false
+            },
+            {
+                "type":"object",
+                "properties":{
+                    "kind":{"type":"string","enum":["label","attachment_id"]},
+                    "value":{"type":"string","minLength":1}
+                },
+                "required":["kind","value"],
+                "additionalProperties":false
+            }
+        ]
+    });
+    let scan_selector = json!({
+        "anyOf":[
+            {
+                "type":"object",
+                "properties":{"scope":{"type":"string","enum":["primary"]}},
+                "required":["scope"],
+                "additionalProperties":false
+            },
+            {
+                "type":"object",
+                "properties":{
+                    "scope":{"type":"string","enum":["named"]},
+                    "scan_id":{"type":"string","minLength":1}
+                },
+                "required":["scope","scan_id"],
+                "additionalProperties":false
+            }
+        ]
+    });
+    let continuation_scope = json!({
+        "anyOf":[
+            {
+                "type":"object",
+                "properties":{"scope":{"type":"string","enum":["document"]}},
+                "required":["scope"],
+                "additionalProperties":false
+            },
+            {
+                "type":"object",
+                "properties":{
+                    "scope":{"type":"string","enum":["within_part"]},
+                    "end_byte":{"type":"integer","minimum":0}
+                },
+                "required":["scope","end_byte"],
+                "additionalProperties":false
+            }
+        ]
+    });
+    let location = json!({
+        "anyOf":[
+            {"type":"null"},
+            {
+                "type":"object",
+                "properties":{"kind":{"type":"string","enum":["whole"]}},
+                "required":["kind"],
+                "additionalProperties":false
+            },
+            {
+                "type":"object",
+                "properties":{
+                    "kind":{"type":"string","enum":["part"]},
+                    "part":part_selector,
+                    "slice":content_slice.clone()
+                },
+                "required":["kind","part"],
+                "additionalProperties":false
+            },
+            {
+                "type":"object",
+                "properties":{
+                    "kind":{"type":"string","enum":["scan_page"]},
+                    "scan":scan_selector,
+                    "page":{"type":"integer","minimum":1},
+                    "slice":content_slice
+                },
+                "required":["kind","page"],
+                "additionalProperties":false
+            },
+            {
+                "type":"object",
+                "properties":{
+                    "kind":{"type":"string","enum":["continuation"]},
+                    "source_id":{"type":"string","minLength":1},
+                    "candidate_id":{"type":"string","minLength":1},
+                    "revision":{"type":"string","minLength":1},
+                    "part_ordinal":{"type":"integer","minimum":0},
+                    "byte_offset":{"type":"integer","minimum":0},
+                    "scope":continuation_scope
+                },
+                "required":["kind","source_id","candidate_id","revision","part_ordinal","byte_offset","scope"],
+                "additionalProperties":false
+            }
+        ]
+    });
     let exact = json!({
         "type":"object","properties":{
             "candidate_id":{"type":"string"},
@@ -488,7 +1025,9 @@ pub fn read_tool(scope: ChartScope) -> Tool {
                     "offset":{"type":"integer","minimum":0}
                 },
                 "required":["part","offset"],"additionalProperties":false
-            }]}
+            }]},
+            "source_id":{"type":["string","null"],"minLength":1},
+            "location":location
         },
         "required":["candidate_id","revision","cursor"],"additionalProperties":false
     });
@@ -499,7 +1038,7 @@ pub fn read_tool(scope: ChartScope) -> Tool {
     };
     Tool {
         name: READ_TOOL.into(),
-        description: "Open exact references for this patient. A whole record includes native content and decoded parts. For a large record, each passage names its part and exact UTF-8 byte span. Pass its next reference back to continue; null ends the record. Part 0 is native content and parts 1 onward are decoded text. Base claims only on the passages delivered.".into(),
+        description: "Open exact references for this patient, optionally scoped by source_id and location (whole record, named or indexed part, 1-indexed scan page, UTF-8 byte span, or continuation). A whole inline record includes native content and decoded parts. For a large or multi-part record, each passage names its part and exact UTF-8 byte span, and non-readable parts report missing_part, unreadable_part, or unavailable_part without stopping remaining parts. Pass next back to continue; null ends the read. Base claims only on the passages delivered.".into(),
         parameters: json!({
             "type":"object","properties":{
                 "references":{"type":"array","items":reference,"minItems":1,"maxItems":8},

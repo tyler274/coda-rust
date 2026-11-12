@@ -4,6 +4,8 @@
 //! reader neither discovers new records nor claims that a snapshot is a
 //! complete chart.
 mod chart;
+/// Reading patient records by source, version, and location in bounded, usable parts.
+pub mod read;
 pub use chart::{ChartInputError, ChartRequest, ChartScope, SEARCH_TOOL, read_tool, search_tool};
 
 use async_trait::async_trait;
@@ -57,19 +59,36 @@ pub struct SourceRevision {
     pub provenance: Value,
 }
 impl SourceRevision {
-    /// Refuses corrupt or unidentified source evidence.
-    pub fn validate(&self) -> Result<(), String> {
-        if self.workspace.is_empty()
-            || self.source_id.is_empty()
-            || self.candidate_id.is_empty()
-            || self.revision.is_empty()
-            || self.record_type.is_empty()
-            || crate::sha256_hex(self.content.as_bytes()) != self.sha256
-            || self.provenance.is_null()
-        {
-            return Err("invalid retained physician source revision".into());
+    /// Validates required identity fields, SHA-256 content digest, and non-null provenance.
+    pub fn validate_integrity(&self) -> Result<(), read::InvalidSourceRevisionError> {
+        for (field, value) in [
+            ("workspace", self.workspace.as_str()),
+            ("source_id", self.source_id.as_str()),
+            ("candidate_id", self.candidate_id.as_str()),
+            ("revision", self.revision.as_str()),
+            ("record_type", self.record_type.as_str()),
+        ] {
+            if value.is_empty() {
+                return Err(read::InvalidSourceRevisionError::EmptyField { field });
+            }
+        }
+        let computed = crate::sha256_hex(self.content.as_bytes());
+        if computed != self.sha256 {
+            return Err(read::InvalidSourceRevisionError::DigestMismatch {
+                expected: self.sha256.clone(),
+                actual: computed,
+            });
+        }
+        if self.provenance.is_null() {
+            return Err(read::InvalidSourceRevisionError::NullProvenance);
         }
         Ok(())
+    }
+
+    /// Refuses corrupt or unidentified source evidence.
+    pub fn validate(&self) -> Result<(), String> {
+        self.validate_integrity()
+            .map_err(|_| "invalid retained physician source revision".into())
     }
 }
 
