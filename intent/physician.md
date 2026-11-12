@@ -28,7 +28,7 @@ Coda's shared principles (README.md) govern this spec. These are the ones specif
 6. **Ambient.** The physician doesn't have to ask Coda to start ordinary work. Preparation, reviews and follow-ups start from the schedule, the clock, scheduled pulls of each source and arriving patient mail.
 7. **Build for every practice.** What differs between practices is configuration or a declared adapter, never a constant or a branch written for one practice.
 8. **Silence that looks like health is a failure.** If something is behind, stuck or degraded, someone who can act on it sees it, with the reason. Recovery is the system's job, and retries never become the physician's workflow.
-9. **Live where you work; history as it was.** What the physician is looking at updates live. Anything already said or sent keeps the version it used and is marked when something newer exists.
+9. **Live where you work; history as it was.** What the physician is looking at updates live. Anything already said or sent keeps the version it used.
 10. **Messages stay in the practice’s channels.** For the MVP, Spruce is the practice inbox. The physician reviews Spruce messages in Coda and sends replies in the original Spruce conversation. Coda has no inbox of its own.
 11. **Never anchor on FHIR or any one API.** Every source comes through its own adapter.
 12. **Fail closed on access, consent and patient data; fail gracefully everywhere else.** A small failure never closes a whole screen, and a list never reads as complete when something is missing.
@@ -107,11 +107,11 @@ Along the way:
 - **Queue.** Send next, also Command+Enter, or Control+Enter on Windows, queues a message. Coda keeps queued messages, not the browser, so they survive a closed tab and show on every device. They stay visible under the answer, and each can be edited, deleted or sent now; saving an edit reads Update. When the answer ends, Coda answers them together in one reply. If the answer can't finish, they stay queued: Send now sends one, and Try again continues the answer first.
 - **Stop.** Stop really stops and never sends queued messages: queued text returns to the composer. The stopped answer stays in the transcript marked stopped and keeps its Resume until the physician sends something else.
 - **News mid-answer.** Records or messages that arrive before the answer finishes are taken in.
-- **News after the answer.** A finished answer stays as it was said and is marked with Update when newer records arrive.
+- **News after the answer.** A finished answer stays as it was said.
 - **Saving.** Drafts save quietly. Only a draft that can't be kept says "Not saved" with Retry, and a failed send keeps its text in the composer.
 - **Lost receipt.** A command changes its item only once accepted. A lost receipt shows as pending, Coda confirms it on its own and never sends twice, and if it still can't confirm, the item says so with Check again.
 - **Restart.** After a restart the physician finds conversations, drafts, history and feedback exactly as they left them, and interrupted work recovers as the [harness](harness.md#guarantees) promises.
-- **Archive.** Archiving a conversation offers Undo. It's allowed only with no running or queued work, and it never clears attention or ends follow-ups. Sending, Resume, Try again and Update each bring an archived conversation back.
+- **Archive.** Archiving a conversation offers Undo. It's allowed only with no running or queued work, and it never clears attention or ends follow-ups. Sending, Resume and Try again each bring an archived conversation back.
 - **Correction.** See K1.
 
 ### P2. A scheduled pull finds a new result
