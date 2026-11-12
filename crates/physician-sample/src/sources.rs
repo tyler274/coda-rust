@@ -3,7 +3,7 @@
 //! All practice-wide outage and patient standing decisions delegate to the single
 //! authoritative rules in [`local_product::source_status`].
 
-use std::collections::BTreeMap;
+use std::collections::{BTreeMap, HashSet};
 use std::sync::{Arc, RwLock};
 
 use axum::Json;
@@ -20,7 +20,7 @@ use local_product::source_status::{
     LinkTarget, PracticeOutageKind, PracticeSourceReport, PracticeSourceSummary, SourceCoordinator,
     SourcePatientKey, SourceStatusError,
 };
-use physician_auth::{AuthStore, Membership};
+use physician_auth::{AuthStore, Membership, PhysicianIdentity};
 use serde::Deserialize;
 use serde_json::{Value, json};
 
@@ -115,22 +115,57 @@ async fn practice_now_seconds(
     }
 }
 
+async fn panel_workspaces(
+    extensions: &Extensions,
+    identity: &PhysicianIdentity,
+) -> Option<HashSet<String>> {
+    let auth_store = extensions.get::<Arc<dyn AuthStore>>()?;
+    Some(auth_store.panel(identity).await.into_iter().collect())
+}
+
+fn scope_summary_to_panel(
+    summary: &PracticeSourceSummary,
+    panel: Option<&HashSet<String>>,
+) -> PracticeSourceSummary {
+    let Some(allowed) = panel else {
+        return summary.clone();
+    };
+    match summary {
+        PracticeSourceSummary::PatientIssues {
+            source_id,
+            total_patients,
+            issues,
+        } => PracticeSourceSummary::PatientIssues {
+            source_id: source_id.clone(),
+            total_patients: *total_patients,
+            issues: issues
+                .iter()
+                .filter(|issue| allowed.contains(&issue.workspace_id))
+                .cloned()
+                .collect(),
+        },
+        other => other.clone(),
+    }
+}
+
 fn format_report(
     registry: &SourceRegistry,
     report: &PracticeSourceReport,
+    panel: Option<&HashSet<String>>,
 ) -> (Value, Option<Value>, Vec<Value>) {
     let source_label = registry
         .adapter(&report.source_id)
         .map(|adapter| adapter.source_label().to_owned())
         .unwrap_or_else(|| report.source_id.clone());
+    let summary = scope_summary_to_panel(&report.summary, panel);
 
-    match &report.summary {
+    match &summary {
         PracticeSourceSummary::Healthy { .. } => (
             json!({
                 "source_id": report.source_id,
                 "source_label": source_label,
                 "access": report.access,
-                "summary": report.summary,
+                "summary": summary,
                 "patient_issues": [],
             }),
             None,
@@ -143,7 +178,7 @@ fn format_report(
                     "source_id": report.source_id,
                     "source_label": source_label,
                     "access": report.access,
-                    "summary": report.summary,
+                    "summary": summary,
                     "outage": outage_val,
                     "patient_issues": [],
                 }),
@@ -158,7 +193,7 @@ fn format_report(
                     "source_id": report.source_id,
                     "source_label": source_label,
                     "access": report.access,
-                    "summary": report.summary,
+                    "summary": summary,
                     "patient_issues": issue_vals,
                 }),
                 None,
@@ -208,10 +243,11 @@ pub(crate) async fn today_connections_and_outages(
 }
 
 /// `GET /connections` — returns practice source summaries, access state, practice-wide outages,
-/// and non-outage per-patient issues.
+/// and non-outage per-patient issues scoped to the caller's panel.
 pub(crate) async fn get_connections(request: Request<Body>) -> Response {
     let extensions = request.extensions();
-    let practice_id = ConnectedCare::identity(extensions).practice_id;
+    let identity = ConnectedCare::identity(extensions);
+    let practice_id = identity.practice_id.clone();
     let Some(registry) = registry_from(extensions) else {
         return Json(json!({
             "practice_id": practice_id,
@@ -237,12 +273,13 @@ pub(crate) async fn get_connections(request: Request<Body>) -> Response {
     else {
         return StatusCode::SERVICE_UNAVAILABLE.into_response();
     };
+    let panel = panel_workspaces(extensions, &identity).await;
 
     let mut sources = Vec::with_capacity(reports.len());
     let mut outages = Vec::new();
     let mut patient_issues = Vec::new();
     for report in &reports {
-        let (source_val, outage, issues) = format_report(registry, report);
+        let (source_val, outage, issues) = format_report(registry, report, panel.as_ref());
         sources.push(source_val);
         if let Some(outage) = outage {
             outages.push(outage);
@@ -390,7 +427,9 @@ pub(crate) async fn post_check(Path(source_id): Path<String>, request: Request<B
         else {
             return StatusCode::SERVICE_UNAVAILABLE.into_response();
         };
-        let (_, outage, issues) = format_report(registry, &practice_report);
+        let panel = panel_workspaces(&parts.extensions, &identity).await;
+        let (_, outage, issues) = format_report(registry, &practice_report, panel.as_ref());
+        let summary = scope_summary_to_panel(&practice_report.summary, panel.as_ref());
 
         return Json(json!({
             "scope": "patient",
@@ -398,7 +437,7 @@ pub(crate) async fn post_check(Path(source_id): Path<String>, request: Request<B
             "source_id": source_id,
             "patient": patient_report,
             "access": practice_report.access,
-            "summary": practice_report.summary,
+            "summary": summary,
             "outages": outage.into_iter().collect::<Vec<_>>(),
             "patient_issues": issues,
         }))
@@ -416,7 +455,9 @@ pub(crate) async fn post_check(Path(source_id): Path<String>, request: Request<B
     let Ok(practice_report) = store.practice_source_report(&practice_id, &source_id).await else {
         return StatusCode::SERVICE_UNAVAILABLE.into_response();
     };
-    let (_, outage, issues) = format_report(registry, &practice_report);
+    let panel = panel_workspaces(&parts.extensions, &identity).await;
+    let (_, outage, issues) = format_report(registry, &practice_report, panel.as_ref());
+    let summary = scope_summary_to_panel(&check.summary, panel.as_ref());
 
     Json(json!({
         "scope": "practice",
@@ -424,7 +465,7 @@ pub(crate) async fn post_check(Path(source_id): Path<String>, request: Request<B
         "source_id": check.source_id,
         "checked_patients": check.patients.len(),
         "access": check.access,
-        "summary": check.summary,
+        "summary": summary,
         "outages": outage.into_iter().collect::<Vec<_>>(),
         "patient_issues": issues,
     }))
@@ -448,17 +489,19 @@ pub(crate) async fn post_reconnect(
         return StatusCode::NOT_FOUND.into_response();
     };
 
-    let practice_id = ConnectedCare::identity(extensions).practice_id;
+    let identity = ConnectedCare::identity(extensions);
+    let practice_id = identity.practice_id.clone();
     let Ok(now) = practice_now_seconds(extensions, &practice_id).await else {
         return StatusCode::SERVICE_UNAVAILABLE.into_response();
     };
+    let panel = panel_workspaces(extensions, &identity).await;
 
     match SourceCoordinator::reconnect_source(store, &*adapter, &practice_id, now).await {
         Ok(report) => Json(json!({
             "outcome": "reconnected",
             "receipt": report.receipt,
             "access": report.access,
-            "summary": report.check.summary,
+            "summary": scope_summary_to_panel(&report.check.summary, panel.as_ref()),
         }))
         .into_response(),
         Err(SourceStatusError::SourceAdapter { reason, .. }) => (
@@ -531,10 +574,12 @@ pub(crate) async fn intercept_reconnect_command(request: Request<Body>, next: Ne
         return reject();
     };
 
-    let practice_id = ConnectedCare::identity(&parts.extensions).practice_id;
+    let identity = ConnectedCare::identity(&parts.extensions);
+    let practice_id = identity.practice_id.clone();
     let Ok(now) = practice_now_seconds(&parts.extensions, &practice_id).await else {
         return StatusCode::SERVICE_UNAVAILABLE.into_response();
     };
+    let panel = panel_workspaces(&parts.extensions, &identity).await;
 
     match SourceCoordinator::reconnect_source(store, &*adapter, &practice_id, now).await {
         Ok(report) => Json(json!({
@@ -542,7 +587,7 @@ pub(crate) async fn intercept_reconnect_command(request: Request<Body>, next: Ne
             "type": "reconnect_source",
             "receipt": report.receipt,
             "access": report.access,
-            "summary": report.check.summary,
+            "summary": scope_summary_to_panel(&report.check.summary, panel.as_ref()),
         }))
         .into_response(),
         Err(_) => reject(),

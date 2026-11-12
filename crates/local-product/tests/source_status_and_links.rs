@@ -902,4 +902,42 @@ async fn single_patient_lapsed_access_stays_patient_scoped_and_later_success_rec
             connected_at: 3_000
         })
     );
+
+    // During reconnect_source at t = 4_000, if p-1 still returns LapsedAccess while p-2 and p-3
+    // succeed (keeping access = Connected { connected_at: 4_000 }), p-1 MUST still report
+    // ReconnectNeeded rather than being masked as UpToDate.
+    source.push(ScriptedPull::LapsedAccess {
+        reason: "patient-1 consent still revoked".into(),
+    });
+    source.push(ScriptedPull::Complete {
+        name: "Patient 2".into(),
+        records: vec![("Patient".into(), "p-2".into(), "Patient 2".into())],
+    });
+    source.push(ScriptedPull::Complete {
+        name: "Patient 3".into(),
+        records: vec![("Patient".into(), "p-3".into(), "Patient 3".into())],
+    });
+    let reconnected = SourceCoordinator::reconnect_source(&store, &*source, &practice, 4_000)
+        .await
+        .unwrap();
+    assert_eq!(
+        reconnected.access,
+        SourceAccessState::Connected {
+            connected_at: 4_000
+        }
+    );
+    let p1_after_reconnect = reconnected
+        .check
+        .patients
+        .iter()
+        .find(|p| p.workspace_id == ws1)
+        .unwrap();
+    assert_eq!(
+        p1_after_reconnect.standing,
+        SourceStanding::ReconnectNeeded {
+            last_good_read_at: Some(3_000),
+            attempted_at: Some(4_000),
+            reason: "patient-1 consent still revoked".into(),
+        }
+    );
 }

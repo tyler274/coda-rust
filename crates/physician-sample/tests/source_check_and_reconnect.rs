@@ -272,6 +272,30 @@ async fn check_and_reconnect_flow_preserves_last_good_read_and_collapses_practic
     assert_eq!(check_one["outages"], json!([]));
     assert_eq!(check_one["patient_issues"].as_array().unwrap().len(), 1);
 
+    // Panel-scoped filtering on /connections: Dr. Check sees ws1's issue, whereas Dr. Colleague
+    // (same practice, not assigned ws1 on panel) receives zero per-patient issue details.
+    let (status, check_conns) = get_json(&base, &session, "/connections").await;
+    assert_eq!(status, 200, "{check_conns}");
+    assert_eq!(check_conns["patient_issues"].as_array().unwrap().len(), 1);
+    let (status, colleague_conns) = get_json(&base, &colleague_session, "/connections").await;
+    assert_eq!(status, 200, "{colleague_conns}");
+    assert_eq!(colleague_conns["patient_issues"], json!([]));
+    assert_eq!(colleague_conns["sources"][0]["patient_issues"], json!([]));
+    assert_eq!(
+        colleague_conns["sources"][0]["summary"]["issues"],
+        json!([])
+    );
+    let (status, colleague_check) = post_json(
+        &base,
+        &colleague_session,
+        "/connections/synthetic-charts/check",
+        json!({}),
+    )
+    .await;
+    assert_eq!(status, 200, "{colleague_check}");
+    assert_eq!(colleague_check["patient_issues"], json!([]));
+    assert_eq!(colleague_check["summary"]["issues"], json!([]));
+
     // Patient page preserves `usable_snapshot.synchronized_at == initial_iso` while naming failed_parts.
     let (status, page1_partial) =
         get_json(&base, &session, &format!("/patient-workspaces/{ws1}")).await;

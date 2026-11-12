@@ -287,24 +287,11 @@ pub fn derive_standing(
             attempted_at: attempt.attempted_at,
             reason: reason.clone(),
         },
-        PullOutcome::LapsedAccess { reason } => {
-            if let Some(SourceAccessState::Connected { connected_at }) = access
-                && *connected_at >= attempt.attempted_at
-            {
-                return match status.last_good_read_at {
-                    Some(last_good_read_at) => SourceStanding::UpToDate {
-                        last_good_read_at,
-                        missing_candidates: Vec::new(),
-                    },
-                    None => SourceStanding::NotYetRead,
-                };
-            }
-            SourceStanding::ReconnectNeeded {
-                last_good_read_at: status.last_good_read_at,
-                attempted_at: Some(attempt.attempted_at),
-                reason: reason.clone(),
-            }
-        }
+        PullOutcome::LapsedAccess { reason } => SourceStanding::ReconnectNeeded {
+            last_good_read_at: status.last_good_read_at,
+            attempted_at: Some(attempt.attempted_at),
+            reason: reason.clone(),
+        },
     }
 }
 
@@ -933,6 +920,25 @@ mod tests {
                 last_good_read_at: Some(120),
                 attempted_at: Some(200),
                 reason: "refresh token expired".into(),
+            }
+        );
+
+        let patient_lapsed_at_reconnect = status_with(
+            Some(120),
+            Some(PullAttempt {
+                attempted_at: 300,
+                outcome: PullOutcome::LapsedAccess {
+                    reason: "patient consent scope revoked".into(),
+                },
+            }),
+        );
+        let reconnected = SourceAccessState::Connected { connected_at: 300 };
+        assert_eq!(
+            derive_standing(Some(&reconnected), Some(&patient_lapsed_at_reconnect)),
+            SourceStanding::ReconnectNeeded {
+                last_good_read_at: Some(120),
+                attempted_at: Some(300),
+                reason: "patient consent scope revoked".into(),
             }
         );
     }
