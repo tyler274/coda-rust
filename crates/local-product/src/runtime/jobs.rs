@@ -565,12 +565,14 @@ impl From<DbErr> for PracticeJobError {
     }
 }
 
-/// Capabilities offered to a practice-owned background run: read-only patient
-/// chart search/read, approved skill views, retained result reads, and history.
+/// Capabilities offered to a practice-owned background run: patient chart
+/// search/read, on-demand source refresh, approved skill views, retained result
+/// reads, and history.
 pub fn tools() -> Vec<Tool> {
     let mut offered = work_tools();
     offered.push(search_tool());
     offered.push(read_tool(ChartScope::Chat));
+    offered.push(super::refresh::refresh_tool());
     offered
 }
 
@@ -1405,6 +1407,9 @@ impl Store {
         {
             return Err(error("partial result differs from recorded terminal turn").into());
         }
+        let observation = super::sources::observed(&tx, &claim.scope.workspace).await?;
+        job.sources_version = observation.version;
+        job.sources = observation.sources;
         let text = turn.text();
         if let Some(attempt) = job.attempts.last_mut() {
             attempt.status = AttemptStatus::Held;
@@ -1485,6 +1490,9 @@ impl Store {
             return Err(error("completion differs from recorded terminal turn").into());
         }
         let output_text = terminal_answer(terminal)?;
+        let observation = super::sources::observed(&tx, &claim.scope.workspace).await?;
+        job.sources_version = observation.version;
+        job.sources = observation.sources;
         if let Some(attempt) = job.attempts.last_mut() {
             attempt.status = AttemptStatus::Completed;
         }
@@ -1791,6 +1799,25 @@ impl Product for PracticeJobHost<'_> {
             .map_err(persistence_failure)
     }
 
+    fn saved_outcome(
+        &mut self,
+        call: &Invocation,
+    ) -> engine::recipe::ToolFuture<Option<ToolOutcome>> {
+        if !super::refresh::is_refresh_tool(&call.name) {
+            return Box::pin(async { Ok(None) });
+        }
+        let store = self.store.clone();
+        let claim = self.claim.clone();
+        let call = call.clone();
+        Box::pin(async move {
+            store.assert_practice_job_current(&claim).await?;
+            let (job, _, _) = store.practice_job_snapshot(&claim.scope).await?;
+            store
+                .saved_practice_refresh_outcome(&claim.scope, &job.work, &call)
+                .await
+        })
+    }
+
     fn execute(&mut self, call: &Invocation, arguments: Value) -> engine::recipe::ToolFuture {
         let store = self.store.clone();
         let claim = self.claim.clone();
@@ -1879,6 +1906,16 @@ impl Product for PracticeJobHost<'_> {
                 return chart
                     .run(workspace, observation.version, &observation.sources)
                     .map_err(Into::into);
+            }
+            if super::refresh::is_refresh_tool(&call.name) {
+                let refresh_call = Invocation {
+                    id: call.id.clone(),
+                    name: call.name.clone(),
+                    arguments,
+                };
+                return store
+                    .execute_claimed_practice_refresh_tool(&claim, &job.work, &refresh_call)
+                    .await;
             }
             if call.name == SKILL_VIEW {
                 return Ok(skills.execute(&call.name, &arguments));
@@ -2053,6 +2090,12 @@ mod tests {
         assert!(built.instructions.contains(&preloaded.sha256));
         assert!(built.tools.iter().any(|tool| tool["name"] == SEARCH_TOOL));
         assert!(built.tools.iter().any(|tool| tool["name"] == READ_TOOL));
+        assert!(
+            built
+                .tools
+                .iter()
+                .any(|tool| tool["name"] == super::super::refresh::REFRESH_TOOL)
+        );
         assert!(
             !built
                 .tools

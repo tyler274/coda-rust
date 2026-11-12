@@ -52,6 +52,8 @@ mod quota;
 /// Command receipts and their 90-day reduction to a salted digest.
 pub mod receipt;
 mod records;
+/// On-demand patient source refresh tool, saved per-source status, and once-only receipts.
+pub mod refresh;
 /// Hosted physician reply drafts and their revision work.
 pub mod reply;
 /// Versioned patient source observations: a stand-in source owner.
@@ -580,6 +582,7 @@ pub enum Stopped {
 pub struct Store {
     db: DatabaseConnection,
     clinical_library: crate::clinical_library::ClinicalLibraryClient,
+    source_refresh: std::sync::Arc<dyn refresh::PatientSourceRefresh>,
 }
 
 fn error(message: &str) -> DbErr {
@@ -747,6 +750,7 @@ impl Store {
         Self {
             db,
             clinical_library: crate::clinical_library::ClinicalLibraryClient::from_env(),
+            source_refresh: std::sync::Arc::new(refresh::FixedSourceCheck::new()),
         }
     }
 
@@ -762,6 +766,20 @@ impl Store {
     /// Clinical library client configured for chat tool execution.
     pub fn clinical_library(&self) -> &crate::clinical_library::ClinicalLibraryClient {
         &self.clinical_library
+    }
+
+    /// Returns a clone bound to an explicit [`refresh::PatientSourceRefresh`] adapter.
+    pub fn with_source_refresh(
+        mut self,
+        source_refresh: std::sync::Arc<dyn refresh::PatientSourceRefresh>,
+    ) -> Self {
+        self.source_refresh = source_refresh;
+        self
+    }
+
+    /// Patient source refresh adapter configured for tool execution.
+    pub fn source_refresh(&self) -> &dyn refresh::PatientSourceRefresh {
+        self.source_refresh.as_ref()
     }
 
     // Display readback now joins several authoritative rows. One read-only
@@ -1804,6 +1822,24 @@ impl<A: Authority> Product for PhysicianHost<A> {
             .map_err(persistence_failure)?;
         Ok(())
     }
+    fn saved_outcome(
+        &mut self,
+        call: &Invocation,
+    ) -> harness::engine::recipe::ToolFuture<Option<ToolOutcome>> {
+        if !refresh::is_refresh_tool(&call.name) {
+            return Box::pin(async { Ok(None) });
+        }
+        let store = self.store.clone();
+        let claim = self.claim.clone();
+        let call = call.clone();
+        Box::pin(async move {
+            store.assert_current(&claim).await?;
+            let (state, _) = store.work_snapshot(&claim.scope).await?;
+            store
+                .saved_physician_refresh_outcome(&claim.scope, &state.work, &call)
+                .await
+        })
+    }
     fn execute(
         &mut self,
         call: &Invocation,
@@ -1876,6 +1912,16 @@ impl<A: Authority> Product for PhysicianHost<A> {
                 return chart
                     .run(workspace, observation.version, &observation.sources)
                     .map_err(Into::into);
+            }
+            if refresh::is_refresh_tool(&call.name) {
+                let refresh_call = Invocation {
+                    id: call.id.clone(),
+                    name: call.name.clone(),
+                    arguments,
+                };
+                return store
+                    .execute_claimed_physician_refresh_tool(&claim, &state.work, &refresh_call)
+                    .await;
             }
             if crate::clinical_library::is_library_tool(&call.name) {
                 return Ok(store
