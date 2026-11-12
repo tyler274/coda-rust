@@ -867,7 +867,20 @@ async fn existing_stop_and_resume_controls_hold_and_resume_practice_run_on_backg
         )
         .await
         .unwrap();
-    assert!(matches!(resumed, Resumed::Pending { .. }));
+    let Resumed::Pending { delivery } = resumed else {
+        panic!("expected Resumed::Pending, got {resumed:?}");
+    };
+    assert_eq!(
+        store
+            .delivery_state(&delivery)
+            .await
+            .expect("resumed practice job delivery state resolves while pending"),
+        local_product::runtime::delivery::DeliveryState::Due,
+    );
+    store
+        .dispatched(&delivery, 60)
+        .await
+        .expect("resumed practice job delivery marks dispatched");
 
     let pending_job = store.practice_job(&scope).await.unwrap().unwrap();
     assert_eq!(pending_job.status, WorkStatus::Pending);
