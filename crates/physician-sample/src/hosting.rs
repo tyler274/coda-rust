@@ -360,6 +360,16 @@ const CREDENTIAL_RESPONSE_LIMIT: usize = 64 * 1024;
 const LIBRARY_RESPONSE_LIMIT: usize = 2 * 1024 * 1024;
 const DEFAULT_LIBRARY_TIMEOUT: std::time::Duration = std::time::Duration::from_secs(30);
 
+fn sha256_hex(bytes: &[u8]) -> String {
+    use sha2::{Digest, Sha256};
+    use std::fmt::Write as _;
+    let mut hex = String::with_capacity(64);
+    for byte in Sha256::digest(bytes) {
+        let _ = write!(hex, "{byte:02x}");
+    }
+    hex
+}
+
 /// Validated connection settings for the read-only clinical library service.
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct ClinicalLibraryConfig {
@@ -598,8 +608,36 @@ pub struct ClinicalPassage {
     pub content_sha256: String,
 }
 
+enum WireUnitTranslation {
+    Displayable(ClinicalPassage),
+    WithheldByRights { passage_id: String },
+}
+
 impl ClinicalPassage {
-    fn from_wire_unit(candidate_id: String, unit: WireUnit) -> Result<Self, &'static str> {
+    fn from_wire_unit(
+        candidate_id: String,
+        unit: WireUnit,
+    ) -> Result<WireUnitTranslation, &'static str> {
+        let passage_id = candidate_id.trim().to_owned();
+        if passage_id.is_empty() {
+            return Err("passage is missing passage_id");
+        }
+        if unit.unit_id.trim() != passage_id {
+            return Err("returned unit_id did not match candidate_id");
+        }
+        if unit.content.trim().is_empty() {
+            return Err("passage is missing text");
+        }
+        let content_sha256 = unit.content_sha256.trim().to_owned();
+        if content_sha256.is_empty() {
+            return Err("passage is missing content_sha256");
+        }
+        if sha256_hex(unit.content.as_bytes()) != content_sha256 {
+            return Err("passage content_sha256 did not match text digest");
+        }
+        if !unit.may_display_excerpt {
+            return Ok(WireUnitTranslation::WithheldByRights { passage_id });
+        }
         let non_blank = |value: Option<String>| {
             value
                 .map(|text| text.trim().to_owned())
@@ -626,17 +664,17 @@ impl ClinicalPassage {
             (None, _) => String::new(),
         };
         let passage = Self {
-            passage_id: candidate_id.trim().to_owned(),
+            passage_id,
             source,
             title,
             date,
             status: unit.lifecycle_state,
             attribution,
             text: unit.content,
-            content_sha256: unit.content_sha256.trim().to_owned(),
+            content_sha256,
         };
         passage.validate()?;
-        Ok(passage)
+        Ok(WireUnitTranslation::Displayable(passage))
     }
 
     fn validate(&self) -> Result<(), &'static str> {
@@ -660,6 +698,9 @@ impl ClinicalPassage {
         }
         if self.content_sha256.trim().is_empty() {
             return Err("passage is missing content_sha256");
+        }
+        if sha256_hex(self.text.as_bytes()) != self.content_sha256.trim() {
+            return Err("passage content_sha256 did not match text digest");
         }
         Ok(())
     }
@@ -886,6 +927,7 @@ enum ReadWireItem {
 
 #[derive(serde::Deserialize)]
 struct WireUnit {
+    unit_id: String,
     source_display_name: String,
     title: String,
     publication_date: Option<String>,
@@ -897,6 +939,7 @@ struct WireUnit {
     native_destination_uri: String,
     license_identifier: Option<String>,
     attribution_text: Option<String>,
+    may_display_excerpt: bool,
 }
 
 /// Authenticated HTTP client for the read-only clinical library service.
@@ -1165,14 +1208,15 @@ impl ClinicalLibraryClient {
         for item in hydrated.results {
             match item {
                 ReadWireItem::Available { candidate_id, unit } => {
-                    let passage =
-                        ClinicalPassage::from_wire_unit(candidate_id, *unit).map_err(|reason| {
-                            ClinicalLibraryError::InvalidResponse {
-                                reason,
-                                source: None,
-                            }
-                        })?;
-                    passages.push(passage);
+                    match ClinicalPassage::from_wire_unit(candidate_id, *unit).map_err(
+                        |reason| ClinicalLibraryError::InvalidResponse {
+                            reason,
+                            source: None,
+                        },
+                    )? {
+                        WireUnitTranslation::Displayable(passage) => passages.push(passage),
+                        WireUnitTranslation::WithheldByRights { .. } => {}
+                    }
                 }
                 ReadWireItem::Unavailable {
                     cause: ReadUnavailableCause::NotFoundOrNotAuthorized,
@@ -1249,12 +1293,20 @@ impl ClinicalLibraryClient {
                         source: None,
                     });
                 }
-                ClinicalPassage::from_wire_unit(candidate_id, *unit).map_err(|reason| {
+                match ClinicalPassage::from_wire_unit(candidate_id, *unit).map_err(|reason| {
                     ClinicalLibraryError::InvalidResponse {
                         reason,
                         source: None,
                     }
-                })
+                })? {
+                    WireUnitTranslation::Displayable(passage) => Ok(passage),
+                    WireUnitTranslation::WithheldByRights { passage_id } => {
+                        Err(ClinicalLibraryError::PassageUnavailable {
+                            passage_id,
+                            cause: ReadUnavailableCause::NotFoundOrNotAuthorized,
+                        })
+                    }
+                }
             }
             ReadWireItem::Unavailable {
                 candidate_id,
@@ -1881,6 +1933,11 @@ mod tests {
             .unwrap();
         });
 
+        let first_text = "Confirm out-of-office blood pressure before intensifying dual therapy.";
+        let first_sha256 = sha256_hex(first_text.as_bytes());
+        let second_text = "Ambulatory blood pressure monitoring is the reference standard.";
+        let second_sha256 = sha256_hex(second_text.as_bytes());
+
         let expected_first = ClinicalPassage {
             passage_id: FIRST_ID.to_owned(),
             source: "PubMed Central".to_owned(),
@@ -1889,10 +1946,8 @@ mod tests {
             status: PassageStatus::Current,
             attribution: "CC BY 4.0 — Smith et al., J Clin Hypertens 2025; PMCID: PMC9001001"
                 .to_owned(),
-            text: "Confirm out-of-office blood pressure before intensifying dual therapy."
-                .to_owned(),
-            content_sha256: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-                .to_owned(),
+            text: first_text.to_owned(),
+            content_sha256: first_sha256.clone(),
         };
         let expected_second = ClinicalPassage {
             passage_id: SECOND_ID.to_owned(),
@@ -1903,9 +1958,8 @@ mod tests {
             attribution:
                 "USPSTF (US-Public-Domain) — https://www.uspreventiveservicestaskforce.org/uspstf/recommendation/hypertension-in-adults-screening"
                     .to_owned(),
-            text: "Ambulatory blood pressure monitoring is the reference standard.".to_owned(),
-            content_sha256: "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
-                .to_owned(),
+            text: second_text.to_owned(),
+            content_sha256: second_sha256.clone(),
         };
         let expected_bearer = format!("Bearer {SYNTHETIC_ID_TOKEN}");
 
@@ -2041,6 +2095,8 @@ mod tests {
                         post(
                             move |headers: HeaderMap, Json(body): Json<serde_json::Value>| {
                                 let ok = check_read(&headers);
+                                let first_sha256 = first_sha256.clone();
+                                let second_sha256 = second_sha256.clone();
                                 async move {
                                     if !ok {
                                         return (
@@ -2103,8 +2159,8 @@ mod tests {
                                                     "native_locator": "Methods > Paragraph 3",
                                                     "unit_kind": "paragraph",
                                                     "ordinal": 3,
-                                                    "content": "Confirm out-of-office blood pressure before intensifying dual therapy.",
-                                                    "content_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                                                    "content": first_text,
+                                                    "content_sha256": first_sha256,
                                                     "native_destination_uri": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9001001/",
                                                     "version_destination_uri": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9001001/",
                                                     "rights_decision_id": "55555555-5555-4555-8555-555555555555",
@@ -2133,8 +2189,8 @@ mod tests {
                                                     "native_locator": "Summary",
                                                     "unit_kind": "paragraph",
                                                     "ordinal": 1,
-                                                    "content": "Ambulatory blood pressure monitoring is the reference standard.",
-                                                    "content_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+                                                    "content": second_text,
+                                                    "content_sha256": second_sha256,
                                                     "native_destination_uri": "https://www.uspreventiveservicestaskforce.org/uspstf/recommendation/hypertension-in-adults-screening",
                                                     "version_destination_uri": "https://www.uspreventiveservicestaskforce.org/uspstf/recommendation/hypertension-in-adults-screening",
                                                     "rights_decision_id": "77777777-7777-4777-8777-777777777777",
@@ -2349,15 +2405,17 @@ mod tests {
                                                 "candidate_id": "99999999-9999-4999-8999-999999999999",
                                                 "outcome": "available",
                                                 "unit": {
+                                                    "unit_id": "99999999-9999-4999-8999-999999999999",
                                                     "source_display_name": "PubMed Central",
                                                     "title": "Title",
                                                     "publication_date": "2025-01-01",
                                                     "acquired_at": "2025-01-01T00:00:00Z",
                                                     "lifecycle_state": "current",
                                                     "content": "Body",
-                                                    "content_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                                                    "content_sha256": sha256_hex(b"Body"),
                                                     "native_destination_uri": "https://pmc.ncbi.nlm.nih.gov/articles/PMC1/",
-                                                    "attribution_text": "CC BY 4.0"
+                                                    "attribution_text": "CC BY 4.0",
+                                                    "may_display_excerpt": true
                                                 }
                                             }]
                                         })),
@@ -2371,14 +2429,16 @@ mod tests {
                                                 "candidate_id": CANDIDATE_ID,
                                                 "outcome": "available",
                                                 "unit": {
+                                                    "unit_id": CANDIDATE_ID,
                                                     "source_display_name": "PubMed Central",
                                                     "title": "Title",
                                                     "publication_date": "2025-01-01",
                                                     "acquired_at": "2025-01-01T00:00:00Z",
                                                     "lifecycle_state": "current",
                                                     "content": "   ",
-                                                    "content_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-                                                    "native_destination_uri": ""
+                                                    "content_sha256": sha256_hex(b"   "),
+                                                    "native_destination_uri": "",
+                                                    "may_display_excerpt": true
                                                 }
                                             }]
                                         })),
@@ -2474,5 +2534,239 @@ mod tests {
         ));
 
         fault_server.abort();
+    }
+
+    #[tokio::test]
+    async fn clinical_library_enforces_excerpt_rights_unit_id_and_sha256_integrity() {
+        use axum::http::StatusCode;
+        use axum::routing::post;
+        use axum::{Json, Router};
+
+        const RESTRICTED_ID: &str = "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa";
+        const DISPLAYABLE_ID: &str = "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee";
+        const MISMATCH_UNIT_ID: &str = "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb";
+        const BAD_HASH_ID: &str = "cccccccc-cccc-4ccc-8ccc-cccccccccccc";
+
+        let restricted_text = "Publisher full-text excerpt display is prohibited by license.";
+        let restricted_sha = sha256_hex(restricted_text.as_bytes());
+        let displayable_text = "Open-access passage permitted for verbatim excerpt display.";
+        let displayable_sha = sha256_hex(displayable_text.as_bytes());
+        let mismatch_text = "Unit identifier does not match candidate identifier.";
+        let mismatch_sha = sha256_hex(mismatch_text.as_bytes());
+
+        let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+        let addr = listener.local_addr().unwrap();
+        let server = tokio::spawn(async move {
+            axum::serve(
+                listener,
+                Router::new()
+                    .route(
+                        "/v1/search",
+                        post(|Json(body): Json<serde_json::Value>| async move {
+                            let query = body.get("query").and_then(|v| v.as_str()).unwrap_or("");
+                            let candidates = match query {
+                                "mixed" => serde_json::json!([
+                                    { "candidate_id": RESTRICTED_ID },
+                                    { "candidate_id": DISPLAYABLE_ID }
+                                ]),
+                                "restricted" => {
+                                    serde_json::json!([{ "candidate_id": RESTRICTED_ID }])
+                                }
+                                "unit-mismatch" => {
+                                    serde_json::json!([{ "candidate_id": MISMATCH_UNIT_ID }])
+                                }
+                                "bad-sha256" => {
+                                    serde_json::json!([{ "candidate_id": BAD_HASH_ID }])
+                                }
+                                _ => serde_json::json!([{ "candidate_id": RESTRICTED_ID }]),
+                            };
+                            let count = candidates.as_array().map(Vec::len).unwrap_or(0);
+                            (
+                                StatusCode::OK,
+                                Json(serde_json::json!({
+                                    "candidates": candidates,
+                                    "page": {
+                                        "examined_candidate_count": count,
+                                        "returned_candidate_count": count,
+                                        "unavailable_candidate_count": 0,
+                                        "truncated": false
+                                    }
+                                })),
+                            )
+                        }),
+                    )
+                    .route(
+                        "/v1/read",
+                        post(move |Json(body): Json<serde_json::Value>| {
+                            let restricted_sha = restricted_sha.clone();
+                            let displayable_sha = displayable_sha.clone();
+                            let mismatch_sha = mismatch_sha.clone();
+                            async move {
+                                let ids = body
+                                    .get("candidate_ids")
+                                    .and_then(|v| v.as_array())
+                                    .cloned()
+                                    .unwrap_or_default();
+                                let mut results = Vec::with_capacity(ids.len());
+                                for raw_id in ids {
+                                    let id = raw_id.as_str().unwrap_or("");
+                                    let item = match id {
+                                        RESTRICTED_ID => serde_json::json!({
+                                            "candidate_id": RESTRICTED_ID,
+                                            "outcome": "available",
+                                            "unit": {
+                                                "unit_id": RESTRICTED_ID,
+                                                "source_display_name": "Publisher Restricted",
+                                                "title": "Restricted Excerpt Article",
+                                                "publication_date": "2025-05-01",
+                                                "acquired_at": "2026-10-01T00:00:00Z",
+                                                "lifecycle_state": "current",
+                                                "content": restricted_text,
+                                                "content_sha256": restricted_sha,
+                                                "native_destination_uri": "https://publisher.example.org/article/1",
+                                                "attribution_text": "All rights reserved",
+                                                "may_display_excerpt": false
+                                            }
+                                        }),
+                                        DISPLAYABLE_ID => serde_json::json!({
+                                            "candidate_id": DISPLAYABLE_ID,
+                                            "outcome": "available",
+                                            "unit": {
+                                                "unit_id": DISPLAYABLE_ID,
+                                                "source_display_name": "PubMed Central",
+                                                "title": "Open-Access Excerpt Article",
+                                                "publication_date": "2025-05-02",
+                                                "acquired_at": "2026-10-01T00:00:00Z",
+                                                "lifecycle_state": "current",
+                                                "content": displayable_text,
+                                                "content_sha256": displayable_sha,
+                                                "native_destination_uri": "https://pmc.ncbi.nlm.nih.gov/articles/PMC99/",
+                                                "attribution_text": "CC BY 4.0",
+                                                "may_display_excerpt": true
+                                            }
+                                        }),
+                                        MISMATCH_UNIT_ID => serde_json::json!({
+                                            "candidate_id": MISMATCH_UNIT_ID,
+                                            "outcome": "available",
+                                            "unit": {
+                                                "unit_id": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                                                "source_display_name": "PubMed Central",
+                                                "title": "Mismatched Unit ID",
+                                                "publication_date": "2025-05-01",
+                                                "acquired_at": "2026-10-01T00:00:00Z",
+                                                "lifecycle_state": "current",
+                                                "content": mismatch_text,
+                                                "content_sha256": mismatch_sha,
+                                                "native_destination_uri": "https://pmc.ncbi.nlm.nih.gov/articles/PMC2/",
+                                                "attribution_text": "CC BY 4.0",
+                                                "may_display_excerpt": true
+                                            }
+                                        }),
+                                        _ => serde_json::json!({
+                                            "candidate_id": BAD_HASH_ID,
+                                            "outcome": "available",
+                                            "unit": {
+                                                "unit_id": BAD_HASH_ID,
+                                                "source_display_name": "PubMed Central",
+                                                "title": "Corrupted Digest",
+                                                "publication_date": "2025-05-01",
+                                                "acquired_at": "2026-10-01T00:00:00Z",
+                                                "lifecycle_state": "current",
+                                                "content": "Tampered passage body that does not match its digest.",
+                                                "content_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+                                                "native_destination_uri": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3/",
+                                                "attribution_text": "CC BY 4.0",
+                                                "may_display_excerpt": true
+                                            }
+                                        }),
+                                    };
+                                    results.push(item);
+                                }
+                                (
+                                    StatusCode::OK,
+                                    Json(serde_json::json!({ "results": results })),
+                                )
+                            }
+                        }),
+                    ),
+            )
+            .await
+            .unwrap();
+        });
+
+        let client = ClinicalLibraryClient::new(ClinicalLibraryConfig {
+            origin: format!("http://{addr}"),
+            auth: ClinicalLibraryAuth::LocalLoopback,
+        })
+        .unwrap();
+
+        let ClinicalSearchOutcome::Found(mixed) = client.search("mixed", 5).await.unwrap() else {
+            panic!(
+                "mixed search must keep displayable unit while withholding non-excerptable unit"
+            );
+        };
+        assert_eq!(mixed.len(), 1);
+        assert_eq!(mixed[0].passage_id, DISPLAYABLE_ID);
+        assert_eq!(mixed[0].text, displayable_text);
+
+        assert_eq!(
+            client.search("restricted", 5).await.unwrap(),
+            ClinicalSearchOutcome::NothingFound,
+            "may_display_excerpt=false unit must be withheld from search results"
+        );
+        assert!(
+            matches!(
+                client.read_passage(RESTRICTED_ID).await,
+                Err(ClinicalLibraryError::PassageUnavailable {
+                    ref passage_id,
+                    cause: ReadUnavailableCause::NotFoundOrNotAuthorized,
+                }) if passage_id == RESTRICTED_ID
+            ),
+            "may_display_excerpt=false unit must be withheld on exact read"
+        );
+
+        assert!(
+            matches!(
+                client.search("unit-mismatch", 5).await,
+                Err(ClinicalLibraryError::InvalidResponse {
+                    reason: "returned unit_id did not match candidate_id",
+                    ..
+                })
+            ),
+            "unit_id mismatch must fail InvalidResponse on search"
+        );
+        assert!(
+            matches!(
+                client.read_passage(MISMATCH_UNIT_ID).await,
+                Err(ClinicalLibraryError::InvalidResponse {
+                    reason: "returned unit_id did not match candidate_id",
+                    ..
+                })
+            ),
+            "unit_id mismatch must fail InvalidResponse on exact read"
+        );
+
+        assert!(
+            matches!(
+                client.search("bad-sha256", 5).await,
+                Err(ClinicalLibraryError::InvalidResponse {
+                    reason: "passage content_sha256 did not match text digest",
+                    ..
+                })
+            ),
+            "SHA-256 mismatch must fail InvalidResponse on search"
+        );
+        assert!(
+            matches!(
+                client.read_passage(BAD_HASH_ID).await,
+                Err(ClinicalLibraryError::InvalidResponse {
+                    reason: "passage content_sha256 did not match text digest",
+                    ..
+                })
+            ),
+            "SHA-256 mismatch must fail InvalidResponse on exact read"
+        );
+
+        server.abort();
     }
 }
