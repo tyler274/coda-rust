@@ -43,6 +43,9 @@ pub enum ProxyCheck {
 /// The proxy's `GET /v1/client` answer.
 #[derive(Debug, Deserialize)]
 struct WhoAmI {
+    /// Required: an explicit `null` means the proxy has no client keys; a body without the
+    /// field is not the proxy's answer.
+    #[serde(deserialize_with = "Option::deserialize")]
     client: Option<Client>,
 }
 
@@ -91,12 +94,50 @@ pub fn check(socket: &Path, proxy: &ModelProxy) -> ProxyCheck {
             };
         }
     };
-    match serde_json::from_str::<WhoAmI>(&body) {
+    read_answer(&body)
+}
+
+/// What a 200 from `GET /v1/client` says.
+fn read_answer(body: &str) -> ProxyCheck {
+    match serde_json::from_str::<WhoAmI>(body) {
         Ok(who) => ProxyCheck::Accepted {
             client: who.client.map(|client| client.label),
         },
         Err(error) => ProxyCheck::NotTheProxy {
             error: error.to_string(),
         },
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::{ProxyCheck, read_answer};
+
+    #[test]
+    fn a_named_client_is_accepted() {
+        assert_eq!(
+            read_answer(r#"{"client":{"id":"x","label":"coda-agent"}}"#),
+            ProxyCheck::Accepted {
+                client: Some("coda-agent".to_owned())
+            }
+        );
+    }
+
+    #[test]
+    fn an_explicit_null_client_is_an_open_proxy() {
+        assert_eq!(
+            read_answer(r#"{"client":null}"#),
+            ProxyCheck::Accepted { client: None }
+        );
+    }
+
+    #[test]
+    fn a_body_without_client_is_not_the_proxy() {
+        for body in ["{}", r#"{"status":"ok"}"#, "<html></html>"] {
+            assert!(
+                matches!(read_answer(body), ProxyCheck::NotTheProxy { .. }),
+                "{body}"
+            );
+        }
     }
 }

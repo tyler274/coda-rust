@@ -91,8 +91,13 @@ impl PoolFeature {
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum FromContainer<T> {
     Answered(T),
-    /// The command did not run to success; never `Reachable`.
-    Unreached(SshReach),
+    /// `ssh` or the command exited non-zero; `exit_code` is `None` when a signal ended it.
+    Failed {
+        exit_code: Option<i32>,
+        stderr: String,
+    },
+    /// No answer within [`SSH_DEADLINE`]; `ssh` was killed.
+    TimedOut,
 }
 
 /// The command `doctor` runs in the container to check the model proxy.
@@ -306,12 +311,10 @@ fn ssh_true(host: &str) -> Result<SshReach, Error> {
 /// Runs [`PROXY_CHECK`] in the container and reads its answer.
 fn ssh_proxy_check(host: &str) -> Result<FromContainer<ProxyCheck>, Error> {
     match ssh_run(host, PROXY_CHECK)? {
-        SshRun::Finished { status, stderr, .. } if !status.success() => {
-            Ok(FromContainer::Unreached(SshReach::Failed {
-                exit_code: status.code(),
-                stderr,
-            }))
-        }
+        SshRun::Finished { status, stderr, .. } if !status.success() => Ok(FromContainer::Failed {
+            exit_code: status.code(),
+            stderr,
+        }),
         SshRun::Finished { stdout, .. } => serde_json::from_str(&stdout)
             .map(FromContainer::Answered)
             .map_err(|source| Error::ProxyCheckOutput {
@@ -320,7 +323,7 @@ fn ssh_proxy_check(host: &str) -> Result<FromContainer<ProxyCheck>, Error> {
                 found: stdout,
                 source,
             }),
-        SshRun::TimedOut => Ok(FromContainer::Unreached(SshReach::TimedOut)),
+        SshRun::TimedOut => Ok(FromContainer::TimedOut),
     }
 }
 

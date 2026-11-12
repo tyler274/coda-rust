@@ -261,17 +261,18 @@ fn model_proxy_outcome(probe: &dyn Probe, config: &Config) -> Outcome {
     let url = &proxy.url;
     let found = match probe.proxy_check(host) {
         Ok(FromContainer::Answered(found)) => found,
-        Ok(FromContainer::Unreached(reach)) => {
+        Ok(FromContainer::Failed { stderr, .. }) => {
             return Outcome::Fail {
-                detail: match reach {
-                    SshReach::Failed { stderr, .. } => {
-                        format!("`ssh {host} {PROXY_CHECK}` failed: {stderr}")
-                    }
-                    SshReach::TimedOut | SshReach::Reachable => format!(
-                        "`ssh {host} {PROXY_CHECK}` did not finish in {} s",
-                        SSH_DEADLINE.as_secs()
-                    ),
-                },
+                detail: format!("`ssh {host} {PROXY_CHECK}` failed: {stderr}"),
+                fix: Fix::command("ssh", [host.as_str(), PROXY_CHECK]),
+            };
+        }
+        Ok(FromContainer::TimedOut) => {
+            return Outcome::Fail {
+                detail: format!(
+                    "`ssh {host} {PROXY_CHECK}` did not finish in {} s",
+                    SSH_DEADLINE.as_secs()
+                ),
                 fix: Fix::command("ssh", [host.as_str(), PROXY_CHECK]),
             };
         }

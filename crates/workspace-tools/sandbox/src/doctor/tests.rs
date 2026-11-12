@@ -312,11 +312,19 @@ fn model_proxy_out_of_reach_fails_and_names_the_address() {
 
 #[test]
 fn model_proxy_check_that_cannot_reach_the_container_fails() {
-    let found = proxy_outcome(FromContainer::Unreached(SshReach::TimedOut));
-    let Outcome::Fail { fix, .. } = found else {
-        panic!("expected Fail, got {found:?}")
-    };
-    assert_eq!(fix.to_string(), "ssh coda-agent 'coda-sandbox proxy-check'");
+    for unreached in [
+        FromContainer::Failed {
+            exit_code: Some(127),
+            stderr: "coda-sandbox: command not found".to_owned(),
+        },
+        FromContainer::TimedOut,
+    ] {
+        let found = proxy_outcome(unreached);
+        let Outcome::Fail { fix, .. } = found else {
+            panic!("expected Fail, got {found:?}")
+        };
+        assert_eq!(fix.to_string(), "ssh coda-agent 'coda-sandbox proxy-check'");
+    }
 }
 
 #[test]
