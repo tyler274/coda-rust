@@ -1946,7 +1946,7 @@ async fn a_reply_draws_code_and_a_table_that_scroll_by_key() {
         "clickNamed",
         serde_json::json!([".composer-toolbar button", "Send"]),
     );
-    browser.wait_for_text("Recheck on Friday", Duration::from_secs(30));
+    browser.wait_for_text("Synthetic Regional Laboratory", Duration::from_secs(30));
     browser.save_pictures("thread-reply", ".message-assistant");
 
     // Reached by reopening the conversation, as the page itself would.
@@ -1965,7 +1965,7 @@ async fn a_reply_draws_code_and_a_table_that_scroll_by_key() {
         "clickNamed",
         serde_json::json!(["[aria-label=\"Conversation\"] button", "Try again"]),
     );
-    browser.wait_for_text("Recheck on Friday", Duration::from_secs(20));
+    browser.wait_for_text("Synthetic Regional Laboratory", Duration::from_secs(20));
     browser.save_pictures("thread-recovered", ".message-assistant");
 
     // Physicians don't write Markdown, so their words show as they wrote them.
@@ -3671,6 +3671,25 @@ async fn past_conversations_and_work_reopen_across_restart_mark_newer_records_an
         .await
         .unwrap();
 
+    // Seed a saved reply draft on patient_a so Past work includes `PastWorkTarget::ReplyDraft`
+    // alongside `Conversation` items for both reopen and revoked-access verification!
+    let scope_reply = Scope {
+        practice: physician_sample::STAGING_PRACTICE_ID.into(),
+        physician: "staging-physician".into(),
+        workspace: patient_a.into(),
+        chat: "reply-k-followup".into(),
+    };
+    store
+        .open_draft_authorized(
+            &scope_reply,
+            "Recheck serum potassium Friday morning at Regional Lab.",
+            &[7; 32],
+            &mut TestOpenAuthority,
+        )
+        .await
+        .unwrap()
+        .expect("seed saved reply draft");
+
     // Also seed a conversation on patient_b so `/recent-conversations` spans multiple workspaces.
     scale::answered_chat(
         &store,
@@ -3793,7 +3812,7 @@ async fn past_conversations_and_work_reopen_across_restart_mark_newer_records_an
     )
     .await;
     assert_eq!(pw_status, 200, "{pw_wire}");
-    assert_eq!(pw_wire["items"].as_array().unwrap().len(), 2);
+    assert_eq!(pw_wire["items"].as_array().unwrap().len(), 3);
     println!(
         "Restarted site durable history verified: recent_count={}, past_work_count={}, sources_count={}",
         rec_items.len(),
@@ -3830,7 +3849,7 @@ async fn past_conversations_and_work_reopen_across_restart_mark_newer_records_an
         "([...document.querySelectorAll('.sidebar-recent button')].find(b => b.innerText.includes(\"What was Tuesday's potassium\"))?.click(), true)",
     );
     browser.wait_for_text("Basis and limitations", Duration::from_secs(15));
-    // Open Past work dialog on the patient page and verify content distinction.
+    // Open Past work dialog on the patient page and verify content distinction + ReplyDraft reopen.
     browser.click_named("button", "Past work");
     browser.wait_for_text(
         "Check lisinopril renal dosing options",
@@ -3839,13 +3858,38 @@ async fn past_conversations_and_work_reopen_across_restart_mark_newer_records_an
     let past_work_dialog = browser.dialog_text();
     assert!(
         past_work_dialog.contains("What was Tuesday's potassium and its basis?")
+            && past_work_dialog.contains("Patient reply draft")
             && past_work_dialog.contains("Answered")
-            && past_work_dialog.contains("Paused"),
-        "Past work dialog must distinguish items by content and outcome:\n{past_work_dialog}"
+            && past_work_dialog.contains("Paused")
+            && past_work_dialog.contains("Reply ready"),
+        "Past work dialog must distinguish conversations and reply drafts by content and outcome:\n{past_work_dialog}"
     );
     std::thread::sleep(Duration::from_millis(250));
     browser.save_picture("history-past-work-dialog");
-    browser.click("dialog[open] button[aria-label=\"Close\"]");
+    browser.eval(
+        "([...document.querySelectorAll('dialog.past-work-dialog button')].find(b => b.innerText.includes('Patient reply draft'))?.click(), true)",
+    );
+    let reply_reader_deadline = Instant::now() + Duration::from_secs(10);
+    while browser
+        .eval("document.querySelector('dialog.reader[open]')?.innerText ?? ''")
+        .as_str()
+        .is_none_or(|t| !t.contains("Recheck serum potassium Friday morning at Regional Lab."))
+    {
+        assert!(
+            Instant::now() < reply_reader_deadline,
+            "ReaderDialog did not open with saved reply draft"
+        );
+        std::thread::sleep(Duration::from_millis(40));
+    }
+    browser.click("dialog.reader[open] button[aria-label=\"Close\"]");
+    let close_deadline = Instant::now() + Duration::from_secs(5);
+    while !browser.dialog_text().is_empty() {
+        assert!(
+            Instant::now() < close_deadline,
+            "ReaderDialog did not finish closing"
+        );
+        std::thread::sleep(Duration::from_millis(40));
+    }
 
     // Expand Basis and open citation [1] in ReaderDialog; compare against saved record!
     browser.click_named(".answer-basis button", "Basis and limitations");
@@ -3861,6 +3905,14 @@ async fn past_conversations_and_work_reopen_across_restart_mark_newer_records_an
     std::thread::sleep(Duration::from_millis(250));
     browser.save_picture("history-reopened-answer-basis-citation");
     browser.click("dialog.citation-inspection button[aria-label=\"Close\"]");
+    let cite_close_deadline = Instant::now() + Duration::from_secs(5);
+    while !browser.dialog_text().is_empty() {
+        assert!(
+            Instant::now() < cite_close_deadline,
+            "citation ReaderDialog did not finish closing"
+        );
+        std::thread::sleep(Duration::from_millis(40));
+    }
 
     // Record a newer source revision in Postgres after the answer's records version.
     // The old answer must stay unchanged AND show the newer-records marker!
@@ -3916,13 +3968,11 @@ async fn past_conversations_and_work_reopen_across_restart_mark_newer_records_an
     assert_eq!(phone_shell["pageWidth"], 390, "{phone_shell}");
     browser.set_viewport(1280, 800, false);
 
-    // Load Recent conversations on Today, then remove panel access for patient_a,
-    // then attempt to reopen from the loaded list -> HTTP 404 + UI blocks clinical content!
-    browser.click("button[aria-label=\"Open Today\"]");
-    browser.wait_for_text(
-        "What was Tuesday's potassium and its basis?",
-        Duration::from_secs(10),
-    );
+    // AC4 (part 1): Load Past work dialog on patient_a, remove panel access, then click
+    // `PastWorkTarget::ReplyDraft` from the already-loaded dialog -> server returns 404,
+    // ReaderDialog never opens, PastWorkDialog closes, and clinical content closes immediately!
+    browser.click_named("button", "Past work");
+    browser.wait_for_text("Patient reply draft", Duration::from_secs(10));
     let auth_pg = PostgresAuthStore::connect_without_migrations(&database.url)
         .await
         .unwrap();
@@ -3930,6 +3980,43 @@ async fn past_conversations_and_work_reopen_across_restart_mark_newer_records_an
         practice_id: physician_sample::STAGING_PRACTICE_ID.to_owned(),
         physician_id: "staging-physician".to_owned(),
     };
+    auth_pg
+        .set_membership(&staging_identity, patient_a, Membership::Denied)
+        .await
+        .unwrap();
+    let (revoked_pw_status, _) = scale::get_json(
+        &host_2,
+        &format!("/patient-workspaces/{patient_a}/past-work"),
+        &session_2,
+    )
+    .await;
+    assert_eq!(
+        revoked_pw_status, 404,
+        "revoked panel access must refuse past-work read with 404"
+    );
+    browser.eval(
+        "([...document.querySelectorAll('dialog.past-work-dialog button')].find(b => b.innerText.includes('Patient reply draft'))?.click(), true)",
+    );
+    let blocked_draft_dom =
+        browser.wait_for_text("Clinic record · Not on your panel", Duration::from_secs(15));
+    assert!(
+        browser.dialog_text().is_empty()
+            && !blocked_draft_dom.contains("Recheck serum potassium Friday morning"),
+        "revoked access must block ReplyDraft reopen and close dialogs:\ndialog={}\ndom={blocked_draft_dom}",
+        browser.dialog_text()
+    );
+
+    // Restore access briefly so Today loads Recent conversations, then remove panel access
+    // again and attempt to reopen the conversation from the loaded Recent list (AC4 part 2)!
+    auth_pg
+        .set_membership(&staging_identity, patient_a, Membership::Allowed)
+        .await
+        .unwrap();
+    browser.navigate(&format!("http://{host_2}/"));
+    browser.wait_for_text(
+        "What was Tuesday's potassium and its basis?",
+        Duration::from_secs(15),
+    );
     auth_pg
         .set_membership(&staging_identity, patient_a, Membership::Denied)
         .await
@@ -4176,6 +4263,7 @@ async fn collapsed_orb_and_persistent_now_banner_across_pages_and_motion_modes()
         );
         std::thread::sleep(Duration::from_millis(60));
     }
+    std::thread::sleep(Duration::from_millis(250));
     browser.save_picture("now-banner-cleared-after-open");
 
     // Collapsing again after opening confirms `.orb-now-pill` is also gone.

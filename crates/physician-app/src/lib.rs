@@ -1109,6 +1109,10 @@ fn PhysicianShell(
                     Ok(open) => {
                         if open.is_clinic_demographic() {
                             forget_workspace_drafts(composer, &client, whoami, &id);
+                            if selected.peek().as_deref() == Some(id.as_str()) {
+                                reading.set(None);
+                                past_work_open.set(false);
+                            }
                         }
                         shown.set(true);
                         gone.set(None);
@@ -1121,12 +1125,19 @@ fn PhysicianShell(
                             session.refused(refused, *shown.peek(), presented);
                         } else if matches!(
                             error,
-                            physician_client::HttpError::Status { status: 404, .. }
+                            physician_client::HttpError::Status {
+                                status: 403 | 404,
+                                ..
+                            }
                         ) {
                             workspace_cache.set(None);
                             // No access (or no patient): its unsent text is
                             // not kept for a later reload or account.
                             forget_workspace_drafts(composer, &client, whoami, &id);
+                            if selected.peek().as_deref() == Some(id.as_str()) {
+                                reading.set(None);
+                                past_work_open.set(false);
+                            }
                             gone.set(Some(id));
                         }
                         Err(())
@@ -1585,6 +1596,31 @@ fn PhysicianShell(
     use_effect(move || {
         if let Some((Some(id), Ok(items))) = past_work_items.read().as_ref() {
             last_past_work.set(Some((Some(id.clone()), items.clone())));
+        }
+    });
+    use_effect(move || {
+        let current_id = selected();
+        let gone_id = gone();
+        let cached = workspace_cache.read();
+        if clinical_dialogs_blocked(
+            place(),
+            current_id.as_deref(),
+            gone_id.as_deref(),
+            cached.as_ref(),
+        ) {
+            if reading.peek().is_some() {
+                reading.set(None);
+            }
+            if *past_work_open.peek() {
+                past_work_open.set(false);
+            }
+            if last_past_work
+                .peek()
+                .as_ref()
+                .is_some_and(|(cached_id, _)| *cached_id == current_id)
+            {
+                last_past_work.set(None);
+            }
         }
     });
     let past_work_state = read_view(
@@ -2370,13 +2406,28 @@ fn PhysicianShell(
                 on_close: move |_| connections_open.set(false),
             }
         }
-        if let Some(open) = reading() {
+        if let Some(open) = reading().filter(|_| {
+            !clinical_dialogs_blocked(
+                place(),
+                selected.read().as_deref(),
+                gone.read().as_deref(),
+                cached_workspace.as_ref(),
+            )
+        }) {
             ReaderDialog {
                 reading: open,
                 on_close: move |_| reading.set(None),
             }
         }
-        if past_work_open() && place() == Place::Workspace {
+        if past_work_open()
+            && place() == Place::Workspace
+            && !clinical_dialogs_blocked(
+                place(),
+                selected.read().as_deref(),
+                gone.read().as_deref(),
+                cached_workspace.as_ref(),
+            )
+        {
             PastWorkDialog {
                 patient: open_name.clone().unwrap_or_default(),
                 state: past_work_state.clone(),
@@ -2391,8 +2442,55 @@ fn PhysicianShell(
                             snapshot_attempt.set(snapshot_attempt() + 1);
                         }
                         PastWorkTarget::ReplyDraft { .. } => {
-                            reading.set(Some(prose_reading(item.title, item.summary)));
+                            let Some(workspace_id) = selected() else {
+                                past_work_open.set(false);
+                                return;
+                            };
+                            let item_id = item.id.clone();
+                            let client = client.read().clone();
+                            let presented = client.session().get();
                             past_work_open.set(false);
+                            spawn(async move {
+                                match client.past_work(&workspace_id).await {
+                                    Ok(page) => {
+                                        if selected.peek().as_deref()
+                                            != Some(workspace_id.as_str())
+                                        {
+                                            return;
+                                        }
+                                        if let Some(fresh) = page
+                                            .items
+                                            .into_iter()
+                                            .find(|entry| entry.id == item_id)
+                                        {
+                                            reading.set(Some(prose_reading(
+                                                fresh.title,
+                                                fresh.summary,
+                                            )));
+                                        } else {
+                                            reading.set(None);
+                                            *past_work_attempt.write() += 1;
+                                            *workspace_attempt.write() += 1;
+                                        }
+                                    }
+                                    Err(error) => {
+                                        reading.set(None);
+                                        if let Some(refused) = refusal(&error) {
+                                            session.refused(refused, *shown.peek(), presented);
+                                        } else if matches!(
+                                            error,
+                                            physician_client::HttpError::Status {
+                                                status: 403 | 404,
+                                                ..
+                                            }
+                                        ) {
+                                            last_past_work.set(None);
+                                            *workspace_attempt.write() += 1;
+                                            *today_attempt.write() += 1;
+                                        }
+                                    }
+                                }
+                            });
                         }
                     }
                 },
@@ -2400,6 +2498,29 @@ fn PhysicianShell(
             }
         }
     }
+}
+
+/// Whether the open patient workspace currently forbids clinical dialogs
+/// (`ReaderDialog` and `PastWorkDialog`) because panel access was removed or
+/// the workspace is unavailable to this physician.
+fn clinical_dialogs_blocked(
+    place: Place,
+    selected_id: Option<&str>,
+    gone_id: Option<&str>,
+    cached_workspace: Option<&PatientWorkspaceResponse>,
+) -> bool {
+    if place != Place::Workspace {
+        return false;
+    }
+    let Some(id) = selected_id else {
+        return false;
+    };
+    if gone_id == Some(id) {
+        return true;
+    }
+    cached_workspace
+        .filter(|ws| ws.patient_workspace_id == id)
+        .is_some_and(PatientWorkspaceResponse::is_clinic_demographic)
 }
 
 const COMMAND_REFUSED: &str = "Coda didn’t take that.";
@@ -5211,14 +5332,14 @@ fn now_millis() -> u128 {
 #[cfg(test)]
 mod conversation_line_tests {
     use super::{
-        AnswerFreshness, ConversationLine, chat_resume_command, chat_stop_command,
-        conversation_lines, new_chat_id,
+        AnswerFreshness, ConversationLine, Place, chat_resume_command, chat_stop_command,
+        clinical_dialogs_blocked, conversation_lines, new_chat_id,
     };
     use crate::feedback;
     use crate::shell::{STOPPED, SynopsisPiece};
     use physician_wire::{
-        ChatRunOutcome, ChatSnapshotResponse, HoldReason, ResponseFeedback, ResponseId,
-        WorkResumeTarget, WorkStopTarget,
+        ChatRunOutcome, ChatSnapshotResponse, HoldReason, PatientWorkspaceResponse,
+        ResponseFeedback, ResponseId, WorkResumeTarget, WorkStopTarget,
     };
     use ui::Author;
 
@@ -5559,5 +5680,52 @@ mod conversation_line_tests {
         );
         assert!(chat_resume_command(None, Some("chat-1".into()), &target()).is_none());
         assert!(chat_resume_command(Some("pw-1".into()), None, &target()).is_none());
+    }
+
+    #[test]
+    fn clinical_dialogs_close_when_workspace_leaves_panel_or_disappears() {
+        let on_panel: PatientWorkspaceResponse = serde_json::from_value(serde_json::json!({
+            "patient_workspace_id": "pw-1",
+            "display_name": "Tanvir Chowdhury",
+            "membership": "allowed",
+        }))
+        .unwrap();
+        let off_panel: PatientWorkspaceResponse = serde_json::from_value(serde_json::json!({
+            "patient_workspace_id": "pw-1",
+            "display_name": "Tanvir Chowdhury",
+            "membership": "clinic_demographic",
+        }))
+        .unwrap();
+
+        assert!(!clinical_dialogs_blocked(
+            Place::Workspace,
+            Some("pw-1"),
+            None,
+            None,
+        ));
+        assert!(!clinical_dialogs_blocked(
+            Place::Workspace,
+            Some("pw-1"),
+            None,
+            Some(&on_panel),
+        ));
+        assert!(clinical_dialogs_blocked(
+            Place::Workspace,
+            Some("pw-1"),
+            None,
+            Some(&off_panel),
+        ));
+        assert!(clinical_dialogs_blocked(
+            Place::Workspace,
+            Some("pw-1"),
+            Some("pw-1"),
+            Some(&on_panel),
+        ));
+        assert!(!clinical_dialogs_blocked(
+            Place::Today,
+            Some("pw-1"),
+            None,
+            Some(&off_panel),
+        ));
     }
 }

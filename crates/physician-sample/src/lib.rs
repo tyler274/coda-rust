@@ -434,13 +434,21 @@ async fn empty_snapshot(
 
 async fn fixture_past_work(
     axum::extract::Path(id): axum::extract::Path<String>,
+    axum::Extension(connected): axum::Extension<care::ConnectedCare>,
     request: Request<Body>,
 ) -> Response {
-    if !care::on_roster(request.extensions(), &id).await {
+    let extensions = request.extensions();
+    let identity = care::ConnectedCare::identity(extensions);
+    if !care::on_roster(extensions, &id).await
+        || connected
+            .auth_store(extensions)
+            .membership(&identity, &id)
+            .await
+            != physician_auth::Membership::Allowed
+    {
         return StatusCode::NOT_FOUND.into_response();
     }
-    let items = request
-        .extensions()
+    let items = extensions
         .get::<std::sync::Arc<SampleFeed>>()
         .and_then(|feed| {
             feed.fixture_past_work
