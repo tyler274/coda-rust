@@ -238,6 +238,7 @@ mod tests {
             options: serde_json::json!({}),
             instructions: String::new(),
             tools: vec![],
+            preloaded_skills: vec![],
             items: vec![],
         };
         assert_eq!(input_limit(&request).unwrap(), 83_616);

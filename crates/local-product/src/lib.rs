@@ -1,7 +1,7 @@
 //! Physician model execution and durable product state.
 //! Postgres owns chat, reply revisions, durable patient memory, and versioned chart
-//! source reads; the worker runs chat and reply revisions through the shared harness
-//! using the selected local subscription or API transport.
+//! source reads; the worker runs jobs through the shared harness using the selected
+//! local subscription or API transport.
 //! Book: `book/src/physician-site.md`.
 #![deny(missing_docs)]
 #![allow(

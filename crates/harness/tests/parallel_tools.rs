@@ -27,6 +27,7 @@ fn request() -> Request {
         options: json!({}),
         instructions: "Test tool scheduling".into(),
         items: vec![],
+        preloaded_skills: vec![],
         tools: ["read", "write", "fail"]
             .into_iter()
             .map(|name| {

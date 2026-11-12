@@ -34,6 +34,7 @@ fn request() -> Request {
         options: json!({}),
         instructions: "owner".into(),
         items: vec![],
+        preloaded_skills: vec![],
         tools: vec![
             Tool {
                 name: "save".into(),

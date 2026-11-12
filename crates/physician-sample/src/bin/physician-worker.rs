@@ -1133,6 +1133,7 @@ mod tests {
                 text: "Hello".into(),
             }],
             tools: vec![],
+            preloaded_skills: vec![],
         }
         .freeze()
         .unwrap()
@@ -1228,6 +1229,7 @@ mod tests {
                 options: json!({}),
                 instructions: "Owner".into(),
                 tools: vec![],
+                preloaded_skills: vec![],
                 items: vec![],
             };
             let result = provider

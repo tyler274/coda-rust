@@ -41,6 +41,9 @@ pub struct Request {
     pub instructions: String,
     /// Tool schemas authorized by the product for this work.
     pub tools: Vec<Value>,
+    /// Packaged guidance targets preloaded into `instructions` by the frozen recipe.
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub preloaded_skills: Vec<crate::skills::SkillTarget>,
     /// Exact context; the engine never truncates or summarizes it.
     pub items: Vec<Item>,
 }
@@ -61,6 +64,9 @@ pub struct RequestRecipe {
     pub instructions: String,
     /// Exact admitted wire schemas.
     pub tools: Vec<Value>,
+    /// Packaged guidance targets preloaded into `instructions` at job acceptance.
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub preloaded_skills: Vec<crate::skills::SkillTarget>,
 }
 
 impl RequestRecipe {
@@ -94,6 +100,7 @@ impl RequestBinding {
             options: self.recipe.options.clone(),
             instructions: self.recipe.instructions.clone(),
             tools: self.recipe.tools.clone(),
+            preloaded_skills: self.recipe.preloaded_skills.clone(),
             items,
         }
     }
@@ -135,6 +142,7 @@ impl Request {
             options: self.options.clone(),
             instructions: self.instructions.clone(),
             tools: self.tools.clone(),
+            preloaded_skills: self.preloaded_skills.clone(),
         }
     }
 
@@ -576,6 +584,7 @@ pub(crate) struct Recipe {
     options: Value,
     instructions: String,
     tools: Vec<Tool>,
+    preloaded_skills: Vec<crate::skills::SkillTarget>,
 }
 /// The admitted recipe and the exact items with which to enter the loop.
 pub struct Window {
@@ -615,6 +624,7 @@ impl Request {
             options,
             instructions,
             tools,
+            preloaded_skills,
             items,
         } = self;
         let tools = tools
@@ -639,6 +649,7 @@ impl Request {
                 options,
                 instructions,
                 tools,
+                preloaded_skills,
             },
             items,
             sent_items: 0,
@@ -673,6 +684,7 @@ impl Recipe {
             options: self.options.clone(),
             instructions: self.instructions.clone(),
             tools: self.tools.iter().map(Tool::function).collect(),
+            preloaded_skills: self.preloaded_skills.clone(),
             items,
         }
     }

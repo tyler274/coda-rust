@@ -112,6 +112,7 @@ fn request() -> Request {
             role: "user".into(),
             text: "hello".into(),
         }],
+        preloaded_skills: vec![],
         tools: vec![
             Tool {
                 name: "read".into(),

@@ -154,6 +154,7 @@ fn request() -> Request {
         options: json!({}),
         instructions: "Owner".into(),
         items: vec![],
+        preloaded_skills: vec![],
         tools: vec![
             Tool {
                 name: "read".into(),

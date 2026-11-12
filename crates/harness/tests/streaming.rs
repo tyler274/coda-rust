@@ -15,6 +15,7 @@ fn request() -> Request {
         options: json!({}),
         instructions: "original".into(),
         tools: vec![],
+        preloaded_skills: vec![],
         items: vec![],
     }
 }

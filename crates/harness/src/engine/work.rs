@@ -1499,6 +1499,7 @@ mod tests {
             options: Value::Null,
             instructions: "Complete the work".into(),
             items: vec![],
+            preloaded_skills: vec![],
             tools: vec![
                 Tool {
                     name: "read".into(),

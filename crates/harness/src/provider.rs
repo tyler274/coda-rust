@@ -240,6 +240,7 @@ mod tests {
                 instructions: "Chords".into(),
                 options: json!({}),
                 tools: vec![],
+                preloaded_skills: vec![],
                 items: vec![],
             };
             let result = provider
@@ -282,6 +283,7 @@ mod tests {
             instructions: "Chords instructions".into(),
             options: json!({"effort":"high"}),
             tools: vec![function.clone()],
+            preloaded_skills: vec![crate::skills::SkillTarget::body("clinical-communication")],
             items: vec![
                 Item::Call(Invocation {
                     id: "read-1".into(),
@@ -296,6 +298,7 @@ mod tests {
         };
         let plan = encode_for(&request, Authorization::ChatGptPlan).unwrap();
         assert_eq!(plan["instructions"], "Chords instructions");
+        assert!(plan.get("preloaded_skills").is_none());
         assert_eq!(
             plan["input"],
             json!([
@@ -308,6 +311,7 @@ mod tests {
         assert_eq!(plan["store"], false);
         assert_eq!(plan["reasoning"], json!({"effort":"high"}));
         let api = encode_for(&request, Authorization::Api).unwrap();
+        assert!(api.get("preloaded_skills").is_none());
         let key = plan["prompt_cache_key"]
             .as_str()
             .expect("plan cache partition");

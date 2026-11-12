@@ -25,6 +25,7 @@ fn request() -> Request {
                 .function()
             })
             .collect(),
+        preloaded_skills: vec![],
         items: vec![],
     }
 }

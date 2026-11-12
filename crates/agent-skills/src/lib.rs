@@ -1,8 +1,11 @@
-//! Loads the clinical skill catalog and answers `skill_view`.
+//! Loads the clinical skill catalog for each product and answers `skill_view`.
 //!
-//! Each product supplies its own package root. Each skill directory contains a
-//! `SKILL.md` with YAML front matter. The loader refuses symlinks and identifies
-//! files by their SHA-256 digest. Reading guidance grants no tool or patient access.
+//! Each skill directory contains a `SKILL.md` with YAML front matter, including
+//! optional `products` visibility (`SkillVisibility`) scoping guidance to Chords,
+//! Duet, or both. The loader refuses symlinks, filters the catalog to the
+//! product's admitted skills, identifies files by their SHA-256 digest, preloads
+//! job-required skill bodies and supporting resources (`SkillTarget`), and opens
+//! admitted skills on demand. Reading guidance grants no tool or patient access.
 #![deny(missing_docs)]
 #![allow(
     clippy::map_err_ignore,
@@ -98,6 +101,149 @@ pub struct SkillResource {
     pub content: String,
 }
 
+/// Product catalogs a packaged skill declares itself visible to in YAML frontmatter.
+#[derive(Debug, Clone, Default, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "snake_case")]
+pub enum SkillVisibility {
+    /// Frontmatter omitted `products`, leaving visibility to the product's default rule.
+    #[default]
+    Unrestricted,
+    /// Frontmatter declared a validated non-empty `products` list.
+    Products(Vec<String>),
+}
+
+impl SkillVisibility {
+    /// Whether frontmatter omitted `products`.
+    pub fn is_unrestricted(&self) -> bool {
+        match self {
+            Self::Unrestricted => true,
+            Self::Products(_) => false,
+        }
+    }
+
+    /// Admits `product` only when explicitly listed in `products`.
+    pub fn admits_explicit(&self, product: &str) -> bool {
+        match self {
+            Self::Unrestricted => false,
+            Self::Products(products) => products.iter().any(|candidate| candidate == product),
+        }
+    }
+
+    /// Admits `product` when explicitly listed or when frontmatter left scope unrestricted.
+    pub fn admits_or_unrestricted(&self, product: &str) -> bool {
+        match self {
+            Self::Unrestricted => true,
+            Self::Products(products) => products.iter().any(|candidate| candidate == product),
+        }
+    }
+}
+
+/// One packaged guidance target inside an admitted [`Package`].
+#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize)]
+#[serde(tag = "kind", rename_all = "snake_case")]
+pub enum SkillTarget {
+    /// The main `SKILL.md` body of `name`.
+    Body {
+        /// Packaged skill name.
+        name: String,
+    },
+    /// A registered supporting resource inside `name`.
+    Resource {
+        /// Packaged skill name.
+        name: String,
+        /// Package-relative resource path, such as `"references/reviews-and-briefings.md"`.
+        file_path: String,
+    },
+}
+
+impl SkillTarget {
+    /// Selects a skill's `SKILL.md` body.
+    pub fn body(name: impl Into<String>) -> Self {
+        Self::Body { name: name.into() }
+    }
+
+    /// Selects a registered supporting resource inside `name`.
+    pub fn resource(name: impl Into<String>, file_path: impl Into<String>) -> Self {
+        Self::Resource {
+            name: name.into(),
+            file_path: file_path.into(),
+        }
+    }
+
+    /// Packaged skill name owning this target.
+    pub fn skill_name(&self) -> &str {
+        match self {
+            Self::Body { name } | Self::Resource { name, .. } => name,
+        }
+    }
+
+    /// Package-relative resource path, or `None` for the `SKILL.md` body.
+    pub fn resource_path(&self) -> Option<&str> {
+        match self {
+            Self::Body { .. } => None,
+            Self::Resource { file_path, .. } => Some(file_path),
+        }
+    }
+}
+
+/// Why a job's requested initial skill preload could not be resolved from its [`Package`].
+#[derive(Debug, Clone, PartialEq, Eq, thiserror::Error)]
+pub enum PreloadError {
+    /// The requested skill name is not in the product's admitted package.
+    #[error("skill {name} is not admitted to product package {product}")]
+    UnknownSkill {
+        /// Product owning the admitted package.
+        product: String,
+        /// Missing skill name.
+        name: String,
+    },
+    /// The requested supporting resource path is not registered on the skill.
+    #[error("skill {name} in product package {product} has no resource {file_path}")]
+    UnavailableResource {
+        /// Product owning the admitted package.
+        product: String,
+        /// Skill name.
+        name: String,
+        /// Missing package-relative resource path.
+        file_path: String,
+    },
+}
+
+/// How a skill body or supporting resource entered a job's context.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(tag = "origin", rename_all = "snake_case")]
+pub enum SkillLoadOrigin {
+    /// Preloaded at job acceptance into the initial recipe instructions.
+    Preloaded,
+    /// Opened on demand during execution through `skill_view`.
+    Discovered {
+        /// Provider tool call identity that opened the guidance.
+        call_id: String,
+    },
+}
+
+/// Versioned provenance of one skill body or resource loaded by a run.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct SkillLoadRecord {
+    /// Which skill body or supporting resource was loaded.
+    pub target: SkillTarget,
+    /// Whether it was preloaded at start or discovered via `skill_view`.
+    pub origin: SkillLoadOrigin,
+    /// Exact `sha256:...` digest of the loaded file bytes in the frozen [`Package`].
+    pub version_id: String,
+}
+
+/// Validated initial guidance and its exact version records for a job recipe.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct PreloadedGuidance {
+    /// Exact `sha256:...` digest of the admitted [`Package`].
+    pub package_version: String,
+    /// Version provenance for each preloaded skill or resource, in selection order.
+    pub records: Vec<SkillLoadRecord>,
+    /// Model-facing preloaded guidance block, free of digests and YAML frontmatter.
+    pub instructions: String,
+}
+
 /// Immutable guidance selected by a product for its accepted work. This
 /// snapshot supplies both the resident index and every later resource read.
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -114,7 +260,21 @@ pub struct Package {
 impl Package {
     /// Load and validate the selected product folder.
     pub fn load(product: &str, root: &Path) -> Result<Self, String> {
-        let skills = load_agent_skills(root)?;
+        Self::load_visible(product, root, |_| true)
+    }
+
+    /// Load and validate `root`, admitting only skills that satisfy `visible` for `product`.
+    /// Both `catalog_instructions` and `execute_skill_view` use this admitted set.
+    pub fn load_visible(
+        product: &str,
+        root: &Path,
+        visible: impl Fn(&AgentSkill) -> bool,
+    ) -> Result<Self, String> {
+        let mut skills = load_agent_skills(root)?;
+        skills.retain(visible);
+        if skills.is_empty() {
+            return Err(format!("No packaged skills are visible to {product}"));
+        }
         let version = version_id(&serde_json::to_vec(&skills).expect("skill data serializes"));
         Ok(Self {
             product: product.into(),
@@ -122,6 +282,116 @@ impl Package {
             skills,
         })
     }
+
+    /// Admitted skills in sorted catalog order.
+    pub fn skills(&self) -> &[AgentSkill] {
+        &self.skills
+    }
+
+    /// Names of admitted skills in sorted catalog order.
+    pub fn skill_names(&self) -> Vec<&str> {
+        self.skills
+            .iter()
+            .map(|skill| skill.name.as_str())
+            .collect()
+    }
+
+    /// Exact `sha256:...` version of `target` when present in this admitted package.
+    pub fn version_of(&self, target: &SkillTarget) -> Option<&str> {
+        let skill = named_skill(&self.skills, target.skill_name())?;
+        match target {
+            SkillTarget::Body { .. } => Some(skill.version_id.as_str()),
+            SkillTarget::Resource { file_path, .. } => skill
+                .resources
+                .iter()
+                .find(|candidate| candidate.file_path == *file_path)
+                .map(|resource| resource.version_id.as_str()),
+        }
+    }
+
+    /// Resolves a `skill_view` argument object to its admitted [`SkillTarget`] and `version_id`
+    /// when `execute_skill_view` returns `Available`.
+    pub fn resolve_view_target(&self, arguments: &Value) -> Option<(SkillTarget, String)> {
+        let Ok(request) = SkillViewRequest::parse(arguments) else {
+            return None;
+        };
+        let target = match request.file_path.filter(|path| path != "SKILL.md") {
+            None => SkillTarget::Body { name: request.name },
+            Some(file_path) if is_registered_path(&file_path) => SkillTarget::Resource {
+                name: request.name,
+                file_path,
+            },
+            Some(_) => return None,
+        };
+        let version = self.version_of(&target)?.to_owned();
+        Some((target, version))
+    }
+
+    /// Preloads an exact ordered selection of skills or resources for a job's initial context.
+    pub fn preload(&self, targets: &[SkillTarget]) -> Result<PreloadedGuidance, PreloadError> {
+        if targets.is_empty() {
+            return Ok(PreloadedGuidance {
+                package_version: self.version.clone(),
+                records: Vec::new(),
+                instructions: String::new(),
+            });
+        }
+        let mut records = Vec::with_capacity(targets.len());
+        let mut sections = Vec::with_capacity(targets.len());
+        for target in targets {
+            let Some(skill) = named_skill(&self.skills, target.skill_name()) else {
+                return Err(PreloadError::UnknownSkill {
+                    product: self.product.clone(),
+                    name: target.skill_name().to_owned(),
+                });
+            };
+            match target {
+                SkillTarget::Body { name } => {
+                    let body = split_frontmatter(&skill.content)
+                        .map(|(_, body)| body.trim())
+                        .unwrap_or_else(|| skill.content.trim());
+                    sections.push(format!("--- Preloaded skill: {name} ---\n{body}"));
+                    records.push(SkillLoadRecord {
+                        target: target.clone(),
+                        origin: SkillLoadOrigin::Preloaded,
+                        version_id: skill.version_id.clone(),
+                    });
+                }
+                SkillTarget::Resource { name, file_path } => {
+                    let Some(resource) = skill
+                        .resources
+                        .iter()
+                        .find(|candidate| candidate.file_path == *file_path)
+                    else {
+                        return Err(PreloadError::UnavailableResource {
+                            product: self.product.clone(),
+                            name: name.clone(),
+                            file_path: file_path.clone(),
+                        });
+                    };
+                    sections.push(format!(
+                        "--- Preloaded skill resource: {name} ({file_path}) ---\n{}",
+                        resource.content.trim()
+                    ));
+                    records.push(SkillLoadRecord {
+                        target: target.clone(),
+                        origin: SkillLoadOrigin::Preloaded,
+                        version_id: resource.version_id.clone(),
+                    });
+                }
+            }
+        }
+        let instructions = format!(
+            "Preloaded skill guidance (already in this conversation; do not reopen these bodies unless reading an unlisted resource):\n\n{}",
+            sections.join("\n\n")
+        );
+        Ok(PreloadedGuidance {
+            package_version: self.version.clone(),
+            records,
+            instructions,
+        })
+    }
+
     /// Metadata from this admitted package, excluding all bodies.
     pub fn catalog_instructions(&self) -> String {
         catalog_instructions(&self.skills)
@@ -148,6 +418,9 @@ pub struct AgentSkill {
     /// Registered files for products offering resource reads.
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub resources: Vec<SkillResource>,
+    /// Declared product visibility from YAML frontmatter, when restricted.
+    #[serde(default, skip_serializing_if = "SkillVisibility::is_unrestricted")]
+    pub visibility: SkillVisibility,
 }
 
 /// Loads each skill directory under `root`.
@@ -447,12 +720,14 @@ fn load_skill(root: &Path, folder: &str) -> Result<AgentSkill, String> {
         ));
     }
     let description = description.trim().to_owned();
+    let visibility = yaml_products(&fields, folder)?;
     Ok(AgentSkill {
         name,
         description,
         version_id: main.version_id,
         content: main.content,
         resources: collect_resources(&folder_path)?,
+        visibility,
     })
 }
 
@@ -559,6 +834,41 @@ fn yaml_string(fields: &serde_yaml::Mapping, key: &str) -> Option<String> {
         .get(serde_yaml::Value::String(key.to_owned()))
         .and_then(serde_yaml::Value::as_str)
         .map(str::to_owned)
+}
+
+fn yaml_products(fields: &serde_yaml::Mapping, folder: &str) -> Result<SkillVisibility, String> {
+    let Some(raw) = fields.get(serde_yaml::Value::String("products".to_owned())) else {
+        return Ok(SkillVisibility::Unrestricted);
+    };
+    let Some(items) = raw.as_sequence() else {
+        return Err(format!(
+            "Packaged skill {folder} products must be a non-empty list of product names"
+        ));
+    };
+    if items.is_empty() {
+        return Err(format!("Packaged skill {folder} products cannot be empty"));
+    }
+    let mut products = Vec::with_capacity(items.len());
+    for item in items {
+        let Some(product) = item.as_str() else {
+            return Err(format!(
+                "Packaged skill {folder} products must contain only product name strings"
+            ));
+        };
+        if !valid_skill_name(product) {
+            return Err(format!(
+                "Packaged skill {folder} has an invalid product name {product}"
+            ));
+        }
+        if products.iter().any(|existing| existing == product) {
+            return Err(format!(
+                "Packaged skill {folder} lists duplicate product {product}"
+            ));
+        }
+        products.push(product.to_owned());
+    }
+    products.sort();
+    Ok(SkillVisibility::Products(products))
 }
 
 fn valid_skill_name(name: &str) -> bool {
@@ -866,5 +1176,117 @@ mod tests {
         .unwrap();
         assert!(load_agent_skills(&root).is_err());
         let _ = fs::remove_dir_all(root);
+    }
+
+    #[test]
+    fn visibility_filters_both_catalog_listing_and_skill_view_opening() {
+        let root = catalog_root();
+        let chords = Package::load_visible("chords", &root, |skill| {
+            skill.visibility.admits_or_unrestricted("chords")
+        })
+        .unwrap();
+        let duet = Package::load_visible("duet", &root, |skill| {
+            skill.visibility.admits_explicit("duet")
+        })
+        .unwrap();
+
+        assert_eq!(
+            chords.skill_names(),
+            vec![
+                "clinical-communication",
+                "patient-communication",
+                "patient-record-retrieval",
+                "physician-clinical-communication",
+            ]
+        );
+        assert_eq!(
+            duet.skill_names(),
+            vec!["clinical-communication", "duet-health-communication"]
+        );
+
+        let denied = duet
+            .execute_skill_view(&serde_json::json!({"name": "physician-clinical-communication"}))
+            .unwrap();
+        assert_eq!(
+            denied,
+            SkillView::UnknownSkill {
+                name: "physician-clinical-communication".into(),
+                file_path: None,
+                available_skills: vec![
+                    "clinical-communication".into(),
+                    "duet-health-communication".into(),
+                ],
+            }
+        );
+    }
+
+    #[test]
+    fn empty_or_invalid_products_frontmatter_fails_loading() {
+        let root =
+            std::env::temp_dir().join(format!("coda-skills-products-{}", std::process::id()));
+        let folder = root.join("bad-products");
+        fs::create_dir_all(&folder).unwrap();
+        for invalid in [
+            "---\nname: bad-products\ndescription: Test\nproducts: []\n---\n\nBody.\n",
+            "---\nname: bad-products\ndescription: Test\nproducts: chords\n---\n\nBody.\n",
+            "---\nname: bad-products\ndescription: Test\nproducts:\n  - Chords_Upper\n---\n\nBody.\n",
+            "---\nname: bad-products\ndescription: Test\nproducts:\n  - chords\n  - chords\n---\n\nBody.\n",
+        ] {
+            fs::write(folder.join("SKILL.md"), invalid).unwrap();
+            assert!(load_agent_skills(&root).is_err(), "{invalid}");
+        }
+        let _ = fs::remove_dir_all(root);
+    }
+
+    #[test]
+    fn preload_records_exact_versions_without_exposing_digests_and_fails_on_missing_targets() {
+        let root = catalog_root();
+        let chords = Package::load_visible("chords", &root, |skill| {
+            skill.visibility.admits_or_unrestricted("chords")
+        })
+        .unwrap();
+        let targets = [
+            SkillTarget::body("clinical-communication"),
+            SkillTarget::resource(
+                "physician-clinical-communication",
+                "references/reviews-and-briefings.md",
+            ),
+        ];
+        let preloaded = chords.preload(&targets).unwrap();
+        assert_eq!(preloaded.package_version, chords.version);
+        assert!(!preloaded.instructions.contains("sha256:"));
+        assert!(!preloaded.instructions.contains("products:"));
+        assert_eq!(preloaded.records.len(), 2);
+        assert_eq!(preloaded.records[0].target, targets[0]);
+        assert_eq!(preloaded.records[0].origin, SkillLoadOrigin::Preloaded);
+        assert_eq!(
+            preloaded.records[0].version_id,
+            chords.version_of(&targets[0]).unwrap()
+        );
+        assert_eq!(preloaded.records[1].target, targets[1]);
+        assert_eq!(preloaded.records[1].origin, SkillLoadOrigin::Preloaded);
+        assert_eq!(
+            preloaded.records[1].version_id,
+            chords.version_of(&targets[1]).unwrap()
+        );
+
+        assert_eq!(
+            chords.preload(&[SkillTarget::body("duet-health-communication")]),
+            Err(PreloadError::UnknownSkill {
+                product: "chords".into(),
+                name: "duet-health-communication".into(),
+            })
+        );
+        assert_eq!(
+            chords.preload(&[SkillTarget::resource(
+                "clinical-communication",
+                "references/missing.md"
+            )]),
+            Err(PreloadError::UnavailableResource {
+                product: "chords".into(),
+                name: "clinical-communication".into(),
+                file_path: "references/missing.md".into(),
+            })
+        );
     }
 }
