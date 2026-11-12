@@ -79,6 +79,8 @@ in
     (wrap "gh" gh "gh" "GH_TOKEN")
     (wrap "doppler" doppler "doppler" "DOPPLER_TOKEN")
     gnumake
+    # Antigravity's remote installer downloads its server with wget only.
+    wget
     ripgrep
     fd
     rsync
