@@ -207,6 +207,91 @@ fn members_post_read_add_and_wake_each_other_across_processes() {
 }
 
 #[test]
+fn board_view_advertises_a_self_contained_mcp_app() {
+    let dir = tempfile::tempdir().expect("tempdir");
+    let mut lead = Client::start(dir.path(), "lead", true);
+
+    let tools = lead.request("tools/list", json!({}))["result"]["tools"].clone();
+    let with_ui: Vec<(&str, &str)> = tools
+        .as_array()
+        .expect("tools")
+        .iter()
+        .filter_map(|tool| {
+            let uri = tool["_meta"]["ui"]["resourceUri"].as_str()?;
+            Some((tool["name"].as_str().expect("name"), uri))
+        })
+        .collect();
+    assert_eq!(with_ui, [("board_view", "ui://coda-swarm/board")]);
+
+    let listed = lead.request("resources/list", json!({}))["result"]["resources"].clone();
+    assert_eq!(listed.as_array().expect("resources").len(), 1);
+    assert_eq!(listed[0]["uri"], "ui://coda-swarm/board");
+    assert_eq!(listed[0]["mimeType"], "text/html;profile=mcp-app");
+
+    let read = lead.request("resources/read", json!({ "uri": "ui://coda-swarm/board" }));
+    let content = &read["result"]["contents"][0];
+    assert_eq!(content["uri"], "ui://coda-swarm/board");
+    assert_eq!(content["mimeType"], "text/html;profile=mcp-app");
+    assert!(
+        content["_meta"]["ui"].get("csp").is_none(),
+        "declares no network domains"
+    );
+    let html = content["text"].as_str().expect("html text");
+    assert!(html.starts_with("<!DOCTYPE html>"), "an HTML5 document");
+    assert!(
+        html.contains("\"board_view\""),
+        "refreshes through board_view"
+    );
+    assert!(html.contains("ui/initialize"), "runs the App handshake");
+    let lowered = html.to_ascii_lowercase();
+    for external in [
+        "http://",
+        "https://",
+        "src=",
+        "href=",
+        "<link",
+        "@import",
+        "url(",
+        "fetch(",
+        "xmlhttprequest",
+        "websocket",
+        "eventsource",
+        "import(",
+        "sendbeacon",
+    ] {
+        assert!(!lowered.contains(external), "view loads {external}");
+    }
+
+    let missing = lead.request("resources/read", json!({ "uri": "ui://coda-swarm/nope" }));
+    assert_eq!(missing["error"]["code"], -32002);
+
+    lead.ok(
+        "swarm",
+        json!({ "action": "title", "title": "Parser swarm" }),
+    );
+    lead.ok(
+        "swarm",
+        json!({ "action": "add", "name": "scout", "brief": "map the parser", "model": "m1" }),
+    );
+    let view = lead.call("board_view", json!({}));
+    assert_eq!(view["isError"], false, "{view}");
+    assert_eq!(view["structuredContent"]["members"][1]["name"], "scout");
+    let summary = view["content"][0]["text"].as_str().expect("summary");
+    assert!(
+        summary.starts_with("Parser swarm ("),
+        "a plain summary, not JSON: {summary}"
+    );
+    assert!(
+        summary.contains("- scout (worker): waiting, m1"),
+        "{summary}"
+    );
+    assert!(
+        summary.contains("[1] #main lead: @scout map the parser"),
+        "{summary}"
+    );
+}
+
+#[test]
 fn workers_manage_only_the_helpers_they_added() {
     let dir = tempfile::tempdir().expect("tempdir");
     let mut lead = Client::start(dir.path(), "lead", true);

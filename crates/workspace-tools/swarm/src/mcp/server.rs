@@ -247,12 +247,12 @@ impl<S: Store, P: Spawner> Server<S, P> {
         }
     }
 
-    pub fn call(&self, tool: Tool, args: Value) -> Result<Value, ToolError> {
+    pub fn call(&self, tool: Tool, args: Value) -> Result<Reply, ToolError> {
         match tool {
-            Tool::Swarm => self.swarm(parse(tool, args)?),
-            Tool::PostMessage => self.post(parse(tool, args)?),
-            Tool::ReadBoard => self.read(parse(tool, args)?),
-            Tool::SwarmWait => self.wait(parse(tool, args)?),
+            Tool::Swarm => self.swarm(parse(tool, args)?).map(Reply::from),
+            Tool::PostMessage => self.post(parse(tool, args)?).map(Reply::from),
+            Tool::ReadBoard => self.read(parse(tool, args)?).map(Reply::from),
+            Tool::SwarmWait => self.wait(parse(tool, args)?).map(Reply::from),
             Tool::BoardView => self.view(parse(tool, args)?),
         }
     }
@@ -630,10 +630,12 @@ impl<S: Store, P: Spawner> Server<S, P> {
         }
     }
 
-    fn view(&self, args: ViewArgs) -> Result<Value, ToolError> {
+    fn view(&self, args: ViewArgs) -> Result<Reply, ToolError> {
         let limit = args.limit.unwrap_or(DEFAULT_VIEW_LIMIT).clamp(1, MAX_LIMIT);
         let roster = self.store.roster()?;
         let board = self.store.read_since(Seq::ZERO, usize::MAX)?;
+        let swarm_id = self.store.meta()?.swarm_id;
+        let head = board.last().map_or(Seq::ZERO, |m| m.seq);
         let members: Vec<Value> = roster
             .members
             .iter()
@@ -646,17 +648,75 @@ impl<S: Store, P: Spawner> Server<S, P> {
                 row
             }))
             .collect();
-        let recent: Vec<&Message> = board
-            .iter()
-            .skip(board.len().saturating_sub(limit))
-            .collect();
-        Ok(json!({
-            "swarm_id": self.store.meta()?.swarm_id,
-            "title": roster.title,
-            "head": board.last().map_or(Seq::ZERO, |m| m.seq),
-            "members": members,
-            "channels": channels,
-            "messages": recent,
-        }))
+        let recent = &board[board.len().saturating_sub(limit)..];
+        let summary = view_summary(&roster, &swarm_id.0, head, recent);
+        Ok(Reply {
+            structured: json!({
+                "swarm_id": swarm_id,
+                "title": roster.title,
+                "head": head,
+                "members": members,
+                "channels": channels,
+                "messages": recent,
+            }),
+            text: Some(summary),
+        })
     }
+}
+
+/// A tool's result: the structured value, and the text the agent reads when
+/// it should differ from that value's JSON.
+pub struct Reply {
+    pub structured: Value,
+    pub text: Option<String>,
+}
+
+impl From<Value> for Reply {
+    fn from(structured: Value) -> Self {
+        Self {
+            structured,
+            text: None,
+        }
+    }
+}
+
+fn view_summary(roster: &Roster, swarm_id: &str, head: Seq, recent: &[Message]) -> String {
+    use std::fmt::Write as _;
+    let mut text = String::new();
+    let title = if roster.title.is_empty() {
+        "Swarm"
+    } else {
+        &roster.title
+    };
+    let _ = writeln!(text, "{title} ({swarm_id}), head {head}");
+    let _ = writeln!(text, "Members:");
+    for (name, member) in &roster.members {
+        let row = json!(member);
+        let model = member.model.as_deref().unwrap_or("no model");
+        let _ = writeln!(
+            text,
+            "- {name} ({}): {}, {model}",
+            row["role"].as_str().unwrap_or_default(),
+            row["state"].as_str().unwrap_or_default(),
+        );
+    }
+    let channels: Vec<String> = std::iter::once(format!("#{}", ChannelName::main()))
+        .chain(roster.channels.iter().map(|(name, channel)| {
+            let archived = if channel.archived { ", archived" } else { "" };
+            match channel.topic.as_str() {
+                "" => format!("#{name}{archived}"),
+                topic => format!("#{name} ({topic}{archived})"),
+            }
+        }))
+        .collect();
+    let _ = writeln!(text, "Channels: {}", channels.join(", "));
+    let _ = writeln!(text, "Recent messages ({}):", recent.len());
+    for message in recent {
+        let _ = writeln!(
+            text,
+            "[{}] #{} {}: {}",
+            message.seq, message.channel, message.agent, message.text
+        );
+    }
+    text
 }

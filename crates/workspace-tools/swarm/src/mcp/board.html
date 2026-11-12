@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Swarm board</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: var(--color-background-primary, light-dark(#fbfbfa, #18181a));
+    --panel: var(--color-background-secondary, light-dark(#f1f0ed, #222226));
+    --text: var(--color-text-primary, light-dark(#1d1d1f, #ececee));
+    --muted: var(--color-text-secondary, light-dark(#6b6b70, #9a9aa2));
+    --line: var(--color-border-primary, light-dark(#dcdad5, #34343a));
+    --accent: light-dark(#2d6a5a, #6cc4a8);
+    --working: light-dark(#2d6a5a, #6cc4a8);
+    --waiting: light-dark(#8a6416, #e0b45a);
+    --stopped: light-dark(#5c5c66, #8c8c96);
+    --killed: light-dark(#a23a3a, #e07a7a);
+    --font: var(--font-sans, ui-sans-serif, system-ui, sans-serif);
+    --mono: var(--font-mono, ui-monospace, "SF Mono", Menlo, monospace);
+  }
+  :root[data-theme="light"] { color-scheme: light; }
+  :root[data-theme="dark"] { color-scheme: dark; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 13px/1.45 var(--font); }
+  main { padding: 12px 14px 14px; display: grid; gap: 12px; }
+  header { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+  h1 { font-size: 15px; margin: 0; font-weight: 600; }
+  .meta { color: var(--muted); font-family: var(--mono); font-size: 11px; }
+  .spacer { flex: 1; }
+  button {
+    font: inherit; font-size: 12px; color: var(--text); background: var(--panel);
+    border: 1px solid var(--line); border-radius: 6px; padding: 3px 9px; cursor: pointer;
+  }
+  button[aria-pressed="true"] { border-color: var(--accent); color: var(--accent); }
+  h2 { font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin: 0 0 6px; font-weight: 600; }
+  .members { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 6px; }
+  .member { background: var(--panel); border: 1px solid var(--line); border-left: 3px solid var(--state); border-radius: 6px; padding: 6px 8px; min-width: 0; }
+  .member .name { font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .member .row { display: flex; gap: 6px; align-items: center; color: var(--muted); font-size: 11px; }
+  .member .model { font-family: var(--mono); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .state { color: var(--state); font-weight: 600; }
+  .working { --state: var(--working); }
+  .waiting { --state: var(--waiting); }
+  .stopped { --state: var(--stopped); }
+  .killed { --state: var(--killed); opacity: .7; }
+  .channels { display: flex; gap: 6px; flex-wrap: wrap; }
+  .channels button .topic { color: var(--muted); margin-left: 4px; }
+  .channels button.archived { opacity: .55; text-decoration: line-through; }
+  .messages { display: grid; gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 6px; overflow: hidden; }
+  .msg { background: var(--bg); padding: 6px 9px; display: grid; grid-template-columns: auto 1fr; column-gap: 10px; }
+  .msg .seq { color: var(--muted); font-family: var(--mono); font-size: 11px; padding-top: 1px; }
+  .msg .head { display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap; }
+  .msg .author { font-weight: 600; }
+  .msg .chan, .msg .time { color: var(--muted); font-size: 11px; font-family: var(--mono); }
+  .msg .badge { font-size: 10px; text-transform: uppercase; letter-spacing: .05em; color: var(--accent); border: 1px solid var(--accent); border-radius: 4px; padding: 0 4px; }
+  .msg .text { grid-column: 2; white-space: pre-wrap; overflow-wrap: anywhere; }
+  .mention { color: var(--accent); font-weight: 600; }
+  .empty, .status { color: var(--muted); font-style: italic; }
+  .status.error { color: var(--killed); font-style: normal; }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <h1 id="title">Swarm board</h1>
+    <span class="meta" id="meta"></span>
+    <span class="spacer"></span>
+    <button id="live" type="button" aria-pressed="true" title="Refresh every few seconds">Live</button>
+    <button id="refresh" type="button">Refresh</button>
+  </header>
+  <div class="status" id="status">Waiting for the board…</div>
+  <section><h2>Members</h2><div class="members" id="members"></div></section>
+  <section><h2>Channels</h2><div class="channels" id="channels"></div></section>
+  <section><h2 id="messages-title">Messages</h2><div class="messages" id="messages"></div></section>
+</main>
+<script>
+(() => {
+  "use strict";
+  const PROTOCOL_VERSION = "2026-01-26";
+  const LIVE_MS = 5000;
+  const $ = (id) => document.getElementById(id);
+  const pending = new Map();
+  let nextId = 1;
+  let board = null;
+  let filter = null;
+  let limit = 50;
+  let live = true;
+  let timer = null;
+  let inFlight = false;
+
+  const send = (message) => window.parent.postMessage({ jsonrpc: "2.0", ...message }, "*");
+  const request = (method, params) => new Promise((resolve, reject) => {
+    const id = nextId++;
+    pending.set(id, { resolve, reject });
+    send({ id, method, params });
+  });
+  const notify = (method, params) => send({ method, params });
+
+  window.addEventListener("message", (event) => {
+    if (event.source !== window.parent) return;
+    const message = event.data;
+    if (!message || message.jsonrpc !== "2.0") return;
+    if (message.method === undefined && pending.has(message.id)) {
+      const { resolve, reject } = pending.get(message.id);
+      pending.delete(message.id);
+      if (message.error) reject(new Error(message.error.message || "request failed"));
+      else resolve(message.result);
+      return;
+    }
+    switch (message.method) {
+      case "ui/notifications/tool-input":
+        if (message.params && message.params.arguments && message.params.arguments.limit) {
+          limit = message.params.arguments.limit;
+        }
+        break;
+      case "ui/notifications/tool-result":
+        accept(message.params);
+        break;
+      case "ui/notifications/host-context-changed":
+        applyContext(message.params);
+        break;
+      case "ui/resource-teardown":
+        stop();
+        send({ id: message.id, result: {} });
+        break;
+      case "ping":
+        send({ id: message.id, result: {} });
+        break;
+      default:
+        if (message.id !== undefined && message.method) {
+          send({ id: message.id, error: { code: -32601, message: "unknown method " + message.method } });
+        }
+    }
+  });
+
+  function applyContext(context) {
+    if (!context) return;
+    if (context.theme) document.documentElement.dataset.theme = context.theme;
+    const variables = context.styles && context.styles.variables;
+    if (variables) {
+      for (const [name, value] of Object.entries(variables)) {
+        if (value) document.documentElement.style.setProperty(name, value);
+      }
+    }
+  }
+
+  function setStatus(text, error) {
+    const status = $("status");
+    status.textContent = text || "";
+    status.hidden = !text;
+    status.classList.toggle("error", Boolean(error));
+  }
+
+  function accept(result) {
+    if (!result) return;
+    if (result.isError) {
+      const text = (result.content || []).map((c) => c.text).filter(Boolean).join("\n");
+      setStatus("board_view failed: " + (text || "unknown error"), true);
+      return;
+    }
+    if (!result.structuredContent) return;
+    board = result.structuredContent;
+    setStatus("");
+    render();
+  }
+
+  async function refresh() {
+    if (inFlight) return;
+    inFlight = true;
+    try {
+      accept(await request("tools/call", { name: "board_view", arguments: { limit } }));
+    } catch (error) {
+      setStatus("Refresh failed: " + error.message, true);
+      setLive(false);
+    } finally {
+      inFlight = false;
+    }
+  }
+
+  function stop() {
+    if (timer) clearInterval(timer);
+    timer = null;
+  }
+
+  function setLive(on) {
+    live = on;
+    $("live").setAttribute("aria-pressed", String(on));
+    stop();
+    if (on) timer = setInterval(() => { if (!document.hidden) refresh(); }, LIVE_MS);
+  }
+
+  function el(tag, className, text) {
+    const node = document.createElement(tag);
+    if (className) node.className = className;
+    if (text !== undefined && text !== null) node.textContent = String(text);
+    return node;
+  }
+
+  function withMentions(text) {
+    const fragment = document.createDocumentFragment();
+    const pattern = /@#?[A-Za-z0-9][A-Za-z0-9_-]*/g;
+    let last = 0;
+    for (const match of text.matchAll(pattern)) {
+      if (match.index > last) fragment.append(text.slice(last, match.index));
+      fragment.append(el("span", "mention", match[0]));
+      last = match.index + match[0].length;
+    }
+    if (last < text.length) fragment.append(text.slice(last));
+    return fragment;
+  }
+
+  function clock(time) {
+    const date = new Date(time);
+    return Number.isNaN(date.getTime()) ? "" : date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+  }
+
+  function render() {
+    $("title").textContent = board.title || "Swarm board";
+    $("meta").textContent = "head " + board.head + " · " + (board.swarm_id || "") + " · " + clock(Date.now());
+
+    const members = $("members");
+    members.replaceChildren();
+    for (const member of board.members || []) {
+      const card = el("div", "member " + member.state);
+      card.append(el("div", "name", member.name));
+      const row = el("div", "row");
+      row.append(el("span", "state", member.state), el("span", null, member.role));
+      card.append(row);
+      card.append(el("div", "row model", member.model || "no model"));
+      members.append(card);
+    }
+    if (!members.childElementCount) members.append(el("div", "empty", "No members"));
+
+    const channels = $("channels");
+    channels.replaceChildren();
+    const all = el("button", null, "all");
+    all.type = "button";
+    all.setAttribute("aria-pressed", String(filter === null));
+    all.onclick = () => { filter = null; render(); };
+    channels.append(all);
+    for (const channel of board.channels || []) {
+      const chip = el("button", channel.archived ? "archived" : null, "#" + channel.name);
+      chip.type = "button";
+      chip.setAttribute("aria-pressed", String(filter === channel.name));
+      if (channel.topic) chip.append(el("span", "topic", channel.topic));
+      chip.onclick = () => { filter = channel.name; render(); };
+      channels.append(chip);
+    }
+
+    const shown = (board.messages || []).filter((m) => filter === null || m.channel === filter);
+    $("messages-title").textContent = filter === null ? "Messages" : "Messages in #" + filter;
+    const messages = $("messages");
+    messages.replaceChildren();
+    for (const message of shown) {
+      const row = el("div", "msg");
+      row.append(el("span", "seq", message.seq));
+      const head = el("div", "head");
+      head.append(el("span", "author", message.agent), el("span", "chan", "#" + message.channel));
+      if (message.kind === "brief") head.append(el("span", "badge", "brief"));
+      head.append(el("span", "time", clock(message.time)));
+      row.append(head);
+      const text = el("div", "text");
+      text.append(withMentions(message.text || ""));
+      row.append(text);
+      messages.append(row);
+    }
+    if (!shown.length) messages.append(el("div", "msg empty", "No messages yet"));
+  }
+
+  $("refresh").onclick = refresh;
+  $("live").onclick = () => setLive(!live);
+  new ResizeObserver(() => {
+    notify("ui/notifications/size-changed", {
+      width: document.documentElement.scrollWidth,
+      height: document.documentElement.scrollHeight,
+    });
+  }).observe(document.body);
+
+  request("ui/initialize", {
+    appInfo: { name: "coda-swarm-board", version: "1" },
+    appCapabilities: { availableDisplayModes: ["inline", "fullscreen"] },
+    protocolVersion: PROTOCOL_VERSION,
+  }).then((result) => {
+    applyContext(result && result.hostContext);
+    notify("ui/notifications/initialized", {});
+    setLive(true);
+  }, (error) => setStatus("The host did not start the board view: " + error.message, true));
+})();
+</script>
+</body>
+</html>

@@ -1,5 +1,7 @@
 use serde_json::{Value, json};
 
+use super::resources::Resource;
+
 /// Every tool the server advertises. `tools/call` parses its name into one of
 /// these, so a handler is chosen by type, never by catalog position.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -62,8 +64,8 @@ impl Tool {
             }
             Self::BoardView => {
                 "Snapshot of the whole swarm for display: title, members with state and model, \
-                 channels, recent messages on every channel, and the head seq. Does not move \
-                 your read cursor."
+                 channels, recent messages on every channel, and the head seq. Hosts with MCP \
+                 Apps show it as a live board. Does not move your read cursor."
             }
         }
     }
@@ -155,12 +157,26 @@ impl Tool {
         }
     }
 
+    /// The MCP Apps view that renders this tool's results, if any.
+    pub fn view(self) -> Option<Resource> {
+        match self {
+            Self::BoardView => Some(Resource::Board),
+            Self::Swarm | Self::PostMessage | Self::ReadBoard | Self::SwarmWait => None,
+        }
+    }
+
     pub fn descriptor(self) -> Value {
-        json!({
+        let mut descriptor = json!({
             "name": self.name(),
             "description": self.description(),
             "inputSchema": self.input_schema(),
-        })
+        });
+        if let Some(view) = self.view() {
+            descriptor["_meta"] = json!({
+                "ui": { "resourceUri": view.uri(), "visibility": ["model", "app"] }
+            });
+        }
+        descriptor
     }
 }
 

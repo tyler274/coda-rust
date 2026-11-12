@@ -1,7 +1,9 @@
 //! The board as a stdio MCP server: newline-delimited JSON-RPC 2.0 with
-//! `initialize`, `tools/list` and `tools/call`. One server process is one
-//! member's connection.
+//! `initialize`, `tools/list`, `tools/call`, `resources/list` and
+//! `resources/read`. The resources are MCP Apps views. One server process is
+//! one member's connection.
 
+mod resources;
 mod server;
 mod spawner;
 mod tools;
@@ -12,7 +14,8 @@ use std::io::{self, BufRead, Write};
 use serde::Deserialize;
 use serde_json::{Value, json};
 
-pub use server::{Server, ToolError};
+pub use resources::{APP_MIME_TYPE, Resource};
+pub use server::{Reply, Server, ToolError};
 pub use spawner::{
     Catalog, ModelInfo, RosterOnlySpawner, SpawnError, SpawnSpec, Spawner, Workspace,
 };
@@ -26,6 +29,7 @@ const PARSE_ERROR: i64 = -32700;
 const INVALID_REQUEST: i64 = -32600;
 const METHOD_NOT_FOUND: i64 = -32601;
 const INVALID_PARAMS: i64 = -32602;
+const RESOURCE_NOT_FOUND: i64 = -32002;
 
 #[derive(Deserialize)]
 struct Request {
@@ -42,6 +46,11 @@ struct CallParams {
     name: String,
     #[serde(default)]
     arguments: Option<Value>,
+}
+
+#[derive(Deserialize)]
+struct ReadParams {
+    uri: String,
 }
 
 fn error(id: Value, code: i64, message: impl Into<String>) -> Value {
@@ -102,12 +111,28 @@ impl<S: Store, P: Spawner> Server<S, P> {
                 id,
                 json!({
                     "protocolVersion": PROTOCOL_VERSION,
-                    "capabilities": { "tools": {} },
+                    "capabilities": { "tools": {}, "resources": {} },
                     "serverInfo": { "name": "coda-swarm", "version": env!("CARGO_PKG_VERSION") },
                 }),
             ),
             "ping" => result(id, json!({})),
             "tools/list" => result(id, json!({ "tools": Tool::ALL.map(Tool::descriptor) })),
+            "resources/list" => result(
+                id,
+                json!({ "resources": Resource::ALL.map(Resource::descriptor) }),
+            ),
+            "resources/templates/list" => result(id, json!({ "resourceTemplates": [] })),
+            "resources/read" => match serde_json::from_value::<ReadParams>(request.params) {
+                Err(source) => error(id, INVALID_PARAMS, source.to_string()),
+                Ok(read) => match Resource::parse(&read.uri) {
+                    None => error(
+                        id,
+                        RESOURCE_NOT_FOUND,
+                        format!("unknown resource {}", read.uri),
+                    ),
+                    Some(resource) => result(id, resource.contents()),
+                },
+            },
             "tools/call" => match serde_json::from_value::<CallParams>(request.params) {
                 Err(source) => error(id, INVALID_PARAMS, source.to_string()),
                 Ok(call) => match Tool::parse(&call.name) {
@@ -122,9 +147,9 @@ impl<S: Store, P: Spawner> Server<S, P> {
     fn tool_result(&self, tool: Tool, arguments: Option<Value>) -> Value {
         let arguments = arguments.unwrap_or_else(|| json!({}));
         match self.call(tool, arguments) {
-            Ok(value) => json!({
-                "content": [{ "type": "text", "text": value.to_string() }],
-                "structuredContent": value,
+            Ok(Reply { structured, text }) => json!({
+                "content": [{ "type": "text", "text": text.unwrap_or_else(|| structured.to_string()) }],
+                "structuredContent": structured,
                 "isError": false,
             }),
             Err(failure) => json!({
