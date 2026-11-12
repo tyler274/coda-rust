@@ -139,9 +139,17 @@ function (step, ...args) {
           .map((node) => ({ path: node.dataset.sourcePath, title: node.title, text: node.innerText })),
       };
     },
-    // What the open reader says of its evidence read: opening, failed with a retry, or the source.
+    clickChip(index) {
+      const chips = [...document.querySelectorAll("section[aria-label='Conversation'] .citation-chip")];
+      if (!chips[index]) throw new Error(`no citation chip at ${index}; saw ${chips.length}`);
+      chips[index].scrollIntoView({ block: "center" });
+      chips[index].click();
+      return true;
+    },
+    // What the open reader says of its evidence read: opening, failed with a retry, unavailable, or the source.
     citationEvidence() {
       const pane = one(".source-reading-pane");
+      const body = one(".source-reading-pane .source-pane-body").getBoundingClientRect();
       const alert = pane.querySelector("[role=alert]");
       return {
         title: pane.querySelector("h2")?.textContent ?? "",
@@ -153,6 +161,20 @@ function (step, ...args) {
         passage: pane.querySelector("blockquote")?.textContent ?? null,
         notice: [...pane.querySelectorAll(".reader-provenance")]
           .some((line) => line.textContent.includes("supporting passage is not identified")),
+        versionNotice: pane.querySelector(".source-version-notice")?.textContent ?? null,
+        unrecoveredNotice: pane.querySelector(".source-unrecovered-notice")?.textContent ?? null,
+        link: pane.querySelector(".clinical-source-reader > .citation-open")?.getAttribute("href") ?? null,
+        summary: pane.querySelector(".source-coda-summary")?.innerText ?? null,
+        citedPaths: [...pane.querySelectorAll("[data-cited='true']")]
+          .map((node) => node.getAttribute("data-source-path") ?? ""),
+        marks: [...pane.querySelectorAll(".source-text mark")].map((mark) => {
+          const r = mark.getBoundingClientRect();
+          return {
+            text: mark.textContent,
+            path: mark.closest("[data-source-path]")?.getAttribute("data-source-path") ?? null,
+            inView: r.height > 0 && r.top >= body.top - 2 && r.bottom <= body.bottom + 2,
+          };
+        }),
       };
     },
     // Brings the reader's no-passage notice into view, for the picture of it.

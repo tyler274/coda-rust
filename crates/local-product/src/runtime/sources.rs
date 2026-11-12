@@ -15,15 +15,64 @@
 //! Projection prose and model output never become sources.
 use std::collections::{BTreeMap, BTreeSet, HashMap, HashSet};
 
+use sea_orm::sea_query::StringLen;
 use sea_orm::{
     ActiveModelTrait, ColumnTrait, ConnectionTrait, DbErr, EntityTrait, QueryFilter, QueryOrder,
     QuerySelect, Set, TransactionTrait,
     sea_query::{Expr, OnConflict, extension::postgres::PgExpr},
 };
+use serde::{Deserialize, Serialize};
 
-use super::entities::{source, source_pull, source_version};
+use super::entities::{source, source_pull, source_restriction, source_version};
 use super::{Store, conversion_error, error};
 use crate::physician_sources::{SourcePatient, SourceRevision};
+
+/// Why a candidate's content is restricted in a patient workspace.
+#[derive(
+    Clone,
+    Copy,
+    Debug,
+    PartialEq,
+    Eq,
+    Serialize,
+    Deserialize,
+    sea_orm::EnumIter,
+    sea_orm::DeriveActiveEnum,
+)]
+#[serde(rename_all = "snake_case")]
+#[sea_orm(rs_type = "String", db_type = "String(StringLen::None)")]
+pub enum SourceRestriction {
+    /// Access to this source was removed.
+    #[sea_orm(string_value = "access_removed")]
+    AccessRemoved,
+    /// The record was withheld from this patient's chart after a wrong-patient correction.
+    #[sea_orm(string_value = "withheld_wrong_patient")]
+    WithheldWrongPatient,
+}
+
+/// Whether a cited revision is still the newest active revision of its source.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum CitedSourceVersion {
+    /// No newer active revision has been observed for this source.
+    Current,
+    /// A newer active revision of this source now exists in the workspace.
+    NewerAvailable,
+}
+
+/// Current access and version state when opening a retained citation.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum CitedSourceState {
+    /// The cited revision may be shown, along with whether a newer revision exists.
+    Readable {
+        /// Whether a newer active revision exists for this candidate.
+        version: CitedSourceVersion,
+    },
+    /// The cited candidate's content may not be returned.
+    Unavailable {
+        /// Why the content is unavailable.
+        reason: SourceRestriction,
+    },
+}
 
 /// Rows written per insert, inside Postgres's bind limit.
 const CHART_BATCH: usize = 200;
@@ -140,8 +189,24 @@ async fn selected(
     candidates: Option<&[&str]>,
 ) -> Result<Observation, DbErr> {
     let version = pin_version(tx, workspace).await?;
+    let mut restriction_query = source_restriction::Entity::find()
+        .filter(source_restriction::Column::Workspace.eq(workspace))
+        .filter(source_restriction::Column::RecordedAtVersion.lte(version as i64));
+    if let Some(ids) = candidates {
+        restriction_query = restriction_query
+            .filter(source_restriction::Column::Candidate.is_in(ids.iter().copied()));
+    }
+    let restricted: HashSet<String> = restriction_query
+        .all(tx)
+        .await?
+        .into_iter()
+        .map(|row| row.candidate)
+        .collect();
     let mut sources = Vec::new();
     for row in latest(tx, workspace, version, candidates).await? {
+        if restricted.contains(&row.candidate) {
+            continue;
+        }
         if let Some(source) = decode(&row)? {
             sources.push(source);
         }
@@ -427,6 +492,117 @@ impl Store {
         let found = by_identities(&tx, workspace, identities).await?;
         tx.commit().await?;
         Ok(found)
+    }
+
+    /// Marks `candidate` restricted in `workspace` (access removed or withheld
+    /// after a wrong-patient correction) under the workspace's version lock.
+    /// Excluded from active chart observations and refused on citation reads.
+    /// Re-recording the same restriction is a no-op.
+    pub async fn restrict_source(
+        &self,
+        workspace: &str,
+        candidate: &str,
+        reason: SourceRestriction,
+    ) -> Result<u64, DbErr> {
+        if workspace.trim().is_empty() || candidate.trim().is_empty() {
+            return Err(error("empty source identity"));
+        }
+        let tx = self.db.begin().await?;
+        ensure_version(&tx, workspace).await?;
+        let row = source_version::Entity::find_by_id(workspace.to_owned())
+            .lock_exclusive()
+            .one(&tx)
+            .await?
+            .ok_or_else(|| error("missing source version"))?;
+        let version = version_of(row.version)?;
+        let existing =
+            source_restriction::Entity::find_by_id((workspace.to_owned(), candidate.to_owned()))
+                .one(&tx)
+                .await?;
+        if existing
+            .as_ref()
+            .is_some_and(|saved| saved.reason == reason)
+        {
+            tx.commit().await?;
+            return Ok(version);
+        }
+        let next = version + 1;
+        source_restriction::Entity::insert(source_restriction::ActiveModel {
+            workspace: Set(workspace.into()),
+            candidate: Set(candidate.into()),
+            reason: Set(reason),
+            recorded_at_version: Set(next as i64),
+        })
+        .on_conflict(
+            OnConflict::columns([
+                source_restriction::Column::Workspace,
+                source_restriction::Column::Candidate,
+            ])
+            .update_columns([
+                source_restriction::Column::Reason,
+                source_restriction::Column::RecordedAtVersion,
+            ])
+            .to_owned(),
+        )
+        .exec_without_returning(&tx)
+        .await?;
+        let mut bumped: source_version::ActiveModel = row.into();
+        bumped.version = Set(next as i64);
+        bumped.update(&tx).await?;
+        tx.commit().await?;
+        Ok(next)
+    }
+
+    /// Every restricted candidate in `workspace`, keyed by candidate ID.
+    pub async fn restricted_sources(
+        &self,
+        workspace: &str,
+    ) -> Result<HashMap<String, SourceRestriction>, DbErr> {
+        let rows = source_restriction::Entity::find()
+            .filter(source_restriction::Column::Workspace.eq(workspace))
+            .all(&self.db)
+            .await?;
+        Ok(rows
+            .into_iter()
+            .map(|row| (row.candidate, row.reason))
+            .collect())
+    }
+
+    /// Current access and version status for a citation to `(candidate, cited_revision)`
+    /// in `workspace`, fenced under the workspace's shared source-version lock.
+    pub async fn cited_source_state(
+        &self,
+        workspace: &str,
+        candidate: &str,
+        cited_revision: &str,
+    ) -> Result<CitedSourceState, DbErr> {
+        let tx = self.db.begin().await?;
+        let version = pin_version(&tx, workspace).await?;
+        let restriction =
+            source_restriction::Entity::find_by_id((workspace.to_owned(), candidate.to_owned()))
+                .filter(source_restriction::Column::RecordedAtVersion.lte(version as i64))
+                .one(&tx)
+                .await?;
+        if let Some(restriction) = restriction {
+            tx.commit().await?;
+            return Ok(CitedSourceState::Unavailable {
+                reason: restriction.reason,
+            });
+        }
+        let newest = latest(&tx, workspace, version, Some(&[candidate])).await?;
+        let version_state = match newest.first() {
+            Some(row) => match decode(row)? {
+                Some(active) if active.revision != cited_revision => {
+                    CitedSourceVersion::NewerAvailable
+                }
+                Some(_) | None => CitedSourceVersion::Current,
+            },
+            None => CitedSourceVersion::Current,
+        };
+        tx.commit().await?;
+        Ok(CitedSourceState::Readable {
+            version: version_state,
+        })
     }
 }
 

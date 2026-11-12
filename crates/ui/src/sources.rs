@@ -468,18 +468,28 @@ struct PassageSurface(Signal<Option<String>>);
 /// the words or their passages change, never on other renders. `passages` are byte ranges of
 /// `text`; one that isn't a range of it is left unmarked.
 #[component]
-pub fn SourceText(text: String, #[props(default)] passages: Vec<(usize, usize)>) -> Element {
+pub fn SourceText(
+    text: String,
+    #[props(default)] passages: Vec<(usize, usize)>,
+    #[props(default)] inline: bool,
+) -> Element {
     let surface = try_use_context::<PassageSurface>();
     use_effect(use_reactive!(|text, passages| {
-        let _ = (&text, &passages);
-        if let Some(PassageSurface(body)) = surface
+        let _ = &text;
+        if !passages.is_empty()
+            && let Some(PassageSurface(body)) = surface
             && let Some(body) = body()
         {
             script::scroll_to_passage(&body);
         }
     }));
+    let class = if inline {
+        "source-text is-inline"
+    } else {
+        "source-text"
+    };
     rsx! {
-        span { class: "source-text",
+        span { class: "{class}",
             for (index, (words, cited)) in marked(&text, &passages).into_iter().enumerate() {
                 if cited {
                     mark { key: "{index}", "{words}" }

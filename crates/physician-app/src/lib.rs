@@ -27,18 +27,19 @@ use physician_wire::{
 
 use panels::Panel;
 use shell::{
-    CONVERSATION_EMPTY, ChatView, Drawer, EVIDENCE_LOADING, EVIDENCE_UNAVAILABLE, EvidenceRead,
-    KeyInput, NavCommand, PAST_WORK_EMPTY, REPLY_ASK, REPLY_CLOSED_NOTICE, REPLY_COPY,
-    REPLY_NO_NEEDED, REPLY_REVISION_STALE, REPLY_TELL_CODA, RESUME, ReadView, ReplyReviewAction,
-    STOP, SourceChip, SynopsisPiece, TODAY_LOADING, TODAY_QUIET, TODAY_QUIET_DETAIL, TODAY_STALE,
-    TODAY_UNAVAILABLE, TRY_AGAIN, TodayLine, TodayView, VisitLine, WORKSPACE_CLOSED,
-    WORKSPACE_EMPTY, WORKSPACE_UNAVAILABLE, answer_sources, answer_to, chat_view, chip_name,
-    citation_inspection, connection_lines, demographic_card_view, format_calendar_date,
-    format_clock, format_local_date, format_waited, keyboard_command, need_you_words, opens_reader,
-    panel_target, past_work_copy, patient_upcoming_visits, read_view, records_time,
-    reply_channel_label, reply_review_actions, reply_revision_words, reply_urgency_words, row_icon,
-    row_tone, schedule_empty_copy, shows_today_schedule, summary_times, synopsis_pieces,
-    today_lines, today_view, upcoming_visits, work_end_reason, work_heading,
+    CONVERSATION_EMPTY, ChatView, Drawer, EVIDENCE_LOADING, EVIDENCE_NEWER_VERSION,
+    EVIDENCE_UNAVAILABLE, EvidenceRead, KeyInput, NavCommand, PAST_WORK_EMPTY, REPLY_ASK,
+    REPLY_CLOSED_NOTICE, REPLY_COPY, REPLY_NO_NEEDED, REPLY_REVISION_STALE, REPLY_TELL_CODA,
+    RESUME, ReadView, ReplyReviewAction, STOP, SourceChip, SynopsisPiece, TODAY_LOADING,
+    TODAY_QUIET, TODAY_QUIET_DETAIL, TODAY_STALE, TODAY_UNAVAILABLE, TRY_AGAIN, TodayLine,
+    TodayView, VisitLine, WORKSPACE_CLOSED, WORKSPACE_EMPTY, WORKSPACE_UNAVAILABLE, answer_sources,
+    answer_to, chat_view, chip_name, citation_inspection, connection_lines, demographic_card_view,
+    format_calendar_date, format_clock, format_local_date, format_waited, keyboard_command,
+    need_you_words, opens_reader, panel_target, past_work_copy, patient_upcoming_visits, read_view,
+    records_time, reply_channel_label, reply_review_actions, reply_revision_words,
+    reply_urgency_words, row_icon, row_tone, schedule_empty_copy, shows_today_schedule,
+    summary_times, synopsis_pieces, today_lines, today_view, upcoming_visits, work_end_reason,
+    work_heading,
 };
 #[cfg(target_arch = "wasm32")]
 use shell::{EventRefetch, event_refetch};
@@ -3837,6 +3838,7 @@ fn ConnectionsDialog(lines: Vec<String>, failed: bool, on_close: EventHandler) -
 #[derive(Clone, PartialEq, Eq)]
 struct OpenReading {
     source: Option<physician_wire::SourceInspection>,
+    version: physician_wire::CitedVersionStatus,
     eyebrow: Option<String>,
     title: String,
     paragraphs: Vec<String>,
@@ -3849,6 +3851,7 @@ struct OpenReading {
 fn prose_reading(title: String, body: String) -> OpenReading {
     OpenReading {
         source: None,
+        version: physician_wire::CitedVersionStatus::Current,
         eyebrow: None,
         title,
         paragraphs: if body.is_empty() {
@@ -3890,28 +3893,38 @@ fn read_evidence(
     });
 }
 
-/// The evidence read's own line above the source: opening, or couldn't load with Try again.
+/// The evidence read's own line above the source: opening, unavailable with its reason, or
+/// couldn't load with Try again.
 #[component]
 fn EvidenceNotice(evidence: EvidenceRead, on_retry: EventHandler) -> Element {
     match evidence {
         EvidenceRead::Loading => rsx! {
             StatusLine { message: EVIDENCE_LOADING, pending: true }
         },
+        EvidenceRead::Unavailable(reason) => rsx! {
+            StatusLine { message: shell::unavailable_reason_words(reason), alert: true }
+        },
         EvidenceRead::Failed(_) => rsx! {
             StatusLine { message: EVIDENCE_UNAVAILABLE, alert: true, retry: TRY_AGAIN, on_retry }
         },
-        EvidenceRead::NotRead | EvidenceRead::Loaded(_) => rsx! {},
+        EvidenceRead::NotRead | EvidenceRead::Loaded { .. } => rsx! {},
     }
 }
 
 fn source_reading(chip: &SourceChip, evidence: &EvidenceRead) -> OpenReading {
     let inspection = citation_inspection(chip, evidence);
-    let source = match inspection.evidence {
-        EvidenceRead::Loaded(source) => Some(std::sync::Arc::unwrap_or_clone(source)),
-        EvidenceRead::NotRead | EvidenceRead::Loading | EvidenceRead::Failed(_) => None,
+    let (source, version) = match inspection.evidence {
+        EvidenceRead::Loaded { source, version } => {
+            (Some(std::sync::Arc::unwrap_or_clone(source)), version)
+        }
+        EvidenceRead::NotRead
+        | EvidenceRead::Loading
+        | EvidenceRead::Unavailable(_)
+        | EvidenceRead::Failed(_) => (None, physician_wire::CitedVersionStatus::Current),
     };
     OpenReading {
         source,
+        version,
         eyebrow: Some(inspection.eyebrow),
         title: inspection.title,
         paragraphs: inspection.paragraphs,
@@ -3977,6 +3990,14 @@ fn SourceReaderContent(reading: OpenReading) -> Element {
                 a { class: "citation-open", href: uri, target: "_blank", rel: "noopener noreferrer", title: "Opens in a new tab", "{label}" }
             }
             if let Some(source) = reading.source {
+                if reading.version == physician_wire::CitedVersionStatus::NewerVersionAvailable {
+                    p {
+                        class: "source-version-notice",
+                        role: "status",
+                        "data-version-status": "newer_version_available",
+                        "{EVIDENCE_NEWER_VERSION}"
+                    }
+                }
                 if let Some(preview) = source.coda_preview {
                     section { class: "source-coda-summary",
                         h3 { "Coda's summary" }

@@ -1179,3 +1179,111 @@ async fn currency_is_read_only_and_renewal_touches_only_the_current_revision_att
     assert_eq!(preserved.attempts[1].status, AttemptStatus::Active);
     assert_eq!(preserved.attempts[1].id, claim.attempt);
 }
+
+#[tokio::test]
+#[ignore = "requires explicit local Postgres"]
+async fn cited_source_state_tracks_newer_versions_and_enforces_restrictions() {
+    use crate::runtime::sources::{CitedSourceState, CitedSourceVersion, SourceRestriction};
+    let (store, scope) = setup().await;
+    let r1 = source(&scope, "lab", "r1", "Potassium 4.1");
+    let r2 = source(&scope, "lab", "r2", "Potassium 5.4");
+    let wrong_patient = source(&scope, "msg-wrong", "m1", "Message for another patient");
+    store
+        .import_sources(&[r1.clone(), wrong_patient.clone()])
+        .await
+        .unwrap();
+
+    assert_eq!(
+        store
+            .cited_source_state(&scope.workspace, "lab", "r1")
+            .await
+            .unwrap(),
+        CitedSourceState::Readable {
+            version: CitedSourceVersion::Current,
+        }
+    );
+
+    // A newer revision arrives: r1 still opens, flagged as having a newer version, while r2 is current.
+    store.record_source(&r2).await.unwrap();
+    assert_eq!(
+        store
+            .cited_source_state(&scope.workspace, "lab", "r1")
+            .await
+            .unwrap(),
+        CitedSourceState::Readable {
+            version: CitedSourceVersion::NewerAvailable,
+        }
+    );
+    assert_eq!(
+        store
+            .cited_source_state(&scope.workspace, "lab", "r2")
+            .await
+            .unwrap(),
+        CitedSourceState::Readable {
+            version: CitedSourceVersion::Current,
+        }
+    );
+
+    // Wrong-patient correction withholds msg-wrong from active observations and citation reads,
+    // including across snapshot re-imports.
+    let before = store.source_version(&scope.workspace).await.unwrap();
+    let after = store
+        .restrict_source(
+            &scope.workspace,
+            "msg-wrong",
+            SourceRestriction::WithheldWrongPatient,
+        )
+        .await
+        .unwrap();
+    assert_eq!(after, before + 1);
+    assert_eq!(
+        store
+            .restrict_source(
+                &scope.workspace,
+                "msg-wrong",
+                SourceRestriction::WithheldWrongPatient,
+            )
+            .await
+            .unwrap(),
+        after,
+        "repeating the same restriction is idempotent"
+    );
+    store.import_sources(&[r1, wrong_patient]).await.unwrap();
+    assert_eq!(
+        store.sources(&scope.workspace).await.unwrap().sources,
+        [r2],
+        "withheld wrong-patient record never reappears in chart observations"
+    );
+    assert_eq!(
+        store
+            .cited_source_state(&scope.workspace, "msg-wrong", "m1")
+            .await
+            .unwrap(),
+        CitedSourceState::Unavailable {
+            reason: SourceRestriction::WithheldWrongPatient,
+        }
+    );
+
+    // Source-level access removal likewise marks the candidate unavailable.
+    store
+        .restrict_source(&scope.workspace, "lab", SourceRestriction::AccessRemoved)
+        .await
+        .unwrap();
+    assert_eq!(
+        store
+            .cited_source_state(&scope.workspace, "lab", "r1")
+            .await
+            .unwrap(),
+        CitedSourceState::Unavailable {
+            reason: SourceRestriction::AccessRemoved,
+        }
+    );
+    assert!(
+        store
+            .sources(&scope.workspace)
+            .await
+            .unwrap()
+            .sources
+            .is_empty()
+    );
+}

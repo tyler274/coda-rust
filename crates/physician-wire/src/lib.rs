@@ -595,12 +595,45 @@ pub struct SourcePresentation {
     pub inspection: Option<SourceInspection>,
 }
 
-/// One citation's evidence, read when the physician opens it.
+/// Whether the cited revision is still the source's latest revision in this workspace.
+#[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq, Default)]
+#[serde(rename_all = "snake_case")]
+pub enum CitedVersionStatus {
+    /// No newer revision of this source has been observed.
+    #[default]
+    Current,
+    /// A newer revision of this source exists; the panel still shows the revision the answer used.
+    NewerVersionAvailable,
+}
+
+/// Why a retained citation's source content cannot be returned.
+#[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(rename_all = "snake_case")]
+pub enum CitationUnavailableReason {
+    /// Access to this patient workspace or source was removed.
+    AccessRemoved,
+    /// The source record was withheld from this patient's chart after a wrong-patient correction.
+    WithheldWrongPatient,
+}
+
+/// One citation's evidence, read under current access when the physician opens it.
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-pub struct SourceEvidence {
-    /// The exact revision the citation retained. Without `coda_preview`: the summary belongs to
-    /// the answer that cited it and arrives with that answer.
-    pub inspection: SourceInspection,
+#[serde(tag = "state", rename_all = "snake_case")]
+pub enum SourceEvidence {
+    /// The cited version is readable under current access.
+    Available {
+        /// The exact revision the citation retained. Without `coda_preview`: the summary belongs to
+        /// the answer that cited it and arrives with that answer.
+        inspection: Box<SourceInspection>,
+        /// Whether a newer version of this source now exists in the patient workspace.
+        #[serde(default)]
+        version: CitedVersionStatus,
+    },
+    /// Access was removed or the content was withheld; no record content is carried.
+    Unavailable {
+        /// Why the cited source is unavailable.
+        reason: CitationUnavailableReason,
+    },
 }
 
 /// Which readable representation of a retained record a passage locator indexes into.

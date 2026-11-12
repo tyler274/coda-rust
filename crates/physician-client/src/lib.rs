@@ -4,8 +4,8 @@
 
 pub use http::HttpError;
 use physician_wire::{
-    ApprovedDoctorPlanWire, ChatSnapshotResponse, DoctorPlanDraftWire, HealthResponse,
-    PanelAssignmentResponse, PatientSearchResponse, PatientWorkspaceResponse,
+    ApprovedDoctorPlanWire, ChatSnapshotResponse, CitationUnavailableReason, DoctorPlanDraftWire,
+    HealthResponse, PanelAssignmentResponse, PatientSearchResponse, PatientWorkspaceResponse,
     PatientWorkspacesResponse, PhysicianDraft, PlanItemWire, PracticeDayResponse,
     RecentConversationsResponse, ReplyDraftWire, SignInResponse, SourceEvidence, TodayListResponse,
     UpdatesResponse, VerifyResponse, WhoamiResponse,
@@ -306,17 +306,40 @@ impl PhysicianClient {
         .await
     }
 
-    /// Reads the evidence one citation in a chat retained.
+    /// Reads the evidence one citation in a chat retained under current access.
+    /// Validated access-removed (`403`, or `404` workspace refusal) and
+    /// wrong-patient withheld (`410`) responses decode as
+    /// [`SourceEvidence::Unavailable`]; unauthenticated, unknown-citation and
+    /// server errors remain [`http::HttpError`].
     pub async fn citation_evidence(
         &self,
         workspace_id: &str,
         chat_id: &str,
         citation_id: &str,
     ) -> Result<SourceEvidence, http::HttpError> {
-        self.get(&format!(
-            "/patient-workspaces/{workspace_id}/chats/{chat_id}/citations/{citation_id}"
-        ))
-        .await
+        let answer = self
+            .get::<SourceEvidence>(&format!(
+                "/patient-workspaces/{workspace_id}/chats/{chat_id}/citations/{citation_id}"
+            ))
+            .await;
+        match answer {
+            Ok(evidence) => Ok(evidence),
+            Err(http::HttpError::Status {
+                status: status @ (403 | 410),
+                body,
+            }) => match citation_unavailable(&body) {
+                Some(unavailable) => Ok(unavailable),
+                None => Err(http::HttpError::Status { status, body }),
+            },
+            Err(http::HttpError::Status { status: 404, body })
+                if workspace_access_refused(&body) =>
+            {
+                Ok(SourceEvidence::Unavailable {
+                    reason: CitationUnavailableReason::AccessRemoved,
+                })
+            }
+            Err(error) => Err(error),
+        }
     }
 
     /// Reads the saved draft.
@@ -475,6 +498,26 @@ fn draft_conflict(body: &str) -> Option<PhysicianDraft> {
     }
     let conflict: Conflict = serde_json::from_str(body).ok()?;
     (conflict.outcome == "conflict" && conflict.current.revision >= 0).then_some(conflict.current)
+}
+
+/// A validated unavailable citation body, and nothing else.
+fn citation_unavailable(body: &str) -> Option<SourceEvidence> {
+    match serde_json::from_str::<SourceEvidence>(body).ok()? {
+        unavailable @ SourceEvidence::Unavailable { .. } => Some(unavailable),
+        SourceEvidence::Available { .. } => None,
+    }
+}
+
+/// The workspace guard's refusal body when panel access to the patient is absent.
+/// Unknown citations return an empty 404 body and stay errors.
+fn workspace_access_refused(body: &str) -> bool {
+    #[derive(serde::Deserialize)]
+    struct GuardNotFound {
+        detail: String,
+    }
+    serde_json::from_str::<GuardNotFound>(body)
+        .ok()
+        .is_some_and(|refusal| refusal.detail == "Workspace not found.")
 }
 
 /// Decodes one response, keeping the server's status and body on failure.
@@ -770,6 +813,123 @@ mod tests {
         assert!(matches!(
             client.today().await,
             Err(http::HttpError::Status { status: 401, .. })
+        ));
+    }
+
+    #[tokio::test]
+    async fn citation_evidence_distinguishes_newer_version_unavailable_and_errors() {
+        use axum::extract::Path;
+        use axum::http::StatusCode;
+        use physician_wire::CitedVersionStatus;
+        let app = axum::Router::new().route(
+            "/patient-workspaces/{workspace}/chats/{chat}/citations/{citation}",
+            get(
+                |Path((_, _, citation)): Path<(String, String, String)>| async move {
+                    match citation.as_str() {
+                        "newer" => Json(serde_json::json!({
+                            "state": "available",
+                            "version": "newer_version_available",
+                            "inspection": {
+                                "title": "Potassium",
+                                "record_kind": "Observation",
+                                "dates": [],
+                                "sections": [],
+                                "cited_passage": null,
+                                "coda_preview": null,
+                                "attribution": [],
+                                "record_details": [],
+                                "technical": {
+                                    "reference": "obs-1",
+                                    "revision": "r1",
+                                    "sha256": "abc",
+                                    "storage_dates": [],
+                                    "original": "{\"value\":4.1}",
+                                    "provenance": "{}"
+                                }
+                            }
+                        }))
+                        .into_response(),
+                        "withheld" => (
+                            StatusCode::GONE,
+                            Json(serde_json::json!({
+                                "state": "unavailable",
+                                "reason": "withheld_wrong_patient"
+                            })),
+                        )
+                            .into_response(),
+                        "source-removed" => (
+                            StatusCode::FORBIDDEN,
+                            Json(serde_json::json!({
+                                "state": "unavailable",
+                                "reason": "access_removed"
+                            })),
+                        )
+                            .into_response(),
+                        "panel-removed" => (
+                            StatusCode::NOT_FOUND,
+                            Json(serde_json::json!({ "detail": "Workspace not found." })),
+                        )
+                            .into_response(),
+                        "missing-citation" => StatusCode::NOT_FOUND.into_response(),
+                        _ => StatusCode::SERVICE_UNAVAILABLE.into_response(),
+                    }
+                },
+            ),
+        );
+        let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+        let address = listener.local_addr().unwrap();
+        tokio::spawn(async move { axum::serve(listener, app).await.unwrap() });
+        let client = PhysicianClient::new(format!("http://{address}"));
+
+        let SourceEvidence::Available {
+            inspection,
+            version,
+        } = client
+            .citation_evidence("ws", "chat", "newer")
+            .await
+            .unwrap()
+        else {
+            panic!("expected available cited revision");
+        };
+        assert_eq!(inspection.technical.revision, "r1");
+        assert_eq!(version, CitedVersionStatus::NewerVersionAvailable);
+
+        assert_eq!(
+            client
+                .citation_evidence("ws", "chat", "withheld")
+                .await
+                .unwrap(),
+            SourceEvidence::Unavailable {
+                reason: CitationUnavailableReason::WithheldWrongPatient,
+            }
+        );
+        assert_eq!(
+            client
+                .citation_evidence("ws", "chat", "source-removed")
+                .await
+                .unwrap(),
+            SourceEvidence::Unavailable {
+                reason: CitationUnavailableReason::AccessRemoved,
+            }
+        );
+        assert_eq!(
+            client
+                .citation_evidence("ws", "chat", "panel-removed")
+                .await
+                .unwrap(),
+            SourceEvidence::Unavailable {
+                reason: CitationUnavailableReason::AccessRemoved,
+            }
+        );
+        assert!(matches!(
+            client
+                .citation_evidence("ws", "chat", "missing-citation")
+                .await,
+            Err(HttpError::Status { status: 404, .. })
+        ));
+        assert!(matches!(
+            client.citation_evidence("ws", "chat", "down").await,
+            Err(HttpError::Status { status: 503, .. })
         ));
     }
 }

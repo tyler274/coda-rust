@@ -496,6 +496,7 @@ pub fn synopsis_pieces(segments: &[ClinicalSegment]) -> Vec<SynopsisPiece> {
                         source.as_deref(),
                         source_id.as_deref(),
                         handle.as_deref(),
+                        source_presentation.as_ref(),
                         &mut numbers,
                         &mut next,
                     );
@@ -646,13 +647,23 @@ fn chip_number(
     source: Option<&str>,
     source_id: Option<&str>,
     handle: Option<&str>,
+    presentation: Option<&SourcePresentation>,
     numbers: &mut Vec<(String, usize)>,
     next: &mut usize,
 ) -> usize {
     if state == "resolved"
         && let (Some(source), Some(source_id), Some(handle)) = (source, source_id, handle)
     {
-        let key = format!("{source}\n{source_id}\n{handle}");
+        let key = if let Some(technical) = presentation
+            .and_then(|presentation| presentation.inspection.as_ref())
+            .map(|inspection| &inspection.technical)
+        {
+            format!("{source}\n{}\n{}", technical.reference, technical.revision)
+        } else if source == "patient" {
+            format!("{source}\n{handle}")
+        } else {
+            format!("{source}\n{source_id}\n{handle}")
+        };
         if let Some((_, number)) = numbers.iter().find(|(existing, _)| existing == &key) {
             return *number;
         }
@@ -1338,8 +1349,15 @@ pub enum EvidenceRead {
     NotRead,
     /// The read is under way.
     Loading,
-    /// The exact revision the citation retained.
-    Loaded(std::sync::Arc<physician_wire::SourceInspection>),
+    /// The exact revision the citation retained, and whether a newer version now exists.
+    Loaded {
+        /// The retained source presentation.
+        source: std::sync::Arc<physician_wire::SourceInspection>,
+        /// Whether a newer version of this source exists in the workspace.
+        version: physician_wire::CitedVersionStatus,
+    },
+    /// Access was removed or the source was withheld; no content is shown and Try again is not offered.
+    Unavailable(physician_wire::CitationUnavailableReason),
     /// The read failed; the reader offers Try again.
     Failed(EvidenceFailure),
 }
@@ -1350,7 +1368,30 @@ impl EvidenceRead {
         read: Result<physician_wire::SourceEvidence, physician_client::HttpError>,
     ) -> Self {
         match read {
-            Ok(evidence) => Self::Loaded(std::sync::Arc::new(evidence.inspection)),
+            Ok(physician_wire::SourceEvidence::Available {
+                inspection,
+                version,
+            }) => Self::Loaded {
+                source: std::sync::Arc::from(inspection),
+                version,
+            },
+            Ok(physician_wire::SourceEvidence::Unavailable { reason }) => Self::Unavailable(reason),
+            Err(physician_client::HttpError::Status {
+                status: 401,
+                ref body,
+            }) if serde_json::from_str::<serde_json::Value>(body)
+                .ok()
+                .and_then(|value| {
+                    value
+                        .get("reason")
+                        .and_then(serde_json::Value::as_str)
+                        .map(str::to_owned)
+                })
+                .as_deref()
+                == Some("access_removed") =>
+            {
+                Self::Unavailable(physician_wire::CitationUnavailableReason::AccessRemoved)
+            }
             Err(error) => Self::Failed(EvidenceFailure(std::sync::Arc::new(error))),
         }
     }
@@ -1373,6 +1414,25 @@ impl Eq for EvidenceFailure {}
 pub const EVIDENCE_LOADING: &str = "Opening the source…";
 /// An open citation whose evidence read failed.
 pub const EVIDENCE_UNAVAILABLE: &str = "Coda couldn’t load this source.";
+/// Notice shown when a newer version of the cited source exists in the workspace.
+pub const EVIDENCE_NEWER_VERSION: &str =
+    "A newer version of this source exists. Showing the version this answer used.";
+/// Notice shown when access to the cited source or patient workspace was removed.
+pub const EVIDENCE_ACCESS_REMOVED: &str =
+    "This source is unavailable because access to it was removed.";
+/// Notice shown when the cited source's content was withheld after a wrong-patient correction.
+pub const EVIDENCE_WITHHELD_WRONG_PATIENT: &str =
+    "This source is unavailable because its content was withheld after a wrong-patient correction.";
+
+/// Physician-facing words for why a cited source cannot be shown.
+pub fn unavailable_reason_words(reason: physician_wire::CitationUnavailableReason) -> &'static str {
+    match reason {
+        physician_wire::CitationUnavailableReason::AccessRemoved => EVIDENCE_ACCESS_REMOVED,
+        physician_wire::CitationUnavailableReason::WithheldWrongPatient => {
+            EVIDENCE_WITHHELD_WRONG_PATIENT
+        }
+    }
+}
 
 /// The citation inspection the reader shows: the chip's own words, with the evidence read.
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -1397,20 +1457,44 @@ pub struct CitationInspection {
 
 /// Builds the inspection surface from a chip and its evidence read. A source no read was asked for
 /// shows the presentation that came with the chip. A read source carries no summary: the answer's
-/// own, which came with the chip, joins it.
+/// own, which came with the chip, joins it. An unavailable source strips any carried preview or
+/// native link so withheld or unpermitted content never lingers in the panel.
 pub fn citation_inspection(chip: &SourceChip, evidence: &EvidenceRead) -> CitationInspection {
     let carried = chip.inspection.as_ref();
     let evidence = match (evidence, carried) {
-        (EvidenceRead::NotRead, Some(carried)) => {
-            EvidenceRead::Loaded(std::sync::Arc::new(carried.clone()))
-        }
-        (EvidenceRead::Loaded(read), Some(carried)) if carried.coda_preview.is_some() => {
+        (EvidenceRead::NotRead, Some(carried)) => EvidenceRead::Loaded {
+            source: std::sync::Arc::new(carried.clone()),
+            version: physician_wire::CitedVersionStatus::Current,
+        },
+        (
+            EvidenceRead::Loaded {
+                source: read,
+                version,
+            },
+            Some(carried),
+        ) if carried.coda_preview.is_some() => {
             let mut source = (**read).clone();
             source.coda_preview = carried.coda_preview.clone();
-            EvidenceRead::Loaded(std::sync::Arc::new(source))
+            EvidenceRead::Loaded {
+                source: std::sync::Arc::new(source),
+                version: *version,
+            }
         }
         (read, _) => read.clone(),
     };
+    if matches!(evidence, EvidenceRead::Unavailable(_)) {
+        let title = carried.map_or_else(|| chip.label.clone(), |source| source.record_kind.clone());
+        return CitationInspection {
+            eyebrow: format!("Source {}", chip.index),
+            title,
+            evidence,
+            paragraphs: Vec::new(),
+            provenance: None,
+            unavailable: None,
+            open_label: None,
+            open_uri: None,
+        };
+    }
     let paragraphs = preview_paragraphs(&chip.preview);
     let unavailable =
         if chip.open && paragraphs.is_empty() && matches!(evidence, EvidenceRead::NotRead) {
@@ -1419,7 +1503,7 @@ pub fn citation_inspection(chip: &SourceChip, evidence: &EvidenceRead) -> Citati
             None
         };
     let title = match &evidence {
-        EvidenceRead::Loaded(source) => source.title.clone(),
+        EvidenceRead::Loaded { source, .. } => source.title.clone(),
         _ => chip
             .inspection
             .as_ref()
@@ -2091,8 +2175,9 @@ mod tests {
             "the failure keeps its cause"
         );
 
-        let read = EvidenceRead::answered(Ok(physician_wire::SourceEvidence {
-            inspection: retained("No known drug allergies"),
+        let read = EvidenceRead::answered(Ok(physician_wire::SourceEvidence::Available {
+            inspection: Box::new(retained("No known drug allergies")),
+            version: physician_wire::CitedVersionStatus::Current,
         }));
         let loaded = shown(&read);
         assert_eq!(loaded.title, "No known drug allergies");
@@ -2102,7 +2187,10 @@ mod tests {
         let carried = shown(&EvidenceRead::NotRead);
         assert_eq!(
             carried.evidence,
-            EvidenceRead::Loaded(std::sync::Arc::new(retained("Carried with the answer")))
+            EvidenceRead::Loaded {
+                source: std::sync::Arc::new(retained("Carried with the answer")),
+                version: physician_wire::CitedVersionStatus::Current,
+            }
         );
     }
 
@@ -2120,12 +2208,21 @@ mod tests {
         let mut chip = source_chip(1, "resolved", Some("c-1"), Some("Allergy"), None, None);
         chip.inspection = Some(summarized("This answer's summary"));
         // Another answer citing the same revision summarized it differently; the read carries none.
-        let read = EvidenceRead::answered(Ok(physician_wire::SourceEvidence {
-            inspection: retained("Allergy"),
+        let read = EvidenceRead::answered(Ok(physician_wire::SourceEvidence::Available {
+            inspection: Box::new(retained("Allergy")),
+            version: physician_wire::CitedVersionStatus::NewerVersionAvailable,
         }));
-        let EvidenceRead::Loaded(shown) = citation_inspection(&chip, &read).evidence else {
+        let EvidenceRead::Loaded {
+            source: shown,
+            version,
+        } = citation_inspection(&chip, &read).evidence
+        else {
             panic!("the read loaded");
         };
+        assert_eq!(
+            version,
+            physician_wire::CitedVersionStatus::NewerVersionAvailable
+        );
         assert_eq!(
             shown
                 .coda_preview
@@ -2135,13 +2232,113 @@ mod tests {
         );
 
         chip.inspection = Some(retained("Allergy"));
-        let EvidenceRead::Loaded(shown) = citation_inspection(&chip, &read).evidence else {
+        let EvidenceRead::Loaded { source: shown, .. } = citation_inspection(&chip, &read).evidence
+        else {
             panic!("the read loaded");
         };
         assert!(
             shown.coda_preview.is_none(),
             "an unsummarized answer gains none"
         );
+    }
+
+    #[test]
+    fn unavailable_evidence_clears_carried_preview_and_link_and_states_why() {
+        let destination = CitationDestination {
+            kind: "source_native".to_owned(),
+            source_label: Some("Demo EHR".to_owned()),
+            uri: Some("https://ehr.example/allergy/1".to_owned()),
+        };
+        let presentation = SourcePresentation {
+            content: Some(physician_wire::SourcePreviewContent {
+                text: "Sensitive summary".to_owned(),
+                as_of: "2018-09-11".to_owned(),
+                as_of_label: "Recorded".to_owned(),
+            }),
+            inspection: Some(retained("Sensitive allergy statement")),
+        };
+        let chip = source_chip(
+            1,
+            "resolved",
+            Some("c-1"),
+            Some("Sensitive allergy statement"),
+            Some(&presentation),
+            Some(&destination),
+        );
+
+        for (reason, expected_words) in [
+            (
+                physician_wire::CitationUnavailableReason::AccessRemoved,
+                EVIDENCE_ACCESS_REMOVED,
+            ),
+            (
+                physician_wire::CitationUnavailableReason::WithheldWrongPatient,
+                EVIDENCE_WITHHELD_WRONG_PATIENT,
+            ),
+        ] {
+            let read =
+                EvidenceRead::answered(Ok(physician_wire::SourceEvidence::Unavailable { reason }));
+            assert_eq!(read, EvidenceRead::Unavailable(reason));
+            assert_eq!(unavailable_reason_words(reason), expected_words);
+            let shown = citation_inspection(&chip, &read);
+            assert_eq!(shown.title, "Allergy record");
+            assert_eq!(shown.evidence, EvidenceRead::Unavailable(reason));
+            assert!(shown.paragraphs.is_empty());
+            assert!(shown.provenance.is_none());
+            assert!(shown.open_label.is_none());
+            assert!(shown.open_uri.is_none());
+        }
+
+        let auth_removed = EvidenceRead::answered(Err(physician_client::HttpError::Status {
+            status: 401,
+            body: r#"{"reason":"access_removed","detail":"Inactive account"}"#.to_owned(),
+        }));
+        assert_eq!(
+            auth_removed,
+            EvidenceRead::Unavailable(physician_wire::CitationUnavailableReason::AccessRemoved)
+        );
+    }
+
+    #[test]
+    fn distinct_citations_to_one_source_revision_share_a_number_and_keep_their_ids() {
+        let presentation = SourcePresentation {
+            content: None,
+            inspection: Some(retained("Basic metabolic panel")),
+        };
+        let cite = |citation_id: &str| ClinicalSegment::Citation {
+            state: "resolved".to_owned(),
+            display_label: Some("Basic metabolic panel".to_owned()),
+            source: Some("patient".to_owned()),
+            source_id: Some(citation_id.to_owned()),
+            handle: Some("r".to_owned()),
+            source_presentation: Some(presentation.clone()),
+            destination: None,
+        };
+        let segments = [
+            ClinicalSegment::Text {
+                text: "Potassium ".to_owned(),
+            },
+            cite("cite-k"),
+            ClinicalSegment::Text {
+                text: " and sodium ".to_owned(),
+            },
+            cite("cite-na"),
+        ];
+        let pieces = synopsis_pieces(&segments);
+        let chips: Vec<_> = pieces
+            .into_iter()
+            .filter_map(|piece| match piece {
+                SynopsisPiece::Chips(chips) => Some(chips),
+                SynopsisPiece::Text(_) => None,
+            })
+            .flatten()
+            .collect();
+        assert_eq!(chips.len(), 2);
+        assert_eq!(chips[0].index, 1);
+        assert_eq!(chips[1].index, 1);
+        assert_eq!(chips[0].citation_id.as_deref(), Some("cite-k"));
+        assert_eq!(chips[1].citation_id.as_deref(), Some("cite-na"));
+        assert_eq!(answer_sources(&segments).len(), 1);
     }
 
     #[test]

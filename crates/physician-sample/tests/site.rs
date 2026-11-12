@@ -1889,6 +1889,8 @@ const ALLERGY_BASIS: &str =
 
 /// The same answer whose evidence read is slow, fails once, then loads.
 const EVIDENCE_CHAT: &str = "chat-allergy-evidence";
+/// Answer citing a record with a newer version, an access-removed record, and a wrong-patient withheld record.
+const VERSION_AND_RESTRICTIONS_CHAT: &str = "chat-citation-states";
 /// Evidence reads `EVIDENCE_CHAT` has answered.
 static EVIDENCE_READS: std::sync::atomic::AtomicUsize = std::sync::atomic::AtomicUsize::new(0);
 
@@ -1925,7 +1927,11 @@ async fn allergy_evidence(chat: &str) -> axum::response::Response {
     let mut inspection = physician_sample::source_inspection::inspection(&allergy_citation(chat));
     // As the live read answers: the summary is the answer's and comes with it.
     inspection.coda_preview = None;
-    axum::Json(physician_wire::SourceEvidence { inspection }).into_response()
+    axum::Json(physician_wire::SourceEvidence::Available {
+        inspection: Box::new(inspection),
+        version: physician_wire::CitedVersionStatus::Current,
+    })
+    .into_response()
 }
 
 /// Lists chats for the review patient whose answer cites `BANK_ALLERGY`, presented by the same
@@ -1935,6 +1941,101 @@ async fn with_allergy_citation(
     next: axum::middleware::Next,
 ) -> axum::response::Response {
     let path = request.uri().path().to_owned();
+    if path.starts_with(&format!(
+        "/patient-workspaces/{REVIEW_PATIENT}/chats/{VERSION_AND_RESTRICTIONS_CHAT}/citations/"
+    )) {
+        let id = path.rsplit('/').next().unwrap_or_default();
+        return match id {
+            "cite-newer" => {
+                let mut inspection = physician_sample::source_inspection::inspection(
+                    &allergy_citation(SUMMARY_CHAT),
+                );
+                inspection.coda_preview = None;
+                axum::Json(physician_wire::SourceEvidence::Available {
+                    inspection: Box::new(inspection),
+                    version: physician_wire::CitedVersionStatus::NewerVersionAvailable,
+                })
+                .into_response()
+            }
+            "cite-removed" => (
+                axum::http::StatusCode::FORBIDDEN,
+                axum::Json(physician_wire::SourceEvidence::Unavailable {
+                    reason: physician_wire::CitationUnavailableReason::AccessRemoved,
+                }),
+            )
+                .into_response(),
+            "cite-withheld" => (
+                axum::http::StatusCode::GONE,
+                axum::Json(physician_wire::SourceEvidence::Unavailable {
+                    reason: physician_wire::CitationUnavailableReason::WithheldWrongPatient,
+                }),
+            )
+                .into_response(),
+            _ => axum::http::StatusCode::NOT_FOUND.into_response(),
+        };
+    }
+    if path
+        == format!(
+            "/patient-workspaces/{REVIEW_PATIENT}/chats/{VERSION_AND_RESTRICTIONS_CHAT}/snapshot"
+        )
+    {
+        let newer_citation = allergy_citation(SUMMARY_CHAT);
+        let newer_inspection = physician_sample::source_inspection::inspection(&newer_citation);
+        let secret_content = r#"{"resourceType":"Condition","id":"wrong-patient-secret","code":{"text":"Secret wrong-patient diagnosis"},"recordedDate":"2026-08-01"}"#;
+        let secret_citation: local_product::physician_chat::Citation =
+            serde_json::from_value(serde_json::json!({
+                "id": "cite-withheld",
+                "reference": "Condition/wrong-patient-secret",
+                "revision": local_product::sha256_hex(secret_content.as_bytes()),
+                "record_type": "Condition",
+                "content": secret_content,
+                "dates": [{"name": "recordedDate", "value": "2026-08-01"}],
+                "sha256": local_product::sha256_hex(secret_content.as_bytes()),
+                "provenance": {"native_record": "Condition/wrong-patient-secret"},
+                "summary": "Confidential wrong-patient clinical summary."
+            }))
+            .unwrap();
+        let secret_inspection = physician_sample::source_inspection::inspection(&secret_citation);
+        return axum::Json(serde_json::json!({
+            "snapshot": {
+                "runs": [],
+                "conversation": [
+                    {"kind": "physician", "text": "Review the prior records."},
+                    {
+                        "kind": "model",
+                        "text": "Allergies [[patient_source:cite-newer]], outside note [[patient_source:cite-removed]], corrected record [[patient_source:cite-withheld]].",
+                        "segments": [
+                            {"kind": "text", "text": "Allergies "},
+                            {
+                                "kind": "citation", "state": "resolved", "source": "patient",
+                                "source_id": "cite-newer", "handle": newer_citation.reference,
+                                "display_label": newer_inspection.title,
+                                "source_presentation": {"inspection": newer_inspection},
+                                "destination": {"kind": "source_native", "source_label": "Demo EHR", "uri": "https://ehr.example/allergy/0493010f2a16"}
+                            },
+                            {"kind": "text", "text": ", outside note "},
+                            {
+                                "kind": "citation", "state": "resolved", "source": "patient",
+                                "source_id": "cite-removed", "handle": "DocumentReference/outside-note",
+                                "display_label": "DocumentReference/outside-note",
+                                "destination": {"kind": "source_native", "source_label": "Outside EHR", "uri": "https://ehr.example/outside-note"}
+                            },
+                            {"kind": "text", "text": ", corrected record "},
+                            {
+                                "kind": "citation", "state": "resolved", "source": "patient",
+                                "source_id": "cite-withheld", "handle": "Condition/wrong-patient-secret",
+                                "display_label": "Secret wrong-patient diagnosis",
+                                "source_presentation": {"inspection": secret_inspection},
+                                "destination": {"kind": "source_native", "source_label": "Demo EHR", "uri": "https://ehr.example/wrong-patient"}
+                            },
+                            {"kind": "text", "text": "."}
+                        ]
+                    }
+                ]
+            }
+        }))
+        .into_response();
+    }
     let chats = [ALLERGY_CHAT, SUMMARY_CHAT, CONTROLS_CHAT, EVIDENCE_CHAT];
     let read = chats.into_iter().find(|chat| {
         path == format!(
@@ -1997,6 +2098,7 @@ async fn with_allergy_citation(
         {"chat_id": SUMMARY_CHAT, "title": "Drug allergies, summarized", "created_at": "2026-08-27T12:06:00Z"},
         {"chat_id": CONTROLS_CHAT, "title": "Drug allergies, with basis", "created_at": "2026-08-27T12:07:00Z"},
         {"chat_id": EVIDENCE_CHAT, "title": "Drug allergies, read slowly", "created_at": "2026-08-27T12:08:00Z"},
+        {"chat_id": VERSION_AND_RESTRICTIONS_CHAT, "title": "Citation states", "created_at": "2026-08-27T12:09:00Z"},
     ]);
     parts.headers.remove(axum::http::header::CONTENT_LENGTH);
     axum::response::Response::from_parts(parts, axum::body::Body::from(workspace.to_string()))
@@ -2253,6 +2355,60 @@ async fn an_answer_ends_with_update_one_sources_control_and_a_collapsed_basis() 
     let reading = tab.step("citationReading", serde_json::json!([]));
     assert_eq!(reading["title"], "No known drug allergies", "{reading}");
     tab.save_picture("source-from-sources");
+    tab.press_key(Key::ESCAPE);
+    let started = Instant::now();
+    while tab.step("citationClosed", serde_json::json!([])) != true {
+        assert!(
+            started.elapsed() < Duration::from_secs(5),
+            "desktop reader did not close"
+        );
+        std::thread::sleep(Duration::from_millis(20));
+    }
+
+    // Phone: Basis and limitations and Sources also open cleanly from the answer.
+    tab.set_viewport(390, 844, false);
+    std::thread::sleep(Duration::from_millis(400));
+    let phone_basis = tab.step("answerControls", serde_json::json!([]));
+    assert_eq!(phone_basis["basisOpen"], true, "{phone_basis}");
+    assert_eq!(phone_basis["basisText"], ALLERGY_BASIS, "{phone_basis}");
+    tab.save_picture("basis-open-phone");
+
+    tab.click("section[aria-label='Conversation'] .answer-controls .sources-button");
+    let started = Instant::now();
+    let phone_listed = loop {
+        let listed = tab.step("answerControls", serde_json::json!([]));
+        if listed["listed"]
+            .as_array()
+            .is_some_and(|rows| !rows.is_empty())
+        {
+            break listed;
+        }
+        assert!(
+            started.elapsed() < Duration::from_secs(10),
+            "Sources listed nothing on phone"
+        );
+        std::thread::sleep(Duration::from_millis(50));
+    };
+    std::thread::sleep(Duration::from_millis(400));
+    assert_eq!(
+        phone_listed["listed"],
+        serde_json::json!(["1 No known drug allergies"]),
+        "{phone_listed}"
+    );
+    tab.save_picture("sources-list-phone");
+
+    tab.click(".answer-sources .list-row");
+    tab.wait_for_text("Technical details", Duration::from_secs(10));
+    std::thread::sleep(Duration::from_millis(400));
+    let phone_reading = tab.step("citationReading", serde_json::json!([]));
+    assert_eq!(
+        phone_reading["title"], "No known drug allergies",
+        "{phone_reading}"
+    );
+    let phone_layout = tab.step("citationLayout", serde_json::json!([]));
+    assert_eq!(phone_layout["fits"], true, "{phone_layout}");
+    assert_eq!(phone_layout["closeVisible"], true, "{phone_layout}");
+    tab.save_picture("source-from-sources-phone");
 }
 
 /// The citation funnel: when the EHR supplies a link and Coda's summary passed its contract, the
@@ -2596,7 +2752,11 @@ async fn with_record_citations(
     if let Some(record) = evidence {
         let mut inspection = cited_record_inspection(record);
         inspection.coda_preview = None;
-        return axum::Json(physician_wire::SourceEvidence { inspection }).into_response();
+        return axum::Json(physician_wire::SourceEvidence::Available {
+            inspection: Box::new(inspection),
+            version: physician_wire::CitedVersionStatus::Current,
+        })
+        .into_response();
     }
     let cited = CITED_RECORDS.iter().find(|record| {
         path == format!(
@@ -3136,6 +3296,120 @@ async fn preliminary_refuted_and_entered_in_error_records_lead_with_status_befor
     ] {
         read_cited_record(address, chat, line, &expected);
     }
+}
+
+/// When a newer version of a cited source exists, opening the citation still shows the cited
+/// version and says a newer one is available. When access was removed or content was withheld
+/// after a wrong-patient correction, the panel shows unavailable with the reason, strips any
+/// carried preview or live link, and offers no retry.
+#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+#[ignore = "browser qualification; run explicitly with --ignored"]
+async fn newer_versions_and_restricted_citations_show_their_state_without_leaking_content() {
+    let _guard = test_lock().lock().await;
+    let site = build_site();
+    // SAFETY: tests in this binary hold `test_lock()` before mutating process env.
+    unsafe {
+        env::set_var("PHYSICIAN_SITE_DIR", &site);
+    }
+    let app =
+        physician_sample::fixture_site().layer(axum::middleware::from_fn(with_allergy_citation));
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let address = listener.local_addr().unwrap();
+    tokio::spawn(async move { axum::serve(listener, app).await.unwrap() });
+    wait_until_ready(address).await;
+
+    let url =
+        format!("http://{address}/?patient={REVIEW_PATIENT}&chat={VERSION_AND_RESTRICTIONS_CHAT}");
+    let mut tab = Tab::open(&url);
+    tab.set_viewport(1280, 800, false);
+    tab.wait_for_text("corrected record", Duration::from_secs(20));
+
+    let wait_evidence = |tab: &mut Tab, until: &dyn Fn(&serde_json::Value) -> bool, what: &str| {
+        let started = Instant::now();
+        loop {
+            let read = tab.step("citationEvidence", serde_json::json!([]));
+            if until(&read) {
+                return read;
+            }
+            assert!(
+                started.elapsed() < Duration::from_secs(10),
+                "never {what}: {read}"
+            );
+            std::thread::sleep(Duration::from_millis(20));
+        }
+    };
+
+    // 1. Newer version exists: opens the version the answer used and says a newer one exists.
+    tab.step("clickChip", serde_json::json!([0]));
+    let newer = wait_evidence(
+        &mut tab,
+        &|read| !read["versionNotice"].is_null() && !read["source"].is_null(),
+        "newer-version notice",
+    );
+    assert_eq!(
+        newer["versionNotice"],
+        "A newer version of this source exists. Showing the version this answer used.",
+        "{newer}"
+    );
+    assert_eq!(newer["title"], "No known drug allergies", "{newer}");
+    assert_eq!(newer["source"], "Medication allergy record", "{newer}");
+    assert_eq!(
+        newer["link"], "https://ehr.example/allergy/0493010f2a16",
+        "{newer}"
+    );
+    let shown = tab.step("citationReading", serde_json::json!([]));
+    assert!(
+        shown["visible"]
+            .as_str()
+            .unwrap()
+            .contains("Recorded September 11, 2018"),
+        "{shown}"
+    );
+    assert_eq!(shown["original"].as_str().unwrap(), BANK_ALLERGY);
+    tab.save_picture("evidence-newer-version");
+
+    // 2. Access removed: shows unavailable with reason, strips link, offers no retry.
+    tab.step("clickChip", serde_json::json!([1]));
+    let removed = wait_evidence(
+        &mut tab,
+        &|read| read["failed"] == "This source is unavailable because access to it was removed.",
+        "access-removed state",
+    );
+    assert_eq!(removed["retry"], serde_json::Value::Null, "{removed}");
+    assert_eq!(removed["source"], serde_json::Value::Null, "{removed}");
+    assert_eq!(removed["link"], serde_json::Value::Null, "{removed}");
+    assert_eq!(removed["summary"], serde_json::Value::Null, "{removed}");
+    assert_eq!(
+        removed["title"], "DocumentReference/outside-note",
+        "{removed}"
+    );
+    tab.save_picture("evidence-access-removed");
+
+    // 3. Withheld after wrong-patient correction: shows unavailable with reason, strips carried
+    // clinical title/summary/link, and never renders confidential content.
+    tab.step("clickChip", serde_json::json!([2]));
+    let withheld = wait_evidence(
+        &mut tab,
+        &|read| {
+            read["failed"]
+                == "This source is unavailable because its content was withheld after a wrong-patient correction."
+        },
+        "wrong-patient withheld state",
+    );
+    assert_eq!(withheld["retry"], serde_json::Value::Null, "{withheld}");
+    assert_eq!(withheld["source"], serde_json::Value::Null, "{withheld}");
+    assert_eq!(withheld["link"], serde_json::Value::Null, "{withheld}");
+    assert_eq!(withheld["summary"], serde_json::Value::Null, "{withheld}");
+    assert_ne!(
+        withheld["title"], "Secret wrong-patient diagnosis",
+        "{withheld}"
+    );
+    let dom = tab.dom();
+    assert!(
+        !dom.contains("Confidential wrong-patient clinical summary"),
+        "withheld summary leaked into DOM"
+    );
+    tab.save_picture("evidence-withheld-wrong-patient");
 }
 
 const CONVERSATION_PERSON: &str = "[aria-label=\"Conversation\"] .message-person";

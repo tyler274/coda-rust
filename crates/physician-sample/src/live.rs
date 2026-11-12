@@ -296,12 +296,20 @@ async fn durable_snapshot(
     let Ok(sources_version) = chat.store.source_version(&scope.workspace).await else {
         return StatusCode::SERVICE_UNAVAILABLE.into_response();
     };
+    let Ok(restricted) = chat.store.restricted_sources(&scope.workspace).await else {
+        return StatusCode::SERVICE_UNAVAILABLE.into_response();
+    };
     let layouts = match &conversation {
         Some(conversation) => cited_layouts(&chat.store, conversation).await,
         None => CitedLayouts::new(),
     };
     Json(json!({
-        "snapshot": durable_snapshot_body(conversation.as_ref(), sources_version, &layouts)
+        "snapshot": durable_snapshot_body(
+            conversation.as_ref(),
+            sources_version,
+            &layouts,
+            &restricted,
+        )
     }))
     .into_response()
 }
@@ -375,8 +383,9 @@ fn usable_layout(
 }
 
 /// One citation's evidence: the exact revision this physician's conversation retained, presented
-/// by [`crate::source_inspection`]. A citation the conversation never made is 404. The auth guard
-/// has already required panel membership for the path's workspace.
+/// by [`crate::source_inspection`], under current workspace and source access. A citation the
+/// conversation never made is 404. Restricted or wrong-patient withheld sources return only their
+/// unavailable reason, never record content.
 pub(crate) async fn citation(
     State(live): State<Arc<Live>>,
     auth_ctx: Option<Extension<AuthContext>>,
@@ -392,19 +401,28 @@ pub(crate) async fn citation(
         chat,
     };
     let conversation = match live.chat.store.read(&scope).await {
-        Ok(conversation) => conversation,
+        Ok(Some(conversation)) => conversation,
+        Ok(None) => return StatusCode::NOT_FOUND.into_response(),
         Err(error) => {
-            tracing::warn!(%error, "physician citation read failed");
+            tracing::warn!(%error, "physician citation conversation read failed");
             return StatusCode::SERVICE_UNAVAILABLE.into_response();
         }
     };
-    match conversation
-        .as_ref()
-        .and_then(|found| cited(found, &citation))
+    let Some(cited) = cited(&conversation, &citation) else {
+        return StatusCode::NOT_FOUND.into_response();
+    };
+    match live
+        .chat
+        .store
+        .cited_source_state(&scope.workspace, &cited.reference, &cited.revision)
+        .await
     {
-        Some(cited) => {
-            let layout = match &cited.source_id {
-                Some(source_id) => usable_layout(
+        Ok(state) => {
+            let layout = match (&state, &cited.source_id) {
+                (
+                    local_product::runtime::sources::CitedSourceState::Readable { .. },
+                    Some(source_id),
+                ) => usable_layout(
                     &(source_id.clone(), cited.record_type.clone()),
                     live.chat
                         .store
@@ -414,16 +432,57 @@ pub(crate) async fn citation(
                         })
                         .await,
                 ),
-                None => None,
+                _ => None,
             };
-            let mut inspection =
-                crate::source_inspection::inspection_with_layout(cited, layout.as_ref());
+            citation_response(cited, state, layout.as_ref())
+        }
+        Err(error) => {
+            tracing::warn!(%error, "physician citation source-state read failed");
+            StatusCode::SERVICE_UNAVAILABLE.into_response()
+        }
+    }
+}
+
+/// Renders one retained citation's HTTP response from its current [`CitedSourceState`].
+/// Restricted sources return only their structured unavailable reason, never record content.
+fn citation_response(
+    cited: &local_product::physician_chat::Citation,
+    state: local_product::runtime::sources::CitedSourceState,
+    layout: Option<&Layout>,
+) -> Response {
+    use local_product::runtime::sources::{
+        CitedSourceState, CitedSourceVersion, SourceRestriction,
+    };
+    use physician_wire::{CitationUnavailableReason, CitedVersionStatus, SourceEvidence};
+    match state {
+        CitedSourceState::Unavailable { reason } => {
+            let (status, reason) = match reason {
+                SourceRestriction::AccessRemoved => (
+                    StatusCode::FORBIDDEN,
+                    CitationUnavailableReason::AccessRemoved,
+                ),
+                SourceRestriction::WithheldWrongPatient => (
+                    StatusCode::GONE,
+                    CitationUnavailableReason::WithheldWrongPatient,
+                ),
+            };
+            (status, Json(SourceEvidence::Unavailable { reason })).into_response()
+        }
+        CitedSourceState::Readable { version } => {
+            let mut inspection = crate::source_inspection::inspection_with_layout(cited, layout);
             // The id names the exact revision, which any answer may cite; each answer keeps its
             // own summary of it, and that comes with the answer, not with the source.
             inspection.coda_preview = None;
-            Json(physician_wire::SourceEvidence { inspection }).into_response()
+            let version = match version {
+                CitedSourceVersion::Current => CitedVersionStatus::Current,
+                CitedSourceVersion::NewerAvailable => CitedVersionStatus::NewerVersionAvailable,
+            };
+            Json(SourceEvidence::Available {
+                inspection: Box::new(inspection),
+                version,
+            })
+            .into_response()
         }
-        None => StatusCode::NOT_FOUND.into_response(),
     }
 }
 
@@ -456,9 +515,12 @@ fn turn_kind(role: &str) -> &'static str {
 
 /// The answer split into text and the exact citations it published with. A
 /// marker without its retained citation ends the split; the rest stays text.
+/// Restricted sources keep only their citation identity so withheld content
+/// never leaves in the snapshot.
 fn citation_segments(
     message: &local_product::runtime::Message,
     layouts: &CitedLayouts,
+    restricted: &HashMap<String, local_product::runtime::sources::SourceRestriction>,
 ) -> Vec<Value> {
     let mut parts = Vec::new();
     let mut text = message.text.as_str();
@@ -470,21 +532,33 @@ fn citation_segments(
             break;
         };
         parts.push(json!({"kind":"text", "text":before}));
-        let layout = citation
-            .source_id
-            .as_ref()
-            .and_then(|source_id| layouts.get(&(source_id.clone(), citation.record_type.clone())));
-        let inspection = crate::source_inspection::inspection_with_layout(citation, layout);
-        let destination = citation.native.as_ref().map(
-            |native| json!({"kind":"source_native", "source_label":native.label, "uri":native.uri}),
-        );
-        parts.push(
-            json!({"kind":"citation", "state":"resolved", "source":"patient",
-            "source_id":citation.id, "handle":citation.reference,
-            "display_label":inspection.title,
-            "source_presentation":{"content":inspection.coda_preview, "inspection":inspection},
-            "destination":destination}),
-        );
+        if restricted.contains_key(&citation.reference) {
+            parts.push(json!({
+                "kind":"citation",
+                "state":"resolved",
+                "source":"patient",
+                "source_id":citation.id,
+                "handle":citation.reference,
+                "display_label":"Unavailable source",
+                "source_presentation":null,
+                "destination":null
+            }));
+        } else {
+            let layout = citation.source_id.as_ref().and_then(|source_id| {
+                layouts.get(&(source_id.clone(), citation.record_type.clone()))
+            });
+            let inspection = crate::source_inspection::inspection_with_layout(citation, layout);
+            let destination = citation.native.as_ref().map(|native| {
+                json!({"kind":"source_native", "source_label":native.label, "uri":native.uri})
+            });
+            parts.push(
+                json!({"kind":"citation", "state":"resolved", "source":"patient",
+                "source_id":citation.id, "handle":citation.reference,
+                "display_label":inspection.title,
+                "source_presentation":{"content":inspection.coda_preview, "inspection":inspection},
+                "destination":destination}),
+            );
+        }
         text = rest;
     }
     parts.push(json!({"kind":"text", "text":text}));
@@ -503,6 +577,7 @@ pub(crate) fn durable_snapshot_body(
     conversation: Option<&local_product::runtime::Conversation>,
     sources_version: u64,
     layouts: &CitedLayouts,
+    restricted: &HashMap<String, local_product::runtime::sources::SourceRestriction>,
 ) -> Value {
     let Some(conversation) = conversation else {
         return json!({ "conversation": [], "runs": [] });
@@ -515,10 +590,38 @@ pub(crate) fn durable_snapshot_body(
                 .sources_version
                 .is_some_and(|answered| answered < sources_version);
             let mut authored = json!({ "kind": turn_kind(message.role.as_str()),
-                "text": message.text, "segments": citation_segments(message, layouts),
+                "text": message.text, "segments": citation_segments(message, layouts, restricted),
                 "basis": message.basis, "newer_records": newer_records });
             if !message.source_previews.is_empty() {
-                authored["source_previews"] = json!(message.source_previews);
+                let previews: Vec<_> = message
+                    .source_previews
+                    .iter()
+                    .map(|entry| match entry {
+                        local_product::citations::ReadRecordPreview::Preview {
+                            reference, ..
+                        } => match restricted.get(reference) {
+                            Some(restriction) => {
+                                local_product::citations::ReadRecordPreview::Unavailable {
+                                    reference: reference.clone(),
+                                    reason: match restriction {
+                                        local_product::runtime::sources::SourceRestriction::AccessRemoved => {
+                                            "access_removed"
+                                        }
+                                        local_product::runtime::sources::SourceRestriction::WithheldWrongPatient => {
+                                            "withheld_wrong_patient"
+                                        }
+                                    }
+                                    .into(),
+                                }
+                            }
+                            None => entry.clone(),
+                        },
+                        local_product::citations::ReadRecordPreview::Unavailable { .. } => {
+                            entry.clone()
+                        }
+                    })
+                    .collect();
+                authored["source_previews"] = json!(previews);
             }
             let partial = message.partial().then(|| {
                 json!({
@@ -802,7 +905,12 @@ mod durable_snapshot_tests {
         conversation: Option<&Conversation>,
         sources_version: u64,
     ) -> serde_json::Value {
-        super::durable_snapshot_body(conversation, sources_version, &Default::default())
+        super::durable_snapshot_body(
+            conversation,
+            sources_version,
+            &Default::default(),
+            &Default::default(),
+        )
     }
 
     fn conversation(status: WorkStatus) -> Conversation {
@@ -1010,7 +1118,9 @@ mod durable_snapshot_tests {
             let mut saved = conversation(WorkStatus::Active);
             saved.status = outcome.into();
             saved.runs.get_mut("work-1").unwrap().end(outcome).unwrap();
-            let body = serde_json::json!({ "snapshot": durable_snapshot_body(Some(&saved), 0) });
+            let body = serde_json::json!({
+                "snapshot": durable_snapshot_body(Some(&saved), 0)
+            });
             let read: ChatSnapshotResponse = serde_json::from_value(body)
                 .unwrap_or_else(|error| panic!("{outcome:?}: the app cannot read it: {error}"));
             let expected: Vec<_> = expected
@@ -1058,12 +1168,15 @@ mod citation_segment_tests {
     use super::citation_segments;
     use local_product::physician_chat::Citation;
     use local_product::runtime::Message;
+    use local_product::runtime::sources::SourceRestriction;
     use serde_json::json;
 
     fn cited(id: &str, native: serde_json::Value) -> Citation {
+        let content = format!(r#"{{"secret":"sensitive-{id}"}}"#);
         serde_json::from_value(json!({
             "id":id, "reference":id, "revision":"r1", "record_type":"AllergyIntolerance",
-            "content":"{}", "sha256":local_product::sha256_hex(b"{}"),
+            "content":content, "sha256":local_product::sha256_hex(content.as_bytes()),
+            "summary":format!("Summary of {id}"),
             "provenance":{}, "native":native
         }))
         .unwrap()
@@ -1088,12 +1201,188 @@ mod citation_segment_tests {
                 cited("plain", json!(null)),
             ],
         };
-        let segments = citation_segments(&message, &Default::default());
+        let segments = citation_segments(
+            &message,
+            &Default::default(),
+            &std::collections::HashMap::new(),
+        );
         assert_eq!(
             segments[1]["destination"],
             json!({"kind":"source_native", "source_label":"Demo chart", "uri":"https://ehr.example/a/1"})
         );
         assert!(segments[3]["destination"].is_null());
+    }
+
+    #[test]
+    fn restricted_citations_strip_content_summary_and_destination_from_the_snapshot() {
+        for reason in [
+            SourceRestriction::AccessRemoved,
+            SourceRestriction::WithheldWrongPatient,
+        ] {
+            let message = Message {
+                role: local_product::runtime::MessageRole::Assistant {
+                    id: "reply-1".into(),
+                    partial: false,
+                },
+                text: "See [[patient_source:wrong-patient-msg]].".into(),
+                source_previews: vec![local_product::citations::ReadRecordPreview::Preview {
+                    reference: "wrong-patient-msg".into(),
+                    revision: "r1".into(),
+                    preview: "Summary of wrong-patient-msg".into(),
+                    dates: vec![],
+                    native: serde_json::from_value(
+                        json!({"label":"Spruce","uri":"https://spruce.example/m/9"}),
+                    )
+                    .unwrap(),
+                }],
+                basis: None,
+                sources_version: None,
+                citations: vec![cited(
+                    "wrong-patient-msg",
+                    json!({"label":"Spruce","uri":"https://spruce.example/m/9"}),
+                )],
+            };
+            let restricted = [("wrong-patient-msg".to_owned(), reason)]
+                .into_iter()
+                .collect();
+            let conversation = local_product::runtime::Conversation {
+                runs: Default::default(),
+                messages: vec![message],
+                status: local_product::runtime::WorkStatus::Completed,
+                work: String::new(),
+                attempts: Vec::new(),
+                revision: 1,
+                skills: serde_json::from_value(json!("fixture-package")).unwrap(),
+                session_hash: None,
+                dispatch_after: 0,
+                failures: 0,
+                budget_resume_after: 0,
+                bindings: Default::default(),
+                opened_at: 0,
+                last_activity_at: 0,
+                scenario: None,
+            };
+            let snapshot = super::durable_snapshot_body(
+                Some(&conversation),
+                0,
+                &Default::default(),
+                &restricted,
+            );
+            let encoded = serde_json::to_string(&snapshot).unwrap();
+            assert!(
+                !encoded.contains("sensitive-wrong-patient-msg"),
+                "{encoded}"
+            );
+            assert!(
+                !encoded.contains("Summary of wrong-patient-msg"),
+                "{encoded}"
+            );
+            assert!(!encoded.contains("spruce.example"), "{encoded}");
+            let segments = &snapshot["conversation"][0]["segments"];
+            assert_eq!(segments[1]["state"], "resolved");
+            assert_eq!(segments[1]["source_id"], "wrong-patient-msg");
+            assert!(segments[1]["source_presentation"].is_null());
+            assert!(segments[1]["destination"].is_null());
+            assert_eq!(
+                snapshot["conversation"][0]["source_previews"][0]["state"],
+                "unavailable"
+            );
+        }
+    }
+
+    #[tokio::test]
+    async fn citation_response_reports_newer_versions_and_never_returns_restricted_content() {
+        use super::citation_response;
+        use axum::body::to_bytes;
+        use axum::http::StatusCode;
+        use local_product::runtime::sources::{CitedSourceState, CitedSourceVersion};
+        use physician_wire::{CitationUnavailableReason, CitedVersionStatus, SourceEvidence};
+
+        let retained = cited(
+            "msg-42",
+            json!({"label":"Spruce","uri":"https://spruce.example/m/42"}),
+        );
+
+        let current_resp = citation_response(
+            &retained,
+            CitedSourceState::Readable {
+                version: CitedSourceVersion::Current,
+            },
+            None,
+        );
+        assert_eq!(current_resp.status(), StatusCode::OK);
+        let current_body: SourceEvidence =
+            serde_json::from_slice(&to_bytes(current_resp.into_body(), 65_536).await.unwrap())
+                .unwrap();
+        match current_body {
+            SourceEvidence::Available {
+                inspection,
+                version,
+            } => {
+                assert_eq!(version, CitedVersionStatus::Current);
+                assert_eq!(inspection.technical.revision, "r1");
+                assert_eq!(inspection.technical.original, retained.content);
+                assert!(inspection.coda_preview.is_none());
+            }
+            other => panic!("expected available evidence, got {other:?}"),
+        }
+
+        let newer_resp = citation_response(
+            &retained,
+            CitedSourceState::Readable {
+                version: CitedSourceVersion::NewerAvailable,
+            },
+            None,
+        );
+        assert_eq!(newer_resp.status(), StatusCode::OK);
+        let newer_body: SourceEvidence =
+            serde_json::from_slice(&to_bytes(newer_resp.into_body(), 65_536).await.unwrap())
+                .unwrap();
+        match newer_body {
+            SourceEvidence::Available {
+                inspection,
+                version,
+            } => {
+                assert_eq!(version, CitedVersionStatus::NewerVersionAvailable);
+                assert_eq!(inspection.technical.revision, "r1");
+                assert_eq!(inspection.technical.original, retained.content);
+            }
+            other => panic!("expected available evidence with newer version, got {other:?}"),
+        }
+
+        for (restriction, expected_status, expected_reason) in [
+            (
+                SourceRestriction::AccessRemoved,
+                StatusCode::FORBIDDEN,
+                CitationUnavailableReason::AccessRemoved,
+            ),
+            (
+                SourceRestriction::WithheldWrongPatient,
+                StatusCode::GONE,
+                CitationUnavailableReason::WithheldWrongPatient,
+            ),
+        ] {
+            let resp = citation_response(
+                &retained,
+                CitedSourceState::Unavailable {
+                    reason: restriction,
+                },
+                None,
+            );
+            assert_eq!(resp.status(), expected_status);
+            let raw = to_bytes(resp.into_body(), 65_536).await.unwrap();
+            let text = std::str::from_utf8(&raw).unwrap();
+            assert!(!text.contains("sensitive-msg-42"), "{text}");
+            assert!(!text.contains("Summary of msg-42"), "{text}");
+            assert!(!text.contains("spruce.example"), "{text}");
+            let decoded: SourceEvidence = serde_json::from_slice(&raw).unwrap();
+            assert_eq!(
+                decoded,
+                SourceEvidence::Unavailable {
+                    reason: expected_reason
+                }
+            );
+        }
     }
 }
 
@@ -1220,7 +1509,12 @@ mod cited_layout_tests {
         ];
         let conversation = conversation(citations.clone());
         let layouts = cited_layouts(&store, &conversation).await;
-        let views = inspections(&durable_snapshot_body(Some(&conversation), 0, &layouts));
+        let views = inspections(&durable_snapshot_body(
+            Some(&conversation),
+            0,
+            &layouts,
+            &std::collections::HashMap::new(),
+        ));
         assert_eq!(views.len(), citations.len());
 
         let sections = &views[0]["layout_sections"];
@@ -1259,7 +1553,12 @@ mod cited_layout_tests {
         let layouts = [(("ehr".to_owned(), "Observation".to_owned()), in_section)]
             .into_iter()
             .collect();
-        let body = durable_snapshot_body(Some(&conversation(vec![cited])), 0, &layouts);
+        let body = durable_snapshot_body(
+            Some(&conversation(vec![cited])),
+            0,
+            &layouts,
+            &std::collections::HashMap::new(),
+        );
         let segments: Vec<physician_wire::ClinicalSegment> =
             serde_json::from_value(body["conversation"][0]["segments"].clone()).unwrap();
         let inspection = segments
@@ -1295,7 +1594,12 @@ mod cited_layout_tests {
         let conversation = conversation(vec![citation.clone()]);
         let layouts = cited_layouts(&closed, &conversation).await;
         assert!(layouts.is_empty());
-        let views = inspections(&durable_snapshot_body(Some(&conversation), 0, &layouts));
+        let views = inspections(&durable_snapshot_body(
+            Some(&conversation),
+            0,
+            &layouts,
+            &std::collections::HashMap::new(),
+        ));
         assert_eq!(views, [general(&citation)]);
     }
 }

@@ -440,7 +440,7 @@ mod tests {
             scenario: None,
         };
         let layouts = cited_layouts(store, &conversation).await;
-        let body = durable_snapshot_body(Some(&conversation), 0, &layouts);
+        let body = durable_snapshot_body(Some(&conversation), 0, &layouts, &Default::default());
         body["conversation"][0]["segments"]
             .as_array()
             .unwrap()

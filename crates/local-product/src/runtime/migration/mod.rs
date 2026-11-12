@@ -5,6 +5,7 @@ use sea_orm_migration::prelude::*;
 mod m20261111_attempt_sources_version;
 mod m20261111_init;
 mod m20261112_physician_source_layouts;
+mod m20261112_source_restrictions;
 
 /// The table this chain records applied migrations in. The runtime shares the
 /// physician database with other chains, and each chain owns its own ledger.
@@ -24,6 +25,7 @@ impl MigratorTrait for Migrator {
             Box::new(m20261111_init::Migration),
             Box::new(m20261111_attempt_sources_version::Migration),
             Box::new(m20261112_physician_source_layouts::Migration),
+            Box::new(m20261112_source_restrictions::Migration),
         ]
     }
 }

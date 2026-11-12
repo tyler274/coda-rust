@@ -1455,6 +1455,94 @@ async fn chart_reads_and_exact_citations_survive_readback_and_duplicate_delivery
     let saved = fresh.read(&scope).await.unwrap().unwrap();
     assert_eq!(serde_json::to_value(saved.messages).unwrap(), original);
     assert_eq!(saved.attempts.len(), 1);
+    read_citation_evidence_after_update_and_restrictions(&running, &scope, &session, citation)
+        .await;
+}
+
+/// After a newer revision arrives in the patient's chart, the retained citation route still opens
+/// the exact revision the answer used and reports `NewerVersionAvailable`. Once access to the
+/// source is removed or the source is withheld after a wrong-patient correction, the route returns
+/// only the unavailable reason and never returns the source's content.
+async fn read_citation_evidence_after_update_and_restrictions(
+    running: &Running,
+    scope: &Scope,
+    session: &str,
+    citation: &local_product::physician_chat::Citation,
+) {
+    use local_product::runtime::sources::SourceRestriction;
+    use physician_wire::{CitationUnavailableReason, CitedVersionStatus, SourceEvidence};
+
+    let port = support::free_port();
+    let listen = format!("127.0.0.1:{port}");
+    let topic = support::topic();
+    let mut site = support::Process::spawn(
+        "site",
+        support::site_bin(),
+        &[],
+        &[
+            ("PHYSICIAN_DATABASE_URL", running.database.url.as_str()),
+            ("PUBSUB_EMULATOR_HOST", running.emulator.host.as_str()),
+            ("GOOGLE_CLOUD_PROJECT", support::PROJECT),
+            ("PHYSICIAN_CHAT_TOPIC", topic.as_str()),
+            ("PHYSICIAN_AUTH", "required"),
+            ("PHYSICIAN_LISTEN_ADDR", listen.as_str()),
+        ],
+        &running.home,
+    );
+    support::wait_ready(&mut site, port).await;
+    let path = format!(
+        "/patient-workspaces/{}/chats/{}/citations/{}",
+        scope.workspace, scope.chat, citation.id
+    );
+
+    let (status, body) = support::get_json(&listen, &path, session).await;
+    assert_eq!(status, 200, "{body}\n{}", site.tail());
+    let read: SourceEvidence = serde_json::from_value(body).unwrap();
+    let SourceEvidence::Available {
+        inspection,
+        version,
+    } = read
+    else {
+        panic!("expected cited revision to remain readable after newer version arrived");
+    };
+    assert_eq!(version, CitedVersionStatus::NewerVersionAvailable);
+    assert_eq!(inspection.technical.revision, "r1");
+    assert_eq!(inspection.technical.original, citation.content);
+    assert!(!inspection.technical.original.contains("6.8"));
+
+    for (restriction, expected_status, expected_reason) in [
+        (
+            SourceRestriction::AccessRemoved,
+            403,
+            CitationUnavailableReason::AccessRemoved,
+        ),
+        (
+            SourceRestriction::WithheldWrongPatient,
+            410,
+            CitationUnavailableReason::WithheldWrongPatient,
+        ),
+    ] {
+        running
+            .store
+            .restrict_source(&scope.workspace, &citation.reference, restriction)
+            .await
+            .unwrap();
+        let (status, body) = support::get_json(&listen, &path, session).await;
+        assert_eq!(status, expected_status, "{body}\n{}", site.tail());
+        let raw = body.to_string();
+        assert!(!raw.contains("potassium"), "{raw}");
+        assert!(!raw.contains("4.1"), "{raw}");
+        assert!(!raw.contains("6.8"), "{raw}");
+        let decoded: SourceEvidence = serde_json::from_value(body).unwrap();
+        assert_eq!(
+            decoded,
+            SourceEvidence::Unavailable {
+                reason: expected_reason
+            }
+        );
+    }
+
+    site.kill_now();
 }
 
 /// Opening the answer's citation reads the exact revision it retained, through a real site on the
@@ -1498,9 +1586,17 @@ async fn read_citation_evidence(
     assert!(source.coda_preview.is_some(), "this answer summarized it");
     // The summary is this answer's, and comes with it; the read is the source alone.
     source.coda_preview = None;
-    assert_eq!(read.inspection, source);
-    assert_eq!(read.inspection.technical.original, citation.content);
-    assert_eq!(read.inspection.technical.revision, "r1");
+    let physician_wire::SourceEvidence::Available {
+        inspection,
+        version,
+    } = read
+    else {
+        panic!("expected available cited revision");
+    };
+    assert_eq!(*inspection, source);
+    assert_eq!(inspection.technical.original, citation.content);
+    assert_eq!(inspection.technical.revision, "r1");
+    assert_eq!(version, physician_wire::CitedVersionStatus::Current);
 
     let (status, body) = support::get_json(&listen, &path("never-cited"), session).await;
     assert_eq!(status, 404, "{body}");

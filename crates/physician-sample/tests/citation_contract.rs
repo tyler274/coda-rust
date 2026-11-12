@@ -655,8 +655,16 @@ async fn synthetic_source_run_saves_two_citations_with_versions_dated_previews_a
         let (status, body) = support::get_json(&stack.site_host, &cite_path, &session).await;
         assert_eq!(status, 200, "{body}");
         let evidence: SourceEvidence = serde_json::from_value(body).expect("SourceEvidence");
-        assert_eq!(evidence.inspection.technical.revision, citation.revision);
-        assert_eq!(evidence.inspection.technical.reference, citation.reference);
+        let SourceEvidence::Available {
+            inspection,
+            version,
+        } = evidence
+        else {
+            panic!("expected available evidence, got {evidence:?}");
+        };
+        assert_eq!(version, physician_wire::CitedVersionStatus::Current);
+        assert_eq!(inspection.technical.revision, citation.revision);
+        assert_eq!(inspection.technical.reference, citation.reference);
     }
 
     let evidence_dump = json!({
@@ -862,12 +870,20 @@ async fn passage_citations_save_exact_locators_reopen_distinct_passages_and_refu
         let (status, payload) = support::get_json(&stack.site_host, &path, &session).await;
         assert_eq!(status, 200, "{payload}");
         let reopened: SourceEvidence = serde_json::from_value(payload).expect("SourceEvidence");
-        assert_eq!(reopened.inspection.technical.revision, "r1");
+        let SourceEvidence::Available {
+            inspection,
+            version,
+        } = reopened
+        else {
+            panic!("expected available evidence, got {reopened:?}");
+        };
         assert_eq!(
-            reopened.inspection.cited_passage.as_deref(),
-            Some(expected_quote)
+            version,
+            physician_wire::CitedVersionStatus::NewerVersionAvailable
         );
-        assert_eq!(reopened.inspection.locator.as_ref(), Some(expected_locator));
+        assert_eq!(inspection.technical.revision, "r1");
+        assert_eq!(inspection.cited_passage.as_deref(), Some(expected_quote));
+        assert_eq!(inspection.locator.as_ref(), Some(expected_locator));
     }
 }
 
@@ -1527,14 +1543,25 @@ async fn structured_field_citation_reopens_same_version_and_every_job_shares_con
     let (status, payload) = support::get_json(&stack.site_host, &cite_path, &session).await;
     assert_eq!(status, 200, "{payload}");
     let reopened: SourceEvidence = serde_json::from_value(payload).expect("SourceEvidence");
-    assert_eq!(reopened.inspection.technical.revision, "r1");
+    let SourceEvidence::Available {
+        inspection,
+        version,
+    } = reopened
+    else {
+        panic!("expected available evidence, got {reopened:?}");
+    };
     assert_eq!(
-        reopened.inspection.locator,
+        version,
+        physician_wire::CitedVersionStatus::NewerVersionAvailable
+    );
+    assert_eq!(inspection.technical.revision, "r1");
+    assert_eq!(
+        inspection.locator,
         Some(CitationLocator::Field {
             path: expected_path.clone(),
         })
     );
     let reopened_json: Value =
-        serde_json::from_str(&reopened.inspection.technical.original).expect("technical json");
+        serde_json::from_str(&inspection.technical.original).expect("technical json");
     assert_eq!(expected_path.resolve(&reopened_json), Some(&json!(13.4)));
 }

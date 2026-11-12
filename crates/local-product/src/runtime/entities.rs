@@ -164,6 +164,28 @@ pub(super) mod source {
     impl ActiveModelBehavior for ActiveModel {}
 }
 
+/// Sources withheld or removed from a patient workspace under its version lock.
+pub(super) mod source_restriction {
+    use super::super::sources::SourceRestriction;
+    use sea_orm::entity::prelude::*;
+
+    #[derive(Clone, Debug, PartialEq, Eq, DeriveEntityModel)]
+    #[sea_orm(table_name = "physician_runtime_source_restrictions")]
+    pub struct Model {
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub workspace: String,
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub candidate: String,
+        pub reason: SourceRestriction,
+        pub recorded_at_version: i64,
+    }
+
+    #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
+    pub enum Relation {}
+
+    impl ActiveModelBehavior for ActiveModel {}
+}
+
 /// One source's last delivery for one patient. A later pull replaces the row.
 /// The table is created by the fixed runtime baseline.
 pub(super) mod source_pull {
