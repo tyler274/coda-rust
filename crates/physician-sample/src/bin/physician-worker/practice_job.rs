@@ -1114,7 +1114,16 @@ mod tests {
                     revision: "rev-sw-1".into(),
                 }],
             }],
-            unresolved_issues: Vec::new(),
+            unresolved_issues: vec![BriefingClaimInput {
+                text: "Spot urine albumin-to-creatinine ratio is not in the connected chart.".into(),
+                uncertainty: Some(
+                    "Albuminuria severity is unconfirmed pending spot UACR.".into(),
+                ),
+                citations: vec![ExactRecordReference {
+                    candidate_id: "Observation/ckd-k-1".into(),
+                    revision: "rev-sw-1".into(),
+                }],
+            }],
             visit_decisions: vec![BriefingDecisionInput {
                 decision: "Potassium management and glycemic regimen adjustment".into(),
                 clinical_rationale:
