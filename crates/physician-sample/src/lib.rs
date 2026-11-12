@@ -525,17 +525,18 @@ enum ChatMode {
     /// Accepted into Postgres, which wakes `physician-worker`.
     Durable,
     /// Durable because `PHYSICIAN_CHAT_TOPIC` is set and
-    /// `PHYSICIAN_DURABLE_CHAT` is not, so a site deployed before its
-    /// environment names the switch still hands chat to the worker. This
-    /// holds until the topic is retired.
+    /// `PHYSICIAN_DURABLE_CHAT` is not. A deployed environment may still
+    /// carry only the topic until the `rust-environments` root is applied;
+    /// once applied, that root sets `PHYSICIAN_DURABLE_CHAT=1` and this
+    /// fallback is inert. The topic itself is no longer read.
     DurableByTopic,
 }
 
 impl ChatMode {
     /// `PHYSICIAN_DURABLE_CHAT=1` selects durable chat and `0` inline chat.
-    /// Unset, a set `PHYSICIAN_CHAT_TOPIC` selects durable chat until the
-    /// topic is retired, and otherwise chat runs inline. Any other value
-    /// refuses to start.
+    /// Unset, a set `PHYSICIAN_CHAT_TOPIC` selects durable chat (see
+    /// [`Self::DurableByTopic`]), and otherwise chat runs inline. Any other
+    /// value refuses to start.
     fn from_env(get: &impl Fn(&str) -> Option<String>) -> Result<Self, String> {
         match configured(get, "PHYSICIAN_DURABLE_CHAT").as_deref() {
             Some("1") => Ok(Self::Durable),

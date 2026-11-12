@@ -333,8 +333,9 @@ pub struct Conversation {
     pub attempts: Vec<Attempt>,
     /// Accepted session reference, absent before acceptance; never the bearer secret.
     pub session_hash: Option<Vec<u8>>,
-    /// Database-clock time before which pending work is not due: the retry
-    /// delay after a failed attempt. Never proof of execution or completion.
+    /// Database-clock time from which pending work is due: when it was
+    /// accepted, resumed or handed back, or the end of the retry delay after
+    /// a failed attempt. Never proof of execution or completion.
     pub dispatch_after: i64,
     /// Trace context of the request that last made this input runnable.
     pub origin: Option<delivery::TraceContext>,
@@ -866,16 +867,16 @@ impl Store {
             state.budget_resume_after = 0;
         }
         state.revision += 1;
+        let now = now(&tx).await?;
         state.session_hash = Some(session_hash);
         state.scenario = input.scenario.clone();
-        state.dispatch_after = 0;
+        state.dispatch_after = now;
         state.origin = origin;
         delivery::notify(
             &tx,
             &delivery::Delivery::chat_turn(scope.clone(), input.key.clone()),
         )
         .await?;
-        let now = now(&tx).await?;
         if state.messages.is_empty() {
             state.opened_at = now;
         }
@@ -1433,7 +1434,7 @@ impl Store {
             .ok_or_else(|| error("missing work lifecycle"))?
             .start(Uuid::new_v4().to_string())?;
         state.status = WorkStatus::Pending;
-        state.dispatch_after = 0;
+        state.dispatch_after = now(&tx).await?;
         state.origin = origin;
         state.session_hash = Some(session_hash);
         let delivery = delivery::Delivery::chat_turn(scope.clone(), input_id);

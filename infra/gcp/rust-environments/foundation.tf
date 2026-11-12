@@ -5,14 +5,17 @@ locals {
   databases          = var.enable_databases ? local.apps : toset([])
   workloads          = var.enable_workloads ? local.apps : toset([])
   identities         = { for pair in setproduct(local.apps, ["runtime", "migration"]) : "${pair[0]}-${pair[1]}" => { app = pair[0], role = pair[1] } }
-  # Physician scaling (cache.tf, queue.tf, the worker in workloads.tf). Keyed
+  # Physician scaling (cache.tf, the worker in workloads.tf). Keyed
   # "physician" so the resources are physician-owned by construction; Duet has
-  # no scaling key and therefore no Redis, Pub/Sub or worker resources.
+  # no scaling key and therefore no Redis or worker resources.
   physician_scale      = var.enable_workloads && var.enable_physician_scale
   physician_scale_apps = local.physician_scale ? toset(["physician"]) : toset([])
+  # With scaling on, the physician site accepts chat turns into Postgres for
+  # the worker instead of running them inline.
+  physician_durable_chat_env = local.physician_scale ? { PHYSICIAN_DURABLE_CHAT = "1" } : {}
   # Infrastructure-owned (or Doppler-owned) physician settings that the
   # nonsecret runtime_environment map may not set or override.
-  scale_owned_env = ["PHYSICIAN_CHAT_TOPIC", "PHYSICIAN_DURABLE_CHAT", "PHYSICIAN_WORKER_AUDIENCE", "PHYSICIAN_PUSH_SERVICE_ACCOUNT", "PHYSICIAN_REDIS_URL", "PHYSICIAN_REDIS_CA_PEM", "PHYSICIAN_SIMULATION_PRACTICES", "PHYSICIAN_IAP_AUDIENCE", "PHYSICIAN_REHEARSAL_PRINCIPAL"]
+  scale_owned_env = ["PHYSICIAN_DURABLE_CHAT", "PHYSICIAN_REDIS_URL", "PHYSICIAN_REDIS_CA_PEM", "PHYSICIAN_SIMULATION_PRACTICES", "PHYSICIAN_IAP_AUDIENCE", "PHYSICIAN_REHEARSAL_PRINCIPAL"]
   # Rehearsal practices (physician_simulation_practices): the same list on the
   # site, the worker and the migration job, which seeds the rehearsal practice.
   physician_simulation_env = length(var.physician_simulation_practices) > 0 ? { PHYSICIAN_SIMULATION_PRACTICES = join(",", sort(tolist(var.physician_simulation_practices))) } : {}
@@ -20,7 +23,7 @@ locals {
     "artifactregistry.googleapis.com", "cloudresourcemanager.googleapis.com",
     "compute.googleapis.com", "iam.googleapis.com", "iamcredentials.googleapis.com",
     "iap.googleapis.com", "logging.googleapis.com", "monitoring.googleapis.com",
-    "pubsub.googleapis.com", "redis.googleapis.com",
+    "redis.googleapis.com",
     "run.googleapis.com", "secretmanager.googleapis.com", "serviceusage.googleapis.com",
     "servicenetworking.googleapis.com", "sqladmin.googleapis.com", "storage.googleapis.com",
     "sts.googleapis.com",
@@ -76,7 +79,7 @@ resource "google_project" "environment" {
       condition = alltrue(flatten([for app, config in var.runtime_environment : [
         for key in keys(config) : !contains(local.scale_owned_env, key) && (app == "physician" || !startswith(key, "PHYSICIAN_"))
       ]]))
-      error_message = "Physician scaling and rehearsal settings are owned by infrastructure (topic, worker audience, push identity, simulation practices) or Doppler (Redis URL and CA); runtime_environment may not set them, and Duet gets no PHYSICIAN_* settings."
+      error_message = "Physician scaling and rehearsal settings are owned by infrastructure (the durable chat switch, simulation practices, rehearsal sign-in) or Doppler (Redis URL and CA); runtime_environment may not set them, and Duet gets no PHYSICIAN_* settings."
     }
     precondition {
       condition     = !var.observability_enabled || var.observability_cluster_enabled

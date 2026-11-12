@@ -6,13 +6,13 @@ locals {
     duet_sql_storage      = "cloudsql_googleapis_com:database_disk_utilization{project_id=\"${var.cluster_project}\",database_id=\"${var.cluster_project}:rust-duet\"}"
     redis_pressure        = "redis_googleapis_com:stats_memory_usage_ratio{project_id=\"${var.cluster_project}\",instance_id=\"projects/${var.cluster_project}/locations/${var.cluster_location}/instances/rust-physician-cache\",role=\"primary\"}"
     redis_uptime          = "redis_googleapis_com:server_uptime{project_id=\"${var.cluster_project}\",instance_id=\"projects/${var.cluster_project}/locations/${var.cluster_location}/instances/rust-physician-cache\",role=\"primary\"}"
-    worker_age            = "pubsub_googleapis_com:subscription_oldest_unacked_message_age{project_id=\"${var.cluster_project}\",subscription_id=\"physician-chat-turns-worker\"}"
-    worker_backlog        = "pubsub_googleapis_com:subscription_num_undelivered_messages{project_id=\"${var.cluster_project}\",subscription_id=\"physician-chat-turns-worker\"}"
-    worker_dead_letters   = "pubsub_googleapis_com:subscription_num_undelivered_messages{project_id=\"${var.cluster_project}\",subscription_id=\"physician-chat-turns-dead-letter\"}"
+    worker_oldest_due     = "custom_googleapis_com:coda_physician_queue_oldest_due_seconds{${local.grafana_probe_labels}}"
+    worker_due            = "custom_googleapis_com:coda_physician_queue_due{${local.grafana_probe_labels}}"
+    worker_failed         = "custom_googleapis_com:coda_physician_queue_failed{${local.grafana_probe_labels}}"
   }
   # Custom metrics can sit on many resource types, so Cloud Monitoring PromQL
-  # rejects them without a monitored_resource matcher. availability-probe
-  # writes both of its metrics on the global resource.
+  # rejects them without a monitored_resource matcher. availability-probe and
+  # the physician worker's queue gauges both write on the global resource.
   grafana_probe_labels = "monitored_resource=\"global\",project_id=\"${var.cluster_project}\""
   grafana_cloud_conditions = merge(
     { for target in ["physician", "duet", "physician-worker"] : "readiness-${target}" => {
@@ -41,6 +41,9 @@ locals {
     } if signal.continuous }
   )
   grafana_cloud_rule_uids = [for key in keys(local.grafana_cloud_conditions) : "gcp-${key}"]
+  # Provisioning keeps a rule whose UID leaves the file, so the Pub/Sub
+  # subscription rules the queue gauges replaced are deleted by name.
+  grafana_cloud_retired_rule_uids = ["gcp-dependency-worker_age", "gcp-absence-worker_age", "gcp-dependency-worker_backlog", "gcp-dependency-worker_dead_letters"]
   grafana_cloud_rules = yamlencode(local.grafana_monitoring_enable ? {
     apiVersion = 1
     groups = [{
@@ -86,10 +89,10 @@ locals {
         ]
       }]
     }]
-    deleteRules = []
+    deleteRules = [for uid in local.grafana_cloud_retired_rule_uids : { orgId = 1, uid = uid }]
     } : {
     apiVersion  = 1
     groups      = []
-    deleteRules = [for uid in local.grafana_cloud_rule_uids : { orgId = 1, uid = uid }]
+    deleteRules = [for uid in concat(local.grafana_cloud_rule_uids, local.grafana_cloud_retired_rule_uids) : { orgId = 1, uid = uid }]
   })
 }

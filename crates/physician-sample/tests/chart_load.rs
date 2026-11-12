@@ -469,7 +469,6 @@ async fn a_site_with_no_load_is_ready_and_empty_until_a_load_fills_it() {
             .env("PHYSICIAN_AUTH", "required")
             .env("PHYSICIAN_LISTEN_ADDR", address.to_string())
             .env_remove("CODA_LOCAL_MODEL_EXECUTION")
-            .env_remove("PHYSICIAN_CHAT_TOPIC")
             .env_remove("PHYSICIAN_DURABLE_CHAT")
             .stdout(Stdio::null())
             .stderr(Stdio::null())

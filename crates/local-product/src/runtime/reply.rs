@@ -232,8 +232,9 @@ pub struct Draft {
     pub attempts: Vec<RevisionAttempt>,
     /// Accepted session reference, never the bearer secret.
     pub session_hash: Option<Vec<u8>>,
-    /// Database-clock time before which a pending revision is not due: the
-    /// retry delay after a failed attempt.
+    /// Database-clock time from which a pending revision is due: when it was
+    /// accepted, resumed or handed back, or the end of the retry delay after
+    /// a failed attempt.
     pub dispatch_after: i64,
     /// Unsuccessful attempts on the accepted revision, including expired leases.
     pub failures: u32,
@@ -630,7 +631,7 @@ fn last_revision_attempt_query(
 }
 
 impl Store {
-    async fn locked_draft(
+    pub(super) async fn locked_draft(
         &self,
         scope: &Scope,
     ) -> Result<(sea_orm::DatabaseTransaction, Draft, i64), DbErr> {
@@ -646,7 +647,7 @@ impl Store {
         Ok((tx, state, now))
     }
 
-    async fn save_draft_row(
+    pub(super) async fn save_draft_row(
         tx: sea_orm::DatabaseTransaction,
         scope: &Scope,
         state: &Draft,
@@ -958,7 +959,7 @@ impl Store {
         state.sources = observation.sources;
         state.sources_version = observation.version;
         state.session_hash = Some(session_hash);
-        state.dispatch_after = 0;
+        state.dispatch_after = now(&tx).await?;
         state.origin = origin;
         delivery::notify(
             &tx,
@@ -1006,7 +1007,7 @@ impl Store {
         state.allowance_after = engine::recovery::resume_boundary(state.resumable_events());
         state.failures = state.runs.start(Uuid::new_v4().to_string())?;
         state.status = DraftStatus::Pending;
-        state.dispatch_after = 0;
+        state.dispatch_after = now(&tx).await?;
         state.origin = origin;
         state.session_hash = Some(session_hash);
         let delivery = Delivery::reply_revision(scope.clone(), input_id);
@@ -1540,6 +1541,8 @@ impl Store {
             state.status = after.draft_status();
             AttemptSettlement::Failed(after)
         } else {
+            // Handed back without a counted failure: due again from now.
+            state.dispatch_after = now;
             AttemptSettlement::Applied
         };
         if state.status == DraftStatus::Pending && state.dispatch_after <= now {

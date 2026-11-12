@@ -97,10 +97,13 @@ The page, identity, clinical execution and delivery each have an owner:
 
 Chat, saved drafts and reply revisions use the Postgres
 [`runtime::Store`](/crates/local-product/src/runtime.rs) and the same worker locally
-and when hosted. The site requires `PHYSICIAN_CHAT_TOPIC`, `PHYSICIAN_DATABASE_URL`
-and `PHYSICIAN_AUTH=required` for this path. A hosted site refuses missing queue
-configuration. Without a topic, a local site can render fixtures or proxy another
-server, but cannot execute chat. The worker selects API-key or local developer-plan
+and when hosted. The site requires `PHYSICIAN_DURABLE_CHAT=1`, `PHYSICIAN_DATABASE_URL`
+and `PHYSICIAN_AUTH=required` for this path. With `PHYSICIAN_DURABLE_CHAT` unset, a
+set `PHYSICIAN_CHAT_TOPIC` also selects durable chat: a deployed environment may carry
+only the topic until the `rust-environments` root is applied, and that root sets
+`PHYSICIAN_DURABLE_CHAT=1`. The topic is not otherwise read. A hosted site refuses to
+start without durable chat. With neither set, or `PHYSICIAN_DURABLE_CHAT=0`, a local site
+can render fixtures or proxy another server, but cannot execute chat. The worker selects API-key or local developer-plan
 Responses transport; credentials are worker configuration, outside the durable job.
 [Local chat setup](/README%2Emd#local-physician-chat) describes the plan grant, which
 refreshes before each request. [Scaling across instances](#scaling-across-instances)
@@ -162,8 +165,8 @@ Each published reply has a response id: the id its assistant message is saved wi
 
 The worker listens on `PHYSICIAN_WORKER_LISTEN_ADDR` when it is set, otherwise on `0.0.0.0:$PORT` when `PORT` is set, otherwise on `127.0.0.1:8791`.
 
-Chat acceptance requires the topic, database and required sign-in configuration together.
-Missing queue configuration refuses hosted startup; local fixture pages
+Chat acceptance requires durable chat, the database and required sign-in configuration together.
+A hosted site without durable chat refuses to start; local fixture pages
 remain display-only.
 
 Reply revision runs in the worker. Drafts live in `physician_runtime_reply_drafts`, one JSONB row per practice, physician, workspace and reply, which [`Store::migrate`](/crates/local-product/src/runtime.rs) creates from the fixed runtime baseline. `GET` and `PUT /replies/{id}` read and save that row; a save must name the current revision, and a `PUT` never creates a draft. `reply.revise` checks the session and workspace, then `Store::accept_revision` records the instruction, the saved text it applies to and the workspace's current source revisions with their version, read in its own transaction, and the same transaction announces a `reply_revision` delivery on `physician_work`. The same command id returns the same acceptance and announces nothing new. A draft that is missing, belongs to another physician, has moved past the command's expected revision, or already has a revision in progress refuses with 409.

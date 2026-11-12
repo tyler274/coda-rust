@@ -25,12 +25,10 @@ resource "google_cloud_run_v2_service" "app" {
     timeout                          = "300s"
     max_instance_request_concurrency = 8
     scaling {
-      # With physician scaling on, the site owns the recovery sweep that
-      # republishes accepted turns whose Pub/Sub publish failed. It runs only
-      # while an instance is up, so one physician instance stays up; at zero
-      # an accepted turn would wait for unrelated traffic to start the site.
-      # The chat topic exists only while physician scaling is on.
-      min_instance_count = each.key == "physician" && length(google_pubsub_topic.chat_turns) > 0 ? 1 : 0
+      # Both sites scale to zero. With physician scaling on, the worker owns
+      # accepted turns, including recovery of a lost attempt, so no site
+      # instance has to stay up for them.
+      min_instance_count = 0
       max_instance_count = var.max_instances
     }
     vpc_access {
@@ -51,9 +49,7 @@ resource "google_cloud_run_v2_service" "app" {
         limits = { cpu = "1", memory = "1Gi" }
         # Physician keeps CPU allocated for the instance lifetime (instance-based
         # billing): its Postgres authority listener and the Redis bus subscriber
-        # run between requests and stall under request-only CPU. With physician
-        # scaling on, one instance stays up for the recovery sweep (see
-        # scaling above). Duet keeps request-based CPU with or without the
+        # run between requests and stall under request-only CPU. Duet keeps request-based CPU with or without the
         # sidecar: it has no work between requests, and telemetry is not a
         # reason to bill it for idle time (book/src/gcp.md, "Telemetry
         # sidecars and CPU allocation").
@@ -93,21 +89,13 @@ resource "google_cloud_run_v2_service" "app" {
       }
       # Physician only, and only behind enable_physician_scale: the site
       # accepts chat turns into Postgres for the worker instead of running
-      # them inline. PHYSICIAN_DURABLE_CHAT selects that; a site revision that
-      # still publishes reads PHYSICIAN_CHAT_TOPIC, so both are set.
+      # them inline. PHYSICIAN_DURABLE_CHAT selects that.
       # PHYSICIAN_REDIS_URL / PHYSICIAN_REDIS_CA_PEM come from Doppler.
       dynamic "env" {
-        for_each = each.key == "physician" ? google_pubsub_topic.chat_turns : {}
+        for_each = each.key == "physician" ? local.physician_durable_chat_env : {}
         content {
-          name  = "PHYSICIAN_CHAT_TOPIC"
-          value = env.value.id
-        }
-      }
-      dynamic "env" {
-        for_each = each.key == "physician" ? google_pubsub_topic.chat_turns : {}
-        content {
-          name  = "PHYSICIAN_DURABLE_CHAT"
-          value = "1"
+          name  = env.key
+          value = env.value
         }
       }
       dynamic "env" {
@@ -187,7 +175,7 @@ resource "google_cloud_run_v2_service" "app" {
     # identity, secret version pins, resource caps and probes. Never ignore template.
     ignore_changes = [template[0].containers[0].image, template[0].revision, traffic, client, client_version]
   }
-  depends_on = [google_secret_manager_secret_iam_binding.bootstrap_reader, google_sql_user.app, google_project_service_identity.iap, google_storage_bucket_iam_member.duet_privacy_journal, google_compute_router_nat.physician_mail, google_pubsub_topic_iam_binding.chat_turns_publisher]
+  depends_on = [google_secret_manager_secret_iam_binding.bootstrap_reader, google_sql_user.app, google_project_service_identity.iap, google_storage_bucket_iam_member.duet_privacy_journal, google_compute_router_nat.physician_mail]
 }
 
 # Duet's independent privacy receipt journal. Hosted Duet refuses to serve
@@ -305,18 +293,12 @@ resource "google_cloud_run_v2_job" "migration" {
 
 # --- Physician chat-turn worker (enable_physician_scale) --------------------
 #
-# Receives Pub/Sub pushes for physician-chat-turns, claims the accepted turn in
-# Postgres, runs the model and publishes workspace_changed on Redis. It is not
-# a browser surface: no IAP, INTERNAL ingress (Pub/Sub in the same project is
-# internal when it calls the default run.app URL,
-# https://cloud.google.com/run/docs/securing/ingress#settings), IAM invoker
-# checks on, and the push identity is the only invoker.
-locals {
-  # Cloud Run's deterministic run.app URL. Known before the service exists, so
-  # the worker can be told its own OIDC audience without a self-reference:
-  # https://cloud.google.com/run/docs/triggering/https-request#deterministic
-  physician_worker_audience = "https://physician-worker-${google_project.environment.number}.${var.region}.run.app"
-}
+# Wakes on Postgres LISTEN/NOTIFY and a bounded poll, claims due chat turns
+# and reply revisions in Postgres, runs the model and publishes
+# workspace_changed on Redis. Nothing pushes work to it; its only HTTP surface
+# is the readiness probe. It is not a browser surface: no IAP, INTERNAL
+# ingress, IAM invoker checks on, and only the availability probe may invoke
+# it.
 
 # Own identity so the worker's grants are visible and revocable on their own.
 # It reuses the physician-runtime Doppler config and token slot rather than a
@@ -329,7 +311,7 @@ resource "google_service_account" "physician_worker" {
   project      = google_project.environment.project_id
   account_id   = "physician-worker-runtime"
   display_name = "physician worker runtime (${var.environment})"
-  description  = "physician-worker Cloud Run identity: physician SQL, physician-runtime Doppler token. No Pub/Sub publish, no Duet access."
+  description  = "physician-worker Cloud Run identity: physician SQL, physician-runtime Doppler token. No Duet access."
   depends_on   = [google_project_service.api]
 }
 
@@ -344,23 +326,31 @@ resource "google_project_iam_member" "physician_worker_sql" {
   }
 }
 
+# The worker writes the queue gauges (oldest due age, due and failed counts)
+# the observability monitors read; see physician-worker/signals.rs.
+resource "google_project_iam_member" "physician_worker_metrics" {
+  for_each = local.physician_scale_apps
+  project  = google_project.environment.project_id
+  role     = "roles/monitoring.metricWriter"
+  member   = "serviceAccount:${google_service_account.physician_worker[each.key].email}"
+}
+
 resource "google_cloud_run_v2_service" "physician_worker" {
   for_each             = local.physician_scale_apps
   project              = google_project.environment.project_id
   name                 = "physician-worker"
   location             = var.region
-  description          = "Physician chat-turn worker; invoked only by Pub/Sub push."
+  description          = "Physician chat-turn worker; pulls due work from Postgres."
   ingress              = "INGRESS_TRAFFIC_INTERNAL_ONLY"
   iap_enabled          = false
   invoker_iam_disabled = false
-  custom_audiences     = [local.physician_worker_audience]
-  # Stateless (turns live in Postgres, the queue in Pub/Sub). Turning the gate
+  # Stateless (turns and their queue live in Postgres). Turning the gate
   # off must remove it in one reviewed plan.
   deletion_protection = false
   template {
     service_account       = google_service_account.physician_worker[each.key].email
     execution_environment = "EXECUTION_ENVIRONMENT_GEN2"
-    # Matches the subscription's 600 s ack deadline: a turn runs inside the push.
+    # Bounds requests (the readiness probe); turns run outside any request.
     timeout = "600s"
     # Turns wait on the model, so a few share an instance; the cap bounds model
     # concurrency and keeps the shared physician-runtime DB role within its
@@ -416,14 +406,6 @@ resource "google_cloud_run_v2_service" "physician_worker" {
           name  = env.key
           value = env.value
         }
-      }
-      env {
-        name  = "PHYSICIAN_WORKER_AUDIENCE"
-        value = local.physician_worker_audience
-      }
-      env {
-        name  = "PHYSICIAN_PUSH_SERVICE_ACCOUNT"
-        value = google_service_account.physician_pubsub_push[each.key].email
       }
       dynamic "env" {
         for_each = local.physician_simulation_env
@@ -497,18 +479,15 @@ resource "google_cloud_run_v2_service" "physician_worker" {
   depends_on = [google_secret_manager_secret_iam_binding.bootstrap_reader, google_sql_user.app, google_project_iam_member.physician_worker_sql]
 }
 
-# Authoritative for run.invoker: only the push identity, never allUsers, the
-# site runtime or the IAP agent.
+# Authoritative for run.invoker: only the availability probe, never allUsers,
+# the site runtime or the IAP agent. Without the probe the binding is empty.
 resource "google_cloud_run_v2_service_iam_binding" "physician_worker_invoker" {
   for_each = local.physician_scale_apps
   project  = google_project.environment.project_id
   location = var.region
   name     = google_cloud_run_v2_service.physician_worker[each.key].name
   role     = "roles/run.invoker"
-  members = concat(
-    ["serviceAccount:${google_service_account.physician_pubsub_push[each.key].email}"],
-    [for identity in google_service_account.availability : "serviceAccount:${identity.email}"],
-  )
+  members  = [for identity in google_service_account.availability : "serviceAccount:${identity.email}"]
 }
 
 # Release updates the worker image like the app services (deploy-staging).

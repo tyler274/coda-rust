@@ -11,12 +11,12 @@
 # starts, instance counts, container CPU and memory, 5xx answered before the
 # product container).
 variable "datadog_gcp_dependency_collection" {
-  description = "Default-off per-namespace collection opt-ins. Every entry requires exact resource filters verified against Datadog's integration before apply. Only SQL, Redis and Pub/Sub subscriptions may be opted in; no IAM roles or global-location collection are added. Imports all metrics in the selected namespace for matching resources, so review series cost before activation."
+  description = "Default-off per-namespace collection opt-ins. Every entry requires exact resource filters verified against Datadog's integration before apply. Only SQL and Redis may be opted in; no IAM roles or global-location collection are added. Imports all metrics in the selected namespace for matching resources, so review series cost before activation."
   type        = map(object({ verified_resource_filters = set(string) }))
   default     = {}
   validation {
     condition = alltrue([for namespace, config in var.datadog_gcp_dependency_collection :
-      contains(["cloudsql", "redis", "pubsub"], namespace) && length(config.verified_resource_filters) > 0 &&
+      contains(["cloudsql", "redis"], namespace) && length(config.verified_resource_filters) > 0 &&
       alltrue([for filter in config.verified_resource_filters : can(regex("^[a-z_]+:[A-Za-z0-9_:/.-]+$", filter)) && !can(regex("patient|run_id|chat_id|^(env|environment|project|project_id|region|zone|location|app|service|purpose):", filter))])
     ])
     error_message = "Dependency collection requires known namespace keys and nonempty exact verified resource identity filters; broad environment/project/location/service tags, wildcards and boolean scopes are forbidden."
@@ -27,8 +27,18 @@ variable "datadog_gcp_dependency_collection" {
   }
 }
 
+variable "datadog_gcp_global_location_enabled" {
+  description = "Default-off import of metrics with no GCP location, which is where custom gauges on the global resource land: the physician worker's queue gauges and the availability probe's. Every such metric in the project is imported, so review series cost before activation."
+  type        = bool
+  default     = false
+  validation {
+    condition     = !var.datadog_gcp_global_location_enabled || (var.environment == "staging" && var.datadog_gcp_integration_enabled)
+    error_message = "Global-location collection requires the staging GCP integration gate."
+  }
+}
+
 locals {
-  dependency_resource_types = { cloudsql = "cloudsql_database", redis = "redis_instance", pubsub = "pubsub_subscription" }
+  dependency_resource_types = { cloudsql = "cloudsql_database", redis = "redis_instance" }
   # The variable's validation already refuses it under grafana; the backend
   # gate here keeps the resources tied to Datadog regardless.
   datadog_gcp_enabled = local.datadog_backend && var.datadog_gcp_integration_enabled
@@ -91,7 +101,7 @@ resource "datadog_integration_gcp_sts" "staging" {
   is_resource_change_collection_enabled     = false
   is_cspm_enabled                           = false
   is_security_command_center_enabled        = false
-  is_global_location_enabled                = false
+  is_global_location_enabled                = var.datadog_gcp_global_location_enabled
 
   # Only the selected Cloud Run services' revisions and this cluster's nodes
   # are imported; other Cloud Run services and VMs in the project are not.

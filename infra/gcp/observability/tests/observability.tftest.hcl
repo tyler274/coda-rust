@@ -77,14 +77,21 @@ run "native_cloud_rules_use_real_source_and_scoped_inventory" {
   assert {
     condition = (
       local.grafana_cloud_conditions["readiness-physician"].no_data == "KeepLast" &&
-      local.grafana_cloud_conditions["dependency-worker_age"].no_data == "OK" &&
-      !contains(keys(local.grafana_cloud_conditions), "absence-worker_age") &&
+      local.grafana_cloud_conditions["dependency-worker_due"].no_data == "OK" &&
+      !contains(keys(local.grafana_cloud_conditions), "absence-worker_due") && !contains(keys(local.grafana_cloud_conditions), "absence-worker_failed") && contains(keys(local.grafana_cloud_conditions), "absence-worker_oldest_due") &&
       strcontains(local.grafana_cloud_conditions["freshness-duet"].expr, "or vector(1)") &&
       alltrue([for key, c in local.grafana_cloud_conditions : strcontains(c.expr, "monitored_resource=\"global\"") if startswith(key, "readiness-") || startswith(key, "freshness-")]) &&
-      strcontains(local.grafana_cloud_conditions["dependency-worker_age"].expr, "1200") &&
-      local.grafana_cloud_conditions["dependency-worker_backlog"].duration == "30m"
+      strcontains(local.grafana_cloud_conditions["dependency-worker_oldest_due"].expr, "custom_googleapis_com:coda_physician_queue_oldest_due_seconds{monitored_resource=\"global\"") && strcontains(local.grafana_cloud_conditions["dependency-worker_oldest_due"].expr, "> bool 300") &&
+      local.grafana_cloud_conditions["dependency-worker_due"].duration == "30m"
     )
     error_message = "Native rules must select the probe's global resource, preserve readiness on silence, distinguish missing observations, and never page for idle sparse queues."
+  }
+  assert {
+    condition = (
+      toset([for rule in yamldecode(local.grafana_cloud_rules).deleteRules : rule.uid]) == toset(["gcp-dependency-worker_age", "gcp-absence-worker_age", "gcp-dependency-worker_backlog", "gcp-dependency-worker_dead_letters"]) &&
+      length(setintersection(toset([for rule in yamldecode(local.grafana_cloud_rules).deleteRules : rule.uid]), toset(local.grafana_cloud_rule_uids))) == 0
+    )
+    error_message = "The retired Pub/Sub subscription rules must be deleted from Grafana state without deleting a live rule."
   }
 }
 
@@ -96,7 +103,7 @@ run "native_cloud_rules_are_removed_when_disabled" {
   assert {
     condition = (
       length(yamldecode(local.grafana_cloud_rules).groups) == 0 &&
-      length(yamldecode(local.grafana_cloud_rules).deleteRules) == length(local.grafana_cloud_conditions)
+      length(yamldecode(local.grafana_cloud_rules).deleteRules) == length(local.grafana_cloud_conditions) + length(local.grafana_cloud_retired_rule_uids)
     )
     error_message = "Disabling the native source must delete its rules from persisted Grafana state."
   }
@@ -1275,6 +1282,21 @@ run "dependency_rules_are_opt_in_even_with_existing_monitors" {
   }
 }
 
+run "worker_queue_scopes_require_global_location_import" {
+  command = plan
+  variables {
+    telemetry_backend               = "both"
+    datadog_gcp_integration_enabled = true
+    datadog_monitors_enabled        = true
+    dependency_monitors_enabled     = true
+    alert_notify                    = "@slack-confirmed-test"
+    dependency_metric_scopes = {
+      worker_oldest_due = "env:staging,project_id:test-rust-stg-only,resource_type:global"
+    }
+  }
+  expect_failures = [var.dependency_metric_scopes]
+}
+
 run "dependency_missing_data_and_idle_contract" {
   command = plan
   variables {
@@ -1282,25 +1304,30 @@ run "dependency_missing_data_and_idle_contract" {
     availability_monitors_enabled          = true
     availability_firing_metric             = "synthetic.availability.firing"
     datadog_gcp_integration_enabled        = true
+    datadog_gcp_global_location_enabled    = true
     datadog_monitors_enabled               = true
     dependency_monitors_enabled            = true
     collector_availability_monitor_enabled = true
     alert_notify                           = "@slack-confirmed-test"
     dependency_metric_scopes = {
-      physician_sql_up    = "env:staging,project_id:test-rust-stg-only,database_id:test-rust-stg-only:rust-physician"
-      redis_uptime        = "env:staging,project_id:test-rust-stg-only,instance_id:test-redis"
-      worker_age          = "env:staging,project_id:test-rust-stg-only,subscription_id:physician-chat-turns-worker"
-      worker_backlog      = "env:staging,project_id:test-rust-stg-only,subscription_id:physician-chat-turns-worker"
-      worker_dead_letters = "env:staging,project_id:test-rust-stg-only,subscription_id:physician-chat-turns-dead-letter"
+      physician_sql_up  = "env:staging,project_id:test-rust-stg-only,database_id:test-rust-stg-only:rust-physician"
+      redis_uptime      = "env:staging,project_id:test-rust-stg-only,instance_id:test-redis"
+      worker_oldest_due = "env:staging,project_id:test-rust-stg-only,resource_type:global"
+      worker_due        = "env:staging,project_id:test-rust-stg-only,resource_type:global"
+      worker_failed     = "env:staging,project_id:test-rust-stg-only,resource_type:global"
     }
   }
   assert {
-    condition     = toset(keys(datadog_monitor.dependency_absence)) == toset(["physician_sql_up", "redis_uptime"]) && alltrue([for monitor in datadog_monitor.dependency_symptom : !monitor.notify_no_data])
+    condition     = toset(keys(datadog_monitor.dependency_absence)) == toset(["physician_sql_up", "redis_uptime", "worker_oldest_due"]) && alltrue([for monitor in datadog_monitor.dependency_symptom : !monitor.notify_no_data])
     error_message = "Only continuously expected signals get separate absence monitors; empty queues cannot page on absence."
   }
   assert {
-    condition     = datadog_monitor.dependency_symptom["worker_age"].query == "min(last_5m):max:gcp.pubsub.subscription.oldest_unacked_message_age{env:staging,project_id:test-rust-stg-only,subscription_id:physician-chat-turns-worker}.fill(null) > 1200" && datadog_monitor.dependency_symptom["worker_backlog"].monitor_thresholds[0].critical == "0"
-    error_message = "Age must admit a delivery plus maximum retry backoff; backlog must require positive work, not zero instances."
+    condition     = datadog_monitor.dependency_symptom["worker_oldest_due"].query == "min(last_5m):max:gcp.custom.coda.physician.queue.oldest_due_seconds{env:staging,project_id:test-rust-stg-only,resource_type:global}.fill(null) > 300" && datadog_monitor.dependency_symptom["worker_due"].monitor_thresholds[0].critical == "0" && datadog_monitor.dependency_symptom["worker_failed"].query == "min(last_5m):max:gcp.custom.coda.physician.queue.failed{env:staging,project_id:test-rust-stg-only,resource_type:global}.fill(null) > 0"
+    error_message = "Worker signals read the Postgres-derived gauges: age past five minutes of polls, positive due work, any failed work."
+  }
+  assert {
+    condition     = datadog_integration_gcp_sts.staging["integration"].is_global_location_enabled
+    error_message = "Worker queue monitors need the global-location import that carries their custom gauges."
   }
   assert {
     condition     = alltrue([for monitor in datadog_monitor.dependency_absence : monitor.notify_no_data && monitor.no_data_timeframe == 20 && !monitor.require_full_window && monitor.renotify_occurrences == 2])
@@ -1311,7 +1338,7 @@ run "dependency_missing_data_and_idle_contract" {
     error_message = "Collector availability must use stable deployment identity, never retired node/pod groups, with separate absence."
   }
   assert {
-    condition     = datadog_monitor.dependency_symptom["physician_sql_up"].timeout_h == 0 && datadog_monitor.dependency_symptom["worker_backlog"].timeout_h == 1 && datadog_monitor.collector_availability["unavailable"].timeout_h == 0
+    condition     = datadog_monitor.dependency_symptom["physician_sql_up"].timeout_h == 0 && datadog_monitor.dependency_symptom["worker_due"].timeout_h == 1 && datadog_monitor.dependency_symptom["worker_oldest_due"].timeout_h == 0 && datadog_monitor.collector_availability["unavailable"].timeout_h == 0
     error_message = "Continuous symptoms cannot auto-resolve on missing data; sparse queue resolution is explicitly qualified."
   }
   assert {
@@ -1334,7 +1361,7 @@ run "dependency_missing_data_and_idle_contract" {
 run "reject_unscoped_dependency_series" {
   command = plan
   variables {
-    dependency_metric_scopes = { worker_age = "env:staging,*" }
+    dependency_metric_scopes = { worker_oldest_due = "env:staging,*" }
   }
   expect_failures = [var.dependency_metric_scopes]
 }
@@ -1418,7 +1445,7 @@ run "reject_unbounded_gcp_dependency_opt_in" {
   command = plan
   variables {
     datadog_gcp_integration_enabled   = true
-    datadog_gcp_dependency_collection = { pubsub = { verified_resource_filters = [] } }
+    datadog_gcp_dependency_collection = { redis = { verified_resource_filters = [] } }
   }
   expect_failures = [var.datadog_gcp_dependency_collection]
 }

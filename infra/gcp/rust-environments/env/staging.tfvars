@@ -44,10 +44,9 @@ enable_physician_smtp_relay = true
 mail_relay_image    = "us-east1-docker.pkg.dev/coda-rust-staging/apps/mail-relay@sha256:4179edf841befcfa33b5dcdb0e1efe0bf20d1dce184fe9359efcb9eef71c6ea4"
 mail_relay_invokers = ["serviceAccount:workspace-web-staging@coda-gym.iam.gserviceaccount.com"]
 
-# Physician scaling (book/src/gcp.md#physician-scaling-redis-fan-out-and-pubsub-chat-turns):
-# Memorystore Basic 1 GB (about $35/month, always billed), the Pub/Sub chat-turn
-# queue, the internal physician-worker, and one always-on physician site
-# instance with allocated CPU (about $53/month) that runs the recovery sweep.
+# Physician scaling (book/src/gcp.md#physician-scaling-redis-fan-out-and-the-chat-turn-worker):
+# Memorystore Basic 1 GB (about $35/month, always billed) and the internal
+# physician-worker, which pulls accepted turns from Postgres.
 # images.physician.worker is the initial digest. Later releases own that field.
 enable_physician_scale = true
 

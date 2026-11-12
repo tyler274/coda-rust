@@ -4,6 +4,7 @@
 //! that makes work runnable, only tells a listening worker sooner than its
 //! next poll; a lost notification delays work and never loses it. Provider
 //! calls themselves are not exactly-once.
+use std::num::NonZeroU64;
 use std::time::Duration;
 
 use harness::engine::MAX_FAILED_ATTEMPTS;
@@ -369,6 +370,101 @@ pub(super) fn revision_due() -> Cond {
         .add(Cond::any().add(revision_pending()).add(revision_lost()))
 }
 
+/// One owner table's share of the [`QueueSignals`], in SQL over its rows.
+/// Work is due when it is pending past `dispatch_after` (`pending`), or
+/// running with no live lease (`lost`); it has waited since `pending_since`
+/// or `lost_since`. `failed` is work recovery gave up on. `owed` narrows the
+/// rows the hosted workers owe at all.
+struct Owed {
+    pending: Cond,
+    pending_since: Expr,
+    lost: Cond,
+    lost_since: Expr,
+    failed: Cond,
+    owed: Cond,
+}
+
+impl Owed {
+    fn select(self, table: impl IntoTableRef) -> SelectStatement {
+        let Self {
+            pending,
+            pending_since,
+            lost,
+            lost_since,
+            failed,
+            owed,
+        } = self;
+        let tally = |condition: Cond| -> Expr {
+            Func::coalesce([
+                Expr::from(Func::sum(Expr::case(condition, 1).finally(0))),
+                Expr::val(0),
+            ])
+            .into()
+        };
+        let due = Cond::any().add(pending.clone()).add(lost.clone());
+        let waiting_since = Expr::case(pending, pending_since)
+            .case(lost, lost_since)
+            .finally(Expr::null());
+        Query::select()
+            .expr_as(tally(due), Alias::new("due"))
+            .expr_as(
+                database_clock().sub(Expr::from(Func::min(waiting_since))),
+                Alias::new("oldest_due"),
+            )
+            .expr_as(tally(failed), Alias::new("failed"))
+            .from(table)
+            .cond_where(owed)
+            .to_owned()
+    }
+}
+
+/// Chat turns: due and lost by [`chat_turn_pending`] and [`chat_turn_lost`],
+/// the rules [`Store::dispatch_due`] reads by. A pending turn has waited since
+/// its `dispatch_after`, and a lost turn since its latest attempt's lease ran
+/// out.
+fn owed_chat_turns() -> Owed {
+    use chat_attempt::Column as A;
+    use conversation::Column as C;
+    let row = |column: C| Expr::col((conversation::Entity, column));
+    let lease_end = Expr::from(
+        latest_chat_attempt()
+            .column((chat_attempt::Entity, A::Expires))
+            .to_owned(),
+    );
+    let dispatch_after = state_bigint(row(C::State), "dispatch_after");
+    Owed {
+        pending: chat_turn_pending(),
+        pending_since: dispatch_after.clone(),
+        lost: chat_turn_lost(),
+        lost_since: Func::coalesce([lease_end, dispatch_after]).into(),
+        failed: Cond::all().add(row(C::Status).eq(WorkStatus::Failed)),
+        owed: Cond::all().add(row(C::SessionHash).is_not_null()),
+    }
+}
+
+/// Reply revisions: owed, due and lost by [`revision_owed`],
+/// [`revision_pending`] and [`revision_lost`], the rules
+/// [`Store::revisions_due`] reads by. A pending revision has waited since its
+/// `dispatch_after`, and a lost one since its latest attempt's lease ran out.
+fn owed_reply_revisions() -> Owed {
+    use reply_draft::Column as D;
+    use revision_attempt::Column as A;
+    let row = |column: D| Expr::col((reply_draft::Entity, column));
+    let lease_end = Expr::from(
+        latest_revision_attempt()
+            .column((revision_attempt::Entity, A::Expires))
+            .to_owned(),
+    );
+    Owed {
+        pending: revision_pending(),
+        pending_since: state_bigint(row(D::State), "dispatch_after"),
+        lost: revision_lost(),
+        lost_since: lease_end,
+        failed: Cond::all().add(row(D::Status).eq(DraftStatus::Failed)),
+        owed: revision_owed(),
+    }
+}
+
 fn connection(source: sea_orm::sqlx::Error) -> DbErr {
     DbErr::Conn(RuntimeErr::SqlxError(source.into()))
 }
@@ -471,6 +567,41 @@ impl Delivery {
     }
 }
 
+/// What the hosted workers owe, across chat turns and current reply
+/// revisions, read from the rows that own the work. Counts only: no scope
+/// or content.
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
+pub struct QueueSignals {
+    /// Work runnable now: pending past its retry delay, or a lease run out.
+    /// None when nothing is due.
+    pub due: Option<DueWork>,
+    /// Work that ended failed after [`MAX_FAILED_ATTEMPTS`] and waits for
+    /// the physician's Try again.
+    pub failed: u64,
+}
+
+/// Due work, which always has an age.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub struct DueWork {
+    /// How many chat turns and reply revisions are runnable.
+    pub count: NonZeroU64,
+    /// How long the longest-waiting of them has been runnable.
+    pub oldest: Duration,
+}
+
+impl DueWork {
+    /// Both owners' due work together.
+    fn merge(a: Option<Self>, b: Option<Self>) -> Option<Self> {
+        match (a, b) {
+            (Some(a), Some(b)) => Some(Self {
+                count: a.count.saturating_add(b.count.get()),
+                oldest: a.oldest.max(b.oldest),
+            }),
+            (one, None) | (None, one) => one,
+        }
+    }
+}
+
 /// One keyset page of due work.
 #[derive(Debug)]
 pub struct DispatchPage {
@@ -553,6 +684,35 @@ impl Store {
         Ok(soonest.map(|seconds| Duration::from_secs(seconds.unsigned_abs())))
     }
 
+    /// The [`QueueSignals`] of every hosted chat turn and current reply
+    /// revision, by the same due rule the dispatch reads apply.
+    pub async fn queue_signals(&self) -> Result<QueueSignals, DbErr> {
+        let queries = [
+            owed_chat_turns().select(conversation::Entity),
+            owed_reply_revisions().select(reply_draft::Entity),
+        ];
+        let mut signals = QueueSignals::default();
+        for query in queries {
+            let Some(row) = self.db.query_one(&query).await? else {
+                return Err(error("queue signal read returned no row"));
+            };
+            let due: i64 = row.try_get("", "due")?;
+            let failed: i64 = row.try_get("", "failed")?;
+            let oldest: Option<i64> = row.try_get("", "oldest_due")?;
+            let due = match (NonZeroU64::new(due.unsigned_abs()), oldest) {
+                (None, _) => None,
+                (Some(count), Some(seconds)) => Some(DueWork {
+                    count,
+                    oldest: Duration::from_secs(Ord::max(seconds, 0).unsigned_abs()),
+                }),
+                (Some(_), None) => return Err(error("queue signal read due work without an age")),
+            };
+            signals.due = DueWork::merge(signals.due, due);
+            signals.failed += failed.unsigned_abs();
+        }
+        Ok(signals)
+    }
+
     /// Atomically claims only the input named by the delivery, never a newer
     /// turn, and only once it is due.
     pub async fn claim_delivery(
@@ -607,6 +767,8 @@ impl Store {
                 state.status = after.work_status();
                 AttemptSettlement::Failed(after)
             } else {
+                // Handed back without a counted failure: due again from now.
+                state.dispatch_after = now;
                 AttemptSettlement::Applied
             };
         }

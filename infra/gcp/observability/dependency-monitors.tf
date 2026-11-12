@@ -8,12 +8,19 @@ variable "dependency_metric_scopes" {
   validation {
     condition = alltrue([
       for key, scope in var.dependency_metric_scopes :
-      contains(["physician_sql_up", "duet_sql_up", "physician_sql_storage", "duet_sql_storage", "redis_pressure", "redis_uptime", "worker_age", "worker_backlog", "worker_dead_letters"], key) &&
+      contains(["physician_sql_up", "duet_sql_up", "physician_sql_storage", "duet_sql_storage", "redis_pressure", "redis_uptime", "worker_oldest_due", "worker_due", "worker_failed"], key) &&
       can(regex("(^|,)env:staging(,|$)", scope)) &&
       length(split(",", scope)) >= 3 &&
       !can(regex("[{}*]|patient|run_id|chat_id|conversation", scope))
     ])
     error_message = "Scopes require a known signal key, env:staging and verified project/resource tags; wildcards, expressions and clinical identifiers are forbidden."
+  }
+  # The worker gauges are custom metrics on the global resource, which the
+  # GCP integration imports only with global-location collection on; a scope
+  # is supplied once their series has been observed in Datadog.
+  validation {
+    condition     = var.datadog_gcp_global_location_enabled || length([for key in keys(var.dependency_metric_scopes) : key if startswith(key, "worker_")]) == 0
+    error_message = "Worker queue scopes require datadog_gcp_global_location_enabled, which imports the worker's global custom gauges."
   }
 }
 
@@ -39,10 +46,15 @@ variable "collector_availability_monitor_enabled" {
 
 locals {
   dependency_runbook = "https://github.com/Coda-Health/coda-rust/blob/main/book/src/observability.md"
-  # Worker lease: 540 s (physician-worker.rs); push/Cloud Run deadline: 600 s;
-  # retry backoff: 10..600 s (queue.tf). 1,200 s admits one full delivery plus
-  # the maximum retry backoff, not five worst-case deliveries before notifying.
-  # Pub/Sub is only a wakeup; canonical Postgres work must be checked separately.
+  # The worker signals are gauges each physician-worker instance writes every
+  # minute from the Postgres rows that own the work (physician-worker
+  # signals.rs). Work is due once its retry delay passes or its lease runs
+  # out; a worker with room starts due work within one 10 s poll, so due work
+  # still waiting after 300 s throughout five minutes means no worker is
+  # taking it. Every instance reads the same rows, so queries take the max.
+  # Age is continuous: a running worker writes it even when nothing is due,
+  # so its absence means no worker is reporting. Failed work waits for the
+  # physician's Try again, so the failed count stays up until then.
   dependency_signals = {
     physician_sql_up      = { service = "physician-sample", metric = "gcp.cloudsql.database.up", aggregation = "max", window = "5m", operator = "<", threshold = 1, continuous = true, symptom = "Cloud SQL reports unavailable" }
     duet_sql_up           = { service = "duet-api", metric = "gcp.cloudsql.database.up", aggregation = "max", window = "5m", operator = "<", threshold = 1, continuous = true, symptom = "Cloud SQL reports unavailable" }
@@ -51,10 +63,10 @@ locals {
     redis_pressure        = { service = "physician-sample", metric = "gcp.redis.stats.memory.usage_ratio", aggregation = "min", window = "15m", operator = ">", threshold = 0.85, continuous = true, symptom = "Redis memory fraction exceeds 0.85" }
     # Uptime is an availability heartbeat, not a reachability test. Only its
     # absence monitor is generated: a normal Redis restart is not an outage.
-    redis_uptime        = { service = "physician-sample", metric = "gcp.redis.server.uptime", aggregation = "max", window = "5m", operator = "<", threshold = 0, continuous = true, symptom = "Redis uptime telemetry is unavailable" }
-    worker_age          = { service = "physician-worker", metric = "gcp.pubsub.subscription.oldest_unacked_message_age", aggregation = "min", window = "5m", operator = ">", threshold = 1200, continuous = false, symptom = "oldest unacknowledged wakeup exceeds 1,200 seconds" }
-    worker_backlog      = { service = "physician-worker", metric = "gcp.pubsub.subscription.num_undelivered_messages", aggregation = "min", window = "30m", operator = ">", threshold = 0, continuous = false, symptom = "unacknowledged wakeups persist" }
-    worker_dead_letters = { service = "physician-worker", metric = "gcp.pubsub.subscription.num_undelivered_messages", aggregation = "min", window = "5m", operator = ">", threshold = 0, continuous = false, symptom = "dead-letter subscription contains unacknowledged messages" }
+    redis_uptime      = { service = "physician-sample", metric = "gcp.redis.server.uptime", aggregation = "max", window = "5m", operator = "<", threshold = 0, continuous = true, symptom = "Redis uptime telemetry is unavailable" }
+    worker_oldest_due = { service = "physician-worker", metric = "gcp.custom.coda.physician.queue.oldest_due_seconds", aggregation = "min", window = "5m", operator = ">", threshold = 300, continuous = true, symptom = "due physician work has waited more than 300 seconds" }
+    worker_due        = { service = "physician-worker", metric = "gcp.custom.coda.physician.queue.due", aggregation = "min", window = "30m", operator = ">", threshold = 0, continuous = false, symptom = "due physician work persists" }
+    worker_failed     = { service = "physician-worker", metric = "gcp.custom.coda.physician.queue.failed", aggregation = "min", window = "5m", operator = ">", threshold = 0, continuous = false, symptom = "physician work ended failed and waits for Try again" }
   }
   active_dependency_signals = {
     for key, signal in local.dependency_signals : key => signal
