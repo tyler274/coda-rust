@@ -3,9 +3,9 @@
 This root deploys the observability stack into the private observability
 Autopilot cluster that [`infra/gcp/rust-environments`](/infra/gcp/rust-environments)
 creates behind `observability_cluster_enabled`. The target is variable-driven
-(`cluster_project`, `cluster_location`, `cluster_name`, `network_name`, all
-required): this root reads the cluster and the `rust-private` VPC through data
-sources and never manages them, their subnets or the gateway address. The
+(`cluster_project`, `cluster_location`, `cluster_name`, all required): this
+root reads the cluster through data sources and never manages it, its subnets
+or the gateway address. The
 data flow, content policy, and runbook are in
 [book/src/observability.md](/book/src/observability.md).
 
@@ -170,7 +170,7 @@ holds the stable names, and the operator renders the rest from the outputs:
 
 | This root | `rust-environments` output |
 | --- | --- |
-| `cluster_project`, `cluster_location`, `cluster_name`, `network_name` | `observability_cluster.{project,location,name,network}` |
+| `cluster_project`, `cluster_location`, `cluster_name` | `observability_cluster.{project,location,name}` |
 | `otel_gateway_ip` | `otel_gateway.ip` (reserved `INTERNAL` address in the node subnet) |
 | `otel_gateway_audience` | `otel_gateway.audience` |
 | `otel_gateway_source_ranges` | `otel_gateway.source_ranges` (the Cloud Run Direct VPC egress subnet `rust-run`) |
@@ -290,15 +290,20 @@ returns Grafana to its root path for port-forward.
 
 ### Retired self-hosted stores
 
-`retired-langfuse.tf` keeps the self-hosted Langfuse's Cloud SQL instance
-`coda-langfuse`, its database and IAM user, and the
-`<project>-langfuse-blobs` bucket out of this root's state without destroying
-them; they hold staging traces from before the hosted project. The
-`coda-langfuse` and `coda-langfuse-blobs` service accounts are forgotten the
-same way; the bucket's HMAC key and the Doppler keys that self-hosted Langfuse
-read outlive them too.
-Deleting any of them is a separate operation with its own authorization, after
-the hosted project's drills pass.
+`retired-langfuse.tf` declares destruction of the staging self-hosted Langfuse
+Cloud SQL instance `coda-langfuse`, its database and IAM user, the
+`<project>-langfuse-blobs` bucket, and the `coda-langfuse` and
+`coda-langfuse-blobs` service accounts. The saved plan must be reviewed and
+explicitly authorized before applying. These declarations must not be applied
+to a production state.
+
+Cloud SQL has both provider-side and API-side deletion protection. Disable
+those protections through a reviewed preparatory apply before destroying the
+instance. The bucket refuses deletion while it contains objects; emptying it
+is an irreversible data deletion and belongs in the authorized cleanup.
+The bucket's operator-managed HMAC key and the old Doppler keys require
+separate cleanup; they are not managed by these declarations. Destruction
+removes the stored traces and prevents rollback using the existing stores.
 
 ## Boundary
 

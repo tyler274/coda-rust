@@ -323,7 +323,7 @@ async fn observability_mounts_keep_prefix_drop_spoofed_assertion_cookies_and_off
             }
             _ => (
                 [(header::SET_COOKIE, "grafana_session=g; Path=/grafana")],
-                path,
+                request.uri().to_string(),
             )
                 .into_response(),
         }
@@ -352,7 +352,7 @@ async fn observability_mounts_keep_prefix_drop_spoofed_assertion_cookies_and_off
     let body = axum::body::to_bytes(response.into_body(), 1024)
         .await
         .unwrap();
-    assert_eq!(body, "/grafana/api/health");
+    assert_eq!(body, "/grafana/api/health?x=1");
     // The bare prefix reaches Grafana unchanged; Grafana owns its root's
     // trailing-slash rule, so the proxy adds no redirect that could loop.
     let response = send(Mount::Grafana, "/grafana").await;
