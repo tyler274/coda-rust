@@ -64,19 +64,41 @@ impl Editor {
     /// editors that have such keys. Zed has none: it forwards only what the
     /// SSH config does, which doctor checks on its own.
     pub fn settings(self) -> Option<SettingsFile> {
-        let (app, keys): (_, &'static [ForwardingKey]) = match self {
-            Self::Cursor => ("Cursor", &ForwardingKey::ALL),
-            Self::VsCode => ("Code", &ForwardingKey::ALL),
+        let (app, keys, extensions): (_, &'static [ForwardingKey], _) = match self {
+            Self::Cursor => ("Cursor", &ForwardingKey::ALL, RemoteExtensions::Setting),
+            Self::VsCode => ("Code", &ForwardingKey::ALL, RemoteExtensions::Setting),
             // Its SSH extension has no agent-forwarding key and follows the
-            // SSH config's ForwardAgent.
+            // SSH config's ForwardAgent, and it has no default-extensions key.
             Self::Antigravity => (
                 "Antigravity IDE",
                 &[ForwardingKey::GitTerminal, ForwardingKey::GithubGit],
+                RemoteExtensions::ByHand,
             ),
             Self::Zed => return None,
         };
-        Some(SettingsFile { app, keys })
+        Some(SettingsFile {
+            app,
+            keys,
+            extensions,
+        })
     }
+}
+
+/// The extensions the container side of the VS Code family needs: direnv
+/// loads the checkout's dev shell, and rust-analyzer then runs the
+/// flake's server from it.
+pub const REMOTE_EXTENSIONS: [&str; 2] = ["mkhl.direnv", "rust-lang.rust-analyzer"];
+
+/// The key that installs extensions on a remote server when it starts.
+pub const DEFAULT_EXTENSIONS_KEY: &str = "remote.SSH.defaultExtensions";
+
+/// How the container side of an editor gets [`REMOTE_EXTENSIONS`].
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum RemoteExtensions {
+    /// [`DEFAULT_EXTENSIONS_KEY`] in the user settings installs them.
+    Setting,
+    /// Nothing does; they are installed once into the remote server.
+    ByHand,
 }
 
 /// An editor's user settings file and the forwarding keys it must turn off.
@@ -85,6 +107,7 @@ pub struct SettingsFile {
     /// The directory under `~/.config`.
     app: &'static str,
     pub keys: &'static [ForwardingKey],
+    pub extensions: RemoteExtensions,
 }
 
 impl SettingsFile {
@@ -156,5 +179,18 @@ impl Settings {
             Some(Value::Bool(true)) => Setting::On,
             Some(other) => Setting::NotBoolean(other.clone()),
         }
+    }
+
+    /// The [`REMOTE_EXTENSIONS`] that [`DEFAULT_EXTENSIONS_KEY`] does not
+    /// list. Extension ids compare without case, as the editors do.
+    pub fn missing_remote_extensions(&self) -> Vec<&'static str> {
+        let listed: Vec<&str> = match self.0.get(DEFAULT_EXTENSIONS_KEY) {
+            Some(Value::Array(ids)) => ids.iter().filter_map(Value::as_str).collect(),
+            _ => Vec::new(),
+        };
+        REMOTE_EXTENSIONS
+            .into_iter()
+            .filter(|want| !listed.iter().any(|id| id.eq_ignore_ascii_case(want)))
+            .collect()
     }
 }

@@ -4,7 +4,10 @@ use serde::Serialize;
 
 use super::{Check, Finding, Fix, Outcome, SpoolDir, broker, reflink};
 use crate::config::{Config, Loaded, UnitName};
-use crate::editor_settings::{Editor, ForwardingKey, Setting, Settings};
+use crate::editor_settings::{
+    DEFAULT_EXTENSIONS_KEY, Editor, ForwardingKey, RemoteExtensions, Setting, Settings,
+    SettingsFile,
+};
 use crate::error::Error;
 use crate::probe::{ActiveState, LoadState, PathKind, Probe, SSH_DEADLINE, SshReach, UnitScope};
 
@@ -317,37 +320,92 @@ fn editor_outcome(probe: &dyn Probe, editor: Editor) -> Option<Outcome> {
             cause: Error::NoHome,
         });
     };
-    Some(settings_outcome(probe, &file.path(&home), file.keys))
+    Some(settings_outcome(probe, &file.path(&home), file))
 }
 
-fn settings_outcome(probe: &dyn Probe, path: &Path, keys: &[ForwardingKey]) -> Outcome {
+fn settings_outcome(probe: &dyn Probe, path: &Path, file: SettingsFile) -> Outcome {
     let text = match probe.read_file(path) {
         Ok(Some(text)) => text,
-        Ok(None) => {
-            return Outcome::Skip {
-                reason: format!("no {}", path.display()),
-            };
-        }
+        Ok(None) => return no_settings_outcome(probe, path, file),
         Err(cause) => return Outcome::CannotCheck { cause },
     };
-    match Settings::parse(path, &text) {
-        Ok(settings) => forwarding_outcome(&settings, keys, path),
+    let settings = match Settings::parse(path, &text) {
+        Ok(settings) => settings,
+        Err(cause) => return Outcome::CannotCheck { cause },
+    };
+    if let Some(failure) = forwarding_failure(&settings, file.keys, path) {
+        return failure;
+    }
+    extensions_outcome(&settings, file.extensions, path)
+}
+
+/// An editor that has run keeps its user directory even with no settings
+/// file, and then every forwarding key is at its default, on. An editor
+/// that never ran on this machine has neither.
+fn no_settings_outcome(probe: &dyn Probe, path: &Path, file: SettingsFile) -> Outcome {
+    let Some(user_dir) = path.parent() else {
+        return Outcome::Skip {
+            reason: format!("no {}", path.display()),
+        };
+    };
+    match probe.path_kind(user_dir) {
+        Ok(PathKind::Directory) => {
+            let keys: Vec<&str> = file.keys.iter().map(|key| key.key()).collect();
+            Outcome::Fail {
+                detail: format!(
+                    "no {}, so {} default to true",
+                    path.display(),
+                    keys.join(", ")
+                ),
+                fix: Fix::instruction(format!(
+                    "create {} setting {} to false",
+                    path.display(),
+                    keys.join(", ")
+                )),
+            }
+        }
+        Ok(_) => Outcome::Skip {
+            reason: format!("no {}", path.display()),
+        },
         Err(cause) => Outcome::CannotCheck { cause },
+    }
+}
+
+/// Missing extensions only warn: the remote still works and forwards
+/// nothing, but rust-analyzer and the dev shell wait for a manual install.
+fn extensions_outcome(settings: &Settings, extensions: RemoteExtensions, path: &Path) -> Outcome {
+    let missing = match extensions {
+        RemoteExtensions::Setting => settings.missing_remote_extensions(),
+        RemoteExtensions::ByHand => Vec::new(),
+    };
+    if missing.is_empty() {
+        return Outcome::Pass {
+            detail: "credential forwarding off".to_owned(),
+        };
+    }
+    Outcome::Warn {
+        detail: format!(
+            "credential forwarding off; {DEFAULT_EXTENSIONS_KEY} lacks {}, so the container side has no dev shell or rust-analyzer until they are installed",
+            missing.join(", ")
+        ),
+        fix: Fix::instruction(format!(
+            "add {} to {DEFAULT_EXTENSIONS_KEY} in {}",
+            missing.join(", "),
+            path.display()
+        )),
     }
 }
 
 /// Unset fails like `true`: the editors default these keys on, so an unset
 /// key forwards the host's credentials just the same.
-fn forwarding_outcome(settings: &Settings, keys: &[ForwardingKey], path: &Path) -> Outcome {
+fn forwarding_failure(settings: &Settings, keys: &[ForwardingKey], path: &Path) -> Option<Outcome> {
     let not_off: Vec<(ForwardingKey, Setting)> = keys
         .iter()
         .map(|&key| (key, settings.get(key)))
         .filter(|(_, setting)| *setting != Setting::Off)
         .collect();
     if not_off.is_empty() {
-        return Outcome::Pass {
-            detail: "credential forwarding off".to_owned(),
-        };
+        return None;
     }
     let keys: Vec<&str> = not_off.iter().map(|(key, _)| key.key()).collect();
     let described: Vec<String> = not_off
@@ -358,12 +416,12 @@ fn forwarding_outcome(settings: &Settings, keys: &[ForwardingKey], path: &Path) 
             Setting::On | Setting::Off => format!("{} = true", key.key()),
         })
         .collect();
-    Outcome::Fail {
+    Some(Outcome::Fail {
         detail: described.join("; "),
         fix: Fix::instruction(format!(
             "set {} to false in {}",
             keys.join(", "),
             path.display()
         )),
-    }
+    })
 }

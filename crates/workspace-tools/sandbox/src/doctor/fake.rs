@@ -143,6 +143,7 @@ const SAFE_SETTINGS: &str = r#"{
   "remote.SSH.enableAgentForwarding": false,
   "git.terminalAuthentication": false,
   "github.gitAuthentication": false,
+  "remote.SSH.defaultExtensions": ["mkhl.direnv", "rust-lang.rust-analyzer"],
 }"#;
 
 /// Cyrene as it should be, with the legacy token directories gone.

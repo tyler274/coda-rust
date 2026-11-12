@@ -326,6 +326,62 @@ fn unset_and_enabled_forwarding_both_fail() {
 }
 
 #[test]
+fn an_editor_that_ran_without_a_settings_file_fails() {
+    let path = settings_path(Editor::Antigravity);
+    let mut probe = healthy();
+    let findings = run(&probe, &config());
+    assert!(matches!(
+        outcome(&findings, &Check::EditorSettings(Editor::Antigravity)),
+        Outcome::Skip { .. }
+    ));
+
+    probe
+        .dirs
+        .push(path.parent().expect("a user directory").to_owned());
+    let findings = run(&probe, &config());
+    assert!(matches!(
+        outcome(&findings, &Check::EditorSettings(Editor::Antigravity)),
+        Outcome::Fail { detail, .. } if detail.contains("github.gitAuthentication")
+    ));
+}
+
+#[test]
+fn missing_remote_extensions_warn_once_forwarding_is_off() {
+    let path = settings_path(Editor::Cursor);
+    let mut probe = healthy();
+    probe.files.insert(
+        path.clone(),
+        r#"{
+          "remote.SSH.enableAgentForwarding": false,
+          "git.terminalAuthentication": false,
+          "github.gitAuthentication": false,
+          "remote.SSH.defaultExtensions": ["MKHL.direnv"],
+        }"#
+        .to_owned(),
+    );
+    let findings = run(&probe, &config());
+    assert!(matches!(
+        outcome(&findings, &Check::EditorSettings(Editor::Cursor)),
+        Outcome::Warn { detail, fix: Fix::Instruction(fix) }
+            if detail.contains("lacks rust-lang.rust-analyzer")
+                && !detail.contains("mkhl.direnv")
+                && fix.contains("remote.SSH.defaultExtensions")
+    ));
+    assert_eq!(verdict(&findings), Verdict::Healthy);
+
+    // A forwarding failure is the finding, whatever the extensions.
+    probe.files.insert(
+        path,
+        r#"{ "git.terminalAuthentication": false }"#.to_owned(),
+    );
+    let findings = run(&probe, &config());
+    assert!(matches!(
+        outcome(&findings, &Check::EditorSettings(Editor::Cursor)),
+        Outcome::Fail { detail, .. } if !detail.contains("defaultExtensions")
+    ));
+}
+
+#[test]
 fn antigravity_needs_only_its_git_keys_off_and_zed_has_no_settings_check() {
     let path = settings_path(Editor::Antigravity);
     assert!(path.ends_with(".config/Antigravity IDE/User/settings.json"));
