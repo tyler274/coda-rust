@@ -441,3 +441,107 @@ pub(super) mod skill_package {
     pub enum Relation {}
     impl ActiveModelBehavior for ActiveModel {}
 }
+
+/// One clinical concern Coda raised for a patient workspace in a practice.
+/// Created by the runtime chain's `m20261112_concerns` migration.
+pub(super) mod concern {
+    use sea_orm::entity::prelude::*;
+
+    #[derive(Clone, Debug, PartialEq, Eq, DeriveEntityModel)]
+    #[sea_orm(table_name = "physician_runtime_concerns")]
+    pub struct Model {
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub practice: String,
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub workspace: String,
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub id: String,
+        /// `now` or `today`.
+        #[sea_orm(column_type = "Text")]
+        pub urgency: String,
+        /// `open`, `done`, or `retired`.
+        #[sea_orm(column_type = "Text")]
+        pub status: String,
+        /// Why Coda thinks the physician should see this concern.
+        #[sea_orm(column_type = "Text")]
+        pub reason: String,
+        /// Serialized `Vec<ExactRecordReference>`.
+        #[sea_orm(column_type = "JsonBinary")]
+        pub records: Json,
+        /// Serialized `SourceWork` that raised or most recently revised the concern.
+        #[sea_orm(column_type = "JsonBinary")]
+        pub source_work: Json,
+        /// Physician who cleared the concern as `Done`, present iff `status = 'done'`.
+        #[sea_orm(column_type = "Text")]
+        pub cleared_by_physician: Option<String>,
+        /// Database-clock seconds when cleared `Done`, present iff `status = 'done'`.
+        pub cleared_at: Option<i64>,
+        /// Feedback revision recorded with `Done`, present iff `status = 'done'`.
+        pub feedback_revision: Option<i64>,
+        /// One-line retirement reason for Updates, present iff `status = 'retired'`.
+        #[sea_orm(column_type = "Text")]
+        pub retirement_reason: Option<String>,
+        /// Serialized `SourceWork` that retired the concern, present iff `status = 'retired'`.
+        #[sea_orm(column_type = "JsonBinary")]
+        pub retired_by_work: Option<Json>,
+        /// Database-clock seconds when retired, present iff `status = 'retired'`.
+        pub retired_at: Option<i64>,
+        /// Database-clock seconds when first raised.
+        pub created_at: i64,
+        /// Database-clock seconds of the latest mutation.
+        pub updated_at: i64,
+        /// 1 when raised; incremented on every revise, retire, or `Done`.
+        pub revision: i64,
+    }
+
+    #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
+    pub enum Relation {}
+
+    impl ActiveModelBehavior for ActiveModel {}
+}
+
+/// Durable physician feedback recorded when a concern is cleared as `Done`,
+/// kept with the concern snapshot for evaluation. Created by `m20261112_concerns`.
+pub(super) mod concern_feedback {
+    use sea_orm::entity::prelude::*;
+
+    #[derive(Clone, Debug, PartialEq, Eq, DeriveEntityModel)]
+    #[sea_orm(table_name = "physician_runtime_concern_feedback")]
+    pub struct Model {
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub practice: String,
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub workspace: String,
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub concern: String,
+        /// Physician who cleared the concern `Done`.
+        #[sea_orm(column_type = "Text")]
+        pub physician: String,
+        /// `done`.
+        #[sea_orm(column_type = "Text")]
+        pub action: String,
+        /// Revision of the concern after clearing.
+        pub concern_revision: i64,
+        /// `now` or `today` snapshot when cleared.
+        #[sea_orm(column_type = "Text")]
+        pub urgency: String,
+        /// Concern statement snapshot when cleared.
+        #[sea_orm(column_type = "Text")]
+        pub concern_reason: String,
+        /// Cited `ExactRecordReference` list when cleared.
+        #[sea_orm(column_type = "JsonBinary")]
+        pub records: Json,
+        /// Originating `SourceWork` snapshot when cleared.
+        #[sea_orm(column_type = "JsonBinary")]
+        pub source_work: Json,
+        /// Database-clock seconds when the feedback was recorded.
+        pub saved_at: i64,
+        /// 1 on the first save; incremented if ever updated.
+        pub revision: i64,
+    }
+
+    #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
+    pub enum Relation {}
+
+    impl ActiveModelBehavior for ActiveModel {}
+}
