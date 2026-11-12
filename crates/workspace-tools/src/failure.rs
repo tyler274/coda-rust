@@ -1,4 +1,5 @@
-#[derive(Debug)]
+#[derive(Debug, thiserror::Error)]
+#[error("{message}")]
 pub struct Failure {
     pub message: String,
     pub code: u8,
@@ -24,20 +25,6 @@ impl Failure {
             code,
             source: Some(Box::new(source)),
         }
-    }
-}
-
-impl std::fmt::Display for Failure {
-    fn fmt(&self, formatter: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        formatter.write_str(&self.message)
-    }
-}
-
-impl std::error::Error for Failure {
-    fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
-        self.source
-            .as_deref()
-            .map(|error| error as &(dyn std::error::Error + 'static))
     }
 }
 

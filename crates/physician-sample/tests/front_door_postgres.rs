@@ -10,9 +10,11 @@ use axum::body::Body;
 use axum::http::{Request, StatusCode};
 use front_door::{FrontDoorStore, RosterPatient};
 use physician_sample::{STAGING_PRACTICE_ID, WORKSPACE_IDS};
-use sea_orm::ConnectionTrait;
 use serde_json::Value;
 use tower::ServiceExt;
+
+#[path = "common/disposable.rs"]
+mod disposable;
 
 const NOW: u64 = 1_760_000_000;
 const STAGING_EMAIL: &str = "physician@codahealth.test";
@@ -47,14 +49,7 @@ async fn router(
     let admin = sea_orm::Database::connect(&format!("{base}/postgres"))
         .await
         .expect("admin connection");
-    admin
-        .execute_unprepared(&format!("DROP DATABASE IF EXISTS {test_db}"))
-        .await
-        .expect("drop stale test database");
-    admin
-        .execute_unprepared(&format!("CREATE DATABASE {test_db}"))
-        .await
-        .expect("create test database");
+    disposable::replace_database(&admin, &test_db).await;
     let url = format!("{base}/{test_db}");
     let auth: std::sync::Arc<dyn physician_auth::AuthStore> = std::sync::Arc::new(
         physician_auth::PostgresAuthStore::connect_with_migrations(&url)

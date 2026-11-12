@@ -11,36 +11,18 @@ extern "C" {
 
 /// Why Apple's web authorization produced no credential.
 #[cfg(target_arch = "wasm32")]
-#[derive(Debug)]
+#[derive(Debug, thiserror::Error)]
 pub enum AppleWebError {
     /// Apple's script threw or rejected, as given: the SDK is missing, the
     /// popup was closed, or the answer did not match this request.
+    #[error("Apple's authorization script failed: {0:?}")]
     Script(JsValue),
     /// The script answered with something other than credential text.
+    #[error("Apple's authorization answered {0:?}")]
     NotText(JsValue),
     /// The credential text was not an Apple credential.
-    Credential(serde_json::Error),
-}
-
-#[cfg(target_arch = "wasm32")]
-impl std::fmt::Display for AppleWebError {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        match self {
-            Self::Script(value) => write!(f, "Apple's authorization script failed: {value:?}"),
-            Self::NotText(value) => write!(f, "Apple's authorization answered {value:?}"),
-            Self::Credential(error) => write!(f, "Apple's credential was unreadable: {error}"),
-        }
-    }
-}
-
-#[cfg(target_arch = "wasm32")]
-impl std::error::Error for AppleWebError {
-    fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
-        match self {
-            Self::Credential(error) => Some(error),
-            Self::Script(_) | Self::NotText(_) => None,
-        }
-    }
+    #[error("Apple's credential was unreadable: {0}")]
+    Credential(#[source] serde_json::Error),
 }
 
 /// Launch official Apple popup for `services_id`, returning to `redirect_uri`;

@@ -9,7 +9,6 @@ fn main() {
 #[cfg(all(feature = "web", target_arch = "wasm32"))]
 mod popup {
     use std::cell::Cell;
-    use std::fmt;
     use std::rc::Rc;
     use std::time::Duration;
 
@@ -47,39 +46,23 @@ mod popup {
     }
 
     /// Why the popup has no reply from the worker.
-    #[derive(Debug)]
+    #[derive(Debug, thiserror::Error)]
     enum NoReply {
         /// Chrome couldn't deliver the message, or the worker didn't answer: Chrome's own error.
+        #[error("Chrome couldn't reach the worker: {}", chrome_words(.0))]
         Unreachable(JsValue),
         /// The worker answered, but not with a reply this popup reads.
-        Unknown(serde_json::Error),
+        #[error("the worker's reply isn't one the popup reads: {0}")]
+        Unknown(#[source] serde_json::Error),
     }
 
-    impl fmt::Display for NoReply {
-        fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-            match self {
-                Self::Unreachable(error) => {
-                    let why = error
-                        .dyn_ref::<js_sys::Error>()
-                        .map(|error| String::from(error.message()))
-                        .or_else(|| error.as_string())
-                        .unwrap_or_else(|| format!("{error:?}"));
-                    write!(f, "Chrome couldn't reach the worker: {why}")
-                }
-                Self::Unknown(error) => {
-                    write!(f, "the worker's reply isn't one the popup reads: {error}")
-                }
-            }
-        }
-    }
-
-    impl std::error::Error for NoReply {
-        fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
-            match self {
-                Self::Unreachable(_) => None,
-                Self::Unknown(error) => Some(error),
-            }
-        }
+    /// Chrome's error in its own words: its message, its text, or what it is.
+    fn chrome_words(error: &JsValue) -> String {
+        error
+            .dyn_ref::<js_sys::Error>()
+            .map(|error| String::from(error.message()))
+            .or_else(|| error.as_string())
+            .unwrap_or_else(|| format!("{error:?}"))
     }
 
     /// A notice the popup shows above the state: its tone, icon, title and detail.

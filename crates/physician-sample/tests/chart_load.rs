@@ -2,6 +2,8 @@
 
 #[allow(dead_code)]
 mod common;
+#[path = "common/disposable.rs"]
+mod disposable;
 
 use std::fs;
 use std::path::PathBuf;
@@ -443,12 +445,8 @@ async fn the_load_tries_every_patient_and_fails_when_one_failed() {
 async fn a_site_with_no_load_is_ready_and_empty_until_a_load_fills_it() {
     let (shared, _runtime) = stores().await;
     let database = format!("practice_{}", run_id().to_lowercase());
-    sea_orm::sqlx::raw_sql(sea_orm::sqlx::AssertSqlSafe(format!(
-        "CREATE DATABASE {database}"
-    )))
-    .execute(shared.pool())
-    .await
-    .unwrap();
+    let admin = sea_orm::SqlxPostgresConnector::from_sqlx_postgres_pool(shared.pool().clone());
+    disposable::create_database(&admin, &database).await;
     let url = std::env::var("PHYSICIAN_TEST_DATABASE_URL").unwrap();
     let (server, _) = url.rsplit_once('/').unwrap();
     let url = format!("{server}/{database}");

@@ -14,13 +14,22 @@ use async_trait::async_trait;
 use clinical_library::{
     Acquired, Ending, HolderState, Lease, NightOutcome, Platform, RunId, SlotName, Source, Store,
 };
+use sea_orm::sea_query::{PostgresQueryBuilder, QuotedBuilder};
 use sea_orm::{
     ConnectOptions, ConnectionTrait, Database, DatabaseConnection, DbBackend, Statement, Value,
 };
 
 pub struct Scratch {
     pub db: DatabaseConnection,
+    /// The schema's name, quoted as an identifier.
     schema: String,
+}
+
+/// `name` as a quoted Postgres identifier.
+fn identifier(name: &str) -> String {
+    let mut quoted = String::new();
+    PostgresQueryBuilder.prepare_iden(&name.to_owned().into(), &mut quoted);
+    quoted
 }
 
 impl Scratch {
@@ -28,9 +37,9 @@ impl Scratch {
         let url = std::env::var("CLINICAL_LIBRARY_TEST_DATABASE_URL")
             .expect("CLINICAL_LIBRARY_TEST_DATABASE_URL must name a local Postgres");
         assert!(url.contains("localhost") || url.contains("127.0.0.1"));
-        // Postgres can't bind an identifier as a parameter, so the schema's
-        // name is spliced in; it is generated here from hex digits only.
-        let schema = format!("clinical_proof_{}", uuid::Uuid::new_v4().simple());
+        // Postgres binds values, not names, so the schema's name goes in as an
+        // identifier the query builder quoted.
+        let schema = identifier(&format!("clinical_proof_{}", uuid::Uuid::new_v4().simple()));
         let admin = Database::connect(&url).await.unwrap();
         admin
             .execute_unprepared(&format!("create schema {schema}"))

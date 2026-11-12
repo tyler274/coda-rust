@@ -3,6 +3,9 @@ use physician_auth::migration::{self, Migrator};
 use sea_orm::{ConnectionTrait, Database, DbBackend, Statement};
 use sea_orm_migration::{MigrationTrait, MigratorTrait, SchemaManager};
 
+#[path = "common/disposable.rs"]
+mod disposable;
+
 #[test]
 fn names_are_stable_and_distinct() {
     let names: Vec<_> = Migrator::migrations()
@@ -42,10 +45,7 @@ async fn postgres_fresh_upgrade_and_partial_schema_regressions() {
             kind,
             uuid::Uuid::new_v4().simple()
         );
-        admin
-            .execute_unprepared(&format!("CREATE SCHEMA {schema}"))
-            .await
-            .unwrap();
+        disposable::create_schema(&admin, &schema).await;
         let separator = if base.contains('?') { '&' } else { '?' };
         let url = format!("{base}{separator}options=-csearch_path%3D{schema}");
         let db = Database::connect(&url).await.unwrap();
@@ -123,10 +123,7 @@ async fn postgres_fresh_upgrade_and_partial_schema_regressions() {
         }
         db.close().await.unwrap();
         // Only this test's unique schema; never a caller's existing data.
-        admin
-            .execute_unprepared(&format!("DROP SCHEMA {schema} CASCADE"))
-            .await
-            .unwrap();
+        disposable::drop_schema(&admin, &schema).await;
     }
 }
 
@@ -138,10 +135,7 @@ async fn old_thirty_day_sessions_become_twelve_hours_and_updates_do_not_notify()
         "physician_session_lifetime_{}",
         uuid::Uuid::new_v4().simple()
     );
-    admin
-        .execute_unprepared(&format!("CREATE SCHEMA {schema}"))
-        .await
-        .unwrap();
+    disposable::create_schema(&admin, &schema).await;
     let separator = if base.contains('?') { '&' } else { '?' };
     let url = format!("{base}{separator}options=-csearch_path%3D{schema}");
     let db = Database::connect(&url).await.unwrap();
@@ -199,10 +193,7 @@ async fn old_thirty_day_sessions_become_twelve_hours_and_updates_do_not_notify()
     assert!(!trigger.contains("UPDATE"));
 
     db.close().await.unwrap();
-    admin
-        .execute_unprepared(&format!("DROP SCHEMA {schema} CASCADE"))
-        .await
-        .unwrap();
+    disposable::drop_schema(&admin, &schema).await;
 }
 
 async fn session_deadlines(db: &sea_orm::DatabaseConnection) -> Vec<(i64, i64)> {

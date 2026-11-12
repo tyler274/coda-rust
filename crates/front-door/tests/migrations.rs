@@ -1,24 +1,22 @@
 //! Real PostgreSQL fresh/legacy/co-resident migration adoption, never silently skipped.
 use sea_orm::{ConnectionTrait, Database, DbBackend, Statement};
 use sea_orm_migration::{MigrationTrait, MigratorTrait, SchemaManager};
+
+#[path = "common/disposable.rs"]
+mod disposable;
 #[tokio::test]
 async fn fresh_legacy_and_co_resident() {
     let url = std::env::var("FRONT_DOOR_TEST_DATABASE_URL").expect("isolated PostgreSQL required");
     assert!(url.contains("localhost") || url.contains("127.0.0.1"));
     let db = Database::connect(&url).await.unwrap();
     let schema = format!("front_proof_{}", uuid::Uuid::new_v4().simple());
-    db.execute_unprepared(&format!(
-        "create schema {schema}; set search_path to {schema}"
-    ))
-    .await
-    .unwrap();
+    disposable::create_schema(&db, &schema).await;
+    disposable::use_schema(&db, &schema).await;
     // A single connection is required for a temporary schema search_path.
     let mut options = sea_orm::ConnectOptions::new(url);
     options.max_connections(1).min_connections(1);
     let db = Database::connect(options).await.unwrap();
-    db.execute_unprepared(&format!("set search_path to {schema}"))
-        .await
-        .unwrap();
+    disposable::use_schema(&db, &schema).await;
     front_door::migration::upgrade::migrate(&db).await.unwrap();
     front_door::migration::upgrade::migrate(&db).await.unwrap();
     let count = db
@@ -70,9 +68,7 @@ async fn fresh_legacy_and_co_resident() {
     .await
     .unwrap();
     assert!(front_door::migration::upgrade::migrate(&db).await.is_err());
-    db.execute_unprepared(&format!("drop schema {schema} cascade"))
-        .await
-        .unwrap();
+    disposable::drop_schema(&db, &schema).await;
     // Explicit stable name must not depend on source filename.
     assert_eq!(
         sea_orm_migration::MigrationName::name(&front_door::migration::m20260101_000001_init),

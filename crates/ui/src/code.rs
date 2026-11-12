@@ -55,16 +55,9 @@ pub fn CopyButton(text: String, words: CopyWords) -> Element {
 }
 
 /// Why the clipboard didn't take the words, in the browser's own words where it gave any.
-#[derive(Debug)]
+#[derive(Debug, thiserror::Error)]
+#[error("the clipboard didn't take the words: {0}")]
 pub struct CopyFailed(String);
-
-impl std::fmt::Display for CopyFailed {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "the clipboard didn't take the words: {}", self.0)
-    }
-}
-
-impl std::error::Error for CopyFailed {}
 
 /// Puts `text` on the clipboard, or says why it didn't take, for a host's own copy action to say
 /// it's copied only once it is.

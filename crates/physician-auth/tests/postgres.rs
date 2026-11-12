@@ -9,6 +9,9 @@ use physician_auth::{
 };
 use sea_orm::{ConnectionTrait, EntityTrait, PaginatorTrait, QuerySelect, TransactionTrait};
 
+#[path = "common/disposable.rs"]
+mod disposable;
+
 const NOW: u64 = 1_760_000_000;
 
 /// Hold the contested row until both independent store calls reach it. The
@@ -249,14 +252,7 @@ async fn fresh_database(name: &str) -> Option<String> {
     let admin = sea_orm::Database::connect(&format!("{base}/postgres"))
         .await
         .expect("admin connection");
-    admin
-        .execute_unprepared(&format!("DROP DATABASE IF EXISTS {test_db}"))
-        .await
-        .expect("drop stale test database");
-    admin
-        .execute_unprepared(&format!("CREATE DATABASE {test_db}"))
-        .await
-        .expect("create test database");
+    disposable::replace_database(&admin, &test_db).await;
     admin.close().await.expect("close admin connection");
     Some(format!("{base}/{test_db}"))
     // The per-test database is intentionally left in place after the test;

@@ -4,45 +4,38 @@ use duet_wire::models::{CanonicalRecordSelection, DoctorCollection, DoctorPageSa
 use serde::{Deserialize, Serialize};
 
 /// Closed failure states; neither response prose nor credential-bearing URLs are logged.
-#[derive(Clone, Debug, PartialEq, Eq)]
+#[derive(Clone, Debug, PartialEq, Eq, thiserror::Error)]
 pub enum DoctorError {
     /// Sign-in expired; never automatically replay mutations after refresh.
+    #[error("Sign in again. Pending operations were not replayed.")]
     Unauthorized,
     /// Server does not advertise/acknowledge atomic UUID preconditions; never retry unconditionally.
+    #[error(
+        "This server has not confirmed conditional revocation support. No unconditional retry will be sent; check the active publication before proceeding."
+    )]
     UnsupportedPrecondition,
     /// Permission or accepted terms required.
+    #[error("This operation needs current account permission or terms.")]
     Forbidden,
     /// Generation, proposal, source or idempotency bytes changed.
+    #[error(
+        "The page, selected sources, or operation changed. Review the current page; your draft is retained."
+    )]
     Conflict,
     /// No such receipt/resource.
+    #[error(
+        "No receipt or resource was found. This alone does not prove an uncertain write failed."
+    )]
     NotFound,
     /// Invalid selection, expiry or command headers.
+    #[error("The request is invalid. Review the selection and expiry.")]
     Invalid,
     /// Transport, server, receipt confirmation or decode failure: mutation outcome may be uncertain.
+    #[error("Duet could not confirm the outcome. Retry the same operation, not a new one.")]
     Uncertain,
     /// Uncertain response with its redacted transport cause retained.
-    Response(crate::refusal::TransportCause),
-}
-impl std::fmt::Display for DoctorError {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        f.write_str(match self {
-            Self::UnsupportedPrecondition => "This server has not confirmed conditional revocation support. No unconditional retry will be sent; check the active publication before proceeding.",
-            Self::Unauthorized => "Sign in again. Pending operations were not replayed.",
-            Self::Forbidden => "This operation needs current account permission or terms.",
-            Self::Conflict => "The page, selected sources, or operation changed. Review the current page; your draft is retained.",
-            Self::NotFound => "No receipt or resource was found. This alone does not prove an uncertain write failed.",
-            Self::Invalid => "The request is invalid. Review the selection and expiry.",
-            Self::Uncertain | Self::Response(_) => "Duet could not confirm the outcome. Retry the same operation, not a new one.",
-        })
-    }
-}
-impl std::error::Error for DoctorError {
-    fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
-        match self {
-            Self::Response(cause) => Some(cause),
-            _ => None,
-        }
-    }
+    #[error("Duet could not confirm the outcome. Retry the same operation, not a new one.")]
+    Response(#[source] crate::refusal::TransportCause),
 }
 /// Exact command retained across uncertain acknowledgements. Contains no capability or patient prose.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]

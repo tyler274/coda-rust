@@ -536,7 +536,8 @@ pub(super) fn parse_stamp(value: &str) -> Result<DateTime<Utc>, String> {
     Ok(parsed.with_timezone(&Utc))
 }
 
-#[derive(Debug)]
+#[derive(Debug, thiserror::Error)]
+#[error("{0}")]
 pub(super) struct SignalError(String);
 
 impl SignalError {
@@ -544,14 +545,6 @@ impl SignalError {
         Self(message.into())
     }
 }
-
-impl std::fmt::Display for SignalError {
-    fn fmt(&self, formatter: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        formatter.write_str(&self.0)
-    }
-}
-
-impl std::error::Error for SignalError {}
 
 pub(super) trait Signal {
     fn fail(&mut self) -> Result<(), SignalError>;

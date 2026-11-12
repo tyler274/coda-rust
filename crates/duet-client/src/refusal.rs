@@ -6,8 +6,9 @@ use crate::{
 use futures_channel::mpsc::UnboundedSender;
 
 /// A transport cause with its credential-bearing URL removed.
-#[derive(Clone, Debug)]
-pub struct TransportCause(std::sync::Arc<reqwest::Error>);
+#[derive(Clone, Debug, thiserror::Error)]
+#[error("response unavailable")]
+pub struct TransportCause(#[source] std::sync::Arc<reqwest::Error>);
 impl From<reqwest::Error> for TransportCause {
     fn from(error: reqwest::Error) -> Self {
         Self(std::sync::Arc::new(error.without_url()))
@@ -19,16 +20,6 @@ impl PartialEq for TransportCause {
     }
 }
 impl Eq for TransportCause {}
-impl std::fmt::Display for TransportCause {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        f.write_str("response unavailable")
-    }
-}
-impl std::error::Error for TransportCause {
-    fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
-        Some(self.0.as_ref())
-    }
-}
 
 /// Definitive product refusal, not a proxy challenge or transport failure.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]

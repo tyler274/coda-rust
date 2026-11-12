@@ -18,6 +18,9 @@ use std::{
     },
 };
 use uuid::Uuid;
+
+#[path = "common/disposable.rs"]
+mod disposable;
 const NOW: i64 = 1_800_000_000;
 #[derive(Default)]
 struct Archive {
@@ -75,10 +78,7 @@ async fn transactional_withdrawal_delivery_restart_replay_and_isolation() {
     let base = url.rsplit_once('/').expect("disposable URL").0;
     let admin = Database::connect(format!("{base}/postgres")).await.unwrap();
     let name = format!("duet_recovery_{}", Uuid::new_v4().simple());
-    admin
-        .execute_unprepared(&format!("CREATE DATABASE {name}"))
-        .await
-        .unwrap();
+    disposable::create_database(&admin, &name).await;
     let url = format!("{base}/{name}");
     let store = PostgresFrontDoorStore::connect(&url).await.unwrap();
     store.migrate().await.unwrap();
@@ -388,9 +388,6 @@ async fn transactional_withdrawal_delivery_restart_replay_and_isolation() {
     );
     drop(store);
     db.close().await.unwrap();
-    admin
-        .execute_unprepared(&format!("DROP DATABASE {name} WITH (FORCE)"))
-        .await
-        .unwrap();
+    disposable::drop_database(&admin, &name).await;
     admin.close().await.unwrap();
 }

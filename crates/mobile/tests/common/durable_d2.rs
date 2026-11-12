@@ -68,17 +68,9 @@ async fn d2_records_browse_correct_remove_and_erase_on_durable_services() {
     assert!(["localhost", "127.0.0.1", "::1"].contains(&options.get_host()));
     let mut admin = sqlx::PgConnection::connect(&url).await.unwrap();
     let suffix = Uuid::new_v4().simple().to_string();
-    // Generated from a UUID simple string ([0-9a-f]); never user input.
     let name = format!("eng162_d2_{suffix}");
     let role = format!("eng162_d2_role_{suffix}");
-    sqlx::raw_sql(sqlx::AssertSqlSafe(format!("create role {role} login")))
-        .execute(&mut admin)
-        .await
-        .unwrap();
-    sqlx::raw_sql(sqlx::AssertSqlSafe(format!("create database {name}")))
-        .execute(&mut admin)
-        .await
-        .unwrap();
+    crate::disposable::create_database_and_role(&mut admin, &name, &role).await;
     let owner_url = options.clone().database(&name).to_url_lossy().to_string();
     let runtime_url = options
         .database(&name)
@@ -88,16 +80,7 @@ async fn d2_records_browse_correct_remove_and_erase_on_durable_services() {
     migrate(&owner_url, &role).await.unwrap();
     let journal = std::env::temp_dir().join(format!("eng162-d2-journal-{suffix}"));
     run(&owner_url, &runtime_url, &journal).await;
-    sqlx::raw_sql(sqlx::AssertSqlSafe(format!(
-        "drop database {name} with (force)"
-    )))
-    .execute(&mut admin)
-    .await
-    .unwrap();
-    sqlx::raw_sql(sqlx::AssertSqlSafe(format!("drop role {role}")))
-        .execute(&mut admin)
-        .await
-        .unwrap();
+    crate::disposable::drop_database_and_role(&mut admin, &name, &role).await;
     let _ = std::fs::remove_dir_all(journal);
 }
 

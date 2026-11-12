@@ -7,15 +7,23 @@ async fn database(name: &str) -> String {
     let url = std::env::var("PHYSICIAN_RUNTIME_TEST_DATABASE_URL").unwrap();
     let (base, db) = url.trim().rsplit_once('/').expect("database URL");
     let test_db = format!("{db}_t_{name}");
+    // CREATE and DROP DATABASE take no bind parameters, so the name goes in
+    // as an identifier the query builder quoted.
+    let quoted = {
+        use sea_orm::sea_query::{PostgresQueryBuilder, QuotedBuilder};
+        let mut quoted = String::new();
+        PostgresQueryBuilder.prepare_iden(&test_db.clone().into(), &mut quoted);
+        quoted
+    };
     let admin = Database::connect(format!("{base}/postgres"))
         .await
         .expect("admin connection");
     admin
-        .execute_unprepared(&format!("DROP DATABASE IF EXISTS {test_db}"))
+        .execute_unprepared(&format!("DROP DATABASE IF EXISTS {quoted}"))
         .await
         .expect("drop stale test database");
     admin
-        .execute_unprepared(&format!("CREATE DATABASE {test_db}"))
+        .execute_unprepared(&format!("CREATE DATABASE {quoted}"))
         .await
         .expect("create test database");
     admin.close().await.expect("close admin connection");

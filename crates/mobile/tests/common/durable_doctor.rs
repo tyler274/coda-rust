@@ -109,15 +109,7 @@ async fn with_durable_browser(
     let suffix = Uuid::new_v4().simple().to_string();
     let name = format!("duet_browser_{suffix}");
     let role = format!("duet_browser_role_{suffix}");
-    // `role` and `name` are generated from a UUID simple string ([0-9a-f]).
-    sqlx::raw_sql(sqlx::AssertSqlSafe(format!("create role {role} login")))
-        .execute(&mut admin)
-        .await
-        .unwrap();
-    sqlx::raw_sql(sqlx::AssertSqlSafe(format!("create database {name}")))
-        .execute(&mut admin)
-        .await
-        .unwrap();
+    crate::disposable::create_database_and_role(&mut admin, &name, &role).await;
     let owner_url = options.clone().database(&name).to_url_lossy().to_string();
     let runtime_url = options
         .database(&name)
@@ -141,16 +133,7 @@ async fn with_durable_browser(
     server.stop();
     drop(workspace);
     drop(database);
-    sqlx::raw_sql(sqlx::AssertSqlSafe(format!(
-        "drop database {name} with (force)"
-    )))
-    .execute(&mut admin)
-    .await
-    .unwrap();
-    sqlx::raw_sql(sqlx::AssertSqlSafe(format!("drop role {role}")))
-        .execute(&mut admin)
-        .await
-        .unwrap();
+    crate::disposable::drop_database_and_role(&mut admin, &name, &role).await;
     std::fs::remove_dir_all(journal_path).unwrap();
 }
 

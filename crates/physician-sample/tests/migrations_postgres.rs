@@ -5,6 +5,9 @@
 
 use sea_orm::{ConnectionTrait, Database, DatabaseConnection};
 
+#[path = "common/disposable.rs"]
+mod disposable;
+
 async fn migrate(url: &str, physician: bool, front_door: bool) {
     // Match physician-sample's production order on the shared database.
     if physician {
@@ -52,10 +55,7 @@ async fn fresh_chains_and_shared_database_are_idempotent() {
     ] {
         let name = format!("migration_{label}_{}", uuid::Uuid::new_v4().simple());
         // Never drop an existing database: each proof starts from a new name.
-        admin
-            .execute_unprepared(&format!("CREATE DATABASE {name} TEMPLATE template0"))
-            .await
-            .expect("create fresh database");
+        disposable::create_empty_database(&admin, &name).await;
         let url = format!("{base}/{name}");
         let db = Database::connect(&url).await.expect("fresh connection");
         db.execute_unprepared("CREATE EXTENSION vector")
@@ -103,10 +103,7 @@ async fn fresh_chains_and_shared_database_are_idempotent() {
             }
         }
         db.close().await.expect("close proof database");
-        admin
-            .execute_unprepared(&format!("DROP DATABASE {name} WITH (FORCE)"))
-            .await
-            .expect("remove proof database");
+        disposable::drop_database(&admin, &name).await;
     }
     admin.close().await.expect("close admin connection");
 }

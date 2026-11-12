@@ -18,6 +18,9 @@ mod devtools;
 
 use devtools::{Browser, DESKTOP, PHONE};
 
+#[path = "common/disposable.rs"]
+mod disposable;
+
 #[path = "common/durable_doctor.rs"]
 mod durable_doctor;
 
