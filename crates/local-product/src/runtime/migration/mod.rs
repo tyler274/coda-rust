@@ -6,6 +6,7 @@ mod m20261111_init;
 mod m20261111_response_feedback;
 mod m20261112_concerns;
 mod m20261112_practice_jobs_dispatch;
+mod m20261112_practice_schedule;
 mod m20261112_source_refresh;
 
 /// The table this chain records applied migrations in. The runtime shares the
@@ -28,6 +29,7 @@ impl MigratorTrait for Migrator {
             Box::new(m20261112_concerns::Migration),
             Box::new(m20261112_practice_jobs_dispatch::Migration),
             Box::new(m20261112_source_refresh::Migration),
+            Box::new(m20261112_practice_schedule::Migration),
         ]
     }
 }
