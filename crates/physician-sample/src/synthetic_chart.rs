@@ -22,7 +22,7 @@ pub const SOURCE_ID: &str = "synthetic-charts";
 const SOURCE_LABEL: &str = "Synthetic chart";
 
 /// The fields that date a record, in the source's names.
-const DATE_FIELDS: [&str; 9] = [
+pub(crate) const DATE_FIELDS: [&str; 9] = [
     "abatementDateTime",
     "authoredOn",
     "date",
@@ -33,6 +33,23 @@ const DATE_FIELDS: [&str; 9] = [
     "performedDateTime",
     "recordedDate",
 ];
+
+/// Why a synthetic FHIR chart record line failed adapter validation.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub(crate) enum ChartRecordError {
+    /// Structural JSON, missing FHIR fields, or `SourceRevision` validation error.
+    Malformed(String),
+    /// Non-text `contentType`, invalid base64, or non-UTF-8 attachment payload.
+    UnsupportedAttachment(String),
+}
+
+impl ChartRecordError {
+    fn into_message(self) -> String {
+        match self {
+            Self::Malformed(reason) | Self::UnsupportedAttachment(reason) => reason,
+        }
+    }
+}
 
 /// A built patient bank on disk.
 pub struct SyntheticCharts {
@@ -146,11 +163,23 @@ fn source_patient(source_patient_id: String, line: &str) -> Result<SourcePatient
 }
 
 fn source_revision(workspace: &str, line: &str) -> Result<SourceRevision, String> {
-    let resource: Value = serde_json::from_str(line).map_err(|error| error.to_string())?;
+    parse_source_revision(workspace, line).map_err(ChartRecordError::into_message)
+}
+
+/// Parses one NDJSON FHIR chart line into a validated [`SourceRevision`] using
+/// the synthetic chart adapter's single-owner date and attachment rules.
+pub(crate) fn parse_source_revision(
+    workspace: &str,
+    line: &str,
+) -> Result<SourceRevision, ChartRecordError> {
+    let resource: Value = serde_json::from_str(line)
+        .map_err(|error| ChartRecordError::Malformed(error.to_string()))?;
     let record_type = resource["resourceType"]
         .as_str()
-        .ok_or("record has no resourceType")?;
-    let id = resource["id"].as_str().ok_or("record has no id")?;
+        .ok_or_else(|| ChartRecordError::Malformed("record has no resourceType".into()))?;
+    let id = resource["id"]
+        .as_str()
+        .ok_or_else(|| ChartRecordError::Malformed("record has no id".into()))?;
     let candidate_id = format!("{record_type}/{id}");
     let sha256 = sha256_hex(line.as_bytes());
     let source = SourceRevision {
@@ -165,7 +194,7 @@ fn source_revision(workspace: &str, line: &str) -> Result<SourceRevision, String
         readable_parts: readable_parts(&resource)?,
         provenance: json!({"native_record": candidate_id}),
     };
-    source.validate()?;
+    source.validate().map_err(ChartRecordError::Malformed)?;
     Ok(source)
 }
 
@@ -186,7 +215,7 @@ fn record_dates(resource: &Value) -> Vec<RecordDate> {
 }
 
 /// The text of the record's attachments, which the exact record holds encoded.
-fn readable_parts(resource: &Value) -> Result<Vec<ReadablePart>, String> {
+fn readable_parts(resource: &Value) -> Result<Vec<ReadablePart>, ChartRecordError> {
     let documents = resource["content"].as_array().into_iter().flatten();
     let forms = resource["presentedForm"].as_array().into_iter().flatten();
     documents
@@ -195,13 +224,19 @@ fn readable_parts(resource: &Value) -> Result<Vec<ReadablePart>, String> {
         .map(|(label, attachment)| {
             let content_type = attachment["contentType"].as_str().unwrap_or_default();
             if !content_type.starts_with("text/") {
-                return Err(format!("{label} is not text: {content_type}"));
+                return Err(ChartRecordError::UnsupportedAttachment(format!(
+                    "{label} is not text: {content_type}"
+                )));
             }
             let data = attachment["data"].as_str().unwrap_or_default();
             let bytes = base64::engine::general_purpose::STANDARD
                 .decode(data)
-                .map_err(|error| format!("{label}: {error}"))?;
-            let text = String::from_utf8(bytes).map_err(|error| format!("{label}: {error}"))?;
+                .map_err(|error| {
+                    ChartRecordError::UnsupportedAttachment(format!("{label}: {error}"))
+                })?;
+            let text = String::from_utf8(bytes).map_err(|error| {
+                ChartRecordError::UnsupportedAttachment(format!("{label}: {error}"))
+            })?;
             Ok(ReadablePart {
                 label: label.to_owned(),
                 text,

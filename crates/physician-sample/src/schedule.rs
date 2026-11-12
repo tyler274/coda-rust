@@ -238,6 +238,12 @@ fn extract_target_label(raw_line: &str, file_label: &str, line_no: usize) -> Str
     format!("{file_label}:{line_no}")
 }
 
+/// Parses one NDJSON FHIR `Appointment` line using the synthetic calendar
+/// adapter's single-owner status, participant, window, and label rules.
+pub(crate) fn parse_fhir_appointment_line(line: &str) -> Result<SourceAppointment, String> {
+    parse_fhir_appointment(line).map_err(|err| err.to_string())
+}
+
 fn parse_fhir_appointment(line: &str) -> Result<SourceAppointment, AppointmentParseError> {
     let resource: Value = serde_json::from_str(line)?;
     let resource_type = resource.get("resourceType").and_then(Value::as_str);

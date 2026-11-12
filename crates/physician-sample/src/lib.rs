@@ -31,6 +31,7 @@ mod reply;
 mod reviews;
 pub mod schedule;
 pub mod synthetic_chart;
+pub mod synthetic_control;
 mod synthetic_reply;
 mod timestamp;
 
@@ -589,11 +590,24 @@ fn configured(get: &impl Fn(&str) -> Option<String>, key: &str) -> Option<String
         .filter(|value| !value.is_empty())
 }
 
+/// Builds the site router from an environment lookup function.
+pub async fn site_router_from_env(
+    get: impl Fn(&str) -> Option<String>,
+) -> Result<(Router, Option<tokio::task::JoinHandle<()>>), String> {
+    site_from_env(
+        get,
+        std::sync::Arc::new(patients::MemoryPatients::default()),
+    )
+    .await
+}
+
 async fn site_from_env(
     get: impl Fn(&str) -> Option<String>,
     memory_patients: std::sync::Arc<patients::MemoryPatients>,
 ) -> Result<(Router, Option<tokio::task::JoinHandle<()>>), String> {
     let hosted = hosting::is_hosted(&get);
+    let staging_synthetic = hosting::StagingSyntheticControlConfig::from_env(&get)
+        .map_err(|error| error.to_string())?;
     let topic = configured(&get, "PHYSICIAN_CHAT_TOPIC");
     let database = configured(&get, "PHYSICIAN_DATABASE_URL");
     if hosted && topic.is_none() {
@@ -616,6 +630,12 @@ async fn site_from_env(
     if topic.is_some() && !required {
         return Err("durable physician chat requires PHYSICIAN_AUTH=required".into());
     }
+    if staging_synthetic.is_some() && !required {
+        return Err("staging synthetic control requires PHYSICIAN_AUTH=required".into());
+    }
+    if staging_synthetic.is_some() && database.is_none() {
+        return Err("staging synthetic control requires PHYSICIAN_DATABASE_URL".into());
+    }
     // Their patients are not the practice's, so access has nothing to enforce.
     if required && configured(&get, "PHYSICIAN_UPSTREAM").is_some() {
         return Err("PHYSICIAN_UPSTREAM cannot run with required sign-in".into());
@@ -636,13 +656,55 @@ async fn site_from_env(
     }
     let bus = physician_bus::from_env(&get, hosted).await?;
     // One pool per process: durable chat and the patient directory share it.
-    let runtime = match &database {
+    let mut runtime = match &database {
         Some(url) if required || durable.is_some() => Some(
             local_product::runtime::Store::connect(url)
                 .await
                 .map_err(|_| "physician runtime store unavailable".to_string())?,
         ),
         _ => None,
+    };
+    let staging_control = if let Some(syn_cfg) = staging_synthetic {
+        let url = database.as_deref().ok_or_else(|| {
+            "staging synthetic control requires PHYSICIAN_DATABASE_URL".to_string()
+        })?;
+        let store = runtime.clone().ok_or_else(|| {
+            "staging synthetic control requires PHYSICIAN_AUTH=required".to_string()
+        })?;
+        let db = sea_orm::Database::connect(url)
+            .await
+            .map_err(|_| "physician runtime database unavailable".to_string())?;
+        let pg_auth = physician_auth::PostgresAuthStore::connect_without_migrations(url)
+            .await
+            .map_err(|_| "physician auth database unavailable".to_string())?;
+        let model = synthetic_control::SyntheticModelEndpoint::from_env(&get, hosted)?;
+        let settings: Vec<_> = local_product::MODEL_SETTING_KEYS
+            .into_iter()
+            .filter_map(|key| configured(&get, key).map(|value| (key, value)))
+            .collect();
+        let environment: Vec<_> = settings
+            .iter()
+            .map(|(key, value)| (*key, value.as_str()))
+            .collect();
+        let roles = local_product::model_roles(model.adapter(), &environment)
+            .map_err(|error| error.to_string())?;
+        let control = synthetic_control::StagingSyntheticControl::initialize(
+            synthetic_control::StagingSyntheticControlDeps {
+                config: syn_cfg,
+                db,
+                store,
+                auth: pg_auth,
+                bus: std::sync::Arc::clone(&bus),
+                roles,
+                skills_dir: configured(&get, "PHYSICIAN_SKILLS_DIR"),
+                model,
+            },
+        )
+        .await?;
+        runtime = Some(control.store().clone());
+        Some(control)
+    } else {
+        None
     };
     let (mut base, chat) = if let (Some((topic, skills)), Some(store)) = (durable, runtime.clone())
     {
@@ -680,6 +742,9 @@ async fn site_from_env(
     } else {
         (router(), None)
     };
+    if let Some(ref control) = staging_control {
+        base = base.merge(synthetic_control::router(std::sync::Arc::clone(control)));
+    }
     if let Some(ref store) = runtime {
         base = base.layer(axum::Extension(store.clone()));
         if chat.is_none() {
@@ -691,7 +756,11 @@ async fn site_from_env(
             )));
         }
     }
-    if let Some(calendar) = schedule::SyntheticBankCalendar::from_env(&get) {
+    if let Some(ref control) = staging_control {
+        let source: std::sync::Arc<dyn local_product::runtime::schedule::ScheduleSource> =
+            control.sources();
+        base = base.layer(schedule::schedule_source_layer(source));
+    } else if let Some(calendar) = schedule::SyntheticBankCalendar::from_env(&get) {
         let source: std::sync::Arc<dyn local_product::runtime::schedule::ScheduleSource> =
             std::sync::Arc::new(calendar);
         base = base.layer(schedule::schedule_source_layer(source));
@@ -798,7 +867,7 @@ async fn today(
         .as_deref()
         .map(str::trim)
         .filter(|ws| !ws.is_empty());
-    let (rows, seen) = match extensions.get::<std::sync::Arc<SampleFeed>>() {
+    let (mut rows, seen) = match extensions.get::<std::sync::Arc<SampleFeed>>() {
         Some(feed) => {
             let seen = feed.seen_for(&identity.practice_id, &identity.physician_id);
             let seen_set: std::collections::BTreeSet<&str> =
@@ -830,6 +899,19 @@ async fn today(
         }
         None => (Vec::new(), Vec::new()),
     };
+    if rows.is_empty()
+        && let Some(store) = extensions.get::<local_product::runtime::Store>()
+    {
+        rows = patients::runtime_open_concern_rows(
+            store,
+            &connected,
+            extensions,
+            &identity,
+            &panel,
+            target_workspace,
+        )
+        .await;
+    }
     Json(json!({
         "date": practice_date(&now),
         "rows": rows,
