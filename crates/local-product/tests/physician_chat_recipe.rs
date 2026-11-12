@@ -166,7 +166,7 @@ fn load_skills() -> PhysicianSkills {
 
 fn synthetic_patient(id: &str, name: &str, dob: &str, mrn: &str) -> SourcePatient {
     SourcePatient {
-        source_patient_id: id.to_owned(),
+        source_patient_id: format!("{id}-{}", uuid::Uuid::new_v4().simple()),
         display_name: name.to_owned(),
         birth_date: Some(dob.to_owned()),
         sex_or_gender: Some("female".into()),
@@ -2631,8 +2631,7 @@ async fn interrupted_chat_attempt_reconciles_saved_memory_and_concern_receipts_w
                 cancel: cancel_attempt_1.clone(),
             }));
 
-    // Claim Attempt 1 with a 1-second lease so a successor worker can claim after abandonment.
-    let claim_1 = crashing_store.claim(&scope, 1).await.unwrap().unwrap();
+    let claim_1 = crashing_store.claim(&scope, 60).await.unwrap().unwrap();
     let mut host_1 = PhysicianHost {
         store: crashing_store,
         claim: claim_1.clone(),
@@ -2717,13 +2716,19 @@ async fn interrupted_chat_attempt_reconciles_saved_memory_and_concern_receipts_w
         }
     }
 
-    // Wait for Attempt 1's 1-second lease to expire, then claim Successor Attempt 2.
-    tokio::time::sleep(std::time::Duration::from_millis(1_150)).await;
+    // Settle Attempt 1 as interrupted so a successor worker claims the same work deterministically.
+    assert_eq!(
+        store
+            .settle_chat_attempt(&claim_1, engine::AttemptFailure::Interrupted)
+            .await
+            .unwrap(),
+        local_product::runtime::delivery::AttemptSettlement::Applied
+    );
     let claim_2 = store
         .claim(&scope, 60)
         .await
         .unwrap()
-        .expect("successor attempt claims abandoned chat turn");
+        .expect("successor attempt claims interrupted chat turn");
     assert_ne!(claim_2.attempt, claim_1.attempt);
 
     struct SuccessorRecoveryProvider {
