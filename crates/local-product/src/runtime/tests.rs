@@ -1084,13 +1084,16 @@ async fn stop_holds_the_named_work_until_resume_and_refuses_a_late_commit() {
                 .is_err()
         );
     }
+    // The new message waits while the stopped run drains its calls, and is
+    // due once that run is settled.
+    let steered_turn = Delivery::chat_turn(scope.clone(), "steered".into());
     assert!(
-        store
+        !store
             .dispatch_due(100, Some(&start))
             .await
             .unwrap()
             .deliveries
-            .contains(&Delivery::chat_turn(scope.clone(), "steered".into()))
+            .contains(&steered_turn)
     );
     assert_eq!(
         store
@@ -1114,6 +1117,14 @@ async fn stop_holds_the_named_work_until_resume_and_refuses_a_late_commit() {
         )
         .await
         .unwrap();
+    assert!(
+        store
+            .dispatch_due(100, Some(&start))
+            .await
+            .unwrap()
+            .deliveries
+            .contains(&steered_turn)
+    );
     let answering = store.claim(&scope, 60).await.unwrap().unwrap();
     assert_ne!(answering.attempt, successor.attempt);
 
