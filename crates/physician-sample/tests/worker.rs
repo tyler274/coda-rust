@@ -139,6 +139,35 @@ async fn accept_as(
     scenario: Option<&str>,
     origin: Option<TraceContext>,
 ) -> (Scope, Delivery) {
+    let (scope, session) = signed_in(url, practice).await;
+    let key = format!("input-{}", uuid::Uuid::new_v4().simple());
+    store
+        .accept_authorized(
+            &scope,
+            &Input {
+                key: key.clone(),
+                text: text.into(),
+                timezone: "America/New_York".into(),
+                scenario: scenario.map(str::to_owned),
+            },
+            PostgresAuthStore::session_reference(&session),
+            skills,
+            &local_product::physician_chat::recipe(
+                &support::models::roles().chat,
+                local_product::physician_chat::INSTRUCTIONS,
+                skills,
+            ),
+            origin,
+        )
+        .await
+        .expect("accept");
+    (scope.clone(), Delivery::chat_turn(scope, key))
+}
+
+/// A new physician in `practice` (a new one when `None`), signed in and
+/// allowed into a new patient workspace: the scope of a new chat there, and
+/// the session's bearer token.
+async fn signed_in(url: &str, practice: Option<&str>) -> (Scope, String) {
     let auth = PostgresAuthStore::connect_without_migrations(url)
         .await
         .expect("auth store");
@@ -184,28 +213,7 @@ async fn accept_as(
         workspace,
         chat,
     };
-    let key = format!("input-{unique}");
-    store
-        .accept_authorized(
-            &scope,
-            &Input {
-                key: key.clone(),
-                text: text.into(),
-                timezone: "America/New_York".into(),
-                scenario: scenario.map(str::to_owned),
-            },
-            PostgresAuthStore::session_reference(&session),
-            skills,
-            &local_product::physician_chat::recipe(
-                &support::models::roles().chat,
-                local_product::physician_chat::INSTRUCTIONS,
-                skills,
-            ),
-            origin,
-        )
-        .await
-        .expect("accept");
-    (scope.clone(), Delivery::chat_turn(scope, key))
+    (scope, session)
 }
 
 async fn wait_assistant(store: &Store, scope: &Scope, worker: &support::Process) -> Conversation {
@@ -1279,6 +1287,144 @@ async fn concurrent_turns_on_one_worker_run_side_by_side() {
     assert!(
         elapsed < delay * 2 - Duration::from_millis(500),
         "two {delay:?} turns took {elapsed:?}; the worker ran them one after the other"
+    );
+}
+
+/// A worker with one slot, kept full by chat turns that arrive faster than it
+/// answers them, still reaches a due reply revision: its sweeps alternate which
+/// kind they read first, so the revision waits for at most the turn running
+/// when it was accepted and one more.
+#[tokio::test]
+async fn a_due_revision_is_claimed_while_chat_turns_keep_arriving() {
+    use local_product::runtime::reply::{DraftStatus, RevisionAccepted, RevisionInput};
+    let _guard = lock().lock().await;
+    let turn = Duration::from_millis(1000);
+    let Some(running) = running_with(
+        "revision_turn",
+        None,
+        Some(turn.as_millis() as u64),
+        "[]",
+        support::FIXED_TEXT,
+        &[
+            ("PHYSICIAN_WORKER_CONCURRENCY", "1"),
+            ("PHYSICIAN_WORKER_POLL_MS", "200"),
+        ],
+    )
+    .await
+    else {
+        return;
+    };
+    // Chat turns arrive twice as fast as the worker answers them.
+    let turns = std::sync::Arc::new(tokio::sync::Mutex::new(Vec::<Scope>::new()));
+    let feeder = tokio::spawn({
+        let (url, store, turns) = (
+            running.database.url.clone(),
+            running.store.clone(),
+            turns.clone(),
+        );
+        async move {
+            loop {
+                let (scope, _) = accept_turn(&url, &store).await;
+                turns.lock().await.push(scope);
+                tokio::time::sleep(turn / 2).await;
+            }
+        }
+    });
+    let answered = |store: Store, turns: std::sync::Arc<tokio::sync::Mutex<Vec<Scope>>>| async move {
+        let scopes = turns.lock().await.clone();
+        let mut count = 0;
+        for scope in &scopes {
+            if store
+                .read(scope)
+                .await
+                .expect("read conversation")
+                .is_some_and(|state| state.status == WorkStatus::Completed)
+            {
+                count += 1;
+            }
+        }
+        (count, scopes.len())
+    };
+    // Wait until the slot is taken and chat turns are queued behind it.
+    let deadline = Instant::now() + Duration::from_secs(20);
+    loop {
+        let (done, accepted) = answered(running.store.clone(), turns.clone()).await;
+        if accepted >= done + 3 {
+            break;
+        }
+        assert!(
+            Instant::now() < deadline,
+            "chat turns never queued\n{}",
+            running.worker.tail()
+        );
+        tokio::time::sleep(Duration::from_millis(50)).await;
+    }
+
+    let (scope, session) = signed_in(&running.database.url, None).await;
+    let hash = PostgresAuthStore::session_reference(&session);
+    running
+        .store
+        .open_draft_authorized(
+            &scope,
+            "Your results look stable.",
+            &hash,
+            &mut physician_sample::durable::RuntimeAuthority,
+        )
+        .await
+        .expect("open draft")
+        .expect("authorized draft");
+    let skills = PhysicianSkills::configured(None, false).unwrap();
+    let (before, _) = answered(running.store.clone(), turns.clone()).await;
+    let accepted = running
+        .store
+        .accept_revision(
+            &scope,
+            &RevisionInput {
+                key: "revise-under-load".into(),
+                expected_revision: 1,
+                instruction: "Make it shorter.".into(),
+                timezone: "America/New_York".into(),
+                scenario: None,
+            },
+            hash,
+            &skills,
+            &local_product::runtime::reply::recipe(&support::models::roles().background, &skills),
+            None,
+        )
+        .await
+        .expect("accept revision");
+    assert_eq!(accepted, RevisionAccepted::New);
+
+    let deadline = Instant::now() + Duration::from_secs(30);
+    let draft = loop {
+        let draft = running
+            .store
+            .draft(&scope)
+            .await
+            .expect("draft")
+            .expect("draft row");
+        if draft.status == DraftStatus::Completed {
+            break draft;
+        }
+        assert!(
+            Instant::now() < deadline,
+            "the revision never ran while chat turns kept arriving: {:?}\n{}",
+            draft.status,
+            running.worker.tail()
+        );
+        tokio::time::sleep(Duration::from_millis(50)).await;
+    };
+    let (after, accepted) = answered(running.store.clone(), turns.clone()).await;
+    feeder.abort();
+    assert_eq!(draft.revision, 2);
+    assert!(
+        accepted > after,
+        "chat turns were still waiting when the revision ran ({after} of {accepted} answered)"
+    );
+    assert!(
+        after - before <= 2,
+        "{} chat turns were answered before the due revision",
+        after - before
     );
 }
 

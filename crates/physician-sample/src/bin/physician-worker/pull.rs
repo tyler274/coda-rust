@@ -166,8 +166,7 @@ pub(super) async fn run(worker: Arc<Worker>, stop: watch::Receiver<bool>) {
                 Ok(None) => watching_lease = false,
                 Err(_) => watching_lease &= !lease_end.is_elapsed(),
             }
-            let kinds = order.next();
-            backlog = match start_due(&worker, &mut running, &stop, kinds).await {
+            backlog = match start_due(&worker, &mut running, &stop, &mut order).await {
                 Ok(left) => left,
                 Err(_) => {
                     tracing::error!(
@@ -220,15 +219,20 @@ impl SweepOrder {
     }
 }
 
-/// Starts the due work of each kind, in `kinds` order, that the worker has
-/// room for. True when it filled up with due work left over.
+/// Starts the due work of each kind, in `order`, that the worker has room
+/// for. True when it filled up with due work left over. A full worker reads
+/// nothing and keeps its order, so the polls that pass while it is busy do not
+/// decide which kind the next free slot goes to.
 async fn start_due(
     worker: &Arc<Worker>,
     running: &mut Running,
     stop: &watch::Receiver<bool>,
-    kinds: [DeliveryKind; 2],
+    order: &mut SweepOrder,
 ) -> Result<bool, DbErr> {
-    for kind in kinds {
+    if running.full() {
+        return Ok(true);
+    }
+    for kind in order.next() {
         let mut after: Option<Scope> = None;
         loop {
             if running.full() {
