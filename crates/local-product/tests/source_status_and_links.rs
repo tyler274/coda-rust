@@ -3,6 +3,7 @@
 
 use std::collections::HashMap;
 use std::sync::{Arc, Mutex};
+use std::time::Duration;
 
 use async_trait::async_trait;
 use local_product::physician_sources::{
@@ -14,7 +15,8 @@ use local_product::runtime::Store;
 use local_product::sha256_hex;
 use local_product::source_status::{
     CompleteDelivery, LinkTarget, PartialDelivery, PatientSourceRecordStatus, PracticeOutage,
-    PracticeOutageKind, PracticeSourceSummary, PullAttempt, PullDisposition, SourceAccessState,
+    PracticeOutageKind, PracticeSourceSummary, PullAttempt, PullDisposition, ReconnectCommand,
+    ReconnectCommandFence, ReconnectCommandOutcome, ReconnectLeasePolicy, SourceAccessState,
     SourceCoordinator, SourcePatientKey, SourceStanding, SourceStatusError, derive_standing,
     summarize_practice_source,
 };
@@ -1372,6 +1374,355 @@ async fn same_timestamp_practice_check_keeps_third_patient_up_to_date_when_two_c
     );
 }
 
+struct GateControlledSource {
+    source_id: String,
+    reconnect_calls: std::sync::atomic::AtomicUsize,
+    pull_calls: std::sync::atomic::AtomicUsize,
+    reconnect_delay_ms: u64,
+    pause_pull: std::sync::atomic::AtomicBool,
+    pull_entered: tokio::sync::Notify,
+    pull_release: tokio::sync::Notify,
+}
+
+impl GateControlledSource {
+    fn new(source_id: &str, reconnect_delay_ms: u64) -> Arc<Self> {
+        Arc::new(Self {
+            source_id: source_id.to_owned(),
+            reconnect_calls: std::sync::atomic::AtomicUsize::new(0),
+            pull_calls: std::sync::atomic::AtomicUsize::new(0),
+            reconnect_delay_ms,
+            pause_pull: std::sync::atomic::AtomicBool::new(false),
+            pull_entered: tokio::sync::Notify::new(),
+            pull_release: tokio::sync::Notify::new(),
+        })
+    }
+}
+
+#[async_trait]
+impl PatientSource for GateControlledSource {
+    fn source_id(&self) -> &str {
+        &self.source_id
+    }
+
+    fn source_label(&self) -> &str {
+        "Gate Controlled EHR"
+    }
+
+    async fn patient_ids(&self) -> Result<Vec<String>, SourceAdapterError> {
+        Ok(vec!["pat-1".to_owned()])
+    }
+
+    async fn patient(&self, source_patient_id: &str) -> Result<SourcePatient, SourceAdapterError> {
+        Ok(make_patient(source_patient_id, "Elena Morales"))
+    }
+
+    async fn records(
+        &self,
+        _patient: &SourcePatient,
+        _workspace: &str,
+    ) -> Result<Vec<SourceRevision>, SourceAdapterError> {
+        Ok(Vec::new())
+    }
+
+    async fn pull_patient(
+        &self,
+        _practice_id: &str,
+        source_patient_id: &str,
+        workspace: &str,
+    ) -> SourcePullOutput {
+        self.pull_calls
+            .fetch_add(1, std::sync::atomic::Ordering::SeqCst);
+        if self.pause_pull.load(std::sync::atomic::Ordering::SeqCst) {
+            self.pull_entered.notify_waiters();
+            self.pull_release.notified().await;
+        }
+        SourcePullOutput::Complete {
+            patient: make_patient(source_patient_id, "Elena Morales"),
+            records: vec![make_revision(
+                workspace,
+                &self.source_id,
+                "Patient",
+                source_patient_id,
+                "Elena Morales",
+            )],
+        }
+    }
+
+    async fn reconnect(
+        &self,
+        practice_id: &str,
+        now: i64,
+        _command_key: Option<SourceCommandKey<'_>>,
+    ) -> Result<ReconnectReceipt, SourceAdapterError> {
+        self.reconnect_calls
+            .fetch_add(1, std::sync::atomic::Ordering::SeqCst);
+        if self.reconnect_delay_ms > 0 {
+            tokio::time::sleep(std::time::Duration::from_millis(self.reconnect_delay_ms)).await;
+        }
+        Ok(ReconnectReceipt {
+            source_id: self.source_id.clone(),
+            practice_id: practice_id.to_owned(),
+            reconnected_at: now,
+        })
+    }
+}
+
+#[tokio::test(flavor = "multi_thread", worker_threads = 4)]
+async fn reconnect_command_serializes_concurrent_duplicates_recovers_interrupted_check_and_preserves_original_receipt()
+ {
+    use std::sync::atomic::Ordering::SeqCst;
+
+    let store = migrated_store().await;
+    let run = Uuid::new_v4().to_string();
+    let practice = format!("practice-{run}");
+    let physician = format!("dr-{run}");
+    let source_a_id = format!("ehr-a-{run}");
+    let source_b_id = format!("ehr-b-{run}");
+    let source_a = GateControlledSource::new(&source_a_id, 60);
+    let source_b = GateControlledSource::new(&source_b_id, 0);
+
+    let ws = format!("pw-cmd-{run}");
+    SourceCoordinator::check_patient(
+        &store,
+        &*source_a,
+        &practice,
+        "pat-1",
+        LinkTarget::Exact(&ws),
+        1_000,
+    )
+    .await
+    .unwrap();
+    assert_eq!(source_a.pull_calls.load(SeqCst), 1);
+
+    // (a) Concurrent duplicate `reconnect_source_command` calls execute `reconnect()` and
+    // `pull_patient()` ONCE total while returning identical Accepted receipts to both callers.
+    let key_1 = format!("key-dup-{run}");
+    let (out_a, out_b) = tokio::join!(
+        SourceCoordinator::reconnect_source_command(
+            &store,
+            ReconnectCommand {
+                practice_id: &practice,
+                physician_id: &physician,
+                idempotency_key: &key_1,
+                source_id: &source_a_id,
+                source: Some(&*source_a),
+                now: 2_000,
+            },
+        ),
+        SourceCoordinator::reconnect_source_command(
+            &store,
+            ReconnectCommand {
+                practice_id: &practice,
+                physician_id: &physician,
+                idempotency_key: &key_1,
+                source_id: &source_a_id,
+                source: Some(&*source_a),
+                now: 2_000,
+            },
+        ),
+    );
+    let out_a = out_a.unwrap();
+    let out_b = out_b.unwrap();
+    assert_eq!(out_a, out_b);
+    assert_eq!(
+        source_a.reconnect_calls.load(SeqCst),
+        1,
+        "concurrent duplicate reconnect commands must invoke source.reconnect() only once"
+    );
+    assert_eq!(
+        source_a.pull_calls.load(SeqCst),
+        2,
+        "concurrent duplicate reconnect commands must run check_practice only once"
+    );
+    assert!(matches!(
+        &out_a,
+        ReconnectCommandOutcome::Accepted { receipt, .. } if receipt.reconnected_at == 2_000
+    ));
+
+    // (d) Conflicting key reuse against BOTH a second registered PatientSource AND an unregistered
+    // source is rejected via the receipt owner without invoking the second adapter.
+    let conflict_registered = SourceCoordinator::reconnect_source_command(
+        &store,
+        ReconnectCommand {
+            practice_id: &practice,
+            physician_id: &physician,
+            idempotency_key: &key_1,
+            source_id: &source_b_id,
+            source: Some(&*source_b),
+            now: 2_500,
+        },
+    )
+    .await
+    .unwrap();
+    assert_eq!(conflict_registered, ReconnectCommandOutcome::ConflictingKey);
+    assert_eq!(
+        source_b.reconnect_calls.load(SeqCst),
+        0,
+        "conflicting registered source must never execute reconnect()"
+    );
+
+    let conflict_unregistered = SourceCoordinator::reconnect_source_command(
+        &store,
+        ReconnectCommand {
+            practice_id: &practice,
+            physician_id: &physician,
+            idempotency_key: &key_1,
+            source_id: "unregistered-ehr",
+            source: None,
+            now: 2_500,
+        },
+    )
+    .await
+    .unwrap();
+    assert_eq!(
+        conflict_unregistered,
+        ReconnectCommandOutcome::ConflictingKey
+    );
+
+    // Concurrent conflicting commands (`source_a` vs `source_b` under a fresh key): at most one
+    // executes and the other rejects with `ConflictingKey` before touching its adapter.
+    let key_race_conflict = format!("key-race-conflict-{run}");
+    let (race_a, race_b) = tokio::join!(
+        SourceCoordinator::reconnect_source_command(
+            &store,
+            ReconnectCommand {
+                practice_id: &practice,
+                physician_id: &physician,
+                idempotency_key: &key_race_conflict,
+                source_id: &source_a_id,
+                source: Some(&*source_a),
+                now: 3_000,
+            },
+        ),
+        SourceCoordinator::reconnect_source_command(
+            &store,
+            ReconnectCommand {
+                practice_id: &practice,
+                physician_id: &physician,
+                idempotency_key: &key_race_conflict,
+                source_id: &source_b_id,
+                source: Some(&*source_b),
+                now: 3_000,
+            },
+        ),
+    );
+    let race_a = race_a.unwrap();
+    let race_b = race_b.unwrap();
+    let accepted_count = usize::from(matches!(race_a, ReconnectCommandOutcome::Accepted { .. }))
+        + usize::from(matches!(race_b, ReconnectCommandOutcome::Accepted { .. }));
+    let conflict_count = usize::from(race_a == ReconnectCommandOutcome::ConflictingKey)
+        + usize::from(race_b == ReconnectCommandOutcome::ConflictingKey);
+    assert_eq!((accepted_count, conflict_count), (1, 1));
+    assert_eq!(
+        source_a.reconnect_calls.load(SeqCst) + source_b.reconnect_calls.load(SeqCst),
+        2,
+        "only the winning side of a concurrent key conflict may call reconnect()"
+    );
+
+    // (b) Execute a later reconnect under `key_2` at t = 4_000 (advancing practice_source_access to 4_000),
+    // compact receipts, and verify replaying `key_1` at t = 5_000 still returns its ORIGINAL `reconnected_at == 2_000`!
+    let key_2 = format!("key-later-{run}");
+    let later = SourceCoordinator::reconnect_source_command(
+        &store,
+        ReconnectCommand {
+            practice_id: &practice,
+            physician_id: &physician,
+            idempotency_key: &key_2,
+            source_id: &source_a_id,
+            source: Some(&*source_a),
+            now: 4_000,
+        },
+    )
+    .await
+    .unwrap();
+    assert!(matches!(
+        later,
+        ReconnectCommandOutcome::Accepted { receipt, .. } if receipt.reconnected_at == 4_000
+    ));
+    let _ = store.compact_receipts(0, 100).await.unwrap();
+
+    let replayed_key_1 = SourceCoordinator::reconnect_source_command(
+        &store,
+        ReconnectCommand {
+            practice_id: &practice,
+            physician_id: &physician,
+            idempotency_key: &key_1,
+            source_id: &source_a_id,
+            source: Some(&*source_a),
+            now: 5_000,
+        },
+    )
+    .await
+    .unwrap();
+    assert_eq!(
+        replayed_key_1, out_a,
+        "replaying an older key after a later reconnect and receipt compaction must return its original receipt"
+    );
+
+    // (c) Interrupted execution in `Reconnected { receipt }` state: pause `pull_patient`, abort
+    // the task after `reconnect()` has committed `Reconnected`, then retry the same key at t = 7_000.
+    // Retry must NOT call `source.reconnect()` again and must return the original `reconnected_at == 6_000`.
+    let before_interrupted_reconnects = source_a.reconnect_calls.load(SeqCst);
+    source_a.pause_pull.store(true, SeqCst);
+    let key_interrupted = format!("key-interrupted-{run}");
+    let entered = source_a.pull_entered.notified();
+    let store_bg = store.clone();
+    let practice_bg = practice.clone();
+    let physician_bg = physician.clone();
+    let key_bg = key_interrupted.clone();
+    let source_a_id_bg = source_a_id.clone();
+    let source_a_bg = Arc::clone(&source_a);
+
+    let handle = tokio::spawn(async move {
+        SourceCoordinator::reconnect_source_command(
+            &store_bg,
+            ReconnectCommand {
+                practice_id: &practice_bg,
+                physician_id: &physician_bg,
+                idempotency_key: &key_bg,
+                source_id: &source_a_id_bg,
+                source: Some(&*source_a_bg),
+                now: 6_000,
+            },
+        )
+        .await
+    });
+
+    entered.await;
+    assert_eq!(
+        source_a.reconnect_calls.load(SeqCst),
+        before_interrupted_reconnects + 1
+    );
+    handle.abort();
+    let _ = handle.await;
+
+    source_a.pause_pull.store(false, SeqCst);
+    source_a.pull_release.notify_waiters();
+
+    let recovered_cmd = SourceCoordinator::reconnect_source_command(
+        &store,
+        ReconnectCommand {
+            practice_id: &practice,
+            physician_id: &physician,
+            idempotency_key: &key_interrupted,
+            source_id: &source_a_id,
+            source: Some(&*source_a),
+            now: 7_000,
+        },
+    )
+    .await
+    .unwrap();
+    assert_eq!(
+        source_a.reconnect_calls.load(SeqCst),
+        before_interrupted_reconnects + 1,
+        "recovering from Reconnected state must complete check_practice without calling reconnect() again"
+    );
+    assert!(matches!(
+        recovered_cmd,
+        ReconnectCommandOutcome::Accepted { receipt, .. } if receipt.reconnected_at == 6_000
+    ));
+}
+
 #[tokio::test]
 async fn partial_and_complete_deliveries_commit_atomically_with_pull_status_and_nullable_pulled_at()
 {
@@ -1477,6 +1828,618 @@ async fn partial_and_complete_deliveries_commit_atomically_with_pull_status_and_
     assert!(matches!(
         mismatch,
         SourceStatusError::PracticeMismatch { .. }
+    ));
+}
+
+struct LeaseControlledSource {
+    source_id: String,
+    reconnect_effects: std::sync::atomic::AtomicUsize,
+    pull_calls: std::sync::atomic::AtomicUsize,
+    reconnect_sleep_ms: std::sync::atomic::AtomicU64,
+    pull_sleep_ms: std::sync::atomic::AtomicU64,
+    pause_on_pull: std::sync::atomic::AtomicBool,
+    pull_entered: tokio::sync::Notify,
+    pull_release: tokio::sync::Notify,
+    cached_receipts: Mutex<HashMap<(String, String, String), ReconnectReceipt>>,
+}
+
+impl LeaseControlledSource {
+    fn new(source_id: &str) -> Arc<Self> {
+        Arc::new(Self {
+            source_id: source_id.to_owned(),
+            reconnect_effects: std::sync::atomic::AtomicUsize::new(0),
+            pull_calls: std::sync::atomic::AtomicUsize::new(0),
+            reconnect_sleep_ms: std::sync::atomic::AtomicU64::new(0),
+            pull_sleep_ms: std::sync::atomic::AtomicU64::new(0),
+            pause_on_pull: std::sync::atomic::AtomicBool::new(false),
+            pull_entered: tokio::sync::Notify::new(),
+            pull_release: tokio::sync::Notify::new(),
+            cached_receipts: Mutex::new(HashMap::new()),
+        })
+    }
+}
+
+#[async_trait]
+impl PatientSource for LeaseControlledSource {
+    fn source_id(&self) -> &str {
+        &self.source_id
+    }
+
+    fn source_label(&self) -> &str {
+        "Lease Controlled EHR"
+    }
+
+    async fn patient_ids(&self) -> Result<Vec<String>, SourceAdapterError> {
+        Ok(vec!["pat-1".to_owned(), "pat-2".to_owned()])
+    }
+
+    async fn patient(&self, source_patient_id: &str) -> Result<SourcePatient, SourceAdapterError> {
+        Ok(make_patient(source_patient_id, "Elena Morales"))
+    }
+
+    async fn records(
+        &self,
+        _patient: &SourcePatient,
+        _workspace: &str,
+    ) -> Result<Vec<SourceRevision>, SourceAdapterError> {
+        Ok(Vec::new())
+    }
+
+    async fn pull_patient(
+        &self,
+        _practice_id: &str,
+        source_patient_id: &str,
+        workspace: &str,
+    ) -> SourcePullOutput {
+        use std::sync::atomic::Ordering::SeqCst;
+
+        self.pull_calls.fetch_add(1, SeqCst);
+        if self.pause_on_pull.load(SeqCst) {
+            let release = self.pull_release.notified();
+            self.pull_entered.notify_waiters();
+            release.await;
+        }
+        let sleep_ms = self.pull_sleep_ms.load(SeqCst);
+        if sleep_ms > 0 {
+            tokio::time::sleep(Duration::from_millis(sleep_ms)).await;
+        }
+        SourcePullOutput::Complete {
+            patient: make_patient(source_patient_id, "Elena Morales"),
+            records: vec![make_revision(
+                workspace,
+                &self.source_id,
+                "Patient",
+                source_patient_id,
+                "Elena Morales",
+            )],
+        }
+    }
+
+    async fn reconnect(
+        &self,
+        practice_id: &str,
+        now: i64,
+        command_key: Option<SourceCommandKey<'_>>,
+    ) -> Result<ReconnectReceipt, SourceAdapterError> {
+        use std::sync::atomic::Ordering::SeqCst;
+
+        if let Some(key) = command_key
+            && let Some(cached) = self
+                .cached_receipts
+                .lock()
+                .unwrap()
+                .get(&key.scoped_key(practice_id))
+                .cloned()
+        {
+            return Ok(cached);
+        }
+        let sleep_ms = self.reconnect_sleep_ms.load(SeqCst);
+        if sleep_ms > 0 {
+            tokio::time::sleep(Duration::from_millis(sleep_ms)).await;
+        }
+        self.reconnect_effects.fetch_add(1, SeqCst);
+        let receipt = ReconnectReceipt {
+            source_id: self.source_id.clone(),
+            practice_id: practice_id.to_owned(),
+            reconnected_at: now,
+        };
+        if let Some(key) = command_key {
+            self.cached_receipts
+                .lock()
+                .unwrap()
+                .insert(key.scoped_key(practice_id), receipt.clone());
+        }
+        Ok(receipt)
+    }
+}
+
+#[tokio::test(flavor = "multi_thread", worker_threads = 4)]
+async fn active_slow_reconnect_and_catch_up_renew_lease_while_superseded_fence_cannot_write() {
+    use std::sync::atomic::Ordering::SeqCst;
+
+    let store = migrated_store().await;
+    let run = Uuid::new_v4().to_string();
+    let practice = format!("practice-lease-{run}");
+    let physician = format!("dr-lease-{run}");
+    let source_id = format!("ehr-lease-{run}");
+    let source = LeaseControlledSource::new(&source_id);
+
+    let ws1 = format!("pw-lease-1-{run}");
+    let ws2 = format!("pw-lease-2-{run}");
+    for (pat_id, ws) in [("pat-1", &ws1), ("pat-2", &ws2)] {
+        SourceCoordinator::check_patient(
+            &store,
+            &*source,
+            &practice,
+            pat_id,
+            LinkTarget::Exact(ws),
+            1_000,
+        )
+        .await
+        .unwrap();
+    }
+    assert_eq!(source.pull_calls.load(SeqCst), 2);
+
+    // Part A: Active slow reconnect (1.3s) + two slow sequential patient pulls (2 * 1.3s = 2.6s)
+    // runs ~3.9s total — nearly 2x the initial 2s lease TTL. Heartbeat renewal every 250ms keeps
+    // caller 1's lease alive so a duplicate caller arriving at 2.3s waits rather than stealing the
+    // lease, executing 1 reconnect effect and 2 patient pulls total.
+    source.reconnect_sleep_ms.store(1_300, SeqCst);
+    source.pull_sleep_ms.store(1_300, SeqCst);
+    let active_policy = ReconnectLeasePolicy {
+        lease_seconds: 2,
+        renew_interval: Duration::from_millis(250),
+    };
+    let slow_key = format!("key-slow-active-{run}");
+
+    let store_c1 = store.clone();
+    let practice_c1 = practice.clone();
+    let physician_c1 = physician.clone();
+    let key_c1 = slow_key.clone();
+    let source_id_c1 = source_id.clone();
+    let source_c1 = Arc::clone(&source);
+    let caller_1 = tokio::spawn(async move {
+        SourceCoordinator::reconnect_source_command_with_lease(
+            &store_c1,
+            ReconnectCommand {
+                practice_id: &practice_c1,
+                physician_id: &physician_c1,
+                idempotency_key: &key_c1,
+                source_id: &source_id_c1,
+                source: Some(&*source_c1),
+                now: 5_000,
+            },
+            active_policy,
+        )
+        .await
+    });
+
+    tokio::time::sleep(Duration::from_millis(2_300)).await;
+    let caller_2 = SourceCoordinator::reconnect_source_command_with_lease(
+        &store,
+        ReconnectCommand {
+            practice_id: &practice,
+            physician_id: &physician,
+            idempotency_key: &slow_key,
+            source_id: &source_id,
+            source: Some(&*source),
+            now: 5_500,
+        },
+        active_policy,
+    )
+    .await
+    .unwrap();
+    let caller_1 = caller_1.await.unwrap().unwrap();
+
+    assert_eq!(caller_1, caller_2);
+    assert_eq!(
+        source.reconnect_effects.load(SeqCst),
+        1,
+        "heartbeat renewal must prevent duplicate reconnect effects past initial lease TTL"
+    );
+    assert_eq!(
+        source.pull_calls.load(SeqCst),
+        4,
+        "each of the 2 linked patients must be pulled once during slow catch-up (2 baseline + 2 catch-up)"
+    );
+    assert!(matches!(
+        &caller_1,
+        ReconnectCommandOutcome::Accepted { receipt, .. } if receipt.reconnected_at == 5_000
+    ));
+
+    // Part B: Stalled runner loses its lease after TTL expires without heartbeat renewal; runner B
+    // claims the expired lease, finishes catch-up at `now = 9_000`, and marks the command Completed.
+    // When stalled runner A wakes up with stale `now = 8_000`, write fencing rejects its delivery
+    // with `CommandLeaseLost` and leaves patient records/statuses at `9_000`.
+    source.reconnect_sleep_ms.store(0, SeqCst);
+    source.pull_sleep_ms.store(0, SeqCst);
+    source.pause_on_pull.store(true, SeqCst);
+
+    let stalled_key = format!("key-stalled-fence-{run}");
+    let stalled_policy = ReconnectLeasePolicy {
+        lease_seconds: 2,
+        renew_interval: Duration::from_secs(3_600),
+    };
+    let entered = source.pull_entered.notified();
+    let store_stalled = store.clone();
+    let practice_stalled = practice.clone();
+    let physician_stalled = physician.clone();
+    let key_stalled = stalled_key.clone();
+    let source_id_stalled = source_id.clone();
+    let source_stalled = Arc::clone(&source);
+
+    let runner_a = tokio::spawn(async move {
+        SourceCoordinator::reconnect_source_command_with_lease(
+            &store_stalled,
+            ReconnectCommand {
+                practice_id: &practice_stalled,
+                physician_id: &physician_stalled,
+                idempotency_key: &key_stalled,
+                source_id: &source_id_stalled,
+                source: Some(&*source_stalled),
+                now: 8_000,
+            },
+            stalled_policy,
+        )
+        .await
+    });
+
+    entered.await;
+    let effects_after_a = source.reconnect_effects.load(SeqCst);
+    assert_eq!(effects_after_a, 2);
+
+    // Wait past the 2s integer-second lease window so runner A's unrenewed lease expires in Postgres.
+    tokio::time::sleep(Duration::from_millis(2_500)).await;
+    source.pause_on_pull.store(false, SeqCst);
+
+    let runner_b_out = SourceCoordinator::reconnect_source_command_with_lease(
+        &store,
+        ReconnectCommand {
+            practice_id: &practice,
+            physician_id: &physician,
+            idempotency_key: &stalled_key,
+            source_id: &source_id,
+            source: Some(&*source),
+            now: 9_000,
+        },
+        ReconnectLeasePolicy {
+            lease_seconds: 10,
+            renew_interval: Duration::from_millis(250),
+        },
+    )
+    .await
+    .unwrap();
+    assert_eq!(
+        source.reconnect_effects.load(SeqCst),
+        effects_after_a,
+        "runner B claiming an expired Reconnected command must not re-run source.reconnect()"
+    );
+    assert!(matches!(
+        &runner_b_out,
+        ReconnectCommandOutcome::Accepted { receipt, .. } if receipt.reconnected_at == 8_000
+    ));
+
+    // Release stalled runner A so it tries to commit its stale `now = 8_000` pull output.
+    source.pull_release.notify_waiters();
+    let runner_a_err = runner_a.await.unwrap().unwrap_err();
+    assert!(
+        matches!(runner_a_err, SourceStatusError::CommandLeaseLost { .. }),
+        "superseded runner A must fail closed with CommandLeaseLost, got {runner_a_err:?}"
+    );
+
+    // Verify neither patient status reverted from `9_000` to stale `8_000`, and a direct fenced
+    // check/link resolution using a stale lease token is also fenced before touching the adapter.
+    for ws in [&ws1, &ws2] {
+        let statuses = store.patient_source_statuses(&practice, ws).await.unwrap();
+        assert_eq!(statuses[0].last_good_read_at, Some(9_000));
+    }
+
+    let pulls_before_stale = source.pull_calls.load(SeqCst);
+    let stale_fence = ReconnectCommandFence {
+        practice_id: &practice,
+        physician_id: &physician,
+        idempotency_key: &stalled_key,
+        lease_owner: "stale-superseded-owner",
+        lease_seconds: 10,
+    };
+    let ws3 = format!("pw-lease-3-{run}");
+    let stale_link_err = SourceCoordinator::check_patient_fenced(
+        &store,
+        &*source,
+        &practice,
+        "pat-3",
+        LinkTarget::Exact(&ws3),
+        7_000,
+        Some(stale_fence),
+    )
+    .await
+    .unwrap_err();
+    assert!(matches!(
+        stale_link_err,
+        SourceStatusError::CommandLeaseLost { .. }
+    ));
+    assert_eq!(
+        source.pull_calls.load(SeqCst),
+        pulls_before_stale,
+        "fenced patient link check must fail before pulling from the adapter"
+    );
+    assert!(
+        store
+            .source_patient_link(&SourcePatientKey {
+                practice_id: practice.clone(),
+                source_id: source_id.clone(),
+                source_patient_id: "pat-3".to_owned(),
+            })
+            .await
+            .unwrap()
+            .is_none(),
+        "fenced link resolution must write zero patient link rows"
+    );
+}
+
+#[derive(Default, serde::Serialize, serde::Deserialize)]
+struct PersistedPreCheckpointLedger {
+    underlying_effects: usize,
+    receipts: Vec<((String, String, String), ReconnectReceipt)>,
+}
+
+struct PreCheckpointSource {
+    source_id: String,
+    store: Store,
+    hang_after_effect: std::sync::atomic::AtomicBool,
+    effect_committed: tokio::sync::Notify,
+}
+
+impl PreCheckpointSource {
+    fn open(store: Store, source_id: &str) -> Arc<Self> {
+        Arc::new(Self {
+            source_id: source_id.to_owned(),
+            store,
+            hang_after_effect: std::sync::atomic::AtomicBool::new(false),
+            effect_committed: tokio::sync::Notify::new(),
+        })
+    }
+
+    async fn underlying_effect_count(&self, practice_id: &str) -> usize {
+        self.store
+            .read_source_adapter_state::<PersistedPreCheckpointLedger>(practice_id, &self.source_id)
+            .await
+            .unwrap()
+            .underlying_effects
+    }
+}
+
+#[async_trait]
+impl PatientSource for PreCheckpointSource {
+    fn source_id(&self) -> &str {
+        &self.source_id
+    }
+
+    fn source_label(&self) -> &str {
+        "Pre-Checkpoint EHR"
+    }
+
+    async fn patient_ids(&self) -> Result<Vec<String>, SourceAdapterError> {
+        Ok(vec!["pat-1".to_owned()])
+    }
+
+    async fn patient(&self, source_patient_id: &str) -> Result<SourcePatient, SourceAdapterError> {
+        Ok(make_patient(source_patient_id, "Elena Morales"))
+    }
+
+    async fn records(
+        &self,
+        _patient: &SourcePatient,
+        _workspace: &str,
+    ) -> Result<Vec<SourceRevision>, SourceAdapterError> {
+        Ok(Vec::new())
+    }
+
+    async fn pull_patient(
+        &self,
+        _practice_id: &str,
+        source_patient_id: &str,
+        workspace: &str,
+    ) -> SourcePullOutput {
+        SourcePullOutput::Complete {
+            patient: make_patient(source_patient_id, "Elena Morales"),
+            records: vec![make_revision(
+                workspace,
+                &self.source_id,
+                "Patient",
+                source_patient_id,
+                "Elena Morales",
+            )],
+        }
+    }
+
+    async fn reconnect(
+        &self,
+        practice_id: &str,
+        now: i64,
+        command_key: Option<SourceCommandKey<'_>>,
+    ) -> Result<ReconnectReceipt, SourceAdapterError> {
+        use std::sync::atomic::Ordering::SeqCst;
+
+        let (receipt, was_cached) = self
+            .store
+            .mutate_source_adapter_state(
+                practice_id,
+                &self.source_id,
+                |ledger: &mut PersistedPreCheckpointLedger| {
+                    if let Some(key) = command_key {
+                        let scoped = key.scoped_key(practice_id);
+                        if let Some((_, cached)) =
+                            ledger.receipts.iter().find(|(k, _)| k == &scoped)
+                        {
+                            return Ok((cached.clone(), true));
+                        }
+                    }
+
+                    ledger.underlying_effects += 1;
+                    let receipt = ReconnectReceipt {
+                        source_id: self.source_id.clone(),
+                        practice_id: practice_id.to_owned(),
+                        reconnected_at: now,
+                    };
+                    if let Some(key) = command_key {
+                        ledger
+                            .receipts
+                            .push((key.scoped_key(practice_id), receipt.clone()));
+                    }
+                    Ok((receipt, false))
+                },
+            )
+            .await?;
+
+        if !was_cached {
+            self.effect_committed.notify_waiters();
+            if self.hang_after_effect.load(SeqCst) {
+                std::future::pending::<()>().await;
+            }
+        }
+        Ok(receipt)
+    }
+}
+
+#[tokio::test(flavor = "multi_thread", worker_threads = 4)]
+async fn interrupted_reconnect_before_db_checkpoint_recovers_cached_adapter_receipt_without_second_effect()
+ {
+    use std::sync::atomic::Ordering::SeqCst;
+
+    let store = migrated_store().await;
+    let run = Uuid::new_v4().to_string();
+    let practice = format!("practice-prechk-{run}");
+    let physician_a = format!("dr-a-{run}");
+    let physician_b = format!("dr-b-{run}");
+    let source_id = format!("ehr-prechk-{run}");
+    let instance_a = PreCheckpointSource::open(store.clone(), &source_id);
+
+    let ws = format!("pw-prechk-{run}");
+    SourceCoordinator::check_patient(
+        &store,
+        &*instance_a,
+        &practice,
+        "pat-1",
+        LinkTarget::Exact(&ws),
+        1_000,
+    )
+    .await
+    .unwrap();
+
+    // Mark access as lapsed at t = 6_500 before issuing the reconnect command.
+    store
+        .set_practice_source_access(
+            &practice,
+            &source_id,
+            &SourceAccessState::ReconnectNeeded {
+                since: 6_500,
+                reason: "refresh token expired".into(),
+            },
+            6_500,
+        )
+        .await
+        .unwrap();
+
+    instance_a.hang_after_effect.store(true, SeqCst);
+    let key = format!("key-prechk-{run}");
+    let committed = instance_a.effect_committed.notified();
+
+    let store_bg = store.clone();
+    let practice_bg = practice.clone();
+    let physician_bg = physician_a.clone();
+    let key_bg = key.clone();
+    let source_id_bg = source_id.clone();
+    let source_bg = Arc::clone(&instance_a);
+
+    let attempt_1 = tokio::spawn(async move {
+        SourceCoordinator::reconnect_source_command(
+            &store_bg,
+            ReconnectCommand {
+                practice_id: &practice_bg,
+                physician_id: &physician_bg,
+                idempotency_key: &key_bg,
+                source_id: &source_id_bg,
+                source: Some(&*source_bg),
+                now: 7_000,
+            },
+        )
+        .await
+    });
+
+    // Wait until `source.reconnect(..., Some(key))` has committed its underlying effect and
+    // receipt in Postgres (`physician_runtime_source_adapter_state`), then abort caller 1 BEFORE
+    // `store.record_reconnect_command_reconnected` runs (DB command row stays `Claimed`) and drop
+    // `instance_a` completely so retry must recover from shared Postgres state on a freshly
+    // constructed adapter instance with zero shared filesystem.
+    committed.await;
+    assert_eq!(instance_a.underlying_effect_count(&practice).await, 1);
+    attempt_1.abort();
+    let _ = attempt_1.await;
+    drop(instance_a);
+
+    // Access in Postgres was NOT updated yet because the DB checkpoint never ran!
+    let report_before_retry = store
+        .practice_source_report(&practice, &source_id)
+        .await
+        .unwrap();
+    assert!(matches!(
+        report_before_retry.access,
+        Some(SourceAccessState::ReconnectNeeded { since: 6_500, .. })
+    ));
+
+    // Construct a brand-new adapter instance sharing ONLY Postgres (`store.clone()`) and retry
+    // with the same `(practice, physician_a, key)` at `now = 7_500`: adapter recovers the cached
+    // receipt (`reconnected_at == 7_000`) without repeating the effect, checkpoints `Reconnected`
+    // + `Completed`, and restores practice access at `7_000`.
+    let instance_b = PreCheckpointSource::open(store.clone(), &source_id);
+    let recovered = SourceCoordinator::reconnect_source_command(
+        &store,
+        ReconnectCommand {
+            practice_id: &practice,
+            physician_id: &physician_a,
+            idempotency_key: &key,
+            source_id: &source_id,
+            source: Some(&*instance_b),
+            now: 7_500,
+        },
+    )
+    .await
+    .unwrap();
+    assert_eq!(
+        instance_b.underlying_effect_count(&practice).await,
+        1,
+        "retry on freshly constructed adapter instance after pre-checkpoint interruption must recover cached receipt from Postgres without a second effect"
+    );
+    assert!(matches!(
+        &recovered,
+        ReconnectCommandOutcome::Accepted {
+            receipt,
+            access: SourceAccessState::Connected { connected_at: 7_000 },
+            ..
+        } if receipt.reconnected_at == 7_000
+    ));
+
+    // A different physician in the same practice reusing the same `idempotency_key` string after a
+    // later lapse is scoped independently (`(practice_id, physician_id, idempotency_key)`), so it
+    // executes a fresh reconnect effect at `8_500`.
+    let second_physician_out = SourceCoordinator::reconnect_source_command(
+        &store,
+        ReconnectCommand {
+            practice_id: &practice,
+            physician_id: &physician_b,
+            idempotency_key: &key,
+            source_id: &source_id,
+            source: Some(&*instance_b),
+            now: 8_500,
+        },
+    )
+    .await
+    .unwrap();
+    assert_eq!(instance_b.underlying_effect_count(&practice).await, 2);
+    assert!(matches!(
+        &second_physician_out,
+        ReconnectCommandOutcome::Accepted { receipt, .. } if receipt.reconnected_at == 8_500
     ));
 }
 
@@ -1594,10 +2557,156 @@ impl PatientSource for InterleavingPullSource {
 }
 
 #[tokio::test]
-async fn older_complete_pulls_held_across_newer_check_do_not_regress_chart_or_timestamps() {
+async fn late_lapsed_check_held_across_reconnect_command_does_not_overwrite_recovery() {
+    let store = migrated_store().await;
+    let suffix = Uuid::new_v4().simple().to_string();
+    let practice = format!("practice-order-lapsed-{suffix}");
+    let physician = format!("dr-order-lapsed-{suffix}");
+    let source_id = format!("ehr-order-lapsed-{suffix}");
+    let spid = "pat-order-1";
+    let ws = workspace_id(&source_id, spid);
+
+    let sid_initial = source_id.clone();
+    let source =
+        InterleavingPullSource::new(&source_id, move |workspace| SourcePullOutput::Complete {
+            patient: make_patient(spid, "Order Patient"),
+            records: vec![make_revision(
+                workspace,
+                &sid_initial,
+                "Observation",
+                "obs-1",
+                "Initial A1c 6.4",
+            )],
+        });
+
+    // Call #1: baseline complete pull at t = 100.
+    let initial = SourceCoordinator::check_patient(
+        &store,
+        &*source,
+        &practice,
+        spid,
+        LinkTarget::ExistingOrDefault(&ws),
+        100,
+    )
+    .await
+    .unwrap();
+    assert_eq!(initial.applied, PullDisposition::Applied);
+    assert!(matches!(
+        initial.standing,
+        SourceStanding::UpToDate {
+            last_good_read_at: 100,
+            ..
+        }
+    ));
+
+    // Hold Call #2 (ordinary Check A): observes LapsedAccess at t = 150 and pauses before DB commit.
+    let (check_a_entered, check_a_release) =
+        source.hold_call(2, |_workspace| SourcePullOutput::LapsedAccess {
+            error: SourceAdapterError::LapsedAccess {
+                reason: "stale refresh token before reconnect".into(),
+            },
+        });
+    let entered_wait = check_a_entered.notified();
+
+    let store_a = store.clone();
+    let source_a = Arc::clone(&source);
+    let practice_a = practice.clone();
+    let ws_a = ws.clone();
+    let check_a_task = tokio::spawn(async move {
+        SourceCoordinator::check_patient(
+            &store_a,
+            &*source_a,
+            &practice_a,
+            spid,
+            LinkTarget::Exact(&ws_a),
+            150,
+        )
+        .await
+    });
+
+    entered_wait.await;
+
+    // While Check A is paused holding LapsedAccess, `reconnect_source_command` B restores access
+    // and commits a fresh Complete pull (Call #3) at t = 300.
+    let sid_recovered = source_id.clone();
+    source.set_default_plan(move |workspace| SourcePullOutput::Complete {
+        patient: make_patient(spid, "Order Patient"),
+        records: vec![make_revision(
+            workspace,
+            &sid_recovered,
+            "Observation",
+            "obs-1",
+            "Recovered A1c 5.9",
+        )],
+    });
+
+    let reconnect_out = SourceCoordinator::reconnect_source_command(
+        &store,
+        ReconnectCommand {
+            practice_id: &practice,
+            physician_id: &physician,
+            idempotency_key: "idem-order-recover",
+            source_id: &source_id,
+            source: Some(&*source),
+            now: 300,
+        },
+    )
+    .await
+    .unwrap();
+    assert!(matches!(
+        reconnect_out,
+        ReconnectCommandOutcome::Accepted {
+            summary: PracticeSourceSummary::Healthy { .. },
+            ..
+        }
+    ));
+
+    // Release delayed Check A: its stale LapsedAccess must be marked Superseded and leave B's recovery intact.
+    check_a_release.notify_waiters();
+    let report_a = check_a_task.await.unwrap().unwrap();
+    assert_eq!(report_a.applied, PullDisposition::Superseded);
+    assert!(matches!(
+        report_a.standing,
+        SourceStanding::UpToDate {
+            last_good_read_at: 300,
+            ..
+        }
+    ));
+
+    let statuses = store.patient_source_statuses(&practice, &ws).await.unwrap();
+    assert_eq!(statuses[0].last_good_read_at, Some(300));
+    assert!(matches!(
+        statuses[0].latest_attempt.as_ref().unwrap(),
+        PullAttempt {
+            attempted_at: 300,
+            outcome: PullOutcome::Succeeded { .. },
+        }
+    ));
+    let access = store
+        .practice_source_access(&practice, &source_id)
+        .await
+        .unwrap();
+    assert_eq!(
+        access,
+        Some(SourceAccessState::Connected { connected_at: 300 })
+    );
+    let practice_report = store
+        .practice_source_report(&practice, &source_id)
+        .await
+        .unwrap();
+    assert!(matches!(
+        practice_report.summary,
+        PracticeSourceSummary::Healthy { .. }
+    ));
+}
+
+#[tokio::test]
+async fn older_complete_pulls_held_across_newer_check_and_distinct_key_reconnect_do_not_regress_chart_or_timestamps()
+ {
     let store = migrated_store().await;
     let suffix = Uuid::new_v4().simple().to_string();
     let practice = format!("practice-order-complete-{suffix}");
+    let physician = format!("dr-order-complete-{suffix}");
     let source_id = format!("ehr-order-complete-{suffix}");
     let spid = "pat-order-complete";
     let ws = workspace_id(&source_id, spid);
@@ -1708,6 +2817,100 @@ async fn older_complete_pulls_held_across_newer_check_do_not_regress_chart_or_ti
     assert_eq!(
         statuses[0].latest_attempt.as_ref().unwrap().attempted_at,
         300
+    );
+
+    // Part 2: Hold distinct-key `reconnect_source_command` ("idem-old", Call #4) delivering v3-stale
+    // at t = 400 while newer distinct-key `reconnect_source_command` ("idem-new", Call #5) commits
+    // v4-newest at t = 500.
+    let sid_v3 = source_id.clone();
+    let (hold_old_entered, hold_old_release) =
+        source.hold_call(4, move |workspace| SourcePullOutput::Complete {
+            patient: make_patient(spid, "Complete Order Patient v3"),
+            records: vec![make_revision(
+                workspace,
+                &sid_v3,
+                "Observation",
+                "obs-order",
+                "v3 STALE RECONNECT",
+            )],
+        });
+    let entered_old = hold_old_entered.notified();
+
+    let store_old = store.clone();
+    let source_old = Arc::clone(&source);
+    let practice_old = practice.clone();
+    let physician_old = physician.clone();
+    let sid_cmd_old = source_id.clone();
+    let task_old = tokio::spawn(async move {
+        SourceCoordinator::reconnect_source_command(
+            &store_old,
+            ReconnectCommand {
+                practice_id: &practice_old,
+                physician_id: &physician_old,
+                idempotency_key: "idem-distinct-old",
+                source_id: &sid_cmd_old,
+                source: Some(&*source_old),
+                now: 400,
+            },
+        )
+        .await
+    });
+    entered_old.await;
+
+    let sid_v4 = source_id.clone();
+    source.set_default_plan(move |workspace| SourcePullOutput::Complete {
+        patient: make_patient(spid, "Complete Order Patient v4"),
+        records: vec![make_revision(
+            workspace,
+            &sid_v4,
+            "Observation",
+            "obs-order",
+            "v4 NEWEST RECONNECT",
+        )],
+    });
+    let out_new = SourceCoordinator::reconnect_source_command(
+        &store,
+        ReconnectCommand {
+            practice_id: &practice,
+            physician_id: &physician,
+            idempotency_key: "idem-distinct-new",
+            source_id: &source_id,
+            source: Some(&*source),
+            now: 500,
+        },
+    )
+    .await
+    .unwrap();
+    assert!(matches!(out_new, ReconnectCommandOutcome::Accepted { .. }));
+
+    hold_old_release.notify_waiters();
+    let out_old = task_old.await.unwrap().unwrap();
+    assert!(matches!(out_old, ReconnectCommandOutcome::Accepted { .. }));
+
+    let final_sources = store.sources(&ws).await.unwrap().sources;
+    let final_obs_rev = final_sources
+        .iter()
+        .find(|rev| rev.candidate_id == "Observation/obs-order")
+        .expect("Observation/obs-order stored");
+    assert!(
+        final_obs_rev.content.contains("v4 NEWEST RECONNECT"),
+        "older distinct-key reconnect must not overwrite v4 chart records"
+    );
+    let final_pulls = store.source_pulls(std::slice::from_ref(&ws)).await.unwrap();
+    assert_eq!(final_pulls[&ws][0].pulled_at, Some(500));
+    assert_eq!(
+        final_pulls[&ws][0].patient.display_name,
+        "Complete Order Patient v4"
+    );
+    let final_statuses = store.patient_source_statuses(&practice, &ws).await.unwrap();
+    assert_eq!(final_statuses[0].last_good_read_at, Some(500));
+    assert_eq!(
+        final_statuses[0]
+            .latest_attempt
+            .as_ref()
+            .unwrap()
+            .attempted_at,
+        500
     );
 }
 
