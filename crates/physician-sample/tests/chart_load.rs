@@ -177,6 +177,27 @@ async fn a_loaded_chart_is_a_patient_of_the_practice_and_loading_again_changes_n
         format!("Mary {run}-a")
     );
     assert_eq!(pulls[&workspace][0].pulled_at, 1_787_846_400);
+    let link = runtime
+        .source_patient_link(&local_product::source_status::SourcePatientKey {
+            practice_id: STAGING_PRACTICE_ID.to_owned(),
+            source_id: "synthetic-charts".to_owned(),
+            source_patient_id: format!("{run}-a"),
+        })
+        .await
+        .unwrap()
+        .expect("chart load records durable source patient link");
+    assert_eq!(link.workspace_id, workspace);
+    let standings = runtime
+        .workspace_source_standings(std::slice::from_ref(&workspace))
+        .await
+        .unwrap();
+    assert_eq!(
+        standings[&workspace]["synthetic-charts"],
+        local_product::source_status::SourceStanding::UpToDate {
+            last_good_read_at: 1_787_846_400,
+            missing_candidates: Vec::new(),
+        }
+    );
 
     let again = load_synthetic_practice(&bank, &auth, &runtime)
         .await

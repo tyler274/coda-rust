@@ -6,22 +6,60 @@
 //! ledgers beside it hold what the charts were written from, so no part of the
 //! product ever sees them.
 
+use std::collections::{BTreeSet, HashMap};
 use std::fs;
 use std::path::{Path, PathBuf};
+use std::sync::{Arc, RwLock};
 
 use async_trait::async_trait;
 use local_product::physician_sources::{
-    MedicalRecordNumber, PatientSource, SourcePatient, SourceRevision,
+    FailedPart, MedicalRecordNumber, PatientSource, ReconnectReceipt, SourcePatient,
+    SourcePullOutput, SourceRevision,
 };
+use serde::{Deserialize, Serialize};
 use serde_json::Value;
 
 /// Identity of the synthetic chart adapter, including developer-plan admission.
 pub const SOURCE_ID: &str = "synthetic-charts";
 const SOURCE_LABEL: &str = "Synthetic chart";
 
+/// Controllable connector condition for [`SyntheticCharts`] in tests and local proof runs.
+#[derive(Clone, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(tag = "mode", rename_all = "snake_case")]
+pub enum SyntheticSourceMode {
+    /// Normal operation: every patient's NDJSON files read completely.
+    #[default]
+    Healthy,
+    /// Source credentials or authorization have lapsed until [`PatientSource::reconnect`] runs.
+    LapsedAccess {
+        /// Access failure message reported by the adapter.
+        reason: String,
+    },
+    /// Whole-source or whole-patient outage where reads fail before returning records.
+    Outage {
+        /// Outage failure message reported by the adapter.
+        reason: String,
+    },
+    /// Partial pull where named FHIR resource families fail while all other families succeed.
+    Partial {
+        /// Resource family names (such as `"DocumentReference"` or `"Observation"`) that fail.
+        failed_families: BTreeSet<String>,
+        /// Failure reason reported for each failed family.
+        reason: String,
+    },
+}
+
+#[derive(Default)]
+struct ModeTable {
+    practice_modes: HashMap<String, SyntheticSourceMode>,
+    patient_modes: HashMap<(String, String), SyntheticSourceMode>,
+}
+
 /// A built patient bank on disk.
+#[derive(Clone)]
 pub struct SyntheticCharts {
     patients: PathBuf,
+    modes: Arc<RwLock<ModeTable>>,
 }
 
 impl SyntheticCharts {
@@ -29,7 +67,163 @@ impl SyntheticCharts {
     pub fn open(bank: &Path) -> Self {
         Self {
             patients: bank.join("patients"),
+            modes: Arc::new(RwLock::new(ModeTable::default())),
         }
+    }
+
+    /// Sets the practice-wide connector mode for `practice_id`, clearing any per-patient overrides
+    /// in that practice so the practice mode applies uniformly.
+    pub fn set_practice_mode(&self, practice_id: &str, mode: SyntheticSourceMode) {
+        let mut table = self.modes.write().expect("synthetic source mode lock");
+        table
+            .patient_modes
+            .retain(|(practice, _), _| practice != practice_id);
+        match mode {
+            SyntheticSourceMode::Healthy => {
+                table.practice_modes.remove(practice_id);
+            }
+            other @ (SyntheticSourceMode::LapsedAccess { .. }
+            | SyntheticSourceMode::Outage { .. }
+            | SyntheticSourceMode::Partial { .. }) => {
+                table.practice_modes.insert(practice_id.to_owned(), other);
+            }
+        }
+    }
+
+    /// Sets a patient-specific connector mode override for `(practice_id, source_patient_id)`.
+    pub fn set_patient_mode(
+        &self,
+        practice_id: &str,
+        source_patient_id: &str,
+        mode: SyntheticSourceMode,
+    ) {
+        let mut table = self.modes.write().expect("synthetic source mode lock");
+        let key = (practice_id.to_owned(), source_patient_id.to_owned());
+        match mode {
+            SyntheticSourceMode::Healthy => {
+                table.patient_modes.remove(&key);
+            }
+            other @ (SyntheticSourceMode::LapsedAccess { .. }
+            | SyntheticSourceMode::Outage { .. }
+            | SyntheticSourceMode::Partial { .. }) => {
+                table.patient_modes.insert(key, other);
+            }
+        }
+    }
+
+    /// Reads the practice-wide connector mode configured for `practice_id`.
+    pub fn practice_mode(&self, practice_id: &str) -> SyntheticSourceMode {
+        let table = self.modes.read().expect("synthetic source mode lock");
+        table
+            .practice_modes
+            .get(practice_id)
+            .cloned()
+            .unwrap_or_default()
+    }
+
+    /// Resolves the effective connector mode for `(practice_id, source_patient_id)`.
+    pub fn effective_mode(
+        &self,
+        practice_id: &str,
+        source_patient_id: &str,
+    ) -> SyntheticSourceMode {
+        let table = self.modes.read().expect("synthetic source mode lock");
+        let key = (practice_id.to_owned(), source_patient_id.to_owned());
+        table
+            .patient_modes
+            .get(&key)
+            .or_else(|| table.practice_modes.get(practice_id))
+            .cloned()
+            .unwrap_or_default()
+    }
+
+    fn partial_pull(
+        &self,
+        source_patient_id: &str,
+        workspace: &str,
+        failed_families: &BTreeSet<String>,
+        reason: &str,
+    ) -> SourcePullOutput {
+        let patient = if failed_families.contains("Patient") {
+            None
+        } else {
+            match self.read_patient_sync(source_patient_id) {
+                Ok(patient) => Some(patient),
+                Err(error) => return SourcePullOutput::Failed { reason: error },
+            }
+        };
+
+        let chart = self.patients.join(source_patient_id);
+        let entries = match fs::read_dir(&chart) {
+            Ok(entries) => entries,
+            Err(error) => {
+                return SourcePullOutput::Failed {
+                    reason: format!("{}: {error}", chart.display()),
+                };
+            }
+        };
+        let mut files = Vec::new();
+        for entry in entries {
+            match entry {
+                Ok(entry) => files.push(entry.path()),
+                Err(error) => {
+                    return SourcePullOutput::Failed {
+                        reason: format!("{}: {error}", chart.display()),
+                    };
+                }
+            }
+        }
+        files.sort();
+
+        let mut records = Vec::new();
+        for file in files {
+            let family = file
+                .file_stem()
+                .and_then(|stem| stem.to_str())
+                .unwrap_or_default();
+            if failed_families.contains(family) {
+                continue;
+            }
+            let text = match read(&file) {
+                Ok(text) => text,
+                Err(error) => return SourcePullOutput::Failed { reason: error },
+            };
+            for line in text.lines() {
+                match crate::synthetic_chart_fhir::source_revision(workspace, SOURCE_ID, line) {
+                    Ok(revision) => records.push(revision),
+                    Err(error) => {
+                        return SourcePullOutput::Failed {
+                            reason: format!("{}: {error}", file.display()),
+                        };
+                    }
+                }
+            }
+        }
+
+        let failed_parts = failed_families
+            .iter()
+            .map(|family| FailedPart {
+                part: family.clone(),
+                reason: reason.to_owned(),
+            })
+            .collect();
+
+        SourcePullOutput::Partial {
+            patient,
+            records,
+            failed_parts,
+        }
+    }
+
+    fn read_patient_sync(&self, source_patient_id: &str) -> Result<SourcePatient, String> {
+        let path = self.patients.join(source_patient_id).join("Patient.ndjson");
+        let text = read(&path)?;
+        let line = text
+            .lines()
+            .next()
+            .ok_or_else(|| format!("{}: no Patient record", path.display()))?;
+        source_patient(source_patient_id.to_owned(), line)
+            .map_err(|error| format!("{}: {error}", path.display()))
     }
 }
 
@@ -56,14 +250,7 @@ impl PatientSource for SyntheticCharts {
     }
 
     async fn patient(&self, source_patient_id: &str) -> Result<SourcePatient, String> {
-        let path = self.patients.join(source_patient_id).join("Patient.ndjson");
-        let text = read(&path)?;
-        let line = text
-            .lines()
-            .next()
-            .ok_or_else(|| format!("{}: no Patient record", path.display()))?;
-        source_patient(source_patient_id.to_owned(), line)
-            .map_err(|error| format!("{}: {error}", path.display()))
+        self.read_patient_sync(source_patient_id)
     }
 
     async fn records(
@@ -93,6 +280,65 @@ impl PatientSource for SyntheticCharts {
             }
         }
         Ok(records)
+    }
+
+    async fn pull_patient(
+        &self,
+        practice_id: &str,
+        source_patient_id: &str,
+        workspace: &str,
+    ) -> SourcePullOutput {
+        match self.effective_mode(practice_id, source_patient_id) {
+            SyntheticSourceMode::Healthy => match self.patient(source_patient_id).await {
+                Ok(patient) => match self.records(&patient, workspace).await {
+                    Ok(records) => SourcePullOutput::Complete { patient, records },
+                    Err(reason) => SourcePullOutput::Failed { reason },
+                },
+                Err(reason) => SourcePullOutput::Failed { reason },
+            },
+            SyntheticSourceMode::LapsedAccess { reason } => {
+                SourcePullOutput::LapsedAccess { reason }
+            }
+            SyntheticSourceMode::Outage { reason } => SourcePullOutput::Failed { reason },
+            SyntheticSourceMode::Partial {
+                failed_families,
+                reason,
+            } => {
+                if failed_families.is_empty() {
+                    match self.patient(source_patient_id).await {
+                        Ok(patient) => match self.records(&patient, workspace).await {
+                            Ok(records) => SourcePullOutput::Complete { patient, records },
+                            Err(error) => SourcePullOutput::Failed { reason: error },
+                        },
+                        Err(error) => SourcePullOutput::Failed { reason: error },
+                    }
+                } else {
+                    self.partial_pull(source_patient_id, workspace, &failed_families, &reason)
+                }
+            }
+        }
+    }
+
+    async fn reconnect(&self, practice_id: &str, now: i64) -> Result<ReconnectReceipt, String> {
+        let mut table = self.modes.write().expect("synthetic source mode lock");
+        if let Some(SyntheticSourceMode::Outage { reason }) = table.practice_modes.get(practice_id)
+        {
+            return Err(reason.clone());
+        }
+        if matches!(
+            table.practice_modes.get(practice_id),
+            Some(SyntheticSourceMode::LapsedAccess { .. })
+        ) {
+            table.practice_modes.remove(practice_id);
+        }
+        table.patient_modes.retain(|(practice, _), mode| {
+            !(practice == practice_id && matches!(mode, SyntheticSourceMode::LapsedAccess { .. }))
+        });
+        Ok(ReconnectReceipt {
+            source_id: SOURCE_ID.to_owned(),
+            practice_id: practice_id.to_owned(),
+            reconnected_at: now,
+        })
     }
 }
 
@@ -214,5 +460,59 @@ mod tests {
         let patient = source.patient(&ids[0]).await.unwrap();
         let error = source.records(&patient, "pw-1").await.unwrap_err();
         assert!(error.contains("image/tiff"), "{error}");
+    }
+
+    #[tokio::test]
+    async fn controllable_modes_simulate_lapsed_access_partial_outage_and_reconnect() {
+        let source = SyntheticCharts::open(&bank("modes", NOTE));
+
+        source.set_practice_mode(
+            "practice-a",
+            SyntheticSourceMode::LapsedAccess {
+                reason: "oauth refresh token expired".into(),
+            },
+        );
+        assert_eq!(
+            source.pull_patient("practice-a", "MRN1", "pw-1").await,
+            SourcePullOutput::LapsedAccess {
+                reason: "oauth refresh token expired".into(),
+            }
+        );
+
+        let receipt = source.reconnect("practice-a", 1_788_000_000).await.unwrap();
+        assert_eq!(receipt.source_id, SOURCE_ID);
+        assert_eq!(receipt.practice_id, "practice-a");
+        assert!(matches!(
+            source.pull_patient("practice-a", "MRN1", "pw-1").await,
+            SourcePullOutput::Complete { records, .. } if records.len() == 3
+        ));
+
+        source.set_patient_mode(
+            "practice-a",
+            "MRN1",
+            SyntheticSourceMode::Partial {
+                failed_families: BTreeSet::from(["DocumentReference".to_owned()]),
+                reason: "DocumentReference endpoint timed out".into(),
+            },
+        );
+        match source.pull_patient("practice-a", "MRN1", "pw-1").await {
+            SourcePullOutput::Partial {
+                patient,
+                records,
+                failed_parts,
+            } => {
+                assert!(patient.is_some());
+                let types: Vec<&str> = records.iter().map(|r| r.record_type.as_str()).collect();
+                assert_eq!(types, ["Encounter", "Patient"]);
+                assert_eq!(
+                    failed_parts,
+                    vec![FailedPart {
+                        part: "DocumentReference".into(),
+                        reason: "DocumentReference endpoint timed out".into(),
+                    }]
+                );
+            }
+            other => panic!("expected Partial, got {other:?}"),
+        }
     }
 }

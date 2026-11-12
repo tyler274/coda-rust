@@ -28,6 +28,7 @@ pub mod patients;
 pub mod queue;
 pub mod rehearsal;
 mod reply;
+pub mod sources;
 pub mod synthetic_chart;
 pub mod synthetic_chart_fhir;
 mod synthetic_reply;
@@ -92,6 +93,7 @@ pub fn fixture_site() -> Router {
             get(empty_snapshot),
         )
         .route("/patient-workspaces/events", get(quiet_events))
+        .layer(middleware::from_fn(sources::intercept_reconnect_command))
         .layer(axum::Extension(care::ConnectedCare::fixture()))
 }
 
@@ -125,6 +127,7 @@ pub fn durable_site(
             "/patient-workspaces/events",
             get(live::events).with_state(bus),
         )
+        .layer(middleware::from_fn(sources::intercept_reconnect_command))
         // The shared workspace route lists this server's chats through it.
         .layer(axum::Extension(std::sync::Arc::clone(&live)))
         .layer(axum::Extension(care::ConnectedCare::new()))
@@ -143,6 +146,12 @@ where
         .route(
             "/recent-conversations",
             get(|| async { Json(json!({ "conversations": [] })) }),
+        )
+        .route("/connections", get(sources::get_connections))
+        .route("/connections/{source_id}/check", post(sources::post_check))
+        .route(
+            "/connections/{source_id}/reconnect",
+            post(sources::post_reconnect),
         )
         .route("/patient-workspaces", get(patient_list))
         .route("/patient-workspaces/{id}", get(workspace))
@@ -509,6 +518,27 @@ async fn site_from_env(
     } else {
         (router(), None)
     };
+    let source_registry = sources::SourceRegistry::new(runtime.clone());
+    if let Some(charts_dir) = configured(&get, "PHYSICIAN_SYNTHETIC_CHARTS") {
+        if hosted
+            && configured(&get, "CODA_HOSTED_PROFILE").as_deref() != Some(hosting::STAGING_PROFILE)
+        {
+            return Err(format!(
+                "PHYSICIAN_SYNTHETIC_CHARTS is only honoured under CODA_HOSTED_PROFILE={}",
+                hosting::STAGING_PROFILE
+            ));
+        }
+        source_registry.register_synthetic(std::sync::Arc::new(
+            synthetic_chart::SyntheticCharts::open(Path::new(&charts_dir)),
+        ));
+    }
+    let local_proof = !hosted && configured(&get, "PHYSICIAN_LOCAL_PROOF").as_deref() == Some("1");
+    let base = if local_proof {
+        base.merge(sources::local_proof_routes())
+    } else {
+        base
+    }
+    .layer(axum::Extension(source_registry));
     let postgres = database.as_deref().zip(runtime);
     let router =
         auth::authed_router_with_bus(base, bus, memory_patients, postgres, rehearsal).await;
@@ -595,11 +625,17 @@ async fn today(
     let Ok(now) = connected.practice_now(request.extensions()).await else {
         return StatusCode::SERVICE_UNAVAILABLE.into_response();
     };
+    let Ok((connections, source_outages)) =
+        sources::today_connections_and_outages(request.extensions()).await
+    else {
+        return StatusCode::SERVICE_UNAVAILABLE.into_response();
+    };
     Json(json!({
         "date": practice_date(&now),
         "rows": [],
         "seen": [],
-        "connections": [],
+        "connections": connections,
+        "source_outages": source_outages,
         "cursors": {},
         "as_of": 0,
         "also_reviewed": 0,
@@ -784,6 +820,7 @@ pub fn rejection_message(command_type: &str) -> &'static str {
         "follow_up.end" => "Coda couldn’t end that follow-up.",
         "conversation.archive" => "Coda couldn’t archive that conversation.",
         "conversation.restore" => "Coda couldn’t restore that conversation.",
+        "reconnect_source" => "Coda couldn’t reconnect that source.",
         "cadence.set" | "cadence.override" | "review_cadence.set" => {
             "Physicians cannot override patient review cadence."
         }

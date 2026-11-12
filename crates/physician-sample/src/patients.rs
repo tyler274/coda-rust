@@ -2,23 +2,25 @@
 //!
 //! The auth store says who belongs to a practice and whose panel they are on.
 //! Each source's last pull says who the patient is and how current their
-//! records are. Search, the patient list and the patient page all read from
-//! here, so a patient exists on every surface or on none: a registered patient
-//! no source holds reads as not found.
+//! records are, while [`SourceStanding`] reflects whether a later pull failed,
+//! partially degraded, or lost source access. Search, the patient list and the
+//! patient page all read from here, so a patient exists on every surface or on
+//! none: a registered patient no source holds reads as not found.
 
 use std::collections::BTreeMap;
 use std::sync::{Arc, Mutex};
+use std::time::{Duration, UNIX_EPOCH};
 
-use crate::timestamp::format_rfc3339;
 use async_trait::async_trait;
 use local_product::physician_sources::{MedicalRecordNumber, SourcePatient};
 use local_product::runtime::Store;
 use local_product::runtime::sources::SourcePull;
+use local_product::source_status::SourceStanding;
 use physician_auth::{AuthStore, Membership, MemoryAuthStore, StoreUnavailable};
 use serde_json::{Value, json};
-use std::time::{Duration, UNIX_EPOCH};
 
 use crate::auth::{STAGING_PRACTICE_ID, SYNTHETIC_PRACTICE_CLOCK, staging_panel};
+use crate::timestamp::format_rfc3339;
 
 /// The zone the practice's times are worded in.
 pub(crate) const PRACTICE_TIME_ZONE: &str = "America/New_York";
@@ -26,7 +28,7 @@ pub(crate) const PRACTICE_TIME_ZONE: &str = "America/New_York";
 /// The most patients one search answers with.
 const SEARCH_LIMIT: usize = 50;
 
-/// Reads each source's last pull for a set of patients.
+/// Reads each source's last pull and effective source standing for a set of patients.
 #[async_trait]
 pub trait PatientDirectory: Send + Sync {
     /// The pulls of `workspaces`, keyed by workspace, each ordered by source.
@@ -34,6 +36,14 @@ pub trait PatientDirectory: Send + Sync {
         &self,
         workspaces: &[String],
     ) -> Result<BTreeMap<String, Vec<SourcePull>>, StoreUnavailable>;
+
+    /// Effective source standings for `workspaces`, keyed by workspace then `source_id`.
+    async fn standings(
+        &self,
+        _workspaces: &[String],
+    ) -> Result<BTreeMap<String, BTreeMap<String, SourceStanding>>, StoreUnavailable> {
+        Ok(BTreeMap::new())
+    }
 }
 
 #[async_trait]
@@ -43,6 +53,15 @@ impl PatientDirectory for Store {
         workspaces: &[String],
     ) -> Result<BTreeMap<String, Vec<SourcePull>>, StoreUnavailable> {
         self.source_pulls(workspaces)
+            .await
+            .map_err(|_| StoreUnavailable)
+    }
+
+    async fn standings(
+        &self,
+        workspaces: &[String],
+    ) -> Result<BTreeMap<String, BTreeMap<String, SourceStanding>>, StoreUnavailable> {
+        self.workspace_source_standings(workspaces)
             .await
             .map_err(|_| StoreUnavailable)
     }
@@ -184,11 +203,23 @@ pub async fn enroll_fixture(auth: &dyn AuthStore, runtime: &Store) -> Result<(),
 pub(crate) struct Patient {
     workspace: String,
     pulls: Vec<SourcePull>,
+    standings: BTreeMap<String, SourceStanding>,
+}
+
+fn unix_to_rfc3339(seconds: i64) -> String {
+    format_rfc3339(UNIX_EPOCH + Duration::from_secs(seconds.unsigned_abs()))
 }
 
 impl Patient {
-    fn from_entry((workspace, pulls): (String, Vec<SourcePull>)) -> Option<Self> {
-        (!pulls.is_empty()).then_some(Self { workspace, pulls })
+    fn from_entry(
+        (workspace, pulls): (String, Vec<SourcePull>),
+        standings: BTreeMap<String, SourceStanding>,
+    ) -> Option<Self> {
+        (!pulls.is_empty()).then_some(Self {
+            workspace,
+            pulls,
+            standings,
+        })
     }
 
     fn holder(&self) -> &SourcePatient {
@@ -251,13 +282,116 @@ impl Patient {
     fn connected_sources(&self) -> Vec<Value> {
         self.pulls
             .iter()
-            .map(|pull| {
-                let pulled = UNIX_EPOCH + Duration::from_secs(pull.pulled_at.unsigned_abs());
-                json!({
-                    "source_id": pull.source_id,
-                    "source_label": pull.source_label,
-                    "state": { "state": "usable", "synchronized_at": format_rfc3339(pulled) },
-                })
+            .map(|pull| match self.standings.get(&pull.source_id) {
+                None | Some(SourceStanding::NotYetRead) => {
+                    let synchronized_at = unix_to_rfc3339(pull.pulled_at);
+                    json!({
+                        "source_id": pull.source_id,
+                        "source_label": pull.source_label,
+                        "standing": "up_to_date",
+                        "reconnect_needed": false,
+                        "last_good_read_at": synchronized_at,
+                        "state": {
+                            "state": "usable",
+                            "synchronized_at": synchronized_at,
+                        },
+                    })
+                }
+                Some(SourceStanding::UpToDate {
+                    last_good_read_at,
+                    missing_candidates,
+                }) => {
+                    let synchronized_at = unix_to_rfc3339(*last_good_read_at);
+                    json!({
+                        "source_id": pull.source_id,
+                        "source_label": pull.source_label,
+                        "standing": "up_to_date",
+                        "reconnect_needed": false,
+                        "last_good_read_at": synchronized_at,
+                        "missing_candidates": missing_candidates,
+                        "state": {
+                            "state": "usable",
+                            "synchronized_at": synchronized_at,
+                        },
+                    })
+                }
+                Some(SourceStanding::Partial {
+                    last_good_read_at,
+                    attempted_at,
+                    failed_parts,
+                    missing_candidates,
+                }) => {
+                    let good = last_good_read_at
+                        .or(Some(pull.pulled_at))
+                        .map(unix_to_rfc3339);
+                    let attempted = unix_to_rfc3339(*attempted_at);
+                    let usable_snapshot = good.as_ref().map(|ts| json!({ "synchronized_at": ts }));
+                    json!({
+                        "source_id": pull.source_id,
+                        "source_label": pull.source_label,
+                        "standing": "partial",
+                        "reconnect_needed": false,
+                        "last_good_read_at": good,
+                        "attempted_at": attempted,
+                        "failed_parts": failed_parts,
+                        "missing_candidates": missing_candidates,
+                        "state": {
+                            "state": "failed",
+                            "synchronized_at": attempted,
+                            "usable_snapshot": usable_snapshot,
+                        },
+                    })
+                }
+                Some(SourceStanding::Failed {
+                    last_good_read_at,
+                    attempted_at,
+                    reason,
+                }) => {
+                    let good = last_good_read_at
+                        .or(Some(pull.pulled_at))
+                        .map(unix_to_rfc3339);
+                    let attempted = unix_to_rfc3339(*attempted_at);
+                    let usable_snapshot = good.as_ref().map(|ts| json!({ "synchronized_at": ts }));
+                    json!({
+                        "source_id": pull.source_id,
+                        "source_label": pull.source_label,
+                        "standing": "failed",
+                        "reconnect_needed": false,
+                        "reason": reason,
+                        "last_good_read_at": good,
+                        "attempted_at": attempted,
+                        "state": {
+                            "state": "failed",
+                            "synchronized_at": attempted,
+                            "usable_snapshot": usable_snapshot,
+                        },
+                    })
+                }
+                Some(SourceStanding::ReconnectNeeded {
+                    last_good_read_at,
+                    attempted_at,
+                    reason,
+                }) => {
+                    let good = last_good_read_at
+                        .or(Some(pull.pulled_at))
+                        .map(unix_to_rfc3339);
+                    let attempted = attempted_at.map(unix_to_rfc3339);
+                    let usable_snapshot = good.as_ref().map(|ts| json!({ "synchronized_at": ts }));
+                    json!({
+                        "source_id": pull.source_id,
+                        "source_label": pull.source_label,
+                        "standing": "reconnect_needed",
+                        "reconnect_needed": true,
+                        "reason": reason,
+                        "last_good_read_at": good,
+                        "attempted_at": attempted,
+                        "state": {
+                            "state": "failed",
+                            "synchronized_at": attempted,
+                            "usable_snapshot": usable_snapshot,
+                        },
+                    })
+                }
             })
             .collect()
     }
@@ -317,11 +451,14 @@ pub(crate) async fn read_patients(
     directory: &dyn PatientDirectory,
     workspaces: &[String],
 ) -> Result<Vec<Patient>, StoreUnavailable> {
-    let mut patients: Vec<Patient> = directory
-        .pulls(workspaces)
-        .await?
+    let (pulls, mut standings) =
+        tokio::try_join!(directory.pulls(workspaces), directory.standings(workspaces))?;
+    let mut patients: Vec<Patient> = pulls
         .into_iter()
-        .filter_map(Patient::from_entry)
+        .filter_map(|(workspace, ws_pulls)| {
+            let ws_standings = standings.remove(&workspace).unwrap_or_default();
+            Patient::from_entry((workspace, ws_pulls), ws_standings)
+        })
         .collect();
     patients.sort_by(|left, right| left.sort_key().cmp(&right.sort_key()));
     Ok(patients)

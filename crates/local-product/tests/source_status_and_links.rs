@@ -1,0 +1,784 @@
+//! Acceptance proof for practice-scoped source patient links, pull status
+//! preservation, and practice-wide outage summarization against real Postgres.
+
+use std::sync::{Arc, Mutex};
+
+use async_trait::async_trait;
+use local_product::physician_sources::{
+    FailedPart, MedicalRecordNumber, PatientSource, PullOutcome, ReconnectReceipt, RecordDate,
+    SourcePatient, SourcePullOutput, SourceRevision, workspace_id,
+};
+use local_product::runtime::Store;
+use local_product::sha256_hex;
+use local_product::source_status::{
+    LinkTarget, PatientSourceRecordStatus, PracticeOutage, PracticeOutageKind,
+    PracticeSourceSummary, PullAttempt, SourceAccessState, SourceCoordinator, SourcePatientKey,
+    SourceStanding, SourceStatusError, derive_standing, summarize_practice_source,
+};
+use serde_json::json;
+use uuid::Uuid;
+
+fn test_database_url() -> String {
+    std::env::var("PHYSICIAN_RUNTIME_TEST_DATABASE_URL")
+        .or_else(|_| std::env::var("PHYSICIAN_TEST_DATABASE_URL"))
+        .expect("set PHYSICIAN_RUNTIME_TEST_DATABASE_URL or PHYSICIAN_TEST_DATABASE_URL")
+}
+
+async fn migrated_store() -> Store {
+    let store = Store::connect(&test_database_url()).await.unwrap();
+    store.migrate().await.unwrap();
+    store
+}
+
+fn make_patient(source_patient_id: &str, name: &str) -> SourcePatient {
+    SourcePatient {
+        source_patient_id: source_patient_id.to_owned(),
+        display_name: name.to_owned(),
+        birth_date: Some("1978-05-14".to_owned()),
+        sex_or_gender: Some("female".to_owned()),
+        medical_record_numbers: vec![MedicalRecordNumber {
+            system: "urn:clinic:mrn".to_owned(),
+            value: source_patient_id.to_owned(),
+        }],
+    }
+}
+
+fn make_revision(
+    workspace: &str,
+    source_id: &str,
+    record_type: &str,
+    id: &str,
+    body_text: &str,
+) -> SourceRevision {
+    let candidate_id = format!("{record_type}/{id}");
+    let content = json!({
+        "resourceType": record_type,
+        "id": id,
+        "text": body_text,
+    })
+    .to_string();
+    let sha256 = sha256_hex(content.as_bytes());
+    SourceRevision {
+        workspace: workspace.to_owned(),
+        source_id: source_id.to_owned(),
+        candidate_id: candidate_id.clone(),
+        revision: sha256.clone(),
+        record_type: record_type.to_owned(),
+        dates: vec![RecordDate {
+            name: "recordedDate".to_owned(),
+            value: "2026-08-20".to_owned(),
+        }],
+        content,
+        sha256,
+        readable_parts: Vec::new(),
+        provenance: json!({ "native_record": candidate_id }),
+        envelope: None,
+    }
+}
+
+#[derive(Clone)]
+enum ScriptedPull {
+    Complete {
+        name: String,
+        records: Vec<(String, String, String)>,
+    },
+    Partial {
+        name: String,
+        records: Vec<(String, String, String)>,
+        failed_parts: Vec<FailedPart>,
+    },
+    Failed {
+        reason: String,
+    },
+    LapsedAccess {
+        reason: String,
+    },
+}
+
+struct ScriptedSource {
+    source_id: String,
+    source_label: String,
+    pulls: Mutex<Vec<ScriptedPull>>,
+    pull_invocations: Mutex<usize>,
+    reconnected_for: Mutex<Vec<(String, i64)>>,
+}
+
+impl ScriptedSource {
+    fn new(source_id: &str, scripted: Vec<ScriptedPull>) -> Arc<Self> {
+        Arc::new(Self {
+            source_id: source_id.to_owned(),
+            source_label: "Scripted Clinic EHR".to_owned(),
+            pulls: Mutex::new(scripted),
+            pull_invocations: Mutex::new(0),
+            reconnected_for: Mutex::new(Vec::new()),
+        })
+    }
+
+    fn push(&self, next: ScriptedPull) {
+        self.pulls.lock().unwrap().push(next);
+    }
+
+    fn pull_count(&self) -> usize {
+        *self.pull_invocations.lock().unwrap()
+    }
+}
+
+#[async_trait]
+impl PatientSource for ScriptedSource {
+    fn source_id(&self) -> &str {
+        &self.source_id
+    }
+
+    fn source_label(&self) -> &str {
+        &self.source_label
+    }
+
+    async fn patient_ids(&self) -> Result<Vec<String>, String> {
+        Ok(vec!["pat-1".to_owned()])
+    }
+
+    async fn patient(&self, source_patient_id: &str) -> Result<SourcePatient, String> {
+        Ok(make_patient(source_patient_id, "Elena Morales"))
+    }
+
+    async fn records(
+        &self,
+        _patient: &SourcePatient,
+        _workspace: &str,
+    ) -> Result<Vec<SourceRevision>, String> {
+        Ok(Vec::new())
+    }
+
+    async fn pull_patient(
+        &self,
+        _practice_id: &str,
+        source_patient_id: &str,
+        workspace: &str,
+    ) -> SourcePullOutput {
+        *self.pull_invocations.lock().unwrap() += 1;
+        let mut queue = self.pulls.lock().unwrap();
+        assert!(
+            !queue.is_empty(),
+            "scripted pull queue exhausted for {source_patient_id}"
+        );
+        let step = queue.remove(0);
+        match step {
+            ScriptedPull::Complete { name, records } => SourcePullOutput::Complete {
+                patient: make_patient(source_patient_id, &name),
+                records: records
+                    .into_iter()
+                    .map(|(rtype, id, text)| {
+                        make_revision(workspace, &self.source_id, &rtype, &id, &text)
+                    })
+                    .collect(),
+            },
+            ScriptedPull::Partial {
+                name,
+                records,
+                failed_parts,
+            } => SourcePullOutput::Partial {
+                patient: Some(make_patient(source_patient_id, &name)),
+                records: records
+                    .into_iter()
+                    .map(|(rtype, id, text)| {
+                        make_revision(workspace, &self.source_id, &rtype, &id, &text)
+                    })
+                    .collect(),
+                failed_parts,
+            },
+            ScriptedPull::Failed { reason } => SourcePullOutput::Failed { reason },
+            ScriptedPull::LapsedAccess { reason } => SourcePullOutput::LapsedAccess { reason },
+        }
+    }
+
+    async fn reconnect(&self, practice_id: &str, now: i64) -> Result<ReconnectReceipt, String> {
+        self.reconnected_for
+            .lock()
+            .unwrap()
+            .push((practice_id.to_owned(), now));
+        Ok(ReconnectReceipt {
+            source_id: self.source_id.clone(),
+            practice_id: practice_id.to_owned(),
+            reconnected_at: now,
+        })
+    }
+}
+
+#[test]
+fn pure_standing_and_outage_rules_cover_partial_failed_lapsed_and_majority_thresholds() {
+    let connected = SourceAccessState::Connected {
+        connected_at: 1_000,
+    };
+    let good_status = PatientSourceRecordStatus {
+        practice_id: "prac-1".into(),
+        workspace_id: "pw-1".into(),
+        source_id: "epic".into(),
+        last_good_read_at: Some(1_100),
+        latest_attempt: Some(PullAttempt {
+            attempted_at: 1_100,
+            outcome: PullOutcome::Succeeded {
+                missing_candidates: Vec::new(),
+            },
+        }),
+    };
+    assert_eq!(
+        derive_standing(Some(&connected), Some(&good_status)),
+        SourceStanding::UpToDate {
+            last_good_read_at: 1_100,
+            missing_candidates: Vec::new(),
+        }
+    );
+
+    // 1 of 2 failing (exact half) stays per-patient, never a practice-wide outage.
+    let one_of_two = vec![
+        (
+            "pw-1".to_owned(),
+            SourceStanding::Failed {
+                last_good_read_at: Some(1_100),
+                attempted_at: 1_200,
+                reason: "chart lock timeout".into(),
+            },
+        ),
+        (
+            "pw-2".to_owned(),
+            SourceStanding::UpToDate {
+                last_good_read_at: 1_200,
+                missing_candidates: Vec::new(),
+            },
+        ),
+    ];
+    match summarize_practice_source("prac-1", "epic", Some(&connected), &one_of_two) {
+        PracticeSourceSummary::PatientIssues {
+            total_patients,
+            issues,
+            ..
+        } => {
+            assert_eq!(total_patients, 2);
+            assert_eq!(issues.len(), 1);
+            assert_eq!(issues[0].workspace_id, "pw-1");
+        }
+        other => panic!("expected PatientIssues for 1 of 2 failing, got {other:?}"),
+    }
+
+    // 3 of 5 failing (strict majority) collapses into one PracticeWideOutage with zero per-patient rows.
+    let three_of_five = vec![
+        (
+            "pw-1".to_owned(),
+            SourceStanding::Failed {
+                last_good_read_at: Some(1_100),
+                attempted_at: 1_300,
+                reason: "503 upstream unavailable".into(),
+            },
+        ),
+        (
+            "pw-2".to_owned(),
+            SourceStanding::Partial {
+                last_good_read_at: Some(1_100),
+                attempted_at: 1_300,
+                failed_parts: vec![FailedPart {
+                    part: "Observation".into(),
+                    reason: "503 upstream unavailable".into(),
+                }],
+                missing_candidates: Vec::new(),
+            },
+        ),
+        (
+            "pw-3".to_owned(),
+            SourceStanding::Failed {
+                last_good_read_at: Some(1_100),
+                attempted_at: 1_300,
+                reason: "503 upstream unavailable".into(),
+            },
+        ),
+        (
+            "pw-4".to_owned(),
+            SourceStanding::UpToDate {
+                last_good_read_at: 1_300,
+                missing_candidates: Vec::new(),
+            },
+        ),
+        (
+            "pw-5".to_owned(),
+            SourceStanding::UpToDate {
+                last_good_read_at: 1_300,
+                missing_candidates: Vec::new(),
+            },
+        ),
+    ];
+    assert_eq!(
+        summarize_practice_source("prac-1", "epic", Some(&connected), &three_of_five),
+        PracticeSourceSummary::PracticeWideOutage(PracticeOutage {
+            practice_id: "prac-1".into(),
+            source_id: "epic".into(),
+            affected_patients: 3,
+            total_patients: 5,
+            kind: PracticeOutageKind::SourceDown {
+                reason: "503 upstream unavailable".into(),
+            },
+        })
+    );
+}
+
+#[tokio::test]
+async fn source_patient_resolves_to_one_chords_patient_across_pulls_and_refuses_other_practice_writes()
+ {
+    let store = migrated_store().await;
+    let run = Uuid::new_v4().to_string();
+    let practice_a = format!("practice-a-{run}");
+    let practice_b = format!("practice-b-{run}");
+    let source_id = format!("ehr-{run}");
+
+    let source_a = ScriptedSource::new(
+        &source_id,
+        vec![
+            ScriptedPull::Complete {
+                name: "Elena Morales".into(),
+                records: vec![("Condition".into(), "cond-1".into(), "Hypertension".into())],
+            },
+            ScriptedPull::Complete {
+                name: "Elena M. Morales".into(),
+                records: vec![
+                    ("Condition".into(), "cond-1".into(), "Hypertension".into()),
+                    ("Observation".into(), "obs-1".into(), "BP 126/78".into()),
+                ],
+            },
+        ],
+    );
+
+    let chosen_workspace = format!("pw-elena-{run}");
+    let first = SourceCoordinator::check_patient(
+        &store,
+        &*source_a,
+        &practice_a,
+        "src-pat-42",
+        LinkTarget::ExistingOrDefault(&chosen_workspace),
+        1_700_000_100,
+    )
+    .await
+    .unwrap();
+    assert_eq!(first.workspace_id, chosen_workspace);
+    assert_eq!(first.changed, 1);
+
+    // Second pull supplies a different fallback default workspace, yet the link resolves to the
+    // exact same Chords patient (`chosen_workspace`).
+    let different_default = workspace_id(&source_id, "src-pat-42");
+    assert_ne!(different_default, chosen_workspace);
+    let second = SourceCoordinator::check_patient(
+        &store,
+        &*source_a,
+        &practice_a,
+        "src-pat-42",
+        LinkTarget::ExistingOrDefault(&different_default),
+        1_700_000_200,
+    )
+    .await
+    .unwrap();
+    assert_eq!(second.workspace_id, chosen_workspace);
+    assert_eq!(second.changed, 1);
+    assert_eq!(
+        store
+            .sources(&chosen_workspace)
+            .await
+            .unwrap()
+            .sources
+            .len(),
+        2
+    );
+
+    // Explicitly demanding a conflicting workspace for the same source patient in the same practice is refused.
+    let conflict = SourceCoordinator::check_patient(
+        &store,
+        &*source_a,
+        &practice_a,
+        "src-pat-42",
+        LinkTarget::Exact(&different_default),
+        1_700_000_250,
+    )
+    .await
+    .unwrap_err();
+    assert!(
+        matches!(conflict, SourceStatusError::ConflictingWorkspaceLink { .. }),
+        "expected ConflictingWorkspaceLink, got {conflict:?}"
+    );
+    assert_eq!(
+        source_a.pull_count(),
+        2,
+        "conflicting link must abort before calling the source adapter"
+    );
+
+    // Another practice (`practice_b`) attempting to pull or read into `chosen_workspace` aborts
+    // with PracticeMismatch BEFORE calling the adapter or saving any records.
+    let rogue_source = ScriptedSource::new(
+        &source_id,
+        vec![ScriptedPull::Complete {
+            name: "Wrong Practice Patient".into(),
+            records: vec![(
+                "MedicationRequest".into(),
+                "med-rogue".into(),
+                "Should never be saved".into(),
+            )],
+        }],
+    );
+    let mismatch = SourceCoordinator::check_patient(
+        &store,
+        &*rogue_source,
+        &practice_b,
+        "src-pat-42",
+        LinkTarget::ExistingOrDefault(&chosen_workspace),
+        1_700_000_300,
+    )
+    .await
+    .unwrap_err();
+    assert!(
+        matches!(
+            mismatch,
+            SourceStatusError::PracticeMismatch {
+                ref workspace_id,
+                ref owner_practice_id,
+                ref requested_practice_id,
+            } if workspace_id == &chosen_workspace
+                && owner_practice_id == &practice_a
+                && requested_practice_id == &practice_b
+        ),
+        "expected PracticeMismatch, got {mismatch:?}"
+    );
+    assert_eq!(
+        rogue_source.pull_count(),
+        0,
+        "cross-practice attempt must not invoke pull_patient"
+    );
+
+    // Verify zero rogue records and zero links were written for `practice_b`.
+    let saved_sources = store.sources(&chosen_workspace).await.unwrap().sources;
+    assert_eq!(saved_sources.len(), 2);
+    assert!(
+        saved_sources
+            .iter()
+            .all(|rev| rev.candidate_id != "MedicationRequest/med-rogue")
+    );
+    let practice_b_link = store
+        .source_patient_link(&SourcePatientKey {
+            practice_id: practice_b.clone(),
+            source_id: source_id.clone(),
+            source_patient_id: "src-pat-42".into(),
+        })
+        .await
+        .unwrap();
+    assert!(practice_b_link.is_none());
+
+    // Cross-practice status read on `chosen_workspace` is also refused.
+    let read_mismatch = store
+        .patient_source_statuses(&practice_b, &chosen_workspace)
+        .await
+        .unwrap_err();
+    assert!(matches!(
+        read_mismatch,
+        SourceStatusError::PracticeMismatch { .. }
+    ));
+}
+
+#[tokio::test]
+async fn failed_partial_and_lapsed_pulls_keep_last_good_read_time_and_reconnect_recovers() {
+    let store = migrated_store().await;
+    let run = Uuid::new_v4().to_string();
+    let practice = format!("practice-{run}");
+    let source_id = format!("ehr-{run}");
+    let workspace = format!("pw-pat-{run}");
+
+    let source = ScriptedSource::new(
+        &source_id,
+        vec![
+            // 1. Complete good pull at t = 1_000.
+            ScriptedPull::Complete {
+                name: "Arthur Pendelton".into(),
+                records: vec![
+                    ("Patient".into(), "pat-1".into(), "Arthur Pendelton".into()),
+                    (
+                        "DocumentReference".into(),
+                        "note-1".into(),
+                        "Initial consult note".into(),
+                    ),
+                ],
+            },
+            // 2. Whole failure at t = 2_000.
+            ScriptedPull::Failed {
+                reason: "connection reset by peer".into(),
+            },
+            // 3. Partial pull at t = 3_000: Encounter succeeds, DocumentReference fails.
+            ScriptedPull::Partial {
+                name: "Arthur Pendelton".into(),
+                records: vec![
+                    ("Patient".into(), "pat-1".into(), "Arthur Pendelton".into()),
+                    ("Encounter".into(), "enc-1".into(), "Follow-up visit".into()),
+                ],
+                failed_parts: vec![FailedPart {
+                    part: "DocumentReference".into(),
+                    reason: "notes service 502".into(),
+                }],
+            },
+            // 4. Lapsed access at t = 4_000.
+            ScriptedPull::LapsedAccess {
+                reason: "oauth refresh token revoked".into(),
+            },
+            // 5. Complete recovery pull during reconnect at t = 5_000.
+            ScriptedPull::Complete {
+                name: "Arthur Pendelton".into(),
+                records: vec![
+                    ("Patient".into(), "pat-1".into(), "Arthur Pendelton".into()),
+                    (
+                        "DocumentReference".into(),
+                        "note-1".into(),
+                        "Initial consult note".into(),
+                    ),
+                    ("Encounter".into(), "enc-1".into(), "Follow-up visit".into()),
+                ],
+            },
+        ],
+    );
+
+    // Step 1: Good read at t = 1_000.
+    let good = SourceCoordinator::check_patient(
+        &store,
+        &*source,
+        &practice,
+        "pat-1",
+        LinkTarget::ExistingOrDefault(&workspace),
+        1_000,
+    )
+    .await
+    .unwrap();
+    assert_eq!(
+        good.standing,
+        SourceStanding::UpToDate {
+            last_good_read_at: 1_000,
+            missing_candidates: Vec::new(),
+        }
+    );
+
+    // Step 2: Failed pull at t = 2_000 keeps last_good_read_at = 1_000.
+    let failed = SourceCoordinator::check_patient(
+        &store,
+        &*source,
+        &practice,
+        "pat-1",
+        LinkTarget::ExistingOrDefault(&workspace),
+        2_000,
+    )
+    .await
+    .unwrap();
+    assert_eq!(
+        failed.standing,
+        SourceStanding::Failed {
+            last_good_read_at: Some(1_000),
+            attempted_at: 2_000,
+            reason: "connection reset by peer".into(),
+        }
+    );
+
+    // Step 3: Partial pull at t = 3_000 saves Encounter/enc-1, keeps DocumentReference/note-1,
+    // names failed part `DocumentReference`, and STILL preserves last_good_read_at = 1_000.
+    let partial = SourceCoordinator::check_patient(
+        &store,
+        &*source,
+        &practice,
+        "pat-1",
+        LinkTarget::ExistingOrDefault(&workspace),
+        3_000,
+    )
+    .await
+    .unwrap();
+    assert_eq!(partial.changed, 1);
+    assert_eq!(
+        partial.standing,
+        SourceStanding::Partial {
+            last_good_read_at: Some(1_000),
+            attempted_at: 3_000,
+            failed_parts: vec![FailedPart {
+                part: "DocumentReference".into(),
+                reason: "notes service 502".into(),
+            }],
+            missing_candidates: Vec::new(),
+        }
+    );
+    let candidate_ids: Vec<String> = store
+        .sources(&workspace)
+        .await
+        .unwrap()
+        .sources
+        .into_iter()
+        .map(|rev| rev.candidate_id)
+        .collect();
+    assert_eq!(
+        candidate_ids,
+        vec![
+            "DocumentReference/note-1".to_owned(),
+            "Encounter/enc-1".to_owned(),
+            "Patient/pat-1".to_owned(),
+        ]
+    );
+    let pulls = store
+        .source_pulls(std::slice::from_ref(&workspace))
+        .await
+        .unwrap();
+    assert_eq!(
+        pulls[&workspace][0].pulled_at, 1_000,
+        "partial pull must not advance last complete pulled_at"
+    );
+
+    // Step 4: Lapsed access at t = 4_000 marks ReconnectNeeded while keeping last_good_read_at = 1_000.
+    let lapsed = SourceCoordinator::check_patient(
+        &store,
+        &*source,
+        &practice,
+        "pat-1",
+        LinkTarget::ExistingOrDefault(&workspace),
+        4_000,
+    )
+    .await
+    .unwrap();
+    assert_eq!(
+        lapsed.standing,
+        SourceStanding::ReconnectNeeded {
+            last_good_read_at: Some(1_000),
+            attempted_at: Some(4_000),
+            reason: "oauth refresh token revoked".into(),
+        }
+    );
+    assert_eq!(
+        store
+            .practice_source_access(&practice, &source_id)
+            .await
+            .unwrap(),
+        Some(SourceAccessState::ReconnectNeeded {
+            since: 4_000,
+            reason: "oauth refresh token revoked".into(),
+        })
+    );
+
+    // Step 5: Reconnect at t = 5_000 restores Connected and advances last_good_read_at = 5_000.
+    let reconnected = SourceCoordinator::reconnect_source(&store, &*source, &practice, 5_000)
+        .await
+        .unwrap();
+    assert_eq!(reconnected.receipt.reconnected_at, 5_000);
+    assert_eq!(
+        reconnected.access,
+        SourceAccessState::Connected {
+            connected_at: 5_000
+        }
+    );
+    assert_eq!(
+        reconnected.check.summary,
+        PracticeSourceSummary::Healthy {
+            source_id: source_id.clone(),
+            total_patients: 1,
+        }
+    );
+    assert_eq!(
+        reconnected.check.patients[0].standing,
+        SourceStanding::UpToDate {
+            last_good_read_at: 5_000,
+            missing_candidates: Vec::new(),
+        }
+    );
+}
+
+#[tokio::test]
+async fn practice_report_returns_one_outage_instead_of_patient_rows_when_majority_fails() {
+    let store = migrated_store().await;
+    let run = Uuid::new_v4().to_string();
+    let practice = format!("practice-{run}");
+    let source_id = format!("ehr-{run}");
+
+    let source = ScriptedSource::new(&source_id, Vec::new());
+
+    // Link 4 patients initially healthy at t = 1_000.
+    for index in 1..=4 {
+        source.push(ScriptedPull::Complete {
+            name: format!("Patient {index}"),
+            records: vec![(
+                "Patient".into(),
+                format!("p-{index}"),
+                format!("Patient {index}"),
+            )],
+        });
+        let ws = format!("pw-{index}-{run}");
+        SourceCoordinator::check_patient(
+            &store,
+            &*source,
+            &practice,
+            &format!("p-{index}"),
+            LinkTarget::Exact(&ws),
+            1_000,
+        )
+        .await
+        .unwrap();
+    }
+
+    // Fail 1 of 4 -> PatientIssues (1 row), not a practice outage.
+    source.push(ScriptedPull::Failed {
+        reason: "record locked".into(),
+    });
+    let ws1 = format!("pw-1-{run}");
+    SourceCoordinator::check_patient(
+        &store,
+        &*source,
+        &practice,
+        "p-1",
+        LinkTarget::Exact(&ws1),
+        2_000,
+    )
+    .await
+    .unwrap();
+
+    let minority_report = store
+        .practice_source_report(&practice, &source_id)
+        .await
+        .unwrap();
+    match minority_report.summary {
+        PracticeSourceSummary::PatientIssues {
+            total_patients,
+            issues,
+            ..
+        } => {
+            assert_eq!(total_patients, 4);
+            assert_eq!(issues.len(), 1);
+            assert_eq!(issues[0].workspace_id, ws1);
+        }
+        other => panic!("expected PatientIssues when 1 of 4 fails, got {other:?}"),
+    }
+
+    // Now fail patients 2 and 3 as well (3 of 4 failing = strict majority) -> ONE PracticeWideOutage!
+    for index in [2, 3] {
+        source.push(ScriptedPull::Failed {
+            reason: "EHR gateway 503".into(),
+        });
+        let ws = format!("pw-{index}-{run}");
+        SourceCoordinator::check_patient(
+            &store,
+            &*source,
+            &practice,
+            &format!("p-{index}"),
+            LinkTarget::Exact(&ws),
+            3_000,
+        )
+        .await
+        .unwrap();
+    }
+
+    let outage_report = store
+        .practice_source_report(&practice, &source_id)
+        .await
+        .unwrap();
+    assert_eq!(
+        outage_report.summary,
+        PracticeSourceSummary::PracticeWideOutage(PracticeOutage {
+            practice_id: practice,
+            source_id,
+            affected_patients: 3,
+            total_patients: 4,
+            kind: PracticeOutageKind::SourceDown {
+                reason: "record locked".into(),
+            },
+        })
+    );
+}
