@@ -11,7 +11,9 @@ use std::time::{Duration, Instant};
 
 use local_product::physician_chat::PhysicianSkills;
 use local_product::runtime::delivery::{Backoff, Delivery, DeliveryState, TraceContext};
-use local_product::runtime::{AttemptStatus, Conversation, Input, Scope, Store, WorkStatus};
+use local_product::runtime::{
+    AttemptStatus, Conversation, Input, Resumed, Scope, Stopped, Store, WorkStatus,
+};
 use physician_auth::{AuthStore, Membership, PostgresAuthStore};
 #[path = "scale/mod.rs"]
 mod support;
@@ -517,6 +519,110 @@ async fn a_lease_that_runs_out_unannounced_is_taken_at_its_end_not_at_the_next_p
     assert!(
         waited < lease + Duration::from_secs(2),
         "the turn waited {waited:?} for a {lease:?} lease"
+    );
+    worker.kill_now();
+    let _ = std::fs::remove_dir_all(&home);
+}
+
+/// AC4 after Stop. The worker running a turn is stopped and dies before it
+/// settles, so its cancelled attempt keeps the claim until the lease runs
+/// out. Try again makes the turn pending at once, but nothing can claim it
+/// before then and nothing announces the lease ending. The poll is far
+/// slower than the lease, so only the wake at the soonest lease end, which
+/// counts the stopped attempt's lease, takes the turn in time.
+#[tokio::test]
+async fn work_resumed_after_a_stopped_worker_died_is_taken_at_its_lease_end() {
+    let _guard = lock().lock().await;
+    let Some(database) = support::Database::create("stopped_lease_end").await else {
+        return;
+    };
+    let store = Store::connect(&database.url).await.expect("runtime store");
+    let (scope, session) = signed_in(&database.url, None).await;
+    let skills = PhysicianSkills::configured(None, false).unwrap();
+    let session_hash = PostgresAuthStore::session_reference(&session);
+    let key = format!("input-{}", uuid::Uuid::new_v4().simple());
+    store
+        .accept_authorized(
+            &scope,
+            &Input {
+                key: key.clone(),
+                text: "Hello".into(),
+                timezone: "America/New_York".into(),
+                scenario: None,
+            },
+            session_hash.clone(),
+            &skills,
+            &local_product::physician_chat::recipe(
+                &support::models::roles().chat,
+                local_product::physician_chat::INSTRUCTIONS,
+                &skills,
+            ),
+            None,
+        )
+        .await
+        .expect("accept");
+    let delivery = Delivery::chat_turn(scope.clone(), key);
+    let lease = Duration::from_secs(4);
+    store
+        .claim_delivery(&delivery, lease.as_secs() as i64)
+        .await
+        .expect("claim")
+        .expect("the accepted turn is claimable");
+    let claimed = Instant::now();
+    let work = store
+        .read(&scope)
+        .await
+        .expect("read")
+        .expect("conversation")
+        .work;
+    assert_eq!(
+        store
+            .stop_authorized(&scope, "stop", session_hash.clone(), &work)
+            .await
+            .expect("stop"),
+        Stopped::Held
+    );
+    let held = store.read(&scope).await.expect("read").expect("held");
+    let run = held.run().expect("held run").id.to_owned();
+    assert!(matches!(
+        store
+            .resume_authorized(&scope, "resume", session_hash, &work, &run, None)
+            .await
+            .expect("resume"),
+        Resumed::Pending { .. }
+    ));
+    let home = std::env::temp_dir().join(format!(
+        "physician-worker-stopped-lease-end-{}",
+        uuid::Uuid::new_v4().simple()
+    ));
+    std::fs::create_dir_all(&home).expect("home");
+    let stub = support::ResponsesStub::start(&home, 0, 0, "[]").await;
+    let port = support::free_port();
+    let listen = format!("127.0.0.1:{port}");
+    let mut worker = support::Process::spawn(
+        "worker",
+        support::worker_bin(),
+        &[],
+        &[
+            ("PHYSICIAN_DATABASE_URL", database.url.as_str()),
+            ("PHYSICIAN_WORKER_LISTEN_ADDR", listen.as_str()),
+            ("PHYSICIAN_RESPONSES_STUB_PORT", stub.port.as_str()),
+            ("PHYSICIAN_WORKER_POLL_MS", "60000"),
+        ],
+        &home,
+    );
+    support::wait_ready(&mut worker, port).await;
+    assert!(claimed.elapsed() < lease, "the worker started too late");
+    let state = wait_assistant(&store, &scope, &worker).await;
+    let waited = claimed.elapsed();
+    println!(
+        "resumed turn behind a stopped lease answered {waited:?} after its {lease:?} lease began (poll 60s)"
+    );
+    assert_eq!(attempt_statuses(&state), ["cancelled", "completed"]);
+    // The database clock counts whole seconds, so allow one beyond the lease.
+    assert!(
+        waited < lease + Duration::from_secs(2),
+        "the turn waited {waited:?} for a stopped {lease:?} lease"
     );
     worker.kill_now();
     let _ = std::fs::remove_dir_all(&home);

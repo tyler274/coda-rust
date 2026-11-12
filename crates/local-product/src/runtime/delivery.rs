@@ -7,12 +7,15 @@
 use std::time::Duration;
 
 use harness::engine::MAX_FAILED_ATTEMPTS;
-use sea_orm::sea_query::{Alias, Expr, ExprTrait, Func, IntoTableRef, Query, SelectStatement};
+use sea_orm::sea_query::{
+    Alias, Cond, Expr, ExprTrait, Func, IntoTableRef, Query, SelectStatement,
+};
 use sea_orm::sqlx::postgres::PgListener;
 use sea_orm::{ColumnTrait, ConnectionTrait, DatabaseTransaction, DbErr, EntityTrait, RuntimeErr};
 use serde::{Deserialize, Serialize};
 
-use super::entities::{chat_attempt, conversation, revision_attempt};
+use super::entities::{chat_attempt, conversation, reply_draft, revision_attempt};
+use super::reply::DraftStatus;
 use super::{
     AttemptStatus, Claim, Conversation, RuntimeError, Scope, Store, WorkStatus, database_clock,
     error, keys,
@@ -163,6 +166,7 @@ impl Wakeups {
 /// Seconds until the soonest live lease among one kind's attempts runs out,
 /// by the database clock; null when no lease is live.
 fn soonest_lease_end<C: ColumnTrait + Copy>(
+    kind: DeliveryKind,
     table: impl IntoTableRef,
     status: C,
     expires: C,
@@ -173,9 +177,196 @@ fn soonest_lease_end<C: ColumnTrait + Copy>(
             Alias::new("left"),
         )
         .from(table)
-        .and_where(status.eq(AttemptStatus::Active))
-        .and_where(Expr::col(expires).gt(database_clock()))
+        .cond_where(lease_live(kind, status, expires))
         .to_owned()
+}
+
+/// An attempt row of `kind` whose lease is live: its status is one
+/// [`DeliveryKind::holds_lease`] names and its expiry is still ahead of the
+/// database clock.
+fn lease_live<C: ColumnTrait + Copy>(kind: DeliveryKind, status: C, expires: C) -> Cond {
+    Cond::all()
+        .add(status.is_in(kind.lease_holders()))
+        .add(Expr::col(expires).gt(database_clock()))
+}
+
+/// `field` of a row's JSON `state` column, as a bigint.
+fn state_bigint(state: Expr, field: &'static str) -> Expr {
+    use sea_orm::sea_query::extension::postgres::PgExpr;
+    state.cast_json_field(field).cast_as(Alias::new("bigint"))
+}
+
+/// The latest of one work row's attempts, by `position`: the attempt the
+/// row's owner judges a lease by. `mine` matches the attempts to the row of
+/// the enclosing query.
+fn latest_attempt<C: ColumnTrait + Copy>(
+    table: impl IntoTableRef + Copy,
+    position: C,
+    mine: Cond,
+) -> SelectStatement {
+    let latest = Query::select()
+        .expr(Func::max(Expr::col(position)))
+        .from(table)
+        .cond_where(mine.clone())
+        .to_owned();
+    Query::select()
+        .from(table)
+        .cond_where(mine)
+        .and_where(Expr::col(position).eq(latest))
+        .to_owned()
+}
+
+/// The latest attempt of the conversation row in the enclosing query.
+pub(super) fn latest_chat_attempt() -> SelectStatement {
+    use chat_attempt::Column as A;
+    use conversation::Column as C;
+    let row = |column: C| Expr::col((conversation::Entity, column));
+    let attempt = |column: A| Expr::col((chat_attempt::Entity, column));
+    latest_attempt(
+        chat_attempt::Entity,
+        A::Position,
+        Cond::all()
+            .add(attempt(A::Practice).eq(row(C::Practice)))
+            .add(attempt(A::Physician).eq(row(C::Physician)))
+            .add(attempt(A::Workspace).eq(row(C::Workspace)))
+            .add(attempt(A::Chat).eq(row(C::Chat))),
+    )
+}
+
+/// Whether the latest attempt of the conversation row in the enclosing
+/// query holds a live lease: [`Attempt::owns_lease`](super::Attempt) in SQL.
+fn chat_lease_held() -> Expr {
+    use chat_attempt::Column as A;
+    Expr::exists(
+        latest_chat_attempt()
+            .expr(Expr::val(1))
+            .cond_where(lease_live(DeliveryKind::ChatTurn, A::Status, A::Expires))
+            .to_owned(),
+    )
+}
+
+/// A pending chat turn that is due: its retry delay has passed and no live
+/// lease holds it (a steer waits for its draining predecessor, and Resume or
+/// new input after Stop waits for the stopped attempt's lease).
+pub(super) fn chat_turn_pending() -> Cond {
+    use conversation::Column as C;
+    Cond::all()
+        .add(Expr::col((conversation::Entity, C::Status)).eq(WorkStatus::Pending))
+        .add(
+            state_bigint(
+                Expr::col((conversation::Entity, C::State)),
+                "dispatch_after",
+            )
+            .lte(database_clock()),
+        )
+        .add(chat_lease_held().not())
+}
+
+/// A running chat turn whose owner is gone: its latest attempt is still
+/// active but holds no live lease, so a claim recovers it as a successor.
+pub(super) fn chat_turn_lost() -> Cond {
+    use chat_attempt::Column as A;
+    use conversation::Column as C;
+    let running = Expr::exists(
+        latest_chat_attempt()
+            .expr(Expr::val(1))
+            .and_where(Expr::col((chat_attempt::Entity, A::Status)).eq(AttemptStatus::Active))
+            .to_owned(),
+    );
+    Cond::all()
+        .add(Expr::col((conversation::Entity, C::Status)).eq(WorkStatus::Active))
+        .add(running)
+        .add(chat_lease_held().not())
+}
+
+/// The conversation rows [`Store::dispatch_due`] hands out.
+pub(super) fn chat_turn_due() -> Cond {
+    Cond::any().add(chat_turn_pending()).add(chat_turn_lost())
+}
+
+/// The draft row's accepted revision input in the enclosing query.
+fn accepted_revision_input() -> Expr {
+    use sea_orm::sea_query::extension::postgres::PgExpr;
+    Expr::col((reply_draft::Entity, reply_draft::Column::State))
+        .get_json_field("accepted")
+        .get_json_field("input")
+}
+
+/// The accepted revision's idempotency key in the enclosing query.
+pub(super) fn accepted_revision_key() -> Expr {
+    use sea_orm::sea_query::extension::postgres::PgExpr;
+    accepted_revision_input().cast_json_field("key")
+}
+
+/// The latest attempt at the accepted revision of the draft row in the
+/// enclosing query.
+pub(super) fn latest_revision_attempt() -> SelectStatement {
+    use reply_draft::Column as D;
+    use revision_attempt::Column as A;
+    let row = |column: D| Expr::col((reply_draft::Entity, column));
+    let attempt = |column: A| Expr::col((revision_attempt::Entity, column));
+    latest_attempt(
+        revision_attempt::Entity,
+        A::Position,
+        Cond::all()
+            .add(attempt(A::Practice).eq(row(D::Practice)))
+            .add(attempt(A::Physician).eq(row(D::Physician)))
+            .add(attempt(A::Workspace).eq(row(D::Workspace)))
+            .add(attempt(A::Reply).eq(row(D::Reply)))
+            .add(attempt(A::InputId).eq(accepted_revision_key())),
+    )
+}
+
+/// A draft row the hosted workers owe at all: accepted under a session, and
+/// current, so no later save left its accepted revision behind.
+pub(super) fn revision_owed() -> Cond {
+    use reply_draft::Column as D;
+    Cond::all()
+        .add(Expr::col((reply_draft::Entity, D::SessionHash)).is_not_null())
+        .add(
+            state_bigint(accepted_revision_input(), "expected_revision")
+                .eq(Expr::col((reply_draft::Entity, D::Revision))),
+        )
+}
+
+/// A pending revision whose retry delay has passed.
+pub(super) fn revision_pending() -> Cond {
+    use reply_draft::Column as D;
+    Cond::all()
+        .add(Expr::col((reply_draft::Entity, D::Status)).eq(DraftStatus::Pending))
+        .add(
+            state_bigint(Expr::col((reply_draft::Entity, D::State)), "dispatch_after")
+                .lte(database_clock()),
+        )
+}
+
+/// A running revision whose latest attempt holds no live lease, so a claim
+/// recovers it as a successor.
+pub(super) fn revision_lost() -> Cond {
+    use reply_draft::Column as D;
+    use revision_attempt::Column as A;
+    let attempted = Expr::exists(latest_revision_attempt().expr(Expr::val(1)).to_owned());
+    let held = Expr::exists(
+        latest_revision_attempt()
+            .expr(Expr::val(1))
+            .cond_where(lease_live(
+                DeliveryKind::ReplyRevision,
+                A::Status,
+                A::Expires,
+            ))
+            .to_owned(),
+    );
+    Cond::all()
+        .add(Expr::col((reply_draft::Entity, D::Status)).eq(DraftStatus::Active))
+        .add(attempted)
+        .add(held.not())
+}
+
+/// The draft rows [`Store::revisions_due`] hands out.
+pub(super) fn revision_due() -> Cond {
+    Cond::all()
+        .add(revision_owed())
+        .add(Cond::any().add(revision_pending()).add(revision_lost()))
 }
 
 fn connection(source: sea_orm::sqlx::Error) -> DbErr {
@@ -219,6 +410,30 @@ impl DeliveryKind {
 
     fn is_chat_turn(&self) -> bool {
         *self == Self::ChatTurn
+    }
+
+    /// Whether an attempt of this kind in `status` still owns its work until
+    /// its lease runs out, so no other attempt may claim it. A chat attempt
+    /// that Stop or a steer ended keeps its claim while its calls drain; a
+    /// revision attempt holds it only while it runs. Every claim, due read
+    /// and lease timer applies this rule.
+    pub(super) fn holds_lease(self, status: AttemptStatus) -> bool {
+        match status {
+            AttemptStatus::Active => true,
+            AttemptStatus::Interrupted | AttemptStatus::Cancelled => match self {
+                Self::ChatTurn => true,
+                Self::ReplyRevision => false,
+            },
+            AttemptStatus::Failed | AttemptStatus::Held | AttemptStatus::Completed => false,
+        }
+    }
+
+    /// The statuses [`Self::holds_lease`] names, for a query.
+    fn lease_holders(self) -> Vec<AttemptStatus> {
+        use sea_orm::Iterable;
+        AttemptStatus::iter()
+            .filter(|status| self.holds_lease(*status))
+            .collect()
     }
 }
 
@@ -293,22 +508,17 @@ impl Store {
         let next = (scopes.len() == maximum).then(|| scopes.last().unwrap().clone());
         let mut deliveries = Vec::new();
         for scope in scopes {
-            let (tx, state, now) = self.locked(&scope).await?;
-            // A steer waits for its draining predecessor; settling that
-            // attempt tells listening workers.
-            let lease_held = state.attempts.last().is_some_and(|a| a.owns_lease(now));
-            let due = match state.status {
-                WorkStatus::Pending => state.dispatch_after <= now && !lease_held,
-                WorkStatus::Active => !lease_held,
-                WorkStatus::Completed
-                | WorkStatus::Failed
-                | WorkStatus::Held
-                | WorkStatus::Cancelled => false,
+            // The claim fences the input, so an unlocked read names it.
+            let Some(row) = conversation::Entity::find_by_id(keys(&scope))
+                .one(&self.db)
+                .await?
+            else {
+                continue;
             };
-            if due && let Some(input_id) = state.input_id() {
+            let state = super::control::conversation(row, Vec::new())?;
+            if let Some(input_id) = state.input_id() {
                 deliveries.push(Delivery::chat_turn(scope, input_id.to_owned()));
             }
-            tx.commit().await?;
         }
         Ok(DispatchPage { deliveries, next })
     }
@@ -320,11 +530,13 @@ impl Store {
     pub async fn soonest_lease_end(&self) -> Result<Option<Duration>, DbErr> {
         let queries = [
             soonest_lease_end(
+                DeliveryKind::ChatTurn,
                 chat_attempt::Entity,
                 chat_attempt::Column::Status,
                 chat_attempt::Column::Expires,
             ),
             soonest_lease_end(
+                DeliveryKind::ReplyRevision,
                 revision_attempt::Entity,
                 revision_attempt::Column::Status,
                 revision_attempt::Column::Expires,
@@ -513,6 +725,22 @@ mod tests {
         );
         // Failed work keeps its earlier hint; nothing reads it until Try again resets it.
         assert_eq!(after, 1010);
+    }
+
+    #[test]
+    fn a_stopped_or_steered_chat_attempt_keeps_its_lease_and_a_revision_attempt_does_not() {
+        assert_eq!(
+            DeliveryKind::ChatTurn.lease_holders(),
+            [
+                AttemptStatus::Active,
+                AttemptStatus::Interrupted,
+                AttemptStatus::Cancelled
+            ]
+        );
+        assert_eq!(
+            DeliveryKind::ReplyRevision.lease_holders(),
+            [AttemptStatus::Active]
+        );
     }
 
     #[test]

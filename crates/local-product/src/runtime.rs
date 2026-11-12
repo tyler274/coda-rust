@@ -19,7 +19,7 @@ pub use harness::engine;
 pub use harness::provider::ResponsesProvider;
 use sea_orm::sea_query::StringLen;
 use sea_orm::{
-    ActiveModelTrait, ColumnTrait, Condition, ConnectionTrait, Database, DatabaseConnection, DbErr,
+    ActiveModelTrait, ColumnTrait, ConnectionTrait, Database, DatabaseConnection, DbErr,
     EntityTrait, QueryFilter, QueryOrder, QuerySelect, Set, TransactionTrait,
     sea_query::{Alias, Expr, ExprTrait, OnConflict, Query, extension::postgres::PgExpr},
 };
@@ -310,11 +310,7 @@ pub struct Attempt {
 
 impl Attempt {
     fn owns_lease(&self, now: i64) -> bool {
-        let leased = match self.status {
-            AttemptStatus::Active | AttemptStatus::Interrupted | AttemptStatus::Cancelled => true,
-            AttemptStatus::Failed | AttemptStatus::Held | AttemptStatus::Completed => false,
-        };
-        self.expires > now && leased
+        self.expires > now && delivery::DeliveryKind::ChatTurn.holds_lease(self.status)
     }
 }
 
@@ -1594,7 +1590,7 @@ impl Store {
         Ok(chats)
     }
 
-    /// Enumerates durable pending/expired work for explicit server activation.
+    /// Enumerates durable due work for explicit server activation.
     /// Caller must reauthorize each scope; construction never starts execution.
     pub async fn pending(&self) -> Result<Vec<Scope>, DbErr> {
         self.pending_batch(100, None).await
@@ -1613,7 +1609,6 @@ impl Store {
             chat: String::new(),
         });
         let columns = [C::Practice, C::Physician, C::Workspace, C::Chat];
-        let expired = control::expired_chat();
         let mut query = conversation::Entity::find()
             .select_only()
             .columns(columns)
@@ -1623,13 +1618,7 @@ impl Store {
                 Expr::val(after.workspace),
                 Expr::val(after.chat),
             ])))
-            .filter(
-                Condition::any().add(C::Status.eq(WorkStatus::Pending)).add(
-                    Condition::all()
-                        .add(C::Status.eq(WorkStatus::Active))
-                        .add(expired),
-                ),
-            )
+            .filter(delivery::chat_turn_due())
             .limit(maximum as u64);
         for column in columns {
             query = query.order_by_asc(column);

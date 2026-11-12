@@ -96,6 +96,14 @@ pub struct RevisionAttempt {
     pub refreshes: Vec<SourceRefresh>,
 }
 
+impl RevisionAttempt {
+    /// Whether this attempt still holds the revision at `now`, by
+    /// [`DeliveryKind::holds_lease`].
+    fn owns_lease(&self, now: i64) -> bool {
+        self.expires > now && DeliveryKind::ReplyRevision.holds_lease(self.status)
+    }
+}
+
 /// The command and frozen execution inputs admitted together for a revision.
 /// An idle draft has no accepted revision; an accepted revision has every field.
 #[derive(Clone, Debug, Serialize, Deserialize)]
@@ -1038,7 +1046,7 @@ impl Store {
             return Ok(None);
         }
         if state.status == DraftStatus::Active
-            && state.attempts.last().is_some_and(|a| a.expires <= now)
+            && state.attempts.last().is_some_and(|a| !a.owns_lease(now))
         {
             let attempt = state.attempts.last_mut().expect("expired revision attempt");
             let outcome = settle_attempt(
@@ -1558,7 +1566,7 @@ impl Store {
         Ok(match state.status {
             DraftStatus::Failed => DeliveryState::Failed,
             DraftStatus::Pending => DeliveryState::Due,
-            DraftStatus::Active if state.attempts.last().is_some_and(|a| a.expires > now) => {
+            DraftStatus::Active if state.attempts.last().is_some_and(|a| a.owns_lease(now)) => {
                 DeliveryState::Claimed
             }
             DraftStatus::Active => DeliveryState::Due,
@@ -1587,60 +1595,47 @@ impl Store {
             chat: String::new(),
         });
         let columns = [C::Practice, C::Physician, C::Workspace, C::Reply];
-        let expired = control::expired_revision();
         let mut query = reply_draft::Entity::find()
             .select_only()
             .columns(columns)
+            .expr(delivery::accepted_revision_key())
             .filter(Expr::tuple(columns.map(Expr::col)).gt(Expr::tuple([
                 Expr::val(after.practice),
                 Expr::val(after.physician),
                 Expr::val(after.workspace),
                 Expr::val(after.chat),
             ])))
-            .filter(
-                Condition::any()
-                    .add(C::Status.eq(DraftStatus::Pending))
-                    .add(
-                        Condition::all()
-                            .add(C::Status.eq(DraftStatus::Active))
-                            .add(expired),
-                    ),
-            )
+            .filter(delivery::revision_due())
             .limit(maximum as u64);
         for column in columns {
             query = query.order_by_asc(column);
         }
-        let scopes: Vec<Scope> = query
-            .into_tuple::<(String, String, String, String)>()
+        let rows = query
+            .into_tuple::<(String, String, String, String, Option<String>)>()
             .all(&self.db)
-            .await?
-            .into_iter()
-            .map(|(practice, physician, workspace, chat)| Scope {
+            .await?;
+        let next = (rows.len() == maximum).then(|| {
+            let (practice, physician, workspace, chat, _) = rows.last().unwrap().clone();
+            Scope {
                 practice,
                 physician,
                 workspace,
                 chat,
+            }
+        });
+        // The claim fences the input, so the read needs no lock.
+        let deliveries = rows
+            .into_iter()
+            .filter_map(|(practice, physician, workspace, chat, input_id)| {
+                let scope = Scope {
+                    practice,
+                    physician,
+                    workspace,
+                    chat,
+                };
+                Some(Delivery::reply_revision(scope, input_id?))
             })
             .collect();
-        let next = (scopes.len() == maximum).then(|| scopes.last().unwrap().clone());
-        let mut deliveries = Vec::new();
-        for scope in scopes {
-            let (tx, state, now) = self.locked_draft(&scope).await?;
-            if state.session_hash.is_some()
-                && !state.stale()
-                && ((state.status == DraftStatus::Pending && state.dispatch_after <= now)
-                    || (state.status == DraftStatus::Active
-                        && state.attempts.last().is_some_and(|a| a.expires <= now)))
-                && let Some(accepted) = state.accepted
-            {
-                deliveries.push(Delivery {
-                    kind: DeliveryKind::ReplyRevision,
-                    scope,
-                    input_id: accepted.input.key,
-                });
-            }
-            tx.commit().await?;
-        }
         Ok(DispatchPage { deliveries, next })
     }
 }

@@ -561,33 +561,3 @@ pub(super) async fn save_revision_attempts(
     }
     Ok(())
 }
-
-/// The parent lock gives a chat at most one active attempt; only that attempt
-/// can make active work due for recovery. Old interrupted attempts are excluded.
-pub(super) fn expired_chat() -> sea_orm::sea_query::SimpleExpr {
-    use chat_attempt::Column as A;
-    use conversation::Column as C;
-    use sea_orm::sea_query::{Expr, ExprTrait, Query};
-    Expr::tuple([C::Practice, C::Physician, C::Workspace, C::Chat].map(Expr::col)).in_subquery(
-        Query::select()
-            .columns([A::Practice, A::Physician, A::Workspace, A::Chat])
-            .from(chat_attempt::Entity)
-            .and_where(A::Status.eq(AttemptStatus::Active))
-            .and_where(Expr::col(A::Expires).lte(super::database_clock()))
-            .to_owned(),
-    )
-}
-
-pub(super) fn expired_revision() -> sea_orm::sea_query::SimpleExpr {
-    use reply_draft::Column as C;
-    use revision_attempt::Column as A;
-    use sea_orm::sea_query::{Expr, ExprTrait, Query};
-    Expr::tuple([C::Practice, C::Physician, C::Workspace, C::Reply].map(Expr::col)).in_subquery(
-        Query::select()
-            .columns([A::Practice, A::Physician, A::Workspace, A::Reply])
-            .from(revision_attempt::Entity)
-            .and_where(A::Status.eq(AttemptStatus::Active))
-            .and_where(Expr::col(A::Expires).lte(super::database_clock()))
-            .to_owned(),
-    )
-}
