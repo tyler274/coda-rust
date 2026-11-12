@@ -322,7 +322,12 @@ async fn expired_attempt_recovery_preserves_accepted_work_and_evidence() {
     );
     let next = s.claim(&scope, 60).await.unwrap().unwrap();
     assert_ne!(first.attempt, next.attempt);
-    s.assert_current(&first).await.unwrap();
+    let lost = s.assert_current(&first).await.unwrap_err();
+    assert_eq!(
+        engine::AttemptFailure::from_cause(lost.as_ref()),
+        engine::AttemptFailure::Failed,
+        "a replaced attempt has lost ownership: {lost}"
+    );
     assert!(s.renew_claim(&first).await.is_err());
     s.renew_claim(&next).await.unwrap();
     let state = s.conversation(&scope).await.unwrap();
@@ -712,6 +717,104 @@ async fn try_again_resumes_only_the_named_failed_run_and_never_completed_work() 
         store.conversation(&scope).await.unwrap().status,
         WorkStatus::Completed
     );
+}
+
+#[tokio::test]
+#[ignore = "requires explicit local Postgres"]
+async fn stop_withdraws_the_running_attempt_and_a_new_message_supersedes_it() {
+    let url = std::env::var("PHYSICIAN_RUNTIME_TEST_DATABASE_URL").unwrap();
+    let store = Store::connect(&url).await.unwrap();
+    store.migrate().await.unwrap();
+    let practice = uuid::Uuid::new_v4().to_string();
+
+    let stopped = delivery_scope(&practice, "stopped");
+    accept(&store, &stopped, &delivery_input("stop-turn"), 5)
+        .await
+        .unwrap();
+    let claim = store.claim(&stopped, 60).await.unwrap().unwrap();
+    store.assert_current(&claim).await.unwrap();
+    let work = store.conversation(&stopped).await.unwrap().work;
+    assert_eq!(
+        store
+            .stop_authorized(&stopped, "stop", vec![6; 32], &work)
+            .await
+            .unwrap(),
+        Stopped::Held
+    );
+    assert_eq!(
+        store.conversation(&stopped).await.unwrap().revision,
+        claim.revision,
+        "Stop leaves the input revision"
+    );
+    let error = store.assert_current(&claim).await.unwrap_err();
+    assert!(error.is::<engine::Withdrawn>(), "{error}");
+    assert_eq!(
+        engine::AttemptFailure::from_cause(error.as_ref()),
+        engine::AttemptFailure::Interrupted
+    );
+
+    let steered = delivery_scope(&practice, "steered");
+    accept(&store, &steered, &delivery_input("first-turn"), 5)
+        .await
+        .unwrap();
+    let claim = store.claim(&steered, 60).await.unwrap().unwrap();
+    accept(&store, &steered, &delivery_input("second-turn"), 5)
+        .await
+        .unwrap();
+    assert!(
+        store.conversation(&steered).await.unwrap().revision > claim.revision,
+        "a new message raises the input revision"
+    );
+    let error = store.assert_current(&claim).await.unwrap_err();
+    assert!(error.is::<engine::Superseded>(), "{error}");
+    let work = store.conversation(&steered).await.unwrap().work;
+    assert_eq!(
+        store
+            .stop_authorized(&steered, "stop-steered", vec![6; 32], &work)
+            .await
+            .unwrap(),
+        Stopped::Held
+    );
+    let error = store.assert_current(&claim).await.unwrap_err();
+    assert!(
+        error.is::<engine::Withdrawn>(),
+        "Stop wins over the waiting message: {error}"
+    );
+}
+
+#[tokio::test]
+#[ignore = "requires explicit local Postgres"]
+async fn stop_then_a_new_message_withdraws_the_running_attempt_and_the_message_runs_next() {
+    let url = std::env::var("PHYSICIAN_RUNTIME_TEST_DATABASE_URL").unwrap();
+    let store = Store::connect(&url).await.unwrap();
+    store.migrate().await.unwrap();
+    let scope = delivery_scope(&Uuid::new_v4().to_string(), "chat");
+    accept(&store, &scope, &delivery_input("first-turn"), 5)
+        .await
+        .unwrap();
+    let claim = store.claim(&scope, 60).await.unwrap().unwrap();
+    let work = store.conversation(&scope).await.unwrap().work;
+    assert_eq!(
+        store
+            .stop_authorized(&scope, "stop", vec![6; 32], &work)
+            .await
+            .unwrap(),
+        Stopped::Held
+    );
+    // The new message arrives before the worker's next check.
+    accept(&store, &scope, &delivery_input("second-turn"), 5)
+        .await
+        .unwrap();
+    let error = store.assert_current(&claim).await.unwrap_err();
+    assert!(
+        error.is::<engine::Withdrawn>(),
+        "Stop ended the attempt, so the waiting message does not make it wait: {error}"
+    );
+    let reason = engine::AttemptFailure::from_cause(error.as_ref());
+    store.settle_chat_attempt(&claim, reason).await.unwrap();
+    let next = store.claim(&scope, 60).await.unwrap().unwrap();
+    assert_ne!(next.attempt, claim.attempt);
+    assert!(next.revision > claim.revision, "the new message runs next");
 }
 
 #[tokio::test]
@@ -1994,7 +2097,12 @@ async fn currency_is_read_only_and_renewal_touches_only_the_current_chat_attempt
         "current lease was not renewed"
     );
     assert!(store.renew_claim(&old).await.is_err());
-    store.assert_current(&old).await.unwrap();
+    let lost = store.assert_current(&old).await.unwrap_err();
+    assert_eq!(
+        engine::AttemptFailure::from_cause(lost.as_ref()),
+        engine::AttemptFailure::Failed,
+        "a replaced attempt has lost ownership: {lost}"
+    );
     assert_eq!(
         store
             .settle_chat_attempt(&old, engine::AttemptFailure::Failed)

@@ -6,7 +6,15 @@
 //! deciding whether to resume. Persisted events are execution evidence, not a
 //! product lifecycle. A candidate must still pass the product's commit fence.
 
-use std::{collections::HashSet, future::Future, time::Duration};
+use std::{
+    collections::HashSet,
+    future::Future,
+    sync::{
+        Arc,
+        atomic::{AtomicU64, Ordering},
+    },
+    time::Duration,
+};
 
 use async_trait::async_trait;
 use serde::{Deserialize, Serialize};
@@ -87,10 +95,13 @@ pub fn retryable_sqlstate(code: Option<&str>) -> bool {
 }
 
 /// A cooperative stop signal, independent of any product terminal state.
+/// Hosting cancels through it; the running loop marks through it each step it
+/// reaches, so hosting can tell a run that stopped moving.
 #[derive(Clone, Debug)]
 pub struct Cancellation {
     run: watch::Sender<bool>,
     request: Option<watch::Receiver<bool>>,
+    liveness: Liveness,
 }
 
 impl Default for Cancellation {
@@ -98,6 +109,27 @@ impl Default for Cancellation {
         Self {
             run: watch::channel(false).0,
             request: None,
+            liveness: Liveness::default(),
+        }
+    }
+}
+
+/// When the running loop last reached a step, shared by every clone of one
+/// [`Cancellation`]. A step is a saved event, a piece of the model's stream or
+/// a currency check, which runs every second while the loop waits. Creating
+/// the signal counts as the first step.
+#[derive(Clone, Debug)]
+struct Liveness {
+    origin: Instant,
+    /// Milliseconds from `origin` to the last step.
+    last: Arc<AtomicU64>,
+}
+
+impl Default for Liveness {
+    fn default() -> Self {
+        Self {
+            origin: Instant::now(),
+            last: Arc::default(),
         }
     }
 }
@@ -111,6 +143,21 @@ impl Cancellation {
     /// Whether this run has been cancelled.
     pub fn is_cancelled(&self) -> bool {
         *self.run.borrow() || self.request.as_ref().is_some_and(|signal| *signal.borrow())
+    }
+
+    /// Records that the running loop reached a step now.
+    pub(crate) fn mark(&self) {
+        let since = Instant::now().saturating_duration_since(self.liveness.origin);
+        let millis = u64::try_from(since.as_millis()).unwrap_or(u64::MAX);
+        self.liveness.last.fetch_max(millis, Ordering::Relaxed);
+    }
+
+    /// How long ago the running loop last reached a step. Hosting reads it to
+    /// tell a run that stopped moving.
+    pub fn since_last_step(&self) -> Duration {
+        let last = self.liveness.origin
+            + Duration::from_millis(self.liveness.last.load(Ordering::Relaxed));
+        Instant::now().saturating_duration_since(last)
     }
 
     /// Refuses a dispatch after cancellation.
@@ -130,6 +177,7 @@ impl Cancellation {
             Self {
                 run: self.run.clone(),
                 request: Some(request),
+                liveness: self.liveness.clone(),
             },
             signal,
         )
@@ -586,6 +634,14 @@ pub type Cause = Box<dyn std::error::Error + Send + Sync>;
 #[error("accepted work or inputs no longer current")]
 pub struct Superseded;
 
+/// The work no longer wants this attempt: the person stopped it, or the work
+/// ended, even when newer input waits. Unlike [`Superseded`], the loop does
+/// not wait for tool calls still running; each stays a call that started with
+/// no recorded outcome.
+#[derive(Debug, thiserror::Error)]
+#[error("accepted work no longer wants this attempt")]
+pub struct Withdrawn;
+
 /// A transient ordered-event write failure, classified by the product storage owner.
 /// The identical event may be saved again: products must acknowledge exact replay
 /// without repeating any related effects, including an unknown commit outcome.
@@ -665,7 +721,7 @@ pub const MAX_FAILED_ATTEMPTS: u32 = 5;
 /// authority checks and map this reason to their own durable lifecycle.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum AttemptFailure {
-    /// Cancellation or superseding input, not a failed attempt.
+    /// Cancellation, superseding input or withdrawn work, not a failed attempt.
     Interrupted,
     /// A reached bound, including an unsuccessful reserved final request.
     Limit,
@@ -696,7 +752,8 @@ impl AttemptFailure {
             Self::Failed
         };
         loop {
-            if error.is::<Superseded>() {
+            // New input and withdrawn work both interrupt the attempt.
+            if error.is::<Superseded>() || error.is::<Withdrawn>() {
                 return Self::Interrupted;
             }
             match error.downcast_ref::<Failure>() {

@@ -163,6 +163,7 @@ impl Visit for SafeFields<'_> {
                     | "retry_persist"
                     | "revision"
                     | "rehearsed"
+                    | "lost"
                     | "publish"
                     | "database"
             ),

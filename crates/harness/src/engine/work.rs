@@ -19,12 +19,24 @@ const PROVIDER_RETRY_MAX: Duration = Duration::from_secs(30);
 // fifth retry fails too, the attempt fails. This follows Codex's
 // `stream_max_retries` default of 5.
 const PROVIDER_RETRIES: u32 = 5;
+// One deadline around every tool call, as Hermes puts one around every tool
+// dispatch. Codex and Hermes give an MCP tool call the same 300 seconds.
+const TOOL_DEADLINE: Duration = Duration::from_secs(300);
 // What the model is told when a tool fails unexpectedly.
 const READ_FAILED: &str = "This call failed. You can try it again.";
 const EFFECT_FAILED: &str =
     "This call failed and its outcome is unknown. Check the current state before you repeat it.";
+// What the model is told when a tool call reaches its deadline.
+const READ_TIMED_OUT: &str = "This call timed out before it finished. You can try it again.";
+const EFFECT_TIMED_OUT: &str = "This call timed out before it finished and its outcome is unknown. Check the current state before you repeat it.";
 // Three identical refusals establish a loop worth drawing to the model's attention.
 const REPEATED_FAILURE_THRESHOLD: u8 = 3;
+
+/// A tool call still running at [`TOOL_DEADLINE`]. Its operation was dropped,
+/// so an effect it started may or may not have happened.
+#[derive(Debug, thiserror::Error)]
+#[error("tool call did not finish within its deadline")]
+struct ToolTimedOut(#[source] tokio::time::error::Elapsed);
 
 /// The shared batching rule, also used by product owners to fence writes.
 /// Unknown tools remain barriers; shared tool behavior has one owner.
@@ -369,6 +381,7 @@ impl<'a> Run<'a> {
             }
         }
         self.progress.sequence = sequence;
+        self.cancel.mark();
         self.parts.observe(&event)?;
         Ok(())
     }
@@ -397,6 +410,7 @@ impl<'a> Run<'a> {
         }
     }
     async fn check(&mut self) -> Result<(), Failure> {
+        self.cancel.mark();
         self.cancel.check()?;
         self.product.assert_current().await.map_err(Failure::Host)
     }
@@ -442,6 +456,8 @@ impl<'a> Run<'a> {
             let mut next = 0;
             let mut results = vec![None; batch.len()];
             let mut failure = None;
+            let mut tick =
+                tokio::time::interval_at(Instant::now() + CURRENCY_INTERVAL, CURRENCY_INTERVAL);
             loop {
                 // Admit only calls that can start now. A steer closes admission,
                 // but every operation already handed to the product is drained.
@@ -449,21 +465,49 @@ impl<'a> Run<'a> {
                 {
                     // Check cancellation before admission. Once persistence begins,
                     // its acknowledgement owns the sequence, including during Stop.
-                    let current = while_current(self.cancel, self.check()).await;
-                    let operation = match current {
-                        Ok(()) => self.tool(window, &batch[next]).await,
-                        Err(error) => Err(error),
-                    };
-                    match operation {
+                    if let Err(error) = while_current(self.cancel, self.check()).await {
+                        if !replaced_by_new_input(&error) {
+                            return Err(error);
+                        }
+                        failure = Some(error);
+                        break;
+                    }
+                    match self.tool(window, &batch[next]).await {
                         Ok(operation) => {
                             let index = next;
                             next += 1;
-                            pending.spawn(async move { (index, operation.await) });
+                            pending.spawn(async move {
+                                let outcome = tokio::time::timeout(TOOL_DEADLINE, operation)
+                                    .await
+                                    .unwrap_or_else(|elapsed| {
+                                        Err(Box::new(ToolTimedOut(elapsed)) as Cause)
+                                    });
+                                (index, outcome)
+                            });
                         }
                         Err(error) => failure = Some(error),
                     }
                 }
-                let Some(completed) = pending.join_next().await else {
+                // While calls run, check currency as `wait` does. New input lets
+                // them finish within their deadline. Stop, withdrawn work or lost
+                // ownership ends the wait now: dropping `pending` drops the
+                // running operations, and each stays a call that started with no
+                // recorded outcome, which recovery reports to the model.
+                let completed = tokio::select! {
+                    biased;
+                    () = self.cancel.cancelled() => return Err(Failure::Cancelled),
+                    completed = pending.join_next() => completed,
+                    _ = tick.tick() => {
+                        if let Err(error) = while_current(self.cancel, self.check()).await {
+                            if !replaced_by_new_input(&error) {
+                                return Err(error);
+                            }
+                            failure.get_or_insert(error);
+                        }
+                        continue;
+                    }
+                };
+                let Some(completed) = completed else {
                     break;
                 };
                 let (index, outcome) = match completed {
@@ -488,9 +532,11 @@ impl<'a> Run<'a> {
                 match self.deliver(window, &batch[index], outcome).await {
                     Ok(result) => results[index] = Some(result),
                     Err(error) => {
-                        // An unacknowledged event owns the next sequence.
-                        // Do not invent later records, or abort running effects.
-                        while pending.join_next().await.is_some() {}
+                        // An unacknowledged event owns the next sequence, so no
+                        // later result can be recorded. Only read-only calls
+                        // share a batch, so any call still running is a read.
+                        // Dropping `pending` drops it, and it stays a call that
+                        // started with no recorded outcome.
                         return Err(error);
                     }
                 }
@@ -506,11 +552,12 @@ impl<'a> Run<'a> {
 
     /// A tool that fails unexpectedly gives the model an error result while
     /// the attempt is still current, as Codex, Hermes, OpenClaw and Pi do. The
-    /// text is fixed; the error itself never reaches the model. An error that
-    /// is itself a cancellation or superseding input, or a failure already
-    /// ending the batch, ends the attempt with the error. When the attempt is
-    /// no longer current, the currency check's failure ends it, so newer input
-    /// interrupts it.
+    /// text is fixed; the error itself never reaches the model. A call that
+    /// reached its deadline takes this path too, and its text says it timed
+    /// out. An error that is itself a cancellation or superseding input, or a
+    /// failure already ending the batch, ends the attempt with the error. When
+    /// the attempt is no longer current, the currency check's failure ends it,
+    /// so newer input interrupts it.
     async fn tool_failed(
         &mut self,
         call: &Invocation,
@@ -521,13 +568,14 @@ impl<'a> Run<'a> {
             return Err(Failure::Host(error));
         }
         while_current(self.cancel, self.check()).await?;
-        Ok(ToolOutcome::Refused(
-            if tool_is_read_only(self.product, &call.name) {
-                recipe::Refusal::new(READ_FAILED)
-            } else {
-                recipe::Refusal::unknown_outcome(EFFECT_FAILED)
-            },
-        ))
+        let timed_out = error.is::<ToolTimedOut>();
+        let read_only = tool_is_read_only(self.product, &call.name);
+        Ok(ToolOutcome::Refused(match (read_only, timed_out) {
+            (true, false) => recipe::Refusal::new(READ_FAILED),
+            (true, true) => recipe::Refusal::new(READ_TIMED_OUT),
+            (false, false) => recipe::Refusal::unknown_outcome(EFFECT_FAILED),
+            (false, true) => recipe::Refusal::unknown_outcome(EFFECT_TIMED_OUT),
+        }))
     }
 
     /// Reconcile every retained outcome before admitting any unstarted call.
@@ -1356,6 +1404,19 @@ pub(crate) async fn run_work<P: Provider + ?Sized>(
             return Ok(committed);
         }
     }
+}
+
+/// Whether a failed currency check means new input replaced the direction.
+/// Only then do running tool calls finish; any other failure ends the wait.
+fn replaced_by_new_input(failure: &Failure) -> bool {
+    let mut error: Option<&(dyn std::error::Error + 'static)> = Some(failure);
+    while let Some(cause) = error {
+        if cause.is::<Superseded>() {
+            return true;
+        }
+        error = cause.source();
+    }
+    false
 }
 
 /// Once cancellation is known, no new product callback may start.

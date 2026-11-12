@@ -2,7 +2,7 @@
 //! no chat row, effect tool, or projection is an authority for this work.
 use super::WorkerAuthority;
 use super::attempt::{self, Claimed, Failure, Outcome, Push, Tally};
-use super::{Worker, absent_claim, announce};
+use super::{Hosted, Worker, absent_claim, announce};
 use async_trait::async_trait;
 use axum::http::StatusCode;
 use harness::engine::recipe::Finish;
@@ -151,8 +151,9 @@ async fn handle(worker: &Worker, delivery: &Delivery, span: &tracing::Span) -> S
         )
         .await
     };
-    let result = super::while_owned(
+    let hosted = super::while_owned(
         claimed.lease,
+        super::STALL,
         &cancel,
         || worker.store.renew_revision_claim(&claimed),
         run.instrument(generation.clone()),
@@ -161,6 +162,10 @@ async fn handle(worker: &Worker, delivery: &Delivery, span: &tracing::Span) -> S
     if let Some((input, output)) = owner.usage.known() {
         genai::record_usage(&generation, input, output);
     }
+    let result = match hosted {
+        Hosted::Returned(result) => result,
+        Hosted::Lost => return super::lost(span, JOB, &owner.claim.attempt),
+    };
     let run_id = Some(owner.claim.attempt.as_str());
     let status = match result {
         Ok(response) => {

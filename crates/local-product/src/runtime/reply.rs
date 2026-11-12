@@ -541,19 +541,75 @@ fn history_of(scope: &Scope) -> Condition {
 }
 
 fn current(state: &Draft, claim: &RevisionClaim, now: i64) -> bool {
-    state.accepted.as_ref().map(|accepted| &accepted.input) == Some(&claim.accepted.input)
-        && control::current(
-            state.status == DraftStatus::Active,
+    control::current(
+        state
+            .attempts
+            .last()
+            .map(|a| (a.id.as_str(), a.status, a.expires)),
+        &claim.attempt,
+        same_input(
+            claim,
             state.revision,
-            state
-                .attempts
-                .last()
-                .map(|a| (a.id.as_str(), a.status, a.expires)),
-            &claim.attempt,
-            claim.accepted.input.expected_revision,
-            now,
+            state.accepted.as_ref().map(|accepted| &accepted.input),
+        ),
+        now,
+    )
+    .is_current()
+}
+
+/// The claim still runs the draft's input: the same accepted instruction, at
+/// the same saved revision. Another accepted instruction is new input, as a
+/// changed revision is.
+fn same_input(claim: &RevisionClaim, revision: u64, accepted: Option<&RevisionInput>) -> bool {
+    accepted == Some(&claim.accepted.input) && revision == claim.accepted.input.expected_revision
+}
+
+/// The draft's saved revision and accepted instruction, which a revision
+/// claim is checked against. The write fence adds its lock.
+fn draft_input_query(scope: &Scope) -> sea_orm::Select<reply_draft::Entity> {
+    use sea_orm::sea_query::extension::postgres::PgExpr;
+    reply_draft::Entity::find_by_id(keys(scope))
+        .select_only()
+        .column(reply_draft::Column::Revision)
+        .expr(
+            Expr::col(reply_draft::Column::State)
+                .get_json_field("accepted")
+                .get_json_field("input"),
         )
-        .is_current()
+}
+
+/// Runs [`draft_input_query`]. A missing draft, an unreadable revision or an
+/// unreadable instruction is an error.
+async fn draft_input(
+    db: &impl sea_orm::ConnectionTrait,
+    query: sea_orm::Select<reply_draft::Entity>,
+) -> Result<(u64, Option<RevisionInput>), DbErr> {
+    let (revision, input) = query
+        .into_tuple::<(i64, serde_json::Value)>()
+        .one(db)
+        .await?
+        .ok_or_else(|| error("reply draft not found"))?;
+    let revision =
+        u64::try_from(revision).map_err(conversion_error("saved draft revision", "u64"))?;
+    let input = serde_json::from_value(input).map_err(conversion_error(
+        "draft accepted input",
+        "Option<RevisionInput>",
+    ))?;
+    Ok((revision, input))
+}
+
+/// The last attempt for the claim's accepted instruction: its id and status.
+/// The write fence adds its expiry.
+fn last_revision_attempt_query(
+    claim: &RevisionClaim,
+) -> sea_orm::Select<super::entities::revision_attempt::Entity> {
+    use super::entities::revision_attempt::{Column as A, Entity};
+    Entity::find()
+        .select_only()
+        .columns([A::Id, A::Status])
+        .filter(control::revision_scope(&claim.scope))
+        .filter(A::InputId.eq(claim.accepted.input.key.as_str()))
+        .order_by_desc(A::Position)
 }
 
 impl Store {
@@ -1060,36 +1116,29 @@ impl Store {
         tx.commit().await
     }
 
-    /// Read only whether this revision's accepted instruction is still current.
+    /// Reads, without a lock or the clock, what the saved state says to this
+    /// revision attempt. An attempt that was ended, by a saved draft or by
+    /// settlement, is [`engine::Withdrawn`], even when a newer instruction
+    /// waits. A running attempt with a newer instruction or saved revision is
+    /// [`engine::Superseded`]. An attempt that another attempt replaced has
+    /// lost ownership. Lease expiry is checked by hosting renewal and the
+    /// write fences. A missing draft or an unreadable revision is an error.
     pub async fn assert_revision_current(
         &self,
         claim: &RevisionClaim,
     ) -> Result<(), engine::Cause> {
-        use sea_orm::sea_query::extension::postgres::PgExpr;
         claim.scope.validate()?;
-        let row = reply_draft::Entity::find_by_id(keys(&claim.scope))
-            .select_only()
-            .columns([reply_draft::Column::Status, reply_draft::Column::Revision])
-            .expr(
-                Expr::col(reply_draft::Column::State)
-                    .get_json_field("accepted")
-                    .get_json_field("input"),
-            )
-            .into_tuple::<(DraftStatus, i64, serde_json::Value)>()
+        let (revision, input) = draft_input(&self.db, draft_input_query(&claim.scope)).await?;
+        let attempt = last_revision_attempt_query(claim)
+            .into_tuple::<(String, AttemptStatus)>()
             .one(&self.db)
-            .await?
-            .ok_or_else(|| error("reply draft not found"))?;
-        let input: Option<RevisionInput> = serde_json::from_value(row.2).map_err(
-            conversion_error("draft accepted input", "Option<RevisionInput>"),
-        )?;
-        if row.0 == DraftStatus::Active
-            && u64::try_from(row.1).ok() == Some(claim.accepted.input.expected_revision)
-            && input.as_ref() == Some(&claim.accepted.input)
-        {
-            Ok(())
-        } else {
-            Err(engine::Superseded.into())
-        }
+            .await?;
+        control::attempt_currency(
+            attempt.as_ref().map(|(id, status)| (id.as_str(), *status)),
+            &claim.attempt,
+            same_input(claim, revision, input.as_ref()),
+        )
+        .require()
     }
 
     /// Hosting extends only its still-live revision attempt, never an earlier row.
@@ -1112,51 +1161,29 @@ impl Store {
         tx.commit().await
     }
 
+    /// The write fence's read: the rows [`Store::assert_revision_current`]
+    /// reads, under the draft lock, plus the last attempt's expiry and the
+    /// clock.
     async fn lock_revision_claim(
         tx: &sea_orm::DatabaseTransaction,
         claim: &RevisionClaim,
     ) -> Result<(bool, Option<RevisionInput>), DbErr> {
-        use sea_orm::sea_query::extension::postgres::PgExpr;
-        let (status, revision, input) = reply_draft::Entity::find_by_id(keys(&claim.scope))
-            .select_only()
-            .columns([reply_draft::Column::Status, reply_draft::Column::Revision])
-            .expr(
-                Expr::col(reply_draft::Column::State)
-                    .get_json_field("accepted")
-                    .get_json_field("input"),
-            )
-            .lock_exclusive()
-            .into_tuple::<(DraftStatus, i64, serde_json::Value)>()
-            .one(tx)
-            .await?
-            .ok_or_else(|| error("reply draft not found"))?;
-        let input: Option<RevisionInput> = serde_json::from_value(input).map_err(
-            conversion_error("draft accepted input", "Option<RevisionInput>"),
-        )?;
-        use super::entities::revision_attempt::Column as A;
-        let attempt = super::entities::revision_attempt::Entity::find()
-            .select_only()
-            .columns([A::Id, A::Status, A::Expires])
-            .filter(control::revision_scope(&claim.scope))
-            .filter(A::InputId.eq(claim.accepted.input.key.as_str()))
-            .order_by_desc(A::Position)
+        let (revision, input) =
+            draft_input(tx, draft_input_query(&claim.scope).lock_exclusive()).await?;
+        let attempt = last_revision_attempt_query(claim)
+            .column(super::entities::revision_attempt::Column::Expires)
             .into_tuple::<(String, AttemptStatus, i64)>()
             .one(tx)
             .await?;
-        let revision =
-            u64::try_from(revision).map_err(conversion_error("saved draft revision", "u64"))?;
-        let current = input.as_ref() == Some(&claim.accepted.input)
-            && control::current(
-                status == DraftStatus::Active,
-                revision,
-                attempt
-                    .as_ref()
-                    .map(|(id, status, expires)| (id.as_str(), *status, *expires)),
-                &claim.attempt,
-                claim.accepted.input.expected_revision,
-                now(tx).await?,
-            )
-            .is_current();
+        let current = control::current(
+            attempt
+                .as_ref()
+                .map(|(id, status, expires)| (id.as_str(), *status, *expires)),
+            &claim.attempt,
+            same_input(claim, revision, input.as_ref()),
+            now(tx).await?,
+        )
+        .is_current();
         Ok((current, input))
     }
 

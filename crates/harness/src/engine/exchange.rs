@@ -98,6 +98,7 @@ pub(super) async fn dispatch<P: Provider + ?Sized>(
                     deadline = Some(Instant::now() + GRACE);
                 }
                 _ = tick.tick(), if presentation.is_none() => {
+                    cancel.mark();
                     if let Err(reason) = settle(cancel, &mut deadline, async {run.product.assert_current().await.map_err(Failure::Host)}).await {
                         interrupt.send_replace(true);
                         presentation = Some(reason);
@@ -105,6 +106,7 @@ pub(super) async fn dispatch<P: Provider + ?Sized>(
                     }
                 }
                 Some((event,ack))=receive.recv()=>{
+                    cancel.mark();
                     let kind = match event {
                         StreamEvent::Usage(reported) => {
                             call.usage.merge(&reported);

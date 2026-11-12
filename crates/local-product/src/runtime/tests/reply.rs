@@ -386,7 +386,12 @@ async fn reply_acceptance_is_scoped_idempotent_and_claimed_once() {
     assert_eq!(recovering.runs.current().unwrap().outcome, None);
     assert_eq!(recovering.runs.events().len(), 1);
 
-    store.assert_revision_current(&claim).await.unwrap();
+    let lost = store.assert_revision_current(&claim).await.unwrap_err();
+    assert_eq!(
+        engine::AttemptFailure::from_cause(lost.as_ref()),
+        engine::AttemptFailure::Failed,
+        "a replaced attempt has lost ownership: {lost}"
+    );
     assert!(store.renew_revision_claim(&claim).await.is_err());
     store.renew_revision_claim(&retry).await.unwrap();
     assert!(store.read(&scope).await.unwrap().is_none());
@@ -614,6 +619,11 @@ async fn reply_publication_requires_evidence_authority_and_current_revision() {
             .unwrap(),
         2
     );
+    let error = store.assert_revision_current(&claim).await.unwrap_err();
+    assert!(
+        error.is::<engine::Withdrawn>(),
+        "a save cancels the revision, so the running attempt returns at once: {error}"
+    );
     assert!(
         store
             .save_draft(&scope, 1, "Stale", &[7; 32], &mut TestAuthority(true))
@@ -634,6 +644,56 @@ async fn reply_publication_requires_evidence_authority_and_current_revision() {
         Some(RunOutcome::Cancelled)
     );
     assert_eq!(draft.restore_text.as_deref(), Some("Original"));
+}
+
+#[tokio::test]
+#[ignore = "requires explicit local Postgres"]
+async fn a_save_then_a_new_instruction_withdraws_the_running_attempt_and_the_instruction_runs_next()
+{
+    let (store, scope) = setup().await;
+    open_draft(&store, &scope, "Original").await;
+    accept_revision_input(&store, &scope, &input("first", 1))
+        .await
+        .unwrap();
+    let claim = store
+        .claim_revision(&Delivery::reply_revision(scope.clone(), "first".into()), 60)
+        .await
+        .unwrap()
+        .unwrap();
+    let revision = store
+        .save_draft(
+            &scope,
+            1,
+            "Physician save",
+            &[7; 32],
+            &mut TestAuthority(true),
+        )
+        .await
+        .unwrap();
+    // The new instruction arrives before the worker's next check.
+    assert_eq!(
+        accept_revision_input(&store, &scope, &input("second", revision))
+            .await
+            .unwrap(),
+        RevisionAccepted::New
+    );
+    let error = store.assert_revision_current(&claim).await.unwrap_err();
+    assert!(
+        error.is::<engine::Withdrawn>(),
+        "the save ended the attempt, so the new instruction does not make it wait: {error}"
+    );
+    let reason = engine::AttemptFailure::from_cause(error.as_ref());
+    store.settle_revision_attempt(&claim, reason).await.unwrap();
+    let next = store
+        .claim_revision(
+            &Delivery::reply_revision(scope.clone(), "second".into()),
+            60,
+        )
+        .await
+        .unwrap()
+        .unwrap();
+    assert_ne!(next.attempt, claim.attempt);
+    assert_eq!(next.accepted.input, input("second", revision));
 }
 
 #[tokio::test]

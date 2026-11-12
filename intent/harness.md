@@ -105,6 +105,7 @@ README.md holds Coda's shared principles, and they apply here. The principles be
 - Tools are how the model reads and acts. They go with the job, not with the model.
 - The product marks which of its tools are read-only.
 - Before a call runs, it passes its authority check and is recorded as started.
+- **A tool call is in one of six states:** requested, refused before it starts, not run, running, ended with a result, or started with no recorded outcome. The model gets exactly one result for every call it issued, and the harness never runs a call again by itself. Codex, Hermes, OpenClaw and Pi share these states and both rules.
 - **Source labels.** The model sees short labels that map back to each source, and citations use those labels. Citations never depend on parsing model text.
 - **Correctable errors** come back to the model under the original call ID:
   - bad arguments;
@@ -116,6 +117,7 @@ README.md holds Coda's shared principles, and they apply here. The principles be
   - output cut off at the provider's limit.
 - Successful results of other calls stay available.
 - **A tool that fails unexpectedly returns an error result.** The model is told the call failed. If the call may have changed something, it is told the outcome is unknown and to check before repeating it. The run continues, as in Codex, Hermes, OpenClaw and Pi.
+- **A tool call has a deadline of 300 seconds.** A call still running then is ended, and the model gets the same error result as for a call that failed. It is told the call timed out and, if the call may have changed something, that the outcome is unknown and to check before repeating it. The run continues. Hermes puts one deadline around every call, and Codex and Hermes give an MCP call the same 300 seconds.
 - **A call always has a usable ID.** A call with an empty ID, or an ID already used in the run, gets a new one and the turn runs, as OpenClaw and Hermes do.
 - **Every request has matched calls and results.** Before a request, a call without a result gets a result that says it was interrupted and its outcome is unknown. A result without a call is left out. Earlier saved records don't change, and the saved request shows what was sent. Codex, OpenClaw and Hermes repair their history the same way.
 - **Repeated failures.** When the same call keeps failing the same way, its result adds a note telling the model to reassess, as Hermes does. The note never stops the run. OpenClaw blocks the call at that point; we don't.
@@ -263,9 +265,10 @@ The products depend on these promises.
 - **Drafts are replaced.** After an interruption or a steer, the harness discards an unpublished draft and runs the step again without it, even if its text was shown live. A published partial answer is part of the conversation, not a draft.
 - **Steering.**
   - New input, whether a steer now or a queued message later, is a saved item with its own ID. The harness puts it into a request exactly once, as Codex's input queue does.
-  - A steer cancels the model request in progress. Tool calls already executing are allowed to finish, and their results are retained; calls that have not started are not executed. The harness discards unpublished draft text. The next request sends the completed calls with their retained results, each call that did not start marked as not run, and the new input, as Codex and Pi answer every call they issued. The model decides which calls to issue again. Finished tool work is never repeated.
+  - A steer cancels the model request in progress. Tool calls already executing are allowed to finish within their deadline, and their results are retained; calls that have not started are not executed. The harness discards unpublished draft text. The next request sends the completed calls with their retained results, each call that did not start marked as not run, and the new input, as Codex and Pi answer every call they issued. The model decides which calls to issue again. Finished tool work is never repeated.
+    - Stop does not wait for a tool call. The harness stops waiting for calls still running, and each counts as a call that started with no recorded outcome. The same holds when a worker loses ownership of the work. All four references let Stop reach a running tool. Stop and new input are separate facts, as in all four references. Stop is checked first, so a waiting message never makes Stop wait for a call.
   - One answer covers all the messages that steered it, and late output never replaces newer direction.
-  - The loop supports both products: in Chords, Stop holds the work until Resume; in Duet, a new message steers the reply in progress.
+  - A new message steers the work in progress in both products. In Chords, Stop also holds the work until Resume.
 - **Honest endings.** A run ends exactly once, with one outcome:
   - completed;
   - held, with its reason: stopped by the person, at a limit, or blocked by the provider;
@@ -349,7 +352,7 @@ Reply text:
   - There are no hidden defaults: if a setting is missing, startup stops.
   - The working window is 272K tokens, below the point where long inputs cost double.
 - **Budgets.** Limits are runaway backstops and never limit an investigation. None of the references stops a run on cost in dollars.
-  - **The backstops.** A run has two: 100 model requests and a token count. A run has no time limit: Codex and Pi have none, Hermes's is off by default, and OpenClaw's is 48 hours. Tool-result presentation is bounded as described in [Large results](#large-results).
+  - **The backstops.** A run has two: 100 model requests and a token count. A run has no time limit: Codex and Pi have none, Hermes's is off by default, and OpenClaw's is 48 hours. A stuck run is caught by the tool deadline and by recovery of a run that stops moving, not by a clock. Tool-result presentation is bounded as described in [Large results](#large-results).
   - **Tokens** are output plus uncached input, the way Codex counts its budget. Cached input is cheap and doesn't count.
   - **Owner.** The harness keeps the shared backstops in one place.
   - **Across attempts.** The counts continue across a run's attempts. Resume and Try again start a new run and reset them, and so does a new message on held or failed work.
@@ -372,6 +375,7 @@ Reply text:
   - Automatic recovery stops after 5 failed attempts, as Pi stops at its retry maximum. The work stays resumable through Try again.
   - A steer or a correctable tool error doesn't count as a failed attempt.
   - The harness decides what counts as a failed attempt for both products. Requested cancellation means interrupted, even when another error arrives with it. After a run returns an error, hosting settles the attempt using the harness classification.
+  - A run that stops moving is recovered. The harness marks each step it reaches: a saved event, a piece of the model's stream, a check during a wait. If a run marks nothing for 600 seconds, its worker cancels it and stops renewing its claim, and the work recovers as it does when a worker is lost. Hermes stops renewing its lease the same way after 600 seconds, and OpenClaw aborts a session that stalls.
 - **Caching.**
   - Each request runs in this order: system prompt, tools, the job's start, then the conversation, which only grows.
   - The cache key is per scope, made only from scope IDs and never from message text, as Codex keys by session.

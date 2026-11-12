@@ -593,6 +593,38 @@ fn keys(scope: &Scope) -> (String, String, String, String) {
     )
 }
 
+/// The conversation's input revision, which a chat claim is checked against.
+/// The write fence adds its lock.
+fn chat_revision_query(scope: &Scope) -> sea_orm::Select<conversation::Entity> {
+    conversation::Entity::find_by_id(keys(scope))
+        .select_only()
+        .column(conversation::Column::Revision)
+}
+
+/// Runs [`chat_revision_query`]. A missing conversation or an unreadable
+/// revision is an error.
+async fn chat_revision(
+    db: &impl ConnectionTrait,
+    query: sea_orm::Select<conversation::Entity>,
+) -> Result<u64, DbErr> {
+    let revision = query
+        .into_tuple::<i64>()
+        .one(db)
+        .await?
+        .ok_or_else(|| error("conversation not found"))?;
+    u64::try_from(revision).map_err(conversion_error("saved conversation revision", "u64"))
+}
+
+/// The chat's last attempt: its id and status. The write fence adds its expiry.
+fn last_chat_attempt_query(scope: &Scope) -> sea_orm::Select<entities::chat_attempt::Entity> {
+    use entities::chat_attempt::Column as A;
+    entities::chat_attempt::Entity::find()
+        .select_only()
+        .columns([A::Id, A::Status])
+        .filter(control::chat_scope(scope))
+        .order_by_desc(A::Position)
+}
+
 fn conversation_model(
     scope: &Scope,
     state: &Conversation,
@@ -921,14 +953,12 @@ impl Store {
 
     fn current(state: &Conversation, claim: &Claim, now: i64) -> control::Currentness {
         control::current(
-            state.status == WorkStatus::Active,
-            state.revision,
             state
                 .attempts
                 .last()
                 .map(|a| (a.id.as_str(), a.status, a.expires)),
             &claim.attempt,
-            claim.revision,
+            state.revision == claim.revision,
             now,
         )
     }
@@ -993,60 +1023,49 @@ impl Store {
         Ok(current.is_current())
     }
 
+    /// The write fence's read: the rows [`Store::assert_current`] reads, under
+    /// the conversation lock, plus the last attempt's expiry and the clock.
     async fn lock_claim(
         tx: &sea_orm::DatabaseTransaction,
         claim: &Claim,
     ) -> Result<control::Currentness, DbErr> {
-        let (status, revision) = conversation::Entity::find_by_id(keys(&claim.scope))
-            .select_only()
-            .columns([conversation::Column::Status, conversation::Column::Revision])
-            .lock_exclusive()
-            .into_tuple::<(WorkStatus, i64)>()
-            .one(tx)
-            .await?
-            .ok_or_else(|| error("conversation not found"))?;
-        use entities::chat_attempt::Column as A;
-        let attempt = entities::chat_attempt::Entity::find()
-            .select_only()
-            .columns([A::Id, A::Status, A::Expires])
-            .filter(control::chat_scope(&claim.scope))
-            .order_by_desc(A::Position)
+        let revision =
+            chat_revision(tx, chat_revision_query(&claim.scope).lock_exclusive()).await?;
+        let attempt = last_chat_attempt_query(&claim.scope)
+            .column(entities::chat_attempt::Column::Expires)
             .into_tuple::<(String, AttemptStatus, i64)>()
             .one(tx)
             .await?;
-        let revision = u64::try_from(revision)
-            .map_err(conversion_error("saved conversation revision", "u64"))?;
         Ok(control::current(
-            status == WorkStatus::Active,
-            revision,
             attempt
                 .as_ref()
                 .map(|(id, status, expires)| (id.as_str(), *status, *expires)),
             &claim.attempt,
-            claim.revision,
+            revision == claim.revision,
             now(tx).await?,
         ))
     }
 
-    /// Read only whether the accepted work is still active at this input revision.
-    /// Attempt ownership is checked by hosting renewal and mutation fences.
+    /// Reads, without a lock or the clock, what the saved state says to this
+    /// attempt. An attempt that was ended, by Stop or by settlement, is
+    /// [`engine::Withdrawn`], even when a newer message waits. A running
+    /// attempt with a newer message is [`engine::Superseded`]. An attempt that
+    /// another attempt replaced has lost ownership. Lease expiry is checked by
+    /// hosting renewal and the write fences. A missing conversation or an
+    /// unreadable revision is an error.
     pub async fn assert_current(&self, claim: &Claim) -> Result<(), engine::Cause> {
         claim.scope.validate()?;
-        let state = conversation::Entity::find_by_id(keys(&claim.scope))
-            .select_only()
-            .columns([conversation::Column::Status, conversation::Column::Revision])
-            .into_tuple::<(WorkStatus, i64)>()
+        let revision = chat_revision(&self.db, chat_revision_query(&claim.scope)).await?;
+        let attempt = last_chat_attempt_query(&claim.scope)
+            .into_tuple::<(String, AttemptStatus)>()
             .one(&self.db)
             .await?;
-        if state.is_some_and(|(status, revision)| {
-            u64::try_from(revision).is_ok_and(|revision| {
-                control::input_current(status == WorkStatus::Active, revision, claim.revision)
-            })
-        }) {
-            Ok(())
-        } else {
-            Err(engine::Superseded.into())
-        }
+        control::attempt_currency(
+            attempt.as_ref().map(|(id, status)| (id.as_str(), *status)),
+            &claim.attempt,
+            revision == claim.revision,
+        )
+        .require()
     }
 
     /// Hosting retains ownership while the attempt executes or drains its calls.

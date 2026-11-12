@@ -119,7 +119,8 @@ struct Owner {
     finish_outcomes: VecDeque<Finish>,
     revoke_after_start: bool,
     currency: Currency,
-    cancel_on_tool: Option<Cancellation>,
+    /// The next call that runs steers the attempt with new input, then returns.
+    steer_on_tool: bool,
     finished: usize,
     partial: Vec<LimitBackstop>,
     /// The next tool call fails with this error.
@@ -224,11 +225,10 @@ impl Product for Owner {
             self.executed += usize::from(matches!(&outcome, ToolOutcome::Returned(_)));
             return Box::pin(std::future::ready(Ok(outcome)));
         }
-        if let Some(cancel) = &self.cancel_on_tool {
+        if std::mem::take(&mut self.steer_on_tool) {
             self.executed += 1;
-            let cancel = cancel.clone();
+            self.currency = Currency::Superseded;
             return Box::pin(async move {
-                cancel.cancel();
                 tokio::task::yield_now().await;
                 Ok(ToolOutcome::Returned("saved after steering".into()))
             });
@@ -1917,13 +1917,17 @@ async fn uncertain_effect_is_never_replayed() {
         call("unstarted-write", "save", "{}"),
     ])]);
     let mut owner = Owner {
-        cancel_on_tool: Some(cancel.clone()),
+        steer_on_tool: true,
         ..Owner::default()
     };
     let error = fresh(request(vec![]), "attempt")
         .run(&mut provider, &mut owner, limits(), &cancel)
         .await
         .unwrap_err();
+    assert!(
+        matches!(&error, Failure::Host(cause) if cause.is::<Superseded>()),
+        "{error}"
+    );
     assert_eq!(owner.executed, 1);
     assert_eq!(
         owner
@@ -1978,6 +1982,7 @@ async fn uncertain_effect_is_never_replayed() {
         )
         .unwrap();
     let mut successor = Script::new(vec![turn(vec![text("Answer after recovery")])]);
+    owner.currency = Currency::Current;
     recovered
         .run(
             &mut successor,
@@ -2014,7 +2019,6 @@ async fn uncertain_effect_is_never_replayed() {
     assert_eq!(starts("c"), 1, "a started call is never admitted again");
     assert_eq!(starts("unstarted-write"), 0);
     assert_eq!(owner.executed, 1);
-    assert!(error.to_string().contains("cancelled"), "{error}");
     assert!(
         !owner
             .events

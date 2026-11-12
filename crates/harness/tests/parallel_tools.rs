@@ -76,6 +76,18 @@ struct Saved {
     high_water: usize,
     writes: usize,
     order: Vec<String>,
+    /// Set when the attempt stops being current.
+    currency: Option<Loss>,
+    /// Saving this call's result fails, not retryably.
+    unsaved_result: Option<&'static str>,
+}
+/// Why the attempt stopped being current, as the owner's check reports it.
+#[derive(Clone, Copy)]
+enum Loss {
+    /// New input replaced the direction.
+    Superseded,
+    /// The work no longer wants this attempt.
+    Withdrawn,
 }
 #[derive(Default)]
 struct Admission {
@@ -135,8 +147,13 @@ impl Product for Owner {
         matches!(name, "read" | "fail")
     }
     async fn assert_current(&mut self) -> Result<(), Cause> {
-        self.saved.lock().unwrap().order.push("authority".into());
-        Ok(())
+        let mut saved = self.saved.lock().unwrap();
+        saved.order.push("authority".into());
+        match saved.currency {
+            None => Ok(()),
+            Some(Loss::Superseded) => Err(Box::new(Superseded)),
+            Some(Loss::Withdrawn) => Err(Box::new(Withdrawn)),
+        }
     }
     async fn persist(&mut self, event: Event) -> Result<(), Cause> {
         let _write = if matches!(event.kind, EventKind::ToolReturned { .. }) {
@@ -157,6 +174,11 @@ impl Product for Owner {
             }
             if let EventKind::ToolStarted(call) = &event.kind {
                 saved.order.push(format!("admit:{}", call.id));
+            }
+            if let EventKind::ToolReturned { call_id, .. } = &event.kind
+                && saved.unsaved_result == Some(call_id.as_str())
+            {
+                return Err("result not acknowledged".into());
             }
             if let EventKind::ToolReturned { call_id, .. } = &event.kind {
                 saved.order.push(format!("returned:{call_id}"));
@@ -200,6 +222,16 @@ impl Product for Owner {
             return Box::pin(async move {
                 searched.notified().await;
                 Ok(ToolOutcome::Returned(json!({"id":call.id}).to_string()))
+            });
+        }
+        if args["hang"] == true {
+            return Box::pin(async move {
+                saved
+                    .lock()
+                    .unwrap()
+                    .order
+                    .push(format!("start:{}", call.id));
+                std::future::pending().await
             });
         }
         Box::pin(async move {
@@ -500,7 +532,7 @@ async fn reads_release_product_locks_while_receipts_are_being_saved() {
 }
 
 #[tokio::test]
-async fn cancelling_committed_admission_keeps_the_drained_read() {
+async fn cancelling_committed_admission_keeps_its_record_and_runs_nothing_more() {
     let admission = Arc::new(Admission::default());
     let mut owner = Owner {
         admission: Some(admission.clone()),
@@ -523,12 +555,18 @@ async fn cancelling_committed_admission_keeps_the_drained_read() {
     let saved = owner.saved.lock().unwrap();
     assert!(
         saved.events.iter().any(|event| {
-            matches!(&event.kind, EventKind::ToolReturned { call_id, .. } if call_id == "running")
+            matches!(&event.kind, EventKind::ToolStarted(call) if call.id == "pending")
         }),
-        "cancellation during committed admission lost the drained read"
+        "cancellation cut the committed admission"
     );
     assert!(matches!(result, Err(Failure::Cancelled)));
     assert!(!saved.calls.contains_key("pending"));
+    assert!(
+        !saved.events.iter().any(|event| {
+            matches!(&event.kind, EventKind::ToolReturned { call_id, .. } if call_id == "running")
+        }),
+        "Stop does not wait for a running call"
+    );
 }
 
 #[tokio::test]
@@ -598,4 +636,237 @@ async fn a_search_in_a_batch_never_includes_a_siblings_result_whatever_order_the
             "only results saved before the search's turn started: {found}"
         );
     }
+}
+
+fn hang(id: &str, name: &str) -> Item {
+    Item::Call(Invocation {
+        id: id.into(),
+        name: name.into(),
+        arguments: json!({"hang":true}).to_string(),
+    })
+}
+
+/// The model-facing result of one call in a request.
+fn result_of(request: &Request, id: &str) -> Value {
+    request
+        .items
+        .iter()
+        .find_map(|item| match item {
+            Item::MaterializedResult { call_id, output } if call_id == id => {
+                Some(serde_json::from_str(output).unwrap())
+            }
+            _ => None,
+        })
+        .unwrap_or_else(|| panic!("no result for {id}"))
+}
+
+/// Runs one turn of calls to completion, or fails after an hour of virtual time.
+async fn run_calls(owner: &mut Owner, calls: Vec<Item>) -> (Turn, Script) {
+    let mut provider = Script {
+        next: Some(calls),
+        ..Script::default()
+    };
+    let answer = tokio::time::timeout(
+        Duration::from_secs(3600),
+        recover::work(request().freeze().unwrap(), "deadline", &[], 0)
+            .unwrap()
+            .run(
+                &mut provider,
+                owner,
+                RunLimits::default(),
+                &Cancellation::default(),
+            ),
+    )
+    .await
+    .expect("the run ends although a call never returns")
+    .expect("a call that times out does not end the run");
+    (answer, provider)
+}
+
+#[tokio::test(start_paused = true)]
+async fn a_read_that_never_returns_times_out_at_its_deadline_and_the_run_continues() {
+    let mut owner = Owner::default();
+    let started = tokio::time::Instant::now();
+    let (answer, provider) = run_calls(&mut owner, vec![hang("stuck", "read")]).await;
+    assert_eq!(answer.text(), "Done");
+    assert_eq!(provider.requests.len(), 2);
+    assert_eq!(
+        started.elapsed().as_secs(),
+        300,
+        "the deadline is 300 seconds"
+    );
+    assert_eq!(
+        result_of(&provider.requests[1], "stuck"),
+        json!({
+            "executed": false,
+            "error": "This call timed out before it finished. You can try it again."
+        })
+    );
+    let saved = owner.saved.lock().unwrap();
+    assert!(saved.events.iter().any(|event| matches!(
+        &event.kind,
+        EventKind::ToolReturned { call_id, .. } if call_id == "stuck"
+    )));
+}
+
+#[tokio::test(start_paused = true)]
+async fn an_effect_that_never_returns_times_out_with_an_unknown_outcome() {
+    let mut owner = Owner::default();
+    let (answer, provider) = run_calls(&mut owner, vec![hang("stuck", "write")]).await;
+    assert_eq!(answer.text(), "Done");
+    assert_eq!(
+        result_of(&provider.requests[1], "stuck"),
+        json!({
+            "outcome": "unknown",
+            "error": "This call timed out before it finished and its outcome is unknown. Check the current state before you repeat it."
+        })
+    );
+}
+
+/// Starts one hanging read, applies `interrupt` once it has started, and
+/// returns the run's result with the virtual time from the interrupt to the end.
+async fn interrupt_a_running_call(
+    owner: &mut Owner,
+    calls: Vec<Item>,
+    cancel: &Cancellation,
+    interrupt: impl FnOnce(),
+) -> (Result<Turn, Failure>, Duration) {
+    let saved = owner.saved.clone();
+    let mut provider = Script {
+        next: Some(calls),
+        ..Script::default()
+    };
+    let run = recover::work(request().freeze().unwrap(), "interrupted", &[], 0)
+        .unwrap()
+        .run(&mut provider, owner, RunLimits::default(), cancel);
+    let interrupted = async {
+        while !saved
+            .lock()
+            .unwrap()
+            .order
+            .iter()
+            .any(|entry| entry.starts_with("start:"))
+        {
+            tokio::time::sleep(Duration::from_millis(10)).await;
+        }
+        interrupt();
+        tokio::time::Instant::now()
+    };
+    let (result, at) = tokio::time::timeout(Duration::from_secs(3600), async {
+        tokio::join!(run, interrupted)
+    })
+    .await
+    .expect("the run ends");
+    (result, at.elapsed())
+}
+
+/// Whether the saved record has this event for the call.
+fn saved(owner: &Owner, kind: &str, id: &str) -> bool {
+    owner
+        .saved
+        .lock()
+        .unwrap()
+        .events
+        .iter()
+        .any(|event| match &event.kind {
+            EventKind::ToolStarted(call) => kind == "started" && call.id == id,
+            EventKind::ToolReturned { call_id, .. } => kind == "returned" && call_id == id,
+            _ => false,
+        })
+}
+
+#[tokio::test(start_paused = true)]
+async fn cancellation_stops_waiting_for_a_running_call() {
+    let mut owner = Owner::default();
+    let cancel = Cancellation::default();
+    let (result, waited) =
+        interrupt_a_running_call(&mut owner, vec![hang("stuck", "read")], &cancel, || {
+            cancel.cancel()
+        })
+        .await;
+    let error = result.unwrap_err();
+    assert!(matches!(error, Failure::Cancelled), "{error}");
+    assert_eq!(
+        AttemptFailure::from_error(&error, &cancel),
+        AttemptFailure::Interrupted
+    );
+    assert!(waited < Duration::from_secs(1), "waited {waited:?}");
+    assert!(saved(&owner, "started", "stuck"));
+    assert!(!saved(&owner, "returned", "stuck"));
+}
+
+#[tokio::test(start_paused = true)]
+async fn withdrawn_work_stops_waiting_for_a_running_call() {
+    let mut owner = Owner::default();
+    let cancel = Cancellation::default();
+    let currency = owner.saved.clone();
+    let (result, waited) =
+        interrupt_a_running_call(&mut owner, vec![hang("stuck", "read")], &cancel, || {
+            currency.lock().unwrap().currency = Some(Loss::Withdrawn);
+        })
+        .await;
+    let error = result.unwrap_err();
+    assert!(
+        matches!(&error, Failure::Host(cause) if cause.is::<Withdrawn>()),
+        "{error}"
+    );
+    assert_eq!(
+        AttemptFailure::from_error(&error, &cancel),
+        AttemptFailure::Interrupted
+    );
+    assert!(waited <= Duration::from_secs(1), "waited {waited:?}");
+    assert!(saved(&owner, "started", "stuck"));
+    assert!(!saved(&owner, "returned", "stuck"));
+}
+
+#[tokio::test(start_paused = true)]
+async fn new_input_lets_a_running_call_finish_and_keeps_its_result() {
+    let mut owner = Owner::default();
+    let cancel = Cancellation::default();
+    let currency = owner.saved.clone();
+    let (result, waited) = interrupt_a_running_call(
+        &mut owner,
+        vec![call("slow", "read", 30_000), call("later", "write", 0)],
+        &cancel,
+        || currency.lock().unwrap().currency = Some(Loss::Superseded),
+    )
+    .await;
+    let error = result.unwrap_err();
+    assert!(
+        matches!(&error, Failure::Host(cause) if cause.is::<Superseded>()),
+        "{error}"
+    );
+    assert!(waited >= Duration::from_secs(29), "waited {waited:?}");
+    assert!(saved(&owner, "returned", "slow"));
+    assert!(!saved(&owner, "started", "later"), "admission closed");
+}
+
+#[tokio::test(start_paused = true)]
+async fn a_failed_result_save_ends_the_run_without_waiting_for_a_running_read() {
+    let mut owner = Owner::default();
+    owner.saved.lock().unwrap().unsaved_result = Some("fast");
+    let mut provider = Script {
+        next: Some(vec![call("fast", "read", 10), hang("stuck", "read")]),
+        ..Script::default()
+    };
+    let started = tokio::time::Instant::now();
+    let error = tokio::time::timeout(
+        Duration::from_secs(3600),
+        recover::work(request().freeze().unwrap(), "unsaved", &[], 0)
+            .unwrap()
+            .run(
+                &mut provider,
+                &mut owner,
+                RunLimits::default(),
+                &Cancellation::default(),
+            ),
+    )
+    .await
+    .expect("the run ends")
+    .unwrap_err();
+    assert!(matches!(error, Failure::Host(_)), "{error}");
+    let waited = started.elapsed();
+    assert!(waited < Duration::from_secs(1), "waited {waited:?}");
+    assert!(saved(&owner, "started", "stuck"));
+    assert!(!saved(&owner, "returned", "stuck"));
 }

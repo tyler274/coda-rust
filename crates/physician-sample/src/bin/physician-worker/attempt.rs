@@ -40,6 +40,8 @@ pub(super) enum Failure {
     Revision,
     /// A rehearsal turn's `[fail:K]` marker failed this attempt on purpose.
     Rehearsed,
+    /// The run stopped moving and hosting dropped it unsettled.
+    Lost,
 }
 
 impl Failure {
@@ -51,6 +53,7 @@ impl Failure {
             Self::RetryPersist => "retry_persist",
             Self::Revision => "revision",
             Self::Rehearsed => "rehearsed",
+            Self::Lost => "lost",
         }
     }
 
@@ -64,6 +67,7 @@ impl Failure {
             Self::RetryPersist => "failed attempt not returned to pending",
             Self::Revision => "reply revision failed",
             Self::Rehearsed => "rehearsed attempt failure",
+            Self::Lost => "run stopped moving and was dropped",
         }
     }
 }
@@ -432,6 +436,7 @@ mod tests {
             Failure::RetryPersist,
             Failure::Revision,
             Failure::Rehearsed,
+            Failure::Lost,
         ]
         .map(Failure::as_str);
         assert_eq!(
@@ -442,7 +447,8 @@ mod tests {
                 "claim",
                 "retry_persist",
                 "revision",
-                "rehearsed"
+                "rehearsed",
+                "lost"
             ]
         );
         let outcomes = [

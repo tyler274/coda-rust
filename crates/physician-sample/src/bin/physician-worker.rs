@@ -39,6 +39,9 @@ use tracing::Instrument;
 // A dead replica's work waits at most 540 seconds for its ownership to expire.
 // Hosting renews every fifth of that duration, independently of the run clock.
 const LEASE_SECONDS: i64 = 540;
+// A run that marks no step for 600 seconds has stopped moving. Hermes stops
+// renewing its session lease after the same 600 seconds without activity.
+const STALL: std::time::Duration = std::time::Duration::from_secs(600);
 // A Pub/Sub wake carries identities, not clinical payloads. Bound request buffering.
 const BODY_LIMIT: usize = 64 * 1024;
 
@@ -235,8 +238,9 @@ async fn chat_attempt(worker: &Worker, delivery: &Delivery, span: &tracing::Span
         }
     };
     let claimed = host.claim.clone();
-    let result = while_owned(
+    let hosted = while_owned(
         claimed.lease,
+        STALL,
         &cancel,
         || worker.store.renew_claim(&claimed),
         host.run(&mut provider, RunLimits::default(), &cancel)
@@ -244,6 +248,10 @@ async fn chat_attempt(worker: &Worker, delivery: &Delivery, span: &tracing::Span
     )
     .await;
     record_chat_usage(&worker.store, &host.claim, &generation).await;
+    let result = match hosted {
+        Hosted::Returned(result) => result,
+        Hosted::Lost => return lost(span, CHAT_JOB, &host.claim.attempt),
+    };
     match result {
         Ok(()) => {
             let output = message_text(&worker.store, &host.claim.scope, "assistant").await;
@@ -289,13 +297,27 @@ async fn record_chat_usage(store: &Store, claim: &Claim, generation: &tracing::S
     }
 }
 
-/// Hosting keeps ownership independently of the model loop and every product callback.
+/// How hosting's wait for a run ended.
+enum Hosted<T> {
+    /// The run returned this result while hosting waited for it.
+    Returned(Result<T, harness::engine::Failure>),
+    /// Hosting cancelled the run, stopped renewing its claim and dropped it,
+    /// because the run stopped moving. Nothing is settled. The lease expires
+    /// and the next claim ends the attempt as abandoned, as when a worker is lost.
+    Lost,
+}
+
+/// Hosting keeps ownership independently of the model loop and every product
+/// callback, while the run keeps marking steps. A run that marks nothing for
+/// `stall` is cancelled and dropped, and its claim is no longer renewed. After
+/// a renewal fails, the cancelled run is waited for under the same rule.
 async fn while_owned<T, E, F: std::future::Future<Output = Result<(), E>>>(
     lease: local_product::runtime::Lease,
+    stall: std::time::Duration,
     cancel: &Cancellation,
     mut renew: impl FnMut() -> F,
     work: impl std::future::Future<Output = Result<T, harness::engine::Failure>>,
-) -> Result<T, harness::engine::Failure>
+) -> Hosted<T>
 where
     E: std::error::Error + Send + Sync + 'static,
 {
@@ -310,17 +332,53 @@ where
             }
         }
     };
+    let stalled = async {
+        loop {
+            let idle = cancel.since_last_step();
+            let Some(left) = stall.checked_sub(idle).filter(|left| !left.is_zero()) else {
+                break idle;
+            };
+            tokio::time::sleep(left).await;
+        }
+    };
     tokio::pin!(work);
     tokio::pin!(renewal);
+    tokio::pin!(stalled);
     tokio::select! {
         biased;
         error = &mut renewal => {
             tracing::warn!(error = %error, "physician attempt ownership could not be renewed");
             cancel.cancel();
-            work.await
+            tokio::select! {
+                biased;
+                result = &mut work => Hosted::Returned(result),
+                idle = &mut stalled => {
+                    tracing::error!(idle_seconds = idle.as_secs(), "physician attempt stopped moving");
+                    Hosted::Lost
+                }
+            }
         }
-        result = &mut work => result,
+        idle = &mut stalled => {
+            tracing::error!(idle_seconds = idle.as_secs(), "physician attempt stopped moving");
+            cancel.cancel();
+            Hosted::Lost
+        }
+        result = &mut work => Hosted::Returned(result),
     }
+}
+
+/// A run hosting dropped settles nothing. Refusing the delivery is what a lost
+/// worker leaves: a redelivery finds the claim still live and acknowledges,
+/// and after the lease expires the recovery sweep republishes the input.
+fn lost(span: &tracing::Span, job: &'static str, attempt: &str) -> StatusCode {
+    attempt::finish(
+        span,
+        job,
+        Some(attempt),
+        Outcome::Retry,
+        Some(Failure::Lost),
+    );
+    StatusCode::INTERNAL_SERVER_ERROR
 }
 
 /// The spans and the primary failure class of an attempt being settled.
@@ -854,8 +912,9 @@ mod tests {
     #[tokio::test]
     async fn successful_work_keeps_renewing_its_ownership() {
         let renewals = std::sync::atomic::AtomicUsize::new(0);
-        let result = while_owned(
+        let hosted = while_owned(
             local_product::runtime::Lease::new(1).unwrap(),
+            STALL,
             &Cancellation::default(),
             || async {
                 renewals.fetch_add(1, std::sync::atomic::Ordering::SeqCst);
@@ -866,9 +925,11 @@ mod tests {
                 Ok(42)
             },
         )
-        .await
-        .unwrap();
-        assert_eq!(result, 42);
+        .await;
+        let Hosted::Returned(result) = hosted else {
+            panic!("work that returns is never dropped");
+        };
+        assert_eq!(result.unwrap(), 42);
         assert!(renewals.load(std::sync::atomic::Ordering::SeqCst) >= 5);
     }
 
@@ -876,8 +937,9 @@ mod tests {
     async fn renewal_failure_preserves_work_errors_and_classifies_interruption() {
         for other_error in [false, true] {
             let cancel = Cancellation::default();
-            let result: Result<(), _> = while_owned(
+            let hosted: Hosted<()> = while_owned(
                 local_product::runtime::Lease::new(1).unwrap(),
+                STALL,
                 &cancel,
                 || async {
                     Err(sea_orm::DbErr::Custom(
@@ -898,6 +960,9 @@ mod tests {
                 },
             )
             .await;
+            let Hosted::Returned(result) = hosted else {
+                panic!("work that returns after cancellation is not dropped");
+            };
             let error = result.unwrap_err();
             assert_eq!(
                 matches!(error, harness::engine::Failure::Host(_)),
@@ -910,6 +975,204 @@ mod tests {
                 "renewal loss must not charge a failed attempt"
             );
         }
+    }
+
+    /// Counts each renewal; every one succeeds.
+    fn counted(
+        renewals: &std::sync::atomic::AtomicUsize,
+    ) -> impl FnMut() -> std::future::Ready<Result<(), std::io::Error>> + '_ {
+        || {
+            renewals.fetch_add(1, std::sync::atomic::Ordering::SeqCst);
+            std::future::ready(Ok(()))
+        }
+    }
+
+    #[tokio::test(start_paused = true)]
+    async fn a_run_that_stops_moving_is_cancelled_and_its_claim_is_no_longer_renewed() {
+        let renewals = std::sync::atomic::AtomicUsize::new(0);
+        let cancel = Cancellation::default();
+        let started = tokio::time::Instant::now();
+        let hosted: Hosted<()> = tokio::time::timeout(
+            Duration::from_secs(3600),
+            while_owned(
+                local_product::runtime::Lease::new(LEASE_SECONDS).unwrap(),
+                STALL,
+                &cancel,
+                counted(&renewals),
+                std::future::pending(),
+            ),
+        )
+        .await
+        .expect("hosting stops waiting for a run that stopped moving");
+        assert!(matches!(hosted, Hosted::Lost));
+        assert!(cancel.is_cancelled());
+        assert_eq!(started.elapsed(), STALL);
+        assert_eq!(
+            renewals.load(std::sync::atomic::Ordering::SeqCst),
+            5,
+            "renewed every 108 seconds until the stall at 600 seconds, then never"
+        );
+    }
+
+    #[tokio::test(start_paused = true)]
+    async fn a_wedged_run_is_dropped_after_renewal_fails() {
+        let cancel = Cancellation::default();
+        let started = tokio::time::Instant::now();
+        let hosted: Hosted<()> = tokio::time::timeout(
+            Duration::from_secs(3600),
+            while_owned(
+                local_product::runtime::Lease::new(LEASE_SECONDS).unwrap(),
+                STALL,
+                &cancel,
+                || async {
+                    Err(sea_orm::DbErr::Custom(
+                        "renewal database unavailable".into(),
+                    ))
+                },
+                std::future::pending(),
+            ),
+        )
+        .await
+        .expect("hosting stops waiting for a wedged run after renewal fails");
+        assert!(matches!(hosted, Hosted::Lost));
+        assert!(cancel.is_cancelled());
+        assert_eq!(
+            started.elapsed(),
+            STALL,
+            "the cancelled run is dropped at the stall, 600 seconds after its last step"
+        );
+    }
+
+    /// A model that thinks for 15 minutes before it answers.
+    struct SlowModel;
+    impl Provider for SlowModel {
+        async fn exchange(
+            &mut self,
+            _: &harness::engine::recipe::Request,
+            _: &Cancellation,
+            _: &RunLimits,
+            _: &mut dyn harness::engine::recipe::Observer,
+        ) -> Result<harness::engine::Turn, harness::engine::Cause> {
+            tokio::time::sleep(Duration::from_secs(900)).await;
+            Ok(harness::engine::Turn {
+                items: vec![harness::engine::Item::assistant("Done")],
+                receipt: json!({}),
+                usage: harness::engine::recipe::Usage::default(),
+            })
+        }
+    }
+
+    /// Accepts every step of one chat run.
+    struct OpenWork;
+    #[async_trait::async_trait]
+    impl harness::engine::Product for OpenWork {
+        fn read_result(&mut self, _: &str) -> harness::engine::recipe::ToolFuture<Option<String>> {
+            Box::pin(async { Ok(None) })
+        }
+        async fn finish_partial(
+            &mut self,
+            _: &harness::engine::Turn,
+            _: &[harness::engine::LimitBackstop],
+        ) -> Result<(), harness::engine::Cause> {
+            Err("this run has no partial result".into())
+        }
+        async fn window_seed(
+            &mut self,
+        ) -> Result<harness::engine::WindowSeed, harness::engine::Cause> {
+            Err("this run has no working windows".into())
+        }
+        async fn assert_current(&mut self) -> Result<(), harness::engine::Cause> {
+            Ok(())
+        }
+        async fn message_sources(
+            &mut self,
+        ) -> Result<Option<Vec<harness::engine::ProductMessage>>, harness::engine::Cause> {
+            Ok(None)
+        }
+        async fn admit_binding(
+            &mut self,
+            _: &harness::engine::recipe::RequestBinding,
+        ) -> Result<(), harness::engine::Cause> {
+            Ok(())
+        }
+        async fn persist(
+            &mut self,
+            _: harness::engine::Event,
+        ) -> Result<(), harness::engine::Cause> {
+            Ok(())
+        }
+        fn execute(
+            &mut self,
+            _: &harness::engine::Invocation,
+            _: Value,
+        ) -> harness::engine::recipe::ToolFuture {
+            Box::pin(async { Err("this run offers no tools".into()) })
+        }
+        async fn finish(
+            &mut self,
+            _: &harness::engine::Turn,
+        ) -> Result<harness::engine::recipe::Finish, harness::engine::Cause> {
+            Ok(harness::engine::recipe::Finish::Committed)
+        }
+    }
+
+    #[tokio::test(start_paused = true)]
+    async fn a_run_that_keeps_marking_steps_keeps_its_claim_past_the_stall_limit() {
+        use harness::engine::recovery;
+        let renewals = std::sync::atomic::AtomicUsize::new(0);
+        let cancel = Cancellation::default();
+        let work = harness::engine::recipe::Request {
+            cache_key: None,
+            model: "scripted".into(),
+            context_window_tokens: 100_000,
+            max_input_tokens: 100_000,
+            options: Value::Null,
+            instructions: "Answer".into(),
+            items: vec![harness::engine::Item::Message {
+                role: "user".into(),
+                text: "Hello".into(),
+            }],
+            tools: vec![],
+        }
+        .freeze()
+        .unwrap()
+        .recover(
+            "attempt",
+            recovery::Records {
+                events: Vec::new(),
+                allowance_after: 0,
+            },
+            recovery::Messages {
+                sources: &[],
+                partial: None,
+            },
+            recovery::Inputs::default(),
+        )
+        .unwrap();
+        let mut model = SlowModel;
+        let mut product = OpenWork;
+        let hosted = tokio::time::timeout(
+            Duration::from_secs(3600),
+            while_owned(
+                local_product::runtime::Lease::new(LEASE_SECONDS).unwrap(),
+                STALL,
+                &cancel,
+                counted(&renewals),
+                work.run(&mut model, &mut product, RunLimits::default(), &cancel),
+            ),
+        )
+        .await
+        .expect("the run ends");
+        let Hosted::Returned(result) = hosted else {
+            panic!("a run that keeps marking steps is never dropped");
+        };
+        assert_eq!(result.unwrap().text(), "Done");
+        assert!(!cancel.is_cancelled());
+        assert_eq!(
+            renewals.load(std::sync::atomic::Ordering::SeqCst),
+            8,
+            "renewed every 108 seconds through 900 seconds"
+        );
     }
 
     #[async_trait::async_trait]

@@ -1109,7 +1109,12 @@ async fn currency_is_read_only_and_renewal_touches_only_the_current_revision_att
         "current lease was not renewed"
     );
     assert!(store.renew_revision_claim(&old).await.is_err());
-    store.assert_revision_current(&old).await.unwrap();
+    let lost = store.assert_revision_current(&old).await.unwrap_err();
+    assert_eq!(
+        engine::AttemptFailure::from_cause(lost.as_ref()),
+        engine::AttemptFailure::Failed,
+        "a replaced attempt has lost ownership: {lost}"
+    );
     assert_eq!(
         store
             .settle_revision_attempt(&old, engine::AttemptFailure::Failed)

@@ -47,12 +47,16 @@ impl Lease {
     }
 }
 
-/// Input currency and attempt ownership are distinct facts. Only changed input
-/// is supersession; losing an otherwise current lease is an operational failure.
+/// What the saved state says to one attempt. An ended attempt and new input
+/// are separate facts: an attempt that was ended is withdrawn, even when
+/// newer input waits, and a running attempt whose input changed is
+/// superseded. An attempt that no longer holds the work, or whose lease ran
+/// out at a write fence, is unowned, which is an operational failure.
 #[derive(Clone, Copy)]
 pub(super) enum Currentness {
     Current,
     Superseded,
+    Withdrawn,
     Unowned,
 }
 impl Currentness {
@@ -63,36 +67,61 @@ impl Currentness {
         match self {
             Self::Current => Ok(()),
             Self::Superseded => Err(super::engine::Superseded.into()),
+            Self::Withdrawn => Err(super::engine::Withdrawn.into()),
             Self::Unowned => Err(error("attempt ownership lost").into()),
         }
     }
 }
 
-/// `work_active` says whether the chat's or draft's work status is active.
-pub(super) fn input_current(work_active: bool, revision: u64, expected_revision: u64) -> bool {
-    work_active && revision == expected_revision
+/// What the saved state says to the claimed attempt. `last` is the last
+/// saved attempt the caller read: for chat, the conversation's last attempt,
+/// whatever work it ran; for a reply revision, the last attempt for one
+/// instruction. When that attempt is another one, or there is none, the
+/// claimed attempt has lost the work. An attempt that was ended, by Stop, a
+/// saved draft or settlement, is withdrawn, even when newer input waits: the
+/// end wins over new input. A running attempt is current while its input is
+/// the same, and superseded once newer input arrived. The caller decides
+/// whether the input is the same. The work's status is not read.
+pub(super) fn attempt_currency(
+    last: Option<(&str, AttemptStatus)>,
+    claimed: &str,
+    same_input: bool,
+) -> Currentness {
+    let Some((_, status)) = last.filter(|(id, _)| *id == claimed) else {
+        return Currentness::Unowned;
+    };
+    match (status, same_input) {
+        (AttemptStatus::Active, true) => Currentness::Current,
+        (AttemptStatus::Active, false) => Currentness::Superseded,
+        (
+            AttemptStatus::Interrupted
+            | AttemptStatus::Cancelled
+            | AttemptStatus::Failed
+            | AttemptStatus::Held
+            | AttemptStatus::Completed,
+            _,
+        ) => Currentness::Withdrawn,
+    }
 }
 
-/// One currentness predicate for stored controls and hydrated publication views.
-/// Source/session authority is still checked by its product owner.
+/// The write fence: [`attempt_currency`], and a current attempt must still
+/// hold its lease at `now`. Source and session authority is still checked by
+/// its product owner.
 pub(super) fn current(
-    work_active: bool,
-    revision: u64,
-    attempt: Option<(&str, AttemptStatus, i64)>,
-    expected_id: &str,
-    expected_revision: u64,
+    last: Option<(&str, AttemptStatus, i64)>,
+    claimed: &str,
+    same_input: bool,
     now: i64,
 ) -> Currentness {
-    if !input_current(work_active, revision, expected_revision) {
-        return Currentness::Superseded;
+    let currentness = attempt_currency(
+        last.map(|(id, status, _)| (id, status)),
+        claimed,
+        same_input,
+    );
+    if currentness.is_current() && last.is_some_and(|(_, _, expires)| expires <= now) {
+        return Currentness::Unowned;
     }
-    if attempt.is_some_and(|(id, status, expires)| {
-        id == expected_id && status == AttemptStatus::Active && expires > now
-    }) {
-        Currentness::Current
-    } else {
-        Currentness::Unowned
-    }
+    currentness
 }
 
 fn decode<T: serde::de::DeserializeOwned>(state: Value, from: &'static str) -> Result<T, DbErr> {
