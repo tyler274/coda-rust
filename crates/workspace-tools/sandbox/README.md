@@ -18,7 +18,6 @@ services.coda-sandbox = {
   authorizedKeys = [ "ssh-ed25519 AAAA... coda-agent" ];
   memoryHigh = "20G";
   ci.enable = true;
-  ci.tokenFile = "/var/lib/coda-ci/github-token";
 };
 ```
 
@@ -40,7 +39,6 @@ services.coda-sandbox = {
 | `broker.ghFallback` | `false` | Let the broker serve `gh auth token` when no `github-agent` is stored |
 | `broker.keyringPackage` | `pkgs.libsecret` | Provides `secret-tool` for the broker |
 | `ci.enable` | `false` | The Firecracker controller, its timer and the seed unit |
-| `ci.tokenFile` | `null` | Root-only GitHub token for the GitHub queue |
 | `ci.guest`, `ci.workDiskSize`, `ci.marginMiB` | `{ }`, `200G`, `4096` | Guest configuration and sizing |
 | `package` | this flake's | The binary installed on the host and in the container |
 
@@ -80,6 +78,8 @@ The broker ([nix/broker.nix](nix/broker.nix), [src/broker](src/broker)) is `coda
 
 Inside the container, git asks `coda-sandbox credential` for `https://github.com` (remotes written as `git@github.com:` are rewritten), and `gh` and `doppler` are wrappers that fetch their token for that one process, so no token is in the environment of a shell. With no answer, git fails rather than prompting. Anything in the container can ask, so the GitHub token must reach only `coda-rust`. `broker.ghFallback = true` lets the broker serve `gh auth token`, your general token, when no `github-agent` is stored; doctor warns while it is on or after it was used. Revoking a token on GitHub or Doppler is the kill switch.
 
+With `ci.enable`, the broker also listens on `/run/coda-sandbox/ci/broker.sock`, in a directory only you and the `coda-ci` user can enter, and serves the `github-ci` token there to the CI controller's user alone. Each socket answers only for its own tokens: the container cannot ask for the CI token, even on its own socket, and the controller cannot ask for the container's. Each socket serves at most 16 connections at once and gives a caller two seconds to send its request, so a stalled caller on one cannot hold up the other.
+
 The module's polkit rule lets `user` start, stop and restart `container@<name>.service` and the `coda-ci` units without sudo, so doctor's fixes for them are plain `systemctl`.
 
 ### Working in the sandbox from Cursor
@@ -103,15 +103,14 @@ The guest has 8 vCPUs and 12 GiB. A job starts only when the guest plus `ci.marg
 
 To enable it:
 
-1. Create a fine-grained token for `Coda-Health/coda-rust` with **Administration: write** (to register runners) and **Actions: read** (to see the queue), and place it in a root-only file:
+1. Set `ci.enable = true`, then switch.
+2. Create a fine-grained token for `Coda-Health/coda-rust` with **Administration: write** (to register runners) and **Actions: read** (to see the queue), and store it in your keyring, as yourself:
 
    ```bash
-   sudo install -d -m 0700 /var/lib/coda-ci
-   sudo install -m 0400 /dev/stdin /var/lib/coda-ci/github-token   # paste, then Ctrl-D
+   coda-sandbox broker store github-ci   # paste at the hidden prompt, then Enter
    ```
 
-   Without a token only local requests run.
-2. Set `ci.enable = true` and `ci.tokenFile = "/var/lib/coda-ci/github-token"`, then switch. The token reaches the controller as a systemd credential and never enters the guest.
+   The controller asks the token broker for it on each pass and it never enters the guest. Without a token, or while the keyring is locked and the broker holds no cached copy, only local requests run and the controller's journal says why.
 3. Build the seed: `sudo systemctl start coda-ci-seed`. It boots the guest once to pull the pinned image and the runner into a fresh work disk, then makes it `seed/work.img`. Run it again to pick up a new image.
 4. Check a local run: `coda-ci act ~/code/coda/coda-rust ci`.
 5. Send the repository's `ci` job here by setting the Actions variable `CI_JOB_RUNNER=cyrene-coda`. Deleting the variable sends it back to Blacksmith.

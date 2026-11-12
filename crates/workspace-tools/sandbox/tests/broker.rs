@@ -8,7 +8,7 @@ use coda_sandbox::broker::client::{self, Want};
 use coda_sandbox::broker::core::Broker;
 use coda_sandbox::broker::error::BrokerError;
 use coda_sandbox::broker::keyring::{Locked, Memory};
-use coda_sandbox::broker::peer::PeerMap;
+use coda_sandbox::broker::peer::{Door, PeerMap};
 use coda_sandbox::broker::wire::{Denied, GhFallback, Unavailable};
 use coda_sandbox::broker::{Item, serve};
 use coda_sandbox::credential::{self, Operation};
@@ -44,7 +44,7 @@ fn start(as_peer: fn(u32) -> PeerMap) -> Running {
     let sink = Arc::clone(&lines);
     let audit: Arc<dyn Fn(&Record) + Send + Sync> =
         Arc::new(move |record| sink.lock().expect("audit lock").push(record.to_string()));
-    let listener = serve::bind(&dir.path().join("broker.sock")).expect("binds");
+    let listener = serve::bind(Door::Agent, &dir.path().join("broker.sock")).expect("binds");
     std::thread::spawn(move || serve::serve(&listener, &broker, &audit));
     Running { dir, memory, lines }
 }
@@ -53,6 +53,7 @@ fn as_agent(uid: u32) -> PeerMap {
     PeerMap {
         agent_uid: uid,
         owner_uid: uid.wrapping_add(1),
+        ci_uid: None,
     }
 }
 
@@ -60,6 +61,7 @@ fn as_owner(uid: u32) -> PeerMap {
     PeerMap {
         agent_uid: uid.wrapping_add(1),
         owner_uid: uid,
+        ci_uid: None,
     }
 }
 
@@ -81,7 +83,7 @@ fn agent_gets_a_git_credential_and_the_audit_line_has_no_secret() {
     assert_eq!(secret.expose(), "ghp-test-secret");
     let audit = broker.audit();
     assert!(
-        audit.contains("git_credential granted peer=agent"),
+        audit.contains("git_credential granted socket=agent peer=agent"),
         "{audit}"
     );
     assert!(audit.contains("gh_token granted"), "{audit}");
@@ -133,7 +135,10 @@ fn the_owner_pings_but_gets_no_secret() {
     assert!(matches!(error, BrokerError::Denied(Denied::WrongPeer)));
     client::reload(&broker.socket()).expect("reload");
     let audit = broker.audit();
-    assert!(audit.contains("gh_token denied peer=owner"), "{audit}");
+    assert!(
+        audit.contains("gh_token denied socket=agent peer=owner"),
+        "{audit}"
+    );
 }
 
 #[test]
@@ -141,4 +146,73 @@ fn no_broker_is_a_connect_error() {
     let dir = tempfile::tempdir().expect("temp dir");
     let error = client::ping(&dir.path().join("none.sock")).expect_err("nothing listens");
     assert!(matches!(error, BrokerError::Connect { .. }));
+}
+
+/// Raw connections that send nothing, as a stalled or hostile client would.
+fn hold(socket: &std::path::Path, count: usize) -> Vec<std::os::unix::net::UnixStream> {
+    (0..count)
+        .map(|_| std::os::unix::net::UnixStream::connect(socket).expect("connects"))
+        .collect()
+}
+
+#[test]
+fn a_full_door_refuses_more_connections_and_recovers_at_the_deadline() {
+    let broker = start(as_agent);
+    let held = hold(&broker.socket(), serve::MAX_CONNECTIONS);
+    // The accept loop takes connections in order, so the next one finds
+    // every slot held.
+    let error = client::secret(&broker.socket(), Want::Gh).expect_err("busy");
+    assert!(
+        matches!(error, BrokerError::Denied(Denied::Busy)),
+        "{error:?}"
+    );
+    // Silent clients are cut off at the deadline, without closing. Each one
+    // spent a request from the caller's rate limit, so the door is open again
+    // before the limit has refilled.
+    std::thread::sleep(serve::REQUEST_DEADLINE + std::time::Duration::from_millis(500));
+    let give_up = std::time::Instant::now() + std::time::Duration::from_secs(10);
+    let secret = loop {
+        match client::secret(&broker.socket(), Want::Gh) {
+            Ok(secret) => break secret,
+            Err(BrokerError::Denied(Denied::RateLimited)) => {
+                assert!(std::time::Instant::now() < give_up, "never served again");
+                std::thread::sleep(std::time::Duration::from_millis(500));
+            }
+            Err(error) => panic!("the door stayed shut: {error:?}"),
+        }
+    };
+    assert_eq!(secret.expose(), "ghp-test-secret");
+    drop(held);
+}
+
+#[test]
+fn a_client_that_trickles_bytes_is_cut_off_at_the_deadline() {
+    use std::io::{Read as _, Write as _};
+    let broker = start(as_agent);
+    let mut stream = std::os::unix::net::UnixStream::connect(broker.socket()).expect("connects");
+    let started = std::time::Instant::now();
+    let writer = stream.try_clone().expect("clones");
+    // One byte every 300 ms would reset a per-read timeout forever.
+    std::thread::spawn(move || {
+        let mut writer = writer;
+        for _ in 0..40 {
+            if writer.write_all(b" ").is_err() {
+                return;
+            }
+            std::thread::sleep(std::time::Duration::from_millis(300));
+        }
+    });
+    let mut reply = String::new();
+    stream.read_to_string(&mut reply).expect("reads the reply");
+    let took = started.elapsed();
+    assert!(reply.contains(r#""reason":"malformed""#), "{reply}");
+    assert!(
+        took < serve::REQUEST_DEADLINE + std::time::Duration::from_secs(2),
+        "answered after {took:?}"
+    );
+    assert!(
+        broker.audit().contains("malformed denied"),
+        "{}",
+        broker.audit()
+    );
 }

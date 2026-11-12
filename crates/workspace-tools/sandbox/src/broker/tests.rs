@@ -4,9 +4,10 @@ use std::time::Instant;
 use super::cache::{FRESH_FOR, STALE_FOR};
 use super::core::Broker;
 use super::keyring::{Locked, Memory};
-use super::peer::{Peer, PeerMap};
+use super::peer::{Door, Peer, PeerMap};
 use super::wire::{
-    Asked, Denied, GhFallback, ItemReport, ItemState, Reply, Report, Request, Unavailable,
+    AgentSecret, Asked, Denied, GhFallback, ItemReport, ItemState, Reply, Report, Request,
+    Unavailable,
 };
 use super::{Item, Secret, SecretError, Source};
 
@@ -36,13 +37,14 @@ fn broker(memory: &Arc<Memory>, gh_fallback: GhFallback) -> Broker {
     let peers = PeerMap {
         agent_uid: 656_360,
         owner_uid: 1000,
+        ci_uid: None,
     };
     Broker::new(peers, memory.clone(), memory.clone(), gh_fallback)
 }
 
 fn ask(broker: &Broker, peer: Peer, request: &Request, now: Instant) -> Reply {
     let line = serde_json::to_vec(request).expect("serializes");
-    broker.handle(peer, &line, now).reply
+    broker.handle(Door::Agent, peer, &line, now).reply
 }
 
 fn granted(text: &str) -> Reply {
@@ -56,7 +58,9 @@ fn request_wire_names_are_stable_and_unknown_kinds_are_rejected() {
     let git: Request =
         serde_json::from_str(r#"{"kind":"git_credential","protocol":"https","host":"github.com"}"#)
             .expect("git credential");
-    assert_eq!(git.asked(), Asked::Secret(Item::GithubAgent));
+    assert_eq!(git.asked(), Asked::Agent(AgentSecret::Github));
+    let ci: Request = serde_json::from_str(r#"{"kind":"ci_token"}"#).expect("ci token");
+    assert_eq!(ci.asked(), Asked::CiToken);
     for bad in [
         r#"{"kind":"github_ci"}"#,
         r#"{"kind":"git_credential","protocol":"http","host":"github.com"}"#,
@@ -85,7 +89,7 @@ fn agent_gets_its_tokens_and_the_audit_line_holds_no_secret() {
     let broker = broker(&memory, GhFallback::Off);
     let now = Instant::now();
     let line = br#"{"kind":"gh_token"}"#;
-    let answer = broker.handle(AGENT, line, now);
+    let answer = broker.handle(Door::Agent, AGENT, line, now);
     assert_eq!(answer.reply, granted(GITHUB_PAT));
     let wire = serde_json::to_string(&answer.reply).expect("serializes");
     assert_eq!(
@@ -93,7 +97,10 @@ fn agent_gets_its_tokens_and_the_audit_line_holds_no_secret() {
         granted(GITHUB_PAT)
     );
     let record = answer.record.expect("audited").to_string();
-    assert!(record.contains("gh_token granted peer=agent"), "{record}");
+    assert!(
+        record.contains("gh_token granted socket=agent peer=agent"),
+        "{record}"
+    );
     assert!(record.contains("source=keyring sha256="), "{record}");
     assert!(!record.contains(GITHUB_PAT), "{record}");
     assert_eq!(
@@ -181,7 +188,7 @@ fn locked_keyring_is_unavailable_not_absent_and_a_cached_token_survives_it() {
     assert_eq!(ask(&broker, AGENT, &Request::GhToken, now), granted("s"));
     memory.set_locked(Locked::Locked);
     let stale = now + FRESH_FOR;
-    let answer = broker.handle(AGENT, br#"{"kind":"gh_token"}"#, stale);
+    let answer = broker.handle(Door::Agent, AGENT, br#"{"kind":"gh_token"}"#, stale);
     assert_eq!(answer.reply, granted("s"));
     let record = answer.record.expect("audited").to_string();
     assert!(record.contains("reason=stale keyring_locked"), "{record}");
@@ -350,7 +357,7 @@ fn malformed_and_rate_limited_requests_are_denied_and_logged_once() {
     let memory = Arc::new(Memory::with([(Item::GithubAgent, "s")]));
     let broker = broker(&memory, GhFallback::Off);
     let now = Instant::now();
-    let malformed = broker.handle(AGENT, b"{\"kind\":", now);
+    let malformed = broker.handle(Door::Agent, AGENT, b"{\"kind\":", now);
     assert_eq!(
         malformed.reply,
         Reply::Denied {
@@ -360,7 +367,7 @@ fn malformed_and_rate_limited_requests_are_denied_and_logged_once() {
     for _ in 0..9 {
         assert_eq!(ask(&broker, AGENT, &Request::GhToken, now), granted("s"));
     }
-    let limited = broker.handle(AGENT, br#"{"kind":"gh_token"}"#, now);
+    let limited = broker.handle(Door::Agent, AGENT, br#"{"kind":"gh_token"}"#, now);
     assert_eq!(
         limited.reply,
         Reply::Denied {
@@ -371,10 +378,166 @@ fn malformed_and_rate_limited_requests_are_denied_and_logged_once() {
         limited.record.is_some(),
         "the first limited request is logged"
     );
-    let again = broker.handle(AGENT, br#"{"kind":"gh_token"}"#, now);
+    let again = broker.handle(Door::Agent, AGENT, br#"{"kind":"gh_token"}"#, now);
     assert!(again.record.is_none(), "later ones within a minute are not");
     assert!(matches!(
         ask(&broker, OWNER, &Request::Ping, now),
         Reply::Report { .. }
     ));
+}
+
+const CI: Peer = Peer { uid: 993, pid: 1 };
+
+fn broker_with_ci(memory: &Arc<Memory>) -> Broker {
+    let peers = PeerMap {
+        agent_uid: AGENT.uid,
+        owner_uid: OWNER.uid,
+        ci_uid: Some(CI.uid),
+    };
+    Broker::new(peers, memory.clone(), memory.clone(), GhFallback::Off)
+}
+
+fn ask_at(broker: &Broker, door: Door, peer: Peer, request: &Request, now: Instant) -> Reply {
+    let line = serde_json::to_vec(request).expect("serializes");
+    broker.handle(door, peer, &line, now).reply
+}
+
+#[test]
+fn the_ci_door_serves_the_ci_token_to_the_ci_user_and_nothing_else() {
+    let memory = Arc::new(Memory::with([
+        (Item::GithubAgent, GITHUB_PAT),
+        (Item::GithubCi, "ci-token"),
+    ]));
+    let broker = broker_with_ci(&memory);
+    let now = Instant::now();
+    let wrong = Reply::Denied {
+        reason: Denied::WrongPeer,
+    };
+    let answer = broker.handle(Door::Ci, CI, br#"{"kind":"ci_token"}"#, now);
+    assert_eq!(answer.reply, granted("ci-token"));
+    let record = answer.record.expect("audited").to_string();
+    assert!(
+        record.contains("ci_token granted socket=ci peer=ci uid=993"),
+        "{record}"
+    );
+    assert!(!record.contains("ci-token"), "{record}");
+
+    for peer in [AGENT, ROOT_IN_CONTAINER, OWNER] {
+        assert_eq!(
+            ask_at(&broker, Door::Ci, peer, &Request::CiToken, now),
+            wrong,
+            "{peer:?} on the CI door"
+        );
+    }
+    for request in [Request::GhToken, Request::DopplerToken, Request::Ping] {
+        for peer in [CI, AGENT, OWNER] {
+            assert_eq!(
+                ask_at(&broker, Door::Ci, peer, &request, now),
+                wrong,
+                "{request:?} from {peer:?} on the CI door"
+            );
+        }
+    }
+}
+
+#[test]
+fn the_agent_door_never_serves_the_ci_token() {
+    let memory = Arc::new(Memory::with([
+        (Item::GithubAgent, GITHUB_PAT),
+        (Item::GithubCi, "ci-token"),
+    ]));
+    let broker = broker_with_ci(&memory);
+    let now = Instant::now();
+    let wrong = Reply::Denied {
+        reason: Denied::WrongPeer,
+    };
+    for peer in [CI, AGENT, ROOT_IN_CONTAINER, OWNER] {
+        let line = br#"{"kind":"ci_token"}"#;
+        let answer = broker.handle(Door::Agent, peer, line, now);
+        assert_eq!(answer.reply, wrong, "{peer:?} on the agent door");
+        let record = answer.record.expect("audited").to_string();
+        assert!(record.contains("reason=wrong_socket"), "{record}");
+    }
+    assert_eq!(
+        ask_at(&broker, Door::Agent, CI, &Request::GhToken, now),
+        wrong,
+        "the CI user gets no agent token"
+    );
+    assert_eq!(memory.edit(|state| state.lookups), 0, "no keyring read");
+}
+
+#[test]
+fn ping_lists_the_ci_token_only_on_a_host_with_the_ci() {
+    let memory = Arc::new(Memory::with([(Item::GithubAgent, "s")]));
+    let now = Instant::now();
+    let items = |broker: &Broker| {
+        let Reply::Report { report } = ask(broker, OWNER, &Request::Ping, now) else {
+            panic!("ping reports");
+        };
+        report
+            .items
+            .into_iter()
+            .map(|entry| (entry.item, entry.state))
+            .collect::<Vec<_>>()
+    };
+    let not_stored = ItemState::Unavailable {
+        reason: Unavailable::NotStored,
+    };
+    let available = ItemState::Available {
+        source: Source::Keyring,
+    };
+    assert_eq!(
+        items(&broker(&memory, GhFallback::Off)),
+        vec![(Item::GithubAgent, available), (Item::Doppler, not_stored)]
+    );
+    assert_eq!(
+        items(&broker_with_ci(&memory)),
+        vec![
+            (Item::GithubAgent, available),
+            (Item::Doppler, not_stored),
+            (Item::GithubCi, not_stored)
+        ]
+    );
+}
+
+#[test]
+fn a_missing_ci_token_is_unavailable_and_the_gh_fallback_never_stands_in() {
+    let memory = Arc::new(Memory::default());
+    memory.edit(|state| state.gh_token = Secret::new("gh-general").ok());
+    let peers = PeerMap {
+        agent_uid: AGENT.uid,
+        owner_uid: OWNER.uid,
+        ci_uid: Some(CI.uid),
+    };
+    let broker = Broker::new(peers, memory.clone(), memory.clone(), GhFallback::On);
+    assert_eq!(
+        ask_at(&broker, Door::Ci, CI, &Request::CiToken, Instant::now()),
+        Reply::Unavailable {
+            reason: Unavailable::NotStored
+        }
+    );
+}
+
+#[test]
+fn the_ci_user_has_its_own_rate_limit() {
+    let memory = Arc::new(Memory::with([
+        (Item::GithubAgent, "s"),
+        (Item::GithubCi, "c"),
+    ]));
+    let broker = broker_with_ci(&memory);
+    let now = Instant::now();
+    for _ in 0..10 {
+        assert_eq!(ask(&broker, AGENT, &Request::GhToken, now), granted("s"));
+    }
+    assert_eq!(
+        ask(&broker, AGENT, &Request::GhToken, now),
+        Reply::Denied {
+            reason: Denied::RateLimited
+        }
+    );
+    assert_eq!(
+        ask_at(&broker, Door::Ci, CI, &Request::CiToken, now),
+        granted("c"),
+        "a runaway container does not starve the controller"
+    );
 }

@@ -3,7 +3,7 @@
 mod cli;
 
 use std::io::{IsTerminal as _, Write as _};
-use std::path::{Path, PathBuf};
+use std::path::Path;
 use std::process::ExitCode;
 
 use clap::Parser as _;
@@ -163,8 +163,13 @@ fn ci_controller(mode: Option<ControllerMode>) -> ExitCode {
     };
     let run = || -> Result<(), ctl::error::Error> {
         let config = ctl::config::ControllerConfig::from_env()?;
-        let credentials = std::env::var_os("CREDENTIALS_DIRECTORY").map(PathBuf::from);
-        let token = ctl::read_token(credentials.as_deref())?;
+        let access = ctl::token::fetch(config.broker_socket.as_deref())?;
+        if let ctl::token::Access::LocalOnly(why) = &access {
+            eprintln!(
+                "coda-sandbox ci-controller: no GitHub token, so only local requests run: {}",
+                ctl::error::chain(why)
+            );
+        }
         let controller = Controller {
             config,
             disks: &ctl::disk::SystemDisks,
@@ -176,7 +181,7 @@ fn ci_controller(mode: Option<ControllerMode>) -> ExitCode {
             Some(ControllerMode::Seed) => Mode::Seed,
             None => Mode::Pass,
         };
-        controller.run(mode, token)
+        controller.run(mode, access)
     };
     match run() {
         Ok(()) => ExitCode::SUCCESS,

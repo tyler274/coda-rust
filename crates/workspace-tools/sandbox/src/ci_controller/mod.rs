@@ -2,7 +2,9 @@
 //! disposable Firecracker guest.
 //!
 //! One pass takes at most one job: a queued GitHub job labelled `cyrene-coda`
-//! first, then the oldest local act request from the spool. The guest gets a
+//! first, then the oldest local act request from the spool. The GitHub token
+//! comes from the token broker ([`token`]); a pass without one takes only
+//! local requests. The guest gets a
 //! reflink clone of the seed work disk and a read-only inputs disk; its serial
 //! console is the only thing that comes back.
 
@@ -16,23 +18,23 @@ pub mod memory;
 pub mod results;
 pub mod spool;
 pub mod termination;
+pub mod token;
 
 #[cfg(test)]
 mod tests;
 
 use std::fs::{self, File};
-use std::io;
 use std::os::unix::fs::PermissionsExt as _;
-use std::path::Path;
 use std::time::SystemTime;
 
 use self::config::ControllerConfig;
 use self::disk::Disks;
 use self::error::Error;
-use self::github::{Api, Job, Token, is_controller_runner};
+use self::github::{Api, Job, is_controller_runner};
 use self::guest::Timers;
 use self::memory::{Admission, MemoryFiles};
 use self::termination::Termination;
+use self::token::Access;
 use crate::ids::RequestId;
 
 /// Which queues this pass may take from. Without a token only local
@@ -65,20 +67,6 @@ pub struct Controller<'a> {
     /// Records SIGTERM; a running guest is stopped and the pass ends.
     pub termination: Termination,
     pub timers: Timers,
-}
-
-/// The GitHub token systemd passes with `LoadCredential=github-token:…`.
-/// An unset credentials directory, an absent file or an empty one means none.
-pub fn read_token(credentials_directory: Option<&Path>) -> Result<Option<Token>, Error> {
-    let Some(directory) = credentials_directory else {
-        return Ok(None);
-    };
-    let path = directory.join("github-token");
-    match fs::read_to_string(&path) {
-        Ok(text) => Ok(Token::new(&text)),
-        Err(error) if error.kind() == io::ErrorKind::NotFound => Ok(None),
-        Err(source) => Err(Error::Read { path, source }),
-    }
 }
 
 impl Controller<'_> {
@@ -154,7 +142,8 @@ impl Controller<'_> {
     }
 
     /// Prepare the directories, take the lock, reconcile, then run `mode`.
-    pub fn run(&self, mode: Mode, token: Option<Token>) -> Result<(), Error> {
+    /// Without GitHub access the pass takes only local requests.
+    pub fn run(&self, mode: Mode, access: Access) -> Result<(), Error> {
         for directory in [
             self.config.jobs(),
             self.config.results(),
@@ -169,9 +158,9 @@ impl Controller<'_> {
         let lock = File::create(&lock_path).map_err(Error::io("create", &lock_path))?;
         rustix::fs::flock(&lock, rustix::fs::FlockOperation::LockExclusive)
             .map_err(|errno| Error::io("lock", &lock_path)(errno.into()))?;
-        let queues = match token {
-            Some(token) => Queues::GitHubThenLocal(Api::new(&self.config.api, token)),
-            None => Queues::LocalOnly,
+        let queues = match access {
+            Access::Granted(token) => Queues::GitHubThenLocal(Api::new(&self.config.api, token)),
+            Access::LocalOnly(_) => Queues::LocalOnly,
         };
         let outcome = self.termination.deferred(|| {
             self.reconcile(&queues)?;

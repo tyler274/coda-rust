@@ -14,7 +14,7 @@ use super::audit::{Record, Served};
 use super::cache::{Cache, Entry, Held};
 use super::keyring::{Fallback, Keyring, KeyringError};
 use super::limit::{Bucket, LOG_EVERY, Rate};
-use super::peer::{Peer, PeerMap, Principal};
+use super::peer::{Door, Peer, PeerMap, Principal};
 use super::wire::{
     Asked, Denied, GhFallback, ItemReport, ItemState, Reply, Report, Request, Unavailable,
 };
@@ -120,9 +120,17 @@ impl Broker {
         state.generation += 1;
     }
 
-    pub fn handle(&self, peer: Peer, line: &[u8], now: Instant) -> Answer {
+    /// The items this broker serves, in the order reports list them: the
+    /// agent's, then the CI controller's on a host with the CI.
+    fn served(&self) -> impl Iterator<Item = Item> + use<> {
+        let ci = self.peers.ci_uid.map(|_| Item::GithubCi);
+        Item::AGENT.into_iter().chain(ci)
+    }
+
+    /// Answers one request line that `peer` sent through `door`.
+    pub fn handle(&self, door: Door, peer: Peer, line: &[u8], now: Instant) -> Answer {
         let principal = self.peers.classify(peer);
-        let outcome = match self.admit(principal, line, now) {
+        let outcome = match self.admit(door, principal, line, now) {
             Admitted::Asked { kind, asked } => self.answer(kind, asked, now),
             Admitted::Refused(outcome) => outcome,
             Admitted::Quiet(reply) => {
@@ -133,6 +141,7 @@ impl Broker {
             }
         };
         let record = Record {
+            door,
             peer,
             comm: super::peer::comm(peer.pid),
             principal,
@@ -147,9 +156,10 @@ impl Broker {
         }
     }
 
-    fn admit(&self, principal: Principal, line: &[u8], now: Instant) -> Admitted {
+    fn admit(&self, door: Door, principal: Principal, line: &[u8], now: Instant) -> Admitted {
         let rate = match principal {
             Principal::Owner => Rate::OWNER,
+            Principal::Ci => Rate::CI,
             Principal::Agent | Principal::Stranger => Rate::AGENT,
         };
         let mut state = self.state();
@@ -172,6 +182,11 @@ impl Broker {
         };
         let kind = request.kind();
         let asked = request.asked();
+        // The door comes first: the agent's socket never answers for the
+        // CI token, even to the CI's own user.
+        if !door.serves(asked.audience()) {
+            return Admitted::Refused(Outcome::denied(kind, Denied::WrongPeer, "wrong_socket"));
+        }
         if !principal.may_ask(asked.audience()) {
             return Admitted::Refused(Outcome::denied(kind, Denied::WrongPeer, "wrong_peer"));
         }
@@ -179,52 +194,63 @@ impl Broker {
     }
 
     fn answer(&self, kind: &'static str, asked: Asked, now: Instant) -> Outcome {
-        let (reply, reason, served) = match asked {
+        match asked {
             Asked::Reload => {
                 self.reload();
-                (Reply::Reloaded, None, None)
-            }
-            Asked::Ping => {
-                let report = self.report(now);
-                (Reply::Report { report }, None, None)
-            }
-            Asked::Secret(item) => match self.secret(item, now) {
-                Ok(got) => {
-                    let (entry, reason) = match got {
-                        Got::Read(entry) => (entry, None),
-                        Got::Kept { entry, locked } => {
-                            (entry, Some(format!("stale {}", locked.describe())))
-                        }
-                    };
-                    let served = Served {
-                        source: entry.source,
-                        fingerprint: entry.secret.fingerprint(),
-                    };
-                    let reply = Reply::Granted {
-                        secret: entry.secret,
-                    };
-                    (reply, reason, Some(served))
+                Outcome {
+                    kind,
+                    reply: Reply::Reloaded,
+                    reason: None,
+                    served: None,
                 }
-                Err(missed) => {
-                    let reason = missed.describe();
-                    let reply = Reply::Unavailable {
-                        reason: missed.reason,
-                    };
-                    (reply, Some(reason), None)
-                }
+            }
+            Asked::Ping => Outcome {
+                kind,
+                reply: Reply::Report {
+                    report: self.report(now),
+                },
+                reason: None,
+                served: None,
             },
+            Asked::Agent(secret) => self.grant(kind, secret.item(), now),
+            Asked::CiToken => self.grant(kind, Item::GithubCi, now),
+        }
+    }
+
+    fn grant(&self, kind: &'static str, item: Item, now: Instant) -> Outcome {
+        let got = match self.secret(item, now) {
+            Ok(got) => got,
+            Err(missed) => {
+                return Outcome {
+                    kind,
+                    reason: Some(missed.describe()),
+                    reply: Reply::Unavailable {
+                        reason: missed.reason,
+                    },
+                    served: None,
+                };
+            }
+        };
+        let (entry, reason) = match got {
+            Got::Read(entry) => (entry, None),
+            Got::Kept { entry, locked } => (entry, Some(format!("stale {}", locked.describe()))),
         };
         Outcome {
             kind,
-            reply,
             reason,
-            served,
+            served: Some(Served {
+                source: entry.source,
+                fingerprint: entry.secret.fingerprint(),
+            }),
+            reply: Reply::Granted {
+                secret: entry.secret,
+            },
         }
     }
 
     fn report(&self, now: Instant) -> Report {
-        let items = Item::SERVED
-            .into_iter()
+        let items = self
+            .served()
             .map(|item| ItemReport {
                 item,
                 state: match self.secret(item, now) {

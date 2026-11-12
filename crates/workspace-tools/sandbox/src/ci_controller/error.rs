@@ -47,6 +47,8 @@ pub enum Error {
     MemAvailableMissing { path: PathBuf },
     #[error("GitHub API")]
     Api(#[from] ApiError),
+    #[error("cannot get the GitHub token from the token broker")]
+    Broker(#[from] crate::broker::error::BrokerError),
     #[error("a controller-owned runner is still busy; refusing concurrent execution")]
     RunnerBusy,
     #[error("no seed work disk at {path}; run coda-ci-seed first")]

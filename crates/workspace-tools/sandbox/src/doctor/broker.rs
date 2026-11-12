@@ -1,5 +1,6 @@
 //! The token broker's checks: its socket answers, which source serves each
-//! token, and whether the `gh auth token` fallback is on or was used.
+//! token, the CI controller's included on a host with the CI, and whether
+//! the `gh auth token` fallback is on or was used.
 
 use super::{Fix, Outcome};
 use crate::broker::error::BrokerError;
@@ -67,21 +68,21 @@ fn report_outcome(report: &Report) -> Outcome {
             ),
         };
     }
-    for item in Item::SERVED {
-        match state(item) {
-            Some(ItemState::Stale { .. }) => {
+    for ItemReport { item, state } in &report.items {
+        match *state {
+            ItemState::Stale { .. } => {
                 return Outcome::Warn {
                     detail,
-                    fix: unavailable_fix(item, Unavailable::KeyringLocked),
+                    fix: unavailable_fix(*item, Unavailable::KeyringLocked),
                 };
             }
-            Some(ItemState::Unavailable { reason }) => {
+            ItemState::Unavailable { reason } => {
                 return Outcome::Warn {
                     detail,
-                    fix: unavailable_fix(item, reason),
+                    fix: unavailable_fix(*item, reason),
                 };
             }
-            Some(ItemState::Available { .. }) | None => {}
+            ItemState::Available { .. } => {}
         }
     }
     Outcome::Pass { detail }

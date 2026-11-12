@@ -1,13 +1,15 @@
 //! The token broker: a user service of the sandbox's host user that hands
-//! the agent container its tokens over a Unix socket, so no token sits in a
-//! file the container can read.
+//! the agent container and the CI controller their tokens over Unix
+//! sockets, so no token sits in a file.
 //!
 //! The broker reads each [`Item`] from the user's Secret Service keyring
 //! ([`keyring`]), keeps it in memory for a while ([`cache`]), and answers one
-//! typed request per connection ([`wire`]). The kernel's peer credentials,
-//! mapped through the container's user namespace ([`peer`]), decide who is
-//! asking. Every request leaves one audit line that never holds a secret
-//! ([`audit`]).
+//! typed request per connection ([`wire`]). It listens on one socket per
+//! [`peer::Door`]: the agent's, bound into the container, and the CI
+//! controller's, which only the `coda-ci` user can reach. The kernel's peer
+//! credentials, mapped through the container's user namespace ([`peer`]),
+//! decide who is asking, and each door answers only its own callers. Every
+//! request leaves one audit line that never holds a secret ([`audit`]).
 
 pub mod audit;
 pub mod cache;
@@ -38,6 +40,9 @@ pub enum Item {
     GithubAgent,
     /// The read-only Doppler service token for the container's doppler.
     Doppler,
+    /// The fine-grained GitHub token the CI controller registers runners
+    /// and reads the job queue with. It never enters the container.
+    GithubCi,
     /// A throwaway item `broker self-test` writes, reads and deletes.
     #[value(skip)]
     #[serde(rename = "coda-sandbox-selftest")]
@@ -45,14 +50,15 @@ pub enum Item {
 }
 
 impl Item {
-    /// The items the broker serves, in the order reports list them.
-    pub const SERVED: [Self; 2] = [Self::GithubAgent, Self::Doppler];
+    /// The items the agent's door serves, in the order reports list them.
+    pub const AGENT: [Self; 2] = [Self::GithubAgent, Self::Doppler];
 
     /// The value of the keyring item's `token` attribute.
     pub fn name(self) -> &'static str {
         match self {
             Self::GithubAgent => "github-agent",
             Self::Doppler => "doppler",
+            Self::GithubCi => "github-ci",
             Self::SelfTest => "coda-sandbox-selftest",
         }
     }

@@ -177,26 +177,3 @@ fn without_a_token_only_local_requests_run() {
     assert_eq!(fs::read_to_string(result.join("status")).unwrap(), "0\n");
     assert!(listing(&setup.requests()).is_empty());
 }
-
-#[test]
-fn no_token_credential_means_local_only() {
-    let dir = tempfile::tempdir().unwrap();
-    assert!(crate::ci_controller::read_token(None).unwrap().is_none());
-    assert!(
-        crate::ci_controller::read_token(Some(dir.path()))
-            .unwrap()
-            .is_none()
-    );
-    fs::write(dir.path().join("github-token"), "\n").unwrap();
-    assert!(
-        crate::ci_controller::read_token(Some(dir.path()))
-            .unwrap()
-            .is_none()
-    );
-    fs::write(dir.path().join("github-token"), "ghp_x\n").unwrap();
-    assert!(
-        crate::ci_controller::read_token(Some(dir.path()))
-            .unwrap()
-            .is_some()
-    );
-}

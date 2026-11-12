@@ -18,7 +18,8 @@ const REBUILD: &str = "declare it in the NixOS configuration, then `sudo nixos-r
 pub enum LegacyTokenDir {
     /// The container's token, which the broker replaces; nothing reads it.
     Agent,
-    /// The CI controller's token file, which it still reads.
+    /// The CI controller's token file, which the broker replaces; nothing
+    /// reads it.
     Ci,
 }
 
@@ -265,8 +266,14 @@ fn legacy_token_outcome(probe: &dyn Probe, dir: LegacyTokenDir) -> Outcome {
                 )),
             },
             LegacyTokenDir::Ci => Outcome::Warn {
-                detail: "present; it holds the CI controller's root-owned GitHub token".to_owned(),
-                fix: Fix::command("sudo", ["ls", "-la", &path.display().to_string()]),
+                detail: "present; it may hold the CI controller's old root-owned GitHub token, \
+                         which the token broker replaces"
+                    .to_owned(),
+                fix: Fix::instruction(format!(
+                    "once the token broker check shows github-ci, revoke that token on \
+                     github.com, then `sudo rm -rf {}`",
+                    path.display()
+                )),
             },
         },
         Err(cause) => Outcome::CannotCheck { cause },

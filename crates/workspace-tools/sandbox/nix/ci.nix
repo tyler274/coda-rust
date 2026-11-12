@@ -7,6 +7,10 @@
 # in spool/requests. The guest (ci-guest.nix) gets a reflink clone of the
 # seed work disk, a read-only inputs disk and the fc-coda-ci tap, whose
 # traffic reaches only the internet.
+#
+# The controller asks the token broker (broker.nix) for its GitHub token on
+# each pass, over a socket only `coda-ci` can reach, so the token is in no
+# file and never enters the guest. Without one, only local requests run.
 { microvmModule }:
 {
   config,
@@ -43,7 +47,6 @@ let
     Type = "oneshot";
     User = "coda-ci";
     Group = "coda-ci";
-    LoadCredential = lib.optional (cfg.tokenFile != null) "github-token:${cfg.tokenFile}";
     TimeoutStartSec = "3h15m";
     KillMode = "control-group";
     UMask = "0077";
@@ -87,6 +90,7 @@ let
     CODA_CI_GUEST_MEM_MIB = toString guestMem;
     CODA_CI_MARGIN_MIB = toString cfg.marginMiB;
     CODA_CI_WORK_DISK_SIZE = cfg.workDiskSize;
+    CODA_CI_BROKER_SOCKET = sandbox.broker.ciSocket;
   } // lib.optionalAttrs (cfg.apiUrl != null) { CODA_CI_API = cfg.apiUrl; };
   # The controller makes each job's disks with mkfs.ext4.
   path = [ pkgs.e2fsprogs ];
@@ -95,18 +99,16 @@ let
   needs = sandbox.requires ++ [ "coda-ci-spool.service" "nftables.service" ];
 in
 {
+  imports = [
+    (lib.mkRemovedOptionModule [ "services" "coda-sandbox" "ci" "tokenFile" ] ''
+      The CI controller gets its GitHub token from the token broker. Store
+      it once as the sandbox user with `coda-sandbox broker store github-ci`,
+      then delete the old file.
+    '')
+  ];
+
   options.services.coda-sandbox.ci = {
     enable = lib.mkEnableOption "Coda CI jobs in disposable Firecracker guests";
-    tokenFile = lib.mkOption {
-      type = lib.types.nullOr lib.types.str;
-      default = null;
-      example = "/var/lib/coda-ci/github-token";
-      description = ''
-        Root-only file with a fine-grained token for Coda-Health/coda-rust
-        (Administration: write, Actions: read). Without it only local act
-        requests run.
-      '';
-    };
     guest = lib.mkOption {
       type = lib.types.deferredModule;
       default = { };

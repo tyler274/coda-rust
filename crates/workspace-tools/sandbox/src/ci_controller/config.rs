@@ -23,6 +23,9 @@ pub struct ControllerConfig {
     pub work_disk_size: DiskSize,
     /// `CODA_CI_API`, default the public GitHub API.
     pub api: String,
+    /// `CODA_CI_BROKER_SOCKET`: where the token broker serves the GitHub
+    /// token. Unset on a host that runs only local requests.
+    pub broker_socket: Option<PathBuf>,
 }
 
 impl ControllerConfig {
@@ -69,6 +72,7 @@ impl ControllerConfig {
                 },
             )?,
             api: optional("CODA_CI_API", DEFAULT_API),
+            broker_socket: lookup("CODA_CI_BROKER_SOCKET").map(PathBuf::from),
         })
     }
 
@@ -118,6 +122,7 @@ mod tests {
         assert_eq!(config.max_bundle_bytes, 4096 * MIB);
         assert_eq!(config.work_disk_size, "200G".parse().unwrap());
         assert_eq!(config.api, DEFAULT_API);
+        assert_eq!(config.broker_socket, None);
         assert_eq!(
             config.requests(),
             Path::new("/agents/coda/ci/spool/requests")

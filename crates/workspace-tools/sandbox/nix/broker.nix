@@ -3,10 +3,12 @@
 # them from the user's Secret Service keyring with `secret-tool`, so no
 # token sits in a file; `coda-sandbox broker store <item>` puts them there.
 #
-# The socket's directory is made by root, owned by the user and grouped to
-# the container's `users` group, and container.nix binds it into the
-# container at the same path. The directory gates traversal; the broker's
-# SO_PEERCRED check gates the rest.
+# Each socket's directory is made by root, owned by the user and grouped to
+# the one caller it is for: the container's `users` group for the agent
+# socket, which container.nix binds into the container at the same path,
+# and `coda-ci` for the CI socket, where the controller of ci.nix fetches
+# its GitHub token. The directory gates traversal; the broker's SO_PEERCRED
+# check gates the rest.
 #
 # The polkit rule lets the same user start, stop and restart the sandbox's
 # system units this host defines, without sudo; nothing else, and never a
@@ -21,6 +23,24 @@ let
   cfg = config.services.coda-sandbox;
   hostUsersGid = cfg.uidBase + 100;
   socketDir = builtins.dirOf cfg.broker.socket;
+  ciSocketDir = builtins.dirOf cfg.broker.ciSocket;
+  doorDirs = [ socketDir ] ++ lib.optional cfg.ci.enable ciSocketDir;
+  # tmpfiles makes the directories in the system manager, which a user unit
+  # cannot order itself after; on the switch that first enables the broker
+  # it can start before they exist.
+  waitForDoors = pkgs.writeShellScript "coda-sandbox-broker-doors" ''
+    for dir in ${lib.escapeShellArgs doorDirs}; do
+      tries=0
+      until [ -d "$dir" ]; do
+        tries=$((tries + 1))
+        if [ "$tries" -gt 100 ]; then
+          echo "$dir is missing; systemd-tmpfiles makes it" >&2
+          exit 1
+        fi
+        ${pkgs.coreutils}/bin/sleep 0.1
+      done
+    done
+  '';
   # Only units this host defines. A name with no unit file is one the user
   # could otherwise create as a transient unit running anything as root.
   defined =
@@ -54,6 +74,13 @@ in
       description = "The agent socket, at the same path on the host and in the container.";
     };
 
+    ciSocket = lib.mkOption {
+      type = lib.types.str;
+      default = "/run/coda-sandbox/ci/broker.sock";
+      readOnly = true;
+      description = "The CI socket, served while `ci.enable` is set and reachable only by `coda-ci`.";
+    };
+
     ghFallback = lib.mkOption {
       type = lib.types.bool;
       default = false;
@@ -78,7 +105,8 @@ in
     systemd.tmpfiles.rules = [
       "d /run/coda-sandbox 0755 root root -"
       "d ${socketDir} 0750 ${cfg.user} ${toString hostUsersGid} -"
-    ];
+    ]
+    ++ lib.optional cfg.ci.enable "d ${ciSocketDir} 0750 ${cfg.user} coda-ci -";
 
     systemd.user.services.coda-sandbox-broker = {
       description = "Coda sandbox token broker";
@@ -89,6 +117,7 @@ in
         pkgs.gh
       ];
       serviceConfig = {
+        ExecStartPre = waitForDoors;
         ExecStart = "${lib.getExe' cfg.package "coda-sandbox"} broker serve";
         ExecReload = "${pkgs.coreutils}/bin/kill -HUP $MAINPID";
         Restart = "on-failure";

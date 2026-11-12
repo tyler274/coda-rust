@@ -104,10 +104,11 @@ impl Probe for FakeProbe {
     }
 }
 
-/// The broker's report when both tokens are in the keyring.
+/// The broker's report on a host with the CI when every token is in the
+/// keyring.
 pub(super) fn stored() -> Report {
     Report {
-        items: Item::SERVED
+        items: [Item::GithubAgent, Item::Doppler, Item::GithubCi]
             .map(|item| ItemReport {
                 item,
                 state: ItemState::Available {

@@ -21,6 +21,11 @@ impl Rate {
         per_minute: 30,
         burst: 10,
     };
+    /// The controller asks once a pass, and a pass comes every 15 seconds.
+    pub const CI: Self = Self {
+        per_minute: 30,
+        burst: 10,
+    };
 }
 
 #[derive(Debug)]

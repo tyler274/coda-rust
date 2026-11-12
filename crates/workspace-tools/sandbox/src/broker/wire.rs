@@ -9,8 +9,7 @@ use super::{Item, Secret, Source};
 pub const MAX_REQUEST: u64 = 4096;
 
 /// A request. Each kind belongs to one [`Audience`], and the broker answers
-/// it only for a peer of that audience. The CI controller's token arrives
-/// as a `Ci` audience with its own request kind.
+/// it only for a peer of that audience, on a door that serves it.
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(tag = "kind", rename_all = "snake_case", deny_unknown_fields)]
 pub enum Request {
@@ -20,6 +19,8 @@ pub enum Request {
     GhToken,
     /// The token the container's `doppler` wrapper puts in `DOPPLER_TOKEN`.
     DopplerToken,
+    /// The token the CI controller talks to GitHub with.
+    CiToken,
     /// Which items the broker can serve and from where; never a secret.
     Ping,
     /// Drop the cache, so a stored or rotated token is read on next use.
@@ -32,15 +33,35 @@ pub enum Request {
 pub enum Audience {
     /// The agent in the container.
     Agent,
+    /// The CI controller, the host's `coda-ci` user.
+    Ci,
     /// The host user the broker runs as: `doctor`, `status`, `broker store`.
     Owner,
+}
+
+/// A secret the container's agent may ask for.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum AgentSecret {
+    Github,
+    Doppler,
+}
+
+impl AgentSecret {
+    pub fn item(self) -> Item {
+        match self {
+            Self::Github => Item::GithubAgent,
+            Self::Doppler => Item::Doppler,
+        }
+    }
 }
 
 /// What a request asks the broker to do, with each kind's data.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum Asked {
-    /// A secret, for the agent.
-    Secret(Item),
+    /// One of the agent's secrets.
+    Agent(AgentSecret),
+    /// The CI controller's GitHub token.
+    CiToken,
     /// The owner's report.
     Ping,
     /// The owner's cache drop.
@@ -50,7 +71,8 @@ pub enum Asked {
 impl Asked {
     pub fn audience(self) -> Audience {
         match self {
-            Self::Secret(_) => Audience::Agent,
+            Self::Agent(_) => Audience::Agent,
+            Self::CiToken => Audience::Ci,
             Self::Ping | Self::Reload => Audience::Owner,
         }
     }
@@ -59,8 +81,9 @@ impl Asked {
 impl Request {
     pub fn asked(&self) -> Asked {
         match self {
-            Self::GitCredential { .. } | Self::GhToken => Asked::Secret(Item::GithubAgent),
-            Self::DopplerToken => Asked::Secret(Item::Doppler),
+            Self::GitCredential { .. } | Self::GhToken => Asked::Agent(AgentSecret::Github),
+            Self::DopplerToken => Asked::Agent(AgentSecret::Doppler),
+            Self::CiToken => Asked::CiToken,
             Self::Ping => Asked::Ping,
             Self::Reload => Asked::Reload,
         }
@@ -72,6 +95,7 @@ impl Request {
             Self::GitCredential { .. } => "git_credential",
             Self::GhToken => "gh_token",
             Self::DopplerToken => "doppler_token",
+            Self::CiToken => "ci_token",
             Self::Ping => "ping",
             Self::Reload => "reload",
         }
@@ -149,6 +173,9 @@ pub enum Denied {
     RateLimited,
     #[error("the broker could not read the request")]
     Malformed,
+    /// Too many connections are open on this socket at once.
+    #[error("the broker has too many connections open on this socket; try again")]
+    Busy,
 }
 
 /// Ping's answer: each served item's state and the fallback's.

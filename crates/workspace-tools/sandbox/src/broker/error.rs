@@ -66,6 +66,14 @@ pub enum BrokerError {
     SelfTestMismatch,
     #[error("the keyring still holds {item} after deleting it")]
     SelfTestNotDeleted { item: Item },
+    #[error("cannot look up the CI controller's user {user}")]
+    UserLookup {
+        user: String,
+        #[source]
+        source: io::Error,
+    },
+    #[error("the CI controller's user {user} does not exist on this host")]
+    NoSuchUser { user: String },
     #[error("cannot handle SIGHUP")]
     Signals(#[source] io::Error),
     #[error("cannot turn off core dumps for the broker")]

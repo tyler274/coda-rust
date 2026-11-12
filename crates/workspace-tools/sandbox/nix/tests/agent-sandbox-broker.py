@@ -122,3 +122,8 @@ with subtest("polkit: the user restarts the container, never a transient root un
     luluco("systemctl --no-ask-password restart container@coda-agent.service")
     machine.wait_for_unit("container@coda-agent.service")
     machine.wait_until_succeeds(in_agent + json.dumps("true"), timeout=60)
+
+with subtest("a host without the CI has no CI socket and no CI token"):
+    machine.fail("test -e /run/coda-sandbox/ci")
+    status = luluco("coda-sandbox status")
+    assert "github-ci" not in status, status
