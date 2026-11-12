@@ -39,7 +39,7 @@ services.coda-sandbox = {
 | `broker.ghFallback` | `false` | Let the broker serve `gh auth token` when no `github-agent` is stored |
 | `broker.keyringPackage` | `pkgs.libsecret` | Provides `secret-tool` for the broker |
 | `localModels.hostPort` | `null` | The one TCP port on `hostAddress` the container may reach, for a model server on the host |
-| `swarm.package` | `null` | A swarm package to install in the container |
+| `swarm.package` | this flake's `coda-swarm` | The swarm supervisor installed in the container; `null` installs none |
 | `ci.enable` | `false` | The Firecracker controller, its timer and the seed unit |
 | `ci.guest`, `ci.workDiskSize`, `ci.marginMiB` | `{ }`, `200G`, `4096` | Guest configuration and sizing |
 | `package` | this flake's | The binary installed on the host and in the container |

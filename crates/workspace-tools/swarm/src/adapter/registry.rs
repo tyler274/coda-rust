@@ -86,11 +86,12 @@ pub struct ModelEntry {
     pub kind: AdapterKind,
     /// The provider's model name, passed to the CLI or API.
     pub model: String,
-    /// Absent for keyless endpoints such as a local Ollama, or a CLI that
-    /// uses its own login.
-    #[serde(default)]
     /// HTTP adapters keep this key in memory and send it as a header; CLI
-    /// adapters get it in the child env.
+    /// adapters get it in the child env. Absent for keyless endpoints such
+    /// as a local Ollama, and for a CLI that fetches its own key: in the
+    /// sandbox container the claude, codex and gemini wrappers ask the
+    /// token broker themselves.
+    #[serde(default)]
     pub key: Option<KeyEnv>,
     #[serde(default)]
     pub display_name: Option<String>,

@@ -306,7 +306,13 @@ fn http_turn(dir: &Path, api: Api, key: Option<&str>) -> (HttpAdapter, TurnReque
     if let Some(key) = key {
         env.push(("PROVIDER_KEY".into(), key.into()));
     }
-    let mcp = vec![stub.display().to_string(), dir.display().to_string()];
+    // Through sh: exec of a script another test thread's fork may still hold
+    // open for writing fails with ETXTBSY.
+    let mcp = vec![
+        "/bin/sh".to_owned(),
+        stub.display().to_string(),
+        dir.display().to_string(),
+    ];
     (adapter, request(dir, mcp, env))
 }
 
@@ -477,8 +483,9 @@ fn example_registry_parses_and_lists_its_models() {
     let adapter = RegistryAdapter::new(registry);
     assert!(adapter.models().admits("gpt-codex"));
     assert!(!adapter.models().admits("gpt-4"));
+    assert_eq!(adapter.keys(Some("claude-opus")), []);
     assert_eq!(
-        adapter.keys(Some("claude-opus")),
+        adapter.keys(Some("claude-sonnet-api")),
         [KeyEnv {
             var: "ANTHROPIC_API_KEY".into(),
             item: "anthropic".into()

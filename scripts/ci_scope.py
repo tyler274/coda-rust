@@ -53,9 +53,14 @@ def sandbox_path(path):
 
 
 def sandbox_input(path):
-    # The sandbox flake builds from the root manifest and lockfile, and the
-    # workflow defines the sandbox job, so changing either reruns it too.
-    return sandbox_path(path) or path in {"Cargo.toml", "Cargo.lock", ".github/workflows/ci.yml"}
+    # The sandbox flake builds from the root manifest and lockfile and also
+    # packages coda-swarm, and the workflow defines the sandbox job, so
+    # changing any of them reruns it too.
+    return (
+        sandbox_path(path)
+        or path.startswith("crates/workspace-tools/swarm/")
+        or path in {"Cargo.toml", "Cargo.lock", ".github/workflows/ci.yml"}
+    )
 
 
 def dependency_path(path):

@@ -19,13 +19,12 @@
       systems = [ "x86_64-linux" "aarch64-linux" ];
       forEachSystem = f: lib.genAttrs systems (system: f nixpkgs.legacyPackages.${system});
 
-      # coda-sandbox is a member of the repository's root Cargo workspace. The
-      # build takes the root manifest and lockfile but none of the other
-      # crates: the manifest's members narrow to this crate, and the lockfile
-      # narrows to the packages it reaches, so only its own dependencies are
-      # vendored.
+      # coda-sandbox and coda-swarm (the swarm supervisor the container runs)
+      # are members of the repository's root Cargo workspace. Each build
+      # takes the root manifest and lockfile but none of the other crates:
+      # the manifest's members narrow to that crate, and the lockfile narrows
+      # to the packages it reaches, so only its own dependencies are vendored.
       repo = ../../..;
-      member = "crates/workspace-tools/sandbox";
       lock = lib.importTOML (repo + "/Cargo.lock");
       byName = lib.groupBy (package: package.name) lock.package;
       # A lockfile dependency is "name" when one version is locked, otherwise
@@ -39,38 +38,31 @@
         else lib.findFirst (package: package.version == builtins.elemAt parts 1)
           (throw "Cargo.lock has no ${dependency}") candidates;
       entry = package: { key = "${package.name} ${package.version}"; inherit package; };
-      reached = builtins.genericClosure {
-        startSet = [ (entry (locked "coda-sandbox")) ];
-        operator = item: map (dependency: entry (locked dependency)) (item.package.dependencies or [ ]);
-      };
-      cargoLockParsed = lock // { package = map (item: item.package) reached; };
-      manifest = lib.recursiveUpdate (lib.importTOML (repo + "/Cargo.toml")) {
-        workspace.members = [ member ];
-      };
 
-      build = pkgs:
+      build = pkgs: { pname, member, fileset, nativeCheckInputs ? [ ] }:
         let
           craneLib = crane.mkLib pkgs;
-          # Tests read config/cyrene.toml, so it enters the source with the crate.
+          reached = builtins.genericClosure {
+            startSet = [ (entry (locked pname)) ];
+            operator = item: map (dependency: entry (locked dependency)) (item.package.dependencies or [ ]);
+          };
+          cargoLockParsed = lock // { package = map (item: item.package) reached; };
+          manifest = lib.recursiveUpdate (lib.importTOML (repo + "/Cargo.toml")) {
+            workspace.members = [ member ];
+          };
           src = lib.fileset.toSource {
             root = repo;
-            fileset = lib.fileset.unions [
-              (repo + "/Cargo.toml")
-              ./Cargo.toml
-              ./src
-              ./config
-            ];
+            fileset = lib.fileset.unions ([ (repo + "/Cargo.toml") ] ++ fileset);
           };
           common = {
-            inherit src cargoLockParsed;
-            pname = "coda-sandbox";
+            inherit src cargoLockParsed pname;
             strictDeps = true;
             postPatch = "cp ${(pkgs.formats.toml { }).generate "Cargo.toml" manifest} Cargo.toml";
             # --offline, not --locked: Cargo compares lockfiles as text, and
             # the narrowed one is rewritten. Offline against a vendor
             # directory of exactly the locked packages, Cargo cannot resolve
             # anything the root Cargo.lock does not pin.
-            cargoExtraArgs = "--offline -p coda-sandbox";
+            cargoExtraArgs = "--offline -p ${pname}";
           };
           cargoArtifacts = craneLib.buildDepsOnly common;
         in
@@ -78,21 +70,34 @@
           package = craneLib.buildPackage (common // {
             inherit cargoArtifacts;
             doCheck = false;
-            meta.mainProgram = "coda-sandbox";
+            meta.mainProgram = pname;
           });
           checks = {
-            # The integration tests drive git in scratch repositories.
-            test = craneLib.cargoTest (common // {
-              inherit cargoArtifacts;
-              nativeCheckInputs = [ pkgs.git ];
-            });
-            clippy = craneLib.cargoClippy (common // {
+            "${pname}-test" = craneLib.cargoTest (common // { inherit cargoArtifacts nativeCheckInputs; });
+            "${pname}-clippy" = craneLib.cargoClippy (common // {
               inherit cargoArtifacts;
               cargoClippyExtraArgs = "--all-targets -- -D warnings";
             });
-            fmt = craneLib.cargoFmt (common // { cargoExtraArgs = "-p coda-sandbox"; });
+            "${pname}-fmt" = craneLib.cargoFmt (common // { cargoExtraArgs = "-p ${pname}"; });
           };
         };
+
+      crates = pkgs: {
+        # Tests read config/cyrene.toml, so it enters the source with the
+        # crate. The integration tests drive git in scratch repositories.
+        coda-sandbox = build pkgs {
+          pname = "coda-sandbox";
+          member = "crates/workspace-tools/sandbox";
+          fileset = [ ./Cargo.toml ./src ./config ];
+          nativeCheckInputs = [ pkgs.git ];
+        };
+        # The registry test reads models.example.json.
+        coda-swarm = build pkgs {
+          pname = "coda-swarm";
+          member = "crates/workspace-tools/swarm";
+          fileset = [ ../swarm/Cargo.toml ../swarm/src ../swarm/tests ../swarm/models.example.json ];
+        };
+      };
 
       sandboxModule = import ./nix {
         packages = self.packages;
@@ -115,15 +120,15 @@
     in
     {
       packages = forEachSystem (pkgs:
-        let coda-sandbox = (build pkgs).package;
-        in { inherit coda-sandbox; default = coda-sandbox; });
+        let built = lib.mapAttrs (_: crate: crate.package) (crates pkgs);
+        in built // { default = built.coda-sandbox; });
 
       nixosModules.default = sandboxModule;
 
-      checks = forEachSystem (pkgs: (build pkgs).checks // {
-        package = self.packages.${pkgs.stdenv.hostPlatform.system}.coda-sandbox;
-        coda-carry = carryCheck pkgs;
-      } // lib.optionalAttrs (pkgs.stdenv.hostPlatform.system == "x86_64-linux") (vmChecks pkgs));
+      checks = forEachSystem (pkgs:
+        lib.concatMapAttrs (name: crate: crate.checks // { ${name} = crate.package; }) (crates pkgs)
+        // { coda-carry = carryCheck pkgs; }
+        // lib.optionalAttrs (pkgs.stdenv.hostPlatform.system == "x86_64-linux") (vmChecks pkgs));
 
       # The CI guest on its own, for building or inspecting it:
       #   nix build ./crates/workspace-tools/sandbox#nixosConfigurations.coda-ci-guest.config.microvm.declaredRunner

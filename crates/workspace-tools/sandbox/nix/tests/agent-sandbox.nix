@@ -194,6 +194,10 @@ in
         assert after - before >= 60 * 1024 * 1024, (before, after)
         agent("rm /agents/coda/build/reflink-src /agents/coda/build/reflink-dst")
 
+    with subtest("the swarm supervisor and the coda-sandbox it calls are on PATH"):
+        agent("coda-swarm --help")
+        agent("command -v coda-sandbox")
+
     with subtest("host nix daemon from the userns container"):
         agent("nix store info")
         agent("nix path-info ${pkgs.coreutils}")

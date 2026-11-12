@@ -147,8 +147,9 @@ in
 
     swarm.package = lib.mkOption {
       type = lib.types.nullOr lib.types.package;
-      default = null;
-      description = "A swarm package to install in the container; null installs none.";
+      default = packages.${pkgs.stdenv.hostPlatform.system}.coda-swarm;
+      defaultText = lib.literalMD "the `coda-swarm` package of this flake";
+      description = "The coda-swarm supervisor to install in the container; null installs none.";
     };
 
     container = {

@@ -34,7 +34,10 @@ split is wrong.
 Your server runs workers only with a model registry. Copy
 `crates/workspace-tools/swarm/models.example.json` to `.swarm/models.json`
 (gitignored), keep the models you can run, and restart the `coda-swarm` MCP
-server; `.cursor/mcp.json` passes that file with `--models`. Workers run as
+server; `.cursor/mcp.json` passes that file with `--models`. CLI models carry
+no `key`: in the sandbox container the `claude`, `codex` and `gemini`
+wrappers fetch their own. HTTP models name a broker item in `key`, which the
+server fetches with `coda-sandbox token <item>`. Workers run as
 children of your server: closing the session or stopping the server stops
 every worker and marks it stopped on the board.
 
