@@ -115,6 +115,13 @@ resource "google_cloud_run_v2_service" "app" {
           value = env.value
         }
       }
+      dynamic "env" {
+        for_each = each.key == "physician" ? local.physician_clinical_library_env : {}
+        content {
+          name  = env.key
+          value = env.value
+        }
+      }
       env {
         name  = "DD_ENV"
         value = local.dd_env
@@ -335,13 +342,16 @@ resource "google_project_iam_member" "physician_worker_sql" {
   }
 }
 
+# Cloud Scheduler HTTP targets originate outside this VPC (like availability.tf),
+# so enabling the schedule opens network ingress while Cloud Run Invoker IAM and
+# in-process route-specific OIDC verification gate every request.
 resource "google_cloud_run_v2_service" "physician_worker" {
   for_each             = local.physician_scale_apps
   project              = google_project.environment.project_id
   name                 = "physician-worker"
   location             = var.region
-  description          = "Physician chat-turn worker; invoked only by Pub/Sub push."
-  ingress              = "INGRESS_TRAFFIC_INTERNAL_ONLY"
+  description          = "Physician worker; invoked only by authenticated Pub/Sub push, Cloud Scheduler wake and availability probes."
+  ingress              = length(local.physician_schedule) > 0 ? "INGRESS_TRAFFIC_ALL" : "INGRESS_TRAFFIC_INTERNAL_ONLY"
   iap_enabled          = false
   invoker_iam_disabled = false
   custom_audiences     = [local.physician_worker_audience]
@@ -414,6 +424,20 @@ resource "google_cloud_run_v2_service" "physician_worker" {
         value = google_service_account.physician_pubsub_push[each.key].email
       }
       dynamic "env" {
+        for_each = local.physician_schedule_env
+        content {
+          name  = env.key
+          value = env.value
+        }
+      }
+      dynamic "env" {
+        for_each = local.physician_clinical_library_env
+        content {
+          name  = env.key
+          value = env.value
+        }
+      }
+      dynamic "env" {
         for_each = local.physician_simulation_env
         content {
           name  = env.key
@@ -483,8 +507,8 @@ resource "google_cloud_run_v2_service" "physician_worker" {
   depends_on = [google_secret_manager_secret_iam_binding.bootstrap_reader, google_sql_user.app, google_project_iam_member.physician_worker_sql]
 }
 
-# Authoritative for run.invoker: only the push identity, never allUsers, the
-# site runtime or the IAP agent.
+# Authoritative for run.invoker: only the push, probe and scheduler identities,
+# never allUsers, the site runtime or the IAP agent.
 resource "google_cloud_run_v2_service_iam_binding" "physician_worker_invoker" {
   for_each = local.physician_scale_apps
   project  = google_project.environment.project_id
@@ -494,6 +518,7 @@ resource "google_cloud_run_v2_service_iam_binding" "physician_worker_invoker" {
   members = concat(
     ["serviceAccount:${google_service_account.physician_pubsub_push[each.key].email}"],
     [for identity in google_service_account.availability : "serviceAccount:${identity.email}"],
+    [for identity in google_service_account.physician_scheduler : "serviceAccount:${identity.email}"],
   )
 }
 

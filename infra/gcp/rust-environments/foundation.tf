@@ -12,20 +12,43 @@ locals {
   physician_scale_apps = local.physician_scale ? toset(["physician"]) : toset([])
   # Infrastructure-owned (or Doppler-owned) physician settings that the
   # nonsecret runtime_environment map may not set or override.
-  scale_owned_env = ["PHYSICIAN_CHAT_TOPIC", "PHYSICIAN_WORKER_AUDIENCE", "PHYSICIAN_PUSH_SERVICE_ACCOUNT", "PHYSICIAN_REDIS_URL", "PHYSICIAN_REDIS_CA_PEM", "PHYSICIAN_SIMULATION_PRACTICES", "PHYSICIAN_IAP_AUDIENCE", "PHYSICIAN_REHEARSAL_PRINCIPAL"]
+  scale_owned_env = [
+    "PHYSICIAN_CHAT_TOPIC",
+    "PHYSICIAN_WORKER_AUDIENCE",
+    "PHYSICIAN_PUSH_SERVICE_ACCOUNT",
+    "PHYSICIAN_SCHEDULER_SERVICE_ACCOUNT",
+    "PHYSICIAN_REDIS_URL",
+    "PHYSICIAN_REDIS_CA_PEM",
+    "PHYSICIAN_SIMULATION_PRACTICES",
+    "PHYSICIAN_IAP_AUDIENCE",
+    "PHYSICIAN_REHEARSAL_PRINCIPAL",
+    "CLINICAL_LIBRARY_URL",
+    "CLINICAL_LIBRARY_AUDIENCE",
+  ]
+  # Read-only clinical-evidence endpoint and OIDC audience passed to physician
+  # and physician-worker only; Duet never receives them here.
+  physician_clinical_library_env = var.physician_clinical_library_url != null ? {
+    CLINICAL_LIBRARY_URL      = var.physician_clinical_library_url
+    CLINICAL_LIBRARY_AUDIENCE = coalesce(var.physician_clinical_library_audience, var.physician_clinical_library_url)
+  } : {}
   # Rehearsal practices (physician_simulation_practices): the same list on the
   # site, the worker and the migration job, which seeds the rehearsal practice.
   physician_simulation_env = length(var.physician_simulation_practices) > 0 ? { PHYSICIAN_SIMULATION_PRACTICES = join(",", sort(tolist(var.physician_simulation_practices))) } : {}
-  services = setunion(toset([
-    "artifactregistry.googleapis.com", "cloudresourcemanager.googleapis.com",
-    "compute.googleapis.com", "iam.googleapis.com", "iamcredentials.googleapis.com",
-    "iap.googleapis.com", "logging.googleapis.com", "monitoring.googleapis.com",
-    "pubsub.googleapis.com", "redis.googleapis.com",
-    "run.googleapis.com", "secretmanager.googleapis.com", "serviceusage.googleapis.com",
-    "servicenetworking.googleapis.com", "sqladmin.googleapis.com", "storage.googleapis.com",
-    "sts.googleapis.com",
+  services = setunion(
+    toset([
+      "artifactregistry.googleapis.com", "cloudresourcemanager.googleapis.com",
+      "compute.googleapis.com", "iam.googleapis.com", "iamcredentials.googleapis.com",
+      "iap.googleapis.com", "logging.googleapis.com", "monitoring.googleapis.com",
+      "pubsub.googleapis.com", "redis.googleapis.com",
+      "run.googleapis.com", "secretmanager.googleapis.com", "serviceusage.googleapis.com",
+      "servicenetworking.googleapis.com", "sqladmin.googleapis.com", "storage.googleapis.com",
+      "sts.googleapis.com",
+    ]),
     # GKE only for the observability cluster (observability-cluster.tf).
-  ]), var.observability_cluster_enabled ? toset(["container.googleapis.com"]) : toset([]))
+    var.observability_cluster_enabled ? toset(["container.googleapis.com"]) : toset([]),
+    # Cloud Scheduler only when availability probes or the physician schedule use it.
+    length(local.availability) > 0 || length(local.physician_schedule) > 0 ? toset(["cloudscheduler.googleapis.com"]) : toset([]),
+  )
 }
 
 resource "google_project" "environment" {
@@ -74,9 +97,9 @@ resource "google_project" "environment" {
     }
     precondition {
       condition = alltrue(flatten([for app, config in var.runtime_environment : [
-        for key in keys(config) : !contains(local.scale_owned_env, key) && (app == "physician" || !startswith(key, "PHYSICIAN_"))
+        for key in keys(config) : !contains(local.scale_owned_env, key) && (app == "physician" || (!startswith(key, "PHYSICIAN_") && !startswith(key, "CLINICAL_LIBRARY_")))
       ]]))
-      error_message = "Physician scaling and rehearsal settings are owned by infrastructure (topic, worker audience, push identity, simulation practices) or Doppler (Redis URL and CA); runtime_environment may not set them, and Duet gets no PHYSICIAN_* settings."
+      error_message = "Physician scaling, schedule, clinical-library and rehearsal settings are owned by infrastructure or Doppler; runtime_environment may not set them, and Duet gets no PHYSICIAN_* or CLINICAL_LIBRARY_* settings."
     }
     precondition {
       condition     = !var.observability_enabled || var.observability_cluster_enabled
