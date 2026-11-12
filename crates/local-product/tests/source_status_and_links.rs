@@ -782,3 +782,124 @@ async fn practice_report_returns_one_outage_instead_of_patient_rows_when_majorit
         })
     );
 }
+
+#[tokio::test]
+async fn single_patient_lapsed_access_stays_patient_scoped_and_later_success_recovers_cleanly() {
+    let store = migrated_store().await;
+    let run = Uuid::new_v4().to_string();
+    let practice = format!("practice-{run}");
+    let source_id = format!("ehr-{run}");
+    let source = ScriptedSource::new(&source_id, Vec::new());
+
+    for index in 1..=3 {
+        source.push(ScriptedPull::Complete {
+            name: format!("Patient {index}"),
+            records: vec![(
+                "Patient".into(),
+                format!("p-{index}"),
+                format!("Patient {index}"),
+            )],
+        });
+        let ws = format!("pw-{index}-{run}");
+        SourceCoordinator::check_patient(
+            &store,
+            &*source,
+            &practice,
+            &format!("p-{index}"),
+            LinkTarget::Exact(&ws),
+            1_000,
+        )
+        .await
+        .unwrap();
+    }
+
+    // Only patient 1 hits LapsedAccess at t = 2_000 (1 of 3 = minority).
+    let ws1 = format!("pw-1-{run}");
+    source.push(ScriptedPull::LapsedAccess {
+        reason: "patient portal grant expired".into(),
+    });
+    let p1_lapsed = SourceCoordinator::check_patient(
+        &store,
+        &*source,
+        &practice,
+        "p-1",
+        LinkTarget::Exact(&ws1),
+        2_000,
+    )
+    .await
+    .unwrap();
+    assert_eq!(
+        p1_lapsed.standing,
+        SourceStanding::ReconnectNeeded {
+            last_good_read_at: Some(1_000),
+            attempted_at: Some(2_000),
+            reason: "patient portal grant expired".into(),
+        }
+    );
+
+    // Practice-level access stays Connected and practice summary stays PatientIssues (only p-1), not a practice outage.
+    assert_eq!(
+        store
+            .practice_source_access(&practice, &source_id)
+            .await
+            .unwrap(),
+        Some(SourceAccessState::Connected {
+            connected_at: 1_000
+        })
+    );
+    let report = store
+        .practice_source_report(&practice, &source_id)
+        .await
+        .unwrap();
+    match report.summary {
+        PracticeSourceSummary::PatientIssues { issues, .. } => {
+            assert_eq!(issues.len(), 1);
+            assert_eq!(issues[0].workspace_id, ws1);
+        }
+        other => panic!("expected single PatientIssues for 1/3 lapsed access, got {other:?}"),
+    }
+
+    // Even if practice_source_access was marked ReconnectNeeded, a subsequent Succeeded pull recovers UpToDate cleanly.
+    store
+        .set_practice_source_access(
+            &practice,
+            &source_id,
+            &SourceAccessState::ReconnectNeeded {
+                since: 2_500,
+                reason: "temporary token rotation".into(),
+            },
+            2_500,
+        )
+        .await
+        .unwrap();
+    source.push(ScriptedPull::Complete {
+        name: "Patient 1".into(),
+        records: vec![("Patient".into(), "p-1".into(), "Patient 1".into())],
+    });
+    let recovered = SourceCoordinator::check_patient(
+        &store,
+        &*source,
+        &practice,
+        "p-1",
+        LinkTarget::Exact(&ws1),
+        3_000,
+    )
+    .await
+    .unwrap();
+    assert_eq!(
+        recovered.standing,
+        SourceStanding::UpToDate {
+            last_good_read_at: 3_000,
+            missing_candidates: Vec::new(),
+        }
+    );
+    assert_eq!(
+        store
+            .practice_source_access(&practice, &source_id)
+            .await
+            .unwrap(),
+        Some(SourceAccessState::Connected {
+            connected_at: 3_000
+        })
+    );
+}

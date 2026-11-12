@@ -4,14 +4,14 @@
 use std::collections::{BTreeMap, BTreeSet, HashMap, HashSet};
 
 use sea_orm::{
-    ActiveModelTrait, ColumnTrait, ConnectionTrait, DbErr, EntityTrait, QueryFilter, QueryOrder,
-    QuerySelect, Set, TransactionTrait, sea_query::OnConflict,
+    ColumnTrait, ConnectionTrait, DbErr, EntityTrait, QueryFilter, QueryOrder, QuerySelect, Set,
+    TransactionTrait, sea_query::OnConflict,
 };
 
 use super::entities::{
-    patient_source_status, practice_source_access, source, source_patient_link, source_version,
-    workspace_practice,
+    patient_source_status, practice_source_access, source_patient_link, workspace_practice,
 };
+use super::sources::{MissingScope, apply_source_delivery_tx};
 use super::{Store, conversion_error, error};
 use crate::physician_sources::{PullOutcome, SourceRevision};
 use crate::source_status::{
@@ -19,9 +19,6 @@ use crate::source_status::{
     SourcePatientKey, SourcePatientLink, SourceStanding, SourceStatusError, derive_standing,
     summarize_practice_source, validate_non_empty,
 };
-
-/// Rows written per insert batch, inside Postgres's bind parameter limit.
-const RECORD_BATCH: usize = 200;
 
 async fn ensure_workspace_practice_tx(
     tx: &impl ConnectionTrait,
@@ -113,18 +110,6 @@ fn decode_link(row: source_patient_link::Model) -> SourcePatientLink {
         workspace_id: row.workspace,
         linked_at: row.linked_at,
     }
-}
-
-fn decode_revision(row: &source::Model) -> Result<Option<SourceRevision>, DbErr> {
-    row.revision
-        .clone()
-        .map(|value| {
-            let revision: SourceRevision = serde_json::from_value(value)
-                .map_err(conversion_error("Json", "SourceRevision"))?;
-            revision.validate().map_err(|reason| error(&reason))?;
-            Ok(revision)
-        })
-        .transpose()
 }
 
 impl Store {
@@ -419,8 +404,35 @@ impl Store {
         .exec_without_returning(&tx)
         .await?;
 
+        let total_linked = source_patient_link::Entity::find()
+            .filter(source_patient_link::Column::Practice.eq(practice_id))
+            .filter(source_patient_link::Column::SourceId.eq(source_id))
+            .all(&tx)
+            .await?
+            .len();
+        let all_statuses = patient_source_status::Entity::find()
+            .filter(patient_source_status::Column::Practice.eq(practice_id))
+            .filter(patient_source_status::Column::SourceId.eq(source_id))
+            .all(&tx)
+            .await?;
+        let mut lapsed_count = 0usize;
+        for row in all_statuses {
+            let decoded = decode_status(row)?;
+            if matches!(
+                decoded.latest_attempt,
+                Some(PullAttempt {
+                    outcome: PullOutcome::LapsedAccess { .. },
+                    ..
+                })
+            ) {
+                lapsed_count += 1;
+            }
+        }
+        let effective_total = total_linked.max(1);
+        let majority_lapsed = lapsed_count * 2 > effective_total;
+
         match &attempt.outcome {
-            PullOutcome::LapsedAccess { reason } => {
+            PullOutcome::LapsedAccess { reason } if majority_lapsed => {
                 let lapsed = SourceAccessState::ReconnectNeeded {
                     since: attempt.attempted_at,
                     reason: reason.clone(),
@@ -448,29 +460,47 @@ impl Store {
                 .await?;
             }
             PullOutcome::Succeeded { .. } | PullOutcome::Partial { .. } => {
-                let connected = SourceAccessState::Connected {
-                    connected_at: attempt.attempted_at,
+                let existing_access = practice_source_access::Entity::find_by_id((
+                    practice_id.to_owned(),
+                    source_id.to_owned(),
+                ))
+                .one(&tx)
+                .await?
+                .map(decode_access)
+                .transpose()?;
+                let should_set_connected = match existing_access {
+                    None => true,
+                    Some(SourceAccessState::ReconnectNeeded { .. }) => !majority_lapsed,
+                    Some(SourceAccessState::Connected { .. }) => false,
                 };
-                let access_json = serde_json::to_value(&connected)
-                    .map_err(conversion_error("SourceAccessState", "Json"))?;
-                practice_source_access::Entity::insert(practice_source_access::ActiveModel {
-                    practice: Set(practice_id.to_owned()),
-                    source_id: Set(source_id.to_owned()),
-                    access: Set(access_json),
-                    updated_at: Set(attempt.attempted_at),
-                })
-                .on_conflict(
-                    OnConflict::columns([
-                        practice_source_access::Column::Practice,
-                        practice_source_access::Column::SourceId,
-                    ])
-                    .do_nothing()
-                    .to_owned(),
-                )
-                .exec_without_returning(&tx)
-                .await?;
+                if should_set_connected {
+                    let connected = SourceAccessState::Connected {
+                        connected_at: attempt.attempted_at,
+                    };
+                    let access_json = serde_json::to_value(&connected)
+                        .map_err(conversion_error("SourceAccessState", "Json"))?;
+                    practice_source_access::Entity::insert(practice_source_access::ActiveModel {
+                        practice: Set(practice_id.to_owned()),
+                        source_id: Set(source_id.to_owned()),
+                        access: Set(access_json),
+                        updated_at: Set(attempt.attempted_at),
+                    })
+                    .on_conflict(
+                        OnConflict::columns([
+                            practice_source_access::Column::Practice,
+                            practice_source_access::Column::SourceId,
+                        ])
+                        .update_columns([
+                            practice_source_access::Column::Access,
+                            practice_source_access::Column::UpdatedAt,
+                        ])
+                        .to_owned(),
+                    )
+                    .exec_without_returning(&tx)
+                    .await?;
+                }
             }
-            PullOutcome::Failed { .. } => {}
+            PullOutcome::LapsedAccess { .. } | PullOutcome::Failed { .. } => {}
         }
 
         tx.commit().await?;
@@ -495,111 +525,21 @@ impl Store {
         validate_non_empty("practice_id", practice_id)?;
         validate_non_empty("workspace_id", workspace_id)?;
         validate_non_empty("source_id", source_id)?;
-        for record in records {
-            record.validate().map_err(|reason| error(&reason))?;
-            if record.workspace != workspace_id || record.source_id != source_id {
-                return Err(error("record outside its partial delivery").into());
-            }
-        }
-
-        let tx = self.db.begin().await?;
-        ensure_workspace_practice_tx(&tx, practice_id, workspace_id).await?;
-
-        source_version::Entity::insert(source_version::ActiveModel {
-            workspace: Set(workspace_id.to_owned()),
-            version: Set(0),
-        })
-        .on_conflict(
-            OnConflict::column(source_version::Column::Workspace)
-                .do_nothing()
-                .to_owned(),
-        )
-        .exec_without_returning(&tx)
-        .await?;
-
-        let version_row = source_version::Entity::find_by_id(workspace_id.to_owned())
-            .lock_exclusive()
-            .one(&tx)
-            .await?
-            .ok_or_else(|| error("missing source version"))?;
-        let current_version =
-            u64::try_from(version_row.version).map_err(|_| error("corrupt source version"))?;
-        let next_version = current_version as i64 + 1;
-
-        let history = source::Entity::find()
-            .filter(source::Column::Workspace.eq(workspace_id))
-            .order_by_desc(source::Column::ObservedAtVersion)
-            .all(&tx)
-            .await?;
-
-        let mut seen: HashMap<(String, String), SourceRevision> = HashMap::new();
-        let mut current: HashMap<String, Option<SourceRevision>> = HashMap::new();
-        for row in &history {
-            let decoded = decode_revision(row)?;
-            current
-                .entry(row.candidate.clone())
-                .or_insert_with(|| decoded.clone());
-            if let Some(decoded) = decoded {
-                seen.insert((row.candidate.clone(), decoded.revision.clone()), decoded);
-            }
-        }
-
-        let mut rows = Vec::new();
-        for record in records {
-            let identity = (record.candidate_id.clone(), record.revision.clone());
-            if seen
-                .get(&identity)
-                .is_some_and(|recorded| recorded != record)
-            {
-                return Err(error("conflicting source revision identity").into());
-            }
-            let holding = current.get(&record.candidate_id).and_then(Option::as_ref);
-            if holding.is_some_and(|existing| existing.revision == record.revision) {
-                continue;
-            }
-            let value =
-                serde_json::to_value(record).map_err(conversion_error("SourceRevision", "Json"))?;
-            rows.push(source::ActiveModel {
-                workspace: Set(workspace_id.to_owned()),
-                candidate: Set(record.candidate_id.clone()),
-                observed_at_version: Set(next_version),
-                revision: Set(Some(value)),
-            });
-        }
 
         let succeeded_types: HashSet<&str> =
             records.iter().map(|r| r.record_type.as_str()).collect();
-        let delivered: HashSet<&str> = records.iter().map(|r| r.candidate_id.as_str()).collect();
-        let mut missing_candidates: Vec<String> = current
-            .iter()
-            .filter_map(|(candidate, newest)| {
-                let existing = newest.as_ref()?;
-                if existing.source_id == source_id
-                    && succeeded_types.contains(existing.record_type.as_str())
-                    && !delivered.contains(candidate.as_str())
-                {
-                    Some(candidate.clone())
-                } else {
-                    None
-                }
-            })
-            .collect();
-        missing_candidates.sort();
-
-        let changed = rows.len();
-        for batch in rows.chunks(RECORD_BATCH) {
-            source::Entity::insert_many(batch.to_vec())
-                .exec_without_returning(&tx)
-                .await?;
-        }
-        if changed > 0 {
-            let mut bumped: source_version::ActiveModel = version_row.into();
-            bumped.version = Set(next_version);
-            bumped.update(&tx).await?;
-        }
-
+        let tx = self.db.begin().await?;
+        ensure_workspace_practice_tx(&tx, practice_id, workspace_id).await?;
+        let receipt = apply_source_delivery_tx(
+            &tx,
+            workspace_id,
+            source_id,
+            records,
+            MissingScope::SucceededTypes(&succeeded_types),
+        )
+        .await?;
         tx.commit().await?;
-        Ok((changed, missing_candidates))
+        Ok((receipt.changed, receipt.missing_candidates))
     }
 
     /// Reads all stored source status rows for `(practice_id, workspace_id)`, refusing

@@ -235,7 +235,6 @@ pub(super) mod source_pull {
 }
 
 /// Binds each patient workspace to its single owning practice.
-#[allow(dead_code, reason = "queried by runtime::source_status")]
 pub(super) mod workspace_practice {
     use sea_orm::entity::prelude::*;
 
@@ -255,7 +254,6 @@ pub(super) mod workspace_practice {
 }
 
 /// Binds one source patient within a practice to one Chords workspace across pulls.
-#[allow(dead_code, reason = "queried by runtime::source_status")]
 pub(super) mod source_patient_link {
     use sea_orm::entity::prelude::*;
 
@@ -280,7 +278,6 @@ pub(super) mod source_patient_link {
 }
 
 /// Practice-level connection access standing for one source adapter.
-#[allow(dead_code, reason = "queried by runtime::source_status")]
 pub(super) mod practice_source_access {
     use sea_orm::entity::prelude::*;
 
@@ -303,7 +300,6 @@ pub(super) mod practice_source_access {
 }
 
 /// Per-patient source pull status, retaining `last_good_read_at` across failures.
-#[allow(dead_code, reason = "queried by runtime::source_status")]
 pub(super) mod patient_source_status {
     use sea_orm::entity::prelude::*;
 

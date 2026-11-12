@@ -700,4 +700,52 @@ mod tests {
         let stale: Value = serde_json::from_str(stale.text().unwrap()).unwrap();
         assert_eq!(check(stale), vec!["lab".to_string()]);
     }
+
+    #[test]
+    fn catch_up_accepts_exact_read_of_source_with_filed_envelope() {
+        let mut current = source("r2", r#"{"resourceType":"Observation","id":"k-1"}"#);
+        current.envelope = Some(RecordEnvelope {
+            bucket: Bucket::Results,
+            source_kind: SourceRecordKind {
+                kind: "Observation".into(),
+                category: Some("laboratory".into()),
+            },
+            native_id: "k-1".into(),
+            version: RecordVersion::Source("2".into()),
+            dates: vec![FiledDate {
+                role: DateRole::Effective,
+                field: "effectiveDateTime".into(),
+                value: "2026-08-21T06:15:00-04:00".into(),
+            }],
+            status: Some("final".into()),
+            codes: Vec::new(),
+            title: Some("Potassium".into()),
+            native_link: None,
+        });
+        let refresh = SourceRefresh::between(0, &[], 1, std::slice::from_ref(&current));
+        let exact = exact_read(
+            std::slice::from_ref(&current),
+            "patient",
+            &["lab".into()],
+            65536,
+        )
+        .unwrap();
+        let original = exact.text().unwrap().to_owned();
+        let mut events = Vec::new();
+        accepted_result(
+            &mut events,
+            "read",
+            &original,
+            harness::engine::results::ResultView::whole("read", &original),
+        );
+        assert!(
+            caught_up(
+                &events,
+                std::slice::from_ref(&refresh),
+                std::slice::from_ref(&current),
+            )
+            .unwrap()
+            .is_empty()
+        );
+    }
 }

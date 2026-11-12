@@ -10,12 +10,10 @@
 //! - [`SourceCoordinator`] executes patient checks, practice checks, and
 //!   reconnect operations through [`PatientSource`] over [`Store`].
 
-use std::collections::HashSet;
-
 use serde::{Deserialize, Serialize};
 
+use crate::physician_sources::{ChartPullReceipt, PatientSource};
 pub use crate::physician_sources::{FailedPart, PullOutcome, ReconnectReceipt, SourcePullOutput};
-use crate::physician_sources::{PatientSource, SourceRevision};
 use crate::runtime::Store;
 use crate::runtime::sources::SourcePull;
 
@@ -218,31 +216,42 @@ pub fn derive_standing(
     status: Option<&PatientSourceRecordStatus>,
 ) -> SourceStanding {
     if let Some(SourceAccessState::ReconnectNeeded { since, reason }) = access {
-        let last_good_read_at = status.and_then(|row| row.last_good_read_at);
-        let attempted_at = status
-            .and_then(|row| row.latest_attempt.as_ref().map(|a| a.attempted_at))
-            .or(Some(*since));
-        let effective_reason = status
-            .and_then(|row| match &row.latest_attempt {
-                Some(PullAttempt {
-                    outcome: PullOutcome::LapsedAccess { reason: patient },
-                    ..
-                }) => Some(patient.clone()),
-                Some(PullAttempt {
-                    outcome:
-                        PullOutcome::Succeeded { .. }
-                        | PullOutcome::Partial { .. }
-                        | PullOutcome::Failed { .. },
-                    ..
-                })
-                | None => None,
+        let fresh_success_after_lapse = status.is_some_and(|row| {
+            row.latest_attempt.as_ref().is_some_and(|attempt| {
+                attempt.attempted_at > *since
+                    && matches!(
+                        attempt.outcome,
+                        PullOutcome::Succeeded { .. } | PullOutcome::Partial { .. }
+                    )
             })
-            .unwrap_or_else(|| reason.clone());
-        return SourceStanding::ReconnectNeeded {
-            last_good_read_at,
-            attempted_at,
-            reason: effective_reason,
-        };
+        });
+        if !fresh_success_after_lapse {
+            let last_good_read_at = status.and_then(|row| row.last_good_read_at);
+            let attempted_at = status
+                .and_then(|row| row.latest_attempt.as_ref().map(|a| a.attempted_at))
+                .or(Some(*since));
+            let effective_reason = status
+                .and_then(|row| match &row.latest_attempt {
+                    Some(PullAttempt {
+                        outcome: PullOutcome::LapsedAccess { reason: patient },
+                        ..
+                    }) => Some(patient.clone()),
+                    Some(PullAttempt {
+                        outcome:
+                            PullOutcome::Succeeded { .. }
+                            | PullOutcome::Partial { .. }
+                            | PullOutcome::Failed { .. },
+                        ..
+                    })
+                    | None => None,
+                })
+                .unwrap_or_else(|| reason.clone());
+            return SourceStanding::ReconnectNeeded {
+                last_good_read_at,
+                attempted_at,
+                reason: effective_reason,
+            };
+        }
     }
 
     let Some(status) = status else {
@@ -737,9 +746,6 @@ async fn apply_pull_output(
 ) -> Result<PatientCheckReport, SourceStatusError> {
     match output {
         SourcePullOutput::Complete { patient, records } => {
-            let missing_candidates =
-                compute_missing_candidates(store, &workspace_id, source.source_id(), &records)
-                    .await?;
             let records_delivered = records.len();
             let pull = SourcePull {
                 source_id: source.source_id().to_owned(),
@@ -747,7 +753,12 @@ async fn apply_pull_output(
                 patient,
                 pulled_at: now,
             };
-            let changed = store.record_chart(&workspace_id, &records, &pull).await?;
+            let ChartPullReceipt {
+                changed,
+                missing_candidates,
+            } = store
+                .record_chart_with_receipt(&workspace_id, &records, &pull)
+                .await?;
             let attempt = PullAttempt {
                 attempted_at: now,
                 outcome: PullOutcome::Succeeded {
@@ -845,26 +856,6 @@ async fn apply_pull_output(
             })
         }
     }
-}
-
-async fn compute_missing_candidates(
-    store: &Store,
-    workspace_id: &str,
-    source_id: &str,
-    records: &[SourceRevision],
-) -> Result<Vec<String>, SourceStatusError> {
-    let current = store.sources(workspace_id).await?;
-    let delivered: HashSet<&str> = records.iter().map(|r| r.candidate_id.as_str()).collect();
-    let mut missing: Vec<String> = current
-        .sources
-        .into_iter()
-        .filter(|existing| {
-            existing.source_id == source_id && !delivered.contains(existing.candidate_id.as_str())
-        })
-        .map(|existing| existing.candidate_id)
-        .collect();
-    missing.sort();
-    Ok(missing)
 }
 
 #[cfg(test)]

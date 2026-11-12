@@ -53,10 +53,14 @@ async fn a_second_migrate_records_nothing_new() {
     assert_eq!(
         names(
             &store.db,
-            "SELECT version AS name FROM physician_runtime_migrations"
+            "SELECT version AS name FROM physician_runtime_migrations ORDER BY version"
         )
         .await,
-        ["m20261111_init", "m20261111_response_feedback"]
+        [
+            "m20261111_init",
+            "m20261111_response_feedback",
+            "m20261112_shared_records_and_source_status"
+        ]
     );
 }
 

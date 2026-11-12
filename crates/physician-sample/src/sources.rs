@@ -18,9 +18,9 @@ use local_product::physician_sources::{PatientSource, workspace_id};
 use local_product::runtime::Store;
 use local_product::source_status::{
     LinkTarget, PracticeOutageKind, PracticeSourceReport, PracticeSourceSummary, SourceCoordinator,
-    SourceStatusError,
+    SourcePatientKey, SourceStatusError,
 };
-use physician_auth::AuthStore;
+use physician_auth::{AuthStore, Membership};
 use serde::Deserialize;
 use serde_json::{Value, json};
 
@@ -291,7 +291,8 @@ pub(crate) async fn post_check(Path(source_id): Path<String>, request: Request<B
         return StatusCode::NOT_FOUND.into_response();
     };
 
-    let practice_id = ConnectedCare::identity(&parts.extensions).practice_id;
+    let identity = ConnectedCare::identity(&parts.extensions);
+    let practice_id = identity.practice_id.clone();
     let Ok(now) = practice_now_seconds(&parts.extensions, &practice_id).await else {
         return StatusCode::SERVICE_UNAVAILABLE.into_response();
     };
@@ -299,6 +300,11 @@ pub(crate) async fn post_check(Path(source_id): Path<String>, request: Request<B
     if parsed.patient_workspace_id.is_some() || parsed.source_patient_id.is_some() {
         let resolved = match (&parsed.patient_workspace_id, &parsed.source_patient_id) {
             (Some(ws), spid_opt) => {
+                if let Some(auth_store) = parts.extensions.get::<Arc<dyn AuthStore>>()
+                    && auth_store.membership(&identity, ws).await != Membership::Allowed
+                {
+                    return auth::not_found();
+                }
                 match store
                     .source_link_for_workspace(&practice_id, &source_id, ws)
                     .await
@@ -324,8 +330,27 @@ pub(crate) async fn post_check(Path(source_id): Path<String>, request: Request<B
                 }
             }
             (None, Some(spid)) => {
-                let default_ws = workspace_id(&source_id, spid);
-                (spid.clone(), default_ws, false)
+                let existing = match store
+                    .source_patient_link(&SourcePatientKey {
+                        practice_id: practice_id.clone(),
+                        source_id: source_id.clone(),
+                        source_patient_id: spid.clone(),
+                    })
+                    .await
+                {
+                    Ok(existing) => existing,
+                    Err(_) => return StatusCode::SERVICE_UNAVAILABLE.into_response(),
+                };
+                let target_ws = existing
+                    .as_ref()
+                    .map(|link| link.workspace_id.clone())
+                    .unwrap_or_else(|| workspace_id(&source_id, spid));
+                if let Some(auth_store) = parts.extensions.get::<Arc<dyn AuthStore>>()
+                    && auth_store.membership(&identity, &target_ws).await != Membership::Allowed
+                {
+                    return auth::not_found();
+                }
+                (spid.clone(), target_ws, existing.is_some())
             }
             (None, None) => unreachable!(),
         };

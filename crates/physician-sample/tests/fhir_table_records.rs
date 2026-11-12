@@ -314,6 +314,65 @@ async fn saved_record_equals_source_bytes_and_absent_parts_stay_absent() {
     let _ = fs::remove_dir_all(&bank);
 }
 
+#[test]
+fn multi_category_fhir_records_and_attachment_edge_cases_file_faithfully() {
+    use local_product::physician_sources::adapter::{
+        FHIR_R4_TABLE, RecordFilingError, file_json_record,
+    };
+
+    // Multi-category DocumentReference with local LOINC code first and `clinical-note` second
+    // files into Bucket::Notes with uppercase MIME type `TEXT/PLAIN; charset=UTF-8`.
+    let note_b64 = base64::engine::general_purpose::STANDARD.encode("Follow-up note body.");
+    let multi_cat_note = format!(
+        r#"{{"resourceType":"DocumentReference","id":"doc-multi","status":"current","category":[{{"coding":[{{"system":"http://loinc.org","code":"11506-3"}}]}},{{"coding":[{{"code":"clinical-note"}}]}}],"content":[{{"attachment":{{"contentType":"TEXT/PLAIN; charset=UTF-8","data":"{note_b64}"}}}}]}}"#
+    );
+    let filed_note =
+        file_json_record(&FHIR_R4_TABLE, "pw-multi", "ehr", &multi_cat_note, None).unwrap();
+    let note_env = filed_note.envelope.as_ref().unwrap();
+    assert_eq!(note_env.bucket, Bucket::Notes);
+    assert_eq!(
+        note_env.source_kind,
+        SourceRecordKind {
+            kind: "DocumentReference".into(),
+            category: Some("clinical-note".into()),
+        }
+    );
+    assert_eq!(filed_note.readable_parts.len(), 1);
+    assert_eq!(filed_note.readable_parts[0].text, "Follow-up note body.");
+
+    // Multi-coded Observation category with vendor code first and `laboratory` second files into Bucket::Results.
+    let multi_cat_obs = r#"{"resourceType":"Observation","id":"obs-multi","status":"final","category":[{"coding":[{"code":"local-chem"},{"code":"laboratory"}]}],"code":{"text":"Sodium"}}"#;
+    let filed_obs =
+        file_json_record(&FHIR_R4_TABLE, "pw-multi", "ehr", multi_cat_obs, None).unwrap();
+    let obs_env = filed_obs.envelope.as_ref().unwrap();
+    assert_eq!(obs_env.bucket, Bucket::Results);
+    assert_eq!(
+        obs_env.source_kind,
+        SourceRecordKind {
+            kind: "Observation".into(),
+            category: Some("laboratory".into()),
+        }
+    );
+
+    // Attachment with contentType `text/plain` and absent `data` (and no external URL) does NOT synthesize an empty ReadablePart.
+    let metadata_only_doc = r#"{"resourceType":"DocumentReference","id":"doc-nodata","status":"current","category":[{"coding":[{"code":"clinical-note"}]}],"content":[{"attachment":{"contentType":"text/plain"}}]}"#;
+    let filed_nodata =
+        file_json_record(&FHIR_R4_TABLE, "pw-multi", "ehr", metadata_only_doc, None).unwrap();
+    assert!(
+        filed_nodata.readable_parts.is_empty(),
+        "absent attachment.data must not synthesize an empty ReadablePart"
+    );
+
+    // Attachment pointing only to an external `url` without inline `data` fails explicitly.
+    let external_url_doc = r#"{"resourceType":"DocumentReference","id":"doc-url","status":"current","content":[{"attachment":{"contentType":"text/plain","url":"https://ehr.example/Binary/99"}}]}"#;
+    let err =
+        file_json_record(&FHIR_R4_TABLE, "pw-multi", "ehr", external_url_doc, None).unwrap_err();
+    assert!(
+        matches!(err, RecordFilingError::ExternalAttachment { .. }),
+        "expected ExternalAttachment error, got {err:?}"
+    );
+}
+
 #[tokio::test]
 async fn source_tools_return_bucket_kind_and_dated_roles_and_filter_by_bucket() {
     let bank = temp_bank_dir("tools");

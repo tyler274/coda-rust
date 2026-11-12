@@ -131,7 +131,9 @@ async fn check_and_reconnect_flow_preserves_last_good_read_and_collapses_practic
     let (auth, runtime, db_url) = stores().await;
     let run = run_id();
     let practice_id = format!("practice-{}", run.to_lowercase());
-    let email = format!("{}@source-check.test", run.to_lowercase());
+    let email = format!("{}@codahealth.test", run.to_lowercase());
+    let colleague_id = format!("{run}-colleague");
+    let colleague_email = format!("{}-colleague@codahealth.test", run.to_lowercase());
     let initial_clock: u64 = 1_787_846_400; // 2026-08-27T16:00:00.000Z
     let initial_iso = "2026-08-27T16:00:00.000Z";
 
@@ -149,6 +151,17 @@ async fn check_and_reconnect_flow_preserves_last_good_read_and_collapses_practic
         .unwrap();
     assert_eq!(loaded.patients, 3);
     assert!(loaded.failed.is_empty(), "{:?}", loaded.failed);
+
+    auth.ensure_account(
+        &practice_id,
+        &colleague_id,
+        &colleague_email,
+        "Dr. Colleague",
+        false,
+        1,
+    )
+    .await
+    .unwrap();
 
     let admin = PhysicianIdentity {
         practice_id: practice_id.clone(),
@@ -175,6 +188,25 @@ async fn check_and_reconnect_flow_preserves_last_good_read_and_collapses_practic
     .await;
     let base = format!("http://{}", server.address);
     let session = sign_in(&base, &email).await;
+    let colleague_session = sign_in(&base, &colleague_email).await;
+
+    // A same-clinic colleague without panel assignment receives 404 on patient-targeted source checks.
+    let (denied_ws_status, _) = post_json(
+        &base,
+        &colleague_session,
+        "/connections/synthetic-charts/check",
+        json!({ "patient_workspace_id": ws1 }),
+    )
+    .await;
+    assert_eq!(denied_ws_status, 404);
+    let (denied_spid_status, _) = post_json(
+        &base,
+        &colleague_session,
+        "/connections/synthetic-charts/check",
+        json!({ "source_patient_id": format!("{run}-1") }),
+    )
+    .await;
+    assert_eq!(denied_spid_status, 404);
 
     // 1. Healthy baseline readback on /connections, /today, and /patient-workspaces/{ws1}.
     let (status, connections) = get_json(&base, &session, "/connections").await;
@@ -466,7 +498,7 @@ async fn local_proof_mode_endpoint_is_absent_when_local_proof_is_disabled() {
     let (auth, _runtime, db_url) = stores().await;
     let run = run_id();
     let practice_id = format!("practice-{}", run.to_lowercase());
-    let email = format!("{}@no-proof.test", run.to_lowercase());
+    let email = format!("{}-guard@codahealth.test", run.to_lowercase());
 
     auth.ensure_practice(&practice_id, PracticeClock::RealTime)
         .await

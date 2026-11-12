@@ -149,6 +149,114 @@ async fn selected(
     Ok(Observation { version, sources })
 }
 
+/// Which held candidates can be evaluated for absence during a source delivery.
+pub(super) enum MissingScope<'a> {
+    /// Complete chart pull: every active candidate for `source_id` is expected.
+    FullChart,
+    /// Partial pull: only active candidates whose `record_type` succeeded in this pull are checked.
+    SucceededTypes(&'a HashSet<&'a str>),
+}
+
+/// Single authoritative source-delivery writer shared by complete and partial pulls.
+///
+/// Under the workspace's exclusive `source_version` lock, validates identity consistency
+/// across history, appends changed candidate observations in batches, bumps `source_version`
+/// when observations changed, and retains previously active candidates absent from `records`
+/// while reporting them in [`ChartPullReceipt::missing_candidates`].
+pub(super) async fn apply_source_delivery_tx(
+    tx: &impl ConnectionTrait,
+    workspace: &str,
+    source_id: &str,
+    records: &[SourceRevision],
+    missing_scope: MissingScope<'_>,
+) -> Result<ChartPullReceipt, DbErr> {
+    for record in records {
+        record.validate().map_err(|e| error(&e))?;
+        if record.workspace != workspace || record.source_id != source_id {
+            return Err(error("record outside its delivery"));
+        }
+    }
+    ensure_version(tx, workspace).await?;
+    let row = source_version::Entity::find_by_id(workspace.to_owned())
+        .lock_exclusive()
+        .one(tx)
+        .await?
+        .ok_or_else(|| error("missing source version"))?;
+    let version = version_of(row.version)?;
+    let next = version as i64 + 1;
+    let history = source::Entity::find()
+        .filter(source::Column::Workspace.eq(workspace))
+        .order_by_desc(source::Column::ObservedAtVersion)
+        .all(tx)
+        .await?;
+    let mut seen: HashMap<(String, String), SourceRevision> = HashMap::new();
+    let mut current: HashMap<String, Option<SourceRevision>> = HashMap::new();
+    for entry in &history {
+        let decoded = decode(entry)?;
+        current
+            .entry(entry.candidate.clone())
+            .or_insert_with(|| decoded.clone());
+        if let Some(decoded) = decoded {
+            seen.insert((entry.candidate.clone(), decoded.revision.clone()), decoded);
+        }
+    }
+    let mut rows = Vec::new();
+    for record in records {
+        let identity = (record.candidate_id.clone(), record.revision.clone());
+        if seen
+            .get(&identity)
+            .is_some_and(|recorded| recorded != record)
+        {
+            return Err(error("conflicting source revision identity"));
+        }
+        let holding = current.get(&record.candidate_id).and_then(Option::as_ref);
+        if holding.is_some_and(|existing| existing.revision == record.revision) {
+            continue;
+        }
+        let value = serde_json::to_value(record)
+            .map_err(conversion_error("SourceRevision", "source revision"))?;
+        rows.push(source::ActiveModel {
+            workspace: Set(workspace.into()),
+            candidate: Set(record.candidate_id.clone()),
+            observed_at_version: Set(next),
+            revision: Set(Some(value)),
+        });
+    }
+    let delivered: HashSet<&str> = records.iter().map(|r| r.candidate_id.as_str()).collect();
+    let mut missing_candidates = Vec::new();
+    for (candidate, newest) in &current {
+        let Some(existing) = newest.as_ref() else {
+            continue;
+        };
+        if existing.source_id != source_id || delivered.contains(candidate.as_str()) {
+            continue;
+        }
+        let in_scope = match missing_scope {
+            MissingScope::FullChart => true,
+            MissingScope::SucceededTypes(types) => types.contains(existing.record_type.as_str()),
+        };
+        if in_scope {
+            missing_candidates.push(candidate.clone());
+        }
+    }
+    missing_candidates.sort();
+    let changed = rows.len();
+    for batch in rows.chunks(CHART_BATCH) {
+        source::Entity::insert_many(batch.to_vec())
+            .exec_without_returning(tx)
+            .await?;
+    }
+    if changed > 0 {
+        let mut bumped: source_version::ActiveModel = row.into();
+        bumped.version = Set(next);
+        bumped.update(tx).await?;
+    }
+    Ok(ChartPullReceipt {
+        changed,
+        missing_candidates,
+    })
+}
+
 impl Store {
     /// Records one immutable source revision. An unseen revision appends a row
     /// and bumps the workspace version, including after withdrawal. Replaying
@@ -250,84 +358,20 @@ impl Store {
         records: &[SourceRevision],
         pull: &SourcePull,
     ) -> Result<ChartPullReceipt, DbErr> {
-        for record in records {
-            record.validate().map_err(|e| error(&e))?;
-            if record.workspace != workspace || record.source_id != pull.source_id {
-                return Err(error("record outside its delivery"));
-            }
-        }
         let tx = self.db.begin().await?;
-        ensure_version(&tx, workspace).await?;
-        let row = source_version::Entity::find_by_id(workspace.to_owned())
-            .lock_exclusive()
-            .one(&tx)
-            .await?
-            .ok_or_else(|| error("missing source version"))?;
-        let version = version_of(row.version)?;
-        let next = version as i64 + 1;
-        let history = source::Entity::find()
-            .filter(source::Column::Workspace.eq(workspace))
-            .order_by_desc(source::Column::ObservedAtVersion)
-            .all(&tx)
-            .await?;
-        let mut seen: HashMap<(String, String), SourceRevision> = HashMap::new();
-        let mut current: HashMap<String, Option<SourceRevision>> = HashMap::new();
-        for row in &history {
-            let decoded = decode(row)?;
-            current
-                .entry(row.candidate.clone())
-                .or_insert_with(|| decoded.clone());
-            if let Some(decoded) = decoded {
-                seen.insert((row.candidate.clone(), decoded.revision.clone()), decoded);
-            }
-        }
-        let mut rows = Vec::new();
-        for record in records {
-            let identity = (record.candidate_id.clone(), record.revision.clone());
-            if seen
-                .get(&identity)
-                .is_some_and(|recorded| recorded != record)
-            {
-                return Err(error("conflicting source revision identity"));
-            }
-            let holding = current.get(&record.candidate_id).and_then(Option::as_ref);
-            if holding.is_some_and(|source| source.revision == record.revision) {
-                continue;
-            }
-            let value = serde_json::to_value(record).map_err(|_| error("invalid source"))?;
-            rows.push(source::ActiveModel {
-                workspace: Set(workspace.into()),
-                candidate: Set(record.candidate_id.clone()),
-                observed_at_version: Set(next),
-                revision: Set(Some(value)),
-            });
-        }
-        let delivered: HashSet<&str> = records.iter().map(|r| r.candidate_id.as_str()).collect();
-        let mut missing_candidates = Vec::new();
-        for (candidate, newest) in &current {
-            let held = newest
-                .as_ref()
-                .is_some_and(|source| source.source_id == pull.source_id);
-            if held && !delivered.contains(candidate.as_str()) {
-                missing_candidates.push(candidate.clone());
-            }
-        }
-        missing_candidates.sort();
-        let changed = rows.len();
-        for batch in rows.chunks(CHART_BATCH) {
-            source::Entity::insert_many(batch.to_vec())
-                .exec_without_returning(&tx)
-                .await?;
-        }
-        if changed > 0 {
-            let mut bumped: source_version::ActiveModel = row.into();
-            bumped.version = Set(next);
-            bumped.update(&tx).await?;
-        }
-        let patient =
-            serde_json::to_value(&pull.patient).map_err(|_| error("invalid source patient"))?;
-        let missing_json = serde_json::to_value(&missing_candidates)
-            .map_err(|_| error("invalid missing candidates"))?;
+        let receipt = apply_source_delivery_tx(
+            &tx,
+            workspace,
+            &pull.source_id,
+            records,
+            MissingScope::FullChart,
+        )
+        .await?;
+        let patient = serde_json::to_value(&pull.patient)
+            .map_err(conversion_error("SourcePatient", "source pull patient"))?;
+        let missing_json = serde_json::to_value(&receipt.missing_candidates).map_err(
+            conversion_error("Vec<String>", "source pull missing candidates"),
+        )?;
         source_pull::Entity::insert(source_pull::ActiveModel {
             workspace: Set(workspace.into()),
             source_id: Set(pull.source_id.clone()),
@@ -352,10 +396,7 @@ impl Store {
         .exec_without_returning(&tx)
         .await?;
         tx.commit().await?;
-        Ok(ChartPullReceipt {
-            changed,
-            missing_candidates,
-        })
+        Ok(receipt)
     }
 
     /// Previously saved candidate IDs from `source_id` that were absent on its
@@ -373,7 +414,7 @@ impl Store {
             return Ok(Vec::new());
         };
         serde_json::from_value(row.missing_candidates)
-            .map_err(|_| error("corrupt missing candidates"))
+            .map_err(conversion_error("Json", "source pull missing candidates"))
     }
 
     /// Explicitly withdraws one candidate observation from `workspace` (such as

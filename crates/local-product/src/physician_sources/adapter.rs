@@ -130,6 +130,14 @@ pub enum RecordFilingError {
         /// Media type sent by the source.
         content_type: String,
     },
+    /// Attachment pointed to an external URL without inline text bytes Coda can read.
+    #[error("{label} has external attachment URL `{url}` without inline data")]
+    ExternalAttachment {
+        /// Declared attachment label.
+        label: &'static str,
+        /// External URL carried by the source attachment.
+        url: String,
+    },
     /// Attachment base64 payload could not be decoded.
     #[error("{label}: {source}")]
     InvalidBase64 {
@@ -502,8 +510,8 @@ pub fn file_json_record(
         .and_then(scalar_string)
         .ok_or(RecordFilingError::MissingField(table.id_field))?;
 
-    let category = first_extracted(&resource, table.category_extractors);
-    let matched = match_row(table, &kind, category.as_deref());
+    let categories = extract_all_values(&resource, table.category_extractors);
+    let (matched, category) = match_row(table, &kind, &categories);
 
     let filed_dates = extract_dates(&resource, matched.dates);
     let legacy_dates: Vec<RecordDate> = filed_dates
@@ -572,32 +580,47 @@ struct MatchedSpec {
     attachments: &'static [AttachmentRule],
 }
 
-fn match_row(table: &AdapterTable, kind: &str, category: Option<&str>) -> MatchedSpec {
+fn match_row(
+    table: &AdapterTable,
+    kind: &str,
+    categories: &[String],
+) -> (MatchedSpec, Option<String>) {
+    let first_category = || categories.first().cloned();
     for row in table.rows.iter().filter(|row| row.kind == kind) {
-        let matched = match row.category {
-            CategoryMatch::Any => true,
-            CategoryMatch::OneOf(allowed) => category.is_some_and(|cat| allowed.contains(&cat)),
-            CategoryMatch::OtherOrNone => true,
+        let matched_category = match row.category {
+            CategoryMatch::Any => Some(first_category()),
+            CategoryMatch::OneOf(allowed) => categories
+                .iter()
+                .find(|cat| allowed.contains(&cat.as_str()))
+                .cloned()
+                .map(Some),
+            CategoryMatch::OtherOrNone => Some(first_category()),
         };
-        if matched {
-            return MatchedSpec {
-                bucket: row.bucket,
-                dates: row.dates,
-                status: row.status,
-                codes: row.codes,
-                title: row.title,
-                attachments: row.attachments,
-            };
+        if let Some(resolved_category) = matched_category {
+            return (
+                MatchedSpec {
+                    bucket: row.bucket,
+                    dates: row.dates,
+                    status: row.status,
+                    codes: row.codes,
+                    title: row.title,
+                    attachments: row.attachments,
+                },
+                resolved_category,
+            );
         }
     }
-    MatchedSpec {
-        bucket: table.unmapped.bucket,
-        dates: table.unmapped.dates,
-        status: table.unmapped.status,
-        codes: table.unmapped.codes,
-        title: table.unmapped.title,
-        attachments: table.unmapped.attachments,
-    }
+    (
+        MatchedSpec {
+            bucket: table.unmapped.bucket,
+            dates: table.unmapped.dates,
+            status: table.unmapped.status,
+            codes: table.unmapped.codes,
+            title: table.unmapped.title,
+            attachments: table.unmapped.attachments,
+        },
+        first_category(),
+    )
 }
 
 fn lookup_path<'a>(root: &'a Value, path: &str) -> Option<&'a Value> {
@@ -620,6 +643,65 @@ fn first_extracted(resource: &Value, extractors: &[ValueExtractor]) -> Option<St
     extractors
         .iter()
         .find_map(|extractor| apply_extractor(resource, *extractor))
+}
+
+fn extract_all_values(resource: &Value, extractors: &[ValueExtractor]) -> Vec<String> {
+    let mut out = Vec::new();
+    for extractor in extractors {
+        match *extractor {
+            ValueExtractor::Scalar(path) => {
+                if let Some(value) = lookup_path(resource, path).and_then(scalar_string) {
+                    out.push(value);
+                }
+            }
+            ValueExtractor::ConceptCode(path) => {
+                if let Some(value) = lookup_path(resource, path) {
+                    collect_concept_codes(value, &mut out);
+                }
+            }
+            ValueExtractor::ConceptLabel(path) => {
+                if let Some(value) = lookup_path(resource, path).and_then(concept_label) {
+                    out.push(value);
+                }
+            }
+            ValueExtractor::HumanName(path) => {
+                if let Some(value) = lookup_path(resource, path).and_then(human_name) {
+                    out.push(value);
+                }
+            }
+        }
+    }
+    out
+}
+
+fn collect_concept_codes(value: &Value, out: &mut Vec<String>) {
+    match value {
+        Value::String(s) if !s.is_empty() => out.push(s.clone()),
+        Value::Object(obj) => {
+            let before = out.len();
+            if let Some(codings) = obj.get("coding").and_then(Value::as_array) {
+                for item in codings {
+                    if let Some(code) = item.get("code").and_then(scalar_string) {
+                        out.push(code);
+                    }
+                }
+            }
+            if out.len() == before
+                && let Some(fallback) = obj
+                    .get("code")
+                    .and_then(scalar_string)
+                    .or_else(|| obj.get("text").and_then(scalar_string))
+            {
+                out.push(fallback);
+            }
+        }
+        Value::Array(items) => {
+            for item in items {
+                collect_concept_codes(item, out);
+            }
+        }
+        _ => {}
+    }
 }
 
 fn apply_extractor(resource: &Value, extractor: ValueExtractor) -> Option<String> {
@@ -811,18 +893,39 @@ fn extract_attachments(
                     continue;
                 };
                 for item in items {
-                    let content_type = lookup_path(item, content_type_path)
-                        .and_then(Value::as_str)
-                        .unwrap_or_default();
-                    if !content_type.starts_with("text/") {
+                    let content_type_opt =
+                        lookup_path(item, content_type_path).and_then(Value::as_str);
+                    if let Some(ct) = content_type_opt
+                        && !ct.trim().to_ascii_lowercase().starts_with("text/")
+                    {
                         return Err(RecordFilingError::UnsupportedAttachment {
                             label,
-                            content_type: content_type.to_owned(),
+                            content_type: ct.to_owned(),
                         });
                     }
-                    let encoded = lookup_path(item, data_path)
-                        .and_then(Value::as_str)
-                        .unwrap_or_default();
+
+                    let data_opt = lookup_path(item, data_path).and_then(Value::as_str);
+                    let Some(encoded) = data_opt else {
+                        let parent_obj = match data_path.rsplit_once('.') {
+                            Some((prefix, _)) => lookup_path(item, prefix),
+                            None => Some(item),
+                        };
+                        if let Some(url) = parent_obj
+                            .and_then(|obj| obj.get("url"))
+                            .and_then(scalar_string)
+                        {
+                            return Err(RecordFilingError::ExternalAttachment { label, url });
+                        }
+                        continue;
+                    };
+
+                    if content_type_opt.is_none() {
+                        return Err(RecordFilingError::UnsupportedAttachment {
+                            label,
+                            content_type: String::new(),
+                        });
+                    }
+
                     let bytes = base64::engine::general_purpose::STANDARD
                         .decode(encoded)
                         .map_err(|source| RecordFilingError::InvalidBase64 { label, source })?;
