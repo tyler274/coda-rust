@@ -893,6 +893,7 @@ impl Store {
     ) -> Result<(), DbErr> {
         save_attempts(&tx, &job.scope, &job.attempts).await?;
         job_active_model(job)?.update(&tx).await?;
+        super::briefings::sync_visit_preparation_job_in_tx(&tx, job).await?;
         tx.commit().await
     }
 
@@ -1785,6 +1786,7 @@ impl Store {
         job.updated_at = now_unix;
         save_attempts(tx, &job.scope, &job.attempts).await?;
         job_active_model(&job)?.update(tx).await?;
+        super::briefings::sync_visit_preparation_job_in_tx(tx, &job).await?;
         Ok(true)
     }
 
@@ -1806,6 +1808,13 @@ impl Store {
         tx.commit().await?;
         Ok((job, ordered, skills))
     }
+}
+
+pub(crate) fn practice_job_tool_is_read_only(kind: PracticeJobKind, name: &str) -> bool {
+    crate::physician_chat::read_only(name)
+        || crate::initial_understanding::read_only_understanding_tool(name)
+        || (kind == PracticeJobKind::VisitPreparation
+            && name == super::chat_operations::PATIENT_MEMORY_TOOL)
 }
 
 /// Shared-harness host for one claimed practice background job. Enforces
@@ -1840,9 +1849,7 @@ impl Product for PracticeJobHost<'_> {
     }
 
     fn read_only(&self, name: &str) -> bool {
-        crate::physician_chat::read_only(name)
-            || crate::initial_understanding::read_only_understanding_tool(name)
-            || name == super::chat_operations::PATIENT_MEMORY_TOOL
+        practice_job_tool_is_read_only(self.claim.kind, name)
     }
 
     fn read_result(&mut self, id: &str) -> engine::recipe::ToolFuture<Option<String>> {
@@ -2328,5 +2335,26 @@ mod tests {
                 .contains("practice run cannot act as a physician"),
             "unexpected error: {err}"
         );
+    }
+
+    #[test]
+    fn patient_memory_is_read_only_only_for_visit_preparation_jobs() {
+        let memory_tool = super::super::chat_operations::PATIENT_MEMORY_TOOL;
+        assert!(super::practice_job_tool_is_read_only(
+            PracticeJobKind::VisitPreparation,
+            memory_tool
+        ));
+        assert!(!super::practice_job_tool_is_read_only(
+            PracticeJobKind::PatientReview,
+            memory_tool
+        ));
+        assert!(!super::practice_job_tool_is_read_only(
+            PracticeJobKind::InitialUnderstanding,
+            memory_tool
+        ));
+        assert!(super::practice_job_tool_is_read_only(
+            PracticeJobKind::PatientReview,
+            crate::physician_sources::READ_TOOL
+        ));
     }
 }

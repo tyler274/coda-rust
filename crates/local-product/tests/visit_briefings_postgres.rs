@@ -1014,7 +1014,7 @@ async fn ac1_five_synthetic_visits_select_which_to_prepare_and_when_with_grounde
 
     // Verify all 5 decisions and their grounded reasons are retained in Postgres:
     let preps = store
-        .visit_preparations_for_practice(&practice)
+        .visit_preparations_for_practice(&practice, auth.as_ref())
         .await
         .unwrap();
     assert_eq!(preps.len(), 5);
@@ -2059,7 +2059,7 @@ async fn ac3_cancelled_or_moved_visit_ends_unfinished_work_and_retains_completed
 
     // Now start `appt-cancel-1`'s briefing job and leave it Pending/unfinished by cancelling mid-flight:
     let cancel_briefing_job_id = format!(
-        "{}-sv1",
+        "{}-av1-sv1",
         local_product::visit_preparation::briefing_job_id(
             CALENDAR_SOURCE_ID,
             "appt-cancel-1",
@@ -2195,7 +2195,7 @@ async fn ac3_cancelled_or_moved_visit_ends_unfinished_work_and_retains_completed
             .is_none()
     );
     let preps_after_cancel = store
-        .visit_preparations_for_practice(&practice)
+        .visit_preparations_for_practice(&practice, auth.as_ref())
         .await
         .unwrap();
     let cancelled_prep = preps_after_cancel
@@ -2870,7 +2870,7 @@ async fn ac4_no_preparation_starts_after_visit_ends_and_exhausted_retries_show_c
     assert_eq!(wake.failed_jobs.len(), 1);
 
     let preps = store
-        .visit_preparations_for_practice(&practice)
+        .visit_preparations_for_practice(&practice, auth.as_ref())
         .await
         .unwrap();
     assert!(
@@ -3815,4 +3815,514 @@ async fn ac6_visit_concern_lifecycle_distinguishes_none_ordinary_today_and_urgen
             .await
             .is_empty()
     );
+}
+
+#[tokio::test]
+async fn mid_run_withdrawal_recorrection_reselection_and_wake_idempotence() {
+    let Some(url) = database_url() else {
+        return;
+    };
+    let (store, auth) = connect_stores(&url).await;
+    let skills = load_skills();
+    let roles = distinct_roles();
+
+    let practice = format!("practice-vp-withdraw-{}", Uuid::new_v4().simple());
+    let foreign_practice = format!("practice-vp-foreign-{}", Uuid::new_v4().simple());
+    let ws = format!("pw-withdraw-{}", Uuid::new_v4().simple());
+    auth.ensure_practice(&practice, PracticeClock::Fixed(BASE_NOW_UNIX as u64))
+        .await
+        .unwrap();
+    auth.ensure_practice(
+        &foreign_practice,
+        PracticeClock::Fixed(BASE_NOW_UNIX as u64),
+    )
+    .await
+    .unwrap();
+
+    let rec_a_v1 = make_record(ChartDoc {
+        workspace: &ws,
+        source_id: CHART_SOURCE_ID,
+        candidate_id: "Observation/k-panel-a",
+        revision: "rev-1",
+        record_type: "Observation",
+        title: "Baseline Chemistry",
+        date: "2026-08-20",
+        text: "Potassium 4.4 mEq/L, creatinine 1.1 mg/dL on stable therapy.",
+    });
+    let rec_b_v1 = make_record(ChartDoc {
+        workspace: &ws,
+        source_id: CHART_SOURCE_ID,
+        candidate_id: "Observation/withdrawn-b",
+        revision: "rev-1",
+        record_type: "Observation",
+        title: "Preliminary External Potassium",
+        date: "2026-08-26",
+        text: "Preliminary outside potassium 6.0 mEq/L pending specimen verification.",
+    });
+
+    seed_roster_patient(
+        &store,
+        &auth,
+        RosterPatient {
+            practice: &practice,
+            workspace: &ws,
+            mrn: "MRN-WITHDRAW",
+            display_name: "Nadia Okonkwo",
+            records: &[rec_a_v1.clone(), rec_b_v1.clone()],
+            pulled_at: BASE_NOW_UNIX - 600,
+        },
+    )
+    .await;
+
+    let appt = make_appointment(
+        "appt-withdraw-1",
+        AppointmentStatus::Scheduled,
+        "booked",
+        "Renal and electrolyte follow-up",
+        "2026-08-27T17:00:00+00:00",
+        "2026-08-27T17:30:00+00:00",
+        Some("MRN-WITHDRAW"),
+    );
+    let starts_at_unix = appt.window().starts_at_unix();
+    let cal = InMemoryScheduleSource::new(vec![appt.clone()]);
+    store
+        .sync_practice_schedule(auth.as_ref(), &practice, &cal, BASE_NOW_UNIX - 300)
+        .await
+        .unwrap();
+
+    // 1. Multi-tick wake retry after a settled Failed selection job must NOT collide on
+    //    idempotency key or silently reuse the settled Failed job!
+    let mut failing_provider = ScriptedProvider::new(
+        (0..5)
+            .map(|i| Err(format!("simulated selection failure {i}")))
+            .collect(),
+    );
+    let failed_wake = store
+        .wake_visit_preparation(
+            auth.as_ref(),
+            &practice,
+            &roles,
+            &skills,
+            &mut failing_provider,
+            BASE_NOW_UNIX,
+        )
+        .await
+        .unwrap();
+    assert_eq!(failed_wake.failed_jobs.len(), 1);
+    let first_sel_scope = failed_wake.selection_job.expect("first selection scope");
+
+    // 2. Subsequent wake at `BASE_NOW_UNIX + 60` runs a fresh selection (`-r1`), queues
+    //    briefing preparation, and exercises:
+    //    - reading `rec_a_v1` in Turn 1a;
+    //    - mid-run arrival of `rec_a_v2` + `rec_x` (`v2`) read in Turn 1b alongside `rec_b_v1`;
+    //    - mid-run withdrawal of BOTH baseline `rec_b_v1` AND mid-run-added `rec_x`, PLUS
+    //      reversion of `rec_a` from `rev-2` back to `rev-1` (`v3`);
+    //    - `SaveTool` refusal naming `changed_records: ["Observation/k-panel-a"]` and
+    //      `withdrawn_candidates: ["Observation/temp-x", "Observation/withdrawn-b"]`;
+    //    - retry after re-reading `rec_a_v1` and acknowledging withdrawals succeeds cleanly!
+    struct WithdrawalAndRecorrectionProvider {
+        store: Store,
+        workspace: String,
+        rec_a_v1: local_product::physician_sources::SourceRevision,
+        rec_b_v1: local_product::physician_sources::SourceRevision,
+        starts_at_unix: i64,
+        step: usize,
+        saw_withdrawal_refusal: bool,
+    }
+
+    impl engine::recipe::Provider for WithdrawalAndRecorrectionProvider {
+        async fn exchange(
+            &mut self,
+            request: &engine::recipe::Request,
+            _: &engine::Cancellation,
+            _: &engine::RunLimits,
+            _: &mut dyn engine::recipe::Observer,
+        ) -> Result<engine::Turn, engine::Cause> {
+            self.step += 1;
+            let serialized = serde_json::to_string(&request.items).unwrap();
+            match self.step {
+                // Selection job (`-r1`) Turn 1:
+                1 => Ok(call_turn(
+                    "sel-r1",
+                    SELECT_VISITS_TOOL,
+                    json!({
+                        "decisions": [{
+                            "source_id": CALENDAR_SOURCE_ID,
+                            "appointment_id": "appt-withdraw-1",
+                            "starts_at_unix": self.starts_at_unix,
+                            "action": "prepare_now",
+                            "reason": "Evaluate preliminary chemistry ahead of electrolyte visit."
+                        }]
+                    }),
+                )
+                .unwrap()),
+                // Selection job (`-r1`) Turn 2:
+                2 => Ok(done_turn("Selected visit for immediate preparation.").unwrap()),
+                // Briefing job Turn 1: read initial `rec_a_v1` (`rev-1`)
+                3 => Ok(call_turn(
+                    "read-a-v1-initial",
+                    READ_TOOL,
+                    json!({
+                        "references": [{ "candidate_id": "Observation/k-panel-a", "revision": "rev-1", "cursor": null }],
+                        "max_result_bytes": 16_384
+                    }),
+                )
+                .unwrap()),
+                // Briefing job Turn 2: mid-run chart moves to `v2` (`rec_a` -> `rev-2`, `rec_x` added),
+                // and model reads `rec_a` @ `rev-2`, `rec_b` @ `rev-1`, and `rec_x` @ `rev-1`!
+                4 => {
+                    let rec_a_v2 = make_record(ChartDoc {
+                        workspace: &self.workspace,
+                        source_id: CHART_SOURCE_ID,
+                        candidate_id: "Observation/k-panel-a",
+                        revision: "rev-2",
+                        record_type: "Observation",
+                        title: "Amended Chemistry",
+                        date: "2026-08-27",
+                        text: "Transient hemolyzed potassium 5.8 mEq/L under lab review.",
+                    });
+                    let rec_x = make_record(ChartDoc {
+                        workspace: &self.workspace,
+                        source_id: CHART_SOURCE_ID,
+                        candidate_id: "Observation/temp-x",
+                        revision: "rev-1",
+                        record_type: "Observation",
+                        title: "Duplicate Draft Observation",
+                        date: "2026-08-27",
+                        text: "Duplicate draft potassium entry entered in error.",
+                    });
+                    self.store
+                        .record_chart(
+                            &self.workspace,
+                            &[rec_a_v2, self.rec_b_v1.clone(), rec_x],
+                            &SourcePull {
+                                source_id: CHART_SOURCE_ID.into(),
+                                source_label: CHART_SOURCE_LABEL.into(),
+                                patient: source_patient("MRN-WITHDRAW", "Nadia Okonkwo"),
+                                pulled_at: BASE_NOW_UNIX + 70,
+                            },
+                        )
+                        .await
+                        .unwrap();
+                    Ok(call_turn(
+                        "read-v2-all",
+                        READ_TOOL,
+                        json!({
+                            "references": [
+                                { "candidate_id": "Observation/k-panel-a", "revision": "rev-2", "cursor": null },
+                                { "candidate_id": "Observation/withdrawn-b", "revision": "rev-1", "cursor": null },
+                                { "candidate_id": "Observation/temp-x", "revision": "rev-1", "cursor": null }
+                            ],
+                            "max_result_bytes": 16_384
+                        }),
+                    )
+                    .unwrap())
+                }
+                // Briefing job Turn 3: chart moves to `v3`: `rec_b_v1` and `rec_x` are WITHDRAWN,
+                // and `rec_a` reverts back to `rev-1`! Model tries to save citing `rec_a` @ `rev-1`
+                // before seeing the withdrawal & reversion!
+                5 => {
+                    self.store
+                        .record_chart(
+                            &self.workspace,
+                            std::slice::from_ref(&self.rec_a_v1),
+                            &SourcePull {
+                                source_id: CHART_SOURCE_ID.into(),
+                                source_label: CHART_SOURCE_LABEL.into(),
+                                patient: source_patient("MRN-WITHDRAW", "Nadia Okonkwo"),
+                                pulled_at: BASE_NOW_UNIX + 80,
+                            },
+                        )
+                        .await
+                        .unwrap();
+                    let stale_args = SaveBriefingArgs {
+                        visit_card_orientation: "Follow-up after retracted external hyperkalemia report; baseline K 4.4 mEq/L.".into(),
+                        trajectory: vec![BriefingClaimInput {
+                            text: "Potassium remains 4.4 mEq/L with creatinine 1.1 mg/dL.".into(),
+                            uncertainty: None,
+                            citations: vec![ExactRecordReference {
+                                candidate_id: "Observation/k-panel-a".into(),
+                                revision: "rev-1".into(),
+                            }],
+                        }],
+                        meaningful_changes: vec![BriefingClaimInput {
+                            text: "No verified interval chemistry abnormality.".into(),
+                            uncertainty: None,
+                            citations: vec![ExactRecordReference {
+                                candidate_id: "Observation/k-panel-a".into(),
+                                revision: "rev-1".into(),
+                            }],
+                        }],
+                        unresolved_issues: vec![BriefingClaimInput {
+                            text: "Confirm routine renal monitoring interval.".into(),
+                            uncertainty: None,
+                            citations: vec![ExactRecordReference {
+                                candidate_id: "Observation/k-panel-a".into(),
+                                revision: "rev-1".into(),
+                            }],
+                        }],
+                        visit_decisions: vec![BriefingDecisionInput {
+                            decision: "Routine renal and electrolyte monitoring plan".into(),
+                            clinical_rationale: "Verified baseline chemistry is stable at K 4.4 mEq/L.".into(),
+                            options_or_questions: vec![
+                                "Consider continuing current regimen and repeating routine metabolic panel per schedule.".into(),
+                            ],
+                            uncertainty: None,
+                            citations: vec![ExactRecordReference {
+                                candidate_id: "Observation/k-panel-a".into(),
+                                revision: "rev-1".into(),
+                            }],
+                        }],
+                        basis_and_limitations: "Prepared from verified baseline chemistry.".into(),
+                        basis_citations: Vec::new(),
+                        limits: Vec::new(),
+                        visit_concern: None,
+                    };
+                    Ok(call_turn(
+                        "save-stale-before-ack",
+                        SAVE_BRIEFING_TOOL,
+                        serde_json::to_value(&stale_args).unwrap(),
+                    )
+                    .unwrap())
+                }
+                // Briefing job Turn 4: verify SaveTool refused with BOTH `Observation/k-panel-a`
+                // in `changed_records` AND `Observation/temp-x` + `Observation/withdrawn-b` in
+                // `withdrawn_candidates`! Re-read `Observation/k-panel-a` @ `rev-1`.
+                6 => {
+                    assert!(
+                        serialized.contains("chart_changed_mid_run")
+                            && serialized.contains("Observation/k-panel-a")
+                            && serialized.contains("Observation/withdrawn-b")
+                            && serialized.contains("Observation/temp-x"),
+                        "expected SaveTool refusal naming reverted and withdrawn records, got {serialized}"
+                    );
+                    self.saw_withdrawal_refusal = true;
+                    Ok(call_turn(
+                        "reread-a-v1",
+                        READ_TOOL,
+                        json!({
+                            "references": [{ "candidate_id": "Observation/k-panel-a", "revision": "rev-1", "cursor": null }],
+                            "max_result_bytes": 16_384
+                        }),
+                    )
+                    .unwrap())
+                }
+                // Briefing job Turn 5: now withdrawals are acknowledged and `rec_a` @ `rev-1` is
+                // re-read -> `save_visit_briefing` succeeds without looping!
+                7 => {
+                    let clean_args = SaveBriefingArgs {
+                        visit_card_orientation: "Stable renal and electrolyte follow-up (K 4.4 mEq/L, Cr 1.1 mg/dL) after withdrawn preliminary reports.".into(),
+                        trajectory: vec![BriefingClaimInput {
+                            text: "Verified serum potassium is 4.4 mEq/L with creatinine 1.1 mg/dL.".into(),
+                            uncertainty: None,
+                            citations: vec![ExactRecordReference {
+                                candidate_id: "Observation/k-panel-a".into(),
+                                revision: "rev-1".into(),
+                            }],
+                        }],
+                        meaningful_changes: vec![BriefingClaimInput {
+                            text: "Preliminary external potassium entries were withdrawn after specimen review; verified baseline chemistry remains stable.".into(),
+                            uncertainty: None,
+                            citations: vec![ExactRecordReference {
+                                candidate_id: "Observation/k-panel-a".into(),
+                                revision: "rev-1".into(),
+                            }],
+                        }],
+                        unresolved_issues: vec![BriefingClaimInput {
+                            text: "Confirm routine electrolyte surveillance cadence at visit.".into(),
+                            uncertainty: None,
+                            citations: vec![ExactRecordReference {
+                                candidate_id: "Observation/k-panel-a".into(),
+                                revision: "rev-1".into(),
+                            }],
+                        }],
+                        visit_decisions: vec![BriefingDecisionInput {
+                            decision: "Electrolyte surveillance interval".into(),
+                            clinical_rationale: "With erroneous hyperkalemia entries withdrawn, potassium is normal at 4.4 mEq/L.".into(),
+                            options_or_questions: vec![
+                                "Consider maintaining current therapy and confirming next routine BMP interval.".into(),
+                            ],
+                            uncertainty: None,
+                            citations: vec![ExactRecordReference {
+                                candidate_id: "Observation/k-panel-a".into(),
+                                revision: "rev-1".into(),
+                            }],
+                        }],
+                        basis_and_limitations: "Prepared from verified chart version 3 after withdrawal of retracted preliminary entries.".into(),
+                        basis_citations: Vec::new(),
+                        limits: Vec::new(),
+                        visit_concern: None,
+                    };
+                    Ok(call_turn(
+                        "save-clean-v3",
+                        SAVE_BRIEFING_TOOL,
+                        serde_json::to_value(&clean_args).unwrap(),
+                    )
+                    .unwrap())
+                }
+                8 => Ok(done_turn("Briefing saved cleanly after withdrawal acknowledgement.").unwrap()),
+                other => panic!("unexpected step {other}"),
+            }
+        }
+    }
+
+    let mut provider = WithdrawalAndRecorrectionProvider {
+        store: store.clone(),
+        workspace: ws.clone(),
+        rec_a_v1: rec_a_v1.clone(),
+        rec_b_v1,
+        starts_at_unix,
+        step: 0,
+        saw_withdrawal_refusal: false,
+    };
+    let second_wake = store
+        .wake_visit_preparation(
+            auth.as_ref(),
+            &practice,
+            &roles,
+            &skills,
+            &mut provider,
+            BASE_NOW_UNIX + 60,
+        )
+        .await
+        .unwrap();
+    assert!(provider.saw_withdrawal_refusal);
+    let second_sel_scope = second_wake.selection_job.expect("second selection scope");
+    assert_ne!(
+        first_sel_scope.job_id, second_sel_scope.job_id,
+        "settled failed selection job must not be reused on subsequent wake"
+    );
+    assert!(second_sel_scope.job_id.ends_with("-r1"));
+    assert_eq!(second_wake.completed_briefings.len(), 1);
+    let orig_briefing_id = second_wake.completed_briefings[0].clone();
+
+    // 3. Re-selecting an already `Ready` visit on a minor chart update (`v4`) where the model
+    //    chooses `Skip` MUST retain `VisitPreparationState::Ready` + `briefing_id`, advance
+    //    `observed_source_version`, and NOT re-select on the next wake!
+    let rec_minor = make_record(ChartDoc {
+        workspace: &ws,
+        source_id: CHART_SOURCE_ID,
+        candidate_id: "Immunization/flu-admin-1",
+        revision: "rev-1",
+        record_type: "Immunization",
+        title: "Seasonal Influenza Vaccine",
+        date: "2026-08-27",
+        text: "Routine seasonal influenza immunization administered in nurse clinic without reaction.",
+    });
+    store
+        .record_chart(
+            &ws,
+            &[rec_a_v1, rec_minor],
+            &SourcePull {
+                source_id: CHART_SOURCE_ID.into(),
+                source_label: CHART_SOURCE_LABEL.into(),
+                patient: source_patient("MRN-WITHDRAW", "Nadia Okonkwo"),
+                pulled_at: BASE_NOW_UNIX + 100,
+            },
+        )
+        .await
+        .unwrap();
+
+    let mut skip_reselect_provider = ScriptedProvider::new(vec![
+        call_turn(
+            "sel-minor-skip",
+            SELECT_VISITS_TOOL,
+            json!({
+                "decisions": [{
+                    "source_id": CALENDAR_SOURCE_ID,
+                    "appointment_id": "appt-withdraw-1",
+                    "starts_at_unix": starts_at_unix,
+                    "action": "skip",
+                    "reason": "Routine influenza immunization record does not alter the prepared renal and electrolyte briefing."
+                }]
+            }),
+        ),
+        done_turn("Existing briefing remains current; skipped re-preparation."),
+    ]);
+    let third_wake = store
+        .wake_visit_preparation(
+            auth.as_ref(),
+            &practice,
+            &roles,
+            &skills,
+            &mut skip_reselect_provider,
+            BASE_NOW_UNIX + 120,
+        )
+        .await
+        .unwrap();
+    assert!(third_wake.selection_job.is_some());
+    assert!(third_wake.queued_briefing_jobs.is_empty());
+
+    let preps = store
+        .visit_preparations_for_practice(&practice, auth.as_ref())
+        .await
+        .unwrap();
+    assert_eq!(preps.len(), 1);
+    assert_eq!(preps[0].observed_source_version, 4);
+    match &preps[0].state {
+        VisitPreparationState::Ready {
+            briefing_id,
+            visit_card_orientation,
+            ..
+        } => {
+            assert_eq!(briefing_id, &orig_briefing_id);
+            assert!(visit_card_orientation.contains("K 4.4 mEq/L"));
+        }
+        other => panic!("expected Ready state preserved after minor-update Skip, got {other:?}"),
+    }
+
+    // Next wake at `BASE_NOW_UNIX + 180` triggers ZERO selection jobs!
+    let mut idle_provider = ScriptedProvider::new(Vec::new());
+    let fourth_wake = store
+        .wake_visit_preparation(
+            auth.as_ref(),
+            &practice,
+            &roles,
+            &skills,
+            &mut idle_provider,
+            BASE_NOW_UNIX + 180,
+        )
+        .await
+        .unwrap();
+    assert!(fourth_wake.selection_job.is_none());
+    assert!(idle_provider.requests.is_empty());
+
+    // 4. `Store::visit_preparations_for_practice` enforces `PracticeAuthority`!
+    struct ScopedPracticeOnlyAuthority {
+        allowed_practice: String,
+    }
+    #[async_trait]
+    impl PracticeAuthority for ScopedPracticeOnlyAuthority {
+        async fn check_practice_patient(
+            &self,
+            scope: &PracticeScope,
+        ) -> Result<(), PracticeAccessError> {
+            if scope.practice != self.allowed_practice {
+                return Err(PracticeAccessError::ForeignPractice {
+                    requested_practice: scope.practice.clone(),
+                    owner_practice: self.allowed_practice.clone(),
+                    workspace: scope.workspace.clone(),
+                });
+            }
+            Ok(())
+        }
+    }
+
+    let foreign_only = ScopedPracticeOnlyAuthority {
+        allowed_practice: foreign_practice,
+    };
+    assert!(matches!(
+        store
+            .visit_preparations_for_practice(&practice, &foreign_only)
+            .await,
+        Err(BriefingError::Access(
+            PracticeAccessError::ForeignPractice { .. }
+        ))
+    ));
+    assert!(matches!(
+        store
+            .visit_preparations_for_practice(" ", auth.as_ref())
+            .await,
+        Err(BriefingError::Access(PracticeAccessError::InvalidScope))
+    ));
 }

@@ -1076,27 +1076,177 @@ enum BriefingFenceStage {
     Finish,
 }
 
+#[derive(Debug, Clone, Serialize, Deserialize)]
+struct ChartChangedFeedback {
+    outcome: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pinned_source_version: Option<u64>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    saved_source_version: Option<u64>,
+    current_source_version: u64,
+    changed_records: Vec<CandidateRecordPreview>,
+    withdrawn_candidates: Vec<String>,
+    message: String,
+}
+
+#[derive(Deserialize)]
+struct DeliveredReadReceipt {
+    results: Vec<DeliveredRecordReceipt>,
+}
+
+#[derive(Deserialize)]
+#[serde(tag = "outcome", rename_all = "snake_case")]
+enum DeliveredRecordReceipt {
+    Available { reference: String, revision: String },
+    Passage { reference: String, revision: String },
+    Unavailable {},
+    OverBudget {},
+}
+
+fn apply_acknowledged_withdrawal_feedback(
+    text: &str,
+    known_revisions: &mut BTreeMap<String, String>,
+) {
+    if let Ok(feedback) = serde_json::from_str::<ChartChangedFeedback>(text)
+        && feedback.outcome == "chart_changed_mid_run"
+    {
+        for cid in feedback.withdrawn_candidates {
+            known_revisions.remove(&cid);
+        }
+    }
+}
+
+/// Reconstructs the exact `(candidate_id -> revision)` map known to the model
+/// at this point in a visit-briefing run, starting from `baseline_sources`
+/// (`job.sources`), advancing in chronological order through delivered
+/// `read_patient_sources` receipts, and clearing candidates whose withdrawal was
+/// already surfaced to the model via `chart_changed_mid_run` feedback.
+fn model_chart_knowledge(
+    baseline_sources: &[SourceRevision],
+    ordered: &[(engine::Event, bool)],
+    message_sources: &[engine::ProductMessage],
+    flush_trailing_turn: bool,
+) -> Result<BTreeMap<String, String>, String> {
+    let delivered_revs =
+        crate::physician_sources::delivered_exact_revisions(ordered.iter(), message_sources)?;
+    let mut known_revisions: BTreeMap<String, String> = baseline_sources
+        .iter()
+        .map(|src| (src.candidate_id.clone(), src.revision.clone()))
+        .collect();
+    let mut pending_reads: Vec<(String, String)> = Vec::new();
+    let mut pending_withdrawn: Vec<String> = Vec::new();
+
+    for (event, _) in ordered {
+        match &event.kind {
+            engine::EventKind::ToolReturned {
+                result: engine::results::ToolResult::Original(output),
+                ..
+            } => {
+                if let Ok(receipt) = serde_json::from_str::<DeliveredReadReceipt>(output) {
+                    for item in receipt.results {
+                        match item {
+                            DeliveredRecordReceipt::Available {
+                                reference,
+                                revision,
+                            }
+                            | DeliveredRecordReceipt::Passage {
+                                reference,
+                                revision,
+                            } => {
+                                if flush_trailing_turn
+                                    || delivered_revs
+                                        .contains(&(reference.clone(), revision.clone()))
+                                {
+                                    pending_reads.push((reference, revision));
+                                }
+                            }
+                            DeliveredRecordReceipt::Unavailable {}
+                            | DeliveredRecordReceipt::OverBudget {} => {}
+                        }
+                    }
+                }
+            }
+            engine::EventKind::ToolReturned {
+                result: engine::results::ToolResult::Refused(refusal),
+                ..
+            } => {
+                if let Ok(feedback) = serde_json::from_str::<ChartChangedFeedback>(refusal.reason())
+                    && feedback.outcome == "chart_changed_mid_run"
+                {
+                    pending_withdrawn.extend(feedback.withdrawn_candidates);
+                }
+            }
+            engine::EventKind::ProviderStarted { request, .. } => {
+                for (cid, rev) in pending_reads.drain(..) {
+                    known_revisions.insert(cid, rev);
+                }
+                for cid in pending_withdrawn.drain(..) {
+                    known_revisions.remove(&cid);
+                }
+                for item in &request.added {
+                    match item {
+                        engine::Item::Feedback { text } => {
+                            apply_acknowledged_withdrawal_feedback(text, &mut known_revisions);
+                        }
+                        engine::Item::FinishRefused(refusal) => {
+                            apply_acknowledged_withdrawal_feedback(
+                                refusal.reason(),
+                                &mut known_revisions,
+                            );
+                        }
+                        engine::Item::ProductMessage(_)
+                        | engine::Item::OutputCutoff
+                        | engine::Item::Message { .. }
+                        | engine::Item::Call(_)
+                        | engine::Item::Result { .. }
+                        | engine::Item::MaterializedResult { .. }
+                        | engine::Item::Opaque(_) => {}
+                    }
+                }
+            }
+            engine::EventKind::ToolReturned { .. }
+            | engine::EventKind::ProviderObservation { .. }
+            | engine::EventKind::ProviderFailed { .. }
+            | engine::EventKind::TransportRetry { .. }
+            | engine::EventKind::ProviderReturned(_)
+            | engine::EventKind::ToolStarted(_)
+            | engine::EventKind::ProviderBlocked { .. }
+            | engine::EventKind::ContextRejected
+            | engine::EventKind::Candidate { .. }
+            | engine::EventKind::WindowOpened { .. } => {}
+        }
+    }
+
+    if flush_trailing_turn {
+        for (cid, rev) in pending_reads.drain(..) {
+            known_revisions.insert(cid, rev);
+        }
+        for cid in pending_withdrawn.drain(..) {
+            known_revisions.remove(&cid);
+        }
+    }
+
+    Ok(known_revisions)
+}
+
 /// Single-owner chart-currency check shared across `save_visit_briefing`,
 /// interrupted-attempt recovery (`PracticeJobHost::run`), and run completion
 /// (`PracticeJobHost::finish`).
 fn briefing_source_change_feedback(
     stage: BriefingFenceStage,
     baseline_version: u64,
-    baseline_pairs: &BTreeSet<(&str, &str)>,
+    known_revisions: &BTreeMap<String, String>,
     current_version: u64,
     current_sources: &[SourceRevision],
-    read_in_work: &BTreeSet<(String, String)>,
 ) -> Option<Value> {
     let mut unread_changes = Vec::new();
     let mut current_candidates = BTreeSet::new();
     for source in current_sources {
         current_candidates.insert(source.candidate_id.as_str());
-        let pair = (source.candidate_id.as_str(), source.revision.as_str());
-        if baseline_pairs.contains(&pair) {
-            continue;
-        }
-        if stage != BriefingFenceStage::Finish
-            && read_in_work.contains(&(source.candidate_id.clone(), source.revision.clone()))
+        if known_revisions
+            .get(&source.candidate_id)
+            .map(String::as_str)
+            == Some(source.revision.as_str())
         {
             continue;
         }
@@ -1110,17 +1260,14 @@ fn briefing_source_change_feedback(
         });
     }
 
-    let withdrawn_candidates: Vec<String> = baseline_pairs
-        .iter()
-        .filter(|&&(cid, _)| !current_candidates.contains(cid))
-        .map(|&(cid, _)| cid.to_owned())
-        .collect::<BTreeSet<_>>()
-        .into_iter()
+    let withdrawn_candidates: Vec<String> = known_revisions
+        .keys()
+        .filter(|cid| !current_candidates.contains(cid.as_str()))
+        .cloned()
         .collect();
 
     let needs_feedback = match stage {
-        BriefingFenceStage::SaveTool => !unread_changes.is_empty(),
-        BriefingFenceStage::Recovery => {
+        BriefingFenceStage::SaveTool | BriefingFenceStage::Recovery => {
             !unread_changes.is_empty() || !withdrawn_candidates.is_empty()
         }
         BriefingFenceStage::Finish => {
@@ -1133,29 +1280,109 @@ fn briefing_source_change_feedback(
         return None;
     }
 
-    let (baseline_key, message) = match stage {
+    let (pinned_source_version, saved_source_version, message) = match stage {
         BriefingFenceStage::SaveTool => (
-            "pinned_source_version",
-            "Patient chart records changed during preparation and have not been read yet. Open the changed record revisions via read_patient_sources and call save_visit_briefing with the updated synthesis.",
+            Some(baseline_version),
+            None,
+            "Patient chart records changed during preparation. Open any changed record revisions via read_patient_sources, remove reliance on any withdrawn records, and call save_visit_briefing with the updated synthesis.",
         ),
         BriefingFenceStage::Recovery => (
-            "pinned_source_version",
+            Some(baseline_version),
+            None,
             "Patient chart records changed before recovery completed. Inspect any changed record revisions via read_patient_sources, remove reliance on any withdrawn records, and call save_visit_briefing again before finishing.",
         ),
         BriefingFenceStage::Finish => (
-            "saved_source_version",
-            "New, updated, or withdrawn patient chart records arrived before run completion. Read any changed revisions via read_patient_sources and call save_visit_briefing with the updated synthesis before finishing.",
+            None,
+            Some(baseline_version),
+            "New, updated, or withdrawn patient chart records arrived before run completion. Read any changed revisions via read_patient_sources, remove reliance on any withdrawn records, and call save_visit_briefing with the updated synthesis before finishing.",
         ),
     };
 
-    Some(json!({
-        "outcome": "chart_changed_mid_run",
-        baseline_key: baseline_version,
-        "current_source_version": current_version,
-        "changed_records": unread_changes,
-        "withdrawn_candidates": withdrawn_candidates,
-        "message": message,
-    }))
+    Some(
+        serde_json::to_value(ChartChangedFeedback {
+            outcome: "chart_changed_mid_run".to_owned(),
+            pinned_source_version,
+            saved_source_version,
+            current_source_version: current_version,
+            changed_records: unread_changes,
+            withdrawn_candidates,
+            message: message.to_owned(),
+        })
+        .expect("ChartChangedFeedback serializes cleanly as JSON"),
+    )
+}
+
+pub(super) async fn sync_visit_preparation_job_in_tx(
+    tx: &sea_orm::DatabaseTransaction,
+    job: &PracticeJob,
+) -> Result<(), DbErr> {
+    if job.kind != super::jobs::PracticeJobKind::VisitPreparation {
+        return Ok(());
+    }
+    let Some(briefing_ctx) = job.assignment.visit_briefing.as_ref() else {
+        return Ok(());
+    };
+    let slot_pk = (
+        job.scope.practice.clone(),
+        briefing_ctx.source_id.clone(),
+        briefing_ctx.appointment_id.clone(),
+        briefing_ctx.starts_at_unix,
+    );
+    let Some(row) = visit_preparation::Entity::find_by_id(slot_pk)
+        .lock_exclusive()
+        .one(tx)
+        .await?
+    else {
+        return Ok(());
+    };
+    if row.state != "preparing" || row.briefing_job_id.as_deref() != Some(job.scope.job_id.as_str())
+    {
+        return Ok(());
+    }
+    let (next_state, next_reason) = match job.status {
+        WorkStatus::Failed => (
+            "could_not_finish",
+            Some(format!(
+                "Visit preparation job `{}` ended in `failed` state without saving a briefing.",
+                job.scope.job_id
+            )),
+        ),
+        WorkStatus::Held => (
+            "could_not_finish",
+            Some(format!(
+                "Visit preparation job `{}` ended in `held` state without saving a briefing.",
+                job.scope.job_id
+            )),
+        ),
+        WorkStatus::Cancelled => (
+            "ended_visit_changed",
+            Some("Appointment changed or preparation cancelled before completion.".to_owned()),
+        ),
+        WorkStatus::Pending | WorkStatus::Active | WorkStatus::Completed => return Ok(()),
+    };
+    visit_preparation::ActiveModel {
+        practice: Unchanged(row.practice),
+        source_id: Unchanged(row.source_id),
+        appointment_id: Unchanged(row.appointment_id),
+        starts_at_unix: Unchanged(row.starts_at_unix),
+        workspace: Unchanged(row.workspace),
+        ends_at_unix: Unchanged(row.ends_at_unix),
+        appointment_saved_version: Unchanged(row.appointment_saved_version),
+        observed_source_version: Unchanged(row.observed_source_version),
+        decision: Unchanged(row.decision),
+        decided_at: Unchanged(row.decided_at),
+        selection_job_id: Unchanged(row.selection_job_id),
+        selection_work_id: Unchanged(row.selection_work_id),
+        selection_idempotency_key: Unchanged(row.selection_idempotency_key),
+        state: Set(next_state.to_owned()),
+        briefing_job_id: Unchanged(row.briefing_job_id),
+        briefing_id: Unchanged(row.briefing_id),
+        failed_reason: Set(next_reason),
+        updated_at: Set(job.updated_at),
+    }
+    .update(tx)
+    .await?;
+    Ok(())
 }
 
 fn verify_briefing_reference<'a>(
@@ -1940,6 +2167,44 @@ impl Store {
                 VisitPreparationDecision::Skip { .. } => "skipped",
             };
 
+            let slot_pk = (
+                claim.scope.practice.clone(),
+                item.source_id.clone(),
+                item.appointment_id.clone(),
+                item.starts_at_unix,
+            );
+            let existing_prep = visit_preparation::Entity::find_by_id(slot_pk.clone())
+                .lock_exclusive()
+                .one(&tx)
+                .await
+                .map_err(persistence_failure)?;
+            let existing_current_briefing = visit_briefing::Entity::find_by_id(slot_pk)
+                .one(&tx)
+                .await
+                .map_err(persistence_failure)?
+                .filter(|b| b.visit_standing == "current");
+
+            let (final_state_str, preserved_briefing_job_id, preserved_briefing_id) =
+                match (&item.decision, existing_current_briefing.as_ref()) {
+                    (VisitPreparationDecision::Skip { .. }, Some(saved_briefing)) => (
+                        "ready",
+                        existing_prep
+                            .as_ref()
+                            .and_then(|prep| prep.briefing_job_id.clone()),
+                        Some(saved_briefing.briefing_id.clone()),
+                    ),
+                    (_, Some(saved_briefing)) => {
+                        (state_str, None, Some(saved_briefing.briefing_id.clone()))
+                    }
+                    (_, None) => (
+                        state_str,
+                        None,
+                        existing_prep
+                            .as_ref()
+                            .and_then(|prep| prep.briefing_id.clone()),
+                    ),
+                };
+
             let obs = sources::observed(&tx, &cand.workspace)
                 .await
                 .map_err(persistence_failure)?;
@@ -1964,9 +2229,9 @@ impl Store {
                 selection_job_id: Set(claim.scope.job_id.clone()),
                 selection_work_id: Set(job.work.clone()),
                 selection_idempotency_key: Set(idempotency_key.clone()),
-                state: Set(state_str.to_owned()),
-                briefing_job_id: Set(None),
-                briefing_id: Set(None),
+                state: Set(final_state_str.to_owned()),
+                briefing_job_id: Set(preserved_briefing_job_id),
+                briefing_id: Set(preserved_briefing_id),
                 failed_reason: Set(None),
                 updated_at: Set(effective_now),
             })
@@ -2005,7 +2270,7 @@ impl Store {
                 "starts_at_unix": item.starts_at_unix,
                 "workspace": cand.workspace,
                 "action": item.decision.action_str(),
-                "state": state_str,
+                "state": final_state_str,
             }));
         }
 
@@ -2164,22 +2429,19 @@ impl Store {
         }
 
         // Mid-run record change detection: refuse stale completion and return
-        // any newly arrived or modified chart revisions unread in this run!
+        // any newly arrived, modified/re-corrected, or withdrawn chart records!
         let observation = sources::observed(&tx, &claim.scope.workspace)
             .await
             .map_err(persistence_failure)?;
-        let pinned_pairs: BTreeSet<(&str, &str)> = job
-            .sources
-            .iter()
-            .map(|src| (src.candidate_id.as_str(), src.revision.as_str()))
-            .collect();
+        let known_revisions =
+            model_chart_knowledge(&job.sources, &ordered, &job.message_sources(), false)
+                .map_err(|err| engine::Cause::from(error(&err)))?;
         if let Some(feedback) = briefing_source_change_feedback(
             BriefingFenceStage::SaveTool,
             job.sources_version,
-            &pinned_pairs,
+            &known_revisions,
             observation.version,
             &observation.sources,
-            &read_in_work,
         ) {
             return Ok(ToolOutcome::refused(feedback.to_string()));
         }
@@ -2826,18 +3088,12 @@ impl Store {
                 .sources(&claim.scope.workspace)
                 .await
                 .map_err(persistence_failure)?;
-            let saved_revs: BTreeSet<(&str, &str)> = saved
-                .source_versions
-                .iter()
-                .map(|(cid, rev)| (cid.as_str(), rev.as_str()))
-                .collect();
             if let Some(feedback) = briefing_source_change_feedback(
                 BriefingFenceStage::Finish,
                 saved.source_version,
-                &saved_revs,
+                &saved.source_versions,
                 observation.version,
                 &observation.sources,
-                &BTreeSet::new(),
             ) {
                 return Ok(Some(feedback));
             }
@@ -2874,23 +3130,15 @@ impl Store {
         {
             return Ok(None);
         }
-        let read_in_work = crate::physician_sources::delivered_exact_revisions(
-            ordered.iter(),
-            &job.message_sources(),
-        )
-        .map_err(|err| error(&err))?;
-        let pinned_pairs: BTreeSet<(&str, &str)> = job
-            .sources
-            .iter()
-            .map(|src| (src.candidate_id.as_str(), src.revision.as_str()))
-            .collect();
+        let known_revisions =
+            model_chart_knowledge(&job.sources, ordered, &job.message_sources(), true)
+                .map_err(|err| error(&err))?;
         Ok(briefing_source_change_feedback(
             BriefingFenceStage::Recovery,
             job.sources_version,
-            &pinned_pairs,
+            &known_revisions,
             observation.version,
             &observation.sources,
-            &read_in_work,
         ))
     }
 
@@ -3034,10 +3282,80 @@ impl Store {
             .collect::<Result<Vec<_>, _>>()?)
     }
 
-    /// Reads all visit preparation records for `practice`, reconciling any
-    /// `Preparing` row whose underlying `practice_job` reached `Failed` or `Held`
-    /// into [`VisitPreparationState::CouldNotFinish`].
-    pub async fn visit_preparations_for_practice(
+    /// Reconciles any `Preparing` row in `practice` whose underlying `practice_job`
+    /// has already settled in `Failed`, `Held`, or `Cancelled`.
+    pub(super) async fn reconcile_unfinished_visit_preparations(
+        &self,
+        practice: &str,
+    ) -> Result<(), DbErr> {
+        let preparing_rows = visit_preparation::Entity::find()
+            .filter(visit_preparation::Column::Practice.eq(practice))
+            .filter(visit_preparation::Column::State.eq("preparing"))
+            .all(&self.db)
+            .await?;
+        for row in preparing_rows {
+            let Some(job_id) = row.briefing_job_id.clone() else {
+                continue;
+            };
+            let Some(job) = practice_job::Entity::find_by_id((
+                row.practice.clone(),
+                row.workspace.clone(),
+                job_id.clone(),
+            ))
+            .one(&self.db)
+            .await?
+            else {
+                continue;
+            };
+            let (next_state, next_reason) = match job.status {
+                WorkStatus::Failed => (
+                    "could_not_finish",
+                    Some(format!(
+                        "Visit preparation job `{job_id}` ended in `failed` state without saving a briefing."
+                    )),
+                ),
+                WorkStatus::Held => (
+                    "could_not_finish",
+                    Some(format!(
+                        "Visit preparation job `{job_id}` ended in `held` state without saving a briefing."
+                    )),
+                ),
+                WorkStatus::Cancelled => (
+                    "ended_visit_changed",
+                    Some(
+                        "Appointment changed or preparation cancelled before completion."
+                            .to_owned(),
+                    ),
+                ),
+                WorkStatus::Pending | WorkStatus::Active | WorkStatus::Completed => continue,
+            };
+            visit_preparation::ActiveModel {
+                practice: Unchanged(row.practice),
+                source_id: Unchanged(row.source_id),
+                appointment_id: Unchanged(row.appointment_id),
+                starts_at_unix: Unchanged(row.starts_at_unix),
+                workspace: Unchanged(row.workspace),
+                ends_at_unix: Unchanged(row.ends_at_unix),
+                appointment_saved_version: Unchanged(row.appointment_saved_version),
+                observed_source_version: Unchanged(row.observed_source_version),
+                decision: Unchanged(row.decision),
+                decided_at: Unchanged(row.decided_at),
+                selection_job_id: Unchanged(row.selection_job_id),
+                selection_work_id: Unchanged(row.selection_work_id),
+                selection_idempotency_key: Unchanged(row.selection_idempotency_key),
+                state: Set(next_state.to_owned()),
+                briefing_job_id: Unchanged(row.briefing_job_id),
+                briefing_id: Unchanged(row.briefing_id),
+                failed_reason: Set(next_reason),
+                updated_at: Set(job.updated_at),
+            }
+            .update(&self.db)
+            .await?;
+        }
+        Ok(())
+    }
+
+    pub(super) async fn visit_preparations_for_practice_internal(
         &self,
         practice: &str,
     ) -> Result<Vec<VisitPreparationRecord>, DbErr> {
@@ -3058,69 +3376,37 @@ impl Store {
             .collect();
 
         let mut records = Vec::with_capacity(rows.len());
-        for mut row in rows {
-            if row.state == "preparing"
-                && let Some(job_id) = row.briefing_job_id.clone()
-            {
-                let job_row = practice_job::Entity::find_by_id((
-                    row.practice.clone(),
-                    row.workspace.clone(),
-                    job_id.clone(),
-                ))
-                .one(&self.db)
-                .await?;
-                if let Some(job) = job_row {
-                    match job.status {
-                        WorkStatus::Failed | WorkStatus::Held => {
-                            let reason = format!(
-                                "Visit preparation job `{}` ended in `{}` state without saving a briefing.",
-                                job_id,
-                                match job.status {
-                                    WorkStatus::Failed => "failed",
-                                    WorkStatus::Held => "held",
-                                    _ => "unfinished",
-                                }
-                            );
-                            visit_preparation::ActiveModel {
-                                practice: Unchanged(row.practice.clone()),
-                                source_id: Unchanged(row.source_id.clone()),
-                                appointment_id: Unchanged(row.appointment_id.clone()),
-                                starts_at_unix: Unchanged(row.starts_at_unix),
-                                workspace: Unchanged(row.workspace.clone()),
-                                ends_at_unix: Unchanged(row.ends_at_unix),
-                                appointment_saved_version: Unchanged(row.appointment_saved_version),
-                                observed_source_version: Unchanged(row.observed_source_version),
-                                decision: Unchanged(row.decision.clone()),
-                                decided_at: Unchanged(row.decided_at),
-                                selection_job_id: Unchanged(row.selection_job_id.clone()),
-                                selection_work_id: Unchanged(row.selection_work_id.clone()),
-                                selection_idempotency_key: Unchanged(
-                                    row.selection_idempotency_key.clone(),
-                                ),
-                                state: Set("could_not_finish".to_owned()),
-                                briefing_job_id: Unchanged(row.briefing_job_id.clone()),
-                                briefing_id: Unchanged(row.briefing_id.clone()),
-                                failed_reason: Set(Some(reason.clone())),
-                                updated_at: Set(job.updated_at),
-                            }
-                            .update(&self.db)
-                            .await?;
-                            row.state = "could_not_finish".to_owned();
-                            row.failed_reason = Some(reason);
-                            row.updated_at = job.updated_at;
-                        }
-                        WorkStatus::Cancelled => {
-                            row.state = "ended_visit_changed".to_owned();
-                        }
-                        WorkStatus::Pending | WorkStatus::Active | WorkStatus::Completed => {}
-                    }
-                }
-            }
+        for row in rows {
             let orientation = row
                 .briefing_id
                 .as_deref()
                 .and_then(|id| orientations.get(id).map(String::as_str));
             records.push(decode_preparation_record(row, orientation)?);
+        }
+        Ok(records)
+    }
+
+    /// Reads all visit preparation records for `practice` without mutating state,
+    /// verifying practice patient membership on `authority` for every workspace
+    /// in the returned records.
+    pub async fn visit_preparations_for_practice<A: PracticeAuthority + ?Sized>(
+        &self,
+        practice: &str,
+        authority: &A,
+    ) -> Result<Vec<VisitPreparationRecord>, BriefingError> {
+        if practice.trim().is_empty() {
+            return Err(BriefingError::Access(PracticeAccessError::InvalidScope));
+        }
+        let records = self
+            .visit_preparations_for_practice_internal(practice)
+            .await?;
+        let mut checked_workspaces = BTreeSet::new();
+        for record in &records {
+            if checked_workspaces.insert(record.workspace.as_str()) {
+                authority
+                    .check_practice_patient(&membership_scope(practice, &record.workspace))
+                    .await?;
+            }
         }
         Ok(records)
     }
@@ -3407,7 +3693,9 @@ impl Store {
             .map_err(PracticeAccessError::StoreUnavailable)?
             .into_iter()
             .collect();
-        let existing_preps = self.visit_preparations_for_practice(practice).await?;
+        let existing_preps = self
+            .visit_preparations_for_practice_internal(practice)
+            .await?;
         let prep_map: BTreeMap<(String, String, i64), VisitPreparationRecord> = existing_preps
             .into_iter()
             .map(|rec| {
@@ -3460,7 +3748,9 @@ impl Store {
                         let saved = self
                             .visit_briefing_by_id_internal(practice, briefing_id)
                             .await?;
-                        saved.is_none_or(|b| obs.version > b.source_version)
+                        saved.is_none_or(|b| {
+                            obs.version > b.source_version.max(rec.observed_source_version)
+                        })
                     }
                     VisitPreparationState::Preparing { .. }
                     | VisitPreparationState::CouldNotFinish { .. }
@@ -3520,12 +3810,16 @@ impl Store {
             })
             .collect();
 
-        let base_job_id = briefing_job_id(
-            appt.source_id.as_str(),
-            appt.appointment_id.as_str(),
-            appt.window.starts_at_unix(),
+        let base_job_id = format!(
+            "{}-av{}-sv{}",
+            briefing_job_id(
+                appt.source_id.as_str(),
+                appt.appointment_id.as_str(),
+                appt.window.starts_at_unix(),
+            ),
+            appt.saved_version,
+            starting_context.chart_version,
         );
-        let job_id = format!("{base_job_id}-sv{}", starting_context.chart_version);
         let context = VisitBriefingContext {
             practice: practice.to_owned(),
             workspace: prep.workspace.clone(),
@@ -3545,21 +3839,48 @@ impl Store {
             source_statuses,
             prior_visit_briefings,
         };
-        let assignment = crate::visit_preparation::briefing_assignment(context, skills)?;
-        let scope = PracticeScope {
-            practice: practice.to_owned(),
-            workspace: prep.workspace.clone(),
-            job_id: job_id.clone(),
+        let base_assignment = crate::visit_preparation::briefing_assignment(context, skills)?;
+        let mut epoch = 0usize;
+        let (job_id, scope) = loop {
+            let candidate_job_id = if epoch == 0 {
+                base_job_id.clone()
+            } else {
+                format!("{base_job_id}-r{epoch}")
+            };
+            let candidate_scope = PracticeScope {
+                practice: practice.to_owned(),
+                workspace: prep.workspace.clone(),
+                job_id: candidate_job_id.clone(),
+            };
+            match self.practice_job(&candidate_scope).await? {
+                Some(existing) => match existing.status {
+                    WorkStatus::Pending | WorkStatus::Active => {
+                        break (candidate_job_id, candidate_scope);
+                    }
+                    WorkStatus::Completed
+                    | WorkStatus::Failed
+                    | WorkStatus::Held
+                    | WorkStatus::Cancelled => {
+                        epoch += 1;
+                    }
+                },
+                None => {
+                    let mut assignment = base_assignment.clone();
+                    assignment.key = if epoch == 0 {
+                        format!("{}:{}", prep.workspace, base_assignment.key)
+                    } else {
+                        format!("{}:{}:r{epoch}", prep.workspace, base_assignment.key)
+                    };
+                    match self
+                        .accept_practice_job(&candidate_scope, &assignment, roles, skills, auth)
+                        .await?
+                    {
+                        Accepted::New | Accepted::Duplicate => {}
+                    }
+                    break (candidate_job_id, candidate_scope);
+                }
+            }
         };
-        match self
-            .accept_practice_job(&scope, &assignment, roles, skills, auth)
-            .await
-        {
-            Ok(Accepted::New | Accepted::Duplicate) => {}
-            Err(PracticeJobError::Runtime(super::RuntimeError::Database(db)))
-                if db.to_string().contains("practice job id already exists") => {}
-            Err(err) => return Err(err.into()),
-        }
 
         if let Some(row) = visit_preparation::Entity::find_by_id(prep.slot.pk_tuple())
             .one(&self.db)
@@ -3581,7 +3902,7 @@ impl Store {
                 selection_idempotency_key: Unchanged(row.selection_idempotency_key),
                 state: Set("preparing".to_owned()),
                 briefing_job_id: Set(Some(job_id)),
-                briefing_id: Set(None),
+                briefing_id: Unchanged(row.briefing_id),
                 failed_reason: Set(None),
                 updated_at: Set(now_unix),
             }
@@ -3660,6 +3981,8 @@ impl Store {
             return Err(BriefingError::InvalidScope);
         }
 
+        self.reconcile_unfinished_visit_preparations(practice)
+            .await?;
         let mut retired_concerns = self.reconcile_visit_concerns(practice, now_unix).await?;
         let schedule = self.practice_schedule(practice).await?;
         let mut selection_job = None;
@@ -3690,7 +4013,7 @@ impl Store {
             )
             .expect("selection fingerprint tuple serializes");
             let fingerprint = &crate::sha256_hex(&fingerprint_input)[..16];
-            let job_id = selection_job_key(practice, fingerprint);
+            let base_job_id = selection_job_key(practice, fingerprint);
             let sel_context = VisitSelectionContext {
                 practice: practice.to_owned(),
                 evaluated_at_unix: now_unix,
@@ -3698,22 +4021,46 @@ impl Store {
                 schedule_standing: schedule.standing.clone(),
                 candidates,
             };
-            let assignment =
-                crate::visit_preparation::selection_assignment(&job_id, sel_context, skills)?;
-            let sel_scope = PracticeScope {
-                practice: practice.to_owned(),
-                workspace: host_workspace,
-                job_id,
+            let mut epoch = 0usize;
+            let sel_scope = loop {
+                let candidate_job_id = if epoch == 0 {
+                    base_job_id.clone()
+                } else {
+                    format!("{base_job_id}-r{epoch}")
+                };
+                let candidate_scope = PracticeScope {
+                    practice: practice.to_owned(),
+                    workspace: host_workspace.clone(),
+                    job_id: candidate_job_id.clone(),
+                };
+                match self.practice_job(&candidate_scope).await? {
+                    Some(existing) => match existing.status {
+                        WorkStatus::Pending | WorkStatus::Active => {
+                            break candidate_scope;
+                        }
+                        WorkStatus::Completed
+                        | WorkStatus::Failed
+                        | WorkStatus::Held
+                        | WorkStatus::Cancelled => {
+                            epoch += 1;
+                        }
+                    },
+                    None => {
+                        let assignment = crate::visit_preparation::selection_assignment(
+                            &candidate_job_id,
+                            sel_context.clone(),
+                            skills,
+                        )?;
+                        match self
+                            .accept_practice_job(&candidate_scope, &assignment, roles, skills, auth)
+                            .await?
+                        {
+                            Accepted::New | Accepted::Duplicate => {}
+                        }
+                        break candidate_scope;
+                    }
+                }
             };
-            match self
-                .accept_practice_job(&sel_scope, &assignment, roles, skills, auth)
-                .await
-            {
-                Ok(Accepted::New | Accepted::Duplicate) => {}
-                Err(PracticeJobError::Runtime(super::RuntimeError::Database(db)))
-                    if db.to_string().contains("practice job id already exists") => {}
-                Err(err) => return Err(err.into()),
-            }
             let status = self
                 .drive_practice_job_to_settlement(auth, &sel_scope, provider)
                 .await?;
@@ -3740,7 +4087,9 @@ impl Store {
             })
             .collect();
 
-        let preparations = self.visit_preparations_for_practice(practice).await?;
+        let preparations = self
+            .visit_preparations_for_practice_internal(practice)
+            .await?;
         let mut jobs_to_drive: Vec<(VisitSlotKey, PracticeScope)> = Vec::new();
 
         for prep in preparations {
@@ -3757,7 +4106,10 @@ impl Store {
                 VisitPreparationState::Scheduled {
                     prepare_at_unix, ..
                 } => {
-                    if *prepare_at_unix <= now_unix
+                    let is_due =
+                        matches!(prep.decision, VisitPreparationDecision::PrepareNow { .. })
+                            || *prepare_at_unix <= now_unix;
+                    if is_due
                         && visit_can_start_preparation(
                             appt.status,
                             appt.window.ends_at_unix(),
@@ -3804,9 +4156,10 @@ impl Store {
             }
         }
 
-        // Refresh preparation states (updating any Failed/Held jobs to CouldNotFinish)
-        // and reconcile any concerns whose visit ended during execution.
-        self.visit_preparations_for_practice(practice).await?;
+        // Reconcile any newly Failed/Held preparation rows and any concerns
+        // whose visit ended during execution.
+        self.reconcile_unfinished_visit_preparations(practice)
+            .await?;
         retired_concerns.extend(self.reconcile_visit_concerns(practice, now_unix).await?);
 
         Ok(ScheduledWakeSummary {

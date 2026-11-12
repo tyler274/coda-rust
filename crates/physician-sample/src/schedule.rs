@@ -516,7 +516,7 @@ pub(crate) async fn practice_day(
     let panel_set: BTreeSet<&str> = panel.iter().map(String::as_str).collect();
 
     let Ok(preparations) = runtime_store
-        .visit_preparations_for_practice(&identity.practice_id)
+        .visit_preparations_for_practice(&identity.practice_id, auth_store.as_ref())
         .await
     else {
         return StatusCode::SERVICE_UNAVAILABLE.into_response();

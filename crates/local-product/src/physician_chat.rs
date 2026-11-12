@@ -599,4 +599,12 @@ mod tests {
         );
         assert_skill_tools(&serde_json::to_value(skills()).unwrap(), &offered, &[]);
     }
+
+    #[test]
+    fn bundled_fallback_matches_workspace_skill_catalog() {
+        assert_eq!(
+            PhysicianSkills::bundled_fallback().unwrap(),
+            PhysicianSkills::configured(None, false).unwrap()
+        );
+    }
 }
