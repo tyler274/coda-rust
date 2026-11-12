@@ -26,7 +26,52 @@ pub(crate) const PRACTICE_TIME_ZONE: &str = "America/New_York";
 /// The most patients one search answers with.
 const SEARCH_LIMIT: usize = 50;
 
-/// Reads each source's last pull for a set of patients.
+/// How a connected source's records currently stand for a patient.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub enum SourceDeliveryState {
+    /// A pull succeeded at `pulled_at` (Unix seconds) and is current.
+    Usable {
+        /// Unix timestamp (seconds) of the successful pull.
+        pulled_at: i64,
+    },
+    /// The latest refresh failed; `last_good_pulled_at` preserves any prior good pull.
+    RefreshFailed {
+        /// Unix timestamp (seconds) of the last successful pull, if one occurred.
+        last_good_pulled_at: Option<i64>,
+    },
+    /// Records are still connecting for the first time.
+    Hydrating,
+    /// Source is registered for the patient with no completed pull yet.
+    NeverPulled,
+}
+
+/// One source's patient identity and record delivery state.
+#[derive(Clone, Debug)]
+pub struct PatientSourceRecord {
+    /// Identifier of the source system.
+    pub source_id: String,
+    /// Human-readable label of the source system.
+    pub source_label: String,
+    /// Demographics known by this source for the patient.
+    pub patient: SourcePatient,
+    /// Delivery and freshness status of this source's records.
+    pub delivery: SourceDeliveryState,
+}
+
+impl From<SourcePull> for PatientSourceRecord {
+    fn from(pull: SourcePull) -> Self {
+        Self {
+            source_id: pull.source_id,
+            source_label: pull.source_label,
+            patient: pull.patient,
+            delivery: SourceDeliveryState::Usable {
+                pulled_at: pull.pulled_at,
+            },
+        }
+    }
+}
+
+/// Reads each source's last pull and saved summary for a set of patients.
 #[async_trait]
 pub trait PatientDirectory: Send + Sync {
     /// The pulls of `workspaces`, keyed by workspace, each ordered by source.
@@ -34,6 +79,31 @@ pub trait PatientDirectory: Send + Sync {
         &self,
         workspaces: &[String],
     ) -> Result<BTreeMap<String, Vec<SourcePull>>, StoreUnavailable>;
+
+    /// Per-source delivery state for `workspaces`, defaulting to [`Self::pulls`] as usable pulls.
+    async fn source_records(
+        &self,
+        workspaces: &[String],
+    ) -> Result<BTreeMap<String, Vec<PatientSourceRecord>>, StoreUnavailable> {
+        let pulls = self.pulls(workspaces).await?;
+        Ok(pulls
+            .into_iter()
+            .map(|(workspace, list)| {
+                (
+                    workspace,
+                    list.into_iter().map(PatientSourceRecord::from).collect(),
+                )
+            })
+            .collect())
+    }
+
+    /// Saved patient summaries (`patient_synopsis` JSON) keyed by workspace.
+    async fn synopses(
+        &self,
+        _workspaces: &[String],
+    ) -> Result<BTreeMap<String, Value>, StoreUnavailable> {
+        Ok(BTreeMap::new())
+    }
 }
 
 #[async_trait]
@@ -51,18 +121,47 @@ impl PatientDirectory for Store {
 /// The directory of a site with no database, and of tests.
 #[derive(Default)]
 pub struct MemoryPatients {
-    pulls: Mutex<BTreeMap<String, Vec<SourcePull>>>,
+    records: Mutex<BTreeMap<String, Vec<PatientSourceRecord>>>,
+    synopses: Mutex<BTreeMap<String, Value>>,
+    unavailable: std::sync::atomic::AtomicBool,
 }
 
 impl MemoryPatients {
-    /// Records one source's pull for `workspace`.
+    /// Records one source's successful pull for `workspace`.
     pub fn add(&self, workspace: &str, pull: SourcePull) {
-        self.pulls
+        self.add_source_record(workspace, PatientSourceRecord::from(pull));
+    }
+
+    /// Records one source's explicit delivery state for `workspace`.
+    pub fn add_source_record(&self, workspace: &str, record: PatientSourceRecord) {
+        self.records
             .lock()
-            .expect("patient pulls")
+            .expect("patient source records")
             .entry(workspace.to_owned())
             .or_default()
-            .push(pull);
+            .push(record);
+    }
+
+    /// Replaces the source records held for `workspace`.
+    pub fn set_source_records(&self, workspace: &str, records: Vec<PatientSourceRecord>) {
+        self.records
+            .lock()
+            .expect("patient source records")
+            .insert(workspace.to_owned(), records);
+    }
+
+    /// Saves a `patient_synopsis` projection for `workspace`.
+    pub fn set_synopsis(&self, workspace: &str, synopsis: Value) {
+        self.synopses
+            .lock()
+            .expect("patient synopses")
+            .insert(workspace.to_owned(), synopsis);
+    }
+
+    /// Simulates directory unavailability so callers verify failure handling.
+    pub fn set_unavailable(&self, unavailable: bool) {
+        self.unavailable
+            .store(unavailable, std::sync::atomic::Ordering::SeqCst);
     }
 
     /// The five patients the tests read, held in memory.
@@ -76,9 +175,9 @@ impl MemoryPatients {
     }
 
     fn workspaces(&self) -> Vec<String> {
-        self.pulls
+        self.records
             .lock()
-            .expect("patient pulls")
+            .expect("patient source records")
             .keys()
             .cloned()
             .collect()
@@ -121,13 +220,76 @@ impl PatientDirectory for MemoryPatients {
         &self,
         workspaces: &[String],
     ) -> Result<BTreeMap<String, Vec<SourcePull>>, StoreUnavailable> {
-        let pulls = self.pulls.lock().expect("patient pulls");
+        if self.unavailable.load(std::sync::atomic::Ordering::SeqCst) {
+            return Err(StoreUnavailable);
+        }
+        let records = self.records.lock().expect("patient source records");
         Ok(workspaces
             .iter()
             .filter_map(|workspace| {
-                pulls
+                let usable: Vec<SourcePull> = records
+                    .get(workspace)?
+                    .iter()
+                    .filter_map(|record| match record.delivery {
+                        SourceDeliveryState::Usable { pulled_at } => Some(SourcePull {
+                            source_id: record.source_id.clone(),
+                            source_label: record.source_label.clone(),
+                            patient: record.patient.clone(),
+                            pulled_at,
+                        }),
+                        SourceDeliveryState::RefreshFailed {
+                            last_good_pulled_at: Some(pulled_at),
+                        } => Some(SourcePull {
+                            source_id: record.source_id.clone(),
+                            source_label: record.source_label.clone(),
+                            patient: record.patient.clone(),
+                            pulled_at,
+                        }),
+                        SourceDeliveryState::RefreshFailed {
+                            last_good_pulled_at: None,
+                        }
+                        | SourceDeliveryState::Hydrating
+                        | SourceDeliveryState::NeverPulled => None,
+                    })
+                    .collect();
+                (!usable.is_empty()).then_some((workspace.clone(), usable))
+            })
+            .collect())
+    }
+
+    async fn source_records(
+        &self,
+        workspaces: &[String],
+    ) -> Result<BTreeMap<String, Vec<PatientSourceRecord>>, StoreUnavailable> {
+        if self.unavailable.load(std::sync::atomic::Ordering::SeqCst) {
+            return Err(StoreUnavailable);
+        }
+        let records = self.records.lock().expect("patient source records");
+        Ok(workspaces
+            .iter()
+            .filter_map(|workspace| {
+                records
                     .get(workspace)
+                    .filter(|found| !found.is_empty())
                     .map(|found| (workspace.clone(), found.clone()))
+            })
+            .collect())
+    }
+
+    async fn synopses(
+        &self,
+        workspaces: &[String],
+    ) -> Result<BTreeMap<String, Value>, StoreUnavailable> {
+        if self.unavailable.load(std::sync::atomic::Ordering::SeqCst) {
+            return Err(StoreUnavailable);
+        }
+        let synopses = self.synopses.lock().expect("patient synopses");
+        Ok(workspaces
+            .iter()
+            .filter_map(|workspace| {
+                synopses
+                    .get(workspace)
+                    .map(|synopsis| (workspace.clone(), synopsis.clone()))
             })
             .collect())
     }
@@ -179,20 +341,49 @@ pub async fn enroll_fixture(auth: &dyn AuthStore, runtime: &Store) -> Result<(),
     Ok(())
 }
 
-/// One patient: their workspace and what the sources say.
+/// Deterministic match priority for Find patient queries.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord)]
+enum SearchRank {
+    /// Exact match on a supplied medical record number or birth date.
+    ExactIdentifier,
+    /// Prefix match from the start of the patient's display name.
+    FullNamePrefix,
+    /// Prefix match on a later word of the patient's display name.
+    TokenPrefix,
+    /// Substring match across display name, birth date, and medical record numbers.
+    Substring,
+}
+
+/// One patient: their workspace, what their sources delivered, and any saved summary.
 #[derive(Clone, Debug)]
 pub(crate) struct Patient {
     workspace: String,
-    pulls: Vec<SourcePull>,
+    sources: Vec<PatientSourceRecord>,
+    synopsis: Option<Value>,
 }
 
 impl Patient {
-    fn from_entry((workspace, pulls): (String, Vec<SourcePull>)) -> Option<Self> {
-        (!pulls.is_empty()).then_some(Self { workspace, pulls })
+    fn from_entry(
+        (workspace, sources): (String, Vec<PatientSourceRecord>),
+        synopsis: Option<Value>,
+    ) -> Option<Self> {
+        (!sources.is_empty()).then_some(Self {
+            workspace,
+            sources,
+            synopsis,
+        })
     }
 
     fn holder(&self) -> &SourcePatient {
-        &self.pulls[0].patient
+        &self.sources[0].patient
+    }
+
+    fn primary_mrn(&self) -> Option<&str> {
+        self.holder()
+            .medical_record_numbers
+            .first()
+            .map(|mrn| mrn.value.as_str())
+            .filter(|value| !value.trim().is_empty())
     }
 
     fn sort_key(&self) -> (String, &str) {
@@ -216,13 +407,63 @@ impl Patient {
             "patient_workspace_id": self.workspace,
             "patient_display_name": self.holder().display_name,
             "birth_date": self.holder().birth_date,
+            "mrn": self.primary_mrn(),
         })
     }
 
-    fn matches(&self, words: &[String]) -> bool {
-        let birth = self.holder().birth_date.as_deref().unwrap_or_default();
-        let haystack = format!("{} {birth}", self.holder().display_name).to_lowercase();
-        words.iter().all(|word| haystack.contains(word))
+    fn search_rank(&self, normalized_query: &str, words: &[String]) -> Option<SearchRank> {
+        let patient = self.holder();
+        let birth_iso = patient
+            .birth_date
+            .as_deref()
+            .map(str::trim)
+            .filter(|value| !value.is_empty());
+        let birth_slash = birth_iso.and_then(slash_birth_date);
+        let birth_words = birth_iso.and_then(spoken_birth_date);
+        let exact_mrn = patient
+            .medical_record_numbers
+            .iter()
+            .any(|mrn| mrn.value.trim().eq_ignore_ascii_case(normalized_query));
+        let exact_dob = birth_iso.is_some_and(|dob| dob.eq_ignore_ascii_case(normalized_query))
+            || birth_slash
+                .as_deref()
+                .is_some_and(|dob| dob.eq_ignore_ascii_case(normalized_query));
+        if exact_mrn || exact_dob {
+            return Some(SearchRank::ExactIdentifier);
+        }
+
+        let mrn_joined: String = patient
+            .medical_record_numbers
+            .iter()
+            .map(|mrn| mrn.value.as_str())
+            .collect::<Vec<_>>()
+            .join(" ");
+        let haystack = format!(
+            "{} {} {} {} {}",
+            patient.display_name,
+            birth_iso.unwrap_or_default(),
+            birth_slash.as_deref().unwrap_or_default(),
+            birth_words.as_deref().unwrap_or_default(),
+            mrn_joined,
+        )
+        .to_lowercase();
+        if !words.iter().all(|word| haystack.contains(word)) {
+            return None;
+        }
+
+        let name_lower = patient.display_name.to_lowercase();
+        if name_lower.starts_with(normalized_query) {
+            Some(SearchRank::FullNamePrefix)
+        } else if words.len() == 1
+            && patient
+                .display_name
+                .split_whitespace()
+                .any(|token| token.to_lowercase().starts_with(&words[0]))
+        {
+            Some(SearchRank::TokenPrefix)
+        } else {
+            Some(SearchRank::Substring)
+        }
     }
 
     fn identity(&self, now: &str) -> Value {
@@ -249,20 +490,44 @@ impl Patient {
     }
 
     fn connected_sources(&self) -> Vec<Value> {
-        self.pulls
+        self.sources
             .iter()
-            .map(|pull| {
-                let pulled = UNIX_EPOCH + Duration::from_secs(pull.pulled_at.unsigned_abs());
+            .map(|source| {
+                let state = match source.delivery {
+                    SourceDeliveryState::Usable { pulled_at } => {
+                        let pulled = UNIX_EPOCH + Duration::from_secs(pulled_at.unsigned_abs());
+                        json!({
+                            "state": "usable",
+                            "synchronized_at": format_rfc3339(pulled),
+                        })
+                    }
+                    SourceDeliveryState::RefreshFailed {
+                        last_good_pulled_at: Some(pulled_at),
+                    } => {
+                        let pulled = UNIX_EPOCH + Duration::from_secs(pulled_at.unsigned_abs());
+                        json!({
+                            "state": "failed",
+                            "usable_snapshot": {
+                                "synchronized_at": format_rfc3339(pulled),
+                            },
+                        })
+                    }
+                    SourceDeliveryState::RefreshFailed {
+                        last_good_pulled_at: None,
+                    } => json!({ "state": "failed" }),
+                    SourceDeliveryState::Hydrating => json!({ "state": "hydrating" }),
+                    SourceDeliveryState::NeverPulled => json!({ "state": "not_yet_pulled" }),
+                };
                 json!({
-                    "source_id": pull.source_id,
-                    "source_label": pull.source_label,
-                    "state": { "state": "usable", "synchronized_at": format_rfc3339(pulled) },
+                    "source_id": source.source_id,
+                    "source_label": source.source_label,
+                    "state": state,
                 })
             })
             .collect()
     }
 
-    /// The patient page: identity and how current the records are.
+    /// The patient page: identity, saved summary when present, and how current the records are.
     pub(crate) fn workspace_body(&self, now: &str) -> Value {
         json!({
             "patient_workspace_id": self.workspace,
@@ -270,6 +535,7 @@ impl Patient {
             "time_zone": PRACTICE_TIME_ZONE,
             "current_time": now,
             "identity": self.identity(now),
+            "patient_synopsis": self.synopsis,
             "connected_sources": self.connected_sources(),
             "chats": [],
             "active_follow_ups": [],
@@ -277,15 +543,26 @@ impl Patient {
         })
     }
 
-    /// What a physician in the clinic reads of a patient not on their panel.
+    /// What a physician in the clinic reads of a patient not on their panel:
+    /// strictly display name, birth date, and medical record numbers.
     pub(crate) fn clinic_demographics(&self, now: &str) -> Value {
+        let patient = self.holder();
+        let numbers: Vec<Value> = patient
+            .medical_record_numbers
+            .iter()
+            .map(|number| json!({ "system": number.system, "value": number.value }))
+            .collect();
         json!({
             "patient_workspace_id": self.workspace,
-            "display_name": self.holder().display_name,
+            "display_name": patient.display_name,
             "membership": "clinic_demographic",
             "time_zone": PRACTICE_TIME_ZONE,
             "current_time": now,
-            "identity": self.identity(now),
+            "identity": {
+                "display_name": patient.display_name,
+                "birth_date": patient.birth_date,
+                "medical_record_numbers": numbers,
+            },
             "chats": [],
             "patient_synopsis": null,
             "automation_run": null,
@@ -294,6 +571,29 @@ impl Patient {
             "connected_sources": [],
         })
     }
+}
+
+fn slash_birth_date(birth: &str) -> Option<String> {
+    let mut parts = birth.split('-');
+    let year = parts.next()?;
+    let month: u32 = parts.next()?.parse().ok()?;
+    let day: u32 = parts.next()?.parse().ok()?;
+    if parts.next().is_some() || year.len() != 4 {
+        return None;
+    }
+    Some(format!("{month:02}/{day:02}/{year}"))
+}
+
+fn spoken_birth_date(birth: &str) -> Option<String> {
+    const MONTHS: [&str; 12] = [
+        "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+    ];
+    let mut parts = birth.split('-');
+    let year = parts.next()?;
+    let month: usize = parts.next()?.parse().ok()?;
+    let day: u32 = parts.next()?.parse().ok()?;
+    let name = *MONTHS.get(month.checked_sub(1)?)?;
+    Some(format!("{name} {day}, {year}"))
 }
 
 /// Whole years between two `YYYY-MM-DD` dates.
@@ -317,11 +617,15 @@ pub(crate) async fn read_patients(
     directory: &dyn PatientDirectory,
     workspaces: &[String],
 ) -> Result<Vec<Patient>, StoreUnavailable> {
+    let mut synopses = directory.synopses(workspaces).await?;
     let mut patients: Vec<Patient> = directory
-        .pulls(workspaces)
+        .source_records(workspaces)
         .await?
         .into_iter()
-        .filter_map(Patient::from_entry)
+        .filter_map(|(workspace, records)| {
+            let synopsis = synopses.remove(&workspace);
+            Patient::from_entry((workspace, records), synopsis)
+        })
         .collect();
     patients.sort_by(|left, right| left.sort_key().cmp(&right.sort_key()));
     Ok(patients)
@@ -337,8 +641,9 @@ pub(crate) async fn read_patient(
         .pop())
 }
 
-/// The patients of `workspaces` whose name and birth date hold every word of
-/// `query`, first by name. A blank query finds no one.
+/// Searches `workspaces` deterministically across display name, DOB, and MRN:
+/// exact MRN or DOB matches first, then name prefixes, then substrings.
+/// A blank query finds no one.
 pub(crate) async fn search(
     directory: &dyn PatientDirectory,
     workspaces: &[String],
@@ -348,10 +653,25 @@ pub(crate) async fn search(
     if words.is_empty() {
         return Ok(Vec::new());
     }
-    let mut found = read_patients(directory, workspaces).await?;
-    found.retain(|patient| patient.matches(&words));
-    found.truncate(SEARCH_LIMIT);
-    Ok(found)
+    let normalized = words.join(" ");
+    let patients = read_patients(directory, workspaces).await?;
+    let mut ranked: Vec<(SearchRank, Patient)> = patients
+        .into_iter()
+        .filter_map(|patient| {
+            let rank = patient.search_rank(&normalized, &words)?;
+            Some((rank, patient))
+        })
+        .collect();
+    ranked.sort_by(|(left_rank, left), (right_rank, right)| {
+        left_rank
+            .cmp(right_rank)
+            .then_with(|| left.sort_key().cmp(&right.sort_key()))
+    });
+    Ok(ranked
+        .into_iter()
+        .take(SEARCH_LIMIT)
+        .map(|(_, patient)| patient)
+        .collect())
 }
 
 pub(crate) fn workspace_body(id: &str) -> Option<&'static str> {
@@ -379,10 +699,192 @@ pub(crate) fn workspace_body(id: &str) -> Option<&'static str> {
 mod tests {
     use super::*;
 
+    fn sample_record(
+        workspace: &str,
+        name: &str,
+        birth_date: Option<&str>,
+        mrn: Option<&str>,
+        delivery: SourceDeliveryState,
+    ) -> PatientSourceRecord {
+        PatientSourceRecord {
+            source_id: "practice-ehr".to_owned(),
+            source_label: "Practice EHR".to_owned(),
+            patient: SourcePatient {
+                source_patient_id: workspace.to_owned(),
+                display_name: name.to_owned(),
+                birth_date: birth_date.map(str::to_owned),
+                sex_or_gender: Some("Female".to_owned()),
+                medical_record_numbers: mrn
+                    .into_iter()
+                    .map(|value| MedicalRecordNumber {
+                        system: "MRN".to_owned(),
+                        value: value.to_owned(),
+                    })
+                    .collect(),
+            },
+            delivery,
+        }
+    }
+
     #[test]
     fn age_turns_on_the_birthday() {
         assert_eq!(age_on("1972-08-27", "2026-08-26"), Some(53));
         assert_eq!(age_on("1972-08-27", "2026-08-27"), Some(54));
         assert_eq!(age_on("unknown", "2026-08-27"), None);
+    }
+
+    #[tokio::test]
+    async fn search_orders_exact_identifier_before_prefix_before_substring() {
+        let directory = MemoryPatients::default();
+        directory.add_source_record(
+            "pw-substring",
+            sample_record(
+                "pw-substring",
+                "Clara Marlow",
+                Some("1981-04-10"),
+                Some("99104200"),
+                SourceDeliveryState::Usable {
+                    pulled_at: 1_787_846_400,
+                },
+            ),
+        );
+        directory.add_source_record(
+            "pw-prefix",
+            sample_record(
+                "pw-prefix",
+                "Marlo Vance",
+                Some("1979-11-02"),
+                Some("88001122"),
+                SourceDeliveryState::Usable {
+                    pulled_at: 1_787_846_400,
+                },
+            ),
+        );
+        directory.add_source_record(
+            "pw-exact",
+            sample_record(
+                "pw-exact",
+                "Zoe Chen",
+                Some("1990-01-15"),
+                Some("MARLO"),
+                SourceDeliveryState::Usable {
+                    pulled_at: 1_787_846_400,
+                },
+            ),
+        );
+        directory.add_source_record(
+            "pw-other-practice",
+            sample_record(
+                "pw-other-practice",
+                "Marlo External",
+                Some("1990-01-15"),
+                Some("MARLO"),
+                SourceDeliveryState::Usable {
+                    pulled_at: 1_787_846_400,
+                },
+            ),
+        );
+
+        let practice_roster = vec![
+            "pw-substring".to_owned(),
+            "pw-prefix".to_owned(),
+            "pw-exact".to_owned(),
+        ];
+        let found = search(&directory, &practice_roster, "marlo")
+            .await
+            .expect("search succeeds");
+        let ids: Vec<&str> = found.iter().map(|p| p.workspace.as_str()).collect();
+        assert_eq!(ids, vec!["pw-exact", "pw-prefix", "pw-substring"]);
+
+        let by_dob = search(&directory, &practice_roster, "04/10/1981")
+            .await
+            .expect("search by formatted DOB succeeds");
+        assert_eq!(by_dob.len(), 1);
+        assert_eq!(by_dob[0].workspace, "pw-substring");
+    }
+
+    #[tokio::test]
+    async fn clinic_demographics_exposes_only_name_dob_and_mrn() {
+        let directory = MemoryPatients::default();
+        directory.add_source_record(
+            "pw-off-panel",
+            sample_record(
+                "pw-off-panel",
+                "Mary Louis",
+                Some("1972-08-27"),
+                Some("00000005"),
+                SourceDeliveryState::Usable {
+                    pulled_at: 1_787_846_400,
+                },
+            ),
+        );
+        directory.set_synopsis(
+            "pw-off-panel",
+            json!({
+                "version_id": "v1",
+                "authored_text": "Persistent atrial fibrillation on apixaban."
+            }),
+        );
+        let patient = read_patient(&directory, "pw-off-panel")
+            .await
+            .expect("read succeeds")
+            .expect("patient present");
+        let off_panel = patient.clinic_demographics("2026-08-28T16:00:00Z");
+        assert_eq!(off_panel["membership"], "clinic_demographic");
+        assert_eq!(off_panel["display_name"], "Mary Louis");
+        assert_eq!(off_panel["identity"]["birth_date"], "1972-08-27");
+        assert_eq!(
+            off_panel["identity"]["medical_record_numbers"][0]["value"],
+            "00000005"
+        );
+        assert!(off_panel["identity"].get("age_years").is_none());
+        assert!(off_panel["identity"].get("sex_or_gender").is_none());
+        assert!(off_panel["identity"].get("state").is_none());
+        assert!(off_panel["patient_synopsis"].is_null());
+        assert_eq!(off_panel["connected_sources"], json!([]));
+    }
+
+    #[tokio::test]
+    async fn source_delivery_never_reports_usable_without_saved_pull_and_keeps_last_good_time() {
+        let directory = MemoryPatients::default();
+        directory.set_source_records(
+            "pw-stale",
+            vec![
+                sample_record(
+                    "pw-stale",
+                    "Jake Smith",
+                    Some("1950-03-12"),
+                    Some("00000001"),
+                    SourceDeliveryState::RefreshFailed {
+                        last_good_pulled_at: Some(1_787_846_400),
+                    },
+                ),
+                PatientSourceRecord {
+                    source_id: "Quest".to_owned(),
+                    source_label: "Quest Diagnostics".to_owned(),
+                    patient: SourcePatient {
+                        source_patient_id: "pw-stale".to_owned(),
+                        display_name: "Jake Smith".to_owned(),
+                        birth_date: Some("1950-03-12".to_owned()),
+                        sex_or_gender: None,
+                        medical_record_numbers: Vec::new(),
+                    },
+                    delivery: SourceDeliveryState::NeverPulled,
+                },
+            ],
+        );
+        let patient = read_patient(&directory, "pw-stale")
+            .await
+            .expect("read succeeds")
+            .expect("patient present");
+        let body = patient.workspace_body("2026-08-28T16:00:00Z");
+        let sources = body["connected_sources"].as_array().expect("sources array");
+        assert_eq!(sources[0]["state"]["state"], "failed");
+        assert_eq!(
+            sources[0]["state"]["usable_snapshot"]["synchronized_at"],
+            "2026-08-27T16:00:00.000Z"
+        );
+        assert_eq!(sources[1]["state"]["state"], "not_yet_pulled");
+        assert!(sources[1]["state"].get("synchronized_at").is_none());
     }
 }

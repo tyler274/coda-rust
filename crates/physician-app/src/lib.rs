@@ -21,33 +21,35 @@ use composer::{Composer, ConflictDraft, DraftTarget, Notice, SaveOutcome, SendAn
 use dioxus::prelude::*;
 use physician_client::{DraftSave, PhysicianClient};
 use physician_wire::{
-    ChatRunOutcome, ChatSnapshot, HoldReason, PatientWorkspaceResponse, PracticeAccountSummary,
-    RecentConversation, ResponseId, SignInResponse, SnapshotFeedback, WhoamiResponse,
+    ActiveReviewRun, ChatRunOutcome, ChatSnapshot, HistoryWorkOutcome, HoldReason, PastWorkItem,
+    PastWorkTarget, PatientWorkspaceResponse, PracticeAccountSummary, RecentConversation,
+    ResponseId, SignInResponse, SnapshotFeedback, UpdatesResponse, WhoamiResponse,
     WorkResumeTarget, WorkStopTarget, WorkspaceReply,
 };
 
 use panels::Panel;
 use shell::{
-    CONVERSATION_EMPTY, ChatView, Drawer, KeyInput, NavCommand, PAST_WORK_EMPTY, REPLY_ASK,
-    REPLY_CLOSED_NOTICE, REPLY_COPY, REPLY_NO_NEEDED, REPLY_REVISION_STALE, REPLY_TELL_CODA,
-    RESUME, ReadView, ReplyReviewAction, STOP, SourceChip, SynopsisPiece, TODAY_LOADING,
-    TODAY_QUIET, TODAY_QUIET_DETAIL, TODAY_STALE, TODAY_UNAVAILABLE, TRY_AGAIN, TodayLine,
-    TodayView, VisitLine, WORKSPACE_CLOSED, WORKSPACE_EMPTY, WORKSPACE_UNAVAILABLE, answer_to,
-    chat_view, chip_name, citation_inspection, connection_lines, demographic_card_view,
-    format_calendar_date, format_clock, format_local_date, format_waited, keyboard_command,
+    CONVERSATION_EMPTY, ChatView, ConnectedSourceStanding, Drawer, KeyInput, NavCommand,
+    PAST_WORK_EMPTY, REPLY_ASK, REPLY_CLOSED_NOTICE, REPLY_COPY, REPLY_NO_NEEDED,
+    REPLY_REVISION_STALE, REPLY_TELL_CODA, RESUME, ReadView, ReplyReviewAction, STOP, SourceChip,
+    SynopsisPiece, TODAY_LOADING, TODAY_QUIET, TODAY_QUIET_DETAIL, TODAY_STALE, TODAY_UNAVAILABLE,
+    TRY_AGAIN, TodayLine, TodayView, VisitLine, WORKSPACE_CLOSED, WORKSPACE_EMPTY,
+    WORKSPACE_UNAVAILABLE, WorkspaceRecordsState, active_now_concern, answer_to, chat_view,
+    chip_name, citation_inspection, connection_lines, demographic_card_view, format_clock,
+    format_context_time, format_local_date, format_waited, keyboard_command, message_pieces,
     need_you_words, opens_reader, panel_target, past_work_copy, patient_upcoming_visits, read_view,
-    records_time, reply_channel_label, reply_review_actions, reply_revision_words,
-    reply_urgency_words, row_icon, row_tone, schedule_empty_copy, shows_today_schedule,
+    reply_channel_label, reply_review_actions, reply_revision_words, reply_urgency_words, row_icon,
+    row_tone, schedule_empty_copy, search_row_detail, shows_today_schedule, source_lines,
     summary_times, synopsis_pieces, today_lines, today_view, upcoming_visits, work_end_reason,
-    work_heading,
+    work_heading, workspace_records_state,
 };
 #[cfg(target_arch = "wasm32")]
 use shell::{EventRefetch, event_refetch};
 use status::{CommandNotice, CommandStage, ReadNotice, ReadStage};
 use ui::{
     ActionRow, Author, Button, ButtonVariant, Card, Count, Dialog, DraftConflict, EmptyLine, Icon,
-    IconName, LiveDot, NavigationControl, NavigationRow, PageTitle, ProgressBar, SearchField,
-    StatePill, StatusLine, TextField, TextKind, Tone,
+    IconName, LiveDot, NavigationControl, NavigationRow, Orb, OrbState, PageTitle, ProgressBar,
+    SearchField, StatePill, StatusLine, TextField, TextKind, Tone, WorkingMark,
 };
 
 const SHELL_STYLES: &str = include_str!("../assets/shell.css");
@@ -56,6 +58,11 @@ const UPDATES_EMPTY: &str = "Nothing from Coda yet today.";
 const UPDATES_EMPTY_DETAIL: &str = "What Coda does for your patients today will appear here.";
 const UPDATES_UNAVAILABLE: &str = "Coda couldn’t load Updates.";
 const UPDATES_STALE: &str = "Coda couldn’t refresh Updates. Showing the last list.";
+const PAST_WORK_LOADING: &str = "Loading past work…";
+const PAST_WORK_UNAVAILABLE: &str = "Coda couldn’t load past work.";
+const PAST_WORK_STALE: &str = "Coda couldn’t refresh past work. Showing the last list.";
+const ANSWER_NEWER_RECORDS: &str = "Newer records arrived after this answer.";
+const UPDATE_ANSWER_PROMPT: &str = "Update this answer with the latest records.";
 const SCHEDULE_LOADING: &str = "Loading the schedule…";
 const SCHEDULE_UNAVAILABLE: &str = "Coda couldn’t load the schedule.";
 const SCHEDULE_STALE: &str = "Coda couldn’t refresh the schedule. Showing the last one.";
@@ -951,6 +958,7 @@ fn PhysicianShell(
     let mut panel_busy = use_signal(|| false);
     let mut panel_notice = use_signal(String::new);
     let mut past_work_open = use_signal(|| false);
+    let mut past_work_attempt = use_signal(|| 0u32);
     let mut reply_notice = use_signal(String::new);
     let reply_slot = use_command_slot();
     let send_slot = use_command_slot();
@@ -1057,7 +1065,7 @@ fn PhysicianShell(
     let updates = use_resource(move || {
         let _attempt = today_attempt();
         let client = client.read().clone();
-        async move { client.updates().await.map(|page| page.rows).map_err(|_| ()) }
+        async move { client.updates().await.map_err(|_| ()) }
     });
     let found = use_resource(move || {
         let _attempt = today_attempt();
@@ -1513,22 +1521,76 @@ fn PhysicianShell(
     let modal =
         shortcuts_open() || connections_open() || past_work_open() || reading.read().is_some();
     let shown_focus = if moved() { Some(focus()) } else { None };
+    let mut opened_now_items = use_signal(std::collections::HashSet::<String>::new);
     let snapshot = use_resource(move || {
         let _attempt = snapshot_attempt();
         let asked = (selected(), open_chat());
         let client = client.read().clone();
         async move {
             let answer = match &asked {
-                (Some(workspace_id), Some(chat_id)) => client
-                    .chat_snapshot(workspace_id, chat_id)
-                    .await
-                    .map(|page| conversation_lines(&page.snapshot))
-                    .map_err(|_| ()),
+                (Some(workspace_id), Some(chat_id)) => {
+                    match client.chat_snapshot(workspace_id, chat_id).await {
+                        Ok(page) => Ok(conversation_lines(&page.snapshot)),
+                        Err(error) => {
+                            if matches!(
+                                error,
+                                physician_client::HttpError::Status {
+                                    status: 403 | 404,
+                                    ..
+                                }
+                            ) {
+                                *workspace_attempt.write() += 1;
+                                *today_attempt.write() += 1;
+                            }
+                            Err(())
+                        }
+                    }
+                }
                 _ => Ok(Vec::new()),
             };
             (asked, answer)
         }
     });
+    let past_work_items = use_resource(move || {
+        let _today = today_attempt();
+        let _workspace = workspace_attempt();
+        let _attempt = past_work_attempt();
+        let open_id = if past_work_open() { selected() } else { None };
+        let client = client.read().clone();
+        async move {
+            let answer = match &open_id {
+                Some(id) => match client.past_work(id).await {
+                    Ok(page) => Ok(page.items),
+                    Err(error) => {
+                        if matches!(
+                            error,
+                            physician_client::HttpError::Status {
+                                status: 403 | 404,
+                                ..
+                            }
+                        ) {
+                            past_work_open.set(false);
+                            *workspace_attempt.write() += 1;
+                            *today_attempt.write() += 1;
+                        }
+                        Err(())
+                    }
+                },
+                None => Ok(Vec::new()),
+            };
+            (open_id, answer)
+        }
+    });
+    let mut last_past_work = use_signal(|| None);
+    use_effect(move || {
+        if let Some((Some(id), Ok(items))) = past_work_items.read().as_ref() {
+            last_past_work.set(Some((Some(id.clone()), items.clone())));
+        }
+    });
+    let past_work_state = read_view(
+        answer_to(&selected(), last_past_work.read().as_ref()).cloned(),
+        answer_to(&selected(), past_work_items.read().as_ref()).cloned(),
+    );
     // A failed reread keeps this conversation's last lines, shown as stale, so
     // its turns and any open details dialog stay; one conversation's lines
     // never stand in for another's.
@@ -1552,6 +1614,52 @@ fn PhysicianShell(
         answer_to(&asking, last_conversation.read().as_ref()).cloned(),
         answer_to(&asking, snapshot.read().as_ref()).cloned(),
     );
+    let active_now = today_state.content().and_then(|rows| {
+        let opened = opened_now_items.read();
+        let remaining: Vec<TodayLine> = rows
+            .iter()
+            .filter(|line| !opened.contains(&line.item_id))
+            .cloned()
+            .collect();
+        active_now_concern(&remaining).cloned()
+    });
+    let active_runs = updates_state
+        .content()
+        .map(|page| page.active_runs.clone())
+        .unwrap_or_default();
+    let update_preview_rows = updates_state
+        .content()
+        .map(|page| page.rows.clone())
+        .unwrap_or_default();
+    let mut open_today_line = move |line: TodayLine| {
+        let reading_text = if opens_reader(&line.kind) {
+            Some(prose_reading(line.patient.clone(), line.reason.clone()))
+        } else {
+            None
+        };
+        if line.now {
+            let client = client.read().clone();
+            let workspace_id = line.workspace_id.clone();
+            let item_id = line.item_id.clone();
+            let key = format!("open-item-{item_id}");
+            spawn(async move {
+                if let Ok(value) = client.open_item(&workspace_id, &item_id, &key).await
+                    && command_rejection(&value).is_none()
+                {
+                    opened_now_items.write().insert(item_id);
+                    *today_attempt.write() += 1;
+                    *workspace_attempt.write() += 1;
+                }
+            });
+        }
+        reading.set(reading_text);
+        selected.set(Some(line.workspace_id));
+        place.set(Place::Workspace);
+        app_collapsed.set(false);
+        search_open.set(false);
+        drawer.set(Drawer::Dismissed);
+        workspace_attempt.set(workspace_attempt() + 1);
+    };
     // New conversation: a fresh id the server keeps once a message is sent.
     // The address names it, so a reload before the reply still reopens it.
     let mut start_chat = move || {
@@ -1575,11 +1683,16 @@ fn PhysicianShell(
     rsx! {
         ui::Stylesheet { app: SHELL_STYLES }
         if app_collapsed() {
-            Button {
-                class: "coda-restore",
-                aria_label: "Open Coda",
-                onclick: move |_| app_collapsed.set(false),
-                img { class: "coda-logo", src: "./assets/coda-health-logo-transparent.png", alt: "" }
+            CodaOrbDock {
+                urgent: active_now.clone(),
+                active_runs: active_runs.clone(),
+                update_rows: update_preview_rows,
+                on_open_coda: move |_| app_collapsed.set(false),
+                on_open_updates: move |_| {
+                    place.set(Place::Updates);
+                    app_collapsed.set(false);
+                },
+                on_open_urgent: move |line: TodayLine| open_today_line(line),
             }
         }
         div {
@@ -1651,8 +1764,20 @@ fn PhysicianShell(
                         focus.set(next.max(0));
                     }
                     NavCommand::Activate => {
-                        let Some(target) = targets.get(focus().max(0) as usize) else { return };
-                        open_target(target.clone(), &mut selected, &mut place, &mut search_open, &mut reading, &mut workspace_attempt);
+                        let Some(target) = targets.get(focus().max(0) as usize).cloned() else {
+                            return;
+                        };
+                        match target {
+                            FocusTarget::Row(line) => open_today_line(line),
+                            other => open_target(
+                                other,
+                                &mut selected,
+                                &mut place,
+                                &mut search_open,
+                                &mut reading,
+                                &mut workspace_attempt,
+                            ),
+                        }
                     }
                 }
             },
@@ -1774,7 +1899,17 @@ fn PhysicianShell(
                                                     }
                                                 },
                                                 Icon { name: IconName::Message }
-                                                "{line.title}"
+                                                span { class: "chat-row-copy",
+                                                    span { class: "sidebar-recent-title", "{line.title}" }
+                                                    if let Some(summary) = distinct_history_summary(line.summary.as_deref(), &line.title, line.outcome) {
+                                                        span { class: "chat-row-summary", "{summary}" }
+                                                    }
+                                                    if let Some(outcome) = line.outcome {
+                                                        span { class: "chat-row-meta",
+                                                            StatePill { tone: history_outcome_tone(outcome), "{outcome.label()}" }
+                                                        }
+                                                    }
+                                                }
                                             }
                                         }
                                     },
@@ -1790,7 +1925,21 @@ fn PhysicianShell(
                                 Some(Ok(list)) if list.conversations.is_empty() => rsx! { p { class: "sidebar-empty", "{RECENT_NONE}" } },
                                 Some(Ok(list)) => rsx! {
                                     for conversation in list.conversations.clone() {
-                                        RecentRow { conversation }
+                                        RecentRow {
+                                            conversation,
+                                            on_open: move |(workspace_id, chat_id): (String, String)| {
+                                                requested_chat.set(Some((
+                                                    workspace_id.clone(),
+                                                    chat_id.clone(),
+                                                )));
+                                                selected.set(Some(workspace_id));
+                                                open_chat.set(Some(chat_id));
+                                                place.set(Place::Workspace);
+                                                drawer.set(Drawer::Dismissed);
+                                                workspace_attempt.set(workspace_attempt() + 1);
+                                                snapshot_attempt.set(snapshot_attempt() + 1);
+                                            },
+                                        }
                                     }
                                 },
                             }
@@ -1863,6 +2012,12 @@ fn PhysicianShell(
                         "Collapse Coda"
                     }
                 }
+                if let Some(concern) = active_now.clone() {
+                    NowBanner {
+                        concern,
+                        on_open: move |line: TodayLine| open_today_line(line),
+                    }
+                }
                 match place() {
                     Place::Today => rsx! {
                         TodaySurface {
@@ -1886,18 +2041,7 @@ fn PhysicianShell(
                                 search_open.set(false);
                                 workspace_attempt.set(workspace_attempt() + 1);
                             },
-                            on_open_row: move |line: TodayLine| {
-                                let reading_text = if opens_reader(&line.kind) {
-                                    Some(prose_reading(line.patient.clone(), line.reason.clone()))
-                                } else {
-                                    None
-                                };
-                                reading.set(reading_text);
-                                selected.set(Some(line.workspace_id));
-                                place.set(Place::Workspace);
-                                search_open.set(false);
-                                workspace_attempt.set(workspace_attempt() + 1);
-                            },
+                            on_open_row: move |line: TodayLine| open_today_line(line),
                             on_open_visit: move |visit: VisitLine| {
                                 let Some(id) = visit.workspace_id.clone() else { return };
                                 selected.set(Some(id));
@@ -1905,15 +2049,28 @@ fn PhysicianShell(
                                 search_open.set(false);
                                 workspace_attempt.set(workspace_attempt() + 1);
                             },
-                            on_resume: move |line: TodayLine| {
-                                if let Some(command) = resume_command(&line, &practice_zone) {
-                                    resume_slot.run(client.read().clone(), command, move || *today_attempt.write() += 1);
+                            on_resume: {
+                                let zone = practice_zone.clone();
+                                move |line: TodayLine| {
+                                    if let Some(command) = resume_command(&line, &zone) {
+                                        resume_slot.run(client.read().clone(), command, move || *today_attempt.write() += 1);
+                                    }
                                 }
                             },
                             resume_notice: resume_slot.notice(client),
                         }
                     },
-                    Place::Updates => rsx! { UpdatesSurface { state: updates_state.clone(), on_retry: move |_| *today_attempt.write() += 1 } },
+                    Place::Updates => rsx! {
+                        UpdatesSurface {
+                            state: updates_state.clone(),
+                            on_retry: move |_| *today_attempt.write() += 1,
+                            on_open_patient: move |id: String| {
+                                selected.set(Some(id));
+                                place.set(Place::Workspace);
+                                workspace_attempt.set(workspace_attempt() + 1);
+                            },
+                        }
+                    },
                     Place::Workspace => rsx! {
                         PatientSurface {
                             gone: patient_gone,
@@ -2094,6 +2251,12 @@ fn PhysicianShell(
                             on_open_chat: move |id: String| open_chat.set(Some(id)),
                             on_new_chat: move |_| start_chat(),
                             on_send: move |_| send_message(),
+                            on_update_answer: move |_| {
+                                let target = draft_target();
+                                composer.write().edit(target.as_ref(), UPDATE_ANSWER_PROMPT.to_owned());
+                                send_message();
+                            },
+                            on_open_patient_row: move |line: TodayLine| open_today_line(line),
                             on_dictate: move |_| {
                                 let client = client.read().clone();
                                 spawn(async move {
@@ -2216,6 +2379,23 @@ fn PhysicianShell(
         if past_work_open() && place() == Place::Workspace {
             PastWorkDialog {
                 patient: open_name.clone().unwrap_or_default(),
+                state: past_work_state.clone(),
+                time_zone: practice_zone.clone(),
+                server_now: server_now.clone(),
+                on_retry: move |_| *past_work_attempt.write() += 1,
+                on_open_item: move |item: PastWorkItem| {
+                    match item.target {
+                        PastWorkTarget::Conversation { chat_id } => {
+                            open_chat.set(Some(chat_id));
+                            past_work_open.set(false);
+                            snapshot_attempt.set(snapshot_attempt() + 1);
+                        }
+                        PastWorkTarget::ReplyDraft { .. } => {
+                            reading.set(Some(prose_reading(item.title, item.summary)));
+                            past_work_open.set(false);
+                        }
+                    }
+                },
                 on_close: move |_| past_work_open.set(false),
             }
         }
@@ -2828,19 +3008,218 @@ mod sign_in_followup_tests {
     }
 }
 
+fn history_outcome_tone(outcome: HistoryWorkOutcome) -> Tone {
+    match outcome {
+        HistoryWorkOutcome::Answered => Tone::Neutral,
+        HistoryWorkOutcome::Running | HistoryWorkOutcome::DraftReady => Tone::Primary,
+        HistoryWorkOutcome::Held => Tone::Warning,
+        HistoryWorkOutcome::Failed | HistoryWorkOutcome::RevisionFailed => Tone::Error,
+    }
+}
+
+fn distinct_history_summary(
+    summary: Option<&str>,
+    title: &str,
+    outcome: Option<HistoryWorkOutcome>,
+) -> Option<String> {
+    let trimmed = summary?.trim();
+    if trimmed.is_empty()
+        || trimmed == title.trim()
+        || outcome.is_some_and(|status| trimmed == status.label())
+    {
+        return None;
+    }
+    Some(trimmed.to_owned())
+}
+
 #[component]
-fn RecentRow(conversation: RecentConversation) -> Element {
+fn RecentRow(conversation: RecentConversation, on_open: EventHandler<(String, String)>) -> Element {
     let title = conversation
         .title
         .clone()
         .unwrap_or_else(|| "Untitled".to_owned());
+    let workspace_id = conversation.patient_workspace_id.clone();
+    let chat_id = conversation.chat_id.clone();
+    let summary = distinct_history_summary(
+        conversation.summary.as_deref(),
+        &title,
+        conversation.outcome,
+    );
     rsx! {
-        div { class: "sidebar-recent-link",
+        NavigationRow {
+            class: "sidebar-recent-link",
+            onclick: move |_| {
+                if let (Some(workspace_id), Some(chat_id)) =
+                    (workspace_id.clone(), chat_id.clone())
+                {
+                    on_open.call((workspace_id, chat_id));
+                }
+            },
             Icon { name: IconName::Message }
-            span { class: "item-text",
+            span { class: "item-text chat-row-copy",
                 span { class: "sidebar-recent-title", "{title}" }
-                if let Some(patient) = conversation.patient_display_name {
-                    span { class: "sidebar-recent-patient", "{patient}" }
+                if conversation.patient_display_name.is_some() || conversation.outcome.is_some() {
+                    span { class: "chat-row-meta",
+                        if let Some(patient) = conversation.patient_display_name {
+                            span { class: "sidebar-recent-patient", "{patient}" }
+                        }
+                        if let Some(outcome) = conversation.outcome {
+                            StatePill { tone: history_outcome_tone(outcome), "{outcome.label()}" }
+                        }
+                    }
+                }
+                if let Some(summary) = summary {
+                    span { class: "chat-row-summary", "{summary}" }
+                }
+            }
+        }
+    }
+}
+
+#[component]
+fn NowBanner(concern: TodayLine, on_open: EventHandler<TodayLine>) -> Element {
+    let open_line = concern.clone();
+    rsx! {
+        section {
+            class: "now-banner",
+            role: "region",
+            aria_label: "Urgent patient concern",
+            div { class: "now-banner-body",
+                LiveDot {}
+                StatePill { tone: Tone::Error, icon: IconName::Alert, "Now" }
+                strong { class: "now-banner-who", "{concern.patient}" }
+                if !concern.reason.is_empty() {
+                    span { class: "now-banner-reason", "{concern.reason}" }
+                }
+            }
+            Button {
+                compact: true,
+                variant: ButtonVariant::Primary,
+                onclick: move |_| on_open.call(open_line.clone()),
+                "Open"
+            }
+        }
+    }
+}
+
+#[component]
+fn CodaOrbDock(
+    urgent: Option<TodayLine>,
+    active_runs: Vec<ActiveReviewRun>,
+    update_rows: Vec<serde_json::Value>,
+    on_open_coda: EventHandler,
+    on_open_updates: EventHandler,
+    on_open_urgent: EventHandler<TodayLine>,
+) -> Element {
+    let mut preview_open = use_signal(|| false);
+    let orb_state = if urgent.is_some() {
+        OrbState::Urgent
+    } else if !active_runs.is_empty() {
+        OrbState::Working
+    } else {
+        OrbState::Idle
+    };
+    rsx! {
+        div {
+            class: "orb-dock",
+            onpointerenter: move |_| preview_open.set(true),
+            onpointerleave: move |_| preview_open.set(false),
+            onfocusin: move |_| preview_open.set(true),
+            onkeydown: move |event: KeyboardEvent| {
+                if event.key() == Key::Escape {
+                    preview_open.set(false);
+                }
+            },
+            div { class: "orb-dock-bar",
+                Orb {
+                    aria_label: "Open Coda",
+                    state: orb_state,
+                    expanded: Some(preview_open()),
+                    onclick: move |_| on_open_coda.call(()),
+                }
+                if let Some(concern) = urgent {
+                    div {
+                        class: "orb-now-pill",
+                        role: "region",
+                        aria_label: "Urgent patient concern",
+                        LiveDot {}
+                        StatePill { tone: Tone::Error, icon: IconName::Alert, "Now" }
+                        span { class: "orb-now-copy",
+                            strong { "{concern.patient}" }
+                            if !concern.reason.is_empty() {
+                                span { "{concern.reason}" }
+                            }
+                        }
+                        Button {
+                            compact: true,
+                            variant: ButtonVariant::Primary,
+                            onclick: move |_| on_open_urgent.call(concern.clone()),
+                            "Open"
+                        }
+                    }
+                }
+            }
+            if preview_open() {
+                section {
+                    class: "orb-preview",
+                    aria_label: "Updates preview",
+                    header { class: "orb-preview-head",
+                        strong { "Updates" }
+                    }
+                    if !active_runs.is_empty() {
+                        div { class: "orb-preview-section",
+                            for run in active_runs {
+                                div { class: "orb-preview-run",
+                                    WorkingMark {}
+                                    span { class: "orb-preview-item-copy",
+                                        strong { "{run.patient_display_name}" }
+                                        span { "{run.headline}" }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    div { class: "orb-preview-section",
+                        if update_rows.is_empty() {
+                            p { class: "orb-preview-empty", "{UPDATES_EMPTY}" }
+                        } else {
+                            for row in update_rows.iter().take(4) {
+                                div { class: "orb-preview-item",
+                                    strong {
+                                        "{row.get(\"patient_display_name\").and_then(|value| value.as_str()).unwrap_or(\"Update\")}"
+                                    }
+                                    if let Some(detail) = row
+                                        .get("headline")
+                                        .or_else(|| row.get("summary"))
+                                        .or_else(|| row.get("reason"))
+                                        .and_then(|value| value.as_str())
+                                        .filter(|text| !text.is_empty())
+                                    {
+                                        span { "{detail}" }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    div { class: "orb-preview-actions",
+                        Button {
+                            compact: true,
+                            onclick: move |_| {
+                                preview_open.set(false);
+                                on_open_coda.call(());
+                            },
+                            "Open Coda"
+                        }
+                        Button {
+                            compact: true,
+                            variant: ButtonVariant::Primary,
+                            onclick: move |_| {
+                                preview_open.set(false);
+                                on_open_updates.call(());
+                            },
+                            "All updates"
+                        }
+                    }
                 }
             }
         }
@@ -3065,7 +3444,11 @@ fn ScheduleRail(
 }
 
 #[component]
-fn UpdatesSurface(state: ReadView<Vec<serde_json::Value>>, on_retry: EventHandler) -> Element {
+fn UpdatesSurface(
+    state: ReadView<UpdatesResponse>,
+    on_retry: EventHandler,
+    on_open_patient: EventHandler<String>,
+) -> Element {
     rsx! {
         div { class: "reading-workspace",
             header { class: "today-heading", h1 { "Updates" } }
@@ -3079,17 +3462,66 @@ fn UpdatesSurface(state: ReadView<Vec<serde_json::Value>>, on_retry: EventHandle
             }
             match state.content().cloned() {
                 None => rsx! {},
-                Some(rows) if rows.is_empty() => rsx! {
+                Some(page) if page.active_runs.is_empty() && page.rows.is_empty() => rsx! {
                     div { class: "updates-empty",
                         h2 { "{UPDATES_EMPTY}" }
                         p { "{UPDATES_EMPTY_DETAIL}" }
                     }
                 },
-                Some(rows) => rsx! {
-                    div { class: "today-list",
-                        for row in rows {
-                            article { class: "today-row",
-                                strong { class: "today-row-who", "{row.get(\"patient_display_name\").and_then(|value| value.as_str()).unwrap_or(\"Update\")}" }
+                Some(page) => rsx! {
+                    div { class: "today-main",
+                        if !page.active_runs.is_empty() {
+                            div { class: "today-list",
+                                for run in page.active_runs {
+                                    article { class: "today-row",
+                                        NavigationRow {
+                                            class: "today-row-open",
+                                            onclick: {
+                                                let id = run.patient_workspace_id.clone();
+                                                move |_| on_open_patient.call(id.clone())
+                                            },
+                                            span { class: "today-row-heading",
+                                                WorkingMark {}
+                                                strong { class: "today-row-who", "{run.patient_display_name}" }
+                                                StatePill { tone: Tone::Primary, "{run.headline}" }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        if !page.rows.is_empty() {
+                            div { class: "today-list",
+                                for row in page.rows {
+                                    article { class: "today-row",
+                                        if let Some(workspace_id) = row
+                                            .get("patient_workspace_id")
+                                            .and_then(|value| value.as_str())
+                                            .map(str::to_owned)
+                                        {
+                                            NavigationRow {
+                                                class: "today-row-open",
+                                                onclick: move |_| on_open_patient.call(workspace_id.clone()),
+                                                strong { class: "today-row-who",
+                                                    "{row.get(\"patient_display_name\").and_then(|value| value.as_str()).unwrap_or(\"Update\")}"
+                                                }
+                                                if let Some(detail) = row
+                                                    .get("headline")
+                                                    .or_else(|| row.get("summary"))
+                                                    .or_else(|| row.get("reason"))
+                                                    .and_then(|value| value.as_str())
+                                                    .filter(|text| !text.is_empty())
+                                                {
+                                                    span { class: "today-row-reason", "{detail}" }
+                                                }
+                                            }
+                                        } else {
+                                            strong { class: "today-row-who",
+                                                "{row.get(\"patient_display_name\").and_then(|value| value.as_str()).unwrap_or(\"Update\")}"
+                                            }
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
@@ -3152,6 +3584,8 @@ fn PatientSurface(
     on_conversation_stop: EventHandler<WorkStopTarget>,
     on_open_chat: EventHandler<String>,
     on_new_chat: EventHandler,
+    on_update_answer: EventHandler,
+    on_open_patient_row: EventHandler<TodayLine>,
     conversation_open: bool,
     /// The open chat, which its responses' feedback belongs to.
     feedback_chat: Option<feedback::ChatKey>,
@@ -3178,6 +3612,11 @@ fn PatientSurface(
         .and_then(|open| open.patient_synopsis.as_ref())
         .map(|synopsis| synopsis.segments.clone())
         .unwrap_or_default();
+    let synopsis_text = workspace
+        .as_ref()
+        .and_then(|open| open.patient_synopsis.as_ref())
+        .and_then(|synopsis| synopsis.authored_text.clone())
+        .filter(|text| !text.trim().is_empty());
     let work = workspace
         .as_ref()
         .and_then(|open| open.automation_run.clone());
@@ -3216,9 +3655,14 @@ fn PatientSurface(
         .as_ref()
         .map(|open| summary_times(open, &server_now))
         .unwrap_or_default();
-    let records = workspace
+    let records_state = workspace
         .as_ref()
-        .and_then(|open| records_time(open, &server_now));
+        .map(|open| workspace_records_state(open, &server_now))
+        .unwrap_or(WorkspaceRecordsState::Absent);
+    let connected_source_lines = workspace
+        .as_ref()
+        .map(|open| source_lines(open, &server_now))
+        .unwrap_or_default();
     let visit_focus = focused.and_then(|index| {
         if index >= 0 && (index as usize) < visits.len() {
             Some(index as usize)
@@ -3280,8 +3724,51 @@ fn PatientSurface(
                     if let Some(mrn) = mrn.clone() {
                         span { "MRN {mrn}" }
                     }
-                    if let Some(records) = records {
-                        time { datetime: "{records.instant}", "{records.label} {records.words}" }
+                    match records_state {
+                        WorkspaceRecordsState::Current(records) => rsx! {
+                            time { datetime: "{records.instant}", "{records.label} {records.words}" }
+                        },
+                        WorkspaceRecordsState::RefreshFailedWithSnapshot(records) => rsx! {
+                            span { class: "records-stale-status",
+                                "{records.label} "
+                                time { datetime: "{records.instant}", "{records.words}" }
+                                ", couldn't update"
+                            }
+                        },
+                        WorkspaceRecordsState::Hydrating => rsx! {
+                            span { "Connecting records…" }
+                        },
+                        WorkspaceRecordsState::Unavailable(message) => rsx! {
+                            span { class: "records-stale-status", "{message}" }
+                        },
+                        WorkspaceRecordsState::Absent => rsx! {},
+                    }
+                }
+                if !clinic_demographic && !connected_source_lines.is_empty() {
+                    div { class: "patient-sources", aria_label: "Record sources",
+                        for source in connected_source_lines {
+                            match source.standing {
+                                ConnectedSourceStanding::Usable { last_good } => rsx! {
+                                    span { class: "patient-source-status", "{source.label} · As of {last_good}" }
+                                },
+                                ConnectedSourceStanding::RefreshFailed { last_good: Some(last_good) } => rsx! {
+                                    span { class: "patient-source-status is-stale-source",
+                                        "{source.label} · As of {last_good}, couldn't update"
+                                    }
+                                },
+                                ConnectedSourceStanding::RefreshFailed { last_good: None } => rsx! {
+                                    span { class: "patient-source-status is-stale-source",
+                                        "{source.label} · Couldn't update"
+                                    }
+                                },
+                                ConnectedSourceStanding::Connecting => rsx! {
+                                    span { class: "patient-source-status", "{source.label} · Connecting…" }
+                                },
+                                ConnectedSourceStanding::AwaitingFirstRead => rsx! {
+                                    span { class: "patient-source-status", "{source.label} · Waiting for first read" }
+                                },
+                            }
+                        }
                     }
                 }
                 if !clinic_demographic && !panel_notice.is_empty() {
@@ -3393,11 +3880,7 @@ fn PatientSurface(
                     rows,
                     server_now: server_now.clone(),
                     focused: None,
-                    on_open: move |line: TodayLine| {
-                        if opens_reader(&line.kind) {
-                            on_read.call((line.patient.clone(), line.reason.clone()));
-                        }
-                    },
+                    on_open: move |line: TodayLine| on_open_patient_row.call(line),
                     on_resume,
                 }
             }
@@ -3457,7 +3940,7 @@ fn PatientSurface(
                     }
                 }
             }
-            if !segments.is_empty() {
+            if !segments.is_empty() || synopsis_text.is_some() {
                 section { class: "patient-section", aria_label: "Patient summary",
                     h2 { "Patient summary" }
                     if !times.is_empty() {
@@ -3471,15 +3954,19 @@ fn PatientSurface(
                         }
                     }
                     div { class: "synopsis",
-                        for piece in synopsis_pieces(&segments) {
-                            match piece {
-                                SynopsisPiece::Text(text) => rsx! { span { "{text}" } },
-                                SynopsisPiece::Chips(chips) => rsx! {
-                                    for chip in chips {
-                                        CitationChip { chip: chip.clone(), on_open: on_open_source }
-                                    }
-                                },
+                        if !segments.is_empty() {
+                            for piece in synopsis_pieces(&segments) {
+                                match piece {
+                                    SynopsisPiece::Text(text) => rsx! { span { "{text}" } },
+                                    SynopsisPiece::Chips(chips) => rsx! {
+                                        for chip in chips {
+                                            CitationChip { chip: chip.clone(), on_open: on_open_source }
+                                        }
+                                    },
+                                }
                             }
+                        } else if let Some(text) = synopsis_text {
+                            span { "{text}" }
                         }
                     }
                 }
@@ -3554,7 +4041,15 @@ fn PatientSurface(
                                     move |_| on_open_chat.call(id.clone())
                                 },
                                 Icon { name: IconName::Message }
-                                "{line.title}"
+                                span { class: "chat-row-copy",
+                                    span { class: "sidebar-recent-title", "{line.title}" }
+                                    if let Some(summary) = distinct_history_summary(line.summary.as_deref(), &line.title, line.outcome) {
+                                        span { class: "chat-row-summary", "{summary}" }
+                                    }
+                                }
+                                if let Some(outcome) = line.outcome {
+                                    StatePill { tone: history_outcome_tone(outcome), "{outcome.label()}" }
+                                }
                             }
                         }
                         if conversation_open {
@@ -3600,7 +4095,27 @@ fn PatientSurface(
                                     actions: feedback_chat.clone().zip(line.response).map(|(chat, (response, read))| rsx! {
                                         feedback::ResponseRating { chat, response, read }
                                     }),
-                                    MessageWords { text: line.text }
+                                    if line.freshness == AnswerFreshness::NewerRecordsArrived {
+                                        div {
+                                            class: "answer-update-banner",
+                                            role: "status",
+                                            "data-answer-freshness": "newer-records",
+                                            span { "{ANSWER_NEWER_RECORDS}" }
+                                            Button {
+                                                compact: true,
+                                                onclick: move |_| on_update_answer.call(()),
+                                                "Update"
+                                            }
+                                        }
+                                    }
+                                    if !line.body_pieces.is_empty() {
+                                        CitedMessage { pieces: line.body_pieces, on_open_source }
+                                    } else {
+                                        MessageWords { text: line.text }
+                                    }
+                                    if !line.basis_pieces.is_empty() {
+                                        AnswerBasis { pieces: line.basis_pieces, on_open_source }
+                                    }
                                 }
                             } else {
                                 MessageWords { text: line.text }
@@ -3700,7 +4215,7 @@ fn SearchDialog(
                 div { class: "patient-search",
                     SearchField {
                         label: "Search your panel",
-                        placeholder: "Name, DOB or phone",
+                        placeholder: "Name, DOB or MRN",
                         clear_label: "Clear search",
                         value: query.clone(),
                         autofocus: true,
@@ -3734,13 +4249,9 @@ fn SearchDialog(
                                     ui::ListRow {
                                         class: if focused == Some(index as i32) { "is-keyboard-focus" } else { "" },
                                         title: patient.patient_display_name.clone(),
-                                        detail: format!(
-                                            "DOB {}",
-                                            patient
-                                                .birth_date
-                                                .as_deref()
-                                                .map(format_calendar_date)
-                                                .unwrap_or_else(|| "not recorded".to_owned())
+                                        detail: search_row_detail(
+                                            patient.birth_date.as_deref(),
+                                            patient.mrn.as_deref(),
                                         ),
                                         onclick: {
                                             let id = patient.patient_workspace_id.clone();
@@ -3870,7 +4381,15 @@ fn ReaderDialog(reading: OpenReading, on_close: EventHandler) -> Element {
 }
 
 #[component]
-fn PastWorkDialog(patient: String, on_close: EventHandler) -> Element {
+fn PastWorkDialog(
+    patient: String,
+    state: ReadView<Vec<PastWorkItem>>,
+    time_zone: String,
+    server_now: String,
+    on_retry: EventHandler,
+    on_open_item: EventHandler<PastWorkItem>,
+    on_close: EventHandler,
+) -> Element {
     rsx! {
         Dialog {
             close_label: "Close",
@@ -3878,7 +4397,93 @@ fn PastWorkDialog(patient: String, on_close: EventHandler) -> Element {
             title: "Past work",
             subtitle: (!patient.is_empty()).then_some(patient),
             on_close,
-            p { class: "past-work-empty", "{PAST_WORK_EMPTY}" }
+            ReadNotice {
+                stage: state.stage(),
+                loading: PAST_WORK_LOADING,
+                stale: PAST_WORK_STALE,
+                unavailable: PAST_WORK_UNAVAILABLE,
+                retry: TRY_AGAIN,
+                on_retry,
+            }
+            match state.content().cloned() {
+                None => rsx! {},
+                Some(items) if items.is_empty() => rsx! {
+                    p { class: "past-work-empty", "{PAST_WORK_EMPTY}" }
+                },
+                Some(items) => rsx! {
+                    ui::RowGroup { class: "past-work-items",
+                        for item in items {
+                            li {
+                                ui::ListRow {
+                                    icon: Some(IconName::Message),
+                                    title: item.title.clone(),
+                                    detail: past_work_item_detail(&item, &time_zone, &server_now),
+                                    onclick: {
+                                        let item = item.clone();
+                                        move |_| on_open_item.call(item.clone())
+                                    },
+                                }
+                            }
+                        }
+                    }
+                },
+            }
+        }
+    }
+}
+
+fn past_work_item_detail(item: &PastWorkItem, time_zone: &str, server_now: &str) -> String {
+    let mut parts = vec![item.outcome.label().to_owned()];
+    if let Some(summary) =
+        distinct_history_summary(Some(&item.summary), &item.title, Some(item.outcome))
+    {
+        parts.push(summary);
+    }
+    if let Some(when) = format_context_time(&item.updated_at, time_zone, server_now) {
+        parts.push(when);
+    }
+    parts.join(" · ")
+}
+
+#[component]
+fn CitedMessage(pieces: Vec<SynopsisPiece>, on_open_source: EventHandler<SourceChip>) -> Element {
+    let parts = pieces
+        .into_iter()
+        .map(|piece| match piece {
+            SynopsisPiece::Text(text) => ui::ProsePart::Words(text),
+            SynopsisPiece::Chips(chips) => ui::ProsePart::Inline(rsx! {
+                for chip in chips {
+                    CitationChip { chip: chip.clone(), on_open: on_open_source }
+                }
+            }),
+        })
+        .collect();
+    rsx! {
+        ui::Prose {
+            message: true,
+            names: ui::ProseNames { code: "Code".to_owned(), table: "Table".to_owned() },
+            parts,
+        }
+    }
+}
+
+#[component]
+fn AnswerBasis(pieces: Vec<SynopsisPiece>, on_open_source: EventHandler<SourceChip>) -> Element {
+    let mut open = use_signal(|| false);
+    rsx! {
+        div { class: "answer-basis",
+            Button {
+                compact: true,
+                variant: ButtonVariant::Quiet,
+                aria_expanded: if open() { "true" } else { "false" },
+                onclick: move |_| open.set(!open()),
+                "Basis and limitations"
+            }
+            if open() {
+                div { class: "answer-basis-body",
+                    CitedMessage { pieces, on_open_source }
+                }
+            }
         }
     }
 }
@@ -4393,12 +4998,22 @@ fn message_command(
     ))
 }
 
+/// Whether newer clinical records arrived after Coda published an answer.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+enum AnswerFreshness {
+    Current,
+    NewerRecordsArrived,
+}
+
 /// One line of the open conversation. A turn Coda couldn't finish carries the
 /// work and run its Try again resumes. A running turn carries Stop, and a
 /// stopped turn carries Resume.
 #[derive(Debug, Clone, PartialEq)]
 struct ConversationLine {
     text: String,
+    body_pieces: Vec<SynopsisPiece>,
+    basis_pieces: Vec<SynopsisPiece>,
+    freshness: AnswerFreshness,
     /// Who wrote it, when the server says: the physician or Coda. A turn that
     /// doesn't say shows without a speaker rather than as either.
     author: Option<Author>,
@@ -4440,19 +5055,35 @@ fn conversation_lines(snapshot: &ChatSnapshot) -> Vec<ConversationLine> {
                 Some("model") => Some(Author::Assistant),
                 _ => None,
             };
-            let response = turn
-                .response_id
-                .clone()
-                .filter(|_| author == Some(Author::Assistant))
-                .map(|id| {
-                    let read = match snapshot.feedback {
-                        SnapshotFeedback::Loaded => feedback::Read::Loaded(turn.feedback.clone()),
-                        SnapshotFeedback::Unavailable => feedback::Read::Unavailable,
-                    };
-                    (id, read)
-                });
+            let is_assistant = author == Some(Author::Assistant);
+            let body_pieces = if is_assistant && !turn.segments.is_empty() {
+                message_pieces(&turn.segments, &snapshot.sources)
+            } else {
+                Vec::new()
+            };
+            let basis_pieces = turn
+                .basis
+                .as_deref()
+                .filter(|basis| is_assistant && !basis.is_empty())
+                .map(|basis| message_pieces(basis, &snapshot.sources))
+                .unwrap_or_default();
+            let freshness = if is_assistant && turn.newer_records {
+                AnswerFreshness::NewerRecordsArrived
+            } else {
+                AnswerFreshness::Current
+            };
+            let response = turn.response_id.clone().filter(|_| is_assistant).map(|id| {
+                let read = match snapshot.feedback {
+                    SnapshotFeedback::Loaded => feedback::Read::Loaded(turn.feedback.clone()),
+                    SnapshotFeedback::Unavailable => feedback::Read::Unavailable,
+                };
+                (id, read)
+            });
             Some(ConversationLine {
                 text,
+                body_pieces,
+                basis_pieces,
+                freshness,
                 author,
                 resume,
                 stop,
@@ -4580,10 +5211,11 @@ fn now_millis() -> u128 {
 #[cfg(test)]
 mod conversation_line_tests {
     use super::{
-        ConversationLine, chat_resume_command, chat_stop_command, conversation_lines, new_chat_id,
+        AnswerFreshness, ConversationLine, chat_resume_command, chat_stop_command,
+        conversation_lines, new_chat_id,
     };
     use crate::feedback;
-    use crate::shell::STOPPED;
+    use crate::shell::{STOPPED, SynopsisPiece};
     use physician_wire::{
         ChatRunOutcome, ChatSnapshotResponse, HoldReason, ResponseFeedback, ResponseId,
         WorkResumeTarget, WorkStopTarget,
@@ -4625,6 +5257,9 @@ mod conversation_line_tests {
             vec![
                 ConversationLine {
                     text: "Hello".into(),
+                    body_pieces: Vec::new(),
+                    basis_pieces: Vec::new(),
+                    freshness: AnswerFreshness::Current,
                     author: Some(Author::Person),
                     resume: None,
                     stop: None,
@@ -4633,6 +5268,9 @@ mod conversation_line_tests {
                 },
                 ConversationLine {
                     text: "Coda couldn’t finish this response. Your message is saved.".into(),
+                    body_pieces: Vec::new(),
+                    basis_pieces: Vec::new(),
+                    freshness: AnswerFreshness::Current,
                     author: None,
                     resume: Some(target()),
                     stop: None,
@@ -4641,6 +5279,75 @@ mod conversation_line_tests {
                 },
             ]
         );
+    }
+
+    #[test]
+    fn reopened_answer_carries_citations_basis_and_newer_records_marker() {
+        let page: ChatSnapshotResponse = serde_json::from_value(serde_json::json!({
+            "snapshot": {
+                "sources": {
+                    "s1": {
+                        "source_key": "s1",
+                        "number": 1,
+                        "source_label": "Practice EHR",
+                        "title": "BMP panel",
+                        "quote": "Potassium 4.4 mmol/L",
+                        "body": "Basic metabolic panel: Potassium 4.4 mmol/L."
+                    }
+                },
+                "conversation": [
+                    {
+                        "kind": "model",
+                        "text": "Potassium is 4.4 mmol/L.",
+                        "segments": [
+                            { "kind": "text", "text": "Potassium is 4.4 mmol/L" },
+                            {
+                                "kind": "citation",
+                                "source_key": "s1",
+                                "number": 1,
+                                "label": "BMP panel",
+                                "quote": "Potassium 4.4 mmol/L"
+                            },
+                            { "kind": "text", "text": "." }
+                        ],
+                        "basis": [
+                            { "kind": "text", "text": "Rests on the outpatient BMP" },
+                            {
+                                "kind": "citation",
+                                "source_key": "s1",
+                                "number": 1,
+                                "label": "BMP panel",
+                                "quote": "Potassium 4.4 mmol/L"
+                            },
+                            { "kind": "text", "text": "; no inpatient labs are on file." }
+                        ],
+                        "newer_records": true
+                    }
+                ],
+                "runs": []
+            }
+        }))
+        .unwrap();
+        let lines = conversation_lines(&page.snapshot);
+        assert_eq!(lines.len(), 1);
+        assert_eq!(lines[0].text, "Potassium is 4.4 mmol/L.");
+        assert_eq!(lines[0].freshness, AnswerFreshness::NewerRecordsArrived);
+        assert!(matches!(
+            lines[0].body_pieces.as_slice(),
+            [
+                SynopsisPiece::Text(_),
+                SynopsisPiece::Chips(_),
+                SynopsisPiece::Text(_)
+            ]
+        ));
+        assert!(matches!(
+            lines[0].basis_pieces.as_slice(),
+            [
+                SynopsisPiece::Text(_),
+                SynopsisPiece::Chips(_),
+                SynopsisPiece::Text(_)
+            ]
+        ));
     }
 
     #[test]

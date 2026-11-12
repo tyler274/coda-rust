@@ -38,6 +38,8 @@ mod entities;
 /// Physician feedback on Coda's responses.
 pub mod feedback;
 mod frozen;
+/// Read-only queries over saved conversations and work.
+pub mod history;
 pub use frozen::{BindingRef, SkillPackageId};
 mod migration;
 mod quota;
