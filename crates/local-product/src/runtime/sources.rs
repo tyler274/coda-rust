@@ -23,7 +23,7 @@ use sea_orm::{
 
 use super::entities::{source, source_pull, source_version};
 use super::{Store, conversion_error, error};
-use crate::physician_sources::{ChartPullReceipt, SourcePatient, SourceRevision};
+use crate::physician_sources::{ChartPullReceipt, SourcePatient, SourceRecordKind, SourceRevision};
 
 /// Rows written per insert, inside Postgres's bind limit.
 const CHART_BATCH: usize = 200;
@@ -153,8 +153,22 @@ async fn selected(
 pub(super) enum MissingScope<'a> {
     /// Complete chart pull: every active candidate for `source_id` is expected.
     FullChart,
-    /// Partial pull: only active candidates whose `record_type` succeeded in this pull are checked.
-    SucceededTypes(&'a HashSet<&'a str>),
+    /// Partial pull: only active candidates whose resource kind or category succeeded in this pull are checked.
+    SucceededKinds(&'a [SourceRecordKind]),
+}
+
+fn kind_matches_existing(kind_spec: &SourceRecordKind, existing: &SourceRevision) -> bool {
+    if existing.record_type != kind_spec.kind {
+        return false;
+    }
+    match &kind_spec.category {
+        None => true,
+        Some(expected_cat) => existing
+            .envelope
+            .as_ref()
+            .and_then(|env| env.source_kind.category.as_deref())
+            .is_some_and(|actual| actual == expected_cat),
+    }
 }
 
 /// Single authoritative source-delivery writer shared by complete and partial pulls.
@@ -233,7 +247,9 @@ pub(super) async fn apply_source_delivery_tx(
         }
         let in_scope = match missing_scope {
             MissingScope::FullChart => true,
-            MissingScope::SucceededTypes(types) => types.contains(existing.record_type.as_str()),
+            MissingScope::SucceededKinds(kinds) => kinds
+                .iter()
+                .any(|kind| kind_matches_existing(kind, existing)),
         };
         if in_scope {
             missing_candidates.push(candidate.clone());

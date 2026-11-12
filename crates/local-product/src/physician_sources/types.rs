@@ -1,10 +1,73 @@
 //! Shared domain types for filed source records, adapter mappings, and pull outcomes.
 
 use std::fmt;
+use std::path::PathBuf;
 
 use serde::{Deserialize, Serialize};
 
+use super::adapter::RecordFilingError;
 use super::{SourcePatient, SourceRevision};
+
+/// Typed connector failure from a [`super::PatientSource`], preserving underlying error causes.
+#[derive(Debug, thiserror::Error)]
+pub enum SourceAdapterError {
+    /// Failed to file a source record through the adapter's mapping table.
+    #[error("failed to file record from `{context}`: {source}")]
+    RecordFiling {
+        /// File path or native source location where filing failed.
+        context: String,
+        /// Underlying record filing error.
+        #[source]
+        source: RecordFilingError,
+    },
+    /// Failed to read or inspect source storage on disk or over local I/O.
+    #[error("failed to read `{path}`: {source}")]
+    Io {
+        /// Path that failed I/O.
+        path: PathBuf,
+        /// Underlying I/O error.
+        #[source]
+        source: std::io::Error,
+    },
+    /// Failed to parse a source patient identity payload.
+    #[error("invalid patient JSON in `{context}`: {source}")]
+    InvalidPatientJson {
+        /// Location or identifier of the malformed patient payload.
+        context: String,
+        /// Underlying JSON parser error.
+        #[source]
+        source: serde_json::Error,
+    },
+    /// Source patient record was missing required identity fields.
+    #[error("missing patient identity in `{context}`: {detail}")]
+    MissingPatientIdentity {
+        /// Location or identifier of the incomplete patient record.
+        context: String,
+        /// Missing field or condition.
+        detail: String,
+    },
+    /// Source credentials or authorization have lapsed and require reconnect.
+    #[error("{reason}")]
+    LapsedAccess {
+        /// Diagnostic access failure reason from the source.
+        reason: String,
+    },
+    /// Source endpoint or connector operation was unavailable.
+    #[error("{reason}")]
+    Unavailable {
+        /// Diagnostic outage or refusal reason from the source.
+        reason: String,
+    },
+    /// Adapter-specific typed error cause.
+    #[error("{context}: {source}")]
+    External {
+        /// Operation context.
+        context: String,
+        /// Underlying error cause.
+        #[source]
+        source: Box<dyn std::error::Error + Send + Sync>,
+    },
+}
 
 /// An unknown chart bucket name supplied at an external boundary.
 #[derive(Clone, Debug, PartialEq, Eq, thiserror::Error)]
@@ -326,7 +389,7 @@ pub enum PullOutcome {
 }
 
 /// Connector-level output of pulling one patient's chart from a [`super::PatientSource`].
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Debug)]
 pub enum SourcePullOutput {
     /// Complete patient identity and chart records.
     Complete {
@@ -339,20 +402,22 @@ pub enum SourcePullOutput {
     Partial {
         /// Patient identity if the identity part succeeded.
         patient: Option<SourcePatient>,
+        /// Resource kinds or families that completed during this pull, including empty ones.
+        succeeded_kinds: Vec<SourceRecordKind>,
         /// Admitted source revisions from the parts that succeeded.
         records: Vec<SourceRevision>,
         /// Parts that failed during the pull.
         failed_parts: Vec<FailedPart>,
     },
-    /// Whole-patient pull failure.
+    /// Whole-patient pull failure preserving its typed adapter error cause.
     Failed {
-        /// Failure reason.
-        reason: String,
+        /// Typed adapter failure cause.
+        error: SourceAdapterError,
     },
     /// Source access has lapsed and needs reconnect.
     LapsedAccess {
-        /// Access failure reason.
-        reason: String,
+        /// Typed access refusal cause.
+        error: SourceAdapterError,
     },
 }
 

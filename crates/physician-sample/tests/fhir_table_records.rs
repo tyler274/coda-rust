@@ -161,33 +161,54 @@ async fn synthetic_chart_files_every_fhir_row_and_routes_unmapped_kinds_to_other
         .collect();
 
     let expected_buckets = [
-        ("Patient/pat-1", Bucket::Patient),
-        ("Condition/cond-1", Bucket::Problems),
-        ("MedicationRequest/medreq-1", Bucket::Medications),
-        ("MedicationStatement/medstmt-1", Bucket::Medications),
-        ("MedicationDispense/meddisp-1", Bucket::Medications),
-        ("MedicationAdministration/medadm-1", Bucket::Medications),
-        ("AllergyIntolerance/alg-1", Bucket::Allergies),
-        ("DiagnosticReport/dr-1", Bucket::Results),
-        ("Observation/obs-lab", Bucket::Results),
-        ("Observation/obs-img", Bucket::Results),
-        ("Observation/obs-vital", Bucket::Vitals),
-        ("Observation/obs-soc", Bucket::History),
-        ("Observation/obs-survey", Bucket::Forms),
-        ("Observation/obs-exam", Bucket::Other),
-        ("Observation/obs-nocat", Bucket::Other),
-        ("DocumentReference/doc-note", Bucket::Notes),
-        ("DocumentReference/doc-fax", Bucket::Documents),
-        ("Encounter/enc-1", Bucket::Visits),
-        ("Appointment/appt-1", Bucket::Visits),
-        ("Procedure/proc-1", Bucket::Procedures),
-        ("Immunization/imm-1", Bucket::Immunizations),
-        ("ServiceRequest/sr-1", Bucket::Orders),
-        ("FamilyMemberHistory/fmh-1", Bucket::History),
-        ("QuestionnaireResponse/qr-1", Bucket::Forms),
-        ("Communication/comm-1", Bucket::Messages),
-        ("Media/media-1", Bucket::Other),
-        ("RiskAssessment/risk-1", Bucket::Other),
+        ("synthetic-charts/Patient/pat-1", Bucket::Patient),
+        ("synthetic-charts/Condition/cond-1", Bucket::Problems),
+        (
+            "synthetic-charts/MedicationRequest/medreq-1",
+            Bucket::Medications,
+        ),
+        (
+            "synthetic-charts/MedicationStatement/medstmt-1",
+            Bucket::Medications,
+        ),
+        (
+            "synthetic-charts/MedicationDispense/meddisp-1",
+            Bucket::Medications,
+        ),
+        (
+            "synthetic-charts/MedicationAdministration/medadm-1",
+            Bucket::Medications,
+        ),
+        (
+            "synthetic-charts/AllergyIntolerance/alg-1",
+            Bucket::Allergies,
+        ),
+        ("synthetic-charts/DiagnosticReport/dr-1", Bucket::Results),
+        ("synthetic-charts/Observation/obs-lab", Bucket::Results),
+        ("synthetic-charts/Observation/obs-img", Bucket::Results),
+        ("synthetic-charts/Observation/obs-vital", Bucket::Vitals),
+        ("synthetic-charts/Observation/obs-soc", Bucket::History),
+        ("synthetic-charts/Observation/obs-survey", Bucket::Forms),
+        ("synthetic-charts/Observation/obs-exam", Bucket::Other),
+        ("synthetic-charts/Observation/obs-nocat", Bucket::Other),
+        ("synthetic-charts/DocumentReference/doc-note", Bucket::Notes),
+        (
+            "synthetic-charts/DocumentReference/doc-fax",
+            Bucket::Documents,
+        ),
+        ("synthetic-charts/Encounter/enc-1", Bucket::Visits),
+        ("synthetic-charts/Appointment/appt-1", Bucket::Visits),
+        ("synthetic-charts/Procedure/proc-1", Bucket::Procedures),
+        ("synthetic-charts/Immunization/imm-1", Bucket::Immunizations),
+        ("synthetic-charts/ServiceRequest/sr-1", Bucket::Orders),
+        (
+            "synthetic-charts/FamilyMemberHistory/fmh-1",
+            Bucket::History,
+        ),
+        ("synthetic-charts/QuestionnaireResponse/qr-1", Bucket::Forms),
+        ("synthetic-charts/Communication/comm-1", Bucket::Messages),
+        ("synthetic-charts/Media/media-1", Bucket::Other),
+        ("synthetic-charts/RiskAssessment/risk-1", Bucket::Other),
     ];
 
     for (candidate_id, expected_bucket) in expected_buckets {
@@ -205,21 +226,21 @@ async fn synthetic_chart_files_every_fhir_row_and_routes_unmapped_kinds_to_other
     );
 
     assert_eq!(
-        by_id["Observation/obs-lab"].source_kind,
+        by_id["synthetic-charts/Observation/obs-lab"].source_kind,
         SourceRecordKind {
             kind: "Observation".into(),
             category: Some("laboratory".into()),
         }
     );
     assert_eq!(
-        by_id["DocumentReference/doc-note"].source_kind,
+        by_id["synthetic-charts/DocumentReference/doc-note"].source_kind,
         SourceRecordKind {
             kind: "DocumentReference".into(),
             category: Some("clinical-note".into()),
         }
     );
     assert_eq!(
-        by_id["Observation/obs-nocat"].source_kind,
+        by_id["synthetic-charts/Observation/obs-nocat"].source_kind,
         SourceRecordKind {
             kind: "Observation".into(),
             category: None,
@@ -262,10 +283,11 @@ async fn saved_record_equals_source_bytes_and_absent_parts_stay_absent() {
         .collect();
 
     // 1. Byte-for-byte content + SHA-256 + explicit version + status + date precision
-    let lab = by_id["Observation/k-1"];
+    let lab = by_id["synthetic-charts/Observation/k-1"];
     assert_eq!(lab.content.as_bytes(), raw_versioned_lab.as_bytes());
     assert_eq!(lab.sha256, sha256_hex(raw_versioned_lab.as_bytes()));
     let lab_env = lab.envelope.as_ref().expect("lab envelope");
+    assert_eq!(lab_env.native_id, "k-1");
     assert_eq!(lab_env.bucket, Bucket::Results);
     assert_eq!(lab_env.version, RecordVersion::Source("v7".into()));
     assert_eq!(lab_env.status.as_deref(), Some("preliminary"));
@@ -282,9 +304,10 @@ async fn saved_record_equals_source_bytes_and_absent_parts_stay_absent() {
     assert_eq!(lab_env.native_link, None);
 
     // 2. Partial date kept verbatim; no versionId -> versioned by content hash; absent status stays None
-    let pat = by_id["Patient/MRN-FID-1"];
+    let pat = by_id["synthetic-charts/Patient/MRN-FID-1"];
     assert_eq!(pat.content.as_bytes(), raw_patient.as_bytes());
     let pat_env = pat.envelope.as_ref().expect("patient envelope");
+    assert_eq!(pat_env.native_id, "MRN-FID-1");
     assert_eq!(
         pat_env.version,
         RecordVersion::ContentHash(pat.sha256.clone())
@@ -300,9 +323,10 @@ async fn saved_record_equals_source_bytes_and_absent_parts_stay_absent() {
     );
 
     // 3. Sparse unmapped record: every absent optional field stays None / empty
-    let sparse = by_id["Basic/sparse-1"];
+    let sparse = by_id["synthetic-charts/Basic/sparse-1"];
     assert_eq!(sparse.content.as_bytes(), raw_sparse_unmapped.as_bytes());
     let sparse_env = sparse.envelope.as_ref().expect("sparse envelope");
+    assert_eq!(sparse_env.native_id, "sparse-1");
     assert_eq!(sparse_env.bucket, Bucket::Other);
     assert_eq!(sparse_env.status, None);
     assert!(sparse_env.dates.is_empty());
@@ -497,19 +521,59 @@ async fn real_patient_bank_build_files_through_fhir_table_and_serves_tools() {
 
     let source = SyntheticCharts::open(&out);
     let ids = source.patient_ids().await.unwrap();
-    assert!(!ids.is_empty());
+    assert_eq!(ids.len(), 468, "built patient-bank holds all 468 patients");
 
-    let first_patient = source.patient(&ids[0]).await.unwrap();
-    let first_records = source.records(&first_patient, "pw-synth-0").await.unwrap();
-    assert!(!first_records.is_empty());
-    for record in &first_records {
-        let env = record
-            .envelope
-            .as_ref()
-            .expect("every synthetic record carries an envelope");
-        assert!(!env.source_kind.kind.is_empty());
-        assert_eq!(record.sha256, sha256_hex(record.content.as_bytes()));
+    let mut total_records = 0usize;
+    let mut first_patient_id = String::new();
+    let mut first_records = Vec::new();
+
+    for (idx, id) in ids.iter().enumerate() {
+        let ws = format!("pw-synth-{idx}");
+        let patient = source.patient(id).await.unwrap();
+        let records = source.records(&patient, &ws).await.unwrap();
+        assert!(!records.is_empty(), "chart {id} must hold records");
+
+        // Read raw NDJSON lines in sorted filename order (matching `SyntheticCharts::records`)
+        // to prove byte-for-byte preservation across every record of all 468 patients.
+        let chart_dir = out.join("patients").join(id);
+        let mut files: Vec<PathBuf> = fs::read_dir(&chart_dir)
+            .unwrap()
+            .map(|entry| entry.unwrap().path())
+            .collect();
+        files.sort();
+        let mut raw_lines = Vec::new();
+        for file in files {
+            let text = fs::read_to_string(&file).unwrap();
+            raw_lines.extend(text.lines().map(str::to_owned));
+        }
+        assert_eq!(
+            records.len(),
+            raw_lines.len(),
+            "every raw NDJSON line in {id} files without error"
+        );
+
+        for (raw_line, record) in raw_lines.iter().zip(&records) {
+            assert_eq!(record.content.as_bytes(), raw_line.as_bytes());
+            assert_eq!(record.sha256, sha256_hex(raw_line.as_bytes()));
+            let env = record
+                .envelope
+                .as_ref()
+                .expect("every synthetic record carries an envelope");
+            assert!(!env.source_kind.kind.is_empty());
+            assert!(
+                record.candidate_id.starts_with("synthetic-charts/"),
+                "candidate_id must be source-scoped: {}",
+                record.candidate_id
+            );
+        }
+
+        total_records += records.len();
+        if idx == 0 {
+            first_patient_id = patient.source_patient_id;
+            first_records = records;
+        }
     }
+    assert!(total_records > 0);
 
     // Exercise bucket-filtered discovery on the real synthetic patient chart.
     let meds_search = ChartRequest::parse(
@@ -543,7 +607,9 @@ async fn real_patient_bank_build_files_through_fhir_table_and_serves_tools() {
     let _ = fs::write(
         verification_dir.join("eng-282-ac3-tool-results.json"),
         serde_json::to_string_pretty(&json!({
-            "patient_id": first_patient.source_patient_id,
+            "patients_verified": ids.len(),
+            "records_verified": total_records,
+            "patient_id": first_patient_id,
             "search_medications": meds_json,
             "read_first_medication": read_json,
         }))

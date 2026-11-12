@@ -74,7 +74,11 @@ pub async fn load_practice_from_source(
         .practice_clock(practice_id)
         .await
         .map_err(|_| "read the practice's clock".to_owned())?;
-    for id in source.patient_ids().await? {
+    for id in source
+        .patient_ids()
+        .await
+        .map_err(|error| error.to_string())?
+    {
         let default_workspace = workspace_id(source.source_id(), &id);
         let key = SourcePatientKey {
             practice_id: practice_id.to_owned(),
@@ -111,7 +115,16 @@ pub async fn load_practice_from_source(
             .map_err(|error| error.to_string())?;
             summary.changed += report.changed;
             match &report.standing {
-                SourceStanding::UpToDate { .. } | SourceStanding::Partial { .. } => {}
+                SourceStanding::UpToDate { .. } => {}
+                SourceStanding::Partial { .. } => {
+                    let pulls = runtime
+                        .source_pulls(std::slice::from_ref(&report.workspace_id))
+                        .await
+                        .map_err(|error| error.to_string())?;
+                    if pulls.get(&report.workspace_id).is_none_or(Vec::is_empty) {
+                        return Err("partial pull missing patient identity".to_owned());
+                    }
+                }
                 SourceStanding::Failed { reason, .. }
                 | SourceStanding::ReconnectNeeded { reason, .. } => {
                     return Err(reason.clone());

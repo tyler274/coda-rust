@@ -11,8 +11,8 @@ pub mod types;
 pub use chart::{ChartInputError, ChartRequest, ChartScope, SEARCH_TOOL, read_tool, search_tool};
 pub use types::{
     Bucket, ChartPullReceipt, DateRole, FailedPart, FiledDate, PullOutcome, ReconnectReceipt,
-    RecordCode, RecordEnvelope, RecordVersion, SourcePullOutput, SourceRecordKind,
-    UnknownBucketError,
+    RecordCode, RecordEnvelope, RecordVersion, SourceAdapterError, SourcePullOutput,
+    SourceRecordKind, UnknownBucketError,
 };
 
 use async_trait::async_trait;
@@ -120,15 +120,15 @@ pub trait PatientSource: Send + Sync {
     /// The source's name as a physician sees it.
     fn source_label(&self) -> &str;
     /// The source's own id for every patient it holds.
-    async fn patient_ids(&self) -> Result<Vec<String>, String>;
+    async fn patient_ids(&self) -> Result<Vec<String>, SourceAdapterError>;
     /// One patient's identity, read alone so one bad patient stays one patient.
-    async fn patient(&self, source_patient_id: &str) -> Result<SourcePatient, String>;
+    async fn patient(&self, source_patient_id: &str) -> Result<SourcePatient, SourceAdapterError>;
     /// One patient's records, admitted to `workspace`.
     async fn records(
         &self,
         patient: &SourcePatient,
         workspace: &str,
-    ) -> Result<Vec<SourceRevision>, String>;
+    ) -> Result<Vec<SourceRevision>, SourceAdapterError>;
 
     /// Pulls one patient's identity and records in a single connector operation,
     /// distinguishing complete pulls, partial pulls, whole failures, and lapsed access.
@@ -141,14 +141,26 @@ pub trait PatientSource: Send + Sync {
         match self.patient(source_patient_id).await {
             Ok(patient) => match self.records(&patient, workspace).await {
                 Ok(records) => SourcePullOutput::Complete { patient, records },
-                Err(reason) => SourcePullOutput::Failed { reason },
+                Err(SourceAdapterError::LapsedAccess { reason }) => {
+                    SourcePullOutput::LapsedAccess {
+                        error: SourceAdapterError::LapsedAccess { reason },
+                    }
+                }
+                Err(error) => SourcePullOutput::Failed { error },
             },
-            Err(reason) => SourcePullOutput::Failed { reason },
+            Err(SourceAdapterError::LapsedAccess { reason }) => SourcePullOutput::LapsedAccess {
+                error: SourceAdapterError::LapsedAccess { reason },
+            },
+            Err(error) => SourcePullOutput::Failed { error },
         }
     }
 
     /// Reconnects a practice's access to this source when credentials have lapsed.
-    async fn reconnect(&self, practice_id: &str, now: i64) -> Result<ReconnectReceipt, String> {
+    async fn reconnect(
+        &self,
+        practice_id: &str,
+        now: i64,
+    ) -> Result<ReconnectReceipt, SourceAdapterError> {
         Ok(ReconnectReceipt {
             source_id: self.source_id().to_owned(),
             practice_id: practice_id.to_owned(),

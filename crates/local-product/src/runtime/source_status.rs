@@ -1,7 +1,7 @@
 //! SeaORM persistence for practice-scoped workspace ownership, source patient links,
 //! practice-level source access state, and per-patient pull status.
 
-use std::collections::{BTreeMap, BTreeSet, HashMap, HashSet};
+use std::collections::{BTreeMap, BTreeSet, HashMap};
 
 use sea_orm::{
     ColumnTrait, ConnectionTrait, DbErr, EntityTrait, QueryFilter, QueryOrder, QuerySelect, Set,
@@ -9,15 +9,16 @@ use sea_orm::{
 };
 
 use super::entities::{
-    patient_source_status, practice_source_access, source_patient_link, workspace_practice,
+    patient_source_status, practice_source_access, source_patient_link, source_pull,
+    workspace_practice,
 };
 use super::sources::{MissingScope, apply_source_delivery_tx};
 use super::{Store, conversion_error, error};
-use crate::physician_sources::{PullOutcome, SourceRevision};
+use crate::physician_sources::PullOutcome;
 use crate::source_status::{
-    LinkTarget, PatientSourceRecordStatus, PracticeSourceReport, PullAttempt, SourceAccessState,
-    SourcePatientKey, SourcePatientLink, SourceStanding, SourceStatusError, derive_standing,
-    summarize_practice_source, validate_non_empty,
+    LinkTarget, PartialDelivery, PatientSourceRecordStatus, PracticeSourceReport, PullAttempt,
+    SourceAccessState, SourcePatientKey, SourcePatientLink, SourceStanding, SourceStatusError,
+    derive_standing, summarize_practice_source, validate_non_empty,
 };
 
 async fn ensure_workspace_practice_tx(
@@ -374,7 +375,15 @@ impl Store {
         .one(&tx)
         .await?;
 
-        let prior_good = existing.as_ref().and_then(|row| row.last_good_read_at);
+        let prior_good = match existing.as_ref() {
+            Some(row) => row.last_good_read_at,
+            None => {
+                source_pull::Entity::find_by_id((workspace_id.to_owned(), source_id.to_owned()))
+                    .one(&tx)
+                    .await?
+                    .and_then(|pull| (pull.pulled_at > 0).then_some(pull.pulled_at))
+            }
+        };
         let last_good_read_at = match &attempt.outcome {
             PullOutcome::Succeeded { .. } => Some(attempt.attempted_at),
             PullOutcome::Partial { .. }
@@ -404,40 +413,30 @@ impl Store {
         .exec_without_returning(&tx)
         .await?;
 
-        let total_linked = source_patient_link::Entity::find()
-            .filter(source_patient_link::Column::Practice.eq(practice_id))
-            .filter(source_patient_link::Column::SourceId.eq(source_id))
-            .all(&tx)
+        if matches!(
+            attempt.outcome,
+            PullOutcome::Succeeded { .. } | PullOutcome::Partial { .. }
+        ) {
+            let existing_access = practice_source_access::Entity::find_by_id((
+                practice_id.to_owned(),
+                source_id.to_owned(),
+            ))
+            .one(&tx)
             .await?
-            .len();
-        let all_statuses = patient_source_status::Entity::find()
-            .filter(patient_source_status::Column::Practice.eq(practice_id))
-            .filter(patient_source_status::Column::SourceId.eq(source_id))
-            .all(&tx)
-            .await?;
-        let mut lapsed_count = 0usize;
-        for row in all_statuses {
-            let decoded = decode_status(row)?;
-            if matches!(
-                decoded.latest_attempt,
-                Some(PullAttempt {
-                    outcome: PullOutcome::LapsedAccess { .. },
-                    ..
-                })
-            ) {
-                lapsed_count += 1;
-            }
-        }
-        let effective_total = total_linked.max(1);
-        let majority_lapsed = lapsed_count * 2 > effective_total;
-
-        match &attempt.outcome {
-            PullOutcome::LapsedAccess { reason } if majority_lapsed => {
-                let lapsed = SourceAccessState::ReconnectNeeded {
-                    since: attempt.attempted_at,
-                    reason: reason.clone(),
+            .map(decode_access)
+            .transpose()?;
+            let should_set_connected = match existing_access {
+                None => true,
+                Some(SourceAccessState::ReconnectNeeded { since, .. }) => {
+                    attempt.attempted_at > since
+                }
+                Some(SourceAccessState::Connected { .. }) => false,
+            };
+            if should_set_connected {
+                let connected = SourceAccessState::Connected {
+                    connected_at: attempt.attempted_at,
                 };
-                let access_json = serde_json::to_value(&lapsed)
+                let access_json = serde_json::to_value(&connected)
                     .map_err(conversion_error("SourceAccessState", "Json"))?;
                 practice_source_access::Entity::insert(practice_source_access::ActiveModel {
                     practice: Set(practice_id.to_owned()),
@@ -459,48 +458,6 @@ impl Store {
                 .exec_without_returning(&tx)
                 .await?;
             }
-            PullOutcome::Succeeded { .. } | PullOutcome::Partial { .. } => {
-                let existing_access = practice_source_access::Entity::find_by_id((
-                    practice_id.to_owned(),
-                    source_id.to_owned(),
-                ))
-                .one(&tx)
-                .await?
-                .map(decode_access)
-                .transpose()?;
-                let should_set_connected = match existing_access {
-                    None => true,
-                    Some(SourceAccessState::ReconnectNeeded { .. }) => !majority_lapsed,
-                    Some(SourceAccessState::Connected { .. }) => false,
-                };
-                if should_set_connected {
-                    let connected = SourceAccessState::Connected {
-                        connected_at: attempt.attempted_at,
-                    };
-                    let access_json = serde_json::to_value(&connected)
-                        .map_err(conversion_error("SourceAccessState", "Json"))?;
-                    practice_source_access::Entity::insert(practice_source_access::ActiveModel {
-                        practice: Set(practice_id.to_owned()),
-                        source_id: Set(source_id.to_owned()),
-                        access: Set(access_json),
-                        updated_at: Set(attempt.attempted_at),
-                    })
-                    .on_conflict(
-                        OnConflict::columns([
-                            practice_source_access::Column::Practice,
-                            practice_source_access::Column::SourceId,
-                        ])
-                        .update_columns([
-                            practice_source_access::Column::Access,
-                            practice_source_access::Column::UpdatedAt,
-                        ])
-                        .to_owned(),
-                    )
-                    .exec_without_returning(&tx)
-                    .await?;
-                }
-            }
-            PullOutcome::LapsedAccess { .. } | PullOutcome::Failed { .. } => {}
         }
 
         tx.commit().await?;
@@ -514,30 +471,56 @@ impl Store {
     }
 
     /// Saves the records that succeeded during a partial pull without withdrawing
-    /// records from failed parts or advancing `source_pull.pulled_at`.
+    /// records from failed parts or advancing `source_pull.pulled_at`. When `delivery.patient`
+    /// is present, ensures `physician_runtime_source_pulls` holds the patient's directory
+    /// identity without fabricating a complete-pull timestamp.
     pub async fn record_partial_records(
         &self,
-        practice_id: &str,
-        workspace_id: &str,
-        source_id: &str,
-        records: &[SourceRevision],
+        delivery: PartialDelivery<'_>,
     ) -> Result<(usize, Vec<String>), SourceStatusError> {
-        validate_non_empty("practice_id", practice_id)?;
-        validate_non_empty("workspace_id", workspace_id)?;
-        validate_non_empty("source_id", source_id)?;
+        validate_non_empty("practice_id", delivery.practice_id)?;
+        validate_non_empty("workspace_id", delivery.workspace_id)?;
+        validate_non_empty("source_id", delivery.source_id)?;
 
-        let succeeded_types: HashSet<&str> =
-            records.iter().map(|r| r.record_type.as_str()).collect();
         let tx = self.db.begin().await?;
-        ensure_workspace_practice_tx(&tx, practice_id, workspace_id).await?;
+        ensure_workspace_practice_tx(&tx, delivery.practice_id, delivery.workspace_id).await?;
         let receipt = apply_source_delivery_tx(
             &tx,
-            workspace_id,
-            source_id,
-            records,
-            MissingScope::SucceededTypes(&succeeded_types),
+            delivery.workspace_id,
+            delivery.source_id,
+            delivery.records,
+            MissingScope::SucceededKinds(delivery.succeeded_kinds),
         )
         .await?;
+        if let Some(source_patient) = delivery.patient {
+            let patient_json = serde_json::to_value(source_patient)
+                .map_err(conversion_error("SourcePatient", "source pull patient"))?;
+            let missing_json = serde_json::to_value(&receipt.missing_candidates).map_err(
+                conversion_error("Vec<String>", "source pull missing candidates"),
+            )?;
+            source_pull::Entity::insert(source_pull::ActiveModel {
+                workspace: Set(delivery.workspace_id.to_owned()),
+                source_id: Set(delivery.source_id.to_owned()),
+                source_label: Set(delivery.source_label.to_owned()),
+                patient: Set(patient_json),
+                pulled_at: Set(0),
+                missing_candidates: Set(missing_json),
+            })
+            .on_conflict(
+                OnConflict::columns([
+                    source_pull::Column::Workspace,
+                    source_pull::Column::SourceId,
+                ])
+                .update_columns([
+                    source_pull::Column::SourceLabel,
+                    source_pull::Column::Patient,
+                    source_pull::Column::MissingCandidates,
+                ])
+                .to_owned(),
+            )
+            .exec_without_returning(&tx)
+            .await?;
+        }
         tx.commit().await?;
         Ok((receipt.changed, receipt.missing_candidates))
     }

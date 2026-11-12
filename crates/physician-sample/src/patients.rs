@@ -321,9 +321,7 @@ impl Patient {
                     failed_parts,
                     missing_candidates,
                 }) => {
-                    let good = last_good_read_at
-                        .or(Some(pull.pulled_at))
-                        .map(unix_to_rfc3339);
+                    let good = last_good_read_at.map(unix_to_rfc3339);
                     let attempted = unix_to_rfc3339(*attempted_at);
                     let usable_snapshot = good.as_ref().map(|ts| json!({ "synchronized_at": ts }));
                     json!({
@@ -347,9 +345,7 @@ impl Patient {
                     attempted_at,
                     reason,
                 }) => {
-                    let good = last_good_read_at
-                        .or(Some(pull.pulled_at))
-                        .map(unix_to_rfc3339);
+                    let good = last_good_read_at.map(unix_to_rfc3339);
                     let attempted = unix_to_rfc3339(*attempted_at);
                     let usable_snapshot = good.as_ref().map(|ts| json!({ "synchronized_at": ts }));
                     json!({
@@ -372,9 +368,7 @@ impl Patient {
                     attempted_at,
                     reason,
                 }) => {
-                    let good = last_good_read_at
-                        .or(Some(pull.pulled_at))
-                        .map(unix_to_rfc3339);
+                    let good = last_good_read_at.map(unix_to_rfc3339);
                     let attempted = attempted_at.map(unix_to_rfc3339);
                     let usable_snapshot = good.as_ref().map(|ts| json!({ "synchronized_at": ts }));
                     json!({

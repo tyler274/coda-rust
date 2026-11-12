@@ -11,7 +11,7 @@ use std::time::{SystemTime, UNIX_EPOCH};
 use local_product::physician_sources::workspace_id;
 use local_product::runtime::Store;
 use physician_auth::migration::PracticeActiveModel;
-use physician_auth::{AuthStore, PhysicianIdentity, PostgresAuthStore, PracticeClock};
+use physician_auth::{AuthStore, Membership, PhysicianIdentity, PostgresAuthStore, PracticeClock};
 use physician_sample::chart_load::load_practice_from_source;
 use physician_sample::synthetic_chart::{SOURCE_ID, SyntheticCharts};
 use sea_orm::{ActiveModelTrait, ActiveValue::Set, ActiveValue::Unchanged, Database};
@@ -396,9 +396,12 @@ async fn check_and_reconnect_flow_preserves_last_good_read_and_collapses_practic
     )
     .await;
     assert_eq!(status, 200, "{lapsed_check}");
-    assert_eq!(lapsed_check["access"]["state"], "reconnect_needed");
     assert_eq!(lapsed_check["summary"]["scope"], "practice_wide_outage");
     assert_eq!(lapsed_check["summary"]["kind"]["kind"], "reconnect_needed");
+    assert_eq!(
+        lapsed_check["outages"][0]["kind"]["kind"],
+        "reconnect_needed"
+    );
     assert_eq!(lapsed_check["patient_issues"], json!([]));
 
     let (status, today_lapsed) = get_json(&base, &session, "/today").await;
@@ -552,4 +555,210 @@ async fn local_proof_mode_endpoint_is_absent_when_local_proof_is_disabled() {
     )
     .await;
     assert_eq!(status, 404);
+}
+
+#[tokio::test(flavor = "multi_thread", worker_threads = 4)]
+async fn off_panel_colleague_sees_practice_outage_without_patient_failure_strings_and_reconnect_command_is_idempotent()
+ {
+    let (auth, runtime, db_url) = stores().await;
+    let run = run_id();
+    let practice_id = format!("practice-priv-{}", run.to_lowercase());
+    let owner_email = format!("{}-owner@codahealth.test", run.to_lowercase());
+    let colleague_email = format!("{}-offpanel@codahealth.test", run.to_lowercase());
+    let colleague_id = format!("{run}-offpanel");
+    let initial_clock: u64 = 1_787_846_400;
+
+    auth.ensure_practice(&practice_id, PracticeClock::Fixed(initial_clock))
+        .await
+        .unwrap();
+    auth.ensure_account(&practice_id, &run, &owner_email, "Dr. Owner", true, 1)
+        .await
+        .unwrap();
+    auth.ensure_account(
+        &practice_id,
+        &colleague_id,
+        &colleague_email,
+        "Dr. OffPanel",
+        false,
+        2,
+    )
+    .await
+    .unwrap();
+
+    let bank = build_bank(&run, 3);
+    let charts = SyntheticCharts::open(&bank);
+    let summary = load_practice_from_source(&practice_id, &charts, &auth, &runtime)
+        .await
+        .unwrap();
+    assert_eq!(summary.patients, 3);
+
+    let owner_identity = PhysicianIdentity {
+        practice_id: practice_id.clone(),
+        physician_id: run.clone(),
+    };
+    for suffix in ["1", "2", "3"] {
+        let ws = workspace_id(SOURCE_ID, &format!("{run}-{suffix}"));
+        auth.assign_panel(&owner_identity, &run, &ws, Membership::Allowed)
+            .await
+            .unwrap();
+    }
+
+    let bank_for_server = bank.clone();
+    let db_for_server = db_url.clone();
+    let server = common::serve_isolated(move || {
+        // SAFETY: `serve_isolated` serializes server startup under its mutex.
+        unsafe {
+            std::env::set_var("PHYSICIAN_DATABASE_URL", &db_for_server);
+            std::env::set_var("PHYSICIAN_AUTH", "required");
+            std::env::set_var("PHYSICIAN_LOCAL_PROOF", "1");
+            std::env::set_var("PHYSICIAN_SYNTHETIC_CHARTS", &bank_for_server);
+        }
+    })
+    .await;
+    let base = format!("http://{}", server.address);
+    let owner_session = sign_in(&base, &owner_email).await;
+    let colleague_session = sign_in(&base, &colleague_email).await;
+
+    // Fail 2 of 3 (>50%) off-panel patients with patient-identifying diagnostic strings.
+    let secret_p1 = "SECRET-MRN-88412-corrupt-bundle";
+    let secret_p2 = "SECRET-MRN-99501-locked-chart";
+    for (suffix, secret) in [("1", secret_p1), ("2", secret_p2)] {
+        let (status, _) = post_json(
+            &base,
+            &owner_session,
+            "/local-proof/sources/synthetic-charts/mode",
+            json!({
+                "practice_id": practice_id,
+                "source_patient_id": format!("{run}-{suffix}"),
+                "mode": "outage",
+                "reason": secret,
+            }),
+        )
+        .await;
+        assert_eq!(status, 200);
+    }
+
+    advance_practice_clock(&db_url, &practice_id, initial_clock + 3_600).await;
+    let (status, _) = post_json(
+        &base,
+        &owner_session,
+        "/connections/synthetic-charts/check",
+        json!({}),
+    )
+    .await;
+    assert_eq!(status, 200);
+
+    // Off-panel colleague sees PracticeWideOutage on /connections and /today, with ZERO
+    // occurrences of off-panel patient failure strings anywhere in either response body.
+    let (status, offpanel_conns) = get_json(&base, &colleague_session, "/connections").await;
+    assert_eq!(status, 200, "{offpanel_conns}");
+    assert_eq!(offpanel_conns["outages"].as_array().unwrap().len(), 1);
+    let conns_text = offpanel_conns.to_string();
+    assert!(!conns_text.contains(secret_p1), "{conns_text}");
+    assert!(!conns_text.contains(secret_p2), "{conns_text}");
+
+    let (status, offpanel_today) = get_json(&base, &colleague_session, "/today").await;
+    assert_eq!(status, 200, "{offpanel_today}");
+    assert_eq!(offpanel_today["connections"].as_array().unwrap().len(), 1);
+    let today_text = offpanel_today.to_string();
+    assert!(!today_text.contains(secret_p1), "{today_text}");
+    assert!(!today_text.contains(secret_p2), "{today_text}");
+
+    // Clear per-patient outages via practice LapsedAccess, then verify `/commands` `reconnect_source`
+    // enforces durable `idempotency_key` replay and conflict rules.
+    let (status, _) = post_json(
+        &base,
+        &owner_session,
+        "/local-proof/sources/synthetic-charts/mode",
+        json!({
+            "practice_id": practice_id,
+            "mode": "lapsed_access",
+            "reason": "practice token expired",
+        }),
+    )
+    .await;
+    assert_eq!(status, 200);
+
+    // Missing `idempotency_key` is rejected.
+    let (status, missing_key_resp) = post_json(
+        &base,
+        &owner_session,
+        "/commands",
+        json!({
+            "type": "reconnect_source",
+            "payload": { "source_id": SOURCE_ID }
+        }),
+    )
+    .await;
+    assert_eq!(status, 200, "{missing_key_resp}");
+    assert_eq!(missing_key_resp["outcome"], "rejected");
+
+    // First reconnect command with `idem_key` executes reconnect + practice check at t1.
+    let t1 = initial_clock + 7_200;
+    advance_practice_clock(&db_url, &practice_id, t1).await;
+    let idem_key = format!("idem-reconn-{run}");
+    let (status, first_cmd) = post_json(
+        &base,
+        &owner_session,
+        "/commands",
+        json!({
+            "type": "reconnect_source",
+            "idempotency_key": idem_key,
+            "payload": { "source_id": SOURCE_ID }
+        }),
+    )
+    .await;
+    assert_eq!(status, 200, "{first_cmd}");
+    assert_eq!(first_cmd["outcome"], "accepted");
+    assert_eq!(first_cmd["receipt"]["reconnected_at"], t1 as i64);
+
+    // Put adapter into practice Outage and advance clock to t2: a duplicate replay of the same
+    // `idempotency_key` MUST NOT re-invoke `source.reconnect` (which would fail under Outage!)
+    // or advance `reconnected_at` to t2; it returns the accepted receipt from t1.
+    let (status, _) = post_json(
+        &base,
+        &owner_session,
+        "/local-proof/sources/synthetic-charts/mode",
+        json!({
+            "practice_id": practice_id,
+            "mode": "outage",
+            "reason": "adapter refuses new reconnects right now",
+        }),
+    )
+    .await;
+    assert_eq!(status, 200);
+    advance_practice_clock(&db_url, &practice_id, t1 + 3_600).await;
+
+    let (status, replay_cmd) = post_json(
+        &base,
+        &owner_session,
+        "/commands",
+        json!({
+            "type": "reconnect_source",
+            "idempotency_key": idem_key,
+            "payload": { "source_id": SOURCE_ID }
+        }),
+    )
+    .await;
+    assert_eq!(status, 200, "{replay_cmd}");
+    assert_eq!(replay_cmd["outcome"], "accepted");
+    assert_eq!(
+        replay_cmd["receipt"]["reconnected_at"], t1 as i64,
+        "duplicate idempotency_key replay must not re-run reconnect side effects"
+    );
+
+    // Reusing the same `idempotency_key` with a different `source_id` returns `rejected`.
+    let (status, conflict_cmd) = post_json(
+        &base,
+        &owner_session,
+        "/commands",
+        json!({
+            "type": "reconnect_source",
+            "idempotency_key": idem_key,
+            "payload": { "source_id": "other-ehr" }
+        }),
+    )
+    .await;
+    assert_eq!(status, 200, "{conflict_cmd}");
+    assert_eq!(conflict_cmd["outcome"], "rejected");
 }

@@ -536,7 +536,8 @@ pub fn file_json_record(
         None => RecordVersion::ContentHash(sha256.clone()),
     };
 
-    let candidate_id = format!("{kind}/{native_id}");
+    let native_record = format!("{kind}/{native_id}");
+    let candidate_id = format!("{source_id}/{native_record}");
     let envelope = RecordEnvelope {
         bucket: matched.bucket,
         source_kind: SourceRecordKind {
@@ -555,14 +556,17 @@ pub fn file_json_record(
     let revision = SourceRevision {
         workspace: workspace.to_owned(),
         source_id: source_id.to_owned(),
-        candidate_id: candidate_id.clone(),
+        candidate_id,
         revision: sha256.clone(),
         record_type: kind,
         dates: legacy_dates,
         content: raw_json.to_owned(),
         sha256,
         readable_parts,
-        provenance: json!({ "native_record": candidate_id }),
+        provenance: json!({
+            "source_id": source_id,
+            "native_record": native_record,
+        }),
         envelope: Some(envelope),
     };
     revision

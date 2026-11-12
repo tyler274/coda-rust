@@ -5,13 +5,13 @@
 use async_trait::async_trait;
 use base64::Engine as _;
 use local_product::physician_sources::adapter::{
-    AdapterRow, AdapterTable, AttachmentRule, CategoryMatch, UnmappedRecordRule, ValueExtractor,
-    file_json_record,
+    AdapterRow, AdapterTable, AttachmentRule, CategoryMatch, FHIR_R4_TABLE, UnmappedRecordRule,
+    ValueExtractor, file_json_record,
 };
 use local_product::physician_sources::{
     Bucket, ChartRequest, ChartScope, DateRole, FiledDate, MedicalRecordNumber, PatientSource,
-    READ_TOOL, RecordVersion, SEARCH_TOOL, SourcePatient, SourcePullOutput, SourceRecordKind,
-    SourceRevision, workspace_id,
+    READ_TOOL, RecordVersion, SEARCH_TOOL, SourceAdapterError, SourcePatient, SourcePullOutput,
+    SourceRecordKind, SourceRevision, workspace_id,
 };
 use local_product::runtime::{Store, sources::SourcePull};
 use local_product::sha256_hex;
@@ -134,13 +134,16 @@ impl PatientSource for NorthwindPortalSource {
         "Northwind Portal"
     }
 
-    async fn patient_ids(&self) -> Result<Vec<String>, String> {
+    async fn patient_ids(&self) -> Result<Vec<String>, SourceAdapterError> {
         Ok(vec!["NW-900".into()])
     }
 
-    async fn patient(&self, source_patient_id: &str) -> Result<SourcePatient, String> {
+    async fn patient(&self, source_patient_id: &str) -> Result<SourcePatient, SourceAdapterError> {
         if source_patient_id != "NW-900" {
-            return Err(format!("unknown patient {source_patient_id}"));
+            return Err(SourceAdapterError::MissingPatientIdentity {
+                context: source_patient_id.to_owned(),
+                detail: "unknown patient".to_owned(),
+            });
         }
         Ok(SourcePatient {
             source_patient_id: "NW-900".into(),
@@ -158,7 +161,7 @@ impl PatientSource for NorthwindPortalSource {
         &self,
         _patient: &SourcePatient,
         workspace: &str,
-    ) -> Result<Vec<SourceRevision>, String> {
+    ) -> Result<Vec<SourceRevision>, SourceAdapterError> {
         self.raw_lines
             .iter()
             .map(|line| {
@@ -169,7 +172,10 @@ impl PatientSource for NorthwindPortalSource {
                     line,
                     None,
                 )
-                .map_err(|err| err.to_string())
+                .map_err(|source| SourceAdapterError::RecordFiling {
+                    context: self.source_id().to_owned(),
+                    source,
+                })
             })
             .collect()
     }
@@ -201,9 +207,10 @@ async fn second_made_up_source_loads_and_serves_tools_with_only_its_table_and_ad
     // Unmapped `parking_voucher` lands in `Bucket::Other` with absent optional fields left None.
     let voucher = records
         .iter()
-        .find(|r| r.candidate_id == "parking_voucher/VOUCH-1")
+        .find(|r| r.candidate_id == "northwind-portal/parking_voucher/VOUCH-1")
         .unwrap();
     let voucher_env = voucher.envelope.as_ref().unwrap();
+    assert_eq!(voucher_env.native_id, "VOUCH-1");
     assert_eq!(voucher_env.bucket, Bucket::Other);
     assert_eq!(voucher_env.status, None);
     assert!(voucher_env.dates.is_empty());
@@ -254,7 +261,7 @@ async fn second_made_up_source_loads_and_serves_tools_with_only_its_table_and_ad
     assert_eq!(note_hits.len(), 1);
     assert_eq!(
         note_hits[0]["reference"]["candidate_id"],
-        "clinician_memo/MEMO-7"
+        "northwind-portal/clinician_memo/MEMO-7"
     );
 
     // Read the discovered memo and confirm envelope + decoded attachment + untouched native JSON.
@@ -338,7 +345,146 @@ async fn second_made_up_source_persists_in_store_and_serves_tools() {
     assert_eq!(hits.len(), 1);
     assert_eq!(
         hits[0]["reference"]["candidate_id"],
-        "clinician_memo/MEMO-8"
+        "northwind-portal/clinician_memo/MEMO-8"
     );
     assert_eq!(hits[0]["bucket"], "documents");
+}
+
+#[tokio::test]
+#[ignore = "requires explicit local Postgres"]
+async fn distinct_sources_with_colliding_native_ids_coexist_in_workspace_and_tools() {
+    let url = std::env::var("PHYSICIAN_RUNTIME_TEST_DATABASE_URL").unwrap();
+    let store = Store::connect(&url).await.unwrap();
+    store.migrate().await.unwrap();
+
+    let ws = format!("pw-multi-src-{}", uuid::Uuid::new_v4());
+    let shared_identical_raw = r#"{"resourceType":"Observation","id":"2","status":"final","category":[{"coding":[{"code":"laboratory"}]}],"code":{"text":"Sodium"},"effectiveDateTime":"2026-08-20T08:00:00Z"}"#;
+    let source_a_obs1 = r#"{"resourceType":"Observation","id":"1","status":"final","category":[{"coding":[{"code":"laboratory"}]}],"code":{"text":"Potassium (Hospital A)"},"effectiveDateTime":"2026-08-19T08:00:00Z"}"#;
+    let source_b_obs1 = r#"{"resourceType":"Observation","id":"1","status":"preliminary","category":[{"coding":[{"code":"laboratory"}]}],"code":{"text":"Potassium (Clinic B)"},"effectiveDateTime":"2026-08-19T09:00:00Z"}"#;
+
+    let a_records = vec![
+        file_json_record(&FHIR_R4_TABLE, &ws, "hospital-a", source_a_obs1, None).unwrap(),
+        file_json_record(
+            &FHIR_R4_TABLE,
+            &ws,
+            "hospital-a",
+            shared_identical_raw,
+            None,
+        )
+        .unwrap(),
+    ];
+    let b_records = vec![
+        file_json_record(&FHIR_R4_TABLE, &ws, "clinic-b", source_b_obs1, None).unwrap(),
+        file_json_record(&FHIR_R4_TABLE, &ws, "clinic-b", shared_identical_raw, None).unwrap(),
+    ];
+
+    assert_eq!(a_records[0].candidate_id, "hospital-a/Observation/1");
+    assert_eq!(b_records[0].candidate_id, "clinic-b/Observation/1");
+    assert_eq!(a_records[0].envelope.as_ref().unwrap().native_id, "1");
+    assert_eq!(b_records[0].envelope.as_ref().unwrap().native_id, "1");
+
+    let patient_a = SourcePatient {
+        source_patient_id: "A-100".into(),
+        display_name: "Nadia Okafor".into(),
+        birth_date: Some("1984-02-19".into()),
+        sex_or_gender: None,
+        medical_record_numbers: Vec::new(),
+    };
+    let patient_b = SourcePatient {
+        source_patient_id: "B-200".into(),
+        display_name: "Nadia Okafor".into(),
+        birth_date: Some("1984-02-19".into()),
+        sex_or_gender: None,
+        medical_record_numbers: Vec::new(),
+    };
+
+    let receipt_a = store
+        .record_chart_with_receipt(
+            &ws,
+            &a_records,
+            &SourcePull {
+                source_id: "hospital-a".into(),
+                source_label: "Hospital A".into(),
+                patient: patient_a,
+                pulled_at: 1_760_000_100,
+            },
+        )
+        .await
+        .unwrap();
+    assert_eq!(receipt_a.changed, 2);
+
+    let receipt_b = store
+        .record_chart_with_receipt(
+            &ws,
+            &b_records,
+            &SourcePull {
+                source_id: "clinic-b".into(),
+                source_label: "Clinic B".into(),
+                patient: patient_b,
+                pulled_at: 1_760_000_200,
+            },
+        )
+        .await
+        .unwrap();
+    assert_eq!(receipt_b.changed, 2);
+    assert!(receipt_b.missing_candidates.is_empty());
+
+    let search = ChartRequest::parse(
+        SEARCH_TOOL,
+        &json!({"query": "", "bucket": "results", "record_type": null, "after": null}),
+        ChartScope::Chat,
+    )
+    .unwrap();
+    let observation = store.chart_observation(&ws, &search).await.unwrap();
+    assert_eq!(
+        observation.sources.len(),
+        4,
+        "neither differing nor identical-bytes colliding Observation IDs overwrite across sources"
+    );
+
+    let search_page: Value = serde_json::from_str(
+        search
+            .run(&ws, observation.version, &observation.sources)
+            .unwrap()
+            .text()
+            .unwrap(),
+    )
+    .unwrap();
+    let hits = search_page["results"].as_array().unwrap();
+    assert_eq!(hits.len(), 4);
+    assert!(hits.iter().any(|hit| {
+        hit["source_id"] == "hospital-a"
+            && hit["reference"]["candidate_id"] == "hospital-a/Observation/1"
+    }));
+    assert!(hits.iter().any(|hit| {
+        hit["source_id"] == "clinic-b"
+            && hit["reference"]["candidate_id"] == "clinic-b/Observation/1"
+    }));
+
+    let refs: Vec<Value> = hits.iter().map(|hit| hit["reference"].clone()).collect();
+    let read = ChartRequest::parse(
+        READ_TOOL,
+        &json!({"references": refs, "max_result_bytes": 16384}),
+        ChartScope::Chat,
+    )
+    .unwrap();
+    let read_page: Value = serde_json::from_str(
+        read.run(&ws, observation.version, &observation.sources)
+            .unwrap()
+            .text()
+            .unwrap(),
+    )
+    .unwrap();
+    let read_items = read_page["results"].as_array().unwrap();
+    assert_eq!(read_items.len(), 4);
+    assert!(read_items.iter().any(|item| {
+        item["reference"] == "hospital-a/Observation/1"
+            && item["provenance"]["source_id"] == "hospital-a"
+            && item["content"] == source_a_obs1
+    }));
+    assert!(read_items.iter().any(|item| {
+        item["reference"] == "clinic-b/Observation/1"
+            && item["provenance"]["source_id"] == "clinic-b"
+            && item["content"] == source_b_obs1
+    }));
 }

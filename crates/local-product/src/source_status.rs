@@ -11,10 +11,16 @@
 //!   reconnect operations through [`PatientSource`] over [`Store`].
 
 use serde::{Deserialize, Serialize};
+use serde_json::json;
 
-use crate::physician_sources::{ChartPullReceipt, PatientSource};
-pub use crate::physician_sources::{FailedPart, PullOutcome, ReconnectReceipt, SourcePullOutput};
+use crate::physician_sources::{
+    ChartPullReceipt, PatientSource, SourcePatient, SourceRecordKind, SourceRevision,
+};
+pub use crate::physician_sources::{
+    FailedPart, PullOutcome, ReconnectReceipt, SourceAdapterError, SourcePullOutput,
+};
 use crate::runtime::Store;
+use crate::runtime::receipt::{ExistingReceipt, Receipt};
 use crate::runtime::sources::SourcePull;
 
 /// Errors returned by source patient linking, status persistence, and connector operations.
@@ -55,12 +61,13 @@ pub enum SourceStatusError {
         requested_workspace_id: String,
     },
     /// The source adapter refused a connector operation such as reconnect or patient listing.
-    #[error("source `{source_id}` failed: {reason}")]
+    #[error("source `{source_id}` failed: {source}")]
     SourceAdapter {
         /// Source adapter identifier.
         source_id: String,
-        /// Diagnostic reason returned by the adapter.
-        reason: String,
+        /// Underlying typed adapter error cause.
+        #[source]
+        source: SourceAdapterError,
     },
     /// Underlying database read, write, or decoding failure.
     #[error("{0}")]
@@ -380,34 +387,20 @@ pub fn summarize_practice_source(
 ) -> PracticeSourceSummary {
     let total_patients = patients.len();
     let mut issues = Vec::new();
-    let mut reconnect_reasons = Vec::new();
-    let mut down_reasons = Vec::new();
+    let mut reconnect_count = 0usize;
 
     for (workspace_id, standing) in patients {
         match standing {
             SourceStanding::NotYetRead | SourceStanding::UpToDate { .. } => {}
-            SourceStanding::Partial { failed_parts, .. } => {
-                let summary = failed_parts
-                    .first()
-                    .map(|part| format!("{}: {}", part.part, part.reason))
-                    .unwrap_or_else(|| "partial source read failure".to_owned());
-                down_reasons.push(summary);
+            SourceStanding::Partial { .. } | SourceStanding::Failed { .. } => {
                 issues.push(PatientSourceIssue {
                     workspace_id: workspace_id.clone(),
                     source_id: source_id.to_owned(),
                     standing: standing.clone(),
                 });
             }
-            SourceStanding::Failed { reason, .. } => {
-                down_reasons.push(reason.clone());
-                issues.push(PatientSourceIssue {
-                    workspace_id: workspace_id.clone(),
-                    source_id: source_id.to_owned(),
-                    standing: standing.clone(),
-                });
-            }
-            SourceStanding::ReconnectNeeded { reason, .. } => {
-                reconnect_reasons.push(reason.clone());
+            SourceStanding::ReconnectNeeded { .. } => {
+                reconnect_count += 1;
                 issues.push(PatientSourceIssue {
                     workspace_id: workspace_id.clone(),
                     source_id: source_id.to_owned(),
@@ -437,20 +430,15 @@ pub fn summarize_practice_source(
     }
 
     if total_patients > 0 && issues.len() * 2 > total_patients {
-        let kind = if reconnect_reasons.len() * 2 > issues.len() {
+        // Practice-wide outage copy stays strictly practice-level so patient-specific
+        // failure diagnostics never leak across panel membership boundaries.
+        let kind = if reconnect_count * 2 > issues.len() {
             PracticeOutageKind::ReconnectNeeded {
-                reason: reconnect_reasons
-                    .into_iter()
-                    .next()
-                    .unwrap_or_else(|| "source access requires reconnect".to_owned()),
+                reason: "source access requires reconnect across most linked patients".to_owned(),
             }
         } else {
             PracticeOutageKind::SourceDown {
-                reason: down_reasons
-                    .into_iter()
-                    .next()
-                    .or_else(|| reconnect_reasons.into_iter().next())
-                    .unwrap_or_else(|| "source unavailable".to_owned()),
+                reason: "source reads are failing across most linked patients".to_owned(),
             }
         };
         return PracticeSourceSummary::PracticeWideOutage(PracticeOutage {
@@ -517,6 +505,25 @@ pub struct PracticeCheckReport {
     pub patients: Vec<PatientCheckReport>,
 }
 
+/// Inputs for persisting the succeeded portion of a partial source pull.
+#[derive(Clone, Copy, Debug)]
+pub struct PartialDelivery<'a> {
+    /// Practice owning the workspace.
+    pub practice_id: &'a str,
+    /// Bound patient workspace identifier.
+    pub workspace_id: &'a str,
+    /// Source adapter identifier.
+    pub source_id: &'a str,
+    /// Physician-facing source label, used when `patient` identity is recorded.
+    pub source_label: &'a str,
+    /// Patient identity if the identity part of the pull succeeded.
+    pub patient: Option<&'a SourcePatient>,
+    /// Resource kinds or families that completed during this pull, including empty ones.
+    pub succeeded_kinds: &'a [SourceRecordKind],
+    /// Admitted source revisions from the parts that succeeded.
+    pub records: &'a [SourceRevision],
+}
+
 /// Result of reconnecting a practice's source and catching up linked patients.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct ReconnectReport {
@@ -526,6 +533,22 @@ pub struct ReconnectReport {
     pub access: SourceAccessState,
     /// Catch-up check across linked patients in the practice.
     pub check: PracticeCheckReport,
+}
+
+/// Outcome of an idempotent `reconnect_source` command backed by `physician_runtime_commands`.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub enum ReconnectCommandOutcome {
+    /// Newly executed reconnect and catch-up check, or a duplicate replay of the same command.
+    Accepted {
+        /// Adapter confirmation receipt.
+        receipt: ReconnectReceipt,
+        /// Practice-level source access state.
+        access: SourceAccessState,
+        /// Practice-level source summary.
+        summary: PracticeSourceSummary,
+    },
+    /// The caller's `idempotency_key` already belongs to a different command or source.
+    ConflictingKey,
 }
 
 /// Coordinates patient-link resolution, chart pulling, status recording, and reconnects
@@ -622,8 +645,8 @@ impl SourceCoordinator {
         let output = source
             .pull_patient(practice_id, source_patient_id, candidate_workspace)
             .await;
-        match &output {
-            SourcePullOutput::Complete { .. } | SourcePullOutput::Partial { .. } => {
+        match output {
+            SourcePullOutput::Complete { .. } => {
                 let link = store
                     .resolve_or_link_patient(&key, LinkTarget::Exact(candidate_workspace), now)
                     .await?;
@@ -638,10 +661,114 @@ impl SourceCoordinator {
                 )
                 .await
             }
-            SourcePullOutput::Failed { reason } | SourcePullOutput::LapsedAccess { reason } => {
-                Err(SourceStatusError::SourceAdapter {
-                    source_id: source.source_id().to_owned(),
-                    reason: reason.clone(),
+            SourcePullOutput::Partial {
+                ref patient,
+                ref failed_parts,
+                ..
+            } => {
+                let has_prior_identity = store
+                    .source_pulls(&[candidate_workspace.to_owned()])
+                    .await?
+                    .get(candidate_workspace)
+                    .is_some_and(|pulls| !pulls.is_empty());
+                if patient.is_some() || has_prior_identity {
+                    let link = store
+                        .resolve_or_link_patient(&key, LinkTarget::Exact(candidate_workspace), now)
+                        .await?;
+                    apply_pull_output(
+                        store,
+                        source,
+                        practice_id,
+                        source_patient_id,
+                        link.workspace_id,
+                        output,
+                        now,
+                    )
+                    .await
+                } else {
+                    let attempt = PullAttempt {
+                        attempted_at: now,
+                        outcome: PullOutcome::Partial {
+                            failed_parts: failed_parts.clone(),
+                            missing_candidates: Vec::new(),
+                        },
+                    };
+                    let status = store
+                        .record_pull_status(
+                            practice_id,
+                            candidate_workspace,
+                            source.source_id(),
+                            &attempt,
+                        )
+                        .await?;
+                    let access = store
+                        .practice_source_access(practice_id, source.source_id())
+                        .await?;
+                    let standing = derive_standing(access.as_ref(), Some(&status));
+                    Ok(PatientCheckReport {
+                        workspace_id: candidate_workspace.to_owned(),
+                        source_patient_id: source_patient_id.to_owned(),
+                        standing,
+                        changed: 0,
+                        records_delivered: 0,
+                        missing_candidates: Vec::new(),
+                    })
+                }
+            }
+            SourcePullOutput::Failed { error } => {
+                let attempt = PullAttempt {
+                    attempted_at: now,
+                    outcome: PullOutcome::Failed {
+                        reason: error.to_string(),
+                    },
+                };
+                let status = store
+                    .record_pull_status(
+                        practice_id,
+                        candidate_workspace,
+                        source.source_id(),
+                        &attempt,
+                    )
+                    .await?;
+                let access = store
+                    .practice_source_access(practice_id, source.source_id())
+                    .await?;
+                let standing = derive_standing(access.as_ref(), Some(&status));
+                Ok(PatientCheckReport {
+                    workspace_id: candidate_workspace.to_owned(),
+                    source_patient_id: source_patient_id.to_owned(),
+                    standing,
+                    changed: 0,
+                    records_delivered: 0,
+                    missing_candidates: Vec::new(),
+                })
+            }
+            SourcePullOutput::LapsedAccess { error } => {
+                let attempt = PullAttempt {
+                    attempted_at: now,
+                    outcome: PullOutcome::LapsedAccess {
+                        reason: error.to_string(),
+                    },
+                };
+                let status = store
+                    .record_pull_status(
+                        practice_id,
+                        candidate_workspace,
+                        source.source_id(),
+                        &attempt,
+                    )
+                    .await?;
+                let access = store
+                    .practice_source_access(practice_id, source.source_id())
+                    .await?;
+                let standing = derive_standing(access.as_ref(), Some(&status));
+                Ok(PatientCheckReport {
+                    workspace_id: candidate_workspace.to_owned(),
+                    source_patient_id: source_patient_id.to_owned(),
+                    standing,
+                    changed: 0,
+                    records_delivered: 0,
+                    missing_candidates: Vec::new(),
                 })
             }
         }
@@ -693,10 +820,10 @@ impl SourceCoordinator {
         now: i64,
     ) -> Result<ReconnectReport, SourceStatusError> {
         validate_non_empty("practice_id", practice_id)?;
-        let receipt = source.reconnect(practice_id, now).await.map_err(|reason| {
+        let receipt = source.reconnect(practice_id, now).await.map_err(|error| {
             SourceStatusError::SourceAdapter {
                 source_id: source.source_id().to_owned(),
-                reason,
+                source: error,
             }
         })?;
         let access = SourceAccessState::Connected { connected_at: now };
@@ -709,6 +836,77 @@ impl SourceCoordinator {
             access,
             check,
         })
+    }
+
+    /// Executes an idempotent `reconnect_source` command scoped to `(practice_id, physician_id)`
+    /// and persisted in `physician_runtime_commands`.
+    ///
+    /// A duplicate retry with the same `idempotency_key` and `source_id` returns the stored
+    /// state without invoking `source.reconnect` or `check_practice` again; reusing the key
+    /// for a different command or source returns [`ReconnectCommandOutcome::ConflictingKey`].
+    pub async fn reconnect_source_command(
+        store: &Store,
+        source: &dyn PatientSource,
+        practice_id: &str,
+        physician_id: &str,
+        idempotency_key: &str,
+        now: i64,
+    ) -> Result<ReconnectCommandOutcome, SourceStatusError> {
+        validate_non_empty("practice_id", practice_id)?;
+        validate_non_empty("physician_id", physician_id)?;
+        validate_non_empty("idempotency_key", idempotency_key)?;
+
+        let source_id = source.source_id();
+        let command = json!({
+            "scope": {
+                "practice": practice_id,
+                "physician": physician_id,
+            },
+            "reconnect_source": {
+                "source_id": source_id,
+            },
+        });
+
+        match store
+            .inspect_command_receipt(practice_id, physician_id, idempotency_key, &command)
+            .await?
+        {
+            ExistingReceipt::Different => return Ok(ReconnectCommandOutcome::ConflictingKey),
+            ExistingReceipt::Same => {
+                let snapshot = store.practice_source_report(practice_id, source_id).await?;
+                let reconnected_at = match &snapshot.access {
+                    Some(SourceAccessState::Connected { connected_at }) => *connected_at,
+                    Some(SourceAccessState::ReconnectNeeded { since, .. }) => *since,
+                    None => now,
+                };
+                let access = snapshot
+                    .access
+                    .unwrap_or(SourceAccessState::Connected { connected_at: now });
+                return Ok(ReconnectCommandOutcome::Accepted {
+                    receipt: ReconnectReceipt {
+                        source_id: source_id.to_owned(),
+                        practice_id: practice_id.to_owned(),
+                        reconnected_at,
+                    },
+                    access,
+                    summary: snapshot.summary,
+                });
+            }
+            ExistingReceipt::Absent => {}
+        }
+
+        let report = Self::reconnect_source(store, source, practice_id, now).await?;
+        match store
+            .record_command_receipt(practice_id, physician_id, idempotency_key, &command)
+            .await?
+        {
+            Receipt::New | Receipt::Same => Ok(ReconnectCommandOutcome::Accepted {
+                receipt: report.receipt,
+                access: report.access,
+                summary: report.check.summary,
+            }),
+            Receipt::Different => Ok(ReconnectCommandOutcome::ConflictingKey),
+        }
     }
 }
 
@@ -769,13 +967,22 @@ async fn apply_pull_output(
             })
         }
         SourcePullOutput::Partial {
-            patient: _,
+            patient,
+            succeeded_kinds,
             records,
             failed_parts,
         } => {
             let records_delivered = records.len();
             let (changed, missing_candidates) = store
-                .record_partial_records(practice_id, &workspace_id, source.source_id(), &records)
+                .record_partial_records(PartialDelivery {
+                    practice_id,
+                    workspace_id: &workspace_id,
+                    source_id: source.source_id(),
+                    source_label: source.source_label(),
+                    patient: patient.as_ref(),
+                    succeeded_kinds: &succeeded_kinds,
+                    records: &records,
+                })
                 .await?;
             let attempt = PullAttempt {
                 attempted_at: now,
@@ -800,10 +1007,12 @@ async fn apply_pull_output(
                 missing_candidates,
             })
         }
-        SourcePullOutput::Failed { reason } => {
+        SourcePullOutput::Failed { error } => {
             let attempt = PullAttempt {
                 attempted_at: now,
-                outcome: PullOutcome::Failed { reason },
+                outcome: PullOutcome::Failed {
+                    reason: error.to_string(),
+                },
             };
             let status = store
                 .record_pull_status(practice_id, &workspace_id, source.source_id(), &attempt)
@@ -821,10 +1030,12 @@ async fn apply_pull_output(
                 missing_candidates: Vec::new(),
             })
         }
-        SourcePullOutput::LapsedAccess { reason } => {
+        SourcePullOutput::LapsedAccess { error } => {
             let attempt = PullAttempt {
                 attempted_at: now,
-                outcome: PullOutcome::LapsedAccess { reason },
+                outcome: PullOutcome::LapsedAccess {
+                    reason: error.to_string(),
+                },
             };
             let status = store
                 .record_pull_status(practice_id, &workspace_id, source.source_id(), &attempt)
@@ -954,7 +1165,7 @@ mod tests {
         let failed = SourceStanding::Failed {
             last_good_read_at: Some(100),
             attempted_at: 200,
-            reason: "FHIR endpoint 503".into(),
+            reason: "MRN-9921 chart directory missing".into(),
         };
 
         // 2 of 4 (<= half) -> per-patient issues, not a practice outage.
@@ -976,22 +1187,93 @@ mod tests {
             other => panic!("expected PatientIssues, got {other:?}"),
         }
 
-        // 3 of 4 (> half) -> single PracticeWideOutage, zero per-patient rows.
+        // 3 of 4 (> half) -> single PracticeWideOutage, zero per-patient rows,
+        // and neutral practice-level copy with zero patient-specific diagnostic strings.
         let majority = vec![
             ("pw-1".into(), failed.clone()),
             ("pw-2".into(), failed.clone()),
             ("pw-3".into(), failed),
-            ("pw-4".into(), up_to_date),
+            ("pw-4".into(), up_to_date.clone()),
         ];
+        let outage_summary =
+            summarize_practice_source("practice-1", "ehr-1", Some(&connected), &majority);
         assert_eq!(
-            summarize_practice_source("practice-1", "ehr-1", Some(&connected), &majority),
+            outage_summary,
             PracticeSourceSummary::PracticeWideOutage(PracticeOutage {
                 practice_id: "practice-1".into(),
                 source_id: "ehr-1".into(),
                 affected_patients: 3,
                 total_patients: 4,
                 kind: PracticeOutageKind::SourceDown {
-                    reason: "FHIR endpoint 503".into(),
+                    reason: "source reads are failing across most linked patients".into(),
+                },
+            })
+        );
+        assert!(
+            !serde_json::to_string(&outage_summary)
+                .unwrap()
+                .contains("MRN-9921")
+        );
+
+        // 2 of 3 LapsedAccess + 1 UpToDate at fixed timestamp 200:
+        // practice summary is PracticeWideOutage(ReconnectNeeded), while patient 3 remains UpToDate.
+        let lapsed_p1 = derive_standing(
+            Some(&connected),
+            Some(&status_with(
+                Some(100),
+                Some(PullAttempt {
+                    attempted_at: 200,
+                    outcome: PullOutcome::LapsedAccess {
+                        reason: "MRN-1001 token revoked".into(),
+                    },
+                }),
+            )),
+        );
+        let lapsed_p2 = derive_standing(
+            Some(&connected),
+            Some(&status_with(
+                Some(100),
+                Some(PullAttempt {
+                    attempted_at: 200,
+                    outcome: PullOutcome::LapsedAccess {
+                        reason: "MRN-1002 token revoked".into(),
+                    },
+                }),
+            )),
+        );
+        let ok_p3 = derive_standing(
+            Some(&connected),
+            Some(&status_with(
+                Some(200),
+                Some(PullAttempt {
+                    attempted_at: 200,
+                    outcome: PullOutcome::Succeeded {
+                        missing_candidates: Vec::new(),
+                    },
+                }),
+            )),
+        );
+        assert_eq!(
+            ok_p3,
+            SourceStanding::UpToDate {
+                last_good_read_at: 200,
+                missing_candidates: Vec::new(),
+            }
+        );
+        let mixed_same_ts = vec![
+            ("pw-1".into(), lapsed_p1),
+            ("pw-2".into(), lapsed_p2),
+            ("pw-3".into(), ok_p3),
+        ];
+        assert_eq!(
+            summarize_practice_source("practice-1", "ehr-1", Some(&connected), &mixed_same_ts),
+            PracticeSourceSummary::PracticeWideOutage(PracticeOutage {
+                practice_id: "practice-1".into(),
+                source_id: "ehr-1".into(),
+                affected_patients: 2,
+                total_patients: 3,
+                kind: PracticeOutageKind::ReconnectNeeded {
+                    reason: "source access requires reconnect across most linked patients".into(),
                 },
             })
         );

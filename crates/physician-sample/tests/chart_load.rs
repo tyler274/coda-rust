@@ -537,3 +537,170 @@ async fn a_site_with_no_load_is_ready_and_empty_until_a_load_fills_it() {
     assert_eq!(status, 200, "{listed}");
     assert_eq!(listed["patients"].as_array().unwrap().len(), 2, "{listed}");
 }
+
+#[tokio::test(flavor = "multi_thread", worker_threads = 4)]
+async fn initial_partial_chart_opens_cleanly_while_initial_missing_identity_or_failed_attempts_record_status_without_404_patients()
+ {
+    use physician_sample::chart_load::load_practice_from_source;
+    use physician_sample::synthetic_chart::{SyntheticCharts, SyntheticSourceMode};
+    use std::collections::BTreeSet;
+
+    let (auth, runtime) = stores().await;
+    let url = std::env::var("PHYSICIAN_TEST_DATABASE_URL").unwrap();
+    let run = run_id();
+    let practice_id = format!("practice-init-{}", run.to_lowercase());
+    let email = format!("{}-init@chart-load.test", run.to_lowercase());
+    let initial_clock: u64 = 1_787_846_400;
+
+    auth.ensure_practice(&practice_id, PracticeClock::Fixed(initial_clock))
+        .await
+        .unwrap();
+    auth.ensure_account(&practice_id, &run, &email, "Dr. Init", true, 1)
+        .await
+        .unwrap();
+
+    // Build 4 patients:
+    // - `{run}-p1`: Partial with Patient identity succeeding and DocumentReference failing -> loads & opens cleanly!
+    // - `{run}-p2`: Partial with Patient family failing (no patient identity) -> recorded in status, NOT registered!
+    // - `{run}-p3`: Outage on initial load -> recorded in status, NOT registered!
+    // - `{run}-p4`: LapsedAccess on initial load -> recorded in status, NOT registered!
+    let bank_dir = std::env::temp_dir().join(format!("coda-chart-load-init-{run}"));
+    for suffix in ["p1", "p2", "p3", "p4"] {
+        let id = format!("{run}-{suffix}");
+        let chart = bank_dir.join("patients").join(&id);
+        fs::create_dir_all(&chart).unwrap();
+        fs::write(chart.join("Patient.ndjson"), format!("{}\n", patient(&id))).unwrap();
+        fs::write(chart.join("DocumentReference.ndjson"), format!("{NOTE}\n")).unwrap();
+    }
+
+    let source = SyntheticCharts::open(&bank_dir);
+    source.set_patient_mode(
+        &practice_id,
+        &format!("{run}-p1"),
+        SyntheticSourceMode::Partial {
+            failed_families: BTreeSet::from(["DocumentReference".to_owned()]),
+            reason: "notes endpoint timed out".into(),
+        },
+    );
+    source.set_patient_mode(
+        &practice_id,
+        &format!("{run}-p2"),
+        SyntheticSourceMode::Partial {
+            failed_families: BTreeSet::from(["Patient".to_owned()]),
+            reason: "demographics endpoint timed out".into(),
+        },
+    );
+    source.set_patient_mode(
+        &practice_id,
+        &format!("{run}-p3"),
+        SyntheticSourceMode::Outage {
+            reason: "initial chart upstream 503".into(),
+        },
+    );
+    source.set_patient_mode(
+        &practice_id,
+        &format!("{run}-p4"),
+        SyntheticSourceMode::LapsedAccess {
+            reason: "initial patient consent missing".into(),
+        },
+    );
+
+    let summary = load_practice_from_source(&practice_id, &source, &auth, &runtime)
+        .await
+        .unwrap();
+    assert_eq!(
+        summary.patients, 1,
+        "only p1 has usable identity on initial load: {summary:?}"
+    );
+    assert_eq!(summary.failed.len(), 3, "{:?}", summary.failed);
+
+    let ws1 = workspace_id("synthetic-charts", &format!("{run}-p1"));
+    let ws2 = workspace_id("synthetic-charts", &format!("{run}-p2"));
+    let ws3 = workspace_id("synthetic-charts", &format!("{run}-p3"));
+    let ws4 = workspace_id("synthetic-charts", &format!("{run}-p4"));
+
+    assert_eq!(
+        auth.patient_practice(&ws1).await.unwrap().as_deref(),
+        Some(practice_id.as_str())
+    );
+    for unopenable in [&ws2, &ws3, &ws4] {
+        assert!(
+            auth.patient_practice(unopenable).await.unwrap().is_none(),
+            "{unopenable} must not be registered without patient identity/chart"
+        );
+    }
+
+    // Attempted initial outcomes for p2, p3, p4 ARE persisted in patient_source_status!
+    let standings = runtime
+        .workspace_source_standings(&[ws1.clone(), ws2.clone(), ws3.clone(), ws4.clone()])
+        .await
+        .unwrap();
+    assert!(matches!(
+        standings[&ws1]["synthetic-charts"],
+        local_product::source_status::SourceStanding::Partial {
+            last_good_read_at: None,
+            ..
+        }
+    ));
+    assert!(matches!(
+        standings[&ws2]["synthetic-charts"],
+        local_product::source_status::SourceStanding::Partial {
+            last_good_read_at: None,
+            ..
+        }
+    ));
+    assert!(matches!(
+        standings[&ws3]["synthetic-charts"],
+        local_product::source_status::SourceStanding::Failed {
+            last_good_read_at: None,
+            ..
+        }
+    ));
+    assert!(matches!(
+        standings[&ws4]["synthetic-charts"],
+        local_product::source_status::SourceStanding::ReconnectNeeded {
+            last_good_read_at: None,
+            ..
+        }
+    ));
+
+    // Place ws1 on Dr. Init's panel and verify HTTP directory, search, and patient page open cleanly
+    // with `standing == "partial"` and `last_good_read_at == null` (no 404 and no fabricated good timestamp).
+    let doctor = PhysicianIdentity {
+        practice_id: practice_id.clone(),
+        physician_id: run.clone(),
+    };
+    auth.assign_panel(&doctor, &run, &ws1, Membership::Allowed)
+        .await
+        .unwrap();
+
+    let server = common::serve_isolated(move || {
+        // SAFETY: `serve_isolated` holds its start lock around this call.
+        unsafe {
+            std::env::set_var("PHYSICIAN_DATABASE_URL", &url);
+            std::env::set_var("PHYSICIAN_AUTH", "required");
+        }
+    })
+    .await;
+    let base = format!("http://{}", server.address);
+    let session = sign_in(&base, &email).await;
+
+    let (status, listed) = read(&base, &session, "/patient-workspaces").await;
+    assert_eq!(status, 200, "{listed}");
+    let patients = listed["patients"].as_array().unwrap();
+    assert_eq!(patients.len(), 1);
+    assert_eq!(patients[0]["patient_workspace_id"], ws1);
+
+    let (status, page) = read(&base, &session, &format!("/patient-workspaces/{ws1}")).await;
+    assert_eq!(status, 200, "{page}");
+    assert_eq!(page["display_name"], format!("Mary {run}-p1"));
+    assert_eq!(page["connected_sources"][0]["standing"], "partial");
+    assert_eq!(
+        page["connected_sources"][0]["last_good_read_at"],
+        Value::Null
+    );
+    assert_eq!(
+        page["connected_sources"][0]["state"]["usable_snapshot"],
+        Value::Null
+    );
+}

@@ -17,8 +17,8 @@ use axum::routing::post;
 use local_product::physician_sources::{PatientSource, workspace_id};
 use local_product::runtime::Store;
 use local_product::source_status::{
-    LinkTarget, PracticeOutageKind, PracticeSourceReport, PracticeSourceSummary, SourceCoordinator,
-    SourcePatientKey, SourceStatusError,
+    LinkTarget, PracticeOutageKind, PracticeSourceReport, PracticeSourceSummary,
+    ReconnectCommandOutcome, SourceCoordinator, SourcePatientKey, SourceStatusError,
 };
 use physician_auth::{AuthStore, Membership, PhysicianIdentity};
 use serde::Deserialize;
@@ -504,11 +504,11 @@ pub(crate) async fn post_reconnect(
             "summary": scope_summary_to_panel(&report.check.summary, panel.as_ref()),
         }))
         .into_response(),
-        Err(SourceStatusError::SourceAdapter { reason, .. }) => (
+        Err(SourceStatusError::SourceAdapter { source, .. }) => (
             StatusCode::BAD_GATEWAY,
             Json(json!({
                 "outcome": "failed",
-                "detail": reason,
+                "detail": source.to_string(),
             })),
         )
             .into_response(),
@@ -542,6 +542,11 @@ pub(crate) async fn intercept_reconnect_command(request: Request<Body>, next: Ne
     }
 
     let body_json = parsed.unwrap_or(Value::Null);
+    let idempotency_key = body_json
+        .get("idempotency_key")
+        .and_then(Value::as_str)
+        .map(str::trim)
+        .filter(|key| !key.is_empty());
     let source_id = body_json
         .get("payload")
         .and_then(|payload| payload.get("source_id"))
@@ -561,7 +566,7 @@ pub(crate) async fn intercept_reconnect_command(request: Request<Body>, next: Ne
             .into_response()
     };
 
-    let Some(source_id) = source_id else {
+    let (Some(idempotency_key), Some(source_id)) = (idempotency_key, source_id) else {
         return reject();
     };
     let Some(registry) = registry_from(&parts.extensions) else {
@@ -576,21 +581,35 @@ pub(crate) async fn intercept_reconnect_command(request: Request<Body>, next: Ne
 
     let identity = ConnectedCare::identity(&parts.extensions);
     let practice_id = identity.practice_id.clone();
+    let physician_id = identity.physician_id.clone();
     let Ok(now) = practice_now_seconds(&parts.extensions, &practice_id).await else {
         return StatusCode::SERVICE_UNAVAILABLE.into_response();
     };
     let panel = panel_workspaces(&parts.extensions, &identity).await;
 
-    match SourceCoordinator::reconnect_source(store, &*adapter, &practice_id, now).await {
-        Ok(report) => Json(json!({
+    match SourceCoordinator::reconnect_source_command(
+        store,
+        &*adapter,
+        &practice_id,
+        &physician_id,
+        idempotency_key,
+        now,
+    )
+    .await
+    {
+        Ok(ReconnectCommandOutcome::Accepted {
+            receipt,
+            access,
+            summary,
+        }) => Json(json!({
             "outcome": "accepted",
             "type": "reconnect_source",
-            "receipt": report.receipt,
-            "access": report.access,
-            "summary": scope_summary_to_panel(&report.check.summary, panel.as_ref()),
+            "receipt": receipt,
+            "access": access,
+            "summary": scope_summary_to_panel(&summary, panel.as_ref()),
         }))
         .into_response(),
-        Err(_) => reject(),
+        Ok(ReconnectCommandOutcome::ConflictingKey) | Err(_) => reject(),
     }
 }
 
