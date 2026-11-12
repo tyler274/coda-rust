@@ -10,6 +10,7 @@
 )]
 
 use std::sync::Arc;
+use std::time::Instant;
 
 use axum::Json;
 use axum::Router;
@@ -24,6 +25,8 @@ use local_product::runtime::delivery::{Delivery, DeliveryKind, DeliveryState};
 
 #[path = "physician-worker/attempt.rs"]
 mod attempt;
+#[path = "physician-worker/layout.rs"]
+mod layout;
 #[path = "physician-worker/revision.rs"]
 mod revision;
 use attempt::{Claimed, Failure, Outcome, Push, Tally};
@@ -103,6 +106,8 @@ async fn readyz(State(worker): State<Arc<Worker>>) -> StatusCode {
 }
 
 async fn chat_turn(State(worker): State<Arc<Worker>>, request: Request) -> StatusCode {
+    // The push deadline runs from here; the layout phase is cut short to stay inside it.
+    let received = Instant::now();
     let header = request
         .headers()
         .get(axum::http::header::AUTHORIZATION)
@@ -123,15 +128,21 @@ async fn chat_turn(State(worker): State<Arc<Worker>>, request: Request) -> Statu
         return revision::deliver(&worker, &push).await;
     }
     let span = attempt::span(&push, CHAT_JOB);
-    chat_attempt(&worker, &push.delivery, &span)
+    chat_attempt(&worker, &push.delivery, &span, received)
         .instrument(span.clone())
         .await
 }
 
 const CHAT_JOB: &str = "physician_chat";
 
-/// One chat-turn delivery inside its `physician.worker.attempt` span.
-async fn chat_attempt(worker: &Worker, delivery: &Delivery, span: &tracing::Span) -> StatusCode {
+/// One chat-turn delivery inside its `physician.worker.attempt` span. `received` is when its
+/// push arrived.
+async fn chat_attempt(
+    worker: &Worker,
+    delivery: &Delivery,
+    span: &tracing::Span,
+    received: Instant,
+) -> StatusCode {
     let claim = match worker.store.claim_delivery(delivery, LEASE_SECONDS).await {
         Ok(Some(claim)) => claim,
         Ok(None) => {
@@ -258,6 +269,9 @@ async fn chat_attempt(worker: &Worker, delivery: &Delivery, span: &tracing::Span
                 Outcome::Committed,
                 None,
             );
+            // After the answer is published and announced, and before the ack, so the work
+            // keeps its CPU; it never changes the response.
+            layout::after_answer(worker, &host.claim.scope, received).await;
             StatusCode::NO_CONTENT
         }
         Err(error) => {
@@ -496,6 +510,10 @@ struct Worker {
     origin: genai::Origin,
     /// Practices whose turns are rehearsal traffic in telemetry.
     simulation_practices: SimulationPractices,
+    /// Who makes a source's record layout the first time it is cited.
+    layouts: layout::LayoutSource,
+    /// Layout keys this instance is making right now.
+    layouts_in_flight: physician_sample::layout_generation::InFlight,
 }
 
 impl Worker {
@@ -517,9 +535,9 @@ impl Worker {
     async fn from_env(get: impl Fn(&str) -> Option<String>) -> Result<Self, String> {
         let hosted = is_hosted(&get);
         let simulation_practices = SimulationPractices::from_env(&get)?;
-        let (transport, origin) = if let Some(port) =
-            configured(&get, "PHYSICIAN_RESPONSES_STUB_PORT")
-        {
+        let stub_port = configured(&get, "PHYSICIAN_RESPONSES_STUB_PORT");
+        let fixed_layout = layout::fixed_from_env(&get, hosted, stub_port.is_some())?;
+        let (transport, origin, layouts) = if let Some(port) = stub_port {
             if hosted {
                 return Err(
                     "hosted physician worker requires the public Responses endpoint".into(),
@@ -534,6 +552,7 @@ impl Worker {
                     key: "local-proof".to_owned(),
                 },
                 genai::Origin::Simulation,
+                fixed_layout.map_or(layout::LayoutSource::Off, layout::LayoutSource::Fixed),
             )
         } else {
             match if hosted {
@@ -545,7 +564,11 @@ impl Worker {
             } {
                 local_product::ModelExecution::Subscription => {
                     local_product::chatgpt::require_sign_in().map_err(|error| error.to_string())?;
-                    (ModelTransport::DeveloperPlan, genai::Origin::Real)
+                    (
+                        ModelTransport::DeveloperPlan,
+                        genai::Origin::Real,
+                        layout::LayoutSource::Model,
+                    )
                 }
                 local_product::ModelExecution::Api => {
                     let key = local_product::open_ai_api_key(
@@ -558,6 +581,7 @@ impl Worker {
                             key,
                         },
                         genai::Origin::Real,
+                        layout::LayoutSource::Model,
                     )
                 }
                 local_product::ModelExecution::Disabled => {
@@ -596,6 +620,8 @@ impl Worker {
             verifier,
             origin,
             simulation_practices,
+            layouts,
+            layouts_in_flight: Default::default(),
         })
     }
 }

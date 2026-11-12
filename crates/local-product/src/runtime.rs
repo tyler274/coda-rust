@@ -641,7 +641,7 @@ fn database_clock() -> Expr {
     Expr::cust("floor(extract(epoch FROM clock_timestamp()))::bigint")
 }
 
-async fn now(tx: &sea_orm::DatabaseTransaction) -> Result<i64, DbErr> {
+pub(crate) async fn now(tx: &sea_orm::DatabaseTransaction) -> Result<i64, DbErr> {
     let query = Query::select()
         .expr_as(database_clock(), Alias::new("now"))
         .to_owned();
@@ -662,6 +662,11 @@ impl Store {
     /// Uses an existing pool without applying migrations or changing its limits.
     pub fn from_connection(db: DatabaseConnection) -> Self {
         Self { db }
+    }
+
+    /// The pool, for the physician stores that share this database.
+    pub(crate) fn connection(&self) -> &DatabaseConnection {
+        &self.db
     }
 
     // Display readback now joins several authoritative rows. One read-only

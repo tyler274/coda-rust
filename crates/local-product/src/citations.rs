@@ -272,6 +272,7 @@ impl WindowEvidence {
                     RecordReceipt::Available {
                         reference,
                         revision,
+                        source_id,
                         record_type,
                         dates,
                         content,
@@ -287,11 +288,14 @@ impl WindowEvidence {
                         }
                         let source = SourceRevision {
                             workspace: workspace.to_owned(),
-                            source_id: provenance
-                                .get("source_id")
-                                .and_then(Value::as_str)
-                                .unwrap_or("retained")
-                                .to_owned(),
+                            source_id: source_id
+                                .or_else(|| {
+                                    provenance
+                                        .get("source_id")
+                                        .and_then(Value::as_str)
+                                        .map(str::to_owned)
+                                })
+                                .unwrap_or_default(),
                             candidate_id: reference.clone(),
                             revision: revision.clone(),
                             record_type,
@@ -1341,6 +1345,7 @@ fn build_citation(
         id,
         reference: source.candidate_id.clone(),
         revision: source.revision.clone(),
+        source_id: (!source.source_id.is_empty()).then(|| source.source_id.clone()),
         record_type: source.record_type.clone(),
         dates: source.dates.clone(),
         content: source.content.clone(),

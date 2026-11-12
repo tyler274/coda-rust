@@ -98,6 +98,10 @@ pub struct Citation {
     pub reference: String,
     /// Immutable source version.
     pub revision: String,
+    /// The source that holds the record. A retained citation without one
+    /// reads through the general view, never a stored layout.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub source_id: Option<String>,
     /// Source record type.
     pub record_type: String,
     /// Source-labeled dates retained by the exact read.

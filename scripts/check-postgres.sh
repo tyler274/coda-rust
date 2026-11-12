@@ -27,7 +27,7 @@ pg_test() { cargo test --locked "${packages[@]}" "$@"; }
 # test time: four slow physician scale suites and the Pub/Sub emulator suites.
 shard_1_targets=(--lib --test migrations_postgres --test postgres
   --test front_door_postgres --test identity --test luna_journal
-  --test database_foundation --test pg_moments
+  --test database_foundation --test pg_moments --test physician_layouts
   --test runtime_postgres --test runtime_publication --test runtime_recovery --test runtime_quota
   --test redis --test fanout --test worker --test recovery --test try_again
   --bin physician-worker)
@@ -48,6 +48,7 @@ shard_1() {
   DUET_TEST_DATABASE_URL="$DUET_IDENTITY_TEST_DATABASE_URL" pg_test --test database_foundation -- --exact fresh_and_upgrade_keep_identity_and_enforce_account_scope
   # Typed moments retain account scoping, ordering and the privacy-journal gate.
   DUET_TEST_DATABASE_URL="$DUET_IDENTITY_TEST_DATABASE_URL" pg_test --test pg_moments
+  pg_test --test physician_layouts
   # Exercises fixed GCS transport against loopback HTTP plus the real journal owner.
   pg_test --lib privacy_archive::tests::gcs_transport_and_postgres_recovery_reconcile_same_receipt_after_restart -- --exact
   # Explicitly select ignored real-database proofs; serial execution prevents

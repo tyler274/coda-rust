@@ -20,14 +20,18 @@ mod chat_draft;
 pub mod durable;
 mod gmail;
 pub mod hosting;
+pub mod layout_generation;
 mod live;
 #[cfg(test)]
 mod live_tests;
+mod narrative;
 pub mod patients;
 pub mod queue;
 pub mod rehearsal;
 mod reply;
 pub mod source_inspection;
+pub mod source_layout;
+mod source_path;
 pub mod synthetic_chart;
 mod synthetic_reply;
 mod timestamp;

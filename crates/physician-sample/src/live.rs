@@ -1,6 +1,7 @@
 //! Physician chat HTTP composition over the durable Postgres owner.
 //! The site accepts work and reads its state; the worker runs the shared loop.
 
+use std::collections::{HashMap, HashSet};
 use std::convert::Infallible;
 use std::sync::Arc;
 
@@ -10,12 +11,14 @@ use axum::extract::{Extension, Path, State};
 use axum::http::{HeaderValue, StatusCode};
 use axum::response::{IntoResponse, Response};
 use futures_util::stream;
+use local_product::physician_layouts::{LayoutKey, LayoutStoreError, StoredLayout};
 use physician_bus::{Bus, Event};
 use serde::Deserialize;
 use serde_json::{Value, json};
 
 use crate::auth::AuthContext;
 use crate::rejection_message;
+use crate::source_layout::Layout;
 
 pub(crate) struct Live {
     pub(crate) bus: Arc<dyn Bus>,
@@ -293,8 +296,82 @@ async fn durable_snapshot(
     let Ok(sources_version) = chat.store.source_version(&scope.workspace).await else {
         return StatusCode::SERVICE_UNAVAILABLE.into_response();
     };
-    Json(json!({ "snapshot": durable_snapshot_body(conversation.as_ref(), sources_version) }))
-        .into_response()
+    let layouts = match &conversation {
+        Some(conversation) => cited_layouts(&chat.store, conversation).await,
+        None => CitedLayouts::new(),
+    };
+    Json(json!({
+        "snapshot": durable_snapshot_body(conversation.as_ref(), sources_version, &layouts)
+    }))
+    .into_response()
+}
+
+/// The stored layout of each `(source, record type)` a conversation cites, keyed the same way.
+type CitedLayouts = HashMap<(String, String), Layout>;
+
+/// Reads the layout of every source and record type the conversation cites, once each. A key
+/// with no usable layout is left out, and its records read through the general view.
+pub(crate) async fn cited_layouts(
+    store: &local_product::runtime::Store,
+    conversation: &local_product::runtime::Conversation,
+) -> CitedLayouts {
+    let mut layouts = CitedLayouts::new();
+    let mut read = HashSet::new();
+    for citation in conversation.messages.iter().flat_map(|m| &m.citations) {
+        let Some(source_id) = &citation.source_id else {
+            continue;
+        };
+        let key = (source_id.clone(), citation.record_type.clone());
+        if !read.insert(key.clone()) {
+            continue;
+        }
+        let stored = store
+            .layout_for(LayoutKey {
+                source_id,
+                record_type: &citation.record_type,
+            })
+            .await;
+        if let Some(layout) = usable_layout(&key, stored) {
+            layouts.insert(key, layout);
+        }
+    }
+    layouts
+}
+
+/// The layout a stored read yields, if any. A layout is presentation over a record the general
+/// view already shows in full, so a failed read or an unparseable layout falls back to that view
+/// rather than withholding the conversation; both are logged with their cause, so neither passes
+/// for a key with no layout.
+fn usable_layout(
+    (source_id, record_type): &(String, String),
+    stored: Result<Option<StoredLayout>, LayoutStoreError>,
+) -> Option<Layout> {
+    let stored = match stored {
+        Ok(stored) => stored?,
+        Err(error) => {
+            tracing::warn!(
+                source_id,
+                record_type,
+                error = &error as &dyn std::error::Error,
+                "source layout unavailable; reading through the general view"
+            );
+            return None;
+        }
+    };
+    match Layout::parse(&stored.layout) {
+        Ok(layout) => Some(layout),
+        Err(error) => {
+            // A JSON error's text can quote the layout, so only its kind and position are logged.
+            tracing::warn!(
+                source_id,
+                record_type,
+                layout_sha256 = stored.sha256,
+                error = %crate::source_layout::JsonFault(&error),
+                "stored source layout does not parse; reading through the general view"
+            );
+            None
+        }
+    }
 }
 
 /// One citation's evidence: the exact revision this physician's conversation retained, presented
@@ -326,7 +403,21 @@ pub(crate) async fn citation(
         .and_then(|found| cited(found, &citation))
     {
         Some(cited) => {
-            let mut inspection = crate::source_inspection::inspection(cited);
+            let layout = match &cited.source_id {
+                Some(source_id) => usable_layout(
+                    &(source_id.clone(), cited.record_type.clone()),
+                    live.chat
+                        .store
+                        .layout_for(LayoutKey {
+                            source_id,
+                            record_type: &cited.record_type,
+                        })
+                        .await,
+                ),
+                None => None,
+            };
+            let mut inspection =
+                crate::source_inspection::inspection_with_layout(cited, layout.as_ref());
             // The id names the exact revision, which any answer may cite; each answer keeps its
             // own summary of it, and that comes with the answer, not with the source.
             inspection.coda_preview = None;
@@ -365,7 +456,10 @@ fn turn_kind(role: &str) -> &'static str {
 
 /// The answer split into text and the exact citations it published with. A
 /// marker without its retained citation ends the split; the rest stays text.
-fn citation_segments(message: &local_product::runtime::Message) -> Vec<Value> {
+fn citation_segments(
+    message: &local_product::runtime::Message,
+    layouts: &CitedLayouts,
+) -> Vec<Value> {
     let mut parts = Vec::new();
     let mut text = message.text.as_str();
     while let Some((before, suffix)) = text.split_once("[[patient_source:") {
@@ -376,7 +470,11 @@ fn citation_segments(message: &local_product::runtime::Message) -> Vec<Value> {
             break;
         };
         parts.push(json!({"kind":"text", "text":before}));
-        let inspection = crate::source_inspection::inspection(citation);
+        let layout = citation
+            .source_id
+            .as_ref()
+            .and_then(|source_id| layouts.get(&(source_id.clone(), citation.record_type.clone())));
+        let inspection = crate::source_inspection::inspection_with_layout(citation, layout);
         let destination = citation.native.as_ref().map(
             |native| json!({"kind":"source_native", "source_label":native.label, "uri":native.uri}),
         );
@@ -401,9 +499,10 @@ fn citation_segments(message: &local_product::runtime::Message) -> Vec<Value> {
 /// attempt id. The physician's text stays saved. `sources_version` is the
 /// workspace's current source version: an answer begun from an older one is
 /// marked as having newer records.
-fn durable_snapshot_body(
+pub(crate) fn durable_snapshot_body(
     conversation: Option<&local_product::runtime::Conversation>,
     sources_version: u64,
+    layouts: &CitedLayouts,
 ) -> Value {
     let Some(conversation) = conversation else {
         return json!({ "conversation": [], "runs": [] });
@@ -416,7 +515,7 @@ fn durable_snapshot_body(
                 .sources_version
                 .is_some_and(|answered| answered < sources_version);
             let mut authored = json!({ "kind": turn_kind(message.role.as_str()),
-                "text": message.text, "segments": citation_segments(message),
+                "text": message.text, "segments": citation_segments(message, layouts),
                 "basis": message.basis, "newer_records": newer_records });
             if !message.source_previews.is_empty() {
                 authored["source_previews"] = json!(message.source_previews);
@@ -694,10 +793,17 @@ fn rejected_submit() -> Response {
 
 #[cfg(test)]
 mod durable_snapshot_tests {
-    use super::{COULDNT_FINISH, STOPPED, WRITING, durable_snapshot_body};
+    use super::{COULDNT_FINISH, STOPPED, WRITING};
     use local_product::runtime::{
         Attempt, AttemptStatus, Conversation, Message, MessageRole, WorkStatus,
     };
+
+    fn durable_snapshot_body(
+        conversation: Option<&Conversation>,
+        sources_version: u64,
+    ) -> serde_json::Value {
+        super::durable_snapshot_body(conversation, sources_version, &Default::default())
+    }
 
     fn conversation(status: WorkStatus) -> Conversation {
         use harness::engine::runs::{HoldReason, RunHistory, RunOutcome};
@@ -982,11 +1088,214 @@ mod citation_segment_tests {
                 cited("plain", json!(null)),
             ],
         };
-        let segments = citation_segments(&message);
+        let segments = citation_segments(&message, &Default::default());
         assert_eq!(
             segments[1]["destination"],
             json!({"kind":"source_native", "source_label":"Demo chart", "uri":"https://ehr.example/a/1"})
         );
         assert!(segments[3]["destination"].is_null());
+    }
+}
+
+#[cfg(test)]
+mod cited_layout_tests {
+    use super::{cited_layouts, durable_snapshot_body};
+    use crate::source_inspection::inspection;
+    use crate::source_inspection::tests::{general_citation, observation};
+    use local_product::physician_chat::Citation;
+    use local_product::physician_layouts::LayoutKey;
+    use local_product::runtime::{Conversation, Message, MessageRole, Store, WorkStatus};
+    use serde_json::{Value, json};
+
+    const OBSERVATION_LAYOUT: &str = r#"{"record_type":"Observation",
+        "statuses":[{"role":"status","pointer":"/status"}],
+        "sections":[{"heading":"result","slots":[
+            {"role":"code","pointer":"/code/text"},
+            {"role":"result","pointer":"/valueQuantity/value"},
+            {"role":"unit","pointer":"/valueQuantity/unit"}]}]}"#;
+
+    async fn store() -> Store {
+        let url = std::env::var("PHYSICIAN_TEST_DATABASE_URL")
+            .or_else(|_| std::env::var("PHYSICIAN_RUNTIME_TEST_DATABASE_URL"))
+            .expect("PHYSICIAN_TEST_DATABASE_URL required for the stored layout proof");
+        let store = Store::connect(&url).await.unwrap();
+        store.migrate().await.unwrap();
+        store
+    }
+
+    fn cited(id: &str, source_id: Option<&str>) -> Citation {
+        let mut cited = general_citation(&observation());
+        cited.id = id.into();
+        cited.source_id = source_id.map(str::to_owned);
+        cited
+    }
+
+    fn conversation(citations: Vec<Citation>) -> Conversation {
+        let text = citations
+            .iter()
+            .map(|c| format!("[[patient_source:{}]]", c.id))
+            .collect::<String>();
+        Conversation {
+            runs: Default::default(),
+            messages: vec![Message {
+                role: MessageRole::Assistant {
+                    id: "reply-1".into(),
+                    partial: false,
+                },
+                text,
+                citations,
+                source_previews: vec![],
+                basis: None,
+                sources_version: None,
+            }],
+            status: WorkStatus::Completed,
+            work: String::new(),
+            attempts: Vec::new(),
+            revision: 1,
+            skills: serde_json::from_value(json!("fixture-package")).unwrap(),
+            session_hash: None,
+            dispatch_after: 0,
+            failures: 0,
+            budget_resume_after: 0,
+            bindings: Default::default(),
+            opened_at: 0,
+            last_activity_at: 0,
+            scenario: None,
+        }
+    }
+
+    /// Each citation's inspection, in the order the message cites them.
+    fn inspections(body: &Value) -> Vec<Value> {
+        body["conversation"][0]["segments"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .filter(|segment| segment["kind"] == "citation")
+            .map(|segment| segment["source_presentation"]["inspection"].clone())
+            .collect()
+    }
+
+    fn general(citation: &Citation) -> Value {
+        serde_json::to_value(inspection(citation)).unwrap()
+    }
+
+    #[tokio::test]
+    async fn a_cited_record_reads_through_its_sources_stored_layout_and_falls_back_without_one() {
+        let store = store().await;
+        let unique = uuid::Uuid::new_v4();
+        let laid_out = format!("ehr-{unique}");
+        let unparseable = format!("unparseable-{unique}");
+        let refused = format!("refused-{unique}");
+        let bare = format!("bare-{unique}");
+        let save = |source: &str, layout: &str| {
+            let store = store.clone();
+            let (source, layout) = (source.to_owned(), layout.to_owned());
+            async move {
+                let key = LayoutKey {
+                    source_id: &source,
+                    record_type: "Observation",
+                };
+                store.save_layout(key, &layout).await.unwrap();
+            }
+        };
+        save(&laid_out, OBSERVATION_LAYOUT).await;
+        // JSON the store accepts but `Layout` does not: a literal value beside the pointers.
+        save(
+            &unparseable,
+            &OBSERVATION_LAYOUT.replacen("\"sections\"", "\"value\":\"7.2\",\"sections\"", 1),
+        )
+        .await;
+        // A layout that parses but reads its result from a pointer the record does not have.
+        save(
+            &refused,
+            &OBSERVATION_LAYOUT.replace("/valueQuantity/value", "/valueQuantity/missing"),
+        )
+        .await;
+        let citations = vec![
+            cited("laid-out", Some(&laid_out)),
+            cited("unparseable", Some(&unparseable)),
+            cited("refused", Some(&refused)),
+            cited("no-layout", Some(&bare)),
+            cited("retained-before-source-ids", None),
+        ];
+        let conversation = conversation(citations.clone());
+        let layouts = cited_layouts(&store, &conversation).await;
+        let views = inspections(&durable_snapshot_body(Some(&conversation), 0, &layouts));
+        assert_eq!(views.len(), citations.len());
+
+        let sections = &views[0]["layout_sections"];
+        assert_eq!(sections[0]["heading"], "Result", "{sections}");
+        assert_eq!(
+            sections[0]["fields"]
+                .as_array()
+                .unwrap()
+                .iter()
+                .map(|field| (field["label"].clone(), field["text"].clone()))
+                .collect::<Vec<_>>(),
+            [
+                (json!("Statement in this record"), json!("Hemoglobin A1c")),
+                (json!("Result"), json!("7.2")),
+                (json!("Unit"), json!("%")),
+            ]
+        );
+        assert_ne!(views[0], general(&citations[0]));
+        for (view, citation) in views.iter().zip(&citations).skip(1) {
+            assert_eq!(*view, general(citation), "{}", citation.id);
+        }
+    }
+
+    /// A layout that shows the status only in a section still leaves it in the statuses the
+    /// citation carries, which the hover preview and the pane header read.
+    #[test]
+    fn a_status_placed_in_a_section_still_reaches_the_hover_preview() {
+        let in_section = crate::source_layout::Layout::parse(
+            r#"{"record_type":"Observation","statuses":[],
+            "sections":[{"heading":"result","slots":[
+                {"role":"result","pointer":"/valueQuantity/value"},
+                {"role":"status","pointer":"/status"}]}]}"#,
+        )
+        .unwrap();
+        let cited = cited("in-section", Some("ehr"));
+        let layouts = [(("ehr".to_owned(), "Observation".to_owned()), in_section)]
+            .into_iter()
+            .collect();
+        let body = durable_snapshot_body(Some(&conversation(vec![cited])), 0, &layouts);
+        let segments: Vec<physician_wire::ClinicalSegment> =
+            serde_json::from_value(body["conversation"][0]["segments"].clone()).unwrap();
+        let inspection = segments
+            .into_iter()
+            .find_map(|segment| match segment {
+                physician_wire::ClinicalSegment::Citation {
+                    source_presentation,
+                    ..
+                } => source_presentation?.inspection,
+                physician_wire::ClinicalSegment::Text { .. } => None,
+            })
+            .expect("the citation carries its inspection");
+        assert_eq!(inspection.layout_sections[0].fields[1].text, "final");
+        assert_eq!(
+            inspection
+                .statuses
+                .iter()
+                .map(|status| (status.label.as_str(), status.text.as_str()))
+                .collect::<Vec<_>>(),
+            [("Result status", "final")]
+        );
+    }
+
+    #[tokio::test]
+    async fn an_unreachable_layout_store_reads_through_the_general_view() {
+        let url = std::env::var("PHYSICIAN_TEST_DATABASE_URL")
+            .or_else(|_| std::env::var("PHYSICIAN_RUNTIME_TEST_DATABASE_URL"))
+            .expect("PHYSICIAN_TEST_DATABASE_URL required for the stored layout proof");
+        let db = sea_orm::Database::connect(&url).await.unwrap();
+        db.clone().close().await.unwrap();
+        let closed = Store::from_connection(db);
+        let citation = cited("laid-out", Some("ehr"));
+        let conversation = conversation(vec![citation.clone()]);
+        let layouts = cited_layouts(&closed, &conversation).await;
+        assert!(layouts.is_empty());
+        let views = inspections(&durable_snapshot_body(Some(&conversation), 0, &layouts));
+        assert_eq!(views, [general(&citation)]);
     }
 }

@@ -1,0 +1,107 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Layout",
+  "description": "Fixed heading choices, roles and JSON pointers into one record type. It holds no values and no wording: labels come from roles or the record's own field names, headings from the fixed list or the repeated element's own code.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["record_type", "sections"],
+  "properties": {
+    "record_type": {
+      "description": "The record type given with the sample record, exactly. It is the source's name for this kind of record, which the record itself need not carry.",
+      "type": "string"
+    },
+    "statuses": {
+      "description": "Status slots read beside the record's kind and date. The record's recognized statuses always read there, so these add only a status named in the record's own way.",
+      "type": "array",
+      "items": { "$ref": "#/$defs/slot" }
+    },
+    "sections": {
+      "description": "Headed groups of fields, in reading order.",
+      "type": "array",
+      "items": { "$ref": "#/$defs/section" }
+    }
+  },
+  "$defs": {
+    "fixed_heading": {
+      "description": "One of the fixed section headings.",
+      "enum": [
+        "result",
+        "results",
+        "panel",
+        "component",
+        "reference_range",
+        "interpretation",
+        "problem",
+        "substance",
+        "reaction",
+        "medication",
+        "dosage",
+        "coding",
+        "status",
+        "dates",
+        "notes",
+        "details"
+      ]
+    },
+    "heading": {
+      "oneOf": [
+        {
+          "description": "A fixed heading. In a repeated section it reads numbered from 1 for each element.",
+          "$ref": "#/$defs/fixed_heading"
+        },
+        {
+          "description": "Only in a repeated section: each element reads under its own code's display or text, or else under this fixed heading numbered from 1.",
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["from_code"],
+          "properties": {
+            "from_code": { "$ref": "#/$defs/fixed_heading" }
+          }
+        }
+      ]
+    },
+    "section": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["heading", "slots"],
+      "properties": {
+        "heading": { "$ref": "#/$defs/heading" },
+        "repeat": {
+          "description": "A JSON pointer to an array in the record. The section repeats once per element, and each slot's pointer is relative to that element.",
+          "type": "string"
+        },
+        "slots": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/slot" }
+        }
+      }
+    },
+    "slot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["role", "pointer"],
+      "properties": {
+        "role": {
+          "description": "What part the value plays in the record. It also names the value: a result, unit, reference range or interpretation reads under its role's fixed label, and any other role under the record's own name for the field.",
+          "enum": [
+            "result",
+            "unit",
+            "reference_range_low",
+            "reference_range_high",
+            "reference_range_text",
+            "interpretation",
+            "status",
+            "date",
+            "code",
+            "note",
+            "other"
+          ]
+        },
+        "pointer": {
+          "description": "An RFC 6901 JSON pointer to one string, number or boolean in the record.",
+          "type": "string"
+        }
+      }
+    }
+  }
+}

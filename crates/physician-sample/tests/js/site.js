@@ -57,21 +57,29 @@ function (step, ...args) {
         scrolled: content.scrollTop > 0,
       };
     },
-    // Where a mouse rests on the conversation's citation, in viewport pixels.
-    citationCenter() {
-      const chip = one("section[aria-label='Conversation'] .citation-chip");
+    // Where a mouse rests on the conversation's citation at `index`, in viewport pixels.
+    citationCenter(index = 0) {
+      const chip = document.querySelectorAll("section[aria-label='Conversation'] .citation-chip")[index];
+      if (!chip) throw new Error(`no citation chip at ${index}`);
       chip.scrollIntoView({ block: "center" });
       const box = chip.getBoundingClientRect();
       return [box.x + box.width / 2, box.y + box.height / 2];
     },
-    citationPreview() {
-      const chip = one("section[aria-label='Conversation'] .citation-chip");
+    citationPreview(index = 0) {
+      const chip = document.querySelectorAll("section[aria-label='Conversation'] .citation-chip")[index];
+      if (!chip) return null;
       const preview = document.getElementById(chip.getAttribute("aria-controls"));
       const body = preview?.querySelector(".citation-preview-body");
       if (!body) return null;
       const original = preview.querySelector(".citation-preview-actions a");
       return { text: body.innerText, original: original?.getAttribute("href") ?? null,
         originalLabel: original?.innerText ?? null };
+    },
+    clickCitation(index = 0) {
+      const chip = document.querySelectorAll("section[aria-label='Conversation'] .citation-chip")[index];
+      if (!chip) throw new Error(`no citation chip at ${index}`);
+      chip.click();
+      return true;
     },
     citationClosed() { return !document.querySelector(".source-reading-pane"); },
     // What closes the conversation's answer: Update, its Sources control, and its basis, in view.
@@ -121,6 +129,14 @@ function (step, ...args) {
         link: pane.querySelector(".clinical-source-reader > .citation-open")?.getAttribute("href") ?? null,
         linkTitle: pane.querySelector(".clinical-source-reader > .citation-open")?.getAttribute("title") ?? null,
         summary: pane.querySelector(".source-coda-summary")?.innerText ?? null,
+        statuses: [...pane.querySelectorAll(".source-record-status")].map((node) => node.innerText),
+        // The reader's blocks in reading order, by their first class.
+        blocks: [...pane.querySelector(".clinical-source-reader").children]
+          .map((node) => node.classList[0] ?? node.tagName.toLowerCase()),
+        // Each readable field's source path with the text shown for it, outside Technical details.
+        fields: [...pane.querySelectorAll("[data-source-path]")]
+          .filter((node) => !node.closest(".source-technical-details"))
+          .map((node) => ({ path: node.dataset.sourcePath, title: node.title, text: node.innerText })),
       };
     },
     // What the open reader says of its evidence read: opening, failed with a retry, or the source.

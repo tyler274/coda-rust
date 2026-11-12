@@ -757,6 +757,21 @@ pub fn source_date(value: &str) -> String {
     source_day(value)
 }
 
+/// The hover preview's record line: the record's kind and the date that dates it, both from the
+/// general view, so it reads the same whether or not a layout applies and whether or not Coda
+/// wrote a summary.
+pub fn preview_record_line(source: &physician_wire::SourceInspection) -> String {
+    match source.record_date() {
+        Some(date) => format!(
+            "{} · {} {}",
+            source.record_kind,
+            date.label,
+            source_date(&date.text)
+        ),
+        None => format!("{} · No record date was retained", source.record_kind),
+    }
+}
+
 /// The sentence under Coda's summary. A recorded, authored, effective, issued, or document
 /// date is the record's date. Any other retained date keeps that field's own label.
 pub fn summary_provenance(label: &str, as_of: &str) -> String {
@@ -1439,6 +1454,46 @@ mod tests {
         );
         assert_eq!(source_date("2026-08"), "2026-08");
         assert_eq!(source_date("2020-13-01T00:00"), "2020-13-01T00:00");
+    }
+
+    #[test]
+    fn the_hover_reads_kind_and_record_date_with_or_without_a_summary() {
+        let source = |summary: serde_json::Value, dates: serde_json::Value| {
+            serde_json::from_value::<physician_wire::SourceInspection>(serde_json::json!({
+                "title": "Peanut", "record_kind": "Medication allergy record", "dates": dates,
+                "sections": [], "cited_passage": null, "coda_preview": summary,
+                "attribution": [], "record_details": [],
+                "technical": {"original": "{}", "reference": "r", "revision": "1",
+                    "sha256": "s", "provenance": "{}"}
+            }))
+            .unwrap()
+        };
+        let dates = serde_json::json!([
+            {"label": "Onset recorded", "text": "2010-01-02"},
+            {"label": "Recorded", "text": "2018-09-11T12:20:00+00:00"}
+        ]);
+        let summary = serde_json::json!({"text": "No known allergies.", "as_of": "2018-09-11"});
+        let expected =
+            "Medication allergy record · Recorded September 11, 2018, 12:20:00+00:00 as recorded";
+        assert_eq!(
+            preview_record_line(&source(summary, dates.clone())),
+            expected
+        );
+        assert_eq!(
+            preview_record_line(&source(serde_json::Value::Null, dates)),
+            expected
+        );
+        assert_eq!(
+            preview_record_line(&source(
+                serde_json::Value::Null,
+                serde_json::json!([{"label": "Onset recorded", "text": "2010-01-02"}])
+            )),
+            "Medication allergy record · Onset recorded January 2, 2010"
+        );
+        assert_eq!(
+            preview_record_line(&source(serde_json::Value::Null, serde_json::json!([]))),
+            "Medication allergy record · No record date was retained"
+        );
     }
 
     fn admin_with_colleague() -> WhoamiResponse {

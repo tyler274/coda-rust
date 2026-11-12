@@ -42,6 +42,7 @@ google-cloud-auth = { version = "1", features = ["idtoken"] }
 
 [dev-dependencies]
 base64 = "0.23"
+patient-bank = { path = "../patient-bank" }
 # Signed synthetic OIDC tokens exercise Google's verifier, not a mock verdict.
 jsonwebtoken = { version = "11", default-features = false, features = ["aws_lc_rs", "use_pem"] }
 mailparse = "0.18"

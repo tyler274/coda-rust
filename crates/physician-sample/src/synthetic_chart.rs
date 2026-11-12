@@ -145,7 +145,7 @@ fn source_patient(source_patient_id: String, line: &str) -> Result<SourcePatient
     })
 }
 
-fn source_revision(workspace: &str, line: &str) -> Result<SourceRevision, String> {
+pub(crate) fn source_revision(workspace: &str, line: &str) -> Result<SourceRevision, String> {
     let resource: Value = serde_json::from_str(line).map_err(|error| error.to_string())?;
     let record_type = resource["resourceType"]
         .as_str()

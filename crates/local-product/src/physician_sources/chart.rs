@@ -76,6 +76,8 @@ pub(crate) enum RecordReceipt {
     Available {
         reference: String,
         revision: String,
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        source_id: Option<String>,
         record_type: String,
         dates: Vec<super::RecordDate>,
         read_representation: ReadRepresentation,
@@ -375,6 +377,7 @@ fn read_record(source: &SourceRevision, cursor: Option<Position>, budget: usize)
         let full = RecordReceipt::Available {
             reference: source.candidate_id.clone(),
             revision: source.revision.clone(),
+            source_id: Some(source.source_id.clone()),
             record_type: source.record_type.clone(),
             dates: source.dates.clone(),
             read_representation: ReadRepresentation::NativeRecord,

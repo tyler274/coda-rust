@@ -660,10 +660,47 @@ pub struct SourceInspection {
     pub coda_preview: Option<SourcePreviewContent>,
     /// Supplied source system, author and patient display labels.
     pub attribution: Vec<SourceField>,
-    /// Recorded statuses and other source facts, not clinical conclusions.
+    /// The record's own clinical, verification and result statuses, read beside its kind and
+    /// date before its statement.
+    #[serde(default)]
+    pub statuses: Vec<SourceField>,
+    /// Other recorded source facts, not clinical conclusions.
     pub record_details: Vec<SourceField>,
+    /// The record's fields as its record type's layout arranges them, each value copied from the
+    /// record at its path. Empty when no layout reads the record.
+    #[serde(default)]
+    pub layout_sections: Vec<SourceLayoutSection>,
+    /// Fields a record type's layout does not place, read under their source labels. Not
+    /// proof that anything the layout expects is absent.
+    #[serde(default)]
+    pub other_fields: Vec<SourceField>,
     /// Exact retained representation and provenance.
     pub technical: SourceTechnicalDetails,
+}
+
+impl SourceInspection {
+    /// Labels of the dates that date the record itself, in preference order.
+    const RECORD_DATES: [&str; 5] = ["Recorded", "Authored", "Effective", "Issued", "Dated"];
+
+    /// The date that dates the record: a recorded, authored, effective, issued or document date,
+    /// else the first retained date, such as an onset, under its own label. `None` when the
+    /// citation retained no date. The dates come from the general view, so a layout never
+    /// changes this.
+    pub fn record_date(&self) -> Option<&SourceField> {
+        Self::RECORD_DATES
+            .iter()
+            .find_map(|label| self.dates.iter().find(|date| date.label == *label))
+            .or_else(|| self.dates.first())
+    }
+}
+
+/// A headed group of a layout's fields.
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+pub struct SourceLayoutSection {
+    /// The layout's heading for the group, not source text.
+    pub heading: String,
+    /// The values the layout places under the heading, in its order.
+    pub fields: Vec<SourceField>,
 }
 
 /// A labeled source value, without clinical inference.
@@ -673,6 +710,12 @@ pub struct SourceField {
     pub label: String,
     /// Text as supplied by the source.
     pub text: String,
+    /// The exact source JSON path the value was copied from, such as `component[1].valueQuantity`.
+    /// A member whose name holds `.`, `[`, `]`, `"` or `\`, or is empty, reads as a quoted JSON
+    /// string in brackets, such as `["valueQuantity.value"]`, so two fields never share a path.
+    /// Absent when the text has no known field mapping, such as an attachment's readable text.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub path: Option<String>,
 }
 
 /// Storage details kept separate from clinical dates and readable content.
@@ -691,6 +734,9 @@ pub struct SourceTechnicalDetails {
     /// Storage timestamps such as `meta.lastUpdated`, kept out of the record's dates.
     #[serde(default)]
     pub storage_dates: Vec<SourceField>,
+    /// Identity, reference and extension values, each labeled with its source path.
+    #[serde(default)]
+    pub fields: Vec<SourceField>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Default)]
@@ -1138,5 +1184,34 @@ mod tests {
             })
         );
         assert_eq!(page.snapshot.conversation[0].resume_target, None);
+    }
+
+    fn inspection_with_dates(dates: serde_json::Value) -> SourceInspection {
+        serde_json::from_value(serde_json::json!({
+            "title": "Peanut", "record_kind": "Medication allergy record", "dates": dates,
+            "sections": [], "cited_passage": null, "coda_preview": null, "attribution": [],
+            "record_details": [],
+            "technical": {"original": "{}", "reference": "r", "revision": "1", "sha256": "s",
+                "provenance": "{}"}
+        }))
+        .unwrap()
+    }
+
+    #[test]
+    fn the_record_date_prefers_a_date_that_dates_the_record() {
+        let onset = serde_json::json!({"label": "Onset recorded", "text": "2010-01-02"});
+        let recorded = serde_json::json!({"label": "Recorded", "text": "2018-09-11"});
+        let both = inspection_with_dates(serde_json::json!([onset, recorded]));
+        let date = both.record_date().unwrap();
+        assert_eq!(
+            (date.label.as_str(), date.text.as_str()),
+            ("Recorded", "2018-09-11")
+        );
+        let onset_only = inspection_with_dates(serde_json::json!([onset]));
+        assert_eq!(onset_only.record_date().unwrap().label, "Onset recorded");
+        assert_eq!(
+            inspection_with_dates(serde_json::json!([])).record_date(),
+            None
+        );
     }
 }

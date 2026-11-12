@@ -2074,9 +2074,9 @@ async fn an_opened_citation_reads_its_evidence_and_offers_retry() {
     tab.save_picture("evidence-unhighlighted-notice");
 }
 
-/// The reported case: an allergy citation reads as the record's statement and date, with codes,
-/// storage time and bytes kept under Technical details; it leaves by Escape or its visible way
-/// back, and going elsewhere closes it.
+/// The reported case: an allergy citation reads as the record's statement and date, its coding
+/// beside the statement, with storage time, references and bytes kept under Technical details;
+/// it leaves by Escape or its visible way back, and going elsewhere closes it.
 #[tokio::test(flavor = "multi_thread", worker_threads = 2)]
 #[ignore = "browser qualification; run explicitly with --ignored"]
 async fn an_allergy_citation_reads_as_its_recorded_statement_and_date() {
@@ -2114,18 +2114,15 @@ async fn an_allergy_citation_reads_as_its_recorded_statement_and_date() {
         let visible = shown["visible"].as_str().unwrap();
         for expected in [
             "Recorded September 11, 2018, 12:20:00+00:00 as recorded",
-            "Source status recorded",
-            "Criticality recorded (not reaction severity)",
-            "Reaction details not supplied in this record.",
+            "Clinical status",
+            "Active",
+            "Criticality (not reaction severity)",
+            // The coding reads in the statement, as every record's codes do.
+            "No known drug allergy (409137002 · http://snomed.info/sct)",
         ] {
             assert!(visible.contains(expected), "missing {expected}: {visible}");
         }
-        for hidden in [
-            "lastUpdated",
-            "409137002",
-            "\"resourceType\"",
-            "MRN00001776",
-        ] {
+        for hidden in ["lastUpdated", "\"resourceType\"", "MRN00001776"] {
             assert!(
                 !visible.contains(hidden),
                 "{hidden} leads the view: {visible}"
@@ -2307,6 +2304,10 @@ async fn a_summarized_citation_reads_link_then_summary_then_record() {
         text.contains("Coda wrote this from the record dated September 11, 2018"),
         "the preview showed Coda's summary without its record date: {preview}"
     );
+    assert!(
+        text.contains("Medication allergy record · Recorded September 11, 2018"),
+        "the preview with a summary dropped the record kind and date: {preview}"
+    );
     assert_eq!(
         preview["original"], "https://ehr.example/allergy/0493010f2a16",
         "{preview}"
@@ -2341,6 +2342,800 @@ async fn a_summarized_citation_reads_link_then_summary_then_record() {
     assert_eq!(shown["technicalOpen"], false, "{shown}");
     assert_eq!(shown["original"].as_str().unwrap(), BANK_ALLERGY);
     tab.save_picture("funnel-reader");
+}
+
+/// The patient bank's lab Observation as `labs::render` writes it: a released potassium above
+/// its catalog range, flagged high.
+const BANK_POTASSIUM: &str = r#"{"resourceType":"Observation","id":"obs-5c1d2e7a9b40","meta":{"versionId":"1","lastUpdated":"2026-08-20T00:00:00+00:00"},"status":"final","category":[{"coding":[{"system":"http://terminology.hl7.org/CodeSystem/observation-category","code":"laboratory","display":"Laboratory"}]}],"code":{"coding":[{"system":"http://loinc.org","code":"2823-3","display":"Potassium [Moles/volume] in Serum or Plasma"}],"text":"Potassium"},"subject":{"reference":"Patient/MRN00001776"},"effectiveDateTime":"2026-08-20T15:15:00+00:00","issued":"2026-08-21T17:02:00+00:00","valueQuantity":{"value":5.9,"unit":"mmol/L","system":"http://unitsofmeasure.org","code":"mmol/L"},"interpretation":[{"coding":[{"system":"http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation","code":"H","display":"High"}]}],"referenceRange":[{"low":{"value":3.5,"unit":"mmol/L","system":"http://unitsofmeasure.org","code":"mmol/L"},"high":{"value":5.1,"unit":"mmol/L","system":"http://unitsofmeasure.org","code":"mmol/L"}}]}"#;
+/// The patient bank's resolved problem-list Condition.
+const BANK_CONDITION: &str = r#"{"resourceType":"Condition","id":"cond-db76cb24b2c2","meta":{"versionId":"1","lastUpdated":"2019-03-12T00:00:00+00:00"},"clinicalStatus":{"coding":[{"system":"http://terminology.hl7.org/CodeSystem/condition-clinical","code":"resolved","display":"Resolved"}]},"verificationStatus":{"coding":[{"system":"http://terminology.hl7.org/CodeSystem/condition-ver-status","code":"confirmed","display":"Confirmed"}]},"category":[{"coding":[{"system":"http://terminology.hl7.org/CodeSystem/condition-category","code":"problem-list-item","display":"Problem List Item"}],"text":"Problem List Item"}],"code":{"coding":[{"system":"http://hl7.org/fhir/sid/icd-10-cm","code":"J20.9","display":"Acute bronchitis, unspecified"}],"text":"Acute bronchitis"},"subject":{"reference":"Patient/MRN00001776"},"onsetDateTime":"2019-03-05","recordedDate":"2019-03-12T13:20:00+00:00","abatementDateTime":"2019-04-02T19:00:00+00:00"}"#;
+/// The patient bank's inactive no-known-drug-allergies record, as `patient-bank`'s renderer writes
+/// it once a subsequent medication allergy rules out the earlier negation.
+const BANK_INACTIVE_NKDA: &str = r#"{"resourceType":"AllergyIntolerance","id":"allergy-0493010f2a16","meta":{"versionId":"1","lastUpdated":"2018-09-11T00:00:00+00:00"},"clinicalStatus":{"coding":[{"system":"http://terminology.hl7.org/CodeSystem/allergyintolerance-clinical","code":"inactive","display":"Inactive"}]},"verificationStatus":{"coding":[{"system":"http://terminology.hl7.org/CodeSystem/allergyintolerance-verification","code":"confirmed","display":"Confirmed"}]},"type":"allergy","category":["medication"],"criticality":"low","code":{"coding":[{"system":"http://snomed.info/sct","code":"409137002","display":"No known drug allergy"}],"text":"No known drug allergies"},"patient":{"reference":"Patient/MRN00001776"},"recordedDate":"2018-09-11T12:20:00+00:00"}"#;
+/// An inactive penicillin allergy in the shape `patient-bank`'s renderer writes once an allergy
+/// is no longer active.
+const BANK_INACTIVE_ALLERGY: &str = r#"{"resourceType":"AllergyIntolerance","id":"allergy-7c3e91d04b2a","meta":{"versionId":"1","lastUpdated":"2016-06-03T00:00:00+00:00"},"clinicalStatus":{"coding":[{"system":"http://terminology.hl7.org/CodeSystem/allergyintolerance-clinical","code":"inactive","display":"Inactive"}]},"verificationStatus":{"coding":[{"system":"http://terminology.hl7.org/CodeSystem/allergyintolerance-verification","code":"confirmed","display":"Confirmed"}]},"type":"allergy","category":["medication"],"criticality":"high","code":{"coding":[{"system":"http://www.nlm.nih.gov/research/umls/rxnorm","code":"7980","display":"Penicillin G"}],"text":"Penicillin"},"patient":{"reference":"Patient/MRN00001776"},"recordedDate":"2016-06-03T09:40:00+00:00","reaction":[{"manifestation":[{"coding":[{"system":"http://snomed.info/sct","code":"247472004","display":"Hives"}],"text":"Hives"}],"severity":"moderate"}]}"#;
+/// DiagnosticReport in the shape `patient-bank`'s renderer writes for an imaging study.
+const BANK_DIAGNOSTIC_REPORT: &str = r#"{"resourceType":"DiagnosticReport","id":"diagrep-9f2a4b1c8d30","meta":{"versionId":"1","lastUpdated":"2026-08-18T00:00:00+00:00"},"status":"final","category":[{"coding":[{"system":"http://terminology.hl7.org/CodeSystem/v2-0074","code":"RAD","display":"Radiology"}]}],"code":{"coding":[{"system":"http://loinc.org","code":"36643-5","display":"XR Chest 2 Views"}],"text":"Chest X-ray"},"subject":{"reference":"Patient/MRN00001776"},"effectiveDateTime":"2026-08-18T10:15:00+00:00","issued":"2026-08-18T14:40:00+00:00","conclusion":"No acute cardiopulmonary process.","presentedForm":[{"contentType":"text/plain; charset=utf-8","data":"THVuZ3MgY2xlYXIu"}]}"#;
+/// MedicationRequest in the shape `patient-bank`'s renderer writes for an active prescription.
+const BANK_MEDICATION_REQUEST: &str = r#"{"resourceType":"MedicationRequest","id":"medrx-24ab1968c855","meta":{"versionId":"1","lastUpdated":"2026-08-12T00:00:00+00:00"},"status":"active","intent":"order","medicationCodeableConcept":{"coding":[{"system":"http://www.nlm.nih.gov/research/umls/rxnorm","code":"861004","display":"metformin hydrochloride 1000 MG Oral Tablet"}],"text":"metformin hydrochloride 1000 mg oral tablet"},"subject":{"reference":"Patient/MRN00001776"},"authoredOn":"2026-08-12T13:20:00+00:00","dosageInstruction":[{"text":"Take 1 tablet by mouth twice daily with meals","timing":{"code":{"text":"BID"}},"doseAndRate":[{"doseQuantity":{"value":1000,"unit":"mg","system":"http://unitsofmeasure.org","code":"mg"}}]}],"reasonCode":[{"text":"Type 2 diabetes mellitus"}]}"#;
+/// Immunization in the shape `patient-bank`'s renderer writes for a vaccine given in clinic.
+const BANK_IMMUNIZATION: &str = r#"{"resourceType":"Immunization","id":"imm-26a721e56006","meta":{"versionId":"1","lastUpdated":"2025-10-14T00:00:00+00:00"},"status":"completed","vaccineCode":{"coding":[{"system":"http://hl7.org/fhir/sid/cvx","code":"115","display":"Tdap"}],"text":"Tdap"},"patient":{"reference":"Patient/MRN00001776"},"occurrenceDateTime":"2025-10-14T14:15:00+00:00","primarySource":true}"#;
+/// Procedure in the shape `patient-bank`'s renderer writes.
+const BANK_PROCEDURE: &str = r#"{"resourceType":"Procedure","id":"proc-8e14c3a20b51","meta":{"versionId":"1","lastUpdated":"2024-05-09T00:00:00+00:00"},"status":"completed","code":{"coding":[{"system":"http://www.ama-assn.org/go/cpt","code":"45378","display":"Colonoscopy, flexible; diagnostic"}],"text":"Screening colonoscopy"},"subject":{"reference":"Patient/MRN00001776"},"performedDateTime":"2024-05-09T08:30:00+00:00"}"#;
+/// Encounter in the shape `patient-bank`'s renderer writes for a completed clinic visit.
+const BANK_ENCOUNTER: &str = r#"{"resourceType":"Encounter","id":"enc-26183a468076","meta":{"versionId":"1","lastUpdated":"2026-08-12T00:00:00+00:00"},"status":"finished","class":{"system":"http://terminology.hl7.org/CodeSystem/v3-ActCode","code":"AMB","display":"ambulatory"},"type":[{"text":"Office Visit"}],"serviceType":{"text":"Internal Medicine"},"subject":{"reference":"Patient/MRN00001776"},"period":{"start":"2026-08-12T13:00:00+00:00","end":"2026-08-12T13:30:00+00:00"},"reasonCode":[{"text":"Diabetes follow-up"}]}"#;
+/// Preliminary lab Observation, refuted Condition, and entered-in-error MedicationRequest.
+const BANK_PRELIMINARY_OBSERVATION: &str = r#"{"resourceType":"Observation","id":"obs-prelim-44a1","meta":{"versionId":"1","lastUpdated":"2026-08-26T00:00:00+00:00"},"status":"preliminary","category":[{"coding":[{"system":"http://terminology.hl7.org/CodeSystem/observation-category","code":"laboratory","display":"Laboratory"}]}],"code":{"coding":[{"system":"http://loinc.org","code":"4548-4","display":"Hemoglobin A1c/Hemoglobin.total in Blood"}],"text":"Hemoglobin A1c"},"subject":{"reference":"Patient/MRN00001776"},"effectiveDateTime":"2026-08-26T09:10:00+00:00","valueQuantity":{"value":7.4,"unit":"%","system":"http://unitsofmeasure.org","code":"%"}}"#;
+const BANK_REFUTED_CONDITION: &str = r#"{"resourceType":"Condition","id":"cond-refuted-91b2","meta":{"versionId":"1","lastUpdated":"2023-11-04T00:00:00+00:00"},"verificationStatus":{"coding":[{"system":"http://terminology.hl7.org/CodeSystem/condition-ver-status","code":"refuted","display":"Refuted"}]},"code":{"coding":[{"system":"http://hl7.org/fhir/sid/icd-10-cm","code":"J45.909","display":"Unspecified asthma, uncomplicated"}],"text":"Asthma"},"subject":{"reference":"Patient/MRN00001776"},"recordedDate":"2023-11-04T11:00:00+00:00"}"#;
+const BANK_ERRORED_MEDICATION: &str = r#"{"resourceType":"MedicationRequest","id":"medrx-error-77c3","meta":{"versionId":"1","lastUpdated":"2026-08-15T00:00:00+00:00"},"status":"entered-in-error","intent":"order","medicationCodeableConcept":{"coding":[{"system":"http://www.nlm.nih.gov/research/umls/rxnorm","code":"314076","display":"lisinopril 10 MG Oral Tablet"}],"text":"lisinopril 10 mg oral tablet"},"subject":{"reference":"Patient/MRN00001776"},"authoredOn":"2026-08-15T16:45:00+00:00"}"#;
+
+const OBSERVATION_CHAT: &str = "ac1-observation";
+const DIAGNOSTIC_REPORT_CHAT: &str = "ac1-diagnostic-report";
+const CONDITION_CHAT: &str = "ac1-condition";
+const MEDICATION_REQUEST_CHAT: &str = "ac1-medication-request";
+const IMMUNIZATION_CHAT: &str = "ac1-immunization";
+const PROCEDURE_CHAT: &str = "ac1-procedure";
+const ENCOUNTER_CHAT: &str = "ac1-encounter";
+const INACTIVE_NKDA_CHAT: &str = "ac1-allergy-intolerance";
+const INACTIVE_ALLERGY_CHAT: &str = "ac3-inactive-allergy";
+const PRELIMINARY_OBSERVATION_CHAT: &str = "ac3-preliminary-observation";
+const REFUTED_CONDITION_CHAT: &str = "ac3-refuted-condition";
+const ERRORED_MEDICATION_CHAT: &str = "ac3-entered-in-error-medication";
+
+/// One cited bank record: its chat, the record line, and the dates the synthetic chart
+/// adapter retains with it.
+struct CitedRecord {
+    chat: &'static str,
+    title: &'static str,
+    question: &'static str,
+    reference: &'static str,
+    record_type: &'static str,
+    line: &'static str,
+    dates: &'static [(&'static str, &'static str)],
+}
+
+const CITED_RECORDS: [CitedRecord; 12] = [
+    CitedRecord {
+        chat: OBSERVATION_CHAT,
+        title: "Latest potassium",
+        question: "What was the last potassium?",
+        reference: "Observation/obs-5c1d2e7a9b40",
+        record_type: "Observation",
+        line: BANK_POTASSIUM,
+        dates: &[
+            ("effectiveDateTime", "2026-08-20T15:15:00+00:00"),
+            ("issued", "2026-08-21T17:02:00+00:00"),
+            ("meta.lastUpdated", "2026-08-20T00:00:00+00:00"),
+        ],
+    },
+    CitedRecord {
+        chat: DIAGNOSTIC_REPORT_CHAT,
+        title: "Chest X-ray",
+        question: "What did the chest X-ray show?",
+        reference: "DiagnosticReport/diagrep-9f2a4b1c8d30",
+        record_type: "DiagnosticReport",
+        line: BANK_DIAGNOSTIC_REPORT,
+        dates: &[
+            ("effectiveDateTime", "2026-08-18T10:15:00+00:00"),
+            ("issued", "2026-08-18T14:40:00+00:00"),
+            ("meta.lastUpdated", "2026-08-18T00:00:00+00:00"),
+        ],
+    },
+    CitedRecord {
+        chat: CONDITION_CHAT,
+        title: "Bronchitis",
+        question: "Is the bronchitis still active?",
+        reference: "Condition/cond-db76cb24b2c2",
+        record_type: "Condition",
+        line: BANK_CONDITION,
+        dates: &[
+            ("abatementDateTime", "2019-04-02T19:00:00+00:00"),
+            ("onsetDateTime", "2019-03-05"),
+            ("recordedDate", "2019-03-12T13:20:00+00:00"),
+            ("meta.lastUpdated", "2019-03-12T00:00:00+00:00"),
+        ],
+    },
+    CitedRecord {
+        chat: MEDICATION_REQUEST_CHAT,
+        title: "Metformin prescription",
+        question: "What metformin dose is ordered?",
+        reference: "MedicationRequest/medrx-24ab1968c855",
+        record_type: "MedicationRequest",
+        line: BANK_MEDICATION_REQUEST,
+        dates: &[
+            ("authoredOn", "2026-08-12T13:20:00+00:00"),
+            ("meta.lastUpdated", "2026-08-12T00:00:00+00:00"),
+        ],
+    },
+    CitedRecord {
+        chat: IMMUNIZATION_CHAT,
+        title: "Tdap vaccine",
+        question: "When was Tdap given?",
+        reference: "Immunization/imm-26a721e56006",
+        record_type: "Immunization",
+        line: BANK_IMMUNIZATION,
+        dates: &[
+            ("occurrenceDateTime", "2025-10-14T14:15:00+00:00"),
+            ("meta.lastUpdated", "2025-10-14T00:00:00+00:00"),
+        ],
+    },
+    CitedRecord {
+        chat: PROCEDURE_CHAT,
+        title: "Colonoscopy",
+        question: "When was the screening colonoscopy performed?",
+        reference: "Procedure/proc-8e14c3a20b51",
+        record_type: "Procedure",
+        line: BANK_PROCEDURE,
+        dates: &[
+            ("performedDateTime", "2024-05-09T08:30:00+00:00"),
+            ("meta.lastUpdated", "2024-05-09T00:00:00+00:00"),
+        ],
+    },
+    CitedRecord {
+        chat: ENCOUNTER_CHAT,
+        title: "Office visit",
+        question: "When was the last office visit?",
+        reference: "Encounter/enc-26183a468076",
+        record_type: "Encounter",
+        line: BANK_ENCOUNTER,
+        dates: &[
+            ("period.start", "2026-08-12T13:00:00+00:00"),
+            ("period.end", "2026-08-12T13:30:00+00:00"),
+            ("meta.lastUpdated", "2026-08-12T00:00:00+00:00"),
+        ],
+    },
+    CitedRecord {
+        chat: INACTIVE_NKDA_CHAT,
+        title: "Earlier allergy negation",
+        question: "Does the 2018 allergy record still apply?",
+        reference: "AllergyIntolerance/allergy-0493010f2a16",
+        record_type: "AllergyIntolerance",
+        line: BANK_INACTIVE_NKDA,
+        dates: &[
+            ("recordedDate", "2018-09-11T12:20:00+00:00"),
+            ("meta.lastUpdated", "2018-09-11T00:00:00+00:00"),
+        ],
+    },
+    CitedRecord {
+        chat: INACTIVE_ALLERGY_CHAT,
+        title: "Penicillin allergy",
+        question: "Is the penicillin allergy still current?",
+        reference: "AllergyIntolerance/allergy-7c3e91d04b2a",
+        record_type: "AllergyIntolerance",
+        line: BANK_INACTIVE_ALLERGY,
+        dates: &[
+            ("recordedDate", "2016-06-03T09:40:00+00:00"),
+            ("meta.lastUpdated", "2016-06-03T00:00:00+00:00"),
+        ],
+    },
+    CitedRecord {
+        chat: PRELIMINARY_OBSERVATION_CHAT,
+        title: "Preliminary A1c",
+        question: "Is the A1c final?",
+        reference: "Observation/obs-prelim-44a1",
+        record_type: "Observation",
+        line: BANK_PRELIMINARY_OBSERVATION,
+        dates: &[
+            ("effectiveDateTime", "2026-08-26T09:10:00+00:00"),
+            ("meta.lastUpdated", "2026-08-26T00:00:00+00:00"),
+        ],
+    },
+    CitedRecord {
+        chat: REFUTED_CONDITION_CHAT,
+        title: "Refuted asthma",
+        question: "Was asthma confirmed?",
+        reference: "Condition/cond-refuted-91b2",
+        record_type: "Condition",
+        line: BANK_REFUTED_CONDITION,
+        dates: &[
+            ("recordedDate", "2023-11-04T11:00:00+00:00"),
+            ("meta.lastUpdated", "2023-11-04T00:00:00+00:00"),
+        ],
+    },
+    CitedRecord {
+        chat: ERRORED_MEDICATION_CHAT,
+        title: "Entered-in-error lisinopril",
+        question: "Was lisinopril ordered?",
+        reference: "MedicationRequest/medrx-error-77c3",
+        record_type: "MedicationRequest",
+        line: BANK_ERRORED_MEDICATION,
+        dates: &[
+            ("authoredOn", "2026-08-15T16:45:00+00:00"),
+            ("meta.lastUpdated", "2026-08-15T00:00:00+00:00"),
+        ],
+    },
+];
+
+fn cited_record_inspection(record: &CitedRecord) -> physician_wire::SourceInspection {
+    let dates: Vec<_> = record
+        .dates
+        .iter()
+        .map(|(name, value)| serde_json::json!({"name": name, "value": value}))
+        .collect();
+    let parsed: serde_json::Value = serde_json::from_str(record.line).unwrap();
+    let readable_parts: Vec<_> = parsed["presentedForm"]
+        .as_array()
+        .into_iter()
+        .flatten()
+        .filter_map(|form| {
+            let encoded = form["data"].as_str()?;
+            let bytes = base64::engine::general_purpose::STANDARD
+                .decode(encoded)
+                .ok()?;
+            let text = String::from_utf8(bytes).ok()?;
+            Some(serde_json::json!({"label": "presentedForm", "text": text}))
+        })
+        .collect();
+    let citation: local_product::physician_chat::Citation =
+        serde_json::from_value(serde_json::json!({
+            "id": "record-citation", "reference": record.reference,
+            "revision": local_product::sha256_hex(record.line.as_bytes()),
+            "record_type": record.record_type, "content": record.line, "dates": dates,
+            "readable_parts": readable_parts,
+            "sha256": local_product::sha256_hex(record.line.as_bytes()),
+            "provenance": {"native_record": record.reference},
+        }))
+        .unwrap();
+    physician_sample::source_inspection::inspection(&citation)
+}
+
+/// Lists one chat per `CITED_RECORDS` entry for the review patient, each answer citing its bank
+/// record through the same `source_inspection` the live projection uses.
+async fn with_record_citations(
+    request: axum::extract::Request,
+    next: axum::middleware::Next,
+) -> axum::response::Response {
+    let path = request.uri().path().to_owned();
+    let evidence = CITED_RECORDS.iter().find(|record| {
+        path == format!(
+            "/patient-workspaces/{REVIEW_PATIENT}/chats/{}/citations/record-citation",
+            record.chat
+        )
+    });
+    if let Some(record) = evidence {
+        let mut inspection = cited_record_inspection(record);
+        inspection.coda_preview = None;
+        return axum::Json(physician_wire::SourceEvidence { inspection }).into_response();
+    }
+    let cited = CITED_RECORDS.iter().find(|record| {
+        path == format!(
+            "/patient-workspaces/{REVIEW_PATIENT}/chats/{}/snapshot",
+            record.chat
+        )
+    });
+    if let Some(record) = cited {
+        let inspection = cited_record_inspection(record);
+        return axum::Json(
+            serde_json::json!({"snapshot": {"runs": [], "conversation": [
+            {"kind": "physician", "text": record.question},
+            {"kind": "model", "text": "The chart records it [[patient_source:record-citation]]",
+             "segments": [
+                {"kind": "text", "text": "The chart records it "},
+                {"kind": "citation", "state": "resolved", "source": "patient",
+                 "source_id": "record-citation", "handle": record.reference,
+                 "display_label": inspection.title,
+                 "source_presentation": {"inspection": inspection},
+                 "destination": serde_json::Value::Null}]}]}}),
+        )
+        .into_response();
+    }
+    let response = next.run(request).await;
+    if path != format!("/patient-workspaces/{REVIEW_PATIENT}") {
+        return response;
+    }
+    let (mut parts, body) = response.into_parts();
+    let bytes = axum::body::to_bytes(body, usize::MAX).await.unwrap();
+    let mut workspace: serde_json::Value = serde_json::from_slice(&bytes).unwrap();
+    workspace["chats"] = CITED_RECORDS
+        .iter()
+        .map(|record| {
+            serde_json::json!({"chat_id": record.chat, "title": record.title,
+                "created_at": "2026-08-27T12:05:00Z"})
+        })
+        .collect();
+    parts.headers.remove(axum::http::header::CONTENT_LENGTH);
+    axum::response::Response::from_parts(parts, axum::body::Body::from(workspace.to_string()))
+}
+
+/// What a cited record's reader must show: its heading, kind and statuses, the kind and date its
+/// hover preview reads, then text that must be visible and the source path of each value that
+/// must carry one. `hidden` text shows in neither the preview nor the reader.
+struct RecordReading {
+    title: &'static str,
+    kind: &'static str,
+    statuses: &'static [&'static str],
+    preview: &'static str,
+    visible: &'static [&'static str],
+    paths: &'static [(&'static str, &'static str)],
+    hidden: &'static [&'static str],
+}
+
+/// Hovers, then opens the citation in `chat`, and checks the record reads as recorded: status
+/// in the preview and beside the kind and date ahead of the statement, every value with its
+/// source path, and no raw JSON outside Technical details.
+fn read_cited_record(
+    address: std::net::SocketAddr,
+    chat: &str,
+    line: &str,
+    expected: &RecordReading,
+) {
+    let url = format!("http://{address}/?patient={REVIEW_PATIENT}&chat={chat}");
+    let mut tab = Tab::open(&url);
+    tab.set_viewport(1280, 800, false);
+    tab.wait_for_text("The chart records it", Duration::from_secs(20));
+    let center = tab.step("citationCenter", serde_json::json!([]));
+    for step in [8.0, 0.0] {
+        tab.call(
+            "Input.dispatchMouseEvent",
+            serde_json::json!({"type": "mouseMoved",
+                "x": center[0].as_f64().unwrap() - step, "y": center[1].as_f64().unwrap()}),
+        );
+    }
+    let started = Instant::now();
+    let preview = loop {
+        let preview = tab.step("citationPreview", serde_json::json!([]));
+        if !preview.is_null() {
+            break preview;
+        }
+        assert!(
+            started.elapsed() < Duration::from_secs(5),
+            "hovering the citation opened no preview"
+        );
+        std::thread::sleep(Duration::from_millis(20));
+    };
+    let preview_text = preview["text"].as_str().unwrap();
+    assert!(preview_text.contains(expected.kind), "{preview}");
+    assert!(
+        preview_text.contains(expected.preview),
+        "preview lacks its kind and date {}: {preview}",
+        expected.preview
+    );
+    for text in expected.hidden {
+        assert!(
+            !preview_text.contains(text),
+            "{text} in the preview: {preview}"
+        );
+    }
+    for status in expected.statuses {
+        assert!(
+            preview_text.contains(status),
+            "preview lacks {status}: {preview}"
+        );
+    }
+
+    tab.click("section[aria-label='Conversation'] .citation-chip");
+    tab.wait_for_text("Technical details", Duration::from_secs(10));
+    std::thread::sleep(Duration::from_millis(400));
+    let shown = tab.step("citationReading", serde_json::json!([]));
+    assert_eq!(shown["title"], expected.title, "{shown}");
+    assert_eq!(shown["kind"], expected.kind, "{shown}");
+    assert_eq!(shown["technicalOpen"], false, "{shown}");
+    assert_eq!(shown["original"].as_str().unwrap(), line);
+    assert_eq!(
+        shown["statuses"],
+        serde_json::json!(expected.statuses),
+        "{shown}"
+    );
+    // Kind, then status, then the record's dates, all ahead of the statement.
+    let blocks: Vec<&str> = shown["blocks"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .map(|block| block.as_str().unwrap())
+        .collect();
+    let first = |class: &str| blocks.iter().position(|block| *block == class);
+    let kind = first("source-record-kind").expect("kind");
+    let status = first("source-record-status").expect("status");
+    let date = first("source-record-date").expect("date");
+    let statement = first("source-record-section").expect("statement");
+    assert!(
+        kind < status && status < date && date < statement,
+        "{blocks:?}"
+    );
+    let visible = shown["visible"].as_str().unwrap();
+    for text in expected.visible {
+        assert!(visible.contains(text), "missing {text}: {visible}");
+    }
+    for text in expected
+        .hidden
+        .iter()
+        .chain(&["\"resourceType\"", "{\"", "lastUpdated"])
+    {
+        assert!(!visible.contains(text), "{text} leads the view: {visible}");
+    }
+    let fields = shown["fields"].as_array().unwrap();
+    for field in fields {
+        assert_eq!(field["title"], field["path"], "{field}");
+    }
+    for (path, text) in expected.paths {
+        assert!(
+            fields
+                .iter()
+                .any(|field| field["path"] == *path
+                    && field["text"].as_str().unwrap().contains(text)),
+            "no {text} at {path}: {fields:?}"
+        );
+    }
+    assert!(
+        shown["technical"]
+            .as_str()
+            .unwrap()
+            .contains("meta.lastUpdated")
+    );
+    let layout = tab.step("citationLayout", serde_json::json!([]));
+    assert_eq!(layout["fits"], true, "{layout}");
+    tab.save_picture(chat);
+}
+
+async fn serve_record_citations() -> std::net::SocketAddr {
+    let site = build_site();
+    // SAFETY: tests in this binary hold `test_lock()` before mutating process env.
+    unsafe {
+        env::set_var("PHYSICIAN_SITE_DIR", &site);
+    }
+    let app =
+        physician_sample::fixture_site().layer(axum::middleware::from_fn(with_record_citations));
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let address = listener.local_addr().unwrap();
+    tokio::spawn(async move { axum::serve(listener, app).await.unwrap() });
+    wait_until_ready(address).await;
+    address
+}
+
+/// A cited lab result reads as its value, unit, range and interpretation, with its result
+/// status beside its kind and date.
+#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+#[ignore = "browser qualification; run explicitly with --ignored"]
+async fn an_observation_citation_reads_its_value_range_and_status_as_recorded() {
+    let _guard = test_lock().lock().await;
+    let address = serve_record_citations().await;
+    read_cited_record(
+        address,
+        OBSERVATION_CHAT,
+        BANK_POTASSIUM,
+        &RecordReading {
+            title: "Potassium",
+            kind: "Observation record",
+            statuses: &["Result status: final"],
+            preview: "Observation record · Effective August 20, 2026",
+            visible: &[
+                "Effective August 20, 2026, 15:15:00+00:00 as recorded",
+                "Issued August 21, 2026, 17:02:00+00:00 as recorded",
+                "5.9 mmol/L",
+                "High (H",
+                "Reference range low",
+                "3.5 mmol/L",
+                "5.1 mmol/L",
+            ],
+            paths: &[
+                ("status", "final"),
+                ("code", "Potassium"),
+                ("valueQuantity", "5.9 mmol/L"),
+                ("interpretation[0]", "High"),
+                ("referenceRange[0].low", "3.5 mmol/L"),
+                ("referenceRange[0].high", "5.1 mmol/L"),
+                ("effectiveDateTime", "August 20, 2026"),
+            ],
+            hidden: &["MRN00001776", "obs-5c1d2e7a9b40"],
+        },
+    );
+}
+
+/// A cited problem reads as its statement, with its clinical and verification status beside
+/// its kind and date, before the statement.
+#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+#[ignore = "browser qualification; run explicitly with --ignored"]
+async fn a_condition_citation_reads_its_statement_with_status_first() {
+    let _guard = test_lock().lock().await;
+    let address = serve_record_citations().await;
+    read_cited_record(
+        address,
+        CONDITION_CHAT,
+        BANK_CONDITION,
+        &RecordReading {
+            title: "Acute bronchitis",
+            kind: "Condition record",
+            statuses: &[
+                "Clinical status: Resolved",
+                "Verification status: Confirmed",
+            ],
+            preview: "Condition record · Recorded March 12, 2019",
+            visible: &[
+                "Onset recorded March 5, 2019",
+                "Recorded March 12, 2019, 13:20:00+00:00 as recorded",
+                "Abatement recorded April 2, 2019, 19:00:00+00:00 as recorded",
+                "Acute bronchitis, unspecified (J20.9",
+                "Problem List Item",
+            ],
+            paths: &[
+                ("clinicalStatus", "Resolved"),
+                ("verificationStatus", "Confirmed"),
+                ("code", "Acute bronchitis"),
+                ("abatementDateTime", "April 2, 2019"),
+            ],
+            hidden: &["MRN00001776", "cond-db76cb24b2c2"],
+        },
+    );
+}
+
+/// A cited allergy that is no longer active leads with its inactive clinical status and its
+/// verification status beside its kind and date, ahead of the statement — including the bank's
+/// inactive "No known drug allergies" record — and never reads as current: neither the hover
+/// preview nor the reader says "Active".
+#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+#[ignore = "browser qualification; run explicitly with --ignored"]
+async fn an_inactive_allergy_citation_leads_with_its_status_and_never_reads_as_current() {
+    let _guard = test_lock().lock().await;
+    let address = serve_record_citations().await;
+    read_cited_record(
+        address,
+        INACTIVE_NKDA_CHAT,
+        BANK_INACTIVE_NKDA,
+        &RecordReading {
+            title: "No known drug allergies",
+            kind: "Medication allergy record",
+            statuses: &[
+                "Clinical status: Inactive",
+                "Verification status: Confirmed",
+            ],
+            preview: "Medication allergy record · Recorded September 11, 2018",
+            visible: &[
+                "Recorded September 11, 2018, 12:20:00+00:00 as recorded",
+                "No known drug allergy (409137002",
+                "Criticality (not reaction severity)",
+            ],
+            paths: &[
+                ("clinicalStatus", "Inactive"),
+                ("verificationStatus", "Confirmed"),
+                ("code", "No known drug allergies"),
+                ("recordedDate", "September 11, 2018"),
+                ("criticality", "low"),
+            ],
+            hidden: &["Active", "MRN00001776", "allergy-0493010f2a16"],
+        },
+    );
+    read_cited_record(
+        address,
+        INACTIVE_ALLERGY_CHAT,
+        BANK_INACTIVE_ALLERGY,
+        &RecordReading {
+            title: "Penicillin",
+            kind: "Medication allergy record",
+            statuses: &[
+                "Clinical status: Inactive",
+                "Verification status: Confirmed",
+            ],
+            preview: "Medication allergy record · Recorded June 3, 2016",
+            visible: &[
+                "Recorded June 3, 2016, 09:40:00+00:00 as recorded",
+                "Penicillin G (7980",
+                "Hives",
+                "moderate",
+                "Criticality (not reaction severity)",
+            ],
+            paths: &[
+                ("clinicalStatus", "Inactive"),
+                ("verificationStatus", "Confirmed"),
+                ("code", "Penicillin"),
+                ("recordedDate", "June 3, 2016"),
+                ("reaction[0].severity", "moderate"),
+                ("criticality", "high"),
+            ],
+            hidden: &["Active", "MRN00001776", "allergy-7c3e91d04b2a"],
+        },
+    );
+}
+
+/// Every remaining structured record type in `patient-bank` (`DiagnosticReport`,
+/// `MedicationRequest`, `Immunization`, `Procedure`, `Encounter`) reads its concept, clinical
+/// dates, status beside kind and date, and recorded fields without raw JSON outside Technical
+/// details.
+#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+#[ignore = "browser qualification; run explicitly with --ignored"]
+async fn every_patient_bank_structured_record_type_reads_cleanly_in_hover_and_pane() {
+    let _guard = test_lock().lock().await;
+    let address = serve_record_citations().await;
+    for (chat, line, expected) in [
+        (
+            DIAGNOSTIC_REPORT_CHAT,
+            BANK_DIAGNOSTIC_REPORT,
+            RecordReading {
+                title: "Chest X-ray",
+                kind: "Diagnostic report record",
+                statuses: &["Result status: final"],
+                preview: "Diagnostic report record · Effective August 18, 2026",
+                visible: &[
+                    "Effective August 18, 2026, 10:15:00+00:00 as recorded",
+                    "Issued August 18, 2026, 14:40:00+00:00 as recorded",
+                    "Presented form",
+                    "Lungs clear.",
+                    "XR Chest 2 Views (36643-5",
+                    "No acute cardiopulmonary process.",
+                ],
+                paths: &[
+                    ("status", "final"),
+                    ("code", "Chest X-ray"),
+                    ("effectiveDateTime", "August 18, 2026"),
+                    ("conclusion", "No acute cardiopulmonary process."),
+                ],
+                hidden: &["MRN00001776", "diagrep-9f2a4b1c8d30", "THVuZ3MgY2xlYXIu"],
+            },
+        ),
+        (
+            MEDICATION_REQUEST_CHAT,
+            BANK_MEDICATION_REQUEST,
+            RecordReading {
+                title: "metformin hydrochloride 1000 mg oral tablet",
+                kind: "Medication request record",
+                statuses: &["Status: active"],
+                preview: "Medication request record · Authored August 12, 2026",
+                visible: &[
+                    "Authored August 12, 2026, 13:20:00+00:00 as recorded",
+                    "metformin hydrochloride 1000 MG Oral Tablet (861004",
+                    "Take 1 tablet by mouth twice daily with meals",
+                    "1000 mg",
+                    "Type 2 diabetes mellitus",
+                ],
+                paths: &[
+                    ("status", "active"),
+                    (
+                        "medicationCodeableConcept",
+                        "metformin hydrochloride 1000 mg oral tablet",
+                    ),
+                    ("authoredOn", "August 12, 2026"),
+                    (
+                        "dosageInstruction[0].doseAndRate[0].doseQuantity",
+                        "1000 mg",
+                    ),
+                ],
+                hidden: &["MRN00001776", "medrx-24ab1968c855"],
+            },
+        ),
+        (
+            IMMUNIZATION_CHAT,
+            BANK_IMMUNIZATION,
+            RecordReading {
+                title: "Tdap",
+                kind: "Immunization record",
+                statuses: &["Status: completed"],
+                preview: "Immunization record · Occurred October 14, 2025",
+                visible: &[
+                    "Occurred October 14, 2025, 14:15:00+00:00 as recorded",
+                    "Tdap (115 · http://hl7.org/fhir/sid/cvx)",
+                    "Primary source",
+                ],
+                paths: &[
+                    ("status", "completed"),
+                    ("vaccineCode", "Tdap"),
+                    ("occurrenceDateTime", "October 14, 2025"),
+                    ("primarySource", "true"),
+                ],
+                hidden: &["MRN00001776", "imm-26a721e56006"],
+            },
+        ),
+        (
+            PROCEDURE_CHAT,
+            BANK_PROCEDURE,
+            RecordReading {
+                title: "Screening colonoscopy",
+                kind: "Procedure record",
+                statuses: &["Status: completed"],
+                preview: "Procedure record · Performed May 9, 2024",
+                visible: &[
+                    "Performed May 9, 2024, 08:30:00+00:00 as recorded",
+                    "Colonoscopy, flexible; diagnostic (45378",
+                ],
+                paths: &[
+                    ("status", "completed"),
+                    ("code", "Screening colonoscopy"),
+                    ("performedDateTime", "May 9, 2024"),
+                ],
+                hidden: &["MRN00001776", "proc-8e14c3a20b51"],
+            },
+        ),
+        (
+            ENCOUNTER_CHAT,
+            BANK_ENCOUNTER,
+            RecordReading {
+                title: "Office Visit",
+                kind: "Encounter record",
+                statuses: &["Status: finished"],
+                preview: "Encounter record · Period start August 12, 2026",
+                visible: &[
+                    "Period start August 12, 2026, 13:00:00+00:00 as recorded",
+                    "Period end August 12, 2026, 13:30:00+00:00 as recorded",
+                    "Office Visit",
+                    "Internal Medicine",
+                    "ambulatory (AMB",
+                    "Diabetes follow-up",
+                ],
+                paths: &[
+                    ("status", "finished"),
+                    ("type[0].text", "Office Visit"),
+                    ("serviceType.text", "Internal Medicine"),
+                    ("class", "ambulatory"),
+                    ("period.start", "August 12, 2026"),
+                ],
+                hidden: &["MRN00001776", "enc-26183a468076"],
+            },
+        ),
+    ] {
+        read_cited_record(address, chat, line, &expected);
+    }
+}
+
+/// Preliminary results, refuted conditions, and entered-in-error medication requests show their
+/// status beside kind and date in both hover preview and reader pane ahead of the statement.
+#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+#[ignore = "browser qualification; run explicitly with --ignored"]
+async fn preliminary_refuted_and_entered_in_error_records_lead_with_status_before_statement() {
+    let _guard = test_lock().lock().await;
+    let address = serve_record_citations().await;
+    for (chat, line, expected) in [
+        (
+            PRELIMINARY_OBSERVATION_CHAT,
+            BANK_PRELIMINARY_OBSERVATION,
+            RecordReading {
+                title: "Hemoglobin A1c",
+                kind: "Observation record",
+                statuses: &["Result status: preliminary"],
+                preview: "Observation record · Effective August 26, 2026",
+                visible: &[
+                    "Effective August 26, 2026, 09:10:00+00:00 as recorded",
+                    "7.4 %",
+                ],
+                paths: &[
+                    ("status", "preliminary"),
+                    ("code", "Hemoglobin A1c"),
+                    ("valueQuantity", "7.4 %"),
+                ],
+                hidden: &["final", "MRN00001776", "obs-prelim-44a1"],
+            },
+        ),
+        (
+            REFUTED_CONDITION_CHAT,
+            BANK_REFUTED_CONDITION,
+            RecordReading {
+                title: "Asthma",
+                kind: "Condition record",
+                statuses: &["Verification status: Refuted"],
+                preview: "Condition record · Recorded November 4, 2023",
+                visible: &[
+                    "Recorded November 4, 2023, 11:00:00+00:00 as recorded",
+                    "Unspecified asthma, uncomplicated (J45.909",
+                ],
+                paths: &[
+                    ("verificationStatus", "Refuted"),
+                    ("code", "Asthma"),
+                    ("recordedDate", "November 4, 2023"),
+                ],
+                hidden: &["Confirmed", "Active", "MRN00001776", "cond-refuted-91b2"],
+            },
+        ),
+        (
+            ERRORED_MEDICATION_CHAT,
+            BANK_ERRORED_MEDICATION,
+            RecordReading {
+                title: "lisinopril 10 mg oral tablet",
+                kind: "Medication request record",
+                statuses: &["Status: entered-in-error"],
+                preview: "Medication request record · Authored August 15, 2026",
+                visible: &[
+                    "Authored August 15, 2026, 16:45:00+00:00 as recorded",
+                    "lisinopril 10 MG Oral Tablet (314076",
+                ],
+                paths: &[
+                    ("status", "entered-in-error"),
+                    ("medicationCodeableConcept", "lisinopril 10 mg oral tablet"),
+                    ("authoredOn", "August 15, 2026"),
+                ],
+                hidden: &["MRN00001776", "medrx-error-77c3"],
+            },
+        ),
+    ] {
+        read_cited_record(address, chat, line, &expected);
+    }
 }
 
 const CONVERSATION_PERSON: &str = "[aria-label=\"Conversation\"] .message-person";
@@ -2392,6 +3187,14 @@ impl Drop for ChatBrowserServer {
 }
 
 async fn serve_chat_browser(site: &std::path::Path, reply: &str) -> ChatBrowserServer {
+    serve_chat_browser_with_rounds(site, "[]", reply).await
+}
+
+async fn serve_chat_browser_with_rounds(
+    site: &std::path::Path,
+    rounds: &str,
+    reply: &str,
+) -> ChatBrowserServer {
     let state = env::temp_dir().join(format!("coda-chat-browser-{}", uuid::Uuid::new_v4()));
     let _ = fs::remove_dir_all(&state);
     fs::create_dir_all(&state).unwrap();
@@ -2418,7 +3221,7 @@ async fn serve_chat_browser(site: &std::path::Path, reply: &str) -> ChatBrowserS
     emulator.provision(worker_port).await;
     let valkey = scale::Valkey::start().await;
     let redis = valkey.url();
-    let stub = scale::ResponsesStub::start_with_reply(&state, 0, 0, "[]", reply).await;
+    let stub = scale::ResponsesStub::start_with_reply(&state, 0, 0, rounds, reply).await;
     let listen = format!("127.0.0.1:{worker_port}");
     let mut worker = scale::Process::spawn(
         "worker",
@@ -2429,6 +3232,7 @@ async fn serve_chat_browser(site: &std::path::Path, reply: &str) -> ChatBrowserS
             ("PUBSUB_EMULATOR_HOST", &emulator.host),
             ("PHYSICIAN_WORKER_LISTEN_ADDR", &listen),
             ("PHYSICIAN_RESPONSES_STUB_PORT", &stub.port),
+            ("PHYSICIAN_WORKER_FIXED_LAYOUT_FAILS", "1"),
             ("PHYSICIAN_REDIS_URL", &redis),
         ],
         &state,
@@ -2477,6 +3281,231 @@ async fn serve_chat_browser(site: &std::path::Path, reply: &str) -> ChatBrowserS
         _valkey: valkey,
         _database: database,
     }
+}
+
+/// Over the real durable site and worker stack, a signed-in physician asks a question, receives a
+/// published answer citing both an `Observation` and a `MedicationRequest`, and opens both
+/// citations in the source reader pane without raw JSON outside Technical details.
+#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+#[ignore = "browser qualification; run explicitly with --ignored"]
+async fn a_physician_cites_and_opens_an_observation_and_a_medication_request_from_a_real_answer() {
+    use local_product::physician_sources::{RecordDate, SourceRevision, citation_id};
+    let _guard = test_lock().lock().await;
+    let site = build_site();
+    let patient = "pw-39e51534-6ce4-43cf-b5f8-7c1ca6252d8e";
+    let obs = SourceRevision {
+        workspace: patient.into(),
+        source_id: "synthetic-charts".into(),
+        candidate_id: "Observation/obs-5c1d2e7a9b40".into(),
+        revision: local_product::sha256_hex(BANK_POTASSIUM.as_bytes()),
+        record_type: "Observation".into(),
+        dates: vec![
+            RecordDate {
+                name: "effectiveDateTime".into(),
+                value: "2026-08-20T15:15:00+00:00".into(),
+            },
+            RecordDate {
+                name: "issued".into(),
+                value: "2026-08-21T17:02:00+00:00".into(),
+            },
+            RecordDate {
+                name: "meta.lastUpdated".into(),
+                value: "2026-08-20T00:00:00+00:00".into(),
+            },
+        ],
+        content: BANK_POTASSIUM.into(),
+        sha256: local_product::sha256_hex(BANK_POTASSIUM.as_bytes()),
+        readable_parts: vec![],
+        provenance: serde_json::json!({"native_record": "Observation/obs-5c1d2e7a9b40"}),
+        native: None,
+    };
+    let med = SourceRevision {
+        workspace: patient.into(),
+        source_id: "synthetic-charts".into(),
+        candidate_id: "MedicationRequest/medrx-24ab1968c855".into(),
+        revision: local_product::sha256_hex(BANK_MEDICATION_REQUEST.as_bytes()),
+        record_type: "MedicationRequest".into(),
+        dates: vec![
+            RecordDate {
+                name: "authoredOn".into(),
+                value: "2026-08-12T13:20:00+00:00".into(),
+            },
+            RecordDate {
+                name: "meta.lastUpdated".into(),
+                value: "2026-08-12T00:00:00+00:00".into(),
+            },
+        ],
+        content: BANK_MEDICATION_REQUEST.into(),
+        sha256: local_product::sha256_hex(BANK_MEDICATION_REQUEST.as_bytes()),
+        readable_parts: vec![],
+        provenance: serde_json::json!({"native_record": "MedicationRequest/medrx-24ab1968c855"}),
+        native: None,
+    };
+    let obs_cite = citation_id(&obs);
+    let med_cite = citation_id(&med);
+    let rounds = serde_json::json!([
+        [{
+            "name": "read_patient_sources",
+            "arguments": {
+                "references": [
+                    {"candidate_id": obs.candidate_id, "revision": obs.revision, "cursor": null},
+                    {"candidate_id": med.candidate_id, "revision": med.revision, "cursor": null}
+                ],
+                "max_result_bytes": 65536
+            }
+        }],
+        [{
+            "name": "publish_citations",
+            "arguments": {
+                "previews": [
+                    {
+                        "reference": obs.candidate_id,
+                        "revision": obs.revision,
+                        "preview": "Potassium 5.9 mmol/L (high) on 2026-08-20."
+                    },
+                    {
+                        "reference": med.candidate_id,
+                        "revision": med.revision,
+                        "preview": "Active metformin 1000 mg twice daily ordered 2026-08-12."
+                    }
+                ],
+                "citations": [
+                    {"id": obs_cite, "reference": obs.candidate_id, "revision": obs.revision, "locator": null},
+                    {"id": med_cite, "reference": med.candidate_id, "revision": med.revision, "locator": null}
+                ]
+            }
+        }]
+    ])
+    .to_string();
+    let reply = format!(
+        "Potassium was 5.9 mmol/L [[patient_source:{obs_cite}]] and metformin 1000 mg twice daily remains active [[patient_source:{med_cite}]]."
+    );
+
+    let server = serve_chat_browser_with_rounds(&site, &rounds, &reply).await;
+    let store = local_product::runtime::Store::connect(&server._database.url)
+        .await
+        .unwrap();
+    store.record_source(&obs).await.unwrap();
+    store.record_source(&med).await.unwrap();
+
+    let mut browser = Tab::open(&format!("http://{}/?patient={patient}", server.address));
+    browser.set_viewport(1280, 800, false);
+    browser.wait_for_text("Work email", Duration::from_secs(20));
+    browser.request_sign_in("physician@codahealth.test");
+    browser.wait_for_text("This workspace has no chats.", Duration::from_secs(20));
+    browser.step(
+        "click",
+        serde_json::json!(["button.sidebar-new-conversation"]),
+    );
+    browser.wait_for_text(
+        "What would you like Coda to review?",
+        Duration::from_secs(10),
+    );
+    browser.type_composer("What was the latest potassium and what metformin dose is ordered?");
+    browser.step(
+        "clickNamed",
+        serde_json::json!([".composer-toolbar button", "Send"]),
+    );
+    browser.wait_for_text(
+        "metformin 1000 mg twice daily remains active",
+        Duration::from_secs(30),
+    );
+    browser.wait_for_text("[2]", Duration::from_secs(30));
+    let controls = browser.step("answerControls", serde_json::json!([]));
+    assert_eq!(controls["chipsInAnswer"], 2, "{controls}");
+
+    // Open Citation 1: Observation (Potassium 5.9 mmol/L, High, 3.5-5.1 mmol/L).
+    browser.step("clickCitation", serde_json::json!([0]));
+    browser.wait_for_text("Technical details", Duration::from_secs(10));
+    let started = Instant::now();
+    loop {
+        let ev = browser.step("citationEvidence", serde_json::json!([]));
+        if !ev["source"].is_null() {
+            break;
+        }
+        assert!(
+            started.elapsed() < Duration::from_secs(10),
+            "Observation citation evidence did not load: {ev}"
+        );
+        std::thread::sleep(Duration::from_millis(25));
+    }
+    std::thread::sleep(Duration::from_millis(200));
+    let obs_shown = browser.step("citationReading", serde_json::json!([]));
+    assert_eq!(obs_shown["title"], "Potassium", "{obs_shown}");
+    assert_eq!(obs_shown["kind"], "Observation record", "{obs_shown}");
+    assert_eq!(
+        obs_shown["statuses"],
+        serde_json::json!(["Result status: final"]),
+        "{obs_shown}"
+    );
+    let obs_visible = obs_shown["visible"].as_str().unwrap();
+    for expected in ["5.9 mmol/L", "High (H", "3.5 mmol/L", "5.1 mmol/L"] {
+        assert!(
+            obs_visible.contains(expected),
+            "Observation pane missing {expected}: {obs_visible}"
+        );
+    }
+    assert!(!obs_visible.contains("\"resourceType\""), "{obs_visible}");
+    assert_eq!(obs_shown["original"].as_str().unwrap(), BANK_POTASSIUM);
+    browser.save_picture("ac5-real-answer-observation");
+
+    browser.press_key(Key::ESCAPE);
+    let started = Instant::now();
+    while browser.step("citationClosed", serde_json::json!([])) != true {
+        assert!(
+            started.elapsed() < Duration::from_secs(5),
+            "Observation pane did not close"
+        );
+        std::thread::sleep(Duration::from_millis(20));
+    }
+
+    // Open Citation 2: MedicationRequest (metformin hydrochloride 1000 mg oral tablet).
+    browser.step("clickCitation", serde_json::json!([1]));
+    browser.wait_for_text("Technical details", Duration::from_secs(10));
+    let started = Instant::now();
+    loop {
+        let ev = browser.step("citationEvidence", serde_json::json!([]));
+        if !ev["source"].is_null() {
+            break;
+        }
+        assert!(
+            started.elapsed() < Duration::from_secs(10),
+            "MedicationRequest citation evidence did not load: {ev}"
+        );
+        std::thread::sleep(Duration::from_millis(25));
+    }
+    std::thread::sleep(Duration::from_millis(200));
+    let med_shown = browser.step("citationReading", serde_json::json!([]));
+    assert_eq!(
+        med_shown["title"], "metformin hydrochloride 1000 mg oral tablet",
+        "{med_shown}"
+    );
+    assert_eq!(
+        med_shown["kind"], "Medication request record",
+        "{med_shown}"
+    );
+    assert_eq!(
+        med_shown["statuses"],
+        serde_json::json!(["Status: active"]),
+        "{med_shown}"
+    );
+    let med_visible = med_shown["visible"].as_str().unwrap();
+    for expected in [
+        "metformin hydrochloride 1000 MG Oral Tablet (861004",
+        "Take 1 tablet by mouth twice daily with meals",
+        "1000 mg",
+    ] {
+        assert!(
+            med_visible.contains(expected),
+            "MedicationRequest pane missing {expected}: {med_visible}"
+        );
+    }
+    assert!(!med_visible.contains("\"resourceType\""), "{med_visible}");
+    assert_eq!(
+        med_shown["original"].as_str().unwrap(),
+        BANK_MEDICATION_REQUEST
+    );
+    browser.save_picture("ac5-real-answer-medication-request");
 }
 
 #[tokio::test(flavor = "multi_thread", worker_threads = 2)]
