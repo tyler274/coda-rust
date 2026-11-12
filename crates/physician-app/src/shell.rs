@@ -560,7 +560,7 @@ pub fn synopsis_pieces(segments: &[ClinicalSegment]) -> Vec<SynopsisPiece> {
 /// whitespace-normalized text (after stripping any trailing ellipsis on
 /// `quote`) so a multiline or truncated `quote` is never duplicated above
 /// `body` when `body` already contains that passage.
-fn citation_preview_body(quote: &str, body: &str) -> String {
+pub(crate) fn citation_preview_body(quote: &str, body: &str) -> String {
     let trimmed_body = body.trim();
     if trimmed_body.is_empty() {
         return quote.trim().to_owned();
@@ -1206,7 +1206,7 @@ fn eastern_offset(unix: i64) -> i32 {
     }
 }
 
-fn nth_sunday(year: i32, month: u32, n: u32) -> u32 {
+pub(crate) fn nth_sunday(year: i32, month: u32, n: u32) -> u32 {
     let first = days_from_civil(year, month, 1);
     let weekday = (first + 4).rem_euclid(7);
     let first_sunday = if weekday == 0 {
@@ -1221,7 +1221,7 @@ fn year_of(unix: i64) -> i32 {
     civil_from_days(unix.div_euclid(86_400)).0
 }
 
-fn civil_from_days(days: i64) -> (i32, u32, u32) {
+pub(crate) fn civil_from_days(days: i64) -> (i32, u32, u32) {
     let z = days + 719_468;
     let era = if z >= 0 { z } else { z - 146_096 } / 146_097;
     let doe = (z - era * 146_097) as u64;
@@ -1239,7 +1239,7 @@ fn civil_from_days(days: i64) -> (i32, u32, u32) {
     (year as i32, month as u32, day as u32)
 }
 
-fn days_from_civil(year: i32, month: u32, day: u32) -> i64 {
+pub(crate) fn days_from_civil(year: i32, month: u32, day: u32) -> i64 {
     let year = if month <= 2 { year - 1 } else { year } as i64;
     let era = if year >= 0 { year } else { year - 399 } / 400;
     let yoe = (year - era * 400) as u64;
@@ -1250,7 +1250,7 @@ fn days_from_civil(year: i32, month: u32, day: u32) -> i64 {
     era * 146_097 + day_of_era - 719_468
 }
 
-fn parse_unix(value: &str) -> Option<i64> {
+pub(crate) fn parse_unix(value: &str) -> Option<i64> {
     let (date, rest) = value.split_once('T')?;
     let mut dates = date.split('-');
     let year: i32 = dates.next()?.parse().ok()?;

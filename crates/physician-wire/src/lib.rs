@@ -6,6 +6,8 @@
 //! Book: `book/src/physician-site.md`.
 #![deny(missing_docs)]
 
+pub mod briefings;
+
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 
@@ -272,11 +274,29 @@ pub struct PracticeDayResponse {
 pub struct PracticeSourceState {
     /// The `state` value.
     pub state: String,
+    #[serde(default)]
+    /// Physician-facing calendar source label when reported.
+    pub source_label: Option<String>,
+    #[serde(default)]
+    /// Timestamp of the retained schedule snapshot (RFC-3339).
+    pub snapshot_as_of: Option<String>,
+    #[serde(default)]
+    /// Timestamp when the schedule snapshot was synchronized (RFC-3339).
+    pub synchronized_at: Option<String>,
+    #[serde(default)]
+    /// Schedule snapshot freshness (`current`, `partial`, or `refresh_failed`).
+    pub freshness: Option<String>,
+    #[serde(default)]
+    /// Latest schedule refresh error when a refresh failed.
+    pub last_error: Option<briefings::PracticeSourceErrorWire>,
 }
 
 #[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
 /// The `PracticeVisit` value exchanged by this crate.
 pub struct PracticeVisit {
+    #[serde(default)]
+    /// Calendar encounter identity when supplied.
+    pub encounter: Option<briefings::ScheduleEncounterWire>,
     #[serde(default)]
     /// The `patient_display_name` value.
     pub patient_display_name: Option<String>,
@@ -305,6 +325,21 @@ pub struct PracticeVisit {
 pub struct VisitPreparation {
     /// The `state` value.
     pub state: String,
+    #[serde(default)]
+    /// Saved briefing identifier when `state == "prepared"`.
+    pub briefing_id: Option<String>,
+    #[serde(default)]
+    /// Concise visit-card orientation when `state == "prepared"`.
+    pub visit_card_orientation: Option<String>,
+    #[serde(default)]
+    /// Timestamp when the briefing was saved (RFC-3339).
+    pub prepared_at: Option<String>,
+    #[serde(default)]
+    /// Failure or skip explanation when reported.
+    pub reason: Option<String>,
+    #[serde(default)]
+    /// Historical briefing identifier preserved for a cancelled or ended visit slot.
+    pub historical_briefing_id: Option<String>,
     #[serde(default)]
     /// The `last_attempt` value.
     pub last_attempt: Option<PreparationAttempt>,

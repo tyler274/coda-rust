@@ -2,6 +2,8 @@
 //! Book: `book/src/physician-site.md`.
 #![deny(missing_docs)]
 
+pub mod briefings;
+
 pub use http::HttpError;
 use physician_wire::{
     ChatSnapshotResponse, HealthResponse, PanelAssignmentResponse, PastWorkResponse,
@@ -93,7 +95,10 @@ impl PhysicianClient {
             .map(|session| format!("Bearer {session}"))
     }
 
-    async fn get<T: serde::de::DeserializeOwned>(&self, path: &str) -> Result<T, http::HttpError> {
+    pub(crate) async fn get<T: serde::de::DeserializeOwned>(
+        &self,
+        path: &str,
+    ) -> Result<T, http::HttpError> {
         let mut request = self.http.get(format!("{}{path}", self.base));
         if let Some(bearer) = self.bearer() {
             request = request.header(reqwest::header::AUTHORIZATION, bearer);
@@ -105,7 +110,7 @@ impl PhysicianClient {
         read_body(response).await
     }
 
-    async fn post<T: serde::de::DeserializeOwned>(
+    pub(crate) async fn post<T: serde::de::DeserializeOwned>(
         &self,
         path: &str,
         body: &impl serde::Serialize,
@@ -443,7 +448,7 @@ impl PhysicianClient {
     }
 }
 
-fn query_escape(value: &str) -> String {
+pub(crate) fn query_escape(value: &str) -> String {
     let mut out = String::new();
     for byte in value.bytes() {
         match byte {
