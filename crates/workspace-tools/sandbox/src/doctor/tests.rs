@@ -232,6 +232,21 @@ fn a_stored_model_key_is_listed_and_a_locked_one_warns() {
 }
 
 #[test]
+fn a_model_key_the_cli_is_configured_to_read_must_be_stored() {
+    let configured = CONFIG.replace("anthropic = false", "anthropic = true");
+    let findings = run(
+        &healthy(),
+        &Config::parse_with_unknown_keys(Path::new("t"), &configured),
+    );
+    let Outcome::Warn { detail, fix } = outcome(&findings, &Check::Broker) else {
+        panic!("expected Warn")
+    };
+    assert!(detail.contains("anthropic: not stored"), "{detail}");
+    assert!(!detail.contains("openai"), "{detail}");
+    assert_eq!(fix.to_string(), "coda-sandbox broker store anthropic");
+}
+
+#[test]
 fn broker_serving_a_token_only_from_cache_warns_with_its_age() {
     let mut probe = healthy();
     let mut report = stored();
@@ -427,6 +442,11 @@ fn ssh_config_forwarding_the_agent_fails() {
         assert!(detail.contains(value), "{detail}");
         assert!(fix.to_string().contains("ForwardAgent no"));
     }
+    probe.ssh_options = "user agent\n".to_owned();
+    assert!(matches!(
+        outcome(&run(&probe, &config()), &Check::SshForwarding),
+        Outcome::CannotCheck { .. }
+    ));
 }
 
 #[test]

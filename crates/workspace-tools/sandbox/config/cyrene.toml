@@ -32,6 +32,12 @@ socket = "/run/coda-sandbox/agent/broker.sock"
 # does not hold. It reaches every repository you can, so it stays off.
 gh_fallback = "off"
 
+[broker.model_keys]
+# Which agent CLIs take their API key from the broker instead of their own
+# login; one that does needs its key stored.
+anthropic = false
+openai = false
+
 [broker.ci]
 # Where the CI controller, running as `user`, asks for its github-ci token.
 # Host only: the container has no such path.

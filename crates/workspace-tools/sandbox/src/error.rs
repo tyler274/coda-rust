@@ -151,6 +151,7 @@ pub enum Error {
     NoEditor {
         editor: crate::editor_settings::Editor,
         program: &'static str,
+        source: io::Error,
     },
     #[error("{program} {status}")]
     EditorFailed {

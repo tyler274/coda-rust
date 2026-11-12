@@ -36,6 +36,9 @@ let
     broker = {
       socket = cfg.broker.socket;
       gh_fallback = if cfg.broker.ghFallback then "on" else "off";
+      model_keys = {
+        inherit (cfg.container.modelKeys) anthropic openai;
+      };
     }
     // lib.optionalAttrs cfg.ci.enable {
       ci = {

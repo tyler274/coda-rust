@@ -112,14 +112,35 @@ impl SshOptions {
         )
     }
 
-    /// `no`, `yes` or an agent socket path; `None` only for output that
-    /// does not come from `ssh -G`, which always resolves it.
-    pub fn forward_agent(&self) -> Option<&str> {
-        self.0
+    /// The resolved `ForwardAgent`. `ssh -G` always prints it, so a missing
+    /// or empty value means the output is not what `ssh -G` prints.
+    pub fn forward_agent(&self) -> Result<ForwardAgent, Error> {
+        let value = self
+            .0
             .iter()
             .find(|(name, _)| name == "forwardagent")
-            .map(|(_, value)| value.as_str())
+            .map(|(_, value)| value.as_str());
+        match value {
+            Some("no") => Ok(ForwardAgent::No),
+            Some("yes") => Ok(ForwardAgent::Yes),
+            Some(socket) if !socket.is_empty() => Ok(ForwardAgent::Socket(socket.to_owned())),
+            found => Err(Error::UnexpectedOutput {
+                what: "forwardagent",
+                source_name: "ssh -G".to_owned(),
+                found: found.unwrap_or_default().to_owned(),
+            }),
+        }
     }
+}
+
+/// Whether SSH sessions to a host carry an agent, and whose.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub enum ForwardAgent {
+    No,
+    /// The agent `SSH_AUTH_SOCK` names.
+    Yes,
+    /// An agent socket path, or `$VAR` naming one.
+    Socket(String),
 }
 
 /// Reads the real machine, without privileges.

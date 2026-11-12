@@ -120,7 +120,11 @@ pub fn open(config: &Config, slug: Option<&Slug>, editor: Editor) -> Result<Path
         .stdin(Stdio::null())
         .status()
         .map_err(|source| match source.kind() {
-            io::ErrorKind::NotFound => Error::NoEditor { editor, program },
+            io::ErrorKind::NotFound => Error::NoEditor {
+                editor,
+                program,
+                source,
+            },
             _ => Error::Spawn { program, source },
         })?;
     if !status.success() {

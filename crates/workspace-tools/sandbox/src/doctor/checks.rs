@@ -9,7 +9,9 @@ use crate::editor_settings::{
     SettingsFile,
 };
 use crate::error::Error;
-use crate::probe::{ActiveState, LoadState, PathKind, Probe, SSH_DEADLINE, SshReach, UnitScope};
+use crate::probe::{
+    ActiveState, ForwardAgent, LoadState, PathKind, Probe, SSH_DEADLINE, SshReach, UnitScope,
+};
 
 const REBUILD: &str = "declare it in the NixOS configuration, then `sudo nixos-rebuild switch`";
 
@@ -293,23 +295,29 @@ fn legacy_token_outcome(probe: &dyn Probe, dir: LegacyTokenDir) -> Outcome {
 /// sessions under the user's SSH config, so its `ForwardAgent` decides
 /// whether the host's keys reach the container.
 fn ssh_forwarding_outcome(probe: &dyn Probe, host: &str) -> Outcome {
-    let resolved = match probe.ssh_config(host) {
-        Ok(resolved) => resolved,
+    let forward = match probe
+        .ssh_config(host)
+        .and_then(|resolved| resolved.forward_agent())
+    {
+        Ok(forward) => forward,
         Err(cause) => return Outcome::CannotCheck { cause },
     };
-    match resolved.forward_agent() {
-        Some("no") => Outcome::Pass {
-            detail: format!("{host}: ForwardAgent no"),
-        },
-        found => Outcome::Fail {
-            detail: format!(
-                "{host}: ForwardAgent {}, so the editors' SSH sessions carry the host's keys",
-                found.unwrap_or("unset")
-            ),
-            fix: Fix::instruction(format!(
-                "set `ForwardAgent no` under `Host {host}` in ~/.ssh/config"
-            )),
-        },
+    let agent = match forward {
+        ForwardAgent::No => {
+            return Outcome::Pass {
+                detail: format!("{host}: ForwardAgent no"),
+            };
+        }
+        ForwardAgent::Yes => "yes".to_owned(),
+        ForwardAgent::Socket(socket) => socket,
+    };
+    Outcome::Fail {
+        detail: format!(
+            "{host}: ForwardAgent {agent}, so the editors' SSH sessions carry the host's keys"
+        ),
+        fix: Fix::instruction(format!(
+            "set `ForwardAgent no` under `Host {host}` in ~/.ssh/config"
+        )),
     }
 }
 

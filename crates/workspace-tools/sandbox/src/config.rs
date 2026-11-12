@@ -9,6 +9,7 @@ use std::str::FromStr;
 
 use serde::{Deserialize, Serialize};
 
+use crate::broker::{Item, Need};
 use crate::error::Error;
 
 pub const DEFAULT_PATH: &str = "/etc/coda-sandbox/config.toml";
@@ -53,6 +54,36 @@ pub struct Broker {
     /// Only a host whose CI controller takes GitHub jobs has one.
     #[serde(default)]
     pub ci: Option<BrokerCi>,
+    #[serde(default)]
+    pub model_keys: ModelKeys,
+}
+
+/// Which agent CLIs in the container take their API key from the broker
+/// (`services.coda-sandbox.container.modelKeys`). A CLI that does needs its
+/// key stored; one that does not keeps its own login.
+#[derive(Debug, Clone, Copy, Default, PartialEq, Eq, Serialize, Deserialize)]
+pub struct ModelKeys {
+    #[serde(default)]
+    pub anthropic: bool,
+    #[serde(default)]
+    pub openai: bool,
+}
+
+impl ModelKeys {
+    /// Whether this host's sandbox works without `item`: a model key is
+    /// required once its CLI is configured to read it from the broker.
+    pub fn need(self, item: Item) -> Need {
+        let configured = match item {
+            Item::Anthropic => self.anthropic,
+            Item::Openai => self.openai,
+            Item::GithubAgent | Item::Doppler | Item::GithubCi | Item::SelfTest => false,
+        };
+        if configured {
+            Need::Required
+        } else {
+            item.need()
+        }
+    }
 }
 
 /// The socket the broker serves the CI controller's GitHub token on. It is
@@ -71,6 +102,7 @@ impl Default for Broker {
             socket: default_broker_socket(),
             gh_fallback: GhFallback::Off,
             ci: None,
+            model_keys: ModelKeys::default(),
         }
     }
 }

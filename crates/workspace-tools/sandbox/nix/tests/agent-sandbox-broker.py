@@ -54,9 +54,10 @@ with subtest("gh and doppler wrappers get their tokens per process"):
     agent_fails("printenv DOPPLER_TOKEN")
 
 with subtest("model keys are optional and reach the agent CLIs' system config"):
-    # Never stored, they are left out of the owner's view and not warned about.
+    # modelKeys.anthropic is on, so its unstored key is shown; openai is off
+    # and never stored, so it is left out and not warned about.
     status = luluco("coda-sandbox status")
-    assert "anthropic" not in status and "openai" not in status, status
+    assert "anthropic: not stored" in status and "openai" not in status, status
     err = agent("coda-sandbox token anthropic 2>&1 || true")
     assert "no token is stored" in err, err
     luluco("printf %s vmcheck-anthropic-5d1e | coda-sandbox broker store anthropic")

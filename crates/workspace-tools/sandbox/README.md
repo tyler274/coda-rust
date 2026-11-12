@@ -110,7 +110,7 @@ coda-sandbox broker store anthropic   # with container.modelKeys.anthropic = tru
 coda-sandbox broker store openai      # with container.modelKeys.openai = true
 ```
 
-The broker serves these on the agent socket like the others. The options write the container's system-wide config, Claude Code's `apiKeyHelper` in `/etc/claude-code/managed-settings.json` and a Codex provider in `/etc/codex/config.toml`, each running `coda-sandbox token <item>` per session, so the key is in no file or environment. The model keys are optional: doctor and `status` list them only once stored.
+The broker serves these on the agent socket like the others. The options write the container's system-wide config, Claude Code's `apiKeyHelper` in `/etc/claude-code/managed-settings.json` and a Codex provider in `/etc/codex/config.toml`, each running `coda-sandbox token <item>` per session, so the key is in no file or environment. A model key is optional while its option is off: doctor and `status` list it only once stored. With the option on, the CLI has no other login, so doctor warns until the key is stored.
 
 The container is the sandbox for both CLIs. Codex's own `workspace-write` sandbox cannot start inside it, since its bubblewrap needs to mount `/proc`, so Codex runs commands there with `-s danger-full-access`, and the container still bounds what they reach.
 

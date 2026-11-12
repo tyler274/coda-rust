@@ -6,7 +6,7 @@ use super::{Fix, Outcome};
 use crate::broker::error::BrokerError;
 use crate::broker::wire::{GhFallback, ItemReport, ItemState, Report, Unavailable};
 use crate::broker::{Item, Need, Source};
-use crate::config::Broker;
+use crate::config::{Broker, ModelKeys};
 use crate::error::Error;
 use crate::probe::Probe;
 
@@ -15,7 +15,7 @@ pub const UNIT: &str = "coda-sandbox-broker.service";
 
 pub fn outcome(probe: &dyn Probe, broker: &Broker) -> Outcome {
     match probe.broker(&broker.socket) {
-        Ok(report) => report_outcome(&report),
+        Ok(report) => report_outcome(&report, broker.model_keys),
         Err(error @ BrokerError::Connect { .. }) => Outcome::Fail {
             detail: crate::error::chain(&error),
             fix: Fix::command("systemctl", ["--user", "restart", UNIT]),
@@ -26,8 +26,8 @@ pub fn outcome(probe: &dyn Probe, broker: &Broker) -> Outcome {
     }
 }
 
-fn report_outcome(report: &Report) -> Outcome {
-    let detail = describe(report);
+fn report_outcome(report: &Report, keys: ModelKeys) -> Outcome {
+    let detail = describe(report, keys);
     let state = |item| {
         report
             .items
@@ -69,7 +69,7 @@ fn report_outcome(report: &Report) -> Outcome {
         };
     }
     for entry @ ItemReport { item, state } in &report.items {
-        if absent_by_choice(entry) {
+        if absent_by_choice(entry, keys) {
             continue;
         }
         match *state {
@@ -93,8 +93,9 @@ fn report_outcome(report: &Report) -> Outcome {
 
 /// An optional key that was never stored is the default: the agent CLI
 /// keeps its own login instead, so it is neither listed nor warned about.
-fn absent_by_choice(entry: &ItemReport) -> bool {
-    entry.item.need() == Need::Optional
+/// A model key this host's CLI is configured to read is not optional.
+fn absent_by_choice(entry: &ItemReport, keys: ModelKeys) -> bool {
+    keys.need(entry.item) == Need::Optional
         && entry.state
             == ItemState::Unavailable {
                 reason: Unavailable::NotStored,
@@ -122,11 +123,11 @@ fn unavailable_fix(item: Item, reason: Unavailable) -> Fix {
 
 /// `github-agent: keyring; doppler: not stored`. An optional key that was
 /// never stored is left out.
-pub fn describe(report: &Report) -> String {
+pub fn describe(report: &Report, keys: ModelKeys) -> String {
     report
         .items
         .iter()
-        .filter(|entry| !absent_by_choice(entry))
+        .filter(|entry| !absent_by_choice(entry, keys))
         .map(|ItemReport { item, state }| {
             let state = match state {
                 ItemState::Available { source } => source.name().to_owned(),
