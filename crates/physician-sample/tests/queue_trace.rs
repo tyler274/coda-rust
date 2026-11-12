@@ -1,143 +1,165 @@
-//! Wakeup publication carries its trace context on the wire, and a failed
-//! publication is recorded without content.
+//! The request that accepts a turn is linked from the attempt that runs it.
 //!
-//! Runs the real `PubSubQueue` against the Pub/Sub emulator from the Nix dev
-//! shell. It skips when the emulator component is unavailable, and fails
-//! under `CODA_REQUIRE_POSTGRES_TESTS`.
+//! A site and a worker share a disposable Postgres and export their spans to
+//! one loopback collector. The site saves its request's trace context with
+//! the accepted turn; the worker's `physician.worker.attempt` is a trace of
+//! its own that links to that request. Nothing carries the context between
+//! the two processes but the conversation row.
 
-use local_product::runtime::Scope;
-use local_product::runtime::delivery::Delivery;
-use opentelemetry::trace::{SpanKind, Status, TracerProvider as _};
-use opentelemetry_sdk::trace::{InMemorySpanExporter, SdkTracerProvider, SpanData};
-use physician_sample::queue::{ChatQueue, PubSubQueue};
-use pubsub::testing::{Emulator, Subscription};
-use tracing_subscriber::layer::SubscriberExt;
+use std::time::{Duration, Instant};
 
-const PROJECT: &str = "coda-queue-trace";
-/// Stands in for clinical content: it must reach the message data only.
-const MARKER: &str = "synthetic-content-marker";
-
-fn attribute(span: &SpanData, key: &str) -> Option<String> {
-    span.attributes
-        .iter()
-        .find(|kv| kv.key.as_str() == key)
-        .map(|kv| kv.value.to_string())
-}
-
-fn delivery() -> Delivery {
-    Delivery::chat_turn(
-        Scope {
-            practice: format!("{MARKER}-practice"),
-            physician: format!("{MARKER}-physician"),
-            workspace: format!("{MARKER}-workspace"),
-            chat: format!("{MARKER}-chat"),
-        },
-        format!("{MARKER}-input"),
-    )
-}
+#[path = "scale/mod.rs"]
+mod support;
+use support::trace_attribute;
 
 #[tokio::test]
-async fn publication_injects_its_trace_context_and_fails_without_content() {
-    let Some(emulator) = Emulator::start(PROJECT).await else {
+async fn the_worker_attempt_links_to_the_request_that_accepted_the_turn() {
+    let Some(database) = support::Database::create("queue_trace").await else {
         return;
     };
-    let topic = emulator.create_topic("wakeups").await;
-    let subscription = emulator
-        .create_subscription("wakeups-pull", &Subscription::pull("wakeups"))
-        .await;
-    let published = PubSubQueue::connect(&topic, Some(&emulator.host), false)
-        .await
-        .expect("emulator publisher");
-    let missing =
-        PubSubQueue::connect(&emulator.topic_path("missing"), Some(&emulator.host), false)
-            .await
-            .expect("publisher for a missing topic");
-
-    let exporter = InMemorySpanExporter::default();
-    let provider = SdkTracerProvider::builder()
-        .with_simple_exporter(exporter.clone())
-        .build();
-    let subscriber = tracing_subscriber::registry()
-        .with(tracing_opentelemetry::layer().with_tracer(provider.tracer("queue-trace")));
-    let guard = tracing::subscriber::set_default(subscriber);
-    let delivery = delivery();
-    published.publish(&delivery).await.expect("published");
-    let refused = missing.publish(&delivery).await;
-    drop(guard);
-    provider.force_flush().unwrap();
-    let spans = exporter.get_finished_spans().unwrap();
-
-    let received = emulator.pull(&subscription, 10).await;
-    assert_eq!(received.len(), 1, "one wakeup: {}", emulator.tail());
-    let message = &received[0].message;
-    assert_eq!(
-        serde_json::from_slice::<Delivery>(&message.data).unwrap(),
-        delivery
+    support::staging_account(&database.url).await;
+    let home = std::env::temp_dir().join(format!(
+        "physician-queue-trace-{}",
+        uuid::Uuid::new_v4().simple()
+    ));
+    std::fs::create_dir_all(&home).expect("home");
+    let collector = support::TraceCapture::start().await;
+    let telemetry = [
+        ("OTEL_EXPORTER_OTLP_ENDPOINT", collector.endpoint.as_str()),
+        ("OTEL_BSP_SCHEDULE_DELAY", "50"),
+    ];
+    let worker_port = support::free_port();
+    let worker_listen = format!("127.0.0.1:{worker_port}");
+    let stub = support::ResponsesStub::start(&home, 0, 0, "[]").await;
+    let mut worker = support::Process::spawn(
+        "worker",
+        support::worker_bin(),
+        &[],
+        &[
+            ("PHYSICIAN_DATABASE_URL", database.url.as_str()),
+            ("PHYSICIAN_WORKER_LISTEN_ADDR", worker_listen.as_str()),
+            ("PHYSICIAN_RESPONSES_STUB_PORT", stub.port.as_str()),
+            telemetry[0],
+            telemetry[1],
+        ],
+        &home,
     );
+    support::wait_ready(&mut worker, worker_port).await;
+    let site_port = support::free_port();
+    let site_listen = format!("127.0.0.1:{site_port}");
+    let mut site = support::Process::spawn(
+        "site",
+        support::site_bin(),
+        &[],
+        &[
+            ("PHYSICIAN_DATABASE_URL", database.url.as_str()),
+            support::DURABLE,
+            ("PHYSICIAN_AUTH", "required"),
+            ("PHYSICIAN_LISTEN_ADDR", site_listen.as_str()),
+            telemetry[0],
+            telemetry[1],
+        ],
+        &home,
+    );
+    support::wait_ready(&mut site, site_port).await;
 
-    let publishes: Vec<_> = spans
+    let session = support::sign_in(&site_listen).await;
+    let workspace = physician_sample::WORKSPACE_IDS[0];
+    let chat = format!("chat-{}", uuid::Uuid::new_v4().simple());
+    // The page's own trace context, as a browser or load balancer sends it.
+    let page_trace = "0af7651916cd43dd8448eb211c80319c";
+    let body = serde_json::to_vec(&support::submit(workspace, &chat, "Hello")).unwrap();
+    let authorization = format!("Bearer {session}");
+    let traceparent = format!("00-{page_trace}-b7ad6b7169203331-01");
+    let (status, text) = support::exchange(
+        &site_listen,
+        "POST",
+        "/commands",
+        &[
+            ("content-type", "application/json"),
+            ("authorization", authorization.as_str()),
+            ("traceparent", traceparent.as_str()),
+        ],
+        Some(&body),
+    )
+    .await
+    .unwrap_or_else(|error| panic!("{error}\n{}", site.tail()));
+    assert_eq!(status, 200, "{text}\n{}", site.tail());
+    assert!(text.contains("\"accepted\""), "{text}");
+
+    let deadline = Instant::now() + Duration::from_secs(30);
+    let (attempt, spans) = loop {
+        let spans = collector.spans.lock().unwrap().clone();
+        let attempt = spans
+            .iter()
+            .find(|span| {
+                span.name == "physician.worker.attempt"
+                    && trace_attribute(span, "coda.outcome").as_deref() == Some("committed")
+            })
+            .cloned();
+        if let Some(attempt) = attempt {
+            break (attempt, spans);
+        }
+        assert!(
+            Instant::now() < deadline,
+            "no committed worker attempt was exported\n{}\n{}",
+            site.tail(),
+            worker.tail()
+        );
+        tokio::time::sleep(Duration::from_millis(50)).await;
+    };
+
+    // The accepting request: the site's server span for this command, which
+    // continues the page's trace.
+    let page_trace = opentelemetry::trace::TraceId::from_hex(page_trace)
+        .unwrap()
+        .to_bytes();
+    let requests: Vec<_> = spans
         .iter()
-        .filter(|span| span.name == "physician.queue.publish")
+        .filter(|span| span.trace_id == page_trace && span.name.contains("/commands"))
         .collect();
-    assert_eq!(publishes.len(), 2, "{spans:?}");
-    let ok = publishes
-        .iter()
-        .find(|span| span.status == Status::Unset)
-        .expect("successful publication span");
-    assert_eq!(ok.span_kind, SpanKind::Producer);
-    for (key, value) in [
-        ("messaging.system", "gcp_pubsub"),
-        ("messaging.operation.type", "publish"),
-        ("coda.delivery_kind", "chat_turn"),
-    ] {
-        assert_eq!(attribute(ok, key).as_deref(), Some(value), "{key}");
-    }
-    // The broker attribute names the publication span itself.
-    let expected = format!(
-        "00-{}-{}-01",
-        ok.span_context.trace_id(),
-        ok.span_context.span_id()
-    );
     assert_eq!(
-        message.attributes.get("traceparent"),
-        Some(&expected),
-        "{:?}",
-        message.attributes
+        requests.len(),
+        1,
+        "one accepting request span: {:?}",
+        spans.iter().map(|span| &span.name).collect::<Vec<_>>()
     );
-    let attributes: std::collections::HashMap<_, _> =
-        message.attributes.clone().into_iter().collect();
-    let remote = telemetry::propagation::remote_context(&attributes).expect("valid context");
-    assert_eq!(remote.span_id(), ok.span_context.span_id());
-    // Trace context never travels in the payload.
-    assert!(!String::from_utf8_lossy(&message.data).contains("traceparent"));
+    let request = requests[0];
 
-    // A refused publication is an error with fixed fields only.
-    assert_eq!(refused, Err("Pub/Sub publication failed".to_owned()));
-    let failed = publishes
-        .iter()
-        .find(|span| span.status != Status::Unset)
-        .expect("failed publication span");
-    assert_eq!(failed.status, Status::error("queue publication failed"));
-    assert_eq!(attribute(failed, "error.type").as_deref(), Some("publish"));
+    assert_eq!(attempt.links.len(), 1, "{attempt:?}");
+    let link = &attempt.links[0];
+    assert_eq!(link.trace_id, request.trace_id);
     assert!(
-        failed
-            .events
+        spans
             .iter()
-            .any(|event| event.attributes.iter().any(|kv| {
-                kv.key.as_str() == "event"
-                    && kv.value.to_string() == "physician.queue.publish_failed"
-            }))
+            .any(|span| span.trace_id == link.trace_id && span.span_id == link.span_id),
+        "the link names no exported span of the accepting request: {link:?}"
     );
-    assert!(
-        failed.events.iter().any(|event| event
-            .attributes
-            .iter()
-            .any(|kv| { kv.key.as_str() == "level" && kv.value.to_string() == "ERROR" })),
-        "publication failures must be alertable errors"
-    );
-    let recorded = format!("{spans:?}");
-    assert!(
-        !recorded.contains(MARKER),
-        "publication telemetry carried delivery content: {recorded}"
-    );
+    // The attempt is its own trace: it ran later, and may run again.
+    assert_ne!(attempt.trace_id, request.trace_id);
+    assert!(attempt.parent_span_id.is_empty(), "{attempt:?}");
+    for (key, value) in [
+        ("coda.trace_relation", "link"),
+        ("messaging.system", "postgresql"),
+        ("coda.delivery_kind", "chat_turn"),
+        ("coda.job", "physician_chat"),
+    ] {
+        assert_eq!(
+            trace_attribute(&attempt, key).as_deref(),
+            Some(value),
+            "{key}"
+        );
+    }
+    // The model call belongs to the attempt's trace.
+    assert!(spans.iter().any(|span| {
+        span.name == "gen_ai.generation"
+            && span.trace_id == attempt.trace_id
+            && span.parent_span_id == attempt.span_id
+    }));
+    // Trace context is identity only: no span carries the message.
+    assert!(!format!("{spans:?}").contains("Hello"));
+
+    worker.kill_now();
+    site.kill_now();
+    let _ = std::fs::remove_dir_all(&home);
 }

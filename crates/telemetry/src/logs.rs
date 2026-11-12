@@ -148,9 +148,7 @@ impl Visit for SafeFields<'_> {
                 value,
                 "physician.worker.attempt_failed"
                     | "physician.worker.retry_not_persisted"
-                    | "physician.queue.publish_failed"
                     | "physician.queue.dispatch_failed"
-                    | "physician.recovery.failed"
                     | "physician.receipt_compaction.failed"
                     | "duet.privacy_recovery.failed"
             ),
@@ -164,7 +162,6 @@ impl Visit for SafeFields<'_> {
                     | "revision"
                     | "rehearsed"
                     | "lost"
-                    | "publish"
                     | "database"
             ),
             "coda.job" => matches!(value, "physician_chat" | "physician_reply_revision"),

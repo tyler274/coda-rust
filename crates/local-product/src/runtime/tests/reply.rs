@@ -78,6 +78,7 @@ fn assert_same_draft(left: &reply::Draft, right: &reply::Draft) {
         session_hash,
         dispatch_after,
         failures,
+        origin,
     } = left;
     assert_eq!(*revision, right.revision);
     assert_eq!(text, &right.text);
@@ -102,6 +103,7 @@ fn assert_same_draft(left: &reply::Draft, right: &reply::Draft) {
     assert_eq!(session_hash, &right.session_hash);
     assert_eq!(*dispatch_after, right.dispatch_after);
     assert_eq!(*failures, right.failures);
+    assert_eq!(origin, &right.origin);
 }
 
 async fn setup() -> (Store, Scope) {
@@ -187,7 +189,11 @@ async fn revision_billing_record_atomically_ends_automatic_recovery() {
         .unwrap();
     reopened.record_revision(&claim, blocked).await.unwrap();
     reopened
-        .settle_revision_attempt(&claim, harness::engine::AttemptFailure::Failed)
+        .settle_revision_attempt(
+            &claim,
+            harness::engine::AttemptFailure::Failed,
+            Backoff::IMMEDIATE,
+        )
         .await
         .unwrap();
     assert!(
@@ -242,7 +248,8 @@ async fn reply_acceptance_is_scoped_idempotent_and_claimed_once() {
                 &first,
                 vec![7; 32],
                 &test_skills(),
-                &configured_recipe
+                &configured_recipe,
+                None
             )
             .await
             .unwrap(),
@@ -257,7 +264,8 @@ async fn reply_acceptance_is_scoped_idempotent_and_claimed_once() {
                 &first,
                 vec![7; 32],
                 &test_skills(),
-                &configured_recipe
+                &configured_recipe,
+                None
             )
             .await
             .unwrap(),
@@ -301,7 +309,8 @@ async fn reply_acceptance_is_scoped_idempotent_and_claimed_once() {
                 &first,
                 vec![7; 32],
                 &test_skills(),
-                &configured_recipe
+                &configured_recipe,
+                None
             )
             .await
             .unwrap(),
@@ -376,7 +385,11 @@ async fn reply_acceptance_is_scoped_idempotent_and_claimed_once() {
         DeliveryState::Claimed
     );
     store
-        .settle_revision_attempt(&claim, harness::engine::AttemptFailure::Failed)
+        .settle_revision_attempt(
+            &claim,
+            harness::engine::AttemptFailure::Failed,
+            Backoff::IMMEDIATE,
+        )
         .await
         .unwrap();
     let retry = store.claim_revision(&delivery, 60).await.unwrap().unwrap();
@@ -488,7 +501,7 @@ async fn held_revision_saves_one_limit_outcome_with_its_visible_status() {
     ] {
         assert_eq!(
             store
-                .resume_authorized(&scope, "retry-held", vec![8; 32], work, run)
+                .resume_authorized(&scope, "retry-held", vec![8; 32], work, run, None)
                 .await
                 .unwrap(),
             Resumed::Refused
@@ -497,7 +510,14 @@ async fn held_revision_saves_one_limit_outcome_with_its_visible_status() {
     let delivery = Delivery::reply_revision(scope.clone(), claim.accepted.input.key.clone());
     assert_eq!(
         store
-            .resume_authorized(&scope, "retry-held", vec![8; 32], &scope.chat, &previous)
+            .resume_authorized(
+                &scope,
+                "retry-held",
+                vec![8; 32],
+                &scope.chat,
+                &previous,
+                None
+            )
             .await
             .unwrap(),
         Resumed::Pending {
@@ -506,7 +526,14 @@ async fn held_revision_saves_one_limit_outcome_with_its_visible_status() {
     );
     assert_eq!(
         store
-            .resume_authorized(&scope, "retry-held", vec![8; 32], &scope.chat, &previous)
+            .resume_authorized(
+                &scope,
+                "retry-held",
+                vec![8; 32],
+                &scope.chat,
+                &previous,
+                None
+            )
             .await
             .unwrap(),
         Resumed::Duplicate
@@ -683,7 +710,10 @@ async fn a_save_then_a_new_instruction_withdraws_the_running_attempt_and_the_ins
         "the save ended the attempt, so the new instruction does not make it wait: {error}"
     );
     let reason = engine::AttemptFailure::from_cause(error.as_ref());
-    store.settle_revision_attempt(&claim, reason).await.unwrap();
+    store
+        .settle_revision_attempt(&claim, reason, Backoff::IMMEDIATE)
+        .await
+        .unwrap();
     let next = store
         .claim_revision(
             &Delivery::reply_revision(scope.clone(), "second".into()),
@@ -898,7 +928,11 @@ async fn late_evidence_for_an_archived_attempt_joins_its_history_and_never_publi
             .is_err()
     );
     store
-        .settle_revision_attempt(&late, harness::engine::AttemptFailure::Failed)
+        .settle_revision_attempt(
+            &late,
+            harness::engine::AttemptFailure::Failed,
+            Backoff::IMMEDIATE,
+        )
         .await
         .unwrap();
     let history = store.earlier_revisions(&scope).await.unwrap();

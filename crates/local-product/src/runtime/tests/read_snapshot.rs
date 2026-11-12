@@ -76,7 +76,14 @@ async fn successive_chat_work_reuses_frozen_recipe_and_package() {
         // A fresh store must resolve the same frozen inputs after restart.
         let reopened = Store::connect(&url).await.unwrap();
         reopened
-            .accept_authorized(scope, &delivery_input(input), vec![5; 32], &skills, &recipe)
+            .accept_authorized(
+                scope,
+                &delivery_input(input),
+                vec![5; 32],
+                &skills,
+                &recipe,
+                None,
+            )
             .await
             .unwrap();
         let claim = reopened.claim(scope, 60).await.unwrap().unwrap();

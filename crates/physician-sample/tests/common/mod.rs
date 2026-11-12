@@ -60,7 +60,8 @@ pub async fn serve_isolated(configure: impl FnOnce()) -> IsolatedServer {
             "PHYSICIAN_GMAIL_SEND_URL",
             "PHYSICIAN_GMAIL_TOKEN_URL",
             "PHYSICIAN_PUBLIC_ORIGIN",
-            // A scale stack exports its topic to child commands; this server runs chat inline.
+            // A scale stack exports durable chat to child commands; this server runs chat inline.
+            "PHYSICIAN_DURABLE_CHAT",
             "PHYSICIAN_CHAT_TOPIC",
         ] {
             std::env::remove_var(key);

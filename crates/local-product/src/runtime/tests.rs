@@ -12,7 +12,7 @@ mod response_tests;
 #[path = "tests/sources.rs"]
 mod source_tests;
 
-use super::delivery::{Delivery, DeliveryState};
+use super::delivery::{Backoff, Delivery, DeliveryState};
 use super::entities::command;
 use super::*;
 use harness::engine::recipe::Request;
@@ -49,14 +49,16 @@ async fn concurrent_commands_and_claims_serialize_on_the_composite_conversation_
             &first,
             vec![0; 32],
             &accepted_skills,
-            &accepted_recipe
+            &accepted_recipe,
+            None
         ),
         store.accept_authorized(
             &scope,
             &second,
             vec![0; 32],
             &accepted_skills,
-            &accepted_recipe
+            &accepted_recipe,
+            None
         )
     );
     assert_eq!(a.unwrap(), Accepted::New);
@@ -391,17 +393,13 @@ async fn queue_delivery_is_fenced_to_its_input_and_recovers_through_typed_owners
     let first = Delivery::chat_turn(scope.clone(), "first".into());
     let page = store.dispatch_due(100, Some(&start)).await.unwrap();
     assert_eq!(ours(&page), vec![first.clone()]);
-    // Successful publication suppresses republish until the retry hint passes.
-    store.dispatched(&first, 600).await.unwrap();
-    let page = store.dispatch_due(100, Some(&start)).await.unwrap();
-    assert!(ours(&page).is_empty());
     assert_eq!(
         store.delivery_state(&first).await.unwrap(),
         DeliveryState::Due
     );
 
     // A newer accepted input supersedes the old wakeup: it can never claim,
-    // and acknowledging it is safe because the newer input is recoverable.
+    // and dropping it is safe because the newer input is due in its place.
     accept(&store, &scope, &delivery_input("second"), 7)
         .await
         .unwrap();
@@ -425,10 +423,14 @@ async fn queue_delivery_is_fenced_to_its_input_and_recovers_through_typed_owners
         DeliveryState::Claimed
     );
 
-    // A failed run is released for broker redelivery as a successor attempt,
+    // A failed run is released to be claimed again as a successor attempt,
     // and its history says it failed: a lost lease is "interrupted" instead.
     store
-        .settle_chat_attempt(&claim, harness::engine::AttemptFailure::Failed)
+        .settle_chat_attempt(
+            &claim,
+            harness::engine::AttemptFailure::Failed,
+            Backoff::IMMEDIATE,
+        )
         .await
         .unwrap();
     let state = store.conversation(&scope).await.unwrap();
@@ -455,7 +457,11 @@ async fn queue_delivery_is_fenced_to_its_input_and_recovers_through_typed_owners
         Stopped::Held
     );
     store
-        .settle_chat_attempt(&retry, harness::engine::AttemptFailure::Failed)
+        .settle_chat_attempt(
+            &retry,
+            harness::engine::AttemptFailure::Failed,
+            Backoff::IMMEDIATE,
+        )
         .await
         .unwrap();
     assert_eq!(
@@ -468,7 +474,6 @@ async fn queue_delivery_is_fenced_to_its_input_and_recovers_through_typed_owners
     );
     assert!(ours(&store.dispatch_due(100, Some(&start)).await.unwrap()).is_empty());
     assert!(store.dispatch_due(0, None).await.is_err());
-    assert!(store.dispatched(&second, 0).await.is_err());
 }
 
 #[tokio::test]
@@ -498,7 +503,11 @@ async fn repeated_failures_end_the_input_as_failed_until_resume_or_new_input() {
     for failure in 1..MAX_FAILED_ATTEMPTS {
         let claim = store.claim_delivery(&turn, 60).await.unwrap().unwrap();
         store
-            .settle_chat_attempt(&claim, harness::engine::AttemptFailure::Failed)
+            .settle_chat_attempt(
+                &claim,
+                harness::engine::AttemptFailure::Failed,
+                Backoff::IMMEDIATE,
+            )
             .await
             .unwrap();
         let state = store.conversation(&scope).await.unwrap();
@@ -512,7 +521,11 @@ async fn repeated_failures_end_the_input_as_failed_until_resume_or_new_input() {
     // The last allowed failure ends the work; recovery has given up.
     let claim = store.claim_delivery(&turn, 60).await.unwrap().unwrap();
     store
-        .settle_chat_attempt(&claim, harness::engine::AttemptFailure::Failed)
+        .settle_chat_attempt(
+            &claim,
+            harness::engine::AttemptFailure::Failed,
+            Backoff::IMMEDIATE,
+        )
         .await
         .unwrap();
     let state = store.conversation(&scope).await.unwrap();
@@ -521,10 +534,10 @@ async fn repeated_failures_end_the_input_as_failed_until_resume_or_new_input() {
     assert!(store.claim_delivery(&turn, 60).await.unwrap().is_none());
     assert!(
         ours(store.dispatch_due(100, Some(&start)).await.unwrap()).is_empty(),
-        "the recovery sweep must not republish work that recovery gave up on"
+        "the due-work read must not return work that recovery gave up on"
     );
-    // Failed is neither settled nor runnable: the worker refuses it so the
-    // broker dead-letters the message instead of acknowledging it.
+    // Failed is neither settled nor runnable: a worker that hears of it
+    // claims nothing and tells open pages to refetch.
     assert_eq!(
         store.delivery_state(&turn).await.unwrap(),
         DeliveryState::Failed
@@ -538,6 +551,7 @@ async fn repeated_failures_end_the_input_as_failed_until_resume_or_new_input() {
             vec![5; 32],
             &state.work,
             state.run().unwrap().id,
+            None,
         )
         .await
         .unwrap();
@@ -602,7 +616,7 @@ async fn try_again_resumes_only_the_named_failed_run_and_never_completed_work() 
     let pending = store.conversation(&scope).await.unwrap();
     assert_eq!(
         store
-            .resume_authorized(&scope, "early", vec![6; 32], &pending.work, "none")
+            .resume_authorized(&scope, "early", vec![6; 32], &pending.work, "none", None)
             .await
             .unwrap(),
         Resumed::Refused
@@ -610,7 +624,11 @@ async fn try_again_resumes_only_the_named_failed_run_and_never_completed_work() 
     for _ in 0..MAX_FAILED_ATTEMPTS {
         let claim = store.claim_delivery(&turn, 60).await.unwrap().unwrap();
         store
-            .settle_chat_attempt(&claim, harness::engine::AttemptFailure::Failed)
+            .settle_chat_attempt(
+                &claim,
+                harness::engine::AttemptFailure::Failed,
+                Backoff::IMMEDIATE,
+            )
             .await
             .unwrap();
     }
@@ -633,7 +651,7 @@ async fn try_again_resumes_only_the_named_failed_run_and_never_completed_work() 
     ] {
         assert_eq!(
             store
-                .resume_authorized(target, key, vec![6; 32], work_id, run_id)
+                .resume_authorized(target, key, vec![6; 32], work_id, run_id, None)
                 .await
                 .unwrap(),
             Resumed::Refused,
@@ -647,7 +665,7 @@ async fn try_again_resumes_only_the_named_failed_run_and_never_completed_work() 
     );
     assert!(
         store
-            .resume_authorized(&scope, "short", vec![6; 4], &work, &run)
+            .resume_authorized(&scope, "short", vec![6; 4], &work, &run, None)
             .await
             .is_err()
     );
@@ -658,7 +676,7 @@ async fn try_again_resumes_only_the_named_failed_run_and_never_completed_work() 
     ] {
         assert_eq!(
             store
-                .resume_authorized(&scope, key, vec![6; 32], work_id, run_id)
+                .resume_authorized(&scope, key, vec![6; 32], work_id, run_id, None)
                 .await
                 .unwrap(),
             Resumed::Refused,
@@ -673,7 +691,7 @@ async fn try_again_resumes_only_the_named_failed_run_and_never_completed_work() 
     // The named failed run resumes with a fresh budget and the current session.
     assert_eq!(
         store
-            .resume_authorized(&scope, "again", vec![6; 32], &work, &run)
+            .resume_authorized(&scope, "again", vec![6; 32], &work, &run, None)
             .await
             .unwrap(),
         Resumed::Pending {
@@ -691,14 +709,14 @@ async fn try_again_resumes_only_the_named_failed_run_and_never_completed_work() 
     // The same request is a duplicate; the same key for another target is not.
     assert_eq!(
         store
-            .resume_authorized(&scope, "again", vec![6; 32], &work, &run)
+            .resume_authorized(&scope, "again", vec![6; 32], &work, &run, None)
             .await
             .unwrap(),
         Resumed::Duplicate
     );
     assert_eq!(
         store
-            .resume_authorized(&scope, "again", vec![6; 32], &work, &earlier)
+            .resume_authorized(&scope, "again", vec![6; 32], &work, &earlier, None)
             .await
             .unwrap(),
         Resumed::Refused
@@ -712,7 +730,14 @@ async fn try_again_resumes_only_the_named_failed_run_and_never_completed_work() 
     Store::save(tx, &scope, &state).await.unwrap();
     assert_eq!(
         store
-            .resume_authorized(&scope, "after-done", vec![6; 32], &work, &claim.attempt)
+            .resume_authorized(
+                &scope,
+                "after-done",
+                vec![6; 32],
+                &work,
+                &claim.attempt,
+                None
+            )
             .await
             .unwrap(),
         Resumed::Refused
@@ -815,7 +840,10 @@ async fn stop_then_a_new_message_withdraws_the_running_attempt_and_the_message_r
         "Stop ended the attempt, so the waiting message does not make it wait: {error}"
     );
     let reason = engine::AttemptFailure::from_cause(error.as_ref());
-    store.settle_chat_attempt(&claim, reason).await.unwrap();
+    store
+        .settle_chat_attempt(&claim, reason, Backoff::IMMEDIATE)
+        .await
+        .unwrap();
     let next = store.claim(&scope, 60).await.unwrap().unwrap();
     assert_ne!(next.attempt, claim.attempt);
     assert!(next.revision > claim.revision, "the new message runs next");
@@ -981,7 +1009,7 @@ async fn stop_holds_the_named_work_until_resume_and_refuses_a_late_commit() {
     let run = held.run().unwrap().id.to_owned();
     assert_eq!(
         store
-            .resume_authorized(&scope, "resume", vec![9; 32], &work, &run)
+            .resume_authorized(&scope, "resume", vec![9; 32], &work, &run, None)
             .await
             .unwrap(),
         Resumed::Pending {
@@ -1056,13 +1084,16 @@ async fn stop_holds_the_named_work_until_resume_and_refuses_a_late_commit() {
                 .is_err()
         );
     }
+    // The new message waits while the stopped run drains its calls, and is
+    // due once that run is settled.
+    let steered_turn = Delivery::chat_turn(scope.clone(), "steered".into());
     assert!(
-        store
+        !store
             .dispatch_due(100, Some(&start))
             .await
             .unwrap()
             .deliveries
-            .contains(&Delivery::chat_turn(scope.clone(), "steered".into()))
+            .contains(&steered_turn)
     );
     assert_eq!(
         store
@@ -1071,16 +1102,29 @@ async fn stop_holds_the_named_work_until_resume_and_refuses_a_late_commit() {
                 "resume-stopped",
                 vec![9; 32],
                 &work,
-                &successor.attempt
+                &successor.attempt,
+                None
             )
             .await
             .unwrap(),
         Resumed::Refused
     );
     store
-        .settle_chat_attempt(&successor, engine::AttemptFailure::Interrupted)
+        .settle_chat_attempt(
+            &successor,
+            engine::AttemptFailure::Interrupted,
+            Backoff::IMMEDIATE,
+        )
         .await
         .unwrap();
+    assert!(
+        store
+            .dispatch_due(100, Some(&start))
+            .await
+            .unwrap()
+            .deliveries
+            .contains(&steered_turn)
+    );
     let answering = store.claim(&scope, 60).await.unwrap().unwrap();
     assert_ne!(answering.attempt, successor.attempt);
 
@@ -1122,6 +1166,7 @@ async fn stop_holds_the_named_work_until_resume_and_refuses_a_late_commit() {
                 vec![9; 32],
                 &stopped.work,
                 &first_run,
+                None,
             )
             .await
             .unwrap(),
@@ -1151,6 +1196,7 @@ async fn stop_holds_the_named_work_until_resume_and_refuses_a_late_commit() {
                 vec![9; 32],
                 &again.work,
                 &second_run,
+                None,
             )
             .await
             .unwrap(),
@@ -1172,7 +1218,11 @@ async fn stop_holds_the_named_work_until_resume_and_refuses_a_late_commit() {
     for _ in 0..MAX_FAILED_ATTEMPTS {
         let claim = store.claim_delivery(&turn, 60).await.unwrap().unwrap();
         store
-            .settle_chat_attempt(&claim, harness::engine::AttemptFailure::Failed)
+            .settle_chat_attempt(
+                &claim,
+                harness::engine::AttemptFailure::Failed,
+                Backoff::IMMEDIATE,
+            )
             .await
             .unwrap();
     }
@@ -1190,7 +1240,14 @@ async fn stop_holds_the_named_work_until_resume_and_refuses_a_late_commit() {
     let run = still.run().unwrap().id.to_owned();
     assert_eq!(
         store
-            .resume_authorized(&failed_scope, "try-again", vec![9; 32], &still.work, &run,)
+            .resume_authorized(
+                &failed_scope,
+                "try-again",
+                vec![9; 32],
+                &still.work,
+                &run,
+                None,
+            )
             .await
             .unwrap(),
         Resumed::Pending {
@@ -1233,7 +1290,7 @@ async fn engine_failure_stays_leased_until_the_lease_expires() {
         if cancelled {
             assert_eq!(
                 store
-                    .settle_chat_attempt(&claim, AttemptFailure::Interrupted)
+                    .settle_chat_attempt(&claim, AttemptFailure::Interrupted, Backoff::IMMEDIATE)
                     .await
                     .unwrap(),
                 delivery::AttemptSettlement::Applied,
@@ -1252,7 +1309,11 @@ async fn engine_failure_stays_leased_until_the_lease_expires() {
         // release the successor or erase the recorded failure.
         assert_eq!(
             store
-                .settle_chat_attempt(&claim, harness::engine::AttemptFailure::Interrupted)
+                .settle_chat_attempt(
+                    &claim,
+                    harness::engine::AttemptFailure::Interrupted,
+                    Backoff::IMMEDIATE
+                )
                 .await
                 .unwrap(),
             delivery::AttemptSettlement::Superseded
@@ -1280,7 +1341,10 @@ async fn settle_after_steer(reason: AttemptFailure) -> (Conversation, DeliverySt
     accept(&store, &scope, &delivery_input("steer"), 5)
         .await
         .unwrap();
-    store.settle_chat_attempt(&old, reason).await.unwrap();
+    store
+        .settle_chat_attempt(&old, reason, Backoff::IMMEDIATE)
+        .await
+        .unwrap();
     let state = store.conversation(&scope).await.unwrap();
     let steer = store
         .delivery_state(&Delivery::chat_turn(scope, "steer".into()))
@@ -1378,8 +1442,7 @@ async fn expired_worker_lease_is_redispatched_by_the_database_clock() {
         .unwrap();
     let delivery = Delivery::chat_turn(scope.clone(), "turn".into());
     let claim = store.claim_delivery(&delivery, 60).await.unwrap().unwrap();
-    store.dispatched(&delivery, 60).await.unwrap();
-    // Expire lease and dispatch hint at the storage owner instead of sleeping
+    // Expire the lease at the storage owner instead of sleeping
     // across a floored database-clock second (flaky on busy runners).
     let (tx, mut state, _) = store.locked(&scope).await.unwrap();
     state.attempts.last_mut().unwrap().expires = 0;
@@ -1845,13 +1908,18 @@ async fn old_receipts_reduce_to_a_digest_that_still_answers_duplicates() {
             hash.clone(),
             &test_skills(),
             &test_chat_recipe(),
+            None,
         )
         .await
         .unwrap();
     for _ in 0..MAX_FAILED_ATTEMPTS {
         let claim = store.claim(&resume_scope, 60).await.unwrap().unwrap();
         store
-            .settle_chat_attempt(&claim, harness::engine::AttemptFailure::Failed)
+            .settle_chat_attempt(
+                &claim,
+                harness::engine::AttemptFailure::Failed,
+                Backoff::IMMEDIATE,
+            )
             .await
             .unwrap();
     }
@@ -1860,7 +1928,14 @@ async fn old_receipts_reduce_to_a_digest_that_still_answers_duplicates() {
     let run = failed.run().unwrap().id.to_owned();
     assert!(matches!(
         store
-            .resume_authorized(&resume_scope, "resume", hash.clone(), &failed.work, &run)
+            .resume_authorized(
+                &resume_scope,
+                "resume",
+                hash.clone(),
+                &failed.work,
+                &run,
+                None
+            )
             .await
             .unwrap(),
         Resumed::Pending { .. }
@@ -1884,14 +1959,28 @@ async fn old_receipts_reduce_to_a_digest_that_still_answers_duplicates() {
     }
     assert_eq!(
         store
-            .resume_authorized(&resume_scope, "resume", hash.clone(), &failed.work, &run)
+            .resume_authorized(
+                &resume_scope,
+                "resume",
+                hash.clone(),
+                &failed.work,
+                &run,
+                None
+            )
             .await
             .unwrap(),
         Resumed::Duplicate
     );
     assert_eq!(
         store
-            .resume_authorized(&resume_scope, "resume", hash, &failed.work, "other-run")
+            .resume_authorized(
+                &resume_scope,
+                "resume",
+                hash,
+                &failed.work,
+                "other-run",
+                None
+            )
             .await
             .unwrap(),
         Resumed::Refused
@@ -1916,7 +2005,8 @@ async fn old_receipts_reduce_to_a_digest_that_still_answers_duplicates() {
                 &revise,
                 vec![9; 32],
                 &test_skills(),
-                &test_revision_recipe()
+                &test_revision_recipe(),
+                None
             )
             .await
             .unwrap(),
@@ -1946,7 +2036,8 @@ async fn old_receipts_reduce_to_a_digest_that_still_answers_duplicates() {
                 &revise,
                 vec![9; 32],
                 &test_skills(),
-                &test_revision_recipe()
+                &test_revision_recipe(),
+                None
             )
             .await
             .unwrap(),
@@ -1963,7 +2054,8 @@ async fn old_receipts_reduce_to_a_digest_that_still_answers_duplicates() {
                 &collision,
                 vec![9; 32],
                 &test_skills(),
-                &test_revision_recipe()
+                &test_revision_recipe(),
+                None
             )
             .await
             .is_err()
@@ -1973,7 +2065,7 @@ async fn old_receipts_reduce_to_a_digest_that_still_answers_duplicates() {
         draft.accepted.as_ref().map(|accepted| &accepted.input),
         Some(&revise)
     );
-    // Settle the revision so other suites' recovery sweeps never pick it up.
+    // Settle the revision so other suites' due-work reads never pick it up.
     store
         .save_draft(
             &reply_scope,
@@ -2027,7 +2119,11 @@ async fn currency_is_read_only_and_renewal_touches_only_the_current_chat_attempt
     let old = store.claim(&scope, 60).await.unwrap().unwrap();
     assert_eq!(
         store
-            .settle_chat_attempt(&old, engine::AttemptFailure::Interrupted)
+            .settle_chat_attempt(
+                &old,
+                engine::AttemptFailure::Interrupted,
+                Backoff::IMMEDIATE
+            )
             .await
             .unwrap(),
         delivery::AttemptSettlement::Applied
@@ -2109,7 +2205,7 @@ async fn currency_is_read_only_and_renewal_touches_only_the_current_chat_attempt
     );
     assert_eq!(
         store
-            .settle_chat_attempt(&old, engine::AttemptFailure::Failed)
+            .settle_chat_attempt(&old, engine::AttemptFailure::Failed, Backoff::IMMEDIATE)
             .await
             .unwrap(),
         delivery::AttemptSettlement::Superseded
@@ -2287,6 +2383,7 @@ async fn accept(
             vec![session; 32],
             &test_skills(),
             &test_chat_recipe(),
+            None,
         )
         .await
 }
@@ -2303,6 +2400,7 @@ async fn accept_revision_input(
             vec![7; 32],
             &test_skills(),
             &test_revision_recipe(),
+            None,
         )
         .await
 }

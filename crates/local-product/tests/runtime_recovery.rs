@@ -51,6 +51,7 @@ async fn setup() -> (Store, PostgresAuthStore, Scope, String, String) {
             PostgresAuthStore::session_reference(&token).to_vec(),
             &local_product::physician_chat::PhysicianSkills::configured(None, false).unwrap(),
             &test_chat_recipe(),
+            None,
         )
         .await
         .unwrap();

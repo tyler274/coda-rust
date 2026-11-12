@@ -25,7 +25,6 @@ mod live;
 #[cfg(test)]
 mod live_tests;
 pub mod patients;
-pub mod queue;
 pub mod rehearsal;
 mod reply;
 pub mod synthetic_chart;
@@ -380,11 +379,11 @@ fn site_mime(file: &Path) -> Option<&'static str> {
 
 /// Serves the router on `listener`.
 ///
-/// One process-wide bus is shared by chat execution and auth. When both
-/// `PHYSICIAN_DATABASE_URL` and `PHYSICIAN_CHAT_TOPIC` are set, `message.submit`
-/// is accepted in Postgres and woken on Pub/Sub; this process does not run
-/// the model. A hosted site requires the topic. Recovery is
-/// aborted after graceful shutdown.
+/// One process-wide bus is shared by chat execution and auth. With durable
+/// chat (`PHYSICIAN_DURABLE_CHAT=1`) and `PHYSICIAN_DATABASE_URL`, `message.submit` is
+/// accepted in Postgres, which wakes `physician-worker`; this process does
+/// not run the model. A hosted site requires durable chat. Receipt
+/// compaction is aborted after graceful shutdown.
 pub async fn serve(listener: tokio::net::TcpListener) {
     serve_holding(listener, std::sync::Arc::default()).await;
 }
@@ -396,7 +395,7 @@ pub async fn serve_holding(
     memory_patients: std::sync::Arc<patients::MemoryPatients>,
 ) {
     let site = site_from_env(|key| env::var(key).ok(), memory_patients).await;
-    let (router, recovery) = match site {
+    let (router, compaction) = match site {
         Ok(ready) => ready,
         Err(error) => {
             tracing::error!(%error, "physician site cannot start");
@@ -407,8 +406,8 @@ pub async fn serve_holding(
     let served = axum::serve(listener, app)
         .with_graceful_shutdown(shutdown())
         .await;
-    if let Some(recovery) = recovery {
-        recovery.abort();
+    if let Some(compaction) = compaction {
+        compaction.abort();
     }
     served.expect("sample server");
 }
@@ -424,15 +423,21 @@ async fn site_from_env(
     memory_patients: std::sync::Arc<patients::MemoryPatients>,
 ) -> Result<(Router, Option<tokio::task::JoinHandle<()>>), String> {
     let hosted = hosting::is_hosted(&get);
-    let topic = configured(&get, "PHYSICIAN_CHAT_TOPIC");
+    let mode = ChatMode::from_env(&get)?;
     let database = configured(&get, "PHYSICIAN_DATABASE_URL");
-    if hosted && topic.is_none() {
-        return Err("hosted physician chat requires PHYSICIAN_CHAT_TOPIC".into());
+    if mode == ChatMode::DurableByTopic {
+        tracing::warn!(
+            "PHYSICIAN_DURABLE_CHAT is unset and PHYSICIAN_CHAT_TOPIC is set; physician chat runs on the worker"
+        );
     }
-    if topic.is_some() && database.is_none() {
-        return Err("PHYSICIAN_CHAT_TOPIC requires PHYSICIAN_DATABASE_URL".into());
+    let durable = mode.is_durable();
+    if hosted && !durable {
+        return Err("hosted physician chat requires PHYSICIAN_DURABLE_CHAT=1".into());
     }
-    if topic.is_none()
+    if durable && database.is_none() {
+        return Err("PHYSICIAN_DURABLE_CHAT requires PHYSICIAN_DATABASE_URL".into());
+    }
+    if !durable
         && local_product::model_execution(
             configured(&get, "CODA_LOCAL_MODEL_EXECUTION").as_deref(),
         )? != local_product::ModelExecution::Disabled
@@ -443,21 +448,20 @@ async fn site_from_env(
         );
     }
     let required = configured(&get, "PHYSICIAN_AUTH").as_deref() == Some("required");
-    if topic.is_some() && !required {
+    if durable && !required {
         return Err("durable physician chat requires PHYSICIAN_AUTH=required".into());
     }
     // Their patients are not the practice's, so access has nothing to enforce.
     if required && configured(&get, "PHYSICIAN_UPSTREAM").is_some() {
         return Err("PHYSICIAN_UPSTREAM cannot run with required sign-in".into());
     }
-    let durable = topic
-        .map(|topic| {
+    let skills = durable
+        .then(|| {
             local_product::physician_chat::PhysicianSkills::configured(
                 configured(&get, "PHYSICIAN_SKILLS_DIR").as_deref(),
                 hosted,
             )
             .map_err(|error| error.to_string())
-            .map(|skills| (topic, skills))
         })
         .transpose()?;
     let rehearsal = hosting::RehearsalSignIn::from_env(&get)?;
@@ -467,14 +471,14 @@ async fn site_from_env(
     let bus = physician_bus::from_env(&get, hosted).await?;
     // One pool per process: durable chat and the patient directory share it.
     let runtime = match &database {
-        Some(url) if required || durable.is_some() => Some(
+        Some(url) if required || durable => Some(
             local_product::runtime::Store::connect(url)
                 .await
                 .map_err(|_| "physician runtime store unavailable".to_string())?,
         ),
         _ => None,
     };
-    let (base, chat) = if let (Some((topic, skills)), Some(store)) = (durable, runtime.clone()) {
+    let (base, chat) = if let (Some(skills), Some(store)) = (skills, runtime.clone()) {
         let settings: Vec<_> = local_product::MODEL_SETTING_KEYS
             .into_iter()
             .filter_map(|key| configured(&get, key).map(|value| (key, value)))
@@ -491,14 +495,12 @@ async fn site_from_env(
             .import_sources(&live::source_snapshot()?)
             .await
             .map_err(|_| "physician source import failed".to_string())?;
-        let emulator = configured(&get, "PUBSUB_EMULATOR_HOST");
-        let queue = queue::PubSubQueue::connect(&topic, emulator.as_deref(), hosted).await?;
         let chat = std::sync::Arc::new(
-            durable::DurableChat::new(store, std::sync::Arc::new(queue), skills, &roles)
+            durable::DurableChat::new(store, skills, &roles)
                 .with_simulation_practices(hosting::SimulationPractices::from_env(&get)?),
         );
         tracing::info!(
-            "physician chat accepts turns onto the configured topic; this process does not run the model"
+            "physician chat accepts turns into Postgres; this process does not run the model"
         );
         (
             durable_site(std::sync::Arc::clone(&chat), std::sync::Arc::clone(&bus))
@@ -511,8 +513,45 @@ async fn site_from_env(
     let postgres = database.as_deref().zip(runtime);
     let router =
         auth::authed_router_with_bus(base, bus, memory_patients, postgres, rehearsal).await;
-    let recovery = chat.map(|chat| chat.start_recovery());
-    Ok((router, recovery))
+    let compaction = chat.map(|chat| chat.start_compaction());
+    Ok((router, compaction))
+}
+
+/// How this site runs physician chat.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+enum ChatMode {
+    /// In this process; only for a local site without model execution.
+    Inline,
+    /// Accepted into Postgres, which wakes `physician-worker`.
+    Durable,
+    /// Durable because `PHYSICIAN_CHAT_TOPIC` is set and
+    /// `PHYSICIAN_DURABLE_CHAT` is not, so a site deployed before its
+    /// environment names the switch still hands chat to the worker. This
+    /// holds until the topic is retired.
+    DurableByTopic,
+}
+
+impl ChatMode {
+    /// `PHYSICIAN_DURABLE_CHAT=1` selects durable chat and `0` inline chat.
+    /// Unset, a set `PHYSICIAN_CHAT_TOPIC` selects durable chat until the
+    /// topic is retired, and otherwise chat runs inline. Any other value
+    /// refuses to start.
+    fn from_env(get: &impl Fn(&str) -> Option<String>) -> Result<Self, String> {
+        match configured(get, "PHYSICIAN_DURABLE_CHAT").as_deref() {
+            Some("1") => Ok(Self::Durable),
+            Some("0") => Ok(Self::Inline),
+            Some(_) => Err("PHYSICIAN_DURABLE_CHAT must be 0 or 1".into()),
+            None if configured(get, "PHYSICIAN_CHAT_TOPIC").is_some() => Ok(Self::DurableByTopic),
+            None => Ok(Self::Inline),
+        }
+    }
+
+    fn is_durable(self) -> bool {
+        match self {
+            Self::Durable | Self::DurableByTopic => true,
+            Self::Inline => false,
+        }
+    }
 }
 
 /// Resolves on SIGTERM (Cloud Run's stop signal) or Ctrl-C, so in-flight
@@ -833,25 +872,102 @@ mod tests {
         (status, String::from_utf8(bytes.to_vec()).unwrap())
     }
 
-    #[tokio::test]
-    async fn hosted_site_requires_the_chat_topic() {
-        let hosted = |name: &str| (name == "K_SERVICE").then(|| "physician".into());
-        let error = site_from_env(hosted, std::sync::Arc::default())
-            .await
-            .expect_err("hosted chat requires its durable owner");
-        assert!(error.contains("PHYSICIAN_CHAT_TOPIC"), "{error}");
+    fn environment(
+        pairs: &'static [(&'static str, &'static str)],
+    ) -> impl Fn(&str) -> Option<String> {
+        |name: &str| {
+            pairs
+                .iter()
+                .find(|(key, _)| *key == name)
+                .map(|(_, value)| (*value).to_owned())
+        }
+    }
+
+    #[test]
+    fn chat_mode_follows_the_switch_and_falls_back_to_the_topic() {
+        const TOPIC: (&str, &str) = (
+            "PHYSICIAN_CHAT_TOPIC",
+            "projects/p/topics/physician-chat-turns",
+        );
+        type Case = (
+            &'static [(&'static str, &'static str)],
+            Result<ChatMode, &'static str>,
+        );
+        let cases: [Case; 8] = [
+            (&[], Ok(ChatMode::Inline)),
+            (&[("PHYSICIAN_DURABLE_CHAT", "1")], Ok(ChatMode::Durable)),
+            (&[("PHYSICIAN_DURABLE_CHAT", "0")], Ok(ChatMode::Inline)),
+            (&[TOPIC], Ok(ChatMode::DurableByTopic)),
+            (
+                &[TOPIC, ("PHYSICIAN_DURABLE_CHAT", "1")],
+                Ok(ChatMode::Durable),
+            ),
+            // An explicit 0 turns durable chat off even while the topic is set.
+            (
+                &[TOPIC, ("PHYSICIAN_DURABLE_CHAT", "0")],
+                Ok(ChatMode::Inline),
+            ),
+            (
+                &[("PHYSICIAN_DURABLE_CHAT", "true")],
+                Err("PHYSICIAN_DURABLE_CHAT must be 0 or 1"),
+            ),
+            (
+                &[TOPIC, ("PHYSICIAN_DURABLE_CHAT", "yes")],
+                Err("PHYSICIAN_DURABLE_CHAT must be 0 or 1"),
+            ),
+        ];
+        for (pairs, expected) in cases {
+            assert_eq!(
+                ChatMode::from_env(&environment(pairs)),
+                expected.map_err(str::to_owned),
+                "{pairs:?}"
+            );
+        }
+        assert!(ChatMode::Durable.is_durable());
+        assert!(ChatMode::DurableByTopic.is_durable());
+        assert!(!ChatMode::Inline.is_durable());
     }
 
     #[tokio::test]
-    async fn a_chat_topic_requires_the_physician_database() {
-        let topic = |name: &str| {
-            (name == "PHYSICIAN_CHAT_TOPIC")
-                .then(|| "projects/p/topics/physician-chat-turns".into())
-        };
-        let error = site_from_env(topic, std::sync::Arc::default())
-            .await
-            .expect_err("topic without a database");
-        assert!(error.contains("PHYSICIAN_DATABASE_URL"), "{error}");
+    async fn hosted_site_requires_durable_chat() {
+        for pairs in [
+            &[("K_SERVICE", "physician")][..],
+            &[("K_SERVICE", "physician"), ("PHYSICIAN_DURABLE_CHAT", "0")],
+        ] {
+            let error = site_from_env(environment(pairs), std::sync::Arc::default())
+                .await
+                .expect_err("hosted chat requires its durable owner");
+            assert_eq!(
+                error,
+                "hosted physician chat requires PHYSICIAN_DURABLE_CHAT=1"
+            );
+        }
+    }
+
+    #[tokio::test]
+    async fn durable_chat_requires_the_physician_database() {
+        for pairs in [
+            &[("PHYSICIAN_DURABLE_CHAT", "1")][..],
+            &[(
+                "PHYSICIAN_CHAT_TOPIC",
+                "projects/p/topics/physician-chat-turns",
+            )],
+        ] {
+            let error = site_from_env(environment(pairs), std::sync::Arc::default())
+                .await
+                .expect_err("durable chat without a database");
+            assert_eq!(
+                error,
+                "PHYSICIAN_DURABLE_CHAT requires PHYSICIAN_DATABASE_URL"
+            );
+        }
+        let (_, compaction) = site_from_env(
+            environment(&[("PHYSICIAN_DURABLE_CHAT", "0")]),
+            std::sync::Arc::default(),
+        )
+        .await
+        .expect("durable chat off starts locally");
+        assert!(compaction.is_none(), "no durable chat, so no compaction");
     }
 
     #[tokio::test]

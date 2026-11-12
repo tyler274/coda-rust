@@ -710,6 +710,7 @@ mod durable_snapshot_tests {
             bindings: Default::default(),
             opened_at: 0,
             last_activity_at: 0,
+            origin: None,
             scenario: None,
         }
     }

@@ -1,48 +1,59 @@
 //! Fenced reply-revision execution. The draft row owns all evidence and text;
 //! no chat row, effect tool, or projection is an authority for this work.
 use super::WorkerAuthority;
-use super::attempt::{self, Claimed, Failure, Outcome, Push, Tally};
-use super::{Hosted, Worker, absent_claim, announce};
+use super::attempt::{self, Claimed, Failure, Next, Outcome, Tally};
+use super::{Hosted, Worker, absent_claim, announce, pull};
 use async_trait::async_trait;
-use axum::http::StatusCode;
 use harness::engine::recipe::Finish;
 use harness::engine::{self, Cancellation, Cause, Event, Invocation, Product, Turn};
 use local_product::physician_sources::{self, read_sources};
 use local_product::runtime::Store;
-use local_product::runtime::delivery::Delivery;
+use local_product::runtime::delivery::{Delivery, DeliveryKind};
 use local_product::runtime::reply::{
     RevisionClaim, RevisionCommit, requests_finish, revised_text, revision_feedback,
 };
 use serde_json::{Value, json};
 use telemetry::genai::{self, RunContext};
+use tokio::sync::watch;
 use tracing::Instrument;
 
 const JOB: &str = "physician_reply_revision";
 
-/// Handles one revision delivery inside its own `physician.worker.attempt`.
-pub(super) async fn deliver(worker: &Worker, push: &Push) -> StatusCode {
-    let span = attempt::span(push, JOB);
-    handle(worker, &push.delivery, &span)
-        .instrument(span.clone())
-        .await
-}
-
-async fn handle(worker: &Worker, delivery: &Delivery, span: &tracing::Span) -> StatusCode {
+/// Claims the revision `delivery` names and runs it inside its own
+/// `physician.worker.attempt` span.
+pub(super) async fn deliver(
+    worker: &Worker,
+    delivery: &Delivery,
+    stop: watch::Receiver<bool>,
+) -> Next {
     let claim = match worker
         .store
-        .claim_revision(delivery, super::LEASE_SECONDS)
+        .claim_revision(delivery, worker.pace.lease)
         .await
     {
         Ok(Some(claim)) => claim,
         Ok(None) => {
-            attempt::finish(span, JOB, None, Outcome::Absent, None);
-            return absent_claim(worker, delivery).await;
+            absent_claim(worker, delivery).await;
+            return Next::Done;
         }
         Err(_) => {
-            attempt::finish(span, JOB, None, Outcome::ClaimError, Some(Failure::Claim));
-            return StatusCode::INTERNAL_SERVER_ERROR;
+            let span = attempt::span(DeliveryKind::ReplyRevision, JOB, None);
+            attempt::finish(&span, JOB, None, Outcome::ClaimError, Some(Failure::Claim));
+            return Next::Done;
         }
     };
+    let span = attempt::span(DeliveryKind::ReplyRevision, JOB, claim.origin.as_ref());
+    handle(worker, claim, &span, stop)
+        .instrument(span.clone())
+        .await
+}
+
+async fn handle(
+    worker: &Worker,
+    claim: RevisionClaim,
+    span: &tracing::Span,
+    stop: watch::Receiver<bool>,
+) -> Next {
     let (origin, scenario_id) = worker.turn_origin(
         &claim.scope.practice,
         claim.accepted.input.scenario.as_deref(),
@@ -151,23 +162,44 @@ async fn handle(worker: &Worker, delivery: &Delivery, span: &tracing::Span) -> S
         )
         .await
     };
-    let hosted = super::while_owned(
-        claimed.lease,
-        super::STALL,
-        &cancel,
-        || worker.store.renew_revision_claim(&claimed),
-        run.instrument(generation.clone()),
-    )
-    .await;
+    let hosted = tokio::select! {
+        hosted = super::while_owned(
+            claimed.lease,
+            super::STALL,
+            &cancel,
+            || worker.store.renew_revision_claim(&claimed),
+            run.instrument(generation.clone()),
+        ) => Some(hosted),
+        () = pull::stopping(stop) => None,
+    };
     if let Some((input, output)) = owner.usage.known() {
         genai::record_usage(&generation, input, output);
     }
+    let run_id = Some(owner.claim.attempt.as_str());
+    let Some(hosted) = hosted else {
+        // This worker is stopping: the revision is handed back as
+        // interrupted, at no cost, and another worker runs it at once.
+        cancel.cancel();
+        genai::record_error(&generation, "physician worker stopping");
+        let saved = worker
+            .store
+            .settle_revision_attempt(
+                &owner.claim,
+                engine::AttemptFailure::Interrupted,
+                worker.pace.backoff,
+            )
+            .await;
+        if saved.is_err() {
+            tracing::warn!("physician worker claim not handed back; its lease will run out");
+        }
+        attempt::finish(span, JOB, run_id, Outcome::Released, None);
+        return Next::Done;
+    };
     let result = match hosted {
         Hosted::Returned(result) => result,
         Hosted::Lost => return super::lost(span, JOB, &owner.claim.attempt),
     };
-    let run_id = Some(owner.claim.attempt.as_str());
-    let status = match result {
+    let next = match result {
         Ok(response) => {
             // Completion has already atomically compared its retained exchange
             // and committed under the real session's publication locks.
@@ -175,36 +207,31 @@ async fn handle(worker: &Worker, delivery: &Delivery, span: &tracing::Span) -> S
                 genai::record_output(&generation, &text);
             }
             attempt::finish(span, JOB, run_id, Outcome::Committed, None);
-            StatusCode::NO_CONTENT
+            Next::Done
         }
         Err(error) => {
             let reason = engine::AttemptFailure::from_error(&error, &cancel);
             cancel.cancel();
-            use local_product::runtime::delivery::AttemptSettlement;
-            let settlement = worker
+            let saved = worker
                 .store
-                .settle_revision_attempt(&owner.claim, reason)
+                .settle_revision_attempt(&owner.claim, reason, worker.pace.backoff)
                 .await;
-            match settlement {
-                Err(_) => {
-                    attempt::retry_not_persisted(span, JOB, &owner.claim.attempt);
-                    attempt::finish(span, JOB, run_id, Outcome::Retry, Some(failure));
-                    StatusCode::INTERNAL_SERVER_ERROR
-                }
-                Ok(AttemptSettlement::Applied) if reason.counts_as_failure() => {
+            let (outcome, next) = attempt::settled(span, JOB, &owner.claim.attempt, &saved);
+            let failure = match outcome {
+                Outcome::Retry | Outcome::GaveUp => {
                     genai::record_error(&generation, "physician reply revision failed");
-                    attempt::finish(span, JOB, run_id, Outcome::Retry, Some(failure));
-                    StatusCode::INTERNAL_SERVER_ERROR
+                    Some(failure)
                 }
-                Ok(AttemptSettlement::Applied | AttemptSettlement::Superseded) => {
-                    attempt::finish(span, JOB, run_id, Outcome::Settled, None);
-                    StatusCode::NO_CONTENT
+                Outcome::Committed | Outcome::Settled | Outcome::Released | Outcome::ClaimError => {
+                    None
                 }
-            }
+            };
+            attempt::finish(span, JOB, run_id, outcome, failure);
+            next
         }
     };
     announce(worker, owner.claim.scope.workspace.clone()).await;
-    status
+    next
 }
 
 fn context(claim: &RevisionClaim) -> local_product::runtime::reply::RevisionContext {

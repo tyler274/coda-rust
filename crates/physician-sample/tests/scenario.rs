@@ -1,7 +1,8 @@
 //! Scenario tags on hosted chat: only a rehearsal practice's session may send
 //! one. The same configured site serves the rehearsal sign-in, whose
-//! assertion checks the crate's unit tests cover with fixture-signed tokens. One authenticated site publishes onto the Pub/Sub emulator over a
-//! disposable Postgres; no worker runs, since acceptance is what is judged.
+//! assertion checks the crate's unit tests cover with fixture-signed tokens. One authenticated durable site
+//! accepts into a disposable Postgres; no worker runs, since acceptance is
+//! what is judged.
 
 use std::path::PathBuf;
 
@@ -55,8 +56,6 @@ async fn only_a_rehearsal_session_may_tag_a_message_with_a_scenario() {
         uuid::Uuid::new_v4().simple()
     )));
     std::fs::create_dir_all(&home.0).expect("home");
-    let emulator = support::Emulator::start().await;
-    let topic = support::topic();
     let port = support::free_port();
     let host = format!("127.0.0.1:{port}");
     let mut site = support::Process::spawn(
@@ -65,9 +64,7 @@ async fn only_a_rehearsal_session_may_tag_a_message_with_a_scenario() {
         &[],
         &[
             ("PHYSICIAN_DATABASE_URL", database.url.as_str()),
-            ("PUBSUB_EMULATOR_HOST", emulator.host.as_str()),
-            ("GOOGLE_CLOUD_PROJECT", support::PROJECT),
-            ("PHYSICIAN_CHAT_TOPIC", topic.as_str()),
+            support::DURABLE,
             ("PHYSICIAN_AUTH", "required"),
             ("PHYSICIAN_LISTEN_ADDR", host.as_str()),
             ("CODA_HOSTED_PROFILE", "staging-preview"),

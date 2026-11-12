@@ -29,7 +29,7 @@ the matching feature file as the recipe. Launch, doctor, evidence and cleanup li
 - Send on one site and read on the other. A pass on a single instance proves nothing
   about fan-out.
 - Wait on a state (`--wait-text`, `--wait-failed`, `watch --until`), never a fixed sleep.
-  The only exception is Pub/Sub backoff, which the recipe names.
+  The only exception is the worker's retry delay, which the recipe names.
 - Use `--out "$RUN/<feature-id>"` on every call whose result is proof.
 - The local Responses stub answers normal messages. Retry and Try again set the stub's
   remaining failures immediately before sending, so run these journeys one at a time.
@@ -60,5 +60,5 @@ behavior. It then has exactly four H2s: `Sub-features`, `How to get to it (user 
   on keeps the message, shows the couldn't-finish line, and Try again gets the reply.
 - [Resync after a Valkey restart](./resync-after-redis-restart.md): held streams get
   `resync` and the page refetches; fan-out works again afterward.
-- [Duplicate and retry](./duplicate-and-retry.md): a repeated command or delivery runs
-  the turn once, and a failed delivery is retried.
+- [Duplicate and retry](./duplicate-and-retry.md): a repeated command or announcement
+  runs the turn once, and a failed attempt is retried.

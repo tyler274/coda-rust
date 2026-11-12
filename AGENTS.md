@@ -96,8 +96,9 @@ Evidence is an artifact a reader can inspect, such as a command with its output 
 a screenshot, tied to the revision it ran against. The
 [verify skills](verification/README.md#verify-skills) name the proof for each
 feature they cover. A physician-site change is not done unless
-`cargo test -p physician-sample --test site -- --ignored` passed; that Chromium
-test fails when the document is blank.
+`cargo test -p physician-sample --test site -- --ignored` passed against a
+disposable Postgres (`PHYSICIAN_RUNTIME_TEST_DATABASE_URL`); that Chromium test
+fails when the document is blank.
 
 Inspect every diff yourself and verify the affected behavior. Obtain independent
 review for non-trivial changes, or when requested. Judge by consequences and

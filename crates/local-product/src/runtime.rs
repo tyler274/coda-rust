@@ -19,7 +19,7 @@ pub use harness::engine;
 pub use harness::provider::ResponsesProvider;
 use sea_orm::sea_query::StringLen;
 use sea_orm::{
-    ActiveModelTrait, ColumnTrait, Condition, ConnectionTrait, Database, DatabaseConnection, DbErr,
+    ActiveModelTrait, ColumnTrait, ConnectionTrait, Database, DatabaseConnection, DbErr,
     EntityTrait, QueryFilter, QueryOrder, QuerySelect, Set, TransactionTrait,
     sea_query::{Alias, Expr, ExprTrait, OnConflict, Query, extension::postgres::PgExpr},
 };
@@ -56,7 +56,7 @@ use crate::physician_sources::{ChartRequest, ChartScope, READ_TOOL, SEARCH_TOOL}
 use entities::conversation;
 
 /// Authenticated product scope, supplied by the server, never the command body.
-#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq, Hash)]
 pub struct Scope {
     /// Practice tenant.
     pub practice: String,
@@ -310,11 +310,7 @@ pub struct Attempt {
 
 impl Attempt {
     fn owns_lease(&self, now: i64) -> bool {
-        let leased = match self.status {
-            AttemptStatus::Active | AttemptStatus::Interrupted | AttemptStatus::Cancelled => true,
-            AttemptStatus::Failed | AttemptStatus::Held | AttemptStatus::Completed => false,
-        };
-        self.expires > now && leased
+        self.expires > now && delivery::DeliveryKind::ChatTurn.holds_lease(self.status)
     }
 }
 
@@ -337,9 +333,11 @@ pub struct Conversation {
     pub attempts: Vec<Attempt>,
     /// Accepted session reference, absent before acceptance; never the bearer secret.
     pub session_hash: Option<Vec<u8>>,
-    /// Database-clock time before which recovery need not republish a wakeup.
-    /// This is a delivery hint, never proof of execution or completion.
+    /// Database-clock time before which pending work is not due: the retry
+    /// delay after a failed attempt. Never proof of execution or completion.
     pub dispatch_after: i64,
+    /// Trace context of the request that last made this input runnable.
+    pub origin: Option<delivery::TraceContext>,
     /// Unsuccessful attempts in the current run, including expired leases.
     /// Only a new run resets it; at [`harness::engine::MAX_FAILED_ATTEMPTS`] the work fails.
     pub failures: u32,
@@ -503,6 +501,7 @@ impl Conversation {
             attempts: vec![],
             session_hash: None,
             dispatch_after: 0,
+            origin: None,
             failures: 0,
             budget_resume_after: 0,
             bindings: Default::default(),
@@ -524,6 +523,8 @@ pub struct Claim {
     pub attempt: String,
     /// Input generation.
     pub revision: u64,
+    /// Trace context of the request that made this input runnable.
+    pub origin: Option<delivery::TraceContext>,
 }
 
 /// Durable accepted command outcome.
@@ -538,12 +539,12 @@ pub enum Accepted {
 /// Outcome of a physician's Try again on failed or held work.
 #[derive(Debug, PartialEq, Eq)]
 pub enum Resumed {
-    /// The work is pending again; publish its owner-specific wakeup.
+    /// The work is pending again and listening workers were told.
     Pending {
-        /// The accepted input and durable owner to wake.
+        /// The accepted input and durable owner that was woken.
         delivery: delivery::Delivery,
     },
-    /// The exact same Try again was already taken; do not publish again.
+    /// The exact same Try again was already taken; nothing changed.
     Duplicate,
     /// The named work or run is not the current failed or held work, or a
     /// command field is blank.
@@ -800,7 +801,9 @@ impl Store {
         tx.commit().await
     }
 
-    /// Accepts hosted input with its original session reference for restart authorization.
+    /// Accepts hosted input with its original session reference for restart
+    /// authorization, and tells listening workers in the same transaction.
+    /// `origin` is the accepting request's trace context.
     pub async fn accept_authorized(
         &self,
         scope: &Scope,
@@ -808,6 +811,7 @@ impl Store {
         session_hash: Vec<u8>,
         skills: &PhysicianSkills,
         recipe: &RequestRecipe,
+        origin: Option<delivery::TraceContext>,
     ) -> Result<Accepted, RuntimeError> {
         if session_hash.len() != 32 {
             return Err(error("invalid session reference").into());
@@ -865,6 +869,12 @@ impl Store {
         state.session_hash = Some(session_hash);
         state.scenario = input.scenario.clone();
         state.dispatch_after = 0;
+        state.origin = origin;
+        delivery::notify(
+            &tx,
+            &delivery::Delivery::chat_turn(scope.clone(), input.key.clone()),
+        )
+        .await?;
         let now = now(&tx).await?;
         if state.messages.is_empty() {
             state.opened_at = now;
@@ -989,7 +999,8 @@ impl Store {
                 return Ok(None);
             }
         }
-        if state.status != WorkStatus::Pending {
+        // Failed work waits out its retry delay.
+        if state.status != WorkStatus::Pending || state.dispatch_after > now {
             tx.commit().await?;
             return Ok(None);
         }
@@ -1009,6 +1020,7 @@ impl Store {
             scope: scope.clone(),
             attempt: id,
             revision: state.revision,
+            origin: state.origin.clone(),
         };
         Self::save(tx, scope, &state).await?;
         Ok(Some(claim))
@@ -1344,7 +1356,9 @@ impl Store {
     /// is refused. The receipt is saved with the change: the same `key` and
     /// target answers `Duplicate`.
     /// The accepted session moves to the physician's current session, because
-    /// the original one may have ended while the work sat failed.
+    /// the original one may have ended while the work sat failed. Listening
+    /// workers are told in the same transaction, and `origin`, this request's
+    /// trace context, replaces the accepting request's.
     pub async fn resume_authorized(
         &self,
         scope: &Scope,
@@ -1352,6 +1366,7 @@ impl Store {
         session_hash: Vec<u8>,
         work_item_id: &str,
         expected_run_id: &str,
+        origin: Option<delivery::TraceContext>,
     ) -> Result<Resumed, RuntimeError> {
         if session_hash.len() != 32 {
             return Err(error("invalid session reference").into());
@@ -1391,8 +1406,15 @@ impl Store {
             .one(&tx)
             .await?
         else {
-            return Self::resume_revision(tx, scope, session_hash, work_item_id, expected_run_id)
-                .await;
+            return Self::resume_revision(
+                tx,
+                scope,
+                session_hash,
+                work_item_id,
+                expected_run_id,
+                origin,
+            )
+            .await;
         };
         let mut state = Self::conversation_control(&tx, scope, row).await?;
         let resumable = state.status.resumable()
@@ -1412,11 +1434,12 @@ impl Store {
             .start(Uuid::new_v4().to_string())?;
         state.status = WorkStatus::Pending;
         state.dispatch_after = 0;
+        state.origin = origin;
         state.session_hash = Some(session_hash);
+        let delivery = delivery::Delivery::chat_turn(scope.clone(), input_id);
+        delivery::notify(&tx, &delivery).await?;
         Self::save(tx, scope, &state).await?;
-        Ok(Resumed::Pending {
-            delivery: delivery::Delivery::chat_turn(scope.clone(), input_id),
-        })
+        Ok(Resumed::Pending { delivery })
     }
 
     /// Hosted Stop. Holds the named work until Resume or newer input, and
@@ -1567,7 +1590,7 @@ impl Store {
         Ok(chats)
     }
 
-    /// Enumerates durable pending/expired work for explicit server activation.
+    /// Enumerates durable due work for explicit server activation.
     /// Caller must reauthorize each scope; construction never starts execution.
     pub async fn pending(&self) -> Result<Vec<Scope>, DbErr> {
         self.pending_batch(100, None).await
@@ -1586,7 +1609,6 @@ impl Store {
             chat: String::new(),
         });
         let columns = [C::Practice, C::Physician, C::Workspace, C::Chat];
-        let expired = control::expired_chat();
         let mut query = conversation::Entity::find()
             .select_only()
             .columns(columns)
@@ -1596,13 +1618,7 @@ impl Store {
                 Expr::val(after.workspace),
                 Expr::val(after.chat),
             ])))
-            .filter(
-                Condition::any().add(C::Status.eq(WorkStatus::Pending)).add(
-                    Condition::all()
-                        .add(C::Status.eq(WorkStatus::Active))
-                        .add(expired),
-                ),
-            )
+            .filter(delivery::chat_turn_due())
             .limit(maximum as u64);
         for column in columns {
             query = query.order_by_asc(column);

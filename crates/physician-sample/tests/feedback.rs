@@ -61,8 +61,6 @@ impl Running {
             uuid::Uuid::new_v4().simple()
         ));
         std::fs::create_dir_all(&home).expect("home");
-        let topic = support::topic();
-        let unused_publisher = format!("127.0.0.1:{}", support::free_port());
         let mut sites = Vec::new();
         let mut hosts = [String::new(), String::new()];
         for (index, host) in hosts.iter_mut().enumerate() {
@@ -74,9 +72,7 @@ impl Running {
                 &[],
                 &[
                     ("PHYSICIAN_DATABASE_URL", &database.url),
-                    ("PUBSUB_EMULATOR_HOST", &unused_publisher),
-                    ("GOOGLE_CLOUD_PROJECT", support::PROJECT),
-                    ("PHYSICIAN_CHAT_TOPIC", &topic),
+                    support::DURABLE,
                     ("PHYSICIAN_AUTH", "required"),
                     ("PHYSICIAN_LISTEN_ADDR", host),
                 ],

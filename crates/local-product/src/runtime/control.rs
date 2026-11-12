@@ -3,6 +3,7 @@
 use super::{
     Attempt, AttemptStatus, BindingRef, Conversation, Message, Scope, SkillPackageId,
     conversion_error,
+    delivery::TraceContext,
     entities::{chat_attempt, conversation, reply_draft, reply_revision, revision_attempt},
     error,
     reply::{AcceptedRevision, Draft, EarlierRevision, RevisionAttempt},
@@ -144,6 +145,8 @@ struct ConversationState {
     last_activity_at: i64,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     scenario: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    origin: Option<TraceContext>,
 }
 
 /// The reply draft row's `state`: each [`Draft`] field that has no column or
@@ -160,6 +163,8 @@ struct DraftState {
     allowance_after: u64,
     dispatch_after: i64,
     failures: u32,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    origin: Option<TraceContext>,
 }
 
 /// The earlier revision row's `state`: each [`EarlierRevision`] field except
@@ -193,6 +198,7 @@ pub(super) fn conversation_state(conversation: &Conversation) -> Result<Value, D
         opened_at,
         last_activity_at,
         scenario,
+        origin,
     } = conversation;
     serde_json::to_value(ConversationState {
         messages: messages.clone(),
@@ -206,6 +212,7 @@ pub(super) fn conversation_state(conversation: &Conversation) -> Result<Value, D
         opened_at: *opened_at,
         last_activity_at: *last_activity_at,
         scenario: scenario.clone(),
+        origin: origin.clone(),
     })
     .map_err(conversion_error("Conversation", "conversation state"))
 }
@@ -228,6 +235,7 @@ pub(super) fn draft_state(draft: &Draft) -> Result<Value, DbErr> {
         session_hash: _,
         dispatch_after,
         failures,
+        origin,
     } = draft;
     serde_json::to_value(DraftState {
         text: text.clone(),
@@ -240,6 +248,7 @@ pub(super) fn draft_state(draft: &Draft) -> Result<Value, DbErr> {
         allowance_after: *allowance_after,
         dispatch_after: *dispatch_after,
         failures: *failures,
+        origin: origin.clone(),
     })
     .map_err(conversion_error("Draft", "reply draft state"))
 }
@@ -285,6 +294,7 @@ pub(super) fn conversation(
         opened_at,
         last_activity_at,
         scenario,
+        origin,
     } = serde_json::from_value(row.state)
         .map_err(conversion_error("conversation state", "ConversationState"))?;
     let mut conversation = Conversation {
@@ -304,6 +314,7 @@ pub(super) fn conversation(
         opened_at,
         last_activity_at,
         scenario,
+        origin,
     };
     if let Some(outcome) = conversation.run().and_then(|run| run.outcome) {
         conversation.status = outcome.into();
@@ -326,6 +337,7 @@ pub(super) fn draft(
         allowance_after,
         dispatch_after,
         failures,
+        origin,
     } = serde_json::from_value(row.state)
         .map_err(conversion_error("reply draft state", "DraftState"))?;
     Ok(Draft {
@@ -344,6 +356,7 @@ pub(super) fn draft(
         session_hash: row.session_hash,
         dispatch_after,
         failures,
+        origin,
     })
 }
 
@@ -547,34 +560,4 @@ pub(super) async fn save_revision_attempts(
             .await?;
     }
     Ok(())
-}
-
-/// The parent lock gives a chat at most one active attempt; only that attempt
-/// can make active work due for recovery. Old interrupted attempts are excluded.
-pub(super) fn expired_chat() -> sea_orm::sea_query::SimpleExpr {
-    use chat_attempt::Column as A;
-    use conversation::Column as C;
-    use sea_orm::sea_query::{Expr, ExprTrait, Query};
-    Expr::tuple([C::Practice, C::Physician, C::Workspace, C::Chat].map(Expr::col)).in_subquery(
-        Query::select()
-            .columns([A::Practice, A::Physician, A::Workspace, A::Chat])
-            .from(chat_attempt::Entity)
-            .and_where(A::Status.eq(AttemptStatus::Active))
-            .and_where(Expr::col(A::Expires).lte(super::database_clock()))
-            .to_owned(),
-    )
-}
-
-pub(super) fn expired_revision() -> sea_orm::sea_query::SimpleExpr {
-    use reply_draft::Column as C;
-    use revision_attempt::Column as A;
-    use sea_orm::sea_query::{Expr, ExprTrait, Query};
-    Expr::tuple([C::Practice, C::Physician, C::Workspace, C::Reply].map(Expr::col)).in_subquery(
-        Query::select()
-            .columns([A::Practice, A::Physician, A::Workspace, A::Reply])
-            .from(revision_attempt::Entity)
-            .and_where(A::Status.eq(AttemptStatus::Active))
-            .and_where(Expr::col(A::Expires).lte(super::database_clock()))
-            .to_owned(),
-    )
 }

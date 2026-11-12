@@ -1,8 +1,9 @@
 # Cross-instance chat
 
 A physician sends a message through one site instance. The worker answers it, and a page
-held on another instance gets the reply live and still shows it after a reload. The turn
-travels as `{scope, input_id}` on Pub/Sub and the change notice goes out on the Valkey
+held on another instance gets the reply live and still shows it after a reload. The site
+accepts the turn into Postgres and announces `{scope, input_id}` there, the worker claims
+it, and the change notice goes out on the Valkey
 bus ([book](../../../../book/src/physician-site.md), `crates/physician-bus`,
 `crates/physician-sample/src/bin/physician-worker.rs`, `tests/fanout.rs`).
 
@@ -33,7 +34,7 @@ Preconditions:
 - **Hold the stream on B.** Run `$D --out "$OUT" watch --site b --session "$S" --until workspace_changed --timeout 60 &`. Stderr prints `watching site b (HTTP 200)`.
 - **Send on A.** Run `$D --out "$OUT" send --site a --session "$S" --chat "$C" --text "Cross-instance hello"`. Exit `0`; `send-a.json` `.body.outcome` is `accepted` and `.body.chat_id` is `$C`.
 - **Live notice on B.** `wait` for the watcher. Exit `0`; `watch-b-workspace_changed.json` has `seen: true` and its frames name `pw-2a995cfc98bbfd3c4e6c1d7492ee6998`.
-- **Reply on B.** Run `$D --out "$OUT" snapshot --site b --session "$S" --chat "$C" --wait-text Noted.`. Exit `0`; `.body.snapshot.conversation` is `[{kind: physician, text: "Cross-instance hello"}, {kind: model, text: "Noted."}]`, and `.runs` holds one run with `state: completed`.
+- **Reply on B.** Run `$D --out "$OUT" snapshot --site b --session "$S" --chat "$C" --wait-text Noted.`. Exit `0`; `.body.snapshot.conversation` is `[{kind: physician, text: "Cross-instance hello"}, {kind: model, text: "Noted."}]`, and `.body.snapshot.runs` holds one run with `state: completed`.
 - **Reload on B.** Run `S2=$($D sign-in --site b)`, then `$D --out "$OUT/reload" snapshot --site b --session "$S2" --chat "$C"`. The same two items come back.
 - **Page on B, live.** Without reloading, wait for `Noted.` under `Cross-instance hello` in the `Conversation` region. Save `$OUT/site-b.png` and the region's accessibility snapshot.
 - **Send from the page on A.** Set `C2=chat-$(python3 -c 'import uuid; print(uuid.uuid4().hex)')`. In a second tab, open `$($D page-url --site a --chat "$C2")`, write `Sent from the page` in `textarea.composer-input`, and choose `Send`. Then run `$D --out "$OUT/page-send" snapshot --site b --session "$S" --chat "$C2" --wait-text Noted.`: the conversation is `[Sent from the page, Noted.]`. The page on A shows the same two lines. Save `$OUT/site-a-page-send.png`.

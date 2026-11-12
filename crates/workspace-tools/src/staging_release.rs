@@ -438,6 +438,21 @@ fn shape_of(shapes: &[(ReleaseService, Shape)], name: ReleaseService) -> Result<
         .map(|(_, shape)| shape)
         .ok_or(Error::Cloud(LocalCode::RequiredServiceAbsent))
 }
+/// Rolls a service infrastructure may not have created yet. Until it exists,
+/// a release only publishes its digest so the plan that creates it can pin one.
+fn rollout_optional(
+    receipt: &mut Receipt,
+    store: &mut impl Store,
+    cloud: &mut impl Cloud,
+    name: ReleaseService,
+    shapes: &[(ReleaseService, Shape)],
+) -> Result<()> {
+    if receipt.services.get(name).before == Observation::Absent {
+        receipt.services.get_mut(name).outcome = Outcome::BootstrapSkippedAbsent;
+        return store.save(receipt);
+    }
+    rollout(receipt, store, cloud, name, shape_of(shapes, name)?)
+}
 fn deploy(receipt: &mut Receipt, store: &mut impl Store, cloud: &mut impl Cloud) -> Result<()> {
     if receipt.outcome != Outcome::Initialized {
         return Err(Error::Input(
@@ -463,6 +478,11 @@ fn deploy(receipt: &mut Receipt, store: &mut impl Store, cloud: &mut impl Cloud)
         let shapes = before_shapes(receipt, cloud)?;
         for app in Product::ALL {
             migrate(receipt, store, cloud, app)?;
+            // A site that accepts work its worker cannot hear of stalls that
+            // work, so the worker is serving before its site moves.
+            for &worker in app.served_first() {
+                rollout_optional(receipt, store, cloud, worker, &shapes)?;
+            }
             rollout(
                 receipt,
                 store,
@@ -471,18 +491,13 @@ fn deploy(receipt: &mut Receipt, store: &mut impl Store, cloud: &mut impl Cloud)
                 shape_of(&shapes, app.service())?,
             )?;
         }
-        // Until infrastructure creates an optional service, a release only
-        // publishes its digest so the plan that creates it can pin one.
-        for optional in ReleaseService::OPTIONAL {
-            if receipt.services.get(optional).before == Observation::Absent {
-                receipt.services.get_mut(optional).outcome = Outcome::BootstrapSkippedAbsent;
-                store.save(receipt)?;
-            } else {
-                let shape = shape_of(&shapes, optional)?;
-                rollout(receipt, store, cloud, optional, shape)?;
-            }
-        }
-        Ok(())
+        rollout_optional(
+            receipt,
+            store,
+            cloud,
+            ReleaseService::ObservabilityRelay,
+            &shapes,
+        )
     })();
     if let Err(error) = &result {
         local_diagnostic(
@@ -1375,11 +1390,12 @@ mod tests {
             [
                 "job:physician-migrate",
                 "execute:physician-migrate",
+                // The worker serves the release before its site does.
+                "service:physician-worker",
                 "service:physician",
                 "job:duet-migrate",
                 "execute:duet-migrate",
                 "service:duet",
-                "service:physician-worker",
                 "service:observability-relay"
             ]
         );
@@ -1402,9 +1418,9 @@ mod tests {
         assert_eq!(
             cloud.targets,
             [
+                Some("physician-worker".to_owned()),
                 Some("physician".to_owned()),
                 None,
-                Some("physician-worker".to_owned()),
                 Some("observability-relay".to_owned())
             ]
         );
@@ -1450,11 +1466,14 @@ mod tests {
             [
                 "job:physician-migrate",
                 "execute:physician-migrate",
-                "service:physician"
+                "service:physician-worker"
             ]
         );
         assert_eq!(
-            receipt.services.get(ReleaseService::Physician).outcome,
+            receipt
+                .services
+                .get(ReleaseService::PhysicianWorker)
+                .outcome,
             Outcome::Failed
         );
         assert_eq!(receipt.outcome, Outcome::PartialOrUnknown);
@@ -1599,7 +1618,10 @@ mod tests {
         assert_eq!(cloud.pauses, ROLLOUT_POLLS);
         assert_eq!(cloud.writes.len(), 3);
         assert_eq!(
-            receipt.services.get(ReleaseService::Physician).outcome,
+            receipt
+                .services
+                .get(ReleaseService::PhysicianWorker)
+                .outcome,
             Outcome::Unknown
         );
     }
@@ -1614,7 +1636,10 @@ mod tests {
         // One confirming read a pause after the first, then no more polling.
         assert_eq!(cloud.pauses, 1);
         assert_eq!(
-            receipt.services.get(ReleaseService::Physician).outcome,
+            receipt
+                .services
+                .get(ReleaseService::PhysicianWorker)
+                .outcome,
             Outcome::Unknown
         );
         let encoded = serde_json::to_string(&receipt).expect("receipt");
@@ -1890,7 +1915,7 @@ mod tests {
         let mut cloud = FakeCloud::new();
         cloud.fail_duet_migration = true;
         assert!(deploy(&mut receipt, &mut MemoryStore::default(), &mut cloud).is_err());
-        assert_eq!(cloud.writes.len(), 5);
+        assert_eq!(cloud.writes.len(), 6);
         assert_eq!(
             receipt.services.get(ReleaseService::Physician).outcome,
             Outcome::Succeeded
@@ -1935,18 +1960,25 @@ mod tests {
         assert_eq!(cloud.writes.len(), 1);
     }
     #[test]
-    fn worker_failure_preserves_both_runtime_successes_and_cause() {
+    fn worker_failure_leaves_the_physician_site_on_its_revision_and_keeps_the_cause() {
         let mut receipt = receipt();
         let mut cloud = FakeCloud::new();
         cloud.worker_failure = true;
         assert!(deploy(&mut receipt, &mut MemoryStore::default(), &mut cloud).is_err());
         assert_eq!(receipt.outcome, Outcome::PartialOrUnknown);
-        assert_eq!(cloud.writes.len(), 7);
+        // A site whose worker is not serving the release never moves to it.
+        assert_eq!(
+            cloud.writes,
+            [
+                "job:physician-migrate",
+                "execute:physician-migrate",
+                "service:physician-worker"
+            ]
+        );
         for app in Product::ALL {
-            assert_eq!(
-                receipt.services.get(app.service()).outcome,
-                Outcome::Succeeded
-            );
+            let site = receipt.services.get(app.service());
+            assert_eq!(site.outcome, Outcome::NotAttempted);
+            assert_eq!(site.before, site.final_state);
         }
         assert_eq!(
             receipt.services.get(ReleaseService::PhysicianWorker).before,

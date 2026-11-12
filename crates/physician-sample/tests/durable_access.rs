@@ -1,7 +1,7 @@
 //! Hosted chat work answers only the physician who owns it.
 //!
-//! One site and one slow worker share a disposable Postgres, Valkey and the
-//! Pub/Sub emulator. The same `message.submit` sent twice is one turn with one
+//! One site and one slow worker share a disposable Postgres and Valkey. The
+//! same `message.submit` sent twice is one turn with one
 //! reply, and that reply carries its response id. A colleague on the
 //! same panel, a physician without the patient on their panel, and a physician
 //! in another practice each try to read, Stop, Resume and write into the
@@ -87,9 +87,6 @@ async fn chat_work_answers_only_its_owner_and_a_repeated_submit_is_one_turn() {
     let redis = valkey.url();
     let worker_port = support::free_port();
     let site_port = support::free_port();
-    let emulator = support::Emulator::start().await;
-    emulator.provision(worker_port).await;
-    let topic = support::topic();
     let worker_listen = format!("127.0.0.1:{worker_port}");
     let site = format!("127.0.0.1:{site_port}");
     // Each answer takes long enough for every outsider to try Stop while it runs.
@@ -101,7 +98,6 @@ async fn chat_work_answers_only_its_owner_and_a_repeated_submit_is_one_turn() {
         &[
             ("PHYSICIAN_DATABASE_URL", database.url.as_str()),
             ("PHYSICIAN_REDIS_URL", redis.as_str()),
-            ("PUBSUB_EMULATOR_HOST", emulator.host.as_str()),
             ("PHYSICIAN_WORKER_LISTEN_ADDR", worker_listen.as_str()),
             ("PHYSICIAN_RESPONSES_STUB_PORT", &stub.port),
         ],
@@ -115,9 +111,7 @@ async fn chat_work_answers_only_its_owner_and_a_repeated_submit_is_one_turn() {
         &[
             ("PHYSICIAN_DATABASE_URL", database.url.as_str()),
             ("PHYSICIAN_REDIS_URL", redis.as_str()),
-            ("PUBSUB_EMULATOR_HOST", emulator.host.as_str()),
-            ("GOOGLE_CLOUD_PROJECT", support::PROJECT),
-            ("PHYSICIAN_CHAT_TOPIC", topic.as_str()),
+            support::DURABLE,
             ("PHYSICIAN_AUTH", "required"),
             ("PHYSICIAN_LISTEN_ADDR", site.as_str()),
         ],
