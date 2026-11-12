@@ -133,6 +133,24 @@ in
       description = "SSH public keys that may log in as the container's agent; sshd runs only when there is one.";
     };
 
+    localModels.hostPort = lib.mkOption {
+      type = lib.types.nullOr lib.types.port;
+      default = null;
+      example = 11434;
+      description = ''
+        The one TCP port on hostAddress the container may connect to, for a
+        model server on the host. The server must listen on hostAddress.
+        Every other connection to the host, the LAN, Tailscale and IPv6
+        stays dropped. Null opens nothing.
+      '';
+    };
+
+    swarm.package = lib.mkOption {
+      type = lib.types.nullOr lib.types.package;
+      default = null;
+      description = "A swarm package to install in the container; null installs none.";
+    };
+
     container = {
       enable = lib.mkOption {
         type = lib.types.bool;

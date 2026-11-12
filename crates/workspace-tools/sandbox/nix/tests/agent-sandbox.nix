@@ -12,6 +12,7 @@ let
   # shaped like a real token, so the published test log stays clean.
   githubToken = "vmcheck-github-agent-7f3a91";
   dopplerToken = "vmcheck-doppler-2c8e54";
+  anthropicKey = "vmcheck-anthropic-91d0b7";
   # Throwaway key for the sshd login check; never used outside this test.
   testKey = pkgs.runCommand "coda-agent-test-key" { nativeBuildInputs = [ pkgs.openssh ]; } ''
     mkdir $out
@@ -86,6 +87,8 @@ in
         # No desktop session runs a Secret Service here; the stub keeps
         # items as files the broker's user owns.
         broker.keyringPackage = pkgs.callPackage ./fake-secret-tool.nix { dir = keyring; };
+        # Stands in for a model server; 8080 stays a service it must not reach.
+        localModels.hostPort = 8081;
       };
       systemd.tmpfiles.rules = [ "d ${keyring} 0700 luluco users -" ];
       # Cyrene's desktop runs polkit; the module's rule needs it.
@@ -97,6 +100,10 @@ in
           {
             addr = "0.0.0.0";
             port = 8080;
+          }
+          {
+            addr = "0.0.0.0";
+            port = 8081;
           }
         ];
       };
@@ -204,6 +211,13 @@ in
     with subtest("network: host and private ranges blocked"):
         machine.succeed("curl -s -o /dev/null http://127.0.0.1:8080/")
         agent_fails("curl -s -m 3 http://10.233.1.1:8080/")
+        # localModels.hostPort opens one TCP port on the host end, and only
+        # there: not on the host's other addresses.
+        machine.succeed("curl -s -o /dev/null http://127.0.0.1:8081/")
+        agent("curl -s -m 5 -o /dev/null http://10.233.1.1:8081/")
+        agent_fails("curl -s -m 3 http://10.0.2.15:8081/")
+        rules = machine.succeed("nft list chain inet agent-sandbox input")
+        assert "ip daddr 10.233.1.1 tcp dport 8081 accept" in rules, rules
         agent_fails("curl -s -m 3 http://10.0.2.15:8080/")
         agent_fails("curl -s -m 3 http://192.168.1.1/")
         agent_fails("curl -s -m 3 http://100.100.100.100/")
@@ -233,6 +247,7 @@ in
 
     github_token = "${githubToken}"
     doppler_token = "${dopplerToken}"
+    anthropic_key = "${anthropicKey}"
     keyring = "${keyring}"
     host_users_gid = "${toString (uidBase + 100)}"
   ''

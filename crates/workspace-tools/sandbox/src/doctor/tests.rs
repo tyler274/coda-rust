@@ -2,8 +2,8 @@ use std::path::{Path, PathBuf};
 
 use super::fake::{healthy, stored};
 use super::{Check, Fix, LegacyTokenDir, Outcome, SpoolDir, Verdict, render, run, verdict};
-use crate::broker::Source;
-use crate::broker::wire::{GhFallback, ItemState, Unavailable};
+use crate::broker::wire::{GhFallback, ItemReport, ItemState, Unavailable};
+use crate::broker::{Item, Provider, Source};
 use crate::config::{Config, Loaded};
 use crate::editor_settings::Editor;
 use crate::error::Error;
@@ -188,6 +188,34 @@ fn broker_reports_source_and_warns_on_fallback() {
         outcome(&findings, &Check::Broker),
         Outcome::Warn { detail, .. } if detail.contains("is on")
     ));
+}
+
+#[test]
+fn broker_passes_without_provider_keys_and_warns_on_a_bad_one() {
+    let mut probe = healthy();
+    let mut report = stored();
+    report.items.push(ItemReport {
+        item: Item::Provider(Provider::Anthropic),
+        state: ItemState::Unavailable {
+            reason: Unavailable::NotStored,
+        },
+    });
+    probe.broker = Some(report.clone());
+    let findings = run(&probe, &config());
+    assert!(matches!(
+        outcome(&findings, &Check::Broker),
+        Outcome::Pass { detail } if detail.ends_with("github-ci: keyring; anthropic: not stored")
+    ));
+
+    report.items.last_mut().expect("anthropic").state = ItemState::Unavailable {
+        reason: Unavailable::NotAToken,
+    };
+    probe.broker = Some(report);
+    let findings = run(&probe, &config());
+    let Outcome::Warn { fix, .. } = outcome(&findings, &Check::Broker) else {
+        panic!("expected Warn")
+    };
+    assert_eq!(fix.to_string(), "coda-sandbox broker store anthropic");
 }
 
 #[test]

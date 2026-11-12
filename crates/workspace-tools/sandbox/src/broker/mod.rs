@@ -27,13 +27,50 @@ pub mod wire;
 mod tests;
 
 use std::fmt;
+use std::sync::LazyLock;
 
+use clap::builder::PossibleValue;
 use serde::{Deserialize, Serialize};
 use sha2::{Digest as _, Sha256};
 
+/// Declares [`Provider`] from one line per provider: its variant and the
+/// name it has in the keyring, on the wire and on the command line.
+macro_rules! providers {
+    ($($(#[doc = $doc:literal])* $variant:ident = $name:literal,)+) => {
+        /// A model provider whose API key the agent's door serves, for the
+        /// container's agent CLIs and the swarm's direct API workers.
+        #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
+        pub enum Provider {
+            $($(#[doc = $doc])* #[serde(rename = $name)] $variant,)+
+        }
+
+        impl Provider {
+            /// Every provider, in the order reports list them.
+            pub const ALL: &[Self] = &[$(Self::$variant),+];
+
+            pub fn name(self) -> &'static str {
+                match self {
+                    $(Self::$variant => $name,)+
+                }
+            }
+        }
+    };
+}
+
+providers! {
+    /// Anthropic's API, for `claude`.
+    Anthropic = "anthropic",
+    /// OpenAI's API, for `codex`.
+    Openai = "openai",
+    /// Google's Gemini API, for `gemini`.
+    Gemini = "gemini",
+    /// OpenRouter's API, for direct API workers.
+    Openrouter = "openrouter",
+}
+
 /// A secret the keyring holds, each under the attributes
 /// `service=coda-sandbox token=<name>`.
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize, clap::ValueEnum)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
 #[serde(rename_all = "kebab-case")]
 pub enum Item {
     /// The fine-grained GitHub token for git and gh in the container.
@@ -44,14 +81,26 @@ pub enum Item {
     /// and reads the job queue with. It never enters the container.
     GithubCi,
     /// A throwaway item `broker self-test` writes, reads and deletes.
-    #[value(skip)]
     #[serde(rename = "coda-sandbox-selftest")]
     SelfTest,
+    /// A model provider's API key, named as the provider is.
+    #[serde(untagged)]
+    Provider(Provider),
 }
 
 impl Item {
     /// The items the agent's door serves, in the order reports list them.
-    pub const AGENT: [Self; 2] = [Self::GithubAgent, Self::Doppler];
+    pub fn agent() -> impl Iterator<Item = Self> {
+        [Self::GithubAgent, Self::Doppler]
+            .into_iter()
+            .chain(Provider::ALL.iter().copied().map(Self::Provider))
+    }
+
+    /// Whether the sandbox works without it. A provider key is stored only
+    /// for the providers the user runs agents on.
+    pub fn optional(self) -> bool {
+        matches!(self, Self::Provider(_))
+    }
 
     /// The value of the keyring item's `token` attribute.
     pub fn name(self) -> &'static str {
@@ -60,6 +109,23 @@ impl Item {
             Self::Doppler => "doppler",
             Self::GithubCi => "github-ci",
             Self::SelfTest => "coda-sandbox-selftest",
+            Self::Provider(provider) => provider.name(),
+        }
+    }
+}
+
+/// `broker store` and `broker delete` take every item but the self-test's.
+impl clap::ValueEnum for Item {
+    fn value_variants<'a>() -> &'a [Self] {
+        static STORABLE: LazyLock<Vec<Item>> =
+            LazyLock::new(|| Item::agent().chain([Item::GithubCi]).collect());
+        &STORABLE
+    }
+
+    fn to_possible_value(&self) -> Option<PossibleValue> {
+        match self {
+            Self::SelfTest => None,
+            item => Some(PossibleValue::new(item.name())),
         }
     }
 }

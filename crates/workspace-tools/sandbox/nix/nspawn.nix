@@ -38,6 +38,15 @@ let
         };
         hostAddress = lib.mkOption { type = lib.types.str; };
         localAddress = lib.mkOption { type = lib.types.str; };
+        hostTcpPort = lib.mkOption {
+          type = lib.types.nullOr lib.types.port;
+          default = null;
+          description = ''
+            The one TCP port on hostAddress the container may connect to, such
+            as a model server's. Every other connection to the host stays
+            dropped, and so does all IPv6.
+          '';
+        };
         autoStart = lib.mkOption {
           type = lib.types.bool;
           default = false;
@@ -246,11 +255,25 @@ in
       ip-forward-no-drop = true;
     };
 
+    # The host's own firewall filters input too; open the port on the veth
+    # alone, so a server listening on every address stays closed elsewhere.
+    networking.firewall.interfaces = lib.mapAttrs' (
+      name: s: lib.nameValuePair (iface name) { allowedTCPPorts = [ s.hostTcpPort ]; }
+    ) (lib.filterAttrs (_: s: s.hostTcpPort != null) cfg.containers);
+
     networking.nftables.tables.agent-sandbox = {
       family = "inet";
       content =
         let
           ifaces = lib.concatMapStringsSep ", " (n: ''"${iface n}"'') (lib.attrNames cfg.containers);
+          hostPorts = lib.concatStrings (
+            lib.mapAttrsToList (
+              name: s:
+              lib.optionalString (s.hostTcpPort != null) ''
+                ${"  "}iifname "${iface name}" ip daddr ${s.hostAddress} tcp dport ${toString s.hostTcpPort} accept
+              ''
+            ) cfg.containers
+          );
         in
         ''
           set blocked4 {
@@ -269,6 +292,9 @@ in
           chain input {
             type filter hook input priority filter - 10; policy accept;
             iifname { ${ifaces} } ct state established,related accept
+          ''
+        + hostPorts
+        + ''
             iifname { ${ifaces} } drop
           }
         '';

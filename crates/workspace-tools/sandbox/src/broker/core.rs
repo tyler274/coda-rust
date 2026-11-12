@@ -124,7 +124,7 @@ impl Broker {
     /// agent's, then the CI controller's on a host with the CI.
     fn served(&self) -> impl Iterator<Item = Item> + use<> {
         let ci = self.peers.ci_uid.map(|_| Item::GithubCi);
-        Item::AGENT.into_iter().chain(ci)
+        Item::agent().chain(ci)
     }
 
     /// Who `peer` is to this broker.

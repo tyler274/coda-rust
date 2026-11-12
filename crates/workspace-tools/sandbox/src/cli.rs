@@ -59,8 +59,8 @@ pub enum Command {
         #[arg(value_enum)]
         operation: Operation,
     },
-    /// Print a token from the broker, for the container's gh and doppler
-    /// wrappers.
+    /// Print a token from the broker, for the container's gh, doppler and
+    /// agent CLI wrappers.
     Token {
         #[arg(value_enum)]
         want: Want,

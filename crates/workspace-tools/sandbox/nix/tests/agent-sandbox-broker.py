@@ -53,6 +53,18 @@ with subtest("gh and doppler wrappers get their tokens per process"):
     agent_fails("printenv GH_TOKEN")
     agent_fails("printenv DOPPLER_TOKEN")
 
+with subtest("agent CLIs get their provider key per process"):
+    status = luluco("coda-sandbox status")
+    assert "anthropic: not stored" in status, status
+    # Without a stored key the wrapper stops before the CLI starts.
+    err = agent("claude --version 2>&1 || true")
+    assert "anthropic is unavailable" in err and "no token is stored" in err, err
+    luluco(f"printf %s {anthropic_key} | coda-sandbox broker store anthropic")
+    assert agent("coda-sandbox token anthropic").strip() == anthropic_key
+    agent("claude --version")
+    agent("command -v codex gemini")
+    agent_fails("printenv ANTHROPIC_API_KEY")
+
 with subtest("only the container's agent gets a secret"):
     err = machine.fail("coda-sandbox token gh 2>&1")
     assert "may not ask" in err, err
@@ -87,6 +99,7 @@ with subtest("the audit log records every request and no secret"):
     journal = broker_journal()
     assert "granted" in journal and "wrong_peer" in journal, journal
     assert github_token not in journal and doppler_token not in journal, journal
+    assert "provider_key granted" in journal and anthropic_key not in journal, journal
 
 with subtest("the broker cannot dump core"):
     pid = machine.succeed("pgrep -u luluco -f 'coda-sandbox broker serve'").strip()

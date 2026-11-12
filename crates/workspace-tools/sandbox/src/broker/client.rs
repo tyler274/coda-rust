@@ -3,11 +3,14 @@
 use std::io::{BufRead as _, BufReader, Write as _};
 use std::os::unix::net::UnixStream;
 use std::path::Path;
+use std::sync::LazyLock;
 use std::time::Duration;
+
+use clap::builder::PossibleValue;
 
 use super::error::BrokerError;
 use super::wire::{GitHost, Protocol, Reply, Report, Request};
-use super::{Item, Secret};
+use super::{Item, Provider, Secret};
 
 /// The broker's agent socket on the host and, through the container's bind
 /// of its directory, inside the container.
@@ -42,15 +45,16 @@ pub fn exchange(socket: &Path, request: &Request) -> Result<Reply, BrokerError> 
 }
 
 /// A secret the container asks for.
-#[derive(Debug, Clone, Copy, PartialEq, Eq, clap::ValueEnum)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum Want {
     /// git's HTTPS credential for github.com.
-    #[value(skip)]
     GitCredential,
     /// The GitHub token for `gh`.
     Gh,
     /// The Doppler service token for `doppler`.
     Doppler,
+    /// A model provider's API key, named as the provider is.
+    Provider(Provider),
 }
 
 impl Want {
@@ -62,6 +66,7 @@ impl Want {
             },
             Self::Gh => Request::GhToken,
             Self::Doppler => Request::DopplerToken,
+            Self::Provider(provider) => Request::ProviderKey { provider },
         }
     }
 
@@ -69,6 +74,29 @@ impl Want {
         match self {
             Self::GitCredential | Self::Gh => Item::GithubAgent,
             Self::Doppler => Item::Doppler,
+            Self::Provider(provider) => Item::Provider(provider),
+        }
+    }
+}
+
+/// `coda-sandbox token` takes `gh`, `doppler` and every provider; git's
+/// credential goes through `coda-sandbox credential` instead.
+impl clap::ValueEnum for Want {
+    fn value_variants<'a>() -> &'a [Self] {
+        static PRINTABLE: LazyLock<Vec<Want>> = LazyLock::new(|| {
+            [Want::Gh, Want::Doppler]
+                .into_iter()
+                .chain(Provider::ALL.iter().copied().map(Want::Provider))
+                .collect()
+        });
+        &PRINTABLE
+    }
+
+    fn to_possible_value(&self) -> Option<PossibleValue> {
+        match self {
+            Self::GitCredential => None,
+            Self::Gh => Some(PossibleValue::new("gh")),
+            want => Some(PossibleValue::new(want.item().name())),
         }
     }
 }

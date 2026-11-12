@@ -10,7 +10,7 @@ use coda_sandbox::broker::error::BrokerError;
 use coda_sandbox::broker::keyring::{Locked, Memory};
 use coda_sandbox::broker::peer::{Door, PeerMap};
 use coda_sandbox::broker::wire::{Denied, GhFallback, Unavailable};
-use coda_sandbox::broker::{Item, serve};
+use coda_sandbox::broker::{Item, Provider, Secret, serve};
 use coda_sandbox::credential::{self, Operation};
 
 struct Running {
@@ -91,6 +91,33 @@ fn agent_gets_a_git_credential_and_the_audit_line_has_no_secret() {
 }
 
 #[test]
+fn agent_gets_a_stored_provider_key_and_a_typed_reason_for_a_missing_one() {
+    let broker = start(as_agent);
+    broker.memory.edit(|state| {
+        state.items.insert(
+            Item::Provider(Provider::Anthropic),
+            Secret::new("sk-ant-test-secret").expect("a token"),
+        )
+    });
+    let anthropic = Want::Provider(Provider::Anthropic);
+    let secret = client::secret(&broker.socket(), anthropic).expect("anthropic key");
+    assert_eq!(secret.expose(), "sk-ant-test-secret");
+    let error =
+        client::secret(&broker.socket(), Want::Provider(Provider::Gemini)).expect_err("not stored");
+    assert!(matches!(
+        error,
+        BrokerError::Unavailable {
+            item: Item::Provider(Provider::Gemini),
+            reason: Unavailable::NotStored
+        }
+    ));
+    let audit = broker.audit();
+    assert!(audit.contains("provider_key granted"), "{audit}");
+    assert!(audit.contains("reason=not_stored"), "{audit}");
+    assert!(!audit.contains("sk-ant-test-secret"), "{audit}");
+}
+
+#[test]
 fn helper_answers_nothing_for_other_hosts_and_for_store_and_erase() {
     let broker = start(as_agent);
     assert_eq!(
@@ -129,10 +156,12 @@ fn locked_keyring_gives_git_no_answer_and_the_client_a_typed_reason() {
 fn the_owner_pings_but_gets_no_secret() {
     let broker = start(as_owner);
     let report = client::ping(&broker.socket()).expect("ping");
-    assert_eq!(report.items.len(), 2);
+    assert_eq!(report.items.len(), Item::agent().count());
     assert!(!report.fallback_used);
-    let error = client::secret(&broker.socket(), Want::Gh).expect_err("denied");
-    assert!(matches!(error, BrokerError::Denied(Denied::WrongPeer)));
+    for want in [Want::Gh, Want::Provider(Provider::Openai)] {
+        let error = client::secret(&broker.socket(), want).expect_err("denied");
+        assert!(matches!(error, BrokerError::Denied(Denied::WrongPeer)));
+    }
     client::reload(&broker.socket()).expect("reload");
     let audit = broker.audit();
     assert!(

@@ -38,6 +38,8 @@ services.coda-sandbox = {
 | `carry.dir`, `carry.sourceRepo` | `/var/lib/coda-carry`, `~user/code/coda/coda-rust` | Where `coda-carry` writes, and what it reads |
 | `broker.ghFallback` | `false` | Let the broker serve `gh auth token` when no `github-agent` is stored |
 | `broker.keyringPackage` | `pkgs.libsecret` | Provides `secret-tool` for the broker |
+| `localModels.hostPort` | `null` | The one TCP port on `hostAddress` the container may reach, for a model server on the host |
+| `swarm.package` | `null` | A swarm package to install in the container |
 | `ci.enable` | `false` | The Firecracker controller, its timer and the seed unit |
 | `ci.guest`, `ci.workDiskSize`, `ci.marginMiB` | `{ }`, `200G`, `4096` | Guest configuration and sizing |
 | `package` | this flake's | The binary installed on the host and in the container |
@@ -60,6 +62,8 @@ services.coda-sandbox = {
 
 Paths equal the host's so the host Nix daemon's GC roots for each worktree's dev shell stay valid. Starting the container never gates boot: it is wanted only by `machines.target`, and if a unit in `requires` fails, only the container and the CI fail. `nix build ./crates/workspace-tools/sandbox#checks.x86_64-linux.agent-sandbox -L` runs the container on a late-imported ZFS pool in a throwaway VM and checks these boundaries.
 
+With `localModels.hostPort` set, nftables accepts TCP from the container to `hostAddress` on that port, and the host firewall opens it on the container's veth only. Every other connection to the host, all forwarded traffic to the LAN, Tailscale and other private ranges, and all IPv6 stay dropped. The model server must listen on `hostAddress` or on every address; Ollama, for one, listens on `127.0.0.1` by default (`services.ollama.host`). Inside the container, reach it at `http://10.233.1.1:<port>`.
+
 Host git refuses trees the agent wrote (they belong to another UID). Do not mark them `safe.directory`: a hook or config the agent planted would run as you. Work on them from inside the container, or bring work out as a bundle.
 
 ### Agent sandbox credentials
@@ -76,7 +80,18 @@ coda-sandbox doctor                      # "token broker  github-agent: keyring;
 
 The broker ([nix/broker.nix](nix/broker.nix), [src/broker](src/broker)) is `coda-sandbox-broker.service`, a `systemd --user` service of `user` that keeps running while the user lingers. It listens on `/run/coda-sandbox/agent/broker.sock`, a directory bound into the container at the same path, and serves a secret only to a peer whose kernel-reported uid is the container's agent (`uidBase + 1000`); container root, other host users and other containers are refused, and you may ask it only for its report or a reload. It keeps each token in memory for an hour, keeps serving a cached one while the keyring is locked, rate-limits the container to 30 requests a minute, and writes one line per request to its journal (`journalctl --user -u coda-sandbox-broker`) with the caller, the outcome and an 8-digit SHA-256 fingerprint of the token, never the token.
 
-Inside the container, git asks `coda-sandbox credential` for `https://github.com` (remotes written as `git@github.com:` are rewritten), and `gh` and `doppler` are wrappers that fetch their token for that one process, so no token is in the environment of a shell. With no answer, git fails rather than prompting. Anything in the container can ask, so the GitHub token must reach only `coda-rust`. `broker.ghFallback = true` lets the broker serve `gh auth token`, your general token, when no `github-agent` is stored; doctor warns while it is on or after it was used. Revoking a token on GitHub or Doppler is the kill switch.
+The coding agents' API keys are optional items, stored the same way when you use them:
+
+```bash
+coda-sandbox broker store anthropic    # claude
+coda-sandbox broker store openai       # codex
+coda-sandbox broker store gemini       # gemini
+coda-sandbox broker store openrouter   # for tools that read it with `coda-sandbox token openrouter`
+```
+
+Doctor reports a provider key that is not stored but does not warn about it. Adding a provider is one line in the `providers!` table in [src/broker/mod.rs](src/broker/mod.rs); its name is the keyring item, the wire name and the `broker store` and `token` argument.
+
+Inside the container, git asks `coda-sandbox credential` for `https://github.com` (remotes written as `git@github.com:` are rewritten), and `gh`, `doppler`, `claude`, `codex` and `gemini` are wrappers that fetch their token for that one process (`coda-sandbox token <gh|doppler|provider>`), so no token is in the environment of a shell or in a file. The agents also keep the key from the commands they run: `claude` runs with `CLAUDE_CODE_SUBPROCESS_ENV_SCRUB=1`, `codex` reads the key through a provider's `env_key` and keeps its default excludes of `*KEY*`, `*SECRET*` and `*TOKEN*` variables, and `/etc/gemini-cli/settings.json` turns on Gemini CLI's variable redaction. That filtering is the CLIs' own, so treat it as one layer: a command that asks the broker gets the key anyway. With no answer, git fails rather than prompting. Anything in the container can ask, so the GitHub token must reach only `coda-rust`. `broker.ghFallback = true` lets the broker serve `gh auth token`, your general token, when no `github-agent` is stored; doctor warns while it is on or after it was used. Revoking a token on GitHub or Doppler is the kill switch.
 
 With `ci.enable`, the broker also listens on `/run/coda-sandbox/ci/broker.sock`, in a directory only you and the `coda-ci` user can enter, and serves the `github-ci` token there to the CI controller's user alone. Each socket answers only for its own tokens: the container cannot ask for the CI token, even on its own socket, and the controller cannot ask for the container's. Each socket serves at most 16 connections at once, with separate room for you, and gives a caller two seconds to send its request, so a stalled caller on one socket cannot hold up the other, nor stop `broker store` from reaching the running broker. If the socket the controller would use exists but it may not reach it, its pass fails instead of quietly skipping GitHub.
 
