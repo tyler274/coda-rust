@@ -259,3 +259,147 @@ async fn discuss_holds_running_work_the_way_stop_does_until_resume() {
         format!("{before:?}")
     );
 }
+
+#[tokio::test]
+#[ignore = "requires explicit local Postgres"]
+async fn discuss_while_messages_are_queued_returns_them_to_the_draft_and_never_sends_them() {
+    use chat_draft::ChatDraftSaved;
+    let store = discuss_store().await;
+    let practice = uuid::Uuid::new_v4().to_string();
+    let source = delivery_scope(&practice, "chat");
+    let start = Scope {
+        practice: practice.clone(),
+        physician: String::new(),
+        workspace: String::new(),
+        chat: String::new(),
+    };
+    accept(&store, &source, &delivery_input("first"), 1)
+        .await
+        .unwrap();
+    answer(&store, &source, "Her heart rate allows it.").await;
+    send(&store, &source, &delivery_input("second"), 1, SendMode::Now)
+        .await
+        .unwrap();
+    let claim = store.claim(&source, 60).await.unwrap().expect("a turn");
+    let work = store.conversation(&source).await.unwrap().work.clone();
+    // Unsent text in the composer, and two Send next messages behind the
+    // running answer.
+    assert!(matches!(
+        store
+            .save_chat_draft(&source, 0, "still typing", &[1; 32], &mut OpenAuthority)
+            .await
+            .unwrap(),
+        ChatDraftSaved::Saved(_)
+    ));
+    for (key, text) in [("q1", "And the potassium?"), ("q2", "Also the creatinine")] {
+        let mut input = delivery_input(key);
+        input.text = text.into();
+        send(&store, &source, &input, 1, SendMode::Next)
+            .await
+            .unwrap();
+    }
+    assert_eq!(store.conversation(&source).await.unwrap().queued.len(), 2);
+
+    assert_eq!(
+        store
+            .discuss_authorized(&source, "discuss", vec![6; 32], 1, "talk")
+            .await
+            .unwrap(),
+        Discussed::Opened
+    );
+    // Discuss holds the running answer as Stop does, and the queue goes
+    // back to the composer after the text already there.
+    let held = store.conversation(&source).await.unwrap();
+    assert_eq!(held.status, WorkStatus::Held);
+    assert!(held.queued.is_empty(), "{:?}", held.queued);
+    let messages = |state: &Conversation| {
+        state
+            .messages
+            .iter()
+            .map(|message| message.text.clone())
+            .collect::<Vec<_>>()
+    };
+    assert!(
+        !messages(&held)
+            .iter()
+            .any(|text| text == "And the potassium?" || text == "Also the creatinine"),
+        "a queued message was sent: {:?}",
+        messages(&held)
+    );
+    let draft = store.chat_draft(&source).await.unwrap();
+    assert_eq!(
+        draft.text,
+        "still typing\n\nAnd the potassium?\n\nAlso the creatinine"
+    );
+    // The new chat holds only the discussed response, never the queue.
+    let talk = store
+        .conversation(&Scope {
+            chat: "talk".into(),
+            ..source.clone()
+        })
+        .await
+        .unwrap();
+    assert_eq!(messages(&talk), ["Her heart rate allows it."]);
+    assert!(talk.queued.is_empty());
+    assert!(
+        store
+            .chat_draft(&Scope {
+                chat: "talk".into(),
+                ..source.clone()
+            })
+            .await
+            .unwrap()
+            .text
+            .is_empty()
+    );
+
+    // Discuss asked again returns nothing twice, and nothing queued is woken.
+    assert_eq!(
+        store
+            .discuss_authorized(&source, "discuss", vec![6; 32], 1, "talk")
+            .await
+            .unwrap(),
+        Discussed::Duplicate
+    );
+    assert_eq!(store.chat_draft(&source).await.unwrap(), draft);
+    assert!(
+        !store
+            .dispatch_due(100, Some(&start))
+            .await
+            .unwrap()
+            .deliveries
+            .iter()
+            .any(|delivery| delivery.scope == source)
+    );
+
+    // Resume answers the held message only; the returned text stays a draft.
+    let run = held.run().unwrap().id.to_owned();
+    assert_eq!(
+        store
+            .resume_authorized(&source, "resume", vec![9; 32], &work, &run)
+            .await
+            .unwrap(),
+        Resumed::Pending {
+            delivery: Delivery::chat_turn(source.clone(), "second".into())
+        }
+    );
+    let (tx, mut state, _) = store.locked(&source).await.unwrap();
+    state.attempts.last_mut().unwrap().expires = 0;
+    Store::save(tx, &source, &state).await.unwrap();
+    let successor = store.claim(&source, 60).await.unwrap().expect("resumed");
+    assert_ne!(successor.attempt, claim.attempt);
+    answer_claim(&store, &successor, "Resumed answer.").await;
+    let done = store.conversation(&source).await.unwrap();
+    assert_eq!(done.status, WorkStatus::Completed);
+    assert!(done.queued.is_empty());
+    assert_eq!(
+        messages(&done),
+        [
+            "first",
+            "Her heart rate allows it.",
+            "second",
+            "Resumed answer."
+        ]
+    );
+    assert_eq!(store.chat_draft(&source).await.unwrap().text, draft.text);
+}
