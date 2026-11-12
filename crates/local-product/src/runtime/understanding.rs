@@ -887,6 +887,8 @@ impl Store {
                     .add(practice_job::Column::Kind.eq(PracticeJobKind::InitialUnderstanding)),
             )
             .order_by_desc(practice_job::Column::CreatedAt)
+            .order_by_desc(practice_job::Column::SourcesVersion)
+            .order_by_desc(practice_job::Column::JobId)
             .all(&tx)
             .await?;
         tx.commit().await?;
@@ -1159,6 +1161,8 @@ impl Store {
                     .add(practice_job::Column::Kind.eq(PracticeJobKind::InitialUnderstanding)),
             )
             .order_by_asc(practice_job::Column::UpdatedAt)
+            .order_by_asc(practice_job::Column::SourcesVersion)
+            .order_by_asc(practice_job::Column::JobId)
             .all(&self.db)
             .await?;
         let mut latest_by_workspace: BTreeMap<String, practice_job::Model> = BTreeMap::new();
@@ -1201,21 +1205,19 @@ impl Store {
         practice: &str,
         workspace: &str,
     ) -> Result<Option<String>, DbErr> {
-        let memories = self
-            .patient_memories(
-                practice,
-                workspace,
-                super::chat_operations::MemorySelection::ActiveOnly,
-            )
-            .await
-            .unwrap_or_default();
+        let memory_standing = self.active_memory_standing(practice, workspace).await?;
         let saved = self
             .patient_understanding_internal(practice, workspace)
             .await?;
-        if saved.is_none() && memories.is_empty() {
+        if saved.is_none()
+            && matches!(
+                &memory_standing,
+                super::chat_operations::PatientMemoryStanding::Available { entries } if entries.is_empty()
+            )
+        {
             return Ok(None);
         }
-        let payload = json!({
+        let mut payload = json!({
             "kind": "patient_understanding_context",
             "revision": saved.as_ref().map_or(0, |u| u.revision),
             "source_version": saved.as_ref().map_or(0, |u| u.source_version),
@@ -1232,8 +1234,8 @@ impl Store {
                     "as_of": c.as_of,
                 })).collect::<Vec<_>>(),
             })),
-            "physician_memory_entries": memories,
         });
+        attach_memory_standing(&mut payload, &memory_standing);
         let encoded =
             serde_json::to_string(&payload).expect("patient understanding context serializes");
         Ok(Some(format!(
@@ -1314,18 +1316,14 @@ impl Store {
                     .patient_understanding_internal(&claim.scope.practice, &claim.scope.workspace)
                     .await
                     .map_err(super::persistence_failure)?;
-                let memories = self
-                    .patient_memories(
-                        &claim.scope.practice,
-                        &claim.scope.workspace,
-                        super::chat_operations::MemorySelection::ActiveOnly,
-                    )
+                let memory_standing = self
+                    .active_memory_standing(&claim.scope.practice, &claim.scope.workspace)
                     .await
-                    .unwrap_or_default();
+                    .map_err(super::persistence_failure)?;
                 Ok(ToolOutcome::Returned(render_read_understanding(
                     &claim.scope.workspace,
                     saved.as_ref(),
-                    &memories,
+                    &memory_standing,
                 )))
             }
             SAVE_UNDERSTANDING_TOOL => {
@@ -1417,18 +1415,14 @@ impl Store {
                     .patient_understanding_internal(&claim.scope.practice, &claim.scope.workspace)
                     .await
                     .map_err(super::persistence_failure)?;
-                let memories = self
-                    .patient_memories(
-                        &claim.scope.practice,
-                        &claim.scope.workspace,
-                        super::chat_operations::MemorySelection::ActiveOnly,
-                    )
+                let memory_standing = self
+                    .active_memory_standing(&claim.scope.practice, &claim.scope.workspace)
                     .await
-                    .unwrap_or_default();
+                    .map_err(super::persistence_failure)?;
                 Ok(ToolOutcome::Returned(render_read_understanding(
                     &claim.scope.workspace,
                     saved.as_ref(),
-                    &memories,
+                    &memory_standing,
                 )))
             }
             SAVE_UNDERSTANDING_TOOL => {
@@ -1739,19 +1733,44 @@ fn validate_empty_read_args(arguments: &Value) -> Result<(), String> {
         .map_err(|err| format!("invalid read_patient_understanding arguments: {err}"))
 }
 
+fn attach_memory_standing(
+    payload: &mut Value,
+    standing: &super::chat_operations::PatientMemoryStanding,
+) {
+    let Some(map) = payload.as_object_mut() else {
+        return;
+    };
+    match standing {
+        super::chat_operations::PatientMemoryStanding::Available { entries } => {
+            map.insert(
+                "physician_memory_entries".into(),
+                serde_json::to_value(entries).expect("memory entries serialize"),
+            );
+        }
+        super::chat_operations::PatientMemoryStanding::Unavailable { reason } => {
+            map.insert(
+                "physician_memory_standing".into(),
+                Value::String("unavailable".into()),
+            );
+            map.insert(
+                "physician_memory_unavailable_reason".into(),
+                Value::String(reason.clone()),
+            );
+        }
+    }
+}
+
 fn render_read_understanding(
     workspace: &str,
     saved: Option<&PatientUnderstanding>,
-    memories: &[super::chat_operations::PatientMemoryEntry],
+    memory_standing: &super::chat_operations::PatientMemoryStanding,
 ) -> String {
-    match saved {
+    let mut payload = match saved {
         None => json!({
             "status": "uninitialized",
             "workspace": workspace,
             "revision": 0,
-            "physician_memory_entries": memories,
-        })
-        .to_string(),
+        }),
         Some(understanding) => json!({
             "status": "available",
             "workspace": workspace,
@@ -1766,9 +1785,9 @@ fn render_read_understanding(
                 "scope_note": understanding.summary.scope_note,
                 "citations": understanding.summary.citations,
             },
-            "physician_memory_entries": memories,
             "updated_at": understanding.updated_at,
-        })
-        .to_string(),
-    }
+        }),
+    };
+    attach_memory_standing(&mut payload, memory_standing);
+    payload.to_string()
 }
