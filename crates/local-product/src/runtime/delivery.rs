@@ -418,94 +418,50 @@ impl Owed {
     }
 }
 
-/// Chat turns, by the rule [`Store::dispatch_due`] applies to each row: a
-/// pending turn is due past its `dispatch_after` and a running one is lost,
-/// in both cases only while its latest attempt holds no live lease (a steer
-/// waits for its draining predecessor). A lost turn has waited since that
-/// attempt's lease ran out.
+/// Chat turns: due and lost by [`chat_turn_pending`] and [`chat_turn_lost`],
+/// the rules [`Store::dispatch_due`] reads by. A pending turn has waited since
+/// its `dispatch_after`, and a lost turn since its latest attempt's lease ran
+/// out.
 fn owed_chat_turns() -> Owed {
     use chat_attempt::Column as A;
     use conversation::Column as C;
     let row = |column: C| Expr::col((conversation::Entity, column));
-    let latest = latest_attempt(
-        chat_attempt::Entity,
-        A::Position,
-        Cond::all()
-            .add(Expr::col(A::Practice).eq(row(C::Practice)))
-            .add(Expr::col(A::Physician).eq(row(C::Physician)))
-            .add(Expr::col(A::Workspace).eq(row(C::Workspace)))
-            .add(Expr::col(A::Chat).eq(row(C::Chat))),
-    );
-    let lease_held = Expr::exists(
-        latest
-            .clone()
-            .expr(Expr::val(1))
-            .and_where(A::Status.is_in([
-                AttemptStatus::Active,
-                AttemptStatus::Interrupted,
-                AttemptStatus::Cancelled,
-            ]))
-            .and_where(Expr::col(A::Expires).gt(database_clock()))
+    let lease_end = Expr::from(
+        latest_chat_attempt()
+            .column((chat_attempt::Entity, A::Expires))
             .to_owned(),
     );
-    let lease_end = Expr::from(latest.clone().column(A::Expires).to_owned());
     let dispatch_after = state_bigint(row(C::State), "dispatch_after");
-    let status = || row(C::Status);
     Owed {
-        pending: Cond::all()
-            .add(status().eq(WorkStatus::Pending))
-            .add(dispatch_after.clone().lte(database_clock()))
-            .add(lease_held.clone().not()),
+        pending: chat_turn_pending(),
         pending_since: dispatch_after.clone(),
-        lost: Cond::all()
-            .add(status().eq(WorkStatus::Active))
-            .add(lease_held.not()),
+        lost: chat_turn_lost(),
         lost_since: Func::coalesce([lease_end, dispatch_after]).into(),
-        failed: Cond::all().add(status().eq(WorkStatus::Failed)),
+        failed: Cond::all().add(row(C::Status).eq(WorkStatus::Failed)),
         owed: Cond::all().add(row(C::SessionHash).is_not_null()),
     }
 }
 
-/// Reply revisions, by the rule [`Store::revisions_due`] applies to each
-/// row: only a current revision (one no later save left behind) is owed; a
-/// pending one is due past its `dispatch_after`, and a running one is lost
-/// once the lease of its latest attempt ran out, which is when it began to
-/// wait.
+/// Reply revisions: owed, due and lost by [`revision_owed`],
+/// [`revision_pending`] and [`revision_lost`], the rules
+/// [`Store::revisions_due`] reads by. A pending revision has waited since its
+/// `dispatch_after`, and a lost one since its latest attempt's lease ran out.
 fn owed_reply_revisions() -> Owed {
     use reply_draft::Column as D;
     use revision_attempt::Column as A;
-    use sea_orm::sea_query::extension::postgres::PgExpr;
     let row = |column: D| Expr::col((reply_draft::Entity, column));
-    let input = row(D::State)
-        .get_json_field("accepted")
-        .get_json_field("input");
-    let latest = latest_attempt(
-        revision_attempt::Entity,
-        A::Position,
-        Cond::all()
-            .add(Expr::col(A::Practice).eq(row(D::Practice)))
-            .add(Expr::col(A::Physician).eq(row(D::Physician)))
-            .add(Expr::col(A::Workspace).eq(row(D::Workspace)))
-            .add(Expr::col(A::Reply).eq(row(D::Reply)))
-            .add(Expr::col(A::InputId).eq(input.clone().cast_json_field("key"))),
+    let lease_end = Expr::from(
+        latest_revision_attempt()
+            .column((revision_attempt::Entity, A::Expires))
+            .to_owned(),
     );
-    let lease_end = Expr::from(latest.clone().column(A::Expires).to_owned());
-    let current = state_bigint(input, "expected_revision").eq(row(D::Revision));
-    let dispatch_after = state_bigint(row(D::State), "dispatch_after");
-    let status = || row(D::Status);
     Owed {
-        pending: Cond::all()
-            .add(status().eq(DraftStatus::Pending))
-            .add(dispatch_after.clone().lte(database_clock())),
-        pending_since: dispatch_after,
-        lost: Cond::all()
-            .add(status().eq(DraftStatus::Active))
-            .add(lease_end.clone().lte(database_clock())),
+        pending: revision_pending(),
+        pending_since: state_bigint(row(D::State), "dispatch_after"),
+        lost: revision_lost(),
         lost_since: lease_end,
-        failed: Cond::all().add(status().eq(DraftStatus::Failed)),
-        owed: Cond::all()
-            .add(row(D::SessionHash).is_not_null())
-            .add(current),
+        failed: Cond::all().add(row(D::Status).eq(DraftStatus::Failed)),
+        owed: revision_owed(),
     }
 }
 
