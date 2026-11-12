@@ -1,21 +1,34 @@
 //! One model turn for one member. The supervisor owns the loop around turns;
 //! an adapter only runs a single turn and reports how it ended.
 
+mod cli;
+mod http;
+mod mcp_client;
+mod process;
+mod registry;
+#[cfg(test)]
+mod tests;
+
 use std::fmt;
-use std::io::{Read, Write};
-use std::os::unix::process::CommandExt;
 use std::path::PathBuf;
-use std::process::{Child, Command, ExitStatus, Stdio};
+use std::process::Command;
 use std::sync::Arc;
 use std::sync::atomic::{AtomicBool, Ordering};
-use std::thread;
-use std::time::{Duration, Instant};
+use std::time::{Duration, SystemTime, UNIX_EPOCH};
 
-use nix::sys::signal::{Signal, killpg};
-use nix::sys::wait::{Id, WaitPidFlag, WaitStatus, waitid};
-use nix::unistd::Pid;
+use serde::{Deserialize, Serialize};
+
+pub use cli::Sessions;
+pub use cli::{Cli, CliAdapter};
+pub use http::Histories;
+pub use http::{Api, HttpAdapter};
+pub use process::ProcessLimits;
+pub use registry::{
+    AdapterKind, ModelEntry, ModelId, Registry, RegistryAdapter, RegistryError, ResolveError,
+};
 
 use crate::names::MemberName;
+use process::{Ended, Tail};
 
 /// Everything an adapter needs to run one turn.
 #[derive(Clone)]
@@ -43,6 +56,18 @@ impl fmt::Debug for TurnRequest {
                 &self.env.iter().map(|(name, _)| name).collect::<Vec<_>>(),
             )
             .finish()
+    }
+}
+
+impl TurnRequest {
+    /// Replaces every env value (each may be a key) in `text`.
+    fn redact(&self, mut text: String) -> String {
+        for (_, value) in &self.env {
+            if !value.is_empty() {
+                text = text.replace(value.as_str(), "<redacted>");
+            }
+        }
+        text
     }
 }
 
@@ -75,10 +100,71 @@ impl Cancel {
     }
 }
 
+#[derive(Debug, Clone, PartialEq, Eq, thiserror::Error)]
+pub enum ForkError {
+    #[error("{adapter} cannot seed a member from another member's history")]
+    Unsupported { adapter: &'static str },
+    #[error("{0} has no history to fork yet")]
+    NoHistory(MemberName),
+    #[error(transparent)]
+    Model(#[from] ResolveError),
+}
+
+/// A child env variable filled from a key source item before each turn.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct KeyEnv {
+    #[serde(rename = "env")]
+    pub var: String,
+    pub item: String,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize)]
+pub struct ModelInfo {
+    pub name: String,
+    pub display_name: String,
+    pub notes: String,
+}
+
+/// The models an adapter can run.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub enum Catalog {
+    /// The adapter runs whatever model name it is given.
+    Any,
+    Listed(Vec<ModelInfo>),
+}
+
+impl Catalog {
+    pub fn admits(&self, model: &str) -> bool {
+        match self {
+            Self::Any => true,
+            Self::Listed(models) => models.iter().any(|m| m.name == model),
+        }
+    }
+}
+
 pub trait WorkerAdapter: Send + Sync {
     /// Runs one turn. Returns [`TurnOutcome::Cancelled`] promptly once
     /// `cancel` is set, after stopping everything the turn started.
     fn run_turn(&self, request: TurnRequest, cancel: &Cancel) -> TurnOutcome;
+
+    /// Seeds `to`, which has not run a turn, with the history `from` has so
+    /// far; `to`'s first turn continues it. `model` is `to`'s model.
+    fn fork(
+        &self,
+        from: &MemberName,
+        to: &MemberName,
+        model: Option<&str>,
+    ) -> Result<(), ForkError>;
+
+    /// Keys a turn on `model` needs in its env, beyond the supervisor's.
+    fn keys(&self, _model: Option<&str>) -> Vec<KeyEnv> {
+        Vec::new()
+    }
+
+    fn models(&self) -> Catalog {
+        Catalog::Any
+    }
 }
 
 /// Exit status a [`CommandAdapter`] program uses to report quota exhaustion.
@@ -86,7 +172,9 @@ pub const QUOTA_EXIT: i32 = 75;
 /// Stdout line prefix carrying the quota retry delay in whole seconds.
 pub const RETRY_AFTER_PREFIX: &str = "retry_after_secs=";
 const DEFAULT_RETRY_AFTER: Duration = Duration::from_secs(60);
-const MAX_STDOUT: u64 = 64 * 1024;
+const MAX_STDOUT: usize = 64 * 1024;
+/// Longest error excerpt a failed outcome quotes.
+const MAX_REASON: usize = 2000;
 
 /// Runs a configured program for each turn, in its own process group.
 ///
@@ -96,14 +184,12 @@ const MAX_STDOUT: u64 = 64 * 1024;
 /// exhaustion, with an optional `retry_after_secs=N` stdout line; anything
 /// else fails it. When the program exits, stragglers left in its group are
 /// killed. Cancellation and timeout send SIGTERM to the group, then SIGKILL
-/// after `kill_grace`.
+/// after `limits.kill_grace`.
 #[derive(Debug, Clone)]
 pub struct CommandAdapter {
     pub program: PathBuf,
     pub args: Vec<String>,
-    pub turn_timeout: Option<Duration>,
-    pub kill_grace: Duration,
-    pub poll: Duration,
+    pub limits: ProcessLimits,
 }
 
 impl CommandAdapter {
@@ -111,17 +197,9 @@ impl CommandAdapter {
         Self {
             program: program.into(),
             args: Vec::new(),
-            turn_timeout: None,
-            kill_grace: Duration::from_secs(5),
-            poll: Duration::from_millis(20),
+            limits: ProcessLimits::default(),
         }
     }
-}
-
-enum Ended {
-    Exited(ExitStatus),
-    Cancelled,
-    TimedOut(Duration),
 }
 
 impl WorkerAdapter for CommandAdapter {
@@ -131,50 +209,27 @@ impl WorkerAdapter for CommandAdapter {
         command
             .args(&self.args)
             .current_dir(&request.cwd)
-            .process_group(0)
-            .stdin(Stdio::piped())
-            .stdout(Stdio::piped())
-            .stderr(Stdio::null())
             .env("CODA_SWARM_MEMBER", request.member.as_str())
             .env("CODA_SWARM_MODEL", request.model.as_deref().unwrap_or(""))
             .env("CODA_SWARM_MCP_COMMAND", mcp)
             .envs(request.env.iter().map(|(name, value)| (name, value)));
-        let mut child = match command.spawn() {
-            Ok(child) => child,
-            Err(error) => {
-                return TurnOutcome::Failed {
-                    reason: format!("start {}: {error}", self.program.display()),
-                };
-            }
+        let ran = process::run(
+            &self.limits,
+            command,
+            request.prompt,
+            Tail::new(MAX_STDOUT),
+            Tail::new(0),
+            cancel,
+        );
+        let ran = match ran {
+            Ok(ran) => ran,
+            Err(reason) => return TurnOutcome::Failed { reason },
         };
-        let stdin = child.stdin.take().map(|mut stdin| {
-            let prompt = request.prompt;
-            // A program that never reads its stdin gets EPIPE; that is fine.
-            thread::spawn(move || drop(stdin.write_all(prompt.as_bytes())))
-        });
-        let stdout = child.stdout.take().map(|stdout| {
-            thread::spawn(move || {
-                let mut text = String::new();
-                drop(stdout.take(MAX_STDOUT).read_to_string(&mut text));
-                text
-            })
-        });
-        let ended = self.supervise(&mut child, cancel);
-        if let Some(stdin) = stdin {
-            drop(stdin.join());
-        }
-        let stdout = stdout
-            .and_then(|reader| reader.join().ok())
-            .unwrap_or_default();
-        match ended {
-            Ok(Ended::Cancelled) => TurnOutcome::Cancelled,
-            Ok(Ended::TimedOut(after)) => TurnOutcome::Failed {
-                reason: format!("turn timed out after {}s", after.as_secs_f32()),
-            },
-            Ok(Ended::Exited(status)) => match status.code() {
+        match ended_outcome(ran.ended) {
+            Ok(status) => match status.code() {
                 Some(0) => TurnOutcome::Completed,
                 Some(QUOTA_EXIT) => TurnOutcome::QuotaExhausted {
-                    retry_after: retry_after(&stdout),
+                    retry_after: retry_after(ran.stdout.text()),
                 },
                 Some(code) => TurnOutcome::Failed {
                     reason: format!("exited with status {code}"),
@@ -183,73 +238,27 @@ impl WorkerAdapter for CommandAdapter {
                     reason: format!("ended by {status}"),
                 },
             },
-            Err(reason) => TurnOutcome::Failed { reason },
-        }
-    }
-}
-
-impl CommandAdapter {
-    fn supervise(&self, child: &mut Child, cancel: &Cancel) -> Result<Ended, String> {
-        let pid = child_pid(child)?;
-        let started = Instant::now();
-        loop {
-            if leader_exited(pid)? {
-                return reap(child, pid).map(Ended::Exited);
-            }
-            if cancel.is_cancelled() {
-                self.terminate(child, pid)?;
-                return Ok(Ended::Cancelled);
-            }
-            if let Some(limit) = self.turn_timeout
-                && started.elapsed() >= limit
-            {
-                self.terminate(child, pid)?;
-                return Ok(Ended::TimedOut(limit));
-            }
-            thread::sleep(self.poll);
+            Err(outcome) => outcome,
         }
     }
 
-    /// SIGTERM the group, SIGKILL it after the grace period, then reap.
-    fn terminate(&self, child: &mut Child, pid: Pid) -> Result<ExitStatus, String> {
-        signal_group(pid, Signal::SIGTERM);
-        let deadline = Instant::now() + self.kill_grace;
-        while Instant::now() < deadline && !leader_exited(pid)? {
-            thread::sleep(self.poll);
-        }
-        reap(child, pid)
+    fn fork(&self, _: &MemberName, _: &MemberName, _: Option<&str>) -> Result<(), ForkError> {
+        Err(ForkError::Unsupported {
+            adapter: "the command adapter",
+        })
     }
 }
 
-fn child_pid(child: &Child) -> Result<Pid, String> {
-    i32::try_from(child.id())
-        .map(Pid::from_raw)
-        .map_err(|error| format!("child pid {}: {error}", child.id()))
-}
-
-/// Whether the group leader has exited, without reaping it: while it is an
-/// unreaped zombie its pid, and so the group id, cannot be reused.
-fn leader_exited(pid: Pid) -> Result<bool, String> {
-    let flags = WaitPidFlag::WEXITED | WaitPidFlag::WNOHANG | WaitPidFlag::WNOWAIT;
-    match waitid(Id::Pid(pid), flags) {
-        Ok(WaitStatus::StillAlive) => Ok(false),
-        Ok(_) => Ok(true),
-        Err(error) => Err(format!("wait for turn process: {error}")),
+/// The exit status of a turn process that ran to its end, or the outcome
+/// of one that was stopped.
+fn ended_outcome(ended: Ended) -> Result<std::process::ExitStatus, TurnOutcome> {
+    match ended {
+        Ended::Exited(status) => Ok(status),
+        Ended::Cancelled => Err(TurnOutcome::Cancelled),
+        Ended::TimedOut(after) => Err(TurnOutcome::Failed {
+            reason: format!("turn timed out after {}s", after.as_secs_f32()),
+        }),
     }
-}
-
-/// Kills whatever is left in the group while the leader still holds its id,
-/// then reaps the leader.
-fn reap(child: &mut Child, pid: Pid) -> Result<ExitStatus, String> {
-    signal_group(pid, Signal::SIGKILL);
-    child
-        .wait()
-        .map_err(|error| format!("reap turn process: {error}"))
-}
-
-fn signal_group(pid: Pid, signal: Signal) {
-    // ESRCH means the group is already empty.
-    let _ = killpg(pid, signal);
 }
 
 fn retry_after(stdout: &str) -> Duration {
@@ -259,4 +268,41 @@ fn retry_after(stdout: &str) -> Duration {
         .find_map(|line| line.trim().strip_prefix(RETRY_AFTER_PREFIX))
         .and_then(|secs| secs.trim().parse().ok())
         .map_or(DEFAULT_RETRY_AFTER, Duration::from_secs)
+}
+
+/// Whether a provider error message reports rate limiting or exhausted
+/// quota, and when to retry. Only error text is classified, never model
+/// output, so a model talking about quotas does not pause a member.
+fn quota_retry(error: &str) -> Option<Duration> {
+    const SIGNS: [&str; 7] = [
+        "usage limit",
+        "rate limit",
+        "rate_limit",
+        "quota",
+        "resource_exhausted",
+        "too many requests",
+        "429",
+    ];
+    let lower = error.to_ascii_lowercase();
+    if !SIGNS.iter().any(|sign| lower.contains(sign)) {
+        return None;
+    }
+    Some(reset_epoch(error).unwrap_or(DEFAULT_RETRY_AFTER))
+}
+
+/// Claude reports its usage limit as `...limit reached|<unix seconds>`.
+fn reset_epoch(error: &str) -> Option<Duration> {
+    let (_, tail) = error.rsplit_once('|')?;
+    let digits: String = tail.chars().take_while(char::is_ascii_digit).collect();
+    let reset = Duration::from_secs(digits.parse().ok()?);
+    let now = SystemTime::now().duration_since(UNIX_EPOCH).ok()?;
+    Some(reset.saturating_sub(now).max(Duration::from_secs(1)))
+}
+
+fn excerpt(text: &str) -> String {
+    let text = text.trim();
+    match text.char_indices().nth(MAX_REASON) {
+        Some((at, _)) => format!("{}...", &text[..at]),
+        None => text.to_owned(),
+    }
 }

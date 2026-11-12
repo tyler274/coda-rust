@@ -21,6 +21,7 @@ const STUB: &str = r#"#!/bin/sh
 dir="$1"
 prompt=$(cat)
 echo "$CODA_SWARM_MEMBER $prompt" >> "$dir/turns"
+echo "$CODA_SWARM_AGENT $CODA_SWARM_DIR $API_KEY $CODA_SWARM_MCP_COMMAND" > "$dir/$CODA_SWARM_MEMBER.board"
 case "$CODA_SWARM_MEMBER" in
   *crash*) exit 3 ;;
   *hang*)
@@ -104,14 +105,14 @@ fn harness(configure: impl FnOnce(&mut CommandAdapter)) -> Harness {
         .expect("coordinator");
     let mut adapter = CommandAdapter::new(&stub);
     adapter.args = vec![dir.path().display().to_string()];
-    adapter.poll = Duration::from_millis(10);
-    adapter.kill_grace = Duration::from_millis(300);
+    adapter.limits.poll = Duration::from_millis(10);
+    adapter.limits.kill_grace = Duration::from_millis(300);
     configure(&mut adapter);
     let workspaces = Arc::new(FakeWorkspaces {
         root: dir.path().join("worktrees"),
         ..FakeWorkspaces::default()
     });
-    let mut config = SupervisorConfig::new(dir.path(), "sw");
+    let mut config = SupervisorConfig::new(dir.path(), dir.path().join("swarm"), "sw");
     config.poll = Duration::from_millis(20);
     config.keys = vec![KeyEnv {
         var: "API_KEY".into(),
@@ -143,6 +144,7 @@ impl Harness {
                     model: Some("stub-model".into()),
                     workspace,
                     channels: Vec::new(),
+                    fork: None,
                     count: NonZeroUsize::new(count).expect("nonzero"),
                 },
             )
@@ -216,7 +218,7 @@ fn spawn_names_a_group_and_runs_each_member_once_in_its_worktree() {
             "scout-3 do the thing"
         ]
     );
-    let models = h.supervisor.models().expect("models");
+    let models = h.supervisor.member_models().expect("models");
     assert_eq!(models[&name("scout-2")].as_deref(), Some("stub-model"));
     assert_eq!(
         h.calls(),
@@ -228,8 +230,30 @@ fn spawn_names_a_group_and_runs_each_member_once_in_its_worktree() {
 }
 
 #[test]
+fn each_turn_reaches_the_board_as_its_own_member() {
+    let h = harness(|_| {});
+    h.spawn("scout", WorkspaceMode::Inherit, 1);
+    eventually("member to park", || is_waiting(h.state("scout")));
+    let swarm = h.dir.path().join("swarm");
+    let board = fs::read_to_string(h.dir.path().join("scout.board")).expect("board env");
+    let mcp = serde_json::to_string(&[
+        "coda-swarm",
+        "mcp",
+        "--dir",
+        &swarm.display().to_string(),
+        "--agent",
+        "scout",
+    ])
+    .expect("json");
+    assert_eq!(
+        board.trim(),
+        format!("scout {} test-key {mcp}", swarm.display())
+    );
+}
+
+#[test]
 fn mixed_outcomes_complete_crash_and_time_out() {
-    let h = harness(|adapter| adapter.turn_timeout = Some(Duration::from_millis(500)));
+    let h = harness(|adapter| adapter.limits.turn_timeout = Some(Duration::from_millis(500)));
     h.spawn("done", WorkspaceMode::Inherit, 1);
     h.spawn("crash", WorkspaceMode::Inherit, 1);
     h.spawn("hang", WorkspaceMode::Inherit, 1);
@@ -357,6 +381,7 @@ fn kill_rules_protect_the_coordinator_names_and_helpers() {
                 workspace: WorkspaceMode::Inherit,
                 channels: Vec::new(),
                 count: NonZeroUsize::MIN,
+                fork: None,
             },
         )
         .expect("helper");
@@ -372,6 +397,7 @@ fn kill_rules_protect_the_coordinator_names_and_helpers() {
                 workspace: WorkspaceMode::Inherit,
                 channels: Vec::new(),
                 count: NonZeroUsize::MIN,
+                fork: None,
             },
         ),
         Err(SpawnError::Exists(_))
@@ -386,7 +412,7 @@ fn set_model_applies_to_the_next_turn() {
         .set_model(&name("scout"), Some("other".into()))
         .expect("set");
     assert_eq!(
-        h.supervisor.models().expect("models")[&name("scout")].as_deref(),
+        h.supervisor.member_models().expect("models")[&name("scout")].as_deref(),
         Some("other")
     );
 }

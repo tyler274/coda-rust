@@ -22,26 +22,22 @@ use chrono::{DateTime, Utc};
 pub use keys::{KeyError, KeySource, SandboxKeys, Secret};
 pub use workspaces::{SandboxWorkspaces, WorkspaceError, WorkspaceMode, Workspaces, WorktreeMode};
 
-use crate::adapter::{Cancel, TurnOutcome, TurnRequest, WorkerAdapter};
+pub use crate::adapter::KeyEnv;
+use crate::adapter::{Cancel, Catalog, ForkError, TurnOutcome, TurnRequest, WorkerAdapter};
 use crate::message::{Draft, Message, MessageKind, Seq};
 use crate::names::{ChannelName, MemberName, NameError};
 use crate::policy;
 use crate::roster::{Member, MemberState, Role, RosterError, WakeMode};
 use crate::store::{AppendError, Store, StoreError, UpdateError};
 
-/// A child env variable filled from a [`KeySource`] item before each turn.
-#[derive(Debug, Clone, PartialEq, Eq)]
-pub struct KeyEnv {
-    pub var: String,
-    pub item: String,
-}
-
 #[derive(Debug, Clone)]
 pub struct SupervisorConfig {
     /// The caller's directory, used by [`WorkspaceMode::Inherit`].
     pub cwd: PathBuf,
-    /// Passed to every turn as [`TurnRequest::mcp_command`].
-    pub mcp_command: Vec<String>,
+    /// The board directory each member's MCP server opens.
+    pub swarm_dir: PathBuf,
+    /// The `coda-swarm` executable members run as their MCP server.
+    pub mcp_program: PathBuf,
     pub keys: Vec<KeyEnv>,
     /// Prefix of every worktree slug, so swarms do not collide.
     pub slug_prefix: String,
@@ -53,10 +49,28 @@ pub struct SupervisorConfig {
 }
 
 impl SupervisorConfig {
-    pub fn new(cwd: impl Into<PathBuf>, slug_prefix: impl Into<String>) -> Self {
+    /// `coda-swarm mcp --dir <swarm-dir> --agent <member>`: how `member` reaches
+    /// the board.
+    pub fn mcp_command(&self, member: &MemberName) -> Vec<String> {
+        vec![
+            self.mcp_program.display().to_string(),
+            "mcp".to_owned(),
+            "--dir".to_owned(),
+            self.swarm_dir.display().to_string(),
+            "--agent".to_owned(),
+            member.to_string(),
+        ]
+    }
+
+    pub fn new(
+        cwd: impl Into<PathBuf>,
+        swarm_dir: impl Into<PathBuf>,
+        slug_prefix: impl Into<String>,
+    ) -> Self {
         Self {
             cwd: cwd.into(),
-            mcp_command: Vec::new(),
+            swarm_dir: swarm_dir.into(),
+            mcp_program: PathBuf::from("coda-swarm"),
             keys: Vec::new(),
             slug_prefix: slug_prefix.into(),
             wake_mode: WakeMode::Mentions,
@@ -75,6 +89,8 @@ pub struct SpawnSpec {
     pub workspace: WorkspaceMode,
     pub channels: Vec<ChannelName>,
     pub count: NonZeroUsize,
+    /// A member whose history each new member starts from.
+    pub fork: Option<MemberName>,
 }
 
 /// What the supervisor last saw of a member's run.
@@ -101,6 +117,13 @@ pub enum SpawnError {
     Name(#[from] NameError),
     #[error("{0} already exists; member names are never reused")]
     Exists(MemberName),
+    #[error("fork {from} into {to}")]
+    Fork {
+        from: MemberName,
+        to: MemberName,
+        #[source]
+        source: ForkError,
+    },
     #[error("post brief")]
     Brief(#[source] AppendError),
     #[error("create worktree {slug}")]
@@ -202,6 +225,18 @@ impl<S: Store + Send + Sync + 'static> Supervisor<S> {
         let roster = self.shared.store.roster()?;
         if let Some(taken) = names.iter().find(|name| roster.members.contains_key(*name)) {
             return Err(SpawnError::Exists(taken.clone()));
+        }
+        if let Some(from) = &spec.fork {
+            for to in &names {
+                self.shared
+                    .adapter
+                    .fork(from, to, spec.model.as_deref())
+                    .map_err(|source| SpawnError::Fork {
+                        from: from.clone(),
+                        to: to.clone(),
+                        source,
+                    })?;
+            }
         }
         let brief = Draft {
             author: by.clone(),
@@ -474,8 +509,13 @@ impl<S: Store + Send + Sync + 'static> Supervisor<S> {
         })
     }
 
+    /// The models members can run.
+    pub fn models(&self) -> Catalog {
+        self.shared.adapter.models()
+    }
+
     /// The model of every live member of the swarm.
-    pub fn models(&self) -> Result<BTreeMap<MemberName, Option<String>>, StoreError> {
+    pub fn member_models(&self) -> Result<BTreeMap<MemberName, Option<String>>, StoreError> {
         Ok(self
             .shared
             .store
@@ -520,14 +560,14 @@ impl<S: Store> Shared<S> {
                     return;
                 }
             };
-            let outcome = match self.turn_env() {
+            let outcome = match self.turn_env(name, model.as_deref()) {
                 Ok(env) => self.adapter.run_turn(
                     TurnRequest {
                         member: name.clone(),
                         model,
                         prompt: prompt.clone(),
                         cwd: cwd.clone(),
-                        mcp_command: self.config.mcp_command.clone(),
+                        mcp_command: self.config.mcp_command(name),
                         env,
                     },
                     cancel,
@@ -574,15 +614,31 @@ impl<S: Store> Shared<S> {
         })
     }
 
-    fn turn_env(&self) -> Result<Vec<(String, String)>, KeyError> {
-        self.config
+    /// The member's board identity, then every key the turn needs.
+    fn turn_env(
+        &self,
+        name: &MemberName,
+        model: Option<&str>,
+    ) -> Result<Vec<(String, String)>, KeyError> {
+        let identity = [
+            (
+                "CODA_SWARM_DIR".to_owned(),
+                self.config.swarm_dir.display().to_string(),
+            ),
+            ("CODA_SWARM_AGENT".to_owned(), name.to_string()),
+        ];
+        let model_keys = self.adapter.keys(model);
+        let keys = self
+            .config
             .keys
             .iter()
+            .chain(&model_keys)
             .map(|key| {
                 let secret = self.keys.get(&key.item)?;
                 Ok((key.var.clone(), secret.expose().to_owned()))
             })
-            .collect()
+            .collect::<Result<Vec<_>, KeyError>>()?;
+        Ok(identity.into_iter().chain(keys).collect())
     }
 
     fn pause(&self, name: &MemberName, retry_after: Duration) {
