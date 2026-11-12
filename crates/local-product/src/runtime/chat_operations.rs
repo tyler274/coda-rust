@@ -560,6 +560,19 @@ pub trait PatientMemoryOperation: Send + Sync {
         command_key: &str,
         input: &RetirePatientMemory,
     ) -> Result<MemoryMutation, PatientMemoryError>;
+
+    /// Reads back an already-committed memory mutation receipt read-only when an
+    /// execution attempt was interrupted before acknowledging its tool outcome.
+    async fn saved_mutation(
+        &self,
+        _store: &Store,
+        _practice: &str,
+        _workspace: &str,
+        _command_key: &str,
+        _id: &PatientMemoryId,
+    ) -> Result<Option<PatientMemoryEntry>, PatientMemoryError> {
+        Ok(None)
+    }
 }
 
 /// Durable SeaORM-backed [`PatientMemoryOperation`] storing entries in
@@ -868,6 +881,30 @@ impl PatientMemoryOperation for PostgresPatientMemoryOperation {
             ..current
         }))
     }
+
+    async fn saved_mutation(
+        &self,
+        store: &Store,
+        practice: &str,
+        workspace: &str,
+        command_key: &str,
+        id: &PatientMemoryId,
+    ) -> Result<Option<PatientMemoryEntry>, PatientMemoryError> {
+        let key = validate_non_empty("command_key", command_key)?;
+        let practice = validate_non_empty("practice", practice)?;
+        let workspace = validate_non_empty("workspace", workspace)?;
+        let receipt_row =
+            command::Entity::find_by_id((practice.clone(), MEMORY_RECEIPT_ACTOR.to_owned(), key))
+                .one(&store.db)
+                .await?;
+        if receipt_row.is_none() {
+            return Ok(None);
+        }
+        let existing = load_memory_entry(&store.db, &practice, &workspace, id)
+            .await?
+            .ok_or_else(|| error("missing memory entry for accepted receipt"))?;
+        Ok(Some(existing))
+    }
 }
 
 /// Summary of one refreshed source returned by [`PatientRefreshOperation`].
@@ -1154,6 +1191,22 @@ pub struct PriorWorkPointer {
     pub updated_at: i64,
 }
 
+/// Standing of durable patient memory in [`PatientStartingContext`].
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(tag = "standing", rename_all = "snake_case")]
+pub enum PatientMemoryStanding {
+    /// Durable patient memory read succeeded.
+    Available {
+        /// Active durable memory entries (physician corrections and clinical summaries).
+        entries: Vec<PatientMemoryEntry>,
+    },
+    /// Durable patient memory could not be read because the memory operation was unavailable.
+    Unavailable {
+        /// Operational reason why durable patient memory could not be read.
+        reason: String,
+    },
+}
+
 /// Starting clinical context assembled for one patient workspace when a chat turn
 /// begins or opens a fresh window.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -1170,8 +1223,8 @@ pub struct PatientStartingContext {
     pub source_pulls: Vec<SourceFreshnessSummary>,
     /// Standing of background source checks for this workspace.
     pub check_standing: DispatchCheckStanding,
-    /// Active durable memory entries (physician corrections and clinical summaries).
-    pub active_memories: Vec<PatientMemoryEntry>,
+    /// Standing of durable patient memory for this workspace.
+    pub memory_standing: PatientMemoryStanding,
     /// Open patient concerns on Today.
     pub open_concerns: Vec<OpenConcernSummary>,
     /// Recent earlier conversations and work in this workspace (excluding the active chat).
@@ -1244,27 +1297,36 @@ impl PatientStartingContext {
             }
         }
 
-        if !self.active_memories.is_empty() {
-            lines.push("Durable patient memory:".to_owned());
-            for entry in &self.active_memories {
-                let origin = match &entry.provenance {
-                    MemoryProvenance::PhysicianCorrection {
-                        physician,
-                        chat_id,
-                        message_id,
-                        ..
-                    } => format!(
-                        "physician-supplied correction by {physician} in {chat_id} ({message_id}) at unix {}",
-                        entry.updated_at
-                    ),
-                    MemoryProvenance::ClinicalSummary { job_id, .. } => format!(
-                        "clinical summary from {job_id} at unix {}",
-                        entry.updated_at
-                    ),
-                };
+        match &self.memory_standing {
+            PatientMemoryStanding::Available { entries } => {
+                if !entries.is_empty() {
+                    lines.push("Durable patient memory:".to_owned());
+                    for entry in entries {
+                        let origin = match &entry.provenance {
+                            MemoryProvenance::PhysicianCorrection {
+                                physician,
+                                chat_id,
+                                message_id,
+                                ..
+                            } => format!(
+                                "physician-supplied correction by {physician} in {chat_id} ({message_id}) at unix {}",
+                                entry.updated_at
+                            ),
+                            MemoryProvenance::ClinicalSummary { job_id, .. } => format!(
+                                "clinical summary from {job_id} at unix {}",
+                                entry.updated_at
+                            ),
+                        };
+                        lines.push(format!(
+                            "- [{}] {}: {} ({origin})",
+                            entry.id, entry.topic, entry.statement
+                        ));
+                    }
+                }
+            }
+            PatientMemoryStanding::Unavailable { reason } => {
                 lines.push(format!(
-                    "- [{}] {}: {} ({origin})",
-                    entry.id, entry.topic, entry.statement
+                    "Memory limit (unavailable): durable patient memory could not be read ({reason}); do not assume prior physician corrections are absent."
                 ));
             }
         }
@@ -1590,7 +1652,7 @@ impl Store {
             .dispatch_check_standing(&scope.practice, &scope.workspace)
             .await?;
 
-        let active_memories = match self
+        let memory_standing = match self
             .patient_memories(
                 &scope.practice,
                 &scope.workspace,
@@ -1598,15 +1660,17 @@ impl Store {
             )
             .await
         {
-            Ok(entries) => entries,
+            Ok(entries) => PatientMemoryStanding::Available { entries },
+            Err(PatientMemoryError::Unavailable { reason }) => {
+                PatientMemoryStanding::Unavailable { reason }
+            }
             Err(PatientMemoryError::Database(db_err)) => return Err(db_err),
             Err(
-                PatientMemoryError::Unavailable { .. }
-                | PatientMemoryError::InvalidInput(_)
+                cause @ (PatientMemoryError::InvalidInput(_)
                 | PatientMemoryError::IdempotencyCollision { .. }
                 | PatientMemoryError::NotFound { .. }
-                | PatientMemoryError::AlreadyRetired { .. },
-            ) => Vec::new(),
+                | PatientMemoryError::AlreadyRetired { .. }),
+            ) => return Err(error(&cause.to_string())),
         };
 
         let mut raw_open_concerns = concern::Entity::find()
@@ -1698,7 +1762,7 @@ impl Store {
             chart_record_count: observation.sources.len(),
             source_pulls,
             check_standing,
-            active_memories,
+            memory_standing,
             open_concerns,
             recent_work,
         })
@@ -1955,7 +2019,7 @@ impl Store {
                 work_id: attempt.work.clone(),
                 attempt_id: claim.attempt.clone(),
             };
-            let command_key = format!("{}:{}", attempt.work, call.id.trim());
+            let command_key = memory_tool_command_key(&attempt.work, &call.id);
 
             return match parsed {
                 MemoryToolCall::Read { include_retired } => {
@@ -2355,20 +2419,6 @@ impl Store {
         claim: &super::Claim,
         call: &Invocation,
     ) -> Result<Option<ToolOutcome>, engine::Cause> {
-        if call.name != PATIENT_MEMORY_TOOL {
-            return Ok(None);
-        }
-        let Ok(parsed) = serde_json::from_str::<MemoryToolCall>(&call.arguments) else {
-            return Ok(None);
-        };
-        let memory_id_raw = match parsed {
-            MemoryToolCall::Read { .. } => return Ok(None),
-            MemoryToolCall::RecordCorrection { memory_id, .. }
-            | MemoryToolCall::Retire { memory_id, .. } => memory_id,
-        };
-        let Ok(memory_id) = PatientMemoryId::new(memory_id_raw) else {
-            return Ok(None);
-        };
         let state = self
             .conversation(&claim.scope)
             .await
@@ -2380,33 +2430,45 @@ impl Store {
         else {
             return Ok(None);
         };
-        let command_key = format!(
-            "chat-memory:{}:{}:{}",
-            claim.scope.chat,
-            attempt.work,
-            call.id.trim()
-        );
-        let receipt_row = command::Entity::find_by_id((
-            claim.scope.practice.clone(),
-            MEMORY_RECEIPT_ACTOR.to_owned(),
-            command_key,
-        ))
-        .one(&self.db)
-        .await
-        .map_err(persistence_failure)?;
-        if receipt_row.is_none() {
+
+        if super::concerns::is_concern_tool(&call.name) {
+            return self
+                .saved_concern_tool_outcome(
+                    &claim.scope.practice,
+                    &claim.scope.workspace,
+                    &attempt.work,
+                    call,
+                )
+                .await;
+        }
+
+        if call.name != PATIENT_MEMORY_TOOL {
             return Ok(None);
         }
-        let Some(entry) = load_memory_entry(
-            &self.db,
-            &claim.scope.practice,
-            &claim.scope.workspace,
-            &memory_id,
-        )
-        .await
-        .map_err(persistence_failure)?
-        else {
+        let Ok(parsed) = serde_json::from_str::<MemoryToolCall>(&call.arguments) else {
             return Ok(None);
+        };
+        let memory_id = match parsed {
+            MemoryToolCall::Read { .. } => return Ok(None),
+            MemoryToolCall::RecordCorrection { memory_id, .. }
+            | MemoryToolCall::Retire { memory_id, .. } => memory_id,
+        };
+        let command_key = memory_tool_command_key(&attempt.work, &call.id);
+        let entry = match self
+            .memory_operation
+            .saved_mutation(
+                self,
+                &claim.scope.practice,
+                &claim.scope.workspace,
+                &command_key,
+                &memory_id,
+            )
+            .await
+        {
+            Ok(Some(entry)) => entry,
+            Ok(None) => return Ok(None),
+            Err(PatientMemoryError::Database(db_err)) => return Err(persistence_failure(db_err)),
+            Err(cause) => return Err(cause.to_string().into()),
         };
         Ok(Some(ToolOutcome::Returned(
             json!({
@@ -2417,6 +2479,10 @@ impl Store {
             .to_string(),
         )))
     }
+}
+
+fn memory_tool_command_key(work_id: &str, call_id: &str) -> String {
+    format!("{}:{}", work_id, call_id.trim())
 }
 
 #[cfg(test)]

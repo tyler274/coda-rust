@@ -36,14 +36,15 @@ use local_product::{
         chat_operations::{
             ChatStartError, DispatchCheckStanding, MemoryMutation, MemoryProvenance,
             MemorySelection, MemoryStanding, PATIENT_MEMORY_TOOL, PatientMemoryEntry,
-            PatientMemoryError, PatientMemoryId, PatientMemoryOperation, PriorWorkKind,
-            REFRESH_SOURCES_TOOL, RETRIEVE_PATIENT_WORK_TOOL, RecordLimit, RecordLimitKind,
-            RecordMemoryCorrection, RetirePatientMemory, SourceAdapterRefreshOperation,
+            PatientMemoryError, PatientMemoryId, PatientMemoryOperation, PatientMemoryStanding,
+            PostgresPatientMemoryOperation, PriorWorkKind, REFRESH_SOURCES_TOOL,
+            RETRIEVE_PATIENT_WORK_TOOL, RecordLimit, RecordLimitKind, RecordMemoryCorrection,
+            RetirePatientMemory, SourceAdapterRefreshOperation,
         },
         concerns::{CONCERN_TOOL, ConcernStanding, ConcernUrgency, WorkspaceAccess},
         dispatch::{PatientSourceChecker, SourceCheckError},
         engine::{
-            self, Invocation, Item, Turn,
+            self, Event, EventKind, Invocation, Item, Product, Turn,
             recipe::{Observer, Provider, Request},
         },
         history::{HistoryOutcome, HistorySegment, TurnAuthor},
@@ -1492,6 +1493,19 @@ async fn chat_operations_execute_persist_refuse_failed_saves_and_enforce_workspa
         workspace: workspace.clone(),
         chat: "chat-ops-failures-ac3".into(),
     };
+    let fail_starting = failing_store
+        .patient_starting_context(&fail_scope)
+        .await
+        .unwrap();
+    assert_eq!(
+        fail_starting.memory_standing,
+        PatientMemoryStanding::Unavailable {
+            reason: "synthetic memory store outage".into(),
+        }
+    );
+
+    let fail_recipe =
+        ChatAssignment::for_patient(fail_scope.clone(), fail_starting).recipe(&roles, &skills);
     failing_store
         .start_chat_authorized(
             &fail_scope,
@@ -1505,7 +1519,7 @@ async fn chat_operations_execute_persist_refuse_failed_saves_and_enforce_workspa
             },
             on_panel_hash.clone(),
             &skills,
-            &recipe,
+            &fail_recipe,
             &mut PostgresWorkspaceAuthority,
         )
         .await
@@ -1525,47 +1539,65 @@ async fn chat_operations_execute_persist_refuse_failed_saves_and_enforce_workspa
         ) -> Result<Turn, engine::Cause> {
             self.turn += 1;
             match self.turn {
-                1 => Ok(Turn {
-                    items: vec![
-                        Item::Call(Invocation {
-                            id: "fail-refresh".into(),
-                            name: REFRESH_SOURCES_TOOL.into(),
-                            arguments: json!({
-                                "source_id": "synthetic-clinic-ehr",
-                                "reason": "Check for repeat potassium"
-                            })
-                            .to_string(),
-                        }),
-                        Item::Call(Invocation {
-                            id: "fail-memory".into(),
-                            name: PATIENT_MEMORY_TOOL.into(),
-                            arguments: json!({
-                                "operation": "record_correction",
-                                "memory_id": "mem-unsaved",
-                                "topic": "Diet",
-                                "statement": "Should not persist during outage."
-                            })
-                            .to_string(),
-                        }),
-                        Item::Call(Invocation {
-                            id: "fail-concern".into(),
-                            name: CONCERN_TOOL.into(),
-                            arguments: json!({
-                                "operation": "raise",
-                                "concern_id": "concern-unverified",
-                                "urgency": "today",
-                                "reason": "Fabricated citation never read in this turn.",
-                                "records": [{
-                                    "candidate_id": "lab-k-2026-11",
-                                    "revision": "rev-999"
-                                }]
-                            })
-                            .to_string(),
-                        }),
-                    ],
-                    receipt: json!({"turn": 1}),
-                    usage: Default::default(),
-                }),
+                1 => {
+                    let Item::Message { role, text } = &request.items[0] else {
+                        panic!("expected developer starting context item");
+                    };
+                    assert_eq!(role, "developer");
+                    assert!(
+                        text.contains("Memory limit (unavailable):"),
+                        "failed memory read must surface as an explicit unavailable limit, got: {text}"
+                    );
+                    assert!(
+                        text.contains("synthetic memory store outage"),
+                        "failed memory read must carry its operational reason, got: {text}"
+                    );
+                    assert!(
+                        !text.contains("mem-stopped-kcl"),
+                        "unavailable memory must not masquerade as available entries: {text}"
+                    );
+                    Ok(Turn {
+                        items: vec![
+                            Item::Call(Invocation {
+                                id: "fail-refresh".into(),
+                                name: REFRESH_SOURCES_TOOL.into(),
+                                arguments: json!({
+                                    "source_id": "synthetic-clinic-ehr",
+                                    "reason": "Check for repeat potassium"
+                                })
+                                .to_string(),
+                            }),
+                            Item::Call(Invocation {
+                                id: "fail-memory".into(),
+                                name: PATIENT_MEMORY_TOOL.into(),
+                                arguments: json!({
+                                    "operation": "record_correction",
+                                    "memory_id": "mem-unsaved",
+                                    "topic": "Diet",
+                                    "statement": "Should not persist during outage."
+                                })
+                                .to_string(),
+                            }),
+                            Item::Call(Invocation {
+                                id: "fail-concern".into(),
+                                name: CONCERN_TOOL.into(),
+                                arguments: json!({
+                                    "operation": "raise",
+                                    "concern_id": "concern-unverified",
+                                    "urgency": "today",
+                                    "reason": "Fabricated citation never read in this turn.",
+                                    "records": [{
+                                        "candidate_id": "lab-k-2026-11",
+                                        "revision": "rev-999"
+                                    }]
+                                })
+                                .to_string(),
+                            }),
+                        ],
+                        receipt: json!({"turn": 1}),
+                        usage: Default::default(),
+                    })
+                }
                 2 => {
                     let outputs = materialized_outputs(request);
                     let refresh_fail: Value =
@@ -1957,7 +1989,10 @@ async fn later_conversation_uses_earlier_memory_correction_and_retrieves_earlier
         chat: "chat-2-followup".into(),
     };
     let chat2_starting = store.patient_starting_context(&chat2_scope).await.unwrap();
-    assert_eq!(chat2_starting.active_memories.len(), 2);
+    match &chat2_starting.memory_standing {
+        PatientMemoryStanding::Available { entries } => assert_eq!(entries.len(), 2),
+        other => panic!("expected available memories, got {other:?}"),
+    }
     assert!(chat2_starting.recent_work.iter().any(|w| matches!(
         &w.target,
         PriorWorkKind::Conversation { chat_id } if chat_id == "chat-1-metformin-correction"
@@ -2362,4 +2397,450 @@ async fn synthetic_patient_end_to_end_question_saves_answer_and_opens_citations(
             .body
             .contains("Empagliflozin 10 mg orally once daily")
     );
+}
+
+#[tokio::test]
+#[ignore = "requires explicit local Postgres"]
+async fn interrupted_chat_attempt_reconciles_saved_memory_and_concern_receipts_without_unknown_or_reexecution()
+ {
+    let (store, auth, _url) = setup_stores().await;
+    let practice = format!("practice-reconcile-{}", uuid::Uuid::new_v4().simple());
+    let (physician, _token, session_hash) = invite_and_sign_in(&auth, &practice, "dr-shah").await;
+    let patient = synthetic_patient("syn-nora-6", "Nora Alvarez", "1968-02-14", "MRN-66019");
+    let workspace = workspace_id("synthetic-clinic-ehr", &patient.source_patient_id);
+    auth.register_patient(&practice, &workspace).await.unwrap();
+    auth.set_membership(&physician, &workspace, Membership::Allowed)
+        .await
+        .unwrap();
+
+    let k_lab = readable_chart_record(
+        &workspace,
+        "rev-1",
+        "2026-11-11",
+        "Serum Potassium",
+        "Serum potassium 5.7 mmol/L on 2026-11-11.",
+        json!({
+            "resourceType": "Observation",
+            "id": "lab-k-recovery",
+            "potassium_mmol_L": 5.7
+        }),
+    );
+    store
+        .record_chart(
+            &workspace,
+            &[k_lab],
+            &SourcePull {
+                source_id: "synthetic-clinic-ehr".into(),
+                source_label: "Synthetic Clinic EHR".into(),
+                patient,
+                pulled_at: 1_762_902_000,
+            },
+        )
+        .await
+        .unwrap();
+
+    // Seed an active memory entry that the interrupted attempt will retire.
+    store
+        .record_patient_memory(
+            "seed-prior-kcl",
+            &RecordMemoryCorrection {
+                practice: practice.clone(),
+                workspace: workspace.clone(),
+                id: PatientMemoryId::new("mem-seeded-kcl").unwrap(),
+                topic: "Potassium supplement".into(),
+                statement: "Previously taking potassium chloride 20 mEq daily.".into(),
+                provenance: MemoryProvenance::PhysicianCorrection {
+                    physician: physician.physician_id.clone(),
+                    chat_id: "chat-seed".into(),
+                    message_id: "msg-seed".into(),
+                    work_id: "work-seed".into(),
+                    attempt_id: "attempt-seed".into(),
+                },
+            },
+        )
+        .await
+        .unwrap();
+
+    let scope = Scope {
+        practice: practice.clone(),
+        physician: physician.physician_id.clone(),
+        workspace: workspace.clone(),
+        chat: "chat-crash-reconcile".into(),
+    };
+    let skills = load_skills();
+    let roles = distinct_model_roles();
+    let recipe = ChatAssignment::for_patient(
+        scope.clone(),
+        store.patient_starting_context(&scope).await.unwrap(),
+    )
+    .recipe(&roles, &skills);
+
+    store
+        .start_chat_authorized(
+            &scope,
+            &Input {
+                key: "cmd-reconcile-1".into(),
+                text: "Nora stopped potassium chloride yesterday and switched to a low-potassium diet; flag her potassium of 5.7 on Today.".into(),
+                timezone: "America/Los_Angeles".into(),
+                scenario: None,
+            },
+            session_hash.clone(),
+            &skills,
+            &recipe,
+            &mut PostgresWorkspaceAuthority,
+        )
+        .await
+        .unwrap();
+
+    let call_mem_record = Invocation {
+        id: "call-mem-record".into(),
+        name: PATIENT_MEMORY_TOOL.into(),
+        arguments: json!({
+            "operation": "record_correction",
+            "memory_id": "mem-low-k-diet",
+            "topic": "Dietary potassium",
+            "statement": "Switched to a low-potassium diet on November 10, 2026 per physician."
+        })
+        .to_string(),
+    };
+    let call_mem_retire = Invocation {
+        id: "call-mem-retire".into(),
+        name: PATIENT_MEMORY_TOOL.into(),
+        arguments: json!({
+            "operation": "retire",
+            "memory_id": "mem-seeded-kcl",
+            "reason": "Physician confirmed potassium chloride 20 mEq daily was stopped."
+        })
+        .to_string(),
+    };
+    let call_concern_raise = Invocation {
+        id: "call-concern-raise".into(),
+        name: CONCERN_TOOL.into(),
+        arguments: json!({
+            "operation": "raise",
+            "concern_id": "concern-k-5-7",
+            "urgency": "now",
+            "reason": "Serum potassium 5.7 mmol/L on November 11, 2026 requires prompt repeat check.",
+            "records": [{
+                "candidate_id": "lab-k-recovery",
+                "revision": "rev-1"
+            }]
+        })
+        .to_string(),
+    };
+    let call_concern_uncommitted = Invocation {
+        id: "call-concern-uncommitted".into(),
+        name: CONCERN_TOOL.into(),
+        arguments: json!({
+            "operation": "revise",
+            "concern_id": "concern-k-5-7",
+            "urgency": "today",
+            "reason": "Uncommitted revision started just before worker crash.",
+            "records": [{
+                "candidate_id": "lab-k-recovery",
+                "revision": "rev-1"
+            }]
+        })
+        .to_string(),
+    };
+
+    // Memory operation wrapper that commits `call-mem-record` to real Postgres and then
+    // cancels `Attempt 1` before `ToolReturned` can be persisted.
+    struct CancelAfterFirstRecordMemory {
+        cancel: engine::Cancellation,
+    }
+
+    #[async_trait]
+    impl PatientMemoryOperation for CancelAfterFirstRecordMemory {
+        async fn list_memories(
+            &self,
+            store: &Store,
+            practice: &str,
+            workspace: &str,
+            selection: MemorySelection,
+        ) -> Result<Vec<PatientMemoryEntry>, PatientMemoryError> {
+            PostgresPatientMemoryOperation
+                .list_memories(store, practice, workspace, selection)
+                .await
+        }
+
+        async fn record_correction(
+            &self,
+            store: &Store,
+            command_key: &str,
+            input: &RecordMemoryCorrection,
+        ) -> Result<MemoryMutation, PatientMemoryError> {
+            let committed = PostgresPatientMemoryOperation
+                .record_correction(store, command_key, input)
+                .await?;
+            self.cancel.cancel();
+            std::future::pending::<()>().await;
+            Ok(committed)
+        }
+
+        async fn retire_memory(
+            &self,
+            store: &Store,
+            command_key: &str,
+            input: &RetirePatientMemory,
+        ) -> Result<MemoryMutation, PatientMemoryError> {
+            PostgresPatientMemoryOperation
+                .retire_memory(store, command_key, input)
+                .await
+        }
+
+        async fn saved_mutation(
+            &self,
+            store: &Store,
+            practice: &str,
+            workspace: &str,
+            command_key: &str,
+            id: &PatientMemoryId,
+        ) -> Result<Option<PatientMemoryEntry>, PatientMemoryError> {
+            PostgresPatientMemoryOperation
+                .saved_mutation(store, practice, workspace, command_key, id)
+                .await
+        }
+    }
+
+    struct FirstAttemptProvider {
+        calls: Vec<Invocation>,
+    }
+
+    impl Provider for FirstAttemptProvider {
+        async fn exchange(
+            &mut self,
+            _: &Request,
+            _: &engine::Cancellation,
+            _: &engine::RunLimits,
+            _: &mut dyn Observer,
+        ) -> Result<Turn, engine::Cause> {
+            Ok(Turn {
+                items: self.calls.iter().cloned().map(Item::Call).collect(),
+                receipt: json!({"attempt": 1, "turn": 1}),
+                usage: Default::default(),
+            })
+        }
+    }
+
+    let cancel_attempt_1 = engine::Cancellation::default();
+    let crashing_store =
+        store
+            .clone()
+            .with_memory_operation(Arc::new(CancelAfterFirstRecordMemory {
+                cancel: cancel_attempt_1.clone(),
+            }));
+
+    // Claim Attempt 1 with a 1-second lease so a successor worker can claim after abandonment.
+    let claim_1 = crashing_store.claim(&scope, 1).await.unwrap().unwrap();
+    let mut host_1 = PhysicianHost {
+        store: crashing_store,
+        claim: claim_1.clone(),
+        authority: PostgresWorkspaceAuthority,
+    };
+    let attempt_1_err = host_1
+        .run(
+            &mut FirstAttemptProvider {
+                calls: vec![
+                    call_mem_record.clone(),
+                    call_mem_retire.clone(),
+                    call_concern_raise.clone(),
+                    call_concern_uncommitted.clone(),
+                ],
+            },
+            engine::RunLimits::default(),
+            &cancel_attempt_1,
+        )
+        .await
+        .expect_err("attempt 1 must abort after committing call-mem-record before ToolReturned");
+    assert!(
+        matches!(attempt_1_err, engine::Failure::Cancelled),
+        "expected cancellation failure, got {attempt_1_err}"
+    );
+
+    // Inspect Attempt 1's persisted events so we append `ToolStarted` for the remaining 3 calls:
+    // `call-mem-retire` and `call-concern-raise` execute through real `PhysicianHost::execute`
+    // without persisting `ToolReturned`, while `call-concern-uncommitted` never executes at all.
+    let after_crash = store.conversation(&scope).await.unwrap();
+    let last_seq = after_crash
+        .attempts
+        .last()
+        .unwrap()
+        .events
+        .last()
+        .unwrap()
+        .sequence;
+    let last_ordinal = after_crash
+        .attempts
+        .last()
+        .unwrap()
+        .events
+        .last()
+        .unwrap()
+        .ordinal;
+
+    let mut exec_host = PhysicianHost {
+        store: store.clone(),
+        claim: claim_1.clone(),
+        authority: PostgresWorkspaceAuthority,
+    };
+    for (offset, (call, should_execute)) in [
+        (&call_mem_retire, true),
+        (&call_concern_raise, true),
+        (&call_concern_uncommitted, false),
+    ]
+    .into_iter()
+    .enumerate()
+    {
+        let sequence = last_seq + (offset as u64) + 1;
+        store
+            .persist(
+                &claim_1,
+                Event {
+                    attempt_id: claim_1.attempt.clone(),
+                    ordinal: last_ordinal,
+                    sequence,
+                    kind: EventKind::ToolStarted(call.clone()),
+                },
+            )
+            .await
+            .unwrap();
+        if should_execute {
+            let parsed_args: Value = serde_json::from_str(&call.arguments).unwrap();
+            let outcome = Product::execute(&mut exec_host, call, parsed_args)
+                .await
+                .unwrap();
+            assert!(
+                matches!(outcome, engine::ToolOutcome::Returned(_)),
+                "expected committed tool outcome before simulated crash"
+            );
+        }
+    }
+
+    // Wait for Attempt 1's 1-second lease to expire, then claim Successor Attempt 2.
+    tokio::time::sleep(std::time::Duration::from_millis(1_150)).await;
+    let claim_2 = store
+        .claim(&scope, 60)
+        .await
+        .unwrap()
+        .expect("successor attempt claims abandoned chat turn");
+    assert_ne!(claim_2.attempt, claim_1.attempt);
+
+    struct SuccessorRecoveryProvider {
+        turn: usize,
+    }
+
+    impl Provider for SuccessorRecoveryProvider {
+        async fn exchange(
+            &mut self,
+            request: &Request,
+            _: &engine::Cancellation,
+            _: &engine::RunLimits,
+            _: &mut dyn Observer,
+        ) -> Result<Turn, engine::Cause> {
+            self.turn += 1;
+            assert_eq!(self.turn, 1, "successor completes in a single resumed turn");
+            let outputs = materialized_outputs(request);
+
+            // 1. `call-mem-record` reconciled via `saved_outcome` as `"duplicate"` (NOT `"unknown"`).
+            let mem_record_out: Value =
+                serde_json::from_str(outputs.get("call-mem-record").unwrap()).unwrap();
+            assert_eq!(mem_record_out["outcome"], "duplicate", "{mem_record_out}");
+            assert_eq!(mem_record_out["saved"], true);
+            assert_eq!(mem_record_out["entry"]["id"], "mem-low-k-diet");
+            assert_eq!(mem_record_out["entry"]["revision"], 1);
+
+            // 2. `call-mem-retire` reconciled via `saved_outcome` as `"duplicate"` (NOT `"unknown"`).
+            let mem_retire_out: Value =
+                serde_json::from_str(outputs.get("call-mem-retire").unwrap()).unwrap();
+            assert_eq!(mem_retire_out["outcome"], "duplicate", "{mem_retire_out}");
+            assert_eq!(mem_retire_out["saved"], true);
+            assert_eq!(mem_retire_out["entry"]["id"], "mem-seeded-kcl");
+            assert_eq!(mem_retire_out["entry"]["revision"], 2);
+            assert_eq!(mem_retire_out["entry"]["standing"]["state"], "retired");
+
+            // 3. `call-concern-raise` reconciled via `saved_outcome` as `"duplicate"` (NOT `"unknown"`).
+            let concern_raise_out: Value =
+                serde_json::from_str(outputs.get("call-concern-raise").unwrap()).unwrap();
+            assert_eq!(
+                concern_raise_out["outcome"], "duplicate",
+                "{concern_raise_out}"
+            );
+            assert_eq!(concern_raise_out["concern"]["id"], "concern-k-5-7");
+            assert_eq!(concern_raise_out["concern"]["urgency"], "now");
+            assert_eq!(concern_raise_out["concern"]["revision"], 1);
+
+            // 4. `call-concern-uncommitted` had no committed receipt, so it MUST remain `"unknown"`,
+            // even though `concern-k-5-7` exists in Postgres from `call-concern-raise`!
+            let uncommitted_out: Value =
+                serde_json::from_str(outputs.get("call-concern-uncommitted").unwrap()).unwrap();
+            assert_eq!(uncommitted_out["outcome"], "unknown", "{uncommitted_out}");
+
+            Ok(Turn {
+                items: vec![Item::assistant(
+                    "Recorded Nora's switch to a low-potassium diet, retired her prior potassium chloride note, and flagged her November 11, 2026 potassium of 5.7 mmol/L as an urgent concern.\n\nBasis and limitations: Synthetic Clinic EHR Serum Potassium (2026-11-11) and physician-reported medication/diet updates.",
+                )],
+                receipt: json!({"attempt": 2, "turn": 1}),
+                usage: Default::default(),
+            })
+        }
+    }
+
+    let mut host_2 = PhysicianHost {
+        store: store.clone(),
+        claim: claim_2,
+        authority: PostgresWorkspaceAuthority,
+    };
+    host_2
+        .run(
+            &mut SuccessorRecoveryProvider { turn: 0 },
+            engine::RunLimits::default(),
+            &engine::Cancellation::default(),
+        )
+        .await
+        .unwrap();
+
+    // Verify none of the reconciled mutations double-incremented or mutated further.
+    let all_memories = store
+        .patient_memories(&practice, &workspace, MemorySelection::All)
+        .await
+        .unwrap();
+    assert_eq!(all_memories.len(), 2);
+    let low_k = all_memories
+        .iter()
+        .find(|entry| entry.id.as_str() == "mem-low-k-diet")
+        .unwrap();
+    assert_eq!(low_k.revision, 1);
+    assert_eq!(low_k.standing, MemoryStanding::Active);
+
+    let retired_kcl = all_memories
+        .iter()
+        .find(|entry| entry.id.as_str() == "mem-seeded-kcl")
+        .unwrap();
+    assert_eq!(retired_kcl.revision, 2);
+    assert!(matches!(
+        retired_kcl.standing,
+        MemoryStanding::Retired { .. }
+    ));
+
+    let open_concerns = store
+        .open_concerns(
+            &WorkspaceAccess {
+                practice: &practice,
+                physician: &physician.physician_id,
+                workspace: &workspace,
+                session_hash: &session_hash,
+            },
+            &mut PostgresWorkspaceAuthority,
+        )
+        .await
+        .unwrap();
+    assert_eq!(open_concerns.len(), 1);
+    assert_eq!(open_concerns[0].id.as_str(), "concern-k-5-7");
+    assert_eq!(open_concerns[0].urgency, ConcernUrgency::Now);
+    assert_eq!(open_concerns[0].revision, 1);
+
+    let saved_conv = store.conversation(&scope).await.unwrap();
+    assert_eq!(saved_conv.status, WorkStatus::Completed);
+    assert_eq!(saved_conv.messages.len(), 2);
 }

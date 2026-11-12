@@ -390,11 +390,26 @@ mod tests {
             check_standing: crate::runtime::chat_operations::DispatchCheckStanding::Current {
                 checked_at: 1_762_900_050,
             },
-            active_memories: Vec::new(),
+            memory_standing: crate::runtime::chat_operations::PatientMemoryStanding::Available {
+                entries: Vec::new(),
+            },
             open_concerns: Vec::new(),
             recent_work: Vec::new(),
         };
         assert_clean_model_text(&sample_context.developer_text());
+
+        let unavailable_memory_context = PatientStartingContext {
+            memory_standing: crate::runtime::chat_operations::PatientMemoryStanding::Unavailable {
+                reason: "memory store connection timed out".into(),
+            },
+            ..sample_context
+        };
+        let unavailable_text = unavailable_memory_context.developer_text();
+        assert!(
+            unavailable_text.contains("Memory limit (unavailable):"),
+            "expected explicit unavailable memory limit, got {unavailable_text}"
+        );
+        assert_clean_model_text(&unavailable_text);
     }
 
     #[test]
@@ -429,7 +444,9 @@ mod tests {
             chart_record_count: 0,
             source_pulls: Vec::new(),
             check_standing: crate::runtime::chat_operations::DispatchCheckStanding::NotRecorded,
-            active_memories: Vec::new(),
+            memory_standing: crate::runtime::chat_operations::PatientMemoryStanding::Available {
+                entries: Vec::new(),
+            },
             open_concerns: Vec::new(),
             recent_work: Vec::new(),
         };
