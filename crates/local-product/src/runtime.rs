@@ -1536,10 +1536,11 @@ impl Store {
     /// Resume. A failed turn stays failed, so Try again can resume it. The
     /// receipt is saved with the change: the same `key` and work answers
     /// [`Stopped::Duplicate`], and so does a new key while that work is
-    /// already held. A different command under that key is refused.
-    /// Completed work, a failed turn, a different work identity, a blank
-    /// field, and a scope with no conversation are refused. Only a new hold
-    /// keeps its receipt. No wakeup is published.
+    /// already held; both keep their receipt, so retrying either key after
+    /// Resume never holds the resumed run. A different command under that
+    /// key is refused. Completed work, a failed turn, a different work
+    /// identity, a blank field, and a scope with no conversation are refused
+    /// and keep no receipt. No wakeup is published.
     pub async fn stop_authorized(
         &self,
         scope: &Scope,
@@ -1588,9 +1589,11 @@ impl Store {
         };
         let mut state = Self::conversation_control(&tx, scope, row).await?;
         // Another press on work that is already held, from a page that has
-        // not caught up or a second tab, finds what it asked for. Nothing
-        // changes, so its receipt is not kept.
+        // not caught up or a second tab, finds what it asked for. Its receipt
+        // is kept, so a retry of that key after a later Resume answers this
+        // same no-op instead of holding the resumed run.
         if state.status == WorkStatus::Held && state.work == work_item_id {
+            tx.commit().await?;
             return Ok(Stopped::Duplicate);
         }
         // A failed turn stays Try again. Stop does not turn it into a hold.

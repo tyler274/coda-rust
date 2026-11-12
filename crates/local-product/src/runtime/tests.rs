@@ -1203,6 +1203,90 @@ async fn stop_holds_the_named_work_until_resume_and_refuses_a_late_commit() {
 
 #[tokio::test]
 #[ignore = "requires explicit local Postgres"]
+async fn a_stop_accepted_on_held_work_keeps_its_receipt_across_resume() {
+    let url = std::env::var("PHYSICIAN_RUNTIME_TEST_DATABASE_URL").unwrap();
+    let store = Store::connect(&url).await.unwrap();
+    store.migrate().await.unwrap();
+    let scope = delivery_scope(&Uuid::new_v4().to_string(), "chat");
+    accept(&store, &scope, &delivery_input("turn"), 5)
+        .await
+        .unwrap();
+    let claim = store.claim(&scope, 60).await.unwrap().unwrap();
+    let work = store.conversation(&scope).await.unwrap().work;
+
+    // Tab A stops the work with K1.
+    assert_eq!(
+        store
+            .stop_authorized(&scope, "stop-k1", vec![6; 32], &work)
+            .await
+            .unwrap(),
+        Stopped::Held
+    );
+    // A stale tab B sends Stop K2, which finds the work already held, and
+    // loses the response.
+    assert_eq!(
+        store
+            .stop_authorized(&scope, "stop-k2", vec![6; 32], &work)
+            .await
+            .unwrap(),
+        Stopped::Duplicate
+    );
+    // A refused Stop keeps no receipt: its key stays free for its own command.
+    assert_eq!(
+        store
+            .stop_authorized(&scope, "stop-k3", vec![6; 32], "other-work")
+            .await
+            .unwrap(),
+        Stopped::Refused
+    );
+
+    // Tab A resumes; a worker picks up the resumed run.
+    let held = store.conversation(&scope).await.unwrap();
+    let run = held.run().unwrap().id.to_owned();
+    assert!(matches!(
+        store
+            .resume_authorized(&scope, "resume", vec![9; 32], &work, &run)
+            .await
+            .unwrap(),
+        Resumed::Pending { .. }
+    ));
+    store
+        .settle_chat_attempt(&claim, engine::AttemptFailure::Interrupted)
+        .await
+        .unwrap();
+    let resumed = store.claim(&scope, 60).await.unwrap().unwrap();
+    assert_ne!(resumed.attempt, claim.attempt);
+
+    // Tab B reconnects to a restarted site and confirms K2 automatically.
+    drop(store);
+    let store = Store::connect(&url).await.unwrap();
+    assert_eq!(
+        store
+            .stop_authorized(&scope, "stop-k2", vec![6; 32], &work)
+            .await
+            .unwrap(),
+        Stopped::Duplicate
+    );
+    let running = store.conversation(&scope).await.unwrap();
+    assert_eq!(
+        running.status,
+        WorkStatus::Active,
+        "the retry held the resumed run"
+    );
+    assert!(store.is_current(&resumed).await.unwrap());
+
+    // K3 was never recorded, so as a Stop of this work it holds the run.
+    assert_eq!(
+        store
+            .stop_authorized(&scope, "stop-k3", vec![6; 32], &work)
+            .await
+            .unwrap(),
+        Stopped::Held
+    );
+}
+
+#[tokio::test]
+#[ignore = "requires explicit local Postgres"]
 async fn engine_failure_stays_leased_until_the_lease_expires() {
     let url = std::env::var("PHYSICIAN_RUNTIME_TEST_DATABASE_URL").unwrap();
     let store = Store::connect(&url).await.unwrap();

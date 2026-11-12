@@ -898,6 +898,152 @@ async fn keyboard_send_clears_only_the_sent_text_and_a_reload_reasks_the_same_co
     );
 }
 
+/// A stale tab's Stop whose answer is lost, on work another tab already
+/// stopped, is confirmed on its own after that other tab resumes. The
+/// confirmation finds the same accepted no-op, so the resumed run keeps
+/// running and is answered.
+#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+#[ignore = "browser and disposable Postgres qualification; run explicitly with --ignored"]
+async fn a_lost_stop_confirmed_after_another_tab_resumes_leaves_the_run_going() {
+    let _guard = test_lock().lock().await;
+    let Some(database) = scale::Database::create("stop_retry_browser").await else {
+        return;
+    };
+    let site = build_site();
+    scale::staging_account(&database.url).await;
+    let home = std::env::temp_dir().join(format!("physician-stop-retry-{}", uuid::Uuid::new_v4()));
+    fs::create_dir_all(&home).unwrap();
+    let valkey = scale::Valkey::start().await;
+    let redis = valkey.url();
+    let worker_port = scale::free_port();
+    let site_port = scale::free_port();
+    let emulator = scale::Emulator::start().await;
+    emulator.provision(worker_port).await;
+    let topic = scale::topic();
+    let worker_listen = format!("127.0.0.1:{worker_port}");
+    let host = format!("127.0.0.1:{site_port}");
+    // Long enough for both Stops, the lost answer and Resume while it runs.
+    let stub = scale::ResponsesStub::start(&home, 0, 12_000, "[]").await;
+    let mut worker = scale::Process::spawn(
+        "stop-retry-worker",
+        scale::worker_bin(),
+        &[],
+        &[
+            ("PHYSICIAN_DATABASE_URL", database.url.as_str()),
+            ("PHYSICIAN_REDIS_URL", redis.as_str()),
+            ("PUBSUB_EMULATOR_HOST", emulator.host.as_str()),
+            ("PHYSICIAN_WORKER_LISTEN_ADDR", worker_listen.as_str()),
+            ("PHYSICIAN_RESPONSES_STUB_PORT", stub.port.as_str()),
+        ],
+        &home,
+    );
+    scale::wait_ready(&mut worker, worker_port).await;
+    let mut process = scale::Process::spawn(
+        "stop-retry-site",
+        scale::site_bin(),
+        &[],
+        &[
+            ("PHYSICIAN_DATABASE_URL", database.url.as_str()),
+            ("PHYSICIAN_REDIS_URL", redis.as_str()),
+            ("PUBSUB_EMULATOR_HOST", emulator.host.as_str()),
+            ("GOOGLE_CLOUD_PROJECT", scale::PROJECT),
+            ("PHYSICIAN_CHAT_TOPIC", topic.as_str()),
+            ("PHYSICIAN_AUTH", "required"),
+            ("PHYSICIAN_AUTH_PROOF_TOKENS", "1"),
+            ("PHYSICIAN_SITE_DIR", site.to_str().unwrap()),
+            ("PHYSICIAN_LISTEN_ADDR", host.as_str()),
+        ],
+        &home,
+    );
+    scale::wait_ready(&mut process, site_port).await;
+    let patient = physician_sample::WORKSPACE_IDS[0];
+    let chat = format!("chat-stop-retry-{}", uuid::Uuid::new_v4().simple());
+    let url = format!("http://{host}/?patient={patient}&chat={chat}");
+    let mut a = Tab::open(&url);
+    a.wait_for_text("Work email", Duration::from_secs(20));
+    a.request_sign_in("physician@codahealth.test");
+    a.wait_composer("", Duration::from_secs(20));
+    let mut b = Tab::open(&url);
+    b.wait_for_text("Work email", Duration::from_secs(20));
+    b.request_sign_in("physician@codahealth.test");
+    b.wait_composer("", Duration::from_secs(20));
+
+    let writing = "Coda is writing this response.";
+    const STOPPED: &str = "Coda stopped this response. Your message is saved.";
+    a.type_composer("Hello");
+    a.step("sendWithKeyboard", serde_json::json!([]));
+    a.wait_for_text(writing, Duration::from_secs(20));
+    // Tab B is the page that has not caught up: it opens the running chat.
+    b.reload();
+    b.wait_for_text(writing, Duration::from_secs(20));
+
+    // Tab B presses Stop; its command is held before it reaches Coda.
+    b.call(
+        "Fetch.enable",
+        serde_json::json!({ "patterns": [
+            { "urlPattern": "*/commands", "requestStage": "Request" },
+            { "urlPattern": "*/commands", "requestStage": "Response" },
+        ] }),
+    );
+    b.click_named(".conversation-mechanical button", "Stop");
+    let stale = b.held_request("POST");
+    let key = held_body(&stale)["idempotency_key"].clone();
+    assert_eq!(held_body(&stale)["type"], "work.stop");
+    // Tab A stops the same work first.
+    a.click_named(".conversation-mechanical button", "Stop");
+    a.wait_for_text(STOPPED, Duration::from_secs(20));
+    // B's Stop reaches Coda, which finds the work already held, and its
+    // answer is lost on the way back.
+    b.release(&stale);
+    let answered = b.held_request("POST");
+    assert!(answered["responseStatusCode"].is_number(), "{answered}");
+    b.call(
+        "Fetch.failRequest",
+        serde_json::json!({ "requestId": answered["requestId"], "errorReason": "Failed" }),
+    );
+    // B confirms on its own under the same key; hold that until A resumes.
+    let retry = b.held_request("POST");
+    assert_eq!(held_body(&retry)["idempotency_key"], key);
+    a.click_named(".conversation-mechanical button", "Resume");
+    a.wait_for_text(writing, Duration::from_secs(20));
+    b.release(&retry);
+    let confirmed = b.held_request("POST");
+    b.release(&confirmed);
+    b.call("Fetch.disable", serde_json::json!({}));
+    b.release_all();
+
+    // The confirmation found the earlier no-op: the resumed run is answered
+    // and is never stopped again.
+    let started = Instant::now();
+    while sent_count(&mut a, scale::FIXED_TEXT) == 0 {
+        let page = a.dom();
+        assert!(
+            !page.contains(STOPPED),
+            "the confirmed Stop held the resumed run\n{}\n{}",
+            process.tail(),
+            worker.tail()
+        );
+        assert!(
+            started.elapsed() < Duration::from_secs(60),
+            "the resumed run was never answered\n{}\n{}",
+            process.tail(),
+            worker.tail()
+        );
+        std::thread::sleep(Duration::from_millis(200));
+    }
+    b.wait_for_text(scale::FIXED_TEXT, Duration::from_secs(20));
+    assert!(
+        !b.dom().contains("Check again"),
+        "B's confirmed Stop still offered Check again"
+    );
+    a.save_pictures("stop-retry-answered", "[aria-label=\"Conversation\"]");
+    drop(a);
+    drop(b);
+    drop(process);
+    drop(worker);
+    fs::remove_dir_all(home).unwrap();
+}
+
 /// How many conversation lines say `text`.
 fn sent_count(tab: &mut Tab, text: &str) -> usize {
     tab.step("conversationLines", serde_json::json!([]))
