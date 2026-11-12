@@ -1565,6 +1565,10 @@ async fn staging_synthetic_end_to_end_walk_browser_and_cli() {
     // Sign in inside headless Chromium as `physician@codahealth.test`.
     let mut browser = Browser::launch();
     browser.watch_page_errors();
+    browser.page().call_session(
+        "Emulation.setTimezoneOverride",
+        json!({ "timezoneId": "America/New_York" }),
+    );
     set_browser_viewport(&mut browser, 1440, 900);
     browser.text_until(&base_url, "Work email");
     browser.type_into("input[type=\"email\"]", "physician@codahealth.test");

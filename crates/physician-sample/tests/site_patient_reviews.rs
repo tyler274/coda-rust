@@ -1008,14 +1008,41 @@ async fn patient_page_reviews_controls_reload_access_and_viewports() {
 
     let seed = seed_synthetic_patient("SYN-REV-UI-01", &auth, &store, &roles, &skills).await;
 
-    // 1. Seed Completed(Assessed) and Completed(Quiet) reviews on Sofia Navarro.
+    // 1. Seed Completed(Assessed) and Completed(Quiet) routine reviews on Sofia Navarro.
     let assessed_id =
         run_assessed_review(&store, &auth, &roles, &skills, &seed, "rev-ui-assessed").await;
     tokio::time::sleep(Duration::from_millis(1100)).await;
     let quiet_id = run_quiet_review(&store, &auth, &roles, &skills, &seed, "rev-ui-quiet").await;
     tokio::time::sleep(Duration::from_millis(1100)).await;
 
-    // 2. Admit a 3rd review (`PhysicianRequest`), claim it, execute 1 chart search step so its
+    let db_url = database.url.clone();
+    let server = common::serve_isolated(|| {
+        // SAFETY: `test_lock()` and `serve_isolated`'s start lock serialize env changes.
+        unsafe {
+            env::set_var("PHYSICIAN_SITE_DIR", &site);
+            env::set_var("PHYSICIAN_DATABASE_URL", &db_url);
+            env::set_var("PHYSICIAN_AUTH", "required");
+            env::set_var("PHYSICIAN_AUTH_PROOF_TOKENS", "1");
+            env::remove_var("PHYSICIAN_UPSTREAM");
+        }
+    })
+    .await;
+    let base = format!("http://{}", server.address);
+
+    // 2. Sign in and verify routine patient reviews do NOT show on Today!
+    let mut tab = Tab::open(&base);
+    tab.set_viewport(1440, 900, true);
+    tab.wait_for_text("Work email", Duration::from_secs(20));
+    tab.request_sign_in("physician@codahealth.test");
+    let today_dom = tab.wait_for_text("Nothing needs you right now.", Duration::from_secs(20));
+    assert!(
+        !today_dom.contains("data-patient-reviews")
+            && !today_dom.contains("Serum creatinine is 1.12 mg/dL")
+            && !today_dom.contains("Harborview EP ablation operative report"),
+        "routine patient reviews must not appear on Today:\n{today_dom}"
+    );
+
+    // 3. Admit a 3rd review (`PhysicianRequest`), claim it, execute 1 chart search step so its
     //    live trace has recorded steps, and hold Turn 2 open so it stays genuinely `Running`.
     let staging_identity = PhysicianIdentity {
         practice_id: physician_sample::STAGING_PRACTICE_ID.to_owned(),
@@ -1112,30 +1139,16 @@ async fn patient_page_reviews_controls_reload_access_and_viewports() {
     });
     step_recorded_wait.notified().await;
 
-    let db_url = database.url.clone();
-    let server = common::serve_isolated(|| {
-        // SAFETY: `test_lock()` and `serve_isolated`'s start lock serialize env changes.
-        unsafe {
-            env::set_var("PHYSICIAN_SITE_DIR", &site);
-            env::set_var("PHYSICIAN_DATABASE_URL", &db_url);
-            env::set_var("PHYSICIAN_AUTH", "required");
-            env::set_var("PHYSICIAN_AUTH_PROOF_TOKENS", "1");
-            env::remove_var("PHYSICIAN_UPSTREAM");
-        }
-    })
-    .await;
-    let base = format!("http://{}", server.address);
-
-    // 3. Sign in and verify routine patient reviews do NOT show on Today!
-    let mut tab = Tab::open(&base);
-    tab.set_viewport(1440, 900, true);
-    tab.wait_for_text("Work email", Duration::from_secs(20));
-    tab.request_sign_in("physician@codahealth.test");
-    let today_dom = tab.wait_for_text("Nothing needs you right now.", Duration::from_secs(20));
+    // Physician-requested running review shows as recognizable running work on Today while
+    // keeping the patient-reviews workspace surface exclusively on the patient page.
+    tab.reload();
+    let today_running_dom = tab.wait_for_text(
+        "Reviewing patient chart as requested",
+        Duration::from_secs(20),
+    );
     assert!(
-        !today_dom.contains("data-patient-reviews")
-            && !today_dom.contains("Re-check renal dosing threshold for apixaban"),
-        "routine patient reviews must not appear on Today:\n{today_dom}"
+        !today_running_dom.contains("data-patient-reviews"),
+        "patient reviews panel must stay on the patient page:\n{today_running_dom}"
     );
 
     // 4. Open patient page -> verify Running, Completed(Quiet), and Completed(Assessed) rows!

@@ -525,6 +525,13 @@ impl BrowserHarness {
         self.run_walk("exists", &[json!(selector)]) == json!(true)
     }
 
+    fn text(&mut self, selector: &str) -> String {
+        self.run_walk("text", &[json!(selector)])
+            .as_str()
+            .unwrap_or_default()
+            .to_owned()
+    }
+
     fn reveal(&mut self, selector: &str) {
         self.run_walk("reveal", &[json!(selector)]);
     }
@@ -1313,16 +1320,16 @@ async fn schedule_pane_and_briefing_view_pass_desktop_and_phone_browser_checks()
     browser.resize(PHONE);
     std::thread::sleep(Duration::from_millis(250));
     let phone_html = browser.browser.html();
-    let phone_visible_text = browser.browser.body_text().expect("phone body innerText");
+    let phone_schedule_text = browser.text(".schedule-rail");
     assert!(
         phone_html.contains("Bob Diaz") && phone_html.contains("David Patel"),
         "full schedule remains mounted in DOM for responsive transitions"
     );
     assert!(
-        phone_visible_text.contains("Alice Carter")
-            && phone_visible_text.contains("1:00 PM")
-            && phone_visible_text.contains("Briefing ready"),
-        "phone schedule must show next visit (`Alice Carter` at `1:00 PM`):\n{phone_visible_text}"
+        phone_schedule_text.contains("Alice Carter")
+            && phone_schedule_text.contains("1:00 PM")
+            && phone_schedule_text.contains("Briefing ready"),
+        "phone schedule must show next visit (`Alice Carter` at `1:00 PM`):\n{phone_schedule_text}"
     );
     for hidden_later_visit in [
         "Bob Diaz",
@@ -1332,8 +1339,8 @@ async fn schedule_pane_and_briefing_view_pass_desktop_and_phone_browser_checks()
         "Cancelled blood pressure check",
     ] {
         assert!(
-            !phone_visible_text.contains(hidden_later_visit),
-            "narrow phone screen must hide non-next visit `{hidden_later_visit}`:\n{phone_visible_text}"
+            !phone_schedule_text.contains(hidden_later_visit),
+            "narrow phone schedule must hide non-next visit `{hidden_later_visit}`:\n{phone_schedule_text}"
         );
     }
     browser.capture_screenshot("briefing-schedule-02-phone-today-next-visit.png");
