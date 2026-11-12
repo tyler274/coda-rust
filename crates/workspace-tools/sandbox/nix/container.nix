@@ -19,6 +19,7 @@ lib.mkIf (cfg.enable && cfg.container.enable) {
       memoryHigh
       authorizedKeys
       ;
+    hostTcpPort = cfg.localModels.hostPort;
     autoStart = true;
     requires = cfg.requires ++ [ "coda-ci-spool.service" ];
     binds = {
@@ -62,6 +63,7 @@ lib.mkIf (cfg.enable && cfg.container.enable) {
         (import ./container-guest.nix {
           inherit (cfg.paths) repo;
           inherit (cfg) package;
+          swarmPackage = cfg.swarm.package;
         })
         cfg.container.config
       ];
