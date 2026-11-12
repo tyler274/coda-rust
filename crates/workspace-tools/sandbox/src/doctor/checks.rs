@@ -1,4 +1,4 @@
-use std::path::{Path, PathBuf};
+use std::path::Path;
 
 use serde::Serialize;
 
@@ -43,9 +43,11 @@ pub fn run(probe: &dyn Probe, config: &Result<Loaded, Error>) -> Vec<Finding> {
     if let Ok(loaded) = config {
         findings.extend(machine(probe, &loaded.config));
     }
-    findings.extend(Editor::ALL.map(|editor| Finding {
-        check: Check::EditorSettings(editor),
-        outcome: editor_outcome(probe, editor),
+    findings.extend(Editor::ALL.into_iter().filter_map(|editor| {
+        Some(Finding {
+            check: Check::EditorSettings(editor),
+            outcome: editor_outcome(probe, editor)?,
+        })
     }));
     findings
 }
@@ -97,6 +99,10 @@ fn machine(probe: &dyn Probe, config: &Config) -> Vec<Finding> {
             unit_outcome(probe, UnitScope::System, &config.container.unit),
         ),
         (Check::Ssh, ssh_outcome(probe, &config.container.ssh_host)),
+        (
+            Check::SshForwarding,
+            ssh_forwarding_outcome(probe, &config.container.ssh_host),
+        ),
         (
             Check::SpoolDir(SpoolDir::Requests),
             spool_outcome(probe, &config.ci.requests()),
@@ -280,14 +286,42 @@ fn legacy_token_outcome(probe: &dyn Probe, dir: LegacyTokenDir) -> Outcome {
     }
 }
 
-fn editor_outcome(probe: &dyn Probe, editor: Editor) -> Outcome {
-    let Some(home) = probe.home() else {
-        return Outcome::CannotCheck {
-            cause: Error::NoHome,
-        };
+/// Every editor's remote, and Claude Code's and Codex's shells, are SSH
+/// sessions under the user's SSH config, so its `ForwardAgent` decides
+/// whether the host's keys reach the container.
+fn ssh_forwarding_outcome(probe: &dyn Probe, host: &str) -> Outcome {
+    let resolved = match probe.ssh_config(host) {
+        Ok(resolved) => resolved,
+        Err(cause) => return Outcome::CannotCheck { cause },
     };
-    let path: PathBuf = editor.settings_path(&home);
-    let text = match probe.read_file(&path) {
+    match resolved.forward_agent() {
+        Some("no") => Outcome::Pass {
+            detail: format!("{host}: ForwardAgent no"),
+        },
+        found => Outcome::Fail {
+            detail: format!(
+                "{host}: ForwardAgent {}, so the editors' SSH sessions carry the host's keys",
+                found.unwrap_or("unset")
+            ),
+            fix: Fix::instruction(format!(
+                "set `ForwardAgent no` under `Host {host}` in ~/.ssh/config"
+            )),
+        },
+    }
+}
+
+fn editor_outcome(probe: &dyn Probe, editor: Editor) -> Option<Outcome> {
+    let file = editor.settings()?;
+    let Some(home) = probe.home() else {
+        return Some(Outcome::CannotCheck {
+            cause: Error::NoHome,
+        });
+    };
+    Some(settings_outcome(probe, &file.path(&home), file.keys))
+}
+
+fn settings_outcome(probe: &dyn Probe, path: &Path, keys: &[ForwardingKey]) -> Outcome {
+    let text = match probe.read_file(path) {
         Ok(Some(text)) => text,
         Ok(None) => {
             return Outcome::Skip {
@@ -296,18 +330,18 @@ fn editor_outcome(probe: &dyn Probe, editor: Editor) -> Outcome {
         }
         Err(cause) => return Outcome::CannotCheck { cause },
     };
-    match Settings::parse(&path, &text) {
-        Ok(settings) => forwarding_outcome(&settings, &path),
+    match Settings::parse(path, &text) {
+        Ok(settings) => forwarding_outcome(&settings, keys, path),
         Err(cause) => Outcome::CannotCheck { cause },
     }
 }
 
 /// Unset fails like `true`: the editors default these keys on, so an unset
 /// key forwards the host's credentials just the same.
-fn forwarding_outcome(settings: &Settings, path: &Path) -> Outcome {
-    let not_off: Vec<(ForwardingKey, Setting)> = ForwardingKey::ALL
-        .into_iter()
-        .map(|key| (key, settings.get(key)))
+fn forwarding_outcome(settings: &Settings, keys: &[ForwardingKey], path: &Path) -> Outcome {
+    let not_off: Vec<(ForwardingKey, Setting)> = keys
+        .iter()
+        .map(|&key| (key, settings.get(key)))
         .filter(|(_, setting)| *setting != Setting::Off)
         .collect();
     if not_off.is_empty() {

@@ -147,6 +147,20 @@ pub enum Error {
     CredentialQuery(#[source] io::Error),
     #[error(transparent)]
     Broker(#[from] crate::broker::error::BrokerError),
+    #[error("{} is not installed: no `{program}` on PATH", editor.name())]
+    NoEditor {
+        editor: crate::editor_settings::Editor,
+        program: &'static str,
+    },
+    #[error("{program} {status}")]
+    EditorFailed {
+        program: &'static str,
+        status: ExitStatus,
+    },
+    #[error(
+        "{host} has no checkout at {path}; `coda-sandbox shell -- coda-sandbox worktree new <slug>` makes one"
+    )]
+    NoCheckout { host: String, path: PathBuf },
 }
 
 impl Error {

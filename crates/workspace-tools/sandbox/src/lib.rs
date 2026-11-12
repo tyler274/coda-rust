@@ -14,6 +14,7 @@ pub mod editor_settings;
 pub mod error;
 pub mod git;
 pub mod ids;
+pub mod open;
 pub mod porcelain;
 pub mod probe;
 pub mod status;

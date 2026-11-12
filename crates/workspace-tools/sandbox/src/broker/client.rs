@@ -51,6 +51,10 @@ pub enum Want {
     Gh,
     /// The Doppler service token for `doppler`.
     Doppler,
+    /// The Anthropic API key, for Claude Code's `apiKeyHelper`.
+    Anthropic,
+    /// The OpenAI API key, for Codex's provider `auth.command`.
+    Openai,
 }
 
 impl Want {
@@ -62,6 +66,8 @@ impl Want {
             },
             Self::Gh => Request::GhToken,
             Self::Doppler => Request::DopplerToken,
+            Self::Anthropic => Request::AnthropicKey,
+            Self::Openai => Request::OpenaiKey,
         }
     }
 
@@ -69,6 +75,8 @@ impl Want {
         match self {
             Self::GitCredential | Self::Gh => Item::GithubAgent,
             Self::Doppler => Item::Doppler,
+            Self::Anthropic => Item::Anthropic,
+            Self::Openai => Item::Openai,
         }
     }
 }

@@ -154,6 +154,18 @@ in
         default = { };
         description = "Extra NixOS configuration for the container.";
       };
+      modelKeys = {
+        anthropic = lib.mkEnableOption ''
+          Claude Code in the container taking its API key from the broker's
+          `anthropic` item (`coda-sandbox broker store anthropic`) instead of
+          its own login. Off, `claude auth login` in the container signs in
+        '';
+        openai = lib.mkEnableOption ''
+          Codex in the container taking its API key from the broker's
+          `openai` item (`coda-sandbox broker store openai`) instead of its
+          own login. Off, `codex login` in the container signs in
+        '';
+      };
     };
 
     paths = {

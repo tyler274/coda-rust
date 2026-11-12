@@ -62,6 +62,7 @@ lib.mkIf (cfg.enable && cfg.container.enable) {
         (import ./container-guest.nix {
           inherit (cfg.paths) repo;
           inherit (cfg) package;
+          inherit (cfg.container) modelKeys;
         })
         cfg.container.config
       ];

@@ -268,6 +268,18 @@ fn ping_reports_a_stale_token_and_its_age_while_the_keyring_is_locked() {
                     reason: Unavailable::KeyringLocked
                 },
             },
+            ItemReport {
+                item: Item::Anthropic,
+                state: ItemState::Unavailable {
+                    reason: Unavailable::KeyringLocked
+                },
+            },
+            ItemReport {
+                item: Item::Openai,
+                state: ItemState::Unavailable {
+                    reason: Unavailable::KeyringLocked
+                },
+            },
         ]
     );
 }
@@ -341,6 +353,18 @@ fn gh_fallback_serves_only_a_missing_github_agent_and_only_when_on() {
                 },
                 ItemReport {
                     item: Item::Doppler,
+                    state: ItemState::Unavailable {
+                        reason: Unavailable::NotStored
+                    },
+                },
+                ItemReport {
+                    item: Item::Anthropic,
+                    state: ItemState::Unavailable {
+                        reason: Unavailable::NotStored
+                    },
+                },
+                ItemReport {
+                    item: Item::Openai,
                     state: ItemState::Unavailable {
                         reason: Unavailable::NotStored
                     },
@@ -488,13 +512,20 @@ fn ping_lists_the_ci_token_only_on_a_host_with_the_ci() {
     };
     assert_eq!(
         items(&broker(&memory, GhFallback::Off)),
-        vec![(Item::GithubAgent, available), (Item::Doppler, not_stored)]
+        vec![
+            (Item::GithubAgent, available),
+            (Item::Doppler, not_stored),
+            (Item::Anthropic, not_stored),
+            (Item::Openai, not_stored),
+        ]
     );
     assert_eq!(
         items(&broker_with_ci(&memory)),
         vec![
             (Item::GithubAgent, available),
             (Item::Doppler, not_stored),
+            (Item::Anthropic, not_stored),
+            (Item::Openai, not_stored),
             (Item::GithubCi, not_stored)
         ]
     );

@@ -39,6 +39,8 @@ pub trait Probe {
     fn read_file(&self, path: &Path) -> Result<Option<String>, Error>;
     fn count_entries(&self, dir: &Path) -> Result<usize, Error>;
     fn ssh(&self, host: &str) -> Result<SshReach, Error>;
+    /// The options `ssh` resolves for `host` from the user's SSH config.
+    fn ssh_config(&self, host: &str) -> Result<SshOptions, Error>;
     fn home(&self) -> Option<PathBuf>;
     /// The token broker's report of what it can serve; never a secret.
     fn broker(&self, socket: &Path) -> Result<Report, BrokerError>;
@@ -93,6 +95,31 @@ pub enum SshReach {
     },
     /// No answer within [`SSH_DEADLINE`]; `ssh` was killed.
     TimedOut,
+}
+
+/// What `ssh -G <host>` prints: one lowercase option name and its value per
+/// line, with every option resolved.
+#[derive(Debug, Clone, PartialEq, Eq, Default)]
+pub struct SshOptions(Vec<(String, String)>);
+
+impl SshOptions {
+    pub fn parse(text: &str) -> Self {
+        Self(
+            text.lines()
+                .filter_map(|line| line.split_once(' '))
+                .map(|(name, value)| (name.to_ascii_lowercase(), value.trim().to_owned()))
+                .collect(),
+        )
+    }
+
+    /// `no`, `yes` or an agent socket path; `None` only for output that
+    /// does not come from `ssh -G`, which always resolves it.
+    pub fn forward_agent(&self) -> Option<&str> {
+        self.0
+            .iter()
+            .find(|(name, _)| name == "forwardagent")
+            .map(|(_, value)| value.as_str())
+    }
 }
 
 /// Reads the real machine, without privileges.
@@ -208,6 +235,10 @@ impl Probe for SystemProbe {
 
     fn ssh(&self, host: &str) -> Result<SshReach, Error> {
         ssh_true(host)
+    }
+
+    fn ssh_config(&self, host: &str) -> Result<SshOptions, Error> {
+        run("ssh", ["-G", host]).map(|text| SshOptions::parse(&text))
     }
 
     fn home(&self) -> Option<PathBuf> {

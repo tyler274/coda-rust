@@ -82,9 +82,33 @@ With `ci.enable`, the broker also listens on `/run/coda-sandbox/ci/broker.sock`,
 
 The module's polkit rule lets `user` start, stop and restart `container@<name>.service` and the `coda-ci` units without sudo, so doctor's fixes for them are plain `systemctl`.
 
-### Working in the sandbox from Cursor
+### Working in the sandbox from an editor or agent CLI
 
-Add an SSH entry for host `coda-agent`: `HostName` is `localAddress`, `User agent`, a dedicated `IdentityFile` whose public key is in `authorizedKeys`, and `ForwardAgent no`. Connect with Remote-SSH and open `/agents/coda/src/coda-rust`. Keep these Cursor settings off so no host credential is forwarded: `remote.SSH.enableAgentForwarding`, `git.terminalAuthentication`, `github.gitAuthentication`; `coda-sandbox doctor` flags them. `coda-sandbox worktree` owns worktrees and their build directories there, and a daily `coda-worktree-gc` timer in the container runs `coda-sandbox worktree gc`.
+Add an SSH entry for host `coda-agent` (`container.sshHost`): `HostName` is `localAddress`, `User agent`, a dedicated `IdentityFile` whose public key is in `authorizedKeys`, and `ForwardAgent no`. Then, on the host:
+
+```bash
+coda-sandbox open                      # the main checkout in Cursor
+coda-sandbox open eng-7 --editor zed   # .worktrees/eng-7 in Zed
+coda-sandbox shell                     # a login shell in the main checkout
+coda-sandbox shell eng-7 -- claude     # Claude Code in that worktree's dev shell
+```
+
+`open` takes `--editor cursor`, `code`, `antigravity` or `zed`, and launches `cursor`, `code` or `antigravity-ide` with `--remote ssh-remote+coda-agent <dir>`, or `zeditor ssh://coda-agent<dir>` (on NixOS `zed` is the ZFS event daemon). `shell` runs a command through `direnv exec`, so it gets the repo's dev shell. Both refuse a worktree that does not exist, and pass `ForwardAgent=no` and `ClearAllForwardings=yes` to their own SSH. The editor window, and its own model sign-in, stay on the host; its remote server, terminals and agent commands run in the container.
+
+Each checkout's `.envrc` is approved once in the container (`direnv allow`). The VS Code family picks up the dev shell through the repo's recommended direnv extension, and Zed through `load_direnv` in `.zed/settings.json`, so rust-analyzer and cargo are the flake's, from the toolchain's own `rust-analyzer` component.
+
+Nothing forwards a host credential: doctor checks that `ssh -G coda-agent` resolves `ForwardAgent no`, which is all Antigravity's remote and Zed have to go by, and that these settings are off where the editor has them: `remote.SSH.enableAgentForwarding`, `git.terminalAuthentication` and `github.gitAuthentication` for Cursor and VS Code, the two Git ones for Antigravity.
+
+Claude Code and Codex run in the container, in `coda-sandbox shell` or an editor's terminal, and come from the dev shell. By default each signs in once there (`claude auth login`, `codex login`) and keeps its login in the agent's home. To use an API key from your keyring instead, store it on the host and turn its option on:
+
+```bash
+coda-sandbox broker store anthropic   # with container.modelKeys.anthropic = true
+coda-sandbox broker store openai      # with container.modelKeys.openai = true
+```
+
+The broker serves these on the agent socket like the others. The options write the container's system-wide config, Claude Code's `apiKeyHelper` in `/etc/claude-code/managed-settings.json` and a Codex provider in `/etc/codex/config.toml`, each running `coda-sandbox token <item>` per session, so the key is in no file or environment. The model keys are optional: doctor and `status` list them only once stored.
+
+`coda-sandbox worktree` owns worktrees and their build directories in the container, and a daily `coda-worktree-gc` timer there runs `coda-sandbox worktree gc`.
 
 ### Bringing host worktrees over
 

@@ -83,6 +83,8 @@ in
         inherit uidBase;
         memoryMax = "1G";
         authorizedKeys = [ (builtins.readFile "${testKey}/key.pub") ];
+        # One model key on and one off, so the check sees both shapes.
+        container.modelKeys.anthropic = true;
         # No desktop session runs a Secret Service here; the stub keeps
         # items as files the broker's user owns.
         broker.keyringPackage = pkgs.callPackage ./fake-secret-tool.nix { dir = keyring; };

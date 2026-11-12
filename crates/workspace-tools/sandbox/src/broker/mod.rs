@@ -40,6 +40,12 @@ pub enum Item {
     GithubAgent,
     /// The read-only Doppler service token for the container's doppler.
     Doppler,
+    /// An Anthropic API key for Claude Code, for when it should not use
+    /// its own login. Optional.
+    Anthropic,
+    /// An OpenAI API key for Codex, for when it should not use its own
+    /// login. Optional.
+    Openai,
     /// The fine-grained GitHub token the CI controller registers runners
     /// and reads the job queue with. It never enters the container.
     GithubCi,
@@ -51,17 +57,39 @@ pub enum Item {
 
 impl Item {
     /// The items the agent's door serves, in the order reports list them.
-    pub const AGENT: [Self; 2] = [Self::GithubAgent, Self::Doppler];
+    pub const AGENT: [Self; 4] = [
+        Self::GithubAgent,
+        Self::Doppler,
+        Self::Anthropic,
+        Self::Openai,
+    ];
 
     /// The value of the keyring item's `token` attribute.
     pub fn name(self) -> &'static str {
         match self {
             Self::GithubAgent => "github-agent",
             Self::Doppler => "doppler",
+            Self::Anthropic => "anthropic",
+            Self::Openai => "openai",
             Self::GithubCi => "github-ci",
             Self::SelfTest => "coda-sandbox-selftest",
         }
     }
+
+    /// Whether the sandbox works without it: the model keys stand in for a
+    /// login the agent CLIs keep themselves.
+    pub fn need(self) -> Need {
+        match self {
+            Self::GithubAgent | Self::Doppler | Self::GithubCi | Self::SelfTest => Need::Required,
+            Self::Anthropic | Self::Openai => Need::Optional,
+        }
+    }
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum Need {
+    Required,
+    Optional,
 }
 
 impl fmt::Display for Item {

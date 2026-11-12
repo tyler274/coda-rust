@@ -15,6 +15,7 @@ pub use checks::{LegacyTokenDir, run};
 
 use crate::editor_settings::Editor;
 use crate::error::Error;
+use crate::open::shell_quote;
 
 /// What one check looks at.
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -24,6 +25,8 @@ pub enum Check {
     Reflinks,
     ContainerUnit,
     Ssh,
+    /// The SSH config does not forward the host's agent to the container.
+    SshForwarding,
     SpoolDir(SpoolDir),
     CiTimer,
     /// The token broker answers and which source serves each token.
@@ -47,6 +50,7 @@ impl Check {
             Self::Reflinks => "reflinks".to_owned(),
             Self::ContainerUnit => "container".to_owned(),
             Self::Ssh => "ssh".to_owned(),
+            Self::SshForwarding => "ssh agent forwarding".to_owned(),
             Self::SpoolDir(SpoolDir::Requests) => "spool requests".to_owned(),
             Self::SpoolDir(SpoolDir::Results) => "spool results".to_owned(),
             Self::CiTimer => "ci timer".to_owned(),
@@ -80,16 +84,6 @@ impl Fix {
 
     pub fn instruction(text: impl Into<String>) -> Self {
         Self::Instruction(text.into())
-    }
-}
-
-/// Quotes `word` for a POSIX shell when it holds anything but plain characters.
-fn shell_quote(word: &str) -> String {
-    let plain = |c: char| c.is_ascii_alphanumeric() || "@%+=:,./-_".contains(c);
-    if !word.is_empty() && word.chars().all(plain) {
-        word.to_owned()
-    } else {
-        format!("'{}'", word.replace('\'', r"'\''"))
     }
 }
 

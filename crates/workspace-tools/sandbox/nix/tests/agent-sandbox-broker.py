@@ -53,6 +53,21 @@ with subtest("gh and doppler wrappers get their tokens per process"):
     agent_fails("printenv GH_TOKEN")
     agent_fails("printenv DOPPLER_TOKEN")
 
+with subtest("model keys are optional and reach the agent CLIs' system config"):
+    # Never stored, they are left out of the owner's view and not warned about.
+    status = luluco("coda-sandbox status")
+    assert "anthropic" not in status and "openai" not in status, status
+    err = agent("coda-sandbox token anthropic 2>&1 || true")
+    assert "no token is stored" in err, err
+    luluco("printf %s vmcheck-anthropic-5d1e | coda-sandbox broker store anthropic")
+    assert agent("coda-sandbox token anthropic").strip() == "vmcheck-anthropic-5d1e"
+    assert "anthropic: keyring" in luluco("coda-sandbox status")
+    managed = json.loads(agent("cat /etc/claude-code/managed-settings.json"))
+    assert managed["apiKeyHelper"].endswith("coda-sandbox token anthropic"), managed
+    assert agent("sh -c " + json.dumps(managed["apiKeyHelper"])).strip() == "vmcheck-anthropic-5d1e"
+    # modelKeys.openai is off: Codex keeps its own login.
+    agent_fails("test -e /etc/codex/config.toml")
+
 with subtest("only the container's agent gets a secret"):
     err = machine.fail("coda-sandbox token gh 2>&1")
     assert "may not ask" in err, err

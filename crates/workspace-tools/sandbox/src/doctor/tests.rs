@@ -1,6 +1,6 @@
 use std::path::{Path, PathBuf};
 
-use super::fake::{healthy, stored};
+use super::fake::{healthy, settings_path, stored};
 use super::{Check, Fix, LegacyTokenDir, Outcome, SpoolDir, Verdict, render, run, verdict};
 use crate::broker::Source;
 use crate::broker::wire::{GhFallback, ItemState, Unavailable};
@@ -206,6 +206,32 @@ fn broker_without_the_agent_token_fails_with_the_store_command() {
 }
 
 #[test]
+fn a_stored_model_key_is_listed_and_a_locked_one_warns() {
+    let mut probe = healthy();
+    let mut report = stored();
+    report.items[2].state = ItemState::Available {
+        source: Source::Keyring,
+    };
+    probe.broker = Some(report.clone());
+    let findings = run(&probe, &config());
+    assert!(matches!(
+        outcome(&findings, &Check::Broker),
+        Outcome::Pass { detail }
+            if detail == "github-agent: keyring; doppler: keyring; anthropic: keyring; github-ci: keyring"
+    ));
+
+    report.items[3].state = ItemState::Unavailable {
+        reason: Unavailable::KeyringLocked,
+    };
+    probe.broker = Some(report);
+    let findings = run(&probe, &config());
+    let Outcome::Warn { detail, .. } = outcome(&findings, &Check::Broker) else {
+        panic!("expected Warn")
+    };
+    assert!(detail.contains("openai: keyring locked"), "{detail}");
+}
+
+#[test]
 fn broker_serving_a_token_only_from_cache_warns_with_its_age() {
     let mut probe = healthy();
     let mut report = stored();
@@ -280,7 +306,7 @@ fn reflink_pool_feature_and_xfs() {
 
 #[test]
 fn unset_and_enabled_forwarding_both_fail() {
-    let path = Editor::Cursor.settings_path(Path::new("/home/me"));
+    let path = settings_path(Editor::Cursor);
     let mut probe = healthy();
     for text in [
         r#"{ "git.terminalAuthentication": false }"#,
@@ -296,6 +322,54 @@ fn unset_and_enabled_forwarding_both_fail() {
             "{text}"
         );
         assert_eq!(verdict(&findings), Verdict::Failing);
+    }
+}
+
+#[test]
+fn antigravity_needs_only_its_git_keys_off_and_zed_has_no_settings_check() {
+    let path = settings_path(Editor::Antigravity);
+    assert!(path.ends_with(".config/Antigravity IDE/User/settings.json"));
+    let mut probe = healthy();
+    probe.files.insert(
+        path.clone(),
+        r#"{ "git.terminalAuthentication": false, "github.gitAuthentication": false }"#.to_owned(),
+    );
+    let findings = run(&probe, &config());
+    assert!(matches!(
+        outcome(&findings, &Check::EditorSettings(Editor::Antigravity)),
+        Outcome::Pass { .. }
+    ));
+    assert!(
+        !findings
+            .iter()
+            .any(|f| f.check == Check::EditorSettings(Editor::Zed))
+    );
+    probe.files.insert(
+        path,
+        r#"{ "git.terminalAuthentication": false }"#.to_owned(),
+    );
+    let findings = run(&probe, &config());
+    assert!(matches!(
+        outcome(&findings, &Check::EditorSettings(Editor::Antigravity)),
+        Outcome::Fail { detail, .. } if detail.contains("github.gitAuthentication unset")
+    ));
+}
+
+#[test]
+fn ssh_config_forwarding_the_agent_fails() {
+    let mut probe = healthy();
+    assert!(matches!(
+        outcome(&run(&probe, &config()), &Check::SshForwarding),
+        Outcome::Pass { .. }
+    ));
+    for value in ["yes", "/run/user/1000/ssh-agent"] {
+        probe.ssh_options = format!("user agent\nforwardagent {value}\n");
+        let findings = run(&probe, &config());
+        let Outcome::Fail { detail, fix } = outcome(&findings, &Check::SshForwarding) else {
+            panic!("ForwardAgent {value} should fail")
+        };
+        assert!(detail.contains(value), "{detail}");
+        assert!(fix.to_string().contains("ForwardAgent no"));
     }
 }
 

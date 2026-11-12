@@ -5,14 +5,14 @@ use std::io;
 use std::path::{Path, PathBuf};
 
 use crate::broker::error::BrokerError;
-use crate::broker::wire::{GhFallback, ItemReport, ItemState, Report};
-use crate::broker::{Item, Source};
+use crate::broker::wire::{GhFallback, ItemReport, ItemState, Report, Unavailable};
+use crate::broker::{Item, Need, Source};
 use crate::config::UnitName;
 use crate::editor_settings::Editor;
 use crate::error::Error;
 use crate::probe::{
-    ActiveState, FsType, LoadState, PathKind, PoolFeature, Probe, SshReach, UnitScope, UnitState,
-    ZFS_BCLONE_PARAMETER,
+    ActiveState, FsType, LoadState, PathKind, PoolFeature, Probe, SshOptions, SshReach, UnitScope,
+    UnitState, ZFS_BCLONE_PARAMETER,
 };
 
 /// Paths it does not list are missing; paths under `denied` fail with
@@ -26,6 +26,8 @@ pub(super) struct FakeProbe {
     pub fs: FsType,
     pub pool_feature: Option<PoolFeature>,
     pub ssh: SshReach,
+    /// What `ssh -G` prints for the container's host.
+    pub ssh_options: String,
     /// `None` when no broker listens on the socket.
     pub broker: Option<Report>,
 }
@@ -92,6 +94,10 @@ impl Probe for FakeProbe {
         Ok(self.ssh.clone())
     }
 
+    fn ssh_config(&self, _: &str) -> Result<SshOptions, Error> {
+        Ok(SshOptions::parse(&self.ssh_options))
+    }
+
     fn home(&self) -> Option<PathBuf> {
         Some(PathBuf::from("/home/me"))
     }
@@ -104,18 +110,29 @@ impl Probe for FakeProbe {
     }
 }
 
-/// The broker's report on a host with the CI when every token is in the
-/// keyring.
+/// The broker's report on a host with the CI when every required token is
+/// in the keyring and neither optional model key was stored.
 pub(super) fn stored() -> Report {
     Report {
-        items: [Item::GithubAgent, Item::Doppler, Item::GithubCi]
-            .map(|item| ItemReport {
-                item,
-                state: ItemState::Available {
+        items: [
+            Item::GithubAgent,
+            Item::Doppler,
+            Item::Anthropic,
+            Item::Openai,
+            Item::GithubCi,
+        ]
+        .map(|item| ItemReport {
+            item,
+            state: match item.need() {
+                Need::Required => ItemState::Available {
                     source: Source::Keyring,
                 },
-            })
-            .to_vec(),
+                Need::Optional => ItemState::Unavailable {
+                    reason: Unavailable::NotStored,
+                },
+            },
+        })
+        .to_vec(),
         gh_fallback: GhFallback::Off,
         fallback_used: false,
     }
@@ -136,10 +153,7 @@ pub(super) fn healthy() -> FakeProbe {
     };
     let units = ["container@coda-agent.service", "coda-ci.timer"];
     let mut files = HashMap::from([(PathBuf::from(ZFS_BCLONE_PARAMETER), "1\n".to_owned())]);
-    files.insert(
-        Editor::Cursor.settings_path(Path::new("/home/me")),
-        SAFE_SETTINGS.to_owned(),
-    );
+    files.insert(settings_path(Editor::Cursor), SAFE_SETTINGS.to_owned());
     FakeProbe {
         units: units.iter().map(|u| ((*u).to_owned(), active)).collect(),
         dirs: [
@@ -154,6 +168,15 @@ pub(super) fn healthy() -> FakeProbe {
         fs: FsType::Zfs,
         pool_feature: Some(PoolFeature::Active),
         ssh: SshReach::Reachable,
+        ssh_options: "hostname 10.233.1.2\nforwardagent no\nuser agent\n".to_owned(),
         broker: Some(stored()),
     }
+}
+
+/// An editor's settings file under the fake home.
+pub(super) fn settings_path(editor: Editor) -> PathBuf {
+    editor
+        .settings()
+        .expect("the editor has a settings file")
+        .path(Path::new("/home/me"))
 }

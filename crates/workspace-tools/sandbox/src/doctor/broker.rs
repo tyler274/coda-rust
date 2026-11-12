@@ -5,7 +5,7 @@
 use super::{Fix, Outcome};
 use crate::broker::error::BrokerError;
 use crate::broker::wire::{GhFallback, ItemReport, ItemState, Report, Unavailable};
-use crate::broker::{Item, Source};
+use crate::broker::{Item, Need, Source};
 use crate::config::Broker;
 use crate::error::Error;
 use crate::probe::Probe;
@@ -68,7 +68,10 @@ fn report_outcome(report: &Report) -> Outcome {
             ),
         };
     }
-    for ItemReport { item, state } in &report.items {
+    for entry @ ItemReport { item, state } in &report.items {
+        if absent_by_choice(entry) {
+            continue;
+        }
         match *state {
             ItemState::Stale { .. } => {
                 return Outcome::Warn {
@@ -86,6 +89,16 @@ fn report_outcome(report: &Report) -> Outcome {
         }
     }
     Outcome::Pass { detail }
+}
+
+/// An optional key that was never stored is the default: the agent CLI
+/// keeps its own login instead, so it is neither listed nor warned about.
+fn absent_by_choice(entry: &ItemReport) -> bool {
+    entry.item.need() == Need::Optional
+        && entry.state
+            == ItemState::Unavailable {
+                reason: Unavailable::NotStored,
+            }
 }
 
 fn unavailable_fix(item: Item, reason: Unavailable) -> Fix {
@@ -107,11 +120,13 @@ fn unavailable_fix(item: Item, reason: Unavailable) -> Fix {
     }
 }
 
-/// `github-agent: keyring; doppler: not stored`.
+/// `github-agent: keyring; doppler: not stored`. An optional key that was
+/// never stored is left out.
 pub fn describe(report: &Report) -> String {
     report
         .items
         .iter()
+        .filter(|entry| !absent_by_choice(entry))
         .map(|ItemReport { item, state }| {
             let state = match state {
                 ItemState::Available { source } => source.name().to_owned(),
