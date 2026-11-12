@@ -42,6 +42,8 @@ mod entities;
 /// Physician feedback on Coda's responses.
 pub mod feedback;
 mod frozen;
+/// Read-only queries over saved conversations and work.
+pub mod history;
 pub use frozen::{BindingRef, SkillPackageId};
 /// Practice-owned background jobs running on the shared run store and background lane.
 pub mod jobs;
