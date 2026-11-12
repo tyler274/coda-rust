@@ -52,6 +52,7 @@ pub fn validate_startup(get: impl Fn(&str) -> Option<String>) -> Result<(), Stri
         && !database.trim().is_empty()
     {
         ClinicalLibraryConfig::from_env(&get).map_err(|error| error.to_string())?;
+        StagingSyntheticControlConfig::from_env(&get).map_err(|error| error.to_string())?;
         return Ok(());
     }
     Err(format!(
@@ -276,6 +277,153 @@ impl RehearsalSignIn {
         Ok(Some(Self {
             audience,
             principal: principal.into_string(),
+        }))
+    }
+}
+
+/// Environment variable that opts into the staging synthetic event control routes.
+pub const STAGING_SYNTHETIC_CONTROL_ENV: &str = "CODA_STAGING_SYNTHETIC_CONTROL";
+
+/// Optional environment variable naming the mutable working bank directory for
+/// staging synthetic events.
+pub const STAGING_SYNTHETIC_WORKDIR_ENV: &str = "CODA_STAGING_SYNTHETIC_WORKDIR";
+
+/// Validated settings for the staging-only synthetic event control surface.
+///
+/// When unset, no `/staging-synthetic/*` route is mounted. Hosted revisions
+/// accept this setting exclusively under `CODA_HOSTED_PROFILE=staging-preview`
+/// (`CODA_ENVIRONMENT=stg`); production and non-staging environments refuse to
+/// start if it is set.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct StagingSyntheticControlConfig {
+    /// Canonical read-only patient bank restored on startup and on reset.
+    pub base_bank_dir: std::path::PathBuf,
+    /// Mutable working directory read by the synthetic chart and calendar adapters.
+    pub working_bank_dir: std::path::PathBuf,
+}
+
+/// Why [`StagingSyntheticControlConfig::from_env`] refused environment settings.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub enum StagingSyntheticControlConfigError {
+    /// `CODA_STAGING_SYNTHETIC_WORKDIR` was set without enabling `CODA_STAGING_SYNTHETIC_CONTROL`.
+    WorkdirWithoutEnable,
+    /// `CODA_STAGING_SYNTHETIC_CONTROL` held a value other than `"enabled"`.
+    InvalidToggle {
+        /// Raw trimmed value supplied in the environment.
+        value: String,
+    },
+    /// A hosted process attempted to enable synthetic control outside `staging-preview`.
+    NotStagingPreview,
+    /// `CODA_ENVIRONMENT` named a non-staging, non-local environment such as `prd` or `production`.
+    DisallowedEnvironment {
+        /// Environment name supplied in `CODA_ENVIRONMENT`.
+        environment: String,
+    },
+    /// `PHYSICIAN_SYNTHETIC_CHARTS` was missing or empty when synthetic control was enabled.
+    MissingBaseBank,
+    /// `working_bank_dir` pointed at the same path as `base_bank_dir`, which would mutate base charts.
+    WorkingDirMatchesBaseBank {
+        /// Colliding filesystem path.
+        path: std::path::PathBuf,
+    },
+}
+
+impl std::fmt::Display for StagingSyntheticControlConfigError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::WorkdirWithoutEnable => write!(
+                f,
+                "{STAGING_SYNTHETIC_WORKDIR_ENV} requires {STAGING_SYNTHETIC_CONTROL_ENV}=enabled"
+            ),
+            Self::InvalidToggle { value } => write!(
+                f,
+                "{STAGING_SYNTHETIC_CONTROL_ENV} must be `enabled` or unset, got `{value}`"
+            ),
+            Self::NotStagingPreview => write!(
+                f,
+                "{STAGING_SYNTHETIC_CONTROL_ENV} is only honoured under CODA_HOSTED_PROFILE={STAGING_PROFILE}"
+            ),
+            Self::DisallowedEnvironment { environment } => write!(
+                f,
+                "{STAGING_SYNTHETIC_CONTROL_ENV} is forbidden when CODA_ENVIRONMENT=`{environment}`"
+            ),
+            Self::MissingBaseBank => write!(
+                f,
+                "{STAGING_SYNTHETIC_CONTROL_ENV}=enabled requires PHYSICIAN_SYNTHETIC_CHARTS"
+            ),
+            Self::WorkingDirMatchesBaseBank { path } => write!(
+                f,
+                "{STAGING_SYNTHETIC_WORKDIR_ENV} (`{}`) must differ from PHYSICIAN_SYNTHETIC_CHARTS so base charts stay immutable",
+                path.display()
+            ),
+        }
+    }
+}
+
+impl std::error::Error for StagingSyntheticControlConfigError {}
+
+impl StagingSyntheticControlConfig {
+    /// Parses staging synthetic control settings, returning `Ok(None)` when disabled.
+    pub fn from_env(
+        get: impl Fn(&str) -> Option<String>,
+    ) -> Result<Option<Self>, StagingSyntheticControlConfigError> {
+        let raw_toggle = get(STAGING_SYNTHETIC_CONTROL_ENV);
+        let raw_workdir = get(STAGING_SYNTHETIC_WORKDIR_ENV);
+        if raw_toggle.is_some() || raw_workdir.is_some() {
+            if is_hosted(&get) && !is_staging_preview(&get) {
+                return Err(StagingSyntheticControlConfigError::NotStagingPreview);
+            }
+            if let Some(environment) = get("CODA_ENVIRONMENT")
+                .map(|value| value.trim().to_owned())
+                .filter(|value| !value.is_empty())
+                && !matches!(environment.as_str(), "stg" | "local" | "dev")
+            {
+                return Err(StagingSyntheticControlConfigError::DisallowedEnvironment {
+                    environment,
+                });
+            }
+        }
+
+        let toggle = raw_toggle
+            .map(|value| value.trim().to_owned())
+            .filter(|value| !value.is_empty());
+        let workdir = raw_workdir
+            .map(|value| value.trim().to_owned())
+            .filter(|value| !value.is_empty());
+
+        let Some(toggle) = toggle else {
+            if workdir.is_some() {
+                return Err(StagingSyntheticControlConfigError::WorkdirWithoutEnable);
+            }
+            return Ok(None);
+        };
+
+        if toggle != "enabled" {
+            return Err(StagingSyntheticControlConfigError::InvalidToggle { value: toggle });
+        }
+
+        let base_bank = get("PHYSICIAN_SYNTHETIC_CHARTS")
+            .map(|value| value.trim().to_owned())
+            .filter(|value| !value.is_empty())
+            .ok_or(StagingSyntheticControlConfigError::MissingBaseBank)?;
+        let base_bank_dir = std::path::PathBuf::from(base_bank);
+        let working_bank_dir = match workdir {
+            Some(explicit) => std::path::PathBuf::from(explicit),
+            None => std::env::temp_dir().join(format!(
+                "coda-staging-synthetic-work-{}",
+                std::process::id()
+            )),
+        };
+        if working_bank_dir == base_bank_dir {
+            return Err(
+                StagingSyntheticControlConfigError::WorkingDirMatchesBaseBank {
+                    path: working_bank_dir,
+                },
+            );
+        }
+        Ok(Some(Self {
+            base_bank_dir,
+            working_bank_dir,
         }))
     }
 }
