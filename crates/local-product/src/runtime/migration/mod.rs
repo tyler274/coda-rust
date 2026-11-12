@@ -4,6 +4,7 @@ use sea_orm_migration::prelude::*;
 
 mod m20261111_init;
 mod m20261111_response_feedback;
+mod m20261112_chat_memory;
 mod m20261112_concerns;
 mod m20261112_practice_jobs_dispatch;
 
@@ -26,6 +27,7 @@ impl MigratorTrait for Migrator {
             Box::new(m20261111_response_feedback::Migration),
             Box::new(m20261112_concerns::Migration),
             Box::new(m20261112_practice_jobs_dispatch::Migration),
+            Box::new(m20261112_chat_memory::Migration),
         ]
     }
 }
