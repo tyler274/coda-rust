@@ -365,9 +365,11 @@ async fn publication_wins_revocation_or_expires_while_holding_authority() {
         let result = publication.await.unwrap();
         if expire {
             let cause = result.unwrap_err();
-            assert_eq!(
-                engine::AttemptFailure::from_cause(cause.as_ref()),
-                engine::AttemptFailure::Failed,
+            assert!(
+                matches!(
+                    cause,
+                    engine::ProductError::NotCurrent(engine::NotCurrent::Lost)
+                ),
                 "lease expiry remains distinct from input supersession"
             );
         } else {

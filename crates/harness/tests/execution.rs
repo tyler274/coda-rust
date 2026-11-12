@@ -3,7 +3,9 @@ mod recover;
 #[path = "support/requests.rs"]
 mod request_records;
 use async_trait::async_trait;
-use harness::engine::{self, Event, EventKind, Invocation, RunLimits, recipe::*};
+use harness::engine::{
+    self, AttemptFailure, Event, EventKind, Failure, Invocation, RunLimits, recipe::*,
+};
 use serde_json::{Value, json};
 
 fn request() -> Request {
@@ -72,31 +74,33 @@ impl engine::Product for TestProduct {
     ) -> harness::engine::recipe::ToolFuture<Option<String>> {
         Box::pin(async { Err("result paging is unavailable for this fixture".into()) })
     }
-    async fn window_seed(&mut self) -> Result<harness::engine::WindowSeed, harness::engine::Cause> {
+    async fn window_seed(
+        &mut self,
+    ) -> Result<harness::engine::WindowSeed, harness::engine::ProductError> {
         Err("working windows are unavailable for this fixture".into())
     }
 
     async fn message_sources(
         &mut self,
-    ) -> Result<Option<Vec<harness::engine::ProductMessage>>, harness::engine::Cause> {
+    ) -> Result<Option<Vec<harness::engine::ProductMessage>>, harness::engine::ProductError> {
         Ok(None)
     }
 
     async fn admit_binding(
         &mut self,
         _: &harness::engine::recipe::RequestBinding,
-    ) -> Result<(), harness::engine::Cause> {
+    ) -> Result<(), harness::engine::ProductError> {
         Ok(())
     }
 
-    async fn assert_current(&mut self) -> Result<(), engine::Cause> {
+    async fn assert_current(&mut self) -> Result<(), engine::ProductError> {
         if self.stale || self.partial {
-            Err("stale".into())
+            Err(engine::NotCurrent::Withdrawn.into())
         } else {
             Ok(())
         }
     }
-    async fn persist(&mut self, record: Event) -> Result<(), engine::Cause> {
+    async fn persist(&mut self, record: Event) -> Result<(), engine::ProductError> {
         if matches!(
             record,
             Event {
@@ -120,7 +124,7 @@ impl engine::Product for TestProduct {
         })();
         Box::pin(std::future::ready(outcome))
     }
-    async fn finish(&mut self, _: &Turn) -> Result<Finish, engine::Cause> {
+    async fn finish(&mut self, _: &Turn) -> Result<Finish, engine::ProductError> {
         self.assert_current().await?;
         self.completed = true;
         Ok(Finish::Committed)
@@ -129,7 +133,7 @@ impl engine::Product for TestProduct {
         &mut self,
         _: &Turn,
         _: &[engine::LimitBackstop],
-    ) -> Result<(), engine::Cause> {
+    ) -> Result<(), engine::ProductError> {
         self.partial = true;
         Ok(())
     }
@@ -275,17 +279,23 @@ async fn late_stale_output_retains_usage_without_effects() {
         withdraw_on_response: true,
         ..Default::default()
     };
+    let error = recover::work(request().freeze().unwrap(), "test", &[], 0)
+        .unwrap()
+        .run(
+            &mut provider,
+            &mut owner,
+            RunLimits::default(),
+            &Cancellation::default(),
+        )
+        .await
+        .unwrap_err();
     assert!(
-        recover::work(request().freeze().unwrap(), "test", &[], 0)
-            .unwrap()
-            .run(
-                &mut provider,
-                &mut owner,
-                RunLimits::default(),
-                &Cancellation::default(),
-            )
-            .await
-            .is_err()
+        matches!(error, Failure::NotCurrent(engine::NotCurrent::Withdrawn)),
+        "{error}"
+    );
+    assert_eq!(
+        AttemptFailure::of(&error, &Cancellation::default()),
+        AttemptFailure::Interrupted
     );
     assert_eq!(Progress::from_events(&owner.records).known_tokens, 5);
     assert_eq!(owner.effects, 0);
@@ -423,30 +433,32 @@ impl engine::Product for Moving {
     ) -> harness::engine::recipe::ToolFuture<Option<String>> {
         Box::pin(async { Err("result paging is unavailable for this fixture".into()) })
     }
-    async fn window_seed(&mut self) -> Result<harness::engine::WindowSeed, harness::engine::Cause> {
+    async fn window_seed(
+        &mut self,
+    ) -> Result<harness::engine::WindowSeed, harness::engine::ProductError> {
         Err("working windows are unavailable for this fixture".into())
     }
 
     async fn message_sources(
         &mut self,
-    ) -> Result<Option<Vec<harness::engine::ProductMessage>>, harness::engine::Cause> {
+    ) -> Result<Option<Vec<harness::engine::ProductMessage>>, harness::engine::ProductError> {
         Ok(None)
     }
 
     async fn admit_binding(
         &mut self,
         _: &harness::engine::recipe::RequestBinding,
-    ) -> Result<(), harness::engine::Cause> {
+    ) -> Result<(), harness::engine::ProductError> {
         Ok(())
     }
 
     fn terminal(&self, response: &Turn) -> bool {
         response.calls().any(|call| call.name == "finish")
     }
-    async fn assert_current(&mut self) -> Result<(), engine::Cause> {
+    async fn assert_current(&mut self) -> Result<(), engine::ProductError> {
         Ok(())
     }
-    async fn persist(&mut self, record: Event) -> Result<(), engine::Cause> {
+    async fn persist(&mut self, record: Event) -> Result<(), engine::ProductError> {
         self.records.push(record);
         Ok(())
     }
@@ -454,7 +466,7 @@ impl engine::Product for Moving {
         let outcome = Ok(ToolOutcome::Returned(json!({"read": true}).to_string()));
         Box::pin(std::future::ready(outcome))
     }
-    async fn finish(&mut self, _: &Turn) -> Result<Finish, engine::Cause> {
+    async fn finish(&mut self, _: &Turn) -> Result<Finish, engine::ProductError> {
         if self.moves > 0 {
             self.moves -= 1;
             return Ok(Finish::Continue(json!({"outcome": "inputs_changed"})));
@@ -466,7 +478,7 @@ impl engine::Product for Moving {
         &mut self,
         _: &Turn,
         _: &[engine::LimitBackstop],
-    ) -> Result<(), engine::Cause> {
+    ) -> Result<(), engine::ProductError> {
         self.partials += 1;
         Ok(())
     }
@@ -547,35 +559,36 @@ async fn mixed_terminal_batch_reaches_product_validation_before_any_effect() {
             &mut self,
             _turn: &harness::engine::Turn,
             _backstops: &[harness::engine::LimitBackstop],
-        ) -> Result<(), harness::engine::Cause> {
+        ) -> Result<(), harness::engine::ProductError> {
             Err("this fixture has no partial-result disposition".into())
         }
         async fn window_seed(
             &mut self,
-        ) -> Result<harness::engine::WindowSeed, harness::engine::Cause> {
+        ) -> Result<harness::engine::WindowSeed, harness::engine::ProductError> {
             Err("working windows are unavailable for this fixture".into())
         }
 
         async fn message_sources(
             &mut self,
-        ) -> Result<Option<Vec<harness::engine::ProductMessage>>, harness::engine::Cause> {
+        ) -> Result<Option<Vec<harness::engine::ProductMessage>>, harness::engine::ProductError>
+        {
             Ok(None)
         }
 
         async fn admit_binding(
             &mut self,
             _: &harness::engine::recipe::RequestBinding,
-        ) -> Result<(), harness::engine::Cause> {
+        ) -> Result<(), harness::engine::ProductError> {
             Ok(())
         }
 
         fn terminal(&self, response: &Turn) -> bool {
             response.calls().any(|call| call.name == "finish")
         }
-        async fn assert_current(&mut self) -> Result<(), engine::Cause> {
+        async fn assert_current(&mut self) -> Result<(), engine::ProductError> {
             Ok(())
         }
-        async fn persist(&mut self, _: Event) -> Result<(), engine::Cause> {
+        async fn persist(&mut self, _: Event) -> Result<(), engine::ProductError> {
             Ok(())
         }
         fn execute(&mut self, _: &Invocation, _: Value) -> harness::engine::recipe::ToolFuture {
@@ -585,7 +598,7 @@ async fn mixed_terminal_batch_reaches_product_validation_before_any_effect() {
             };
             Box::pin(std::future::ready(outcome))
         }
-        async fn finish(&mut self, response: &Turn) -> Result<Finish, engine::Cause> {
+        async fn finish(&mut self, response: &Turn) -> Result<Finish, engine::ProductError> {
             self.seen.push(response.clone());
             Err("product rejects mixed terminal effects".into())
         }
@@ -927,7 +940,10 @@ async fn token_backstop_excludes_cached_input_and_survives_trace_restoration() {
         )
         .await
         .unwrap_err();
-    assert!(matches!(error, engine::Failure::Host(_)));
+    assert!(
+        matches!(error, Failure::NotCurrent(engine::NotCurrent::Withdrawn)),
+        "a held attempt is ended, so a reclaimed run stops: {error}"
+    );
     assert_eq!(provider.calls, 3);
     assert_eq!(product.records.len(), count);
 }

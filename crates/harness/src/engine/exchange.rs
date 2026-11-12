@@ -99,7 +99,7 @@ pub(super) async fn dispatch<P: Provider + ?Sized>(
                 }
                 _ = tick.tick(), if presentation.is_none() => {
                     cancel.mark();
-                    if let Err(reason) = settle(cancel, &mut deadline, async {run.product.assert_current().await.map_err(Failure::Host)}).await {
+                    if let Err(reason) = settle(cancel, &mut deadline, async {run.product.assert_current().await.map_err(Failure::from)}).await {
                         interrupt.send_replace(true);
                         presentation = Some(reason);
                         deadline.get_or_insert_with(|| Instant::now() + GRACE);
@@ -126,7 +126,7 @@ pub(super) async fn dispatch<P: Provider + ?Sized>(
                             let delivered = settle(cancel, &mut deadline, async {
                                 cancel.check()?;
                                 run.product.live_text(run.progress.provider_ordinal, delta)
-                                    .await.map_err(Failure::Host)
+                                    .await.map_err(Failure::from)
                             }).await;
                             match delivered {
                                 Ok(delivery) => {

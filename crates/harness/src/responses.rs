@@ -544,7 +544,7 @@ mod tests {
         let error =
             crate::engine::Failure::Final(Box::new(crate::engine::Failure::Provider(cause)));
         assert_eq!(
-            crate::engine::AttemptFailure::from_cause(&error),
+            crate::engine::AttemptFailure::of(&error, &crate::engine::Cancellation::default()),
             crate::engine::AttemptFailure::ProviderBlocked,
             "reserved final billing failure must remain provider blocked"
         );

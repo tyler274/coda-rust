@@ -53,7 +53,7 @@ async fn hosted_attempt<A: Authority, P: engine::recipe::Provider>(
             host.store
                 .settle_chat_attempt(
                     &host.claim,
-                    engine::AttemptFailure::from_error(error, cancel),
+                    engine::AttemptFailure::of(error, cancel),
                     Backoff::IMMEDIATE
                 )
                 .await
@@ -454,7 +454,7 @@ async fn a_read_recorded_after_a_steer_is_retained_by_the_successor() {
     let error = running.await.unwrap().unwrap_err();
     s.settle_chat_attempt(
         &claim,
-        engine::AttemptFailure::from_error(&error, &engine::Cancellation::default()),
+        engine::AttemptFailure::of(&error, &engine::Cancellation::default()),
         Backoff::IMMEDIATE,
     )
     .await
@@ -577,7 +577,7 @@ async fn a_steered_run_that_reaches_its_limit_keeps_the_partial_answer() {
     .unwrap_err();
     s.settle_chat_attempt(
         &claim,
-        engine::AttemptFailure::from_error(&error, &engine::Cancellation::default()),
+        engine::AttemptFailure::of(&error, &engine::Cancellation::default()),
         Backoff::IMMEDIATE,
     )
     .await
@@ -1170,13 +1170,19 @@ async fn event_ack_stop_steering_and_late_candidate_fences() {
             .unwrap_err(),
     ] {
         assert_eq!(
-            engine::AttemptFailure::from_cause(cause.as_ref()),
+            engine::AttemptFailure::of(
+                &engine::Failure::from(cause),
+                &engine::Cancellation::default()
+            ),
             engine::AttemptFailure::Interrupted,
             "write-time currency fences must classify a steer as interrupted"
         );
     }
     let cause = s.assert_current(&answering).await.unwrap_err();
-    let reason = engine::AttemptFailure::from_cause(cause.as_ref());
+    let reason = engine::AttemptFailure::of(
+        &engine::Failure::from(cause),
+        &engine::Cancellation::default(),
+    );
     assert_eq!(
         reason,
         engine::AttemptFailure::Interrupted,
@@ -1483,7 +1489,7 @@ async fn first_final_without_a_result_rearms_the_exact_admitted_recipe() {
         store
             .settle_chat_attempt(
                 &first,
-                engine::AttemptFailure::from_error(&error, &engine::Cancellation::default()),
+                engine::AttemptFailure::of(&error, &engine::Cancellation::default()),
                 Backoff::IMMEDIATE,
             )
             .await

@@ -168,31 +168,33 @@ impl Product for Owner {
     ) -> harness::engine::recipe::ToolFuture<Option<String>> {
         Box::pin(async { Err("result paging is unavailable for this fixture".into()) })
     }
-    async fn window_seed(&mut self) -> Result<harness::engine::WindowSeed, harness::engine::Cause> {
+    async fn window_seed(
+        &mut self,
+    ) -> Result<harness::engine::WindowSeed, harness::engine::ProductError> {
         Err("working windows are unavailable for this fixture".into())
     }
 
     async fn message_sources(
         &mut self,
-    ) -> Result<Option<Vec<harness::engine::ProductMessage>>, harness::engine::Cause> {
+    ) -> Result<Option<Vec<harness::engine::ProductMessage>>, harness::engine::ProductError> {
         Ok(None)
     }
 
     async fn admit_binding(
         &mut self,
         _: &harness::engine::recipe::RequestBinding,
-    ) -> Result<(), harness::engine::Cause> {
+    ) -> Result<(), harness::engine::ProductError> {
         Ok(())
     }
 
-    async fn assert_current(&mut self) -> Result<(), Cause> {
+    async fn assert_current(&mut self) -> Result<(), ProductError> {
         match self.currency {
             Currency::Current => Ok(()),
             Currency::Revoked => Err("revoked".into()),
-            Currency::Superseded => Err(Box::new(Superseded)),
+            Currency::Superseded => Err(NotCurrent::Superseded.into()),
         }
     }
-    async fn persist(&mut self, event: Event) -> Result<(), Cause> {
+    async fn persist(&mut self, event: Event) -> Result<(), ProductError> {
         if self.pending_event {
             return std::future::pending().await;
         }
@@ -238,14 +240,18 @@ impl Product for Owner {
             "saved".into(),
         ))))
     }
-    async fn finish(&mut self, _: &Turn) -> Result<Finish, Cause> {
+    async fn finish(&mut self, _: &Turn) -> Result<Finish, ProductError> {
         self.finished += 1;
         Ok(self
             .finish_outcomes
             .pop_front()
             .unwrap_or(Finish::Committed))
     }
-    async fn finish_partial(&mut self, _: &Turn, backstops: &[LimitBackstop]) -> Result<(), Cause> {
+    async fn finish_partial(
+        &mut self,
+        _: &Turn,
+        backstops: &[LimitBackstop],
+    ) -> Result<(), ProductError> {
         self.partial.extend_from_slice(backstops);
         Ok(())
     }
@@ -462,22 +468,22 @@ struct WindowOwner {
 
 #[async_trait]
 impl Product for WindowOwner {
-    async fn message_sources(&mut self) -> Result<Option<Vec<ProductMessage>>, Cause> {
+    async fn message_sources(&mut self) -> Result<Option<Vec<ProductMessage>>, ProductError> {
         Ok(self.source_updates.pop_front())
     }
 
     async fn admit_binding(
         &mut self,
         _: &harness::engine::recipe::RequestBinding,
-    ) -> Result<(), harness::engine::Cause> {
+    ) -> Result<(), harness::engine::ProductError> {
         Ok(())
     }
 
-    async fn assert_current(&mut self) -> Result<(), Cause> {
+    async fn assert_current(&mut self) -> Result<(), ProductError> {
         Ok(())
     }
 
-    async fn persist(&mut self, event: Event) -> Result<(), Cause> {
+    async fn persist(&mut self, event: Event) -> Result<(), ProductError> {
         if self.lose_save_receipt_once
             && matches!(&event.kind, EventKind::ToolReturned { call_id, .. } if call_id == "save")
         {
@@ -567,18 +573,22 @@ impl Product for WindowOwner {
         Box::pin(std::future::ready(outcome))
     }
 
-    async fn finish(&mut self, turn: &Turn) -> Result<Finish, Cause> {
+    async fn finish(&mut self, turn: &Turn) -> Result<Finish, ProductError> {
         self.completion_count += 1;
         self.completed = Some(turn.text());
         Ok(Finish::Committed)
     }
 
-    async fn finish_partial(&mut self, turn: &Turn, _: &[LimitBackstop]) -> Result<(), Cause> {
+    async fn finish_partial(
+        &mut self,
+        turn: &Turn,
+        _: &[LimitBackstop],
+    ) -> Result<(), ProductError> {
         self.completed = Some(turn.text());
         Ok(())
     }
 
-    async fn window_seed(&mut self) -> Result<harness::engine::WindowSeed, Cause> {
+    async fn window_seed(&mut self) -> Result<harness::engine::WindowSeed, ProductError> {
         Ok(harness::engine::WindowSeed {
             items: self.seed.clone(),
             note_references: self.note_references.clone(),
@@ -1662,11 +1672,11 @@ async fn a_tool_error_after_the_attempt_was_superseded_still_interrupts() {
         .await
         .unwrap_err();
     assert!(
-        matches!(&error, Failure::Host(cause) if cause.is::<Superseded>()),
+        matches!(error, Failure::NotCurrent(NotCurrent::Superseded)),
         "the newer input ends the attempt, not the tool's error: {error}"
     );
     assert_eq!(
-        AttemptFailure::from_error(&error, &Cancellation::default()),
+        AttemptFailure::of(&error, &Cancellation::default()),
         AttemptFailure::Interrupted,
         "superseded work is interrupted, not a failed attempt"
     );
@@ -1925,7 +1935,7 @@ async fn uncertain_effect_is_never_replayed() {
         .await
         .unwrap_err();
     assert!(
-        matches!(&error, Failure::Host(cause) if cause.is::<Superseded>()),
+        matches!(error, Failure::NotCurrent(NotCurrent::Superseded)),
         "{error}"
     );
     assert_eq!(owner.executed, 1);
@@ -2104,7 +2114,7 @@ async fn model_request_and_response_budgets_are_enforced() {
         assert_eq!(result.is_ok(), accepted);
         if let Err(error) = result {
             assert_eq!(
-                harness::engine::AttemptFailure::from_error(
+                harness::engine::AttemptFailure::of(
                     &error,
                     &harness::engine::Cancellation::default()
                 ),
@@ -3160,11 +3170,11 @@ fn requested_cancellation_precedes_other_attempt_end_causes() {
         ),
         (Failure::Cancelled, AttemptFailure::Interrupted),
     ] {
-        assert_eq!(AttemptFailure::from_error(&error, &cancel), expected);
+        assert_eq!(AttemptFailure::of(&error, &cancel), expected);
         let requested = Cancellation::default();
         requested.cancel();
         assert_eq!(
-            AttemptFailure::from_error(&error, &requested),
+            AttemptFailure::of(&error, &requested),
             AttemptFailure::Interrupted
         );
     }

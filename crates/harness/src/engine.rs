@@ -629,18 +629,75 @@ pub enum WindowReason {
 /// Original error supplied by a product or provider adapter.
 pub type Cause = Box<dyn std::error::Error + Send + Sync>;
 
-/// Accepted work or input has changed; this attempt no longer supplies direction.
-#[derive(Debug, thiserror::Error)]
-#[error("accepted work or inputs no longer current")]
-pub struct Superseded;
+/// Why the work no longer wants this attempt. The product's currency owner
+/// gives it, and the harness matches on it. It is not an [`std::error::Error`],
+/// so it cannot be boxed into a [`Cause`] and lost in an error chain.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum NotCurrent {
+    /// New input replaced the direction. Tool calls already running finish
+    /// within their deadline; no new call starts.
+    Superseded,
+    /// The work no longer wants this attempt: the person stopped it, or the
+    /// work ended, even when newer input waits. The loop does not wait for
+    /// running tool calls; each stays a call that started with no recorded
+    /// outcome.
+    Withdrawn,
+    /// Another attempt holds the work, or this attempt's lease ran out. An
+    /// operational failure.
+    Lost,
+}
 
-/// The work no longer wants this attempt: the person stopped it, or the work
-/// ended, even when newer input waits. Unlike [`Superseded`], the loop does
-/// not wait for tool calls still running; each stays a call that started with
-/// no recorded outcome.
-#[derive(Debug, thiserror::Error)]
-#[error("accepted work no longer wants this attempt")]
-pub struct Withdrawn;
+impl std::fmt::Display for NotCurrent {
+    fn fmt(&self, formatter: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        formatter.write_str(match self {
+            Self::Superseded => "accepted work or inputs no longer current",
+            Self::Withdrawn => "accepted work no longer wants this attempt",
+            Self::Lost => "attempt ownership lost",
+        })
+    }
+}
+
+/// The error of every [`Product`] callback: the work no longer wants this
+/// attempt, or the callback failed. It is not an [`std::error::Error`], so the
+/// currency answer cannot hide in a chain; a caller that needs an error
+/// converts it into a [`Failure`].
+#[derive(Debug)]
+pub enum ProductError {
+    /// The work no longer wants this attempt.
+    NotCurrent(NotCurrent),
+    /// The callback failed; durable writes may need reconciliation.
+    Failed(Cause),
+}
+
+impl From<NotCurrent> for ProductError {
+    fn from(answer: NotCurrent) -> Self {
+        Self::NotCurrent(answer)
+    }
+}
+
+impl<E: Into<Cause>> From<E> for ProductError {
+    fn from(error: E) -> Self {
+        Self::Failed(error.into())
+    }
+}
+
+impl std::fmt::Display for ProductError {
+    fn fmt(&self, formatter: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::NotCurrent(answer) => answer.fmt(formatter),
+            Self::Failed(error) => error.fmt(formatter),
+        }
+    }
+}
+
+impl From<ProductError> for Failure {
+    fn from(error: ProductError) -> Self {
+        match error {
+            ProductError::NotCurrent(answer) => Self::NotCurrent(answer),
+            ProductError::Failed(cause) => Self::Host(cause),
+        }
+    }
+}
 
 /// A transient ordered-event write failure, classified by the product storage owner.
 /// The identical event may be saved again: products must acknowledge exact replay
@@ -656,60 +713,43 @@ impl RetryablePersistence {
 }
 
 /// Why execution stopped, without deciding a product terminal state.
-#[derive(Debug)]
+#[derive(Debug, thiserror::Error)]
 pub enum Failure {
     /// Cooperative cancellation.
+    #[error("execution cancelled")]
     Cancelled,
     /// One of the two runaway backstops was reached.
+    #[error("{0}")]
     Limit(String),
     /// A final request or the reduced fresh window was refused by the provider.
+    #[error("provider refused the last permitted context request")]
     ContextRefused,
     /// The reserved final dispatch failed before it yielded a handoff.
-    Final(Box<Failure>),
+    #[error("{0}")]
+    Final(#[source] Box<Failure>),
     /// Provider or context protocol integrity failed.
+    #[error("{0}")]
     Protocol(String),
     /// A provider failure; may have dispatched and consumed provider usage.
-    Provider(Cause),
+    #[error("{0}")]
+    Provider(#[source] Cause),
     /// Transport failed after acknowledged visible output; never replay this request.
-    AfterOutput(Cause),
+    #[error("{0}")]
+    AfterOutput(#[source] Cause),
+    /// The work no longer wants this attempt, as its product answered.
+    #[error("{0}")]
+    NotCurrent(NotCurrent),
     /// Product callback failure; durable writes may need reconciliation.
-    Host(Cause),
+    #[error("{0}")]
+    Host(#[source] Cause),
     /// A materialized request or response could not be encoded.
-    Encoding(serde_json::Error),
+    #[error("{0}")]
+    Encoding(#[source] serde_json::Error),
 }
 
 impl Failure {
     fn transport_retry(&self) -> bool {
         matches!(self, Self::Provider(cause) if cause.is::<crate::responses::Transient>())
-    }
-}
-
-impl std::fmt::Display for Failure {
-    fn fmt(&self, formatter: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        formatter.write_str(match self {
-            Self::Cancelled => "execution cancelled",
-            Self::ContextRefused => "provider refused the last permitted context request",
-            Self::Limit(reason) | Self::Protocol(reason) => reason,
-            Self::Provider(error) | Self::AfterOutput(error) | Self::Host(error) => {
-                return error.fmt(formatter);
-            }
-            Self::Final(error) => return std::fmt::Display::fmt(error, formatter),
-            Self::Encoding(error) => return std::fmt::Display::fmt(error, formatter),
-        })
-    }
-}
-
-// Written by hand: the cause of `Final` must be the inner `Failure`, not its box, so `AttemptFailure::from_cause` can find it. A derived `#[source]` would return the box.
-impl std::error::Error for Failure {
-    fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
-        match self {
-            Self::Provider(error) | Self::AfterOutput(error) | Self::Host(error) => {
-                Some(error.as_ref())
-            }
-            Self::Final(error) => Some(error.as_ref()),
-            Self::Encoding(error) => Some(error),
-            Self::Cancelled | Self::Limit(_) | Self::ContextRefused | Self::Protocol(_) => None,
-        }
     }
 }
 
@@ -734,51 +774,27 @@ pub enum AttemptFailure {
 }
 
 impl AttemptFailure {
-    /// Cancellation takes precedence over the retained error chain. Hosting
-    /// supplies the same cancellation signal used by the run; display text is never read.
-    pub fn from_error(error: &(dyn std::error::Error + 'static), cancel: &Cancellation) -> Self {
+    /// The kind of ending a run's failure is. Cancellation takes precedence.
+    /// Hosting supplies the same cancellation signal the run used; display
+    /// text is never read.
+    pub fn of(failure: &Failure, cancel: &Cancellation) -> Self {
         if cancel.is_cancelled() {
             return Self::Interrupted;
         }
-        Self::from_cause(error)
-    }
-
-    /// Classify a persisted or admission error when no execution signal exists.
-    pub fn from_cause(mut error: &(dyn std::error::Error + 'static)) -> Self {
-        let blocked = crate::responses::provider_blocked(error);
-        let mut reason = if blocked {
-            Self::ProviderBlocked
-        } else {
-            Self::Failed
-        };
-        loop {
-            // New input and withdrawn work both interrupt the attempt.
-            if error.is::<Superseded>() || error.is::<Withdrawn>() {
-                return Self::Interrupted;
+        let blocked = crate::responses::provider_blocked(failure);
+        match failure {
+            Failure::Cancelled
+            | Failure::NotCurrent(NotCurrent::Superseded | NotCurrent::Withdrawn) => {
+                Self::Interrupted
             }
-            match error.downcast_ref::<Failure>() {
-                Some(Failure::Cancelled) => return Self::Interrupted,
-                Some(Failure::Limit(_) | Failure::Final(_) | Failure::ContextRefused)
-                    if !blocked =>
-                {
-                    reason = Self::Limit;
-                }
-                None
-                | Some(
-                    Failure::Limit(_)
-                    | Failure::Final(_)
-                    | Failure::ContextRefused
-                    | Failure::Protocol(_)
-                    | Failure::Provider(_)
-                    | Failure::AfterOutput(_)
-                    | Failure::Host(_)
-                    | Failure::Encoding(_),
-                ) => (),
-            }
-            let Some(source) = error.source() else {
-                return reason;
-            };
-            error = source;
+            Failure::NotCurrent(NotCurrent::Lost) => Self::Failed,
+            _ if blocked => Self::ProviderBlocked,
+            Failure::Limit(_) | Failure::Final(_) | Failure::ContextRefused => Self::Limit,
+            Failure::Protocol(_)
+            | Failure::Provider(_)
+            | Failure::AfterOutput(_)
+            | Failure::Host(_)
+            | Failure::Encoding(_) => Self::Failed,
         }
     }
 

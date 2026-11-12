@@ -808,7 +808,7 @@ impl ToolOutcome {
 /// resolve an in-memory result immediately; asynchronous I/O stays in this future.
 /// Dropping it does not roll back an effect. Recovery reconciles the original ID.
 pub type ToolFuture<T = ToolOutcome> =
-    std::pin::Pin<Box<dyn Future<Output = Result<T, Cause>> + Send>>;
+    std::pin::Pin<Box<dyn Future<Output = Result<T, super::ProductError>> + Send>>;
 
 /// Whether the product actually exposed this live fragment to a person.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -822,22 +822,30 @@ pub enum TextDelivery {
 /// Authority for one admitted job. All tool permissions and writes are fenced at the product.
 #[async_trait]
 pub trait Product: Send {
-    /// Read whether work is still allowed and its inputs remain current before reading or acting.
-    async fn assert_current(&mut self) -> Result<(), Cause>;
+    /// Read whether work is still allowed and its inputs remain current before
+    /// reading or acting. When the work no longer wants this attempt, answer
+    /// [`super::ProductError::NotCurrent`] with the reason.
+    async fn assert_current(&mut self) -> Result<(), super::ProductError>;
     /// Read authored-message sources after the harness checks currentness.
     /// This read does not acquire a write fence or check attempt ownership.
     /// Return None only when this product has no mutable message sources.
-    async fn message_sources(&mut self) -> Result<Option<Vec<super::ProductMessage>>, Cause>;
+    async fn message_sources(
+        &mut self,
+    ) -> Result<Option<Vec<super::ProductMessage>>, super::ProductError>;
     /// Check the accepted policy and cache scope at the work owner before any
     /// dispatch. Neither part of the binding may change during recovery.
-    async fn admit_binding(&mut self, binding: &RequestBinding) -> Result<(), Cause>;
+    async fn admit_binding(&mut self, binding: &RequestBinding) -> Result<(), super::ProductError>;
     /// Acknowledge the ordered fact in the product's durable record. Exact replay
     /// must be idempotent. Only transient storage failures may be wrapped in
     /// [`RetryablePersistence`]; authority, fence and semantic errors stay permanent.
-    async fn persist(&mut self, event: Event) -> Result<(), Cause>;
+    async fn persist(&mut self, event: Event) -> Result<(), super::ProductError>;
     /// Deliver one ephemeral fragment, outside the durable event record. The
     /// provider ordinal identifies its exchange. Return Visible only when shown.
-    async fn live_text(&mut self, _ordinal: u64, _delta: TextDelta) -> Result<TextDelivery, Cause> {
+    async fn live_text(
+        &mut self,
+        _ordinal: u64,
+        _delta: TextDelta,
+    ) -> Result<TextDelivery, super::ProductError> {
         Ok(TextDelivery::Hidden)
     }
     /// Whether this turn requests the product's explicit completion tool.
@@ -861,7 +869,7 @@ pub trait Product: Send {
     /// Read the confirmed receipt in this work under the current product authority.
     fn read_result(&mut self, call_id: &str) -> ToolFuture<Option<String>>;
     /// Publish under current authority or return corrective feedback to the same run.
-    async fn finish(&mut self, turn: &Turn) -> Result<Finish, Cause>;
+    async fn finish(&mut self, turn: &Turn) -> Result<Finish, super::ProductError>;
 
     /// Retain the best answer from the reserved terminal request without
     /// representing the accepted work as complete. The product owns how the
@@ -870,12 +878,12 @@ pub trait Product: Send {
         &mut self,
         turn: &Turn,
         backstops: &[LimitBackstop],
-    ) -> Result<(), Cause>;
+    ) -> Result<(), super::ProductError>;
 
     /// Exact accepted assignment, original request, accepted steering and
     /// stable references needed to enter a fresh provider window. The harness
     /// appends the acknowledged note to this product-owned seed.
-    async fn window_seed(&mut self) -> Result<crate::engine::WindowSeed, Cause>;
+    async fn window_seed(&mut self) -> Result<crate::engine::WindowSeed, super::ProductError>;
 }
 
 impl Usage {

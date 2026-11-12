@@ -366,7 +366,7 @@ impl<'a> Run<'a> {
         loop {
             match self.product.persist(event.clone()).await {
                 Ok(()) => break,
-                Err(error) if error.is::<RetryablePersistence>() => {
+                Err(ProductError::Failed(error)) if error.is::<RetryablePersistence>() => {
                     // Keep the exact event and any paid result in memory until the
                     // owner acknowledges it. Never request a replacement model turn.
                     // Stop and shutdown end the wait; the save itself is never cut.
@@ -377,7 +377,7 @@ impl<'a> Run<'a> {
                     }
                     backoff = (backoff * 2).min(PERSIST_RETRY_MAX);
                 }
-                Err(error) => return Err(Failure::Host(error)),
+                Err(error) => return Err(error.into()),
             }
         }
         self.progress.sequence = sequence;
@@ -412,14 +412,14 @@ impl<'a> Run<'a> {
     async fn check(&mut self) -> Result<(), Failure> {
         self.cancel.mark();
         self.cancel.check()?;
-        self.product.assert_current().await.map_err(Failure::Host)
+        self.product.assert_current().await.map_err(Failure::from)
     }
     async fn candidate(&mut self, turn: &Turn) -> Result<Finish, Failure> {
         self.check().await?;
         self.record(EventKind::Candidate { text: turn.text() })
             .await?;
         self.check().await?;
-        self.product.finish(turn).await.map_err(Failure::Host)
+        self.product.finish(turn).await.map_err(Failure::from)
     }
     async fn partial_candidate(
         &mut self,
@@ -433,7 +433,7 @@ impl<'a> Run<'a> {
         self.product
             .finish_partial(turn, backstops)
             .await
-            .map_err(Failure::Host)
+            .map_err(Failure::from)
     }
     /// Called once for each new response, before it is saved.
     pub(super) fn assign_call_ids(&self, turn: &mut Turn) {
@@ -465,11 +465,8 @@ impl<'a> Run<'a> {
                 {
                     // Check cancellation before admission. Once persistence begins,
                     // its acknowledgement owns the sequence, including during Stop.
-                    if let Err(error) = while_current(self.cancel, self.check()).await {
-                        if !replaced_by_new_input(&error) {
-                            return Err(error);
-                        }
-                        failure = Some(error);
+                    if let Some(replaced) = self.currency_while_calls_run().await? {
+                        failure.get_or_insert(replaced);
                         break;
                     }
                     match self.tool(window, &batch[next]).await {
@@ -479,9 +476,7 @@ impl<'a> Run<'a> {
                             pending.spawn(async move {
                                 let outcome = tokio::time::timeout(TOOL_DEADLINE, operation)
                                     .await
-                                    .unwrap_or_else(|elapsed| {
-                                        Err(Box::new(ToolTimedOut(elapsed)) as Cause)
-                                    });
+                                    .unwrap_or_else(|elapsed| Err(ToolTimedOut(elapsed).into()));
                                 (index, outcome)
                             });
                         }
@@ -498,11 +493,8 @@ impl<'a> Run<'a> {
                     () = self.cancel.cancelled() => return Err(Failure::Cancelled),
                     completed = pending.join_next() => completed,
                     _ = tick.tick() => {
-                        if let Err(error) = while_current(self.cancel, self.check()).await {
-                            if !replaced_by_new_input(&error) {
-                                return Err(error);
-                            }
-                            failure.get_or_insert(error);
+                        if let Some(replaced) = self.currency_while_calls_run().await? {
+                            failure.get_or_insert(replaced);
                         }
                         continue;
                     }
@@ -550,23 +542,36 @@ impl<'a> Run<'a> {
         Ok(())
     }
 
+    /// While calls run, whether the attempt is still wanted. `Ok(None)`: it
+    /// is. `Ok(Some(failure))`: new input replaced the direction, so admission
+    /// closes and running calls finish within their deadline. `Err`: Stop,
+    /// withdrawn work or lost ownership ends the wait now.
+    async fn currency_while_calls_run(&mut self) -> Result<Option<Failure>, Failure> {
+        match while_current(self.cancel, self.check()).await {
+            Ok(()) => Ok(None),
+            Err(failure @ Failure::NotCurrent(NotCurrent::Superseded)) => Ok(Some(failure)),
+            Err(failure) => Err(failure),
+        }
+    }
+
     /// A tool that fails unexpectedly gives the model an error result while
     /// the attempt is still current, as Codex, Hermes, OpenClaw and Pi do. The
     /// text is fixed; the error itself never reaches the model. A call that
     /// reached its deadline takes this path too, and its text says it timed
-    /// out. An error that is itself a cancellation or superseding input, or a
-    /// failure already ending the batch, ends the attempt with the error. When
-    /// the attempt is no longer current, the currency check's failure ends it,
-    /// so newer input interrupts it.
+    /// out. A tool whose product answered that the work no longer wants this
+    /// attempt, or a failure already ending the batch, ends the attempt with
+    /// the error. When the attempt is no longer current, the currency check's
+    /// failure ends it, so newer input interrupts it.
     async fn tool_failed(
         &mut self,
         call: &Invocation,
-        error: Cause,
+        error: ProductError,
         ending: bool,
     ) -> Result<ToolOutcome, Failure> {
-        if ending || AttemptFailure::from_cause(error.as_ref()) == AttemptFailure::Interrupted {
-            return Err(Failure::Host(error));
-        }
+        let error = match error {
+            ProductError::Failed(error) if !ending => error,
+            error => return Err(error.into()),
+        };
         while_current(self.cancel, self.check()).await?;
         let timed_out = error.is::<ToolTimedOut>();
         let read_only = tool_is_read_only(self.product, &call.name);
@@ -619,7 +624,7 @@ impl<'a> Run<'a> {
                 self.check().await?;
                 let receipt = self.product.saved_outcome(&call);
                 let saved = self
-                    .wait(async { receipt.await.map_err(Failure::Host) })
+                    .wait(async { receipt.await.map_err(Failure::from) })
                     .await?;
                 Some(match saved {
                     Some(outcome) => self.deliver(window, &call, outcome).await?,
@@ -1058,7 +1063,7 @@ impl<'a> Run<'a> {
             return Ok(());
         }
         self.check().await?;
-        let seed = self.product.window_seed().await.map_err(Failure::Host)?;
+        let seed = self.product.window_seed().await.map_err(Failure::from)?;
         window
             .items
             .extend(windows::earlier_notes(&seed.note_references)?);
@@ -1273,7 +1278,7 @@ pub(crate) async fn run_work<P: Provider + ?Sized>(
         run.product
             .admit_binding(&window.request(Vec::new()).binding())
             .await
-            .map_err(Failure::Host)
+            .map_err(Failure::from)
     })
     .await?;
     let mut starting = work.saved.is_none();
@@ -1325,7 +1330,7 @@ pub(crate) async fn run_work<P: Provider + ?Sized>(
         // Keep a permitted final exact; a reached backstop replaces ordinary work.
         let sources = while_current(cancel, async {
             run.check().await?;
-            run.product.message_sources().await.map_err(Failure::Host)
+            run.product.message_sources().await.map_err(Failure::from)
         })
         .await?;
         let sources_changed = match sources {
@@ -1406,19 +1411,6 @@ pub(crate) async fn run_work<P: Provider + ?Sized>(
     }
 }
 
-/// Whether a failed currency check means new input replaced the direction.
-/// Only then do running tool calls finish; any other failure ends the wait.
-fn replaced_by_new_input(failure: &Failure) -> bool {
-    let mut error: Option<&(dyn std::error::Error + 'static)> = Some(failure);
-    while let Some(cause) = error {
-        if cause.is::<Superseded>() {
-            return true;
-        }
-        error = cause.source();
-    }
-    false
-}
-
 /// Once cancellation is known, no new product callback may start.
 /// A dropped in-flight write is reconciled by its product on recovery.
 async fn while_current<T>(
@@ -1464,29 +1456,31 @@ mod tests {
             &mut self,
             _turn: &crate::engine::Turn,
             _backstops: &[crate::engine::LimitBackstop],
-        ) -> Result<(), crate::engine::Cause> {
+        ) -> Result<(), crate::engine::ProductError> {
             Err("this fixture has no partial-result disposition".into())
         }
-        async fn window_seed(&mut self) -> Result<crate::engine::WindowSeed, crate::engine::Cause> {
+        async fn window_seed(
+            &mut self,
+        ) -> Result<crate::engine::WindowSeed, crate::engine::ProductError> {
             Err("working windows are unavailable for this fixture".into())
         }
 
-        async fn assert_current(&mut self) -> Result<(), Cause> {
+        async fn assert_current(&mut self) -> Result<(), ProductError> {
             Ok(())
         }
-        async fn message_sources(&mut self) -> Result<Option<Vec<ProductMessage>>, Cause> {
+        async fn message_sources(&mut self) -> Result<Option<Vec<ProductMessage>>, ProductError> {
             Ok(None)
         }
-        async fn admit_binding(&mut self, _: &recipe::RequestBinding) -> Result<(), Cause> {
+        async fn admit_binding(&mut self, _: &recipe::RequestBinding) -> Result<(), ProductError> {
             Ok(())
         }
-        async fn persist(&mut self, _: Event) -> Result<(), Cause> {
+        async fn persist(&mut self, _: Event) -> Result<(), ProductError> {
             Ok(())
         }
         fn execute(&mut self, _: &Invocation, _: Value) -> recipe::ToolFuture {
             Box::pin(async { Ok(ToolOutcome::Returned("evidence".into())) })
         }
-        async fn finish(&mut self, _: &Turn) -> Result<Finish, Cause> {
+        async fn finish(&mut self, _: &Turn) -> Result<Finish, ProductError> {
             Ok(Finish::Committed)
         }
     }
@@ -1573,7 +1567,7 @@ mod tests {
             "the provider error ends it: {error}"
         );
         assert_eq!(
-            AttemptFailure::from_error(&error, &Cancellation::default()),
+            AttemptFailure::of(&error, &Cancellation::default()),
             AttemptFailure::Failed
         );
         assert_eq!(provider.sent, 6, "a try and five retries, no seventh");
@@ -1588,7 +1582,7 @@ mod tests {
         );
         let error = run(&mut provider).await.unwrap_err();
         assert_eq!(
-            AttemptFailure::from_error(&error, &Cancellation::default()),
+            AttemptFailure::of(&error, &Cancellation::default()),
             AttemptFailure::Failed
         );
         assert_eq!(provider.sent, 12, "five, a response, then six in a row");

@@ -310,6 +310,24 @@ async fn expired_attempt_recovery_preserves_accepted_work_and_evidence() {
     let (tx, mut state, _) = s.locked(&scope).await.unwrap();
     state.attempts.last_mut().unwrap().expires = 0;
     Store::save(tx, &scope, &state).await.unwrap();
+    let dispatch = || engine::Event {
+        attempt_id: first.attempt.clone(),
+        ordinal: 1,
+        sequence: 2,
+        kind: engine::EventKind::ToolStarted(engine::Invocation {
+            id: "late".into(),
+            name: "skill_view".into(),
+            arguments: "{}".into(),
+        }),
+    };
+    let expired = s.persist(&first, dispatch()).await.unwrap_err();
+    assert!(
+        matches!(
+            expired,
+            engine::ProductError::NotCurrent(engine::NotCurrent::Lost)
+        ),
+        "an attempt whose lease ran out has lost the work at a write: {expired}"
+    );
     drop(s);
     let s = Store::connect(&url).await.unwrap();
     // Read from this test's practice onward: other tests leave pending chats
@@ -329,10 +347,20 @@ async fn expired_attempt_recovery_preserves_accepted_work_and_evidence() {
     let next = s.claim(&scope, 60).await.unwrap().unwrap();
     assert_ne!(first.attempt, next.attempt);
     let lost = s.assert_current(&first).await.unwrap_err();
-    assert_eq!(
-        engine::AttemptFailure::from_cause(lost.as_ref()),
-        engine::AttemptFailure::Failed,
+    assert!(
+        matches!(
+            lost,
+            engine::ProductError::NotCurrent(engine::NotCurrent::Lost)
+        ),
         "a replaced attempt has lost ownership: {lost}"
+    );
+    let replaced = s.persist(&first, dispatch()).await.unwrap_err();
+    assert!(
+        matches!(
+            replaced,
+            engine::ProductError::NotCurrent(engine::NotCurrent::Lost)
+        ),
+        "a replaced attempt has lost the work at a write: {replaced}"
     );
     assert!(s.renew_claim(&first).await.is_err());
     s.renew_claim(&next).await.unwrap();
@@ -776,9 +804,18 @@ async fn stop_withdraws_the_running_attempt_and_a_new_message_supersedes_it() {
         "Stop leaves the input revision"
     );
     let error = store.assert_current(&claim).await.unwrap_err();
-    assert!(error.is::<engine::Withdrawn>(), "{error}");
+    assert!(
+        matches!(
+            error,
+            engine::ProductError::NotCurrent(engine::NotCurrent::Withdrawn)
+        ),
+        "{error}"
+    );
     assert_eq!(
-        engine::AttemptFailure::from_cause(error.as_ref()),
+        engine::AttemptFailure::of(
+            &engine::Failure::from(error),
+            &engine::Cancellation::default()
+        ),
         engine::AttemptFailure::Interrupted
     );
 
@@ -795,7 +832,13 @@ async fn stop_withdraws_the_running_attempt_and_a_new_message_supersedes_it() {
         "a new message raises the input revision"
     );
     let error = store.assert_current(&claim).await.unwrap_err();
-    assert!(error.is::<engine::Superseded>(), "{error}");
+    assert!(
+        matches!(
+            error,
+            engine::ProductError::NotCurrent(engine::NotCurrent::Superseded)
+        ),
+        "{error}"
+    );
     let work = store.conversation(&steered).await.unwrap().work;
     assert_eq!(
         store
@@ -806,7 +849,10 @@ async fn stop_withdraws_the_running_attempt_and_a_new_message_supersedes_it() {
     );
     let error = store.assert_current(&claim).await.unwrap_err();
     assert!(
-        error.is::<engine::Withdrawn>(),
+        matches!(
+            error,
+            engine::ProductError::NotCurrent(engine::NotCurrent::Withdrawn)
+        ),
         "Stop wins over the waiting message: {error}"
     );
 }
@@ -836,10 +882,16 @@ async fn stop_then_a_new_message_withdraws_the_running_attempt_and_the_message_r
         .unwrap();
     let error = store.assert_current(&claim).await.unwrap_err();
     assert!(
-        error.is::<engine::Withdrawn>(),
+        matches!(
+            error,
+            engine::ProductError::NotCurrent(engine::NotCurrent::Withdrawn)
+        ),
         "Stop ended the attempt, so the waiting message does not make it wait: {error}"
     );
-    let reason = engine::AttemptFailure::from_cause(error.as_ref());
+    let reason = engine::AttemptFailure::of(
+        &engine::Failure::from(error),
+        &engine::Cancellation::default(),
+    );
     store
         .settle_chat_attempt(&claim, reason, Backoff::IMMEDIATE)
         .await
@@ -2198,9 +2250,11 @@ async fn currency_is_read_only_and_renewal_touches_only_the_current_chat_attempt
     );
     assert!(store.renew_claim(&old).await.is_err());
     let lost = store.assert_current(&old).await.unwrap_err();
-    assert_eq!(
-        engine::AttemptFailure::from_cause(lost.as_ref()),
-        engine::AttemptFailure::Failed,
+    assert!(
+        matches!(
+            lost,
+            engine::ProductError::NotCurrent(engine::NotCurrent::Lost)
+        ),
         "a replaced attempt has lost ownership: {lost}"
     );
     assert_eq!(
@@ -2346,11 +2400,15 @@ fn a_run_lifecycle_error_keeps_its_cause_and_a_wrapped_database_error_still_retr
         std::error::Error::source(&lifecycle).and_then(|cause| cause.downcast_ref::<RunError>()),
         Some(&RunError::StillRunning)
     );
-    assert!(!persistence_failure(lifecycle).is::<engine::RetryablePersistence>());
-    let timeout = || DbErr::ConnectionAcquire(sea_orm::ConnAcquireErr::Timeout);
-    assert!(persistence_failure(timeout()).is::<engine::RetryablePersistence>());
     assert!(
-        persistence_failure(RuntimeError::from(timeout())).is::<engine::RetryablePersistence>()
+        !matches!(persistence_failure(lifecycle), engine::ProductError::Failed(cause) if cause.is::<engine::RetryablePersistence>())
+    );
+    let timeout = || DbErr::ConnectionAcquire(sea_orm::ConnAcquireErr::Timeout);
+    assert!(
+        matches!(persistence_failure(timeout()), engine::ProductError::Failed(cause) if cause.is::<engine::RetryablePersistence>())
+    );
+    assert!(
+        matches!(persistence_failure(RuntimeError::from(timeout())), engine::ProductError::Failed(cause) if cause.is::<engine::RetryablePersistence>())
     );
 }
 

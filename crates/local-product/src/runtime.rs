@@ -392,7 +392,7 @@ impl Conversation {
         let reason = if attempt.revision == self.revision {
             reason
         } else {
-            AttemptFailure::from_cause(&engine::Superseded)
+            AttemptFailure::Interrupted
         };
         let outcome = settle_attempt(
             reason,
@@ -619,9 +619,13 @@ impl From<engine::runs::RunError> for RuntimeError {
 
 /// Classify only retryable database writes, preserving the original storage cause.
 /// Authorization, stale claims, invalid events and decoding errors never retry.
-/// A database error can arrive bare or inside a [`RuntimeError`].
-pub fn persistence_failure(error: impl Into<engine::Cause>) -> engine::Cause {
-    let error = error.into();
+/// A database error can arrive bare or inside a [`RuntimeError`]. An answer
+/// that the work no longer wants this attempt passes through unchanged.
+pub fn persistence_failure(error: impl Into<engine::ProductError>) -> engine::ProductError {
+    let error = match error.into() {
+        engine::ProductError::Failed(error) => error,
+        answer @ engine::ProductError::NotCurrent(_) => return answer,
+    };
     use sea_orm::{ConnAcquireErr, RuntimeErr, SqlxError};
     let database = match error.downcast_ref::<RuntimeError>() {
         Some(RuntimeError::Database(database)) => Some(database),
@@ -645,7 +649,7 @@ pub fn persistence_failure(error: impl Into<engine::Cause>) -> engine::Cause {
     if retry {
         engine::RetryablePersistence::new(error).into()
     } else {
-        error
+        engine::ProductError::Failed(error)
     }
 }
 
@@ -1027,7 +1031,7 @@ impl Store {
         Ok(Some(claim))
     }
 
-    fn current(state: &Conversation, claim: &Claim, now: i64) -> control::Currentness {
+    fn current(state: &Conversation, claim: &Claim, now: i64) -> Result<(), engine::NotCurrent> {
         control::current(
             state
                 .attempts
@@ -1096,7 +1100,7 @@ impl Store {
         let tx = self.db.begin().await?;
         let current = Self::lock_claim(&tx, claim).await?;
         tx.commit().await?;
-        Ok(current.is_current())
+        Ok(current.is_ok())
     }
 
     /// The write fence's read: the rows [`Store::assert_current`] reads, under
@@ -1104,7 +1108,7 @@ impl Store {
     async fn lock_claim(
         tx: &sea_orm::DatabaseTransaction,
         claim: &Claim,
-    ) -> Result<control::Currentness, DbErr> {
+    ) -> Result<Result<(), engine::NotCurrent>, DbErr> {
         let revision =
             chat_revision(tx, chat_revision_query(&claim.scope).lock_exclusive()).await?;
         let attempt = last_chat_attempt_query(&claim.scope)
@@ -1124,12 +1128,13 @@ impl Store {
 
     /// Reads, without a lock or the clock, what the saved state says to this
     /// attempt. An attempt that was ended, by Stop or by settlement, is
-    /// [`engine::Withdrawn`], even when a newer message waits. A running
-    /// attempt with a newer message is [`engine::Superseded`]. An attempt that
-    /// another attempt replaced has lost ownership. Lease expiry is checked by
+    /// [`engine::NotCurrent::Withdrawn`], even when a newer message waits. A
+    /// running attempt with a newer message is
+    /// [`engine::NotCurrent::Superseded`]. An attempt that another attempt
+    /// replaced is [`engine::NotCurrent::Lost`]. Lease expiry is checked by
     /// hosting renewal and the write fences. A missing conversation or an
     /// unreadable revision is an error.
-    pub async fn assert_current(&self, claim: &Claim) -> Result<(), engine::Cause> {
+    pub async fn assert_current(&self, claim: &Claim) -> Result<(), engine::ProductError> {
         claim.scope.validate()?;
         let revision = chat_revision(&self.db, chat_revision_query(&claim.scope)).await?;
         let attempt = last_chat_attempt_query(&claim.scope)
@@ -1140,8 +1145,8 @@ impl Store {
             attempt.as_ref().map(|(id, status)| (id.as_str(), *status)),
             &claim.attempt,
             revision == claim.revision,
-        )
-        .require()
+        )?;
+        Ok(())
     }
 
     /// Hosting retains ownership while the attempt executes or drains its calls.
@@ -1171,9 +1176,9 @@ impl Store {
         &self,
         claim: &Claim,
         recipe: &RequestBinding,
-    ) -> Result<(), engine::Cause> {
+    ) -> Result<(), engine::ProductError> {
         let (tx, state, now) = self.locked(&claim.scope).await?;
-        Self::current(&state, claim, now).require()?;
+        Self::current(&state, claim, now)?;
         if let Some(id) = state.bindings.get(&state.work) {
             let saved = frozen::binding(&tx, &claim.scope, id).await?;
             if &saved != recipe {
@@ -1185,7 +1190,7 @@ impl Store {
     }
 
     /// Acknowledges an ordered event only after commit. Exact replay is idempotent.
-    pub async fn persist(&self, claim: &Claim, event: Event) -> Result<(), engine::Cause> {
+    pub async fn persist(&self, claim: &Claim, event: Event) -> Result<(), engine::ProductError> {
         claim.scope.validate()?;
         if event.attempt_id != claim.attempt {
             return Err(error("event attempt mismatch").into());
@@ -1195,9 +1200,9 @@ impl Store {
         // Late provider/tool evidence is inspectable truth, not permission to
         // execute or publish. Never acknowledge a stale dispatch or candidate.
         if !event.kind.survives_loss_of_currency() {
-            current.require()?;
+            current?;
         }
-        let current = current.is_current();
+        let current = current.is_ok();
         let blocked = current && matches!(event.kind, engine::EventKind::ProviderBlocked { .. });
         use entities::chat_attempt::Column as A;
         let known = entities::chat_attempt::Entity::find()
@@ -1236,7 +1241,7 @@ impl Store {
         claim: &Claim,
         turn: &Turn,
         authority: &mut dyn Authority,
-    ) -> Result<(), engine::Cause> {
+    ) -> Result<(), engine::ProductError> {
         let (tx, mut state, _) = self.locked(&claim.scope).await?;
         Self::conversation_events(&tx, &claim.scope, &mut state).await?;
         authority
@@ -1244,7 +1249,7 @@ impl Store {
             .await
             .map_err(|e| error(&e))?;
         let now = now(&tx).await?;
-        Self::current(&state, claim, now).require()?;
+        Self::current(&state, claim, now)?;
         let attempt = state.attempts.last().unwrap();
         if !matches!(attempt.events.last().map(|e| &e.kind), Some(engine::EventKind::Candidate { text }) if text == &turn.text())
         {
@@ -1298,7 +1303,7 @@ impl Store {
         claim: &Claim,
         turn: &Turn,
         authority: &mut dyn Authority,
-    ) -> Result<(), engine::Cause> {
+    ) -> Result<(), engine::ProductError> {
         let (tx, mut state, _) = self.locked(&claim.scope).await?;
         Self::conversation_events(&tx, &claim.scope, &mut state).await?;
         authority
@@ -1306,7 +1311,7 @@ impl Store {
             .await
             .map_err(|e| error(&e))?;
         let now = now(&tx).await?;
-        Self::current(&state, claim, now).require()?;
+        Self::current(&state, claim, now)?;
         let attempt = state.attempts.last_mut().unwrap();
         if !matches!(attempt.events.last().map(|e| &e.kind), Some(engine::EventKind::Candidate { text }) if text == &turn.text())
         {
@@ -1745,11 +1750,11 @@ fn earlier_messages(start: usize) -> Option<Item> {
 impl<A: Authority> Product for PhysicianHost<A> {
     async fn message_sources(
         &mut self,
-    ) -> Result<Option<Vec<engine::ProductMessage>>, engine::Cause> {
+    ) -> Result<Option<Vec<engine::ProductMessage>>, engine::ProductError> {
         Ok(Some(self.store.message_sources(&self.claim.scope).await?))
     }
 
-    async fn admit_binding(&mut self, recipe: &RequestBinding) -> Result<(), engine::Cause> {
+    async fn admit_binding(&mut self, recipe: &RequestBinding) -> Result<(), engine::ProductError> {
         self.store
             .authorize(&self.claim.scope, &mut self.authority)
             .await?;
@@ -1772,14 +1777,14 @@ impl<A: Authority> Product for PhysicianHost<A> {
                 .map_err(Into::into)
         })
     }
-    async fn assert_current(&mut self) -> Result<(), engine::Cause> {
+    async fn assert_current(&mut self) -> Result<(), engine::ProductError> {
         self.store
             .authorize(&self.claim.scope, &mut self.authority)
             .await?;
         self.store.assert_current(&self.claim).await?;
         Ok(())
     }
-    async fn persist(&mut self, event: Event) -> Result<(), engine::Cause> {
+    async fn persist(&mut self, event: Event) -> Result<(), engine::ProductError> {
         self.store
             .persist(&self.claim, event)
             .await
@@ -1863,7 +1868,7 @@ impl<A: Authority> Product for PhysicianHost<A> {
             Ok(skills.execute(&call.name, &arguments))
         })
     }
-    async fn finish(&mut self, turn: &Turn) -> Result<Finish, engine::Cause> {
+    async fn finish(&mut self, turn: &Turn) -> Result<Finish, engine::ProductError> {
         self.assert_current().await?;
         self.store
             .commit_authorized(&self.claim, turn, &mut self.authority)
@@ -1875,7 +1880,7 @@ impl<A: Authority> Product for PhysicianHost<A> {
         &mut self,
         turn: &Turn,
         _backstops: &[engine::LimitBackstop],
-    ) -> Result<(), engine::Cause> {
+    ) -> Result<(), engine::ProductError> {
         self.assert_current().await?;
         self.store
             .retain_partial_authorized(&self.claim, turn, &mut self.authority)
@@ -1883,7 +1888,7 @@ impl<A: Authority> Product for PhysicianHost<A> {
         Ok(())
     }
 
-    async fn window_seed(&mut self) -> Result<harness::engine::WindowSeed, engine::Cause> {
+    async fn window_seed(&mut self) -> Result<harness::engine::WindowSeed, engine::ProductError> {
         self.assert_current().await?;
         let state = self.store.conversation(&self.claim.scope).await?;
         let start = current_work_start(&state)?;
@@ -1911,7 +1916,7 @@ impl<A: Authority> PhysicianHost<A> {
         limits: engine::RunLimits,
         cancel: &engine::Cancellation,
     ) -> Result<(), engine::Failure> {
-        self.assert_current().await.map_err(engine::Failure::Host)?;
+        self.assert_current().await.map_err(engine::Failure::from)?;
         let (state, records) = self
             .store
             .work_snapshot(&self.claim.scope)

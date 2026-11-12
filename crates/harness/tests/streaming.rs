@@ -134,27 +134,29 @@ impl engine::Product for TestProduct {
     ) -> harness::engine::recipe::ToolFuture<Option<String>> {
         Box::pin(async { Err("result paging is unavailable for this fixture".into()) })
     }
-    async fn window_seed(&mut self) -> Result<harness::engine::WindowSeed, harness::engine::Cause> {
+    async fn window_seed(
+        &mut self,
+    ) -> Result<harness::engine::WindowSeed, harness::engine::ProductError> {
         Err("working windows are unavailable for this fixture".into())
     }
 
     async fn message_sources(
         &mut self,
-    ) -> Result<Option<Vec<harness::engine::ProductMessage>>, harness::engine::Cause> {
+    ) -> Result<Option<Vec<harness::engine::ProductMessage>>, harness::engine::ProductError> {
         Ok(None)
     }
 
     async fn admit_binding(
         &mut self,
         _: &harness::engine::recipe::RequestBinding,
-    ) -> Result<(), harness::engine::Cause> {
+    ) -> Result<(), harness::engine::ProductError> {
         Ok(())
     }
 
-    async fn assert_current(&mut self) -> Result<(), engine::Cause> {
+    async fn assert_current(&mut self) -> Result<(), engine::ProductError> {
         Ok(())
     }
-    async fn persist(&mut self, record: Event) -> Result<(), engine::Cause> {
+    async fn persist(&mut self, record: Event) -> Result<(), engine::ProductError> {
         self.0.push(record);
         Ok(())
     }
@@ -162,7 +164,7 @@ impl engine::Product for TestProduct {
         &mut self,
         _: u64,
         _: engine::TextDelta,
-    ) -> Result<TextDelivery, engine::Cause> {
+    ) -> Result<TextDelivery, engine::ProductError> {
         Err("product presentation fence closed".into())
     }
     fn execute(&mut self, _: &Invocation, _: Value) -> harness::engine::recipe::ToolFuture {
@@ -172,11 +174,11 @@ impl engine::Product for TestProduct {
         &mut self,
         turn: &Turn,
         _: &[engine::LimitBackstop],
-    ) -> Result<(), engine::Cause> {
+    ) -> Result<(), engine::ProductError> {
         assert!(turn.calls().next().is_none());
         Ok(())
     }
-    async fn finish(&mut self, _: &Turn) -> Result<Finish, engine::Cause> {
+    async fn finish(&mut self, _: &Turn) -> Result<Finish, engine::ProductError> {
         panic!("incomplete must never publish")
     }
 }
@@ -435,32 +437,33 @@ async fn expired_transport_settlement_allows_bounded_async_final_retention() {
             &mut self,
             _turn: &harness::engine::Turn,
             _backstops: &[harness::engine::LimitBackstop],
-        ) -> Result<(), harness::engine::Cause> {
+        ) -> Result<(), harness::engine::ProductError> {
             Err("this fixture has no partial-result disposition".into())
         }
         async fn window_seed(
             &mut self,
-        ) -> Result<harness::engine::WindowSeed, harness::engine::Cause> {
+        ) -> Result<harness::engine::WindowSeed, harness::engine::ProductError> {
             Err("working windows are unavailable for this fixture".into())
         }
 
         async fn message_sources(
             &mut self,
-        ) -> Result<Option<Vec<harness::engine::ProductMessage>>, harness::engine::Cause> {
+        ) -> Result<Option<Vec<harness::engine::ProductMessage>>, harness::engine::ProductError>
+        {
             Ok(None)
         }
 
         async fn admit_binding(
             &mut self,
             _: &harness::engine::recipe::RequestBinding,
-        ) -> Result<(), harness::engine::Cause> {
+        ) -> Result<(), harness::engine::ProductError> {
             Ok(())
         }
 
-        async fn assert_current(&mut self) -> Result<(), engine::Cause> {
+        async fn assert_current(&mut self) -> Result<(), engine::ProductError> {
             Ok(())
         }
-        async fn persist(&mut self, record: Event) -> Result<(), engine::Cause> {
+        async fn persist(&mut self, record: Event) -> Result<(), engine::ProductError> {
             if matches!(
                 record,
                 Event {
@@ -484,7 +487,7 @@ async fn expired_transport_settlement_allows_bounded_async_final_retention() {
         fn execute(&mut self, _: &Invocation, _: Value) -> harness::engine::recipe::ToolFuture {
             panic!("cancelled transport cannot authorize effects")
         }
-        async fn finish(&mut self, _: &Turn) -> Result<Finish, engine::Cause> {
+        async fn finish(&mut self, _: &Turn) -> Result<Finish, engine::ProductError> {
             panic!("cancelled transport cannot authorize publication")
         }
     }
@@ -588,7 +591,7 @@ async fn cancellation_bounds_pending_owner_callbacks_without_assuming_rollback()
         observed: bool,
     }
     impl PendingOwner {
-        async fn hang(&mut self) -> Result<(), engine::Cause> {
+        async fn hang(&mut self) -> Result<(), engine::ProductError> {
             self.entered
                 .take()
                 .expect("callback must not be retried")
@@ -609,38 +612,39 @@ async fn cancellation_bounds_pending_owner_callbacks_without_assuming_rollback()
             &mut self,
             _turn: &harness::engine::Turn,
             _backstops: &[harness::engine::LimitBackstop],
-        ) -> Result<(), harness::engine::Cause> {
+        ) -> Result<(), harness::engine::ProductError> {
             Err("this fixture has no partial-result disposition".into())
         }
         async fn window_seed(
             &mut self,
-        ) -> Result<harness::engine::WindowSeed, harness::engine::Cause> {
+        ) -> Result<harness::engine::WindowSeed, harness::engine::ProductError> {
             Err("working windows are unavailable for this fixture".into())
         }
 
         async fn message_sources(
             &mut self,
-        ) -> Result<Option<Vec<harness::engine::ProductMessage>>, harness::engine::Cause> {
+        ) -> Result<Option<Vec<harness::engine::ProductMessage>>, harness::engine::ProductError>
+        {
             Ok(None)
         }
 
         async fn admit_binding(
             &mut self,
             _: &harness::engine::recipe::RequestBinding,
-        ) -> Result<(), harness::engine::Cause> {
+        ) -> Result<(), harness::engine::ProductError> {
             Ok(())
         }
 
-        async fn assert_current(&mut self) -> Result<(), engine::Cause> {
+        async fn assert_current(&mut self) -> Result<(), engine::ProductError> {
             if matches!(self.boundary, Boundary::SteeredRetention) && self.observed {
-                return Err(engine::Superseded.into());
+                return Err(engine::NotCurrent::Superseded.into());
             }
             if matches!(self.boundary, Boundary::Check) && self.observed {
                 return self.hang().await;
             }
             Ok(())
         }
-        async fn persist(&mut self, record: Event) -> Result<(), engine::Cause> {
+        async fn persist(&mut self, record: Event) -> Result<(), engine::ProductError> {
             let observation = matches!(
                 record,
                 Event {
@@ -673,7 +677,7 @@ async fn cancellation_bounds_pending_owner_callbacks_without_assuming_rollback()
             &mut self,
             _: u64,
             _: engine::TextDelta,
-        ) -> Result<TextDelivery, engine::Cause> {
+        ) -> Result<TextDelivery, engine::ProductError> {
             if matches!(self.boundary, Boundary::Provisional) {
                 self.hang().await?;
             }
@@ -682,7 +686,7 @@ async fn cancellation_bounds_pending_owner_callbacks_without_assuming_rollback()
         fn execute(&mut self, _: &Invocation, _: Value) -> harness::engine::recipe::ToolFuture {
             panic!("cancelled acknowledgment cannot authorize effects")
         }
-        async fn finish(&mut self, _: &Turn) -> Result<Finish, engine::Cause> {
+        async fn finish(&mut self, _: &Turn) -> Result<Finish, engine::ProductError> {
             panic!("cancelled acknowledgment cannot authorize publication")
         }
     }
@@ -778,7 +782,7 @@ async fn cancellation_bounds_pending_owner_callbacks_without_assuming_rollback()
             .unwrap()
             .expect_err("interruption cannot return completion");
         assert_eq!(
-            engine::AttemptFailure::from_error(&error, &cancel),
+            engine::AttemptFailure::of(&error, &cancel),
             engine::AttemptFailure::Interrupted,
             "a detected steer must survive a later retention drain timeout"
         );

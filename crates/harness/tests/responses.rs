@@ -5,7 +5,7 @@ use std::time::Duration;
 
 use harness::{
     engine::{
-        self, Cause, Item, RunLimits, Tool, ToolOutcome,
+        self, Item, ProductError, RunLimits, Tool, ToolOutcome,
         recipe::{Finish, Provider, Request},
     },
     provider::ResponsesProvider,
@@ -145,32 +145,33 @@ async fn real_http_two_turn_skill_loop_preserves_opaque_reasoning_and_exact_resu
             &mut self,
             _turn: &harness::engine::Turn,
             _backstops: &[harness::engine::LimitBackstop],
-        ) -> Result<(), harness::engine::Cause> {
+        ) -> Result<(), harness::engine::ProductError> {
             Err("this fixture has no partial-result disposition".into())
         }
         async fn window_seed(
             &mut self,
-        ) -> Result<harness::engine::WindowSeed, harness::engine::Cause> {
+        ) -> Result<harness::engine::WindowSeed, harness::engine::ProductError> {
             Err("working windows are unavailable for this fixture".into())
         }
 
         async fn message_sources(
             &mut self,
-        ) -> Result<Option<Vec<harness::engine::ProductMessage>>, harness::engine::Cause> {
+        ) -> Result<Option<Vec<harness::engine::ProductMessage>>, harness::engine::ProductError>
+        {
             Ok(None)
         }
 
         async fn admit_binding(
             &mut self,
             _: &harness::engine::recipe::RequestBinding,
-        ) -> Result<(), harness::engine::Cause> {
+        ) -> Result<(), harness::engine::ProductError> {
             Ok(())
         }
 
-        async fn assert_current(&mut self) -> Result<(), Cause> {
+        async fn assert_current(&mut self) -> Result<(), ProductError> {
             Ok(())
         }
-        async fn persist(&mut self, event: Event) -> Result<(), Cause> {
+        async fn persist(&mut self, event: Event) -> Result<(), ProductError> {
             self.events.push(event);
             Ok(())
         }
@@ -190,7 +191,7 @@ async fn real_http_two_turn_skill_loop_preserves_opaque_reasoning_and_exact_resu
             })();
             Box::pin(std::future::ready(outcome))
         }
-        async fn finish(&mut self, _: &Turn) -> Result<Finish, Cause> {
+        async fn finish(&mut self, _: &Turn) -> Result<Finish, ProductError> {
             Ok(Finish::Committed)
         }
     }

@@ -193,21 +193,21 @@ struct Owner {
 impl Product for Owner {
     async fn message_sources(
         &mut self,
-    ) -> Result<Option<Vec<harness::engine::ProductMessage>>, harness::engine::Cause> {
+    ) -> Result<Option<Vec<harness::engine::ProductMessage>>, harness::engine::ProductError> {
         Ok(self.sources.pop_front())
     }
 
     async fn admit_binding(
         &mut self,
         _: &harness::engine::recipe::RequestBinding,
-    ) -> Result<(), harness::engine::Cause> {
+    ) -> Result<(), harness::engine::ProductError> {
         Ok(())
     }
 
-    async fn assert_current(&mut self) -> Result<(), Cause> {
+    async fn assert_current(&mut self) -> Result<(), ProductError> {
         Ok(())
     }
-    async fn persist(&mut self, event: Event) -> Result<(), Cause> {
+    async fn persist(&mut self, event: Event) -> Result<(), ProductError> {
         let value = json!(event);
         if matches!(event.kind, EventKind::ProviderReturned(_)) && self.write_failures > 0 {
             self.write_failures -= 1;
@@ -260,7 +260,7 @@ impl Product for Owner {
         .map_err(Into::into);
         Box::pin(std::future::ready(original))
     }
-    async fn finish(&mut self, _: &Turn) -> Result<Finish, Cause> {
+    async fn finish(&mut self, _: &Turn) -> Result<Finish, ProductError> {
         Ok(Finish::Committed)
     }
 
@@ -268,12 +268,12 @@ impl Product for Owner {
         &mut self,
         _: &Turn,
         _: &[harness::engine::LimitBackstop],
-    ) -> Result<(), Cause> {
+    ) -> Result<(), ProductError> {
         self.partials += 1;
         Ok(())
     }
 
-    async fn window_seed(&mut self) -> Result<harness::engine::WindowSeed, Cause> {
+    async fn window_seed(&mut self) -> Result<harness::engine::WindowSeed, ProductError> {
         Ok(harness::engine::WindowSeed {
             items: self.seed.clone(),
             note_references: Vec::new(),
@@ -566,7 +566,7 @@ async fn a_retry_hint_above_sixty_seconds_ends_the_attempt_and_one_at_sixty_is_w
         .unwrap_err();
     task.await.unwrap();
     assert_eq!(
-        AttemptFailure::from_error(&error, &cancel),
+        AttemptFailure::of(&error, &cancel),
         AttemptFailure::Failed,
         "{error}"
     );
@@ -591,7 +591,7 @@ async fn a_retry_hint_above_sixty_seconds_ends_the_attempt_and_one_at_sixty_is_w
         .unwrap_err();
     task.abort();
     assert_eq!(
-        AttemptFailure::from_error(&error, &cancel),
+        AttemptFailure::of(&error, &cancel),
         AttemptFailure::Failed,
         "{error}"
     );
@@ -700,7 +700,7 @@ async fn incomplete_error_body_cannot_retry_a_permanent_http_rejection() {
     assert!(cause.is::<harness::responses::ProviderBlock>());
     assert!(cause.source().unwrap().to_string().contains("401"));
     assert_eq!(
-        AttemptFailure::from_cause(&error),
+        AttemptFailure::of(&error, &Cancellation::default()),
         AttemptFailure::ProviderBlocked
     );
     assert!(matches!(owner.events.last().map(|event| &event.kind),
@@ -736,7 +736,7 @@ async fn a_rejected_request_holds_the_run_and_is_not_sent_again() {
         task.await.unwrap();
         let error = result.unwrap_err();
         assert_eq!(
-            AttemptFailure::from_error(&error, &cancel),
+            AttemptFailure::of(&error, &cancel),
             AttemptFailure::ProviderBlocked,
             "{status}: {error}"
         );
@@ -1227,7 +1227,7 @@ async fn a_refused_final_is_never_dispatched_again() {
         task.await.unwrap();
         let error = result.unwrap_err();
         assert_eq!(
-            AttemptFailure::from_error(&error, &harness::engine::Cancellation::default()),
+            AttemptFailure::of(&error, &harness::engine::Cancellation::default()),
             AttemptFailure::Limit,
             "a refused final stays held at the limit, live and after recovery: {error}"
         );

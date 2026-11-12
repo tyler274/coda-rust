@@ -427,7 +427,7 @@ pub(crate) async fn seed(
     let WindowSeed {
         items: mut seed,
         note_references,
-    } = product.window_seed().await.map_err(Failure::Host)?;
+    } = product.window_seed().await.map_err(Failure::from)?;
     // Products list notes in the order saved; this work's own saves follow.
     // The carried note is inline, so only the others are references.
     let newest = carried.note().map(|note| note.note.reference.as_str());

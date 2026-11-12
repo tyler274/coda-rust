@@ -165,31 +165,33 @@ impl Product for Owner {
         &mut self,
         _turn: &harness::engine::Turn,
         _backstops: &[harness::engine::LimitBackstop],
-    ) -> Result<(), harness::engine::Cause> {
+    ) -> Result<(), harness::engine::ProductError> {
         Err("this fixture has no partial-result disposition".into())
     }
-    async fn window_seed(&mut self) -> Result<harness::engine::WindowSeed, harness::engine::Cause> {
+    async fn window_seed(
+        &mut self,
+    ) -> Result<harness::engine::WindowSeed, harness::engine::ProductError> {
         Err("working windows are unavailable for this fixture".into())
     }
 
     async fn message_sources(
         &mut self,
-    ) -> Result<Option<Vec<harness::engine::ProductMessage>>, harness::engine::Cause> {
+    ) -> Result<Option<Vec<harness::engine::ProductMessage>>, harness::engine::ProductError> {
         Ok(None)
     }
 
     async fn admit_binding(
         &mut self,
         _: &harness::engine::recipe::RequestBinding,
-    ) -> Result<(), harness::engine::Cause> {
+    ) -> Result<(), harness::engine::ProductError> {
         Ok(())
     }
 
-    async fn assert_current(&mut self) -> Result<(), Cause> {
+    async fn assert_current(&mut self) -> Result<(), ProductError> {
         self.checks += 1;
         Ok(())
     }
-    async fn live_text(&mut self, _: u64, delta: TextDelta) -> Result<TextDelivery, Cause> {
+    async fn live_text(&mut self, _: u64, delta: TextDelta) -> Result<TextDelivery, ProductError> {
         if self.reject {
             return Err("publication refused".into());
         }
@@ -205,7 +207,7 @@ impl Product for Owner {
             TextDelivery::Visible
         })
     }
-    async fn persist(&mut self, event: Event) -> Result<(), Cause> {
+    async fn persist(&mut self, event: Event) -> Result<(), ProductError> {
         self.events.push(event);
         Ok(())
     }
@@ -216,7 +218,7 @@ impl Product for Owner {
         };
         Box::pin(std::future::ready(outcome))
     }
-    async fn finish(&mut self, _: &Turn) -> Result<Finish, Cause> {
+    async fn finish(&mut self, _: &Turn) -> Result<Finish, ProductError> {
         Ok(Finish::Committed)
     }
 }
@@ -477,7 +479,7 @@ async fn stream_errors_retry_except_outcomes_another_try_cannot_fix() {
             );
             assert_eq!(cause.to_string(), kind, "{code:?}");
             assert_eq!(
-                AttemptFailure::from_error(&error, &cancel),
+                AttemptFailure::of(&error, &cancel),
                 AttemptFailure::ProviderBlocked,
                 "the run is held, not failed and replayed: {code:?}"
             );

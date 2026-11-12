@@ -135,6 +135,7 @@ impl Provider for ResponsesProvider {
                 | crate::engine::Failure::Final(_)
                 | crate::engine::Failure::Protocol(_)
                 | crate::engine::Failure::AfterOutput(_)
+                | crate::engine::Failure::NotCurrent(_)
                 | crate::engine::Failure::Host(_)
                 | crate::engine::Failure::Encoding(_)) => Box::new(other),
             },

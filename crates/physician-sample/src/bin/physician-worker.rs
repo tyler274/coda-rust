@@ -242,8 +242,7 @@ async fn chat_attempt(
         Ok(provider) => provider,
         Err(error) => {
             genai::record_error(&generation, "physician chat provider unavailable");
-            let reason =
-                AttemptFailure::from_error(&harness::engine::Failure::Provider(error), &cancel);
+            let reason = AttemptFailure::of(&harness::engine::Failure::Provider(error), &cancel);
             let attempt = Settling {
                 span,
                 generation: &generation,
@@ -288,7 +287,7 @@ async fn chat_attempt(
             Next::Done
         }
         Err(error) => {
-            let reason = AttemptFailure::from_error(&error, &cancel);
+            let reason = AttemptFailure::of(&error, &cancel);
             let attempt = Settling {
                 span,
                 generation: &generation,
@@ -1012,7 +1011,7 @@ mod tests {
                 "hosting must preserve the actual work error"
             );
             assert_eq!(
-                harness::engine::AttemptFailure::from_error(&error, &cancel),
+                harness::engine::AttemptFailure::of(&error, &cancel),
                 harness::engine::AttemptFailure::Interrupted,
                 "renewal loss must not charge a failed attempt"
             );
@@ -1115,32 +1114,33 @@ mod tests {
             &mut self,
             _: &harness::engine::Turn,
             _: &[harness::engine::LimitBackstop],
-        ) -> Result<(), harness::engine::Cause> {
+        ) -> Result<(), harness::engine::ProductError> {
             Err("this run has no partial result".into())
         }
         async fn window_seed(
             &mut self,
-        ) -> Result<harness::engine::WindowSeed, harness::engine::Cause> {
+        ) -> Result<harness::engine::WindowSeed, harness::engine::ProductError> {
             Err("this run has no working windows".into())
         }
-        async fn assert_current(&mut self) -> Result<(), harness::engine::Cause> {
+        async fn assert_current(&mut self) -> Result<(), harness::engine::ProductError> {
             Ok(())
         }
         async fn message_sources(
             &mut self,
-        ) -> Result<Option<Vec<harness::engine::ProductMessage>>, harness::engine::Cause> {
+        ) -> Result<Option<Vec<harness::engine::ProductMessage>>, harness::engine::ProductError>
+        {
             Ok(None)
         }
         async fn admit_binding(
             &mut self,
             _: &harness::engine::recipe::RequestBinding,
-        ) -> Result<(), harness::engine::Cause> {
+        ) -> Result<(), harness::engine::ProductError> {
             Ok(())
         }
         async fn persist(
             &mut self,
             _: harness::engine::Event,
-        ) -> Result<(), harness::engine::Cause> {
+        ) -> Result<(), harness::engine::ProductError> {
             Ok(())
         }
         fn execute(
@@ -1153,7 +1153,7 @@ mod tests {
         async fn finish(
             &mut self,
             _: &harness::engine::Turn,
-        ) -> Result<harness::engine::recipe::Finish, harness::engine::Cause> {
+        ) -> Result<harness::engine::recipe::Finish, harness::engine::ProductError> {
             Ok(harness::engine::recipe::Finish::Committed)
         }
     }

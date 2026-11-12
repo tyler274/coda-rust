@@ -77,17 +77,9 @@ struct Saved {
     writes: usize,
     order: Vec<String>,
     /// Set when the attempt stops being current.
-    currency: Option<Loss>,
+    currency: Option<NotCurrent>,
     /// Saving this call's result fails, not retryably.
     unsaved_result: Option<&'static str>,
-}
-/// Why the attempt stopped being current, as the owner's check reports it.
-#[derive(Clone, Copy)]
-enum Loss {
-    /// New input replaced the direction.
-    Superseded,
-    /// The work no longer wants this attempt.
-    Withdrawn,
 }
 #[derive(Default)]
 struct Admission {
@@ -123,39 +115,40 @@ impl Product for Owner {
         &mut self,
         _turn: &harness::engine::Turn,
         _backstops: &[harness::engine::LimitBackstop],
-    ) -> Result<(), harness::engine::Cause> {
+    ) -> Result<(), harness::engine::ProductError> {
         Err("this fixture has no partial-result disposition".into())
     }
-    async fn window_seed(&mut self) -> Result<harness::engine::WindowSeed, harness::engine::Cause> {
+    async fn window_seed(
+        &mut self,
+    ) -> Result<harness::engine::WindowSeed, harness::engine::ProductError> {
         Err("working windows are unavailable for this fixture".into())
     }
 
     async fn message_sources(
         &mut self,
-    ) -> Result<Option<Vec<harness::engine::ProductMessage>>, harness::engine::Cause> {
+    ) -> Result<Option<Vec<harness::engine::ProductMessage>>, harness::engine::ProductError> {
         Ok(None)
     }
 
     async fn admit_binding(
         &mut self,
         _: &harness::engine::recipe::RequestBinding,
-    ) -> Result<(), harness::engine::Cause> {
+    ) -> Result<(), harness::engine::ProductError> {
         Ok(())
     }
 
     fn read_only(&self, name: &str) -> bool {
         matches!(name, "read" | "fail")
     }
-    async fn assert_current(&mut self) -> Result<(), Cause> {
+    async fn assert_current(&mut self) -> Result<(), ProductError> {
         let mut saved = self.saved.lock().unwrap();
         saved.order.push("authority".into());
         match saved.currency {
             None => Ok(()),
-            Some(Loss::Superseded) => Err(Box::new(Superseded)),
-            Some(Loss::Withdrawn) => Err(Box::new(Withdrawn)),
+            Some(answer) => Err(answer.into()),
         }
     }
-    async fn persist(&mut self, event: Event) -> Result<(), Cause> {
+    async fn persist(&mut self, event: Event) -> Result<(), ProductError> {
         let _write = if matches!(event.kind, EventKind::ToolReturned { .. }) {
             match &self.transaction {
                 Some(lock) => Some(lock.lock().await),
@@ -224,6 +217,9 @@ impl Product for Owner {
                 Ok(ToolOutcome::Returned(json!({"id":call.id}).to_string()))
             });
         }
+        if args["answer"] == "withdrawn" {
+            return Box::pin(async { Err(NotCurrent::Withdrawn.into()) });
+        }
         if args["hang"] == true {
             return Box::pin(async move {
                 saved
@@ -262,7 +258,7 @@ impl Product for Owner {
             ))
         })
     }
-    async fn finish(&mut self, _: &Turn) -> Result<Finish, Cause> {
+    async fn finish(&mut self, _: &Turn) -> Result<Finish, ProductError> {
         Ok(Finish::Committed)
     }
 }
@@ -787,7 +783,7 @@ async fn cancellation_stops_waiting_for_a_running_call() {
     let error = result.unwrap_err();
     assert!(matches!(error, Failure::Cancelled), "{error}");
     assert_eq!(
-        AttemptFailure::from_error(&error, &cancel),
+        AttemptFailure::of(&error, &cancel),
         AttemptFailure::Interrupted
     );
     assert!(waited < Duration::from_secs(1), "waited {waited:?}");
@@ -802,21 +798,75 @@ async fn withdrawn_work_stops_waiting_for_a_running_call() {
     let currency = owner.saved.clone();
     let (result, waited) =
         interrupt_a_running_call(&mut owner, vec![hang("stuck", "read")], &cancel, || {
-            currency.lock().unwrap().currency = Some(Loss::Withdrawn);
+            currency.lock().unwrap().currency = Some(NotCurrent::Withdrawn);
         })
         .await;
     let error = result.unwrap_err();
     assert!(
-        matches!(&error, Failure::Host(cause) if cause.is::<Withdrawn>()),
+        matches!(error, Failure::NotCurrent(NotCurrent::Withdrawn)),
         "{error}"
     );
     assert_eq!(
-        AttemptFailure::from_error(&error, &cancel),
+        AttemptFailure::of(&error, &cancel),
         AttemptFailure::Interrupted
     );
     assert!(waited <= Duration::from_secs(1), "waited {waited:?}");
     assert!(saved(&owner, "started", "stuck"));
     assert!(!saved(&owner, "returned", "stuck"));
+}
+
+#[tokio::test(start_paused = true)]
+async fn lost_ownership_stops_waiting_for_a_running_call_as_a_failure() {
+    let mut owner = Owner::default();
+    let cancel = Cancellation::default();
+    let currency = owner.saved.clone();
+    let (result, waited) =
+        interrupt_a_running_call(&mut owner, vec![hang("stuck", "read")], &cancel, || {
+            currency.lock().unwrap().currency = Some(NotCurrent::Lost);
+        })
+        .await;
+    let error = result.unwrap_err();
+    assert!(
+        matches!(error, Failure::NotCurrent(NotCurrent::Lost)),
+        "{error}"
+    );
+    assert_eq!(AttemptFailure::of(&error, &cancel), AttemptFailure::Failed);
+    assert!(waited <= Duration::from_secs(1), "waited {waited:?}");
+    assert!(saved(&owner, "started", "stuck"));
+    assert!(!saved(&owner, "returned", "stuck"));
+}
+
+#[tokio::test]
+async fn a_tool_that_finds_the_work_withdrawn_ends_the_attempt_without_a_result() {
+    let mut owner = Owner::default();
+    let cancel = Cancellation::default();
+    let mut provider = Script {
+        next: Some(vec![Item::Call(Invocation {
+            id: "seen".into(),
+            name: "read".into(),
+            arguments: json!({"answer": "withdrawn"}).to_string(),
+        })]),
+        ..Script::default()
+    };
+    let error = recover::work(request().freeze().unwrap(), "withdrawn", &[], 0)
+        .unwrap()
+        .run(&mut provider, &mut owner, RunLimits::default(), &cancel)
+        .await
+        .unwrap_err();
+    assert!(
+        matches!(error, Failure::NotCurrent(NotCurrent::Withdrawn)),
+        "{error}"
+    );
+    assert_eq!(
+        AttemptFailure::of(&error, &cancel),
+        AttemptFailure::Interrupted
+    );
+    assert!(saved(&owner, "started", "seen"));
+    assert!(
+        !saved(&owner, "returned", "seen"),
+        "the model gets no failed-read result for withdrawn work"
+    );
+    assert_eq!(provider.requests.len(), 1, "no further model turn");
 }
 
 #[tokio::test(start_paused = true)]
@@ -828,12 +878,12 @@ async fn new_input_lets_a_running_call_finish_and_keeps_its_result() {
         &mut owner,
         vec![call("slow", "read", 30_000), call("later", "write", 0)],
         &cancel,
-        || currency.lock().unwrap().currency = Some(Loss::Superseded),
+        || currency.lock().unwrap().currency = Some(NotCurrent::Superseded),
     )
     .await;
     let error = result.unwrap_err();
     assert!(
-        matches!(&error, Failure::Host(cause) if cause.is::<Superseded>()),
+        matches!(error, Failure::NotCurrent(NotCurrent::Superseded)),
         "{error}"
     );
     assert!(waited >= Duration::from_secs(29), "waited {waited:?}");

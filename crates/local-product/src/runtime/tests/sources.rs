@@ -1126,9 +1126,11 @@ async fn currency_is_read_only_and_renewal_touches_only_the_current_revision_att
     );
     assert!(store.renew_revision_claim(&old).await.is_err());
     let lost = store.assert_revision_current(&old).await.unwrap_err();
-    assert_eq!(
-        engine::AttemptFailure::from_cause(lost.as_ref()),
-        engine::AttemptFailure::Failed,
+    assert!(
+        matches!(
+            lost,
+            engine::ProductError::NotCurrent(engine::NotCurrent::Lost)
+        ),
         "a replaced attempt has lost ownership: {lost}"
     );
     assert_eq!(

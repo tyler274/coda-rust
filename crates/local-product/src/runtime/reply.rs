@@ -20,7 +20,7 @@
 //! Draft scopes reuse [`Scope`]: its `chat` field names the reply work.
 use harness::engine::recipe::Request;
 use harness::engine::{
-    self, Event, EventKind, Item, Turn,
+    self, Event, EventKind, Item, NotCurrent, ProductError, Turn,
     runs::{HoldReason, RunHistory, RunOutcome},
 };
 use sea_orm::sea_query::StringLen;
@@ -558,7 +558,7 @@ fn history_of(scope: &Scope) -> Condition {
         .add(C::Reply.eq(scope.chat.as_str()))
 }
 
-fn current(state: &Draft, claim: &RevisionClaim, now: i64) -> bool {
+fn current(state: &Draft, claim: &RevisionClaim, now: i64) -> Result<(), NotCurrent> {
     control::current(
         state
             .attempts
@@ -572,7 +572,6 @@ fn current(state: &Draft, claim: &RevisionClaim, now: i64) -> bool {
         ),
         now,
     )
-    .is_current()
 }
 
 /// The claim still runs the draft's input: the same accepted instruction, at
@@ -1149,15 +1148,12 @@ impl Store {
 
     /// Reads, without a lock or the clock, what the saved state says to this
     /// revision attempt. An attempt that was ended, by a saved draft or by
-    /// settlement, is [`engine::Withdrawn`], even when a newer instruction
+    /// settlement, is [`NotCurrent::Withdrawn`], even when a newer instruction
     /// waits. A running attempt with a newer instruction or saved revision is
-    /// [`engine::Superseded`]. An attempt that another attempt replaced has
-    /// lost ownership. Lease expiry is checked by hosting renewal and the
-    /// write fences. A missing draft or an unreadable revision is an error.
-    pub async fn assert_revision_current(
-        &self,
-        claim: &RevisionClaim,
-    ) -> Result<(), engine::Cause> {
+    /// [`NotCurrent::Superseded`]. An attempt that another attempt replaced is
+    /// [`NotCurrent::Lost`]. Lease expiry is checked by hosting renewal and
+    /// the write fences. A missing draft or an unreadable revision is an error.
+    pub async fn assert_revision_current(&self, claim: &RevisionClaim) -> Result<(), ProductError> {
         claim.scope.validate()?;
         let (revision, input) = draft_input(&self.db, draft_input_query(&claim.scope)).await?;
         let attempt = last_revision_attempt_query(claim)
@@ -1168,8 +1164,8 @@ impl Store {
             attempt.as_ref().map(|(id, status)| (id.as_str(), *status)),
             &claim.attempt,
             same_input(claim, revision, input.as_ref()),
-        )
-        .require()
+        )?;
+        Ok(())
     }
 
     /// Hosting extends only its still-live revision attempt, never an earlier row.
@@ -1177,7 +1173,7 @@ impl Store {
         claim.scope.validate()?;
         let tx = self.db.begin().await?;
         let (current, _) = Self::lock_revision_claim(&tx, claim).await?;
-        if !current {
+        if current.is_err() {
             return Err(error("revision ownership lost"));
         }
         let now = now(&tx).await?;
@@ -1198,7 +1194,7 @@ impl Store {
     async fn lock_revision_claim(
         tx: &sea_orm::DatabaseTransaction,
         claim: &RevisionClaim,
-    ) -> Result<(bool, Option<RevisionInput>), DbErr> {
+    ) -> Result<(Result<(), NotCurrent>, Option<RevisionInput>), DbErr> {
         let (revision, input) =
             draft_input(tx, draft_input_query(&claim.scope).lock_exclusive()).await?;
         let attempt = last_revision_attempt_query(claim)
@@ -1213,8 +1209,7 @@ impl Store {
             &claim.attempt,
             same_input(claim, revision, input.as_ref()),
             now(tx).await?,
-        )
-        .is_current();
+        );
         Ok((current, input))
     }
 
@@ -1252,19 +1247,17 @@ impl Store {
         &self,
         claim: &RevisionClaim,
         recipe: &engine::recipe::RequestBinding,
-    ) -> Result<(), DbErr> {
+    ) -> Result<(), ProductError> {
         let (tx, state, now) = self.locked_draft(&claim.scope).await?;
-        if !current(&state, claim, now) {
-            return Err(error("stale revision recipe admission"));
-        }
+        current(&state, claim, now)?;
         let accepted = state
             .accepted
             .as_ref()
             .ok_or_else(|| error("accepted revision is missing"))?;
         if super::frozen::binding(&tx, &claim.scope, &accepted.binding).await? != *recipe {
-            return Err(error("dispatch changed the accepted revision recipe"));
+            return Err(error("dispatch changed the accepted revision recipe").into());
         }
-        tx.commit().await
+        Ok(tx.commit().await?)
     }
 
     /// Retains one execution event on this attempt. A dispatch needs a
@@ -1275,16 +1268,18 @@ impl Store {
         &self,
         claim: &RevisionClaim,
         event: Event,
-    ) -> Result<(), RuntimeError> {
+    ) -> Result<(), ProductError> {
         if event.attempt_id != claim.attempt {
             return Err(error("revision event belongs to another attempt").into());
         }
         claim.scope.validate()?;
         let tx = self.db.begin().await?;
-        let (is_current, input) = Self::lock_revision_claim(&tx, claim).await?;
-        if !is_current && !event.kind.survives_loss_of_currency() {
-            return Err(error("stale revision dispatch").into());
+        let (current, input) = Self::lock_revision_claim(&tx, claim).await?;
+        // Late provider evidence is kept; a stale dispatch is never acknowledged.
+        if !event.kind.survives_loss_of_currency() {
+            current?;
         }
+        let is_current = current.is_ok();
         use super::entities::revision_attempt::Column as A;
         let known = super::entities::revision_attempt::Entity::find()
             .select_only()
@@ -1372,12 +1367,10 @@ impl Store {
         &self,
         claim: &RevisionClaim,
         response: &Turn,
-    ) -> Result<(), RuntimeError> {
+    ) -> Result<(), ProductError> {
         let (tx, mut state, now) = self.locked_draft(&claim.scope).await?;
         Self::revision_events(&tx, &claim.scope, &mut state.attempts).await?;
-        if !current(&state, claim, now) {
-            return Err(error("stale revision handoff").into());
-        }
+        current(&state, claim, now)?;
         let records = Self::revision_work_records(&tx, &claim.scope, &state).await?;
         let recipe = &claim.binding;
         let messages = self.revision_message_sources(&claim.scope, &state).await?;
@@ -1411,7 +1404,7 @@ impl Store {
         claim: &RevisionClaim,
         response: &Turn,
         authority: &mut dyn Authority,
-    ) -> Result<RevisionCommit, RuntimeError> {
+    ) -> Result<RevisionCommit, ProductError> {
         let text = revised_text(response).map_err(error)?;
         let (tx, mut state, _) = self.locked_draft(&claim.scope).await?;
         Self::revision_events(&tx, &claim.scope, &mut state.attempts).await?;
@@ -1420,9 +1413,7 @@ impl Store {
             .await
             .map_err(|e| error(&e))?;
         let now = now(&tx).await?;
-        if !current(&state, claim, now) {
-            return Err(error("stale revision completion").into());
-        }
+        current(&state, claim, now)?;
         let observation = super::sources::observed(&tx, &claim.scope.workspace).await?;
         let pinned_version = state.sources_version;
         let pinned = std::mem::take(&mut state.sources);

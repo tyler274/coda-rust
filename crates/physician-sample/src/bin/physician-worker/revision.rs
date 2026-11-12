@@ -5,7 +5,7 @@ use super::attempt::{self, Claimed, Failure, Next, Outcome, Tally};
 use super::{Hosted, Worker, absent_claim, announce, pull};
 use async_trait::async_trait;
 use harness::engine::recipe::Finish;
-use harness::engine::{self, Cancellation, Cause, Event, Invocation, Product, Turn};
+use harness::engine::{self, Cancellation, Event, Invocation, Product, ProductError, Turn};
 use local_product::physician_sources::{self, read_sources};
 use local_product::runtime::Store;
 use local_product::runtime::delivery::{Delivery, DeliveryKind};
@@ -210,7 +210,7 @@ async fn handle(
             Next::Done
         }
         Err(error) => {
-            let reason = engine::AttemptFailure::from_error(&error, &cancel);
+            let reason = engine::AttemptFailure::of(&error, &cancel);
             cancel.cancel();
             let saved = worker
                 .store
@@ -255,7 +255,7 @@ struct RevisionOwner {
 impl Product for RevisionOwner {
     async fn message_sources(
         &mut self,
-    ) -> Result<Option<Vec<harness::engine::ProductMessage>>, harness::engine::Cause> {
+    ) -> Result<Option<Vec<harness::engine::ProductMessage>>, harness::engine::ProductError> {
         let draft = self
             .store
             .draft(&self.claim.scope)
@@ -271,7 +271,7 @@ impl Product for RevisionOwner {
     async fn admit_binding(
         &mut self,
         recipe: &engine::recipe::RequestBinding,
-    ) -> Result<(), Cause> {
+    ) -> Result<(), ProductError> {
         self.assert_current().await?;
         self.store
             .admit_revision_binding(&self.claim, recipe)
@@ -279,7 +279,7 @@ impl Product for RevisionOwner {
         Ok(())
     }
 
-    async fn window_seed(&mut self) -> Result<engine::WindowSeed, Cause> {
+    async fn window_seed(&mut self) -> Result<engine::WindowSeed, ProductError> {
         self.assert_current().await?;
         let draft = self
             .store
@@ -334,7 +334,7 @@ impl Product for RevisionOwner {
         requests_finish(response)
     }
 
-    async fn assert_current(&mut self) -> Result<(), Cause> {
+    async fn assert_current(&mut self) -> Result<(), ProductError> {
         // The revision supplies its own accepted session reference to the
         // same read-only auth owner used by chat.
         self.store
@@ -343,7 +343,7 @@ impl Product for RevisionOwner {
         self.store.assert_revision_current(&self.claim).await
     }
 
-    async fn persist(&mut self, event: Event) -> Result<(), Cause> {
+    async fn persist(&mut self, event: Event) -> Result<(), ProductError> {
         self.usage.event(&event);
         self.store
             .record_revision(&self.claim, event)
@@ -412,14 +412,14 @@ impl Product for RevisionOwner {
             if call.name == harness::skills::SKILL_VIEW {
                 return Ok(claim.skills.execute(&call.name, &call.arguments));
             }
-            read_sources(&claim.sources, &claim.scope.workspace, &call)
+            Ok(read_sources(&claim.sources, &claim.scope.workspace, &call)?)
         })
     }
 
     /// A finish on an older reading of the chart publishes nothing. The
     /// attempt re-pins and the model gets what changed, reads it, and
     /// finishes again under the revision's same call budget.
-    async fn finish(&mut self, response: &Turn) -> Result<Finish, Cause> {
+    async fn finish(&mut self, response: &Turn) -> Result<Finish, ProductError> {
         if let Err(reason) = revised_text(response) {
             return Ok(revision_feedback(reason));
         }
@@ -444,7 +444,7 @@ impl Product for RevisionOwner {
         &mut self,
         response: &Turn,
         _backstops: &[engine::LimitBackstop],
-    ) -> Result<(), Cause> {
+    ) -> Result<(), ProductError> {
         self.store.hold_revision(&self.claim, response).await?;
         Ok(())
     }

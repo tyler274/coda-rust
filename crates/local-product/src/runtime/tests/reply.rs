@@ -400,9 +400,11 @@ async fn reply_acceptance_is_scoped_idempotent_and_claimed_once() {
     assert_eq!(recovering.runs.events().len(), 1);
 
     let lost = store.assert_revision_current(&claim).await.unwrap_err();
-    assert_eq!(
-        engine::AttemptFailure::from_cause(lost.as_ref()),
-        engine::AttemptFailure::Failed,
+    assert!(
+        matches!(
+            lost,
+            engine::ProductError::NotCurrent(engine::NotCurrent::Lost)
+        ),
         "a replaced attempt has lost ownership: {lost}"
     );
     assert!(store.renew_revision_claim(&claim).await.is_err());
@@ -648,7 +650,10 @@ async fn reply_publication_requires_evidence_authority_and_current_revision() {
     );
     let error = store.assert_revision_current(&claim).await.unwrap_err();
     assert!(
-        error.is::<engine::Withdrawn>(),
+        matches!(
+            error,
+            engine::ProductError::NotCurrent(engine::NotCurrent::Withdrawn)
+        ),
         "a save cancels the revision, so the running attempt returns at once: {error}"
     );
     assert!(
@@ -706,10 +711,16 @@ async fn a_save_then_a_new_instruction_withdraws_the_running_attempt_and_the_ins
     );
     let error = store.assert_revision_current(&claim).await.unwrap_err();
     assert!(
-        error.is::<engine::Withdrawn>(),
+        matches!(
+            error,
+            engine::ProductError::NotCurrent(engine::NotCurrent::Withdrawn)
+        ),
         "the save ended the attempt, so the new instruction does not make it wait: {error}"
     );
-    let reason = engine::AttemptFailure::from_cause(error.as_ref());
+    let reason = engine::AttemptFailure::of(
+        &engine::Failure::from(error),
+        &engine::Cancellation::default(),
+    );
     store
         .settle_revision_attempt(&claim, reason, Backoff::IMMEDIATE)
         .await
@@ -724,6 +735,126 @@ async fn a_save_then_a_new_instruction_withdraws_the_running_attempt_and_the_ins
         .unwrap();
     assert_ne!(next.attempt, claim.attempt);
     assert_eq!(next.accepted.input, input("second", revision));
+}
+
+/// A claimed revision with its frozen binding and a recorded candidate, so
+/// each write fence would admit, hold or publish it while it is current.
+async fn claimed_with_candidate(
+    store: &Store,
+    scope: &Scope,
+) -> (reply::RevisionClaim, engine::recipe::RequestBinding, Turn) {
+    open_draft(store, scope, "Original").await;
+    accept_revision_input(store, scope, &input("first", 1))
+        .await
+        .unwrap();
+    let claim = store
+        .claim_revision(&Delivery::reply_revision(scope.clone(), "first".into()), 60)
+        .await
+        .unwrap()
+        .unwrap();
+    let binding = store
+        .draft(scope)
+        .await
+        .unwrap()
+        .unwrap()
+        .accepted
+        .unwrap()
+        .binding;
+    let binding = store.frozen_binding(scope, &binding).await.unwrap();
+    let output = response("Revised");
+    candidate(store, &claim, &output).await;
+    (claim, binding, output)
+}
+
+/// What each of the four revision write fences answers this claim.
+async fn write_fence_answers(
+    store: &Store,
+    claim: &reply::RevisionClaim,
+    binding: &engine::recipe::RequestBinding,
+    output: &Turn,
+) -> [(&'static str, engine::ProductError); 4] {
+    let admission = store
+        .admit_revision_binding(claim, binding)
+        .await
+        .unwrap_err();
+    let dispatch = store
+        .record_revision(
+            claim,
+            event(
+                claim,
+                3,
+                EventKind::ToolStarted(Invocation {
+                    id: "after-the-end".into(),
+                    name: "skill_view".into(),
+                    arguments: "{}".into(),
+                }),
+            ),
+        )
+        .await
+        .unwrap_err();
+    let handoff = store.hold_revision(claim, output).await.unwrap_err();
+    let completion = store
+        .commit_revision(claim, output, &mut TestAuthority(true))
+        .await
+        .unwrap_err();
+    [
+        ("admission", admission),
+        ("dispatch", dispatch),
+        ("handoff", handoff),
+        ("completion", completion),
+    ]
+}
+
+#[tokio::test]
+#[ignore = "requires explicit local Postgres"]
+async fn a_saved_draft_withdraws_the_revision_at_every_write_fence() {
+    let (store, scope) = setup().await;
+    let (claim, binding, output) = claimed_with_candidate(&store, &scope).await;
+    store
+        .save_draft(
+            &scope,
+            1,
+            "Physician save",
+            &[7; 32],
+            &mut TestAuthority(true),
+        )
+        .await
+        .unwrap();
+    for (fence, answer) in write_fence_answers(&store, &claim, &binding, &output).await {
+        assert!(
+            matches!(
+                answer,
+                engine::ProductError::NotCurrent(engine::NotCurrent::Withdrawn)
+            ),
+            "{fence}: {answer}"
+        );
+    }
+}
+
+#[tokio::test]
+#[ignore = "requires explicit local Postgres"]
+async fn a_replaced_revision_attempt_has_lost_the_work_at_every_write_fence() {
+    let (store, scope) = setup().await;
+    let (claim, binding, output) = claimed_with_candidate(&store, &scope).await;
+    store
+        .settle_revision_attempt(&claim, engine::AttemptFailure::Failed, Backoff::IMMEDIATE)
+        .await
+        .unwrap();
+    let retry = store
+        .claim_revision(&Delivery::reply_revision(scope.clone(), "first".into()), 60)
+        .await
+        .unwrap()
+        .unwrap();
+    assert_ne!(retry.attempt, claim.attempt);
+    for (fence, answer) in write_fence_answers(&store, &claim, &binding, &output).await {
+        assert!(
+            matches!(
+                answer,
+                engine::ProductError::NotCurrent(engine::NotCurrent::Lost)
+            ),
+            "{fence}: {answer}"
+        );
+    }
 }
 
 #[tokio::test]
