@@ -236,6 +236,7 @@ pub(crate) async fn submit(
     };
     if body.kind == "item.open" {
         return crate::accept_item_open(
+            Some(&live.chat.store),
             auth_ctx.map(|Extension(ctx)| ctx),
             sample_feed.map(|Extension(feed)| feed),
             Some(&live.bus),

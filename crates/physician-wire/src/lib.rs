@@ -6,6 +6,8 @@
 //! Book: `book/src/physician-site.md`.
 #![deny(missing_docs)]
 
+pub mod today_updates;
+
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 
@@ -51,6 +53,15 @@ pub struct TodayListResponse {
     #[serde(default)]
     /// Item identifiers already opened once by the signed-in physician.
     pub seen: Vec<String>,
+    #[serde(default)]
+    /// Count of additional patients quietly reviewed today with nothing needing the physician.
+    pub also_reviewed: usize,
+    #[serde(default)]
+    /// Collapsed practice-wide source outage lines when an entire source is down across the practice.
+    pub practice_outages: Vec<today_updates::PracticeOutageWire>,
+    #[serde(default)]
+    /// Individual producer slices that failed during a partial Today load.
+    pub failed_parts: Vec<today_updates::FailedProducerWire>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
@@ -196,6 +207,18 @@ pub struct TodayRow {
     #[serde(default)]
     /// Whether the signed-in physician has already opened this row once.
     pub seen: bool,
+    #[serde(default)]
+    /// Concise row title when distinct from the supporting detail.
+    pub title: Option<String>,
+    #[serde(default)]
+    /// Typed per-physician seen standing (`unseen`, `seen`, or `changed_since_seen`).
+    pub standing: Option<today_updates::SeenStandingWire>,
+    #[serde(default)]
+    /// Whether this row can be cleared with `Done`.
+    pub can_mark_done: bool,
+    #[serde(default)]
+    /// Linked conversation identifier when this row tracks an active physician chat response.
+    pub linked_chat_id: Option<String>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
@@ -449,6 +472,18 @@ pub struct UpdatesResponse {
     #[serde(default)]
     /// The `rows` value.
     pub rows: Vec<Value>,
+    #[serde(default)]
+    /// Typed Updates entries recorded today (excluding quiet reviews).
+    pub today_items: Vec<today_updates::UpdateItemWire>,
+    #[serde(default)]
+    /// Quiet completed reviews today grouped under `"Reviewed, nothing for you"`.
+    pub reviewed_nothing_for_you: Vec<today_updates::UpdateItemWire>,
+    #[serde(default)]
+    /// Completed updates from earlier calendar days (`Yesterday`, etc.).
+    pub earlier_days: Vec<today_updates::EarlierDayUpdatesWire>,
+    #[serde(default)]
+    /// Individual producer slices that failed during a partial Updates load.
+    pub failed_parts: Vec<today_updates::FailedProducerWire>,
 }
 
 #[derive(Debug, Clone, Deserialize, PartialEq, Eq)]

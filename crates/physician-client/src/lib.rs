@@ -2,6 +2,8 @@
 //! Book: `book/src/physician-site.md`.
 #![deny(missing_docs)]
 
+pub mod today_updates;
+
 pub use http::HttpError;
 use physician_wire::{
     ChatSnapshotResponse, HealthResponse, PanelAssignmentResponse, PastWorkResponse,

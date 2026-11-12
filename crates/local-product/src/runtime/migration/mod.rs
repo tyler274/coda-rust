@@ -11,6 +11,7 @@ mod m20261112_patient_understanding;
 mod m20261112_practice_jobs_dispatch;
 mod m20261112_practice_schedule;
 mod m20261112_source_refresh;
+mod m20261112_today_updates_seen;
 mod m20261112_visit_briefings;
 
 /// The table this chain records applied migrations in. The runtime shares the
@@ -38,6 +39,7 @@ impl MigratorTrait for Migrator {
             Box::new(m20261112_patient_understanding::Migration),
             Box::new(m20261112_patient_reviews::Migration),
             Box::new(m20261112_visit_briefings::Migration),
+            Box::new(m20261112_today_updates_seen::Migration),
         ]
     }
 }

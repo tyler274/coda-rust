@@ -68,6 +68,8 @@ pub mod schedule;
 pub mod sources;
 #[cfg(test)]
 mod tests;
+/// Cross-producer Today and Updates read model, per-physician seen state, and item detail projection.
+pub mod today_updates;
 /// Durable patient understanding: private operating index and patient-page summary.
 pub mod understanding;
 /// Working notes derived from the authorized product record.
