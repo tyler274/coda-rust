@@ -33,9 +33,9 @@ use ui::{
     SearchField, SectionHeader, Segmented, Select, SeriesChart, SeriesPoint, SeriesShape,
     SettingRow, Slider, SortOrder, SourceDetails, SourcePane, SourceReading, SourceText,
     SourcesButton, Sparkline, Spinner, StatePill, StatusLine, StepState, Suggestion, TabBar, Table,
-    TableRow, Task, TaskList, TaskState, TaskWords, TextField, TextKind, Toast, ToggleChip, Tone,
-    Tooltip, TopBar, TryAgain, Value, VersionSwitch, WorkStep, WorkTrace, WorkingMark,
-    WorkingPresence, use_live_rows,
+    TableRow, Task, TaskList, TaskState, TaskWords, TextField, TextKind, Toast, ToggleChip,
+    ToggleRow, Tone, Tooltip, TopBar, TryAgain, Value, VersionSwitch, WorkStep, WorkTrace,
+    WorkingMark, WorkingPresence, use_live_rows,
 };
 #[cfg(feature = "web")]
 use wasm_bindgen::{JsCast, closure::Closure};
@@ -143,6 +143,9 @@ const FAMILIES: [Family; 16] = [
             rsx! {
                 Part { title: "Rows and sections", note: "Related rows group once, a hairline between them, rather than a card around each. A row leads with an icon, a number or a person's avatar, in three sizes. A section's one action sits beside its title.",
                     RowsDemo {}
+                }
+                Part { title: "Row states, on/off rows and icon actions", note: "Where a row's thing stands leads its quiet line in bold, in the line's own colour. A row that is on or off lines up with ordinary rows: off, its icon on its tile and nothing at its edge; on, the tile filled in the brand colour and a check where a chevron would be. Here it stands off, on (press it to turn it off), and unavailable, beside a row that opens something. A section's one action can be an icon alone, on a full touch target, its words then its spoken name.",
+                    RowStatesDemo {}
                 }
                 Part { title: "Live lists", note: "A row that joins a list already shown opens and settles from just below; a row the list drops stays in its place as it collapses, then goes. A count fades into its new value, number and words together. A row the list moves up rises over the others, lifted; the selection is one fill that slides to the row chosen and travels with it. With a keyboard, all of it simply arrives.",
                     LiveDemo {}
@@ -1733,6 +1736,34 @@ fn RowsDemo() -> Element {
             ol { class: "row-list",
                 li { ListRow { number: 1, title: "Discharge summary", detail: "Read Today, 8:00 AM", onclick: move |_| {} } }
                 li { ListRow { number: 2, title: "Cardiology note", onclick: move |_| {} } }
+            }
+        }
+    }
+}
+
+#[cfg(feature = "web")]
+#[component]
+fn RowStatesDemo() -> Element {
+    let mut marked = use_signal(|| true);
+    rsx! {
+        div { class: "gallery-rows",
+            SectionHeader { title: "For my doctor", action: "Write a note", action_icon: IconName::Plus, on_action: move |_| {} }
+            RowGroup {
+                li { ListRow { icon: IconName::Share, title: "November 4", state: "Received by the care team", detail: "2 records, 1 note", onclick: move |_| {} } }
+                li { ListRow { icon: IconName::Heart, title: "Blood pressure", state: "Not saved yet", onclick: move |_| {} } }
+            }
+            RowGroup {
+                li { ToggleRow { icon: IconName::Flag, title: "Mark for my doctor", pressed: false, onclick: move |_| {} } }
+                li {
+                    ToggleRow {
+                        icon: IconName::Flag,
+                        title: if marked() { "Marked for my doctor" } else { "Mark for my doctor" },
+                        pressed: marked(),
+                        onclick: move |_| marked.toggle(),
+                    }
+                }
+                li { ToggleRow { icon: IconName::Flag, title: "Mark for my doctor", pressed: false, disabled: true, onclick: move |_| {} } }
+                li { ListRow { icon: IconName::Pencil, title: "Write a note", onclick: move |_| {} } }
             }
         }
     }

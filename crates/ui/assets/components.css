@@ -147,7 +147,7 @@
 :is(.control-primary, .control-icon, .control-danger) > .icon { color: inherit; }
 .navigation-control { position: relative; display: inline-flex; align-items: center; justify-content: flex-start; gap: var(--space-2); width: fit-content; max-width: 100%; min-height: var(--navigation-min-height, var(--control-height)); padding: var(--space-1) 0; border: 0; border-radius: var(--radius-sm); background: transparent; color: var(--navigation-color, var(--body)); cursor: pointer; text-align: left; text-decoration: none; font: var(--type-body-md); -webkit-tap-highlight-color: transparent; }
 @media (hover: hover) { .navigation-control:hover:not(:disabled) { color: var(--navigation-hover-color, var(--ink)); text-decoration: underline; text-decoration-thickness: var(--hairline); text-underline-offset: .2em; } }
-.navigation-control:disabled { cursor: default; opacity: .46; }
+:is(.navigation-control, .toggle-row):disabled { cursor: default; opacity: .46; }
 .action-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); }
 /* A key hint beside a control's words, where there is a keyboard. */
 .key-hint { margin-inline-start: var(--space-1); color: inherit; opacity: .72; font: inherit; font-weight: var(--weight-regular); }
@@ -402,11 +402,21 @@ button.source-trigger { cursor: pointer; transition: border-color var(--motion-p
 .list-row-text { flex: 1; min-width: 0; overflow-wrap: anywhere; }
 .list-row-text strong { display: block; color: var(--ink); font: var(--type-title-sm); }
 .list-row-text small { display: block; margin-top: var(--space-hair); color: var(--muted); font: var(--type-body-sm); }
+/* A row's state leads its detail in the detail's colour, set in the label role's weight. */
+.list-row-state { font: var(--type-label-md); }
 .list-row-chevron { flex: none; color: var(--muted); }
 .list-row-chevron .icon { transform: rotate(-90deg); }
+/* A row that is on or off is a list row; on, its tile fills with the brand colour as a control changes state, and its
+   check takes the chevron's place in the brand colour. */
+.toggle-row .icon-tile { transition: background-color var(--motion-control) var(--ease-out), color var(--motion-control) var(--ease-out); }
+.toggle-row[aria-pressed="true"] .icon-tile { background: var(--primary); color: var(--on-primary); }
+.toggle-row-check { flex: none; color: var(--primary); }
 .section-header { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); min-height: var(--target); }
 .section-title { margin: 0; color: var(--ink); font: var(--type-title-md); }
 .section-action { min-height: var(--target); margin-block: calc(-1 * var(--space-3)); padding: 0 0 0 var(--space-3); border: 0; background: transparent; color: var(--primary); font: var(--type-body-sm); cursor: pointer; }
+/* An icon action fills the touch target, its mark centred and set back so the mark's edge meets the title's row edge. */
+.section-action.is-icon { display: inline-grid; place-items: center; min-width: var(--target); margin-inline-end: calc((var(--icon-xl) - var(--target)) / 2); padding: 0; }
+.section-action.is-icon .icon { width: var(--icon-xl); height: var(--icon-xl); }
 .tabs.has-icons button { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--space-1); min-height: var(--tab-bar-height); font: var(--type-label-sm); }
 .tabs.has-icons .icon { width: var(--icon-xl); height: var(--icon-xl); }
 /* Prose: body large, a step between paragraphs, headings on the title roles, code set apart in its frame, and tables

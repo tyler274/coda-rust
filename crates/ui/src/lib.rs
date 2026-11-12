@@ -1149,8 +1149,9 @@ pub fn SourcesButton(
 }
 
 /// One row in a list of rows: an optional icon on its tile, a number or a person's avatar, the row's name, an
-/// optional detail beneath it, and a chevron, with the whole row one button. Rows group once, a
-/// hairline between them, rather than a card around each.
+/// optional detail beneath it, and a chevron, with the whole row one button. Its state, when it has
+/// one, leads the detail in bold. Rows group once, a hairline between them, rather than a card
+/// around each.
 #[component]
 pub fn ListRow(
     #[props(default)] icon: Option<IconName>,
@@ -1160,6 +1161,9 @@ pub fn ListRow(
     person: Option<String>,
     title: String,
     detail: Option<String>,
+    /// Where the row's thing stands, in the host's words: "Sent".
+    #[props(default)]
+    state: Option<String>,
     onclick: EventHandler<MouseEvent>,
     #[props(extends = GlobalAttributes)] attributes: Vec<Attribute>,
 ) -> Element {
@@ -1178,13 +1182,56 @@ pub fn ListRow(
             } else if let Some(name) = person {
                 Avatar { name }
             }
-            span { class: "list-row-text",
-                strong { "{title}" }
-                if let Some(detail) = detail {
-                    small { "{detail}" }
-                }
-            }
+            {row_text(title, detail, state)}
             span { class: "list-row-chevron", aria_hidden: "true", Icon { name: IconName::ChevronDown } }
+        }
+    }
+}
+
+/// A row's words: its name, and beneath it the detail, led by its state in bold when it has one.
+fn row_text(title: String, detail: Option<String>, state: Option<String>) -> Element {
+    rsx! {
+        span { class: "list-row-text",
+            strong { "{title}" }
+            if let Some(state) = state {
+                small {
+                    span { class: "list-row-state", "{state}" }
+                    if let Some(detail) = detail {
+                        " · {detail}"
+                    }
+                }
+            } else if let Some(detail) = detail {
+                small { "{detail}" }
+            }
+        }
+    }
+}
+
+/// A row that is on or off, among list rows: its icon on its tile, its name and an optional detail,
+/// the whole row one button that says whether it is pressed. Off, it shows the icon as any row does
+/// and nothing at its trailing edge, since it opens nothing; on, its tile fills with the brand
+/// colour and a check stands where a chevron would. The words are the host's for each state.
+#[component]
+pub fn ToggleRow(
+    icon: IconName,
+    title: String,
+    detail: Option<String>,
+    pressed: bool,
+    #[props(default)] disabled: bool,
+    onclick: EventHandler<MouseEvent>,
+) -> Element {
+    rsx! {
+        button {
+            class: "navigation-row list-row toggle-row",
+            r#type: "button",
+            aria_pressed: if pressed { "true" } else { "false" },
+            disabled,
+            onclick: move |event| onclick.call(event),
+            IconTile { name: icon, tinted: true }
+            {row_text(title, detail, None)}
+            if pressed {
+                span { class: "toggle-row-check", aria_hidden: "true", Icon { name: IconName::Check } }
+            }
         }
     }
 }
@@ -1200,18 +1247,32 @@ pub fn RowGroup(
     rsx! { ul { class: "{class}", ..rest, {children} } }
 }
 
-/// A section's title, with the one action that belongs to the whole section beside it.
+/// A section's title, with the one action that belongs to the whole section beside it: its words,
+/// or, with `action_icon`, that icon alone on a full touch target, the words then its spoken name.
 #[component]
 pub fn SectionHeader(
     title: String,
     #[props(default)] action: Option<String>,
     #[props(default)] on_action: Option<EventHandler<MouseEvent>>,
+    /// Draws the action as this icon alone; `action` names it for assistive technology.
+    #[props(default)]
+    action_icon: Option<IconName>,
 ) -> Element {
     rsx! {
         div { class: "section-header",
             h2 { class: "section-title", "{title}" }
             if let (Some(action), Some(on_action)) = (action, on_action) {
-                button { class: "section-action", r#type: "button", onclick: move |event| on_action.call(event), "{action}" }
+                if let Some(name) = action_icon {
+                    button {
+                        class: "section-action is-icon",
+                        r#type: "button",
+                        aria_label: "{action}",
+                        onclick: move |event| on_action.call(event),
+                        Icon { name }
+                    }
+                } else {
+                    button { class: "section-action", r#type: "button", onclick: move |event| on_action.call(event), "{action}" }
+                }
             }
         }
     }
@@ -1337,6 +1398,72 @@ mod tests {
         assert_eq!(initials("maria  de la Cruz"), "MD");
         assert_eq!(initials("Ólafur"), "Ó");
         assert_eq!(initials("  "), "");
+    }
+
+    #[test]
+    fn a_state_leads_a_rows_detail_and_a_row_without_one_keeps_its_plain_detail() {
+        fn app() -> Element {
+            rsx! {
+                ListRow { title: "Visit note", detail: "Northside Clinic · October 15", onclick: move |_| {} }
+                ListRow { title: "November 4", state: "Sent", detail: "2 records, 1 note", onclick: move |_| {} }
+                ListRow { title: "November 12", state: "Sent", onclick: move |_| {} }
+            }
+        }
+        let mut dom = VirtualDom::new(app);
+        dom.rebuild_in_place();
+        let html = dioxus_ssr::render(&dom);
+        assert!(
+            html.contains("<small>Northside Clinic · October 15</small>"),
+            "{html}"
+        );
+        assert!(
+            html.contains(
+                "<small><span class=\"list-row-state\">Sent</span> · 2 records, 1 note</small>"
+            ),
+            "{html}"
+        );
+        assert!(
+            html.contains("<small><span class=\"list-row-state\">Sent</span></small>"),
+            "{html}"
+        );
+    }
+
+    #[test]
+    fn a_toggle_row_says_whether_it_is_pressed_and_shows_its_check_only_when_on() {
+        fn off() -> Element {
+            rsx! { ToggleRow { icon: IconName::Flag, title: "Mark", pressed: false, onclick: move |_| {} } }
+        }
+        fn on() -> Element {
+            rsx! { ToggleRow { icon: IconName::Flag, title: "Marked", pressed: true, onclick: move |_| {} } }
+        }
+        let render = |app: fn() -> Element| {
+            let mut dom = VirtualDom::new(app);
+            dom.rebuild_in_place();
+            dioxus_ssr::render(&dom)
+        };
+        let (off, on) = (render(off), render(on));
+        assert!(off.contains("aria-pressed=\"false\""), "{off}");
+        assert!(!off.contains("toggle-row-check"), "{off}");
+        assert!(!off.contains("list-row-chevron"), "{off}");
+        assert!(on.contains("aria-pressed=\"true\""), "{on}");
+        assert!(on.contains("toggle-row-check"), "{on}");
+        assert!(!on.contains("list-row-chevron"), "{on}");
+    }
+
+    #[test]
+    fn a_sections_icon_action_is_named_by_its_words() {
+        fn app() -> Element {
+            rsx! {
+                SectionHeader { title: "Records", action: "See all", on_action: move |_| {} }
+                SectionHeader { title: "Notes", action: "Write a note", action_icon: IconName::Plus, on_action: move |_| {} }
+            }
+        }
+        let mut dom = VirtualDom::new(app);
+        dom.rebuild_in_place();
+        let html = dioxus_ssr::render(&dom);
+        assert!(html.contains(">See all</button>"), "{html}");
+        assert!(html.contains("aria-label=\"Write a note\""), "{html}");
+        assert!(!html.contains(">Write a note<"), "{html}");
     }
 
     #[test]
