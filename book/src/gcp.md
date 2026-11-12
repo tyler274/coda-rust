@@ -357,7 +357,7 @@ not change how CPU is allocated:
 
 | Service | `cpu_idle` | Minimum instances | Why |
 | --- | --- | --- | --- |
-| `physician` | `false` | 1 with scaling on, else 0 | Its Postgres authority listener and Redis subscriber run between requests |
+| `physician` | `false` | 0 | Its Postgres authority listener and Redis subscriber run between requests while an instance is up; the worker owns accepted turns, so none has to stay up |
 | `duet` | `true` | 0 | All work happens inside a request |
 | `physician-worker` | `false` | 1 | Its Postgres listener, 10 s poll and lease renewals run outside any request |
 
@@ -374,7 +374,9 @@ Cost at Cloud Run tier-1 prices ($0.000018 per vCPU-second, $0.000002 per
 GiB-second, instance-based) for an instance kept warm for a month:
 
 - `physician` with the sidecar: 2 vCPU and 1.25 GiB, about $101 a month instead
-  of about $53 without it. Only scaling's minimum instance keeps it warm all month.
+  of about $53 without it, for each instance kept up all month. It scales to
+  zero, so it bills only while an instance is up, including up to 15 idle
+  minutes after its last request.
 - `physician-worker` has the same shape, instance-based CPU and its own minimum
   instance, so it is kept warm all month as well.
 - `duet` stays on request-based billing and scales to zero, so idle time costs
