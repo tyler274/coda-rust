@@ -1,4 +1,8 @@
 //! Isolated real PostgreSQL proof; requires explicit loopback admin URL and never silently skips.
+#![allow(
+    clippy::disallowed_methods,
+    reason = "converting to the typed database API; the proof also provisions databases"
+)]
 use async_trait::async_trait;
 use chrono::{Duration, Utc};
 use duet_api::{

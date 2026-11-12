@@ -53,9 +53,12 @@ def sandbox_path(path):
 
 
 def sandbox_input(path):
-    # The sandbox flake builds from the root manifest and lockfile, and the
-    # workflow defines the sandbox job, so changing either reruns it too.
-    return sandbox_path(path) or path in {"Cargo.toml", "Cargo.lock", ".github/workflows/ci.yml"}
+    # The sandbox flake builds from the root manifest, lockfile and Clippy
+    # settings, and the workflow defines the sandbox job, so changing any of
+    # them reruns it too.
+    return sandbox_path(path) or path in {
+        "Cargo.toml", "Cargo.lock", "clippy.toml", ".github/workflows/ci.yml",
+    }
 
 
 def dependency_path(path):

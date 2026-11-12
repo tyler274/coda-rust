@@ -292,6 +292,10 @@ pub(super) fn same_trace(datadog: &str, trace_id: &str) -> bool {
 
 /// What an operations backend holds for the same trace.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize)]
+#[expect(
+    clippy::struct_excessive_bools,
+    reason = "the drill's saved report has these three flags"
+)]
 pub(super) struct OpsSpan {
     pub(super) backend: &'static str,
     pub(super) found: bool,

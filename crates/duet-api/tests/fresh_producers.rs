@@ -1,6 +1,10 @@
 //! Fresh-install HTTP health-context producer, account isolation and restriction.
 //! All product rows originate through authenticated product APIs; SQL only
 //! provisions isolated roles/schema and inspects durability/authority proofs.
+#![allow(
+    clippy::disallowed_methods,
+    reason = "converting to the typed database API; the proof also provisions databases"
+)]
 use async_trait::async_trait;
 use axum::{Router, body::Body, http::Request};
 use chrono::{Duration, Utc};

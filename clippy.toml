@@ -1,0 +1,46 @@
+# Settings for the lints in `[workspace.lints.clippy]` in Cargo.toml.
+
+# Three bools in one struct or one signature usually encode one state.
+max-struct-bools = 2
+max-fn-params-bools = 2
+
+# Raw SQL through sqlx: the calls through which code hands sqlx 0.9 SQL text.
+# These are its query functions, the exits of its `QueryBuilder` (so how the
+# builder was made does not matter), the `Executor` methods, the `begin_with`
+# transaction starts, and Postgres's raw `COPY`. A `Query`, `QueryAs`,
+# `QueryScalar` or `Map` takes no SQL of its own: it runs SQL one of these took,
+# or a statement `prepare` took. Not listed: sqlx's doc-hidden internals
+# (`__query_*_with_result`, `Transaction::begin`, `Executor::describe`), the
+# traits a database driver implements (`TransactionManager`,
+# `AnyConnectionBackend`), and its migration runner. The query macros are not
+# enabled. Clippy matches calls by path, so a statement the typed builder
+# produced and a hand-written string look the same here; the typed adapter
+# that runs built statements says so in its own exception.
+disallowed-methods = [
+    { path = "sqlx::query", reason = "queries go through the product's typed database API" },
+    { path = "sqlx::query_with", reason = "queries go through the product's typed database API" },
+    { path = "sqlx::query_as", reason = "queries go through the product's typed database API" },
+    { path = "sqlx::query_as_with", reason = "queries go through the product's typed database API" },
+    { path = "sqlx::query_scalar", reason = "queries go through the product's typed database API" },
+    { path = "sqlx::query_scalar_with", reason = "queries go through the product's typed database API" },
+    { path = "sqlx::raw_sql", reason = "queries go through the product's typed database API" },
+    { path = "sqlx::QueryBuilder::build", reason = "queries go through the product's typed database API" },
+    { path = "sqlx::QueryBuilder::build_query_as", reason = "queries go through the product's typed database API" },
+    { path = "sqlx::QueryBuilder::build_query_scalar", reason = "queries go through the product's typed database API" },
+    { path = "sqlx::Executor::execute", reason = "queries go through the product's typed database API" },
+    { path = "sqlx::Executor::execute_many", reason = "queries go through the product's typed database API" },
+    { path = "sqlx::Executor::fetch", reason = "queries go through the product's typed database API" },
+    { path = "sqlx::Executor::fetch_many", reason = "queries go through the product's typed database API" },
+    { path = "sqlx::Executor::fetch_all", reason = "queries go through the product's typed database API" },
+    { path = "sqlx::Executor::fetch_one", reason = "queries go through the product's typed database API" },
+    { path = "sqlx::Executor::fetch_optional", reason = "queries go through the product's typed database API" },
+    { path = "sqlx::Executor::prepare", reason = "queries go through the product's typed database API" },
+    { path = "sqlx::Executor::prepare_with", reason = "queries go through the product's typed database API" },
+    { path = "sqlx::Pool::begin_with", reason = "queries go through the product's typed database API" },
+    { path = "sqlx::Pool::try_begin_with", reason = "queries go through the product's typed database API" },
+    { path = "sqlx::Connection::begin_with", reason = "queries go through the product's typed database API" },
+    { path = "sqlx::postgres::PgConnection::copy_in_raw", reason = "queries go through the product's typed database API" },
+    { path = "sqlx::postgres::PgConnection::copy_out_raw", reason = "queries go through the product's typed database API" },
+    { path = "sqlx::postgres::PgPoolCopyExt::copy_in_raw", reason = "queries go through the product's typed database API" },
+    { path = "sqlx::postgres::PgPoolCopyExt::copy_out_raw", reason = "queries go through the product's typed database API" },
+]

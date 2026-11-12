@@ -86,9 +86,11 @@ class ScopeTests(unittest.TestCase):
             "crates/workspace-tools/sandbox/flake.lock": (False, False, True),
             "crates/workspace-tools/sandbox/config/cyrene.toml": (False, False, True),
             ".github/workflows/ci.yml": (True, False, True),
-            # The sandbox flake builds from the root manifest and lockfile.
+            # The sandbox flake builds from the root manifest, lockfile and
+            # Clippy settings.
             "Cargo.lock": (True, True, True),
             "Cargo.toml": (True, True, True),
+            "clippy.toml": (True, False, True),
             "crates/workspace-tools/src/main.rs": (True, False, False),
             "crates/app/Cargo.toml": (True, True, False),
             "book/src/page.md": (False, False, False),

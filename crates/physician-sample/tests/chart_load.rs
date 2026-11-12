@@ -322,6 +322,10 @@ async fn a_chart_that_cannot_load_is_reported_and_the_rest_still_load() {
 }
 
 /// Has Postgres refuse every new row for `workspace` in `table`.
+#[expect(
+    clippy::disallowed_methods,
+    reason = "installs a refusing trigger, which no typed API owns"
+)]
 async fn refuse_writes(auth: &PostgresAuthStore, name: &str, table: &str, workspace: &str) {
     let sql = format!(
         "CREATE FUNCTION {name}() RETURNS trigger AS $$ BEGIN
@@ -338,6 +342,10 @@ async fn refuse_writes(auth: &PostgresAuthStore, name: &str, table: &str, worksp
 }
 
 #[tokio::test(flavor = "multi_thread", worker_threads = 4)]
+#[expect(
+    clippy::disallowed_methods,
+    reason = "drops the refusing trigger, which no typed API owns"
+)]
 async fn a_patient_the_practice_could_not_take_is_reported_and_the_next_load_takes_them() {
     let (auth, runtime) = stores().await;
     for table in ["physician_patients", "physician_memberships"] {
@@ -386,6 +394,10 @@ async fn a_patient_the_practice_could_not_take_is_reported_and_the_next_load_tak
 }
 
 #[tokio::test(flavor = "multi_thread", worker_threads = 4)]
+#[expect(
+    clippy::disallowed_methods,
+    reason = "installs a refusing trigger, which no typed API owns"
+)]
 async fn a_deploy_leaves_the_charts_alone_and_a_failed_account_fails_it() {
     let (auth, _runtime) = stores().await;
     let run = run_id();

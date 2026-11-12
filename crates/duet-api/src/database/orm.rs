@@ -21,6 +21,10 @@ macro_rules! statement {
 statement!(SelectStatement, InsertStatement, UpdateStatement);
 
 /// Execute a typed statement; returns affected rows.
+#[expect(
+    clippy::disallowed_methods,
+    reason = "runs a statement the typed builder produced; Clippy matches the call, not where its SQL came from"
+)]
 pub(crate) async fn execute(
     tx: &mut Transaction<'_, Postgres>,
     statement: &impl Statement,
@@ -34,6 +38,10 @@ pub(crate) async fn execute(
 }
 
 /// Fetch at most one row of a typed statement.
+#[expect(
+    clippy::disallowed_methods,
+    reason = "runs a statement the typed builder produced; Clippy matches the call, not where its SQL came from"
+)]
 pub(crate) async fn row(
     tx: &mut Transaction<'_, Postgres>,
     statement: &impl Statement,
@@ -46,6 +54,10 @@ pub(crate) async fn row(
 }
 
 /// Fetch every row of a typed statement.
+#[expect(
+    clippy::disallowed_methods,
+    reason = "runs a statement the typed builder produced; Clippy matches the call, not where its SQL came from"
+)]
 pub(crate) async fn rows(
     tx: &mut Transaction<'_, Postgres>,
     statement: &impl Statement,

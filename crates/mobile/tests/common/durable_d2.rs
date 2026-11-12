@@ -84,6 +84,10 @@ async fn d2_records_browse_correct_remove_and_erase_on_durable_services() {
     let _ = std::fs::remove_dir_all(journal);
 }
 
+#[expect(
+    clippy::disallowed_methods,
+    reason = "stages consent as the database owner, outside the API under proof"
+)]
 async fn run(owner_url: &str, runtime_url: &str, journal: &std::path::Path) {
     let database = AccountDatabase::connect(runtime_url).await.unwrap();
     let identity = IdentityStore::new(database.clone(), Arc::new(Verifier));

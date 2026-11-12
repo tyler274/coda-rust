@@ -6,6 +6,10 @@
 //! own migrations here, without replaying the reference beta reset. The
 //! reference `schema_migrations` ledger is not claimed or modified.
 
+#[warn(
+    clippy::disallowed_methods,
+    reason = "the typed adapter states its own exception"
+)]
 pub(crate) mod orm;
 
 use sha2::{Digest, Sha256};

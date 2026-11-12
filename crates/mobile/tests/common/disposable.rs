@@ -2,6 +2,10 @@
 //!
 //! Postgres binds values, not names, so each statement here takes its name as
 //! an identifier the query builder quoted. Each test chooses its own names.
+#![expect(
+    clippy::disallowed_methods,
+    reason = "creates and drops a disposable role and database"
+)]
 
 use sea_orm::sea_query::{PostgresQueryBuilder, QuotedBuilder};
 use sqlx::PgConnection;

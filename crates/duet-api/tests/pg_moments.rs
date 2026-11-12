@@ -1,6 +1,10 @@
 //! Bounded PgMoments proof against a disposable loopback PostgreSQL database.
 //! The fixture represents the externally owned relation; no migration is run or
 //! rewritten. Other Duet SQLx transactions are deliberately outside this slice.
+#![allow(
+    clippy::disallowed_methods,
+    reason = "converting to the typed database API; the proof also provisions databases"
+)]
 
 use duet_api::{ApiError, Moments, PgMoments};
 use sqlx::{AssertSqlSafe, Connection, PgConnection, postgres::PgPoolOptions};

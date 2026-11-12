@@ -11,27 +11,59 @@
 
 pub mod background;
 pub mod care;
+#[expect(
+    clippy::disallowed_methods,
+    reason = "converting raw SQL to the typed database API"
+)]
 pub mod database;
 pub mod doctor_routes;
+#[expect(
+    clippy::disallowed_methods,
+    reason = "converting raw SQL to the typed database API"
+)]
 pub mod durable;
 pub mod evidence;
 mod evidence_entity;
 pub mod evidence_paging;
 pub mod evidence_routes;
 mod follow_up_entity;
+#[expect(
+    clippy::disallowed_methods,
+    reason = "converting raw SQL to the typed database API"
+)]
 pub mod health_context;
 mod health_context_entity;
 pub mod hosting;
+#[expect(
+    clippy::disallowed_methods,
+    reason = "converting raw SQL to the typed database API"
+)]
 pub mod identity;
 pub mod journal_gcs;
 mod moment_entity;
+#[expect(
+    clippy::disallowed_methods,
+    reason = "converting raw SQL to the typed database API"
+)]
 pub mod privacy;
 pub mod privacy_archive;
+#[expect(
+    clippy::disallowed_methods,
+    reason = "converting raw SQL to the typed database API"
+)]
 pub mod producer_database;
 pub mod producer_routes;
+#[expect(
+    clippy::disallowed_methods,
+    reason = "converting raw SQL to the typed database API"
+)]
 pub mod publication;
 pub mod session;
 pub mod site;
+#[expect(
+    clippy::disallowed_methods,
+    reason = "converting raw SQL to the typed database API"
+)]
 pub mod workspace;
 
 use std::env;
@@ -568,6 +600,10 @@ pub(crate) fn account_id(state: &AppState, headers: &HeaderMap) -> Result<Uuid, 
 }
 
 /// Reports whether the required migration is applied.
+#[expect(
+    clippy::disallowed_methods,
+    reason = "converting raw SQL to the typed database API"
+)]
 pub async fn schema_is_ready(pool: &sqlx::PgPool) -> Result<bool, sqlx::Error> {
     sqlx::query_scalar(include_str!("sql/has_migration.sql"))
         .bind(REQUIRED_MIGRATION)

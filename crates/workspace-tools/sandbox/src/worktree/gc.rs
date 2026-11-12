@@ -23,6 +23,10 @@ pub enum Action {
 }
 
 /// The decision for one target, from what was read about it.
+#[expect(
+    clippy::fn_params_excessive_bools,
+    reason = "three readings of one target that the match turns into one Action; a typed target state is left to this tool's owner"
+)]
 pub fn decide(has_tree: bool, idle: bool, pristine: bool) -> Action {
     match (has_tree, idle, pristine) {
         (false, _, _) => Action::Remove,

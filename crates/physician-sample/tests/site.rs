@@ -858,6 +858,10 @@ struct Edges {
 
 /// What `sidebar_layout.js` reads from the page.
 #[derive(Debug, serde::Deserialize)]
+#[expect(
+    clippy::struct_excessive_bools,
+    reason = "each bool is one independent measurement the page reports"
+)]
 struct SidebarLayout {
     window_width: f64,
     window_height: f64,

@@ -612,6 +612,10 @@ async fn a_dead_sessions_note_does_not_move_expires_at() {
     assert_eq!(column_expires_at(&store, &session).await, deadline);
 }
 
+#[expect(
+    clippy::disallowed_methods,
+    reason = "reads the stored column to prove the store left it unchanged"
+)]
 async fn column_expires_at(store: &PostgresAuthStore, token: &str) -> i64 {
     use sea_orm::sqlx::Row;
     sea_orm::sqlx::query("SELECT expires_at FROM physician_sessions WHERE token_hash = $1")

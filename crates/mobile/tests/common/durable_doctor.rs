@@ -259,6 +259,10 @@ impl Drop for BackendProcess {
     }
 }
 
+#[expect(
+    clippy::disallowed_methods,
+    reason = "stages and counts rows as the database owner, outside the API under proof"
+)]
 async fn run_browser_checks(
     base: &str,
     workspace: &WorkspaceStore,

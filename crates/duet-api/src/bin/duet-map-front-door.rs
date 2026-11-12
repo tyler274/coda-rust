@@ -1,5 +1,9 @@
 //! Explicit operator-only front-door mapping; no email matching and no public linking endpoint.
 use sqlx::{Connection, PgConnection, Row};
+#[expect(
+    clippy::disallowed_methods,
+    reason = "converting raw SQL to the typed database API"
+)]
 #[tokio::main]
 async fn main() {
     let args: Vec<_> = std::env::args().skip(1).collect();
