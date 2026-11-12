@@ -337,6 +337,10 @@ pub(super) mod channel_message {
         /// Version order within the item, from 1, assigned under the
         /// connection row's lock.
         pub ordinal: i64,
+        /// The version the latest read saw. One per item, set under the
+        /// connection row's lock; an earlier version seen again becomes
+        /// current without a new row.
+        pub current: bool,
         /// Database-clock seconds the version was saved.
         pub recorded_at: i64,
         /// The serialized `MessageVersion`.

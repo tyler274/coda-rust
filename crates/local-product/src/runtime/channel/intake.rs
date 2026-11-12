@@ -20,7 +20,7 @@ use spruce::payload::{
 
 use super::{
     AccessLoss, AttachmentRecord, Attempt, Backlog, Body, ChannelError, ChannelKey, Connection,
-    ContactRecord, ConversationDetails, Direction, Lease, MAX_FILE_BYTES, MessageVersion,
+    ContactRecord, ConversationDetails, Direction, ItemRead, Lease, MAX_FILE_BYTES, MessageVersion,
     OwedCause, PageWrite, Participant, SavedFile, sha256_hex,
 };
 use crate::runtime::Store;
@@ -132,12 +132,23 @@ pub enum ConnectError {
     /// The credential can't be sent, or Spruce's answer was unreadable.
     #[error("spruce could not check the credential")]
     Check(#[source] SpruceError),
+    /// Spruce refused the conversation list that sets where new messages
+    /// start. Nothing changed.
+    #[error("spruce refused the conversation list that sets where new messages start")]
+    BoundaryRefused,
+    /// Spruce did not answer the conversation list that sets where new
+    /// messages start. Nothing changed.
+    #[error("spruce did not answer the conversation list that sets where new messages start")]
+    BoundaryUnavailable,
     /// The store refused the binding.
     #[error(transparent)]
     Store(#[from] ChannelError),
 }
 
 /// Checks a credential against Spruce and binds its organization to the practice.
+///
+/// Before binding, it reads where new messages start, so a message that
+/// arrives after Connect returns is new however long the first pass waits.
 pub async fn connect(
     store: &Store,
     key: &ChannelKey,
@@ -157,9 +168,30 @@ pub async fn connect(
         }
         Err(error) => return Err(ConnectError::Check(error)),
     };
+    let start = boundary(&Reader::new(client)).await?;
     Ok(store
-        .bind_channel(key, practice, &organization.id, member, credential)
+        .bind_channel(key, practice, &organization.id, member, credential, &start)
         .await?)
+}
+
+/// Lists the organization's conversations until the history floor is set.
+async fn boundary(reader: &Reader) -> Result<Cursor, ConnectError> {
+    let mut cursor: Option<Cursor> = None;
+    loop {
+        let page = match reader
+            .changes(cursor.as_ref())
+            .await
+            .map_err(ConnectError::Check)?
+        {
+            Outcome::Page(page) => page,
+            Outcome::ReconnectRequired => return Err(ConnectError::BoundaryRefused),
+            Outcome::Unavailable => return Err(ConnectError::BoundaryUnavailable),
+        };
+        if page.cursor.is_established() {
+            return Ok(page.cursor);
+        }
+        cursor = Some(page.cursor);
+    }
 }
 
 /// Runs one pass for the practice.
@@ -231,8 +263,9 @@ async fn run(store: &Store, intake: &Intake, lease: &Lease) -> Result<PassOutcom
         more = page.has_more;
         cursor = Some(page.cursor);
     }
-    // Until the first pass sets the floor, nothing can tell history from new
-    // messages, so owed reads and the backlog wait.
+    // Connect sets the floor. A cursor without one, written before Connect
+    // did, can't tell history from new messages yet, so owed reads and the
+    // backlog wait for the pass that sets it.
     if let Some(cursor) = cursor.as_ref().filter(|cursor| cursor.is_established()) {
         store
             .queue_rechecks(lease, intake.recheck_every, intake.rechecks)
@@ -278,7 +311,7 @@ impl Work<'_> {
         Ok(PassOutcome::ReconnectRequired)
     }
 
-    /// Turns observed items into versions, downloading files of new versions
+    /// Turns observed items into reads, downloading files of new versions
     /// only. A conversation whose file failed or whose item was unreadable is
     /// owed a full read.
     async fn observed(&self, observed: Vec<Observed>, write: &mut PageWrite) -> Result<(), Stop> {
@@ -304,18 +337,26 @@ impl Work<'_> {
                     }
                     let version = item.version();
                     if saved.contains(&(item.id().to_owned(), version.clone())) {
+                        write.versions.push(ItemRead::Saved {
+                            item: item.id().to_owned(),
+                            version,
+                            modified_at: item.envelope.modified_at.clone(),
+                        });
                         continue;
                     }
-                    match self.files(&item, &conversation, write).await? {
-                        Some(attachments) => {
-                            write
-                                .versions
-                                .push(message(&item, conversation, version, attachments))
-                        }
-                        None => write
+                    let attachments = self.files(&item, &conversation, write).await?;
+                    let mut kept = message(&item, conversation, version, attachments);
+                    // A file still to fetch: the item is kept with what was
+                    // read, under a version of its own, and its conversation
+                    // is owed the read that saves the file and the whole
+                    // version.
+                    if kept.files_owed() {
+                        write
                             .owed
-                            .push((conversation, OwedCause::TemporarilyUnavailable)),
+                            .push((kept.conversation.clone(), OwedCause::TemporarilyUnavailable));
+                        kept.version = format!("files-owed:{}", kept.version);
                     }
+                    write.versions.push(ItemRead::Version(Box::new(kept)));
                 }
                 Observed::Unreadable(envelope) => {
                     let Some(conversation) = envelope.conversation_id.clone() else {
@@ -326,11 +367,21 @@ impl Work<'_> {
                         .owed
                         .push((conversation.clone(), OwedCause::Undecodable));
                     let version = unreadable_version(&envelope);
-                    if !saved.contains(&(envelope.id.clone(), version.clone())) {
-                        write
-                            .versions
-                            .push(unreadable(&envelope, conversation, version));
-                    }
+                    write.versions.push(
+                        if saved.contains(&(envelope.id.clone(), version.clone())) {
+                            ItemRead::Saved {
+                                item: envelope.id.clone(),
+                                version,
+                                modified_at: envelope.modified_at.clone(),
+                            }
+                        } else {
+                            ItemRead::Version(Box::new(unreadable(
+                                &envelope,
+                                conversation,
+                                version,
+                            )))
+                        },
+                    );
                 }
             }
         }
@@ -350,14 +401,14 @@ impl Work<'_> {
         Ok(())
     }
 
-    /// Saves an item's files. `None` when a file could not be fetched now,
-    /// so the version waits for the conversation's full read.
+    /// Saves an item's files. A file that could not be fetched now is
+    /// [`AttachmentRecord::Owed`].
     async fn files(
         &self,
         item: &Item,
         conversation: &str,
         write: &mut PageWrite,
-    ) -> Result<Option<Vec<AttachmentRecord>>, Stop> {
+    ) -> Result<Vec<AttachmentRecord>, Stop> {
         let mut records = Vec::new();
         for attachment in &item.attachments {
             let Some(link) = &attachment.link else {
@@ -388,10 +439,13 @@ impl Work<'_> {
                 }),
                 // A signed link carries no credential, so a refusal here is an
                 // expired link, not a revoked grant: the full read re-signs it.
-                Err(_) => return Ok(None),
+                Err(_) => records.push(AttachmentRecord::Owed {
+                    name: attachment.name.clone(),
+                    mimetype: attachment.mimetype.clone(),
+                }),
             }
         }
-        Ok(Some(records))
+        Ok(records)
     }
 
     /// Who a conversation is with. `None` when Spruce could not say for now.

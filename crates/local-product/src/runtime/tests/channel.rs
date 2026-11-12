@@ -60,7 +60,7 @@ async fn setup() -> Setup {
 }
 
 impl Setup {
-    /// Connects, then runs the first pass that sets the history boundary.
+    /// Connects, which sets the history boundary, then runs a first pass.
     async fn connected(&self) {
         intake::connect(
             &self.store,
@@ -718,4 +718,227 @@ async fn the_organization_binds_to_one_practice_and_a_refused_credential_stores_
         ConnectError::Store(ChannelError::OrganizationTaken)
     ));
     s.store.disconnect_channel(&s.practice).await.unwrap();
+}
+
+#[tokio::test]
+#[ignore = "requires explicit local Postgres"]
+async fn a_message_after_connect_is_new_however_late_the_first_pass_runs() {
+    let s = setup().await;
+    release_organization(&s.store).await;
+    s.fake.deliver(message("c1", "before", "history", 0));
+    intake::connect(
+        &s.store,
+        &key(),
+        &s.intake.api,
+        &s.practice,
+        "member-1",
+        CREDENTIAL,
+    )
+    .await
+    .unwrap();
+    // A message arrives before the first wake-up, which runs after a restart.
+    s.fake
+        .deliver(message("c1", "after", "sent after connect", 10));
+    let url = std::env::var("PHYSICIAN_RUNTIME_TEST_DATABASE_URL").unwrap();
+    let restarted = Store::connect(&url).await.unwrap();
+    intake::pass(&restarted, &s.intake, &s.practice)
+        .await
+        .unwrap();
+    assert_eq!(s.texts("c1").await, ["sent after connect"]);
+    assert_eq!(s.rows("before").await, 0, "history waits for the backlog");
+    assert!(matches!(
+        s.store.channel_connection(&s.practice).await.unwrap(),
+        Connection::Reading {
+            backlog: Backlog::Offered,
+            ..
+        }
+    ));
+
+    // Spruce not answering the list refuses Connect and stores nothing.
+    let other = uuid::Uuid::new_v4().to_string();
+    s.store.disconnect_channel(&s.practice).await.unwrap();
+    s.fake.fail_conversation_list();
+    let refused = intake::connect(&s.store, &key(), &s.intake.api, &other, "m", CREDENTIAL)
+        .await
+        .unwrap_err();
+    assert!(matches!(refused, ConnectError::BoundaryUnavailable));
+    assert_eq!(
+        s.store.channel_connection(&other).await.unwrap(),
+        Connection::Disconnected
+    );
+    s.fake.recover();
+}
+
+#[tokio::test]
+#[ignore = "requires explicit local Postgres"]
+async fn a_version_read_again_is_current_again() {
+    let s = setup().await;
+    release_organization(&s.store).await;
+    s.connected().await;
+    let mut voicemail = message("c1", "vm", "", 10);
+    voicemail.transcription_id = Some("tr1".into());
+    voicemail.transcription_text = Some("call me back".into());
+    s.fake.deliver(voicemail);
+    s.fake.deliver(message("c1", "odd", "readable", 11));
+    s.pass().await;
+    let transcript = |s: &Setup| {
+        let practice = s.practice.clone();
+        let store = s.store.clone();
+        async move {
+            store
+                .channel_messages(&practice, "c1")
+                .await
+                .unwrap()
+                .into_iter()
+                .map(|version| match version.body {
+                    Body::Voicemail { transcript, .. } => transcript.unwrap_or_default(),
+                    Body::Text { text } => text,
+                    other => format!("{other:?}"),
+                })
+                .collect::<Vec<_>>()
+        }
+    };
+    assert_eq!(transcript(&s).await, ["call me back", "readable"]);
+
+    // The transcript stops answering and the item stops decoding: each is a
+    // new version, and current.
+    s.fake.fail_transcriptions();
+    s.fake.make_unreadable("odd");
+    s.pass().await;
+    assert_eq!(transcript(&s).await, ["", "Unreadable"]);
+    assert_eq!(s.rows("vm").await, 2);
+    assert_eq!(s.rows("odd").await, 2);
+
+    // Both come back unchanged: no new row, and the earlier version is
+    // current again.
+    s.fake.recover();
+    s.fake.make_readable("odd");
+    s.pass().await;
+    s.pass().await;
+    assert_eq!(transcript(&s).await, ["call me back", "readable"]);
+    assert_eq!(s.rows("vm").await, 2);
+    assert_eq!(s.rows("odd").await, 2);
+    assert!(
+        s.store
+            .channel_status(&s.practice)
+            .await
+            .unwrap()
+            .unread
+            .is_empty()
+    );
+}
+
+#[tokio::test]
+#[ignore = "requires explicit local Postgres"]
+async fn a_late_read_of_an_older_edit_does_not_replace_the_newer_one() {
+    use crate::runtime::channel::{ItemRead, MessageVersion};
+    let s = setup().await;
+    release_organization(&s.store).await;
+    s.connected().await;
+    let version = |id: &str, text: &str, modified: i64| MessageVersion {
+        item: "e1".into(),
+        conversation: "c1".into(),
+        version: id.into(),
+        direction: Direction::Patient,
+        author: None,
+        internal_note: false,
+        created_at: Some(at(20)),
+        modified_at: Some(at(modified)),
+        app_url: None,
+        body: Body::Text { text: text.into() },
+        attachments: Vec::new(),
+        deleted: false,
+    };
+    let lease = s
+        .store
+        .claim_channel(&s.practice, "direct", 60)
+        .await
+        .unwrap()
+        .unwrap();
+    let write = |reads: Vec<ItemRead>| PageWrite {
+        versions: reads,
+        ..PageWrite::default()
+    };
+    s.store
+        .apply_channel_page(
+            &lease,
+            write(vec![ItemRead::Version(Box::new(version(
+                "v1", "draft", 20,
+            )))]),
+        )
+        .await
+        .unwrap();
+    s.store
+        .apply_channel_page(
+            &lease,
+            write(vec![ItemRead::Version(Box::new(version(
+                "v2", "final", 25,
+            )))]),
+        )
+        .await
+        .unwrap();
+    // A read that started before the edit commits after it.
+    s.store
+        .apply_channel_page(
+            &lease,
+            write(vec![ItemRead::Saved {
+                item: "e1".into(),
+                version: "v1".into(),
+                modified_at: Some(at(20)),
+            }]),
+        )
+        .await
+        .unwrap();
+    s.store.release_channel(&lease).await.unwrap();
+    assert_eq!(s.texts("c1").await, ["final"]);
+}
+
+#[tokio::test]
+#[ignore = "requires explicit local Postgres"]
+async fn an_item_whose_file_failed_keeps_its_text_and_link_until_the_file_arrives() {
+    let s = setup().await;
+    release_organization(&s.store).await;
+    s.connected().await;
+    s.fake.deliver(message("c1", "f1", "see attached", 10));
+    s.fake.attach("f1", "scan.pdf", b"%PDF-1.7 bytes");
+    s.fake.fail_files();
+    s.pass().await;
+    let saved = s.store.channel_message(&s.practice, "f1").await.unwrap();
+    assert_eq!(saved.len(), 1, "the item is kept while its file is owed");
+    assert_eq!(
+        saved[0].body,
+        Body::Text {
+            text: "see attached".into()
+        }
+    );
+    assert!(saved[0].app_url.as_deref().unwrap().contains("/message/f1"));
+    assert!(matches!(
+        &saved[0].attachments[..],
+        [AttachmentRecord::Owed { name: Some(name), .. }] if name == "scan.pdf"
+    ));
+    let status = s.store.channel_status(&s.practice).await.unwrap();
+    assert_eq!(status.unread.len(), 1);
+    assert_eq!(
+        status.unread[0].owed.cause,
+        OwedCause::TemporarilyUnavailable
+    );
+
+    // The file comes back: the whole version is kept and current, and the
+    // owed read settles.
+    s.fake.recover();
+    s.pass().await;
+    let saved = s.store.channel_messages(&s.practice, "c1").await.unwrap();
+    let AttachmentRecord::File { sha256, .. } = &saved[0].attachments[0] else {
+        panic!("file saved: {saved:?}");
+    };
+    assert_eq!(*sha256, sha256_hex(b"%PDF-1.7 bytes"));
+    assert_eq!(s.rows("f1").await, 2);
+    assert!(
+        s.store
+            .channel_status(&s.practice)
+            .await
+            .unwrap()
+            .unread
+            .is_empty()
+    );
 }

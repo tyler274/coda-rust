@@ -89,6 +89,17 @@ pub struct FakeContact {
     pub date_of_birth: Option<String>,
 }
 
+/// A route the stand-in can take down with a 503.
+#[derive(Clone, Copy, PartialEq, Eq, Hash)]
+enum Outage {
+    /// Every file link.
+    Files,
+    /// Every transcription read.
+    Transcriptions,
+    /// The conversation list.
+    ConversationList,
+}
+
 struct FakeState {
     page_size: usize,
     /// Every route answers 401, including with the right credential.
@@ -109,6 +120,8 @@ struct FakeState {
     /// Bumped by [`FakeSpruce::expire_links`]; a link signed under an older
     /// generation answers 403.
     link_generation: u64,
+    /// Routes that answer 503 until [`FakeSpruce::recover`].
+    outages: HashSet<Outage>,
     /// Every path the stand-in was asked for, in order.
     requests: Vec<String>,
     /// `http://host:port`, for signing file links.
@@ -130,6 +143,7 @@ impl FakeState {
             associations: HashMap::new(),
             files: HashMap::new(),
             link_generation: 0,
+            outages: HashSet::new(),
             requests: Vec::new(),
             origin: String::new(),
         }
@@ -250,6 +264,38 @@ impl FakeSpruce {
         self.with_item(id, |item| item.unreadable = true);
     }
 
+    /// The item's content decodes again after [`Self::make_unreadable`].
+    pub fn make_readable(&self, id: &str) {
+        self.with_item(id, |item| item.unreadable = false);
+    }
+
+    /// File links answer 503 until [`Self::recover`].
+    pub fn fail_files(&self) {
+        self.state
+            .lock()
+            .expect("spruce stand-in lock")
+            .outages
+            .insert(Outage::Files);
+    }
+
+    /// Transcription reads answer 503 until [`Self::recover`].
+    pub fn fail_transcriptions(&self) {
+        self.state
+            .lock()
+            .expect("spruce stand-in lock")
+            .outages
+            .insert(Outage::Transcriptions);
+    }
+
+    /// The conversation list answers 503 until [`Self::recover`].
+    pub fn fail_conversation_list(&self) {
+        self.state
+            .lock()
+            .expect("spruce stand-in lock")
+            .outages
+            .insert(Outage::ConversationList);
+    }
+
     /// Attaches a file to an item. Its link is signed under the current
     /// generation and stops working after [`Self::expire_links`].
     pub fn attach(&self, id: &str, name: &str, bytes: &[u8]) {
@@ -291,11 +337,13 @@ impl FakeSpruce {
             .clone()
     }
 
-    /// Reads answer normally again after [`Self::fail`], [`Self::forbid`] or
-    /// [`Self::reject_unauthorized`].
+    /// Reads answer normally again after [`Self::fail`], [`Self::forbid`],
+    /// [`Self::reject_unauthorized`], [`Self::fail_files`],
+    /// [`Self::fail_transcriptions`] or [`Self::fail_conversation_list`].
     pub fn recover(&self) {
         let mut state = self.state.lock().expect("spruce stand-in lock");
         state.failing.clear();
+        state.outages.clear();
         state.forbidden = false;
         state.unauthorized = false;
     }
@@ -411,6 +459,9 @@ async fn conversations(
         return response;
     }
     let state = state.lock().expect("spruce stand-in lock");
+    if state.outages.contains(&Outage::ConversationList) {
+        return (StatusCode::SERVICE_UNAVAILABLE, Json(json!({}))).into_response();
+    }
     let mut rows: Vec<&StoredConversation> = state.conversations.iter().collect();
     if let Some(start) = query.start_from.as_deref() {
         rows.retain(|conversation| at_or_after(&conversation.last_message_at, start));
@@ -524,6 +575,9 @@ async fn transcription(
         return response;
     }
     let state = state.lock().expect("spruce stand-in lock");
+    if state.outages.contains(&Outage::Transcriptions) {
+        return (StatusCode::SERVICE_UNAVAILABLE, Json(json!({}))).into_response();
+    }
     let Some(transcription) = state.transcriptions.get(&id) else {
         return (StatusCode::NOT_FOUND, Json(json!({}))).into_response();
     };
@@ -574,6 +628,9 @@ async fn file(
     Path((generation, name)): Path<(u64, String)>,
 ) -> Response {
     let state = state.lock().expect("spruce stand-in lock");
+    if state.outages.contains(&Outage::Files) {
+        return (StatusCode::SERVICE_UNAVAILABLE, "unavailable").into_response();
+    }
     if generation != state.link_generation {
         return (StatusCode::FORBIDDEN, "expired").into_response();
     }

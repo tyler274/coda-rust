@@ -332,6 +332,14 @@ pub enum AttachmentRecord {
         /// Title Spruce sent.
         title: Option<String>,
     },
+    /// A file Coda could not fetch yet. The conversation is owed a full
+    /// read, which saves it and completes this version.
+    Owed {
+        /// File name Spruce sent.
+        name: Option<String>,
+        /// MIME type Spruce sent.
+        mimetype: Option<String>,
+    },
 }
 
 /// One saved version of a channel message. Append-only.
@@ -341,7 +349,8 @@ pub struct MessageVersion {
     pub item: String,
     /// Spruce conversation id.
     pub conversation: String,
-    /// `spruce::payload::Item::version`, or `unreadable:` and `modifiedAt`.
+    /// `spruce::payload::Item::version`; `files-owed:` and that version while
+    /// a file is still to be fetched; or `unreadable:` and `modifiedAt`.
     pub version: String,
     /// Who it is from.
     pub direction: Direction,
@@ -363,6 +372,67 @@ pub struct MessageVersion {
     pub deleted: bool,
 }
 
+impl MessageVersion {
+    /// A file of this version is still to be fetched.
+    pub fn files_owed(&self) -> bool {
+        self.attachments
+            .iter()
+            .any(|attachment| matches!(attachment, AttachmentRecord::Owed { .. }))
+    }
+}
+
+/// What a read found for one item.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub enum ItemRead {
+    /// A version to save. One already saved is not saved twice.
+    Version(Box<MessageVersion>),
+    /// A version already saved, seen again.
+    Saved {
+        /// Spruce item id.
+        item: String,
+        /// Its version.
+        version: String,
+        /// When Spruce last changed it, as this read saw it.
+        modified_at: Option<String>,
+    },
+}
+
+impl ItemRead {
+    fn key(&self) -> (&str, &str) {
+        match self {
+            Self::Version(version) => (&version.item, &version.version),
+            Self::Saved { item, version, .. } => (item, version),
+        }
+    }
+
+    fn modified_at(&self) -> Option<&str> {
+        match self {
+            Self::Version(version) => version.modified_at.as_deref(),
+            Self::Saved { modified_at, .. } => modified_at.as_deref(),
+        }
+    }
+}
+
+/// Whether a read's version replaces the current one: always, unless Spruce
+/// says the current one changed later. A version read again with the same
+/// `modifiedAt`, such as a transcript that came back, is current again.
+fn supersedes(read: Option<&str>, current: Option<&str>) -> bool {
+    let instant = |value: Option<&str>| {
+        value.and_then(|text| chrono::DateTime::parse_from_rfc3339(text).ok())
+    };
+    match (instant(read), instant(current)) {
+        (Some(read), Some(current)) => read >= current,
+        _ => true,
+    }
+}
+
+/// An item's current version and when Spruce last changed it.
+struct Current {
+    version: String,
+    modified_at: Option<String>,
+    changed: bool,
+}
+
 /// File bytes to save with a page.
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct SavedFile {
@@ -377,8 +447,9 @@ pub struct SavedFile {
 /// Everything one page saves, in one transaction.
 #[derive(Clone, Debug, Default)]
 pub struct PageWrite {
-    /// Versions to keep. One already kept is skipped.
-    pub versions: Vec<MessageVersion>,
+    /// What the read found, in read order. A version already kept is not
+    /// kept twice; the last one per item becomes its current version.
+    pub versions: Vec<ItemRead>,
     /// Files those versions name.
     pub files: Vec<SavedFile>,
     /// Conversations now owed a full read.
@@ -677,11 +748,11 @@ impl Store {
 
     /// Binds a checked organization to the practice.
     ///
-    /// A disconnected practice starts reading new messages and is offered the
-    /// backlog. A practice that must reconnect resumes from its cursor when
-    /// the organization is the same. A connected practice with the same
-    /// organization replaces its credential. Another practice's organization
-    /// is refused.
+    /// A disconnected practice starts reading new messages from `start`, the
+    /// boundary read at Connect, and is offered the backlog. A practice that
+    /// must reconnect resumes from its cursor when the organization is the
+    /// same. A connected practice with the same organization replaces its
+    /// credential. Another practice's organization is refused.
     pub(super) async fn bind_channel(
         &self,
         key: &ChannelKey,
@@ -689,6 +760,7 @@ impl Store {
         organization: &str,
         bound_by: &str,
         credential: &str,
+        start: &spruce::changes::Cursor,
     ) -> Result<Connection, ChannelError> {
         if organization.trim().is_empty() || bound_by.trim().is_empty() {
             return Err(ChannelError::WrongState);
@@ -711,7 +783,7 @@ impl Store {
         let mut active: channel_connection::ActiveModel = row.clone().into();
         let next = match connection_of(&row)? {
             Connection::Disconnected => {
-                active.cursor = Set(None);
+                active.cursor = Set(Some(start.encode()));
                 active.last_read_at = Set(None);
                 reading(Backlog::Offered)
             }
@@ -893,9 +965,14 @@ impl Store {
             return Err(ChannelError::LeaseLost);
         }
 
-        let items: Vec<String> = page.versions.iter().map(|v| v.item.clone()).collect();
+        let items: Vec<String> = page
+            .versions
+            .iter()
+            .map(|read| read.key().0.to_owned())
+            .collect();
         let mut existing: HashSet<(String, String)> = HashSet::new();
         let mut ordinals: HashMap<String, i64> = HashMap::new();
+        let mut current: HashMap<String, Current> = HashMap::new();
         if !items.is_empty() {
             for stored in channel_message::Entity::find()
                 .filter(channel_message::Column::Practice.eq(practice))
@@ -905,14 +982,49 @@ impl Store {
             {
                 let ordinal = ordinals.entry(stored.item.clone()).or_insert(0);
                 *ordinal = (*ordinal).max(stored.ordinal);
+                if stored.current {
+                    let record: MessageVersion = from_json(stored.record, "message")?;
+                    current.insert(
+                        stored.item.clone(),
+                        Current {
+                            version: stored.version.clone(),
+                            modified_at: record.modified_at,
+                            changed: false,
+                        },
+                    );
+                }
                 existing.insert((stored.item, stored.version));
             }
         }
         let mut rows = Vec::new();
         let mut conversations: HashSet<String> = HashSet::new();
-        for version in &page.versions {
-            conversations.insert(version.conversation.clone());
-            if !existing.insert((version.item.clone(), version.version.clone())) {
+        for read in &page.versions {
+            let (item, version_id) = read.key();
+            let key = (item.to_owned(), version_id.to_owned());
+            if let ItemRead::Version(version) = read {
+                conversations.insert(version.conversation.clone());
+            }
+            let known = existing.contains(&key);
+            if known || matches!(read, ItemRead::Version(_)) {
+                let replaces = current.get(item).is_none_or(|now| {
+                    now.version != version_id
+                        && supersedes(read.modified_at(), now.modified_at.as_deref())
+                });
+                if replaces {
+                    current.insert(
+                        key.0.clone(),
+                        Current {
+                            version: key.1.clone(),
+                            modified_at: read.modified_at().map(str::to_owned),
+                            changed: true,
+                        },
+                    );
+                }
+            }
+            let ItemRead::Version(version) = read else {
+                continue;
+            };
+            if !existing.insert(key) {
                 continue;
             }
             let ordinal = ordinals.entry(version.item.clone()).or_insert(0);
@@ -923,6 +1035,7 @@ impl Store {
                 version: Set(version.version.clone()),
                 conversation: Set(version.conversation.clone()),
                 ordinal: Set(*ordinal),
+                current: Set(false),
                 recorded_at: Set(now),
                 record: Set(to_json(version, "message")?),
             });
@@ -940,6 +1053,17 @@ impl Store {
                     .to_owned(),
                 )
                 .exec_without_returning(&tx)
+                .await?;
+        }
+        for (item, now) in current.into_iter().filter(|(_, now)| now.changed) {
+            channel_message::Entity::update_many()
+                .col_expr(
+                    channel_message::Column::Current,
+                    channel_message::Column::Version.eq(now.version),
+                )
+                .filter(channel_message::Column::Practice.eq(practice))
+                .filter(channel_message::Column::Item.eq(item))
+                .exec(&tx)
                 .await?;
         }
         for file in &page.files {
@@ -1293,7 +1417,7 @@ impl Store {
             .collect()
     }
 
-    /// The latest version of each item in a conversation, oldest item first.
+    /// The current version of each item in a conversation, oldest item first.
     pub async fn channel_messages(
         &self,
         practice: &str,
@@ -1302,21 +1426,15 @@ impl Store {
         let rows = channel_message::Entity::find()
             .filter(channel_message::Column::Practice.eq(practice))
             .filter(channel_message::Column::Conversation.eq(conversation))
-            .order_by_asc(channel_message::Column::Item)
-            .order_by_desc(channel_message::Column::Ordinal)
+            .filter(channel_message::Column::Current.eq(true))
             .all(&self.db)
             .await?;
-        let mut latest: Vec<MessageVersion> = Vec::new();
-        let mut last_item: Option<String> = None;
-        for row in rows {
-            if last_item.as_deref() == Some(row.item.as_str()) {
-                continue;
-            }
-            last_item = Some(row.item.clone());
-            latest.push(from_json(row.record, "message")?);
-        }
-        latest.sort_by(|left, right| left.created_at.cmp(&right.created_at));
-        Ok(latest)
+        let mut current = rows
+            .into_iter()
+            .map(|row| from_json::<MessageVersion>(row.record, "message"))
+            .collect::<Result<Vec<_>, _>>()?;
+        current.sort_by(|left, right| left.created_at.cmp(&right.created_at));
+        Ok(current)
     }
 
     /// `(item, version)` pairs already saved, among `items`.

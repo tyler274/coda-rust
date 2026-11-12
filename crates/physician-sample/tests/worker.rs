@@ -1452,7 +1452,7 @@ async fn the_spruce_wake_up_saves_each_message_once_across_a_restart() {
         transcription_status: None,
         transcription_summary: None,
     };
-    // The first wake-up sets the history boundary.
+    // Connect set the history boundary; the first wake-up finds nothing new.
     assert_eq!(wake(running.worker_host.clone()).await.0, 204);
     fake.deliver(delivery("m2", "second", "2030-01-01T00:00:20Z"));
     fake.deliver(delivery("m1", "first", "2030-01-01T00:00:10Z"));
