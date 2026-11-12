@@ -4,6 +4,7 @@
 //! authoritative rules in [`local_product::source_status`].
 
 use std::collections::{BTreeMap, HashSet};
+use std::fmt;
 use std::sync::{Arc, RwLock};
 
 use axum::Json;
@@ -26,7 +27,7 @@ use serde_json::{Value, json};
 
 use crate::auth;
 use crate::care::ConnectedCare;
-use crate::chart_load::enroll_identified_patients;
+use crate::chart_load::{EnrollmentError, enroll_identified_patients};
 use crate::synthetic_chart::{self, SyntheticCharts, SyntheticSourceMode};
 
 const BODY_LIMIT: usize = 1_000_000;
@@ -124,23 +125,80 @@ async fn panel_workspaces(
     Some(auth_store.panel(identity).await.into_iter().collect())
 }
 
+#[derive(Debug)]
+enum PracticeEnrollmentError {
+    Links(SourceStatusError),
+    Enroll(EnrollmentError),
+}
+
+impl fmt::Display for PracticeEnrollmentError {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            Self::Links(error) => write!(f, "list practice source links: {error}"),
+            Self::Enroll(error) => write!(f, "{error}"),
+        }
+    }
+}
+
+impl std::error::Error for PracticeEnrollmentError {
+    fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
+        match self {
+            Self::Links(error) => Some(error),
+            Self::Enroll(error) => Some(error),
+        }
+    }
+}
+
+fn enrollment_failure_response(
+    practice_id: &str,
+    source_id: &str,
+    error: &dyn std::error::Error,
+) -> Response {
+    tracing::error!(
+        practice_id = %practice_id,
+        source_id = %source_id,
+        error = %error,
+        source = ?error.source(),
+        "failed to enroll identified source patients"
+    );
+    StatusCode::INTERNAL_SERVER_ERROR.into_response()
+}
+
 async fn sync_practice_enrollments(
     extensions: &Extensions,
     store: &Store,
     practice_id: &str,
     source_id: &str,
-) -> Result<(), StatusCode> {
+) -> Result<(), PracticeEnrollmentError> {
     let Some(auth_store) = extensions.get::<Arc<dyn AuthStore>>() else {
         return Ok(());
     };
     let links = store
         .practice_source_links(practice_id, source_id)
         .await
-        .map_err(|_| StatusCode::SERVICE_UNAVAILABLE)?;
+        .map_err(PracticeEnrollmentError::Links)?;
     let workspaces: Vec<String> = links.into_iter().map(|link| link.workspace_id).collect();
     enroll_identified_patients(practice_id, &**auth_store, store, &workspaces)
         .await
-        .map_err(|_| StatusCode::SERVICE_UNAVAILABLE)
+        .map_err(PracticeEnrollmentError::Enroll)
+}
+
+async fn sync_workspace_enrollment(
+    extensions: &Extensions,
+    store: &Store,
+    practice_id: &str,
+    workspace_id: &str,
+) -> Result<(), EnrollmentError> {
+    let Some(auth_store) = extensions.get::<Arc<dyn AuthStore>>() else {
+        return Ok(());
+    };
+    enroll_identified_patients(
+        practice_id,
+        &**auth_store,
+        store,
+        std::slice::from_ref(&workspace_id.to_owned()),
+    )
+    .await
 }
 
 fn scope_summary_to_panel(
@@ -383,7 +441,13 @@ pub(crate) async fn post_check(Path(source_id): Path<String>, request: Request<B
                     Err(SourceStatusError::PracticeMismatch { .. }) => {
                         return StatusCode::NOT_FOUND.into_response();
                     }
-                    Err(_) => return StatusCode::SERVICE_UNAVAILABLE.into_response(),
+                    Err(
+                        SourceStatusError::ConflictingWorkspaceLink { .. }
+                        | SourceStatusError::EmptyIdentity { .. }
+                        | SourceStatusError::SourceAdapter { .. }
+                        | SourceStatusError::CommandLeaseLost { .. }
+                        | SourceStatusError::Database(_),
+                    ) => return StatusCode::SERVICE_UNAVAILABLE.into_response(),
                 }
             }
             (None, Some(spid)) => {
@@ -396,7 +460,14 @@ pub(crate) async fn post_check(Path(source_id): Path<String>, request: Request<B
                     .await
                 {
                     Ok(existing) => existing,
-                    Err(_) => return StatusCode::SERVICE_UNAVAILABLE.into_response(),
+                    Err(
+                        SourceStatusError::PracticeMismatch { .. }
+                        | SourceStatusError::ConflictingWorkspaceLink { .. }
+                        | SourceStatusError::EmptyIdentity { .. }
+                        | SourceStatusError::SourceAdapter { .. }
+                        | SourceStatusError::CommandLeaseLost { .. }
+                        | SourceStatusError::Database(_),
+                    ) => return StatusCode::SERVICE_UNAVAILABLE.into_response(),
                 };
                 let target_ws = existing
                     .as_ref()
@@ -438,10 +509,25 @@ pub(crate) async fn post_check(Path(source_id): Path<String>, request: Request<B
             Err(SourceStatusError::EmptyIdentity { .. }) => {
                 return StatusCode::BAD_REQUEST.into_response();
             }
-            Err(SourceStatusError::SourceAdapter { .. } | SourceStatusError::Database(_)) => {
+            Err(
+                SourceStatusError::SourceAdapter { .. }
+                | SourceStatusError::CommandLeaseLost { .. }
+                | SourceStatusError::Database(_),
+            ) => {
                 return StatusCode::SERVICE_UNAVAILABLE.into_response();
             }
         };
+
+        if let Err(error) = sync_workspace_enrollment(
+            &parts.extensions,
+            store,
+            &practice_id,
+            &patient_report.workspace_id,
+        )
+        .await
+        {
+            return enrollment_failure_response(&practice_id, &source_id, &error);
+        }
 
         let Ok(practice_report) = store.practice_source_report(&practice_id, &source_id).await
         else {
@@ -469,12 +555,18 @@ pub(crate) async fn post_check(Path(source_id): Path<String>, request: Request<B
         Err(SourceStatusError::EmptyIdentity { .. }) => {
             return StatusCode::BAD_REQUEST.into_response();
         }
-        Err(_) => return StatusCode::SERVICE_UNAVAILABLE.into_response(),
+        Err(
+            SourceStatusError::PracticeMismatch { .. }
+            | SourceStatusError::ConflictingWorkspaceLink { .. }
+            | SourceStatusError::SourceAdapter { .. }
+            | SourceStatusError::CommandLeaseLost { .. }
+            | SourceStatusError::Database(_),
+        ) => return StatusCode::SERVICE_UNAVAILABLE.into_response(),
     };
-    if let Err(code) =
+    if let Err(error) =
         sync_practice_enrollments(&parts.extensions, store, &practice_id, &source_id).await
     {
-        return code.into_response();
+        return enrollment_failure_response(&practice_id, &source_id, &error);
     }
 
     let Ok(practice_report) = store.practice_source_report(&practice_id, &source_id).await else {
@@ -522,10 +614,10 @@ pub(crate) async fn post_reconnect(
 
     match SourceCoordinator::reconnect_source(store, &*adapter, &practice_id, now).await {
         Ok(report) => {
-            if let Err(code) =
+            if let Err(error) =
                 sync_practice_enrollments(extensions, store, &practice_id, &source_id).await
             {
-                return code.into_response();
+                return enrollment_failure_response(&practice_id, &source_id, &error);
             }
             let panel = panel_workspaces(extensions, &identity).await;
             Json(json!({
@@ -544,7 +636,13 @@ pub(crate) async fn post_reconnect(
             })),
         )
             .into_response(),
-        Err(_) => StatusCode::SERVICE_UNAVAILABLE.into_response(),
+        Err(
+            SourceStatusError::PracticeMismatch { .. }
+            | SourceStatusError::ConflictingWorkspaceLink { .. }
+            | SourceStatusError::EmptyIdentity { .. }
+            | SourceStatusError::CommandLeaseLost { .. }
+            | SourceStatusError::Database(_),
+        ) => StatusCode::SERVICE_UNAVAILABLE.into_response(),
     }
 }
 
@@ -634,10 +732,10 @@ pub(crate) async fn intercept_reconnect_command(request: Request<Body>, next: Ne
             access,
             summary,
         }) => {
-            if let Err(code) =
+            if let Err(error) =
                 sync_practice_enrollments(&parts.extensions, store, &practice_id, source_id).await
             {
-                return code.into_response();
+                return enrollment_failure_response(&practice_id, source_id, &error);
             }
             let panel = panel_workspaces(&parts.extensions, &identity).await;
             Json(json!({
@@ -662,7 +760,8 @@ pub(crate) async fn intercept_reconnect_command(request: Request<Body>, next: Ne
         )
             .into_response(),
         Err(
-            SourceStatusError::Database(_)
+            SourceStatusError::CommandLeaseLost { .. }
+            | SourceStatusError::Database(_)
             | SourceStatusError::PracticeMismatch { .. }
             | SourceStatusError::ConflictingWorkspaceLink { .. },
         ) => StatusCode::SERVICE_UNAVAILABLE.into_response(),

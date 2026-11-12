@@ -14,7 +14,7 @@ use std::sync::{Arc, RwLock};
 use async_trait::async_trait;
 use local_product::physician_sources::{
     FailedPart, MedicalRecordNumber, PatientSource, ReconnectReceipt, SourceAdapterError,
-    SourcePatient, SourcePullOutput, SourceRecordKind, SourceRevision,
+    SourceCommandKey, SourcePatient, SourcePullOutput, SourceRecordKind, SourceRevision,
 };
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
@@ -53,6 +53,8 @@ pub enum SyntheticSourceMode {
 struct ModeTable {
     practice_modes: HashMap<String, SyntheticSourceMode>,
     patient_modes: HashMap<(String, String), SyntheticSourceMode>,
+    command_receipts: HashMap<(String, String, String), ReconnectReceipt>,
+    reconnect_effects: HashMap<String, usize>,
 }
 
 /// A built patient bank on disk.
@@ -119,6 +121,16 @@ impl SyntheticCharts {
             .get(practice_id)
             .cloned()
             .unwrap_or_default()
+    }
+
+    /// Number of non-deduplicated reconnect effects performed for `practice_id`.
+    pub fn reconnect_effect_count(&self, practice_id: &str) -> usize {
+        let table = self.modes.read().expect("synthetic source mode lock");
+        table
+            .reconnect_effects
+            .get(practice_id)
+            .copied()
+            .unwrap_or(0)
     }
 
     /// Resolves the effective connector mode for `(practice_id, source_patient_id)`.
@@ -368,8 +380,17 @@ impl PatientSource for SyntheticCharts {
         &self,
         practice_id: &str,
         now: i64,
+        command_key: Option<SourceCommandKey<'_>>,
     ) -> Result<ReconnectReceipt, SourceAdapterError> {
         let mut table = self.modes.write().expect("synthetic source mode lock");
+        if let Some(cmd_key) = command_key
+            && let Some(existing) = table
+                .command_receipts
+                .get(&cmd_key.scoped_key(practice_id))
+                .cloned()
+        {
+            return Ok(existing);
+        }
         if let Some(SyntheticSourceMode::Outage { reason }) = table.practice_modes.get(practice_id)
         {
             return Err(SourceAdapterError::Unavailable {
@@ -385,11 +406,21 @@ impl PatientSource for SyntheticCharts {
         table.patient_modes.retain(|(practice, _), mode| {
             !(practice == practice_id && matches!(mode, SyntheticSourceMode::LapsedAccess { .. }))
         });
-        Ok(ReconnectReceipt {
+        *table
+            .reconnect_effects
+            .entry(practice_id.to_owned())
+            .or_insert(0) += 1;
+        let receipt = ReconnectReceipt {
             source_id: SOURCE_ID.to_owned(),
             practice_id: practice_id.to_owned(),
             reconnected_at: now,
-        })
+        };
+        if let Some(cmd_key) = command_key {
+            table
+                .command_receipts
+                .insert(cmd_key.scoped_key(practice_id), receipt.clone());
+        }
+        Ok(receipt)
     }
 }
 
@@ -551,9 +582,25 @@ mod tests {
             other => panic!("expected LapsedAccess, got {other:?}"),
         }
 
-        let receipt = source.reconnect("practice-a", 1_788_000_000).await.unwrap();
+        let cmd_key = SourceCommandKey {
+            physician_id: "dr-1",
+            idempotency_key: "reconn-1",
+        };
+        let receipt = source
+            .reconnect("practice-a", 1_788_000_000, Some(cmd_key))
+            .await
+            .unwrap();
         assert_eq!(receipt.source_id, SOURCE_ID);
         assert_eq!(receipt.practice_id, "practice-a");
+        assert_eq!(source.reconnect_effect_count("practice-a"), 1);
+
+        // Retrying with the same command key recovers the prior receipt without a second effect.
+        let replayed = source
+            .reconnect("practice-a", 1_788_000_999, Some(cmd_key))
+            .await
+            .unwrap();
+        assert_eq!(replayed, receipt);
+        assert_eq!(source.reconnect_effect_count("practice-a"), 1);
         assert!(matches!(
             source.pull_patient("practice-a", "MRN1", "pw-1").await,
             SourcePullOutput::Complete { records, .. } if records.len() == 3

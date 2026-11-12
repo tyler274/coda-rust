@@ -432,3 +432,26 @@ pub struct ReconnectReceipt {
     /// Practice-clock Unix timestamp in seconds when reconnected.
     pub reconnected_at: i64,
 }
+
+/// Scoped command identity passed to [`super::PatientSource::reconnect`] when executed under an
+/// idempotent physician command, allowing the adapter to deduplicate or recover its effect across
+/// retries before a database checkpoint commits.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
+pub struct SourceCommandKey<'a> {
+    /// Physician who issued the command within `practice_id`.
+    pub physician_id: &'a str,
+    /// Client-supplied idempotency key within `(practice_id, physician_id)`.
+    pub idempotency_key: &'a str,
+}
+
+impl SourceCommandKey<'_> {
+    /// Builds the `(practice_id, physician_id, idempotency_key)` tuple uniquely identifying this
+    /// command across practices and physicians.
+    pub fn scoped_key(self, practice_id: &str) -> (String, String, String) {
+        (
+            practice_id.to_owned(),
+            self.physician_id.to_owned(),
+            self.idempotency_key.to_owned(),
+        )
+    }
+}

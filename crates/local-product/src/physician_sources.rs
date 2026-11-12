@@ -11,8 +11,8 @@ pub mod types;
 pub use chart::{ChartInputError, ChartRequest, ChartScope, SEARCH_TOOL, read_tool, search_tool};
 pub use types::{
     Bucket, ChartPullReceipt, DateRole, FailedPart, FiledDate, PullOutcome, ReconnectReceipt,
-    RecordCode, RecordEnvelope, RecordVersion, SourceAdapterError, SourcePullOutput,
-    SourceRecordKind, UnknownBucketError,
+    RecordCode, RecordEnvelope, RecordVersion, SourceAdapterError, SourceCommandKey,
+    SourcePullOutput, SourceRecordKind, UnknownBucketError,
 };
 
 use async_trait::async_trait;
@@ -156,10 +156,15 @@ pub trait PatientSource: Send + Sync {
     }
 
     /// Reconnects a practice's access to this source when credentials have lapsed.
+    ///
+    /// When `command_key` is `Some(...)`, the adapter deduplicates or recovers any prior
+    /// successful reconnect performed for `(practice_id, command_key)` so retrying an interrupted
+    /// command before its database checkpoint commits does not repeat the external side effect.
     async fn reconnect(
         &self,
         practice_id: &str,
         now: i64,
+        _command_key: Option<SourceCommandKey<'_>>,
     ) -> Result<ReconnectReceipt, SourceAdapterError> {
         Ok(ReconnectReceipt {
             source_id: self.source_id().to_owned(),

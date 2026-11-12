@@ -20,13 +20,10 @@ use super::{Store, conversion_error, error, now};
 use crate::physician_sources::{ChartPullReceipt, PullOutcome, ReconnectReceipt};
 use crate::source_status::{
     AdapterPresence, CompleteDelivery, LinkTarget, PartialDelivery, PatientSourceRecordStatus,
-    PracticeSourceReport, PullAttempt, ReconnectCommandClaim, ReconnectCommandState,
-    SourceAccessState, SourcePatientKey, SourcePatientLink, SourceStanding, SourceStatusError,
-    derive_standing, summarize_practice_source, validate_non_empty,
+    PracticeSourceReport, PullAttempt, ReconnectCommandClaim, ReconnectCommandFence,
+    ReconnectCommandState, SourceAccessState, SourcePatientKey, SourcePatientLink, SourceStanding,
+    SourceStatusError, derive_standing, summarize_practice_source, validate_non_empty,
 };
-
-/// Lease window in seconds protecting an in-flight `reconnect_source` command across instances.
-const RECONNECT_COMMAND_LEASE_SECONDS: i64 = 30;
 
 async fn ensure_workspace_practice_tx(
     tx: &impl ConnectionTrait,
@@ -122,6 +119,53 @@ fn decode_link(row: source_patient_link::Model) -> SourcePatientLink {
 
 fn decode_reconnect_state(value: Value) -> Result<ReconnectCommandState, DbErr> {
     serde_json::from_value(value).map_err(conversion_error("Json", "ReconnectCommandState"))
+}
+
+/// Locks the `reconnect_command` row in `tx`, verifies that `fence.lease_owner` still holds active
+/// non-completed ownership, and refreshes `lease_until` using the database clock.
+async fn verify_reconnect_fence_tx(
+    tx: &sea_orm::DatabaseTransaction,
+    fence: Option<ReconnectCommandFence<'_>>,
+) -> Result<(), SourceStatusError> {
+    let Some(fence) = fence else {
+        return Ok(());
+    };
+    let lost = || SourceStatusError::CommandLeaseLost {
+        practice_id: fence.practice_id.to_owned(),
+        physician_id: fence.physician_id.to_owned(),
+        idempotency_key: fence.idempotency_key.to_owned(),
+    };
+    let row = reconnect_command::Entity::find_by_id((
+        fence.practice_id.to_owned(),
+        fence.physician_id.to_owned(),
+        fence.idempotency_key.to_owned(),
+    ))
+    .lock_exclusive()
+    .one(tx)
+    .await?
+    .ok_or_else(lost)?;
+
+    let existing = decode_reconnect_state(row.state.clone())?;
+    if matches!(existing, ReconnectCommandState::Completed { .. })
+        || row.lease_owner.as_deref() != Some(fence.lease_owner)
+    {
+        return Err(lost());
+    }
+
+    let db_now = now(tx).await?;
+    reconnect_command::ActiveModel {
+        practice: Unchanged(row.practice),
+        physician: Unchanged(row.physician),
+        key: Unchanged(row.key),
+        source_id: Unchanged(row.source_id),
+        state: Unchanged(row.state),
+        lease_owner: Unchanged(row.lease_owner),
+        lease_until: Set(Some(db_now + fence.lease_seconds.max(2))),
+        updated_at: Set(db_now),
+    }
+    .update(tx)
+    .await?;
+    Ok(())
 }
 
 async fn record_pull_status_tx(
@@ -311,10 +355,24 @@ impl Store {
         target: LinkTarget<'_>,
         linked_at: i64,
     ) -> Result<SourcePatientLink, SourceStatusError> {
+        self.resolve_or_link_patient_fenced(key, target, linked_at, None)
+            .await
+    }
+
+    /// Resolves or creates a source-patient link, optionally fenced by an active
+    /// [`ReconnectCommandFence`].
+    pub async fn resolve_or_link_patient_fenced(
+        &self,
+        key: &SourcePatientKey,
+        target: LinkTarget<'_>,
+        linked_at: i64,
+        fence: Option<ReconnectCommandFence<'_>>,
+    ) -> Result<SourcePatientLink, SourceStatusError> {
         key.validate()?;
         validate_non_empty("workspace_id", target.workspace())?;
 
         let tx = self.db.begin().await?;
+        verify_reconnect_fence_tx(&tx, fence).await?;
         let existing = source_patient_link::Entity::find_by_id((
             key.practice_id.clone(),
             key.source_id.clone(),
@@ -507,11 +565,25 @@ impl Store {
         source_id: &str,
         attempt: &PullAttempt,
     ) -> Result<PatientSourceRecordStatus, SourceStatusError> {
+        self.record_pull_status_fenced(practice_id, workspace_id, source_id, attempt, None)
+            .await
+    }
+
+    /// Records a pull attempt optionally fenced by an active [`ReconnectCommandFence`].
+    pub async fn record_pull_status_fenced(
+        &self,
+        practice_id: &str,
+        workspace_id: &str,
+        source_id: &str,
+        attempt: &PullAttempt,
+        fence: Option<ReconnectCommandFence<'_>>,
+    ) -> Result<PatientSourceRecordStatus, SourceStatusError> {
         validate_non_empty("practice_id", practice_id)?;
         validate_non_empty("workspace_id", workspace_id)?;
         validate_non_empty("source_id", source_id)?;
 
         let tx = self.db.begin().await?;
+        verify_reconnect_fence_tx(&tx, fence).await?;
         let status =
             record_pull_status_tx(&tx, practice_id, workspace_id, source_id, attempt).await?;
         tx.commit().await?;
@@ -525,11 +597,22 @@ impl Store {
         &self,
         delivery: CompleteDelivery<'_>,
     ) -> Result<(ChartPullReceipt, PatientSourceRecordStatus), SourceStatusError> {
+        self.record_complete_pull_fenced(delivery, None).await
+    }
+
+    /// Atomically commits a complete chart delivery and status row, optionally fenced by an active
+    /// [`ReconnectCommandFence`] so superseded executions roll back before writing any records.
+    pub async fn record_complete_pull_fenced(
+        &self,
+        delivery: CompleteDelivery<'_>,
+        fence: Option<ReconnectCommandFence<'_>>,
+    ) -> Result<(ChartPullReceipt, PatientSourceRecordStatus), SourceStatusError> {
         validate_non_empty("practice_id", delivery.practice_id)?;
         validate_non_empty("workspace_id", delivery.workspace_id)?;
         validate_non_empty("source_id", delivery.source_id)?;
 
         let tx = self.db.begin().await?;
+        verify_reconnect_fence_tx(&tx, fence).await?;
         ensure_workspace_practice_tx(&tx, delivery.practice_id, delivery.workspace_id).await?;
         let receipt = apply_source_delivery_tx(
             &tx,
@@ -594,11 +677,22 @@ impl Store {
         &self,
         delivery: PartialDelivery<'_>,
     ) -> Result<(ChartPullReceipt, PatientSourceRecordStatus), SourceStatusError> {
+        self.record_partial_pull_fenced(delivery, None).await
+    }
+
+    /// Atomically commits a partial chart delivery and status row, optionally fenced by an active
+    /// [`ReconnectCommandFence`] so superseded executions roll back before writing any records.
+    pub async fn record_partial_pull_fenced(
+        &self,
+        delivery: PartialDelivery<'_>,
+        fence: Option<ReconnectCommandFence<'_>>,
+    ) -> Result<(ChartPullReceipt, PatientSourceRecordStatus), SourceStatusError> {
         validate_non_empty("practice_id", delivery.practice_id)?;
         validate_non_empty("workspace_id", delivery.workspace_id)?;
         validate_non_empty("source_id", delivery.source_id)?;
 
         let tx = self.db.begin().await?;
+        verify_reconnect_fence_tx(&tx, fence).await?;
         ensure_workspace_practice_tx(&tx, delivery.practice_id, delivery.workspace_id).await?;
         let receipt = apply_source_delivery_tx(
             &tx,
@@ -675,6 +769,21 @@ impl Store {
         Ok((receipt, status))
     }
 
+    /// Verifies and renews `fence`'s lease ownership on `physician_runtime_reconnect_commands`.
+    pub async fn renew_reconnect_command_lease(
+        &self,
+        fence: ReconnectCommandFence<'_>,
+    ) -> Result<(), SourceStatusError> {
+        let tx = self.db.begin().await?;
+        verify_reconnect_fence_tx(&tx, Some(fence)).await?;
+        tx.commit().await?;
+        Ok(())
+    }
+
+    #[expect(
+        clippy::too_many_arguments,
+        reason = "claiming a reconnect command requires practice, physician, key, source, adapter presence, payload, and lease window"
+    )]
     pub(crate) async fn claim_reconnect_command(
         &self,
         practice_id: &str,
@@ -683,7 +792,9 @@ impl Store {
         source_id: &str,
         presence: AdapterPresence,
         command_payload: &Value,
+        lease_seconds: i64,
     ) -> Result<ReconnectCommandClaim, SourceStatusError> {
+        let lease_seconds = lease_seconds.max(2);
         let tx = self.db.begin().await?;
         let existing_cmd = command::Entity::find_by_id((
             practice_id.to_owned(),
@@ -733,7 +844,7 @@ impl Store {
                     return Ok(ReconnectCommandClaim::UnregisteredSource);
                 }
                 let lease_owner = Uuid::new_v4().to_string();
-                let lease_until = db_now + RECONNECT_COMMAND_LEASE_SECONDS;
+                let lease_until = db_now + lease_seconds;
                 reconnect_command::ActiveModel {
                     practice: Unchanged(row.practice),
                     physician: Unchanged(row.physician),
@@ -768,7 +879,7 @@ impl Store {
                 source_id: Set(source_id.to_owned()),
                 state: Set(state_json),
                 lease_owner: Set(Some(lease_owner.clone())),
-                lease_until: Set(Some(db_now + RECONNECT_COMMAND_LEASE_SECONDS)),
+                lease_until: Set(Some(db_now + lease_seconds)),
                 updated_at: Set(db_now),
             })
             .exec_without_returning(&tx)
@@ -805,7 +916,7 @@ impl Store {
                     source_id: Set(source_id.to_owned()),
                     state: Set(state_json),
                     lease_owner: Set(Some(lease_owner.clone())),
-                    lease_until: Set(Some(db_now + RECONNECT_COMMAND_LEASE_SECONDS)),
+                    lease_until: Set(Some(db_now + lease_seconds)),
                     updated_at: Set(db_now),
                 })
                 .exec_without_returning(&tx)
@@ -818,32 +929,37 @@ impl Store {
 
     pub(crate) async fn record_reconnect_command_reconnected(
         &self,
-        practice_id: &str,
-        physician_id: &str,
-        key: &str,
-        lease_owner: &str,
+        fence: ReconnectCommandFence<'_>,
         receipt: &ReconnectReceipt,
         access: &SourceAccessState,
     ) -> Result<(), SourceStatusError> {
+        let lost = || SourceStatusError::CommandLeaseLost {
+            practice_id: fence.practice_id.to_owned(),
+            physician_id: fence.physician_id.to_owned(),
+            idempotency_key: fence.idempotency_key.to_owned(),
+        };
         let tx = self.db.begin().await?;
         let row = reconnect_command::Entity::find_by_id((
-            practice_id.to_owned(),
-            physician_id.to_owned(),
-            key.to_owned(),
+            fence.practice_id.to_owned(),
+            fence.physician_id.to_owned(),
+            fence.idempotency_key.to_owned(),
         ))
         .lock_exclusive()
         .one(&tx)
         .await?
-        .ok_or_else(|| error("missing reconnect command state"))?;
+        .ok_or_else(lost)?;
 
-        if row.lease_owner.as_deref() != Some(lease_owner) {
-            return Err(error("reconnect command lease superseded").into());
+        let existing = decode_reconnect_state(row.state.clone())?;
+        if matches!(existing, ReconnectCommandState::Completed { .. })
+            || row.lease_owner.as_deref() != Some(fence.lease_owner)
+        {
+            return Err(lost());
         }
 
         let access_json =
             serde_json::to_value(access).map_err(conversion_error("SourceAccessState", "Json"))?;
         practice_source_access::Entity::insert(practice_source_access::ActiveModel {
-            practice: Set(practice_id.to_owned()),
+            practice: Set(fence.practice_id.to_owned()),
             source_id: Set(receipt.source_id.clone()),
             access: Set(access_json),
             updated_at: Set(receipt.reconnected_at),
@@ -876,7 +992,7 @@ impl Store {
             source_id: Unchanged(row.source_id),
             state: Set(state_json),
             lease_owner: Unchanged(row.lease_owner),
-            lease_until: Set(Some(db_now + RECONNECT_COMMAND_LEASE_SECONDS)),
+            lease_until: Set(Some(db_now + fence.lease_seconds.max(2))),
             updated_at: Set(db_now),
         }
         .update(&tx)
@@ -887,30 +1003,30 @@ impl Store {
 
     pub(crate) async fn complete_reconnect_command(
         &self,
-        practice_id: &str,
-        physician_id: &str,
-        key: &str,
-        lease_owner: &str,
+        fence: ReconnectCommandFence<'_>,
         completed: ReconnectCommandState,
     ) -> Result<(), SourceStatusError> {
+        let lost = || SourceStatusError::CommandLeaseLost {
+            practice_id: fence.practice_id.to_owned(),
+            physician_id: fence.physician_id.to_owned(),
+            idempotency_key: fence.idempotency_key.to_owned(),
+        };
         let tx = self.db.begin().await?;
         let row = reconnect_command::Entity::find_by_id((
-            practice_id.to_owned(),
-            physician_id.to_owned(),
-            key.to_owned(),
+            fence.practice_id.to_owned(),
+            fence.physician_id.to_owned(),
+            fence.idempotency_key.to_owned(),
         ))
         .lock_exclusive()
         .one(&tx)
         .await?
-        .ok_or_else(|| error("missing reconnect command state"))?;
+        .ok_or_else(lost)?;
 
         let existing = decode_reconnect_state(row.state.clone())?;
-        if matches!(existing, ReconnectCommandState::Completed { .. }) {
-            tx.commit().await?;
-            return Ok(());
-        }
-        if row.lease_owner.as_deref() != Some(lease_owner) {
-            return Err(error("reconnect command lease superseded").into());
+        if matches!(existing, ReconnectCommandState::Completed { .. })
+            || row.lease_owner.as_deref() != Some(fence.lease_owner)
+        {
+            return Err(lost());
         }
 
         let db_now = now(&tx).await?;

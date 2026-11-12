@@ -893,3 +893,403 @@ async fn off_panel_colleague_sees_practice_outage_without_patient_failure_string
     assert_eq!(status, 200, "{conflict_unregistered}");
     assert_eq!(conflict_unregistered["outcome"], "rejected");
 }
+
+struct FailingEnrollmentAuth {
+    inner: PostgresAuthStore,
+    fail_register: std::sync::atomic::AtomicBool,
+}
+
+#[async_trait::async_trait]
+impl AuthStore for FailingEnrollmentAuth {
+    fn authority_changes(
+        &self,
+    ) -> Option<physician_auth::watch::Receiver<physician_auth::AuthorityFeed>> {
+        self.inner.authority_changes()
+    }
+    async fn begin_sign_in(
+        &self,
+        email: &str,
+        now: u64,
+    ) -> Result<String, physician_auth::SignInError> {
+        self.inner.begin_sign_in(email, now).await
+    }
+    async fn complete_sign_in(
+        &self,
+        email: &str,
+        token: &str,
+        now: u64,
+    ) -> Result<(PhysicianIdentity, String), physician_auth::SignInError> {
+        self.inner.complete_sign_in(email, token, now).await
+    }
+    async fn mint_fixed_session(
+        &self,
+        identity: &PhysicianIdentity,
+        now: u64,
+        ends_at: u64,
+    ) -> Result<String, physician_auth::SignInError> {
+        self.inner.mint_fixed_session(identity, now, ends_at).await
+    }
+    async fn verified_session(
+        &self,
+        token: &str,
+        now: u64,
+    ) -> Result<physician_auth::Session, physician_auth::SessionError> {
+        self.inner.verified_session(token, now).await
+    }
+    async fn note_physician_activity(
+        &self,
+        token: &str,
+        now: u64,
+    ) -> Result<physician_auth::SessionActivity, physician_auth::StoreUnavailable> {
+        self.inner.note_physician_activity(token, now).await
+    }
+    async fn publish_authorized(
+        &self,
+        token: &str,
+        identity: &PhysicianIdentity,
+        workspace: &str,
+        now: u64,
+        publish: &mut (dyn FnMut() -> Result<(), String> + Send),
+    ) -> Result<(), String> {
+        self.inner
+            .publish_authorized(token, identity, workspace, now, publish)
+            .await
+    }
+    async fn end_session(&self, token: &str) -> Result<(), physician_auth::StoreUnavailable> {
+        self.inner.end_session(token).await
+    }
+    async fn account_by_email(&self, email: &str) -> Option<physician_auth::Account> {
+        self.inner.account_by_email(email).await
+    }
+    async fn account_by_identity(
+        &self,
+        identity: &PhysicianIdentity,
+    ) -> Option<physician_auth::Account> {
+        self.inner.account_by_identity(identity).await
+    }
+    async fn membership(
+        &self,
+        identity: &PhysicianIdentity,
+        patient_workspace_id: &str,
+    ) -> Membership {
+        self.inner.membership(identity, patient_workspace_id).await
+    }
+    async fn set_membership(
+        &self,
+        identity: &PhysicianIdentity,
+        patient_workspace_id: &str,
+        membership: Membership,
+    ) -> Result<(), physician_auth::StoreUnavailable> {
+        self.inner
+            .set_membership(identity, patient_workspace_id, membership)
+            .await
+    }
+    async fn place_on_panel(
+        &self,
+        identity: &PhysicianIdentity,
+        patient_workspace_id: &str,
+    ) -> Result<(), physician_auth::StoreUnavailable> {
+        self.inner
+            .place_on_panel(identity, patient_workspace_id)
+            .await
+    }
+    async fn panel(&self, identity: &PhysicianIdentity) -> Vec<String> {
+        self.inner.panel(identity).await
+    }
+    async fn assign_panel(
+        &self,
+        actor: &PhysicianIdentity,
+        physician_id: &str,
+        patient_workspace_id: &str,
+        membership: Membership,
+    ) -> Result<(), physician_auth::PanelError> {
+        self.inner
+            .assign_panel(actor, physician_id, patient_workspace_id, membership)
+            .await
+    }
+    async fn ensure_practice(
+        &self,
+        practice_id: &str,
+        clock: PracticeClock,
+    ) -> Result<(), physician_auth::StoreUnavailable> {
+        self.inner.ensure_practice(practice_id, clock).await
+    }
+    async fn practice_clock(
+        &self,
+        practice_id: &str,
+    ) -> Result<PracticeClock, physician_auth::StoreUnavailable> {
+        self.inner.practice_clock(practice_id).await
+    }
+    async fn register_patient(
+        &self,
+        practice_id: &str,
+        patient_workspace_id: &str,
+    ) -> Result<(), physician_auth::StoreUnavailable> {
+        if self.fail_register.load(std::sync::atomic::Ordering::SeqCst) {
+            return Err(physician_auth::StoreUnavailable);
+        }
+        self.inner
+            .register_patient(practice_id, patient_workspace_id)
+            .await
+    }
+    async fn patient_practice(
+        &self,
+        patient_workspace_id: &str,
+    ) -> Result<Option<String>, physician_auth::StoreUnavailable> {
+        self.inner.patient_practice(patient_workspace_id).await
+    }
+    async fn practice_patients(&self, practice_id: &str) -> Vec<String> {
+        self.inner.practice_patients(practice_id).await
+    }
+    async fn practice_accounts(
+        &self,
+        practice_id: &str,
+    ) -> Result<Vec<physician_auth::Account>, physician_auth::StoreUnavailable> {
+        self.inner.practice_accounts(practice_id).await
+    }
+    async fn patient_cadence(&self, patient_workspace_id: &str) -> physician_auth::ReviewCadence {
+        self.inner.patient_cadence(patient_workspace_id).await
+    }
+    async fn set_patient_cadence(
+        &self,
+        patient_workspace_id: &str,
+        cadence: physician_auth::ReviewCadence,
+    ) {
+        self.inner
+            .set_patient_cadence(patient_workspace_id, cadence)
+            .await;
+    }
+    async fn invite(
+        &self,
+        practice_id: &str,
+        email: &str,
+        display_name: &str,
+        admin: bool,
+        now: u64,
+    ) -> Result<String, physician_auth::SignInError> {
+        self.inner
+            .invite(practice_id, email, display_name, admin, now)
+            .await
+    }
+    async fn redeem_invitation(
+        &self,
+        email: &str,
+        token: &str,
+        now: u64,
+    ) -> Result<(PhysicianIdentity, String), physician_auth::SignInError> {
+        self.inner.redeem_invitation(email, token, now).await
+    }
+    async fn deactivate(&self, email: &str) -> bool {
+        self.inner.deactivate(email).await
+    }
+    async fn reactivate(&self, email: &str) -> bool {
+        self.inner.reactivate(email).await
+    }
+    async fn remove_account(&self, email: &str) -> bool {
+        self.inner.remove_account(email).await
+    }
+    async fn invite_patient(
+        &self,
+        practice_id: &str,
+        patient_workspace_id: &str,
+        now: u64,
+    ) -> Result<String, physician_auth::SignInError> {
+        self.inner
+            .invite_patient(practice_id, patient_workspace_id, now)
+            .await
+    }
+    async fn accept_patient_invitation(
+        &self,
+        token: &str,
+        duet_account_id: &str,
+        now: u64,
+    ) -> Result<physician_auth::PatientLink, physician_auth::SignInError> {
+        self.inner
+            .accept_patient_invitation(token, duet_account_id, now)
+            .await
+    }
+    async fn grant_patient_consent(
+        &self,
+        practice_id: &str,
+        patient_workspace_id: &str,
+        duet_account_id: &str,
+        consent_version: &str,
+        now: u64,
+    ) -> Result<physician_auth::PatientLink, physician_auth::SignInError> {
+        self.inner
+            .grant_patient_consent(
+                practice_id,
+                patient_workspace_id,
+                duet_account_id,
+                consent_version,
+                now,
+            )
+            .await
+    }
+    async fn revoke_patient_consent(
+        &self,
+        practice_id: &str,
+        patient_workspace_id: &str,
+        now: u64,
+    ) -> Result<physician_auth::PatientLink, physician_auth::SignInError> {
+        self.inner
+            .revoke_patient_consent(practice_id, patient_workspace_id, now)
+            .await
+    }
+    async fn set_patient_premium(
+        &self,
+        practice_id: &str,
+        patient_workspace_id: &str,
+        premium: bool,
+    ) {
+        self.inner
+            .set_patient_premium(practice_id, patient_workspace_id, premium)
+            .await;
+    }
+    async fn patient_link(
+        &self,
+        practice_id: &str,
+        patient_workspace_id: &str,
+    ) -> Option<physician_auth::PatientLink> {
+        self.inner
+            .patient_link(practice_id, patient_workspace_id)
+            .await
+    }
+    async fn patient_link_cadence(
+        &self,
+        practice_id: &str,
+        patient_workspace_id: &str,
+    ) -> physician_auth::Cadence {
+        self.inner
+            .patient_link_cadence(practice_id, patient_workspace_id)
+            .await
+    }
+}
+
+#[tokio::test(flavor = "multi_thread", worker_threads = 4)]
+async fn check_and_reconnect_routes_propagate_enrollment_failures_as_500_and_repair_on_retry() {
+    use std::sync::Arc;
+    use std::sync::atomic::Ordering::SeqCst;
+
+    let (auth, runtime, db_url) = stores().await;
+    let run = run_id();
+    let practice_id = format!("practice-enr-{}", run.to_lowercase());
+    let email = format!("enr-{}@codahealth.test", run.to_lowercase());
+    let fixed_clock: u64 = 1_788_100_000;
+
+    auth.ensure_practice(&practice_id, PracticeClock::Fixed(fixed_clock))
+        .await
+        .unwrap();
+    auth.ensure_account(&practice_id, &run, &email, "Dr. Enroll", true, 1)
+        .await
+        .unwrap();
+
+    let bank = build_bank(&run, 1);
+    let pat_id = format!("{run}-1");
+    let ws = workspace_id(SOURCE_ID, &pat_id);
+    let admin = PhysicianIdentity {
+        practice_id: practice_id.clone(),
+        physician_id: run.clone(),
+    };
+    // Grant panel membership without pre-registering `ws` in `physician_patients` so the HTTP
+    // check/reconnect handlers exercise `enroll_identified_patients` -> `auth.register_patient`.
+    auth.set_membership(&admin, &ws, Membership::Allowed)
+        .await
+        .unwrap();
+    assert_eq!(auth.patient_practice(&ws).await.unwrap(), None);
+
+    let failing_auth = Arc::new(FailingEnrollmentAuth {
+        inner: auth.clone(),
+        fail_register: std::sync::atomic::AtomicBool::new(false),
+    });
+    let front_door = front_door::PostgresFrontDoorStore::connect_with_migrations(&db_url)
+        .await
+        .unwrap();
+    let registry = physician_sample::sources::SourceRegistry::new(Some(runtime.clone()));
+    registry.register_synthetic(Arc::new(SyntheticCharts::open(&bank)));
+
+    let app = physician_sample::authed_router_on(
+        physician_sample::fixture_site().layer(axum::Extension(registry)),
+        Arc::clone(&failing_auth) as Arc<dyn AuthStore>,
+        Arc::new(front_door),
+    )
+    .await;
+
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let addr = listener.local_addr().unwrap();
+    let server_task = tokio::spawn(async move {
+        let _ = axum::serve(listener, app).await;
+    });
+    let base = format!("http://{addr}");
+    let session = sign_in(&base, &email).await;
+
+    // Induce `EnrollmentError::RegisterPatient` on all four check/reconnect HTTP paths:
+    // none may return 200 OK while leaving the newly identified patient unenrolled!
+    failing_auth.fail_register.store(true, SeqCst);
+
+    let (status_single_check, _) = post_json(
+        &base,
+        &session,
+        "/connections/synthetic-charts/check",
+        json!({ "patient_workspace_id": ws, "source_patient_id": pat_id }),
+    )
+    .await;
+    assert_eq!(status_single_check, 500);
+    assert_eq!(auth.patient_practice(&ws).await.unwrap(), None);
+
+    let (status_practice_check, _) = post_json(
+        &base,
+        &session,
+        "/connections/synthetic-charts/check",
+        json!({}),
+    )
+    .await;
+    assert_eq!(status_practice_check, 500);
+
+    let (status_reconnect, _) = post_json(
+        &base,
+        &session,
+        "/connections/synthetic-charts/reconnect",
+        json!({}),
+    )
+    .await;
+    assert_eq!(status_reconnect, 500);
+
+    let idem = format!("idem-enr-{run}");
+    let (status_command_fail, _) = post_json(
+        &base,
+        &session,
+        "/commands",
+        json!({
+            "type": "reconnect_source",
+            "idempotency_key": idem,
+            "payload": { "source_id": SOURCE_ID }
+        }),
+    )
+    .await;
+    assert_eq!(status_command_fail, 500);
+    assert_eq!(auth.patient_practice(&ws).await.unwrap(), None);
+
+    // Clear the enrollment failure and retry the SAME idempotency_key: idempotent replay repairs
+    // directory enrollment and returns 200 Accepted with the original receipt timestamp!
+    failing_auth.fail_register.store(false, SeqCst);
+    advance_practice_clock(&db_url, &practice_id, fixed_clock + 600).await;
+
+    let (status_command_ok, ok_body) = post_json(
+        &base,
+        &session,
+        "/commands",
+        json!({
+            "type": "reconnect_source",
+            "idempotency_key": idem,
+            "payload": { "source_id": SOURCE_ID }
+        }),
+    )
+    .await;
+    assert_eq!(status_command_ok, 200, "{ok_body}");
+    assert_eq!(ok_body["outcome"], "accepted");
+    assert_eq!(ok_body["receipt"]["reconnected_at"], fixed_clock as i64);
+    assert_eq!(auth.patient_practice(&ws).await.unwrap(), Some(practice_id));
+
+    server_task.abort();
+}
