@@ -71,6 +71,10 @@ async fn a_practice_read_from_a_lost_database_is_unavailable_not_empty() {
         store.practice_accounts("clinic").await,
         Err(StoreUnavailable)
     );
+    assert_eq!(
+        store.practice_patients("clinic").await,
+        Err(StoreUnavailable)
+    );
 }
 
 #[tokio::test]
@@ -110,7 +114,13 @@ async fn a_patient_whose_practice_could_not_be_read_stays_with_that_practice() {
         store.patient_practice("pw-owned").await,
         Ok(Some("owner-clinic".to_owned()))
     );
-    assert!(store.practice_patients("other-clinic").await.is_empty());
+    assert!(
+        store
+            .practice_patients("other-clinic")
+            .await
+            .unwrap()
+            .is_empty()
+    );
     assert_eq!(store.panel(&doc).await, vec!["pw-owned".to_owned()]);
 }
 

@@ -276,7 +276,7 @@ pub trait AuthStore: Send + Sync {
         patient_workspace_id: &str,
     ) -> Result<Option<String>, StoreUnavailable>;
     /// Lists the patient workspaces registered in `practice_id`, sorted.
-    async fn practice_patients(&self, practice_id: &str) -> Vec<String>;
+    async fn practice_patients(&self, practice_id: &str) -> Result<Vec<String>, StoreUnavailable>;
     /// Lists the physician accounts in `practice_id`, sorted.
     async fn practice_accounts(&self, practice_id: &str) -> Result<Vec<Account>, StoreUnavailable>;
     /// Records one pending invitation and returns its redeem token.
@@ -940,7 +940,7 @@ impl AuthStore for MemoryAuthStore {
             .cloned())
     }
 
-    async fn practice_patients(&self, practice_id: &str) -> Vec<String> {
+    async fn practice_patients(&self, practice_id: &str) -> Result<Vec<String>, StoreUnavailable> {
         let state = self.state.lock().expect("auth state");
         let mut patients: Vec<String> = state
             .patients
@@ -949,7 +949,7 @@ impl AuthStore for MemoryAuthStore {
             .map(|(workspace_id, _)| workspace_id.clone())
             .collect();
         patients.sort();
-        patients
+        Ok(patients)
     }
 
     async fn practice_accounts(&self, practice_id: &str) -> Result<Vec<Account>, StoreUnavailable> {
@@ -1743,7 +1743,7 @@ mod tests {
             Some("clinic-a")
         );
         assert_eq!(
-            store.practice_patients("clinic-a").await,
+            store.practice_patients("clinic-a").await.unwrap(),
             vec!["pw-mary".to_owned()]
         );
 

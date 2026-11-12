@@ -765,17 +765,17 @@ impl AuthStore for PostgresAuthStore {
             .map_err(|_| StoreUnavailable)
     }
 
-    async fn practice_patients(&self, practice_id: &str) -> Vec<String> {
+    async fn practice_patients(&self, practice_id: &str) -> Result<Vec<String>, StoreUnavailable> {
         let mut workspaces: Vec<String> = Patients::find()
             .filter(crate::migration::patient::Column::PracticeId.eq(practice_id))
             .all(&self.db)
             .await
-            .unwrap_or_default()
+            .map_err(|_| StoreUnavailable)?
             .into_iter()
             .map(|row| row.patient_workspace_id)
             .collect();
         workspaces.sort();
-        workspaces
+        Ok(workspaces)
     }
 
     async fn practice_accounts(&self, practice_id: &str) -> Result<Vec<Account>, StoreUnavailable> {

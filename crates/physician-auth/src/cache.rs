@@ -458,8 +458,8 @@ impl AuthStore for CachedAuthStore {
         .await
     }
 
-    async fn practice_patients(&self, practice_id: &str) -> Vec<String> {
-        self.read(
+    async fn practice_patients(&self, practice_id: &str) -> Result<Vec<String>, StoreUnavailable> {
+        self.read_fallible(
             |cache| &mut cache.practice_patients,
             practice_id.to_owned(),
             self.inner.practice_patients(practice_id),
@@ -690,7 +690,10 @@ mod tests {
             }
             self.inner.patient_practice(a).await
         }
-        async fn practice_patients(&self, a: &str) -> Vec<String> {
+        async fn practice_patients(&self, a: &str) -> Result<Vec<String>, StoreUnavailable> {
+            if self.unavailable.load(Ordering::SeqCst) {
+                return Err(StoreUnavailable);
+            }
             self.inner.practice_patients(a).await
         }
         async fn practice_accounts(&self, a: &str) -> Result<Vec<Account>, StoreUnavailable> {
@@ -904,10 +907,18 @@ mod tests {
         counting.inner.seed_patient("clinic", "ws-1");
         counting.unavailable.store(true, Ordering::SeqCst);
         assert_eq!(cached.patient_practice("ws-1").await, Err(StoreUnavailable));
+        assert_eq!(
+            cached.practice_patients("clinic").await,
+            Err(StoreUnavailable)
+        );
         counting.unavailable.store(false, Ordering::SeqCst);
         assert_eq!(
             cached.patient_practice("ws-1").await,
             Ok(Some("clinic".to_owned()))
+        );
+        assert_eq!(
+            cached.practice_patients("clinic").await,
+            Ok(vec!["ws-1".to_owned()])
         );
     }
 

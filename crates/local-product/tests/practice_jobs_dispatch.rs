@@ -18,8 +18,9 @@ use local_product::physician_sources::{
     SourceRevision,
 };
 use local_product::runtime::dispatch::{
-    DispatchEndpointState, PatientSourceChecker, PracticeJobReviewReceiver, ReviewReceiver,
-    SetCadenceBody, SourceCheckError, StoredObservationChecker, WakeSummary, operator_router,
+    DispatchEndpointState, DispatchError, PatientSourceChecker, PracticeJobReviewReceiver,
+    ReviewReceiver, SetCadenceBody, SourceCheckError, StoredObservationChecker, WakeSummary,
+    operator_router,
 };
 use local_product::runtime::engine::Product;
 use local_product::runtime::jobs::{
@@ -1597,6 +1598,219 @@ async fn single_cadence_owner_unaffected_by_billing_and_duet_connection_changes(
             .unwrap();
     assert_eq!(wake2.checked_patients, vec![pw_with_duet]);
     assert_eq!(wake2.skipped_not_due, vec![pw_clinic_only]);
+}
+
+#[tokio::test]
+async fn baseline_chart_registered_patient_skips_first_review_until_records_change_or_periodic_due()
+{
+    let Some(url) = database_url() else {
+        return;
+    };
+    let (store, auth) = connect_stores(&url).await;
+    let skills = load_skills();
+    let roles = distinct_roles();
+
+    let practice = format!("practice-baseline-{}", Uuid::new_v4().simple());
+    let pw_changes = format!("pw-base-chg-{}", Uuid::new_v4().simple());
+    let pw_periodic = format!("pw-base-per-{}", Uuid::new_v4().simple());
+    auth.ensure_practice(&practice, PracticeClock::RealTime)
+        .await
+        .unwrap();
+
+    let t0 = 1_760_400_000_i64;
+
+    // Load non-empty baseline charts BEFORE joining the practice, then register
+    // and seed registration dispatch baselines (matching `load_synthetic_practice`).
+    for (workspace, patient_id, name, note_id, summary) in [
+        (
+            &pw_changes,
+            "pt-base-1",
+            "Amara Singh",
+            "baseline-labs-1",
+            "Hemoglobin A1c 6.4%",
+        ),
+        (
+            &pw_periodic,
+            "pt-base-2",
+            "Devon Brooks",
+            "baseline-labs-2",
+            "Blood pressure 122/76 mmHg",
+        ),
+    ] {
+        let baseline_pull = local_product::runtime::sources::SourcePull {
+            source_id: "clinic-ehr".into(),
+            source_label: "Clinic EHR".into(),
+            patient: source_patient(patient_id, name),
+            pulled_at: t0,
+        };
+        store
+            .record_chart(
+                workspace,
+                &[chart_record(
+                    workspace,
+                    note_id,
+                    "rev-1",
+                    "2026-10-01",
+                    summary,
+                )],
+                &baseline_pull,
+            )
+            .await
+            .unwrap();
+        auth.register_patient(&practice, workspace).await.unwrap();
+        store
+            .register_patient_dispatch(auth.as_ref(), &practice, workspace, t0)
+            .await
+            .unwrap();
+    }
+
+    let checker = StoredObservationChecker::new(store.clone());
+    let recorder = RecordingReceiver::default();
+    let receiver = TeeReceiver {
+        recorder: &recorder,
+        practice_jobs: PracticeJobReviewReceiver::new(
+            store.clone(),
+            &roles,
+            &skills,
+            auth.as_ref(),
+        ),
+    };
+
+    // 1. First wake-up at `t0`: both pre-loaded charts are unchanged since registration -> no review.
+    let wake0 = store
+        .wake_practice_dispatch(auth.as_ref(), &practice, t0, &checker, &receiver)
+        .await
+        .unwrap();
+    let mut expected_checked = vec![pw_changes.clone(), pw_periodic.clone()];
+    expected_checked.sort();
+    assert_eq!(wake0.checked_patients, expected_checked);
+    assert!(wake0.failed_checks.is_empty());
+    assert!(
+        wake0.started_reviews.is_empty(),
+        "baseline chart unchanged since registration must not start a spurious review: {wake0:?}"
+    );
+    assert!(recorder.requests.lock().unwrap().is_empty());
+
+    // 2. Re-running chart load on `pw_changes` with an updated record + idempotent
+    //    `register_patient_dispatch` preserves the baseline, so Day 1 starts `"new records"`.
+    let day1 = t0 + DEFAULT_CHECK_EVERY_SECONDS.cast_signed();
+    let updated_pull = local_product::runtime::sources::SourcePull {
+        source_id: "clinic-ehr".into(),
+        source_label: "Clinic EHR".into(),
+        patient: source_patient("pt-base-1", "Amara Singh"),
+        pulled_at: day1 - 60,
+    };
+    store
+        .record_chart(
+            &pw_changes,
+            &[chart_record(
+                &pw_changes,
+                "baseline-labs-1",
+                "rev-2",
+                "2026-10-02",
+                "Hemoglobin A1c 7.1%",
+            )],
+            &updated_pull,
+        )
+        .await
+        .unwrap();
+    store
+        .register_patient_dispatch(auth.as_ref(), &practice, &pw_changes, day1 - 60)
+        .await
+        .unwrap();
+
+    let wake1 = store
+        .wake_practice_dispatch(auth.as_ref(), &practice, day1, &checker, &receiver)
+        .await
+        .unwrap();
+    assert_eq!(wake1.checked_patients, expected_checked);
+    assert_eq!(wake1.started_reviews.len(), 1);
+    assert_eq!(wake1.started_reviews[0].patient_workspace_id, pw_changes);
+    assert_eq!(wake1.started_reviews[0].reason, ReviewReason::NewRecords);
+    assert_eq!(wake1.started_reviews[0].reason.as_str(), "new records");
+
+    // 3. Days 2..6 with no further changes start no reviews; Day 7 starts `"periodic"` for `pw_periodic`.
+    for day_idx in 2..7 {
+        let day_t = t0 + day_idx * DEFAULT_CHECK_EVERY_SECONDS.cast_signed();
+        let mid_wake = store
+            .wake_practice_dispatch(auth.as_ref(), &practice, day_t, &checker, &receiver)
+            .await
+            .unwrap();
+        assert!(
+            mid_wake.started_reviews.is_empty(),
+            "day {day_idx} must not start any review before weekly window: {mid_wake:?}"
+        );
+    }
+
+    let day7 = t0 + DEFAULT_REVIEW_EVERY_SECONDS.cast_signed();
+    let wake7 = store
+        .wake_practice_dispatch(auth.as_ref(), &practice, day7, &checker, &receiver)
+        .await
+        .unwrap();
+    assert_eq!(wake7.started_reviews.len(), 1);
+    assert_eq!(wake7.started_reviews[0].patient_workspace_id, pw_periodic);
+    assert_eq!(wake7.started_reviews[0].reason, ReviewReason::Periodic);
+    assert_eq!(wake7.started_reviews[0].reason.as_str(), "periodic");
+}
+
+#[tokio::test]
+async fn unavailable_practice_patients_fails_dispatch_reads_and_wakeups_instead_of_reading_empty() {
+    let Some(url) = database_url() else {
+        return;
+    };
+    let (store, _shared_auth) = connect_stores(&url).await;
+    let lost_auth = PostgresAuthStore::connect_with_migrations(&url)
+        .await
+        .expect("connect disposable PostgresAuthStore");
+
+    let practice = format!("practice-lost-auth-{}", Uuid::new_v4().simple());
+    let workspace = format!("pw-lost-auth-{}", Uuid::new_v4().simple());
+    lost_auth
+        .ensure_practice(&practice, PracticeClock::RealTime)
+        .await
+        .unwrap();
+    lost_auth
+        .register_patient(&practice, &workspace)
+        .await
+        .unwrap();
+    lost_auth.pool().close().await;
+
+    let t0 = 1_760_500_000_i64;
+    let checker = StoredObservationChecker::new(store.clone());
+    let recorder = RecordingReceiver::default();
+
+    assert!(matches!(
+        store
+            .practice_dispatch_statuses(&lost_auth, &practice, t0)
+            .await,
+        Err(DispatchError::Access(
+            PracticeAccessError::StoreUnavailable(_)
+        ))
+    ));
+    assert!(matches!(
+        store
+            .check_due_patients(&lost_auth, &practice, t0, &checker)
+            .await,
+        Err(DispatchError::Access(
+            PracticeAccessError::StoreUnavailable(_)
+        ))
+    ));
+    assert!(matches!(
+        store
+            .deliver_pending_reviews(&lost_auth, &practice, &recorder)
+            .await,
+        Err(DispatchError::Access(
+            PracticeAccessError::StoreUnavailable(_)
+        ))
+    ));
+    assert!(matches!(
+        store
+            .wake_practice_dispatch(&lost_auth, &practice, t0, &checker, &recorder)
+            .await,
+        Err(DispatchError::Access(
+            PracticeAccessError::StoreUnavailable(_)
+        ))
+    ));
 }
 
 #[test]

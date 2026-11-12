@@ -105,6 +105,19 @@ impl StoredObservationChecker {
     }
 }
 
+async fn observed_record_versions(
+    tx: &impl ConnectionTrait,
+    workspace_id: &str,
+) -> Result<(u64, BTreeMap<String, String>), DbErr> {
+    let observation = super::sources::observed(tx, workspace_id).await?;
+    let record_versions: BTreeMap<String, String> = observation
+        .sources
+        .into_iter()
+        .map(|source| (source.candidate_id, source.revision))
+        .collect();
+    Ok((observation.version, record_versions))
+}
+
 #[async_trait]
 impl PatientSourceChecker for StoredObservationChecker {
     async fn check_patient_sources(
@@ -114,7 +127,7 @@ impl PatientSourceChecker for StoredObservationChecker {
         _now: i64,
     ) -> Result<CheckedSources, SourceCheckError> {
         let tx = self.store.db.begin().await?;
-        let observation = super::sources::observed(&tx, workspace_id).await?;
+        let (version, record_versions) = observed_record_versions(&tx, workspace_id).await?;
         let previous =
             patient_dispatch::Entity::find_by_id((practice_id.to_owned(), workspace_id.to_owned()))
                 .one(&tx)
@@ -122,25 +135,20 @@ impl PatientSourceChecker for StoredObservationChecker {
                 .map(decode_dispatch_state)
                 .transpose()?;
         tx.commit().await?;
-        let record_versions: BTreeMap<String, String> = observation
-            .sources
-            .into_iter()
-            .map(|source| (source.candidate_id, source.revision))
-            .collect();
         let changed = match previous.and_then(|state| {
             state
                 .last_checked_version
-                .map(|version| (version, state.last_checked_records))
+                .map(|prev_version| (prev_version, state.last_checked_records))
         }) {
             Some((prev_version, prev_records)) => {
-                prev_version != observation.version || prev_records != record_versions
+                prev_version != version || prev_records != record_versions
             }
             None => !record_versions.is_empty(),
         };
         Ok(if changed {
-            CheckedSources::changed(observation.version, record_versions)
+            CheckedSources::changed(version, record_versions)
         } else {
-            CheckedSources::unchanged(observation.version, record_versions)
+            CheckedSources::unchanged(version, record_versions)
         })
     }
 }
@@ -364,6 +372,61 @@ fn scope_for_membership(practice_id: &str, workspace_id: &str) -> PracticeScope 
 }
 
 impl Store {
+    /// Seeds the registration-time source observation baseline for a patient
+    /// joining `practice_id` so an unchanged pre-loaded chart does not trigger a
+    /// `"new records"` review on the first wake-up.
+    ///
+    /// Idempotent (`ON CONFLICT DO NOTHING`): re-running after a later chart load
+    /// preserves both the saved cadence (`Store::set_patient_cadence` remains the
+    /// sole cadence writer) and the saved check baseline so subsequent record
+    /// changes still register against the prior baseline.
+    pub async fn register_patient_dispatch<A: PracticeAuthority + ?Sized>(
+        &self,
+        authority: &A,
+        practice_id: &str,
+        patient_workspace_id: &str,
+        registered_at: i64,
+    ) -> Result<(), DispatchError> {
+        authority
+            .check_practice_patient(&scope_for_membership(practice_id, patient_workspace_id))
+            .await?;
+        let tx = self.db.begin().await?;
+        let (version, record_versions) =
+            observed_record_versions(&tx, patient_workspace_id).await?;
+        let checked_version =
+            i64::try_from(version).map_err(conversion_error("last_checked_version", "i64"))?;
+        let records = serde_json::to_value(&record_versions).map_err(conversion_error(
+            "BTreeMap<String, String>",
+            "last_checked_records",
+        ))?;
+        patient_dispatch::Entity::insert(patient_dispatch::ActiveModel {
+            practice: Set(practice_id.to_owned()),
+            workspace: Set(patient_workspace_id.to_owned()),
+            cadence: ActiveValue::NotSet,
+            registered_at: Set(registered_at),
+            last_attempt_at: Set(None),
+            last_success_at: Set(None),
+            last_checked_version: Set(Some(checked_version)),
+            last_checked_records: Set(records),
+            last_reviewed_at: Set(None),
+            last_reviewed_version: Set(None),
+            review_sequence: ActiveValue::NotSet,
+            pending_review: Set(None),
+        })
+        .on_conflict(
+            OnConflict::columns([
+                patient_dispatch::Column::Practice,
+                patient_dispatch::Column::Workspace,
+            ])
+            .do_nothing()
+            .to_owned(),
+        )
+        .exec_without_returning(&tx)
+        .await?;
+        tx.commit().await?;
+        Ok(())
+    }
+
     /// Sole writer of stored patient cadence across the entire product.
     /// Validates `(practice_id, patient_workspace_id)` membership, updates the
     /// stored cadence, and returns the resulting operator view.
@@ -453,7 +516,10 @@ impl Store {
         if practice_id.trim().is_empty() {
             return Err(PracticeAccessError::InvalidScope.into());
         }
-        let patients = auth.practice_patients(practice_id).await;
+        let patients = auth
+            .practice_patients(practice_id)
+            .await
+            .map_err(PracticeAccessError::from)?;
         let saved_rows = patient_dispatch::Entity::find()
             .filter(patient_dispatch::Column::Practice.eq(practice_id))
             .order_by_asc(patient_dispatch::Column::Workspace)
@@ -490,8 +556,12 @@ impl Store {
         if practice_id.trim().is_empty() {
             return Err(PracticeAccessError::InvalidScope.into());
         }
+        let patients = auth
+            .practice_patients(practice_id)
+            .await
+            .map_err(PracticeAccessError::from)?;
         let mut summary = WakeSummary::default();
-        for workspace in auth.practice_patients(practice_id).await {
+        for workspace in patients {
             let tx = self.db.begin().await?;
             ensure_dispatch_row(&tx, practice_id, &workspace, now_sec).await?;
             let row =
@@ -565,8 +635,12 @@ impl Store {
         if practice_id.trim().is_empty() {
             return Err(PracticeAccessError::InvalidScope.into());
         }
+        let patients = auth
+            .practice_patients(practice_id)
+            .await
+            .map_err(PracticeAccessError::from)?;
         let mut delivered = Vec::new();
-        for workspace in auth.practice_patients(practice_id).await {
+        for workspace in patients {
             let row =
                 patient_dispatch::Entity::find_by_id((practice_id.to_owned(), workspace.clone()))
                     .one(&self.db)

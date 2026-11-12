@@ -136,7 +136,6 @@ impl ConnectedCare {
                 consent_version: None,
                 consented_at: None,
                 revoked_at: None,
-                cadence: String::new(),
             },
         }
     }
@@ -187,6 +186,5 @@ fn to_link_wire(link: PatientLink) -> PatientLinkWire {
         consent_version: link.consent_version,
         consented_at: link.consented_at,
         revoked_at: link.revoked_at,
-        cadence: String::new(),
     }
 }
