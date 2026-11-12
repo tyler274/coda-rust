@@ -3,7 +3,7 @@
 
 use serde::{Deserialize, Serialize};
 
-use super::{Item, Secret, Source};
+use super::{Item, Provider, Secret, Source};
 
 /// The longest request line the broker reads; anything longer is malformed.
 pub const MAX_REQUEST: u64 = 4096;
@@ -19,6 +19,9 @@ pub enum Request {
     GhToken,
     /// The token the container's `doppler` wrapper puts in `DOPPLER_TOKEN`.
     DopplerToken,
+    /// A model provider's API key, for the container's agent CLI wrappers
+    /// and direct API workers.
+    ProviderKey { provider: Provider },
     /// The token the CI controller talks to GitHub with.
     CiToken,
     /// Which items the broker can serve and from where; never a secret.
@@ -44,6 +47,7 @@ pub enum Audience {
 pub enum AgentSecret {
     Github,
     Doppler,
+    Provider(Provider),
 }
 
 impl AgentSecret {
@@ -51,6 +55,7 @@ impl AgentSecret {
         match self {
             Self::Github => Item::GithubAgent,
             Self::Doppler => Item::Doppler,
+            Self::Provider(provider) => Item::Provider(provider),
         }
     }
 }
@@ -83,6 +88,7 @@ impl Request {
         match self {
             Self::GitCredential { .. } | Self::GhToken => Asked::Agent(AgentSecret::Github),
             Self::DopplerToken => Asked::Agent(AgentSecret::Doppler),
+            Self::ProviderKey { provider } => Asked::Agent(AgentSecret::Provider(*provider)),
             Self::CiToken => Asked::CiToken,
             Self::Ping => Asked::Ping,
             Self::Reload => Asked::Reload,
@@ -95,6 +101,7 @@ impl Request {
             Self::GitCredential { .. } => "git_credential",
             Self::GhToken => "gh_token",
             Self::DopplerToken => "doppler_token",
+            Self::ProviderKey { .. } => "provider_key",
             Self::CiToken => "ci_token",
             Self::Ping => "ping",
             Self::Reload => "reload",

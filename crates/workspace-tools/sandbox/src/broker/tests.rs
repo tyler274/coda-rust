@@ -9,7 +9,7 @@ use super::wire::{
     AgentSecret, Asked, Denied, GhFallback, ItemReport, ItemState, Reply, Report, Request,
     Unavailable,
 };
-use super::{Item, Secret, SecretError, Source};
+use super::{Item, Provider, Secret, SecretError, Source};
 
 /// Shaped like a fine-grained GitHub token: `github_pat_`, 22 characters,
 /// `_`, 59 characters. Fake; it never authenticated anything.
@@ -252,24 +252,20 @@ fn ping_reports_a_stale_token_and_its_age_while_the_keyring_is_locked() {
     let Reply::Report { report } = ask(&broker, OWNER, &Request::Ping, stale) else {
         panic!("ping reports");
     };
-    assert_eq!(
-        report.items,
-        vec![
-            ItemReport {
-                item: Item::GithubAgent,
-                state: ItemState::Stale {
-                    source: Source::Keyring,
-                    read_secs_ago: FRESH_FOR.as_secs(),
-                },
-            },
-            ItemReport {
-                item: Item::Doppler,
-                state: ItemState::Unavailable {
-                    reason: Unavailable::KeyringLocked
-                },
-            },
-        ]
-    );
+    let mut items = vec![ItemReport {
+        item: Item::GithubAgent,
+        state: ItemState::Stale {
+            source: Source::Keyring,
+            read_secs_ago: FRESH_FOR.as_secs(),
+        },
+    }];
+    items.extend(Item::agent().skip(1).map(|item| ItemReport {
+        item,
+        state: ItemState::Unavailable {
+            reason: Unavailable::KeyringLocked,
+        },
+    }));
+    assert_eq!(report.items, items);
 }
 
 #[test]
@@ -326,26 +322,29 @@ fn gh_fallback_serves_only_a_missing_github_agent_and_only_when_on() {
         granted("gh-general")
     );
     assert_eq!(ask(&on, AGENT, &Request::DopplerToken, now), not_stored);
+    let anthropic = Request::ProviderKey {
+        provider: Provider::Anthropic,
+    };
+    assert_eq!(ask(&on, AGENT, &anthropic, now), not_stored);
     let Reply::Report { report } = ask(&on, OWNER, &Request::Ping, now) else {
         panic!("ping reports");
     };
+    let mut items = vec![ItemReport {
+        item: Item::GithubAgent,
+        state: ItemState::Available {
+            source: Source::GhCli,
+        },
+    }];
+    items.extend(Item::agent().skip(1).map(|item| ItemReport {
+        item,
+        state: ItemState::Unavailable {
+            reason: Unavailable::NotStored,
+        },
+    }));
     assert_eq!(
         report,
         Report {
-            items: vec![
-                ItemReport {
-                    item: Item::GithubAgent,
-                    state: ItemState::Available {
-                        source: Source::GhCli
-                    },
-                },
-                ItemReport {
-                    item: Item::Doppler,
-                    state: ItemState::Unavailable {
-                        reason: Unavailable::NotStored
-                    },
-                },
-            ],
+            items,
             gh_fallback: GhFallback::On,
             fallback_used: true,
         }
@@ -477,27 +476,89 @@ fn ping_lists_the_ci_token_only_on_a_host_with_the_ci() {
         report
             .items
             .into_iter()
-            .map(|entry| (entry.item, entry.state))
+            .map(|entry| entry.item)
             .collect::<Vec<_>>()
     };
-    let not_stored = ItemState::Unavailable {
-        reason: Unavailable::NotStored,
-    };
-    let available = ItemState::Available {
-        source: Source::Keyring,
-    };
+    let agent = Item::agent().collect::<Vec<_>>();
+    assert_eq!(items(&broker(&memory, GhFallback::Off)), agent);
+    let mut with_ci = agent;
+    with_ci.push(Item::GithubCi);
+    assert_eq!(items(&broker_with_ci(&memory)), with_ci);
+}
+
+#[test]
+fn provider_names_are_one_name_in_the_keyring_on_the_wire_and_on_the_command_line() {
+    use clap::ValueEnum as _;
     assert_eq!(
-        items(&broker(&memory, GhFallback::Off)),
-        vec![(Item::GithubAgent, available), (Item::Doppler, not_stored)]
+        Provider::ALL.iter().map(|p| p.name()).collect::<Vec<_>>(),
+        ["anthropic", "openai", "gemini", "openrouter"]
     );
+    for &provider in Provider::ALL {
+        let item = Item::Provider(provider);
+        assert_eq!(item.name(), provider.name());
+        assert_eq!(
+            serde_json::to_string(&item).expect("serializes"),
+            format!("\"{}\"", provider.name())
+        );
+        assert_eq!(
+            serde_json::from_str::<Item>(&format!("\"{}\"", provider.name())).expect("reads"),
+            item
+        );
+        assert_eq!(Item::from_str(provider.name(), false), Ok(item));
+        let request = Request::ProviderKey { provider };
+        let line = serde_json::to_string(&request).expect("serializes");
+        assert_eq!(
+            line,
+            format!(
+                r#"{{"kind":"provider_key","provider":"{}"}}"#,
+                provider.name()
+            )
+        );
+        assert_eq!(
+            request.asked(),
+            Asked::Agent(AgentSecret::Provider(provider))
+        );
+    }
     assert_eq!(
-        items(&broker_with_ci(&memory)),
-        vec![
-            (Item::GithubAgent, available),
-            (Item::Doppler, not_stored),
-            (Item::GithubCi, not_stored)
-        ]
+        serde_json::from_str::<Item>("\"github-agent\"").expect("reads"),
+        Item::GithubAgent
     );
+    assert!(Item::from_str("coda-sandbox-selftest", false).is_err());
+    assert!(
+        serde_json::from_str::<Request>(r#"{"kind":"provider_key","provider":"mistral"}"#).is_err()
+    );
+}
+
+#[test]
+fn provider_keys_are_served_only_to_the_agent_at_the_agent_door() {
+    let memory = Arc::new(Memory::with([(
+        Item::Provider(Provider::Openai),
+        "sk-test-openai",
+    )]));
+    let broker = broker_with_ci(&memory);
+    let now = Instant::now();
+    let openai = Request::ProviderKey {
+        provider: Provider::Openai,
+    };
+    let answer = broker.handle(
+        Door::Agent,
+        AGENT,
+        &serde_json::to_vec(&openai).expect("serializes"),
+        now,
+    );
+    assert_eq!(answer.reply, granted("sk-test-openai"));
+    let record = answer.record.expect("audited").to_string();
+    assert!(record.contains("provider_key granted"), "{record}");
+    assert!(record.contains("sha256="), "{record}");
+    assert!(!record.contains("sk-test-openai"), "{record}");
+    let wrong = Reply::Denied {
+        reason: Denied::WrongPeer,
+    };
+    for peer in [OWNER, ROOT_IN_CONTAINER, CI] {
+        assert_eq!(ask(&broker, peer, &openai, now), wrong);
+    }
+    assert_eq!(ask_at(&broker, Door::Ci, CI, &openai, now), wrong);
+    assert_eq!(ask_at(&broker, Door::Ci, AGENT, &openai, now), wrong);
 }
 
 #[test]

@@ -1,6 +1,7 @@
 //! The token broker's checks: its socket answers, which source serves each
 //! token, the CI controller's included on a host with the CI, and whether
-//! the `gh auth token` fallback is on or was used.
+//! the `gh auth token` fallback is on or was used. A provider key that is
+//! not stored is no problem: the user stores only the ones they use.
 
 use super::{Fix, Outcome};
 use crate::broker::error::BrokerError;
@@ -76,6 +77,9 @@ fn report_outcome(report: &Report) -> Outcome {
                     fix: unavailable_fix(*item, Unavailable::KeyringLocked),
                 };
             }
+            ItemState::Unavailable {
+                reason: Unavailable::NotStored,
+            } if item.optional() => {}
             ItemState::Unavailable { reason } => {
                 return Outcome::Warn {
                     detail,
