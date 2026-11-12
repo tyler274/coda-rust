@@ -480,6 +480,7 @@ pub(super) mod practice_job {
         pub sources: Json,
         #[sea_orm(column_type = "JsonBinary")]
         pub result: Option<Json>,
+        pub dispatch_after: i64,
         pub created_at: i64,
         pub updated_at: i64,
     }

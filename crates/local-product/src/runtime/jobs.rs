@@ -22,7 +22,7 @@ use serde::{Deserialize, Serialize};
 use serde_json::{Value, json};
 use uuid::Uuid;
 
-use super::delivery::{AttemptSettlement, Delivery};
+use super::delivery::{AttemptSettlement, Delivery, DeliveryKind, DeliveryState};
 use super::entities::{practice_job, practice_job_attempt};
 use super::receipt::{self, Receipt};
 use super::records::{self, Owner, OwnerKey};
@@ -141,6 +141,22 @@ impl PracticeScope {
             workspace: self.workspace.clone(),
             chat: self.job_id.clone(),
         }
+    }
+
+    /// Parses a [`DeliveryKind::PracticeJob`] control scope back into its
+    /// [`PracticeScope`], refusing any scope whose `physician` is not
+    /// [`PRACTICE_OWNER`] or whose identifiers are blank.
+    pub fn from_delivery_scope(scope: &Scope) -> Result<Self, DbErr> {
+        if scope.physician != PRACTICE_OWNER {
+            return Err(error("practice job delivery carries non-practice actor"));
+        }
+        let parsed = Self {
+            practice: scope.practice.clone(),
+            workspace: scope.workspace.clone(),
+            job_id: scope.chat.clone(),
+        };
+        parsed.validate()?;
+        Ok(parsed)
     }
 
     fn owner_key(&self) -> OwnerKey<'_> {
@@ -411,6 +427,8 @@ pub struct PracticeJob {
     pub sources: Vec<SourceRevision>,
     /// Saved output, once completed or held with partial text.
     pub result: Option<PracticeJobResult>,
+    /// Earliest database-clock Unix second when recovery may republish this wakeup.
+    pub dispatch_after: i64,
     /// Ordered attempts on this practice job.
     pub attempts: Vec<PracticeJobAttempt>,
     /// Database-clock Unix seconds when accepted.
@@ -684,6 +702,7 @@ fn decode_job(
             .map_err(conversion_error("practice_job.sources_version", "u64"))?,
         sources,
         result,
+        dispatch_after: row.dispatch_after,
         attempts,
         created_at: row.created_at,
         updated_at: row.updated_at,
@@ -810,6 +829,7 @@ fn job_active_model(job: &PracticeJob) -> Result<practice_job::ActiveModel, DbEr
                     .map_err(conversion_error("PracticeJobResult", "practice_job.result"))
             })
             .transpose()?),
+        dispatch_after: Set(job.dispatch_after),
         created_at: Set(job.created_at),
         updated_at: Set(job.updated_at),
     })
@@ -951,6 +971,7 @@ impl Store {
             sources_version: observation.version,
             sources: observation.sources,
             result: None,
+            dispatch_after: 0,
             attempts: Vec::new(),
             created_at: clock,
             updated_at: clock,
@@ -1035,6 +1056,120 @@ impl Store {
         Ok(due)
     }
 
+    /// Keyset-paginated recovery sweep of due practice-job wakeups across practices.
+    pub async fn practice_jobs_dispatch_due(
+        &self,
+        maximum: usize,
+        after: Option<&PracticeScope>,
+    ) -> Result<(Vec<Delivery>, Option<PracticeScope>), DbErr> {
+        if !(1..=100).contains(&maximum) {
+            return Err(error("invalid dispatch bounds"));
+        }
+        let mut query = practice_job::Entity::find()
+            .filter(
+                Condition::any()
+                    .add(practice_job::Column::Status.eq(WorkStatus::Pending))
+                    .add(practice_job::Column::Status.eq(WorkStatus::Active)),
+            )
+            .order_by_asc(practice_job::Column::Practice)
+            .order_by_asc(practice_job::Column::Workspace)
+            .order_by_asc(practice_job::Column::JobId)
+            .limit(maximum as u64);
+        if let Some(cursor) = after {
+            query = query.filter(
+                Condition::any()
+                    .add(practice_job::Column::Practice.gt(cursor.practice.as_str()))
+                    .add(
+                        Condition::all()
+                            .add(practice_job::Column::Practice.eq(cursor.practice.as_str()))
+                            .add(practice_job::Column::Workspace.gt(cursor.workspace.as_str())),
+                    )
+                    .add(
+                        Condition::all()
+                            .add(practice_job::Column::Practice.eq(cursor.practice.as_str()))
+                            .add(practice_job::Column::Workspace.eq(cursor.workspace.as_str()))
+                            .add(practice_job::Column::JobId.gt(cursor.job_id.as_str())),
+                    ),
+            );
+        }
+        let rows = query.all(&self.db).await?;
+        let scopes: Vec<PracticeScope> = rows
+            .into_iter()
+            .map(|row| PracticeScope {
+                practice: row.practice,
+                workspace: row.workspace,
+                job_id: row.job_id,
+            })
+            .collect();
+        let next = (scopes.len() == maximum).then(|| scopes.last().unwrap().clone());
+        let mut deliveries = Vec::new();
+        for scope in scopes {
+            let (tx, job, clock) = self.locked_practice_job(&scope).await?;
+            if job.dispatch_after <= clock
+                && (job.status == WorkStatus::Pending
+                    || (job.status == WorkStatus::Active
+                        && job.attempts.last().is_some_and(|a| a.expires <= clock)))
+            {
+                deliveries.push(Delivery::practice_job(&scope, job.assignment.key.clone()));
+            }
+            tx.commit().await?;
+        }
+        Ok((deliveries, next))
+    }
+
+    pub(super) async fn practice_job_dispatched(
+        &self,
+        delivery: &Delivery,
+        retry_after: i64,
+    ) -> Result<(), DbErr> {
+        let scope = PracticeScope::from_delivery_scope(&delivery.scope)?;
+        let (tx, mut job, clock) = self.locked_practice_job(&scope).await?;
+        if job.assignment.key == delivery.input_id {
+            job.dispatch_after = clock + retry_after;
+        }
+        Self::save_practice_job(tx, &job).await
+    }
+
+    pub(super) async fn practice_job_delivery_state(
+        &self,
+        delivery: &Delivery,
+    ) -> Result<DeliveryState, DbErr> {
+        let scope = PracticeScope::from_delivery_scope(&delivery.scope)?;
+        let (tx, job, clock) = self.locked_practice_job(&scope).await?;
+        tx.commit().await?;
+        if job.assignment.key != delivery.input_id {
+            return Ok(DeliveryState::Settled);
+        }
+        Ok(match job.status {
+            WorkStatus::Completed | WorkStatus::Held => DeliveryState::Settled,
+            WorkStatus::Failed => DeliveryState::Failed,
+            WorkStatus::Active
+                if job.attempts.last().is_some_and(|attempt| {
+                    attempt.status == AttemptStatus::Active && attempt.expires > clock
+                }) =>
+            {
+                DeliveryState::Claimed
+            }
+            WorkStatus::Active | WorkStatus::Pending | WorkStatus::Cancelled => DeliveryState::Due,
+        })
+    }
+
+    /// Claims the practice-job attempt named by a [`DeliveryKind::PracticeJob`]
+    /// broker wakeup after verifying practice patient membership.
+    pub async fn claim_practice_job_delivery(
+        &self,
+        delivery: &Delivery,
+        lease_seconds: i64,
+        authority: &dyn PracticeAuthority,
+    ) -> Result<Option<PracticeJobClaim>, PracticeJobError> {
+        if delivery.kind != DeliveryKind::PracticeJob {
+            return Err(RuntimeError::Database(error("not a practice job delivery")).into());
+        }
+        let scope = PracticeScope::from_delivery_scope(&delivery.scope)?;
+        self.claim_practice_job_inner(&scope, lease_seconds, Some(&delivery.input_id), authority)
+            .await
+    }
+
     /// Claims an attempt lease on a pending (or lease-expired active) practice
     /// background job after verifying practice patient membership.
     pub async fn claim_practice_job(
@@ -1043,9 +1178,24 @@ impl Store {
         lease_seconds: i64,
         authority: &dyn PracticeAuthority,
     ) -> Result<Option<PracticeJobClaim>, PracticeJobError> {
+        self.claim_practice_job_inner(scope, lease_seconds, None, authority)
+            .await
+    }
+
+    async fn claim_practice_job_inner(
+        &self,
+        scope: &PracticeScope,
+        lease_seconds: i64,
+        expected_input_id: Option<&str>,
+        authority: &dyn PracticeAuthority,
+    ) -> Result<Option<PracticeJobClaim>, PracticeJobError> {
         authority.check_practice_patient(scope).await?;
         let lease = Lease::new(lease_seconds)?;
         let (tx, mut job, clock) = self.locked_practice_job(scope).await?;
+        if expected_input_id.is_some_and(|input_id| job.assignment.key != input_id) {
+            tx.commit().await?;
+            return Ok(None);
+        }
         if job.status == WorkStatus::Active
             && job
                 .attempts
@@ -1063,6 +1213,9 @@ impl Store {
                 &mut job.runs,
             )?;
             job.status = outcome.map_or(WorkStatus::Pending, WorkStatus::from);
+            if job.status == WorkStatus::Pending {
+                job.dispatch_after = clock;
+            }
             job.updated_at = clock;
             if job.status == WorkStatus::Failed {
                 Self::save_practice_job(tx, &job).await?;
@@ -1201,6 +1354,9 @@ impl Store {
                 &mut job.runs,
             )?;
             job.status = outcome.map_or(WorkStatus::Pending, WorkStatus::from);
+            if job.status == WorkStatus::Pending {
+                job.dispatch_after = clock;
+            }
             job.updated_at = clock;
             Self::save_practice_job(tx, &job).await?;
             return Ok(());
@@ -1374,6 +1530,9 @@ impl Store {
                 &mut job.runs,
             )?;
             job.status = outcome.map_or(WorkStatus::Pending, WorkStatus::from);
+            if job.status == WorkStatus::Pending {
+                job.dispatch_after = clock;
+            }
             job.updated_at = clock;
             Self::save_practice_job(tx, &job).await?;
             Ok(AttemptSettlement::Applied)
@@ -1540,11 +1699,12 @@ impl Store {
         );
         job.failures = job.runs.start(Uuid::new_v4().to_string())?;
         job.status = WorkStatus::Pending;
+        job.dispatch_after = 0;
         job.updated_at = now(&tx).await?;
         let input_id = job.assignment.key.clone();
         Self::save_practice_job(tx, &job).await?;
         Ok(Resumed::Pending {
-            delivery: Delivery::chat_turn(control_scope.clone(), input_id),
+            delivery: Delivery::practice_job(&practice_scope, input_id),
         })
     }
 

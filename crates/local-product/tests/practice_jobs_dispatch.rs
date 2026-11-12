@@ -856,10 +856,18 @@ async fn existing_stop_and_resume_controls_hold_and_resume_practice_run_on_backg
         })
     );
 
-    // Resume the held practice run through the existing Store::resume_authorized control!
+    // Resume the held practice run through the existing Store::resume_authorized control
+    // (including when invoked through a signed-in physician's control Scope: the
+    // returned broker Delivery must normalize to DeliveryKind::PracticeJob and PRACTICE_OWNER).
+    let physician_control_scope = Scope {
+        practice: practice.clone(),
+        physician: "dr-alice".into(),
+        workspace: workspace.clone(),
+        chat: scope.job_id.clone(),
+    };
     let resumed = store
         .resume_authorized(
-            &control_scope,
+            &physician_control_scope,
             "resume-key-1",
             vec![0_u8; 32],
             &scope.job_id,
@@ -870,6 +878,17 @@ async fn existing_stop_and_resume_controls_hold_and_resume_practice_run_on_backg
     let Resumed::Pending { delivery } = resumed else {
         panic!("expected Resumed::Pending, got {resumed:?}");
     };
+    assert_eq!(
+        delivery.kind,
+        local_product::runtime::delivery::DeliveryKind::PracticeJob
+    );
+    assert_eq!(delivery.scope, control_scope);
+    assert_eq!(delivery.input_id, assignment.key);
+
+    // Before dispatch acknowledgement, the recovery sweep sees the resumed wakeup as due.
+    let (due_deliveries, _) = store.practice_jobs_dispatch_due(100, None).await.unwrap();
+    assert!(due_deliveries.contains(&delivery));
+
     assert_eq!(
         store
             .delivery_state(&delivery)
@@ -882,18 +901,25 @@ async fn existing_stop_and_resume_controls_hold_and_resume_practice_run_on_backg
         .await
         .expect("resumed practice job delivery marks dispatched");
 
+    let (due_after_ack, _) = store.practice_jobs_dispatch_due(100, None).await.unwrap();
+    assert!(!due_after_ack.contains(&delivery));
+
     let pending_job = store.practice_job(&scope).await.unwrap().unwrap();
     assert_eq!(pending_job.status, WorkStatus::Pending);
     let resumed_run_id = pending_job.current_run().unwrap().id.to_owned();
     assert_ne!(resumed_run_id, first_run_id);
 
-    // Claim the resumed run and execute it to completion on the background lane.
+    // Claim the resumed run through the worker delivery entrypoint and execute it on the background lane.
     let claim2 = store
-        .claim_practice_job(&scope, 60, auth.as_ref())
+        .claim_practice_job_delivery(&delivery, 60, auth.as_ref())
         .await
         .unwrap()
-        .expect("resumed practice job is claimable");
+        .expect("resumed practice job delivery is claimable");
     assert_ne!(claim2.attempt, claim1.attempt);
+    assert_eq!(
+        store.delivery_state(&delivery).await.unwrap(),
+        local_product::runtime::delivery::DeliveryState::Claimed,
+    );
 
     struct BackgroundLaneVerifier {
         observed_model: Option<String>,
@@ -937,6 +963,10 @@ async fn existing_stop_and_resume_controls_hold_and_resume_practice_run_on_backg
     assert_eq!(
         verifier.observed_model.as_deref(),
         Some("background-worker-lane")
+    );
+    assert_eq!(
+        store.delivery_state(&delivery).await.unwrap(),
+        local_product::runtime::delivery::DeliveryState::Settled,
     );
     let finished = store.practice_job(&scope).await.unwrap().unwrap();
     assert_eq!(finished.status, WorkStatus::Completed);

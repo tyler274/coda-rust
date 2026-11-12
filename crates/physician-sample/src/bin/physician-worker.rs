@@ -24,6 +24,8 @@ use local_product::runtime::delivery::{Delivery, DeliveryKind, DeliveryState};
 
 #[path = "physician-worker/attempt.rs"]
 mod attempt;
+#[path = "physician-worker/practice_job.rs"]
+mod practice_job;
 #[path = "physician-worker/revision.rs"]
 mod revision;
 use attempt::{Claimed, Failure, Outcome, Push, Tally};
@@ -121,9 +123,11 @@ async fn chat_turn(State(worker): State<Arc<Worker>>, request: Request) -> Statu
         return StatusCode::BAD_REQUEST;
     };
     // Decode and dispatch only after verifying the push identity. Revision
-    // scopes name reply work, never a chat conversation.
-    if push.delivery.kind == DeliveryKind::ReplyRevision {
-        return revision::deliver(&worker, &push).await;
+    // scopes name reply work, and practice jobs carry no physician session.
+    match push.delivery.kind {
+        DeliveryKind::ReplyRevision => return revision::deliver(&worker, &push).await,
+        DeliveryKind::PracticeJob => return practice_job::deliver(&worker, &push).await,
+        DeliveryKind::ChatTurn => {}
     }
     let span = attempt::span(&push, CHAT_JOB);
     chat_attempt(&worker, &push.delivery, &span)
@@ -864,7 +868,7 @@ impl local_product::runtime::Authority for WorkerAuthority {
 }
 
 impl WorkerAuthority {
-    async fn check_source_boundary(&self, scope: &Scope) -> Result<(), String> {
+    pub(crate) async fn check_source_boundary(&self, scope: &Scope) -> Result<(), String> {
         if !self.synthetic_only {
             return Ok(());
         }
@@ -1382,6 +1386,24 @@ mod tests {
         assert_eq!(push.delivery.input_id, "k");
         assert_eq!(push.message_id, "revision-message");
         assert_eq!(push.delivery_attempt, None);
+        let practice_job_delivery = Delivery::practice_job(
+            &local_product::runtime::jobs::PracticeScope {
+                practice: "p".into(),
+                workspace: "w".into(),
+                job_id: "j".into(),
+            },
+            "job-key".into(),
+        );
+        let data = base64::engine::general_purpose::STANDARD
+            .encode(serde_json::to_vec(&practice_job_delivery).unwrap());
+        let body = json!({"message": {"data": data, "message_id": "practice-job-message"}});
+        let push = decode_push(body.to_string().as_bytes()).unwrap();
+        assert_eq!(push.delivery.kind, DeliveryKind::PracticeJob);
+        assert_eq!(
+            push.delivery.scope.physician,
+            local_product::runtime::jobs::PRACTICE_OWNER
+        );
+        assert_eq!(push.delivery.input_id, "job-key");
         assert!(decode_push(b"{}").is_err());
         assert!(decode_push(br#"{"message":{"data":"not base64","messageId":"m"}}"#).is_err());
         let bad = base64::engine::general_purpose::STANDARD.encode("{}");

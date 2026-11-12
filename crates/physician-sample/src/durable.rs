@@ -297,6 +297,39 @@ impl DurableChat {
         Ok(total)
     }
 
+    /// Practice-job recovery has its own keyset, independent of chat and revision pagination.
+    pub async fn recover_practice_job_page(
+        &self,
+        after: Option<&local_product::runtime::jobs::PracticeScope>,
+    ) -> Result<Option<local_product::runtime::jobs::PracticeScope>, String> {
+        let span = sweep_span("practice_job");
+        async {
+            let (deliveries, next) = self
+                .store
+                .practice_jobs_dispatch_due(100, after)
+                .await
+                .inspect_err(|_| record_recovery_failure("database"))
+                .map_err(|e| e.to_string())?;
+            let mut republished = 0_u64;
+            for delivery in deliveries {
+                if self.queue.publish(&delivery).await.is_ok() {
+                    republished += 1;
+                    self.store
+                        .dispatched(&delivery, DISPATCH_RETRY_SECONDS)
+                        .await
+                        .inspect_err(|_| record_recovery_failure("database"))
+                        .map_err(|e| e.to_string())?;
+                } else {
+                    record_recovery_failure("publish");
+                }
+            }
+            tracing::Span::current().record("coda.republished", republished);
+            Ok(next)
+        }
+        .instrument(span)
+        .await
+    }
+
     /// Explicitly starts recovery on the site's always-allocated CPU. Keep and
     /// abort the task on graceful shutdown. Construction never starts execution.
     /// Receipt compaction runs on the first tick and then hourly.
@@ -304,6 +337,7 @@ impl DurableChat {
         tokio::spawn(async move {
             let mut after = None;
             let mut revision_after = None;
+            let mut practice_job_after = None;
             let mut ticks = tokio::time::interval(std::time::Duration::from_secs(10));
             let mut tick: u64 = 0;
             loop {
@@ -343,6 +377,12 @@ impl DurableChat {
                 }
                 if let Ok(next) = self.recover_revision_page(revision_after.as_ref()).await {
                     revision_after = next;
+                }
+                if let Ok(next) = self
+                    .recover_practice_job_page(practice_job_after.as_ref())
+                    .await
+                {
+                    practice_job_after = next;
                 }
             }
         })

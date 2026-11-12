@@ -86,6 +86,12 @@ impl MigrationTrait for Migration {
                     .col(ColumnDef::new(JobColumn::Sources).json_binary().not_null())
                     .col(ColumnDef::new(JobColumn::Result).json_binary())
                     .col(
+                        ColumnDef::new(JobColumn::DispatchAfter)
+                            .big_integer()
+                            .not_null()
+                            .default(0),
+                    )
+                    .col(
                         ColumnDef::new(JobColumn::CreatedAt)
                             .big_integer()
                             .not_null(),
