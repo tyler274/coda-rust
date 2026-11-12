@@ -5,6 +5,8 @@ mod migration_tests;
 mod read_snapshot;
 #[path = "tests/reply.rs"]
 mod reply_tests;
+#[path = "tests/responses.rs"]
+mod response_tests;
 #[path = "tests/sources.rs"]
 mod source_tests;
 

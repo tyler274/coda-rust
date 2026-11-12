@@ -146,6 +146,37 @@ pub struct Message {
     pub text: String,
 }
 
+/// The durable name of one of Coda's published replies: the id its
+/// [`MessageRole::Assistant`] message was saved with. It stays the same across
+/// restarts, so feedback and evaluation can refer to the reply by it.
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq, PartialOrd, Ord, Hash)]
+#[serde(transparent)]
+pub struct ResponseId(String);
+
+impl ResponseId {
+    /// The reply id, as stored and shown on the wire.
+    pub fn as_str(&self) -> &str {
+        &self.0
+    }
+}
+
+impl std::fmt::Display for ResponseId {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(&self.0)
+    }
+}
+
+/// One of Coda's published replies, named by its [`ResponseId`].
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct Response<'a> {
+    /// Its place among the conversation's messages.
+    pub place: usize,
+    /// The reply's durable name.
+    pub id: ResponseId,
+    /// The reply as saved.
+    pub text: &'a str,
+}
+
 /// Where a conversation's current work stands. Each value is saved as its
 /// text in the conversation row's status column.
 #[derive(
@@ -409,6 +440,28 @@ impl Conversation {
             MessageRole::User { id, .. } => Some(id.as_str()),
             MessageRole::Assistant { .. } => None,
         })
+    }
+
+    /// Coda's published replies in order, each named by its saved id. A
+    /// partial answer kept from a run that did not complete is not a
+    /// response, and physician messages are not either.
+    pub fn responses(&self) -> impl Iterator<Item = Response<'_>> {
+        self.messages
+            .iter()
+            .enumerate()
+            .filter_map(|(place, message)| match &message.role {
+                MessageRole::Assistant { id, partial: false } => Some(Response {
+                    place,
+                    id: ResponseId(id.clone()),
+                    text: &message.text,
+                }),
+                MessageRole::Assistant { partial: true, .. } | MessageRole::User { .. } => None,
+            })
+    }
+
+    /// The published reply named `id`, if this conversation holds one.
+    pub fn response(&self, id: &ResponseId) -> Option<Response<'_>> {
+        self.responses().find(|response| &response.id == id)
     }
 }
 

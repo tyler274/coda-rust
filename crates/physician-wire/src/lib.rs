@@ -710,9 +710,26 @@ pub struct ChatSnapshot {
     pub runs: Vec<ChatRun>,
 }
 
+/// The durable name of one of Coda's published replies, which stays the same
+/// across restarts and reloads.
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, PartialOrd, Ord, Hash)]
+#[serde(transparent)]
+pub struct ResponseId(pub String);
+
+impl ResponseId {
+    /// The response id as the server sent it.
+    pub fn as_str(&self) -> &str {
+        &self.0
+    }
+}
+
 #[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
 /// The `ChatTurn` value exchanged by this crate.
 pub struct ChatTurn {
+    #[serde(default)]
+    /// On one of Coda's published replies: its response id. Physician and
+    /// mechanical lines, and partial answers, have none.
+    pub response_id: Option<ResponseId>,
     #[serde(default)]
     /// The `text` value.
     pub text: Option<String>,
@@ -1020,5 +1037,19 @@ mod tests {
             })
         );
         assert_eq!(page.snapshot.conversation[0].resume_target, None);
+    }
+
+    #[test]
+    fn reads_the_response_id_of_a_published_reply() {
+        let page: ChatSnapshotResponse = serde_json::from_str(
+            r#"{"snapshot": {"runs": [], "conversation": [
+                {"text": "Hello", "kind": "physician"},
+                {"text": "Sodium is stable.", "kind": "model", "response_id": "a1:reply"}
+            ]}}"#,
+        )
+        .unwrap();
+        let turns = &page.snapshot.conversation;
+        assert_eq!(turns[0].response_id, None);
+        assert_eq!(turns[1].response_id, Some(ResponseId("a1:reply".into())));
     }
 }

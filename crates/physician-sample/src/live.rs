@@ -307,17 +307,27 @@ fn turn_kind(role: &str) -> &'static str {
 /// the exact work and run Try again resumes. A running turn offers Stop. A
 /// held turn offers Resume. An answered turn names its run and the attempt
 /// that answered it, so an operator can match the reply to its telemetry by
-/// attempt id. The physician's text stays saved.
+/// attempt id. Each of Coda's published replies carries `response_id`, its
+/// saved id, which stays its name across restarts; a partial answer carries
+/// none. The physician's text stays saved.
 fn durable_snapshot_body(conversation: Option<&local_product::runtime::Conversation>) -> Value {
     let Some(conversation) = conversation else {
         return json!({ "conversation": [], "runs": [] });
     };
+    let responses: std::collections::BTreeMap<_, _> = conversation
+        .responses()
+        .map(|response| (response.place, response.id))
+        .collect();
     let mut items: Vec<Value> = conversation
         .messages
         .iter()
-        .flat_map(|message| {
-            let authored =
+        .enumerate()
+        .flat_map(|(place, message)| {
+            let mut authored =
                 json!({ "kind": turn_kind(message.role.as_str()), "text": message.text });
+            if let Some(id) = responses.get(&place) {
+                authored["response_id"] = json!(id);
+            }
             let partial = message.partial().then(|| {
                 json!({
                     "kind": "mechanical", "text": "Partial response.",
@@ -748,6 +758,41 @@ mod durable_snapshot_tests {
         );
         let empty = durable_snapshot_body(None);
         assert!(empty["conversation"].as_array().unwrap().is_empty());
+    }
+
+    #[test]
+    fn each_published_reply_carries_its_response_id() {
+        use local_product::runtime::MessageRole;
+        let mut answered = conversation(WorkStatus::Completed);
+        for (id, partial, text) in [
+            ("attempt-0:reply", true, "The saved part."),
+            ("attempt-1:reply", false, "Sodium is stable."),
+        ] {
+            answered.messages.push(Message {
+                role: MessageRole::Assistant {
+                    id: id.into(),
+                    partial,
+                },
+                text: text.into(),
+            });
+        }
+        let body = durable_snapshot_body(Some(&answered));
+        let items = body["conversation"].as_array().unwrap();
+        let named: Vec<_> = items
+            .iter()
+            .map(|item| (item["kind"].as_str(), item.get("response_id")))
+            .collect();
+        let published = serde_json::json!("attempt-1:reply");
+        assert_eq!(
+            named,
+            [
+                (Some("physician"), None),
+                (Some("model"), None),
+                (Some("mechanical"), None),
+                (Some("model"), Some(&published)),
+            ],
+            "only the published reply is a response: {body}"
+        );
     }
 
     /// The wire crate keeps its own outcome and hold reason types. A run
