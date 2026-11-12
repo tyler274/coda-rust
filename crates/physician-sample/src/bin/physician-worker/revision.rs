@@ -73,7 +73,7 @@ async fn handle(
     genai::record_input(&generation, &claim.accepted.input.instruction);
     let mut owner = RevisionOwner {
         store: worker.store.clone(),
-        authority: worker.model.authority(worker.store.clone()),
+        authority: worker.model.authority(),
         claim,
         usage: Tally::default(),
     };
@@ -311,7 +311,6 @@ impl Product for RevisionOwner {
         Box::pin(async move {
             let mut authority = WorkerAuthority {
                 inner: super::RuntimeAuthority,
-                store: store.clone(),
                 synthetic_only,
             };
             store
@@ -363,7 +362,6 @@ impl Product for RevisionOwner {
         Box::pin(async move {
             let mut authority = WorkerAuthority {
                 inner: super::RuntimeAuthority,
-                store: store.clone(),
                 synthetic_only,
             };
             store

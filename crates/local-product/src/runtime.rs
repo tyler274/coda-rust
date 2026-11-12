@@ -653,6 +653,81 @@ pub fn persistence_failure(error: impl Into<engine::ProductError>) -> engine::Pr
     }
 }
 
+/// What kind of database failure an error is: the pool ran out, the
+/// connection failed, the schema is missing, or Postgres refused the query.
+/// Log lines name it as `error.type`, and only [`Self::SchemaMissing`] calls
+/// for the migration job.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum DbFailure {
+    /// No pooled connection came free within the acquire timeout.
+    PoolTimeout,
+    /// The connection could not be opened or was lost.
+    Connection,
+    /// A table or column the code reads does not exist (SQLSTATE 42P01 or
+    /// 42703): the migration job has not run.
+    SchemaMissing,
+    /// Postgres or the driver refused the statement itself.
+    Query,
+}
+
+impl DbFailure {
+    /// Classifies `error`.
+    pub fn of(error: &DbErr) -> Self {
+        use sea_orm::{ConnAcquireErr, RuntimeErr, SqlxError};
+        let source = match error {
+            DbErr::ConnectionAcquire(ConnAcquireErr::Timeout) => return Self::PoolTimeout,
+            DbErr::ConnectionAcquire(ConnAcquireErr::ConnectionClosed) => return Self::Connection,
+            DbErr::Conn(RuntimeErr::SqlxError(source))
+            | DbErr::Exec(RuntimeErr::SqlxError(source))
+            | DbErr::Query(RuntimeErr::SqlxError(source)) => source.as_ref(),
+            DbErr::Conn(_) => return Self::Connection,
+            _ => return Self::Query,
+        };
+        match source {
+            SqlxError::PoolTimedOut => Self::PoolTimeout,
+            SqlxError::Io(_) | SqlxError::Tls(_) | SqlxError::PoolClosed => Self::Connection,
+            SqlxError::Database(_) => match sqlstate(error).as_deref() {
+                Some("42P01" | "42703") => Self::SchemaMissing,
+                // Postgres reporting the session itself ended or never
+                // started, whichever statement it arrived on: connection
+                // exceptions (class 08), a terminated or shut-down backend
+                // (57P01-57P03), and the role or server out of connections
+                // (53300).
+                Some(code) if code.starts_with("08") => Self::Connection,
+                Some("57P01" | "57P02" | "57P03" | "53300") => Self::Connection,
+                _ if matches!(error, DbErr::Conn(_)) => Self::Connection,
+                _ => Self::Query,
+            },
+            _ if matches!(error, DbErr::Conn(_)) => Self::Connection,
+            _ => Self::Query,
+        }
+    }
+
+    /// The bounded `error.type` a log line carries for this failure.
+    pub fn error_type(self) -> &'static str {
+        match self {
+            Self::PoolTimeout => "pool_timeout",
+            Self::Connection => "connection",
+            Self::SchemaMissing => "schema",
+            Self::Query => "database",
+        }
+    }
+}
+
+/// The SQLSTATE Postgres answered with, when the failure came from Postgres.
+pub fn sqlstate(error: &DbErr) -> Option<String> {
+    use sea_orm::{RuntimeErr, SqlxError};
+    match error {
+        DbErr::Conn(RuntimeErr::SqlxError(source))
+        | DbErr::Exec(RuntimeErr::SqlxError(source))
+        | DbErr::Query(RuntimeErr::SqlxError(source)) => match source.as_ref() {
+            SqlxError::Database(database) => database.code().map(|code| code.into_owned()),
+            _ => None,
+        },
+        _ => None,
+    }
+}
+
 fn keys(scope: &Scope) -> (String, String, String, String) {
     (
         scope.practice.clone(),
@@ -728,17 +803,38 @@ async fn now(tx: &sea_orm::DatabaseTransaction) -> Result<i64, DbErr> {
         .try_get("", "now")
 }
 
+/// The most Postgres connections one physician process holds, its LISTEN
+/// connection included. Every store in the process shares this one pool; the
+/// connection budget in `book/src/gcp.md` ("Physician scaling") derives the
+/// number.
+pub const MAX_CONNECTIONS: u32 = 3;
+/// How long a statement waits for a pooled connection before it fails.
+const ACQUIRE_TIMEOUT: std::time::Duration = std::time::Duration::from_secs(10);
+/// How long an unused pooled connection stays open.
+const IDLE_TIMEOUT: std::time::Duration = std::time::Duration::from_secs(60);
+
 impl Store {
-    /// Connects only. Schema-owner credentials belong to the migration job.
+    /// Opens the process's one pool, at most [`MAX_CONNECTIONS`]. Connects
+    /// only; schema-owner credentials belong to the migration job.
     pub async fn connect(url: &str) -> Result<Self, DbErr> {
         let mut options = sea_orm::ConnectOptions::new(url);
-        options.max_connections(8).sqlx_logging(false);
+        options
+            .max_connections(MAX_CONNECTIONS)
+            .acquire_timeout(ACQUIRE_TIMEOUT)
+            .idle_timeout(IDLE_TIMEOUT)
+            .sqlx_logging(false);
         Ok(Self::from_connection(Database::connect(options).await?))
     }
 
     /// Uses an existing pool without applying migrations or changing its limits.
     pub fn from_connection(db: DatabaseConnection) -> Self {
         Self { db }
+    }
+
+    /// This store's pool, for the process's other stores to share, so the
+    /// process holds one pool.
+    pub fn connection(&self) -> &DatabaseConnection {
+        &self.db
     }
 
     // Display readback now joins several authoritative rows. One read-only

@@ -629,6 +629,44 @@ fn last_revision_attempt_query(
         .order_by_desc(A::Position)
 }
 
+/// Authored history for replay: each earlier revision, then the draft's
+/// accepted one.
+fn history_messages(
+    earlier: &[EarlierRevision],
+    draft: &Draft,
+) -> Vec<harness::engine::history::Message<serde_json::Value>> {
+    let mut history = Vec::new();
+    for previous in earlier {
+        history.extend(messages(
+            &previous.accepted.input,
+            previous
+                .runs
+                .current()
+                .is_some_and(|run| run.outcome == Some(RunOutcome::Completed)),
+            previous.attempts.iter().flat_map(|attempt| &attempt.events),
+        ));
+    }
+    if let Some(accepted) = &draft.accepted {
+        history.extend(messages(
+            &accepted.input,
+            draft
+                .runs
+                .current()
+                .is_some_and(|run| run.outcome == Some(RunOutcome::Completed)),
+            draft.attempts.iter().flat_map(|attempt| &attempt.events),
+        ));
+    }
+    history
+}
+
+/// [`history_messages`] resolved to the authored sources model replay reads.
+fn history_sources(earlier: &[EarlierRevision], draft: &Draft) -> Vec<engine::ProductMessage> {
+    history_messages(earlier, draft)
+        .iter()
+        .map(engine::history::Message::source)
+        .collect()
+}
+
 impl Store {
     pub(super) async fn locked_draft(
         &self,
@@ -758,29 +796,8 @@ impl Store {
         scope: &Scope,
         draft: &Draft,
     ) -> Result<Vec<harness::engine::history::Message<serde_json::Value>>, DbErr> {
-        let mut history = Vec::new();
-        for previous in self.earlier_revisions(scope).await? {
-            history.extend(messages(
-                &previous.accepted.input,
-                previous
-                    .runs
-                    .current()
-                    .is_some_and(|run| run.outcome == Some(RunOutcome::Completed)),
-                previous.attempts.iter().flat_map(|attempt| &attempt.events),
-            ));
-        }
-        if let Some(accepted) = &draft.accepted {
-            let input = &accepted.input;
-            history.extend(messages(
-                input,
-                draft
-                    .runs
-                    .current()
-                    .is_some_and(|run| run.outcome == Some(RunOutcome::Completed)),
-                draft.attempts.iter().flat_map(|attempt| &attempt.events),
-            ));
-        }
-        Ok(history)
+        let earlier = self.earlier_revisions(scope).await?;
+        Ok(history_messages(&earlier, draft))
     }
 
     /// Resolve revision history to the authored sources used by model replay.
@@ -789,30 +806,37 @@ impl Store {
         scope: &Scope,
         draft: &Draft,
     ) -> Result<Vec<engine::ProductMessage>, DbErr> {
-        Ok(self
-            .revision_messages(scope, draft)
-            .await?
-            .iter()
-            .map(engine::history::Message::source)
-            .collect())
+        let earlier = self.earlier_revisions(scope).await?;
+        Ok(history_sources(&earlier, draft))
     }
 
     /// This physician's earlier revisions, with evidence from their original rows.
     pub async fn earlier_revisions(&self, scope: &Scope) -> Result<Vec<EarlierRevision>, DbErr> {
         scope.validate()?;
         let tx = self.snapshot().await?;
+        let history = Self::earlier_revisions_on(&tx, scope).await?;
+        tx.commit().await?;
+        Ok(history)
+    }
+
+    /// [`Self::earlier_revisions`] read on `db`. A caller that already holds
+    /// a transaction reads through it rather than taking a second connection
+    /// from the process's small pool while holding the first.
+    async fn earlier_revisions_on(
+        db: &impl sea_orm::ConnectionTrait,
+        scope: &Scope,
+    ) -> Result<Vec<EarlierRevision>, DbErr> {
         let rows = reply_revision::Entity::find()
             .filter(history_of(scope))
             .order_by_asc(reply_revision::Column::Ordinal)
-            .all(&tx)
+            .all(db)
             .await?;
         let mut history = Vec::with_capacity(rows.len());
         for row in rows {
-            let mut state = Self::earlier_control(&tx, scope, row).await?;
-            Self::revision_events(&tx, scope, &mut state.attempts).await?;
+            let mut state = Self::earlier_control(db, scope, row).await?;
+            Self::revision_events(db, scope, &mut state.attempts).await?;
             history.push(state);
         }
-        tx.commit().await?;
         Ok(history)
     }
 
@@ -1373,7 +1397,10 @@ impl Store {
         current(&state, claim, now)?;
         let records = Self::revision_work_records(&tx, &claim.scope, &state).await?;
         let recipe = &claim.binding;
-        let messages = self.revision_message_sources(&claim.scope, &state).await?;
+        // Read on the draft's transaction: a second connection taken while
+        // this one is held could wait on another attempt doing the same.
+        let earlier = Self::earlier_revisions_on(&tx, &claim.scope).await?;
+        let messages = history_sources(&earlier, &state);
         if !harness::engine::pending_final(recipe, records.iter(), state.allowance_after, &messages)
             .map_err(RuntimeError::PendingFinal)?
             .is_some_and(|saved| saved.turn == *response)

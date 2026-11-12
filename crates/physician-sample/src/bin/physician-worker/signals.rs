@@ -11,8 +11,8 @@
 //! A worker outside Cloud Run writes nothing.
 use std::time::Duration;
 
-use local_product::runtime::Store;
 use local_product::runtime::delivery::QueueSignals;
+use local_product::runtime::{DbFailure, Store};
 use reqwest::{Client, StatusCode};
 use sea_orm::DbErr;
 use serde_json::{Value, json};
@@ -51,14 +51,30 @@ pub(super) enum SignalError {
 }
 
 impl SignalError {
-    /// The bounded `error.type` logged for this failure.
+    /// The bounded `error.type` logged for this failure. A failed read says
+    /// whether the pool ran out or Postgres refused the query.
     fn kind(&self) -> &'static str {
         match self {
-            Self::Read(_) => "database",
+            Self::Read(error) => DbFailure::of(error).error_type(),
             Self::Request(_) => "request",
             Self::Status(..) => "status",
             Self::Token => "token",
         }
+    }
+}
+
+/// An error followed by each of its sources, for a log line.
+struct ErrorChain<'a>(&'a (dyn std::error::Error + 'static));
+
+impl std::fmt::Display for ErrorChain<'_> {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", self.0)?;
+        let mut source = self.0.source();
+        while let Some(cause) = source {
+            write!(f, ": {cause}")?;
+            source = cause.source();
+        }
+        Ok(())
     }
 }
 
@@ -100,6 +116,7 @@ pub(super) async fn run(store: Store, stop: watch::Receiver<bool>) {
             tracing::warn!(
                 event = "physician.queue.signals_failed",
                 error.type = error.kind(),
+                error = %ErrorChain(&error),
                 "physician worker queue signals not written"
             );
         }

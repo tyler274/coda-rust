@@ -55,8 +55,10 @@ SELECT
 -- PostgreSQL grants PUBLIC EXECUTE globally by default; a schema-local revoke
 -- cannot remove that global default. Revoke globally for this creating role.
 ALTER DEFAULT PRIVILEGES FOR ROLE :"migration_user" REVOKE EXECUTE ON FUNCTIONS FROM PUBLIC;
--- At most 5 instances x 2 overlapping revisions x pool 4 = 40, reserving room
--- below max_connections=100 for migrations/operators. Role limits also bound
+-- The runtime limit is the physician-runtime connection budget in
+-- book/src/gcp.md ("Connection budget" under "Physician scaling"), which
+-- derives each process's pool size from it. It stays below
+-- max_connections=100, leaving room for migrations and operators, and bounds
 -- connections if a runtime pool is misconfigured. Model limits require runtime
 -- enforcement/provider quotas; neither budgets nor these SQL grants enforce it.
 ALTER ROLE :"runtime_user" CONNECTION

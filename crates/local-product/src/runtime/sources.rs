@@ -16,8 +16,8 @@
 use std::collections::{BTreeMap, HashMap, HashSet};
 
 use sea_orm::{
-    ActiveModelTrait, ColumnTrait, ConnectionTrait, DbErr, EntityTrait, QueryFilter, QueryOrder,
-    QuerySelect, Set, TransactionTrait,
+    ActiveModelTrait, ColumnTrait, ConnectionTrait, DatabaseTransaction, DbErr, EntityTrait,
+    QueryFilter, QueryOrder, QuerySelect, Set, TransactionTrait,
     sea_query::{Expr, OnConflict, extension::postgres::PgExpr},
 };
 
@@ -375,7 +375,21 @@ impl Store {
     /// without reading chart bodies, under the same version fence as chart reads.
     pub async fn has_sources_outside(&self, workspace: &str, allowed: &str) -> Result<bool, DbErr> {
         let tx = self.db.begin().await?;
-        let version = pin_version(&tx, workspace).await?;
+        let outside = Self::has_sources_outside_in(&tx, workspace, allowed).await?;
+        tx.commit().await?;
+        Ok(outside)
+    }
+
+    /// [`Self::has_sources_outside`] inside the caller's transaction, holding
+    /// the version row's shared lock until it ends. A check made while that
+    /// transaction is open reads through it rather than taking a second
+    /// connection from the process's small pool.
+    pub async fn has_sources_outside_in(
+        tx: &DatabaseTransaction,
+        workspace: &str,
+        allowed: &str,
+    ) -> Result<bool, DbErr> {
+        let version = pin_version(tx, workspace).await?;
         // A withdrawal row has no revision; the revisions before it name the source.
         let sources = source::Entity::find()
             .filter(source::Column::Workspace.eq(workspace))
@@ -385,9 +399,8 @@ impl Store {
             .expr(Expr::col(source::Column::Revision).cast_json_field("source_id"))
             .distinct()
             .into_tuple::<Option<String>>()
-            .all(&tx)
+            .all(tx)
             .await?;
-        tx.commit().await?;
         let mut outside = false;
         for source in sources {
             outside |= source.ok_or_else(|| error("missing source identity"))? != allowed;

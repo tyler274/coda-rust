@@ -513,6 +513,33 @@ announced and claimed in Postgres, as
 `PHYSICIAN_REDIS_URL` embeds the AUTH string, so it lives only in Doppler, as
 does `PHYSICIAN_REDIS_CA_PEM`. Neither value is committed.
 
+#### Connection budget
+
+The `physician` site and `physician-worker` both connect as the
+`physician-runtime` role, whose `CONNECTION LIMIT` is 40
+([`bootstrap-grants.sql`](/infra/gcp/rust-environments/bootstrap-grants.sql)).
+Each process opens one Postgres pool,
+[`local_product::runtime::Store::connect`](/crates/local-product/src/runtime.rs),
+and every store in it reads through that pool: the runtime store, auth, the
+front door and `/readyz`. The pool holds at most
+`MAX_CONNECTIONS` = 3 connections, waits up to 10 s for one, and closes a
+connection idle for 60 s. Each process's long-lived `LISTEN` (the site's
+authority feed, the worker's wakeups) holds one of those 3 while it runs, so
+two remain for requests and claims.
+
+A rolling deploy runs the old and new revision side by side, so the peak is
+
+```text
+peak = services × max_instances × overlapping revisions × MAX_CONNECTIONS
+     = 2 × 2 × 2 × 3 = 24 of 40
+```
+
+with `max_instances` at its default of 2. That leaves 16 for the migration job
+and operators, and keeps the peak at or below 30. The highest `max_instances`
+the role fits is `40 ÷ (2 × 2 × 3)`, rounded down: 3. Raising `max_instances`
+past it, or raising `MAX_CONNECTIONS`, needs this budget redone and the role
+limit changed with it.
+
 To turn scaling on:
 
 1. **Deploy the code first.** The site that queues turns and `physician-worker` must

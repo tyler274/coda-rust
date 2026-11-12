@@ -353,8 +353,9 @@ resource "google_cloud_run_v2_service" "physician_worker" {
     # Bounds requests (the readiness probe); turns run outside any request.
     timeout = "600s"
     # Turns wait on the model, so a few share an instance; the cap bounds model
-    # concurrency and keeps the shared physician-runtime DB role within its
-    # connection limit together with the site (2 x 4 + 2 x 4 pooled).
+    # concurrency. They share the process's one Postgres pool; the
+    # physician-runtime connection budget is in book/src/gcp.md
+    # ("Connection budget" under "Physician scaling").
     max_instance_request_concurrency = 4
     scaling {
       # One worker instance stays up, so the worker runs whether or not a

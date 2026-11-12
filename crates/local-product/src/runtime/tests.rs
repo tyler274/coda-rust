@@ -17,6 +17,100 @@ use super::entities::command;
 use super::*;
 use harness::engine::recipe::Request;
 
+#[test]
+fn a_pool_timeout_is_not_a_failed_query() {
+    use sea_orm::{ConnAcquireErr, RuntimeErr, SqlxError};
+    let acquire = DbErr::ConnectionAcquire(ConnAcquireErr::Timeout);
+    assert_eq!(DbFailure::of(&acquire), DbFailure::PoolTimeout);
+    let connect = DbErr::Conn(RuntimeErr::SqlxError(SqlxError::PoolTimedOut.into()));
+    assert_eq!(DbFailure::of(&connect), DbFailure::PoolTimeout);
+    let closed = DbErr::Conn(RuntimeErr::SqlxError(
+        SqlxError::Io(std::io::Error::from(std::io::ErrorKind::ConnectionReset)).into(),
+    ));
+    assert_eq!(DbFailure::of(&closed), DbFailure::Connection);
+    let refused = DbErr::Query(RuntimeErr::Internal("refused".into()));
+    assert_eq!(DbFailure::of(&refused), DbFailure::Query);
+    for failure in [acquire, connect, closed, refused] {
+        assert_eq!(sqlstate(&failure), None);
+    }
+    let kinds = [
+        DbFailure::PoolTimeout,
+        DbFailure::Connection,
+        DbFailure::SchemaMissing,
+        DbFailure::Query,
+    ]
+    .map(DbFailure::error_type);
+    assert_eq!(kinds, ["pool_timeout", "connection", "schema", "database"]);
+}
+
+#[tokio::test]
+#[ignore = "requires a disposable Postgres in PHYSICIAN_RUNTIME_TEST_DATABASE_URL"]
+async fn a_missing_table_is_the_only_failure_that_names_the_schema() {
+    use sea_orm::sea_query::{Alias, Expr, ExprTrait, Query};
+    let url = std::env::var("PHYSICIAN_RUNTIME_TEST_DATABASE_URL").unwrap();
+    let store = Store::connect(&url).await.unwrap();
+    let db = store.connection();
+    let missing = db
+        .query_one(
+            &Query::select()
+                .expr(Expr::val(1))
+                .from(Alias::new("physician_runtime_no_such_table"))
+                .to_owned(),
+        )
+        .await
+        .unwrap_err();
+    assert_eq!(DbFailure::of(&missing), DbFailure::SchemaMissing);
+    assert_eq!(sqlstate(&missing).as_deref(), Some("42P01"));
+    let refused = db
+        .query_one(&Query::select().expr(Expr::val(1).div(0)).to_owned())
+        .await
+        .unwrap_err();
+    assert_eq!(DbFailure::of(&refused), DbFailure::Query);
+    assert_eq!(sqlstate(&refused).as_deref(), Some("22012"));
+}
+
+/// A backend ended while its statement runs reports the end through
+/// Postgres's own error response, which reaches the caller as a failed query.
+/// It is still a lost connection, not a refused query.
+#[tokio::test]
+#[ignore = "requires a disposable Postgres in PHYSICIAN_RUNTIME_TEST_DATABASE_URL"]
+async fn a_backend_ended_mid_statement_is_a_lost_connection() {
+    use sea_orm::sea_query::{Alias, Expr, Func, Query};
+    let url = std::env::var("PHYSICIAN_RUNTIME_TEST_DATABASE_URL").unwrap();
+    let store = Store::connect(&url).await.unwrap();
+    let db = store.connection();
+    let tx = db.begin().await.unwrap();
+    let pid: i32 = tx
+        .query_one(
+            &Query::select()
+                .expr_as(Func::cust(Alias::new("pg_backend_pid")), Alias::new("pid"))
+                .to_owned(),
+        )
+        .await
+        .unwrap()
+        .unwrap()
+        .try_get("", "pid")
+        .unwrap();
+    let sleep = Query::select()
+        .expr(Func::cust(Alias::new("pg_sleep")).arg(30))
+        .to_owned();
+    let sleeping = tx.query_one(&sleep);
+    let end = async {
+        tokio::time::sleep(std::time::Duration::from_millis(300)).await;
+        db.query_one(
+            &Query::select()
+                .expr(Func::cust(Alias::new("pg_terminate_backend")).arg(Expr::val(pid)))
+                .to_owned(),
+        )
+        .await
+    };
+    let (slept, ended) = tokio::join!(sleeping, end);
+    ended.unwrap();
+    let lost = slept.unwrap_err();
+    assert_eq!(sqlstate(&lost).as_deref(), Some("57P01"), "{lost}");
+    assert_eq!(DbFailure::of(&lost), DbFailure::Connection, "{lost}");
+}
+
 #[tokio::test]
 #[ignore = "requires explicit local Postgres"]
 async fn concurrent_commands_and_claims_serialize_on_the_composite_conversation_key() {

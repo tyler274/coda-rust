@@ -29,7 +29,7 @@ shard_1_targets=(--lib --test migrations_postgres --test postgres
   --test front_door_postgres --test identity --test luna_journal
   --test database_foundation --test pg_moments
   --test runtime_postgres --test runtime_publication --test runtime_recovery --test runtime_quota
-  --test redis --test fanout --test worker --test try_again
+  --test redis --test fanout --test worker --test try_again --test pool_budget
   --bin physician-worker)
 shard_2_targets=(--test stop --test chat_draft --test feedback --test reply_revision
   --test instance_loss)
@@ -75,6 +75,10 @@ shard_1() {
   # not hear of; failures wait longer each time. A turn that ran out of
   # attempts shows "couldn't finish" and Try again (work.resume) gets the reply.
   pg_test --test try_again -- --test-threads=1
+  # The connection budget: each process holds one pool of at most
+  # MAX_CONNECTIONS, and a worker's failed due read says whether the pool ran
+  # out or Postgres refused the query.
+  pg_test --test pool_budget -- --test-threads=1
 }
 
 shard_2() {

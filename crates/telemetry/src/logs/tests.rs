@@ -233,7 +233,15 @@ fn queue_signal_failures_keep_their_event_and_class() {
         .build();
     let subscriber =
         tracing_subscriber::registry().with(SafeLogs::new(&provider, "physician-worker"));
-    let classes = ["database", "request", "status", "token"];
+    let classes = [
+        "database",
+        "pool_timeout",
+        "connection",
+        "schema",
+        "request",
+        "status",
+        "token",
+    ];
     tracing::subscriber::with_default(subscriber, || {
         for class in classes {
             tracing::warn!(event = "physician.queue.signals_failed", error.type = class,

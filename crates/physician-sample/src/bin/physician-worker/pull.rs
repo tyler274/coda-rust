@@ -15,7 +15,7 @@ use std::sync::Arc;
 use std::time::Duration;
 
 use local_product::runtime::delivery::{Delivery, DeliveryKind, DispatchPage};
-use local_product::runtime::{Scope, Store};
+use local_product::runtime::{DbFailure, Scope, Store, sqlstate};
 use sea_orm::DbErr;
 use tokio::sync::{mpsc, watch};
 use tokio::task::{Id, JoinSet};
@@ -168,10 +168,12 @@ pub(super) async fn run(worker: Arc<Worker>, stop: watch::Receiver<bool>) {
             }
             backlog = match start_due(&worker, &mut running, &stop, &mut order).await {
                 Ok(left) => left,
-                Err(_) => {
+                Err(error) => {
                     tracing::error!(
                         event = "physician.queue.dispatch_failed",
-                        error.type = "database",
+                        error.type = DbFailure::of(&error).error_type(),
+                        db.response.status_code = sqlstate(&error).as_deref(),
+                        error = %error,
                         "physician worker could not read due work"
                     );
                     backlog

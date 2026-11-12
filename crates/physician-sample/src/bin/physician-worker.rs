@@ -59,13 +59,20 @@ async fn main() {
         std::process::exit(1);
     }
     let _telemetry = telemetry::init("physician-worker");
-    if let Err(reason) = run().await {
-        eprintln!("physician worker cannot start: {reason}");
+    if let Err(error) = run().await {
+        let database = error.database();
+        tracing::error!(
+            error.type = database.map(|cause| local_product::runtime::DbFailure::of(cause).error_type()),
+            db.response.status_code = database.and_then(local_product::runtime::sqlstate).as_deref(),
+            error = %error,
+            error.cause = database.map(tracing::field::display),
+            "physician worker cannot start"
+        );
         std::process::exit(1);
     }
 }
 
-async fn run() -> Result<(), String> {
+async fn run() -> Result<(), hosting::StartupError> {
     let worker = Arc::new(Worker::from_env(|key| std::env::var(key).ok()).await?);
     let address = listen_addr(&|key: &str| std::env::var(key).ok());
     let listener = tokio::net::TcpListener::bind(&address)
@@ -92,7 +99,7 @@ async fn run() -> Result<(), String> {
         .await;
     work.await
         .map_err(|_| "physician worker pull loop ended abnormally".to_owned())?;
-    served.map_err(|_| "physician worker stopped".to_owned())
+    served.map_err(|_| "physician worker stopped".into())
 }
 
 fn router(worker: Arc<Worker>) -> Router {
@@ -233,7 +240,7 @@ async fn chat_attempt(
     let mut host = PhysicianHost {
         store: worker.store.clone(),
         claim,
-        authority: worker.model.authority(worker.store.clone()),
+        authority: worker.model.authority(),
     };
     let cancel = Cancellation::default();
     // One provider per turn: concurrent turns on this instance run side by
@@ -556,8 +563,9 @@ struct Pace {
 
 impl Pace {
     /// Hosted pacing: the poll bounds how late a lost notification is found.
-    /// Attempts take a connection only for each statement, so four leave the
-    /// store's eight-connection pool room for the listener and renewals.
+    /// Attempts take a connection only for each statement and wait for one
+    /// when the process's pool is busy, so four share what the listener
+    /// leaves of [`local_product::runtime::MAX_CONNECTIONS`].
     const HOSTED: Self = Self {
         poll: Duration::from_secs(10),
         lease: 60,
@@ -667,7 +675,7 @@ impl Worker {
         }
     }
 
-    async fn from_env(get: impl Fn(&str) -> Option<String>) -> Result<Self, String> {
+    async fn from_env(get: impl Fn(&str) -> Option<String>) -> Result<Self, hosting::StartupError> {
         let hosted = is_hosted(&get);
         let simulation_practices = SimulationPractices::from_env(&get)?;
         let (transport, origin) = if let Some(port) =
@@ -732,12 +740,11 @@ impl Worker {
         let model = ModelSource { transport, roles };
         let database = configured(&get, "PHYSICIAN_DATABASE_URL")
             .ok_or("PHYSICIAN_DATABASE_URL is required")?;
+        // One pool per process: the auth store reads through the runtime's.
         let store = Store::connect(&database)
             .await
-            .map_err(|_| "physician runtime store unavailable".to_string())?;
-        let auth = PostgresAuthStore::connect_without_migrations(&database)
-            .await
-            .map_err(|_| "physician auth store unavailable".to_string())?;
+            .map_err(hosting::StartupError::RuntimeStore)?;
+        let auth = PostgresAuthStore::from_connection(store.connection().clone());
         let bus = physician_bus::from_env(&get, hosted).await?;
         let quota: Arc<dyn harness::provider::QuotaGate> = Arc::new(store.clone());
         Ok(Self {
@@ -816,10 +823,9 @@ impl ModelSource {
         })
     }
 
-    fn authority(&self, store: Store) -> WorkerAuthority {
+    fn authority(&self) -> WorkerAuthority {
         WorkerAuthority {
             inner: RuntimeAuthority,
-            store,
             synthetic_only: match self.transport {
                 ModelTransport::DeveloperPlan => true,
                 ModelTransport::Responses { .. } => false,
@@ -863,7 +869,6 @@ impl Provider for ModelProvider {
 /// practice. The same auth owner still fences chat and revision publication.
 struct WorkerAuthority {
     inner: RuntimeAuthority,
-    store: Store,
     synthetic_only: bool,
 }
 
@@ -875,7 +880,7 @@ impl local_product::runtime::Authority for WorkerAuthority {
         scope: &Scope,
         hash: Option<&[u8]>,
     ) -> Result<(), String> {
-        self.check_source_boundary(scope).await?;
+        self.check_source_boundary(tx, scope).await?;
         self.inner.check(tx, scope, hash).await
     }
 
@@ -885,24 +890,29 @@ impl local_product::runtime::Authority for WorkerAuthority {
         scope: &Scope,
         hash: Option<&[u8]>,
     ) -> Result<(), String> {
-        self.check_source_boundary(scope).await?;
+        self.check_source_boundary(tx, scope).await?;
         self.inner.lock_publication(tx, scope, hash).await
     }
 }
 
 impl WorkerAuthority {
-    async fn check_source_boundary(&self, scope: &Scope) -> Result<(), String> {
+    /// Reads on the caller's transaction, which already holds one of the
+    /// process's pooled connections, rather than waiting for a second.
+    async fn check_source_boundary(
+        &self,
+        tx: &local_product::runtime::PublicationTransaction,
+        scope: &Scope,
+    ) -> Result<(), String> {
         if !self.synthetic_only {
             return Ok(());
         }
-        let outside = self
-            .store
-            .has_sources_outside(
-                &scope.workspace,
-                physician_sample::synthetic_chart::SOURCE_ID,
-            )
-            .await
-            .map_err(|e| e.to_string())?;
+        let outside = Store::has_sources_outside_in(
+            tx,
+            &scope.workspace,
+            physician_sample::synthetic_chart::SOURCE_ID,
+        )
+        .await
+        .map_err(|e| e.to_string())?;
         if outside {
             return Err("Developer ChatGPT plans can read only the synthetic practice".into());
         }
@@ -1352,8 +1362,16 @@ mod tests {
             }
         };
         let refusal = |extra| block(Worker::from_env(hosted(extra))).err().unwrap();
-        assert!(refusal("stub").contains("public Responses endpoint"));
-        assert!(refusal("pace").contains("PHYSICIAN_WORKER_POLL_MS"));
+        assert!(
+            refusal("stub")
+                .to_string()
+                .contains("public Responses endpoint")
+        );
+        assert!(
+            refusal("pace")
+                .to_string()
+                .contains("PHYSICIAN_WORKER_POLL_MS")
+        );
     }
 
     fn block<T>(future: impl std::future::Future<Output = T>) -> T {
@@ -1426,8 +1444,15 @@ mod tests {
 
         // A developer plan refuses the mixed workspace before the auth owner runs,
         // for the check and for publication.
-        let mut plan = model(ModelTransport::DeveloperPlan).authority(store.clone());
-        let db = sea_orm::Database::connect(url.as_str()).await.unwrap();
+        let mut plan = model(ModelTransport::DeveloperPlan).authority();
+        // The check reads on the caller's transaction: on a pool of one, a
+        // second connection taken while it is held would time out.
+        let mut single = sea_orm::ConnectOptions::new(url.as_str());
+        single
+            .max_connections(1)
+            .acquire_timeout(Duration::from_secs(2))
+            .sqlx_logging(false);
+        let db = &sea_orm::Database::connect(single).await.unwrap();
         let tx = db.begin().await.unwrap();
         assert_eq!(
             plan.check(&tx, &scope(&mixed), Some(&[0; 32])).await,
@@ -1445,14 +1470,18 @@ mod tests {
             endpoint: "http://127.0.0.1:1/responses".into(),
             key: "synthetic-key".into(),
         })
-        .authority(store.clone());
+        .authority();
+        let tx = db.begin().await.unwrap();
         responses
-            .check_source_boundary(&scope(&mixed))
+            .check_source_boundary(&tx, &scope(&mixed))
             .await
             .unwrap();
 
         // A developer plan may read a workspace that holds only the synthetic practice.
-        plan.check_source_boundary(&scope(&practice)).await.unwrap();
+        plan.check_source_boundary(&tx, &scope(&practice))
+            .await
+            .unwrap();
+        tx.rollback().await.unwrap();
 
         // A record from outside the synthetic practice that was later withdrawn
         // still counts: answers written from it stay in the workspace's history.
@@ -1483,9 +1512,11 @@ mod tests {
             .unwrap();
         let current = store.sources(&withdrawn).await.unwrap().sources;
         assert!(current.iter().all(|source| source.source_id == synthetic));
+        let tx = db.begin().await.unwrap();
         assert_eq!(
-            plan.check_source_boundary(&scope(&withdrawn)).await,
+            plan.check_source_boundary(&tx, &scope(&withdrawn)).await,
             refusal
         );
+        tx.rollback().await.unwrap();
     }
 }

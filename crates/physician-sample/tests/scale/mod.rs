@@ -105,6 +105,46 @@ impl Database {
 }
 
 impl Database {
+    /// This database's name on the server.
+    pub fn name(&self) -> &str {
+        &self.name
+    }
+
+    /// The server's maintenance database, as the admin.
+    pub fn admin(&self) -> &str {
+        &self.admin
+    }
+
+    /// How many sessions each `application_name` holds on this database now.
+    pub async fn connections_by_application(&self) -> HashMap<String, i64> {
+        use sea_orm::sea_query::{Alias, Expr, ExprTrait, Func, Query};
+        let application = || Alias::new("application_name");
+        let query = Query::select()
+            .column(application())
+            .expr_as(
+                Func::count(Expr::col(Alias::new("pid"))),
+                Alias::new("connections"),
+            )
+            .from(Alias::new("pg_stat_activity"))
+            .and_where(Expr::col(Alias::new("datname")).eq(self.name.as_str()))
+            .group_by_col(application())
+            .to_owned();
+        let connection = sea_orm::Database::connect(&self.admin)
+            .await
+            .expect("admin connection");
+        let rows = connection.query_all(&query).await.expect("count sessions");
+        connection.close().await.expect("close admin connection");
+        rows.iter()
+            .map(|row| {
+                (
+                    row.try_get::<String>("", "application_name")
+                        .expect("application name"),
+                    row.try_get::<i64>("", "connections").expect("connections"),
+                )
+            })
+            .collect()
+    }
+
     /// Ends every session in this database that is subscribed to a
     /// notification channel, as a dropped connection would, and returns how
     /// many it ended.
@@ -295,6 +335,11 @@ impl Process {
     pub fn restart(&mut self) {
         self.kill_now();
         self.start();
+    }
+
+    /// Everything the process has written so far.
+    pub fn log(&self) -> String {
+        String::from_utf8_lossy(&std::fs::read(&self.log_path).unwrap_or_default()).into_owned()
     }
 
     pub fn exited(&mut self) -> Option<i32> {

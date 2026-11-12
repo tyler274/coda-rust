@@ -398,11 +398,18 @@ pub async fn serve_holding(
     let (router, compaction) = match site {
         Ok(ready) => ready,
         Err(error) => {
-            tracing::error!(%error, "physician site cannot start");
+            let database = error.database();
+            tracing::error!(
+                error.type = database.map(|cause| local_product::runtime::DbFailure::of(cause).error_type()),
+                db.response.status_code = database.and_then(local_product::runtime::sqlstate).as_deref(),
+                error = %error,
+                error.cause = database.map(tracing::field::display),
+                "physician site cannot start"
+            );
             std::process::exit(1);
         }
     };
-    let app = traced(route_readiness(router).await);
+    let app = traced(router);
     let served = axum::serve(listener, app)
         .with_graceful_shutdown(shutdown())
         .await;
@@ -421,7 +428,7 @@ fn configured(get: &impl Fn(&str) -> Option<String>, key: &str) -> Option<String
 async fn site_from_env(
     get: impl Fn(&str) -> Option<String>,
     memory_patients: std::sync::Arc<patients::MemoryPatients>,
-) -> Result<(Router, Option<tokio::task::JoinHandle<()>>), String> {
+) -> Result<(Router, Option<tokio::task::JoinHandle<()>>), hosting::StartupError> {
     let hosted = hosting::is_hosted(&get);
     let mode = ChatMode::from_env(&get)?;
     let database = configured(&get, "PHYSICIAN_DATABASE_URL");
@@ -469,15 +476,24 @@ async fn site_from_env(
         return Err("the rehearsal sign-in needs PHYSICIAN_AUTH=required".into());
     }
     let bus = physician_bus::from_env(&get, hosted).await?;
-    // One pool per process: durable chat and the patient directory share it.
+    // One pool per process: durable chat, the patient directory, auth, the
+    // front door and `/readyz` all read through it.
+    // A site that serves from the database refuses to start without it; one
+    // that only reports readiness from it starts and answers 503.
     let runtime = match &database {
-        Some(url) if required || durable => Some(
-            local_product::runtime::Store::connect(url)
-                .await
-                .map_err(|_| "physician runtime store unavailable".to_string())?,
-        ),
-        _ => None,
+        Some(url) => match local_product::runtime::Store::connect(url).await {
+            Ok(store) => Some(store),
+            Err(error) if required || durable => {
+                return Err(hosting::StartupError::RuntimeStore(error));
+            }
+            Err(error) => {
+                tracing::warn!(%error, "physician readiness store unavailable");
+                None
+            }
+        },
+        None => None,
     };
+    let readiness = runtime.as_ref().map(hosting::Readiness::shared);
     let (base, chat) = if let (Some(skills), Some(store)) = (skills, runtime.clone()) {
         let settings: Vec<_> = local_product::MODEL_SETTING_KEYS
             .into_iter()
@@ -510,9 +526,10 @@ async fn site_from_env(
     } else {
         (router(), None)
     };
-    let postgres = database.as_deref().zip(runtime);
+    let postgres = runtime.zip(readiness.as_ref());
     let router =
         auth::authed_router_with_bus(base, bus, memory_patients, postgres, rehearsal).await;
+    let router = route_readiness(router, readiness);
     let compaction = chat.map(|chat| chat.start_compaction());
     Ok((router, compaction))
 }
@@ -572,34 +589,15 @@ async fn shutdown() {
     tokio::signal::ctrl_c().await.expect("shutdown signal");
 }
 
-/// Adds `/readyz`, which answers from the same stores the process serves with.
-/// Without `PHYSICIAN_DATABASE_URL` there is nothing to check, so it stays 503.
-async fn route_readiness(app: Router) -> Router {
-    let url = std::env::var("PHYSICIAN_DATABASE_URL").ok();
-    let stores = match url.as_deref() {
-        Some(url) => {
-            let auth = physician_auth::PostgresAuthStore::connect_without_migrations(url).await;
-            let front = front_door::PostgresFrontDoorStore::connect_without_migrations(url).await;
-            match (auth, front) {
-                (Ok(auth), Ok(front)) => Some((auth, front)),
-                (Err(error), _) | (_, Err(error)) => {
-                    eprintln!("readiness stores unavailable: {error}");
-                    None
-                }
-            }
-        }
-        None => None,
-    };
-    let (auth, front) = match stores {
-        Some((auth, front)) => (Some(auth), Some(front)),
-        None => (None, None),
-    };
+/// Adds `/readyz`, which checks the stores the process serves with, over its
+/// one pool; it never opens a connection of its own. Without
+/// `PHYSICIAN_DATABASE_URL` there is nothing to check, so it stays 503.
+fn route_readiness(app: Router, readiness: Option<hosting::Readiness>) -> Router {
     app.route(
         "/readyz",
         get(move || {
-            let auth = auth.clone();
-            let front = front.clone();
-            async move { hosting::ready(auth.as_ref(), front.as_ref()).await }
+            let readiness = readiness.clone();
+            async move { hosting::ready(readiness.as_ref()).await }
         }),
     )
 }
@@ -939,7 +937,7 @@ mod tests {
                 .await
                 .expect_err("hosted chat requires its durable owner");
             assert_eq!(
-                error,
+                error.to_string(),
                 "hosted physician chat requires PHYSICIAN_DURABLE_CHAT=1"
             );
         }
@@ -958,7 +956,7 @@ mod tests {
                 .await
                 .expect_err("durable chat without a database");
             assert_eq!(
-                error,
+                error.to_string(),
                 "PHYSICIAN_DURABLE_CHAT requires PHYSICIAN_DATABASE_URL"
             );
         }
@@ -979,7 +977,7 @@ mod tests {
         let error = site_from_env(environment, std::sync::Arc::default())
             .await
             .expect_err("required sign-in over other routes");
-        assert!(error.contains("PHYSICIAN_UPSTREAM"), "{error}");
+        assert!(error.to_string().contains("PHYSICIAN_UPSTREAM"), "{error}");
     }
 
     #[tokio::test]

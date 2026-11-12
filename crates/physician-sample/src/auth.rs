@@ -37,11 +37,10 @@ use serde::Deserialize;
 use serde_json::{Value, json};
 
 use crate::timestamp::format_rfc3339;
-use front_door::{FrontDoorStore, MemoryFrontDoorStore, PostgresFrontDoorStore, RosterPatient};
+use front_door::{FrontDoorStore, MemoryFrontDoorStore, RosterPatient};
 use physician_auth::{
     AuthStore, AuthorityFeed, CachedAuthStore, Membership, MemoryAuthStore, PanelError,
-    PhysicianIdentity, PostgresAuthStore, PracticeClock, ReviewCadence, SessionError, SignInError,
-    StoreUnavailable,
+    PhysicianIdentity, PracticeClock, ReviewCadence, SessionError, SignInError, StoreUnavailable,
 };
 
 use crate::patients::{MemoryPatients, PatientDirectory, enroll_in_memory, read_patient};
@@ -224,34 +223,22 @@ impl Auth {
         )
     }
 
-    /// Postgres auth on a caller-owned bus, reading patients through the
-    /// process's `runtime` store. Does not migrate.
+    /// Postgres auth on a caller-owned bus, on the `stores` that read through
+    /// the process's `runtime` pool, which also reads patients. Does not
+    /// migrate; refuses when either schema does not answer.
     pub(crate) async fn postgres_with_bus(
-        database_url: &str,
         runtime: local_product::runtime::Store,
+        stores: &crate::hosting::Readiness,
         events: Arc<dyn physician_bus::Bus>,
         mail: crate::gmail::Delivery,
-    ) -> Result<Arc<Self>, String> {
-        let store = PostgresAuthStore::connect_without_migrations(database_url)
-            .await
-            .map_err(|error| format!("physician auth store: {error}"))?;
-        store
-            .check_schema()
-            .await
-            .map_err(|error| format!("physician auth schema; run migration job: {error}"))?;
-        let front_door = PostgresFrontDoorStore::connect_without_migrations(database_url)
-            .await
-            .map_err(|error| format!("front-door store: {error}"))?;
-        front_door
-            .check_schema()
-            .await
-            .map_err(|error| format!("front-door schema; run migration job: {error}"))?;
+    ) -> Result<Arc<Self>, crate::hosting::SchemaError> {
+        stores.check().await?;
         // Authority reads are answered from memory between changes; the
         // database trigger feed invalidates them across replicas.
-        let store = CachedAuthStore::postgres(store);
+        let store = CachedAuthStore::postgres(stores.auth.clone());
         Ok(Self::configured(
             Arc::new(store),
-            Arc::new(front_door),
+            Arc::new(stores.front_door.clone()),
             Arc::new(runtime),
             events,
             mail,
@@ -1285,10 +1272,11 @@ pub async fn authed_router(base: axum::Router) -> axum::Router {
 /// Builds the router with auth on `base`, publishing panel changes on `bus`.
 ///
 /// `PHYSICIAN_AUTH=required` guards every physician route through one store —
-/// Postgres when `postgres` names the database and the process's runtime store,
-/// memory otherwise. Any other value serves `base` with the auth routes still
-/// present. Neither store is migrated. Without a database the practice holds
-/// `memory_patients`. Sign-in mail comes from the environment.
+/// Postgres when `postgres` holds the process's runtime store and the stores
+/// over its pool, memory otherwise. Any other value serves `base` with the
+/// auth routes still present. Neither store is migrated. Without a database
+/// the practice holds `memory_patients`. Sign-in mail comes from the
+/// environment.
 ///
 /// `rehearsal` adds `POST /auth/rehearsal` ([`crate::rehearsal::sign_in_routes`]),
 /// and only behind required sign-in: with open auth there is no session to mint.
@@ -1296,16 +1284,23 @@ pub(crate) async fn authed_router_with_bus(
     base: axum::Router,
     bus: Arc<dyn physician_bus::Bus>,
     memory_patients: Arc<MemoryPatients>,
-    postgres: Option<(&str, local_product::runtime::Store)>,
+    postgres: Option<(local_product::runtime::Store, &crate::hosting::Readiness)>,
     rehearsal: Option<crate::hosting::RehearsalSignIn>,
 ) -> axum::Router {
     let mail = crate::gmail::Delivery::from_env(|key| std::env::var(key).ok());
     let auth = match (auth_mode(), postgres) {
-        (AuthMode::Required, Some((url, runtime))) => {
-            match Auth::postgres_with_bus(url, runtime, bus, mail).await {
+        (AuthMode::Required, Some((runtime, stores))) => {
+            match Auth::postgres_with_bus(runtime, stores, bus, mail).await {
                 Ok(auth) => auth,
                 Err(error) => {
-                    tracing::error!(%error, "physician auth store unavailable");
+                    tracing::error!(
+                        error.type = error.failure().error_type(),
+                        db.response.status_code =
+                            local_product::runtime::sqlstate(error.cause()).as_deref(),
+                        error = %error,
+                        error.cause = %error.cause(),
+                        "physician auth store unavailable"
+                    );
                     std::process::exit(1);
                 }
             }

@@ -478,7 +478,16 @@ async fn held_revision_saves_one_limit_outcome_with_its_visible_status() {
     ] {
         store.record_revision(&claim, event).await.unwrap();
     }
-    store.hold_revision(&claim, &handoff).await.unwrap();
+    // On a pool of one, a second connection taken while the draft's is held
+    // would time out: the hold reads its history on the draft's transaction.
+    let url = std::env::var("PHYSICIAN_RUNTIME_TEST_DATABASE_URL").unwrap();
+    let mut single = sea_orm::ConnectOptions::new(url);
+    single
+        .max_connections(1)
+        .acquire_timeout(std::time::Duration::from_secs(2))
+        .sqlx_logging(false);
+    let single = Store::from_connection(sea_orm::Database::connect(single).await.unwrap());
+    single.hold_revision(&claim, &handoff).await.unwrap();
     let held = store.draft(&scope).await.unwrap().unwrap();
     assert_eq!(held.status, DraftStatus::Held);
     assert_eq!(held.attempts.last().unwrap().status, AttemptStatus::Held);

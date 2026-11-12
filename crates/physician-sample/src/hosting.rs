@@ -332,19 +332,144 @@ pub fn staging_physician_id(email: &str) -> String {
     }
 }
 
-/// Readiness for a hosted revision: the auth store and the front-door schema
-/// both answer. Anything else, including an unconfigured local run, is 503.
-pub async fn ready(
-    auth: Option<&physician_auth::PostgresAuthStore>,
-    front_door: Option<&front_door::PostgresFrontDoorStore>,
-) -> axum::http::StatusCode {
-    match (auth, front_door) {
-        (Some(auth), Some(front_door))
-            if auth.check_schema().await.is_ok() && front_door.check_schema().await.is_ok() =>
-        {
-            axum::http::StatusCode::OK
+/// The auth and front-door stores a site serves with, both reading through
+/// the process's one runtime pool. Startup and `/readyz` check the same pair,
+/// so readiness never opens a connection of its own.
+#[derive(Clone)]
+pub struct Readiness {
+    pub(crate) auth: physician_auth::PostgresAuthStore,
+    pub(crate) front_door: front_door::PostgresFrontDoorStore,
+}
+
+impl Readiness {
+    /// The stores over `runtime`'s pool.
+    pub fn shared(runtime: &local_product::runtime::Store) -> Self {
+        Self {
+            auth: physician_auth::PostgresAuthStore::from_connection(runtime.connection().clone()),
+            front_door: front_door::PostgresFrontDoorStore::from_connection(
+                runtime.connection().clone(),
+            ),
         }
-        _ => axum::http::StatusCode::SERVICE_UNAVAILABLE,
+    }
+
+    /// Whether both schemas answer.
+    pub async fn check(&self) -> Result<(), SchemaError> {
+        self.auth
+            .check_schema()
+            .await
+            .map_err(|source| SchemaError::new(SchemaOwner::Auth, source))?;
+        self.front_door
+            .check_schema()
+            .await
+            .map_err(|source| SchemaError::new(SchemaOwner::FrontDoor, source))
+    }
+}
+
+/// Readiness for a hosted revision: the auth and front-door schemas both
+/// answer. Anything else, including an unconfigured local run, is 503.
+pub async fn ready(readiness: Option<&Readiness>) -> axum::http::StatusCode {
+    let Some(readiness) = readiness else {
+        return axum::http::StatusCode::SERVICE_UNAVAILABLE;
+    };
+    match readiness.check().await {
+        Ok(()) => axum::http::StatusCode::OK,
+        Err(_) => axum::http::StatusCode::SERVICE_UNAVAILABLE,
+    }
+}
+
+/// Which store's schema check failed.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum SchemaOwner {
+    /// The physician auth tables.
+    Auth,
+    /// The patient front-door tables.
+    FrontDoor,
+}
+
+impl SchemaOwner {
+    /// The schema's name in an error message.
+    fn schema(self) -> &'static str {
+        match self {
+            Self::Auth => "physician auth schema",
+            Self::FrontDoor => "front-door schema",
+        }
+    }
+}
+
+/// A schema check that did not answer, keeping the database error and what
+/// kind of failure it was. Only a missing table names the migration job; a
+/// pool timeout or lost connection says so instead.
+#[derive(Debug, thiserror::Error)]
+#[error("{} {}", .owner.schema(), schema_failure_reason(.failure))]
+pub struct SchemaError {
+    owner: SchemaOwner,
+    failure: local_product::runtime::DbFailure,
+    #[source]
+    source: sea_orm::DbErr,
+}
+
+impl SchemaError {
+    fn new(owner: SchemaOwner, source: sea_orm::DbErr) -> Self {
+        Self {
+            owner,
+            failure: local_product::runtime::DbFailure::of(&source),
+            source,
+        }
+    }
+
+    /// What kind of database failure stopped the check.
+    pub fn failure(&self) -> local_product::runtime::DbFailure {
+        self.failure
+    }
+
+    /// The database error the check returned.
+    pub fn cause(&self) -> &sea_orm::DbErr {
+        &self.source
+    }
+}
+
+/// Why a physician process, site or worker, could not start.
+#[derive(Debug, thiserror::Error)]
+pub enum StartupError {
+    /// The process's one Postgres pool could not be opened.
+    #[error("physician runtime store unavailable")]
+    RuntimeStore(#[source] sea_orm::DbErr),
+    /// The environment asks for something the process refuses to run.
+    #[error("{0}")]
+    Refused(String),
+}
+
+impl StartupError {
+    /// The database error that stopped startup, when one did.
+    pub fn database(&self) -> Option<&sea_orm::DbErr> {
+        match self {
+            Self::RuntimeStore(source) => Some(source),
+            Self::Refused(_) => None,
+        }
+    }
+}
+
+impl From<String> for StartupError {
+    fn from(reason: String) -> Self {
+        Self::Refused(reason)
+    }
+}
+
+impl From<&str> for StartupError {
+    fn from(reason: &str) -> Self {
+        Self::Refused(reason.to_owned())
+    }
+}
+
+/// What a failed schema check says about the schema: only a missing table
+/// names the migration job.
+fn schema_failure_reason(failure: &local_product::runtime::DbFailure) -> &'static str {
+    use local_product::runtime::DbFailure;
+    match failure {
+        DbFailure::SchemaMissing => "missing; run the migration job",
+        DbFailure::PoolTimeout => "unchecked: no pooled connection came free",
+        DbFailure::Connection => "unchecked: the database connection failed",
+        DbFailure::Query => "check failed",
     }
 }
 
@@ -700,8 +825,28 @@ mod tests {
     #[tokio::test]
     async fn readiness_fails_closed_without_live_stores() {
         assert_eq!(
-            ready(None, None).await,
+            ready(None).await,
             axum::http::StatusCode::SERVICE_UNAVAILABLE
         );
+    }
+
+    #[test]
+    fn a_pool_timeout_does_not_suggest_the_migration_job() {
+        let error = SchemaError::new(
+            SchemaOwner::Auth,
+            sea_orm::DbErr::ConnectionAcquire(sea_orm::ConnAcquireErr::Timeout),
+        );
+        assert_eq!(
+            error.failure(),
+            local_product::runtime::DbFailure::PoolTimeout
+        );
+        let message = error.to_string();
+        assert_eq!(
+            message,
+            "physician auth schema unchecked: no pooled connection came free"
+        );
+        assert!(!message.contains("migration"), "{message}");
+        let source = std::error::Error::source(&error).expect("the database error is the source");
+        assert_eq!(source.to_string(), error.cause().to_string());
     }
 }
