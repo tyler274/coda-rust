@@ -7,10 +7,11 @@ use serde::Deserialize;
 use serde::de::DeserializeOwned;
 use serde_json::{Value, json};
 
-use super::spawner::{Catalog, SpawnError, SpawnSpec, Spawner, Workspace};
+use super::spawner::{SpawnError, SpawnSpec, Spawner, Workspace};
 use super::tools::{
     DEFAULT_LIMIT, DEFAULT_VIEW_LIMIT, DEFAULT_WAIT_SECS, MAX_LIMIT, MAX_WAIT_SECS, Tool,
 };
+use crate::adapter::Catalog;
 use crate::mention::Mention;
 use crate::message::{Control, Draft, Message, MessageKind, Seq};
 use crate::names::{ChannelName, MemberName, NameError};

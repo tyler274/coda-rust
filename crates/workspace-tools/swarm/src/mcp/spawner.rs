@@ -2,6 +2,7 @@ use std::error::Error;
 
 use serde::{Deserialize, Serialize};
 
+use crate::adapter::Catalog;
 use crate::names::{ChannelName, MemberName};
 
 /// Where a new member works: the caller's checkout, or its own worktree or
@@ -24,30 +25,6 @@ pub struct SpawnSpec {
     pub model: Option<String>,
     pub workspace: Workspace,
     pub channels: Vec<ChannelName>,
-}
-
-#[derive(Debug, Clone, PartialEq, Eq, Serialize)]
-pub struct ModelInfo {
-    pub name: String,
-    pub display_name: String,
-    pub notes: String,
-}
-
-/// The models a spawner can run.
-#[derive(Debug, Clone, PartialEq, Eq)]
-pub enum Catalog {
-    /// The spawner runs no model, so any name is recorded as given.
-    Any,
-    Listed(Vec<ModelInfo>),
-}
-
-impl Catalog {
-    pub fn admits(&self, model: &str) -> bool {
-        match self {
-            Self::Any => true,
-            Self::Listed(models) => models.iter().any(|m| m.name == model),
-        }
-    }
 }
 
 #[derive(Debug, thiserror::Error)]

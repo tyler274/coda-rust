@@ -16,9 +16,7 @@ use serde_json::{Value, json};
 
 pub use resources::{APP_MIME_TYPE, Resource};
 pub use server::{Reply, Server, ToolError};
-pub use spawner::{
-    Catalog, ModelInfo, RosterOnlySpawner, SpawnError, SpawnSpec, Spawner, Workspace,
-};
+pub use spawner::{RosterOnlySpawner, SpawnError, SpawnSpec, Spawner, Workspace};
 pub use tools::Tool;
 
 use crate::store::Store;

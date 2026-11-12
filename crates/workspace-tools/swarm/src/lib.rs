@@ -2,6 +2,7 @@
 //! channels. This crate owns their data model, the rules that admit a post,
 //! and storage behind the [`Store`] trait with a locked file backend.
 
+pub mod adapter;
 mod file_store;
 pub mod mcp;
 mod mention;
@@ -10,6 +11,7 @@ mod names;
 pub mod policy;
 mod roster;
 mod store;
+pub mod supervisor;
 
 pub use file_store::FileStore;
 pub use mention::{Mention, parse_mentions};
