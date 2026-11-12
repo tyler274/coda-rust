@@ -301,10 +301,80 @@ mod tests {
                     "{} has no readable presentation",
                     record.candidate_id
                 );
+                let shown = [&view.title, &view.record_kind]
+                    .into_iter()
+                    .chain(view.sections.iter().map(|section| &section.label))
+                    .chain(
+                        [
+                            &view.dates,
+                            &view.sections,
+                            &view.record_details,
+                            &view.attribution,
+                        ]
+                        .into_iter()
+                        .flatten()
+                        .map(|field| &field.text),
+                    )
+                    .map(|text| text.to_lowercase())
+                    .collect::<Vec<_>>()
+                    .join("\n");
+                let resource: Value = serde_json::from_str(&record.content).unwrap();
+                let mut leaves = Vec::new();
+                recorded_values("", &resource, &mut leaves);
+                for (path, value) in leaves {
+                    assert!(
+                        shown.contains(&value.to_lowercase()),
+                        "{} does not show {path} = {value}",
+                        record.candidate_id
+                    );
+                }
                 *totals.entry(record.record_type).or_default() += 1;
             }
         }
         assert_eq!(json!(totals), manifest["totals"]);
+    }
+
+    /// Every clinical value a record carries, with its path. The storage envelope, record
+    /// identifiers in references, encoded attachment bytes, the narrative's markup, and the
+    /// code-system details behind a labelled concept live under Technical details instead. A concept with its
+    /// own text reads as that text; its codings are the terminology behind it.
+    fn recorded_values(path: &str, value: &Value, leaves: &mut Vec<(String, String)>) {
+        match value {
+            Value::String(text) if !text.trim().is_empty() => {
+                leaves.push((path.to_owned(), text.trim().to_owned()));
+            }
+            Value::Number(number) => leaves.push((path.to_owned(), number.to_string())),
+            Value::Bool(flag) => leaves.push((path.to_owned(), flag.to_string())),
+            Value::Array(items) => {
+                for item in items {
+                    recorded_values(path, item, leaves);
+                }
+            }
+            Value::Object(fields) => {
+                let labelled = fields.contains_key("display") || fields.contains_key("text");
+                for (name, inner) in fields {
+                    let technical = matches!(name.as_str(), "id" | "meta" | "resourceType")
+                        && path.is_empty()
+                        || name == "system"
+                        || name == "data" && fields.contains_key("contentType")
+                        || name == "div" && path == "text"
+                        || name == "status" && path == "text"
+                        || name == "reference"
+                        || labelled && matches!(name.as_str(), "code" | "version")
+                        || name == "coding" && fields.contains_key("text")
+                        || name == "code" && fields.contains_key("unit");
+                    if !technical {
+                        let path = if path.is_empty() {
+                            name.clone()
+                        } else {
+                            format!("{path}.{name}")
+                        };
+                        recorded_values(&path, inner, leaves);
+                    }
+                }
+            }
+            _ => {}
+        }
     }
 
     #[tokio::test]
