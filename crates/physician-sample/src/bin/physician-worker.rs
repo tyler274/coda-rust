@@ -1541,6 +1541,7 @@ mod tests {
                 content,
                 readable_parts: vec![],
                 provenance: json!({"native_record": "Observation"}),
+                envelope: None,
             }
         };
         let synthetic = physician_sample::synthetic_chart::SOURCE_ID;
@@ -1599,20 +1600,8 @@ mod tests {
             .record_source(&record(&withdrawn, "ehr"))
             .await
             .unwrap();
-        let empty_pull = local_product::runtime::sources::SourcePull {
-            source_id: "ehr".into(),
-            source_label: "EHR".into(),
-            patient: local_product::physician_sources::SourcePatient {
-                source_patient_id: "patient-1".into(),
-                display_name: "Synthetic Patient".into(),
-                birth_date: None,
-                sex_or_gender: None,
-                medical_record_numbers: vec![],
-            },
-            pulled_at: 1,
-        };
         store
-            .record_chart(&withdrawn, &[], &empty_pull)
+            .withdraw_source(&withdrawn, "Observation/ehr")
             .await
             .unwrap();
         let current = store.sources(&withdrawn).await.unwrap().sources;

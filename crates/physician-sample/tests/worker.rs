@@ -1224,6 +1224,7 @@ async fn skill_reads_run_through_the_worker_and_only_the_answer_is_published() {
         sha256: revision.clone(),
         readable_parts: vec![],
         provenance: serde_json::json!({"native_record":"Observation/result"}),
+        envelope: None,
     };
     running.store.record_source(&record).await.unwrap();
     running.emulator.publish(&delivery).await;

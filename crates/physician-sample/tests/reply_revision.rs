@@ -42,6 +42,7 @@ fn source(id: &str, revision: &str, content: &str) -> SourceRevision {
         content: content.into(),
         readable_parts: vec![],
         provenance: json!({"synthetic": true, "native_record": id}),
+        envelope: None,
     }
 }
 

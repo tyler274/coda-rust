@@ -3,8 +3,17 @@
 //! come from a source adapter, never projection prose or a provider. This
 //! reader neither discovers new records nor claims that a snapshot is a
 //! complete chart.
+/// Declared adapter mapping tables and shared record filing.
+pub mod adapter;
 mod chart;
+/// Shared domain types for chart buckets, filed envelopes, and pull outcomes.
+pub mod types;
 pub use chart::{ChartInputError, ChartRequest, ChartScope, SEARCH_TOOL, read_tool, search_tool};
+pub use types::{
+    Bucket, ChartPullReceipt, DateRole, FailedPart, FiledDate, PullOutcome, ReconnectReceipt,
+    RecordCode, RecordEnvelope, RecordVersion, SourcePullOutput, SourceRecordKind,
+    UnknownBucketError,
+};
 
 use async_trait::async_trait;
 use serde::{Deserialize, Serialize};
@@ -55,6 +64,9 @@ pub struct SourceRevision {
     pub readable_parts: Vec<ReadablePart>,
     /// Source-owned provenance, including native record identity.
     pub provenance: Value,
+    /// Shared record envelope produced by the source adapter's declared mapping table.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub envelope: Option<RecordEnvelope>,
 }
 impl SourceRevision {
     /// Refuses corrupt or unidentified source evidence.
@@ -117,6 +129,32 @@ pub trait PatientSource: Send + Sync {
         patient: &SourcePatient,
         workspace: &str,
     ) -> Result<Vec<SourceRevision>, String>;
+
+    /// Pulls one patient's identity and records in a single connector operation,
+    /// distinguishing complete pulls, partial pulls, whole failures, and lapsed access.
+    async fn pull_patient(
+        &self,
+        _practice_id: &str,
+        source_patient_id: &str,
+        workspace: &str,
+    ) -> SourcePullOutput {
+        match self.patient(source_patient_id).await {
+            Ok(patient) => match self.records(&patient, workspace).await {
+                Ok(records) => SourcePullOutput::Complete { patient, records },
+                Err(reason) => SourcePullOutput::Failed { reason },
+            },
+            Err(reason) => SourcePullOutput::Failed { reason },
+        }
+    }
+
+    /// Reconnects a practice's access to this source when credentials have lapsed.
+    async fn reconnect(&self, practice_id: &str, now: i64) -> Result<ReconnectReceipt, String> {
+        Ok(ReconnectReceipt {
+            source_id: self.source_id().to_owned(),
+            practice_id: practice_id.to_owned(),
+            reconnected_at: now,
+        })
+    }
 }
 
 /// The stable workspace of one source patient. It carries no patient
@@ -407,6 +445,7 @@ mod tests {
             sha256: crate::sha256_hex(content.as_bytes()),
             readable_parts: vec![],
             provenance: json!({"native_record": "lab"}),
+            envelope: None,
         }
     }
 

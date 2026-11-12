@@ -10,29 +10,14 @@ use std::fs;
 use std::path::{Path, PathBuf};
 
 use async_trait::async_trait;
-use base64::Engine as _;
 use local_product::physician_sources::{
-    MedicalRecordNumber, PatientSource, ReadablePart, RecordDate, SourcePatient, SourceRevision,
+    MedicalRecordNumber, PatientSource, SourcePatient, SourceRevision,
 };
-use local_product::sha256_hex;
-use serde_json::{Value, json};
+use serde_json::Value;
 
 /// Identity of the synthetic chart adapter, including developer-plan admission.
 pub const SOURCE_ID: &str = "synthetic-charts";
 const SOURCE_LABEL: &str = "Synthetic chart";
-
-/// The fields that date a record, in the source's names.
-const DATE_FIELDS: [&str; 9] = [
-    "abatementDateTime",
-    "authoredOn",
-    "date",
-    "effectiveDateTime",
-    "issued",
-    "occurrenceDateTime",
-    "onsetDateTime",
-    "performedDateTime",
-    "recordedDate",
-];
 
 /// A built patient bank on disk.
 pub struct SyntheticCharts {
@@ -102,7 +87,7 @@ impl PatientSource for SyntheticCharts {
         for file in files {
             for line in read(&file)?.lines() {
                 records.push(
-                    source_revision(workspace, line)
+                    crate::synthetic_chart_fhir::source_revision(workspace, SOURCE_ID, line)
                         .map_err(|error| format!("{}: {error}", file.display()))?,
                 );
             }
@@ -145,74 +130,10 @@ fn source_patient(source_patient_id: String, line: &str) -> Result<SourcePatient
     })
 }
 
-fn source_revision(workspace: &str, line: &str) -> Result<SourceRevision, String> {
-    let resource: Value = serde_json::from_str(line).map_err(|error| error.to_string())?;
-    let record_type = resource["resourceType"]
-        .as_str()
-        .ok_or("record has no resourceType")?;
-    let id = resource["id"].as_str().ok_or("record has no id")?;
-    let candidate_id = format!("{record_type}/{id}");
-    let sha256 = sha256_hex(line.as_bytes());
-    let source = SourceRevision {
-        workspace: workspace.to_owned(),
-        source_id: SOURCE_ID.to_owned(),
-        candidate_id: candidate_id.clone(),
-        revision: sha256.clone(),
-        record_type: record_type.to_owned(),
-        dates: record_dates(&resource),
-        content: line.to_owned(),
-        sha256,
-        readable_parts: readable_parts(&resource)?,
-        provenance: json!({"native_record": candidate_id}),
-    };
-    source.validate()?;
-    Ok(source)
-}
-
-fn record_dates(resource: &Value) -> Vec<RecordDate> {
-    let date = |name: &str, value: &Value| {
-        value.as_str().map(|value| RecordDate {
-            name: name.to_owned(),
-            value: value.to_owned(),
-        })
-    };
-    DATE_FIELDS
-        .iter()
-        .filter_map(|name| date(name, &resource[name]))
-        .chain(date("period.start", &resource["period"]["start"]))
-        .chain(date("period.end", &resource["period"]["end"]))
-        .chain(date("meta.lastUpdated", &resource["meta"]["lastUpdated"]))
-        .collect()
-}
-
-/// The text of the record's attachments, which the exact record holds encoded.
-fn readable_parts(resource: &Value) -> Result<Vec<ReadablePart>, String> {
-    let documents = resource["content"].as_array().into_iter().flatten();
-    let forms = resource["presentedForm"].as_array().into_iter().flatten();
-    documents
-        .map(|document| ("attachment", &document["attachment"]))
-        .chain(forms.map(|form| ("presentedForm", form)))
-        .map(|(label, attachment)| {
-            let content_type = attachment["contentType"].as_str().unwrap_or_default();
-            if !content_type.starts_with("text/") {
-                return Err(format!("{label} is not text: {content_type}"));
-            }
-            let data = attachment["data"].as_str().unwrap_or_default();
-            let bytes = base64::engine::general_purpose::STANDARD
-                .decode(data)
-                .map_err(|error| format!("{label}: {error}"))?;
-            let text = String::from_utf8(bytes).map_err(|error| format!("{label}: {error}"))?;
-            Ok(ReadablePart {
-                label: label.to_owned(),
-                text,
-            })
-        })
-        .collect()
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;
+    use serde_json::json;
 
     const PATIENT: &str = r#"{"resourceType":"Patient","id":"MRN1","meta":{"lastUpdated":"2026-08-27T00:00:00+00:00"},"identifier":[{"system":"urn:mrn","value":"1"}],"name":[{"family":"Louis","given":["Mary","Ann"]}],"gender":"female","birthDate":"1972-03-18"}"#;
     const NOTE: &str = r#"{"resourceType":"DocumentReference","id":"note-1","date":"2026-08-12T12:05:00+00:00","content":[{"attachment":{"contentType":"text/plain; charset=utf-8","data":"U2VlbiBpbiBjbGluaWMu"}}]}"#;

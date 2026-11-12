@@ -13,9 +13,12 @@ use sha2::{Digest, Sha256};
 pub mod chatgpt;
 /// Hosted physician chat instructions and the `skill_view` tool.
 pub mod physician_chat;
+/// Shared source record format, adapter mappings, and chart-reading tools.
 pub mod physician_sources;
 /// Physician-owned durable conversations and execution authority.
 pub mod runtime;
+/// Practice-scoped source patient links, pull status, and check/reconnect operations.
+pub mod source_status;
 
 /// How this process runs a model. A process without a selection does not run models.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]

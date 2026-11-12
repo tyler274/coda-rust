@@ -223,6 +223,102 @@ pub(super) mod source_pull {
         pub patient: Json,
         /// The practice clock's Unix second when the pull finished.
         pub pulled_at: i64,
+        /// Previously saved candidate IDs from this source absent on this pull.
+        #[sea_orm(column_type = "JsonBinary")]
+        pub missing_candidates: Json,
+    }
+
+    #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
+    pub enum Relation {}
+
+    impl ActiveModelBehavior for ActiveModel {}
+}
+
+/// Binds each patient workspace to its single owning practice.
+#[allow(dead_code, reason = "queried by runtime::source_status")]
+pub(super) mod workspace_practice {
+    use sea_orm::entity::prelude::*;
+
+    #[derive(Clone, Debug, PartialEq, Eq, DeriveEntityModel)]
+    #[sea_orm(table_name = "physician_runtime_workspace_practices")]
+    pub struct Model {
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub workspace: String,
+        #[sea_orm(column_type = "Text")]
+        pub practice: String,
+    }
+
+    #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
+    pub enum Relation {}
+
+    impl ActiveModelBehavior for ActiveModel {}
+}
+
+/// Binds one source patient within a practice to one Chords workspace across pulls.
+#[allow(dead_code, reason = "queried by runtime::source_status")]
+pub(super) mod source_patient_link {
+    use sea_orm::entity::prelude::*;
+
+    #[derive(Clone, Debug, PartialEq, Eq, DeriveEntityModel)]
+    #[sea_orm(table_name = "physician_runtime_source_patient_links")]
+    pub struct Model {
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub practice: String,
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub source_id: String,
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub source_patient_id: String,
+        #[sea_orm(column_type = "Text")]
+        pub workspace: String,
+        pub linked_at: i64,
+    }
+
+    #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
+    pub enum Relation {}
+
+    impl ActiveModelBehavior for ActiveModel {}
+}
+
+/// Practice-level connection access standing for one source adapter.
+#[allow(dead_code, reason = "queried by runtime::source_status")]
+pub(super) mod practice_source_access {
+    use sea_orm::entity::prelude::*;
+
+    #[derive(Clone, Debug, PartialEq, Eq, DeriveEntityModel)]
+    #[sea_orm(table_name = "physician_runtime_practice_source_access")]
+    pub struct Model {
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub practice: String,
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub source_id: String,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub access: Json,
+        pub updated_at: i64,
+    }
+
+    #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
+    pub enum Relation {}
+
+    impl ActiveModelBehavior for ActiveModel {}
+}
+
+/// Per-patient source pull status, retaining `last_good_read_at` across failures.
+#[allow(dead_code, reason = "queried by runtime::source_status")]
+pub(super) mod patient_source_status {
+    use sea_orm::entity::prelude::*;
+
+    #[derive(Clone, Debug, PartialEq, Eq, DeriveEntityModel)]
+    #[sea_orm(table_name = "physician_runtime_patient_source_status")]
+    pub struct Model {
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub practice: String,
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub workspace: String,
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub source_id: String,
+        pub last_good_read_at: Option<i64>,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub attempt: Option<Json>,
     }
 
     #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]

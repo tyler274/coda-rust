@@ -319,6 +319,7 @@ impl Store {
             source_label: Set(pull.source_label.clone()),
             patient: Set(patient),
             pulled_at: Set(pull.pulled_at),
+            missing_candidates: Set(serde_json::json!([])),
         })
         .on_conflict(
             OnConflict::columns([
@@ -329,6 +330,7 @@ impl Store {
                 source_pull::Column::SourceLabel,
                 source_pull::Column::Patient,
                 source_pull::Column::PulledAt,
+                source_pull::Column::MissingCandidates,
             ])
             .to_owned(),
         )
@@ -336,6 +338,48 @@ impl Store {
         .await?;
         tx.commit().await?;
         Ok(changed)
+    }
+
+    /// Explicitly withdraws one candidate observation from `workspace` (such as
+    /// after wrong-patient link correction or an explicit source withdrawal),
+    /// appending a null-revision observation and advancing the workspace version.
+    /// Withdrawing an absent or already-withdrawn candidate changes nothing.
+    pub async fn withdraw_source(&self, workspace: &str, candidate: &str) -> Result<u64, DbErr> {
+        if workspace.trim().is_empty() || candidate.trim().is_empty() {
+            return Err(error("empty source identity"));
+        }
+        let tx = self.db.begin().await?;
+        ensure_version(&tx, workspace).await?;
+        let row = source_version::Entity::find_by_id(workspace.to_owned())
+            .lock_exclusive()
+            .one(&tx)
+            .await?
+            .ok_or_else(|| error("missing source version"))?;
+        let version = version_of(row.version)?;
+        let active = latest(&tx, workspace, version, Some(&[candidate]))
+            .await?
+            .into_iter()
+            .next()
+            .and_then(|entry| entry.revision)
+            .is_some();
+        if !active {
+            tx.commit().await?;
+            return Ok(version);
+        }
+        let next = version + 1;
+        source::Entity::insert(source::ActiveModel {
+            workspace: Set(workspace.into()),
+            candidate: Set(candidate.into()),
+            observed_at_version: Set(next as i64),
+            revision: Set(None),
+        })
+        .exec_without_returning(&tx)
+        .await?;
+        let mut bumped: source_version::ActiveModel = row.into();
+        bumped.version = Set(next as i64);
+        bumped.update(&tx).await?;
+        tx.commit().await?;
+        Ok(next)
     }
 
     /// Each source's last pull for a workspace, ordered by source.
