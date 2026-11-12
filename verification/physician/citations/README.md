@@ -16,7 +16,7 @@ How Coda cites the sources behind its work, how a citation opens its source, and
 - **Page:** one page of a scan or fax that has no text to quote, named by its number.
 - **Valid:** a citation is valid when its label names a version that is delivered and its place is delivered too: the passage is in the delivered text, or the page is one the harness delivered.
 - **Finish:** what Coda hands in to end the work. It has three typed parts: the work, with its labels; the place of each citation, or the statement that the work cites no source; and the Basis and limitations.
-- **Complete:** a finish is complete when it has the work and the Basis and limitations, and either every citation in the work is valid or the work has no citation and the finish states that it cites none.
+- **Complete:** a finish is complete when it has the work and the Basis and limitations, every citation in the work is valid, and it states that the work cites no source exactly when the work has no citation.
 - **Coda's description:** Coda's short account of a source, used only when nothing from the source itself can be shown.
 - **Panel:** the side panel that shows a source as a readable record, beside the work.
 - **Layout:** a saved arrangement for one source and one record type. It places the record's fields and never holds a value.
@@ -33,7 +33,7 @@ One piece of work, as Coda writes it:
 | Working | Coda starts from a fresh context | Working: nothing read before is delivered until Coda reads it again |
 | Working | Coda hands in a complete finish | Finished: the work is saved with its citations, or with none, and with its Basis |
 | Working | Coda hands in a finish that is not complete, and it lacks the work or the Basis, or fewer than two finishes of this work were refused | Working: the finish is refused, nothing is saved, and Coda is told what is wrong |
-| Working | Coda hands in a finish that has the work and the Basis but a citation that is not valid, after two finishes of this work were refused | Finished: the work is saved with its valid citations and its Basis, and each citation that is not valid is dropped |
+| Working | Coda hands in a finish that has the work and the Basis but is not complete, after two finishes of this work were refused | Finished: the work is saved with its valid citations and its Basis, and each citation that is not valid is dropped |
 | Working | the work is stopped, is cut off, or can't be finished | Not finished: no citations and no Basis are saved |
 | Not finished | the work continues | Working |
 
@@ -66,9 +66,9 @@ How the panel reads a record:
 
 1. Every citation in finished work names a version and a place that were both delivered when Coda handed in the finish.
 2. Finished work has exactly one Basis and limitations.
-3. Finished work has no citation only when Coda stated that it cites no source or every citation Coda handed in was dropped, and it never has both a citation and that statement.
+3. Work is saved from a finish that is not complete only after two finishes of that work were refused.
 4. Work that was stopped, was cut off or couldn't be finished has no citations and no Basis.
-5. A refused finish saves nothing, and at most two finishes of one piece of work are refused for a citation that is not valid.
+5. A refused finish saves nothing. A finish that lacks the work or the Basis is always refused, and any other finish that is not complete is refused at most twice for one piece of work.
 6. The panel shows a source's content only while you may access its patient and the content is not withheld.
 7. The panel shows only the citation you chose last: an answer for an earlier citation never replaces it.
 8. When the panel shows a source, it is the version its citation names, and a highlight is at the place its citation names and nowhere else.
