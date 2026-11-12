@@ -108,12 +108,12 @@ Signing in, staying signed in and signing out of a phone, with their model, live
 3. They let Duet read Apple Health on iPhone or Health Connect on Android. Wearables linked to Apple Health come through HealthKit, with one instruction to turn that on in the wearable's app.
 4. Duet imports all the available history and never calls an import complete when it isn't. One unreadable record fails alone, with its reason, and the rest publish. A part that never becomes readable ends the import as partial, with the rest usable and the next daily refresh trying again.
 5. The person browses You. Records show as the source sent them, including entered-in-error or cancelled, and Duet explains the status. Only exact duplicates are removed; a likely duplicate from two sources shows in the review sheet as "looks like the same result as …", and the person keeps one or both. A condition shown as current isn't also shown as past.
-6. **Correction at the source.** A correction or deletion at the source carries through to You. The person's own wording or corrections are dated and attributed and never silently replace the imported original.
+6. **Correction at the source.** A correction or deletion at the source carries through to You. Records from a source change only at the source. The person cannot edit or delete them in You.
 7. **Daily refresh.** Each portal refreshes daily, and one portal failing doesn't block the others.
 8. **A connection stops working.** The source in You shows "Couldn't update since <day>" with Reconnect. There's no separate alert.
 9. **Missing on a fetch.** A record missing from one fetch, or an empty or failed read, is never treated as a deletion.
 10. **Deleted in Apple Health.** Duet recalculates that day's total and drops it from current evidence if no readings remain. Earlier versions stay for sends that already carry them.
-11. **Disconnect and reconnect.** The person can always disconnect, even while newer Terms wait. Disconnecting stops new imports and keeps the imported history, which the person can still delete, or they can delete the account. Reconnecting the same source carries on with that history.
+11. **Disconnect and reconnect.** The person can always disconnect, even while newer Terms wait. Disconnecting stops new imports and keeps the imported history. Reconnecting the same source carries on with that history.
 12. **A vendor is switched off.** It leaves search and blocks new sign-ins only. Existing connections stay connected and refreshing, and disconnect always works.
 13. **Restart while uploading.** Phone uploads not yet sent survive the restart.
 14. **Health Connect.** Duet asks for every Health Connect data type Google approves, the person grants each in Google's permission sheet, and Duet judges what's useful. Unsupported data and background limits are stated to the person.
@@ -234,6 +234,7 @@ How it is built today:
 - An activity, reasoning or tool-trace UI.
 - Caregiver access.
 - Manual lab, measurement and demographics entry.
+- The person editing or deleting records that came from a source.
 - Technical record inspectors.
 - A universal medical record.
 - Genome data.
