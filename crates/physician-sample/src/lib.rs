@@ -28,6 +28,7 @@ pub mod patients;
 pub mod queue;
 pub mod rehearsal;
 mod reply;
+pub mod schedule;
 pub mod synthetic_chart;
 mod synthetic_reply;
 mod timestamp;
@@ -194,6 +195,7 @@ pub fn durable_site_with_feed(
     bus: std::sync::Arc<dyn physician_bus::Bus>,
     feed: std::sync::Arc<SampleFeed>,
 ) -> Router {
+    let runtime_store = chat.store.clone();
     let live = live::Live::new(std::sync::Arc::clone(&bus), chat);
     site()
         .route("/commands", post(live::submit))
@@ -220,6 +222,7 @@ pub fn durable_site_with_feed(
             get(live::events).with_state(bus),
         )
         // The shared workspace route lists this server's chats through it.
+        .layer(axum::Extension(runtime_store))
         .layer(axum::Extension(std::sync::Arc::clone(&live)))
         .layer(axum::Extension(feed))
         .layer(axum::Extension(care::ConnectedCare::new()))
@@ -233,7 +236,8 @@ where
     Router::new()
         .route("/health", get(|| async { Json(json!({"status": "ok"})) }))
         .route("/today", get(today))
-        .route("/practice-day", get(practice_day))
+        .route("/practice-day", get(schedule::practice_day))
+        .route("/director/schedule/sync", post(schedule::sync_route))
         .route("/updates", get(updates))
         .route("/recent-conversations", get(recent_conversations))
         .route("/patient-workspaces", get(patient_list))
@@ -615,7 +619,8 @@ async fn site_from_env(
         ),
         _ => None,
     };
-    let (base, chat) = if let (Some((topic, skills)), Some(store)) = (durable, runtime.clone()) {
+    let (mut base, chat) = if let (Some((topic, skills)), Some(store)) = (durable, runtime.clone())
+    {
         let settings: Vec<_> = local_product::MODEL_SETTING_KEYS
             .into_iter()
             .filter_map(|key| configured(&get, key).map(|value| (key, value)))
@@ -649,6 +654,14 @@ async fn site_from_env(
     } else {
         (router(), None)
     };
+    if let Some(ref store) = runtime {
+        base = base.layer(axum::Extension(store.clone()));
+    }
+    if let Some(calendar) = schedule::SyntheticBankCalendar::from_env(&get) {
+        let source: std::sync::Arc<dyn local_product::runtime::schedule::ScheduleSource> =
+            std::sync::Arc::new(calendar);
+        base = base.layer(schedule::schedule_source_layer(source));
+    }
     let postgres = database.as_deref().zip(runtime);
     let router =
         auth::authed_router_with_bus(base, bus, memory_patients, postgres, rehearsal).await;
@@ -908,24 +921,6 @@ async fn recent_conversations(
         None => Vec::new(),
     };
     Json(json!({ "conversations": conversations })).into_response()
-}
-
-/// The practice has no calendar source yet, so the day says so.
-async fn practice_day(
-    axum::Extension(connected): axum::Extension<care::ConnectedCare>,
-    request: Request<Body>,
-) -> Response {
-    let Ok(now) = connected.practice_now(request.extensions()).await else {
-        return StatusCode::SERVICE_UNAVAILABLE.into_response();
-    };
-    Json(json!({
-        "date": practice_date(&now),
-        "time_zone": patients::PRACTICE_TIME_ZONE,
-        "current_time": now,
-        "source_state": { "state": "absent" },
-        "visits": [],
-    }))
-    .into_response()
 }
 
 async fn patient_list(

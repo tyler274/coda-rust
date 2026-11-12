@@ -54,6 +54,8 @@ pub mod receipt;
 mod records;
 /// Hosted physician reply drafts and their revision work.
 pub mod reply;
+/// Practice schedule reads, patient matching, and versioned saved appointments.
+pub mod schedule;
 /// Versioned patient source observations: a stand-in source owner.
 pub mod sources;
 #[cfg(test)]
