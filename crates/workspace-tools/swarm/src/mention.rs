@@ -1,4 +1,4 @@
-use crate::names::MemberName;
+use crate::names::{MemberName, is_member_char};
 
 /// One `@` reference found in post text. Tokens are lowercased and kept as
 /// text because a post may name someone who is not on the roster.
@@ -19,8 +19,8 @@ impl Mention {
         match self {
             Self::All => true,
             Self::Name(token) => {
-                let name = member.as_str();
-                name == token
+                let name = member.as_str().to_lowercase();
+                name == *token
                     || name
                         .strip_prefix(token.as_str())
                         .and_then(|rest| rest.strip_prefix('-'))
@@ -33,10 +33,6 @@ impl Mention {
     }
 }
 
-fn is_token_char(c: char) -> bool {
-    c.is_ascii_alphanumeric() || c == '-' || c == '_'
-}
-
 /// Finds mentions in post text. A mention starts at a word boundary and runs
 /// until the first character that cannot be part of a name, so `a@b` and
 /// `@bob_x` never mention `bob`. Matching is case-insensitive.
@@ -44,7 +40,7 @@ pub fn parse_mentions(text: &str) -> Vec<Mention> {
     let mut mentions = Vec::new();
     let mut previous: Option<char> = None;
     for (index, c) in text.char_indices() {
-        let at_boundary = previous.is_none_or(|p| !is_token_char(p));
+        let at_boundary = previous.is_none_or(|p| !is_member_char(p));
         previous = Some(c);
         if c != '@' || !at_boundary {
             continue;
@@ -54,11 +50,13 @@ pub fn parse_mentions(text: &str) -> Vec<Mention> {
             Some(body) => (true, body),
             None => (false, rest),
         };
-        let token_len = body.find(|c: char| !is_token_char(c)).unwrap_or(body.len());
+        let token_len = body
+            .find(|c: char| !is_member_char(c))
+            .unwrap_or(body.len());
         if token_len == 0 {
             continue;
         }
-        let token = body[..token_len].to_ascii_lowercase();
+        let token = body[..token_len].to_lowercase();
         let mention = match (is_channel, token.as_str()) {
             (true, _) => Mention::Channel(token),
             (false, "all") => Mention::All,
@@ -110,5 +108,14 @@ mod tests {
         assert!(!scout.names(&name("scout-x")));
         assert!(!Mention::Name("scout-1".into()).names(&name("scout-12")));
         assert!(Mention::All.names(&name("anyone")));
+    }
+
+    #[test]
+    fn mentions_cover_unicode_names_and_ignore_case() {
+        assert_eq!(
+            parse_mentions("ping @研究員 and @Bob."),
+            vec![Mention::Name("研究員".into()), Mention::Name("bob".into())]
+        );
+        assert!(Mention::Name("bob".into()).names(&name("Bob")));
     }
 }

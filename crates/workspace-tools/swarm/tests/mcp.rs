@@ -331,3 +331,47 @@ fn workers_manage_only_the_helpers_they_added() {
     let refused = scout.refused("post_message", json!({ "text": "still here?" }));
     assert!(refused.contains("killed"), "{refused}");
 }
+
+#[test]
+fn channel_changes_are_board_rows_every_process_replays() {
+    let dir = tempfile::tempdir().expect("tempdir");
+    let mut lead = Client::start(dir.path(), "lead", true);
+    let created = lead.ok(
+        "swarm",
+        json!({ "action": "channel", "op": "create", "channel": "ops", "topic": "deploys" }),
+    );
+    assert_eq!(created["seq"], 1);
+    lead.ok(
+        "swarm",
+        json!({ "action": "add", "name": "scout", "brief": "deploy", "model": "m1", "channels": ["ops"] }),
+    );
+
+    let mut scout = Client::start(dir.path(), "scout", false);
+    let posted = scout.ok("post_message", json!({ "text": "deploying" }));
+    assert_eq!(
+        posted["channel"], "ops",
+        "home channel comes from the replayed subscription"
+    );
+    let rows: Vec<Value> = std::fs::read_to_string(dir.path().join("board.jsonl"))
+        .expect("board")
+        .lines()
+        .map(|line| serde_json::from_str(line).expect("row"))
+        .collect();
+    assert_eq!(rows[0]["control"]["op"], "create");
+    assert_eq!(rows[1]["control"]["op"], "subscribe");
+    assert!(rows[0].get("kind").is_none());
+
+    lead.ok(
+        "swarm",
+        json!({ "action": "channel", "op": "archive", "channel": "ops" }),
+    );
+    let refused = scout.refused("post_message", json!({ "text": "late", "channel": "ops" }));
+    assert!(refused.contains("archived"), "{refused}");
+    let fallback = scout.ok("post_message", json!({ "text": "back on main" }));
+    assert_eq!(fallback["channel"], "main");
+    let refused = lead.refused(
+        "swarm",
+        json!({ "action": "channel", "op": "create", "channel": "Ops" }),
+    );
+    assert!(refused.contains("invalid arguments"), "{refused}");
+}

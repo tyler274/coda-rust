@@ -2,52 +2,73 @@ use std::fmt;
 use std::num::NonZeroUsize;
 
 use serde::{Deserialize, Serialize};
+use unicode_general_category::{GeneralCategory, get_general_category};
 
-use crate::policy::{MAX_CHANNEL_NAME_LEN, MAX_MEMBER_NAME_LEN, RESERVED_MEMBER_NAMES};
+use crate::policy::{MAX_CHANNEL_NAME_LEN, MAX_MEMBER_NAME_LEN, RESERVED_MEMBER_NAME};
 
 #[derive(Debug, Clone, PartialEq, Eq, thiserror::Error)]
 pub enum NameError {
     #[error("name is empty")]
     Empty,
-    #[error("name has {len} characters; the limit is {max}")]
+    #[error("name is {len} bytes; the limit is {max}")]
     TooLong { len: usize, max: usize },
-    #[error("name must start with a lowercase letter")]
-    BadStart,
-    #[error("name contains {0:?}; only a-z, 0-9 and '-' are allowed")]
-    BadChar(char),
+    #[error("channel name must start with a lowercase letter")]
+    BadChannelStart,
+    #[error("channel name contains {0:?}; only a-z, 0-9 and '-' are allowed")]
+    BadChannelChar(char),
+    #[error("member name must start with a letter or digit")]
+    BadMemberStart,
+    #[error("member name contains {0:?}; only letters, digits, '-' and '_' are allowed")]
+    BadMemberChar(char),
     #[error("{0:?} is reserved")]
     Reserved(String),
 }
 
-fn validate(text: &str, max: usize) -> Result<(), NameError> {
-    let Some(first) = text.chars().next() else {
-        return Err(NameError::Empty);
-    };
-    let len = text.chars().count();
-    if len > max {
-        return Err(NameError::TooLong { len, max });
-    }
-    if !first.is_ascii_lowercase() {
-        return Err(NameError::BadStart);
-    }
-    match text
-        .chars()
-        .find(|c| !(c.is_ascii_lowercase() || c.is_ascii_digit() || *c == '-'))
-    {
-        Some(bad) => Err(NameError::BadChar(bad)),
-        None => Ok(()),
-    }
+fn is_letter_or_digit(c: char) -> bool {
+    matches!(
+        get_general_category(c),
+        GeneralCategory::UppercaseLetter
+            | GeneralCategory::LowercaseLetter
+            | GeneralCategory::TitlecaseLetter
+            | GeneralCategory::ModifierLetter
+            | GeneralCategory::OtherLetter
+            | GeneralCategory::DecimalNumber
+    )
 }
 
-/// A roster member's name: lowercase, starting with a letter, `[a-z0-9-]`.
+/// A character a member name may contain: any Unicode letter or decimal
+/// digit, `-` or `_`. Mentions end at the first character that is not one.
+pub(crate) fn is_member_char(c: char) -> bool {
+    is_letter_or_digit(c) || c == '-' || c == '_'
+}
+
+fn check_len(text: &str, max: usize) -> Result<char, NameError> {
+    let first = text.chars().next().ok_or(NameError::Empty)?;
+    if text.len() > max {
+        return Err(NameError::TooLong {
+            len: text.len(),
+            max,
+        });
+    }
+    Ok(first)
+}
+
+/// A roster member's name: 1 to 32 bytes of letters, digits, `-` and `_`,
+/// starting with a letter or digit.
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize)]
 #[serde(try_from = "String", into = "String")]
 pub struct MemberName(String);
 
 impl MemberName {
     pub fn parse(text: &str) -> Result<Self, NameError> {
-        validate(text, MAX_MEMBER_NAME_LEN)?;
-        if RESERVED_MEMBER_NAMES.contains(&text) {
+        let first = check_len(text, MAX_MEMBER_NAME_LEN)?;
+        if !is_letter_or_digit(first) {
+            return Err(NameError::BadMemberStart);
+        }
+        if let Some(bad) = text.chars().find(|c| !is_member_char(*c)) {
+            return Err(NameError::BadMemberChar(bad));
+        }
+        if text == RESERVED_MEMBER_NAME {
             return Err(NameError::Reserved(text.to_owned()));
         }
         Ok(Self(text.to_owned()))
@@ -96,7 +117,14 @@ pub struct ChannelName(String);
 
 impl ChannelName {
     pub fn parse(text: &str) -> Result<Self, NameError> {
-        validate(text, MAX_CHANNEL_NAME_LEN)?;
+        let first = check_len(text, MAX_CHANNEL_NAME_LEN)?;
+        if !first.is_ascii_lowercase() {
+            return Err(NameError::BadChannelStart);
+        }
+        let allowed = |c: &char| c.is_ascii_lowercase() || c.is_ascii_digit() || *c == '-';
+        if let Some(bad) = text.chars().find(|c| !allowed(c)) {
+            return Err(NameError::BadChannelChar(bad));
+        }
         Ok(Self(text.to_owned()))
     }
 
@@ -141,12 +169,32 @@ mod tests {
     }
 
     #[test]
-    fn member_names_follow_the_charset() {
-        assert!(MemberName::parse("scout-2").is_ok());
+    fn member_names_accept_unicode_letters_digits_dash_and_underscore() {
+        for ok in [
+            "scout-2",
+            "a_b",
+            "Bob",
+            "2x",
+            "ā",
+            "研究員",
+            "x".repeat(32).as_str(),
+        ] {
+            assert!(MemberName::parse(ok).is_ok(), "{ok:?} is valid");
+        }
         assert_eq!(MemberName::parse(""), Err(NameError::Empty));
-        assert_eq!(MemberName::parse("2x"), Err(NameError::BadStart));
-        assert_eq!(MemberName::parse("Bob"), Err(NameError::BadStart));
-        assert_eq!(MemberName::parse("a_b"), Err(NameError::BadChar('_')));
+        assert_eq!(
+            MemberName::parse(&"x".repeat(33)),
+            Err(NameError::TooLong { len: 33, max: 32 })
+        );
+        assert_eq!(
+            MemberName::parse(&"研".repeat(11)),
+            Err(NameError::TooLong { len: 33, max: 32 })
+        );
+        assert_eq!(MemberName::parse("-x"), Err(NameError::BadMemberStart));
+        assert_eq!(MemberName::parse("_x"), Err(NameError::BadMemberStart));
+        assert_eq!(MemberName::parse("a b"), Err(NameError::BadMemberChar(' ')));
+        assert_eq!(MemberName::parse("a.b"), Err(NameError::BadMemberChar('.')));
+        assert_eq!(MemberName::parse("a@b"), Err(NameError::BadMemberChar('@')));
         assert_eq!(
             MemberName::parse("all"),
             Err(NameError::Reserved("all".into()))
@@ -175,12 +223,26 @@ mod tests {
     }
 
     #[test]
-    fn channel_names_have_at_most_24_characters() {
-        assert!(ChannelName::parse(&"c".repeat(24)).is_ok());
-        assert!(matches!(
+    fn channel_names_match_lowercase_start_then_a_z_digits_dash() {
+        for ok in ["c", "ops-2", "a1-", "c".repeat(24).as_str()] {
+            assert!(ChannelName::parse(ok).is_ok(), "{ok:?} is valid");
+        }
+        assert_eq!(
             ChannelName::parse(&"c".repeat(25)),
             Err(NameError::TooLong { len: 25, max: 24 })
-        ));
+        );
+        assert_eq!(ChannelName::parse(""), Err(NameError::Empty));
+        assert_eq!(ChannelName::parse("1ops"), Err(NameError::BadChannelStart));
+        assert_eq!(ChannelName::parse("-ops"), Err(NameError::BadChannelStart));
+        assert_eq!(ChannelName::parse("Ops"), Err(NameError::BadChannelStart));
+        assert_eq!(
+            ChannelName::parse("o_ps"),
+            Err(NameError::BadChannelChar('_'))
+        );
+        assert_eq!(
+            ChannelName::parse("oPs"),
+            Err(NameError::BadChannelChar('P'))
+        );
         assert!(ChannelName::parse("main").expect("valid").is_main());
     }
 

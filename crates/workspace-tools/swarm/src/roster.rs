@@ -3,7 +3,7 @@ use std::collections::BTreeMap;
 use serde::{Deserialize, Serialize};
 
 use crate::mention::Mention;
-use crate::message::{Message, Seq};
+use crate::message::{Body, Control, Message, Seq};
 use crate::names::{ChannelName, MemberName};
 use crate::policy::{MAX_TOPIC_LEN, RESERVED_CHANNEL_NAMES};
 
@@ -58,11 +58,16 @@ pub struct Member {
     pub state: MemberState,
     pub model: Option<String>,
     /// Subscribed channels besides `main`; the first active one is home.
-    #[serde(default)]
-    pub channels: Vec<ChannelName>,
+    /// Replayed from the board's control rows, never stored here.
+    #[serde(skip)]
+    channels: Vec<ChannelName>,
     pub added_by: Option<MemberName>,
     #[serde(default)]
     pub last_read_seq: Seq,
+    /// The head at which a stop-time intervention last fired for this
+    /// member; see [`Member::take_park_block`].
+    #[serde(default)]
+    pub last_park_blocked_seq: Seq,
 }
 
 impl Member {
@@ -74,7 +79,23 @@ impl Member {
             channels: Vec::new(),
             added_by,
             last_read_seq: Seq::ZERO,
+            last_park_blocked_seq: Seq::ZERO,
         }
+    }
+
+    pub fn channels(&self) -> &[ChannelName] {
+        &self.channels
+    }
+
+    /// Claims the one stop-time intervention (blocking a stop, or ringing
+    /// itself on stop) allowed at `head`. Returns false when one already
+    /// fired at this head, so the member may stop.
+    pub fn take_park_block(&mut self, head: Seq) -> bool {
+        if head <= self.last_park_blocked_seq {
+            return false;
+        }
+        self.last_park_blocked_seq = head;
+        true
     }
 
     /// Moves the read cursor forward; it never moves back.
@@ -157,20 +178,23 @@ pub enum RosterError {
     Exists(MemberName),
     #[error("member {0} does not exist")]
     Unknown(MemberName),
+    #[error("{0} has been killed")]
+    Killed(MemberName),
     #[error(transparent)]
     Channel(#[from] ChannelError),
 }
 
-/// The contents of `members.json`: the swarm title, its members and the
-/// channels besides `main`, which always exists and is never stored.
+/// The swarm title and its members, stored in `members.json`, plus channel
+/// state replayed from the board's control rows. `main` always exists and
+/// is never recorded.
 #[derive(Debug, Clone, Default, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Roster {
     #[serde(default)]
     pub title: String,
     #[serde(default)]
     pub members: BTreeMap<MemberName, Member>,
-    #[serde(default)]
-    pub channels: BTreeMap<ChannelName, Channel>,
+    #[serde(skip)]
+    channels: BTreeMap<ChannelName, Channel>,
 }
 
 impl Roster {
@@ -186,13 +210,9 @@ impl Roster {
             .ok_or_else(|| RosterError::Unknown(name.clone()))
     }
 
-    /// Adds a member. Each of its channels must exist and be active.
     pub fn add_member(&mut self, name: MemberName, member: Member) -> Result<(), RosterError> {
         if self.members.contains_key(&name) {
             return Err(RosterError::Exists(name));
-        }
-        for channel in &member.channels {
-            self.active_channel(channel)?;
         }
         self.members.insert(name, member);
         Ok(())
@@ -202,6 +222,11 @@ impl Roster {
         self.members
             .remove(name)
             .ok_or_else(|| RosterError::Unknown(name.clone()))
+    }
+
+    /// Channels besides `main`, archived ones included.
+    pub fn channels(&self) -> &BTreeMap<ChannelName, Channel> {
+        &self.channels
     }
 
     /// Accepts `main` or an existing, unarchived channel.
@@ -230,71 +255,90 @@ impl Roster {
             .unwrap_or_else(ChannelName::main)
     }
 
-    pub fn create_channel(
-        &mut self,
-        name: ChannelName,
-        topic: Topic,
-        created_by: MemberName,
-    ) -> Result<(), RosterError> {
-        if RESERVED_CHANNEL_NAMES.contains(&name.as_str()) {
-            return Err(ChannelError::Reserved(name).into());
+    /// Checks `control` by `author` against the current state. The store
+    /// records the row only when this passes.
+    pub(crate) fn check(&self, author: &MemberName, control: &Control) -> Result<(), RosterError> {
+        if !self.member(author)?.state.is_live() {
+            return Err(RosterError::Killed(author.clone()));
         }
-        if self.channels.contains_key(&name) {
-            return Err(ChannelError::Exists(name).into());
-        }
-        self.member(&created_by)?;
-        self.channels.insert(
-            name,
-            Channel {
-                topic,
-                created_by,
-                archived: false,
-            },
-        );
-        Ok(())
-    }
-
-    pub fn archive_channel(
-        &mut self,
-        name: &ChannelName,
-        by: &MemberName,
-    ) -> Result<(), RosterError> {
-        self.active_channel(name)?;
-        let is_coordinator = self.member(by)?.role == Role::Coordinator;
-        let channel = self
-            .channels
-            .get_mut(name)
-            .ok_or_else(|| ChannelError::Reserved(name.clone()))?;
-        if channel.created_by != *by && !is_coordinator {
-            return Err(ChannelError::NotAllowed(name.clone()).into());
-        }
-        channel.archived = true;
-        Ok(())
-    }
-
-    pub fn subscribe(
-        &mut self,
-        member: &MemberName,
-        channel: &ChannelName,
-    ) -> Result<(), RosterError> {
-        self.active_channel(channel)?;
-        if channel.is_main() {
-            return Ok(());
-        }
-        let entry = self.member_mut(member)?;
-        if !entry.channels.contains(channel) {
-            entry.channels.push(channel.clone());
+        let known =
+            |members: &[MemberName]| members.iter().try_for_each(|m| self.member(m).map(drop));
+        match control {
+            Control::Create { channel, .. } => {
+                if RESERVED_CHANNEL_NAMES.contains(&channel.as_str()) {
+                    return Err(ChannelError::Reserved(channel.clone()).into());
+                }
+                if self.channels.contains_key(channel) {
+                    return Err(ChannelError::Exists(channel.clone()).into());
+                }
+            }
+            Control::Archive { channel } => {
+                self.active_channel(channel)?;
+                let created_by = &self
+                    .channels
+                    .get(channel)
+                    .ok_or_else(|| ChannelError::Reserved(channel.clone()))?
+                    .created_by;
+                if created_by != author && self.member(author)?.role != Role::Coordinator {
+                    return Err(ChannelError::NotAllowed(channel.clone()).into());
+                }
+            }
+            Control::Subscribe { channel, members } => {
+                self.active_channel(channel)?;
+                known(members)?;
+            }
+            Control::Unsubscribe { members, .. } => known(members)?,
         }
         Ok(())
     }
 
-    pub fn unsubscribe(
-        &mut self,
-        member: &MemberName,
-        channel: &ChannelName,
-    ) -> Result<(), RosterError> {
-        self.member_mut(member)?.channels.retain(|c| c != channel);
-        Ok(())
+    /// Applies one control row. Rows were checked when recorded, so this
+    /// never fails; a member no longer on the roster is skipped.
+    pub(crate) fn apply(&mut self, author: &MemberName, control: &Control) {
+        match control {
+            Control::Create { channel, topic } => {
+                self.channels
+                    .entry(channel.clone())
+                    .or_insert_with(|| Channel {
+                        topic: topic.clone(),
+                        created_by: author.clone(),
+                        archived: false,
+                    });
+            }
+            Control::Archive { channel } => {
+                if let Some(entry) = self.channels.get_mut(channel) {
+                    entry.archived = true;
+                }
+            }
+            Control::Subscribe { channel, members } if !channel.is_main() => {
+                for member in members {
+                    let Some(entry) = self.members.get_mut(member) else {
+                        continue;
+                    };
+                    if !entry.channels.contains(channel) {
+                        entry.channels.push(channel.clone());
+                    }
+                }
+            }
+            Control::Subscribe { .. } => {}
+            Control::Unsubscribe { channel, members } => {
+                for member in members {
+                    let Some(entry) = self.members.get_mut(member) else {
+                        continue;
+                    };
+                    entry.channels.retain(|c| c != channel);
+                }
+            }
+        }
+    }
+
+    /// Rebuilds channel state from the board's control rows, in seq order.
+    pub(crate) fn replay(&mut self, board: &[Message]) {
+        for message in board {
+            if let Body::Control(control) = &message.body {
+                self.apply(&message.agent, control);
+            }
+        }
     }
 
     /// Whether `mentions` call on this member: by name, group, `@all`, or an
@@ -342,6 +386,25 @@ mod tests {
         ChannelName::parse(text).expect("valid")
     }
 
+    fn control(roster: &mut Roster, author: &str, control: Control) -> Result<(), RosterError> {
+        roster.check(&name(author), &control)?;
+        roster.apply(&name(author), &control);
+        Ok(())
+    }
+
+    fn create(channel_name: &str) -> Control {
+        Control::Create {
+            channel: channel(channel_name),
+            topic: Topic::parse("deploys").expect("valid"),
+        }
+    }
+
+    fn archive(channel_name: &str) -> Control {
+        Control::Archive {
+            channel: channel(channel_name),
+        }
+    }
+
     fn roster() -> Roster {
         let mut roster = Roster::default();
         roster
@@ -352,16 +415,12 @@ mod tests {
                 .add_member(name(worker), Member::new(Role::Worker, Some(name("lead"))))
                 .expect("added");
         }
-        roster
-            .create_channel(
-                channel("ops"),
-                Topic::parse("deploys").expect("valid"),
-                name("scout-1"),
-            )
-            .expect("created");
-        roster
-            .subscribe(&name("scout-1"), &channel("ops"))
-            .expect("subscribed");
+        control(&mut roster, "scout-1", create("ops")).expect("created");
+        let subscribe = Control::Subscribe {
+            channel: channel("ops"),
+            members: vec![name("scout-1")],
+        };
+        control(&mut roster, "scout-1", subscribe).expect("subscribed");
         roster
     }
 
@@ -371,7 +430,7 @@ mod tests {
             agent: name(author),
             text: text.into(),
             time: DateTime::from_timestamp(1_800_000_000, 0).expect("valid"),
-            kind: MessageKind::Post,
+            body: Body::Post(MessageKind::Post),
             request_id: None,
             channel,
         }
@@ -393,10 +452,9 @@ mod tests {
     fn main_always_exists_and_reserved_names_cannot_be_created() {
         let mut roster = roster();
         assert_eq!(roster.active_channel(&ChannelName::main()), Ok(()));
-        let topic = Topic::parse("x").expect("valid");
         for reserved in ["main", "all", "here"] {
             assert_eq!(
-                roster.create_channel(channel(reserved), topic.clone(), name("lead")),
+                control(&mut roster, "lead", create(reserved)),
                 Err(ChannelError::Reserved(channel(reserved)).into())
             );
         }
@@ -413,9 +471,7 @@ mod tests {
         let mut roster = roster();
         let scout = roster.member(&name("scout-1")).expect("member").clone();
         assert_eq!(roster.home_channel(&scout), channel("ops"));
-        roster
-            .archive_channel(&channel("ops"), &name("lead"))
-            .expect("coordinator archives");
+        control(&mut roster, "lead", archive("ops")).expect("coordinator archives");
         assert_eq!(roster.home_channel(&scout), ChannelName::main());
     }
 
@@ -423,12 +479,13 @@ mod tests {
     fn only_creator_or_coordinator_archives() {
         let mut roster = roster();
         assert_eq!(
-            roster.archive_channel(&channel("ops"), &name("scout-2")),
+            control(&mut roster, "scout-2", archive("ops")),
             Err(ChannelError::NotAllowed(channel("ops")).into())
         );
+        assert_eq!(control(&mut roster, "scout-1", archive("ops")), Ok(()));
         assert_eq!(
-            roster.archive_channel(&channel("ops"), &name("scout-1")),
-            Ok(())
+            control(&mut roster, "lead", archive("ops")),
+            Err(ChannelError::Archived(channel("ops")).into())
         );
     }
 
@@ -486,8 +543,94 @@ mod tests {
         let mut roster = roster();
         park(&mut roster, "scout-2", WakeMode::Mentions, 0);
         let mut brief = message("lead", "@scout-2 go", ChannelName::main(), 1);
-        brief.kind = MessageKind::Brief;
+        brief.body = Body::Post(MessageKind::Brief);
         assert!(!rung(&roster, "scout-2", &brief));
+    }
+
+    #[test]
+    fn control_rows_never_ring() {
+        let mut roster = roster();
+        park(&mut roster, "scout-2", WakeMode::Anything, 0);
+        let mut row = message("lead", "@scout-2 @all", ChannelName::main(), 1);
+        row.body = Body::Control(archive("ops"));
+        assert!(!rung(&roster, "scout-2", &row));
+        row.body = Body::Post(MessageKind::Post);
+        assert!(rung(&roster, "scout-2", &row));
+    }
+
+    #[test]
+    fn replay_rebuilds_channels_and_subscriptions_in_seq_order() {
+        let mut fresh = roster();
+        let rows = [
+            ("lead", create("ops")),
+            (
+                "lead",
+                Control::Subscribe {
+                    channel: channel("ops"),
+                    members: vec![name("scout-1"), name("scout-2")],
+                },
+            ),
+            (
+                "lead",
+                Control::Unsubscribe {
+                    channel: channel("ops"),
+                    members: vec![name("scout-1")],
+                },
+            ),
+            ("lead", archive("ops")),
+        ];
+        let board: Vec<Message> = rows
+            .into_iter()
+            .enumerate()
+            .map(|(index, (author, row))| {
+                let mut entry = message(author, "", ChannelName::main(), index as u64 + 1);
+                entry.body = Body::Control(row);
+                entry
+            })
+            .collect();
+        fresh.channels.clear();
+        for member in fresh.members.values_mut() {
+            member.channels.clear();
+        }
+        fresh.replay(&board);
+        let ops = &fresh.channels()[&channel("ops")];
+        assert!(ops.archived);
+        assert_eq!(ops.created_by, name("lead"));
+        assert!(
+            fresh
+                .member(&name("scout-1"))
+                .expect("member")
+                .channels()
+                .is_empty()
+        );
+        let scout = fresh.member(&name("scout-2")).expect("member");
+        assert_eq!(scout.channels(), [channel("ops")]);
+        assert_eq!(fresh.home_channel(scout), ChannelName::main());
+        assert_eq!(
+            fresh.active_channel(&channel("ops")),
+            Err(ChannelError::Archived(channel("ops")))
+        );
+    }
+
+    #[test]
+    fn killed_members_cannot_change_channels() {
+        let mut roster = roster();
+        roster.member_mut(&name("scout-2")).expect("member").state = MemberState::Killed;
+        assert_eq!(
+            control(&mut roster, "scout-2", create("dev")),
+            Err(RosterError::Killed(name("scout-2")))
+        );
+    }
+
+    #[test]
+    fn park_block_fires_at_most_once_per_head() {
+        let mut member = Member::new(Role::Worker, None);
+        assert!(!member.take_park_block(Seq::ZERO));
+        assert!(member.take_park_block(Seq(4)));
+        assert!(!member.take_park_block(Seq(4)));
+        assert!(!member.take_park_block(Seq(3)));
+        assert!(member.take_park_block(Seq(5)));
+        assert_eq!(member.last_park_blocked_seq, Seq(5));
     }
 
     #[test]
@@ -516,6 +659,7 @@ mod tests {
         assert_eq!(json["state"], "waiting");
         assert_eq!(json["wake_mode"], "mentions");
         assert_eq!(json["wait_since"], 7);
+        assert!(json.get("channels").is_none(), "channels live on the board");
         assert_eq!(
             serde_json::from_value::<Member>(json).expect("decodes"),
             member

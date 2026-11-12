@@ -4,10 +4,10 @@ use std::time::Duration;
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 
-use crate::message::{Draft, Message, Seq};
+use crate::message::{Body, Control, Draft, Message, MessageKind, Seq};
 use crate::names::MemberName;
 use crate::policy::Policy;
-use crate::roster::{ChannelError, Roster};
+use crate::roster::{ChannelError, Roster, RosterError};
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 #[serde(transparent)]
@@ -45,8 +45,14 @@ pub enum Rejection {
         "post is {bytes} bytes; the limit is {max}. Write the details to a file and post its path"
     )]
     TooLarge { bytes: usize, max: usize },
-    #[error("posting too fast; retry in {}s", retry_after.as_secs().max(1))]
-    RateLimited { retry_after: Duration },
+    #[error(
+        "posting faster than {per_minute} posts a minute; retry in {:.1}s",
+        retry_after.as_secs_f64()
+    )]
+    RateLimited {
+        retry_after: Duration,
+        per_minute: u32,
+    },
     #[error(transparent)]
     Channel(#[from] ChannelError),
 }
@@ -115,10 +121,20 @@ pub trait Store {
     /// The oldest `limit` messages after `since`, in seq order.
     fn read_since(&self, since: Seq, limit: usize) -> Result<Vec<Message>, StoreError>;
 
+    /// The members, with channel state replayed from the board.
     fn roster(&self) -> Result<Roster, StoreError>;
 
-    /// Runs `change` on the current roster and saves the result only if it
-    /// succeeds. Member and channel changes go through here.
+    /// Checks a channel change by `author` and appends it to the board as a
+    /// control row, the only record of channel state.
+    fn record(
+        &self,
+        author: MemberName,
+        control: Control,
+        now: DateTime<Utc>,
+    ) -> Result<Message, UpdateError<RosterError>>;
+
+    /// Runs `change` on the current roster and saves the members only if it
+    /// succeeds. Channel changes made here are not saved; use `record`.
     fn update_roster<T, E>(
         &self,
         change: impl FnOnce(&mut Roster) -> Result<T, E>,
@@ -163,15 +179,16 @@ pub(crate) fn admit(
         }
         None => roster.home_channel(author),
     };
-    if draft.kind == crate::message::MessageKind::Post {
-        let earlier = board
-            .iter()
-            .filter(|m| m.agent == draft.author && m.kind == draft.kind)
-            .map(|m| m.time);
+    let body = Body::Post(draft.kind);
+    if draft.kind == MessageKind::Post {
+        let earlier = board.iter().filter(|m| m.body == body).map(|m| m.time);
         policy
             .rate
             .check(earlier, now)
-            .map_err(|retry_after| Rejection::RateLimited { retry_after })?;
+            .map_err(|retry_after| Rejection::RateLimited {
+                retry_after,
+                per_minute: policy.rate.per_minute(),
+            })?;
     }
     let head = board.last().map_or(Seq::ZERO, |m| m.seq);
     Ok(Admitted::New(Message {
@@ -179,10 +196,37 @@ pub(crate) fn admit(
         agent: draft.author,
         text: draft.text,
         time: now,
-        kind: draft.kind,
+        body,
         request_id: draft.request_id,
         channel,
     }))
+}
+
+/// The rule that admits a channel change, shared by every backend. `roster`
+/// has already replayed `board`.
+pub(crate) fn admit_control(
+    roster: &Roster,
+    board: &[Message],
+    author: MemberName,
+    control: Control,
+    now: DateTime<Utc>,
+) -> Result<Message, RosterError> {
+    roster.check(&author, &control)?;
+    let channel = match &control {
+        Control::Create { channel, .. }
+        | Control::Archive { channel }
+        | Control::Subscribe { channel, .. }
+        | Control::Unsubscribe { channel, .. } => channel.clone(),
+    };
+    Ok(Message {
+        seq: board.last().map_or(Seq::ZERO, |m| m.seq).next(),
+        agent: author,
+        text: control.describe(),
+        time: now,
+        body: Body::Control(control),
+        request_id: None,
+        channel,
+    })
 }
 
 pub(crate) enum Admitted {

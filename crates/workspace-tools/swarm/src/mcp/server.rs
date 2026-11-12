@@ -12,7 +12,7 @@ use super::tools::{
     DEFAULT_LIMIT, DEFAULT_VIEW_LIMIT, DEFAULT_WAIT_SECS, MAX_LIMIT, MAX_WAIT_SECS, Tool,
 };
 use crate::mention::Mention;
-use crate::message::{Draft, Message, MessageKind, Seq};
+use crate::message::{Control, Draft, Message, MessageKind, Seq};
 use crate::names::{ChannelName, MemberName, NameError};
 use crate::policy::rings;
 use crate::roster::{Member, MemberState, Role, Roster, RosterError, Topic, TopicError, WakeMode};
@@ -315,6 +315,10 @@ impl<S: Store, P: Spawner> Server<S, P> {
         };
         let names = MemberName::group(&args.name, count)?;
         let head = self.store.head()?;
+        let current = self.store.roster()?;
+        for channel in &args.channels {
+            current.active_channel(channel).map_err(RosterError::from)?;
+        }
         let catalog = self.spawner.models();
         let specs = self.store.update_roster(|roster| {
             live(roster, &self.caller)?;
@@ -335,29 +339,34 @@ impl<S: Store, P: Spawner> Server<S, P> {
                     wait_since: head,
                 };
                 member.model.clone_from(&model);
-                member.channels.clone_from(&args.channels);
-                let home = roster.home_channel(&member);
                 roster.add_member(name.clone(), member)?;
                 let brief = match args.tasks.get(index) {
                     Some(task) => format!("{}\n\nYour task: {task}", args.brief),
                     None => args.brief.clone(),
                 };
-                specs.push((
-                    home,
-                    SpawnSpec {
-                        name: name.clone(),
-                        brief,
-                        model: model.clone(),
-                        workspace: args.workspace,
-                        channels: args.channels.clone(),
-                    },
-                ));
+                specs.push(SpawnSpec {
+                    name: name.clone(),
+                    brief,
+                    model: model.clone(),
+                    workspace: args.workspace,
+                    channels: args.channels.clone(),
+                });
             }
             Ok(specs)
         })?;
+        for channel in &args.channels {
+            let control = Control::Subscribe {
+                channel: channel.clone(),
+                members: names.clone(),
+            };
+            self.store
+                .record(self.caller.clone(), control, Utc::now())?;
+        }
+        let roster = self.store.roster()?;
 
         let mut added = Vec::new();
-        for (index, (home, spec)) in specs.iter().enumerate() {
+        for (index, spec) in specs.iter().enumerate() {
+            let home = roster.home_channel(roster.member(&spec.name)?);
             let posted = self.store.append(
                 Draft {
                     author: self.caller.clone(),
@@ -380,7 +389,7 @@ impl<S: Store, P: Spawner> Server<S, P> {
                 })),
                 Err(error) => {
                     let unstarted: Vec<MemberName> =
-                        specs[index..].iter().map(|(_, s)| s.name.clone()).collect();
+                        specs[index..].iter().map(|s| s.name.clone()).collect();
                     self.store.update_roster(|roster| {
                         for name in &unstarted {
                             roster.member_mut(name)?.state = MemberState::Killed;
@@ -464,12 +473,11 @@ impl<S: Store, P: Spawner> Server<S, P> {
     }
 
     fn channel(&self, op: ChannelOp) -> Result<Value, ToolError> {
-        let caller = &self.caller;
         match op {
             ChannelOp::List {} => {
                 let roster = self.store.roster()?;
                 let channels: Vec<Value> = roster
-                    .channels
+                    .channels()
                     .iter()
                     .map(|(name, channel)| {
                         let mut row = json!(channel);
@@ -482,52 +490,58 @@ impl<S: Store, P: Spawner> Server<S, P> {
             ChannelOp::Create { channel, topic } => {
                 let channel = required(channel, "create", "channel")?;
                 let topic = topic.map_or_else(|| Topic::parse(""), Ok)?;
-                self.store.update_roster(|roster| {
-                    live(roster, caller)?;
-                    roster.create_channel(channel.clone(), topic, caller.clone())?;
-                    Ok::<_, ToolError>(())
+                let row = self.record(Control::Create {
+                    channel: channel.clone(),
+                    topic,
                 })?;
-                Ok(json!({ "created": channel }))
+                Ok(json!({ "created": channel, "seq": row.seq }))
             }
             ChannelOp::Archive { channel } => {
                 let channel = required(channel, "archive", "channel")?;
-                self.store.update_roster(|roster| {
-                    live(roster, caller)?;
-                    roster.archive_channel(&channel, caller)?;
-                    Ok::<_, ToolError>(())
+                let row = self.record(Control::Archive {
+                    channel: channel.clone(),
                 })?;
-                Ok(json!({ "archived": channel }))
+                Ok(json!({ "archived": channel, "seq": row.seq }))
             }
             ChannelOp::Subscribe { channel, name } => {
                 let channel = required(channel, "subscribe", "channel")?;
-                let member =
-                    self.subscription(name, |roster, member| roster.subscribe(member, &channel))?;
-                Ok(json!({ "subscribed": member, "channel": channel }))
+                let member = self.subscriber(name)?;
+                let row = self.record(Control::Subscribe {
+                    channel: channel.clone(),
+                    members: vec![member.clone()],
+                })?;
+                Ok(json!({ "subscribed": member, "channel": channel, "seq": row.seq }))
             }
             ChannelOp::Unsubscribe { channel, name } => {
                 let channel = required(channel, "unsubscribe", "channel")?;
-                let member =
-                    self.subscription(name, |roster, member| roster.unsubscribe(member, &channel))?;
-                Ok(json!({ "unsubscribed": member, "channel": channel }))
+                let member = self.subscriber(name)?;
+                let row = self.record(Control::Unsubscribe {
+                    channel: channel.clone(),
+                    members: vec![member.clone()],
+                })?;
+                Ok(json!({ "unsubscribed": member, "channel": channel, "seq": row.seq }))
             }
         }
     }
 
-    fn subscription(
-        &self,
-        name: Option<MemberName>,
-        change: impl FnOnce(&mut Roster, &MemberName) -> Result<(), RosterError>,
-    ) -> Result<MemberName, ToolError> {
+    fn record(&self, control: Control) -> Result<Message, ToolError> {
+        Ok(self
+            .store
+            .record(self.caller.clone(), control, Utc::now())?)
+    }
+
+    /// The member whose subscriptions change: the caller, or one it may
+    /// manage.
+    fn subscriber(&self, name: Option<MemberName>) -> Result<MemberName, ToolError> {
         let member = name.unwrap_or_else(|| self.caller.clone());
-        self.store.update_roster(|roster| {
-            if member == self.caller {
-                live(roster, &self.caller)?;
-            } else {
-                authorize(roster, &self.caller, "change the channels of", &member)?;
-            }
-            change(roster, &member)?;
-            Ok::<_, ToolError>(())
-        })?;
+        if member != self.caller {
+            authorize(
+                &self.store.roster()?,
+                &self.caller,
+                "change the channels of",
+                &member,
+            )?;
+        }
         Ok(member)
     }
 
@@ -642,7 +656,7 @@ impl<S: Store, P: Spawner> Server<S, P> {
             .map(|(name, member)| member_row(name, member, last_post(&board, name)))
             .collect();
         let channels: Vec<Value> = std::iter::once(json!({ "name": ChannelName::main() }))
-            .chain(roster.channels.iter().map(|(name, channel)| {
+            .chain(roster.channels().iter().map(|(name, channel)| {
                 let mut row = json!(channel);
                 row["name"] = json!(name);
                 row
@@ -701,7 +715,7 @@ fn view_summary(roster: &Roster, swarm_id: &str, head: Seq, recent: &[Message]) 
         );
     }
     let channels: Vec<String> = std::iter::once(format!("#{}", ChannelName::main()))
-        .chain(roster.channels.iter().map(|(name, channel)| {
+        .chain(roster.channels().iter().map(|(name, channel)| {
             let archived = if channel.archived { ", archived" } else { "" };
             match channel.topic.as_str() {
                 "" => format!("#{name}{archived}"),

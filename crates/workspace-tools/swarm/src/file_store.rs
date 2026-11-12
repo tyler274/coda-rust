@@ -6,11 +6,13 @@ use chrono::{DateTime, Utc};
 use serde::Serialize;
 use serde::de::DeserializeOwned;
 
-use crate::message::{Draft, Message, Seq};
+use crate::message::{Control, Draft, Message, Seq};
+use crate::names::MemberName;
 use crate::policy::Policy;
-use crate::roster::Roster;
+use crate::roster::{Roster, RosterError};
 use crate::store::{
     Admitted, AppendError, Backend, Store, StoreError, SwarmId, SwarmMeta, UpdateError, admit,
+    admit_control,
 };
 
 const META: &str = "swarm.json";
@@ -19,7 +21,8 @@ const MEMBERS: &str = "members.json";
 const LOCK: &str = ".lock";
 
 /// A swarm directory holding `swarm.json`, an append-only `board.jsonl` and
-/// `members.json`. Every operation holds an advisory lock on `.lock`, so
+/// `members.json`. Channel state lives only in the board's control rows and
+/// is replayed over `members.json` on every load. Every operation holds an advisory lock on `.lock`, so
 /// handles in different processes see one ordered board.
 #[derive(Debug, Clone)]
 pub struct FileStore {
@@ -156,8 +159,12 @@ impl FileStore {
         Ok(())
     }
 
-    fn read_roster(&self) -> Result<Roster, StoreError> {
-        Ok(self.read_json(MEMBERS)?.unwrap_or_default())
+    /// The board and the roster with its control rows replayed.
+    fn load(&self) -> Result<(Vec<Message>, Roster), StoreError> {
+        let board = self.read_board()?;
+        let mut roster: Roster = self.read_json(MEMBERS)?.unwrap_or_default();
+        roster.replay(&board);
+        Ok((board, roster))
     }
 
     fn read_board(&self) -> Result<Vec<Message>, StoreError> {
@@ -212,8 +219,7 @@ impl Store for FileStore {
 
     fn append(&self, draft: Draft, now: DateTime<Utc>) -> Result<Message, AppendError> {
         let _lock = self.lock(Access::Write)?;
-        let board = self.read_board()?;
-        let roster = self.read_roster()?;
+        let (board, roster) = self.load()?;
         match admit(&self.policy, &roster, &board, draft, now)? {
             Admitted::Duplicate(message) => Ok(message),
             Admitted::New(message) => {
@@ -235,7 +241,21 @@ impl Store for FileStore {
 
     fn roster(&self) -> Result<Roster, StoreError> {
         let _lock = self.lock(Access::Read)?;
-        self.read_roster()
+        Ok(self.load()?.1)
+    }
+
+    fn record(
+        &self,
+        author: MemberName,
+        control: Control,
+        now: DateTime<Utc>,
+    ) -> Result<Message, UpdateError<RosterError>> {
+        let _lock = self.lock(Access::Write)?;
+        let (board, roster) = self.load()?;
+        let message =
+            admit_control(&roster, &board, author, control, now).map_err(UpdateError::Rejected)?;
+        self.append_line(&message)?;
+        Ok(message)
     }
 
     fn update_roster<T, E>(
@@ -243,7 +263,7 @@ impl Store for FileStore {
         change: impl FnOnce(&mut Roster) -> Result<T, E>,
     ) -> Result<T, UpdateError<E>> {
         let _lock = self.lock(Access::Write)?;
-        let mut roster = self.read_roster()?;
+        let (_, mut roster) = self.load()?;
         let value = change(&mut roster).map_err(UpdateError::Rejected)?;
         self.write_json(MEMBERS, "roster", &roster)?;
         Ok(value)
@@ -257,7 +277,7 @@ mod tests {
     use std::time::Duration;
 
     use super::*;
-    use crate::message::{MessageKind, RequestId};
+    use crate::message::{Body, Control, MessageKind, RequestId};
     use crate::names::{ChannelName, MemberName};
     use crate::policy::RateLimit;
     use crate::roster::{ChannelError, Member, Role, RosterError, Topic};
@@ -278,8 +298,8 @@ mod tests {
     fn unlimited() -> Policy {
         Policy {
             rate: RateLimit {
-                max_posts: NonZeroU32::MAX,
-                window: Duration::from_secs(1),
+                per_second: NonZeroU32::MAX,
+                burst: NonZeroU32::MAX,
             },
             ..Policy::default()
         }
@@ -364,11 +384,13 @@ mod tests {
             Rejection::NotMember(name("ghost"))
         );
         assert_eq!(reject(Draft::post(name("lead"), "  ")), Rejection::Empty);
-        let big = "x".repeat(Policy::default().max_post_bytes + 1);
-        assert!(matches!(
-            reject(Draft::post(name("lead"), big)),
-            Rejection::TooLarge { .. }
-        ));
+        assert_eq!(
+            reject(Draft::post(name("lead"), "x".repeat(65_537))),
+            Rejection::TooLarge {
+                bytes: 65_537,
+                max: 65_536
+            }
+        );
         let ops = ChannelName::parse("ops").expect("valid");
         let mut draft = Draft::post(name("lead"), "hi");
         draft.channel = Some(ops.clone());
@@ -381,23 +403,37 @@ mod tests {
         let dir = tempfile::tempdir().expect("tempdir");
         let store = swarm(dir.path(), Policy::default(), &["lead"]);
         let ops = ChannelName::parse("ops").expect("valid");
-        store
-            .update_roster(|roster| {
-                roster.create_channel(
-                    ops.clone(),
-                    Topic::parse("ops").expect("valid"),
-                    name("lead"),
-                )?;
-                roster.subscribe(&name("lead"), &ops)
-            })
-            .expect("channel created");
+        let record = |control: Control, secs: i64| {
+            store
+                .record(name("lead"), control, at(secs))
+                .expect("recorded")
+        };
+        record(
+            Control::Create {
+                channel: ops.clone(),
+                topic: Topic::parse("ops").expect("valid"),
+            },
+            0,
+        );
+        record(
+            Control::Subscribe {
+                channel: ops.clone(),
+                members: vec![name("lead")],
+            },
+            0,
+        );
         let posted = store
             .append(Draft::post(name("lead"), "hi"), at(0))
             .expect("appended");
         assert_eq!(posted.channel, ops);
-        store
-            .update_roster(|roster| roster.archive_channel(&ops, &name("lead")))
-            .expect("archived");
+        assert_eq!(posted.seq, Seq(3), "control rows take board seqs");
+        let archived = record(
+            Control::Archive {
+                channel: ops.clone(),
+            },
+            1,
+        );
+        assert_eq!(archived.text, "[channel] archived #ops");
         let mut draft = Draft::post(name("lead"), "late");
         draft.channel = Some(ops.clone());
         assert!(matches!(
@@ -413,33 +449,125 @@ mod tests {
     }
 
     #[test]
-    fn rate_limit_applies_per_author_and_skips_briefs() {
+    fn channel_state_is_replayed_from_board_not_members_json() {
+        let dir = tempfile::tempdir().expect("tempdir");
+        let store = swarm(dir.path(), Policy::default(), &["lead", "scout"]);
+        let ops = ChannelName::parse("ops").expect("valid");
+        for control in [
+            Control::Create {
+                channel: ops.clone(),
+                topic: Topic::parse("").expect("valid"),
+            },
+            Control::Subscribe {
+                channel: ops.clone(),
+                members: vec![name("scout")],
+            },
+        ] {
+            store
+                .record(name("lead"), control, at(0))
+                .expect("recorded");
+        }
+        let members = fs::read_to_string(dir.path().join(MEMBERS)).expect("read");
+        assert!(!members.contains("ops"), "members.json holds no channels");
+        store
+            .update_roster(|roster| {
+                roster.title = "t".into();
+                Ok::<_, RosterError>(())
+            })
+            .expect("saved");
+        let members = fs::read_to_string(dir.path().join(MEMBERS)).expect("read");
+        assert!(
+            !members.contains("ops"),
+            "saving members writes no channels"
+        );
+
+        let reopened = FileStore::open(dir.path(), Policy::default()).expect("opened");
+        let roster = reopened.roster().expect("roster");
+        assert_eq!(roster.channels()[&ops].created_by, name("lead"));
+        assert_eq!(
+            roster.member(&name("scout")).expect("member").channels(),
+            std::slice::from_ref(&ops)
+        );
+        let board = reopened.read_since(Seq::ZERO, 10).expect("read");
+        assert!(board.iter().all(|m| matches!(m.body, Body::Control(_))));
+
+        assert!(matches!(
+            reopened.record(
+                name("lead"),
+                Control::Create {
+                    channel: ops.clone(),
+                    topic: Topic::parse("").expect("valid"),
+                },
+                at(1),
+            ),
+            Err(UpdateError::Rejected(RosterError::Channel(
+                ChannelError::Exists(_)
+            )))
+        ));
+        assert_eq!(
+            reopened.head().expect("head"),
+            Seq(2),
+            "rejected rows are not written"
+        );
+    }
+
+    #[test]
+    fn post_of_exactly_64_kib_is_admitted() {
+        let dir = tempfile::tempdir().expect("tempdir");
+        let store = swarm(dir.path(), Policy::default(), &["lead"]);
+        let posted = store
+            .append(Draft::post(name("lead"), "x".repeat(65_536)), at(0))
+            .expect("64 KiB fits");
+        assert_eq!(posted.text.len(), 65_536);
+    }
+
+    #[test]
+    fn rate_limit_is_one_swarm_bucket_shared_through_the_board() {
         let dir = tempfile::tempdir().expect("tempdir");
         let policy = Policy {
             rate: RateLimit {
-                max_posts: NonZeroU32::new(1).expect("nonzero"),
-                window: Duration::from_secs(10),
+                per_second: NonZeroU32::new(2).expect("nonzero"),
+                burst: NonZeroU32::new(3).expect("nonzero"),
             },
             ..Policy::default()
         };
-        let store = swarm(dir.path(), policy, &["lead", "scout"]);
-        store
-            .append(Draft::post(name("lead"), "a"), at(0))
-            .expect("first post");
+        let store = swarm(dir.path(), policy.clone(), &["lead", "scout"]);
+        for (who, text) in [("lead", "a"), ("scout", "b"), ("lead", "c")] {
+            store
+                .append(Draft::post(name(who), text), at(0))
+                .expect("burst");
+        }
+        let other = FileStore::open(dir.path(), policy).expect("second handle");
         assert!(matches!(
-            store.append(Draft::post(name("lead"), "b"), at(3)),
-            Err(AppendError::Rejected(Rejection::RateLimited { retry_after }))
-                if retry_after == Duration::from_secs(7)
+            other.append(Draft::post(name("lead"), "d"), at(0)),
+            Err(AppendError::Rejected(Rejection::RateLimited { retry_after, per_minute: 120 }))
+                if retry_after == Duration::from_millis(500)
         ));
         let mut brief = Draft::post(name("lead"), "@scout do it");
         brief.kind = MessageKind::Brief;
-        store.append(brief, at(3)).expect("briefs are not limited");
-        store
-            .append(Draft::post(name("scout"), "ok"), at(3))
-            .expect("other authors are not limited");
-        store
-            .append(Draft::post(name("lead"), "c"), at(10))
-            .expect("window passed");
+        other.append(brief, at(0)).expect("briefs are not limited");
+        other
+            .record(
+                name("lead"),
+                Control::Create {
+                    channel: ChannelName::parse("ops").expect("valid"),
+                    topic: Topic::parse("").expect("valid"),
+                },
+                at(0),
+            )
+            .expect("control rows are not limited");
+        assert!(
+            matches!(
+                other.append(Draft::post(name("scout"), "ok"), at(0)),
+                Err(AppendError::Rejected(Rejection::RateLimited { .. }))
+            ),
+            "every poster draws on the same bucket"
+        );
+        let mut draft = Draft::post(name("lead"), "d");
+        draft.request_id = Some(RequestId("r".into()));
+        let later =
+            |ms: i64| DateTime::from_timestamp_millis(1_800_000_000_000 + ms).expect("valid");
+        other.append(draft, later(500)).expect("one token refilled");
     }
 
     #[test]
