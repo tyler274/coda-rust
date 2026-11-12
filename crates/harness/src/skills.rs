@@ -1,6 +1,6 @@
 //! Tool declaration for reading a product’s packaged guidance.
 
-pub use agent_skills::{MissingSkill, Package, SKILL_VIEW};
+pub use agent_skills::{Package, SKILL_VIEW};
 
 /// The shared skill protocol as an engine tool. Each product supplies the package
 /// the index and reader may use. Reading guidance grants no other capability.

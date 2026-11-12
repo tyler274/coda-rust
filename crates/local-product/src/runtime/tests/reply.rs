@@ -279,8 +279,8 @@ async fn reply_acceptance_is_scoped_idempotent_and_claimed_once() {
     )
     .unwrap();
     assert_eq!(
-        result["status"], "unavailable",
-        "revision opened chat-only guidance"
+        result["status"], "available",
+        "the accepted revision's saved package must open every Chords skill"
     );
     assert!(
         accepted.accepted.is_some(),

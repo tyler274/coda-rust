@@ -111,14 +111,6 @@ pub struct Package {
     skills: Vec<AgentSkill>,
 }
 
-/// A required job skill is absent from the configured package.
-#[derive(Debug, thiserror::Error)]
-#[error("required skill {name} is missing")]
-pub struct MissingSkill {
-    /// Missing configured skill name.
-    pub name: String,
-}
-
 impl Package {
     /// Load and validate the selected product folder.
     pub fn load(product: &str, root: &Path) -> Result<Self, String> {
@@ -130,30 +122,6 @@ impl Package {
             skills,
         })
     }
-    /// Keep only the names the product permits for this job. The selected package
-    /// supplies both its index and every subsequent body or resource read.
-    pub fn select(&self, names: &[&str]) -> Result<Self, MissingSkill> {
-        for name in names {
-            if !self.skills.iter().any(|skill| &skill.name == name) {
-                return Err(MissingSkill {
-                    name: (*name).into(),
-                });
-            }
-        }
-        let skills: Vec<_> = self
-            .skills
-            .iter()
-            .filter(|skill| names.contains(&skill.name.as_str()))
-            .cloned()
-            .collect();
-        let version = version_id(&serde_json::to_vec(&skills).expect("skill data serializes"));
-        Ok(Self {
-            product: self.product.clone(),
-            version,
-            skills,
-        })
-    }
-
     /// Metadata from this admitted package, excluding all bodies.
     pub fn catalog_instructions(&self) -> String {
         catalog_instructions(&self.skills)
@@ -667,14 +635,12 @@ mod tests {
 
     #[test]
     fn the_supplied_package_controls_listing_and_opening() {
-        let package = Package::load("chords", &catalog_root()).unwrap();
-        let selected = package.select(&["patient-record-retrieval"]).unwrap();
-        assert_ne!(selected.version, package.version);
-        let index: Value = serde_json::from_str(&catalog_json(&selected.skills)).unwrap();
+        let package = record_retrieval_only("listing");
+        let index: Value = serde_json::from_str(&catalog_json(&package.skills)).unwrap();
         assert_eq!(index["skills"].as_array().unwrap().len(), 1);
         assert_eq!(index["skills"][0]["name"], "patient-record-retrieval");
         assert!(
-            !selected
+            !package
                 .catalog_instructions()
                 .contains("patient-communication")
         );
@@ -682,7 +648,7 @@ mod tests {
             ("patient-record-retrieval", "available"),
             ("patient-communication", "unavailable"),
         ] {
-            let result = selected
+            let result = package
                 .execute_skill_view(&serde_json::json!({"name":name}))
                 .unwrap();
             let opened = serde_json::to_value(result).unwrap();
@@ -692,6 +658,22 @@ mod tests {
 
     fn catalog_root() -> PathBuf {
         PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../../skills")
+    }
+
+    /// A package loaded from a folder that holds only patient-record-retrieval,
+    /// while the workspace catalog also has patient-communication.
+    fn record_retrieval_only(test: &str) -> Package {
+        let root = std::env::temp_dir().join(format!("coda-skills-{test}-{}", std::process::id()));
+        let folder = root.join("patient-record-retrieval");
+        fs::create_dir_all(&folder).unwrap();
+        fs::copy(
+            catalog_root().join("patient-record-retrieval/SKILL.md"),
+            folder.join("SKILL.md"),
+        )
+        .unwrap();
+        let package = Package::load("chords", &root).unwrap();
+        let _ = fs::remove_dir_all(&root);
+        package
     }
 
     #[test]
@@ -848,16 +830,12 @@ mod tests {
     }
 
     #[test]
-    fn unknown_skill_lists_the_skills_of_the_package_the_job_has() {
-        let package = Package::load("chords", &catalog_root()).unwrap();
-        let job = package.select(&["patient-record-retrieval"]).unwrap();
-        assert!(
-            package.skills.len() > job.skills.len(),
-            "the catalog has skills this job was not given"
-        );
+    fn unknown_skill_lists_the_skills_of_the_package() {
+        let package = record_retrieval_only("unknown");
         for path in [None, Some("SKILL.md")] {
             let value = serde_json::to_value(
-                job.execute_skill_view(&serde_json::json!({"name":"not-a-skill","file_path":path}))
+                package
+                    .execute_skill_view(&serde_json::json!({"name":"not-a-skill","file_path":path}))
                     .unwrap(),
             )
             .unwrap();

@@ -8,7 +8,7 @@
 use std::path::{Path, PathBuf};
 
 use harness::engine::{Tool, ToolOutcome};
-use harness::skills::{MissingSkill, Package};
+use harness::skills::Package;
 use serde_json::{Value, json};
 
 /// Immutable chat recipe selected by the site when it accepts new work.
@@ -109,9 +109,10 @@ fn chart_tools() -> [Tool; 2] {
     ]
 }
 
-/// The physician catalog selected at acceptance. Every attempt on that work
-/// reads the same package. Construction fails when the catalog is
-/// missing or invalid; there is no empty fallback.
+/// The whole Chords skill package. Every Chords job lists and opens every skill
+/// in it. The package is saved with accepted work and every attempt reads that
+/// same package. Construction fails when the catalog is missing or invalid;
+/// there is no empty fallback.
 #[derive(Clone, Debug, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
 #[serde(transparent)]
 pub struct PhysicianSkills {
@@ -132,15 +133,6 @@ pub enum SkillsError {
         /// Why the package did not load, in the package loader's words.
         reason: String,
     },
-    /// The package at `root` lacks a skill Chords requires.
-    #[error("physician skill catalog at {} is unavailable: {source}", .root.display())]
-    Missing {
-        /// The catalog folder.
-        root: PathBuf,
-        /// The required skill the package lacks.
-        #[source]
-        source: MissingSkill,
-    },
 }
 
 impl PhysicianSkills {
@@ -160,24 +152,7 @@ impl PhysicianSkills {
             root: root.to_owned(),
             reason,
         })?;
-        Ok(Self {
-            package: package
-                .select(&["patient-record-retrieval", "patient-communication"])
-                .map_err(|source| SkillsError::Missing {
-                    root: root.to_owned(),
-                    source,
-                })?,
-        })
-    }
-
-    /// Select guidance for revision's source reads and authored reply.
-    pub(crate) fn for_revision(&self) -> Self {
-        Self {
-            package: self
-                .package
-                .select(&["patient-communication"])
-                .expect("loaded Chords package contains required revision guidance"),
-        }
+        Ok(Self { package })
     }
 
     /// `base` followed by the catalog section. The accepted recipe keeps the exact text.
@@ -185,7 +160,7 @@ impl PhysicianSkills {
         format!("{base}\n\n{}", self.package.catalog_instructions())
     }
 
-    /// The common skill tool offered for this product's selected package.
+    /// The common skill tool offered for this product's package.
     pub fn tool() -> Tool {
         harness::skills::tool()
     }
@@ -235,7 +210,7 @@ mod tests {
     }
 
     #[test]
-    fn a_missing_empty_or_incomplete_catalog_fails_loading() {
+    fn a_missing_or_empty_catalog_fails_loading() {
         let missing = std::env::temp_dir().join(format!(
             "physician-skills-missing-{}",
             uuid::Uuid::new_v4().simple()
@@ -245,17 +220,6 @@ mod tests {
         std::fs::create_dir_all(&missing).unwrap();
         let error = PhysicianSkills::load(&missing).err().unwrap().to_string();
         assert!(error.contains("No packaged skills"), "{error}");
-        let root = missing.join("patient-record-retrieval");
-        std::fs::create_dir_all(&root).unwrap();
-        std::fs::write(
-            root.join("SKILL.md"),
-            include_str!("../../../skills/patient-record-retrieval/SKILL.md"),
-        )
-        .unwrap();
-        assert!(
-            PhysicianSkills::load(&missing).is_err(),
-            "an incomplete required skill package must refuse startup"
-        );
         std::fs::remove_dir_all(&missing).unwrap();
     }
     #[test]
@@ -308,16 +272,9 @@ mod tests {
     }
 
     #[test]
-    fn listed_skills_only_name_tools_offered_by_the_job() {
-        let skills = skills();
-        for (package, offered) in [
-            (
-                skills.clone(),
-                tools().iter().map(Tool::function).collect::<Vec<_>>(),
-            ),
-            (skills.for_revision(), crate::runtime::reply::tools()),
-        ] {
-            assert_skill_tools(&serde_json::to_value(&package).unwrap(), &offered, &[]);
-        }
+    fn chords_skills_only_name_tools_some_chords_job_offers() {
+        let mut offered = tools().iter().map(Tool::function).collect::<Vec<_>>();
+        offered.extend(crate::runtime::reply::tools());
+        assert_skill_tools(&serde_json::to_value(skills()).unwrap(), &offered, &[]);
     }
 }

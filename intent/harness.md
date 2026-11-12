@@ -149,13 +149,14 @@ Each tool result has an inline limit. A result under it goes to the model whole.
 
 - **Each product supplies** its system prompt, its skills folder and its visibility rule.
 - **One shared loader** lists a short index and opens a skill by name. The same visibility rule controls both listing and opening.
+- **Every job in a product can list and open every skill the product has.** Jobs differ in their system prompt and in the skills loaded at the start.
 - **Reading a skill gives no permission.**
 - **The skill package is frozen with the accepted work,** so recovery reads the same version.
 - **Chat** starts small and finds what it needs.
 - **Background work** starts from its assignment, gets all the product's tools, and can preload the skills its assignment always needs, as Hermes's scheduled jobs do.
 - **Text the model reads** has no ticket numbers or porting notes.
 - **Each piece of guidance lives in one place:** the system prompt or a skill, not both.
-- **An unknown skill name returns the names of the skills the job has,** as Hermes does.
+- **An unknown skill name returns the names of the skills the product has,** as Hermes does.
 - **Skills improve from traces.**
   - Traces show which skills load, what they cost in context, and what goes wrong after a load.
   - A skill that runs long gets shorter, with details moved into linked references.

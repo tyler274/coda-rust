@@ -430,7 +430,7 @@ pub fn recipe(
         context_window_tokens: binding.context_window_tokens,
         max_input_tokens: binding.max_input_tokens,
         options: serde_json::json!({"effort":binding.effort}),
-        instructions: skills.for_revision().instructions(INSTRUCTIONS),
+        instructions: skills.instructions(INSTRUCTIONS),
         tools: tools(),
     };
     engine::offer_working_notes(&mut recipe.instructions, &mut recipe.tools);
@@ -878,7 +878,7 @@ impl Store {
         state.accepted = Some(AcceptedRevision {
             input: input.clone(),
             binding: super::frozen::keep_binding(&tx, scope, &recipe).await?,
-            skills: super::frozen::keep_skills(&tx, scope, &skills.for_revision()).await?,
+            skills: super::frozen::keep_skills(&tx, scope, skills).await?,
         });
         state.sources = observation.sources;
         state.sources_version = observation.version;
