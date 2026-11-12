@@ -46,6 +46,8 @@ pub mod receipt;
 mod records;
 /// Hosted physician reply drafts and their revision work.
 pub mod reply;
+/// Durable source patient links, access state, and pull status.
+pub mod source_status;
 /// Versioned patient source observations: a stand-in source owner.
 pub mod sources;
 #[cfg(test)]
