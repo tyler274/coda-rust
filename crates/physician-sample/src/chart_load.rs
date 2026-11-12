@@ -37,6 +37,31 @@ pub async fn load_synthetic_practice(
     auth: &dyn AuthStore,
     runtime: &Store,
 ) -> Result<LoadSummary, String> {
+    load_synthetic_practice_inner(bank, auth, runtime, None).await
+}
+
+/// Loads the synthetic charts built at `bank` into the synthetic practice and
+/// triggers the initial or revision patient understanding assignment for each
+/// loaded patient workspace.
+pub async fn load_synthetic_practice_with_understanding(
+    bank: &Path,
+    auth: &dyn AuthStore,
+    runtime: &Store,
+    roles: &local_product::ModelRoles,
+    skills: &local_product::physician_chat::PhysicianSkills,
+) -> Result<LoadSummary, String> {
+    load_synthetic_practice_inner(bank, auth, runtime, Some((roles, skills))).await
+}
+
+async fn load_synthetic_practice_inner(
+    bank: &Path,
+    auth: &dyn AuthStore,
+    runtime: &Store,
+    understanding: Option<(
+        &local_product::ModelRoles,
+        &local_product::physician_chat::PhysicianSkills,
+    )>,
+) -> Result<LoadSummary, String> {
     auth.ensure_practice(STAGING_PRACTICE_ID, SYNTHETIC_PRACTICE_CLOCK)
         .await
         .map_err(|_| "create the synthetic practice".to_owned())?;
@@ -88,6 +113,18 @@ pub async fn load_synthetic_practice(
                 auth.place_on_panel(identity, &workspace)
                     .await
                     .map_err(|_| "place the patient on the panel".to_owned())?;
+            }
+            if let Some((roles, skills)) = understanding {
+                runtime
+                    .trigger_patient_understanding(
+                        STAGING_PRACTICE_ID,
+                        &workspace,
+                        roles,
+                        skills,
+                        auth,
+                    )
+                    .await
+                    .map_err(|error| error.to_string())?;
             }
             summary.records += records.len();
             summary.patients += 1;

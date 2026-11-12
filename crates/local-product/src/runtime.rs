@@ -64,6 +64,8 @@ pub mod schedule;
 pub mod sources;
 #[cfg(test)]
 mod tests;
+/// Durable patient understanding: private operating index and patient-page summary.
+pub mod understanding;
 /// Working notes derived from the authorized product record.
 pub mod working_notes;
 use entities::conversation;
@@ -588,6 +590,7 @@ pub struct Store {
     source_refresh: std::sync::Arc<dyn refresh::PatientSourceRefresh>,
     refresh_operation: std::sync::Arc<dyn chat_operations::PatientRefreshOperation>,
     memory_operation: std::sync::Arc<dyn chat_operations::PatientMemoryOperation>,
+    understanding_trigger: Option<std::sync::Arc<understanding::UnderstandingTriggerBinding>>,
 }
 
 fn error(message: &str) -> DbErr {
@@ -758,7 +761,21 @@ impl Store {
             source_refresh: std::sync::Arc::new(refresh::FixedSourceCheck::new()),
             refresh_operation: std::sync::Arc::new(chat_operations::RuntimeSourceRefreshOperation),
             memory_operation: std::sync::Arc::new(chat_operations::PostgresPatientMemoryOperation),
+            understanding_trigger: None,
         }
+    }
+
+    /// Configures automatic background patient understanding triggers (`roles.background`)
+    /// whenever refreshed source observations record new or changed chart revisions.
+    pub fn with_understanding_trigger(
+        mut self,
+        roles: crate::ModelRoles,
+        skills: PhysicianSkills,
+    ) -> Self {
+        self.understanding_trigger = Some(std::sync::Arc::new(
+            understanding::UnderstandingTriggerBinding { roles, skills },
+        ));
+        self
     }
 
     /// Returns a clone bound to an explicit [`crate::clinical_library::ClinicalLibraryClient`].
@@ -1838,6 +1855,7 @@ impl<A: Authority> Product for PhysicianHost<A> {
 
     fn read_only(&self, name: &str) -> bool {
         crate::physician_chat::read_only(name)
+            || crate::initial_understanding::read_only_understanding_tool(name)
     }
 
     fn read_result(&mut self, id: &str) -> harness::engine::recipe::ToolFuture<Option<String>> {

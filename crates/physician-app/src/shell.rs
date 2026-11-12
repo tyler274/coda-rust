@@ -218,7 +218,9 @@ pub fn row_did(row: &TodayRow) -> String {
 
 fn work_subject(kind: Option<&str>) -> &'static str {
     match kind {
-        Some("patient_initialization" | "summary_maintenance") => "Patient summary",
+        Some("patient_initialization" | "summary_maintenance" | "initial_understanding") => {
+            "Patient summary"
+        }
         Some("pre_visit_preparation") => "Visit preparation",
         Some("review") => "Review",
         Some("conversation") => "Response",
@@ -2329,6 +2331,35 @@ mod tests {
         assert_eq!(
             citation_preview_body("Quoted excerpt only.", "   "),
             "Quoted excerpt only."
+        );
+    }
+
+    #[test]
+    fn initial_understanding_run_renders_building_and_failed_headings() {
+        let running: AutomationRun = serde_json::from_value(serde_json::json!({
+            "kind": "initial_understanding",
+            "state": "running",
+            "purpose": {
+                "headline": "Building initial patient summary"
+            }
+        }))
+        .unwrap();
+        assert_eq!(
+            work_heading(&running),
+            Some("Building initial patient summary".to_owned())
+        );
+
+        let failed: AutomationRun = serde_json::from_value(serde_json::json!({
+            "kind": "initial_understanding",
+            "state": "failed",
+            "purpose": {
+                "headline": "Building initial patient summary"
+            }
+        }))
+        .unwrap();
+        assert_eq!(
+            work_heading(&failed),
+            Some("Patient summary couldn’t finish".to_owned())
         );
     }
 }

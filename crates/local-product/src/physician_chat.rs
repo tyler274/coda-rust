@@ -135,7 +135,8 @@ material ambiguity or decision requires physician input.
 
 Treat new physician input as part of a continuing relationship. Reconcile corrections and changed direction \
 with prior understanding, record durable physician-stated corrections or clinical context in patient_memory \
-while retiring superseded entries, and keep physician-provided information distinct from chart records. \
+while retiring superseded entries, revise chart-grounded patient understanding and summary claims with \
+save_patient_understanding when warranted, and keep physician-provided information distinct from chart records. \
 Explain a material disagreement rather than silently accepting or dismissing it. When earlier conversations, \
 background reviews or reply drafts are relevant, inspect them on demand through retrieve_patient_work. Honor \
 clear physician direction within available authority.
@@ -198,6 +199,7 @@ pub fn tools() -> Vec<Tool> {
     offered.push(crate::runtime::chat_operations::patient_memory_tool());
     offered.push(crate::runtime::chat_operations::retrieve_patient_work_tool());
     offered.push(crate::runtime::concerns::concern_tool());
+    offered.extend(crate::initial_understanding::understanding_tools());
     offered.extend(crate::clinical_library::tools());
     offered
 }
@@ -210,7 +212,7 @@ pub fn work_tools() -> Vec<Tool> {
     offered
 }
 
-/// Source, clinical library, and prior-work reads have no product effects or shared session mutation.
+/// Source, clinical library, patient understanding, and prior-work reads have no product effects or shared session mutation.
 pub fn read_only(name: &str) -> bool {
     matches!(
         name,
@@ -219,6 +221,7 @@ pub fn read_only(name: &str) -> bool {
             | crate::clinical_library::SEARCH_LIBRARY_TOOL
             | crate::clinical_library::READ_LIBRARY_TOOL
             | crate::runtime::chat_operations::RETRIEVE_PATIENT_WORK_TOOL
+            | crate::initial_understanding::READ_UNDERSTANDING_TOOL
     )
 }
 
@@ -390,6 +393,7 @@ mod tests {
             check_standing: crate::runtime::chat_operations::DispatchCheckStanding::Current {
                 checked_at: 1_762_900_050,
             },
+            understanding: None,
             memory_standing: crate::runtime::chat_operations::PatientMemoryStanding::Available {
                 entries: Vec::new(),
             },
@@ -444,6 +448,7 @@ mod tests {
             chart_record_count: 0,
             source_pulls: Vec::new(),
             check_standing: crate::runtime::chat_operations::DispatchCheckStanding::NotRecorded,
+            understanding: None,
             memory_standing: crate::runtime::chat_operations::PatientMemoryStanding::Available {
                 entries: Vec::new(),
             },
@@ -478,6 +483,8 @@ mod tests {
             crate::runtime::chat_operations::PATIENT_MEMORY_TOOL,
             crate::runtime::chat_operations::RETRIEVE_PATIENT_WORK_TOOL,
             crate::runtime::concerns::CONCERN_TOOL,
+            crate::initial_understanding::READ_UNDERSTANDING_TOOL,
+            crate::initial_understanding::SAVE_UNDERSTANDING_TOOL,
             crate::clinical_library::SEARCH_LIBRARY_TOOL,
             crate::clinical_library::READ_LIBRARY_TOOL,
             "save_working_note",
@@ -495,6 +502,12 @@ mod tests {
         assert!(read_only(crate::clinical_library::READ_LIBRARY_TOOL));
         assert!(read_only(
             crate::runtime::chat_operations::RETRIEVE_PATIENT_WORK_TOOL
+        ));
+        assert!(read_only(
+            crate::initial_understanding::READ_UNDERSTANDING_TOOL
+        ));
+        assert!(!read_only(
+            crate::initial_understanding::SAVE_UNDERSTANDING_TOOL
         ));
         assert!(!read_only(
             crate::runtime::chat_operations::REFRESH_SOURCES_TOOL
