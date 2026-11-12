@@ -19,9 +19,17 @@ use serde_json::{Value, json};
 use crate::auth::AuthContext;
 use crate::rejection_message;
 
+pub(crate) type ReviewControlReceiptKey = (String, String, String, String);
+pub(crate) type ReviewControlReceiptValue = (
+    physician_wire::ReviewControlActionWire,
+    physician_wire::ReviewVersion,
+);
+
 pub(crate) struct Live {
     pub(crate) bus: Arc<dyn Bus>,
     pub(crate) chat: Arc<crate::durable::DurableChat>,
+    pub(crate) accepted_review_controls:
+        std::sync::Mutex<BTreeMap<ReviewControlReceiptKey, ReviewControlReceiptValue>>,
     synthetic_reply: Option<String>,
 }
 
@@ -30,6 +38,7 @@ impl Live {
         Arc::new(Self {
             bus,
             chat,
+            accepted_review_controls: std::sync::Mutex::new(BTreeMap::new()),
             synthetic_reply: synthetic_reply_from_env(),
         })
     }
