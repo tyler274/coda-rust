@@ -1,7 +1,8 @@
 # Coda CI in disposable Firecracker guests (crates/workspace-tools/sandbox/README.md, "Coda CI in
 # Firecracker").
 #
-# The controller (coda_ci.py) runs from a timer. Each pass takes one job: a
+# The controller (coda-sandbox ci-controller, src/ci_controller) runs from a
+# timer. Each pass takes one job: a
 # queued GitHub job labelled cyrene-coda, else the oldest local act request
 # in spool/requests. The guest (ci-guest.nix) gets a reflink clone of the
 # seed work disk, a read-only inputs disk and the fc-coda-ci tap, whose
@@ -30,11 +31,7 @@ let
   };
   guestMem = guest.config.microvm.mem;
 
-  controller = pkgs.writeShellApplication {
-    name = "coda-ci-controller";
-    runtimeInputs = with pkgs; [ python3 coreutils e2fsprogs ];
-    text = ''exec python3 ${./coda_ci.py} "$@"'';
-  };
+  controller = "${lib.getExe sandbox.package} ci-controller";
 
   cli = pkgs.writeShellApplication {
     name = "coda-ci";
@@ -91,6 +88,8 @@ let
     CODA_CI_MARGIN_MIB = toString cfg.marginMiB;
     CODA_CI_WORK_DISK_SIZE = cfg.workDiskSize;
   } // lib.optionalAttrs (cfg.apiUrl != null) { CODA_CI_API = cfg.apiUrl; };
+  # The controller makes each job's disks with mkfs.ext4.
+  path = [ pkgs.e2fsprogs ];
 
   blockedIPv4 = import ./blocked-ipv4.nix;
   needs = sandbox.requires ++ [ "coda-ci-spool.service" "nftables.service" ];
@@ -207,9 +206,9 @@ in
         bindsTo = [ "nftables.service" ];
         after = needs ++ [ "network-online.target" ];
         wants = [ "network-online.target" ];
-        inherit environment;
+        inherit environment path;
         serviceConfig = serviceConfig // {
-          ExecStart = lib.getExe controller;
+          ExecStart = controller;
         };
       };
       systemd.timers.coda-ci = {
@@ -227,9 +226,9 @@ in
         bindsTo = [ "nftables.service" ];
         after = needs ++ [ "network-online.target" ];
         wants = [ "network-online.target" ];
-        inherit environment;
+        inherit environment path;
         serviceConfig = serviceConfig // {
-          ExecStart = "${lib.getExe controller} seed";
+          ExecStart = "${controller} seed";
         };
       };
     })

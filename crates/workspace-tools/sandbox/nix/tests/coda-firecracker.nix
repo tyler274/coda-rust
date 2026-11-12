@@ -6,16 +6,6 @@
 { sandboxModule }:
 { pkgs, lib, ... }:
 let
-  # The controller's unit tests, run when the check builds.
-  unitTests = pkgs.runCommand "coda-ci-unit-tests" {
-    nativeBuildInputs = with pkgs; [ python3 coreutils e2fsprogs ];
-  } ''
-    cp ${../coda_ci.py} coda_ci.py
-    cp ${../test_coda_ci.py} test_coda_ci.py
-    python3 -m unittest -v test_coda_ci
-    touch $out
-  '';
-
   # Enough of a runner image for act's run steps, built offline.
   jobImage = pkgs.dockerTools.buildImage {
     name = "coda-test";
@@ -160,12 +150,18 @@ in
     };
 
   testScript = ''
+    import re
+
     def as_alice(cmd):
         return f"su - alice -c '{cmd}'"
 
     machine.start()
     machine.wait_for_unit("multi-user.target")
-    machine.succeed("test -e ${unitTests}")
+
+    with subtest("the units run coda-sandbox ci-controller"):
+        for unit, args in (("coda-ci", "ci-controller"), ("coda-ci-seed", "ci-controller seed")):
+            exec_start = machine.succeed(f"grep '^ExecStart=' /etc/systemd/system/{unit}.service").strip()
+            assert re.fullmatch(rf"ExecStart=/nix/store/[^/ ]+-coda-sandbox-[^/ ]+/bin/coda-sandbox {args}", exec_start), exec_start
 
     with subtest("nested KVM and the CI spool"):
         machine.succeed("test -c /dev/kvm")
@@ -196,6 +192,11 @@ in
         assert "CODA_TEST_JOB_RAN" in out, "job output missing"
         assert out.count("CODA_PROBE") >= 3, "egress probes missing"
         assert "CODA_JOB_EXIT=0" in out, "exit marker missing"
+        queued = re.search(r"coda-ci: queued ([0-9a-f]{12})", out)
+        assert queued is not None, "request id missing"
+        request = queued.group(1)
+        machine.succeed(f"grep -qx 0 /agents/coda/ci/spool/results/{request}/status")
+        machine.succeed(f"journalctl -u coda-ci --no-pager | grep -q 'Local request {request} exited 0'")
 
     with subtest("the GitHub queue was checked first"):
         requests = machine.succeed("cat /var/log/github-stub.log")

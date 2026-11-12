@@ -1,7 +1,7 @@
 # The disposable Firecracker guest that runs one Coda CI job.
 #
-# The controller (coda_ci.py, run by ci.nix) gives each boot two raw ext4 disks and nothing
-# else from the host:
+# The controller (coda-sandbox ci-controller, run by ci.nix) gives each boot
+# two raw ext4 disks and nothing else from the host:
 #   work.img    writable; a reflink clone of the seed with Docker's images
 #   inputs.img  read-only; `mode` plus the job's payload:
 #                 github  jit                    (a JIT runner config)

@@ -2,7 +2,7 @@
 //! at once. Once it holds the lock, SIGTERM is recorded instead: a running
 //! guest's process group is stopped, the pass unwinds through its cleanup
 //! (job directory, JIT runner, the local request's result) and the process
-//! then exits 143, as the Python controller's `SystemExit(143)` did.
+//! then exits 143.
 
 use std::io;
 use std::sync::Arc;
