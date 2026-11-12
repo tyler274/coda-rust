@@ -1114,6 +1114,7 @@ impl Store {
                     &roster,
                     delivery,
                     read_at,
+                    None,
                 )
                 .await?;
                 tx.commit().await?;
@@ -1134,6 +1135,53 @@ impl Store {
                     retained_appointments,
                 })
             }
+        }
+    }
+
+    /// Runs the live [`Store::sync_practice_schedule`] transaction write path
+    /// up to `abort_after_appointment_writes` appointment rows, confirms those
+    /// rows were written inside the uncommitted transaction, and aborts before
+    /// `commit` so Postgres rolls the partial write back.
+    #[doc(hidden)]
+    pub async fn abort_schedule_sync_after_writes(
+        &self,
+        auth: &dyn AuthStore,
+        practice: &str,
+        source: &dyn ScheduleSource,
+        read_at: i64,
+        abort_after_appointment_writes: usize,
+    ) -> Result<(), ScheduleError> {
+        let practice = trim_non_empty(practice, ScheduleDomainError::EmptyPractice)?;
+        let source_id = source.source_id().clone();
+        let source_label =
+            trim_non_empty(source.source_label(), ScheduleDomainError::EmptySourceLabel)?;
+        let roster: BTreeSet<String> = auth
+            .practice_patients(&practice)
+            .await
+            .map_err(ScheduleError::AuthStore)?
+            .into_iter()
+            .collect();
+        let delivery = source
+            .read_schedule()
+            .await
+            .map_err(|cause| ScheduleError::Database(DbErr::Custom(cause.to_string())))?;
+        let tx = self.db.begin().await?;
+        let outcome = apply_delivery_in_tx(
+            &tx,
+            &practice,
+            &source_id,
+            &source_label,
+            &roster,
+            delivery,
+            read_at,
+            Some(abort_after_appointment_writes),
+        )
+        .await;
+        match outcome {
+            Err(err) => Err(err),
+            Ok(_) => Err(ScheduleError::Database(DbErr::Custom(
+                "expected mid-transaction schedule write interruption".to_owned(),
+            ))),
         }
     }
 
@@ -1182,6 +1230,10 @@ impl Store {
 
 /// Applies a [`ScheduleDelivery`] inside caller-supplied transaction `tx`.
 /// Exposed to crate tests via [`Store`] and transaction rollback tests.
+#[expect(
+    clippy::too_many_arguments,
+    reason = "single-owner transaction write path shared by live sync and rollback proof"
+)]
 pub(crate) async fn apply_delivery_in_tx(
     tx: &impl ConnectionTrait,
     practice: &str,
@@ -1190,6 +1242,7 @@ pub(crate) async fn apply_delivery_in_tx(
     roster: &BTreeSet<String>,
     delivery: ScheduleDelivery,
     read_at: i64,
+    abort_after_appointment_writes: Option<usize>,
 ) -> Result<ScheduleSyncSummary, ScheduleError> {
     let existing_source = lock_schedule_source(tx, practice, source_id).await?;
     let prior_version = match &existing_source {
@@ -1242,6 +1295,7 @@ pub(crate) async fn apply_delivery_in_tx(
 
     let mut delivered_ids = BTreeSet::new();
     let mut changed_appointments = 0usize;
+    let mut written_appointments = 0usize;
 
     for item in incoming {
         delivered_ids.insert(item.appointment_id().clone());
@@ -1330,6 +1384,12 @@ pub(crate) async fn apply_delivery_in_tx(
                 .exec_without_returning(tx)
                 .await?;
             }
+        }
+        written_appointments += 1;
+        if abort_after_appointment_writes == Some(written_appointments) {
+            return Err(ScheduleError::Database(DbErr::Custom(format!(
+                "aborted schedule write transaction after {written_appointments} appointment writes"
+            ))));
         }
     }
 

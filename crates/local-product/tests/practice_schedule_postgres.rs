@@ -688,42 +688,21 @@ async fn ac2_restart_mid_read_and_mid_transaction_loses_and_duplicates_nothing()
         AppointmentStatus::Scheduled
     );
 
-    // 2. Mid-transaction crash after writing the first two rows: inject a one-practice
-    //    Postgres trigger that aborts on inserting `appt-c`, proving atomic rollback.
-    let trigger_fn = format!("abort_mid_sched_{}", Uuid::new_v4().simple());
-    let trigger_sql = format!(
-        "CREATE FUNCTION {trigger_fn}() RETURNS trigger AS $$ BEGIN
-           IF NEW.practice = '{practice}' AND NEW.appointment_id = 'appt-c' THEN
-             RAISE EXCEPTION 'simulated mid-transaction restart';
-           END IF;
-           RETURN NEW;
-         END $$ LANGUAGE plpgsql;
-         CREATE TRIGGER {trigger_fn} BEFORE INSERT ON physician_runtime_appointments
-           FOR EACH ROW EXECUTE FUNCTION {trigger_fn}();"
-    );
-    sea_orm::sqlx::raw_sql(sea_orm::sqlx::AssertSqlSafe(trigger_sql))
-        .execute(auth.pool())
-        .await
-        .unwrap();
-
+    // 2. Mid-transaction interruption after writing the first two appointment rows
+    //    inside the live SeaORM transaction: uncommitted writes roll back cleanly.
     let next_source = StubScheduleSource::new(StubSchedulePlan::Complete(next_appointments));
     let tx_err = restarted_store
-        .sync_practice_schedule(&*auth, &practice, &next_source, 2_150)
+        .abort_schedule_sync_after_writes(&*auth, &practice, &next_source, 2_150, 2)
         .await
-        .expect_err("mid-transaction crash must abort");
+        .expect_err("mid-transaction interruption must abort without committing");
     assert!(matches!(tx_err, ScheduleError::Database(_)));
 
-    // Remove the simulated mid-transaction fault and verify rollback left t=2000 untouched.
-    let cleanup_sql = format!(
-        "DROP TRIGGER {trigger_fn} ON physician_runtime_appointments;
-         DROP FUNCTION {trigger_fn}();"
-    );
-    sea_orm::sqlx::raw_sql(sea_orm::sqlx::AssertSqlSafe(cleanup_sql))
-        .execute(auth.pool())
+    // Reconnect a brand-new Store ("restart" after mid-transaction drop) and verify t=2000 is untouched.
+    let restarted_after_tx = Store::connect(&url).await.unwrap();
+    let after_rollback = restarted_after_tx
+        .practice_schedule(&practice)
         .await
         .unwrap();
-
-    let after_rollback = restarted_store.practice_schedule(&practice).await.unwrap();
     assert_eq!(after_rollback.appointments.len(), 2);
     assert_eq!(
         after_rollback.appointments[0].window.starts_at(),
@@ -737,7 +716,7 @@ async fn ac2_restart_mid_read_and_mid_transaction_loses_and_duplicates_nothing()
     assert_eq!(after_rollback.appointments[1].saved_version, 1);
 
     // Resume sync after restart: applies cleanly once, losing and duplicating nothing.
-    let recovered = restarted_store
+    let recovered = restarted_after_tx
         .sync_practice_schedule(&*auth, &practice, &next_source, 2_200)
         .await
         .unwrap();
@@ -747,7 +726,10 @@ async fn ac2_restart_mid_read_and_mid_transaction_loses_and_duplicates_nothing()
     assert_eq!(recovered_summary.saved_appointments, 3);
     assert_eq!(recovered_summary.changed_appointments, 3);
 
-    let final_sched = restarted_store.practice_schedule(&practice).await.unwrap();
+    let final_sched = restarted_after_tx
+        .practice_schedule(&practice)
+        .await
+        .unwrap();
     assert_eq!(final_sched.appointments.len(), 3);
     let by_id: std::collections::BTreeMap<_, _> = final_sched
         .appointments

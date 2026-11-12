@@ -737,7 +737,7 @@ pub async fn serve_with_store(
 /// The practice's calendar day, as `/today` and `/updates` carry it. It is the
 /// clock's UTC date, which a fixed clock at noon never shows; a real-time
 /// practice needs its own zone here.
-fn practice_date(now: &str) -> &str {
+pub(crate) fn practice_date(now: &str) -> &str {
     now.get(..10).unwrap_or_default()
 }
 
