@@ -1983,6 +1983,23 @@ impl Product for PracticeJobHost<'_> {
                 };
                 return Ok(ToolOutcome::History(page));
             }
+            if call.name == SKILL_VIEW {
+                return Ok(skills.execute(&call.name, &arguments));
+            }
+            if job.assignment.visit_selection.is_some() {
+                if call.name == crate::visit_preparation::SELECT_VISITS_TOOL
+                    && claim.kind == PracticeJobKind::VisitPreparation
+                {
+                    return store
+                        .execute_visit_preparation_tool_fenced(&claim, &call, &arguments)
+                        .await;
+                }
+                return Ok(ToolOutcome::refused(format!(
+                    "tool {} is not available to multi-visit selection jobs; use starting selection context and {}",
+                    call.name,
+                    crate::visit_preparation::SELECT_VISITS_TOOL
+                )));
+            }
             if matches!(call.name.as_str(), SEARCH_TOOL | READ_TOOL) {
                 // Reject any attempt to pass a foreign workspace argument.
                 if let Some(requested_workspace) =
@@ -2021,9 +2038,6 @@ impl Product for PracticeJobHost<'_> {
                 return store
                     .execute_claimed_practice_refresh_tool(&claim, &job.work, &refresh_call)
                     .await;
-            }
-            if call.name == SKILL_VIEW {
-                return Ok(skills.execute(&call.name, &arguments));
             }
             if crate::initial_understanding::is_understanding_tool(&call.name) {
                 if call.name == crate::initial_understanding::SAVE_UNDERSTANDING_TOOL

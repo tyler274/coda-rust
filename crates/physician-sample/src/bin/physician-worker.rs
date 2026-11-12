@@ -679,7 +679,13 @@ impl Worker {
             local_product::physician_chat::PhysicianSkills::load(std::path::Path::new(dir))
                 .map_err(|err| format!("invalid PHYSICIAN_SKILLS_DIR: {err}"))?;
         }
-        let calendar = physician_sample::schedule::SyntheticBankCalendar::from_env(&get);
+        let calendar =
+            physician_sample::schedule::SyntheticBankCalendar::from_env(&get).map(|source| {
+                PracticeSyntheticCalendar {
+                    practice: physician_sample::STAGING_PRACTICE_ID.to_owned(),
+                    source,
+                }
+            });
         let wake = Arc::new(WakeService {
             auth: schedule_auth,
             mode: wake_mode,
@@ -889,13 +895,18 @@ impl WakeHandler for StoreWakeHandler {
     }
 }
 
+struct PracticeSyntheticCalendar {
+    practice: String,
+    source: physician_sample::schedule::SyntheticBankCalendar,
+}
+
 struct VisitPrepWakeHandler {
     store: Store,
     auth: PostgresAuthStore,
     model: ModelSource,
     quota: Arc<dyn harness::provider::QuotaGate>,
     skills_dir: Option<String>,
-    calendar: Option<physician_sample::schedule::SyntheticBankCalendar>,
+    calendar: Option<PracticeSyntheticCalendar>,
 }
 
 #[async_trait::async_trait]
@@ -918,18 +929,16 @@ impl WakeHandler for VisitPrepWakeHandler {
             .scheduled_practices()
             .await
             .map_err(WakeError::RuntimeStore)?;
-        if self.calendar.is_some()
-            && !practices
-                .iter()
-                .any(|id| id == physician_sample::STAGING_PRACTICE_ID)
+        if let Some(cal) = &self.calendar
+            && !practices.iter().any(|id| id == &cal.practice)
             && !self
                 .auth
-                .practice_patients(physician_sample::STAGING_PRACTICE_ID)
+                .practice_patients(&cal.practice)
                 .await
                 .map_err(WakeError::AuthUnavailable)?
                 .is_empty()
         {
-            practices.push(physician_sample::STAGING_PRACTICE_ID.to_owned());
+            practices.push(cal.practice.clone());
         }
         if practices.is_empty() {
             return Ok(WakeReport::default());
@@ -952,9 +961,11 @@ impl WakeHandler for VisitPrepWakeHandler {
 
         let mut report = WakeReport::default();
         for practice in practices {
-            if let Some(cal) = &self.calendar {
+            if let Some(cal) = &self.calendar
+                && practice == cal.practice
+            {
                 physician_sample::schedule::sync_synthetic_schedule(
-                    cal,
+                    &cal.source,
                     &self.auth,
                     &self.store,
                     &practice,
@@ -2819,6 +2830,36 @@ mod tests {
             .await
             .unwrap();
 
+        // Seed a second scheduled practice in the same database so we verify
+        // `VisitPrepWakeHandler` syncs `calendar` strictly for its owning practice
+        // without overwriting `other_practice`'s schedule.
+        let other_practice = "practice-worker-other".to_string();
+        auth.ensure_practice(&other_practice, PracticeClock::Fixed(fixed_now))
+            .await
+            .unwrap();
+        let other_temp_dir = std::env::temp_dir().join(format!(
+            "coda-worker-other-cal-{}",
+            uuid::Uuid::new_v4().simple()
+        ));
+        std::fs::create_dir_all(other_temp_dir.join("calendar")).unwrap();
+        let other_appt_line = r#"{"resourceType":"Appointment","id":"appt-other-practice-keep","meta":{"versionId":"1","lastUpdated":"2026-08-27T00:00:00+00:00"},"status":"booked","description":"Unmatched external consult","start":"2026-08-28T16:00:00+00:00","end":"2026-08-28T16:30:00+00:00","participant":[{"actor":{"reference":"Patient/UNMATCHED-OTHER"},"status":"accepted"}]}"#;
+        std::fs::write(
+            other_temp_dir.join("calendar/Appointment.ndjson"),
+            format!("{other_appt_line}\n"),
+        )
+        .unwrap();
+        let other_calendar =
+            physician_sample::schedule::SyntheticBankCalendar::open(&other_temp_dir);
+        physician_sample::schedule::sync_synthetic_schedule(
+            &other_calendar,
+            &auth,
+            &store,
+            &other_practice,
+        )
+        .await
+        .unwrap();
+        let _ = std::fs::remove_dir_all(&other_temp_dir);
+
         let starts_at_unix =
             AppointmentWindow::parse("2026-08-28T15:00:00+00:00", "2026-08-28T15:30:00+00:00")
                 .unwrap()
@@ -2997,7 +3038,10 @@ mod tests {
                 },
                 quota: Arc::new(store.clone()),
                 skills_dir: None,
-                calendar: Some(calendar),
+                calendar: Some(PracticeSyntheticCalendar {
+                    practice: practice.clone(),
+                    source: calendar,
+                }),
             }),
             clinical_library: None,
         }));
@@ -3036,6 +3080,14 @@ mod tests {
             .unwrap()
             .expect("POST /schedule/wake saved tomorrow's visit briefing");
         assert!(saved.visit_card_orientation.contains("CKD 3a"));
+
+        // Verify `other_practice`'s schedule was NOT overwritten by `practice`'s synthetic calendar:
+        let other_sched = store.practice_schedule(&other_practice).await.unwrap();
+        assert_eq!(other_sched.appointments.len(), 1);
+        assert_eq!(
+            other_sched.appointments[0].appointment_id.as_str(),
+            "appt-other-practice-keep"
+        );
 
         drop(store);
         drop(auth);

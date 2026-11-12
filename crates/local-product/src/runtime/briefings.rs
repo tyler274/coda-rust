@@ -956,117 +956,131 @@ async fn reconcile_visit_concerns_in_tx(
     let mut retired_ids = Vec::new();
     for raw_link in links {
         let link = decode_visit_concern_link(raw_link)?;
-        let Some(current_concern) =
-            load_concern(tx, &link.practice, &link.workspace, &link.concern_id).await?
-        else {
-            continue;
-        };
-        if !current_concern.shows_on_today() {
-            continue;
-        }
-
-        let (visit_ended_or_changed, reason_text) = match appt_map.get(&(
+        let appt = appt_map.get(&(
             link.slot.source_id.clone(),
             link.slot.appointment_id.clone(),
-        )) {
-            None => (
-                true,
-                format!(
-                    "Scheduled visit {} was withdrawn from the practice calendar.",
-                    link.slot.appointment_id
-                ),
+        ));
+        if reconcile_one_visit_concern_in_tx(tx, &link, appt, now_unix).await? {
+            retired_ids.push(link.concern_id);
+        }
+    }
+
+    Ok(retired_ids)
+}
+
+async fn reconcile_one_visit_concern_in_tx(
+    tx: &sea_orm::DatabaseTransaction,
+    link: &VisitConcernLink,
+    appt: Option<&schedule_appointment::Model>,
+    now_unix: i64,
+) -> Result<bool, DbErr> {
+    let Some(current_concern) =
+        load_concern(tx, &link.practice, &link.workspace, &link.concern_id).await?
+    else {
+        return Ok(false);
+    };
+    if !current_concern.shows_on_today() {
+        return Ok(false);
+    }
+
+    let (visit_ended_or_changed, reason_text) = match appt {
+        None => (
+            true,
+            format!(
+                "Scheduled visit {} was withdrawn from the practice calendar.",
+                link.slot.appointment_id
             ),
-            Some(appt) if appt.status == AppointmentStatus::Cancelled => (
-                true,
-                format!(
-                    "Scheduled visit {} was cancelled on the practice calendar.",
-                    link.slot.appointment_id
-                ),
+        ),
+        Some(appt) if appt.status == AppointmentStatus::Cancelled => (
+            true,
+            format!(
+                "Scheduled visit {} was cancelled on the practice calendar.",
+                link.slot.appointment_id
             ),
-            Some(appt) if appt.starts_at_unix != link.slot.starts_at_unix => (
-                true,
-                format!(
-                    "Scheduled visit {} moved to {}; earlier slot pre-visit concern retired.",
-                    link.slot.appointment_id, appt.starts_at
-                ),
+        ),
+        Some(appt) if appt.starts_at_unix != link.slot.starts_at_unix => (
+            true,
+            format!(
+                "Scheduled visit {} moved to {}; earlier slot pre-visit concern retired.",
+                link.slot.appointment_id, appt.starts_at
             ),
-            Some(appt)
-                if matches!(
-                    appt.status,
-                    AppointmentStatus::Fulfilled | AppointmentStatus::NoShow
-                ) || now_unix >= link.ends_at_unix =>
-            {
-                (
-                    true,
-                    format!(
-                        "Scheduled visit {} ended at {}.",
-                        link.slot.appointment_id,
-                        format_unix_rfc3339(link.ends_at_unix)
-                    ),
-                )
-            }
-            Some(_) if now_unix >= link.ends_at_unix => (
+        ),
+        Some(appt)
+            if matches!(
+                appt.status,
+                AppointmentStatus::Fulfilled | AppointmentStatus::NoShow
+            ) || now_unix >= link.ends_at_unix =>
+        {
+            (
                 true,
                 format!(
                     "Scheduled visit {} ended at {}.",
                     link.slot.appointment_id,
                     format_unix_rfc3339(link.ends_at_unix)
                 ),
-            ),
-            Some(_) => (false, String::new()),
-        };
-
-        let was_opened = matches!(link.open_state, VisitConcernOpenState::Opened { .. });
-        if !should_retire_visit_concern(link.urgency, was_opened, visit_ended_or_changed) {
-            continue;
-        }
-
-        let retirement_reason = RetirementReason::new(reason_text).map_err(conversion_error(
-            "visit concern retirement reason",
-            "RetirementReason",
-        ))?;
-        let source_work = SourceWork::new(
-            "visit_preparation_lifecycle",
-            format!(
-                "visit-concern-close:{}:{}:{}",
-                link.slot.source_id, link.slot.appointment_id, link.slot.starts_at_unix
-            ),
-            format!("reconcile-{now_unix}"),
-        )
-        .map_err(conversion_error("visit concern source_work", "SourceWork"))?;
-        let key_digest = &crate::sha256_hex(
-            format!(
-                "retire-visit-concern:{}:{}:{}:{}",
-                link.practice, link.workspace, link.concern_id, link.slot.starts_at_unix
             )
-            .as_bytes(),
-        )[..24];
-        let command_key = CommandKey::new(format!("vc-retire:{key_digest}"))
-            .map_err(conversion_error("visit concern retire key", "CommandKey"))?;
-
-        match retire_concern_in_tx(
-            tx,
-            &command_key,
-            &RetireConcern {
-                practice: link.practice.clone(),
-                workspace: link.workspace.clone(),
-                id: link.concern_id.clone(),
-                reason: retirement_reason,
-                source_work,
-            },
-        )
-        .await
-        {
-            Ok(ConcernMutation::Applied(_) | ConcernMutation::Duplicate(_)) => {
-                retired_ids.push(link.concern_id);
-            }
-            Err(ConcernError::NotOpen { .. }) => {}
-            Err(ConcernError::Database(db)) => return Err(db),
-            Err(other) => return Err(error(&other.to_string())),
         }
+        Some(_) if now_unix >= link.ends_at_unix => (
+            true,
+            format!(
+                "Scheduled visit {} ended at {}.",
+                link.slot.appointment_id,
+                format_unix_rfc3339(link.ends_at_unix)
+            ),
+        ),
+        Some(_) => (false, String::new()),
+    };
+
+    let was_opened = matches!(link.open_state, VisitConcernOpenState::Opened { .. });
+    if !should_retire_visit_concern(link.urgency, was_opened, visit_ended_or_changed) {
+        return Ok(false);
     }
 
-    Ok(retired_ids)
+    let retirement_reason = RetirementReason::new(reason_text).map_err(conversion_error(
+        "visit concern retirement reason",
+        "RetirementReason",
+    ))?;
+    let source_work = SourceWork::new(
+        "visit_preparation_lifecycle",
+        format!(
+            "visit-concern-close:{}:{}:{}",
+            link.slot.source_id, link.slot.appointment_id, link.slot.starts_at_unix
+        ),
+        "slot-lifecycle",
+    )
+    .map_err(conversion_error("visit concern source_work", "SourceWork"))?;
+    let key_digest = &crate::sha256_hex(
+        format!(
+            "retire-visit-concern:{}:{}:{}:{}:{}",
+            link.practice,
+            link.workspace,
+            link.concern_id,
+            link.slot.starts_at_unix,
+            retirement_reason.as_str(),
+        )
+        .as_bytes(),
+    )[..24];
+    let command_key = CommandKey::new(format!("vc-retire:{key_digest}"))
+        .map_err(conversion_error("visit concern retire key", "CommandKey"))?;
+
+    match retire_concern_in_tx(
+        tx,
+        &command_key,
+        &RetireConcern {
+            practice: link.practice.clone(),
+            workspace: link.workspace.clone(),
+            id: link.concern_id.clone(),
+            reason: retirement_reason,
+            source_work,
+        },
+    )
+    .await
+    {
+        Ok(ConcernMutation::Applied(_) | ConcernMutation::Duplicate(_)) => Ok(true),
+        Err(ConcernError::NotOpen { .. }) => Ok(false),
+        Err(ConcernError::Database(db)) => Err(db),
+        Err(other) => Err(error(&other.to_string())),
+    }
 }
 
 #[derive(Clone, Copy, PartialEq, Eq)]
@@ -2621,7 +2635,7 @@ impl Store {
                 if existing_concern.is_none() {
                     let raise_key =
                         CommandKey::new(format!("vc-raise:{}:{}", job.work, call.id.trim()))
-                            .map_err(|err| engine::Cause::from(error(&err.to_string())))?;
+                            .map_err(|err| -> engine::Cause { Box::new(err) })?;
                     match raise_concern_in_tx(
                         &tx,
                         &raise_key,
@@ -2650,8 +2664,8 @@ impl Store {
                         }
                     }
                 } else if prior_concern_id.as_ref() == Some(&concern_input.concern_id) {
-                    // Same slot updated its own raised concern after mid-run chart catch-up.
-                    if let Some(row) = concern::Entity::find_by_id((
+                    // Same slot updated its own raised concern: only valid if still Open!
+                    let locked_row = concern::Entity::find_by_id((
                         claim.scope.practice.clone(),
                         claim.scope.workspace.clone(),
                         concern_input.concern_id.as_str().to_owned(),
@@ -2659,38 +2673,66 @@ impl Store {
                     .lock_exclusive()
                     .one(&tx)
                     .await
-                    .map_err(persistence_failure)?
-                        && row.status == "open"
-                    {
-                        let records_json = serde_json::to_value(&concern_input.records)
-                            .map_err(conversion_error("ExactRecordReference", "json"))
+                    .map_err(persistence_failure)?;
+                    match locked_row {
+                        Some(row) if row.status == "open" => {
+                            let records_json = serde_json::to_value(&concern_input.records)
+                                .map_err(conversion_error("ExactRecordReference", "json"))
+                                .map_err(persistence_failure)?;
+                            let work_json = serde_json::to_value(&source_work)
+                                .map_err(conversion_error("SourceWork", "json"))
+                                .map_err(persistence_failure)?;
+                            let next_rev = row.revision + 1;
+                            concern::ActiveModel {
+                                practice: Unchanged(row.practice),
+                                workspace: Unchanged(row.workspace),
+                                id: Unchanged(row.id),
+                                urgency: Set(concern_input.urgency.as_str().to_owned()),
+                                status: Unchanged(row.status),
+                                reason: Set(concern_input.reason.clone()),
+                                records: Set(records_json),
+                                source_work: Set(work_json),
+                                cleared_by_physician: Unchanged(row.cleared_by_physician),
+                                cleared_at: Unchanged(row.cleared_at),
+                                feedback_revision: Unchanged(row.feedback_revision),
+                                retirement_reason: Unchanged(row.retirement_reason),
+                                retired_by_work: Unchanged(row.retired_by_work),
+                                retired_at: Unchanged(row.retired_at),
+                                created_at: Unchanged(row.created_at),
+                                updated_at: Set(prepared_at),
+                                revision: Set(next_rev),
+                            }
+                            .update(&tx)
+                            .await
                             .map_err(persistence_failure)?;
-                        let work_json = serde_json::to_value(&source_work)
-                            .map_err(conversion_error("SourceWork", "json"))
-                            .map_err(persistence_failure)?;
-                        let next_rev = row.revision + 1;
-                        concern::ActiveModel {
-                            practice: Unchanged(row.practice),
-                            workspace: Unchanged(row.workspace),
-                            id: Unchanged(row.id),
-                            urgency: Set(concern_input.urgency.as_str().to_owned()),
-                            status: Unchanged(row.status),
-                            reason: Set(concern_input.reason.clone()),
-                            records: Set(records_json),
-                            source_work: Set(work_json),
-                            cleared_by_physician: Unchanged(row.cleared_by_physician),
-                            cleared_at: Unchanged(row.cleared_at),
-                            feedback_revision: Unchanged(row.feedback_revision),
-                            retirement_reason: Unchanged(row.retirement_reason),
-                            retired_by_work: Unchanged(row.retired_by_work),
-                            retired_at: Unchanged(row.retired_at),
-                            created_at: Unchanged(row.created_at),
-                            updated_at: Set(prepared_at),
-                            revision: Set(next_rev),
                         }
-                        .update(&tx)
-                        .await
-                        .map_err(persistence_failure)?;
+                        Some(row) => {
+                            return Ok(ToolOutcome::refused(
+                                json!({
+                                    "outcome": "concern_already_closed",
+                                    "concern_id": concern_input.concern_id,
+                                    "current_status": row.status,
+                                    "message": format!(
+                                        "Earlier pre-visit concern `{}` is already `{}` and cannot be reopened under the same id; choose a fresh concern_id for this new pre-visit finding.",
+                                        concern_input.concern_id, row.status
+                                    ),
+                                })
+                                .to_string(),
+                            ));
+                        }
+                        None => {
+                            return Ok(ToolOutcome::refused(
+                                json!({
+                                    "outcome": "concern_already_closed",
+                                    "concern_id": concern_input.concern_id,
+                                    "message": format!(
+                                        "Earlier pre-visit concern `{}` is no longer open; choose a fresh concern_id for this new pre-visit finding.",
+                                        concern_input.concern_id
+                                    ),
+                                })
+                                .to_string(),
+                            ));
+                        }
                     }
                 } else {
                     return Ok(ToolOutcome::refused(
@@ -2751,13 +2793,13 @@ impl Store {
                         job.work,
                         call.id.trim()
                     ))
-                    .map_err(|err| engine::Cause::from(error(&err.to_string())))?;
+                    .map_err(|err| -> engine::Cause { Box::new(err) })?;
                     let reason = RetirementReason::new(format!(
                         "Scheduled visit {} ended at {}.",
                         briefing_ctx.appointment_id,
                         format_unix_rfc3339(appt.ends_at_unix)
                     ))
-                    .map_err(|err| engine::Cause::from(error(&err.to_string())))?;
+                    .map_err(|err| -> engine::Cause { Box::new(err) })?;
                     match retire_concern_in_tx(
                         &tx,
                         &retire_key,
@@ -2774,7 +2816,7 @@ impl Store {
                         Ok(_)
                         | Err(ConcernError::NotOpen { .. } | ConcernError::NotFound { .. }) => {}
                         Err(ConcernError::Database(db)) => return Err(persistence_failure(db)),
-                        Err(other) => return Err(engine::Cause::from(error(&other.to_string()))),
+                        Err(other) => return Err(Box::new(other)),
                     }
                 }
 
@@ -2784,11 +2826,11 @@ impl Store {
                 if let Some(prior_id) = &prior_concern_id {
                     let retire_key =
                         CommandKey::new(format!("vc-resolved:{}:{}", job.work, call.id.trim()))
-                            .map_err(|err| engine::Cause::from(error(&err.to_string())))?;
+                            .map_err(|err| -> engine::Cause { Box::new(err) })?;
                     let reason = RetirementReason::new(
                         "Updated chart evidence before the visit resolved the earlier pre-visit concern.",
                     )
-                    .map_err(|err| engine::Cause::from(error(&err.to_string())))?;
+                    .map_err(|err| -> engine::Cause { Box::new(err) })?;
                     match retire_concern_in_tx(
                         &tx,
                         &retire_key,
@@ -2805,7 +2847,7 @@ impl Store {
                         Ok(_)
                         | Err(ConcernError::NotOpen { .. } | ConcernError::NotFound { .. }) => {}
                         Err(ConcernError::Database(db)) => return Err(persistence_failure(db)),
-                        Err(other) => return Err(engine::Cause::from(error(&other.to_string()))),
+                        Err(other) => return Err(Box::new(other)),
                     }
                 }
                 None
@@ -3534,7 +3576,7 @@ impl Store {
                 .clone()
                 .unwrap_or_else(|| physician.to_owned());
 
-            visit_concern::ActiveModel {
+            let updated_vc_row = visit_concern::ActiveModel {
                 practice: Unchanged(vc_row.practice.clone()),
                 workspace: Unchanged(vc_row.workspace.clone()),
                 concern_id: Unchanged(vc_row.concern_id.clone()),
@@ -3551,6 +3593,7 @@ impl Store {
             .update(&tx)
             .await?;
 
+            let updated_link = decode_visit_concern_link(updated_vc_row)?;
             let appt_row = schedule_appointment::Entity::find_by_id((
                 practice.to_owned(),
                 vc_row.source_id.clone(),
@@ -3558,13 +3601,13 @@ impl Store {
             ))
             .one(&tx)
             .await?;
-            let mut appt_map = BTreeMap::new();
-            if let Some(appt) = appt_row {
-                appt_map.insert((appt.source_id.clone(), appt.appointment_id.clone()), appt);
-            }
-            let retired =
-                reconcile_visit_concerns_in_tx(&tx, practice, &appt_map, opened_at_unix).await?;
-            retired_after_visit_end = retired.contains(concern_id);
+            retired_after_visit_end = reconcile_one_visit_concern_in_tx(
+                &tx,
+                &updated_link,
+                appt_row.as_ref(),
+                opened_at_unix,
+            )
+            .await?;
         }
 
         let updated = load_concern(&tx, practice, workspace, concern_id)

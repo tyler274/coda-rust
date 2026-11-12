@@ -3370,6 +3370,7 @@ async fn ac6_visit_concern_lifecycle_distinguishes_none_ordinary_today_and_urgen
     let ws_none = format!("pw-c-none-{}", Uuid::new_v4().simple());
     let ws_today = format!("pw-c-today-{}", Uuid::new_v4().simple());
     let ws_now = format!("pw-c-now-{}", Uuid::new_v4().simple());
+    let ws_later = format!("pw-c-later-{}", Uuid::new_v4().simple());
     auth.ensure_practice(&practice, PracticeClock::Fixed(BASE_NOW_UNIX as u64))
         .await
         .unwrap();
@@ -3392,6 +3393,12 @@ async fn ac6_visit_concern_lifecycle_distinguishes_none_ordinary_today_and_urgen
             "MRN-CNOW",
             "Urgent Now Patient",
             "Critical serum potassium 6.2 mEq/L resulted 30 minutes ago ahead of renal visit.",
+        ),
+        (
+            &ws_later,
+            "MRN-CLATER",
+            "Evening Today Concern Patient",
+            "New outpatient Holter report shows symptomatic 4-second sinus pause ahead of 21:00 cardiology follow-up.",
         ),
     ] {
         seed_roster_patient(
@@ -3418,7 +3425,8 @@ async fn ac6_visit_concern_lifecycle_distinguishes_none_ordinary_today_and_urgen
         .await;
     }
 
-    // All three visits run 15:00–15:30Z (`ends_at_unix = BASE_NOW_UNIX + 5400`):
+    // Three visits run 15:00–15:30Z (`ends_at_unix = BASE_NOW_UNIX + 5400`) and a fourth
+    // (`appt-c-later`) runs 21:00–21:30Z so it remains upcoming when `open_concern` runs:
     let appts = vec![
         make_appointment(
             "appt-c-none",
@@ -3447,9 +3455,20 @@ async fn ac6_visit_concern_lifecycle_distinguishes_none_ordinary_today_and_urgen
             "2026-08-27T15:30:00+00:00",
             Some("MRN-CNOW"),
         ),
+        make_appointment(
+            "appt-c-later",
+            AppointmentStatus::Scheduled,
+            "booked",
+            "Evening arrhythmia follow-up",
+            "2026-08-27T21:00:00+00:00",
+            "2026-08-27T21:30:00+00:00",
+            Some("MRN-CLATER"),
+        ),
     ];
     let slot_start = appts[0].window().starts_at_unix();
     let slot_end = appts[0].window().ends_at_unix();
+    let later_slot_start = appts[3].window().starts_at_unix();
+    let later_slot_end = appts[3].window().ends_at_unix();
 
     let cal = InMemoryScheduleSource::new(appts);
     store
@@ -3531,6 +3550,19 @@ async fn ac6_visit_concern_lifecycle_distinguishes_none_ordinary_today_and_urgen
             }],
         }),
     );
+    let save_later = build_save(
+        "Symptomatic 4-second sinus pause on Holter report ahead of 21:00 visit.",
+        Some(VisitConcernInput {
+            concern_id: ConcernId::new("concern-later-today-stay-open").unwrap(),
+            urgency: ConcernUrgency::Today,
+            reason: "New Holter sinus pause finding ahead of tonight's 21:00 cardiology visit."
+                .into(),
+            records: vec![ExactRecordReference {
+                candidate_id: "Observation/finding-1".into(),
+                revision: "rev-1".into(),
+            }],
+        }),
+    );
 
     let mut provider = ScriptedProvider::new(vec![
         call_turn(
@@ -3558,11 +3590,18 @@ async fn ac6_visit_concern_lifecycle_distinguishes_none_ordinary_today_and_urgen
                         "starts_at_unix": slot_start,
                         "action": "prepare_now",
                         "reason": "New urgent-care TIA note before 15:00 visit."
+                    },
+                    {
+                        "source_id": CALENDAR_SOURCE_ID,
+                        "appointment_id": "appt-c-later",
+                        "starts_at_unix": later_slot_start,
+                        "action": "prepare_now",
+                        "reason": "New Holter sinus pause before 21:00 visit."
                     }
                 ]
             }),
         ),
-        done_turn("Selected all three."),
+        done_turn("Selected all four."),
         // 1. `appt-c-none`:
         call_turn(
             "r-none",
@@ -3599,6 +3638,18 @@ async fn ac6_visit_concern_lifecycle_distinguishes_none_ordinary_today_and_urgen
             serde_json::to_value(&save_today).unwrap(),
         ),
         done_turn("Saved today."),
+        // 4. `appt-c-later` (`starts_at_unix = later_slot_start` runs after the 15:00 slots):
+        call_turn(
+            "r-later",
+            READ_TOOL,
+            json!({ "references": [{ "candidate_id": "Observation/finding-1", "revision": "rev-1", "cursor": null }], "max_result_bytes": 16_384 }),
+        ),
+        call_turn(
+            "s-later",
+            SAVE_BRIEFING_TOOL,
+            serde_json::to_value(&save_later).unwrap(),
+        ),
+        done_turn("Saved later today."),
     ]);
 
     store
@@ -3615,11 +3666,16 @@ async fn ac6_visit_concern_lifecycle_distinguishes_none_ordinary_today_and_urgen
 
     // Before visit end (`BASE_NOW_UNIX < slot_end`):
     // - `ws_none` has ZERO concerns;
-    // - `ws_today` (`Today`) and `ws_now` (`Now`) are both Open on Today!
-    let all_workspaces = vec![ws_none.clone(), ws_today.clone(), ws_now.clone()];
+    // - `ws_today` (`Today`), `ws_later` (`Today` at 21:00), and `ws_now` (`Now`) are all Open on Today!
+    let all_workspaces = vec![
+        ws_none.clone(),
+        ws_today.clone(),
+        ws_now.clone(),
+        ws_later.clone(),
+    ];
     let open_before_end =
         open_concerns_for_workspaces(&store, &auth, &practice, &all_workspaces).await;
-    assert_eq!(open_before_end.len(), 2);
+    assert_eq!(open_before_end.len(), 3);
     assert!(!open_before_end.iter().any(|c| c.workspace == ws_none));
     assert!(
         open_before_end
@@ -3631,8 +3687,15 @@ async fn ac6_visit_concern_lifecycle_distinguishes_none_ordinary_today_and_urgen
             .iter()
             .any(|c| c.id.as_str() == "concern-previsit-tia" && c.urgency == ConcernUrgency::Today)
     );
+    assert!(
+        open_before_end
+            .iter()
+            .any(|c| c.id.as_str() == "concern-later-today-stay-open"
+                && c.urgency == ConcernUrgency::Today)
+    );
 
-    // Advance clock to `slot_end` (`now_unix >= ends_at_unix`) and run scheduled wake / reconciliation:
+    // Advance clock to `slot_end` (`now_unix >= ends_at_unix` for 15:00 visits, still `< later_slot_end`)
+    // and run scheduled wake / reconciliation:
     let retired_at_end = store
         .reconcile_visit_concerns(&practice, slot_end)
         .await
@@ -3640,14 +3703,22 @@ async fn ac6_visit_concern_lifecycle_distinguishes_none_ordinary_today_and_urgen
     assert_eq!(
         retired_at_end,
         vec![ConcernId::new("concern-previsit-tia").unwrap()],
-        "ordinary Today visit concern ends automatically with the visit, while Now stays open!"
+        "ordinary Today visit concern for ended 15:00 visit retires, while Now and upcoming 21:00 Today stay open!"
     );
 
     let open_after_end =
         open_concerns_for_workspaces(&store, &auth, &practice, &all_workspaces).await;
-    assert_eq!(open_after_end.len(), 1);
-    assert_eq!(open_after_end[0].id.as_str(), "concern-critical-k-62");
-    assert_eq!(open_after_end[0].standing, ConcernStanding::Open);
+    assert_eq!(open_after_end.len(), 2);
+    assert!(
+        open_after_end
+            .iter()
+            .any(|c| c.id.as_str() == "concern-critical-k-62")
+    );
+    assert!(
+        open_after_end
+            .iter()
+            .any(|c| c.id.as_str() == "concern-later-today-stay-open")
+    );
 
     let retired_updates = retired_concerns_for_workspace(&store, &auth, &practice, &ws_today).await;
     assert_eq!(retired_updates.len(), 1);
@@ -3811,8 +3882,47 @@ async fn ac6_visit_concern_lifecycle_distinguishes_none_ordinary_today_and_urgen
         );
     }
     assert!(
-        open_concerns_for_workspaces(&store, &auth, &practice, &[ws_now])
+        open_concerns_for_workspaces(&store, &auth, &practice, std::slice::from_ref(&ws_now))
             .await
+            .is_empty()
+    );
+    // Crucial regression check: opening `ws_now`'s ended `Now` concern MUST NOT falsely
+    // retire `ws_later`'s still-upcoming 21:00 `Today` pre-visit concern!
+    let later_still_open =
+        open_concerns_for_workspaces(&store, &auth, &practice, std::slice::from_ref(&ws_later))
+            .await;
+    assert_eq!(
+        later_still_open.len(),
+        1,
+        "peer patient's upcoming Today visit concern must remain Open after open_concern"
+    );
+    assert_eq!(
+        later_still_open[0].id.as_str(),
+        "concern-later-today-stay-open"
+    );
+
+    // Reconciling again at a distinct timestamp before 21:30 retires nothing and never
+    // collides on receipt SourceWork; once 21:30 passes, `ws_later` retires cleanly and
+    // repeated reconciles at later timestamps remain idempotent:
+    assert!(
+        store
+            .reconcile_visit_concerns(&practice, slot_end + 610)
+            .await
+            .unwrap()
+            .is_empty()
+    );
+    assert_eq!(
+        store
+            .reconcile_visit_concerns(&practice, later_slot_end)
+            .await
+            .unwrap(),
+        vec![ConcernId::new("concern-later-today-stay-open").unwrap()]
+    );
+    assert!(
+        store
+            .reconcile_visit_concerns(&practice, later_slot_end + 45)
+            .await
+            .unwrap()
             .is_empty()
     );
 }
@@ -4325,4 +4435,341 @@ async fn mid_run_withdrawal_recorrection_reselection_and_wake_idempotence() {
             .await,
         Err(BriefingError::Access(PracticeAccessError::InvalidScope))
     ));
+}
+
+#[tokio::test]
+async fn closed_prior_concern_refusal_and_selection_scope_isolation() {
+    let Some(url) = database_url() else {
+        return;
+    };
+    let (store, auth) = connect_stores(&url).await;
+    let skills = load_skills();
+    let roles = distinct_roles();
+
+    let practice = format!("practice-vp-closedc-{}", Uuid::new_v4().simple());
+    let ws = format!("pw-closedc-{}", Uuid::new_v4().simple());
+    auth.ensure_practice(&practice, PracticeClock::Fixed(BASE_NOW_UNIX as u64))
+        .await
+        .unwrap();
+
+    let rec_v1 = make_record(ChartDoc {
+        workspace: &ws,
+        source_id: CHART_SOURCE_ID,
+        candidate_id: "Observation/inr-previsit",
+        revision: "rev-1",
+        record_type: "Observation",
+        title: "Outpatient INR",
+        date: "2026-08-27",
+        text: "INR 4.6 on warfarin 5 mg daily ahead of anticoagulation clinic visit.",
+    });
+    seed_roster_patient(
+        &store,
+        &auth,
+        RosterPatient {
+            practice: &practice,
+            workspace: &ws,
+            mrn: "MRN-CLOSEDC",
+            display_name: "Elena Rostova",
+            records: std::slice::from_ref(&rec_v1),
+            pulled_at: BASE_NOW_UNIX - 600,
+        },
+    )
+    .await;
+
+    let appt = make_appointment(
+        "appt-closedc-1",
+        AppointmentStatus::Scheduled,
+        "booked",
+        "Anticoagulation follow-up",
+        "2026-08-27T18:00:00+00:00",
+        "2026-08-27T18:30:00+00:00",
+        Some("MRN-CLOSEDC"),
+    );
+    let starts_at_unix = appt.window().starts_at_unix();
+    let cal = InMemoryScheduleSource::new(vec![appt]);
+    store
+        .sync_practice_schedule(auth.as_ref(), &practice, &cal, BASE_NOW_UNIX - 300)
+        .await
+        .unwrap();
+
+    // Part A: Prepare initial briefing raising `concern-inr-initial` (`Today`), verify that
+    // a multi-visit selection job on `PracticeJobHost` refuses single-patient workspace tools,
+    // then have an authorized physician mark `concern-inr-initial` `Done`, record new chart
+    // evidence (`INR 5.9`), and re-prepare: reusing `concern-inr-initial` MUST be refused with
+    // `concern_already_closed` until a fresh `concern_id` (`concern-inr-escalated`) is chosen!
+    let make_save = |rev: &str, orientation: &str, concern_id: &str| SaveBriefingArgs {
+        visit_card_orientation: orientation.to_owned(),
+        trajectory: vec![BriefingClaimInput {
+            text: orientation.to_owned(),
+            uncertainty: None,
+            citations: vec![ExactRecordReference {
+                candidate_id: "Observation/inr-previsit".into(),
+                revision: rev.to_owned(),
+            }],
+        }],
+        meaningful_changes: vec![BriefingClaimInput {
+            text: orientation.to_owned(),
+            uncertainty: None,
+            citations: vec![ExactRecordReference {
+                candidate_id: "Observation/inr-previsit".into(),
+                revision: rev.to_owned(),
+            }],
+        }],
+        unresolved_issues: vec![BriefingClaimInput {
+            text: "Warfarin hold/dose adjustment needed at 18:00 visit.".into(),
+            uncertainty: None,
+            citations: vec![ExactRecordReference {
+                candidate_id: "Observation/inr-previsit".into(),
+                revision: rev.to_owned(),
+            }],
+        }],
+        visit_decisions: vec![BriefingDecisionInput {
+            decision: "Anticoagulation dose adjustment".into(),
+            clinical_rationale: "Supratherapeutic INR before visit.".into(),
+            options_or_questions: vec![
+                "Consider holding warfarin dose and repeating INR per protocol.".into(),
+            ],
+            uncertainty: None,
+            citations: vec![ExactRecordReference {
+                candidate_id: "Observation/inr-previsit".into(),
+                revision: rev.to_owned(),
+            }],
+        }],
+        basis_and_limitations: "Prepared from outpatient coagulation lab.".into(),
+        basis_citations: Vec::new(),
+        limits: Vec::new(),
+        visit_concern: Some(VisitConcernInput {
+            concern_id: ConcernId::new(concern_id).unwrap(),
+            urgency: ConcernUrgency::Today,
+            reason: orientation.to_owned(),
+            records: vec![ExactRecordReference {
+                candidate_id: "Observation/inr-previsit".into(),
+                revision: rev.to_owned(),
+            }],
+        }),
+    };
+
+    let mut wake1 = ScriptedProvider::new(vec![
+        call_turn(
+            "sel-1",
+            SELECT_VISITS_TOOL,
+            json!({
+                "decisions": [{
+                    "source_id": CALENDAR_SOURCE_ID,
+                    "appointment_id": "appt-closedc-1",
+                    "starts_at_unix": starts_at_unix,
+                    "action": "prepare_now",
+                    "reason": "Supratherapeutic INR 4.6 ahead of 18:00 anticoagulation visit."
+                }]
+            }),
+        ),
+        done_turn("Selected."),
+        call_turn(
+            "read-1",
+            READ_TOOL,
+            json!({ "references": [{ "candidate_id": "Observation/inr-previsit", "revision": "rev-1", "cursor": null }], "max_result_bytes": 16_384 }),
+        ),
+        call_turn(
+            "save-1",
+            SAVE_BRIEFING_TOOL,
+            serde_json::to_value(make_save(
+                "rev-1",
+                "Supratherapeutic INR 4.6 ahead of 18:00 visit.",
+                "concern-inr-initial",
+            ))
+            .unwrap(),
+        ),
+        done_turn("Saved initial briefing."),
+    ]);
+    let wake1_summary = store
+        .wake_visit_preparation(
+            auth.as_ref(),
+            &practice,
+            &roles,
+            &skills,
+            &mut wake1,
+            BASE_NOW_UNIX,
+        )
+        .await
+        .unwrap();
+
+    // Verify `PracticeJobHost` on a claimed multi-visit selection job refuses all
+    // single-patient workspace tools (`SEARCH_TOOL`, `READ_TOOL`, `refresh_patient_sources`,
+    // `patient_memory`, `retrieve_patient_work`, `search_clinical_library`, `SAVE_BRIEFING_TOOL`):
+    let wake1_sel_scope = wake1_summary.selection_job.expect("wake1 selection job");
+    let mut sel_assign = store
+        .practice_job(&wake1_sel_scope)
+        .await
+        .unwrap()
+        .unwrap()
+        .assignment;
+    sel_assign.key = "sel-scope-guard-key".into();
+    let sel_scope = PracticeScope {
+        practice: practice.clone(),
+        workspace: ws.clone(),
+        job_id: "sel-scope-guard".into(),
+    };
+    store
+        .accept_practice_job(&sel_scope, &sel_assign, &roles, &skills, auth.as_ref())
+        .await
+        .unwrap();
+    let sel_claim = store
+        .claim_practice_job(&sel_scope, 120, auth.as_ref())
+        .await
+        .unwrap()
+        .expect("claim selection scope guard job");
+    let mut sel_host = PracticeJobHost {
+        store: store.clone(),
+        claim: sel_claim,
+        authority: auth.as_ref(),
+    };
+    use harness::engine::Product as _;
+    for refused_tool in [
+        SEARCH_TOOL,
+        READ_TOOL,
+        "refresh_patient_sources",
+        "patient_memory",
+        "retrieve_patient_work",
+        "search_clinical_library",
+        SAVE_BRIEFING_TOOL,
+    ] {
+        let out = sel_host
+            .execute(
+                &engine::Invocation {
+                    id: format!("sel-refuse-{refused_tool}"),
+                    name: refused_tool.into(),
+                    arguments: "{}".into(),
+                },
+                json!({}),
+            )
+            .await
+            .unwrap();
+        assert!(
+            matches!(out, engine::ToolOutcome::Refused(_)),
+            "selection job must refuse workspace tool {refused_tool}, got {out:?}"
+        );
+    }
+
+    // Physician marks `concern-inr-initial` Done before the visit:
+    let now_secs = std::time::SystemTime::now()
+        .duration_since(std::time::UNIX_EPOCH)
+        .unwrap()
+        .as_secs();
+    let (doc, session_hash) = invite_and_sign_in(&auth, &practice, "DrAnticoag", now_secs).await;
+    auth.set_membership(&doc, &ws, Membership::Allowed)
+        .await
+        .unwrap();
+    let mut authority = PostgresWorkspaceAuthority;
+    store
+        .mark_concern_done(
+            &WorkspaceAccess {
+                practice: &practice,
+                physician: &doc.physician_id,
+                workspace: &ws,
+                session_hash: &session_hash,
+            },
+            &CommandKey::new("done-initial-inr").unwrap(),
+            &ConcernId::new("concern-inr-initial").unwrap(),
+            &mut authority,
+        )
+        .await
+        .unwrap();
+    assert!(
+        open_concerns_for_workspaces(&store, &auth, &practice, std::slice::from_ref(&ws))
+            .await
+            .is_empty()
+    );
+
+    // Repeat INR arrives higher (`INR 5.9`, `rev-2`), triggering re-selection and re-preparation:
+    let rec_v2 = make_record(ChartDoc {
+        workspace: &ws,
+        source_id: CHART_SOURCE_ID,
+        candidate_id: "Observation/inr-previsit",
+        revision: "rev-2",
+        record_type: "Observation",
+        title: "Repeat Outpatient INR",
+        date: "2026-08-27",
+        text: "Repeat confirmatory INR 5.9 with minor gingival oozing reported.",
+    });
+    store
+        .record_chart(
+            &ws,
+            std::slice::from_ref(&rec_v2),
+            &SourcePull {
+                source_id: CHART_SOURCE_ID.into(),
+                source_label: CHART_SOURCE_LABEL.into(),
+                patient: source_patient("MRN-CLOSEDC", "Elena Rostova"),
+                pulled_at: BASE_NOW_UNIX + 60,
+            },
+        )
+        .await
+        .unwrap();
+
+    let mut wake2 = ScriptedProvider::new(vec![
+        call_turn(
+            "sel-2",
+            SELECT_VISITS_TOOL,
+            json!({
+                "decisions": [{
+                    "source_id": CALENDAR_SOURCE_ID,
+                    "appointment_id": "appt-closedc-1",
+                    "starts_at_unix": starts_at_unix,
+                    "action": "prepare_now",
+                    "reason": "Confirmatory INR rose to 5.9; refresh briefing."
+                }]
+            }),
+        ),
+        done_turn("Re-selected."),
+        call_turn(
+            "read-2",
+            READ_TOOL,
+            json!({ "references": [{ "candidate_id": "Observation/inr-previsit", "revision": "rev-2", "cursor": null }], "max_result_bytes": 16_384 }),
+        ),
+        // First attempt reuses closed `concern-inr-initial` -> MUST be refused (`concern_already_closed`)!
+        call_turn(
+            "save-reuse-closed",
+            SAVE_BRIEFING_TOOL,
+            serde_json::to_value(make_save(
+                "rev-2",
+                "Repeat INR 5.9 with gingival oozing ahead of 18:00 visit.",
+                "concern-inr-initial",
+            ))
+            .unwrap(),
+        ),
+        // Second attempt uses fresh `concern-inr-escalated` -> succeeds and opens a real Open concern!
+        call_turn(
+            "save-fresh-id",
+            SAVE_BRIEFING_TOOL,
+            serde_json::to_value(make_save(
+                "rev-2",
+                "Repeat INR 5.9 with gingival oozing ahead of 18:00 visit.",
+                "concern-inr-escalated",
+            ))
+            .unwrap(),
+        ),
+        done_turn("Saved refreshed briefing with fresh concern."),
+    ]);
+    let summary2 = store
+        .wake_visit_preparation(
+            auth.as_ref(),
+            &practice,
+            &roles,
+            &skills,
+            &mut wake2,
+            BASE_NOW_UNIX + 120,
+        )
+        .await
+        .unwrap();
+    assert_eq!(summary2.completed_briefings.len(), 1);
+    let refusal_turn_prompt = serde_json::to_string(&wake2.requests[4].items).unwrap();
+    assert!(
+        refusal_turn_prompt.contains("concern_already_closed"),
+        "expected concern_already_closed refusal when reusing Done concern_id, got {refusal_turn_prompt}"
+    );
+
+    let open_after_refresh =
+        open_concerns_for_workspaces(&store, &auth, &practice, std::slice::from_ref(&ws)).await;
+    assert_eq!(open_after_refresh.len(), 1);
+    assert_eq!(open_after_refresh[0].id.as_str(), "concern-inr-escalated");
+    assert_eq!(open_after_refresh[0].standing, ConcernStanding::Open);
 }
