@@ -1960,7 +1960,7 @@ impl Product for PracticeJobHost<'_> {
         let call = call.clone();
         Box::pin(async move {
             if is_understanding {
-                if claim.kind != PracticeJobKind::InitialUnderstanding {
+                if claim.kind == PracticeJobKind::VisitPreparation {
                     return Ok(None);
                 }
                 return store
@@ -2097,10 +2097,10 @@ impl Product for PracticeJobHost<'_> {
             }
             if crate::initial_understanding::is_understanding_tool(&call.name) {
                 if call.name == crate::initial_understanding::SAVE_UNDERSTANDING_TOOL
-                    && claim.kind != PracticeJobKind::InitialUnderstanding
+                    && claim.kind == PracticeJobKind::VisitPreparation
                 {
                     return Ok(ToolOutcome::refused(
-                        "save_patient_understanding is only available to initial understanding jobs",
+                        "save_patient_understanding is not available to visit preparation jobs",
                     ));
                 }
                 return store
