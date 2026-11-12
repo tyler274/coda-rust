@@ -161,7 +161,7 @@ impl<'a> ReplayEvent<'a> {
     }
 
     /// Content usable by recovery after the shared replay rules are applied.
-    pub(crate) fn admitted(self) -> Option<&'a Event> {
+    pub fn admitted(self) -> Option<&'a Event> {
         match self {
             Self::Admitted(event) => Some(event),
             Self::EvidenceOnly(_) => None,
@@ -181,7 +181,7 @@ impl<'a> From<&'a (Event, bool)> for ReplayEvent<'a> {
 
 /// A result from an admitted call remains usable when it finishes after a steer.
 /// Late model output still cannot supply new direction or executable calls.
-pub(crate) fn replay_events<'a>(
+pub fn replay_events<'a>(
     events: impl IntoIterator<Item = impl Into<ReplayEvent<'a>>>,
 ) -> impl Iterator<Item = ReplayEvent<'a>> {
     let mut started = std::collections::HashSet::new();

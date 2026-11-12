@@ -6,8 +6,12 @@
 //! Book: `book/src/physician-site.md`.
 #![deny(missing_docs)]
 
+pub mod source_path;
+
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
+
+pub use source_path::{SourcePath, SourcePathError, Step as SourcePathStep};
 
 #[derive(Debug, Clone, Deserialize, PartialEq)]
 /// The `HealthResponse` value exchanged by this crate.
@@ -599,6 +603,43 @@ pub struct SourceEvidence {
     pub inspection: SourceInspection,
 }
 
+/// Which readable representation of a retained record a passage locator indexes into.
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(tag = "kind", rename_all = "snake_case")]
+pub enum CitedPart {
+    /// Raw UTF-8 record content (`SourceTechnicalDetails::original`, part `0` in chart reads).
+    NativeRecord,
+    /// Decoded attachment or narrative text (`readable_parts[index]`, part `index + 1` in chart reads).
+    ReadablePart {
+        /// Zero-based index into `readable_parts`.
+        index: usize,
+        /// Source-supplied label of that readable part.
+        label: String,
+    },
+}
+
+/// Exact sub-record target saved on a citation so reopening highlights what backed the claim.
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(tag = "kind", rename_all = "snake_case")]
+pub enum CitationLocator {
+    /// An exact UTF-8 byte span and verbatim quote in a text record or readable attachment.
+    Passage {
+        /// Which part of the retained record holds the passage.
+        part: CitedPart,
+        /// Inclusive UTF-8 start byte within `part`.
+        start_byte: usize,
+        /// Exclusive UTF-8 end byte within `part`.
+        end_byte: usize,
+        /// Exact substring at `start_byte..end_byte` in the delivered text.
+        quote: String,
+    },
+    /// A specific JSON value inside a structured record (`SourceTechnicalDetails::original`).
+    Field {
+        /// Canonical path from the root of the structured JSON record.
+        path: SourcePath,
+    },
+}
+
 /// A presentation of retained evidence, never a statement of current chart truth.
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct SourceInspection {
@@ -612,6 +653,9 @@ pub struct SourceInspection {
     pub sections: Vec<SourceField>,
     /// An exact passage identified by the citation owner, when available.
     pub cited_passage: Option<String>,
+    /// Exact passage or structured-field locator when this citation targets part of a record.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub locator: Option<CitationLocator>,
     /// A separately retained Coda-authored preview, not source text.
     pub coda_preview: Option<SourcePreviewContent>,
     /// Supplied source system, author and patient display labels.

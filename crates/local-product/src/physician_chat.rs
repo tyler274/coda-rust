@@ -55,12 +55,13 @@ patient workspace and open the exact revisions. A search hit identifies a candid
 the content actually returned, name the dated source and distinguish a partial read from a whole one. \
 If chart tools or evidence are unavailable, say what you cannot confirm.
 
-Cite record-supported claims with [[patient_source:CITATION_ID]], using only citation_id values from whole \
-records opened in this conversation's current context. A passage of a large record carries no citation_id \
-and cannot be cited. Never invent a citation. When you cite, end the answer with a [[source_summaries]] \
-block: one line per cited source, CITATION_ID: one or two plain sentences on what that record itself says \
-that bears on the answer, then [[/source_summaries]]. The physician sees each line beside its source, not \
-in the answer; it describes the record, adds no new claim and contains no citation markers.
+Whenever you read patient records in your current context window, call publish_citations before finishing. \
+Write a short dated preview in publish_citations for every record you read in this window: one or two plain \
+sentences with the record's date on what the record itself says, with no citation markers and never the word \
+Unavailable (which belongs only to failed reads). Declare whole-record, verbatim passage, or structured JSON \
+field citations in publish_citations and cite record-supported claims inline with [[patient_source:ID]] using \
+those declared handles (or a whole-record citation_id opened in this window once its preview is recorded). \
+Never invent a citation or cite evidence outside your current context window.
 
 The approved skill catalog describes reusable capability guidance and exact packaged resources. Review it \
 when a task begins and whenever the task scope changes. Before relying on a matching, materially \
@@ -111,176 +112,30 @@ pub struct Citation {
     pub sha256: String,
     /// Source-owned provenance.
     pub provenance: Value,
-    /// Coda's summary of this record for this answer; never source text.
+    /// Coda's dated preview of this record for this job; never source text.
     #[serde(default)]
     pub summary: Option<String>,
     /// Where the source system can open this record, when its adapter supplies one.
     #[serde(default)]
     pub native: Option<crate::physician_sources::NativeLink>,
+    /// Optional verbatim passage or structured-field sub-record locator retained with this citation.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub locator: Option<physician_wire::CitationLocator>,
 }
 
-const CITATION_OPEN: &str = "[[patient_source:";
-const SUMMARIES_OPEN: &str = "[[source_summaries]]";
-const SUMMARIES_CLOSE: &str = "[[/source_summaries]]";
-const SUMMARY_MAX_CHARS: usize = 400;
-const BASIS_OPEN: &str = "[[basis]]";
-const BASIS_CLOSE: &str = "[[/basis]]";
-
-/// An answer as the physician reads it.
-#[derive(Debug)]
-pub struct Published {
-    /// The answer, without its basis or source summaries.
-    pub text: String,
-    /// What the answer rests on and its limits, shown apart from the answer.
-    /// `None` when the model wrote no closed, marker-free basis block.
-    pub basis: Option<String>,
-    /// The sources the answer cites, in first-cited order.
-    pub citations: Vec<Citation>,
-}
-
-/// The answer the physician reads and the citations it publishes with. The model's
-/// `[[basis]]` block leaves the visible text and becomes the answer's basis. Its
-/// `[[source_summaries]]` block leaves too; each line that names a cited source, fits,
-/// and carries no citation marker becomes that citation's summary. A line that breaks
-/// the contract is dropped, leaving that source to read as its record.
-/// `delivered` holds the whole records that reached the model in its current window.
-pub fn published(text: &str, delivered: &[Citation]) -> Result<Published, PublicationError> {
-    let (visible, basis) = split_basis(text);
-    let (visible, block) = split_block(&visible, SUMMARIES_OPEN, SUMMARIES_CLOSE);
-    let cited = citations(&visible, delivered)?;
-    Ok(Published {
-        text: visible,
-        basis,
-        citations: summarized(cited, block),
-    })
-}
-
-/// A partial answer ends the run, so a citation the model could not correct is
-/// removed rather than refused. Resolution is the same as [`published`]: only
-/// whole records delivered in the current window are cited, and the rest of the
-/// answer is kept. An unclosed marker loses only its opening `[[patient_source:`.
-pub fn published_partial(text: &str, delivered: &[Citation]) -> Published {
-    let (visible, basis) = split_basis(text);
-    let (visible, block) = split_block(&visible, SUMMARIES_OPEN, SUMMARIES_CLOSE);
-    let mut kept = String::with_capacity(visible.len());
-    let mut cited: Vec<Citation> = Vec::new();
-    let mut remaining = visible.as_str();
-    while let Some((before, suffix)) = remaining.split_once(CITATION_OPEN) {
-        kept.push_str(before);
-        let Some((id, rest)) = suffix.split_once("]]") else {
-            remaining = suffix;
-            break;
-        };
-        if let Some(citation) = delivered.iter().find(|c| c.id == id) {
-            kept.push_str(CITATION_OPEN);
-            kept.push_str(id);
-            kept.push_str("]]");
-            if !cited.iter().any(|c| c.id == id) {
-                cited.push(citation.clone());
-            }
-        }
-        remaining = rest;
-    }
-    kept.push_str(remaining);
-    Published {
-        text: kept,
-        basis,
-        citations: summarized(cited, block),
-    }
-}
-
-/// Removes the closed `[[basis]]` block. A basis that is blank or carries a
-/// marker is dropped, so a citation never hides in the collapsed section.
-fn split_basis(text: &str) -> (String, Option<String>) {
-    let (visible, basis) = split_block(text, BASIS_OPEN, BASIS_CLOSE);
-    let basis = Some(basis.trim())
-        .filter(|basis| !basis.is_empty() && !basis.contains("[["))
-        .map(str::to_owned);
-    (visible, basis)
-}
-
-/// Attaches each well-formed `[[source_summaries]]` line to the citation it names.
-fn summarized(mut cited: Vec<Citation>, block: &str) -> Vec<Citation> {
-    for line in block.lines() {
-        let Some((id, summary)) = line.split_once(':') else {
-            continue;
-        };
-        let summary = summary.trim();
-        if summary.is_empty()
-            || summary.chars().count() > SUMMARY_MAX_CHARS
-            || summary.contains("[[")
-        {
-            continue;
-        }
-        let id = id.trim().trim_start_matches(['-', '*']).trim();
-        if let Some(citation) = cited.iter_mut().find(|c| c.id == id) {
-            citation.summary = Some(summary.to_owned());
+impl Citation {
+    /// Exact verbatim quote when this citation targets a passage.
+    pub fn cited_passage(&self) -> Option<&str> {
+        match &self.locator {
+            Some(physician_wire::CitationLocator::Passage { quote, .. }) => Some(quote.as_str()),
+            Some(physician_wire::CitationLocator::Field { .. }) | None => None,
         }
     }
-    cited
 }
 
-/// Removes one closed block, the last one, and returns its body. An unclosed marker
-/// stays in the answer: it is not a block, and hiding the text after it would drop part
-/// of what the physician asked for.
-fn split_block<'a>(text: &'a str, open: &str, close: &str) -> (String, &'a str) {
-    let Some((before, after)) = text.rsplit_once(open) else {
-        return (text.to_owned(), "");
-    };
-    let Some((block, tail)) = after.split_once(close) else {
-        return (text.to_owned(), "");
-    };
-    let head = before.trim_end();
-    let tail = tail.trim();
-    let visible = match (head.is_empty(), tail.is_empty()) {
-        (_, true) => head.to_owned(),
-        (true, false) => tail.to_owned(),
-        (false, false) => format!("{head}\n\n{tail}"),
-    };
-    // A block that is the whole turn is not a block. Removing it would publish a blank answer.
-    if visible.trim().is_empty() {
-        return (text.to_owned(), "");
-    }
-    (visible, block)
-}
-
-/// Why an answer's citations cannot be published. Each is a correctable model
-/// mistake: the finish is refused with this reason and the run continues.
-#[derive(Debug, PartialEq, Eq, thiserror::Error)]
-pub enum PublicationError {
-    /// A citation marker has no closing `]]`.
-    #[error(
-        "A citation marker is missing its closing ]]. Close every [[patient_source:CITATION_ID]] marker."
-    )]
-    Unterminated,
-    /// The answer cites an identity no whole record in the current window carries.
-    #[error(
-        "The answer cites {0}, which no whole record opened in the current context carries. Open the record in full and cite its citation_id, or remove the citation."
-    )]
-    NotRead(String),
-}
-
-/// Resolve only citations carried by whole records delivered in the current
-/// window. An unsupported marker refuses publication rather than becoming
-/// fabricated evidence.
-fn citations(text: &str, delivered: &[Citation]) -> Result<Vec<Citation>, PublicationError> {
-    let mut result: Vec<Citation> = Vec::new();
-    let mut remaining = text;
-    while let Some((_, suffix)) = remaining.split_once(CITATION_OPEN) {
-        let (id, rest) = suffix
-            .split_once("]]")
-            .ok_or(PublicationError::Unterminated)?;
-        let citation = delivered
-            .iter()
-            .find(|c| c.id == id)
-            .ok_or_else(|| PublicationError::NotRead(id.to_owned()))?;
-        if !result.iter().any(|c| c.id == id) {
-            result.push(citation.clone());
-        }
-        remaining = rest;
-    }
-    Ok(result)
-}
+pub use crate::citations::{
+    JobCitationMode, PublicationError, PublishedJob, publish_job_citations, publish_partial_chat,
+};
 
 /// Capabilities shared by every ordinary Chords chat request.
 pub fn tools() -> Vec<Tool> {
@@ -292,7 +147,11 @@ pub fn tools() -> Vec<Tool> {
 /// Shared capabilities implemented by durable Chords chat and revision work.
 /// Each recipe adds the working notes with their guidance.
 pub fn work_tools() -> Vec<Tool> {
-    let mut offered = vec![PhysicianSkills::tool(), harness::engine::results::tool()];
+    let mut offered = vec![
+        PhysicianSkills::tool(),
+        harness::engine::results::tool(),
+        crate::citations::tool(),
+    ];
     offered.extend(harness::engine::history::tools());
     offered
 }
@@ -426,183 +285,430 @@ mod tests {
             .unwrap()
     }
 
-    /// A whole record as delivered to the model, ready to cite.
-    fn delivered(id: &str, native: Option<crate::physician_sources::NativeLink>) -> Citation {
-        let content = format!("{{\"id\":\"{id}\"}}");
-        Citation {
-            id: format!("cite-{id}"),
-            reference: id.into(),
+    fn source_record(
+        id: &str,
+        content: &str,
+        native: Option<crate::physician_sources::NativeLink>,
+    ) -> crate::physician_sources::SourceRevision {
+        crate::physician_sources::SourceRevision {
+            workspace: "w1".into(),
+            source_id: "ehr".into(),
+            candidate_id: id.into(),
             revision: "r1".into(),
-            record_type: "AllergyIntolerance".into(),
-            dates: vec![],
+            record_type: "Observation".into(),
+            dates: vec![crate::physician_sources::RecordDate {
+                name: "effectiveDateTime".into(),
+                value: "2026-03-14".into(),
+            }],
             sha256: crate::sha256_hex(content.as_bytes()),
-            content,
+            content: content.into(),
             readable_parts: vec![],
             provenance: json!({"native_record": id}),
-            summary: None,
             native,
         }
     }
 
+    fn evidence_with(
+        sources: &[crate::physician_sources::SourceRevision],
+    ) -> crate::citations::WindowEvidence {
+        let mut evidence = crate::citations::WindowEvidence::default();
+        for source in sources {
+            let receipt_id = crate::physician_sources::citation_id(source);
+            evidence.whole.insert(
+                (source.candidate_id.clone(), source.revision.clone()),
+                crate::citations::WholeDelivery {
+                    source: source.clone(),
+                    receipt_citation_id: Some(receipt_id),
+                },
+            );
+        }
+        evidence
+    }
+
     #[test]
-    fn invented_citations_cannot_publish() {
+    fn every_job_recipe_offers_publish_citations_tool() {
+        let skills = skills();
+        let binding = crate::ModelBinding {
+            model: "fixture".into(),
+            effort: "high".into(),
+            context_window_tokens: 272_000,
+            max_input_tokens: 250_000,
+            adapter: "fixture".into(),
+        };
+        for job_recipe in [
+            recipe(&binding, INSTRUCTIONS, &skills),
+            crate::runtime::reply::recipe(&binding, &skills),
+        ] {
+            assert!(
+                job_recipe
+                    .tools
+                    .iter()
+                    .any(|tool| tool["name"] == crate::citations::PUBLISH_CITATIONS_TOOL),
+                "missing publish_citations in job recipe"
+            );
+        }
+    }
+
+    #[test]
+    fn unwindowed_citations_previews_and_passages_are_refused_at_finish_with_reasons() {
+        let lab = source_record("lab-k", "{\"potassium\":4.1}", None);
+        let empty = crate::citations::WindowEvidence::default();
+
+        // Invented inline marker without tool declaration.
         assert_eq!(
-            published("Claim [[patient_source:invented]]", &[]).err(),
+            publish_job_citations(
+                "Claim [[patient_source:invented]]",
+                JobCitationMode::InlineMarkers,
+                &empty,
+                &crate::citations::StagedPublications::default(),
+                std::slice::from_ref(&lab),
+            )
+            .err(),
             Some(PublicationError::NotRead("invented".into()))
         );
-        let invented = "Claim.\n[[source_summaries]]\ninvented: A record.\n[[/source_summaries]]";
-        let answered = published(invented, &[]).unwrap();
-        assert_eq!(answered.text, "Claim.");
-        assert!(answered.citations.is_empty());
-        let answered = published("General knowledge only.", &[]).unwrap();
-        assert_eq!(answered.text, "General knowledge only.");
-        assert!(answered.citations.is_empty());
-    }
 
-    #[test]
-    fn a_summary_joins_its_citation_and_leaves_the_answer() {
-        let records = [delivered("allergy", None), delivered("note", None)];
-        let (allergy, note) = (&records[0].id, &records[1].id);
-        let long = "x".repeat(SUMMARY_MAX_CHARS + 1);
-        let answer = format!(
-            "No drug allergies are recorded [[patient_source:{allergy}]].\n\n\
-             [[source_summaries]]\n\
-             {allergy}: Records no known drug allergies, entered September 11, 2018.\n\
-             {note}: Not cited in the answer.\n\
-             unknown: Names no source.\n\
-             [[/source_summaries]]\n"
+        // Citation staged in an earlier window (record absent from current window) refuses with why.
+        let mut staged_citation = crate::citations::StagedPublications::default();
+        staged_citation.apply(
+            crate::citations::PublishCitationsCall {
+                previews: vec![crate::citations::PreviewSubmission {
+                    reference: "lab-k".into(),
+                    revision: "r1".into(),
+                    preview: "Potassium 4.1 mmol/L on 2026-03-14.".into(),
+                }],
+                citations: vec![crate::citations::CitationSubmission {
+                    id: "c1".into(),
+                    reference: "lab-k".into(),
+                    revision: "r1".into(),
+                    locator: None,
+                }],
+                replace: false,
+            },
+            false,
         );
-        let answered = published(&answer, &records).unwrap();
+        let err = publish_job_citations(
+            "Potassium 4.1 [[patient_source:c1]].",
+            JobCitationMode::InlineMarkers,
+            &empty,
+            &staged_citation,
+            std::slice::from_ref(&lab),
+        )
+        .unwrap_err();
         assert_eq!(
-            answered.text,
-            format!("No drug allergies are recorded [[patient_source:{allergy}]].")
+            err,
+            PublicationError::CitationNotInWindow {
+                id: "c1".into(),
+                reference: "lab-k".into(),
+                revision: "r1".into(),
+            }
         );
-        assert_eq!(answered.citations.len(), 1);
-        assert_eq!(
-            answered.citations[0].summary.as_deref(),
-            Some("Records no known drug allergies, entered September 11, 2018.")
-        );
+        assert!(err.to_string().contains("current context window"));
 
-        for broken in [
-            long,
-            format!("Points elsewhere [[patient_source:{note}]]."),
-            " ".into(),
-        ] {
-            let answer = format!(
-                "Claim [[patient_source:{allergy}]].\n[[source_summaries]]\n{allergy}: {broken}\n[[/source_summaries]]"
+        // Preview staged for evidence not in the current window refuses with why.
+        let mut staged_preview = crate::citations::StagedPublications::default();
+        staged_preview.apply(
+            crate::citations::PublishCitationsCall {
+                previews: vec![crate::citations::PreviewSubmission {
+                    reference: "lab-k".into(),
+                    revision: "r1".into(),
+                    preview: "Potassium 4.1 mmol/L on 2026-03-14.".into(),
+                }],
+                citations: vec![],
+                replace: false,
+            },
+            false,
+        );
+        let err = publish_job_citations(
+            "General answer.",
+            JobCitationMode::InlineMarkers,
+            &empty,
+            &staged_preview,
+            std::slice::from_ref(&lab),
+        )
+        .unwrap_err();
+        assert_eq!(
+            err,
+            PublicationError::PreviewNotInWindow {
+                reference: "lab-k".into(),
+                revision: "r1".into(),
+            }
+        );
+        assert!(err.to_string().contains("current context window"));
+
+        // Passage staged for an unread span of a partially read record refuses at finish with why.
+        let note = source_record(
+            "note-1",
+            "First paragraph delivered in window.\nSecond paragraph never paged.",
+            None,
+        );
+        let mut partial_window = crate::citations::WindowEvidence::default();
+        let first_slice = "First paragraph delivered in window.";
+        partial_window
+            .passages
+            .entry(("note-1".into(), "r1".into()))
+            .or_default()
+            .parts
+            .insert(
+                0,
+                (
+                    "native_record".into(),
+                    vec![crate::citations::DeliveredSpan {
+                        start_byte: 0,
+                        end_byte: first_slice.len(),
+                        content: first_slice.into(),
+                    }],
+                ),
             );
-            let answered = published(&answer, &records).unwrap();
-            assert_eq!(
-                answered.text,
-                format!("Claim [[patient_source:{allergy}]].")
-            );
-            assert_eq!(answered.citations[0].summary, None, "kept {broken:?}");
-        }
-
-        let unclosed = format!(
-            "Claim [[patient_source:{allergy}]].\n[[source_summaries]]\n{allergy}: Records none."
+        let mut staged_passage = crate::citations::StagedPublications::default();
+        staged_passage.apply(
+            crate::citations::PublishCitationsCall {
+                previews: vec![crate::citations::PreviewSubmission {
+                    reference: "note-1".into(),
+                    revision: "r1".into(),
+                    preview: "Clinic note dated 2026-03-14.".into(),
+                }],
+                citations: vec![crate::citations::CitationSubmission {
+                    id: "p-unread".into(),
+                    reference: "note-1".into(),
+                    revision: "r1".into(),
+                    locator: Some(crate::citations::RequestedLocator::Passage {
+                        part: 0,
+                        quote: "Second paragraph never paged.".into(),
+                        start_byte: None,
+                    }),
+                }],
+                replace: false,
+            },
+            true,
         );
-        let answered = published(&unclosed, &records).unwrap();
-        assert_eq!(answered.text, unclosed);
-        assert_eq!(answered.citations[0].summary, None);
-
-        let around = format!(
-            "Before [[patient_source:{allergy}]].\n[[source_summaries]]\n{allergy}: Records none.\n[[/source_summaries]]\nAfter."
-        );
-        let answered = published(&around, &records).unwrap();
+        let err = publish_job_citations(
+            "Claim [[patient_source:p-unread]].",
+            JobCitationMode::InlineMarkers,
+            &partial_window,
+            &staged_passage,
+            std::slice::from_ref(&note),
+        )
+        .unwrap_err();
         assert_eq!(
-            answered.text,
-            format!("Before [[patient_source:{allergy}]].\n\nAfter.")
+            err,
+            PublicationError::PassageNotInWindow {
+                id: "p-unread".into(),
+                reference: "note-1".into(),
+                revision: "r1".into(),
+                part: 0,
+            }
         );
-        assert_eq!(
-            answered.citations[0].summary.as_deref(),
-            Some("Records none.")
-        );
-
-        let only_block =
-            format!("[[source_summaries]]\n{allergy}: Records none.\n[[/source_summaries]]");
-        let answered = published(&only_block, &records).unwrap();
-        assert_eq!(answered.text, only_block);
-        assert!(answered.citations.is_empty());
-        let blank_around = format!(
-            " \n[[source_summaries]]\n[[patient_source:{allergy}]]\n[[/source_summaries]]\n "
-        );
-        let answered = published(&blank_around, &records).unwrap();
-        assert_eq!(answered.text, blank_around);
-        assert_eq!(answered.citations.len(), 1);
-        assert_eq!(answered.citations[0].summary, None);
+        assert!(err.to_string().contains("current context window"));
     }
 
     #[test]
-    fn a_citation_marker_inside_the_summary_block_is_not_a_citation() {
-        let records = [delivered("allergy", None)];
-        let allergy = &records[0].id;
-        let answer = format!(
-            "General knowledge only.\n[[source_summaries]]\n{allergy}: See [[patient_source:invented]].\n[[/source_summaries]]"
-        );
-        let answered = published(&answer, &records).unwrap();
-        assert_eq!(answered.text, "General knowledge only.");
-        assert!(answered.citations.is_empty());
-    }
+    fn every_read_record_requires_a_preview_and_unavailable_comes_only_from_failed_reads() {
+        let allergy = source_record("allergy", "{\"code\":\"NKDA\"}", None);
+        let note = source_record("note", "Patient feels well.", None);
+        let mut evidence = evidence_with(&[allergy.clone(), note.clone()]);
+        evidence
+            .failed_reads
+            .insert("missing-lab".into(), "not_found".into());
 
-    #[test]
-    fn a_source_native_link_travels_with_its_citation() {
-        let link = crate::physician_sources::NativeLink {
-            label: "Demo chart".into(),
-            uri: "https://ehr.example/allergy/1".into(),
-        };
-        let records = [
-            delivered("allergy", Some(link.clone())),
-            delivered("note", None),
-        ];
-        let answered = published(
-            &format!(
-                "A [[patient_source:{}]] B [[patient_source:{}]]",
-                records[0].id, records[1].id
-            ),
-            &records,
+        // Citing allergy without writing any preview refuses with CitationMissingPreview.
+        let allergy_id = crate::physician_sources::citation_id(&allergy);
+        let err = publish_job_citations(
+            &format!("No allergies [[patient_source:{allergy_id}]]."),
+            JobCitationMode::InlineMarkers,
+            &evidence,
+            &crate::citations::StagedPublications::default(),
+            &[allergy.clone(), note.clone()],
+        )
+        .unwrap_err();
+        assert_eq!(
+            err,
+            PublicationError::CitationMissingPreview {
+                id: allergy_id.clone(),
+                reference: "allergy".into(),
+                revision: "r1".into(),
+            }
+        );
+
+        // Previewing allergy but omitting the read `note` preview refuses with MissingPreview.
+        let mut partial_previews = crate::citations::StagedPublications::default();
+        partial_previews.apply(
+            crate::citations::PublishCitationsCall {
+                previews: vec![crate::citations::PreviewSubmission {
+                    reference: "allergy".into(),
+                    revision: "r1".into(),
+                    preview: "Records NKDA on 2026-03-14.".into(),
+                }],
+                citations: vec![],
+                replace: false,
+            },
+            true,
+        );
+        let err = publish_job_citations(
+            &format!("No allergies [[patient_source:{allergy_id}]]."),
+            JobCitationMode::InlineMarkers,
+            &evidence,
+            &partial_previews,
+            &[allergy.clone(), note.clone()],
+        )
+        .unwrap_err();
+        assert_eq!(
+            err,
+            PublicationError::MissingPreview {
+                reference: "note".into(),
+                revision: "r1".into(),
+            }
+        );
+
+        // Model cannot write "Unavailable" as a preview via the tool or at finish.
+        let refused_tool = crate::citations::execute_publish_citations(
+            &json!({
+                "previews": [{"reference": "note", "revision": "r1", "preview": "Unavailable"}],
+                "citations": []
+            }),
+            &evidence,
+            &[allergy.clone(), note.clone()],
+        );
+        assert!(matches!(refused_tool, ToolOutcome::Refused { .. }));
+
+        // Previewing both read records succeeds, and the failed read alone carries Unavailable.
+        partial_previews.apply(
+            crate::citations::PublishCitationsCall {
+                previews: vec![crate::citations::PreviewSubmission {
+                    reference: "note".into(),
+                    revision: "r1".into(),
+                    preview: "Visit note on 2026-03-14 reports patient feels well.".into(),
+                }],
+                citations: vec![],
+                replace: false,
+            },
+            true,
+        );
+        let published = publish_job_citations(
+            &format!("No allergies [[patient_source:{allergy_id}]]."),
+            JobCitationMode::InlineMarkers,
+            &evidence,
+            &partial_previews,
+            &[allergy, note],
         )
         .unwrap();
-        assert_eq!(answered.citations[0].native, Some(link));
-        assert_eq!(answered.citations[1].native, None);
+        assert_eq!(published.citations.len(), 1);
+        assert_eq!(
+            published.citations[0].summary.as_deref(),
+            Some("Records NKDA on 2026-03-14.")
+        );
+        assert_eq!(published.source_previews.len(), 3);
+        assert_eq!(
+            published
+                .source_previews
+                .iter()
+                .filter(|entry| entry.display_text() == "Unavailable")
+                .count(),
+            1
+        );
     }
 
     #[test]
-    fn the_basis_leaves_the_answer_and_publishes_beside_it() {
-        let records = [delivered("allergy", None)];
-        let allergy = &records[0].id;
-        let answer = format!(
-            "None recorded [[patient_source:{allergy}]].\n\n[[basis]]\nRests on one allergy record.\n[[/basis]]\n\
-             [[source_summaries]]\n{allergy}: Records none.\n[[/source_summaries]]"
+    fn passages_and_structured_fields_publish_through_tool_and_preserve_links_and_basis() {
+        let link = crate::physician_sources::NativeLink {
+            label: "Demo chart".into(),
+            uri: "https://ehr.example/obs/1".into(),
+        };
+        let lab = source_record(
+            "obs-panel",
+            r#"{"resourceType":"Observation","valueQuantity":{"value":4.1,"unit":"mmol/L"},"note":[{"text":"Hemolysis absent."},{"text":"Fasting specimen."}]}"#,
+            Some(link.clone()),
         );
-        let answered = published(&answer, &records).unwrap();
-        assert_eq!(
-            answered.text,
-            format!("None recorded [[patient_source:{allergy}]].")
-        );
-        assert_eq!(
-            answered.basis.as_deref(),
-            Some("Rests on one allergy record.")
-        );
-        assert_eq!(
-            answered.citations[0].summary.as_deref(),
-            Some("Records none.")
-        );
-        // A partial answer separates its basis the same way.
-        let partial = published_partial(&answer, &records);
-        assert_eq!(partial.text, answered.text);
-        assert_eq!(partial.basis, answered.basis);
+        let evidence = evidence_with(std::slice::from_ref(&lab));
 
-        let cited_basis = format!("Claim.\n[[basis]]See [[patient_source:{allergy}]].[[/basis]]");
-        let answered = published(&cited_basis, &records).unwrap();
-        assert_eq!(answered.text, "Claim.");
-        assert_eq!(answered.basis, None);
-        assert!(answered.citations.is_empty());
+        // Nonexistent field path and absent passage quote are refused by execute_publish_citations.
+        assert!(matches!(
+            crate::citations::execute_publish_citations(
+                &json!({
+                    "previews": [{"reference":"obs-panel","revision":"r1","preview":"Potassium 4.1 mmol/L on 2026-03-14."}],
+                    "citations": [{"id":"bad-field","reference":"obs-panel","revision":"r1","locator":{"kind":"field","path":"valueQuantity.missing"}}]
+                }),
+                &evidence,
+                std::slice::from_ref(&lab),
+            ),
+            ToolOutcome::Refused { .. }
+        ));
+        assert!(matches!(
+            crate::citations::execute_publish_citations(
+                &json!({
+                    "previews": [{"reference":"obs-panel","revision":"r1","preview":"Potassium 4.1 mmol/L on 2026-03-14."}],
+                    "citations": [{"id":"bad-quote","reference":"obs-panel","revision":"r1","locator":{"kind":"passage","part":0,"quote":"Hemolysis severe."}}]
+                }),
+                &evidence,
+                std::slice::from_ref(&lab),
+            ),
+            ToolOutcome::Refused { .. }
+        ));
 
-        let unclosed = "Claim.\n[[basis]]Rests on nothing.";
-        let answered = published(unclosed, &records).unwrap();
-        assert_eq!(answered.text, unclosed);
-        assert_eq!(answered.basis, None);
+        // Valid field locator + two distinct passage locators on the same record produce 3 distinct citation IDs.
+        let outcome = crate::citations::execute_publish_citations(
+            &json!({
+                "previews": [{"reference":"obs-panel","revision":"r1","preview":"Potassium 4.1 mmol/L on 2026-03-14."}],
+                "citations": [
+                    {"id":"val","reference":"obs-panel","revision":"r1","locator":{"kind":"field","path":"valueQuantity.value"}},
+                    {"id":"p1","reference":"obs-panel","revision":"r1","locator":{"kind":"passage","part":0,"quote":"Hemolysis absent."}},
+                    {"id":"p2","reference":"obs-panel","revision":"r1","locator":{"kind":"passage","part":0,"quote":"Fasting specimen."}}
+                ]
+            }),
+            &evidence,
+            std::slice::from_ref(&lab),
+        );
+        let ToolOutcome::Returned(receipt_json) = outcome else {
+            panic!("expected returned receipt");
+        };
+        let receipt: crate::citations::RecordedCitationsReceipt =
+            serde_json::from_str(&receipt_json).unwrap();
+        let mut staged = crate::citations::StagedPublications::default();
+        staged.apply(receipt.call, true);
+
+        let answer = "Potassium is 4.1 [[patient_source:val]], without hemolysis [[patient_source:p1]] on a fasting sample [[patient_source:p2]].\n\n[[basis]]\nRests on one potassium observation.\n[[/basis]]";
+        let published = publish_job_citations(
+            answer,
+            JobCitationMode::InlineMarkers,
+            &evidence,
+            &staged,
+            std::slice::from_ref(&lab),
+        )
+        .unwrap();
+        assert_eq!(published.citations.len(), 3);
+        assert_ne!(published.citations[0].id, published.citations[1].id);
+        assert_ne!(published.citations[1].id, published.citations[2].id);
+        assert_eq!(published.citations[0].native, Some(link));
+        assert_eq!(
+            published.citations[0].locator,
+            Some(physician_wire::CitationLocator::Field {
+                path: "valueQuantity.value".parse().unwrap()
+            })
+        );
+        assert_eq!(
+            published.citations[1].cited_passage(),
+            Some("Hemolysis absent.")
+        );
+        assert_eq!(
+            published.citations[2].cited_passage(),
+            Some("Fasting specimen.")
+        );
+        assert_eq!(
+            published.basis.as_deref(),
+            Some("Rests on one potassium observation.")
+        );
+
+        let partial = publish_partial_chat(
+            "Partial [[patient_source:p1]] and [[patient_source:unknown]].\n\n[[basis]]\nRests on one potassium observation.\n[[/basis]]",
+            &evidence,
+            &staged,
+            std::slice::from_ref(&lab),
+        );
+        assert_eq!(partial.citations.len(), 1);
+        assert_eq!(
+            partial.citations[0].cited_passage(),
+            Some("Hemolysis absent.")
+        );
+        assert_eq!(partial.basis, published.basis);
     }
 
     #[test]

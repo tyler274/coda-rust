@@ -13,7 +13,7 @@
 //! Beside the records, each source's last pull says how current they are.
 //!
 //! Projection prose and model output never become sources.
-use std::collections::{BTreeMap, HashMap, HashSet};
+use std::collections::{BTreeMap, BTreeSet, HashMap, HashSet};
 
 use sea_orm::{
     ActiveModelTrait, ColumnTrait, ConnectionTrait, DbErr, EntityTrait, QueryFilter, QueryOrder,
@@ -416,4 +416,47 @@ impl Store {
         tx.commit().await?;
         Ok(observation)
     }
+
+    /// Loads retained source revisions matching exact `(candidate_id, revision)` identities.
+    pub async fn sources_by_identities(
+        &self,
+        workspace: &str,
+        identities: &BTreeSet<(String, String)>,
+    ) -> Result<Vec<SourceRevision>, DbErr> {
+        let tx = self.db.begin().await?;
+        let found = by_identities(&tx, workspace, identities).await?;
+        tx.commit().await?;
+        Ok(found)
+    }
+}
+
+/// Historical source revisions matching exact `(candidate_id, revision)` pairs in `workspace`.
+pub(super) async fn by_identities(
+    tx: &impl ConnectionTrait,
+    workspace: &str,
+    identities: &BTreeSet<(String, String)>,
+) -> Result<Vec<SourceRevision>, DbErr> {
+    if identities.is_empty() {
+        return Ok(Vec::new());
+    }
+    let candidates: BTreeSet<&str> = identities.iter().map(|(c, _)| c.as_str()).collect();
+    let rows = source::Entity::find()
+        .filter(source::Column::Workspace.eq(workspace))
+        .filter(source::Column::Candidate.is_in(candidates))
+        .filter(source::Column::Revision.is_not_null())
+        .order_by_asc(source::Column::Candidate)
+        .order_by_asc(source::Column::ObservedAtVersion)
+        .all(tx)
+        .await?;
+    let mut seen = BTreeSet::new();
+    let mut found = Vec::new();
+    for row in rows {
+        if let Some(source) = decode(&row)? {
+            let key = (source.candidate_id.clone(), source.revision.clone());
+            if identities.contains(&key) && seen.insert(key) {
+                found.push(source);
+            }
+        }
+    }
+    Ok(found)
 }

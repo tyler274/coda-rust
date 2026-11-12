@@ -73,6 +73,8 @@ fn assert_same_draft(left: &reply::Draft, right: &reply::Draft) {
         base_text,
         sources,
         sources_version,
+        citations,
+        source_previews,
         allowance_after,
         attempts,
         session_hash,
@@ -94,6 +96,8 @@ fn assert_same_draft(left: &reply::Draft, right: &reply::Draft) {
     assert_eq!(base_text, &right.base_text);
     assert_eq!(sources, &right.sources);
     assert_eq!(*sources_version, right.sources_version);
+    assert_eq!(citations, &right.citations);
+    assert_eq!(source_previews, &right.source_previews);
     assert_eq!(*allowance_after, right.allowance_after);
     assert_eq!(
         serde_json::to_value(attempts).unwrap(),

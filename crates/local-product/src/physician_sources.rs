@@ -5,6 +5,7 @@
 //! complete chart.
 mod chart;
 pub use chart::{ChartInputError, ChartRequest, ChartScope, SEARCH_TOOL, read_tool, search_tool};
+pub(crate) use chart::{ReadReceipt, RecordReceipt, part as source_part};
 
 use async_trait::async_trait;
 use serde::{Deserialize, Serialize};
@@ -73,6 +74,23 @@ pub struct NativeLink {
 /// Opaque citation identity for one exact record, including its provenance.
 pub fn citation_id(source: &SourceRevision) -> String {
     crate::sha256_hex(&serde_json::to_vec(source).expect("source serialization"))
+}
+
+/// Opaque citation identity scoped to an exact record revision and optional sub-record locator.
+///
+/// Whole-record citations (`locator: None`) use [`citation_id`] directly; passage and field
+/// citations incorporate the canonical locator so distinct passages or fields of one record
+/// retain distinct citation identities.
+pub fn citation_id_for(
+    source: &SourceRevision,
+    locator: Option<&physician_wire::CitationLocator>,
+) -> String {
+    match locator {
+        None => citation_id(source),
+        Some(locator) => crate::sha256_hex(
+            &serde_json::to_vec(&(source, locator)).expect("source locator serialization"),
+        ),
+    }
 }
 
 impl SourceRevision {
@@ -368,57 +386,6 @@ pub fn caught_up_context<'a>(
         }
     }
     Ok(unread)
-}
-
-/// Whole records the model received in full in its latest working window, as
-/// an answer may cite them. A passage, a preview of a large result, or a read
-/// from an earlier window never grants citation authority.
-pub fn delivered_citations<'a>(
-    records: impl IntoIterator<Item = impl Into<harness::engine::recipe::ReplayEvent<'a>>>,
-    messages: &[harness::engine::ProductMessage],
-) -> Result<Vec<crate::physician_chat::Citation>, DeliveredCitationError> {
-    let mut cited = Vec::new();
-    for output in harness::engine::results::delivered_originals(records, messages)? {
-        // Other tools' results share the window; only chart reads decode.
-        let Ok(receipt) = serde_json::from_str::<chart::ReadReceipt>(output) else {
-            continue;
-        };
-        for result in receipt.results {
-            let chart::RecordReceipt::Available {
-                reference,
-                revision,
-                record_type,
-                dates,
-                content,
-                readable_parts,
-                sha256,
-                provenance,
-                native,
-                citation_id: Some(id),
-                ..
-            } = result
-            else {
-                continue;
-            };
-            if crate::sha256_hex(content.as_bytes()) != sha256 {
-                return Err(DeliveredCitationError::Corrupt { reference });
-            }
-            cited.push(crate::physician_chat::Citation {
-                id,
-                reference,
-                revision,
-                record_type,
-                dates,
-                content,
-                readable_parts,
-                sha256,
-                provenance,
-                summary: None,
-                native,
-            });
-        }
-    }
-    Ok(cited)
 }
 
 /// Why the delivered chart reads could not be resolved for publication.

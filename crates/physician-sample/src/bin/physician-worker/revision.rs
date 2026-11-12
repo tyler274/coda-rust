@@ -380,6 +380,31 @@ impl Product for RevisionOwner {
             if call.name == harness::skills::SKILL_VIEW {
                 return Ok(claim.skills.execute(&call.name, &call.arguments));
             }
+            if call.name == local_product::citations::PUBLISH_CITATIONS_TOOL {
+                let messages = store.revision_message_sources(&claim.scope, &draft).await?;
+                let evidence = local_product::citations::WindowEvidence::from_records(
+                    work_records.iter(),
+                    &messages,
+                    &claim.scope.workspace,
+                )?;
+                let identities =
+                    local_product::citations::call_identities(&call.arguments, &evidence);
+                let mut retained = store
+                    .sources_by_identities(&claim.scope.workspace, &identities)
+                    .await?;
+                for source in &claim.sources {
+                    if !retained.iter().any(|s| {
+                        s.candidate_id == source.candidate_id && s.revision == source.revision
+                    }) {
+                        retained.push(source.clone());
+                    }
+                }
+                return Ok(local_product::citations::execute_publish_citations(
+                    &call.arguments,
+                    &evidence,
+                    &retained,
+                ));
+            }
             read_sources(&claim.sources, &claim.scope.workspace, &call)
         })
     }
@@ -405,6 +430,9 @@ impl Product for RevisionOwner {
             RevisionCommit::SourcesUnread(references) => Ok(Finish::Continue(
                 physician_sources::unread_result(&references),
             )),
+            RevisionCommit::CitationsRefused(refused) => {
+                Ok(revision_feedback(&refused.to_string()))
+            }
         }
     }
 

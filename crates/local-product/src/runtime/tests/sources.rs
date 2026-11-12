@@ -131,6 +131,59 @@ async fn read_then_finish(
         )
         .await
         .unwrap();
+    let previews: Vec<Value> = value["results"]
+        .as_array()
+        .into_iter()
+        .flatten()
+        .filter(|entry| entry["outcome"] == "available")
+        .map(|entry| {
+            serde_json::json!({
+                "reference": entry["reference"],
+                "revision": entry["revision"],
+                "preview": format!("Reviewed {} ({}).", entry["reference"], entry["revision"]),
+            })
+        })
+        .collect();
+    if !previews.is_empty() {
+        let all_events = store
+            .revision_records(
+                &claim.scope,
+                &store.draft(&claim.scope).await.unwrap().unwrap(),
+            )
+            .await
+            .unwrap();
+        let evidence = crate::citations::WindowEvidence::from_records(
+            all_events.iter(),
+            &[],
+            &claim.scope.workspace,
+        )
+        .unwrap();
+        let publish = crate::citations::execute_publish_citations(
+            &serde_json::json!({
+                "previews": previews,
+                "citations": [],
+            }),
+            &evidence,
+            read,
+        );
+        store
+            .record_revision(
+                claim,
+                Event {
+                    attempt_id: claim.attempt.clone(),
+                    sequence: count + 3,
+                    ordinal: sequence,
+                    kind: EventKind::ToolReturned {
+                        call_id: format!("publish-{sequence}"),
+                        result: harness::engine::results::ToolResult::Original(
+                            publish.text().unwrap().to_owned(),
+                        ),
+                    },
+                },
+            )
+            .await
+            .unwrap();
+    }
     exchange(store, claim, sequence, output).await;
 }
 
@@ -791,6 +844,9 @@ async fn ingestion_racing_a_commit_is_caught_or_lands_after_it_never_lost() {
                 assert_eq!(draft.sources_version, recorded);
             }
             RevisionCommit::SourcesUnread(_) => panic!("no refresh preceded this finish"),
+            RevisionCommit::CitationsRefused(error) => {
+                panic!("no sources read in this turn: {error:?}")
+            }
         }
     }
 }

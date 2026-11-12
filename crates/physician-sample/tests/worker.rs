@@ -1221,6 +1221,9 @@ async fn skill_reads_run_through_the_worker_and_only_the_answer_is_published() {
         [
             {"name": "skill_view", "arguments": {"name": "patient-record-retrieval", "file_path": "references/authoring-guide.md"}},
             {"name":"read_patient_sources","arguments":{"references":[{"candidate_id":"Observation/result","revision":revision,"cursor":null}],"max_result_bytes":4096}}
+        ],
+        [
+            {"name": "publish_citations", "arguments": {"previews": [{"reference": "Observation/result", "revision": revision, "preview": "Creatinine 1.1 mg/dL on lab observation."}], "citations": []}}
         ]
     ])
     .to_string();
@@ -1293,7 +1296,7 @@ async fn skill_reads_run_through_the_worker_and_only_the_answer_is_published() {
             _ => None,
         })
         .collect();
-    assert_eq!(requests.len(), 3, "two tool rounds and one answer");
+    assert_eq!(requests.len(), 4, "three tool rounds and one answer");
     let offered = local_product::physician_chat::recipe(
         &support::models::roles().chat,
         local_product::physician_chat::INSTRUCTIONS,
@@ -1314,7 +1317,7 @@ async fn skill_reads_run_through_the_worker_and_only_the_answer_is_published() {
         assert_eq!(context.tools, offered);
     }
     let returned = tool_returned(&saved);
-    assert_eq!(returned.len(), 9);
+    assert_eq!(returned.len(), 10);
     let output = |id: &str| {
         returned
             .iter()
@@ -1367,7 +1370,7 @@ async fn skill_reads_run_through_the_worker_and_only_the_answer_is_published() {
 async fn chart_reads_and_exact_citations_survive_readback_and_duplicate_delivery() {
     let _guard = lock().lock().await;
     let content = "{\"potassium\":4.1}";
-    let reply = "Controlled source read [[patient_source:{{citation_id}}]]\n\n[[basis]]\nRests on one potassium result.\n[[/basis]]\n[[source_summaries]]\n{{citation_id}}: Records potassium 4.1.\n[[/source_summaries]]";
+    let reply = "Controlled source read [[patient_source:{{citation_id}}]]\n\n[[basis]]\nRests on one potassium result.\n[[/basis]]";
     let Some(running) = running_with("chart_citations", None, None, "[]", reply, &[]).await else {
         return;
     };
@@ -1396,7 +1399,6 @@ async fn chart_reads_and_exact_citations_survive_readback_and_duplicate_delivery
     let answer = state.messages.last().unwrap();
     let citation = &answer.citations[0];
     assert_eq!(citation.content, content);
-    assert!(!answer.text.contains("source_summaries"), "{}", answer.text);
     assert!(
         answer
             .text

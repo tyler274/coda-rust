@@ -147,6 +147,9 @@ pub struct Message {
     /// Exact sources cited by this answer, retained independently of later chart changes.
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub citations: Vec<crate::physician_chat::Citation>,
+    /// Previews and failed-read statuses recorded for every source touched in the finishing window.
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub source_previews: Vec<crate::citations::ReadRecordPreview>,
     /// What an answer rests on and its limits, kept apart from its text.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub basis: Option<String>,
@@ -552,6 +555,9 @@ pub enum RuntimeError {
     /// The saved records could not be read as a reserved final exchange.
     #[error("{0}")]
     PendingFinal(#[source] engine::Failure),
+    /// Delivered chart reads could not be reconstructed for citation verification.
+    #[error("{0}")]
+    DeliveredCitations(#[from] crate::physician_sources::DeliveredCitationError),
 }
 
 impl From<DbErr> for RuntimeError {
@@ -574,7 +580,11 @@ pub fn persistence_failure(error: impl Into<engine::Cause>) -> engine::Cause {
     use sea_orm::{ConnAcquireErr, RuntimeErr, SqlxError};
     let database = match error.downcast_ref::<RuntimeError>() {
         Some(RuntimeError::Database(database)) => Some(database),
-        Some(RuntimeError::RunLifecycle(_) | RuntimeError::PendingFinal(_)) => None,
+        Some(
+            RuntimeError::RunLifecycle(_)
+            | RuntimeError::PendingFinal(_)
+            | RuntimeError::DeliveredCitations(_),
+        ) => None,
         None => error.downcast_ref::<DbErr>(),
     };
     let retry = match database {
@@ -797,6 +807,7 @@ impl Store {
             },
             text: input.text.clone(),
             citations: Vec::new(),
+            source_previews: Vec::new(),
             basis: None,
             sources_version: None,
         });
@@ -1200,11 +1211,20 @@ impl Store {
         {
             return Err(error("partial result differs from recorded terminal turn").into());
         }
-        let delivered = crate::physician_sources::delivered_citations(
+        let evidence = crate::citations::WindowEvidence::from_records(
             records.iter(),
             &state.message_sources(),
+            &claim.scope.workspace,
         )?;
-        let published = crate::physician_chat::published_partial(&turn.text(), &delivered);
+        let staged = crate::citations::StagedPublications::from_records(records.iter());
+        let identities = crate::citations::publication_identities(&evidence, &staged);
+        let retained = sources::by_identities(&tx, &claim.scope.workspace, &identities).await?;
+        let published = crate::physician_chat::publish_partial_chat(
+            &turn.text(),
+            &evidence,
+            &staged,
+            &retained,
+        );
         let attempt = state.attempts.last_mut().unwrap();
         attempt.status = AttemptStatus::Held;
         let sources_version = attempt.sources_version;
@@ -1220,6 +1240,7 @@ impl Store {
                 },
                 text: published.text,
                 citations: published.citations,
+                source_previews: published.source_previews,
                 basis: published.basis,
                 sources_version,
             });
@@ -1228,9 +1249,8 @@ impl Store {
     }
 
     /// Locks the real auth owner on this same transaction through reply publication.
-    /// An answer citing a record that did not reach the model whole in its
-    /// current window is refused without writing, so the model can correct it
-    /// in the same run.
+    /// An answer citing evidence outside the current window or missing a preview for a read
+    /// record is refused without writing, so the model can correct it in the same run.
     pub async fn commit_authorized(
         &self,
         claim: &Claim,
@@ -1282,11 +1302,21 @@ impl Store {
             &state.work_attempt_ids(),
         )
         .await?;
-        let delivered = crate::physician_sources::delivered_citations(
+        let evidence = crate::citations::WindowEvidence::from_records(
             records.iter(),
             &state.message_sources(),
+            &claim.scope.workspace,
         )?;
-        let published = match crate::physician_chat::published(&answer, &delivered) {
+        let staged = crate::citations::StagedPublications::from_records(records.iter());
+        let identities = crate::citations::publication_identities(&evidence, &staged);
+        let retained = sources::by_identities(&tx, &claim.scope.workspace, &identities).await?;
+        let published = match crate::physician_chat::publish_job_citations(
+            &answer,
+            crate::physician_chat::JobCitationMode::InlineMarkers,
+            &evidence,
+            &staged,
+            &retained,
+        ) {
             Ok(published) => published,
             // Dropping the transaction writes nothing; the attempt stays current.
             Err(refused) => return Ok(Finish::Refused(engine::recipe::Refusal::new(refused))),
@@ -1303,6 +1333,7 @@ impl Store {
             },
             text: published.text,
             citations: published.citations,
+            source_previews: published.source_previews,
             basis: published.basis,
             sources_version,
         });
@@ -1813,6 +1844,20 @@ impl<A: Authority> Product for PhysicianHost<A> {
                 return chart
                     .run(workspace, observation.version, &observation.sources)
                     .map_err(Into::into);
+            }
+            if call.name == crate::citations::PUBLISH_CITATIONS_TOOL {
+                let evidence = crate::citations::WindowEvidence::from_records(
+                    records.iter(),
+                    &state.message_sources(),
+                    &claim.scope.workspace,
+                )?;
+                let identities = crate::citations::call_identities(&arguments, &evidence);
+                let retained = store
+                    .sources_by_identities(&claim.scope.workspace, &identities)
+                    .await?;
+                return Ok(crate::citations::execute_publish_citations(
+                    &arguments, &evidence, &retained,
+                ));
             }
             let skills = store.frozen_skills(&claim.scope, &state.skills).await?;
             Ok(skills.execute(&call.name, &arguments))

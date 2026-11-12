@@ -384,7 +384,7 @@ fn citation_segments(message: &local_product::runtime::Message) -> Vec<Value> {
             json!({"kind":"citation", "state":"resolved", "source":"patient",
             "source_id":citation.id, "handle":citation.reference,
             "display_label":inspection.title,
-            "source_presentation":{"inspection":inspection},
+            "source_presentation":{"content":inspection.coda_preview, "inspection":inspection},
             "destination":destination}),
         );
         text = rest;
@@ -415,9 +415,12 @@ fn durable_snapshot_body(
             let newer_records = message
                 .sources_version
                 .is_some_and(|answered| answered < sources_version);
-            let authored = json!({ "kind": turn_kind(message.role.as_str()),
+            let mut authored = json!({ "kind": turn_kind(message.role.as_str()),
                 "text": message.text, "segments": citation_segments(message),
                 "basis": message.basis, "newer_records": newer_records });
+            if !message.source_previews.is_empty() {
+                authored["source_previews"] = json!(message.source_previews);
+            }
             let partial = message.partial().then(|| {
                 json!({
                     "kind": "mechanical", "text": "Partial response.",
@@ -720,6 +723,7 @@ mod durable_snapshot_tests {
                 },
                 text: "Hello".into(),
                 citations: vec![],
+                source_previews: vec![],
                 basis: None,
                 sources_version: None,
             }],
@@ -769,6 +773,7 @@ mod durable_snapshot_tests {
                         },
                         text: "The saved part of the answer.".into(),
                         citations: Vec::new(),
+                        source_previews: Vec::new(),
                         basis: None,
                         sources_version: None,
                     });
@@ -923,6 +928,7 @@ mod durable_snapshot_tests {
             },
             text: "None recorded.".into(),
             citations: vec![],
+            source_previews: vec![],
             basis: Some("Rests on one allergy record.".into()),
             sources_version: Some(3),
         });
@@ -965,6 +971,7 @@ mod citation_segment_tests {
                 partial: false,
             },
             text: "A [[patient_source:linked]] B [[patient_source:plain]]".into(),
+            source_previews: vec![],
             basis: None,
             sources_version: None,
             citations: vec![

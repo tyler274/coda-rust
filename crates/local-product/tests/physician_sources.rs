@@ -48,11 +48,32 @@ fn exact_reader_rejects_corruption_and_cross_workspace_and_never_truncates_conte
         .unwrap()
         .to_owned();
     let events = delivered_read("read", &read.to_string());
-    let delivered =
-        local_product::physician_sources::delivered_citations(events.iter(), &[]).unwrap();
-    let citations = local_product::physician_chat::published(
+    let evidence =
+        local_product::citations::WindowEvidence::from_records(events.iter(), &[], "one").unwrap();
+    let mut staged = local_product::citations::StagedPublications::default();
+    staged.apply(
+        local_product::citations::PublishCitationsCall {
+            replace: false,
+            previews: vec![local_product::citations::PreviewSubmission {
+                reference: "original-id".into(),
+                revision: "revision-7".into(),
+                preview: "Records potassium 4.1 mmol/L.".into(),
+            }],
+            citations: vec![local_product::citations::CitationSubmission {
+                id: citation_id.clone(),
+                reference: "original-id".into(),
+                revision: "revision-7".into(),
+                locator: None,
+            }],
+        },
+        true,
+    );
+    let citations = local_product::citations::publish_job_citations(
         &format!("Claim [[patient_source:{citation_id}]]"),
-        &delivered,
+        local_product::citations::JobCitationMode::InlineMarkers,
+        &evidence,
+        &staged,
+        std::slice::from_ref(&source),
     )
     .unwrap()
     .citations;
@@ -234,12 +255,15 @@ fn delivered_read(call_id: &str, output: &str) -> Vec<(harness::engine::Event, b
     ]
 }
 
-/// Citation authority comes only from a whole record the model received in its
-/// current window: a passage carries no identity, and a fresh window drops it.
+/// Citation authority comes strictly from evidence delivered to the model in its
+/// current window and previews/citations submitted via `publish_citations`.
 #[test]
-fn only_whole_records_delivered_in_the_current_window_are_citable() {
-    use local_product::physician_chat::{PublicationError, published, published_partial};
-    use local_product::physician_sources::delivered_citations;
+fn only_evidence_delivered_in_the_current_window_publishes_and_answer_text_is_never_parsed() {
+    use local_product::citations::{
+        JobCitationMode, PublicationError, StagedPublications, WindowEvidence,
+        execute_publish_citations, publish_job_citations, publish_partial_chat,
+    };
+
     let content = "Potassium 4.1 mmol/L";
     let source = SourceRevision {
         workspace: "one".into(),
@@ -260,46 +284,133 @@ fn only_whole_records_delivered_in_the_current_window_are_citable() {
     assert!(whole.contains(&id));
     let answer = format!("Potassium is 4.1 [[patient_source:{id}]].");
 
-    let current = delivered_read("read", &whole);
-    let delivered = delivered_citations(current.iter(), &[]).unwrap();
-    let answered = published(&answer, &delivered).unwrap();
-    assert_eq!(answered.text, answer);
-    assert_eq!(answered.citations[0].id, id);
-    assert_eq!(answered.citations[0].content, content);
+    let mut current = delivered_read("read", &whole);
+    let evidence = WindowEvidence::from_records(current.iter(), &[], "one").unwrap();
 
-    // Returned but never delivered: not citable.
-    let undelivered = &current[..1];
-    let delivered = delivered_citations(undelivered.iter(), &[]).unwrap();
+    // Answer text is never parsed for previews: embedding a bracketed summary block without
+    // calling publish_citations refuses at finish, and once publish_citations supplies the preview,
+    // any bracketed text block in the answer remains untouched rather than parsed into summary.
+    let open_tag = concat!("[[source_", "summaries]]");
+    let close_tag = concat!("[[/source_", "summaries]]");
+    let text_with_legacy_block =
+        format!("{answer}\n{open_tag}\n{id}: Parsed from text.\n{close_tag}");
     assert_eq!(
-        published(&answer, &delivered).err(),
-        Some(PublicationError::NotRead(id.clone()))
+        publish_job_citations(
+            &text_with_legacy_block,
+            JobCitationMode::InlineMarkers,
+            &evidence,
+            &StagedPublications::default(),
+            std::slice::from_ref(&source),
+        )
+        .err(),
+        Some(PublicationError::CitationMissingPreview {
+            id: id.clone(),
+            reference: "lab".into(),
+            revision: "r1".into(),
+        })
     );
 
-    // Delivered in a window the model has since left: not citable.
-    let mut earlier = current.clone();
-    earlier.push(event(
+    let tool_out = execute_publish_citations(
+        &json!({
+            "previews": [{"reference": "lab", "revision": "r1", "preview": "Potassium 4.1 mmol/L recorded by lab."}],
+            "citations": [{"id": id, "reference": "lab", "revision": "r1", "locator": null}]
+        }),
+        &evidence,
+        std::slice::from_ref(&source),
+    );
+    let receipt = tool_out.text().unwrap().to_owned();
+    current.push(event(
         4,
         1,
+        harness::engine::EventKind::ToolReturned {
+            call_id: "pub-1".into(),
+            result: harness::engine::results::ToolResult::Original(receipt),
+        },
+    ));
+    let staged = StagedPublications::from_records(current.iter());
+
+    let untouched = publish_job_citations(
+        &text_with_legacy_block,
+        JobCitationMode::InlineMarkers,
+        &evidence,
+        &staged,
+        std::slice::from_ref(&source),
+    )
+    .unwrap();
+    assert_eq!(
+        untouched.text, text_with_legacy_block,
+        "nothing is parsed or stripped out of answer text for previews"
+    );
+    assert_eq!(
+        untouched.citations[0].summary.as_deref(),
+        Some("Potassium 4.1 mmol/L recorded by lab.")
+    );
+    assert_eq!(untouched.citations[0].id, id);
+    assert_eq!(untouched.citations[0].content, content);
+
+    // Returned but never delivered in a model request: not citable.
+    let undelivered = &current[..1];
+    let undelivered_evidence =
+        WindowEvidence::from_records(undelivered.iter(), &[], "one").unwrap();
+    assert_eq!(
+        publish_job_citations(
+            &answer,
+            JobCitationMode::InlineMarkers,
+            &undelivered_evidence,
+            &staged,
+            std::slice::from_ref(&source),
+        )
+        .err(),
+        Some(PublicationError::CitationNotInWindow {
+            id: id.clone(),
+            reference: "lab".into(),
+            revision: "r1".into(),
+        })
+    );
+
+    // Delivered in a window the model has since left: refused at finish.
+    let mut earlier = current.clone();
+    earlier.push(event(
+        5,
+        2,
         harness::engine::EventKind::WindowOpened {
             opened_at_unix_ms: 0,
             handoff: None,
             reason: harness::engine::WindowReason::ModelAsked,
         },
     ));
-    let delivered = delivered_citations(earlier.iter(), &[]).unwrap();
-    assert!(delivered.is_empty());
+    let fresh_evidence = WindowEvidence::from_records(earlier.iter(), &[], "one").unwrap();
+    let fresh_staged = StagedPublications::from_records(earlier.iter());
+    assert!(fresh_evidence.whole.is_empty());
     assert_eq!(
-        published(&answer, &delivered).err(),
-        Some(PublicationError::NotRead(id.clone()))
+        publish_job_citations(
+            &answer,
+            JobCitationMode::InlineMarkers,
+            &fresh_evidence,
+            &fresh_staged,
+            std::slice::from_ref(&source),
+        )
+        .err(),
+        Some(PublicationError::CitationNotInWindow {
+            id: id.clone(),
+            reference: "lab".into(),
+            revision: "r1".into(),
+        })
     );
     // A partial answer cannot be corrected, so the unsupported marker leaves it.
-    let partial = published_partial(&answer, &delivered);
+    let partial = publish_partial_chat(
+        &answer,
+        &fresh_evidence,
+        &fresh_staged,
+        std::slice::from_ref(&source),
+    );
     assert_eq!(partial.text, "Potassium is 4.1 .");
     assert!(partial.citations.is_empty());
 
-    // A passage is delivered but carries no citation identity.
+    // A partial passage read grants passage authority only for the delivered byte span,
+    // never whole-record authority or unread spans.
     let mut large = source;
-    large.content = "x".repeat(10_000);
+    large.content = format!("Delivered lead sentence. {}", "x".repeat(6_000)) + " Unread tail.";
     large.sha256 = local_product::sha256_hex(large.content.as_bytes());
     let passage = ChartRequest::parse(
         READ_TOOL,
@@ -312,16 +423,102 @@ fn only_whole_records_delivered_in_the_current_window_are_citable() {
     let passage = passage.text().unwrap().to_owned();
     assert!(passage.contains("\"outcome\":\"passage\""));
     assert!(!passage.contains("citation_id"));
-    let events = delivered_read("passage", &passage);
-    assert!(delivered_citations(events.iter(), &[]).unwrap().is_empty());
+    let passage_events = delivered_read("passage", &passage);
+    let passage_evidence = WindowEvidence::from_records(passage_events.iter(), &[], "one").unwrap();
+    assert!(passage_evidence.whole.is_empty());
+    assert!(passage_evidence.has_record("lab", "r1"));
+
+    let mut staged_whole_on_passage = StagedPublications::default();
+    staged_whole_on_passage.apply(
+        local_product::citations::PublishCitationsCall {
+            previews: vec![local_product::citations::PreviewSubmission {
+                reference: "lab".into(),
+                revision: "r1".into(),
+                preview: "Large lab report partial read.".into(),
+            }],
+            citations: vec![local_product::citations::CitationSubmission {
+                id: "whole".into(),
+                reference: "lab".into(),
+                revision: "r1".into(),
+                locator: None,
+            }],
+            replace: false,
+        },
+        true,
+    );
+    assert_eq!(
+        publish_job_citations(
+            "Claim [[patient_source:whole]].",
+            JobCitationMode::InlineMarkers,
+            &passage_evidence,
+            &staged_whole_on_passage,
+            std::slice::from_ref(&large),
+        )
+        .err(),
+        Some(PublicationError::CitationNotInWindow {
+            id: "whole".into(),
+            reference: "lab".into(),
+            revision: "r1".into(),
+        })
+    );
+
+    let mut staged_delivered_passage = StagedPublications::default();
+    staged_delivered_passage.apply(
+        local_product::citations::PublishCitationsCall {
+            previews: vec![local_product::citations::PreviewSubmission {
+                reference: "lab".into(),
+                revision: "r1".into(),
+                preview: "Large lab report partial read.".into(),
+            }],
+            citations: vec![local_product::citations::CitationSubmission {
+                id: "lead".into(),
+                reference: "lab".into(),
+                revision: "r1".into(),
+                locator: Some(local_product::citations::RequestedLocator::Passage {
+                    part: 0,
+                    quote: "Delivered lead sentence.".into(),
+                    start_byte: None,
+                }),
+            }],
+            replace: false,
+        },
+        true,
+    );
+    let published_passage = publish_job_citations(
+        "Lead [[patient_source:lead]].",
+        JobCitationMode::InlineMarkers,
+        &passage_evidence,
+        &staged_delivered_passage,
+        std::slice::from_ref(&large),
+    )
+    .unwrap();
+    assert_eq!(
+        published_passage.citations[0].cited_passage(),
+        Some("Delivered lead sentence.")
+    );
 
     // An unclosed marker refuses a final answer and loses only its opening in a partial one.
+    let empty_evidence = WindowEvidence::default();
+    let empty_staged = StagedPublications::default();
     assert_eq!(
-        published("Claim [[patient_source:abc", &[]).err(),
+        publish_job_citations(
+            "Claim [[patient_source:abc",
+            JobCitationMode::InlineMarkers,
+            &empty_evidence,
+            &empty_staged,
+            &[],
+        )
+        .err(),
         Some(PublicationError::Unterminated)
     );
     assert_eq!(
-        published_partial("Claim [[patient_source:abc", &[]).text,
+        publish_partial_chat(
+            "Claim [[patient_source:abc",
+            &empty_evidence,
+            &empty_staged,
+            &[]
+        )
+        .text,
         "Claim abc"
     );
 }

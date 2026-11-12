@@ -35,7 +35,7 @@ pub(super) struct Position {
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
-pub(super) struct Exact {
+pub(crate) struct Exact {
     candidate_id: String,
     revision: String,
     cursor: Option<Position>,
@@ -66,13 +66,13 @@ struct Read {
 
 /// Chart read receipts have one wire owner for production and delivery checks.
 #[derive(Debug, Serialize, Deserialize)]
-pub(super) struct ReadReceipt {
+pub(crate) struct ReadReceipt {
     pub results: Vec<RecordReceipt>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(tag = "outcome", rename_all = "snake_case")]
-pub(super) enum RecordReceipt {
+pub(crate) enum RecordReceipt {
     Available {
         reference: String,
         revision: String,
@@ -114,7 +114,7 @@ pub(super) enum RecordReceipt {
 
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
-pub(super) enum ReadRepresentation {
+pub(crate) enum ReadRepresentation {
     NativeRecord,
 }
 
@@ -454,7 +454,7 @@ fn read_record(source: &SourceRevision, cursor: Option<Position>, budget: usize)
     }
 }
 
-pub(super) fn part(source: &SourceRevision, index: usize) -> Option<(&str, &str)> {
+pub(crate) fn part(source: &SourceRevision, index: usize) -> Option<(&str, &str)> {
     if index == 0 {
         return Some(("native_record", &source.content));
     }

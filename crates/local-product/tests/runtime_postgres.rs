@@ -359,7 +359,8 @@ async fn a_read_recorded_after_a_steer_is_retained_by_the_successor() {
             Ok(output)
         }
     }
-    struct Successor;
+    #[derive(Default)]
+    struct Successor(usize);
     impl engine::recipe::Provider for Successor {
         async fn exchange(
             &mut self,
@@ -368,11 +369,21 @@ async fn a_read_recorded_after_a_steer_is_retained_by_the_successor() {
             _: &engine::RunLimits,
             _: &mut dyn Observer,
         ) -> Result<engine::Turn, engine::Cause> {
+            self.0 += 1;
             assert!(request.items.iter().any(|item| matches!(item,
                 engine::Item::MaterializedResult { call_id, output }
                 if call_id == "steering-late-read" && output.contains("Potassium 4.1"))));
             assert!(request.items.iter().any(|item| matches!(item,
                 engine::Item::Message { text, .. } if text == "Use the retained read")));
+            if self.0 == 1 {
+                let mut output = turn("");
+                output.items = vec![read(
+                    "steering-late-preview",
+                    local_product::citations::PUBLISH_CITATIONS_TOOL,
+                    r#"{"previews":[{"reference":"late-read-lab","revision":"r1","preview":"Potassium 4.1 mmol/L."}],"citations":[]}"#,
+                )];
+                return Ok(output);
+            }
             Ok(turn("Completed using the retained read"))
         }
     }
@@ -459,7 +470,7 @@ async fn a_read_recorded_after_a_steer_is_retained_by_the_successor() {
         authority: Allowed,
     };
     host.run(
-        &mut Successor,
+        &mut Successor::default(),
         engine::RunLimits::default(),
         &engine::Cancellation::default(),
     )

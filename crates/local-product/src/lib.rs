@@ -14,6 +14,8 @@ use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
 
 pub mod chatgpt;
+/// Shared citation and source-preview contract for physician jobs.
+pub mod citations;
 /// Hosted physician chat instructions and the `skill_view` tool.
 pub mod physician_chat;
 pub mod physician_sources;

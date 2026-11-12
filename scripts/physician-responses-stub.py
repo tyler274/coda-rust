@@ -30,6 +30,43 @@ def message(text):
             "content": [{"type": "output_text", "text": text}]}
 
 
+def unpreviewed_reads(items):
+    previewed = set()
+    for item in items:
+        if item.get("type") == "function_call" and item.get("name") == "publish_citations":
+            try:
+                args = json.loads(item["arguments"]) if isinstance(item["arguments"], str) else item["arguments"]
+            except Exception:
+                continue
+            if not isinstance(args, dict):
+                continue
+            if args.get("replace"):
+                previewed.clear()
+            for entry in args.get("previews") or []:
+                if isinstance(entry, dict) and entry.get("reference") and entry.get("revision"):
+                    previewed.add((entry["reference"], entry["revision"]))
+    missing = []
+    seen = set()
+    for item in items:
+        if item.get("type") != "function_call_output":
+            continue
+        try:
+            payload = json.loads(item["output"])
+        except Exception:
+            continue
+        if not isinstance(payload, dict) or not isinstance(payload.get("results"), list):
+            continue
+        for entry in payload["results"]:
+            if not isinstance(entry, dict):
+                continue
+            if entry.get("outcome") in ("available", "passage"):
+                key = (entry.get("reference"), entry.get("revision"))
+                if key[0] and key[1] and key not in previewed and key not in seen:
+                    seen.add(key)
+                    missing.append(key)
+    return missing
+
+
 def output_for(body, rounds, reply):
     results = {item["call_id"]: item["output"] for item in body["input"]
                if item.get("type") == "function_call_output"}
@@ -60,6 +97,15 @@ def output_for(body, rounds, reply):
         identity = f"fixed-{len(body['input'])}"
         if references:
             return [call(identity, "read_patient_sources", {"references": references[:8], "max_result_bytes": 65536})]
+        missing_previews = unpreviewed_reads(body["input"])
+        if missing_previews:
+            return [call(identity, "publish_citations", {
+                "previews": [
+                    {"reference": ref, "revision": rev, "preview": f"Reviewed source record {ref} ({rev})."}
+                    for ref, rev in missing_previews
+                ],
+                "citations": [],
+            })]
         return [call(identity, "finish_reply_revision", {"text": "Noted.", "review_basis": "Synthetic provider response."})]
     if "{{citation_id}}" in reply:
         return cited(reply, results)
@@ -68,8 +114,8 @@ def output_for(body, rounds, reply):
 
 def cited(reply, results):
     """A reply naming `{{citation_id}}` first searches the chart, reads the first
-    record it finds in full, then answers with that read's citation identity, as
-    a model cites what it was handed."""
+    record it finds in full, publishes its dated preview and citation, then answers
+    with that read's citation identity, as a model cites what it was handed."""
     if "chart-search" not in results:
         return [call("chart-search", "search_patient_information",
                      {"query": "", "record_type": None, "after": None})]
@@ -80,6 +126,20 @@ def cited(reply, results):
                      {"references": [found[0]["reference"]], "max_result_bytes": 65536})]
     read = json.loads(results["chart-read"])["results"][0]
     assert read.get("citation_id"), f"the record was not read whole: {read}"
+    if "chart-citations" not in results:
+        return [call("chart-citations", "publish_citations", {
+            "previews": [{
+                "reference": read["reference"],
+                "revision": read["revision"],
+                "preview": "Records potassium 4.1.",
+            }],
+            "citations": [{
+                "id": read["citation_id"],
+                "reference": read["reference"],
+                "revision": read["revision"],
+                "locator": None,
+            }],
+        })]
     return [message(reply.replace("{{citation_id}}", read["citation_id"]))]
 
 

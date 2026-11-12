@@ -21,7 +21,8 @@ pub fn inspection(citation: &Citation) -> SourceInspection {
             .iter()
             .map(|part| field(&part.label, &part.text))
             .collect(),
-        cited_passage: None,
+        cited_passage: citation.cited_passage().map(str::to_owned),
+        locator: citation.locator.clone(),
         coda_preview: None,
         attribution: Vec::new(),
         record_details: Vec::new(),
