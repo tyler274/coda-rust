@@ -270,6 +270,7 @@ pub(super) mod source_patient_link {
         #[sea_orm(column_type = "Text")]
         pub workspace: String,
         pub linked_at: i64,
+        pub issued_pull_seq: i64,
     }
 
     #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
@@ -292,6 +293,7 @@ pub(super) mod practice_source_access {
         #[sea_orm(column_type = "JsonBinary")]
         pub access: Json,
         pub updated_at: i64,
+        pub access_seq: i64,
     }
 
     #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
@@ -316,6 +318,7 @@ pub(super) mod patient_source_status {
         pub last_good_read_at: Option<i64>,
         #[sea_orm(column_type = "JsonBinary")]
         pub attempt: Option<Json>,
+        pub applied_pull_seq: i64,
     }
 
     #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]

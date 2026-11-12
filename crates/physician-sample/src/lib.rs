@@ -528,9 +528,16 @@ async fn site_from_env(
                 hosting::STAGING_PROFILE
             ));
         }
+        let charts_path = Path::new(&charts_dir);
+        if !charts_path.join("patients").is_dir() {
+            return Err(format!(
+                "PHYSICIAN_SYNTHETIC_CHARTS has no patients directory at {}",
+                charts_path.display()
+            ));
+        }
         source_registry.register_synthetic(std::sync::Arc::new(
             synthetic_chart::SyntheticCharts::open_with_optional_store(
-                Path::new(&charts_dir),
+                charts_path,
                 runtime.clone(),
             ),
         ));
@@ -904,6 +911,21 @@ mod tests {
             .await
             .expect_err("required sign-in over other routes");
         assert!(error.contains("PHYSICIAN_UPSTREAM"), "{error}");
+    }
+
+    #[tokio::test]
+    async fn synthetic_charts_fail_closed_when_patients_folder_is_missing() {
+        let environment = |name: &str| {
+            (name == "PHYSICIAN_SYNTHETIC_CHARTS")
+                .then(|| "/nonexistent-synthetic-chart-bank".to_owned())
+        };
+        let error = site_from_env(environment, std::sync::Arc::default())
+            .await
+            .expect_err("missing synthetic bank folder must fail closed");
+        assert!(
+            error.contains("PHYSICIAN_SYNTHETIC_CHARTS has no patients directory"),
+            "{error}"
+        );
     }
 
     #[tokio::test]

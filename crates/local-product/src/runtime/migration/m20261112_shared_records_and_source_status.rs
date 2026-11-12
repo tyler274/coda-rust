@@ -11,7 +11,7 @@ use super::super::entities::{
 };
 
 #[derive(DeriveMigrationName)]
-pub(super) struct Migration;
+pub(in crate::runtime) struct Migration;
 
 #[async_trait::async_trait]
 impl MigrationTrait for Migration {
@@ -83,6 +83,12 @@ impl MigrationTrait for Migration {
                             .big_integer()
                             .not_null(),
                     )
+                    .col(
+                        ColumnDef::new(source_patient_link::Column::IssuedPullSeq)
+                            .big_integer()
+                            .not_null()
+                            .default(0),
+                    )
                     .primary_key(
                         Index::create()
                             .col(source_patient_link::Column::Practice)
@@ -130,6 +136,12 @@ impl MigrationTrait for Migration {
                             .big_integer()
                             .not_null(),
                     )
+                    .col(
+                        ColumnDef::new(practice_source_access::Column::AccessSeq)
+                            .big_integer()
+                            .not_null()
+                            .default(0),
+                    )
                     .primary_key(
                         Index::create()
                             .col(practice_source_access::Column::Practice)
@@ -162,6 +174,12 @@ impl MigrationTrait for Migration {
                         ColumnDef::new(patient_source_status::Column::LastGoodReadAt).big_integer(),
                     )
                     .col(ColumnDef::new(patient_source_status::Column::Attempt).json_binary())
+                    .col(
+                        ColumnDef::new(patient_source_status::Column::AppliedPullSeq)
+                            .big_integer()
+                            .not_null()
+                            .default(0),
+                    )
                     .primary_key(
                         Index::create()
                             .col(patient_source_status::Column::Practice)

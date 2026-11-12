@@ -18,8 +18,9 @@ use axum::routing::post;
 use local_product::physician_sources::{PatientSource, workspace_id};
 use local_product::runtime::Store;
 use local_product::source_status::{
-    LinkTarget, PracticeOutageKind, PracticeSourceReport, PracticeSourceSummary, ReconnectCommand,
-    ReconnectCommandOutcome, SourceCoordinator, SourcePatientKey, SourceStatusError,
+    LinkTarget, PracticeOutageKind, PracticeSourceReport, PracticeSourceSummary, PullDisposition,
+    ReconnectCommand, ReconnectCommandOutcome, SourceCoordinator, SourcePatientKey,
+    SourceStatusError,
 };
 use physician_auth::{AuthStore, Membership, PhysicianIdentity};
 use serde::Deserialize;
@@ -523,13 +524,14 @@ pub(crate) async fn post_check(Path(source_id): Path<String>, request: Request<B
             }
         };
 
-        if let Err(error) = sync_workspace_enrollment(
-            &parts.extensions,
-            store,
-            &practice_id,
-            &patient_report.workspace_id,
-        )
-        .await
+        if patient_report.applied == PullDisposition::Applied
+            && let Err(error) = sync_workspace_enrollment(
+                &parts.extensions,
+                store,
+                &practice_id,
+                &patient_report.workspace_id,
+            )
+            .await
         {
             return enrollment_failure_response(&practice_id, &source_id, &error);
         }

@@ -487,6 +487,76 @@ pub struct PracticeSourceReport {
     pub patients: Vec<(String, SourceStanding)>,
 }
 
+/// Monotonic ordering token issued before a patient pull begins so an older in-flight pull
+/// cannot overwrite chart records, timestamps, or recovery standing committed by a newer pull
+/// or practice reconnect.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub struct PullTicket {
+    /// Monotonic per-`(practice_id, source_id, source_patient_id)` pull sequence (`>= 1`).
+    pub seq: i64,
+    /// Practice-level `access_seq` observed when this pull began (`0` when unset).
+    pub access_seq: i64,
+}
+
+/// Whether a patient pull committed as the newest observation or yielded to a newer pull
+/// or practice reconnect.
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "snake_case")]
+pub enum PullDisposition {
+    /// The pull was the newest for this patient and source and updated stored state.
+    #[default]
+    Applied,
+    /// A newer pull or practice reconnect superseded this in-flight pull; stored records,
+    /// directory timestamps, and standing were left untouched.
+    Superseded,
+}
+
+/// Decision from [`decide_pull_order`] for an arriving pull result.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum PullOrderOutcome {
+    /// Persist this pull's records, directory state, and status at `applied_seq`.
+    Apply {
+        /// Monotonic `applied_pull_seq` to persist on `patient_source_status`.
+        applied_seq: i64,
+    },
+    /// Leave persisted records, directory state, and status untouched because a newer pull
+    /// or practice reconnect already superseded this pull.
+    Superseded,
+}
+
+/// Single authoritative ordering rule for competing patient pulls on the same
+/// `(practice_id, workspace_id, source_id)`.
+pub fn decide_pull_order(
+    ticket: Option<PullTicket>,
+    existing_applied_seq: i64,
+    existing_latest_attempted_at: Option<i64>,
+    current_access: Option<&SourceAccessState>,
+    current_access_seq: i64,
+    attempt: &PullAttempt,
+) -> PullOrderOutcome {
+    if let Some(ticket) = ticket {
+        if ticket.seq <= existing_applied_seq {
+            return PullOrderOutcome::Superseded;
+        }
+        if matches!(attempt.outcome, PullOutcome::LapsedAccess { .. })
+            && matches!(current_access, Some(SourceAccessState::Connected { .. }))
+            && current_access_seq > ticket.access_seq
+        {
+            return PullOrderOutcome::Superseded;
+        }
+        PullOrderOutcome::Apply {
+            applied_seq: ticket.seq,
+        }
+    } else {
+        if existing_latest_attempted_at.is_some_and(|prev| prev > attempt.attempted_at) {
+            return PullOrderOutcome::Superseded;
+        }
+        PullOrderOutcome::Apply {
+            applied_seq: existing_applied_seq + 1,
+        }
+    }
+}
+
 /// Result of checking one patient's records through [`SourceCoordinator::check_patient`].
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct PatientCheckReport {
@@ -496,6 +566,9 @@ pub struct PatientCheckReport {
     pub source_patient_id: String,
     /// Resulting patient source standing after the check.
     pub standing: SourceStanding,
+    /// Whether this check committed or yielded to a newer pull or practice reconnect.
+    #[serde(default)]
+    pub applied: PullDisposition,
     /// Number of candidate observations added or updated in the store.
     pub changed: usize,
     /// Number of source revisions delivered by the adapter on this check.
@@ -537,6 +610,8 @@ pub struct CompleteDelivery<'a> {
     pub records: &'a [SourceRevision],
     /// Practice-clock Unix second when the complete pull finished.
     pub pulled_at: i64,
+    /// Monotonic pull ticket issued before the adapter call, if coordinated.
+    pub ticket: Option<PullTicket>,
 }
 
 /// Inputs for atomically persisting the succeeded portion of a partial source pull
@@ -561,6 +636,8 @@ pub struct PartialDelivery<'a> {
     pub failed_parts: &'a [FailedPart],
     /// Practice-clock Unix second when the partial pull ran.
     pub attempted_at: i64,
+    /// Monotonic pull ticket issued before the adapter call, if coordinated.
+    pub ticket: Option<PullTicket>,
 }
 
 /// Result of reconnecting a practice's source and catching up linked patients.
@@ -855,8 +932,8 @@ impl SourceCoordinator {
             source_id: source.source_id().to_owned(),
             source_patient_id: source_patient_id.to_owned(),
         };
-        let link = store
-            .resolve_or_link_patient_fenced(&key, target, now, fence)
+        let (link, ticket) = store
+            .begin_patient_pull_fenced(&key, target, now, fence)
             .await?;
         let output = source
             .pull_patient(practice_id, source_patient_id, &link.workspace_id)
@@ -869,6 +946,7 @@ impl SourceCoordinator {
             link.workspace_id,
             output,
             now,
+            Some(ticket),
             fence,
         )
         .await
@@ -1218,7 +1296,7 @@ pub(crate) fn validate_non_empty(
 
 #[expect(
     clippy::too_many_arguments,
-    reason = "pull application requires store, source, patient keys, output, timestamp, and optional command fence"
+    reason = "pull application requires store, source, patient keys, output, timestamp, pull ticket, and optional command fence"
 )]
 async fn apply_pull_output(
     store: &Store,
@@ -1228,6 +1306,7 @@ async fn apply_pull_output(
     workspace_id: String,
     output: SourcePullOutput,
     now: i64,
+    ticket: Option<PullTicket>,
     fence: Option<ReconnectCommandFence<'_>>,
 ) -> Result<PatientCheckReport, SourceStatusError> {
     match output {
@@ -1239,6 +1318,7 @@ async fn apply_pull_output(
                     missing_candidates,
                 },
                 status,
+                applied,
             ) = store
                 .record_complete_pull_fenced(
                     CompleteDelivery {
@@ -1249,6 +1329,7 @@ async fn apply_pull_output(
                         patient: &patient,
                         records: &records,
                         pulled_at: now,
+                        ticket,
                     },
                     fence,
                 )
@@ -1261,6 +1342,7 @@ async fn apply_pull_output(
                 workspace_id,
                 source_patient_id: source_patient_id.to_owned(),
                 standing,
+                applied,
                 changed,
                 records_delivered,
                 missing_candidates,
@@ -1279,6 +1361,7 @@ async fn apply_pull_output(
                     missing_candidates,
                 },
                 status,
+                applied,
             ) = store
                 .record_partial_pull_fenced(
                     PartialDelivery {
@@ -1291,6 +1374,7 @@ async fn apply_pull_output(
                         records: &records,
                         failed_parts: &failed_parts,
                         attempted_at: now,
+                        ticket,
                     },
                     fence,
                 )
@@ -1303,6 +1387,7 @@ async fn apply_pull_output(
                 workspace_id,
                 source_patient_id: source_patient_id.to_owned(),
                 standing,
+                applied,
                 changed,
                 records_delivered,
                 missing_candidates,
@@ -1315,12 +1400,13 @@ async fn apply_pull_output(
                     reason: error.to_string(),
                 },
             };
-            let status = store
+            let (status, applied) = store
                 .record_pull_status_fenced(
                     practice_id,
                     &workspace_id,
                     source.source_id(),
                     &attempt,
+                    ticket,
                     fence,
                 )
                 .await?;
@@ -1332,6 +1418,7 @@ async fn apply_pull_output(
                 workspace_id,
                 source_patient_id: source_patient_id.to_owned(),
                 standing,
+                applied,
                 changed: 0,
                 records_delivered: 0,
                 missing_candidates: Vec::new(),
@@ -1344,12 +1431,13 @@ async fn apply_pull_output(
                     reason: error.to_string(),
                 },
             };
-            let status = store
+            let (status, applied) = store
                 .record_pull_status_fenced(
                     practice_id,
                     &workspace_id,
                     source.source_id(),
                     &attempt,
+                    ticket,
                     fence,
                 )
                 .await?;
@@ -1361,6 +1449,7 @@ async fn apply_pull_output(
                 workspace_id,
                 source_patient_id: source_patient_id.to_owned(),
                 standing,
+                applied,
                 changed: 0,
                 records_delivered: 0,
                 missing_candidates: Vec::new(),
@@ -1589,6 +1678,74 @@ mod tests {
                     reason: "source access requires reconnect across most linked patients".into(),
                 },
             })
+        );
+    }
+
+    #[test]
+    fn decide_pull_order_rejects_superseded_tickets_and_pre_reconnect_lapses() {
+        let connected = SourceAccessState::Connected { connected_at: 200 };
+        let lapsed_attempt = PullAttempt {
+            attempted_at: 150,
+            outcome: PullOutcome::LapsedAccess {
+                reason: "token expired".into(),
+            },
+        };
+        let ok_attempt = PullAttempt {
+            attempted_at: 220,
+            outcome: PullOutcome::Succeeded {
+                missing_candidates: Vec::new(),
+            },
+        };
+
+        assert_eq!(
+            decide_pull_order(
+                Some(PullTicket {
+                    seq: 2,
+                    access_seq: 1,
+                }),
+                3,
+                Some(200),
+                Some(&connected),
+                1,
+                &ok_attempt,
+            ),
+            PullOrderOutcome::Superseded,
+        );
+        assert_eq!(
+            decide_pull_order(
+                Some(PullTicket {
+                    seq: 2,
+                    access_seq: 1,
+                }),
+                1,
+                Some(100),
+                Some(&connected),
+                2,
+                &lapsed_attempt,
+            ),
+            PullOrderOutcome::Superseded,
+        );
+        assert_eq!(
+            decide_pull_order(
+                Some(PullTicket {
+                    seq: 3,
+                    access_seq: 2,
+                }),
+                1,
+                Some(100),
+                Some(&connected),
+                2,
+                &lapsed_attempt,
+            ),
+            PullOrderOutcome::Apply { applied_seq: 3 },
+        );
+        assert_eq!(
+            decide_pull_order(None, 4, Some(300), Some(&connected), 2, &lapsed_attempt),
+            PullOrderOutcome::Superseded,
+        );
+        assert_eq!(
+            decide_pull_order(None, 4, Some(150), Some(&connected), 2, &ok_attempt),
+            PullOrderOutcome::Apply { applied_seq: 5 },
         );
     }
 }

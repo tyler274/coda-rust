@@ -222,10 +222,14 @@ Enable the relay in this order:
 
 ### Staging synthetic charts
 
-The physician migration image carries the charts and manifest from the
+The physician migration and site images carry the charts and manifest from the
 [synthetic patient bank](patient-bank.md), built offline from accepted ledgers and
 their seeds at the image's revision. `PHYSICIAN_SYNTHETIC_CHARTS` names the packaged
-folder. Runtime images read the imported records from physician Postgres.
+folder: `physician-migrate load-charts` imports the practice's initial records into
+physician Postgres, and the staging site (`CODA_HOSTED_PROFILE=staging-preview`)
+registers the synthetic adapter against that folder so live source checks and
+reconnect commands run against the packaged bank and persist deliveries and source
+standing in physician Postgres.
 
 After a successful schema migration and account bootstrap, a staging operator with
 `run.jobs.runWithOverrides` loads the charts explicitly. The CI release role does

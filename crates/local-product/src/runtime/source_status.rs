@@ -23,15 +23,25 @@ use crate::physician_sources::{
 };
 use crate::source_status::{
     AdapterPresence, CompleteDelivery, LinkTarget, PartialDelivery, PatientSourceRecordStatus,
-    PracticeSourceReport, PullAttempt, ReconnectCommandClaim, ReconnectCommandFence,
-    ReconnectCommandState, SourceAccessState, SourcePatientKey, SourcePatientLink, SourceStanding,
-    SourceStatusError, derive_standing, summarize_practice_source, validate_non_empty,
+    PracticeSourceReport, PullAttempt, PullDisposition, PullOrderOutcome, PullTicket,
+    ReconnectCommandClaim, ReconnectCommandFence, ReconnectCommandState, SourceAccessState,
+    SourcePatientKey, SourcePatientLink, SourceStanding, SourceStatusError, decide_pull_order,
+    derive_standing, summarize_practice_source, validate_non_empty,
 };
 
 async fn ensure_workspace_practice_tx(
     tx: &impl ConnectionTrait,
     practice_id: &str,
     workspace_id: &str,
+) -> Result<(), SourceStatusError> {
+    ensure_workspace_practice_locked_tx(tx, practice_id, workspace_id, false).await
+}
+
+async fn ensure_workspace_practice_locked_tx(
+    tx: &impl ConnectionTrait,
+    practice_id: &str,
+    workspace_id: &str,
+    exclusive: bool,
 ) -> Result<(), SourceStatusError> {
     validate_non_empty("practice_id", practice_id)?;
     validate_non_empty("workspace_id", workspace_id)?;
@@ -48,11 +58,13 @@ async fn ensure_workspace_practice_tx(
     .exec_without_returning(tx)
     .await?;
 
-    let row = workspace_practice::Entity::find_by_id(workspace_id.to_owned())
-        .lock_shared()
-        .one(tx)
-        .await?
-        .ok_or_else(|| error("missing workspace practice binding"))?;
+    let select = workspace_practice::Entity::find_by_id(workspace_id.to_owned());
+    let row = if exclusive {
+        select.lock_exclusive().one(tx).await?
+    } else {
+        select.lock_shared().one(tx).await?
+    }
+    .ok_or_else(|| error("missing workspace practice binding"))?;
 
     if row.practice != practice_id {
         return Err(SourceStatusError::PracticeMismatch {
@@ -171,19 +183,77 @@ async fn verify_reconnect_fence_tx(
     Ok(())
 }
 
-async fn record_pull_status_tx(
+enum PreparedPullOrder {
+    Apply {
+        applied_seq: i64,
+        prior_good: Option<i64>,
+        existing_pull: Option<source_pull::Model>,
+    },
+    Superseded {
+        status: PatientSourceRecordStatus,
+        missing_candidates: Vec<String>,
+    },
+}
+
+async fn upsert_practice_source_access_tx(
+    tx: &impl ConnectionTrait,
+    practice_id: &str,
+    source_id: &str,
+    access: &SourceAccessState,
+    updated_at: i64,
+) -> Result<i64, SourceStatusError> {
+    let access_json =
+        serde_json::to_value(access).map_err(conversion_error("SourceAccessState", "Json"))?;
+
+    practice_source_access::Entity::insert(practice_source_access::ActiveModel {
+        practice: Set(practice_id.to_owned()),
+        source_id: Set(source_id.to_owned()),
+        access: Set(access_json.clone()),
+        updated_at: Set(updated_at),
+        access_seq: Set(0),
+    })
+    .on_conflict(
+        OnConflict::columns([
+            practice_source_access::Column::Practice,
+            practice_source_access::Column::SourceId,
+        ])
+        .do_nothing()
+        .to_owned(),
+    )
+    .exec_without_returning(tx)
+    .await?;
+
+    let row =
+        practice_source_access::Entity::find_by_id((practice_id.to_owned(), source_id.to_owned()))
+            .lock_exclusive()
+            .one(tx)
+            .await?
+            .ok_or_else(|| error("missing practice source access row after insert"))?;
+
+    let next_seq = row.access_seq + 1;
+    practice_source_access::ActiveModel {
+        practice: Unchanged(row.practice),
+        source_id: Unchanged(row.source_id),
+        access: Set(access_json),
+        updated_at: Set(updated_at),
+        access_seq: Set(next_seq),
+    }
+    .update(tx)
+    .await?;
+    Ok(next_seq)
+}
+
+async fn prepare_pull_order_tx(
     tx: &impl ConnectionTrait,
     practice_id: &str,
     workspace_id: &str,
     source_id: &str,
-    attempt: &PullAttempt,
-) -> Result<PatientSourceRecordStatus, SourceStatusError> {
-    ensure_workspace_practice_tx(tx, practice_id, workspace_id).await?;
+    ticket: Option<PullTicket>,
+    probe_attempt: &PullAttempt,
+) -> Result<PreparedPullOrder, SourceStatusError> {
+    ensure_workspace_practice_locked_tx(tx, practice_id, workspace_id, true).await?;
 
-    let attempt_json =
-        serde_json::to_value(attempt).map_err(conversion_error("PullAttempt", "Json"))?;
-
-    let existing = patient_source_status::Entity::find_by_id((
+    let existing_status_row = patient_source_status::Entity::find_by_id((
         practice_id.to_owned(),
         workspace_id.to_owned(),
         source_id.to_owned(),
@@ -191,16 +261,84 @@ async fn record_pull_status_tx(
     .lock_exclusive()
     .one(tx)
     .await?;
+    let existing_applied_seq = existing_status_row
+        .as_ref()
+        .map_or(0, |row| row.applied_pull_seq);
+    let existing_status = existing_status_row.map(decode_status).transpose()?;
 
-    let prior_good = match existing.as_ref() {
-        Some(row) => row.last_good_read_at,
-        None => source_pull::Entity::find_by_id((workspace_id.to_owned(), source_id.to_owned()))
+    let existing_pull =
+        source_pull::Entity::find_by_id((workspace_id.to_owned(), source_id.to_owned()))
+            .lock_exclusive()
             .one(tx)
-            .await?
-            .and_then(|pull| pull.pulled_at),
-    };
+            .await?;
+
+    let existing_access_row =
+        practice_source_access::Entity::find_by_id((practice_id.to_owned(), source_id.to_owned()))
+            .one(tx)
+            .await?;
+    let current_access_seq = existing_access_row.as_ref().map_or(0, |row| row.access_seq);
+    let current_access = existing_access_row.map(decode_access).transpose()?;
+
+    let existing_latest_attempted_at = existing_status
+        .as_ref()
+        .and_then(|status| status.latest_attempt.as_ref().map(|a| a.attempted_at));
+
+    match decide_pull_order(
+        ticket,
+        existing_applied_seq,
+        existing_latest_attempted_at,
+        current_access.as_ref(),
+        current_access_seq,
+        probe_attempt,
+    ) {
+        PullOrderOutcome::Superseded => {
+            let missing_candidates = match existing_pull.as_ref() {
+                Some(pull) => serde_json::from_value(pull.missing_candidates.clone())
+                    .map_err(conversion_error("Json", "Vec<String>"))?,
+                None => Vec::new(),
+            };
+            let status = existing_status.unwrap_or_else(|| PatientSourceRecordStatus {
+                practice_id: practice_id.to_owned(),
+                workspace_id: workspace_id.to_owned(),
+                source_id: source_id.to_owned(),
+                last_good_read_at: existing_pull.as_ref().and_then(|pull| pull.pulled_at),
+                latest_attempt: None,
+            });
+            Ok(PreparedPullOrder::Superseded {
+                status,
+                missing_candidates,
+            })
+        }
+        PullOrderOutcome::Apply { applied_seq } => {
+            let prior_good = match existing_status.as_ref() {
+                Some(status) => status.last_good_read_at,
+                None => existing_pull.as_ref().and_then(|pull| pull.pulled_at),
+            };
+            Ok(PreparedPullOrder::Apply {
+                applied_seq,
+                prior_good,
+                existing_pull,
+            })
+        }
+    }
+}
+
+async fn write_applied_pull_status_tx(
+    tx: &impl ConnectionTrait,
+    practice_id: &str,
+    workspace_id: &str,
+    source_id: &str,
+    attempt: &PullAttempt,
+    prior_good: Option<i64>,
+    applied_seq: i64,
+) -> Result<PatientSourceRecordStatus, SourceStatusError> {
+    let attempt_json =
+        serde_json::to_value(attempt).map_err(conversion_error("PullAttempt", "Json"))?;
+
     let last_good_read_at = match &attempt.outcome {
-        PullOutcome::Succeeded { .. } => Some(attempt.attempted_at),
+        PullOutcome::Succeeded { .. } => {
+            Some(prior_good.map_or(attempt.attempted_at, |prev| prev.max(attempt.attempted_at)))
+        }
         PullOutcome::Partial { .. }
         | PullOutcome::Failed { .. }
         | PullOutcome::LapsedAccess { .. } => prior_good,
@@ -212,6 +350,7 @@ async fn record_pull_status_tx(
         source_id: Set(source_id.to_owned()),
         last_good_read_at: Set(last_good_read_at),
         attempt: Set(Some(attempt_json)),
+        applied_pull_seq: Set(applied_seq),
     })
     .on_conflict(
         OnConflict::columns([
@@ -222,6 +361,7 @@ async fn record_pull_status_tx(
         .update_columns([
             patient_source_status::Column::LastGoodReadAt,
             patient_source_status::Column::Attempt,
+            patient_source_status::Column::AppliedPullSeq,
         ])
         .to_owned(),
     )
@@ -240,36 +380,46 @@ async fn record_pull_status_tx(
         .await?
         .map(decode_access)
         .transpose()?;
-        let should_set_connected = match existing_access {
-            None => true,
-            Some(SourceAccessState::ReconnectNeeded { since, .. }) => attempt.attempted_at > since,
-            Some(SourceAccessState::Connected { .. }) => false,
+        let connected = SourceAccessState::Connected {
+            connected_at: attempt.attempted_at,
         };
-        if should_set_connected {
-            let connected = SourceAccessState::Connected {
-                connected_at: attempt.attempted_at,
-            };
-            let access_json = serde_json::to_value(&connected)
-                .map_err(conversion_error("SourceAccessState", "Json"))?;
-            practice_source_access::Entity::insert(practice_source_access::ActiveModel {
-                practice: Set(practice_id.to_owned()),
-                source_id: Set(source_id.to_owned()),
-                access: Set(access_json),
-                updated_at: Set(attempt.attempted_at),
-            })
-            .on_conflict(
-                OnConflict::columns([
-                    practice_source_access::Column::Practice,
-                    practice_source_access::Column::SourceId,
-                ])
-                .update_columns([
-                    practice_source_access::Column::Access,
-                    practice_source_access::Column::UpdatedAt,
-                ])
-                .to_owned(),
-            )
-            .exec_without_returning(tx)
-            .await?;
+        match existing_access {
+            None => {
+                let access_json = serde_json::to_value(&connected)
+                    .map_err(conversion_error("SourceAccessState", "Json"))?;
+                practice_source_access::Entity::insert(practice_source_access::ActiveModel {
+                    practice: Set(practice_id.to_owned()),
+                    source_id: Set(source_id.to_owned()),
+                    access: Set(access_json),
+                    updated_at: Set(attempt.attempted_at),
+                    access_seq: Set(0),
+                })
+                .on_conflict(
+                    OnConflict::columns([
+                        practice_source_access::Column::Practice,
+                        practice_source_access::Column::SourceId,
+                    ])
+                    .do_nothing()
+                    .to_owned(),
+                )
+                .exec_without_returning(tx)
+                .await?;
+            }
+            Some(SourceAccessState::ReconnectNeeded { since, .. })
+                if attempt.attempted_at > since =>
+            {
+                upsert_practice_source_access_tx(
+                    tx,
+                    practice_id,
+                    source_id,
+                    &connected,
+                    attempt.attempted_at,
+                )
+                .await?;
+            }
+            Some(
+                SourceAccessState::ReconnectNeeded { .. } | SourceAccessState::Connected { .. },
+            ) => {}
         }
     }
 
@@ -371,6 +521,38 @@ impl Store {
         linked_at: i64,
         fence: Option<ReconnectCommandFence<'_>>,
     ) -> Result<SourcePatientLink, SourceStatusError> {
+        let (link, _) = self
+            .resolve_or_link_patient_inner(key, target, linked_at, fence, false)
+            .await?;
+        Ok(link)
+    }
+
+    /// Resolves or creates a source-patient link and atomically issues a monotonic [`PullTicket`]
+    /// before a patient pull begins so competing checks and reconnects cannot overwrite newer state.
+    pub async fn begin_patient_pull_fenced(
+        &self,
+        key: &SourcePatientKey,
+        target: LinkTarget<'_>,
+        linked_at: i64,
+        fence: Option<ReconnectCommandFence<'_>>,
+    ) -> Result<(SourcePatientLink, PullTicket), SourceStatusError> {
+        let (link, ticket) = self
+            .resolve_or_link_patient_inner(key, target, linked_at, fence, true)
+            .await?;
+        Ok((
+            link,
+            ticket.expect("begin_patient_pull_fenced always issues a PullTicket"),
+        ))
+    }
+
+    async fn resolve_or_link_patient_inner(
+        &self,
+        key: &SourcePatientKey,
+        target: LinkTarget<'_>,
+        linked_at: i64,
+        fence: Option<ReconnectCommandFence<'_>>,
+        issue_pull_ticket: bool,
+    ) -> Result<(SourcePatientLink, Option<PullTicket>), SourceStatusError> {
         key.validate()?;
         validate_non_empty("workspace_id", target.workspace())?;
 
@@ -385,65 +567,119 @@ impl Store {
         .one(&tx)
         .await?;
 
-        if let Some(existing) = existing {
-            if let LinkTarget::Exact(requested) = target
-                && requested != existing.workspace
+        if existing.is_none() {
+            let candidate_workspace = target.workspace();
+            ensure_workspace_practice_tx(&tx, &key.practice_id, candidate_workspace).await?;
+
+            let conflicting_patient = source_patient_link::Entity::find()
+                .filter(source_patient_link::Column::Practice.eq(&key.practice_id))
+                .filter(source_patient_link::Column::SourceId.eq(&key.source_id))
+                .filter(source_patient_link::Column::Workspace.eq(candidate_workspace))
+                .lock_shared()
+                .one(&tx)
+                .await?;
+
+            if let Some(other) = conflicting_patient
+                && other.source_patient_id != key.source_patient_id
             {
                 return Err(SourceStatusError::ConflictingWorkspaceLink {
                     practice_id: key.practice_id.clone(),
                     source_id: key.source_id.clone(),
                     source_patient_id: key.source_patient_id.clone(),
-                    existing_workspace_id: existing.workspace,
-                    requested_workspace_id: requested.to_owned(),
+                    existing_workspace_id: other.workspace,
+                    requested_workspace_id: format!(
+                        "{candidate_workspace} (already linked to `{}`)",
+                        other.source_patient_id
+                    ),
                 });
             }
-            ensure_workspace_practice_tx(&tx, &key.practice_id, &existing.workspace).await?;
-            tx.commit().await?;
-            return Ok(decode_link(existing));
+
+            source_patient_link::Entity::insert(source_patient_link::ActiveModel {
+                practice: Set(key.practice_id.clone()),
+                source_id: Set(key.source_id.clone()),
+                source_patient_id: Set(key.source_patient_id.clone()),
+                workspace: Set(candidate_workspace.to_owned()),
+                linked_at: Set(linked_at),
+                issued_pull_seq: Set(0),
+            })
+            .on_conflict(
+                OnConflict::columns([
+                    source_patient_link::Column::Practice,
+                    source_patient_link::Column::SourceId,
+                    source_patient_link::Column::SourcePatientId,
+                ])
+                .do_nothing()
+                .to_owned(),
+            )
+            .exec_without_returning(&tx)
+            .await?;
         }
 
-        let candidate_workspace = target.workspace();
-        ensure_workspace_practice_tx(&tx, &key.practice_id, candidate_workspace).await?;
-
-        let conflicting_patient = source_patient_link::Entity::find()
-            .filter(source_patient_link::Column::Practice.eq(&key.practice_id))
-            .filter(source_patient_link::Column::SourceId.eq(&key.source_id))
-            .filter(source_patient_link::Column::Workspace.eq(candidate_workspace))
-            .lock_shared()
+        let row = match existing {
+            Some(row) => row,
+            None => source_patient_link::Entity::find_by_id((
+                key.practice_id.clone(),
+                key.source_id.clone(),
+                key.source_patient_id.clone(),
+            ))
+            .lock_exclusive()
             .one(&tx)
-            .await?;
+            .await?
+            .ok_or_else(|| error("missing source patient link row after insert"))?,
+        };
 
-        if let Some(other) = conflicting_patient
-            && other.source_patient_id != key.source_patient_id
+        if let LinkTarget::Exact(requested) = target
+            && requested != row.workspace
         {
             return Err(SourceStatusError::ConflictingWorkspaceLink {
                 practice_id: key.practice_id.clone(),
                 source_id: key.source_id.clone(),
                 source_patient_id: key.source_patient_id.clone(),
-                existing_workspace_id: other.workspace,
-                requested_workspace_id: format!(
-                    "{candidate_workspace} (already linked to `{}`)",
-                    other.source_patient_id
-                ),
+                existing_workspace_id: row.workspace,
+                requested_workspace_id: requested.to_owned(),
             });
         }
+        ensure_workspace_practice_tx(&tx, &key.practice_id, &row.workspace).await?;
 
-        source_patient_link::Entity::insert(source_patient_link::ActiveModel {
-            practice: Set(key.practice_id.clone()),
-            source_id: Set(key.source_id.clone()),
-            source_patient_id: Set(key.source_patient_id.clone()),
-            workspace: Set(candidate_workspace.to_owned()),
-            linked_at: Set(linked_at),
-        })
-        .exec_without_returning(&tx)
-        .await?;
+        let ticket = if issue_pull_ticket {
+            let existing_applied_seq = patient_source_status::Entity::find_by_id((
+                key.practice_id.clone(),
+                row.workspace.clone(),
+                key.source_id.clone(),
+            ))
+            .one(&tx)
+            .await?
+            .map_or(0, |status| status.applied_pull_seq);
+            let access_seq = practice_source_access::Entity::find_by_id((
+                key.practice_id.clone(),
+                key.source_id.clone(),
+            ))
+            .one(&tx)
+            .await?
+            .map_or(0, |access| access.access_seq);
 
+            let next_seq = row.issued_pull_seq.max(existing_applied_seq) + 1;
+            source_patient_link::ActiveModel {
+                practice: Unchanged(row.practice.clone()),
+                source_id: Unchanged(row.source_id.clone()),
+                source_patient_id: Unchanged(row.source_patient_id.clone()),
+                workspace: Unchanged(row.workspace.clone()),
+                linked_at: Unchanged(row.linked_at),
+                issued_pull_seq: Set(next_seq),
+            }
+            .update(&tx)
+            .await?;
+            Some(PullTicket {
+                seq: next_seq,
+                access_seq,
+            })
+        } else {
+            None
+        };
+
+        let link = decode_link(row);
         tx.commit().await?;
-        Ok(SourcePatientLink {
-            key: key.clone(),
-            workspace_id: candidate_workspace.to_owned(),
-            linked_at,
-        })
+        Ok((link, ticket))
     }
 
     /// Reads the link for `(practice_id, source_id, source_patient_id)` if one exists.
@@ -504,7 +740,8 @@ impl Store {
         Ok(rows.into_iter().map(decode_link).collect())
     }
 
-    /// Sets the practice-level access state for `(practice_id, source_id)`.
+    /// Sets the practice-level access state for `(practice_id, source_id)` and advances
+    /// `access_seq` so in-flight pre-reconnect `LapsedAccess` pulls cannot overwrite recovery.
     pub async fn set_practice_source_access(
         &self,
         practice_id: &str,
@@ -514,28 +751,9 @@ impl Store {
     ) -> Result<(), SourceStatusError> {
         validate_non_empty("practice_id", practice_id)?;
         validate_non_empty("source_id", source_id)?;
-        let access_json =
-            serde_json::to_value(access).map_err(conversion_error("SourceAccessState", "Json"))?;
-
-        practice_source_access::Entity::insert(practice_source_access::ActiveModel {
-            practice: Set(practice_id.to_owned()),
-            source_id: Set(source_id.to_owned()),
-            access: Set(access_json),
-            updated_at: Set(updated_at),
-        })
-        .on_conflict(
-            OnConflict::columns([
-                practice_source_access::Column::Practice,
-                practice_source_access::Column::SourceId,
-            ])
-            .update_columns([
-                practice_source_access::Column::Access,
-                practice_source_access::Column::UpdatedAt,
-            ])
-            .to_owned(),
-        )
-        .exec_without_returning(&self.db)
-        .await?;
+        let tx = self.db.begin().await?;
+        upsert_practice_source_access_tx(&tx, practice_id, source_id, access, updated_at).await?;
+        tx.commit().await?;
         Ok(())
     }
 
@@ -568,29 +786,56 @@ impl Store {
         source_id: &str,
         attempt: &PullAttempt,
     ) -> Result<PatientSourceRecordStatus, SourceStatusError> {
-        self.record_pull_status_fenced(practice_id, workspace_id, source_id, attempt, None)
-            .await
+        let (status, _) = self
+            .record_pull_status_fenced(practice_id, workspace_id, source_id, attempt, None, None)
+            .await?;
+        Ok(status)
     }
 
-    /// Records a pull attempt optionally fenced by an active [`ReconnectCommandFence`].
+    /// Records a pull attempt ordered by `ticket` and optionally fenced by an active
+    /// [`ReconnectCommandFence`], leaving stored state untouched if a newer pull or practice
+    /// reconnect has already superseded this attempt.
     pub async fn record_pull_status_fenced(
         &self,
         practice_id: &str,
         workspace_id: &str,
         source_id: &str,
         attempt: &PullAttempt,
+        ticket: Option<PullTicket>,
         fence: Option<ReconnectCommandFence<'_>>,
-    ) -> Result<PatientSourceRecordStatus, SourceStatusError> {
+    ) -> Result<(PatientSourceRecordStatus, PullDisposition), SourceStatusError> {
         validate_non_empty("practice_id", practice_id)?;
         validate_non_empty("workspace_id", workspace_id)?;
         validate_non_empty("source_id", source_id)?;
 
         let tx = self.db.begin().await?;
         verify_reconnect_fence_tx(&tx, fence).await?;
-        let status =
-            record_pull_status_tx(&tx, practice_id, workspace_id, source_id, attempt).await?;
-        tx.commit().await?;
-        Ok(status)
+        match prepare_pull_order_tx(&tx, practice_id, workspace_id, source_id, ticket, attempt)
+            .await?
+        {
+            PreparedPullOrder::Superseded { status, .. } => {
+                tx.commit().await?;
+                Ok((status, PullDisposition::Superseded))
+            }
+            PreparedPullOrder::Apply {
+                applied_seq,
+                prior_good,
+                ..
+            } => {
+                let status = write_applied_pull_status_tx(
+                    &tx,
+                    practice_id,
+                    workspace_id,
+                    source_id,
+                    attempt,
+                    prior_good,
+                    applied_seq,
+                )
+                .await?;
+                tx.commit().await?;
+                Ok((status, PullDisposition::Applied))
+            }
+        }
     }
 
     /// Atomically commits a complete chart delivery (`physician_runtime_sources`,
@@ -600,23 +845,62 @@ impl Store {
         &self,
         delivery: CompleteDelivery<'_>,
     ) -> Result<(ChartPullReceipt, PatientSourceRecordStatus), SourceStatusError> {
-        self.record_complete_pull_fenced(delivery, None).await
+        let (receipt, status, _) = self.record_complete_pull_fenced(delivery, None).await?;
+        Ok((receipt, status))
     }
 
-    /// Atomically commits a complete chart delivery and status row, optionally fenced by an active
-    /// [`ReconnectCommandFence`] so superseded executions roll back before writing any records.
+    /// Atomically commits a complete chart delivery and status row ordered by `delivery.ticket`
+    /// and optionally fenced by an active [`ReconnectCommandFence`] so superseded executions or
+    /// older checks never overwrite newer records or timestamps.
     pub async fn record_complete_pull_fenced(
         &self,
         delivery: CompleteDelivery<'_>,
         fence: Option<ReconnectCommandFence<'_>>,
-    ) -> Result<(ChartPullReceipt, PatientSourceRecordStatus), SourceStatusError> {
+    ) -> Result<(ChartPullReceipt, PatientSourceRecordStatus, PullDisposition), SourceStatusError>
+    {
         validate_non_empty("practice_id", delivery.practice_id)?;
         validate_non_empty("workspace_id", delivery.workspace_id)?;
         validate_non_empty("source_id", delivery.source_id)?;
 
+        let probe_attempt = PullAttempt {
+            attempted_at: delivery.pulled_at,
+            outcome: PullOutcome::Succeeded {
+                missing_candidates: Vec::new(),
+            },
+        };
         let tx = self.db.begin().await?;
         verify_reconnect_fence_tx(&tx, fence).await?;
-        ensure_workspace_practice_tx(&tx, delivery.practice_id, delivery.workspace_id).await?;
+        let (applied_seq, prior_good, existing_pull) = match prepare_pull_order_tx(
+            &tx,
+            delivery.practice_id,
+            delivery.workspace_id,
+            delivery.source_id,
+            delivery.ticket,
+            &probe_attempt,
+        )
+        .await?
+        {
+            PreparedPullOrder::Superseded {
+                status,
+                missing_candidates,
+            } => {
+                tx.commit().await?;
+                return Ok((
+                    ChartPullReceipt {
+                        changed: 0,
+                        missing_candidates,
+                    },
+                    status,
+                    PullDisposition::Superseded,
+                ));
+            }
+            PreparedPullOrder::Apply {
+                applied_seq,
+                prior_good,
+                existing_pull,
+            } => (applied_seq, prior_good, existing_pull),
+        };
+
         let receipt = apply_source_delivery_tx(
             &tx,
             delivery.workspace_id,
@@ -625,6 +909,9 @@ impl Store {
             MissingScope::FullChart,
         )
         .await?;
+        let effective_pulled_at = existing_pull
+            .and_then(|pull| pull.pulled_at)
+            .map_or(delivery.pulled_at, |prev| prev.max(delivery.pulled_at));
         let patient_json = serde_json::to_value(delivery.patient)
             .map_err(conversion_error("SourcePatient", "source pull patient"))?;
         let missing_json = serde_json::to_value(&receipt.missing_candidates).map_err(
@@ -635,7 +922,7 @@ impl Store {
             source_id: Set(delivery.source_id.to_owned()),
             source_label: Set(delivery.source_label.to_owned()),
             patient: Set(patient_json),
-            pulled_at: Set(Some(delivery.pulled_at)),
+            pulled_at: Set(Some(effective_pulled_at)),
             missing_candidates: Set(missing_json),
         })
         .on_conflict(
@@ -660,16 +947,18 @@ impl Store {
                 missing_candidates: receipt.missing_candidates.clone(),
             },
         };
-        let status = record_pull_status_tx(
+        let status = write_applied_pull_status_tx(
             &tx,
             delivery.practice_id,
             delivery.workspace_id,
             delivery.source_id,
             &attempt,
+            prior_good,
+            applied_seq,
         )
         .await?;
         tx.commit().await?;
-        Ok((receipt, status))
+        Ok((receipt, status, PullDisposition::Applied))
     }
 
     /// Atomically commits the succeeded portion of a partial pull (`physician_runtime_sources`,
@@ -680,23 +969,63 @@ impl Store {
         &self,
         delivery: PartialDelivery<'_>,
     ) -> Result<(ChartPullReceipt, PatientSourceRecordStatus), SourceStatusError> {
-        self.record_partial_pull_fenced(delivery, None).await
+        let (receipt, status, _) = self.record_partial_pull_fenced(delivery, None).await?;
+        Ok((receipt, status))
     }
 
-    /// Atomically commits a partial chart delivery and status row, optionally fenced by an active
-    /// [`ReconnectCommandFence`] so superseded executions roll back before writing any records.
+    /// Atomically commits a partial chart delivery and status row ordered by `delivery.ticket`
+    /// and optionally fenced by an active [`ReconnectCommandFence`] so superseded executions or
+    /// older checks never overwrite newer records or status.
     pub async fn record_partial_pull_fenced(
         &self,
         delivery: PartialDelivery<'_>,
         fence: Option<ReconnectCommandFence<'_>>,
-    ) -> Result<(ChartPullReceipt, PatientSourceRecordStatus), SourceStatusError> {
+    ) -> Result<(ChartPullReceipt, PatientSourceRecordStatus, PullDisposition), SourceStatusError>
+    {
         validate_non_empty("practice_id", delivery.practice_id)?;
         validate_non_empty("workspace_id", delivery.workspace_id)?;
         validate_non_empty("source_id", delivery.source_id)?;
 
+        let probe_attempt = PullAttempt {
+            attempted_at: delivery.attempted_at,
+            outcome: PullOutcome::Partial {
+                failed_parts: delivery.failed_parts.to_vec(),
+                missing_candidates: Vec::new(),
+            },
+        };
         let tx = self.db.begin().await?;
         verify_reconnect_fence_tx(&tx, fence).await?;
-        ensure_workspace_practice_tx(&tx, delivery.practice_id, delivery.workspace_id).await?;
+        let (applied_seq, prior_good, existing_pull) = match prepare_pull_order_tx(
+            &tx,
+            delivery.practice_id,
+            delivery.workspace_id,
+            delivery.source_id,
+            delivery.ticket,
+            &probe_attempt,
+        )
+        .await?
+        {
+            PreparedPullOrder::Superseded {
+                status,
+                missing_candidates,
+            } => {
+                tx.commit().await?;
+                return Ok((
+                    ChartPullReceipt {
+                        changed: 0,
+                        missing_candidates,
+                    },
+                    status,
+                    PullDisposition::Superseded,
+                ));
+            }
+            PreparedPullOrder::Apply {
+                applied_seq,
+                prior_good,
+                existing_pull,
+            } => (applied_seq, prior_good, existing_pull),
+        };
+
         let receipt = apply_source_delivery_tx(
             &tx,
             delivery.workspace_id,
@@ -712,12 +1041,14 @@ impl Store {
                 missing_candidates: receipt.missing_candidates.clone(),
             },
         };
-        let status = record_pull_status_tx(
+        let status = write_applied_pull_status_tx(
             &tx,
             delivery.practice_id,
             delivery.workspace_id,
             delivery.source_id,
             &attempt,
+            prior_good,
+            applied_seq,
         )
         .await?;
 
@@ -749,14 +1080,7 @@ impl Store {
             )
             .exec_without_returning(&tx)
             .await?;
-        } else if let Some(existing_pull) = source_pull::Entity::find_by_id((
-            delivery.workspace_id.to_owned(),
-            delivery.source_id.to_owned(),
-        ))
-        .lock_exclusive()
-        .one(&tx)
-        .await?
-        {
+        } else if let Some(existing_pull) = existing_pull {
             source_pull::ActiveModel {
                 workspace: Unchanged(existing_pull.workspace),
                 source_id: Unchanged(existing_pull.source_id),
@@ -769,7 +1093,7 @@ impl Store {
             .await?;
         }
         tx.commit().await?;
-        Ok((receipt, status))
+        Ok((receipt, status, PullDisposition::Applied))
     }
 
     /// Verifies and renews `fence`'s lease ownership on `physician_runtime_reconnect_commands`.
@@ -959,26 +1283,13 @@ impl Store {
             return Err(lost());
         }
 
-        let access_json =
-            serde_json::to_value(access).map_err(conversion_error("SourceAccessState", "Json"))?;
-        practice_source_access::Entity::insert(practice_source_access::ActiveModel {
-            practice: Set(fence.practice_id.to_owned()),
-            source_id: Set(receipt.source_id.clone()),
-            access: Set(access_json),
-            updated_at: Set(receipt.reconnected_at),
-        })
-        .on_conflict(
-            OnConflict::columns([
-                practice_source_access::Column::Practice,
-                practice_source_access::Column::SourceId,
-            ])
-            .update_columns([
-                practice_source_access::Column::Access,
-                practice_source_access::Column::UpdatedAt,
-            ])
-            .to_owned(),
+        upsert_practice_source_access_tx(
+            &tx,
+            fence.practice_id,
+            &receipt.source_id,
+            access,
+            receipt.reconnected_at,
         )
-        .exec_without_returning(&tx)
         .await?;
 
         let db_now = now(&tx).await?;

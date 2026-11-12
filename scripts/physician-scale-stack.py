@@ -461,7 +461,9 @@ def run(args, root, evidence):
                                    f"CODA_{role}_INPUT_LIMIT_TOKENS": "922000"})
             stack.start("worker", [str(binary / "physician-worker")], worker_env | model_settings)
             stack.wait(lambda: healthy(worker), f"worker readiness on {worker}")
-            site_env = shared | model_settings
+            site_env = shared | model_settings | {
+                "PHYSICIAN_SYNTHETIC_CHARTS": str(args.charts.resolve()),
+            }
             if args.practice_dir and os.environ.get("PHYSICIAN_SYNTHETIC_REPLY"):
                 site_env["PHYSICIAN_SYNTHETIC_REPLY"] = os.environ["PHYSICIAN_SYNTHETIC_REPLY"]
             if args.site_dir:
