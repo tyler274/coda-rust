@@ -9,8 +9,10 @@ use crate::editor_settings::{
     SettingsFile,
 };
 use crate::error::Error;
+use crate::model_proxy::ProxyCheck;
 use crate::probe::{
-    ActiveState, ForwardAgent, LoadState, PathKind, Probe, SSH_DEADLINE, SshReach, UnitScope,
+    ActiveState, ForwardAgent, FromContainer, LoadState, PROXY_CHECK, PathKind, Probe,
+    SSH_DEADLINE, SshReach, UnitScope,
 };
 
 const REBUILD: &str = "declare it in the NixOS configuration, then `sudo nixos-rebuild switch`";
@@ -120,7 +122,8 @@ fn machine(probe: &dyn Probe, config: &Config) -> Vec<Finding> {
             Check::CiTimer,
             unit_outcome(probe, UnitScope::System, &config.ci.timer),
         ),
-        (Check::Broker, broker::outcome(probe, &config.broker)),
+        (Check::Broker, broker::outcome(probe, config)),
+        (Check::ModelProxy, model_proxy_outcome(probe, config)),
     ];
     for dir in LegacyTokenDir::ALL {
         findings.push((Check::LegacyToken(dir), legacy_token_outcome(probe, dir)));
@@ -243,6 +246,85 @@ fn ssh_outcome(probe: &dyn Probe, host: &str) -> Outcome {
             fix: why(),
         },
         Err(cause) => Outcome::CannotCheck { cause },
+    }
+}
+
+/// Asks from inside the container, so the check crosses the same firewall
+/// and presents the same key as Claude Code and Codex do.
+fn model_proxy_outcome(probe: &dyn Probe, config: &Config) -> Outcome {
+    let Some(proxy) = &config.model_proxy else {
+        return Outcome::Skip {
+            reason: "modelProxy is off; the agent CLIs keep their own logins".to_owned(),
+        };
+    };
+    let host = &config.container.ssh_host;
+    let url = &proxy.url;
+    let found = match probe.proxy_check(host) {
+        Ok(FromContainer::Answered(found)) => found,
+        Ok(FromContainer::Unreached(reach)) => {
+            return Outcome::Fail {
+                detail: match reach {
+                    SshReach::Failed { stderr, .. } => {
+                        format!("`ssh {host} {PROXY_CHECK}` failed: {stderr}")
+                    }
+                    SshReach::TimedOut | SshReach::Reachable => format!(
+                        "`ssh {host} {PROXY_CHECK}` did not finish in {} s",
+                        SSH_DEADLINE.as_secs()
+                    ),
+                },
+                fix: Fix::command("ssh", [host.as_str(), PROXY_CHECK]),
+            };
+        }
+        Err(cause) => return Outcome::CannotCheck { cause },
+    };
+    match found {
+        ProxyCheck::Accepted {
+            client: Some(client),
+        } => Outcome::Pass {
+            detail: format!("{url} takes the key as client {client}"),
+        },
+        ProxyCheck::Accepted { client: None } => Outcome::Warn {
+            detail: format!(
+                "{url} has no client keys, so it serves anything that reaches it \
+                 and cannot tell the container's usage apart"
+            ),
+            fix: Fix::instruction(
+                "mint a key in the proxy's dashboard on the host, then \
+                 `coda-sandbox broker store model-proxy`",
+            ),
+        },
+        ProxyCheck::Refused { status: 401 | 403 } => Outcome::Fail {
+            detail: format!("{url} refuses the broker's model-proxy key"),
+            fix: Fix::instruction(
+                "mint a key in the proxy's dashboard on the host, then \
+                 `coda-sandbox broker store model-proxy`",
+            ),
+        },
+        ProxyCheck::Refused { status } => Outcome::Fail {
+            detail: format!("{url}/v1/client answered {status}"),
+            fix: Fix::instruction("see the proxy's log on the host"),
+        },
+        ProxyCheck::NotTheProxy { error } => Outcome::Fail {
+            detail: format!("{url} answers, but not as the model proxy: {error}"),
+            fix: Fix::instruction(
+                "run a proxy with `GET /v1/client`, such as Coda's ungate, on that port",
+            ),
+        },
+        ProxyCheck::Unreachable { error } => Outcome::Fail {
+            detail: format!("the container cannot reach {url}: {error}"),
+            fix: Fix::instruction(
+                "start the proxy on the host listening on hostAddress, \
+                 such as `systemctl --user status ungate`",
+            ),
+        },
+        ProxyCheck::NoKey { reason } => Outcome::Fail {
+            detail: format!("no model-proxy key to present: {reason}"),
+            fix: Fix::command("coda-sandbox", ["broker", "store", "model-proxy"]),
+        },
+        ProxyCheck::Broker { error } => Outcome::Fail {
+            detail: format!("the container's broker did not answer: {error}"),
+            fix: Fix::command("systemctl", ["--user", "status", broker::UNIT]),
+        },
     }
 }
 

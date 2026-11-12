@@ -39,6 +39,31 @@ pub struct Config {
     pub carry: Option<Carry>,
     #[serde(default)]
     pub broker: Broker,
+    /// Only a host that serves the container's agent CLIs a model proxy
+    /// has one; without it they keep their own logins.
+    #[serde(default)]
+    pub model_proxy: Option<ModelProxy>,
+}
+
+/// The model proxy on the host (`services.coda-sandbox.container.modelProxy`):
+/// Claude Code and Codex in the container send their requests to it with
+/// the broker's `model-proxy` key, and it holds the account sign-ins.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct ModelProxy {
+    /// Its address as the container reaches it, such as
+    /// `http://10.233.1.1:47821`.
+    pub url: String,
+}
+
+impl ModelProxy {
+    /// Whether a host with `proxy` works without `item`: the proxy's key is
+    /// required once the proxy is configured.
+    pub fn need(proxy: Option<&Self>, item: Item) -> Need {
+        match item {
+            Item::ModelProxy if proxy.is_some() => Need::Required,
+            item => item.need(),
+        }
+    }
 }
 
 /// The token broker: the agent's socket, the same path on the host and in
@@ -54,36 +79,6 @@ pub struct Broker {
     /// Only a host whose CI controller takes GitHub jobs has one.
     #[serde(default)]
     pub ci: Option<BrokerCi>,
-    #[serde(default)]
-    pub model_keys: ModelKeys,
-}
-
-/// Which agent CLIs in the container take their API key from the broker
-/// (`services.coda-sandbox.container.modelKeys`). A CLI that does needs its
-/// key stored; one that does not keeps its own login.
-#[derive(Debug, Clone, Copy, Default, PartialEq, Eq, Serialize, Deserialize)]
-pub struct ModelKeys {
-    #[serde(default)]
-    pub anthropic: bool,
-    #[serde(default)]
-    pub openai: bool,
-}
-
-impl ModelKeys {
-    /// Whether this host's sandbox works without `item`: a model key is
-    /// required once its CLI is configured to read it from the broker.
-    pub fn need(self, item: Item) -> Need {
-        let configured = match item {
-            Item::Anthropic => self.anthropic,
-            Item::Openai => self.openai,
-            Item::GithubAgent | Item::Doppler | Item::GithubCi | Item::SelfTest => false,
-        };
-        if configured {
-            Need::Required
-        } else {
-            item.need()
-        }
-    }
 }
 
 /// The socket the broker serves the CI controller's GitHub token on. It is
@@ -102,7 +97,6 @@ impl Default for Broker {
             socket: default_broker_socket(),
             gh_fallback: GhFallback::Off,
             ci: None,
-            model_keys: ModelKeys::default(),
         }
     }
 }

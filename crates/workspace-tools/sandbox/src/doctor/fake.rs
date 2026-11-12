@@ -5,14 +5,15 @@ use std::io;
 use std::path::{Path, PathBuf};
 
 use crate::broker::error::BrokerError;
-use crate::broker::wire::{GhFallback, ItemReport, ItemState, Report, Unavailable};
-use crate::broker::{Item, Need, Source};
+use crate::broker::wire::{GhFallback, ItemReport, ItemState, Report};
+use crate::broker::{Item, Source};
 use crate::config::UnitName;
 use crate::editor_settings::Editor;
 use crate::error::Error;
+use crate::model_proxy::ProxyCheck;
 use crate::probe::{
-    ActiveState, FsType, LoadState, PathKind, PoolFeature, Probe, SshOptions, SshReach, UnitScope,
-    UnitState, ZFS_BCLONE_PARAMETER,
+    ActiveState, FromContainer, FsType, LoadState, PathKind, PoolFeature, Probe, SshOptions,
+    SshReach, UnitScope, UnitState, ZFS_BCLONE_PARAMETER,
 };
 
 /// Paths it does not list are missing; paths under `denied` fail with
@@ -30,6 +31,7 @@ pub(super) struct FakeProbe {
     pub ssh_options: String,
     /// `None` when no broker listens on the socket.
     pub broker: Option<Report>,
+    pub proxy_check: FromContainer<ProxyCheck>,
 }
 
 fn denied(path: &Path) -> Error {
@@ -94,6 +96,10 @@ impl Probe for FakeProbe {
         Ok(self.ssh.clone())
     }
 
+    fn proxy_check(&self, _: &str) -> Result<FromContainer<ProxyCheck>, Error> {
+        Ok(self.proxy_check.clone())
+    }
+
     fn ssh_config(&self, _: &str) -> Result<SshOptions, Error> {
         Ok(SshOptions::parse(&self.ssh_options))
     }
@@ -110,26 +116,20 @@ impl Probe for FakeProbe {
     }
 }
 
-/// The broker's report on a host with the CI when every required token is
-/// in the keyring and neither optional model key was stored.
+/// The broker's report on a host with the CI and the model proxy when every
+/// token is in the keyring.
 pub(super) fn stored() -> Report {
     Report {
         items: [
             Item::GithubAgent,
             Item::Doppler,
-            Item::Anthropic,
-            Item::Openai,
+            Item::ModelProxy,
             Item::GithubCi,
         ]
         .map(|item| ItemReport {
             item,
-            state: match item.need() {
-                Need::Required => ItemState::Available {
-                    source: Source::Keyring,
-                },
-                Need::Optional => ItemState::Unavailable {
-                    reason: Unavailable::NotStored,
-                },
+            state: ItemState::Available {
+                source: Source::Keyring,
             },
         })
         .to_vec(),
@@ -171,6 +171,9 @@ pub(super) fn healthy() -> FakeProbe {
         ssh: SshReach::Reachable,
         ssh_options: "hostname 10.233.1.2\nforwardagent no\nuser agent\n".to_owned(),
         broker: Some(stored()),
+        proxy_check: FromContainer::Answered(ProxyCheck::Accepted {
+            client: Some("coda-agent".to_owned()),
+        }),
     }
 }
 

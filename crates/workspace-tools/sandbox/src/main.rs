@@ -15,7 +15,7 @@ use coda_sandbox::credential;
 use coda_sandbox::error::Error;
 use coda_sandbox::probe::SystemProbe;
 use coda_sandbox::worktree::{self, Layout, prune::Confirm};
-use coda_sandbox::{carry, ci, doctor, open, status};
+use coda_sandbox::{carry, ci, doctor, model_proxy, open, status};
 
 fn main() -> ExitCode {
     let cli = Cli::parse();
@@ -110,6 +110,13 @@ fn dispatch(cli: &Cli) -> Result<ExitCode, Error> {
                 dir.display(),
                 editor.name()
             ))?;
+            Ok(ExitCode::SUCCESS)
+        }
+        Command::ProxyCheck => {
+            let config = Config::load(&cli.config)?;
+            let proxy = config.model_proxy.as_ref().ok_or(Error::NoModelProxy)?;
+            let found = model_proxy::check(&config.broker.socket, proxy);
+            print(&(serde_json::to_string(&found).map_err(Error::Json)? + "\n"))?;
             Ok(ExitCode::SUCCESS)
         }
         Command::Token { want, force } => {

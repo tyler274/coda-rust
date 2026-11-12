@@ -7,8 +7,10 @@ use crate::broker::wire::{GhFallback, ItemState, Unavailable};
 use crate::config::{Config, Loaded};
 use crate::editor_settings::Editor;
 use crate::error::Error;
+use crate::model_proxy::ProxyCheck;
 use crate::probe::{
-    ActiveState, FsType, LoadState, PoolFeature, SshReach, UnitState, ZFS_BCLONE_PARAMETER,
+    ActiveState, FromContainer, FsType, LoadState, PoolFeature, SshReach, UnitState,
+    ZFS_BCLONE_PARAMETER,
 };
 
 const CONFIG: &str = include_str!("../../config/cyrene.toml");
@@ -163,7 +165,8 @@ fn broker_reports_source_and_warns_on_fallback() {
     let findings = run(&healthy(), &config());
     assert!(matches!(
         outcome(&findings, &Check::Broker),
-        Outcome::Pass { detail } if detail == "github-agent: keyring; doppler: keyring; github-ci: keyring"
+        Outcome::Pass { detail }
+            if detail == "github-agent: keyring; doppler: keyring; model-proxy: keyring; github-ci: keyring"
     ));
 
     let mut probe = healthy();
@@ -206,44 +209,114 @@ fn broker_without_the_agent_token_fails_with_the_store_command() {
 }
 
 #[test]
-fn a_stored_model_key_is_listed_and_a_locked_one_warns() {
+fn with_the_model_proxy_on_its_key_must_be_stored() {
     let mut probe = healthy();
     let mut report = stored();
-    report.items[2].state = ItemState::Available {
-        source: Source::Keyring,
-    };
-    probe.broker = Some(report.clone());
-    let findings = run(&probe, &config());
-    assert!(matches!(
-        outcome(&findings, &Check::Broker),
-        Outcome::Pass { detail }
-            if detail == "github-agent: keyring; doppler: keyring; anthropic: keyring; github-ci: keyring"
-    ));
-
-    report.items[3].state = ItemState::Unavailable {
-        reason: Unavailable::KeyringLocked,
+    report.items[2].state = ItemState::Unavailable {
+        reason: Unavailable::NotStored,
     };
     probe.broker = Some(report);
     let findings = run(&probe, &config());
-    let Outcome::Warn { detail, .. } = outcome(&findings, &Check::Broker) else {
-        panic!("expected Warn")
-    };
-    assert!(detail.contains("openai: keyring locked"), "{detail}");
-}
-
-#[test]
-fn a_model_key_the_cli_is_configured_to_read_must_be_stored() {
-    let configured = CONFIG.replace("anthropic = false", "anthropic = true");
-    let findings = run(
-        &healthy(),
-        &Config::parse_with_unknown_keys(Path::new("t"), &configured),
-    );
     let Outcome::Warn { detail, fix } = outcome(&findings, &Check::Broker) else {
         panic!("expected Warn")
     };
-    assert!(detail.contains("anthropic: not stored"), "{detail}");
-    assert!(!detail.contains("openai"), "{detail}");
-    assert_eq!(fix.to_string(), "coda-sandbox broker store anthropic");
+    assert!(detail.contains("model-proxy: not stored"), "{detail}");
+    assert_eq!(fix.to_string(), "coda-sandbox broker store model-proxy");
+}
+
+#[test]
+fn with_the_model_proxy_off_its_key_is_not_listed_and_the_check_skips() {
+    let off = config_without_proxy();
+    let mut probe = healthy();
+    let mut report = stored();
+    report.items[2].state = ItemState::Unavailable {
+        reason: Unavailable::NotStored,
+    };
+    probe.broker = Some(report);
+    let findings = run(&probe, &off);
+    assert!(matches!(
+        outcome(&findings, &Check::Broker),
+        Outcome::Pass { detail }
+            if detail == "github-agent: keyring; doppler: keyring; github-ci: keyring"
+    ));
+    assert!(matches!(
+        outcome(&findings, &Check::ModelProxy),
+        Outcome::Skip { .. }
+    ));
+}
+
+fn config_without_proxy() -> Result<Loaded, Error> {
+    let start = CONFIG.find("[model_proxy]").expect("cyrene has a proxy");
+    let end = start + CONFIG[start..].find("[carry]").expect("carry follows");
+    let off = format!("{}{}", &CONFIG[..start], &CONFIG[end..]);
+    Config::parse_with_unknown_keys(Path::new("t"), &off)
+}
+
+fn proxy_outcome(found: FromContainer<ProxyCheck>) -> Outcome {
+    let mut probe = healthy();
+    probe.proxy_check = found;
+    let mut findings = run(&probe, &config());
+    let index = findings
+        .iter()
+        .position(|f| f.check == Check::ModelProxy)
+        .expect("check ran");
+    findings.swap_remove(index).outcome
+}
+
+#[test]
+fn model_proxy_taking_the_key_passes_with_its_client() {
+    let found = proxy_outcome(FromContainer::Answered(ProxyCheck::Accepted {
+        client: Some("coda-agent".to_owned()),
+    }));
+    assert!(
+        matches!(&found, Outcome::Pass { detail } if detail.contains("client coda-agent")),
+        "{found:?}"
+    );
+}
+
+#[test]
+fn model_proxy_without_client_keys_warns() {
+    let found = proxy_outcome(FromContainer::Answered(ProxyCheck::Accepted {
+        client: None,
+    }));
+    assert!(
+        matches!(&found, Outcome::Warn { detail, .. } if detail.contains("no client keys")),
+        "{found:?}"
+    );
+}
+
+#[test]
+fn model_proxy_refusing_the_key_fails_and_says_to_store_a_new_one() {
+    let found = proxy_outcome(FromContainer::Answered(ProxyCheck::Refused { status: 403 }));
+    let Outcome::Fail { detail, fix } = found else {
+        panic!("expected Fail, got {found:?}")
+    };
+    assert!(detail.contains("refuses"), "{detail}");
+    assert!(
+        fix.to_string()
+            .contains("coda-sandbox broker store model-proxy")
+    );
+}
+
+#[test]
+fn model_proxy_out_of_reach_fails_and_names_the_address() {
+    let found = proxy_outcome(FromContainer::Answered(ProxyCheck::Unreachable {
+        error: "connection refused".to_owned(),
+    }));
+    assert!(
+        matches!(&found, Outcome::Fail { detail, .. }
+            if detail.contains("http://10.233.1.1:47821") && detail.contains("connection refused")),
+        "{found:?}"
+    );
+}
+
+#[test]
+fn model_proxy_check_that_cannot_reach_the_container_fails() {
+    let found = proxy_outcome(FromContainer::Unreached(SshReach::TimedOut));
+    let Outcome::Fail { fix, .. } = found else {
+        panic!("expected Fail, got {found:?}")
+    };
+    assert_eq!(fix.to_string(), "ssh coda-agent 'coda-sandbox proxy-check'");
 }
 
 #[test]

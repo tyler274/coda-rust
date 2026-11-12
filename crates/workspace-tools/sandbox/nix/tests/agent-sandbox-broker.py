@@ -53,21 +53,34 @@ with subtest("gh and doppler wrappers get their tokens per process"):
     agent_fails("printenv GH_TOKEN")
     agent_fails("printenv DOPPLER_TOKEN")
 
-with subtest("model keys are optional and reach the agent CLIs' system config"):
-    # modelKeys.anthropic is on, so its unstored key is shown; openai is off
-    # and never stored, so it is left out and not warned about.
+with subtest("model proxy: the container reaches its port only, with the broker's key"):
+    proxy = "http://10.233.1.1:47821"
+    # modelProxy is on, so its unstored key is shown.
     status = luluco("coda-sandbox status")
-    assert "anthropic: not stored" in status and "openai" not in status, status
-    err = agent("coda-sandbox token anthropic 2>&1 || true")
-    assert "no token is stored" in err, err
-    luluco("printf %s vmcheck-anthropic-5d1e | coda-sandbox broker store anthropic")
-    assert agent("coda-sandbox token anthropic").strip() == "vmcheck-anthropic-5d1e"
-    assert "anthropic: keyring" in luluco("coda-sandbox status")
+    assert "model-proxy: not stored" in status, status
+    check = json.loads(agent("coda-sandbox proxy-check"))
+    assert check["result"] == "no_key" and check["reason"] == "not_stored", check
+    luluco("printf %s wrong-key | coda-sandbox broker store model-proxy")
+    check = json.loads(agent("coda-sandbox proxy-check"))
+    assert check == {"result": "refused", "status": 403}, check
+    luluco(f"printf %s {proxy_key} | coda-sandbox broker store model-proxy")
+    assert agent("coda-sandbox token model-proxy").strip() == proxy_key
+    assert "model-proxy: keyring" in luluco("coda-sandbox status")
+    check = json.loads(agent("coda-sandbox proxy-check"))
+    assert check == {"result": "accepted", "client": "coda-agent"}, check
+    # The proxy's port opens; every other host port stays dropped.
+    agent_fails("curl -s -m 3 http://10.233.1.1:8080/")
+    agent_fails("curl -s -m 3 http://10.0.2.15:47821/v1/client")
+    # Claude Code: managed settings point it at the proxy with the key.
     managed = json.loads(agent("cat /etc/claude-code/managed-settings.json"))
-    assert managed["apiKeyHelper"].endswith("coda-sandbox token anthropic"), managed
-    assert agent("sh -c " + json.dumps(managed["apiKeyHelper"])).strip() == "vmcheck-anthropic-5d1e"
-    # modelKeys.openai is off: Codex keeps its own login.
-    agent_fails("test -e /etc/codex/config.toml")
+    assert managed["env"]["ANTHROPIC_BASE_URL"] == proxy, managed
+    assert agent("sh -c " + json.dumps(managed["apiKeyHelper"])).strip() == proxy_key
+    # Codex: the system config's provider is the proxy's Responses API.
+    codex = agent("cat /etc/codex/config.toml")
+    assert 'model_provider = "model-proxy"' in codex, codex
+    assert f'base_url = "{proxy}/v1"' in codex, codex
+    assert 'wire_api = "responses"' in codex, codex
+    assert '"model-proxy"' in codex and "coda-sandbox" in codex, codex
 
 with subtest("only the container's agent gets a secret"):
     err = machine.fail("coda-sandbox token gh 2>&1")

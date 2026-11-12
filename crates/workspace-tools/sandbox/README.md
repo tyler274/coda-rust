@@ -46,7 +46,7 @@ services.coda-sandbox = {
 
 ## The agent container
 
-`coda-agent` ([nix/container.nix](nix/container.nix) on [nix/nspawn.nix](nix/nspawn.nix)) has its own user namespace (the agent is an unmapped high host UID), a private network that cannot reach the host, the LAN or Tailscale, no sudo and no Docker. It sees only these host paths:
+`coda-agent` ([nix/container.nix](nix/container.nix) on [nix/nspawn.nix](nix/nspawn.nix)) has its own user namespace (the agent is an unmapped high host UID), a private network that cannot reach the host (except the ports `modelProxy` and `hostTcpPorts` open), the LAN or Tailscale, no sudo and no Docker. It sees only these host paths:
 
 | Container path | Host path | Access |
 | --- | --- | --- |
@@ -103,14 +103,18 @@ Each checkout's `.envrc` is approved once in the container (`direnv allow`). Rus
 
 Nothing forwards a host credential: doctor checks that `ssh -G coda-agent` resolves `ForwardAgent no`, which is all Antigravity's remote and Zed have to go by, and that these settings are off where the editor has them: `remote.SSH.enableAgentForwarding`, `git.terminalAuthentication` and `github.gitAuthentication` for Cursor and VS Code, the two Git ones for Antigravity. An editor that has run here but has no settings file fails too, since every key is then at its default.
 
-Claude Code and Codex run in the container, in `coda-sandbox shell` or an editor's terminal, and come from the dev shell. By default each signs in once there (`claude auth login`, `codex login`) and keeps its login in the agent's home. To use an API key from your keyring instead, store it on the host and turn its option on:
+Claude Code and Codex run in the container, in `coda-sandbox shell` or an editor's terminal, and come from the dev shell. By default each signs in once there (`claude auth login`, `codex login`) and keeps its login in the agent's home.
+
+With `container.modelProxy.enable`, both send their requests to a model proxy on the host instead, and no account sign-in enters the container. The proxy is [Coda's ungate](https://github.com/Coda-Health/ungate): it keeps the Claude and ChatGPT sign-ins as an account pool, passes Claude Code's `/v1/messages` and Codex's `/v1/responses` through to them, and records usage per client key. Run it on the host listening on `hostAddress` as well as loopback (its `HOST` takes a comma-separated list, and it binds `hostAddress` once the container's interface exists), on `container.modelProxy.port`, 47821 by default. Mint a client key for the container in its dashboard, then store it:
 
 ```bash
-coda-sandbox broker store anthropic   # with container.modelKeys.anthropic = true
-coda-sandbox broker store openai      # with container.modelKeys.openai = true
+coda-sandbox broker store model-proxy
+coda-sandbox doctor                   # "model proxy  http://10.233.1.1:47821 takes the key as client coda-agent"
 ```
 
-The broker serves these on the agent socket like the others. The options write the container's system-wide config, Claude Code's `apiKeyHelper` in `/etc/claude-code/managed-settings.json` and a Codex provider in `/etc/codex/config.toml`, each running `coda-sandbox token <item>` per session, so the key is in no file or environment. A model key is optional while its option is off: doctor and `status` list it only once stored. With the option on, the CLI has no other login, so doctor warns until the key is stored.
+The container's firewall opens that one port on `hostAddress` and keeps every other host port dropped; `container.hostTcpPorts` opens further ones, such as a local model server's. The option writes the container's system-wide config: Claude Code's `/etc/claude-code/managed-settings.json` sets `ANTHROPIC_BASE_URL` to the proxy and an `apiKeyHelper`, and `/etc/codex/config.toml` makes the proxy's Responses API Codex's provider with a key command. Both run `coda-sandbox token model-proxy` per session, so the key is in no file or environment. Managed settings outrank the agent's own, so every Claude Code session uses the proxy; the agent's `~/.codex/config.toml` can still pick another Codex provider. The proxy's admin routes answer only on loopback, so the container can use its key but cannot mint, list or revoke keys.
+
+With the option on, `status` and doctor's token broker check list `model-proxy` and warn until it is stored, and doctor's model proxy check runs `coda-sandbox proxy-check` in the container over SSH: it asks the proxy's `GET /v1/client` with the stored key, which costs no tokens, and fails when the container cannot reach the proxy or the proxy refuses the key. A proxy with no client keys serves anyone who reaches it, so the check warns. Revoking the key in the dashboard cuts the container off.
 
 The container is the sandbox for both CLIs. Codex's own `workspace-write` sandbox cannot start inside it, since its bubblewrap needs to mount `/proc`, so Codex runs commands there with `-s danger-full-access`, and the container still bounds what they reach.
 

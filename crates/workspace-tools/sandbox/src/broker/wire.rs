@@ -19,10 +19,9 @@ pub enum Request {
     GhToken,
     /// The token the container's `doppler` wrapper puts in `DOPPLER_TOKEN`.
     DopplerToken,
-    /// The key Claude Code's `apiKeyHelper` prints.
-    AnthropicKey,
-    /// The key Codex's provider `auth.command` prints.
-    OpenaiKey,
+    /// The model proxy's client key, which Claude Code's `apiKeyHelper` and
+    /// Codex's provider `auth.command` print.
+    ModelProxyKey,
     /// The token the CI controller talks to GitHub with.
     CiToken,
     /// Which items the broker can serve and from where; never a secret.
@@ -48,8 +47,7 @@ pub enum Audience {
 pub enum AgentSecret {
     Github,
     Doppler,
-    Anthropic,
-    Openai,
+    ModelProxy,
 }
 
 impl AgentSecret {
@@ -57,8 +55,7 @@ impl AgentSecret {
         match self {
             Self::Github => Item::GithubAgent,
             Self::Doppler => Item::Doppler,
-            Self::Anthropic => Item::Anthropic,
-            Self::Openai => Item::Openai,
+            Self::ModelProxy => Item::ModelProxy,
         }
     }
 }
@@ -91,8 +88,7 @@ impl Request {
         match self {
             Self::GitCredential { .. } | Self::GhToken => Asked::Agent(AgentSecret::Github),
             Self::DopplerToken => Asked::Agent(AgentSecret::Doppler),
-            Self::AnthropicKey => Asked::Agent(AgentSecret::Anthropic),
-            Self::OpenaiKey => Asked::Agent(AgentSecret::Openai),
+            Self::ModelProxyKey => Asked::Agent(AgentSecret::ModelProxy),
             Self::CiToken => Asked::CiToken,
             Self::Ping => Asked::Ping,
             Self::Reload => Asked::Reload,
@@ -105,8 +101,7 @@ impl Request {
             Self::GitCredential { .. } => "git_credential",
             Self::GhToken => "gh_token",
             Self::DopplerToken => "doppler_token",
-            Self::AnthropicKey => "anthropic_key",
-            Self::OpenaiKey => "openai_key",
+            Self::ModelProxyKey => "model_proxy_key",
             Self::CiToken => "ci_token",
             Self::Ping => "ping",
             Self::Reload => "reload",

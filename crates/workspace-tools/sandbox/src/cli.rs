@@ -77,6 +77,10 @@ pub enum Command {
         #[arg(long, value_enum, default_value = "cursor")]
         editor: Editor,
     },
+    /// In the container: ask the model proxy whether it takes the broker's
+    /// model-proxy key, and print what it said as JSON. `doctor` on the
+    /// host runs this over SSH.
+    ProxyCheck,
     /// Print a token from the broker, for the container's gh and doppler
     /// wrappers and the agent CLIs' key commands.
     Token {

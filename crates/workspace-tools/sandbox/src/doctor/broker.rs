@@ -6,16 +6,17 @@ use super::{Fix, Outcome};
 use crate::broker::error::BrokerError;
 use crate::broker::wire::{GhFallback, ItemReport, ItemState, Report, Unavailable};
 use crate::broker::{Item, Need, Source};
-use crate::config::{Broker, ModelKeys};
+use crate::config::{Config, ModelProxy};
 use crate::error::Error;
 use crate::probe::Probe;
 
 /// The user unit that runs `coda-sandbox broker serve`.
 pub const UNIT: &str = "coda-sandbox-broker.service";
 
-pub fn outcome(probe: &dyn Probe, broker: &Broker) -> Outcome {
+pub fn outcome(probe: &dyn Probe, config: &Config) -> Outcome {
+    let broker = &config.broker;
     match probe.broker(&broker.socket) {
-        Ok(report) => report_outcome(&report, broker.model_keys),
+        Ok(report) => report_outcome(&report, config.model_proxy.as_ref()),
         Err(error @ BrokerError::Connect { .. }) => Outcome::Fail {
             detail: crate::error::chain(&error),
             fix: Fix::command("systemctl", ["--user", "restart", UNIT]),
@@ -26,8 +27,8 @@ pub fn outcome(probe: &dyn Probe, broker: &Broker) -> Outcome {
     }
 }
 
-fn report_outcome(report: &Report, keys: ModelKeys) -> Outcome {
-    let detail = describe(report, keys);
+fn report_outcome(report: &Report, proxy: Option<&ModelProxy>) -> Outcome {
+    let detail = describe(report, proxy);
     let state = |item| {
         report
             .items
@@ -69,7 +70,7 @@ fn report_outcome(report: &Report, keys: ModelKeys) -> Outcome {
         };
     }
     for entry @ ItemReport { item, state } in &report.items {
-        if absent_by_choice(entry, keys) {
+        if absent_by_choice(entry, proxy) {
             continue;
         }
         match *state {
@@ -93,9 +94,9 @@ fn report_outcome(report: &Report, keys: ModelKeys) -> Outcome {
 
 /// An optional key that was never stored is the default: the agent CLI
 /// keeps its own login instead, so it is neither listed nor warned about.
-/// A model key this host's CLI is configured to read is not optional.
-fn absent_by_choice(entry: &ItemReport, keys: ModelKeys) -> bool {
-    keys.need(entry.item) == Need::Optional
+/// The model proxy's key is not optional on a host that configures it.
+fn absent_by_choice(entry: &ItemReport, proxy: Option<&ModelProxy>) -> bool {
+    ModelProxy::need(proxy, entry.item) == Need::Optional
         && entry.state
             == ItemState::Unavailable {
                 reason: Unavailable::NotStored,
@@ -123,11 +124,11 @@ fn unavailable_fix(item: Item, reason: Unavailable) -> Fix {
 
 /// `github-agent: keyring; doppler: not stored`. An optional key that was
 /// never stored is left out.
-pub fn describe(report: &Report, keys: ModelKeys) -> String {
+pub fn describe(report: &Report, proxy: Option<&ModelProxy>) -> String {
     report
         .items
         .iter()
-        .filter(|entry| !absent_by_choice(entry, keys))
+        .filter(|entry| !absent_by_choice(entry, proxy))
         .map(|ItemReport { item, state }| {
             let state = match state {
                 ItemState::Available { source } => source.name().to_owned(),

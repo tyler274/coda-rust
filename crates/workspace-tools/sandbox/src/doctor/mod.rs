@@ -31,6 +31,8 @@ pub enum Check {
     CiTimer,
     /// The token broker answers and which source serves each token.
     Broker,
+    /// The model proxy answers the container and takes its key.
+    ModelProxy,
     /// A directory that holds a root-owned GitHub token in a file.
     LegacyToken(LegacyTokenDir),
     EditorSettings(Editor),
@@ -55,6 +57,7 @@ impl Check {
             Self::SpoolDir(SpoolDir::Results) => "spool results".to_owned(),
             Self::CiTimer => "ci timer".to_owned(),
             Self::Broker => "token broker".to_owned(),
+            Self::ModelProxy => "model proxy".to_owned(),
             Self::LegacyToken(dir) => format!("token dir {}", dir.path().display()),
             Self::EditorSettings(editor) => format!("{} settings", editor.name()),
         }

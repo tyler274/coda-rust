@@ -7,7 +7,7 @@ use std::path::{Path, PathBuf};
 use serde::Serialize;
 
 use crate::broker::wire::Report;
-use crate::config::{Config, ModelKeys, UnitName};
+use crate::config::{Config, ModelProxy, UnitName};
 use crate::doctor::LegacyTokenDir;
 use crate::error::Error;
 use crate::probe::{LoadState, PathKind, Probe, SshReach, UnitScope, UnitState};
@@ -96,8 +96,8 @@ pub struct CiStatus {
 #[derive(Debug, Serialize)]
 pub struct BrokerStatus {
     pub socket: PathBuf,
-    /// Which agent CLIs read their API key from the broker.
-    pub model_keys: ModelKeys,
+    /// The model proxy the agent CLIs use, when the host has one.
+    pub model_proxy: Option<ModelProxy>,
     pub report: Reading<Report>,
 }
 
@@ -137,7 +137,7 @@ pub fn collect(probe: &dyn Probe, config_path: &Path, config: &Config) -> Status
         },
         broker: BrokerStatus {
             socket: config.broker.socket.clone(),
-            model_keys: config.broker.model_keys,
+            model_proxy: config.model_proxy.clone(),
             report: probe
                 .broker(&config.broker.socket)
                 .map_err(Error::from)
@@ -204,7 +204,7 @@ impl Status {
             out,
             "broker     {}",
             show(&self.broker.report, |report| {
-                crate::doctor::broker::describe(report, self.broker.model_keys)
+                crate::doctor::broker::describe(report, self.broker.model_proxy.as_ref())
             })
         );
         let (mut absent, mut present, mut unreadable) = (0, 0, 0);

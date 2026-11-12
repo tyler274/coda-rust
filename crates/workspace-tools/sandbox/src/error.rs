@@ -69,8 +69,16 @@ pub enum Error {
         #[source]
         source: json5::Error,
     },
-    #[error("cannot encode status as JSON")]
+    #[error("cannot encode the output as JSON")]
     Json(#[source] serde_json::Error),
+    #[error("`ssh {host} {command}` printed something other than a proxy check: {found:?}")]
+    ProxyCheckOutput {
+        host: String,
+        command: &'static str,
+        found: String,
+        #[source]
+        source: serde_json::Error,
+    },
     #[error("cannot write to standard output")]
     Output(#[source] io::Error),
     #[error("cannot {op} {path}")]
@@ -141,6 +149,11 @@ pub enum Error {
     CiTimeout { id: RequestId, seconds: u64 },
     #[error("this machine's config has no [carry] section, so it has no worktrees to carry")]
     NoCarry,
+    #[error(
+        "this machine's config has no [model_proxy] section; \
+         set services.coda-sandbox.container.modelProxy.enable"
+    )]
+    NoModelProxy,
     #[error("carry runs git in your worktrees, so it runs as their owner, never as root")]
     CarryAsRoot,
     #[error("cannot read git's credential query")]
