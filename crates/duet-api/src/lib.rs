@@ -356,10 +356,6 @@ pub fn router_with_care(
             "/api/luna-notes/{id}/approve",
             post(care::post_approve_luna_note),
         )
-        .route(
-            "/api/doctor-plan",
-            get(care::get_doctor_plan).put(care::put_doctor_plan),
-        )
         .route("/api/auth/account", put(session::put_ensure_account))
         .route("/api/auth/account/terms", put(session::put_accept_terms))
         .route(
@@ -904,7 +900,7 @@ mod tests {
     }
 
     #[tokio::test]
-    async fn connected_care_routes_enforce_consent_zero_private_leakage_and_read_only_plan() {
+    async fn connected_care_routes_enforce_consent_and_zero_private_leakage() {
         let store = Arc::new(Memory {
             rows: std::sync::Mutex::new(vec![moment()]),
         });

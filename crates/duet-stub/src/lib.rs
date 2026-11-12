@@ -173,10 +173,6 @@ pub fn router(store: Arc<Mutex<Store>>) -> Router {
             "/api/luna-notes/{id}/approve",
             post(care::post_approve_luna_note),
         )
-        .route(
-            "/api/doctor-plan",
-            get(care::get_doctor_plan).put(care::put_doctor_plan),
-        )
         .with_state(store)
 }
 
@@ -855,7 +851,7 @@ mod tests {
     }
 
     #[tokio::test]
-    async fn connected_care_consent_approved_luna_notes_share_link_and_read_only_doctors_plan() {
+    async fn connected_care_consent_approved_luna_notes_and_share_link() {
         let (path, store) = temp_store();
         let app = router(store);
 
@@ -1067,40 +1063,7 @@ mod tests {
             .unwrap();
         assert_eq!(gone.status(), StatusCode::NOT_FOUND);
 
-        // 7. Read-only "your doctor's plan" in Duet.
-        let publish_plan = app
-            .clone()
-            .oneshot(
-                Request::builder()
-                    .method("PUT")
-                    .uri("/api/doctor-plan")
-                    .header("content-type", "application/json")
-                    .body(Body::from(
-                        r#"{"practice_id":"practice-coda-1","patient_workspace_id":"pw-39e51534-6ce4-43cf-b5f8-7c1ca6252d8e","physician_name":"Dr. Rivera","version":1,"approved_at":"2026-10-13T12:00:00Z","items":[{"id":"item-1","title":"Continue statin","body":"Take rosuvastatin 10 mg nightly."}]}"#,
-                    ))
-                    .unwrap(),
-            )
-            .await
-            .unwrap();
-        assert_eq!(publish_plan.status(), StatusCode::OK);
-
-        let get_plan = app
-            .clone()
-            .oneshot(
-                Request::builder()
-                    .uri("/api/doctor-plan")
-                    .body(Body::empty())
-                    .unwrap(),
-            )
-            .await
-            .unwrap();
-        assert_eq!(get_plan.status(), StatusCode::OK);
-        let plan_json: serde_json::Value = serde_json::from_str(&body(get_plan).await).unwrap();
-        assert_eq!(plan_json["label"], "your doctor's plan");
-        assert_eq!(plan_json["read_only"], true);
-        assert_eq!(plan_json["version"], 1);
-
-        // 8. One-step "stop sharing" immediately revokes physician read access.
+        // 7. One-step "stop sharing" immediately revokes physician read access.
         let stop = app
             .clone()
             .oneshot(

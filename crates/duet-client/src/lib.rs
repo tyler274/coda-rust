@@ -82,39 +82,6 @@ pub struct LunaNoteProposal {
     pub saved_record_id: Option<String>,
 }
 
-/// One item in `"your doctor's plan"` (`ENG-54`).
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
-pub struct DoctorPlanItemView {
-    /// Stable item identifier.
-    pub id: String,
-    /// Item heading.
-    pub title: String,
-    /// Exact physician-approved guidance text.
-    pub body: String,
-}
-
-/// Read-only `"your doctor's plan"` displayed in Duet (`ENG-54`).
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
-pub struct DuetDoctorPlanView {
-    /// Patient-facing label: always `"your doctor's plan"`.
-    pub label: String,
-    /// Always `true`: `"your doctor's plan"` is read-only in Duet and separate from adaptive routines.
-    pub read_only: bool,
-    /// Practice identifier.
-    pub practice_id: String,
-    /// Patient workspace identifier.
-    pub patient_workspace_id: String,
-    /// Approving physician's display name.
-    pub physician_name: String,
-    /// Approved plan version (`1` for full first version, `2+` for batched diffs).
-    pub version: u32,
-    /// Timestamp when approved by the physician.
-    pub approved_at: String,
-    /// Exact-text approved plan items.
-    #[serde(default)]
-    pub items: Vec<DoctorPlanItemView>,
-}
-
 /// The `BUILD_HEADER` constant.
 pub const BUILD_HEADER: &str = "X-Duet-App-Build";
 /// The `VERSION_HEADER` constant.
@@ -741,29 +708,6 @@ impl DuetClient {
             return Err(format!("status {}", response.status()));
         }
         response.json().await.map_err(|error| error.to_string())
-    }
-
-    /// Reads the read-only `"your doctor's plan"` in Duet (`ENG-54`), returning `Ok(None)` when none exists.
-    pub async fn doctor_plan(&self) -> Result<Option<DuetDoctorPlanView>, String> {
-        let url = format!(
-            "{}/api/doctor-plan",
-            self.configuration.base_path.trim_end_matches('/')
-        );
-        let response = self
-            .configuration
-            .client
-            .get(&url)
-            .send()
-            .await
-            .map_err(|error| error.to_string())?;
-        if response.status().as_u16() == 404 {
-            return Ok(None);
-        }
-        if !response.status().is_success() {
-            return Err(format!("status {}", response.status()));
-        }
-        let plan: DuetDoctorPlanView = response.json().await.map_err(|error| error.to_string())?;
-        Ok(Some(plan))
     }
 }
 

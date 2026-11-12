@@ -8,7 +8,6 @@
 //! - Consented read API (`GET /api/physician-sharing/consented-records`) returning
 //!   consented records and approved Luna notes with `sha256` revision cursors (`ENG-50`).
 //! - Expiring, revocable read-only `For my doctor` share links (`ENG-46`).
-//! - Read-only `"your doctor's plan"` storage and retrieval (`ENG-54`).
 
 use std::sync::{Arc, Mutex};
 use std::time::{SystemTime, UNIX_EPOCH};
@@ -203,38 +202,6 @@ pub struct ForMyDoctorSharedView {
     pub approved_luna_notes: Vec<LunaNoteProposal>,
 }
 
-/// One item in `"your doctor's plan"` (`ENG-54`).
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
-pub struct DoctorPlanItemView {
-    /// Stable item identifier.
-    pub id: String,
-    /// Item heading.
-    pub title: String,
-    /// Exact physician-approved guidance text.
-    pub body: String,
-}
-
-/// Read-only `"your doctor's plan"` displayed in Duet (`ENG-54`).
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
-pub struct DuetDoctorPlanView {
-    /// Patient-facing label: always `"your doctor's plan"`.
-    pub label: String,
-    /// Always `true`: `"your doctor's plan"` is read-only in Duet and separate from adaptive routines.
-    pub read_only: bool,
-    /// Practice identifier.
-    pub practice_id: String,
-    /// Patient workspace identifier.
-    pub patient_workspace_id: String,
-    /// Approving physician's display name.
-    pub physician_name: String,
-    /// Approved plan version (`1` for full first version, `2+` for batched diffs).
-    pub version: u32,
-    /// Timestamp when approved by the physician.
-    pub approved_at: String,
-    /// Exact-text approved plan items.
-    pub items: Vec<DoctorPlanItemView>,
-}
-
 /// Connected Care state held by `duet-api`.
 #[derive(Debug, Default)]
 pub struct ApiConnectedCare {
@@ -248,8 +215,6 @@ pub struct ApiConnectedCare {
     pub patient_records: Vec<PatientContributedRecord>,
     /// Active or revoked `For my doctor` share link (`ENG-46`).
     pub share_link: Option<ForMyDoctorShareLink>,
-    /// Physician-approved `"your doctor's plan"` (`ENG-54`).
-    pub doctor_plan: Option<DuetDoctorPlanView>,
     /// Structurally unexportable private operating index (`ENG-52`).
     pub private_operating_index: PrivateOperatingIndex,
 }
@@ -635,46 +600,6 @@ pub(crate) async fn get_shared_for_my_doctor(
         approved_luna_notes,
     })
     .into_response()
-}
-
-#[derive(Debug, Deserialize)]
-pub(crate) struct PutDoctorPlanRequest {
-    practice_id: String,
-    patient_workspace_id: String,
-    physician_name: String,
-    version: u32,
-    approved_at: String,
-    items: Vec<DoctorPlanItemView>,
-}
-
-pub(crate) async fn put_doctor_plan(
-    State(state): State<AppState>,
-    Json(body): Json<PutDoctorPlanRequest>,
-) -> Response {
-    if body.version == 0 || body.items.is_empty() {
-        return StatusCode::BAD_REQUEST.into_response();
-    }
-    let mut care = state.care.lock().expect("care lock");
-    let plan = DuetDoctorPlanView {
-        label: "your doctor's plan".to_owned(),
-        read_only: true,
-        practice_id: body.practice_id,
-        patient_workspace_id: body.patient_workspace_id,
-        physician_name: body.physician_name,
-        version: body.version,
-        approved_at: body.approved_at,
-        items: body.items,
-    };
-    care.doctor_plan = Some(plan.clone());
-    Json(plan).into_response()
-}
-
-pub(crate) async fn get_doctor_plan(State(state): State<AppState>) -> Response {
-    let care = state.care.lock().expect("care lock");
-    match care.doctor_plan.clone() {
-        Some(plan) => Json(plan).into_response(),
-        None => StatusCode::NOT_FOUND.into_response(),
-    }
 }
 
 /// Helper for tests to inspect the count of private operating-index entries without exposing their content.

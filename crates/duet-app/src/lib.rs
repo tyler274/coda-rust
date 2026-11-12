@@ -31,8 +31,7 @@ use duet_client::DuetClient;
 use duet_notify::{AlertSnapshot, AlertState, PlatformAlerts};
 use roots::{
     ALLOW_NOTIFICATIONS, CONNECTING, DoctorPage, LIBRARY_EMPTY, LIBRARY_UNAVAILABLE, LibraryKind,
-    LibraryRecord, LibraryRoot, OPEN_NOTIFICATION_SETTINGS, TRY_AGAIN, doctor_page,
-    doctor_plan_section, library_root,
+    LibraryRecord, LibraryRoot, OPEN_NOTIFICATION_SETTINGS, TRY_AGAIN, doctor_page, library_root,
 };
 use ui::{
     ActionRow, Button, ButtonVariant, Disclosure, Icon, IconName, NavigationControl, TabBar,
@@ -1118,7 +1117,6 @@ fn YouTab(
     let mut attempt = use_signal(|| 0u32);
     let mut loading = use_signal(|| true);
     let mut cache = use_signal(|| None);
-    let mut doctor_plan_cache = use_signal(|| None::<duet_client::DuetDoctorPlanView>);
     let mut menu = use_signal(|| false);
     let mut editor = use_signal(|| None::<YouEditor>);
     let mut medication = use_signal(String::new);
@@ -1140,31 +1138,24 @@ fn YouTab(
         let bearer = bearer.clone();
         async move {
             match open_client(base_url, bearer) {
-                Ok(api) => {
-                    futures_util::future::try_join(api.evidence_library(), async {
-                        Ok(api.doctor_plan().await.ok().flatten())
-                    })
-                    .await
-                }
+                Ok(api) => api.evidence_library().await,
                 Err(error) => Err(error),
             }
         }
     });
     use_effect(move || {
         loading.set(resource().is_none());
-        if let Some(Ok((page, plan))) = resource() {
+        if let Some(Ok(page)) = resource() {
             cache.set(Some(page));
-            doctor_plan_cache.set(plan);
         }
     });
     let current = resource();
     let failed = matches!(current, Some(Err(_)));
-    let (page, doctor_plan) = match current {
-        Some(Ok((page, plan))) => (Some(page), plan),
-        _ => (cache(), doctor_plan_cache()),
+    let page = match current {
+        Some(Ok(page)) => Some(page),
+        _ => cache(),
     };
     let root = page.as_ref().map(library_root);
-    let plan_section = doctor_plan_section(doctor_plan.as_ref());
     let retry = move |_| attempt.set(attempt() + 1);
     // Saving shares the closure shapes with the other save handlers.
     let save_record = move |_| {
@@ -1323,16 +1314,6 @@ fn YouTab(
                     aria_label: "{OPEN_NOTIFICATION_SETTINGS}",
                     onclick: move |_| on_open_settings.call(()),
                     "{OPEN_NOTIFICATION_SETTINGS}"
-                }
-            }
-        }
-        if let Some(section) = plan_section {
-            article { class: "card voice-card",
-                p { class: "card-title", "{section.heading}" }
-                p { class: "record-meta", "{section.attribution}" }
-                for item in section.items {
-                    p { class: "card-text", "{item.title}" }
-                    p { class: "record-meta", "{item.body}" }
                 }
             }
         }

@@ -79,7 +79,7 @@ const TABLE: &[Entry] = &[
     Entry {
         file: "crates/duet-app/src/lib.rs",
         kind: CardMarkup,
-        count: 8,
+        count: 5,
         reason: "You, For my doctor and saved page preview cards put `card`, `card-title` and `card-text` on plain elements, with voice and number layouts that `Card` would have to hold before they move.",
     },
     Entry {
