@@ -2873,7 +2873,7 @@ fn project_snapshot_search_records(
     }
 }
 
-async fn read_search_records_in_tx(
+pub(super) async fn read_search_records_in_tx(
     db: &impl ConnectionTrait,
     query: &MemorySearchQuery,
 ) -> Result<Vec<MemorySearchRecord>, MemoryError> {

@@ -201,13 +201,13 @@ pub fn work_tools() -> Vec<Tool> {
 pub fn read_only(name: &str) -> bool {
     matches!(
         name,
-        crate::physician_sources::SEARCH_TOOL | crate::physician_sources::READ_TOOL
+        crate::runtime::patient_search::SEARCH_TOOL | crate::physician_sources::READ_TOOL
     ) || crate::runtime::memory::is_read_only(name)
 }
 
 fn chart_tools() -> [Tool; 2] {
     [
-        crate::physician_sources::search_tool(),
+        crate::runtime::patient_search::search_tool(),
         crate::physician_sources::read_tool(crate::physician_sources::ChartScope::Chat),
     ]
 }

@@ -42,6 +42,8 @@ pub use frozen::{BindingRef, SkillPackageId};
 /// Durable patient memory, corrections, version history, and saved summary.
 pub mod memory;
 mod migration;
+/// Unified patient-scoped search across chart records, earlier work, and memory.
+pub mod patient_search;
 mod quota;
 /// Command receipts and their 90-day reduction to a salted digest.
 pub mod receipt;
@@ -54,7 +56,7 @@ pub mod sources;
 mod tests;
 /// Working notes derived from the authorized product record.
 pub mod working_notes;
-use crate::physician_sources::{ChartRequest, ChartScope, READ_TOOL, SEARCH_TOOL};
+use crate::physician_sources::{ChartRequest, ChartScope, READ_TOOL};
 use entities::conversation;
 
 /// Authenticated product scope, supplied by the server, never the command body.
@@ -1823,6 +1825,9 @@ impl<A: Authority> Product for PhysicianHost<A> {
                     .execute_chat_memory_tool(&claim, &call, arguments)
                     .await;
             }
+            if patient_search::is_tool(&call.name) {
+                return store.execute_chat_patient_search(&claim, arguments).await;
+            }
             let (state, records) = store.work_snapshot(&claim.scope).await?;
             if engine::history::is_tool(&call.name) {
                 let messages: Vec<_> = state
@@ -1849,7 +1854,7 @@ impl<A: Authority> Product for PhysicianHost<A> {
                 };
                 return Ok(ToolOutcome::History(page));
             }
-            if matches!(call.name.as_str(), SEARCH_TOOL | READ_TOOL) {
+            if call.name == READ_TOOL {
                 let chart = match ChartRequest::parse(&call.name, &arguments, ChartScope::Chat) {
                     Ok(chart) => chart,
                     Err(reason) => {
