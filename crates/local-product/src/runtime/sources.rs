@@ -23,7 +23,7 @@ use sea_orm::{
 
 use super::entities::{source, source_pull, source_version};
 use super::{Store, conversion_error, error};
-use crate::physician_sources::{SourcePatient, SourceRevision};
+use crate::physician_sources::{ChartPullReceipt, SourcePatient, SourceRevision};
 
 /// Rows written per insert, inside Postgres's bind limit.
 const CHART_BATCH: usize = 200;
@@ -222,18 +222,34 @@ impl Store {
     }
 
     /// Records one source's whole delivery for a workspace in one transaction:
-    /// each record that differs from the current one, a withdrawal of each
-    /// record the source no longer holds, and the pull, so "records as of"
-    /// never outruns the records. A delivery says what the source holds now,
-    /// so an earlier revision delivered again becomes current, unlike a replay
-    /// through [`Self::record_source`]. A revision identity still holds one set
-    /// of bytes. One delivery is one version. Returns how many records changed.
+    /// each record that differs from the current one and the pull metadata, so
+    /// "records as of" never outruns the records. Records from `pull.source_id`
+    /// that were previously active and absent from `records` stay saved and are
+    /// recorded in [`ChartPullReceipt::missing_candidates`]. A delivery says
+    /// what the source sent now, so an earlier revision delivered again becomes
+    /// current, unlike a replay through [`Self::record_source`]. A revision
+    /// identity still holds one set of bytes. One delivery is one version.
+    /// Returns how many records changed.
     pub async fn record_chart(
         &self,
         workspace: &str,
         records: &[SourceRevision],
         pull: &SourcePull,
     ) -> Result<usize, DbErr> {
+        self.record_chart_with_receipt(workspace, records, pull)
+            .await
+            .map(|receipt| receipt.changed)
+    }
+
+    /// Records one source's delivery for `workspace` in one transaction,
+    /// returning both how many observations moved and which previously active
+    /// candidate IDs from `pull.source_id` were absent on this pull.
+    pub async fn record_chart_with_receipt(
+        &self,
+        workspace: &str,
+        records: &[SourceRevision],
+        pull: &SourcePull,
+    ) -> Result<ChartPullReceipt, DbErr> {
         for record in records {
             record.validate().map_err(|e| error(&e))?;
             if record.workspace != workspace || record.source_id != pull.source_id {
@@ -287,19 +303,16 @@ impl Store {
             });
         }
         let delivered: HashSet<&str> = records.iter().map(|r| r.candidate_id.as_str()).collect();
+        let mut missing_candidates = Vec::new();
         for (candidate, newest) in &current {
             let held = newest
                 .as_ref()
                 .is_some_and(|source| source.source_id == pull.source_id);
             if held && !delivered.contains(candidate.as_str()) {
-                rows.push(source::ActiveModel {
-                    workspace: Set(workspace.into()),
-                    candidate: Set(candidate.clone()),
-                    observed_at_version: Set(next),
-                    revision: Set(None),
-                });
+                missing_candidates.push(candidate.clone());
             }
         }
+        missing_candidates.sort();
         let changed = rows.len();
         for batch in rows.chunks(CHART_BATCH) {
             source::Entity::insert_many(batch.to_vec())
@@ -313,13 +326,15 @@ impl Store {
         }
         let patient =
             serde_json::to_value(&pull.patient).map_err(|_| error("invalid source patient"))?;
+        let missing_json = serde_json::to_value(&missing_candidates)
+            .map_err(|_| error("invalid missing candidates"))?;
         source_pull::Entity::insert(source_pull::ActiveModel {
             workspace: Set(workspace.into()),
             source_id: Set(pull.source_id.clone()),
             source_label: Set(pull.source_label.clone()),
             patient: Set(patient),
             pulled_at: Set(pull.pulled_at),
-            missing_candidates: Set(serde_json::json!([])),
+            missing_candidates: Set(missing_json),
         })
         .on_conflict(
             OnConflict::columns([
@@ -337,7 +352,28 @@ impl Store {
         .exec_without_returning(&tx)
         .await?;
         tx.commit().await?;
-        Ok(changed)
+        Ok(ChartPullReceipt {
+            changed,
+            missing_candidates,
+        })
+    }
+
+    /// Previously saved candidate IDs from `source_id` that were absent on its
+    /// latest recorded pull for `workspace`.
+    pub async fn pull_missing_candidates(
+        &self,
+        workspace: &str,
+        source_id: &str,
+    ) -> Result<Vec<String>, DbErr> {
+        let Some(row) =
+            source_pull::Entity::find_by_id((workspace.to_owned(), source_id.to_owned()))
+                .one(&self.db)
+                .await?
+        else {
+            return Ok(Vec::new());
+        };
+        serde_json::from_value(row.missing_candidates)
+            .map_err(|_| error("corrupt missing candidates"))
     }
 
     /// Explicitly withdraws one candidate observation from `workspace` (such as
