@@ -66,11 +66,12 @@ pub async fn load_synthetic_practice(
             }
             let patient = source.patient(&id).await?;
             let records = source.records(&patient, &workspace).await?;
+            let pulled_at = clock.now(now()) as i64;
             let pull = SourcePull {
                 source_id: source.source_id().to_owned(),
                 source_label: source.source_label().to_owned(),
                 patient,
-                pulled_at: clock.now(now()) as i64,
+                pulled_at,
             };
             summary.changed += runtime
                 .record_chart(&workspace, &records, &pull)
@@ -79,6 +80,10 @@ pub async fn load_synthetic_practice(
             auth.register_patient(STAGING_PRACTICE_ID, &workspace)
                 .await
                 .map_err(|_| "register the patient".to_owned())?;
+            runtime
+                .register_patient_dispatch(auth, STAGING_PRACTICE_ID, &workspace, pulled_at)
+                .await
+                .map_err(|error| error.to_string())?;
             for identity in &panel {
                 auth.place_on_panel(identity, &workspace)
                     .await

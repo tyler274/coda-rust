@@ -36,11 +36,15 @@ mod control;
 pub use control::Lease;
 /// Queue delivery recovery uses the conversation owner, not a parallel ledger.
 pub mod delivery;
+/// Practice patient source checks, review dispatch, and operator cadence controls.
+pub mod dispatch;
 mod entities;
 /// Physician feedback on Coda's responses.
 pub mod feedback;
 mod frozen;
 pub use frozen::{BindingRef, SkillPackageId};
+/// Practice-owned background jobs running on the shared run store and background lane.
+pub mod jobs;
 mod migration;
 mod quota;
 /// Command receipts and their 90-day reduction to a salted digest.
@@ -71,12 +75,15 @@ pub struct Scope {
 }
 
 impl Scope {
-    fn validate(&self) -> Result<(), DbErr> {
+    pub(super) fn validate(&self) -> Result<(), DbErr> {
         if [&self.practice, &self.physician, &self.workspace, &self.chat]
             .iter()
             .any(|s| s.trim().is_empty())
         {
             return Err(error("empty physician scope"));
+        }
+        if self.physician.trim() == jobs::PRACTICE_OWNER {
+            return Err(error("practice run cannot act as a physician"));
         }
         Ok(())
     }
@@ -715,11 +722,11 @@ fn database_clock() -> Expr {
     Expr::cust("floor(extract(epoch FROM clock_timestamp()))::bigint")
 }
 
-async fn now(tx: &sea_orm::DatabaseTransaction) -> Result<i64, DbErr> {
+async fn now(db: &impl ConnectionTrait) -> Result<i64, DbErr> {
     let query = Query::select()
         .expr_as(database_clock(), Alias::new("now"))
         .to_owned();
-    tx.query_one(&query)
+    db.query_one(&query)
         .await?
         .ok_or_else(|| error("missing database clock"))?
         .try_get("", "now")
@@ -846,6 +853,7 @@ impl Store {
         {
             return Err(error("empty command field").into());
         }
+        scope.validate()?;
         let tx = self.db.begin().await?;
         let command = serde_json::json!({"scope": scope, "input": input});
         match receipt::record(&tx, &scope.practice, &scope.physician, &input.key, &command).await? {
@@ -1493,7 +1501,12 @@ impl Store {
             .one(&tx)
             .await?
         else {
-            return Ok(Stopped::Refused);
+            let practice_scope = jobs::PracticeScope {
+                practice: scope.practice.clone(),
+                workspace: scope.workspace.clone(),
+                job_id: scope.chat.clone(),
+            };
+            return Self::stop_practice_job_in_tx(tx, &practice_scope, work_item_id).await;
         };
         let mut state = Self::conversation_control(&tx, scope, row).await?;
         // Another press on work that is already held, from a page that has

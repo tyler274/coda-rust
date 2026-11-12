@@ -163,13 +163,19 @@ pub async fn enroll_fixture(auth: &dyn AuthStore, runtime: &Store) -> Result<(),
         .await
         .map_err(|_| "read the staging panel".to_owned())?;
     for workspace in crate::WORKSPACE_IDS {
+        let pull = fixture_pull(workspace);
+        let pulled_at = pull.pulled_at;
         runtime
-            .record_chart(workspace, &[], &fixture_pull(workspace))
+            .record_chart(workspace, &[], &pull)
             .await
             .map_err(|error| format!("{workspace}: {error}"))?;
         auth.register_patient(STAGING_PRACTICE_ID, workspace)
             .await
             .map_err(|_| format!("{workspace}: register the patient"))?;
+        runtime
+            .register_patient_dispatch(auth, STAGING_PRACTICE_ID, workspace, pulled_at)
+            .await
+            .map_err(|error| format!("{workspace}: {error}"))?;
         for identity in &panel {
             auth.set_membership(identity, workspace, Membership::Allowed)
                 .await

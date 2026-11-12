@@ -22,6 +22,7 @@ fn names_are_stable_and_distinct() {
             "physician_auth_20261030_000005_practices",
             "physician_auth_20261106_000006_session_lifetime",
             "physician_auth_20261109_000007_fixed_sessions",
+            "physician_auth_20261112_000008_drop_cadence_columns",
         ]
     );
 }
@@ -89,7 +90,7 @@ async fn postgres_fresh_upgrade_and_partial_schema_regressions() {
                 .unwrap()
                 .try_get::<i64>("", "n")
                 .unwrap();
-            assert_eq!(count, 7);
+            assert_eq!(count, 8);
             assert!(
                 SchemaManager::new(&db)
                     .has_table("physician_patients")

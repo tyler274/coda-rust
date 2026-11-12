@@ -1,8 +1,8 @@
-//! One roster patient's front-door invitation, Duet link, consent, and cadence at rest.
+//! One roster patient's front-door invitation, Duet link, and consent at rest.
 
 use sea_orm::entity::prelude::*;
 
-/// One roster patient's front-door invitation, Duet link, consent, and cadence at rest.
+/// One roster patient's front-door invitation, Duet link, and consent at rest.
 #[derive(Clone, Debug, PartialEq, Eq, DeriveEntityModel)]
 #[sea_orm(table_name = "physician_patient_links")]
 pub struct Model {
@@ -29,8 +29,6 @@ pub struct Model {
     pub consented_at: Option<i64>,
     /// The Unix second consent was revoked.
     pub revoked_at: Option<i64>,
-    /// The review cadence exposed to Agents (`"weekly"` or `"daily_when_changed"`).
-    pub cadence: String,
     /// The Unix second the row was created.
     pub created_at: i64,
 }

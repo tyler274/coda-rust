@@ -86,6 +86,7 @@ pub async fn seed_rehearsal_practice(
         let mut pull = crate::patients::fixture_pull(fixture);
         pull.source_id = REHEARSAL_SOURCE.to_owned();
         pull.source_label = "Rehearsal fixture".to_owned();
+        let pulled_at = pull.pulled_at;
         runtime
             .record_chart(&workspace, &[], &pull)
             .await
@@ -93,6 +94,10 @@ pub async fn seed_rehearsal_practice(
         auth.register_patient(REHEARSAL_PRACTICE_ID, &workspace)
             .await
             .map_err(|_| format!("{workspace}: register the patient"))?;
+        runtime
+            .register_patient_dispatch(auth, REHEARSAL_PRACTICE_ID, &workspace, pulled_at)
+            .await
+            .map_err(|error| format!("{workspace}: {error}"))?;
         auth.place_on_panel(&physician, &workspace)
             .await
             .map_err(|_| format!("{workspace}: place the patient on the panel"))?;

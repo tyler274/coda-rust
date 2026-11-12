@@ -59,7 +59,8 @@ async fn a_second_migrate_records_nothing_new() {
         [
             "m20261111_init",
             "m20261111_response_feedback",
-            "m20261112_concerns"
+            "m20261112_concerns",
+            "m20261112_practice_jobs_dispatch",
         ]
     );
 }

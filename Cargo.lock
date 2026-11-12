@@ -5312,8 +5312,10 @@ dependencies = [
  "async-trait",
  "axum",
  "base64 0.23.1",
+ "front-door",
  "harness",
  "jsonwebtoken",
+ "patient-work",
  "physician-auth",
  "reqwest 0.12.28",
  "sea-orm",
@@ -5323,6 +5325,7 @@ dependencies = [
  "sha2 0.11.1",
  "thiserror 2.0.21",
  "tokio",
+ "tower",
  "tracing",
  "uuid",
 ]
@@ -6376,6 +6379,11 @@ dependencies = [
 [[package]]
 name = "patient-work"
 version = "0.1.0"
+dependencies = [
+ "serde",
+ "serde_json",
+ "thiserror 2.0.21",
+]
 
 [[package]]
 name = "pdf-writer"
@@ -6555,7 +6563,6 @@ name = "physician-auth"
 version = "0.1.0"
 dependencies = [
  "async-trait",
- "patient-work",
  "sea-orm",
  "sea-orm-migration",
  "serde",

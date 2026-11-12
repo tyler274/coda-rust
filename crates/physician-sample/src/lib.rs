@@ -704,7 +704,9 @@ async fn roster(
     let extensions = request.extensions();
     let store = connected.auth_store(extensions);
     let practice = care::ConnectedCare::identity(extensions).practice_id;
-    let registered = store.practice_patients(&practice).await;
+    let Ok(registered) = store.practice_patients(&practice).await else {
+        return StatusCode::SERVICE_UNAVAILABLE.into_response();
+    };
     let directory = connected.patients(extensions);
     let query = query.query.unwrap_or_default();
     let Ok(found) = patients::search(&*directory, &registered, &query).await else {
@@ -720,7 +722,6 @@ async fn roster(
         if let Some(link) = link {
             row["duet_linked"] = json!(link.linked);
             row["sharing_consented"] = json!(link.sharing_consented);
-            row["cadence"] = json!(link.cadence);
         }
     }
     Json(json!({ "patients": rows, "next_after": null })).into_response()
@@ -1058,7 +1059,7 @@ mod tests {
             .await
             .unwrap();
 
-        // 3. The patient page carries the link's consent state.
+        // 3. The patient page and roster carry the link's consent state without any cadence copy.
         let (status, ws_body) = request(
             app.clone(),
             "GET",
@@ -1070,6 +1071,16 @@ mod tests {
         let ws_json: Value = serde_json::from_str(&ws_body).unwrap();
         assert_eq!(ws_json["patient_link"]["linked"], true);
         assert_eq!(ws_json["patient_link"]["sharing_consented"], true);
+        assert!(ws_json["patient_link"].get("cadence").is_none());
+        assert!(ws_json.get("review_cadence").is_none());
         assert!(ws_json.get("duet_records").is_none());
+
+        let (roster_status, roster_body) =
+            request(app, "GET", "/patient-roster?query=Mary", Body::empty()).await;
+        assert_eq!(roster_status, StatusCode::OK);
+        let roster_json: Value = serde_json::from_str(&roster_body).unwrap();
+        assert_eq!(roster_json["patients"][0]["duet_linked"], true);
+        assert_eq!(roster_json["patients"][0]["sharing_consented"], true);
+        assert!(roster_json["patients"][0].get("cadence").is_none());
     }
 }

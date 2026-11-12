@@ -33,6 +33,10 @@ pub enum DeliveryKind {
     /// A reply revision in `physician_runtime_reply_drafts`; `scope.chat`
     /// names the reply work.
     ReplyRevision,
+    /// A practice-owned background job in `physician_runtime_practice_jobs`;
+    /// `scope.physician` is [`super::jobs::PRACTICE_OWNER`] and `scope.chat`
+    /// names `job_id`.
+    PracticeJob,
 }
 
 /// Non-clinical broker payload, fenced to the accepted input identity.
@@ -62,6 +66,17 @@ impl Delivery {
         Self {
             kind: DeliveryKind::ReplyRevision,
             scope,
+            input_id,
+        }
+    }
+
+    /// A practice-job wakeup for `input_id`, normalizing `scope` to
+    /// [`super::jobs::PracticeScope::as_control_scope`] so no physician
+    /// identity ever enters a practice-job broker payload.
+    pub fn practice_job(scope: &super::jobs::PracticeScope, input_id: String) -> Self {
+        Self {
+            kind: DeliveryKind::PracticeJob,
+            scope: scope.as_control_scope(),
             input_id,
         }
     }
@@ -113,14 +128,17 @@ impl Store {
         if !DISPATCH_RETRY_SECONDS.contains(&retry_after) {
             return Err(error("invalid dispatch retry"));
         }
-        if delivery.kind == DeliveryKind::ReplyRevision {
-            return self.revision_dispatched(delivery, retry_after).await;
+        match delivery.kind {
+            DeliveryKind::ReplyRevision => self.revision_dispatched(delivery, retry_after).await,
+            DeliveryKind::PracticeJob => self.practice_job_dispatched(delivery, retry_after).await,
+            DeliveryKind::ChatTurn => {
+                let (tx, mut state, now) = self.locked(&delivery.scope).await?;
+                if state.input_id() == Some(&delivery.input_id) {
+                    state.dispatch_after = now + retry_after;
+                }
+                Self::save(tx, &delivery.scope, &state).await
+            }
         }
-        let (tx, mut state, now) = self.locked(&delivery.scope).await?;
-        if state.input_id() == Some(&delivery.input_id) {
-            state.dispatch_after = now + retry_after;
-        }
-        Self::save(tx, &delivery.scope, &state).await
     }
 
     /// Atomically claims only the input named by the wakeup, never a newer turn.
@@ -191,22 +209,29 @@ impl Store {
     /// Where the input named by a wakeup stands, read under the conversation
     /// lock. A worker uses it when its claim found nothing to run.
     pub async fn delivery_state(&self, delivery: &Delivery) -> Result<DeliveryState, DbErr> {
-        if delivery.kind == DeliveryKind::ReplyRevision {
-            return self.revision_state(delivery).await;
-        }
-        let (tx, state, now) = self.locked(&delivery.scope).await?;
-        tx.commit().await?;
-        if state.input_id() != Some(&delivery.input_id) {
-            return Ok(DeliveryState::Settled);
-        }
-        Ok(match state.status {
-            WorkStatus::Completed | WorkStatus::Held => DeliveryState::Settled,
-            WorkStatus::Failed => DeliveryState::Failed,
-            WorkStatus::Active if state.attempts.last().is_some_and(|a| a.owns_lease(now)) => {
-                DeliveryState::Claimed
+        match delivery.kind {
+            DeliveryKind::ReplyRevision => self.revision_state(delivery).await,
+            DeliveryKind::PracticeJob => self.practice_job_delivery_state(delivery).await,
+            DeliveryKind::ChatTurn => {
+                let (tx, state, now) = self.locked(&delivery.scope).await?;
+                tx.commit().await?;
+                if state.input_id() != Some(&delivery.input_id) {
+                    return Ok(DeliveryState::Settled);
+                }
+                Ok(match state.status {
+                    WorkStatus::Completed | WorkStatus::Held => DeliveryState::Settled,
+                    WorkStatus::Failed => DeliveryState::Failed,
+                    WorkStatus::Active
+                        if state.attempts.last().is_some_and(|a| a.owns_lease(now)) =>
+                    {
+                        DeliveryState::Claimed
+                    }
+                    WorkStatus::Active | WorkStatus::Pending | WorkStatus::Cancelled => {
+                        DeliveryState::Due
+                    }
+                })
             }
-            WorkStatus::Active | WorkStatus::Pending | WorkStatus::Cancelled => DeliveryState::Due,
-        })
+        }
     }
 }
 

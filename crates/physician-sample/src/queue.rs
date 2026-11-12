@@ -67,11 +67,12 @@ fn message(delivery: &Delivery) -> Result<google_cloud_pubsub::model::Message, &
         .set_attributes(attributes))
 }
 
-/// `coda.delivery_kind`: `chat_turn` or `reply_revision`.
+/// `coda.delivery_kind`: `chat_turn`, `reply_revision`, or `practice_job`.
 pub fn delivery_kind(kind: DeliveryKind) -> &'static str {
     match kind {
         DeliveryKind::ChatTurn => "chat_turn",
         DeliveryKind::ReplyRevision => "reply_revision",
+        DeliveryKind::PracticeJob => "practice_job",
     }
 }
 

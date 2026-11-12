@@ -545,3 +545,117 @@ pub(super) mod concern_feedback {
 
     impl ActiveModelBehavior for ActiveModel {}
 }
+
+/// One practice-owned background job for one patient workspace, with no
+/// physician session. Created by `m20261112_practice_jobs_dispatch`.
+pub(super) mod practice_job {
+    use super::super::WorkStatus;
+    use super::super::jobs::PracticeJobKind;
+    use sea_orm::entity::prelude::*;
+
+    #[derive(Clone, Debug, PartialEq, Eq, DeriveEntityModel)]
+    #[sea_orm(table_name = "physician_runtime_practice_jobs")]
+    pub struct Model {
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub practice: String,
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub workspace: String,
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub job_id: String,
+        pub kind: PracticeJobKind,
+        pub status: WorkStatus,
+        #[sea_orm(column_type = "Text")]
+        pub work: String,
+        pub revision: i64,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub assignment: Json,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub preloaded_skills: Json,
+        #[sea_orm(column_type = "Text")]
+        pub skills: String,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub binding: Json,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub runs: Json,
+        pub failures: i64,
+        pub allowance_after: i64,
+        pub sources_version: i64,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub sources: Json,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub result: Option<Json>,
+        pub dispatch_after: i64,
+        pub created_at: i64,
+        pub updated_at: i64,
+    }
+
+    #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
+    pub enum Relation {}
+
+    impl ActiveModelBehavior for ActiveModel {}
+}
+
+/// Mutable attempt control for a practice-owned background job.
+pub(super) mod practice_job_attempt {
+    use super::super::AttemptStatus;
+    use sea_orm::entity::prelude::*;
+
+    #[derive(Clone, Debug, PartialEq, Eq, DeriveEntityModel)]
+    #[sea_orm(table_name = "physician_runtime_practice_job_attempts")]
+    pub struct Model {
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub practice: String,
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub workspace: String,
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub job_id: String,
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub id: String,
+        pub position: i64,
+        #[sea_orm(column_type = "Text")]
+        pub predecessor: Option<String>,
+        #[sea_orm(column_type = "Text")]
+        pub work: String,
+        pub revision: i64,
+        pub status: AttemptStatus,
+        pub expires: i64,
+    }
+
+    #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
+    pub enum Relation {}
+
+    impl ActiveModelBehavior for ActiveModel {}
+}
+
+/// Per-patient source check and review cadence state for a practice.
+/// `cadence` here is the sole stored cadence field across the product.
+pub(super) mod patient_dispatch {
+    use sea_orm::entity::prelude::*;
+
+    #[derive(Clone, Debug, PartialEq, Eq, DeriveEntityModel)]
+    #[sea_orm(table_name = "physician_runtime_patient_dispatch")]
+    pub struct Model {
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub practice: String,
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub workspace: String,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub cadence: Json,
+        pub registered_at: i64,
+        pub last_attempt_at: Option<i64>,
+        pub last_success_at: Option<i64>,
+        pub last_checked_version: Option<i64>,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub last_checked_records: Json,
+        pub last_reviewed_at: Option<i64>,
+        pub last_reviewed_version: Option<i64>,
+        pub review_sequence: i64,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub pending_review: Option<Json>,
+    }
+
+    #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
+    pub enum Relation {}
+
+    impl ActiveModelBehavior for ActiveModel {}
+}

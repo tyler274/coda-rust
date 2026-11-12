@@ -8,8 +8,7 @@ use serde_json::Value;
 
 use crate::timestamp::format_rfc3339;
 use physician_auth::{
-    AuthStore, Cadence, Membership, MemoryAuthStore, PatientLink, PhysicianIdentity,
-    StoreUnavailable,
+    AuthStore, Membership, MemoryAuthStore, PatientLink, PhysicianIdentity, StoreUnavailable,
 };
 use physician_wire::PatientLinkWire;
 
@@ -137,7 +136,6 @@ impl ConnectedCare {
                 consent_version: None,
                 consented_at: None,
                 revoked_at: None,
-                cadence: Cadence::Weekly.as_str().to_owned(),
             },
         }
     }
@@ -188,6 +186,5 @@ fn to_link_wire(link: PatientLink) -> PatientLinkWire {
         consent_version: link.consent_version,
         consented_at: link.consented_at,
         revoked_at: link.revoked_at,
-        cadence: link.cadence.as_str().to_owned(),
     }
 }
