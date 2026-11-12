@@ -1110,7 +1110,18 @@ async fn a_rehearsal_turn_marked_to_fail_fails_once_and_its_successor_answers() 
 #[tokio::test]
 async fn the_fifth_failure_ends_the_turn_and_nothing_starts_it_again() {
     let _guard = lock().lock().await;
-    let Some(mut running) = running("gave_up", Some(100), None).await else {
+    // A retry delay, so the restart lands between the second and third
+    // attempts rather than racing an immediate retry.
+    let Some(mut running) = running_with(
+        "gave_up",
+        Some(100),
+        None,
+        "[]",
+        support::FIXED_TEXT,
+        &[("PHYSICIAN_WORKER_RETRY_SECONDS", "1")],
+    )
+    .await
+    else {
         return;
     };
     let (scope, delivery) = accept_turn(&running.database.url, &running.store).await;
@@ -1661,7 +1672,16 @@ async fn skill_reads_run_through_the_worker_and_only_the_answer_is_published() {
 async fn hosting_cancels_a_chat_whose_claim_has_been_replaced() {
     use harness::engine::{AttemptFailure, EventKind};
     let _guard = lock().lock().await;
-    let Some(running) = running("claim_replaced", None, Some(200_000)).await else {
+    let Some(running) = running_with(
+        "claim_replaced",
+        None,
+        Some(200_000),
+        "[]",
+        support::FIXED_TEXT,
+        &[("PHYSICIAN_WORKER_CONCURRENCY", "1")],
+    )
+    .await
+    else {
         return;
     };
     let (scope, _) = accept_turn(&running.database.url, &running.store).await;
@@ -1692,20 +1712,25 @@ async fn hosting_cancels_a_chat_whose_claim_has_been_replaced() {
         .unwrap();
     let successor = running.store.claim(&scope, 540).await.unwrap().unwrap();
     assert_ne!(successor.attempt, abandoned.attempt);
-    // The worker still runs the old attempt, so hearing of the turn again
-    // starts nothing; its next renewal finds the claim replaced.
+    // The worker runs one attempt at a time, so another physician's turn
+    // starts only once hosting has cancelled the replaced run.
+    let (other, _) = accept_text(&running.database.url, &running.store, "Next").await;
     let deadline = Instant::now() + Duration::from_secs(115);
-    while !running
-        .worker
-        .tail()
-        .contains("physician attempt ownership could not be renewed")
-    {
+    loop {
+        let state = running.store.conversation(&other).await.unwrap();
+        if state.attempts.first().is_some_and(|attempt| {
+            attempt
+                .events
+                .iter()
+                .any(|event| matches!(event.kind, EventKind::ProviderStarted { .. }))
+        }) {
+            break;
+        }
         assert!(
             Instant::now() < deadline,
-            "hosting must cancel the old run at its 108-second renewal cadence\n{}",
-            running.worker.tail()
+            "hosting must cancel the run whose claim was replaced"
         );
-        tokio::time::sleep(Duration::from_millis(200)).await;
+        tokio::time::sleep(Duration::from_millis(100)).await;
     }
     let saved = running.store.conversation(&scope).await.unwrap();
     assert_eq!(saved.attempts.len(), 2);

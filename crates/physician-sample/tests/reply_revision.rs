@@ -685,7 +685,18 @@ async fn physician_save_cancels_an_in_flight_revision_and_preserves_the_edit() {
 
 #[tokio::test]
 async fn revision_capabilities_survive_a_window_and_worker_replacement_between_attempts() {
-    let Some(mut running) = Running::start("reply_capabilities", 0, 500).await else {
+    // A retry delay holds the failed revision pending until the worker is
+    // replaced, rather than the old worker retrying it at once.
+    let Some(mut running) = Running::start_full(
+        "reply_capabilities",
+        0,
+        500,
+        false,
+        &[],
+        &[("PHYSICIAN_WORKER_RETRY_SECONDS", "3")],
+    )
+    .await
+    else {
         return;
     };
     let scope = running.seed().await;

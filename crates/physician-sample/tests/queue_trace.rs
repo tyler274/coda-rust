@@ -30,6 +30,7 @@ async fn the_worker_attempt_links_to_the_request_that_accepted_the_turn() {
     ];
     let worker_port = support::free_port();
     let worker_listen = format!("127.0.0.1:{worker_port}");
+    let stub = support::ResponsesStub::start(&home, 0, 0, "[]").await;
     let mut worker = support::Process::spawn(
         "worker",
         support::worker_bin(),
@@ -37,7 +38,7 @@ async fn the_worker_attempt_links_to_the_request_that_accepted_the_turn() {
         &[
             ("PHYSICIAN_DATABASE_URL", database.url.as_str()),
             ("PHYSICIAN_WORKER_LISTEN_ADDR", worker_listen.as_str()),
-            ("PHYSICIAN_WORKER_FIXED_TEXT", support::FIXED_TEXT),
+            ("PHYSICIAN_RESPONSES_STUB_PORT", stub.port.as_str()),
             telemetry[0],
             telemetry[1],
         ],
