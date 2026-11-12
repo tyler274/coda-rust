@@ -1015,3 +1015,129 @@ async fn a_file_that_arrives_while_another_is_owed_is_readable_from_its_message(
             .is_empty()
     );
 }
+
+/// Each attachment of the item's current version: its file hash, or `owed`.
+async fn current_files(store: &Store, practice: &str, item: &str) -> Vec<String> {
+    store
+        .channel_messages(practice, "c1")
+        .await
+        .unwrap()
+        .into_iter()
+        .find(|version| version.item == item)
+        .expect("item saved")
+        .attachments
+        .into_iter()
+        .map(|attachment| match attachment {
+            AttachmentRecord::File { sha256, .. } => sha256,
+            AttachmentRecord::Owed { .. } => "owed".to_owned(),
+            other => format!("{other:?}"),
+        })
+        .collect()
+}
+
+#[tokio::test]
+#[ignore = "requires explicit local Postgres"]
+async fn files_fetched_by_different_reads_add_up_on_the_message() {
+    let s = setup().await;
+    release_organization(&s.store).await;
+    s.connected().await;
+    s.fake.deliver(message("c1", "f3", "two scans", 10));
+    s.fake.attach("f3", "c.pdf", b"%PDF-1.7 third");
+    s.fake.attach("f3", "d.pdf", b"%PDF-1.7 fourth");
+
+    // C arrives while D fails.
+    s.fake.fail_file("d.pdf");
+    s.pass().await;
+    assert_eq!(
+        current_files(&s.store, &s.practice, "f3").await,
+        [sha256_hex(b"%PDF-1.7 third"), "owed".into()]
+    );
+
+    // The next read fetches D while C fails: both are on the message, read
+    // back after a restart, and nothing is owed.
+    s.fake.recover();
+    s.fake.fail_file("c.pdf");
+    s.pass().await;
+    let url = std::env::var("PHYSICIAN_RUNTIME_TEST_DATABASE_URL").unwrap();
+    let restarted = Store::connect(&url).await.unwrap();
+    assert_eq!(
+        current_files(&restarted, &s.practice, "f3").await,
+        [
+            sha256_hex(b"%PDF-1.7 third"),
+            sha256_hex(b"%PDF-1.7 fourth")
+        ]
+    );
+    assert!(
+        restarted
+            .channel_status(&s.practice)
+            .await
+            .unwrap()
+            .unread
+            .is_empty()
+    );
+    s.fake.recover();
+}
+
+#[tokio::test]
+#[ignore = "requires explicit local Postgres"]
+async fn an_item_readable_again_is_current_while_its_file_is_still_owed() {
+    let s = setup().await;
+    release_organization(&s.store).await;
+    s.connected().await;
+    s.fake.deliver(message("c1", "f4", "see attached", 10));
+    s.fake.attach("f4", "e.pdf", b"%PDF-1.7 fifth");
+    s.fake.fail_files();
+    s.pass().await;
+    assert_eq!(s.texts("c1").await, ["see attached"]);
+
+    // The item stops decoding, then decodes again while its file still
+    // fails: the readable version with its owed file is current again.
+    s.fake.make_unreadable("f4");
+    s.pass().await;
+    let bodies = |store: Store, practice: String| async move {
+        store
+            .channel_messages(&practice, "c1")
+            .await
+            .unwrap()
+            .into_iter()
+            .map(|version| match version.body {
+                Body::Text { text } => text,
+                other => format!("{other:?}"),
+            })
+            .collect::<Vec<_>>()
+    };
+    assert_eq!(
+        bodies(s.store.clone(), s.practice.clone()).await,
+        ["Unreadable"]
+    );
+    s.fake.make_readable("f4");
+    s.pass().await;
+    let url = std::env::var("PHYSICIAN_RUNTIME_TEST_DATABASE_URL").unwrap();
+    let restarted = Store::connect(&url).await.unwrap();
+    assert_eq!(
+        bodies(restarted.clone(), s.practice.clone()).await,
+        ["see attached"]
+    );
+    assert_eq!(current_files(&restarted, &s.practice, "f4").await, ["owed"]);
+    assert_eq!(
+        s.rows("f4").await,
+        2,
+        "the readable version is not saved twice"
+    );
+
+    // The file arrives: the whole version is current and nothing is owed.
+    s.fake.recover();
+    s.pass().await;
+    assert_eq!(
+        current_files(&s.store, &s.practice, "f4").await,
+        [sha256_hex(b"%PDF-1.7 fifth")]
+    );
+    assert!(
+        s.store
+            .channel_status(&s.practice)
+            .await
+            .unwrap()
+            .unread
+            .is_empty()
+    );
+}

@@ -349,9 +349,8 @@ pub struct MessageVersion {
     pub item: String,
     /// Spruce conversation id.
     pub conversation: String,
-    /// `spruce::payload::Item::version`; while files are still to be fetched,
-    /// `files-owed:`, their positions and that version, so each partial
-    /// download is a version of its own; or `unreadable:` and `modifiedAt`.
+    /// `spruce::payload::Item::version`, or `unreadable:` and `modifiedAt`.
+    /// [`Self::saved_as`] is the key it is saved under.
     pub version: String,
     /// Who it is from.
     pub direction: Direction,
@@ -383,6 +382,34 @@ impl MessageVersion {
             .map(|(position, _)| position)
             .collect()
     }
+
+    /// The key this version is saved under: its Spruce version, or, while
+    /// files are owed, `files-owed:`, their positions and that version, so
+    /// each partial download of one Spruce version is saved once.
+    pub fn saved_as(&self) -> String {
+        let owed = self.owed_files();
+        if owed.is_empty() {
+            return self.version.clone();
+        }
+        let positions: Vec<String> = owed.iter().map(ToString::to_string).collect();
+        format!("files-owed:{}:{}", positions.join(","), self.version)
+    }
+
+    /// Fills owed attachments with the files `saved`, an earlier read of the
+    /// same Spruce version, already fetched, so download progress only
+    /// accumulates.
+    fn fill_from(&mut self, saved: &MessageVersion) {
+        if saved.version != self.version || saved.attachments.len() != self.attachments.len() {
+            return;
+        }
+        for (mine, theirs) in self.attachments.iter_mut().zip(&saved.attachments) {
+            if matches!(mine, AttachmentRecord::Owed { .. })
+                && matches!(theirs, AttachmentRecord::File { .. })
+            {
+                *mine = theirs.clone();
+            }
+        }
+    }
 }
 
 /// What a read found for one item.
@@ -402,51 +429,31 @@ pub enum ItemRead {
 }
 
 impl ItemRead {
-    fn key(&self) -> (&str, &str) {
+    fn item(&self) -> &str {
         match self {
-            Self::Version(version) => (&version.item, &version.version),
-            Self::Saved { item, version, .. } => (item, version),
-        }
-    }
-
-    fn modified_at(&self) -> Option<&str> {
-        match self {
-            Self::Version(version) => version.modified_at.as_deref(),
-            Self::Saved { modified_at, .. } => modified_at.as_deref(),
-        }
-    }
-
-    /// How many of its files are still to be fetched. A version seen again
-    /// was saved whole, since intake keys a partial download by its owed
-    /// files and reads it as a new version.
-    fn owed(&self) -> usize {
-        match self {
-            Self::Version(version) => version.owed_files().len(),
-            Self::Saved { .. } => 0,
+            Self::Version(version) => &version.item,
+            Self::Saved { item, .. } => item,
         }
     }
 }
 
-/// Whether a read's version replaces the current one. A later Spruce change
-/// always does, an earlier one never does. At the same `modifiedAt`, such as
-/// a transcript that came back, the read replaces it unless it owes more
-/// files, so a failed download never hides a file already saved.
-fn supersedes(read: (Option<&str>, usize), current: (Option<&str>, usize)) -> bool {
+/// Whether a read's version replaces the current one: always, unless Spruce
+/// says the current one changed later. A version read again with the same
+/// `modifiedAt`, such as a transcript that came back, is current again.
+fn supersedes(read: Option<&str>, current: Option<&str>) -> bool {
     let instant = |value: Option<&str>| {
         value.and_then(|text| chrono::DateTime::parse_from_rfc3339(text).ok())
     };
-    match (instant(read.0), instant(current.0)) {
-        (Some(at), Some(now)) if at != now => at > now,
-        _ => read.1 <= current.1,
+    match (instant(read), instant(current)) {
+        (Some(read), Some(current)) => read >= current,
+        _ => true,
     }
 }
 
-/// An item's current version, when Spruce last changed it and how many of
-/// its files are still to be fetched.
+/// An item's current version and when Spruce last changed it.
 struct Current {
     version: String,
     modified_at: Option<String>,
-    owed: usize,
     changed: bool,
 }
 
@@ -985,11 +992,12 @@ impl Store {
         let items: Vec<String> = page
             .versions
             .iter()
-            .map(|read| read.key().0.to_owned())
+            .map(|read| read.item().to_owned())
             .collect();
         let mut existing: HashSet<(String, String)> = HashSet::new();
         let mut ordinals: HashMap<String, i64> = HashMap::new();
         let mut current: HashMap<String, Current> = HashMap::new();
+        let mut saved: HashMap<String, Vec<MessageVersion>> = HashMap::new();
         if !items.is_empty() {
             for stored in channel_message::Entity::find()
                 .filter(channel_message::Column::Practice.eq(practice))
@@ -999,45 +1007,60 @@ impl Store {
             {
                 let ordinal = ordinals.entry(stored.item.clone()).or_insert(0);
                 *ordinal = (*ordinal).max(stored.ordinal);
+                let record: MessageVersion = from_json(stored.record, "message")?;
                 if stored.current {
-                    let record: MessageVersion = from_json(stored.record, "message")?;
                     current.insert(
                         stored.item.clone(),
                         Current {
                             version: stored.version.clone(),
-                            owed: record.owed_files().len(),
-                            modified_at: record.modified_at,
+                            modified_at: record.modified_at.clone(),
                             changed: false,
                         },
                     );
                 }
+                saved.entry(stored.item.clone()).or_default().push(record);
                 existing.insert((stored.item, stored.version));
             }
         }
         let mut rows = Vec::new();
         let mut conversations: HashSet<String> = HashSet::new();
-        for read in &page.versions {
-            let (item, version_id) = read.key();
-            let key = (item.to_owned(), version_id.to_owned());
-            if let ItemRead::Version(version) = read {
-                conversations.insert(version.conversation.clone());
-            }
+        for read in page.versions {
+            // A read still owing files keeps every file an earlier read of
+            // the same Spruce version fetched, and is keyed by what it still
+            // owes, so download progress is never read back as owed.
+            let read = match read {
+                ItemRead::Version(mut version) => {
+                    for earlier in saved.get(&version.item).into_iter().flatten() {
+                        version.fill_from(earlier);
+                    }
+                    conversations.insert(version.conversation.clone());
+                    ItemRead::Version(version)
+                }
+                saved_read @ ItemRead::Saved { .. } => saved_read,
+            };
+            let (key, modified_at) = match &read {
+                ItemRead::Version(version) => (
+                    (version.item.clone(), version.saved_as()),
+                    version.modified_at.clone(),
+                ),
+                ItemRead::Saved {
+                    item,
+                    version,
+                    modified_at,
+                } => ((item.clone(), version.clone()), modified_at.clone()),
+            };
             let known = existing.contains(&key);
             if known || matches!(read, ItemRead::Version(_)) {
-                let replaces = current.get(item).is_none_or(|now| {
-                    now.version != version_id
-                        && supersedes(
-                            (read.modified_at(), read.owed()),
-                            (now.modified_at.as_deref(), now.owed),
-                        )
+                let replaces = current.get(read.item()).is_none_or(|now| {
+                    now.version != key.1
+                        && supersedes(modified_at.as_deref(), now.modified_at.as_deref())
                 });
                 if replaces {
                     current.insert(
                         key.0.clone(),
                         Current {
                             version: key.1.clone(),
-                            modified_at: read.modified_at().map(str::to_owned),
-                            owed: read.owed(),
+                            modified_at,
                             changed: true,
                         },
                     );
@@ -1046,7 +1069,7 @@ impl Store {
             let ItemRead::Version(version) = read else {
                 continue;
             };
-            if !existing.insert(key) {
+            if !existing.insert(key.clone()) {
                 continue;
             }
             let ordinal = ordinals.entry(version.item.clone()).or_insert(0);
@@ -1054,13 +1077,17 @@ impl Store {
             rows.push(channel_message::ActiveModel {
                 practice: Set(practice.to_owned()),
                 item: Set(version.item.clone()),
-                version: Set(version.version.clone()),
+                version: Set(key.1),
                 conversation: Set(version.conversation.clone()),
                 ordinal: Set(*ordinal),
                 current: Set(false),
                 recorded_at: Set(now),
-                record: Set(to_json(version, "message")?),
+                record: Set(to_json(&*version, "message")?),
             });
+            saved
+                .entry(version.item.clone())
+                .or_default()
+                .push(*version);
         }
         let kept = rows.len();
         for batch in rows.chunks(100) {
