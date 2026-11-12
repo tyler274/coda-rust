@@ -3106,7 +3106,9 @@ async fn chat_receives_initial_understanding_triggers_revision_on_refresh_and_up
                     let context_seen = request.items.iter().any(|item| {
                         matches!(
                             item,
-                            Item::Feedback { text } if text.contains("PRIVATE_SEAM_OVERVIEW_V1")
+                            Item::Message { role, text }
+                                if role == "developer"
+                                    && text.contains("PRIVATE_SEAM_OVERVIEW_V1")
                         )
                     });
                     assert!(
