@@ -307,7 +307,8 @@ fn map_evidence_wire(evidence: ItemWorkEvidence) -> ItemWorkEvidenceWire {
                 label: c.display_label,
                 as_of: c.as_of,
                 excerpt: c.excerpt,
-                native_uri: None,
+                body: c.body,
+                native_uri: c.native_uri,
             })
             .collect(),
         linked_chat_id: evidence.chat_id,

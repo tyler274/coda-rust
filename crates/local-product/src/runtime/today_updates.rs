@@ -11,8 +11,8 @@ use std::fmt;
 
 use physician_auth::{AuthStore, Membership, PhysicianIdentity, SessionError, StoreUnavailable};
 use sea_orm::{
-    ColumnTrait, DbErr, EntityTrait, QueryFilter, QueryOrder, QuerySelect, Set, TransactionTrait,
-    sea_query::OnConflict,
+    ColumnTrait, ConnectionTrait, DbErr, EntityTrait, QueryFilter, QueryOrder, QuerySelect, Set,
+    TransactionTrait, sea_query::OnConflict,
 };
 use serde::{Deserialize, Serialize};
 use serde_json::{Value, json};
@@ -20,8 +20,8 @@ use sha2::{Digest, Sha256};
 
 use super::briefings::ConcernOpenOutcome;
 use super::concerns::{
-    CommandKey, Concern, ConcernDoneOutcome, ConcernError, ConcernId, ConcernInputError,
-    ConcernStanding, ConcernUrgency, ExactRecordReference, SourceWork, WorkspaceAccess,
+    CommandKey, ConcernDoneOutcome, ConcernError, ConcernId, ConcernInputError, ConcernUrgency,
+    ExactRecordReference, SourceWork, WorkspaceAccess,
 };
 use super::entities::{
     concern, conversation, patient_review, patient_understanding, practice_job, schedule_source,
@@ -30,11 +30,14 @@ use super::entities::{
 };
 use super::jobs::PracticeJobKind;
 use super::receipt::{self, Receipt};
-use super::reviews::{ReviewHoldReason, ReviewLifecycleState};
+use super::reviews::{RecordedReviewAction, ReviewHoldReason, ReviewLifecycleState};
 use super::understanding::{PatientSummary, SummaryCitation};
 use super::{Authority, MessageRole, Store, WorkStatus, control, conversion_error};
-use crate::patient_reviews::{ReviewCitation, ReviewOutcome, ReviewTrigger, UnfinishedReviewWork};
-use crate::physician_sources::{SourcePatient, SourceRevision};
+use crate::patient_reviews::{
+    PriorPatientReviewSummary, ReviewCitation, ReviewOutcome, ReviewStartingContext, ReviewTrigger,
+    UnfinishedReviewWork,
+};
+use crate::physician_sources::{ReadablePart, SourcePatient, SourceRevision};
 use crate::visit_preparation::VisitPreparationDecision;
 
 const EXCERPT_CHARS: usize = 320;
@@ -689,6 +692,12 @@ pub struct ItemEvidenceCitation {
     pub as_of: Option<String>,
     /// Bounded readable excerpt from the verified chart record.
     pub excerpt: String,
+    /// Full formatted readable source record opened when inspecting the citation.
+    #[serde(default)]
+    pub body: String,
+    /// Native or external EHR link when provenance supplies one.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub native_uri: Option<String>,
 }
 
 /// Full clinical work and evidence returned when opening a Today row or Update item.
@@ -847,22 +856,144 @@ fn is_physician_requested_review(triggers: &[ReviewTrigger]) -> bool {
 }
 
 /// Single-owner rule deciding whether a failed or held review creates an
-/// unhandled Today row: quiet reviews and failed/held background reviews
-/// without `unfinished_work` create no Today row.
+/// unhandled Today row: quiet reviews, physician-stopped (`ReviewHoldReason::Stopped`)
+/// reviews, and failed/limit-held background reviews without `unfinished_work`
+/// create no Today row.
 fn review_creates_unhandled_today_row(
     triggers: &[ReviewTrigger],
     unfinished_work: &[UnfinishedReviewWork],
     state: &ReviewLifecycleState,
 ) -> bool {
     match state {
-        ReviewLifecycleState::Failed { .. } | ReviewLifecycleState::Held { .. } => {
-            !unfinished_work.is_empty() || is_physician_requested_review(triggers)
+        ReviewLifecycleState::Failed { .. }
+        | ReviewLifecycleState::Held {
+            reason: ReviewHoldReason::Limit,
+            ..
+        } => !unfinished_work.is_empty() || is_physician_requested_review(triggers),
+        ReviewLifecycleState::Held {
+            reason: ReviewHoldReason::Stopped,
+            ..
         }
-        ReviewLifecycleState::Pending
+        | ReviewLifecycleState::Pending
         | ReviewLifecycleState::Running { .. }
         | ReviewLifecycleState::Completed { .. }
         | ReviewLifecycleState::Superseded { .. } => false,
     }
+}
+
+fn compute_unhandled_group_version(constituents: &[TodayRow]) -> String {
+    let mut buf = Vec::new();
+    for row in constituents {
+        buf.extend_from_slice(row.item_key.as_str().as_bytes());
+        buf.push(b'@');
+        buf.extend_from_slice(row.version_id.as_bytes());
+        buf.push(b'\n');
+    }
+    let hex = crate::sha256_hex(&buf);
+    format!("unhandled-v1:{}", &hex[..16])
+}
+
+/// Collapses constituent non-restartable unhandled items to at most one Today
+/// row per patient workspace (`unhandled:<workspace>`), ordered by earliest
+/// `waiting_since_unix` with a deterministic version over active constituents.
+fn collapse_unhandled_today_rows(
+    rows: Vec<TodayRow>,
+    seen_map: &BTreeMap<String, StoredSeenEntry>,
+    dismissals: &BTreeSet<(String, String, String)>,
+) -> Vec<TodayRow> {
+    let mut out = Vec::with_capacity(rows.len());
+    let mut unhandled_by_ws: BTreeMap<String, Vec<TodayRow>> = BTreeMap::new();
+    for row in rows {
+        if matches!(row.payload, TodayRowPayload::UnhandledWork { .. }) {
+            unhandled_by_ws
+                .entry(row.workspace.clone())
+                .or_default()
+                .push(row);
+        } else {
+            out.push(row);
+        }
+    }
+
+    for (workspace, mut group) in unhandled_by_ws {
+        group.sort_by(|left, right| {
+            left.waiting_since_unix
+                .cmp(&right.waiting_since_unix)
+                .then_with(|| left.item_key.cmp(&right.item_key))
+        });
+        let combined_key = format!("unhandled:{workspace}");
+        let version_id = compute_unhandled_group_version(&group);
+        if dismissals.contains(&(workspace.clone(), combined_key.clone(), version_id.clone())) {
+            continue;
+        }
+        let waiting_since_unix = group[0].waiting_since_unix;
+        let updated_at_unix = group
+            .iter()
+            .map(|r| r.updated_at_unix)
+            .max()
+            .unwrap_or(waiting_since_unix);
+        let patient_display_name = group[0].patient_display_name.clone();
+
+        let (title, detail, payload) = if group.len() == 1 {
+            let single = group.into_iter().next().expect("single constituent");
+            (single.title, single.detail, single.payload)
+        } else {
+            let title = format!("{} unhandled items couldn't finish", group.len());
+            let detail = group
+                .iter()
+                .map(|r| r.detail.as_str())
+                .collect::<Vec<_>>()
+                .join(" · ");
+            let mut combined_topics = Vec::new();
+            let mut first_kind = UnhandledWorkKind::PatientReview;
+            let mut first_work_id = String::new();
+            for (idx, item) in group.into_iter().enumerate() {
+                if let TodayRowPayload::UnhandledWork {
+                    work_kind,
+                    work_id,
+                    mut unfinished_topics,
+                } = item.payload
+                {
+                    if idx == 0 {
+                        first_kind = work_kind;
+                        first_work_id = work_id;
+                    }
+                    combined_topics.append(&mut unfinished_topics);
+                }
+            }
+            (
+                title,
+                detail,
+                TodayRowPayload::UnhandledWork {
+                    work_kind: first_kind,
+                    work_id: first_work_id,
+                    unfinished_topics: combined_topics,
+                },
+            )
+        };
+
+        let snapshot = SeenItemSnapshot {
+            version_id: version_id.clone(),
+            urgency: None,
+            headline: title.clone(),
+            detail: detail.clone(),
+        };
+        let seen_standing = evaluate_seen_standing(seen_map.get(&combined_key), &snapshot);
+        out.push(TodayRow {
+            item_key: SeenItemKey(combined_key),
+            version_id,
+            workspace,
+            patient_display_name,
+            title,
+            detail,
+            waiting_since_unix,
+            updated_at_unix,
+            seen_standing,
+            can_mark_done: true,
+            payload,
+        });
+    }
+
+    out
 }
 
 fn source_work_summary(work: &SourceWork) -> String {
@@ -1185,6 +1316,7 @@ impl Store {
             }),
         }
 
+        let mut rows = collapse_unhandled_today_rows(rows, &seen_map, &dismissals);
         rows.sort_by(|left, right| {
             left.sort_rank()
                 .cmp(&right.sort_rank())
@@ -1267,15 +1399,16 @@ impl Store {
             let key_str = format!("concern:{}:{}", row.workspace, row.id);
             let item_key = SeenItemKey(key_str.clone());
             let version_id = format!("rev:{}", row.revision);
+            let base_headline = summarize_one_line(&row.reason, 96);
             let headline = if visit_slot.is_some() {
-                format!("Pre-visit: {}", summarize_one_line(&row.reason, 96))
+                format!("Pre-visit: {base_headline}")
             } else {
-                summarize_one_line(&row.reason, 96)
+                base_headline.clone()
             };
             let snapshot = SeenItemSnapshot {
                 version_id: version_id.clone(),
                 urgency: Some(urgency),
-                headline: headline.clone(),
+                headline: base_headline,
                 detail: row.reason.clone(),
             };
             let seen_standing = evaluate_seen_standing(seen_map.get(&key_str), &snapshot);
@@ -1448,8 +1581,8 @@ impl Store {
                         let key_str =
                             format!("unhandled-review:{}:{}", row.workspace, row.review_id);
                         let reason_label = match reason {
-                            ReviewHoldReason::Stopped => "paused",
                             ReviewHoldReason::Limit => "reached run limit",
+                            ReviewHoldReason::Stopped => continue,
                         };
                         let version_id = format!("held:{held_at}:{}", row.updated_at);
                         if dismissals.contains(&(
@@ -1816,12 +1949,10 @@ impl Store {
                     .unwrap_or("source connection unavailable");
                 outages.push(PracticeOutageLine {
                     source_id,
-                    source_label: source_label.clone(),
+                    source_label,
                     affected_workspace_count: affected_allowed_count,
                     since_unix,
-                    failure_detail: format!(
-                        "{source_label} is unavailable across the practice ({reason})."
-                    ),
+                    failure_detail: reason.to_owned(),
                 });
             }
         }
@@ -1843,13 +1974,10 @@ impl Store {
                 .unwrap_or("schedule feed could not refresh");
             outages.push(PracticeOutageLine {
                 source_id: sched.source_id,
-                source_label: sched.source_label.clone(),
+                source_label: sched.source_label,
                 affected_workspace_count: ctx.allowed_workspaces.len(),
                 since_unix: sched.as_of.unwrap_or(ctx.clinical_now_unix),
-                failure_detail: format!(
-                    "{} is unavailable across the practice ({detail}).",
-                    sched.source_label
-                ),
+                failure_detail: detail.to_owned(),
             });
         }
 
@@ -2063,7 +2191,7 @@ impl Store {
                     let retired_at = row.retired_at.unwrap_or(row.updated_at);
                     let key_str = format!("concern-retired:{}:{}", row.workspace, row.id);
                     let version_id = format!("rev:{}", row.revision);
-                    let title = format!("Retired concern: {}", summarize_one_line(&row.reason, 84));
+                    let title = summarize_one_line(&row.reason, 120);
                     let detail = retirement_reason.clone();
                     let snapshot = SeenItemSnapshot {
                         version_id: version_id.clone(),
@@ -2098,18 +2226,18 @@ impl Store {
                         detail: row.reason.clone(),
                     };
                     let seen_standing = evaluate_seen_standing(seen_map.get(&key_str), &snapshot);
-                    let title = if row.status == "done" {
-                        format!("Concern (cleared Done): {headline}")
+                    let detail = if row.status == "done" {
+                        "Cleared with Done".to_owned()
                     } else {
-                        format!("Concern raised: {headline}")
+                        String::new()
                     };
                     entries.push(UpdateEntry {
                         item_key: SeenItemKey(key_str),
                         version_id,
                         workspace: row.workspace,
                         patient_display_name,
-                        title,
-                        detail: row.reason,
+                        title: headline,
+                        detail,
                         occurred_at_unix: row.updated_at,
                         seen_standing,
                         kind: UpdateEntryKind::ConcernRaised {
@@ -2188,8 +2316,7 @@ impl Store {
                             explanation,
                             ..
                         } => {
-                            let title = "Reviewed chart — nothing for you".to_owned();
-                            let detail = summarize_one_line(&explanation, 160);
+                            let title = summarize_one_line(&explanation, 120);
                             let snapshot = SeenItemSnapshot {
                                 version_id: version_id.clone(),
                                 urgency: None,
@@ -2204,7 +2331,7 @@ impl Store {
                                 workspace: row.workspace,
                                 patient_display_name,
                                 title,
-                                detail,
+                                detail: String::new(),
                                 occurred_at_unix: completed_at,
                                 seen_standing,
                                 kind: UpdateEntryKind::QuietReview {
@@ -2214,13 +2341,12 @@ impl Store {
                             });
                         }
                         ReviewOutcome::Assessed { summary, .. } => {
-                            let title =
-                                format!("Chart review: {}", summarize_one_line(&summary, 84));
+                            let title = summarize_one_line(&summary, 120);
                             let snapshot = SeenItemSnapshot {
                                 version_id: version_id.clone(),
                                 urgency: None,
                                 headline: title.clone(),
-                                detail: summary.clone(),
+                                detail: summary,
                             };
                             let seen_standing =
                                 evaluate_seen_standing(seen_map.get(&key_str), &snapshot);
@@ -2230,7 +2356,7 @@ impl Store {
                                 workspace: row.workspace,
                                 patient_display_name,
                                 title,
-                                detail: summarize_one_line(&summary, 180),
+                                detail: String::new(),
                                 occurred_at_unix: completed_at,
                                 seen_standing,
                                 kind: UpdateEntryKind::AssessedReview {
@@ -2301,7 +2427,7 @@ impl Store {
                         row.workspace, row.source_id, row.appointment_id, row.starts_at_unix
                     );
                     let version_id = format!("skipped:{}", row.updated_at);
-                    let title = "Visit preparation — nothing to prepare".to_owned();
+                    let title = summarize_one_line(&reason, 120);
                     let snapshot = SeenItemSnapshot {
                         version_id: version_id.clone(),
                         urgency: None,
@@ -2315,7 +2441,7 @@ impl Store {
                         workspace: row.workspace,
                         patient_display_name,
                         title,
-                        detail: reason.clone(),
+                        detail: String::new(),
                         occurred_at_unix: row.updated_at,
                         seen_standing,
                         kind: UpdateEntryKind::EndedNothingToDo {
@@ -2333,7 +2459,7 @@ impl Store {
                         row.workspace, row.source_id, row.appointment_id, row.starts_at_unix
                     );
                     let version_id = format!("ended:{}", row.updated_at);
-                    let title = "Visit preparation ended without briefing".to_owned();
+                    let title = summarize_one_line(&reason, 120);
                     let snapshot = SeenItemSnapshot {
                         version_id: version_id.clone(),
                         urgency: None,
@@ -2347,7 +2473,7 @@ impl Store {
                         workspace: row.workspace,
                         patient_display_name,
                         title,
-                        detail: reason.clone(),
+                        detail: String::new(),
                         occurred_at_unix: row.updated_at,
                         seen_standing,
                         kind: UpdateEntryKind::EndedNothingToDo {
@@ -2377,15 +2503,12 @@ impl Store {
                 .unwrap_or_else(|| row.workspace.clone());
             let key_str = format!("briefing:{}:{}", row.workspace, row.briefing_id);
             let version_id = format!("v{}:{}", row.source_version, row.updated_at);
-            let title = format!(
-                "Visit briefing prepared: {}",
-                summarize_one_line(&row.visit_card_orientation, 84)
-            );
+            let title = summarize_one_line(&row.visit_card_orientation, 120);
             let snapshot = SeenItemSnapshot {
                 version_id: version_id.clone(),
                 urgency: None,
                 headline: title.clone(),
-                detail: row.visit_card_orientation.clone(),
+                detail: row.visit_card_orientation,
             };
             let seen_standing = evaluate_seen_standing(seen_map.get(&key_str), &snapshot);
             entries.push(UpdateEntry {
@@ -2394,7 +2517,7 @@ impl Store {
                 workspace: row.workspace,
                 patient_display_name,
                 title,
-                detail: row.visit_card_orientation,
+                detail: String::new(),
                 occurred_at_unix: row.prepared_at,
                 seen_standing,
                 kind: UpdateEntryKind::VisitBriefing {
@@ -2475,12 +2598,12 @@ impl Store {
                 .unwrap_or_else(|| workspace.clone());
             let key_str = format!("summary:{workspace}");
             let version_id = format!("rev:{revision}");
-            let title = if revision <= 1 {
-                "Prepared patient summary".to_owned()
+            let title = summarize_one_line(&summary.narrative, 120);
+            let detail = if revision > 1 {
+                format!("Updated summary (v{revision})")
             } else {
-                format!("Updated patient summary (v{revision})")
+                String::new()
             };
-            let detail = summarize_one_line(&summary.narrative, 160);
             let snapshot = SeenItemSnapshot {
                 version_id: version_id.clone(),
                 urgency: None,
@@ -2677,13 +2800,24 @@ impl Store {
                     &found.record_type,
                     &reference.candidate_id,
                 );
-                let body = super::history::format_cited_source_body(
-                    &display_label,
-                    &found.readable_parts,
-                    &found.content,
-                );
-                let excerpt = if body.trim().is_empty() {
+                let formatted =
+                    format_today_cited_body(&display_label, &found.readable_parts, &found.content);
+                let body = if formatted.trim().is_empty() {
                     "Chart record on file.".to_owned()
+                } else {
+                    formatted
+                };
+                let readable_only: String = found
+                    .readable_parts
+                    .iter()
+                    .map(|part| part.text.trim())
+                    .filter(|text| !text.is_empty())
+                    .collect::<Vec<_>>()
+                    .join(" ");
+                let excerpt = if !readable_only.is_empty() {
+                    summarize_one_line(&readable_only, EXCERPT_CHARS)
+                } else if body == "Chart record on file." {
+                    body.clone()
                 } else {
                     summarize_one_line(&body, EXCERPT_CHARS)
                 };
@@ -2698,6 +2832,7 @@ impl Store {
                     .cloned()
                     .filter(|label| !label.trim().is_empty())
                     .unwrap_or_else(|| found.source_id.clone());
+                let native_uri = extract_record_native_uri(workspace, found);
                 citations.push(ItemEvidenceCitation {
                     reference: reference.clone(),
                     source_id: found.source_id.clone(),
@@ -2705,6 +2840,8 @@ impl Store {
                     display_label,
                     as_of,
                     excerpt,
+                    body,
+                    native_uri,
                 });
             } else {
                 citations.push(ItemEvidenceCitation {
@@ -2714,7 +2851,63 @@ impl Store {
                     display_label: reference.candidate_id.clone(),
                     as_of: None,
                     excerpt: "Referenced chart record.".to_owned(),
+                    body: "Referenced chart record.".to_owned(),
+                    native_uri: None,
                 });
+            }
+        }
+        Ok(citations)
+    }
+
+    async fn enrich_citations_from_store(
+        &self,
+        workspace: &str,
+        mut citations: Vec<ItemEvidenceCitation>,
+    ) -> Result<Vec<ItemEvidenceCitation>, DbErr> {
+        if citations.is_empty() {
+            return Ok(citations);
+        }
+        let candidate_ids: Vec<&str> = citations
+            .iter()
+            .map(|c| c.reference.candidate_id.as_str())
+            .collect();
+        let rows = source::Entity::find()
+            .filter(source::Column::Workspace.eq(workspace))
+            .filter(source::Column::Candidate.is_in(candidate_ids))
+            .order_by_desc(source::Column::ObservedAtVersion)
+            .all(&self.db)
+            .await?;
+        let mut by_ref: BTreeMap<(String, String), SourceRevision> = BTreeMap::new();
+        for row in rows {
+            let Some(rev_json) = row.revision else {
+                continue;
+            };
+            let decoded: SourceRevision = serde_json::from_value(rev_json)
+                .map_err(conversion_error("source revision", "SourceRevision"))?;
+            by_ref
+                .entry((row.candidate, decoded.revision.clone()))
+                .or_insert(decoded);
+        }
+        for citation in &mut citations {
+            if let Some(found) = by_ref.get(&(
+                citation.reference.candidate_id.clone(),
+                citation.reference.revision.clone(),
+            )) {
+                let formatted = format_today_cited_body(
+                    &citation.display_label,
+                    &found.readable_parts,
+                    &found.content,
+                );
+                if !formatted.trim().is_empty() {
+                    citation.body = formatted;
+                } else if citation.body.trim().is_empty() {
+                    citation.body = citation.excerpt.clone();
+                }
+                if let Some(uri) = extract_record_native_uri(workspace, found) {
+                    citation.native_uri = Some(uri);
+                }
+            } else if citation.body.trim().is_empty() {
+                citation.body = citation.excerpt.clone();
             }
         }
         Ok(citations)
@@ -2729,6 +2922,106 @@ impl Store {
     ) -> Result<(ItemWorkEvidence, SeenItemSnapshot, Option<ConcernId>), TodayUpdatesError> {
         let key = item_key.as_str();
         let practice = ctx.identity.practice_id.as_str();
+
+        if let Some(ws_part) = key.strip_prefix("unhandled:") {
+            if ws_part != workspace {
+                return Err(TodayUpdatesError::NotFound {
+                    workspace: workspace.to_owned(),
+                    item_key: key.to_owned(),
+                });
+            }
+            let dismissals = load_workspace_dismissals(&self.db, practice, workspace).await?;
+            let constituents = active_workspace_unhandled_constituents(
+                &self.db,
+                practice,
+                workspace,
+                ctx.clinical_now_unix,
+                patient_display_name,
+                &dismissals,
+            )
+            .await?;
+            if constituents.is_empty() {
+                return Err(TodayUpdatesError::NotFound {
+                    workspace: workspace.to_owned(),
+                    item_key: key.to_owned(),
+                });
+            }
+            let mut collapsed_rows = collapse_unhandled_today_rows(
+                constituents.clone(),
+                &BTreeMap::new(),
+                &BTreeSet::new(),
+            );
+            let collapsed = collapsed_rows
+                .pop()
+                .ok_or_else(|| TodayUpdatesError::NotFound {
+                    workspace: workspace.to_owned(),
+                    item_key: key.to_owned(),
+                })?;
+            let snapshot = SeenItemSnapshot {
+                version_id: collapsed.version_id.clone(),
+                urgency: None,
+                headline: collapsed.title.clone(),
+                detail: collapsed.detail.clone(),
+            };
+            if constituents.len() == 1 {
+                let (mut sub_detail, _, _) = Box::pin(self.load_item_work_evidence_and_snapshot(
+                    ctx,
+                    workspace,
+                    &constituents[0].item_key,
+                    patient_display_name,
+                ))
+                .await?;
+                sub_detail.item_key = item_key.clone();
+                sub_detail.version_id = collapsed.version_id;
+                sub_detail.headline = collapsed.title;
+                return Ok((sub_detail, snapshot, None));
+            }
+
+            let mut sections = Vec::with_capacity(constituents.len());
+            let mut origins = Vec::with_capacity(constituents.len());
+            let mut citations = Vec::new();
+            let mut seen_refs = BTreeSet::new();
+            for constituent in &constituents {
+                let (sub, _, _) = Box::pin(self.load_item_work_evidence_and_snapshot(
+                    ctx,
+                    workspace,
+                    &constituent.item_key,
+                    patient_display_name,
+                ))
+                .await?;
+                sections.push(format!("{}\n{}", sub.headline, sub.clinical_body));
+                origins.push(sub.origin_summary);
+                for citation in sub.citations {
+                    if seen_refs.insert((
+                        citation.reference.candidate_id.clone(),
+                        citation.reference.revision.clone(),
+                    )) {
+                        citations.push(citation);
+                    }
+                }
+            }
+            return Ok((
+                ItemWorkEvidence {
+                    item_key: item_key.clone(),
+                    version_id: collapsed.version_id,
+                    workspace: workspace.to_owned(),
+                    patient_display_name: patient_display_name.to_owned(),
+                    kind_label: "Unhandled patient work".to_owned(),
+                    headline: collapsed.title,
+                    clinical_body: sections.join("\n\n"),
+                    basis_and_limitations: Some(
+                        "Non-restartable work stopped before completion; clearing with Done hands any unreviewed chart results to the next review."
+                            .to_owned(),
+                    ),
+                    citations,
+                    origin_summary: origins.join(", "),
+                    chat_id: None,
+                    seen_standing: SeenStanding::Unseen,
+                },
+                snapshot,
+                None,
+            ));
+        }
 
         if let Some(rest) = key
             .strip_prefix("concern:")
@@ -2787,7 +3080,7 @@ impl Store {
                     .retirement_reason
                     .clone()
                     .unwrap_or_else(|| "No longer needed".to_owned());
-                let title = format!("Retired concern: {}", summarize_one_line(&row.reason, 84));
+                let title = summarize_one_line(&row.reason, 120);
                 let clinical_body = format!(
                     "Retired reason: {retirement_reason}\n\nEarlier clinical concern: {}",
                     row.reason
@@ -2826,10 +3119,11 @@ impl Store {
                 ));
             }
 
+            let base_headline = summarize_one_line(&row.reason, 96);
             let headline = if visit_link.is_some() {
-                format!("Pre-visit: {}", summarize_one_line(&row.reason, 96))
+                format!("Pre-visit: {base_headline}")
             } else {
-                summarize_one_line(&row.reason, 96)
+                base_headline.clone()
             };
             let kind_label = match urgency {
                 ConcernUrgency::Now => "Now concern".to_owned(),
@@ -2872,7 +3166,7 @@ impl Store {
             let snapshot = SeenItemSnapshot {
                 version_id: version_id.clone(),
                 urgency: Some(urgency),
-                headline: headline.clone(),
+                headline: base_headline,
                 detail: row.reason,
             };
             let open_concern_target = (row.status == "open").then_some(concern_id);
@@ -2944,21 +3238,24 @@ impl Store {
                     completed_source_version,
                 } => {
                     let version_id = format!("completed:{completed_source_version}:{completed_at}");
-                    let citations = outcome
+                    let base_citations = outcome
                         .citations()
                         .iter()
                         .map(review_citation_to_evidence)
                         .collect();
+                    let citations = self
+                        .enrich_citations_from_store(workspace, base_citations)
+                        .await?;
                     let basis = Some(outcome.basis_and_limitations().to_owned());
                     let (kind_label, headline, detail) = match &outcome {
                         ReviewOutcome::Quiet { explanation, .. } => (
                             "Reviewed, nothing for you".to_owned(),
-                            "Reviewed chart — nothing for you".to_owned(),
+                            summarize_one_line(explanation, 120),
                             explanation.clone(),
                         ),
                         ReviewOutcome::Assessed { summary, .. } => (
                             "Patient review".to_owned(),
-                            format!("Chart review: {}", summarize_one_line(summary, 84)),
+                            summarize_one_line(summary, 120),
                             summary.clone(),
                         ),
                     };
@@ -3143,15 +3440,15 @@ impl Store {
                     "briefing citations",
                     "Vec<SummaryCitation>",
                 ))?;
-            let citations = raw_citations
+            let base_citations = raw_citations
                 .iter()
                 .map(summary_citation_to_evidence)
                 .collect();
+            let citations = self
+                .enrich_citations_from_store(workspace, base_citations)
+                .await?;
             let version_id = format!("v{}:{}", row.source_version, row.updated_at);
-            let headline = format!(
-                "Visit briefing prepared: {}",
-                summarize_one_line(&row.visit_card_orientation, 84)
-            );
+            let headline = summarize_one_line(&row.visit_card_orientation, 120);
             let snapshot = SeenItemSnapshot {
                 version_id: version_id.clone(),
                 urgency: None,
@@ -3202,17 +3499,16 @@ impl Store {
             let (revision_i64, source_version, summary_json) = row;
             let summary: PatientSummary = serde_json::from_value(summary_json)
                 .map_err(conversion_error("patient summary", "PatientSummary"))?;
-            let citations = summary
+            let base_citations = summary
                 .citations
                 .iter()
                 .map(summary_citation_to_evidence)
                 .collect();
+            let citations = self
+                .enrich_citations_from_store(workspace, base_citations)
+                .await?;
             let version_id = format!("rev:{revision_i64}");
-            let headline = if revision_i64 <= 1 {
-                "Prepared patient summary".to_owned()
-            } else {
-                format!("Updated patient summary (v{revision_i64})")
-            };
+            let headline = summarize_one_line(&summary.narrative, 120);
             let basis = if summary.material_gaps.is_empty() {
                 summary
                     .scope_note
@@ -3300,9 +3596,10 @@ impl Store {
                         "VisitPreparationDecision",
                     ))?;
                     let reason = decision.reason().to_owned();
+                    let headline = summarize_one_line(&reason, 120);
                     (
                         "Visit preparation".to_owned(),
-                        "Visit preparation — nothing to prepare".to_owned(),
+                        headline,
                         reason,
                         format!("skipped:{}", row.updated_at),
                     )
@@ -3311,9 +3608,10 @@ impl Store {
                     let reason = row.failed_reason.unwrap_or_else(|| {
                         "Appointment ended or changed before preparation.".to_owned()
                     });
+                    let headline = summarize_one_line(&reason, 120);
                     (
                         "Visit preparation".to_owned(),
-                        "Visit preparation ended without briefing".to_owned(),
+                        headline,
                         reason,
                         format!("ended:{}", row.updated_at),
                     )
@@ -3483,7 +3781,8 @@ impl Store {
     /// Clears a Today item as `Done`: delegates open concerns to
     /// [`Store::mark_concern_done`] (clearing for every physician sharing the
     /// patient and recording evaluation feedback) and records durable once-only
-    /// dismissals for non-restartable unhandled work.
+    /// dismissals for non-restartable unhandled work (handing any unreviewed
+    /// chart results from unhandled reviews to the next review).
     pub async fn clear_today_item_done(
         &self,
         auth: &dyn AuthStore,
@@ -3534,8 +3833,16 @@ impl Store {
             };
         }
 
-        if !key.starts_with("unhandled-") {
+        if !key.starts_with("unhandled:") && !key.starts_with("unhandled-") {
             return Err(TodayUpdatesError::CannotMarkDone {
+                item_key: key.to_owned(),
+            });
+        }
+        if let Some(ws_part) = key.strip_prefix("unhandled:")
+            && ws_part != workspace
+        {
+            return Err(TodayUpdatesError::NotFound {
+                workspace: workspace.to_owned(),
                 item_key: key.to_owned(),
             });
         }
@@ -3609,22 +3916,533 @@ impl Store {
             });
         }
 
-        today_work_dismissal::Entity::insert(today_work_dismissal::ActiveModel {
-            practice: Set(scope.practice),
-            workspace: Set(scope.workspace),
-            item_key: Set(key.to_owned()),
-            version_id: Set(trimmed_version.to_owned()),
-            cleared_by_physician: Set(scope.physician),
-            cleared_at: Set(ctx.clinical_now_unix),
-        })
-        .exec_without_returning(&tx)
-        .await?;
+        if key.starts_with("unhandled:") {
+            let dismissals =
+                load_workspace_dismissals(&tx, &scope.practice, &scope.workspace).await?;
+            let constituents = active_workspace_unhandled_constituents(
+                &tx,
+                &scope.practice,
+                &scope.workspace,
+                ctx.clinical_now_unix,
+                &scope.workspace,
+                &dismissals,
+            )
+            .await?;
+            if constituents.is_empty() {
+                tx.commit().await?;
+                return Ok(TodayDoneResult::AlreadyCleared {
+                    item_key: item_key.clone(),
+                });
+            }
+            let current_version = compute_unhandled_group_version(&constituents);
+            if current_version != trimmed_version {
+                tx.rollback().await?;
+                return Err(TodayUpdatesError::CannotMarkDone {
+                    item_key: key.to_owned(),
+                });
+            }
+            for constituent in &constituents {
+                insert_work_dismissal_idempotent(
+                    &tx,
+                    &scope.practice,
+                    &scope.workspace,
+                    constituent.item_key.as_str(),
+                    &constituent.version_id,
+                    &scope.physician,
+                    ctx.clinical_now_unix,
+                )
+                .await?;
+            }
+            insert_work_dismissal_idempotent(
+                &tx,
+                &scope.practice,
+                &scope.workspace,
+                key,
+                trimmed_version,
+                &scope.physician,
+                ctx.clinical_now_unix,
+            )
+            .await?;
+        } else {
+            insert_work_dismissal_idempotent(
+                &tx,
+                &scope.practice,
+                &scope.workspace,
+                key,
+                trimmed_version,
+                &scope.physician,
+                ctx.clinical_now_unix,
+            )
+            .await?;
+        }
         tx.commit().await?;
 
         Ok(TodayDoneResult::Cleared {
             item_key: item_key.clone(),
         })
     }
+
+    /// Returns unhandled reviews on `(practice, workspace)` whose Today row was
+    /// cleared with `Done` and not yet superseded by a later completed review,
+    /// handing their unreviewed trigger inputs and `unfinished_work` into the
+    /// next review's [`ReviewStartingContext`].
+    pub(super) async fn handed_off_unhandled_reviews(
+        &self,
+        practice: &str,
+        workspace: &str,
+        exclude_review_id: &str,
+    ) -> Result<Vec<PriorPatientReviewSummary>, DbErr> {
+        let dismissal_rows = today_work_dismissal::Entity::find()
+            .filter(today_work_dismissal::Column::Practice.eq(practice))
+            .filter(today_work_dismissal::Column::Workspace.eq(workspace))
+            .all(&self.db)
+            .await?;
+        if dismissal_rows.is_empty() {
+            return Ok(Vec::new());
+        }
+        let dismissed_versions: BTreeMap<(String, String), i64> = dismissal_rows
+            .into_iter()
+            .map(|row| ((row.item_key, row.version_id), row.cleared_at))
+            .collect();
+
+        let review_rows = patient_review::Entity::find()
+            .filter(patient_review::Column::Practice.eq(practice))
+            .filter(patient_review::Column::Workspace.eq(workspace))
+            .filter(patient_review::Column::ReviewId.ne(exclude_review_id))
+            .all(&self.db)
+            .await?;
+
+        let latest_completed_at = review_rows
+            .iter()
+            .filter(|row| row.status == "completed")
+            .filter_map(|row| row.completed_at.or(Some(row.updated_at)))
+            .max();
+
+        let mut handed_off = Vec::new();
+        for row in review_rows {
+            let state: ReviewLifecycleState = serde_json::from_value(row.state)
+                .map_err(conversion_error("review state", "ReviewLifecycleState"))?;
+            let triggers: Vec<ReviewTrigger> = serde_json::from_value(row.triggers)
+                .map_err(conversion_error("review triggers", "Vec<ReviewTrigger>"))?;
+            let unfinished_work: Vec<UnfinishedReviewWork> =
+                serde_json::from_value(row.unfinished_work).map_err(conversion_error(
+                    "unfinished_work",
+                    "Vec<UnfinishedReviewWork>",
+                ))?;
+            let actions: Vec<RecordedReviewAction> = serde_json::from_value(row.actions)
+                .map_err(conversion_error("actions", "Vec<RecordedReviewAction>"))?;
+
+            if !review_creates_unhandled_today_row(&triggers, &unfinished_work, &state) {
+                continue;
+            }
+            let (version_id, reason_summary) = match &state {
+                ReviewLifecycleState::Failed {
+                    reason, failed_at, ..
+                } => (
+                    format!("failed:{failed_at}:{}", row.updated_at),
+                    format!("failed: {reason}"),
+                ),
+                ReviewLifecycleState::Held {
+                    reason: ReviewHoldReason::Limit,
+                    held_at,
+                    ..
+                } => (
+                    format!("held:{held_at}:{}", row.updated_at),
+                    "reached run limit".to_owned(),
+                ),
+                _ => continue,
+            };
+            let key_str = format!("unhandled-review:{workspace}:{}", row.review_id);
+            let Some(&cleared_at) = dismissed_versions.get(&(key_str, version_id)) else {
+                continue;
+            };
+            if latest_completed_at.is_some_and(|completed_at| {
+                completed_at > cleared_at && completed_at > row.updated_at
+            }) {
+                continue;
+            }
+
+            let mut handed_work = unfinished_work;
+            for trigger in &triggers {
+                match trigger {
+                    ReviewTrigger::ChangedRecords {
+                        workspace_version,
+                        record_versions,
+                        changed_candidates,
+                    } => {
+                        let candidates: Vec<String> = if changed_candidates.is_empty() {
+                            record_versions.keys().cloned().collect()
+                        } else {
+                            changed_candidates.clone()
+                        };
+                        if !candidates.is_empty() {
+                            handed_work.push(UnfinishedReviewWork {
+                                topic: format!("Unreviewed chart results from {}", row.review_id),
+                                detail: format!(
+                                    "Chart v{workspace_version} candidates awaiting review after prior run cleared with Done: {}",
+                                    candidates.join(", ")
+                                ),
+                                limit: None,
+                            });
+                        }
+                    }
+                    ReviewTrigger::PhysicianRequest { request_text, .. } => {
+                        handed_work.push(UnfinishedReviewWork {
+                            topic: format!("Unreviewed physician request from {}", row.review_id),
+                            detail: request_text.clone(),
+                            limit: None,
+                        });
+                    }
+                    ReviewTrigger::Periodic { .. } => {}
+                }
+            }
+
+            handed_off.push(PriorPatientReviewSummary {
+                review_id: row.review_id,
+                completed_at: cleared_at,
+                completed_source_version: u64::try_from(row.initial_source_version.max(0))
+                    .unwrap_or(0),
+                triggers: triggers
+                    .iter()
+                    .map(|t| t.reason_label().to_owned())
+                    .collect(),
+                disposition: "unhandled_handed_off_on_done".to_owned(),
+                reason: format!(
+                    "Unhandled review ({reason_summary}) cleared on Today with Done; unreviewed results handed forward"
+                ),
+                actions: actions
+                    .iter()
+                    .map(RecordedReviewAction::summary_label)
+                    .collect(),
+                unfinished_work: handed_work,
+            });
+        }
+
+        Ok(handed_off)
+    }
+
+    /// Assembles the [`ReviewStartingContext`] that the next patient review on
+    /// `(practice, workspace)` receives, including any `Done`-cleared unhandled
+    /// reviews handed forward.
+    pub async fn next_review_starting_context(
+        &self,
+        practice: &str,
+        workspace: &str,
+        next_review_id: &str,
+        trigger: ReviewTrigger,
+    ) -> Result<ReviewStartingContext, TodayUpdatesError> {
+        let (ctx, _) = self
+            .review_starting_context(practice, workspace, next_review_id, trigger, Vec::new())
+            .await?;
+        Ok(ctx)
+    }
+}
+
+async fn insert_work_dismissal_idempotent<C: ConnectionTrait>(
+    conn: &C,
+    practice: &str,
+    workspace: &str,
+    item_key: &str,
+    version_id: &str,
+    physician: &str,
+    cleared_at: i64,
+) -> Result<(), DbErr> {
+    use today_work_dismissal::Column as D;
+
+    today_work_dismissal::Entity::insert(today_work_dismissal::ActiveModel {
+        practice: Set(practice.to_owned()),
+        workspace: Set(workspace.to_owned()),
+        item_key: Set(item_key.to_owned()),
+        version_id: Set(version_id.to_owned()),
+        cleared_by_physician: Set(physician.to_owned()),
+        cleared_at: Set(cleared_at),
+    })
+    .on_conflict(
+        OnConflict::columns([D::Practice, D::Workspace, D::ItemKey, D::VersionId])
+            .do_nothing()
+            .to_owned(),
+    )
+    .exec_without_returning(conn)
+    .await
+    .map(|_| ())
+}
+
+async fn load_workspace_dismissals<C: ConnectionTrait>(
+    conn: &C,
+    practice: &str,
+    workspace: &str,
+) -> Result<BTreeSet<(String, String, String)>, DbErr> {
+    Ok(today_work_dismissal::Entity::find()
+        .filter(today_work_dismissal::Column::Practice.eq(practice))
+        .filter(today_work_dismissal::Column::Workspace.eq(workspace))
+        .all(conn)
+        .await?
+        .into_iter()
+        .map(|row| (row.workspace, row.item_key, row.version_id))
+        .collect())
+}
+
+async fn active_workspace_unhandled_constituents<C: ConnectionTrait>(
+    conn: &C,
+    practice: &str,
+    workspace: &str,
+    clinical_now_unix: i64,
+    patient_display_name: &str,
+    dismissals: &BTreeSet<(String, String, String)>,
+) -> Result<Vec<TodayRow>, DbErr> {
+    let mut constituents = Vec::new();
+
+    let review_rows = patient_review::Entity::find()
+        .filter(patient_review::Column::Practice.eq(practice))
+        .filter(patient_review::Column::Workspace.eq(workspace))
+        .all(conn)
+        .await?;
+    for row in review_rows {
+        let triggers: Vec<ReviewTrigger> = serde_json::from_value(row.triggers)
+            .map_err(conversion_error("review triggers", "Vec<ReviewTrigger>"))?;
+        let unfinished_work: Vec<UnfinishedReviewWork> =
+            serde_json::from_value(row.unfinished_work).map_err(conversion_error(
+                "unfinished_work",
+                "Vec<UnfinishedReviewWork>",
+            ))?;
+        let state: ReviewLifecycleState = serde_json::from_value(row.state)
+            .map_err(conversion_error("review state", "ReviewLifecycleState"))?;
+        if !review_creates_unhandled_today_row(&triggers, &unfinished_work, &state) {
+            continue;
+        }
+        let key_str = format!("unhandled-review:{workspace}:{}", row.review_id);
+        let topics: Vec<String> = unfinished_work
+            .iter()
+            .map(|item| format!("{}: {}", item.topic, item.detail))
+            .collect();
+        match &state {
+            ReviewLifecycleState::Failed {
+                reason, failed_at, ..
+            } => {
+                let version_id = format!("failed:{failed_at}:{}", row.updated_at);
+                if dismissals.contains(&(workspace.to_owned(), key_str.clone(), version_id.clone()))
+                {
+                    continue;
+                }
+                let title = "Patient review couldn't finish".to_owned();
+                let detail = if topics.is_empty() {
+                    format!("Couldn't finish requested review: {reason}")
+                } else {
+                    format!("Unhandled follow-up: {}", topics.join("; "))
+                };
+                constituents.push(TodayRow {
+                    item_key: SeenItemKey(key_str),
+                    version_id,
+                    workspace: workspace.to_owned(),
+                    patient_display_name: patient_display_name.to_owned(),
+                    title,
+                    detail,
+                    waiting_since_unix: *failed_at,
+                    updated_at_unix: row.updated_at,
+                    seen_standing: SeenStanding::Unseen,
+                    can_mark_done: true,
+                    payload: TodayRowPayload::UnhandledWork {
+                        work_kind: UnhandledWorkKind::PatientReview,
+                        work_id: row.review_id,
+                        unfinished_topics: topics,
+                    },
+                });
+            }
+            ReviewLifecycleState::Held {
+                reason: ReviewHoldReason::Limit,
+                held_at,
+                ..
+            } => {
+                let version_id = format!("held:{held_at}:{}", row.updated_at);
+                if dismissals.contains(&(workspace.to_owned(), key_str.clone(), version_id.clone()))
+                {
+                    continue;
+                }
+                let title = "Patient review reached run limit with unhandled items".to_owned();
+                let detail = if topics.is_empty() {
+                    "Requested review reached run limit before finishing.".to_owned()
+                } else {
+                    format!("Unhandled follow-up: {}", topics.join("; "))
+                };
+                constituents.push(TodayRow {
+                    item_key: SeenItemKey(key_str),
+                    version_id,
+                    workspace: workspace.to_owned(),
+                    patient_display_name: patient_display_name.to_owned(),
+                    title,
+                    detail,
+                    waiting_since_unix: *held_at,
+                    updated_at_unix: row.updated_at,
+                    seen_standing: SeenStanding::Unseen,
+                    can_mark_done: true,
+                    payload: TodayRowPayload::UnhandledWork {
+                        work_kind: UnhandledWorkKind::PatientReview,
+                        work_id: row.review_id,
+                        unfinished_topics: topics,
+                    },
+                });
+            }
+            _ => {}
+        }
+    }
+
+    let prep_rows = visit_preparation::Entity::find()
+        .filter(visit_preparation::Column::Practice.eq(practice))
+        .filter(visit_preparation::Column::Workspace.eq(workspace))
+        .filter(visit_preparation::Column::State.eq("could_not_finish"))
+        .filter(visit_preparation::Column::EndsAtUnix.gt(clinical_now_unix))
+        .all(conn)
+        .await?;
+    for row in prep_rows {
+        let key_str = format!(
+            "unhandled-visit:{workspace}:{}:{}:{}",
+            row.source_id, row.appointment_id, row.starts_at_unix
+        );
+        let version_id = format!("could_not_finish:{}", row.updated_at);
+        if dismissals.contains(&(workspace.to_owned(), key_str.clone(), version_id.clone())) {
+            continue;
+        }
+        let reason = row
+            .failed_reason
+            .unwrap_or_else(|| "Pre-visit briefing could not finish.".to_owned());
+        let title = "Visit briefing couldn't finish".to_owned();
+        let detail = format!("Upcoming visit: {reason}");
+        let work_id = row
+            .briefing_job_id
+            .unwrap_or_else(|| row.selection_job_id.clone());
+        constituents.push(TodayRow {
+            item_key: SeenItemKey(key_str),
+            version_id,
+            workspace: workspace.to_owned(),
+            patient_display_name: patient_display_name.to_owned(),
+            title,
+            detail,
+            waiting_since_unix: row.updated_at,
+            updated_at_unix: row.updated_at,
+            seen_standing: SeenStanding::Unseen,
+            can_mark_done: true,
+            payload: TodayRowPayload::UnhandledWork {
+                work_kind: UnhandledWorkKind::VisitPreparation,
+                work_id,
+                unfinished_topics: vec![reason],
+            },
+        });
+    }
+
+    let failed_jobs = practice_job::Entity::find()
+        .filter(practice_job::Column::Practice.eq(practice))
+        .filter(practice_job::Column::Workspace.eq(workspace))
+        .filter(practice_job::Column::Kind.eq(PracticeJobKind::InitialUnderstanding))
+        .filter(practice_job::Column::Status.is_in([WorkStatus::Failed, WorkStatus::Held]))
+        .all(conn)
+        .await?;
+    if !failed_jobs.is_empty() {
+        let saved_version = patient_understanding::Entity::find()
+            .select_only()
+            .column(patient_understanding::Column::SourceVersion)
+            .filter(patient_understanding::Column::Practice.eq(practice))
+            .filter(patient_understanding::Column::Workspace.eq(workspace))
+            .into_tuple::<i64>()
+            .one(conn)
+            .await?;
+        for job in failed_jobs {
+            if job.sources_version <= 0 || saved_version.is_some_and(|v| v >= job.sources_version) {
+                continue;
+            }
+            let key_str = format!("unhandled-understanding:{workspace}:{}", job.job_id);
+            let status_tag = match job.status {
+                WorkStatus::Failed => "failed",
+                WorkStatus::Held => "held",
+                _ => "incomplete",
+            };
+            let version_id = format!("{status_tag}:{}:{}", job.failures, job.updated_at);
+            if dismissals.contains(&(workspace.to_owned(), key_str.clone(), version_id.clone())) {
+                continue;
+            }
+            let title = "Initial patient summary couldn't finish".to_owned();
+            let detail = format!(
+                "Chart summary for version {} could not complete automatically.",
+                job.sources_version
+            );
+            constituents.push(TodayRow {
+                item_key: SeenItemKey(key_str),
+                version_id,
+                workspace: workspace.to_owned(),
+                patient_display_name: patient_display_name.to_owned(),
+                title,
+                detail: detail.clone(),
+                waiting_since_unix: job.updated_at,
+                updated_at_unix: job.updated_at,
+                seen_standing: SeenStanding::Unseen,
+                can_mark_done: true,
+                payload: TodayRowPayload::UnhandledWork {
+                    work_kind: UnhandledWorkKind::InitialUnderstanding,
+                    work_id: job.job_id,
+                    unfinished_topics: vec![detail],
+                },
+            });
+        }
+    }
+
+    constituents.sort_by(|left, right| {
+        left.waiting_since_unix
+            .cmp(&right.waiting_since_unix)
+            .then_with(|| left.item_key.cmp(&right.item_key))
+    });
+    Ok(constituents)
+}
+
+fn is_generic_structural_part_label(label: &str) -> bool {
+    matches!(
+        label.trim().to_ascii_lowercase().as_str(),
+        "attachment" | "presentedform" | "presented form" | "text" | "note" | "body"
+    )
+}
+
+fn format_today_cited_body(
+    display_label: &str,
+    readable_parts: &[ReadablePart],
+    raw_content: &str,
+) -> String {
+    let cleaned_parts: Vec<ReadablePart> = readable_parts
+        .iter()
+        .map(|part| ReadablePart {
+            label: if is_generic_structural_part_label(&part.label) {
+                String::new()
+            } else {
+                part.label.clone()
+            },
+            text: part.text.clone(),
+        })
+        .collect();
+    super::history::format_cited_source_body(display_label, &cleaned_parts, raw_content)
+}
+
+fn extract_record_native_uri(workspace: &str, found: &SourceRevision) -> Option<String> {
+    for key in ["external_url", "native_uri", "uri", "url", "href"] {
+        if let Some(raw) = found
+            .provenance
+            .get(key)
+            .and_then(Value::as_str)
+            .map(str::trim)
+            .filter(|val| !val.is_empty())
+        {
+            return Some(raw.to_owned());
+        }
+    }
+    if let Some(locator) = found
+        .provenance
+        .get("record_locator")
+        .or_else(|| found.provenance.get("native_id"))
+        .and_then(Value::as_str)
+        .map(str::trim)
+        .filter(|val| !val.is_empty())
+    {
+        return Some(format!(
+            "/local-ehr/{workspace}/{locator}#/resources/{locator}"
+        ));
+    }
+    None
 }
 
 fn review_citation_to_evidence(citation: &ReviewCitation) -> ItemEvidenceCitation {
@@ -3635,6 +4453,8 @@ fn review_citation_to_evidence(citation: &ReviewCitation) -> ItemEvidenceCitatio
         display_label: citation.display_label.clone(),
         as_of: citation.as_of.clone(),
         excerpt: citation.excerpt.clone(),
+        body: citation.excerpt.clone(),
+        native_uri: None,
     }
 }
 
@@ -3646,695 +4466,7 @@ fn summary_citation_to_evidence(citation: &SummaryCitation) -> ItemEvidenceCitat
         display_label: citation.display_label.clone(),
         as_of: citation.as_of.clone(),
         excerpt: citation.excerpt.clone(),
+        body: citation.excerpt.clone(),
+        native_uri: citation.native_uri.clone(),
     }
 }
-
-/// Typed SeaORM seeding helpers for exercising every Today and Updates
-/// producer state at deterministic timestamps in integration and browser proof
-/// tests without raw SQL.
-pub mod fixture {
-    use sea_orm::{ActiveModelTrait, EntityTrait, Set, Unchanged, sea_query::OnConflict};
-    use serde_json::json;
-
-    use super::*;
-    use crate::initial_understanding::{EvidenceScope, OperatingIndex};
-    use crate::runtime::reviews::ReviewUsage;
-
-    /// Lifecycle state when seeding a fixture concern.
-    #[derive(Clone, Debug)]
-    pub enum SeedConcernStanding {
-        /// Active on Today.
-        Open,
-        /// Retired by Coda with a one-line clinical reason at `retired_at`.
-        Retired {
-            /// One-line retirement reason.
-            reason: String,
-            /// Unix second when retired.
-            retired_at: i64,
-        },
-    }
-
-    /// Typed specification for seeding a concern (and optional visit-slot link).
-    #[derive(Clone, Debug)]
-    pub struct SeedConcern {
-        /// Practice identifier.
-        pub practice: String,
-        /// Patient workspace identifier.
-        pub workspace: String,
-        /// Concern identifier.
-        pub concern_id: String,
-        /// `Now` or `Today`.
-        pub urgency: ConcernUrgency,
-        /// `Open` or `Retired`.
-        pub standing: SeedConcernStanding,
-        /// Clinical statement.
-        pub reason: String,
-        /// Cited chart record references.
-        pub records: Vec<ExactRecordReference>,
-        /// Originating background work.
-        pub source_work: SourceWork,
-        /// Unix second when raised.
-        pub created_at: i64,
-        /// Unix second of latest update.
-        pub updated_at: i64,
-        /// Monotonic revision (>= 1).
-        pub revision: i64,
-        /// Optional pre-visit appointment link.
-        pub visit_slot: Option<TodayVisitSlot>,
-    }
-
-    /// Inserts a typed concern (and optional `visit_concern` link) into Postgres.
-    pub async fn seed_concern(store: &Store, spec: SeedConcern) -> Result<(), DbErr> {
-        let records_json =
-            serde_json::to_value(&spec.records).map_err(conversion_error("records", "json"))?;
-        let work_json = serde_json::to_value(&spec.source_work)
-            .map_err(conversion_error("source_work", "json"))?;
-        let (status, ret_reason, ret_work, ret_at) = match &spec.standing {
-            SeedConcernStanding::Open => ("open".to_owned(), None, None, None),
-            SeedConcernStanding::Retired { reason, retired_at } => (
-                "retired".to_owned(),
-                Some(reason.clone()),
-                Some(work_json.clone()),
-                Some(*retired_at),
-            ),
-        };
-
-        concern::ActiveModel {
-            practice: Set(spec.practice.clone()),
-            workspace: Set(spec.workspace.clone()),
-            id: Set(spec.concern_id.clone()),
-            urgency: Set(spec.urgency.as_str().to_owned()),
-            status: Set(status),
-            reason: Set(spec.reason),
-            records: Set(records_json),
-            source_work: Set(work_json),
-            cleared_by_physician: Set(None),
-            cleared_at: Set(None),
-            feedback_revision: Set(None),
-            retirement_reason: Set(ret_reason),
-            retired_by_work: Set(ret_work),
-            retired_at: Set(ret_at),
-            created_at: Set(spec.created_at),
-            updated_at: Set(spec.updated_at),
-            revision: Set(spec.revision),
-        }
-        .insert(&store.db)
-        .await?;
-
-        if let Some(slot) = spec.visit_slot {
-            use super::super::entities::schedule_appointment::{self, Column as A};
-            use super::super::schedule::AppointmentStatus;
-            schedule_appointment::Entity::insert(schedule_appointment::ActiveModel {
-                practice: Set(spec.practice.clone()),
-                source_id: Set(slot.source_id.clone()),
-                appointment_id: Set(slot.appointment_id.clone()),
-                saved_version: Set(1),
-                source_revision: Set("rev-1".to_owned()),
-                starts_at: Set(slot.starts_at_unix.to_string()),
-                starts_at_unix: Set(slot.starts_at_unix),
-                ends_at: Set(slot.ends_at_unix.to_string()),
-                ends_at_unix: Set(slot.ends_at_unix),
-                status: Set(AppointmentStatus::Scheduled),
-                source_status: Set("booked".to_owned()),
-                label: Set("Follow-up visit".to_owned()),
-                match_state: Set("matched".to_owned()),
-                workspace: Set(Some(spec.workspace.clone())),
-                source_patient_id: Set(Some(spec.workspace.clone())),
-                dates: Set(json!([])),
-                content: Set("{}".to_owned()),
-                sha256: Set("fixture-appt".to_owned()),
-                provenance: Set(json!({})),
-                as_of: Set(spec.updated_at),
-                updated_at: Set(spec.updated_at),
-            })
-            .on_conflict(
-                OnConflict::columns([A::Practice, A::SourceId, A::AppointmentId])
-                    .update_columns([A::StartsAtUnix, A::EndsAtUnix, A::Status, A::UpdatedAt])
-                    .to_owned(),
-            )
-            .exec_without_returning(&store.db)
-            .await?;
-
-            visit_concern::ActiveModel {
-                practice: Set(spec.practice),
-                workspace: Set(spec.workspace),
-                concern_id: Set(spec.concern_id),
-                source_id: Set(slot.source_id),
-                appointment_id: Set(slot.appointment_id),
-                starts_at_unix: Set(slot.starts_at_unix),
-                ends_at_unix: Set(slot.ends_at_unix),
-                urgency: Set(spec.urgency.as_str().to_owned()),
-                opened_at: Set(None),
-                opened_by_physician: Set(None),
-                created_at: Set(spec.created_at),
-                updated_at: Set(spec.updated_at),
-            }
-            .insert(&store.db)
-            .await?;
-        }
-        Ok(())
-    }
-
-    /// Revises an open seeded concern in place so `SeenStanding::ChangedSinceSeen`
-    /// can be verified deterministically across restarts and browser tabs.
-    pub async fn revise_seeded_concern(
-        store: &Store,
-        practice: &str,
-        workspace: &str,
-        concern_id: &str,
-        new_urgency: ConcernUrgency,
-        new_reason: &str,
-        updated_at: i64,
-    ) -> Result<(), DbErr> {
-        let row = concern::Entity::find_by_id((
-            practice.to_owned(),
-            workspace.to_owned(),
-            concern_id.to_owned(),
-        ))
-        .one(&store.db)
-        .await?
-        .ok_or_else(|| DbErr::Custom(format!("concern `{concern_id}` not found")))?;
-
-        let next_rev = row.revision + 1;
-        concern::ActiveModel {
-            practice: Unchanged(row.practice),
-            workspace: Unchanged(row.workspace),
-            id: Unchanged(row.id),
-            urgency: Set(new_urgency.as_str().to_owned()),
-            status: Unchanged(row.status),
-            reason: Set(new_reason.to_owned()),
-            records: Unchanged(row.records),
-            source_work: Unchanged(row.source_work),
-            cleared_by_physician: Unchanged(row.cleared_by_physician),
-            cleared_at: Unchanged(row.cleared_at),
-            feedback_revision: Unchanged(row.feedback_revision),
-            retirement_reason: Unchanged(row.retirement_reason),
-            retired_by_work: Unchanged(row.retired_by_work),
-            retired_at: Unchanged(row.retired_at),
-            created_at: Unchanged(row.created_at),
-            updated_at: Set(updated_at),
-            revision: Set(next_rev),
-        }
-        .update(&store.db)
-        .await?;
-        Ok(())
-    }
-
-    /// Typed specification for seeding a saved patient review row.
-    #[derive(Clone, Debug)]
-    pub struct SeedReview {
-        /// Practice identifier.
-        pub practice: String,
-        /// Patient workspace identifier.
-        pub workspace: String,
-        /// Review identifier.
-        pub review_id: String,
-        /// Triggers that started the review.
-        pub triggers: Vec<ReviewTrigger>,
-        /// Unfinished follow-up items recorded on the review.
-        pub unfinished_work: Vec<UnfinishedReviewWork>,
-        /// Lifecycle state (`Pending`, `Running`, `Held`, `Completed`, `Failed`, `Superseded`).
-        pub state: ReviewLifecycleState,
-        /// Exact chart references read during the review.
-        pub evidence_read: Vec<ExactRecordReference>,
-        /// Unix second when queued.
-        pub queued_at: i64,
-        /// Unix second of latest update.
-        pub updated_at: i64,
-    }
-
-    /// Inserts a typed patient review row into Postgres.
-    pub async fn seed_review(store: &Store, spec: SeedReview) -> Result<(), DbErr> {
-        let completed_at = match &spec.state {
-            ReviewLifecycleState::Completed { completed_at, .. } => Some(*completed_at),
-            _ => None,
-        };
-        let completed_source_version = match &spec.state {
-            ReviewLifecycleState::Completed {
-                completed_source_version,
-                ..
-            } => Some(
-                i64::try_from(*completed_source_version)
-                    .map_err(conversion_error("completed_source_version", "i64"))?,
-            ),
-            _ => None,
-        };
-        let started_at = match &spec.state {
-            ReviewLifecycleState::Running { started_at, .. } => Some(*started_at),
-            ReviewLifecycleState::Completed { .. } => Some(spec.queued_at),
-            _ => None,
-        };
-
-        patient_review::ActiveModel {
-            practice: Set(spec.practice),
-            workspace: Set(spec.workspace),
-            review_id: Set(spec.review_id.clone()),
-            command_key: Set(format!("cmd-{}", spec.review_id)),
-            job_id: Set(format!("job-{}", spec.review_id)),
-            work_id: Set(format!("work-{}", spec.review_id)),
-            status: Set(spec.state.status_str().to_owned()),
-            patient_snapshot: Set(None),
-            triggers: Set(serde_json::to_value(&spec.triggers)
-                .map_err(conversion_error("triggers", "json"))?),
-            accepted_inputs: Set(json!([])),
-            recipe_version: Set(json!({"model":"fixture","effort":"high"})),
-            initial_source_version: Set(1),
-            initial_sources: Set(json!({})),
-            completed_source_version: Set(completed_source_version),
-            completed_sources: Set(completed_source_version.map(|_| json!({}))),
-            evidence_read: Set(serde_json::to_value(&spec.evidence_read)
-                .map_err(conversion_error("evidence_read", "json"))?),
-            actions: Set(json!([])),
-            unfinished_work: Set(serde_json::to_value(&spec.unfinished_work)
-                .map_err(conversion_error("unfinished_work", "json"))?),
-            state: Set(
-                serde_json::to_value(&spec.state).map_err(conversion_error("state", "json"))?
-            ),
-            usage: Set(serde_json::to_value(ReviewUsage::Unknown)
-                .map_err(conversion_error("usage", "json"))?),
-            duration_ms: Set(completed_at.map(|_| 1_200)),
-            staged_completion: Set(None),
-            queued_at: Set(spec.queued_at),
-            started_at: Set(started_at),
-            completed_at: Set(completed_at),
-            updated_at: Set(spec.updated_at),
-        }
-        .insert(&store.db)
-        .await?;
-        Ok(())
-    }
-
-    /// Standing when seeding a visit preparation row.
-    #[derive(Clone, Debug)]
-    pub enum SeedVisitPrepState {
-        /// Actively preparing a visit briefing.
-        Preparing {
-            /// Briefing job identifier.
-            job_id: String,
-        },
-        /// Skipped with a clinical reason.
-        Skipped {
-            /// Why no briefing was needed.
-            reason: String,
-        },
-        /// Non-restartable failure ahead of the visit.
-        CouldNotFinish {
-            /// Failure summary.
-            reason: String,
-        },
-        /// Appointment ended or moved before preparation ran.
-        EndedVisitChanged {
-            /// Explanation recorded on the visit preparation.
-            reason: String,
-        },
-    }
-
-    /// Typed specification for seeding a visit preparation row.
-    #[derive(Clone, Debug)]
-    pub struct SeedVisitPreparation {
-        /// Practice identifier.
-        pub practice: String,
-        /// Patient workspace identifier.
-        pub workspace: String,
-        /// Schedule source identifier.
-        pub source_id: String,
-        /// Appointment identifier.
-        pub appointment_id: String,
-        /// Scheduled start in Unix seconds.
-        pub starts_at_unix: i64,
-        /// Scheduled end in Unix seconds.
-        pub ends_at_unix: i64,
-        /// Execution standing.
-        pub state: SeedVisitPrepState,
-        /// Unix second of latest update.
-        pub updated_at: i64,
-    }
-
-    /// Inserts a typed visit preparation row into Postgres.
-    pub async fn seed_visit_preparation(
-        store: &Store,
-        spec: SeedVisitPreparation,
-    ) -> Result<(), DbErr> {
-        let (state_str, decision, briefing_job_id, failed_reason) = match spec.state {
-            SeedVisitPrepState::Preparing { job_id } => (
-                "preparing".to_owned(),
-                VisitPreparationDecision::PrepareNow {
-                    reason: "Upcoming complex follow-up".to_owned(),
-                },
-                Some(job_id),
-                None,
-            ),
-            SeedVisitPrepState::Skipped { reason } => (
-                "skipped".to_owned(),
-                VisitPreparationDecision::Skip { reason },
-                None,
-                None,
-            ),
-            SeedVisitPrepState::CouldNotFinish { reason } => (
-                "could_not_finish".to_owned(),
-                VisitPreparationDecision::PrepareNow {
-                    reason: "Upcoming visit preparation".to_owned(),
-                },
-                Some(format!("brief-job-{}", spec.appointment_id)),
-                Some(reason),
-            ),
-            SeedVisitPrepState::EndedVisitChanged { reason } => (
-                "ended_visit_changed".to_owned(),
-                VisitPreparationDecision::PrepareNow {
-                    reason: "Scheduled visit".to_owned(),
-                },
-                None,
-                Some(reason),
-            ),
-        };
-
-        visit_preparation::ActiveModel {
-            practice: Set(spec.practice),
-            source_id: Set(spec.source_id),
-            appointment_id: Set(spec.appointment_id.clone()),
-            starts_at_unix: Set(spec.starts_at_unix),
-            workspace: Set(spec.workspace),
-            ends_at_unix: Set(spec.ends_at_unix),
-            appointment_saved_version: Set(1),
-            observed_source_version: Set(1),
-            decision: Set(
-                serde_json::to_value(&decision).map_err(conversion_error("decision", "json"))?
-            ),
-            decided_at: Set(spec.updated_at),
-            selection_job_id: Set(format!("sel-job-{}", spec.appointment_id)),
-            selection_work_id: Set(format!("sel-work-{}", spec.appointment_id)),
-            selection_idempotency_key: Set(format!("sel-idem-{}", spec.appointment_id)),
-            state: Set(state_str),
-            briefing_job_id: Set(briefing_job_id),
-            briefing_id: Set(None),
-            failed_reason: Set(failed_reason),
-            updated_at: Set(spec.updated_at),
-        }
-        .insert(&store.db)
-        .await?;
-        Ok(())
-    }
-
-    /// Typed specification for seeding a saved visit briefing.
-    #[derive(Clone, Debug)]
-    pub struct SeedVisitBriefing {
-        /// Practice identifier.
-        pub practice: String,
-        /// Patient workspace identifier.
-        pub workspace: String,
-        /// Schedule source identifier.
-        pub source_id: String,
-        /// Appointment identifier.
-        pub appointment_id: String,
-        /// Scheduled start in Unix seconds.
-        pub starts_at_unix: i64,
-        /// Scheduled end in Unix seconds.
-        pub ends_at_unix: i64,
-        /// Stable briefing identifier.
-        pub briefing_id: String,
-        /// Concise orientation shown on schedule cards and Updates.
-        pub orientation: String,
-        /// Full narrative markdown.
-        pub narrative: String,
-        /// Dated basis and limitations.
-        pub basis_and_limitations: String,
-        /// Verified chart citations.
-        pub citations: Vec<SummaryCitation>,
-        /// Unix second when prepared.
-        pub prepared_at: i64,
-        /// Chart source version covered.
-        pub source_version: i64,
-    }
-
-    /// Inserts a typed visit briefing row into Postgres.
-    pub async fn seed_visit_briefing(store: &Store, spec: SeedVisitBriefing) -> Result<(), DbErr> {
-        visit_briefing::ActiveModel {
-            practice: Set(spec.practice),
-            source_id: Set(spec.source_id),
-            appointment_id: Set(spec.appointment_id),
-            starts_at_unix: Set(spec.starts_at_unix),
-            briefing_id: Set(spec.briefing_id.clone()),
-            workspace: Set(spec.workspace),
-            idempotency_key: Set(format!("idem-{}", spec.briefing_id)),
-            starts_at: Set("2026-11-12T16:00:00Z".to_owned()),
-            ends_at: Set("2026-11-12T16:30:00Z".to_owned()),
-            ends_at_unix: Set(spec.ends_at_unix),
-            appointment_saved_version: Set(1),
-            prepared_at: Set(spec.prepared_at),
-            source_version: Set(spec.source_version),
-            source_versions: Set(json!({})),
-            source_freshness: Set(json!([])),
-            limits: Set(json!([])),
-            visit_card_orientation: Set(spec.orientation),
-            trajectory: Set(json!([])),
-            meaningful_changes: Set(json!([])),
-            unresolved_issues: Set(json!([])),
-            visit_decisions: Set(json!([])),
-            basis_and_limitations: Set(spec.basis_and_limitations),
-            basis_citations: Set(json!([])),
-            citations: Set(serde_json::to_value(&spec.citations)
-                .map_err(conversion_error("citations", "json"))?),
-            narrative: Set(spec.narrative),
-            raised_concern_id: Set(None),
-            visit_standing: Set("current".to_owned()),
-            visit_standing_detail: Set(None),
-            origin: Set(json!({
-                "job_id": format!("job-{}", spec.briefing_id),
-                "work_id": format!("work-{}", spec.briefing_id),
-                "attempt_id": "attempt-1"
-            })),
-            updated_at: Set(spec.prepared_at),
-        }
-        .insert(&store.db)
-        .await?;
-        Ok(())
-    }
-
-    /// Inserts or updates a saved patient summary (`patient_understanding`) for `workspace`.
-    pub async fn seed_patient_summary(
-        store: &Store,
-        practice: &str,
-        workspace: &str,
-        revision: i64,
-        source_version: i64,
-        summary: &PatientSummary,
-        updated_at: i64,
-    ) -> Result<(), DbErr> {
-        use patient_understanding::Column as U;
-
-        let empty_index = OperatingIndex {
-            working_overview: "INTERNAL-OPERATING-INDEX-NEVER-SHOWN".to_owned(),
-            known_health_systems: Vec::new(),
-            open_threads: Vec::new(),
-            anchors: Vec::new(),
-        };
-        let scope = EvidenceScope::ClinicalChart {
-            connected_sources: Vec::new(),
-        };
-
-        patient_understanding::Entity::insert(patient_understanding::ActiveModel {
-            practice: Set(practice.to_owned()),
-            workspace: Set(workspace.to_owned()),
-            revision: Set(revision),
-            source_version: Set(source_version),
-            evidence_scope: Set(
-                serde_json::to_value(&scope).map_err(conversion_error("scope", "json"))?
-            ),
-            operating_index: Set(serde_json::to_value(&empty_index)
-                .map_err(conversion_error("operating_index", "json"))?),
-            summary: Set(
-                serde_json::to_value(summary).map_err(conversion_error("summary", "json"))?
-            ),
-            origin: Set(json!({
-                "kind": "practice_run",
-                "job_id": format!("understanding-{workspace}"),
-                "work_id": format!("work-{workspace}"),
-                "attempt_id": "attempt-1",
-                "mode": "initial"
-            })),
-            updated_at: Set(updated_at),
-        })
-        .on_conflict(
-            OnConflict::columns([U::Practice, U::Workspace])
-                .update_columns([U::Revision, U::SourceVersion, U::Summary, U::UpdatedAt])
-                .to_owned(),
-        )
-        .exec_without_returning(&store.db)
-        .await?;
-        Ok(())
-    }
-
-    /// Inserts a failed `InitialUnderstanding` practice job row so non-restartable
-    /// summary failures can be exercised on Today.
-    pub async fn seed_failed_initial_understanding(
-        store: &Store,
-        practice: &str,
-        workspace: &str,
-        job_id: &str,
-        sources_version: i64,
-        updated_at: i64,
-    ) -> Result<(), DbErr> {
-        practice_job::ActiveModel {
-            practice: Set(practice.to_owned()),
-            workspace: Set(workspace.to_owned()),
-            job_id: Set(job_id.to_owned()),
-            kind: Set(PracticeJobKind::InitialUnderstanding),
-            status: Set(WorkStatus::Failed),
-            work: Set(format!("work-{job_id}")),
-            revision: Set(1),
-            assignment: Set(json!({"prompt":"Prepare initial patient summary"})),
-            preloaded_skills: Set(json!([])),
-            skills: Set("pkg-fixture".to_owned()),
-            binding: Set(json!({"model":"fixture"})),
-            runs: Set(json!({})),
-            failures: Set(3),
-            allowance_after: Set(0),
-            sources_version: Set(sources_version),
-            sources: Set(json!({})),
-            result: Set(None),
-            dispatch_after: Set(updated_at),
-            created_at: Set(updated_at),
-            updated_at: Set(updated_at),
-        }
-        .insert(&store.db)
-        .await?;
-        Ok(())
-    }
-
-    /// Outcome when seeding a connected source status row.
-    #[derive(Clone, Debug)]
-    pub enum SeedSourceOutcome {
-        /// Connected source refreshed cleanly at `pulled_at`.
-        Updated {
-            /// Last successful pull timestamp.
-            pulled_at: i64,
-        },
-        /// Connected source failed to refresh with `reason`.
-        Failed {
-            /// Optional prior successful pull timestamp.
-            last_good_pulled_at: Option<i64>,
-            /// Failure detail.
-            reason: String,
-        },
-    }
-
-    /// Inserts or updates a connected source refresh status row in `physician_runtime_source_statuses`.
-    pub async fn seed_source_status(
-        store: &Store,
-        practice: &str,
-        workspace: &str,
-        source_id: &str,
-        source_label: &str,
-        outcome: SeedSourceOutcome,
-        checked_at: i64,
-    ) -> Result<(), DbErr> {
-        use source_status::Column as S;
-
-        let (outcome_str, last_good, reason) = match outcome {
-            SeedSourceOutcome::Updated { pulled_at } => {
-                ("updated".to_owned(), Some(pulled_at), None)
-            }
-            SeedSourceOutcome::Failed {
-                last_good_pulled_at,
-                reason,
-            } => ("failed".to_owned(), last_good_pulled_at, Some(reason)),
-        };
-
-        source_status::Entity::insert(source_status::ActiveModel {
-            practice: Set(practice.to_owned()),
-            workspace: Set(workspace.to_owned()),
-            source_id: Set(source_id.to_owned()),
-            source_label: Set(source_label.to_owned()),
-            outcome: Set(outcome_str),
-            checked_at: Set(checked_at),
-            last_good_pulled_at: Set(last_good),
-            workspace_version: Set(Some(1)),
-            changed_records: Set(0),
-            reason: Set(reason),
-        })
-        .on_conflict(
-            OnConflict::columns([S::Practice, S::Workspace, S::SourceId])
-                .update_columns([
-                    S::SourceLabel,
-                    S::Outcome,
-                    S::CheckedAt,
-                    S::LastGoodPulledAt,
-                    S::Reason,
-                ])
-                .to_owned(),
-        )
-        .exec_without_returning(&store.db)
-        .await?;
-        Ok(())
-    }
-
-    /// Parameters for seeding a running physician conversation row.
-    #[derive(Clone, Debug)]
-    pub struct SeedRunningConversation {
-        /// Practice identifier.
-        pub practice: String,
-        /// Physician identifier.
-        pub physician: String,
-        /// Patient workspace identifier.
-        pub workspace: String,
-        /// Conversation identifier.
-        pub chat_id: String,
-        /// Latest physician question text.
-        pub question: String,
-        /// Unix timestamp when the question was accepted.
-        pub activity_at: i64,
-    }
-
-    /// Inserts an active physician conversation row in `physician_runtime_conversations`
-    /// using the canonical conversation state encoding.
-    pub async fn seed_running_conversation(
-        store: &Store,
-        seed: SeedRunningConversation,
-    ) -> Result<(), DbErr> {
-        use super::super::{Conversation, Message, MessageRole, SkillPackageId, control};
-        let skills: SkillPackageId = serde_json::from_value(json!("pkg-fixture"))
-            .map_err(conversion_error("pkg", "SkillPackageId"))?;
-        let work_id = format!("work-{}", seed.chat_id);
-        let conv = Conversation {
-            messages: vec![Message {
-                role: MessageRole::User {
-                    id: format!("cmd-{}", seed.chat_id),
-                    work: work_id.clone(),
-                    revision: 1,
-                },
-                text: seed.question,
-            }],
-            revision: 1,
-            status: WorkStatus::Active,
-            work: work_id,
-            runs: BTreeMap::new(),
-            skills,
-            attempts: Vec::new(),
-            session_hash: None,
-            dispatch_after: seed.activity_at,
-            failures: 0,
-            budget_resume_after: 0,
-            bindings: BTreeMap::new(),
-            opened_at: seed.activity_at,
-            last_activity_at: seed.activity_at,
-            scenario: None,
-        };
-        let state = control::conversation_state(&conv)?;
-        conversation::ActiveModel {
-            practice: Set(seed.practice),
-            physician: Set(seed.physician),
-            workspace: Set(seed.workspace),
-            chat: Set(seed.chat_id),
-            status: Set(WorkStatus::Active),
-            revision: Set(1),
-            session_hash: Set(None),
-            state: Set(state),
-        }
-        .insert(&store.db)
-        .await?;
-        Ok(())
-    }
-}
-
-#[allow(dead_code)]
-fn _assert_concern_standing_used(_: &Concern, _: &ConcernStanding) {}

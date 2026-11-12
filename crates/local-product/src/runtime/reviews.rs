@@ -172,7 +172,7 @@ pub enum RecordedReviewAction {
 }
 
 impl RecordedReviewAction {
-    fn summary_label(&self) -> String {
+    pub(super) fn summary_label(&self) -> String {
         match self {
             Self::ConcernOpen {
                 concern_id,
@@ -1421,7 +1421,7 @@ impl Store {
     /// authoritative patient pulls, chart observations, source refresh statuses,
     /// dispatch standing, saved understanding, durable memory, open concerns,
     /// and prior completed patient reviews.
-    async fn review_starting_context(
+    pub(super) async fn review_starting_context(
         &self,
         practice: &str,
         workspace: &str,
@@ -1556,6 +1556,16 @@ impl Store {
                 });
             }
         }
+        prior_reviews.extend(
+            self.handed_off_unhandled_reviews(practice, workspace, review_id)
+                .await?,
+        );
+        prior_reviews.sort_by(|left, right| {
+            right
+                .completed_at
+                .cmp(&left.completed_at)
+                .then_with(|| left.review_id.cmp(&right.review_id))
+        });
 
         Ok((
             ReviewStartingContext {

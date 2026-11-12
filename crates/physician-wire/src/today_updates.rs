@@ -158,8 +158,11 @@ pub struct ItemCitationWire {
     /// Effective date of the cited record, when supplied.
     #[serde(default)]
     pub as_of: Option<String>,
-    /// Verbatim excerpt from the saved chart record.
+    /// Bounded preview excerpt from the saved chart record.
     pub excerpt: String,
+    /// Full formatted readable chart record opened when inspecting the citation.
+    #[serde(default)]
+    pub body: String,
     /// Optional deep link into the external EHR.
     #[serde(default)]
     pub native_uri: Option<String>,

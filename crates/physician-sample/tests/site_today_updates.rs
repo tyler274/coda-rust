@@ -12,30 +12,37 @@ use std::time::{Duration, Instant, SystemTime, UNIX_EPOCH};
 
 use base64::Engine as _;
 use front_door::PostgresFrontDoorStore;
+use harness::engine::AttemptFailure;
+use local_product::ModelRoles;
 use local_product::initial_understanding::SummaryClaimInput;
 use local_product::patient_reviews::{
     QuietReviewReason, ReviewCitation, ReviewOutcome, ReviewTrigger, UnfinishedReviewWork,
 };
+use local_product::physician_chat::PhysicianSkills;
 use local_product::physician_sources::{
     MedicalRecordNumber, ReadablePart, RecordDate, SourcePatient, SourceRevision,
 };
-use local_product::runtime::Store;
-use local_product::runtime::concerns::{ConcernUrgency, ExactRecordReference, SourceWork};
-use local_product::runtime::reviews::ReviewLifecycleState;
-use local_product::runtime::sources::SourcePull;
-use local_product::runtime::today_updates::fixture::{
-    SeedConcern, SeedConcernStanding, SeedReview, SeedRunningConversation, SeedSourceOutcome,
-    SeedVisitBriefing, SeedVisitPrepState, SeedVisitPreparation, revise_seeded_concern,
-    seed_concern, seed_failed_initial_understanding, seed_patient_summary, seed_review,
-    seed_running_conversation, seed_source_status, seed_visit_briefing, seed_visit_preparation,
+use local_product::runtime::concerns::{
+    CommandKey, ConcernId, ConcernUrgency, ExactRecordReference, RaiseConcern, RetireConcern,
+    RetirementReason, ReviseConcern, SourceWork,
 };
+use local_product::runtime::jobs::{Assignment, PracticeScope};
+use local_product::runtime::refresh::{
+    FixedCheckStep, FixedSourceCheck, RefreshCommandKey, RefreshRequest, RefreshTarget,
+    SourceCheckOutcome, SourceId,
+};
+use local_product::runtime::reviews::{ReviewHoldReason, ReviewLifecycleState};
+use local_product::runtime::sources::SourcePull;
 use local_product::runtime::today_updates::{ProducerKind, TodayVisitSlot};
 use local_product::runtime::understanding::{PatientSummary, SummaryCitation, SummarySegment};
+use local_product::runtime::{Input, Scope, Store};
 use local_product::sha256_hex;
+use local_product::visit_preparation::VisitPreparationDecision;
 use physician_auth::{AuthStore, Membership, PhysicianIdentity, PostgresAuthStore};
 use physician_sample::today_updates::{TodayUpdatesFaultInjection, fault_layer};
 use physician_sample::{STAGING_PRACTICE_ID, WORKSPACE_IDS};
-use sea_orm::ConnectionTrait;
+use sea_orm::sea_query::{Alias, Expr, ExprTrait, OnConflict, Query};
+use sea_orm::{ConnectionTrait, Database, DatabaseConnection};
 use serde_json::json;
 use tokio::sync::Mutex;
 use uuid::Uuid;
@@ -266,6 +273,7 @@ struct RunningHarness {
     _db: DisposableDb,
     address: SocketAddr,
     store: Store,
+    db: DatabaseConnection,
     auth: Arc<PostgresAuthStore>,
     faults: Arc<TodayUpdatesFaultInjection>,
     server_task: tokio::task::JoinHandle<()>,
@@ -284,15 +292,20 @@ impl RunningHarness {
         unsafe {
             env::set_var("PHYSICIAN_SITE_DIR", &site);
         }
-        let db = DisposableDb::create(label).await;
-        let store = Store::connect(&db.url).await.expect("connect store");
+        let disposable = DisposableDb::create(label).await;
+        let store = Store::connect(&disposable.url)
+            .await
+            .expect("connect store");
+        let db = Database::connect(&disposable.url)
+            .await
+            .expect("connect sea_orm db");
         let auth = Arc::new(
-            PostgresAuthStore::connect_without_migrations(&db.url)
+            PostgresAuthStore::connect_without_migrations(&disposable.url)
                 .await
                 .expect("connect auth store"),
         );
         let front_door = Arc::new(
-            PostgresFrontDoorStore::connect_without_migrations(&db.url)
+            PostgresFrontDoorStore::connect_without_migrations(&disposable.url)
                 .await
                 .expect("connect front-door store"),
         );
@@ -314,9 +327,10 @@ impl RunningHarness {
         wait_until_serving(address).await;
 
         Self {
-            _db: db,
+            _db: disposable,
             address,
             store,
+            db,
             auth,
             faults,
             server_task,
@@ -371,6 +385,44 @@ async fn wait_until_serving(address: SocketAddr) {
     }
 }
 
+fn jsonb_expr(value: &serde_json::Value) -> sea_orm::sea_query::SimpleExpr {
+    Expr::val(serde_json::to_string(value).expect("serialize jsonb")).cast_as(Alias::new("jsonb"))
+}
+
+async fn exec_query(db: &DatabaseConnection, stmt: impl sea_orm::StatementBuilder) {
+    db.execute(&stmt).await.expect("execute test setup query");
+}
+
+fn test_model_roles() -> ModelRoles {
+    local_product::model_roles(
+        "test",
+        &[
+            ("CODA_CHAT_MODEL", "gpt-5.4"),
+            ("CODA_CHAT_EFFORT", "medium"),
+            ("CODA_CHAT_CONTEXT_WINDOW_TOKENS", "128000"),
+            ("CODA_CHAT_INPUT_LIMIT_TOKENS", "64000"),
+            ("CODA_BACKGROUND_MODEL", "gpt-5.4"),
+            ("CODA_BACKGROUND_EFFORT", "medium"),
+            ("CODA_BACKGROUND_CONTEXT_WINDOW_TOKENS", "128000"),
+            ("CODA_BACKGROUND_INPUT_LIMIT_TOKENS", "64000"),
+        ],
+    )
+    .expect("valid test model roles")
+}
+
+fn make_source_patient(workspace: &str, patient_name: &str) -> SourcePatient {
+    SourcePatient {
+        source_patient_id: workspace.to_owned(),
+        display_name: patient_name.to_owned(),
+        birth_date: Some("1968-05-14".to_owned()),
+        sex_or_gender: Some("female".to_owned()),
+        medical_record_numbers: vec![MedicalRecordNumber {
+            system: "MRN".to_owned(),
+            value: format!("MRN-{workspace}"),
+        }],
+    }
+}
+
 async fn seed_chart_record(
     store: &Store,
     workspace: &str,
@@ -380,25 +432,48 @@ async fn seed_chart_record(
     excerpt: &str,
     pulled_at: i64,
 ) -> ExactRecordReference {
+    seed_chart_record_full(
+        store,
+        workspace,
+        patient_name,
+        candidate_id,
+        revision,
+        vec![ReadablePart {
+            label: "Clinical finding".to_owned(),
+            text: excerpt.to_owned(),
+        }],
+        json!({"system": "regional-ehr", "id": candidate_id}),
+        pulled_at,
+    )
+    .await
+}
+
+#[allow(clippy::too_many_arguments)]
+async fn seed_chart_record_full(
+    store: &Store,
+    workspace: &str,
+    patient_name: &str,
+    candidate_id: &str,
+    revision: &str,
+    readable_parts: Vec<ReadablePart>,
+    provenance: serde_json::Value,
+    pulled_at: i64,
+) -> ExactRecordReference {
+    let combined_text = readable_parts
+        .iter()
+        .map(|part| part.text.as_str())
+        .collect::<Vec<_>>()
+        .join("\n");
     let content = json!({
         "resourceType": "Observation",
         "id": candidate_id,
-        "note": excerpt,
+        "note": combined_text,
     })
     .to_string();
     let pull = SourcePull {
         source_id: "regional-ehr".to_owned(),
         source_label: "Regional EHR".to_owned(),
-        patient: SourcePatient {
-            source_patient_id: workspace.to_owned(),
-            display_name: patient_name.to_owned(),
-            birth_date: Some("1968-05-14".to_owned()),
-            sex_or_gender: Some("female".to_owned()),
-            medical_record_numbers: vec![MedicalRecordNumber {
-                system: "MRN".to_owned(),
-                value: format!("MRN-{workspace}"),
-            }],
-        },
+        patient: make_source_patient(workspace, patient_name),
         pulled_at,
     };
     let rev = SourceRevision {
@@ -413,17 +488,725 @@ async fn seed_chart_record(
         }],
         sha256: sha256_hex(content.as_bytes()),
         content,
-        readable_parts: vec![ReadablePart {
-            label: "Clinical finding".to_owned(),
-            text: excerpt.to_owned(),
-        }],
-        provenance: json!({"system": "regional-ehr", "id": candidate_id}),
+        readable_parts,
+        provenance,
     };
     store
         .record_chart(workspace, &[rev], &pull)
         .await
         .expect("record chart");
     ExactRecordReference::new(candidate_id, revision).expect("valid ref")
+}
+
+async fn ensure_scheduled_appointment(
+    db: &DatabaseConnection,
+    practice: &str,
+    workspace: &str,
+    slot: &TodayVisitSlot,
+    updated_at: i64,
+) {
+    let content = "{}";
+    let mut appt = Query::insert();
+    appt.into_table(Alias::new("physician_runtime_appointments"))
+        .columns([
+            Alias::new("practice"),
+            Alias::new("source_id"),
+            Alias::new("appointment_id"),
+            Alias::new("saved_version"),
+            Alias::new("source_revision"),
+            Alias::new("starts_at"),
+            Alias::new("starts_at_unix"),
+            Alias::new("ends_at"),
+            Alias::new("ends_at_unix"),
+            Alias::new("status"),
+            Alias::new("source_status"),
+            Alias::new("label"),
+            Alias::new("match_state"),
+            Alias::new("workspace"),
+            Alias::new("source_patient_id"),
+            Alias::new("dates"),
+            Alias::new("content"),
+            Alias::new("sha256"),
+            Alias::new("provenance"),
+            Alias::new("as_of"),
+            Alias::new("updated_at"),
+        ])
+        .values_panic([
+            practice.into(),
+            slot.source_id.as_str().into(),
+            slot.appointment_id.as_str().into(),
+            1_i64.into(),
+            "rev-1".into(),
+            "2026-08-27T17:00:00Z".into(),
+            slot.starts_at_unix.into(),
+            "2026-08-27T17:30:00Z".into(),
+            slot.ends_at_unix.into(),
+            "scheduled".into(),
+            "booked".into(),
+            "Follow-up visit".into(),
+            "matched".into(),
+            workspace.into(),
+            workspace.into(),
+            jsonb_expr(&json!([])),
+            content.into(),
+            sha256_hex(content.as_bytes()).into(),
+            jsonb_expr(&json!({"system": slot.source_id})),
+            updated_at.into(),
+            updated_at.into(),
+        ])
+        .on_conflict(
+            OnConflict::columns([
+                Alias::new("practice"),
+                Alias::new("source_id"),
+                Alias::new("appointment_id"),
+            ])
+            .update_columns([
+                Alias::new("starts_at_unix"),
+                Alias::new("ends_at_unix"),
+                Alias::new("status"),
+                Alias::new("workspace"),
+                Alias::new("updated_at"),
+            ])
+            .to_owned(),
+        );
+    exec_query(db, appt).await;
+}
+
+enum TestConcernStanding {
+    Open,
+    Retired { reason: String, retired_at: i64 },
+}
+
+struct TestConcern {
+    practice: String,
+    workspace: String,
+    concern_id: String,
+    urgency: ConcernUrgency,
+    standing: TestConcernStanding,
+    reason: String,
+    records: Vec<ExactRecordReference>,
+    source_work: SourceWork,
+    created_at: i64,
+    updated_at: i64,
+    visit_slot: Option<TodayVisitSlot>,
+}
+
+async fn seed_concern(store: &Store, db: &DatabaseConnection, spec: TestConcern) {
+    let id = ConcernId::new(&spec.concern_id).expect("valid concern id");
+    let raise_key =
+        CommandKey::new(format!("test-raise:{}:{}", spec.workspace, spec.concern_id)).unwrap();
+    store
+        .raise_concern(
+            &raise_key,
+            &RaiseConcern {
+                practice: spec.practice.clone(),
+                workspace: spec.workspace.clone(),
+                id: id.clone(),
+                urgency: spec.urgency,
+                reason: spec.reason.clone(),
+                records: spec.records.clone(),
+                source_work: spec.source_work.clone(),
+            },
+        )
+        .await
+        .expect("raise concern through Store::raise_concern");
+
+    let mut retired_at_val: Option<i64> = None;
+    if let TestConcernStanding::Retired { reason, retired_at } = &spec.standing {
+        let retire_key = CommandKey::new(format!(
+            "test-retire:{}:{}",
+            spec.workspace, spec.concern_id
+        ))
+        .unwrap();
+        store
+            .retire_concern(
+                &retire_key,
+                &RetireConcern {
+                    practice: spec.practice.clone(),
+                    workspace: spec.workspace.clone(),
+                    id: id.clone(),
+                    reason: RetirementReason::new(reason.clone()).expect("valid retirement reason"),
+                    source_work: spec.source_work.clone(),
+                },
+            )
+            .await
+            .expect("retire concern through Store::retire_concern");
+        retired_at_val = Some(*retired_at);
+    }
+
+    let mut update = Query::update();
+    update
+        .table(Alias::new("physician_runtime_concerns"))
+        .value(Alias::new("created_at"), spec.created_at)
+        .value(Alias::new("updated_at"), spec.updated_at)
+        .and_where(Expr::col(Alias::new("practice")).eq(spec.practice.as_str()))
+        .and_where(Expr::col(Alias::new("workspace")).eq(spec.workspace.as_str()))
+        .and_where(Expr::col(Alias::new("id")).eq(spec.concern_id.as_str()));
+    if let Some(ts) = retired_at_val {
+        update.value(Alias::new("retired_at"), ts);
+    }
+    exec_query(db, update).await;
+
+    if let Some(slot) = spec.visit_slot {
+        ensure_scheduled_appointment(db, &spec.practice, &spec.workspace, &slot, spec.updated_at)
+            .await;
+        let mut insert = Query::insert();
+        insert
+            .into_table(Alias::new("physician_runtime_visit_concerns"))
+            .columns([
+                Alias::new("practice"),
+                Alias::new("workspace"),
+                Alias::new("concern_id"),
+                Alias::new("source_id"),
+                Alias::new("appointment_id"),
+                Alias::new("starts_at_unix"),
+                Alias::new("ends_at_unix"),
+                Alias::new("urgency"),
+                Alias::new("created_at"),
+                Alias::new("updated_at"),
+            ])
+            .values_panic([
+                spec.practice.into(),
+                spec.workspace.into(),
+                spec.concern_id.into(),
+                slot.source_id.into(),
+                slot.appointment_id.into(),
+                slot.starts_at_unix.into(),
+                slot.ends_at_unix.into(),
+                spec.urgency.as_str().into(),
+                spec.created_at.into(),
+                spec.updated_at.into(),
+            ])
+            .on_conflict(
+                OnConflict::columns([
+                    Alias::new("practice"),
+                    Alias::new("workspace"),
+                    Alias::new("concern_id"),
+                ])
+                .update_columns([
+                    Alias::new("source_id"),
+                    Alias::new("appointment_id"),
+                    Alias::new("starts_at_unix"),
+                    Alias::new("ends_at_unix"),
+                    Alias::new("urgency"),
+                    Alias::new("updated_at"),
+                ])
+                .to_owned(),
+            );
+        exec_query(db, insert).await;
+    }
+}
+
+#[allow(clippy::too_many_arguments)]
+async fn revise_concern_at(
+    store: &Store,
+    db: &DatabaseConnection,
+    practice: &str,
+    workspace: &str,
+    concern_id: &str,
+    urgency: ConcernUrgency,
+    reason: &str,
+    records: Vec<ExactRecordReference>,
+    updated_at: i64,
+) {
+    let key = CommandKey::new(format!("test-revise:{workspace}:{concern_id}:{updated_at}"))
+        .expect("valid revise key");
+    store
+        .revise_concern(
+            &key,
+            &ReviseConcern {
+                practice: practice.to_owned(),
+                workspace: workspace.to_owned(),
+                id: ConcernId::new(concern_id).expect("valid concern id"),
+                urgency,
+                reason: reason.to_owned(),
+                records,
+                source_work: SourceWork::new("patient_review", "work-revise", "att-revise")
+                    .unwrap(),
+            },
+        )
+        .await
+        .expect("revise concern through Store::revise_concern");
+
+    let mut update = Query::update();
+    update
+        .table(Alias::new("physician_runtime_concerns"))
+        .value(Alias::new("updated_at"), updated_at)
+        .and_where(Expr::col(Alias::new("practice")).eq(practice))
+        .and_where(Expr::col(Alias::new("workspace")).eq(workspace))
+        .and_where(Expr::col(Alias::new("id")).eq(concern_id));
+    exec_query(db, update).await;
+}
+
+struct TestReview {
+    practice: String,
+    workspace: String,
+    review_id: String,
+    triggers: Vec<ReviewTrigger>,
+    unfinished_work: Vec<UnfinishedReviewWork>,
+    state: ReviewLifecycleState,
+    evidence_read: Vec<ExactRecordReference>,
+    queued_at: i64,
+    updated_at: i64,
+}
+
+async fn seed_review(db: &DatabaseConnection, spec: TestReview) {
+    let status = spec.state.status_str();
+    let completed_at = match &spec.state {
+        ReviewLifecycleState::Completed { completed_at, .. } => Some(*completed_at),
+        _ => None,
+    };
+    let completed_source_version = match &spec.state {
+        ReviewLifecycleState::Completed {
+            completed_source_version,
+            ..
+        } => Some(i64::try_from(*completed_source_version).unwrap_or(1)),
+        _ => None,
+    };
+    let started_at = match &spec.state {
+        ReviewLifecycleState::Running { started_at, .. } => Some(*started_at),
+        ReviewLifecycleState::Completed { completed_at, .. } => Some(*completed_at - 10),
+        ReviewLifecycleState::Held { held_at, .. } => Some(*held_at - 10),
+        ReviewLifecycleState::Failed { failed_at, .. } => Some(*failed_at - 10),
+        ReviewLifecycleState::Pending | ReviewLifecycleState::Superseded { .. } => None,
+    };
+    let recipe_version = json!({
+        "model": "gpt-5.4",
+        "skill_sha256": "deadbeef",
+        "instructions_sha256": "cafebabe"
+    });
+    let usage = json!({"kind": "unknown"});
+    let mut insert = Query::insert();
+    insert
+        .into_table(Alias::new("physician_runtime_patient_reviews"))
+        .columns([
+            Alias::new("practice"),
+            Alias::new("workspace"),
+            Alias::new("review_id"),
+            Alias::new("command_key"),
+            Alias::new("job_id"),
+            Alias::new("work_id"),
+            Alias::new("status"),
+            Alias::new("triggers"),
+            Alias::new("accepted_inputs"),
+            Alias::new("recipe_version"),
+            Alias::new("initial_source_version"),
+            Alias::new("initial_sources"),
+            Alias::new("completed_source_version"),
+            Alias::new("evidence_read"),
+            Alias::new("actions"),
+            Alias::new("unfinished_work"),
+            Alias::new("state"),
+            Alias::new("usage"),
+            Alias::new("queued_at"),
+            Alias::new("started_at"),
+            Alias::new("completed_at"),
+            Alias::new("updated_at"),
+        ])
+        .values_panic([
+            spec.practice.into(),
+            spec.workspace.into(),
+            spec.review_id.clone().into(),
+            format!("cmd-rev-{}", spec.review_id).into(),
+            format!("job-rev-{}", spec.review_id).into(),
+            format!("work-rev-{}", spec.review_id).into(),
+            status.into(),
+            jsonb_expr(&serde_json::to_value(&spec.triggers).unwrap()),
+            jsonb_expr(&json!([])),
+            jsonb_expr(&recipe_version),
+            1_i64.into(),
+            jsonb_expr(&json!([])),
+            completed_source_version.into(),
+            jsonb_expr(&serde_json::to_value(&spec.evidence_read).unwrap()),
+            jsonb_expr(&json!([])),
+            jsonb_expr(&serde_json::to_value(&spec.unfinished_work).unwrap()),
+            jsonb_expr(&serde_json::to_value(&spec.state).unwrap()),
+            jsonb_expr(&usage),
+            spec.queued_at.into(),
+            started_at.into(),
+            completed_at.into(),
+            spec.updated_at.into(),
+        ]);
+    exec_query(db, insert).await;
+}
+
+enum TestVisitPrepState {
+    CouldNotFinish { reason: String },
+    Skipped { reason: String },
+}
+
+struct TestVisitPreparation {
+    practice: String,
+    workspace: String,
+    source_id: String,
+    appointment_id: String,
+    starts_at_unix: i64,
+    ends_at_unix: i64,
+    state: TestVisitPrepState,
+    updated_at: i64,
+}
+
+async fn seed_visit_preparation(db: &DatabaseConnection, spec: TestVisitPreparation) {
+    let (state_str, decision, failed_reason, briefing_job_id) = match spec.state {
+        TestVisitPrepState::CouldNotFinish { reason } => (
+            "could_not_finish",
+            VisitPreparationDecision::PrepareNow {
+                reason: "Upcoming clinical visit requires chart synthesis.".to_owned(),
+            },
+            Some(reason),
+            Some(format!("job-vp-{}", spec.appointment_id)),
+        ),
+        TestVisitPrepState::Skipped { reason } => (
+            "skipped",
+            VisitPreparationDecision::Skip { reason },
+            None,
+            None,
+        ),
+    };
+    let mut insert = Query::insert();
+    insert
+        .into_table(Alias::new("physician_runtime_visit_preparations"))
+        .columns([
+            Alias::new("practice"),
+            Alias::new("source_id"),
+            Alias::new("appointment_id"),
+            Alias::new("starts_at_unix"),
+            Alias::new("workspace"),
+            Alias::new("ends_at_unix"),
+            Alias::new("appointment_saved_version"),
+            Alias::new("observed_source_version"),
+            Alias::new("decision"),
+            Alias::new("decided_at"),
+            Alias::new("selection_job_id"),
+            Alias::new("selection_work_id"),
+            Alias::new("selection_idempotency_key"),
+            Alias::new("state"),
+            Alias::new("briefing_job_id"),
+            Alias::new("failed_reason"),
+            Alias::new("updated_at"),
+        ])
+        .values_panic([
+            spec.practice.into(),
+            spec.source_id.into(),
+            spec.appointment_id.clone().into(),
+            spec.starts_at_unix.into(),
+            spec.workspace.into(),
+            spec.ends_at_unix.into(),
+            1_i64.into(),
+            1_i64.into(),
+            jsonb_expr(&serde_json::to_value(&decision).unwrap()),
+            spec.updated_at.into(),
+            format!("sel-job-{}", spec.appointment_id).into(),
+            format!("sel-work-{}", spec.appointment_id).into(),
+            format!("sel-key-{}", spec.appointment_id).into(),
+            state_str.into(),
+            briefing_job_id.into(),
+            failed_reason.into(),
+            spec.updated_at.into(),
+        ]);
+    exec_query(db, insert).await;
+}
+
+struct TestVisitBriefing {
+    practice: String,
+    workspace: String,
+    source_id: String,
+    appointment_id: String,
+    starts_at_unix: i64,
+    ends_at_unix: i64,
+    briefing_id: String,
+    orientation: String,
+    narrative: String,
+    basis_and_limitations: String,
+    citations: Vec<SummaryCitation>,
+    prepared_at: i64,
+    source_version: i64,
+}
+
+async fn seed_visit_briefing(db: &DatabaseConnection, spec: TestVisitBriefing) {
+    ensure_scheduled_appointment(
+        db,
+        &spec.practice,
+        &spec.workspace,
+        &TodayVisitSlot {
+            source_id: spec.source_id.clone(),
+            appointment_id: spec.appointment_id.clone(),
+            starts_at_unix: spec.starts_at_unix,
+            ends_at_unix: spec.ends_at_unix,
+        },
+        spec.prepared_at,
+    )
+    .await;
+    let origin = json!({
+        "kind": "practice_run",
+        "job_id": format!("job-{}", spec.briefing_id),
+        "work_id": format!("work-{}", spec.briefing_id),
+        "attempt_id": "att-1"
+    });
+    let mut insert = Query::insert();
+    insert
+        .into_table(Alias::new("physician_runtime_visit_briefings"))
+        .columns([
+            Alias::new("practice"),
+            Alias::new("source_id"),
+            Alias::new("appointment_id"),
+            Alias::new("starts_at_unix"),
+            Alias::new("briefing_id"),
+            Alias::new("workspace"),
+            Alias::new("idempotency_key"),
+            Alias::new("starts_at"),
+            Alias::new("ends_at"),
+            Alias::new("ends_at_unix"),
+            Alias::new("appointment_saved_version"),
+            Alias::new("prepared_at"),
+            Alias::new("source_version"),
+            Alias::new("source_versions"),
+            Alias::new("source_freshness"),
+            Alias::new("limits"),
+            Alias::new("visit_card_orientation"),
+            Alias::new("trajectory"),
+            Alias::new("meaningful_changes"),
+            Alias::new("unresolved_issues"),
+            Alias::new("visit_decisions"),
+            Alias::new("basis_and_limitations"),
+            Alias::new("basis_citations"),
+            Alias::new("citations"),
+            Alias::new("narrative"),
+            Alias::new("visit_standing"),
+            Alias::new("origin"),
+            Alias::new("updated_at"),
+        ])
+        .values_panic([
+            spec.practice.into(),
+            spec.source_id.into(),
+            spec.appointment_id.into(),
+            spec.starts_at_unix.into(),
+            spec.briefing_id.clone().into(),
+            spec.workspace.into(),
+            format!("idem-{}", spec.briefing_id).into(),
+            "2026-08-27T17:00:00Z".into(),
+            "2026-08-27T17:30:00Z".into(),
+            spec.ends_at_unix.into(),
+            1_i64.into(),
+            spec.prepared_at.into(),
+            spec.source_version.into(),
+            jsonb_expr(&json!({})),
+            jsonb_expr(&json!([])),
+            jsonb_expr(&json!([])),
+            spec.orientation.into(),
+            jsonb_expr(&json!([])),
+            jsonb_expr(&json!([])),
+            jsonb_expr(&json!([])),
+            jsonb_expr(&json!([])),
+            spec.basis_and_limitations.into(),
+            jsonb_expr(&json!([])),
+            jsonb_expr(&serde_json::to_value(&spec.citations).unwrap()),
+            spec.narrative.into(),
+            "current".into(),
+            jsonb_expr(&origin),
+            spec.prepared_at.into(),
+        ]);
+    exec_query(db, insert).await;
+}
+
+async fn seed_patient_summary(
+    db: &DatabaseConnection,
+    practice: &str,
+    workspace: &str,
+    revision: i64,
+    source_version: i64,
+    summary: &PatientSummary,
+    updated_at: i64,
+) {
+    let operating_index = json!({
+        "sentinel": "INTERNAL-OPERATING-INDEX-NEVER-SHOWN",
+        "clinical_snapshot": "Private operating index only for Coda runs."
+    });
+    let origin = json!({
+        "kind": "practice_run",
+        "job_id": format!("job-understanding-{workspace}-{revision}"),
+        "work_id": format!("work-understanding-{workspace}-{revision}"),
+        "attempt_id": "att-1"
+    });
+    let mut insert = Query::insert();
+    insert
+        .into_table(Alias::new("physician_runtime_patient_understanding"))
+        .columns([
+            Alias::new("practice"),
+            Alias::new("workspace"),
+            Alias::new("revision"),
+            Alias::new("source_version"),
+            Alias::new("evidence_scope"),
+            Alias::new("operating_index"),
+            Alias::new("summary"),
+            Alias::new("origin"),
+            Alias::new("updated_at"),
+        ])
+        .values_panic([
+            practice.into(),
+            workspace.into(),
+            revision.into(),
+            source_version.into(),
+            jsonb_expr(&json!({"sources": []})),
+            jsonb_expr(&operating_index),
+            jsonb_expr(&serde_json::to_value(summary).unwrap()),
+            jsonb_expr(&origin),
+            updated_at.into(),
+        ]);
+    exec_query(db, insert).await;
+}
+
+async fn seed_failed_initial_understanding(
+    store: &Store,
+    db: &DatabaseConnection,
+    auth: &PostgresAuthStore,
+    practice: &str,
+    workspace: &str,
+    job_id: &str,
+    failed_at: i64,
+) {
+    let skills = PhysicianSkills::configured(None, false).expect("load workspace skills");
+    let assignment = Assignment::synthetic_patient_stub(workspace, &skills).expect("stub");
+    let scope = PracticeScope {
+        practice: practice.to_owned(),
+        workspace: workspace.to_owned(),
+        job_id: job_id.to_owned(),
+    };
+    store
+        .accept_practice_job(&scope, &assignment, &test_model_roles(), &skills, auth)
+        .await
+        .expect("accept practice job");
+    while let Some(claim) = store
+        .claim_practice_job(&scope, 60, auth)
+        .await
+        .expect("claim practice job")
+    {
+        store
+            .settle_practice_job_attempt(&claim, AttemptFailure::Failed)
+            .await
+            .expect("settle failed practice job attempt");
+    }
+
+    let mut update = Query::update();
+    update
+        .table(Alias::new("physician_runtime_practice_jobs"))
+        .value(Alias::new("created_at"), failed_at - 30)
+        .value(Alias::new("updated_at"), failed_at)
+        .and_where(Expr::col(Alias::new("practice")).eq(practice))
+        .and_where(Expr::col(Alias::new("workspace")).eq(workspace))
+        .and_where(Expr::col(Alias::new("job_id")).eq(job_id));
+    exec_query(db, update).await;
+}
+
+async fn seed_running_conversation(
+    harness: &RunningHarness,
+    scope: &Scope,
+    question: &str,
+    activity_at: i64,
+) {
+    let skills = PhysicianSkills::configured(None, false).expect("load workspace skills");
+    let roles = test_model_roles();
+    let recipe = harness
+        .store
+        .chat_recipe_with_understanding(
+            &roles.chat,
+            "Answer clinical questions from chart evidence.",
+            &skills,
+            &scope.practice,
+            &scope.workspace,
+        )
+        .await
+        .expect("build chat recipe");
+    harness
+        .store
+        .accept_authorized(
+            scope,
+            &Input {
+                key: format!("chat-input-{}", scope.chat),
+                text: question.to_owned(),
+                timezone: "America/New_York".to_owned(),
+                scenario: None,
+            },
+            vec![7_u8; 32],
+            &skills,
+            &recipe,
+        )
+        .await
+        .expect("accept running chat");
+
+    let mut select = Query::select();
+    select
+        .column(Alias::new("state"))
+        .from(Alias::new("physician_runtime_conversations"))
+        .and_where(Expr::col(Alias::new("practice")).eq(scope.practice.as_str()))
+        .and_where(Expr::col(Alias::new("physician")).eq(scope.physician.as_str()))
+        .and_where(Expr::col(Alias::new("workspace")).eq(scope.workspace.as_str()))
+        .and_where(Expr::col(Alias::new("chat")).eq(scope.chat.as_str()));
+    let row = harness
+        .db
+        .query_one(&select)
+        .await
+        .expect("query seeded conversation state")
+        .expect("seeded conversation row");
+    let mut state_val: serde_json::Value = row
+        .try_get("", "state")
+        .expect("decode conversation state jsonb");
+    if let Some(obj) = state_val.as_object_mut() {
+        obj.insert("opened_at".to_owned(), json!(activity_at));
+        obj.insert("last_activity_at".to_owned(), json!(activity_at));
+    }
+    let mut update = Query::update();
+    update
+        .table(Alias::new("physician_runtime_conversations"))
+        .value(Alias::new("state"), jsonb_expr(&state_val))
+        .and_where(Expr::col(Alias::new("practice")).eq(scope.practice.as_str()))
+        .and_where(Expr::col(Alias::new("physician")).eq(scope.physician.as_str()))
+        .and_where(Expr::col(Alias::new("workspace")).eq(scope.workspace.as_str()))
+        .and_where(Expr::col(Alias::new("chat")).eq(scope.chat.as_str()));
+    exec_query(&harness.db, update).await;
+}
+
+async fn seed_practice_source_outage(
+    harness: &RunningHarness,
+    workspaces: &[&str],
+    source_id_str: &str,
+    source_label: &str,
+    checked_at: i64,
+    reason: &str,
+) {
+    let source_id = SourceId::new(source_id_str).expect("valid source id");
+    let checker = FixedSourceCheck::new();
+    for ws in workspaces {
+        checker.push_step(
+            STAGING_PRACTICE_ID,
+            *ws,
+            source_id.clone(),
+            FixedCheckStep::Outcome(SourceCheckOutcome::Failed {
+                source_label: Some(source_label.to_owned()),
+                checked_at,
+                reason: reason.to_owned(),
+            }),
+        );
+    }
+    for (idx, ws) in workspaces.iter().enumerate() {
+        harness
+            .store
+            .refresh_patient_sources_for_practice(
+                &PracticeScope {
+                    practice: STAGING_PRACTICE_ID.to_owned(),
+                    workspace: (*ws).to_owned(),
+                    job_id: format!("job-outage-{source_id_str}-{idx}"),
+                },
+                harness.auth.as_ref(),
+                &RefreshRequest::new(
+                    RefreshCommandKey::new(format!("cmd-outage-{source_id_str}-{ws}")).unwrap(),
+                    RefreshTarget::AllSources,
+                ),
+                &checker,
+            )
+            .await
+            .expect("refresh patient sources for outage");
+    }
 }
 
 fn build_site() -> PathBuf {
@@ -685,31 +1468,54 @@ async fn ac1_every_producer_kind_flat_order_and_open_lands_on_work_and_evidence(
     let _guard = test_lock().lock().await;
     let harness = RunningHarness::start("ac1").await;
 
-    // Fixture workspaces:
-    // [0] Elena Morales, [1] Jake Miller, [2] Maria Santos, [3] Robert Chen
     let ws_elena = WORKSPACE_IDS[0];
     let ws_jake = WORKSPACE_IDS[1];
     let ws_maria = WORKSPACE_IDS[2];
     let ws_robert = WORKSPACE_IDS[3];
+    let ws_mary = WORKSPACE_IDS[4];
 
     let dr_rivera = harness
         .enroll_physician(
             "dr.rivera@codahealth.test",
             "Dr. Rivera",
-            &[ws_elena, ws_jake, ws_maria, ws_robert],
+            &[ws_elena, ws_jake, ws_maria, ws_robert, ws_mary],
         )
         .await;
 
-    let ref_elena = seed_chart_record(
+    // Multi-section >550-char chart record on Elena with `external_url` + structural `"attachment"` label.
+    let bmp_head = "Serum potassium 6.2 mmol/L on morning basic metabolic panel (critical high; \
+        reference range 3.5-5.1 mmol/L) drawn from non-hemolyzed peripheral venipuncture at 06:35 AM. \
+        Serum sodium 136 mmol/L, chloride 103 mmol/L, bicarbonate 18 mmol/L, anion gap 15 mmol/L, \
+        blood urea nitrogen 41 mg/dL, serum creatinine 2.2 mg/dL (baseline 1.4 mg/dL), calcium 9.1 mg/dL, \
+        glucose 118 mg/dL, eGFR 26 mL/min/1.73m2.";
+    let bmp_tail = "TAIL_MARKER_BEYOND_320_CHARS: Stat 12-lead ECG and repeat venous potassium \
+        ordered; hold lisinopril 20 mg and spironolactone 25 mg pending immediate physician review.";
+    let ref_elena = seed_chart_record_full(
         &harness.store,
         ws_elena,
         "Elena Morales",
         "obs-k-elena",
         "rev-1",
-        "Serum potassium 6.2 mmol/L on morning basic metabolic panel (critical high).",
+        vec![
+            ReadablePart {
+                label: "attachment".to_owned(),
+                text: bmp_head.to_owned(),
+            },
+            ReadablePart {
+                label: "Clinical comment".to_owned(),
+                text: bmp_tail.to_owned(),
+            },
+        ],
+        json!({
+            "system": "regional-ehr",
+            "id": "obs-k-elena",
+            "title": "Morning Basic Metabolic Panel",
+            "external_url": "https://ehr.codahealth.test/chart/obs-k-elena"
+        }),
         CLINICAL_NOW_UNIX - 600,
     )
     .await;
+
     let ref_jake = seed_chart_record(
         &harness.store,
         ws_jake,
@@ -740,34 +1546,46 @@ async fn ac1_every_producer_kind_flat_order_and_open_lands_on_work_and_evidence(
         CLINICAL_NOW_UNIX - 1_800,
     )
     .await;
+    let _ref_mary = seed_chart_record(
+        &harness.store,
+        ws_mary,
+        "Mary Johnson",
+        "obs-cards-mary",
+        "rev-1",
+        "Cardiology stress echocardiogram awaiting outside report fetch.",
+        CLINICAL_NOW_UNIX - 8_000,
+    )
+    .await;
 
     let origin = SourceWork::new("patient_review", "work-ac1", "att-1").unwrap();
 
     // 1. Open Now concern on Elena Morales (waited only 5 minutes -> STILL first!).
     seed_concern(
         &harness.store,
-        SeedConcern {
+        &harness.db,
+        TestConcern {
             practice: STAGING_PRACTICE_ID.to_owned(),
             workspace: ws_elena.to_owned(),
             concern_id: "concern-now-k".to_owned(),
             urgency: ConcernUrgency::Now,
-            standing: SeedConcernStanding::Open,
+            standing: TestConcernStanding::Open,
             reason: "Critical hyperkalemia (K 6.2 mmol/L) on morning BMP.".to_owned(),
             records: vec![ref_elena.clone()],
             source_work: origin.clone(),
             created_at: CLINICAL_NOW_UNIX - 300,
             updated_at: CLINICAL_NOW_UNIX - 300,
-            revision: 1,
             visit_slot: None,
         },
     )
-    .await
-    .unwrap();
+    .await;
 
-    // 2. Failed review WITH unfinished work on Maria Santos (waited 3 hours).
+    // 2. TWO unhandled items on Maria Santos (`ws_maria`):
+    //    - Failed review WITH unfinished work (`now - 10_800`)
+    //    - CouldNotFinish visit preparation (`now - 9_600`)
+    //    Proves Today collapses multiple unhandled failures on one patient into ONE `unhandled:<ws_maria>` row!
     seed_review(
-        &harness.store,
-        SeedReview {
+        &harness.db,
+        TestReview {
             practice: STAGING_PRACTICE_ID.to_owned(),
             workspace: ws_maria.to_owned(),
             review_id: "rev-failed-unhandled".to_owned(),
@@ -791,44 +1609,59 @@ async fn ac1_every_producer_kind_flat_order_and_open_lands_on_work_and_evidence(
             updated_at: CLINICAL_NOW_UNIX - 10_800,
         },
     )
-    .await
-    .unwrap();
+    .await;
 
-    // 3. Upcoming visit preparation CouldNotFinish on Maria Santos (waited 2 hours).
     seed_visit_preparation(
-        &harness.store,
-        SeedVisitPreparation {
+        &harness.db,
+        TestVisitPreparation {
             practice: STAGING_PRACTICE_ID.to_owned(),
             workspace: ws_maria.to_owned(),
             source_id: "practice-sched".to_owned(),
-            appointment_id: "appt-maria-upcoming".to_owned(),
+            appointment_id: "appt-maria-collapse".to_owned(),
+            starts_at_unix: CLINICAL_NOW_UNIX + 9_000,
+            ends_at_unix: CLINICAL_NOW_UNIX + 10_800,
+            state: TestVisitPrepState::CouldNotFinish {
+                reason: "Dialysis flowsheet timed out before nephrology visit".to_owned(),
+            },
+            updated_at: CLINICAL_NOW_UNIX - 9_600,
+        },
+    )
+    .await;
+
+    // 3. Upcoming visit preparation CouldNotFinish on `ws_mary` (waited 2 hours -> `unhandled:<ws_mary>`).
+    seed_visit_preparation(
+        &harness.db,
+        TestVisitPreparation {
+            practice: STAGING_PRACTICE_ID.to_owned(),
+            workspace: ws_mary.to_owned(),
+            source_id: "practice-sched".to_owned(),
+            appointment_id: "appt-mary-upcoming".to_owned(),
             starts_at_unix: CLINICAL_NOW_UNIX + 7_200,
             ends_at_unix: CLINICAL_NOW_UNIX + 9_000,
-            state: SeedVisitPrepState::CouldNotFinish {
-                reason: "Could not synthesize external nephrology consult before visit".to_owned(),
+            state: TestVisitPrepState::CouldNotFinish {
+                reason: "Could not synthesize cardiology stress echo before visit".to_owned(),
             },
             updated_at: CLINICAL_NOW_UNIX - 7_200,
         },
     )
-    .await
-    .unwrap();
+    .await;
 
-    // 4. Failed InitialUnderstanding on Maria Santos (waited 90 minutes).
+    // 4. Failed InitialUnderstanding on `ws_robert` (waited 90 minutes -> `unhandled:<ws_robert>`).
     seed_failed_initial_understanding(
         &harness.store,
+        &harness.db,
+        harness.auth.as_ref(),
         STAGING_PRACTICE_ID,
-        ws_maria,
-        "init-maria",
-        1,
+        ws_robert,
+        "init-robert",
         CLINICAL_NOW_UNIX - 5_400,
     )
-    .await
-    .unwrap();
+    .await;
 
     // 5. Open Today pre-visit nudge + saved VisitBriefing on Jake Miller (waited 1 hour).
     seed_visit_briefing(
-        &harness.store,
-        SeedVisitBriefing {
+        &harness.db,
+        TestVisitBriefing {
             practice: STAGING_PRACTICE_ID.to_owned(),
             workspace: ws_jake.to_owned(),
             source_id: "practice-sched".to_owned(),
@@ -856,23 +1689,22 @@ async fn ac1_every_producer_kind_flat_order_and_open_lands_on_work_and_evidence(
             source_version: 1,
         },
     )
-    .await
-    .unwrap();
+    .await;
 
     seed_concern(
         &harness.store,
-        SeedConcern {
+        &harness.db,
+        TestConcern {
             practice: STAGING_PRACTICE_ID.to_owned(),
             workspace: ws_jake.to_owned(),
             concern_id: "concern-visit-a1c".to_owned(),
             urgency: ConcernUrgency::Today,
-            standing: SeedConcernStanding::Open,
+            standing: TestConcernStanding::Open,
             reason: "A1c rose to 8.9% ahead of today's diabetes visit.".to_owned(),
             records: vec![ref_jake.clone()],
             source_work: origin.clone(),
             created_at: CLINICAL_NOW_UNIX - 3_600,
             updated_at: CLINICAL_NOW_UNIX - 3_600,
-            revision: 1,
             visit_slot: Some(TodayVisitSlot {
                 source_id: "practice-sched".to_owned(),
                 appointment_id: "appt-jake-1".to_owned(),
@@ -881,29 +1713,28 @@ async fn ac1_every_producer_kind_flat_order_and_open_lands_on_work_and_evidence(
             }),
         },
     )
-    .await
-    .unwrap();
+    .await;
 
     // 6. Active physician conversation response on Jake Miller (waited 30 minutes).
     seed_running_conversation(
-        &harness.store,
-        SeedRunningConversation {
+        &harness,
+        &Scope {
             practice: STAGING_PRACTICE_ID.to_owned(),
-            physician: dr_rivera.physician_id,
+            physician: dr_rivera.physician_id.clone(),
             workspace: ws_jake.to_owned(),
-            chat_id: "chat-jake-renal".to_owned(),
-            question: "Compare eGFR slope over the last year".to_owned(),
-            activity_at: CLINICAL_NOW_UNIX - 1_800,
+            chat: "chat-jake-renal".to_owned(),
         },
+        "Compare eGFR slope over the last year",
+        CLINICAL_NOW_UNIX - 1_800,
     )
-    .await
-    .unwrap();
+    .await;
 
-    // 7. Quiet review, clean failed review, retired concern, assessed review, skipped visit prep,
-    //    patient summary, and routine running review -> reach Updates, NEVER Today!
+    // 7. Quiet review, clean failed review, physician-stopped review, retired concern,
+    //    assessed review, skipped visit prep, patient summary, and routine running review ->
+    //    reach Updates (or stay on patient page), NEVER Today!
     seed_review(
-        &harness.store,
-        SeedReview {
+        &harness.db,
+        TestReview {
             practice: STAGING_PRACTICE_ID.to_owned(),
             workspace: ws_robert.to_owned(),
             review_id: "rev-quiet-robert".to_owned(),
@@ -938,12 +1769,11 @@ async fn ac1_every_producer_kind_flat_order_and_open_lands_on_work_and_evidence(
             updated_at: CLINICAL_NOW_UNIX - 1_200,
         },
     )
-    .await
-    .unwrap();
+    .await;
 
     seed_review(
-        &harness.store,
-        SeedReview {
+        &harness.db,
+        TestReview {
             practice: STAGING_PRACTICE_ID.to_owned(),
             workspace: ws_robert.to_owned(),
             review_id: "rev-clean-failed-robert".to_owned(),
@@ -963,17 +1793,46 @@ async fn ac1_every_producer_kind_flat_order_and_open_lands_on_work_and_evidence(
             updated_at: CLINICAL_NOW_UNIX - 1_500,
         },
     )
-    .await
-    .unwrap();
+    .await;
+
+    seed_review(
+        &harness.db,
+        TestReview {
+            practice: STAGING_PRACTICE_ID.to_owned(),
+            workspace: ws_elena.to_owned(),
+            review_id: "rev-stopped-by-physician".to_owned(),
+            triggers: vec![ReviewTrigger::PhysicianRequest {
+                physician_id: dr_rivera.physician_id.clone(),
+                request_text: "Check outpatient potassium trend".to_owned(),
+                workspace_version: 1,
+                record_versions: BTreeMap::new(),
+            }],
+            unfinished_work: vec![UnfinishedReviewWork {
+                topic: "PHYSICIAN_STOPPED_REVIEW_NO_TODAY_ROW".to_owned(),
+                detail: "Stopped intentionally by physician".to_owned(),
+                limit: None,
+            }],
+            state: ReviewLifecycleState::Held {
+                reason: ReviewHoldReason::Stopped,
+                held_at: CLINICAL_NOW_UNIX - 12_000,
+                partial_text: Some("Paused by physician.".to_owned()),
+            },
+            evidence_read: Vec::new(),
+            queued_at: CLINICAL_NOW_UNIX - 12_100,
+            updated_at: CLINICAL_NOW_UNIX - 12_000,
+        },
+    )
+    .await;
 
     seed_concern(
         &harness.store,
-        SeedConcern {
+        &harness.db,
+        TestConcern {
             practice: STAGING_PRACTICE_ID.to_owned(),
             workspace: ws_robert.to_owned(),
             concern_id: "concern-retired-bp".to_owned(),
             urgency: ConcernUrgency::Today,
-            standing: SeedConcernStanding::Retired {
+            standing: TestConcernStanding::Retired {
                 reason: "Repeat clinic and home blood pressures normalized.".to_owned(),
                 retired_at: CLINICAL_NOW_UNIX - 900,
             },
@@ -982,16 +1841,14 @@ async fn ac1_every_producer_kind_flat_order_and_open_lands_on_work_and_evidence(
             source_work: origin,
             created_at: CLINICAL_NOW_UNIX - 20_000,
             updated_at: CLINICAL_NOW_UNIX - 900,
-            revision: 2,
             visit_slot: None,
         },
     )
-    .await
-    .unwrap();
+    .await;
 
     seed_review(
-        &harness.store,
-        SeedReview {
+        &harness.db,
+        TestReview {
             practice: STAGING_PRACTICE_ID.to_owned(),
             workspace: ws_elena.to_owned(),
             review_id: "rev-assessed-elena".to_owned(),
@@ -1015,39 +1872,38 @@ async fn ac1_every_producer_kind_flat_order_and_open_lands_on_work_and_evidence(
             updated_at: CLINICAL_NOW_UNIX - 280,
         },
     )
-    .await
-    .unwrap();
+    .await;
 
     seed_visit_preparation(
-        &harness.store,
-        SeedVisitPreparation {
+        &harness.db,
+        TestVisitPreparation {
             practice: STAGING_PRACTICE_ID.to_owned(),
             workspace: ws_robert.to_owned(),
             source_id: "practice-sched".to_owned(),
             appointment_id: "appt-robert-flu".to_owned(),
             starts_at_unix: CLINICAL_NOW_UNIX + 10_800,
             ends_at_unix: CLINICAL_NOW_UNIX + 11_700,
-            state: SeedVisitPrepState::Skipped {
+            state: TestVisitPrepState::Skipped {
                 reason: "Nurse-only influenza vaccination visit needs no chart briefing."
                     .to_owned(),
             },
             updated_at: CLINICAL_NOW_UNIX - 700,
         },
     )
-    .await
-    .unwrap();
+    .await;
 
+    let _ = ref_robert;
     seed_patient_summary(
-        &harness.store,
+        &harness.db,
         STAGING_PRACTICE_ID,
-        ws_robert,
+        ws_jake,
         1,
         1,
         &PatientSummary {
             narrative: "Well-controlled hypertension on lisinopril 10 mg daily.".to_owned(),
             claims: vec![SummaryClaimInput {
                 text: "Home BP averaging 118/74 mmHg.".to_owned(),
-                citations: vec![ref_robert],
+                citations: vec![ref_jake],
             }],
             material_gaps: Vec::new(),
             scope_note: None,
@@ -1058,12 +1914,11 @@ async fn ac1_every_producer_kind_flat_order_and_open_lands_on_work_and_evidence(
         },
         CLINICAL_NOW_UNIX - 650,
     )
-    .await
-    .unwrap();
+    .await;
 
     seed_review(
-        &harness.store,
-        SeedReview {
+        &harness.db,
+        TestReview {
             practice: STAGING_PRACTICE_ID.to_owned(),
             workspace: ws_jake.to_owned(),
             review_id: "rev-routine-running".to_owned(),
@@ -1082,8 +1937,7 @@ async fn ac1_every_producer_kind_flat_order_and_open_lands_on_work_and_evidence(
             updated_at: CLINICAL_NOW_UNIX - 90,
         },
     )
-    .await
-    .unwrap();
+    .await;
 
     let base = format!("http://{}", harness.address);
     let mut tab = Tab::open(&base);
@@ -1094,7 +1948,8 @@ async fn ac1_every_producer_kind_flat_order_and_open_lands_on_work_and_evidence(
     );
 
     // Verify Today is ONE flat list, every row names its patient, Now comes first, and the rest
-    // are ordered strictly by how long they have waited (oldest waiting_since first).
+    // are ordered strictly by how long they have waited (with Maria's 2 unhandled failures collapsed
+    // into one `unhandled:<ws_maria>` row, and Elena's physician-stopped review excluded!).
     let list_count = tab.eval(
         "document.querySelectorAll('section[aria-label=\"Needs you\"] > .today-list').length",
     );
@@ -1116,16 +1971,13 @@ async fn ac1_every_producer_kind_flat_order_and_open_lands_on_work_and_evidence(
         item_ids,
         vec![
             format!("concern:{ws_elena}:concern-now-k"),
-            format!("unhandled-review:{ws_maria}:rev-failed-unhandled"),
-            format!(
-                "unhandled-visit:{ws_maria}:practice-sched:appt-maria-upcoming:{}",
-                CLINICAL_NOW_UNIX + 7_200
-            ),
-            format!("unhandled-understanding:{ws_maria}:init-maria"),
+            format!("unhandled:{ws_maria}"),
+            format!("unhandled:{ws_mary}"),
+            format!("unhandled:{ws_robert}"),
             format!("concern:{ws_jake}:concern-visit-a1c"),
             format!("running-chat:{ws_jake}:chat-jake-renal"),
         ],
-        "Today rows must place Now first and order the remaining rows by longest wait: {rows_snapshot}"
+        "Today rows must place Now first, collapse unhandled work to at most one row per patient, and order by longest wait: {rows_snapshot}"
     );
     assert_eq!(rows[0]["now"], json!(true));
     for row in rows {
@@ -1144,8 +1996,9 @@ async fn ac1_every_producer_kind_flat_order_and_open_lands_on_work_and_evidence(
     assert!(
         !today_text.contains("Home BP log remains well controlled")
             && !today_text.contains("ROUTINE_CLEAN_FAILURE_NO_TODAY_ROW")
+            && !today_text.contains("PHYSICIAN_STOPPED_REVIEW_NO_TODAY_ROW")
             && !today_text.contains("Borderline elevated office blood pressure"),
-        "quiet review, clean failed review, and retired concern must not appear on Today:\n{today_text}"
+        "quiet review, clean failed review, physician-stopped review, and retired concern must not appear on Today:\n{today_text}"
     );
 
     // Click Elena's Now row -> lands on Elena's workspace AND shows work + chart evidence!
@@ -1154,7 +2007,7 @@ async fn ac1_every_producer_kind_flat_order_and_open_lands_on_work_and_evidence(
         "[data-today-item=\"{elena_item}\"] button.today-row-open"
     ));
     tab.wait_for_text(
-        "Serum potassium 6.2 mmol/L on morning basic metabolic panel (critical high).",
+        "Serum potassium 6.2 mmol/L on morning basic metabolic panel",
         Duration::from_secs(15),
     );
     let open_patient = tab.eval("new URL(location.href).searchParams.get('patient')");
@@ -1173,7 +2026,30 @@ async fn ac1_every_producer_kind_flat_order_and_open_lands_on_work_and_evidence(
         "opening Today row did not display its work and chart citation:\n{evidence_text}"
     );
 
-    // Navigate to Updates -> verify every producer kind reached Updates, then click an Update item!
+    // Click citation `[1]` inside `[data-work-evidence]` -> `ReaderDialog` renders FULL untruncated
+    // multi-section record body (>500 chars), omits raw `"attachment"`, AND shows `Open in Regional EHR`!
+    tab.click("[data-citation-candidate=\"obs-k-elena\"] button");
+    tab.wait_for_text("TAIL_MARKER_BEYOND_320_CHARS", Duration::from_secs(10));
+    let reader_snapshot = tab.eval(
+        "({text: document.querySelector('.citation-inspection')?.innerText ?? '', \
+           href: document.querySelector('.citation-inspection a.citation-open')?.getAttribute('href') ?? '', \
+           linkText: document.querySelector('.citation-inspection a.citation-open')?.textContent?.trim() ?? ''})",
+    );
+    let reader_text = reader_snapshot["text"].as_str().unwrap_or_default();
+    assert!(
+        reader_text.contains("TAIL_MARKER_BEYOND_320_CHARS")
+            && !reader_text.lines().any(|line| line.trim() == "attachment"),
+        "ReaderDialog must render full untruncated record text without raw `attachment` label:\n{reader_text}"
+    );
+    assert_eq!(
+        reader_snapshot["href"],
+        json!("https://ehr.codahealth.test/chart/obs-k-elena")
+    );
+    assert_eq!(reader_snapshot["linkText"], json!("Open in Regional EHR"));
+    tab.click(".citation-inspection button[aria-label=\"Close\"]");
+    tab.wait_until_absent("TAIL_MARKER_BEYOND_320_CHARS", Duration::from_secs(10));
+
+    // Navigate to Updates -> verify every producer kind reached Updates with clean non-duplicated headlines!
     tab.click_named(".sidebar-nav-item", "Updates");
     tab.wait_for_text("What Coda did today", Duration::from_secs(15));
     tab.wait_for_text("Reviewed, nothing for you", Duration::from_secs(10));
@@ -1194,6 +2070,19 @@ async fn ac1_every_producer_kind_flat_order_and_open_lands_on_work_and_evidence(
         assert!(
             updates_text.contains(expected),
             "Updates surface missing expected producer entry {expected:?}:\n{updates_text}"
+        );
+    }
+    for forbidden_doubled in [
+        "Concern raised:",
+        "Retired concern:",
+        "Reviewed chart — nothing for you",
+        "Chart review:",
+        "Visit briefing prepared:",
+        "Prepared patient summary",
+    ] {
+        assert!(
+            !updates_text.contains(forbidden_doubled),
+            "Updates surface must not repeat category prefix {forbidden_doubled:?} in card headline:\n{updates_text}"
         );
     }
 
@@ -1259,42 +2148,40 @@ async fn ac2_two_physicians_two_concerns_seen_state_revision_and_done() {
     let origin = SourceWork::new("patient_review", "work-ac2", "att-1").unwrap();
     seed_concern(
         &harness.store,
-        SeedConcern {
+        &harness.db,
+        TestConcern {
             practice: STAGING_PRACTICE_ID.to_owned(),
             workspace: ws_elena.to_owned(),
             concern_id: "concern-a".to_owned(),
             urgency: ConcernUrgency::Now,
-            standing: SeedConcernStanding::Open,
+            standing: TestConcernStanding::Open,
             reason: "Stat potassium 6.2 mmol/L requires immediate repeat.".to_owned(),
             records: vec![ref_elena.clone()],
             source_work: origin.clone(),
             created_at: CLINICAL_NOW_UNIX - 300,
             updated_at: CLINICAL_NOW_UNIX - 300,
-            revision: 1,
             visit_slot: None,
         },
     )
-    .await
-    .unwrap();
+    .await;
     seed_concern(
         &harness.store,
-        SeedConcern {
+        &harness.db,
+        TestConcern {
             practice: STAGING_PRACTICE_ID.to_owned(),
             workspace: ws_jake.to_owned(),
             concern_id: "concern-b".to_owned(),
             urgency: ConcernUrgency::Today,
-            standing: SeedConcernStanding::Open,
+            standing: TestConcernStanding::Open,
             reason: "Supratherapeutic INR 3.9 needs warfarin dose hold review.".to_owned(),
             records: vec![ref_jake],
             source_work: origin,
             created_at: CLINICAL_NOW_UNIX - 1_200,
             updated_at: CLINICAL_NOW_UNIX - 1_200,
-            revision: 1,
             visit_slot: None,
         },
     )
-    .await
-    .unwrap();
+    .await;
 
     let base = format!("http://{}", harness.address);
     let mut tab_patel = Tab::open(&base);
@@ -1311,7 +2198,6 @@ async fn ac2_two_physicians_two_concerns_seen_state_revision_and_done() {
         Duration::from_secs(20),
     );
 
-    // Before opening, Now stays at the top AND renders `.now-banner` even across reload!
     assert_eq!(
         tab_patel.eval("!!document.querySelector('.now-banner')"),
         json!(true)
@@ -1327,7 +2213,6 @@ async fn ac2_two_physicians_two_concerns_seen_state_revision_and_done() {
         "Now concern must remain active across reload until opened"
     );
 
-    // Dr. Patel opens Concern A -> marks Dr. Patel's seen state on server.
     let item_a = format!("concern:{ws_elena}:concern-a");
     let item_b = format!("concern:{ws_jake}:concern-b");
     tab_patel.click(&format!(
@@ -1343,7 +2228,6 @@ async fn ac2_two_physicians_two_concerns_seen_state_revision_and_done() {
         "Now banner must clear for Dr. Patel once opened"
     );
 
-    // Reload Dr. Patel -> seen state survives reload in PostgreSQL!
     tab_patel.reload();
     tab_patel.wait_for_text("Tanvir Chowdhury", Duration::from_secs(20));
     assert_eq!(
@@ -1352,7 +2236,6 @@ async fn ac2_two_physicians_two_concerns_seen_state_revision_and_done() {
         "Dr. Patel's seen state must persist across reload"
     );
 
-    // Meanwhile Dr. Nguyen has NOT opened Concern A -> `.now-banner` is STILL active for Dr. Nguyen!
     tab_nguyen.reload();
     tab_nguyen.wait_for_text(
         "Stat potassium 6.2 mmol/L requires immediate repeat.",
@@ -1364,18 +2247,19 @@ async fn ac2_two_physicians_two_concerns_seen_state_revision_and_done() {
         "Opening Concern A as Dr. Patel must not mark Dr. Nguyen's seen state"
     );
 
-    // Revise Concern A -> returns as changed for Dr. Patel and names what changed!
-    revise_seeded_concern(
+    // Revise Concern A through `Store::revise_concern` -> returns as changed for Dr. Patel!
+    revise_concern_at(
         &harness.store,
+        &harness.db,
         STAGING_PRACTICE_ID,
         ws_elena,
         "concern-a",
         ConcernUrgency::Now,
         "Repeat potassium rose to 6.5 mmol/L with peaked T waves on ECG.",
+        vec![ref_elena],
         CLINICAL_NOW_UNIX - 30,
     )
-    .await
-    .unwrap();
+    .await;
 
     tab_patel.click("button[aria-label=\"Open Today\"]");
     tab_patel.reload();
@@ -1400,7 +2284,6 @@ async fn ac2_two_physicians_two_concerns_seen_state_revision_and_done() {
         "Revised concern must state what changed since Dr. Patel opened it; got: {changed_badge:?}"
     );
 
-    // Dr. Patel marks Concern A Done -> clears ONLY Concern A; Concern B stays!
     tab_patel.click(&format!("button[data-today-done=\"{item_a}\"]"));
     tab_patel.wait_until_absent(
         "Repeat potassium rose to 6.5 mmol/L with peaked T waves on ECG.",
@@ -1461,46 +2344,42 @@ async fn ac3_partial_failure_practice_outage_failed_open_retry_and_nothing_needs
     let origin = SourceWork::new("patient_review", "work-ac3", "att-1").unwrap();
     seed_concern(
         &harness.store,
-        SeedConcern {
+        &harness.db,
+        TestConcern {
             practice: STAGING_PRACTICE_ID.to_owned(),
             workspace: ws_elena.to_owned(),
             concern_id: "concern-troponin".to_owned(),
             urgency: ConcernUrgency::Today,
-            standing: SeedConcernStanding::Open,
+            standing: TestConcernStanding::Open,
             reason: "Elevated hs-troponin I 142 ng/L on chest pain panel.".to_owned(),
             records: vec![ref_elena],
             source_work: origin.clone(),
             created_at: CLINICAL_NOW_UNIX - 400,
             updated_at: CLINICAL_NOW_UNIX - 400,
-            revision: 1,
             visit_slot: None,
         },
     )
-    .await
-    .unwrap();
+    .await;
     seed_concern(
         &harness.store,
-        SeedConcern {
+        &harness.db,
+        TestConcern {
             practice: STAGING_PRACTICE_ID.to_owned(),
             workspace: ws_jake.to_owned(),
             concern_id: "concern-bnp".to_owned(),
             urgency: ConcernUrgency::Today,
-            standing: SeedConcernStanding::Open,
+            standing: TestConcernStanding::Open,
             reason: "Elevated NT-proBNP 1,850 pg/mL ahead of cardiology check.".to_owned(),
             records: vec![ref_jake],
             source_work: origin,
             created_at: CLINICAL_NOW_UNIX - 800,
             updated_at: CLINICAL_NOW_UNIX - 800,
-            revision: 1,
             visit_slot: None,
         },
     )
-    .await
-    .unwrap();
+    .await;
 
-    // 1. Force `PatientReviews` producer failure BEFORE opening Today:
-    //    - Dr. Okafor still sees both healthy Concerns rows + ONE Retry banner naming `patient reviews`.
-    //    - Dr. Empty (0 rows) sees the partial failure banner and MUST NOT see "Nothing needs you right now."!
+    // 1. Force `PatientReviews` producer failure BEFORE opening Today.
     harness.faults.fail_producer(ProducerKind::PatientReviews);
 
     let base = format!("http://{}", harness.address);
@@ -1536,8 +2415,6 @@ async fn ac3_partial_failure_practice_outage_failed_open_retry_and_nothing_needs
         "\"Nothing needs you\" must NOT show when a producer failed:\n{empty_partial_text}"
     );
 
-    // Clear producer fault and click Retry -> Dr. Empty now genuinely sees "Nothing needs you right now.",
-    // and Dr. Okafor's partial failure banner clears!
     harness.faults.clear_producer_failures();
     tab_empty.click("button[data-today-partial-retry=\"true\"]");
     tab_empty.wait_for_text("Nothing needs you right now.", Duration::from_secs(15));
@@ -1554,24 +2431,16 @@ async fn ac3_partial_failure_practice_outage_failed_open_retry_and_nothing_needs
         json!(0)
     );
 
-    // 2. Seed a practice-wide source outage (`quest-labs` failing across workspaces) ->
-    //    shows ONE outage line, and suppresses "Nothing needs you right now." on Dr. Empty!
-    for ws in [ws_elena, ws_jake, ws_mary] {
-        seed_source_status(
-            &harness.store,
-            STAGING_PRACTICE_ID,
-            ws,
-            "quest-labs",
-            "Quest Diagnostics",
-            SeedSourceOutcome::Failed {
-                last_good_pulled_at: Some(CLINICAL_NOW_UNIX - 3_600),
-                reason: "upstream gateway 503".to_owned(),
-            },
-            CLINICAL_NOW_UNIX - 60,
-        )
-        .await
-        .unwrap();
-    }
+    // 2. Seed a practice-wide source outage (`quest-labs`) via `Store::refresh_patient_sources_for_practice`!
+    seed_practice_source_outage(
+        &harness,
+        &[ws_elena, ws_jake, ws_mary],
+        "quest-labs",
+        "Quest Diagnostics",
+        CLINICAL_NOW_UNIX - 60,
+        "upstream gateway 503",
+    )
+    .await;
 
     tab_okafor.reload();
     tab_okafor.wait_for_text("Quest Diagnostics", Duration::from_secs(20));
@@ -1579,6 +2448,22 @@ async fn ac3_partial_failure_practice_outage_failed_open_retry_and_nothing_needs
         tab_okafor.eval("document.querySelectorAll('[data-practice-outage]').length"),
         json!(1),
         "practice-wide outage across multiple patients must render as one line"
+    );
+    let outage_text = tab_okafor
+        .eval("document.querySelector('[data-practice-outage]')?.innerText ?? ''")
+        .as_str()
+        .unwrap_or_default()
+        .to_owned();
+    assert_eq!(
+        outage_text
+            .matches("is unavailable across the practice")
+            .count(),
+        1,
+        "practice outage banner must state `is unavailable across the practice` once without doubling: {outage_text:?}"
+    );
+    assert!(
+        outage_text.contains("Quest Diagnostics is unavailable across the practice (2 patients): upstream gateway 503"),
+        "unexpected outage banner sentence: {outage_text:?}"
     );
 
     tab_empty.reload();
@@ -1592,12 +2477,9 @@ async fn ac3_partial_failure_practice_outage_failed_open_retry_and_nothing_needs
         "\"Nothing needs you\" must not render during a practice-wide source outage"
     );
 
-    // 3. Open Elena's item (renders Elena's content), then force open failure on Jake's item:
-    //    Elena's older content MUST stay on screen while offering `Retry`, and clicking `Retry`
-    //    once cleared opens Jake's work & evidence!
+    // 3. Failed item open preserves older content on screen while offering `Retry`!
     let item_elena = format!("concern:{ws_elena}:concern-troponin");
     let item_jake = format!("concern:{ws_jake}:concern-bnp");
-
     tab_okafor.click(&format!(
         "[data-today-item=\"{item_elena}\"] button.today-row-open"
     ));
@@ -1606,9 +2488,6 @@ async fn ac3_partial_failure_practice_outage_failed_open_retry_and_nothing_needs
         Duration::from_secs(15),
     );
 
-    // Return to Today, arm open failure on `item_jake`, and click `item_jake`:
-    // Today's existing list stays on screen with `[data-item-open-failure="true"]` and `Retry`!
-    // And also test from Elena's open evidence page via Updates/Today:
     harness.faults.fail_open_item(&item_jake);
     tab_okafor.click("button[aria-label=\"Open Today\"]");
     tab_okafor.wait_for_text(
@@ -1627,7 +2506,6 @@ async fn ac3_partial_failure_practice_outage_failed_open_retry_and_nothing_needs
         tab_okafor.eval("!!document.querySelector('[data-item-open-retry=\"true\"]')"),
         json!(true)
     );
-    // Older Today content is still visible underneath!
     assert!(
         tab_okafor
             .eval("document.body.innerText")
@@ -1637,7 +2515,6 @@ async fn ac3_partial_failure_practice_outage_failed_open_retry_and_nothing_needs
         "failed item open must preserve existing content on screen"
     );
 
-    // Clear open fault and click Retry -> lands on Jake Miller's work and evidence!
     harness.faults.clear_open_failures();
     tab_okafor.click("button[data-item-open-retry=\"true\"]");
     tab_okafor.wait_for_text(
@@ -1700,69 +2577,102 @@ async fn ac4_and_ac5_patient_page_rows_updates_groups_and_desktop_phone_screensh
     )
     .await;
 
+    // Seed a practice-wide external lab outage via `Store::refresh_patient_sources_for_practice`
+    // so `09-today-desktop.png` and `10-today-phone.png` visually prove clean non-duplicated outage prose!
+    seed_practice_source_outage(
+        &harness,
+        &[ws_elena, ws_jake, ws_maria, ws_robert],
+        "quest-labs",
+        "Quest Diagnostics",
+        CLINICAL_NOW_UNIX - 180,
+        "upstream gateway 503",
+    )
+    .await;
+
     let origin = SourceWork::new("patient_review", "work-ac4", "att-1").unwrap();
 
-    // Two Today rows on Elena Morales + one Today row on Jake Miller.
+    // Two Today rows on Elena Morales (1 open concern + 1 collapsed unhandled row) + one Today row on Jake Miller.
     seed_concern(
         &harness.store,
-        SeedConcern {
+        &harness.db,
+        TestConcern {
             practice: STAGING_PRACTICE_ID.to_owned(),
             workspace: ws_elena.to_owned(),
             concern_id: "concern-elena-k".to_owned(),
             urgency: ConcernUrgency::Today,
-            standing: SeedConcernStanding::Open,
+            standing: TestConcernStanding::Open,
             reason: "Potassium 5.8 mmol/L on ACE inhibitor; recheck BMP this week.".to_owned(),
             records: vec![ref_elena.clone()],
             source_work: origin.clone(),
             created_at: CLINICAL_NOW_UNIX - 1_800,
             updated_at: CLINICAL_NOW_UNIX - 1_800,
-            revision: 1,
             visit_slot: None,
         },
     )
-    .await
-    .unwrap();
+    .await;
     seed_visit_preparation(
-        &harness.store,
-        SeedVisitPreparation {
+        &harness.db,
+        TestVisitPreparation {
             practice: STAGING_PRACTICE_ID.to_owned(),
             workspace: ws_elena.to_owned(),
             source_id: "practice-sched".to_owned(),
             appointment_id: "appt-elena-pm".to_owned(),
             starts_at_unix: CLINICAL_NOW_UNIX + 5_400,
             ends_at_unix: CLINICAL_NOW_UNIX + 7_200,
-            state: SeedVisitPrepState::CouldNotFinish {
+            state: TestVisitPrepState::CouldNotFinish {
                 reason: "Outside cardiology discharge summary still awaiting fax OCR".to_owned(),
             },
             updated_at: CLINICAL_NOW_UNIX - 3_600,
         },
     )
-    .await
-    .unwrap();
+    .await;
     seed_concern(
         &harness.store,
-        SeedConcern {
+        &harness.db,
+        TestConcern {
             practice: STAGING_PRACTICE_ID.to_owned(),
             workspace: ws_jake.to_owned(),
             concern_id: "concern-jake-ldl".to_owned(),
             urgency: ConcernUrgency::Today,
-            standing: SeedConcernStanding::Open,
+            standing: TestConcernStanding::Open,
             reason: "LDL 164 mg/dL after statin hold; discuss re-challenge.".to_owned(),
             records: vec![ref_jake],
-            source_work: origin,
+            source_work: origin.clone(),
             created_at: CLINICAL_NOW_UNIX - 2_400,
             updated_at: CLINICAL_NOW_UNIX - 2_400,
-            revision: 1,
             visit_slot: None,
         },
     )
-    .await
-    .unwrap();
+    .await;
+
+    // Seed retired concern + assessed review + patient summary so `13-updates-groups-desktop.png`
+    // and `14-updates-groups-phone.png` visually prove clean non-duplicated card headlines!
+    seed_concern(
+        &harness.store,
+        &harness.db,
+        TestConcern {
+            practice: STAGING_PRACTICE_ID.to_owned(),
+            workspace: ws_robert.to_owned(),
+            concern_id: "concern-robert-retired".to_owned(),
+            urgency: ConcernUrgency::Today,
+            standing: TestConcernStanding::Retired {
+                reason: "Repeat ambulatory blood pressures normalized.".to_owned(),
+                retired_at: CLINICAL_NOW_UNIX - 1_400,
+            },
+            reason: "Borderline office systolic blood pressure last month.".to_owned(),
+            records: vec![ref_robert.clone()],
+            source_work: origin,
+            created_at: CLINICAL_NOW_UNIX - 15_000,
+            updated_at: CLINICAL_NOW_UNIX - 1_400,
+            visit_slot: None,
+        },
+    )
+    .await;
 
     // Quiet reviews today (`Reviewed, nothing for you` group) on Robert Chen and Maria Santos.
     seed_review(
-        &harness.store,
-        SeedReview {
+        &harness.db,
+        TestReview {
             practice: STAGING_PRACTICE_ID.to_owned(),
             workspace: ws_robert.to_owned(),
             review_id: "rev-quiet-robert-ac5".to_owned(),
@@ -1795,11 +2705,10 @@ async fn ac4_and_ac5_patient_page_rows_updates_groups_and_desktop_phone_screensh
             updated_at: CLINICAL_NOW_UNIX - 1_200,
         },
     )
-    .await
-    .unwrap();
+    .await;
     seed_review(
-        &harness.store,
-        SeedReview {
+        &harness.db,
+        TestReview {
             practice: STAGING_PRACTICE_ID.to_owned(),
             workspace: ws_maria.to_owned(),
             review_id: "rev-quiet-maria-ac5".to_owned(),
@@ -1824,13 +2733,12 @@ async fn ac4_and_ac5_patient_page_rows_updates_groups_and_desktop_phone_screensh
             updated_at: CLINICAL_NOW_UNIX - 1_000,
         },
     )
-    .await
-    .unwrap();
+    .await;
 
     // Earlier days (`Yesterday` 2026-08-26 and `Aug 25, 2026`).
     seed_review(
-        &harness.store,
-        SeedReview {
+        &harness.db,
+        TestReview {
             practice: STAGING_PRACTICE_ID.to_owned(),
             workspace: ws_elena.to_owned(),
             review_id: "rev-yesterday-elena".to_owned(),
@@ -1855,11 +2763,10 @@ async fn ac4_and_ac5_patient_page_rows_updates_groups_and_desktop_phone_screensh
             updated_at: CLINICAL_NOW_UNIX - DAY_SECONDS,
         },
     )
-    .await
-    .unwrap();
+    .await;
     seed_review(
-        &harness.store,
-        SeedReview {
+        &harness.db,
+        TestReview {
             practice: STAGING_PRACTICE_ID.to_owned(),
             workspace: ws_jake.to_owned(),
             review_id: "rev-two-days-ago-jake".to_owned(),
@@ -1883,8 +2790,7 @@ async fn ac4_and_ac5_patient_page_rows_updates_groups_and_desktop_phone_screensh
             updated_at: CLINICAL_NOW_UNIX - 2 * DAY_SECONDS,
         },
     )
-    .await
-    .unwrap();
+    .await;
 
     let base = format!("http://{}", harness.address);
     let mut tab = Tab::open(&base);
@@ -1895,6 +2801,10 @@ async fn ac4_and_ac5_patient_page_rows_updates_groups_and_desktop_phone_screensh
     );
     tab.wait_for_text(
         "Coda also reviewed 2 patients today — nothing needed you",
+        Duration::from_secs(10),
+    );
+    tab.wait_for_text(
+        "Quest Diagnostics is unavailable across the practice (4 patients): upstream gateway 503",
         Duration::from_secs(10),
     );
 
@@ -1930,13 +2840,7 @@ async fn ac4_and_ac5_patient_page_rows_updates_groups_and_desktop_phone_screensh
     );
     assert_eq!(
         patient_rows,
-        json!([
-            format!(
-                "unhandled-visit:{ws_elena}:practice-sched:appt-elena-pm:{}",
-                CLINICAL_NOW_UNIX + 5_400
-            ),
-            elena_concern_id,
-        ]),
+        json!([format!("unhandled:{ws_elena}"), elena_concern_id,]),
         "patient page must display that patient's Today rows ordered by wait time, and no other patient's rows: {patient_rows}"
     );
     let patient_rows_text = tab

@@ -156,12 +156,17 @@ pub(crate) fn item_citation_to_chip(index: usize, citation: &ItemCitationWire) -
             format!("Open in {}", citation.source_label)
         }
     });
+    let full_record = if citation.body.trim().is_empty() {
+        citation.excerpt.clone()
+    } else {
+        citation.body.clone()
+    };
     SourceChip {
         index,
         open: true,
         label: citation.label.clone(),
         as_of: citation.as_of.clone().unwrap_or_default(),
-        preview: citation.excerpt.clone(),
+        preview: full_record,
         open_label,
         open_uri: citation.native_uri.clone(),
     }
@@ -750,6 +755,33 @@ mod tests {
         assert_eq!(
             outage,
             "Quest Labs is unavailable across the practice (4 patients): Connection refused"
+        );
+    }
+
+    #[test]
+    fn citation_chip_opens_full_formatted_record_body_and_preserves_native_uri() {
+        let full_body = format!(
+            "Comprehensive metabolic panel\n{}\nPotassium: 6.1 mmol/L (critical high)",
+            "Normal range reference line. ".repeat(20)
+        );
+        assert!(full_body.len() > 500);
+        let citation = ItemCitationWire {
+            candidate_id: "obs-bmp-1".to_owned(),
+            revision: "rev-1".to_owned(),
+            source_id: "regional-ehr".to_owned(),
+            source_label: "Regional EHR".to_owned(),
+            label: "Comprehensive metabolic panel".to_owned(),
+            as_of: Some("2026-08-27".to_owned()),
+            excerpt: "Short 320-char excerpt…".to_owned(),
+            body: full_body.clone(),
+            native_uri: Some("https://ehr.codahealth.test/chart/obs-bmp-1".to_owned()),
+        };
+        let chip = item_citation_to_chip(1, &citation);
+        assert_eq!(chip.preview, full_body);
+        assert_eq!(chip.open_label.as_deref(), Some("Open in Regional EHR"));
+        assert_eq!(
+            chip.open_uri.as_deref(),
+            Some("https://ehr.codahealth.test/chart/obs-bmp-1")
         );
     }
 }
