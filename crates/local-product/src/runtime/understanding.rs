@@ -371,7 +371,7 @@ pub enum PhysicianSummaryAccessError {
 }
 
 /// Why `save_patient_understanding` refused a completion candidate without saving.
-#[derive(Clone, Debug, PartialEq, Eq)]
+#[derive(Debug)]
 enum SaveRefusal {
     InvalidArgs(UnderstandingInputError),
     MissingCitationsForAvailableChart,
@@ -522,7 +522,62 @@ fn record_native_uri(workspace: &str, source: &SourceRevision) -> Option<String>
     ))
 }
 
-/// Single rule owner verifying cited references and constructing [`PatientSummary`].
+/// Single rule owner collecting `(candidate_id, revision)` pairs already
+/// verified and stored on `saved` (across both summary citations and
+/// operating-index anchors).
+fn known_understanding_pairs(saved: &PatientUnderstanding) -> BTreeSet<(String, String)> {
+    let mut pairs: BTreeSet<(String, String)> = saved
+        .summary
+        .citations
+        .iter()
+        .map(|c| {
+            (
+                c.reference.candidate_id.clone(),
+                c.reference.revision.clone(),
+            )
+        })
+        .collect();
+    for anchor in &saved.operating_index.anchors {
+        pairs.insert((
+            anchor.reference.candidate_id.clone(),
+            anchor.reference.revision.clone(),
+        ));
+    }
+    pairs
+}
+
+/// Single rule owner checking one [`ExactRecordReference`] against current
+/// workspace observations and `(read_in_work ∪ carried_forward_refs)`.
+fn verify_read_current_reference<'a>(
+    reference: &ExactRecordReference,
+    by_candidate: &BTreeMap<&str, &'a SourceRevision>,
+    read_in_work: &BTreeSet<(String, String)>,
+    carried_forward_refs: &BTreeSet<(String, String)>,
+) -> Result<&'a SourceRevision, SaveRefusal> {
+    let Some(source) = by_candidate.get(reference.candidate_id.as_str()).copied() else {
+        return Err(SaveRefusal::MissingSourceRecord {
+            candidate_id: reference.candidate_id.clone(),
+        });
+    };
+    if source.revision != reference.revision {
+        return Err(SaveRefusal::StaleSourceRevision {
+            candidate_id: reference.candidate_id.clone(),
+            cited_revision: reference.revision.clone(),
+            current_revision: source.revision.clone(),
+        });
+    }
+    let key = (reference.candidate_id.clone(), reference.revision.clone());
+    if !read_in_work.contains(&key) && !carried_forward_refs.contains(&key) {
+        return Err(SaveRefusal::UnreadSourceRevision {
+            candidate_id: reference.candidate_id.clone(),
+            revision: reference.revision.clone(),
+        });
+    }
+    Ok(source)
+}
+
+/// Single rule owner verifying operating-index anchors + summary citations and
+/// constructing [`PatientSummary`].
 fn build_verified_summary(
     workspace: &str,
     args: &SaveUnderstandingArgs,
@@ -540,6 +595,15 @@ fn build_verified_summary(
         .iter()
         .map(|source| (source.candidate_id.as_str(), source))
         .collect();
+
+    for anchor in &args.operating_index.anchors {
+        verify_read_current_reference(
+            &anchor.reference,
+            &by_candidate,
+            read_in_work,
+            carried_forward_refs,
+        )?;
+    }
 
     let mut citations: Vec<SummaryCitation> = Vec::new();
     let mut citation_index_by_ref: BTreeMap<(String, String), usize> = BTreeMap::new();
@@ -572,25 +636,13 @@ fn build_verified_summary(
         prose_parts.push(claim_text);
 
         for reference in &claim.citations {
-            let Some(source) = by_candidate.get(reference.candidate_id.as_str()).copied() else {
-                return Err(SaveRefusal::MissingSourceRecord {
-                    candidate_id: reference.candidate_id.clone(),
-                });
-            };
-            if source.revision != reference.revision {
-                return Err(SaveRefusal::StaleSourceRevision {
-                    candidate_id: reference.candidate_id.clone(),
-                    cited_revision: reference.revision.clone(),
-                    current_revision: source.revision.clone(),
-                });
-            }
+            let source = verify_read_current_reference(
+                reference,
+                &by_candidate,
+                read_in_work,
+                carried_forward_refs,
+            )?;
             let key = (reference.candidate_id.clone(), reference.revision.clone());
-            if !read_in_work.contains(&key) && !carried_forward_refs.contains(&key) {
-                return Err(SaveRefusal::UnreadSourceRevision {
-                    candidate_id: reference.candidate_id.clone(),
-                    revision: reference.revision.clone(),
-                });
-            }
             let idx = if let Some(&existing) = citation_index_by_ref.get(&key) {
                 existing
             } else {
@@ -844,29 +896,13 @@ impl Store {
                     .collect(),
             ),
             Some(saved) => {
-                let mut known_pairs: BTreeSet<(&str, &str)> = saved
-                    .summary
-                    .citations
-                    .iter()
-                    .map(|c| {
-                        (
-                            c.reference.candidate_id.as_str(),
-                            c.reference.revision.as_str(),
-                        )
-                    })
-                    .collect();
-                for anchor in &saved.operating_index.anchors {
-                    known_pairs.insert((
-                        anchor.reference.candidate_id.as_str(),
-                        anchor.reference.revision.as_str(),
-                    ));
-                }
+                let known_pairs = known_understanding_pairs(saved);
                 let changed: Vec<String> = observation
                     .sources
                     .iter()
                     .filter(|source| {
                         !known_pairs
-                            .contains(&(source.candidate_id.as_str(), source.revision.as_str()))
+                            .contains(&(source.candidate_id.clone(), source.revision.clone()))
                     })
                     .map(|source| source.candidate_id.clone())
                     .collect();
@@ -1502,19 +1538,7 @@ impl Store {
 
         let carried_forward_refs: BTreeSet<(String, String)> = current_row
             .as_ref()
-            .map(|saved| {
-                saved
-                    .summary
-                    .citations
-                    .iter()
-                    .map(|c| {
-                        (
-                            c.reference.candidate_id.clone(),
-                            c.reference.revision.clone(),
-                        )
-                    })
-                    .collect()
-            })
+            .map(known_understanding_pairs)
             .unwrap_or_default();
 
         let summary = match build_verified_summary(

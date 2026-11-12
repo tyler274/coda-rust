@@ -229,16 +229,25 @@ pub struct SaveUnderstandingArgs {
 }
 
 /// Validation failure on [`SaveUnderstandingArgs`] or [`OperatingIndex`].
-#[derive(Clone, Debug, PartialEq, Eq, thiserror::Error)]
+#[derive(Debug, thiserror::Error)]
 pub enum UnderstandingInputError {
     /// Arguments JSON failed schema decoding.
     #[error("invalid save_patient_understanding arguments: {0}")]
-    MalformedJson(String),
+    MalformedJson(#[source] serde_json::Error),
     /// Required text field was empty or whitespace.
     #[error("{field} must not be empty")]
     EmptyField {
         /// Name of the empty field.
         field: &'static str,
+    },
+    /// Record reference in `operating_index.anchors` or `claims.citations` was invalid.
+    #[error("invalid {field}: {cause}")]
+    InvalidReference {
+        /// Field holding the invalid reference.
+        field: &'static str,
+        /// Underlying exact-reference validation cause.
+        #[source]
+        cause: crate::runtime::concerns::ConcernInputError,
     },
     /// No summary claims were supplied.
     #[error("claims must contain at least one clinical summary statement")]
@@ -260,7 +269,7 @@ impl SaveUnderstandingArgs {
     /// Parses and normalizes raw tool JSON into [`SaveUnderstandingArgs`].
     pub fn parse(arguments: &Value) -> Result<Self, UnderstandingInputError> {
         let parsed: Self = serde_json::from_value(arguments.clone())
-            .map_err(|err| UnderstandingInputError::MalformedJson(err.to_string()))?;
+            .map_err(UnderstandingInputError::MalformedJson)?;
         parsed.validate()
     }
 
@@ -300,8 +309,9 @@ impl SaveUnderstandingArgs {
                 &anchor.reference.candidate_id,
                 &anchor.reference.revision,
             )
-            .map_err(|_| UnderstandingInputError::EmptyField {
+            .map_err(|cause| UnderstandingInputError::InvalidReference {
                 field: "operating_index.anchors.reference",
+                cause,
             })?;
             anchors.push(IndexedAnchor {
                 reference,
@@ -320,8 +330,9 @@ impl SaveUnderstandingArgs {
             for citation in claim.citations {
                 let verified =
                     ExactRecordReference::new(&citation.candidate_id, &citation.revision).map_err(
-                        |_| UnderstandingInputError::EmptyField {
+                        |cause| UnderstandingInputError::InvalidReference {
                             field: "claims.citations",
+                            cause,
                         },
                     )?;
                 if !citations.contains(&verified) {
@@ -766,19 +777,51 @@ mod tests {
             "claims": [{ "text": "Summary line.", "citations": [] }],
             "material_gaps": []
         });
-        assert_eq!(
+        assert!(matches!(
             SaveUnderstandingArgs::parse(&missing_gaps),
             Err(UnderstandingInputError::EmptyMaterialGaps)
-        );
+        ));
 
         let unknown_prop = json!({
             "operating_index": { "working_overview": "Overview", "unexpected": true },
             "claims": [{ "text": "Summary line.", "citations": [] }],
             "material_gaps": ["Outside cardiology records pending."]
         });
+        let malformed_err = SaveUnderstandingArgs::parse(&unknown_prop)
+            .expect_err("unknown property must fail strict schema");
         assert!(matches!(
-            SaveUnderstandingArgs::parse(&unknown_prop),
-            Err(UnderstandingInputError::MalformedJson(_))
+            malformed_err,
+            UnderstandingInputError::MalformedJson(_)
         ));
+        assert!(
+            std::error::Error::source(&malformed_err).is_some(),
+            "MalformedJson must preserve serde_json::Error as #[source]"
+        );
+
+        let control_char_anchor = json!({
+            "operating_index": {
+                "working_overview": "Overview",
+                "anchors": [{
+                    "reference": { "candidate_id": "Condition/bad\u{0007}id", "revision": "rev-1" },
+                    "source_id": "clinic-ehr",
+                    "topic": "Topic"
+                }]
+            },
+            "claims": [{ "text": "Summary line.", "citations": [] }],
+            "material_gaps": ["Outside cardiology records pending."]
+        });
+        let ref_err = SaveUnderstandingArgs::parse(&control_char_anchor)
+            .expect_err("control characters in anchor reference must fail");
+        assert!(matches!(
+            ref_err,
+            UnderstandingInputError::InvalidReference {
+                field: "operating_index.anchors.reference",
+                ..
+            }
+        ));
+        assert!(
+            std::error::Error::source(&ref_err).is_some(),
+            "InvalidReference must preserve ConcernInputError as #[source]"
+        );
     }
 }

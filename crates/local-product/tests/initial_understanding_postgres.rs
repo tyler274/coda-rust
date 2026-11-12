@@ -680,7 +680,8 @@ async fn ac2_synthetic_chart_saves_verified_memory_and_summary_with_material_gap
                     receipt: json!({"turn": 1}),
                     usage: Default::default(),
                 }),
-                // Turn 2: Verify premature save was refused (`unread_source_revision`), then read exact records!
+                // Turn 2: Verify premature save was refused (`unread_source_reference`), then read ONLY `Condition/afib-1`
+                // and verify an unread `operating_index.anchors` entry (`DiagnosticReport/bmp-1`) is ALSO refused!
                 2 => {
                     let refusal = request
                         .items
@@ -700,18 +701,13 @@ async fn ac2_synthetic_chart_saves_verified_memory_and_summary_with_material_gap
                     );
                     Ok(engine::Turn {
                         items: vec![engine::Item::Call(engine::Invocation {
-                            id: "read-both".into(),
+                            id: "read-afib-only".into(),
                             name: READ_TOOL.into(),
                             arguments: json!({
                                 "references": [
                                     {
                                         "candidate_id": "Condition/afib-1",
                                         "revision": "rev-afib-1",
-                                        "cursor": null
-                                    },
-                                    {
-                                        "candidate_id": "DiagnosticReport/bmp-1",
-                                        "revision": "rev-bmp-1",
                                         "cursor": null
                                     }
                                 ],
@@ -723,30 +719,93 @@ async fn ac2_synthetic_chart_saves_verified_memory_and_summary_with_material_gap
                         usage: Default::default(),
                     })
                 }
-                // Turn 3: Try finishing WITHOUT calling `save_patient_understanding` -> PracticeJobHost forces Continue!
-                3 => Ok(engine::Turn {
-                    items: vec![engine::Item::assistant(
-                        "Attempting to finish before saving structured understanding.",
-                    )],
-                    receipt: json!({"turn": 3}),
-                    usage: Default::default(),
-                }),
-                // Turn 4: Save verified understanding!
-                4 => Ok(engine::Turn {
+                // Turn 3: Cite ONLY the read `Condition/afib-1` in `claims`, while smuggling unread `DiagnosticReport/bmp-1`
+                // into `operating_index.anchors` -> must be refused (`unread_source_reference`), then read `DiagnosticReport/bmp-1`!
+                3 => {
+                    let unread_anchor_args = SaveUnderstandingArgs {
+                        expected_revision: None,
+                        operating_index: draft_args.operating_index.clone(),
+                        claims: vec![SummaryClaimInput {
+                            text: "Paroxysmal atrial fibrillation managed with apixaban 5 mg twice daily"
+                                .into(),
+                            citations: vec![ExactRecordReference {
+                                candidate_id: "Condition/afib-1".into(),
+                                revision: "rev-afib-1".into(),
+                            }],
+                        }],
+                        material_gaps: draft_args.material_gaps.clone(),
+                        scope_note: None,
+                    };
+                    Ok(engine::Turn {
+                        items: vec![
+                            engine::Item::Call(engine::Invocation {
+                                id: "unread-anchor-save".into(),
+                                name: SAVE_UNDERSTANDING_TOOL.into(),
+                                arguments: serde_json::to_string(&unread_anchor_args).unwrap(),
+                            }),
+                            engine::Item::Call(engine::Invocation {
+                                id: "read-bmp".into(),
+                                name: READ_TOOL.into(),
+                                arguments: json!({
+                                    "references": [
+                                        {
+                                            "candidate_id": "DiagnosticReport/bmp-1",
+                                            "revision": "rev-bmp-1",
+                                            "cursor": null
+                                        }
+                                    ],
+                                    "max_result_bytes": 32_768
+                                })
+                                .to_string(),
+                            }),
+                        ],
+                        receipt: json!({"turn": 3}),
+                        usage: Default::default(),
+                    })
+                }
+                // Turn 4: Confirm `unread-anchor-save` was refused, then try finishing WITHOUT calling `save_patient_understanding` -> PracticeJobHost forces Continue!
+                4 => {
+                    let anchor_refusal = request
+                        .items
+                        .iter()
+                        .find_map(|item| match item {
+                            engine::Item::MaterializedResult { call_id, output }
+                                if call_id == "unread-anchor-save" =>
+                            {
+                                Some(output.as_str())
+                            }
+                            _ => None,
+                        })
+                        .expect("unread anchor refusal materialized");
+                    assert!(
+                        anchor_refusal.contains("unread_source_reference")
+                            && anchor_refusal.contains("DiagnosticReport/bmp-1"),
+                        "unread operating_index anchor must be refused: {anchor_refusal}"
+                    );
+                    Ok(engine::Turn {
+                        items: vec![engine::Item::assistant(
+                            "Attempting to finish before saving structured understanding.",
+                        )],
+                        receipt: json!({"turn": 4}),
+                        usage: Default::default(),
+                    })
+                }
+                // Turn 5: Save verified understanding!
+                5 => Ok(engine::Turn {
                     items: vec![engine::Item::Call(engine::Invocation {
                         id: "verified-save".into(),
                         name: SAVE_UNDERSTANDING_TOOL.into(),
                         arguments: serde_json::to_string(&draft_args).unwrap(),
                     })],
-                    receipt: json!({"turn": 4}),
+                    receipt: json!({"turn": 5}),
                     usage: Default::default(),
                 }),
-                // Turn 5: Conclude cleanly after saving.
-                5 => Ok(engine::Turn {
+                // Turn 6: Conclude cleanly after saving.
+                6 => Ok(engine::Turn {
                     items: vec![engine::Item::assistant(
                         "Initial patient understanding saved with verified citations and material gaps.",
                     )],
-                    receipt: json!({"turn": 5}),
+                    receipt: json!({"turn": 6}),
                     usage: Default::default(),
                 }),
                 other => panic!("unexpected turn {other}"),
@@ -1303,7 +1362,8 @@ async fn ac3_later_source_and_chat_correction_update_same_patient_and_inform_sub
                     assert!(prior_json.contains("Valley Pulmonology"));
                     assert!(prior_json.contains("budesonide-formoterol"));
 
-                    // Verify citing the stale superseded `rev-bmp-1` is refused!
+                    // Verify BOTH citing the stale superseded `rev-bmp-1` in `claims` AND keeping a stale
+                    // `rev-bmp-1` anchor in `operating_index.anchors` are refused!
                     let stale_attempt = SaveUnderstandingArgs {
                         expected_revision: Some(1),
                         operating_index: OperatingIndex {
@@ -1322,12 +1382,45 @@ async fn ac3_later_source_and_chat_correction_update_same_patient_and_inform_sub
                         material_gaps: vec!["Valley Pulmonology spirometry missing".into()],
                         scope_note: None,
                     };
+                    let stale_anchor_attempt = SaveUnderstandingArgs {
+                        expected_revision: Some(1),
+                        operating_index: OperatingIndex {
+                            working_overview: "Attempt with stale operating_index anchor".into(),
+                            known_health_systems: vec![],
+                            open_threads: vec![],
+                            anchors: vec![IndexedAnchor {
+                                reference: ExactRecordReference {
+                                    candidate_id: "DiagnosticReport/bmp-1".into(),
+                                    revision: "rev-bmp-1".into(),
+                                },
+                                source_id: "clinic-ehr".into(),
+                                topic: "Superseded lab anchor".into(),
+                            }],
+                        },
+                        claims: vec![SummaryClaimInput {
+                            text: "Moderate persistent asthma controlled on budesonide-formoterol"
+                                .into(),
+                            citations: vec![ExactRecordReference {
+                                candidate_id: "Condition/asthma-1".into(),
+                                revision: "rev-asthma-1".into(),
+                            }],
+                        }],
+                        material_gaps: vec!["Valley Pulmonology spirometry missing".into()],
+                        scope_note: None,
+                    };
                     Ok(engine::Turn {
-                        items: vec![engine::Item::Call(engine::Invocation {
-                            id: "save-stale".into(),
-                            name: SAVE_UNDERSTANDING_TOOL.into(),
-                            arguments: serde_json::to_string(&stale_attempt).unwrap(),
-                        })],
+                        items: vec![
+                            engine::Item::Call(engine::Invocation {
+                                id: "save-stale".into(),
+                                name: SAVE_UNDERSTANDING_TOOL.into(),
+                                arguments: serde_json::to_string(&stale_attempt).unwrap(),
+                            }),
+                            engine::Item::Call(engine::Invocation {
+                                id: "save-stale-anchor".into(),
+                                name: SAVE_UNDERSTANDING_TOOL.into(),
+                                arguments: serde_json::to_string(&stale_anchor_attempt).unwrap(),
+                            }),
+                        ],
                         receipt: json!({"turn": 2}),
                         usage: Default::default(),
                     })
@@ -1347,7 +1440,24 @@ async fn ac3_later_source_and_chat_correction_update_same_patient_and_inform_sub
                         .unwrap();
                     assert!(
                         stale_refusal.contains("stale_source_revision"),
-                        "superseded revision must be refused: {stale_refusal}"
+                        "superseded claim citation must be refused: {stale_refusal}"
+                    );
+                    let stale_anchor_refusal = request
+                        .items
+                        .iter()
+                        .find_map(|item| match item {
+                            engine::Item::MaterializedResult { call_id, output }
+                                if call_id == "save-stale-anchor" =>
+                            {
+                                Some(output.as_str())
+                            }
+                            _ => None,
+                        })
+                        .unwrap();
+                    assert!(
+                        stale_anchor_refusal.contains("stale_source_revision")
+                            && stale_anchor_refusal.contains("DiagnosticReport/bmp-1"),
+                        "superseded operating_index anchor must be refused: {stale_anchor_refusal}"
                     );
 
                     let revised_args = SaveUnderstandingArgs {
