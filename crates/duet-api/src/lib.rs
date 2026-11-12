@@ -27,6 +27,7 @@ pub mod journal_gcs;
 mod moment_entity;
 pub mod privacy;
 pub mod privacy_archive;
+mod privacy_entity;
 pub mod producer_database;
 pub mod producer_routes;
 pub mod publication;
