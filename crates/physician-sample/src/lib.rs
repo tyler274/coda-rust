@@ -14,6 +14,7 @@
 )]
 
 mod auth;
+pub mod briefings;
 mod care;
 pub mod chart_load;
 mod chat_draft;
@@ -263,11 +264,23 @@ where
         .route("/health", get(|| async { Json(json!({"status": "ok"})) }))
         .route("/today", get(today))
         .route("/practice-day", get(schedule::practice_day))
+        .route(
+            "/practice-day/refresh",
+            post(schedule::refresh_practice_day),
+        )
         .route("/director/schedule/sync", post(schedule::sync_route))
         .route("/updates", get(updates))
         .route("/recent-conversations", get(recent_conversations))
         .route("/patient-workspaces", get(patient_list))
         .route("/patient-workspaces/{id}", get(workspace))
+        .route(
+            "/patient-workspaces/{id}/briefings",
+            get(briefings::workspace_briefings),
+        )
+        .route(
+            "/patient-workspaces/{id}/briefings/{briefing_id}",
+            get(briefings::visit_briefing),
+        )
         .route("/patient-roster", get(roster))
         .route("/dictation", post(|| async { dictation_unavailable() }))
         .route("/", get(site_index))

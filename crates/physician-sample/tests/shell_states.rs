@@ -43,6 +43,10 @@ impl Walk {
         browser.resize(size.1);
         browser.page().call_session("Page.enable", json!({}));
         browser.page().call_session(
+            "Emulation.setTimezoneOverride",
+            json!({ "timezoneId": "America/New_York" }),
+        );
+        browser.page().call_session(
             "Page.addScriptToEvaluateOnNewDocument",
             json!({ "source": include_str!("js/sign_in_states.js") }),
         );

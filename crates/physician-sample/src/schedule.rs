@@ -19,7 +19,8 @@ use axum::response::{IntoResponse, Response};
 use local_product::physician_sources::RecordDate;
 use local_product::runtime::Store;
 use local_product::runtime::briefings::{
-    VisitPreparationRecord, VisitPreparationState, visit_can_start_preparation,
+    SavedVisitBriefing, VisitPreparationRecord, VisitPreparationState, VisitStanding,
+    visit_can_start_preparation,
 };
 use local_product::runtime::schedule::{
     AppointmentId, AppointmentStatus, AppointmentWindow, PatientMatch, SavedAppointment,
@@ -489,6 +490,42 @@ pub(crate) async fn sync_route(
     }
 }
 
+/// Physician route `POST /practice-day/refresh`: refreshes the practice's
+/// configured schedule source when attached, keeping any retained snapshot on
+/// source failure, and returns the resulting `PracticeDayResponse`.
+pub(crate) async fn refresh_practice_day(
+    axum::Extension(connected): axum::Extension<ConnectedCare>,
+    request: Request<Body>,
+) -> Response {
+    let extensions = request.extensions();
+    if let (Some(runtime_store), Some(ConfiguredScheduleSource(source))) = (
+        extensions.get::<Store>().cloned(),
+        extensions.get::<ConfiguredScheduleSource>().cloned(),
+    ) {
+        let identity = ConnectedCare::identity(extensions);
+        let auth_store = connected.auth_store(extensions);
+        match sync_synthetic_schedule(
+            &*source,
+            &*auth_store,
+            &runtime_store,
+            &identity.practice_id,
+        )
+        .await
+        {
+            Ok(ScheduleSyncOutcome::Applied(_) | ScheduleSyncOutcome::FailedRead { .. }) => {
+                if let Some(live) = extensions.get::<Arc<crate::live::Live>>() {
+                    let _ = live.bus.publish(physician_bus::Event::Resync).await;
+                }
+            }
+            Err(error) => {
+                tracing::error!(%error, "practice-day refresh failed");
+                return StatusCode::SERVICE_UNAVAILABLE.into_response();
+            }
+        }
+    }
+    practice_day(axum::Extension(connected), request).await
+}
+
 /// Serves `GET /practice-day` from [`Store::practice_schedule`] when Postgres
 /// runtime state is attached, or reports `"absent"` when no schedule has been read.
 pub(crate) async fn practice_day(
@@ -545,12 +582,10 @@ pub(crate) async fn practice_day(
         .appointments
         .iter()
         .filter_map(|appointment| match &appointment.patient_match {
-            PatientMatch::Matched { workspace_id, .. }
-                if panel_set.contains(workspace_id.as_str()) =>
-            {
-                Some(workspace_id.clone())
-            }
-            _ => None,
+            PatientMatch::Matched { workspace_id, .. } => panel_set
+                .contains(workspace_id.as_str())
+                .then(|| workspace_id.clone()),
+            PatientMatch::Unmatched { .. } => None,
         })
         .collect::<BTreeSet<_>>()
         .into_iter()
@@ -570,6 +605,26 @@ pub(crate) async fn practice_day(
         })
         .collect();
 
+    let mut briefing_by_slot: BTreeMap<(String, String, i64), SavedVisitBriefing> = BTreeMap::new();
+    for ws in &matched_workspaces {
+        let Ok(briefings) = runtime_store
+            .visit_briefings_for_workspace(&identity.practice_id, ws, auth_store.as_ref())
+            .await
+        else {
+            return StatusCode::SERVICE_UNAVAILABLE.into_response();
+        };
+        for briefing in briefings {
+            briefing_by_slot.insert(
+                (
+                    briefing.slot.source_id.clone(),
+                    briefing.slot.appointment_id.clone(),
+                    briefing.slot.starts_at_unix,
+                ),
+                briefing,
+            );
+        }
+    }
+
     let version = match &schedule.standing {
         ScheduleStanding::Usable {
             schedule_version, ..
@@ -587,6 +642,7 @@ pub(crate) async fn practice_day(
                     &panel_set,
                     &display_names,
                     &prep_by_slot,
+                    &briefing_by_slot,
                     current_time_unix,
                 )
             })
@@ -700,6 +756,7 @@ fn visit_json(
     panel_set: &BTreeSet<&str>,
     display_names: &BTreeMap<String, String>,
     prep_by_slot: &BTreeMap<(String, String, i64), VisitPreparationRecord>,
+    briefing_by_slot: &BTreeMap<(String, String, i64), SavedVisitBriefing>,
     current_time_unix: i64,
 ) -> Option<Value> {
     let encounter = json!({
@@ -726,6 +783,7 @@ fn visit_json(
             let preparation = matched_visit_preparation_json(
                 appointment,
                 prep_by_slot.get(&slot_key),
+                briefing_by_slot.get(&slot_key),
                 current_time_unix,
             );
             Some(json!({
@@ -755,27 +813,79 @@ fn visit_json(
             "patient_workspace_id": Value::Null,
             "patient_display_name": Value::Null,
             "patient_time_zone": Value::Null,
-            "preparation": { "state": "unavailable" },
+            "preparation": if appointment.status == AppointmentStatus::Cancelled {
+                json!({ "state": "cancelled" })
+            } else {
+                json!({ "state": "unavailable" })
+            },
         })),
+    }
+}
+
+fn slot_historical_briefing_id<'a>(
+    prep: Option<&'a VisitPreparationRecord>,
+    briefing: Option<&'a SavedVisitBriefing>,
+) -> Option<&'a str> {
+    if let Some(saved) = briefing {
+        return Some(saved.briefing_id.as_str());
+    }
+    match prep.map(|rec| &rec.state) {
+        Some(VisitPreparationState::Ready { briefing_id, .. }) => Some(briefing_id.as_str()),
+        Some(
+            VisitPreparationState::Scheduled { .. }
+            | VisitPreparationState::Deferred { .. }
+            | VisitPreparationState::Skipped { .. }
+            | VisitPreparationState::Preparing { .. }
+            | VisitPreparationState::CouldNotFinish { .. }
+            | VisitPreparationState::EndedVisitChanged { .. },
+        )
+        | None => None,
     }
 }
 
 fn matched_visit_preparation_json(
     appointment: &SavedAppointment,
     prep: Option<&VisitPreparationRecord>,
+    briefing: Option<&SavedVisitBriefing>,
     current_time_unix: i64,
 ) -> Value {
-    let default_state = || {
-        if visit_can_start_preparation(
-            appointment.status,
-            appointment.window.ends_at_unix(),
-            current_time_unix,
-        ) {
-            json!({ "state": "scheduled" })
-        } else {
-            json!({ "state": "pending" })
-        }
-    };
+    let active_slot = visit_can_start_preparation(
+        appointment.status,
+        appointment.window.ends_at_unix(),
+        current_time_unix,
+    );
+    if appointment.status == AppointmentStatus::Cancelled {
+        return match slot_historical_briefing_id(prep, briefing) {
+            Some(id) => json!({
+                "state": "cancelled",
+                "historical_briefing_id": id,
+            }),
+            None => json!({ "state": "cancelled" }),
+        };
+    }
+    if !active_slot {
+        return match slot_historical_briefing_id(prep, briefing) {
+            Some(id) => json!({
+                "state": "ended",
+                "historical_briefing_id": id,
+            }),
+            None => json!({ "state": "pending" }),
+        };
+    }
+
+    let default_state = || json!({ "state": "scheduled" });
+
+    if let Some(saved) = briefing
+        && matches!(saved.visit_standing, VisitStanding::Current)
+    {
+        return json!({
+            "state": "prepared",
+            "briefing_id": saved.briefing_id,
+            "prepared_at": format_unix_rfc3339(saved.prepared_at),
+            "visit_card_orientation": saved.visit_card_orientation,
+        });
+    }
+
     let Some(prep) = prep else {
         return default_state();
     };
@@ -785,12 +895,21 @@ fn matched_visit_preparation_json(
             prepared_at,
             visit_card_orientation,
             reason: _,
-        } => json!({
-            "state": "prepared",
-            "briefing_id": briefing_id,
-            "prepared_at": format_unix_rfc3339(*prepared_at),
-            "visit_card_orientation": visit_card_orientation,
-        }),
+        } => {
+            if briefing.is_some_and(|saved| !matches!(saved.visit_standing, VisitStanding::Current))
+            {
+                return json!({
+                    "state": "scheduled",
+                    "historical_briefing_id": briefing_id,
+                });
+            }
+            json!({
+                "state": "prepared",
+                "briefing_id": briefing_id,
+                "prepared_at": format_unix_rfc3339(*prepared_at),
+                "visit_card_orientation": visit_card_orientation,
+            })
+        }
         VisitPreparationState::Preparing {
             job_id,
             started_at: _,
