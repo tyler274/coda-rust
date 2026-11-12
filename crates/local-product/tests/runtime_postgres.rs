@@ -714,6 +714,117 @@ async fn successor_publishes_retained_paid_answer_without_redispatch_or_duplicat
     }
 }
 
+/// An answer saved before its worker died keeps the source version it was
+/// written from, so a chart correction between that answer and the successor's
+/// claim still shows Update once the successor publishes it.
+#[tokio::test]
+#[ignore = "requires explicit local Postgres"]
+async fn a_recovered_answer_keeps_the_sources_it_was_written_from() {
+    struct Answer;
+    impl engine::recipe::Provider for Answer {
+        async fn exchange(
+            &mut self,
+            _: &Request,
+            _: &engine::Cancellation,
+            _: &engine::RunLimits,
+            _: &mut dyn Observer,
+        ) -> Result<engine::Turn, engine::Cause> {
+            Ok(turn("Potassium was 4.1."))
+        }
+    }
+    let lab = |content: &str| local_product::physician_sources::SourceRevision {
+        workspace: String::new(),
+        source_id: "ehr".into(),
+        candidate_id: "recovered-lab".into(),
+        revision: local_product::sha256_hex(content.as_bytes()),
+        record_type: "Observation".into(),
+        dates: vec![],
+        content: content.into(),
+        sha256: local_product::sha256_hex(content.as_bytes()),
+        readable_parts: vec![],
+        provenance: json!({"native_record":"recovered-lab"}),
+        native: None,
+    };
+    let s = store().await;
+    let mut scope = scope();
+    scope.workspace = uuid::Uuid::new_v4().to_string();
+    let original = local_product::physician_sources::SourceRevision {
+        workspace: scope.workspace.clone(),
+        ..lab("Potassium 4.1")
+    };
+    s.record_source(&original).await.unwrap();
+    let written_from = s.source_version(&scope.workspace).await.unwrap();
+    accept(&s, &scope, &input()).await.unwrap();
+    let first = s.claim(&scope, 1).await.unwrap().unwrap();
+    let mut host = PhysicianHost {
+        store: s.clone(),
+        claim: first,
+        authority: PublicationInterrupted,
+    };
+    // The answer is saved, then the worker dies before publishing it: its
+    // attempt is never settled and its lease runs out.
+    assert!(
+        host.run(&mut Answer, limits(), &engine::Cancellation::default())
+            .await
+            .is_err()
+    );
+    let corrected = local_product::physician_sources::SourceRevision {
+        workspace: scope.workspace.clone(),
+        ..lab("Potassium 6.8")
+    };
+    s.record_source(&corrected).await.unwrap();
+    let current = s.source_version(&scope.workspace).await.unwrap();
+    assert!(current > written_from);
+    tokio::time::sleep(std::time::Duration::from_millis(1_100)).await;
+    let successor = s.claim(&scope, 60).await.unwrap().unwrap();
+    PhysicianHost {
+        store: s.clone(),
+        claim: successor,
+        authority: Allowed,
+    }
+    .run(
+        &mut MustNotDispatch,
+        limits(),
+        &engine::Cancellation::default(),
+    )
+    .await
+    .unwrap();
+    let saved = s.conversation(&scope).await.unwrap();
+    assert_eq!(saved.status, WorkStatus::Completed);
+    assert_eq!(saved.attempts.len(), 2);
+    assert_eq!(saved.attempts[1].sources_version, Some(written_from));
+    let answer = saved.messages.last().unwrap();
+    assert_eq!(answer.text, "Potassium was 4.1.");
+    assert_eq!(answer.sources_version, Some(written_from));
+    assert!(
+        answer
+            .sources_version
+            .is_some_and(|answered| answered < current),
+        "the recovered answer must show Update after the correction"
+    );
+
+    // New work after the answer starts from the corrected chart.
+    accept(
+        &s,
+        &scope,
+        &Input {
+            key: "command-b".into(),
+            text: "And now?".into(),
+            ..input()
+        },
+    )
+    .await
+    .unwrap();
+    let next = s.claim(&scope, 60).await.unwrap().unwrap();
+    let saved = s.conversation(&scope).await.unwrap();
+    let attempt = saved
+        .attempts
+        .iter()
+        .find(|attempt| attempt.id == next.attempt)
+        .unwrap();
+    assert_eq!(attempt.sources_version, Some(current));
+}
+
 #[tokio::test]
 #[ignore = "requires explicit local Postgres"]
 async fn resume_after_stop_does_not_replay_an_unpublished_answer_as_visible() {

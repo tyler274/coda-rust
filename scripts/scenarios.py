@@ -139,6 +139,18 @@ def conversation(port, session, chat):
                   for item in (body or {}).get("snapshot", {}).get("conversation", [])]
 
 
+def answers(body):
+    return [item for item in (body or {}).get("snapshot", {}).get("conversation", [])
+            if item.get("kind") == "model"]
+
+
+# What a published answer keeps across chart corrections: everything the snapshot
+# carries except newer_records, which says whether records arrived after it.
+def published_evidence(body):
+    return [(item.get("kind"), item.get("text"), item.get("basis"), item.get("segments"))
+            for item in (body or {}).get("snapshot", {}).get("conversation", [])]
+
+
 def wait_conversation(port, session, chat, want, timeout=60):
     deadline = time.monotonic() + timeout
     while True:
@@ -298,10 +310,18 @@ def p1(receipt, state, out):
         if result.returncode == 0:
             restart_applications(state, 3)
             after_correction, _ = conversation(b, session, chat)
+            answers_before = [item.get("newer_records") for item in answers(original_body)]
+            answers_after = [item.get("newer_records") for item in answers(after_correction)]
             receipt.step("P1", "corrected chart cannot replace published evidence after restart", actor,
-                         after_correction == original_body,
-                         "Both sites and worker restarted after source correction; saved answer and citation unchanged",
+                         published_evidence(after_correction) == published_evidence(original_body),
+                         "Both sites and worker restarted after source correction; saved answer text, "
+                         "basis and citations unchanged",
                          command_id=key, artifact=save(out, "corrected-chart-after-restart", after_correction))
+            receipt.step("P1", "answer offers Update after the chart correction", actor,
+                         answers_before == [False] and answers_after == [True],
+                         f"newer_records on the answer was {answers_before} before the correction "
+                         f"and {answers_after} after it",
+                         command_id=key)
             proof_input.write_text(json.dumps({
                 "url": f"http://127.0.0.1:{b}/?patient={stack.WORKSPACE}&chat={chat}",
                 "citation": citations[0], "correct_source": False,

@@ -442,6 +442,17 @@ impl Conversation {
             .filter(|attempt| attempt.work == self.work)
     }
 
+    /// The source version a new attempt of the current work answers from. A
+    /// successor can reuse an earlier attempt's model context or saved answer,
+    /// so the work keeps the oldest version any of its attempts started from;
+    /// `current` applies only when none recorded one.
+    fn work_sources_version(&self, current: u64) -> u64 {
+        self.work_attempts()
+            .filter_map(|attempt| attempt.sources_version)
+            .min()
+            .unwrap_or(current)
+    }
+
     /// The latest attempt, when it belongs to the current work.
     fn latest_work_attempt(&self) -> Option<&Attempt> {
         self.attempts
@@ -985,7 +996,7 @@ impl Store {
         // Read before the conversation lock, so the claim never holds that row
         // while waiting on the source tables. A record landing after this read
         // marks the answer as having newer records, which is the safe side.
-        let sources_version = self.source_version(&scope.workspace).await?;
+        let current_sources = self.source_version(&scope.workspace).await?;
         let (tx, mut state, now) = self.locked(scope).await?;
         if input_id.is_some_and(|id| state.input_id() != Some(id)) {
             tx.commit().await?;
@@ -1015,6 +1026,7 @@ impl Store {
             return Ok(None);
         }
         let id = Uuid::new_v4().to_string();
+        let sources_version = state.work_sources_version(current_sources);
         state.attempts.push(Attempt {
             id: id.clone(),
             predecessor: state.latest_work_attempt().map(|a| a.id.clone()),
