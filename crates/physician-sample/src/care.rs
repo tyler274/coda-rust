@@ -14,7 +14,15 @@ use physician_auth::{
 use physician_wire::PatientLinkWire;
 
 use crate::auth::{AuthContext, STAGING_PRACTICE_ID, SYNTHETIC_PRACTICE_CLOCK, now};
-use crate::patients::{self, MemoryPatients, Patient, PatientDirectory};
+use crate::patients::{self, DirectoryError, MemoryPatients, Patient, PatientDirectory};
+
+#[derive(Debug, thiserror::Error)]
+pub(crate) enum PatientLookupError {
+    #[error("physician auth store unavailable")]
+    Auth,
+    #[error(transparent)]
+    Directory(#[from] DirectoryError),
+}
 
 /// Shared Connected Care state attached to every request on a physician router.
 #[derive(Clone)]
@@ -88,13 +96,19 @@ impl ConnectedCare {
         &self,
         extensions: &axum::http::Extensions,
         id: &str,
-    ) -> Result<Option<Patient>, StoreUnavailable> {
+    ) -> Result<Option<Patient>, PatientLookupError> {
         let practice = Self::identity(extensions).practice_id;
         let store = self.auth_store(extensions);
-        if store.patient_practice(id).await?.as_deref() != Some(practice.as_str()) {
+        if store
+            .patient_practice(id)
+            .await
+            .map_err(|StoreUnavailable| PatientLookupError::Auth)?
+            .as_deref()
+            != Some(practice.as_str())
+        {
             return Ok(None);
         }
-        patients::read_patient(&*self.patients(extensions), id).await
+        Ok(patients::read_patient(&*self.patients(extensions), id).await?)
     }
 
     pub(crate) fn identity(extensions: &axum::http::Extensions) -> PhysicianIdentity {

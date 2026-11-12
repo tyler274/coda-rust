@@ -27,6 +27,7 @@ mod live_tests;
 pub mod patients;
 pub mod rehearsal;
 mod reply;
+pub mod sources;
 pub mod synthetic_chart;
 pub mod synthetic_chart_fhir;
 mod synthetic_reply;
@@ -91,6 +92,7 @@ pub fn fixture_site() -> Router {
             get(empty_snapshot),
         )
         .route("/patient-workspaces/events", get(quiet_events))
+        .layer(middleware::from_fn(sources::intercept_reconnect_command))
         .layer(axum::Extension(care::ConnectedCare::fixture()))
 }
 
@@ -124,6 +126,7 @@ pub fn durable_site(
             "/patient-workspaces/events",
             get(live::events).with_state(bus),
         )
+        .layer(middleware::from_fn(sources::intercept_reconnect_command))
         // The shared workspace route lists this server's chats through it.
         .layer(axum::Extension(std::sync::Arc::clone(&live)))
         .layer(axum::Extension(care::ConnectedCare::new()))
@@ -142,6 +145,12 @@ where
         .route(
             "/recent-conversations",
             get(|| async { Json(json!({ "conversations": [] })) }),
+        )
+        .route("/connections", get(sources::get_connections))
+        .route("/connections/{source_id}/check", post(sources::post_check))
+        .route(
+            "/connections/{source_id}/reconnect",
+            post(sources::post_reconnect),
         )
         .route("/patient-workspaces", get(patient_list))
         .route("/patient-workspaces/{id}", get(workspace))
@@ -227,6 +236,7 @@ async fn forward(upstream: &str, request: Request<Body>) -> Response {
         .cloned();
     let accept = request.headers().get(axum::http::header::ACCEPT).cloned();
     let last_event = request.headers().get("last-event-id").cloned();
+    let idempotency_key = request.headers().get("idempotency-key").cloned();
     let body = axum::body::to_bytes(request.into_body(), 1_000_000)
         .await
         .unwrap_or_default();
@@ -241,6 +251,9 @@ async fn forward(upstream: &str, request: Request<Body>) -> Response {
     }
     if let Some(value) = last_event {
         outgoing = outgoing.header("last-event-id", value);
+    }
+    if let Some(value) = idempotency_key {
+        outgoing = outgoing.header("idempotency-key", value);
     }
     let Ok(incoming) = outgoing.send().await else {
         return StatusCode::BAD_GATEWAY.into_response();
@@ -527,6 +540,39 @@ async fn site_from_env(
     } else {
         (router(), None)
     };
+    let source_registry = sources::SourceRegistry::new(runtime.clone());
+    if let Some(charts_dir) = configured(&get, "PHYSICIAN_SYNTHETIC_CHARTS") {
+        if hosted
+            && configured(&get, "CODA_HOSTED_PROFILE").as_deref() != Some(hosting::STAGING_PROFILE)
+        {
+            return Err(format!(
+                "PHYSICIAN_SYNTHETIC_CHARTS is only honoured under CODA_HOSTED_PROFILE={}",
+                hosting::STAGING_PROFILE
+            )
+            .into());
+        }
+        let charts_path = Path::new(&charts_dir);
+        if !charts_path.join("patients").is_dir() {
+            return Err(format!(
+                "PHYSICIAN_SYNTHETIC_CHARTS has no patients directory at {}",
+                charts_path.display()
+            )
+            .into());
+        }
+        source_registry.register_synthetic(std::sync::Arc::new(
+            synthetic_chart::SyntheticCharts::open_with_optional_store(
+                charts_path,
+                runtime.clone(),
+            ),
+        ));
+    }
+    let local_proof = !hosted && configured(&get, "PHYSICIAN_LOCAL_PROOF").as_deref() == Some("1");
+    let base = if local_proof {
+        base.merge(sources::local_proof_routes())
+    } else {
+        base
+    }
+    .layer(axum::Extension(source_registry));
     let postgres = runtime.zip(readiness.as_ref());
     let router =
         auth::authed_router_with_bus(base, bus, memory_patients, postgres, rehearsal).await;
@@ -633,11 +679,17 @@ async fn today(
     let Ok(now) = connected.practice_now(request.extensions()).await else {
         return StatusCode::SERVICE_UNAVAILABLE.into_response();
     };
+    let Ok((connections, source_outages)) =
+        sources::today_connections_and_outages(request.extensions()).await
+    else {
+        return StatusCode::SERVICE_UNAVAILABLE.into_response();
+    };
     Json(json!({
         "date": practice_date(&now),
         "rows": [],
         "seen": [],
-        "connections": [],
+        "connections": connections,
+        "source_outages": source_outages,
         "cursors": {},
         "as_of": 0,
         "also_reviewed": 0,
@@ -712,8 +764,13 @@ async fn workspace(
         Ok(None) => return StatusCode::NOT_FOUND.into_response(),
         Err(_) => return StatusCode::SERVICE_UNAVAILABLE.into_response(),
     };
-    let mut enriched =
-        care::enrich_workspace(patient.workspace_body(&now), &id, request.extensions()).await;
+    let registry = sources::registry_from(request.extensions()).map(std::sync::Arc::as_ref);
+    let mut enriched = care::enrich_workspace(
+        patient.workspace_body(&now, registry),
+        &id,
+        request.extensions(),
+    )
+    .await;
     // A live server lists the signed-in physician's chats. The fixture site
     // has no `Live`.
     if let Some(live) = request.extensions().get::<std::sync::Arc<live::Live>>() {
@@ -822,6 +879,7 @@ pub fn rejection_message(command_type: &str) -> &'static str {
         "follow_up.end" => "Coda couldn’t end that follow-up.",
         "conversation.archive" => "Coda couldn’t archive that conversation.",
         "conversation.restore" => "Coda couldn’t restore that conversation.",
+        "reconnect_source" => "Coda couldn’t reconnect that source.",
         "cadence.set" | "cadence.override" | "review_cadence.set" => {
             "Physicians cannot override patient review cadence."
         }
@@ -979,6 +1037,23 @@ mod tests {
             .await
             .expect_err("required sign-in over other routes");
         assert!(error.to_string().contains("PHYSICIAN_UPSTREAM"), "{error}");
+    }
+
+    #[tokio::test]
+    async fn synthetic_charts_fail_closed_when_patients_folder_is_missing() {
+        let environment = |name: &str| {
+            (name == "PHYSICIAN_SYNTHETIC_CHARTS")
+                .then(|| "/nonexistent-synthetic-chart-bank".to_owned())
+        };
+        let error = site_from_env(environment, std::sync::Arc::default())
+            .await
+            .expect_err("missing synthetic bank folder must fail closed");
+        assert!(
+            error
+                .to_string()
+                .contains("PHYSICIAN_SYNTHETIC_CHARTS has no patients directory"),
+            "{error}"
+        );
     }
 
     #[tokio::test]

@@ -97,18 +97,20 @@ def check(path):
             assert not missing, f"skill assets missing from the physician site image: {missing}"
         elif "PHYSICIAN_SKILLS_DIR" in env:
             raise AssertionError("only the physician site image carries the skill catalog")
-        if labels["com.coda.binary"].endswith("/physician-migrate"):
-            assert "PHYSICIAN_SYNTHETIC_CHARTS" in env, "the migration image must name its chart bank"
+        if labels["com.coda.binary"].endswith(("/physician-migrate", "/physician-sample")):
+            assert "PHYSICIAN_SYNTHETIC_CHARTS" in env, \
+                "the physician site and migration images must name their chart bank"
             directory = env["PHYSICIAN_SYNTHETIC_CHARTS"].lstrip("/")
-            assert chart_manifest and chart_manifest["patients"], "nonempty chart manifest missing from migration image"
+            assert chart_manifest and chart_manifest["patients"], \
+                "nonempty chart manifest missing from physician image"
             expected = {
                 f"{directory}/patients/{patient['mrn']}/{family}.ndjson"
                 for patient in chart_manifest["patients"] for family in chart_manifest["families"]
             }
             missing = expected - paths
-            assert not missing, f"patient chart files missing from migration image: {sorted(missing)}"
+            assert not missing, f"patient chart files missing from physician image: {sorted(missing)}"
         elif "PHYSICIAN_SYNTHETIC_CHARTS" in env:
-            raise AssertionError("only the migration image carries the chart bank")
+            raise AssertionError("only the physician site and migration images carry the chart bank")
         for key in ("PHYSICIAN_SITE_DIR", "DUET_SITE_DIR"):
             if key in env:
                 directory = env[key].lstrip("/")
