@@ -58,7 +58,7 @@ pub(super) struct LangfuseTurn {
 }
 
 /// The generations in a `GET /api/public/v2/observations?sessionId=` answer,
-/// newest first: a redelivered attempt's generation comes before the one it
+/// newest first: a retried attempt's generation comes before the one it
 /// replaced. `None` when the answer has no `data` list or a generation in it
 /// has no `traceId`: a malformed answer, not an empty session.
 pub(super) fn session_generations(body: &Value, canary: &str) -> Option<Vec<LangfuseTurn>> {
@@ -140,6 +140,9 @@ pub(super) struct AttemptSpan {
     pub(super) work_id: Option<String>,
     pub(super) predecessor_run_id: Option<String>,
     pub(super) error_type: Option<String>,
+    /// `coda.trace_relation`: how the attempt's new trace relates to the
+    /// request that made its work runnable.
+    pub(super) trace_relation: Option<String>,
 }
 
 /// The attempt span for `run_id` in a Datadog span search answer.
@@ -156,12 +159,27 @@ pub(super) fn attempt_span(body: &Value, run_id: &str) -> Option<AttemptSpan> {
         work_id: text("coda.work_id"),
         predecessor_run_id: text("coda.predecessor_run_id"),
         error_type: text("error.type"),
+        trace_relation: text("coda.trace_relation"),
     })
+}
+
+/// Where an attempt misses its relation to the accepting request: the worker
+/// starts each attempt's own trace and links it to the request's saved trace
+/// context, recording `coda.trace_relation` `link`. Any other relation means
+/// the work reached the worker without the request's context.
+pub(super) fn link_gaps(attempt: &AttemptSpan) -> Vec<String> {
+    if attempt.trace_relation.as_deref() == Some("link") {
+        return Vec::new();
+    }
+    vec![format!(
+        "attempt {} has coda.trace_relation {:?}, not \"link\"; it is not linked to the accepting request",
+        attempt.run_id, attempt.trace_relation
+    )]
 }
 
 /// What `chat-failure` requires of a marked turn's two attempts: the first
 /// failed on purpose, and the one that answered succeeds it in the same work.
-pub(super) fn redelivery_gaps(failed: &AttemptSpan, successor: &AttemptSpan) -> Vec<String> {
+pub(super) fn retry_gaps(failed: &AttemptSpan, successor: &AttemptSpan) -> Vec<String> {
     let mut gaps = Vec::new();
     if failed.error_type.as_deref() != Some("rehearsed") {
         gaps.push(format!(
@@ -401,32 +419,6 @@ pub(super) fn isolation_gaps(span: &OpsSpan, run_id: Option<&str>) -> Vec<String
     gaps
 }
 
-/// Where one Datadog trace misses the Pub/Sub handoff: the site's publish
-/// span and the worker's attempt span must share the trace, or the worker
-/// started a trace of its own.
-pub(super) fn handoff_gaps(trace: &Value) -> Vec<String> {
-    let spans = trace["data"]
-        .as_array()
-        .map(Vec::as_slice)
-        .unwrap_or_default();
-    let holds = |service: &str, resource: &str| {
-        spans.iter().any(|span| {
-            span["attributes"]["service"] == service
-                && span["attributes"]["resource_name"] == resource
-        })
-    };
-    [
-        ("physician-sample", "physician.queue.publish"),
-        ("physician-worker", "physician.worker.attempt"),
-    ]
-    .into_iter()
-    .filter(|(service, resource)| !holds(service, resource))
-    .map(|(service, resource)| {
-        format!("the trace has no {service} {resource} span; the Pub/Sub handoff did not carry it")
-    })
-    .collect()
-}
-
 /// One log backend's answer for one turn: the physician log lines of its
 /// trace (the positive control that its logs arrive at all) and the lines
 /// that carry the canary.
@@ -593,13 +585,12 @@ mod tests {
     fn session_generations_come_newest_first() {
         let mut first = generation();
         first["traceId"] = json!("first");
-        let mut redelivered = generation();
-        redelivered["traceId"] = json!("redelivered");
-        redelivered["startTime"] = json!("2026-11-09T10:00:12.000Z");
-        let turns =
-            session_generations(&observations(&[first, redelivered]), "canary-123").unwrap();
+        let mut retried = generation();
+        retried["traceId"] = json!("retried");
+        retried["startTime"] = json!("2026-11-09T10:00:12.000Z");
+        let turns = session_generations(&observations(&[first, retried]), "canary-123").unwrap();
         let traces: Vec<&str> = turns.iter().map(|turn| turn.trace_id.as_str()).collect();
-        assert_eq!(traces, ["redelivered", "first"]);
+        assert_eq!(traces, ["retried", "first"]);
     }
 
     #[test]
@@ -656,17 +647,20 @@ mod tests {
     }
 
     #[test]
-    fn the_handoff_needs_the_publish_and_the_attempt_in_one_trace() {
-        let span = |service: &str, resource: &str| json!({ "attributes": { "service": service, "resource_name": resource } });
-        let carried = json!({ "data": [
-            span("physician-sample", "physician.queue.publish"),
-            span("physician-worker", "physician.worker.attempt"),
-        ]});
-        assert!(handoff_gaps(&carried).is_empty());
-        let broken = json!({ "data": [span("physician-worker", "physician.worker.attempt")] });
-        let gaps = handoff_gaps(&broken);
-        assert_eq!(gaps.len(), 1, "{gaps:?}");
-        assert!(gaps[0].contains("physician.queue.publish"), "{gaps:?}");
+    fn an_attempt_must_link_to_the_accepting_request() {
+        let related = |relation: Value| {
+            let mut body = attempt_body("run-1", json!({}));
+            body["data"][0]["attributes"]["custom"]["coda"]["trace_relation"] = relation;
+            attempt_span(&body, "run-1").unwrap()
+        };
+        let linked = related(json!("link"));
+        assert_eq!(linked.trace_relation.as_deref(), Some("link"));
+        assert!(link_gaps(&linked).is_empty());
+        for unlinked in [related(json!("root")), related(Value::Null)] {
+            let gaps = link_gaps(&unlinked);
+            assert_eq!(gaps.len(), 1, "{gaps:?}");
+            assert!(gaps[0].contains("run-1"), "{gaps:?}");
+        }
     }
 
     #[test]
@@ -780,7 +774,7 @@ mod tests {
         body["data"][0]["attributes"]["custom"]["coda"]["predecessor_run_id"] = json!("run-1");
         let successor = attempt_span(&body, "run-2").unwrap();
         assert_eq!(failed.error_type.as_deref(), Some("rehearsed"));
-        assert!(redelivery_gaps(&failed, &successor).is_empty());
+        assert!(retry_gaps(&failed, &successor).is_empty());
         assert_eq!(attempt_span(&body, "run-9"), None);
     }
 
@@ -791,14 +785,16 @@ mod tests {
             work_id: Some("work-1".into()),
             predecessor_run_id: None,
             error_type: Some("model".into()),
+            trace_relation: None,
         };
         let successor = AttemptSpan {
             run_id: "run-2".into(),
             work_id: Some("work-2".into()),
             predecessor_run_id: None,
             error_type: Some("model".into()),
+            trace_relation: None,
         };
-        assert_eq!(redelivery_gaps(&failed, &successor).len(), 4);
+        assert_eq!(retry_gaps(&failed, &successor).len(), 4);
     }
 
     #[test]

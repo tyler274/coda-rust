@@ -57,7 +57,7 @@ configuration, checks, and the
 | Flake output | Image | Role | Entrypoint binary |
 | --- | --- | --- | --- |
 | `physician-sample-image` | `coda-physician-sample` | runtime | `physician-sample` serving `PHYSICIAN_SITE_DIR` (Dioxus WASM bundle) |
-| `physician-worker-image` | `coda-physician-worker` | runtime | `physician-worker`, the Pub/Sub chat-turn worker |
+| `physician-worker-image` | `coda-physician-worker` | runtime | `physician-worker`, which runs the physician work Postgres announces |
 | `observability-relay-image` | `coda-observability-relay` | runtime | `observability-relay`, which forwards public-site's `/grafana/` requests to Grafana's internal load balancer. It reads no secrets and starts without Doppler |
 | `duet-api-image` | `coda-duet-api` | runtime | `duet-api` serving `DUET_SITE_DIR` (Dioxus WASM bundle) |
 | `physician-migration-image` | `coda-physician-migrate` | migration | `physician-migrate`: physician-auth, front-door, then runtime chains; packaged synthetic charts for explicit `load-charts` |

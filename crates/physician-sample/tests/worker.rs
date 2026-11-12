@@ -283,8 +283,8 @@ async fn hearing_of_settled_work_again_runs_the_fixed_provider_once() {
     assert_eq!(attempt_statuses(&again), ["completed"]);
 }
 
-/// The worker serves health and readiness only: the route a broker used to
-/// push work to is gone, so nothing can hand it work over HTTP.
+/// The worker serves health and readiness only: no route takes work, so
+/// nothing can hand it work over HTTP.
 #[tokio::test]
 async fn the_worker_serves_no_work_route() {
     let _guard = lock().lock().await;

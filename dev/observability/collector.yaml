@@ -53,7 +53,7 @@ processors:
           - set(status.message, "")
           # Only known instrumentation names survive; callers may otherwise
           # put free text into a span name. HTTP route remains a safe attribute.
-          - set(name, "operation") where not IsMatch(name, "^(gen_ai\\.generation|http\\.server|physician\\.(worker\\.attempt|queue\\.publish|recovery\\.sweep)|duet\\.((recovery|privacy_recovery)\\.sweep|conversation\\.execute)|codex\\.exec|coda\\.simulation)$")
+          - set(name, "operation") where not IsMatch(name, "^(gen_ai\\.generation|http\\.server|physician\\.(worker\\.attempt|receipt_compaction)|duet\\.((recovery|privacy_recovery)\\.sweep|conversation\\.execute)|codex\\.exec|coda\\.simulation)$")
           - set(name, "http.server") where attributes["http.request.method"] != nil
       - context: spanevent
         statements:

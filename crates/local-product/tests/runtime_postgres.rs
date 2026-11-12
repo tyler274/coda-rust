@@ -1225,7 +1225,7 @@ async fn event_ack_stop_steering_and_late_candidate_fences() {
     assert_eq!(
         ours(s.dispatch_due(100, Some(&start)).await.unwrap()),
         vec![delivery],
-        "settlement makes the waiting steer due for the recovery sweep"
+        "settlement makes the waiting steer due for the due-work read"
     );
     assert_eq!(
         settlement,

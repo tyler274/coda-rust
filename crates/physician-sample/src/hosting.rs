@@ -205,7 +205,7 @@ impl SimulationPractices {
 /// `[fail:K]`: the first K attempts fail. The count is the conversation's
 /// saved attempts on this input, so it survives a worker restart and every
 /// worker instance agrees. Try again keeps the input, so `[fail:5]`
-/// dead-letters on its fifth failure and its Try again then succeeds.
+/// ends the turn failed on its fifth failure and its Try again then succeeds.
 pub fn marked_attempt_fails(earlier_attempts: u32, input: &str) -> bool {
     marked_failures(input).is_some_and(|failures| earlier_attempts < failures)
 }

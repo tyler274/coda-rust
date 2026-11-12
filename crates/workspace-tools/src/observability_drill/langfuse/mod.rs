@@ -41,7 +41,7 @@ ACTION
   isolation          Langfuse holds the canary; the operations spans and logs of
                      the same trace exist and hold no canary
   chat-failure       send threshold + 1 canary turns marked [fail:1] (needs
-                     --confirm, it pages): each answers on redelivery, the
+                     --confirm, it pages): each answers on its retry, the
                      physician chat failure monitor fires, one failure is
                      followed from the monitor's query to the failed attempt,
                      its successor in the same work and its ERROR generation
@@ -66,7 +66,7 @@ const CHAT_FAILURE_MONITOR: &str = "[staging] physician chat generation errors";
 /// The ledger group of a `chat-failure` exercise, apart from the exporter's.
 const CHAT_FAILURE_GROUP: &str = "staging/physician-chat-failure";
 /// What `chat-failure` appends to each turn: the worker fails the first
-/// attempt of a rehearsal turn so marked, and the redelivery answers.
+/// attempt of a rehearsal turn so marked, and its retry answers.
 const FAIL_ONCE: &str = " [fail:1]";
 /// The most marked turns `chat-failure` sends, whatever the threshold says.
 const MAX_FAILING_TURNS: u32 = 20;
@@ -655,7 +655,7 @@ impl LangfuseApi<'_> {
     }
 
     /// Waits for the generation of attempt `run_id` among the chat's
-    /// generations: a redelivered attempt has a trace of its own.
+    /// generations: each attempt has a trace of its own.
     fn attempt_generation(
         &self,
         sent: &Sent,
@@ -749,29 +749,6 @@ impl Datadog {
                     .then_some(DatadogTrace { trace_id, body }))
             })?
             .ok_or(readback_timeout("the Datadog attempt and generation spans"))
-    }
-
-    /// Re-reads `trace` until it also holds the site's publish span: spans
-    /// land in Datadog independently, so the worker's may come first. Returns
-    /// the latest read of the trace, which every later verdict must judge,
-    /// and the handoff gaps that outlast the polls.
-    fn await_handoff(
-        &self,
-        trace: DatadogTrace,
-        watch: &Watch,
-    ) -> Result<(DatadogTrace, Vec<String>), DrillError> {
-        if readback::handoff_gaps(&trace.body).is_empty() {
-            return Ok((trace, Vec::new()));
-        }
-        let mut latest = trace;
-        watch.poll(READBACK_POLLS, POLL, |_| {
-            latest.body = self.spans(&format!("trace_id:{}", latest.trace_id))?;
-            Ok(readback::handoff_gaps(&latest.body)
-                .is_empty()
-                .then_some(()))
-        })?;
-        let gaps = readback::handoff_gaps(&latest.body);
-        Ok((latest, gaps))
     }
 
     /// Waits for the physician logs of the turn's trace, then judges every
@@ -928,7 +905,6 @@ fn alert_to_run(request: &Request, report: &mut Report, watch: &Watch) -> Result
     let datadog = Datadog::open()?;
     let sent = send_turn(request, report, watch)?;
     let trace = datadog.attempt_trace(&sent.attempt, watch)?;
-    let (trace, handoff) = datadog.await_handoff(trace, watch)?;
     let turn = api.turn(&sent, watch)?;
     let generation = readback::datadog_span(&trace.body, &sent.canary);
     let attempt_run = trace.attempt_run_id();
@@ -944,7 +920,10 @@ fn alert_to_run(request: &Request, report: &mut Report, watch: &Watch) -> Result
             trace.trace_id, turn.trace_id
         ));
     }
-    found.extend(handoff);
+    // A missing attempt span is the `coda.run_id` gap below.
+    if let Some(span) = readback::attempt_span(&trace.body, &sent.attempt) {
+        found.extend(readback::link_gaps(&span));
+    }
     let attempt = Some(sent.attempt.as_str());
     if generation.run_id.as_deref() != attempt {
         found.push(format!(
@@ -1342,8 +1321,6 @@ fn follow_failure(
         )]);
     };
     let (failed, failed_trace) = datadog.attempt(&failed_run, watch)?;
-    // The first delivery continues the site's trace; the redelivery may not.
-    let (failed_trace, handoff) = datadog.await_handoff(failed_trace, watch)?;
     let alerted_trace = datadog.failed_generation(&failed_run, watch)?;
     let langfuse = api.attempt_generation(sent, &failed_run, watch)?;
     let failed_generation = readback::datadog_span(&failed_trace.body, &sent.canary);
@@ -1362,7 +1339,7 @@ fn follow_failure(
             "langfuse": langfuse,
         }),
     );
-    let mut found = readback::redelivery_gaps(&failed, &successor);
+    let mut found = readback::retry_gaps(&failed, &successor);
     found.extend(readback::failed_generation_gaps(&langfuse, &failed_run));
     if alerted_trace != failed_trace.trace_id {
         found.push(format!(
@@ -1385,7 +1362,8 @@ fn follow_failure(
     if failed_generation.canary {
         found.push("Datadog carries the canary in the failed attempt's trace".to_owned());
     }
-    found.extend(handoff);
+    found.extend(readback::link_gaps(&failed));
+    found.extend(readback::link_gaps(&successor));
     found.extend(readback::isolation_gaps(
         &successor_generation,
         Some(&sent.attempt),

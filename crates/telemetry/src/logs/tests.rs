@@ -174,40 +174,7 @@ fn every_http_response_exports_one_record_under_the_default_filter() {
 }
 
 #[test]
-fn queue_publish_failure_keeps_identifying_fields_without_content() {
-    let exporter = InMemoryLogExporter::default();
-    let provider = SdkLoggerProvider::builder()
-        .with_simple_exporter(exporter.clone())
-        .build();
-    let subscriber = tracing_subscriber::registry().with(SafeLogs::new(&provider, "test"));
-    tracing::subscriber::with_default(subscriber, || {
-        tracing::error!(
-            event = "physician.queue.publish_failed",
-            error.type = "publish",
-            error = "SECRET-PUBLISH-PAYLOAD",
-            "SECRET-PUBLISH-MESSAGE"
-        );
-    });
-    let logs = exporter.get_emitted_logs().unwrap();
-    assert_eq!(logs.len(), 1);
-    for (key, value) in [
-        ("event", "physician.queue.publish_failed"),
-        ("error.type", "publish"),
-    ] {
-        assert!(
-            logs[0]
-                .record
-                .attributes_iter()
-                .any(|(k, v)| k.as_str() == key && *v == AnyValue::from(value)),
-            "missing {key}"
-        );
-    }
-    assert!(!format!("{logs:?}").contains("SECRET"));
-    provider.shutdown().unwrap();
-}
-
-#[test]
-fn recovery_failures_keep_named_safe_classes_and_trace_identity() {
+fn worker_failures_keep_named_safe_classes_and_trace_identity() {
     let exporter = InMemoryLogExporter::default();
     let provider = SdkLoggerProvider::builder()
         .with_simple_exporter(exporter.clone())
@@ -217,12 +184,10 @@ fn recovery_failures_keep_named_safe_classes_and_trace_identity() {
         .with(tracing_opentelemetry::layer().with_tracer(traces.tracer("test")))
         .with(SafeLogs::new(&provider, "physician-sample"));
     let expected = tracing::subscriber::with_default(subscriber, || {
-        let span = tracing::info_span!("physician.recovery.sweep");
+        let span = tracing::info_span!("physician.receipt_compaction");
         let expected = span.context().span().span_context().clone();
         let _entered = span.enter();
         for (event, class) in [
-            ("physician.recovery.failed", "database"),
-            ("physician.recovery.failed", "publish"),
             ("physician.queue.dispatch_failed", "database"),
             ("physician.receipt_compaction.failed", "database"),
         ] {
@@ -232,10 +197,8 @@ fn recovery_failures_keep_named_safe_classes_and_trace_identity() {
         expected
     });
     let logs = exporter.get_emitted_logs().unwrap();
-    assert_eq!(logs.len(), 4);
+    assert_eq!(logs.len(), 2);
     for (log, (event, class)) in logs.iter().zip([
-        ("physician.recovery.failed", "database"),
-        ("physician.recovery.failed", "publish"),
         ("physician.queue.dispatch_failed", "database"),
         ("physician.receipt_compaction.failed", "database"),
     ]) {

@@ -399,7 +399,7 @@ async fn queue_delivery_is_fenced_to_its_input_and_recovers_through_typed_owners
     );
 
     // A newer accepted input supersedes the old wakeup: it can never claim,
-    // and acknowledging it is safe because the newer input is recoverable.
+    // and dropping it is safe because the newer input is due in its place.
     accept(&store, &scope, &delivery_input("second"), 7)
         .await
         .unwrap();
@@ -423,7 +423,7 @@ async fn queue_delivery_is_fenced_to_its_input_and_recovers_through_typed_owners
         DeliveryState::Claimed
     );
 
-    // A failed run is released for broker redelivery as a successor attempt,
+    // A failed run is released to be claimed again as a successor attempt,
     // and its history says it failed: a lost lease is "interrupted" instead.
     store
         .settle_chat_attempt(
@@ -534,10 +534,10 @@ async fn repeated_failures_end_the_input_as_failed_until_resume_or_new_input() {
     assert!(store.claim_delivery(&turn, 60).await.unwrap().is_none());
     assert!(
         ours(store.dispatch_due(100, Some(&start)).await.unwrap()).is_empty(),
-        "the recovery sweep must not republish work that recovery gave up on"
+        "the due-work read must not return work that recovery gave up on"
     );
-    // Failed is neither settled nor runnable: the worker refuses it so the
-    // broker dead-letters the message instead of acknowledging it.
+    // Failed is neither settled nor runnable: a worker that hears of it
+    // claims nothing and tells open pages to refetch.
     assert_eq!(
         store.delivery_state(&turn).await.unwrap(),
         DeliveryState::Failed
@@ -2065,7 +2065,7 @@ async fn old_receipts_reduce_to_a_digest_that_still_answers_duplicates() {
         draft.accepted.as_ref().map(|accepted| &accepted.input),
         Some(&revise)
     );
-    // Settle the revision so other suites' recovery sweeps never pick it up.
+    // Settle the revision so other suites' due-work reads never pick it up.
     store
         .save_draft(
             &reply_scope,

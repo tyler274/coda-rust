@@ -366,8 +366,7 @@ def run_backend(backend):
         return
     test_privacy()
     test_operational_failure()
-    test_operational_failure("physician-sample", "physician.recovery.sweep", "physician.recovery.failed", {"error.type": "database"})
-    test_operational_failure("physician-sample", "physician.queue.publish", "physician.queue.publish_failed", {"error.type": "publish"})
+    test_operational_failure("physician-sample", "physician.receipt_compaction", "physician.receipt_compaction.failed", {"error.type": "database"})
     test_outage("langfuse")
     test_outage("ops")
     test_auth()

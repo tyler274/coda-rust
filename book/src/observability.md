@@ -434,9 +434,9 @@ against:
 | Action | What must hold |
 | --- | --- |
 | `rehearse` | A canary turn sent as the rehearsal physician answers, and Langfuse holds its generation in environment `simulation`, with the scenario, the chat as session, `coda.run_id`, a 128-bit trace id and the canary in its input or output. |
-| `alert-to-run` | The same turn found from Datadog: the snapshot's attempt id, the attempt span, the generation span and Langfuse agree on `coda.run_id` and the trace id, and the trace holds the site's `physician.queue.publish` span with the worker's attempt, so the Pub/Sub handoff carried it. |
+| `alert-to-run` | The same turn found from Datadog: the snapshot's attempt id, the attempt span, the generation span and Langfuse agree on `coda.run_id` and the trace id, and the attempt span records `coda.trace_relation` `link`: the attempt started its own trace linked to the request that accepted the turn. |
 | `isolation` | Langfuse holds the canary (the positive control) under the snapshot's attempt; the operations spans of the same trace exist in Datadog, and in Tempo under `grafana`, with model and usage, and no canary anywhere; Datadog Logs, and Loki under `grafana`, hold the physician logs of the same trace (their positive control) and no physician log event since the turn carries the canary in any field. |
-| `chat-failure` | The physician chat failure monitor is OK, then the drill sends one more canary turn than its threshold, each marked `[fail:1]`. Every turn answers through redelivery and the monitor fires. For one turn, the answering attempt's span names the failed attempt as its predecessor in the same `coda.work_id`; the failed attempt's span has `error.type` `rehearsed`; the monitor's own query, narrowed to that attempt, finds the error generation in the failed attempt's trace; and Langfuse holds that attempt's generation in the same trace at level `ERROR`, with the canary. The failed attempt's trace holds the site's publish span, so the handoff carried the first delivery. Datadog holds no canary in either attempt's trace, and the monitor recovers after its 10-minute window. |
+| `chat-failure` | The physician chat failure monitor is OK, then the drill sends one more canary turn than its threshold, each marked `[fail:1]`. Every turn answers on a retry and the monitor fires. For one turn, the answering attempt's span names the failed attempt as its predecessor in the same `coda.work_id`; the failed attempt's span has `error.type` `rehearsed`; the monitor's own query, narrowed to that attempt, finds the error generation in the failed attempt's trace; and Langfuse holds that attempt's generation in the same trace at level `ERROR`, with the canary. Both attempts' spans record `coda.trace_relation` `link` to the accepting request. Datadog holds no canary in either attempt's trace, and the monitor recovers after its 10-minute window. |
 
 The rehearsal physician is the `physician-rehearsal` service account. Its turns
 belong to a practice in `physician_simulation_practices`
@@ -464,7 +464,7 @@ hosted project; no drill takes the hosted project down to fire them.
 `chat-failure` pages `#engineering-observability`, so it needs `--confirm`,
 and runs only with the operator's approval for that window. Its failure is the worker's own: a rehearsal turn marked `[fail:K]` fails
 its first K attempts before any model call, with `error.type` `rehearsed`,
-and Pub/Sub redelivers it. Only a practice in `physician_simulation_practices`
+and the worker runs it again once its retry backoff is due. Only a practice in `physician_simulation_practices`
 on the `staging-preview` profile honours the marker; a real practice's turn
 answers whatever it says. The monitor is `chat_generation_errors` in
 [`datadog.tf`](/infra/gcp/observability/datadog.tf), on in staging through
