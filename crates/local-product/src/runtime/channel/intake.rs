@@ -346,15 +346,18 @@ impl Work<'_> {
                     }
                     let attachments = self.files(&item, &conversation, write).await?;
                     let mut kept = message(&item, conversation, version, attachments);
-                    // A file still to fetch: the item is kept with what was
-                    // read, under a version of its own, and its conversation
-                    // is owed the read that saves the file and the whole
-                    // version.
-                    if kept.files_owed() {
+                    // Files still to fetch: the item is kept with what was
+                    // read, under a version naming which files are owed, so
+                    // a read that fetches some of them is kept too. Its
+                    // conversation is owed the read that saves the rest.
+                    let owed = kept.owed_files();
+                    if !owed.is_empty() {
                         write
                             .owed
                             .push((kept.conversation.clone(), OwedCause::TemporarilyUnavailable));
-                        kept.version = format!("files-owed:{}", kept.version);
+                        let positions: Vec<String> = owed.iter().map(ToString::to_string).collect();
+                        kept.version =
+                            format!("files-owed:{}:{}", positions.join(","), kept.version);
                     }
                     write.versions.push(ItemRead::Version(Box::new(kept)));
                 }

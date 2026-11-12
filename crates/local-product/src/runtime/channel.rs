@@ -349,8 +349,9 @@ pub struct MessageVersion {
     pub item: String,
     /// Spruce conversation id.
     pub conversation: String,
-    /// `spruce::payload::Item::version`; `files-owed:` and that version while
-    /// a file is still to be fetched; or `unreadable:` and `modifiedAt`.
+    /// `spruce::payload::Item::version`; while files are still to be fetched,
+    /// `files-owed:`, their positions and that version, so each partial
+    /// download is a version of its own; or `unreadable:` and `modifiedAt`.
     pub version: String,
     /// Who it is from.
     pub direction: Direction,
@@ -373,11 +374,14 @@ pub struct MessageVersion {
 }
 
 impl MessageVersion {
-    /// A file of this version is still to be fetched.
-    pub fn files_owed(&self) -> bool {
+    /// Positions of the attachments still to be fetched, in order.
+    pub fn owed_files(&self) -> Vec<usize> {
         self.attachments
             .iter()
-            .any(|attachment| matches!(attachment, AttachmentRecord::Owed { .. }))
+            .enumerate()
+            .filter(|(_, attachment)| matches!(attachment, AttachmentRecord::Owed { .. }))
+            .map(|(position, _)| position)
+            .collect()
     }
 }
 
@@ -411,25 +415,38 @@ impl ItemRead {
             Self::Saved { modified_at, .. } => modified_at.as_deref(),
         }
     }
-}
 
-/// Whether a read's version replaces the current one: always, unless Spruce
-/// says the current one changed later. A version read again with the same
-/// `modifiedAt`, such as a transcript that came back, is current again.
-fn supersedes(read: Option<&str>, current: Option<&str>) -> bool {
-    let instant = |value: Option<&str>| {
-        value.and_then(|text| chrono::DateTime::parse_from_rfc3339(text).ok())
-    };
-    match (instant(read), instant(current)) {
-        (Some(read), Some(current)) => read >= current,
-        _ => true,
+    /// How many of its files are still to be fetched. A version seen again
+    /// was saved whole, since intake keys a partial download by its owed
+    /// files and reads it as a new version.
+    fn owed(&self) -> usize {
+        match self {
+            Self::Version(version) => version.owed_files().len(),
+            Self::Saved { .. } => 0,
+        }
     }
 }
 
-/// An item's current version and when Spruce last changed it.
+/// Whether a read's version replaces the current one. A later Spruce change
+/// always does, an earlier one never does. At the same `modifiedAt`, such as
+/// a transcript that came back, the read replaces it unless it owes more
+/// files, so a failed download never hides a file already saved.
+fn supersedes(read: (Option<&str>, usize), current: (Option<&str>, usize)) -> bool {
+    let instant = |value: Option<&str>| {
+        value.and_then(|text| chrono::DateTime::parse_from_rfc3339(text).ok())
+    };
+    match (instant(read.0), instant(current.0)) {
+        (Some(at), Some(now)) if at != now => at > now,
+        _ => read.1 <= current.1,
+    }
+}
+
+/// An item's current version, when Spruce last changed it and how many of
+/// its files are still to be fetched.
 struct Current {
     version: String,
     modified_at: Option<String>,
+    owed: usize,
     changed: bool,
 }
 
@@ -988,6 +1005,7 @@ impl Store {
                         stored.item.clone(),
                         Current {
                             version: stored.version.clone(),
+                            owed: record.owed_files().len(),
                             modified_at: record.modified_at,
                             changed: false,
                         },
@@ -1008,7 +1026,10 @@ impl Store {
             if known || matches!(read, ItemRead::Version(_)) {
                 let replaces = current.get(item).is_none_or(|now| {
                     now.version != version_id
-                        && supersedes(read.modified_at(), now.modified_at.as_deref())
+                        && supersedes(
+                            (read.modified_at(), read.owed()),
+                            (now.modified_at.as_deref(), now.owed),
+                        )
                 });
                 if replaces {
                     current.insert(
@@ -1016,6 +1037,7 @@ impl Store {
                         Current {
                             version: key.1.clone(),
                             modified_at: read.modified_at().map(str::to_owned),
+                            owed: read.owed(),
                             changed: true,
                         },
                     );

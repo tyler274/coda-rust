@@ -90,10 +90,12 @@ pub struct FakeContact {
 }
 
 /// A route the stand-in can take down with a 503.
-#[derive(Clone, Copy, PartialEq, Eq, Hash)]
+#[derive(Clone, PartialEq, Eq, Hash)]
 enum Outage {
     /// Every file link.
     Files,
+    /// The link to one file, by name.
+    File(String),
     /// Every transcription read.
     Transcriptions,
     /// The conversation list.
@@ -278,6 +280,15 @@ impl FakeSpruce {
             .insert(Outage::Files);
     }
 
+    /// The link to the file named `name` answers 503 until [`Self::recover`].
+    pub fn fail_file(&self, name: &str) {
+        self.state
+            .lock()
+            .expect("spruce stand-in lock")
+            .outages
+            .insert(Outage::File(name.to_owned()));
+    }
+
     /// Transcription reads answer 503 until [`Self::recover`].
     pub fn fail_transcriptions(&self) {
         self.state
@@ -338,7 +349,7 @@ impl FakeSpruce {
     }
 
     /// Reads answer normally again after [`Self::fail`], [`Self::forbid`],
-    /// [`Self::reject_unauthorized`], [`Self::fail_files`],
+    /// [`Self::reject_unauthorized`], [`Self::fail_files`], [`Self::fail_file`],
     /// [`Self::fail_transcriptions`] or [`Self::fail_conversation_list`].
     pub fn recover(&self) {
         let mut state = self.state.lock().expect("spruce stand-in lock");
@@ -628,7 +639,8 @@ async fn file(
     Path((generation, name)): Path<(u64, String)>,
 ) -> Response {
     let state = state.lock().expect("spruce stand-in lock");
-    if state.outages.contains(&Outage::Files) {
+    if state.outages.contains(&Outage::Files) || state.outages.contains(&Outage::File(name.clone()))
+    {
         return (StatusCode::SERVICE_UNAVAILABLE, "unavailable").into_response();
     }
     if generation != state.link_generation {

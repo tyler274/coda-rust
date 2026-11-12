@@ -942,3 +942,76 @@ async fn an_item_whose_file_failed_keeps_its_text_and_link_until_the_file_arrive
             .is_empty()
     );
 }
+
+#[tokio::test]
+#[ignore = "requires explicit local Postgres"]
+async fn a_file_that_arrives_while_another_is_owed_is_readable_from_its_message() {
+    let s = setup().await;
+    release_organization(&s.store).await;
+    s.connected().await;
+    s.fake.deliver(message("c1", "f2", "two scans", 10));
+    s.fake.attach("f2", "a.pdf", b"%PDF-1.7 first");
+    s.fake.attach("f2", "b.pdf", b"%PDF-1.7 second");
+    let files = |saved: &[crate::runtime::channel::MessageVersion]| {
+        saved[0]
+            .attachments
+            .iter()
+            .map(|attachment| match attachment {
+                AttachmentRecord::File { sha256, .. } => sha256.clone(),
+                AttachmentRecord::Owed { .. } => "owed".to_owned(),
+                other => format!("{other:?}"),
+            })
+            .collect::<Vec<_>>()
+    };
+
+    // Both downloads fail.
+    s.fake.fail_files();
+    s.pass().await;
+    let saved = s.store.channel_messages(&s.practice, "c1").await.unwrap();
+    assert_eq!(files(&saved), ["owed", "owed"]);
+
+    // The next full read fetches A while B still fails: A is readable from
+    // the saved message, after a restart too.
+    s.fake.recover();
+    s.fake.fail_file("b.pdf");
+    s.pass().await;
+    let url = std::env::var("PHYSICIAN_RUNTIME_TEST_DATABASE_URL").unwrap();
+    let restarted = Store::connect(&url).await.unwrap();
+    let saved = restarted.channel_messages(&s.practice, "c1").await.unwrap();
+    assert_eq!(
+        files(&saved),
+        [sha256_hex(b"%PDF-1.7 first"), "owed".into()]
+    );
+    assert_eq!(s.rows("f2").await, 2);
+
+    // A read where both fail again keeps A readable.
+    s.fake.fail_files();
+    s.pass().await;
+    let saved = s.store.channel_messages(&s.practice, "c1").await.unwrap();
+    assert_eq!(
+        files(&saved),
+        [sha256_hex(b"%PDF-1.7 first"), "owed".into()]
+    );
+    assert_eq!(s.rows("f2").await, 2);
+
+    // B arrives: the whole version is current and nothing is owed.
+    s.fake.recover();
+    s.pass().await;
+    let saved = s.store.channel_messages(&s.practice, "c1").await.unwrap();
+    assert_eq!(
+        files(&saved),
+        [
+            sha256_hex(b"%PDF-1.7 first"),
+            sha256_hex(b"%PDF-1.7 second")
+        ]
+    );
+    assert_eq!(s.rows("f2").await, 3);
+    assert!(
+        s.store
+            .channel_status(&s.practice)
+            .await
+            .unwrap()
+            .unread
+            .is_empty()
+    );
+}
