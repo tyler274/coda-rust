@@ -9,7 +9,7 @@ use std::time::Duration;
 
 use chrono::{DateTime, Utc};
 
-use crate::message::Message;
+use crate::message::{Message, MessageKind};
 use crate::names::MemberName;
 use crate::roster::{Member, MemberState, Roster, WakeMode};
 
@@ -78,8 +78,8 @@ impl Default for Policy {
 
 /// Whether `message` wakes the parked member `name`.
 ///
-/// Only a waiting member can be rung, never by its own post, and only by a
-/// post after the seq it parked on. A mentions-only member needs to be named;
+/// Only a waiting member can be rung, never by its own post or a brief, and
+/// only by a post after the seq it parked on. A mentions-only member needs to be named;
 /// any other waiting member wakes for any post it can see.
 pub fn rings(roster: &Roster, name: &MemberName, member: &Member, message: &Message) -> bool {
     let MemberState::Waiting {
@@ -89,7 +89,7 @@ pub fn rings(roster: &Roster, name: &MemberName, member: &Member, message: &Mess
     else {
         return false;
     };
-    if message.agent == *name || message.seq <= wait_since {
+    if message.kind != MessageKind::Post || message.agent == *name || message.seq <= wait_since {
         return false;
     }
     let mentions = message.mentions();

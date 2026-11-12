@@ -482,6 +482,15 @@ mod tests {
     }
 
     #[test]
+    fn briefs_never_ring() {
+        let mut roster = roster();
+        park(&mut roster, "scout-2", WakeMode::Mentions, 0);
+        let mut brief = message("lead", "@scout-2 go", ChannelName::main(), 1);
+        brief.kind = MessageKind::Brief;
+        assert!(!rung(&roster, "scout-2", &brief));
+    }
+
+    #[test]
     fn working_members_are_never_rung() {
         let roster = roster();
         let post = message("lead", "@all hi", ChannelName::main(), 1);

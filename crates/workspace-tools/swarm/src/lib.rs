@@ -3,6 +3,7 @@
 //! and storage behind the [`Store`] trait with a locked file backend.
 
 mod file_store;
+pub mod mcp;
 mod mention;
 mod message;
 mod names;
