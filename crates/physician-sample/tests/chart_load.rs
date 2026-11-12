@@ -573,37 +573,49 @@ async fn initial_partial_chart_opens_cleanly_while_initial_missing_identity_or_f
         fs::write(chart.join("DocumentReference.ndjson"), format!("{NOTE}\n")).unwrap();
     }
 
-    let source = SyntheticCharts::open(&bank_dir);
-    source.set_patient_mode(
-        &practice_id,
-        &format!("{run}-p1"),
-        SyntheticSourceMode::Partial {
-            failed_families: BTreeSet::from(["DocumentReference".to_owned()]),
-            reason: "notes endpoint timed out".into(),
-        },
-    );
-    source.set_patient_mode(
-        &practice_id,
-        &format!("{run}-p2"),
-        SyntheticSourceMode::Partial {
-            failed_families: BTreeSet::from(["Patient".to_owned()]),
-            reason: "demographics endpoint timed out".into(),
-        },
-    );
-    source.set_patient_mode(
-        &practice_id,
-        &format!("{run}-p3"),
-        SyntheticSourceMode::Outage {
-            reason: "initial chart upstream 503".into(),
-        },
-    );
-    source.set_patient_mode(
-        &practice_id,
-        &format!("{run}-p4"),
-        SyntheticSourceMode::LapsedAccess {
-            reason: "initial patient consent missing".into(),
-        },
-    );
+    let source = SyntheticCharts::open_with_store(&bank_dir, runtime.clone());
+    source
+        .set_patient_mode(
+            &practice_id,
+            &format!("{run}-p1"),
+            SyntheticSourceMode::Partial {
+                failed_families: BTreeSet::from(["DocumentReference".to_owned()]),
+                reason: "notes endpoint timed out".into(),
+            },
+        )
+        .await
+        .unwrap();
+    source
+        .set_patient_mode(
+            &practice_id,
+            &format!("{run}-p2"),
+            SyntheticSourceMode::Partial {
+                failed_families: BTreeSet::from(["Patient".to_owned()]),
+                reason: "demographics endpoint timed out".into(),
+            },
+        )
+        .await
+        .unwrap();
+    source
+        .set_patient_mode(
+            &practice_id,
+            &format!("{run}-p3"),
+            SyntheticSourceMode::Outage {
+                reason: "initial chart upstream 503".into(),
+            },
+        )
+        .await
+        .unwrap();
+    source
+        .set_patient_mode(
+            &practice_id,
+            &format!("{run}-p4"),
+            SyntheticSourceMode::LapsedAccess {
+                reason: "initial patient consent missing".into(),
+            },
+        )
+        .await
+        .unwrap();
 
     let summary = load_practice_from_source(&practice_id, &source, &auth, &runtime)
         .await

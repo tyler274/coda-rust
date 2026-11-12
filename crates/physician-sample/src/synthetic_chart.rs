@@ -6,18 +6,17 @@
 //! ledgers beside it hold what the charts were written from, so no part of the
 //! product ever sees them.
 
-use std::collections::{BTreeMap, BTreeSet, HashMap};
+use std::collections::{BTreeMap, BTreeSet};
 use std::fs;
-use std::io;
 use std::path::{Path, PathBuf};
-use std::sync::atomic::{AtomicU64, Ordering};
-use std::sync::{Arc, Mutex, OnceLock};
+use std::sync::{Arc, Mutex};
 
 use async_trait::async_trait;
 use local_product::physician_sources::{
     FailedPart, MedicalRecordNumber, PatientSource, ReconnectReceipt, SourceAdapterError,
     SourceCommandKey, SourcePatient, SourcePullOutput, SourceRecordKind, SourceRevision,
 };
+use local_product::runtime::Store;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 
@@ -52,321 +51,291 @@ pub enum SyntheticSourceMode {
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-struct SavedPatientMode {
-    practice_id: String,
-    source_patient_id: String,
-    mode: SyntheticSourceMode,
-}
-
-#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 struct SavedCommandReceipt {
-    practice_id: String,
     physician_id: String,
     idempotency_key: String,
     receipt: ReconnectReceipt,
 }
 
 #[derive(Clone, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
-struct PersistedSourceState {
+struct PersistedPracticeState {
     #[serde(default)]
-    practice_modes: BTreeMap<String, SyntheticSourceMode>,
-    #[serde(default)]
-    patient_modes: Vec<SavedPatientMode>,
-    #[serde(default)]
+    practice_mode: SyntheticSourceMode,
+    #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
+    patient_modes: BTreeMap<String, SyntheticSourceMode>,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
     command_receipts: Vec<SavedCommandReceipt>,
     #[serde(default)]
-    reconnect_effects: BTreeMap<String, usize>,
+    reconnect_effects: usize,
 }
 
-#[derive(Default)]
-struct ModeTable {
-    practice_modes: BTreeMap<String, SyntheticSourceMode>,
-    patient_modes: BTreeMap<(String, String), SyntheticSourceMode>,
-    command_receipts: BTreeMap<(String, String, String), ReconnectReceipt>,
-    reconnect_effects: BTreeMap<String, usize>,
+#[derive(Clone, Debug, Default, PartialEq, Eq)]
+struct PracticeModeState {
+    practice_mode: SyntheticSourceMode,
+    patient_modes: BTreeMap<String, SyntheticSourceMode>,
+    command_receipts: BTreeMap<(String, String), ReconnectReceipt>,
+    reconnect_effects: usize,
 }
 
-impl ModeTable {
-    fn from_persisted(persisted: PersistedSourceState) -> Self {
+impl PracticeModeState {
+    fn from_persisted(persisted: PersistedPracticeState) -> Self {
         Self {
-            practice_modes: persisted.practice_modes,
-            patient_modes: persisted
-                .patient_modes
-                .into_iter()
-                .map(|entry| ((entry.practice_id, entry.source_patient_id), entry.mode))
-                .collect(),
+            practice_mode: persisted.practice_mode,
+            patient_modes: persisted.patient_modes,
             command_receipts: persisted
                 .command_receipts
                 .into_iter()
-                .map(|entry| {
-                    (
-                        (entry.practice_id, entry.physician_id, entry.idempotency_key),
-                        entry.receipt,
-                    )
-                })
+                .map(|entry| ((entry.physician_id, entry.idempotency_key), entry.receipt))
                 .collect(),
             reconnect_effects: persisted.reconnect_effects,
         }
     }
 
-    fn into_persisted(self) -> PersistedSourceState {
-        PersistedSourceState {
-            practice_modes: self.practice_modes,
-            patient_modes: self
-                .patient_modes
-                .into_iter()
-                .map(
-                    |((practice_id, source_patient_id), mode)| SavedPatientMode {
-                        practice_id,
-                        source_patient_id,
-                        mode,
-                    },
-                )
-                .collect(),
+    fn into_persisted(self) -> PersistedPracticeState {
+        PersistedPracticeState {
+            practice_mode: self.practice_mode,
+            patient_modes: self.patient_modes,
             command_receipts: self
                 .command_receipts
                 .into_iter()
-                .map(|((practice_id, physician_id, idempotency_key), receipt)| {
-                    SavedCommandReceipt {
-                        practice_id,
+                .map(
+                    |((physician_id, idempotency_key), receipt)| SavedCommandReceipt {
                         physician_id,
                         idempotency_key,
                         receipt,
-                    }
-                })
+                    },
+                )
                 .collect(),
             reconnect_effects: self.reconnect_effects,
         }
     }
+
+    fn apply_practice_mode(&mut self, mode: SyntheticSourceMode) {
+        self.patient_modes.clear();
+        self.practice_mode = mode;
+    }
+
+    fn apply_patient_mode(&mut self, source_patient_id: &str, mode: SyntheticSourceMode) {
+        match mode {
+            SyntheticSourceMode::Healthy => {
+                self.patient_modes.remove(source_patient_id);
+            }
+            other @ (SyntheticSourceMode::LapsedAccess { .. }
+            | SyntheticSourceMode::Outage { .. }
+            | SyntheticSourceMode::Partial { .. }) => {
+                self.patient_modes
+                    .insert(source_patient_id.to_owned(), other);
+            }
+        }
+    }
+
+    fn effective_mode(&self, source_patient_id: &str) -> SyntheticSourceMode {
+        self.patient_modes
+            .get(source_patient_id)
+            .unwrap_or(&self.practice_mode)
+            .clone()
+    }
+
+    fn apply_reconnect(
+        &mut self,
+        practice_id: &str,
+        now: i64,
+        command_key: Option<SourceCommandKey<'_>>,
+    ) -> Result<ReconnectReceipt, SourceAdapterError> {
+        if let Some(cmd_key) = command_key
+            && let Some(existing) = self
+                .command_receipts
+                .get(&(
+                    cmd_key.physician_id.to_owned(),
+                    cmd_key.idempotency_key.to_owned(),
+                ))
+                .cloned()
+        {
+            return Ok(existing);
+        }
+        if let SyntheticSourceMode::Outage { reason } = &self.practice_mode {
+            return Err(SourceAdapterError::Unavailable {
+                reason: reason.clone(),
+            });
+        }
+        if matches!(self.practice_mode, SyntheticSourceMode::LapsedAccess { .. }) {
+            self.practice_mode = SyntheticSourceMode::Healthy;
+        }
+        self.patient_modes
+            .retain(|_, mode| !matches!(mode, SyntheticSourceMode::LapsedAccess { .. }));
+        self.reconnect_effects += 1;
+        let receipt = ReconnectReceipt {
+            source_id: SOURCE_ID.to_owned(),
+            practice_id: practice_id.to_owned(),
+            reconnected_at: now,
+        };
+        if let Some(cmd_key) = command_key {
+            self.command_receipts.insert(
+                (
+                    cmd_key.physician_id.to_owned(),
+                    cmd_key.idempotency_key.to_owned(),
+                ),
+                receipt.clone(),
+            );
+        }
+        Ok(receipt)
+    }
 }
 
-fn ledger_paths(bank: &Path) -> (PathBuf, PathBuf) {
-    let canonical = fs::canonicalize(bank).unwrap_or_else(|_| bank.to_path_buf());
-    let digest = local_product::sha256_hex(canonical.as_os_str().as_encoded_bytes());
-    let temp = std::env::temp_dir();
-    (
-        temp.join(format!("coda-synthetic-source-{digest}.json")),
-        temp.join(format!("coda-synthetic-source-{digest}.lock")),
-    )
+#[derive(Clone)]
+enum StateBackend {
+    Database(Store),
+    Memory(Arc<Mutex<BTreeMap<String, PracticeModeState>>>),
 }
 
-fn process_lock_for(lock_path: &Path) -> Arc<Mutex<()>> {
-    static LOCKS: OnceLock<Mutex<HashMap<PathBuf, Arc<Mutex<()>>>>> = OnceLock::new();
-    let mut map = LOCKS
-        .get_or_init(|| Mutex::new(HashMap::new()))
-        .lock()
-        .expect("synthetic source process-lock registry");
-    Arc::clone(
-        map.entry(lock_path.to_path_buf())
-            .or_insert_with(|| Arc::new(Mutex::new(()))),
-    )
-}
-
-/// A built patient bank on disk, with durable connector modes and command receipts shared across
-/// adapter instances opened against the same bank path.
+/// A built patient bank on disk, with shared connector modes and command receipts persisted in
+/// Postgres via [`Store`] (or held in memory for standalone unit tests without a database).
 #[derive(Clone)]
 pub struct SyntheticCharts {
     patients: PathBuf,
-    state_path: PathBuf,
-    lock_path: PathBuf,
-    process_lock: Arc<Mutex<()>>,
+    backend: StateBackend,
 }
 
 impl SyntheticCharts {
-    /// Opens the bank built at `bank`.
+    /// Opens the bank built at `bank` with an in-memory mode ledger for standalone unit tests.
     pub fn open(bank: &Path) -> Self {
-        let (state_path, lock_path) = ledger_paths(bank);
-        let process_lock = process_lock_for(&lock_path);
         Self {
             patients: bank.join("patients"),
-            state_path,
-            lock_path,
-            process_lock,
+            backend: StateBackend::Memory(Arc::new(Mutex::new(BTreeMap::new()))),
         }
     }
 
-    fn load_table_unlocked(&self) -> Result<ModeTable, SourceAdapterError> {
-        let bytes = match fs::read(&self.state_path) {
-            Ok(bytes) => bytes,
-            Err(err) if err.kind() == io::ErrorKind::NotFound => return Ok(ModeTable::default()),
-            Err(source) => {
-                return Err(SourceAdapterError::Io {
-                    path: self.state_path.clone(),
-                    source,
-                });
-            }
-        };
-        let persisted: PersistedSourceState =
-            serde_json::from_slice(&bytes).map_err(|source| SourceAdapterError::Io {
-                path: self.state_path.clone(),
-                source: io::Error::new(io::ErrorKind::InvalidData, source),
-            })?;
-        Ok(ModeTable::from_persisted(persisted))
-    }
-
-    fn read_table(&self) -> Result<ModeTable, SourceAdapterError> {
-        let _guard = self
-            .process_lock
-            .lock()
-            .expect("synthetic source process lock");
-        if !self.lock_path.exists() && !self.state_path.exists() {
-            return Ok(ModeTable::default());
+    /// Opens the bank built at `bank`, persisting shared connector modes and reconnect receipts
+    /// across instances in Postgres via `store`.
+    pub fn open_with_store(bank: &Path, store: Store) -> Self {
+        Self {
+            patients: bank.join("patients"),
+            backend: StateBackend::Database(store),
         }
-        let lock_file = fs::OpenOptions::new()
-            .create(true)
-            .read(true)
-            .write(true)
-            .truncate(false)
-            .open(&self.lock_path)
-            .map_err(|source| SourceAdapterError::Io {
-                path: self.lock_path.clone(),
-                source,
-            })?;
-        lock_file
-            .lock_shared()
-            .map_err(|source| SourceAdapterError::Io {
-                path: self.lock_path.clone(),
-                source,
-            })?;
-        self.load_table_unlocked()
     }
 
-    fn mutate_table<T>(
+    /// Opens the bank built at `bank`, attaching `store` when configured.
+    pub fn open_with_optional_store(bank: &Path, store: Option<Store>) -> Self {
+        match store {
+            Some(store) => Self::open_with_store(bank, store),
+            None => Self::open(bank),
+        }
+    }
+
+    /// Returns a copy backed by `store` so connector modes and command receipts persist in Postgres.
+    pub fn with_store(mut self, store: Store) -> Self {
+        self.backend = StateBackend::Database(store);
+        self
+    }
+
+    /// Whether this adapter persists shared connector state in Postgres via [`Store`].
+    pub fn uses_store(&self) -> bool {
+        matches!(self.backend, StateBackend::Database(_))
+    }
+
+    async fn read_practice_state(
         &self,
-        f: impl FnOnce(&mut ModeTable) -> Result<T, SourceAdapterError>,
+        practice_id: &str,
+    ) -> Result<PracticeModeState, SourceAdapterError> {
+        match &self.backend {
+            StateBackend::Database(store) => {
+                let persisted: PersistedPracticeState = store
+                    .read_source_adapter_state(practice_id, SOURCE_ID)
+                    .await?;
+                Ok(PracticeModeState::from_persisted(persisted))
+            }
+            StateBackend::Memory(memory) => {
+                let guard = memory.lock().expect("synthetic source memory lock");
+                Ok(guard.get(practice_id).cloned().unwrap_or_default())
+            }
+        }
+    }
+
+    async fn mutate_practice_state<T>(
+        &self,
+        practice_id: &str,
+        mutate: impl FnOnce(&mut PracticeModeState) -> Result<T, SourceAdapterError>,
     ) -> Result<T, SourceAdapterError> {
-        static TMP_SEQ: AtomicU64 = AtomicU64::new(1);
-
-        let _guard = self
-            .process_lock
-            .lock()
-            .expect("synthetic source process lock");
-        let lock_file = fs::OpenOptions::new()
-            .create(true)
-            .read(true)
-            .write(true)
-            .truncate(false)
-            .open(&self.lock_path)
-            .map_err(|source| SourceAdapterError::Io {
-                path: self.lock_path.clone(),
-                source,
-            })?;
-        lock_file.lock().map_err(|source| SourceAdapterError::Io {
-            path: self.lock_path.clone(),
-            source,
-        })?;
-
-        let mut table = self.load_table_unlocked()?;
-        let out = f(&mut table)?;
-        let persisted = table.into_persisted();
-        let encoded = serde_json::to_vec(&persisted).map_err(|source| SourceAdapterError::Io {
-            path: self.state_path.clone(),
-            source: io::Error::new(io::ErrorKind::InvalidData, source),
-        })?;
-        let seq = TMP_SEQ.fetch_add(1, Ordering::Relaxed);
-        let tmp_path = self
-            .state_path
-            .with_extension(format!("tmp.{}.{seq}", std::process::id()));
-        fs::write(&tmp_path, encoded).map_err(|source| SourceAdapterError::Io {
-            path: tmp_path.clone(),
-            source,
-        })?;
-        fs::rename(&tmp_path, &self.state_path).map_err(|source| SourceAdapterError::Io {
-            path: self.state_path.clone(),
-            source,
-        })?;
-        Ok(out)
+        match &self.backend {
+            StateBackend::Database(store) => {
+                store
+                    .mutate_source_adapter_state(
+                        practice_id,
+                        SOURCE_ID,
+                        |persisted: &mut PersistedPracticeState| {
+                            let mut state =
+                                PracticeModeState::from_persisted(std::mem::take(persisted));
+                            let result = mutate(&mut state);
+                            *persisted = state.into_persisted();
+                            result
+                        },
+                    )
+                    .await
+            }
+            StateBackend::Memory(memory) => {
+                let mut guard = memory.lock().expect("synthetic source memory lock");
+                let mut candidate = guard.get(practice_id).cloned().unwrap_or_default();
+                let output = mutate(&mut candidate)?;
+                guard.insert(practice_id.to_owned(), candidate);
+                Ok(output)
+            }
+        }
     }
 
     /// Sets the practice-wide connector mode for `practice_id`, clearing any per-patient overrides
     /// in that practice so the practice mode applies uniformly.
-    pub fn set_practice_mode(&self, practice_id: &str, mode: SyntheticSourceMode) {
-        self.mutate_table(|table| {
-            table
-                .patient_modes
-                .retain(|(practice, _), _| practice != practice_id);
-            match mode {
-                SyntheticSourceMode::Healthy => {
-                    table.practice_modes.remove(practice_id);
-                }
-                other @ (SyntheticSourceMode::LapsedAccess { .. }
-                | SyntheticSourceMode::Outage { .. }
-                | SyntheticSourceMode::Partial { .. }) => {
-                    table.practice_modes.insert(practice_id.to_owned(), other);
-                }
-            }
+    pub async fn set_practice_mode(
+        &self,
+        practice_id: &str,
+        mode: SyntheticSourceMode,
+    ) -> Result<(), SourceAdapterError> {
+        self.mutate_practice_state(practice_id, |state| {
+            state.apply_practice_mode(mode);
             Ok(())
         })
-        .expect("persist synthetic source practice mode");
+        .await
     }
 
     /// Sets a patient-specific connector mode override for `(practice_id, source_patient_id)`.
-    pub fn set_patient_mode(
+    pub async fn set_patient_mode(
         &self,
         practice_id: &str,
         source_patient_id: &str,
         mode: SyntheticSourceMode,
-    ) {
-        self.mutate_table(|table| {
-            let key = (practice_id.to_owned(), source_patient_id.to_owned());
-            match mode {
-                SyntheticSourceMode::Healthy => {
-                    table.patient_modes.remove(&key);
-                }
-                other @ (SyntheticSourceMode::LapsedAccess { .. }
-                | SyntheticSourceMode::Outage { .. }
-                | SyntheticSourceMode::Partial { .. }) => {
-                    table.patient_modes.insert(key, other);
-                }
-            }
+    ) -> Result<(), SourceAdapterError> {
+        self.mutate_practice_state(practice_id, |state| {
+            state.apply_patient_mode(source_patient_id, mode);
             Ok(())
         })
-        .expect("persist synthetic source patient mode");
+        .await
     }
 
     /// Reads the practice-wide connector mode configured for `practice_id`.
-    pub fn practice_mode(&self, practice_id: &str) -> SyntheticSourceMode {
-        let table = self.read_table().expect("read synthetic source state");
-        table
-            .practice_modes
-            .get(practice_id)
-            .cloned()
-            .unwrap_or_default()
+    pub async fn practice_mode(
+        &self,
+        practice_id: &str,
+    ) -> Result<SyntheticSourceMode, SourceAdapterError> {
+        let state = self.read_practice_state(practice_id).await?;
+        Ok(state.practice_mode)
     }
 
     /// Number of non-deduplicated reconnect effects performed for `practice_id`.
-    pub fn reconnect_effect_count(&self, practice_id: &str) -> usize {
-        let table = self.read_table().expect("read synthetic source state");
-        table
-            .reconnect_effects
-            .get(practice_id)
-            .copied()
-            .unwrap_or(0)
+    pub async fn reconnect_effect_count(
+        &self,
+        practice_id: &str,
+    ) -> Result<usize, SourceAdapterError> {
+        let state = self.read_practice_state(practice_id).await?;
+        Ok(state.reconnect_effects)
     }
 
     /// Resolves the effective connector mode for `(practice_id, source_patient_id)`.
-    pub fn effective_mode(
-        &self,
-        practice_id: &str,
-        source_patient_id: &str,
-    ) -> SyntheticSourceMode {
-        self.try_effective_mode(practice_id, source_patient_id)
-            .expect("read synthetic source state")
-    }
-
-    fn try_effective_mode(
+    pub async fn effective_mode(
         &self,
         practice_id: &str,
         source_patient_id: &str,
     ) -> Result<SyntheticSourceMode, SourceAdapterError> {
-        let table = self.read_table()?;
-        let key = (practice_id.to_owned(), source_patient_id.to_owned());
-        Ok(table
-            .patient_modes
-            .get(&key)
-            .or_else(|| table.practice_modes.get(practice_id))
-            .cloned()
-            .unwrap_or_default())
+        let state = self.read_practice_state(practice_id).await?;
+        Ok(state.effective_mode(source_patient_id))
     }
 
     fn partial_pull(
@@ -563,7 +532,7 @@ impl PatientSource for SyntheticCharts {
         source_patient_id: &str,
         workspace: &str,
     ) -> SourcePullOutput {
-        let mode = match self.try_effective_mode(practice_id, source_patient_id) {
+        let mode = match self.effective_mode(practice_id, source_patient_id).await {
             Ok(mode) => mode,
             Err(error) => return SourcePullOutput::Failed { error },
         };
@@ -606,48 +575,10 @@ impl PatientSource for SyntheticCharts {
         now: i64,
         command_key: Option<SourceCommandKey<'_>>,
     ) -> Result<ReconnectReceipt, SourceAdapterError> {
-        self.mutate_table(|table| {
-            if let Some(cmd_key) = command_key
-                && let Some(existing) = table
-                    .command_receipts
-                    .get(&cmd_key.scoped_key(practice_id))
-                    .cloned()
-            {
-                return Ok(existing);
-            }
-            if let Some(SyntheticSourceMode::Outage { reason }) =
-                table.practice_modes.get(practice_id)
-            {
-                return Err(SourceAdapterError::Unavailable {
-                    reason: reason.clone(),
-                });
-            }
-            if matches!(
-                table.practice_modes.get(practice_id),
-                Some(SyntheticSourceMode::LapsedAccess { .. })
-            ) {
-                table.practice_modes.remove(practice_id);
-            }
-            table.patient_modes.retain(|(practice, _), mode| {
-                !(practice == practice_id
-                    && matches!(mode, SyntheticSourceMode::LapsedAccess { .. }))
-            });
-            *table
-                .reconnect_effects
-                .entry(practice_id.to_owned())
-                .or_insert(0) += 1;
-            let receipt = ReconnectReceipt {
-                source_id: SOURCE_ID.to_owned(),
-                practice_id: practice_id.to_owned(),
-                reconnected_at: now,
-            };
-            if let Some(cmd_key) = command_key {
-                table
-                    .command_receipts
-                    .insert(cmd_key.scoped_key(practice_id), receipt.clone());
-            }
-            Ok(receipt)
+        self.mutate_practice_state(practice_id, |state| {
+            state.apply_reconnect(practice_id, now, command_key)
         })
+        .await
     }
 }
 
@@ -703,6 +634,7 @@ fn source_patient(
 mod tests {
     use super::*;
     use serde_json::json;
+    use std::sync::atomic::{AtomicU64, Ordering};
 
     const PATIENT: &str = r#"{"resourceType":"Patient","id":"MRN1","meta":{"lastUpdated":"2026-08-27T00:00:00+00:00"},"identifier":[{"system":"urn:mrn","value":"1"}],"name":[{"family":"Louis","given":["Mary","Ann"]}],"gender":"female","birthDate":"1972-03-18"}"#;
     const NOTE: &str = r#"{"resourceType":"DocumentReference","id":"note-1","date":"2026-08-12T12:05:00+00:00","content":[{"attachment":{"contentType":"text/plain; charset=utf-8","data":"U2VlbiBpbiBjbGluaWMu"}}]}"#;
@@ -802,12 +734,15 @@ mod tests {
     async fn controllable_modes_simulate_lapsed_access_partial_outage_and_reconnect() {
         let source = SyntheticCharts::open(&bank("modes", NOTE));
 
-        source.set_practice_mode(
-            "practice-a",
-            SyntheticSourceMode::LapsedAccess {
-                reason: "oauth refresh token expired".into(),
-            },
-        );
+        source
+            .set_practice_mode(
+                "practice-a",
+                SyntheticSourceMode::LapsedAccess {
+                    reason: "oauth refresh token expired".into(),
+                },
+            )
+            .await
+            .unwrap();
         match source.pull_patient("practice-a", "MRN1", "pw-1").await {
             SourcePullOutput::LapsedAccess { error } => {
                 assert_eq!(error.to_string(), "oauth refresh token expired");
@@ -825,28 +760,38 @@ mod tests {
             .unwrap();
         assert_eq!(receipt.source_id, SOURCE_ID);
         assert_eq!(receipt.practice_id, "practice-a");
-        assert_eq!(source.reconnect_effect_count("practice-a"), 1);
+        assert_eq!(
+            source.reconnect_effect_count("practice-a").await.unwrap(),
+            1
+        );
 
-        // Retrying with the same command key recovers the prior receipt without a second effect.
-        let replayed = source
+        // Retrying on a cloned handle with the same command key recovers the prior receipt without a second effect.
+        let cloned = source.clone();
+        let replayed = cloned
             .reconnect("practice-a", 1_788_000_999, Some(cmd_key))
             .await
             .unwrap();
         assert_eq!(replayed, receipt);
-        assert_eq!(source.reconnect_effect_count("practice-a"), 1);
+        assert_eq!(
+            cloned.reconnect_effect_count("practice-a").await.unwrap(),
+            1
+        );
         assert!(matches!(
             source.pull_patient("practice-a", "MRN1", "pw-1").await,
             SourcePullOutput::Complete { records, .. } if records.len() == 3
         ));
 
-        source.set_patient_mode(
-            "practice-a",
-            "MRN1",
-            SyntheticSourceMode::Partial {
-                failed_families: BTreeSet::from(["DocumentReference".to_owned()]),
-                reason: "DocumentReference endpoint timed out".into(),
-            },
-        );
+        source
+            .set_patient_mode(
+                "practice-a",
+                "MRN1",
+                SyntheticSourceMode::Partial {
+                    failed_families: BTreeSet::from(["DocumentReference".to_owned()]),
+                    reason: "DocumentReference endpoint timed out".into(),
+                },
+            )
+            .await
+            .unwrap();
         match source.pull_patient("practice-a", "MRN1", "pw-1").await {
             SourcePullOutput::Partial {
                 patient,
@@ -872,66 +817,108 @@ mod tests {
     }
 
     #[tokio::test]
-    async fn reconnect_receipts_persist_across_reopened_synthetic_chart_instances() {
-        let dir = bank("reopened-receipts", NOTE);
+    #[ignore = "requires explicit local Postgres"]
+    async fn reconnect_receipts_and_modes_persist_in_postgres_across_separate_bank_directories() {
+        let db_url = std::env::var("PHYSICIAN_TEST_DATABASE_URL")
+            .or_else(|_| std::env::var("PHYSICIAN_RUNTIME_TEST_DATABASE_URL"))
+            .expect("set PHYSICIAN_TEST_DATABASE_URL or PHYSICIAN_RUNTIME_TEST_DATABASE_URL");
+        let store = Store::connect(&db_url).await.unwrap();
+        store.migrate().await.unwrap();
+
+        let practice = format!(
+            "practice-shared-{}",
+            std::time::SystemTime::now()
+                .duration_since(std::time::UNIX_EPOCH)
+                .unwrap()
+                .as_nanos()
+        );
+        let bank_a = bank("reopened-site-a", NOTE);
+        let bank_b = bank("reopened-site-b", NOTE);
+        assert_ne!(bank_a, bank_b);
+
         let cmd_key_a = SourceCommandKey {
             physician_id: "dr-a",
             idempotency_key: "idem-cross-instance",
         };
 
         let first_receipt = {
-            let instance_a = SyntheticCharts::open(&dir);
-            instance_a.set_practice_mode(
-                "practice-shared",
-                SyntheticSourceMode::LapsedAccess {
-                    reason: "token expired on site A".into(),
-                },
-            );
-            let receipt = instance_a
-                .reconnect("practice-shared", 1_788_010_000, Some(cmd_key_a))
+            let instance_a = SyntheticCharts::open_with_store(&bank_a, store.clone());
+            instance_a
+                .set_practice_mode(
+                    &practice,
+                    SyntheticSourceMode::LapsedAccess {
+                        reason: "token expired on site A".into(),
+                    },
+                )
                 .await
                 .unwrap();
-            assert_eq!(instance_a.reconnect_effect_count("practice-shared"), 1);
+            let receipt = instance_a
+                .reconnect(&practice, 1_788_010_000, Some(cmd_key_a))
+                .await
+                .unwrap();
+            assert_eq!(
+                instance_a.reconnect_effect_count(&practice).await.unwrap(),
+                1
+            );
             receipt
         };
 
-        // Construct a brand-new `SyntheticCharts` instance on the same bank (simulating Site B
-        // or a restarted Site A after a pre-checkpoint crash) and retry with the same key.
-        let instance_b = SyntheticCharts::open(&dir);
-        assert_eq!(instance_b.reconnect_effect_count("practice-shared"), 1);
+        // Remove Site A's bank directory completely so Site B shares ONLY Postgres.
+        fs::remove_dir_all(&bank_a).unwrap();
+        assert!(!bank_a.exists());
+
+        let instance_b = SyntheticCharts::open_with_store(&bank_b, store);
         assert_eq!(
-            instance_b.practice_mode("practice-shared"),
+            instance_b.reconnect_effect_count(&practice).await.unwrap(),
+            1
+        );
+        assert_eq!(
+            instance_b.practice_mode(&practice).await.unwrap(),
             SyntheticSourceMode::Healthy
         );
 
         // Even if the practice later enters Outage before retry, the cached receipt is recovered
-        // without repeating the underlying reconnect effect.
-        instance_b.set_practice_mode(
-            "practice-shared",
-            SyntheticSourceMode::Outage {
-                reason: "upstream maintenance".into(),
-            },
-        );
+        // from Postgres without repeating the underlying reconnect effect.
+        instance_b
+            .set_practice_mode(
+                &practice,
+                SyntheticSourceMode::Outage {
+                    reason: "upstream maintenance".into(),
+                },
+            )
+            .await
+            .unwrap();
         let recovered = instance_b
-            .reconnect("practice-shared", 1_788_019_999, Some(cmd_key_a))
+            .reconnect(&practice, 1_788_019_999, Some(cmd_key_a))
             .await
             .unwrap();
         assert_eq!(recovered, first_receipt);
         assert_eq!(recovered.reconnected_at, 1_788_010_000);
-        assert_eq!(instance_b.reconnect_effect_count("practice-shared"), 1);
+        assert_eq!(
+            instance_b.reconnect_effect_count(&practice).await.unwrap(),
+            1
+        );
 
         // Restore healthy mode and verify a second physician reusing the same key string executes
         // an independent reconnect effect scoped to `(practice_id, physician_id, idempotency_key)`.
-        instance_b.set_practice_mode("practice-shared", SyntheticSourceMode::Healthy);
+        instance_b
+            .set_practice_mode(&practice, SyntheticSourceMode::Healthy)
+            .await
+            .unwrap();
         let cmd_key_b = SourceCommandKey {
             physician_id: "dr-b",
             idempotency_key: "idem-cross-instance",
         };
         let second_receipt = instance_b
-            .reconnect("practice-shared", 1_788_025_000, Some(cmd_key_b))
+            .reconnect(&practice, 1_788_025_000, Some(cmd_key_b))
             .await
             .unwrap();
         assert_eq!(second_receipt.reconnected_at, 1_788_025_000);
-        assert_eq!(instance_b.reconnect_effect_count("practice-shared"), 2);
+        assert_eq!(
+            instance_b.reconnect_effect_count(&practice).await.unwrap(),
+            2
+        );
+
+        let _ = fs::remove_dir_all(&bank_b);
     }
 }

@@ -2182,39 +2182,27 @@ struct PersistedPreCheckpointLedger {
 
 struct PreCheckpointSource {
     source_id: String,
-    ledger_path: std::path::PathBuf,
+    store: Store,
     hang_after_effect: std::sync::atomic::AtomicBool,
     effect_committed: tokio::sync::Notify,
 }
 
 impl PreCheckpointSource {
-    fn open(ledger_path: &std::path::Path, source_id: &str) -> Arc<Self> {
+    fn open(store: Store, source_id: &str) -> Arc<Self> {
         Arc::new(Self {
             source_id: source_id.to_owned(),
-            ledger_path: ledger_path.to_path_buf(),
+            store,
             hang_after_effect: std::sync::atomic::AtomicBool::new(false),
             effect_committed: tokio::sync::Notify::new(),
         })
     }
 
-    fn read_ledger(&self) -> PersistedPreCheckpointLedger {
-        match std::fs::read(&self.ledger_path) {
-            Ok(bytes) => serde_json::from_slice(&bytes).unwrap(),
-            Err(err) if err.kind() == std::io::ErrorKind::NotFound => {
-                PersistedPreCheckpointLedger::default()
-            }
-            Err(err) => panic!("read pre-checkpoint ledger: {err}"),
-        }
-    }
-
-    fn write_ledger(&self, ledger: &PersistedPreCheckpointLedger) {
-        let tmp = self.ledger_path.with_extension("tmp");
-        std::fs::write(&tmp, serde_json::to_vec(ledger).unwrap()).unwrap();
-        std::fs::rename(&tmp, &self.ledger_path).unwrap();
-    }
-
-    fn underlying_effect_count(&self) -> usize {
-        self.read_ledger().underlying_effects
+    async fn underlying_effect_count(&self, practice_id: &str) -> usize {
+        self.store
+            .read_source_adapter_state::<PersistedPreCheckpointLedger>(practice_id, &self.source_id)
+            .await
+            .unwrap()
+            .underlying_effects
     }
 }
 
@@ -2270,29 +2258,42 @@ impl PatientSource for PreCheckpointSource {
     ) -> Result<ReconnectReceipt, SourceAdapterError> {
         use std::sync::atomic::Ordering::SeqCst;
 
-        let mut ledger = self.read_ledger();
-        if let Some(key) = command_key {
-            let scoped = key.scoped_key(practice_id);
-            if let Some((_, cached)) = ledger.receipts.iter().find(|(k, _)| k == &scoped) {
-                return Ok(cached.clone());
-            }
-        }
+        let (receipt, was_cached) = self
+            .store
+            .mutate_source_adapter_state(
+                practice_id,
+                &self.source_id,
+                |ledger: &mut PersistedPreCheckpointLedger| {
+                    if let Some(key) = command_key {
+                        let scoped = key.scoped_key(practice_id);
+                        if let Some((_, cached)) =
+                            ledger.receipts.iter().find(|(k, _)| k == &scoped)
+                        {
+                            return Ok((cached.clone(), true));
+                        }
+                    }
 
-        ledger.underlying_effects += 1;
-        let receipt = ReconnectReceipt {
-            source_id: self.source_id.clone(),
-            practice_id: practice_id.to_owned(),
-            reconnected_at: now,
-        };
-        if let Some(key) = command_key {
-            ledger
-                .receipts
-                .push((key.scoped_key(practice_id), receipt.clone()));
-        }
-        self.write_ledger(&ledger);
-        self.effect_committed.notify_waiters();
-        if self.hang_after_effect.load(SeqCst) {
-            std::future::pending::<()>().await;
+                    ledger.underlying_effects += 1;
+                    let receipt = ReconnectReceipt {
+                        source_id: self.source_id.clone(),
+                        practice_id: practice_id.to_owned(),
+                        reconnected_at: now,
+                    };
+                    if let Some(key) = command_key {
+                        ledger
+                            .receipts
+                            .push((key.scoped_key(practice_id), receipt.clone()));
+                    }
+                    Ok((receipt, false))
+                },
+            )
+            .await?;
+
+        if !was_cached {
+            self.effect_committed.notify_waiters();
+            if self.hang_after_effect.load(SeqCst) {
+                std::future::pending::<()>().await;
+            }
         }
         Ok(receipt)
     }
@@ -2309,8 +2310,7 @@ async fn interrupted_reconnect_before_db_checkpoint_recovers_cached_adapter_rece
     let physician_a = format!("dr-a-{run}");
     let physician_b = format!("dr-b-{run}");
     let source_id = format!("ehr-prechk-{run}");
-    let ledger_path = std::env::temp_dir().join(format!("coda-prechk-ledger-{run}.json"));
-    let instance_a = PreCheckpointSource::open(&ledger_path, &source_id);
+    let instance_a = PreCheckpointSource::open(store.clone(), &source_id);
 
     let ws = format!("pw-prechk-{run}");
     SourceCoordinator::check_patient(
@@ -2364,12 +2364,13 @@ async fn interrupted_reconnect_before_db_checkpoint_recovers_cached_adapter_rece
         .await
     });
 
-    // Wait until `source.reconnect(..., Some(key))` has performed its underlying effect, then
-    // abort caller 1 BEFORE `store.record_reconnect_command_reconnected` runs (DB stays `Claimed`)
-    // and drop `instance_a` completely so retry must recover from shared durable state on a
-    // freshly constructed adapter instance.
+    // Wait until `source.reconnect(..., Some(key))` has committed its underlying effect and
+    // receipt in Postgres (`physician_runtime_source_adapter_state`), then abort caller 1 BEFORE
+    // `store.record_reconnect_command_reconnected` runs (DB command row stays `Claimed`) and drop
+    // `instance_a` completely so retry must recover from shared Postgres state on a freshly
+    // constructed adapter instance with zero shared filesystem.
     committed.await;
-    assert_eq!(instance_a.underlying_effect_count(), 1);
+    assert_eq!(instance_a.underlying_effect_count(&practice).await, 1);
     attempt_1.abort();
     let _ = attempt_1.await;
     drop(instance_a);
@@ -2384,11 +2385,11 @@ async fn interrupted_reconnect_before_db_checkpoint_recovers_cached_adapter_rece
         Some(SourceAccessState::ReconnectNeeded { since: 6_500, .. })
     ));
 
-    // Construct a brand-new adapter instance backed by shared durable state (simulating Site B or
-    // restarted Site A) and retry with the same `(practice, physician_a, key)` at `now = 7_500`:
-    // adapter recovers the cached receipt (`reconnected_at == 7_000`) without repeating the effect,
-    // checkpoints `Reconnected` + `Completed`, and restores practice access at `7_000`.
-    let instance_b = PreCheckpointSource::open(&ledger_path, &source_id);
+    // Construct a brand-new adapter instance sharing ONLY Postgres (`store.clone()`) and retry
+    // with the same `(practice, physician_a, key)` at `now = 7_500`: adapter recovers the cached
+    // receipt (`reconnected_at == 7_000`) without repeating the effect, checkpoints `Reconnected`
+    // + `Completed`, and restores practice access at `7_000`.
+    let instance_b = PreCheckpointSource::open(store.clone(), &source_id);
     let recovered = SourceCoordinator::reconnect_source_command(
         &store,
         ReconnectCommand {
@@ -2403,9 +2404,9 @@ async fn interrupted_reconnect_before_db_checkpoint_recovers_cached_adapter_rece
     .await
     .unwrap();
     assert_eq!(
-        instance_b.underlying_effect_count(),
+        instance_b.underlying_effect_count(&practice).await,
         1,
-        "retry on freshly constructed adapter instance after pre-checkpoint interruption must recover cached receipt without a second effect"
+        "retry on freshly constructed adapter instance after pre-checkpoint interruption must recover cached receipt from Postgres without a second effect"
     );
     assert!(matches!(
         &recovered,
@@ -2432,10 +2433,9 @@ async fn interrupted_reconnect_before_db_checkpoint_recovers_cached_adapter_rece
     )
     .await
     .unwrap();
-    assert_eq!(instance_b.underlying_effect_count(), 2);
+    assert_eq!(instance_b.underlying_effect_count(&practice).await, 2);
     assert!(matches!(
         &second_physician_out,
         ReconnectCommandOutcome::Accepted { receipt, .. } if receipt.reconnected_at == 8_500
     ));
-    let _ = std::fs::remove_file(&ledger_path);
 }

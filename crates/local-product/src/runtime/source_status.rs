@@ -1,5 +1,6 @@
 //! SeaORM persistence for practice-scoped workspace ownership, source patient links,
-//! practice-level source access state, and per-patient pull status.
+//! practice-level source access state, per-patient pull status, reconnect commands,
+//! and shared source adapter state across instances.
 
 use std::collections::{BTreeMap, BTreeSet, HashMap};
 
@@ -11,13 +12,15 @@ use serde_json::Value;
 use uuid::Uuid;
 
 use super::entities::{
-    command, patient_source_status, practice_source_access, reconnect_command, source_patient_link,
-    source_pull, workspace_practice,
+    command, patient_source_status, practice_source_access, reconnect_command,
+    source_adapter_state, source_patient_link, source_pull, workspace_practice,
 };
 use super::receipt::Receipt;
 use super::sources::{MissingScope, apply_source_delivery_tx};
 use super::{Store, conversion_error, error, now};
-use crate::physician_sources::{ChartPullReceipt, PullOutcome, ReconnectReceipt};
+use crate::physician_sources::{
+    ChartPullReceipt, PullOutcome, ReconnectReceipt, SourceAdapterError,
+};
 use crate::source_status::{
     AdapterPresence, CompleteDelivery, LinkTarget, PartialDelivery, PatientSourceRecordStatus,
     PracticeSourceReport, PullAttempt, ReconnectCommandClaim, ReconnectCommandFence,
@@ -1252,5 +1255,128 @@ impl Store {
             reports.push(self.practice_source_report(practice_id, &source_id).await?);
         }
         Ok(reports)
+    }
+
+    /// Reads shared adapter-owned state for `(practice_id, source_id)` from Postgres, returning
+    /// `S::default()` when no state row has been written yet.
+    pub async fn read_source_adapter_state<S>(
+        &self,
+        practice_id: &str,
+        source_id: &str,
+    ) -> Result<S, SourceAdapterError>
+    where
+        S: Default + serde::de::DeserializeOwned,
+    {
+        validate_non_empty("practice_id", practice_id)
+            .map_err(|err| adapter_state_error("validate source adapter state scope", err))?;
+        validate_non_empty("source_id", source_id)
+            .map_err(|err| adapter_state_error("validate source adapter state scope", err))?;
+
+        let Some(row) = source_adapter_state::Entity::find_by_id((
+            practice_id.to_owned(),
+            source_id.to_owned(),
+        ))
+        .one(&self.db)
+        .await
+        .map_err(|err| adapter_state_error("read source adapter state", err))?
+        else {
+            return Ok(S::default());
+        };
+
+        serde_json::from_value(row.state)
+            .map_err(|err| adapter_state_error("decode source adapter state", err))
+    }
+
+    /// Atomically locks, mutates, and persists shared adapter-owned state for
+    /// `(practice_id, source_id)` in a single Postgres transaction (`SELECT ... FOR UPDATE`),
+    /// rolling back if `mutate` returns an error.
+    pub async fn mutate_source_adapter_state<S, T>(
+        &self,
+        practice_id: &str,
+        source_id: &str,
+        mutate: impl FnOnce(&mut S) -> Result<T, SourceAdapterError>,
+    ) -> Result<T, SourceAdapterError>
+    where
+        S: Default + serde::Serialize + serde::de::DeserializeOwned,
+    {
+        validate_non_empty("practice_id", practice_id)
+            .map_err(|err| adapter_state_error("validate source adapter state scope", err))?;
+        validate_non_empty("source_id", source_id)
+            .map_err(|err| adapter_state_error("validate source adapter state scope", err))?;
+
+        let initial_state = serde_json::to_value(S::default())
+            .map_err(|err| adapter_state_error("encode initial source adapter state", err))?;
+
+        let tx =
+            self.db.begin().await.map_err(|err| {
+                adapter_state_error("begin source adapter state transaction", err)
+            })?;
+        let clock_now = now(&tx)
+            .await
+            .map_err(|err| adapter_state_error("read database clock for adapter state", err))?;
+
+        source_adapter_state::Entity::insert(source_adapter_state::ActiveModel {
+            practice: Set(practice_id.to_owned()),
+            source_id: Set(source_id.to_owned()),
+            state: Set(initial_state),
+            updated_at: Set(clock_now),
+        })
+        .on_conflict(
+            OnConflict::columns([
+                source_adapter_state::Column::Practice,
+                source_adapter_state::Column::SourceId,
+            ])
+            .do_nothing()
+            .to_owned(),
+        )
+        .exec_without_returning(&tx)
+        .await
+        .map_err(|err| adapter_state_error("ensure source adapter state row", err))?;
+
+        let row = source_adapter_state::Entity::find_by_id((
+            practice_id.to_owned(),
+            source_id.to_owned(),
+        ))
+        .lock_exclusive()
+        .one(&tx)
+        .await
+        .map_err(|err| adapter_state_error("lock source adapter state row", err))?
+        .ok_or_else(|| {
+            adapter_state_error(
+                "lock source adapter state row",
+                error("missing source adapter state row after insert"),
+            )
+        })?;
+
+        let mut state: S = serde_json::from_value(row.state)
+            .map_err(|err| adapter_state_error("decode source adapter state", err))?;
+        let output = mutate(&mut state)?;
+        let encoded = serde_json::to_value(&state)
+            .map_err(|err| adapter_state_error("encode source adapter state", err))?;
+
+        source_adapter_state::ActiveModel {
+            practice: Unchanged(row.practice),
+            source_id: Unchanged(row.source_id),
+            state: Set(encoded),
+            updated_at: Set(clock_now),
+        }
+        .update(&tx)
+        .await
+        .map_err(|err| adapter_state_error("update source adapter state row", err))?;
+
+        tx.commit()
+            .await
+            .map_err(|err| adapter_state_error("commit source adapter state transaction", err))?;
+        Ok(output)
+    }
+}
+
+fn adapter_state_error(
+    context: impl Into<String>,
+    source: impl std::error::Error + Send + Sync + 'static,
+) -> SourceAdapterError {
+    SourceAdapterError::External {
+        context: context.into(),
+        source: Box::new(source),
     }
 }

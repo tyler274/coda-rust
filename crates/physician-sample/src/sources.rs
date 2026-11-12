@@ -59,8 +59,13 @@ impl SourceRegistry {
     }
 
     /// Registers the synthetic chart adapter so connector checks, reconnects, and local-proof
-    /// mode switches act on the same shared adapter instance.
+    /// mode switches act on the same shared adapter instance, attaching the runtime [`Store`]
+    /// when configured.
     pub fn register_synthetic(&self, charts: Arc<SyntheticCharts>) {
+        let charts = match (&self.runtime, charts.uses_store()) {
+            (Some(store), false) => Arc::new((*charts).clone().with_store(store.clone())),
+            _ => charts,
+        };
         *self.synthetic.write().expect("synthetic adapter lock") = Some(Arc::clone(&charts));
         self.register(charts);
     }
@@ -805,21 +810,73 @@ async fn post_local_proof_mode(Path(source_id): Path<String>, request: Request<B
         .map(str::trim)
         .filter(|id| !id.is_empty())
     {
-        charts.set_patient_mode(&practice_id, source_patient_id, parsed.mode.clone());
+        if let Err(error) = charts
+            .set_patient_mode(&practice_id, source_patient_id, parsed.mode.clone())
+            .await
+        {
+            tracing::error!(
+                practice_id = %practice_id,
+                source_id = %source_id,
+                source_patient_id = %source_patient_id,
+                error = %error,
+                source = ?std::error::Error::source(&error),
+                "failed to persist local-proof patient source mode"
+            );
+            return StatusCode::INTERNAL_SERVER_ERROR.into_response();
+        }
+        let active_mode = match charts.effective_mode(&practice_id, source_patient_id).await {
+            Ok(mode) => mode,
+            Err(error) => {
+                tracing::error!(
+                    practice_id = %practice_id,
+                    source_id = %source_id,
+                    source_patient_id = %source_patient_id,
+                    error = %error,
+                    source = ?std::error::Error::source(&error),
+                    "failed to read local-proof patient source mode"
+                );
+                return StatusCode::INTERNAL_SERVER_ERROR.into_response();
+            }
+        };
         return Json(json!({
             "source_id": source_id,
             "practice_id": practice_id,
             "source_patient_id": source_patient_id,
-            "active_mode": charts.effective_mode(&practice_id, source_patient_id),
+            "active_mode": active_mode,
         }))
         .into_response();
     }
 
-    charts.set_practice_mode(&practice_id, parsed.mode.clone());
+    if let Err(error) = charts
+        .set_practice_mode(&practice_id, parsed.mode.clone())
+        .await
+    {
+        tracing::error!(
+            practice_id = %practice_id,
+            source_id = %source_id,
+            error = %error,
+            source = ?std::error::Error::source(&error),
+            "failed to persist local-proof practice source mode"
+        );
+        return StatusCode::INTERNAL_SERVER_ERROR.into_response();
+    }
+    let active_mode = match charts.practice_mode(&practice_id).await {
+        Ok(mode) => mode,
+        Err(error) => {
+            tracing::error!(
+                practice_id = %practice_id,
+                source_id = %source_id,
+                error = %error,
+                source = ?std::error::Error::source(&error),
+                "failed to read local-proof practice source mode"
+            );
+            return StatusCode::INTERNAL_SERVER_ERROR.into_response();
+        }
+    };
     Json(json!({
         "source_id": source_id,
         "practice_id": practice_id,
-        "active_mode": charts.practice_mode(&practice_id),
+        "active_mode": active_mode,
     }))
     .into_response()
 }

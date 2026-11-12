@@ -34,10 +34,10 @@ fn patient_ndjson(id: &str) -> String {
     )
 }
 
-fn build_bank(run: &str, count: usize) -> PathBuf {
-    let root = std::env::temp_dir().join(format!("coda-source-check-{run}"));
+fn build_bank_at(dir_suffix: &str, patient_prefix: &str, count: usize) -> PathBuf {
+    let root = std::env::temp_dir().join(format!("coda-source-check-{dir_suffix}"));
     for index in 1..=count {
-        let id = format!("{run}-{index}");
+        let id = format!("{patient_prefix}-{index}");
         let chart = root.join("patients").join(&id);
         fs::create_dir_all(&chart).unwrap();
         fs::write(
@@ -49,6 +49,10 @@ fn build_bank(run: &str, count: usize) -> PathBuf {
         fs::write(chart.join("Encounter.ndjson"), format!("{VISIT}\n")).unwrap();
     }
     root
+}
+
+fn build_bank(run: &str, count: usize) -> PathBuf {
+    build_bank_at(run, run, count)
 }
 
 async fn stores() -> (PostgresAuthStore, Store, String) {
@@ -1379,9 +1383,13 @@ async fn pre_checkpoint_interrupted_reconnect_recovers_original_receipt_across_f
         .await
         .unwrap();
 
-    let bank = build_bank(&run, 2);
+    // Give Site A and Site B completely separate bank directories on disk so they share ONLY Postgres!
+    let bank_dir_a = build_bank_at(&format!("{run}-site-a"), &run, 2);
+    let bank_dir_b = build_bank_at(&format!("{run}-site-b"), &run, 2);
+    assert_ne!(bank_dir_a, bank_dir_b);
+
     {
-        let site_a_charts = SyntheticCharts::open(&bank);
+        let site_a_charts = SyntheticCharts::open_with_store(&bank_dir_a, runtime.clone());
         let loaded = load_practice_from_source(&practice_id, &site_a_charts, &auth, &runtime)
             .await
             .unwrap();
@@ -1398,12 +1406,15 @@ async fn pre_checkpoint_interrupted_reconnect_recovers_original_receipt_across_f
                 .unwrap();
         }
 
-        site_a_charts.set_practice_mode(
-            &practice_id,
-            SyntheticSourceMode::LapsedAccess {
-                reason: "site A refresh token expired".into(),
-            },
-        );
+        site_a_charts
+            .set_practice_mode(
+                &practice_id,
+                SyntheticSourceMode::LapsedAccess {
+                    reason: "site A refresh token expired".into(),
+                },
+            )
+            .await
+            .unwrap();
         runtime
             .set_practice_source_access(
                 &practice_id,
@@ -1446,13 +1457,21 @@ async fn pre_checkpoint_interrupted_reconnect_recovers_original_receipt_across_f
 
         committed.await;
         assert_eq!(
-            site_a_adapter.inner.reconnect_effect_count(&practice_id),
+            site_a_adapter
+                .inner
+                .reconnect_effect_count(&practice_id)
+                .await
+                .unwrap(),
             1,
             "Site A performed exactly one reconnect effect before crashing"
         );
         site_a_task.abort();
         let _ = site_a_task.await;
     }
+
+    // Delete Site A's bank directory completely so Site B cannot observe anything from Site A's filesystem.
+    fs::remove_dir_all(&bank_dir_a).unwrap();
+    assert!(!bank_dir_a.exists());
 
     // Site A's adapter instance has been dropped and the DB checkpoint never ran (`ReconnectNeeded`
     // is still stored in Postgres).
@@ -1465,10 +1484,10 @@ async fn pre_checkpoint_interrupted_reconnect_recovers_original_receipt_across_f
         Some(SourceAccessState::ReconnectNeeded { .. })
     ));
 
-    // Boot Site B (`serve_isolated` opens a brand-new `SyntheticCharts::open(&bank)` via
-    // `PHYSICIAN_SYNTHETIC_CHARTS`), advance the practice clock to `t_site_b`, and retry the same
-    // `idempotency_key` over HTTP `/commands`.
-    let bank_for_site_b = bank.clone();
+    // Boot Site B with its own isolated `bank_dir_b` (`bank_dir_b != bank_dir_a`), sharing ONLY
+    // `db_url`, advance the practice clock to `t_site_b`, and retry the same `idempotency_key`
+    // over HTTP `/commands`.
+    let bank_for_site_b = bank_dir_b.clone();
     let db_for_site_b = db_url.clone();
     let site_b = common::serve_isolated(move || {
         // SAFETY: `serve_isolated` serializes server startup under its mutex.
@@ -1503,7 +1522,10 @@ async fn pre_checkpoint_interrupted_reconnect_recovers_original_receipt_across_f
         "Site B retry must recover Site A's original receipt timestamp rather than minting t_site_b"
     );
     assert_eq!(
-        SyntheticCharts::open(&bank).reconnect_effect_count(&practice_id),
+        SyntheticCharts::open_with_store(&bank_dir_b, runtime.clone())
+            .reconnect_effect_count(&practice_id)
+            .await
+            .unwrap(),
         1,
         "Site B retry must not repeat the underlying reconnect effect"
     );
@@ -1513,4 +1535,6 @@ async fn pre_checkpoint_interrupted_reconnect_recovers_original_receipt_across_f
     assert_eq!(conns_body["outages"], json!([]));
     assert_eq!(conns_body["sources"][0]["summary"]["scope"], "healthy");
     assert_eq!(conns_body["sources"][0]["summary"]["total_patients"], 2);
+
+    let _ = fs::remove_dir_all(&bank_dir_b);
 }

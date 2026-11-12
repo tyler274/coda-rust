@@ -41,7 +41,7 @@ pub async fn load_synthetic_practice(
     auth: &dyn AuthStore,
     runtime: &Store,
 ) -> Result<LoadSummary, String> {
-    let source = SyntheticCharts::open(bank);
+    let source = SyntheticCharts::open_with_store(bank, runtime.clone());
     load_practice_from_source(STAGING_PRACTICE_ID, &source, auth, runtime).await
 }
 

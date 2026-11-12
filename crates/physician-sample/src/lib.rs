@@ -529,7 +529,10 @@ async fn site_from_env(
             ));
         }
         source_registry.register_synthetic(std::sync::Arc::new(
-            synthetic_chart::SyntheticCharts::open(Path::new(&charts_dir)),
+            synthetic_chart::SyntheticCharts::open_with_optional_store(
+                Path::new(&charts_dir),
+                runtime.clone(),
+            ),
         ));
     }
     let local_proof = !hosted && configured(&get, "PHYSICIAN_LOCAL_PROOF").as_deref() == Some("1");

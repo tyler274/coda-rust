@@ -1,12 +1,13 @@
 //! Additive schema for pull missing-record receipts, nullable partial-pull
 //! timestamps, practice-scoped source patient links, practice source access
-//! state, per-patient pull status, and durable reconnect command execution.
+//! state, per-patient pull status, durable reconnect command execution, and
+//! shared source adapter state across instances.
 
 use sea_orm_migration::prelude::*;
 
 use super::super::entities::{
-    patient_source_status, practice_source_access, reconnect_command, source_patient_link,
-    source_pull, workspace_practice,
+    patient_source_status, practice_source_access, reconnect_command, source_adapter_state,
+    source_patient_link, source_pull, workspace_practice,
 };
 
 #[derive(DeriveMigrationName)]
@@ -212,6 +213,39 @@ impl MigrationTrait for Migration {
                             .col(reconnect_command::Column::Practice)
                             .col(reconnect_command::Column::Physician)
                             .col(reconnect_command::Column::Key),
+                    )
+                    .to_owned(),
+            )
+            .await?;
+
+        manager
+            .create_table(
+                Table::create()
+                    .table(source_adapter_state::Entity)
+                    .col(
+                        ColumnDef::new(source_adapter_state::Column::Practice)
+                            .text()
+                            .not_null(),
+                    )
+                    .col(
+                        ColumnDef::new(source_adapter_state::Column::SourceId)
+                            .text()
+                            .not_null(),
+                    )
+                    .col(
+                        ColumnDef::new(source_adapter_state::Column::State)
+                            .json_binary()
+                            .not_null(),
+                    )
+                    .col(
+                        ColumnDef::new(source_adapter_state::Column::UpdatedAt)
+                            .big_integer()
+                            .not_null(),
+                    )
+                    .primary_key(
+                        Index::create()
+                            .col(source_adapter_state::Column::Practice)
+                            .col(source_adapter_state::Column::SourceId),
                     )
                     .to_owned(),
             )

@@ -27,10 +27,11 @@ them.
 
 The reset discards chats, drafts, revision history, response feedback,
 attempts, command receipts, frozen execution inputs, provider cooldown,
-retained synthetic chart observations, practice source access and patient
-source links and pull status. It also drops `physician_runtime_migrations`, the
-runtime chain's ledger, so a reset leaves no ledger behind. It leaves account,
-session, practice, panel and front-door tables in place.
+retained synthetic chart observations, practice source access, shared source
+adapter state, and patient source links and pull status. It also drops
+`physician_runtime_migrations`, the runtime chain's ledger, so a reset leaves
+no ledger behind. It leaves account, session, practice, panel and front-door
+tables in place.
 
 ```sql
 DROP TABLE IF EXISTS
@@ -50,6 +51,7 @@ DROP TABLE IF EXISTS
     physician_runtime_reply_revisions,
     physician_runtime_response_feedback,
     physician_runtime_revision_attempts,
+    physician_runtime_source_adapter_state,
     physician_runtime_source_patient_links,
     physician_runtime_source_pulls,
     physician_runtime_source_versions,
@@ -267,7 +269,7 @@ The physician runtime keeps clinical history and the evidence Coda can learn fro
 | Earlier reply revisions (`physician_runtime_reply_revisions`) | [`reply.rs`](/crates/local-product/src/runtime/reply.rs) | Learning evidence: what Coda could read, what it read and produced, and what the physician changed | Append-only: a superseded attempt's late records are added, nothing is rewritten; kept with clinical history until the de-identified learning export exists. |
 | Patient sources (`physician_runtime_sources`) and their versions (`physician_runtime_source_versions`) | [`sources.rs`](/crates/local-product/src/runtime/sources.rs) | Every revision of each source a reply revision could read, and each workspace's observation version | Append-only: corrections and withdrawals are new rows. Kept with clinical history, since pinned and refreshed revisions on drafts and earlier revisions refer to them. |
 | Each source's last pull (`physician_runtime_source_pulls`) | [`sources.rs`](/crates/local-product/src/runtime/sources.rs) | Patient directory identity per source, when a source last delivered a complete chart (or null when only partial records have landed), which "Records as of" reads, plus candidate IDs omitted on that pull | One row per patient and source; partial pulls preserve any prior complete timestamp and a later complete pull replaces it. |
-| Source patient links, practice access, pull status and reconnect commands (`physician_runtime_workspace_practices`, `physician_runtime_source_patient_links`, `physician_runtime_practice_source_access`, `physician_runtime_patient_source_status`, `physician_runtime_reconnect_commands`) | [`source_status.rs`](/crates/local-product/src/runtime/source_status.rs) | Practice workspace ownership, stable source-patient links per practice, practice-level connector access state, each patient's latest pull outcome and preserved last good read time, and durable execution state and receipts for reconnect commands | Kept with the practice's patient records; status and access rows update as pulls and reconnects occur. |
+| Source patient links, practice access, pull status, reconnect commands and shared adapter state (`physician_runtime_workspace_practices`, `physician_runtime_source_patient_links`, `physician_runtime_practice_source_access`, `physician_runtime_patient_source_status`, `physician_runtime_reconnect_commands`, `physician_runtime_source_adapter_state`) | [`source_status.rs`](/crates/local-product/src/runtime/source_status.rs) | Practice workspace ownership, stable source-patient links per practice, practice-level connector access state, each patient's latest pull outcome and preserved last good read time, durable execution state and receipts for reconnect commands, and shared adapter connector state across instances | Kept with the practice's patient records; status, access and adapter state rows update as pulls and reconnects occur. |
 | Execution records (attempt records on conversations and drafts) | [`runtime::Store`](/crates/local-product/src/runtime.rs) | Model requests and responses, tool reads, failures, and the evidence retries and recovery replay | Kept with the record they belong to. |
 | Command receipts (`physician_runtime_commands`) | [`receipt.rs`](/crates/local-product/src/runtime/receipt.rs) | Idempotency: a repeated command id returns the same answer; a different command under that id is refused | Full command for 90 days from `accepted_at`, then reduced to a salted digest. |
 | Langfuse traces | [Observability](observability.md) | Debugging model runs | The Langfuse HIPAA cloud project keeps them for 90 days. |
