@@ -243,7 +243,7 @@ const CONCEPT_OR_CODING: Reader = Reader {
 };
 const RANGE: Reader = Reader {
     show: reference_range,
-    parts: &["text", "low", "high"],
+    parts: &["text", "low", "high", "type"],
 };
 /// A reference reads as its display; the identifier behind it is technical.
 const PERSON: Reader = Reader {
@@ -546,16 +546,42 @@ fn quantity(value: &Value) -> Option<String> {
     )
 }
 
+/// A range's kind, text and bounds, every one the source gives, since `RANGE` removes them all
+/// once it shows. A part present but unreadable leaves the whole range to the general view.
 fn reference_range(range: &Value) -> Option<String> {
-    if let Some(text) = text(&range["text"]) {
-        return Some(text.into());
+    fn part(
+        range: &Value,
+        name: &str,
+        read: fn(&Value) -> Option<String>,
+    ) -> Result<Option<String>, ()> {
+        match &range[name] {
+            Value::Null => Ok(None),
+            value => read(value).map(Some).ok_or(()),
+        }
     }
-    match (quantity(&range["low"]), quantity(&range["high"])) {
+    let (Ok(kind), Ok(low), Ok(high)) = (
+        part(range, "type", concept),
+        part(range, "low", quantity),
+        part(range, "high", quantity),
+    ) else {
+        return None;
+    };
+    let bounds = match (low, high) {
         (Some(low), Some(high)) => Some(format!("{low} to {high}")),
         (Some(low), None) => Some(format!("At least {low}")),
         (None, Some(high)) => Some(format!("At most {high}")),
         (None, None) => None,
-    }
+    };
+    let reading = match (text(&range["text"]), bounds) {
+        (Some(text), Some(bounds)) => format!("{text} ({bounds})"),
+        (Some(text), None) => text.into(),
+        (None, Some(bounds)) => bounds,
+        (None, None) => return None,
+    };
+    Some(match kind {
+        Some(kind) => format!("{kind}: {reading}"),
+        None => reading,
+    })
 }
 
 /// The general view: every field no layout placed, one section per field under the source's own
@@ -617,9 +643,10 @@ fn readable_lines(path: &str, value: &Value, lines: &mut Vec<String>) {
         }
         Value::Object(fields) => {
             let only = |allowed: &[&str]| fields.keys().all(|key| allowed.contains(&key.as_str()));
+            let reference = fields.contains_key("reference");
             // A reference with no display names a record by its identifier, which, like this
             // record's own identifier, is technical rather than something the record says.
-            if only(&["reference", "type"]) {
+            if reference && only(&["reference", "type"]) {
                 return;
             }
             if only(&["value", "unit", "code", "system", "comparator"]) {
@@ -665,14 +692,17 @@ fn readable_lines(path: &str, value: &Value, lines: &mut Vec<String>) {
 }
 
 /// The record's own human-readable narrative (`text.div`), as plain text. Blocks and table rows
-/// start new lines, table cells stay apart, and a superscript keeps its meaning as `^`.
+/// start new lines, table cells stay apart, and a superscript keeps its meaning as `^`. A row
+/// stays on one line: a line break inside a cell reads as ` / `, so the next cell's value never
+/// reads as continuing it.
 fn narrative(resource: &Value) -> Option<String> {
     let div = text(&resource["text"]["div"])?;
     let mut plain = String::new();
     let mut cells = 0;
+    let mut cell = Cell::Outside;
     let mut rest = div;
     while let Some(start) = rest.find('<') {
-        push_text(&mut plain, &rest[..start]);
+        cell.push(&mut plain, &rest[..start]);
         let Some(end) = rest[start..].find('>') else {
             rest = "";
             break;
@@ -692,14 +722,24 @@ fn narrative(resource: &Value) -> Option<String> {
                     plain.push_str(" | ");
                 }
                 cells += 1;
+                cell = Cell::Empty;
             }
+            "td" | "th" => cell = Cell::Outside,
             "sup" if opening => {
                 trim_line_end(&mut plain);
                 plain.push('^');
             }
+            "br" | "p" | "div" | "li" | "ul" | "ol" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6"
+                if cell != Cell::Outside =>
+            {
+                if cell == Cell::Written {
+                    cell = Cell::Broken;
+                }
+            }
             "br" | "p" | "div" | "li" | "tr" | "table" | "thead" | "tbody" | "tfoot" | "ul"
             | "ol" | "caption" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" => {
                 cells = 0;
+                cell = Cell::Outside;
                 trim_line_end(&mut plain);
                 if !plain.is_empty() && !plain.ends_with('\n') {
                     plain.push('\n');
@@ -709,13 +749,45 @@ fn narrative(resource: &Value) -> Option<String> {
         }
         rest = &rest[start + end + 1..];
     }
-    push_text(&mut plain, rest);
+    cell.push(&mut plain, rest);
     let lines: Vec<_> = plain
         .lines()
         .map(str::trim)
         .filter(|line| !line.is_empty())
         .collect();
     (!lines.is_empty()).then(|| lines.join("\n"))
+}
+
+/// Where the narrative's text falls relative to a table cell.
+#[derive(Clone, Copy, PartialEq, Eq)]
+enum Cell {
+    Outside,
+    /// In a cell with no text yet.
+    Empty,
+    Written,
+    /// In a cell with text, after a line break that more text has not followed yet.
+    Broken,
+}
+
+impl Cell {
+    /// Writes text between tags. Inside a cell, a line break followed by more text reads as
+    /// ` / `, and one with nothing after it in the cell reads as nothing.
+    fn push(&mut self, plain: &mut String, raw: &str) {
+        if decode_entities(raw).trim().is_empty() {
+            push_text(plain, raw);
+            return;
+        }
+        match self {
+            Self::Outside => {}
+            Self::Broken => {
+                trim_line_end(plain);
+                plain.push_str(" / ");
+                *self = Self::Written;
+            }
+            Self::Empty | Self::Written => *self = Self::Written,
+        }
+        push_text(plain, raw);
+    }
 }
 
 /// Text between tags, with its whitespace collapsed as XHTML displays it and its character
@@ -1257,6 +1329,39 @@ mod tests {
         );
     }
 
+    /// A range reads with its kind, its text and its bounds together, wherever it sits, and an
+    /// object that only qualifies something is never mistaken for a reference.
+    #[test]
+    fn a_range_keeps_its_bounds_and_kind_beside_its_text() {
+        let view = inspection(&citation(
+            r#"{"resourceType":"Observation","code":{"text":"Glucose"},"valueQuantity":{"value":108,"unit":"mg/dL"},
+            "referenceRange":[{"text":"Adult fasting interval","low":{"value":70,"unit":"mg/dL"},"high":{"value":99,"unit":"mg/dL"}},
+                {"type":{"text":"Therapeutic"},"low":{"value":2,"unit":"mg/dL"}},
+                {"low":{"value":1},"appliesTo":[{"text":"Adults"}]}],
+            "component":[{"code":{"text":"Fasting"},"valueQuantity":{"value":108,"unit":"mg/dL"},
+                "referenceRange":[{"text":"Adult","type":{"text":"Normal"},"high":{"value":99,"unit":"mg/dL"}}]}],
+            "extension":[{"type":{"text":"Qualifier only"}}]}"#,
+        ));
+        assert_eq!(
+            view.sections,
+            vec![
+                field("Statement in this record", "Glucose"),
+                field("Recorded value", "108 mg/dL"),
+                field(
+                    "Fasting",
+                    "108 mg/dL\nReference range recorded: Normal: Adult (At most 99 mg/dL)"
+                ),
+                field(
+                    "Reference range recorded",
+                    "Adult fasting interval (70 mg/dL to 99 mg/dL)\n\
+                     Therapeutic: At least 2 mg/dL\nAt least 1"
+                ),
+                field("extension", "type: Qualifier only"),
+                field("referenceRange", "appliesTo: Adults"),
+            ]
+        );
+    }
+
     /// A field no layout knows still reads under the source's name for it, nested values
     /// included, and nothing a layout placed is repeated.
     #[test]
@@ -1329,6 +1434,21 @@ mod tests {
                 "Narrative in this record",
                 "Test | Value | Range\nGlucose | 108 | 70-99\nFlag | | H\n\
                  WBC 4.5 x 10^9/L, area 2 m^2 × 1"
+            )]
+        );
+    }
+
+    /// A line break inside a cell keeps the row on one line, so the next cell stays apart.
+    #[test]
+    fn a_line_break_inside_a_cell_keeps_its_row_together() {
+        let view = inspection(&citation(
+            r#"{"resourceType":"Basic","text":{"div":"<div><table><tr><td>Glucose</td><td>108<br/>109</td><td>70-99</td></tr><tr><td><p>Flag</p></td><td>H<br/></td><td><br/>Low</td></tr></table><p>After<br/>the table</p></div>"}}"#,
+        ));
+        assert_eq!(
+            view.sections,
+            vec![field(
+                "Narrative in this record",
+                "Glucose | 108 / 109 | 70-99\nFlag | H | Low\nAfter\nthe table"
             )]
         );
     }
