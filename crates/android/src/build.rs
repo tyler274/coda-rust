@@ -54,7 +54,6 @@ const HEALTH_PERMISSIONS: &str = "\
 
 const NOTIFICATION_PERMISSIONS: &str = "\
     <uses-permission android:name=\"android.permission.POST_NOTIFICATIONS\" />
-    <uses-permission android:name=\"android.permission.SCHEDULE_EXACT_ALARM\" />
 ";
 
 const PERMISSION_RATIONALE: &str = "\
@@ -443,12 +442,6 @@ fn patch_health_manifest(text: &str) -> String {
             NOTIFICATION_PERMISSIONS,
         );
     }
-    if !text.contains("coda.duet.InsightAlertReceiver") {
-        text = text.replace(
-            "</application>",
-            "    <receiver android:name=\"coda.duet.InsightAlertReceiver\" android:exported=\"false\" />\n    </application>",
-        );
-    }
     if !text.contains("VIEW_PERMISSION_USAGE") {
         text = text.replace("</activity>", PERMISSION_RATIONALE);
     }
@@ -691,7 +684,6 @@ dependencies {
         assert!(app.contains("buildToolsVersion = \"37.0.0\""));
         assert!(manifest.contains("android:usesCleartextTraffic=\"true\""));
         assert!(manifest.contains("android.permission.health.READ_STEPS"));
-        assert!(manifest.contains("coda.duet.InsightAlertReceiver"));
         assert!(manifest.contains("android.permission.POST_NOTIFICATIONS"));
         assert!(manifest.contains("windowSoftInputMode=\"adjustResize\""));
         assert!(manifest.contains("<!-- duet-android-wired -->"));
