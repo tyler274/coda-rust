@@ -180,7 +180,7 @@ pub(crate) fn admit(
         None => roster.home_channel(author),
     };
     let body = Body::Post(draft.kind);
-    if draft.kind == MessageKind::Post {
+    if draft.kind != MessageKind::Brief {
         let earlier = board.iter().filter(|m| m.body == body).map(|m| m.time);
         policy
             .rate

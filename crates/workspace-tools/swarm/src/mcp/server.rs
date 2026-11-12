@@ -125,6 +125,27 @@ struct AddArgs {
     #[serde(default)]
     tasks: Vec<String>,
     fork: Option<MemberName>,
+    #[serde(default)]
+    role: AddRole,
+}
+
+#[derive(Debug, Clone, Copy, Default, Deserialize)]
+#[serde(rename_all = "lowercase")]
+enum AddRole {
+    #[default]
+    Worker,
+    Narrator,
+    Monitor,
+}
+
+impl From<AddRole> for Role {
+    fn from(role: AddRole) -> Self {
+        match role {
+            AddRole::Worker => Self::Worker,
+            AddRole::Narrator => Self::Narrator,
+            AddRole::Monitor => Self::Monitor,
+        }
+    }
 }
 
 #[derive(Deserialize)]
@@ -328,7 +349,11 @@ impl<S: Store, P: Spawner> Server<S, P> {
             current.active_channel(channel).map_err(RosterError::from)?;
         }
         let catalog = self.spawner.models();
+        let role = Role::from(args.role);
         let specs = self.store.update_roster(|roster| {
+            if role != Role::Worker && live(roster, &self.caller)?.role != Role::Coordinator {
+                return Err(ToolError::CoordinatorOnly("add a narrator or monitor"));
+            }
             live(roster, &self.caller)?;
             let model = args
                 .model
@@ -341,7 +366,7 @@ impl<S: Store, P: Spawner> Server<S, P> {
             }
             let mut specs = Vec::new();
             for (index, name) in names.iter().enumerate() {
-                let mut member = Member::new(Role::Worker, Some(self.caller.clone()));
+                let mut member = Member::new(role, Some(self.caller.clone()));
                 member.state = MemberState::Waiting {
                     wake_mode: WakeMode::Mentions,
                     wait_since: head,
@@ -558,6 +583,9 @@ impl<S: Store, P: Spawner> Server<S, P> {
     fn post(&self, args: PostArgs) -> Result<Value, ToolError> {
         let mut draft = Draft::post(self.caller.clone(), args.text);
         draft.channel = args.channel;
+        if self.store.roster()?.member(&self.caller)?.role == Role::Narrator {
+            draft.kind = MessageKind::Summary;
+        }
         let message = self.store.append(draft, Utc::now())?;
         Ok(json!({ "seq": message.seq, "channel": message.channel }))
     }

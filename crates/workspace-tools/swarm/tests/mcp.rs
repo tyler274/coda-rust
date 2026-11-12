@@ -505,3 +505,39 @@ fn coordinator_with_a_registry_runs_and_stops_workers() {
     let note = unregistered["note"].as_str().expect("note");
     assert!(note.contains("no model registry"), "{note}");
 }
+
+#[test]
+fn coordinator_adds_observers_whose_summaries_wake_no_one() {
+    let dir = tempfile::tempdir().expect("tempdir");
+    let mut lead = Client::start(dir.path(), "lead", true);
+    lead.ok(
+        "swarm",
+        json!({ "action": "add", "name": "scout", "brief": "go" }),
+    );
+    lead.ok(
+        "swarm",
+        json!({ "action": "add", "name": "narrator", "brief": "keep the user posted", "role": "narrator" }),
+    );
+    let mut scout = Client::start(dir.path(), "scout", false);
+    let refused = scout.refused(
+        "swarm",
+        json!({ "action": "add", "name": "monitor", "brief": "watch", "role": "monitor" }),
+    );
+    assert!(refused.contains("only the coordinator"), "{refused}");
+
+    let status = lead.ok("swarm", json!({ "action": "status" }));
+    assert_eq!(member(&status, "narrator")["role"], "narrator");
+
+    let mut narrator = Client::start(dir.path(), "narrator", false);
+    let posted = narrator.ok(
+        "post_message",
+        json!({ "text": "@lead @scout progress: scout started (#1)" }),
+    );
+    let read = lead.ok(
+        "read_board",
+        json!({ "since": posted["seq"].as_u64().expect("seq") - 1 }),
+    );
+    assert_eq!(read["messages"][0]["kind"], "summary");
+    let wait = lead.ok("swarm_wait", json!({ "since": 0, "timeout": 1 }));
+    assert_eq!(wait["woken"], false, "{wait}");
+}

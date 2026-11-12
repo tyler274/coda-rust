@@ -1,6 +1,8 @@
 //! Runs swarm members. Each member gets one thread that loops: mark it
-//! working, run one turn through the [`WorkerAdapter`], park it waiting, and
-//! poll the board until [`policy::rings`] admits a post for it.
+//! working, run one turn through the [`WorkerAdapter`], give it one park
+//! guard turn if it left mentions unread, park it waiting, and poll the
+//! board until [`policy::rings`] admits a post for it or, for a narrator or
+//! monitor, its timer ticks.
 //!
 //! The MCP server owns the roster and briefs; the supervisor runs the
 //! members it is asked to start, as the coordinator's [`Spawner`]. It owns
@@ -9,6 +11,7 @@
 //! [`Supervisor::kill`] or [`Supervisor::shutdown`].
 
 mod keys;
+mod observers;
 mod workspaces;
 
 use std::collections::{BTreeMap, BTreeSet};
@@ -25,11 +28,12 @@ pub use workspaces::{SandboxWorkspaces, WorkspaceError, Workspaces, WorktreeMode
 pub use crate::adapter::KeyEnv;
 use crate::adapter::{Cancel, Catalog, ForkError, TurnOutcome, TurnRequest, WorkerAdapter};
 use crate::mcp::{SpawnError, SpawnSpec, Spawner, Workspace};
-use crate::message::{Draft, Message, Seq};
+use crate::message::{Body, Draft, Message, MessageKind, Seq};
 use crate::names::MemberName;
 use crate::policy;
 use crate::roster::{MemberState, RosterError, WakeMode};
 use crate::store::{Store, StoreError, UpdateError};
+use observers::Observer;
 
 #[derive(Debug, Clone)]
 pub struct SupervisorConfig {
@@ -47,6 +51,10 @@ pub struct SupervisorConfig {
     pub poll: Duration,
     /// Board messages read per store call while polling.
     pub read_batch: usize,
+    /// How often a narrator gets a tick while others post.
+    pub narrator_every: Duration,
+    /// How often a monitor gets a tick while workers are live.
+    pub monitor_every: Duration,
 }
 
 impl SupervisorConfig {
@@ -77,6 +85,8 @@ impl SupervisorConfig {
             wake_mode: WakeMode::Mentions,
             poll: Duration::from_millis(200),
             read_batch: 256,
+            narrator_every: Duration::from_secs(300),
+            monitor_every: Duration::from_secs(180),
         }
     }
 }
@@ -202,14 +212,30 @@ impl<S: Store + Send + Sync + 'static> Supervisor<S> {
                 })?;
         }
         let since = self.shared.store.head()?;
+        let observer = self
+            .shared
+            .store
+            .roster()?
+            .members
+            .get(&spec.name)
+            .and_then(|member| Observer::of(member.role));
         let (cwd, worktree) = self.place(&mut owned, spec)?;
         let cancel = Cancel::default();
         let thread = {
             let shared = Arc::clone(&self.shared);
             let name = spec.name.clone();
-            let prompt = spec.brief.clone();
+            let prompt = match observer {
+                Some(observer) => format!(
+                    "{}\n\n{}",
+                    observer.role_prompt(&shared.coordinator, observer.every(&shared.config)),
+                    spec.brief
+                ),
+                None => spec.brief.clone(),
+            };
             let cancel = cancel.clone();
-            thread::spawn(move || shared.run_member(&name, cwd, prompt, since, &cancel))
+            thread::spawn(move || {
+                shared.run_member(&name, observer, cwd, prompt, since, &cancel);
+            })
         };
         lock(&self.shared.status).insert(spec.name.clone(), MemberStatus::default());
         owned.runs.insert(
@@ -420,12 +446,14 @@ impl<S: Store> Shared<S> {
     fn run_member(
         &self,
         name: &MemberName,
+        observer: Option<Observer>,
         cwd: PathBuf,
         first_prompt: String,
         mut since: Seq,
         cancel: &Cancel,
     ) {
         let mut prompt = first_prompt;
+        let mut tick_mark = since;
         while !cancel.is_cancelled() {
             let model = match self.begin_turn(name) {
                 Ok(model) => model,
@@ -469,17 +497,76 @@ impl<S: Store> Shared<S> {
                     }
                     continue;
                 }
-                TurnOutcome::Completed | TurnOutcome::Failed { .. } => {}
+                TurnOutcome::Completed => match self.park_guard(name, since) {
+                    Ok(ParkGuard::Clear) => {}
+                    Ok(ParkGuard::Spent { head }) => since = since.max(head),
+                    Ok(ParkGuard::Nudge { prompt: nudge }) => {
+                        prompt = nudge;
+                        continue;
+                    }
+                    Err(error) => self.note_error(name, &error),
+                },
+                TurnOutcome::Failed { .. } => {}
             }
-            let Some(message) = self.wait_for_ring(name, since, cancel) else {
-                return;
+            let ticks = observer.map(|observer| (observer, &mut tick_mark));
+            prompt = match self.wait_for_ring(name, since, ticks, cancel) {
+                None => return,
+                Some(Wake::Tick { observer, head }) => observer.tick_prompt(head),
+                Some(Wake::Ring(message)) => {
+                    since = message.seq;
+                    format!(
+                        "New post #{} from {} in #{}:\n{}",
+                        message.seq, message.agent, message.channel, message.text
+                    )
+                }
             };
-            since = message.seq;
-            prompt = format!(
-                "New post #{} from {} in #{}:\n{}",
-                message.seq, message.agent, message.channel, message.text
+        }
+    }
+
+    /// The park guard, run when a turn completes. Posts after both the
+    /// member's read cursor and `delivered` (the last post handed to it in
+    /// a prompt) that mention it earn one more turn to read and answer them.
+    /// At most one such turn per board head, recorded on the roster so a
+    /// restart does not repeat it; once spent, the member parks past them.
+    fn park_guard(&self, name: &MemberName, delivered: Seq) -> Result<ParkGuard, GuardError> {
+        let head = self.store.head()?;
+        let roster = self.store.roster()?;
+        let member = roster.member(name)?;
+        let mut unread = Vec::new();
+        let mut cursor = delivered.max(member.last_read_seq);
+        loop {
+            let batch = self.store.read_since(cursor, self.config.read_batch)?;
+            let Some(last) = batch.last() else { break };
+            cursor = last.seq;
+            unread.extend(
+                batch
+                    .iter()
+                    .filter(|m| {
+                        m.body == Body::Post(MessageKind::Post)
+                            && m.agent != *name
+                            && roster.is_mentioned(name, member, &m.mentions())
+                    })
+                    .map(|m| format!("#{}", m.seq)),
             );
         }
+        if unread.is_empty() {
+            return Ok(ParkGuard::Clear);
+        }
+        let claimed = self.store.update_roster(|roster| {
+            Ok::<_, RosterError>(roster.member_mut(name)?.take_park_block(head))
+        })?;
+        if !claimed {
+            return Ok(ParkGuard::Spent { head });
+        }
+        Ok(ParkGuard::Nudge {
+            prompt: format!(
+                "[board] Your turn ended with unread posts that mention you: {}. The board \
+                 is at #{head} and you have read up to #{}. Call read_board, answer what \
+                 concerns you, then end your turn.",
+                unread.join(", "),
+                member.last_read_seq
+            ),
+        })
     }
 
     /// Marks the member working and returns the model for this turn.
@@ -545,8 +632,18 @@ impl<S: Store> Shared<S> {
         }
     }
 
-    /// Parks the member and polls the board until a post rings it.
-    fn wait_for_ring(&self, name: &MemberName, since: Seq, cancel: &Cancel) -> Option<Message> {
+    /// Parks the member and polls the board until a post rings it or, for
+    /// an observer, a tick is due.
+    fn wait_for_ring(
+        &self,
+        name: &MemberName,
+        since: Seq,
+        mut ticks: Option<(Observer, &mut Seq)>,
+        cancel: &Cancel,
+    ) -> Option<Wake> {
+        let mut next_tick = ticks
+            .as_ref()
+            .map(|(observer, _)| Instant::now() + observer.every(&self.config));
         let mut cursor = loop {
             let parked = self.store.update_roster(|roster| {
                 let member = roster.member_mut(name)?;
@@ -567,9 +664,24 @@ impl<S: Store> Shared<S> {
         };
         loop {
             match self.ringing(name, &mut cursor) {
-                Ok(Some(message)) => return Some(message),
+                Ok(Some(message)) => return Some(Wake::Ring(message)),
                 Ok(None) => {}
                 Err(error) => self.note_error(name, &error),
+            }
+            if let (Some((observer, mark)), Some(at)) = (ticks.as_mut(), next_tick.as_mut())
+                && Instant::now() >= *at
+            {
+                *at = Instant::now() + observer.every(&self.config);
+                match self.tick_due(name, *observer, mark) {
+                    Ok(Some(head)) => {
+                        return Some(Wake::Tick {
+                            observer: *observer,
+                            head,
+                        });
+                    }
+                    Ok(None) => {}
+                    Err(error) => self.note_error(name, &error),
+                }
             }
             if !self.idle(cancel, self.config.poll) {
                 return None;
@@ -598,6 +710,28 @@ impl<S: Store> Shared<S> {
         }
     }
 
+    /// The head, when the observer's tick is worth a turn. Advances `mark`
+    /// to the head either way, so each post counts toward one tick.
+    fn tick_due(
+        &self,
+        name: &MemberName,
+        observer: Observer,
+        mark: &mut Seq,
+    ) -> Result<Option<Seq>, StoreError> {
+        let head = self.store.head()?;
+        let roster = self.store.roster()?;
+        let mut moved = false;
+        let mut cursor = *mark;
+        while !moved && cursor < head {
+            let batch = self.store.read_since(cursor, self.config.read_batch)?;
+            let Some(last) = batch.last() else { break };
+            cursor = last.seq;
+            moved = batch.iter().any(|m| Observer::moves(name, m));
+        }
+        *mark = head;
+        Ok(observer.due(&roster, moved).then_some(head))
+    }
+
     /// Sleeps up to `duration`; false once cancelled.
     fn idle(&self, cancel: &Cancel, duration: Duration) -> bool {
         let deadline = Instant::now() + duration;
@@ -619,6 +753,32 @@ impl<S: Store> Shared<S> {
             .or_default()
             .last_error = Some(error.to_string());
     }
+}
+
+enum Wake {
+    Ring(Message),
+    Tick { observer: Observer, head: Seq },
+}
+
+enum ParkGuard {
+    Clear,
+    /// This head's one nudge already ran.
+    Spent {
+        head: Seq,
+    },
+    Nudge {
+        prompt: String,
+    },
+}
+
+#[derive(Debug, thiserror::Error)]
+enum GuardError {
+    #[error(transparent)]
+    Store(#[from] StoreError),
+    #[error(transparent)]
+    Roster(#[from] RosterError),
+    #[error(transparent)]
+    Update(#[from] UpdateError<RosterError>),
 }
 
 #[cfg(test)]

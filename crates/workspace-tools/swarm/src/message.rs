@@ -36,6 +36,8 @@ pub enum MessageKind {
     Post,
     /// The brief posted when a member is added.
     Brief,
+    /// A narrator's progress summary for the human; it wakes no one.
+    Summary,
 }
 
 impl MessageKind {

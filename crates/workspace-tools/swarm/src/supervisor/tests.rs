@@ -17,12 +17,14 @@ use crate::store::SwarmId;
 
 /// Behavior by member name. Every turn appends `<member> <prompt>` to
 /// `$1/turns`; a hanging turn leaves a background child whose pid it writes
-/// to `$1/<member>.child`.
+/// to `$1/<member>.child`. While `$1/<member>.hold` exists a turn does not
+/// end, and it never reads the board.
 const STUB: &str = r#"#!/bin/sh
 dir="$1"
 prompt=$(cat)
 echo "$CODA_SWARM_MEMBER $prompt" >> "$dir/turns"
 echo "$CODA_SWARM_AGENT $CODA_SWARM_DIR $API_KEY $CODA_SWARM_MCP_COMMAND" > "$dir/$CODA_SWARM_MEMBER.board"
+while [ -f "$dir/$CODA_SWARM_MEMBER.hold" ]; do sleep 0.01; done
 case "$CODA_SWARM_MEMBER" in
   *crash*) exit 3 ;;
   *hang*)
@@ -115,6 +117,8 @@ fn harness(configure: impl FnOnce(&mut CommandAdapter)) -> Harness {
     });
     let mut config = SupervisorConfig::new(dir.path(), dir.path().join("swarm"), "sw");
     config.poll = Duration::from_millis(20);
+    config.narrator_every = Duration::from_millis(100);
+    config.monitor_every = Duration::from_millis(100);
     config.keys = vec![KeyEnv {
         var: "API_KEY".into(),
         item: "api".into(),
@@ -137,13 +141,23 @@ fn harness(configure: impl FnOnce(&mut CommandAdapter)) -> Harness {
 impl Harness {
     /// Adds the group to the roster, as the MCP server does, then starts it.
     fn spawn(&self, base: &str, workspace: Workspace, count: usize) -> Vec<MemberName> {
+        self.spawn_as(base, Role::Worker, workspace, count)
+    }
+
+    fn spawn_as(
+        &self,
+        base: &str,
+        role: Role,
+        workspace: Workspace,
+        count: usize,
+    ) -> Vec<MemberName> {
         let names =
             MemberName::group(base, NonZeroUsize::new(count).expect("nonzero")).expect("names");
         self.supervisor
             .store()
             .update_roster(|roster| {
                 names.iter().try_for_each(|member| {
-                    let mut entry = Member::new(Role::Worker, Some(name("lead")));
+                    let mut entry = Member::new(role, Some(name("lead")));
                     entry.model = Some("stub-model".into());
                     roster.add_member(member.clone(), entry)
                 })
@@ -185,6 +199,30 @@ impl Harness {
 
     fn outcome(&self, who: &str) -> Option<TurnOutcome> {
         self.supervisor.status(&name(who))?.last_outcome
+    }
+
+    fn turns_starting(&self, prefix: &str) -> usize {
+        self.turns()
+            .iter()
+            .filter(|t| t.starts_with(prefix))
+            .count()
+    }
+
+    fn post(&self, text: &str) -> Seq {
+        self.supervisor
+            .store()
+            .append(Draft::post(name("lead"), text), Utc::now())
+            .expect("post")
+            .seq
+    }
+
+    fn hold(&self, who: &str, on: bool) {
+        let path = self.dir.path().join(format!("{who}.hold"));
+        if on {
+            fs::write(path, "").expect("hold");
+        } else {
+            fs::remove_file(path).expect("release");
+        }
     }
 
     fn calls(&self) -> Vec<String> {
@@ -403,4 +441,100 @@ fn quota_exhaustion_pauses_and_posts_a_notice() {
         .kill(&name("quota"))
         .expect("kill while paused");
     assert_eq!(h.state("quota"), MemberState::Killed);
+}
+
+#[test]
+fn park_guard_nudges_once_per_head_for_unread_mentions() {
+    let h = harness(|_| {});
+    h.hold("scout", true);
+    h.spawn("scout", Workspace::Inherit, 1);
+    eventually("brief turn", || h.turns_starting("scout do the thing") == 1);
+    let ping = h.post("@scout are you there?");
+    h.hold("scout", false);
+
+    eventually("nudge turn", || h.turns_starting("scout [board]") == 1);
+    eventually("member to park", || is_waiting(h.state("scout")));
+    thread::sleep(Duration::from_millis(300));
+    assert_eq!(h.turns().len(), 2, "{:?}", h.turns());
+    assert!(
+        h.turns()[1].contains(&format!("#{ping}")),
+        "{:?}",
+        h.turns()
+    );
+    let roster = h.supervisor.store().roster().expect("roster");
+    assert_eq!(
+        roster
+            .member(&name("scout"))
+            .expect("scout")
+            .last_park_blocked_seq,
+        ping
+    );
+
+    h.hold("scout", true);
+    h.post("@scout next step");
+    eventually("rung turn", || h.turns_starting("scout New post") == 1);
+    let later = h.post("@scout also this");
+    h.hold("scout", false);
+    eventually("second nudge", || h.turns_starting("scout [board]") == 2);
+    eventually("member to park", || is_waiting(h.state("scout")));
+    thread::sleep(Duration::from_millis(300));
+    assert_eq!(h.turns_starting("scout [board]"), 2, "{:?}", h.turns());
+    let roster = h.supervisor.store().roster().expect("roster");
+    assert_eq!(
+        roster
+            .member(&name("scout"))
+            .expect("scout")
+            .last_park_blocked_seq,
+        later
+    );
+}
+
+#[test]
+fn park_guard_leaves_a_member_with_nothing_unread_parked() {
+    let h = harness(|_| {});
+    h.spawn("scout", Workspace::Inherit, 1);
+    eventually("member to park", || is_waiting(h.state("scout")));
+    h.post("chatter that names nobody");
+    thread::sleep(Duration::from_millis(300));
+    assert_eq!(h.turns(), ["scout do the thing"]);
+}
+
+#[test]
+fn narrator_ticks_only_after_others_post() {
+    let h = harness(|_| {});
+    h.spawn_as("narrator", Role::Narrator, Workspace::Inherit, 1);
+    eventually("role prompt turn", || {
+        h.turns_starting("narrator You are the swarm's narrator") == 1
+    });
+    eventually("narrator to park", || is_waiting(h.state("narrator")));
+    thread::sleep(Duration::from_millis(400));
+    assert_eq!(h.turns_starting("narrator [narrator tick]"), 0);
+
+    h.post("parser landed");
+    eventually("tick", || h.turns_starting("narrator [narrator tick]") == 1);
+    thread::sleep(Duration::from_millis(400));
+    assert_eq!(h.turns_starting("narrator [narrator tick]"), 1);
+}
+
+#[test]
+fn monitor_ticks_while_a_worker_is_busy_and_stops_once_all_park() {
+    let h = harness(|_| {});
+    h.hold("scout", true);
+    h.spawn("scout", Workspace::Inherit, 1);
+    h.spawn_as("monitor", Role::Monitor, Workspace::Inherit, 1);
+    eventually("role prompt naming the coordinator", || {
+        h.turns()
+            .iter()
+            .any(|t| t.contains("@lead") && t.starts_with("monitor You are the swarm's monitor"))
+    });
+    eventually("repeated ticks", || {
+        h.turns_starting("monitor [monitor tick]") >= 2
+    });
+
+    h.hold("scout", false);
+    eventually("worker to park", || is_waiting(h.state("scout")));
+    thread::sleep(Duration::from_millis(300));
+    let settled = h.turns_starting("monitor [monitor tick]");
+    thread::sleep(Duration::from_millis(400));
+    assert_eq!(h.turns_starting("monitor [monitor tick]"), settled);
 }

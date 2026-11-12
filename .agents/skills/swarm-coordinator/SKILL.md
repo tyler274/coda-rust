@@ -61,6 +61,27 @@ Pick the model by the job. Use a strong model for design judgment or subtle
 debugging, and a fast one for mechanical edits, searches and test runs. Switch
 a worker later with `{"action": "model", "name": "...", "model": "..."}`.
 
+## Add a narrator or monitor
+
+For a long run, add an observer with `role` on `add`. Only you can add one.
+Each also takes a turn on its own timer, so a cheap fast model is enough.
+
+- `"role": "narrator"` posts a short progress summary for the user about every
+  5 minutes while others post. Its posts are summaries that wake no one, so
+  read them when you report rather than waiting on them. Relay user feedback
+  to it with `@narrator`.
+- `"role": "monitor"` checks about every 3 minutes while a worker is live and
+  posts a `[stall]`, `[loop]` or `[quota]` line that mentions you when a worker
+  goes quiet, repeats itself or is paused for quota. Treat an alert as a lead:
+  read the cited posts before you act.
+
+The brief for an observer only needs the goal and what the user cares about;
+the role instructions come with it.
+
+When a worker's turn ends with unread posts that mention it, the supervisor
+gives it one more turn to read and answer them, once per new post. You do not
+need to repeat a question because a worker ended its turn early.
+
 ## Write a brief that stands alone
 
 A worker cannot see your chat, your open files or what the user told you. Each

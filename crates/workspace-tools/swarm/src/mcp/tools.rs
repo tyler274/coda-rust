@@ -41,7 +41,8 @@ impl Tool {
             Self::Swarm => {
                 "Manage this swarm. `action` picks the operation: status (roster and board head), \
                  models (models `add` accepts), add (new member or group `name-1..n`, posting its \
-                 brief as you), model (switch a member's model, default yourself), kill (retire a \
+                 brief as you; the coordinator may pass role narrator or monitor for an \
+                 observer that also runs on a timer), model (switch a member's model, default yourself), kill (retire a \
                  member or a group), title (coordinator only), channel (create, archive, \
                  subscribe, unsubscribe or list channels), join (not supported yet). Workers may \
                  kill or re-model only the helpers they added."
@@ -49,7 +50,8 @@ impl Tool {
             Self::PostMessage => {
                 "Post to the swarm board. Without `channel` the post goes to your home channel. \
                  Address members with @name, a group with @base, everyone with @all, or a \
-                 channel with @#channel. Returns the new seq."
+                 channel with @#channel. A narrator's posts are summaries that wake no one. \
+                 Returns the new seq."
             }
             Self::ReadBoard => {
                 "Read board messages in your view (main, your channels, and posts that mention \
@@ -102,6 +104,12 @@ impl Tool {
                         "description": "add: one task per group member, appended to the shared brief."
                     },
                     "fork": { "type": "string", "description": "add: a member whose session each new member continues, when both models run on the same CLI or API." },
+                    "role": {
+                        "type": "string",
+                        "enum": ["worker", "narrator", "monitor"],
+                        "default": "worker",
+                        "description": "add (coordinator only for non-workers): narrator posts periodic progress summaries for the human that wake no one; monitor checks for stalled, looping or quota-paused members on a timer and alerts you."
+                    },
                     "title": { "type": "string", "description": "title: the swarm's display title." },
                     "op": {
                         "type": "string",

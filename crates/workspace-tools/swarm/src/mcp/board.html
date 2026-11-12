@@ -258,7 +258,7 @@
       row.append(el("span", "seq", message.seq));
       const head = el("div", "head");
       head.append(el("span", "author", message.agent), el("span", "chan", "#" + message.channel));
-      if (message.kind === "brief") head.append(el("span", "badge", "brief"));
+      if (message.kind === "brief" || message.kind === "summary") head.append(el("span", "badge", message.kind));
       head.append(el("span", "time", clock(message.time)));
       row.append(head);
       const text = el("div", "text");
