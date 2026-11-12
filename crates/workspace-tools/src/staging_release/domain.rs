@@ -29,6 +29,15 @@ impl Product {
             Self::Duet => ReleaseService::Duet,
         }
     }
+    /// Services that must be serving the release before this product's site
+    /// does. The physician worker claims what any site revision accepted, but
+    /// a newer site announces work in a way an older worker does not hear.
+    pub fn served_first(self) -> &'static [ReleaseService] {
+        match self {
+            Self::Physician => &[ReleaseService::PhysicianWorker],
+            Self::Duet => &[],
+        }
+    }
     pub fn migration_image(self) -> ImageRole {
         match self {
             Self::Physician => ImageRole::PhysicianMigration,

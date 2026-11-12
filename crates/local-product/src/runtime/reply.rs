@@ -32,7 +32,10 @@ use sea_orm::{
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
-use super::delivery::{Delivery, DeliveryKind, DeliveryState, DispatchPage};
+use super::delivery::{
+    self, AttemptSettlement, Backoff, Delivery, DeliveryKind, DeliveryState, DispatchPage,
+    RetryClock, TraceContext,
+};
 use super::entities::{reply_draft, reply_revision};
 use super::receipt::{self, Receipt};
 use super::{
@@ -221,10 +224,13 @@ pub struct Draft {
     pub attempts: Vec<RevisionAttempt>,
     /// Accepted session reference, never the bearer secret.
     pub session_hash: Option<Vec<u8>>,
-    /// Database-clock time before which recovery need not republish a wakeup.
+    /// Database-clock time before which a pending revision is not due: the
+    /// retry delay after a failed attempt.
     pub dispatch_after: i64,
     /// Unsuccessful attempts on the accepted revision, including expired leases.
     pub failures: u32,
+    /// Trace context of the request that last made the revision runnable.
+    pub origin: Option<TraceContext>,
 }
 
 impl Draft {
@@ -267,6 +273,7 @@ impl Draft {
             session_hash: None,
             dispatch_after: 0,
             failures: 0,
+            origin: None,
         }
     }
 
@@ -309,9 +316,9 @@ impl Draft {
 /// Outcome of accepting a revision command.
 #[derive(Debug, PartialEq, Eq)]
 pub enum RevisionAccepted {
-    /// Saved; publish a wakeup for it.
+    /// Saved, and listening workers were told.
     New,
-    /// The exact same command was already accepted; do not publish again.
+    /// The exact same command was already accepted; nothing changed.
     Duplicate,
     /// No saved draft, a stale revision, or a revision already running.
     Refused,
@@ -357,6 +364,8 @@ pub struct RevisionClaim {
     pub sources: Vec<SourceRevision>,
     /// Workspace source version of `sources`.
     pub sources_version: u64,
+    /// Trace context of the request that made the revision runnable.
+    pub origin: Option<TraceContext>,
 }
 
 /// Instructions for every reply revision. Working notes belong to the job,
@@ -833,7 +842,8 @@ impl Store {
     /// command answers `Duplicate` and keeps the original pin; the same key
     /// with a different command is an idempotency collision. A refused
     /// command leaves no receipt, so the physician may retry it once the
-    /// draft allows.
+    /// draft allows. Listening workers are told in the same transaction;
+    /// `origin` is the accepting request's trace context.
     pub async fn accept_revision(
         &self,
         scope: &Scope,
@@ -841,6 +851,7 @@ impl Store {
         session_hash: Vec<u8>,
         skills: &crate::physician_chat::PhysicianSkills,
         recipe: &engine::recipe::RequestRecipe,
+        origin: Option<TraceContext>,
     ) -> Result<RevisionAccepted, RuntimeError> {
         scope.validate()?;
         if session_hash.len() != 32 {
@@ -940,6 +951,12 @@ impl Store {
         state.sources_version = observation.version;
         state.session_hash = Some(session_hash);
         state.dispatch_after = 0;
+        state.origin = origin;
+        delivery::notify(
+            &tx,
+            &Delivery::reply_revision(scope.clone(), input.key.clone()),
+        )
+        .await?;
         Self::save_draft_row(tx, scope, &state).await?;
         Ok(RevisionAccepted::New)
     }
@@ -951,6 +968,7 @@ impl Store {
         session_hash: Vec<u8>,
         work_item_id: &str,
         expected_run_id: &str,
+        origin: Option<TraceContext>,
     ) -> Result<super::Resumed, RuntimeError> {
         if scope.chat != work_item_id {
             return Ok(super::Resumed::Refused);
@@ -981,15 +999,17 @@ impl Store {
         state.failures = state.runs.start(Uuid::new_v4().to_string())?;
         state.status = DraftStatus::Pending;
         state.dispatch_after = 0;
+        state.origin = origin;
         state.session_hash = Some(session_hash);
+        let delivery = Delivery::reply_revision(scope.clone(), input_id);
+        delivery::notify(&tx, &delivery).await?;
         Self::save_draft_row(tx, scope, &state).await?;
-        Ok(super::Resumed::Pending {
-            delivery: Delivery::reply_revision(scope.clone(), input_id),
-        })
+        Ok(super::Resumed::Pending { delivery })
     }
 
-    /// Claims only the revision named by the wakeup. A stale revision is
-    /// cancelled; an expired lease counts as a failed attempt.
+    /// Claims only the revision named by the delivery, once it is due. A
+    /// stale revision is cancelled; an expired lease counts as a failed
+    /// attempt.
     pub async fn claim_revision(
         &self,
         delivery: &Delivery,
@@ -1033,7 +1053,8 @@ impl Store {
                 return Ok(None);
             }
         }
-        if state.status != DraftStatus::Pending {
+        // A failed revision waits out its retry delay.
+        if state.status != DraftStatus::Pending || state.dispatch_after > now {
             tx.commit().await?;
             return Ok(None);
         }
@@ -1089,6 +1110,7 @@ impl Store {
             base_text: state.base_text.clone(),
             sources: state.sources.clone(),
             sources_version: state.sources_version,
+            origin: state.origin.clone(),
         };
         Self::save_draft_row(tx, &delivery.scope, &state).await?;
         Ok(Some(claim))
@@ -1470,30 +1492,55 @@ impl Store {
     }
 
     /// Ends this attempt under the shared failure rule. Limits hold the work;
-    /// only actual failures consume the recovery allowance. Settled work stays settled.
+    /// only actual failures consume the recovery allowance, and each makes
+    /// the revision due again after `backoff`, until the
+    /// [`harness::engine::MAX_FAILED_ATTEMPTS`]th ends it as failed. An
+    /// interrupted attempt, such as one whose worker is stopping, hands the
+    /// revision back at once and tells listening workers. Settled work stays
+    /// settled.
     pub async fn settle_revision_attempt(
         &self,
         claim: &RevisionClaim,
         reason: AttemptFailure,
-    ) -> Result<super::delivery::AttemptSettlement, RuntimeError> {
-        let (tx, mut state, _) = self.locked_draft(&claim.scope).await?;
-        if state.accepted.as_ref().map(|accepted| &accepted.input) == Some(&claim.accepted.input)
-            && state.status == DraftStatus::Active
-            && let Some(attempt) = state.attempts.last_mut().filter(|a| a.id == claim.attempt)
-        {
-            let outcome = settle_attempt(
-                reason,
-                &mut state.failures,
-                &mut attempt.status,
-                &mut state.runs,
-            )?;
-            state.status = outcome.map_or(DraftStatus::Pending, DraftStatus::from);
-            Self::save_draft_row(tx, &claim.scope, &state).await?;
-            Ok(super::delivery::AttemptSettlement::Applied)
-        } else {
+        backoff: Backoff,
+    ) -> Result<AttemptSettlement, RuntimeError> {
+        let (tx, mut state, now) = self.locked_draft(&claim.scope).await?;
+        let owned = state.accepted.as_ref().map(|accepted| &accepted.input)
+            == Some(&claim.accepted.input)
+            && state.status == DraftStatus::Active;
+        let Some(attempt) = state
+            .attempts
+            .last_mut()
+            .filter(|a| owned && a.id == claim.attempt)
+        else {
             tx.rollback().await?;
-            Ok(super::delivery::AttemptSettlement::Superseded)
+            return Ok(AttemptSettlement::Superseded);
+        };
+        let outcome = settle_attempt(
+            reason,
+            &mut state.failures,
+            &mut attempt.status,
+            &mut state.runs,
+        )?;
+        state.status = outcome.map_or(DraftStatus::Pending, DraftStatus::from);
+        let settlement = if reason.counts_as_failure() {
+            let clock = RetryClock {
+                failures: state.failures,
+                dispatch_after: &mut state.dispatch_after,
+            };
+            let after = delivery::failed_once(clock, now, backoff);
+            state.status = after.draft_status();
+            AttemptSettlement::Failed(after)
+        } else {
+            AttemptSettlement::Applied
+        };
+        if state.status == DraftStatus::Pending && state.dispatch_after <= now {
+            let woken =
+                Delivery::reply_revision(claim.scope.clone(), claim.accepted.input.key.clone());
+            delivery::notify(&tx, &woken).await?;
         }
+        Self::save_draft_row(tx, &claim.scope, &state).await?;
+        Ok(settlement)
     }
 
     pub(super) async fn revision_state(&self, delivery: &Delivery) -> Result<DeliveryState, DbErr> {
@@ -1522,25 +1569,8 @@ impl Store {
         })
     }
 
-    pub(super) async fn revision_dispatched(
-        &self,
-        delivery: &Delivery,
-        retry_after: i64,
-    ) -> Result<(), DbErr> {
-        let (tx, mut state, now) = self.locked_draft(&delivery.scope).await?;
-        if state
-            .accepted
-            .as_ref()
-            .map(|accepted| accepted.input.key.as_str())
-            == Some(delivery.input_id.as_str())
-        {
-            state.dispatch_after = now + retry_after;
-        }
-        Self::save_draft_row(tx, &delivery.scope, &state).await
-    }
-
-    /// One keyset page of recoverable revision wakeups: accepted revisions
-    /// whose publish never landed and attempts whose lease ran out.
+    /// One keyset page of due revisions: pending ones whose retry delay has
+    /// passed, and attempts whose lease ran out.
     pub async fn revisions_due(
         &self,
         maximum: usize,
@@ -1596,10 +1626,9 @@ impl Store {
         let mut deliveries = Vec::new();
         for scope in scopes {
             let (tx, state, now) = self.locked_draft(&scope).await?;
-            if state.dispatch_after <= now
-                && state.session_hash.is_some()
+            if state.session_hash.is_some()
                 && !state.stale()
-                && (state.status == DraftStatus::Pending
+                && ((state.status == DraftStatus::Pending && state.dispatch_after <= now)
                     || (state.status == DraftStatus::Active
                         && state.attempts.last().is_some_and(|a| a.expires <= now)))
                 && let Some(accepted) = state.accepted

@@ -1,100 +1,22 @@
-//! Physician worker against the Pub/Sub emulator and a disposable Postgres.
+//! Physician worker against a disposable Postgres, with no broker.
 //!
-//! The emulator pushes deliveries. A duplicate runs the fixed provider once,
-//! a failed run is redelivered and can then succeed, a request the provider
-//! rejects holds the turn and is not sent again, and the fifth failure is
-//! forwarded to the dead-letter topic. The worker does not ack that fifth try,
-//! and the turn ends as failed so the site's recovery sweep leaves it alone.
-//! Concurrent pushes on one worker run side by side.
+//! Accepting a turn notifies the worker in the same transaction. Hearing of
+//! settled work again runs the fixed provider once, a failed attempt is due
+//! again and can then succeed, a request the provider rejects holds the turn
+//! and is not sent again, and the fifth failure ends the turn as failed so
+//! nothing starts it again. A worker whose listener is gone still finds
+//! accepted work by polling. Concurrent turns on one worker run side by side.
 
 use std::time::{Duration, Instant};
 
 use local_product::physician_chat::PhysicianSkills;
-use local_product::runtime::delivery::Delivery;
+use local_product::runtime::delivery::{Backoff, Delivery, DeliveryState, TraceContext};
 use local_product::runtime::{AttemptStatus, Conversation, Input, Scope, Store, WorkStatus};
 use physician_auth::{AuthStore, Membership, PostgresAuthStore};
 #[path = "scale/mod.rs"]
 mod support;
 
-type ExportedSpan = opentelemetry_proto::tonic::trace::v1::Span;
-
-/// A loopback OTLP/HTTP receiver: the decoded spans, and every request body
-/// as received (traces and logs), so a test can search all of it.
-struct TraceCapture {
-    endpoint: String,
-    port: u16,
-    spans: std::sync::Arc<std::sync::Mutex<Vec<ExportedSpan>>>,
-    bodies: std::sync::Arc<std::sync::Mutex<Vec<Vec<u8>>>>,
-    task: tokio::task::JoinHandle<()>,
-}
-
-#[derive(Clone)]
-struct Captured {
-    spans: std::sync::Arc<std::sync::Mutex<Vec<ExportedSpan>>>,
-    bodies: std::sync::Arc<std::sync::Mutex<Vec<Vec<u8>>>>,
-}
-
-impl TraceCapture {
-    async fn start() -> Self {
-        use axum::{Router, body::Bytes, extract::State, routing::post};
-        use opentelemetry_proto::tonic::collector::trace::v1::ExportTraceServiceRequest;
-        use prost::Message as _;
-        async fn traces(State(captured): State<Captured>, body: Bytes) -> axum::http::StatusCode {
-            let request = ExportTraceServiceRequest::decode(body.clone()).expect("OTLP protobuf");
-            captured.bodies.lock().unwrap().push(body.to_vec());
-            captured.spans.lock().unwrap().extend(
-                request
-                    .resource_spans
-                    .into_iter()
-                    .flat_map(|r| r.scope_spans)
-                    .flat_map(|s| s.spans),
-            );
-            axum::http::StatusCode::OK
-        }
-        async fn logs(State(captured): State<Captured>, body: Bytes) -> axum::http::StatusCode {
-            captured.bodies.lock().unwrap().push(body.to_vec());
-            axum::http::StatusCode::OK
-        }
-        let captured = Captured {
-            spans: Default::default(),
-            bodies: Default::default(),
-        };
-        let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
-        let port = listener.local_addr().unwrap().port();
-        let app = Router::new()
-            .route("/v1/traces", post(traces))
-            .route("/v1/logs", post(logs))
-            .with_state(captured.clone());
-        let task = tokio::spawn(async move {
-            axum::serve(listener, app).await.unwrap();
-        });
-        Self {
-            endpoint: format!("http://127.0.0.1:{port}"),
-            port,
-            spans: captured.spans,
-            bodies: captured.bodies,
-            task,
-        }
-    }
-}
-
-impl Drop for TraceCapture {
-    fn drop(&mut self) {
-        self.task.abort();
-    }
-}
-
-fn trace_attribute(span: &ExportedSpan, key: &str) -> Option<String> {
-    use opentelemetry_proto::tonic::common::v1::any_value::Value;
-    span.attributes
-        .iter()
-        .find(|kv| kv.key == key)
-        .and_then(|kv| kv.value.as_ref())
-        .and_then(|value| match &value.value {
-            Some(Value::StringValue(text)) => Some(text.clone()),
-            _ => None,
-        })
-}
+use support::{ExportedSpan, TraceCapture, trace_attribute};
 
 fn lock() -> &'static tokio::sync::Mutex<()> {
     static LOCK: std::sync::OnceLock<tokio::sync::Mutex<()>> = std::sync::OnceLock::new();
@@ -105,10 +27,16 @@ struct Running {
     stub: support::ResponsesStub,
     database: support::Database,
     store: Store,
-    emulator: support::Emulator,
     worker: support::Process,
     worker_host: String,
     home: std::path::PathBuf,
+}
+
+impl Running {
+    fn port(&self) -> u16 {
+        let (_, port) = self.worker_host.rsplit_once(':').expect("worker host");
+        port.parse().expect("worker port")
+    }
 }
 
 impl Drop for Running {
@@ -133,8 +61,6 @@ async fn running_with(
     let database = support::Database::create(label).await?;
     let store = Store::connect(&database.url).await.expect("runtime store");
     let worker_port = support::free_port();
-    let emulator = support::Emulator::start().await;
-    emulator.provision(worker_port).await;
     let home = std::env::temp_dir().join(format!(
         "physician-scale-worker-{}-{}",
         std::process::id(),
@@ -152,9 +78,9 @@ async fn running_with(
     .await;
     let mut env = vec![
         ("PHYSICIAN_DATABASE_URL", database.url.as_str()),
-        ("PUBSUB_EMULATOR_HOST", emulator.host.as_str()),
         ("PHYSICIAN_WORKER_LISTEN_ADDR", listen.as_str()),
         ("PHYSICIAN_RESPONSES_STUB_PORT", stub.port.as_str()),
+        support::RETRY_NOW,
     ];
     env.extend_from_slice(extra);
     let mut worker = support::Process::spawn("worker", support::worker_bin(), &[], &env, &home);
@@ -163,7 +89,6 @@ async fn running_with(
         stub,
         database,
         store,
-        emulator,
         worker,
         worker_host: listen,
         home,
@@ -187,24 +112,32 @@ async fn accept_in(
     practice: Option<&str>,
     scenario: Option<&str>,
 ) -> (Scope, Delivery) {
-    accept_with_skills(
-        url,
-        store,
-        text,
-        &PhysicianSkills::configured(None, false).unwrap(),
-        practice,
-        scenario,
-    )
-    .await
+    let skills = PhysicianSkills::configured(None, false).unwrap();
+    accept_as(url, store, text, &skills, practice, scenario, None).await
 }
 
-async fn accept_with_skills(
+/// Accepts `text` whose accepting request carried the trace context `origin`.
+async fn accept_from(
+    url: &str,
+    store: &Store,
+    text: &str,
+    origin: Option<TraceContext>,
+) -> (Scope, Delivery) {
+    let skills = PhysicianSkills::configured(None, false).unwrap();
+    accept_as(url, store, text, &skills, None, None, origin).await
+}
+
+/// Accepts one authorized turn, as the site does: the store notifies the
+/// worker in the accepting transaction. `origin` is the accepting request's
+/// trace context.
+async fn accept_as(
     url: &str,
     store: &Store,
     text: &str,
     skills: &PhysicianSkills,
     practice: Option<&str>,
     scenario: Option<&str>,
+    origin: Option<TraceContext>,
 ) -> (Scope, Delivery) {
     let auth = PostgresAuthStore::connect_without_migrations(url)
         .await
@@ -268,6 +201,7 @@ async fn accept_with_skills(
                 local_product::physician_chat::INSTRUCTIONS,
                 skills,
             ),
+            origin,
         )
         .await
         .expect("accept");
@@ -313,37 +247,19 @@ fn assistant_texts(state: &Conversation) -> Vec<&str> {
 }
 
 #[tokio::test]
-async fn duplicate_delivery_runs_the_fixed_provider_once() {
+async fn hearing_of_settled_work_again_runs_the_fixed_provider_once() {
     let _guard = lock().lock().await;
     let Some(running) = running("dup", None, None).await else {
         return;
     };
     let (scope, delivery) = accept_turn(&running.database.url, &running.store).await;
-    running.emulator.publish(&delivery).await;
     let first = wait_assistant(&running.store, &scope, &running.worker).await;
     assert_eq!(assistant_texts(&first), [support::FIXED_TEXT]);
-    assert_eq!(
-        first
-            .attempts
-            .iter()
-            .filter(|attempt| attempt.status == AttemptStatus::Completed)
-            .count(),
-        1,
-        "first push should complete one attempt"
-    );
+    assert_eq!(attempt_statuses(&first), ["completed"]);
 
-    running.emulator.publish(&delivery).await;
-    let body = support::push_body(&delivery, "duplicate-delivery");
-    let (status, text) = support::exchange(
-        &running.worker_host,
-        "POST",
-        "/pubsub/chat-turn",
-        &[("content-type", "application/json")],
-        Some(&body),
-    )
-    .await
-    .unwrap_or_else(|error| panic!("{error}\n{}", running.worker.tail()));
-    assert_eq!(status, 204, "duplicate push should ack: {text}");
+    for _ in 0..3 {
+        running.database.announce(&delivery).await;
+    }
     tokio::time::sleep(Duration::from_secs(1)).await;
     let again = running
         .store
@@ -354,20 +270,252 @@ async fn duplicate_delivery_runs_the_fixed_provider_once() {
     assert_eq!(
         assistant_texts(&again),
         [support::FIXED_TEXT],
-        "a duplicate delivery must not call the provider again"
+        "settled work heard of again must not call the provider again"
     );
-    assert_eq!(
-        again
-            .attempts
-            .iter()
-            .filter(|attempt| attempt.status == AttemptStatus::Completed)
-            .count(),
-        1
+    assert_eq!(attempt_statuses(&again), ["completed"]);
+}
+
+/// The worker serves health and readiness only: the route a broker used to
+/// push work to is gone, so nothing can hand it work over HTTP.
+#[tokio::test]
+async fn the_worker_serves_no_work_route() {
+    let _guard = lock().lock().await;
+    let Some(running) = running("no_route", None, None).await else {
+        return;
+    };
+    let (_, delivery) = accept_turn(&running.database.url, &running.store).await;
+    let body = serde_json::to_vec(&delivery).expect("delivery");
+    for path in ["/pubsub/chat-turn", "/"] {
+        let (status, text) = support::exchange(
+            &running.worker_host,
+            "POST",
+            path,
+            &[("content-type", "application/json")],
+            Some(&body),
+        )
+        .await
+        .unwrap_or_else(|error| panic!("{error}\n{}", running.worker.tail()));
+        assert_eq!(status, 404, "POST {path}: {text}");
+    }
+    for path in ["/health", "/readyz"] {
+        let (status, text) = support::exchange(&running.worker_host, "GET", path, &[], None)
+            .await
+            .unwrap_or_else(|error| panic!("{error}\n{}", running.worker.tail()));
+        assert_eq!(status, 200, "GET {path}: {text}");
+    }
+}
+
+/// AC7. A hosted worker starts and is ready with the staging profile and no
+/// push identity: neither `PHYSICIAN_WORKER_AUDIENCE` nor
+/// `PHYSICIAN_PUSH_SERVICE_ACCOUNT` is set. It runs no turn, so the API key
+/// is never used.
+#[tokio::test]
+async fn a_hosted_worker_starts_without_push_identity_settings() {
+    let _guard = lock().lock().await;
+    let Some(database) = support::Database::create("hosted_start").await else {
+        return;
+    };
+    let home = std::env::temp_dir().join(format!(
+        "physician-worker-hosted-{}",
+        uuid::Uuid::new_v4().simple()
+    ));
+    std::fs::create_dir_all(&home).expect("home");
+    let port = support::free_port();
+    let listen = format!("127.0.0.1:{port}");
+    let skills = concat!(env!("CARGO_MANIFEST_DIR"), "/../../skills");
+    let mut worker = support::Process::spawn(
+        "worker",
+        support::worker_bin(),
+        &[],
+        &[
+            ("K_SERVICE", "physician-worker"),
+            ("CODA_ENVIRONMENT", "stg"),
+            (
+                "CODA_HOSTED_PROFILE",
+                physician_sample::hosting::STAGING_PROFILE,
+            ),
+            ("PHYSICIAN_AUTH", "required"),
+            ("PHYSICIAN_DATABASE_URL", database.url.as_str()),
+            ("PHYSICIAN_WORKER_LISTEN_ADDR", listen.as_str()),
+            ("PHYSICIAN_SKILLS_DIR", skills),
+            ("CODA_LOCAL_MODEL_EXECUTION", "api"),
+            ("CODA_ALLOW_MODEL_CALLS", "1"),
+            ("OPENAI_API_KEY", "unused-no-turn-runs"),
+        ],
+        &home,
+    );
+    support::wait_ready(&mut worker, port).await;
+    let host = format!("127.0.0.1:{port}");
+    let (status, _) = support::exchange(&host, "POST", "/pubsub/chat-turn", &[], Some(b"{}"))
+        .await
+        .unwrap_or_else(|error| panic!("{error}\n{}", worker.tail()));
+    assert_eq!(status, 404);
+    println!("hosted worker ready without push settings; POST /pubsub/chat-turn -> {status}");
+    worker.kill_now();
+    let _ = std::fs::remove_dir_all(&home);
+}
+
+/// AC2. The worker's listening connection is ended, as a dropped connection
+/// or a database failover would end it, and a turn is accepted at once. The
+/// worker still claims it within its poll interval, here the hosted 10 s.
+#[tokio::test]
+async fn a_worker_whose_listener_is_gone_claims_accepted_work_within_the_poll_interval() {
+    let _guard = lock().lock().await;
+    let Some(running) = running("listener_gone", None, None).await else {
+        return;
+    };
+    // The listener is up once a first turn is answered or polled; either way
+    // a listening session exists before it is ended.
+    let deadline = Instant::now() + Duration::from_secs(10);
+    let ended = loop {
+        let ended = running.database.terminate_listeners().await;
+        if ended > 0 {
+            break ended;
+        }
+        assert!(Instant::now() < deadline, "the worker never listened");
+        tokio::time::sleep(Duration::from_millis(50)).await;
+    };
+    assert_eq!(ended, 1, "one worker, one listening session");
+    let accepted = Instant::now();
+    let (scope, _) = accept_turn(&running.database.url, &running.store).await;
+    let state = wait_assistant(&running.store, &scope, &running.worker).await;
+    let waited = accepted.elapsed();
+    println!("listener ended; accepted turn answered after {waited:?} (poll interval 10 s)");
+    assert_eq!(attempt_statuses(&state), ["completed"]);
+    assert!(
+        waited < Duration::from_secs(11),
+        "the turn waited {waited:?}, longer than the poll interval"
+    );
+    assert!(
+        running
+            .worker
+            .tail()
+            .contains("physician work listener disconnected"),
+        "the worker never noticed its listener was gone\n{}",
+        running.worker.tail()
     );
 }
 
+/// AC2, the poll on its own. Work becomes due with no notification at all: a
+/// worker claimed the turn and died, and its lease ran out. Only the timed
+/// read of the due work can find it.
 #[tokio::test]
-async fn failed_delivery_is_redelivered_and_can_succeed() {
+async fn work_that_becomes_due_unannounced_is_found_by_the_poll() {
+    let _guard = lock().lock().await;
+    let Some(database) = support::Database::create("poll_only").await else {
+        return;
+    };
+    let store = Store::connect(&database.url).await.expect("runtime store");
+    let (scope, delivery) = accept_turn(&database.url, &store).await;
+    // The dead worker's claim. Nothing announces its lease running out.
+    let lease = Duration::from_secs(3);
+    store
+        .claim_delivery(&delivery, lease.as_secs() as i64)
+        .await
+        .expect("claim")
+        .expect("the accepted turn is claimable");
+    let claimed = Instant::now();
+    let home = std::env::temp_dir().join(format!(
+        "physician-worker-poll-{}",
+        uuid::Uuid::new_v4().simple()
+    ));
+    std::fs::create_dir_all(&home).expect("home");
+    let stub = support::ResponsesStub::start(&home, 0, 0, "[]").await;
+    let port = support::free_port();
+    let listen = format!("127.0.0.1:{port}");
+    let poll = Duration::from_millis(500);
+    let poll_ms = poll.as_millis().to_string();
+    let mut worker = support::Process::spawn(
+        "worker",
+        support::worker_bin(),
+        &[],
+        &[
+            ("PHYSICIAN_DATABASE_URL", database.url.as_str()),
+            ("PHYSICIAN_WORKER_LISTEN_ADDR", listen.as_str()),
+            ("PHYSICIAN_RESPONSES_STUB_PORT", stub.port.as_str()),
+            ("PHYSICIAN_WORKER_POLL_MS", poll_ms.as_str()),
+        ],
+        &home,
+    );
+    support::wait_ready(&mut worker, port).await;
+    // The worker's first reads of the due work fall inside the live lease.
+    assert!(claimed.elapsed() < lease, "the worker started too late");
+    assert_eq!(
+        store.delivery_state(&delivery).await.expect("state"),
+        DeliveryState::Claimed
+    );
+    let state = wait_assistant(&store, &scope, &worker).await;
+    let waited = claimed.elapsed();
+    println!(
+        "unannounced work answered {waited:?} after its {lease:?} lease began (poll {poll:?})"
+    );
+    assert_eq!(attempt_statuses(&state), ["interrupted", "completed"]);
+    // The database clock counts whole seconds, so allow one beyond the lease.
+    assert!(
+        waited < lease + Duration::from_secs(1) + poll * 2,
+        "the poll took {waited:?} to find work due after {lease:?}"
+    );
+    worker.kill_now();
+    let _ = std::fs::remove_dir_all(&home);
+}
+
+/// AC4 without the poll. A dead worker's lease is live at every read before
+/// it runs out, and the poll is far slower than the lease, so only the
+/// worker's wake at the soonest lease end can take the turn in time.
+#[tokio::test]
+async fn a_lease_that_runs_out_unannounced_is_taken_at_its_end_not_at_the_next_poll() {
+    let _guard = lock().lock().await;
+    let Some(database) = support::Database::create("lease_end").await else {
+        return;
+    };
+    let store = Store::connect(&database.url).await.expect("runtime store");
+    let (scope, delivery) = accept_turn(&database.url, &store).await;
+    let lease = Duration::from_secs(4);
+    store
+        .claim_delivery(&delivery, lease.as_secs() as i64)
+        .await
+        .expect("claim")
+        .expect("the accepted turn is claimable");
+    let claimed = Instant::now();
+    let home = std::env::temp_dir().join(format!(
+        "physician-worker-lease-end-{}",
+        uuid::Uuid::new_v4().simple()
+    ));
+    std::fs::create_dir_all(&home).expect("home");
+    let stub = support::ResponsesStub::start(&home, 0, 0, "[]").await;
+    let port = support::free_port();
+    let listen = format!("127.0.0.1:{port}");
+    let mut worker = support::Process::spawn(
+        "worker",
+        support::worker_bin(),
+        &[],
+        &[
+            ("PHYSICIAN_DATABASE_URL", database.url.as_str()),
+            ("PHYSICIAN_WORKER_LISTEN_ADDR", listen.as_str()),
+            ("PHYSICIAN_RESPONSES_STUB_PORT", stub.port.as_str()),
+            ("PHYSICIAN_WORKER_POLL_MS", "60000"),
+        ],
+        &home,
+    );
+    support::wait_ready(&mut worker, port).await;
+    assert!(claimed.elapsed() < lease, "the worker started too late");
+    let state = wait_assistant(&store, &scope, &worker).await;
+    let waited = claimed.elapsed();
+    println!(
+        "unannounced lease end answered {waited:?} after its {lease:?} lease began (poll 60s)"
+    );
+    assert_eq!(attempt_statuses(&state), ["interrupted", "completed"]);
+    // The database clock counts whole seconds, so allow one beyond the lease.
+    assert!(
+        waited < lease + Duration::from_secs(2),
+        "the turn waited {waited:?} for a {lease:?} lease"
+    );
+    worker.kill_now();
+    let _ = std::fs::remove_dir_all(&home);
+}
+
+#[tokio::test]
+async fn a_failed_attempt_is_retried_and_links_to_the_accepting_request() {
     let _guard = lock().lock().await;
     let collector = TraceCapture::start().await;
     let Some(running) = running_with(
@@ -386,21 +534,16 @@ async fn failed_delivery_is_redelivered_and_can_succeed() {
     else {
         return;
     };
-    let (scope, delivery) = accept_turn(&running.database.url, &running.store).await;
-    running
-        .emulator
-        .publish_with_attributes(
-            &delivery,
-            [
-                (
-                    "traceparent".into(),
-                    "00-0af7651916cd43dd8448eb211c80319c-b7ad6b7169203331-01".into(),
-                ),
-                ("tracestate".into(), "dd=s:1".into()),
-            ]
-            .into(),
-        )
-        .await;
+    let (scope, _) = accept_from(
+        &running.database.url,
+        &running.store,
+        "Hello",
+        Some(TraceContext {
+            traceparent: "00-0af7651916cd43dd8448eb211c80319c-b7ad6b7169203331-01".into(),
+            tracestate: Some("dd=s:1".into()),
+        }),
+    )
+    .await;
     let state = wait_assistant(&running.store, &scope, &running.worker).await;
     assert_eq!(state.status, WorkStatus::Completed);
     assert_eq!(assistant_texts(&state), [support::FIXED_TEXT]);
@@ -410,7 +553,7 @@ async fn failed_delivery_is_redelivered_and_can_succeed() {
     let second = &state.attempts[1];
     assert_ne!(
         first.id, second.id,
-        "redelivery claims a new canonical attempt"
+        "the retry claims a new canonical attempt"
     );
     assert_eq!(first.work, second.work);
     assert_eq!(second.predecessor.as_deref(), Some(first.id.as_str()));
@@ -474,26 +617,36 @@ async fn failed_delivery_is_redelivered_and_can_succeed() {
         let generation = find("gen_ai.generation");
         assert_eq!(generation.trace_id, attempt.trace_id);
         assert_eq!(generation.parent_span_id, attempt.span_id);
-        let publisher_trace =
+        let accepting_trace =
             opentelemetry::trace::TraceId::from_hex("0af7651916cd43dd8448eb211c80319c")
                 .unwrap()
                 .to_bytes();
-        // The emulator omits deliveryAttempt. An unknown delivery count
-        // conservatively links, never assumes this is the first execution.
-        assert_ne!(attempt.trace_id, publisher_trace, "retry span: {attempt:?}");
+        // Every attempt is its own trace and links to the request that
+        // accepted the turn; one accepted input can have several attempts.
+        assert_ne!(
+            attempt.trace_id, accepting_trace,
+            "attempt span: {attempt:?}"
+        );
         assert_eq!(
             trace_attribute(attempt, "coda.trace_relation").as_deref(),
             Some("link")
         );
         assert_eq!(attempt.links.len(), 1);
-        assert_eq!(attempt.links[0].trace_id, publisher_trace);
+        assert_eq!(attempt.links[0].trace_id, accepting_trace);
+        assert_eq!(
+            attempt.links[0].span_id,
+            opentelemetry::trace::SpanId::from_hex("b7ad6b7169203331")
+                .unwrap()
+                .to_bytes()
+        );
+        assert_eq!(attempt.links[0].trace_state, "dd=s:1");
+        assert_eq!(
+            trace_attribute(attempt, "messaging.system").as_deref(),
+            Some("postgresql")
+        );
         assert_eq!(
             trace_attribute(attempt, "coda.work_id").as_deref(),
             Some(saved.work.as_str())
-        );
-        assert_ne!(
-            trace_attribute(attempt, "messaging.message.id").as_deref(),
-            Some(saved.id.as_str())
         );
     }
     let failed = spans
@@ -510,9 +663,8 @@ async fn failed_delivery_is_redelivered_and_can_succeed() {
         ))
     );
     assert!(
-        spans
-            .iter()
-            .any(|span| span.name == "POST /pubsub/chat-turn")
+        spans.iter().all(|span| !span.name.contains("pubsub")),
+        "no work arrives over HTTP"
     );
 }
 
@@ -529,7 +681,6 @@ async fn a_request_the_provider_rejects_holds_the_turn_and_is_not_sent_again() {
     };
     running.stub.reject_next(1);
     let (scope, delivery) = accept_turn(&running.database.url, &running.store).await;
-    running.emulator.publish(&delivery).await;
     let deadline = Instant::now() + Duration::from_secs(30);
     let held = loop {
         let state = running.store.conversation(&scope).await.unwrap();
@@ -556,18 +707,8 @@ async fn a_request_the_provider_rejects_holds_the_turn_and_is_not_sent_again() {
     );
     assert_eq!(running.stub.requests().len(), 1);
 
-    // A redelivery of the same turn does not send the request again.
-    let body = support::push_body(&delivery, "rejected-redelivery");
-    let (status, text) = support::exchange(
-        &running.worker_host,
-        "POST",
-        "/pubsub/chat-turn",
-        &[("content-type", "application/json")],
-        Some(&body),
-    )
-    .await
-    .unwrap_or_else(|error| panic!("{error}\n{}", running.worker.tail()));
-    assert_eq!(status, 204, "a redelivered held turn should ack: {text}");
+    // Hearing of the held turn again does not send the request again.
+    running.database.announce(&delivery).await;
     tokio::time::sleep(Duration::from_secs(1)).await;
     let after = running.store.conversation(&scope).await.unwrap();
     assert_eq!(attempt_statuses(&after), ["held"]);
@@ -577,7 +718,7 @@ async fn a_request_the_provider_rejects_holds_the_turn_and_is_not_sent_again() {
         1,
         "a held turn must not send the rejected request again"
     );
-    // The site's recovery sweep leaves the held turn alone.
+    // The poll leaves the held turn alone.
     let start = Scope {
         practice: scope.practice.clone(),
         physician: String::new(),
@@ -588,10 +729,10 @@ async fn a_request_the_provider_rejects_holds_the_turn_and_is_not_sent_again() {
         .store
         .dispatch_due(100, Some(&start))
         .await
-        .expect("recovery sweep");
+        .expect("due work");
     assert!(
         !swept.deliveries.contains(&delivery),
-        "the recovery sweep republished a held turn"
+        "a held turn is still due"
     );
 }
 
@@ -618,7 +759,7 @@ async fn origin_follows_the_practice_of_the_claimed_turn() {
         return;
     };
     let url = &running.database.url;
-    let (simulated_scope, simulated_delivery) = accept_in(
+    let (simulated_scope, _) = accept_in(
         url,
         &running.store,
         "Rehearse",
@@ -626,10 +767,8 @@ async fn origin_follows_the_practice_of_the_claimed_turn() {
         Some("drill.rehearse"),
     )
     .await;
-    let (other_scope, other_delivery) =
+    let (other_scope, _) =
         accept_in(url, &running.store, "Hello", None, Some("drill.rehearse")).await;
-    running.emulator.publish(&simulated_delivery).await;
-    running.emulator.publish(&other_delivery).await;
     let simulated = wait_assistant(&running.store, &simulated_scope, &running.worker).await;
     let other = wait_assistant(&running.store, &other_scope, &running.worker).await;
     let deadline = Instant::now() + Duration::from_secs(10);
@@ -750,7 +889,7 @@ async fn content_reaches_langfuse_and_never_the_operations_backend() {
     else {
         return;
     };
-    let (scope, delivery) = accept_in(
+    let (scope, _) = accept_in(
         &running.database.url,
         &running.store,
         &format!("Rehearse {prompt_canary}"),
@@ -758,7 +897,6 @@ async fn content_reaches_langfuse_and_never_the_operations_backend() {
         Some("drill.full-path"),
     )
     .await;
-    running.emulator.publish(&delivery).await;
     let state = wait_assistant(&running.store, &scope, &running.worker).await;
     assert_eq!(assistant_texts(&state), [reply.as_str()]);
     let run = state.attempts.last().expect("an attempt").id.clone();
@@ -879,9 +1017,9 @@ fn attempt_statuses(state: &Conversation) -> Vec<String> {
 }
 
 /// A rehearsal practice's `[fail:1]` fails its first attempt on purpose,
-/// before any model call: the attempt span says `rehearsed`, and the
-/// redelivery completes the same work. A real practice's `[fail:1]` answers
-/// on its first attempt.
+/// before any model call: the attempt span says `rehearsed`, and the retry
+/// completes the same work. A real practice's `[fail:1]` answers on its
+/// first attempt.
 #[tokio::test]
 async fn a_rehearsal_turn_marked_to_fail_fails_once_and_its_successor_answers() {
     let _guard = lock().lock().await;
@@ -905,7 +1043,7 @@ async fn a_rehearsal_turn_marked_to_fail_fails_once_and_its_successor_answers() 
         return;
     };
     let url = &running.database.url;
-    let (scope, marked) = accept_in(
+    let (scope, _) = accept_in(
         url,
         &running.store,
         "Drill [fail:1]",
@@ -913,7 +1051,6 @@ async fn a_rehearsal_turn_marked_to_fail_fails_once_and_its_successor_answers() 
         Some("drill.chat-failure"),
     )
     .await;
-    running.emulator.publish(&marked).await;
     let state = wait_assistant(&running.store, &scope, &running.worker).await;
     assert_eq!(state.status, WorkStatus::Completed);
     assert_eq!(assistant_texts(&state), [support::FIXED_TEXT]);
@@ -953,8 +1090,7 @@ async fn a_rehearsal_turn_marked_to_fail_fails_once_and_its_successor_answers() 
         Some(failed.work.as_str())
     );
 
-    let (real_scope, real) = accept_in(url, &running.store, "Real [fail:1]", None, None).await;
-    running.emulator.publish(&real).await;
+    let (real_scope, _) = accept_in(url, &running.store, "Real [fail:1]", None, None).await;
     let state = wait_assistant(&running.store, &real_scope, &running.worker).await;
     assert_eq!(
         attempt_statuses(&state),
@@ -964,13 +1100,12 @@ async fn a_rehearsal_turn_marked_to_fail_fails_once_and_its_successor_answers() 
 }
 
 #[tokio::test]
-async fn fifth_failure_is_forwarded_to_the_dead_letter_topic() {
+async fn the_fifth_failure_ends_the_turn_and_nothing_starts_it_again() {
     let _guard = lock().lock().await;
-    let Some(mut running) = running("dlq", Some(100), None).await else {
+    let Some(mut running) = running("gave_up", Some(100), None).await else {
         return;
     };
     let (scope, delivery) = accept_turn(&running.database.url, &running.store).await;
-    running.emulator.publish(&delivery).await;
 
     let restart_deadline = Instant::now() + Duration::from_secs(30);
     loop {
@@ -978,13 +1113,7 @@ async fn fifth_failure_is_forwarded_to_the_dead_letter_topic() {
         if state.failures == 2 {
             assert_eq!(attempt_statuses(&state), ["failed", "failed"]);
             running.worker.restart();
-            let port = running
-                .worker_host
-                .rsplit_once(':')
-                .unwrap()
-                .1
-                .parse()
-                .unwrap();
+            let port = running.port();
             support::wait_ready(&mut running.worker, port).await;
             break;
         }
@@ -1000,116 +1129,157 @@ async fn fifth_failure_is_forwarded_to_the_dead_letter_topic() {
     }
 
     let deadline = Instant::now() + Duration::from_secs(60);
-    let forwarded = loop {
-        let messages = running.emulator.pull_dead_letters().await;
-        if let Some(bytes) = messages.into_iter().find(|bytes| {
-            serde_json::from_slice::<Delivery>(bytes).ok().as_ref() == Some(&delivery)
-        }) {
-            break bytes;
-        }
-        assert!(
-            Instant::now() < deadline,
-            "dead-letter topic did not receive the delivery\n{}\n{}",
-            running.worker.tail(),
-            running.emulator.tail()
-        );
-        tokio::time::sleep(Duration::from_millis(200)).await;
-    };
-    let decoded: Delivery = serde_json::from_slice(&forwarded).expect("dead-letter payload");
-    assert_eq!(decoded, delivery);
-
-    let mut state = running
-        .store
-        .read(&scope)
-        .await
-        .expect("read")
-        .expect("conversation");
-    let attempts_deadline = Instant::now() + Duration::from_secs(5);
-    while state.attempts.len() < 5 && Instant::now() < attempts_deadline {
-        tokio::time::sleep(Duration::from_millis(100)).await;
-        state = running
+    let state = loop {
+        let state = running
             .store
             .read(&scope)
             .await
             .expect("read")
             .expect("conversation");
-    }
+        if state.status == WorkStatus::Failed {
+            break state;
+        }
+        assert!(
+            Instant::now() < deadline,
+            "the turn never ended as failed: {:?}\n{}",
+            attempt_statuses(&state),
+            running.worker.tail()
+        );
+        tokio::time::sleep(Duration::from_millis(100)).await;
+    };
     assert_eq!(attempt_statuses(&state), ["failed"; 5]);
-    assert_eq!(
-        state.status,
-        WorkStatus::Failed,
-        "recovery gives up with the dead letter, so the turn ends as failed"
-    );
     assert!(
         assistant_texts(&state).is_empty(),
-        "a dead-lettered turn must not publish an assistant reply"
+        "a turn that gave up must not publish an assistant reply"
     );
-    // The site's recovery sweep reads the same store. It must not republish
-    // the turn, which would restart the five-delivery budget forever.
+    assert_eq!(
+        running
+            .store
+            .delivery_state(&delivery)
+            .await
+            .expect("state"),
+        DeliveryState::Failed
+    );
+    // Neither the poll nor another announcement starts a sixth attempt.
     let start = Scope {
         practice: scope.practice.clone(),
         physician: String::new(),
         workspace: String::new(),
         chat: String::new(),
     };
-    let swept = running
+    let due = running
         .store
         .dispatch_due(100, Some(&start))
         .await
-        .expect("recovery sweep");
+        .expect("due work");
     assert!(
-        !swept.deliveries.contains(&delivery),
-        "the recovery sweep republished a turn that recovery gave up on"
+        !due.deliveries.contains(&delivery),
+        "a turn that gave up is still due"
     );
+    running.database.announce(&delivery).await;
+    tokio::time::sleep(Duration::from_secs(1)).await;
+    let later = running
+        .store
+        .read(&scope)
+        .await
+        .expect("read")
+        .expect("conversation");
+    assert_eq!(later.status, WorkStatus::Failed);
+    assert_eq!(later.attempts.len(), 5);
+}
+
+/// AC3. Hosted pacing: each failure makes the turn due later than the last,
+/// 10 s then 20 s, and the worker does not run it before then.
+#[tokio::test]
+async fn failed_attempts_wait_longer_each_time() {
+    let _guard = lock().lock().await;
+    let Some(database) = support::Database::create("backoff").await else {
+        return;
+    };
+    let store = Store::connect(&database.url).await.expect("runtime store");
+    let home = std::env::temp_dir().join(format!(
+        "physician-worker-backoff-{}",
+        uuid::Uuid::new_v4().simple()
+    ));
+    std::fs::create_dir_all(&home).expect("home");
+    let stub = support::ResponsesStub::start(&home, 2, 0, "[]").await;
+    let port = support::free_port();
+    let listen = format!("127.0.0.1:{port}");
+    // No retry setting: this worker waits the hosted 10 s, 20 s, 40 s.
+    let mut worker = support::Process::spawn(
+        "worker",
+        support::worker_bin(),
+        &[],
+        &[
+            ("PHYSICIAN_DATABASE_URL", database.url.as_str()),
+            ("PHYSICIAN_WORKER_LISTEN_ADDR", listen.as_str()),
+            ("PHYSICIAN_RESPONSES_STUB_PORT", stub.port.as_str()),
+        ],
+        &home,
+    );
+    support::wait_ready(&mut worker, port).await;
+    let (scope, _) = accept_turn(&database.url, &store).await;
+    let started = Instant::now();
+    let mut seen = vec![];
+    let deadline = Instant::now() + Duration::from_secs(60);
+    let state = loop {
+        let state = store.read(&scope).await.expect("read").expect("row");
+        while seen.len() < state.attempts.len() {
+            seen.push(started.elapsed());
+        }
+        if state.status == WorkStatus::Completed {
+            break state;
+        }
+        assert!(
+            Instant::now() < deadline,
+            "the turn never completed: {:?}\n{}",
+            attempt_statuses(&state),
+            worker.tail()
+        );
+        tokio::time::sleep(Duration::from_millis(50)).await;
+    };
+    assert_eq!(attempt_statuses(&state), ["failed", "failed", "completed"]);
+    let first_wait = seen[1] - seen[0];
+    let second_wait = seen[2] - seen[1];
+    println!("attempts began at {seen:?}: waits of {first_wait:?} then {second_wait:?}");
+    // The database clock counts whole seconds; a poll may add its interval.
+    for (wait, seconds) in [(first_wait, 10), (second_wait, 20)] {
+        assert!(
+            wait >= Duration::from_secs(seconds - 1),
+            "retried after {wait:?}, before its {seconds} s delay"
+        );
+        assert!(
+            wait < Duration::from_secs(seconds + 11),
+            "retried after {wait:?}, long after its {seconds} s delay"
+        );
+    }
+    worker.kill_now();
+    let _ = std::fs::remove_dir_all(&home);
 }
 
 #[tokio::test]
-async fn concurrent_pushes_on_one_worker_run_side_by_side() {
+async fn concurrent_turns_on_one_worker_run_side_by_side() {
     let _guard = lock().lock().await;
     let delay = Duration::from_secs(2);
     let Some(running) = running("parallel", None, Some(delay.as_millis() as u64)).await else {
         return;
     };
-    let (first_scope, first) = accept_turn(&running.database.url, &running.store).await;
-    let (second_scope, second) = accept_turn(&running.database.url, &running.store).await;
-    let first_body = support::push_body(&first, "parallel-first");
-    let second_body = support::push_body(&second, "parallel-second");
-    let push = |body: Vec<u8>| {
-        let host = running.worker_host.clone();
-        async move {
-            support::exchange(
-                &host,
-                "POST",
-                "/pubsub/chat-turn",
-                &[("content-type", "application/json")],
-                Some(&body),
-            )
-            .await
-        }
-    };
     let started = Instant::now();
-    let (a, b) = tokio::join!(push(first_body), push(second_body));
-    let elapsed = started.elapsed();
-    for result in [a, b] {
-        let (status, text) =
-            result.unwrap_or_else(|error| panic!("{error}\n{}", running.worker.tail()));
-        assert_eq!(
-            status, 204,
-            "push should ack after the turn completes: {text}"
-        );
+    let (first_scope, _) = accept_turn(&running.database.url, &running.store).await;
+    let (second_scope, _) = accept_turn(&running.database.url, &running.store).await;
+    for scope in [&first_scope, &second_scope] {
+        let state = wait_assistant(&running.store, scope, &running.worker).await;
+        assert_eq!(assistant_texts(&state), [support::FIXED_TEXT]);
     }
+    let elapsed = started.elapsed();
     assert!(
         elapsed >= delay,
-        "pushes acked after {elapsed:?}, before the {delay:?} turn could finish"
+        "both turns answered after {elapsed:?}, before a {delay:?} turn could finish"
     );
     assert!(
         elapsed < delay * 2 - Duration::from_millis(500),
         "two {delay:?} turns took {elapsed:?}; the worker ran them one after the other"
     );
-    for scope in [&first_scope, &second_scope] {
-        let state = wait_assistant(&running.store, scope, &running.worker).await;
-        assert_eq!(assistant_texts(&state), [support::FIXED_TEXT]);
-    }
 }
 
 /// Copies the workspace catalog to a directory outside the source checkout,
@@ -1198,16 +1368,21 @@ async fn skill_reads_run_through_the_worker_and_only_the_answer_is_published() {
         ]
     ])
     .to_string();
-    let Some(running) = running_with("skills", None, None, &rounds, support::FIXED_TEXT, &[]).await
+    let Some(mut running) =
+        running_with("skills", None, None, &rounds, support::FIXED_TEXT, &[]).await
     else {
         let _ = std::fs::remove_dir_all(&staging);
         return;
     };
-    let (scope, delivery) = accept_with_skills(
+    // The turn is accepted while no worker runs, so its source is saved
+    // before any attempt can search for it.
+    running.worker.kill_now();
+    let (scope, _) = accept_as(
         &running.database.url,
         &running.store,
         "Hello",
         &admitted,
+        None,
         None,
         None,
     )
@@ -1226,7 +1401,9 @@ async fn skill_reads_run_through_the_worker_and_only_the_answer_is_published() {
         provenance: serde_json::json!({"native_record":"Observation/result"}),
     };
     running.store.record_source(&record).await.unwrap();
-    running.emulator.publish(&delivery).await;
+    running.worker.restart();
+    let port = running.port();
+    support::wait_ready(&mut running.worker, port).await;
     let state = wait_assistant(&running.store, &scope, &running.worker).await;
     assert_eq!(state.status, WorkStatus::Completed);
     assert_eq!(attempt_statuses(&state), ["completed"]);
@@ -1341,18 +1518,7 @@ async fn hosting_cancels_a_chat_whose_claim_has_been_replaced() {
     let Some(running) = running("claim_replaced", None, Some(200_000)).await else {
         return;
     };
-    let (scope, delivery) = accept_turn(&running.database.url, &running.store).await;
-    let host = running.worker_host.clone();
-    let body = support::push_body(&delivery, "claim-replaced");
-    let push = tokio::spawn(async move {
-        reqwest::Client::new()
-            .post(format!("http://{host}/pubsub/chat-turn"))
-            .header("content-type", "application/json")
-            .body(body)
-            .send()
-            .await
-            .unwrap()
-    });
+    let (scope, _) = accept_turn(&running.database.url, &running.store).await;
     let started = Instant::now();
     let abandoned = loop {
         let state = running.store.conversation(&scope).await.unwrap();
@@ -1367,6 +1533,7 @@ async fn hosting_cancels_a_chat_whose_claim_has_been_replaced() {
                 attempt: attempt.id.clone(),
                 revision: attempt.revision,
                 lease: local_product::runtime::Lease::new(540).unwrap(),
+                origin: None,
             };
         }
         assert!(started.elapsed() < Duration::from_secs(10));
@@ -1374,16 +1541,26 @@ async fn hosting_cancels_a_chat_whose_claim_has_been_replaced() {
     };
     running
         .store
-        .settle_chat_attempt(&abandoned, AttemptFailure::Interrupted)
+        .settle_chat_attempt(&abandoned, AttemptFailure::Interrupted, Backoff::IMMEDIATE)
         .await
         .unwrap();
     let successor = running.store.claim(&scope, 540).await.unwrap().unwrap();
     assert_ne!(successor.attempt, abandoned.attempt);
-    let response = tokio::time::timeout(Duration::from_secs(115), push)
-        .await
-        .expect("hosting must cancel the old run at its 108-second renewal cadence")
-        .unwrap();
-    assert_eq!(response.status(), reqwest::StatusCode::NO_CONTENT);
+    // The worker still runs the old attempt, so hearing of the turn again
+    // starts nothing; its next renewal finds the claim replaced.
+    let deadline = Instant::now() + Duration::from_secs(115);
+    while !running
+        .worker
+        .tail()
+        .contains("physician attempt ownership could not be renewed")
+    {
+        assert!(
+            Instant::now() < deadline,
+            "hosting must cancel the old run at its 108-second renewal cadence\n{}",
+            running.worker.tail()
+        );
+        tokio::time::sleep(Duration::from_millis(200)).await;
+    }
     let saved = running.store.conversation(&scope).await.unwrap();
     assert_eq!(saved.attempts.len(), 2);
     assert_eq!(saved.attempts[1].id, successor.attempt);

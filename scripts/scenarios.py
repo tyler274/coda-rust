@@ -4,7 +4,7 @@
     scripts/scenarios.py [--only P1,D1] [--require-complete] [--evidence DIR]
 
 P1 runs over HTTP against scripts/physician-scale-stack.py: two physician-sample
-sites, physician-worker, Postgres, Valkey and the Pub/Sub emulator, with the
+sites, physician-worker, Postgres and Valkey, with the
 worker answering through the local Responses stub. D1 migrates a fresh database
 on that same disposable Postgres through duet-migrate, drives the duet-api
 binary over HTTP with its local identity stand-in (killing and restarting it
@@ -555,7 +555,7 @@ def main():
         receipt.data["sources"] = sources(bin_dir)
         process = start_stack(evidence, bin_dir)
         state = wait_ready(process, evidence)
-        receipt.data["services"] = {k: state[k] for k in ("sites", "worker", "postgres", "valkey", "pubsub")}
+        receipt.data["services"] = {k: state[k] for k in ("sites", "worker", "postgres", "valkey")}
         if "P1" in journeys:
             p1(receipt, state, evidence / "p1")
         if "D1" in journeys:

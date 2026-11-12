@@ -1,7 +1,7 @@
 //! A physician Stop holds the turn until Resume or a newer message.
 //!
-//! One site and one slow worker share a disposable Postgres, Valkey and the
-//! Pub/Sub emulator. Stop during the turn keeps the row held after the worker
+//! One site and one slow worker share a disposable Postgres and Valkey. Stop
+//! during the turn keeps the row held after the worker
 //! is dropped, and the late reply is not published. Resume on a new worker
 //! starts a successor, a second Stop holds that too, and a message sent
 //! while held is answered without either stopped reply.
@@ -42,10 +42,7 @@ async fn stop_holds_across_restart_and_again_after_resume_until_a_newer_message(
     let redis = valkey.url();
     let worker_port = support::free_port();
     let site_port = support::free_port();
-    let emulator = support::Emulator::start().await;
-    emulator.provision(worker_port).await;
 
-    let topic = support::topic();
     let worker_listen = format!("127.0.0.1:{worker_port}");
     let site_listen = format!("127.0.0.1:{site_port}");
     let stub = support::ResponsesStub::start(&home.0, 0, 4000, "[]").await;
@@ -56,7 +53,6 @@ async fn stop_holds_across_restart_and_again_after_resume_until_a_newer_message(
         &[
             ("PHYSICIAN_DATABASE_URL", database.url.as_str()),
             ("PHYSICIAN_REDIS_URL", redis.as_str()),
-            ("PUBSUB_EMULATOR_HOST", emulator.host.as_str()),
             ("PHYSICIAN_WORKER_LISTEN_ADDR", worker_listen.as_str()),
             ("PHYSICIAN_RESPONSES_STUB_PORT", &stub.port),
         ],
@@ -70,9 +66,7 @@ async fn stop_holds_across_restart_and_again_after_resume_until_a_newer_message(
         &[
             ("PHYSICIAN_DATABASE_URL", database.url.as_str()),
             ("PHYSICIAN_REDIS_URL", redis.as_str()),
-            ("PUBSUB_EMULATOR_HOST", emulator.host.as_str()),
-            ("GOOGLE_CLOUD_PROJECT", support::PROJECT),
-            ("PHYSICIAN_CHAT_TOPIC", topic.as_str()),
+            support::DURABLE,
             ("PHYSICIAN_AUTH", "required"),
             ("PHYSICIAN_LISTEN_ADDR", site_listen.as_str()),
         ],
@@ -237,7 +231,6 @@ async fn stop_holds_across_restart_and_again_after_resume_until_a_newer_message(
         &[
             ("PHYSICIAN_DATABASE_URL", database.url.as_str()),
             ("PHYSICIAN_REDIS_URL", redis.as_str()),
-            ("PUBSUB_EMULATOR_HOST", emulator.host.as_str()),
             ("PHYSICIAN_WORKER_LISTEN_ADDR", worker_listen.as_str()),
             ("PHYSICIAN_RESPONSES_STUB_PORT", &stub.port),
         ],

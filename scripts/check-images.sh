@@ -233,14 +233,13 @@ for job in CHAT:gpt-6.1-sol:high BACKGROUND:gpt-6-luna:max; do
     -e "CODA_${role}_CONTEXT_WINDOW_TOKENS=272000" -e "CODA_${role}_INPUT_LIMIT_TOKENS=922000")
 done
 # Chords as staging runs it: hosted, on the staging-preview profile. The site
-# accepts chat onto its Pub/Sub topic and does not run the model; it builds the
-# publisher at startup but contacts Pub/Sub only when a chat is accepted.
+# accepts chat into Postgres for the worker and does not run the model.
 chords=(-e CODA_HOSTED=1 -e PHYSICIAN_DATABASE_URL="$physician_runtime_db"
   -e CODA_ENVIRONMENT=stg -e CODA_HOSTED_PROFILE=staging-preview
   -e CODA_ALLOW_MODEL_CALLS=1 -e OPENAI_API_KEY=image-smoke-placeholder "${chords_models[@]}")
-chat_topic=(-e PHYSICIAN_CHAT_TOPIC=projects/image-smoke/topics/physician-chat-turns)
+durable_chat=(-e PHYSICIAN_DURABLE_CHAT=1)
 physician_port=$(free_port)
-serve coda-physician-sample "$physician_port" "${chords[@]}" "${chat_topic[@]}" \
+serve coda-physician-sample "$physician_port" "${chords[@]}" "${durable_chat[@]}" \
   -e PHYSICIAN_AUTH=required
 expect_status "http://127.0.0.1:$physician_port/health" 200
 expect_status "http://127.0.0.1:$physician_port/readyz" 200
@@ -248,19 +247,17 @@ expect_status "http://127.0.0.1:$physician_port/" 200
 expect_status "http://127.0.0.1:$physician_port/physician-app_bg.wasm" 200
 
 # The worker with no PHYSICIAN_AUTH passed in, so the image's own setting must
-# satisfy hosted startup. The audience and push account only configure token
-# verification; no push is sent.
+# satisfy hosted startup. The placeholder key is never used because the smoke
+# database holds no accepted work.
 worker_port=$(free_port)
-serve coda-physician-worker "$worker_port" "${chords[@]}" \
-  -e PHYSICIAN_WORKER_AUDIENCE=https://physician-worker.image-smoke.invalid \
-  -e PHYSICIAN_PUSH_SERVICE_ACCOUNT=physician-pubsub-push@image-smoke.iam.gserviceaccount.com
+serve coda-physician-worker "$worker_port" "${chords[@]}"
 expect_status "http://127.0.0.1:$worker_port/health" 200
 expect_status "http://127.0.0.1:$worker_port/readyz" 200
 # Accepted chat pins the image's catalog before any work reaches a worker.
 expect_failure "${tag_of[coda-physician-sample]} without its skill catalog" "physician skill catalog at /tmp/no-skills is unavailable" \
   run "${locked[@]}" --network host \
     --entrypoint "$(binary_of "${tag_of[coda-physician-sample]}")" \
-    "${chords[@]}" "${chat_topic[@]}" \
+    "${chords[@]}" "${durable_chat[@]}" \
     -e PHYSICIAN_SKILLS_DIR=/tmp/no-skills -e PORT="$(free_port)" \
     "${tag_of[coda-physician-sample]}"
 

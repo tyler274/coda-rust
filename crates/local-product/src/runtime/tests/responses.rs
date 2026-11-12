@@ -1,5 +1,6 @@
 use super::super::*;
 use super::{OpenAuthority, accept, delivery_input, delivery_scope};
+use crate::runtime::delivery::Backoff;
 
 /// Answers every request with the same text.
 pub(super) struct Answer(pub(super) &'static str);
@@ -73,7 +74,7 @@ async fn each_published_reply_keeps_its_response_id_across_a_fresh_store() {
     let run_id = state.run().unwrap().id.to_owned();
     assert!(matches!(
         store
-            .resume_authorized(&scope, "again", vec![0; 32], &state.work, &run_id)
+            .resume_authorized(&scope, "again", vec![0; 32], &state.work, &run_id, None)
             .await
             .unwrap(),
         Resumed::Pending { .. }
@@ -121,7 +122,11 @@ async fn try_again_refuses_another_physician_or_practice() {
     for _ in 0..harness::engine::MAX_FAILED_ATTEMPTS {
         let claim = store.claim(&scope, 60).await.unwrap().unwrap();
         store
-            .settle_chat_attempt(&claim, harness::engine::AttemptFailure::Failed)
+            .settle_chat_attempt(
+                &claim,
+                harness::engine::AttemptFailure::Failed,
+                Backoff::IMMEDIATE,
+            )
             .await
             .unwrap();
     }
@@ -136,7 +141,7 @@ async fn try_again_refuses_another_physician_or_practice() {
     for (key, target) in [("colleague", &colleague), ("elsewhere", &elsewhere)] {
         assert_eq!(
             store
-                .resume_authorized(target, key, vec![6; 32], &failed.work, &run_id)
+                .resume_authorized(target, key, vec![6; 32], &failed.work, &run_id, None)
                 .await
                 .unwrap(),
             Resumed::Refused,

@@ -1,17 +1,18 @@
 //! A chat turn the worker gives up on, then Try again.
 //!
-//! One site and one worker share a disposable Postgres, Valkey and the Pub/Sub
-//! emulator. The worker's fixed provider sends five responses that break the
-//! stream contract, so five attempts fail, the delivery goes to the
-//! dead-letter topic and the turn ends as failed. A stream held on the site is
-//! told to refetch, and the snapshot then shows the reference "couldn't
-//! finish" line with the run Try again resumes. `work.resume` for that run is
-//! accepted, and the reply arrives.
+//! One site and one worker share a disposable Postgres and Valkey. The
+//! worker's fixed provider sends five responses that break the stream
+//! contract, so five attempts fail, each making the turn due again, and the
+//! fifth ends the turn as failed. A stream held on the site is told to
+//! refetch, and the snapshot then shows the reference "couldn't finish" line
+//! with the run Try again resumes. `work.resume` for that run is accepted,
+//! and the reply arrives.
 
 use std::path::PathBuf;
 use std::time::{Duration, Instant};
 
-use local_product::runtime::delivery::Delivery;
+use local_product::runtime::engine::MAX_FAILED_ATTEMPTS;
+use local_product::runtime::{AttemptStatus, Store, WorkStatus};
 use serde_json::{Value, json};
 
 #[path = "scale/mod.rs"]
@@ -29,7 +30,7 @@ impl Drop for Home {
 }
 
 #[tokio::test]
-async fn a_dead_lettered_turn_shows_couldnt_finish_and_try_again_gets_the_reply() {
+async fn a_turn_that_gave_up_shows_couldnt_finish_and_try_again_gets_the_reply() {
     let Some(database) = support::Database::create("try_again").await else {
         return;
     };
@@ -45,10 +46,7 @@ async fn a_dead_lettered_turn_shows_couldnt_finish_and_try_again_gets_the_reply(
     let redis = valkey.url();
     let worker_port = support::free_port();
     let site_port = support::free_port();
-    let emulator = support::Emulator::start().await;
-    emulator.provision(worker_port).await;
 
-    let topic = support::topic();
     let worker_listen = format!("127.0.0.1:{worker_port}");
     let site_listen = format!("127.0.0.1:{site_port}");
     let stub = support::ResponsesStub::start(&home.0, 5, 0, "[]").await;
@@ -59,9 +57,9 @@ async fn a_dead_lettered_turn_shows_couldnt_finish_and_try_again_gets_the_reply(
         &[
             ("PHYSICIAN_DATABASE_URL", database.url.as_str()),
             ("PHYSICIAN_REDIS_URL", redis.as_str()),
-            ("PUBSUB_EMULATOR_HOST", emulator.host.as_str()),
             ("PHYSICIAN_WORKER_LISTEN_ADDR", worker_listen.as_str()),
             ("PHYSICIAN_RESPONSES_STUB_PORT", &stub.port),
+            support::RETRY_NOW,
         ],
         &home.0,
     );
@@ -73,9 +71,7 @@ async fn a_dead_lettered_turn_shows_couldnt_finish_and_try_again_gets_the_reply(
         &[
             ("PHYSICIAN_DATABASE_URL", database.url.as_str()),
             ("PHYSICIAN_REDIS_URL", redis.as_str()),
-            ("PUBSUB_EMULATOR_HOST", emulator.host.as_str()),
-            ("GOOGLE_CLOUD_PROJECT", support::PROJECT),
-            ("PHYSICIAN_CHAT_TOPIC", topic.as_str()),
+            support::DURABLE,
             ("PHYSICIAN_AUTH", "required"),
             ("PHYSICIAN_LISTEN_ADDR", site_listen.as_str()),
         ],
@@ -127,24 +123,35 @@ async fn a_dead_lettered_turn_shows_couldnt_finish_and_try_again_gets_the_reply(
     assert_eq!(status, 200, "{body}\n{}", tails(&site, &worker));
     assert_eq!(body["outcome"], "accepted", "{body}");
 
-    // Five failed deliveries reach the dead-letter topic.
-    let deadline = Instant::now() + Duration::from_secs(90);
-    loop {
-        let forwarded = emulator.pull_dead_letters().await;
-        if forwarded.iter().any(|bytes| {
-            serde_json::from_slice::<Delivery>(bytes)
-                .is_ok_and(|delivery| delivery.scope.chat == chat)
-        }) {
-            break;
+    // Five failed attempts end the turn; nothing starts a sixth.
+    let store = Store::connect(&database.url).await.expect("runtime store");
+    let scope = local_product::runtime::Scope {
+        practice: physician_sample::STAGING_PRACTICE_ID.into(),
+        physician: "staging-physician".into(),
+        workspace: workspace.into(),
+        chat: chat.clone(),
+    };
+    let deadline = Instant::now() + Duration::from_secs(60);
+    let failed = loop {
+        let state = store.read(&scope).await.expect("read");
+        if let Some(state) = state.filter(|state| state.status == WorkStatus::Failed) {
+            break state;
         }
         assert!(
             Instant::now() < deadline,
-            "dead-letter topic did not receive the turn\n{}\n{}",
-            tails(&site, &worker),
-            emulator.tail()
+            "the turn never ended as failed\n{}",
+            tails(&site, &worker)
         );
-        tokio::time::sleep(Duration::from_millis(200)).await;
-    }
+        tokio::time::sleep(Duration::from_millis(100)).await;
+    };
+    assert_eq!(
+        failed
+            .attempts
+            .iter()
+            .map(|attempt| attempt.status)
+            .collect::<Vec<_>>(),
+        [AttemptStatus::Failed; MAX_FAILED_ATTEMPTS as usize]
+    );
 
     // A page held open learns of the failure without reloading.
     sse.wait_for("event: workspace_changed", Duration::from_secs(20))

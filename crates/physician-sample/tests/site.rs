@@ -1725,7 +1725,6 @@ struct ChatBrowserServer {
     worker: scale::Process,
     site_task: tokio::task::JoinHandle<()>,
     _stub: scale::ResponsesStub,
-    _emulator: scale::Emulator,
     _valkey: scale::Valkey,
     _database: scale::Database,
 }
@@ -1759,9 +1758,7 @@ async fn serve_chat_browser(site: &std::path::Path, reply: &str) -> ChatBrowserS
     let store = local_product::runtime::Store::connect(&database.url)
         .await
         .unwrap();
-    let emulator = scale::Emulator::start().await;
     let worker_port = scale::free_port();
-    emulator.provision(worker_port).await;
     let valkey = scale::Valkey::start().await;
     let redis = valkey.url();
     let stub = scale::ResponsesStub::start_with_reply(&state, 0, 0, "[]", reply).await;
@@ -1772,7 +1769,6 @@ async fn serve_chat_browser(site: &std::path::Path, reply: &str) -> ChatBrowserS
         &[],
         &[
             ("PHYSICIAN_DATABASE_URL", &database.url),
-            ("PUBSUB_EMULATOR_HOST", &emulator.host),
             ("PHYSICIAN_WORKER_LISTEN_ADDR", &listen),
             ("PHYSICIAN_RESPONSES_STUB_PORT", &stub.port),
             ("PHYSICIAN_REDIS_URL", &redis),
@@ -1785,13 +1781,8 @@ async fn serve_chat_browser(site: &std::path::Path, reply: &str) -> ChatBrowserS
             .await
             .unwrap(),
     );
-    let queue =
-        physician_sample::queue::PubSubQueue::connect(&scale::topic(), Some(&emulator.host), false)
-            .await
-            .unwrap();
     let chat = Arc::new(physician_sample::durable::DurableChat::new(
         store,
-        Arc::new(queue),
         local_product::physician_chat::PhysicianSkills::configured(None, false).unwrap(),
         &scale::models::roles(),
     ));
@@ -1819,7 +1810,6 @@ async fn serve_chat_browser(site: &std::path::Path, reply: &str) -> ChatBrowserS
         worker,
         site_task,
         _stub: stub,
-        _emulator: emulator,
         _valkey: valkey,
         _database: database,
     }
@@ -1875,6 +1865,7 @@ async fn held_limits_and_provider_blocks_render_without_a_partial_answer() {
                 physician_auth::PostgresAuthStore::session_reference(&bearer),
                 &local_product::physician_chat::PhysicianSkills::configured(None, false).unwrap(),
                 &scale::models::chat_recipe(),
+                None,
             )
             .await
             .unwrap();
@@ -1896,7 +1887,11 @@ async fn held_limits_and_provider_blocks_render_without_a_partial_answer() {
                 .unwrap();
         } else {
             store
-                .settle_chat_attempt(&claim, AttemptFailure::Limit)
+                .settle_chat_attempt(
+                    &claim,
+                    AttemptFailure::Limit,
+                    local_product::runtime::delivery::Backoff::IMMEDIATE,
+                )
                 .await
                 .unwrap();
         }
@@ -2318,8 +2313,6 @@ async fn drafts_survive_site_restart_in_independent_browser_sessions() {
     let home =
         std::env::temp_dir().join(format!("physician-draft-browser-{}", uuid::Uuid::new_v4()));
     fs::create_dir_all(&home).unwrap();
-    let topic = scale::topic();
-    let publisher = format!("127.0.0.1:{}", scale::free_port());
     let mut sites = Vec::new();
     let mut hosts = Vec::new();
     for name in ["draft-a", "draft-b"] {
@@ -2331,9 +2324,7 @@ async fn drafts_survive_site_restart_in_independent_browser_sessions() {
             &[],
             &[
                 ("PHYSICIAN_DATABASE_URL", &database.url),
-                ("PUBSUB_EMULATOR_HOST", &publisher),
-                ("GOOGLE_CLOUD_PROJECT", scale::PROJECT),
-                ("PHYSICIAN_CHAT_TOPIC", &topic),
+                scale::DURABLE,
                 ("PHYSICIAN_AUTH", "required"),
                 ("PHYSICIAN_AUTH_PROOF_TOKENS", "1"),
                 ("PHYSICIAN_SITE_DIR", site.to_str().unwrap()),

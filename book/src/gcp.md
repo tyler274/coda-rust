@@ -279,7 +279,8 @@ runs on pushes to `main`, after every check job, when the repository variable
    registry digest. It never rebuilds an image;
 2. checks the shape of the `physician` and `duet` services before any migration
    runs, then for `physician`, then `duet`: updates `<app>-migrate` to the migration
-   digest and executes it to completion, then updates the `<app>` service's product
+   digest and executes it to completion, then for physician updates `physician-worker` once that
+   service exists, then updates the `<app>` service's product
    container to the runtime digest and requires its latest Ready revision to serve
    that digest with all traffic. The update is submitted with `--async` and
    readiness is polled every 5 s for at most 10 minutes, within the release's
@@ -287,8 +288,10 @@ runs on pushes to `main`, after every check job, when the repository variable
    consecutive reads, 5 s apart, still show a different image in the service spec.
    The release then stops with an unconfirmed rollout rather than waiting out the
    poll bound;
-3. updates `physician-worker` and `observability-relay` to their digests once each
-   service exists, with the same checks. Until then it reports the digest to record as
+3. updates `observability-relay` to its digest once the service exists, with the
+   same checks. `physician-worker` moves before the physician site in step 2, so a
+   site that announces turns in Postgres never serves ahead of a worker that
+   listens for them. Until a service exists the release reports the digest to record as
    `images.physician.worker` or `observability_relay_image` for the infrastructure apply;
 4. finalizes and uploads the structured `receipt.json`, tested-archive manifest
    and digest files as the `release-receipt-*` artifact, including failed runs.
@@ -307,7 +310,7 @@ release; rerun the image proof to produce a new handoff.
 
 Cloud Run moves traffic only to a revision that passes its `/readyz` startup
 probe. This protects an individual failed candidate, not the whole release:
-physician can already be serving a new revision when Duet or the worker fails.
+the worker can already be serving a new revision when the physician site or Duet fails.
 A timed-out update can also have completed remotely. Inspect each service's
 observed traffic before deciding what to do; an unavailable read means unknown,
 not unchanged. Fix forward by default. Returning traffic to a previous digest
@@ -354,9 +357,9 @@ not change how CPU is allocated:
 
 | Service | `cpu_idle` | Minimum instances | Why |
 | --- | --- | --- | --- |
-| `physician` | `false` | 1 with scaling on, else 0 | Its Postgres authority listener and Redis subscriber run between requests, and the 10 s recovery sweep needs a live instance |
+| `physician` | `false` | 1 with scaling on, else 0 | Its Postgres authority listener and Redis subscriber run between requests |
 | `duet` | `true` | 0 | All work happens inside a request |
-| `physician-worker` | `false` | 1 | It stays running between requests, so its work does not depend on an open push request |
+| `physician-worker` | `false` | 1 | Its Postgres listener, 10 s poll and lease renewals run outside any request |
 
 Telemetry is best effort, as the sidecar's own configuration states. Under
 request-based CPU, a batch queued after the last response waits until the next
@@ -456,9 +459,10 @@ For a failed release, start with its workflow run and release receipt. Use the
 recorded execution name to find migration logs, and the recorded revision names
 to find runtime/worker logs. Inspect current traffic independently before a
 retry. Do not copy raw environment values, tokens or clinical content into a
-receipt or public diagnostic. For worker failures also inspect the
-`physician-chat-turns-dead-letter` subscription; inspect without acknowledging or
-replaying messages unless that action is separately authorized. A deployment
+receipt or public diagnostic. For worker failures also read the
+attempts saved on the turn in `physician_runtime_conversations`: each failed
+attempt is recorded there with its time, and a turn that failed five times stays
+failed until the physician chooses Try again. A deployment
 check and a ready process do not establish that a clinical journey succeeded.
 
 ### Physician scaling (Redis fan-out and Pub/Sub chat turns)
@@ -477,9 +481,11 @@ grant or setting, and the root's tests check this.
   `resync`, and the page refetches. Sign-in and panel notices stay on the
   Postgres `physician_authority` triggers.
 - [`queue.tf`](/infra/gcp/rust-environments/queue.tf) creates the topics
-  `physician-chat-turns` and `physician-chat-turns-dead-letter`. Each message is
-  `{scope, input_id}`. A push subscription delivers each turn to the worker
-  with an OIDC token for the `physician-pubsub-push` service account. The ack
+  `physician-chat-turns` and `physician-chat-turns-dead-letter` and their
+  subscriptions. The site and the worker built from this workspace do not use
+  them: turns are announced and claimed in Postgres, as
+  [the physician site chapter](physician-site.md#scaling-across-instances) describes. The push
+  subscription carries an OIDC token for the `physician-pubsub-push` service account. The ack
   deadline is 600 s and retries back off from 10 s to 600 s. After 5 failed
   deliveries a message goes to the
   dead-letter topic, which has a pull subscription of the same name for
@@ -499,16 +505,15 @@ grant or setting, and the root's tests check this.
   anything. It is told its OIDC audience (the deterministic
   `https://physician-worker-PROJECT_NUMBER.REGION.run.app`) and the push account
   as `PHYSICIAN_WORKER_AUDIENCE` and `PHYSICIAN_PUSH_SERVICE_ACCOUNT`. It has
-  `cpu_idle = false` and one minimum instance, so it stays running between
-  requests. Pub/Sub pushes deliver its turns. On each push it checks the token's audience and the
-  `physician-pubsub-push` email, claims the leased turn in Postgres, runs the
-  model, commits, and publishes `workspace_changed`.
-- The physician site gets `PHYSICIAN_CHAT_TOPIC`, `cpu_idle = false` and one
-  minimum instance. CPU stays allocated because
+  `cpu_idle = false` and one minimum instance, because no request carries its
+  work. The worker reads neither setting. It listens on Postgres
+  for accepted turns, reads the due work every 10 s, claims the leased turn,
+  runs the model, commits, and publishes `workspace_changed`. A request to
+  `/pubsub/chat-turn` gets 404.
+- The physician site gets `PHYSICIAN_DURABLE_CHAT=1`, `PHYSICIAN_CHAT_TOPIC`,
+  `cpu_idle = false` and one minimum instance. `PHYSICIAN_DURABLE_CHAT=1` is
+  what hands turns to the worker; the site does not read the topic. CPU stays allocated because
   its Postgres listener and Redis subscriber must keep running between requests.
-  The minimum instance keeps the recovery sweep running: it republishes, every
-  10 s, an accepted turn whose Pub/Sub publish failed. At zero instances that
-  turn would wait until unrelated traffic started the site again.
   Duet keeps `cpu_idle = true`. `runtime_environment` may not set any of the
   scaling keys, and Duet may not set any `PHYSICIAN_*` key.
 
@@ -539,9 +544,8 @@ To turn scaling on:
    the screen, argv or a file.
 5. **Verify.** Open site tabs until `labels.instanceId` in the `physician` stream logs
    shows two instances, send a turn from one tab, and check the reply appears in a tab
-   on the other instance. On `physician-chat-turns-worker`, `subscription/push_request_count`
-   should show successes, `subscription/oldest_unacked_message_age` stay near zero and
-   `subscription/dead_letter_message_count` stay at zero.
+   on the other instance. The turn's row in `physician_runtime_conversations` should
+   show one completed attempt.
 
 Replacing the Memorystore instance changes its host, AUTH string and CA, so run step 4
 again.
@@ -561,9 +565,6 @@ for service in physician physician-worker; do
     --region us-east1 --revision-suffix="$suffix" --quiet
 done
 ```
-
-To inspect dead letters without acknowledging them, run
-`gcloud pubsub subscriptions pull physician-chat-turns-dead-letter --project coda-rust-staging --limit 10`.
 
 To turn scaling off, set `enable_physician_scale = false` and apply a reviewed
 saved plan. The plan removes the cache, topics, subscriptions, and worker.

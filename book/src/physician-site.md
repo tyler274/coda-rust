@@ -124,7 +124,7 @@ between runs; the worker uses the same notes, windows, history and chart tools a
 | --- | --- | --- |
 | Feature model checked by TLC | Every state the modeled steps reach keeps the agreed rules. | Covers only the finite model; does not execute the app, its Rust owners or a clinical model. |
 | `cargo test -p physician-sample --test site` | The exercised Chromium journeys render and behave correctly against their test setup. | Does not qualify every graph state or hosted dependency. |
-| <a href="/.agents/skills/coda-verify-physician/SKILL%2Emd">Local physician scale recipe</a> | Real site/worker binaries, Postgres, Valkey and Pub/Sub emulator support the exercised cross-instance chat and recovery journeys. | Fixed provider, proof sign-in and emulator delivery; not real model quality, mail delivery or hosted push authentication. |
+| <a href="/.agents/skills/coda-verify-physician/SKILL%2Emd">Local physician scale recipe</a> | Real site/worker binaries, Postgres and Valkey support the exercised cross-instance chat and recovery journeys. | Fixed provider, proof sign-in and a local Postgres; not real model quality, mail delivery, Cloud Run or Cloud SQL behaviour. |
 ## Physician sign-in and practice access
 
 [`physician-auth`](/crates/physician-auth/src/lib.rs) is one durable owner for who a clinic user or physician is, which practice they belong to, who holds panel-assignment permission, and which patients are on each physician's panel. Sign-in is a per-user email magic token: the server issues a one-time token (24-hour TTL, stored `sha256`-hashed), and its verification mints one bearer session (idle for 12 hours, and never past 7 days after sign-in) with a revocation fence (`sessions_ended_before`) so deactivating an account ends every session it holds.
@@ -144,9 +144,9 @@ A turn that finishes on one `physician-sample` instance has to show up on a stre
 
 `RedisBus` is the `fred` client: TLS plus AUTH, `PHYSICIAN_REDIS_URL` as a `rediss://` URL and `PHYSICIAN_REDIS_CA_PEM` as the Memorystore server CA. With `PHYSICIAN_REDIS_URL` unset, `LocalBus` keeps those events inside one process. That is the local and test path.
 
-Hosted `message.submit` accepts the turn in Postgres and publishes `{scope, input_id}` on the Pub/Sub topic `physician-chat-turns`. The topic carries only that pair. `physician-worker` checks the push token's audience and the `physician-pubsub-push` email, claims the leased turn, runs the model, commits, and publishes `workspace_changed`. A non-2xx response is a redelivery. After 5 attempts the message goes to the dead-letter topic. The subscription's ack deadline is 600 seconds, and retries back off from 10 seconds to 600 seconds.
+Hosted `message.submit` accepts the turn in Postgres. The transaction that saves it also sends `pg_notify` on the channel `physician_work` with `{scope, input_id}`, and nothing else. Postgres delivers a notification only when its transaction commits, so there is no accepted turn whose announcement failed. Try again, Resume, an accepted reply revision and a claim a stopping worker hands back are announced the same way ([`runtime/delivery.rs`](/crates/local-product/src/runtime/delivery.rs)).
 
-When a push cannot claim its turn, the worker answers from the saved conversation. It acknowledges a turn that is committed, stopped, replaced by a newer message, or running under another live claim. It answers 500 for a turn that is still waiting and for one that recovery gave up on. The second case is what lets Pub/Sub dead-letter the message: it counts each message's own deliveries, so a message the sweep republished under a new ID still reaches the dead-letter topic.
+`physician-worker` holds one `LISTEN` connection and starts announced work at once ([`pull.rs`](/crates/physician-sample/src/bin/physician-worker/pull.rs)). A notification sent while that connection is down is lost, so the worker also reads the due work every 10 seconds, and again each time it resubscribes: pending work whose retry delay has passed, and attempts whose lease ran out. A notification only names work. The claim in Postgres decides who runs it, so work heard twice, or by two workers, runs once, and work that is committed, stopped, replaced by a newer message or held under another live claim is not claimed. A worker runs at most four attempts at a time. Its HTTP listener serves `/health` and `/readyz` only; there is no route that delivers work.
 
 When a newer message steers an executing answer, running calls finish
 within their 300-second deadline before settlement releases the old claim.
@@ -190,9 +190,9 @@ The Send button and Cmd/Ctrl+Enter share one path. Acceptance removes only the s
 
 `GET /patient-workspaces/{id}` lists the signed-in physician's runtime chats for that workspace, newest activity first, each titled by its first physician message (cut to about 60 characters). Durable chats come from `Store::chats` over `physician_runtime_conversations`, scoped by practice, physician and workspace. Postgres orders them by latest activity, then chat id, before taking the newest 200, so a chat that just got a message lists however many older chats the workspace has. The page's `New conversation` button, in the Conversations sidebar and the empty Conversation region, opens a new `chat-…` id. The navigation owner keeps `?patient=` and `?chat=` aligned with the selected conversation, including sidebar selection and patient changes, and removes both when leaving the patient page. A chat is listed after a reload once its first message is accepted.
 
-The physician site sets `cpu_idle = false` so the Redis subscriber and the Postgres listener keep running between requests. The worker also sets `cpu_idle = false` and keeps one instance up, so it stays running between the push requests that deliver its turns. Duet has no Redis instance and no chat-turn topic.
+The physician site sets `cpu_idle = false` so the Redis subscriber and the Postgres listener keep running between requests. The worker also sets `cpu_idle = false` and keeps one instance up, because its listener, its poll and its lease renewals run outside any request. Duet has no Redis instance and no worker.
 
-`nix develop` provides `valkey` and the Pub/Sub emulator.
+`nix develop` provides `valkey` and Postgres, which is all the physician scale tests need.
 
 ## Skills in physician chat
 

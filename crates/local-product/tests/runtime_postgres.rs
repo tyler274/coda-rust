@@ -1,5 +1,6 @@
 //! Real Postgres proof. Run explicitly with PHYSICIAN_RUNTIME_TEST_DATABASE_URL.
 use engine::recipe::{Observer, Request};
+use local_product::runtime::delivery::Backoff;
 use local_product::runtime::{
     Accepted, AttemptStatus, Authority, Input, PhysicianHost, RuntimeError, Scope, Store,
     WorkStatus, async_trait, engine,
@@ -52,7 +53,8 @@ async fn hosted_attempt<A: Authority, P: engine::recipe::Provider>(
             host.store
                 .settle_chat_attempt(
                     &host.claim,
-                    engine::AttemptFailure::from_error(error, cancel)
+                    engine::AttemptFailure::from_error(error, cancel),
+                    Backoff::IMMEDIATE
                 )
                 .await
                 .unwrap(),
@@ -293,9 +295,13 @@ async fn successor_replaces_the_abandoned_draft_and_reuses_the_confirmed_read() 
         .await
         .is_err()
     );
-    s.settle_chat_attempt(&claim, harness::engine::AttemptFailure::Failed)
-        .await
-        .unwrap();
+    s.settle_chat_attempt(
+        &claim,
+        harness::engine::AttemptFailure::Failed,
+        Backoff::IMMEDIATE,
+    )
+    .await
+    .unwrap();
     drop(host);
     drop(s);
     // The browser and first worker can disappear; only the durable owner is read.
@@ -449,6 +455,7 @@ async fn a_read_recorded_after_a_steer_is_retained_by_the_successor() {
     s.settle_chat_attempt(
         &claim,
         engine::AttemptFailure::from_error(&error, &engine::Cancellation::default()),
+        Backoff::IMMEDIATE,
     )
     .await
     .unwrap();
@@ -571,6 +578,7 @@ async fn a_steered_run_that_reaches_its_limit_keeps_the_partial_answer() {
     s.settle_chat_attempt(
         &claim,
         engine::AttemptFailure::from_error(&error, &engine::Cancellation::default()),
+        Backoff::IMMEDIATE,
     )
     .await
     .unwrap();
@@ -648,9 +656,13 @@ async fn successor_publishes_retained_paid_answer_without_redispatch_or_duplicat
                 .await
                 .is_err()
         );
-        s.settle_chat_attempt(&claim, harness::engine::AttemptFailure::Failed)
-            .await
-            .unwrap();
+        s.settle_chat_attempt(
+            &claim,
+            harness::engine::AttemptFailure::Failed,
+            Backoff::IMMEDIATE,
+        )
+        .await
+        .unwrap();
         drop(s);
         let reopened = store().await;
         let successor = reopened.claim(&scope, 60).await.unwrap().unwrap();
@@ -756,9 +768,13 @@ async fn resume_after_stop_does_not_replay_an_unpublished_answer_as_visible() {
     s.stop_authorized(&scope, "stop-paid", vec![7; 32], &state.work)
         .await
         .unwrap();
-    s.settle_chat_attempt(&host.claim, engine::AttemptFailure::Interrupted)
-        .await
-        .unwrap();
+    s.settle_chat_attempt(
+        &host.claim,
+        engine::AttemptFailure::Interrupted,
+        Backoff::IMMEDIATE,
+    )
+    .await
+    .unwrap();
     let held = s.conversation(&scope).await.unwrap();
     s.resume_authorized(
         &scope,
@@ -766,6 +782,7 @@ async fn resume_after_stop_does_not_replay_an_unpublished_answer_as_visible() {
         vec![7; 32],
         &held.work,
         held.run().unwrap().id,
+        None,
     )
     .await
     .unwrap();
@@ -834,7 +851,11 @@ async fn exhausted_provider_credit_holds_chat_atomically_before_worker_settlemen
     // Lost COMMIT acknowledgment can replay the event without charging twice.
     reopened.persist(&claim, blocked).await.unwrap();
     reopened
-        .settle_chat_attempt(&claim, harness::engine::AttemptFailure::Failed)
+        .settle_chat_attempt(
+            &claim,
+            harness::engine::AttemptFailure::Failed,
+            Backoff::IMMEDIATE,
+        )
         .await
         .unwrap();
     assert!(reopened.claim(&scope, 60).await.unwrap().is_none());
@@ -854,7 +875,8 @@ async fn exhausted_provider_credit_holds_chat_atomically_before_worker_settlemen
                 "try-after-billing",
                 vec![7; 32],
                 &state.work,
-                state.run().unwrap().id
+                state.run().unwrap().id,
+                None
             )
             .await
             .unwrap(),
@@ -884,14 +906,16 @@ async fn durable_acceptance_dedup_tenants_successor_and_engine_commit() {
             &command,
             vec![0; 32],
             &accepted_skills,
-            &accepted_recipe
+            &accepted_recipe,
+            None
         ),
         s.accept_authorized(
             &scope,
             &command,
             vec![0; 32],
             &accepted_skills,
-            &accepted_recipe
+            &accepted_recipe,
+            None
         )
     );
     let outcomes = [a.unwrap(), b.unwrap()];
@@ -938,9 +962,13 @@ async fn durable_acceptance_dedup_tenants_successor_and_engine_commit() {
     );
     let first = s.claim(&scope, 60).await.unwrap().unwrap();
     assert!(s.claim(&scope, 60).await.unwrap().is_none());
-    s.settle_chat_attempt(&first, harness::engine::AttemptFailure::Interrupted)
-        .await
-        .unwrap();
+    s.settle_chat_attempt(
+        &first,
+        harness::engine::AttemptFailure::Interrupted,
+        Backoff::IMMEDIATE,
+    )
+    .await
+    .unwrap();
     drop(s);
     let s = store().await;
     assert_eq!(
@@ -988,9 +1016,13 @@ async fn durable_acceptance_dedup_tenants_successor_and_engine_commit() {
         Accepted::Duplicate
     );
     assert!(s.claim(&scope, 60).await.unwrap().is_none());
-    s.settle_chat_attempt(&successor, harness::engine::AttemptFailure::Interrupted)
-        .await
-        .unwrap();
+    s.settle_chat_attempt(
+        &successor,
+        harness::engine::AttemptFailure::Interrupted,
+        Backoff::IMMEDIATE,
+    )
+    .await
+    .unwrap();
     assert_eq!(
         s.conversation(&scope).await.unwrap().status,
         WorkStatus::Completed
@@ -1097,9 +1129,13 @@ async fn event_ack_stop_steering_and_late_candidate_fences() {
         s.claim(&scope, 60).await.unwrap().is_none(),
         "a stopped worker must settle before new work starts"
     );
-    s.settle_chat_attempt(&claim, engine::AttemptFailure::Interrupted)
-        .await
-        .unwrap();
+    s.settle_chat_attempt(
+        &claim,
+        engine::AttemptFailure::Interrupted,
+        Backoff::IMMEDIATE,
+    )
+    .await
+    .unwrap();
     let answering = s.claim(&scope, 60).await.unwrap().unwrap();
     assert_ne!(claim.attempt, answering.attempt);
     steer.key = "steer-again".into();
@@ -1166,8 +1202,6 @@ async fn event_ack_stop_steering_and_late_candidate_fences() {
         s.claim(&scope, 60).await.unwrap().is_none(),
         "a steered worker must drain before its successor starts"
     );
-    // The site's accept records the steer's wakeup as published.
-    s.dispatched(&delivery, 60).await.unwrap();
     let start = Scope {
         practice: scope.practice.clone(),
         physician: String::new(),
@@ -1182,9 +1216,12 @@ async fn event_ack_stop_steering_and_late_candidate_fences() {
     };
     assert!(
         ours(s.dispatch_due(100, Some(&start)).await.unwrap()).is_empty(),
-        "a published steer wakeup is not due again while its predecessor drains"
+        "a steer is not due while its predecessor drains"
     );
-    let settlement = s.settle_chat_attempt(&answering, reason).await.unwrap();
+    let settlement = s
+        .settle_chat_attempt(&answering, reason, Backoff::IMMEDIATE)
+        .await
+        .unwrap();
     assert_eq!(
         ours(s.dispatch_due(100, Some(&start)).await.unwrap()),
         vec![delivery],
@@ -1447,6 +1484,7 @@ async fn first_final_without_a_result_rearms_the_exact_admitted_recipe() {
             .settle_chat_attempt(
                 &first,
                 engine::AttemptFailure::from_error(&error, &engine::Cancellation::default()),
+                Backoff::IMMEDIATE,
             )
             .await
             .unwrap(),
@@ -1477,6 +1515,7 @@ async fn first_final_without_a_result_rearms_the_exact_admitted_recipe() {
             vec![7; 32],
             &held.work,
             held.run().unwrap().id,
+            None,
         )
         .await
         .unwrap();
@@ -1626,6 +1665,7 @@ async fn explicit_retry_keeps_fresh_allowance_and_original_input_across_two_clai
             vec![7; 32],
             &partial.work,
             partial.run().unwrap().id,
+            None,
         )
         .await
         .unwrap();
@@ -1653,7 +1693,11 @@ async fn explicit_retry_keeps_fresh_allowance_and_original_input_across_two_clai
         .is_err()
     );
     store
-        .settle_chat_attempt(&second, harness::engine::AttemptFailure::Failed)
+        .settle_chat_attempt(
+            &second,
+            harness::engine::AttemptFailure::Failed,
+            Backoff::IMMEDIATE,
+        )
         .await
         .unwrap();
     let third = store.claim(&scope, 60).await.unwrap().unwrap();
@@ -1691,7 +1735,11 @@ async fn fail_earlier_attempts(store: &Store, scope: &Scope) {
     for _ in 1..harness::engine::MAX_FAILED_ATTEMPTS {
         let claim = store.claim(scope, 60).await.unwrap().unwrap();
         store
-            .settle_chat_attempt(&claim, harness::engine::AttemptFailure::Failed)
+            .settle_chat_attempt(
+                &claim,
+                harness::engine::AttemptFailure::Failed,
+                Backoff::IMMEDIATE,
+            )
             .await
             .unwrap();
     }
@@ -1748,7 +1796,11 @@ async fn accepted_input_ids_survive_interruption_and_identical_message_text() {
         .is_err()
     );
     initial
-        .settle_chat_attempt(&host.claim, engine::AttemptFailure::Interrupted)
+        .settle_chat_attempt(
+            &host.claim,
+            engine::AttemptFailure::Interrupted,
+            Backoff::IMMEDIATE,
+        )
         .await
         .unwrap();
     drop(host);
@@ -2094,7 +2146,7 @@ async fn accept_with(
     input: &Input,
     recipe: &harness::engine::recipe::RequestRecipe,
 ) -> Result<Accepted, RuntimeError> {
-    s.accept_authorized(scope, input, vec![0; 32], &skills(), recipe)
+    s.accept_authorized(scope, input, vec![0; 32], &skills(), recipe, None)
         .await
 }
 

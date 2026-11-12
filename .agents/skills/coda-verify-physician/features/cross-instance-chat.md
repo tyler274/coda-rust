@@ -1,8 +1,9 @@
 # Cross-instance chat
 
 A physician sends a message through one site instance. The worker answers it, and a page
-held on another instance gets the reply live and still shows it after a reload. The turn
-travels as `{scope, input_id}` on Pub/Sub and the change notice goes out on the Valkey
+held on another instance gets the reply live and still shows it after a reload. The site
+accepts the turn into Postgres and announces `{scope, input_id}` there, the worker claims
+it, and the change notice goes out on the Valkey
 bus ([book](../../../../book/src/physician-site.md), `crates/physician-bus`,
 `crates/physician-sample/src/bin/physician-worker.rs`, `tests/fanout.rs`).
 

@@ -1,6 +1,6 @@
 ---
 name: coda-verify-physician
-description: "Verify the physician site's hosted-shape chat journeys on a disposable local scale stack: two physician-sample instances, physician-worker, Postgres, Valkey and the Pub/Sub emulator. Use for cross-instance chat, couldn't-finish/Try again, Valkey-restart resync, and duplicate/retry delivery."
+description: "Verify the physician site's hosted-shape chat journeys on a disposable local scale stack: two physician-sample instances, physician-worker, Postgres and Valkey. Use for cross-instance chat, couldn't-finish/Try again, Valkey-restart resync, and duplicate/retried work."
 ---
 
 # Verify the physician scale stack
@@ -9,7 +9,8 @@ See [Coda verification](../../../verification/README.md). The design
 lives in [book/src/physician-site.md#scaling-across-instances](../../../book/src/physician-site.md)
 and [book/src/gcp.md](../../../book/src/gcp.md); the feature map is
 [features/README.md](features/README.md). This recipe drives the real Rust binaries over
-their real HTTP, SSE and Pub/Sub push entry points. It never touches staging, Doppler,
+their real HTTP and SSE entry points, with the worker claiming accepted work from
+Postgres as it does when hosted. It never touches staging, Doppler,
 Google credentials or a model key: the worker answers with the fixed text `Noted.`.
 
 Every command runs inside the nix dev shell from the worktree root. If direnv is not
@@ -48,9 +49,23 @@ Run the matching [feature](features/README.md) when a change touches:
    scripts/physician-scale-stack.py --bin-dir target/stream-e/debug
    ```
 
+<<<<<<< ours
    The stack starts a loopback Responses stub. For a retry journey, set the number
    of upcoming provider responses that break the stream contract, each failing its attempt, in the file identified by `.worker.failures_file`
    in `stack.json` before sending the message. Run those journeys one at a time.
+||||||| base
+   One stack serves every feature. `--worker-fail-marker` makes a message containing
+   `[fail:K]` fail its first K attempts, counted from the attempts saved on that message (Retry `[fail:1]`, Try
+   again `[fail:5]`). Unmarked messages answer at once. `--worker-failures N` (the first N
+   provider calls of the process fail, whatever the message) is still available.
+=======
+   One stack serves every feature. `--worker-fail-marker` makes a message containing
+   `[fail:K]` fail its first K attempts, counted from the attempts saved on that message (Retry `[fail:1]`, Try
+   again `[fail:5]`). Unmarked messages answer at once. `--worker-failures N` (the first N
+   provider calls of the process fail, whatever the message) is still available.
+   The worker waits 1 s after a first failure and doubles it each time, so five failures
+   take about 15 s; `--worker-retry-seconds 10` gives the hosted 10 s start.
+>>>>>>> theirs
 
    Readiness is these lines, in order:
 
@@ -59,7 +74,7 @@ Run the matching [feature](features/README.md) when a change touches:
    Site B: http://127.0.0.1:<b> (port <b>)
    Worker: http://127.0.0.1:<w> (port <w>); stub
    Sites: http://127.0.0.1:<a> and http://127.0.0.1:<b>
-   Dependencies ready; emulator 127.0.0.1:<p>, Redis <r>, Postgres <g>. Logs: /tmp/...
+   Dependencies ready; Redis <r>, Postgres <g>. Logs: /tmp/...
    Evidence: <repo>/target/verification/runs/physician-scale-stack-<time>-<pid> ... Restart Valkey: kill -USR1 <pid>. Stop: kill -TERM <pid>
    ```
 
@@ -87,7 +102,14 @@ curl -fsS -o /dev/null -w "%{http_code} page\n" "$(jq -r .sites.a "$RUN/stack.js
 D=.agents/skills/coda-verify-physician/scripts/physician-drive.py
 $D subscribers                       # 3: site A, site B and the worker on physician:workspace-events:v1
 S=$($D sign-in --site a) && echo "${#S}"   # a bearer session; proof sign-in works
+<<<<<<< ours
 jq '.worker | {fixed_failures, failures_file}' "$RUN/stack.json"   # initial count and stub control file
+||||||| base
+jq '.worker | {fixed_failures, fail_marker}' "$RUN/stack.json"   # 0 and true
+=======
+jq '.worker | {fixed_failures, fail_marker, retry_seconds}' "$RUN/stack.json"   # 0, true and 1
+jq 'has("pubsub")' "$RUN/stack.json"   # false: no Pub/Sub process belongs to this stack
+>>>>>>> theirs
 ```
 
 `physician-drive.py` reads the newest `physician-scale-stack-*/stack.json` (or `--stack`)
@@ -126,9 +148,19 @@ and survives cleanup:
 
 | Artifact | Written by | Holds |
 | --- | --- | --- |
+<<<<<<< ours
 | `stack.json` | the stack, at start and on each Valkey restart and exit | pids, ports, URLs, `fixed_failures`, `failures_file`, `valkey_restarts`, `ready_at`, `stopped_at` |
 | `logs/{postgres,valkey,pubsub,worker,site-a,site-b}.log` | the stack, copied on exit | full process output |
 | `<feature>/send-<site>.json`, `snapshot-<site>.json`, `resume-<site>.json`, `watch-<site>-<event>.json`, `dead-letters.json` | `physician-drive.py --out` | the request key, HTTP status and full response body |
+||||||| base
+| `stack.json` | the stack, at start and on each Valkey restart and exit | pids, ports, URLs, `fixed_failures`, `fail_marker`, `valkey_restarts`, `ready_at`, `stopped_at` |
+| `logs/{postgres,valkey,pubsub,worker,site-a,site-b}.log` | the stack, copied on exit | full process output |
+| `<feature>/send-<site>.json`, `snapshot-<site>.json`, `resume-<site>.json`, `watch-<site>-<event>.json`, `dead-letters.json` | `physician-drive.py --out` | the request key, HTTP status and full response body |
+=======
+| `stack.json` | the stack, at start and on each Valkey restart and exit | pids, ports, URLs, `fixed_failures`, `fail_marker`, `retry_seconds`, `valkey_restarts`, `ready_at`, `stopped_at` |
+| `logs/{postgres,valkey,worker,site-a,site-b}.log` | the stack, copied on exit | full process output |
+| `<feature>/send-<site>.json`, `snapshot-<site>.json`, `resume-<site>.json`, `watch-<site>-<event>.json`, `announce.json` | `physician-drive.py --out` | the request key, HTTP status and full response body |
+>>>>>>> theirs
 | `load-numbers.json` | `--load-numbers` | see below |
 | `<feature>/*.png`, `*.aria.txt` | the browser driver | screenshot and accessibility snapshot |
 
@@ -167,33 +199,39 @@ Use a browser driver against `Site A` or `Site B` with a desktop viewport:
 ```bash
 kill -TERM "$(jq -r .pid "$RUN/stack.json")"     # or Ctrl-C in the stack's terminal
 jq .stopped_at "$RUN/stack.json"                  # set
-ls "$RUN/logs"                                    # six logs retained
-pgrep -af 'physician-sample|physician-worker|valkey-server|cloud-pubsub-emulator'   # nothing from this run
+ls "$RUN/logs"                                    # five logs retained
+pgrep -af 'physician-sample|physician-worker|valkey-server'   # nothing from this run
 ```
 
 The stack owns only its temporary directory and child process groups; stopping it
-removes the database, the Valkey and the emulator state. Keep `target/verification/runs/`.
+removes the database and the Valkey state. Keep `target/verification/runs/`.
 Do not kill processes that belong to another run.
 
 ## Helpers
 
 - [`scripts/physician-scale-stack.py`](../../../scripts/physician-scale-stack.py):
+<<<<<<< ours
   `--worker-failures N`, `--load-numbers`, `--idle-seconds`, `--evidence DIR`,
+||||||| base
+  `--worker-fail-marker`, `--worker-failures N`, `--load-numbers`, `--idle-seconds`, `--evidence DIR`,
+=======
+  `--worker-fail-marker`, `--worker-failures N`, `--worker-retry-seconds S`, `--load-numbers`, `--idle-seconds`, `--evidence DIR`,
+>>>>>>> theirs
   `--site-dir DIR`, `--check`, `--dependencies-only`, `-- <child command>`.
   `kill -USR1 <pid>` restarts Valkey on the same port.
-  The Gmail push-wake suite reuses the stack's emulator through `PUBSUB_EMULATOR_HOST`:
-  `scripts/physician-scale-stack.py --dependencies-only -- cargo test -p gmail --test push_wake -- --test-threads=1`.
 - [`scripts/physician-drive.py`](scripts/physician-drive.py) (executable):
   `sign-in`, `page-url`, `send`, `snapshot --wait-text/--wait-failed`, `resume [--run]`,
-  `watch --until <event>`, `dead-letters`, `restart-valkey`, `subscribers`.
+  `watch --until <event>`, `announce`, `restart-valkey`, `subscribers`.
 
 ## Coverage boundary
 
-This stack stands in for hosted Cloud Run, Memorystore and Pub/Sub. Push-token
-verification is off under `PUBSUB_EMULATOR_HOST`, the provider is the fixed text, and
-mail is proof delivery. Those remain unverified here and are proved only in staging per
+This stack stands in for hosted Cloud Run, Memorystore and Cloud SQL. The provider is
+the fixed text, mail is proof delivery, and the worker's retry delay starts at 1 s where
+hosted starts at 10 s. Those remain unverified here and are proved only in staging per
 [book/src/gcp.md](../../../book/src/gcp.md). The inline fallback for a site without
-`PHYSICIAN_CHAT_TOPIC` is not on this stack; `crates/physician-sample` tests cover it.
-Gmail push wake is proved only as a controlled emulator test against a Gmail stand-in
-(`crates/gmail/tests/push_wake.rs`).
+`PHYSICIAN_DURABLE_CHAT=1` is not on this stack; `crates/physician-sample` tests cover it.
+A worker stopped or killed mid-turn, and a worker whose listener is gone, are proved in
+`crates/physician-sample/tests/instance_loss.rs` and `tests/worker.rs`, not here.
+Gmail push wake is proved only as a controlled Pub/Sub emulator test against a Gmail
+stand-in (`crates/gmail/tests/push_wake.rs`), which starts its own emulator.
 It has no feature file: nothing a physician sees changes until the product's Gmail intake exists.

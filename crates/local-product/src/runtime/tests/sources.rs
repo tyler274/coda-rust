@@ -816,7 +816,11 @@ async fn retries_pin_the_newest_sources_and_duplicates_keep_the_original_pin() {
         1
     );
     store
-        .settle_revision_attempt(&first, harness::engine::AttemptFailure::Failed)
+        .settle_revision_attempt(
+            &first,
+            harness::engine::AttemptFailure::Failed,
+            Backoff::IMMEDIATE,
+        )
         .await
         .unwrap();
     let retry = store
@@ -853,7 +857,11 @@ async fn retained_model_context_requires_new_sources_after_a_no_dispatch_success
     let arrived = source(&scope, "lab-2", "r1", "Creatinine 2.4 (high)");
     store.record_source(&arrived).await.unwrap();
     store
-        .settle_revision_attempt(&first, harness::engine::AttemptFailure::Failed)
+        .settle_revision_attempt(
+            &first,
+            harness::engine::AttemptFailure::Failed,
+            Backoff::IMMEDIATE,
+        )
         .await
         .unwrap();
     let delivery = Delivery::reply_revision(scope.clone(), "first".into());
@@ -861,7 +869,11 @@ async fn retained_model_context_requires_new_sources_after_a_no_dispatch_success
     // Losing a successor before dispatch must not erase the earlier context
     // or its obligation to incorporate the newly pinned source.
     store
-        .settle_revision_attempt(&second, harness::engine::AttemptFailure::Failed)
+        .settle_revision_attempt(
+            &second,
+            harness::engine::AttemptFailure::Failed,
+            Backoff::IMMEDIATE,
+        )
         .await
         .unwrap();
     let third = store.claim_revision(&delivery, 60).await.unwrap().unwrap();
@@ -1052,7 +1064,11 @@ async fn currency_is_read_only_and_renewal_touches_only_the_current_revision_att
     let old = accepted_claim(&store, &scope, "lease").await;
     assert_eq!(
         store
-            .settle_revision_attempt(&old, engine::AttemptFailure::Interrupted)
+            .settle_revision_attempt(
+                &old,
+                engine::AttemptFailure::Interrupted,
+                Backoff::IMMEDIATE
+            )
             .await
             .unwrap(),
         delivery::AttemptSettlement::Applied
@@ -1117,7 +1133,7 @@ async fn currency_is_read_only_and_renewal_touches_only_the_current_revision_att
     );
     assert_eq!(
         store
-            .settle_revision_attempt(&old, engine::AttemptFailure::Failed)
+            .settle_revision_attempt(&old, engine::AttemptFailure::Failed, Backoff::IMMEDIATE)
             .await
             .unwrap(),
         delivery::AttemptSettlement::Superseded

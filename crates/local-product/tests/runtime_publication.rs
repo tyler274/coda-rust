@@ -99,6 +99,7 @@ async fn accepted(store: &Store, auth: &PostgresAuthStore) -> Scope {
             PostgresAuthStore::session_reference(&token),
             &local_product::physician_chat::PhysicianSkills::configured(None, false).unwrap(),
             &test_chat_recipe(),
+            None,
         )
         .await
         .unwrap();
@@ -305,6 +306,7 @@ async fn publication_wins_revocation_or_expires_while_holding_authority() {
                 PostgresAuthStore::session_reference(&token),
                 &local_product::physician_chat::PhysicianSkills::configured(None, false).unwrap(),
                 &test_chat_recipe(),
+                None,
             )
             .await
             .unwrap();

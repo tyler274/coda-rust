@@ -11,12 +11,11 @@ writes it there too. No credentials: proof sign-in for the synthetic account.
   snapshot  --session S --chat C [--site b] [--wait-text T | --wait-failed] [--timeout 90]
   resume    --session S --chat C [--site a]       Try again on the failed run
   watch     --session S [--site b] [--until EVENT] [--timeout 60]
-  dead-letters                                    pull the dead-letter subscription
+  announce  --chat C --key K                      tell listening workers of that input again
   restart-valkey                                  SIGUSR1 to the stack (stop, wait, start)
   subscribers                                     Valkey bus subscriber count
 """
 import argparse
-import base64
 import http.client
 import json
 import os
@@ -31,7 +30,7 @@ import uuid
 
 REPO = Path(__file__).resolve().parents[4]
 RUNS = REPO / "target" / "verification" / "runs"
-PROJECT = "coda-local-physician"
+WORK_CHANNEL = "physician_work"
 CHANNEL = "physician:workspace-events:v1"
 COULDNT_FINISH = "Coda couldn’t finish this response. Your message is saved."
 
@@ -101,9 +100,23 @@ def snapshot(stack, site, session, chat):
     return request("GET", url, bearer=session)
 
 
+<<<<<<< ours
 def resume_line(body):
+||||||| base
+def mechanical(body):
+=======
+def mechanical(body):
+    """The line of a turn that ended and can be resumed. A turn still running
+    also shows a mechanical line, with a stop target and nothing to resume."""
+>>>>>>> theirs
     for item in (body or {}).get("snapshot", {}).get("conversation", []):
+<<<<<<< ours
         if item.get("kind") == "mechanical" and "resume_target" in item:
+||||||| base
+        if item.get("kind") == "mechanical":
+=======
+        if item.get("kind") == "mechanical" and item.get("resume_target"):
+>>>>>>> theirs
             return item
     return None
 
@@ -143,7 +156,9 @@ def main():
     s = sub.add_parser("watch")
     s.add_argument("--site", default="b"); s.add_argument("--session", required=True)
     s.add_argument("--until", default="workspace_changed"); s.add_argument("--timeout", type=float, default=60)
-    sub.add_parser("dead-letters")
+    s = sub.add_parser("announce")
+    s.add_argument("--chat", required=True)
+    s.add_argument("--key", required=True, help="the accepted command's idempotency key")
     sub.add_parser("restart-valkey")
     sub.add_parser("subscribers")
     args = parser.parse_args()
@@ -213,14 +228,20 @@ def main():
             "site": args.site, "status": response.status, "until": args.until, "seen": seen,
             "seconds": round(time.monotonic() - started, 3), "frames": buffer})
         return 0 if seen else 1
-    if args.action == "dead-letters":
-        url = (f"http://{stack['pubsub_emulator_host']}/v1/projects/{PROJECT}/subscriptions/"
-               "physician-chat-turns-dead-letter:pull")
-        status, body = request("POST", url, {"maxMessages": 10, "returnImmediately": True})
-        messages = [json.loads(base64.b64decode(item["message"]["data"]))
-                    for item in (body or {}).get("receivedMessages", [])]
-        emit(args, "dead-letters", {"status": status, "messages": messages})
-        return 0
+    if args.action == "announce":
+        # The notification the accepting transaction sent, sent once more: a
+        # worker that hears of settled work must do nothing.
+        account = stack["account"]
+        delivery = {"scope": {"practice": account["practice"], "physician": account["physician"],
+                              "workspace": stack["workspace"], "chat": args.chat},
+                    "input_id": args.key}
+        sent = subprocess.run(
+            ["psql", stack["postgres"]["url"], "-v", "ON_ERROR_STOP=1", "-At",
+             "-v", f"channel={WORK_CHANNEL}", "-v", f"payload={json.dumps(delivery)}"],
+            input="select pg_notify(:'channel', :'payload');\n", capture_output=True, text=True)
+        emit(args, "announce", {"channel": WORK_CHANNEL, "delivery": delivery,
+                                "exit": sent.returncode, "stderr": sent.stderr.strip()})
+        return sent.returncode
     if args.action == "restart-valkey":
         os.kill(stack["pid"], signal.SIGUSR1)
         print(f"sent SIGUSR1 to stack pid {stack['pid']}; see the stack's output for the restart")

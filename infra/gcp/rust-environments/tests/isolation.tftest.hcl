@@ -412,7 +412,7 @@ run "physician_scale_gate_off" {
     error_message = "Without enable_physician_scale there is no worker, push identity or worker grant."
   }
   assert {
-    condition     = !contains([for env in google_cloud_run_v2_service.app["physician"].template[0].containers[0].env : env.name], "PHYSICIAN_CHAT_TOPIC") && length(google_secret_manager_secret_iam_binding.bootstrap_reader["physician-runtime"].members) == 1
+    condition     = !contains([for env in google_cloud_run_v2_service.app["physician"].template[0].containers[0].env : env.name], "PHYSICIAN_CHAT_TOPIC") && !contains([for env in google_cloud_run_v2_service.app["physician"].template[0].containers[0].env : env.name], "PHYSICIAN_DURABLE_CHAT") && length(google_secret_manager_secret_iam_binding.bootstrap_reader["physician-runtime"].members) == 1
     error_message = "Without the gate the site runs turns inline and only the site reads its Doppler slot."
   }
   assert {
@@ -707,6 +707,10 @@ run "physician_scale_active" {
   assert {
     condition     = contains([for env in google_cloud_run_v2_service.app["physician"].template[0].containers[0].env : env.name], "PHYSICIAN_CHAT_TOPIC")
     error_message = "The physician site publishes chat turns to the topic."
+  }
+  assert {
+    condition     = contains([for env in google_cloud_run_v2_service.app["physician"].template[0].containers[0].env : "${env.name}=${coalesce(env.value, "<secret>")}"], "PHYSICIAN_DURABLE_CHAT=1")
+    error_message = "The physician site accepts chat turns for the worker."
   }
   assert {
     condition     = length([for env in google_cloud_run_v2_service.app["duet"].template[0].containers[0].env : env.name if startswith(env.name, "PHYSICIAN_") || strcontains(lower(env.name), "redis") || strcontains(lower(env.name), "pubsub")]) == 0

@@ -1,49 +1,54 @@
-//! Push worker for accepted physician chat turns.
+//! Pull worker for accepted physician chat turns and reply revisions.
 //!
-//! Postgres owns the turn. Pub/Sub only wakes this process. The push body
-//! carries a scope and an input id, never clinical text, and logs stay that way.
-//! A duplicate or settled delivery is acknowledged without calling the model.
-//! Skill reads use the package saved with the work at acceptance.
+//! Postgres owns the work. The worker listens for the notification the
+//! accepting transaction sends and polls the due work, so a lost notification
+//! only delays a turn (`pull`). A delivery names a scope and an input id,
+//! never clinical text, and logs stay that way. Work that is settled or that
+//! another worker holds is not claimed, so the model is not called for it.
+//! A claim is a short lease that hosting keeps renewing while the attempt
+//! runs, and that the worker hands back when it is told to stop. The HTTP
+//! listener serves health and readiness only. Skill reads use the package
+//! saved with the work at acceptance.
 #![allow(
     clippy::map_err_ignore,
     reason = "converting to errors that keep their cause"
 )]
 
 use std::sync::Arc;
+use std::time::Duration;
 
 use axum::Json;
 use axum::Router;
-use axum::extract::{Request, State};
+use axum::extract::State;
 use axum::http::StatusCode;
-use axum::routing::{get, post};
-use base64::Engine;
+use axum::routing::get;
 use harness::engine::recipe::Provider;
-use harness::engine::{Cancellation, RunLimits};
+use harness::engine::{AttemptFailure, Cancellation, RunLimits};
 use harness::provider::ResponsesProvider;
-use local_product::runtime::delivery::{Delivery, DeliveryKind, DeliveryState};
+use local_product::runtime::delivery::{
+    AttemptSettlement, Backoff, Delivery, DeliveryKind, DeliveryState,
+};
 
 #[path = "physician-worker/attempt.rs"]
 mod attempt;
+#[path = "physician-worker/pull.rs"]
+mod pull;
 #[path = "physician-worker/revision.rs"]
 mod revision;
-use attempt::{Claimed, Failure, Outcome, Push, Tally};
-use local_product::runtime::{Claim, Conversation, PhysicianHost, Scope, Store};
+use attempt::{Claimed, Failure, Next, Outcome, Tally};
+use local_product::runtime::{Claim, Conversation, PhysicianHost, RuntimeError, Scope, Store};
 use physician_auth::PostgresAuthStore;
 use physician_bus::{Bus, Event};
 use physician_sample::durable::RuntimeAuthority;
 use physician_sample::hosting::{self, SimulationPractices, is_hosted};
 use serde_json::{Value, json};
 use telemetry::genai::{self, RunContext};
+use tokio::sync::watch;
 use tracing::Instrument;
 
-// A dead replica's work waits at most 540 seconds for its ownership to expire.
-// Hosting renews every fifth of that duration, independently of the run clock.
-const LEASE_SECONDS: i64 = 540;
 // A run that marks no step for 600 seconds has stopped moving. Hermes stops
 // renewing its session lease after the same 600 seconds without activity.
-const STALL: std::time::Duration = std::time::Duration::from_secs(600);
-// A Pub/Sub wake carries identities, not clinical payloads. Bound request buffering.
-const BODY_LIMIT: usize = 64 * 1024;
+const STALL: Duration = Duration::from_secs(600);
 
 #[tokio::main]
 async fn main() {
@@ -70,17 +75,24 @@ async fn run() -> Result<(), String> {
             .local_addr()
             .map_err(|_| "physician worker address unavailable".to_owned())?
     );
-    axum::serve(listener, router(worker))
-        .with_graceful_shutdown(shutdown())
-        .await
-        .map_err(|_| "physician worker stopped".to_owned())
+    let (stop, stopped) = watch::channel(false);
+    let work = tokio::spawn(pull::run(Arc::clone(&worker), stopped));
+    let served = axum::serve(listener, router(worker))
+        .with_graceful_shutdown(async move {
+            shutdown().await;
+            // The pull loop and every running attempt watch this.
+            stop.send_replace(true);
+        })
+        .await;
+    work.await
+        .map_err(|_| "physician worker pull loop ended abnormally".to_owned())?;
+    served.map_err(|_| "physician worker stopped".to_owned())
 }
 
 fn router(worker: Arc<Worker>) -> Router {
     Router::new()
         .route("/health", get(health))
         .route("/readyz", get(readyz))
-        .route("/pubsub/chat-turn", post(chat_turn))
         .layer(telemetry::http_layer())
         .with_state(worker)
 }
@@ -105,53 +117,52 @@ async fn readyz(State(worker): State<Arc<Worker>>) -> StatusCode {
     }
 }
 
-async fn chat_turn(State(worker): State<Arc<Worker>>, request: Request) -> StatusCode {
-    let header = request
-        .headers()
-        .get(axum::http::header::AUTHORIZATION)
-        .and_then(|value| value.to_str().ok())
-        .map(str::to_owned);
-    if let Err(status) = authorize_push(worker.verifier.as_ref(), header.as_deref()).await {
-        return status;
+/// Claims and runs the work `delivery` names, if it is this worker's to run.
+async fn run_delivery(worker: &Worker, delivery: &Delivery, stop: watch::Receiver<bool>) -> Next {
+    match delivery.kind {
+        DeliveryKind::ChatTurn => chat_turn(worker, delivery, stop).await,
+        DeliveryKind::ReplyRevision => revision::deliver(worker, delivery, stop).await,
     }
-    let Ok(bytes) = axum::body::to_bytes(request.into_body(), BODY_LIMIT).await else {
-        return StatusCode::BAD_REQUEST;
-    };
-    let Ok(push) = decode_push(&bytes) else {
-        return StatusCode::BAD_REQUEST;
-    };
-    // Decode and dispatch only after verifying the push identity. Revision
-    // scopes name reply work, never a chat conversation.
-    if push.delivery.kind == DeliveryKind::ReplyRevision {
-        return revision::deliver(&worker, &push).await;
-    }
-    let span = attempt::span(&push, CHAT_JOB);
-    chat_attempt(&worker, &push.delivery, &span)
-        .instrument(span.clone())
-        .await
 }
 
 const CHAT_JOB: &str = "physician_chat";
 
-/// One chat-turn delivery inside its `physician.worker.attempt` span.
-async fn chat_attempt(worker: &Worker, delivery: &Delivery, span: &tracing::Span) -> StatusCode {
-    let claim = match worker.store.claim_delivery(delivery, LEASE_SECONDS).await {
+async fn chat_turn(worker: &Worker, delivery: &Delivery, stop: watch::Receiver<bool>) -> Next {
+    let claim = match worker
+        .store
+        .claim_delivery(delivery, worker.pace.lease)
+        .await
+    {
         Ok(Some(claim)) => claim,
         Ok(None) => {
-            attempt::finish(span, CHAT_JOB, None, Outcome::Absent, None);
-            return absent_claim(worker, delivery).await;
+            absent_claim(worker, delivery).await;
+            return Next::Done;
         }
         Err(_) => {
+            let span = attempt::span(DeliveryKind::ChatTurn, CHAT_JOB, None);
             attempt::finish(
-                span,
+                &span,
                 CHAT_JOB,
                 None,
                 Outcome::ClaimError,
                 Some(Failure::Claim),
             );
-            return StatusCode::INTERNAL_SERVER_ERROR;
+            return Next::Done;
         }
     };
+    let span = attempt::span(DeliveryKind::ChatTurn, CHAT_JOB, claim.origin.as_ref());
+    chat_attempt(worker, claim, &span, stop)
+        .instrument(span.clone())
+        .await
+}
+
+/// One claimed chat turn inside its `physician.worker.attempt` span.
+async fn chat_attempt(
+    worker: &Worker,
+    claim: Claim,
+    span: &tracing::Span,
+    stop: watch::Receiver<bool>,
+) -> Next {
     let workspace_id = claim.scope.workspace.clone();
     let session_id = claim.scope.chat.clone();
     let conversation = worker.store.read(&claim.scope).await.ok().flatten();
@@ -208,7 +219,7 @@ async fn chat_attempt(worker: &Worker, delivery: &Delivery, span: &tracing::Span
             generation: &generation,
             failure: Failure::Rehearsed,
         };
-        let reason = harness::engine::AttemptFailure::Failed;
+        let reason = AttemptFailure::Failed;
         return settle_attempt(worker, &claim, workspace_id, reason, &attempt).await;
     }
     let provider = worker.model.provider(worker.quota.clone()).await;
@@ -219,16 +230,14 @@ async fn chat_attempt(worker: &Worker, delivery: &Delivery, span: &tracing::Span
         authority: worker.model.authority(worker.store.clone()),
     };
     let cancel = Cancellation::default();
-    // One provider per turn: concurrent pushes on this instance run side by
+    // One provider per turn: concurrent turns on this instance run side by
     // side instead of queueing behind one another's model call.
     let mut provider = match provider {
         Ok(provider) => provider,
         Err(error) => {
             genai::record_error(&generation, "physician chat provider unavailable");
-            let reason = harness::engine::AttemptFailure::from_error(
-                &harness::engine::Failure::Provider(error),
-                &cancel,
-            );
+            let reason =
+                AttemptFailure::from_error(&harness::engine::Failure::Provider(error), &cancel);
             let attempt = Settling {
                 span,
                 generation: &generation,
@@ -238,15 +247,20 @@ async fn chat_attempt(worker: &Worker, delivery: &Delivery, span: &tracing::Span
         }
     };
     let claimed = host.claim.clone();
-    let hosted = while_owned(
-        claimed.lease,
-        STALL,
-        &cancel,
-        || worker.store.renew_claim(&claimed),
-        host.run(&mut provider, RunLimits::default(), &cancel)
-            .instrument(generation.clone()),
-    )
-    .await;
+    let hosted = tokio::select! {
+        hosted = while_owned(
+            claimed.lease,
+            STALL,
+            &cancel,
+            || worker.store.renew_claim(&claimed),
+            host.run(&mut provider, RunLimits::default(), &cancel)
+                .instrument(generation.clone()),
+        ) => Some(hosted),
+        () = pull::stopping(stop) => None,
+    };
+    let Some(hosted) = hosted else {
+        return released(worker, &host.claim, span, &generation, &cancel).await;
+    };
     record_chat_usage(&worker.store, &host.claim, &generation).await;
     let result = match hosted {
         Hosted::Returned(result) => result,
@@ -257,7 +271,6 @@ async fn chat_attempt(worker: &Worker, delivery: &Delivery, span: &tracing::Span
             let output = message_text(&worker.store, &host.claim.scope, "assistant").await;
             genai::record_output(&generation, &output);
             drop(output);
-            // The turn is committed. Redelivery sees it settled and acks.
             announce(worker, workspace_id).await;
             attempt::finish(
                 span,
@@ -266,10 +279,10 @@ async fn chat_attempt(worker: &Worker, delivery: &Delivery, span: &tracing::Span
                 Outcome::Committed,
                 None,
             );
-            StatusCode::NO_CONTENT
+            Next::Done
         }
         Err(error) => {
-            let reason = harness::engine::AttemptFailure::from_error(&error, &cancel);
+            let reason = AttemptFailure::from_error(&error, &cancel);
             let attempt = Settling {
                 span,
                 generation: &generation,
@@ -278,6 +291,35 @@ async fn chat_attempt(worker: &Worker, delivery: &Delivery, span: &tracing::Span
             settle_attempt(worker, &host.claim, workspace_id, reason, &attempt).await
         }
     }
+}
+
+/// This worker is stopping: the attempt is cancelled and handed back as
+/// interrupted, which costs it nothing, so another worker runs it at once.
+/// A hand-back that could not be saved leaves the lease to run out.
+async fn released(
+    worker: &Worker,
+    claim: &Claim,
+    span: &tracing::Span,
+    generation: &tracing::Span,
+    cancel: &Cancellation,
+) -> Next {
+    cancel.cancel();
+    genai::record_error(generation, "physician worker stopping");
+    let saved = worker
+        .store
+        .settle_chat_attempt(claim, AttemptFailure::Interrupted, worker.pace.backoff)
+        .await;
+    if saved.is_err() {
+        tracing::warn!("physician worker claim not handed back; its lease will run out");
+    }
+    attempt::finish(
+        span,
+        CHAT_JOB,
+        Some(&claim.attempt),
+        Outcome::Released,
+        None,
+    );
+    Next::Done
 }
 
 /// Records the provider-reported usage of this attempt's retained receipts.
@@ -367,10 +409,10 @@ where
     }
 }
 
-/// A run hosting dropped settles nothing. Refusing the delivery is what a lost
-/// worker leaves: a redelivery finds the claim still live and acknowledges,
-/// and after the lease expires the recovery sweep republishes the input.
-fn lost(span: &tracing::Span, job: &'static str, attempt: &str) -> StatusCode {
+/// A run hosting dropped settles nothing. The claim is left to run out, as a
+/// lost worker leaves it: the next claim after the lease ends the attempt as
+/// abandoned.
+fn lost(span: &tracing::Span, job: &'static str, attempt: &str) -> Next {
     attempt::finish(
         span,
         job,
@@ -378,66 +420,72 @@ fn lost(span: &tracing::Span, job: &'static str, attempt: &str) -> StatusCode {
         Outcome::Retry,
         Some(Failure::Lost),
     );
-    StatusCode::INTERNAL_SERVER_ERROR
+    Next::Done
 }
 
 /// The spans and the primary failure class of an attempt being settled.
 struct Settling<'a> {
-    /// The delivery's `physician.worker.attempt` span.
+    /// The attempt's `physician.worker.attempt` span.
     span: &'a tracing::Span,
     /// The attempt's `gen_ai.generation` span.
     generation: &'a tracing::Span,
     failure: Failure,
 }
 
-/// Retain the shared failure classification, then announce the durable state.
-/// Actual failures refuse the delivery for broker retry or dead-letter handling;
-/// a reached limit acknowledges the delivery and stays held for explicit Resume.
+/// Retains the shared failure classification, then announces the durable
+/// state. A counted failure makes the work due again after the backoff, or
+/// ends it as failed at the last allowed attempt; a reached limit holds it
+/// for explicit Resume.
 async fn settle_attempt(
     worker: &Worker,
     claim: &Claim,
     workspace_id: String,
-    reason: harness::engine::AttemptFailure,
+    reason: AttemptFailure,
     attempt: &Settling<'_>,
-) -> StatusCode {
-    use local_product::runtime::delivery::AttemptSettlement;
-    let run_id = Some(claim.attempt.as_str());
-    let settlement = worker.store.settle_chat_attempt(claim, reason).await;
-    let status = match settlement {
-        Err(_) => {
-            attempt::retry_not_persisted(attempt.span, CHAT_JOB, &claim.attempt);
-            let failure = Some(attempt.failure);
-            attempt::finish(attempt.span, CHAT_JOB, run_id, Outcome::Retry, failure);
-            return StatusCode::INTERNAL_SERVER_ERROR;
-        }
-        Ok(AttemptSettlement::Applied) if reason.counts_as_failure() => {
-            genai::record_error(attempt.generation, "physician chat failed");
-            let failure = Some(attempt.failure);
-            attempt::finish(attempt.span, CHAT_JOB, run_id, Outcome::Retry, failure);
-            StatusCode::INTERNAL_SERVER_ERROR
-        }
-        // Superseded delivery cannot consume the successor's broker allowance.
-        Ok(AttemptSettlement::Applied | AttemptSettlement::Superseded) => {
-            attempt::finish(attempt.span, CHAT_JOB, run_id, Outcome::Settled, None);
-            StatusCode::NO_CONTENT
-        }
-    };
+) -> Next {
+    let saved = worker
+        .store
+        .settle_chat_attempt(claim, reason, worker.pace.backoff)
+        .await;
+    let ended = settled(claim, &saved, attempt);
     announce(worker, workspace_id).await;
-    status
+    ended
 }
 
-async fn absent_claim(worker: &Worker, delivery: &Delivery) -> StatusCode {
-    let state = match worker.store.delivery_state(delivery).await {
-        Ok(state) => state,
-        Err(_) => return StatusCode::INTERNAL_SERVER_ERROR,
+/// Records how a chat attempt's settlement ended and what the loop does next.
+fn settled(
+    claim: &Claim,
+    saved: &Result<AttemptSettlement, RuntimeError>,
+    attempt: &Settling<'_>,
+) -> Next {
+    let (outcome, next) = attempt::settled(attempt.span, CHAT_JOB, &claim.attempt, saved);
+    let failure = match outcome {
+        Outcome::Retry | Outcome::GaveUp => {
+            genai::record_error(attempt.generation, "physician chat failed");
+            Some(attempt.failure)
+        }
+        Outcome::Committed | Outcome::Settled | Outcome::Released | Outcome::ClaimError => None,
     };
-    if state == DeliveryState::Failed {
-        // This claim may itself have ended the turn: an exhausted lease is
-        // recorded as the last failure and leaves nothing to claim. Every
-        // redelivery of a failed turn repeats the notice; a refetch is cheap.
-        announce(worker, delivery.scope.workspace.clone()).await;
+    attempt::finish(
+        attempt.span,
+        CHAT_JOB,
+        Some(&claim.attempt),
+        outcome,
+        failure,
+    );
+    next
+}
+
+/// A delivery that had nothing to claim. The claim may itself have ended the
+/// work: an exhausted lease is recorded as the last failure and leaves
+/// nothing to run, so open pages are told to refetch. Hearing of failed work
+/// again repeats the notice; a refetch is cheap.
+async fn absent_claim(worker: &Worker, delivery: &Delivery) {
+    match worker.store.delivery_state(delivery).await {
+        Ok(DeliveryState::Failed) => announce(worker, delivery.scope.workspace.clone()).await,
+        Ok(DeliveryState::Settled | DeliveryState::Claimed | DeliveryState::Due) => {}
+        Err(_) => tracing::warn!("physician work state unreadable after an empty claim"),
     }
-    absent_status(state)
 }
 
 /// Tells every open page on this workspace to refetch. Sent after each
@@ -452,18 +500,6 @@ async fn announce(worker: &Worker, workspace_id: String) {
         .is_err()
     {
         tracing::warn!("physician workspace invalidation not published");
-    }
-}
-
-/// The broker response when this push could not claim its input. Settled,
-/// superseded and live-claimed work is acknowledged. Runnable work is not, so
-/// Pub/Sub redelivers it. Failed work is not either: Pub/Sub keeps counting
-/// this message's deliveries and forwards it to the dead-letter topic, even
-/// when the sweep republished the input under a new message ID.
-fn absent_status(state: DeliveryState) -> StatusCode {
-    match state {
-        DeliveryState::Settled | DeliveryState::Claimed => StatusCode::NO_CONTENT,
-        DeliveryState::Due | DeliveryState::Failed => StatusCode::INTERNAL_SERVER_ERROR,
     }
 }
 
@@ -488,8 +524,8 @@ fn last_text(conversation: &Conversation, role: &str) -> String {
 }
 
 /// Attempts saved before this claim on the same input. Try again keeps the
-/// input revision, so the count spans redeliveries, the dead letter, Try again
-/// and worker restarts; a new message starts a new revision at zero.
+/// input revision, so the count spans retries, Try again and worker
+/// restarts; a new message starts a new revision at zero.
 fn earlier_attempts(conversation: &Conversation, claim: &Claim) -> u32 {
     let count = conversation
         .attempts
@@ -499,47 +535,117 @@ fn earlier_attempts(conversation: &Conversation, claim: &Claim) -> u32 {
     u32::try_from(count).unwrap_or(u32::MAX)
 }
 
-/// Decodes a Pub/Sub push body. Push delivers publisher attributes (where
-/// the trace context travels) in the JSON body, not as HTTP headers.
-fn decode_push(bytes: &[u8]) -> Result<Push, ()> {
-    let envelope: Value = serde_json::from_slice(bytes).map_err(|_| ())?;
-    let message = envelope.get("message").ok_or(())?;
-    let data = message.get("data").and_then(Value::as_str).ok_or(())?;
-    // Pub/Sub sends both messageId and message_id. deliveryAttempt only
-    // shapes telemetry: a failed turn is never acked, including the fifth.
-    let message_id = message
-        .get("messageId")
-        .and_then(Value::as_str)
-        .or_else(|| message.get("message_id").and_then(Value::as_str))
-        .filter(|id| !id.is_empty())
-        .ok_or(())?
-        .to_owned();
-    let raw = base64::engine::general_purpose::STANDARD
-        .decode(data.trim())
-        .map_err(|_| ())?;
-    let delivery: Delivery = serde_json::from_slice(&raw).map_err(|_| ())?;
-    // Non-string attribute values are not Pub/Sub attributes; skip them.
-    let attributes = message
-        .get("attributes")
-        .and_then(Value::as_object)
-        .map(|attributes| {
-            attributes
-                .iter()
-                .filter_map(|(key, value)| Some((key.clone(), value.as_str()?.to_owned())))
-                .collect()
-        })
-        .unwrap_or_default();
-    let delivery_attempt = envelope
-        .get("deliveryAttempt")
-        .or_else(|| envelope.get("delivery_attempt"))
-        .and_then(Value::as_u64)
-        .and_then(|attempt| u32::try_from(attempt).ok());
-    Ok(Push {
-        delivery,
-        message_id,
-        attributes,
-        delivery_attempt,
-    })
+/// How this worker paces its work.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+struct Pace {
+    /// Time between reads of the due work.
+    poll: Duration,
+    /// Seconds a claim lasts unless renewed. A worker that dies leaves its
+    /// turn to another worker within this long.
+    lease: i64,
+    /// Attempts this process runs at once.
+    concurrency: usize,
+    /// The wait before failed work is due again.
+    backoff: Backoff,
+}
+
+impl Pace {
+    /// Hosted pacing: the poll bounds how late a lost notification is found.
+    /// Attempts take a connection only for each statement, so four leave the
+    /// store's eight-connection pool room for the listener and renewals.
+    const HOSTED: Self = Self {
+        poll: Duration::from_secs(10),
+        lease: 60,
+        concurrency: 4,
+        backoff: Backoff::HOSTED,
+    };
+
+    /// [`Self::HOSTED`], or the non-hosted proof values a test names to see
+    /// recovery and retries without waiting out hosted time.
+    fn from_env(get: &impl Fn(&str) -> Option<String>, hosted: bool) -> Result<Self, PaceError> {
+        let mut pace = Self::HOSTED;
+        let proof = |key: &'static str| match configured(get, key) {
+            Some(_) if hosted => Err(PaceError::Hosted { key }),
+            Some(value) => value
+                .parse::<u32>()
+                .map(Some)
+                .map_err(|source| PaceError::NotWhole { key, source }),
+            None => Ok(None),
+        };
+        let outside = |key, low, high| PaceError::OutOfRange { key, low, high };
+        if let Some(millis) = proof("PHYSICIAN_WORKER_POLL_MS")? {
+            if millis == 0 {
+                return Err(PaceError::Zero {
+                    key: "PHYSICIAN_WORKER_POLL_MS",
+                });
+            }
+            pace.poll = Duration::from_millis(millis.into());
+        }
+        if let Some(seconds) = proof("PHYSICIAN_WORKER_LEASE_SECONDS")? {
+            if !(1..=600).contains(&seconds) {
+                return Err(outside("PHYSICIAN_WORKER_LEASE_SECONDS", 1, 600));
+            }
+            pace.lease = seconds.into();
+        }
+        if let Some(first) = proof("PHYSICIAN_WORKER_RETRY_SECONDS")? {
+            pace.backoff = Backoff::new(first.into(), 600).ok_or(outside(
+                "PHYSICIAN_WORKER_RETRY_SECONDS",
+                0,
+                600,
+            ))?;
+        }
+        if let Some(value) = configured(get, "PHYSICIAN_WORKER_CONCURRENCY") {
+            let key = "PHYSICIAN_WORKER_CONCURRENCY";
+            let count = value
+                .parse::<usize>()
+                .map_err(|source| PaceError::NotWhole { key, source })?;
+            if !(1..=64).contains(&count) {
+                return Err(outside(key, 1, 64));
+            }
+            pace.concurrency = count;
+        }
+        Ok(pace)
+    }
+}
+
+/// Why a pacing setting was refused.
+#[derive(Debug, PartialEq, Eq)]
+enum PaceError {
+    /// A proof-only setting given to a hosted worker.
+    Hosted { key: &'static str },
+    /// A setting that is not a whole number.
+    NotWhole {
+        key: &'static str,
+        source: std::num::ParseIntError,
+    },
+    /// Zero for a setting that must be at least 1.
+    Zero { key: &'static str },
+    /// A whole number outside the setting's range.
+    OutOfRange {
+        key: &'static str,
+        low: usize,
+        high: usize,
+    },
+}
+
+impl std::fmt::Display for PaceError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Hosted { key } => write!(f, "{key} is refused in hosted execution"),
+            Self::NotWhole { key, .. } => write!(f, "{key} must be a whole number"),
+            Self::Zero { key } => write!(f, "{key} must be at least 1"),
+            Self::OutOfRange { key, low, high } => write!(f, "{key} must be {low} to {high}"),
+        }
+    }
+}
+
+impl std::error::Error for PaceError {
+    fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
+        match self {
+            Self::NotWhole { source, .. } => Some(source),
+            Self::Hosted { .. } | Self::Zero { .. } | Self::OutOfRange { .. } => None,
+        }
+    }
 }
 
 struct Worker {
@@ -549,7 +655,7 @@ struct Worker {
     model: ModelSource,
     /// One durable provider cooldown for this product across worker replicas.
     quota: Arc<dyn harness::provider::QuotaGate>,
-    verifier: Option<google_cloud_auth::credentials::idtoken::verifier::Verifier>,
+    pace: Pace,
     /// `Simulation` for every turn when the model is the local Responses stub.
     origin: genai::Origin,
     /// Practices whose turns are rehearsal traffic in telemetry.
@@ -626,7 +732,7 @@ impl Worker {
                 }
             }
         };
-        let verifier = push_verifier(&get, hosted)?;
+        let pace = Pace::from_env(&get, hosted).map_err(|error| error.to_string())?;
         let owned = role_environment(&get);
         let environment: Vec<_> = owned
             .iter()
@@ -651,79 +757,11 @@ impl Worker {
             bus,
             model,
             quota,
-            verifier,
+            pace,
             origin,
             simulation_practices,
         })
     }
-}
-
-/// The push route's authentication gate runs before decoding or claiming work.
-async fn authorize_push(
-    verifier: Option<&google_cloud_auth::credentials::idtoken::verifier::Verifier>,
-    header: Option<&str>,
-) -> Result<(), StatusCode> {
-    let Some(verifier) = verifier else {
-        return Ok(());
-    };
-    let token = header
-        .and_then(|value| value.strip_prefix("Bearer "))
-        .map(str::trim)
-        .filter(|token| !token.is_empty())
-        .ok_or(StatusCode::UNAUTHORIZED)?;
-    verifier
-        .verify(token)
-        .await
-        .map(|_| ())
-        .map_err(|_| StatusCode::UNAUTHORIZED)
-}
-
-fn push_verifier(
-    get: &impl Fn(&str) -> Option<String>,
-    hosted: bool,
-) -> Result<Option<google_cloud_auth::credentials::idtoken::verifier::Verifier>, String> {
-    let audience = configured(get, "PHYSICIAN_WORKER_AUDIENCE");
-    let email = configured(get, "PHYSICIAN_PUSH_SERVICE_ACCOUNT");
-    if hosted {
-        let audience =
-            audience.ok_or("hosted physician worker requires PHYSICIAN_WORKER_AUDIENCE")?;
-        let email =
-            email.ok_or("hosted physician worker requires PHYSICIAN_PUSH_SERVICE_ACCOUNT")?;
-        return Ok(Some(identity_verifier(audience, email).build()));
-    }
-    if configured(get, "PUBSUB_EMULATOR_HOST").is_some() {
-        // The emulator sends no token, so the worker verifies none. That is
-        // safe only when no one but this machine can reach the listener.
-        let address = listen_addr(get);
-        if !is_loopback_listener(&address) {
-            return Err(format!(
-                "PUBSUB_EMULATOR_HOST disables push verification, so the worker must listen on loopback; {address} is not"
-            ));
-        }
-        return Ok(None);
-    }
-    match (audience, email) {
-        (Some(audience), Some(email)) => Ok(Some(identity_verifier(audience, email).build())),
-        _ => Err(
-            "physician worker requires PHYSICIAN_WORKER_AUDIENCE and PHYSICIAN_PUSH_SERVICE_ACCOUNT, or PUBSUB_EMULATOR_HOST"
-                .into(),
-        ),
-    }
-}
-
-fn identity_verifier(
-    audience: String,
-    email: String,
-) -> google_cloud_auth::credentials::idtoken::verifier::Builder {
-    google_cloud_auth::credentials::idtoken::verifier::Builder::new([audience]).with_email(email)
-}
-
-/// Whether `address` binds only loopback. A name, a wildcard or any other
-/// address is refused: it is checked as written, not after resolution.
-fn is_loopback_listener(address: &str) -> bool {
-    address
-        .parse::<std::net::SocketAddr>()
-        .is_ok_and(|socket| socket.ip().is_loopback())
 }
 
 fn listen_addr(get: &impl Fn(&str) -> Option<String>) -> String {
@@ -901,11 +939,9 @@ async fn shutdown() {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use axum::http::StatusCode;
-    use base64::Engine;
-    use harness::engine::recipe::Provider;
-    use serde_json::json;
-    use std::time::Duration;
+
+    /// A lease long enough that its renewal beat is slower than a stall check.
+    const LEASE_SECONDS: i64 = 540;
 
     pub(super) struct WaitingGate;
 
@@ -1264,230 +1300,70 @@ mod tests {
         );
     }
 
-    #[tokio::test]
-    async fn signed_push_tokens_enforce_audience_issuer_email_and_expiry() {
-        use jsonwebtoken::{Algorithm, EncodingKey, Header};
-        // This publicly committed key has no authority outside this test's
-        // loopback JWKS endpoint. Production always uses Google's endpoint.
-        let key = EncodingKey::from_rsa_pem(include_bytes!(
-            "../../tests/fixtures/pubsub-test-only-key.pem"
-        ))
-        .unwrap();
-        let jwks: Value = serde_json::from_str(include_str!(
-            "../../tests/fixtures/pubsub-test-only-jwks.json"
-        ))
-        .unwrap();
-        let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
-        let endpoint = format!("http://{}/certs", listener.local_addr().unwrap());
-        let server = tokio::spawn(async move {
-            axum::serve(
-                listener,
-                Router::new().route(
-                    "/certs",
-                    get(move || {
-                        let jwks = jwks.clone();
-                        async move { Json(jwks) }
-                    }),
-                ),
-            )
-            .await
-            .unwrap();
-        });
-        let audience = "https://physician-worker.example.test";
-        let email = "physician-push@example.test";
-        let verifier = identity_verifier(audience.into(), email.into())
-            .with_jwks_url(endpoint)
-            .build();
-        let now = std::time::SystemTime::now()
-            .duration_since(std::time::UNIX_EPOCH)
-            .unwrap()
-            .as_secs();
-        let claims = json!({"iss":"https://accounts.google.com","aud":audience,
-            "sub":"synthetic-service-account","email":email,"email_verified":true,
-            "iat":now-60,"exp":now+600});
-        let mut header = Header::new(Algorithm::RS256);
-        header.kid = Some("synthetic-pubsub-proof".into());
-        let token = |claims: &Value| {
-            format!(
-                "Bearer {}",
-                jsonwebtoken::encode(&header, claims, &key).unwrap()
-            )
-        };
-        // A valid signed control proves the negative cases are not merely
-        // failing key retrieval, signature verification, or token parsing.
-        assert_eq!(
-            authorize_push(Some(&verifier), Some(&token(&claims))).await,
-            Ok(())
-        );
-        for (field, value) in [
-            ("aud", json!("https://another-worker.example.test")),
-            ("iss", json!("https://untrusted-issuer.example.test")),
-            ("email", json!("another-account@example.test")),
-            ("email_verified", json!(false)),
-            ("exp", json!(now - 60)),
+    #[test]
+    fn pace_is_hosted_by_default_and_proof_values_are_refused_when_hosted() {
+        let none = |_: &str| None;
+        assert_eq!(Pace::from_env(&none, true), Ok(Pace::HOSTED));
+        assert_eq!(Pace::from_env(&none, false), Ok(Pace::HOSTED));
+        for key in [
+            "PHYSICIAN_WORKER_POLL_MS",
+            "PHYSICIAN_WORKER_LEASE_SECONDS",
+            "PHYSICIAN_WORKER_RETRY_SECONDS",
         ] {
-            let mut invalid = claims.clone();
-            invalid[field] = value;
-            assert_eq!(
-                authorize_push(Some(&verifier), Some(&token(&invalid))).await,
-                Err(StatusCode::UNAUTHORIZED),
-                "invalid {field} must be refused before work is claimed"
-            );
+            let set = |name: &str| (name == key).then(|| "1".to_owned());
+            assert_eq!(Pace::from_env(&set, true), Err(PaceError::Hosted { key }));
+            let invalid = |name: &str| (name == key).then(|| "soon".to_owned());
+            assert!(Pace::from_env(&invalid, false).is_err(), "{key}");
         }
-        assert_eq!(
-            authorize_push(Some(&verifier), None).await,
-            Err(StatusCode::UNAUTHORIZED)
-        );
-        server.abort();
-    }
-
-    #[test]
-    fn settled_and_live_claims_ack_while_due_and_failed_work_does_not() {
-        assert_eq!(
-            absent_status(DeliveryState::Settled),
-            StatusCode::NO_CONTENT
-        );
-        assert_eq!(
-            absent_status(DeliveryState::Claimed),
-            StatusCode::NO_CONTENT
-        );
-        // Not acknowledging failed work is what lets Pub/Sub dead-letter it.
-        for state in [DeliveryState::Due, DeliveryState::Failed] {
-            assert_eq!(absent_status(state), StatusCode::INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    #[test]
-    fn push_body_decodes_standard_base64_delivery_without_requiring_one_id_field() {
-        let delivery = r#"{"kind":"chat_turn","scope":{"practice":"p","physician":"d","workspace":"w","chat":"c"},"input_id":"k"}"#;
-        let data = base64::engine::general_purpose::STANDARD.encode(delivery);
-        let body = json!({
-            "message": {"data": data, "messageId": "m1", "message_id": "m1"},
-            "deliveryAttempt": 2
-        });
-        let push = decode_push(body.to_string().as_bytes()).unwrap();
-        assert_eq!(push.message_id, "m1");
-        assert_eq!(push.delivery.input_id, "k");
-        assert_eq!(push.delivery.scope.workspace, "w");
-        assert_eq!(push.delivery.kind, DeliveryKind::ChatTurn);
-        assert_eq!(push.delivery_attempt, Some(2));
-        assert!(push.attributes.is_empty());
-        let mut revision = push.delivery;
-        revision.kind = DeliveryKind::ReplyRevision;
-        let data = base64::engine::general_purpose::STANDARD
-            .encode(serde_json::to_vec(&revision).unwrap());
-        let body = json!({"message": {"data": data, "message_id": "revision-message"}});
-        let push = decode_push(body.to_string().as_bytes()).unwrap();
-        assert_eq!(push.delivery.kind, DeliveryKind::ReplyRevision);
-        assert_eq!(push.delivery.input_id, "k");
-        assert_eq!(push.message_id, "revision-message");
-        assert_eq!(push.delivery_attempt, None);
-        assert!(decode_push(b"{}").is_err());
-        assert!(decode_push(br#"{"message":{"data":"not base64","messageId":"m"}}"#).is_err());
-        let bad = base64::engine::general_purpose::STANDARD.encode("{}");
-        let bad_body = json!({"message": {"data": bad, "messageId": "m"}});
-        assert!(decode_push(bad_body.to_string().as_bytes()).is_err());
-    }
-
-    #[test]
-    fn push_body_carries_trace_attributes_and_the_delivery_attempt() {
-        let delivery = r#"{"kind":"chat_turn","scope":{"practice":"p","physician":"d","workspace":"w","chat":"c"},"input_id":"k"}"#;
-        let data = base64::engine::general_purpose::STANDARD.encode(delivery);
-        let traceparent = "00-0af7651916cd43dd8448eb211c80319c-b7ad6b7169203331-01";
-        let body = json!({
-            "message": {
-                "data": data,
-                "messageId": "m1",
-                "attributes": {"traceparent": traceparent, "tracestate": "dd=s:1", "ignored": 7}
-            },
-            "subscription": "projects/p/subscriptions/s",
-            "deliveryAttempt": 3
-        });
-        let push = decode_push(body.to_string().as_bytes()).unwrap();
-        assert_eq!(push.delivery_attempt, Some(3));
-        assert_eq!(
-            push.attributes.get("traceparent").map(String::as_str),
-            Some(traceparent)
-        );
-        assert_eq!(
-            push.attributes.get("tracestate").map(String::as_str),
-            Some("dd=s:1")
-        );
-        // Non-string values are not Pub/Sub attributes.
-        assert!(!push.attributes.contains_key("ignored"));
-        let remote = telemetry::propagation::remote_context(&push.attributes).unwrap();
-        // A third delivery links to the publisher instead of continuing it.
-        assert_eq!(
-            attempt::relation(true, push.delivery_attempt),
-            telemetry::propagation::Relation::Link
-        );
-        assert!(remote.is_remote());
-        // An absent attempt count does not establish first delivery, and
-        // attributes may be absent entirely.
-        let body = json!({"message": {"data": data, "messageId": "m2", "attributes": null}});
-        let push = decode_push(body.to_string().as_bytes()).unwrap();
-        assert!(push.attributes.is_empty());
-        assert_eq!(push.delivery_attempt, None);
-    }
-
-    #[test]
-    fn hosted_worker_refuses_local_provider_and_local_worker_requires_verified_push() {
-        let get = |name: &str| (name == "PHYSICIAN_RESPONSES_STUB_PORT").then(|| "8080".into());
-        let hosted = |name: &str| {
-            if name == "K_SERVICE" {
-                Some("physician-worker".into())
-            } else {
-                get(name)
-            }
+        let proof = |name: &str| match name {
+            "PHYSICIAN_WORKER_POLL_MS" => Some("250".to_owned()),
+            "PHYSICIAN_WORKER_LEASE_SECONDS" => Some("3".to_owned()),
+            "PHYSICIAN_WORKER_RETRY_SECONDS" => Some("0".to_owned()),
+            "PHYSICIAN_WORKER_CONCURRENCY" => Some("2".to_owned()),
+            _ => None,
         };
-        assert!(
-            block(Worker::from_env(hosted))
-                .err()
-                .unwrap()
-                .contains("public Responses endpoint")
+        assert_eq!(
+            Pace::from_env(&proof, false),
+            Ok(Pace {
+                poll: Duration::from_millis(250),
+                lease: 3,
+                concurrency: 2,
+                backoff: Backoff::new(0, 600).unwrap(),
+            })
         );
-        assert!(
-            block(Worker::from_env(get))
-                .err()
-                .unwrap()
-                .contains("PUBSUB_EMULATOR_HOST")
-        );
+        // Concurrency is an operating value, so hosted execution takes it.
+        let hosted = |name: &str| (name == "PHYSICIAN_WORKER_CONCURRENCY").then(|| "16".to_owned());
+        assert_eq!(Pace::from_env(&hosted, true).map(|p| p.concurrency), Ok(16));
+        for bad in ["0", "65", "many"] {
+            let set = |name: &str| (name == "PHYSICIAN_WORKER_CONCURRENCY").then(|| bad.to_owned());
+            assert!(Pace::from_env(&set, true).is_err(), "{bad}");
+        }
+        for (key, bad) in [
+            ("PHYSICIAN_WORKER_POLL_MS", "0"),
+            ("PHYSICIAN_WORKER_LEASE_SECONDS", "0"),
+            ("PHYSICIAN_WORKER_LEASE_SECONDS", "601"),
+            ("PHYSICIAN_WORKER_RETRY_SECONDS", "601"),
+        ] {
+            let set = |name: &str| (name == key).then(|| bad.to_owned());
+            assert!(Pace::from_env(&set, false).is_err(), "{key}={bad}");
+        }
     }
 
     #[test]
-    fn emulator_bypass_requires_a_loopback_listener() {
-        let emulator = |listen: Option<&'static str>, port: Option<&'static str>| {
+    fn hosted_worker_refuses_local_provider_and_proof_pacing() {
+        let hosted = |extra: &'static str| {
             move |name: &str| match name {
-                "PUBSUB_EMULATOR_HOST" => Some("127.0.0.1:8085".to_owned()),
-                "PHYSICIAN_WORKER_LISTEN_ADDR" => listen.map(str::to_owned),
-                "PORT" => port.map(str::to_owned),
+                "K_SERVICE" => Some("physician-worker".into()),
+                "PHYSICIAN_RESPONSES_STUB_PORT" if extra == "stub" => Some("8080".into()),
+                "PHYSICIAN_WORKER_POLL_MS" if extra == "pace" => Some("250".into()),
+                "CODA_ALLOW_MODEL_CALLS" => Some("1".into()),
+                "OPENAI_API_KEY" => Some("synthetic-key".into()),
                 _ => None,
             }
         };
-        // The default and explicit loopback listeners keep the bypass.
-        for (listen, port) in [
-            (None, None),
-            (Some("127.0.0.1:8791"), None),
-            (Some("[::1]:8791"), None),
-            (Some("127.0.0.1:8791"), Some("8080")),
-        ] {
-            let verifier = push_verifier(&emulator(listen, port), false);
-            assert!(matches!(verifier, Ok(None)), "{listen:?} {port:?}");
-        }
-        // PORT alone binds every interface, as do wildcards and named or
-        // external listeners. Each refuses to start without verification.
-        for (listen, port) in [
-            (None, Some("8080")),
-            (Some("0.0.0.0:8791"), None),
-            (Some("[::]:8791"), None),
-            (Some("10.0.0.5:8791"), None),
-            (Some("localhost:8791"), None),
-        ] {
-            match push_verifier(&emulator(listen, port), false) {
-                Err(error) => assert!(error.contains("loopback"), "{error}"),
-                Ok(_) => panic!("{listen:?} {port:?} must refuse the emulator bypass"),
-            }
-        }
+        let refusal = |extra| block(Worker::from_env(hosted(extra))).err().unwrap();
+        assert!(refusal("stub").contains("public Responses endpoint"));
+        assert!(refusal("pace").contains("PHYSICIAN_WORKER_POLL_MS"));
     }
 
     fn block<T>(future: impl std::future::Future<Output = T>) -> T {
