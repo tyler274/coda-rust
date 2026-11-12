@@ -1,6 +1,6 @@
 # Chords
 
-This is what we're building for physicians: what Chords is, why it exists, and how it should behave. It describes the product as we intend it today. Open questions are at the end, and git keeps the history.
+This is what we're building for physicians: what Chords is, why it exists, and how it should behave. It describes the product as we intend it today. Git keeps the history.
 
 ## What Chords is
 
@@ -37,6 +37,8 @@ Coda's shared principles (README.md) govern this spec. These are the ones specif
 ## The concepts
 
 **Coda.** The team of agents. It investigates, synthesizes and recommends instead of pushing routine judgment back to the physician.
+
+**Roster.** The practice's patients, as its EHR lists them. A patient with a live Duet connection is active, and Coda works on active patients first. A patient in the EHR with no connection stays on the roster, to the side, as not active. How the first practice's roster is filled and kept current is not decided yet.
 
 **Today.** The physician's to-do list. It shows the most salient things: what needs their attention, what's urgent, what's wrong. It is one flat list across patients, one row per thing, each naming its patient, ordered by urgency (now, then today) and then by how long it has waited. Coda decides what goes on Today, what goes to Updates and what stays on the patient page. Three things are fixed regardless of that judgment: only people with access see a patient's item, nothing broken, behind or unhandled is silent to someone who can act, and nothing reaches a patient without the physician's approval.
 
@@ -200,7 +202,7 @@ Physicians sign in only through Chords, with an emailed link and no password or 
 
 Inside the workspace:
 
-1. Which patients a physician may access, and whether a practice has roles, are open ([Q2](#open-questions)). Everything here follows what it decides.
+1. Which patients a physician may access, and whether a practice has roles, are not decided yet. Everything here follows that decision.
 2. When a physician loses access to a patient, that patient's screens close at once and anything that physician personally started stops; practice-owned work continues.
 3. Every list across patients reads within the physician's access. A list that couldn't check a patient skips only that patient and says it may be missing someone.
 4. Spruce conversations show only for patients the physician may access.
@@ -293,7 +295,7 @@ Everything Coda reads in the MVP is read only.
 
 - **The practice's EHR.** No EHR is chosen in advance. Choose sources based on the first practice's needs, available access, and what the adapters can read.
 - **For practices using Hint**, the planned adapter uses Coda's Chrome extension in the practice's own Chrome. The physician signs into Hint as usual, and the extension reads the chart's structured data in the background under that sign-in. It downloads nothing, never sees the physician's password or MFA codes, and keeps Hint's session only inside Chrome. Coda's access lasts as long as the physician's Hint sign-in. When Hint signs out, Coda keeps what it read and catches up the next time the physician signs in. Pulls run during the practice's business hours, and Coda asks the physician to reconnect only when fresh Hint data is needed and access is missing.
-- **The schedule**, from the practice's EHR.
+- **The schedule**, from the practice's EHR or another scheduler. Which one is not decided yet.
 - **Patient mail** from the practice’s Spruce connection.
 - **Attachments**, including scans and faxes read through OCR.
 - **A connected patient's Duet data**, which lives in Coda's record for that patient and never in the EHR. Connected care owns what crosses.
@@ -376,7 +378,7 @@ How it is built today:
 - Clinical trials data in the library.
 - A desktop app.
 
-**Ideas.** Nobody has actioned these, and the shape of each is not decided:
+**Parked.** Nobody is working on these, and we spec each one when we pick it up:
 
 - Read-only outside records through Kno2, with Coda acting as the physician’s delegate. These records complement the practice’s chart.
 - Send beside Copy, where Coda sends exactly the approved words for the physician.
@@ -395,20 +397,4 @@ How it is built today:
 - A Hint route that doesn't depend on the practice's open Chrome.
 - Coda keeping its own clinical record, or building into EHRs. Today the EHR is the source of truth, read only, and Duet data a practice receives lives in Coda.
 - A limit on background runs. There's none today.
-
-## Open questions
-
-These are undecided. When one is answered, the answer goes into every spec it touches and the question leaves this list. Answer by ID.
-
-- **Q2. Practice access and roles.** Which patients each physician may access, and whether a practice has roles. Patient messaging waits on it for who sees a message before it's matched, who sees a patient's phone and email while matching, and who may send.
-- **Q3. Judging necessary care in the simulation.** How the patients-who-do-nothing run judges that necessary care happened, and who judges it.
-
-UI questions are judged against the UI principles (README.md U1–U9).
-
-- **UI6. Deleting a physician conversation.** Whether Delete sits beside Archive.
-- **UI7. The Updates log.** Whether the full log keeps its own page beyond Today's collapsed line, and how it looks.
-- **E1. Production triggers and the schedule source.** How scheduled and pre-visit work runs in production, and where the real schedule comes from.
-- **E2. Schedule mapping.** How each EHR's schedule and encounters map to patients.
-- **E3. The patient roster.** How the first practice populates and maintains its active roster remains open. Decide after checking what its sources provide and what the practice needs.
-- **E13. Physician run preconditions.** What the physician product checks before each run, stated in harness terms.
-- **S2. CDS compliance.** Whether a lightweight deterministic contract should back the prompts.
+- Deleting a physician conversation, beside Archive.
