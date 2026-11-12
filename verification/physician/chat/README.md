@@ -74,7 +74,9 @@ The steps of one answer:
 | Running | it ends | The step shows how it ended |
 | Running | Coda accepts a message as Send now | The step still ends, and shows how it ended |
 | Running | Coda accepts Stop | The step shows that it was stopped |
-| Steps showing | the answer ends | The steps fold into one line that still opens |
+| Working | Coda starts something | One line shows the step Coda is on; the steps sit folded under it |
+| Folded | you press the line | The steps open, and stay open until you close them |
+| Open | the answer ends | The steps stay open |
 | Folded | you open the conversation later | The same steps, in the same order |
 
 Putting a conversation away:
