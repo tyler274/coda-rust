@@ -43,7 +43,7 @@ use super::jobs::{
 use super::receipt::{self, Receipt};
 use super::sources::SourcePull;
 use super::{
-    Accepted, AttemptStatus, BindingRef, RuntimeError, SkillPackageId, Stopped, Store, WorkStatus,
+    AttemptStatus, BindingRef, RuntimeError, SkillPackageId, Stopped, Store, WorkStatus,
     conversion_error, error, frozen, now, persistence_failure,
 };
 use crate::ModelRoles;
@@ -623,6 +623,14 @@ fn validate_id(value: &str) -> Result<String, PatientReviewError> {
         return Err(PatientReviewError::InvalidScope);
     }
     Ok(trimmed.to_owned())
+}
+
+fn review_membership_scope(practice: &str, workspace: &str) -> PracticeScope {
+    PracticeScope {
+        practice: practice.to_owned(),
+        workspace: workspace.to_owned(),
+        job_id: "patient_review_membership".to_owned(),
+    }
 }
 
 fn deterministic_review_id(workspace: &str, command_key: &str) -> String {
@@ -1413,7 +1421,7 @@ impl Store {
     /// authoritative patient pulls, chart observations, source refresh statuses,
     /// dispatch standing, saved understanding, durable memory, open concerns,
     /// and prior completed patient reviews.
-    pub async fn review_starting_context(
+    async fn review_starting_context(
         &self,
         practice: &str,
         workspace: &str,
@@ -1877,45 +1885,64 @@ impl Store {
             completed_at: None,
             updated_at: clock,
         };
+        let _ = job_accept;
         let delivery = Delivery::practice_job(&scope, command_key);
-        Ok(match job_accept {
-            Accepted::New => AdmittedPatientReview::New {
-                review: Box::new(saved),
-                delivery,
-            },
-            Accepted::Duplicate => AdmittedPatientReview::Duplicate {
-                review: Box::new(saved),
-                delivery,
-            },
+        Ok(AdmittedPatientReview::New {
+            review: Box::new(saved),
+            delivery,
         })
     }
 
-    /// Reads one saved patient review by `(practice, workspace, review_id)`.
-    pub async fn patient_review(
+    async fn patient_review_internal(
         &self,
         practice: &str,
         workspace: &str,
         review_id: &str,
     ) -> Result<Option<SavedPatientReview>, PatientReviewError> {
+        patient_review::Entity::find_by_id((
+            practice.to_owned(),
+            workspace.to_owned(),
+            review_id.to_owned(),
+        ))
+        .one(&self.db)
+        .await?
+        .map(decode_saved_review)
+        .transpose()
+        .map_err(Into::into)
+    }
+
+    /// Reads one saved patient review by `(practice, workspace, review_id)` after
+    /// verifying practice patient membership.
+    pub async fn patient_review(
+        &self,
+        practice: &str,
+        workspace: &str,
+        review_id: &str,
+        authority: &dyn PracticeAuthority,
+    ) -> Result<Option<SavedPatientReview>, PatientReviewError> {
         let practice = validate_id(practice)?;
         let workspace = validate_id(workspace)?;
         let review_id = validate_id(review_id)?;
-        patient_review::Entity::find_by_id((practice, workspace, review_id))
-            .one(&self.db)
-            .await?
-            .map(decode_saved_review)
-            .transpose()
-            .map_err(Into::into)
+        authority
+            .check_practice_patient(&review_membership_scope(&practice, &workspace))
+            .await?;
+        self.patient_review_internal(&practice, &workspace, &review_id)
+            .await
     }
 
-    /// Lists saved patient reviews for `(practice, workspace)`, newest first.
+    /// Lists saved patient reviews for `(practice, workspace)`, newest first, after
+    /// verifying practice patient membership.
     pub async fn patient_reviews(
         &self,
         practice: &str,
         workspace: &str,
+        authority: &dyn PracticeAuthority,
     ) -> Result<Vec<SavedPatientReview>, PatientReviewError> {
         let practice = validate_id(practice)?;
         let workspace = validate_id(workspace)?;
+        authority
+            .check_practice_patient(&review_membership_scope(&practice, &workspace))
+            .await?;
         let rows = patient_review::Entity::find()
             .filter(patient_review::Column::Practice.eq(practice))
             .filter(patient_review::Column::Workspace.eq(workspace))
@@ -1957,8 +1984,11 @@ impl Store {
             });
         }
 
+        authority
+            .check_practice_patient(&review_membership_scope(&practice, &workspace))
+            .await?;
         let existing = self
-            .patient_review(&practice, &workspace, &review_id)
+            .patient_review_internal(&practice, &workspace, &review_id)
             .await?
             .ok_or_else(|| PatientReviewError::NotFound {
                 practice: practice.clone(),
@@ -1968,40 +1998,20 @@ impl Store {
         let scope = existing.practice_scope();
         authority.check_practice_patient(&scope).await?;
 
-        if existing.accepted_inputs.iter().any(|i| i.id == input_key) {
-            return Ok(Delivery::practice_job(&scope, existing.command_key));
-        }
-        if matches!(
-            existing.state,
-            ReviewLifecycleState::Completed { .. } | ReviewLifecycleState::Superseded { .. }
-        ) {
-            return Err(PatientReviewError::ControlRefused {
-                review_id,
-                state: existing.state.status_str().to_owned(),
-                action: "steer",
-            });
-        }
-
-        let mut next_inputs = existing.accepted_inputs.clone();
-        let mut next_input_texts: Vec<String> =
-            next_inputs.iter().map(|i| i.text.clone()).collect();
-        next_input_texts.push(trimmed.to_owned());
-        let primary_trigger = existing
+        let preview_trigger = existing
             .triggers
             .first()
             .cloned()
             .ok_or_else(|| error("corrupt patient review missing primary trigger"))?;
-        let (starting_context, observation) = self
+        let (mut starting_context, observation) = self
             .review_starting_context(
                 &practice,
                 &workspace,
                 &review_id,
-                primary_trigger,
-                next_input_texts,
+                preview_trigger,
+                Vec::new(),
             )
             .await?;
-        let updated_assignment =
-            build_review_assignment(&existing.command_key, starting_context, skills)?;
 
         let (tx, mut job, clock) = self.locked_practice_job(&scope).await?;
         let Some(rev_row) = patient_review::Entity::find_by_id((
@@ -2019,17 +2029,50 @@ impl Store {
                 review_id,
             });
         };
+        let locked_review = decode_saved_review(rev_row.clone())?;
 
+        if let Some(prev) = locked_review
+            .accepted_inputs
+            .iter()
+            .find(|i| i.id == input_key)
+        {
+            if prev.text == trimmed {
+                tx.commit().await?;
+                return Ok(Delivery::practice_job(&scope, locked_review.command_key));
+            }
+            tx.rollback().await?;
+            return Err(PatientReviewError::IdempotencyCollision { key: input_key });
+        }
+        if matches!(
+            locked_review.state,
+            ReviewLifecycleState::Completed { .. } | ReviewLifecycleState::Superseded { .. }
+        ) {
+            tx.rollback().await?;
+            return Err(PatientReviewError::ControlRefused {
+                review_id,
+                state: locked_review.state.status_str().to_owned(),
+                action: "steer",
+            });
+        }
+
+        let mut next_inputs = locked_review.accepted_inputs.clone();
         next_inputs.push(ReviewAcceptedInput {
             id: input_key,
             text: trimmed.to_owned(),
             recorded_at: clock,
         });
-        let mut triggers: Vec<ReviewTrigger> = serde_json::from_value(rev_row.triggers.clone())
-            .map_err(conversion_error(
-                "patient_review.triggers",
-                "Vec<ReviewTrigger>",
-            ))?;
+        let next_input_texts: Vec<String> = next_inputs.iter().map(|i| i.text.clone()).collect();
+        let primary_trigger = locked_review
+            .triggers
+            .first()
+            .cloned()
+            .ok_or_else(|| error("corrupt patient review missing primary trigger"))?;
+        starting_context.trigger = primary_trigger;
+        starting_context.additional_inputs = next_input_texts;
+        let updated_assignment =
+            build_review_assignment(&locked_review.command_key, starting_context, skills)?;
+
+        let mut triggers = locked_review.triggers;
         if let Some(trig) = additional_trigger {
             triggers.push(trig);
         }
@@ -2064,6 +2107,8 @@ impl Store {
         job.dispatch_after = 0;
         job.updated_at = clock;
 
+        let refreshed_recipe =
+            build_recipe_version(roles, &job.binding, &job.skills, &job.assignment)?;
         let next_state = ReviewLifecycleState::Pending;
         patient_review::ActiveModel {
             practice: Unchanged(rev_row.practice),
@@ -2078,11 +2123,12 @@ impl Store {
                 .map_err(conversion_error("Vec<ReviewTrigger>", "json"))?),
             accepted_inputs: Set(serde_json::to_value(&next_inputs)
                 .map_err(conversion_error("Vec<ReviewAcceptedInput>", "json"))?),
-            recipe_version: Unchanged(rev_row.recipe_version),
-            initial_source_version: Set(i64::try_from(observation.version)
-                .map_err(conversion_error("initial_source_version", "i64"))?),
-            initial_sources: Set(serde_json::to_value(&observation.sources)
-                .map_err(conversion_error("Vec<SourceRevision>", "json"))?),
+            recipe_version: Set(serde_json::to_value(&refreshed_recipe)
+                .map_err(conversion_error("ReviewRecipeVersion", "json"))?),
+            // Preserve `initial_source_version` / `initial_sources` so records added,
+            // corrected, or withdrawn between admission and steering remain fenced!
+            initial_source_version: Unchanged(rev_row.initial_source_version),
+            initial_sources: Unchanged(rev_row.initial_sources),
             completed_source_version: Set(None),
             completed_sources: Set(None),
             evidence_read: Unchanged(rev_row.evidence_read),
@@ -2106,21 +2152,26 @@ impl Store {
         Ok(Delivery::practice_job(&scope, input_id))
     }
 
-    /// Stops a pending or active patient review, holding both the practice job
-    /// and the saved review across process restart.
+    /// Stops a pending or active patient review after verifying practice patient
+    /// membership, holding both the practice job and the saved review across
+    /// process restart.
     pub async fn stop_patient_review(
         &self,
         practice: &str,
         workspace: &str,
         review_id: &str,
         command_key: &str,
+        authority: &dyn PracticeAuthority,
     ) -> Result<Stopped, PatientReviewError> {
         let practice = validate_id(practice)?;
         let workspace = validate_id(workspace)?;
         let review_id = validate_id(review_id)?;
         let command_key = validate_id(command_key)?;
+        authority
+            .check_practice_patient(&review_membership_scope(&practice, &workspace))
+            .await?;
         let review = self
-            .patient_review(&practice, &workspace, &review_id)
+            .patient_review_internal(&practice, &workspace, &review_id)
             .await?
             .ok_or_else(|| PatientReviewError::NotFound {
                 practice: practice.clone(),
@@ -2191,8 +2242,24 @@ impl Store {
         let review_id = validate_id(target.review_id)?;
         let command_key = validate_id(command_key)?;
 
+        // Re-verify practice patient access first. If access was lost, record any
+        // existing review as superseded by access loss so the old result can never complete.
+        if let Err(access_err) = authority
+            .check_practice_patient(&review_membership_scope(&practice, &workspace))
+            .await
+        {
+            self.mark_review_access_lost(
+                &practice,
+                &workspace,
+                &review_id,
+                &access_err.to_string(),
+            )
+            .await?;
+            return Err(PatientReviewError::Access(access_err));
+        }
+
         let existing = self
-            .patient_review(&practice, &workspace, &review_id)
+            .patient_review_internal(&practice, &workspace, &review_id)
             .await?
             .ok_or_else(|| PatientReviewError::NotFound {
                 practice: practice.clone(),
@@ -2200,9 +2267,6 @@ impl Store {
                 review_id: review_id.clone(),
             })?;
         let scope = existing.practice_scope();
-
-        // Re-verify practice patient access first. If access was lost, record the
-        // review as superseded by access loss so the old result can never complete.
         if let Err(access_err) = authority.check_practice_patient(&scope).await {
             self.mark_review_access_lost(
                 &practice,
@@ -2218,84 +2282,20 @@ impl Store {
             RearmKind::Resume => "resume",
             RearmKind::TryAgain => "try_again",
         };
-        let eligible = matches!(
-            (&existing.state, rearm_kind),
-            (
-                ReviewLifecycleState::Held {
-                    reason: ReviewHoldReason::Stopped,
-                    ..
-                },
-                RearmKind::Resume,
-            ) | (
-                ReviewLifecycleState::Held {
-                    reason: ReviewHoldReason::Limit,
-                    ..
-                } | ReviewLifecycleState::Failed { .. },
-                RearmKind::TryAgain,
-            )
-        );
-
-        let command_envelope = json!({
-            "kind": action_label,
-            "practice": &practice,
-            "workspace": &workspace,
-            "review_id": &review_id,
-            "work_id": &existing.work_id,
-        });
-        {
-            let tx = self.db.begin().await?;
-            match receipt::record(
-                &tx,
-                &practice,
-                REVIEW_MEMORY_ACTOR,
-                &command_key,
-                &command_envelope,
-            )
-            .await?
-            {
-                Receipt::New => {
-                    if !eligible {
-                        tx.rollback().await?;
-                        return Err(PatientReviewError::ControlRefused {
-                            review_id,
-                            state: existing.state.status_str().to_owned(),
-                            action: action_label,
-                        });
-                    }
-                    tx.commit().await?;
-                }
-                Receipt::Same => {
-                    tx.commit().await?;
-                    return Ok(Delivery::practice_job(&scope, existing.command_key));
-                }
-                Receipt::Different => {
-                    tx.rollback().await?;
-                    return Err(PatientReviewError::IdempotencyCollision { key: command_key });
-                }
-            }
-        }
-
-        let primary_trigger = existing
+        let preview_trigger = existing
             .triggers
             .first()
             .cloned()
             .ok_or_else(|| error("corrupt patient review missing primary trigger"))?;
-        let extra_texts: Vec<String> = existing
-            .accepted_inputs
-            .iter()
-            .map(|i| i.text.clone())
-            .collect();
-        let (starting_context, observation) = self
+        let (mut starting_context, observation) = self
             .review_starting_context(
                 &practice,
                 &workspace,
                 &review_id,
-                primary_trigger,
-                extra_texts,
+                preview_trigger,
+                Vec::new(),
             )
             .await?;
-        let updated_assignment =
-            build_review_assignment(&existing.command_key, starting_context.clone(), skills)?;
 
         let (tx, mut job, clock) = self.locked_practice_job(&scope).await?;
         super::jobs::load_attempt_events_for_reviews(&tx, &scope, &mut job.attempts).await?;
@@ -2314,10 +2314,78 @@ impl Store {
                 review_id,
             });
         };
+        let locked_review = decode_saved_review(rev_row.clone())?;
+
+        let command_envelope = json!({
+            "kind": action_label,
+            "practice": &practice,
+            "workspace": &workspace,
+            "review_id": &review_id,
+            "work_id": &locked_review.work_id,
+        });
+        match receipt::record(
+            &tx,
+            &practice,
+            REVIEW_MEMORY_ACTOR,
+            &command_key,
+            &command_envelope,
+        )
+        .await?
+        {
+            Receipt::New => {}
+            Receipt::Same => {
+                tx.commit().await?;
+                return Ok(Delivery::practice_job(&scope, locked_review.command_key));
+            }
+            Receipt::Different => {
+                tx.rollback().await?;
+                return Err(PatientReviewError::IdempotencyCollision { key: command_key });
+            }
+        }
+
+        let eligible = matches!(
+            (&locked_review.state, rearm_kind),
+            (
+                ReviewLifecycleState::Held {
+                    reason: ReviewHoldReason::Stopped,
+                    ..
+                },
+                RearmKind::Resume,
+            ) | (
+                ReviewLifecycleState::Held {
+                    reason: ReviewHoldReason::Limit,
+                    ..
+                } | ReviewLifecycleState::Failed { .. },
+                RearmKind::TryAgain,
+            )
+        );
+        if !eligible {
+            tx.rollback().await?;
+            return Err(PatientReviewError::ControlRefused {
+                review_id,
+                state: locked_review.state.status_str().to_owned(),
+                action: action_label,
+            });
+        }
+
+        let primary_trigger = locked_review
+            .triggers
+            .first()
+            .cloned()
+            .ok_or_else(|| error("corrupt patient review missing primary trigger"))?;
+        let extra_texts: Vec<String> = locked_review
+            .accepted_inputs
+            .iter()
+            .map(|i| i.text.clone())
+            .collect();
+        starting_context.trigger = primary_trigger;
+        starting_context.additional_inputs = extra_texts;
+        let updated_assignment =
+            build_review_assignment(&locked_review.command_key, starting_context.clone(), skills)?;
 
         let prior_initial_sources = decode_initial_sources(rev_row.initial_sources.clone())?;
         let sources_moved = !SourceRefresh::between(
-            existing.initial_source_version,
+            locked_review.initial_source_version,
             &prior_initial_sources,
             observation.version,
             &observation.sources,
@@ -2902,7 +2970,7 @@ impl Store {
             ))),
             Ok(None) => Ok(None),
             Err(PatientMemoryError::Database(db_err)) => Err(persistence_failure(db_err)),
-            Err(other) => Err(other.to_string().into()),
+            Err(other) => Err(Box::new(other)),
         }
     }
 

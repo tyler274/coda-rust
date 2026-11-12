@@ -448,7 +448,7 @@ mod tests {
         });
         let worker = Arc::new(Worker {
             store: store.clone(),
-            auth,
+            auth: auth.clone(),
             bus: physician_bus::from_env(|_| None, false).await.unwrap(),
             model: ModelSource {
                 transport: ModelTransport::Responses {
@@ -782,7 +782,7 @@ mod tests {
         });
         let worker = Arc::new(Worker {
             store: store.clone(),
-            auth,
+            auth: auth.clone(),
             bus: physician_bus::from_env(|_| None, false).await.unwrap(),
             model: ModelSource {
                 transport: ModelTransport::Responses {
@@ -858,7 +858,10 @@ mod tests {
         assert_eq!(push_resp.status(), StatusCode::NO_CONTENT);
 
         // 3. Verify `SavedPatientReview` is durably Completed with Known usage!
-        let reviews = store.patient_reviews(&practice, &workspace).await.unwrap();
+        let reviews = store
+            .patient_reviews(&practice, &workspace, &auth)
+            .await
+            .unwrap();
         assert_eq!(reviews.len(), 1);
         assert_eq!(reviews[0].state.status_str(), "completed");
         assert_eq!(reviews[0].actions.len(), 1);

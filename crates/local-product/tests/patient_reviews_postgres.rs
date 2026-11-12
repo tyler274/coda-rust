@@ -423,7 +423,10 @@ async fn dispatch_changed_periodic_and_physician_reviews_reach_model_with_recipe
     // Execute both the changed-record review and the periodic review through PracticeJobHost,
     // asserting the exact Request reaching the model (recipe, background model settings,
     // preloaded retrieval skill, discoverable patient-communication skill, and tools).
-    let changed_reviews = store.patient_reviews(&practice, &changed_ws).await.unwrap();
+    let changed_reviews = store
+        .patient_reviews(&practice, &changed_ws, auth.as_ref())
+        .await
+        .unwrap();
     assert_eq!(changed_reviews.len(), 1);
     let changed_rev = &changed_reviews[0];
     assert!(matches!(
@@ -646,7 +649,12 @@ async fn dispatch_changed_periodic_and_physician_reviews_reach_model_with_recipe
         .expect("changed-record review executes to completion");
 
     let saved_changed = store
-        .patient_review(&practice, &changed_ws, &changed_rev.review_id)
+        .patient_review(
+            &practice,
+            &changed_ws,
+            &changed_rev.review_id,
+            auth.as_ref(),
+        )
         .await
         .unwrap()
         .unwrap();
@@ -662,7 +670,7 @@ async fn dispatch_changed_periodic_and_physician_reviews_reach_model_with_recipe
     // Also execute the dispatched periodic review (from wake_practice_dispatch) to prove
     // periodic dispatch reaches the model with its periodic trigger and completes cleanly.
     let periodic_reviews = store
-        .patient_reviews(&practice, &periodic_ws)
+        .patient_reviews(&practice, &periodic_ws, auth.as_ref())
         .await
         .unwrap();
     let periodic_dispatched = periodic_reviews
@@ -768,7 +776,12 @@ async fn dispatch_changed_periodic_and_physician_reviews_reach_model_with_recipe
         .expect("periodic review completes quietly");
 
     let saved_periodic = store
-        .patient_review(&practice, &periodic_ws, &periodic_dispatched.review_id)
+        .patient_review(
+            &practice,
+            &periodic_ws,
+            &periodic_dispatched.review_id,
+            auth.as_ref(),
+        )
         .await
         .unwrap()
         .unwrap();
@@ -1185,7 +1198,7 @@ async fn real_tool_operations_persist_across_restart_and_quiet_saves_nothing_to_
     assert_eq!(understanding.source_version, 2);
 
     let readback_review = restarted
-        .patient_review(&practice, &workspace, &review.review_id)
+        .patient_review(&practice, &workspace, &review.review_id, auth.as_ref())
         .await
         .unwrap()
         .expect("saved review persists across restart");
@@ -1347,7 +1360,7 @@ async fn real_tool_operations_persist_across_restart_and_quiet_saves_nothing_to_
 
     let after_quiet_restart = Store::connect(&url).await.unwrap();
     let saved_quiet = after_quiet_restart
-        .patient_review(&practice, &quiet_ws, &quiet_rev.review_id)
+        .patient_review(&practice, &quiet_ws, &quiet_rev.review_id, auth.as_ref())
         .await
         .unwrap()
         .unwrap();
@@ -1647,7 +1660,7 @@ async fn mid_run_record_correction_blocks_old_version_and_interrupted_action_is_
         .expect("review continues past mid-run correction and commits corrected version");
 
     let saved_corr = store
-        .patient_review(&practice, &workspace, &corr_rev.review_id)
+        .patient_review(&practice, &workspace, &corr_rev.review_id, auth.as_ref())
         .await
         .unwrap()
         .unwrap();
@@ -2057,7 +2070,7 @@ async fn mid_run_record_correction_blocks_old_version_and_interrupted_action_is_
     );
 
     let saved_crash_rev = store
-        .patient_review(&practice, &crash_ws, &crash_rev.review_id)
+        .patient_review(&practice, &crash_ws, &crash_rev.review_id, auth.as_ref())
         .await
         .unwrap()
         .unwrap();
@@ -2228,7 +2241,7 @@ async fn saved_review_records_metadata_keeps_unknown_usage_unknown_and_feeds_lat
         .unwrap();
 
     let saved_1 = store
-        .patient_review(&practice, &workspace, &rev1.review_id)
+        .patient_review(&practice, &workspace, &rev1.review_id, auth.as_ref())
         .await
         .unwrap()
         .unwrap();
@@ -2439,7 +2452,7 @@ async fn saved_review_records_metadata_keeps_unknown_usage_unknown_and_feeds_lat
         .unwrap();
 
     let saved_2 = store
-        .patient_review(&practice, &workspace, &rev2.review_id)
+        .patient_review(&practice, &workspace, &rev2.review_id, auth.as_ref())
         .await
         .unwrap()
         .unwrap();
@@ -2526,7 +2539,13 @@ async fn stop_holds_across_restart_resume_and_try_again_refresh_evidence_and_new
 
     assert_eq!(
         store
-            .stop_patient_review(&practice, &stop_ws, &stop_rev.review_id, "cmd-stop-1")
+            .stop_patient_review(
+                &practice,
+                &stop_ws,
+                &stop_rev.review_id,
+                "cmd-stop-1",
+                auth.as_ref(),
+            )
             .await
             .unwrap(),
         Stopped::Held
@@ -2553,7 +2572,7 @@ async fn stop_holds_across_restart_resume_and_try_again_refresh_evidence_and_new
     // Reconnect Store ("after restart") and verify review stays Held(Stopped) and is NOT due!
     let restarted = Store::connect(&url).await.unwrap();
     let held_after_restart = restarted
-        .patient_review(&practice, &stop_ws, &stop_rev.review_id)
+        .patient_review(&practice, &stop_ws, &stop_rev.review_id, auth.as_ref())
         .await
         .unwrap()
         .unwrap();
@@ -2724,7 +2743,7 @@ async fn stop_holds_across_restart_resume_and_try_again_refresh_evidence_and_new
         .expect("resumed review completes on corrected evidence");
 
     let saved_resumed = restarted
-        .patient_review(&practice, &stop_ws, &stop_rev.review_id)
+        .patient_review(&practice, &stop_ws, &stop_rev.review_id, auth.as_ref())
         .await
         .unwrap()
         .unwrap();
@@ -2788,7 +2807,7 @@ async fn stop_holds_across_restart_resume_and_try_again_refresh_evidence_and_new
             .unwrap();
     }
     let failed_state = restarted
-        .patient_review(&practice, &retry_ws, &fail_rev.review_id)
+        .patient_review(&practice, &retry_ws, &fail_rev.review_id, auth.as_ref())
         .await
         .unwrap()
         .unwrap();
@@ -2987,7 +3006,13 @@ async fn stop_holds_across_restart_resume_and_try_again_refresh_evidence_and_new
     // must fail Access AND transition SavedPatientReview to Superseded(AccessLost)!
     assert_eq!(
         restarted
-            .stop_patient_review(&practice, &steer_ws, &steer_rev.review_id, "cmd-stop-steer")
+            .stop_patient_review(
+                &practice,
+                &steer_ws,
+                &steer_rev.review_id,
+                "cmd-stop-steer",
+                &revocable,
+            )
             .await
             .unwrap(),
         Stopped::Held
@@ -3006,8 +3031,14 @@ async fn stop_holds_across_restart_resume_and_try_again_refresh_evidence_and_new
         .expect_err("Resume after access loss must fail");
     assert!(matches!(access_err, PatientReviewError::Access(_)));
 
+    assert!(matches!(
+        restarted
+            .patient_review(&practice, &steer_ws, &steer_rev.review_id, &revocable)
+            .await,
+        Err(PatientReviewError::Access(_))
+    ));
     let superseded_review = restarted
-        .patient_review(&practice, &steer_ws, &steer_rev.review_id)
+        .patient_review(&practice, &steer_ws, &steer_rev.review_id, auth.as_ref())
         .await
         .unwrap()
         .unwrap();
@@ -3604,7 +3635,12 @@ async fn clinical_cases_urgent_abnormal_nonurgent_change_conflicting_sources_and
     assert_eq!(conflict_open.len(), 1);
     assert_eq!(conflict_open[0].records.len(), 2);
     let saved_conflict = store
-        .patient_review(&practice, &conflict_ws, &conflict_rev.review_id)
+        .patient_review(
+            &practice,
+            &conflict_ws,
+            &conflict_rev.review_id,
+            auth.as_ref(),
+        )
         .await
         .unwrap()
         .unwrap();
@@ -3773,7 +3809,7 @@ async fn clinical_cases_urgent_abnormal_nonurgent_change_conflicting_sources_and
             .is_empty()
     );
     let saved_normal = store
-        .patient_review(&practice, &normal_ws, &normal_rev.review_id)
+        .patient_review(&practice, &normal_ws, &normal_rev.review_id, auth.as_ref())
         .await
         .unwrap()
         .unwrap();
@@ -4064,7 +4100,7 @@ async fn periodic_reassessment_respects_prior_decisions_avoids_duplicate_alerts_
     // decisions (which raised `concern-bp-log`, now cleared by physician), and unfinished work;
     // finishes quietly WITHOUT repeating alerts or churning memory / understanding! ---
     let saved_run1 = store
-        .patient_review(&practice, &workspace, &run1.review_id)
+        .patient_review(&practice, &workspace, &run1.review_id, auth.as_ref())
         .await
         .unwrap()
         .unwrap();
@@ -4236,7 +4272,7 @@ async fn periodic_reassessment_respects_prior_decisions_avoids_duplicate_alerts_
         .unwrap();
 
     let saved_run2 = store
-        .patient_review(&practice, &workspace, &run2.review_id)
+        .patient_review(&practice, &workspace, &run2.review_id, auth.as_ref())
         .await
         .unwrap()
         .unwrap();
@@ -5023,7 +5059,12 @@ async fn corrected_evidence_revises_outputs_missing_sources_stay_explicit_limits
     assert_eq!(revised_u.summary.material_gaps.len(), 2);
 
     let saved_corr_review = store
-        .patient_review(&practice, &workspace, &rev_corrected.review_id)
+        .patient_review(
+            &practice,
+            &workspace,
+            &rev_corrected.review_id,
+            auth.as_ref(),
+        )
         .await
         .unwrap()
         .unwrap();
@@ -5118,7 +5159,10 @@ async fn new_review_supersedes_incomplete_review_withdrawn_records_fence_recover
         "duplicate review admission must not publish a second wakeup delivery"
     );
 
-    let initial_reviews = store.patient_reviews(&practice, &workspace).await.unwrap();
+    let initial_reviews = store
+        .patient_reviews(&practice, &workspace, auth.as_ref())
+        .await
+        .unwrap();
     assert_eq!(initial_reviews.len(), 1);
     let rev_old = initial_reviews[0].clone();
     let claim_old = store
@@ -5156,7 +5200,7 @@ async fn new_review_supersedes_incomplete_review_withdrawn_records_fence_recover
         .clone();
 
     let old_after = store
-        .patient_review(&practice, &workspace, &rev_old.review_id)
+        .patient_review(&practice, &workspace, &rev_old.review_id, auth.as_ref())
         .await
         .unwrap()
         .unwrap();
@@ -5296,7 +5340,7 @@ async fn new_review_supersedes_incomplete_review_withdrawn_records_fence_recover
         .expect("rev_mid completes at chart v2");
 
     let saved_mid = store
-        .patient_review(&practice, &workspace, &rev_mid.review_id)
+        .patient_review(&practice, &workspace, &rev_mid.review_id, auth.as_ref())
         .await
         .unwrap()
         .unwrap();
@@ -5534,5 +5578,626 @@ async fn new_review_supersedes_incomplete_review_withdrawn_records_fence_recover
     assert!(
         inspector.saw_withdrawn_feedback,
         "recovery after pure record withdrawal must inject patient-review source_feedback naming complete_patient_review"
+    );
+}
+
+#[tokio::test]
+async fn practice_authority_enforced_on_reads_and_stop_atomic_rearm_steering_fences_and_understanding_tool_boundary()
+ {
+    use harness::engine::recipe::Product as _;
+    use local_product::patient_reviews::review_job_id;
+    use local_product::runtime::dispatch::ReviewReceiver as _;
+    use local_product::runtime::jobs::Assignment;
+
+    let Some(url) = database_url() else {
+        return;
+    };
+    let (store, auth) = connect_stores(&url).await;
+    let skills = load_skills();
+    let roles = distinct_roles();
+
+    let practice = format!("practice-guard-{}", Uuid::new_v4().simple());
+    let other_practice = format!("practice-other-{}", Uuid::new_v4().simple());
+    let workspace = format!("pw-guard-{}", Uuid::new_v4().simple());
+    let unregistered_ws = format!("pw-unreg-{}", Uuid::new_v4().simple());
+    auth.ensure_practice(&practice, PracticeClock::RealTime)
+        .await
+        .unwrap();
+    auth.ensure_practice(&other_practice, PracticeClock::RealTime)
+        .await
+        .unwrap();
+    auth.register_patient(&practice, &workspace).await.unwrap();
+
+    let patient = source_patient("pt-guard", "Nadia Patel");
+    let lab_v1 = chart_record(ChartRecordSpec {
+        workspace: &workspace,
+        source_id: "quest-labs",
+        candidate_id: "Observation/k-guard",
+        revision: "rev-1",
+        record_type: "Observation",
+        title: "Serum Potassium",
+        date: "2026-11-10",
+        text: "Serum Potassium (2026-11-10): 4.4 mmol/L.",
+    });
+    store
+        .record_chart(
+            &workspace,
+            std::slice::from_ref(&lab_v1),
+            &SourcePull {
+                source_id: "quest-labs".into(),
+                source_label: "Quest Diagnostics".into(),
+                pulled_at: 1_700_500_000,
+                patient: patient.clone(),
+            },
+        )
+        .await
+        .unwrap();
+
+    // --- 1. Partial admission recovery: if `accept_practice_job` already committed before
+    // `patient_review` row insertion, retrying `submit_review` still yields `New` + wakeup delivery! ---
+    let partial_cmd_key = format!("dispatch:{practice}:{workspace}:new-records:partial-1");
+    let partial_digest = &sha256_hex(format!("{workspace}|{partial_cmd_key}").as_bytes())[..20];
+    let partial_review_id = format!("rev-{partial_digest}");
+    let partial_scope = PracticeScope {
+        practice: practice.clone(),
+        workspace: workspace.clone(),
+        job_id: review_job_id(&partial_review_id),
+    };
+    let partial_trigger = ReviewTrigger::ChangedRecords {
+        workspace_version: 1,
+        record_versions: BTreeMap::from([("Observation/k-guard".into(), "rev-1".into())]),
+        changed_candidates: vec!["Observation/k-guard".into()],
+    };
+    let partial_ctx = ReviewStartingContext {
+        workspace: workspace.clone(),
+        review_id: partial_review_id.clone(),
+        patient: Some(patient.clone()),
+        trigger: partial_trigger,
+        additional_inputs: Vec::new(),
+        chart_version: 1,
+        chart_record_count: 1,
+        evidence_scope: EvidenceScope::ClinicalChart {
+            connected_sources: vec![ConnectedSourceBrief {
+                source_id: "quest-labs".into(),
+                source_label: "Quest Diagnostics".into(),
+                pulled_at: 1_700_500_000,
+            }],
+        },
+        source_pulls: vec![SourceFreshnessSummary {
+            source_id: "quest-labs".into(),
+            source_label: "Quest Diagnostics".into(),
+            pulled_at: 1_700_500_000,
+        }],
+        refresh_statuses: Vec::new(),
+        check_standing: DispatchCheckStanding::NotRecorded,
+        understanding: None,
+        memory_standing: PatientMemoryStanding::Available {
+            entries: Vec::new(),
+        },
+        open_concerns: Vec::new(),
+        prior_reviews: Vec::new(),
+    };
+    let pre_assignment = review_assignment(&partial_cmd_key, partial_ctx, &skills).unwrap();
+    let pre_accepted = store
+        .accept_practice_job(
+            &partial_scope,
+            &pre_assignment,
+            &roles,
+            &skills,
+            auth.as_ref(),
+        )
+        .await
+        .unwrap();
+    assert_eq!(pre_accepted, local_product::runtime::Accepted::New);
+
+    let receiver = PatientReviewReceiver::new(&store, &roles, &skills, auth.as_ref());
+    let partial_req = patient_work::ReviewRequest {
+        practice_id: practice.clone(),
+        patient_workspace_id: workspace.clone(),
+        reason: ReviewReason::NewRecords,
+        command_key: partial_cmd_key.clone(),
+        workspace_version: 1,
+        record_versions: BTreeMap::from([("Observation/k-guard".into(), "rev-1".into())]),
+    };
+    receiver
+        .submit_review(&partial_req)
+        .await
+        .expect("retry after partial practice job admission succeeds");
+    let recovered_deliveries = receiver.take_deliveries().await;
+    assert_eq!(
+        recovered_deliveries.len(),
+        1,
+        "partial admission retry must return AdmittedPatientReview::New and publish wakeup delivery"
+    );
+
+    let rev = store
+        .patient_review(&practice, &workspace, &partial_review_id, auth.as_ref())
+        .await
+        .unwrap()
+        .expect("saved review inserted on retry");
+
+    // --- 2. `PracticeAuthority` enforcement on `patient_review`, `patient_reviews`, and `stop_patient_review` ---
+    assert!(matches!(
+        store
+            .patient_review(&other_practice, &workspace, &rev.review_id, auth.as_ref())
+            .await,
+        Err(PatientReviewError::Access(
+            PracticeAccessError::ForeignPractice { .. }
+        ))
+    ));
+    assert!(matches!(
+        store
+            .patient_review(&practice, &unregistered_ws, &rev.review_id, auth.as_ref())
+            .await,
+        Err(PatientReviewError::Access(
+            PracticeAccessError::UnregisteredPatient { .. }
+        ))
+    ));
+    assert!(matches!(
+        store
+            .patient_reviews(&other_practice, &workspace, auth.as_ref())
+            .await,
+        Err(PatientReviewError::Access(
+            PracticeAccessError::ForeignPractice { .. }
+        ))
+    ));
+    assert!(matches!(
+        store
+            .patient_reviews(&practice, &unregistered_ws, auth.as_ref())
+            .await,
+        Err(PatientReviewError::Access(
+            PracticeAccessError::UnregisteredPatient { .. }
+        ))
+    ));
+    assert!(matches!(
+        store
+            .stop_patient_review(
+                &other_practice,
+                &workspace,
+                &rev.review_id,
+                "unauth-stop-1",
+                auth.as_ref(),
+            )
+            .await,
+        Err(PatientReviewError::Access(
+            PracticeAccessError::ForeignPractice { .. }
+        ))
+    ));
+    assert!(matches!(
+        store
+            .stop_patient_review(
+                &practice,
+                &unregistered_ws,
+                &rev.review_id,
+                "unauth-stop-2",
+                auth.as_ref(),
+            )
+            .await,
+        Err(PatientReviewError::Access(
+            PracticeAccessError::UnregisteredPatient { .. }
+        ))
+    ));
+    // Verify unauthorized stop did NOT hold `rev`!
+    assert_eq!(
+        store
+            .patient_review(&practice, &workspace, &rev.review_id, auth.as_ref())
+            .await
+            .unwrap()
+            .unwrap()
+            .state,
+        ReviewLifecycleState::Pending
+    );
+
+    // --- 3. Atomic `rearm_patient_review_internal` receipt + locked eligibility ---
+    // Calling `resume_patient_review` while `Pending` (not `Stopped`) must return `ControlRefused`
+    // AND roll back `receipt::record` so `"cmd-atomic-rearm"` is NOT burned!
+    let refused_rearm = store
+        .resume_patient_review(
+            rev.target(),
+            "cmd-atomic-rearm",
+            &roles,
+            &skills,
+            auth.as_ref(),
+        )
+        .await
+        .expect_err("Resume while Pending must be refused");
+    assert!(matches!(
+        refused_rearm,
+        PatientReviewError::ControlRefused {
+            action: "resume",
+            ..
+        }
+    ));
+    // Now actually Stop `rev`, then Resume with the SAME `"cmd-atomic-rearm"` key -> must transition to Pending!
+    assert_eq!(
+        store
+            .stop_patient_review(
+                &practice,
+                &workspace,
+                &rev.review_id,
+                "cmd-valid-stop",
+                auth.as_ref(),
+            )
+            .await
+            .unwrap(),
+        Stopped::Held
+    );
+    store
+        .resume_patient_review(
+            rev.target(),
+            "cmd-atomic-rearm",
+            &roles,
+            &skills,
+            auth.as_ref(),
+        )
+        .await
+        .expect("unburned command_key succeeds once review is Stopped");
+    assert_eq!(
+        store
+            .patient_review(&practice, &workspace, &rev.review_id, auth.as_ref())
+            .await
+            .unwrap()
+            .unwrap()
+            .state,
+        ReviewLifecycleState::Pending
+    );
+    // Idempotent `Receipt::Same` retry of `"cmd-atomic-rearm"` returns `Ok(Delivery)`, while
+    // reusing `"cmd-atomic-rearm"` for `try_again_patient_review` returns `IdempotencyCollision`!
+    store
+        .resume_patient_review(
+            rev.target(),
+            "cmd-atomic-rearm",
+            &roles,
+            &skills,
+            auth.as_ref(),
+        )
+        .await
+        .expect("idempotent same-key Resume succeeds");
+    assert!(matches!(
+        store
+            .try_again_patient_review(
+                rev.target(),
+                "cmd-atomic-rearm",
+                &roles,
+                &skills,
+                auth.as_ref(),
+            )
+            .await,
+        Err(PatientReviewError::IdempotencyCollision { key }) if key == "cmd-atomic-rearm"
+    ));
+
+    // --- 4. `submit_patient_review_input` preserves `initial_source_version` / `initial_sources`
+    // and enforces idempotency collision + terminal-state refusal under row locks ---
+    // Deliver `lab_v2` (`rev-1` -> `rev-2`, chart v1 -> v2) BEFORE steering `rev`!
+    let lab_v2 = chart_record(ChartRecordSpec {
+        workspace: &workspace,
+        source_id: "quest-labs",
+        candidate_id: "Observation/k-guard",
+        revision: "rev-2",
+        record_type: "Observation",
+        title: "Serum Potassium (Corrected)",
+        date: "2026-11-10",
+        text: "Serum Potassium (Corrected, 2026-11-10): 5.8 mmol/L hyperkalemia.",
+    });
+    store
+        .record_chart(
+            &workspace,
+            &[lab_v2],
+            &SourcePull {
+                source_id: "quest-labs".into(),
+                source_label: "Quest Diagnostics".into(),
+                pulled_at: 1_700_500_100,
+                patient: patient.clone(),
+            },
+        )
+        .await
+        .unwrap();
+
+    store
+        .submit_patient_review_input(
+            rev.target(),
+            ReviewInputSubmission {
+                input_key: "steer-guard-1",
+                input_text: "Prioritize checking potassium trend.",
+                additional_trigger: None,
+            },
+            &roles,
+            &skills,
+            auth.as_ref(),
+        )
+        .await
+        .expect("steer input accepted");
+    // Same `(input_key, text)` is idempotent; same `input_key` with different text is `IdempotencyCollision`!
+    store
+        .submit_patient_review_input(
+            rev.target(),
+            ReviewInputSubmission {
+                input_key: "steer-guard-1",
+                input_text: "Prioritize checking potassium trend.",
+                additional_trigger: None,
+            },
+            &roles,
+            &skills,
+            auth.as_ref(),
+        )
+        .await
+        .expect("duplicate steer input is idempotent");
+    assert!(matches!(
+        store
+            .submit_patient_review_input(
+                rev.target(),
+                ReviewInputSubmission {
+                    input_key: "steer-guard-1",
+                    input_text: "Conflicting steer payload.",
+                    additional_trigger: None,
+                },
+                &roles,
+                &skills,
+                auth.as_ref(),
+            )
+            .await,
+        Err(PatientReviewError::IdempotencyCollision { key }) if key == "steer-guard-1"
+    ));
+
+    let after_steer = store
+        .patient_review(&practice, &workspace, &rev.review_id, auth.as_ref())
+        .await
+        .unwrap()
+        .unwrap();
+    assert_eq!(
+        after_steer.initial_source_version, 1,
+        "submit_patient_review_input must preserve initial_source_version so pre-steer chart changes stay fenced"
+    );
+
+    // Execute the steered review: Turn 1 tries to complete WITHOUT reading `rev-2` -> must be
+    // refused by `review_source_change_feedback` (`sources_changed`), proving `initial_sources`
+    // was preserved across steering! Turn 2 reads `rev-2`, Turn 3 stages completion, Turn 4 finishes.
+    let steered_claim = store
+        .claim_practice_job(&rev.practice_scope(), 60, auth.as_ref())
+        .await
+        .unwrap()
+        .expect("claim steered review");
+
+    struct SteeredSourceFenceProvider {
+        turn: usize,
+    }
+    impl engine::recipe::Provider for SteeredSourceFenceProvider {
+        async fn exchange(
+            &mut self,
+            request: &engine::recipe::Request,
+            _: &engine::Cancellation,
+            _: &engine::RunLimits,
+            _: &mut dyn engine::recipe::Observer,
+        ) -> Result<engine::Turn, engine::Cause> {
+            self.turn += 1;
+            match self.turn {
+                1 => {
+                    let premature = CompleteReviewArgs {
+                        disposition: CompleteReviewDisposition::Quiet {
+                            explanation: "Unverified completion without reading rev-2.".into(),
+                        },
+                        citations: vec![ExactRecordReference {
+                            candidate_id: "Observation/k-guard".into(),
+                            revision: "rev-2".into(),
+                        }],
+                        basis_and_limitations: "None.".into(),
+                        unfinished_work: vec![],
+                    };
+                    Ok(engine::Turn {
+                        items: vec![engine::Item::Call(engine::Invocation {
+                            id: "try-unread-rev2".into(),
+                            name: COMPLETE_PATIENT_REVIEW_TOOL.into(),
+                            arguments: serde_json::to_string(&premature).unwrap(),
+                        })],
+                        receipt: json!({"turn": 1}),
+                        usage: Default::default(),
+                    })
+                }
+                2 => {
+                    let wire = serde_json::to_string(&request.items).unwrap();
+                    assert!(
+                        wire.contains("sources_changed") && wire.contains("Observation/k-guard"),
+                        "preserved initial_sources must fence unread rev-2 after steering: {wire}"
+                    );
+                    Ok(engine::Turn {
+                        items: vec![engine::Item::Call(engine::Invocation {
+                            id: "read-k-rev2".into(),
+                            name: READ_TOOL.into(),
+                            arguments: json!({
+                                "references": [{
+                                    "candidate_id": "Observation/k-guard",
+                                    "revision": "rev-2",
+                                    "cursor": null
+                                }],
+                                "max_result_bytes": 16_384
+                            })
+                            .to_string(),
+                        })],
+                        receipt: json!({"turn": 2}),
+                        usage: Default::default(),
+                    })
+                }
+                3 => {
+                    let complete = CompleteReviewArgs {
+                        disposition: CompleteReviewDisposition::Assessed {
+                            summary:
+                                "Verified corrected potassium 5.8 mmol/L; raised today concern."
+                                    .into(),
+                        },
+                        citations: vec![ExactRecordReference {
+                            candidate_id: "Observation/k-guard".into(),
+                            revision: "rev-2".into(),
+                        }],
+                        basis_and_limitations: "Quest Diagnostics corrected potassium (rev-2)."
+                            .into(),
+                        unfinished_work: vec![],
+                    };
+                    Ok(engine::Turn {
+                        items: vec![
+                            engine::Item::Call(engine::Invocation {
+                                id: "raise-k-guard".into(),
+                                name: CONCERN_TOOL.into(),
+                                arguments: json!({
+                                    "operation": "raise",
+                                    "concern_id": "concern-k-guard",
+                                    "urgency": "today",
+                                    "reason": "Hyperkalemia 5.8 mmol/L on corrected lab report.",
+                                    "records": [{
+                                        "candidate_id": "Observation/k-guard",
+                                        "revision": "rev-2"
+                                    }]
+                                })
+                                .to_string(),
+                            }),
+                            engine::Item::Call(engine::Invocation {
+                                id: "complete-k-guard".into(),
+                                name: COMPLETE_PATIENT_REVIEW_TOOL.into(),
+                                arguments: serde_json::to_string(&complete).unwrap(),
+                            }),
+                        ],
+                        receipt: json!({"turn": 3}),
+                        usage: Default::default(),
+                    })
+                }
+                4 => Ok(engine::Turn {
+                    items: vec![engine::Item::assistant("Steered review completed.")],
+                    receipt: json!({"turn": 4}),
+                    usage: Default::default(),
+                }),
+                other => panic!("unexpected turn {other}"),
+            }
+        }
+    }
+
+    PracticeJobHost {
+        store: store.clone(),
+        claim: steered_claim,
+        authority: auth.as_ref(),
+    }
+    .run(
+        &mut SteeredSourceFenceProvider { turn: 0 },
+        engine::RunLimits::default(),
+        &engine::Cancellation::default(),
+    )
+    .await
+    .expect("steered review completes after reading rev-2");
+
+    // Once `Completed`, both `submit_patient_review_input` and `try_again_patient_review`
+    // are refused under row locks without overwriting `Completed`!
+    assert!(matches!(
+        store
+            .submit_patient_review_input(
+                rev.target(),
+                ReviewInputSubmission {
+                    input_key: "steer-after-complete",
+                    input_text: "Late input after completion.",
+                    additional_trigger: None,
+                },
+                &roles,
+                &skills,
+                auth.as_ref(),
+            )
+            .await,
+        Err(PatientReviewError::ControlRefused {
+            action: "steer",
+            ..
+        })
+    ));
+    assert!(matches!(
+        store
+            .try_again_patient_review(
+                rev.target(),
+                "cmd-try-after-complete",
+                &roles,
+                &skills,
+                auth.as_ref(),
+            )
+            .await,
+        Err(PatientReviewError::ControlRefused {
+            action: "try_again",
+            ..
+        })
+    ));
+    assert_eq!(
+        store
+            .patient_review(&practice, &workspace, &rev.review_id, auth.as_ref())
+            .await
+            .unwrap()
+            .unwrap()
+            .state
+            .status_str(),
+        "completed"
+    );
+
+    // --- 5. `PracticeJobKind::InitialUnderstanding` refuses concern, memory, and review tools,
+    // and `PracticeJobHost` preserves typed `PracticeAccessError` causes! ---
+    let iu_scope = PracticeScope {
+        practice: practice.clone(),
+        workspace: workspace.clone(),
+        job_id: "iu-boundary-check".into(),
+    };
+    let iu_assign = Assignment::synthetic_patient_stub(&workspace, &skills).unwrap();
+    store
+        .accept_practice_job(&iu_scope, &iu_assign, &roles, &skills, auth.as_ref())
+        .await
+        .unwrap();
+    let iu_claim = store
+        .claim_practice_job(&iu_scope, 60, auth.as_ref())
+        .await
+        .unwrap()
+        .unwrap();
+    assert_eq!(iu_claim.kind, PracticeJobKind::InitialUnderstanding);
+
+    let revocable = RevocablePracticeAuthority {
+        inner: auth.clone(),
+        revoked: AtomicBool::new(false),
+    };
+    let mut iu_host = PracticeJobHost {
+        store: store.clone(),
+        claim: iu_claim,
+        authority: &revocable,
+    };
+    for (tool_name, args) in [
+        (CONCERN_TOOL, json!({"operation": "list"})),
+        (
+            PATIENT_MEMORY_TOOL,
+            json!({
+                "operation": "record_correction",
+                "memory_id": "mem-1",
+                "topic": "t",
+                "statement": "s"
+            }),
+        ),
+        (
+            COMPLETE_PATIENT_REVIEW_TOOL,
+            json!({
+                "disposition": "quiet",
+                "explanation": "x",
+                "citations": [],
+                "basis_and_limitations": "b",
+                "unfinished_work": []
+            }),
+        ),
+    ] {
+        let call = engine::Invocation {
+            id: format!("iu-refuse-{tool_name}"),
+            name: tool_name.into(),
+            arguments: args.to_string(),
+        };
+        let out = iu_host.execute(&call, args).await.unwrap();
+        assert!(
+            matches!(out, engine::recipe::ToolOutcome::Refused(_)),
+            "InitialUnderstanding job must refuse {tool_name}, got: {out:?}"
+        );
+    }
+
+    revocable.revoked.store(true, Ordering::SeqCst);
+    let cause = iu_host
+        .assert_current()
+        .await
+        .expect_err("revoked authority must fail assert_current");
+    assert!(
+        cause.downcast_ref::<PracticeAccessError>().is_some(),
+        "PracticeJobHost::assert_current must preserve typed PracticeAccessError cause, got: {cause:?}"
     );
 }

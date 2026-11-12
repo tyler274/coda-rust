@@ -1824,8 +1824,7 @@ impl Product for PracticeJobHost<'_> {
     async fn admit_binding(&mut self, recipe: &RequestBinding) -> Result<(), engine::Cause> {
         self.authority
             .check_practice_patient(&self.claim.scope)
-            .await
-            .map_err(|err| error(&err.to_string()))?;
+            .await?;
         self.store
             .admit_practice_job_binding(&self.claim, recipe)
             .await?;
@@ -1853,8 +1852,7 @@ impl Product for PracticeJobHost<'_> {
     async fn assert_current(&mut self) -> Result<(), engine::Cause> {
         self.authority
             .check_practice_patient(&self.claim.scope)
-            .await
-            .map_err(|err| error(&err.to_string()))?;
+            .await?;
         self.store.assert_practice_job_current(&self.claim).await
     }
 
@@ -1875,6 +1873,11 @@ impl Product for PracticeJobHost<'_> {
         let is_memory = super::chat_operations::is_memory_tool(&call.name);
         let is_complete_review = call.name == crate::patient_reviews::COMPLETE_PATIENT_REVIEW_TOOL;
         if !is_understanding && !is_refresh && !is_concern && !is_memory && !is_complete_review {
+            return Box::pin(async { Ok(None) });
+        }
+        if (is_concern || is_memory || is_complete_review)
+            && self.claim.kind == PracticeJobKind::InitialUnderstanding
+        {
             return Box::pin(async { Ok(None) });
         }
         let store = self.store.clone();
@@ -1992,12 +1995,18 @@ impl Product for PracticeJobHost<'_> {
                     .await;
             }
             if super::concerns::is_concern_tool(&call.name) {
+                if claim.kind == PracticeJobKind::InitialUnderstanding {
+                    return Ok(ToolOutcome::refused(format!(
+                        "initial understanding job cannot modify concerns: {} is refused",
+                        call.name
+                    )));
+                }
                 let source_work = super::concerns::SourceWork::new(
                     claim.kind.as_str(),
                     &job.work,
                     &claim.attempt,
                 )
-                .map_err(|cause| cause.to_string())?;
+                .map_err(|cause| -> engine::Cause { Box::new(cause) })?;
                 let invocation = Invocation {
                     id: call.id.clone(),
                     name: call.name.clone(),
@@ -2013,11 +2022,23 @@ impl Product for PracticeJobHost<'_> {
                     .await;
             }
             if super::chat_operations::is_memory_tool(&call.name) {
+                if claim.kind == PracticeJobKind::InitialUnderstanding {
+                    return Ok(ToolOutcome::refused(format!(
+                        "initial understanding job cannot modify patient memory: {} is refused",
+                        call.name
+                    )));
+                }
                 return store
                     .execute_practice_memory_tool(&claim, &job, &ordered, &call, arguments)
                     .await;
             }
             if crate::patient_reviews::is_patient_review_tool(&call.name) {
+                if claim.kind == PracticeJobKind::InitialUnderstanding {
+                    return Ok(ToolOutcome::refused(format!(
+                        "initial understanding job cannot invoke patient review tools: {} is refused",
+                        call.name
+                    )));
+                }
                 return store
                     .execute_patient_review_tool(&claim, &job, &ordered, &call, &arguments)
                     .await;
