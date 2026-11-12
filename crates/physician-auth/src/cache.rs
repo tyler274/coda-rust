@@ -29,9 +29,9 @@ use async_trait::async_trait;
 use tokio::sync::watch;
 
 use crate::{
-    Account, AuthStore, AuthorityFeed, Cadence, Membership, PanelError, PatientLink,
-    PhysicianIdentity, PracticeClock, ReviewCadence, Session, SessionActivity, SessionError,
-    SessionRenewal, SignInError, StoreUnavailable, token_hash,
+    Account, AuthStore, AuthorityFeed, Membership, PanelError, PatientLink, PhysicianIdentity,
+    PracticeClock, Session, SessionActivity, SessionError, SessionRenewal, SignInError,
+    StoreUnavailable, token_hash,
 };
 
 /// The Postgres channel the authority triggers notify.
@@ -56,7 +56,6 @@ struct Cache {
     accounts: HashMap<PhysicianIdentity, Entry<Option<Account>>>,
     practices: HashMap<String, Entry<Option<String>>>,
     practice_patients: HashMap<String, Entry<Vec<String>>>,
-    cadences: HashMap<String, Entry<ReviewCadence>>,
 }
 
 impl Cache {
@@ -67,7 +66,6 @@ impl Cache {
         self.accounts.clear();
         self.practices.clear();
         self.practice_patients.clear();
-        self.cadences.clear();
     }
 
     /// Drops every entry read under an older stamp.
@@ -473,22 +471,6 @@ impl AuthStore for CachedAuthStore {
         self.inner.practice_accounts(practice_id).await
     }
 
-    async fn patient_cadence(&self, patient_workspace_id: &str) -> ReviewCadence {
-        self.read(
-            |cache| &mut cache.cadences,
-            patient_workspace_id.to_owned(),
-            self.inner.patient_cadence(patient_workspace_id),
-        )
-        .await
-    }
-
-    async fn set_patient_cadence(&self, patient_workspace_id: &str, cadence: ReviewCadence) {
-        self.inner
-            .set_patient_cadence(patient_workspace_id, cadence)
-            .await;
-        self.invalidate();
-    }
-
     async fn invite(
         &self,
         practice_id: &str,
@@ -583,19 +565,6 @@ impl AuthStore for CachedAuthStore {
             .await
     }
 
-    async fn set_patient_premium(
-        &self,
-        practice_id: &str,
-        patient_workspace_id: &str,
-        premium: bool,
-    ) {
-        self.inner
-            .set_patient_premium(practice_id, patient_workspace_id, premium)
-            .await;
-        // The memory store also moves the review cadence this cache holds.
-        self.invalidate();
-    }
-
     async fn patient_link(
         &self,
         practice_id: &str,
@@ -603,12 +572,6 @@ impl AuthStore for CachedAuthStore {
     ) -> Option<PatientLink> {
         self.inner
             .patient_link(practice_id, patient_workspace_id)
-            .await
-    }
-
-    async fn patient_link_cadence(&self, practice_id: &str, patient_workspace_id: &str) -> Cadence {
-        self.inner
-            .patient_link_cadence(practice_id, patient_workspace_id)
             .await
     }
 }
@@ -733,12 +696,6 @@ mod tests {
         async fn practice_accounts(&self, a: &str) -> Result<Vec<Account>, StoreUnavailable> {
             AuthStore::practice_accounts(&self.inner, a).await
         }
-        async fn patient_cadence(&self, a: &str) -> ReviewCadence {
-            self.inner.patient_cadence(a).await
-        }
-        async fn set_patient_cadence(&self, a: &str, b: ReviewCadence) {
-            self.inner.set_patient_cadence(a, b).await
-        }
         async fn invite(
             &self,
             a: &str,
@@ -795,14 +752,8 @@ mod tests {
         ) -> Result<PatientLink, SignInError> {
             self.inner.revoke_patient_consent(a, b, c).await
         }
-        async fn set_patient_premium(&self, a: &str, b: &str, c: bool) {
-            self.inner.set_patient_premium(a, b, c).await
-        }
         async fn patient_link(&self, a: &str, b: &str) -> Option<PatientLink> {
             self.inner.patient_link(a, b).await
-        }
-        async fn patient_link_cadence(&self, a: &str, b: &str) -> Cadence {
-            self.inner.patient_link_cadence(a, b).await
         }
     }
 

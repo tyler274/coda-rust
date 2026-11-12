@@ -56,7 +56,11 @@ async fn a_second_migrate_records_nothing_new() {
             "SELECT version AS name FROM physician_runtime_migrations"
         )
         .await,
-        ["m20261111_init", "m20261111_response_feedback"]
+        [
+            "m20261111_init",
+            "m20261111_response_feedback",
+            "m20261112_practice_jobs_dispatch",
+        ]
     );
 }
 

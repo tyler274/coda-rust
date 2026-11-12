@@ -579,8 +579,6 @@ impl ConsentState {
 pub struct PremiumState {
     /// Whether premium features are on.
     pub premium: bool,
-    /// The cadence Agents runs; Duet never stores billing.
-    pub cadence: String,
 }
 
 /// Why a front-door call failed.
@@ -907,7 +905,6 @@ mod tests {
                                 axum::http::StatusCode::OK,
                                 Json(serde_json::json!({
                                     "premium": false,
-                                    "cadence": "weekly",
                                 })),
                             ),
                         }
@@ -956,7 +953,6 @@ mod tests {
         );
         let premium = client.premium().await.unwrap();
         assert!(!premium.premium);
-        assert_eq!(premium.cadence, "weekly");
         // A used invitation never joins again.
         assert!(
             client

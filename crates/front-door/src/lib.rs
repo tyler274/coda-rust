@@ -42,11 +42,6 @@ pub const SIGN_IN_TOKEN_TTL_SECONDS: u64 = 86_400;
 pub const SESSION_TTL_SECONDS: u64 = 30 * 86_400;
 /// An invitation is redeemable for fourteen days.
 pub const INVITATION_TTL_SECONDS: u64 = 14 * 86_400;
-/// The cadence Agents runs for every patient: one weekly review.
-pub const CADENCE_WEEKLY: &str = "weekly";
-/// The cadence for paying patients: the weekly review plus a daily check
-/// that runs a full review only when something changed.
-pub const CADENCE_WEEKLY_DAILY_CHECK: &str = "weekly-daily-check";
 
 /// Which roster patient an invitation or link names.
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
@@ -114,9 +109,6 @@ pub enum Consent {
 pub struct Premium {
     /// Whether the patient pays for premium.
     pub premium: bool,
-    /// The cadence Agents runs for the patient. Agents reads only this and
-    /// never knows who pays.
-    pub cadence: String,
 }
 
 /// The durable front-door owner.
@@ -175,8 +167,7 @@ pub trait FrontDoorStore: Send + Sync {
     async fn withdraw_consent(&self, account_id: Uuid, now: u64) -> Result<(), LinkError>;
     /// Reads one account's consent state.
     async fn consent(&self, account_id: Uuid) -> Result<Consent, LinkError>;
-    /// Sets one linked patient's premium status. The cadence follows the
-    /// status: paying patients add the daily check.
+    /// Sets one linked patient's premium status.
     async fn set_premium(
         &self,
         patient: &RosterPatient,
@@ -184,7 +175,7 @@ pub trait FrontDoorStore: Send + Sync {
         now: u64,
     ) -> Result<(), LinkError>;
     /// Reads one linked patient's premium status. Patients without a status
-    /// row read free, with the plain weekly cadence.
+    /// row read free.
     async fn premium(&self, patient: &RosterPatient) -> Premium;
 }
 
@@ -196,15 +187,6 @@ pub(crate) fn token_hash(token: &str) -> [u8; 32] {
 /// Mints one presented token. The store keeps only its hash.
 pub(crate) fn mint_token() -> String {
     format!("codaf-{}", Uuid::new_v4().simple())
-}
-
-/// The cadence a premium status implies: paying patients add the daily check.
-fn cadence_for(premium: bool) -> &'static str {
-    if premium {
-        CADENCE_WEEKLY_DAILY_CHECK
-    } else {
-        CADENCE_WEEKLY
-    }
 }
 
 #[derive(Debug, Default)]
@@ -549,10 +531,7 @@ impl FrontDoorStore for MemoryFrontDoorStore {
         }
         state.premium.insert(
             (patient.practice_id.clone(), patient.patient_id.clone()),
-            Premium {
-                premium,
-                cadence: cadence_for(premium).to_owned(),
-            },
+            Premium { premium },
         );
         Ok(())
     }
@@ -563,10 +542,7 @@ impl FrontDoorStore for MemoryFrontDoorStore {
             .premium
             .get(&(patient.practice_id.clone(), patient.patient_id.clone()))
             .cloned()
-            .unwrap_or(Premium {
-                premium: false,
-                cadence: cadence_for(false).to_owned(),
-            })
+            .unwrap_or(Premium { premium: false })
     }
 }
 
@@ -837,29 +813,17 @@ mod tests {
         let (luna, _, _) = invited(&store, "luna@example.test").await;
         assert_eq!(
             store.premium(&luna).await,
-            Premium {
-                premium: false,
-                cadence: CADENCE_WEEKLY.to_owned(),
-            },
+            Premium { premium: false },
             "a patient without a status row reads free"
         );
         store.set_premium(&luna, true, NOW).await.unwrap();
         assert_eq!(
             store.premium(&luna).await,
-            Premium {
-                premium: true,
-                cadence: CADENCE_WEEKLY_DAILY_CHECK.to_owned(),
-            },
-            "paying patients add the daily check"
+            Premium { premium: true },
+            "premium status updates per linked patient"
         );
         store.set_premium(&luna, false, NOW).await.unwrap();
-        assert_eq!(
-            store.premium(&luna).await,
-            Premium {
-                premium: false,
-                cadence: CADENCE_WEEKLY.to_owned(),
-            }
-        );
+        assert_eq!(store.premium(&luna).await, Premium { premium: false });
         assert_eq!(
             store
                 .set_premium(&patient("practice", "nobody"), true, NOW)

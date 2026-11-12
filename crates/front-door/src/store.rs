@@ -8,8 +8,8 @@ use std::time::Duration;
 use crate::migration::{Accounts, Consents, Invitations, Links, Premiums, Sessions, SignInTokens};
 use crate::{
     Account, Consent, FrontDoorStore, Invitation, InviteError, LinkError, Premium, RosterPatient,
-    SESSION_TTL_SECONDS, SIGN_IN_TOKEN_TTL_SECONDS, SessionError, SignInError, cadence_for,
-    mint_token, token_hash,
+    SESSION_TTL_SECONDS, SIGN_IN_TOKEN_TTL_SECONDS, SessionError, SignInError, mint_token,
+    token_hash,
 };
 use async_trait::async_trait;
 use sea_orm::{
@@ -555,13 +555,11 @@ impl FrontDoorStore for PostgresFrontDoorStore {
             Some(row) => {
                 let mut update: crate::migration::PremiumActiveModel = row.into();
                 update.premium = Set(premium);
-                update.cadence = Set(cadence_for(premium).to_owned());
                 update
             }
             None => crate::migration::PremiumActiveModel {
                 patient_key: Set(patient_key(patient)),
                 premium: Set(premium),
-                cadence: Set(cadence_for(premium).to_owned()),
                 created_at: Set(now as i64),
             },
         };
@@ -570,10 +568,7 @@ impl FrontDoorStore for PostgresFrontDoorStore {
                 sea_orm::sea_query::OnConflict::column(
                     crate::migration::premium::Column::PatientKey,
                 )
-                .update_columns([
-                    crate::migration::premium::Column::Premium,
-                    crate::migration::premium::Column::Cadence,
-                ])
+                .update_columns([crate::migration::premium::Column::Premium])
                 .to_owned(),
             )
             .exec(&self.db)
@@ -590,12 +585,8 @@ impl FrontDoorStore for PostgresFrontDoorStore {
             .flatten()
             .map(|row| Premium {
                 premium: row.premium,
-                cadence: row.cadence,
             })
-            .unwrap_or(Premium {
-                premium: false,
-                cadence: cadence_for(false).to_owned(),
-            })
+            .unwrap_or(Premium { premium: false })
     }
 }
 

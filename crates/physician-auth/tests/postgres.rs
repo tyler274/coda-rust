@@ -4,7 +4,7 @@
 //! contract is covered by the memory-store unit tests, and these stay quiet.
 
 use physician_auth::{
-    Account, AuthStore, Cadence, Membership, PanelError, PhysicianIdentity, PostgresAuthStore,
+    Account, AuthStore, Membership, PanelError, PhysicianIdentity, PostgresAuthStore,
     PracticeClock, SessionActivity, SessionError, SignInError, StoreUnavailable,
 };
 use sea_orm::{ConnectionTrait, EntityTrait, PaginatorTrait, QuerySelect, TransactionTrait};
@@ -810,25 +810,10 @@ async fn practice_patients_resolve_clinic_demographic_and_persist_cadence_in_pos
         store.membership(&doc, "pw-clinic-1").await,
         Membership::ClinicDemographic
     );
-
-    assert_eq!(
-        store.patient_cadence("pw-clinic-1").await,
-        physician_auth::ReviewCadence::Weekly
-    );
-    store
-        .set_patient_cadence(
-            "pw-clinic-1",
-            physician_auth::ReviewCadence::WeeklyAndDailyWhenChanged,
-        )
-        .await;
-    assert_eq!(
-        store.patient_cadence("pw-clinic-1").await,
-        physician_auth::ReviewCadence::WeeklyAndDailyWhenChanged
-    );
 }
 
 #[tokio::test]
-async fn patient_invitation_consent_and_cadence_round_trip() {
+async fn patient_invitation_and_consent_round_trip() {
     let Some(store) = store("patient_link").await else {
         return;
     };
@@ -849,14 +834,6 @@ async fn patient_invitation_consent_and_cadence_round_trip() {
         .expect("grant consent");
     assert!(consented.sharing_consented);
     assert_eq!(consented.consent_version.as_deref(), Some("v1"));
-
-    store
-        .set_patient_premium("pg-proof", "pw-elena", true)
-        .await;
-    assert_eq!(
-        store.patient_link_cadence("pg-proof", "pw-elena").await,
-        Cadence::DailyWhenChanged
-    );
 
     let revoked = store
         .revoke_patient_consent("pg-proof", "pw-elena", NOW + 20)

@@ -31,7 +31,6 @@ pub use lifetime::{SessionActivity, SessionLifetime, SessionRenewal};
 
 pub use cache::{AUTHORITY_CHANNEL, CachedAuthStore, ENTRY_TTL, follow};
 pub use error::{PanelError, SessionError, SignInError, StoreUnavailable};
-pub use patient_work::ReviewCadence;
 pub use store::PostgresAuthStore;
 pub use tokio::sync::watch;
 
@@ -43,41 +42,8 @@ pub const SIGN_IN_TOKEN_TTL_SECONDS: u64 = 86_400;
 /// An invitation is redeemable for fourteen days.
 pub const INVITATION_TTL_SECONDS: u64 = 14 * 86_400;
 
-/// The per-patient review cadence exposed to Agents.
-///
-/// Agents reads only `Cadence` (`Weekly` or `DailyWhenChanged`) and never
-/// reads payment, subscription, or billing state.
-#[derive(Debug, Clone, Copy, Default, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
-#[serde(rename_all = "snake_case")]
-pub enum Cadence {
-    /// Weekly review cadence (the default for all roster patients).
-    #[default]
-    Weekly,
-    /// Daily review cadence when patient state has changed.
-    DailyWhenChanged,
-}
-
-impl Cadence {
-    /// Returns the wire/database string for this cadence (`"weekly"` or `"daily_when_changed"`).
-    pub const fn as_str(self) -> &'static str {
-        match self {
-            Self::Weekly => "weekly",
-            Self::DailyWhenChanged => "daily_when_changed",
-        }
-    }
-
-    /// Parses a cadence string, defaulting unknown values to `None`.
-    pub fn parse(value: &str) -> Option<Self> {
-        match value.trim() {
-            "weekly" => Some(Self::Weekly),
-            "daily_when_changed" => Some(Self::DailyWhenChanged),
-            _ => None,
-        }
-    }
-}
-
 /// The front-door link between a practice's roster patient `(practice_id, patient_workspace_id)`
-/// and the patient's Duet account, including versioned sharing consent and review cadence.
+/// and the patient's Duet account, including versioned sharing consent.
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct PatientLink {
     /// The practice that owns the roster patient.
@@ -96,8 +62,6 @@ pub struct PatientLink {
     pub consented_at: Option<u64>,
     /// The Unix second consent was revoked, if revoked.
     pub revoked_at: Option<u64>,
-    /// The per-patient review cadence exposed to Agents (`Weekly` | `DailyWhenChanged`).
-    pub cadence: Cadence,
 }
 
 /// A physician's practice-scoped identity, as the projections key it.
@@ -315,12 +279,6 @@ pub trait AuthStore: Send + Sync {
     async fn practice_patients(&self, practice_id: &str) -> Vec<String>;
     /// Lists the physician accounts in `practice_id`, sorted.
     async fn practice_accounts(&self, practice_id: &str) -> Result<Vec<Account>, StoreUnavailable>;
-    /// Reads the per-patient [`ReviewCadence`] without exposing payment status.
-    async fn patient_cadence(&self, patient_workspace_id: &str) -> ReviewCadence;
-    /// Sets the per-patient [`ReviewCadence`] (written by the front door /
-    /// practice bridge when patient health-link tier changes, never by
-    /// physician override).
-    async fn set_patient_cadence(&self, patient_workspace_id: &str, cadence: ReviewCadence);
     /// Records one pending invitation and returns its redeem token.
     async fn invite(
         &self,
@@ -376,34 +334,12 @@ pub trait AuthStore: Send + Sync {
         patient_workspace_id: &str,
         now: u64,
     ) -> Result<PatientLink, SignInError>;
-    /// Sets whether a roster patient has premium front-door features, which maps internally
-    /// to `Cadence::DailyWhenChanged` (or `Cadence::Weekly` when `false`) without exposing
-    /// billing or payment state to Agents.
-    async fn set_patient_premium(
-        &self,
-        practice_id: &str,
-        patient_workspace_id: &str,
-        premium: bool,
-    );
     /// Reads the `PatientLink` for `(practice_id, patient_workspace_id)`, if invited or configured.
     async fn patient_link(
         &self,
         practice_id: &str,
         patient_workspace_id: &str,
     ) -> Option<PatientLink>;
-    /// Reads the per-patient review `Cadence` (`Weekly` | `DailyWhenChanged`) exposed to Agents.
-    ///
-    /// This is the same per-patient cadence as [`AuthStore::patient_cadence`], keyed by
-    /// `(practice_id, patient_workspace_id)` instead of workspace id alone.
-    async fn patient_link_cadence(&self, practice_id: &str, patient_workspace_id: &str) -> Cadence;
-}
-
-/// Maps the Agents-facing `Cadence` onto the internal `ReviewCadence`.
-fn cadence_to_review_cadence(cadence: Cadence) -> ReviewCadence {
-    match cadence {
-        Cadence::Weekly => ReviewCadence::Weekly,
-        Cadence::DailyWhenChanged => ReviewCadence::WeeklyAndDailyWhenChanged,
-    }
 }
 
 /// The SHA-256 of a presented token: the only form the store keeps.
@@ -427,7 +363,6 @@ struct MemoryState {
     memberships: HashMap<(String, String, String), Membership>,
     practices: HashMap<String, PracticeClock>,
     patients: HashMap<String, String>,
-    cadences: HashMap<String, ReviewCadence>,
     sessions: HashMap<[u8; 32], Session>,
     sign_ins: HashMap<String, (SignInPending, ())>,
     invitations: HashMap<String, InvitationPending>,
@@ -537,10 +472,6 @@ impl MemoryAuthStore {
         state
             .patients
             .insert(patient_workspace_id.to_owned(), practice_id.to_owned());
-        state
-            .cadences
-            .entry(patient_workspace_id.to_owned())
-            .or_insert(ReviewCadence::Weekly);
     }
 
     /// Places one patient on a physician's panel directly, for fixtures.
@@ -993,10 +924,6 @@ impl AuthStore for MemoryAuthStore {
             .patients
             .entry(patient_workspace_id.to_owned())
             .or_insert_with(|| practice_id.to_owned());
-        state
-            .cadences
-            .entry(patient_workspace_id.to_owned())
-            .or_insert(ReviewCadence::Weekly);
         Ok(())
     }
 
@@ -1027,34 +954,6 @@ impl AuthStore for MemoryAuthStore {
 
     async fn practice_accounts(&self, practice_id: &str) -> Result<Vec<Account>, StoreUnavailable> {
         Ok(MemoryAuthStore::practice_accounts(self, practice_id))
-    }
-
-    async fn patient_cadence(&self, patient_workspace_id: &str) -> ReviewCadence {
-        self.state
-            .lock()
-            .expect("auth state")
-            .cadences
-            .get(patient_workspace_id)
-            .copied()
-            .unwrap_or(ReviewCadence::Weekly)
-    }
-
-    async fn set_patient_cadence(&self, patient_workspace_id: &str, cadence: ReviewCadence) {
-        let _announce = self.announce();
-        let mut state = self.state.lock().expect("auth state");
-        state
-            .cadences
-            .insert(patient_workspace_id.to_owned(), cadence);
-        if let Some(record) = state
-            .patient_links
-            .values_mut()
-            .find(|record| record.link.patient_workspace_id == patient_workspace_id)
-        {
-            record.link.cadence = match cadence {
-                ReviewCadence::Weekly => Cadence::Weekly,
-                ReviewCadence::WeeklyAndDailyWhenChanged => Cadence::DailyWhenChanged,
-            };
-        }
     }
 
     async fn invite(
@@ -1207,7 +1106,6 @@ impl AuthStore for MemoryAuthStore {
                     consent_version: None,
                     consented_at: None,
                     revoked_at: None,
-                    cadence: Cadence::Weekly,
                 },
                 pending_token_hash: None,
                 pending_expires_at: None,
@@ -1303,44 +1201,6 @@ impl AuthStore for MemoryAuthStore {
         Ok(record.link.clone())
     }
 
-    async fn set_patient_premium(
-        &self,
-        practice_id: &str,
-        patient_workspace_id: &str,
-        premium: bool,
-    ) {
-        let _announce = self.announce();
-        let cadence = if premium {
-            Cadence::DailyWhenChanged
-        } else {
-            Cadence::Weekly
-        };
-        let review_cadence = cadence_to_review_cadence(cadence);
-        let mut state = self.state.lock().expect("auth state");
-        state
-            .cadences
-            .insert(patient_workspace_id.to_owned(), review_cadence);
-        let entry = state
-            .patient_links
-            .entry((practice_id.to_owned(), patient_workspace_id.to_owned()))
-            .or_insert_with(|| PatientLinkRecord {
-                link: PatientLink {
-                    practice_id: practice_id.to_owned(),
-                    patient_workspace_id: patient_workspace_id.to_owned(),
-                    duet_account_id: None,
-                    linked: false,
-                    sharing_consented: false,
-                    consent_version: None,
-                    consented_at: None,
-                    revoked_at: None,
-                    cadence,
-                },
-                pending_token_hash: None,
-                pending_expires_at: None,
-            });
-        entry.link.cadence = cadence;
-    }
-
     async fn patient_link(
         &self,
         practice_id: &str,
@@ -1352,13 +1212,6 @@ impl AuthStore for MemoryAuthStore {
             .patient_links
             .get(&(practice_id.to_owned(), patient_workspace_id.to_owned()))
             .map(|record| record.link.clone())
-    }
-
-    async fn patient_link_cadence(&self, practice_id: &str, patient_workspace_id: &str) -> Cadence {
-        self.patient_link(practice_id, patient_workspace_id)
-            .await
-            .map(|link| link.cadence)
-            .unwrap_or(Cadence::Weekly)
     }
 }
 
@@ -1865,7 +1718,7 @@ mod tests {
     }
 
     #[tokio::test]
-    async fn registered_practice_patients_resolve_clinic_demographic_and_store_cadence() {
+    async fn registered_practice_patients_resolve_clinic_demographic() {
         let store = MemoryAuthStore::new();
         store.seed_account("clinic-a", "admin", "admin@a.test", "Admin A", true);
         store.seed_account("clinic-a", "doc", "doc@a.test", "Doc A", false);
@@ -1918,19 +1771,6 @@ mod tests {
             store.membership(&doc, "pw-mary").await,
             Membership::ClinicDemographic
         );
-
-        // Per-patient cadence defaults to Weekly and updates to WeeklyAndDailyWhenChanged.
-        assert_eq!(
-            store.patient_cadence("pw-mary").await,
-            ReviewCadence::Weekly
-        );
-        store
-            .set_patient_cadence("pw-mary", ReviewCadence::WeeklyAndDailyWhenChanged)
-            .await;
-        assert_eq!(
-            store.patient_cadence("pw-mary").await,
-            ReviewCadence::WeeklyAndDailyWhenChanged
-        );
     }
 
     #[tokio::test]
@@ -1949,7 +1789,6 @@ mod tests {
             .expect("invited patient record");
         assert!(!initial.linked);
         assert!(!initial.sharing_consented);
-        assert_eq!(initial.cadence, Cadence::Weekly);
 
         // Consent cannot be granted before accepting the explicit practice invitation.
         assert_eq!(
@@ -1988,6 +1827,14 @@ mod tests {
         assert_eq!(consented.consented_at, Some(NOW + 30));
         assert_eq!(consented.revoked_at, None);
 
+        let serialized = serde_json::to_string(&consented).unwrap();
+        assert!(
+            !serialized.contains("premium")
+                && !serialized.contains("billing")
+                && !serialized.contains("cadence"),
+            "serialized link carries connection and consent only"
+        );
+
         // One-step stop-sharing immediately revokes active consent.
         let revoked = store
             .revoke_patient_consent("practice-1", "pw-elena", NOW + 60)
@@ -2011,43 +1858,5 @@ mod tests {
             .expect("link remains");
         assert!(!still.sharing_consented);
         assert_eq!(still.revoked_at, Some(NOW + 60));
-    }
-
-    #[tokio::test]
-    async fn patient_cadence_exposes_only_weekly_or_daily_when_changed_to_agents() {
-        let store = MemoryAuthStore::new();
-        assert_eq!(
-            store.patient_link_cadence("practice-1", "pw-elena").await,
-            Cadence::Weekly,
-            "default roster cadence is Weekly"
-        );
-
-        store
-            .set_patient_premium("practice-1", "pw-elena", true)
-            .await;
-        assert_eq!(
-            store.patient_link_cadence("practice-1", "pw-elena").await,
-            Cadence::DailyWhenChanged
-        );
-        let serialized = serde_json::to_string(
-            &store
-                .patient_link("practice-1", "pw-elena")
-                .await
-                .expect("link"),
-        )
-        .unwrap();
-        assert!(serialized.contains("\"daily_when_changed\""));
-        assert!(
-            !serialized.contains("premium") && !serialized.contains("billing"),
-            "serialized link exposes cadence only, never billing or payment state"
-        );
-
-        store
-            .set_patient_premium("practice-1", "pw-elena", false)
-            .await;
-        assert_eq!(
-            store.patient_link_cadence("practice-1", "pw-elena").await,
-            Cadence::Weekly
-        );
     }
 }
