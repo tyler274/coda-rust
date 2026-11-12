@@ -3,7 +3,7 @@
 The Coda agent sandbox: a hardened NixOS container where coding agents (and you, over Remote-SSH) work on `coda-rust`, and disposable Firecracker microVMs that run its CI. The crate is a member of the root Cargo workspace; this directory is also its own flake, apart from the product flake, which builds only this crate from the root manifest and lockfile, so a host deploys it without the product flake's toolchain or other crates. It provides:
 
 - `packages.coda-sandbox`: the `coda-sandbox` binary ([src](src)), with `doctor` and `status`.
-- `nixosModules.default`: `services.coda-sandbox` ([nix/default.nix](nix/default.nix)), which declares the container, the CI and `coda-carry`, and writes `/etc/coda-sandbox/config.toml` for the binary.
+- `nixosModules.default`: `services.coda-sandbox` ([nix/default.nix](nix/default.nix)), which declares the container, its token broker, the CI and `coda-carry`, and writes `/etc/coda-sandbox/config.toml` for the binary.
 - `checks`: the binary's tests, Clippy and rustfmt; the `coda-carry` test; and two VM tests, `agent-sandbox` and `coda-firecracker`, that need KVM.
 
 ## Using the module
@@ -37,6 +37,8 @@ services.coda-sandbox = {
 | `paths.root` | `/agents/coda` | Holds `src`, `build` and `ci`; each is its own option |
 | `paths.repo` | `${paths.src}/coda-rust` | The checkout inside the container |
 | `carry.dir`, `carry.sourceRepo` | `/var/lib/coda-carry`, `~user/code/coda/coda-rust` | Where `coda-carry` writes, and what it reads |
+| `broker.ghFallback` | `false` | Let the broker serve `gh auth token` when no `github-agent` is stored |
+| `broker.keyringPackage` | `pkgs.libsecret` | Provides `secret-tool` for the broker |
 | `ci.enable` | `false` | The Firecracker controller, its timer and the seed unit |
 | `ci.tokenFile` | `null` | Root-only GitHub token for the GitHub queue |
 | `ci.guest`, `ci.workDiskSize`, `ci.marginMiB` | `{ }`, `200G`, `4096` | Guest configuration and sizing |
@@ -55,7 +57,7 @@ services.coda-sandbox = {
 | `/agents/coda/ci/spool/requests` | `/agents/coda/ci/spool/requests` | drop-only (mode `1733`) |
 | `/agents/coda/ci/spool/results` | `/agents/coda/ci/spool/results` | read-only |
 | `/agents/coda/carry` | `/var/lib/coda-carry` | read-only |
-| `/run/agent-secrets` | `/var/lib/agent-secrets/coda-agent` | read-only |
+| `/run/coda-sandbox/agent` | `/run/coda-sandbox/agent` | read-only; the token broker's socket |
 | `/nix/store`, daemon socket | host store | read-only; the agent is an untrusted daemon user |
 
 Paths equal the host's so the host Nix daemon's GC roots for each worktree's dev shell stay valid. Starting the container never gates boot: it is wanted only by `machines.target`, and if a unit in `requires` fails, only the container and the CI fail. `nix build ./crates/workspace-tools/sandbox#checks.x86_64-linux.agent-sandbox -L` runs the container on a late-imported ZFS pool in a throwaway VM and checks these boundaries.
@@ -64,15 +66,21 @@ Host git refuses trees the agent wrote (they belong to another UID). Do not mark
 
 ### Agent sandbox credentials
 
-The agent's tokens are files the agent can read and not change. Create a fine-grained GitHub token limited to `Coda-Health/coda-rust` with **Contents: read and write** and **Pull requests: read and write**, and a Doppler service token for the `dev` config (read-only). Then, with the group `uidBase + 100` (655460 by default):
+No token sits in a file. The container's tokens live in your desktop keyring (the Secret Service, which KDE's wallet serves and PAM unlocks at login), and the token broker hands them out one request at a time. Create a fine-grained GitHub token limited to `Coda-Health/coda-rust` with **Contents: read and write** and **Pull requests: read and write**, and a read-only Doppler service token for `coda-rust`'s `dev` config. Store each once, as yourself:
 
 ```bash
-d=/var/lib/agent-secrets/coda-agent
-sudo install -m 0440 -o root -g 655460 /dev/stdin $d/github-token   # paste, then Ctrl-D
-sudo install -m 0440 -o root -g 655460 /dev/stdin $d/doppler-token  # paste, then Ctrl-D
+coda-sandbox broker store github-agent   # paste at the hidden prompt, then Enter
+coda-sandbox broker store doppler
+coda-sandbox doctor                      # "token broker  github-agent: keyring; doppler: keyring"
 ```
 
-Anything in the container can read `github-token`, so a general `gh auth token` there can push to every repository you can; use the fine-grained token. Inside, git uses the GitHub token over HTTPS (remotes written as `git@github.com:` are rewritten), and `GH_TOKEN` and `DOPPLER_TOKEN` are set for login shells. Revoking either token on GitHub or Doppler is the kill switch. `coda-sandbox doctor` lists these files as ones the token broker replaces.
+`broker store` reads the token from standard input, never from the command line, and tells the running broker to read it on next use; `broker delete <item>` removes one. `coda-sandbox broker self-test` stores, reads back and deletes a throwaway item to prove the keyring works.
+
+The broker ([nix/broker.nix](nix/broker.nix), [src/broker](src/broker)) is `coda-sandbox-broker.service`, a `systemd --user` service of `user` that keeps running while the user lingers. It listens on `/run/coda-sandbox/agent/broker.sock`, a directory bound into the container at the same path, and serves a secret only to a peer whose kernel-reported uid is the container's agent (`uidBase + 1000`); container root, other host users and other containers are refused, and you may ask it only for its report or a reload. It keeps each token in memory for an hour, keeps serving a cached one while the keyring is locked, rate-limits the container to 30 requests a minute, and writes one line per request to its journal (`journalctl --user -u coda-sandbox-broker`) with the caller, the outcome and an 8-digit SHA-256 fingerprint of the token, never the token.
+
+Inside the container, git asks `coda-sandbox credential` for `https://github.com` (remotes written as `git@github.com:` are rewritten), and `gh` and `doppler` are wrappers that fetch their token for that one process, so no token is in the environment of a shell. With no answer, git fails rather than prompting. Anything in the container can ask, so the GitHub token must reach only `coda-rust`. `broker.ghFallback = true` lets the broker serve `gh auth token`, your general token, when no `github-agent` is stored; doctor warns while it is on or after it was used. Revoking a token on GitHub or Doppler is the kill switch.
+
+The module's polkit rule lets `user` start, stop and restart `container@<name>.service` and the `coda-ci` units without sudo, so doctor's fixes for them are plain `systemctl`.
 
 ### Working in the sandbox from Cursor
 

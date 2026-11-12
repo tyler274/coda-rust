@@ -3,10 +3,12 @@
 //! replace the sandbox scripts (`worktree`, `ci run` and `carry`), and the
 //! CI controller.
 
+pub mod broker;
 pub mod carry;
 pub mod ci;
 pub mod ci_controller;
 pub mod config;
+pub mod credential;
 pub mod doctor;
 pub mod editor_settings;
 pub mod error;

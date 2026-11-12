@@ -7,6 +7,11 @@ let
   disk = "/dev/disk/by-id/virtio-agents";
   uidBase = 655360;
   hostAgent = toString (uidBase + 1000);
+  keyring = "/var/lib/fake-keyring";
+  # Distinctive, so the audit-log check cannot match ordinary text, and not
+  # shaped like a real token, so the published test log stays clean.
+  githubToken = "vmcheck-github-agent-7f3a91";
+  dopplerToken = "vmcheck-doppler-2c8e54";
   # Throwaway key for the sshd login check; never used outside this test.
   testKey = pkgs.runCommand "coda-agent-test-key" { nativeBuildInputs = [ pkgs.openssh ]; } ''
     mkdir $out
@@ -78,10 +83,13 @@ in
         inherit uidBase;
         memoryMax = "1G";
         authorizedKeys = [ (builtins.readFile "${testKey}/key.pub") ];
+        # No desktop session runs a Secret Service here; the stub keeps
+        # items as files the broker's user owns.
+        broker.keyringPackage = pkgs.callPackage ./fake-secret-tool.nix { dir = keyring; };
       };
-      systemd.tmpfiles.rules = [
-        "f /var/lib/agent-secrets/coda-agent/github-token 0440 root ${toString (uidBase + 100)} - secret"
-      ];
+      systemd.tmpfiles.rules = [ "d ${keyring} 0700 luluco users -" ];
+      # Cyrene's desktop runs polkit; the module's rule needs it.
+      security.polkit.enable = true;
       # Host services the sandbox must not reach.
       services.nginx = {
         enable = true;
@@ -94,9 +102,11 @@ in
       };
       # Open on the host firewall, so only the sandbox rules can block it.
       networking.firewall.allowedTCPPorts = [ 8080 ];
+      # Lingering, as on Cyrene, so the broker runs without a login.
       users.users.luluco = {
         isNormalUser = true;
         home = "/home/luluco";
+        linger = true;
       };
     };
 
@@ -182,9 +192,9 @@ in
         agent("nix path-info ${pkgs.coreutils}")
         agent_fails("touch /nix/store/escape")
 
-    with subtest("secrets are read-only, home is absent"):
-        agent("cat /run/agent-secrets/github-token")
-        agent_fails("touch /run/agent-secrets/x")
+    with subtest("no token file, home is absent"):
+        machine.fail("test -e /var/lib/agent-secrets")
+        agent_fails("test -e /run/agent-secrets")
         agent_fails("ls /home/luluco")
 
     with subtest("Landlock works inside nspawn"):
@@ -216,12 +226,16 @@ in
         machine.fail(ssh + "root@10.233.1.2 true")
         machine.fail(ssh + "-o PubkeyAuthentication=no agent@10.233.1.2 true")
 
-    with subtest("dev tools: direnv, git over HTTPS with the token helper"):
+    with subtest("dev tools: direnv, GitHub remotes rewritten to HTTPS"):
         agent("command -v direnv")
         rewritten = agent("git ls-remote --get-url git@github.com:Coda-Health/coda-rust.git").strip()
         assert rewritten == "https://github.com/Coda-Health/coda-rust.git", rewritten
-        cred = agent("printf 'protocol=https\\nhost=github.com\\n\\n' | git credential fill")
-        assert "password=secret" in cred, cred
-        assert agent("printenv GH_TOKEN").strip() == "secret"
-  '' + builtins.readFile ./agent-sandbox-coda.py;
+
+    github_token = "${githubToken}"
+    doppler_token = "${dopplerToken}"
+    keyring = "${keyring}"
+    host_users_gid = "${toString (uidBase + 100)}"
+  ''
+  + builtins.readFile ./agent-sandbox-broker.py
+  + builtins.readFile ./agent-sandbox-coda.py;
 }

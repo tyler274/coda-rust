@@ -3,7 +3,10 @@
 use std::path::PathBuf;
 
 use clap::{Parser, Subcommand};
+use coda_sandbox::broker::Item;
+use coda_sandbox::broker::client::Want;
 use coda_sandbox::config;
+use coda_sandbox::credential::Operation;
 use coda_sandbox::ids::{JobName, Slug};
 use coda_sandbox::worktree::gc::DEFAULT_IDLE_DAYS;
 use coda_sandbox::worktree::new::DEFAULT_FROM;
@@ -47,6 +50,43 @@ pub enum Command {
         #[arg(value_enum)]
         mode: Option<ControllerMode>,
     },
+    /// The token broker on the host: it serves the container's tokens from
+    /// your keyring over [broker] socket.
+    #[command(subcommand)]
+    Broker(Broker),
+    /// git's credential helper in the container, answered by the broker.
+    Credential {
+        #[arg(value_enum)]
+        operation: Operation,
+    },
+    /// Print a token from the broker, for the container's gh and doppler
+    /// wrappers.
+    Token {
+        #[arg(value_enum)]
+        want: Want,
+        /// Print even when standard output is a terminal.
+        #[arg(long)]
+        force: bool,
+    },
+}
+
+#[derive(Debug, Subcommand)]
+pub enum Broker {
+    /// Serve the socket; run by the coda-sandbox-broker user service.
+    Serve,
+    /// Store a token in your keyring, read from standard input without echo
+    /// and never from the command line, then reload the running broker.
+    Store {
+        #[arg(value_enum)]
+        item: Item,
+    },
+    /// Remove a token from your keyring and reload the running broker.
+    Delete {
+        #[arg(value_enum)]
+        item: Item,
+    },
+    /// Store, read back and delete a throwaway keyring item.
+    SelfTest,
 }
 
 #[derive(Debug, Clone, Copy, clap::ValueEnum)]

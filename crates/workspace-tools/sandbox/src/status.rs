@@ -6,8 +6,9 @@ use std::path::{Path, PathBuf};
 
 use serde::Serialize;
 
+use crate::broker::wire::Report;
 use crate::config::{Config, UnitName};
-use crate::doctor::LEGACY_TOKEN_DIRS;
+use crate::doctor::LegacyTokenDir;
 use crate::error::Error;
 use crate::probe::{LoadState, PathKind, Probe, SshReach, UnitScope, UnitState};
 
@@ -20,6 +21,7 @@ pub struct Status {
     pub container: ContainerStatus,
     pub build_root: Reading<PathKind>,
     pub ci: CiStatus,
+    pub broker: BrokerStatus,
     pub legacy_token_dirs: Vec<TokenDir>,
 }
 
@@ -90,7 +92,14 @@ pub struct CiStatus {
     pub results: Reading<usize>,
 }
 
-/// A directory that held a root-owned GitHub token before the broker.
+/// The token broker's socket and its report of what it can serve.
+#[derive(Debug, Serialize)]
+pub struct BrokerStatus {
+    pub socket: PathBuf,
+    pub report: Reading<Report>,
+}
+
+/// A directory that holds a root-owned GitHub token in a file.
 #[derive(Debug, Serialize)]
 pub struct TokenDir {
     pub path: PathBuf,
@@ -124,12 +133,18 @@ pub fn collect(probe: &dyn Probe, config_path: &Path, config: &Config) -> Status
             service: unit(probe, UnitScope::System, &config.ci.service),
             results: probe.count_entries(&config.ci.results()).into(),
         },
-        legacy_token_dirs: LEGACY_TOKEN_DIRS
-            .map(PathBuf::from)
+        broker: BrokerStatus {
+            socket: config.broker.socket.clone(),
+            report: probe
+                .broker(&config.broker.socket)
+                .map_err(Error::from)
+                .into(),
+        },
+        legacy_token_dirs: LegacyTokenDir::ALL
             .into_iter()
-            .map(|path| TokenDir {
-                kind: probe.path_kind(&path).into(),
-                path,
+            .map(|dir| TokenDir {
+                path: dir.path().to_owned(),
+                kind: probe.path_kind(dir.path()).into(),
             })
             .collect(),
     }
@@ -181,6 +196,11 @@ impl Status {
             show_unit(&self.ci.timer),
             show_unit(&self.ci.service),
             show(&self.ci.results, usize::to_string)
+        );
+        let _ = writeln!(
+            out,
+            "broker     {}",
+            show(&self.broker.report, crate::doctor::broker::describe)
         );
         let (mut absent, mut present, mut unreadable) = (0, 0, 0);
         for dir in &self.legacy_token_dirs {

@@ -143,6 +143,10 @@ pub enum Error {
     NoCarry,
     #[error("carry runs git in your worktrees, so it runs as their owner, never as root")]
     CarryAsRoot,
+    #[error("cannot read git's credential query")]
+    CredentialQuery(#[source] io::Error),
+    #[error(transparent)]
+    Broker(#[from] crate::broker::error::BrokerError),
 }
 
 impl Error {
@@ -155,13 +159,18 @@ impl Error {
 
     /// The error and each of its causes, joined for one line of output.
     pub fn chain(&self) -> String {
-        let mut text = self.to_string();
-        let mut cause = std::error::Error::source(self);
-        while let Some(current) = cause {
-            text.push_str(": ");
-            text.push_str(&current.to_string());
-            cause = current.source();
-        }
-        text
+        chain(self)
     }
+}
+
+/// Any error and each of its causes, joined for one line of output.
+pub fn chain(error: &dyn std::error::Error) -> String {
+    let mut text = error.to_string();
+    let mut cause = error.source();
+    while let Some(current) = cause {
+        text.push_str(": ");
+        text.push_str(&current.to_string());
+        cause = current.source();
+    }
+    text
 }

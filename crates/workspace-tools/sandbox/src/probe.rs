@@ -14,6 +14,8 @@ use serde::Serialize;
 
 pub use systemd::{ActiveState, LoadState, UnitScope, UnitState};
 
+use crate::broker::error::BrokerError;
+use crate::broker::wire::Report;
 use crate::config::UnitName;
 use crate::error::Error;
 
@@ -38,6 +40,8 @@ pub trait Probe {
     fn count_entries(&self, dir: &Path) -> Result<usize, Error>;
     fn ssh(&self, host: &str) -> Result<SshReach, Error>;
     fn home(&self) -> Option<PathBuf>;
+    /// The token broker's report of what it can serve; never a secret.
+    fn broker(&self, socket: &Path) -> Result<Report, BrokerError>;
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize)]
@@ -210,6 +214,10 @@ impl Probe for SystemProbe {
         std::env::var_os("HOME")
             .filter(|home| !home.is_empty())
             .map(PathBuf::from)
+    }
+
+    fn broker(&self, socket: &Path) -> Result<Report, BrokerError> {
+        crate::broker::client::ping(socket)
     }
 }
 

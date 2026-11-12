@@ -1,6 +1,7 @@
 //! `coda-sandbox doctor`: read-only checks of the sandbox on this machine.
 //! Every warning and failure names the fix.
 
+pub mod broker;
 mod checks;
 #[cfg(test)]
 mod fake;
@@ -9,9 +10,8 @@ mod reflink;
 mod tests;
 
 use std::fmt::{self, Write as _};
-use std::path::PathBuf;
 
-pub use checks::{LEGACY_TOKEN_DIRS, run};
+pub use checks::{LegacyTokenDir, run};
 
 use crate::editor_settings::Editor;
 use crate::error::Error;
@@ -26,8 +26,10 @@ pub enum Check {
     Ssh,
     SpoolDir(SpoolDir),
     CiTimer,
-    /// A directory that held a root-owned GitHub token before the broker.
-    LegacyToken(PathBuf),
+    /// The token broker answers and which source serves each token.
+    Broker,
+    /// A directory that holds a root-owned GitHub token in a file.
+    LegacyToken(LegacyTokenDir),
     EditorSettings(Editor),
 }
 
@@ -48,7 +50,8 @@ impl Check {
             Self::SpoolDir(SpoolDir::Requests) => "spool requests".to_owned(),
             Self::SpoolDir(SpoolDir::Results) => "spool results".to_owned(),
             Self::CiTimer => "ci timer".to_owned(),
-            Self::LegacyToken(dir) => format!("token dir {}", dir.display()),
+            Self::Broker => "token broker".to_owned(),
+            Self::LegacyToken(dir) => format!("token dir {}", dir.path().display()),
             Self::EditorSettings(editor) => format!("{} settings", editor.name()),
         }
     }

@@ -1,7 +1,9 @@
 use std::path::{Path, PathBuf};
 
-use super::fake::healthy;
-use super::{Check, Fix, Outcome, SpoolDir, Verdict, render, run, verdict};
+use super::fake::{healthy, stored};
+use super::{Check, Fix, LegacyTokenDir, Outcome, SpoolDir, Verdict, render, run, verdict};
+use crate::broker::Source;
+use crate::broker::wire::{GhFallback, ItemState, Unavailable};
 use crate::config::{Config, Loaded};
 use crate::editor_settings::Editor;
 use crate::error::Error;
@@ -107,22 +109,120 @@ fn permission_denied_is_cannot_check_and_makes_the_verdict_incomplete() {
 }
 
 #[test]
-fn present_legacy_token_dir_warns_with_a_sudo_ls_fix() {
+fn present_legacy_token_dirs_warn_and_only_the_agent_one_says_remove() {
     let mut probe = healthy();
     probe.dirs.push(PathBuf::from("/var/lib/coda-ci"));
     let findings = run(&probe, &config());
-    let check = Check::LegacyToken(PathBuf::from("/var/lib/coda-ci"));
-    let Outcome::Warn { fix, detail } = outcome(&findings, &check) else {
+    let Outcome::Warn { fix, .. } = outcome(&findings, &Check::LegacyToken(LegacyTokenDir::Ci))
+    else {
         panic!("expected Warn")
     };
     assert_eq!(
         fix,
         &Fix::command("sudo", ["ls", "-la", "/var/lib/coda-ci"])
     );
-    assert!(detail.contains("broker"), "{detail}");
-    let absent = Check::LegacyToken(PathBuf::from("/var/lib/agent-secrets/coda-agent"));
-    assert!(matches!(outcome(&findings, &absent), Outcome::Pass { .. }));
+    let agent = Check::LegacyToken(LegacyTokenDir::Agent);
+    assert!(matches!(outcome(&findings, &agent), Outcome::Pass { .. }));
     assert_eq!(verdict(&findings), Verdict::Healthy);
+
+    probe
+        .dirs
+        .push(PathBuf::from("/var/lib/agent-secrets/coda-agent"));
+    let findings = run(&probe, &config());
+    let Outcome::Warn { fix, detail } = outcome(&findings, &agent) else {
+        panic!("expected Warn")
+    };
+    assert!(detail.contains("broker"), "{detail}");
+    assert!(
+        fix.to_string()
+            .contains("sudo rm -rf /var/lib/agent-secrets/coda-agent"),
+        "{fix}"
+    );
+}
+
+#[test]
+fn broker_without_a_socket_fails_with_a_restart_fix() {
+    let mut probe = healthy();
+    probe.broker = None;
+    let findings = run(&probe, &config());
+    let Outcome::Fail { fix, detail } = outcome(&findings, &Check::Broker) else {
+        panic!("expected Fail")
+    };
+    assert!(
+        detail.contains("/run/coda-sandbox/agent/broker.sock"),
+        "{detail}"
+    );
+    assert_eq!(
+        fix.to_string(),
+        "systemctl --user restart coda-sandbox-broker.service"
+    );
+}
+
+#[test]
+fn broker_reports_source_and_warns_on_fallback() {
+    let findings = run(&healthy(), &config());
+    assert!(matches!(
+        outcome(&findings, &Check::Broker),
+        Outcome::Pass { detail } if detail == "github-agent: keyring; doppler: keyring"
+    ));
+
+    let mut probe = healthy();
+    let mut report = stored();
+    report.items[0].state = ItemState::Available {
+        source: Source::GhCli,
+    };
+    report.gh_fallback = GhFallback::On;
+    report.fallback_used = true;
+    probe.broker = Some(report);
+    let findings = run(&probe, &config());
+    assert!(matches!(
+        outcome(&findings, &Check::Broker),
+        Outcome::Warn { detail, .. } if detail.contains("served a token")
+    ));
+
+    let mut report = stored();
+    report.gh_fallback = GhFallback::On;
+    probe.broker = Some(report);
+    let findings = run(&probe, &config());
+    assert!(matches!(
+        outcome(&findings, &Check::Broker),
+        Outcome::Warn { detail, .. } if detail.contains("is on")
+    ));
+}
+
+#[test]
+fn broker_without_the_agent_token_fails_with_the_store_command() {
+    let mut probe = healthy();
+    let mut report = stored();
+    report.items[0].state = ItemState::Unavailable {
+        reason: Unavailable::NotStored,
+    };
+    probe.broker = Some(report);
+    let findings = run(&probe, &config());
+    let Outcome::Fail { fix, .. } = outcome(&findings, &Check::Broker) else {
+        panic!("expected Fail")
+    };
+    assert_eq!(fix.to_string(), "coda-sandbox broker store github-agent");
+}
+
+#[test]
+fn broker_serving_a_token_only_from_cache_warns_with_its_age() {
+    let mut probe = healthy();
+    let mut report = stored();
+    report.items[0].state = ItemState::Stale {
+        source: Source::Keyring,
+        read_secs_ago: 7200,
+    };
+    probe.broker = Some(report);
+    let findings = run(&probe, &config());
+    let Outcome::Warn { detail, fix } = outcome(&findings, &Check::Broker) else {
+        panic!("expected Warn")
+    };
+    assert!(
+        detail.contains("github-agent: keyring cached 120 min ago, keyring locked"),
+        "{detail}"
+    );
+    assert!(fix.to_string().contains("log in"), "{fix}");
 }
 
 #[test]
@@ -141,7 +241,7 @@ fn stopped_container_and_zfs_without_bclone_fail() {
     let findings = run(&probe, &config());
     assert!(matches!(
         outcome(&findings, &Check::ContainerUnit),
-        Outcome::Fail { fix, .. } if fix.to_string() == "sudo systemctl start container@coda-agent.service"
+        Outcome::Fail { fix, .. } if fix.to_string() == "systemctl start container@coda-agent.service"
     ));
     assert!(matches!(
         outcome(&findings, &Check::Reflinks),

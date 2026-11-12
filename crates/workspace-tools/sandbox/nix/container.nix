@@ -7,8 +7,7 @@
 let
   cfg = config.services.coda-sandbox;
   name = cfg.container.name;
-  hostUsersGid = cfg.uidBase + 100;
-  secrets = "/var/lib/agent-secrets/${name}";
+  brokerDir = builtins.dirOf cfg.broker.socket;
 in
 lib.mkIf (cfg.enable && cfg.container.enable) {
   agentSandbox.containers.${name} = {
@@ -49,11 +48,12 @@ lib.mkIf (cfg.enable && cfg.container.enable) {
         hostPath = cfg.carry.dir;
         readOnly = true;
       };
-      # Tokens placed by hand (crates/workspace-tools/sandbox/README.md, "Agent sandbox
-      # credentials"). Anything in the container can read them, so a token
-      # here should reach only coda-rust.
-      "/run/agent-secrets" = {
-        hostPath = secrets;
+      # The token broker's socket directory (broker.nix), at the host's
+      # path, so the config's [broker] socket names it on both sides.
+      # Binding the directory keeps a re-created socket visible; connecting
+      # to a socket needs no writable mount.
+      ${brokerDir} = {
+        hostPath = brokerDir;
         readOnly = true;
       };
     };
@@ -70,10 +70,7 @@ lib.mkIf (cfg.enable && cfg.container.enable) {
     };
   };
 
-  # The agent may read the token files; nothing in the container can change them.
   systemd.tmpfiles.rules = [
-    "d /var/lib/agent-secrets 0711 root root -"
-    "d ${secrets} 0750 root ${toString hostUsersGid} -"
     "d ${cfg.carry.dir} 0755 root root -"
   ];
 

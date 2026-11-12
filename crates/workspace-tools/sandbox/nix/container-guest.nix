@@ -3,14 +3,19 @@
 { repo, package }:
 { lib, pkgs, ... }:
 let
-  secrets = "/run/agent-secrets";
-  # Git asks this for HTTPS credentials; the token never lands in a git config.
-  credentialHelper = pkgs.writeShellScript "github-token-credential" ''
-    test "$1" = get || exit 0
-    test -r ${secrets}/github-token || exit 0
-    echo username=x-access-token
-    echo "password=$(cat ${secrets}/github-token)"
-  '';
+  coda-sandbox = lib.getExe' package "coda-sandbox";
+  # gh and Doppler read their tokens from the environment and have no
+  # credential hook, so each wrapper asks the host's token broker for one
+  # per run and hands it to that process alone.
+  wrap =
+    name: real: want: var:
+    pkgs.writeShellApplication {
+      inherit name;
+      text = ''
+        token="$(${coda-sandbox} token ${want})" || exit 1
+        ${var}="$token" exec ${lib.getExe real} "$@"
+      '';
+    };
 in
 {
   programs.direnv = {
@@ -27,22 +32,19 @@ in
         "git@github.com:"
         "ssh://git@github.com/"
       ];
-      credential."https://github.com".helper = "${credentialHelper}";
+      # Asks the token broker on every fetch and push; the token never lands
+      # in a file or a git config.
+      credential."https://github.com".helper = "${coda-sandbox} credential";
       init.defaultBranch = "main";
     };
   };
 
-  # gh and Doppler read their tokens from the environment.
-  environment.extraInit = ''
-    if [ -r ${secrets}/github-token ]; then
-      GH_TOKEN="$(cat ${secrets}/github-token)"; export GH_TOKEN
-    fi
-    if [ -r ${secrets}/doppler-token ]; then
-      DOPPLER_TOKEN="$(cat ${secrets}/doppler-token)"; export DOPPLER_TOKEN
-    fi
-  '';
+  # With no answer from the broker, git fails instead of waiting at a prompt.
+  environment.variables.GIT_TERMINAL_PROMPT = "0";
 
   environment.systemPackages = with pkgs; [
+    (wrap "gh" gh "gh" "GH_TOKEN")
+    (wrap "doppler" doppler "doppler" "DOPPLER_TOKEN")
     gnumake
     ripgrep
     fd

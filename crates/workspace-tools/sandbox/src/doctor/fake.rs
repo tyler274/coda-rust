@@ -4,6 +4,9 @@ use std::collections::HashMap;
 use std::io;
 use std::path::{Path, PathBuf};
 
+use crate::broker::error::BrokerError;
+use crate::broker::wire::{GhFallback, ItemReport, ItemState, Report};
+use crate::broker::{Item, Source};
 use crate::config::UnitName;
 use crate::editor_settings::Editor;
 use crate::error::Error;
@@ -23,6 +26,8 @@ pub(super) struct FakeProbe {
     pub fs: FsType,
     pub pool_feature: Option<PoolFeature>,
     pub ssh: SshReach,
+    /// `None` when no broker listens on the socket.
+    pub broker: Option<Report>,
 }
 
 fn denied(path: &Path) -> Error {
@@ -90,6 +95,29 @@ impl Probe for FakeProbe {
     fn home(&self) -> Option<PathBuf> {
         Some(PathBuf::from("/home/me"))
     }
+
+    fn broker(&self, socket: &Path) -> Result<Report, BrokerError> {
+        self.broker.clone().ok_or_else(|| BrokerError::Connect {
+            socket: socket.to_owned(),
+            source: io::Error::from(io::ErrorKind::NotFound),
+        })
+    }
+}
+
+/// The broker's report when both tokens are in the keyring.
+pub(super) fn stored() -> Report {
+    Report {
+        items: Item::SERVED
+            .map(|item| ItemReport {
+                item,
+                state: ItemState::Available {
+                    source: Source::Keyring,
+                },
+            })
+            .to_vec(),
+        gh_fallback: GhFallback::Off,
+        fallback_used: false,
+    }
 }
 
 const SAFE_SETTINGS: &str = r#"{
@@ -125,5 +153,6 @@ pub(super) fn healthy() -> FakeProbe {
         fs: FsType::Zfs,
         pool_feature: Some(PoolFeature::Active),
         ssh: SshReach::Reachable,
+        broker: Some(stored()),
     }
 }

@@ -108,6 +108,20 @@ nix run ./crates/workspace-tools/sandbox -- --help
 `coda-sandbox worktree seed` builds the seed with
 [`dev/session-seed.sh`](dev/session-seed.sh).
 
+The container's GitHub and Doppler tokens live in the host user's desktop
+keyring, and `coda-sandbox broker`, a user service on the host, hands them to
+the container's git, `gh` and `doppler` over a socket, one request at a time.
+Store each token once on the host, then check the result:
+
+```sh
+coda-sandbox broker store github-agent   # the fine-grained coda-rust token
+coda-sandbox broker store doppler        # the read-only dev service token
+coda-sandbox doctor
+```
+
+The sandbox [README](crates/workspace-tools/sandbox/README.md#agent-sandbox-credentials)
+says which tokens to create and what the broker checks.
+
 ### Local CI checks
 
 From the repository's agent dev shell, install the small validation dependency

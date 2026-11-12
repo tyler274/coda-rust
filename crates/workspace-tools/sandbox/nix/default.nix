@@ -1,8 +1,9 @@
 # services.coda-sandbox: the Coda agent sandbox on a NixOS host.
 #
 # One option set declares the coda-agent container (container.nix on the
-# hardened nspawn module nspawn.nix), the Firecracker CI (ci.nix), the
-# coda-carry bundler, and /etc/coda-sandbox/config.toml, which the
+# hardened nspawn module nspawn.nix), its token broker (broker.nix), the
+# Firecracker CI (ci.nix), the coda-carry bundler, and
+# /etc/coda-sandbox/config.toml, which the
 # coda-sandbox binary reads by default. The flake passes its packages and
 # the microvm module in, so a host needs only this module.
 { packages, microvmModule }:
@@ -32,6 +33,10 @@ let
       timer = "coda-ci.timer";
       service = "coda-ci.service";
     };
+    broker = {
+      socket = cfg.broker.socket;
+      gh_fallback = if cfg.broker.ghFallback then "on" else "off";
+    };
   };
 
   carry = pkgs.callPackage ./carry-package.nix {
@@ -44,6 +49,7 @@ in
   imports = [
     ./nspawn.nix
     ./container.nix
+    ./broker.nix
     (import ./ci.nix { inherit microvmModule; })
   ];
 

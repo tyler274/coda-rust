@@ -25,6 +25,13 @@ timeout_seconds = 14400
 timer = "coda-ci.timer"
 service = "coda-ci.service"
 
+[broker]
+# The token broker's socket, bound into the container at the same path.
+socket = "/run/coda-sandbox/agent/broker.sock"
+# Whether `gh auth token` may stand in for a github-agent token the keyring
+# does not hold. It reaches every repository you can, so it stays off.
+gh_fallback = "off"
+
 [carry]
 repo = "/home/luluco/code/coda/coda-rust"
 out = "/var/lib/coda-carry"

@@ -1,6 +1,8 @@
 use std::path::{Path, PathBuf};
 
-use super::{Check, Finding, Fix, Outcome, SpoolDir, reflink};
+use serde::Serialize;
+
+use super::{Check, Finding, Fix, Outcome, SpoolDir, broker, reflink};
 use crate::config::{Config, Loaded, UnitName};
 use crate::editor_settings::{Editor, ForwardingKey, Setting, Settings};
 use crate::error::Error;
@@ -8,10 +10,28 @@ use crate::probe::{ActiveState, LoadState, PathKind, Probe, SSH_DEADLINE, SshRea
 
 const REBUILD: &str = "declare it in the NixOS configuration, then `sudo nixos-rebuild switch`";
 
-/// Directories that held a root-owned GitHub token before the broker. They
-/// are history, not machine layout, so they live here rather than in config.
-/// Their parents keep the host user out, so the check reports each directory.
-pub const LEGACY_TOKEN_DIRS: [&str; 2] = ["/var/lib/agent-secrets/coda-agent", "/var/lib/coda-ci"];
+/// Directories that hold a root-owned GitHub token in a file. They are not
+/// machine layout, so they live here rather than in config. Their parents
+/// keep the host user out, so the check reports each directory.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize)]
+#[serde(rename_all = "snake_case")]
+pub enum LegacyTokenDir {
+    /// The container's token, which the broker replaces; nothing reads it.
+    Agent,
+    /// The CI controller's token file, which it still reads.
+    Ci,
+}
+
+impl LegacyTokenDir {
+    pub const ALL: [Self; 2] = [Self::Agent, Self::Ci];
+
+    pub fn path(self) -> &'static Path {
+        Path::new(match self {
+            Self::Agent => "/var/lib/agent-secrets/coda-agent",
+            Self::Ci => "/var/lib/coda-ci",
+        })
+    }
+}
 
 /// Runs every check. Editor checks run even when the config does not load.
 pub fn run(probe: &dyn Probe, config: &Result<Loaded, Error>) -> Vec<Finding> {
@@ -88,10 +108,10 @@ fn machine(probe: &dyn Probe, config: &Config) -> Vec<Finding> {
             Check::CiTimer,
             unit_outcome(probe, UnitScope::System, &config.ci.timer),
         ),
+        (Check::Broker, broker::outcome(probe, &config.broker)),
     ];
-    for dir in LEGACY_TOKEN_DIRS.map(PathBuf::from) {
-        let outcome = legacy_token_outcome(probe, &dir);
-        findings.push((Check::LegacyToken(dir), outcome));
+    for dir in LegacyTokenDir::ALL {
+        findings.push((Check::LegacyToken(dir), legacy_token_outcome(probe, dir)));
     }
     findings
         .into_iter()
@@ -121,10 +141,26 @@ fn build_root_outcome(root: &Path, kind: Result<PathKind, Error>) -> Outcome {
     }
 }
 
-fn systemctl(scope: UnitScope, verb: &str, unit: &UnitName) -> Fix {
+/// What a fix asks systemd to do. The module's polkit rule lets the sandbox
+/// user start the container and CI units, the only system units doctor
+/// checks, without sudo; unmasking still needs root.
+#[derive(Debug, Clone, Copy)]
+enum Verb {
+    Start,
+    Unmask,
+}
+
+fn systemctl(scope: UnitScope, verb: Verb, unit: &UnitName) -> Fix {
+    let (verb, needs_root) = match verb {
+        Verb::Start => ("start", false),
+        Verb::Unmask => ("unmask", true),
+    };
     let args = [verb, unit.as_str()].map(str::to_owned);
     match scope {
-        UnitScope::System => Fix::command("sudo", ["systemctl".to_owned()].into_iter().chain(args)),
+        UnitScope::System if needs_root => {
+            Fix::command("sudo", ["systemctl".to_owned()].into_iter().chain(args))
+        }
+        UnitScope::System => Fix::command("systemctl", args),
         UnitScope::User => Fix::command("systemctl", ["--user".to_owned()].into_iter().chain(args)),
     }
 }
@@ -155,7 +191,7 @@ fn unit_outcome(probe: &dyn Probe, scope: UnitScope, unit: &UnitName) -> Outcome
             | ActiveState::Maintenance,
         ) => Outcome::Fail {
             detail,
-            fix: systemctl(scope, "start", unit),
+            fix: systemctl(scope, Verb::Start, unit),
         },
         (LoadState::NotFound, _) => Outcome::Fail {
             detail: format!("{unit} not found"),
@@ -163,7 +199,7 @@ fn unit_outcome(probe: &dyn Probe, scope: UnitScope, unit: &UnitName) -> Outcome
         },
         (LoadState::Masked, _) => Outcome::Fail {
             detail,
-            fix: systemctl(scope, "unmask", unit),
+            fix: systemctl(scope, Verb::Unmask, unit),
         },
         (LoadState::Stub | LoadState::BadSetting | LoadState::Error | LoadState::Merged, _) => {
             Outcome::Fail {
@@ -211,16 +247,27 @@ fn spool_outcome(probe: &dyn Probe, path: &Path) -> Outcome {
     }
 }
 
-fn legacy_token_outcome(probe: &dyn Probe, dir: &Path) -> Outcome {
-    match probe.path_kind(dir) {
+fn legacy_token_outcome(probe: &dyn Probe, dir: LegacyTokenDir) -> Outcome {
+    let path = dir.path();
+    match probe.path_kind(path) {
         Ok(PathKind::Missing) => Outcome::Pass {
             detail: "absent".to_owned(),
         },
-        Ok(_) => Outcome::Warn {
-            detail: "present; it may hold a root-owned GitHub token, \
-                     which the token broker PR removes"
-                .to_owned(),
-            fix: Fix::command("sudo", ["ls", "-la", &dir.display().to_string()]),
+        Ok(_) => match dir {
+            LegacyTokenDir::Agent => Outcome::Warn {
+                detail: "present; it may hold the container's old root-owned GitHub token, \
+                         which the token broker replaces"
+                    .to_owned(),
+                fix: Fix::instruction(format!(
+                    "once the token broker check passes, revoke that token on github.com, \
+                     then `sudo rm -rf {}`",
+                    path.display()
+                )),
+            },
+            LegacyTokenDir::Ci => Outcome::Warn {
+                detail: "present; it holds the CI controller's root-owned GitHub token".to_owned(),
+                fix: Fix::command("sudo", ["ls", "-la", &path.display().to_string()]),
+            },
         },
         Err(cause) => Outcome::CannotCheck { cause },
     }

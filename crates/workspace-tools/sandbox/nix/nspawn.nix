@@ -155,7 +155,6 @@ let
       ];
       environment.systemPackages = with pkgs; [
         git
-        gh
         curl
         jq
       ];

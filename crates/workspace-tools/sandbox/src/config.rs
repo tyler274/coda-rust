@@ -36,7 +36,35 @@ pub struct Config {
     /// Only the host that carries its worktrees into the sandbox has one.
     #[serde(default)]
     pub carry: Option<Carry>,
+    #[serde(default)]
+    pub broker: Broker,
 }
+
+/// The token broker: its socket, the same path on the host and in the
+/// container, and whether `gh auth token` may stand in for a
+/// `github-agent` the keyring does not hold.
+#[derive(Debug, Clone, PartialEq, Eq, Deserialize)]
+pub struct Broker {
+    #[serde(default = "default_broker_socket")]
+    pub socket: PathBuf,
+    #[serde(default)]
+    pub gh_fallback: GhFallback,
+}
+
+impl Default for Broker {
+    fn default() -> Self {
+        Self {
+            socket: default_broker_socket(),
+            gh_fallback: GhFallback::Off,
+        }
+    }
+}
+
+fn default_broker_socket() -> PathBuf {
+    PathBuf::from(crate::broker::client::SOCKET)
+}
+
+pub use crate::broker::wire::GhFallback;
 
 /// `coda-sandbox carry`: which checkout to record and where the bundle goes.
 #[derive(Debug, Clone, PartialEq, Eq, Deserialize)]

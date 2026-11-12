@@ -2,13 +2,16 @@
 
 mod cli;
 
-use std::io::Write as _;
-use std::path::PathBuf;
+use std::io::{IsTerminal as _, Write as _};
+use std::path::{Path, PathBuf};
 use std::process::ExitCode;
 
 use clap::Parser as _;
-use cli::{Ci, Cli, Command, ControllerMode, Worktree};
+use cli::{Broker, Ci, Cli, Command, ControllerMode, Worktree};
+use coda_sandbox::broker::client;
+use coda_sandbox::broker::error::BrokerError;
 use coda_sandbox::config::Config;
+use coda_sandbox::credential;
 use coda_sandbox::error::Error;
 use coda_sandbox::probe::SystemProbe;
 use coda_sandbox::worktree::{self, Layout, prune::Confirm};
@@ -74,6 +77,50 @@ fn dispatch(cli: &Cli) -> Result<ExitCode, Error> {
             Ok(ExitCode::SUCCESS)
         }
         Command::CiController { mode } => Ok(ci_controller(*mode)),
+        Command::Broker(command) => {
+            broker_command(&cli.config, command)?;
+            Ok(ExitCode::SUCCESS)
+        }
+        Command::Credential { operation } => {
+            let config = Config::load(&cli.config)?;
+            let stdin = std::io::stdin().lock();
+            credential::run(*operation, &config.broker.socket, stdin, std::io::stdout())?;
+            Ok(ExitCode::SUCCESS)
+        }
+        Command::Token { want, force } => {
+            if std::io::stdout().is_terminal() && !force {
+                return Err(BrokerError::Terminal.into());
+            }
+            let config = Config::load(&cli.config)?;
+            let secret = client::secret(&config.broker.socket, *want)?;
+            print(secret.expose())?;
+            Ok(ExitCode::SUCCESS)
+        }
+    }
+}
+
+fn broker_command(config_path: &Path, command: &Broker) -> Result<(), Error> {
+    use coda_sandbox::broker::commands::{self, Stored};
+    let report = |item, stored| match stored {
+        Stored::Reloaded => format!("{item} saved; the running broker reads it on next use\n"),
+        Stored::BrokerNotRunning => {
+            format!("{item} saved; no broker is running, so it reads it when it starts\n")
+        }
+    };
+    match command {
+        Broker::Serve => Ok(commands::serve(&Config::load(config_path)?)?),
+        Broker::Store { item } => {
+            let stored = commands::store(&Config::load(config_path)?, *item)?;
+            print(&report(item, stored))
+        }
+        Broker::Delete { item } => {
+            let stored = commands::delete(&Config::load(config_path)?, *item)?;
+            print(&report(item, stored).replace("saved", "deleted"))
+        }
+        Broker::SelfTest => {
+            let keyring = coda_sandbox::broker::keyring::SecretTool::default();
+            print(&commands::self_test(&keyring)?)
+        }
     }
 }
 
