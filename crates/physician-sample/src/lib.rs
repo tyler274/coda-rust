@@ -423,14 +423,8 @@ async fn site_from_env(
     memory_patients: std::sync::Arc<patients::MemoryPatients>,
 ) -> Result<(Router, Option<tokio::task::JoinHandle<()>>), String> {
     let hosted = hosting::is_hosted(&get);
-    let mode = ChatMode::from_env(&get)?;
+    let durable = ChatMode::from_env(&get)? == ChatMode::Durable;
     let database = configured(&get, "PHYSICIAN_DATABASE_URL");
-    if mode == ChatMode::DurableByTopic {
-        tracing::warn!(
-            "PHYSICIAN_DURABLE_CHAT is unset and PHYSICIAN_CHAT_TOPIC is set; physician chat runs on the worker"
-        );
-    }
-    let durable = mode.is_durable();
     if hosted && !durable {
         return Err("hosted physician chat requires PHYSICIAN_DURABLE_CHAT=1".into());
     }
@@ -524,32 +518,17 @@ enum ChatMode {
     Inline,
     /// Accepted into Postgres, which wakes `physician-worker`.
     Durable,
-    /// Durable because `PHYSICIAN_CHAT_TOPIC` is set and
-    /// `PHYSICIAN_DURABLE_CHAT` is not, so a site deployed before its
-    /// environment names the switch still hands chat to the worker. This
-    /// holds until the topic is retired.
-    DurableByTopic,
 }
 
 impl ChatMode {
-    /// `PHYSICIAN_DURABLE_CHAT=1` selects durable chat and `0` inline chat.
-    /// Unset, a set `PHYSICIAN_CHAT_TOPIC` selects durable chat until the
-    /// topic is retired, and otherwise chat runs inline. Any other value
-    /// refuses to start.
+    /// `PHYSICIAN_DURABLE_CHAT=1` selects durable chat; `0` or unset, inline
+    /// chat. Any other value refuses to start.
     fn from_env(get: &impl Fn(&str) -> Option<String>) -> Result<Self, String> {
         match configured(get, "PHYSICIAN_DURABLE_CHAT").as_deref() {
             Some("1") => Ok(Self::Durable),
             Some("0") => Ok(Self::Inline),
             Some(_) => Err("PHYSICIAN_DURABLE_CHAT must be 0 or 1".into()),
-            None if configured(get, "PHYSICIAN_CHAT_TOPIC").is_some() => Ok(Self::DurableByTopic),
             None => Ok(Self::Inline),
-        }
-    }
-
-    fn is_durable(self) -> bool {
-        match self {
-            Self::Durable | Self::DurableByTopic => true,
-            Self::Inline => false,
         }
     }
 }
@@ -884,35 +863,21 @@ mod tests {
     }
 
     #[test]
-    fn chat_mode_follows_the_switch_and_falls_back_to_the_topic() {
-        const TOPIC: (&str, &str) = (
-            "PHYSICIAN_CHAT_TOPIC",
-            "projects/p/topics/physician-chat-turns",
-        );
+    fn chat_mode_follows_the_switch() {
         type Case = (
             &'static [(&'static str, &'static str)],
             Result<ChatMode, &'static str>,
         );
-        let cases: [Case; 8] = [
+        let cases: [Case; 5] = [
             (&[], Ok(ChatMode::Inline)),
             (&[("PHYSICIAN_DURABLE_CHAT", "1")], Ok(ChatMode::Durable)),
             (&[("PHYSICIAN_DURABLE_CHAT", "0")], Ok(ChatMode::Inline)),
-            (&[TOPIC], Ok(ChatMode::DurableByTopic)),
-            (
-                &[TOPIC, ("PHYSICIAN_DURABLE_CHAT", "1")],
-                Ok(ChatMode::Durable),
-            ),
-            // An explicit 0 turns durable chat off even while the topic is set.
-            (
-                &[TOPIC, ("PHYSICIAN_DURABLE_CHAT", "0")],
-                Ok(ChatMode::Inline),
-            ),
             (
                 &[("PHYSICIAN_DURABLE_CHAT", "true")],
                 Err("PHYSICIAN_DURABLE_CHAT must be 0 or 1"),
             ),
             (
-                &[TOPIC, ("PHYSICIAN_DURABLE_CHAT", "yes")],
+                &[("PHYSICIAN_DURABLE_CHAT", "yes")],
                 Err("PHYSICIAN_DURABLE_CHAT must be 0 or 1"),
             ),
         ];
@@ -923,9 +888,6 @@ mod tests {
                 "{pairs:?}"
             );
         }
-        assert!(ChatMode::Durable.is_durable());
-        assert!(ChatMode::DurableByTopic.is_durable());
-        assert!(!ChatMode::Inline.is_durable());
     }
 
     #[tokio::test]
@@ -946,21 +908,16 @@ mod tests {
 
     #[tokio::test]
     async fn durable_chat_requires_the_physician_database() {
-        for pairs in [
-            &[("PHYSICIAN_DURABLE_CHAT", "1")][..],
-            &[(
-                "PHYSICIAN_CHAT_TOPIC",
-                "projects/p/topics/physician-chat-turns",
-            )],
-        ] {
-            let error = site_from_env(environment(pairs), std::sync::Arc::default())
-                .await
-                .expect_err("durable chat without a database");
-            assert_eq!(
-                error,
-                "PHYSICIAN_DURABLE_CHAT requires PHYSICIAN_DATABASE_URL"
-            );
-        }
+        let error = site_from_env(
+            environment(&[("PHYSICIAN_DURABLE_CHAT", "1")]),
+            std::sync::Arc::default(),
+        )
+        .await
+        .expect_err("durable chat without a database");
+        assert_eq!(
+            error,
+            "PHYSICIAN_DURABLE_CHAT requires PHYSICIAN_DATABASE_URL"
+        );
         let (_, compaction) = site_from_env(
             environment(&[("PHYSICIAN_DURABLE_CHAT", "0")]),
             std::sync::Arc::default(),

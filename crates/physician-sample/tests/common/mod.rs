@@ -44,7 +44,6 @@ pub async fn serve_isolated(configure: impl FnOnce()) -> IsolatedServer {
         for key in [
             "CODA_LOCAL_MODEL_EXECUTION",
             "PHYSICIAN_DATABASE_URL",
-            "PHYSICIAN_CHAT_TOPIC",
             "CODA_ALLOW_MODEL_CALLS",
             "OPENAI_API_KEY",
             "CODA_PHYSICIAN_SOURCE_SNAPSHOT",
@@ -62,7 +61,6 @@ pub async fn serve_isolated(configure: impl FnOnce()) -> IsolatedServer {
             "PHYSICIAN_PUBLIC_ORIGIN",
             // A scale stack exports durable chat to child commands; this server runs chat inline.
             "PHYSICIAN_DURABLE_CHAT",
-            "PHYSICIAN_CHAT_TOPIC",
         ] {
             std::env::remove_var(key);
         }

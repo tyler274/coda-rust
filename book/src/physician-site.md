@@ -97,10 +97,10 @@ The page, identity, clinical execution and delivery each have an owner:
 
 Chat, saved drafts and reply revisions use the Postgres
 [`runtime::Store`](/crates/local-product/src/runtime.rs) and the same worker locally
-and when hosted. The site requires `PHYSICIAN_CHAT_TOPIC`, `PHYSICIAN_DATABASE_URL`
-and `PHYSICIAN_AUTH=required` for this path. A hosted site refuses missing queue
-configuration. Without a topic, a local site can render fixtures or proxy another
-server, but cannot execute chat. The worker selects API-key or local developer-plan
+and when hosted. The site requires `PHYSICIAN_DURABLE_CHAT=1`, `PHYSICIAN_DATABASE_URL`
+and `PHYSICIAN_AUTH=required` for this path. A hosted site refuses to start without
+durable chat. With `PHYSICIAN_DURABLE_CHAT` unset or `0`, a local site can render
+fixtures or proxy another server, but cannot execute chat. The worker selects API-key or local developer-plan
 Responses transport; credentials are worker configuration, outside the durable job.
 [Local chat setup](/README%2Emd#local-physician-chat) describes the plan grant, which
 refreshes before each request. [Scaling across instances](#scaling-across-instances)
@@ -162,7 +162,7 @@ Each published reply has a response id: the id its assistant message is saved wi
 
 The worker listens on `PHYSICIAN_WORKER_LISTEN_ADDR` when it is set, otherwise on `0.0.0.0:$PORT` when `PORT` is set, otherwise on `127.0.0.1:8791`.
 
-Chat acceptance requires the topic, database and required sign-in configuration together.
+Chat acceptance requires `PHYSICIAN_DURABLE_CHAT=1`, the database and required sign-in configuration together.
 Missing queue configuration refuses hosted startup; local fixture pages
 remain display-only.
 
