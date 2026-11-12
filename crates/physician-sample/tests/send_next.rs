@@ -116,6 +116,15 @@ async fn queued_messages_get_one_reply_take_edits_once_and_return_on_stop() {
         .await
         .unwrap_or_else(|error| panic!("never claimed: {error}\n{}", tails(&site, &worker)));
 
+    // An intent the site doesn't name is refused, not taken as Send: it
+    // neither steers the running answer nor queues.
+    let (status, body) = post(submit(workspace, &chat, "odd", "Steer?", Some("next"))).await;
+    assert_eq!(
+        (status, body["outcome"].as_str()),
+        (200, Some("rejected")),
+        "{body}"
+    );
+
     // Two Send next messages behind the running answer.
     for (key, text) in [("q1", "And the potassium?"), ("q2", "Also the creatinine")] {
         let (status, body) = post(submit(workspace, &chat, key, text, Some("queue"))).await;

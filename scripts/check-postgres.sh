@@ -31,7 +31,7 @@ shard_1_targets=(--lib --test migrations_postgres --test postgres
   --test runtime_postgres --test runtime_publication --test runtime_recovery --test runtime_quota
   --test redis --test fanout --test worker --test recovery --test try_again
   --bin physician-worker)
-shard_2_targets=(--test stop --test chat_draft --test feedback --test reply_revision
+shard_2_targets=(--test stop --test send_next --test chat_draft --test feedback --test reply_revision
   --test instance_loss --test emulator --test push_wake)
 
 shard_1() {
@@ -81,6 +81,10 @@ shard_2() {
   # Stop holds the turn across a worker restart; a second Stop holds the resumed
   # run; a message sent while held is answered without either stopped reply.
   pg_test --test stop -- --test-threads=1
+  # Send next: the queue lives in Coda, takes one edit and one withdrawal
+  # exactly once, gets one reply after the answer, and returns to the draft
+  # on Stop; an unnamed send intent is refused.
+  pg_test --test send_next -- --test-threads=1
   # Composer chat drafts: cross-site reads, stale-revision conflicts and physician
   # ownership, without a worker. The runtime draft-fence proof runs in shard 1.
   pg_test --test chat_draft -- --test-threads=1

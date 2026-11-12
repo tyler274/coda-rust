@@ -146,16 +146,29 @@ struct SubmitPayload {
     /// hosted path may send one; see [`crate::hosting::SimulationPractices`].
     #[serde(default)]
     scenario: Option<String>,
-    /// `queue` is Send next; anything else, or none, is Send.
+    /// Absent is Send; `queue` is Send next. Any other value rejects the
+    /// command rather than choosing an operation for it.
     #[serde(default)]
-    intent: Option<String>,
+    intent: SendIntent,
+}
+
+/// How a `message.submit` meets running work, as the wire names it.
+#[derive(Debug, Default, Clone, Copy, PartialEq, Eq, Deserialize)]
+#[serde(rename_all = "snake_case")]
+enum SendIntent {
+    /// No `intent` on the wire: Send.
+    #[default]
+    #[serde(skip_deserializing)]
+    Send,
+    /// `"queue"`: Send next.
+    Queue,
 }
 
 impl SubmitPayload {
     fn mode(&self) -> local_product::runtime::SendMode {
-        match self.intent.as_deref() {
-            Some("queue") => local_product::runtime::SendMode::Next,
-            _ => local_product::runtime::SendMode::Now,
+        match self.intent {
+            SendIntent::Send => local_product::runtime::SendMode::Now,
+            SendIntent::Queue => local_product::runtime::SendMode::Next,
         }
     }
 }
@@ -1140,5 +1153,42 @@ mod durable_snapshot_tests {
         assert!(body["queued"][0].get("session_hash").is_none());
         let done = snapshot(Some(&conversation(WorkStatus::Completed)));
         assert_eq!(done["queued"], serde_json::json!([]));
+    }
+}
+
+#[cfg(test)]
+mod submit_payload_tests {
+    use local_product::runtime::SendMode;
+    use serde_json::json;
+
+    use super::SubmitPayload;
+
+    fn parse(intent: Option<serde_json::Value>) -> Result<SubmitPayload, serde_json::Error> {
+        let mut payload = json!({
+            "patient_workspace_id": "workspace",
+            "chat_id": "chat",
+            "text": "Hello",
+            "physician_time_zone": "America/New_York",
+        });
+        if let Some(intent) = intent {
+            payload["intent"] = intent;
+        }
+        serde_json::from_value(payload)
+    }
+
+    #[test]
+    fn send_intent_is_send_when_absent_and_send_next_only_for_queue() {
+        assert_eq!(parse(None).unwrap().mode(), SendMode::Now);
+        assert_eq!(parse(Some(json!("queue"))).unwrap().mode(), SendMode::Next);
+        // An unknown or explicit-but-unnamed intent never picks an operation.
+        for unknown in [
+            json!("next"),
+            json!("send"),
+            json!(""),
+            json!(null),
+            json!(1),
+        ] {
+            assert!(parse(Some(unknown.clone())).is_err(), "{unknown}");
+        }
     }
 }
