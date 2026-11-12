@@ -258,7 +258,8 @@ fn project_briefing(
             .copied();
 
         let title = resolve_citation_title(citation, retained);
-        let (body, raw_content, record_type) = build_cited_body(&title, citation, retained);
+        let quote = clean_excerpt_quote(&citation.excerpt, &title);
+        let (body, raw_content, record_type) = build_cited_body(&title, &quote, retained);
         let wire_source = CitedSourceWire {
             source_key: source_key.clone(),
             number,
@@ -266,7 +267,7 @@ fn project_briefing(
             title: title.clone(),
             record_type,
             recorded_at: citation.as_of.clone(),
-            quote: citation.excerpt.clone(),
+            quote: quote.clone(),
             body,
             raw_content,
             external_url: citation.native_uri.clone(),
@@ -281,7 +282,7 @@ fn project_briefing(
                 source_key,
                 number,
                 label: title,
-                quote: citation.excerpt.clone(),
+                quote,
             },
         );
     }
@@ -392,13 +393,136 @@ fn resolve_citation_title(citation: &SummaryCitation, retained: Option<&SourceRe
     citation.display_label.clone()
 }
 
+fn is_generic_part_label(label: &str) -> bool {
+    matches!(
+        label.trim().to_ascii_lowercase().as_str(),
+        "attachment" | "presentedform" | "text" | "note" | "body"
+    )
+}
+
+fn clean_excerpt_quote(excerpt: &str, title: &str) -> String {
+    let normalized_title = title.trim();
+    let mut remaining = excerpt.trim();
+    while let Some((first_line, rest)) = remaining.split_once('\n') {
+        let candidate = first_line.trim();
+        if candidate.is_empty()
+            || is_generic_part_label(candidate)
+            || (!normalized_title.is_empty() && candidate.eq_ignore_ascii_case(normalized_title))
+        {
+            remaining = rest.trim();
+        } else {
+            break;
+        }
+    }
+    remaining.to_owned()
+}
+
+fn humanize_json_key(key: &str) -> String {
+    let replaced = key.replace(['_', '-'], " ");
+    let collapsed = replaced.split_whitespace().collect::<Vec<_>>().join(" ");
+    let mut chars = collapsed.chars();
+    match chars.next() {
+        Some(first) => first.to_uppercase().collect::<String>() + chars.as_str(),
+        None => String::new(),
+    }
+}
+
+fn render_json_lines(prefix: Option<&str>, value: &serde_json::Value, out: &mut Vec<String>) {
+    match value {
+        serde_json::Value::Null => {}
+        serde_json::Value::Bool(flag) => {
+            let word = if *flag { "Yes" } else { "No" };
+            match prefix {
+                Some(key) if !key.is_empty() => out.push(format!("{key}: {word}")),
+                Some(_) | None => out.push(word.to_owned()),
+            }
+        }
+        serde_json::Value::Number(num) => match prefix {
+            Some(key) if !key.is_empty() => out.push(format!("{key}: {num}")),
+            Some(_) | None => out.push(num.to_string()),
+        },
+        serde_json::Value::String(text) => {
+            let trimmed = text.trim();
+            if !trimmed.is_empty() {
+                match prefix {
+                    Some(key) if !key.is_empty() => out.push(format!("{key}: {trimmed}")),
+                    Some(_) | None => out.push(trimmed.to_owned()),
+                }
+            }
+        }
+        serde_json::Value::Array(items) => {
+            let all_scalar = items.iter().all(|item| {
+                matches!(
+                    item,
+                    serde_json::Value::String(_)
+                        | serde_json::Value::Number(_)
+                        | serde_json::Value::Bool(_)
+                )
+            });
+            if all_scalar {
+                let joined: Vec<String> = items
+                    .iter()
+                    .filter_map(|item| match item {
+                        serde_json::Value::String(s) if !s.trim().is_empty() => {
+                            Some(s.trim().to_owned())
+                        }
+                        serde_json::Value::Number(n) => Some(n.to_string()),
+                        serde_json::Value::Bool(b) => {
+                            Some(if *b { "Yes" } else { "No" }.to_owned())
+                        }
+                        serde_json::Value::Null
+                        | serde_json::Value::String(_)
+                        | serde_json::Value::Array(_)
+                        | serde_json::Value::Object(_) => None,
+                    })
+                    .collect();
+                if !joined.is_empty() {
+                    let list = joined.join(", ");
+                    match prefix {
+                        Some(key) if !key.is_empty() => out.push(format!("{key}: {list}")),
+                        Some(_) | None => out.push(list),
+                    }
+                }
+            } else {
+                for item in items {
+                    render_json_lines(prefix, item, out);
+                }
+            }
+        }
+        serde_json::Value::Object(map) => {
+            for (key, nested) in map {
+                let label = humanize_json_key(key);
+                let full_key = match prefix {
+                    Some(parent) if !parent.is_empty() && !label.is_empty() => {
+                        format!("{parent} · {label}")
+                    }
+                    Some(parent) if !parent.is_empty() => parent.to_owned(),
+                    Some(_) | None => label,
+                };
+                render_json_lines(Some(&full_key), nested, out);
+            }
+        }
+    }
+}
+
+fn format_structured_content(raw_content: &str) -> Option<String> {
+    let trimmed = raw_content.trim();
+    if trimmed.is_empty() {
+        return None;
+    }
+    let parsed = serde_json::from_str::<serde_json::Value>(trimmed).ok()?;
+    let mut lines = Vec::new();
+    render_json_lines(None, &parsed, &mut lines);
+    (!lines.is_empty()).then(|| lines.join("\n"))
+}
+
 fn build_cited_body(
     title: &str,
-    citation: &SummaryCitation,
+    cleaned_quote: &str,
     retained: Option<&SourceRevision>,
 ) -> (String, Option<String>, Option<String>) {
     let Some(source) = retained else {
-        return (citation.excerpt.clone(), None, None);
+        return (cleaned_quote.to_owned(), None, None);
     };
     let normalized_title = title.trim();
     let sections: Vec<String> = source
@@ -408,7 +532,7 @@ fn build_cited_body(
             let label = part.label.trim();
             let text = part.text.trim();
             let same_as_title = !label.is_empty() && label.eq_ignore_ascii_case(normalized_title);
-            if label.is_empty() || same_as_title {
+            if label.is_empty() || same_as_title || is_generic_part_label(label) {
                 (!text.is_empty()).then(|| text.to_owned())
             } else if text.is_empty() {
                 Some(label.to_owned())
@@ -419,8 +543,10 @@ fn build_cited_body(
         .collect();
     let body = if !sections.is_empty() {
         sections.join("\n\n")
-    } else if !citation.excerpt.trim().is_empty() {
-        citation.excerpt.clone()
+    } else if let Some(formatted_json) = format_structured_content(&source.content) {
+        formatted_json
+    } else if !cleaned_quote.trim().is_empty() {
+        cleaned_quote.to_owned()
     } else {
         source.content.trim().to_owned()
     };
@@ -559,4 +685,76 @@ fn segments_with_citations(
         });
     }
     segments
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use local_product::physician_sources::ReadablePart;
+    use serde_json::json;
+
+    #[test]
+    fn generic_part_labels_are_omitted_and_structured_json_renders_key_value_lines() {
+        let doc_source = SourceRevision {
+            workspace: "pw-1".to_owned(),
+            source_id: "synthetic-charts".to_owned(),
+            candidate_id: "DocumentReference/doc-1".to_owned(),
+            revision: "rev-1".to_owned(),
+            record_type: "DocumentReference".to_owned(),
+            dates: Vec::new(),
+            content: json!({"resourceType": "DocumentReference", "id": "doc-1"}).to_string(),
+            sha256: "sha-1".to_owned(),
+            readable_parts: vec![
+                ReadablePart {
+                    label: "attachment".to_owned(),
+                    text: "Discharged on oral torsemide 20 mg daily.".to_owned(),
+                },
+                ReadablePart {
+                    label: "presentedForm".to_owned(),
+                    text: "Follow up BMP in 72 hours.".to_owned(),
+                },
+            ],
+            provenance: json!({}),
+        };
+        let quote = clean_excerpt_quote(
+            "attachment\nDischarged on oral torsemide 20 mg daily.",
+            "Discharge Summary",
+        );
+        assert_eq!(quote, "Discharged on oral torsemide 20 mg daily.");
+        let (body, _, _) = build_cited_body("Discharge Summary", &quote, Some(&doc_source));
+        assert_eq!(
+            body,
+            "Discharged on oral torsemide 20 mg daily.\n\nFollow up BMP in 72 hours."
+        );
+
+        let obs_source = SourceRevision {
+            workspace: "pw-1".to_owned(),
+            source_id: "synthetic-charts".to_owned(),
+            candidate_id: "Observation/obs-1".to_owned(),
+            revision: "rev-2".to_owned(),
+            record_type: "Observation".to_owned(),
+            dates: Vec::new(),
+            content: json!({
+                "resourceType": "Observation",
+                "status": "final",
+                "code": { "text": "Serum creatinine" },
+                "valueQuantity": { "value": 1.42, "unit": "mg/dL" }
+            })
+            .to_string(),
+            sha256: "sha-2".to_owned(),
+            readable_parts: Vec::new(),
+            provenance: json!({}),
+        };
+        let (obs_body, _, _) =
+            build_cited_body("Serum creatinine", "Truncated…", Some(&obs_source));
+        assert!(
+            obs_body.contains("Code · Text: Serum creatinine"),
+            "{obs_body}"
+        );
+        assert!(
+            obs_body.contains("ValueQuantity · Value: 1.42"),
+            "{obs_body}"
+        );
+        assert!(!obs_body.starts_with('{'), "{obs_body}");
+    }
 }

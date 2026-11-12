@@ -1387,6 +1387,12 @@ async fn schedule_pane_and_briefing_view_pass_desktop_and_phone_browser_checks()
         browser.exists(".briefing-document"),
         "briefing document must stay mounted underneath citation dialog:\n{with_citation}"
     );
+    assert!(
+        !with_citation
+            .lines()
+            .any(|line| line.trim().eq_ignore_ascii_case("attachment")),
+        "citation dialog must omit generic `attachment` part labels:\n{with_citation}"
+    );
     browser.capture_screenshot("briefing-schedule-05-desktop-citation.png");
     browser.press("Close");
     browser.wait_absent("dialog[open].citation-inspection");

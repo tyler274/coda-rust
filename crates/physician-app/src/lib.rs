@@ -40,14 +40,14 @@ use shell::{
     PAST_WORK_EMPTY, REPLY_ASK, REPLY_CLOSED_NOTICE, REPLY_COPY, REPLY_NO_NEEDED,
     REPLY_REVISION_STALE, REPLY_TELL_CODA, RESUME, ReadView, ReplyReviewAction, STOP, SourceChip,
     SynopsisPiece, TODAY_LOADING, TODAY_QUIET, TODAY_QUIET_DETAIL, TODAY_STALE, TODAY_UNAVAILABLE,
-    TRY_AGAIN, TodayLine, TodayView, VisitLine, WORKSPACE_CLOSED, WORKSPACE_EMPTY,
-    WORKSPACE_UNAVAILABLE, WorkspaceRecordsState, active_now_concern, answer_to, chat_view,
-    chip_name, citation_inspection, connection_lines, demographic_card_view, format_context_time,
+    TRY_AGAIN, TodayLine, TodayView, WORKSPACE_CLOSED, WORKSPACE_EMPTY, WORKSPACE_UNAVAILABLE,
+    WorkspaceRecordsState, active_now_concern, answer_to, chat_view, chip_name,
+    citation_inspection, connection_lines, demographic_card_view, format_context_time,
     format_local_date, format_waited, keyboard_command, message_pieces, need_you_words,
-    opens_reader, panel_target, past_work_copy, patient_upcoming_visits, read_view,
-    reply_channel_label, reply_review_actions, reply_revision_words, reply_urgency_words, row_icon,
-    row_tone, schedule_empty_copy, search_row_detail, shows_today_schedule, source_lines,
-    summary_times, synopsis_pieces, today_lines, today_view, work_end_reason, work_heading,
+    opens_reader, panel_target, past_work_copy, read_view, reply_channel_label,
+    reply_review_actions, reply_revision_words, reply_urgency_words, row_icon, row_tone,
+    schedule_empty_copy, search_row_detail, shows_today_schedule, source_lines, summary_times,
+    synopsis_pieces, today_lines, today_view, work_end_reason, work_heading,
     workspace_records_state,
 };
 #[cfg(target_arch = "wasm32")]
@@ -1559,14 +1559,6 @@ fn PhysicianShell(
         .and_then(|list| list.as_ref())
         .map(today_lines)
         .unwrap_or_default();
-    let patient_visits = day
-        .and_then(|day| {
-            selected
-                .read()
-                .as_deref()
-                .map(|id| patient_upcoming_visits(day, id))
-        })
-        .unwrap_or_default();
     let patient_schedule_rows = day
         .and_then(|day| {
             selected
@@ -2254,7 +2246,6 @@ fn PhysicianShell(
                             name: open_name.clone().unwrap_or_default(),
                             workspace: open_workspace.clone(),
                             rows: patient_rows.clone(),
-                            visits: patient_visits.clone(),
                             schedule_rows: patient_schedule_rows.clone(),
                             show_schedule: show_patient_schedule,
                             schedule_freshness: schedule_freshness.clone(),
@@ -3755,7 +3746,6 @@ fn PatientSurface(
     name: String,
     workspace: Option<PatientWorkspaceResponse>,
     rows: Vec<TodayLine>,
-    visits: Vec<VisitLine>,
     schedule_rows: Vec<ScheduleVisitRow>,
     show_schedule: bool,
     schedule_freshness: SchedulePaneFreshness,
@@ -4143,9 +4133,9 @@ fn PatientSurface(
                             class: "today-row-open",
                             onclick: {
                                 let heading = heading.clone();
-                                let preparation = visits
+                                let preparation = schedule_rows
                                     .first()
-                                    .and_then(|visit| visit.preparation.clone());
+                                    .and_then(ScheduleVisitRow::preparation_detail);
                                 let ended_cause = run.ended_cause.clone();
                                 move |_| {
                                     let body = preparation

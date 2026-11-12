@@ -157,6 +157,20 @@ impl ScheduleVisitRow {
             (None, _) => ScheduleVisitActivation::None,
         }
     }
+
+    /// Physician-readable preparation detail for this schedule row when present.
+    pub fn preparation_detail(&self) -> Option<String> {
+        match &self.state {
+            ScheduleVisitState::ScheduledQuiet => None,
+            ScheduleVisitState::Preparing => Some("Preparing".to_owned()),
+            ScheduleVisitState::Ready { orientation, .. } => {
+                Some(orientation.clone().unwrap_or_else(|| "Prepared".to_owned()))
+            }
+            ScheduleVisitState::Unavailable => Some("Preparation unavailable".to_owned()),
+            ScheduleVisitState::Failed { cue } => Some(cue.clone()),
+            ScheduleVisitState::Cancelled { .. } => None,
+        }
+    }
 }
 
 /// Resolves the physician's IANA time zone from the browser's `Intl` runtime,
@@ -571,7 +585,7 @@ fn classify_visit_state(visit: &PracticeVisit) -> ScheduleVisitState {
             orientation,
         };
     }
-    if prep.state == "preparing" && prep.last_attempt.is_none() {
+    if prep.state == "preparing" {
         return ScheduleVisitState::Preparing;
     }
     if let Some(cue) = preparation_cue(prep)
@@ -1528,5 +1542,38 @@ mod tests {
                 "Kept in history for the scheduled slot (Today, 10:00 AM).".to_owned(),
             ))
         );
+    }
+
+    #[test]
+    fn actively_retrying_preparation_with_prior_failed_attempt_stays_preparing() {
+        let day: PracticeDayResponse = serde_json::from_value(serde_json::json!({
+            "current_time": "2026-08-27T16:00:00.000Z",
+            "time_zone": "America/New_York",
+            "source_state": { "state": "usable" },
+            "visits": [
+                {
+                    "starts_at": "2026-08-27T19:00:00.000Z",
+                    "ends_at": "2026-08-27T19:30:00.000Z",
+                    "status": "scheduled",
+                    "label": "Pulmonary exacerbation check",
+                    "patient_workspace_id": "pw-clara",
+                    "patient_display_name": "Clara Nguyen",
+                    "preparation": {
+                        "state": "preparing",
+                        "run_id": "job-retry-2",
+                        "last_attempt": {
+                            "run_id": "job-attempt-1",
+                            "outcome": "failed",
+                            "occurred_at": "2026-08-27T15:45:00.000Z"
+                        }
+                    }
+                }
+            ]
+        }))
+        .expect("practice day");
+
+        let rows = schedule_rows(&day, None);
+        assert_eq!(rows.len(), 1);
+        assert_eq!(rows[0].state, ScheduleVisitState::Preparing);
     }
 }
