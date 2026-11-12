@@ -554,6 +554,40 @@ pub fn synopsis_pieces(segments: &[ClinicalSegment]) -> Vec<SynopsisPiece> {
     parts
 }
 
+/// Builds the readable text shown when inspecting a cited source, comparing
+/// whitespace-normalized text (after stripping any trailing ellipsis on
+/// `quote`) so a multiline or truncated `quote` is never duplicated above
+/// `body` when `body` already contains that passage.
+fn citation_preview_body(quote: &str, body: &str) -> String {
+    let trimmed_body = body.trim();
+    if trimmed_body.is_empty() {
+        return quote.trim().to_owned();
+    }
+    let stripped_quote = quote
+        .trim()
+        .trim_end_matches('…')
+        .trim_end_matches("...")
+        .trim();
+    if stripped_quote.is_empty() {
+        return trimmed_body.to_owned();
+    }
+    let norm_quote = normalize_citation_whitespace(stripped_quote);
+    let norm_body = normalize_citation_whitespace(trimmed_body);
+    if norm_quote.is_empty() || norm_body.contains(&norm_quote) {
+        trimmed_body.to_owned()
+    } else {
+        format!("{}\n\n{trimmed_body}", quote.trim())
+    }
+}
+
+fn normalize_citation_whitespace(input: &str) -> String {
+    input
+        .split_whitespace()
+        .collect::<Vec<_>>()
+        .join(" ")
+        .to_lowercase()
+}
+
 /// Converts structured conversation/Basis segments and snapshot sources into [`SynopsisPiece`]s.
 pub fn message_pieces(
     segments: &[physician_wire::MessageSegment],
@@ -578,15 +612,7 @@ pub fn message_pieces(
                 {
                     let chip = match sources.get(source_key) {
                         Some(source) => {
-                            let preview = if source.body.trim().is_empty() {
-                                quote.clone()
-                            } else if !quote.trim().is_empty()
-                                && !source.body.contains(quote.trim())
-                            {
-                                format!("{}\n\n{}", quote.trim(), source.body.trim())
-                            } else {
-                                source.body.clone()
-                            };
+                            let preview = citation_preview_body(quote, &source.body);
                             let (open_label, open_uri) = match source
                                 .external_url
                                 .as_deref()
@@ -2279,6 +2305,30 @@ mod tests {
                     },
                 },
             ]
+        );
+    }
+
+    #[test]
+    fn citation_preview_deduplicates_multiline_and_truncated_quotes_against_body() {
+        let multiline_body = "Specimen comment\nPotassium 5.4 mmol/L (reference 3.5-5.0 mmol/L).\n\nSodium 140 mmol/L.";
+        let collapsed_truncated_quote =
+            "Specimen comment Potassium 5.4 mmol/L (reference 3.5-5.0 mmol/L).…";
+        assert_eq!(
+            citation_preview_body(collapsed_truncated_quote, multiline_body),
+            multiline_body
+        );
+
+        assert_eq!(
+            citation_preview_body(
+                "Addendum from cardiology consult.",
+                "Sinus rhythm at 68 bpm."
+            ),
+            "Addendum from cardiology consult.\n\nSinus rhythm at 68 bpm."
+        );
+
+        assert_eq!(
+            citation_preview_body("Quoted excerpt only.", "   "),
+            "Quoted excerpt only."
         );
     }
 }

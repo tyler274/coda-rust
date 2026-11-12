@@ -409,14 +409,30 @@ async fn site_index() -> Response {
         .into_response()
 }
 
+async fn on_panel_in_practice(
+    connected: &care::ConnectedCare,
+    extensions: &axum::http::Extensions,
+    id: &str,
+) -> bool {
+    let identity = care::ConnectedCare::identity(extensions);
+    care::on_roster(extensions, id).await
+        && connected
+            .auth_store(extensions)
+            .membership(&identity, id)
+            .await
+            == physician_auth::Membership::Allowed
+}
+
 async fn empty_snapshot(
     axum::extract::Path((id, chat)): axum::extract::Path<(String, String)>,
+    axum::Extension(connected): axum::Extension<care::ConnectedCare>,
     request: Request<Body>,
 ) -> Response {
-    if !care::on_roster(request.extensions(), &id).await {
+    let extensions = request.extensions();
+    if !on_panel_in_practice(&connected, extensions, &id).await {
         return StatusCode::NOT_FOUND.into_response();
     }
-    if let Some(feed) = request.extensions().get::<std::sync::Arc<SampleFeed>>()
+    if let Some(feed) = extensions.get::<std::sync::Arc<SampleFeed>>()
         && let Some(snapshot) = feed
             .fixture_snapshots
             .lock()
@@ -438,14 +454,7 @@ async fn fixture_past_work(
     request: Request<Body>,
 ) -> Response {
     let extensions = request.extensions();
-    let identity = care::ConnectedCare::identity(extensions);
-    if !care::on_roster(extensions, &id).await
-        || connected
-            .auth_store(extensions)
-            .membership(&identity, &id)
-            .await
-            != physician_auth::Membership::Allowed
-    {
+    if !on_panel_in_practice(&connected, extensions, &id).await {
         return StatusCode::NOT_FOUND.into_response();
     }
     let items = extensions
@@ -1477,5 +1486,56 @@ mod tests {
         assert_eq!(ws_json["patient_link"]["linked"], true);
         assert_eq!(ws_json["patient_link"]["sharing_consented"], true);
         assert!(ws_json.get("duet_records").is_none());
+    }
+
+    #[tokio::test]
+    async fn fixture_snapshot_and_past_work_refuse_off_panel_clinic_demographic_patients() {
+        use physician_auth::{AuthStore, Membership, MemoryAuthStore, PhysicianIdentity};
+        let patient_id = WORKSPACE_IDS[0];
+        let feed = SampleFeed::new();
+        feed.set_fixture_snapshot(
+            patient_id,
+            "chat-seeded",
+            json!({ "conversation": [{ "kind": "model", "text": "Saved answer" }], "runs": [] }),
+        );
+        feed.set_fixture_past_work(
+            patient_id,
+            vec![json!({
+                "id": "conversation:chat-seeded",
+                "target": { "kind": "conversation", "chat_id": "chat-seeded" },
+                "title": "Question",
+                "summary": "Saved answer",
+                "outcome": "answered",
+                "updated_at": "2026-08-27T15:00:00Z",
+            })],
+        );
+
+        let store = MemoryAuthStore::new();
+        store.seed_patient("roger-synthetic-practice", patient_id);
+        let preview = PhysicianIdentity {
+            practice_id: "roger-synthetic-practice".to_owned(),
+            physician_id: "local-preview".to_owned(),
+        };
+        store.seed_membership(&preview, patient_id, Membership::ClinicDemographic);
+        let auth_ext: std::sync::Arc<dyn AuthStore> = std::sync::Arc::new(store);
+        let app = fixture_site_with_feed(feed).layer(axum::Extension(auth_ext));
+
+        let (snap_status, _) = request(
+            app.clone(),
+            "GET",
+            &format!("/patient-workspaces/{patient_id}/chats/chat-seeded/snapshot"),
+            Body::empty(),
+        )
+        .await;
+        assert_eq!(snap_status, StatusCode::NOT_FOUND);
+
+        let (pw_status, _) = request(
+            app,
+            "GET",
+            &format!("/patient-workspaces/{patient_id}/past-work"),
+            Body::empty(),
+        )
+        .await;
+        assert_eq!(pw_status, StatusCode::NOT_FOUND);
     }
 }

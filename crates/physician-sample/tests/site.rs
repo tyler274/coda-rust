@@ -3902,6 +3902,23 @@ async fn past_conversations_and_work_reopen_across_restart_mark_newer_records_an
         "Potassium 5.4 mmol/L (reference 3.5-5.0 mmol/L), collected Tuesday morning.",
         Duration::from_secs(10),
     );
+    let citation_dialog = browser.dialog_text();
+    assert_eq!(
+        citation_dialog
+            .matches("Potassium 5.4 mmol/L (reference 3.5-5.0 mmol/L), collected Tuesday morning.")
+            .count(),
+        1,
+        "citation dialog must render the cited passage once without duplication:\n{citation_dialog}"
+    );
+    assert_eq!(
+        citation_dialog.matches("Basic metabolic panel").count(),
+        1,
+        "citation dialog must not repeat the record title inside readable parts:\n{citation_dialog}"
+    );
+    assert!(
+        !citation_dialog.contains('{'),
+        "citation dialog must never show raw JSON:\n{citation_dialog}"
+    );
     std::thread::sleep(Duration::from_millis(250));
     browser.save_picture("history-reopened-answer-basis-citation");
     browser.click("dialog.citation-inspection button[aria-label=\"Close\"]");

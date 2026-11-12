@@ -22,7 +22,7 @@ use super::{
     Attempt, Conversation, MAX_LISTED_CHATS, Message, MessageRole, Scope, Store, WorkStatus,
     control, conversion_error, engine, keys,
 };
-use crate::physician_sources::{READ_TOOL, SEARCH_TOOL, SourceRevision};
+use crate::physician_sources::{READ_TOOL, ReadablePart, SEARCH_TOOL, SourceRevision};
 
 /// A failure while reading saved conversations or work history.
 #[derive(Debug, thiserror::Error)]
@@ -501,21 +501,10 @@ fn collect_work_observations(attempts: &[Attempt]) -> HashMap<String, WorkObserv
                                     dates,
                                     provenance,
                                 } => {
-                                    let body = if readable_parts.is_empty() {
-                                        content.clone()
-                                    } else {
-                                        readable_parts
-                                            .iter()
-                                            .map(|part| {
-                                                if part.label.trim().is_empty() {
-                                                    part.text.clone()
-                                                } else {
-                                                    format!("{}\n{}", part.label, part.text)
-                                                }
-                                            })
-                                            .collect::<Vec<_>>()
-                                            .join("\n\n")
-                                    };
+                                    let title =
+                                        cited_record_title(&provenance, &record_type, &reference);
+                                    let body =
+                                        format_cited_source_body(&title, &readable_parts, &content);
                                     let quote = truncate_clean(&body, 220);
                                     if !entry.reads.iter().any(|existing| {
                                         existing.candidate_id == reference
@@ -539,7 +528,14 @@ fn collect_work_observations(attempts: &[Attempt]) -> HashMap<String, WorkObserv
                                     label,
                                     content,
                                 } => {
-                                    let quote = truncate_clean(&content, 220);
+                                    let title = if label.trim().is_empty() {
+                                        reference.as_str()
+                                    } else {
+                                        label.as_str()
+                                    };
+                                    let readable_body =
+                                        format_cited_source_body(title, &[], &content);
+                                    let quote = truncate_clean(&readable_body, 220);
                                     if let Some(existing) = entry.reads.iter_mut().find(|item| {
                                         item.candidate_id == reference && item.revision == revision
                                     }) {
@@ -552,7 +548,7 @@ fn collect_work_observations(attempts: &[Attempt]) -> HashMap<String, WorkObserv
                                             revision,
                                             quote,
                                             fallback_record_type: label,
-                                            fallback_body: content.clone(),
+                                            fallback_body: readable_body,
                                             fallback_raw: content,
                                             fallback_date: None,
                                             fallback_provenance: Value::Null,
@@ -583,6 +579,140 @@ fn provenance_string(provenance: &Value, keys: &[&str]) -> Option<String> {
         }
     }
     None
+}
+
+fn cited_record_title(provenance: &Value, record_type: &str, candidate_id: &str) -> String {
+    provenance_string(provenance, &["title", "display", "label"]).unwrap_or_else(|| {
+        let trimmed = record_type.trim();
+        if trimmed.is_empty() {
+            candidate_id.to_owned()
+        } else {
+            trimmed.to_owned()
+        }
+    })
+}
+
+/// Formats a cited source as human-readable clinical prose for physician
+/// inspection, omitting a redundant `part.label` when it matches `title`
+/// case-insensitively and rendering JSON `raw_content` as `"Key: value"` lines
+/// when `readable_parts` is empty (`raw_content` stays only in `raw_content`).
+fn format_cited_source_body(
+    title: &str,
+    readable_parts: &[ReadablePart],
+    raw_content: &str,
+) -> String {
+    let normalized_title = collapse_whitespace(title).to_lowercase();
+    let sections: Vec<String> = readable_parts
+        .iter()
+        .filter_map(|part| {
+            let label = part.label.trim();
+            let text = part.text.trim();
+            let same_as_title =
+                !label.is_empty() && collapse_whitespace(label).to_lowercase() == normalized_title;
+            if label.is_empty() || same_as_title {
+                (!text.is_empty()).then(|| text.to_owned())
+            } else if text.is_empty() {
+                Some(label.to_owned())
+            } else {
+                Some(format!("{label}\n{text}"))
+            }
+        })
+        .collect();
+    if !sections.is_empty() {
+        return sections.join("\n\n");
+    }
+    format_readable_fallback(raw_content)
+}
+
+fn humanize_json_key(key: &str) -> String {
+    let replaced = key.replace(['_', '-'], " ");
+    let collapsed = collapse_whitespace(&replaced);
+    let mut chars = collapsed.chars();
+    match chars.next() {
+        Some(first) => first.to_uppercase().collect::<String>() + chars.as_str(),
+        None => String::new(),
+    }
+}
+
+fn render_json_lines(prefix: Option<&str>, value: &Value, out: &mut Vec<String>) {
+    match value {
+        Value::Null => {}
+        Value::Bool(flag) => {
+            let word = if *flag { "Yes" } else { "No" };
+            match prefix {
+                Some(key) if !key.is_empty() => out.push(format!("{key}: {word}")),
+                _ => out.push(word.to_owned()),
+            }
+        }
+        Value::Number(num) => match prefix {
+            Some(key) if !key.is_empty() => out.push(format!("{key}: {num}")),
+            _ => out.push(num.to_string()),
+        },
+        Value::String(text) => {
+            let trimmed = text.trim();
+            if !trimmed.is_empty() {
+                match prefix {
+                    Some(key) if !key.is_empty() => out.push(format!("{key}: {trimmed}")),
+                    _ => out.push(trimmed.to_owned()),
+                }
+            }
+        }
+        Value::Array(items) => {
+            let all_scalar = items
+                .iter()
+                .all(|item| matches!(item, Value::String(_) | Value::Number(_) | Value::Bool(_)));
+            if all_scalar {
+                let joined: Vec<String> = items
+                    .iter()
+                    .filter_map(|item| match item {
+                        Value::String(s) if !s.trim().is_empty() => Some(s.trim().to_owned()),
+                        Value::Number(n) => Some(n.to_string()),
+                        Value::Bool(b) => Some(if *b { "Yes" } else { "No" }.to_owned()),
+                        _ => None,
+                    })
+                    .collect();
+                if !joined.is_empty() {
+                    let list = joined.join(", ");
+                    match prefix {
+                        Some(key) if !key.is_empty() => out.push(format!("{key}: {list}")),
+                        _ => out.push(list),
+                    }
+                }
+            } else {
+                for item in items {
+                    render_json_lines(prefix, item, out);
+                }
+            }
+        }
+        Value::Object(map) => {
+            for (key, nested) in map {
+                let label = humanize_json_key(key);
+                let full_key = match prefix {
+                    Some(parent) if !parent.is_empty() && !label.is_empty() => {
+                        format!("{parent} · {label}")
+                    }
+                    Some(parent) if !parent.is_empty() => parent.to_owned(),
+                    _ => label,
+                };
+                render_json_lines(Some(&full_key), nested, out);
+            }
+        }
+    }
+}
+
+fn format_readable_fallback(raw_content: &str) -> String {
+    let trimmed = raw_content.trim();
+    if trimmed.is_empty() {
+        return String::new();
+    }
+    if let Ok(parsed) = serde_json::from_str::<Value>(trimmed) {
+        let mut lines = Vec::new();
+        render_json_lines(None, &parsed, &mut lines);
+        if !lines.is_empty() {
+            return lines.join("\n");
+        }
+    }
+    trimmed.to_owned()
 }
 
 /// Parses inline `[1]` or `[candidate_id]` markers against the verified sources
@@ -909,24 +1039,15 @@ impl Store {
                         .cloned()
                         .or_else(|| provenance_string(&rev.provenance, &["source_label", "system"]))
                         .unwrap_or_else(|| rev.source_id.clone());
-                    let title = provenance_string(&rev.provenance, &["title", "display", "label"])
-                        .unwrap_or_else(|| rev.record_type.clone());
+                    let title =
+                        cited_record_title(&rev.provenance, &rev.record_type, &rev.candidate_id);
                     let external_url =
                         provenance_string(&rev.provenance, &["external_url", "url", "href"]);
-                    let body = if rev.readable_parts.is_empty() {
-                        rev.content.clone()
+                    let body = format_cited_source_body(&title, &rev.readable_parts, &rev.content);
+                    let quote = if !body.is_empty() {
+                        truncate_clean(&body, 220)
                     } else {
-                        rev.readable_parts
-                            .iter()
-                            .map(|part| {
-                                if part.label.trim().is_empty() {
-                                    part.text.clone()
-                                } else {
-                                    format!("{}\n{}", part.label, part.text)
-                                }
-                            })
-                            .collect::<Vec<_>>()
-                            .join("\n\n")
+                        read.quote.clone()
                     };
                     CitedSourceReadback {
                         source_key: source_key.clone(),
@@ -938,11 +1059,7 @@ impl Store {
                         title,
                         record_type: rev.record_type.clone(),
                         recorded_at: rev.dates.first().map(|d| d.value.clone()),
-                        quote: if read.quote.is_empty() {
-                            truncate_clean(&body, 220)
-                        } else {
-                            read.quote.clone()
-                        },
+                        quote,
                         body,
                         raw_content: rev.content.clone(),
                         external_url,
@@ -951,18 +1068,11 @@ impl Store {
                     let source_label =
                         provenance_string(&read.fallback_provenance, &["source_label", "system"])
                             .unwrap_or_else(|| "Patient chart".to_owned());
-                    let title = provenance_string(
+                    let title = cited_record_title(
                         &read.fallback_provenance,
-                        &["title", "display", "label"],
-                    )
-                    .filter(|s| !s.is_empty())
-                    .unwrap_or_else(|| {
-                        if read.fallback_record_type.is_empty() {
-                            read.candidate_id.clone()
-                        } else {
-                            read.fallback_record_type.clone()
-                        }
-                    });
+                        &read.fallback_record_type,
+                        &read.candidate_id,
+                    );
                     let external_url = provenance_string(
                         &read.fallback_provenance,
                         &["external_url", "url", "href"],
@@ -1126,5 +1236,48 @@ mod unit_tests {
                 },
             ]
         );
+    }
+
+    #[test]
+    fn cited_source_body_omits_duplicate_title_label_and_renders_json_fallback_as_readable_lines() {
+        let duplicate_label = vec![ReadablePart {
+            label: "basic metabolic panel".to_owned(),
+            text: "Potassium 5.4 mmol/L (reference 3.5-5.0 mmol/L).".to_owned(),
+        }];
+        assert_eq!(
+            format_cited_source_body(
+                "Basic metabolic panel",
+                &duplicate_label,
+                r#"{"potassium":5.4}"#
+            ),
+            "Potassium 5.4 mmol/L (reference 3.5-5.0 mmol/L)."
+        );
+
+        let distinct_sections = vec![
+            ReadablePart {
+                label: "Basic metabolic panel".to_owned(),
+                text: "Potassium 5.4 mmol/L.".to_owned(),
+            },
+            ReadablePart {
+                label: "Specimen comment".to_owned(),
+                text: "No hemolysis detected.".to_owned(),
+            },
+        ];
+        assert_eq!(
+            format_cited_source_body(
+                "Basic metabolic panel",
+                &distinct_sections,
+                r#"{"potassium":5.4}"#
+            ),
+            "Potassium 5.4 mmol/L.\n\nSpecimen comment\nNo hemolysis detected."
+        );
+
+        let raw_json = r#"{"test":"Basic metabolic panel","potassium_mmol_l":5.4,"urgent":true,"notes":null,"flags":["High","Repeat"]}"#;
+        let rendered = format_cited_source_body("Basic metabolic panel", &[], raw_json);
+        assert_eq!(
+            rendered,
+            "Flags: High, Repeat\nPotassium mmol l: 5.4\nTest: Basic metabolic panel\nUrgent: Yes"
+        );
+        assert!(!rendered.as_str().contains('{') && !rendered.as_str().contains('}'));
     }
 }
