@@ -1,6 +1,7 @@
 //! Physician chat HTTP composition over the durable Postgres owner.
 //! The site accepts work and reads its state; the worker runs the shared loop.
 
+use std::collections::BTreeMap;
 use std::convert::Infallible;
 use std::sync::Arc;
 
@@ -10,6 +11,7 @@ use axum::extract::{Extension, Path, State};
 use axum::http::{HeaderValue, StatusCode};
 use axum::response::{IntoResponse, Response};
 use futures_util::stream;
+use local_product::runtime::feedback::Feedback;
 use physician_bus::{Bus, Event};
 use serde::Deserialize;
 use serde_json::{Value, json};
@@ -288,9 +290,32 @@ async fn durable_snapshot(
     // Unlocked display read. None, before the first accept, is an empty conversation.
     let conversation = match chat.store.read(&scope).await {
         Ok(conversation) => conversation,
-        Err(_) => return StatusCode::SERVICE_UNAVAILABLE.into_response(),
+        Err(error) => {
+            tracing::error!(%error, "physician chat snapshot conversation read failed");
+            return StatusCode::SERVICE_UNAVAILABLE.into_response();
+        }
     };
-    Json(json!({ "snapshot": durable_snapshot_body(conversation.as_ref()) })).into_response()
+    // The conversation comes even when its feedback can't be read, so one
+    // unreadable feedback row never keeps the physician from Coda's replies;
+    // the snapshot then says feedback is unavailable instead of showing rated
+    // responses as unrated.
+    let feedback = match chat.store.chat_feedback(&scope).await {
+        Ok(feedback) => SnapshotFeedback::Loaded(feedback),
+        Err(error) => {
+            tracing::error!(%error, "physician chat snapshot feedback read failed");
+            SnapshotFeedback::Unavailable
+        }
+    };
+    Json(json!({ "snapshot": durable_snapshot_body(conversation.as_ref(), &feedback) }))
+        .into_response()
+}
+
+/// The physician's feedback on a chat's responses, as the snapshot read it.
+enum SnapshotFeedback {
+    /// Each rated response's saved feedback, by response.
+    Loaded(BTreeMap<local_product::runtime::ResponseId, Feedback>),
+    /// The read failed; no response carries feedback.
+    Unavailable,
 }
 
 /// Who wrote a turn, as the snapshot names it: Coda's turns are the model's, every other the physician's.
@@ -308,13 +333,37 @@ fn turn_kind(role: &str) -> &'static str {
 /// held turn offers Resume. An answered turn names its run and the attempt
 /// that answered it, so an operator can match the reply to its telemetry by
 /// attempt id. Each of Coda's published replies carries `response_id`, its
-/// saved id, which stays its name across restarts; a partial answer carries
-/// none. The physician's text stays saved.
-fn durable_snapshot_body(conversation: Option<&local_product::runtime::Conversation>) -> Value {
-    let Some(conversation) = conversation else {
-        return json!({ "conversation": [], "runs": [] });
+/// saved id, which stays its name across restarts, and the physician's saved
+/// `feedback` on it, if they rated it; a partial answer carries neither. The
+/// physician's text stays saved. When the feedback read failed, the snapshot
+/// says `"feedback": "unavailable"` and no turn carries feedback.
+fn durable_snapshot_body(
+    conversation: Option<&local_product::runtime::Conversation>,
+    feedback: &SnapshotFeedback,
+) -> Value {
+    let (saved, mut body) = match feedback {
+        SnapshotFeedback::Loaded(saved) => (Some(saved), json!({})),
+        SnapshotFeedback::Unavailable => (
+            None,
+            json!({ "feedback": physician_wire::SnapshotFeedback::Unavailable }),
+        ),
     };
-    let responses: std::collections::BTreeMap<_, _> = conversation
+    let (conversation, runs) = match conversation {
+        Some(conversation) => snapshot_turns(conversation, saved),
+        None => (Vec::new(), Vec::new()),
+    };
+    body["conversation"] = json!(conversation);
+    body["runs"] = json!(runs);
+    body
+}
+
+/// A saved conversation's turns and its latest run, as the snapshot names
+/// them, with `feedback` on each rated response when it was read.
+fn snapshot_turns(
+    conversation: &local_product::runtime::Conversation,
+    feedback: Option<&BTreeMap<local_product::runtime::ResponseId, Feedback>>,
+) -> (Vec<Value>, Vec<Value>) {
+    let responses: BTreeMap<_, _> = conversation
         .responses()
         .map(|response| (response.place, response.id))
         .collect();
@@ -327,6 +376,9 @@ fn durable_snapshot_body(conversation: Option<&local_product::runtime::Conversat
                 json!({ "kind": turn_kind(message.role.as_str()), "text": message.text });
             if let Some(id) = responses.get(&place) {
                 authored["response_id"] = json!(id);
+                if let Some(saved) = feedback.and_then(|feedback| feedback.get(id)) {
+                    authored["feedback"] = json!(crate::feedback::wire(saved.clone()));
+                }
             }
             let partial = message.partial().then(|| {
                 json!({
@@ -397,7 +449,7 @@ fn durable_snapshot_body(conversation: Option<&local_product::runtime::Conversat
             Some(RunOutcome::Cancelled) | None => {}
         }
     }
-    json!({ "conversation": items, "runs": runs })
+    (items, runs)
 }
 
 fn resume_line(
@@ -601,9 +653,19 @@ fn rejected_submit() -> Response {
 
 #[cfg(test)]
 mod durable_snapshot_tests {
-    use super::{COULDNT_FINISH, STOPPED, WRITING, durable_snapshot_body};
-    use local_product::runtime::{Attempt, AttemptStatus, Conversation, Message, WorkStatus};
+    use std::collections::{BTreeMap, BTreeSet};
 
+    use super::{COULDNT_FINISH, STOPPED, SnapshotFeedback, WRITING, durable_snapshot_body};
+    use local_product::runtime::feedback::{Details, Feedback, Rating, Reason};
+    use local_product::runtime::{
+        Attempt, AttemptStatus, Conversation, Message, ResponseId, WorkStatus,
+    };
+    use serde_json::Value;
+
+    /// The snapshot of a chat with no feedback.
+    fn snapshot(conversation: Option<&Conversation>) -> Value {
+        durable_snapshot_body(conversation, &SnapshotFeedback::Loaded(BTreeMap::new()))
+    }
     fn conversation(status: WorkStatus) -> Conversation {
         use harness::engine::runs::{HoldReason, RunHistory, RunOutcome};
         let mut runs = RunHistory::default();
@@ -681,11 +743,11 @@ mod durable_snapshot_tests {
                     ordinal: 1,
                     kind: harness::engine::EventKind::ProviderBlocked { reason: raw.into() },
                 });
-                let snapshot = durable_snapshot_body(Some(&saved));
-                let lines = snapshot["conversation"].as_array().unwrap();
+                let body = snapshot(Some(&saved));
+                let lines = body["conversation"].as_array().unwrap();
                 let status = lines.last().unwrap()["text"].as_str().unwrap();
                 assert!(
-                    !snapshot.to_string().contains(raw),
+                    !body.to_string().contains(raw),
                     "provider details are not product copy"
                 );
                 if reason == HoldReason::Limit {
@@ -712,7 +774,7 @@ mod durable_snapshot_tests {
 
     #[test]
     fn a_failed_turn_keeps_the_message_and_names_the_run_to_resume() {
-        let body = durable_snapshot_body(Some(&conversation(WorkStatus::Failed)));
+        let body = snapshot(Some(&conversation(WorkStatus::Failed)));
         let items = body["conversation"].as_array().unwrap();
         assert_eq!(items[0]["kind"], "physician");
         assert_eq!(items[0]["text"], "Hello");
@@ -727,7 +789,7 @@ mod durable_snapshot_tests {
     #[test]
     fn a_running_turn_offers_stop_and_a_held_turn_offers_resume() {
         for status in [WorkStatus::Pending, WorkStatus::Active] {
-            let body = durable_snapshot_body(Some(&conversation(status)));
+            let body = snapshot(Some(&conversation(status)));
             let items = body["conversation"].as_array().unwrap();
             assert_eq!(items.len(), 2, "{status:?}");
             assert_eq!(items[1]["text"], WRITING, "{status:?}");
@@ -738,14 +800,14 @@ mod durable_snapshot_tests {
             assert!(items[1].get("resume_target").is_none(), "{status:?}");
             assert!(body["runs"].as_array().unwrap().is_empty(), "{status:?}");
         }
-        let held = durable_snapshot_body(Some(&conversation(WorkStatus::Held)));
+        let held = snapshot(Some(&conversation(WorkStatus::Held)));
         let items = held["conversation"].as_array().unwrap();
         assert_eq!(items[1]["text"], STOPPED);
         assert_eq!(items[1]["resume_target"]["work_item_id"], "work-1");
         assert_eq!(items[1]["resume_target"]["expected_run_id"], "run-1");
         assert!(items[1].get("stop_target").is_none());
         assert_eq!(held["runs"][0]["state"], "held");
-        let done = durable_snapshot_body(Some(&conversation(WorkStatus::Completed)));
+        let done = snapshot(Some(&conversation(WorkStatus::Completed)));
         assert_eq!(done["conversation"].as_array().unwrap().len(), 1);
         assert_eq!(
             done["runs"],
@@ -756,12 +818,13 @@ mod durable_snapshot_tests {
                 "attempt_id": "attempt-1",
             }])
         );
-        let empty = durable_snapshot_body(None);
+        let empty = snapshot(None);
         assert!(empty["conversation"].as_array().unwrap().is_empty());
     }
 
-    #[test]
-    fn each_published_reply_carries_its_response_id() {
+    /// A completed chat whose two assistant messages are a partial answer
+    /// (`attempt-0:reply`) and then the published reply (`attempt-1:reply`).
+    fn answered() -> Conversation {
         use local_product::runtime::MessageRole;
         let mut answered = conversation(WorkStatus::Completed);
         for (id, partial, text) in [
@@ -776,7 +839,12 @@ mod durable_snapshot_tests {
                 text: text.into(),
             });
         }
-        let body = durable_snapshot_body(Some(&answered));
+        answered
+    }
+
+    #[test]
+    fn each_published_reply_carries_its_response_id() {
+        let body = snapshot(Some(&answered()));
         let items = body["conversation"].as_array().unwrap();
         let named: Vec<_> = items
             .iter()
@@ -792,6 +860,79 @@ mod durable_snapshot_tests {
                 (Some("model"), Some(&published)),
             ],
             "only the published reply is a response: {body}"
+        );
+        assert!(items[3].get("feedback").is_none(), "unrated: {body}");
+    }
+
+    #[test]
+    fn a_rated_reply_carries_its_saved_feedback() {
+        let details = Details::new(BTreeSet::from([Reason::MissingContext]), "Trend?".into());
+        let unrated = Feedback {
+            rating: Rating::Up,
+            details: None,
+            saved_at: 10,
+            revision: 1,
+        };
+        let feedback = BTreeMap::from([
+            (
+                ResponseId::from("attempt-1:reply".to_owned()),
+                Feedback {
+                    rating: Rating::Down,
+                    details,
+                    saved_at: 10,
+                    revision: 3,
+                },
+            ),
+            // Feedback naming a partial answer, or a response this chat
+            // doesn't hold, lands nowhere.
+            (
+                ResponseId::from("attempt-0:reply".to_owned()),
+                unrated.clone(),
+            ),
+            (ResponseId::from("attempt-9:reply".to_owned()), unrated),
+        ]);
+        let body = durable_snapshot_body(Some(&answered()), &SnapshotFeedback::Loaded(feedback));
+        let items = body["conversation"].as_array().unwrap();
+        let carried: Vec<_> = items.iter().map(|item| item.get("feedback")).collect();
+        let rated = serde_json::json!({
+            "revision": 3,
+            "rating": "down",
+            "details": { "reasons": ["missing_context"], "text": "Trend?" },
+        });
+        assert_eq!(carried, [None, None, None, Some(&rated)], "{body}");
+        assert!(
+            body.get("feedback").is_none(),
+            "loaded is the default: {body}"
+        );
+    }
+
+    /// A failed feedback read still sends the whole conversation, marked so
+    /// the page can tell its responses' ratings are missing, not unrated.
+    #[test]
+    fn unavailable_feedback_keeps_the_conversation_and_says_so() {
+        use physician_wire::{ChatSnapshotResponse, SnapshotFeedback as Wire};
+        let body = durable_snapshot_body(Some(&answered()), &SnapshotFeedback::Unavailable);
+        let loaded = snapshot(Some(&answered()));
+        assert_eq!(body["conversation"], loaded["conversation"], "{body}");
+        assert_eq!(body["runs"], loaded["runs"], "{body}");
+        assert_eq!(body["feedback"], "unavailable", "{body}");
+        let read: ChatSnapshotResponse =
+            serde_json::from_value(serde_json::json!({ "snapshot": body })).unwrap();
+        assert_eq!(read.snapshot.feedback, Wire::Unavailable);
+        assert_eq!(
+            read.snapshot.conversation[3].body(),
+            Some("Sodium is stable.")
+        );
+        assert!(
+            read.snapshot
+                .conversation
+                .iter()
+                .all(|turn| turn.feedback.is_none())
+        );
+        let empty = durable_snapshot_body(None, &SnapshotFeedback::Unavailable);
+        assert_eq!(
+            empty,
+            serde_json::json!({ "feedback": "unavailable", "conversation": [], "runs": [] })
         );
     }
 
@@ -835,7 +976,7 @@ mod durable_snapshot_tests {
             let mut saved = conversation(WorkStatus::Active);
             saved.status = outcome.into();
             saved.runs.get_mut("work-1").unwrap().end(outcome).unwrap();
-            let body = serde_json::json!({ "snapshot": durable_snapshot_body(Some(&saved)) });
+            let body = serde_json::json!({ "snapshot": snapshot(Some(&saved)) });
             let read: ChatSnapshotResponse = serde_json::from_value(body)
                 .unwrap_or_else(|error| panic!("{outcome:?}: the app cannot read it: {error}"));
             let expected: Vec<_> = expected

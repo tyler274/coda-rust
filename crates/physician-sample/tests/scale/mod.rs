@@ -877,6 +877,184 @@ pub async fn get_json(host: &str, path: &str, bearer: &str) -> (u16, Value) {
     (status, value)
 }
 
+/// The runtime store's feedback table, which a test reaches past the store to
+/// put in a state the site itself never writes.
+const FEEDBACK_TABLE: &str = "physician_runtime_response_feedback";
+
+/// Runs `statement` against the database at `url`.
+async fn execute_on<S: sea_orm::StatementBuilder>(url: &str, statement: &S) {
+    use sea_orm::ConnectionTrait;
+    let db = sea_orm::Database::connect(url).await.expect("connect");
+    db.execute(statement).await.expect("test statement");
+    db.close().await.expect("close");
+}
+
+/// Overwrites every saved feedback's details with a JSON string, which
+/// can't be read back as details.
+pub async fn corrupt_feedback_details(url: &str) {
+    use sea_orm::sea_query::{Alias, Query};
+    execute_on(
+        url,
+        Query::update()
+            .table(Alias::new(FEEDBACK_TABLE))
+            .value(Alias::new("details"), json!("corrupt")),
+    )
+    .await;
+}
+
+/// [`corrupt_feedback_details`] on the one response named `response`.
+pub async fn corrupt_feedback_details_on(url: &str, response: &str) {
+    use sea_orm::sea_query::{Alias, Expr, ExprTrait, Query};
+    execute_on(
+        url,
+        Query::update()
+            .table(Alias::new(FEEDBACK_TABLE))
+            .value(Alias::new("details"), json!("corrupt"))
+            .and_where(Expr::col(Alias::new("response")).eq(response)),
+    )
+    .await;
+}
+
+/// Every saved feedback row as `{response, revision, rating, details}`, in
+/// response order, read past the store so a test can check what a save wrote
+/// while the store can't read every row.
+pub async fn feedback_rows(url: &str) -> Vec<Value> {
+    use sea_orm::sea_query::{Alias, Order, Query};
+    let db = sea_orm::Database::connect(url).await.expect("connect");
+    let rows = db
+        .query_all(
+            Query::select()
+                .columns(["response", "revision", "rating", "details"].map(Alias::new))
+                .from(Alias::new(FEEDBACK_TABLE))
+                .order_by(Alias::new("response"), Order::Asc),
+        )
+        .await
+        .expect("feedback rows");
+    db.close().await.expect("close");
+    rows.iter()
+        .map(|row| {
+            json!({
+                "response": row.try_get::<String>("", "response").expect("response"),
+                "revision": row.try_get::<i64>("", "revision").expect("revision"),
+                "rating": row.try_get::<String>("", "rating").expect("rating"),
+                "details": row.try_get::<Option<Value>>("", "details").expect("details"),
+            })
+        })
+        .collect()
+}
+
+/// Moves the feedback table aside, so every feedback read and save fails.
+pub async fn remove_feedback_table(url: &str) {
+    use sea_orm::sea_query::{Alias, Table};
+    execute_on(
+        url,
+        Table::rename().table(Alias::new(FEEDBACK_TABLE), Alias::new("feedback_away")),
+    )
+    .await;
+}
+
+/// Seeds a chat in which the staging physician asked each question and Coda
+/// answered it, through the store's own accept, claim and shared run with a
+/// fixed answer, with no worker or model. Returns each published reply's
+/// response id, in order.
+pub async fn answered_chat(
+    store: &local_product::runtime::Store,
+    workspace: &str,
+    chat: &str,
+    turns: &[(&str, &str)],
+) -> Vec<local_product::runtime::ResponseId> {
+    use local_product::runtime::{Input, PhysicianHost, Scope, engine};
+    let scope = Scope {
+        practice: physician_sample::STAGING_PRACTICE_ID.into(),
+        physician: "staging-physician".into(),
+        workspace: workspace.into(),
+        chat: chat.into(),
+    };
+    let skills = local_product::physician_chat::PhysicianSkills::configured(None, false)
+        .expect("physician skills");
+    for (index, (question, answer)) in turns.iter().enumerate() {
+        let input = Input {
+            key: format!("{chat}-{index}"),
+            text: (*question).into(),
+            timezone: "UTC".into(),
+            scenario: None,
+        };
+        store
+            .accept_authorized(&scope, &input, vec![7; 32], &skills, &models::chat_recipe())
+            .await
+            .expect("accept question");
+        let claim = store
+            .claim(&scope, 60)
+            .await
+            .expect("claim")
+            .expect("pending turn");
+        PhysicianHost {
+            store: store.clone(),
+            claim,
+            authority: OpenAuthority,
+        }
+        .run(
+            &mut FixedAnswer(answer),
+            engine::RunLimits::default(),
+            &engine::Cancellation::default(),
+        )
+        .await
+        .expect("answer the question");
+    }
+    let responses: Vec<_> = store
+        .conversation(&scope)
+        .await
+        .expect("answered chat")
+        .responses()
+        .map(|response| response.id)
+        .collect();
+    assert_eq!(responses.len(), turns.len(), "each question was answered");
+    responses
+}
+
+/// Answers every request with the same text.
+struct FixedAnswer<'a>(&'a str);
+
+impl local_product::runtime::engine::recipe::Provider for FixedAnswer<'_> {
+    async fn exchange(
+        &mut self,
+        _: &local_product::runtime::engine::recipe::Request,
+        _: &local_product::runtime::engine::Cancellation,
+        _: &local_product::runtime::engine::RunLimits,
+        _: &mut dyn local_product::runtime::engine::recipe::Observer,
+    ) -> Result<local_product::runtime::engine::Turn, local_product::runtime::engine::Cause> {
+        Ok(local_product::runtime::engine::Turn {
+            items: vec![local_product::runtime::engine::Item::assistant(self.0)],
+            receipt: Value::Null,
+            usage: Default::default(),
+        })
+    }
+}
+
+/// Seeding stands in for a signed-in session, so every authority check passes.
+struct OpenAuthority;
+
+#[local_product::runtime::async_trait]
+impl local_product::runtime::Authority for OpenAuthority {
+    async fn check(
+        &mut self,
+        _: &local_product::runtime::PublicationTransaction,
+        _: &local_product::runtime::Scope,
+        _: Option<&[u8]>,
+    ) -> Result<(), String> {
+        Ok(())
+    }
+
+    async fn lock_publication(
+        &mut self,
+        _: &local_product::runtime::PublicationTransaction,
+        _: &local_product::runtime::Scope,
+        _: Option<&[u8]>,
+    ) -> Result<(), String> {
+        Ok(())
+    }
+}
+
 /// A `message.submit` command body for one new chat line.
 pub fn submit(workspace: &str, chat: &str, text: &str) -> Value {
     json!({

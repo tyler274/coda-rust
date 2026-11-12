@@ -16,6 +16,10 @@
 //! whose panels start with every patient. It tries every patient and exits
 //! failed if any did not load. Loading again changes only what the charts
 //! changed and leaves panel choices alone.
+//!
+//! `physician-migrate feedback` prints every physician's feedback on Coda's
+//! responses, one JSON line per rated response, for evaluation by Coda staff.
+//! It only reads, and it refuses to run as a Cloud Run job.
 
 use physician_sample::STAGING_PRACTICE_ID;
 use physician_sample::chart_load::load_synthetic_practice;
@@ -48,6 +52,18 @@ async fn main() {
         Some("load-charts") => {
             if let Err(error) = load_charts(&url).await {
                 eprintln!("synthetic charts not loaded: {error}");
+                std::process::exit(1);
+            }
+            return;
+        }
+        Some("feedback") => {
+            if let Err(error) = print_feedback(&url).await {
+                eprintln!("feedback not read: {error}");
+                let mut cause = std::error::Error::source(&error);
+                while let Some(inner) = cause {
+                    eprintln!("  caused by: {inner}");
+                    cause = inner.source();
+                }
                 std::process::exit(1);
             }
             return;
@@ -125,6 +141,74 @@ async fn migrate(url: &str, accounts: &[StagingAccount], rehearsal: bool) -> Res
         println!("rehearsal practice {REHEARSAL_PRACTICE_ID} seeded");
     }
     Ok(())
+}
+
+/// Prints every feedback row as one JSON line, with the rated response's
+/// text. The output is clinical text, so it is read on an operator's own
+/// terminal: inside a Cloud Run job, where stdout reaches Cloud Logging, it
+/// refuses and reads nothing.
+async fn print_feedback(url: &str) -> Result<(), FeedbackReadError> {
+    use std::io::Write;
+    if std::env::var_os("CLOUD_RUN_JOB").is_some() {
+        return Err(FeedbackReadError::InCloudRunJob);
+    }
+    let db = migration_connection(url)
+        .await
+        .map_err(FeedbackReadError::Connect)?;
+    let rows = local_product::runtime::Store::from_connection(db)
+        .feedback_for_evaluation()
+        .await
+        .map_err(FeedbackReadError::Read)?;
+    let mut out = std::io::stdout().lock();
+    for row in rows {
+        let details = row.feedback.details.as_ref();
+        let line = serde_json::json!({
+            "practice": row.scope.practice,
+            "physician": row.scope.physician,
+            "workspace": row.scope.workspace,
+            "chat": row.scope.chat,
+            "response": row.response,
+            "rating": row.feedback.rating,
+            "reasons": details.map(|details| details.reasons()),
+            "details": details.map(|details| details.text()),
+            "saved_at": row.feedback.saved_at,
+            "revision": row.feedback.revision,
+            "response_text": row.response_text,
+        });
+        writeln!(out, "{line}").map_err(FeedbackReadError::Print)?;
+    }
+    Ok(())
+}
+
+/// Why `physician-migrate feedback` read nothing, or stopped part way.
+#[derive(Debug)]
+enum FeedbackReadError {
+    /// It prints clinical text, so it never runs as a Cloud Run job.
+    InCloudRunJob,
+    Connect(DbErr),
+    Read(DbErr),
+    Print(std::io::Error),
+}
+
+impl std::fmt::Display for FeedbackReadError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(match self {
+            Self::InCloudRunJob => "it prints clinical text and never runs as a Cloud Run job",
+            Self::Connect(_) => "the physician database did not connect",
+            Self::Read(_) => "the feedback did not read",
+            Self::Print(_) => "the feedback did not print",
+        })
+    }
+}
+
+impl std::error::Error for FeedbackReadError {
+    fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
+        match self {
+            Self::InCloudRunJob => None,
+            Self::Connect(cause) | Self::Read(cause) => Some(cause),
+            Self::Print(cause) => Some(cause),
+        }
+    }
 }
 
 async fn load_charts(url: &str) -> Result<(), String> {

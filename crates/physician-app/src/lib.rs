@@ -8,6 +8,7 @@
 )]
 
 mod composer;
+mod feedback;
 mod local_draft;
 mod panels;
 mod shell;
@@ -21,8 +22,8 @@ use dioxus::prelude::*;
 use physician_client::{DraftSave, PhysicianClient};
 use physician_wire::{
     ChatRunOutcome, ChatSnapshot, HoldReason, PatientWorkspaceResponse, PracticeAccountSummary,
-    RecentConversation, SignInResponse, WhoamiResponse, WorkResumeTarget, WorkStopTarget,
-    WorkspaceReply,
+    RecentConversation, ResponseId, SignInResponse, SnapshotFeedback, WhoamiResponse,
+    WorkResumeTarget, WorkStopTarget, WorkspaceReply,
 };
 
 use panels::Panel;
@@ -84,6 +85,7 @@ const DRAFT_USE_NEWER: &str = "Use newer text";
 const RECOVERY_UNAVAILABLE: &str =
     "This tab can’t keep a reload copy of your draft. Keep the page open until it saves.";
 const CONVERSATION_UNAVAILABLE: &str = "Coda couldn’t open this conversation.";
+const CONVERSATION_STALE: &str = "Coda couldn’t refresh this conversation. Showing the last one.";
 const DICTATION_UNAVAILABLE: &str =
     "Dictation is unavailable. Check microphone support and server configuration.";
 const CONNECTIONS: &str = "Connections";
@@ -938,6 +940,7 @@ fn PhysicianShell(
     let mut today_attempt = use_signal(|| 0u32);
     let mut workspace_attempt = use_signal(|| 0u32);
     let mut snapshot_attempt = use_signal(|| 0u32);
+    let mut feedback_desk = feedback::use_feedback(client, session, shown, selected, open_chat);
     let mut search_attempt = use_signal(|| 0u32);
     let mut today_cache = use_signal(|| None::<Vec<TodayLine>>);
     let mut workspace_cache = use_signal(|| None::<PatientWorkspaceResponse>);
@@ -1526,10 +1529,28 @@ fn PhysicianShell(
             (asked, answer)
         }
     });
-    // One conversation's lines never stand in for another's.
+    // A failed reread keeps this conversation's last lines, shown as stale, so
+    // its turns and any open details dialog stay; one conversation's lines
+    // never stand in for another's.
+    let mut last_conversation = use_signal(|| None);
+    use_effect(move || {
+        if let Some((asked, Ok(lines))) = snapshot.read().as_ref() {
+            if let (Some(workspace), Some(chat)) = asked.clone() {
+                let reads = lines.iter().filter_map(|line| match &line.response {
+                    Some((id, feedback::Read::Loaded(Some(saved)))) => Some((id, saved)),
+                    _ => None,
+                });
+                feedback_desk
+                    .write()
+                    .remember(&feedback::ChatKey { workspace, chat }, reads);
+            }
+            last_conversation.set(Some((asked.clone(), lines.clone())));
+        }
+    });
+    let asking = (selected(), open_chat());
     let conversation = read_view(
-        None,
-        answer_to(&(selected(), open_chat()), snapshot.read().as_ref()).cloned(),
+        answer_to(&asking, last_conversation.read().as_ref()).cloned(),
+        answer_to(&asking, snapshot.read().as_ref()).cloned(),
     );
     // New conversation: a fresh id the server keeps once a message is sent.
     // The address names it, so a reload before the reply still reopens it.
@@ -2082,6 +2103,9 @@ fn PhysicianShell(
                             },
                             on_editing: move |value: bool| editing.set(value),
                             conversation_open: open_chat.read().is_some(),
+                            feedback_chat: selected().zip(open_chat()).map(|(workspace, chat)| {
+                                feedback::ChatKey { workspace, chat }
+                            }),
                             past_work: open_workspace.as_ref().is_some_and(|open| past_work_copy(open).is_some()),
                             reply_notice: reply_notice(),
                             reply_busy: reply_slot.sending(),
@@ -3129,6 +3153,8 @@ fn PatientSurface(
     on_open_chat: EventHandler<String>,
     on_new_chat: EventHandler,
     conversation_open: bool,
+    /// The open chat, which its responses' feedback belongs to.
+    feedback_chat: Option<feedback::ChatKey>,
     past_work: bool,
     reply_notice: String,
     reply_busy: bool,
@@ -3561,7 +3587,7 @@ fn PatientSurface(
                             ReadNotice {
                                 stage: conversation.stage(),
                                 loading: CONVERSATION_LOADING,
-                                stale: "",
+                                stale: CONVERSATION_STALE,
                                 unavailable: CONVERSATION_UNAVAILABLE,
                                 retry: TRY_AGAIN,
                                 on_retry: on_conversation_retry,
@@ -3597,6 +3623,9 @@ fn PatientSurface(
                                 }
                             } else if line.author == Some(Author::Assistant) {
                                 ui::Message { author: Author::Assistant, by: "Coda",
+                                    actions: feedback_chat.clone().zip(line.response).map(|(chat, (response, read))| rsx! {
+                                        feedback::ResponseRating { chat, response, read }
+                                    }),
                                     MessageWords { text: line.text }
                                 }
                             } else {
@@ -4403,6 +4432,10 @@ struct ConversationLine {
     stop: Option<WorkStopTarget>,
     /// This resume is an intentional Stop. A failed turn's resume is Try again.
     held: bool,
+    /// On one of Coda's published responses: its response id, which
+    /// feedback names, and the physician's feedback on it as the snapshot
+    /// read it.
+    response: Option<(ResponseId, feedback::Read)>,
 }
 
 /// The lines a chat snapshot shows, in order. Only a mechanical line keeps a
@@ -4433,12 +4466,24 @@ fn conversation_lines(snapshot: &ChatSnapshot) -> Vec<ConversationLine> {
                 Some("model") => Some(Author::Assistant),
                 _ => None,
             };
+            let response = turn
+                .response_id
+                .clone()
+                .filter(|_| author == Some(Author::Assistant))
+                .map(|id| {
+                    let read = match snapshot.feedback {
+                        SnapshotFeedback::Loaded => feedback::Read::Loaded(turn.feedback.clone()),
+                        SnapshotFeedback::Unavailable => feedback::Read::Unavailable,
+                    };
+                    (id, read)
+                });
             Some(ConversationLine {
                 text,
                 author,
                 resume,
                 stop,
                 held,
+                response,
             })
         })
         .collect()
@@ -4563,9 +4608,11 @@ mod conversation_line_tests {
     use super::{
         ConversationLine, chat_resume_command, chat_stop_command, conversation_lines, new_chat_id,
     };
+    use crate::feedback;
     use crate::shell::STOPPED;
     use physician_wire::{
-        ChatRunOutcome, ChatSnapshotResponse, HoldReason, WorkResumeTarget, WorkStopTarget,
+        ChatRunOutcome, ChatSnapshotResponse, HoldReason, ResponseFeedback, ResponseId,
+        WorkResumeTarget, WorkStopTarget,
     };
     use ui::Author;
 
@@ -4608,6 +4655,7 @@ mod conversation_line_tests {
                     resume: None,
                     stop: None,
                     held: false,
+                    response: None,
                 },
                 ConversationLine {
                     text: "Coda couldn’t finish this response. Your message is saved.".into(),
@@ -4615,6 +4663,7 @@ mod conversation_line_tests {
                     resume: Some(target()),
                     stop: None,
                     held: false,
+                    response: None,
                 },
             ]
         );
@@ -4637,6 +4686,61 @@ mod conversation_line_tests {
         assert_eq!(
             authors,
             vec![Some(Author::Person), Some(Author::Assistant), None]
+        );
+    }
+
+    #[test]
+    fn only_codas_responses_carry_the_response_id_feedback_names() {
+        let page: ChatSnapshotResponse = serde_json::from_value(serde_json::json!({
+            "snapshot": { "runs": [], "conversation": [
+                { "kind": "physician", "text": "Start metoprolol?", "response_id": "r-0" },
+                { "kind": "model", "text": "Her heart rate allows it.", "response_id": "r-1",
+                  "feedback": { "revision": 2, "rating": "up" } },
+                { "kind": "model", "text": "From an older server.",
+                  "feedback": { "revision": 1, "rating": "down" } },
+                { "text": "Recorded in local simulation.", "response_id": "r-3" },
+            ] }
+        }))
+        .unwrap();
+        let named: Vec<_> = conversation_lines(&page.snapshot)
+            .into_iter()
+            .map(|line| line.response.map(|(id, read)| (id.0, read)))
+            .collect();
+        // Feedback rides only on a response that names its response id.
+        assert_eq!(
+            named,
+            vec![
+                None,
+                Some((
+                    "r-1".to_owned(),
+                    feedback::Read::Loaded(Some(ResponseFeedback {
+                        revision: 2,
+                        rating: physician_wire::FeedbackRating::Up,
+                        details: None,
+                    }))
+                )),
+                None,
+                None
+            ]
+        );
+    }
+
+    #[test]
+    fn unavailable_feedback_keeps_every_line_and_marks_each_response() {
+        let page: ChatSnapshotResponse = serde_json::from_value(serde_json::json!({
+            "snapshot": { "runs": [], "feedback": "unavailable", "conversation": [
+                { "kind": "physician", "text": "Start metoprolol?" },
+                { "kind": "model", "text": "Her heart rate allows it.", "response_id": "r-1" },
+            ] }
+        }))
+        .unwrap();
+        let lines = conversation_lines(&page.snapshot);
+        assert_eq!(lines.len(), 2);
+        assert_eq!(lines[1].text, "Her heart rate allows it.");
+        assert_eq!(lines[0].response, None);
+        assert_eq!(
+            lines[1].response,
+            Some((ResponseId("r-1".into()), feedback::Read::Unavailable))
         );
     }
 

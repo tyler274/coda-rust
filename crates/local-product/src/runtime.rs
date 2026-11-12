@@ -35,6 +35,8 @@ pub use control::Lease;
 /// Queue delivery recovery uses the conversation owner, not a parallel ledger.
 pub mod delivery;
 mod entities;
+/// Physician feedback on Coda's responses.
+pub mod feedback;
 mod frozen;
 pub use frozen::{BindingRef, SkillPackageId};
 mod migration;
@@ -157,6 +159,14 @@ impl ResponseId {
     /// The reply id, as stored and shown on the wire.
     pub fn as_str(&self) -> &str {
         &self.0
+    }
+}
+
+impl From<String> for ResponseId {
+    /// A response named from outside, such as a route. Only
+    /// [`Conversation::response`] says whether it answered a chat.
+    fn from(id: String) -> Self {
+        Self(id)
     }
 }
 

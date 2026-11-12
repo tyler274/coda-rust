@@ -34,6 +34,44 @@ pub(super) mod chat_draft {
     impl ActiveModelBehavior for ActiveModel {}
 }
 
+/// One physician's feedback on one of Coda's responses in a chat. The table
+/// is created by the runtime chain's `m20261111_response_feedback` migration.
+pub(super) mod response_feedback {
+    use sea_orm::entity::prelude::*;
+
+    #[derive(Clone, Debug, PartialEq, Eq, DeriveEntityModel)]
+    #[sea_orm(table_name = "physician_runtime_response_feedback")]
+    pub struct Model {
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub practice: String,
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub physician: String,
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub workspace: String,
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub chat: String,
+        /// The rated response: its `ResponseId`.
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub response: String,
+        /// `up` or `down`.
+        #[sea_orm(column_type = "Text")]
+        pub rating: String,
+        /// The serialized `Details`; null when the latest save had none.
+        #[sea_orm(column_type = "JsonBinary")]
+        pub details: Option<Json>,
+        /// Database-clock seconds of the latest save.
+        pub saved_at: i64,
+        /// 1 on the first save; every later save increments it, so the
+        /// highest revision a reader has seen is the newest feedback.
+        pub revision: i64,
+    }
+
+    #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
+    pub enum Relation {}
+
+    impl ActiveModelBehavior for ActiveModel {}
+}
+
 pub(super) mod conversation {
     use super::super::WorkStatus;
     use sea_orm::entity::prelude::*;

@@ -115,11 +115,60 @@ function (step, ...args) {
         (line) => line.textContent,
       );
     },
+    // Each response's feedback controls as shown: the pressed thumb, whether the thumbs can be
+    // pressed, what the details button says and the notice beside them.
+    ratings() {
+      return [...document.querySelectorAll('.message-actions[aria-label="Response actions"]')].map(
+        (row) => ({
+          pressed: row.querySelector('.feedback-rating [aria-pressed="true"]')?.getAttribute("aria-label") ?? null,
+          enabled: [...row.querySelectorAll(".feedback-rating button")].every((button) => !button.disabled),
+          details: row.querySelector(".feedback-details-open")?.textContent.trim() ?? null,
+          notice: row.querySelector(".feedback-notice")?.textContent ?? null,
+        }),
+      );
+    },
+    // Each element `selector` names that does not sit wholly inside the viewport once scrolled to,
+    // with where it lies; empty when every one fits and at least one exists.
+    outsideViewport(selector) {
+      const found = [...document.querySelectorAll(selector)];
+      if (found.length === 0) return [{ missing: selector }];
+      return found.flatMap((element) => {
+        element.scrollIntoView({ block: "nearest", inline: "nearest", behavior: "instant" });
+        const r = element.getBoundingClientRect();
+        const inside = r.width > 0 && r.height > 0 && r.left >= 0 && r.top >= 0
+          && r.right <= innerWidth && r.bottom <= innerHeight;
+        return inside ? [] : [{ left: r.left, top: r.top, right: r.right, bottom: r.bottom, innerWidth, innerHeight }];
+      });
+    },
+    // Clicks the control named `label` in the `index`th response's feedback controls.
+    clickInRating(index, label) {
+      const row = document.querySelectorAll('.message-actions[aria-label="Response actions"]')[index];
+      if (!row) throw new Error(`no response ${index}`);
+      const control = [...row.querySelectorAll("button")].find(
+        (button) => button.getAttribute("aria-label") === label || button.textContent.trim() === label,
+      );
+      if (!control) throw new Error(`response ${index} has no ${label}`);
+      control.click();
+    },
     // The conflict the composer shows: the newer revision and its text, or null.
     conflict() {
       const conflict = document.querySelector(".draft-conflict");
       if (!conflict) return null;
       return [Number(conflict.dataset.revision), conflict.querySelector("pre")?.textContent ?? ""];
+    },
+    // Puts the caret at the end of a field, so the next key types there.
+    focusEnd(selector) {
+      const field = one(selector);
+      field.focus();
+      field.setSelectionRange(field.value.length, field.value.length);
+    },
+    // Presses `key` on `selector` as a keydown that bubbles to the page.
+    keyOn(selector, key) {
+      one(selector).dispatchEvent(new KeyboardEvent("keydown", { key, bubbles: true }));
+    },
+    // How many open dialogs say `words`.
+    dialogsSaying(words) {
+      return [...document.querySelectorAll("dialog")].filter((dialog) => dialog.innerText.includes(words)).length;
     },
     // Sends from the keyboard: Ctrl+Enter in the composer.
     sendWithKeyboard() {

@@ -2,7 +2,7 @@ use super::super::*;
 use super::{OpenAuthority, accept, delivery_input, delivery_scope};
 
 /// Answers every request with the same text.
-struct Answer(&'static str);
+pub(super) struct Answer(pub(super) &'static str);
 
 impl Provider for Answer {
     async fn exchange(
@@ -21,7 +21,12 @@ impl Provider for Answer {
 }
 
 /// Claims the pending work and runs it to its end with `provider`.
-async fn run(store: &Store, scope: &Scope, provider: &mut Answer, max_calls: u64) -> Claim {
+pub(super) async fn run(
+    store: &Store,
+    scope: &Scope,
+    provider: &mut Answer,
+    max_calls: u64,
+) -> Claim {
     let claim = store.claim(scope, 60).await.unwrap().unwrap();
     PhysicianHost {
         store: store.clone(),

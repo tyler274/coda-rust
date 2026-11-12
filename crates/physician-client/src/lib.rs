@@ -7,8 +7,8 @@ use physician_wire::{
     ApprovedDoctorPlanWire, ChatSnapshotResponse, DoctorPlanDraftWire, HealthResponse,
     PanelAssignmentResponse, PatientSearchResponse, PatientWorkspaceResponse,
     PatientWorkspacesResponse, PhysicianDraft, PlanItemWire, PracticeDayResponse,
-    RecentConversationsResponse, ReplyDraftWire, SignInResponse, TodayListResponse,
-    UpdatesResponse, VerifyResponse, WhoamiResponse,
+    RecentConversationsResponse, ReplyDraftWire, ResponseFeedback, ResponseId, SaveFeedback,
+    SignInResponse, TodayListResponse, UpdatesResponse, VerifyResponse, WhoamiResponse,
 };
 use std::sync::Arc;
 
@@ -342,6 +342,26 @@ impl PhysicianClient {
             },
             Err(error) => Err(error),
         }
+    }
+
+    /// Saves feedback on the response named `response` in a chat, replacing
+    /// its rating and details; answers the saved feedback with its revision.
+    /// The chat snapshot carries saved feedback on each response.
+    pub async fn save_feedback(
+        &self,
+        workspace_id: &str,
+        chat_id: &str,
+        response: &ResponseId,
+        feedback: &SaveFeedback,
+    ) -> Result<ResponseFeedback, http::HttpError> {
+        self.put(
+            &format!(
+                "/physician-state/feedback/{workspace_id}/{chat_id}/{}",
+                response.as_str()
+            ),
+            feedback,
+        )
+        .await
     }
 
     /// Reads one reply draft with its exact revision and latest revision run.

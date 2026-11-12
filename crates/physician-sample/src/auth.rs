@@ -792,7 +792,10 @@ fn request_workspace(path: &str, query: Option<&str>) -> Option<String> {
         let id = rest.split('/').next()?;
         return (!id.is_empty()).then(|| id.to_owned());
     }
-    if let Some(rest) = path.strip_prefix("/physician-state/drafts/") {
+    if let Some(rest) = path
+        .strip_prefix("/physician-state/drafts/")
+        .or_else(|| path.strip_prefix("/physician-state/feedback/"))
+    {
         let id = rest.split('/').next()?;
         return (!id.is_empty()).then(|| id.to_owned());
     }

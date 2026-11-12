@@ -708,6 +708,24 @@ pub struct ChatSnapshot {
     pub conversation: Vec<ChatTurn>,
     /// The held, failed or answered run, or an empty list when there is none.
     pub runs: Vec<ChatRun>,
+    #[serde(default)]
+    /// Whether the signed-in physician's feedback on the responses could be
+    /// read. Sites without feedback omit it.
+    pub feedback: SnapshotFeedback,
+}
+
+/// Whether a chat snapshot could read the physician's feedback. The
+/// conversation comes either way; only the ratings are missing when it
+/// couldn't.
+#[derive(Debug, Clone, Copy, Default, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(rename_all = "snake_case")]
+pub enum SnapshotFeedback {
+    /// Each rated response carries its saved feedback; one without is unrated.
+    #[default]
+    Loaded,
+    /// The feedback read failed, so no response carries feedback and none
+    /// can be told apart from unrated.
+    Unavailable,
 }
 
 /// The durable name of one of Coda's published replies, which stays the same
@@ -744,6 +762,67 @@ pub struct ChatTurn {
     pub resume_target: Option<WorkResumeTarget>,
     /// On a mechanical line while Coda is still writing: the work Stop names.
     pub stop_target: Option<WorkStopTarget>,
+    #[serde(default)]
+    /// On one of Coda's replies the signed-in physician rated: their saved
+    /// feedback on it.
+    pub feedback: Option<ResponseFeedback>,
+}
+
+/// A physician's rating of one of Coda's responses.
+#[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(rename_all = "snake_case")]
+pub enum FeedbackRating {
+    /// A good response.
+    Up,
+    /// A poor response.
+    Down,
+}
+
+/// A reason picked in a rating's details.
+#[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq, PartialOrd, Ord)]
+#[serde(rename_all = "snake_case")]
+pub enum FeedbackReason {
+    /// "Incorrect information".
+    IncorrectInformation,
+    /// "Missing context".
+    MissingContext,
+    /// "Hard to follow".
+    HardToFollow,
+    /// "Not useful".
+    NotUseful,
+}
+
+/// The optional details on a rating.
+#[derive(Debug, Clone, Default, Serialize, Deserialize, PartialEq, Eq)]
+pub struct FeedbackDetails {
+    /// The reasons picked.
+    pub reasons: Vec<FeedbackReason>,
+    /// The physician's words.
+    pub text: String,
+}
+
+/// A feedback save's body: the rating and the details together, replacing
+/// both, so details never travel without a rating.
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+pub struct SaveFeedback {
+    /// The rating chosen.
+    pub rating: FeedbackRating,
+    #[serde(default)]
+    /// The details, or `None` to save the rating alone.
+    pub details: Option<FeedbackDetails>,
+}
+
+/// The physician's saved feedback on one response.
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+pub struct ResponseFeedback {
+    /// 1 on the first save, one more on each later save: the highest
+    /// revision seen is the newest feedback.
+    pub revision: u64,
+    /// The saved rating.
+    pub rating: FeedbackRating,
+    #[serde(default)]
+    /// The saved details, if any.
+    pub details: Option<FeedbackDetails>,
 }
 
 impl ChatTurn {
@@ -1051,5 +1130,25 @@ mod tests {
         let turns = &page.snapshot.conversation;
         assert_eq!(turns[0].response_id, None);
         assert_eq!(turns[1].response_id, Some(ResponseId("a1:reply".into())));
+        assert_eq!(page.snapshot.feedback, SnapshotFeedback::Loaded);
+    }
+
+    #[test]
+    fn reads_a_snapshot_whose_feedback_was_unavailable() {
+        let page: ChatSnapshotResponse = serde_json::from_str(
+            r#"{"snapshot": {"runs": [], "feedback": "unavailable", "conversation": [
+                {"text": "Sodium is stable.", "kind": "model", "response_id": "a1:reply"}
+            ]}}"#,
+        )
+        .unwrap();
+        assert_eq!(page.snapshot.feedback, SnapshotFeedback::Unavailable);
+        assert_eq!(
+            page.snapshot.conversation[0].body(),
+            Some("Sodium is stable.")
+        );
+        assert!(
+            serde_json::from_str::<SnapshotFeedback>(r#""partial""#).is_err(),
+            "an unknown feedback state is refused, not read as loaded"
+        );
     }
 }

@@ -18,6 +18,7 @@ mod care;
 pub mod chart_load;
 mod chat_draft;
 pub mod durable;
+mod feedback;
 mod gmail;
 pub mod hosting;
 mod live;
@@ -109,6 +110,10 @@ pub fn durable_site(
         .route(
             "/physician-state/reply-drafts/{workspace}/{reply}",
             get(reply::read).put(reply::save),
+        )
+        .route(
+            "/physician-state/feedback/{workspace}/{chat}/{response}",
+            axum::routing::put(feedback::save),
         )
         .route(
             "/patient-workspaces/{id}/chats/{chat}/snapshot",

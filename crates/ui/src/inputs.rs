@@ -67,7 +67,8 @@ pub enum TextKind {
 
 /// A field with its label above it, taking what its `kind` says. The host owns its value and hears
 /// each change and, with `onkeydown`, each key. A `hint` stands beneath it; an `error` says what is
-/// wrong in its place and outlines the field in red.
+/// wrong in its place and outlines the field in red. `disabled` holds its words still while the
+/// host acts on them.
 #[component]
 pub fn TextField(
     label: String,
@@ -78,6 +79,7 @@ pub fn TextField(
     hint: Option<String>,
     error: Option<String>,
     onkeydown: Option<EventHandler<KeyboardEvent>>,
+    #[props(default)] disabled: bool,
 ) -> Element {
     let id = use_hook(field_id);
     let note = note_id(&id, &hint, &error);
@@ -97,6 +99,7 @@ pub fn TextField(
                     rows: "3",
                     placeholder: "{placeholder}",
                     value: "{value}",
+                    disabled,
                     aria_describedby: note,
                     aria_invalid: invalid,
                     oninput: move |event| on_input.call(event.value()),
@@ -110,6 +113,7 @@ pub fn TextField(
                     autocomplete: email.then_some("email"),
                     placeholder: "{placeholder}",
                     value: "{value}",
+                    disabled,
                     aria_describedby: note,
                     aria_invalid: invalid,
                     oninput: move |event| on_input.call(event.value()),

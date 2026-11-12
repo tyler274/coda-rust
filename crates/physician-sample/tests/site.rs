@@ -2408,6 +2408,573 @@ async fn drafts_survive_site_restart_in_independent_browser_sessions() {
     fs::remove_dir_all(home).unwrap();
 }
 
+/// Each of Coda's responses in the chat snapshot as `(response_id, feedback)`.
+async fn snapshot_feedback(
+    host: &str,
+    session: &str,
+    patient: &str,
+    chat: &str,
+) -> Vec<(serde_json::Value, serde_json::Value)> {
+    let (status, snapshot) = scale::get_json(
+        host,
+        &format!("/patient-workspaces/{patient}/chats/{chat}/snapshot"),
+        session,
+    )
+    .await;
+    assert_eq!(status, 200, "{snapshot}");
+    snapshot["snapshot"]["conversation"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .filter(|turn| turn["kind"] == "model")
+        .map(|turn| (turn["response_id"].clone(), turn["feedback"].clone()))
+        .collect()
+}
+
+/// Reads each response's feedback controls until `settled` holds.
+fn ratings_when(
+    tab: &mut Tab,
+    what: &str,
+    settled: impl Fn(&[serde_json::Value]) -> bool,
+) -> Vec<serde_json::Value> {
+    let deadline = Instant::now() + Duration::from_secs(10);
+    loop {
+        let ratings = tab.step("ratings", serde_json::json!([]));
+        let ratings = ratings.as_array().cloned().unwrap_or_default();
+        if settled(&ratings) {
+            return ratings;
+        }
+        assert!(Instant::now() < deadline, "{what}: {ratings:?}");
+        std::thread::sleep(Duration::from_millis(60));
+    }
+}
+
+#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+#[ignore = "browser and disposable Postgres qualification; run explicitly with --ignored"]
+async fn feedback_stays_on_its_response_across_site_restart() {
+    let _guard = test_lock().lock().await;
+    let Some(database) = scale::Database::create("feedback_browser").await else {
+        return;
+    };
+    let site = build_site();
+    scale::staging_account(&database.url).await;
+    let patient = physician_sample::WORKSPACE_IDS[0];
+    let chat = "chat-feedback-browser";
+    let store = local_product::runtime::Store::connect(&database.url)
+        .await
+        .expect("runtime store");
+    let responses = scale::answered_chat(
+        &store,
+        patient,
+        chat,
+        &[
+            ("Latest potassium?", "Potassium was 4.1 on Monday."),
+            ("And sodium?", "Sodium was 139 on Monday."),
+        ],
+    )
+    .await;
+    let [first, second] = [responses[0].as_str(), responses[1].as_str()];
+    let home = std::env::temp_dir().join(format!(
+        "physician-feedback-browser-{}",
+        uuid::Uuid::new_v4()
+    ));
+    fs::create_dir_all(&home).unwrap();
+    let topic = scale::topic();
+    let publisher = format!("127.0.0.1:{}", scale::free_port());
+    let mut sites = Vec::new();
+    let mut hosts = Vec::new();
+    for name in ["feedback-a", "feedback-b"] {
+        let port = scale::free_port();
+        let host = format!("127.0.0.1:{port}");
+        let mut process = scale::Process::spawn(
+            name,
+            scale::site_bin(),
+            &[],
+            &[
+                ("PHYSICIAN_DATABASE_URL", &database.url),
+                ("PUBSUB_EMULATOR_HOST", &publisher),
+                ("GOOGLE_CLOUD_PROJECT", scale::PROJECT),
+                ("PHYSICIAN_CHAT_TOPIC", &topic),
+                ("PHYSICIAN_AUTH", "required"),
+                ("PHYSICIAN_AUTH_PROOF_TOKENS", "1"),
+                ("PHYSICIAN_SITE_DIR", site.to_str().unwrap()),
+                ("PHYSICIAN_LISTEN_ADDR", &host),
+            ],
+            &home,
+        );
+        scale::wait_ready(&mut process, port).await;
+        sites.push(process);
+        hosts.push(host);
+    }
+    let urls: Vec<_> = hosts
+        .iter()
+        .map(|host| format!("http://{host}/?patient={patient}&chat={chat}"))
+        .collect();
+    let mut tab = Tab::open(&urls[0]);
+    tab.wait_for_text("Work email", Duration::from_secs(20));
+    tab.request_sign_in("physician@codahealth.test");
+    tab.wait_for_text("Sodium was 139 on Monday.", Duration::from_secs(20));
+    ratings_when(&mut tab, "both responses offer unrated thumbs", |ratings| {
+        ratings.len() == 2
+            && ratings
+                .iter()
+                .all(|rating| rating["enabled"] == true && rating["pressed"].is_null())
+    });
+    tab.save_pictures("feedback-unrated", "[aria-label=\"Conversation\"]");
+
+    tab.step("clickInRating", serde_json::json!([0, "Good response"]));
+    ratings_when(&mut tab, "the first response saved as good", |ratings| {
+        ratings[0]["pressed"] == "Good response" && ratings[0]["details"] == "Add details"
+    });
+
+    tab.call(
+        "Fetch.enable",
+        serde_json::json!({ "patterns": [{ "urlPattern": "*/physician-state/feedback/*" }] }),
+    );
+    tab.step("clickInRating", serde_json::json!([1, "Poor response"]));
+    let save = tab.held_request("PUT");
+    tab.call(
+        "Fetch.failRequest",
+        serde_json::json!({ "requestId": save["requestId"], "errorReason": "Failed" }),
+    );
+    ratings_when(&mut tab, "the failed save says so", |ratings| {
+        ratings[1]["notice"] == "Couldn’t save" && ratings[1]["pressed"].is_null()
+    });
+    tab.save_pictures("feedback-not-saved", "[aria-label=\"Conversation\"]");
+    // A save that answers after the physician left the chat still settles it.
+    tab.step("clickInRating", serde_json::json!([1, "Poor response"]));
+    let retry = tab.held_request("PUT");
+    tab.click_named(".sidebar-nav-item", "Today");
+    let left = Instant::now();
+    while tab.dom().contains("Sodium was 139 on Monday.") {
+        assert!(
+            left.elapsed() < Duration::from_secs(5),
+            "Today left the chat on screen"
+        );
+        std::thread::sleep(Duration::from_millis(60));
+    }
+    tab.release(&retry);
+    tab.call("Fetch.disable", serde_json::json!({}));
+    tab.release_all();
+    tab.click(r#"button[aria-label="Find patient"]"#);
+    tab.browser.type_into(".search-field input", "Tanvir");
+    tab.wait_for_text("DOB", Duration::from_secs(5));
+    tab.click(".dialog-results button");
+    tab.wait_for_text("Sodium was 139 on Monday.", Duration::from_secs(10));
+    ratings_when(&mut tab, "the retried save landed", |ratings| {
+        ratings[1]["pressed"] == "Poor response"
+            && ratings[1]["notice"].is_null()
+            && ratings[1]["details"] == "Add details"
+    });
+
+    tab.step("clickInRating", serde_json::json!([1, "Add details"]));
+    tab.wait_for_text(
+        "What would have made this response better?",
+        Duration::from_secs(5),
+    );
+    tab.click("dialog.feedback-details button[aria-label=\"Close\"]");
+    let closed = Instant::now();
+    while !tab.dialog_text().is_empty() {
+        assert!(
+            closed.elapsed() < Duration::from_secs(5),
+            "Close left the dialog open"
+        );
+        std::thread::sleep(Duration::from_millis(60));
+    }
+    ratings_when(&mut tab, "closing the dialog kept the rating", |ratings| {
+        ratings[1]["pressed"] == "Poor response" && ratings[1]["details"] == "Add details"
+    });
+    // A details save that answers after its dialog closed still lands.
+    tab.step("clickInRating", serde_json::json!([1, "Add details"]));
+    tab.wait_for_text(
+        "What would have made this response better?",
+        Duration::from_secs(5),
+    );
+    tab.click_named("dialog.feedback-details .toggle-chip", "Not useful");
+    tab.call(
+        "Fetch.enable",
+        serde_json::json!({ "patterns": [{ "urlPattern": "*/physician-state/feedback/*" }] }),
+    );
+    tab.click_named("dialog.feedback-details button", "Save details");
+    let held = tab.held_request("PUT");
+    tab.click("dialog.feedback-details button[aria-label=\"Close\"]");
+    let closed = Instant::now();
+    while !tab.dialog_text().is_empty() {
+        assert!(
+            closed.elapsed() < Duration::from_secs(5),
+            "Close left the dialog open while its save was on its way"
+        );
+        std::thread::sleep(Duration::from_millis(60));
+    }
+    tab.release(&held);
+    tab.call("Fetch.disable", serde_json::json!({}));
+    tab.release_all();
+    ratings_when(
+        &mut tab,
+        "the details saved after the dialog closed",
+        |ratings| {
+            ratings[1]["pressed"] == "Poor response"
+                && ratings[1]["details"] == "Edit details"
+                && ratings[1]["notice"].is_null()
+        },
+    );
+
+    tab.step("clickInRating", serde_json::json!([0, "Add details"]));
+    tab.wait_for_text(
+        "What would have made this response better?",
+        Duration::from_secs(5),
+    );
+    tab.click_named("dialog.feedback-details .toggle-chip", "Missing context");
+    tab.browser
+        .type_into("dialog.feedback-details textarea", "It left out the trend");
+    // Keys pressed in the details dialog are its own, never the page's shortcuts.
+    const DETAILS: &str = "dialog.feedback-details textarea";
+    tab.step("focusEnd", serde_json::json!([DETAILS]));
+    tab.press_key(Key::typing("?", "Slash", 191));
+    assert_eq!(
+        tab.step("valueSoon", serde_json::json!([DETAILS])),
+        "It left out the trend?",
+        "a key typed into the details went missing"
+    );
+    tab.step(
+        "keyOn",
+        serde_json::json!(["dialog.feedback-details button[aria-label=\"Close\"]", "?"]),
+    );
+    std::thread::sleep(Duration::from_millis(150));
+    assert_eq!(
+        tab.step("dialogsSaying", serde_json::json!(["Keyboard shortcuts"])),
+        0,
+        "a key pressed in the details dialog opened the page's shortcuts"
+    );
+    // A conversation reread that fails keeps the conversation, marked stale,
+    // and the open dialog with its unsaved words.
+    sites[0].kill_now();
+    tab.wait_for_text(
+        "Coda couldn’t refresh this conversation.",
+        Duration::from_secs(20),
+    );
+    ratings_when(
+        &mut tab,
+        "the stale conversation keeps its ratings",
+        |ratings| ratings.len() == 2 && ratings[0]["pressed"] == "Good response",
+    );
+    assert_eq!(
+        tab.step("valueSoon", serde_json::json!([DETAILS])),
+        "It left out the trend?",
+        "a failed conversation reread lost the dialog's words"
+    );
+    sites[0].restart();
+    scale::wait_ready(
+        &mut sites[0],
+        hosts[0].rsplit_once(':').unwrap().1.parse().unwrap(),
+    )
+    .await;
+    let back = Instant::now();
+    while tab
+        .dom()
+        .contains("Coda couldn’t refresh this conversation.")
+    {
+        assert!(
+            back.elapsed() < Duration::from_secs(30),
+            "the conversation stayed stale after the site came back"
+        );
+        std::thread::sleep(Duration::from_millis(100));
+    }
+    assert_eq!(
+        tab.step("valueSoon", serde_json::json!([DETAILS])),
+        "It left out the trend?",
+        "the reread after recovery lost the dialog's words"
+    );
+    tab.save_pictures("feedback-details", "dialog.feedback-details");
+    tab.click_named("dialog.feedback-details button", "Save details");
+    ratings_when(&mut tab, "the details saved", |ratings| {
+        ratings[0]["pressed"] == "Good response" && ratings[0]["details"] == "Edit details"
+    });
+    // A save refused for an ended session, while every read still answers,
+    // covers the page with the sign-in prompt and clears the patient.
+    tab.call(
+        "Fetch.enable",
+        serde_json::json!({ "patterns": [{ "urlPattern": "*/physician-state/feedback/*" }] }),
+    );
+    tab.step("clickInRating", serde_json::json!([0, "Poor response"]));
+    let refused = tab.held_request("PUT");
+    tab.call(
+        "Fetch.fulfillRequest",
+        serde_json::json!({ "requestId": refused["requestId"], "responseCode": 401 }),
+    );
+    tab.call("Fetch.disable", serde_json::json!({}));
+    tab.release_all();
+    let ended = tab.wait_for_text(
+        "Your session ended. Sign in to continue.",
+        Duration::from_secs(10),
+    );
+    assert!(
+        !ended.contains("Sodium was 139 on Monday."),
+        "a refused feedback save left the patient on screen:\n{ended}"
+    );
+    drop(tab);
+
+    for (process, host) in sites.iter_mut().zip(&hosts) {
+        process.restart();
+        scale::wait_ready(process, host.rsplit_once(':').unwrap().1.parse().unwrap()).await;
+    }
+    let session = scale::sign_in(&hosts[0]).await;
+    let saved = snapshot_feedback(&hosts[1], &session, patient, chat).await;
+    // The first response: rated, then details. The second: a failed save,
+    // the retry, then details.
+    assert_eq!(
+        saved,
+        [
+            (
+                serde_json::json!(first),
+                serde_json::json!({
+                    "revision": 2,
+                    "rating": "up",
+                    "details": {"reasons": ["missing_context"], "text": "It left out the trend?"},
+                })
+            ),
+            (
+                serde_json::json!(second),
+                serde_json::json!({
+                    "revision": 2,
+                    "rating": "down",
+                    "details": {"reasons": ["not_useful"], "text": ""},
+                })
+            ),
+        ]
+    );
+    println!("Both site processes restarted; snapshot feedback: {saved:?}");
+    let mut fresh = Tab::open(&urls[1]);
+    fresh.wait_for_text("Work email", Duration::from_secs(20));
+    fresh.request_sign_in("physician@codahealth.test");
+    fresh.wait_for_text("Sodium was 139 on Monday.", Duration::from_secs(20));
+    ratings_when(
+        &mut fresh,
+        "each rating stayed on its response",
+        |ratings| {
+            ratings.len() == 2
+                && ratings[0]["pressed"] == "Good response"
+                && ratings[0]["details"] == "Edit details"
+                && ratings[1]["pressed"] == "Poor response"
+                && ratings[1]["details"] == "Edit details"
+        },
+    );
+    fresh.save_pictures("feedback-after-restart", "[aria-label=\"Conversation\"]");
+
+    // On a phone the controls and the details dialog fit the screen and work.
+    // A phone opens with the sidebar closed, so load the chat afresh at its size.
+    fresh.set_viewport(390, 844, true);
+    fresh.reload();
+    fresh.wait_for_text("Sodium was 139 on Monday.", Duration::from_secs(20));
+    ratings_when(&mut fresh, "the phone shows the saved ratings", |ratings| {
+        ratings.len() == 2 && ratings[0]["pressed"] == "Good response"
+    });
+    const CONTROLS: &str = ".message-actions[aria-label=\"Response actions\"]";
+    assert_eq!(
+        fresh.step("outsideViewport", serde_json::json!([CONTROLS])),
+        serde_json::json!([]),
+        "a response's feedback controls run off a phone's screen"
+    );
+    let shell = fresh.step("readShell", serde_json::json!([]));
+    assert_eq!(
+        shell["pageWidth"], 390,
+        "the page is wider than a phone: {shell}"
+    );
+    fresh.save_picture("feedback-phone-controls");
+    fresh.step("clickInRating", serde_json::json!([0, "Poor response"]));
+    ratings_when(&mut fresh, "the phone rating saved", |ratings| {
+        ratings[0]["pressed"] == "Poor response"
+            && ratings[0]["enabled"] == true
+            && ratings[0]["details"] == "Edit details"
+    });
+    fresh.step("clickInRating", serde_json::json!([0, "Edit details"]));
+    fresh.wait_for_text(
+        "What would have made this response better?",
+        Duration::from_secs(5),
+    );
+    assert_eq!(
+        fresh.step(
+            "outsideViewport",
+            serde_json::json!(["dialog.feedback-details"])
+        ),
+        serde_json::json!([]),
+        "the details dialog runs off a phone's screen"
+    );
+    assert_eq!(
+        fresh.step(
+            "outsideViewport",
+            serde_json::json!([
+                "dialog.feedback-details button.control-primary, dialog.feedback-details textarea"
+            ]),
+        ),
+        serde_json::json!([]),
+        "the dialog's words and Save sit off a phone's screen"
+    );
+    fresh.save_picture("feedback-phone-details");
+    fresh.click("dialog.feedback-details button[aria-label=\"Close\"]");
+    let closed = Instant::now();
+    while !fresh.dialog_text().is_empty() {
+        assert!(
+            closed.elapsed() < Duration::from_secs(5),
+            "Close left the phone dialog open"
+        );
+        std::thread::sleep(Duration::from_millis(60));
+    }
+    let phone = snapshot_feedback(&hosts[0], &session, patient, chat).await;
+    let rerated = &phone[0].1;
+    assert_eq!(phone[0].0, first, "{phone:?}");
+    assert_eq!(
+        (&rerated["rating"], &rerated["revision"]),
+        (&serde_json::json!("down"), &serde_json::json!(3))
+    );
+    assert_eq!(
+        rerated["details"]["text"], "It left out the trend?",
+        "a new rating on a phone kept the saved details"
+    );
+
+    // What a reread found stays when a later one can't read feedback: a newer
+    // revision saved on another device and an open dialog's unsaved words.
+    fresh.set_viewport(1280, 800, true);
+    let http = reqwest::Client::new();
+    let reread = || {
+        http.put(format!(
+            "http://{}/auth/panels/staging-physician/{patient}",
+            hosts[1]
+        ))
+        .bearer_auth(&session)
+        .send()
+    };
+    let elsewhere = serde_json::json!({
+        "rating": "up",
+        "details": {"reasons": ["hard_to_follow"], "text": "Saved on another device."},
+    });
+    let (status, body) = scale::exchange(
+        &hosts[0],
+        "PUT",
+        &format!("/physician-state/feedback/{patient}/{chat}/{first}"),
+        &[
+            ("content-type", "application/json"),
+            ("authorization", &format!("Bearer {session}")),
+        ],
+        Some(&serde_json::to_vec(&elsewhere).unwrap()),
+    )
+    .await
+    .unwrap();
+    assert_eq!(status, 200, "{body}");
+    // A panel change announces the patient, so the open chat is read again.
+    assert!(reread().await.unwrap().status().is_success());
+    ratings_when(
+        &mut fresh,
+        "the other device's rating was read",
+        |ratings| ratings[0]["pressed"] == "Good response" && ratings[0]["notice"].is_null(),
+    );
+    fresh.step("clickInRating", serde_json::json!([0, "Edit details"]));
+    fresh.wait_for_text(
+        "What would have made this response better?",
+        Duration::from_secs(5),
+    );
+    assert_eq!(
+        fresh.step("valueSoon", serde_json::json!([DETAILS])),
+        "Saved on another device."
+    );
+    fresh
+        .browser
+        .type_into(DETAILS, "Not saved yet: the trend matters");
+    scale::corrupt_feedback_details_on(&database.url, second).await;
+    assert!(reread().await.unwrap().status().is_success());
+    let failed = Instant::now();
+    while !sites[1]
+        .tail()
+        .contains("physician chat snapshot feedback read failed")
+    {
+        assert!(
+            failed.elapsed() < Duration::from_secs(10),
+            "the reread never found feedback unavailable"
+        );
+        std::thread::sleep(Duration::from_millis(60));
+    }
+    std::thread::sleep(Duration::from_millis(300));
+    ratings_when(
+        &mut fresh,
+        "unavailable feedback kept what earlier reads found",
+        |ratings| {
+            ratings.len() == 2
+                && ratings[0]["pressed"] == "Good response"
+                && ratings[1]["pressed"] == "Poor response"
+                && ratings
+                    .iter()
+                    .all(|rating| rating["enabled"] == true && rating["notice"].is_null())
+        },
+    );
+    assert_eq!(
+        fresh.step("valueSoon", serde_json::json!([DETAILS])),
+        "Not saved yet: the trend matters",
+        "an unavailable reread closed the dialog and lost its words"
+    );
+    fresh.save_pictures("feedback-kept-when-unavailable", "dialog.feedback-details");
+    fresh.click("dialog.feedback-details button[aria-label=\"Close\"]");
+    // A thumb then keeps the newest details read, not an older local save's.
+    fresh.step("clickInRating", serde_json::json!([0, "Poor response"]));
+    ratings_when(&mut fresh, "the thumb saved over the read", |ratings| {
+        ratings[0]["pressed"] == "Poor response" && ratings[0]["notice"].is_null()
+    });
+    // The page shows the pressed thumb while its save is in flight, so wait for the row.
+    let pressed = Instant::now();
+    let rows = loop {
+        let rows = scale::feedback_rows(&database.url).await;
+        let landed = rows
+            .iter()
+            .any(|row| row["response"] == first && row["revision"] == 5);
+        if landed || pressed.elapsed() > Duration::from_secs(10) {
+            break rows;
+        }
+        tokio::time::sleep(Duration::from_millis(60)).await;
+    };
+    let row = rows.iter().find(|row| row["response"] == first);
+    assert_eq!(
+        row,
+        Some(&serde_json::json!({
+            "response": first,
+            "revision": 5,
+            "rating": "down",
+            "details": elsewhere["details"],
+        })),
+        "{rows:?}"
+    );
+
+    // Feedback the site can't read leaves the chat usable: the conversation
+    // shows, current, and each response's thumbs are disabled and say why.
+    scale::corrupt_feedback_details(&database.url).await;
+    fresh.set_viewport(1280, 800, true);
+    fresh.reload();
+    fresh.wait_for_text("Sodium was 139 on Monday.", Duration::from_secs(20));
+    ratings_when(
+        &mut fresh,
+        "unreadable feedback disables each response's thumbs",
+        |ratings| {
+            ratings.len() == 2
+                && ratings.iter().all(|rating| {
+                    rating["enabled"] == false
+                        && rating["pressed"].is_null()
+                        && rating["details"].is_null()
+                        && rating["notice"] == "Couldn’t load your rating"
+                })
+        },
+    );
+    let page = fresh.dom();
+    assert!(
+        page.contains("Potassium was 4.1 on Monday.")
+            && !page.contains("Coda couldn’t refresh this conversation."),
+        "unreadable feedback kept the conversation from showing as current"
+    );
+    fresh.type_composer("Still writing to Coda");
+    fresh.wait_saved();
+    fresh.save_pictures("feedback-unavailable", "[aria-label=\"Conversation\"]");
+    drop(fresh);
+    drop(sites);
+    fs::remove_dir_all(home).unwrap();
+}
+
 async fn dump_dom(chrome: &std::path::Path, url: &str) -> String {
     let child = Command::new(chrome)
         .env_remove("LD_LIBRARY_PATH")
