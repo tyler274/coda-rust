@@ -16,7 +16,6 @@ data flow, content policy, and runbook are in
 | `datadog_gcp.tf` | Off by default (`datadog_gcp_integration_enabled`, `datadog` only): the Datadog GCP integration for `cluster_project` only, through service-account impersonation |
 | `grafana.tf` | With `telemetry_backend = "grafana"` or `"both"`: one-replica StatefulSets with persistent disks for Tempo `3.1.1`, Loki `3.7.9`, Prometheus `v3.16.0` and Grafana `13.3.0`, each behind a ClusterIP Service, reading the shared files under [`dev/observability/grafana`](/dev/observability/grafana) from ConfigMaps: Tempo's metrics-generator, Loki's OTLP ingestion, the datasources (`tempo`, `loki`, `prometheus`) and the four operational alert rules in shadow mode. Retention: `grafana_traces_retention_days` (14), `grafana_logs_retention_days` (30), `grafana_metrics_retention_days` (30). Off by default (`grafana_cloud_monitoring_enabled`): a Cloud Monitoring datasource read through Workload Identity by a `roles/monitoring.viewer` service account |
 | `langfuse-monitors.tf` | Behind `langfuse_monitors_enabled`: Datadog monitors on the collector's `otlphttp/langfuse` send and enqueue failures |
-| `retired-langfuse.tf` | `removed` blocks that make this root forget the retired self-hosted Langfuse Cloud SQL instance, database, user and bucket without destroying them (see [Retired self-hosted stores](#retired-self-hosted-stores)) |
 | `web.tf` | Off by default (`observability_web`): an internal passthrough load balancer for `grafana:3000` on the reserved address, admitting only the relay subnet. People reach it only through public-site's `/grafana/` mount (see [Staging proxy](#staging-proxy)) |
 | `doppler.tf` | Doppler Kubernetes Operator `1.7.3` and one `DopplerSecret` per consuming Kubernetes Secret |
 | `charts/manifests` | A local chart that renders custom resources (DatadogAgent, DopplerSecret) so they apply after their operators' CRDs exist |
@@ -287,23 +286,6 @@ Each apply is from a reviewed saved plan with the operator's authorization.
 
 Removing `staging_proxy` and `observability_web` deletes the load balancer and
 returns Grafana to its root path for port-forward.
-
-### Retired self-hosted stores
-
-`retired-langfuse.tf` declares destruction of the staging self-hosted Langfuse
-Cloud SQL instance `coda-langfuse`, its database and IAM user, the
-`<project>-langfuse-blobs` bucket, and the `coda-langfuse` and
-`coda-langfuse-blobs` service accounts. The saved plan must be reviewed and
-explicitly authorized before applying. These declarations must not be applied
-to a production state.
-
-Cloud SQL has both provider-side and API-side deletion protection. Disable
-those protections through a reviewed preparatory apply before destroying the
-instance. The bucket refuses deletion while it contains objects; emptying it
-is an irreversible data deletion and belongs in the authorized cleanup.
-The bucket's operator-managed HMAC key and the old Doppler keys require
-separate cleanup; they are not managed by these declarations. Destruction
-removes the stored traces and prevents rollback using the existing stores.
 
 ## Boundary
 
