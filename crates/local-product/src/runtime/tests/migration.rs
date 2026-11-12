@@ -66,6 +66,7 @@ async fn a_second_migrate_records_nothing_new() {
             "m20261112_chat_memory",
             "m20261112_patient_understanding",
             "m20261112_patient_reviews",
+            "m20261112_visit_briefings",
         ]
     );
 }

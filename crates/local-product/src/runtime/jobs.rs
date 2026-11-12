@@ -217,6 +217,14 @@ pub struct Assignment {
     /// physician-requested patient review.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub review: Option<crate::patient_reviews::ReviewAssignmentContext>,
+    /// Optional structured context when this assignment selects upcoming visits
+    /// and preparation times from a practice schedule wake-up.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub visit_selection: Option<crate::visit_preparation::VisitSelectionContext>,
+    /// Optional structured context when this assignment prepares and saves one
+    /// visit's clinical briefing.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub visit_briefing: Option<crate::visit_preparation::VisitBriefingContext>,
 }
 
 impl Assignment {
@@ -256,6 +264,8 @@ impl Assignment {
             preloaded_skills,
             understanding: None,
             review: None,
+            visit_selection: None,
+            visit_briefing: None,
         })
     }
 
@@ -619,6 +629,9 @@ pub fn recipe(
     if assignment.kind == PracticeJobKind::PatientReview && assignment.review.is_some() {
         return crate::patient_reviews::recipe(&roles.background, assignment, skills);
     }
+    if assignment.kind == PracticeJobKind::VisitPreparation {
+        return crate::visit_preparation::recipe(&roles.background, assignment, skills);
+    }
     let background = &roles.background;
     let mut instructions = skills.instructions(INSTRUCTIONS);
     if !assignment.preloaded_skills.is_empty() {
@@ -915,6 +928,7 @@ impl Store {
         job: &PracticeJob,
     ) -> Result<(), DbErr> {
         write_practice_job_in_tx(&tx, job).await?;
+        super::briefings::sync_visit_preparation_job_in_tx(&tx, job).await?;
         tx.commit().await
     }
 
@@ -1193,7 +1207,9 @@ impl Store {
             return Ok(DeliveryState::Settled);
         }
         Ok(match job.status {
-            WorkStatus::Completed | WorkStatus::Held => DeliveryState::Settled,
+            WorkStatus::Completed | WorkStatus::Held | WorkStatus::Cancelled => {
+                DeliveryState::Settled
+            }
             WorkStatus::Failed => DeliveryState::Failed,
             WorkStatus::Active
                 if job.attempts.last().is_some_and(|attempt| {
@@ -1202,7 +1218,7 @@ impl Store {
             {
                 DeliveryState::Claimed
             }
-            WorkStatus::Active | WorkStatus::Pending | WorkStatus::Cancelled => DeliveryState::Due,
+            WorkStatus::Active | WorkStatus::Pending => DeliveryState::Due,
         })
     }
 
@@ -1775,6 +1791,56 @@ impl Store {
         })
     }
 
+    /// Cancels a pending, active, or held practice job inside caller-supplied
+    /// transaction `tx` without committing `tx`. Returns `true` when the job
+    /// transitioned to [`WorkStatus::Cancelled`].
+    pub(super) async fn cancel_practice_job_in_tx(
+        tx: &sea_orm::DatabaseTransaction,
+        scope: &PracticeScope,
+        now_unix: i64,
+    ) -> Result<bool, RuntimeError> {
+        let Some(row) = practice_job::Entity::find_by_id(job_keys(scope))
+            .lock_exclusive()
+            .one(tx)
+            .await?
+        else {
+            return Ok(false);
+        };
+        let attempts = load_attempts(tx, scope).await?;
+        let mut job = decode_job(row, attempts)?;
+        if matches!(
+            job.status,
+            WorkStatus::Completed | WorkStatus::Failed | WorkStatus::Cancelled
+        ) {
+            return Ok(false);
+        }
+        if let Some(attempt) = job
+            .attempts
+            .last_mut()
+            .filter(|attempt| attempt.status == AttemptStatus::Active)
+        {
+            attempt.status = AttemptStatus::Cancelled;
+        }
+        if let Some(current) = job.runs.current() {
+            match current.outcome {
+                None => {
+                    job.runs.end(RunOutcome::Cancelled)?;
+                }
+                Some(RunOutcome::Held { .. }) => {
+                    job.runs.start(Uuid::new_v4().to_string())?;
+                    job.runs.end(RunOutcome::Cancelled)?;
+                }
+                Some(RunOutcome::Completed | RunOutcome::Failed | RunOutcome::Cancelled) => {}
+            }
+        }
+        job.status = WorkStatus::Cancelled;
+        job.updated_at = now_unix;
+        save_attempts(tx, &job.scope, &job.attempts).await?;
+        job_active_model(&job)?.update(tx).await?;
+        super::briefings::sync_visit_preparation_job_in_tx(tx, &job).await?;
+        Ok(true)
+    }
+
     pub(super) async fn practice_job_snapshot(
         &self,
         scope: &PracticeScope,
@@ -1793,6 +1859,14 @@ impl Store {
         tx.commit().await?;
         Ok((job, ordered, skills))
     }
+}
+
+pub(crate) fn practice_job_tool_is_read_only(kind: PracticeJobKind, name: &str) -> bool {
+    crate::physician_chat::read_only(name)
+        || crate::initial_understanding::read_only_understanding_tool(name)
+        || crate::patient_reviews::read_only_review_tool(name)
+        || (kind == PracticeJobKind::VisitPreparation
+            && name == super::chat_operations::PATIENT_MEMORY_TOOL)
 }
 
 /// Shared-harness host for one claimed practice background job. Enforces
@@ -1828,9 +1902,7 @@ impl Product for PracticeJobHost<'_> {
     }
 
     fn read_only(&self, name: &str) -> bool {
-        crate::physician_chat::read_only(name)
-            || crate::initial_understanding::read_only_understanding_tool(name)
-            || crate::patient_reviews::read_only_review_tool(name)
+        practice_job_tool_is_read_only(self.claim.kind, name)
     }
 
     fn read_result(&mut self, id: &str) -> engine::recipe::ToolFuture<Option<String>> {
@@ -1864,15 +1936,22 @@ impl Product for PracticeJobHost<'_> {
         call: &Invocation,
     ) -> engine::recipe::ToolFuture<Option<ToolOutcome>> {
         let is_understanding = call.name == crate::initial_understanding::SAVE_UNDERSTANDING_TOOL;
+        let is_visit_prep = crate::visit_preparation::is_visit_preparation_tool(&call.name);
         let is_refresh = super::refresh::is_refresh_tool(&call.name);
         let is_concern = super::concerns::is_concern_tool(&call.name);
         let is_memory = super::chat_operations::is_memory_tool(&call.name);
         let is_complete_review = call.name == crate::patient_reviews::COMPLETE_PATIENT_REVIEW_TOOL;
-        if !is_understanding && !is_refresh && !is_concern && !is_memory && !is_complete_review {
+        if !is_understanding
+            && !is_visit_prep
+            && !is_refresh
+            && !is_concern
+            && !is_memory
+            && !is_complete_review
+        {
             return Box::pin(async { Ok(None) });
         }
         if (is_concern || is_memory || is_complete_review)
-            && self.claim.kind == PracticeJobKind::InitialUnderstanding
+            && self.claim.kind != PracticeJobKind::PatientReview
         {
             return Box::pin(async { Ok(None) });
         }
@@ -1881,9 +1960,18 @@ impl Product for PracticeJobHost<'_> {
         let call = call.clone();
         Box::pin(async move {
             if is_understanding {
+                if claim.kind != PracticeJobKind::InitialUnderstanding {
+                    return Ok(None);
+                }
                 return store
                     .saved_practice_understanding_outcome(&claim, &call)
                     .await;
+            }
+            if is_visit_prep {
+                if claim.kind != PracticeJobKind::VisitPreparation {
+                    return Ok(None);
+                }
+                return store.saved_visit_preparation_outcome(&claim, &call).await;
             }
             store.assert_practice_job_current(&claim).await?;
             let (job, _, _) = store.practice_job_snapshot(&claim.scope).await?;
@@ -1975,6 +2063,23 @@ impl Product for PracticeJobHost<'_> {
                 };
                 return Ok(ToolOutcome::History(page));
             }
+            if call.name == SKILL_VIEW {
+                return Ok(skills.execute(&call.name, &arguments));
+            }
+            if job.assignment.visit_selection.is_some() {
+                if call.name == crate::visit_preparation::SELECT_VISITS_TOOL
+                    && claim.kind == PracticeJobKind::VisitPreparation
+                {
+                    return store
+                        .execute_visit_preparation_tool_fenced(&claim, &call, &arguments)
+                        .await;
+                }
+                return Ok(ToolOutcome::refused(format!(
+                    "tool {} is not available to multi-visit selection jobs; use starting selection context and {}",
+                    call.name,
+                    crate::visit_preparation::SELECT_VISITS_TOOL
+                )));
+            }
             if matches!(call.name.as_str(), SEARCH_TOOL | READ_TOOL) {
                 return store
                     .execute_practice_chart_tool(&claim.scope, &call.name, &arguments)
@@ -1990,10 +2095,50 @@ impl Product for PracticeJobHost<'_> {
                     .execute_claimed_practice_refresh_tool(&claim, &job.work, &refresh_call)
                     .await;
             }
+            if crate::initial_understanding::is_understanding_tool(&call.name) {
+                if call.name == crate::initial_understanding::SAVE_UNDERSTANDING_TOOL
+                    && claim.kind != PracticeJobKind::InitialUnderstanding
+                {
+                    return Ok(ToolOutcome::refused(
+                        "save_patient_understanding is only available to initial understanding jobs",
+                    ));
+                }
+                return store
+                    .execute_practice_understanding_tool_fenced(&claim, &call, &arguments)
+                    .await;
+            }
+            if crate::visit_preparation::is_visit_preparation_tool(&call.name) {
+                if claim.kind != PracticeJobKind::VisitPreparation {
+                    return Ok(ToolOutcome::refused(format!(
+                        "tool {} is only available to visit preparation jobs",
+                        call.name
+                    )));
+                }
+                return store
+                    .execute_visit_preparation_tool_fenced(&claim, &call, &arguments)
+                    .await;
+            }
+            if crate::patient_reviews::is_patient_review_tool(&call.name) {
+                if claim.kind != PracticeJobKind::PatientReview {
+                    return Ok(ToolOutcome::refused(format!(
+                        "tool {} is only available to patient review jobs",
+                        call.name
+                    )));
+                }
+                return store
+                    .execute_patient_review_tool(&claim, &job, &ordered, &call, &arguments)
+                    .await;
+            }
             if super::concerns::is_concern_tool(&call.name) {
                 if claim.kind == PracticeJobKind::InitialUnderstanding {
                     return Ok(ToolOutcome::refused(format!(
                         "initial understanding job cannot modify concerns: {} is refused",
+                        call.name
+                    )));
+                }
+                if claim.kind == PracticeJobKind::VisitPreparation {
+                    return Ok(ToolOutcome::refused(format!(
+                        "visit preparation job cannot invoke {} directly; record pre-visit concerns through save_visit_briefing",
                         call.name
                     )));
                 }
@@ -2018,60 +2163,42 @@ impl Product for PracticeJobHost<'_> {
                     .await;
             }
             if super::chat_operations::is_memory_tool(&call.name) {
-                if claim.kind == PracticeJobKind::InitialUnderstanding {
-                    return Ok(ToolOutcome::refused(format!(
+                return match claim.kind {
+                    PracticeJobKind::InitialUnderstanding => Ok(ToolOutcome::refused(format!(
                         "initial understanding job cannot modify patient memory: {} is refused",
                         call.name
-                    )));
-                }
-                return store
-                    .execute_practice_memory_tool(&claim, &job, &ordered, &call, arguments)
-                    .await;
+                    ))),
+                    PracticeJobKind::VisitPreparation => {
+                        store
+                            .execute_practice_memory_read_tool(&claim.scope, &arguments)
+                            .await
+                    }
+                    PracticeJobKind::PatientReview => {
+                        store
+                            .execute_practice_memory_tool(&claim, &job, &ordered, &call, arguments)
+                            .await
+                    }
+                };
             }
-            if crate::patient_reviews::is_patient_review_tool(&call.name) {
+            if super::chat_operations::is_retrieve_work_tool(&call.name) {
                 if claim.kind == PracticeJobKind::InitialUnderstanding {
-                    return Ok(ToolOutcome::refused(format!(
-                        "initial understanding job cannot invoke patient review tools: {} is refused",
-                        call.name
-                    )));
+                    return Ok(ToolOutcome::refused(
+                        "retrieve_patient_work is not available to initial understanding jobs",
+                    ));
                 }
                 return store
-                    .execute_patient_review_tool(&claim, &job, &ordered, &call, &arguments)
+                    .execute_practice_retrieve_work_tool(&claim.scope, &arguments)
                     .await;
             }
             if crate::clinical_library::is_library_tool(&call.name) {
-                let outcome = store
-                    .clinical_library()
-                    .execute(&call.name, &arguments)
-                    .await;
-                if let ToolOutcome::Returned(raw) = &outcome
-                    && let Ok(mut parsed) = serde_json::from_str::<Value>(raw)
-                    && parsed.get("outcome").and_then(Value::as_str) == Some("unavailable")
-                {
-                    let detail = parsed
-                        .get("reason")
-                        .or_else(|| parsed.get("message"))
-                        .and_then(Value::as_str)
-                        .unwrap_or("Clinical library service is unavailable.")
-                        .to_owned();
-                    let limit = super::chat_operations::RecordLimit {
-                        kind: super::chat_operations::RecordLimitKind::Unavailable,
-                        subject: "clinical_library".into(),
-                        detail,
-                    };
-                    if let Some(obj) = parsed.as_object_mut() {
-                        obj.insert("limits".into(), serde_json::to_value([limit])?);
-                    }
-                    return Ok(ToolOutcome::Returned(parsed.to_string()));
+                if claim.kind == PracticeJobKind::InitialUnderstanding {
+                    return Ok(ToolOutcome::refused(format!(
+                        "tool {} is not available to initial understanding jobs",
+                        call.name
+                    )));
                 }
-                return Ok(outcome);
-            }
-            if call.name == SKILL_VIEW {
-                return Ok(skills.execute(&call.name, &arguments));
-            }
-            if crate::initial_understanding::is_understanding_tool(&call.name) {
                 return store
-                    .execute_practice_understanding_tool_fenced(&claim, &call, &arguments)
+                    .execute_practice_clinical_library_tool(&call.name, &arguments)
                     .await;
             }
             Ok(ToolOutcome::refused(format!(
@@ -2109,6 +2236,14 @@ impl Product for PracticeJobHost<'_> {
             super::reviews::ReviewCommitCheck::Continue(payload) => {
                 return Ok(Finish::Continue(payload));
             }
+        }
+        if job.kind == PracticeJobKind::VisitPreparation
+            && let Some(feedback) = self
+                .store
+                .finish_visit_preparation_gate(&self.claim, &job)
+                .await?
+        {
+            return Ok(Finish::Continue(feedback));
         }
         self.store
             .commit_practice_job(&self.claim, turn, self.authority)
@@ -2189,11 +2324,18 @@ impl PracticeJobHost<'_> {
             .review_message_sources_for_job(&job)
             .await
             .map_err(|err| engine::Failure::Host(err.into()))?;
-        let (accepted, source_feedback) = self
+        let (accepted, mut source_feedback) = self
             .store
             .practice_job_recovery_inputs(&job, &ordered)
             .await
             .map_err(|err| engine::Failure::Host(err.into()))?;
+        if self.claim.kind == PracticeJobKind::VisitPreparation {
+            source_feedback = self
+                .store
+                .visit_preparation_recovery_feedback(&self.claim, &job, &ordered)
+                .await
+                .map_err(|err| engine::Failure::Host(err.into()))?;
+        }
         let work = request.freeze()?.recover(
             &self.claim.attempt,
             engine::recovery::Records {
@@ -2355,5 +2497,26 @@ mod tests {
                 .contains("practice run cannot act as a physician"),
             "unexpected error: {err}"
         );
+    }
+
+    #[test]
+    fn patient_memory_is_read_only_only_for_visit_preparation_jobs() {
+        let memory_tool = super::super::chat_operations::PATIENT_MEMORY_TOOL;
+        assert!(super::practice_job_tool_is_read_only(
+            PracticeJobKind::VisitPreparation,
+            memory_tool
+        ));
+        assert!(!super::practice_job_tool_is_read_only(
+            PracticeJobKind::PatientReview,
+            memory_tool
+        ));
+        assert!(!super::practice_job_tool_is_read_only(
+            PracticeJobKind::InitialUnderstanding,
+            memory_tool
+        ));
+        assert!(super::practice_job_tool_is_read_only(
+            PracticeJobKind::PatientReview,
+            crate::physician_sources::READ_TOOL
+        ));
     }
 }
