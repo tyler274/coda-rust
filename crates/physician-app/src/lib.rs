@@ -11,6 +11,7 @@ mod composer;
 mod feedback;
 mod local_draft;
 mod panels;
+mod patient_reviews_panel;
 mod shell;
 mod status;
 mod tabs;
@@ -486,14 +487,14 @@ pub struct SignInLink {
 
 /// Why the server refused a signed-in read: the `reason` beside its 401.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
-enum Refusal {
+pub(crate) enum Refusal {
     /// The session ended or expired.
     SessionEnded,
     /// The practice removed this physician's access.
     AccessRemoved,
 }
 
-fn refusal(error: &physician_client::HttpError) -> Option<Refusal> {
+pub(crate) fn refusal(error: &physician_client::HttpError) -> Option<Refusal> {
     let physician_client::HttpError::Status { status: 401, body } = error else {
         return None;
     };
@@ -513,7 +514,7 @@ fn refusal(error: &physician_client::HttpError) -> Option<Refusal> {
 /// Every change names the bearer it is about, because a request can finish
 /// after this browser has moved on to a newer session.
 #[derive(Clone, Copy, PartialEq)]
-struct SessionState {
+pub(crate) struct SessionState {
     /// Presents this tab's bearer on every read.
     client: Signal<PhysicianClient>,
     signed_in: Signal<bool>,
@@ -635,7 +636,7 @@ impl SessionState {
     /// way the browser keeps storing the ended session: only a sign-out
     /// forgets it, so a tab that later finds nothing stored knows one came.
     /// Removed access signs out and says "No access to this practice".
-    fn refused(mut self, refusal: Refusal, shown: bool, presented: Option<String>) {
+    pub(crate) fn refused(mut self, refusal: Refusal, shown: bool, presented: Option<String>) {
         if self.bearer() != presented {
             return;
         }
@@ -2111,6 +2112,13 @@ fn PhysicianShell(
                         PatientSurface {
                             gone: patient_gone,
                             read: patient_read,
+                            reviews_context: patient_reviews_panel::PatientReviewsContext {
+                                client,
+                                session,
+                                shown,
+                                workspace_attempt,
+                                today_attempt,
+                            },
                             on_go_today: move |_| {
                                 selected.set(None);
                                 place.set(Place::Today);
@@ -2526,7 +2534,7 @@ fn clinical_dialogs_blocked(
 const COMMAND_REFUSED: &str = "Coda didn’t take that.";
 const COMMAND_SENDING: &str = "Sending…";
 const COMMAND_UNCONFIRMED: &str = "Coda couldn’t confirm that.";
-const CHECK_AGAIN: &str = "Check again";
+pub(crate) const CHECK_AGAIN: &str = "Check again";
 const MESSAGE_REFUSED: &str = "Coda couldn’t accept that message.";
 
 fn command_rejection(value: &serde_json::Value) -> Option<String> {
@@ -3656,6 +3664,7 @@ fn UpdatesSurface(
 fn PatientSurface(
     gone: bool,
     read: ReadStage,
+    reviews_context: patient_reviews_panel::PatientReviewsContext,
     on_go_today: EventHandler,
     name: String,
     workspace: Option<PatientWorkspaceResponse>,
@@ -4061,6 +4070,15 @@ fn PatientSurface(
                     }
                 }
             }
+            if let Some(open) = workspace.as_ref().filter(|_| !clinic_demographic) {
+                patient_reviews_panel::PatientReviewsPanel {
+                    workspace_id: open.patient_workspace_id.clone(),
+                    server_now: server_now.clone(),
+                    time_zone: open.time_zone.clone().unwrap_or_default(),
+                    context: reviews_context,
+                    on_open_source,
+                }
+            }
             if !segments.is_empty() || synopsis_text.is_some() {
                 section { class: "patient-section", aria_label: "Patient summary",
                     h2 { "Patient summary" }
@@ -4446,7 +4464,7 @@ fn source_reading(chip: SourceChip) -> OpenReading {
 }
 
 #[component]
-fn CitationChip(chip: SourceChip, on_open: EventHandler<SourceChip>) -> Element {
+pub(crate) fn CitationChip(chip: SourceChip, on_open: EventHandler<SourceChip>) -> Element {
     let label = chip_name(&chip);
     let index = chip.index;
     if chip.open {
@@ -4567,7 +4585,10 @@ fn past_work_item_detail(item: &PastWorkItem, time_zone: &str, server_now: &str)
 }
 
 #[component]
-fn CitedMessage(pieces: Vec<SynopsisPiece>, on_open_source: EventHandler<SourceChip>) -> Element {
+pub(crate) fn CitedMessage(
+    pieces: Vec<SynopsisPiece>,
+    on_open_source: EventHandler<SourceChip>,
+) -> Element {
     let parts = pieces
         .into_iter()
         .map(|piece| match piece {
@@ -4589,7 +4610,10 @@ fn CitedMessage(pieces: Vec<SynopsisPiece>, on_open_source: EventHandler<SourceC
 }
 
 #[component]
-fn AnswerBasis(pieces: Vec<SynopsisPiece>, on_open_source: EventHandler<SourceChip>) -> Element {
+pub(crate) fn AnswerBasis(
+    pieces: Vec<SynopsisPiece>,
+    on_open_source: EventHandler<SourceChip>,
+) -> Element {
     let mut open = use_signal(|| false);
     rsx! {
         div { class: "answer-basis",
@@ -4611,7 +4635,7 @@ fn AnswerBasis(pieces: Vec<SynopsisPiece>, on_open_source: EventHandler<SourceCh
 
 /// What Coda says in a chat snapshot, drawn richly. This doesn't fetch a source or run a model.
 #[component]
-fn MessageWords(text: String) -> Element {
+pub(crate) fn MessageWords(text: String) -> Element {
     rsx! {
         ui::Prose {
             message: true,
@@ -4957,7 +4981,7 @@ fn forget_workspace_drafts(
 
 /// Waits `ms` milliseconds without blocking the page.
 #[cfg(target_arch = "wasm32")]
-async fn sleep_ms(ms: u32) {
+pub(crate) async fn sleep_ms(ms: u32) {
     let Some(window) = web_sys::window() else {
         return;
     };
@@ -4972,7 +4996,7 @@ async fn sleep_ms(ms: u32) {
 
 /// Waits `ms` milliseconds on a helper thread (native builds).
 #[cfg(not(target_arch = "wasm32"))]
-async fn sleep_ms(ms: u32) {
+pub(crate) async fn sleep_ms(ms: u32) {
     use std::sync::{Arc, Mutex};
     use std::task::{Poll, Waker};
     let state: Arc<Mutex<(bool, Option<Waker>)>> = Arc::default();
@@ -5273,7 +5297,7 @@ fn resume_command(line: &TodayLine, time_zone: &str) -> Option<Command> {
     ))
 }
 
-fn idempotency_key() -> String {
+pub(crate) fn idempotency_key() -> String {
     static NEXT: AtomicU64 = AtomicU64::new(1);
     let n = NEXT.fetch_add(1, Ordering::Relaxed);
     format!("submit-{}-{n}", now_millis())
@@ -5288,13 +5312,16 @@ fn new_chat_id() -> String {
 }
 
 /// Puts the open patient and conversation in the address, without a history
-/// entry, so a reload reopens the same chat.
+/// entry, so a reload reopens the same chat and keeps any selected review on
+/// that patient.
 #[cfg(target_arch = "wasm32")]
 fn write_address(patient: Option<&str>, chat: Option<&str>) {
     if let Some(window) = web_sys::window()
         && let Ok(href) = window.location().href()
         && let Ok(url) = web_sys::Url::new(&href)
     {
+        let same_patient =
+            patient.is_some() && url.search_params().get("patient").as_deref() == patient;
         match patient {
             Some(patient) => url.search_params().set("patient", patient),
             None => url.search_params().delete("patient"),
@@ -5302,6 +5329,9 @@ fn write_address(patient: Option<&str>, chat: Option<&str>) {
         match chat.filter(|_| patient.is_some()) {
             Some(chat) => url.search_params().set("chat", chat),
             None => url.search_params().delete("chat"),
+        }
+        if !same_patient {
+            url.search_params().delete("review");
         }
         if let Ok(history) = window.history() {
             let _ =

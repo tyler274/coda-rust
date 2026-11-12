@@ -26,7 +26,7 @@ pub struct DurableChat {
     /// Existing authoritative Postgres runtime.
     pub store: Store,
     skills: local_product::physician_chat::PhysicianSkills,
-    chat_binding: local_product::ModelBinding,
+    roles: local_product::ModelRoles,
     revision_recipe: harness::engine::recipe::RequestRecipe,
     queue: Arc<dyn ChatQueue>,
     /// Practices whose sessions may tag their inputs with a rehearsal scenario.
@@ -44,10 +44,46 @@ impl DurableChat {
         Self {
             store,
             queue,
-            chat_binding: roles.chat.clone(),
+            roles: roles.clone(),
             revision_recipe: local_product::runtime::reply::recipe(&roles.background, &skills),
             skills,
             simulation_practices: SimulationPractices::default(),
+        }
+    }
+
+    /// Configured model roles for physician chat and background practice runs.
+    pub fn roles(&self) -> &local_product::ModelRoles {
+        &self.roles
+    }
+
+    /// Approved clinical skills catalog shared by chat and practice runs.
+    pub fn skills(&self) -> &local_product::physician_chat::PhysicianSkills {
+        &self.skills
+    }
+
+    /// Publishes a wakeup hint for an already-accepted practice background job.
+    /// Publication failure does not undo the durable Postgres acceptance; the
+    /// bounded recovery sweep republishes unclaimed wakeups.
+    pub async fn publish_practice_job(&self, delivery: &Delivery) {
+        if self.queue.publish(delivery).await.is_ok() {
+            if self
+                .store
+                .dispatched(delivery, DISPATCH_RETRY_SECONDS)
+                .await
+                .is_err()
+            {
+                tracing::error!(
+                    event = "physician.queue.dispatch_failed",
+                    error.type = "database",
+                    "accepted practice job dispatch marker unavailable"
+                );
+            }
+        } else {
+            tracing::error!(
+                event = "physician.queue.publish_failed",
+                error.type = "publish",
+                "accepted practice job awaits queue recovery"
+            );
         }
     }
 
@@ -84,7 +120,7 @@ impl DurableChat {
         let chat_recipe = self
             .store
             .chat_recipe_with_understanding(
-                &self.chat_binding,
+                &self.roles.chat,
                 local_product::physician_chat::INSTRUCTIONS,
                 &self.skills,
                 &scope.practice,
