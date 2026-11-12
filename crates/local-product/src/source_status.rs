@@ -690,8 +690,55 @@ pub(crate) enum ReconnectCommandClaim {
     UnregisteredSource,
 }
 
+enum ReconnectExecution {
+    ReadyToComplete {
+        receipt: ReconnectReceipt,
+        access: SourceAccessState,
+        summary: PracticeSourceSummary,
+    },
+    AlreadyCompleted {
+        receipt: ReconnectReceipt,
+        access: SourceAccessState,
+        summary: PracticeSourceSummary,
+    },
+}
+
+#[expect(
+    clippy::too_many_arguments,
+    reason = "heartbeat worker owns cloned scope strings, lease parameters, and oneshot error channel"
+)]
+fn spawn_reconnect_heartbeat(
+    store: Store,
+    practice_id: String,
+    physician_id: String,
+    idempotency_key: String,
+    lease_owner: String,
+    lease_seconds: i64,
+    renew_every: Duration,
+    err_tx: tokio::sync::oneshot::Sender<SourceStatusError>,
+) -> tokio::task::JoinHandle<()> {
+    tokio::spawn(async move {
+        let mut ticker = tokio::time::interval_at(Instant::now() + renew_every, renew_every);
+        let fence = ReconnectCommandFence {
+            practice_id: &practice_id,
+            physician_id: &physician_id,
+            idempotency_key: &idempotency_key,
+            lease_owner: &lease_owner,
+            lease_seconds,
+        };
+        loop {
+            ticker.tick().await;
+            if let Err(error) = store.renew_reconnect_command_lease(fence).await {
+                let _ = err_tx.send(error);
+                break;
+            }
+        }
+    })
+}
+
 struct ReconnectLeaseGuard {
     armed: bool,
+    heartbeat: Option<tokio::task::JoinHandle<()>>,
     db: sea_orm::DatabaseConnection,
     practice_id: String,
     physician_id: String,
@@ -704,7 +751,15 @@ impl ReconnectLeaseGuard {
         self.armed = false;
     }
 
+    async fn stop_heartbeat(&mut self) {
+        if let Some(handle) = self.heartbeat.take() {
+            handle.abort();
+            let _ = handle.await;
+        }
+    }
+
     async fn release_now(&mut self) {
+        self.stop_heartbeat().await;
         if !self.armed {
             return;
         }
@@ -722,17 +777,24 @@ impl ReconnectLeaseGuard {
 
 impl Drop for ReconnectLeaseGuard {
     fn drop(&mut self) {
+        let heartbeat = self.heartbeat.take();
+        if let Some(ref handle) = heartbeat {
+            handle.abort();
+        }
         if !self.armed {
             return;
         }
         self.armed = false;
-        if let Ok(handle) = tokio::runtime::Handle::try_current() {
+        if let Ok(runtime) = tokio::runtime::Handle::try_current() {
             let db = self.db.clone();
             let practice_id = self.practice_id.clone();
             let physician_id = self.physician_id.clone();
             let key = self.key.clone();
             let lease_owner = self.lease_owner.clone();
-            handle.spawn(async move {
+            runtime.spawn(async move {
+                if let Some(handle) = heartbeat {
+                    let _ = handle.await;
+                }
                 let _ = release_reconnect_command_lease_db(
                     &db,
                     &practice_id,
@@ -999,8 +1061,22 @@ impl SourceCoordinator {
             return Ok(ReconnectCommandOutcome::UnregisteredSource);
         };
 
+        // Declare `guard` BEFORE the `work_fut` scope so cancellation drops `work_fut` first
+        // (releasing any open DB transaction's `FOR UPDATE` row lock), aborts/awaits the spawned
+        // heartbeat task second, and releases the lease last.
+        let (heartbeat_err_tx, mut heartbeat_err_rx) = tokio::sync::oneshot::channel();
         let mut guard = ReconnectLeaseGuard {
             armed: true,
+            heartbeat: Some(spawn_reconnect_heartbeat(
+                store.clone(),
+                cmd.practice_id.to_owned(),
+                cmd.physician_id.to_owned(),
+                cmd.idempotency_key.to_owned(),
+                lease_owner.clone(),
+                lease_seconds,
+                renew_every,
+                heartbeat_err_tx,
+            )),
             db: store.connection().clone(),
             practice_id: cmd.practice_id.to_owned(),
             physician_id: cmd.physician_id.to_owned(),
@@ -1020,77 +1096,107 @@ impl SourceCoordinator {
             idempotency_key: cmd.idempotency_key,
         };
 
-        let work_fut = async {
-            let (receipt, access) = match state {
-                ReconnectCommandState::Claimed { .. } => {
-                    let receipt = source
-                        .reconnect(cmd.practice_id, cmd.now, Some(command_key))
-                        .await
-                        .map_err(|error| SourceStatusError::SourceAdapter {
-                            source_id: source.source_id().to_owned(),
-                            source: error,
-                        })?;
-                    let access = SourceAccessState::Connected {
-                        connected_at: receipt.reconnected_at,
-                    };
-                    store
-                        .record_reconnect_command_reconnected(fence, &receipt, &access)
-                        .await?;
-                    (receipt, access)
-                }
-                ReconnectCommandState::Reconnected { receipt, access } => (receipt, access),
-                ReconnectCommandState::Completed {
-                    receipt,
-                    access,
-                    summary,
-                } => {
-                    return Ok(ReconnectCommandOutcome::Accepted {
+        let execution: Result<ReconnectExecution, SourceStatusError> = {
+            let work_fut = async {
+                let (receipt, access) = match state {
+                    ReconnectCommandState::Claimed { .. } => {
+                        let receipt = source
+                            .reconnect(cmd.practice_id, cmd.now, Some(command_key))
+                            .await
+                            .map_err(|error| SourceStatusError::SourceAdapter {
+                                source_id: source.source_id().to_owned(),
+                                source: error,
+                            })?;
+                        let access = SourceAccessState::Connected {
+                            connected_at: receipt.reconnected_at,
+                        };
+                        store
+                            .record_reconnect_command_reconnected(fence, &receipt, &access)
+                            .await?;
+                        (receipt, access)
+                    }
+                    ReconnectCommandState::Reconnected { receipt, access } => (receipt, access),
+                    ReconnectCommandState::Completed {
                         receipt,
                         access,
                         summary,
-                    });
-                }
-            };
+                    } => {
+                        return Ok(ReconnectExecution::AlreadyCompleted {
+                            receipt,
+                            access,
+                            summary,
+                        });
+                    }
+                };
 
-            let check =
-                Self::check_practice_fenced(store, source, cmd.practice_id, cmd.now, Some(fence))
-                    .await?;
-            let summary = check.summary;
-            store
-                .complete_reconnect_command(
-                    fence,
-                    ReconnectCommandState::Completed {
-                        receipt: receipt.clone(),
-                        access: access.clone(),
-                        summary: summary.clone(),
-                    },
+                let check = Self::check_practice_fenced(
+                    store,
+                    source,
+                    cmd.practice_id,
+                    cmd.now,
+                    Some(fence),
                 )
                 .await?;
-            Ok(ReconnectCommandOutcome::Accepted {
-                receipt,
-                access,
-                summary,
-            })
-        };
-        tokio::pin!(work_fut);
+                Ok(ReconnectExecution::ReadyToComplete {
+                    receipt,
+                    access,
+                    summary: check.summary,
+                })
+            };
+            tokio::pin!(work_fut);
 
-        let mut ticker = tokio::time::interval_at(Instant::now() + renew_every, renew_every);
-        let run: Result<ReconnectCommandOutcome, SourceStatusError> = loop {
             tokio::select! {
                 biased;
-                outcome = &mut work_fut => break outcome,
-                _ = ticker.tick() => {
-                    if let Err(error) = store.renew_reconnect_command_lease(fence).await {
-                        break Err(error);
-                    }
-                }
+                outcome = &mut work_fut => outcome,
+                heartbeat_err = &mut heartbeat_err_rx => match heartbeat_err {
+                    Ok(error) => Err(error),
+                    Err(_closed) => work_fut.await,
+                },
             }
         };
 
-        match run {
-            Ok(outcome) => {
+        // Stop and join the spawned heartbeat task BEFORE recording `Completed` so a late
+        // heartbeat renewal never races against `complete_reconnect_command` clearing `lease_owner`.
+        guard.stop_heartbeat().await;
+
+        match execution {
+            Ok(ReconnectExecution::ReadyToComplete {
+                receipt,
+                access,
+                summary,
+            }) => {
+                if let Err(error) = store
+                    .complete_reconnect_command(
+                        fence,
+                        ReconnectCommandState::Completed {
+                            receipt: receipt.clone(),
+                            access: access.clone(),
+                            summary: summary.clone(),
+                        },
+                    )
+                    .await
+                {
+                    guard.release_now().await;
+                    return Err(error);
+                }
                 guard.disarm();
-                Ok(outcome)
+                Ok(ReconnectCommandOutcome::Accepted {
+                    receipt,
+                    access,
+                    summary,
+                })
+            }
+            Ok(ReconnectExecution::AlreadyCompleted {
+                receipt,
+                access,
+                summary,
+            }) => {
+                guard.disarm();
+                Ok(ReconnectCommandOutcome::Accepted {
+                    receipt,
+                    access,
+                    summary,
+                })
             }
             Err(error) => {
                 guard.release_now().await;

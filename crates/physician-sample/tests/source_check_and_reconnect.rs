@@ -1293,3 +1293,224 @@ async fn check_and_reconnect_routes_propagate_enrollment_failures_as_500_and_rep
 
     server_task.abort();
 }
+
+#[tokio::test(flavor = "multi_thread", worker_threads = 4)]
+async fn pre_checkpoint_interrupted_reconnect_recovers_original_receipt_across_fresh_synthetic_charts_instance()
+ {
+    use std::sync::Arc;
+
+    use local_product::physician_sources::{
+        PatientSource, ReconnectReceipt, SourceAdapterError, SourceCommandKey, SourcePatient,
+        SourcePullOutput, SourceRevision,
+    };
+    use local_product::source_status::{ReconnectCommand, SourceAccessState, SourceCoordinator};
+    use physician_sample::synthetic_chart::SyntheticSourceMode;
+
+    struct SiteACrashBeforeCheckpoint {
+        inner: SyntheticCharts,
+        committed: tokio::sync::Notify,
+    }
+
+    #[async_trait::async_trait]
+    impl PatientSource for SiteACrashBeforeCheckpoint {
+        fn source_id(&self) -> &str {
+            self.inner.source_id()
+        }
+
+        fn source_label(&self) -> &str {
+            self.inner.source_label()
+        }
+
+        async fn patient_ids(&self) -> Result<Vec<String>, SourceAdapterError> {
+            self.inner.patient_ids().await
+        }
+
+        async fn patient(
+            &self,
+            source_patient_id: &str,
+        ) -> Result<SourcePatient, SourceAdapterError> {
+            self.inner.patient(source_patient_id).await
+        }
+
+        async fn records(
+            &self,
+            patient: &SourcePatient,
+            workspace: &str,
+        ) -> Result<Vec<SourceRevision>, SourceAdapterError> {
+            self.inner.records(patient, workspace).await
+        }
+
+        async fn pull_patient(
+            &self,
+            practice_id: &str,
+            source_patient_id: &str,
+            workspace: &str,
+        ) -> SourcePullOutput {
+            self.inner
+                .pull_patient(practice_id, source_patient_id, workspace)
+                .await
+        }
+
+        async fn reconnect(
+            &self,
+            practice_id: &str,
+            now: i64,
+            command_key: Option<SourceCommandKey<'_>>,
+        ) -> Result<ReconnectReceipt, SourceAdapterError> {
+            let receipt = self.inner.reconnect(practice_id, now, command_key).await?;
+            self.committed.notify_waiters();
+            std::future::pending::<()>().await;
+            Ok(receipt)
+        }
+    }
+
+    let (auth, runtime, db_url) = stores().await;
+    let run = run_id();
+    let practice_id = format!("practice-failover-{}", run.to_lowercase());
+    let email = format!("failover-{}@codahealth.test", run.to_lowercase());
+    let t_initial: u64 = 1_788_200_000;
+    let t_site_a: i64 = 1_788_201_000;
+    let t_site_b: u64 = 1_788_205_000;
+
+    auth.ensure_practice(&practice_id, PracticeClock::Fixed(t_initial))
+        .await
+        .unwrap();
+    auth.ensure_account(&practice_id, &run, &email, "Dr. Failover", true, 1)
+        .await
+        .unwrap();
+
+    let bank = build_bank(&run, 2);
+    {
+        let site_a_charts = SyntheticCharts::open(&bank);
+        let loaded = load_practice_from_source(&practice_id, &site_a_charts, &auth, &runtime)
+            .await
+            .unwrap();
+        assert_eq!(loaded.patients, 2);
+
+        let admin = PhysicianIdentity {
+            practice_id: practice_id.clone(),
+            physician_id: run.clone(),
+        };
+        for suffix in ["1", "2"] {
+            let ws = workspace_id(SOURCE_ID, &format!("{run}-{suffix}"));
+            auth.assign_panel(&admin, &run, &ws, Membership::Allowed)
+                .await
+                .unwrap();
+        }
+
+        site_a_charts.set_practice_mode(
+            &practice_id,
+            SyntheticSourceMode::LapsedAccess {
+                reason: "site A refresh token expired".into(),
+            },
+        );
+        runtime
+            .set_practice_source_access(
+                &practice_id,
+                SOURCE_ID,
+                &SourceAccessState::ReconnectNeeded {
+                    since: t_initial as i64 + 500,
+                    reason: "site A refresh token expired".into(),
+                },
+                t_initial as i64 + 500,
+            )
+            .await
+            .unwrap();
+
+        let idem = format!("idem-failover-{run}");
+        let site_a_adapter = Arc::new(SiteACrashBeforeCheckpoint {
+            inner: site_a_charts,
+            committed: tokio::sync::Notify::new(),
+        });
+        let committed = site_a_adapter.committed.notified();
+        let runtime_bg = runtime.clone();
+        let practice_bg = practice_id.clone();
+        let physician_bg = run.clone();
+        let idem_bg = idem.clone();
+        let adapter_bg = Arc::clone(&site_a_adapter);
+
+        let site_a_task = tokio::spawn(async move {
+            SourceCoordinator::reconnect_source_command(
+                &runtime_bg,
+                ReconnectCommand {
+                    practice_id: &practice_bg,
+                    physician_id: &physician_bg,
+                    idempotency_key: &idem_bg,
+                    source_id: SOURCE_ID,
+                    source: Some(&*adapter_bg),
+                    now: t_site_a,
+                },
+            )
+            .await
+        });
+
+        committed.await;
+        assert_eq!(
+            site_a_adapter.inner.reconnect_effect_count(&practice_id),
+            1,
+            "Site A performed exactly one reconnect effect before crashing"
+        );
+        site_a_task.abort();
+        let _ = site_a_task.await;
+    }
+
+    // Site A's adapter instance has been dropped and the DB checkpoint never ran (`ReconnectNeeded`
+    // is still stored in Postgres).
+    let pre_retry_report = runtime
+        .practice_source_report(&practice_id, SOURCE_ID)
+        .await
+        .unwrap();
+    assert!(matches!(
+        pre_retry_report.access,
+        Some(SourceAccessState::ReconnectNeeded { .. })
+    ));
+
+    // Boot Site B (`serve_isolated` opens a brand-new `SyntheticCharts::open(&bank)` via
+    // `PHYSICIAN_SYNTHETIC_CHARTS`), advance the practice clock to `t_site_b`, and retry the same
+    // `idempotency_key` over HTTP `/commands`.
+    let bank_for_site_b = bank.clone();
+    let db_for_site_b = db_url.clone();
+    let site_b = common::serve_isolated(move || {
+        // SAFETY: `serve_isolated` serializes server startup under its mutex.
+        unsafe {
+            std::env::set_var("PHYSICIAN_DATABASE_URL", &db_for_site_b);
+            std::env::set_var("PHYSICIAN_AUTH", "required");
+            std::env::set_var("PHYSICIAN_LOCAL_PROOF", "1");
+            std::env::set_var("PHYSICIAN_SYNTHETIC_CHARTS", &bank_for_site_b);
+        }
+    })
+    .await;
+    let base_b = format!("http://{}", site_b.address);
+    let session_b = sign_in(&base_b, &email).await;
+    advance_practice_clock(&db_url, &practice_id, t_site_b).await;
+
+    let idem = format!("idem-failover-{run}");
+    let (status, site_b_resp) = post_json(
+        &base_b,
+        &session_b,
+        "/commands",
+        json!({
+            "type": "reconnect_source",
+            "idempotency_key": idem,
+            "payload": { "source_id": SOURCE_ID }
+        }),
+    )
+    .await;
+    assert_eq!(status, 200, "{site_b_resp}");
+    assert_eq!(site_b_resp["outcome"], "accepted");
+    assert_eq!(
+        site_b_resp["receipt"]["reconnected_at"], t_site_a,
+        "Site B retry must recover Site A's original receipt timestamp rather than minting t_site_b"
+    );
+    assert_eq!(
+        SyntheticCharts::open(&bank).reconnect_effect_count(&practice_id),
+        1,
+        "Site B retry must not repeat the underlying reconnect effect"
+    );
+
+    let (conns_status, conns_body) = get_json(&base_b, &session_b, "/connections").await;
+    assert_eq!(conns_status, 200, "{conns_body}");
+    assert_eq!(conns_body["outages"], json!([]));
+    assert_eq!(conns_body["sources"][0]["summary"]["scope"], "healthy");
+    assert_eq!(conns_body["sources"][0]["summary"]["total_patients"], 2);
+}

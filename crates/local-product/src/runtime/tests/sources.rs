@@ -1262,3 +1262,242 @@ async fn filed_fhir_record_envelope_round_trips_through_postgres_unchanged() {
         Some("https://ehr.example/Observation/potassium-9")
     );
 }
+
+#[tokio::test]
+#[ignore = "requires explicit local Postgres"]
+async fn heartbeat_renewal_does_not_deadlock_when_fenced_delivery_waits_on_database_lock() {
+    use std::sync::Arc;
+    use std::sync::atomic::{AtomicBool, Ordering::SeqCst};
+    use std::time::{Duration, Instant};
+
+    use crate::physician_sources::{
+        PatientSource, ReconnectReceipt, SourceAdapterError, SourceCommandKey, SourcePullOutput,
+    };
+    use crate::runtime::entities::patient_source_status;
+    use crate::source_status::{
+        LinkTarget, ReconnectCommand, ReconnectCommandOutcome, ReconnectLeasePolicy,
+        SourceAccessState, SourceCoordinator,
+    };
+
+    struct RowLockingAdapter {
+        source_id: String,
+        locker_store: Store,
+        practice_id: String,
+        workspace_id: String,
+        arm_status_lock: AtomicBool,
+        lock_held_during_delivery: AtomicBool,
+    }
+
+    #[async_trait]
+    impl PatientSource for RowLockingAdapter {
+        fn source_id(&self) -> &str {
+            &self.source_id
+        }
+
+        fn source_label(&self) -> &str {
+            "Row-Locking Test EHR"
+        }
+
+        async fn patient_ids(&self) -> Result<Vec<String>, SourceAdapterError> {
+            Ok(vec!["pat-1".to_owned()])
+        }
+
+        async fn patient(
+            &self,
+            source_patient_id: &str,
+        ) -> Result<SourcePatient, SourceAdapterError> {
+            Ok(SourcePatient {
+                source_patient_id: source_patient_id.to_owned(),
+                display_name: "Mary Louis".to_owned(),
+                birth_date: Some("1972-03-18".to_owned()),
+                sex_or_gender: None,
+                medical_record_numbers: vec![],
+            })
+        }
+
+        async fn records(
+            &self,
+            _patient: &SourcePatient,
+            _workspace: &str,
+        ) -> Result<Vec<SourceRevision>, SourceAdapterError> {
+            Ok(vec![])
+        }
+
+        async fn pull_patient(
+            &self,
+            _practice_id: &str,
+            source_patient_id: &str,
+            workspace: &str,
+        ) -> SourcePullOutput {
+            if self.arm_status_lock.swap(false, SeqCst) {
+                // Acquire `FOR UPDATE` on the patient's `physician_runtime_patient_source_status`
+                // row on an independent connection and hold it for 80ms while returning `Complete`
+                // immediately. `apply_pull_output -> record_complete_pull_fenced` will immediately
+                // acquire `FOR UPDATE` on `physician_runtime_reconnect_commands` and then block in
+                // Postgres for 80ms waiting on `hold_tx` while ~7-8 10ms heartbeat ticks fire.
+                let hold_tx = self.locker_store.db.begin().await.unwrap();
+                let locked = patient_source_status::Entity::find_by_id((
+                    self.practice_id.clone(),
+                    self.workspace_id.clone(),
+                    self.source_id.clone(),
+                ))
+                .lock_exclusive()
+                .one(&hold_tx)
+                .await
+                .unwrap();
+                assert!(
+                    locked.is_some(),
+                    "seeded patient_source_status row must exist"
+                );
+                self.lock_held_during_delivery.store(true, SeqCst);
+                tokio::spawn(async move {
+                    tokio::time::sleep(Duration::from_millis(80)).await;
+                    hold_tx.commit().await.unwrap();
+                });
+            }
+            let scope = Scope {
+                practice: self.practice_id.clone(),
+                physician: "dr-lock".to_owned(),
+                workspace: workspace.to_owned(),
+                chat: "reply".to_owned(),
+            };
+            let mut rev = source(&scope, "lab-lock", "r1", "Potassium 4.2");
+            rev.source_id = self.source_id.clone();
+            SourcePullOutput::Complete {
+                patient: self.patient(source_patient_id).await.unwrap(),
+                records: vec![rev],
+            }
+        }
+
+        async fn reconnect(
+            &self,
+            practice_id: &str,
+            now: i64,
+            _command_key: Option<SourceCommandKey<'_>>,
+        ) -> Result<ReconnectReceipt, SourceAdapterError> {
+            Ok(ReconnectReceipt {
+                source_id: self.source_id.clone(),
+                practice_id: practice_id.to_owned(),
+                reconnected_at: now,
+            })
+        }
+    }
+
+    let url = std::env::var("PHYSICIAN_RUNTIME_TEST_DATABASE_URL").unwrap();
+    let store = Store::connect(&url).await.unwrap();
+    store.migrate().await.unwrap();
+    let locker_store = Store::connect(&url).await.unwrap();
+
+    let run = Uuid::new_v4().to_string();
+    let practice = format!("practice-hb-lock-{run}");
+    let workspace = format!("pw-hb-lock-{run}");
+    let source_id = format!("ehr-hb-lock-{run}");
+    let adapter = Arc::new(RowLockingAdapter {
+        source_id: source_id.clone(),
+        locker_store,
+        practice_id: practice.clone(),
+        workspace_id: workspace.clone(),
+        arm_status_lock: AtomicBool::new(false),
+        lock_held_during_delivery: AtomicBool::new(false),
+    });
+
+    // Seed the patient link and `patient_source_status` row at t = 1_000.
+    SourceCoordinator::check_patient(
+        &store,
+        &*adapter,
+        &practice,
+        "pat-1",
+        LinkTarget::Exact(&workspace),
+        1_000,
+    )
+    .await
+    .unwrap();
+
+    store
+        .set_practice_source_access(
+            &practice,
+            &source_id,
+            &SourceAccessState::ReconnectNeeded {
+                since: 1_500,
+                reason: "token expired".to_owned(),
+            },
+            1_500,
+        )
+        .await
+        .unwrap();
+
+    adapter.arm_status_lock.store(true, SeqCst);
+    let idem_key = format!("idem-hb-lock-{run}");
+    let started = Instant::now();
+
+    let outcome = tokio::time::timeout(
+        Duration::from_secs(5),
+        SourceCoordinator::reconnect_source_command_with_lease(
+            &store,
+            ReconnectCommand {
+                practice_id: &practice,
+                physician_id: "dr-lock",
+                idempotency_key: &idem_key,
+                source_id: &source_id,
+                source: Some(&*adapter),
+                now: 2_000,
+            },
+            ReconnectLeasePolicy {
+                lease_seconds: 10,
+                renew_interval: Duration::from_millis(10),
+            },
+        ),
+    )
+    .await
+    .expect("fenced transaction waiting on Postgres row lock must not self-deadlock with heartbeat")
+    .unwrap();
+
+    assert!(adapter.lock_held_during_delivery.load(SeqCst));
+    assert!(
+        started.elapsed() >= Duration::from_millis(75),
+        "fenced transaction must have waited on the 80ms Postgres lock across multiple 10ms ticks"
+    );
+    match outcome {
+        ReconnectCommandOutcome::Accepted {
+            receipt,
+            access,
+            summary,
+        } => {
+            assert_eq!(receipt.reconnected_at, 2_000);
+            assert_eq!(
+                access,
+                SourceAccessState::Connected {
+                    connected_at: 2_000
+                }
+            );
+            assert_eq!(
+                summary,
+                crate::source_status::PracticeSourceSummary::Healthy {
+                    source_id: source_id.clone(),
+                    total_patients: 1,
+                }
+            );
+        }
+        other => panic!("expected Accepted outcome, got {other:?}"),
+    }
+
+    // Replaying the completed key proves `complete_reconnect_command` committed cleanly after
+    // joining the spawned heartbeat task without racing an unblocked renewal query.
+    let replayed = SourceCoordinator::reconnect_source_command(
+        &store,
+        ReconnectCommand {
+            practice_id: &practice,
+            physician_id: "dr-lock",
+            idempotency_key: &idem_key,
+            source_id: &source_id,
+            source: Some(&*adapter),
+            now: 2_999,
+        },
+    )
+    .await
+    .unwrap();
+    assert!(matches!(
+        replayed,
+        ReconnectCommandOutcome::Accepted { receipt, .. } if receipt.reconnected_at == 2_000
+    ));
+}
