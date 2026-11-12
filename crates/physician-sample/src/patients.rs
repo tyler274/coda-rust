@@ -104,6 +104,14 @@ pub trait PatientDirectory: Send + Sync {
     ) -> Result<BTreeMap<String, Value>, StoreUnavailable> {
         Ok(BTreeMap::new())
     }
+
+    /// Running or failed background understanding runs (`automation_run` JSON) keyed by workspace.
+    async fn automation_runs(
+        &self,
+        _workspaces: &[String],
+    ) -> Result<BTreeMap<String, Value>, StoreUnavailable> {
+        Ok(BTreeMap::new())
+    }
 }
 
 #[async_trait]
@@ -116,6 +124,43 @@ impl PatientDirectory for Store {
             .await
             .map_err(|_| StoreUnavailable)
     }
+
+    async fn synopses(
+        &self,
+        workspaces: &[String],
+    ) -> Result<BTreeMap<String, Value>, StoreUnavailable> {
+        let views = self
+            .patient_summaries_for_workspaces(workspaces)
+            .await
+            .map_err(|_| StoreUnavailable)?;
+        Ok(views
+            .into_iter()
+            .map(|(workspace, view)| {
+                let authored = UNIX_EPOCH + Duration::from_secs(view.updated_at.unsigned_abs());
+                (workspace, view.to_wire_synopsis(format_rfc3339(authored)))
+            })
+            .collect())
+    }
+
+    async fn automation_runs(
+        &self,
+        workspaces: &[String],
+    ) -> Result<BTreeMap<String, Value>, StoreUnavailable> {
+        let runs = self
+            .active_or_failed_understanding_runs(workspaces)
+            .await
+            .map_err(|_| StoreUnavailable)?;
+        Ok(runs
+            .into_iter()
+            .map(|(workspace, status)| {
+                let started = UNIX_EPOCH + Duration::from_secs(status.started_at.unsigned_abs());
+                (
+                    workspace,
+                    status.to_wire_automation_run(format_rfc3339(started)),
+                )
+            })
+            .collect())
+    }
 }
 
 /// The directory of a site with no database, and of tests.
@@ -123,6 +168,7 @@ impl PatientDirectory for Store {
 pub struct MemoryPatients {
     records: Mutex<BTreeMap<String, Vec<PatientSourceRecord>>>,
     synopses: Mutex<BTreeMap<String, Value>>,
+    automation_runs: Mutex<BTreeMap<String, Value>>,
     unavailable: std::sync::atomic::AtomicBool,
 }
 
@@ -156,6 +202,14 @@ impl MemoryPatients {
             .lock()
             .expect("patient synopses")
             .insert(workspace.to_owned(), synopsis);
+    }
+
+    /// Saves an `automation_run` projection for `workspace`.
+    pub fn set_automation_run(&self, workspace: &str, run: Value) {
+        self.automation_runs
+            .lock()
+            .expect("patient automation runs")
+            .insert(workspace.to_owned(), run);
     }
 
     /// Simulates directory unavailability so callers verify failure handling.
@@ -293,6 +347,26 @@ impl PatientDirectory for MemoryPatients {
             })
             .collect())
     }
+
+    async fn automation_runs(
+        &self,
+        workspaces: &[String],
+    ) -> Result<BTreeMap<String, Value>, StoreUnavailable> {
+        if self.unavailable.load(std::sync::atomic::Ordering::SeqCst) {
+            return Err(StoreUnavailable);
+        }
+        let runs = self
+            .automation_runs
+            .lock()
+            .expect("patient automation runs");
+        Ok(workspaces
+            .iter()
+            .filter_map(|workspace| {
+                runs.get(workspace)
+                    .map(|run| (workspace.clone(), run.clone()))
+            })
+            .collect())
+    }
 }
 
 /// Creates the synthetic practice in memory, registers `patients` to it and
@@ -366,17 +440,20 @@ pub(crate) struct Patient {
     workspace: String,
     sources: Vec<PatientSourceRecord>,
     synopsis: Option<Value>,
+    automation_run: Option<Value>,
 }
 
 impl Patient {
     fn from_entry(
         (workspace, sources): (String, Vec<PatientSourceRecord>),
         synopsis: Option<Value>,
+        automation_run: Option<Value>,
     ) -> Option<Self> {
         (!sources.is_empty()).then_some(Self {
             workspace,
             sources,
             synopsis,
+            automation_run,
         })
     }
 
@@ -542,6 +619,7 @@ impl Patient {
             "current_time": now,
             "identity": self.identity(now),
             "patient_synopsis": self.synopsis,
+            "automation_run": self.automation_run,
             "connected_sources": self.connected_sources(),
             "chats": [],
             "active_follow_ups": [],
@@ -624,13 +702,15 @@ pub(crate) async fn read_patients(
     workspaces: &[String],
 ) -> Result<Vec<Patient>, StoreUnavailable> {
     let mut synopses = directory.synopses(workspaces).await?;
+    let mut automation_runs = directory.automation_runs(workspaces).await?;
     let mut patients: Vec<Patient> = directory
         .source_records(workspaces)
         .await?
         .into_iter()
         .filter_map(|(workspace, records)| {
             let synopsis = synopses.remove(&workspace);
-            Patient::from_entry((workspace, records), synopsis)
+            let automation_run = automation_runs.remove(&workspace);
+            Patient::from_entry((workspace, records), synopsis, automation_run)
         })
         .collect();
     patients.sort_by(|left, right| left.sort_key().cmp(&right.sort_key()));

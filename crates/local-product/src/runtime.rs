@@ -58,6 +58,8 @@ pub mod reply;
 pub mod sources;
 #[cfg(test)]
 mod tests;
+/// Durable patient understanding: private operating index and patient-page summary.
+pub mod understanding;
 /// Working notes derived from the authorized product record.
 pub mod working_notes;
 use crate::physician_sources::{ChartRequest, ChartScope, READ_TOOL, SEARCH_TOOL};
@@ -1777,6 +1779,22 @@ impl<A: Authority> Product for PhysicianHost<A> {
 
     fn read_only(&self, name: &str) -> bool {
         crate::physician_chat::read_only(name)
+            || crate::initial_understanding::read_only_understanding_tool(name)
+    }
+
+    fn saved_outcome(
+        &mut self,
+        call: &Invocation,
+    ) -> harness::engine::recipe::ToolFuture<Option<ToolOutcome>> {
+        let store = self.store.clone();
+        let claim = self.claim.clone();
+        let call = call.clone();
+        Box::pin(async move {
+            if call.name == crate::initial_understanding::SAVE_UNDERSTANDING_TOOL {
+                return store.saved_chat_understanding_outcome(&claim, &call).await;
+            }
+            Ok(None)
+        })
     }
 
     fn read_result(&mut self, id: &str) -> harness::engine::recipe::ToolFuture<Option<String>> {
@@ -1882,6 +1900,11 @@ impl<A: Authority> Product for PhysicianHost<A> {
                     .clinical_library()
                     .execute(&call.name, &arguments)
                     .await);
+            }
+            if crate::initial_understanding::is_understanding_tool(&call.name) {
+                return store
+                    .execute_chat_understanding_tool(&claim, &call, &arguments)
+                    .await;
             }
             let skills = store.frozen_skills(&claim.scope, &state.skills).await?;
             Ok(skills.execute(&call.name, &arguments))

@@ -209,6 +209,10 @@ pub struct Assignment {
     pub prompt: String,
     /// Skills loaded from [`PhysicianSkills`] at assignment creation.
     pub preloaded_skills: Vec<PreloadedSkill>,
+    /// Optional structured context when this assignment runs initial or revised
+    /// patient understanding.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub understanding: Option<crate::initial_understanding::UnderstandingContext>,
 }
 
 impl Assignment {
@@ -246,6 +250,7 @@ impl Assignment {
             key,
             prompt,
             preloaded_skills,
+            understanding: None,
         })
     }
 
@@ -443,7 +448,7 @@ impl PracticeJob {
         self.runs.current()
     }
 
-    fn message_sources(&self) -> Vec<engine::ProductMessage> {
+    pub(super) fn message_sources(&self) -> Vec<engine::ProductMessage> {
         let mut sources = vec![self.assignment.message()];
         if let Some(saved) = &self.result {
             sources.push(engine::ProductMessage {
@@ -601,6 +606,9 @@ pub fn recipe(
     assignment: &Assignment,
     skills: &PhysicianSkills,
 ) -> RequestRecipe {
+    if assignment.kind == PracticeJobKind::InitialUnderstanding {
+        return crate::initial_understanding::recipe(&roles.background, assignment, skills);
+    }
     let background = &roles.background;
     let mut instructions = skills.instructions(INSTRUCTIONS);
     if !assignment.preloaded_skills.is_empty() {
@@ -877,13 +885,13 @@ impl Store {
     /// with no physician session, verifying practice patient membership, freezing
     /// the background-lane recipe (`roles.background`), and recording the
     /// assignment's preloaded skills with the run.
-    pub async fn accept_practice_job(
+    pub async fn accept_practice_job<A: PracticeAuthority + ?Sized>(
         &self,
         scope: &PracticeScope,
         assignment: &Assignment,
         roles: &crate::ModelRoles,
         skills: &PhysicianSkills,
-        authority: &dyn PracticeAuthority,
+        authority: &A,
     ) -> Result<Accepted, PracticeJobError> {
         authority.check_practice_patient(scope).await?;
         if assignment.key.trim().is_empty() || assignment.prompt.trim().is_empty() {
@@ -1708,7 +1716,7 @@ impl Store {
         })
     }
 
-    async fn practice_job_snapshot(
+    pub(super) async fn practice_job_snapshot(
         &self,
         scope: &PracticeScope,
     ) -> Result<(PracticeJob, Vec<(Event, bool)>, PhysicianSkills), DbErr> {
@@ -1762,6 +1770,24 @@ impl Product for PracticeJobHost<'_> {
 
     fn read_only(&self, name: &str) -> bool {
         crate::physician_chat::read_only(name)
+            || crate::initial_understanding::read_only_understanding_tool(name)
+    }
+
+    fn saved_outcome(
+        &mut self,
+        call: &Invocation,
+    ) -> engine::recipe::ToolFuture<Option<ToolOutcome>> {
+        let store = self.store.clone();
+        let claim = self.claim.clone();
+        let call = call.clone();
+        Box::pin(async move {
+            if call.name == crate::initial_understanding::SAVE_UNDERSTANDING_TOOL {
+                return store
+                    .saved_practice_understanding_outcome(&claim, &call)
+                    .await;
+            }
+            Ok(None)
+        })
     }
 
     fn read_result(&mut self, id: &str) -> engine::recipe::ToolFuture<Option<String>> {
@@ -1883,6 +1909,11 @@ impl Product for PracticeJobHost<'_> {
             if call.name == SKILL_VIEW {
                 return Ok(skills.execute(&call.name, &arguments));
             }
+            if crate::initial_understanding::is_understanding_tool(&call.name) {
+                return store
+                    .execute_practice_understanding_tool_fenced(&claim, &call, &arguments)
+                    .await;
+            }
             Ok(ToolOutcome::refused(format!(
                 "tool {} is not available to a practice background job",
                 call.name
@@ -1892,6 +1923,22 @@ impl Product for PracticeJobHost<'_> {
 
     async fn finish(&mut self, turn: &Turn) -> Result<Finish, engine::Cause> {
         self.assert_current().await?;
+        let (job, _, _) = self.store.practice_job_snapshot(&self.claim.scope).await?;
+        if job.assignment.understanding.is_some()
+            && !self
+                .store
+                .has_saved_understanding_for_work(
+                    &self.claim.scope.practice,
+                    &self.claim.scope.workspace,
+                    &job.work,
+                )
+                .await?
+        {
+            return Ok(Finish::Continue(json!({
+                "outcome": "understanding_not_saved",
+                "message": "Call save_patient_understanding to record the operating index and physician-facing summary before finishing.",
+            })));
+        }
         self.store
             .commit_practice_job(&self.claim, turn, self.authority)
             .await?;
