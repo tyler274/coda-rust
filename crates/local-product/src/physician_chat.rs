@@ -38,7 +38,16 @@ impl PhysicianJob {
     pub fn preloaded_targets(self) -> Vec<SkillTarget> {
         match self {
             Self::Conversation => Vec::new(),
-            Self::PatientReview | Self::VisitBriefing => vec![
+            Self::PatientReview => vec![
+                SkillTarget::body("clinical-communication"),
+                SkillTarget::body("physician-clinical-communication"),
+                SkillTarget::resource(
+                    "physician-clinical-communication",
+                    "references/reviews-and-briefings.md",
+                ),
+                SkillTarget::body("patient-memory-maintenance"),
+            ],
+            Self::VisitBriefing => vec![
                 SkillTarget::body("clinical-communication"),
                 SkillTarget::body("physician-clinical-communication"),
                 SkillTarget::resource(
@@ -156,9 +165,10 @@ answer the physician reads, so do not leave part of the answer only in earlier t
 
 /// Assignment guidance for unattended Chords patient reviews.
 pub const REVIEW_INSTRUCTIONS: &str = "\
-Review new patient workspace evidence and messages for the physician, applying the preloaded clinical and \
-physician communication guidance. Search the patient workspace and open exact revisions with \
-read_patient_sources before drawing conclusions. When the review also requires guidance that is not \
+Review new patient workspace evidence and messages for the physician, applying the preloaded clinical, \
+physician communication, and patient memory maintenance guidance. Read durable patient memory with \
+read_patient_memory, search the patient workspace, and open exact revisions with read_patient_sources \
+before drawing conclusions or updating memory. When the review also requires guidance that is not \
 preloaded — such as drafting a patient-facing reply — open that skill from the catalog with skill_view. \
 Requesting tools continues work; your final response without tool calls records the completed review.";
 
@@ -166,7 +176,8 @@ Requesting tools continues work; your final response without tool calls records 
 pub const BRIEFING_INSTRUCTIONS: &str = "\
 Prepare a pre-visit briefing for the physician ahead of the upcoming encounter, applying the preloaded \
 clinical and physician communication guidance. Search the patient workspace and open exact revisions with \
-read_patient_sources before synthesizing the patient's trajectory and visit decisions. Open additional \
+read_patient_sources before synthesizing the patient's trajectory and visit decisions, and open \
+patient-memory-maintenance with skill_view when reading or updating durable patient memory. Open additional \
 catalog skills with skill_view only when the task calls for them. Requesting tools continues work; your \
 final response without tool calls delivers the completed briefing.";
 
@@ -366,6 +377,7 @@ mod tests {
         assert!(text.contains("clinical-communication"));
         assert!(text.contains("physician-clinical-communication"));
         assert!(text.contains("patient-communication"));
+        assert!(text.contains("patient-memory-maintenance"));
         assert!(text.contains("patient-record-retrieval"));
         assert!(!text.contains("duet-health-communication"));
         assert!(!text.contains("\"content\""));

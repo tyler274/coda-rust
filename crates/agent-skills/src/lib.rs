@@ -1195,6 +1195,7 @@ mod tests {
             vec![
                 "clinical-communication",
                 "patient-communication",
+                "patient-memory-maintenance",
                 "patient-record-retrieval",
                 "physician-clinical-communication",
             ]

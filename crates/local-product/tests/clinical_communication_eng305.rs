@@ -249,6 +249,7 @@ fn ac1_shared_rules_have_single_guidance_owner_without_conflicting_copies() {
             "clinical-communication",
             "duet-health-communication",
             "patient-communication",
+            "patient-memory-maintenance",
             "patient-record-retrieval",
             "physician-clinical-communication",
         ]
@@ -884,6 +885,11 @@ async fn ac2_initial_contexts_and_discovered_traces_isolate_audience_guidance_ac
                 version_id: file_digest(
                     "physician-clinical-communication/references/reviews-and-briefings.md"
                 ),
+            },
+            SkillLoadRecord {
+                target: SkillTarget::body("patient-memory-maintenance"),
+                origin: SkillLoadOrigin::Preloaded,
+                version_id: file_digest("patient-memory-maintenance/SKILL.md"),
             },
             SkillLoadRecord {
                 target: SkillTarget::body("patient-communication"),

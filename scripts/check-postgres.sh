@@ -29,7 +29,7 @@ shard_1_targets=(--lib --test migrations_postgres --test postgres
   --test front_door_postgres --test identity --test luna_journal
   --test database_foundation --test pg_moments
   --test runtime_postgres --test runtime_publication --test runtime_recovery --test runtime_quota
-  --test patient_memory_eng265 --test record_read_eng262 --test clinical_communication_eng305
+  --test patient_memory_eng265 --test record_read_eng262 --test clinical_communication_eng305 --test memory_upkeep_skill_eng251
   --test redis --test fanout --test worker --test recovery --test try_again
   --bin physician-worker)
 shard_2_targets=(--test stop --test chat_draft --test feedback --test reply_revision
@@ -66,6 +66,7 @@ shard_1() {
   pg_test --test patient_memory_eng265 -- --test-threads=1
   pg_test --test record_read_eng262 -- --test-threads=1
   pg_test --test clinical_communication_eng305 -- --test-threads=1
+  pg_test --test memory_upkeep_skill_eng251 -- --test-threads=1
   # The worker's source boundary: a developer plan refuses non-synthetic sources.
   pg_test --bin physician-worker -- --ignored --test-threads=1
   # Physician scale proofs. Valkey and the Pub/Sub emulator come from the nix
