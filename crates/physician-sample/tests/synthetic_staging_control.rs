@@ -36,17 +36,17 @@ use local_product::runtime::concerns::ExactRecordReference;
 use local_product::visit_preparation::{
     BriefingClaimInput, BriefingDecisionInput, SaveBriefingArgs, VisitSelectionContext,
 };
+use physician_auth::{AuthStore, Membership, PhysicianIdentity};
 use physician_sample::STAGING_PRACTICE_ID;
 use physician_sample::hosting::{
     self, STAGING_SYNTHETIC_CONTROL_ENV, STAGING_SYNTHETIC_WORKDIR_ENV,
     StagingSyntheticControlConfig,
 };
 use physician_sample::synthetic_control::{
-    ChartEventRecordKind, PRODUCTION_ROUTE_MANIFEST, PatientSelector, PracticeSyntheticStatus,
-    RoundsExecutionReport, STAGING_SYNTHETIC_ROUTE_MANIFEST, SavedSyntheticEvent,
-    SourceHealthDirective, StagingSyntheticSources, SyntheticEventSpec,
-    SyntheticPatientListResponse, SyntheticSourceKind, VisitChangeStatus,
-    VisitPreparationExecutionReport, published_route_manifest,
+    ChartEventRecordKind, PatientSelector, PracticeSyntheticStatus, RoundsExecutionReport,
+    STAGING_SYNTHETIC_ROUTE_MANIFEST, SavedSyntheticEvent, SourceHealthDirective,
+    StagingSyntheticSources, SyntheticEventSpec, SyntheticPatientListResponse, SyntheticSourceKind,
+    VisitChangeStatus, VisitPreparationExecutionReport,
 };
 use serde_json::{Value, json};
 use tokio::sync::Mutex;
@@ -234,22 +234,28 @@ async fn ac4_source_refuses_unacceptable_events_without_saving() {
         .expect_err("blank clinical text must be refused");
     assert_eq!(err.code(), "empty_record_text");
 
-    // 4. Invalid clinical date.
-    let err = sources
-        .accept_event(
-            SyntheticEventSpec::FreeFormChartRecord {
-                patient: PatientSelector::MedicalRecordNumber("00090001".into()),
-                record_id: Some("obs-bad-date".into()),
-                kind: ChartEventRecordKind::LabResult,
-                title: "Potassium".into(),
-                text: "Potassium 5.9 mmol/L".into(),
-                effective_at: "27-Aug-2026".into(),
-            },
-            1_787_846_400,
-        )
-        .await
-        .expect_err("non-ISO date must be refused");
-    assert_eq!(err.code(), "invalid_timestamp");
+    // 4. Invalid clinical date (non-ISO and impossible civil calendar dates).
+    for invalid_effective_at in ["27-Aug-2026", "2026-02-31", "2026-04-31T15:00:00Z"] {
+        let err = sources
+            .accept_event(
+                SyntheticEventSpec::FreeFormChartRecord {
+                    patient: PatientSelector::MedicalRecordNumber("00090001".into()),
+                    record_id: Some("obs-bad-date".into()),
+                    kind: ChartEventRecordKind::LabResult,
+                    title: "Potassium".into(),
+                    text: "Potassium 5.9 mmol/L".into(),
+                    effective_at: invalid_effective_at.into(),
+                },
+                1_787_846_400,
+            )
+            .await
+            .expect_err("invalid or impossible date must be refused");
+        assert_eq!(
+            err.code(),
+            "invalid_timestamp",
+            "expected invalid_timestamp for {invalid_effective_at}, got {err:?}"
+        );
+    }
 
     // 5. Non-text binary attachment on raw FHIR resource.
     let err = sources
@@ -452,20 +458,13 @@ fn ac6_product_code_contains_zero_synthetic_checks() {
 
 #[tokio::test]
 async fn ac7_production_omits_staging_synthetic_routes_and_refuses_startup() {
-    let prod_routes = published_route_manifest(false);
-    assert_eq!(prod_routes.as_slice(), PRODUCTION_ROUTE_MANIFEST);
-    for route in &prod_routes {
-        assert!(
-            !route.path.starts_with("/staging-synthetic"),
-            "production route manifest must not contain staging synthetic path: {route:?}"
-        );
-    }
+    let _guard = test_lock().lock().await;
 
-    let staging_routes = published_route_manifest(true);
-    for expected in STAGING_SYNTHETIC_ROUTE_MANIFEST {
+    assert_eq!(STAGING_SYNTHETIC_ROUTE_MANIFEST.len(), 7);
+    for entry in STAGING_SYNTHETIC_ROUTE_MANIFEST {
         assert!(
-            staging_routes.contains(expected),
-            "staging route manifest missing {expected:?}"
+            entry.path.starts_with("/staging-synthetic/"),
+            "owned staging synthetic route must live under /staging-synthetic/: {entry:?}"
         );
     }
 
@@ -529,6 +528,119 @@ async fn ac7_production_omits_staging_synthetic_routes_and_refuses_startup() {
             entry.path
         );
     }
+
+    // Authenticated `site_router_from_env` built with `CODA_STAGING_SYNTHETIC_CONTROL`
+    // unset (`PHYSICIAN_DATABASE_URL` + `PHYSICIAN_AUTH=required`) also returns 404
+    // for every `STAGING_SYNTHETIC_ROUTE_MANIFEST` path even for a valid session.
+    let mut ephemeral_pg = None;
+    if scale::gate_url().is_none() {
+        let cluster = EphemeralPostgres::start();
+        // SAFETY: `test_lock()` serializes environment mutation in this test binary.
+        unsafe {
+            env::set_var("PHYSICIAN_RUNTIME_TEST_DATABASE_URL", &cluster.admin_url);
+        }
+        ephemeral_pg = Some(cluster);
+    }
+    let database = scale::Database::create("ac7_prod_site_router")
+        .await
+        .expect("disposable Postgres database for ac7");
+    let session_token = {
+        let auth = physician_auth::PostgresAuthStore::connect_without_migrations(&database.url)
+            .await
+            .expect("connect PostgresAuthStore for ac7");
+        let now_secs = SystemTime::now()
+            .duration_since(UNIX_EPOCH)
+            .expect("unix clock")
+            .as_secs();
+        auth.ensure_account(
+            "prod-practice",
+            "prod-physician",
+            "prod@codahealth.test",
+            "Prod Physician",
+            true,
+            now_secs,
+        )
+        .await
+        .expect("ensure active physician account");
+        let one_time = auth
+            .begin_sign_in("prod@codahealth.test", now_secs)
+            .await
+            .expect("begin sign-in");
+        let (_identity, bearer) = auth
+            .complete_sign_in("prod@codahealth.test", &one_time, now_secs)
+            .await
+            .expect("complete sign-in");
+        bearer
+    };
+
+    // SAFETY: `test_lock()` is held for the entire test.
+    unsafe {
+        env::set_var("PHYSICIAN_AUTH", "required");
+        env::remove_var("PHYSICIAN_UPSTREAM");
+    }
+    let db_url = database.url.clone();
+    let (authed_prod_router, _recovery) = physician_sample::site_router_from_env(|key| match key {
+        "CODA_ENVIRONMENT" => Some("production".to_owned()),
+        "PHYSICIAN_DATABASE_URL" => Some(db_url.clone()),
+        "PHYSICIAN_AUTH" => Some("required".to_owned()),
+        _ => None,
+    })
+    .await
+    .expect("build authenticated production site router without staging synthetic control");
+
+    let bearer_header = format!("Bearer {session_token}");
+    let today_resp = authed_prod_router
+        .clone()
+        .oneshot(
+            Request::builder()
+                .method(Method::GET)
+                .uri("/today")
+                .header(axum::http::header::AUTHORIZATION, &bearer_header)
+                .body(Body::empty())
+                .expect("build /today probe"),
+        )
+        .await
+        .expect("execute /today probe");
+    assert_eq!(
+        today_resp.status(),
+        StatusCode::OK,
+        "authenticated production site router must answer /today with 200 OK"
+    );
+
+    for entry in STAGING_SYNTHETIC_ROUTE_MANIFEST {
+        let method = Method::from_bytes(entry.method.as_bytes()).expect("valid HTTP method");
+        let response = authed_prod_router
+            .clone()
+            .oneshot(
+                Request::builder()
+                    .method(method)
+                    .uri(entry.path)
+                    .header(axum::http::header::AUTHORIZATION, &bearer_header)
+                    .header(axum::http::header::CONTENT_TYPE, "application/json")
+                    .body(Body::from("{}"))
+                    .expect("build authenticated staging-synthetic probe"),
+            )
+            .await
+            .expect("execute authenticated staging-synthetic probe");
+        assert_eq!(
+            response.status(),
+            StatusCode::NOT_FOUND,
+            "authenticated production site_router_from_env must return 404 for {} {}",
+            entry.method,
+            entry.path
+        );
+    }
+
+    drop(authed_prod_router);
+    drop(database);
+    // SAFETY: `test_lock()` is held.
+    unsafe {
+        env::remove_var("PHYSICIAN_AUTH");
+        if ephemeral_pg.is_some() {
+            env::remove_var("PHYSICIAN_RUNTIME_TEST_DATABASE_URL");
+        }
+    }
+    drop(ephemeral_pg);
 
     // Staging profile (`CODA_ENVIRONMENT=stg`) accepts valid configuration.
     let work_dir = base_bank.with_file_name("ac7-unit-workdir");
@@ -1867,7 +1979,112 @@ async fn staging_synthetic_end_to_end_walk_browser_and_cli() {
     assert_eq!(dirty_status.counts.understandings, 1);
     assert_eq!(dirty_status.counts.briefings, 1);
 
+    // Return browser to Today before removing Alice from the panel so the open tab
+    // is not querying `?patient_workspace_id={alice_ws}` during panel revocation.
+    set_browser_viewport(&mut browser, 1440, 900);
+    let _ = navigate_and_wait(&mut browser, &base_url, "Alice Carter");
+
+    // Also remove Alice from the signed-in physician's panel (`Membership::ClinicDemographic`)
+    // via the real `/auth/panels/...` route and register a non-seeded patient in
+    // `STAGING_PRACTICE_ID`, verifying `reset` restores panel access and purges
+    // non-seeded memberships/registrations.
+    let staging_identity = PhysicianIdentity {
+        practice_id: STAGING_PRACTICE_ID.to_owned(),
+        physician_id: "staging-physician".to_owned(),
+    };
+    let non_seeded_ws = "pw-extra-non-seeded-workspace";
+    let remove_panel_resp = http
+        .delete(format!(
+            "{base_url}/auth/panels/staging-physician/{alice_ws}"
+        ))
+        .bearer_auth(&token)
+        .send()
+        .await
+        .expect("DELETE /auth/panels/staging-physician/{alice_ws}");
+    assert_eq!(remove_panel_resp.status(), reqwest::StatusCode::OK);
+    {
+        let pg_auth = physician_auth::PostgresAuthStore::connect_without_migrations(&database.url)
+            .await
+            .expect("connect PostgresAuthStore before reset");
+        assert_eq!(
+            pg_auth.membership(&staging_identity, &alice_ws).await,
+            Membership::ClinicDemographic,
+            "panel removal must demote seeded clinic patient to Membership::ClinicDemographic before reset"
+        );
+        pg_auth
+            .register_patient(STAGING_PRACTICE_ID, non_seeded_ws)
+            .await
+            .expect("register non-seeded patient before reset");
+        pg_auth
+            .set_membership(&staging_identity, non_seeded_ws, Membership::Allowed)
+            .await
+            .expect("grant membership on non-seeded patient before reset");
+        let before_reset_patients = pg_auth
+            .practice_patients(STAGING_PRACTICE_ID)
+            .await
+            .expect("practice_patients before reset");
+        assert!(before_reset_patients.iter().any(|ws| ws == non_seeded_ws));
+    }
+    let panel_before_reset: Value = http
+        .get(format!("{base_url}/patient-workspaces"))
+        .bearer_auth(&token)
+        .send()
+        .await
+        .expect("GET /patient-workspaces after panel removal")
+        .json()
+        .await
+        .expect("parse /patient-workspaces JSON");
+    assert!(
+        panel_before_reset["patients"]
+            .as_array()
+            .expect("patients array")
+            .iter()
+            .all(|p| p["patient_workspace_id"].as_str() != Some(alice_ws.as_str())),
+        "Alice must be absent from panel list after DELETE /auth/panels: {panel_before_reset}"
+    );
+
     let reset_status: PracticeSyntheticStatus = run_cli_ok(&base_url, &token, &["reset"]);
+    {
+        let pg_auth = physician_auth::PostgresAuthStore::connect_without_migrations(&database.url)
+            .await
+            .expect("connect PostgresAuthStore after reset");
+        assert_eq!(
+            pg_auth.membership(&staging_identity, &alice_ws).await,
+            Membership::Allowed,
+            "reset must restore Membership::Allowed for seeded panel patients"
+        );
+        assert_eq!(
+            pg_auth.membership(&staging_identity, non_seeded_ws).await,
+            Membership::Denied,
+            "reset must purge non-seeded patient registration and membership overrides"
+        );
+        let after_reset_patients = pg_auth
+            .practice_patients(STAGING_PRACTICE_ID)
+            .await
+            .expect("practice_patients after reset");
+        assert!(
+            !after_reset_patients.iter().any(|ws| ws == non_seeded_ws),
+            "reset must purge non-seeded patient registrations from STAGING_PRACTICE_ID: {after_reset_patients:?}"
+        );
+        assert_eq!(after_reset_patients.len(), 2);
+    }
+    let panel_after_reset: Value = http
+        .get(format!("{base_url}/patient-workspaces"))
+        .bearer_auth(&token)
+        .send()
+        .await
+        .expect("GET /patient-workspaces after reset")
+        .json()
+        .await
+        .expect("parse /patient-workspaces JSON after reset");
+    assert!(
+        panel_after_reset["patients"]
+            .as_array()
+            .expect("patients array")
+            .iter()
+            .any(|p| p["patient_workspace_id"].as_str() == Some(alice_ws.as_str())),
+        "reset must restore Alice onto the live cached panel: {panel_after_reset}"
+    );
     assert_eq!(reset_status.practice_id, STAGING_PRACTICE_ID);
     assert_eq!(reset_status.counts.patients, 2);
     assert_eq!(reset_status.counts.conversations, 0);

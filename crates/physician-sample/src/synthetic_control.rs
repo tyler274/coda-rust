@@ -30,7 +30,7 @@ use base64::Engine as _;
 use harness::engine::{self, Cancellation, RunLimits};
 use harness::provider::ResponsesProvider;
 use local_product::physician_sources::{
-    PatientSource, ReadablePart, RecordDate, SourcePatient, SourceRevision, workspace_id,
+    PatientSource, SourcePatient, SourceRevision, workspace_id,
 };
 use local_product::runtime::briefings::{
     BriefingError, SavedVisitBriefing, ScheduledWakeSummary, VisitPreparationRecord,
@@ -50,12 +50,10 @@ use local_product::runtime::reviews::{
     PatientReviewError, PatientReviewReceiver, SavedPatientReview,
 };
 use local_product::runtime::schedule::{
-    AppointmentId, AppointmentStatus, AppointmentWindow, ScheduleDelivery, ScheduleError,
-    ScheduleSource, ScheduleSourceError, ScheduleSyncOutcome, SourceAppointment,
-    SourceAppointmentParts, SourceId as ScheduleSourceId, SourcePatientId,
+    AppointmentWindow, ScheduleDelivery, ScheduleError, ScheduleSource, ScheduleSourceError,
+    ScheduleSyncOutcome, SourceAppointment, SourceId as ScheduleSourceId,
 };
 use local_product::runtime::{Authority, PublicationTransaction, Scope, Store};
-use local_product::sha256_hex;
 use patient_work::CheckedSources;
 use physician_auth::{AuthStore, PostgresAuthStore, SessionError};
 use sea_orm::sea_query::{Expr, Iden, Query};
@@ -66,7 +64,7 @@ use serde_json::{Value, json};
 use crate::auth::{STAGING_PRACTICE_ID, bearer, now};
 use crate::hosting::StagingSyntheticControlConfig;
 use crate::schedule::{self, SyntheticBankCalendar};
-use crate::synthetic_chart::{self, SyntheticCharts};
+use crate::synthetic_chart::{self, ChartRecordError, SyntheticCharts};
 
 /// HTTP method and path of one published route on the physician server.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize)]
@@ -76,98 +74,6 @@ pub struct PublishedRouteEntry {
     /// Route path pattern as mounted on Axum.
     pub path: &'static str,
 }
-
-/// Routes mounted on the physician server in production and standard non-staging runs.
-pub const PRODUCTION_ROUTE_MANIFEST: &[PublishedRouteEntry] = &[
-    PublishedRouteEntry {
-        method: "GET",
-        path: "/",
-    },
-    PublishedRouteEntry {
-        method: "GET",
-        path: "/index.html",
-    },
-    PublishedRouteEntry {
-        method: "GET",
-        path: "/health",
-    },
-    PublishedRouteEntry {
-        method: "GET",
-        path: "/readyz",
-    },
-    PublishedRouteEntry {
-        method: "GET",
-        path: "/today",
-    },
-    PublishedRouteEntry {
-        method: "GET",
-        path: "/practice-day",
-    },
-    PublishedRouteEntry {
-        method: "POST",
-        path: "/director/schedule/sync",
-    },
-    PublishedRouteEntry {
-        method: "GET",
-        path: "/updates",
-    },
-    PublishedRouteEntry {
-        method: "GET",
-        path: "/recent-conversations",
-    },
-    PublishedRouteEntry {
-        method: "GET",
-        path: "/patient-workspaces",
-    },
-    PublishedRouteEntry {
-        method: "GET",
-        path: "/patient-workspaces/{id}",
-    },
-    PublishedRouteEntry {
-        method: "GET",
-        path: "/patient-workspaces/{id}/past-work",
-    },
-    PublishedRouteEntry {
-        method: "GET",
-        path: "/patient-workspaces/{id}/chats/{chat}/snapshot",
-    },
-    PublishedRouteEntry {
-        method: "GET",
-        path: "/patient-workspaces/events",
-    },
-    PublishedRouteEntry {
-        method: "GET",
-        path: "/patient-roster",
-    },
-    PublishedRouteEntry {
-        method: "POST",
-        path: "/commands",
-    },
-    PublishedRouteEntry {
-        method: "POST",
-        path: "/dictation",
-    },
-    PublishedRouteEntry {
-        method: "GET",
-        path: "/physician-state/drafts/{workspace}/{chat}",
-    },
-    PublishedRouteEntry {
-        method: "PUT",
-        path: "/physician-state/drafts/{workspace}/{chat}",
-    },
-    PublishedRouteEntry {
-        method: "GET",
-        path: "/physician-state/reply-drafts/{workspace}/{reply}",
-    },
-    PublishedRouteEntry {
-        method: "PUT",
-        path: "/physician-state/reply-drafts/{workspace}/{reply}",
-    },
-    PublishedRouteEntry {
-        method: "PUT",
-        path: "/physician-state/feedback/{workspace}/{chat}/{response}",
-    },
-];
 
 /// Staging-only synthetic control routes mounted exclusively when
 /// [`StagingSyntheticControlConfig`] is enabled.
@@ -201,15 +107,6 @@ pub const STAGING_SYNTHETIC_ROUTE_MANIFEST: &[PublishedRouteEntry] = &[
         path: "/staging-synthetic/reset",
     },
 ];
-
-/// Enumerates the route table mounted for the selected staging-synthetic state.
-pub fn published_route_manifest(staging_synthetic_enabled: bool) -> Vec<PublishedRouteEntry> {
-    let mut routes = PRODUCTION_ROUTE_MANIFEST.to_vec();
-    if staging_synthetic_enabled {
-        routes.extend_from_slice(STAGING_SYNTHETIC_ROUTE_MANIFEST);
-    }
-    routes
-}
 
 /// Which synthetic source adapter an operation targets.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
@@ -2008,26 +1905,39 @@ impl StagingSyntheticControl {
 
     /// Restores `working_bank_dir` from `base_bank_dir`, purges all runtime state for
     /// [`STAGING_PRACTICE_ID`] (conversations, reviews, concerns, memories,
-    /// understandings, briefings, dispatches, source versions, and schedule rows),
-    /// reloads the base charts and base calendar, and returns the verified readback.
+    /// understandings, briefings, dispatches, source versions, schedule rows, and
+    /// panel overrides), reloads the base charts and base calendar, restores default
+    /// staging panel memberships, and returns the verified readback.
     pub async fn reset(&self) -> Result<PracticeSyntheticStatus, SyntheticControlError> {
+        self.reset_with_auth(None).await
+    }
+
+    async fn reset_with_auth(
+        &self,
+        auth_override: Option<&dyn AuthStore>,
+    ) -> Result<PracticeSyntheticStatus, SyntheticControlError> {
+        let auth_target: &dyn AuthStore = auth_override.unwrap_or(&self.auth);
         self.sources
             .restore_working_bank_from_base()
             .map_err(SyntheticControlError::WorkingBankIo)?;
         self.accepted_events.lock().await.clear();
 
-        let mut workspaces = self
-            .auth
+        let mut workspaces = auth_target
             .practice_patients(STAGING_PRACTICE_ID)
             .await
             .map_err(SyntheticControlError::AuthUnavailable)?;
         let base_charts = SyntheticCharts::open(self.sources.working_bank_dir());
-        if let Ok(ids) = base_charts.patient_ids().await {
-            for id in ids {
-                let ws = workspace_id(base_charts.source_id(), &id);
-                if !workspaces.contains(&ws) {
-                    workspaces.push(ws);
-                }
+        let seeded_ids = base_charts
+            .patient_ids()
+            .await
+            .map_err(SyntheticControlError::ChartLoad)?;
+        let seeded_workspaces: Vec<String> = seeded_ids
+            .iter()
+            .map(|id| workspace_id(base_charts.source_id(), id))
+            .collect();
+        for ws in &seeded_workspaces {
+            if !workspaces.contains(ws) {
+                workspaces.push(ws.clone());
             }
         }
 
@@ -2037,7 +1947,7 @@ impl StagingSyntheticControl {
 
         let load_summary = crate::chart_load::load_synthetic_practice(
             self.sources.working_bank_dir(),
-            &self.auth,
+            auth_target,
             &self.store,
         )
         .await
@@ -2046,6 +1956,18 @@ impl StagingSyntheticControl {
             return Err(SyntheticControlError::ChartLoad(
                 load_summary.failed.join("; "),
             ));
+        }
+
+        let panel_identities = crate::auth::staging_panel(auth_target)
+            .await
+            .map_err(SyntheticControlError::AuthUnavailable)?;
+        for identity in &panel_identities {
+            for seeded_ws in &seeded_workspaces {
+                auth_target
+                    .set_membership(identity, seeded_ws, physician_auth::Membership::Allowed)
+                    .await
+                    .map_err(SyntheticControlError::AuthUnavailable)?;
+            }
         }
 
         if self
@@ -2057,7 +1979,7 @@ impl StagingSyntheticControl {
         {
             schedule::sync_synthetic_schedule(
                 self.sources.as_ref(),
-                &self.auth,
+                auth_target,
                 &self.store,
                 STAGING_PRACTICE_ID,
             )
@@ -2434,10 +2356,10 @@ async fn reset_route(
     request: Request<Body>,
 ) -> Response {
     let (token, auth_ext) = extract_auth_inputs(&request);
-    if let Some(denied) = authorize_staging_request(&control, token, auth_ext).await {
+    if let Some(denied) = authorize_staging_request(&control, token, auth_ext.clone()).await {
         return denied;
     }
-    match control.reset().await {
+    match control.reset_with_auth(auth_ext.as_deref()).await {
         Ok(status) => Json(status).into_response(),
         Err(err) => err.into_response(),
     }
@@ -2494,7 +2416,23 @@ fn is_valid_iso_date(value: &str) -> bool {
     let Ok(day) = value[8..10].parse::<u32>() else {
         return false;
     };
-    (1900..=2200).contains(&year) && (1..=12).contains(&month) && (1..=31).contains(&day)
+    if !(1900..=2200).contains(&year) || day == 0 {
+        return false;
+    }
+    let is_leap = (year.is_multiple_of(4) && !year.is_multiple_of(100)) || year.is_multiple_of(400);
+    let max_day = match month {
+        1 | 3 | 5 | 7 | 8 | 10 | 12 => 31,
+        4 | 6 | 9 | 11 => 30,
+        2 => {
+            if is_leap {
+                29
+            } else {
+                28
+            }
+        }
+        _ => return false,
+    };
+    day <= max_day
 }
 
 fn is_valid_rfc3339(value: &str) -> bool {
@@ -2567,18 +2505,6 @@ fn build_free_form_fhir_resource(
     }
 }
 
-const CHART_DATE_FIELDS: [&str; 9] = [
-    "abatementDateTime",
-    "authoredOn",
-    "date",
-    "effectiveDateTime",
-    "issued",
-    "occurrenceDateTime",
-    "onsetDateTime",
-    "performedDateTime",
-    "recordedDate",
-];
-
 fn validate_chart_resource_for_patient(
     workspace: &str,
     patient: &SourcePatient,
@@ -2632,8 +2558,7 @@ fn validate_chart_resource_for_patient(
         }
     }
 
-    let mut dates = Vec::new();
-    for field in CHART_DATE_FIELDS {
+    for field in synthetic_chart::DATE_FIELDS {
         if let Some(val) = resource.get(field) {
             let text = val
                 .as_str()
@@ -2642,102 +2567,65 @@ fn validate_chart_resource_for_patient(
                     value: val.to_string(),
                 })?;
             validate_iso_date_or_rfc3339(field, text)?;
-            dates.push(RecordDate {
-                name: field.to_owned(),
-                value: text.to_owned(),
-            });
         }
     }
-    if let Some(start) = resource
-        .get("period")
-        .and_then(|p| p.get("start"))
-        .and_then(Value::as_str)
-    {
-        validate_iso_date_or_rfc3339("period.start", start)?;
-        dates.push(RecordDate {
-            name: "period.start".to_owned(),
-            value: start.to_owned(),
-        });
-    }
-    if let Some(end) = resource
-        .get("period")
-        .and_then(|p| p.get("end"))
-        .and_then(Value::as_str)
-    {
-        validate_iso_date_or_rfc3339("period.end", end)?;
-        dates.push(RecordDate {
-            name: "period.end".to_owned(),
-            value: end.to_owned(),
-        });
-    }
-    if dates.is_empty() {
-        return Err(SyntheticEventRefusal::MalformedFhirResource {
-            reason: "chart record must carry at least one valid clinical date field".to_owned(),
-        });
+    for (field, nested) in [
+        (
+            "period.start",
+            resource.get("period").and_then(|p| p.get("start")),
+        ),
+        (
+            "period.end",
+            resource.get("period").and_then(|p| p.get("end")),
+        ),
+        (
+            "meta.lastUpdated",
+            resource.get("meta").and_then(|m| m.get("lastUpdated")),
+        ),
+    ] {
+        if let Some(val) = nested {
+            let text = val
+                .as_str()
+                .ok_or_else(|| SyntheticEventRefusal::InvalidTimestamp {
+                    field,
+                    value: val.to_string(),
+                })?;
+            validate_iso_date_or_rfc3339(field, text)?;
+        }
     }
 
-    let readable_parts = decode_readable_attachments(resource)?;
     let line = serde_json::to_string(resource).map_err(|err| {
         SyntheticEventRefusal::MalformedFhirResource {
             reason: err.to_string(),
         }
     })?;
-    let candidate_id = format!("{record_type}/{id}");
-    let digest = sha256_hex(line.as_bytes());
-    let revision = SourceRevision {
-        workspace: workspace.to_owned(),
-        source_id: synthetic_chart::SOURCE_ID.to_owned(),
-        candidate_id: candidate_id.clone(),
-        revision: digest.clone(),
-        record_type: record_type.to_owned(),
-        dates,
-        content: line.clone(),
-        sha256: digest,
-        readable_parts,
-        provenance: json!({ "native_record": candidate_id }),
-    };
-    revision
-        .validate()
-        .map_err(|reason| SyntheticEventRefusal::MalformedFhirResource { reason })?;
-
-    Ok((record_type.to_owned(), line, candidate_id))
-}
-
-fn decode_readable_attachments(
-    resource: &Value,
-) -> Result<Vec<ReadablePart>, SyntheticEventRefusal> {
-    let documents = resource["content"].as_array().into_iter().flatten();
-    let forms = resource["presentedForm"].as_array().into_iter().flatten();
-    documents
-        .map(|doc| ("attachment", &doc["attachment"]))
-        .chain(forms.map(|form| ("presentedForm", form)))
-        .map(|(label, attachment)| {
-            let content_type = attachment["contentType"].as_str().unwrap_or_default();
-            if !content_type.starts_with("text/") {
-                return Err(SyntheticEventRefusal::UnsupportedAttachmentMedia {
-                    detail: format!("{label} is not text: {content_type}"),
-                });
+    let revision: SourceRevision = synthetic_chart::parse_source_revision(workspace, &line)
+        .map_err(|err| match err {
+            ChartRecordError::UnsupportedAttachment(detail) => {
+                SyntheticEventRefusal::UnsupportedAttachmentMedia { detail }
             }
-            let data = attachment["data"].as_str().unwrap_or_default();
-            let bytes = base64::engine::general_purpose::STANDARD
-                .decode(data)
-                .map_err(|err| SyntheticEventRefusal::UnsupportedAttachmentMedia {
-                    detail: format!("{label}: {err}"),
-                })?;
-            let text = String::from_utf8(bytes).map_err(|err| {
-                SyntheticEventRefusal::UnsupportedAttachmentMedia {
-                    detail: format!("{label}: {err}"),
-                }
-            })?;
-            if text.trim().is_empty() {
-                return Err(SyntheticEventRefusal::EmptyRecordText);
+            ChartRecordError::Malformed(reason) => {
+                SyntheticEventRefusal::MalformedFhirResource { reason }
             }
-            Ok(ReadablePart {
-                label: label.to_owned(),
-                text,
-            })
-        })
-        .collect()
+        })?;
+    if revision.dates.is_empty() {
+        return Err(SyntheticEventRefusal::MalformedFhirResource {
+            reason: "chart record must carry at least one valid clinical date field".to_owned(),
+        });
+    }
+    if revision
+        .readable_parts
+        .iter()
+        .any(|part| part.text.trim().is_empty())
+    {
+        return Err(SyntheticEventRefusal::EmptyRecordText);
+    }
+
+    Ok((
+        revision.record_type,
+        revision.content,
+        revision.candidate_id,
+    ))
 }
 
 fn validate_fhir_appointment_resource(
@@ -2748,142 +2636,33 @@ fn validate_fhir_appointment_resource(
             reason: "FHIR Appointment must be a JSON object".to_owned(),
         });
     }
-    let resource_type = resource.get("resourceType").and_then(Value::as_str);
-    if resource_type != Some("Appointment") {
-        return Err(SyntheticEventRefusal::InvalidAppointment {
-            reason: format!("expected resourceType \"Appointment\", got {resource_type:?}"),
-        });
-    }
-    let raw_id = resource.get("id").and_then(Value::as_str).ok_or_else(|| {
-        SyntheticEventRefusal::InvalidAppointment {
-            reason: "Appointment is missing required string field \"id\"".to_owned(),
-        }
-    })?;
-    let appointment_id =
-        AppointmentId::new(raw_id).map_err(|err| SyntheticEventRefusal::InvalidAppointment {
-            reason: err.to_string(),
-        })?;
-    let source_status = resource
-        .get("status")
-        .and_then(Value::as_str)
-        .ok_or_else(|| SyntheticEventRefusal::InvalidAppointment {
-            reason: "Appointment is missing required string field \"status\"".to_owned(),
-        })?
-        .trim()
-        .to_owned();
-    let status = match source_status.as_str() {
-        "booked" | "pending" | "proposed" | "arrived" | "checked-in" | "waitlist" | "scheduled" => {
-            AppointmentStatus::Scheduled
-        }
-        "cancelled" | "entered-in-error" => AppointmentStatus::Cancelled,
-        "fulfilled" => AppointmentStatus::Fulfilled,
-        "noshow" => AppointmentStatus::NoShow,
-        other => {
-            return Err(SyntheticEventRefusal::InvalidAppointment {
-                reason: format!("unsupported Appointment status `{other}`"),
-            });
-        }
-    };
-    let start = resource
-        .get("start")
-        .and_then(Value::as_str)
-        .ok_or_else(|| SyntheticEventRefusal::InvalidAppointment {
-            reason: "Appointment is missing required string field \"start\"".to_owned(),
-        })?;
-    let end = resource.get("end").and_then(Value::as_str).ok_or_else(|| {
-        SyntheticEventRefusal::InvalidAppointment {
-            reason: "Appointment is missing required string field \"end\"".to_owned(),
-        }
-    })?;
-    let window = AppointmentWindow::parse(start, end).map_err(|err| {
-        SyntheticEventRefusal::InvalidAppointment {
-            reason: err.to_string(),
-        }
-    })?;
-    let label = [
-        resource.get("description").and_then(Value::as_str),
-        resource
-            .get("appointmentType")
-            .and_then(|v| v.get("text"))
-            .and_then(Value::as_str),
-    ]
-    .into_iter()
-    .flatten()
-    .map(str::trim)
-    .find(|s| !s.is_empty())
-    .ok_or_else(|| SyntheticEventRefusal::InvalidAppointment {
-        reason: "Appointment is missing non-empty \"description\"".to_owned(),
-    })?
-    .to_owned();
-
-    let mut matched_patient: Option<SourcePatientId> = None;
-    for participant in resource
-        .get("participant")
-        .and_then(Value::as_array)
-        .into_iter()
-        .flatten()
-    {
-        let Some(reference) = participant
-            .get("actor")
-            .and_then(|actor| actor.get("reference"))
-            .and_then(Value::as_str)
-            .map(str::trim)
-        else {
-            continue;
-        };
-        let Some(raw_patient_id) = reference.strip_prefix("Patient/") else {
-            continue;
-        };
-        let patient_id = SourcePatientId::new(raw_patient_id).map_err(|err| {
-            SyntheticEventRefusal::InvalidAppointment {
-                reason: err.to_string(),
-            }
-        })?;
-        if let Some(existing) = &matched_patient
-            && existing != &patient_id
+    for (field, val) in [
+        ("start", resource.get("start")),
+        ("end", resource.get("end")),
+    ] {
+        if let Some(text) = val.and_then(Value::as_str)
+            && !is_valid_rfc3339(text)
         {
             return Err(SyntheticEventRefusal::InvalidAppointment {
-                reason: "Appointment lists multiple distinct Patient participants".to_owned(),
+                reason: format!(
+                    "Appointment `{field}` (`{text}`) is not a valid RFC3339 civil timestamp"
+                ),
             });
         }
-        matched_patient = Some(patient_id);
     }
-    if matched_patient.is_none() {
-        return Err(SyntheticEventRefusal::InvalidAppointment {
-            reason: "Appointment must list one Patient/<id> participant".to_owned(),
-        });
-    }
-
     let line = serde_json::to_string(resource).map_err(|err| {
         SyntheticEventRefusal::InvalidAppointment {
             reason: err.to_string(),
         }
     })?;
-    let candidate_id = format!("Appointment/{appointment_id}");
-    SourceAppointment::new(SourceAppointmentParts {
-        appointment_id,
-        source_revision: None,
-        window,
-        status,
-        source_status,
-        label,
-        source_patient_id: matched_patient,
-        dates: vec![
-            RecordDate {
-                name: "start".to_owned(),
-                value: start.to_owned(),
-            },
-            RecordDate {
-                name: "end".to_owned(),
-                value: end.to_owned(),
-            },
-        ],
-        content: line,
-        provenance: json!({ "native_record": candidate_id }),
-    })
-    .map_err(|err| SyntheticEventRefusal::InvalidAppointment {
-        reason: err.to_string(),
-    })
+    let parsed = schedule::parse_fhir_appointment_line(&line)
+        .map_err(|reason| SyntheticEventRefusal::InvalidAppointment { reason })?;
+    if parsed.source_patient_id().is_none() {
+        return Err(SyntheticEventRefusal::InvalidAppointment {
+            reason: "Appointment must list one Patient/<id> participant".to_owned(),
+        });
+    }
+    Ok(parsed)
 }
 
 fn append_ndjson_line(path: &Path, line: &str) -> Result<(), SyntheticEventRefusal> {
@@ -3053,8 +2832,26 @@ mod runtime_tables {
     }
 
     #[derive(Clone, Copy)]
+    pub(super) enum AuthPracticeTable {
+        PatientLinks,
+        Memberships,
+        Patients,
+    }
+
+    impl Iden for AuthPracticeTable {
+        fn unquoted(&self) -> &'static str {
+            match self {
+                Self::PatientLinks => "physician_patient_links",
+                Self::Memberships => "physician_memberships",
+                Self::Patients => "physician_patients",
+            }
+        }
+    }
+
+    #[derive(Clone, Copy)]
     pub(super) enum RuntimeCol {
         Practice,
+        PracticeId,
         Workspace,
         Chat,
     }
@@ -3063,6 +2860,7 @@ mod runtime_tables {
         fn unquoted(&self) -> &'static str {
             match self {
                 Self::Practice => "practice",
+                Self::PracticeId => "practice_id",
                 Self::Workspace => "workspace",
                 Self::Chat => "chat",
             }
@@ -3124,6 +2922,12 @@ mod runtime_tables {
         WorkspaceTable::SourcePulls,
         WorkspaceTable::SourceVersions,
     ];
+
+    pub(super) const ALL_AUTH_PRACTICE_TABLES: &[AuthPracticeTable] = &[
+        AuthPracticeTable::PatientLinks,
+        AuthPracticeTable::Memberships,
+        AuthPracticeTable::Patients,
+    ];
 }
 
 async fn count_practice_conversations(
@@ -3151,7 +2955,8 @@ async fn purge_practice_runtime_state(
     workspaces: &[String],
 ) -> Result<(), DbErr> {
     use runtime_tables::{
-        ALL_PRACTICE_TABLES, ALL_WORKSPACE_TABLES, InfoSchema, PracticeTable, RuntimeCol,
+        ALL_AUTH_PRACTICE_TABLES, ALL_PRACTICE_TABLES, ALL_WORKSPACE_TABLES, InfoSchema,
+        PracticeTable, RuntimeCol,
     };
     use sea_orm::sea_query::ExprTrait as _;
 
@@ -3195,6 +3000,14 @@ async fn purge_practice_runtime_state(
                 .to_owned();
             tx.execute(&delete).await?;
         }
+    }
+
+    for table in ALL_AUTH_PRACTICE_TABLES {
+        let delete = Query::delete()
+            .from_table(*table)
+            .and_where(Expr::col(RuntimeCol::PracticeId).eq(practice_id))
+            .to_owned();
+        tx.execute(&delete).await?;
     }
 
     tx.commit().await?;
