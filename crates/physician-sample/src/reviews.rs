@@ -16,17 +16,18 @@ use local_product::patient_reviews::{
     ReviewTrigger, UnfinishedReviewWork,
 };
 use local_product::physician_chat::PhysicianSkills;
-use local_product::physician_sources::{ReadablePart, SEARCH_TOOL, SourceRevision};
-use local_product::runtime::Stopped;
+use local_product::physician_sources::{SEARCH_TOOL, SourceRevision};
 use local_product::runtime::chat_operations::{PATIENT_MEMORY_TOOL, RecordLimitKind};
 use local_product::runtime::concerns::ExactRecordReference;
 use local_product::runtime::history::{
-    CitedSourceReadback, HistorySegment, parse_segments_with_citations,
+    CitedSourceReadback, HistorySegment, cited_record_title, format_cited_source_body,
+    parse_segments_with_citations,
 };
 use local_product::runtime::jobs::{PracticeJob, PracticeJobAttempt};
 use local_product::runtime::reviews::{
     PatientReviewError, PatientReviewTarget, RecordedReviewAction, ReviewHoldReason,
     ReviewLifecycleState, ReviewRecipeVersion, ReviewSupersededReason, SavedPatientReview,
+    VersionedReviewAction, VersionedReviewControl, patient_review_version,
 };
 use local_product::{ModelBinding, ModelRoles};
 use physician_bus::{Bus, Event as BusEvent};
@@ -39,10 +40,9 @@ use physician_wire::{
     ReviewUnfinishedWorkWire, ReviewVersion,
 };
 use serde_json::Value;
-use sha2::{Digest, Sha256};
 
 use crate::care::ConnectedCare;
-use crate::live::{Live, ReviewControlReceiptKey, ReviewControlReceiptValue};
+use crate::live::Live;
 use crate::timestamp::format_rfc3339;
 
 /// Shared durable review state attached to `router()` when Postgres is enabled
@@ -53,8 +53,6 @@ pub(crate) struct StandaloneReviews {
     roles: Option<ModelRoles>,
     skills: Option<PhysicianSkills>,
     bus: Arc<dyn Bus>,
-    accepted_controls:
-        Arc<std::sync::Mutex<BTreeMap<ReviewControlReceiptKey, ReviewControlReceiptValue>>>,
 }
 
 impl StandaloneReviews {
@@ -87,7 +85,6 @@ impl StandaloneReviews {
             roles,
             skills,
             bus,
-            accepted_controls: Arc::new(std::sync::Mutex::new(BTreeMap::new())),
         }
     }
 }
@@ -98,8 +95,6 @@ struct ReviewCtx<'a> {
     roles: Option<&'a ModelRoles>,
     skills: Option<&'a PhysicianSkills>,
     bus: &'a dyn Bus,
-    accepted_controls:
-        &'a std::sync::Mutex<BTreeMap<ReviewControlReceiptKey, ReviewControlReceiptValue>>,
 }
 
 impl<'a> ReviewCtx<'a> {
@@ -110,7 +105,6 @@ impl<'a> ReviewCtx<'a> {
             roles: Some(live.chat.roles()),
             skills: Some(live.chat.skills()),
             bus: live.bus.as_ref(),
-            accepted_controls: &live.accepted_review_controls,
         }
     }
 
@@ -121,7 +115,6 @@ impl<'a> ReviewCtx<'a> {
             roles: standalone.roles.as_ref(),
             skills: standalone.skills.as_ref(),
             bus: standalone.bus.as_ref(),
-            accepted_controls: standalone.accepted_controls.as_ref(),
         }
     }
 }
@@ -397,108 +390,39 @@ async fn handle_control(
         );
     }
 
-    let receipt_key = (
-        identity.practice_id.clone(),
-        id.clone(),
-        review_id.clone(),
-        command.idempotency_key.trim().to_owned(),
-    );
-    let prior_receipt = ctx
-        .accepted_controls
-        .lock()
-        .expect("review control receipts")
-        .get(&receipt_key)
-        .cloned();
-    if let Some((accepted_action, accepted_version)) = prior_receipt {
-        let current = match load_projected_review(
-            ctx.store,
-            &identity.practice_id,
-            &id,
-            &review_id,
-            &authority,
-        )
+    let saved = match ctx
+        .store
+        .patient_review(&identity.practice_id, &id, &review_id, &authority)
         .await
-        {
-            Ok(Some(wire)) => wire,
-            Ok(None) | Err(LoadReviewFailure::NotFound) => {
-                return StatusCode::NOT_FOUND.into_response();
-            }
-            Err(LoadReviewFailure::Unavailable) => {
-                return StatusCode::SERVICE_UNAVAILABLE.into_response();
-            }
-        };
-        if accepted_action == command.action && accepted_version == command.version {
-            return Json(ReviewControlResponse::Accepted {
-                review: Box::new(current),
-            })
-            .into_response();
-        }
-        return refused(
-            StatusCode::CONFLICT,
-            ReviewControlRefusalReason::IdempotencyCollision,
-            "That control request key was already used for a different action.",
-            Some(current),
-        );
-    }
-
-    let (saved, current) = match load_saved_and_projected_review(
-        ctx.store,
-        &identity.practice_id,
-        &id,
-        &review_id,
-        &authority,
-    )
-    .await
     {
-        Ok(Some(pair)) => pair,
-        Ok(None) | Err(LoadReviewFailure::NotFound) => {
+        Ok(Some(saved)) => saved,
+        Ok(None)
+        | Err(
+            PatientReviewError::Access(_)
+            | PatientReviewError::PhysicianUnauthorized { .. }
+            | PatientReviewError::NotFound { .. }
+            | PatientReviewError::InvalidScope,
+        ) => {
             return StatusCode::NOT_FOUND.into_response();
         }
-        Err(LoadReviewFailure::Unavailable) => {
+        Err(error) => {
+            tracing::error!(%error, "patient review read failed");
             return StatusCode::SERVICE_UNAVAILABLE.into_response();
         }
     };
-
-    if current.version != command.version {
-        return refused(
-            StatusCode::CONFLICT,
-            ReviewControlRefusalReason::StaleVersion,
-            "This review changed before your request arrived. Showing its current status.",
-            Some(current),
-        );
-    }
-
-    if current.state.available_control() != Some(command.action) {
-        let message = invalid_state_message(command.action, &current.state);
-        return refused(
-            StatusCode::CONFLICT,
-            ReviewControlRefusalReason::InvalidState,
-            &message,
-            Some(current),
-        );
-    }
 
     let target = PatientReviewTarget {
         practice: &identity.practice_id,
         workspace: &id,
         review_id: &review_id,
     };
-    let key = command.idempotency_key.trim();
-    let execution = match command.action {
-        ReviewControlActionWire::Stop => match ctx
-            .store
-            .stop_patient_review(&identity.practice_id, &id, &review_id, key, &authority)
-            .await
-        {
-            Ok(Stopped::Held | Stopped::Duplicate) => ControlExecution::Accepted,
-            Ok(Stopped::Refused) => ControlExecution::StateRefused,
-            Err(error) => ControlExecution::Failed(error),
-        },
+    let owned_roles;
+    let versioned_action = match command.action {
+        ReviewControlActionWire::Stop => VersionedReviewAction::Stop,
         ReviewControlActionWire::Resume => {
             let Some(skills) = ctx.skills else {
                 return StatusCode::SERVICE_UNAVAILABLE.into_response();
             };
-            let owned_roles;
             let roles = match ctx.roles {
                 Some(roles) => roles,
                 None => {
@@ -506,25 +430,12 @@ async fn handle_control(
                     &owned_roles
                 }
             };
-            match ctx
-                .store
-                .resume_patient_review(target, key, roles, skills, &authority)
-                .await
-            {
-                Ok(delivery) => {
-                    if let Some(chat) = ctx.chat {
-                        chat.publish_practice_job(&delivery).await;
-                    }
-                    ControlExecution::Accepted
-                }
-                Err(error) => ControlExecution::Failed(error),
-            }
+            VersionedReviewAction::Resume { roles, skills }
         }
         ReviewControlActionWire::TryAgain => {
             let Some(skills) = ctx.skills else {
                 return StatusCode::SERVICE_UNAVAILABLE.into_response();
             };
-            let owned_roles;
             let roles = match ctx.roles {
                 Some(roles) => roles,
                 None => {
@@ -532,28 +443,25 @@ async fn handle_control(
                     &owned_roles
                 }
             };
-            match ctx
-                .store
-                .try_again_patient_review(target, key, roles, skills, &authority)
-                .await
-            {
-                Ok(delivery) => {
-                    if let Some(chat) = ctx.chat {
-                        chat.publish_practice_job(&delivery).await;
-                    }
-                    ControlExecution::Accepted
-                }
-                Err(error) => ControlExecution::Failed(error),
-            }
+            VersionedReviewAction::TryAgain { roles, skills }
         }
     };
 
-    match execution {
-        ControlExecution::Accepted => {
-            ctx.accepted_controls
-                .lock()
-                .expect("review control receipts")
-                .insert(receipt_key, (command.action, command.version));
+    match ctx
+        .store
+        .control_patient_review_versioned(
+            target,
+            command.version.as_str(),
+            command.idempotency_key.trim(),
+            versioned_action,
+            &authority,
+        )
+        .await
+    {
+        Ok(VersionedReviewControl::Accepted { delivery }) => {
+            if let (Some(chat), Some(delivery)) = (ctx.chat, delivery.as_ref()) {
+                chat.publish_practice_job(delivery).await;
+            }
             if let Err(error) = ctx
                 .bus
                 .publish(BusEvent::WorkspaceChanged {
@@ -584,7 +492,7 @@ async fn handle_control(
                 }
             }
         }
-        ControlExecution::StateRefused => {
+        Ok(VersionedReviewControl::StaleVersion { .. }) => {
             let latest = load_projected_review(
                 ctx.store,
                 &identity.practice_id,
@@ -595,96 +503,104 @@ async fn handle_control(
             .await
             .ok()
             .flatten();
-            let reason = match &latest {
-                Some(wire) if wire.version != command.version => {
-                    ReviewControlRefusalReason::StaleVersion
-                }
-                _ => ReviewControlRefusalReason::InvalidState,
-            };
-            let message = match (&latest, reason) {
-                (_, ReviewControlRefusalReason::StaleVersion) => {
-                    "This review changed before your request arrived. Showing its current status."
-                        .to_owned()
-                }
-                (Some(wire), _) => invalid_state_message(command.action, &wire.state),
-                (None, _) => "Coda couldn’t apply that control right now.".to_owned(),
-            };
-            refused(StatusCode::CONFLICT, reason, &message, latest)
+            refused(
+                StatusCode::CONFLICT,
+                ReviewControlRefusalReason::StaleVersion,
+                "This review changed before your request arrived. Showing its current status.",
+                latest,
+            )
         }
-        ControlExecution::Failed(error) => match error {
+        Ok(VersionedReviewControl::InvalidState) => {
+            let latest = load_projected_review(
+                ctx.store,
+                &identity.practice_id,
+                &id,
+                &review_id,
+                &authority,
+            )
+            .await
+            .ok()
+            .flatten();
+            let message = latest
+                .as_ref()
+                .map(|wire| invalid_state_message(command.action, &wire.state))
+                .unwrap_or_else(|| {
+                    "That control does not apply to the review’s current status.".to_owned()
+                });
+            refused(
+                StatusCode::CONFLICT,
+                ReviewControlRefusalReason::InvalidState,
+                &message,
+                latest,
+            )
+        }
+        Ok(VersionedReviewControl::IdempotencyConflict)
+        | Err(PatientReviewError::IdempotencyCollision { .. }) => {
+            let latest = load_projected_review(
+                ctx.store,
+                &identity.practice_id,
+                &id,
+                &review_id,
+                &authority,
+            )
+            .await
+            .ok()
+            .flatten();
+            refused(
+                StatusCode::CONFLICT,
+                ReviewControlRefusalReason::IdempotencyCollision,
+                "That control request key was already used for a different action.",
+                latest,
+            )
+        }
+        Err(
             PatientReviewError::NotFound { .. }
             | PatientReviewError::Access(_)
-            | PatientReviewError::PhysicianUnauthorized { .. } => {
-                StatusCode::NOT_FOUND.into_response()
-            }
-            PatientReviewError::InvalidScope | PatientReviewError::InvalidInput { .. } => refused(
-                StatusCode::BAD_REQUEST,
-                ReviewControlRefusalReason::InvalidRequest,
-                "The review control request was invalid.",
-                None,
-            ),
-            PatientReviewError::IdempotencyCollision { .. } => {
-                let latest = load_projected_review(
-                    ctx.store,
-                    &identity.practice_id,
-                    &id,
-                    &review_id,
-                    &authority,
-                )
-                .await
-                .ok()
-                .flatten();
-                refused(
-                    StatusCode::CONFLICT,
-                    ReviewControlRefusalReason::IdempotencyCollision,
-                    "That control request key was already used for a different action.",
-                    latest,
-                )
-            }
-            PatientReviewError::ControlRefused { .. } => {
-                let latest = load_projected_review(
-                    ctx.store,
-                    &identity.practice_id,
-                    &id,
-                    &review_id,
-                    &authority,
-                )
-                .await
-                .ok()
-                .flatten();
-                let message = latest
-                    .as_ref()
-                    .map(|wire| invalid_state_message(command.action, &wire.state))
-                    .unwrap_or_else(|| {
-                        "That control does not apply to the review’s current status.".to_owned()
-                    });
-                refused(
-                    StatusCode::CONFLICT,
-                    ReviewControlRefusalReason::InvalidState,
-                    &message,
-                    latest,
-                )
-            }
-            PatientReviewError::Assignment(error) => {
-                tracing::error!(%error, "patient review control assignment failed");
-                StatusCode::SERVICE_UNAVAILABLE.into_response()
-            }
-            PatientReviewError::Runtime(error) => {
-                tracing::error!(%error, "patient review control runtime failed");
-                StatusCode::SERVICE_UNAVAILABLE.into_response()
-            }
-            PatientReviewError::Database(error) => {
-                tracing::error!(%error, "patient review control database failed");
-                StatusCode::SERVICE_UNAVAILABLE.into_response()
-            }
-        },
+            | PatientReviewError::PhysicianUnauthorized { .. },
+        ) => StatusCode::NOT_FOUND.into_response(),
+        Err(PatientReviewError::InvalidScope | PatientReviewError::InvalidInput { .. }) => refused(
+            StatusCode::BAD_REQUEST,
+            ReviewControlRefusalReason::InvalidRequest,
+            "The review control request was invalid.",
+            None,
+        ),
+        Err(PatientReviewError::ControlRefused { .. }) => {
+            let latest = load_projected_review(
+                ctx.store,
+                &identity.practice_id,
+                &id,
+                &review_id,
+                &authority,
+            )
+            .await
+            .ok()
+            .flatten();
+            let message = latest
+                .as_ref()
+                .map(|wire| invalid_state_message(command.action, &wire.state))
+                .unwrap_or_else(|| {
+                    "That control does not apply to the review’s current status.".to_owned()
+                });
+            refused(
+                StatusCode::CONFLICT,
+                ReviewControlRefusalReason::InvalidState,
+                &message,
+                latest,
+            )
+        }
+        Err(PatientReviewError::Assignment(error)) => {
+            tracing::error!(%error, "patient review control assignment failed");
+            StatusCode::SERVICE_UNAVAILABLE.into_response()
+        }
+        Err(PatientReviewError::Runtime(error)) => {
+            tracing::error!(%error, "patient review control runtime failed");
+            StatusCode::SERVICE_UNAVAILABLE.into_response()
+        }
+        Err(PatientReviewError::Database(error)) => {
+            tracing::error!(%error, "patient review control database failed");
+            StatusCode::SERVICE_UNAVAILABLE.into_response()
+        }
     }
-}
-
-enum ControlExecution {
-    Accepted,
-    StateRefused,
-    Failed(PatientReviewError),
 }
 
 enum LoadReviewFailure {
@@ -736,13 +652,13 @@ async fn load_workspace_source_context(
     })
 }
 
-async fn load_saved_and_projected_review(
+async fn load_projected_review(
     store: &local_product::runtime::Store,
     practice_id: &str,
     workspace_id: &str,
     review_id: &str,
     authority: &dyn local_product::runtime::jobs::PracticeAuthority,
-) -> Result<Option<(SavedPatientReview, PatientReviewWire)>, LoadReviewFailure> {
+) -> Result<Option<PatientReviewWire>, LoadReviewFailure> {
     let review = match store
         .patient_review(practice_id, workspace_id, review_id, authority)
         .await
@@ -770,20 +686,11 @@ async fn load_saved_and_projected_review(
             tracing::error!(%error, "patient review practice job read failed");
             LoadReviewFailure::Unavailable
         })?;
-    let projected = project_patient_review(&review, job.as_ref(), &context);
-    Ok(Some((review, projected)))
-}
-
-async fn load_projected_review(
-    store: &local_product::runtime::Store,
-    practice_id: &str,
-    workspace_id: &str,
-    review_id: &str,
-    authority: &dyn local_product::runtime::jobs::PracticeAuthority,
-) -> Result<Option<PatientReviewWire>, LoadReviewFailure> {
-    load_saved_and_projected_review(store, practice_id, workspace_id, review_id, authority)
-        .await
-        .map(|opt| opt.map(|(_, projected)| projected))
+    Ok(Some(project_patient_review(
+        &review,
+        job.as_ref(),
+        &context,
+    )))
 }
 
 fn refused(
@@ -842,36 +749,7 @@ pub(crate) fn review_version(
     review: &SavedPatientReview,
     job: Option<&PracticeJob>,
 ) -> ReviewVersion {
-    let mut hasher = Sha256::new();
-    hasher.update(review.review_id.as_bytes());
-    hasher.update(b"|");
-    hasher.update(review.work_id.as_bytes());
-    hasher.update(b"|");
-    if let Ok(state_bytes) = serde_json::to_vec(&review.state) {
-        hasher.update(&state_bytes);
-    }
-    hasher.update(b"|");
-    hasher.update(review.updated_at.to_le_bytes());
-    hasher.update(review.triggers.len().to_le_bytes());
-    hasher.update(review.accepted_inputs.len().to_le_bytes());
-    hasher.update(review.actions.len().to_le_bytes());
-    hasher.update(review.evidence_read.len().to_le_bytes());
-    if let Some(job) = job {
-        hasher.update(b"|job:");
-        hasher.update(job.revision.to_le_bytes());
-        hasher.update(job.updated_at.to_le_bytes());
-        hasher.update(job.attempts.len().to_le_bytes());
-        if let Ok(runs_bytes) = serde_json::to_vec(&job.runs) {
-            hasher.update(&runs_bytes);
-        }
-    }
-    let digest = hasher.finalize();
-    let mut hex = String::with_capacity(16);
-    for byte in &digest[..8] {
-        use std::fmt::Write as _;
-        let _ = write!(&mut hex, "{byte:02x}");
-    }
-    ReviewVersion(format!("rv-{hex}"))
+    ReviewVersion(patient_review_version(review, job))
 }
 
 fn project_patient_review(
@@ -937,13 +815,18 @@ fn project_trigger(trigger: &ReviewTrigger, context: &WorkspaceSourceContext) ->
                         .latest_by_candidate
                         .get(candidate_id)
                         .map(|src| {
-                            let title =
-                                record_title(&src.provenance, &src.record_type, candidate_id);
-                            match src.dates.first() {
-                                Some(date) if !date.value.trim().is_empty() => {
-                                    format!("{title} ({})", date.value.trim())
-                                }
-                                _ => title,
+                            let title = humanize_record_title(
+                                &src.provenance,
+                                &src.record_type,
+                                candidate_id,
+                            );
+                            match src
+                                .dates
+                                .first()
+                                .and_then(|d| format_trigger_date(&d.value))
+                            {
+                                Some(date) => format!("{title} ({date})"),
+                                None => title,
                             }
                         })
                         .unwrap_or_else(|| candidate_id.clone())
@@ -1162,7 +1045,9 @@ fn collect_review_evidence(
             let observed = context.by_pair.get(&pair);
             let record_type = observed.map(|s| s.record_type.clone()).unwrap_or_default();
             let body = observed
-                .map(|s| format_record_body(&citation.display_label, &s.readable_parts, &s.content))
+                .map(|s| {
+                    format_cited_source_body(&citation.display_label, &s.readable_parts, &s.content)
+                })
                 .filter(|b| !b.trim().is_empty())
                 .unwrap_or_else(|| citation.excerpt.clone());
             let raw_content = observed.map(|s| s.content.clone()).unwrap_or_default();
@@ -1234,8 +1119,8 @@ fn collect_review_evidence(
                 .get(&src.source_id)
                 .cloned()
                 .unwrap_or_else(|| src.source_id.clone());
-            let title = record_title(&src.provenance, &src.record_type, candidate_id);
-            let body = format_record_body(&title, &src.readable_parts, &src.content);
+            let title = cited_record_title(&src.provenance, &src.record_type, candidate_id);
+            let body = format_cited_source_body(&title, &src.readable_parts, &src.content);
             let quote = truncate_chars(&body, 220);
             let as_of = src.dates.first().map(|d| d.value.clone());
             let external_url = provenance_str(&src.provenance, &["url", "external_url"]);
@@ -1324,15 +1209,18 @@ fn extract_steps(
         for event in &attempt.events {
             match &event.kind {
                 EventKind::ToolStarted(call) => {
-                    let (label, detail) = describe_tool_step(&call.name, &call.arguments, context);
-                    steps.push((
-                        call.id.clone(),
-                        ReviewStepWire {
-                            label,
-                            detail,
-                            state: unfinished_step_state,
-                        },
-                    ));
+                    if let Some((label, detail)) =
+                        describe_tool_step(&call.name, &call.arguments, context)
+                    {
+                        steps.push((
+                            call.id.clone(),
+                            ReviewStepWire {
+                                label,
+                                detail,
+                                state: unfinished_step_state,
+                            },
+                        ));
+                    }
                 }
                 EventKind::ToolReturned { call_id, result } => {
                     let settled = match result {
@@ -1364,7 +1252,7 @@ fn describe_tool_step(
     name: &str,
     arguments: &str,
     context: &WorkspaceSourceContext,
-) -> (String, Option<String>) {
+) -> Option<(String, Option<String>)> {
     let parsed: Option<Value> = serde_json::from_str(arguments).ok();
     match name {
         SEARCH_TOOL => {
@@ -1375,7 +1263,7 @@ fn describe_tool_step(
                 .map(str::trim)
                 .filter(|s| !s.is_empty())
                 .map(str::to_owned);
-            ("Searched patient chart".to_owned(), query)
+            Some(("Searched patient chart".to_owned(), query))
         }
         "read_patient_sources" => {
             let titles: Vec<String> = parsed
@@ -1387,13 +1275,19 @@ fn describe_tool_step(
                         .iter()
                         .filter_map(|entry| {
                             let id = entry
-                                .as_str()
-                                .or_else(|| entry.get("reference").and_then(Value::as_str))?;
+                                .get("candidate_id")
+                                .and_then(Value::as_str)
+                                .or_else(|| entry.get("reference").and_then(Value::as_str))
+                                .or_else(|| entry.as_str())
+                                .map(str::trim)
+                                .filter(|s| !s.is_empty())?;
                             Some(
                                 context
                                     .latest_by_candidate
                                     .get(id)
-                                    .map(|s| record_title(&s.provenance, &s.record_type, id))
+                                    .map(|s| {
+                                        humanize_record_title(&s.provenance, &s.record_type, id)
+                                    })
                                     .unwrap_or_else(|| id.to_owned()),
                             )
                         })
@@ -1401,18 +1295,34 @@ fn describe_tool_step(
                 })
                 .unwrap_or_default();
             let detail = (!titles.is_empty()).then(|| titles.join(", "));
-            ("Read chart records".to_owned(), detail)
+            Some(("Read chart records".to_owned(), detail))
         }
-        "refresh_patient_sources" => ("Checked connected sources".to_owned(), None),
-        READ_PATIENT_REVIEWS_TOOL => ("Checked prior patient reviews".to_owned(), None),
-        "patient_concern" => ("Updated Today concern".to_owned(), None),
-        PATIENT_MEMORY_TOOL => ("Updated patient clinical memory".to_owned(), None),
-        "save_patient_understanding" => ("Updated patient summary".to_owned(), None),
-        COMPLETE_PATIENT_REVIEW_TOOL => ("Recorded review outcome".to_owned(), None),
+        "refresh_patient_sources" => Some(("Checked connected sources".to_owned(), None)),
+        READ_PATIENT_REVIEWS_TOOL => Some(("Checked prior patient reviews".to_owned(), None)),
+        COMPLETE_PATIENT_REVIEW_TOOL => Some(("Recorded review outcome".to_owned(), None)),
+        "read_patient_understanding" => Some(("Read patient summary".to_owned(), None)),
+        "save_patient_understanding" => Some(("Updated patient summary".to_owned(), None)),
+        "patient_concern" => Some(("Updated Today concern".to_owned(), None)),
+        PATIENT_MEMORY_TOOL => Some(("Updated patient clinical memory".to_owned(), None)),
+        "retrieve_patient_work" => Some(("Checked prior patient conversations".to_owned(), None)),
         "search_clinical_library" | "read_clinical_library" => {
-            ("Checked clinical guidance".to_owned(), None)
+            Some(("Checked clinical guidance".to_owned(), None))
         }
-        other => (format!("Ran {}", other.replace('_', " ")), None),
+        "select_visit_preparations" | "save_visit_briefing" => {
+            Some(("Prepared visit briefing".to_owned(), None))
+        }
+        "finish_reply_revision" => Some(("Updated patient reply draft".to_owned(), None)),
+        "skill_view"
+        | "save_working_note"
+        | "working_notes"
+        | "read_tool_result"
+        | "list_conversation_history"
+        | "read_conversation_message"
+        | "search_conversation_history"
+        | "history_list"
+        | "history_read"
+        | "history_search" => None,
+        _ => Some(("Checked clinical context".to_owned(), None)),
     }
 }
 
@@ -1439,10 +1349,7 @@ fn project_action(action: &RecordedReviewAction) -> ReviewActionWire {
             workspace_version_after,
         } => format!("Refreshed {source_id} (chart v{workspace_version_after})"),
     };
-    ReviewActionWire {
-        summary,
-        recorded_at: String::new(),
-    }
+    ReviewActionWire { summary }
 }
 
 fn project_unfinished(item: &UnfinishedReviewWork) -> ReviewUnfinishedWorkWire {
@@ -1482,48 +1389,37 @@ fn provenance_str(provenance: &Value, keys: &[&str]) -> Option<String> {
     None
 }
 
-fn record_title(provenance: &Value, record_type: &str, candidate_id: &str) -> String {
-    provenance_str(provenance, &["title", "display", "label"]).unwrap_or_else(|| {
-        let trimmed = record_type.trim();
-        if trimmed.is_empty() {
-            candidate_id.to_owned()
-        } else {
-            trimmed.to_owned()
-        }
-    })
+fn format_trigger_date(raw: &str) -> Option<&str> {
+    let date = raw.split('T').next().unwrap_or(raw).trim();
+    (!date.is_empty()).then_some(date)
 }
 
-fn format_record_body(title: &str, parts: &[ReadablePart], raw_content: &str) -> String {
-    let normalized_title = title
-        .split_whitespace()
-        .collect::<Vec<_>>()
-        .join(" ")
-        .to_lowercase();
-    let sections: Vec<String> = parts
-        .iter()
-        .filter_map(|part| {
-            let label = part.label.trim();
-            let text = part.text.trim();
-            let same_title = !label.is_empty()
-                && label
-                    .split_whitespace()
-                    .collect::<Vec<_>>()
-                    .join(" ")
-                    .to_lowercase()
-                    == normalized_title;
-            if label.is_empty() || same_title {
-                (!text.is_empty()).then(|| text.to_owned())
-            } else if text.is_empty() {
-                Some(label.to_owned())
-            } else {
-                Some(format!("{label}\n{text}"))
-            }
-        })
-        .collect();
-    if !sections.is_empty() {
-        return sections.join("\n\n");
+fn humanize_record_title(provenance: &Value, record_type: &str, candidate_id: &str) -> String {
+    let base = cited_record_title(provenance, record_type, candidate_id);
+    if provenance_str(provenance, &["title", "display", "label"]).is_some() || base == candidate_id
+    {
+        return base;
     }
-    raw_content.trim().to_owned()
+    humanize_pascal_type(&base)
+}
+
+fn humanize_pascal_type(raw: &str) -> String {
+    let trimmed = raw.trim();
+    if trimmed.is_empty() || trimmed.contains(' ') {
+        return trimmed.to_owned();
+    }
+    let mut out = String::with_capacity(trimmed.len() + 4);
+    for (idx, ch) in trimmed.chars().enumerate() {
+        if idx > 0 && ch.is_ascii_uppercase() {
+            out.push(' ');
+            for lower in ch.to_lowercase() {
+                out.push(lower);
+            }
+        } else {
+            out.push(ch);
+        }
+    }
+    out
 }
 
 fn truncate_chars(text: &str, max_chars: usize) -> String {
@@ -1616,5 +1512,110 @@ mod tests {
             .into_iter()
             .collect();
         assert_eq!(distinct.len(), 4);
+    }
+
+    #[test]
+    fn project_trigger_and_tool_steps_use_physician_language_and_candidate_ids() {
+        use local_product::physician_sources::RecordDate;
+        use serde_json::json;
+
+        let obs = SourceRevision {
+            workspace: "pw-1".into(),
+            source_id: "quest".into(),
+            candidate_id: "Observation/creatinine-2026-08".into(),
+            revision: "rev-obs-1".into(),
+            record_type: "Observation".into(),
+            dates: vec![RecordDate {
+                name: "effectiveDateTime".into(),
+                value: "2026-08-22T09:15:00Z".into(),
+            }],
+            content: "{}".into(),
+            sha256: "00".repeat(32),
+            readable_parts: Vec::new(),
+            provenance: json!({"system": "https://quest.example"}),
+        };
+        let doc = SourceRevision {
+            workspace: "pw-1".into(),
+            source_id: "ucsf".into(),
+            candidate_id: "DocumentReference/consult-afib-2026".into(),
+            revision: "rev-doc-1".into(),
+            record_type: "DocumentReference".into(),
+            dates: vec![RecordDate {
+                name: "date".into(),
+                value: "2026-08-20T14:30:00Z".into(),
+            }],
+            content: "{}".into(),
+            sha256: "11".repeat(32),
+            readable_parts: Vec::new(),
+            provenance: json!({"system": "https://ucsf.example"}),
+        };
+        let context = WorkspaceSourceContext {
+            by_pair: BTreeMap::from([
+                (
+                    (obs.candidate_id.clone(), obs.revision.clone()),
+                    obs.clone(),
+                ),
+                (
+                    (doc.candidate_id.clone(), doc.revision.clone()),
+                    doc.clone(),
+                ),
+            ]),
+            latest_by_candidate: BTreeMap::from([
+                (obs.candidate_id.clone(), obs),
+                (doc.candidate_id.clone(), doc),
+            ]),
+            source_labels: BTreeMap::new(),
+        };
+
+        let trigger = ReviewTrigger::ChangedRecords {
+            workspace_version: 2,
+            record_versions: BTreeMap::new(),
+            changed_candidates: vec![
+                "Observation/creatinine-2026-08".into(),
+                "DocumentReference/consult-afib-2026".into(),
+            ],
+        };
+        assert_eq!(
+            project_trigger(&trigger, &context),
+            ReviewTriggerWire::ChangedRecords {
+                workspace_version: 2,
+                changed_records: vec![
+                    "Observation (2026-08-22)".into(),
+                    "Document reference (2026-08-20)".into(),
+                ],
+            }
+        );
+
+        let read_args = json!({
+            "references": [
+                { "candidate_id": "Observation/creatinine-2026-08", "revision": "rev-obs-1", "cursor": null },
+                { "candidate_id": "DocumentReference/consult-afib-2026", "revision": "rev-doc-1", "cursor": null }
+            ]
+        })
+        .to_string();
+        assert_eq!(
+            describe_tool_step("read_patient_sources", &read_args, &context),
+            Some((
+                "Read chart records".to_owned(),
+                Some("Observation, Document reference".to_owned()),
+            ))
+        );
+
+        for plumbing in [
+            "skill_view",
+            "save_working_note",
+            "working_notes",
+            "read_tool_result",
+            "list_conversation_history",
+            "read_conversation_message",
+            "search_conversation_history",
+        ] {
+            assert_eq!(describe_tool_step(plumbing, "{}", &context), None);
+        }
+
+        let fallback = describe_tool_step("future_internal_tool_name", "{}", &context)
+            .expect("fallback step label");
+        assert_eq!(fallback, ("Checked clinical context".to_owned(), None));
+        assert!(!fallback.0.contains("future"));
     }
 }

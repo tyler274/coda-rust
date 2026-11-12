@@ -667,8 +667,21 @@ async fn review_endpoints_enforce_versions_idempotency_and_panel_access() {
         }
     })
     .await;
+    let db_url_b = database.url.clone();
+    let server_b = common::serve_isolated(|| {
+        // SAFETY: `test_lock()` and `serve_isolated`'s start lock serialize env changes.
+        unsafe {
+            env::remove_var("PHYSICIAN_SITE_DIR");
+            env::set_var("PHYSICIAN_DATABASE_URL", &db_url_b);
+            env::set_var("PHYSICIAN_AUTH", "required");
+            env::set_var("PHYSICIAN_AUTH_PROOF_TOKENS", "1");
+            env::remove_var("PHYSICIAN_UPSTREAM");
+        }
+    })
+    .await;
     let host = server.address.to_string();
     let base = format!("http://{host}");
+    let base_b = format!("http://{}", server_b.address);
     let bearer = scale::sign_in(&host).await;
     let (outside_status, outside_login) = scale::post(
         &host,
@@ -808,7 +821,8 @@ async fn review_endpoints_enforce_versions_idempotency_and_panel_access() {
         }
     ));
 
-    // 4. Stop with matching version succeeds (`200 Accepted`), advances version, and replays idempotently!
+    // 4. Stop with matching version succeeds (`200 Accepted`), advances version, and replays
+    //    idempotently both on the same instance and across a separate server instance (`base_b`)!
     let stop_req = ReviewControlRequest {
         review_id: running_id.clone(),
         version: running_wire.version.clone(),
@@ -832,26 +846,29 @@ async fn review_endpoints_enforce_versions_idempotency_and_panel_access() {
     };
     assert_ne!(stopped_wire.version, running_wire.version);
 
-    let replay_resp = http
-        .post(format!(
-            "{base}/patient-workspaces/{}/reviews/{running_id}/control",
-            seed.workspace
-        ))
-        .bearer_auth(&bearer)
-        .json(&stop_req)
-        .send()
-        .await
-        .unwrap();
-    assert_eq!(replay_resp.status(), reqwest::StatusCode::OK);
-    assert!(matches!(
-        replay_resp.json::<ReviewControlResponse>().await.unwrap(),
-        ReviewControlResponse::Accepted { .. }
-    ));
+    for target_base in [&base, &base_b] {
+        let replay_resp = http
+            .post(format!(
+                "{target_base}/patient-workspaces/{}/reviews/{running_id}/control",
+                seed.workspace
+            ))
+            .bearer_auth(&bearer)
+            .json(&stop_req)
+            .send()
+            .await
+            .unwrap();
+        assert_eq!(replay_resp.status(), reqwest::StatusCode::OK);
+        let replayed = match replay_resp.json::<ReviewControlResponse>().await.unwrap() {
+            ReviewControlResponse::Accepted { review } => *review,
+            other => panic!("expected cross-instance Accepted replay, got {other:?}"),
+        };
+        assert_eq!(replayed.version, stopped_wire.version);
+    }
 
-    // 5. Resume with updated version succeeds (`200 Accepted`).
-    let resume_resp = http
+    // Reusing `stop-idempotent-1` for a different action on Instance B returns `409 IdempotencyCollision`.
+    let collision_resp = http
         .post(format!(
-            "{base}/patient-workspaces/{}/reviews/{running_id}/control",
+            "{base_b}/patient-workspaces/{}/reviews/{running_id}/control",
             seed.workspace
         ))
         .bearer_auth(&bearer)
@@ -859,8 +876,38 @@ async fn review_endpoints_enforce_versions_idempotency_and_panel_access() {
             review_id: running_id.clone(),
             version: stopped_wire.version.clone(),
             action: ReviewControlActionWire::Resume,
-            idempotency_key: "resume-1".into(),
+            idempotency_key: "stop-idempotent-1".into(),
         })
+        .send()
+        .await
+        .unwrap();
+    assert_eq!(collision_resp.status(), reqwest::StatusCode::CONFLICT);
+    assert!(matches!(
+        collision_resp
+            .json::<ReviewControlResponse>()
+            .await
+            .unwrap(),
+        ReviewControlResponse::Refused {
+            reason: ReviewControlRefusalReason::IdempotencyCollision,
+            review: Some(_),
+            ..
+        }
+    ));
+
+    // 5. Resume with updated version succeeds (`200 Accepted`) and replays idempotently across `base_b`.
+    let resume_req = ReviewControlRequest {
+        review_id: running_id.clone(),
+        version: stopped_wire.version.clone(),
+        action: ReviewControlActionWire::Resume,
+        idempotency_key: "resume-1".into(),
+    };
+    let resume_resp = http
+        .post(format!(
+            "{base}/patient-workspaces/{}/reviews/{running_id}/control",
+            seed.workspace
+        ))
+        .bearer_auth(&bearer)
+        .json(&resume_req)
         .send()
         .await
         .unwrap();
@@ -870,6 +917,25 @@ async fn review_endpoints_enforce_versions_idempotency_and_panel_access() {
         other => panic!("expected Accepted on Resume, got {other:?}"),
     };
     assert!(resumed_wire.state.is_working());
+
+    let resume_replay_b = http
+        .post(format!(
+            "{base_b}/patient-workspaces/{}/reviews/{running_id}/control",
+            seed.workspace
+        ))
+        .bearer_auth(&bearer)
+        .json(&resume_req)
+        .send()
+        .await
+        .unwrap();
+    assert_eq!(resume_replay_b.status(), reqwest::StatusCode::OK);
+    assert!(matches!(
+        resume_replay_b
+            .json::<ReviewControlResponse>()
+            .await
+            .unwrap(),
+        ReviewControlResponse::Accepted { .. }
+    ));
 
     // 6. Panel removal (`ClinicDemographic`) immediately blocks review list, detail, and control with `404`.
     auth.set_membership(&staging_identity, &seed.workspace, Membership::Denied)
@@ -1131,8 +1197,10 @@ async fn patient_page_reviews_controls_reload_access_and_viewports() {
 
     let trigger_text = tab.text("[data-review-trigger=\"true\"]");
     assert!(
-        trigger_text.contains("New records:"),
-        "selected review must show its trigger: {trigger_text}"
+        trigger_text
+            .contains("New records: Observation (2026-08-22), Document reference (2026-08-20)")
+            && !trigger_text.contains("T09:15:00Z"),
+        "selected review must show clean physician-worded trigger dates and record types: {trigger_text}"
     );
     let evidence_text = tab.text("[data-review-evidence=\"true\"]");
     assert!(

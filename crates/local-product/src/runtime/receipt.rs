@@ -84,6 +84,31 @@ pub(super) fn matches(stored: &Value, command: &Value) -> bool {
     }
 }
 
+/// Checks whether `(practice, physician, key)` already holds a committed
+/// receipt in `tx` without inserting a row, so callers that validate version
+/// or state eligibility before recording a new command can still reconcile
+/// lost-receipt retries first.
+pub(super) async fn check(
+    tx: &sea_orm::DatabaseTransaction,
+    practice: &str,
+    physician: &str,
+    key: &str,
+    command: &Value,
+) -> Result<Option<Receipt>, DbErr> {
+    let Some(existing) =
+        command::Entity::find_by_id((practice.to_owned(), physician.to_owned(), key.to_owned()))
+            .one(tx)
+            .await?
+    else {
+        return Ok(None);
+    };
+    Ok(Some(if matches(&existing.command, command) {
+        Receipt::Same
+    } else {
+        Receipt::Different
+    }))
+}
+
 /// Records `command` under its key in `tx`, or compares it with the receipt
 /// already there.
 pub(super) async fn record(

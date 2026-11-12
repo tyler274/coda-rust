@@ -25,8 +25,22 @@ use crate::status::{ReadNotice, ReadStage};
 const REVIEWS_LOADING: &str = "Loading reviews…";
 const REVIEWS_STALE: &str = "Coda couldn’t refresh reviews. Showing the last list.";
 const REVIEWS_UNAVAILABLE: &str = "Coda couldn’t load reviews for this patient.";
-const REVIEW_POLL_MS: u32 = 1_500;
-const REVIEW_POLL_LIMIT: u32 = 40;
+
+/// Gentle-backoff poll interval while any review in the mounted workspace is
+/// `Pending` or `Running`: 1.5s across the first 30s (`0..20`), 3s across the
+/// next 3m (`20..80`), 5s across the rest of the 10m background run/lease window
+/// (`80..200`), and 10s thereafter if multi-attempt recovery continues.
+const fn working_review_poll_delay_ms(polls: u32) -> u32 {
+    if polls < 20 {
+        1_500
+    } else if polls < 80 {
+        3_000
+    } else if polls < 200 {
+        5_000
+    } else {
+        10_000
+    }
+}
 
 /// Shell signals the patient reviews section reads and refreshes through.
 #[derive(Clone, Copy, PartialEq)]
@@ -263,7 +277,7 @@ pub(crate) fn PatientReviewsPanel(
         write_review_param(&ws, chosen.as_deref());
     });
 
-    // Bounded background poll while any review for this workspace is working.
+    // Gentle-backoff background poll while any review on this mounted panel is working.
     let mut review_poll = use_signal(|| (0u64, 0u32));
     use_effect(move || {
         let ws = current_ws();
@@ -275,13 +289,10 @@ pub(crate) fn PatientReviewsPanel(
             review_poll.set((generation, 0));
             return;
         }
-        if polls >= REVIEW_POLL_LIMIT {
-            review_poll.set((generation, polls));
-            return;
-        }
-        review_poll.set((generation, polls + 1));
+        let delay_ms = working_review_poll_delay_ms(polls);
+        review_poll.set((generation, polls.saturating_add(1)));
         spawn(async move {
-            crate::sleep_ms(REVIEW_POLL_MS).await;
+            crate::sleep_ms(delay_ms).await;
             if review_poll.peek().0 == generation {
                 *reviews_attempt.write() += 1;
             }
@@ -1249,7 +1260,9 @@ mod tests {
         ReviewControlActionWire, ReviewHoldReasonWire, ReviewTriggerWire, ReviewVersion,
     };
 
-    use super::{ReviewControlStatus, resolve_selected_review_id, row_headline};
+    use super::{
+        ReviewControlStatus, resolve_selected_review_id, row_headline, working_review_poll_delay_ms,
+    };
 
     fn sample_review(id: &str, state: PatientReviewStateWire) -> PatientReviewWire {
         PatientReviewWire {
@@ -1374,5 +1387,23 @@ mod tests {
         assert!(done.applies_to("rev-1", &settled));
         assert!(!done.applies_to("rev-1", &later));
         assert!(!done.applies_to("rev-other", &settled));
+    }
+
+    #[test]
+    fn working_review_poll_backoff_stays_active_across_ten_minute_run_window() {
+        assert_eq!(working_review_poll_delay_ms(0), 1_500);
+        assert_eq!(working_review_poll_delay_ms(19), 1_500);
+        assert_eq!(working_review_poll_delay_ms(20), 3_000);
+        assert_eq!(working_review_poll_delay_ms(79), 3_000);
+        assert_eq!(working_review_poll_delay_ms(80), 5_000);
+        assert_eq!(working_review_poll_delay_ms(199), 5_000);
+        assert_eq!(working_review_poll_delay_ms(200), 10_000);
+        let first_two_hundred_ms: u64 = (0..200)
+            .map(|poll| u64::from(working_review_poll_delay_ms(poll)))
+            .sum();
+        assert!(
+            first_two_hundred_ms >= 600_000,
+            "first 200 polls cover >10m background run window ({first_two_hundred_ms}ms)"
+        );
     }
 }

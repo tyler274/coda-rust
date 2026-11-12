@@ -326,8 +326,6 @@ pub struct ReviewEvidenceRefWire {
 pub struct ReviewActionWire {
     /// Short physician-facing description of the action taken.
     pub summary: String,
-    /// RFC 3339 timestamp when committed.
-    pub recorded_at: String,
 }
 
 /// Kind of evidence limit blocking resolution of an unfinished-work item.
