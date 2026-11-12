@@ -42,14 +42,25 @@ pub fn inspection(citation: &Citation) -> SourceInspection {
     if let Some(label) = text(&citation.provenance["source_label"]) {
         view.attribution.push(field("Source system", label));
     }
-    match resource {
-        Some(resource) if resource["resourceType"] == "AllergyIntolerance" => allergy(&resource, &mut view),
-        Some(_) if view.sections.is_empty() => view.sections.push(field(
-            "Source content",
-            "A readable presentation is not available for this format. The retained source is available under Technical details.",
-        )),
-        None if view.sections.is_empty() => view.sections.push(field("Source text", &citation.content)),
+    match &resource {
+        Some(resource) if resource["resourceType"] == "AllergyIntolerance" => {
+            allergy(resource, &mut view)
+        }
+        Some(resource) if text(&resource["resourceType"]).is_some() => record(resource, &mut view),
         _ => {}
+    }
+    if let Some(narrative) = resource.as_ref().and_then(narrative) {
+        view.sections
+            .push(field("Narrative in this record", &narrative));
+    }
+    if view.sections.is_empty() {
+        view.sections.push(match resource {
+            Some(_) => field(
+                "Source content",
+                "A readable presentation is not available for this format. The retained source is available under Technical details.",
+            ),
+            None => field("Source text", &citation.content),
+        });
     }
     view.coda_preview = citation.summary.as_ref().map(|summary| {
         let (label, as_of) = summary_date(&view.dates);
@@ -159,6 +170,241 @@ fn allergy_kind(resource: &Value) -> String {
         kind[..1].make_ascii_uppercase();
         format!("{kind} record")
     }
+}
+
+/// The fields that name what a record is about, in the order a record type uses them.
+const STATEMENT_FIELDS: [&str; 6] = [
+    "code",
+    "vaccineCode",
+    "medicationCodeableConcept",
+    "type",
+    "serviceType",
+    "reasonCode",
+];
+
+/// Any other chart record, arranged so it reads as a record: its statement, its recorded values,
+/// and its status and attribution. Every value shown is copied from the record; a field the
+/// record does not carry is left out rather than reported missing.
+fn record(resource: &Value, view: &mut SourceInspection) {
+    let statement = STATEMENT_FIELDS
+        .iter()
+        .find_map(|name| concepts(&resource[*name]));
+    if let Some(statement) = &statement {
+        view.title = statement.clone();
+        view.sections
+            .insert(0, field("Statement in this record", statement));
+    } else if let Some(name) = person_name(&resource["name"]) {
+        view.title = name.clone();
+        view.sections.insert(0, field("Name recorded", &name));
+    }
+    for (name, label) in [
+        ("gender", "Sex or gender recorded"),
+        ("birthDate", "Birth date recorded"),
+    ] {
+        if let Some(value) = text(&resource[name]) {
+            view.record_details.push(field(label, value));
+        }
+    }
+    if let Some(value) = observed_value(resource) {
+        view.sections.push(field("Recorded value", &value));
+    }
+    for component in resource["component"].as_array().into_iter().flatten() {
+        let label = concept(&component["code"]).unwrap_or_else(|| "Component".into());
+        let value = observed_value(component)
+            .or_else(|| text(&component["dataAbsentReason"]["text"]).map(str::to_owned));
+        if let Some(value) = value {
+            view.sections.push(field(&label, &value));
+        }
+    }
+    let ranges: Vec<_> = resource["referenceRange"]
+        .as_array()
+        .into_iter()
+        .flatten()
+        .filter_map(reference_range)
+        .collect();
+    if !ranges.is_empty() {
+        view.sections
+            .push(field("Reference range recorded", &ranges.join("\n")));
+    }
+    if let Some(value) = concepts(&resource["interpretation"]) {
+        view.sections.push(field("Interpretation recorded", &value));
+    }
+    let dosage: Vec<_> = resource["dosageInstruction"]
+        .as_array()
+        .into_iter()
+        .flatten()
+        .filter_map(|dosage| text(&dosage["text"]))
+        .collect();
+    if !dosage.is_empty() {
+        view.sections
+            .push(field("Dosage instruction", &dosage.join("\n")));
+    }
+    for (name, label) in [("description", "Description"), ("conclusion", "Conclusion")] {
+        if let Some(value) = text(&resource[name]) {
+            view.sections.push(field(label, value));
+        }
+    }
+    if let Some(reason) = concepts(&resource["reasonCode"])
+        && statement.as_ref() != Some(&reason)
+    {
+        view.sections.push(field("Reason recorded", &reason));
+    }
+    for note in resource["note"].as_array().into_iter().flatten() {
+        if let Some(value) = text(&note["text"]) {
+            view.sections.push(field("Source note", value));
+        }
+    }
+    for (name, label) in [("status", "Status recorded"), ("intent", "Intent recorded")] {
+        if let Some(value) = text(&resource[name]) {
+            view.record_details.push(field(label, value));
+        }
+    }
+    for (name, label) in [
+        ("clinicalStatus", "Source status recorded"),
+        ("verificationStatus", "Verification status recorded"),
+        ("category", "Category recorded"),
+        ("class", "Class recorded"),
+    ] {
+        if let Some(value) = concepts(&resource[name]).or_else(|| coding(&resource[name])) {
+            view.record_details.push(field(label, &value));
+        }
+    }
+    for (name, label) in [
+        ("performer", "Performed by"),
+        ("author", "Authored by"),
+        ("requester", "Requested by"),
+        ("recorder", "Recorded by"),
+        ("asserter", "Asserted by"),
+    ] {
+        let people: Vec<_> = match &resource[name] {
+            Value::Array(people) => people
+                .iter()
+                .filter_map(|person| text(&person["display"]))
+                .collect(),
+            person => text(&person["display"]).into_iter().collect(),
+        };
+        if !people.is_empty() {
+            view.attribution.push(field(label, &people.join("; ")));
+        }
+    }
+}
+
+/// Each concept's label, for a field that holds one concept or a list of them.
+fn concepts(value: &Value) -> Option<String> {
+    let labels: Vec<_> = match value {
+        Value::Array(values) => values.iter().filter_map(concept).collect(),
+        value => concept(value).into_iter().collect(),
+    };
+    (!labels.is_empty()).then(|| labels.join("; "))
+}
+
+/// The first recorded name of a person, as written or from its given and family parts.
+fn person_name(value: &Value) -> Option<String> {
+    let name = value.as_array()?.first()?;
+    if let Some(text) = text(&name["text"]) {
+        return Some(text.into());
+    }
+    let parts: Vec<_> = name["given"]
+        .as_array()
+        .into_iter()
+        .flatten()
+        .chain(std::iter::once(&name["family"]))
+        .filter_map(text)
+        .collect();
+    (!parts.is_empty()).then(|| parts.join(" "))
+}
+
+/// A bare `Coding`'s label or code, as `class` carries it.
+fn coding(value: &Value) -> Option<String> {
+    text(&value["display"])
+        .or_else(|| text(&value["code"]))
+        .map(str::to_owned)
+}
+
+/// The value a record or component carries, copied as recorded with its unit.
+fn observed_value(resource: &Value) -> Option<String> {
+    if let Some(quantity) = quantity(&resource["valueQuantity"]) {
+        return Some(quantity);
+    }
+    if let Some(value) = concept(&resource["valueCodeableConcept"])
+        .or_else(|| coding(&resource["valueCoding"]))
+        .or_else(|| text(&resource["valueString"]).map(str::to_owned))
+    {
+        return Some(value);
+    }
+    ["valueBoolean", "valueInteger", "valueDateTime"]
+        .iter()
+        .map(|name| &resource[*name])
+        .find(|value| !value.is_null())
+        .map(|value| match value {
+            Value::String(text) => text.clone(),
+            other => other.to_string(),
+        })
+}
+
+fn quantity(value: &Value) -> Option<String> {
+    let number = match &value["value"] {
+        Value::Number(number) => number.to_string(),
+        _ => return None,
+    };
+    let comparator = text(&value["comparator"]).unwrap_or_default();
+    Some(
+        match text(&value["unit"]).or_else(|| text(&value["code"])) {
+            Some(unit) => format!("{comparator}{number} {unit}"),
+            None => format!("{comparator}{number}"),
+        },
+    )
+}
+
+fn reference_range(range: &Value) -> Option<String> {
+    if let Some(text) = text(&range["text"]) {
+        return Some(text.into());
+    }
+    match (quantity(&range["low"]), quantity(&range["high"])) {
+        (Some(low), Some(high)) => Some(format!("{low} to {high}")),
+        (Some(low), None) => Some(format!("At least {low}")),
+        (None, Some(high)) => Some(format!("At most {high}")),
+        (None, None) => None,
+    }
+}
+
+/// The record's own human-readable narrative (`text.div`), as plain text.
+fn narrative(resource: &Value) -> Option<String> {
+    let div = text(&resource["text"]["div"])?;
+    let mut plain = String::new();
+    let mut rest = div;
+    while let Some(start) = rest.find('<') {
+        plain.push_str(&rest[..start]);
+        let Some(end) = rest[start..].find('>') else {
+            rest = "";
+            break;
+        };
+        let tag = rest[start + 1..start + end].trim_start_matches('/');
+        let name = tag.split([' ', '/']).next().unwrap_or_default();
+        if matches!(
+            name.to_ascii_lowercase().as_str(),
+            "br" | "p" | "div" | "li" | "tr" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6"
+        ) && !plain.ends_with('\n')
+        {
+            plain.push('\n');
+        }
+        rest = &rest[start + end + 1..];
+    }
+    plain.push_str(rest);
+    let plain = plain
+        .replace("&nbsp;", " ")
+        .replace("&lt;", "<")
+        .replace("&gt;", ">")
+        .replace("&quot;", "\"")
+        .replace("&#39;", "'")
+        .replace("&apos;", "'")
+        .replace("&amp;", "&");
+    let lines: Vec<_> = plain
+        .lines()
+        .map(str::trim)
+        .filter(|line| !line.is_empty())
+        .collect();
+    (!lines.is_empty()).then(|| lines.join("\n"))
 }
 
 fn allergy(resource: &Value, view: &mut SourceInspection) {
@@ -430,6 +676,93 @@ mod tests {
         assert_eq!(
             inspection(&unknown).sections,
             vec![field("Document", "Readable attachment")]
+        );
+    }
+
+    /// The patient bank's own potassium result reads as its test, value, unit and range, with
+    /// no fallback sentence and the LOINC code kept to Technical details.
+    #[test]
+    fn a_bank_observation_reads_as_its_recorded_value() {
+        let line = r#"{"resourceType":"Observation","id":"obs-447fdd24f33f","meta":{"versionId":"1","lastUpdated":"2019-03-12T00:00:00+00:00"},"status":"final","category":[{"coding":[{"system":"http://terminology.hl7.org/CodeSystem/observation-category","code":"laboratory","display":"Laboratory"}]}],"code":{"coding":[{"system":"http://loinc.org","code":"2823-3","display":"Potassium [Moles/volume] in Serum or Plasma"}],"text":"Potassium"},"subject":{"reference":"Patient/MRN00001101"},"encounter":{"reference":"Encounter/enc-26183a468076"},"effectiveDateTime":"2019-03-12T14:10:00+00:00","issued":"2019-03-12T17:32:00+00:00","valueQuantity":{"value":3.9,"unit":"mmol/L","system":"http://unitsofmeasure.org","code":"mmol/L"},"referenceRange":[{"low":{"value":3.5,"unit":"mmol/L","system":"http://unitsofmeasure.org","code":"mmol/L"},"high":{"value":5.0,"unit":"mmol/L","system":"http://unitsofmeasure.org","code":"mmol/L"}}]}"#;
+        let mut retained = citation(line);
+        retained.record_type = "Observation".into();
+        let view = inspection(&retained);
+        assert_eq!(view.title, "Potassium");
+        assert_eq!(
+            view.sections,
+            vec![
+                field("Statement in this record", "Potassium"),
+                field("Recorded value", "3.9 mmol/L"),
+                field("Reference range recorded", "3.5 mmol/L to 5.0 mmol/L"),
+            ]
+        );
+        assert!(
+            view.record_details
+                .contains(&field("Status recorded", "final"))
+        );
+        assert!(
+            view.record_details
+                .contains(&field("Category recorded", "Laboratory"))
+        );
+        let shown = serde_json::to_string(&(&view.sections, &view.record_details)).unwrap();
+        assert!(!shown.contains("2823-3"), "{shown}");
+        assert!(!shown.contains("Technical details"), "{shown}");
+        assert_eq!(view.technical.original, line);
+    }
+
+    #[test]
+    fn a_panel_reads_each_component_and_a_narrative_reads_as_text() {
+        let view = inspection(&citation(
+            r#"{"resourceType":"Observation","code":{"text":"Blood Pressure"},
+            "component":[{"code":{"text":"Systolic Blood Pressure"},"valueQuantity":{"value":159,"unit":"mmHg"}},
+                         {"code":{"coding":[{"display":"Diastolic blood pressure"}]},"valueQuantity":{"value":99,"unit":"mmHg"}}],
+            "text":{"status":"generated","div":"<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>BP 159/99 &amp; rising</p><p>Recheck in 2 weeks</p></div>"}}"#,
+        ));
+        assert_eq!(
+            view.sections,
+            vec![
+                field("Statement in this record", "Blood Pressure"),
+                field("Systolic Blood Pressure", "159 mmHg"),
+                field("Diastolic blood pressure", "99 mmHg"),
+                field(
+                    "Narrative in this record",
+                    "BP 159/99 & rising\nRecheck in 2 weeks"
+                ),
+            ]
+        );
+        let narrated = inspection(&citation(
+            r#"{"resourceType":"Basic","text":{"div":"<div>Only a narrative</div>"}}"#,
+        ));
+        assert_eq!(
+            narrated.sections,
+            vec![field("Narrative in this record", "Only a narrative")]
+        );
+    }
+
+    #[test]
+    fn an_order_reads_as_its_medication_dosage_and_reason() {
+        let view = inspection(&citation(
+            r#"{"resourceType":"MedicationRequest","status":"active","intent":"order",
+            "medicationCodeableConcept":{"text":"metformin hydrochloride 1000 mg oral tablet"},
+            "dosageInstruction":[{"text":"Take 1 tablet by mouth twice daily with meals"}],
+            "reasonCode":[{"text":"Type 2 diabetes"}],"requester":{"display":"Dr. Order"}}"#,
+        ));
+        assert_eq!(view.title, "metformin hydrochloride 1000 mg oral tablet");
+        assert!(view.sections.contains(&field(
+            "Dosage instruction",
+            "Take 1 tablet by mouth twice daily with meals"
+        )));
+        assert!(
+            view.sections
+                .contains(&field("Reason recorded", "Type 2 diabetes"))
+        );
+        assert!(
+            view.record_details
+                .contains(&field("Intent recorded", "order"))
+        );
+        assert!(
+            view.attribution
+                .contains(&field("Requested by", "Dr. Order"))
         );
     }
 

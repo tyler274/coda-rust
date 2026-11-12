@@ -280,6 +280,27 @@ mod tests {
                     "{}",
                     record.candidate_id
                 );
+                let cited = local_product::physician_chat::Citation {
+                    id: record.candidate_id.clone(),
+                    reference: record.candidate_id.clone(),
+                    revision: record.revision.clone(),
+                    record_type: record.record_type.clone(),
+                    dates: record.dates.clone(),
+                    content: record.content.clone(),
+                    readable_parts: record.readable_parts.clone(),
+                    sha256: record.sha256.clone(),
+                    provenance: record.provenance.clone(),
+                    summary: None,
+                    native: None,
+                };
+                let view = crate::source_inspection::inspection(&cited);
+                assert!(
+                    view.sections
+                        .iter()
+                        .all(|section| section.label != "Source content"),
+                    "{} has no readable presentation",
+                    record.candidate_id
+                );
                 *totals.entry(record.record_type).or_default() += 1;
             }
         }

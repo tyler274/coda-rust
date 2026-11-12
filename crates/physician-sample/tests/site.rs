@@ -1882,6 +1882,9 @@ const ALLERGY_CHAT: &str = "chat-allergy-citation";
 /// The same citation once the model's summary passed the contract and the EHR supplied a link.
 const SUMMARY_CHAT: &str = "chat-allergy-summary";
 const ALLERGY_SUMMARY: &str = "Records no known drug allergies, confirmed and active.";
+/// The patient bank's own potassium result, as the synthetic chart retains it.
+const BANK_POTASSIUM: &str = r#"{"resourceType":"Observation","id":"obs-447fdd24f33f","meta":{"versionId":"1","lastUpdated":"2019-03-12T00:00:00+00:00"},"status":"final","category":[{"coding":[{"system":"http://terminology.hl7.org/CodeSystem/observation-category","code":"laboratory","display":"Laboratory"}]}],"code":{"coding":[{"system":"http://loinc.org","code":"2823-3","display":"Potassium [Moles/volume] in Serum or Plasma"}],"text":"Potassium"},"subject":{"reference":"Patient/MRN00001101"},"encounter":{"reference":"Encounter/enc-26183a468076"},"effectiveDateTime":"2019-03-12T14:10:00+00:00","issued":"2019-03-12T17:32:00+00:00","valueQuantity":{"value":3.9,"unit":"mmol/L","system":"http://unitsofmeasure.org","code":"mmol/L"},"referenceRange":[{"low":{"value":3.5,"unit":"mmol/L","system":"http://unitsofmeasure.org","code":"mmol/L"},"high":{"value":5.0,"unit":"mmol/L","system":"http://unitsofmeasure.org","code":"mmol/L"}}]}"#;
+const POTASSIUM_CHAT: &str = "chat-potassium-citation";
 
 /// Lists one chat for the review patient whose answer cites `BANK_ALLERGY`, presented by the
 /// same `source_inspection` the live projection uses.
@@ -1890,6 +1893,33 @@ async fn with_allergy_citation(
     next: axum::middleware::Next,
 ) -> axum::response::Response {
     let path = request.uri().path().to_owned();
+    if path == format!("/patient-workspaces/{REVIEW_PATIENT}/chats/{POTASSIUM_CHAT}/snapshot") {
+        let citation: local_product::physician_chat::Citation =
+            serde_json::from_value(serde_json::json!({
+                "id": "potassium-citation", "reference": "Observation/obs-447fdd24f33f",
+                "revision": local_product::sha256_hex(BANK_POTASSIUM.as_bytes()),
+                "record_type": "Observation", "content": BANK_POTASSIUM,
+                "dates": [{"name": "effectiveDateTime", "value": "2019-03-12T14:10:00+00:00"},
+                          {"name": "issued", "value": "2019-03-12T17:32:00+00:00"},
+                          {"name": "meta.lastUpdated", "value": "2019-03-12T00:00:00+00:00"}],
+                "sha256": local_product::sha256_hex(BANK_POTASSIUM.as_bytes()),
+                "provenance": {"native_record": "Observation/obs-447fdd24f33f"},
+            }))
+            .unwrap();
+        let inspection = physician_sample::source_inspection::inspection(&citation);
+        return axum::Json(
+            serde_json::json!({"snapshot": {"runs": [], "conversation": [
+            {"kind": "physician", "text": "Latest potassium?"},
+            {"kind": "model", "text": "Potassium was 3.9 [[patient_source:potassium-citation]]",
+             "segments": [
+                {"kind": "text", "text": "Potassium was 3.9 "},
+                {"kind": "citation", "state": "resolved", "source": "patient",
+                 "source_id": "potassium-citation", "handle": citation.reference,
+                 "display_label": inspection.title,
+                 "source_presentation": {"inspection": inspection}}]}]}}),
+        )
+        .into_response();
+    }
     let chat = [ALLERGY_CHAT, SUMMARY_CHAT]
         .into_iter()
         .find(|chat| path == format!("/patient-workspaces/{REVIEW_PATIENT}/chats/{chat}/snapshot"));
@@ -1937,6 +1967,7 @@ async fn with_allergy_citation(
     workspace["chats"] = serde_json::json!([
         {"chat_id": ALLERGY_CHAT, "title": "Drug allergies", "created_at": "2026-08-27T12:05:00Z"},
         {"chat_id": SUMMARY_CHAT, "title": "Drug allergies, summarized", "created_at": "2026-08-27T12:06:00Z"},
+        {"chat_id": POTASSIUM_CHAT, "title": "Latest potassium", "created_at": "2026-08-27T12:07:00Z"},
     ]);
     parts.headers.remove(axum::http::header::CONTENT_LENGTH);
     axum::response::Response::from_parts(parts, axum::body::Body::from(workspace.to_string()))
@@ -2039,6 +2070,55 @@ async fn an_allergy_citation_reads_as_its_recorded_statement_and_date() {
         );
         std::thread::sleep(Duration::from_millis(20));
     }
+}
+
+/// An ordinary lab result reads as its test, value, unit and range, outside Technical details,
+/// with no unavailable-presentation sentence.
+#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+#[ignore = "browser qualification; run explicitly with --ignored"]
+async fn an_observation_citation_reads_as_its_recorded_value() {
+    let _guard = test_lock().lock().await;
+    let site = build_site();
+    // SAFETY: tests in this binary hold `test_lock()` before mutating process env.
+    unsafe {
+        env::set_var("PHYSICIAN_SITE_DIR", &site);
+    }
+    let app =
+        physician_sample::fixture_site().layer(axum::middleware::from_fn(with_allergy_citation));
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let address = listener.local_addr().unwrap();
+    tokio::spawn(async move { axum::serve(listener, app).await.unwrap() });
+    wait_until_ready(address).await;
+
+    let url = format!("http://{address}/?patient={REVIEW_PATIENT}&chat={POTASSIUM_CHAT}");
+    let mut tab = Tab::open(&url);
+    tab.set_viewport(1280, 800, false);
+    tab.wait_for_text("Potassium was 3.9", Duration::from_secs(20));
+    tab.click("section[aria-label='Conversation'] .citation-chip");
+    tab.wait_for_text("Technical details", Duration::from_secs(10));
+    std::thread::sleep(Duration::from_millis(400));
+    let shown = tab.step("citationReading", serde_json::json!([]));
+    assert_eq!(shown["title"], "Potassium", "{shown}");
+    assert_eq!(shown["technicalOpen"], false, "{shown}");
+    let visible = shown["visible"].as_str().unwrap();
+    for expected in [
+        "Recorded value",
+        "3.9 mmol/L",
+        "3.5 mmol/L to 5.0 mmol/L",
+        "Status recorded",
+        "Laboratory",
+    ] {
+        assert!(visible.contains(expected), "missing {expected}: {visible}");
+    }
+    for hidden in [
+        "not available for this format",
+        "2823-3",
+        "\"resourceType\"",
+    ] {
+        assert!(!visible.contains(hidden), "{hidden} shows: {visible}");
+    }
+    assert_eq!(shown["original"].as_str().unwrap(), BANK_POTASSIUM);
+    tab.save_picture("observation-reader");
 }
 
 /// The citation funnel: when the EHR supplies a link and Coda's summary passed its contract, the
