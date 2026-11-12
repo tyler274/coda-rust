@@ -3,21 +3,25 @@
 //! Queries leaving patient chat carry clinical concepts only — never patient
 //! names, birth dates, medical record numbers, workspace identifiers, or
 //! contact details. `ClinicalLibraryClient` speaks the deployed clinical-evidence
-//! HTTP service contract (`POST /v1/search` and `POST /v1/read`) and converts
-//! both search hits and exact reads through one shared [`LibraryPassage`]
-//! translator carrying source metadata, publication date, [`PublicationStatus`]
-//! (including retraction and correction notices), attribution, and
-//! integrity-checked text. When the clinical library service is unconfigured,
-//! unreachable, or refuses a call, tools return a structured `unavailable`
-//! outcome distinct from empty search results so chat can still answer from the
-//! patient chart and state the literature limitation.
+//! HTTP service contract (`POST /v1/search` and `POST /v1/read`), authenticates
+//! hosted Cloud Run calls with per-request Google metadata OIDC identity tokens,
+//! refuses HTTP redirects, and converts both search hits and exact reads through
+//! one shared [`LibraryPassage`] translator carrying source metadata, publication
+//! date, [`PublicationStatus`] (including retraction and correction notices),
+//! attribution, and integrity-checked text. When the clinical library service is
+//! unconfigured, unreachable, or refuses a call, tools return a structured
+//! `unavailable` outcome distinct from empty search results so chat can still
+//! answer from the patient chart and state the literature limitation.
 
 use std::collections::{BTreeMap, BTreeSet};
 use std::fmt;
+use std::net::IpAddr;
 use std::time::Duration;
 
 use harness::engine::{Tool, ToolOutcome};
-use reqwest::StatusCode;
+use reqwest::header::{AUTHORIZATION, HeaderValue};
+use reqwest::{StatusCode, Url, redirect};
+use serde::ser::SerializeStruct;
 use serde::{Deserialize, Serialize};
 use serde_json::{Value, json};
 
@@ -39,6 +43,11 @@ pub const MAX_SEARCH_LIMIT: usize = 20;
 /// Upper bound on candidate identifiers accepted by one `POST /v1/read` call.
 pub const MAX_WIRE_READ_IDS: usize = 32;
 
+/// Google Compute/Cloud Run metadata server identity endpoint for OIDC tokens.
+pub const DEFAULT_GOOGLE_METADATA_IDENTITY_URL: &str =
+    "http://metadata.google.internal/computeMetadata/v1/instance/service-accounts/default/identity";
+
+const MAX_OIDC_TOKEN_BYTES: usize = 16 * 1024;
 const MAX_SEARCH_PAGES: usize = 4;
 const DEFAULT_TIMEOUT: Duration = Duration::from_secs(15);
 
@@ -55,9 +64,17 @@ pub fn tools() -> [Tool; 2] {
 /// Configuration failure when constructing an explicit [`ClinicalLibraryClient`].
 #[derive(Debug, thiserror::Error)]
 pub enum LibraryConfigError {
-    /// Base URL was empty or not an `http://` or `https://` URL.
-    #[error("clinical library base URL must start with http:// or https://")]
+    /// Base URL was malformed, carried credentials/query/fragment, or used cleartext HTTP to a non-loopback host.
+    #[error(
+        "clinical library base URL must be a valid https:// URL or local loopback http:// URL without embedded credentials or query"
+    )]
     InvalidBaseUrl,
+    /// Hosted or audience-authenticated clinical library endpoints require `https://`.
+    #[error("hosted or audience-authenticated clinical library base URL must use https://")]
+    HttpsRequired,
+    /// OIDC audience was empty or contained whitespace or control characters.
+    #[error("clinical library OIDC audience must be a non-empty single-token URI")]
+    InvalidAudience,
     /// Underlying HTTP client failed to initialize.
     #[error("failed to build clinical library HTTP client: {0}")]
     HttpClient(#[source] reqwest::Error),
@@ -495,53 +512,36 @@ impl ClinicalLibraryRequest {
     }
 }
 
-/// Discovery mode accepted by `POST /v1/search` on the clinical-evidence service.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[serde(rename_all = "snake_case")]
-pub enum SearchWireMode {
-    /// Free-text clinical concept query discovery.
-    Query,
-    /// Identifier discovery.
-    Identifier,
-    /// Sibling unit discovery.
-    Siblings,
-    /// Relationship traversal discovery.
-    Relationship,
+/// Internal wire payload for `POST /v1/search`, holding only valid query-mode state
+/// and serializing the exact 7-key strict JSON object required by `ClinicalEvidenceServer`.
+struct SearchWireRequest<'a> {
+    query: &'a ConceptQuery,
+    cursor: Option<&'a str>,
 }
 
-/// Strict 7-key request body sent to `POST /v1/search` on the clinical-evidence service.
-#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[serde(deny_unknown_fields)]
-pub struct SearchWireRequest {
-    /// Discovery mode (`"query"` for clinical concept search).
-    pub mode: SearchWireMode,
-    /// Validated clinical concept query when `mode` is [`SearchWireMode::Query`].
-    pub query: Option<String>,
-    /// Identifier scheme for identifier mode, else `None` (`null`).
-    pub scheme: Option<String>,
-    /// Identifier value for identifier mode, else `None` (`null`).
-    pub value: Option<String>,
-    /// Anchor candidate UUID for sibling/relationship modes, else `None` (`null`).
-    pub candidate_id: Option<String>,
-    /// Relationship selector for relationship mode, else `None` (`null`).
-    pub relationship: Option<Value>,
-    /// Continuation cursor from a prior search response, or `None` (`null`).
-    pub cursor: Option<String>,
-}
-
-impl SearchWireRequest {
-    /// Constructs the exact 7-key `"query"` request body required by `POST /v1/search`.
-    pub fn query_page(query: &ConceptQuery, cursor: Option<String>) -> Self {
-        Self {
-            mode: SearchWireMode::Query,
-            query: Some(query.as_str().to_owned()),
-            scheme: None,
-            value: None,
-            candidate_id: None,
-            relationship: None,
-            cursor,
-        }
+impl<'a> SearchWireRequest<'a> {
+    const fn query_page(query: &'a ConceptQuery, cursor: Option<&'a str>) -> Self {
+        Self { query, cursor }
     }
+}
+
+impl Serialize for SearchWireRequest<'_> {
+    fn serialize<S: serde::Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error> {
+        let mut state = serializer.serialize_struct("SearchWireRequest", 7)?;
+        state.serialize_field("mode", "query")?;
+        state.serialize_field("query", self.query.as_str())?;
+        state.serialize_field("scheme", &None::<&str>)?;
+        state.serialize_field("value", &None::<&str>)?;
+        state.serialize_field("candidate_id", &None::<&str>)?;
+        state.serialize_field("relationship", &None::<&str>)?;
+        state.serialize_field("cursor", &self.cursor)?;
+        state.end()
+    }
+}
+
+#[derive(Serialize)]
+struct ReadWireRequest<'a> {
+    candidate_ids: &'a [String],
 }
 
 /// Page summary returned from `POST /v1/search`.
@@ -582,14 +582,6 @@ pub struct SearchWireResponse {
     /// Continuation cursor when `page.truncated` is true.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub next_cursor: Option<String>,
-}
-
-/// Strict request body sent to `POST /v1/read` on the clinical-evidence service.
-#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[serde(deny_unknown_fields)]
-pub struct ReadWireRequest {
-    /// Candidate unit identifiers (`1..=32`) to read.
-    pub candidate_ids: Vec<String>,
 }
 
 /// Lifecycle standing reported on a clinical-evidence unit.
@@ -1120,6 +1112,19 @@ pub fn passage_from_wire_unit(
     Ok(passage)
 }
 
+#[derive(Clone, Debug, PartialEq, Eq)]
+enum OutboundAuth {
+    /// Local loopback without outbound Authorization header.
+    Unauthenticated,
+    /// Fixed bearer credential (`CLINICAL_LIBRARY_BEARER_TOKEN`).
+    StaticBearer(String),
+    /// Per-call Google metadata server OIDC identity token minting for Cloud Run IAM.
+    GoogleMetadataOidc {
+        metadata_identity_url: String,
+        audience: String,
+    },
+}
+
 #[derive(Clone)]
 enum Endpoint {
     Unconfigured {
@@ -1127,9 +1132,132 @@ enum Endpoint {
     },
     Http {
         base_url: String,
-        bearer_token: Option<String>,
+        auth: OutboundAuth,
         client: reqwest::Client,
     },
+}
+
+fn parse_clean_url(raw: &str) -> Result<(Url, String), LibraryConfigError> {
+    let trimmed = raw.trim().trim_end_matches('/').to_owned();
+    let parsed = Url::parse(&trimmed).map_err(|_| LibraryConfigError::InvalidBaseUrl)?;
+    if !matches!(parsed.scheme(), "http" | "https")
+        || parsed.host_str().is_none()
+        || !parsed.username().is_empty()
+        || parsed.password().is_some()
+        || parsed.query().is_some()
+        || parsed.fragment().is_some()
+    {
+        return Err(LibraryConfigError::InvalidBaseUrl);
+    }
+    Ok((parsed, trimmed))
+}
+
+fn is_loopback_url(url: &Url) -> bool {
+    let Some(host) = url.host_str() else {
+        return false;
+    };
+    if host.eq_ignore_ascii_case("localhost") {
+        return true;
+    }
+    let bare = host
+        .strip_prefix('[')
+        .and_then(|s| s.strip_suffix(']'))
+        .unwrap_or(host);
+    bare.parse::<IpAddr>().is_ok_and(|ip| ip.is_loopback())
+}
+
+fn validate_audience(raw: impl Into<String>) -> Result<String, LibraryConfigError> {
+    let trimmed = raw.into().trim().to_owned();
+    if trimmed.is_empty()
+        || trimmed
+            .chars()
+            .any(|ch| ch.is_whitespace() || ch.is_control())
+    {
+        return Err(LibraryConfigError::InvalidAudience);
+    }
+    Ok(trimmed)
+}
+
+fn build_http_client(timeout: Duration) -> Result<reqwest::Client, LibraryConfigError> {
+    reqwest::Client::builder()
+        .timeout(timeout)
+        .redirect(redirect::Policy::none())
+        .build()
+        .map_err(LibraryConfigError::HttpClient)
+}
+
+fn validate_oidc_jwt(raw: &str) -> Result<String, &'static str> {
+    let token = raw.trim();
+    if token.is_empty()
+        || token
+            .bytes()
+            .any(|b| b.is_ascii_whitespace() || b.is_ascii_control())
+    {
+        return Err("clinical_library_invalid_oidc_token");
+    }
+    let mut parts = token.split('.');
+    let (Some(header), Some(payload), Some(signature), None) =
+        (parts.next(), parts.next(), parts.next(), parts.next())
+    else {
+        return Err("clinical_library_invalid_oidc_token");
+    };
+    if header.is_empty() || payload.is_empty() || signature.is_empty() {
+        return Err("clinical_library_invalid_oidc_token");
+    }
+    Ok(token.to_owned())
+}
+
+fn sensitive_bearer_header(token: &str) -> Result<HeaderValue, &'static str> {
+    let trimmed = token.trim();
+    if trimmed.is_empty() {
+        return Err("clinical_library_empty_bearer_token");
+    }
+    let mut header = HeaderValue::from_str(&format!("Bearer {trimmed}"))
+        .map_err(|_| "clinical_library_invalid_bearer_token")?;
+    header.set_sensitive(true);
+    Ok(header)
+}
+
+async fn fetch_google_oidc_token(
+    client: &reqwest::Client,
+    metadata_identity_url: &str,
+    audience: &str,
+) -> Result<String, String> {
+    let mut response = client
+        .get(metadata_identity_url)
+        .query(&[("audience", audience), ("format", "full")])
+        .header("Metadata-Flavor", "Google")
+        .send()
+        .await
+        .map_err(|cause| {
+            format!(
+                "clinical_library_oidc_metadata_{}",
+                classify_transport_kind(&cause)
+            )
+        })?;
+
+    if response.status() != StatusCode::OK {
+        return Err(format!(
+            "clinical_library_oidc_metadata_http_{}",
+            response.status().as_u16()
+        ));
+    }
+
+    let mut bytes = Vec::new();
+    while let Some(chunk) = response
+        .chunk()
+        .await
+        .map_err(|_| "clinical_library_oidc_metadata_read_error".to_owned())?
+    {
+        if bytes.len().saturating_add(chunk.len()) > MAX_OIDC_TOKEN_BYTES {
+            return Err("clinical_library_oidc_token_too_large".into());
+        }
+        bytes.extend_from_slice(&chunk);
+    }
+
+    let raw = std::str::from_utf8(&bytes)
+        .map_err(|_| "clinical_library_invalid_oidc_token".to_owned())?;
+    validate_oidc_jwt(raw).map_err(str::to_owned)
 }
 
 /// Client for searching and reading the clinical library (`clinical-evidence`) service.
@@ -1149,44 +1277,104 @@ impl ClinicalLibraryClient {
         }
     }
 
-    /// Client targeting an HTTP or HTTPS clinical library service base URL.
+    /// Client targeting an `https://` or local loopback `http://` clinical library URL.
     pub fn http(base_url: impl Into<String>) -> Result<Self, LibraryConfigError> {
         Self::http_with_timeout(base_url, DEFAULT_TIMEOUT)
     }
 
-    /// Client targeting `base_url` with an explicit per-request `timeout`.
+    /// Client targeting an `https://` or local loopback `http://` clinical library URL
+    /// with an explicit per-request `timeout`. Redirects are never followed.
     pub fn http_with_timeout(
         base_url: impl Into<String>,
         timeout: Duration,
     ) -> Result<Self, LibraryConfigError> {
-        let trimmed = base_url.into().trim().trim_end_matches('/').to_owned();
-        if !(trimmed.starts_with("http://") || trimmed.starts_with("https://")) {
+        let raw = base_url.into();
+        let (parsed, trimmed) = parse_clean_url(&raw)?;
+        if parsed.scheme() == "http" && !is_loopback_url(&parsed) {
             return Err(LibraryConfigError::InvalidBaseUrl);
         }
-        let client = reqwest::Client::builder()
-            .timeout(timeout)
-            .build()
-            .map_err(LibraryConfigError::HttpClient)?;
+        let client = build_http_client(timeout)?;
         Ok(Self {
             endpoint: Endpoint::Http {
                 base_url: trimmed,
-                bearer_token: None,
+                auth: OutboundAuth::Unauthenticated,
                 client,
             },
         })
     }
 
-    /// Attaches an `Authorization: Bearer` token for authenticated service endpoints.
+    /// Client targeting an `https://` Cloud Run clinical library URL authenticated
+    /// per call with a Google metadata server OIDC identity token for `audience`.
+    pub fn google_oidc(
+        base_url: impl Into<String>,
+        audience: impl Into<String>,
+    ) -> Result<Self, LibraryConfigError> {
+        let raw = base_url.into();
+        let (parsed, trimmed) = parse_clean_url(&raw)?;
+        if parsed.scheme() != "https" {
+            return Err(LibraryConfigError::HttpsRequired);
+        }
+        let audience = validate_audience(audience)?;
+        let client = build_http_client(DEFAULT_TIMEOUT)?;
+        Ok(Self {
+            endpoint: Endpoint::Http {
+                base_url: trimmed,
+                auth: OutboundAuth::GoogleMetadataOidc {
+                    metadata_identity_url: DEFAULT_GOOGLE_METADATA_IDENTITY_URL.to_owned(),
+                    audience,
+                },
+                client,
+            },
+        })
+    }
+
+    /// Client restricted to local loopback `http://` library and metadata servers for
+    /// exercising the Google metadata OIDC minting flow in local integration tests.
+    pub fn loopback_google_oidc(
+        loopback_base_url: impl Into<String>,
+        loopback_metadata_identity_url: impl Into<String>,
+        audience: impl Into<String>,
+    ) -> Result<Self, LibraryConfigError> {
+        let raw_base = loopback_base_url.into();
+        let (parsed_base, trimmed_base) = parse_clean_url(&raw_base)?;
+        let raw_meta = loopback_metadata_identity_url.into();
+        let (parsed_meta, trimmed_meta) = parse_clean_url(&raw_meta)?;
+        if !is_loopback_url(&parsed_base) || !is_loopback_url(&parsed_meta) {
+            return Err(LibraryConfigError::InvalidBaseUrl);
+        }
+        let audience = validate_audience(audience)?;
+        let client = build_http_client(DEFAULT_TIMEOUT)?;
+        Ok(Self {
+            endpoint: Endpoint::Http {
+                base_url: trimmed_base,
+                auth: OutboundAuth::GoogleMetadataOidc {
+                    metadata_identity_url: trimmed_meta,
+                    audience,
+                },
+                client,
+            },
+        })
+    }
+
+    /// Attaches a static `Authorization: Bearer` token. Passing a blank token marks
+    /// the client unconfigured rather than downgrading to unauthenticated requests.
     pub fn with_bearer_token(mut self, token: impl Into<String>) -> Self {
-        if let Endpoint::Http { bearer_token, .. } = &mut self.endpoint {
+        if let Endpoint::Http { auth, .. } = &mut self.endpoint {
             let trimmed = token.into().trim().to_owned();
-            *bearer_token = (!trimmed.is_empty()).then_some(trimmed);
+            if trimmed.is_empty() {
+                self.endpoint = Endpoint::Unconfigured {
+                    reason: "clinical_library_empty_bearer_token".into(),
+                };
+            } else {
+                *auth = OutboundAuth::StaticBearer(trimmed);
+            }
         }
         self
     }
 
-    /// Reads `CLINICAL_LIBRARY_URL` or `CLINICAL_EVIDENCE_URL` (and optional bearer
-    /// token) from the process environment, defaulting cleanly to unconfigured when unset.
+    /// Reads `CLINICAL_LIBRARY_URL` / `CLINICAL_EVIDENCE_URL`, `CLINICAL_LIBRARY_AUDIENCE`,
+    /// `CLINICAL_LIBRARY_BEARER_TOKEN`, and hosted markers (`K_SERVICE` / `CODA_HOSTED`)
+    /// from the process environment, defaulting cleanly to unconfigured when unset.
     pub fn from_env() -> Self {
         Self::from_reader(|key| std::env::var(key).ok())
     }
@@ -1201,13 +1389,28 @@ impl ClinicalLibraryClient {
         let Some(url) = raw_url else {
             return Self::unconfigured();
         };
-        match Self::http(url) {
-            Ok(client) => match read("CLINICAL_LIBRARY_BEARER_TOKEN")
-                .or_else(|| read("CLINICAL_EVIDENCE_BEARER_TOKEN"))
-            {
+
+        let hosted = read("K_SERVICE").is_some() || read("CODA_HOSTED").is_some();
+        let static_bearer = read("CLINICAL_LIBRARY_BEARER_TOKEN")
+            .or_else(|| read("CLINICAL_EVIDENCE_BEARER_TOKEN"))
+            .map(|value| value.trim().to_owned())
+            .filter(|value| !value.is_empty());
+        let configured_audience = read("CLINICAL_LIBRARY_AUDIENCE")
+            .or_else(|| read("CLINICAL_EVIDENCE_AUDIENCE"))
+            .map(|value| value.trim().to_owned())
+            .filter(|value| !value.is_empty());
+
+        let configured = if hosted || configured_audience.is_some() {
+            Self::build_hosted_or_audience_client(&url, static_bearer, configured_audience)
+        } else {
+            Self::http(url).map(|client| match static_bearer {
                 Some(token) => client.with_bearer_token(token),
                 None => client,
-            },
+            })
+        };
+
+        match configured {
+            Ok(client) => client,
             Err(reason) => Self {
                 endpoint: Endpoint::Unconfigured {
                     reason: format!("clinical_library_invalid_configuration: {reason}"),
@@ -1216,14 +1419,40 @@ impl ClinicalLibraryClient {
         }
     }
 
-    async fn post_search_page(
-        &self,
-        query: &ConceptQuery,
-        cursor: Option<String>,
-    ) -> Result<SearchWireResponse, String> {
+    fn build_hosted_or_audience_client(
+        raw_url: &str,
+        static_bearer: Option<String>,
+        configured_audience: Option<String>,
+    ) -> Result<Self, LibraryConfigError> {
+        let (parsed, trimmed) = parse_clean_url(raw_url)?;
+        if parsed.scheme() != "https" {
+            return Err(LibraryConfigError::HttpsRequired);
+        }
+        let client = build_http_client(DEFAULT_TIMEOUT)?;
+        let auth = match static_bearer {
+            Some(token) => OutboundAuth::StaticBearer(token),
+            None => {
+                let audience =
+                    validate_audience(configured_audience.unwrap_or_else(|| trimmed.clone()))?;
+                OutboundAuth::GoogleMetadataOidc {
+                    metadata_identity_url: DEFAULT_GOOGLE_METADATA_IDENTITY_URL.to_owned(),
+                    audience,
+                }
+            }
+        };
+        Ok(Self {
+            endpoint: Endpoint::Http {
+                base_url: trimmed,
+                auth,
+                client,
+            },
+        })
+    }
+
+    async fn authorized_post(&self, path: &str) -> Result<reqwest::RequestBuilder, String> {
         let Endpoint::Http {
             base_url,
-            bearer_token,
+            auth,
             client,
         } = &self.endpoint
         else {
@@ -1233,13 +1462,33 @@ impl ClinicalLibraryClient {
             return Err(reason.clone());
         };
 
-        let url = format!("{base_url}/v1/search");
-        let mut request = client
-            .post(url)
-            .json(&SearchWireRequest::query_page(query, cursor));
-        if let Some(token) = bearer_token {
-            request = request.bearer_auth(token);
+        let request = client.post(format!("{base_url}{path}"));
+        match auth {
+            OutboundAuth::Unauthenticated => Ok(request),
+            OutboundAuth::StaticBearer(token) => {
+                let header = sensitive_bearer_header(token)?;
+                Ok(request.header(AUTHORIZATION, header))
+            }
+            OutboundAuth::GoogleMetadataOidc {
+                metadata_identity_url,
+                audience,
+            } => {
+                let jwt = fetch_google_oidc_token(client, metadata_identity_url, audience).await?;
+                let header = sensitive_bearer_header(&jwt)?;
+                Ok(request.header(AUTHORIZATION, header))
+            }
         }
+    }
+
+    async fn post_search_page(
+        &self,
+        query: &ConceptQuery,
+        cursor: Option<&str>,
+    ) -> Result<SearchWireResponse, String> {
+        let request = self
+            .authorized_post("/v1/search")
+            .await?
+            .json(&SearchWireRequest::query_page(query, cursor));
 
         let response = request
             .send()
@@ -1255,25 +1504,10 @@ impl ClinicalLibraryClient {
     }
 
     async fn post_read_units(&self, candidate_ids: &[String]) -> Result<ReadWireResponse, String> {
-        let Endpoint::Http {
-            base_url,
-            bearer_token,
-            client,
-        } = &self.endpoint
-        else {
-            let Endpoint::Unconfigured { reason } = &self.endpoint else {
-                unreachable!()
-            };
-            return Err(reason.clone());
-        };
-
-        let url = format!("{base_url}/v1/read");
-        let mut request = client.post(url).json(&ReadWireRequest {
-            candidate_ids: candidate_ids.to_vec(),
-        });
-        if let Some(token) = bearer_token {
-            request = request.bearer_auth(token);
-        }
+        let request = self
+            .authorized_post("/v1/read")
+            .await?
+            .json(&ReadWireRequest { candidate_ids });
 
         let response = request
             .send()
@@ -1306,10 +1540,10 @@ impl ClinicalLibraryClient {
         let target_limit = limit.clamp(1, MAX_SEARCH_LIMIT);
         let mut seen_ids = BTreeSet::new();
         let mut selected_ids = Vec::with_capacity(target_limit);
-        let mut cursor = None;
+        let mut cursor: Option<String> = None;
 
         for _ in 0..MAX_SEARCH_PAGES {
-            let page = match self.post_search_page(query, cursor.take()).await {
+            let page = match self.post_search_page(query, cursor.as_deref()).await {
                 Ok(page) => page,
                 Err(reason) => return LibrarySearchOutcome::Unavailable { reason },
             };
@@ -1332,9 +1566,12 @@ impl ClinicalLibraryClient {
             if selected_ids.len() >= target_limit {
                 break;
             }
-            match page.next_cursor.filter(|next| !next.trim().is_empty()) {
-                Some(next) if page.page.truncated => cursor = Some(next),
-                _ => break,
+            if let Some(next) = page.next_cursor.filter(|next| !next.trim().is_empty())
+                && page.page.truncated
+            {
+                cursor = Some(next);
+            } else {
+                break;
             }
         }
 
@@ -1375,11 +1612,17 @@ impl ClinicalLibraryClient {
                         }
                     }
                     Some(WireReadItem::Unavailable {
-                        cause:
-                            WireReadUnavailableCause::NotFoundOrNotAuthorized
-                            | WireReadUnavailableCause::InvalidCandidateId,
+                        cause: WireReadUnavailableCause::NotFoundOrNotAuthorized,
                         ..
                     }) => {}
+                    Some(WireReadItem::Unavailable {
+                        cause: WireReadUnavailableCause::InvalidCandidateId,
+                        ..
+                    }) => {
+                        return LibrarySearchOutcome::Unavailable {
+                            reason: "clinical_library_invalid_candidate_id".into(),
+                        };
+                    }
                     Some(WireReadItem::Unavailable {
                         cause:
                             WireReadUnavailableCause::VisualUnavailable
@@ -1484,14 +1727,18 @@ impl ClinicalLibraryClient {
     }
 }
 
-fn classify_transport_error(error: &reqwest::Error) -> String {
+fn classify_transport_kind(error: &reqwest::Error) -> &'static str {
     if error.is_timeout() {
-        "clinical_library_timeout".into()
+        "timeout"
     } else if error.is_connect() {
-        "clinical_library_unreachable".into()
+        "unreachable"
     } else {
-        "clinical_library_transport_error".into()
+        "transport_error"
     }
+}
+
+fn classify_transport_error(error: &reqwest::Error) -> String {
+    format!("clinical_library_{}", classify_transport_kind(error))
 }
 
 fn classify_status(status: StatusCode) -> String {
@@ -1622,5 +1869,86 @@ mod tests {
             LibraryCollection::from_source_code("dailymed"),
             Ok(LibraryCollection::Dailymed)
         );
+    }
+
+    #[test]
+    fn from_reader_selects_google_oidc_in_hosted_or_audience_mode_and_refuses_cleartext_http() {
+        // Hosted Cloud Run with CLINICAL_LIBRARY_URL + CLINICAL_LIBRARY_AUDIENCE -> GoogleMetadataOidc.
+        let hosted_oidc = ClinicalLibraryClient::from_reader(|key| match key {
+            "K_SERVICE" => Some("physician-worker".into()),
+            "CLINICAL_LIBRARY_URL" => Some("https://coda-clinical-evidence-stg.a.run.app/".into()),
+            "CLINICAL_LIBRARY_AUDIENCE" => {
+                Some("https://coda-clinical-evidence-stg.a.run.app".into())
+            }
+            _ => None,
+        });
+        assert!(matches!(
+            hosted_oidc.endpoint,
+            Endpoint::Http {
+                ref base_url,
+                auth: OutboundAuth::GoogleMetadataOidc {
+                    ref metadata_identity_url,
+                    ref audience,
+                },
+                ..
+            } if base_url == "https://coda-clinical-evidence-stg.a.run.app"
+                && metadata_identity_url == DEFAULT_GOOGLE_METADATA_IDENTITY_URL
+                && audience == "https://coda-clinical-evidence-stg.a.run.app"
+        ));
+
+        // Hosted without explicit CLINICAL_LIBRARY_AUDIENCE still mints Google OIDC using URL audience.
+        let hosted_default_aud = ClinicalLibraryClient::from_reader(|key| match key {
+            "CODA_HOSTED" => Some("1".into()),
+            "CLINICAL_LIBRARY_URL" => Some("https://coda-clinical-evidence-stg.a.run.app".into()),
+            _ => None,
+        });
+        assert!(matches!(
+            hosted_default_aud.endpoint,
+            Endpoint::Http {
+                auth: OutboundAuth::GoogleMetadataOidc { ref audience, .. },
+                ..
+            } if audience == "https://coda-clinical-evidence-stg.a.run.app"
+        ));
+
+        // Hosted http:// (even loopback) is refused.
+        let hosted_http = ClinicalLibraryClient::from_reader(|key| match key {
+            "K_SERVICE" => Some("physician-worker".into()),
+            "CLINICAL_LIBRARY_URL" => Some("http://127.0.0.1:8080".into()),
+            _ => None,
+        });
+        assert!(matches!(
+            hosted_http.endpoint,
+            Endpoint::Unconfigured { ref reason } if reason.contains("https://")
+        ));
+
+        // Audience-authenticated http:// (even unhosted) is refused.
+        let audience_http = ClinicalLibraryClient::from_reader(|key| match key {
+            "CLINICAL_LIBRARY_URL" => Some("http://127.0.0.1:8080".into()),
+            "CLINICAL_LIBRARY_AUDIENCE" => {
+                Some("https://coda-clinical-evidence-stg.a.run.app".into())
+            }
+            _ => None,
+        });
+        assert!(matches!(
+            audience_http.endpoint,
+            Endpoint::Unconfigured { ref reason } if reason.contains("https://")
+        ));
+
+        // Non-loopback http:// is always refused.
+        assert!(matches!(
+            ClinicalLibraryClient::http("http://clinical.example.org"),
+            Err(LibraryConfigError::InvalidBaseUrl)
+        ));
+        assert!(matches!(
+            ClinicalLibraryClient::google_oidc(
+                "http://127.0.0.1:8080",
+                "https://coda-clinical-evidence-stg.a.run.app"
+            ),
+            Err(LibraryConfigError::HttpsRequired)
+        ));
+        assert!(matches!(
+            ClinicalLibraryClient::google_oidc("https://coda-clinical-evidence-stg.a.run.app", " "),
+            Err(LibraryConfigError::InvalidAudience)
+        ));
     }
 }

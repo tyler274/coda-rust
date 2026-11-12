@@ -4,7 +4,7 @@
 //! schemas and exercised through both `ClinicalLibraryClient` and end-to-end
 //! `PhysicianHost` chat turns.
 
-use std::collections::BTreeSet;
+use std::collections::{BTreeMap, BTreeSet};
 use std::sync::{
     Arc,
     atomic::{AtomicUsize, Ordering},
@@ -12,11 +12,15 @@ use std::sync::{
 
 use axum::{
     Json, Router,
-    extract::State,
-    http::{HeaderMap, StatusCode, header::AUTHORIZATION},
+    extract::{Query, State},
+    http::{
+        HeaderMap, StatusCode,
+        header::{AUTHORIZATION, LOCATION},
+    },
     response::{IntoResponse, Response},
-    routing::post,
+    routing::{get, post},
 };
+use base64::{Engine as _, engine::general_purpose::URL_SAFE_NO_PAD};
 use local_product::{
     ModelBinding,
     clinical_library::{
@@ -43,13 +47,45 @@ const MMWR_UNIT_ID: &str = "44444444-4444-4444-8444-444444444404";
 const MISSING_UNIT_ID: &str = "99999999-9999-4999-8999-999999999999";
 
 #[derive(Clone)]
+enum BearerPolicy {
+    Open,
+    Exact(String),
+    Prefix(String),
+}
+
+impl BearerPolicy {
+    fn allows(&self, headers: &HeaderMap) -> bool {
+        match self {
+            Self::Open => true,
+            Self::Exact(expected) => {
+                headers
+                    .get(AUTHORIZATION)
+                    .and_then(|value| value.to_str().ok())
+                    == Some(&format!("Bearer {expected}"))
+            }
+            Self::Prefix(prefix) => headers
+                .get(AUTHORIZATION)
+                .and_then(|value| value.to_str().ok())
+                .and_then(|raw| raw.strip_prefix("Bearer "))
+                .is_some_and(|token| token.starts_with(prefix) && token.split('.').count() == 3),
+        }
+    }
+}
+
+#[derive(Clone)]
 enum ServerBehavior {
     Healthy {
         units: Vec<WireEvidenceUnit>,
-        required_bearer: Option<String>,
+        auth: BearerPolicy,
     },
     ServiceUnavailable,
+    RedirectTo {
+        target_base: String,
+    },
     TamperedDigest {
+        unit: Box<WireEvidenceUnit>,
+    },
+    CorruptCandidateId {
         unit: Box<WireEvidenceUnit>,
     },
 }
@@ -323,6 +359,11 @@ async fn search_handler(
             })),
         )
             .into_response(),
+        ServerBehavior::RedirectTo { target_base } => (
+            StatusCode::TEMPORARY_REDIRECT,
+            [(LOCATION, format!("{target_base}/v1/search"))],
+        )
+            .into_response(),
         ServerBehavior::TamperedDigest { unit } => Json(json!({
             "candidates": [candidate_from_unit(unit)],
             "page": WireSearchPage {
@@ -333,21 +374,27 @@ async fn search_handler(
             }
         }))
         .into_response(),
-        ServerBehavior::Healthy {
-            units,
-            required_bearer,
-        } => {
-            if let Some(expected) = required_bearer {
-                let actual = headers
-                    .get(AUTHORIZATION)
-                    .and_then(|value| value.to_str().ok());
-                if actual != Some(&format!("Bearer {expected}")) {
-                    return (
-                        StatusCode::FORBIDDEN,
-                        Json(json!({"error": "missing or invalid invoker token"})),
-                    )
-                        .into_response();
+        ServerBehavior::CorruptCandidateId { unit } => {
+            let mut candidate = candidate_from_unit(unit);
+            candidate.candidate_id = "corrupt-non-uuid".into();
+            Json(json!({
+                "candidates": [candidate],
+                "page": WireSearchPage {
+                    examined_candidate_count: 1,
+                    returned_candidate_count: 1,
+                    unavailable_candidate_count: 0,
+                    truncated: false,
                 }
+            }))
+            .into_response()
+        }
+        ServerBehavior::Healthy { units, auth } => {
+            if !auth.allows(&headers) {
+                return (
+                    StatusCode::FORBIDDEN,
+                    Json(json!({"error": "missing or invalid invoker token"})),
+                )
+                    .into_response();
             }
             let terms: Vec<String> = query
                 .split_whitespace()
@@ -406,6 +453,11 @@ async fn read_handler(
             })),
         )
             .into_response(),
+        ServerBehavior::RedirectTo { target_base } => (
+            StatusCode::TEMPORARY_REDIRECT,
+            [(LOCATION, format!("{target_base}/v1/read"))],
+        )
+            .into_response(),
         ServerBehavior::TamperedDigest { unit } => {
             let mut corrupted = (**unit).clone();
             corrupted.content_sha256 = "0".repeat(64);
@@ -418,21 +470,23 @@ async fn read_handler(
                 .collect();
             Json(json!({ "results": results })).into_response()
         }
-        ServerBehavior::Healthy {
-            units,
-            required_bearer,
-        } => {
-            if let Some(expected) = required_bearer {
-                let actual = headers
-                    .get(AUTHORIZATION)
-                    .and_then(|value| value.to_str().ok());
-                if actual != Some(&format!("Bearer {expected}")) {
-                    return (
-                        StatusCode::FORBIDDEN,
-                        Json(json!({"error": "missing or invalid invoker token"})),
-                    )
-                        .into_response();
-                }
+        ServerBehavior::CorruptCandidateId { .. } => {
+            let results: Vec<WireReadItem> = candidate_ids
+                .into_iter()
+                .map(|id| WireReadItem::Unavailable {
+                    candidate_id: id,
+                    cause: WireReadUnavailableCause::InvalidCandidateId,
+                })
+                .collect();
+            Json(json!({ "results": results })).into_response()
+        }
+        ServerBehavior::Healthy { units, auth } => {
+            if !auth.allows(&headers) {
+                return (
+                    StatusCode::FORBIDDEN,
+                    Json(json!({"error": "missing or invalid invoker token"})),
+                )
+                    .into_response();
             }
             let mut results = Vec::with_capacity(candidate_ids.len());
             for id in candidate_ids {
@@ -503,7 +557,7 @@ async fn search_returns_passages_with_source_date_status_and_attribution_and_ref
  {
     let (base_url, requests) = spawn_library_server(ServerBehavior::Healthy {
         units: recorded_units(),
-        required_bearer: Some("test-invoker-token".into()),
+        auth: BearerPolicy::Exact("test-invoker-token".into()),
     })
     .await;
     let client = ClinicalLibraryClient::http(&base_url)
@@ -611,7 +665,7 @@ async fn search_returns_passages_with_source_date_status_and_attribution_and_ref
 async fn exact_read_returns_identical_passage_and_reports_not_found_when_absent() {
     let (base_url, _) = spawn_library_server(ServerBehavior::Healthy {
         units: recorded_units(),
-        required_bearer: None,
+        auth: BearerPolicy::Open,
     })
     .await;
     let client = ClinicalLibraryClient::http(&base_url).unwrap();
@@ -681,7 +735,7 @@ async fn exact_read_returns_identical_passage_and_reports_not_found_when_absent(
 async fn unavailable_library_differs_from_nothing_found_across_failure_modes() {
     let (healthy_url, _) = spawn_library_server(ServerBehavior::Healthy {
         units: recorded_units(),
-        required_bearer: Some("expected-secret".into()),
+        auth: BearerPolicy::Exact("expected-secret".into()),
     })
     .await;
     let healthy = ClinicalLibraryClient::http(&healthy_url)
@@ -712,7 +766,15 @@ async fn unavailable_library_differs_from_nothing_found_across_failure_modes() {
     drop(closed_listener);
 
     let (unavailable_url, _) = spawn_library_server(ServerBehavior::ServiceUnavailable).await;
+    let (redirect_url, _) = spawn_library_server(ServerBehavior::RedirectTo {
+        target_base: healthy_url.clone(),
+    })
+    .await;
     let (tampered_url, _) = spawn_library_server(ServerBehavior::TamperedDigest {
+        unit: Box::new(recorded_units().remove(0)),
+    })
+    .await;
+    let (corrupt_id_url, _) = spawn_library_server(ServerBehavior::CorruptCandidateId {
         unit: Box::new(recorded_units().remove(0)),
     })
     .await;
@@ -726,6 +788,12 @@ async fn unavailable_library_differs_from_nothing_found_across_failure_modes() {
         (
             "http_503",
             ClinicalLibraryClient::http(&unavailable_url).unwrap(),
+        ),
+        (
+            "http_307_redirect_not_followed",
+            ClinicalLibraryClient::http(&redirect_url)
+                .unwrap()
+                .with_bearer_token("expected-secret"),
         ),
         (
             "http_404_wrong_base_path",
@@ -781,6 +849,236 @@ async fn unavailable_library_differs_from_nothing_found_across_failure_modes() {
         let read_val: Value = serde_json::from_str(&read_raw).unwrap();
         assert_eq!(read_val["outcome"], "unavailable", "{label}");
     }
+
+    // Search hydration receiving `invalid_candidate_id` for a server-returned candidate
+    // surfaces `Unavailable` rather than silently coercing into empty `"results"`.
+    let corrupt_client = ClinicalLibraryClient::http(&corrupt_id_url).unwrap();
+    let engine::ToolOutcome::Returned(corrupt_search_raw) = corrupt_client
+        .execute(
+            SEARCH_LIBRARY_TOOL,
+            &json!({
+                "query": "colorectal screening",
+                "collection": null,
+                "limit": 5
+            }),
+        )
+        .await
+    else {
+        panic!("expected Returned outcome on corrupt candidate_id search");
+    };
+    let corrupt_search_val: Value = serde_json::from_str(&corrupt_search_raw).unwrap();
+    assert_eq!(corrupt_search_val["outcome"], "unavailable");
+    assert_eq!(
+        corrupt_search_val["reason"],
+        "clinical_library_invalid_candidate_id"
+    );
+}
+
+#[derive(Clone)]
+enum MetadataBehavior {
+    Healthy {
+        expected_audience: String,
+        header_b64: String,
+        payload_b64: String,
+    },
+    Http500,
+    MalformedToken,
+    OversizedToken,
+}
+
+#[derive(Clone)]
+struct MockMetadataState {
+    behavior: MetadataBehavior,
+    requests: Arc<AtomicUsize>,
+}
+
+async fn metadata_identity_handler(
+    State(state): State<MockMetadataState>,
+    headers: HeaderMap,
+    Query(params): Query<BTreeMap<String, String>>,
+) -> Response {
+    let count = state.requests.fetch_add(1, Ordering::SeqCst) + 1;
+    if headers
+        .get("Metadata-Flavor")
+        .and_then(|value| value.to_str().ok())
+        != Some("Google")
+    {
+        return (StatusCode::FORBIDDEN, "missing Metadata-Flavor: Google").into_response();
+    }
+    if params.get("format").map(String::as_str) != Some("full") {
+        return (StatusCode::BAD_REQUEST, "expected format=full").into_response();
+    }
+
+    match &state.behavior {
+        MetadataBehavior::Healthy {
+            expected_audience,
+            header_b64,
+            payload_b64,
+        } => {
+            if params.get("audience") != Some(expected_audience) {
+                return (StatusCode::BAD_REQUEST, "unexpected audience").into_response();
+            }
+            let jwt = format!("{header_b64}.{payload_b64}.sig-{count}");
+            (StatusCode::OK, jwt).into_response()
+        }
+        MetadataBehavior::Http500 => {
+            (StatusCode::INTERNAL_SERVER_ERROR, "metadata unavailable").into_response()
+        }
+        MetadataBehavior::MalformedToken => {
+            (StatusCode::OK, "not-a-three-part-jwt").into_response()
+        }
+        MetadataBehavior::OversizedToken => (StatusCode::OK, "a".repeat(20_000)).into_response(),
+    }
+}
+
+async fn spawn_metadata_server(behavior: MetadataBehavior) -> (String, Arc<AtomicUsize>) {
+    let requests = Arc::new(AtomicUsize::new(0));
+    let state = MockMetadataState {
+        behavior,
+        requests: Arc::clone(&requests),
+    };
+    let app = Router::new()
+        .route(
+            "/computeMetadata/v1/instance/service-accounts/default/identity",
+            get(metadata_identity_handler),
+        )
+        .with_state(state);
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let address = listener.local_addr().unwrap();
+    tokio::spawn(async move {
+        let _ = axum::serve(listener, app).await;
+    });
+    (
+        format!("http://{address}/computeMetadata/v1/instance/service-accounts/default/identity"),
+        requests,
+    )
+}
+
+#[tokio::test]
+async fn google_metadata_oidc_mints_per_call_jwt_and_surfaces_metadata_failures_as_unavailable() {
+    let audience = "https://coda-clinical-evidence-stg.a.run.app";
+    let header_b64 = URL_SAFE_NO_PAD.encode(r#"{"alg":"RS256","typ":"JWT"}"#);
+    let payload_b64 = URL_SAFE_NO_PAD.encode(format!(r#"{{"aud":"{audience}"}}"#));
+    let expected_prefix = format!("{header_b64}.{payload_b64}.sig-");
+
+    // Production constructor enforces `https://` when using Google OIDC.
+    assert!(ClinicalLibraryClient::google_oidc("http://127.0.0.1:8080", audience).is_err());
+
+    let (library_url, library_requests) = spawn_library_server(ServerBehavior::Healthy {
+        units: recorded_units(),
+        auth: BearerPolicy::Prefix(expected_prefix),
+    })
+    .await;
+    let (metadata_url, metadata_requests) = spawn_metadata_server(MetadataBehavior::Healthy {
+        expected_audience: audience.into(),
+        header_b64,
+        payload_b64,
+    })
+    .await;
+
+    let oidc_client =
+        ClinicalLibraryClient::loopback_google_oidc(&library_url, &metadata_url, audience).unwrap();
+
+    // `search_clinical_library` mints fresh OIDC tokens for `/v1/search` and `/v1/read`.
+    let engine::ToolOutcome::Returned(search_raw) = oidc_client
+        .execute(
+            SEARCH_LIBRARY_TOOL,
+            &json!({
+                "query": "colorectal dapagliflozin hyperkalemia influenza",
+                "collection": null,
+                "limit": 10
+            }),
+        )
+        .await
+    else {
+        panic!("expected Returned outcome from OIDC-authenticated search");
+    };
+    let LibrarySearchOutcome::Results { passages } = serde_json::from_str(&search_raw).unwrap()
+    else {
+        panic!("expected OIDC search passages");
+    };
+    assert_eq!(passages.len(), 4);
+    assert_eq!(metadata_requests.load(Ordering::SeqCst), 2);
+    assert_eq!(library_requests.load(Ordering::SeqCst), 2);
+
+    // `read_clinical_library` mints a fresh OIDC token for `/v1/read`.
+    let engine::ToolOutcome::Returned(read_raw) = oidc_client
+        .execute(
+            READ_LIBRARY_TOOL,
+            &json!({
+                "passage_id": USPSTF_UNIT_ID
+            }),
+        )
+        .await
+    else {
+        panic!("expected Returned outcome from OIDC-authenticated read");
+    };
+    let LibraryReadOutcome::Passage { passage } = serde_json::from_str(&read_raw).unwrap() else {
+        panic!("expected OIDC read passage");
+    };
+    assert_eq!(passage.passage_id.as_str(), USPSTF_UNIT_ID);
+    assert_eq!(metadata_requests.load(Ordering::SeqCst), 3);
+    assert_eq!(library_requests.load(Ordering::SeqCst), 3);
+
+    // Metadata failures (HTTP 500, malformed token, oversized token, unreachable metadata host)
+    // surface cleanly as `Unavailable` without forwarding unauthenticated requests to the library.
+    let closed_listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let closed_meta_addr = closed_listener.local_addr().unwrap();
+    drop(closed_listener);
+    let unreachable_meta_url = format!(
+        "http://{closed_meta_addr}/computeMetadata/v1/instance/service-accounts/default/identity"
+    );
+
+    let (meta_500_url, _) = spawn_metadata_server(MetadataBehavior::Http500).await;
+    let (meta_malformed_url, _) = spawn_metadata_server(MetadataBehavior::MalformedToken).await;
+    let (meta_oversized_url, _) = spawn_metadata_server(MetadataBehavior::OversizedToken).await;
+
+    for (label, bad_meta_url) in [
+        ("metadata_http_500", meta_500_url),
+        ("metadata_malformed_jwt", meta_malformed_url),
+        ("metadata_oversized_jwt", meta_oversized_url),
+        ("metadata_unreachable", unreachable_meta_url),
+    ] {
+        let failing_client =
+            ClinicalLibraryClient::loopback_google_oidc(&library_url, &bad_meta_url, audience)
+                .unwrap();
+
+        let engine::ToolOutcome::Returned(search_fail_raw) = failing_client
+            .execute(
+                SEARCH_LIBRARY_TOOL,
+                &json!({
+                    "query": "dapagliflozin chronic kidney disease",
+                    "collection": null,
+                    "limit": 5
+                }),
+            )
+            .await
+        else {
+            panic!("{label}: expected Returned unavailable outcome on search");
+        };
+        let search_fail_val: Value = serde_json::from_str(&search_fail_raw).unwrap();
+        assert_eq!(search_fail_val["outcome"], "unavailable", "{label}");
+
+        let engine::ToolOutcome::Returned(read_fail_raw) = failing_client
+            .execute(
+                READ_LIBRARY_TOOL,
+                &json!({
+                    "passage_id": USPSTF_UNIT_ID
+                }),
+            )
+            .await
+        else {
+            panic!("{label}: expected Returned unavailable outcome on read");
+        };
+        let read_fail_val: Value = serde_json::from_str(&read_fail_raw).unwrap();
+        assert_eq!(read_fail_val["outcome"], "unavailable", "{label}");
+    }
+
+    assert_eq!(
+        library_requests.load(Ordering::SeqCst),
+        3,
+        "failed metadata token minting must never send unauthenticated requests to the library"
+    );
 }
 
 struct AllowedAuthority;
@@ -1140,7 +1438,7 @@ async fn chat_question_needing_literature_searches_reads_and_cites_library_passa
     let db_url = std::env::var("PHYSICIAN_RUNTIME_TEST_DATABASE_URL").unwrap();
     let (healthy_url, _) = spawn_library_server(ServerBehavior::Healthy {
         units: recorded_units(),
-        required_bearer: None,
+        auth: BearerPolicy::Open,
     })
     .await;
     let library_client = ClinicalLibraryClient::http(&healthy_url).unwrap();
