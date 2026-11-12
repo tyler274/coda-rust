@@ -3,8 +3,17 @@
 //! come from a source adapter, never projection prose or a provider. This
 //! reader neither discovers new records nor claims that a snapshot is a
 //! complete chart.
+/// Declared adapter mapping tables and shared record filing.
+pub mod adapter;
 mod chart;
+/// Shared domain types for chart buckets, filed envelopes, and pull outcomes.
+pub mod types;
 pub use chart::{ChartInputError, ChartRequest, ChartScope, SEARCH_TOOL, read_tool, search_tool};
+pub use types::{
+    Bucket, ChartPullReceipt, DateRole, FailedPart, FiledDate, PullOutcome, ReconnectReceipt,
+    RecordCode, RecordEnvelope, RecordVersion, SourceAdapterError, SourceCommandKey,
+    SourcePullOutput, SourceRecordKind, UnknownBucketError,
+};
 
 use async_trait::async_trait;
 use serde::{Deserialize, Serialize};
@@ -55,6 +64,9 @@ pub struct SourceRevision {
     pub readable_parts: Vec<ReadablePart>,
     /// Source-owned provenance, including native record identity.
     pub provenance: Value,
+    /// Shared record envelope produced by the source adapter's declared mapping table.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub envelope: Option<RecordEnvelope>,
 }
 impl SourceRevision {
     /// Refuses corrupt or unidentified source evidence.
@@ -108,15 +120,58 @@ pub trait PatientSource: Send + Sync {
     /// The source's name as a physician sees it.
     fn source_label(&self) -> &str;
     /// The source's own id for every patient it holds.
-    async fn patient_ids(&self) -> Result<Vec<String>, String>;
+    async fn patient_ids(&self) -> Result<Vec<String>, SourceAdapterError>;
     /// One patient's identity, read alone so one bad patient stays one patient.
-    async fn patient(&self, source_patient_id: &str) -> Result<SourcePatient, String>;
+    async fn patient(&self, source_patient_id: &str) -> Result<SourcePatient, SourceAdapterError>;
     /// One patient's records, admitted to `workspace`.
     async fn records(
         &self,
         patient: &SourcePatient,
         workspace: &str,
-    ) -> Result<Vec<SourceRevision>, String>;
+    ) -> Result<Vec<SourceRevision>, SourceAdapterError>;
+
+    /// Pulls one patient's identity and records in a single connector operation,
+    /// distinguishing complete pulls, partial pulls, whole failures, and lapsed access.
+    async fn pull_patient(
+        &self,
+        _practice_id: &str,
+        source_patient_id: &str,
+        workspace: &str,
+    ) -> SourcePullOutput {
+        match self.patient(source_patient_id).await {
+            Ok(patient) => match self.records(&patient, workspace).await {
+                Ok(records) => SourcePullOutput::Complete { patient, records },
+                Err(SourceAdapterError::LapsedAccess { reason }) => {
+                    SourcePullOutput::LapsedAccess {
+                        error: SourceAdapterError::LapsedAccess { reason },
+                    }
+                }
+                Err(error) => SourcePullOutput::Failed { error },
+            },
+            Err(SourceAdapterError::LapsedAccess { reason }) => SourcePullOutput::LapsedAccess {
+                error: SourceAdapterError::LapsedAccess { reason },
+            },
+            Err(error) => SourcePullOutput::Failed { error },
+        }
+    }
+
+    /// Reconnects a practice's access to this source when credentials have lapsed.
+    ///
+    /// When `command_key` is `Some(...)`, the adapter deduplicates or recovers any prior
+    /// successful reconnect performed for `(practice_id, command_key)` so retrying an interrupted
+    /// command before its database checkpoint commits does not repeat the external side effect.
+    async fn reconnect(
+        &self,
+        practice_id: &str,
+        now: i64,
+        _command_key: Option<SourceCommandKey<'_>>,
+    ) -> Result<ReconnectReceipt, SourceAdapterError> {
+        Ok(ReconnectReceipt {
+            source_id: self.source_id().to_owned(),
+            practice_id: practice_id.to_owned(),
+            reconnected_at: now,
+        })
+    }
 }
 
 /// The stable workspace of one source patient. It carries no patient
@@ -407,6 +462,7 @@ mod tests {
             sha256: crate::sha256_hex(content.as_bytes()),
             readable_parts: vec![],
             provenance: json!({"native_record": "lab"}),
+            envelope: None,
         }
     }
 
@@ -660,5 +716,53 @@ mod tests {
         .unwrap();
         let stale: Value = serde_json::from_str(stale.text().unwrap()).unwrap();
         assert_eq!(check(stale), vec!["lab".to_string()]);
+    }
+
+    #[test]
+    fn catch_up_accepts_exact_read_of_source_with_filed_envelope() {
+        let mut current = source("r2", r#"{"resourceType":"Observation","id":"k-1"}"#);
+        current.envelope = Some(RecordEnvelope {
+            bucket: Bucket::Results,
+            source_kind: SourceRecordKind {
+                kind: "Observation".into(),
+                category: Some("laboratory".into()),
+            },
+            native_id: "k-1".into(),
+            version: RecordVersion::Source("2".into()),
+            dates: vec![FiledDate {
+                role: DateRole::Effective,
+                field: "effectiveDateTime".into(),
+                value: "2026-08-21T06:15:00-04:00".into(),
+            }],
+            status: Some("final".into()),
+            codes: Vec::new(),
+            title: Some("Potassium".into()),
+            native_link: None,
+        });
+        let refresh = SourceRefresh::between(0, &[], 1, std::slice::from_ref(&current));
+        let exact = exact_read(
+            std::slice::from_ref(&current),
+            "patient",
+            &["lab".into()],
+            65536,
+        )
+        .unwrap();
+        let original = exact.text().unwrap().to_owned();
+        let mut events = Vec::new();
+        accepted_result(
+            &mut events,
+            "read",
+            &original,
+            harness::engine::results::ResultView::whole("read", &original),
+        );
+        assert!(
+            caught_up(
+                &events,
+                std::slice::from_ref(&refresh),
+                std::slice::from_ref(&current),
+            )
+            .unwrap()
+            .is_empty()
+        );
     }
 }

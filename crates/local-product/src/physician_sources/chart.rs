@@ -1,5 +1,8 @@
 //! On-demand discovery and bounded reads of the physician's workspace.
-use super::{READ_TOOL, SourceRevision};
+use super::{
+    Bucket, FiledDate, READ_TOOL, ReadablePart, RecordCode, RecordDate, RecordVersion,
+    SourceRecordKind, SourceRevision, UnknownBucketError,
+};
 use harness::engine::{Tool, ToolOutcome};
 use serde::{Deserialize, Serialize};
 use serde_json::{Value, json};
@@ -16,10 +19,23 @@ struct After {
     candidate_id: String,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Deserialize)]
 #[serde(deny_unknown_fields)]
+struct SearchWire {
+    #[serde(default)]
+    query: String,
+    #[serde(default)]
+    bucket: Option<String>,
+    #[serde(default)]
+    record_type: Option<String>,
+    #[serde(default)]
+    after: Option<After>,
+}
+
+#[derive(Debug, Clone)]
 struct Search {
     query: String,
+    bucket: Option<Bucket>,
     record_type: Option<String>,
     after: Option<After>,
 }
@@ -64,6 +80,48 @@ struct Read {
     max_result_bytes: usize,
 }
 
+/// Dates carried on a discovery hit, preserving declared roles when filed through
+/// an adapter table and raw date pairs for un-enveloped revisions.
+#[derive(Debug, Serialize)]
+#[serde(untagged)]
+enum SearchHitDates<'a> {
+    Filed(&'a [FiledDate]),
+    Raw(&'a [RecordDate]),
+}
+
+fn codes_is_empty(codes: &&[RecordCode]) -> bool {
+    codes.is_empty()
+}
+
+#[derive(Debug, Serialize)]
+struct SearchHit<'a> {
+    reference: Exact,
+    record_type: &'a str,
+    source_id: &'a str,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    bucket: Option<Bucket>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    source_kind: Option<&'a SourceRecordKind>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    version: Option<&'a RecordVersion>,
+    dates: SearchHitDates<'a>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    status: Option<&'a str>,
+    #[serde(skip_serializing_if = "codes_is_empty")]
+    codes: &'a [RecordCode],
+    #[serde(skip_serializing_if = "Option::is_none")]
+    title: Option<&'a str>,
+}
+
+/// Dates carried on a read receipt, round-tripping both filed role-bearing dates
+/// and un-enveloped date pairs.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(untagged)]
+pub(super) enum ReceiptDates {
+    Filed(Vec<FiledDate>),
+    Raw(Vec<RecordDate>),
+}
+
 /// Chart read receipts have one wire owner for production and delivery checks.
 #[derive(Debug, Serialize, Deserialize)]
 pub(super) struct ReadReceipt {
@@ -77,10 +135,24 @@ pub(super) enum RecordReceipt {
         reference: String,
         revision: String,
         record_type: String,
-        dates: Vec<super::RecordDate>,
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        bucket: Option<Bucket>,
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        source_kind: Option<SourceRecordKind>,
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        version: Option<RecordVersion>,
+        dates: ReceiptDates,
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        status: Option<String>,
+        #[serde(default, skip_serializing_if = "Vec::is_empty")]
+        codes: Vec<RecordCode>,
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        title: Option<String>,
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        native_link: Option<String>,
         read_representation: ReadRepresentation,
         content: String,
-        readable_parts: Vec<super::ReadablePart>,
+        readable_parts: Vec<ReadablePart>,
         sha256: String,
         provenance: Value,
     },
@@ -160,8 +232,11 @@ pub enum ChartScope {
 #[derive(Debug, thiserror::Error)]
 pub enum ChartInputError {
     /// A discovery request did not match the offered search fields.
-    #[error("Supply query, optional record_type and the returned after cursor ({0}).")]
+    #[error("Supply query, optional bucket or record_type, and the returned after cursor ({0}).")]
     Search(#[source] serde_json::Error),
+    /// A discovery request supplied a bucket name outside the sixteen chart buckets.
+    #[error("{0}")]
+    InvalidBucket(#[source] UnknownBucketError),
     /// An exact read did not name its references and byte budget.
     #[error("Supply references as an array and max_result_bytes as an integer ({0}).")]
     Read(#[source] serde_json::Error),
@@ -183,14 +258,25 @@ impl ChartRequest {
     ) -> Result<Self, ChartInputError> {
         let operation = match name {
             SEARCH_TOOL if scope == ChartScope::Chat => {
-                let search: Search =
+                let wire: SearchWire =
                     serde_json::from_value(arguments.clone()).map_err(ChartInputError::Search)?;
-                if search.query.len() > 512 {
+                if wire.query.len() > 512 {
                     return Err(ChartInputError::Refused(
                         "Use at most 512 bytes of search text.",
                     ));
                 }
-                Operation::Search(search)
+                let bucket = wire
+                    .bucket
+                    .as_deref()
+                    .map(Bucket::parse)
+                    .transpose()
+                    .map_err(ChartInputError::InvalidBucket)?;
+                Operation::Search(Search {
+                    query: wire.query,
+                    bucket,
+                    record_type: wire.record_type,
+                    after: wire.after,
+                })
             }
             READ_TOOL => {
                 let read: Read =
@@ -262,44 +348,19 @@ impl Search {
         let query = self.query.to_lowercase();
         let mut matches: Vec<_> = sources
             .iter()
-            .filter(|s| {
-                if s.workspace != workspace
-                    || self
-                        .record_type
-                        .as_ref()
-                        .is_some_and(|kind| !kind.eq_ignore_ascii_case(&s.record_type))
-                    || self
-                        .after
-                        .as_ref()
-                        .is_some_and(|c| s.candidate_id <= c.candidate_id)
-                {
-                    return false;
-                }
-                if query.trim().is_empty() {
-                    return true;
-                }
-                let fields: Vec<_> = [&s.record_type, &s.candidate_id, &s.content]
-                    .into_iter()
-                    .chain(s.readable_parts.iter().map(|p| &p.text))
-                    .chain(s.dates.iter().map(|d| &d.value))
-                    .map(|s| s.to_lowercase())
-                    .collect();
-                query
-                    .split_whitespace()
-                    .all(|term| fields.iter().any(|f| f.contains(term)))
-            })
+            .filter(|s| self.matches_source(workspace, &query, s))
             .collect();
         matches.sort_unstable_by_key(|s| &s.candidate_id);
         let mut results = Vec::new();
         let mut next = None;
         for source in matches.iter().take(SEARCH_PAGE) {
-            let hit = json!({"reference":Exact {candidate_id:source.candidate_id.clone(),revision:source.revision.clone(),cursor:None}, "record_type":source.record_type,"source_id":source.source_id,"dates":source.dates});
+            let hit = serde_json::to_value(search_hit(source)).expect("search hit serializes");
             results.push(hit);
             let continuation = After {
                 version,
                 candidate_id: source.candidate_id.clone(),
             };
-            if json!({"results":results,"next":continuation})
+            if json!({"results": results, "next": continuation})
                 .to_string()
                 .len()
                 > MAX_PAGE
@@ -318,8 +379,122 @@ impl Search {
             next = None;
         }
         Ok(ToolOutcome::Returned(
-            json!({"results":results,"next":next}).to_string(),
+            json!({"results": results, "next": next}).to_string(),
         ))
+    }
+
+    fn matches_source(&self, workspace: &str, query: &str, source: &SourceRevision) -> bool {
+        if source.workspace != workspace {
+            return false;
+        }
+        if let Some(target_bucket) = self.bucket
+            && !source
+                .envelope
+                .as_ref()
+                .is_some_and(|env| env.bucket == target_bucket)
+        {
+            return false;
+        }
+        if self
+            .record_type
+            .as_ref()
+            .is_some_and(|kind| !kind.eq_ignore_ascii_case(&source.record_type))
+        {
+            return false;
+        }
+        if self
+            .after
+            .as_ref()
+            .is_some_and(|c| source.candidate_id <= c.candidate_id)
+        {
+            return false;
+        }
+        if query.trim().is_empty() {
+            return true;
+        }
+        let fields = searchable_fields(source);
+        query
+            .split_whitespace()
+            .all(|term| fields.iter().any(|field| field.contains(term)))
+    }
+}
+
+fn searchable_fields(source: &SourceRevision) -> Vec<String> {
+    let mut fields: Vec<String> = [
+        source.record_type.as_str(),
+        source.candidate_id.as_str(),
+        source.content.as_str(),
+    ]
+    .into_iter()
+    .chain(source.readable_parts.iter().map(|part| part.text.as_str()))
+    .chain(source.dates.iter().map(|date| date.value.as_str()))
+    .map(str::to_lowercase)
+    .collect();
+    if let Some(env) = &source.envelope {
+        fields.push(env.bucket.as_str().to_owned());
+        fields.push(env.source_kind.kind.to_lowercase());
+        if let Some(category) = &env.source_kind.category {
+            fields.push(category.to_lowercase());
+        }
+        if let Some(title) = &env.title {
+            fields.push(title.to_lowercase());
+        }
+        if let Some(status) = &env.status {
+            fields.push(status.to_lowercase());
+        }
+        for date in &env.dates {
+            fields.push(date.role.as_str().to_owned());
+            fields.push(date.field.to_lowercase());
+            fields.push(date.value.to_lowercase());
+        }
+        for code in &env.codes {
+            for part in [
+                code.system.as_deref(),
+                code.code.as_deref(),
+                code.display.as_deref(),
+                code.text.as_deref(),
+            ]
+            .into_iter()
+            .flatten()
+            {
+                fields.push(part.to_lowercase());
+            }
+        }
+    }
+    fields
+}
+
+fn search_hit(source: &SourceRevision) -> SearchHit<'_> {
+    let reference = Exact {
+        candidate_id: source.candidate_id.clone(),
+        revision: source.revision.clone(),
+        cursor: None,
+    };
+    match &source.envelope {
+        Some(env) => SearchHit {
+            reference,
+            record_type: &source.record_type,
+            source_id: &source.source_id,
+            bucket: Some(env.bucket),
+            source_kind: Some(&env.source_kind),
+            version: Some(&env.version),
+            dates: SearchHitDates::Filed(&env.dates),
+            status: env.status.as_deref(),
+            codes: &env.codes,
+            title: env.title.as_deref(),
+        },
+        None => SearchHit {
+            reference,
+            record_type: &source.record_type,
+            source_id: &source.source_id,
+            bucket: None,
+            source_kind: None,
+            version: None,
+            dates: SearchHitDates::Raw(&source.dates),
+            status: None,
+            codes: &[],
+            title: None,
+        },
     }
 }
 
@@ -365,17 +540,7 @@ impl Read {
 
 fn read_record(source: &SourceRevision, cursor: Option<Position>, budget: usize) -> RecordReceipt {
     if cursor.is_none() && source.content.len() <= budget {
-        let full = RecordReceipt::Available {
-            reference: source.candidate_id.clone(),
-            revision: source.revision.clone(),
-            record_type: source.record_type.clone(),
-            dates: source.dates.clone(),
-            read_representation: ReadRepresentation::NativeRecord,
-            content: source.content.clone(),
-            readable_parts: source.readable_parts.clone(),
-            sha256: source.sha256.clone(),
-            provenance: source.provenance.clone(),
-        };
+        let full = available_receipt(source);
         if full.encoded_len() <= budget {
             return full;
         }
@@ -445,6 +610,47 @@ fn read_record(source: &SourceRevision, cursor: Option<Position>, budget: usize)
     }
 }
 
+fn available_receipt(source: &SourceRevision) -> RecordReceipt {
+    match &source.envelope {
+        Some(env) => RecordReceipt::Available {
+            reference: source.candidate_id.clone(),
+            revision: source.revision.clone(),
+            record_type: source.record_type.clone(),
+            bucket: Some(env.bucket),
+            source_kind: Some(env.source_kind.clone()),
+            version: Some(env.version.clone()),
+            dates: ReceiptDates::Filed(env.dates.clone()),
+            status: env.status.clone(),
+            codes: env.codes.clone(),
+            title: env.title.clone(),
+            native_link: env.native_link.clone(),
+            read_representation: ReadRepresentation::NativeRecord,
+            content: source.content.clone(),
+            readable_parts: source.readable_parts.clone(),
+            sha256: source.sha256.clone(),
+            provenance: source.provenance.clone(),
+        },
+        None => RecordReceipt::Available {
+            reference: source.candidate_id.clone(),
+            revision: source.revision.clone(),
+            record_type: source.record_type.clone(),
+            bucket: None,
+            source_kind: None,
+            version: None,
+            dates: ReceiptDates::Raw(source.dates.clone()),
+            status: None,
+            codes: Vec::new(),
+            title: None,
+            native_link: None,
+            read_representation: ReadRepresentation::NativeRecord,
+            content: source.content.clone(),
+            readable_parts: source.readable_parts.clone(),
+            sha256: source.sha256.clone(),
+            provenance: source.provenance.clone(),
+        },
+    }
+}
+
 pub(super) fn part(source: &SourceRevision, index: usize) -> Option<(&str, &str)> {
     if index == 0 {
         return Some(("native_record", &source.content));
@@ -457,13 +663,15 @@ pub(super) fn part(source: &SourceRevision, index: usize) -> Option<(&str, &str)
 
 /// The search definition used by both chat hosts.
 pub fn search_tool() -> Tool {
+    let bucket_names: Vec<&str> = Bucket::ALL.into_iter().map(Bucket::as_str).collect();
     Tool {
         name: SEARCH_TOOL.into(),
-        description: "Browse or search the currently retained chart for this patient. All query words must match the native record, decoded text, record type, ID or dates. Use an empty query to browse. Results are metadata in candidate order, not evidence of clinical absence. Continue the same search with next as after. Open a returned reference to read evidence.".into(),
+        description: "Browse or search the currently retained chart for this patient. Filter by chart bucket or source record_type when narrowing, and use an empty query to list a bucket. All query words must match the native record, decoded text, bucket, source kind, codes, title, status, ID or dates. Results are metadata in candidate order, not evidence of clinical absence. Continue the same search with next as after. Open a returned reference to read evidence.".into(),
         parameters: json!({
             "type":"object",
             "properties":{
                 "query":{"type":"string"},
+                "bucket":{"anyOf":[{"type":"null"},{"type":"string","enum":bucket_names}]},
                 "record_type":{"type":["string","null"]},
                 "after":{"anyOf":[{"type":"null"}, {
                     "type":"object",
@@ -471,7 +679,7 @@ pub fn search_tool() -> Tool {
                     "required":["version","candidate_id"],"additionalProperties":false
                 }]}
             },
-            "required":["query","record_type","after"],"additionalProperties":false
+            "required":["query","bucket","record_type","after"],"additionalProperties":false
         }),
     }
 }
