@@ -1,6 +1,8 @@
 //! Safe messages at the logging boundary; original causes stay inspectable.
 use std::{error::Error as StdError, fmt};
 
+#[derive(thiserror::Error)]
+#[error("{message}")]
 pub struct Error {
     message: String,
     source: Option<Box<dyn StdError + Send + Sync>>,
@@ -35,21 +37,9 @@ impl From<String> for Error {
         }
     }
 }
-impl fmt::Display for Error {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        f.write_str(&self.message)
-    }
-}
 impl fmt::Debug for Error {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         fmt::Display::fmt(self, f)
-    }
-}
-impl StdError for Error {
-    fn source(&self) -> Option<&(dyn StdError + 'static)> {
-        self.source
-            .as_deref()
-            .map(|source| source as &(dyn StdError + 'static))
     }
 }
 #[cfg(test)]

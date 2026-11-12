@@ -34,15 +34,19 @@ const METADATA: &str = "http://metadata.google.internal/computeMetadata/v1";
 const MONITORING: &str = "https://monitoring.googleapis.com/v3/projects";
 
 /// Why one round of gauges was not written.
-#[derive(Debug)]
+#[derive(Debug, thiserror::Error)]
 pub(super) enum SignalError {
     /// Postgres did not answer the signal read.
-    Read(DbErr),
+    #[error("queue signal read failed")]
+    Read(#[source] DbErr),
     /// A metadata or monitoring request did not complete.
-    Request(reqwest::Error),
+    #[error("queue signal request failed")]
+    Request(#[source] reqwest::Error),
     /// The metadata server or Cloud Monitoring refused the request.
+    #[error("{0} answered {1}")]
     Status(&'static str, StatusCode),
     /// The metadata token response named no access token.
+    #[error("metadata token response has no access_token")]
     Token,
 }
 
@@ -54,27 +58,6 @@ impl SignalError {
             Self::Request(_) => "request",
             Self::Status(..) => "status",
             Self::Token => "token",
-        }
-    }
-}
-
-impl std::fmt::Display for SignalError {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        match self {
-            Self::Read(_) => f.write_str("queue signal read failed"),
-            Self::Request(_) => f.write_str("queue signal request failed"),
-            Self::Status(call, status) => write!(f, "{call} answered {status}"),
-            Self::Token => f.write_str("metadata token response has no access_token"),
-        }
-    }
-}
-
-impl std::error::Error for SignalError {
-    fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
-        match self {
-            Self::Read(error) => Some(error),
-            Self::Request(error) => Some(error),
-            Self::Status(..) | Self::Token => None,
         }
     }
 }

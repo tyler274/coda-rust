@@ -614,43 +614,27 @@ impl Pace {
 }
 
 /// Why a pacing setting was refused.
-#[derive(Debug, PartialEq, Eq)]
+#[derive(Debug, PartialEq, Eq, thiserror::Error)]
 enum PaceError {
     /// A proof-only setting given to a hosted worker.
+    #[error("{key} is refused in hosted execution")]
     Hosted { key: &'static str },
     /// A setting that is not a whole number.
+    #[error("{key} must be a whole number")]
     NotWhole {
         key: &'static str,
         source: std::num::ParseIntError,
     },
     /// Zero for a setting that must be at least 1.
+    #[error("{key} must be at least 1")]
     Zero { key: &'static str },
     /// A whole number outside the setting's range.
+    #[error("{key} must be {low} to {high}")]
     OutOfRange {
         key: &'static str,
         low: usize,
         high: usize,
     },
-}
-
-impl std::fmt::Display for PaceError {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        match self {
-            Self::Hosted { key } => write!(f, "{key} is refused in hosted execution"),
-            Self::NotWhole { key, .. } => write!(f, "{key} must be a whole number"),
-            Self::Zero { key } => write!(f, "{key} must be at least 1"),
-            Self::OutOfRange { key, low, high } => write!(f, "{key} must be {low} to {high}"),
-        }
-    }
-}
-
-impl std::error::Error for PaceError {
-    fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
-        match self {
-            Self::NotWhole { source, .. } => Some(source),
-            Self::Hosted { .. } | Self::Zero { .. } | Self::OutOfRange { .. } => None,
-        }
-    }
 }
 
 struct Worker {
