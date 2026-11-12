@@ -3,6 +3,9 @@ name: CI
 on:
   workflow_dispatch:
   pull_request:
+  # The merge queue checks each pull request on top of main and the entries
+  # ahead of it. `CI result` on that candidate is what lets it merge.
+  merge_group:
   push:
     branches: [main]
   # Weekly full run on main, so the GitHub cache entries (evicted after 7 days
@@ -11,8 +14,9 @@ on:
   schedule:
     - cron: '23 10 * * 1'
 
-# Only a newer revision of the same PR cancels validation. Main pushes and
-# manual runs remain distinct; deployment concurrency stays with each deploy job.
+# Only a newer revision of the same PR cancels validation. Main pushes, merge
+# queue candidates and manual runs remain distinct; deployment concurrency
+# stays with each deploy job.
 concurrency:
   group: ci-${{ github.event.pull_request.number || github.run_id }}
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
@@ -451,9 +455,12 @@ jobs:
           fi
           echo "include_target=${include_target}" >> "$GITHUB_OUTPUT"
           df -h
+      # A merge queue candidate never saves. Its branch is deleted when the
+      # entry leaves the queue, and the main push that follows saves the same
+      # tree.
       - name: Save Rust build cache
         continue-on-error: true
-        if: steps.rust-cache.outputs.cache-hit != 'true' && steps.cache-payload.outputs.include_target == 'true'
+        if: github.event_name != 'merge_group' && steps.rust-cache.outputs.cache-hit != 'true' && steps.cache-payload.outputs.include_target == 'true'
         uses: actions/cache/save@v6
         with:
           path: |
@@ -464,7 +471,7 @@ jobs:
           key: ${{ steps.rust-cache.outputs.cache-primary-key }}
       - name: Save cargo registry without target
         continue-on-error: true
-        if: steps.rust-cache.outputs.cache-hit != 'true' && steps.cache-payload.outputs.include_target != 'true'
+        if: github.event_name != 'merge_group' && steps.rust-cache.outputs.cache-hit != 'true' && steps.cache-payload.outputs.include_target != 'true'
         uses: actions/cache/save@v6
         with:
           path: |
@@ -876,9 +883,11 @@ jobs:
           nix develop .#agent --command createdb --maintenance-db "$MIGRATION_DATABASE_URL" physician_ci
           nix develop .#agent --command bash scripts/check-postgres.sh
       # A PR saves (about 1.5 GB per shard) only when main had nothing for its
-      # dependency set, so ordinary PRs don't evict main's entries.
+      # dependency set, so ordinary PRs don't evict main's entries. A merge
+      # queue candidate never saves, as with the Rust build cache.
       - name: Save Postgres proof build
         if: >-
+          github.event_name != 'merge_group' &&
           steps.postgres-cache.outputs.cache-hit != 'true' && (github.event_name != 'pull_request' ||
           !startsWith(steps.postgres-cache.outputs.cache-matched-key, format('postgres-{0}-shard{1}-{2}-', runner.os, matrix.shard, hashFiles('flake.lock', 'Cargo.lock', 'scripts/check-postgres.sh'))))
         continue-on-error: true

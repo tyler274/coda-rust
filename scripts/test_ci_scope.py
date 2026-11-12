@@ -56,8 +56,10 @@ class ScopeTests(unittest.TestCase):
     def scope(self, name="pull_request", base=None, head=None, event=None):
         if event is None:
             base, head = base or self.base, head or self.git("rev-parse", "HEAD")
-            event = ({"pull_request": {"base": {"sha": base}, "head": {"sha": head}}}
-                     if name == "pull_request" else {"before": base, "after": head})
+            event = {
+                "pull_request": {"pull_request": {"base": {"sha": base}, "head": {"sha": head}}},
+                "merge_group": {"merge_group": {"base_sha": base, "head_sha": head}},
+            }.get(name, {"before": base, "after": head})
         payload = self.root / "event.json"
         output = self.root / "output"
         payload.write_text(json.dumps(event))
@@ -175,7 +177,7 @@ class ScopeTests(unittest.TestCase):
         self.assertFalse(ci_scope.MOBILE_ON_CHANGE)
         self.write("crates/mobile/src/main.rs", "changed\n")
         self.commit()
-        for event in ("pull_request", "push"):
+        for event in ("pull_request", "merge_group", "push"):
             with self.subTest(event=event):
                 self.assertEqual(self.scope(event), "full=true")
                 self.assertEqual(self.last_mobile, "mobile=false")
@@ -215,9 +217,18 @@ class ScopeTests(unittest.TestCase):
         self.commit()
         self.write("README.md", "last commit only changes docs\n")
         self.commit()
-        for event in ("pull_request", "push"):
+        for event in ("pull_request", "merge_group", "push"):
             with self.subTest(event=event):
                 self.assertEqual(self.scope(event), "full=true")
+
+    def test_merge_queue_candidate_is_scoped_by_what_it_adds_to_its_base(self):
+        self.write("crates/app/src/lib.rs", "pub fn ahead() {}\n")
+        ahead = self.commit()
+        self.write("README.md", "docs change\n")
+        self.commit()
+        # Behind a product change in the queue, a docs entry stays lightweight.
+        self.assertEqual(self.scope("merge_group", base=ahead), "full=false")
+        self.assertEqual(self.scope("merge_group"), "full=true")
 
     def test_pr_uses_merge_base_not_unrelated_base_branch_changes(self):
         self.git("checkout", "-qb", "base-advance")
@@ -262,6 +273,8 @@ class ScopeTests(unittest.TestCase):
             ("push", {"before": "0" * 40, "after": head}),
             ("push", {"before": "1" * 40, "after": head}),
             ("pull_request", {}), ("pull_request", None),
+            ("merge_group", {}), ("merge_group", {"merge_group": None}),
+            ("merge_group", {"merge_group": {"base_sha": "1" * 40, "head_sha": head}}),
             ("workflow_dispatch", {}), ("schedule", {}), ("unknown", {}),
         ]:
             with self.subTest(event=event, payload=payload):
@@ -370,6 +383,19 @@ class WarmRunTests(unittest.TestCase):
         for name, job in self.jobs.items():
             if name.startswith("deploy-") or name == "nix-cache-publish":
                 self.assertIn("github.event_name == 'push'", job["if"], name)
+
+    def test_merge_queue_candidates_are_checked_without_deploying_or_saving_caches(self):
+        # The main ruleset's merge queue waits for `CI result` on each
+        # candidate; without this trigger a queued pull request never merges.
+        self.assertIn("merge_group", self.workflow[True])
+        self.assertEqual(self.workflow["concurrency"]["cancel-in-progress"],
+                         "${{ github.event_name == 'pull_request' }}")
+        saves = [(name, step) for name, job in self.jobs.items() for step in job["steps"]
+                 if step.get("uses", "").startswith("actions/cache/save@")]
+        self.assertTrue(saves)
+        for name, step in saves:
+            with self.subTest(job=name, step=step["name"]):
+                self.assertIn("github.event_name != 'merge_group'", step["if"])
 
     def test_validation_cannot_dispatch_other_workflows(self):
         # GitHub's dispatch API requires Actions write. Validation executes

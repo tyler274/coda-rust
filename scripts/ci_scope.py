@@ -109,6 +109,11 @@ def classify(event_name, event):
             head = event["pull_request"]["head"]["sha"]
         elif event_name == "push":
             base, head = event["before"], event["after"]
+        elif event_name == "merge_group":
+            # The queue's candidate commit and the commit it was built on:
+            # main, or the candidate of the entry ahead.
+            base = event["merge_group"]["base_sha"]
+            head = event["merge_group"]["head_sha"]
         else:
             return True, False, True, True, "event has no supported comparison"
         if not all(isinstance(sha, str) and re.fullmatch(r"[0-9a-f]{40}", sha)

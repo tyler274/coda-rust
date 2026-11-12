@@ -125,7 +125,8 @@ scripts/check-book-links.sh
 
 [ci_scope.py](scripts/ci_scope.py) owns the lightweight path categories. Other or
 mixed changes keep the full suite; missing Git comparison data also selects it.
-PRs use their complete diff from the merge base, and main pushes use the full
+PRs use their complete diff from the merge base, merge queue candidates use what
+they add to the commit they were built on, and main pushes use the full
 before/after range. Manual dispatch retains full browser qualification. New PR
 revisions cancel superseded CI runs, without cancelling main deployment runs.
 
