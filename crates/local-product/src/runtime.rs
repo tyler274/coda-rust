@@ -28,6 +28,8 @@ use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use uuid::Uuid;
 
+/// Visit preparation selection, saved pre-visit briefings, and visit concern lifecycle.
+pub mod briefings;
 /// Hosted chat drafts: the physician's unsent composer text per chat.
 pub mod chat_draft;
 /// Patient starting context, readability limits, durable memory, source refresh, and chat tool dispatch.
@@ -58,6 +60,8 @@ mod records;
 pub mod refresh;
 /// Hosted physician reply drafts and their revision work.
 pub mod reply;
+/// Shared-harness execution, fencing, lifecycle controls, and storage for patient reviews.
+pub mod reviews;
 /// Practice schedule reads, patient matching, and versioned saved appointments.
 pub mod schedule;
 /// Durable source patient links, access state, and pull status.

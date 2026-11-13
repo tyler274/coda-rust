@@ -23,8 +23,8 @@ use physician_client::{DraftSave, PhysicianClient};
 use physician_wire::{
     ActiveReviewRun, AnswerState, ChatSnapshot, HistoryWorkOutcome, PastWorkItem, PastWorkTarget,
     PatientWorkspaceResponse, PracticeAccountSummary, RecentConversation, ResponseId,
-    SignInResponse, SnapshotFeedback, UpdatesResponse, WhoamiResponse,
-    WorkResumeTarget, WorkStopTarget, WorkspaceReply,
+    SignInResponse, SnapshotFeedback, UpdatesResponse, WhoamiResponse, WorkResumeTarget,
+    WorkStopTarget, WorkspaceReply,
 };
 
 use panels::Panel;

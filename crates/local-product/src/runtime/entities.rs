@@ -1098,3 +1098,222 @@ pub(super) mod patient_understanding_revision {
 
     impl ActiveModelBehavior for ActiveModel {}
 }
+
+/// Durable patient review record per `(practice, workspace, review_id)` pairing
+/// trigger provenance, recipe/source versions, read evidence, authoritative tool
+/// actions, controlled outcome (`"nothing to do"` vs assessed), unfinished work,
+/// duration, usage (`Unknown` vs `Known`), and lifecycle state with its
+/// underlying `physician_runtime_practice_jobs` execution run.
+pub(super) mod patient_review {
+    use sea_orm::entity::prelude::*;
+
+    #[derive(Clone, Debug, PartialEq, Eq, DeriveEntityModel)]
+    #[sea_orm(table_name = "physician_runtime_patient_reviews")]
+    pub struct Model {
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub practice: String,
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub workspace: String,
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub review_id: String,
+        #[sea_orm(column_type = "Text")]
+        pub command_key: String,
+        #[sea_orm(column_type = "Text")]
+        pub job_id: String,
+        #[sea_orm(column_type = "Text")]
+        pub work_id: String,
+        #[sea_orm(column_type = "Text")]
+        pub status: String,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub patient_snapshot: Option<Json>,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub triggers: Json,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub accepted_inputs: Json,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub recipe_version: Json,
+        pub initial_source_version: i64,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub initial_sources: Json,
+        pub completed_source_version: Option<i64>,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub completed_sources: Option<Json>,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub evidence_read: Json,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub actions: Json,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub unfinished_work: Json,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub state: Json,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub usage: Json,
+        pub duration_ms: Option<i64>,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub staged_completion: Option<Json>,
+        pub queued_at: i64,
+        pub started_at: Option<i64>,
+        pub completed_at: Option<i64>,
+        pub updated_at: i64,
+    }
+
+    #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
+    pub enum Relation {}
+
+    impl ActiveModelBehavior for ActiveModel {}
+}
+
+/// Per-visit-slot preparation selection decision and execution standing.
+/// Created by `m20261112_visit_briefings`.
+pub(super) mod visit_preparation {
+    use sea_orm::entity::prelude::*;
+
+    #[derive(Clone, Debug, PartialEq, Eq, DeriveEntityModel)]
+    #[sea_orm(table_name = "physician_runtime_visit_preparations")]
+    pub struct Model {
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub practice: String,
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub source_id: String,
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub appointment_id: String,
+        #[sea_orm(primary_key, auto_increment = false)]
+        pub starts_at_unix: i64,
+        #[sea_orm(column_type = "Text")]
+        pub workspace: String,
+        pub ends_at_unix: i64,
+        pub appointment_saved_version: i64,
+        pub observed_source_version: i64,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub decision: Json,
+        pub decided_at: i64,
+        #[sea_orm(column_type = "Text")]
+        pub selection_job_id: String,
+        #[sea_orm(column_type = "Text")]
+        pub selection_work_id: String,
+        #[sea_orm(column_type = "Text")]
+        pub selection_idempotency_key: String,
+        #[sea_orm(column_type = "Text")]
+        pub state: String,
+        #[sea_orm(column_type = "Text")]
+        pub briefing_job_id: Option<String>,
+        #[sea_orm(column_type = "Text")]
+        pub briefing_id: Option<String>,
+        #[sea_orm(column_type = "Text")]
+        pub failed_reason: Option<String>,
+        pub updated_at: i64,
+    }
+
+    #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
+    pub enum Relation {}
+
+    impl ActiveModelBehavior for ActiveModel {}
+}
+
+/// Durable pre-visit clinical briefing keyed to `(practice, source_id, appointment_id, starts_at_unix)`.
+/// Created by `m20261112_visit_briefings`.
+pub(super) mod visit_briefing {
+    use sea_orm::entity::prelude::*;
+
+    #[derive(Clone, Debug, PartialEq, Eq, DeriveEntityModel)]
+    #[sea_orm(table_name = "physician_runtime_visit_briefings")]
+    pub struct Model {
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub practice: String,
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub source_id: String,
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub appointment_id: String,
+        #[sea_orm(primary_key, auto_increment = false)]
+        pub starts_at_unix: i64,
+        #[sea_orm(column_type = "Text")]
+        pub briefing_id: String,
+        #[sea_orm(column_type = "Text")]
+        pub workspace: String,
+        #[sea_orm(column_type = "Text")]
+        pub idempotency_key: String,
+        #[sea_orm(column_type = "Text")]
+        pub starts_at: String,
+        #[sea_orm(column_type = "Text")]
+        pub ends_at: String,
+        pub ends_at_unix: i64,
+        pub appointment_saved_version: i64,
+        pub prepared_at: i64,
+        pub source_version: i64,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub source_versions: Json,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub source_freshness: Json,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub limits: Json,
+        #[sea_orm(column_type = "Text")]
+        pub visit_card_orientation: String,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub trajectory: Json,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub meaningful_changes: Json,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub unresolved_issues: Json,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub visit_decisions: Json,
+        #[sea_orm(column_type = "Text")]
+        pub basis_and_limitations: String,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub basis_citations: Json,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub citations: Json,
+        #[sea_orm(column_type = "Text")]
+        pub narrative: String,
+        #[sea_orm(column_type = "Text")]
+        pub raised_concern_id: Option<String>,
+        #[sea_orm(column_type = "Text")]
+        pub visit_standing: String,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub visit_standing_detail: Option<Json>,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub origin: Json,
+        pub updated_at: i64,
+    }
+
+    #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
+    pub enum Relation {}
+
+    impl ActiveModelBehavior for ActiveModel {}
+}
+
+/// Visit-scoped lifecycle tracking for pre-visit concerns raised by visit preparation.
+/// Ordinary (`today`) visit concerns retire when the visit ends; `now` concerns
+/// stay open past the visit end until opened by an authorized physician.
+/// Created by `m20261112_visit_briefings`.
+pub(super) mod visit_concern {
+    use sea_orm::entity::prelude::*;
+
+    #[derive(Clone, Debug, PartialEq, Eq, DeriveEntityModel)]
+    #[sea_orm(table_name = "physician_runtime_visit_concerns")]
+    pub struct Model {
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub practice: String,
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub workspace: String,
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub concern_id: String,
+        #[sea_orm(column_type = "Text")]
+        pub source_id: String,
+        #[sea_orm(column_type = "Text")]
+        pub appointment_id: String,
+        pub starts_at_unix: i64,
+        pub ends_at_unix: i64,
+        #[sea_orm(column_type = "Text")]
+        pub urgency: String,
+        pub opened_at: Option<i64>,
+        #[sea_orm(column_type = "Text")]
+        pub opened_by_physician: Option<String>,
+        pub created_at: i64,
+        pub updated_at: i64,
+    }
+
+    #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
+    pub enum Relation {}
+
+    impl ActiveModelBehavior for ActiveModel {}
+}

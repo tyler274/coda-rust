@@ -492,11 +492,29 @@ fn record_display_label(source: &SourceRevision) -> String {
     )
 }
 
-fn record_excerpt(source: &SourceRevision) -> String {
+pub(super) fn record_excerpt(source: &SourceRevision) -> String {
     let title = record_display_label(source);
     let body =
         super::history::format_cited_source_body(&title, &source.readable_parts, &source.content);
     truncate_excerpt(&body)
+}
+
+pub(super) fn build_summary_citation(
+    workspace: &str,
+    reference: &ExactRecordReference,
+    source: &SourceRevision,
+    pulls: &[SourcePull],
+) -> SummaryCitation {
+    SummaryCitation {
+        reference: reference.clone(),
+        source_id: source.source_id.clone(),
+        source_label: source_label_for(&source.source_id, pulls),
+        sha256: source.sha256.clone(),
+        display_label: record_display_label(source),
+        as_of: record_as_of(source),
+        excerpt: record_excerpt(source),
+        native_uri: record_native_uri(workspace, source),
+    }
 }
 
 fn record_as_of(source: &SourceRevision) -> Option<String> {
@@ -525,7 +543,9 @@ fn record_native_uri(workspace: &str, source: &SourceRevision) -> Option<String>
 /// Single rule owner collecting `(candidate_id, revision)` pairs already
 /// verified and stored on `saved` (across both summary citations and
 /// operating-index anchors).
-fn known_understanding_pairs(saved: &PatientUnderstanding) -> BTreeSet<(String, String)> {
+pub(super) fn known_understanding_pairs(
+    saved: &PatientUnderstanding,
+) -> BTreeSet<(String, String)> {
     let mut pairs: BTreeSet<(String, String)> = saved
         .summary
         .citations
@@ -647,16 +667,7 @@ fn build_verified_summary(
                 existing
             } else {
                 let next_idx = citations.len();
-                citations.push(SummaryCitation {
-                    reference: reference.clone(),
-                    source_id: source.source_id.clone(),
-                    source_label: source_label_for(&source.source_id, pulls),
-                    sha256: source.sha256.clone(),
-                    display_label: record_display_label(source),
-                    as_of: record_as_of(source),
-                    excerpt: record_excerpt(source),
-                    native_uri: record_native_uri(workspace, source),
-                });
+                citations.push(build_summary_citation(workspace, reference, source, pulls));
                 citation_index_by_ref.insert(key, next_idx);
                 next_idx
             };
@@ -887,6 +898,8 @@ impl Store {
                     .add(practice_job::Column::Kind.eq(PracticeJobKind::InitialUnderstanding)),
             )
             .order_by_desc(practice_job::Column::CreatedAt)
+            .order_by_desc(practice_job::Column::SourcesVersion)
+            .order_by_desc(practice_job::Column::JobId)
             .all(&tx)
             .await?;
         tx.commit().await?;
@@ -1159,6 +1172,8 @@ impl Store {
                     .add(practice_job::Column::Kind.eq(PracticeJobKind::InitialUnderstanding)),
             )
             .order_by_asc(practice_job::Column::UpdatedAt)
+            .order_by_asc(practice_job::Column::SourcesVersion)
+            .order_by_asc(practice_job::Column::JobId)
             .all(&self.db)
             .await?;
         let mut latest_by_workspace: BTreeMap<String, practice_job::Model> = BTreeMap::new();
@@ -1201,21 +1216,19 @@ impl Store {
         practice: &str,
         workspace: &str,
     ) -> Result<Option<String>, DbErr> {
-        let memories = self
-            .patient_memories(
-                practice,
-                workspace,
-                super::chat_operations::MemorySelection::ActiveOnly,
-            )
-            .await
-            .unwrap_or_default();
+        let memory_standing = self.active_memory_standing(practice, workspace).await?;
         let saved = self
             .patient_understanding_internal(practice, workspace)
             .await?;
-        if saved.is_none() && memories.is_empty() {
+        if saved.is_none()
+            && matches!(
+                &memory_standing,
+                super::chat_operations::PatientMemoryStanding::Available { entries } if entries.is_empty()
+            )
+        {
             return Ok(None);
         }
-        let payload = json!({
+        let mut payload = json!({
             "kind": "patient_understanding_context",
             "revision": saved.as_ref().map_or(0, |u| u.revision),
             "source_version": saved.as_ref().map_or(0, |u| u.source_version),
@@ -1232,8 +1245,8 @@ impl Store {
                     "as_of": c.as_of,
                 })).collect::<Vec<_>>(),
             })),
-            "physician_memory_entries": memories,
         });
+        attach_memory_standing(&mut payload, &memory_standing);
         let encoded =
             serde_json::to_string(&payload).expect("patient understanding context serializes");
         Ok(Some(format!(
@@ -1314,18 +1327,14 @@ impl Store {
                     .patient_understanding_internal(&claim.scope.practice, &claim.scope.workspace)
                     .await
                     .map_err(super::persistence_failure)?;
-                let memories = self
-                    .patient_memories(
-                        &claim.scope.practice,
-                        &claim.scope.workspace,
-                        super::chat_operations::MemorySelection::ActiveOnly,
-                    )
+                let memory_standing = self
+                    .active_memory_standing(&claim.scope.practice, &claim.scope.workspace)
                     .await
-                    .unwrap_or_default();
+                    .map_err(super::persistence_failure)?;
                 Ok(ToolOutcome::Returned(render_read_understanding(
                     &claim.scope.workspace,
                     saved.as_ref(),
-                    &memories,
+                    &memory_standing,
                 )))
             }
             SAVE_UNDERSTANDING_TOOL => {
@@ -1417,18 +1426,14 @@ impl Store {
                     .patient_understanding_internal(&claim.scope.practice, &claim.scope.workspace)
                     .await
                     .map_err(super::persistence_failure)?;
-                let memories = self
-                    .patient_memories(
-                        &claim.scope.practice,
-                        &claim.scope.workspace,
-                        super::chat_operations::MemorySelection::ActiveOnly,
-                    )
+                let memory_standing = self
+                    .active_memory_standing(&claim.scope.practice, &claim.scope.workspace)
                     .await
-                    .unwrap_or_default();
+                    .map_err(super::persistence_failure)?;
                 Ok(ToolOutcome::Returned(render_read_understanding(
                     &claim.scope.workspace,
                     saved.as_ref(),
-                    &memories,
+                    &memory_standing,
                 )))
             }
             SAVE_UNDERSTANDING_TOOL => {
@@ -1739,19 +1744,44 @@ fn validate_empty_read_args(arguments: &Value) -> Result<(), String> {
         .map_err(|err| format!("invalid read_patient_understanding arguments: {err}"))
 }
 
+fn attach_memory_standing(
+    payload: &mut Value,
+    standing: &super::chat_operations::PatientMemoryStanding,
+) {
+    let Some(map) = payload.as_object_mut() else {
+        return;
+    };
+    match standing {
+        super::chat_operations::PatientMemoryStanding::Available { entries } => {
+            map.insert(
+                "physician_memory_entries".into(),
+                serde_json::to_value(entries).expect("memory entries serialize"),
+            );
+        }
+        super::chat_operations::PatientMemoryStanding::Unavailable { reason } => {
+            map.insert(
+                "physician_memory_standing".into(),
+                Value::String("unavailable".into()),
+            );
+            map.insert(
+                "physician_memory_unavailable_reason".into(),
+                Value::String(reason.clone()),
+            );
+        }
+    }
+}
+
 fn render_read_understanding(
     workspace: &str,
     saved: Option<&PatientUnderstanding>,
-    memories: &[super::chat_operations::PatientMemoryEntry],
+    memory_standing: &super::chat_operations::PatientMemoryStanding,
 ) -> String {
-    match saved {
+    let mut payload = match saved {
         None => json!({
             "status": "uninitialized",
             "workspace": workspace,
             "revision": 0,
-            "physician_memory_entries": memories,
-        })
-        .to_string(),
+        }),
         Some(understanding) => json!({
             "status": "available",
             "workspace": workspace,
@@ -1766,9 +1796,9 @@ fn render_read_understanding(
                 "scope_note": understanding.summary.scope_note,
                 "citations": understanding.summary.citations,
             },
-            "physician_memory_entries": memories,
             "updated_at": understanding.updated_at,
-        })
-        .to_string(),
-    }
+        }),
+    };
+    attach_memory_standing(&mut payload, memory_standing);
+    payload.to_string()
 }

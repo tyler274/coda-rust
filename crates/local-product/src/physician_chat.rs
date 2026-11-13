@@ -418,6 +418,46 @@ impl PhysicianSkills {
         Ok(Self { package })
     }
 
+    /// Loads the embedded core Chords skills through [`Self::load`] when a
+    /// background worker container has neither `PHYSICIAN_SKILLS_DIR` nor a
+    /// previously saved catalog package in Postgres.
+    pub fn bundled_fallback() -> Result<Self, SkillsError> {
+        let dir = std::env::temp_dir().join(format!(
+            "coda-bundled-skills-{}",
+            uuid::Uuid::new_v4().simple()
+        ));
+        let embedded = [
+            (
+                "patient-communication",
+                include_str!("../../../skills/patient-communication/SKILL.md"),
+            ),
+            (
+                "patient-record-retrieval",
+                include_str!("../../../skills/patient-record-retrieval/SKILL.md"),
+            ),
+            (
+                "visit-preparation",
+                include_str!("../../../skills/visit-preparation/SKILL.md"),
+            ),
+        ];
+        for (name, body) in embedded {
+            let skill_dir = dir.join(name);
+            std::fs::create_dir_all(&skill_dir).map_err(|err| SkillsError::Package {
+                root: dir.clone(),
+                reason: err.to_string(),
+            })?;
+            std::fs::write(skill_dir.join("SKILL.md"), body).map_err(|err| {
+                SkillsError::Package {
+                    root: dir.clone(),
+                    reason: err.to_string(),
+                }
+            })?;
+        }
+        let loaded = Self::load(&dir);
+        let _ = std::fs::remove_dir_all(&dir);
+        loaded
+    }
+
     /// `base` followed by the catalog section. The accepted recipe keeps the exact text.
     pub fn instructions(&self, base: &str) -> String {
         format!("{base}\n\n{}", self.package.catalog_instructions())
@@ -448,7 +488,7 @@ fn refusal(reason: &str) -> ToolOutcome {
 
 #[cfg(test)]
 #[path = "../../../verification/model_text.rs"]
-mod model_text;
+pub(crate) mod model_text;
 
 #[cfg(test)]
 mod tests {
@@ -706,6 +746,20 @@ mod tests {
     fn chords_skills_only_name_tools_some_chords_job_offers() {
         let mut offered = tools().iter().map(Tool::function).collect::<Vec<_>>();
         offered.extend(crate::runtime::reply::tools());
+        offered.extend(crate::patient_reviews::tools().iter().map(Tool::function));
+        offered.extend(
+            crate::visit_preparation::all_tools()
+                .iter()
+                .map(Tool::function),
+        );
         assert_skill_tools(&serde_json::to_value(skills()).unwrap(), &offered, &[]);
+    }
+
+    #[test]
+    fn bundled_fallback_matches_workspace_skill_catalog() {
+        assert_eq!(
+            PhysicianSkills::bundled_fallback().unwrap(),
+            PhysicianSkills::configured(None, false).unwrap()
+        );
     }
 }
