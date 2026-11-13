@@ -72,6 +72,7 @@ async fn a_second_migrate_records_nothing_new() {
             "m20261113_01_spruce_matching",
             "m20261113_02_reply_proposals",
             "m20261113_03_follow_ups_withdrawal",
+            "m20261114_02_message_followup_dispatch",
         ]
     );
 }

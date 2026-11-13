@@ -28,9 +28,18 @@ use super::entities::{
     source, source_pull, source_status, today_updates_seen, today_work_dismissal, visit_briefing,
     visit_concern, visit_preparation,
 };
+use super::follow_ups::{
+    FollowUpStanding, FollowUpUpdateKind, follow_up_entity, follow_up_update_entity,
+};
 use super::jobs::PracticeJobKind;
 use super::receipt::{self, Receipt};
+use super::reply::proposals::{
+    ChannelConnection, ConversationLink, ExpectedDisconnectedCard, ReplyConversation,
+    ReplyProposalBasis, ReplyProposalError, ReplyProposalInputError, ReplyStanding,
+    tables::{reply_conversation, reply_proposal},
+};
 use super::reviews::{RecordedReviewAction, ReviewHoldReason, ReviewLifecycleState};
+use super::spruce_matching::{MessageStanding, SpruceMatchingError, TodayChannelBanner};
 use super::understanding::{PatientSummary, SummaryCitation};
 use super::{Authority, MessageRole, Store, WorkStatus, control, conversion_error};
 use crate::patient_reviews::{
@@ -42,6 +51,11 @@ use crate::visit_preparation::VisitPreparationDecision;
 
 const EXCERPT_CHARS: usize = 320;
 const SECONDS_PER_DAY: i64 = 86_400;
+
+/// Sentinel workspace scope used for practice-wide messaging items on Today
+/// (`match:...`, `unreadable:...`, and `channel:spruce`) before a conversation
+/// is linked to an individual patient workspace.
+pub const PRACTICE_MESSAGING_WORKSPACE: &str = "__practice_messaging__";
 
 /// Which durable runtime producer owns one slice of Today or Updates.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize)]
@@ -59,6 +73,10 @@ pub enum ProducerKind {
     RunningConversations,
     /// Per-source refresh statuses and practice schedule source standing.
     SourceStatuses,
+    /// Linked patient message threads, unmatched/unreadable Spruce items, and reply drafts.
+    Messages,
+    /// Clinical follow-up items and follow-up change history.
+    FollowUps,
 }
 
 impl ProducerKind {
@@ -72,6 +90,8 @@ impl ProducerKind {
             Self::PatientUnderstanding => "patient_understanding",
             Self::RunningConversations => "running_conversations",
             Self::SourceStatuses => "source_statuses",
+            Self::Messages => "messages",
+            Self::FollowUps => "follow_ups",
         }
     }
 
@@ -85,6 +105,8 @@ impl ProducerKind {
             Self::PatientUnderstanding => "patient summaries",
             Self::RunningConversations => "active conversations",
             Self::SourceStatuses => "connected source statuses",
+            Self::Messages => "patient messages",
+            Self::FollowUps => "patient follow-ups",
         }
     }
 }
@@ -221,6 +243,12 @@ pub enum TodayUpdatesError {
     /// Underlying concern lifecycle operation failed.
     #[error("{0}")]
     Concern(#[source] ConcernError),
+    /// Underlying Spruce channel or matching operation failed.
+    #[error("{0}")]
+    SpruceMatching(#[source] SpruceMatchingError),
+    /// Underlying reply conversation or proposal operation failed.
+    #[error("{0}")]
+    ReplyProposal(#[source] ReplyProposalError),
     /// Postgres refused or failed an operation outside partial producer reads.
     #[error("{0}")]
     Database(#[from] DbErr),
@@ -238,6 +266,40 @@ impl From<ConcernError> for TodayUpdatesError {
             ConcernError::AccessDenied { reason } => Self::AccessDenied { reason },
             ConcernError::IdempotencyCollision { key } => Self::IdempotencyCollision { key },
             other => Self::Concern(other),
+        }
+    }
+}
+
+impl From<SpruceMatchingError> for TodayUpdatesError {
+    fn from(error: SpruceMatchingError) -> Self {
+        match error {
+            SpruceMatchingError::AccessDenied { reason, .. } => Self::AccessDenied {
+                reason: reason.to_owned(),
+            },
+            SpruceMatchingError::IdempotencyCollision { key } => Self::IdempotencyCollision { key },
+            SpruceMatchingError::InvalidIdentifier { field }
+            | SpruceMatchingError::InvalidReasonText { field } => Self::InvalidInput { field },
+            SpruceMatchingError::AuthorityUnavailable(err) => Self::AuthUnavailable(err),
+            SpruceMatchingError::Database(err) => Self::Database(err),
+            other => Self::SpruceMatching(other),
+        }
+    }
+}
+
+impl From<ReplyProposalError> for TodayUpdatesError {
+    fn from(error: ReplyProposalError) -> Self {
+        match error {
+            ReplyProposalError::AccessDenied { reason } => Self::AccessDenied { reason },
+            ReplyProposalError::IdempotencyCollision { key } => Self::IdempotencyCollision { key },
+            ReplyProposalError::InvalidInput(ReplyProposalInputError::InvalidIdentifier {
+                field,
+                ..
+            })
+            | ReplyProposalError::InvalidInput(ReplyProposalInputError::InvalidText { field }) => {
+                Self::InvalidInput { field }
+            }
+            ReplyProposalError::Database(err) => Self::Database(err),
+            other => Self::ReplyProposal(other),
         }
     }
 }
@@ -404,6 +466,8 @@ pub enum UnhandledWorkKind {
     VisitPreparation,
     /// Initial patient understanding job that failed before producing a summary.
     InitialUnderstanding,
+    /// Due clinical follow-up whose review failed non-restartably (`CannotRestart`).
+    FollowUpReview,
 }
 
 /// Which kind of physician-recognizable running work appears on Today.
@@ -451,6 +515,49 @@ pub enum TodayRowPayload {
         #[serde(default, skip_serializing_if = "Option::is_none")]
         chat_id: Option<String>,
     },
+    /// Linked patient message thread needing handling (open messages, open reply, or open associated concern).
+    MessageThread {
+        /// Channel conversation identifier.
+        conversation_id: String,
+        /// Whether a ready reply draft is currently saved on the thread.
+        reply_ready: bool,
+        /// Count of open unanswered patient messages on the thread.
+        open_message_count: usize,
+        /// Whether the practice's messaging channel is currently disconnected.
+        channel_disconnected: bool,
+        /// Open concerns associated with this conversation that keep the row open until handled.
+        open_concern_ids: Vec<ConcernId>,
+        /// `Now` when an associated open concern has `Now` urgency, otherwise `Today`.
+        urgency: ConcernUrgency,
+    },
+    /// Unmatched patient message waiting for confirmation on `"Messages to match"`.
+    MessageToMatch {
+        /// Spruce message identifier.
+        message_id: String,
+        /// Spruce conversation identifier.
+        conversation_id: String,
+        /// Whether Coda flagged this unmatched message as urgent (`Now`).
+        leads_as_now: bool,
+        /// Viewer-authorized patient suggestion, when present.
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        suggested_workspace: Option<String>,
+    },
+    /// Unreadable Spruce item waiting on Today until Coda reads it or a physician marks `Done`.
+    UnreadableMessage {
+        /// Spruce message identifier.
+        message_id: String,
+        /// Spruce conversation identifier.
+        conversation_id: String,
+        /// Plain-language reason Coda could not read the message.
+        reason: String,
+    },
+    /// Practice-wide Spruce channel read problem (`CannotRead` or `ReconnectRequired`).
+    MessagingChannelProblem {
+        /// `"cannot_read"` or `"reconnect_required"`.
+        problem_kind: String,
+        /// Unix second when the channel read problem was recorded.
+        failed_at_unix: i64,
+    },
 }
 
 /// One flat row on Today for an authorized patient workspace.
@@ -489,28 +596,33 @@ impl TodayRow {
             TodayRowPayload::OpenConcern {
                 urgency: ConcernUrgency::Now,
                 ..
+            } | TodayRowPayload::MessageThread {
+                urgency: ConcernUrgency::Now,
+                ..
+            } | TodayRowPayload::MessageToMatch {
+                leads_as_now: true,
+                ..
             }
         )
     }
 
     fn sort_rank(&self) -> u8 {
-        match &self.payload {
-            TodayRowPayload::OpenConcern {
-                urgency: ConcernUrgency::Now,
-                ..
-            } => {
-                if self.seen_standing.needs_physician_eye() {
-                    0
-                } else {
-                    1
-                }
+        if self.is_now() {
+            if self.seen_standing.needs_physician_eye() {
+                0
+            } else {
+                1
             }
-            TodayRowPayload::OpenConcern {
-                urgency: ConcernUrgency::Today,
-                ..
+        } else {
+            match &self.payload {
+                TodayRowPayload::OpenConcern { .. }
+                | TodayRowPayload::UnhandledWork { .. }
+                | TodayRowPayload::RunningWork { .. }
+                | TodayRowPayload::MessageThread { .. }
+                | TodayRowPayload::MessageToMatch { .. }
+                | TodayRowPayload::UnreadableMessage { .. }
+                | TodayRowPayload::MessagingChannelProblem { .. } => 2,
             }
-            | TodayRowPayload::UnhandledWork { .. }
-            | TodayRowPayload::RunningWork { .. } => 2,
         }
     }
 }
@@ -622,6 +734,24 @@ pub enum UpdateEntryKind {
         work_label: String,
         /// Clinical reason why nothing was needed.
         reason: String,
+    },
+    /// Reply proposal saved by Coda as a physician draft on a linked patient message conversation.
+    ReplyDrafted {
+        /// Channel conversation identifier.
+        conversation_id: String,
+        /// Reply card identity.
+        reply_id: u64,
+        /// Monotonic proposal version on `conversation_id`.
+        proposal_version: u64,
+    },
+    /// Clinical follow-up created, changed, completed, or cancelled on a patient workspace.
+    FollowUpChanged {
+        /// Durable follow-up identifier.
+        follow_up_id: String,
+        /// Follow-up revision number.
+        version: u64,
+        /// Canonical change kind (`"created"`, `"changed"`, `"completed"`, `"cancelled"`, etc.).
+        change_kind: String,
     },
 }
 
@@ -1006,6 +1136,163 @@ fn source_work_summary(work: &SourceWork) -> String {
     }
 }
 
+fn is_practice_wide_messaging_item(workspace: &str, key: &str) -> bool {
+    workspace == PRACTICE_MESSAGING_WORKSPACE
+        && (key == "channel:spruce" || key.starts_with("match:") || key.starts_with("unreadable:"))
+}
+
+/// Single-owner rule deciding whether a linked patient message conversation
+/// belongs on Today: a practice message does not itself clear the row; the row
+/// remains while an unanswered open patient message, an open reply (`Ready` or
+/// `Withheld`), or an associated open concern exists, and closes only when all
+/// are handled.
+fn message_thread_open_on_today(
+    conv: &ReplyConversation,
+    open_associated_concerns: &[ConcernId],
+) -> bool {
+    let has_open_patient_messages = conv
+        .patient_messages
+        .iter()
+        .any(|msg| msg.standing.is_open());
+    has_open_patient_messages
+        || conv.reply_standing.is_open()
+        || !open_associated_concerns.is_empty()
+}
+
+/// Single-owner rule deciding whether a Today `MessageThread` row can be cleared
+/// directly with `Done`: while patient messages or a reply card remain open, `Done`
+/// is permitted only when the messaging channel is disconnected and an open reply
+/// card exists; once all messages and the reply are handled, `Done` is permitted
+/// when only associated open concern(s) remain.
+fn message_thread_can_mark_done(
+    conv: &ReplyConversation,
+    open_associated_concerns: &[ConcernId],
+) -> bool {
+    let has_open_msgs_or_reply = conv
+        .patient_messages
+        .iter()
+        .any(|msg| msg.standing.is_open())
+        || conv.reply_standing.is_open();
+    if has_open_msgs_or_reply {
+        matches!(conv.channel, ChannelConnection::Disconnected { .. })
+            && conv.reply_standing.is_open()
+    } else {
+        !open_associated_concerns.is_empty()
+    }
+}
+
+fn message_thread_version_id(
+    conv: &ReplyConversation,
+    open_concerns: &[(ConcernId, i64, ConcernUrgency)],
+) -> String {
+    let mut buf = Vec::new();
+    let standing_tag = match &conv.reply_standing {
+        ReplyStanding::None => "none".to_owned(),
+        ReplyStanding::Ready { proposal } => {
+            format!("ready:{}:{}", proposal.reply_id, proposal.version)
+        }
+        ReplyStanding::Withheld {
+            reply_id,
+            move_epoch,
+            ..
+        } => format!("withheld:{reply_id}:{move_epoch}"),
+        ReplyStanding::ClosedWithUndo { proposal, .. } => {
+            format!("closed_undo:{}:{}", proposal.reply_id, proposal.version)
+        }
+    };
+    let disconnected = matches!(conv.channel, ChannelConnection::Disconnected { .. });
+    buf.extend_from_slice(
+        format!(
+            "cv:{};pv:{};st:{standing_tag};disc:{disconnected};",
+            conv.conversation_version, conv.last_proposal_version
+        )
+        .as_bytes(),
+    );
+    for msg in &conv.patient_messages {
+        if msg.standing.is_open() {
+            buf.extend_from_slice(msg.message_id.as_bytes());
+            buf.push(b',');
+        }
+    }
+    buf.push(b'|');
+    for (cid, rev, urgency) in open_concerns {
+        buf.extend_from_slice(format!("{}:{rev}:{};", cid.as_str(), urgency.as_str()).as_bytes());
+    }
+    let hex = crate::sha256_hex(&buf);
+    format!("thread-v1:{}", &hex[..16])
+}
+
+const fn follow_up_update_kind_label(kind: FollowUpUpdateKind) -> &'static str {
+    match kind {
+        FollowUpUpdateKind::Created => "created",
+        FollowUpUpdateKind::Changed => "changed",
+        FollowUpUpdateKind::Stopped => "stopped",
+        FollowUpUpdateKind::Resumed => "resumed",
+        FollowUpUpdateKind::ReviewRequestedNow => "review_requested_now",
+        FollowUpUpdateKind::MarkedCannotRestart => "marked_cannot_restart",
+        FollowUpUpdateKind::Completed => "completed",
+        FollowUpUpdateKind::Cancelled => "cancelled",
+        FollowUpUpdateKind::WithdrawnWrongPatient => "withdrawn_wrong_patient",
+    }
+}
+
+fn cannot_restart_follow_up_today_row(
+    row: follow_up_entity::Model,
+    patient_display_name: &str,
+    seen_map: Option<&BTreeMap<String, StoredSeenEntry>>,
+    dismissals: &BTreeSet<(String, String, String)>,
+) -> Result<Option<TodayRow>, String> {
+    let standing: FollowUpStanding = serde_json::from_value(row.standing_detail)
+        .map_err(|err| format!("decode follow-up standing: {err}"))?;
+    let FollowUpStanding::CannotRestart {
+        failed_work_id,
+        failed_at,
+        reason,
+        ..
+    } = standing
+    else {
+        return Ok(None);
+    };
+    let key_str = format!("unhandled-followup:{}:{}", row.workspace, row.id);
+    let version_id = format!("cannot_restart:{}:{failed_at}", row.version);
+    if dismissals.contains(&(row.workspace.clone(), key_str.clone(), version_id.clone())) {
+        return Ok(None);
+    }
+    let title = "Follow-up review couldn't finish".to_owned();
+    let detail = format!("Follow-up `{}`: {reason}", row.summary);
+    let snapshot = SeenItemSnapshot {
+        version_id: version_id.clone(),
+        urgency: None,
+        headline: title.clone(),
+        detail: detail.clone(),
+    };
+    let seen_standing = seen_map
+        .map(|map| evaluate_seen_standing(map.get(&key_str), &snapshot))
+        .unwrap_or(SeenStanding::Unseen);
+    let work_id = if failed_work_id.trim().is_empty() {
+        row.id
+    } else {
+        failed_work_id
+    };
+    Ok(Some(TodayRow {
+        item_key: SeenItemKey(key_str),
+        version_id,
+        workspace: row.workspace,
+        patient_display_name: patient_display_name.to_owned(),
+        title,
+        detail: detail.clone(),
+        waiting_since_unix: failed_at,
+        updated_at_unix: row.updated_at,
+        seen_standing,
+        can_mark_done: true,
+        payload: TodayRowPayload::UnhandledWork {
+            work_kind: UnhandledWorkKind::FollowUpReview,
+            work_id,
+            unfinished_topics: vec![detail],
+        },
+    }))
+}
+
 impl Store {
     async fn authorize_physician_read(
         &self,
@@ -1225,11 +1512,15 @@ impl Store {
         let names = self
             .resolve_patient_names(&ctx.allowed_workspaces, patient_names)
             .await;
+        let mut seen_workspaces = ctx.allowed_workspaces.clone();
+        if workspace_filter.is_none() {
+            seen_workspaces.push(PRACTICE_MESSAGING_WORKSPACE.to_owned());
+        }
         let seen_map = self
             .load_physician_seen_map(
                 &ctx.identity.practice_id,
                 &ctx.identity.physician_id,
-                &ctx.allowed_workspaces,
+                &seen_workspaces,
             )
             .await?;
         let dismissals = self
@@ -1240,6 +1531,7 @@ impl Store {
         let mut failed_parts = Vec::new();
         let mut quiet_reviewed_workspaces_today = BTreeSet::new();
         let mut practice_outages = Vec::new();
+        let mut absorbed_concern_ids: BTreeSet<(String, ConcernId)> = BTreeSet::new();
 
         // 1. Concerns & pre-visit nudges.
         match self
@@ -1314,6 +1606,43 @@ impl Store {
                 producer: ProducerKind::SourceStatuses,
                 message,
             }),
+        }
+
+        // 7. Patient messages (linked threads, unmatched messages, unreadable items, channel health).
+        match self
+            .read_today_messages_slice(auth, &ctx, workspace_filter, &names, &seen_map, probe)
+            .await
+        {
+            Ok((mut msg_rows, absorbed)) => {
+                absorbed_concern_ids = absorbed;
+                rows.append(&mut msg_rows);
+            }
+            Err(message) => failed_parts.push(ProducerFailure {
+                producer: ProducerKind::Messages,
+                message,
+            }),
+        }
+
+        // 8. Non-restartable follow-up failures (`CannotRestart`).
+        match self
+            .read_today_follow_ups_slice(&ctx, &names, &seen_map, &dismissals, probe)
+            .await
+        {
+            Ok(mut follow_up_rows) => rows.append(&mut follow_up_rows),
+            Err(message) => failed_parts.push(ProducerFailure {
+                producer: ProducerKind::FollowUps,
+                message,
+            }),
+        }
+
+        if !absorbed_concern_ids.is_empty() {
+            rows.retain(|row| {
+                !matches!(
+                    &row.payload,
+                    TodayRowPayload::OpenConcern { concern_id, .. }
+                        if absorbed_concern_ids.contains(&(row.workspace.clone(), concern_id.clone()))
+                )
+            });
         }
 
         let mut rows = collapse_unhandled_today_rows(rows, &seen_map, &dismissals);
@@ -1986,6 +2315,416 @@ impl Store {
         Ok(outages)
     }
 
+    async fn read_today_messages_slice(
+        &self,
+        auth: &dyn AuthStore,
+        ctx: &AuthorizedReadContext,
+        workspace_filter: Option<&str>,
+        names: &BTreeMap<String, String>,
+        seen_map: &BTreeMap<String, StoredSeenEntry>,
+        probe: &dyn TodayUpdatesProbe,
+    ) -> Result<(Vec<TodayRow>, BTreeSet<(String, ConcernId)>), String> {
+        probe.check_producer(ProducerKind::Messages)?;
+        let practice = ctx.identity.practice_id.as_str();
+        let mut out = Vec::new();
+        let mut absorbed_concerns = BTreeSet::new();
+
+        if workspace_filter.is_none() {
+            let spruce = self
+                .today_spruce_summary_for_physician(auth, &ctx.identity)
+                .await
+                .map_err(|err| err.to_string())?;
+
+            match spruce.channel_banner {
+                TodayChannelBanner::Quiet => {}
+                TodayChannelBanner::CannotRead {
+                    reason,
+                    failed_at,
+                    last_read_at,
+                } => {
+                    let key_str = "channel:spruce".to_owned();
+                    let version_id = format!("cannot_read:{failed_at}:{reason}");
+                    let title = "Messaging channel cannot be read".to_owned();
+                    let detail = match last_read_at {
+                        Some(last_ts) => {
+                            format!(
+                                "Cannot read messaging channel ({reason}); last read at {last_ts}."
+                            )
+                        }
+                        None => format!("Cannot read messaging channel ({reason})."),
+                    };
+                    let snapshot = SeenItemSnapshot {
+                        version_id: version_id.clone(),
+                        urgency: None,
+                        headline: title.clone(),
+                        detail: detail.clone(),
+                    };
+                    let seen_standing = evaluate_seen_standing(seen_map.get(&key_str), &snapshot);
+                    out.push(TodayRow {
+                        item_key: SeenItemKey(key_str),
+                        version_id,
+                        workspace: PRACTICE_MESSAGING_WORKSPACE.to_owned(),
+                        patient_display_name: "Practice messaging".to_owned(),
+                        title,
+                        detail,
+                        waiting_since_unix: failed_at,
+                        updated_at_unix: failed_at,
+                        seen_standing,
+                        can_mark_done: false,
+                        payload: TodayRowPayload::MessagingChannelProblem {
+                            problem_kind: "cannot_read".to_owned(),
+                            failed_at_unix: failed_at,
+                        },
+                    });
+                }
+                TodayChannelBanner::ReconnectRequired {
+                    reason,
+                    failed_at,
+                    last_read_at,
+                } => {
+                    let key_str = "channel:spruce".to_owned();
+                    let version_id = format!("reconnect_required:{failed_at}:{reason}");
+                    let title = "Messaging channel requires reconnect".to_owned();
+                    let detail = match last_read_at {
+                        Some(last_ts) => format!(
+                            "Messaging channel needs reconnect ({reason}); last read at {last_ts}."
+                        ),
+                        None => format!("Messaging channel needs reconnect ({reason})."),
+                    };
+                    let snapshot = SeenItemSnapshot {
+                        version_id: version_id.clone(),
+                        urgency: None,
+                        headline: title.clone(),
+                        detail: detail.clone(),
+                    };
+                    let seen_standing = evaluate_seen_standing(seen_map.get(&key_str), &snapshot);
+                    out.push(TodayRow {
+                        item_key: SeenItemKey(key_str),
+                        version_id,
+                        workspace: PRACTICE_MESSAGING_WORKSPACE.to_owned(),
+                        patient_display_name: "Practice messaging".to_owned(),
+                        title,
+                        detail,
+                        waiting_since_unix: failed_at,
+                        updated_at_unix: failed_at,
+                        seen_standing,
+                        can_mark_done: false,
+                        payload: TodayRowPayload::MessagingChannelProblem {
+                            problem_kind: "reconnect_required".to_owned(),
+                            failed_at_unix: failed_at,
+                        },
+                    });
+                }
+            }
+
+            for msg in spruce.messages_to_match {
+                let key_str = format!("match:{}", msg.message_id);
+                let suggested_ws = msg.suggested_patient.as_ref().map(|s| s.workspace.clone());
+                let urgency_opt = msg.leads_today_as_now.then_some(ConcernUrgency::Now);
+                let version_id = format!(
+                    "waiting:{}:{}:{}",
+                    msg.waiting_since,
+                    msg.leads_today_as_now,
+                    suggested_ws.as_deref().unwrap_or("none")
+                );
+                let title = if msg.leads_today_as_now {
+                    "Urgent message to match".to_owned()
+                } else {
+                    "Message to match".to_owned()
+                };
+                let detail = summarize_one_line(&msg.body_text, 140);
+                let snapshot = SeenItemSnapshot {
+                    version_id: version_id.clone(),
+                    urgency: urgency_opt,
+                    headline: title.clone(),
+                    detail: detail.clone(),
+                };
+                let seen_standing = evaluate_seen_standing(seen_map.get(&key_str), &snapshot);
+                let patient_display_name = suggested_ws
+                    .as_deref()
+                    .and_then(|ws| names.get(ws).cloned())
+                    .unwrap_or_else(|| "Unmatched message".to_owned());
+                out.push(TodayRow {
+                    item_key: SeenItemKey(key_str),
+                    version_id,
+                    workspace: PRACTICE_MESSAGING_WORKSPACE.to_owned(),
+                    patient_display_name,
+                    title,
+                    detail,
+                    waiting_since_unix: msg.waiting_since,
+                    updated_at_unix: msg.waiting_since,
+                    seen_standing,
+                    can_mark_done: false,
+                    payload: TodayRowPayload::MessageToMatch {
+                        message_id: msg.message_id,
+                        conversation_id: msg.conversation_id,
+                        leads_as_now: msg.leads_today_as_now,
+                        suggested_workspace: suggested_ws,
+                    },
+                });
+            }
+
+            for msg in spruce.unreadable_messages {
+                let key_str = format!("unreadable:{}", msg.message_id);
+                let version_id = format!("cant_read:{}", msg.kept_at);
+                let title = "Message couldn't be read".to_owned();
+                let detail = msg.failure_reason.clone();
+                let snapshot = SeenItemSnapshot {
+                    version_id: version_id.clone(),
+                    urgency: None,
+                    headline: title.clone(),
+                    detail: detail.clone(),
+                };
+                let seen_standing = evaluate_seen_standing(seen_map.get(&key_str), &snapshot);
+                out.push(TodayRow {
+                    item_key: SeenItemKey(key_str),
+                    version_id,
+                    workspace: PRACTICE_MESSAGING_WORKSPACE.to_owned(),
+                    patient_display_name: "Practice messaging".to_owned(),
+                    title,
+                    detail,
+                    waiting_since_unix: msg.kept_at,
+                    updated_at_unix: msg.kept_at,
+                    seen_standing,
+                    can_mark_done: true,
+                    payload: TodayRowPayload::UnreadableMessage {
+                        message_id: msg.message_id,
+                        conversation_id: msg.conversation_id,
+                        reason: msg.failure_reason,
+                    },
+                });
+            }
+        }
+
+        if ctx.allowed_workspaces.is_empty() {
+            return Ok((out, absorbed_concerns));
+        }
+
+        for ws in &ctx.allowed_workspaces {
+            self.sync_workspace_spruce_conversations_to_reply(practice, ws)
+                .await
+                .map_err(|err| err.to_string())?;
+        }
+
+        let open_concern_rows = concern::Entity::find()
+            .filter(concern::Column::Practice.eq(practice))
+            .filter(
+                concern::Column::Workspace.is_in(ctx.allowed_workspaces.iter().map(String::as_str)),
+            )
+            .filter(concern::Column::Status.eq("open"))
+            .all(&self.db)
+            .await
+            .map_err(|err| err.to_string())?;
+        let mut open_concerns_by_ws_id: BTreeMap<
+            (String, String),
+            (ConcernId, i64, ConcernUrgency, String),
+        > = BTreeMap::new();
+        for c_row in open_concern_rows {
+            let urgency = match c_row.urgency.as_str() {
+                "now" => ConcernUrgency::Now,
+                "today" => ConcernUrgency::Today,
+                other => return Err(format!("invalid concern urgency `{other}`")),
+            };
+            let cid = ConcernId::new(c_row.id.clone())
+                .map_err(|err| format!("invalid concern id: {err}"))?;
+            open_concerns_by_ws_id.insert(
+                (c_row.workspace, c_row.id),
+                (cid, c_row.revision, urgency, c_row.reason),
+            );
+        }
+
+        let conv_rows = reply_conversation::Entity::find()
+            .filter(reply_conversation::Column::Practice.eq(practice))
+            .filter(reply_conversation::Column::LinkKind.eq("linked_patient"))
+            .filter(
+                reply_conversation::Column::Workspace
+                    .is_in(ctx.allowed_workspaces.iter().map(String::as_str)),
+            )
+            .order_by_asc(reply_conversation::Column::ConversationId)
+            .all(&self.db)
+            .await
+            .map_err(|err| err.to_string())?;
+
+        let allowed_set: BTreeSet<&str> =
+            ctx.allowed_workspaces.iter().map(String::as_str).collect();
+
+        for conv_row in conv_rows {
+            let Some(conv) = self
+                .reply_conversation(practice, &conv_row.conversation_id)
+                .await
+                .map_err(|err| err.to_string())?
+            else {
+                continue;
+            };
+            let ConversationLink::LinkedPatient { workspace } = &conv.link else {
+                continue;
+            };
+            if !allowed_set.contains(workspace.as_str()) {
+                continue;
+            }
+
+            let mut open_concern_tuples = Vec::new();
+            let mut open_concern_ids = Vec::new();
+            let mut open_concern_reasons = Vec::new();
+            let mut thread_urgency = ConcernUrgency::Today;
+            for assoc_id in &conv.associated_concern_ids {
+                if let Some((cid, rev, urg, reason)) =
+                    open_concerns_by_ws_id.get(&(workspace.clone(), assoc_id.as_str().to_owned()))
+                {
+                    if *urg == ConcernUrgency::Now {
+                        thread_urgency = ConcernUrgency::Now;
+                    }
+                    open_concern_tuples.push((cid.clone(), *rev, *urg));
+                    open_concern_ids.push(cid.clone());
+                    open_concern_reasons.push(summarize_one_line(reason, 96));
+                }
+            }
+
+            if !message_thread_open_on_today(&conv, &open_concern_ids) {
+                continue;
+            }
+
+            for cid in &open_concern_ids {
+                absorbed_concerns.insert((workspace.clone(), cid.clone()));
+            }
+
+            let open_message_count = conv
+                .patient_messages
+                .iter()
+                .filter(|m| m.standing.is_open())
+                .count();
+            let reply_ready = matches!(conv.reply_standing, ReplyStanding::Ready { .. });
+            let channel_disconnected =
+                matches!(conv.channel, ChannelConnection::Disconnected { .. });
+            let has_open_msgs_or_reply = open_message_count > 0 || conv.reply_standing.is_open();
+            let can_mark_done = message_thread_can_mark_done(&conv, &open_concern_ids);
+
+            let waiting_since_unix = conv
+                .patient_messages
+                .iter()
+                .filter(|m| m.standing.is_open())
+                .map(|m| m.sent_at)
+                .min()
+                .or(match &conv.reply_standing {
+                    ReplyStanding::Ready { proposal } => Some(proposal.proposed_at),
+                    ReplyStanding::Withheld { withheld_at, .. } => Some(*withheld_at),
+                    ReplyStanding::None | ReplyStanding::ClosedWithUndo { .. } => None,
+                })
+                .unwrap_or(conv.created_at);
+
+            let (title, mut detail) = match &conv.reply_standing {
+                ReplyStanding::Ready { proposal } => (
+                    "Reply draft ready".to_owned(),
+                    summarize_one_line(&proposal.text, 140),
+                ),
+                ReplyStanding::Withheld { .. } => (
+                    "Patient message awaiting updated reply".to_owned(),
+                    "Conversation moved; Coda is reviewing messages for this patient.".to_owned(),
+                ),
+                ReplyStanding::None | ReplyStanding::ClosedWithUndo { .. } => {
+                    if open_message_count > 0 {
+                        let latest = conv
+                            .patient_messages
+                            .iter()
+                            .rev()
+                            .find(|m| m.standing.is_open())
+                            .map(|m| summarize_one_line(&m.text, 140))
+                            .unwrap_or_else(|| "Open patient message awaiting review.".to_owned());
+                        ("Patient message".to_owned(), latest)
+                    } else {
+                        (
+                            "Message concern still open".to_owned(),
+                            open_concern_reasons.join("; "),
+                        )
+                    }
+                }
+            };
+            if has_open_msgs_or_reply && !open_concern_reasons.is_empty() {
+                detail = format!("{detail} · Concern: {}", open_concern_reasons.join("; "));
+            }
+
+            let key_str = format!("reply:{workspace}:{}", conv.conversation_id);
+            let version_id = message_thread_version_id(&conv, &open_concern_tuples);
+            let snapshot = SeenItemSnapshot {
+                version_id: version_id.clone(),
+                urgency: Some(thread_urgency),
+                headline: title.clone(),
+                detail: detail.clone(),
+            };
+            let seen_standing = evaluate_seen_standing(seen_map.get(&key_str), &snapshot);
+            let patient_display_name = names
+                .get(workspace)
+                .cloned()
+                .unwrap_or_else(|| workspace.clone());
+
+            out.push(TodayRow {
+                item_key: SeenItemKey(key_str),
+                version_id,
+                workspace: workspace.clone(),
+                patient_display_name,
+                title,
+                detail,
+                waiting_since_unix,
+                updated_at_unix: conv.updated_at,
+                seen_standing,
+                can_mark_done,
+                payload: TodayRowPayload::MessageThread {
+                    conversation_id: conv.conversation_id,
+                    reply_ready,
+                    open_message_count,
+                    channel_disconnected,
+                    open_concern_ids,
+                    urgency: thread_urgency,
+                },
+            });
+        }
+
+        Ok((out, absorbed_concerns))
+    }
+
+    async fn read_today_follow_ups_slice(
+        &self,
+        ctx: &AuthorizedReadContext,
+        names: &BTreeMap<String, String>,
+        seen_map: &BTreeMap<String, StoredSeenEntry>,
+        dismissals: &BTreeSet<(String, String, String)>,
+        probe: &dyn TodayUpdatesProbe,
+    ) -> Result<Vec<TodayRow>, String> {
+        probe.check_producer(ProducerKind::FollowUps)?;
+        if ctx.allowed_workspaces.is_empty() {
+            return Ok(Vec::new());
+        }
+        let rows = follow_up_entity::Entity::find()
+            .filter(follow_up_entity::Column::Practice.eq(ctx.identity.practice_id.as_str()))
+            .filter(
+                follow_up_entity::Column::Workspace
+                    .is_in(ctx.allowed_workspaces.iter().map(String::as_str)),
+            )
+            .filter(follow_up_entity::Column::Status.eq("cannot_restart"))
+            .order_by_asc(follow_up_entity::Column::UpdatedAt)
+            .order_by_asc(follow_up_entity::Column::Id)
+            .all(&self.db)
+            .await
+            .map_err(|err| err.to_string())?;
+
+        let mut out = Vec::new();
+        for row in rows {
+            let patient_display_name = names
+                .get(&row.workspace)
+                .cloned()
+                .unwrap_or_else(|| row.workspace.clone());
+            if let Some(today_row) = cannot_restart_follow_up_today_row(
+                row,
+                &patient_display_name,
+                Some(seen_map),
+                dismissals,
+            )? {
+                out.push(today_row);
+            }
+        }
+        Ok(out)
+    }
+
     /// Reads the Updates projection across the signed-in physician's authorized
     /// panel patients, including active runs, today's items, `"Reviewed, nothing
     /// for you"`, and earlier calendar days.
@@ -2086,6 +2825,30 @@ impl Store {
             }
             Err(message) => failed_parts.push(ProducerFailure {
                 producer: ProducerKind::PatientUnderstanding,
+                message,
+            }),
+        }
+
+        // 5. Patient message reply drafts saved by Coda (never practice-sent channel messages).
+        match self
+            .read_updates_messages_slice(&ctx, &names, &seen_map, probe)
+            .await
+        {
+            Ok(mut entries) => completed_entries.append(&mut entries),
+            Err(message) => failed_parts.push(ProducerFailure {
+                producer: ProducerKind::Messages,
+                message,
+            }),
+        }
+
+        // 6. Clinical follow-up creations, changes, completions, and cancellations.
+        match self
+            .read_updates_follow_ups_slice(&ctx, &names, &seen_map, probe)
+            .await
+        {
+            Ok(mut entries) => completed_entries.append(&mut entries),
+            Err(message) => failed_parts.push(ProducerFailure {
+                producer: ProducerKind::FollowUps,
                 message,
             }),
         }
@@ -2628,6 +3391,207 @@ impl Store {
         Ok((active_runs, entries))
     }
 
+    async fn read_updates_messages_slice(
+        &self,
+        ctx: &AuthorizedReadContext,
+        names: &BTreeMap<String, String>,
+        seen_map: &BTreeMap<String, StoredSeenEntry>,
+        probe: &dyn TodayUpdatesProbe,
+    ) -> Result<Vec<UpdateEntry>, String> {
+        probe.check_producer(ProducerKind::Messages)?;
+        if ctx.allowed_workspaces.is_empty() {
+            return Ok(Vec::new());
+        }
+        let practice = ctx.identity.practice_id.as_str();
+        let proposal_rows = reply_proposal::Entity::find()
+            .filter(reply_proposal::Column::Practice.eq(practice))
+            .filter(
+                reply_proposal::Column::Workspace
+                    .is_in(ctx.allowed_workspaces.iter().map(String::as_str)),
+            )
+            .order_by_asc(reply_proposal::Column::ProposedAt)
+            .order_by_asc(reply_proposal::Column::Version)
+            .all(&self.db)
+            .await
+            .map_err(|err| err.to_string())?;
+        if proposal_rows.is_empty() {
+            return Ok(Vec::new());
+        }
+
+        let conv_ids: BTreeSet<String> = proposal_rows
+            .iter()
+            .map(|r| r.conversation_id.clone())
+            .collect();
+        let conv_rows = reply_conversation::Entity::find()
+            .filter(reply_conversation::Column::Practice.eq(practice))
+            .filter(
+                reply_conversation::Column::ConversationId
+                    .is_in(conv_ids.iter().map(String::as_str)),
+            )
+            .all(&self.db)
+            .await
+            .map_err(|err| err.to_string())?;
+        let mut active_conv_workspace: BTreeMap<String, String> = BTreeMap::new();
+        for c_row in conv_rows {
+            if c_row.link_kind == "linked_patient"
+                && let Some(ws) = c_row.workspace
+            {
+                active_conv_workspace.insert(c_row.conversation_id, ws);
+            }
+        }
+
+        let mut entries = Vec::new();
+        for row in proposal_rows {
+            if active_conv_workspace.get(&row.conversation_id) != Some(&row.workspace) {
+                continue;
+            }
+            let reply_id = u64::try_from(row.reply_id)
+                .map_err(|err| format!("reply_proposal.reply_id: {err}"))?;
+            let proposal_version = u64::try_from(row.version)
+                .map_err(|err| format!("reply_proposal.version: {err}"))?;
+            let key_str = format!(
+                "reply-proposal:{}:{}:{proposal_version}",
+                row.workspace, row.conversation_id
+            );
+            let version_id = format!("v{proposal_version}");
+            let title = format!("Drafted reply (v{proposal_version})");
+            let detail = summarize_one_line(&row.text, 140);
+            let snapshot = SeenItemSnapshot {
+                version_id: version_id.clone(),
+                urgency: None,
+                headline: title.clone(),
+                detail: detail.clone(),
+            };
+            let seen_standing = evaluate_seen_standing(seen_map.get(&key_str), &snapshot);
+            let patient_display_name = names
+                .get(&row.workspace)
+                .cloned()
+                .unwrap_or_else(|| row.workspace.clone());
+            entries.push(UpdateEntry {
+                item_key: SeenItemKey(key_str),
+                version_id,
+                workspace: row.workspace,
+                patient_display_name,
+                title,
+                detail,
+                occurred_at_unix: row.proposed_at,
+                seen_standing,
+                kind: UpdateEntryKind::ReplyDrafted {
+                    conversation_id: row.conversation_id,
+                    reply_id,
+                    proposal_version,
+                },
+            });
+        }
+        Ok(entries)
+    }
+
+    async fn read_updates_follow_ups_slice(
+        &self,
+        ctx: &AuthorizedReadContext,
+        names: &BTreeMap<String, String>,
+        seen_map: &BTreeMap<String, StoredSeenEntry>,
+        probe: &dyn TodayUpdatesProbe,
+    ) -> Result<Vec<UpdateEntry>, String> {
+        probe.check_producer(ProducerKind::FollowUps)?;
+        if ctx.allowed_workspaces.is_empty() {
+            return Ok(Vec::new());
+        }
+        let practice = ctx.identity.practice_id.as_str();
+
+        let withdrawn_rows = follow_up_entity::Entity::find()
+            .filter(follow_up_entity::Column::Practice.eq(practice))
+            .filter(
+                follow_up_entity::Column::Workspace
+                    .is_in(ctx.allowed_workspaces.iter().map(String::as_str)),
+            )
+            .filter(follow_up_entity::Column::Status.eq("withdrawn_wrong_patient"))
+            .all(&self.db)
+            .await
+            .map_err(|err| err.to_string())?;
+        let withdrawn_keys: BTreeSet<(String, String)> = withdrawn_rows
+            .into_iter()
+            .map(|r| (r.workspace, r.id))
+            .collect();
+
+        let rows = follow_up_update_entity::Entity::find()
+            .filter(follow_up_update_entity::Column::Practice.eq(practice))
+            .filter(
+                follow_up_update_entity::Column::Workspace
+                    .is_in(ctx.allowed_workspaces.iter().map(String::as_str)),
+            )
+            .order_by_asc(follow_up_update_entity::Column::OccurredAt)
+            .order_by_asc(follow_up_update_entity::Column::FollowUpId)
+            .order_by_asc(follow_up_update_entity::Column::Version)
+            .all(&self.db)
+            .await
+            .map_err(|err| err.to_string())?;
+
+        let mut entries = Vec::new();
+        for row in rows {
+            if withdrawn_keys.contains(&(row.workspace.clone(), row.follow_up_id.clone())) {
+                continue;
+            }
+            let parsed_kind: FollowUpUpdateKind =
+                serde_json::from_value(Value::String(row.kind.clone()))
+                    .map_err(|err| format!("decode follow-up update kind `{}`: {err}", row.kind))?;
+            if parsed_kind == FollowUpUpdateKind::WithdrawnWrongPatient {
+                continue;
+            }
+            let version = u64::try_from(row.version)
+                .map_err(|err| format!("follow-up update version: {err}"))?;
+            let kind_label = follow_up_update_kind_label(parsed_kind);
+            let action_word = match parsed_kind {
+                FollowUpUpdateKind::Created => "created",
+                FollowUpUpdateKind::Changed => "updated",
+                FollowUpUpdateKind::Stopped => "paused",
+                FollowUpUpdateKind::Resumed => "resumed",
+                FollowUpUpdateKind::ReviewRequestedNow => "requested now",
+                FollowUpUpdateKind::MarkedCannotRestart => "couldn't restart",
+                FollowUpUpdateKind::Completed => "completed",
+                FollowUpUpdateKind::Cancelled => "cancelled",
+                FollowUpUpdateKind::WithdrawnWrongPatient => continue,
+            };
+            let key_str = format!(
+                "followup-update:{}:{}:{version}",
+                row.workspace, row.follow_up_id
+            );
+            let version_id = format!("v{version}");
+            let title = format!(
+                "Follow-up {action_word}: {}",
+                summarize_one_line(&row.summary, 96)
+            );
+            let detail = row.detail;
+            let snapshot = SeenItemSnapshot {
+                version_id: version_id.clone(),
+                urgency: None,
+                headline: title.clone(),
+                detail: detail.clone(),
+            };
+            let seen_standing = evaluate_seen_standing(seen_map.get(&key_str), &snapshot);
+            let patient_display_name = names
+                .get(&row.workspace)
+                .cloned()
+                .unwrap_or_else(|| row.workspace.clone());
+            entries.push(UpdateEntry {
+                item_key: SeenItemKey(key_str),
+                version_id,
+                workspace: row.workspace,
+                patient_display_name,
+                title,
+                detail,
+                occurred_at_unix: row.occurred_at,
+                seen_standing,
+                kind: UpdateEntryKind::FollowUpChanged {
+                    follow_up_id: row.follow_up_id,
+                    version,
+                    change_kind: kind_label.to_owned(),
+                },
+            });
+        }
+        Ok(entries)
+    }
+
     /// Opens a Today row or Updates entry on behalf of the signed-in physician,
     /// recording per-physician seen state in `physician_runtime_today_updates_seen`,
     /// reconciling any opened visit concern via [`Store::open_concern`], and
@@ -2653,8 +3617,18 @@ impl Store {
     ) -> Result<ItemWorkEvidence, TodayUpdatesError> {
         let workspace = request.workspace;
         let item_key = request.item_key;
+        let practice_wide_msg = is_practice_wide_messaging_item(workspace, item_key.as_str());
         let ctx = self
-            .authorize_physician_read(auth, request.token, request.real_now_unix, Some(workspace))
+            .authorize_physician_read(
+                auth,
+                request.token,
+                request.real_now_unix,
+                if practice_wide_msg {
+                    None
+                } else {
+                    Some(workspace)
+                },
+            )
             .await?;
         if let Err(detail) = probe.check_open_item(workspace, item_key.as_str()) {
             return Err(TodayUpdatesError::ItemOpenFailed {
@@ -2665,13 +3639,23 @@ impl Store {
         let names = self
             .resolve_patient_names(&ctx.allowed_workspaces, request.patient_names)
             .await;
-        let patient_display_name = names
-            .get(workspace)
-            .cloned()
-            .unwrap_or_else(|| workspace.to_owned());
+        let patient_display_name = if practice_wide_msg {
+            "Practice messaging".to_owned()
+        } else {
+            names
+                .get(workspace)
+                .cloned()
+                .unwrap_or_else(|| workspace.to_owned())
+        };
 
         let (mut detail, snapshot, open_concern_id) = self
-            .load_item_work_evidence_and_snapshot(&ctx, workspace, item_key, &patient_display_name)
+            .load_item_work_evidence_and_snapshot(
+                auth,
+                &ctx,
+                workspace,
+                item_key,
+                &patient_display_name,
+            )
             .await?;
 
         if let Some(concern_id) = open_concern_id {
@@ -2916,6 +3900,7 @@ impl Store {
 
     async fn load_item_work_evidence_and_snapshot(
         &self,
+        auth: &dyn AuthStore,
         ctx: &AuthorizedReadContext,
         workspace: &str,
         item_key: &SeenItemKey,
@@ -2966,6 +3951,7 @@ impl Store {
             };
             if constituents.len() == 1 {
                 let (mut sub_detail, _, _) = Box::pin(self.load_item_work_evidence_and_snapshot(
+                    auth,
                     ctx,
                     workspace,
                     &constituents[0].item_key,
@@ -2984,6 +3970,7 @@ impl Store {
             let mut seen_refs = BTreeSet::new();
             for constituent in &constituents {
                 let (sub, _, _) = Box::pin(self.load_item_work_evidence_and_snapshot(
+                    auth,
                     ctx,
                     workspace,
                     &constituent.item_key,
@@ -3773,6 +4760,625 @@ impl Store {
             ));
         }
 
+        if let Some(rest) = key.strip_prefix("reply:") {
+            let (ws_part, conversation_id) =
+                rest.split_once(':')
+                    .ok_or_else(|| TodayUpdatesError::NotFound {
+                        workspace: workspace.to_owned(),
+                        item_key: key.to_owned(),
+                    })?;
+            if ws_part != workspace {
+                return Err(TodayUpdatesError::NotFound {
+                    workspace: workspace.to_owned(),
+                    item_key: key.to_owned(),
+                });
+            }
+            let conv = self
+                .reply_conversation(practice, conversation_id)
+                .await?
+                .ok_or_else(|| TodayUpdatesError::NotFound {
+                    workspace: workspace.to_owned(),
+                    item_key: key.to_owned(),
+                })?;
+            if conv.link
+                != (ConversationLink::LinkedPatient {
+                    workspace: workspace.to_owned(),
+                })
+            {
+                return Err(TodayUpdatesError::NotFound {
+                    workspace: workspace.to_owned(),
+                    item_key: key.to_owned(),
+                });
+            }
+            let open_concern_rows = if conv.associated_concern_ids.is_empty() {
+                Vec::new()
+            } else {
+                concern::Entity::find()
+                    .filter(concern::Column::Practice.eq(practice))
+                    .filter(concern::Column::Workspace.eq(workspace))
+                    .filter(concern::Column::Status.eq("open"))
+                    .filter(
+                        concern::Column::Id
+                            .is_in(conv.associated_concern_ids.iter().map(ConcernId::as_str)),
+                    )
+                    .all(&self.db)
+                    .await?
+            };
+            let mut open_concern_tuples = Vec::new();
+            let mut open_concern_reasons = Vec::new();
+            let mut thread_urgency = ConcernUrgency::Today;
+            for crow in open_concern_rows {
+                let cid = ConcernId::new(crow.id)?;
+                let urgency = if crow.urgency == "now" {
+                    ConcernUrgency::Now
+                } else {
+                    ConcernUrgency::Today
+                };
+                if urgency == ConcernUrgency::Now {
+                    thread_urgency = ConcernUrgency::Now;
+                }
+                open_concern_tuples.push((cid, crow.revision, urgency));
+                open_concern_reasons.push(summarize_one_line(&crow.reason, 96));
+            }
+            let version_id = message_thread_version_id(&conv, &open_concern_tuples);
+            let open_message_count = conv
+                .patient_messages
+                .iter()
+                .filter(|m| m.standing.is_open())
+                .count();
+            let has_open_msgs_or_reply = open_message_count > 0 || conv.reply_standing.is_open();
+
+            let (headline, mut summary_detail, mut citations, mut basis) = match &conv
+                .reply_standing
+            {
+                ReplyStanding::Ready { proposal } => {
+                    let base_citations = proposal
+                        .citations
+                        .iter()
+                        .map(summary_citation_to_evidence)
+                        .collect();
+                    let enriched = self
+                        .enrich_citations_from_store(workspace, base_citations)
+                        .await?;
+                    let basis_str = if proposal.basis.limits.is_empty() {
+                        proposal.basis.summary.clone()
+                    } else {
+                        format!(
+                            "{} Limits: {}",
+                            proposal.basis.summary,
+                            proposal.basis.limits.join("; ")
+                        )
+                    };
+                    (
+                        "Reply draft ready".to_owned(),
+                        summarize_one_line(&proposal.text, 140),
+                        enriched,
+                        Some(basis_str),
+                    )
+                }
+                ReplyStanding::Withheld { .. } => (
+                    "Patient message awaiting updated reply".to_owned(),
+                    "Conversation moved; Coda is reviewing messages for this patient.".to_owned(),
+                    Vec::new(),
+                    None,
+                ),
+                ReplyStanding::None | ReplyStanding::ClosedWithUndo { .. } => {
+                    if open_message_count > 0 {
+                        let latest = conv
+                            .patient_messages
+                            .iter()
+                            .rev()
+                            .find(|m| m.standing.is_open())
+                            .map(|m| summarize_one_line(&m.text, 140))
+                            .unwrap_or_else(|| "Open patient message awaiting review.".to_owned());
+                        ("Patient message".to_owned(), latest, Vec::new(), None)
+                    } else {
+                        (
+                            "Message concern still open".to_owned(),
+                            open_concern_reasons.join("; "),
+                            Vec::new(),
+                            None,
+                        )
+                    }
+                }
+            };
+            if has_open_msgs_or_reply && !open_concern_reasons.is_empty() {
+                summary_detail = format!(
+                    "{summary_detail} · Concern: {}",
+                    open_concern_reasons.join("; ")
+                );
+            }
+            let mut body_parts = Vec::new();
+            for msg in &conv.patient_messages {
+                if msg.standing.is_open() {
+                    body_parts.push(format!(
+                        "Patient message ({}): {}",
+                        msg.message_id, msg.text
+                    ));
+                }
+            }
+            if let ReplyStanding::Ready { proposal } = &conv.reply_standing {
+                body_parts.push(format!("Proposed reply draft:\n{}", proposal.text));
+            }
+            if !open_concern_reasons.is_empty() {
+                body_parts.push(format!(
+                    "Open associated concerns:\n{}",
+                    open_concern_reasons.join("\n")
+                ));
+            }
+            if body_parts.is_empty() {
+                body_parts.push(summary_detail.clone());
+            }
+            if citations.is_empty() && basis.is_none() {
+                basis = Some(format!(
+                    "Conversation {} at v{}.",
+                    conv.conversation_id, conv.conversation_version
+                ));
+            }
+            let snapshot = SeenItemSnapshot {
+                version_id: version_id.clone(),
+                urgency: Some(thread_urgency),
+                headline: headline.clone(),
+                detail: summary_detail,
+            };
+            return Ok((
+                ItemWorkEvidence {
+                    item_key: item_key.clone(),
+                    version_id,
+                    workspace: workspace.to_owned(),
+                    patient_display_name: patient_display_name.to_owned(),
+                    kind_label: "Patient message".to_owned(),
+                    headline,
+                    clinical_body: body_parts.join("\n\n"),
+                    basis_and_limitations: basis,
+                    citations: std::mem::take(&mut citations),
+                    origin_summary: format!("Message conversation ({conversation_id})"),
+                    chat_id: None,
+                    seen_standing: SeenStanding::Unseen,
+                },
+                snapshot,
+                None,
+            ));
+        }
+
+        if let Some(rest) = key.strip_prefix("reply-proposal:") {
+            let parts: Vec<&str> = rest.splitn(3, ':').collect();
+            if parts.len() != 3 || parts[0] != workspace {
+                return Err(TodayUpdatesError::NotFound {
+                    workspace: workspace.to_owned(),
+                    item_key: key.to_owned(),
+                });
+            }
+            let conversation_id = parts[1];
+            let version_i64: i64 = parts[2].parse().map_err(|_| TodayUpdatesError::NotFound {
+                workspace: workspace.to_owned(),
+                item_key: key.to_owned(),
+            })?;
+            let row = reply_proposal::Entity::find_by_id((
+                practice.to_owned(),
+                conversation_id.to_owned(),
+                version_i64,
+            ))
+            .one(&self.db)
+            .await?
+            .ok_or_else(|| TodayUpdatesError::NotFound {
+                workspace: workspace.to_owned(),
+                item_key: key.to_owned(),
+            })?;
+            if row.workspace != workspace {
+                return Err(TodayUpdatesError::NotFound {
+                    workspace: workspace.to_owned(),
+                    item_key: key.to_owned(),
+                });
+            }
+            let basis: ReplyProposalBasis = serde_json::from_value(row.basis).map_err(
+                conversion_error("reply_proposal basis", "ReplyProposalBasis"),
+            )?;
+            let raw_citations: Vec<SummaryCitation> = serde_json::from_value(row.citations)
+                .map_err(conversion_error(
+                    "reply_proposal citations",
+                    "Vec<SummaryCitation>",
+                ))?;
+            let base_citations = raw_citations
+                .iter()
+                .map(summary_citation_to_evidence)
+                .collect();
+            let citations = self
+                .enrich_citations_from_store(workspace, base_citations)
+                .await?;
+            let version_id = format!("r{}:v{}", row.reply_id, row.version);
+            let headline = format!("Reply draft v{} ready", row.version);
+            let detail = summarize_one_line(&row.text, 140);
+            let basis_text = if basis.limits.is_empty() {
+                basis.summary
+            } else {
+                format!("{} Limits: {}", basis.summary, basis.limits.join("; "))
+            };
+            let snapshot = SeenItemSnapshot {
+                version_id: version_id.clone(),
+                urgency: None,
+                headline: headline.clone(),
+                detail,
+            };
+            return Ok((
+                ItemWorkEvidence {
+                    item_key: item_key.clone(),
+                    version_id,
+                    workspace: workspace.to_owned(),
+                    patient_display_name: patient_display_name.to_owned(),
+                    kind_label: "Reply draft".to_owned(),
+                    headline,
+                    clinical_body: row.text,
+                    basis_and_limitations: Some(basis_text),
+                    citations,
+                    origin_summary: format!("Reply proposal ({conversation_id} v{})", row.version),
+                    chat_id: None,
+                    seen_standing: SeenStanding::Unseen,
+                },
+                snapshot,
+                None,
+            ));
+        }
+
+        if let Some(message_id) = key.strip_prefix("match:") {
+            if workspace != PRACTICE_MESSAGING_WORKSPACE {
+                return Err(TodayUpdatesError::NotFound {
+                    workspace: workspace.to_owned(),
+                    item_key: key.to_owned(),
+                });
+            }
+            let summary = self
+                .today_spruce_summary_for_physician(auth, &ctx.identity)
+                .await?;
+            let row = summary
+                .messages_to_match
+                .into_iter()
+                .find(|m| m.message_id == message_id)
+                .ok_or_else(|| TodayUpdatesError::NotFound {
+                    workspace: workspace.to_owned(),
+                    item_key: key.to_owned(),
+                })?;
+            let urgency = if row.leads_today_as_now {
+                ConcernUrgency::Now
+            } else {
+                ConcernUrgency::Today
+            };
+            let suggested_ws = row.suggested_patient.as_ref().map(|s| s.workspace.as_str());
+            let version_id = format!(
+                "match:{}:{}:{}",
+                row.waiting_since,
+                urgency.as_str(),
+                suggested_ws.unwrap_or("none")
+            );
+            let headline = if row.leads_today_as_now {
+                "Urgent message to match".to_owned()
+            } else {
+                "Message to match".to_owned()
+            };
+            let preview = if row.body_text.trim().is_empty() {
+                "Unmatched patient message awaiting confirmation.".to_owned()
+            } else {
+                summarize_one_line(&row.body_text, 140)
+            };
+            let snapshot = SeenItemSnapshot {
+                version_id: version_id.clone(),
+                urgency: Some(urgency),
+                headline: headline.clone(),
+                detail: preview,
+            };
+            let clinical_body = match &row.suggested_patient {
+                Some(sug) => format!(
+                    "{}\n\nSuggested patient ({}): {}",
+                    row.body_text, sug.workspace, sug.evidence_summary
+                ),
+                None => row.body_text,
+            };
+            return Ok((
+                ItemWorkEvidence {
+                    item_key: item_key.clone(),
+                    version_id,
+                    workspace: workspace.to_owned(),
+                    patient_display_name: patient_display_name.to_owned(),
+                    kind_label: "Message to match".to_owned(),
+                    headline,
+                    clinical_body,
+                    basis_and_limitations: Some(
+                        "Message awaits patient workspace confirmation before chart review."
+                            .to_owned(),
+                    ),
+                    citations: Vec::new(),
+                    origin_summary: format!("Spruce message ({message_id})"),
+                    chat_id: None,
+                    seen_standing: SeenStanding::Unseen,
+                },
+                snapshot,
+                None,
+            ));
+        }
+
+        if let Some(message_id) = key.strip_prefix("unreadable:") {
+            if workspace != PRACTICE_MESSAGING_WORKSPACE {
+                return Err(TodayUpdatesError::NotFound {
+                    workspace: workspace.to_owned(),
+                    item_key: key.to_owned(),
+                });
+            }
+            let msg = self
+                .spruce_message(practice, message_id)
+                .await?
+                .ok_or_else(|| TodayUpdatesError::NotFound {
+                    workspace: workspace.to_owned(),
+                    item_key: key.to_owned(),
+                })?;
+            let (failure_reason, app_url) = match msg.standing {
+                MessageStanding::CantRead {
+                    failure_reason,
+                    app_url,
+                } => (failure_reason, app_url),
+                MessageStanding::MarkedDone {
+                    failure_reason,
+                    app_url,
+                    ..
+                } => (failure_reason, app_url),
+                _ => {
+                    return Err(TodayUpdatesError::NotFound {
+                        workspace: workspace.to_owned(),
+                        item_key: key.to_owned(),
+                    });
+                }
+            };
+            let version_id = format!("cant_read:{}", msg.kept_at);
+            let headline = "Unreadable Spruce message".to_owned();
+            let snapshot = SeenItemSnapshot {
+                version_id: version_id.clone(),
+                urgency: None,
+                headline: headline.clone(),
+                detail: failure_reason.clone(),
+            };
+            let clinical_body = match app_url {
+                Some(url) => format!("{failure_reason}\n\nOpen in Spruce: {url}"),
+                None => failure_reason,
+            };
+            return Ok((
+                ItemWorkEvidence {
+                    item_key: item_key.clone(),
+                    version_id,
+                    workspace: workspace.to_owned(),
+                    patient_display_name: patient_display_name.to_owned(),
+                    kind_label: "Unreadable message".to_owned(),
+                    headline,
+                    clinical_body,
+                    basis_and_limitations: Some(
+                        "Envelope metadata was saved, but message content could not be decoded."
+                            .to_owned(),
+                    ),
+                    citations: Vec::new(),
+                    origin_summary: format!("Spruce message ({message_id})"),
+                    chat_id: None,
+                    seen_standing: SeenStanding::Unseen,
+                },
+                snapshot,
+                None,
+            ));
+        }
+
+        if key == "channel:spruce" {
+            if workspace != PRACTICE_MESSAGING_WORKSPACE {
+                return Err(TodayUpdatesError::NotFound {
+                    workspace: workspace.to_owned(),
+                    item_key: key.to_owned(),
+                });
+            }
+            let summary = self
+                .today_spruce_summary_for_physician(auth, &ctx.identity)
+                .await?;
+            let (headline, reason, since_unix, reconnect_required) = match summary.channel_banner {
+                TodayChannelBanner::Quiet => {
+                    return Err(TodayUpdatesError::NotFound {
+                        workspace: workspace.to_owned(),
+                        item_key: key.to_owned(),
+                    });
+                }
+                TodayChannelBanner::CannotRead {
+                    reason, failed_at, ..
+                } => (
+                    "Coda cannot read the Spruce channel".to_owned(),
+                    reason,
+                    failed_at,
+                    false,
+                ),
+                TodayChannelBanner::ReconnectRequired {
+                    reason, failed_at, ..
+                } => (
+                    "Reconnect Spruce channel".to_owned(),
+                    reason,
+                    failed_at,
+                    true,
+                ),
+            };
+            let version_id = format!("spruce:{reconnect_required}:{since_unix}");
+            let snapshot = SeenItemSnapshot {
+                version_id: version_id.clone(),
+                urgency: None,
+                headline: headline.clone(),
+                detail: reason.clone(),
+            };
+            return Ok((
+                ItemWorkEvidence {
+                    item_key: item_key.clone(),
+                    version_id,
+                    workspace: workspace.to_owned(),
+                    patient_display_name: patient_display_name.to_owned(),
+                    kind_label: "Messaging channel".to_owned(),
+                    headline,
+                    clinical_body: reason,
+                    basis_and_limitations: None,
+                    citations: Vec::new(),
+                    origin_summary: "Spruce messaging channel".to_owned(),
+                    chat_id: None,
+                    seen_standing: SeenStanding::Unseen,
+                },
+                snapshot,
+                None,
+            ));
+        }
+
+        if let Some(rest) = key.strip_prefix("unhandled-followup:") {
+            let (ws_part, follow_up_id) =
+                rest.split_once(':')
+                    .ok_or_else(|| TodayUpdatesError::NotFound {
+                        workspace: workspace.to_owned(),
+                        item_key: key.to_owned(),
+                    })?;
+            if ws_part != workspace {
+                return Err(TodayUpdatesError::NotFound {
+                    workspace: workspace.to_owned(),
+                    item_key: key.to_owned(),
+                });
+            }
+            let row = follow_up_entity::Entity::find_by_id((
+                practice.to_owned(),
+                workspace.to_owned(),
+                follow_up_id.to_owned(),
+            ))
+            .one(&self.db)
+            .await?
+            .ok_or_else(|| TodayUpdatesError::NotFound {
+                workspace: workspace.to_owned(),
+                item_key: key.to_owned(),
+            })?;
+            let standing: FollowUpStanding = serde_json::from_value(row.standing_detail)
+                .map_err(conversion_error("follow_up standing", "FollowUpStanding"))?;
+            let FollowUpStanding::CannotRestart {
+                failed_at, reason, ..
+            } = standing
+            else {
+                return Err(TodayUpdatesError::NotFound {
+                    workspace: workspace.to_owned(),
+                    item_key: key.to_owned(),
+                });
+            };
+            let refs: Vec<ExactRecordReference> = serde_json::from_value(row.records).map_err(
+                conversion_error("follow_up records", "Vec<ExactRecordReference>"),
+            )?;
+            let citations = self
+                .resolve_exact_record_citations(workspace, &refs)
+                .await?;
+            let version_id = format!("cannot_restart:{}:{failed_at}", row.version);
+            let headline = "Follow-up review couldn't finish".to_owned();
+            let detail = format!("Follow-up `{}`: {reason}", row.summary);
+            let snapshot = SeenItemSnapshot {
+                version_id: version_id.clone(),
+                urgency: None,
+                headline: headline.clone(),
+                detail: detail.clone(),
+            };
+            return Ok((
+                ItemWorkEvidence {
+                    item_key: item_key.clone(),
+                    version_id,
+                    workspace: workspace.to_owned(),
+                    patient_display_name: patient_display_name.to_owned(),
+                    kind_label: "Unhandled follow-up review".to_owned(),
+                    headline,
+                    clinical_body: detail,
+                    basis_and_limitations: Some(
+                        "Scheduled follow-up review stopped and cannot restart automatically."
+                            .to_owned(),
+                    ),
+                    citations,
+                    origin_summary: format!("Follow-up ({follow_up_id})"),
+                    chat_id: None,
+                    seen_standing: SeenStanding::Unseen,
+                },
+                snapshot,
+                None,
+            ));
+        }
+
+        if let Some(rest) = key.strip_prefix("followup-update:") {
+            let parts: Vec<&str> = rest.splitn(3, ':').collect();
+            if parts.len() != 3 || parts[0] != workspace {
+                return Err(TodayUpdatesError::NotFound {
+                    workspace: workspace.to_owned(),
+                    item_key: key.to_owned(),
+                });
+            }
+            let follow_up_id = parts[1];
+            let version_i64: i64 = parts[2].parse().map_err(|_| TodayUpdatesError::NotFound {
+                workspace: workspace.to_owned(),
+                item_key: key.to_owned(),
+            })?;
+            let row = follow_up_update_entity::Entity::find_by_id((
+                practice.to_owned(),
+                workspace.to_owned(),
+                follow_up_id.to_owned(),
+                version_i64,
+            ))
+            .one(&self.db)
+            .await?
+            .ok_or_else(|| TodayUpdatesError::NotFound {
+                workspace: workspace.to_owned(),
+                item_key: key.to_owned(),
+            })?;
+            let parsed_kind: FollowUpUpdateKind =
+                serde_json::from_value(Value::String(row.kind.clone())).map_err(
+                    conversion_error("follow_up_update kind", "FollowUpUpdateKind"),
+                )?;
+            if parsed_kind == FollowUpUpdateKind::WithdrawnWrongPatient {
+                return Err(TodayUpdatesError::NotFound {
+                    workspace: workspace.to_owned(),
+                    item_key: key.to_owned(),
+                });
+            }
+            let refs: Vec<ExactRecordReference> = serde_json::from_value(row.records).map_err(
+                conversion_error("follow_up_update records", "Vec<ExactRecordReference>"),
+            )?;
+            let citations = self
+                .resolve_exact_record_citations(workspace, &refs)
+                .await?;
+            let action_word = match parsed_kind {
+                FollowUpUpdateKind::Created => "created",
+                FollowUpUpdateKind::Changed => "updated",
+                FollowUpUpdateKind::Stopped => "paused",
+                FollowUpUpdateKind::Resumed => "resumed",
+                FollowUpUpdateKind::ReviewRequestedNow => "requested now",
+                FollowUpUpdateKind::MarkedCannotRestart => "couldn't restart",
+                FollowUpUpdateKind::Completed => "completed",
+                FollowUpUpdateKind::Cancelled => "cancelled",
+                FollowUpUpdateKind::WithdrawnWrongPatient => "withdrawn",
+            };
+            let version_id = format!("v{version_i64}");
+            let headline = format!(
+                "Follow-up {action_word}: {}",
+                summarize_one_line(&row.summary, 96)
+            );
+            let snapshot = SeenItemSnapshot {
+                version_id: version_id.clone(),
+                urgency: None,
+                headline: headline.clone(),
+                detail: row.detail.clone(),
+            };
+            return Ok((
+                ItemWorkEvidence {
+                    item_key: item_key.clone(),
+                    version_id,
+                    workspace: workspace.to_owned(),
+                    patient_display_name: patient_display_name.to_owned(),
+                    kind_label: "Clinical follow-up".to_owned(),
+                    headline,
+                    clinical_body: format!("{}\n\n{}", row.summary, row.detail),
+                    basis_and_limitations: None,
+                    citations,
+                    origin_summary: format!("Follow-up ({follow_up_id} v{version_i64})"),
+                    chat_id: None,
+                    seen_standing: SeenStanding::Unseen,
+                },
+                snapshot,
+                None,
+            ));
+        }
+
         Err(TodayUpdatesError::NotFound {
             workspace: workspace.to_owned(),
             item_key: key.to_owned(),
@@ -3793,10 +5399,20 @@ impl Store {
         let workspace = request.workspace;
         let item_key = request.item_key;
         let command_key = request.command_key;
-        let ctx = self
-            .authorize_physician_read(auth, request.token, request.real_now_unix, Some(workspace))
-            .await?;
         let key = item_key.as_str();
+        let practice_wide_msg = is_practice_wide_messaging_item(workspace, key);
+        let ctx = self
+            .authorize_physician_read(
+                auth,
+                request.token,
+                request.real_now_unix,
+                if practice_wide_msg {
+                    None
+                } else {
+                    Some(workspace)
+                },
+            )
+            .await?;
 
         if let Some(rest) = key.strip_prefix("concern:") {
             let (ws_part, id_part) =
@@ -3832,6 +5448,248 @@ impl Store {
                     item_key: item_key.clone(),
                 }),
             };
+        }
+
+        if let Some(message_id) = key.strip_prefix("unreadable:") {
+            if workspace != PRACTICE_MESSAGING_WORKSPACE {
+                return Err(TodayUpdatesError::NotFound {
+                    workspace: workspace.to_owned(),
+                    item_key: key.to_owned(),
+                });
+            }
+            let trimmed_version = request.version_id.trim();
+            if trimmed_version.is_empty() {
+                return Err(TodayUpdatesError::InvalidInput {
+                    field: "version_id",
+                });
+            }
+            let msg = self
+                .spruce_message(&ctx.identity.practice_id, message_id)
+                .await?
+                .ok_or_else(|| TodayUpdatesError::NotFound {
+                    workspace: workspace.to_owned(),
+                    item_key: key.to_owned(),
+                })?;
+            match msg.standing {
+                MessageStanding::CantRead { .. } => {
+                    let expected_version = format!("cant_read:{}", msg.kept_at);
+                    if trimmed_version != expected_version {
+                        return Err(TodayUpdatesError::CannotMarkDone {
+                            item_key: key.to_owned(),
+                        });
+                    }
+                    self.mark_unreadable_spruce_message_done(
+                        auth,
+                        &ctx.identity,
+                        message_id,
+                        command_key.as_str(),
+                        ctx.clinical_now_unix,
+                    )
+                    .await?;
+                    return Ok(TodayDoneResult::Cleared {
+                        item_key: item_key.clone(),
+                    });
+                }
+                MessageStanding::MarkedDone { .. } => {
+                    return match self
+                        .mark_unreadable_spruce_message_done(
+                            auth,
+                            &ctx.identity,
+                            message_id,
+                            command_key.as_str(),
+                            ctx.clinical_now_unix,
+                        )
+                        .await
+                    {
+                        Ok(_) => Ok(TodayDoneResult::Duplicate {
+                            item_key: item_key.clone(),
+                        }),
+                        Err(SpruceMatchingError::InvalidTransition { .. }) => {
+                            Ok(TodayDoneResult::AlreadyCleared {
+                                item_key: item_key.clone(),
+                            })
+                        }
+                        Err(other) => Err(other.into()),
+                    };
+                }
+                _ => {
+                    return Err(TodayUpdatesError::CannotMarkDone {
+                        item_key: key.to_owned(),
+                    });
+                }
+            }
+        }
+
+        if let Some(rest) = key.strip_prefix("reply:") {
+            let (ws_part, conversation_id) =
+                rest.split_once(':')
+                    .ok_or_else(|| TodayUpdatesError::NotFound {
+                        workspace: workspace.to_owned(),
+                        item_key: key.to_owned(),
+                    })?;
+            if ws_part != workspace {
+                return Err(TodayUpdatesError::NotFound {
+                    workspace: workspace.to_owned(),
+                    item_key: key.to_owned(),
+                });
+            }
+            let trimmed_version = request.version_id.trim();
+            if trimmed_version.is_empty() {
+                return Err(TodayUpdatesError::InvalidInput {
+                    field: "version_id",
+                });
+            }
+            let practice = ctx.identity.practice_id.as_str();
+            let conv = self
+                .reply_conversation(practice, conversation_id)
+                .await?
+                .ok_or_else(|| TodayUpdatesError::NotFound {
+                    workspace: workspace.to_owned(),
+                    item_key: key.to_owned(),
+                })?;
+            if conv.link
+                != (ConversationLink::LinkedPatient {
+                    workspace: workspace.to_owned(),
+                })
+            {
+                return Err(TodayUpdatesError::NotFound {
+                    workspace: workspace.to_owned(),
+                    item_key: key.to_owned(),
+                });
+            }
+            let open_concern_rows = if conv.associated_concern_ids.is_empty() {
+                Vec::new()
+            } else {
+                concern::Entity::find()
+                    .filter(concern::Column::Practice.eq(practice))
+                    .filter(concern::Column::Workspace.eq(workspace))
+                    .filter(concern::Column::Status.eq("open"))
+                    .filter(
+                        concern::Column::Id
+                            .is_in(conv.associated_concern_ids.iter().map(ConcernId::as_str)),
+                    )
+                    .all(&self.db)
+                    .await?
+            };
+            let mut open_concern_ids = Vec::new();
+            let mut open_concern_tuples = Vec::new();
+            for crow in open_concern_rows {
+                let cid = ConcernId::new(crow.id)?;
+                let urgency = if crow.urgency == "now" {
+                    ConcernUrgency::Now
+                } else {
+                    ConcernUrgency::Today
+                };
+                open_concern_ids.push(cid.clone());
+                open_concern_tuples.push((cid, crow.revision, urgency));
+            }
+
+            let command_json = json!({
+                "kind": "today_reply_done",
+                "practice": practice,
+                "physician": &ctx.identity.physician_id,
+                "workspace": workspace,
+                "item_key": key,
+                "version_id": trimmed_version,
+            });
+            let tx = self.db.begin().await?;
+            match receipt::check(
+                &tx,
+                practice,
+                &ctx.identity.physician_id,
+                command_key.as_str(),
+                &command_json,
+            )
+            .await?
+            {
+                Some(Receipt::Same) => {
+                    tx.commit().await?;
+                    return Ok(TodayDoneResult::Duplicate {
+                        item_key: item_key.clone(),
+                    });
+                }
+                Some(Receipt::Different) => {
+                    tx.rollback().await?;
+                    return Err(TodayUpdatesError::IdempotencyCollision {
+                        key: command_key.to_string(),
+                    });
+                }
+                None | Some(Receipt::New) => {}
+            }
+            tx.rollback().await?;
+
+            if !message_thread_open_on_today(&conv, &open_concern_ids) {
+                return Ok(TodayDoneResult::AlreadyCleared {
+                    item_key: item_key.clone(),
+                });
+            }
+            let current_version = message_thread_version_id(&conv, &open_concern_tuples);
+            if current_version != trimmed_version
+                || !message_thread_can_mark_done(&conv, &open_concern_ids)
+            {
+                return Err(TodayUpdatesError::CannotMarkDone {
+                    item_key: key.to_owned(),
+                });
+            }
+
+            let access = WorkspaceAccess {
+                practice,
+                physician: &ctx.identity.physician_id,
+                workspace,
+                session_hash: &ctx.session_hash,
+            };
+            if conv.reply_standing.is_open() {
+                let expected = match &conv.reply_standing {
+                    ReplyStanding::Ready { proposal } => ExpectedDisconnectedCard::Ready {
+                        reply_id: proposal.reply_id,
+                        proposal_version: proposal.version,
+                    },
+                    ReplyStanding::Withheld { reply_id, .. } => {
+                        ExpectedDisconnectedCard::Withheld {
+                            reply_id: *reply_id,
+                        }
+                    }
+                    ReplyStanding::None | ReplyStanding::ClosedWithUndo { .. } => {
+                        return Err(TodayUpdatesError::CannotMarkDone {
+                            item_key: key.to_owned(),
+                        });
+                    }
+                };
+                let disc_key = CommandKey::new(format!("disc-reply:{}", command_key.as_str()))?;
+                self.mark_disconnected_reply_done(
+                    &access,
+                    &disc_key,
+                    conversation_id,
+                    expected,
+                    authority,
+                )
+                .await?;
+            }
+            for cid in &open_concern_ids {
+                let concern_key = CommandKey::new(format!(
+                    "reply-concern:{}:{}",
+                    command_key.as_str(),
+                    cid.as_str()
+                ))?;
+                let _ = self
+                    .mark_concern_done(&access, &concern_key, cid, authority)
+                    .await?;
+            }
+
+            let tx = self.db.begin().await?;
+            let _ = receipt::record(
+                &tx,
+                practice,
+                &ctx.identity.physician_id,
+                command_key.as_str(),
+                &command_json,
+            )
+            .await?;
+            tx.commit().await?;
+
+            return Ok(TodayDoneResult::Cleared {
+                item_key: item_key.clone(),
+            });
         }
 
         if !key.starts_with("unhandled:") && !key.starts_with("unhandled-") {
@@ -4094,6 +5952,32 @@ impl Store {
                             limit: None,
                         });
                     }
+                    ReviewTrigger::Message {
+                        conversation_id,
+                        message_ids,
+                        ..
+                    } => {
+                        handed_work.push(UnfinishedReviewWork {
+                            topic: format!("Unreviewed patient messages from {}", row.review_id),
+                            detail: format!(
+                                "Conversation {conversation_id} / messages [{}] awaiting review after prior run cleared with Done",
+                                message_ids.join(", ")
+                            ),
+                            limit: None,
+                        });
+                    }
+                    ReviewTrigger::FollowUp {
+                        follow_up_id,
+                        version,
+                        summary,
+                        ..
+                    } => {
+                        handed_work.push(UnfinishedReviewWork {
+                            topic: format!("Unreviewed due follow-up {follow_up_id}"),
+                            detail: format!("{summary} (v{version})"),
+                            limit: None,
+                        });
+                    }
                     ReviewTrigger::Periodic { .. } => {}
                 }
             }
@@ -4133,7 +6017,13 @@ impl Store {
         trigger: ReviewTrigger,
     ) -> Result<ReviewStartingContext, TodayUpdatesError> {
         let (ctx, _) = self
-            .review_starting_context(practice, workspace, next_review_id, trigger, Vec::new())
+            .review_starting_context(
+                practice,
+                workspace,
+                next_review_id,
+                std::slice::from_ref(&trigger),
+                Vec::new(),
+            )
             .await?;
         Ok(ctx)
     }
@@ -4382,6 +6272,23 @@ async fn active_workspace_unhandled_constituents<C: ConnectionTrait>(
                     unfinished_topics: vec![detail],
                 },
             });
+        }
+    }
+
+    let cannot_restart_follow_ups = follow_up_entity::Entity::find()
+        .filter(follow_up_entity::Column::Practice.eq(practice))
+        .filter(follow_up_entity::Column::Workspace.eq(workspace))
+        .filter(follow_up_entity::Column::Status.eq("cannot_restart"))
+        .order_by_asc(follow_up_entity::Column::UpdatedAt)
+        .order_by_asc(follow_up_entity::Column::Id)
+        .all(conn)
+        .await?;
+    for row in cannot_restart_follow_ups {
+        if let Some(today_row) =
+            cannot_restart_follow_up_today_row(row, patient_display_name, None, dismissals)
+                .map_err(DbErr::Custom)?
+        {
+            constituents.push(today_row);
         }
     }
 

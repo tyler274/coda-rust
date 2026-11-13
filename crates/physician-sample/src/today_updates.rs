@@ -174,11 +174,15 @@ fn map_failed_parts(parts: &[ProducerFailure]) -> Vec<FailedProducerWire> {
         .map(|part| FailedProducerWire {
             producer: match part.producer {
                 ProducerKind::Concerns => ProducerSliceWire::Concerns,
-                ProducerKind::PatientReviews => ProducerSliceWire::PatientReviews,
+                ProducerKind::PatientReviews | ProducerKind::FollowUps => {
+                    ProducerSliceWire::PatientReviews
+                }
                 ProducerKind::VisitPreparation => ProducerSliceWire::VisitPreparation,
                 ProducerKind::PatientUnderstanding => ProducerSliceWire::PatientUnderstanding,
                 ProducerKind::RunningConversations => ProducerSliceWire::RunningConversations,
-                ProducerKind::SourceStatuses => ProducerSliceWire::SourceStatuses,
+                ProducerKind::SourceStatuses | ProducerKind::Messages => {
+                    ProducerSliceWire::SourceStatuses
+                }
             },
             label: part.producer.label().to_owned(),
             message: part.message.clone(),
@@ -217,6 +221,7 @@ fn serialize_today_row(row: &TodayRow) -> Value {
                 UnhandledWorkKind::PatientReview => "review",
                 UnhandledWorkKind::VisitPreparation => "pre_visit_preparation",
                 UnhandledWorkKind::InitialUnderstanding => "initial_understanding",
+                UnhandledWorkKind::FollowUpReview => "follow_up",
             };
             ("today", "failed_review", Some(wk), None)
         }
@@ -228,6 +233,19 @@ fn serialize_today_row(row: &TodayRow) -> Value {
                 RecognizableRunKind::PhysicianRequestedReview => "review",
             };
             ("today", "running_work", Some(wk), chat_id.clone())
+        }
+        TodayRowPayload::MessageThread { urgency, .. } => {
+            (urgency.as_str(), "message_thread", None, None)
+        }
+        TodayRowPayload::MessageToMatch { leads_as_now, .. } => (
+            if *leads_as_now { "now" } else { "today" },
+            "message_to_match",
+            None,
+            None,
+        ),
+        TodayRowPayload::UnreadableMessage { .. } => ("today", "unreadable_message", None, None),
+        TodayRowPayload::MessagingChannelProblem { .. } => {
+            ("today", "messaging_channel", None, None)
         }
     };
     let seen = matches!(row.seen_standing, SeenStanding::Seen { .. });
@@ -242,7 +260,12 @@ fn serialize_today_row(row: &TodayRow) -> Value {
         TodayRowPayload::OpenConcern {
             visit_slot: None, ..
         } => "Flagged concern".to_owned(),
-        _ => row.title.clone(),
+        TodayRowPayload::UnhandledWork { .. }
+        | TodayRowPayload::RunningWork { .. }
+        | TodayRowPayload::MessageThread { .. }
+        | TodayRowPayload::MessageToMatch { .. }
+        | TodayRowPayload::UnreadableMessage { .. }
+        | TodayRowPayload::MessagingChannelProblem { .. } => row.title.clone(),
     };
 
     json!({
@@ -268,7 +291,9 @@ fn map_update_entry(entry: &UpdateEntry) -> UpdateItemWire {
         UpdateEntryKind::ConcernRaised { .. } => UpdateItemKindWire::ConcernRaised,
         UpdateEntryKind::ConcernRetired { .. } => UpdateItemKindWire::ConcernRetired,
         UpdateEntryKind::QuietReview { .. } => UpdateItemKindWire::QuietReview,
-        UpdateEntryKind::AssessedReview { .. } => UpdateItemKindWire::AssessedReview,
+        UpdateEntryKind::AssessedReview { .. }
+        | UpdateEntryKind::ReplyDrafted { .. }
+        | UpdateEntryKind::FollowUpChanged { .. } => UpdateItemKindWire::AssessedReview,
         UpdateEntryKind::VisitBriefing { .. } => UpdateItemKindWire::VisitBriefing,
         UpdateEntryKind::PatientSummary { .. } => UpdateItemKindWire::PatientSummary,
         UpdateEntryKind::EndedNothingToDo { .. } => UpdateItemKindWire::EndedNothingToDo,
@@ -317,9 +342,18 @@ fn map_evidence_wire(evidence: ItemWorkEvidence) -> ItemWorkEvidenceWire {
 }
 
 fn error_response(err: TodayUpdatesError) -> Response {
+    use local_product::runtime::reply::proposals::ReplyProposalError;
+    use local_product::runtime::spruce_matching::SpruceMatchingError;
+
     match err {
         TodayUpdatesError::Session(_) => StatusCode::UNAUTHORIZED.into_response(),
-        TodayUpdatesError::AccessDenied { .. } | TodayUpdatesError::NotFound { .. } => (
+        TodayUpdatesError::AccessDenied { .. }
+        | TodayUpdatesError::NotFound { .. }
+        | TodayUpdatesError::SpruceMatching(SpruceMatchingError::NotFound { .. })
+        | TodayUpdatesError::ReplyProposal(
+            ReplyProposalError::ConversationNotFound { .. }
+            | ReplyProposalError::ConversationNotLinkedToPatient { .. },
+        ) => (
             StatusCode::NOT_FOUND,
             Json(json!({ "detail": "Not found." })),
         )
@@ -327,7 +361,16 @@ fn error_response(err: TodayUpdatesError) -> Response {
         TodayUpdatesError::InvalidInput { .. }
         | TodayUpdatesError::CannotMarkDone { .. }
         | TodayUpdatesError::IdempotencyCollision { .. }
-        | TodayUpdatesError::ConcernInput(_) => (
+        | TodayUpdatesError::ConcernInput(_)
+        | TodayUpdatesError::SpruceMatching(
+            SpruceMatchingError::InvalidTransition { .. }
+            | SpruceMatchingError::ChannelStateRefused { .. },
+        )
+        | TodayUpdatesError::ReplyProposal(
+            ReplyProposalError::ChannelStillConnected { .. }
+            | ReplyProposalError::StaleDraftVersion { .. }
+            | ReplyProposalError::InvalidInput(_),
+        ) => (
             StatusCode::BAD_REQUEST,
             Json(json!({ "detail": err.to_string() })),
         )
@@ -335,6 +378,8 @@ fn error_response(err: TodayUpdatesError) -> Response {
         TodayUpdatesError::AuthUnavailable(_)
         | TodayUpdatesError::ItemOpenFailed { .. }
         | TodayUpdatesError::Concern(_)
+        | TodayUpdatesError::SpruceMatching(_)
+        | TodayUpdatesError::ReplyProposal(_)
         | TodayUpdatesError::Database(_) => StatusCode::SERVICE_UNAVAILABLE.into_response(),
     }
 }
@@ -728,7 +773,24 @@ pub(crate) async fn done_route(request: Request<Body>) -> Response {
             err @ (TodayUpdatesError::CannotMarkDone { .. }
             | TodayUpdatesError::IdempotencyCollision { .. }
             | TodayUpdatesError::InvalidInput { .. }
-            | TodayUpdatesError::ConcernInput(_)),
+            | TodayUpdatesError::ConcernInput(_)
+            | TodayUpdatesError::SpruceMatching(
+                local_product::runtime::spruce_matching::SpruceMatchingError::InvalidTransition {
+                    ..
+                }
+                | local_product::runtime::spruce_matching::SpruceMatchingError::ChannelStateRefused {
+                    ..
+                },
+            )
+            | TodayUpdatesError::ReplyProposal(
+                local_product::runtime::reply::proposals::ReplyProposalError::ChannelStillConnected {
+                    ..
+                }
+                | local_product::runtime::reply::proposals::ReplyProposalError::StaleDraftVersion {
+                    ..
+                }
+                | local_product::runtime::reply::proposals::ReplyProposalError::InvalidInput(_),
+            )),
         ) => Json(TodayDoneResponseWire {
             outcome: TodayDoneOutcomeWire::Rejected,
             item_id: payload.item_id,

@@ -845,6 +845,35 @@ fn project_trigger(trigger: &ReviewTrigger, context: &WorkspaceSourceContext) ->
             workspace_version: *workspace_version,
             last_reviewed_at: last_reviewed_at.map(unix_to_rfc3339),
         },
+        ReviewTrigger::Message {
+            conversation_id,
+            message_ids,
+            workspace_version,
+            ..
+        } => {
+            let label = if message_ids.is_empty() {
+                format!("Linked message ({conversation_id})")
+            } else {
+                format!(
+                    "Linked message ({conversation_id}: {})",
+                    message_ids.join(", ")
+                )
+            };
+            ReviewTriggerWire::ChangedRecords {
+                workspace_version: *workspace_version,
+                changed_records: vec![label],
+            }
+        }
+        ReviewTrigger::FollowUp {
+            follow_up_id,
+            version,
+            summary,
+            workspace_version,
+            ..
+        } => ReviewTriggerWire::ChangedRecords {
+            workspace_version: *workspace_version,
+            changed_records: vec![format!("Follow-up {follow_up_id} v{version}: {summary}")],
+        },
         ReviewTrigger::PhysicianRequest {
             physician_id,
             request_text,
@@ -1348,6 +1377,20 @@ fn project_action(action: &RecordedReviewAction) -> ReviewActionWire {
             source_id,
             workspace_version_after,
         } => format!("Refreshed {source_id} (chart v{workspace_version_after})"),
+        RecordedReviewAction::ReplyProposed {
+            conversation_id,
+            version,
+            ..
+        } => format!("Drafted reply proposal v{version} on {conversation_id}"),
+        RecordedReviewAction::MessagesHandled {
+            conversation_id, ..
+        } => format!("Handled patient messages on {conversation_id}"),
+        RecordedReviewAction::FollowUpChanged {
+            follow_up_id,
+            version,
+            change_kind,
+            summary,
+        } => format!("Updated follow-up {follow_up_id} ({change_kind}, v{version}): {summary}"),
     };
     ReviewActionWire { summary }
 }
