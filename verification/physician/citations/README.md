@@ -15,9 +15,9 @@ How Coda cites the sources behind its work, how a citation opens its source, and
 - **Field:** one value in a structured record. A passage quoted from a structured record is shown as the fields its words cover.
 - **Page:** one page of a scan or fax that has no text to quote, named by its number.
 - **Valid:** a citation is valid when its label names a version the harness gave Coda in this piece of work.
-- **Finish:** what Coda hands in to end the work. Its typed parts are the work, with its labels; quotes for those labels, which are optional; the statement that the work cites no source, when that is so; and the Basis and limitations.
+- **Finish:** what Coda hands in to end the work. Its typed parts are the work, with its labels; quotes for those labels, which are optional; a description of a source, only for a source that has nothing of its own to show; the statement that the work cites no source, when that is so; and the Basis and limitations.
 - **Complete:** a finish is complete when it has the work and the Basis and limitations, every citation in it is valid, and it has at least one citation or states that the work cites no source.
-- **Coda's description:** Coda's short account of a source, used only when nothing from the source itself can be shown.
+- **Coda's description:** Coda's short account of what a source says, in Coda's own words, handed in with the finish. It is used only when nothing from the source itself can be shown.
 - **Panel:** the side panel that shows a source as a readable record, beside the work.
 - **Layout:** a saved arrangement for one source and one record type. It places the record's fields and never holds a value.
 - **Basis and limitations:** Coda's account of what the work rests on and what is missing, uncertain or assumed.
@@ -46,6 +46,7 @@ The panel, for one reader:
 | Loading | the source loads, and its place is found | Shown: the version Coda read, at the place, highlighted |
 | Loading | the source loads, and the citation has no place | Shown: the version Coda read, without highlighting |
 | Loading | the source loads, and its place can't be found in the readable record | Shown: the same version without highlighting, with a short notice |
+| Loading | the source loads, and it has nothing of its own to show | Shown: Coda's description, marked as prepared by Coda, with the date Coda read the source. Unavailable, with the reason, when Coda gave none |
 | Loading | the source can't load | Couldn't load, with Retry |
 | Loading | you may not access the patient, or the content is withheld after a wrong-patient correction | Unavailable, with the reason |
 | Loading | an answer arrives for a citation you chose earlier | Loading: the answer is dropped |
@@ -86,6 +87,7 @@ These rules rest on the code, its records and the screen, not on the order of st
 - A citation opens the version Coda read, also after the source has changed. The panel shows the source as of the work, with that date, and doesn't mark that a newer version exists.
 - Pointing at a citation shows what the source is, from the record itself, and the cited place when it has one: the passage quoted, the fields it covers with their values, or the page.
 - Coda's description shows only when nothing from the source itself can be shown. It is marked as prepared by Coda, with the date Coda read the source, so Coda's words and the source's words never look alike.
+- Coda is asked for a description only for a source that came with nothing of its own to show. A description is never required, and it never makes a finish incomplete. A description of any other source is never shown.
 - The panel never picks a place because its text is equal to the quote.
 - Every value the panel shows is copied from the record. No value comes from the model or from a layout.
 - Nothing in the record is dropped: a field no layout places still shows, under its source's name for it.
