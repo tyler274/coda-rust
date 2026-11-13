@@ -11,11 +11,27 @@ use sea_orm::{
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 
-/// Shared provider policy and the exact cache binding accepted for this work.
+/// Shared provider policy, cache binding, and optional starting chart version
+/// accepted for this work.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct BindingRef {
     id: String,
     cache_key: Option<harness::PromptCacheKey>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pinned_source_version: Option<u64>,
+}
+
+impl BindingRef {
+    /// Attaches the workspace chart observation version pinned when chat work began.
+    pub(super) fn with_pinned_source_version(mut self, version: u64) -> Self {
+        self.pinned_source_version = Some(version);
+        self
+    }
+
+    /// Workspace chart observation version pinned when chat work began, if recorded.
+    pub(super) fn pinned_source_version(&self) -> Option<u64> {
+        self.pinned_source_version
+    }
 }
 
 /// Identity of one exact packaged skill selection within its physician owner.
@@ -70,7 +86,11 @@ pub(super) async fn keep_owner_binding(
     )
     .exec_without_returning(db)
     .await?;
-    Ok(BindingRef { id, cache_key })
+    Ok(BindingRef {
+        id,
+        cache_key,
+        pinned_source_version: None,
+    })
 }
 
 pub(super) async fn keep_binding(

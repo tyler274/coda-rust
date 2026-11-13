@@ -559,6 +559,21 @@ pub enum Accepted {
     Duplicate,
 }
 
+/// Outcome of checking patient chart currency and publishing a chat reply.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub enum ChatFinish {
+    /// Patient chart was current (or relied-on changes were read again) and the reply published.
+    Committed,
+    /// Chart changed during the run or relied-on changes remain unread; finish is refused.
+    Refused(crate::physician_sources::ChatChartArrivalNote),
+}
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+enum CommitMode {
+    Direct,
+    CheckChartCurrency,
+}
+
 /// Outcome of a physician's Try again on failed or held work.
 #[derive(Debug, PartialEq, Eq)]
 pub enum Resumed {
@@ -970,8 +985,11 @@ impl Store {
             state.failures = runs.start(Uuid::new_v4().to_string())?;
             state.runs.insert(state.work.clone(), runs);
             state.skills = package;
+            let pinned_version = sources::pin_version(&tx, &scope.workspace).await?;
             let recipe = recipe.bind(Some(scope.cache_key("chords-chat")));
-            let recipe = frozen::keep_binding(&tx, scope, &recipe).await?;
+            let recipe = frozen::keep_binding(&tx, scope, &recipe)
+                .await?
+                .with_pinned_source_version(pinned_version);
             state.bindings.insert(state.work.clone(), recipe);
             state.budget_resume_after = 0;
         }
@@ -1106,6 +1124,25 @@ impl Store {
         if state.status != WorkStatus::Pending {
             tx.commit().await?;
             return Ok(None);
+        }
+        let work_attempts = state.work_attempt_ids();
+        let has_retained_dispatch = if work_attempts.is_empty() {
+            false
+        } else {
+            records::ordered(&tx, scope, records::Owner::Chat, &work_attempts)
+                .await?
+                .iter()
+                .any(|(event, admitted)| {
+                    *admitted && matches!(event.kind, engine::EventKind::ProviderStarted { .. })
+                })
+        };
+        if !has_retained_dispatch {
+            let current_source_version = sources::pin_version(&tx, &scope.workspace).await?;
+            if let Some(binding) = state.bindings.get_mut(&state.work) {
+                *binding = binding
+                    .clone()
+                    .with_pinned_source_version(current_source_version);
+            }
         }
         let id = Uuid::new_v4().to_string();
         state.attempts.push(Attempt {
@@ -1273,12 +1310,19 @@ impl Store {
         claim: &Claim,
         recipe: &RequestBinding,
     ) -> Result<(), engine::Cause> {
-        let (tx, state, now) = self.locked(&claim.scope).await?;
+        let (tx, mut state, now) = self.locked(&claim.scope).await?;
         Self::current(&state, claim, now).require()?;
-        if let Some(id) = state.bindings.get(&state.work) {
-            let saved = frozen::binding(&tx, &claim.scope, id).await?;
+        if let Some(id) = state.bindings.get(&state.work).cloned() {
+            let saved = frozen::binding(&tx, &claim.scope, &id).await?;
             if &saved != recipe {
                 return Err(error("dispatch changed the accepted work recipe").into());
+            }
+            if id.pinned_source_version().is_none() {
+                let pinned = sources::pin_version(&tx, &claim.scope.workspace).await?;
+                state
+                    .bindings
+                    .insert(state.work.clone(), id.with_pinned_source_version(pinned));
+                return Ok(Self::save(tx, &claim.scope, &state).await?);
             }
             return Ok(tx.commit().await?);
         }
@@ -1400,6 +1444,33 @@ impl Store {
         turn: &Turn,
         authority: &mut dyn Authority,
     ) -> Result<(), engine::Cause> {
+        let outcome = self
+            .finish_chat_inner(claim, turn, authority, CommitMode::Direct)
+            .await?;
+        debug_assert_eq!(outcome, ChatFinish::Committed);
+        Ok(())
+    }
+
+    /// Checks patient chart currency under the workspace source version lock and
+    /// publishes the reply when current, or returns a [`ChatFinish::Refused`] note
+    /// when records were added, corrected, or withdrawn during the run.
+    pub async fn finish_chat_authorized(
+        &self,
+        claim: &Claim,
+        turn: &Turn,
+        authority: &mut dyn Authority,
+    ) -> Result<ChatFinish, engine::Cause> {
+        self.finish_chat_inner(claim, turn, authority, CommitMode::CheckChartCurrency)
+            .await
+    }
+
+    async fn finish_chat_inner(
+        &self,
+        claim: &Claim,
+        turn: &Turn,
+        authority: &mut dyn Authority,
+        mode: CommitMode,
+    ) -> Result<ChatFinish, engine::Cause> {
         let (tx, mut state, _) = self.locked(&claim.scope).await?;
         Self::conversation_events(&tx, &claim.scope, &mut state).await?;
         authority
@@ -1438,6 +1509,43 @@ impl Store {
             return Err(error("completion differs from recorded terminal turn").into());
         }
         let answer = terminal_answer(terminal)?;
+
+        if mode == CommitMode::CheckChartCurrency {
+            let current_obs = sources::observed(&tx, &claim.scope.workspace).await?;
+            let pinned_version = state
+                .bindings
+                .get(&state.work)
+                .and_then(BindingRef::pinned_source_version)
+                .unwrap_or(current_obs.version);
+            if current_obs.version != pinned_version {
+                let baseline_obs =
+                    sources::observed_at(&tx, &claim.scope.workspace, pinned_version).await?;
+                let ordered = records::ordered(
+                    &tx,
+                    &claim.scope,
+                    records::Owner::Chat,
+                    &state.work_attempt_ids(),
+                )
+                .await?;
+                let messages = state.message_sources();
+                match crate::physician_sources::evaluate_chat_finish_currency(
+                    &baseline_obs.sources,
+                    current_obs.version,
+                    &current_obs.sources,
+                    ordered.iter(),
+                    &messages,
+                )
+                .map_err(|reason| engine::Cause::from(error(&reason)))?
+                {
+                    crate::physician_sources::ChatFinishCurrency::Current => {}
+                    crate::physician_sources::ChatFinishCurrency::Refused(note) => {
+                        tx.commit().await?;
+                        return Ok(ChatFinish::Refused(note));
+                    }
+                }
+            }
+        }
+
         let attempt = state.attempts.last_mut().unwrap();
         attempt.status = AttemptStatus::Completed;
         state.end_run(RunOutcome::Completed)?;
@@ -1449,7 +1557,8 @@ impl Store {
             },
             text: answer,
         });
-        Ok(Self::save(tx, &claim.scope, &state).await?)
+        Self::save(tx, &claim.scope, &state).await?;
+        Ok(ChatFinish::Committed)
     }
 
     /// Hosted Try again. Resumes only the named work while it is failed or held
@@ -1968,10 +2077,16 @@ impl<A: Authority> Product for PhysicianHost<A> {
     }
     async fn finish(&mut self, turn: &Turn) -> Result<Finish, engine::Cause> {
         self.assert_current().await?;
-        self.store
-            .commit_authorized(&self.claim, turn, &mut self.authority)
-            .await?;
-        Ok(Finish::Committed)
+        match self
+            .store
+            .finish_chat_authorized(&self.claim, turn, &mut self.authority)
+            .await?
+        {
+            ChatFinish::Committed => Ok(Finish::Committed),
+            ChatFinish::Refused(note) => Ok(Finish::Refused(
+                harness::engine::recipe::Refusal::new(note.to_json_string()),
+            )),
+        }
     }
 
     async fn finish_partial(
