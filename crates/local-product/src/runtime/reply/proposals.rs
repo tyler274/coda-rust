@@ -307,6 +307,16 @@ pub enum ReplyProposalError {
         /// Conversation identifier.
         conversation_id: String,
     },
+    /// Conversation content is withheld on `workspace` due to a wrong-patient link correction.
+    #[error("{reason}")]
+    ConversationWithheld {
+        /// Conversation identifier.
+        conversation_id: String,
+        /// Patient workspace where content is withheld.
+        workspace: String,
+        /// Unavailable reason explaining the link correction status.
+        reason: String,
+    },
     /// Move targeted the patient workspace the conversation is already linked to.
     #[error("conversation `{conversation_id}` is already linked to workspace `{workspace}`")]
     MoveTargetUnchanged {
@@ -779,6 +789,20 @@ pub struct ActiveReplyReview {
     pub started_at: i64,
     /// Read currency of this review.
     pub read_state: ReviewReadState,
+    /// Deduplicated wake events consumed into this review, restored if the review
+    /// is superseded, stopped, or fails before completing its reply decision.
+    #[serde(default, skip_serializing_if = "BTreeSet::is_empty")]
+    pub consumed_wakes: BTreeSet<ReviewWakeEvent>,
+}
+
+/// How an active reply review fence is released when a background patient review
+/// settles without calling `complete_reply_review`.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub(in crate::runtime) enum ReplyReviewRelease {
+    /// Review finished (`complete_patient_review`) without calling `complete_reply_review`.
+    Completed,
+    /// Review was superseded, stopped, or failed before completing.
+    Aborted,
 }
 
 /// Pending physician request from `Ask Coda to reply`.
@@ -2244,6 +2268,29 @@ fn verify_conversation_workspace(
     Ok((scope, workspace.clone()))
 }
 
+async fn verify_conversation_workspace_in_tx(
+    tx: &DatabaseTransaction,
+    access: &WorkspaceAccess<'_>,
+    conv: &ReplyConversation,
+) -> Result<(Scope, String), ReplyProposalError> {
+    let scope = verify_physician_access_scope(access)?;
+    if let Some(reason) = super::super::link_correction::conversation_withheld_reason_in_tx(
+        tx,
+        &scope.practice,
+        &scope.workspace,
+        &conv.conversation_id,
+    )
+    .await?
+    {
+        return Err(ReplyProposalError::ConversationWithheld {
+            conversation_id: conv.conversation_id.clone(),
+            workspace: scope.workspace,
+            reason,
+        });
+    }
+    verify_conversation_workspace(access, conv)
+}
+
 async fn check_physician_read_gate_in_tx(
     tx: &DatabaseTransaction,
     scope: &Scope,
@@ -2292,6 +2339,21 @@ async fn verify_conversation_workspace_for_write(
     conv: &ReplyConversation,
     authority: &mut dyn Authority,
 ) -> Result<String, ReplyProposalError> {
+    if let Some(reason) = super::super::link_correction::conversation_withheld_reason_in_tx(
+        tx,
+        &scope.practice,
+        &scope.workspace,
+        &conv.conversation_id,
+    )
+    .await?
+    {
+        lock_proposal_access_in_tx(tx, scope, access.session_hash, authority).await?;
+        return Err(ReplyProposalError::ConversationWithheld {
+            conversation_id: conv.conversation_id.clone(),
+            workspace: scope.workspace.clone(),
+            reason,
+        });
+    }
     let ConversationLink::LinkedPatient { workspace } = &conv.link else {
         lock_proposal_access_in_tx(tx, scope, access.session_hash, authority).await?;
         return Err(ReplyProposalError::ConversationNotLinkedToPatient {
@@ -2834,13 +2896,13 @@ impl Store {
         };
 
         let timestamp = now(&tx).await?;
-        let started_at = match &conv.active_review {
+        let (started_at, mut consumed_wakes) = match &conv.active_review {
             None => {
                 if conv.woke_events.is_empty() {
                     tx.rollback().await?;
                     return Err(ReplyProposalError::NoPendingReviewWake { conversation_id });
                 }
-                timestamp
+                (timestamp, BTreeSet::new())
             }
             Some(active) => {
                 if active.review_id != review_id {
@@ -2853,12 +2915,12 @@ impl Store {
                         ),
                     });
                 }
-                active.started_at
+                (active.started_at, active.consumed_wakes.clone())
             }
         };
 
         let observation = super::super::sources::observed(&tx, &workspace).await?;
-        conv.woke_events.clear();
+        consumed_wakes.extend(std::mem::take(&mut conv.woke_events));
         if conv.pending_reply_request.is_some() {
             if reopen_latest_needs_no_reply_for_request(&mut conv).is_some() {
                 conv.conversation_version += 1;
@@ -2901,6 +2963,7 @@ impl Store {
                 read_practice_message_ids,
                 saw_physician_reply_request: conv.pending_reply_request.is_some(),
             },
+            consumed_wakes,
         };
         conv.active_review = Some(active.clone());
         conv.updated_at = timestamp;
@@ -2912,6 +2975,162 @@ impl Store {
             conversation: conv,
             source_version: observation.version,
         })
+    }
+
+    /// Reads the current `woke_events` set of `(practice, conversation_id)` inside `tx`
+    /// through the typed conversation owner.
+    pub(in crate::runtime) async fn conversation_woke_events_in_tx(
+        tx: &sea_orm::DatabaseTransaction,
+        practice: &str,
+        conversation_id: &str,
+    ) -> Result<BTreeSet<ReviewWakeEvent>, DbErr> {
+        let Some(row) = reply_conversation::Entity::find_by_id((
+            practice.to_owned(),
+            conversation_id.to_owned(),
+        ))
+        .one(tx)
+        .await?
+        else {
+            return Ok(BTreeSet::new());
+        };
+        let conv = decode_conversation(tx, row).await?;
+        Ok(conv.woke_events)
+    }
+
+    /// Releases any `active_review` fence held by `review_id` across linked conversations
+    /// in `(practice, workspace)` through the typed conversation owner, restoring consumed
+    /// wakes when `release == ReplyReviewRelease::Aborted` (`Superseded`, `Stopped`, or
+    /// `Failed`) and re-seeding any still-unhandled open messages / reply requests on
+    /// `ReplyReviewRelease::Completed`.
+    pub(in crate::runtime) async fn release_workspace_reply_reviews_in_tx(
+        tx: &sea_orm::DatabaseTransaction,
+        practice: &str,
+        workspace: &str,
+        review_id: &str,
+        release: ReplyReviewRelease,
+        clock: i64,
+    ) -> Result<(), DbErr> {
+        let conv_rows = reply_conversation::Entity::find()
+            .filter(reply_conversation::Column::Practice.eq(practice))
+            .filter(reply_conversation::Column::LinkKind.eq("linked_patient"))
+            .filter(reply_conversation::Column::Workspace.eq(workspace))
+            .lock_exclusive()
+            .all(tx)
+            .await?;
+        for conv_row in conv_rows {
+            let mut conv = decode_conversation(tx, conv_row).await?;
+            let matches_review = conv
+                .active_review
+                .as_ref()
+                .is_some_and(|active| active.review_id == review_id);
+            if !matches_review {
+                continue;
+            }
+            let active = conv.active_review.take().expect("checked is_some_and");
+            match release {
+                ReplyReviewRelease::Aborted => {
+                    conv.woke_events.extend(active.consumed_wakes);
+                    if conv.woke_events.is_empty() {
+                        if !matches!(conv.reply_standing, ReplyStanding::Ready { .. }) {
+                            for msg in &conv.patient_messages {
+                                if msg.standing.is_open() {
+                                    conv.woke_events.insert(ReviewWakeEvent::PatientMessage {
+                                        message_id: msg.message_id.clone(),
+                                    });
+                                }
+                            }
+                        }
+                        if let Some(req) = &conv.pending_reply_request {
+                            conv.woke_events
+                                .insert(ReviewWakeEvent::PhysicianAskedForReply {
+                                    request_id: req.request_id.clone(),
+                                });
+                        }
+                    }
+                }
+                ReplyReviewRelease::Completed => {
+                    let saw_reply_request = matches!(
+                        active.read_state,
+                        ReviewReadState::Current {
+                            saw_physician_reply_request: true,
+                            ..
+                        }
+                    );
+                    if saw_reply_request {
+                        conv.pending_reply_request = None;
+                    } else if let Some(req) = &conv.pending_reply_request {
+                        conv.woke_events
+                            .insert(ReviewWakeEvent::PhysicianAskedForReply {
+                                request_id: req.request_id.clone(),
+                            });
+                    }
+                }
+            }
+            conv.updated_at = clock;
+            encode_conversation_model(&conv)?.update(tx).await?;
+        }
+        Ok(())
+    }
+
+    /// Re-seeds a pending review wake on `(practice, conversation_id)` when an operator or
+    /// physician explicitly rearms (`Resume` / `TryAgain`) a stopped or failed message review.
+    pub(in crate::runtime) async fn rearm_reply_conversation_wake_in_tx(
+        tx: &sea_orm::DatabaseTransaction,
+        practice: &str,
+        workspace: &str,
+        conversation_id: &str,
+        message_ids: &[String],
+        clock: i64,
+    ) -> Result<(), DbErr> {
+        if conversation_id.is_empty() {
+            return Ok(());
+        }
+        let Some(row) = reply_conversation::Entity::find_by_id((
+            practice.to_owned(),
+            conversation_id.to_owned(),
+        ))
+        .lock_exclusive()
+        .one(tx)
+        .await?
+        else {
+            return Ok(());
+        };
+        let mut conv = decode_conversation(tx, row).await?;
+        let is_linked_workspace = matches!(
+            &conv.link,
+            ConversationLink::LinkedPatient { workspace: linked } if linked == workspace
+        );
+        if !is_linked_workspace || !conv.woke_events.is_empty() {
+            return Ok(());
+        }
+        for mid in message_ids {
+            if !mid.is_empty() {
+                conv.woke_events.insert(ReviewWakeEvent::PatientMessage {
+                    message_id: mid.clone(),
+                });
+            }
+        }
+        if conv.woke_events.is_empty() {
+            for msg in &conv.patient_messages {
+                if msg.standing.is_open() {
+                    conv.woke_events.insert(ReviewWakeEvent::PatientMessage {
+                        message_id: msg.message_id.clone(),
+                    });
+                }
+            }
+        }
+        if conv.woke_events.is_empty()
+            && let Some(last_pm) = conv.practice_messages.last()
+        {
+            conv.woke_events.insert(ReviewWakeEvent::PracticeMessage {
+                practice_message_id: last_pm.practice_message_id.clone(),
+            });
+        }
+        if !conv.woke_events.is_empty() {
+            conv.updated_at = clock;
+            encode_conversation_model(&conv)?.update(tx).await?;
+        }
+        Ok(())
     }
 
     /// Marks an active review as needing a fresh full-conversation read after worker
@@ -3741,7 +3960,7 @@ impl Store {
             return Err(ReplyProposalError::ConversationNotFound { conversation_id });
         };
         let conv = decode_conversation(&tx, row).await?;
-        if let Err(err) = verify_conversation_workspace(access, &conv) {
+        if let Err(err) = verify_conversation_workspace_in_tx(&tx, access, &conv).await {
             tx.rollback().await?;
             return Err(err);
         }
@@ -3778,7 +3997,7 @@ impl Store {
             return Err(ReplyProposalError::ConversationNotFound { conversation_id });
         };
         let conv = decode_conversation(&tx, row).await?;
-        let (_, workspace) = match verify_conversation_workspace(access, &conv) {
+        let (_, workspace) = match verify_conversation_workspace_in_tx(&tx, access, &conv).await {
             Ok(pair) => pair,
             Err(err) => {
                 tx.rollback().await?;

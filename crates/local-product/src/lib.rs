@@ -15,10 +15,14 @@ pub mod attachments;
 pub mod chatgpt;
 /// Clinical library search and exact passage read tools for physician chat.
 pub mod clinical_library;
+/// Patient follow-up reassessment recipe, starting context, and background execution.
+pub mod follow_up_reassessment;
 /// Hint chart filing table, bucket mapping, redaction, deep links, and `PatientSource` adapter.
 pub mod hint;
 /// Recipe, initial context, and memory tools for patient understanding runs.
 pub mod initial_understanding;
+/// Linked patient message review and physician-requested reply revision recipes.
+pub mod message_review_recipe;
 /// Rounds recipe, initial context, and review tools for background and physician-requested patient reviews.
 pub mod patient_reviews;
 /// Hosted physician chat instructions and the `skill_view` tool.

@@ -19,6 +19,8 @@ mod m20261113_01_spruce_matching;
 mod m20261113_02_reply_proposals;
 mod m20261113_03_follow_ups_withdrawal;
 pub(in crate::runtime) mod m20261113_source_links_and_standing;
+mod m20261114_01_link_correction;
+mod m20261114_02_message_followup_dispatch;
 pub(in crate::runtime) mod m20261114_reconnect_commands_and_adapter_state;
 
 /// The table this chain records applied migrations in. The runtime shares the
@@ -54,6 +56,8 @@ impl MigratorTrait for Migrator {
             Box::new(m20261113_01_spruce_matching::Migration),
             Box::new(m20261113_02_reply_proposals::Migration),
             Box::new(m20261113_03_follow_ups_withdrawal::Migration),
+            Box::new(m20261114_01_link_correction::Migration),
+            Box::new(m20261114_02_message_followup_dispatch::Migration),
         ]
     }
 }

@@ -442,6 +442,10 @@ impl PhysicianSkills {
                 include_str!("../../../skills/patient-communication/SKILL.md"),
             ),
             (
+                "patient-follow-up",
+                include_str!("../../../skills/patient-follow-up/SKILL.md"),
+            ),
+            (
                 "patient-record-retrieval",
                 include_str!("../../../skills/patient-record-retrieval/SKILL.md"),
             ),

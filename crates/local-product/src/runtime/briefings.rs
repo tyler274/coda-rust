@@ -30,9 +30,9 @@ use serde::{Deserialize, Serialize};
 use serde_json::{Value, json};
 
 use super::chat_operations::{
-    MAX_RETRIEVED_WORK_ITEMS, MemoryInputError, MemorySelection, OpenConcernSummary,
-    PatientMemoryError, PatientMemoryStanding, PatientStartingContext, PriorWorkKind,
-    PriorWorkPointer, RecordLimit, RecordLimitKind, SourceFreshnessSummary,
+    MAX_RETRIEVED_WORK_ITEMS, MemoryInputError, MemorySelection, PatientMemoryError,
+    PatientMemoryStanding, PatientStartingContext, PriorWorkKind, PriorWorkPointer, RecordLimit,
+    RecordLimitKind, SourceFreshnessSummary,
 };
 use super::concerns::{
     CommandKey, Concern, ConcernError, ConcernId, ConcernMutation, ConcernUrgency,
@@ -1609,33 +1609,9 @@ impl Store {
         let check_standing = self.dispatch_check_standing(practice, workspace).await?;
         let memory_standing = self.active_memory_standing(practice, workspace).await?;
 
-        let mut raw_open_concerns = concern::Entity::find()
-            .filter(concern::Column::Practice.eq(practice))
-            .filter(concern::Column::Workspace.eq(workspace))
-            .filter(concern::Column::Status.eq("open"))
-            .all(&self.db)
+        let open_concerns = self
+            .load_open_concern_summaries(practice, workspace)
             .await?;
-        raw_open_concerns.sort_by(|left, right| {
-            let rank = |urgency: &str| if urgency == "now" { 0_u8 } else { 1_u8 };
-            rank(&left.urgency)
-                .cmp(&rank(&right.urgency))
-                .then_with(|| left.created_at.cmp(&right.created_at))
-                .then_with(|| left.id.cmp(&right.id))
-        });
-        let mut open_concerns = Vec::with_capacity(raw_open_concerns.len());
-        for row in raw_open_concerns {
-            let urgency: ConcernUrgency = serde_json::from_value(Value::String(row.urgency))
-                .map_err(conversion_error("stored concern urgency", "ConcernUrgency"))?;
-            let records: Vec<ExactRecordReference> = serde_json::from_value(row.records).map_err(
-                conversion_error("stored concern records", "ExactRecordReference"),
-            )?;
-            open_concerns.push(OpenConcernSummary {
-                concern_id: row.id,
-                urgency,
-                reason: row.reason,
-                records,
-            });
-        }
 
         let completed_jobs = practice_job::Entity::find()
             .filter(practice_job::Column::Practice.eq(practice))

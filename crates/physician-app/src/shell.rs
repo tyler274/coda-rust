@@ -103,6 +103,8 @@ pub struct TodayLine {
     pub can_mark_done: bool,
     /// Linked conversation identifier when opening an active chat response.
     pub linked_chat_id: Option<String>,
+    pub spruce_conversation_id: Option<String>,
+    pub matching_message_id: Option<String>,
     pub resume_work_item_id: Option<String>,
     pub resume_run_id: Option<String>,
 }
@@ -212,6 +214,8 @@ fn today_line(row: &TodayRow, seen_ids: &[String]) -> TodayLine {
         standing,
         can_mark_done: row.can_mark_done,
         linked_chat_id: row.linked_chat_id.clone(),
+        spruce_conversation_id: row.spruce_conversation_id.clone(),
+        matching_message_id: row.matching_message_id.clone(),
         resume_work_item_id: row
             .resume_target
             .as_ref()
@@ -227,8 +231,8 @@ fn today_line(row: &TodayRow, seen_ids: &[String]) -> TodayLine {
 /// a drafted reply is ready, a review that couldn't finish failed, and anything else is neutral.
 pub fn row_tone(kind: &str) -> ui::Tone {
     match kind {
-        "concern" | "visit_nudge" => ui::Tone::Warning,
-        "reply" | "running_work" => ui::Tone::Primary,
+        "concern" | "visit_nudge" | "unmatched_message" | "unreadable_message" => ui::Tone::Warning,
+        "reply" | "drafted_reply" | "running_work" => ui::Tone::Primary,
         "failed_review" => ui::Tone::Error,
         _ => ui::Tone::Neutral,
     }
@@ -239,8 +243,8 @@ pub fn row_icon(kind: &str) -> Option<ui::IconName> {
     Some(match kind {
         "concern" => ui::IconName::Flag,
         "visit_nudge" => ui::IconName::Calendar,
-        "reply" => ui::IconName::Reply,
-        "running_work" => ui::IconName::Message,
+        "reply" | "drafted_reply" => ui::IconName::Reply,
+        "running_work" | "unmatched_message" => ui::IconName::Message,
         _ => ui::IconName::Alert,
     })
 }
@@ -267,6 +271,7 @@ fn work_subject(kind: Option<&str>) -> &'static str {
         }
         Some("pre_visit_preparation") => "Visit preparation",
         Some("review") => "Review",
+        Some("follow_up") => "Follow-up",
         Some("conversation") => "Response",
         _ => "Work",
     }

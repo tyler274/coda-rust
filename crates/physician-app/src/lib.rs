@@ -9,7 +9,9 @@
 
 mod composer;
 mod feedback;
+mod follow_ups;
 mod local_draft;
+mod matching_reply;
 mod panels;
 mod patient_reviews_panel;
 mod schedule_briefing;
@@ -125,7 +127,37 @@ const LINK_ON_THE_WAY: &str = "If that address has an account, a sign-in link is
 enum Place {
     Today,
     Updates,
+    MessagesToMatch,
+    Filtered,
     Workspace,
+}
+
+#[cfg(target_arch = "wasm32")]
+fn initial_place_from_address(open_patient: &str) -> Place {
+    if !open_patient.is_empty() {
+        return Place::Workspace;
+    }
+    if let Some(window) = web_sys::window()
+        && let Ok(href) = window.location().href()
+        && let Ok(url) = web_sys::Url::new(&href)
+    {
+        match url.search_params().get("view").as_deref() {
+            Some("matching") => return Place::MessagesToMatch,
+            Some("filtered") => return Place::Filtered,
+            Some("updates") => return Place::Updates,
+            _ => {}
+        }
+    }
+    Place::Today
+}
+
+#[cfg(not(target_arch = "wasm32"))]
+fn initial_place_from_address(open_patient: &str) -> Place {
+    if open_patient.is_empty() {
+        Place::Today
+    } else {
+        Place::Workspace
+    }
 }
 
 /// The session belongs to this browser, so it lives in localStorage: a new tab,
@@ -900,12 +932,9 @@ fn PhysicianShell(
     let expired = session.expired;
     // Whether this tab has shown the practice yet; see SessionState::refused.
     let mut shown = use_signal(|| false);
-    let mut place = use_signal(|| {
-        if open_patient.is_empty() {
-            Place::Today
-        } else {
-            Place::Workspace
-        }
+    let mut place = use_signal({
+        let initial = initial_place_from_address(&open_patient);
+        move || initial
     });
     let mut selected = use_signal(|| {
         if open_patient.is_empty() {
@@ -1724,6 +1753,41 @@ fn PhysicianShell(
     let mut open_item_failure = use_signal(|| None::<today_updates::FailedItemOpen>);
     let mut opening_item_busy = use_signal(|| false);
     let mut done_state = use_signal(today_updates::DoneActionState::default);
+    let on_panel_workspace = use_memo(move || {
+        if place() != Place::Workspace {
+            return None;
+        }
+        let current = selected()?;
+        let cached = workspace_cache.read();
+        let open = cached.as_ref()?;
+        (open.patient_workspace_id == current && !open.is_clinic_demographic()).then_some(current)
+    });
+    let mark_patient_gone = Callback::new(move |gone_ws: String| {
+        workspace_cache.set(None);
+        forget_workspace_drafts(composer, &client.peek(), whoami, &gone_ws);
+        reading.set(None);
+        open_briefing.set(None);
+        past_work_open.set(false);
+        gone.set(Some(gone_ws));
+        *today_attempt.write() += 1;
+    });
+    let shell_reviews_context = patient_reviews_panel::PatientReviewsContext {
+        client,
+        session,
+        shown,
+        workspace_attempt,
+        today_attempt,
+    };
+    let spruce_replies_read = matching_reply::use_patient_spruce_replies(
+        on_panel_workspace,
+        shell_reviews_context,
+        mark_patient_gone,
+    );
+    let follow_ups_read = follow_ups::use_patient_follow_ups(
+        on_panel_workspace,
+        shell_reviews_context,
+        mark_patient_gone,
+    );
     let snapshot = use_resource(move || {
         let _attempt = snapshot_attempt();
         let asked = (selected(), open_chat());
@@ -1869,6 +1933,35 @@ fn PhysicianShell(
         .map(|page| page.rows.clone())
         .unwrap_or_default();
     let mut open_item_target = move |target: today_updates::OpenItemTarget| {
+        if target.item_id.starts_with("spruce-match:")
+            || target.item_id.starts_with("spruce-unreadable:")
+        {
+            open_item_failure.set(None);
+            reading.set(None);
+            open_briefing.set(None);
+            place.set(Place::MessagesToMatch);
+            app_collapsed.set(false);
+            search_open.set(false);
+            drawer.set(Drawer::Dismissed);
+            *today_attempt.write() += 1;
+            return;
+        }
+        if target.item_id.starts_with("spruce-reply:")
+            || target.item_id.starts_with("follow-up-cannot-restart:")
+            || target.item_id.starts_with("follow-up-update:")
+        {
+            open_item_failure.set(None);
+            reading.set(None);
+            open_briefing.set(None);
+            selected.set(Some(target.workspace_id));
+            place.set(Place::Workspace);
+            app_collapsed.set(false);
+            search_open.set(false);
+            drawer.set(Drawer::Dismissed);
+            *workspace_attempt.write() += 1;
+            *today_attempt.write() += 1;
+            return;
+        }
         if *opening_item_busy.peek() {
             return;
         }
@@ -1981,6 +2074,36 @@ fn PhysicianShell(
         ScheduleVisitActivation::None => {}
     };
     let mut open_today_line = move |line: TodayLine| {
+        opened_now_items
+            .write()
+            .insert((line.item_id.clone(), line.version_id.clone()));
+        if line.kind == "unmatched_message" || line.kind == "unreadable_message" {
+            open_item_failure.set(None);
+            reading.set(None);
+            open_briefing.set(None);
+            place.set(Place::MessagesToMatch);
+            app_collapsed.set(false);
+            search_open.set(false);
+            drawer.set(Drawer::Dismissed);
+            *today_attempt.write() += 1;
+            return;
+        }
+        if line.kind == "drafted_reply"
+            || line.item_id.starts_with("spruce-reply:")
+            || line.item_id.starts_with("follow-up-cannot-restart:")
+        {
+            open_item_failure.set(None);
+            reading.set(None);
+            open_briefing.set(None);
+            selected.set(Some(line.workspace_id));
+            place.set(Place::Workspace);
+            app_collapsed.set(false);
+            search_open.set(false);
+            drawer.set(Drawer::Dismissed);
+            *workspace_attempt.write() += 1;
+            *today_attempt.write() += 1;
+            return;
+        }
         let label = if line.title.trim().is_empty() {
             line.patient.clone()
         } else {
@@ -2248,6 +2371,26 @@ fn PhysicianShell(
                         }
                         NavigationRow {
                             class: "sidebar-nav-item",
+                            aria_label: "Messages to match",
+                            aria_current: (place() == Place::MessagesToMatch || place() == Place::Filtered).then_some("page"),
+                            "data-nav-messages-to-match": "true",
+                            onclick: move |_| {
+                                open_briefing.set(None);
+                                place.set(Place::MessagesToMatch);
+                                drawer.set(Drawer::Dismissed);
+                            },
+                            Icon { name: IconName::Link }
+                            strong { class: "item-text", "Messages to match" }
+                            if today_meta.messages_to_match_count > 0 {
+                                span {
+                                    class: "mr-nav-badge",
+                                    "data-messages-to-match-count": "{today_meta.messages_to_match_count}",
+                                    "{today_meta.messages_to_match_count}"
+                                }
+                            }
+                        }
+                        NavigationRow {
+                            class: "sidebar-nav-item",
                             aria_label: "Find patient",
                             onclick: move |_| {
                                 open_search_dialog();
@@ -2494,6 +2637,42 @@ fn PhysicianShell(
                             on_open_item: move |target: today_updates::OpenItemTarget| open_item_target(target),
                         }
                     },
+                    Place::MessagesToMatch => rsx! {
+                        matching_reply::MessagesToMatchSurface {
+                            client,
+                            session,
+                            shown,
+                            today_attempt,
+                            on_open_filtered: move |_| {
+                                open_briefing.set(None);
+                                place.set(Place::Filtered);
+                            },
+                            on_open_patient: move |id: String| {
+                                open_briefing.set(None);
+                                selected.set(Some(id));
+                                place.set(Place::Workspace);
+                                workspace_attempt.set(workspace_attempt() + 1);
+                            },
+                        }
+                    },
+                    Place::Filtered => rsx! {
+                        matching_reply::FilteredMessagesSurface {
+                            client,
+                            session,
+                            shown,
+                            today_attempt,
+                            on_back_to_matching: move |_| {
+                                open_briefing.set(None);
+                                place.set(Place::MessagesToMatch);
+                            },
+                            on_open_patient: move |id: String| {
+                                open_briefing.set(None);
+                                selected.set(Some(id));
+                                place.set(Place::Workspace);
+                                workspace_attempt.set(workspace_attempt() + 1);
+                            },
+                        }
+                    },
                     Place::Workspace => {
                         if let Some(target) = open_briefing().filter(|t| {
                             selected.read().as_deref() == Some(t.workspace_id.as_str())
@@ -2528,13 +2707,9 @@ fn PhysicianShell(
                         PatientSurface {
                             gone: patient_gone,
                             read: patient_read,
-                            reviews_context: patient_reviews_panel::PatientReviewsContext {
-                                client,
-                                session,
-                                shown,
-                                workspace_attempt,
-                                today_attempt,
-                            },
+                            reviews_context: shell_reviews_context,
+                            spruce_replies_read,
+                            follow_ups_read,
                             on_go_today: move |_| {
                                 open_briefing.set(None);
                                 selected.set(None);
@@ -2819,6 +2994,23 @@ fn PhysicianShell(
                                         *workspace_attempt.write() += 1;
                                     }),
                                 );
+                            },
+                            on_open_patient: move |id: String| {
+                                open_briefing.set(None);
+                                selected.set(Some(id));
+                                place.set(Place::Workspace);
+                                workspace_attempt.set(workspace_attempt() + 1);
+                            },
+                            on_patient_gone: move |gone_ws: String| {
+                                mark_patient_gone.call(gone_ws);
+                            },
+                            on_open_discuss_chat: move |chat_id: String| {
+                                if let Some(ws_id) = selected() {
+                                    requested_chat.set(Some((ws_id, chat_id.clone())));
+                                }
+                                open_chat.set(Some(chat_id));
+                                *workspace_attempt.write() += 1;
+                                *snapshot_attempt.write() += 1;
                             },
                         }
                             }
@@ -4037,8 +4229,23 @@ fn TodayRows(
                             span { class: "today-row-reason", "{row.reason}" }
                         }
                     }
-                    if row.resume_work_item_id.is_some() || row.can_mark_done {
+                    if row.resume_work_item_id.is_some()
+                        || row.can_mark_done
+                        || row.kind == "drafted_reply"
+                    {
                         div { class: "today-row-action",
+                            if row.kind == "drafted_reply" {
+                                Button {
+                                    compact: true,
+                                    variant: ButtonVariant::Secondary,
+                                    "data-today-review-reply": "{row.item_id}",
+                                    onclick: {
+                                        let row = row.clone();
+                                        move |_| on_open.call(row.clone())
+                                    },
+                                    "Review reply"
+                                }
+                            }
                             if row.resume_work_item_id.is_some() {
                                 Button {
                                     compact: true,
@@ -4077,6 +4284,8 @@ fn PatientSurface(
     gone: bool,
     read: ReadStage,
     reviews_context: patient_reviews_panel::PatientReviewsContext,
+    spruce_replies_read: matching_reply::PatientSpruceRepliesRead,
+    follow_ups_read: follow_ups::PatientFollowUpsRead,
     on_go_today: EventHandler,
     workspace_id: String,
     name: String,
@@ -4161,6 +4370,9 @@ fn PatientSurface(
     on_close_reply: EventHandler<String>,
     on_revise_reply: EventHandler<(String, u64, String)>,
     on_resume_reply: EventHandler<WorkResumeTarget>,
+    on_open_patient: EventHandler<String>,
+    on_patient_gone: EventHandler<String>,
+    on_open_discuss_chat: EventHandler<String>,
 ) -> Element {
     let clinic_demographic = workspace
         .as_ref()
@@ -4494,6 +4706,23 @@ fn PatientSurface(
                     }
                 }
             }
+            if let Some(open) = workspace.as_ref().filter(|_| !clinic_demographic) {
+                matching_reply::PatientSpruceRepliesSection {
+                    workspace_id: open.patient_workspace_id.clone(),
+                    patient_name: heading_name.clone(),
+                    browser_tz: browser_tz.clone(),
+                    read_state: spruce_replies_read,
+                    client: reviews_context.client,
+                    session: reviews_context.session,
+                    shown: reviews_context.shown,
+                    workspace_attempt: reviews_context.workspace_attempt,
+                    today_attempt: reviews_context.today_attempt,
+                    on_open_source,
+                    on_open_basis: on_read,
+                    on_open_patient,
+                    on_patient_gone,
+                }
+            }
             if !replies.is_empty() || !superseded_replies.is_empty() {
                 section { class: "patient-section", aria_label: "Patient replies",
                     h2 { "Patient replies" }
@@ -4636,12 +4865,19 @@ fn PatientSurface(
                     }
                 }
             }
-            if !follow_ups.is_empty() {
-                section { class: "patient-section", aria_label: "Follow-ups",
-                    h2 { "Follow-ups" }
-                    for follow_up in follow_ups {
-                        p { "{follow_up.description.clone().unwrap_or_default()}" }
-                    }
+            if let Some(open) = workspace.as_ref().filter(|_| !clinic_demographic) {
+                follow_ups::PatientFollowUpsSection {
+                    workspace_id: open.patient_workspace_id.clone(),
+                    browser_tz: browser_tz.clone(),
+                    legacy_follow_ups: follow_ups,
+                    read_state: follow_ups_read,
+                    client: reviews_context.client,
+                    session: reviews_context.session,
+                    shown: reviews_context.shown,
+                    workspace_attempt: reviews_context.workspace_attempt,
+                    today_attempt: reviews_context.today_attempt,
+                    on_open_discuss_chat,
+                    on_patient_gone,
                 }
             }
             section { class: "patient-section", aria_label: "Conversation",

@@ -768,6 +768,12 @@ impl PatientMemoryOperation for PostgresPatientMemoryOperation {
             | MemorySelection::AuditAll => {}
         }
         let include_entered_in_error = matches!(selection, MemorySelection::AuditAll);
+        let withheld = if include_entered_in_error {
+            super::link_correction::WithheldWorkspaceState::default()
+        } else {
+            super::link_correction::load_workspace_withheld_state_in_tx(&store.db, &workspace)
+                .await?
+        };
         let rows = query
             .order_by_desc(patient_memory::Column::UpdatedAt)
             .order_by_asc(patient_memory::Column::Id)
@@ -781,7 +787,34 @@ impl PatientMemoryOperation for PostgresPatientMemoryOperation {
                 }
                 continue;
             }
-            entries.push(decode_memory_entry(row)?);
+            let entry = decode_memory_entry(row)?;
+            if !include_entered_in_error && !withheld.is_empty() {
+                let cites_withheld = match &entry.provenance {
+                    MemoryProvenance::PhysicianCorrection {
+                        chat_id,
+                        message_id,
+                        work_id,
+                        ..
+                    } => {
+                        withheld.message_ids.contains(message_id)
+                            || withheld.candidate_ids.contains(message_id)
+                            || withheld.work_ids.contains(work_id)
+                            || withheld.work_ids.contains(chat_id)
+                    }
+                    MemoryProvenance::ClinicalSummary {
+                        work_id, records, ..
+                    } => {
+                        withheld.work_ids.contains(work_id)
+                            || records
+                                .iter()
+                                .any(|r| withheld.candidate_ids.contains(&r.candidate_id))
+                    }
+                };
+                if cites_withheld {
+                    continue;
+                }
+            }
+            entries.push(entry);
         }
         if include_entered_in_error {
             for (_, orphan_snapshot) in withdrawn_by_id {
@@ -2119,6 +2152,63 @@ impl Store {
         Ok(standing)
     }
 
+    /// Loads open [`OpenConcernSummary`] items for `workspace`, sorted `Now`
+    /// before `Today` and excluding any concern immediately withheld by an
+    /// active wrong-patient link correction.
+    pub(crate) async fn load_open_concern_summaries(
+        &self,
+        practice: &str,
+        workspace: &str,
+    ) -> Result<Vec<OpenConcernSummary>, DbErr> {
+        let withheld =
+            super::link_correction::load_workspace_withheld_state_in_tx(&self.db, workspace)
+                .await?;
+        self.load_open_concern_summaries_with_withheld(practice, workspace, &withheld)
+            .await
+    }
+
+    async fn load_open_concern_summaries_with_withheld(
+        &self,
+        practice: &str,
+        workspace: &str,
+        withheld: &super::link_correction::WithheldWorkspaceState,
+    ) -> Result<Vec<OpenConcernSummary>, DbErr> {
+        let mut raw_open_concerns = concern::Entity::find()
+            .filter(concern::Column::Practice.eq(practice))
+            .filter(concern::Column::Workspace.eq(workspace))
+            .filter(concern::Column::Status.eq("open"))
+            .all(&self.db)
+            .await?;
+        raw_open_concerns.sort_by(|left, right| {
+            let rank = |urgency: &str| if urgency == "now" { 0_u8 } else { 1_u8 };
+            rank(&left.urgency)
+                .cmp(&rank(&right.urgency))
+                .then_with(|| left.created_at.cmp(&right.created_at))
+                .then_with(|| left.id.cmp(&right.id))
+        });
+        let mut open_concerns = Vec::with_capacity(raw_open_concerns.len());
+        for row in raw_open_concerns {
+            let urgency: ConcernUrgency = serde_json::from_value(Value::String(row.urgency))
+                .map_err(conversion_error("stored concern urgency", "ConcernUrgency"))?;
+            let records: Vec<ExactRecordReference> = serde_json::from_value(row.records).map_err(
+                conversion_error("stored concern records", "ExactRecordReference"),
+            )?;
+            let source_work: super::concerns::SourceWork = serde_json::from_value(row.source_work)
+                .map_err(conversion_error("stored concern source_work", "SourceWork"))?;
+            if super::link_correction::concern_is_withheld(withheld, &source_work.work_id, &records)
+            {
+                continue;
+            }
+            open_concerns.push(OpenConcernSummary {
+                concern_id: row.id,
+                urgency,
+                reason: row.reason,
+                records,
+            });
+        }
+        Ok(open_concerns)
+    }
+
     /// Assembles [`PatientStartingContext`] for `scope` from durable source pulls,
     /// chart observations, dispatch check status, patient memory, open concerns,
     /// and saved workspace history.
@@ -2160,6 +2250,7 @@ impl Store {
                 })
             })
             .collect();
+
         let check_standing = self
             .dispatch_check_standing(&scope.practice, &scope.workspace)
             .await?;
@@ -2168,33 +2259,12 @@ impl Store {
             .active_memory_standing(&scope.practice, &scope.workspace)
             .await?;
 
-        let mut raw_open_concerns = concern::Entity::find()
-            .filter(concern::Column::Practice.eq(&scope.practice))
-            .filter(concern::Column::Workspace.eq(&scope.workspace))
-            .filter(concern::Column::Status.eq("open"))
-            .all(&self.db)
+        let withheld =
+            super::link_correction::load_workspace_withheld_state_in_tx(&self.db, &scope.workspace)
+                .await?;
+        let open_concerns = self
+            .load_open_concern_summaries_with_withheld(&scope.practice, &scope.workspace, &withheld)
             .await?;
-        raw_open_concerns.sort_by(|left, right| {
-            let rank = |urgency: &str| if urgency == "now" { 0_u8 } else { 1_u8 };
-            rank(&left.urgency)
-                .cmp(&rank(&right.urgency))
-                .then_with(|| left.created_at.cmp(&right.created_at))
-                .then_with(|| left.id.cmp(&right.id))
-        });
-        let mut open_concerns = Vec::with_capacity(raw_open_concerns.len());
-        for row in raw_open_concerns {
-            let urgency: ConcernUrgency = serde_json::from_value(Value::String(row.urgency))
-                .map_err(conversion_error("stored concern urgency", "ConcernUrgency"))?;
-            let records: Vec<ExactRecordReference> = serde_json::from_value(row.records).map_err(
-                conversion_error("stored concern records", "ExactRecordReference"),
-            )?;
-            open_concerns.push(OpenConcernSummary {
-                concern_id: row.id,
-                urgency,
-                reason: row.reason,
-                records,
-            });
-        }
 
         let past_work = self
             .workspace_past_work(&scope.practice, &scope.physician, &scope.workspace)
@@ -2207,7 +2277,7 @@ impl Store {
             .into_iter()
             .filter_map(|item| match item.target {
                 super::history::HistoryWorkTarget::Conversation { chat_id }
-                    if chat_id == scope.chat =>
+                    if chat_id == scope.chat || withheld.reason_for_work(&chat_id).is_some() =>
                 {
                     None
                 }
@@ -2218,6 +2288,11 @@ impl Store {
                         outcome: item.outcome.label().to_owned(),
                         updated_at: item.updated_at,
                     })
+                }
+                super::history::HistoryWorkTarget::ReplyDraft { reply_id, .. }
+                    if withheld.reason_for_draft_key(&reply_id).is_some() =>
+                {
+                    None
                 }
                 super::history::HistoryWorkTarget::ReplyDraft { reply_id, .. } => {
                     Some(PriorWorkPointer {
@@ -2238,7 +2313,11 @@ impl Store {
             .order_by_desc(practice_job::Column::UpdatedAt)
             .all(&self.db)
             .await?;
-        for job in completed_jobs.into_iter().take(3) {
+        for job in completed_jobs
+            .into_iter()
+            .filter(|job| !withheld.work_ids.contains(&job.job_id))
+            .take(3)
+        {
             recent_work.push(PriorWorkPointer {
                 target: PriorWorkKind::BackgroundJob {
                     job_id: job.job_id.clone(),
@@ -2334,6 +2413,16 @@ impl Store {
                 .retain(|source| !withdrawn_set.contains(source.candidate_id.as_str()));
         }
 
+        let withheld =
+            super::link_correction::load_workspace_withheld_state_in_tx(&self.db, &scope.workspace)
+                .await
+                .map_err(persistence_failure)?;
+        if !withheld.is_empty() {
+            observation
+                .sources
+                .retain(|source| !withheld.candidate_ids.contains(&source.candidate_id));
+        }
+
         let check_standing = self
             .dispatch_check_standing(&scope.practice, &scope.workspace)
             .await
@@ -2393,21 +2482,39 @@ impl Store {
             return Ok(ToolOutcome::Returned(payload.to_string()));
         }
 
-        if let Some(results) = payload.get("results").and_then(Value::as_array) {
+        let mut rewrote_withheld_item = false;
+        if let Some(results) = payload.get_mut("results").and_then(Value::as_array_mut) {
             for item in results {
                 let item_outcome = item.get("outcome").and_then(Value::as_str);
                 let reference = item
                     .get("reference")
                     .and_then(Value::as_str)
-                    .unwrap_or(&scope.workspace);
+                    .unwrap_or(&scope.workspace)
+                    .to_owned();
                 if item_outcome == Some("unavailable") {
+                    if let Some(w_reason) = withheld.reason_for_candidate(&reference) {
+                        if let Some(obj) = item.as_object_mut() {
+                            obj.insert("reason".into(), json!("withheld_wrong_patient_link"));
+                            obj.insert("detail".into(), json!(w_reason));
+                        }
+                        rewrote_withheld_item = true;
+                        limits.push(RecordLimit {
+                            kind: RecordLimitKind::Unavailable,
+                            subject: reference,
+                            detail: w_reason,
+                        });
+                        continue;
+                    }
                     let reason = item.get("reason").and_then(Value::as_str).unwrap_or("");
                     if reason == "not_in_recorded_observation" {
                         limits.push(RecordLimit {
                             kind: RecordLimitKind::Missing,
-                            subject: reference.to_owned(),
+                            subject: reference,
                             detail: format!(
-                                "Requested chart record `{reference}` is missing from this patient's retained chart observation."
+                                "Requested chart record `{}` is missing from this patient's retained chart observation.",
+                                item.get("reference")
+                                    .and_then(Value::as_str)
+                                    .unwrap_or(&scope.workspace)
                             ),
                         });
                     }
@@ -2424,7 +2531,7 @@ impl Store {
         }
 
         // Preserve exact byte-for-byte ReadReceipt JSON when no limits apply.
-        if limits.is_empty() {
+        if limits.is_empty() && !rewrote_withheld_item {
             return Ok(ToolOutcome::Returned(raw_json));
         }
         if let Some(obj) = payload.as_object_mut() {
@@ -2816,6 +2923,12 @@ impl Store {
                     })
                     .take(cap)
                     .collect();
+                let withheld = super::link_correction::load_workspace_withheld_state_in_tx(
+                    &self.db,
+                    &scope.workspace,
+                )
+                .await
+                .map_err(persistence_failure)?;
                 let jobs = practice_job::Entity::find()
                     .filter(practice_job::Column::Practice.eq(&scope.practice))
                     .filter(practice_job::Column::Workspace.eq(&scope.workspace))
@@ -2826,6 +2939,7 @@ impl Store {
                     .map_err(persistence_failure)?;
                 let background_jobs: Vec<_> = jobs
                     .into_iter()
+                    .filter(|job| !withheld.work_ids.contains(&job.job_id))
                     .take(cap)
                     .map(|job| {
                         json!({
@@ -2915,6 +3029,25 @@ impl Store {
                 if target_job.is_empty() {
                     return Ok(ToolOutcome::refused("Supply a non-empty job_id."));
                 }
+                let withheld = super::link_correction::load_workspace_withheld_state_in_tx(
+                    &self.db,
+                    &scope.workspace,
+                )
+                .await
+                .map_err(persistence_failure)?;
+                if let Some(reason) = withheld.reason_for_work(target_job) {
+                    return Ok(ToolOutcome::Returned(
+                        json!({
+                            "outcome": "unavailable",
+                            "limits": [{
+                                "kind": "unavailable",
+                                "subject": target_job,
+                                "detail": reason,
+                            }],
+                        })
+                        .to_string(),
+                    ));
+                }
                 let row = practice_job::Entity::find_by_id((
                     scope.practice.clone(),
                     scope.workspace.clone(),
@@ -2962,13 +3095,39 @@ impl Store {
         workspace: &str,
         arguments: &Value,
     ) -> Result<ToolOutcome, engine::ProductError> {
+        let withheld_state =
+            super::link_correction::load_workspace_withheld_state_in_tx(&self.db, workspace)
+                .await
+                .map_err(persistence_failure)?;
+        if let Some(doc_id) = arguments
+            .get("document_id")
+            .and_then(Value::as_str)
+            .map(str::trim)
+            && let Some(reason) = withheld_state.reason_for_candidate(doc_id)
+        {
+            let page_number = arguments
+                .get("page_number")
+                .and_then(Value::as_u64)
+                .unwrap_or(1);
+            return Ok(ToolOutcome::Returned(
+                json!({
+                    "outcome": "unavailable",
+                    "document_id": doc_id,
+                    "page_number": page_number,
+                    "failure_code": "withheld_wrong_patient_link",
+                    "reason": reason,
+                })
+                .to_string(),
+            ));
+        }
         let boundary =
             super::follow_ups::load_workspace_withdrawal_boundary(&self.db, practice, workspace)
                 .await
                 .map_err(persistence_failure)?;
-        let withdrawn_candidates: std::collections::BTreeSet<String> = boundary
+        let mut withdrawn_candidates: std::collections::BTreeSet<String> = boundary
             .map(|b| b.candidate_ids.into_iter().collect())
             .unwrap_or_default();
+        withdrawn_candidates.extend(withheld_state.candidate_ids);
 
         let rows = source::Entity::find()
             .filter(source::Column::Workspace.eq(workspace))

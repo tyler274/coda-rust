@@ -3,6 +3,8 @@
 #![deny(missing_docs)]
 
 pub mod briefings;
+pub mod follow_ups;
+pub mod matching_reply;
 mod reviews;
 pub mod source_setup;
 pub mod today_updates;
@@ -149,7 +151,7 @@ impl PhysicianClient {
         read_body(response).await
     }
 
-    async fn put<T: serde::de::DeserializeOwned>(
+    pub(crate) async fn put<T: serde::de::DeserializeOwned>(
         &self,
         path: &str,
         body: &impl serde::Serialize,
@@ -484,6 +486,19 @@ pub(crate) fn query_escape(value: &str) -> String {
         match byte {
             b'A'..=b'Z' | b'a'..=b'z' | b'0'..=b'9' | b'-' | b'_' | b'.' => out.push(byte as char),
             b' ' => out.push('+'),
+            _ => out.push_str(&format!("%{byte:02X}")),
+        }
+    }
+    out
+}
+
+pub(crate) fn path_escape(raw: &str) -> String {
+    let mut out = String::with_capacity(raw.len());
+    for byte in raw.bytes() {
+        match byte {
+            b'A'..=b'Z' | b'a'..=b'z' | b'0'..=b'9' | b'-' | b'_' | b'.' | b'~' => {
+                out.push(byte as char);
+            }
             _ => out.push_str(&format!("%{byte:02X}")),
         }
     }
