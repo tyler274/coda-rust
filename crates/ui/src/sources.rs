@@ -185,31 +185,80 @@ pub struct RecordAbout {
 /// the source's own can be shown, Coda's description of it.
 #[derive(Clone, Debug, PartialEq)]
 pub enum PreviewContent {
-    /// What the record says about itself, then the cited place in its own words.
+    /// What the record says about itself, then the cited place in its own words, when the citation
+    /// names one.
     Cited {
         /// The record's kind, date and status.
         about: RecordAbout,
-        /// The cited place.
-        place: CitedPlace,
+        /// The cited place; none when the citation names the record as a whole.
+        place: Option<CitedPlace>,
     },
     /// Nothing of the source's own can be shown: Coda's description of it, marked as Coda's.
     Described(SourceSummary),
 }
 
-/// Where in its source a cited claim rests. Every citation names one.
+/// Where in its source a cited claim rests, as a preview shows it.
 #[derive(Clone, Debug, PartialEq)]
 pub enum CitedPlace {
-    /// Words quoted from the source's own text.
-    Passage(String),
-    /// One value of a structured record: its name, and its value as the record gives it.
-    Field {
-        /// The field's name.
-        name: String,
-        /// Its value, with its unit when it has one.
-        value: String,
-    },
+    /// The source's own words: passages quoted from its text, each a quoted block, then values of a
+    /// structured record, each a row, both in the order given.
+    Quoted(Places<String, CitedField>),
     /// A page of a scan that has no text of its own, in the host's words: "Page 2".
     Page(String),
+}
+
+/// One value of a structured record, as a preview quotes it: its name, and its value as the record
+/// gives it.
+#[derive(Clone, Debug, PartialEq)]
+pub struct CitedField {
+    /// The field's name.
+    pub name: String,
+    /// Its value, with its unit when it has one.
+    pub value: String,
+}
+
+/// The places a citation names in its source: passages of its text and fields of a structured
+/// record, each in the order given, and at least one in all. A set with neither can't be made.
+#[derive(Clone, Debug, PartialEq)]
+pub struct Places<P, F> {
+    passages: Vec<P>,
+    fields: Vec<F>,
+}
+
+impl<P, F> Places<P, F> {
+    /// The passages and the fields, or none when there is neither.
+    pub fn new(passages: Vec<P>, fields: Vec<F>) -> Option<Self> {
+        if passages.is_empty() && fields.is_empty() {
+            return None;
+        }
+        Some(Self { passages, fields })
+    }
+
+    /// One passage.
+    pub fn passage(passage: P) -> Self {
+        Self {
+            passages: vec![passage],
+            fields: Vec::new(),
+        }
+    }
+
+    /// One field.
+    pub fn field(field: F) -> Self {
+        Self {
+            passages: Vec::new(),
+            fields: vec![field],
+        }
+    }
+
+    /// The passages, in order.
+    pub fn passages(&self) -> &[P] {
+        &self.passages
+    }
+
+    /// The fields, in order.
+    pub fn fields(&self) -> &[F] {
+        &self.fields
+    }
 }
 
 /// The source in its own system, opened in a new tab: its address, the link's words, and the
@@ -237,11 +286,11 @@ pub struct ExpandSource {
 /// A citation in prose that previews its source. Pointing at it opens the preview beside it, which
 /// stays while the pointer or focus is on either; Escape or Close dismisses it. Under its eyebrow
 /// and title, the preview shows its `content`: one quiet line of what the record says about itself,
-/// then the cited place in the source's own words, never the whole record; or, only when nothing
-/// of the source's own can be shown, Coda's description, marked as Coda's. Choosing the citation
-/// opens the source beside the reader when the host gives `expand`, and otherwise toggles the
-/// preview, as on touch. The preview's actions open the pane and the `original` record, each shown
-/// with its words.
+/// then the cited place, when it names one, in the source's own words, never the whole record; or,
+/// only when nothing of the source's own can be shown, Coda's description, marked as Coda's.
+/// Choosing the citation opens the source beside the reader when the host gives `expand`, and
+/// otherwise toggles the preview, as on touch. The preview's actions open the pane and the
+/// `original` record, each shown with its words.
 #[component]
 pub fn CitationPreview(
     index: usize,
@@ -363,7 +412,9 @@ pub fn CitationPreview(
                         match content {
                             PreviewContent::Cited { about, place } => rsx! {
                                 AboutLine { about }
-                                PlaceView { place }
+                                if let Some(place) = place {
+                                    PlaceView { place }
+                                }
                             },
                             PreviewContent::Described(summary) => rsx! { SummaryView { summary } },
                         }
@@ -464,18 +515,24 @@ fn SummaryView(summary: SourceSummary) -> Element {
     }
 }
 
-/// Where a claim rests, in the source's own words: a passage quoted, a field's name and value, or
-/// the page of a scan named.
+/// Where a claim rests, in the source's own words: each passage quoted in a block of its own, then
+/// the fields in one block, a row each with its name and value; or the page of a scan named.
 #[component]
 fn PlaceView(place: CitedPlace) -> Element {
     match place {
-        CitedPlace::Passage(words) => rsx! {
-            span { class: "source-quote", "{words}" }
-        },
-        CitedPlace::Field { name, value } => rsx! {
-            span { class: "source-quote is-field",
-                span { class: "source-quote-name", "{name}" }
-                span { class: "source-quote-value", "{value}" }
+        CitedPlace::Quoted(places) => rsx! {
+            for (index, words) in places.passages().iter().enumerate() {
+                span { key: "{index}", class: "source-quote", "{words}" }
+            }
+            if !places.fields().is_empty() {
+                span { class: "source-quote",
+                    for (index, field) in places.fields().iter().enumerate() {
+                        span { key: "{index}", class: "source-quote-field",
+                            span { class: "source-quote-name", "{field.name}" }
+                            span { class: "source-quote-value", "{field.value}" }
+                        }
+                    }
+                }
             }
         },
         CitedPlace::Page(page) => rsx! {
@@ -675,9 +732,10 @@ pub enum SourceState {
 }
 
 /// A source as it reads in the pane: under its title, what it says about itself on one quiet line;
-/// under a hairline, scrolling, the record itself, with the cited place highlighted or a notice that
-/// it can't be found, and last, collapsed, the raw record; and pinned at the pane's foot under a
-/// hairline, a link to it in its own system when there is one.
+/// under a hairline, scrolling, the record itself, with its cited places highlighted, nothing
+/// highlighted when it is cited as a whole, or a notice that its cited place can't be found, and
+/// last, collapsed, the raw record; and pinned at the pane's foot under a hairline, a link to it in
+/// its own system when there is one.
 #[derive(Clone, PartialEq)]
 pub struct SourceRecord {
     /// Its kind, date and status.
@@ -709,35 +767,52 @@ pub struct RawRecord {
     pub text: String,
 }
 
-/// Whether the cited place was found in the record: where it is, or the short notice that says it
-/// can't be found.
+/// Where a citation points in the record the pane shows: the record as a whole, its cited places,
+/// or the notice that its cited place can't be found. Only cited places are highlighted, and only a
+/// place that can't be found brings a notice.
 #[derive(Clone, Debug, PartialEq)]
-pub enum Located<T> {
-    /// Where the cited place is.
-    Found(T),
-    /// The notice that it can't be found; the record shows without a highlight.
+pub enum CitedAt {
+    /// The record as a whole: nothing is highlighted and no notice shows.
+    Whole,
+    /// The cited passages and fields, each highlighted, a field named by its key. The pane opens at
+    /// the first of them in the record's reading order.
+    Places(Places<PartRange, String>),
+    /// The notice that the cited place can't be found; the record shows without a highlight.
     NotFound(String),
 }
 
-/// The record itself: its own text, or, for a record with no text of its own, its fields.
+/// A cited passage of a record's text: the part it is in, by its place among the record's parts,
+/// and its byte range of that part's text. One that isn't a range of its part is left unmarked.
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub struct PartRange {
+    /// The part, counted from 0 in the record's order.
+    pub part: usize,
+    /// The byte range of the part's text.
+    pub range: (usize, usize),
+}
+
+/// The record itself: its own text, part by part, then its fields, group by group, and where its
+/// citation points in it. A record may have text, fields or both.
 #[derive(Clone, Debug, PartialEq)]
-pub enum RecordBody {
-    /// The source's own text, and the cited passage as a byte range of it.
-    Text {
-        /// The record's text.
-        text: String,
-        /// The cited passage.
-        cited: Located<(usize, usize)>,
-    },
-    /// Every field under its name, in groups, and the cited field by its key.
-    Fields {
-        /// The groups of fields, in order.
-        groups: Vec<FieldGroup>,
-        /// The cited field's key.
-        cited: Located<String>,
-        /// What a result's reference range is called beside it: "Reference range".
-        range_label: String,
-    },
+pub struct RecordBody {
+    /// The record's own text, in parts, in order.
+    pub parts: Vec<TextPart>,
+    /// Every field under its name, in groups, in order.
+    pub groups: Vec<FieldGroup>,
+    /// What a result's reference range is called beside it: "Reference range".
+    pub range_label: String,
+    /// Where the citation points in the record.
+    pub cited: CitedAt,
+}
+
+/// One part of a record's own text, under its own label when it has one, such as "Assessment and
+/// plan".
+#[derive(Clone, Debug, PartialEq)]
+pub struct TextPart {
+    /// The part's label.
+    pub label: Option<String>,
+    /// The part's text.
+    pub text: String,
 }
 
 /// Fields that stand together, under an optional heading such as "Other fields".
@@ -807,20 +882,29 @@ fn SourceView(state: SourceState) -> Element {
     }
 }
 
-/// A source shown, in the pane's body: the notice when its cited place can't be found, the record,
-/// its raw form.
+/// A source shown, in the pane's body: the notice when its cited place can't be found; the record,
+/// its text parts, each under its label, then its fields, with its cited places marked; its raw
+/// form. The pane it is read in opens at the first place marked, and again whenever the record or
+/// its places change, never on other renders.
 #[component]
 fn RecordView(body: RecordBody, raw: RawRecord) -> Element {
-    let notice = match &body {
-        RecordBody::Text {
-            cited: Located::NotFound(notice),
-            ..
+    let surface = try_use_context::<PassageSurface>();
+    use_effect(use_reactive!(|body| {
+        let _ = &body;
+        if let Some(PassageSurface(id)) = &surface {
+            script::scroll_to_passage(id);
         }
-        | RecordBody::Fields {
-            cited: Located::NotFound(notice),
-            ..
-        } => Some(notice.clone()),
-        _ => None,
+    }));
+    let RecordBody {
+        parts,
+        groups,
+        range_label,
+        cited,
+    } = body;
+    let (passages, keys, notice) = match cited {
+        CitedAt::Whole => (Vec::new(), Vec::new(), None),
+        CitedAt::Places(places) => (places.passages().to_vec(), places.fields().to_vec(), None),
+        CitedAt::NotFound(notice) => (Vec::new(), Vec::new(), Some(notice)),
     };
     rsx! {
         div { class: "source-record",
@@ -831,20 +915,19 @@ fn RecordView(body: RecordBody, raw: RawRecord) -> Element {
                 }
             }
             div { class: "source-record-body",
-                match body {
-                    RecordBody::Text { text, cited } => rsx! {
+                for (index, part) in parts.into_iter().enumerate() {
+                    div { key: "{index}", class: "source-text-part",
+                        if let Some(label) = part.label {
+                            h3 { class: "source-text-label", "{label}" }
+                        }
                         SourceText {
-                            text,
-                            passage: match cited { Located::Found(range) => Some(range), Located::NotFound(_) => None },
+                            text: part.text,
+                            passages: passages.iter().filter(|at| at.part == index).map(|at| at.range).collect::<Vec<_>>(),
                         }
-                    },
-                    RecordBody::Fields { groups, cited, range_label } => rsx! {
-                        RecordFields {
-                            groups,
-                            cited: match cited { Located::Found(key) => Some(key), Located::NotFound(_) => None },
-                            range_label,
-                        }
-                    },
+                    }
+                }
+                if !groups.is_empty() {
+                    RecordFields { groups, cited: keys, range_label }
                 }
             }
             Disclosure { title: raw.label, detail: true,
@@ -881,18 +964,11 @@ fn AboutLine(about: RecordAbout) -> Element {
     }
 }
 
-/// Every field of a record under its name, group by group, the cited one, named by its key,
+/// Every field of a record under its name, group by group, the cited ones, named by their keys,
 /// highlighted. A result keeps its own unit, reference range and status; a part the source says is
-/// absent reads in its own quieter words. The pane opens at the cited field.
+/// absent reads in its own quieter words.
 #[component]
-fn RecordFields(groups: Vec<FieldGroup>, cited: Option<String>, range_label: String) -> Element {
-    let surface = try_use_context::<PassageSurface>();
-    use_effect(use_reactive!(|cited| {
-        let _ = &cited;
-        if let Some(PassageSurface(body)) = &surface {
-            script::scroll_to_passage(body);
-        }
-    }));
+fn RecordFields(groups: Vec<FieldGroup>, cited: Vec<String>, range_label: String) -> Element {
     rsx! {
         div { class: "record-fields",
             for (index, group) in groups.into_iter().enumerate() {
@@ -904,7 +980,7 @@ fn RecordFields(groups: Vec<FieldGroup>, cited: Option<String>, range_label: Str
                         for field in group.fields {
                             FieldRow {
                                 key: "{field.key}",
-                                cited: cited.as_deref() == Some(field.key.as_str()),
+                                cited: cited.contains(&field.key),
                                 field,
                                 range_label: range_label.clone(),
                             }
@@ -962,20 +1038,10 @@ fn FieldRow(field: RecordField, cited: bool, range_label: String) -> Element {
 #[derive(Clone)]
 struct PassageSurface(String);
 
-/// A source's own words with the cited passage marked: its line breaks kept and long words
-/// wrapping. The pane it is read in opens at the passage, and again whenever the words or the
-/// passage change, never on other renders. `passage` is a byte range of `text`; one that isn't a
-/// range of it is left unmarked.
+/// A source's own words with its cited passages marked: its line breaks kept and long words
+/// wrapping. `passages` are byte ranges of `text`; one that isn't a range of it is left unmarked.
 #[component]
-fn SourceText(text: String, passage: Option<(usize, usize)>) -> Element {
-    let surface = try_use_context::<PassageSurface>();
-    use_effect(use_reactive!(|text, passage| {
-        let _ = (&text, &passage);
-        if let Some(PassageSurface(body)) = &surface {
-            script::scroll_to_passage(body);
-        }
-    }));
-    let passages: Vec<(usize, usize)> = passage.into_iter().collect();
+fn SourceText(text: String, passages: Vec<(usize, usize)>) -> Element {
     rsx! {
         span { class: "source-text",
             for (index, (words, cited)) in marked(&text, &passages).into_iter().enumerate() {
@@ -1071,5 +1137,13 @@ mod tests {
         );
         // A range that splits a character is not a range of the words.
         assert_eq!(marked("é", &[(1, 2)]), vec![("é".to_owned(), false)]);
+    }
+
+    #[test]
+    fn a_set_of_places_has_at_least_one() {
+        assert_eq!(Places::<String, String>::new(Vec::new(), Vec::new()), None);
+        let fields = vec!["component[3]".to_owned()];
+        let places = Places::<String, String>::new(Vec::new(), fields.clone());
+        assert_eq!(places.as_ref().map(Places::fields), Some(&fields[..]));
     }
 }

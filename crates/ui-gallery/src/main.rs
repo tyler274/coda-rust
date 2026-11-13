@@ -22,24 +22,24 @@ use ui::{
     ActionRow, Answer, AnswerEnding, AnswerSources, ApprovalCard, ApprovalState, ArtifactCard,
     AttachButton, Attachment, AttachmentState, Attachments, Author, Avatar, AvatarSize, Basis,
     Button, ButtonVariant, Card, Change, ChartHeader, ChatColumn, ChatHeader, Checkbox, Choice,
-    CitationChip, CitationPreview, CitedPlace, CodeBlock, Column, Combobox, Command,
-    CommandPalette, CompactField, Comparison, ComparisonBars, Composer, ContextChip, ContextMenu,
-    ConversationViewport, CopyButton, CopyWords, Count, DateField, DateKind, DateSeparator, Dialog,
-    Dictation, Diff, DiffLine, DiffWords, Disclosure, DraftConflict, EmptyLine, EmptyState,
-    EndAction, Ending, ExpandSource, FeedbackRating, FieldGroup, FieldValue, FooterActions,
-    HeaderFact, Icon, IconName, IconTile, IndexedSource, KeyHint, ListRow, LiveDot, Located,
+    CitationChip, CitationPreview, CitedAt, CitedField, CitedPlace, CodeBlock, Column, Combobox,
+    Command, CommandPalette, CompactField, Comparison, ComparisonBars, Composer, ContextChip,
+    ContextMenu, ConversationViewport, CopyButton, CopyWords, Count, DateField, DateKind,
+    DateSeparator, Dialog, Dictation, Diff, DiffLine, DiffWords, Disclosure, DraftConflict,
+    EmptyLine, EmptyState, EndAction, Ending, ExpandSource, FeedbackRating, FieldGroup, FieldValue,
+    FooterActions, HeaderFact, Icon, IconName, IconTile, IndexedSource, KeyHint, ListRow, LiveDot,
     MeasurementTile, Menu, MenuItem, MenuSection, Message, MessageActions, MessageEditor,
     MessageQueue, MessageState, MessageStatus, NavigationControl, NavigationRow, Notice, PageTitle,
-    Paper, PaperSection, Placeholder, PlaceholderShape, Popover, PreviewContent, ProgressBar,
-    ProposedChange, Prose, ProseNames, ProsePart, QueuePlace, Quote, RadioGroup, RailCard, Rating,
-    RawRecord, RecordAbout, RecordBody, RecordField, RecordStatus, RowFrame, RowGroup,
-    RunningChart, SearchField, SectionHeader, Segmented, Select, SeriesChart, SeriesPoint,
-    SeriesShape, SettingRow, Slider, SortOrder, SourceLink, SourcePane, SourceReading,
+    Paper, PaperSection, PartRange, Placeholder, PlaceholderShape, Places, Popover, PreviewContent,
+    ProgressBar, ProposedChange, Prose, ProseNames, ProsePart, QueuePlace, Quote, RadioGroup,
+    RailCard, Rating, RawRecord, RecordAbout, RecordBody, RecordField, RecordStatus, RowFrame,
+    RowGroup, RunningChart, SearchField, SectionHeader, Segmented, Select, SeriesChart,
+    SeriesPoint, SeriesShape, SettingRow, Slider, SortOrder, SourceLink, SourcePane, SourceReading,
     SourceRecord, SourceState, SourceSummary, SourcesButton, Sparkline, Spinner, StatePill,
     StatusLine, StepState, Suggestion, TabBar, Table, TableRow, Task, TaskList, TaskState,
-    TaskWords, TextField, TextKind, Toast, ToggleChip, ToggleRow, ToggleState, Tone, Tooltip,
-    TopBar, TryAgain, Value, VersionSwitch, WorkStep, WorkTrace, WorkingMark, WorkingPresence,
-    use_live_rows,
+    TaskWords, TextField, TextKind, TextPart, Toast, ToggleChip, ToggleRow, ToggleState, Tone,
+    Tooltip, TopBar, TryAgain, Value, VersionSwitch, WorkStep, WorkTrace, WorkingMark,
+    WorkingPresence, use_live_rows,
 };
 #[cfg(feature = "web")]
 use wasm_bindgen::{JsCast, closure::Closure};
@@ -285,10 +285,11 @@ const FAMILIES: [Family; 17] = [
     Family {
         slug: "citations-and-sources",
         title: "Citations and sources",
-        note: "Pointing at a citation previews its source in its own words: what the record says about itself, then the cited passage, field or page. Choosing it opens the source beside the reader, or over it with Back where there isn't room, at the cited place, marked. Only a source with nothing of its own to show is described in Coda's words, marked as Coda's. A citation whose source can't be shown is muted and says so.",
+        note: "Pointing at a citation previews its source in its own words: what the record says about itself, then the cited passages, fields or page, when it names a place. Choosing it opens the source beside the reader, or over it with Back where there isn't room, at the cited place, marked. Only a source with nothing of its own to show is described in Coda's words, marked as Coda's. A citation whose source can't be shown is muted and says so.",
         body: || {
             rsx! {
                 CitationDemo {}
+                CitedPlacesDemo {}
             }
         },
     },
@@ -1562,6 +1563,40 @@ const DISCHARGE_RAW: &str = "{\n  \"resourceType\": \"DocumentReference\",\n  \"
 #[cfg(feature = "web")]
 const PANEL_RAW: &str = "{\n  \"resourceType\": \"Observation\",\n  \"id\": \"obs-4471-bmp-0425\",\n  \"status\": \"preliminary\",\n  \"code\": { \"text\": \"Basic metabolic panel\" },\n  \"effectiveDateTime\": \"2024-04-25T06:10:00-04:00\",\n  \"component\": [\n    { \"code\": { \"text\": \"Potassium\" }, \"valueQuantity\": { \"value\": 4.0, \"unit\": \"mmol/L\" } },\n    { \"code\": { \"text\": \"Urea\" }, \"valueQuantity\": { \"value\": 4.0, \"unit\": \"mmol/L\" } }\n  ]\n}";
 
+/// The echocardiogram report's own text, which the sixth source shows.
+#[cfg(feature = "web")]
+const ECHO: &str = "Transthoracic echocardiogram.\nIndication: heart failure with worsening dyspnea.\nFindings. The study is technically adequate. The left ventricle is mildly dilated, with global hypokinesis that is worst in the inferior and inferolateral walls. Wall thickness is normal. Diastolic function shows a pseudonormal filling pattern, with an E/e′ ratio of 16. The right ventricle is normal in size, with mildly reduced systolic function; TAPSE is 15 mm. The left atrium is moderately dilated. There is moderate functional mitral regurgitation and trace tricuspid regurgitation; the estimated right ventricular systolic pressure is 42 mmHg. The inferior vena cava is dilated, collapsing less than 50 percent on sniff. There is no pericardial effusion.\nConclusions. Left ventricular ejection fraction of 35 percent, reduced from 45 percent in March 2022. Moderate functional mitral regurgitation. Elevated left ventricular filling pressures.";
+
+/// The two passages of the echocardiogram report the answer cites.
+#[cfg(feature = "web")]
+const ECHO_PASSAGES: [&str; 2] = [
+    "Left ventricular ejection fraction of 35 percent, reduced from 45 percent in March 2022.",
+    "Elevated left ventricular filling pressures.",
+];
+
+#[cfg(feature = "web")]
+const ECHO_RAW: &str = "{\n  \"resourceType\": \"DiagnosticReport\",\n  \"id\": \"dx-4471-echo-0422\",\n  \"status\": \"final\",\n  \"code\": { \"text\": \"Transthoracic echocardiogram\" },\n  \"effectiveDateTime\": \"2024-04-22T10:40:00-04:00\",\n  \"presentedForm\": [{ \"contentType\": \"text/plain\" }]\n}";
+
+/// The clinic note's own text, in its two labelled parts, which the seventh source shows.
+#[cfg(feature = "web")]
+const CLINIC_PARTS: [(&str, &str); 2] = [
+    (
+        "Interval history",
+        "Seen two weeks after discharge. Breathing is better; she sleeps on two pillows and walks to the mailbox without stopping. No dizziness. Home weights have held between 71 and 72 kg.",
+    ),
+    (
+        "Assessment and plan",
+        "Heart failure with reduced ejection fraction, now euvolemic. Continue furosemide 40 mg daily. Start sacubitril-valsartan 24/26 mg twice daily and recheck a basic metabolic panel in one week. Return in four weeks.",
+    ),
+];
+
+/// The passage of the clinic note's plan the answer cites.
+#[cfg(feature = "web")]
+const CLINIC_PASSAGE: &str = "Continue furosemide 40 mg daily.";
+
+#[cfg(feature = "web")]
+const CLINIC_RAW: &str = "{\n  \"resourceType\": \"Composition\",\n  \"id\": \"cmp-4471-0509\",\n  \"status\": \"final\",\n  \"type\": { \"text\": \"Heart failure clinic note\" },\n  \"date\": \"2024-05-09T14:05:00-04:00\",\n  \"section\": [{ \"title\": \"Interval history\" }, { \"title\": \"Assessment and plan\" }]\n}";
+
 /// The sources the citation samples cite, by their number.
 #[cfg(feature = "web")]
 #[derive(Clone, Copy, PartialEq)]
@@ -1571,6 +1606,9 @@ enum Cited {
     Fax,
     /// An outside document with nothing of its own that can be shown.
     Outside,
+    Echo,
+    /// A note with two labelled parts of text and vital signs.
+    ClinicNote,
 }
 
 #[cfg(feature = "web")]
@@ -1581,6 +1619,8 @@ impl Cited {
             Cited::Panel => 2,
             Cited::Fax => 3,
             Cited::Outside => 5,
+            Cited::Echo => 6,
+            Cited::ClinicNote => 7,
         }
     }
 
@@ -1590,6 +1630,8 @@ impl Cited {
             Cited::Panel => "Basic metabolic panel",
             Cited::Fax => "Outside cardiology consult",
             Cited::Outside => "Outside records packet",
+            Cited::Echo => "Transthoracic echocardiogram",
+            Cited::ClinicNote => "Heart failure clinic note",
         }
     }
 
@@ -1621,6 +1663,16 @@ impl Cited {
                 status: None,
             },
             Cited::Outside => RecordAbout::default(),
+            Cited::Echo => RecordAbout {
+                kind: None,
+                date: Some("April 22, 2024".into()),
+                status: Some(RecordStatus::Settled("Final".into())),
+            },
+            Cited::ClinicNote => RecordAbout {
+                kind: None,
+                date: Some("May 9, 2024".into()),
+                status: Some(RecordStatus::Settled("Signed".into())),
+            },
         }
     }
 
@@ -1628,17 +1680,31 @@ impl Cited {
     /// packet, which has nothing of its own to show, Coda's description.
     fn content(self) -> PreviewContent {
         let place = match self {
-            Cited::Discharge => CitedPlace::Passage(DISCHARGE_PASSAGE.into()),
-            Cited::Panel => CitedPlace::Field {
+            Cited::Discharge => CitedPlace::Quoted(Places::passage(DISCHARGE_PASSAGE.into())),
+            Cited::Panel => CitedPlace::Quoted(Places::field(CitedField {
                 name: "Potassium".into(),
                 value: "4.0 mmol/L".into(),
-            },
+            })),
             Cited::Fax => CitedPlace::Page("Page 2".into()),
             Cited::Outside => return PreviewContent::Described(outside_description()),
+            Cited::Echo => CitedPlace::Quoted(
+                Places::new(ECHO_PASSAGES.map(Into::into).to_vec(), Vec::new())
+                    .expect("two passages"),
+            ),
+            Cited::ClinicNote => CitedPlace::Quoted(
+                Places::new(
+                    vec![CLINIC_PASSAGE.into()],
+                    vec![CitedField {
+                        name: "Weight".into(),
+                        value: "71.2 kg".into(),
+                    }],
+                )
+                .expect("a passage and a field"),
+            ),
         };
         PreviewContent::Cited {
             about: self.about(),
-            place,
+            place: Some(place),
         }
     }
 
@@ -1660,10 +1726,16 @@ fn outside_description() -> SourceSummary {
     }
 }
 
-/// A citation mark that previews its source, and with `on_expand`, opens it in the pane.
+/// A citation mark that previews its source, at its place in the samples or with `content` where
+/// given, and with `on_expand`, opens it in the pane.
 #[cfg(feature = "web")]
 #[component]
-fn CitedMark(cited: Cited, on_expand: Option<EventHandler>) -> Element {
+fn CitedMark(
+    cited: Cited,
+    #[props(default)] content: Option<PreviewContent>,
+    on_expand: Option<EventHandler>,
+) -> Element {
+    let content = content.unwrap_or_else(|| cited.content());
     let index = cited.index();
     let title = cited.title();
     rsx! {
@@ -1673,7 +1745,7 @@ fn CitedMark(cited: Cited, on_expand: Option<EventHandler>) -> Element {
             eyebrow: "Source {index}",
             citation_label: "Source {index}: {title}. Preview source.",
             close_label: "Close source preview",
-            content: cited.content(),
+            content,
             expand: on_expand.map(|on_expand| ExpandSource { label: "Expand".into(), on_expand }),
             original: cited.original(),
         }
@@ -1740,11 +1812,16 @@ fn plain(key: &str, name: &str, value: &str) -> RecordField {
 }
 
 #[cfg(feature = "web")]
-fn discharge_record(cited: Located<(usize, usize)>) -> SourceRecord {
+fn discharge_record(cited: CitedAt) -> SourceRecord {
     SourceRecord {
         about: Cited::Discharge.about(),
-        body: RecordBody::Text {
-            text: DISCHARGE.into(),
+        body: RecordBody {
+            parts: vec![TextPart {
+                label: None,
+                text: DISCHARGE.into(),
+            }],
+            groups: Vec::new(),
+            range_label: "Reference range".into(),
             cited,
         },
         original: Cited::Discharge.original(),
@@ -1756,10 +1833,11 @@ fn discharge_record(cited: Located<(usize, usize)>) -> SourceRecord {
 }
 
 #[cfg(feature = "web")]
-fn panel_record(cited: Located<String>) -> SourceRecord {
+fn panel_record(cited: CitedAt) -> SourceRecord {
     SourceRecord {
         about: Cited::Panel.about(),
-        body: RecordBody::Fields {
+        body: RecordBody {
+            parts: Vec::new(),
             groups: vec![
                 FieldGroup {
                     heading: None,
@@ -1812,8 +1890,8 @@ fn panel_record(cited: Located<String>) -> SourceRecord {
                     ],
                 },
             ],
-            cited,
             range_label: "Reference range".into(),
+            cited,
         },
         original: Cited::Panel.original(),
         raw: RawRecord {
@@ -1823,11 +1901,111 @@ fn panel_record(cited: Located<String>) -> SourceRecord {
     }
 }
 
+/// Where `words` sit in `text`, the record's text part `part`.
+#[cfg(feature = "web")]
+fn found(part: usize, text: &str, words: &str) -> PartRange {
+    let start = text
+        .find(words)
+        .expect("the sample's cited passage is not in its text");
+    PartRange {
+        part,
+        range: (start, start + words.len()),
+    }
+}
+
 /// Where the cited passage sits in the discharge summary's text.
 #[cfg(feature = "web")]
-fn discharge_passage() -> Located<(usize, usize)> {
-    let start = DISCHARGE.find(DISCHARGE_PASSAGE).unwrap_or(0);
-    Located::Found((start, start + DISCHARGE_PASSAGE.len()))
+fn discharge_passage() -> CitedAt {
+    CitedAt::Places(Places::passage(found(0, DISCHARGE, DISCHARGE_PASSAGE)))
+}
+
+/// The echocardiogram report, its two cited passages marked.
+#[cfg(feature = "web")]
+fn echo_record() -> SourceRecord {
+    SourceRecord {
+        about: Cited::Echo.about(),
+        body: RecordBody {
+            parts: vec![TextPart {
+                label: None,
+                text: ECHO.into(),
+            }],
+            groups: Vec::new(),
+            range_label: "Reference range".into(),
+            cited: CitedAt::Places(
+                Places::new(
+                    ECHO_PASSAGES.map(|words| found(0, ECHO, words)).to_vec(),
+                    Vec::new(),
+                )
+                .expect("two passages"),
+            ),
+        },
+        original: None,
+        raw: RawRecord {
+            label: "Technical details".into(),
+            text: ECHO_RAW.into(),
+        },
+    }
+}
+
+/// The clinic note: its two labelled parts of text, then its vital signs, cited in its plan and at
+/// its weight.
+#[cfg(feature = "web")]
+fn clinic_record() -> SourceRecord {
+    let measured = |key: &str, name: &str, value: &str, unit: &str| RecordField {
+        key: key.into(),
+        name: name.into(),
+        value: FieldValue::Given {
+            value: value.into(),
+            unit: Some(unit.into()),
+            range: None,
+            status: None,
+        },
+    };
+    let (_, plan) = CLINIC_PARTS[1];
+    SourceRecord {
+        about: Cited::ClinicNote.about(),
+        body: RecordBody {
+            parts: CLINIC_PARTS
+                .map(|(label, text)| TextPart {
+                    label: Some(label.into()),
+                    text: text.into(),
+                })
+                .to_vec(),
+            groups: vec![FieldGroup {
+                heading: Some("Vital signs".into()),
+                fields: vec![
+                    measured("vitals[0]", "Weight", "71.2", "kg"),
+                    measured("vitals[1]", "Blood pressure", "118/72", "mmHg"),
+                    measured("vitals[2]", "Heart rate", "68", "/min"),
+                ],
+            }],
+            range_label: "Reference range".into(),
+            cited: CitedAt::Places(
+                Places::new(
+                    vec![found(1, plan, CLINIC_PASSAGE)],
+                    vec!["vitals[0]".into()],
+                )
+                .expect("a passage and a field"),
+            ),
+        },
+        original: None,
+        raw: RawRecord {
+            label: "Technical details".into(),
+            text: CLINIC_RAW.into(),
+        },
+    }
+}
+
+/// A source as the pane shows it, in the state `state`.
+#[cfg(feature = "web")]
+fn pane(cited: Cited, state: SourceState) -> SourcePane {
+    SourcePane {
+        eyebrow: format!("Source {}", cited.index()),
+        title: cited.title().to_owned(),
+        state,
+        back: "Back".to_owned(),
+        close: "Close source".to_owned(),
+    }
 }
 
 #[cfg(feature = "web")]
@@ -1855,13 +2033,13 @@ fn CitationDemo() -> Element {
             ),
             PaneSample::Fields => (
                 Cited::Panel,
-                SourceState::Shown(Box::new(panel_record(Located::Found(
+                SourceState::Shown(Box::new(panel_record(CitedAt::Places(Places::field(
                     "component[0]".into(),
-                )))),
+                ))))),
             ),
             PaneSample::NotFound => (
                 Cited::Discharge,
-                SourceState::Shown(Box::new(discharge_record(Located::NotFound(
+                SourceState::Shown(Box::new(discharge_record(CitedAt::NotFound(
                     "Couldn’t find the cited passage.".into(),
                 )))),
             ),
@@ -1886,13 +2064,7 @@ fn CitationDemo() -> Element {
                 SourceState::Described(outside_description()),
             ),
         };
-        SourcePane {
-            eyebrow: format!("Source {}", cited.index()),
-            title: cited.title().to_owned(),
-            state,
-            back: "Back".to_owned(),
-            close: "Close source".to_owned(),
-        }
+        pane(cited, state)
     });
     rsx! {
         div { class: "gallery-row",
@@ -1923,6 +2095,138 @@ fn CitationDemo() -> Element {
                         CitationChip { index: 4, label: "Source 4 unavailable", unavailable: "unavailable" }
                         " An outside packet records an ablation in 2019."
                         CitedMark { cited: Cited::Outside, on_expand: move |_| read_then_show(PaneSample::Described) }
+                    }
+                }
+            }
+        }
+    }
+}
+
+/// A citation of the places samples: a record cited as a whole, or citing several places.
+#[cfg(feature = "web")]
+#[derive(Clone, Copy, PartialEq)]
+enum Placed {
+    /// The discharge summary as a whole.
+    Whole,
+    /// Two passages of the echocardiogram report's one part of text.
+    Passages,
+    /// A passage in the second of the clinic note's two parts of text, and one of its fields.
+    Parts,
+    /// Two fields of the metabolic panel.
+    Fields,
+}
+
+#[cfg(feature = "web")]
+const PLACED_SAMPLES: [(Placed, &str); 4] = [
+    (Placed::Whole, "Whole record"),
+    (Placed::Passages, "Two passages"),
+    (Placed::Parts, "Parts and fields"),
+    (Placed::Fields, "Two fields"),
+];
+
+#[cfg(feature = "web")]
+impl Placed {
+    fn source(self) -> Cited {
+        match self {
+            Placed::Whole => Cited::Discharge,
+            Placed::Passages => Cited::Echo,
+            Placed::Parts => Cited::ClinicNote,
+            Placed::Fields => Cited::Panel,
+        }
+    }
+
+    /// What its preview shows: what the record says about itself, and its places, if any.
+    fn content(self) -> PreviewContent {
+        match self {
+            Placed::Whole => PreviewContent::Cited {
+                about: Cited::Discharge.about(),
+                place: None,
+            },
+            Placed::Passages | Placed::Parts => self.source().content(),
+            Placed::Fields => PreviewContent::Cited {
+                about: Cited::Panel.about(),
+                place: Some(CitedPlace::Quoted(
+                    Places::new(
+                        Vec::new(),
+                        vec![
+                            CitedField {
+                                name: "Creatinine".into(),
+                                value: "124 µmol/L".into(),
+                            },
+                            CitedField {
+                                name: "eGFR".into(),
+                                value: "52".into(),
+                            },
+                        ],
+                    )
+                    .expect("two fields"),
+                )),
+            },
+        }
+    }
+
+    /// The source as the pane shows it, at this citation's places.
+    fn record(self) -> SourceRecord {
+        match self {
+            Placed::Whole => discharge_record(CitedAt::Whole),
+            Placed::Passages => echo_record(),
+            Placed::Parts => clinic_record(),
+            Placed::Fields => panel_record(CitedAt::Places(
+                Places::new(
+                    Vec::new(),
+                    vec!["component[3]".into(), "component[4]".into()],
+                )
+                .expect("two fields"),
+            )),
+        }
+    }
+}
+
+/// Citations that name a record as a whole or several places in it, each previewed and opened in
+/// the pane, read at once.
+#[cfg(feature = "web")]
+#[component]
+fn CitedPlacesDemo() -> Element {
+    let mut shown = use_signal(|| None::<Placed>);
+    let source = shown().map(|placed| {
+        pane(
+            placed.source(),
+            SourceState::Shown(Box::new(placed.record())),
+        )
+    });
+    let mark = move |placed: Placed| {
+        rsx! {
+            CitedMark {
+                cited: placed.source(),
+                content: placed.content(),
+                on_expand: move |_| shown.set(Some(placed)),
+            }
+        }
+    };
+    rsx! {
+        div { class: "gallery-row",
+            for (placed, words) in PLACED_SAMPLES {
+                Button {
+                    key: "{words}",
+                    compact: true,
+                    aria_pressed: if shown() == Some(placed) { "true" } else { "false" },
+                    onclick: move |_| shown.set(Some(placed)),
+                    "{words}"
+                }
+            }
+        }
+        div { class: "gallery-reading",
+            SourceReading { source, on_close: move |_| shown.set(None),
+                div { class: "gallery-reader",
+                    p { class: "gallery-copy",
+                        "Her discharge summary from that stay is signed and final."
+                        {mark(Placed::Whole)}
+                        " Her echocardiogram showed an ejection fraction of 35 percent, down from 45 percent in 2022, with raised filling pressures."
+                        {mark(Placed::Passages)}
+                        " Two weeks later in clinic she weighed 71.2 kg, and her furosemide was continued."
+                        {mark(Placed::Parts)}
+                        " Her creatinine was 124 µmol/L, with an eGFR of 52."
+                        {mark(Placed::Fields)}
                     }
                 }
             }

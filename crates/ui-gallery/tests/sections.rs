@@ -7,7 +7,8 @@
 //! `UI_GALLERY_SCREENSHOTS` set to a folder, those walks leave a picture of what
 //! they focused there. The UI library's module behaviour is walked with real input too: a
 //! menu's keys, a dialog's close, a sheet's drag, a copy read back from the clipboard, a
-//! popover's fade out under reduced motion, and a selection fill through quick changes.
+//! popover's fade out under reduced motion, and a selection fill through quick changes. A source
+//! pane is read for the places its citation marks.
 
 // The shared client also carries helpers for journeys this test doesn't walk.
 #[allow(dead_code)]
@@ -1050,6 +1051,175 @@ fn a_preview_hears_the_page_until_it_goes() {
         "the page to have Escape back",
     );
     assert_eq!(browser.take_page_errors(), Vec::<String>::new());
+}
+
+/// A citation of a record as a whole shows the record with nothing marked and no notice, and its
+/// preview says what the record is with no cited place.
+#[test]
+#[ignore = "browser qualification; run explicitly with --ignored"]
+fn a_whole_record_citation_marks_nothing_and_gives_no_notice() {
+    let gallery = Gallery::start();
+    let mut browser = open_at(
+        &gallery,
+        DESKTOP,
+        "citations-and-sources",
+        "Citations and sources",
+    );
+    let (x, y) = center(
+        &mut browser,
+        ".gallery-reading ~ .gallery-reading button.citation-chip",
+    );
+    mouse(&mut browser, "mouseMoved", x, y);
+    let label = Value::from("Source 1: Discharge summary");
+    wait_for(
+        &mut browser,
+        include_str!("preview_reading.js"),
+        std::slice::from_ref(&label),
+        |preview| !preview.is_null(),
+        "the whole record's preview",
+    );
+    assert_eq!(
+        browser
+            .page()
+            .call_function(include_str!("preview_reading.js"), &[label]),
+        serde_json::json!({ "about": "April 25, 2024Final", "places": 0 }),
+        "the preview should say what the record is and show no cited place"
+    );
+
+    let reading = pane_reading(&mut browser, "Whole record");
+    assert_eq!(
+        (&reading["marks"], &reading["notice"], &reading["has_words"]),
+        (&serde_json::json!([]), &Value::Null, &Value::Bool(true)),
+        "the pane should show the record with nothing marked and no notice"
+    );
+}
+
+/// A citation of two passages marks both, and the pane opens with the first in view though the
+/// record runs past it.
+#[test]
+#[ignore = "browser qualification; run explicitly with --ignored"]
+fn two_cited_passages_are_both_marked_and_the_first_is_in_view() {
+    let gallery = Gallery::start();
+    let mut browser = open_at(
+        &gallery,
+        DESKTOP,
+        "citations-and-sources",
+        "Citations and sources",
+    );
+    assert_eq!(
+        pane_reading(&mut browser, "Two passages"),
+        serde_json::json!({
+            "labels": [],
+            "marks": [
+                "Left ventricular ejection fraction of 35 percent, reduced from 45 percent in March 2022.",
+                "Elevated left ventricular filling pressures.",
+            ],
+            "notice": null,
+            "has_words": true,
+            "first_in_view": true,
+            "overflows": true,
+        }),
+    );
+}
+
+/// A citation of two fields of a structured record marks both rows.
+#[test]
+#[ignore = "browser qualification; run explicitly with --ignored"]
+fn two_cited_fields_are_both_marked() {
+    let gallery = Gallery::start();
+    let mut browser = open_at(
+        &gallery,
+        DESKTOP,
+        "citations-and-sources",
+        "Citations and sources",
+    );
+    let reading = pane_reading(&mut browser, "Two fields");
+    assert_eq!(
+        (&reading["marks"], &reading["notice"]),
+        (&serde_json::json!(["Creatinine", "eGFR"]), &Value::Null),
+    );
+}
+
+/// A citation of a passage in a labelled part of text and of a field marks both, in reading order,
+/// under the record's part labels, and its preview shows both places.
+#[test]
+#[ignore = "browser qualification; run explicitly with --ignored"]
+fn a_passage_in_a_labelled_part_and_a_field_are_both_marked() {
+    let gallery = Gallery::start();
+    let mut browser = open_at(
+        &gallery,
+        DESKTOP,
+        "citations-and-sources",
+        "Citations and sources",
+    );
+    let (x, y) = center(
+        &mut browser,
+        ".gallery-reading ~ .gallery-reading button.citation-chip[aria-label^='Source 7:']",
+    );
+    mouse(&mut browser, "mouseMoved", x, y);
+    let label = Value::from("Source 7: Heart failure clinic note");
+    wait_for(
+        &mut browser,
+        include_str!("preview_reading.js"),
+        std::slice::from_ref(&label),
+        |preview| !preview.is_null(),
+        "the clinic note's preview",
+    );
+    assert_eq!(
+        browser
+            .page()
+            .call_function(include_str!("preview_reading.js"), &[label])["places"],
+        2,
+        "the preview should show the passage and the field"
+    );
+
+    let reading = pane_reading(&mut browser, "Parts and fields");
+    assert_eq!(
+        (&reading["labels"], &reading["marks"], &reading["notice"]),
+        (
+            &serde_json::json!(["Interval history", "Assessment and plan"]),
+            &serde_json::json!(["Continue furosemide 40 mg daily.", "Weight"]),
+            &Value::Null,
+        ),
+    );
+}
+
+/// A cited place that can't be found shows its notice and marks nothing.
+#[test]
+#[ignore = "browser qualification; run explicitly with --ignored"]
+fn a_place_that_cant_be_found_gives_its_notice_and_marks_nothing() {
+    let gallery = Gallery::start();
+    let mut browser = open_at(
+        &gallery,
+        DESKTOP,
+        "citations-and-sources",
+        "Citations and sources",
+    );
+    let reading = pane_reading(&mut browser, "Not found");
+    assert_eq!(
+        (&reading["marks"], &reading["notice"]),
+        (
+            &serde_json::json!([]),
+            &Value::from("Couldn’t find the cited passage.")
+        ),
+    );
+}
+
+/// Opens the pane sample `sample` and reads its record once the pane has opened at its place.
+fn pane_reading(browser: &mut Browser, sample: &str) -> Value {
+    click_button(browser, sample);
+    wait_for(
+        browser,
+        include_str!("pane_reading.js"),
+        &[],
+        |reading| !reading.is_null(),
+        "the pane's record",
+    );
+    // The pane opens at its place two frames after the record shows.
+    std::thread::sleep(Duration::from_millis(300));
+    browser
+        .page()
+        .call_function(include_str!("pane_reading.js"), &[])
 }
 
 /// A copy the clipboard refuses, or that the browser can't even try, leaves the control as it was
