@@ -24,6 +24,8 @@ pub mod physician_chat;
 pub mod physician_sources;
 /// Physician-owned durable conversations and execution authority.
 pub mod runtime;
+/// Unmatched Spruce message classification and patient-match suggestion recipe.
+pub mod spruce_matching_recipe;
 /// Recipe, context, and tool descriptors for visit selection and visit briefings.
 pub mod visit_preparation;
 
