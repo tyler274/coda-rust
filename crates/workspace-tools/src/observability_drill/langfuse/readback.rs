@@ -452,11 +452,39 @@ impl LogIsolation {
     }
 }
 
+/// Whether a Datadog log event carries valid trace context naming `trace_id`
+/// (`otel.trace_id`, `dd.trace_id`, or `trace_id`, in 128-bit hex or Datadog's
+/// lower-64-bit decimal form). Untraced logs and all-zero IDs never match.
+fn log_has_trace(event: &Value, trace_id: &str) -> bool {
+    if !is_trace_id(trace_id) || !trace_id.bytes().any(|byte| byte != b'0') {
+        return false;
+    }
+    let envelope = &event["attributes"];
+    let custom = &envelope["attributes"];
+    for root in [envelope, custom] {
+        for key in ["otel.trace_id", "dd.trace_id", "trace_id"] {
+            let Some(raw) = dotted(root, key) else {
+                continue;
+            };
+            let candidate = match raw {
+                Value::String(text) => std::borrow::Cow::Borrowed(text.as_str()),
+                Value::Number(number) => std::borrow::Cow::Owned(number.to_string()),
+                _ => continue,
+            };
+            if candidate.bytes().any(|byte| byte != b'0') && same_trace(&candidate, trace_id) {
+                return true;
+            }
+        }
+    }
+    false
+}
+
 /// Reads a Datadog `POST /api/v2/logs/events/search` page: every event is
-/// scanned whole, so the canary is found in its message, attributes or
-/// error fields alike. `None` when the answer has no `data` list, or when it
-/// may be incomplete: more pages follow, the search timed out, or Datadog
-/// warns of partial results. Such a page cannot vouch for the window.
+/// scanned whole for the canary (message, attributes or error fields alike),
+/// while `trace_lines` counts only events whose trace context names `trace_id`.
+/// `None` when the answer has no `data` list, or when it may be incomplete:
+/// more pages follow, the search timed out, or Datadog warns of partial
+/// results. Such a page cannot vouch for the window.
 pub(super) fn datadog_logs(body: &Value, trace_id: &str, canary: &str) -> Option<LogIsolation> {
     let meta = &body["meta"];
     let complete = !meta["page"]["after"].is_string()
@@ -470,7 +498,7 @@ pub(super) fn datadog_logs(body: &Value, trace_id: &str, canary: &str) -> Option
         backend: "datadog",
         trace_lines: events
             .iter()
-            .filter(|event| mentions(event, trace_id))
+            .filter(|event| log_has_trace(event, trace_id))
             .count(),
         canary_lines: events
             .iter()
@@ -702,6 +730,89 @@ mod tests {
         assert_eq!(datadog_logs(&warned, TRACE, "canary-123"), None);
         let done = json!({ "data": traced, "meta": { "status": "done", "warnings": [] } });
         assert!(datadog_logs(&done, TRACE, "canary-123").is_some());
+    }
+
+    #[test]
+    fn untraced_physician_logs_and_empty_answers_fail_isolation() {
+        // Physician logs without trace context — including invalid all-zero
+        // trace IDs or plain text mentioning the hex ID outside trace context —
+        // cannot satisfy the trace positive control.
+        let untraced = json!({
+            "data": [
+                {
+                    "attributes": {
+                        "service": "physician-worker",
+                        "message": "operational event",
+                        "attributes": { "event": "physician.worker.attempt_finished" }
+                    }
+                },
+                {
+                    "attributes": {
+                        "service": "physician-worker",
+                        "attributes": {
+                            "otel": { "trace_id": "00000000000000000000000000000000" },
+                            "dd": { "trace_id": "0" },
+                            "trace_id": "0"
+                        }
+                    }
+                },
+                {
+                    "attributes": {
+                        "service": "physician-sample",
+                        "message": format!("untraced diagnostic mentioning {TRACE}"),
+                        "attributes": {}
+                    }
+                }
+            ],
+            "meta": { "status": "done" }
+        });
+        let logs = datadog_logs(&untraced, TRACE, "canary-123").unwrap();
+        assert_eq!((logs.trace_lines, logs.canary_lines), (0, 0));
+        assert_eq!(
+            logs.gaps(),
+            ["datadog holds no physician log for the turn's trace; an empty answer is not proof"]
+        );
+
+        // Empty answers from either log backend fail isolation.
+        let empty_dd = datadog_logs(
+            &json!({ "data": [], "meta": { "status": "done" } }),
+            TRACE,
+            "canary-123",
+        )
+        .unwrap();
+        assert_eq!(
+            empty_dd.gaps(),
+            ["datadog holds no physician log for the turn's trace; an empty answer is not proof"]
+        );
+        let empty_loki = LogIsolation {
+            backend: "loki",
+            trace_lines: loki_lines(&json!({
+                "status": "success",
+                "data": { "resultType": "streams", "result": [] }
+            }))
+            .unwrap(),
+            canary_lines: 0,
+        };
+        assert_eq!(
+            empty_loki.gaps(),
+            ["loki holds no physician log for the turn's trace; an empty answer is not proof"]
+        );
+
+        // Datadog's lower-64-bit decimal trace ID in `dd.trace_id` satisfies
+        // the positive control when clean and still fails if a canary leaks.
+        let dd_decimal = datadog_trace_id(TRACE).unwrap();
+        let decimal_traced = json!({
+            "data": [{
+                "attributes": {
+                    "service": "physician-worker",
+                    "attributes": { "dd": { "trace_id": dd_decimal } }
+                }
+            }],
+            "meta": { "status": "done" }
+        });
+        let clean = datadog_logs(&decimal_traced, TRACE, "canary-123").unwrap();
+        assert_eq!((clean.trace_lines, clean.canary_lines), (1, 0));
+        assert!(clean.gaps().is_empty());
     }
 
     #[test]

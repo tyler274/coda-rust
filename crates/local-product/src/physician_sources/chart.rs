@@ -55,8 +55,8 @@ pub(super) struct Position {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub(super) struct Exact {
-    candidate_id: String,
-    revision: String,
+    pub(super) candidate_id: String,
+    pub(super) revision: String,
     cursor: Option<Position>,
 }
 
@@ -123,13 +123,43 @@ struct SearchHit<'a> {
     title: Option<&'a str>,
 }
 
-/// Dates carried on a read receipt, round-tripping both filed role-bearing dates
-/// and un-enveloped date pairs.
+/// Dates carried on a read or discovery receipt, round-tripping both filed
+/// role-bearing dates and un-enveloped date pairs.
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(untagged)]
 pub(super) enum ReceiptDates {
     Filed(Vec<FiledDate>),
     Raw(Vec<RecordDate>),
+}
+
+impl ReceiptDates {
+    pub(super) fn into_record_dates(self) -> Vec<RecordDate> {
+        match self {
+            Self::Filed(filed) => filed
+                .into_iter()
+                .map(|d| RecordDate {
+                    name: d.field,
+                    value: d.value,
+                })
+                .collect(),
+            Self::Raw(raw) => raw,
+        }
+    }
+}
+
+/// Deserialized discovery pointer returned by [`SEARCH_TOOL`].
+#[derive(Debug, Clone, Deserialize)]
+pub(super) struct SearchReceiptHit {
+    pub(super) reference: Exact,
+    pub(super) record_type: String,
+    pub(super) source_id: String,
+    pub(super) dates: ReceiptDates,
+}
+
+/// Chart discovery receipts have one wire owner for production and delivery checks.
+#[derive(Debug, Deserialize)]
+pub(super) struct SearchReceipt {
+    pub(super) results: Vec<SearchReceiptHit>,
 }
 
 /// Chart read receipts have one wire owner for production and delivery checks.

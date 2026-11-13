@@ -1,6 +1,8 @@
 //! Run Duet-owned ORM statements inside the caller's account-scoped transaction.
 
-use sea_orm::sea_query::{InsertStatement, PostgresQueryBuilder, SelectStatement, UpdateStatement};
+use sea_orm::sea_query::{
+    DeleteStatement, InsertStatement, PostgresQueryBuilder, SelectStatement, UpdateStatement,
+};
 use sea_query_sqlx::{SqlxBinder, SqlxValues};
 use sqlx::{AssertSqlSafe, Postgres, Transaction, postgres::PgRow};
 
@@ -18,7 +20,12 @@ macro_rules! statement {
         }
     )*};
 }
-statement!(SelectStatement, InsertStatement, UpdateStatement);
+statement!(
+    SelectStatement,
+    InsertStatement,
+    UpdateStatement,
+    DeleteStatement
+);
 
 /// Execute a typed statement; returns affected rows.
 #[expect(

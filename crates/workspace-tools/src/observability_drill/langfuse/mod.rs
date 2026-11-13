@@ -1050,9 +1050,9 @@ fn loki_isolation(
             field: "a streams result",
         })
     };
-    // The turn's trace carries at least the site's `http.server` response log
-    // for its POST /commands: the first delivery's attempt continues that
-    // trace. Loki keeps `trace_id` as structured metadata.
+    // Each finished worker attempt logs inside its `physician.worker.attempt`
+    // span, so the turn's trace carries at least that `physician-worker` log
+    // record. Loki keeps `trace_id` as structured metadata.
     let traced = format!("{{service_name=~\"physician.*\"}} | trace_id=\"{trace_id}\"");
     let trace_lines = watch
         .poll(READBACK_POLLS, POLL, |_| {
