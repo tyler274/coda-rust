@@ -21,7 +21,7 @@ use sea_orm::{
 use serde::{Deserialize, Serialize};
 use serde_json::{Value, json};
 
-use super::entities::{concern, concern_feedback};
+use super::entities::{command, concern, concern_feedback};
 use super::{Authority, Scope, Store, conversion_error, error, now, persistence_failure, receipt};
 
 /// Longest clinical concern statement accepted, in characters.
@@ -956,6 +956,10 @@ async fn load_concern(
     .transpose()
 }
 
+fn concern_tool_command_key(work_id: &str, call_id: &str) -> Result<CommandKey, ConcernInputError> {
+    CommandKey::new(format!("{}:{}", work_id, call_id.trim()))
+}
+
 impl Store {
     /// Raises a new patient concern once under `command_key`, verifying every
     /// cited chart record revision against the workspace's current observation.
@@ -1307,8 +1311,7 @@ impl Store {
             Ok(work) => work,
             Err(reason) => return Err(engine::Cause::from(reason.to_string()).into()),
         };
-        let raw_key = format!("{}:{}", validated_work.work_id, call.id.trim());
-        let command_key = match CommandKey::new(raw_key) {
+        let command_key = match concern_tool_command_key(&validated_work.work_id, &call.id) {
             Ok(key) => key,
             Err(reason) => return Err(engine::Cause::from(reason.to_string()).into()),
         };
@@ -1395,6 +1398,67 @@ impl Store {
             Err(ConcernError::AccessDenied { reason }) => Err(engine::Cause::from(reason).into()),
             Err(ConcernError::Database(db_err)) => Err(persistence_failure(db_err)),
         }
+    }
+
+    /// Reconciles an already-committed concern mutation receipt read-only when an
+    /// attempt was interrupted after `ToolStarted` and before `ToolReturned`.
+    pub(super) async fn saved_concern_tool_outcome(
+        &self,
+        practice: &str,
+        workspace: &str,
+        work_id: &str,
+        call: &Invocation,
+    ) -> Result<Option<ToolOutcome>, engine::ProductError> {
+        if !is_concern_tool(&call.name) {
+            return Ok(None);
+        }
+        let Ok(arguments) = serde_json::from_str::<Value>(&call.arguments) else {
+            return Ok(None);
+        };
+        let Ok(parsed) = ConcernToolCall::parse(&call.name, &arguments) else {
+            return Ok(None);
+        };
+        let concern_id = match parsed {
+            ConcernToolCall::Raise { concern_id, .. }
+            | ConcernToolCall::Revise { concern_id, .. }
+            | ConcernToolCall::Retire { concern_id, .. } => concern_id,
+        };
+        let Ok(practice) = validate_non_empty_field("practice", practice) else {
+            return Ok(None);
+        };
+        let Ok(workspace) = validate_non_empty_field("workspace", workspace) else {
+            return Ok(None);
+        };
+        let Ok(work_id) = validate_non_empty_field("work_id", work_id) else {
+            return Ok(None);
+        };
+        let Ok(command_key) = concern_tool_command_key(&work_id, &call.id) else {
+            return Ok(None);
+        };
+        let receipt_row = command::Entity::find_by_id((
+            practice.clone(),
+            JOB_RECEIPT_ACTOR.to_owned(),
+            command_key.as_str().to_owned(),
+        ))
+        .one(&self.db)
+        .await
+        .map_err(persistence_failure)?;
+        if receipt_row.is_none() {
+            return Ok(None);
+        }
+        let Some(concern) = load_concern(&self.db, &practice, &workspace, &concern_id)
+            .await
+            .map_err(persistence_failure)?
+        else {
+            return Err("missing concern for accepted receipt".into());
+        };
+        Ok(Some(ToolOutcome::Returned(
+            json!({
+                "outcome": "duplicate",
+                "concern": concern,
+            })
+            .to_string(),
+        )))
     }
 
     /// Marks an open concern `Done` on behalf of an authorized physician,

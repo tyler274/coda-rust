@@ -209,6 +209,10 @@ pub struct Assignment {
     pub prompt: String,
     /// Skills loaded from [`PhysicianSkills`] at assignment creation.
     pub preloaded_skills: Vec<PreloadedSkill>,
+    /// Optional structured context when this assignment runs initial or revised
+    /// patient understanding.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub understanding: Option<crate::initial_understanding::UnderstandingContext>,
 }
 
 impl Assignment {
@@ -246,6 +250,7 @@ impl Assignment {
             key,
             prompt,
             preloaded_skills,
+            understanding: None,
         })
     }
 
@@ -443,7 +448,7 @@ impl PracticeJob {
         self.runs.current()
     }
 
-    fn message_sources(&self) -> Vec<engine::ProductMessage> {
+    pub(super) fn message_sources(&self) -> Vec<engine::ProductMessage> {
         let mut sources = vec![self.assignment.message()];
         if let Some(saved) = &self.result {
             sources.push(engine::ProductMessage {
@@ -565,12 +570,14 @@ impl From<DbErr> for PracticeJobError {
     }
 }
 
-/// Capabilities offered to a practice-owned background run: read-only patient
-/// chart search/read, approved skill views, retained result reads, and history.
+/// Capabilities offered to a practice-owned background run: patient chart
+/// search/read, on-demand source refresh, approved skill views, retained result
+/// reads, and history.
 pub fn tools() -> Vec<Tool> {
     let mut offered = work_tools();
     offered.push(search_tool());
     offered.push(read_tool(ChartScope::Chat));
+    offered.push(super::refresh::refresh_tool());
     offered
 }
 
@@ -601,6 +608,9 @@ pub fn recipe(
     assignment: &Assignment,
     skills: &PhysicianSkills,
 ) -> RequestRecipe {
+    if assignment.kind == PracticeJobKind::InitialUnderstanding {
+        return crate::initial_understanding::recipe(&roles.background, assignment, skills);
+    }
     let background = &roles.background;
     let mut instructions = skills.instructions(INSTRUCTIONS);
     if !assignment.preloaded_skills.is_empty() {
@@ -881,13 +891,13 @@ impl Store {
     /// with no physician session, verifying practice patient membership, freezing
     /// the background-lane recipe (`roles.background`), and recording the
     /// assignment's preloaded skills with the run.
-    pub async fn accept_practice_job(
+    pub async fn accept_practice_job<A: PracticeAuthority + ?Sized>(
         &self,
         scope: &PracticeScope,
         assignment: &Assignment,
         roles: &crate::ModelRoles,
         skills: &PhysicianSkills,
-        authority: &dyn PracticeAuthority,
+        authority: &A,
     ) -> Result<Accepted, PracticeJobError> {
         authority.check_practice_patient(scope).await?;
         if assignment.key.trim().is_empty() || assignment.prompt.trim().is_empty() {
@@ -1419,6 +1429,9 @@ impl Store {
         {
             return Err(error("partial result differs from recorded terminal turn").into());
         }
+        let observation = super::sources::observed(&tx, &claim.scope.workspace).await?;
+        job.sources_version = observation.version;
+        job.sources = observation.sources;
         let text = turn.text();
         if let Some(attempt) = job.attempts.last_mut() {
             attempt.status = AttemptStatus::Held;
@@ -1499,6 +1512,9 @@ impl Store {
             return Err(error("completion differs from recorded terminal turn").into());
         }
         let output_text = terminal_answer(terminal)?;
+        let observation = super::sources::observed(&tx, &claim.scope.workspace).await?;
+        job.sources_version = observation.version;
+        job.sources = observation.sources;
         if let Some(attempt) = job.attempts.last_mut() {
             attempt.status = AttemptStatus::Completed;
         }
@@ -1747,7 +1763,7 @@ impl Store {
         Ok(Resumed::Pending { delivery })
     }
 
-    async fn practice_job_snapshot(
+    pub(super) async fn practice_job_snapshot(
         &self,
         scope: &PracticeScope,
     ) -> Result<(PracticeJob, Vec<(Event, bool)>, PhysicianSkills), DbErr> {
@@ -1801,6 +1817,7 @@ impl Product for PracticeJobHost<'_> {
 
     fn read_only(&self, name: &str) -> bool {
         crate::physician_chat::read_only(name)
+            || crate::initial_understanding::read_only_understanding_tool(name)
     }
 
     fn read_result(&mut self, id: &str) -> engine::recipe::ToolFuture<Option<String>> {
@@ -1828,6 +1845,32 @@ impl Product for PracticeJobHost<'_> {
             .persist_practice_job_event(&self.claim, event)
             .await
             .map_err(persistence_failure)
+    }
+
+    fn saved_outcome(
+        &mut self,
+        call: &Invocation,
+    ) -> engine::recipe::ToolFuture<Option<ToolOutcome>> {
+        let is_understanding = call.name == crate::initial_understanding::SAVE_UNDERSTANDING_TOOL;
+        let is_refresh = super::refresh::is_refresh_tool(&call.name);
+        if !is_understanding && !is_refresh {
+            return Box::pin(async { Ok(None) });
+        }
+        let store = self.store.clone();
+        let claim = self.claim.clone();
+        let call = call.clone();
+        Box::pin(async move {
+            if is_understanding {
+                return store
+                    .saved_practice_understanding_outcome(&claim, &call)
+                    .await;
+            }
+            store.assert_practice_job_current(&claim).await?;
+            let (job, _, _) = store.practice_job_snapshot(&claim.scope).await?;
+            store
+                .saved_practice_refresh_outcome(&claim.scope, &job.work, &call)
+                .await
+        })
     }
 
     fn execute(&mut self, call: &Invocation, arguments: Value) -> engine::recipe::ToolFuture {
@@ -1919,8 +1962,23 @@ impl Product for PracticeJobHost<'_> {
                     .run(workspace, observation.version, &observation.sources)
                     .map_err(Into::into);
             }
+            if super::refresh::is_refresh_tool(&call.name) {
+                let refresh_call = Invocation {
+                    id: call.id.clone(),
+                    name: call.name.clone(),
+                    arguments,
+                };
+                return store
+                    .execute_claimed_practice_refresh_tool(&claim, &job.work, &refresh_call)
+                    .await;
+            }
             if call.name == SKILL_VIEW {
                 return Ok(skills.execute(&call.name, &arguments));
+            }
+            if crate::initial_understanding::is_understanding_tool(&call.name) {
+                return store
+                    .execute_practice_understanding_tool_fenced(&claim, &call, &arguments)
+                    .await;
             }
             Ok(ToolOutcome::refused(format!(
                 "tool {} is not available to a practice background job",
@@ -1931,6 +1989,22 @@ impl Product for PracticeJobHost<'_> {
 
     async fn finish(&mut self, turn: &Turn) -> Result<Finish, engine::ProductError> {
         self.assert_current().await?;
+        let (job, _, _) = self.store.practice_job_snapshot(&self.claim.scope).await?;
+        if job.assignment.understanding.is_some()
+            && !self
+                .store
+                .has_saved_understanding_for_work(
+                    &self.claim.scope.practice,
+                    &self.claim.scope.workspace,
+                    &job.work,
+                )
+                .await?
+        {
+            return Ok(Finish::Continue(json!({
+                "outcome": "understanding_not_saved",
+                "message": "Call save_patient_understanding to record the operating index and physician-facing summary before finishing.",
+            })));
+        }
         self.store
             .commit_practice_job(&self.claim, turn, self.authority)
             .await?;
@@ -2092,6 +2166,12 @@ mod tests {
         assert!(built.instructions.contains(&preloaded.sha256));
         assert!(built.tools.iter().any(|tool| tool["name"] == SEARCH_TOOL));
         assert!(built.tools.iter().any(|tool| tool["name"] == READ_TOOL));
+        assert!(
+            built
+                .tools
+                .iter()
+                .any(|tool| tool["name"] == super::super::refresh::REFRESH_TOOL)
+        );
         assert!(
             !built
                 .tools

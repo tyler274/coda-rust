@@ -807,3 +807,294 @@ pub(super) mod patient_dispatch {
 
     impl ActiveModelBehavior for ActiveModel {}
 }
+
+/// Latest saved refresh status per `(practice, workspace, source_id)`:
+/// `updated`, `partly_updated`, or `failed`. Created by `m20261112_source_refresh`.
+pub(super) mod source_status {
+    use sea_orm::entity::prelude::*;
+
+    #[derive(Clone, Debug, PartialEq, Eq, DeriveEntityModel)]
+    #[sea_orm(table_name = "physician_runtime_source_statuses")]
+    pub struct Model {
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub practice: String,
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub workspace: String,
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub source_id: String,
+        #[sea_orm(column_type = "Text")]
+        pub source_label: String,
+        /// `updated`, `partly_updated`, or `failed`.
+        #[sea_orm(column_type = "Text")]
+        pub outcome: String,
+        pub checked_at: i64,
+        pub last_good_pulled_at: Option<i64>,
+        pub workspace_version: Option<i64>,
+        pub changed_records: i64,
+        #[sea_orm(column_type = "Text")]
+        pub reason: Option<String>,
+    }
+
+    #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
+    pub enum Relation {}
+
+    impl ActiveModelBehavior for ActiveModel {}
+}
+
+/// Durable once-only per-source refresh receipt, committed in the same
+/// transaction as the source's evidence and saved status update so a retry
+/// after an interrupted source check never repeats a settled source.
+/// Created by `m20261112_source_refresh`.
+pub(super) mod source_refresh_receipt {
+    use sea_orm::entity::prelude::*;
+
+    #[derive(Clone, Debug, PartialEq, Eq, DeriveEntityModel)]
+    #[sea_orm(table_name = "physician_runtime_source_refresh_receipts")]
+    pub struct Model {
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub practice: String,
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub actor: String,
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub workspace: String,
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub command_key: String,
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub source_id: String,
+        pub ordinal: i64,
+        #[sea_orm(column_type = "Text")]
+        pub request_sha256: String,
+        pub workspace_version_after: i64,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub status: Json,
+        pub recorded_at: i64,
+    }
+
+    #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
+    pub enum Relation {}
+
+    impl ActiveModelBehavior for ActiveModel {}
+}
+
+/// Practice schedule source standing, `"as of"` timestamp, and partial/failed
+/// refresh diagnostics. Exclusive row lock on `(practice, source_id)` serializes
+/// schedule syncs for that source.
+pub(super) mod schedule_source {
+    use sea_orm::entity::prelude::*;
+
+    #[derive(Clone, Debug, PartialEq, Eq, DeriveEntityModel)]
+    #[sea_orm(table_name = "physician_runtime_schedule_sources")]
+    pub struct Model {
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub practice: String,
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub source_id: String,
+        #[sea_orm(column_type = "Text")]
+        pub source_label: String,
+        pub schedule_version: i64,
+        #[sea_orm(column_type = "Text")]
+        pub standing: String,
+        pub as_of: Option<i64>,
+        pub last_complete_as_of: Option<i64>,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub issues: Json,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub last_failure: Option<Json>,
+    }
+
+    #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
+    pub enum Relation {}
+
+    impl ActiveModelBehavior for ActiveModel {}
+}
+
+/// Seeded schedule patient links mapping `(practice, source_id, source_patient_id)`
+/// to an existing registered Coda `workspace`.
+pub(super) mod schedule_patient_link {
+    use sea_orm::entity::prelude::*;
+
+    #[derive(Clone, Debug, PartialEq, Eq, DeriveEntityModel)]
+    #[sea_orm(table_name = "physician_runtime_schedule_patient_links")]
+    pub struct Model {
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub practice: String,
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub source_id: String,
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub source_patient_id: String,
+        #[sea_orm(column_type = "Text")]
+        pub workspace: String,
+        pub seeded_at: i64,
+    }
+
+    #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
+    pub enum Relation {}
+
+    impl ActiveModelBehavior for ActiveModel {}
+}
+
+/// Saved practice schedule appointments, versioned per appointment and matched
+/// (or retained unmatched) against seeded schedule patient links.
+pub(super) mod schedule_appointment {
+    use super::super::schedule::AppointmentStatus;
+    use sea_orm::entity::prelude::*;
+
+    #[derive(Clone, Debug, PartialEq, Eq, DeriveEntityModel)]
+    #[sea_orm(table_name = "physician_runtime_appointments")]
+    pub struct Model {
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub practice: String,
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub source_id: String,
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub appointment_id: String,
+        pub saved_version: i64,
+        #[sea_orm(column_type = "Text")]
+        pub source_revision: String,
+        #[sea_orm(column_type = "Text")]
+        pub starts_at: String,
+        pub starts_at_unix: i64,
+        #[sea_orm(column_type = "Text")]
+        pub ends_at: String,
+        pub ends_at_unix: i64,
+        pub status: AppointmentStatus,
+        #[sea_orm(column_type = "Text")]
+        pub source_status: String,
+        #[sea_orm(column_type = "Text")]
+        pub label: String,
+        #[sea_orm(column_type = "Text")]
+        pub match_state: String,
+        #[sea_orm(column_type = "Text")]
+        pub workspace: Option<String>,
+        #[sea_orm(column_type = "Text")]
+        pub source_patient_id: Option<String>,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub dates: Json,
+        #[sea_orm(column_type = "Text")]
+        pub content: String,
+        #[sea_orm(column_type = "Text")]
+        pub sha256: String,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub provenance: Json,
+        pub as_of: i64,
+        pub updated_at: i64,
+    }
+
+    #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
+    pub enum Relation {}
+
+    impl ActiveModelBehavior for ActiveModel {}
+}
+
+/// Durable patient memory entry for `(practice, workspace)`, carrying clinical
+/// summaries and dated physician chat corrections across sessions and runs.
+/// Created by `m20261112_chat_memory`.
+pub(super) mod patient_memory {
+    use sea_orm::entity::prelude::*;
+
+    #[derive(Clone, Debug, PartialEq, Eq, DeriveEntityModel)]
+    #[sea_orm(table_name = "physician_runtime_patient_memory")]
+    pub struct Model {
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub practice: String,
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub workspace: String,
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub id: String,
+        /// `active` or `retired`.
+        #[sea_orm(column_type = "Text")]
+        pub status: String,
+        /// Short clinical topic naming what this memory entry covers.
+        #[sea_orm(column_type = "Text")]
+        pub topic: String,
+        /// Durable statement carried forward across conversations and runs.
+        #[sea_orm(column_type = "Text")]
+        pub statement: String,
+        /// Serialized `MemoryProvenance` distinguishing physician chat input from clinical summary jobs.
+        #[sea_orm(column_type = "JsonBinary")]
+        pub provenance: Json,
+        /// Single-line retirement reason, present iff `status = 'retired'`.
+        #[sea_orm(column_type = "Text")]
+        pub retirement_reason: Option<String>,
+        /// Serialized `MemoryProvenance` that retired this entry, present iff `status = 'retired'`.
+        #[sea_orm(column_type = "JsonBinary")]
+        pub retired_by: Option<Json>,
+        /// Database-clock seconds when retired, present iff `status = 'retired'`.
+        pub retired_at: Option<i64>,
+        /// Database-clock seconds when first recorded.
+        pub created_at: i64,
+        /// Database-clock seconds of the latest mutation.
+        pub updated_at: i64,
+        /// 1 when recorded; incremented on every update or retirement.
+        pub revision: i64,
+    }
+
+    #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
+    pub enum Relation {}
+
+    impl ActiveModelBehavior for ActiveModel {}
+}
+
+/// Durable patient understanding per `(practice, workspace)`: private operating
+/// index for Coda's runs and physician-facing summary for the patient page.
+pub(super) mod patient_understanding {
+    use sea_orm::entity::prelude::*;
+
+    #[derive(Clone, Debug, PartialEq, Eq, DeriveEntityModel)]
+    #[sea_orm(table_name = "physician_runtime_patient_understanding")]
+    pub struct Model {
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub practice: String,
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub workspace: String,
+        pub revision: i64,
+        pub source_version: i64,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub evidence_scope: Json,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub operating_index: Json,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub summary: Json,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub origin: Json,
+        pub updated_at: i64,
+    }
+
+    #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
+    pub enum Relation {}
+
+    impl ActiveModelBehavior for ActiveModel {}
+}
+
+/// Append-only revision and once-only idempotency ledger for patient understanding.
+pub(super) mod patient_understanding_revision {
+    use sea_orm::entity::prelude::*;
+
+    #[derive(Clone, Debug, PartialEq, Eq, DeriveEntityModel)]
+    #[sea_orm(table_name = "physician_runtime_patient_understanding_revisions")]
+    pub struct Model {
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub practice: String,
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub workspace: String,
+        #[sea_orm(primary_key, auto_increment = false)]
+        pub revision: i64,
+        #[sea_orm(column_type = "Text")]
+        pub idempotency_key: String,
+        pub source_version: i64,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub evidence_scope: Json,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub operating_index: Json,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub summary: Json,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub origin: Json,
+        pub saved_at: i64,
+    }
+
+    #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
+    pub enum Relation {}
+
+    impl ActiveModelBehavior for ActiveModel {}
+}

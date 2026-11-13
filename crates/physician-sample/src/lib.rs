@@ -27,6 +27,7 @@ mod live_tests;
 pub mod patients;
 pub mod rehearsal;
 mod reply;
+pub mod schedule;
 pub mod sources;
 pub mod synthetic_chart;
 pub mod synthetic_chart_fhir;
@@ -196,6 +197,7 @@ pub fn durable_site_with_feed(
     bus: std::sync::Arc<dyn physician_bus::Bus>,
     feed: std::sync::Arc<SampleFeed>,
 ) -> Router {
+    let runtime_store = chat.store.clone();
     let live = live::Live::new(std::sync::Arc::clone(&bus), chat);
     site()
         .route("/commands", post(live::submit))
@@ -223,6 +225,7 @@ pub fn durable_site_with_feed(
         )
         .layer(middleware::from_fn(sources::intercept_reconnect_command))
         // The shared workspace route lists this server's chats through it.
+        .layer(axum::Extension(runtime_store))
         .layer(axum::Extension(std::sync::Arc::clone(&live)))
         .layer(axum::Extension(feed))
         .layer(axum::Extension(care::ConnectedCare::new()))
@@ -236,7 +239,8 @@ where
     Router::new()
         .route("/health", get(|| async { Json(json!({"status": "ok"})) }))
         .route("/today", get(today))
-        .route("/practice-day", get(practice_day))
+        .route("/practice-day", get(schedule::practice_day))
+        .route("/director/schedule/sync", post(schedule::sync_route))
         .route("/updates", get(updates))
         .route("/recent-conversations", get(recent_conversations))
         .route("/connections", get(sources::get_connections))
@@ -653,7 +657,7 @@ async fn site_from_env(
         None => None,
     };
     let readiness = runtime.as_ref().map(hosting::Readiness::shared);
-    let (base, chat) = if let (Some(skills), Some(store)) = (skills, runtime.clone()) {
+    let (mut base, chat) = if let (Some(skills), Some(store)) = (skills, runtime.clone()) {
         let settings: Vec<_> = local_product::MODEL_SETTING_KEYS
             .into_iter()
             .filter_map(|key| configured(&get, key).map(|value| (key, value)))
@@ -664,6 +668,7 @@ async fn site_from_env(
             .collect();
         let roles = local_product::model_roles("responses", &environment)
             .map_err(|error| error.to_string())?;
+        let store = store.with_understanding_trigger(roles.clone(), skills.clone());
         // The retained snapshot is the stand-in source owner's only import
         // path. Importing it again changes nothing, so every instance can.
         store
@@ -712,12 +717,18 @@ async fn site_from_env(
         ));
     }
     let local_proof = !hosted && configured(&get, "PHYSICIAN_LOCAL_PROOF").as_deref() == Some("1");
-    let base = if local_proof {
-        base.merge(sources::local_proof_routes())
-    } else {
-        base
+    if local_proof {
+        base = base.merge(sources::local_proof_routes());
     }
-    .layer(axum::Extension(source_registry));
+    base = base.layer(axum::Extension(source_registry));
+    if let Some(ref store) = runtime {
+        base = base.layer(axum::Extension(store.clone()));
+    }
+    if let Some(calendar) = schedule::SyntheticBankCalendar::from_env(&get) {
+        let source: std::sync::Arc<dyn local_product::runtime::schedule::ScheduleSource> =
+            std::sync::Arc::new(calendar);
+        base = base.layer(schedule::schedule_source_layer(source));
+    }
     let postgres = runtime.zip(readiness.as_ref());
     let router =
         auth::authed_router_with_bus(base, bus, memory_patients, postgres, rehearsal).await;
@@ -813,7 +824,7 @@ pub async fn serve_with_store(
 /// The practice's calendar day, as `/today` and `/updates` carry it. It is the
 /// clock's UTC date, which a fixed clock at noon never shows; a real-time
 /// practice needs its own zone here.
-fn practice_date(now: &str) -> &str {
+pub(crate) fn practice_date(now: &str) -> &str {
     now.get(..10).unwrap_or_default()
 }
 
@@ -1003,24 +1014,6 @@ async fn recent_conversations(
         None => Vec::new(),
     };
     Json(json!({ "conversations": conversations })).into_response()
-}
-
-/// The practice has no calendar source yet, so the day says so.
-async fn practice_day(
-    axum::Extension(connected): axum::Extension<care::ConnectedCare>,
-    request: Request<Body>,
-) -> Response {
-    let Ok(now) = connected.practice_now(request.extensions()).await else {
-        return StatusCode::SERVICE_UNAVAILABLE.into_response();
-    };
-    Json(json!({
-        "date": practice_date(&now),
-        "time_zone": patients::PRACTICE_TIME_ZONE,
-        "current_time": now,
-        "source_state": { "state": "absent" },
-        "visits": [],
-    }))
-    .into_response()
 }
 
 async fn patient_list(

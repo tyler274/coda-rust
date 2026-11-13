@@ -25,7 +25,7 @@ pub struct DurableChat {
     /// Existing authoritative Postgres runtime.
     pub store: Store,
     skills: local_product::physician_chat::PhysicianSkills,
-    chat_recipe: harness::engine::recipe::RequestRecipe,
+    chat_binding: local_product::ModelBinding,
     revision_recipe: harness::engine::recipe::RequestRecipe,
     /// Practices whose sessions may tag their inputs with a rehearsal scenario.
     simulation_practices: SimulationPractices,
@@ -40,11 +40,7 @@ impl DurableChat {
     ) -> Self {
         Self {
             store,
-            chat_recipe: local_product::physician_chat::recipe(
-                &roles.chat,
-                local_product::physician_chat::INSTRUCTIONS,
-                &skills,
-            ),
+            chat_binding: roles.chat.clone(),
             revision_recipe: local_product::runtime::reply::recipe(&roles.background, &skills),
             skills,
             simulation_practices: SimulationPractices::default(),
@@ -80,13 +76,24 @@ impl DurableChat {
         input: &Input,
         session_hash: Vec<u8>,
     ) -> Result<Accepted, String> {
+        let chat_recipe = self
+            .store
+            .chat_recipe_with_understanding(
+                &self.chat_binding,
+                local_product::physician_chat::INSTRUCTIONS,
+                &self.skills,
+                &scope.practice,
+                &scope.workspace,
+            )
+            .await
+            .map_err(|e| e.to_string())?;
         self.store
             .accept_authorized(
                 scope,
                 input,
                 session_hash,
                 &self.skills,
-                &self.chat_recipe,
+                &chat_recipe,
                 request_context(),
             )
             .await

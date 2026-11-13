@@ -406,6 +406,39 @@ pub fn caught_up_context<'a>(
     Ok(unread)
 }
 
+/// Exact `(candidate_id, revision)` pairs delivered via `read_patient_sources`
+/// (`Available` or `Passage` receipts) in `records`.
+pub fn delivered_exact_revisions<'a>(
+    records: impl IntoIterator<Item = impl Into<harness::engine::recipe::ReplayEvent<'a>>>,
+    messages: &[harness::engine::ProductMessage],
+) -> Result<std::collections::BTreeSet<(String, String)>, String> {
+    use harness::engine::results;
+    let delivered = results::delivered_originals(records, messages)
+        .map_err(|cause| cause.to_string())?
+        .into_iter()
+        .filter_map(|output| serde_json::from_str::<chart::ReadReceipt>(output).ok())
+        .flat_map(|receipt| receipt.results);
+    let mut read = std::collections::BTreeSet::new();
+    for item in delivered {
+        match item {
+            chart::RecordReceipt::Available {
+                reference,
+                revision,
+                ..
+            }
+            | chart::RecordReceipt::Passage {
+                reference,
+                revision,
+                ..
+            } => {
+                read.insert((reference, revision));
+            }
+            chart::RecordReceipt::Unavailable { .. } | chart::RecordReceipt::OverBudget { .. } => {}
+        }
+    }
+    Ok(read)
+}
+
 /// A last page can be requested directly. Only the union of delivered exact
 /// spans can establish that a changed record was read after a refresh.
 fn delivered_part(source: &SourceRevision, part: usize, results: &[&chart::RecordReceipt]) -> bool {

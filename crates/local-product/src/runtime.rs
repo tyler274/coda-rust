@@ -30,6 +30,8 @@ use uuid::Uuid;
 
 /// Hosted chat drafts: the physician's unsent composer text per chat.
 pub mod chat_draft;
+/// Patient starting context, readability limits, durable memory, source refresh, and chat tool dispatch.
+pub mod chat_operations;
 /// Patient concerns raised, revised, and retired by Coda, and cleared `Done` by physicians.
 pub mod concerns;
 mod control;
@@ -52,8 +54,12 @@ mod quota;
 /// Command receipts and their 90-day reduction to a salted digest.
 pub mod receipt;
 mod records;
+/// On-demand patient source refresh tool, saved per-source status, and once-only receipts.
+pub mod refresh;
 /// Hosted physician reply drafts and their revision work.
 pub mod reply;
+/// Practice schedule reads, patient matching, and versioned saved appointments.
+pub mod schedule;
 /// Durable source patient links, access state, and pull status.
 pub mod source_status;
 /// Versioned patient source observations: a stand-in source owner.
@@ -62,9 +68,10 @@ pub mod sources;
 mod tests;
 mod transcript;
 pub use transcript::TranscriptError;
+/// Durable patient understanding: private operating index and patient-page summary.
+pub mod understanding;
 /// Working notes derived from the authorized product record.
 pub mod working_notes;
-use crate::physician_sources::{ChartRequest, ChartScope, READ_TOOL, SEARCH_TOOL};
 use entities::conversation;
 
 /// Authenticated product scope, supplied by the server, never the command body.
@@ -592,6 +599,10 @@ pub enum Stopped {
 pub struct Store {
     db: DatabaseConnection,
     clinical_library: crate::clinical_library::ClinicalLibraryClient,
+    source_refresh: std::sync::Arc<dyn refresh::PatientSourceRefresh>,
+    refresh_operation: std::sync::Arc<dyn chat_operations::PatientRefreshOperation>,
+    memory_operation: std::sync::Arc<dyn chat_operations::PatientMemoryOperation>,
+    understanding_trigger: Option<std::sync::Arc<understanding::UnderstandingTriggerBinding>>,
 }
 
 fn error(message: &str) -> DbErr {
@@ -853,7 +864,24 @@ impl Store {
         Self {
             db,
             clinical_library: crate::clinical_library::ClinicalLibraryClient::from_env(),
+            source_refresh: std::sync::Arc::new(refresh::FixedSourceCheck::new()),
+            refresh_operation: std::sync::Arc::new(chat_operations::RuntimeSourceRefreshOperation),
+            memory_operation: std::sync::Arc::new(chat_operations::PostgresPatientMemoryOperation),
+            understanding_trigger: None,
         }
+    }
+
+    /// Configures automatic background patient understanding triggers (`roles.background`)
+    /// whenever refreshed source observations record new or changed chart revisions.
+    pub fn with_understanding_trigger(
+        mut self,
+        roles: crate::ModelRoles,
+        skills: PhysicianSkills,
+    ) -> Self {
+        self.understanding_trigger = Some(std::sync::Arc::new(
+            understanding::UnderstandingTriggerBinding { roles, skills },
+        ));
+        self
     }
 
     /// Returns a clone bound to an explicit [`crate::clinical_library::ClinicalLibraryClient`].
@@ -862,6 +890,24 @@ impl Store {
         clinical_library: crate::clinical_library::ClinicalLibraryClient,
     ) -> Self {
         self.clinical_library = clinical_library;
+        self
+    }
+
+    /// Returns a clone bound to an explicit [`chat_operations::PatientRefreshOperation`].
+    pub fn with_refresh_operation(
+        mut self,
+        refresh_operation: std::sync::Arc<dyn chat_operations::PatientRefreshOperation>,
+    ) -> Self {
+        self.refresh_operation = refresh_operation;
+        self
+    }
+
+    /// Returns a clone bound to an explicit [`chat_operations::PatientMemoryOperation`].
+    pub fn with_memory_operation(
+        mut self,
+        memory_operation: std::sync::Arc<dyn chat_operations::PatientMemoryOperation>,
+    ) -> Self {
+        self.memory_operation = memory_operation;
         self
     }
 
@@ -874,6 +920,22 @@ impl Store {
     /// process holds one pool.
     pub fn connection(&self) -> &DatabaseConnection {
         &self.db
+    }
+
+    /// Returns a clone bound to an explicit [`refresh::PatientSourceRefresh`] adapter.
+    pub fn with_source_refresh(
+        mut self,
+        source_refresh: std::sync::Arc<dyn refresh::PatientSourceRefresh>,
+    ) -> Self {
+        self.source_refresh = source_refresh;
+        self.refresh_operation =
+            std::sync::Arc::new(chat_operations::RuntimeSourceRefreshOperation);
+        self
+    }
+
+    /// Patient source refresh adapter configured for tool execution.
+    pub fn source_refresh(&self) -> &dyn refresh::PatientSourceRefresh {
+        self.source_refresh.as_ref()
     }
 
     // Display readback now joins several authoritative rows. One read-only
@@ -956,6 +1018,12 @@ impl Store {
         if session_hash.len() != 32 {
             return Err(error("invalid session reference").into());
         }
+        Self::validate_accept_fields(scope, input)?;
+        let tx = self.db.begin().await?;
+        Self::accept_in_tx(tx, scope, input, session_hash, skills, recipe, origin).await
+    }
+
+    pub(super) fn validate_accept_fields(scope: &Scope, input: &Input) -> Result<(), RuntimeError> {
         if [
             &input.key,
             &input.text,
@@ -971,7 +1039,18 @@ impl Store {
             return Err(error("empty command field").into());
         }
         scope.validate()?;
-        let tx = self.db.begin().await?;
+        Ok(())
+    }
+
+    pub(super) async fn accept_in_tx(
+        tx: sea_orm::DatabaseTransaction,
+        scope: &Scope,
+        input: &Input,
+        session_hash: Vec<u8>,
+        skills: &PhysicianSkills,
+        recipe: &RequestRecipe,
+        origin: Option<delivery::TraceContext>,
+    ) -> Result<Accepted, RuntimeError> {
         let command = serde_json::json!({"scope": scope, "input": input});
         match receipt::record(&tx, &scope.practice, &scope.physician, &input.key, &command).await? {
             receipt::Receipt::New => {}
@@ -1958,6 +2037,7 @@ impl<A: Authority, S: ShownStepSaved> Product for PhysicianHost<A, S> {
 
     fn read_only(&self, name: &str) -> bool {
         crate::physician_chat::read_only(name)
+            || crate::initial_understanding::read_only_understanding_tool(name)
     }
 
     fn read_result(&mut self, id: &str) -> harness::engine::recipe::ToolFuture<Option<String>> {
@@ -1969,6 +2049,18 @@ impl<A: Authority, S: ShownStepSaved> Product for PhysicianHost<A, S> {
             let (state, records) = store.work_snapshot(&claim.scope).await?;
             engine::results::resolve(records.iter(), &id, &state.message_sources())
                 .map_err(Into::into)
+        })
+    }
+    fn saved_outcome(
+        &mut self,
+        call: &Invocation,
+    ) -> harness::engine::recipe::ToolFuture<Option<ToolOutcome>> {
+        let store = self.store.clone();
+        let claim = self.claim.clone();
+        let call = call.clone();
+        Box::pin(async move {
+            store.assert_current(&claim).await?;
+            store.saved_chat_tool_outcome(&claim, &call).await
         })
     }
     async fn assert_current(&mut self) -> Result<(), engine::ProductError> {
@@ -2051,27 +2143,9 @@ impl<A: Authority, S: ShownStepSaved> Product for PhysicianHost<A, S> {
                 };
                 return Ok(ToolOutcome::History(page));
             }
-            if matches!(call.name.as_str(), SEARCH_TOOL | READ_TOOL) {
-                let chart = match ChartRequest::parse(&call.name, &arguments, ChartScope::Chat) {
-                    Ok(chart) => chart,
-                    Err(reason) => {
-                        return Ok(ToolOutcome::refused(reason.to_string()));
-                    }
-                };
-                let workspace = &claim.scope.workspace;
-                let observation = store.chart_observation(workspace, &chart).await?;
-                return chart
-                    .run(workspace, observation.version, &observation.sources)
-                    .map_err(Into::into);
-            }
-            if crate::clinical_library::is_library_tool(&call.name) {
-                return Ok(store
-                    .clinical_library()
-                    .execute(&call.name, &arguments)
-                    .await);
-            }
-            let skills = store.frozen_skills(&claim.scope, &state.skills).await?;
-            Ok(skills.execute(&call.name, &arguments))
+            store
+                .execute_chat_tool(&claim, &state, &call, arguments)
+                .await
         })
     }
     async fn finish(&mut self, turn: &Turn) -> Result<Finish, engine::ProductError> {
@@ -2098,7 +2172,13 @@ impl<A: Authority, S: ShownStepSaved> Product for PhysicianHost<A, S> {
         self.assert_current().await?;
         let state = self.store.conversation(&self.claim.scope).await?;
         let start = current_work_start(&state)?;
-        let mut seed: Vec<_> = earlier_messages(start).into_iter().collect();
+        let starting_context = self
+            .store
+            .patient_starting_context(&self.claim.scope)
+            .await
+            .map_err(persistence_failure)?;
+        let mut seed = vec![starting_context.developer_item()];
+        seed.extend(earlier_messages(start));
         seed.extend(state.messages[start..].iter().flat_map(Message::items));
         let note_references =
             working_notes::references(state.attempts.iter().flat_map(|attempt| {
@@ -2138,6 +2218,11 @@ impl<A: Authority, S: ShownStepSaved> PhysicianHost<A, S> {
             .await
             .map_err(|cause| engine::Failure::Host(cause.into()))?
             .request(Vec::new());
+        let starting_context = self
+            .store
+            .patient_starting_context(&self.claim.scope)
+            .await
+            .map_err(|cause| engine::Failure::from(persistence_failure(cause)))?;
         let messages = state.messages.as_slice();
         request.items.clear();
         let mut pending: Vec<engine::AcceptedInput> = Vec::new();
@@ -2145,9 +2230,14 @@ impl<A: Authority, S: ShownStepSaved> PhysicianHost<A, S> {
             if let MessageRole::User { id, work, .. } = &message.role
                 && work == &state.work
             {
+                let items = if pending.is_empty() {
+                    vec![starting_context.developer_item()]
+                } else {
+                    Vec::new()
+                };
                 pending.push(engine::AcceptedInput {
                     id: id.clone(),
-                    items: Vec::new(),
+                    items,
                 });
             }
             let target = match pending.last_mut() {

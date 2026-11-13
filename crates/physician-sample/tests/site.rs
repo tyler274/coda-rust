@@ -4292,6 +4292,445 @@ async fn collapsed_orb_and_persistent_now_banner_across_pages_and_motion_modes()
     server_task.abort();
 }
 
+/// Real first-source path (`load_synthetic_practice_with_understanding` ->
+/// `PracticeJobHost` -> `GET /patient-workspaces/{id}` -> `physician-app` in
+/// Chromium): shows in-progress work before completion, then renders the saved
+/// summary, material gaps, and interactive citation evidence while keeping
+/// Coda's private `OperatingIndex` completely absent from wire responses and DOM.
+#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+#[ignore = "browser qualification; run explicitly with --ignored"]
+async fn first_source_path_renders_saved_patient_summary_and_evidence_without_private_operating_index()
+ {
+    use local_product::initial_understanding::{
+        HealthSystemStanding, IndexedAnchor, KnownHealthSystem, OperatingIndex,
+        SAVE_UNDERSTANDING_TOOL, SaveUnderstandingArgs, SummaryClaimInput, job_key,
+    };
+    use local_product::physician_sources::{READ_TOOL, SEARCH_TOOL, workspace_id};
+    use local_product::runtime::concerns::ExactRecordReference;
+    use local_product::runtime::engine;
+    use local_product::runtime::jobs::{PracticeJobHost, PracticeScope};
+
+    let _guard = test_lock().lock().await;
+    let database = scale::Database::create("first_source_browser")
+        .await
+        .expect("browser proof database");
+    scale::staging_account(&database.url).await;
+    let site = build_site();
+
+    // 1. Build a synthetic FHIR patient bank on disk and run the real first-source loader!
+    let bank_dir = env::temp_dir().join(format!("coda-first-source-bank-{}", uuid::Uuid::new_v4()));
+    let _ = fs::remove_dir_all(&bank_dir);
+    let chart_dir = bank_dir.join("patients/SYN-FIRST-01");
+    fs::create_dir_all(&chart_dir).unwrap();
+
+    let patient_ndjson = serde_json::json!({
+        "resourceType": "Patient",
+        "id": "SYN-FIRST-01",
+        "meta": { "lastUpdated": "2026-08-25T10:00:00Z" },
+        "identifier": [{ "system": "urn:oid:2.16.840.1.113883.19.5", "value": "00091402" }],
+        "name": [{ "family": "Navarro", "given": ["Sofia"] }],
+        "gender": "female",
+        "birthDate": "1968-05-19"
+    });
+    let note_text = "CONSULTATION NOTE (2026-08-20): Persistent atrial fibrillation anticoagulated with apixaban 5 mg twice daily. Prior ablation operative report from Harborview Electrophysiology Center has not yet been received.";
+    let note_ndjson = serde_json::json!({
+        "resourceType": "DocumentReference",
+        "id": "consult-afib-2026",
+        "date": "2026-08-20T14:30:00Z",
+        "content": [{
+            "attachment": {
+                "contentType": "text/plain; charset=utf-8",
+                "data": base64::engine::general_purpose::STANDARD.encode(note_text.as_bytes()),
+            }
+        }]
+    });
+    let lab_ndjson = serde_json::json!({
+        "resourceType": "Observation",
+        "id": "creatinine-2026-08",
+        "effectiveDateTime": "2026-08-22T09:15:00Z",
+        "code": { "text": "Serum Creatinine" },
+        "valueQuantity": { "value": 1.12, "unit": "mg/dL" }
+    });
+
+    fs::write(
+        chart_dir.join("Patient.ndjson"),
+        format!("{}\n", serde_json::to_string(&patient_ndjson).unwrap()),
+    )
+    .unwrap();
+    fs::write(
+        chart_dir.join("DocumentReference.ndjson"),
+        format!("{}\n", serde_json::to_string(&note_ndjson).unwrap()),
+    )
+    .unwrap();
+    fs::write(
+        chart_dir.join("Observation.ndjson"),
+        format!("{}\n", serde_json::to_string(&lab_ndjson).unwrap()),
+    )
+    .unwrap();
+
+    let store = local_product::runtime::Store::connect(&database.url)
+        .await
+        .unwrap();
+    let auth = physician_auth::PostgresAuthStore::connect_without_migrations(&database.url)
+        .await
+        .unwrap();
+    let skills = local_product::physician_chat::PhysicianSkills::configured(None, false).unwrap();
+    let roles = scale::models::roles();
+
+    let load_summary = physician_sample::chart_load::load_synthetic_practice_with_understanding(
+        &bank_dir, &auth, &store, &roles, &skills,
+    )
+    .await
+    .expect("first-source synthetic practice load succeeds");
+    assert_eq!(load_summary.patients, 1);
+    assert_eq!(load_summary.records, 3);
+    assert!(load_summary.failed.is_empty(), "{:?}", load_summary.failed);
+
+    let db_url = database.url.clone();
+    let server = common::serve_isolated(|| {
+        // SAFETY: `test_lock()` and `serve_isolated`'s start lock are both held.
+        unsafe {
+            env::set_var("PHYSICIAN_SITE_DIR", &site);
+            env::set_var("PHYSICIAN_DATABASE_URL", &db_url);
+            env::set_var("PHYSICIAN_AUTH", "required");
+            env::set_var("PHYSICIAN_AUTH_PROOF_TOKENS", "1");
+            env::remove_var("PHYSICIAN_UPSTREAM");
+        }
+    })
+    .await;
+    let base = format!("http://{}", server.address);
+
+    let workspace = workspace_id(physician_sample::synthetic_chart::SOURCE_ID, "SYN-FIRST-01");
+    let job_scope = PracticeScope {
+        practice: physician_sample::STAGING_PRACTICE_ID.to_owned(),
+        workspace: workspace.clone(),
+        job_id: job_key(&workspace, 1),
+    };
+    let pending_job = store
+        .practice_job(&job_scope)
+        .await
+        .unwrap()
+        .expect("first-source load started InitialUnderstanding practice job");
+    assert_eq!(pending_job.sources_version, 1);
+
+    // 2. Sign in via Chromium and verify in-progress `Building initial patient summary` appears BEFORE completion!
+    let mut browser = Tab::open(&base);
+    browser.wait_for_text("Work email", Duration::from_secs(20));
+    browser.request_sign_in("physician@codahealth.test");
+    browser.wait_for_text("Nothing needs you right now.", Duration::from_secs(20));
+    let bearer = browser
+        .eval("localStorage.getItem('coda.physician.session')")
+        .as_str()
+        .expect("session bearer token")
+        .to_owned();
+
+    let patient_url = format!("{base}/?patient={workspace}");
+    browser.navigate(&patient_url);
+    browser.wait_for_text("Sofia Navarro", Duration::from_secs(20));
+    browser.wait_for_text("Building initial patient summary", Duration::from_secs(10));
+    std::thread::sleep(Duration::from_millis(300));
+    browser.save_picture("ac5-patient-summary-building");
+
+    // 3. Execute the real `PracticeJobHost` on the triggered job, saving both a sentinel-bearing
+    //    private `OperatingIndex` and a cited `PatientSummary` with material gaps!
+    let claim = store
+        .claim_practice_job(&job_scope, 60, &auth)
+        .await
+        .unwrap()
+        .expect("claim triggered initial understanding job");
+
+    struct FirstSourceBrowserProvider {
+        turn: usize,
+        note_rev: Option<String>,
+        lab_rev: Option<String>,
+    }
+    impl engine::recipe::Provider for FirstSourceBrowserProvider {
+        async fn exchange(
+            &mut self,
+            request: &engine::recipe::Request,
+            _: &engine::Cancellation,
+            _: &engine::RunLimits,
+            _: &mut dyn engine::recipe::Observer,
+        ) -> Result<engine::Turn, engine::Cause> {
+            self.turn += 1;
+            match self.turn {
+                1 => Ok(engine::Turn {
+                    items: vec![engine::Item::Call(engine::Invocation {
+                        id: "browse-chart".into(),
+                        name: SEARCH_TOOL.into(),
+                        arguments: serde_json::json!({
+                            "query": "",
+                            "record_type": null,
+                            "after": null
+                        })
+                        .to_string(),
+                    })],
+                    receipt: serde_json::json!({"turn": 1}),
+                    usage: Default::default(),
+                }),
+                2 => {
+                    let search_json: serde_json::Value = request
+                        .items
+                        .iter()
+                        .find_map(|item| match item {
+                            engine::Item::MaterializedResult { call_id, output }
+                                if call_id == "browse-chart" =>
+                            {
+                                serde_json::from_str(output).ok()
+                            }
+                            _ => None,
+                        })
+                        .expect("search results materialized");
+                    let results = search_json["results"].as_array().expect("results array");
+                    let find_rev = |cand: &str| -> String {
+                        results
+                            .iter()
+                            .find(|r| r["reference"]["candidate_id"] == cand)
+                            .and_then(|r| r["reference"]["revision"].as_str())
+                            .unwrap_or_else(|| panic!("missing candidate {cand} in {results:?}"))
+                            .to_owned()
+                    };
+                    let note_rev = find_rev("DocumentReference/consult-afib-2026");
+                    let lab_rev = find_rev("Observation/creatinine-2026-08");
+                    self.note_rev = Some(note_rev.clone());
+                    self.lab_rev = Some(lab_rev.clone());
+
+                    Ok(engine::Turn {
+                        items: vec![engine::Item::Call(engine::Invocation {
+                            id: "read-sources".into(),
+                            name: READ_TOOL.into(),
+                            arguments: serde_json::json!({
+                                "references": [
+                                    {
+                                        "candidate_id": "DocumentReference/consult-afib-2026",
+                                        "revision": note_rev,
+                                        "cursor": null
+                                    },
+                                    {
+                                        "candidate_id": "Observation/creatinine-2026-08",
+                                        "revision": lab_rev,
+                                        "cursor": null
+                                    }
+                                ],
+                                "max_result_bytes": 32_768
+                            })
+                            .to_string(),
+                        })],
+                        receipt: serde_json::json!({"turn": 2}),
+                        usage: Default::default(),
+                    })
+                }
+                3 => {
+                    let note_rev = self.note_rev.clone().unwrap();
+                    let lab_rev = self.lab_rev.clone().unwrap();
+                    let args = SaveUnderstandingArgs {
+                        expected_revision: Some(0),
+                        operating_index: OperatingIndex {
+                            working_overview: "PRIVATE_INDEX_ORIENTATION_7741: Persistent AFib on apixaban; Harborview EP ablation report missing.".into(),
+                            known_health_systems: vec![
+                                KnownHealthSystem {
+                                    name: "Synthetic chart".into(),
+                                    standing: HealthSystemStanding::Connected {
+                                        source_id: physician_sample::synthetic_chart::SOURCE_ID.into(),
+                                    },
+                                    note: "PRIVATE_CONNECTED_NOTE_7741".into(),
+                                },
+                                KnownHealthSystem {
+                                    name: "PRIVATE_OUTSIDE_EP_SYSTEM_7741".into(),
+                                    standing: HealthSystemStanding::MentionedInRecords,
+                                    note: "PRIVATE_EP_ABLATION_NOTE_7741".into(),
+                                },
+                            ],
+                            open_threads: vec![
+                                "PRIVATE_OPERATING_GAP_7741".into(),
+                                "PRIVATE_ANCHOR_REASON_7741".into(),
+                                "PRIVATE_MED_VERIFICATION_CUE_7741".into(),
+                            ],
+                            anchors: vec![
+                                IndexedAnchor {
+                                    reference: ExactRecordReference {
+                                        candidate_id: "DocumentReference/consult-afib-2026".into(),
+                                        revision: note_rev.clone(),
+                                    },
+                                    source_id: physician_sample::synthetic_chart::SOURCE_ID.into(),
+                                    topic: "PRIVATE_ANCHOR_AFIB_7741".into(),
+                                },
+                            ],
+                        },
+                        claims: vec![
+                            SummaryClaimInput {
+                                text: "Persistent atrial fibrillation anticoagulated with apixaban 5 mg twice daily".into(),
+                                citations: vec![ExactRecordReference {
+                                    candidate_id: "DocumentReference/consult-afib-2026".into(),
+                                    revision: note_rev,
+                                }],
+                            },
+                            SummaryClaimInput {
+                                text: "Serum creatinine was 1.12 mg/dL on 2026-08-22".into(),
+                                citations: vec![ExactRecordReference {
+                                    candidate_id: "Observation/creatinine-2026-08".into(),
+                                    revision: lab_rev,
+                                }],
+                            },
+                        ],
+                        material_gaps: vec![
+                            "Harborview Electrophysiology Center ablation operative report not yet received".into(),
+                        ],
+                        scope_note: None,
+                    };
+                    Ok(engine::Turn {
+                        items: vec![engine::Item::Call(engine::Invocation {
+                            id: "save-understanding".into(),
+                            name: SAVE_UNDERSTANDING_TOOL.into(),
+                            arguments: serde_json::to_string(&args).unwrap(),
+                        })],
+                        receipt: serde_json::json!({"turn": 3}),
+                        usage: Default::default(),
+                    })
+                }
+                4 => Ok(engine::Turn {
+                    items: vec![engine::Item::assistant(
+                        "Initial patient understanding saved.",
+                    )],
+                    receipt: serde_json::json!({"turn": 4}),
+                    usage: Default::default(),
+                }),
+                other => panic!("unexpected turn {other}"),
+            }
+        }
+    }
+
+    let mut host = PracticeJobHost {
+        store: store.clone(),
+        claim,
+        authority: &auth,
+    };
+    host.run(
+        &mut FirstSourceBrowserProvider {
+            turn: 0,
+            note_rev: None,
+            lab_rev: None,
+        },
+        engine::RunLimits::default(),
+        &engine::Cancellation::default(),
+    )
+    .await
+    .expect("first-source initial understanding run completes");
+
+    // 4. Inspect raw HTTP wire response `GET /patient-workspaces/{workspace}`:
+    let http = reqwest::Client::new();
+    let ws_resp = http
+        .get(format!("{base}/patient-workspaces/{workspace}"))
+        .bearer_auth(&bearer)
+        .send()
+        .await
+        .expect("fetch patient workspace wire JSON");
+    assert_eq!(ws_resp.status(), reqwest::StatusCode::OK);
+    let raw_wire = ws_resp.text().await.unwrap();
+    let wire_json: serde_json::Value = serde_json::from_str(&raw_wire).unwrap();
+
+    assert!(
+        wire_json["automation_run"].is_null(),
+        "completed initial understanding must clear automation_run: {raw_wire}"
+    );
+    assert_eq!(
+        wire_json["patient_synopsis"]["version_id"],
+        "understanding-v1"
+    );
+    assert!(
+        wire_json["patient_synopsis"]["authored_text"]
+            .as_str()
+            .unwrap_or_default()
+            .contains(
+                "Harborview Electrophysiology Center ablation operative report not yet received"
+            )
+    );
+    for forbidden in [
+        "operating_index",
+        "PRIVATE_INDEX_ORIENTATION_7741",
+        "PRIVATE_CONNECTED_NOTE_7741",
+        "PRIVATE_OUTSIDE_EP_SYSTEM_7741",
+        "PRIVATE_EP_ABLATION_NOTE_7741",
+        "PRIVATE_ANCHOR_AFIB_7741",
+        "PRIVATE_ANCHOR_REASON_7741",
+        "PRIVATE_OPERATING_GAP_7741",
+        "PRIVATE_MED_VERIFICATION_CUE_7741",
+    ] {
+        assert!(
+            !raw_wire.contains(forbidden),
+            "wire workspace response leaked private operating index token {forbidden}:\n{raw_wire}"
+        );
+    }
+
+    // 5. Reload the patient page in Chromium: verify summary, material gaps, and citation inspection!
+    browser.navigate(&patient_url);
+    browser.wait_for_text("Patient summary", Duration::from_secs(20));
+    browser.wait_for_text(
+        "Harborview Electrophysiology Center ablation operative report not yet received",
+        Duration::from_secs(10),
+    );
+    std::thread::sleep(Duration::from_millis(300));
+    browser.save_picture("ac5-patient-summary-loaded");
+
+    let dom_summary = browser
+        .eval("document.documentElement.outerHTML")
+        .as_str()
+        .unwrap_or_default()
+        .to_owned();
+    assert!(
+        !dom_summary.contains("Building initial patient summary"),
+        "completed run banner remained on DOM:\n{dom_summary}"
+    );
+    assert!(
+        dom_summary.contains("Persistent atrial fibrillation anticoagulated with apixaban 5 mg twice daily")
+            && dom_summary.contains("Material gaps: Harborview Electrophysiology Center ablation operative report not yet received"),
+        "patient summary prose or material gaps missing in DOM:\n{dom_summary}"
+    );
+
+    // Click citation chip 1 inside Patient summary -> side-panel source inspection opens!
+    browser.click("section[aria-label=\"Patient summary\"] button[aria-label*=\"Source 1:\"]");
+    browser.wait_for_text(
+        "Prepared by Coda · as of 2026-08-20",
+        Duration::from_secs(10),
+    );
+    browser.wait_for_text(
+        "CONSULTATION NOTE (2026-08-20): Persistent atrial fibrillation",
+        Duration::from_secs(10),
+    );
+    std::thread::sleep(Duration::from_millis(300));
+    browser.save_picture("ac5-patient-summary-citation-open");
+
+    let dom_after_open = browser
+        .eval("document.documentElement.outerHTML")
+        .as_str()
+        .unwrap_or_default()
+        .to_owned();
+    for forbidden in [
+        "operating_index",
+        "PRIVATE_INDEX_ORIENTATION_7741",
+        "PRIVATE_CONNECTED_NOTE_7741",
+        "PRIVATE_OUTSIDE_EP_SYSTEM_7741",
+        "PRIVATE_EP_ABLATION_NOTE_7741",
+        "PRIVATE_ANCHOR_AFIB_7741",
+        "PRIVATE_ANCHOR_REASON_7741",
+        "PRIVATE_OPERATING_GAP_7741",
+        "PRIVATE_MED_VERIFICATION_CUE_7741",
+    ] {
+        assert!(
+            !dom_after_open.contains(forbidden),
+            "Chromium DOM leaked private operating index token {forbidden}:\n{dom_after_open}"
+        );
+    }
+
+    drop(browser);
+    let _ = fs::remove_dir_all(&bank_dir);
+    unsafe {
+        env::remove_var("PHYSICIAN_DATABASE_URL");
+        env::remove_var("PHYSICIAN_AUTH");
+        env::remove_var("PHYSICIAN_AUTH_PROOF_TOKENS");
+    }
+}
+
 async fn dump_dom(chrome: &std::path::Path, url: &str) -> String {
     let child = Command::new(chrome)
         .env_remove("LD_LIBRARY_PATH")

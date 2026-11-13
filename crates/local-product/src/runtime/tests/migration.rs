@@ -59,9 +59,13 @@ async fn a_second_migrate_records_nothing_new() {
         [
             "m20261111_init",
             "m20261111_response_feedback",
+            "m20261112_chat_memory",
             "m20261112_concerns",
+            "m20261112_patient_understanding",
             "m20261112_practice_jobs_dispatch",
+            "m20261112_practice_schedule",
             "m20261112_source_pull_missing_candidates",
+            "m20261112_source_refresh",
             "m20261113_source_links_and_standing",
             "m20261114_reconnect_commands_and_adapter_state",
         ]
