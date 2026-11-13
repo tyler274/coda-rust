@@ -5,13 +5,23 @@
 //! physician choices without automatic restart, durable commit probing, panel
 //! authorization, and wrong-patient source withdrawal holdbacks.
 
+use std::path::PathBuf;
+
 use local_product::{
+    ModelBinding, ModelRoles,
+    patient_reviews::{
+        COMPLETE_PATIENT_REVIEW_TOOL, CompleteReviewArgs, CompleteReviewDisposition,
+    },
+    physician_chat::{ChatAssignment, PhysicianSkills},
     physician_sources::{
-        ChartRequest, ChartScope, READ_TOOL, RecordDate, SourceRevision, read_tool,
+        ChartRequest, ChartScope, MedicalRecordNumber, READ_TOOL, ReadablePart, RecordDate,
+        SourcePatient, SourceRevision, read_tool,
     },
     runtime::{
-        Authority, PublicationTransaction, Scope, Store, async_trait,
+        Accepted, Authority, Input, PhysicianHost, PublicationTransaction, Scope, Store,
+        WorkStatus, async_trait,
         concerns::{ExactRecordReference, SourceWork, WorkspaceAccess},
+        dispatch::StoredObservationChecker,
         engine::{
             self, AcceptedInput, Event, Invocation, Item, Product, ProductMessage, ToolOutcome,
             Turn, WindowSeed,
@@ -25,10 +35,13 @@ use local_product::{
             PhysicianCreateFollowUp, SourceWithdrawalOutcome, WithdrawWrongPatientRequest,
             follow_up_tool, is_follow_up_tool,
         },
+        jobs::PracticeJobHost,
+        reviews::PatientReviewReceiver,
+        sources::SourcePull,
     },
     sha256_hex,
 };
-use physician_auth::{AuthStore, Membership, PhysicianIdentity, PostgresAuthStore};
+use physician_auth::{AuthStore, Membership, PhysicianIdentity, PostgresAuthStore, PracticeClock};
 use sea_orm::DbErr;
 use serde_json::{Value, json};
 
@@ -867,7 +880,69 @@ async fn terminal_follow_ups_never_reopen_and_cannot_restart_offers_physician_ch
         "CannotRestart follow-up must never auto-restart in due_follow_ups"
     );
 
-    // Physician resolves `CannotRestart` with `NewDate`, then on a subsequent failure resolves with `Complete`.
+    // Ordinary `change` (both tool and physician) and `FollowUpReviewOutcome::Revise` MUST refuse
+    // a `CannotRestart` follow-up so only explicit `resolve_cannot_restart_for_physician` can clear it.
+    let refused_stuck_tool = store
+        .execute_follow_up_tool(
+            &practice,
+            &workspace,
+            &SourceWork::new("patient_review", "late-work-stuck", "attempt-1").unwrap(),
+            &Invocation {
+                id: "tool-change-cannot-restart".into(),
+                name: FOLLOW_UP_TOOL.into(),
+                arguments: json!({
+                    "operation": "change",
+                    "follow_up_id": fu_stuck.as_str(),
+                    "summary": "Attempt to overwrite CannotRestart via ordinary change.",
+                    "due_at": due_ts + 3600,
+                    "note": "Should be refused."
+                }),
+            },
+        )
+        .await
+        .unwrap();
+    assert!(
+        matches!(refused_stuck_tool, ToolOutcome::Refused(_)),
+        "FOLLOW_UP_TOOL change must refuse CannotRestart standing: {refused_stuck_tool:?}"
+    );
+    assert!(matches!(
+        store
+            .change_follow_up_for_physician(
+                &access,
+                &FollowUpCommandKey::new("physician-change-stuck-refused").unwrap(),
+                &PhysicianChangeFollowUp {
+                    id: fu_stuck.clone(),
+                    summary: FollowUpSummary::new("Attempt ordinary physician edit on stuck item.")
+                        .unwrap(),
+                    due_at: due_ts + 3600,
+                    records: vec![],
+                    note: FollowUpChangeNote::new("Must use resolve_cannot_restart.").unwrap(),
+                },
+                &mut PostgresWorkspaceAuthority,
+            )
+            .await,
+        Err(FollowUpError::InvalidTransition { .. })
+    ));
+    assert!(matches!(
+        store
+            .apply_follow_up_review_outcome(
+                &practice,
+                &workspace,
+                &FollowUpCommandKey::new("review-revise-stuck-refused").unwrap(),
+                &fu_stuck,
+                SourceWork::new("patient_review", "late-work-revise", "attempt-1").unwrap(),
+                FollowUpReviewOutcome::Revise {
+                    summary: FollowUpSummary::new("Attempt review revise on stuck item.").unwrap(),
+                    due_at: due_ts + 3600,
+                    records: vec![],
+                    note: FollowUpChangeNote::new("Must be refused.").unwrap(),
+                },
+            )
+            .await,
+        Err(FollowUpError::InvalidTransition { .. })
+    ));
+
+    // Physician resolves `CannotRestart` with `NewDate`.
     let rescheduled_due = due_ts + 7 * 86_400;
     let rescheduled = store
         .resolve_cannot_restart_for_physician(
@@ -1215,7 +1290,7 @@ async fn removing_wrong_patient_message_holds_back_derived_follow_ups_and_pendin
         vec![FollowUpId::new("fu-wrong-inr").unwrap()]
     );
 
-    // Repeating the withdrawal request is idempotent.
+    // Repeating the withdrawal request with identical payload is idempotent.
     let dup_withdrawal = store
         .withdraw_wrong_patient_source(&withdrawal_req)
         .await
@@ -1223,6 +1298,22 @@ async fn removing_wrong_patient_message_holds_back_derived_follow_ups_and_pendin
     assert!(matches!(
         dup_withdrawal,
         SourceWithdrawalOutcome::Duplicate(_)
+    ));
+
+    // Reusing `withdrawal_id` with different `candidate_ids` or `reason` fails with `IdempotencyCollision`.
+    let mut colliding_candidates = withdrawal_req.clone();
+    colliding_candidates.candidate_ids = vec!["cand-clean-a1c".into()];
+    assert!(matches!(
+        store
+            .withdraw_wrong_patient_source(&colliding_candidates)
+            .await,
+        Err(FollowUpError::IdempotencyCollision { .. })
+    ));
+    let mut colliding_reason = withdrawal_req.clone();
+    colliding_reason.reason = "Mutated reason for existing withdrawal key.".into();
+    assert!(matches!(
+        store.withdraw_wrong_patient_source(&colliding_reason).await,
+        Err(FollowUpError::IdempotencyCollision { .. })
     ));
 
     // Pending due review action on `fu-wrong-inr` is immediately cleared; `fu-clean-a1c` remains due.
@@ -1233,13 +1324,39 @@ async fn removing_wrong_patient_message_holds_back_derived_follow_ups_and_pendin
     assert_eq!(due_after.len(), 1);
     assert_eq!(due_after[0].id.as_str(), "fu-clean-a1c");
 
-    // Audit state preserves `fu-wrong-inr` in `WithdrawnWrongPatient` standing while `fu-clean-a1c` is `Active`.
-    let all_items = store
+    // Physician-facing clinical follow-up list and Updates feed EXCLUDE `WithdrawnWrongPatient`
+    // items (`fu-wrong-inr`), returning only `fu-clean-a1c`.
+    let physician_items = store
         .physician_follow_ups(&access, &mut PostgresWorkspaceAuthority)
         .await
         .unwrap();
-    assert_eq!(all_items.len(), 2);
-    let wrong_after = all_items
+    assert_eq!(physician_items.len(), 1);
+    assert_eq!(physician_items[0].id.as_str(), "fu-clean-a1c");
+    assert!(matches!(
+        physician_items[0].standing,
+        FollowUpStanding::Active { .. }
+    ));
+
+    let physician_updates = store
+        .physician_follow_up_updates(&access, &mut PostgresWorkspaceAuthority)
+        .await
+        .unwrap();
+    assert!(
+        !physician_updates
+            .iter()
+            .any(|u| u.follow_up_id.as_str() == "fu-wrong-inr"),
+        "physician Updates must exclude wrong-patient withdrawn follow-up history: {physician_updates:?}"
+    );
+    assert_eq!(physician_updates.len(), 1);
+    assert_eq!(physician_updates[0].follow_up_id.as_str(), "fu-clean-a1c");
+
+    // Internal/audit reads retain `fu-wrong-inr` in `WithdrawnWrongPatient` standing and its audit Updates log.
+    let audit_items = store
+        .workspace_follow_ups(&practice, &workspace)
+        .await
+        .unwrap();
+    assert_eq!(audit_items.len(), 2);
+    let wrong_after = audit_items
         .iter()
         .find(|f| f.id.as_str() == "fu-wrong-inr")
         .unwrap();
@@ -1248,14 +1365,14 @@ async fn removing_wrong_patient_message_holds_back_derived_follow_ups_and_pendin
         FollowUpStanding::WithdrawnWrongPatient { withdrawal_id, .. }
             if withdrawal_id == "withdraw-spruce-msg-1"
     ));
-    let clean_after = all_items
-        .iter()
-        .find(|f| f.id.as_str() == "fu-clean-a1c")
+    let audit_updates = store
+        .workspace_follow_up_updates_audit(&practice, &workspace)
+        .await
         .unwrap();
-    assert!(matches!(
-        clean_after.standing,
-        FollowUpStanding::Active { .. }
-    ));
+    assert!(audit_updates.iter().any(|u| {
+        u.follow_up_id.as_str() == "fu-wrong-inr"
+            && u.kind == FollowUpUpdateKind::WithdrawnWrongPatient
+    }));
 
     // Replay of the earlier `FOLLOW_UP_TOOL` call or a new write citing `cand-wrong-spruce-msg` is refused.
     let replay_outcome = store
@@ -1287,4 +1404,390 @@ async fn removing_wrong_patient_message_holds_back_derived_follow_ups_and_pendin
         fresh_work_citing_withdrawn,
         ToolOutcome::Refused(_)
     ));
+}
+
+#[tokio::test]
+#[ignore = "requires explicit local Postgres"]
+async fn production_patient_review_and_physician_chat_hosts_offer_and_execute_follow_up_tool() {
+    let url = std::env::var("PHYSICIAN_RUNTIME_TEST_DATABASE_URL").unwrap();
+    let store = Store::connect(&url).await.unwrap();
+    store.migrate().await.unwrap();
+    let auth = PostgresAuthStore::connect_with_migrations(&url)
+        .await
+        .unwrap();
+
+    let skills =
+        PhysicianSkills::load(&PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../../skills"))
+            .unwrap();
+    let roles = ModelRoles {
+        chat: ModelBinding {
+            model: "chat-lane-followup".into(),
+            effort: "medium".into(),
+            context_window_tokens: 192_000,
+            max_input_tokens: 160_000,
+            adapter: "fixture".into(),
+        },
+        background: ModelBinding {
+            model: "background-lane-followup".into(),
+            effort: "high".into(),
+            context_window_tokens: 272_000,
+            max_input_tokens: 250_000,
+            adapter: "fixture".into(),
+        },
+    };
+
+    let practice = format!("practice-prod-fu-{}", uuid::Uuid::new_v4().simple());
+    let workspace = format!("pw-prod-fu-{}", uuid::Uuid::new_v4().simple());
+    auth.ensure_practice(&practice, PracticeClock::RealTime)
+        .await
+        .unwrap();
+    let (physician, _token, session_hash) = invite_and_sign_in(&auth, &practice, "dr-prod").await;
+    auth.register_patient(&practice, &workspace).await.unwrap();
+    auth.set_membership(&physician, &workspace, Membership::Allowed)
+        .await
+        .unwrap();
+
+    let reg_time = 1_790_000_000_i64;
+    store
+        .register_patient_dispatch(&auth, &practice, &workspace, reg_time)
+        .await
+        .unwrap();
+
+    let lab_content = "Serum ferritin 9 ng/mL on oral iron supplementation.";
+    let lab_rev = SourceRevision {
+        workspace: workspace.clone(),
+        source_id: "clinic-ehr".into(),
+        candidate_id: "Observation/ferritin-1".into(),
+        revision: "rev-1".into(),
+        record_type: "Observation".into(),
+        dates: vec![RecordDate {
+            name: "effectiveDateTime".into(),
+            value: "2026-11-10".into(),
+        }],
+        content: lab_content.into(),
+        sha256: sha256_hex(lab_content.as_bytes()),
+        readable_parts: vec![ReadablePart {
+            label: "Ferritin".into(),
+            text: lab_content.into(),
+        }],
+        provenance: json!({"title": "Ferritin", "id": "Observation/ferritin-1"}),
+    };
+    let pull = SourcePull {
+        source_id: "clinic-ehr".into(),
+        source_label: "Clinic EHR".into(),
+        patient: SourcePatient {
+            source_patient_id: "pt-ferritin".into(),
+            display_name: "Nadia Vance".into(),
+            birth_date: Some("1982-09-12".into()),
+            sex_or_gender: Some("female".into()),
+            medical_record_numbers: vec![MedicalRecordNumber {
+                system: "clinic-mrn".into(),
+                value: "MRN-8821".into(),
+            }],
+        },
+        pulled_at: reg_time + 3600,
+    };
+    store
+        .record_chart(&workspace, std::slice::from_ref(&lab_rev), &pull)
+        .await
+        .unwrap();
+
+    // 1. Dispatch a real `PatientReview` job and run it via production `PracticeJobHost`.
+    let checker = StoredObservationChecker::new(store.clone());
+    let receiver = PatientReviewReceiver::new(&store, &roles, &skills, &auth);
+    let wake = store
+        .wake_practice_dispatch(&auth, &practice, reg_time + 3600, &checker, &receiver)
+        .await
+        .unwrap();
+    assert_eq!(wake.started_reviews.len(), 1);
+    let reviews = store
+        .patient_reviews(&practice, &workspace, &auth)
+        .await
+        .unwrap();
+    let review_scope = reviews[0].practice_scope();
+    let claim = store
+        .claim_practice_job(&review_scope, 60, &auth)
+        .await
+        .unwrap()
+        .unwrap();
+
+    let due_initial = i64::try_from(unix_seconds()).unwrap() + 14 * 86_400;
+    let due_revised = due_initial + 7 * 86_400;
+
+    struct ReviewCreateFollowUpProvider {
+        turn: usize,
+        due_at: i64,
+    }
+    impl Provider for ReviewCreateFollowUpProvider {
+        async fn exchange(
+            &mut self,
+            request: &Request,
+            _: &engine::Cancellation,
+            _: &engine::RunLimits,
+            _: &mut dyn Observer,
+        ) -> Result<Turn, engine::Cause> {
+            self.turn += 1;
+            let tool_names: Vec<&str> = request
+                .tools
+                .iter()
+                .filter_map(|t| t["name"].as_str())
+                .collect();
+            assert!(
+                tool_names.contains(&FOLLOW_UP_TOOL),
+                "PatientReview recipe must offer FOLLOW_UP_TOOL: {tool_names:?}"
+            );
+            match self.turn {
+                1 => Ok(Turn {
+                    items: vec![
+                        Item::Call(Invocation {
+                            id: "read-ferritin".into(),
+                            name: READ_TOOL.into(),
+                            arguments: json!({
+                                "references": [{
+                                    "candidate_id": "Observation/ferritin-1",
+                                    "revision": "rev-1",
+                                    "cursor": null
+                                }],
+                                "max_result_bytes": 16_384
+                            })
+                            .to_string(),
+                        }),
+                        Item::Call(Invocation {
+                            id: "create-ferritin-fu".into(),
+                            name: FOLLOW_UP_TOOL.into(),
+                            arguments: json!({
+                                "operation": "create",
+                                "follow_up_id": "fu-prod-ferritin",
+                                "summary": "Recheck CBC and ferritin in 2 weeks on oral iron.",
+                                "due_at": self.due_at,
+                                "records": [{"candidate_id": "Observation/ferritin-1", "revision": "rev-1"}]
+                            })
+                            .to_string(),
+                        }),
+                    ],
+                    receipt: json!({"turn": 1}),
+                    usage: Default::default(),
+                }),
+                2 => {
+                    let fu_out = request
+                        .items
+                        .iter()
+                        .find_map(|item| match item {
+                            Item::MaterializedResult { call_id, output }
+                                if call_id == "create-ferritin-fu" =>
+                            {
+                                Some(output.as_str())
+                            }
+                            _ => None,
+                        })
+                        .expect("FOLLOW_UP_TOOL result materialized in PracticeJobHost");
+                    let parsed: Value = serde_json::from_str(fu_out).unwrap();
+                    assert_eq!(parsed["outcome"], "applied");
+                    assert_eq!(parsed["follow_up"]["id"], "fu-prod-ferritin");
+
+                    let complete = CompleteReviewArgs {
+                        disposition: CompleteReviewDisposition::Assessed {
+                            summary: "Low ferritin 9 ng/mL; scheduled 2-week ferritin follow-up.".into(),
+                        },
+                        citations: vec![ExactRecordReference {
+                            candidate_id: "Observation/ferritin-1".into(),
+                            revision: "rev-1".into(),
+                        }],
+                        basis_and_limitations: "Clinic EHR ferritin lab 2026-11-10.".into(),
+                        unfinished_work: vec![],
+                    };
+                    Ok(Turn {
+                        items: vec![Item::Call(Invocation {
+                            id: "complete-rev".into(),
+                            name: COMPLETE_PATIENT_REVIEW_TOOL.into(),
+                            arguments: serde_json::to_string(&complete).unwrap(),
+                        })],
+                        receipt: json!({"turn": 2}),
+                        usage: Default::default(),
+                    })
+                }
+                3 => Ok(Turn {
+                    items: vec![Item::assistant("Completed ferritin patient review.")],
+                    receipt: json!({"turn": 3}),
+                    usage: Default::default(),
+                }),
+                other => panic!("unexpected review turn {other}"),
+            }
+        }
+    }
+
+    let mut review_host = PracticeJobHost {
+        store: store.clone(),
+        claim,
+        authority: &auth,
+    };
+    review_host
+        .run(
+            &mut ReviewCreateFollowUpProvider {
+                turn: 0,
+                due_at: due_initial,
+            },
+            engine::RunLimits::default(),
+            &engine::Cancellation::default(),
+        )
+        .await
+        .unwrap();
+
+    // 2. Now run an authorized `PhysicianHost` chat turn using `physician_chat::recipe` and
+    // revise the SAME `fu-prod-ferritin` follow-up via `FOLLOW_UP_TOOL`!
+    let chat_scope = Scope {
+        practice: practice.clone(),
+        physician: physician.physician_id.clone(),
+        workspace: workspace.clone(),
+        chat: "chat-prod-fu-1".into(),
+    };
+    let starting = store.patient_starting_context(&chat_scope).await.unwrap();
+    let recipe = ChatAssignment::for_patient(chat_scope.clone(), starting).recipe(&roles, &skills);
+    let accepted = store
+        .start_chat_authorized(
+            &chat_scope,
+            &Input {
+                key: "chat-fu-cmd-1".into(),
+                text: "Move Nadia's ferritin follow-up out by one more week.".into(),
+                timezone: "America/Los_Angeles".into(),
+                scenario: None,
+            },
+            session_hash.clone(),
+            &skills,
+            &recipe,
+            &mut PostgresWorkspaceAuthority,
+        )
+        .await
+        .unwrap();
+    assert_eq!(accepted, Accepted::New);
+
+    struct ChatReviseFollowUpProvider {
+        turn: usize,
+        due_at: i64,
+    }
+    impl Provider for ChatReviseFollowUpProvider {
+        async fn exchange(
+            &mut self,
+            request: &Request,
+            _: &engine::Cancellation,
+            _: &engine::RunLimits,
+            _: &mut dyn Observer,
+        ) -> Result<Turn, engine::Cause> {
+            self.turn += 1;
+            let tool_names: Vec<&str> = request
+                .tools
+                .iter()
+                .filter_map(|t| t["name"].as_str())
+                .collect();
+            assert!(
+                tool_names.contains(&FOLLOW_UP_TOOL),
+                "physician_chat recipe must offer FOLLOW_UP_TOOL: {tool_names:?}"
+            );
+            match self.turn {
+                1 => Ok(Turn {
+                    items: vec![
+                        Item::Call(Invocation {
+                            id: "chat-read-ferritin".into(),
+                            name: READ_TOOL.into(),
+                            arguments: json!({
+                                "references": [{
+                                    "candidate_id": "Observation/ferritin-1",
+                                    "revision": "rev-1",
+                                    "cursor": null
+                                }],
+                                "max_result_bytes": 16_384
+                            })
+                            .to_string(),
+                        }),
+                        Item::Call(Invocation {
+                            id: "chat-change-fu".into(),
+                            name: FOLLOW_UP_TOOL.into(),
+                            arguments: json!({
+                                "operation": "change",
+                                "follow_up_id": "fu-prod-ferritin",
+                                "summary": "Recheck CBC and ferritin in 3 weeks on oral iron.",
+                                "due_at": self.due_at,
+                                "records": [{"candidate_id": "Observation/ferritin-1", "revision": "rev-1"}],
+                                "note": "Extended by 1 week per physician chat instruction."
+                            })
+                            .to_string(),
+                        }),
+                    ],
+                    receipt: json!({"turn": 1}),
+                    usage: Default::default(),
+                }),
+                2 => {
+                    let fu_out = request
+                        .items
+                        .iter()
+                        .find_map(|item| match item {
+                            Item::MaterializedResult { call_id, output }
+                                if call_id == "chat-change-fu" =>
+                            {
+                                Some(output.as_str())
+                            }
+                            _ => None,
+                        })
+                        .expect("FOLLOW_UP_TOOL result materialized in PhysicianHost");
+                    let parsed: Value = serde_json::from_str(fu_out).unwrap();
+                    assert_eq!(parsed["outcome"], "applied");
+                    assert_eq!(parsed["follow_up"]["version"], 2);
+                    Ok(Turn {
+                        items: vec![Item::assistant(
+                            "Updated the ferritin follow-up to 3 weeks [1].\n\nBasis and limitations: Clinic EHR ferritin result dated 2026-11-10.",
+                        )],
+                        receipt: json!({"turn": 2}),
+                        usage: Default::default(),
+                    })
+                }
+                other => panic!("unexpected chat turn {other}"),
+            }
+        }
+    }
+
+    let chat_claim = store.claim(&chat_scope, 60).await.unwrap().unwrap();
+    let mut chat_host = PhysicianHost {
+        store: store.clone(),
+        claim: chat_claim,
+        authority: PostgresWorkspaceAuthority,
+    };
+    chat_host
+        .run(
+            &mut ChatReviseFollowUpProvider {
+                turn: 0,
+                due_at: due_revised,
+            },
+            engine::RunLimits::default(),
+            &engine::Cancellation::default(),
+        )
+        .await
+        .unwrap();
+    assert_eq!(
+        store.conversation(&chat_scope).await.unwrap().status,
+        WorkStatus::Completed
+    );
+
+    let access = WorkspaceAccess {
+        practice: &practice,
+        physician: &physician.physician_id,
+        workspace: &workspace,
+        session_hash: &session_hash,
+    };
+    let final_items = store
+        .physician_follow_ups(&access, &mut PostgresWorkspaceAuthority)
+        .await
+        .unwrap();
+    assert_eq!(final_items.len(), 1);
+    assert_eq!(final_items[0].id.as_str(), "fu-prod-ferritin");
+    assert_eq!(final_items[0].version, 2);
+
+    let updates = store
+        .physician_follow_up_updates(&access, &mut PostgresWorkspaceAuthority)
+        .await
+        .unwrap();
+    assert_eq!(updates.len(), 2);
+    assert_eq!(updates[0].kind, FollowUpUpdateKind::Created);
+    assert_eq!(updates[1].kind, FollowUpUpdateKind::Changed);
+    assert!(matches!(updates[0].actor, FollowUpActor::CodaWork { .. }));
+    assert!(matches!(updates[1].actor, FollowUpActor::CodaWork { .. }));
 }

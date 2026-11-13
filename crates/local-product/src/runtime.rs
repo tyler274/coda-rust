@@ -1984,6 +1984,7 @@ impl<A: Authority> Product for PhysicianHost<A> {
     fn read_only(&self, name: &str) -> bool {
         crate::physician_chat::read_only(name)
             || crate::initial_understanding::read_only_understanding_tool(name)
+            || crate::attachments::is_document_page_tool(name)
     }
 
     fn read_result(&mut self, id: &str) -> harness::engine::recipe::ToolFuture<Option<String>> {

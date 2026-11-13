@@ -140,6 +140,15 @@ pub enum ConcernError {
     Database(#[from] DbErr),
 }
 
+impl From<super::follow_ups::WithdrawalFenceCheckError> for ConcernError {
+    fn from(err: super::follow_ups::WithdrawalFenceCheckError) -> Self {
+        match err {
+            super::follow_ups::WithdrawalFenceCheckError::Violation(v) => Self::WithdrawnFence(v),
+            super::follow_ups::WithdrawalFenceCheckError::Database(db) => Self::Database(db),
+        }
+    }
+}
+
 fn valid_token(value: &str) -> bool {
     let count = value.chars().count();
     (1..=256).contains(&count) && value.trim() == value && !value.chars().any(char::is_control)

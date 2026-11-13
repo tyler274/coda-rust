@@ -590,6 +590,15 @@ impl ReviewStartingContext {
             }
         }
 
+        for review in &self.prior_reviews {
+            if review.disposition == "withdrawn_boundary" {
+                lines.push(format!(
+                    "Entered-in-error withdrawal boundary: {}",
+                    review.reason
+                ));
+            }
+        }
+
         match &self.memory_standing {
             PatientMemoryStanding::Available { entries } => {
                 if !entries.is_empty() {
@@ -632,12 +641,17 @@ impl ReviewStartingContext {
             }
         }
 
-        if !self.prior_reviews.is_empty() {
+        let clinical_prior_reviews: Vec<&PriorPatientReviewSummary> = self
+            .prior_reviews
+            .iter()
+            .filter(|review| review.disposition != "withdrawn_boundary")
+            .collect();
+        if !clinical_prior_reviews.is_empty() {
             lines.push(
                 "Prior completed patient reviews (use read_patient_reviews to inspect full details):"
                     .to_owned(),
             );
-            for review in &self.prior_reviews {
+            for review in clinical_prior_reviews {
                 let actions = if review.actions.is_empty() {
                     "no durable mutations".to_owned()
                 } else {
@@ -1070,8 +1084,10 @@ pub fn tools() -> Vec<Tool> {
     let mut offered = work_tools();
     offered.push(search_tool());
     offered.push(read_tool(ChartScope::Chat));
+    offered.push(crate::attachments::document_page_tool());
     offered.push(refresh_tool());
     offered.push(concern_tool());
+    offered.push(crate::runtime::follow_ups::follow_up_tool());
     offered.push(patient_memory_tool());
     offered.extend(understanding_tools());
     offered.push(read_patient_reviews_tool());
@@ -1299,8 +1315,10 @@ mod tests {
         for expected in [
             crate::physician_sources::SEARCH_TOOL,
             crate::physician_sources::READ_TOOL,
+            crate::attachments::READ_DOCUMENT_PAGE_TOOL,
             crate::runtime::refresh::REFRESH_TOOL,
             crate::runtime::concerns::CONCERN_TOOL,
+            crate::runtime::follow_ups::FOLLOW_UP_TOOL,
             crate::runtime::chat_operations::PATIENT_MEMORY_TOOL,
             crate::initial_understanding::READ_UNDERSTANDING_TOOL,
             crate::initial_understanding::SAVE_UNDERSTANDING_TOOL,

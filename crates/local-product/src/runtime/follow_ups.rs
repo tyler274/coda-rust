@@ -25,7 +25,7 @@ use super::concerns::{
 };
 use super::entities::{
     command, concern, conversation, patient_memory, patient_understanding,
-    patient_understanding_revision, practice_job,
+    patient_understanding_revision, practice_job, source, source_version,
 };
 use super::{
     Authority, Scope, Store, WorkStatus, control, conversion_error, error, now,
@@ -397,6 +397,26 @@ pub enum FollowUpError {
     Database(#[from] DbErr),
 }
 
+/// Internal error returned by [`check_withdrawal_fence_in_tx`], separating a
+/// substantive wrong-patient fence violation from a database or JSON decode failure
+/// so callers fail closed without hiding persistence errors.
+#[derive(Debug, thiserror::Error)]
+pub(super) enum WithdrawalFenceCheckError {
+    #[error("{0}")]
+    Violation(#[from] WithdrawalFenceViolation),
+    #[error("{0}")]
+    Database(#[from] DbErr),
+}
+
+impl From<WithdrawalFenceCheckError> for FollowUpError {
+    fn from(err: WithdrawalFenceCheckError) -> Self {
+        match err {
+            WithdrawalFenceCheckError::Violation(v) => Self::WithdrawnFence(v),
+            WithdrawalFenceCheckError::Database(db) => Self::Database(db),
+        }
+    }
+}
+
 fn valid_token(value: &str) -> bool {
     let count = value.chars().count();
     (1..=256).contains(&count) && value.trim() == value && !value.chars().any(char::is_control)
@@ -748,7 +768,11 @@ impl FollowUpStanding {
                 CannotRestartAction::NewDate,
                 CannotRestartAction::Cancel,
             ],
-            _ => &[],
+            Self::Active { .. }
+            | Self::Held { .. }
+            | Self::Completed { .. }
+            | Self::Cancelled { .. }
+            | Self::WithdrawnWrongPatient { .. } => &[],
         }
     }
 }
@@ -1490,7 +1514,8 @@ impl WorkspaceWithdrawalBoundary {
 
 /// Single rule owner checking whether a candidate write to durable memory,
 /// patient understanding, concerns, or follow-ups violates a wrong-patient
-/// withdrawal fence in `(practice, workspace)`.
+/// withdrawal fence in `(practice, workspace)`. Fails closed on any database
+/// or stored JSON decoding error.
 pub(super) async fn check_withdrawal_fence_in_tx(
     tx: &impl ConnectionTrait,
     practice: &str,
@@ -1498,20 +1523,25 @@ pub(super) async fn check_withdrawal_fence_in_tx(
     cited_candidates: &[String],
     message_id: Option<&str>,
     work_id: Option<&str>,
-) -> Result<(), WithdrawalFenceViolation> {
+) -> Result<(), WithdrawalFenceCheckError> {
     let rows = source_withdrawal_entity::Entity::find()
         .filter(source_withdrawal_entity::Column::Practice.eq(practice))
         .filter(source_withdrawal_entity::Column::Workspace.eq(workspace))
         .order_by_asc(source_withdrawal_entity::Column::WithdrawalEpoch)
         .all(tx)
-        .await
-        .unwrap_or_default();
+        .await?;
 
     for row in rows {
-        let epoch = u64::try_from(row.withdrawal_epoch).unwrap_or(1);
-        let candidates: Vec<String> = serde_json::from_value(row.candidate_ids).unwrap_or_default();
-        let fenced_works: Vec<String> =
-            serde_json::from_value(row.fenced_work_ids).unwrap_or_default();
+        let epoch = u64::try_from(row.withdrawal_epoch).map_err(conversion_error(
+            "source_withdrawal.withdrawal_epoch",
+            "u64",
+        ))?;
+        let candidates: Vec<String> = serde_json::from_value(row.candidate_ids).map_err(
+            conversion_error("source_withdrawal.candidate_ids", "Vec<String>"),
+        )?;
+        let fenced_works: Vec<String> = serde_json::from_value(row.fenced_work_ids).map_err(
+            conversion_error("source_withdrawal.fenced_work_ids", "Vec<String>"),
+        )?;
 
         if let Some(work) = work_id
             && fenced_works.iter().any(|w| w == work)
@@ -1520,7 +1550,8 @@ pub(super) async fn check_withdrawal_fence_in_tx(
                 work_id: work.to_owned(),
                 withdrawal_id: row.withdrawal_id,
                 withdrawal_epoch: epoch,
-            });
+            }
+            .into());
         }
 
         if let Some(msg) = message_id
@@ -1530,7 +1561,8 @@ pub(super) async fn check_withdrawal_fence_in_tx(
                 message_id: msg.to_owned(),
                 withdrawal_id: row.withdrawal_id,
                 withdrawal_epoch: epoch,
-            });
+            }
+            .into());
         }
 
         for cited in cited_candidates {
@@ -1539,11 +1571,39 @@ pub(super) async fn check_withdrawal_fence_in_tx(
                     candidate_id: cited.clone(),
                     withdrawal_id: row.withdrawal_id,
                     withdrawal_epoch: epoch,
-                });
+                }
+                .into());
             }
         }
     }
 
+    Ok(())
+}
+
+async fn ensure_not_withdrawn_follow_up(
+    tx: &impl ConnectionTrait,
+    practice: &str,
+    workspace: &str,
+    existing: &FollowUp,
+) -> Result<(), FollowUpError> {
+    if let FollowUpStanding::WithdrawnWrongPatient { withdrawal_id, .. } = &existing.standing {
+        let epoch = source_withdrawal_entity::Entity::find_by_id((
+            practice.to_owned(),
+            workspace.to_owned(),
+            withdrawal_id.clone(),
+        ))
+        .one(tx)
+        .await?
+        .and_then(|row| u64::try_from(row.withdrawal_epoch).ok())
+        .unwrap_or(1);
+        return Err(FollowUpError::WithdrawnFence(
+            WithdrawalFenceViolation::WithdrawnItem {
+                item_id: existing.id.to_string(),
+                withdrawal_id: withdrawal_id.clone(),
+                withdrawal_epoch: epoch,
+            },
+        ));
+    }
     Ok(())
 }
 
@@ -1651,17 +1711,7 @@ async fn create_follow_up_in_tx(
             let existing = load_follow_up(tx, &practice, &workspace, &input.id)
                 .await?
                 .ok_or_else(|| error("missing follow-up for accepted create receipt"))?;
-            if let FollowUpStanding::WithdrawnWrongPatient { withdrawal_id, .. } =
-                &existing.standing
-            {
-                return Err(FollowUpError::WithdrawnFence(
-                    WithdrawalFenceViolation::WithdrawnItem {
-                        item_id: existing.id.to_string(),
-                        withdrawal_id: withdrawal_id.clone(),
-                        withdrawal_epoch: 1,
-                    },
-                ));
-            }
+            ensure_not_withdrawn_follow_up(tx, &practice, &workspace, &existing).await?;
             return Ok(FollowUpMutation::Duplicate(existing));
         }
         receipt::Receipt::Different => {
@@ -1798,6 +1848,7 @@ async fn change_follow_up_in_tx(
             let existing = load_follow_up(tx, &practice, &workspace, &input.id)
                 .await?
                 .ok_or_else(|| error("missing follow-up for accepted change receipt"))?;
+            ensure_not_withdrawn_follow_up(tx, &practice, &workspace, &existing).await?;
             return Ok(FollowUpMutation::Duplicate(existing));
         }
         receipt::Receipt::Different => {
@@ -1846,11 +1897,36 @@ async fn change_follow_up_in_tx(
             held_by,
             reason,
         },
-        _ => FollowUpStanding::Active {
+        FollowUpStanding::Active { .. } => FollowUpStanding::Active {
             schedule: FollowUpReviewSchedule::Scheduled {
                 due_at: input.due_at,
             },
         },
+        FollowUpStanding::CannotRestart { .. } => {
+            return Err(FollowUpError::InvalidTransition {
+                id: input.id.clone(),
+                expected: "active_or_held",
+                actual: "cannot_restart",
+            });
+        }
+        FollowUpStanding::Completed { .. } => {
+            return Err(FollowUpError::Terminal {
+                id: input.id.clone(),
+                terminal: "completed",
+            });
+        }
+        FollowUpStanding::Cancelled { .. } => {
+            return Err(FollowUpError::Terminal {
+                id: input.id.clone(),
+                terminal: "cancelled",
+            });
+        }
+        FollowUpStanding::WithdrawnWrongPatient { .. } => {
+            return Err(FollowUpError::Terminal {
+                id: input.id.clone(),
+                terminal: "withdrawn_wrong_patient",
+            });
+        }
     };
 
     let standing_json = serde_json::to_value(&next_standing)
@@ -1986,6 +2062,7 @@ async fn transition_follow_up_in_tx(
             let existing = load_follow_up(tx, &practice, &workspace, id)
                 .await?
                 .ok_or_else(|| error("missing follow-up for accepted transition receipt"))?;
+            ensure_not_withdrawn_follow_up(tx, &practice, &workspace, &existing).await?;
             return Ok(FollowUpMutation::Duplicate(existing));
         }
         receipt::Receipt::Different => {
@@ -2793,11 +2870,20 @@ impl Store {
         else {
             return Ok(None);
         };
-        if let FollowUpStanding::WithdrawnWrongPatient { withdrawal_id, .. } = &follow_up.standing {
-            return Ok(Some(ToolOutcome::refused(format!(
-                "follow-up `{}` was withdrawn as wrong-patient in `{withdrawal_id}` and cannot be restored",
-                follow_up.id
-            ))));
+        match ensure_not_withdrawn_follow_up(
+            &self.db,
+            practice.trim(),
+            workspace.trim(),
+            &follow_up,
+        )
+        .await
+        {
+            Ok(()) => {}
+            Err(FollowUpError::WithdrawnFence(violation)) => {
+                return Ok(Some(ToolOutcome::refused(violation.to_string())));
+            }
+            Err(FollowUpError::Database(db_err)) => return Err(persistence_failure(db_err)),
+            Err(other) => return Ok(Some(ToolOutcome::refused(other.to_string()))),
         }
         Ok(Some(ToolOutcome::Returned(
             json!({
@@ -2809,7 +2895,8 @@ impl Store {
         )))
     }
 
-    /// Reads all follow-ups in `(practice, workspace)` for an authorized physician.
+    /// Reads all clinical follow-ups in `(practice, workspace)` for an authorized
+    /// physician, excluding items held back as wrong-patient entries.
     pub async fn physician_follow_ups(
         &self,
         access: &WorkspaceAccess<'_>,
@@ -2826,15 +2913,23 @@ impl Store {
         let rows = follow_up_entity::Entity::find()
             .filter(follow_up_entity::Column::Practice.eq(&scope.practice))
             .filter(follow_up_entity::Column::Workspace.eq(&scope.workspace))
+            .filter(follow_up_entity::Column::Status.ne("withdrawn_wrong_patient"))
             .order_by_asc(follow_up_entity::Column::DueAt)
             .order_by_asc(follow_up_entity::Column::Id)
             .all(&tx)
             .await?;
         tx.commit().await?;
-        rows.into_iter()
-            .map(decode_follow_up)
-            .collect::<Result<Vec<_>, _>>()
-            .map_err(Into::into)
+        let mut out = Vec::with_capacity(rows.len());
+        for row in rows {
+            let item = decode_follow_up(row)?;
+            if !matches!(
+                item.standing,
+                FollowUpStanding::WithdrawnWrongPatient { .. }
+            ) {
+                out.push(item);
+            }
+        }
+        Ok(out)
     }
 
     /// Reads all follow-ups in `(practice, workspace)` whose current version is due
@@ -2866,8 +2961,9 @@ impl Store {
         Ok(due)
     }
 
-    /// Reads the append-only follow-up `Updates` change log for `(practice, workspace)`
-    /// in ascending `(occurred_at, follow_up_id, version)` order after verifying physician access.
+    /// Reads the physician-facing follow-up `Updates` change log for `(practice, workspace)`
+    /// in ascending `(occurred_at, follow_up_id, version)` order after verifying physician access,
+    /// excluding all change entries belonging to wrong-patient withdrawn follow-ups.
     pub async fn physician_follow_up_updates(
         &self,
         access: &WorkspaceAccess<'_>,
@@ -2881,6 +2977,13 @@ impl Store {
                 return Err(err);
             }
         };
+        let withdrawn_rows = follow_up_entity::Entity::find()
+            .filter(follow_up_entity::Column::Practice.eq(&scope.practice))
+            .filter(follow_up_entity::Column::Workspace.eq(&scope.workspace))
+            .filter(follow_up_entity::Column::Status.eq("withdrawn_wrong_patient"))
+            .all(&tx)
+            .await?;
+        let withdrawn_ids: BTreeSet<String> = withdrawn_rows.into_iter().map(|r| r.id).collect();
         let rows = follow_up_update_entity::Entity::find()
             .filter(follow_up_update_entity::Column::Practice.eq(&scope.practice))
             .filter(follow_up_update_entity::Column::Workspace.eq(&scope.workspace))
@@ -2890,6 +2993,37 @@ impl Store {
             .all(&tx)
             .await?;
         tx.commit().await?;
+        let mut out = Vec::with_capacity(rows.len());
+        for row in rows {
+            if withdrawn_ids.contains(&row.follow_up_id) {
+                continue;
+            }
+            let entry = decode_follow_up_update(row)?;
+            if entry.kind == FollowUpUpdateKind::WithdrawnWrongPatient {
+                continue;
+            }
+            out.push(entry);
+        }
+        Ok(out)
+    }
+
+    /// Reads the full append-only follow-up `Updates` audit log for `(practice, workspace)`,
+    /// including wrong-patient withdrawal entries retained for compliance audit.
+    pub async fn workspace_follow_up_updates_audit(
+        &self,
+        practice: &str,
+        workspace: &str,
+    ) -> Result<Vec<FollowUpUpdateEntry>, FollowUpError> {
+        let practice = validate_non_empty_field("practice", practice)?;
+        let workspace = validate_non_empty_field("workspace", workspace)?;
+        let rows = follow_up_update_entity::Entity::find()
+            .filter(follow_up_update_entity::Column::Practice.eq(practice))
+            .filter(follow_up_update_entity::Column::Workspace.eq(workspace))
+            .order_by_asc(follow_up_update_entity::Column::OccurredAt)
+            .order_by_asc(follow_up_update_entity::Column::FollowUpId)
+            .order_by_asc(follow_up_update_entity::Column::Version)
+            .all(&self.db)
+            .await?;
         rows.into_iter()
             .map(decode_follow_up_update)
             .collect::<Result<Vec<_>, _>>()
@@ -2949,6 +3083,13 @@ impl Store {
             return Err(FollowUpInputError::InvalidField("candidate_ids_or_message_id").into());
         }
 
+        let requested_fenced: BTreeSet<String> = request
+            .fenced_work_ids
+            .iter()
+            .map(|w| w.trim().to_owned())
+            .filter(|w| !w.is_empty())
+            .collect();
+
         let tx = self.db.begin().await?;
 
         if let Some(existing) = source_withdrawal_entity::Entity::find_by_id((
@@ -2960,6 +3101,26 @@ impl Store {
         .one(&tx)
         .await?
         {
+            let existing_candidates: Vec<String> = serde_json::from_value(existing.candidate_ids)
+                .map_err(conversion_error(
+                "source_withdrawal.candidate_ids",
+                "Vec<String>",
+            ))?;
+            let stored_fenced: BTreeSet<String> = serde_json::from_value(existing.fenced_work_ids)
+                .map_err(conversion_error(
+                    "source_withdrawal.fenced_work_ids",
+                    "BTreeSet<String>",
+                ))?;
+            let expected_candidates: Vec<String> = candidate_set.iter().cloned().collect();
+            if existing_candidates != expected_candidates
+                || existing.message_id != message_id
+                || existing.reason != reason_note.as_str()
+                || existing.actor != actor
+                || !requested_fenced.is_subset(&stored_fenced)
+            {
+                tx.rollback().await?;
+                return Err(FollowUpError::IdempotencyCollision { key: withdrawal_id });
+            }
             let saved: SourceWithdrawalReceipt = serde_json::from_value(existing.receipt).map_err(
                 conversion_error("source_withdrawal.receipt", "SourceWithdrawalReceipt"),
             )?;
@@ -2985,12 +3146,7 @@ impl Store {
 
         // Discover any pre-existing active/pending background jobs and active chat works
         // in `(practice, workspace)` so old in-flight runs are automatically fenced.
-        let mut fenced_works: BTreeSet<String> = request
-            .fenced_work_ids
-            .iter()
-            .map(|w| w.trim().to_owned())
-            .filter(|w| !w.is_empty())
-            .collect();
+        let mut fenced_works = requested_fenced;
 
         let active_jobs = practice_job::Entity::find()
             .filter(practice_job::Column::Practice.eq(&practice))
@@ -3358,10 +3514,9 @@ impl Store {
 
             let concern_id = ConcernId::new(row.id.clone())
                 .map_err(conversion_error("concern.id", "ConcernId"))?;
-            let urgency = match row.urgency.as_str() {
-                "now" => super::concerns::ConcernUrgency::Now,
-                _ => super::concerns::ConcernUrgency::Today,
-            };
+            let urgency: super::concerns::ConcernUrgency =
+                serde_json::from_value(Value::String(row.urgency.clone()))
+                    .map_err(conversion_error("concern.urgency", "ConcernUrgency"))?;
             let rev_u64 =
                 u64::try_from(row.revision).map_err(conversion_error("concern.revision", "u64"))?;
             let snapshot = Concern {
@@ -3401,6 +3556,74 @@ impl Store {
                 .exec(&tx)
                 .await?;
             withdrawn_concern_ids.push(concern_id);
+        }
+
+        // 5. Withdraw affected chart source observations in `physician_runtime_sources` by
+        // appending immutable `revision = None` tombstones under the workspace's exclusive
+        // `source_version` lock while keeping all earlier revision rows intact for audit.
+        if !candidate_set.is_empty() {
+            source_version::Entity::insert(source_version::ActiveModel {
+                workspace: Set(workspace.clone()),
+                version: Set(0),
+            })
+            .on_conflict(
+                sea_orm::sea_query::OnConflict::column(source_version::Column::Workspace)
+                    .do_nothing()
+                    .to_owned(),
+            )
+            .exec_without_returning(&tx)
+            .await?;
+
+            let ver_row = source_version::Entity::find_by_id(workspace.clone())
+                .lock_exclusive()
+                .one(&tx)
+                .await?
+                .ok_or_else(|| error("missing source version"))?;
+            let cur_ver = u64::try_from(ver_row.version)
+                .map_err(conversion_error("source_version.version", "u64"))?;
+
+            let cand_list: Vec<String> = candidate_set.iter().cloned().collect();
+            let source_rows = source::Entity::find()
+                .filter(source::Column::Workspace.eq(&workspace))
+                .filter(source::Column::Candidate.is_in(cand_list))
+                .order_by_asc(source::Column::Candidate)
+                .order_by_desc(source::Column::ObservedAtVersion)
+                .all(&tx)
+                .await?;
+
+            let mut latest_by_candidate: BTreeMap<String, bool> = BTreeMap::new();
+            for s_row in source_rows {
+                latest_by_candidate
+                    .entry(s_row.candidate)
+                    .or_insert_with(|| s_row.revision.is_some());
+            }
+            let active_candidates: Vec<String> = latest_by_candidate
+                .into_iter()
+                .filter_map(|(cand, has_revision)| has_revision.then_some(cand))
+                .collect();
+
+            if !active_candidates.is_empty() {
+                let next_ver = cur_ver
+                    .checked_add(1)
+                    .ok_or_else(|| error("source version overflow"))?;
+                let next_ver_i64 = i64::try_from(next_ver)
+                    .map_err(conversion_error("source_version.version", "i64"))?;
+                let tombstones: Vec<source::ActiveModel> = active_candidates
+                    .into_iter()
+                    .map(|cand| source::ActiveModel {
+                        workspace: Set(workspace.clone()),
+                        candidate: Set(cand),
+                        observed_at_version: Set(next_ver_i64),
+                        revision: Set(None),
+                    })
+                    .collect();
+                source::Entity::insert_many(tombstones)
+                    .exec_without_returning(&tx)
+                    .await?;
+                let mut bumped_ver: source_version::ActiveModel = ver_row.into();
+                bumped_ver.version = Set(next_ver_i64);
+                bumped_ver.update(&tx).await?;
+            }
         }
 
         let candidate_vec: Vec<String> = candidate_set.into_iter().collect();

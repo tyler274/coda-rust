@@ -7,10 +7,13 @@
 //! sending protected health information to an external OCR vendor.
 
 use std::collections::BTreeMap;
+use std::io::{Read as _, Write as _};
 use std::time::Instant;
 
 use base64::Engine as _;
+use flate2::{Compression, read::ZlibDecoder, write::ZlibEncoder};
 use harness::engine::{Tool, ToolOutcome};
+use image::codecs::jpeg::JpegEncoder;
 use serde::{Deserialize, Serialize};
 use serde_json::{Value, json};
 
@@ -1371,16 +1374,45 @@ fn parse_pdf_indirect_objects(pdf_bytes: &[u8]) -> Result<BTreeMap<u32, Vec<u8>>
             body_start += 1;
         }
 
-        let Some(rel_end) = find_subslice(&pdf_bytes[body_start..], b"endobj") else {
+        let Some(first_endobj_rel) = find_subslice(&pdf_bytes[body_start..], b"endobj") else {
             return Err(format!("object {obj_id} missing `endobj`"));
         };
-        let mut body_end = body_start + rel_end;
+
+        // Advance past declared `/Length` when `stream` precedes `first_endobj_rel` so
+        // compressed binary bytes inside a stream can never match `endobj` prematurely.
+        let search_end_from = match find_subslice(&pdf_bytes[body_start..], b"stream") {
+            Some(stream_rel) if stream_rel < first_endobj_rel => {
+                let header_text =
+                    String::from_utf8_lossy(&pdf_bytes[body_start..body_start + stream_rel]);
+                let mut data_start = body_start + stream_rel + 6;
+                if pdf_bytes.get(data_start) == Some(&b'\r') {
+                    data_start += 1;
+                }
+                if pdf_bytes.get(data_start) == Some(&b'\n') {
+                    data_start += 1;
+                }
+                match extract_pdf_uint(&header_text, "/Length") {
+                    Some(declared_len)
+                        if data_start.saturating_add(declared_len as usize) <= pdf_bytes.len() =>
+                    {
+                        data_start + declared_len as usize
+                    }
+                    _ => body_start,
+                }
+            }
+            _ => body_start,
+        };
+
+        let Some(rel_end) = find_subslice(&pdf_bytes[search_end_from..], b"endobj") else {
+            return Err(format!("object {obj_id} missing `endobj`"));
+        };
+        let mut body_end = search_end_from + rel_end;
         while body_end > body_start && matches!(pdf_bytes[body_end - 1], b'\n' | b'\r') {
             body_end -= 1;
         }
 
         objects.insert(obj_id, pdf_bytes[body_start..body_end].to_vec());
-        cursor = body_start + rel_end + 6;
+        cursor = search_end_from + rel_end + 6;
     }
 
     if objects.is_empty() {
@@ -1405,7 +1437,7 @@ fn collect_page_object_ids(objects: &BTreeMap<u32, Vec<u8>>) -> Result<Vec<u32>,
         && let Some(pages_body) = objects.get(&pages_id)
     {
         let pages_dict = String::from_utf8_lossy(pages_body);
-        if let Some(kids) = extract_kids_refs(&pages_dict)
+        if let Some(kids) = extract_ref_array(&pages_dict, "/Kids")
             && !kids.is_empty()
         {
             return Ok(kids);
@@ -1422,18 +1454,43 @@ fn collect_page_object_ids(objects: &BTreeMap<u32, Vec<u8>>) -> Result<Vec<u32>,
     Ok(fallback_pages)
 }
 
-fn extract_single_ref(dict_text: &str, key: &str) -> Option<u32> {
+fn extract_pdf_uint(dict_text: &str, key: &str) -> Option<u32> {
     let after_key = dict_text.split_once(key)?.1.trim_start();
-    let num_token = after_key.split_whitespace().next()?;
-    num_token.parse::<u32>().ok()
+    let digits_len = after_key.bytes().take_while(u8::is_ascii_digit).count();
+    if digits_len == 0 {
+        return None;
+    }
+    after_key[..digits_len].parse::<u32>().ok()
 }
 
-fn extract_kids_refs(dict_text: &str) -> Option<Vec<u32>> {
-    let after_kids = dict_text.split_once("/Kids")?.1;
-    let open = after_kids.find('[')?;
-    let close = after_kids[open + 1..].find(']')?;
-    let inner = &after_kids[open + 1..open + 1 + close];
-    let tokens: Vec<&str> = inner.split_whitespace().collect();
+fn extract_single_ref(dict_text: &str, key: &str) -> Option<u32> {
+    let after_key = dict_text.split_once(key)?.1.trim_start();
+    let mut parts = after_key.split_whitespace();
+    let id = parts.next()?.parse::<u32>().ok()?;
+    let generation = parts.next()?;
+    let ref_tok = parts.next()?;
+    if generation == "0"
+        && (ref_tok == "R" || ref_tok.starts_with("R>") || ref_tok.starts_with("R/"))
+    {
+        Some(id)
+    } else {
+        None
+    }
+}
+
+fn extract_ref_array(dict_text: &str, key: &str) -> Option<Vec<u32>> {
+    let after_key = dict_text.split_once(key)?.1.trim_start();
+    if !after_key.starts_with('[') {
+        return None;
+    }
+    let close = after_key[1..].find(']')?;
+    let inner = &after_key[1..1 + close];
+    Some(parse_indirect_refs_in_text(inner))
+}
+
+fn parse_indirect_refs_in_text(text: &str) -> Vec<u32> {
+    let normalized = text.replace(['<', '>', '[', ']', '/'], " ");
+    let tokens: Vec<&str> = normalized.split_whitespace().collect();
     let mut out = Vec::new();
     let mut idx = 0;
     while idx + 2 < tokens.len() {
@@ -1447,7 +1504,104 @@ fn extract_kids_refs(dict_text: &str) -> Option<Vec<u32>> {
         }
         idx += 1;
     }
-    Some(out)
+    out
+}
+
+fn extract_contents_refs(page_dict: &str) -> Vec<u32> {
+    if let Some(arr) = extract_ref_array(page_dict, "/Contents")
+        && !arr.is_empty()
+    {
+        return arr;
+    }
+    extract_single_ref(page_dict, "/Contents")
+        .into_iter()
+        .collect()
+}
+
+fn extract_pdf_filter_names(dict_header: &str) -> Result<Vec<String>, String> {
+    let Some((_, after_filter)) = dict_header.split_once("/Filter") else {
+        return Ok(Vec::new());
+    };
+    let trimmed = after_filter.trim_start();
+    if let Some(inside_brackets) = trimmed.strip_prefix('[') {
+        let Some(close) = inside_brackets.find(']') else {
+            return Err("unclosed `/Filter [` array in stream dictionary".into());
+        };
+        let names: Vec<String> = inside_brackets[..close]
+            .split('/')
+            .skip(1)
+            .map(|seg| {
+                seg.chars()
+                    .take_while(|c| c.is_ascii_alphanumeric())
+                    .collect::<String>()
+            })
+            .filter(|name| !name.is_empty())
+            .collect();
+        if names.is_empty() {
+            return Err("empty `/Filter []` array in stream dictionary".into());
+        }
+        Ok(names)
+    } else if let Some(after_slash) = trimmed.strip_prefix('/') {
+        let name: String = after_slash
+            .chars()
+            .take_while(|c| c.is_ascii_alphanumeric())
+            .collect();
+        if name.is_empty() {
+            return Err("malformed `/Filter` name in stream dictionary".into());
+        }
+        Ok(vec![name])
+    } else {
+        Err("malformed `/Filter` value in stream dictionary".into())
+    }
+}
+
+fn decode_pdf_stream_bytes(dict_header: &str, raw_bytes: &[u8]) -> Result<Vec<u8>, String> {
+    let filters = extract_pdf_filter_names(dict_header)?;
+    if filters.is_empty() {
+        return Ok(raw_bytes.to_vec());
+    }
+    let mut current = raw_bytes.to_vec();
+    for filter in filters {
+        match filter.as_str() {
+            "FlateDecode" => {
+                let mut inflated = Vec::new();
+                ZlibDecoder::new(current.as_slice())
+                    .read_to_end(&mut inflated)
+                    .map_err(|err| format!("corrupted FlateDecode stream: {err}"))?;
+                current = inflated;
+            }
+            other => {
+                return Err(format!("unsupported or corrupted stream filter `{other}`"));
+            }
+        }
+    }
+    Ok(current)
+}
+
+fn collect_page_xobject_ids(page_dict: &str, objects: &BTreeMap<u32, Vec<u8>>) -> Vec<u32> {
+    let resources_cow: String = if let Some(res_id) = extract_single_ref(page_dict, "/Resources")
+        && let Some(res_body) = objects.get(&res_id)
+    {
+        String::from_utf8_lossy(res_body).into_owned()
+    } else {
+        page_dict.to_owned()
+    };
+
+    let Some((_, after_xobj)) = resources_cow.split_once("/XObject") else {
+        return Vec::new();
+    };
+    let trimmed = after_xobj.trim_start();
+    if let Some(xobj_dict_id) = extract_single_ref(&resources_cow, "/XObject")
+        && let Some(xobj_body) = objects.get(&xobj_dict_id)
+    {
+        return parse_indirect_refs_in_text(&String::from_utf8_lossy(xobj_body));
+    }
+    if let Some(after_open) = trimmed.strip_prefix("<<")
+        && let Some(close) = after_open.find(">>")
+    {
+        return parse_indirect_refs_in_text(&after_open[..close]);
+    }
+    Vec::new()
 }
 
 fn decode_single_pdf_page(
@@ -1468,49 +1622,58 @@ fn decode_single_pdf_page(
         });
     };
     let page_dict = String::from_utf8_lossy(page_body);
-    let Some(contents_id) = extract_single_ref(&page_dict, "/Contents") else {
+    let contents_ids = extract_contents_refs(&page_dict);
+    if contents_ids.is_empty() {
         return Err(AttachmentReadFailure::CorruptedPage {
             document_id: document_id.to_owned(),
             version,
             page_number,
             reason: "page dictionary is missing `/Contents` reference".into(),
         });
-    };
-    let Some(contents_body) = objects.get(&contents_id) else {
-        return Err(AttachmentReadFailure::CorruptedPage {
-            document_id: document_id.to_owned(),
-            version,
-            page_number,
-            reason: format!("missing page contents stream `{contents_id} 0 obj`"),
-        });
-    };
-
-    let (dict_header, stream_bytes) =
-        split_pdf_stream(contents_body).map_err(|reason| AttachmentReadFailure::CorruptedPage {
-            document_id: document_id.to_owned(),
-            version,
-            page_number,
-            reason,
-        })?;
-
-    if dict_header.contains("/Filter") && !dict_header.contains("/ASCIIBase64PngScan") {
-        return Err(AttachmentReadFailure::CorruptedPage {
-            document_id: document_id.to_owned(),
-            version,
-            page_number,
-            reason: format!("unsupported or corrupted stream filter in `{dict_header}`"),
-        });
     }
 
-    let stream_text =
-        std::str::from_utf8(stream_bytes).map_err(|err| AttachmentReadFailure::CorruptedPage {
-            document_id: document_id.to_owned(),
-            version,
-            page_number,
-            reason: format!("corrupted content stream bytes: {err}"),
+    let mut combined_content_text = String::new();
+    for contents_id in contents_ids {
+        let Some(contents_body) = objects.get(&contents_id) else {
+            return Err(AttachmentReadFailure::CorruptedPage {
+                document_id: document_id.to_owned(),
+                version,
+                page_number,
+                reason: format!("missing page contents stream `{contents_id} 0 obj`"),
+            });
+        };
+        let (dict_header, raw_stream) = split_pdf_stream(contents_body).map_err(|reason| {
+            AttachmentReadFailure::CorruptedPage {
+                document_id: document_id.to_owned(),
+                version,
+                page_number,
+                reason,
+            }
         })?;
+        let decoded_bytes =
+            decode_pdf_stream_bytes(&dict_header, raw_stream).map_err(|reason| {
+                AttachmentReadFailure::CorruptedPage {
+                    document_id: document_id.to_owned(),
+                    version,
+                    page_number,
+                    reason,
+                }
+            })?;
+        let chunk_text = std::str::from_utf8(&decoded_bytes).map_err(|err| {
+            AttachmentReadFailure::CorruptedPage {
+                document_id: document_id.to_owned(),
+                version,
+                page_number,
+                reason: format!("corrupted content stream UTF-8 operators: {err}"),
+            }
+        })?;
+        if !combined_content_text.is_empty() && !combined_content_text.ends_with('\n') {
+            combined_content_text.push('\n');
+        }
+        combined_content_text.push_str(chunk_text);
+    }
 
-    let native_lines = extract_pdf_text_operators(stream_text);
+    let native_lines = extract_pdf_text_operators(&combined_content_text);
     if !native_lines.is_empty() {
         let joined = native_lines.join("\n");
         return Ok(DocumentPage {
@@ -1524,33 +1687,142 @@ fn decode_single_pdf_page(
         });
     }
 
-    if policy == PdfExtractionPolicy::HybridTextAndLocalRasterOcr
-        && let Some(inline_b64) = extract_inline_png_scan_base64(stream_text)
-    {
-        let png_bytes = base64::engine::general_purpose::STANDARD
-            .decode(inline_b64.trim())
-            .map_err(|err| AttachmentReadFailure::CorruptedPage {
-                document_id: document_id.to_owned(),
-                version,
-                page_number,
-                reason: format!("corrupted inline scan base64: {err}"),
+    if policy == PdfExtractionPolicy::HybridTextAndLocalRasterOcr {
+        let xobject_ids = collect_page_xobject_ids(&page_dict, objects);
+        let mut ocr_blocks = Vec::new();
+        for xobj_id in xobject_ids {
+            let Some(xobj_body) = objects.get(&xobj_id) else {
+                return Err(AttachmentReadFailure::CorruptedPage {
+                    document_id: document_id.to_owned(),
+                    version,
+                    page_number,
+                    reason: format!("missing image XObject `{xobj_id} 0 obj`"),
+                });
+            };
+            let (xobj_header, xobj_stream) = split_pdf_stream(xobj_body).map_err(|reason| {
+                AttachmentReadFailure::CorruptedPage {
+                    document_id: document_id.to_owned(),
+                    version,
+                    page_number,
+                    reason,
+                }
             })?;
-        let (width, height, pixels) = decode_grayscale_or_rgb_png(document_id, &png_bytes)
-            .map_err(|err| AttachmentReadFailure::CorruptedPage {
-                document_id: document_id.to_owned(),
-                version,
-                page_number,
-                reason: err.to_string(),
+            if !xobj_header.contains("/Image") {
+                continue;
+            }
+            let filters = extract_pdf_filter_names(&xobj_header).map_err(|reason| {
+                AttachmentReadFailure::CorruptedPage {
+                    document_id: document_id.to_owned(),
+                    version,
+                    page_number,
+                    reason,
+                }
             })?;
-        let ocr_text = ocr_5x7_grayscale_grid(width as usize, height as usize, &pixels);
-        if !ocr_text.trim().is_empty() {
+
+            let (width, height, grayscale) = if filters.as_slice() == ["DCTDecode"] {
+                let decoded_img =
+                    image::load_from_memory_with_format(xobj_stream, image::ImageFormat::Jpeg)
+                        .map_err(|err| AttachmentReadFailure::CorruptedPage {
+                            document_id: document_id.to_owned(),
+                            version,
+                            page_number,
+                            reason: format!("corrupted DCTDecode JPEG image XObject: {err}"),
+                        })?;
+                let luma = decoded_img.to_luma8();
+                (
+                    decoded_img.width() as usize,
+                    decoded_img.height() as usize,
+                    luma.into_raw(),
+                )
+            } else {
+                let raw_pixels =
+                    decode_pdf_stream_bytes(&xobj_header, xobj_stream).map_err(|reason| {
+                        AttachmentReadFailure::CorruptedPage {
+                            document_id: document_id.to_owned(),
+                            version,
+                            page_number,
+                            reason,
+                        }
+                    })?;
+                let Some(width) = extract_pdf_uint(&xobj_header, "/Width").filter(|&w| w > 0)
+                else {
+                    return Err(AttachmentReadFailure::CorruptedPage {
+                        document_id: document_id.to_owned(),
+                        version,
+                        page_number,
+                        reason: "image XObject missing positive `/Width`".into(),
+                    });
+                };
+                let Some(height) = extract_pdf_uint(&xobj_header, "/Height").filter(|&h| h > 0)
+                else {
+                    return Err(AttachmentReadFailure::CorruptedPage {
+                        document_id: document_id.to_owned(),
+                        version,
+                        page_number,
+                        reason: "image XObject missing positive `/Height`".into(),
+                    });
+                };
+                let w = width as usize;
+                let h = height as usize;
+                let channels = if xobj_header.contains("/DeviceRGB") {
+                    3_usize
+                } else if xobj_header.contains("/DeviceGray")
+                    || !xobj_header.contains("/ColorSpace")
+                {
+                    1_usize
+                } else {
+                    return Err(AttachmentReadFailure::CorruptedPage {
+                        document_id: document_id.to_owned(),
+                        version,
+                        page_number,
+                        reason: format!(
+                            "unsupported image XObject `/ColorSpace` in `{xobj_header}`"
+                        ),
+                    });
+                };
+                let expected_len = w.saturating_mul(h).saturating_mul(channels);
+                if raw_pixels.len() != expected_len {
+                    return Err(AttachmentReadFailure::CorruptedPage {
+                        document_id: document_id.to_owned(),
+                        version,
+                        page_number,
+                        reason: format!(
+                            "image XObject pixel byte count mismatch (expected {expected_len}, got {})",
+                            raw_pixels.len()
+                        ),
+                    });
+                }
+                let gray = if channels == 1 {
+                    raw_pixels
+                } else {
+                    raw_pixels
+                        .as_chunks::<3>()
+                        .0
+                        .iter()
+                        .map(|&[r, g, b]| {
+                            ((u16::from(r) * 77 + u16::from(g) * 150 + u16::from(b) * 29) >> 8)
+                                as u8
+                        })
+                        .collect()
+                };
+                (w, h, gray)
+            };
+
+            let ocr_text = ocr_5x7_grayscale_grid(width, height, &grayscale);
+            if !ocr_text.trim().is_empty() {
+                ocr_blocks.push(ocr_text);
+            }
+        }
+
+        if !ocr_blocks.is_empty() {
+            let joined = ocr_blocks.join("\n");
             return Ok(DocumentPage {
                 document_id: document_id.to_owned(),
                 version,
                 page_number,
                 page_count,
-                page_sha256: sha256_hex(ocr_text.as_bytes()),
-                text: ocr_text,
+                page_sha256: sha256_hex(joined.as_bytes()),
+                text: joined,
                 extraction_method: PageExtractionMethod::LocalRasterOcr,
             });
         }
@@ -1576,15 +1848,25 @@ fn split_pdf_stream(contents_body: &[u8]) -> Result<(String, &[u8]), String> {
     if contents_body.get(data_start) == Some(&b'\n') {
         data_start += 1;
     }
+
+    if let Some(declared_len) = extract_pdf_uint(&header, "/Length") {
+        let declared_end = data_start.saturating_add(declared_len as usize);
+        if declared_end <= contents_body.len()
+            && find_subslice(&contents_body[declared_end..], b"endstream").is_some()
+        {
+            return Ok((header, &contents_body[data_start..declared_end]));
+        }
+    }
+
     let Some(rel_end) = find_subslice(&contents_body[data_start..], b"endstream") else {
         return Err("missing `endstream` keyword in content object".into());
     };
     let mut data_end = data_start + rel_end;
     if data_end > data_start && contents_body[data_end - 1] == b'\n' {
         data_end -= 1;
-    }
-    if data_end > data_start && contents_body[data_end - 1] == b'\r' {
-        data_end -= 1;
+        if data_end > data_start && contents_body[data_end - 1] == b'\r' {
+            data_end -= 1;
+        }
     }
     Ok((header, &contents_body[data_start..data_end]))
 }
@@ -1651,15 +1933,6 @@ fn unescape_pdf_literal(inner: &str) -> String {
     out
 }
 
-fn extract_inline_png_scan_base64(stream_text: &str) -> Option<&str> {
-    if !stream_text.contains("/ASCIIBase64PngScan") {
-        return None;
-    }
-    let after_id = stream_text.split_once("\nID\n")?.1;
-    let before_ei = after_id.split_once("\nEI")?.0;
-    Some(before_ei.trim())
-}
-
 fn find_subslice(haystack: &[u8], needle: &[u8]) -> Option<usize> {
     if needle.is_empty() || haystack.len() < needle.len() {
         return None;
@@ -1667,8 +1940,9 @@ fn find_subslice(haystack: &[u8], needle: &[u8]) -> Option<usize> {
     haystack.windows(needle.len()).position(|w| w == needle)
 }
 
-/// Validates an RFC-2083 PNG byte stream (signature, `IHDR`, chunk CRCs, stored
-/// zlib `IDAT`, Adler-32, and `IEND`) and returns `(width, height, grayscale_pixels)`.
+/// Validates an RFC-2083 PNG byte stream (signature, chunk framing, IEEE CRC-32 on every
+/// chunk, `IHDR`, deflate `IDAT` across all filter/interlace/color modes, and `IEND`)
+/// and returns `(width, height, grayscale_pixels)`.
 fn decode_grayscale_or_rgb_png(
     subject: &str,
     bytes: &[u8],
@@ -1683,8 +1957,8 @@ fn decode_grayscale_or_rgb_png(
     }
 
     let mut pos = 8_usize;
-    let mut ihdr: Option<(u32, u32, u8, u8)> = None;
-    let mut idat = Vec::new();
+    let mut saw_ihdr = false;
+    let mut saw_idat = false;
     let mut saw_iend = false;
 
     while pos + 12 <= bytes.len() {
@@ -1736,18 +2010,20 @@ fn decode_grayscale_or_rgb_png(
                 }
                 let width = u32::from_be_bytes([data[0], data[1], data[2], data[3]]);
                 let height = u32::from_be_bytes([data[4], data[5], data[6], data[7]]);
-                let bit_depth = data[8];
-                let color_type = data[9];
-                if width == 0 || height == 0 || bit_depth != 8 || !matches!(color_type, 0 | 2 | 6) {
+                if width == 0 || height == 0 {
                     return Err(AttachmentReadFailure::CorruptedImage {
                         subject: subject.to_owned(),
                         format: "image/png".into(),
-                        reason: "unsupported or zero-dimension PNG IHDR".into(),
+                        reason: "zero-dimension PNG IHDR".into(),
                     });
                 }
-                ihdr = Some((width, height, bit_depth, color_type));
+                saw_ihdr = true;
             }
-            b"IDAT" => idat.extend_from_slice(data),
+            b"IDAT" => {
+                if !data.is_empty() {
+                    saw_idat = true;
+                }
+            }
             b"IEND" => {
                 saw_iend = true;
                 break;
@@ -1758,74 +2034,24 @@ fn decode_grayscale_or_rgb_png(
         pos = data_end + 4;
     }
 
-    let Some((width, height, _, color_type)) = ihdr else {
+    if !saw_ihdr || !saw_idat || !saw_iend {
         return Err(AttachmentReadFailure::CorruptedImage {
             subject: subject.to_owned(),
             format: "image/png".into(),
-            reason: "missing IHDR chunk".into(),
-        });
-    };
-    if !saw_iend || idat.is_empty() {
-        return Err(AttachmentReadFailure::CorruptedImage {
-            subject: subject.to_owned(),
-            format: "image/png".into(),
-            reason: "missing IDAT or IEND chunk".into(),
+            reason: "missing IHDR, IDAT, or IEND chunk".into(),
         });
     }
 
-    let channels: usize = match color_type {
-        0 => 1,
-        2 => 3,
-        6 => 4,
-        _ => 1,
-    };
-    let w = width as usize;
-    let h = height as usize;
-    let expected_scanlines = h * (1 + w * channels);
-
-    let inflated =
-        zlib_inflate_stored(&idat).map_err(|reason| AttachmentReadFailure::CorruptedImage {
-            subject: subject.to_owned(),
-            format: "image/png".into(),
-            reason,
-        })?;
-    if inflated.len() != expected_scanlines {
-        return Err(AttachmentReadFailure::CorruptedImage {
-            subject: subject.to_owned(),
-            format: "image/png".into(),
-            reason: format!(
-                "scanline byte count mismatch (expected {expected_scanlines}, got {})",
-                inflated.len()
-            ),
-        });
-    }
-
-    let mut grayscale = Vec::with_capacity(w * h);
-    let stride = 1 + w * channels;
-    for row in 0..h {
-        let row_bytes = &inflated[row * stride..(row + 1) * stride];
-        if row_bytes[0] != 0 {
-            return Err(AttachmentReadFailure::CorruptedImage {
+    let decoded =
+        image::load_from_memory_with_format(bytes, image::ImageFormat::Png).map_err(|err| {
+            AttachmentReadFailure::CorruptedImage {
                 subject: subject.to_owned(),
                 format: "image/png".into(),
-                reason: format!("unsupported PNG scanline filter `{}`", row_bytes[0]),
-            });
-        }
-        for col in 0..w {
-            let px_offset = 1 + col * channels;
-            let lum = if channels == 1 {
-                row_bytes[px_offset]
-            } else {
-                let r = u16::from(row_bytes[px_offset]);
-                let g = u16::from(row_bytes[px_offset + 1]);
-                let b = u16::from(row_bytes[px_offset + 2]);
-                ((r * 77 + g * 150 + b * 29) >> 8) as u8
-            };
-            grayscale.push(lum);
-        }
-    }
-
-    Ok((width, height, grayscale))
+                reason: format!("PNG image decode failed: {err}"),
+            }
+        })?;
+    let luma = decoded.to_luma8();
+    Ok((decoded.width(), decoded.height(), luma.into_raw()))
 }
 
 fn validate_and_decode_jpeg(
@@ -1847,147 +2073,27 @@ fn validate_and_decode_jpeg(
         });
     }
 
-    let mut pos = 2_usize;
-    let mut dimensions: Option<(u32, u32)> = None;
-    let mut raster_b64 = String::new();
-
-    while pos + 4 <= bytes.len() {
-        if bytes[pos] != 0xFF {
-            return Err(AttachmentReadFailure::CorruptedImage {
+    let decoded =
+        image::load_from_memory_with_format(bytes, image::ImageFormat::Jpeg).map_err(|err| {
+            AttachmentReadFailure::CorruptedImage {
                 subject: subject.to_owned(),
                 format: "image/jpeg".into(),
-                reason: format!("invalid JPEG marker prefix at byte {pos}"),
-            });
-        }
-        let marker = bytes[pos + 1];
-        if marker == 0xD9 {
-            break;
-        }
-        if marker == 0xD8 || (0xD0..=0xD7).contains(&marker) {
-            pos += 2;
-            continue;
-        }
-        let seg_len = u16::from_be_bytes([bytes[pos + 2], bytes[pos + 3]]) as usize;
-        if seg_len < 2 || pos + 2 + seg_len > bytes.len() {
-            return Err(AttachmentReadFailure::CorruptedImage {
-                subject: subject.to_owned(),
-                format: "image/jpeg".into(),
-                reason: "truncated JPEG marker segment".into(),
-            });
-        }
-        let payload = &bytes[pos + 4..pos + 2 + seg_len];
-        if matches!(marker, 0xC0 | 0xC2) {
-            if payload.len() < 5 {
-                return Err(AttachmentReadFailure::CorruptedImage {
-                    subject: subject.to_owned(),
-                    format: "image/jpeg".into(),
-                    reason: "truncated JPEG SOF segment".into(),
-                });
+                reason: format!("JPEG DCT/Huffman decode failed: {err}"),
             }
-            let h = u32::from(u16::from_be_bytes([payload[1], payload[2]]));
-            let w = u32::from(u16::from_be_bytes([payload[3], payload[4]]));
-            if w == 0 || h == 0 {
-                return Err(AttachmentReadFailure::CorruptedImage {
-                    subject: subject.to_owned(),
-                    format: "image/jpeg".into(),
-                    reason: "JPEG SOF has zero width or height".into(),
-                });
-            }
-            dimensions = Some((w, h));
-        } else if marker == 0xE2
-            && let Ok(text) = std::str::from_utf8(payload)
-        {
-            if let Some(rest) = text.strip_prefix("CODA_RASTER_PNG:") {
-                raster_b64.push_str(rest);
-            } else if !raster_b64.is_empty() {
-                raster_b64.push_str(text);
-            }
-        } else if marker == 0xDA {
-            break;
-        }
-        pos += 2 + seg_len;
-    }
-
-    let Some((width, height)) = dimensions else {
+        })?;
+    let width = decoded.width();
+    let height = decoded.height();
+    if width == 0 || height == 0 {
         return Err(AttachmentReadFailure::CorruptedImage {
             subject: subject.to_owned(),
             format: "image/jpeg".into(),
-            reason: "missing JPEG SOF0/SOF2 frame header".into(),
+            reason: "JPEG frame has zero width or height".into(),
         });
-    };
-
-    let mut extracted_text = String::new();
-    if !raster_b64.is_empty() {
-        let png_bytes = base64::engine::general_purpose::STANDARD
-            .decode(raster_b64.trim())
-            .map_err(|err| AttachmentReadFailure::CorruptedImage {
-                subject: subject.to_owned(),
-                format: "image/jpeg".into(),
-                reason: format!("corrupted embedded raster band: {err}"),
-            })?;
-        let (rw, rh, pixels) = decode_grayscale_or_rgb_png(subject, &png_bytes)?;
-        extracted_text = ocr_5x7_grayscale_grid(rw as usize, rh as usize, &pixels);
     }
 
+    let luma = decoded.to_luma8();
+    let extracted_text = ocr_5x7_grayscale_grid(width as usize, height as usize, luma.as_raw());
     Ok((width, height, extracted_text))
-}
-
-fn zlib_inflate_stored(zlib_bytes: &[u8]) -> Result<Vec<u8>, String> {
-    if zlib_bytes.len() < 6 {
-        return Err("zlib stream shorter than 6 bytes".into());
-    }
-    let cmf = zlib_bytes[0];
-    let flg = zlib_bytes[1];
-    if (cmf & 0x0F) != 8 || ((u16::from(cmf) * 256 + u16::from(flg)) % 31) != 0 {
-        return Err("invalid zlib header check bits".into());
-    }
-
-    let mut pos = 2_usize;
-    let payload_end = zlib_bytes.len() - 4;
-    let mut out = Vec::new();
-    let mut saw_final = false;
-
-    while pos < payload_end {
-        let header = zlib_bytes[pos];
-        let is_final = (header & 0x01) != 0;
-        let btype = (header >> 1) & 0x03;
-        if btype != 0 {
-            return Err(format!("unsupported deflate block type {btype}"));
-        }
-        if pos + 5 > payload_end {
-            return Err("truncated deflate stored block header".into());
-        }
-        let len = u16::from_le_bytes([zlib_bytes[pos + 1], zlib_bytes[pos + 2]]);
-        let nlen = u16::from_le_bytes([zlib_bytes[pos + 3], zlib_bytes[pos + 4]]);
-        if len != !nlen {
-            return Err("deflate stored block LEN/NLEN complement mismatch".into());
-        }
-        let block_start = pos + 5;
-        let block_end = block_start + usize::from(len);
-        if block_end > payload_end {
-            return Err("truncated deflate stored block payload".into());
-        }
-        out.extend_from_slice(&zlib_bytes[block_start..block_end]);
-        pos = block_end;
-        if is_final {
-            saw_final = true;
-            break;
-        }
-    }
-
-    if !saw_final {
-        return Err("missing final deflate block".into());
-    }
-    let expected_adler = u32::from_be_bytes([
-        zlib_bytes[payload_end],
-        zlib_bytes[payload_end + 1],
-        zlib_bytes[payload_end + 2],
-        zlib_bytes[payload_end + 3],
-    ]);
-    if adler32(&out) != expected_adler {
-        return Err("zlib Adler-32 checksum mismatch".into());
-    }
-    Ok(out)
 }
 
 /// Adaptive grayscale glyph recognizer matching the 5x7 clinical label raster grid
@@ -2213,9 +2319,7 @@ fn glyph_bitmap_5x7(ch: char) -> [u8; 7] {
     }
 }
 
-/// Renders uppercase/digit/punctuation lines into a valid RFC-2083 8-bit grayscale
-/// PNG image for synthetic attachment, scan, and benchmark tests.
-pub fn render_synthetic_clinical_png(lines: &[&str], noisy_scan: bool) -> Vec<u8> {
+fn render_synthetic_grayscale_grid(lines: &[&str], noisy_scan: bool) -> (u32, u32, Vec<u8>) {
     const MARGIN_X: usize = 6;
     const MARGIN_Y: usize = 6;
     const CELL_W: usize = 6;
@@ -2258,99 +2362,129 @@ pub fn render_synthetic_clinical_png(lines: &[&str], noisy_scan: bool) -> Vec<u8
         }
     }
 
-    let mut raw_scanlines = Vec::with_capacity(height * (width + 1));
-    for row in 0..height {
-        raw_scanlines.push(0_u8);
-        raw_scanlines.extend_from_slice(&pixels[row * width..(row + 1) * width]);
-    }
-    let zlib_data = zlib_store(&raw_scanlines);
+    (
+        u32::try_from(width).expect("grid width fits u32"),
+        u32::try_from(height).expect("grid height fits u32"),
+        pixels,
+    )
+}
 
-    let mut out = Vec::with_capacity(64 + zlib_data.len());
-    out.extend_from_slice(b"\x89PNG\r\n\x1a\n");
-    let mut ihdr = Vec::with_capacity(13);
-    ihdr.extend_from_slice(&(width as u32).to_be_bytes());
-    ihdr.extend_from_slice(&(height as u32).to_be_bytes());
-    ihdr.extend_from_slice(&[8, 0, 0, 0, 0]);
-    write_png_chunk(&mut out, b"IHDR", &ihdr);
-    write_png_chunk(&mut out, b"IDAT", &zlib_data);
-    write_png_chunk(&mut out, b"IEND", &[]);
+/// Renders uppercase/digit/punctuation lines into a deflate-compressed RFC-2083 8-bit
+/// grayscale PNG image using Paeth scanline filtering.
+pub fn render_synthetic_clinical_png(lines: &[&str], noisy_scan: bool) -> Vec<u8> {
+    let (width, height, pixels) = render_synthetic_grayscale_grid(lines, noisy_scan);
+    let mut out = Vec::new();
+    {
+        let mut encoder = png::Encoder::new(&mut out, width, height);
+        encoder.set_color(png::ColorType::Grayscale);
+        encoder.set_depth(png::BitDepth::Eight);
+        encoder.set_compression(png::Compression::Balanced);
+        encoder.set_filter(png::Filter::Paeth);
+        let mut writer = encoder.write_header().expect("valid PNG header");
+        writer
+            .write_image_data(&pixels)
+            .expect("valid PNG image data");
+    }
     out
 }
 
-/// Renders uppercase/digit/punctuation lines into a valid baseline JFIF/JPEG image
-/// for synthetic Spruce photo attachment tests.
+/// Renders uppercase/digit/punctuation lines into a deflate-compressed 24-bit RGB PNG
+/// image for color-type qualification tests.
+pub fn render_synthetic_clinical_rgb_png(lines: &[&str], noisy_scan: bool) -> Vec<u8> {
+    let (width, height, luma) = render_synthetic_grayscale_grid(lines, noisy_scan);
+    let mut rgb = Vec::with_capacity(luma.len() * 3);
+    for px in luma {
+        rgb.extend_from_slice(&[px, px, px]);
+    }
+    let mut out = Vec::new();
+    {
+        let mut encoder = png::Encoder::new(&mut out, width, height);
+        encoder.set_color(png::ColorType::Rgb);
+        encoder.set_depth(png::BitDepth::Eight);
+        encoder.set_compression(png::Compression::Balanced);
+        encoder.set_filter(png::Filter::Sub);
+        let mut writer = encoder.write_header().expect("valid RGB PNG header");
+        writer
+            .write_image_data(&rgb)
+            .expect("valid RGB PNG image data");
+    }
+    out
+}
+
+/// Renders uppercase/digit/punctuation lines into a standard ISO/IEC 10918-1 baseline
+/// DCT/Huffman grayscale JPEG image for synthetic Spruce photo attachment tests.
 pub fn render_synthetic_clinical_jpeg(lines: &[&str], noisy_scan: bool) -> Vec<u8> {
-    let png = render_synthetic_clinical_png(lines, noisy_scan);
-    let width =
-        u16::try_from(u32::from_be_bytes([png[16], png[17], png[18], png[19]])).unwrap_or(160);
-    let height =
-        u16::try_from(u32::from_be_bytes([png[20], png[21], png[22], png[23]])).unwrap_or(64);
-
-    let mut out = Vec::with_capacity(256 + png.len() * 2);
-    out.extend_from_slice(&[0xFF, 0xD8]);
-    out.extend_from_slice(&[
-        0xFF, 0xE0, 0x00, 0x10, b'J', b'F', b'I', b'F', 0x00, 0x01, 0x01, 0x01, 0x00, 0x48, 0x00,
-        0x48, 0x00, 0x00,
-    ]);
-    out.extend_from_slice(&[0xFF, 0xDB, 0x00, 0x43, 0x00]);
-    out.extend_from_slice(&[16_u8; 64]);
-    out.extend_from_slice(&[0xFF, 0xC0, 0x00, 0x0B, 0x08]);
-    out.extend_from_slice(&height.to_be_bytes());
-    out.extend_from_slice(&width.to_be_bytes());
-    out.extend_from_slice(&[0x01, 0x01, 0x11, 0x00]);
-    let encoded_raster = base64::engine::general_purpose::STANDARD.encode(&png);
-    let mut app2 = b"CODA_RASTER_PNG:".to_vec();
-    app2.extend_from_slice(encoded_raster.as_bytes());
-    for chunk in app2.chunks(60_000) {
-        let seg_len = u16::try_from(chunk.len() + 2).expect("segment fits u16");
-        out.extend_from_slice(&[0xFF, 0xE2]);
-        out.extend_from_slice(&seg_len.to_be_bytes());
-        out.extend_from_slice(chunk);
-    }
-    out.extend_from_slice(&[
-        0xFF, 0xDA, 0x00, 0x08, 0x01, 0x01, 0x00, 0x00, 0x3F, 0x00, 0x7F,
-    ]);
-    out.extend_from_slice(&[0xFF, 0xD9]);
+    let (width, height, pixels) = render_synthetic_grayscale_grid(lines, noisy_scan);
+    let mut out = Vec::new();
+    JpegEncoder::new_with_quality(&mut out, 98)
+        .encode(&pixels, width, height, image::ExtendedColorType::L8)
+        .expect("valid baseline JPEG encode");
     out
 }
 
-/// Builds a valid multi-page PDF-1.4 document from `(lines, is_raster_scan, is_noisy)`
-/// page tuples for qualification and benchmark runs.
+fn zlib_compress(raw: &[u8]) -> Vec<u8> {
+    let mut encoder = ZlibEncoder::new(Vec::new(), Compression::default());
+    encoder.write_all(raw).expect("in-memory zlib write");
+    encoder.finish().expect("in-memory zlib finish")
+}
+
+fn build_flate_stream_obj(extra_dict: &str, raw_stream: &[u8]) -> Vec<u8> {
+    let compressed = zlib_compress(raw_stream);
+    let header = if extra_dict.trim().is_empty() {
+        format!(
+            "<< /Filter /FlateDecode /Length {} >>\nstream\n",
+            compressed.len()
+        )
+    } else {
+        format!(
+            "<< {} /Filter /FlateDecode /Length {} >>\nstream\n",
+            extra_dict.trim(),
+            compressed.len()
+        )
+    };
+    let mut obj = header.into_bytes();
+    obj.extend_from_slice(&compressed);
+    obj.extend_from_slice(b"\nendstream");
+    obj
+}
+
+/// Builds a valid multi-page PDF-1.4 document with `/FlateDecode` compressed streams
+/// and `/Subtype /Image` XObjects from `(lines, is_raster_scan, is_noisy)` page tuples.
 pub fn build_test_pdf(pages: &[(Vec<String>, bool, bool)]) -> Vec<u8> {
     let page_count = pages.len();
-    let mut bodies: Vec<Vec<u8>> = Vec::with_capacity(3 + page_count * 2);
+    let mut bodies: Vec<Vec<u8>> = Vec::with_capacity(3 + page_count * 3);
     bodies.push(b"<< /Type /Catalog /Pages 2 0 R >>".to_vec());
-    let kids: Vec<String> = (0..page_count)
-        .map(|i| format!("{} 0 R", 4 + i * 2))
-        .collect();
-    bodies.push(
-        format!(
-            "<< /Type /Pages /Kids [{}] /Count {} >>",
-            kids.join(" "),
-            page_count
-        )
-        .into_bytes(),
-    );
+    bodies.push(Vec::new());
     bodies.push(b"<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>".to_vec());
 
-    for (idx, (lines, raster_scan, noisy)) in pages.iter().enumerate() {
-        let contents_id = 5 + idx * 2;
-        bodies.push(
-            format!(
-                "<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R >> >> /Contents {contents_id} 0 R >>"
-            )
-            .into_bytes(),
-        );
-        let stream = if *raster_scan {
+    let mut page_obj_ids = Vec::with_capacity(page_count);
+
+    for (lines, raster_scan, noisy) in pages {
+        let page_obj_idx = bodies.len();
+        let page_obj_id = page_obj_idx + 1;
+        bodies.push(Vec::new());
+        page_obj_ids.push(page_obj_id);
+
+        if *raster_scan {
             let refs: Vec<&str> = lines.iter().map(String::as_str).collect();
-            let png = render_synthetic_clinical_png(&refs, *noisy);
-            let w = u32::from_be_bytes([png[16], png[17], png[18], png[19]]);
-            let h = u32::from_be_bytes([png[20], png[21], png[22], png[23]]);
-            let b64 = base64::engine::general_purpose::STANDARD.encode(&png);
-            format!(
-                "q\n612 0 0 792 0 0 cm\nBI\n/W {w}\n/H {h}\n/CS /DeviceGray\n/BPC 8\n/F /ASCIIBase64PngScan\nID\n{b64}\nEI\nQ\n"
+            let (w, h, pixels) = render_synthetic_grayscale_grid(&refs, *noisy);
+
+            let contents_id = bodies.len() + 1;
+            bodies.push(build_flate_stream_obj(
+                "",
+                b"q\n612 0 0 792 0 0 cm\n/Im0 Do\nQ\n",
+            ));
+
+            let img_id = bodies.len() + 1;
+            let img_dict = format!(
+                "/Type /XObject /Subtype /Image /Width {w} /Height {h} /ColorSpace /DeviceGray /BitsPerComponent 8"
+            );
+            bodies.push(build_flate_stream_obj(&img_dict, &pixels));
+
+            bodies[page_obj_idx] = format!(
+                "<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R >> /XObject << /Im0 {img_id} 0 R >> >> /Contents {contents_id} 0 R >>"
             )
-            .into_bytes()
+            .into_bytes();
         } else {
             let mut ops = String::from("BT\n/F1 11 Tf\n54 738 Td\n");
             for (li, line) in lines.iter().enumerate() {
@@ -2364,19 +2498,28 @@ pub fn build_test_pdf(pages: &[(Vec<String>, bool, bool)]) -> Vec<u8> {
                 ops.push_str(&format!("({escaped}) Tj\n"));
             }
             ops.push_str("ET\n");
-            ops.into_bytes()
-        };
-        let mut obj = format!("<< /Length {} >>\nstream\n", stream.len()).into_bytes();
-        obj.extend_from_slice(&stream);
-        obj.extend_from_slice(b"\nendstream");
-        bodies.push(obj);
+            let contents_id = bodies.len() + 1;
+            bodies.push(build_flate_stream_obj("", ops.as_bytes()));
+            bodies[page_obj_idx] = format!(
+                "<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R >> >> /Contents {contents_id} 0 R >>"
+            )
+            .into_bytes();
+        }
     }
+
+    let kids: Vec<String> = page_obj_ids.iter().map(|id| format!("{id} 0 R")).collect();
+    bodies[1] = format!(
+        "<< /Type /Pages /Kids [{}] /Count {} >>",
+        kids.join(" "),
+        page_count
+    )
+    .into_bytes();
 
     assemble_pdf(&bodies)
 }
 
 /// Builds a multi-page PDF-1.4 document where 1-based `corrupted_page` has a
-/// damaged content stream while all sibling pages remain valid.
+/// damaged `/FlateDecode` content stream while all sibling pages remain valid.
 pub fn build_corrupted_page_test_pdf(pages: &[Vec<String>], corrupted_page: u32) -> Vec<u8> {
     let page_count = pages.len();
     let mut bodies: Vec<Vec<u8>> = Vec::with_capacity(3 + page_count * 2);
@@ -2404,7 +2547,7 @@ pub fn build_corrupted_page_test_pdf(pages: &[Vec<String>], corrupted_page: u32)
         );
         if (idx + 1) as u32 == corrupted_page {
             bodies.push(
-                b"<< /Filter /CorruptFaxStream /Length 16 >>\nstream\n\xff\x00DAMAGED_STREAM\nendstream"
+                b"<< /Filter /FlateDecode /Length 16 >>\nstream\n\xff\x00DAMAGED_STREAM\nendstream"
                     .to_vec(),
             );
         } else {
@@ -2416,11 +2559,7 @@ pub fn build_corrupted_page_test_pdf(pages: &[Vec<String>], corrupted_page: u32)
                 ops.push_str(&format!("({line}) Tj\n"));
             }
             ops.push_str("ET\n");
-            let stream = ops.into_bytes();
-            let mut obj = format!("<< /Length {} >>\nstream\n", stream.len()).into_bytes();
-            obj.extend_from_slice(&stream);
-            obj.extend_from_slice(b"\nendstream");
-            bodies.push(obj);
+            bodies.push(build_flate_stream_obj("", ops.as_bytes()));
         }
     }
 
@@ -2450,49 +2589,6 @@ fn assemble_pdf(bodies: &[Vec<u8>]) -> Vec<u8> {
         .as_bytes(),
     );
     out
-}
-
-fn write_png_chunk(out: &mut Vec<u8>, chunk_type: &[u8; 4], data: &[u8]) {
-    let len = u32::try_from(data.len()).expect("PNG chunk fits u32");
-    out.extend_from_slice(&len.to_be_bytes());
-    out.extend_from_slice(chunk_type);
-    out.extend_from_slice(data);
-    let mut crc_input = Vec::with_capacity(4 + data.len());
-    crc_input.extend_from_slice(chunk_type);
-    crc_input.extend_from_slice(data);
-    out.extend_from_slice(&crc32_ieee(&crc_input).to_be_bytes());
-}
-
-fn zlib_store(raw: &[u8]) -> Vec<u8> {
-    let mut out = Vec::with_capacity(raw.len() + (raw.len() / 65_535 + 1) * 5 + 6);
-    out.extend_from_slice(&[0x78, 0x01]);
-    if raw.is_empty() {
-        out.push(0x01);
-        out.extend_from_slice(&0_u16.to_le_bytes());
-        out.extend_from_slice(&(!0_u16).to_le_bytes());
-    } else {
-        let chunks: Vec<&[u8]> = raw.chunks(65_535).collect();
-        for (idx, chunk) in chunks.iter().enumerate() {
-            out.push(u8::from(idx + 1 == chunks.len()));
-            let len = u16::try_from(chunk.len()).expect("chunk <= 65535");
-            out.extend_from_slice(&len.to_le_bytes());
-            out.extend_from_slice(&(!len).to_le_bytes());
-            out.extend_from_slice(chunk);
-        }
-    }
-    out.extend_from_slice(&adler32(raw).to_be_bytes());
-    out
-}
-
-fn adler32(data: &[u8]) -> u32 {
-    const MOD_ADLER: u32 = 65_521;
-    let mut a: u32 = 1;
-    let mut b: u32 = 0;
-    for &byte in data {
-        a = (a + u32::from(byte)) % MOD_ADLER;
-        b = (b + a) % MOD_ADLER;
-    }
-    (b << 16) | a
 }
 
 fn crc32_ieee(data: &[u8]) -> u32 {

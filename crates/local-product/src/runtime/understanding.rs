@@ -1699,7 +1699,7 @@ impl Store {
 
         let tx = self.db.begin().await.map_err(super::persistence_failure)?;
 
-        if let Err(violation) = super::follow_ups::check_withdrawal_fence_in_tx(
+        match super::follow_ups::check_withdrawal_fence_in_tx(
             &tx,
             practice,
             workspace,
@@ -1709,13 +1709,19 @@ impl Store {
         )
         .await
         {
-            return Ok(ToolOutcome::refused(
-                json!({
-                    "outcome": "withdrawn_fence",
-                    "message": violation.to_string(),
-                })
-                .to_string(),
-            ));
+            Ok(()) => {}
+            Err(super::follow_ups::WithdrawalFenceCheckError::Violation(violation)) => {
+                return Ok(ToolOutcome::refused(
+                    json!({
+                        "outcome": "withdrawn_fence",
+                        "message": violation.to_string(),
+                    })
+                    .to_string(),
+                ));
+            }
+            Err(super::follow_ups::WithdrawalFenceCheckError::Database(db_err)) => {
+                return Err(super::persistence_failure(db_err));
+            }
         }
 
         if let Some(existing_rev) = patient_understanding_revision::Entity::find()

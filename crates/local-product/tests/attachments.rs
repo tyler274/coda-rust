@@ -14,26 +14,41 @@
 use std::path::PathBuf;
 
 use local_product::{
+    ModelBinding, ModelRoles,
     attachments::{
         AttachmentMediaKind, AttachmentPart, AttachmentReadFailure, PagedDocumentInput,
         READ_DOCUMENT_PAGE_TOOL, SavedAttachmentInput, VersionedDocumentArchive,
         build_corrupted_page_test_pdf, build_test_pdf, document_page_tool,
         execute_document_page_read_from_revisions, ingest_attachment_batch, ingest_paged_document,
         is_document_page_tool, render_synthetic_clinical_jpeg, render_synthetic_clinical_png,
-        run_document_reader_benchmark,
+        render_synthetic_clinical_rgb_png, run_document_reader_benchmark,
     },
-    physician_sources::{ChartRequest, ChartScope, READ_TOOL, SourceRevision, read_tool},
+    patient_reviews::{
+        COMPLETE_PATIENT_REVIEW_TOOL, CompleteReviewArgs, CompleteReviewDisposition,
+    },
+    physician_chat::{ChatAssignment, PhysicianSkills},
+    physician_sources::{
+        ChartRequest, ChartScope, MedicalRecordNumber, READ_TOOL, SourcePatient, SourceRevision,
+        read_tool,
+    },
     runtime::{
-        Store, async_trait,
+        Accepted, Authority, Input, PhysicianHost, PublicationTransaction, Scope, Store,
+        WorkStatus, async_trait,
         chat_operations::{RecordLimitKind, inspect_record_readability},
+        concerns::ExactRecordReference,
+        dispatch::StoredObservationChecker,
         engine::{
             self, AcceptedInput, Event, Invocation, Item, Product, ProductMessage, ToolOutcome,
             Turn, WindowSeed,
             recipe::{Finish, Observer, Provider, Request, RequestBinding, RequestRecipe},
         },
+        jobs::PracticeJobHost,
+        reviews::PatientReviewReceiver,
+        sources::SourcePull,
     },
     sha256_hex,
 };
+use physician_auth::{AuthStore, Membership, PhysicianIdentity, PostgresAuthStore, PracticeClock};
 use serde_json::{Value, json};
 
 #[allow(dead_code)]
@@ -194,9 +209,44 @@ async fn spruce_photo_and_text_attachments_read_unique_details_through_harness_r
         false,
     );
     let png_sha = sha256_hex(&png_bytes);
+    assert!(!png_bytes.windows(15).any(|w| w == b"CODA_RASTER_PNG"));
+
+    let rgb_png_bytes = render_synthetic_clinical_rgb_png(&["RGB DERM PHOTO", "LESION 6MM"], false);
+    let rgb_png_sha = sha256_hex(&rgb_png_bytes);
+    let rgb_batch = ingest_attachment_batch(&[SavedAttachmentInput {
+        attachment_id: "spruce-derm-rgb".into(),
+        revision: "v1".into(),
+        workspace: "pw-spruce-1".into(),
+        source_id: "spruce".into(),
+        authored_date: "2026-11-11".into(),
+        title: "Inbound 24-bit RGB dermatology photograph".into(),
+        media_kind: AttachmentMediaKind::PngPhoto,
+        bytes: rgb_png_bytes,
+        expected_sha256: Some(rgb_png_sha),
+    }]);
+    let Ok(AttachmentPart::Image {
+        extracted_text: rgb_extracted,
+        ..
+    }) = &rgb_batch.records[0].outcome
+    else {
+        panic!("expected decoded 24-bit RGB PNG AttachmentPart::Image");
+    };
+    assert!(
+        rgb_extracted.contains("LESION 6MM")
+            && rgb_batch.records[0]
+                .source_revision
+                .readable_parts
+                .iter()
+                .any(|p| p.text.contains("LESION 6MM")),
+        "24-bit RGB PNG must decode cleanly: {rgb_extracted}"
+    );
 
     let jpg_bytes = render_synthetic_clinical_jpeg(&["AMOXICILLIN 500MG", "LOT-K9482"], false);
     let jpg_sha = sha256_hex(&jpg_bytes);
+    assert!(
+        !jpg_bytes.windows(15).any(|w| w == b"CODA_RASTER_PNG"),
+        "JPEG fixture must use standard DCT/Huffman pixels with zero sidecar APP2 markers"
+    );
 
     let txt_body = "Home ankle swelling log:\nMorning standing weight 194.6 lb.\nDiary code: SYMPTOM-LOG-8829\n";
     let txt_bytes = txt_body.as_bytes().to_vec();
@@ -684,6 +734,42 @@ async fn chart_scans_spruce_faxes_and_multipage_pdfs_read_page_by_page_through_r
         assert_eq!(ingested.page_count, 3);
     }
 
+    // Also verify a standard `/Subtype /Image /Filter /DCTDecode` JPEG-scan PDF XObject!
+    let dct_jpeg =
+        render_synthetic_clinical_jpeg(&["DCT JPEG SCAN P1", "TROPONIN 0.01 NG/ML"], false);
+    let dct_img = image::load_from_memory_with_format(&dct_jpeg, image::ImageFormat::Jpeg).unwrap();
+    let (jw, jh) = (dct_img.width(), dct_img.height());
+    let mut dct_pdf = b"%PDF-1.4\n1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n2 0 obj\n<< /Type /Pages /Kids [3 0 R] /Count 1 >>\nendobj\n3 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /XObject << /Im0 5 0 R >> >> /Contents 4 0 R >>\nendobj\n4 0 obj\n<< /Length 31 >>\nstream\nq\n612 0 0 792 0 0 cm\n/Im0 Do\nQ\n\nendstream\nendobj\n".to_vec();
+    dct_pdf.extend_from_slice(
+        format!(
+            "5 0 obj\n<< /Type /XObject /Subtype /Image /Width {jw} /Height {jh} /ColorSpace /DeviceGray /BitsPerComponent 8 /Filter /DCTDecode /Length {} >>\nstream\n",
+            dct_jpeg.len()
+        )
+        .as_bytes(),
+    );
+    dct_pdf.extend_from_slice(&dct_jpeg);
+    dct_pdf.extend_from_slice(b"\nendstream\nendobj\ntrailer\n<< /Root 1 0 R >>\n%%EOF\n");
+    let dct_ingested = ingest_paged_document(&PagedDocumentInput {
+        document_id: "scan-dct-jpeg".into(),
+        version: 1,
+        workspace: "pw-paged-1".into(),
+        source_id: "clinic-ehr".into(),
+        authored_date: "2026-11-11".into(),
+        title: "DCT JPEG Scan".into(),
+        media_kind: AttachmentMediaKind::ChartScanPdf,
+        pdf_bytes: dct_pdf,
+        expected_sha256: None,
+    })
+    .unwrap();
+    assert!(
+        dct_ingested
+            .read_page(1)
+            .unwrap()
+            .text
+            .contains("TROPONIN 0.01 NG/ML"),
+        "DCTDecode JPEG scan XObject must OCR cleanly"
+    );
+
     struct PageByPageProvider {
         step: usize,
     }
@@ -1048,5 +1134,439 @@ async fn corrected_document_in_postgres_creates_new_version_while_existing_citat
             .as_str()
             .unwrap()
             .contains("LVEF 56 PERCENT PRELIMINARY")
+    );
+
+    // End-to-end production host verification: BOTH `PracticeJobHost` (`PatientReview`) and
+    // `PhysicianHost` (`physician_chat::recipe`) advertise and execute `READ_DOCUMENT_PAGE_TOOL`!
+    struct PostgresDocAuthority;
+    #[async_trait]
+    impl Authority for PostgresDocAuthority {
+        async fn check(
+            &mut self,
+            tx: &PublicationTransaction,
+            scope: &Scope,
+            session_hash: Option<&[u8]>,
+        ) -> Result<(), String> {
+            PostgresAuthStore::check_runtime_authority(
+                tx,
+                session_hash.ok_or("missing session reference")?,
+                &PhysicianIdentity {
+                    practice_id: scope.practice.clone(),
+                    physician_id: scope.physician.clone(),
+                },
+                &scope.workspace,
+            )
+            .await
+            .map_err(|cause| cause.to_string())
+        }
+
+        async fn lock_publication(
+            &mut self,
+            tx: &PublicationTransaction,
+            scope: &Scope,
+            session_hash: Option<&[u8]>,
+        ) -> Result<(), String> {
+            PostgresAuthStore::lock_runtime_authority(
+                tx,
+                session_hash.ok_or("missing session reference")?,
+                &PhysicianIdentity {
+                    practice_id: scope.practice.clone(),
+                    physician_id: scope.physician.clone(),
+                },
+                &scope.workspace,
+            )
+            .await
+            .map_err(|cause| cause.to_string())
+        }
+    }
+
+    let auth = PostgresAuthStore::connect_with_migrations(&url)
+        .await
+        .unwrap();
+    let host_practice = format!("practice-doc-host-{}", uuid::Uuid::new_v4().simple());
+    let host_workspace = format!("pw-doc-host-{}", uuid::Uuid::new_v4().simple());
+    auth.ensure_practice(&host_practice, PracticeClock::RealTime)
+        .await
+        .unwrap();
+    let email = format!("dr-echo-{}@codahealth.test", uuid::Uuid::new_v4().simple());
+    let now_secs = std::time::SystemTime::now()
+        .duration_since(std::time::UNIX_EPOCH)
+        .unwrap()
+        .as_secs();
+    let invite = auth
+        .invite(&host_practice, &email, "dr-echo", false, now_secs)
+        .await
+        .unwrap();
+    let (physician, token) = auth
+        .redeem_invitation(&email, &invite, now_secs)
+        .await
+        .unwrap();
+    let session_hash = PostgresAuthStore::session_reference(&token);
+    auth.register_patient(&host_practice, &host_workspace)
+        .await
+        .unwrap();
+    auth.set_membership(&physician, &host_workspace, Membership::Allowed)
+        .await
+        .unwrap();
+
+    let skills =
+        PhysicianSkills::load(&PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../../skills"))
+            .unwrap();
+    let roles = ModelRoles {
+        chat: ModelBinding {
+            model: "chat-lane-doc".into(),
+            effort: "medium".into(),
+            context_window_tokens: 192_000,
+            max_input_tokens: 160_000,
+            adapter: "fixture".into(),
+        },
+        background: ModelBinding {
+            model: "bg-lane-doc".into(),
+            effort: "high".into(),
+            context_window_tokens: 272_000,
+            max_input_tokens: 250_000,
+            adapter: "fixture".into(),
+        },
+    };
+
+    let mut host_doc_v1 = doc_v1.source_revision.clone();
+    host_doc_v1.workspace = host_workspace.clone();
+    let mut host_doc_v2 = doc_v2.source_revision.clone();
+    host_doc_v2.workspace = host_workspace.clone();
+
+    store.record_source(&host_doc_v1).await.unwrap();
+    store
+        .register_patient_dispatch(&auth, &host_practice, &host_workspace, 1_790_000_000)
+        .await
+        .unwrap();
+    store
+        .record_chart(
+            &host_workspace,
+            std::slice::from_ref(&host_doc_v2),
+            &SourcePull {
+                source_id: "clinic-ehr".into(),
+                source_label: "Clinic EHR".into(),
+                patient: SourcePatient {
+                    source_patient_id: "pt-echo".into(),
+                    display_name: "Elena Rostova".into(),
+                    birth_date: Some("1974-02-19".into()),
+                    sex_or_gender: Some("female".into()),
+                    medical_record_numbers: vec![MedicalRecordNumber {
+                        system: "clinic-mrn".into(),
+                        value: "MRN-5510".into(),
+                    }],
+                },
+                pulled_at: 1_790_003_600,
+            },
+        )
+        .await
+        .unwrap();
+
+    // 1. Run `PracticeJobHost` (`PatientReview`) calling `READ_DOCUMENT_PAGE_TOOL` for `version: null` (`v2`) and `version: 1` (`v1`).
+    let checker = StoredObservationChecker::new(store.clone());
+    let receiver = PatientReviewReceiver::new(&store, &roles, &skills, &auth);
+    let wake = store
+        .wake_practice_dispatch(&auth, &host_practice, 1_790_003_600, &checker, &receiver)
+        .await
+        .unwrap();
+    assert_eq!(wake.started_reviews.len(), 1);
+    let reviews = store
+        .patient_reviews(&host_practice, &host_workspace, &auth)
+        .await
+        .unwrap();
+    let review_claim = store
+        .claim_practice_job(&reviews[0].practice_scope(), 60, &auth)
+        .await
+        .unwrap()
+        .unwrap();
+
+    struct ReviewDocPageProvider {
+        turn: usize,
+    }
+    impl Provider for ReviewDocPageProvider {
+        async fn exchange(
+            &mut self,
+            request: &Request,
+            _: &engine::Cancellation,
+            _: &engine::RunLimits,
+            _: &mut dyn Observer,
+        ) -> Result<Turn, engine::Cause> {
+            self.turn += 1;
+            let tool_names: Vec<&str> = request
+                .tools
+                .iter()
+                .filter_map(|t| t["name"].as_str())
+                .collect();
+            assert!(
+                tool_names.contains(&READ_DOCUMENT_PAGE_TOOL),
+                "PatientReview recipe must advertise READ_DOCUMENT_PAGE_TOOL: {tool_names:?}"
+            );
+            match self.turn {
+                1 => Ok(Turn {
+                    items: vec![
+                        Item::Call(Invocation {
+                            id: "rev-read-echo-source".into(),
+                            name: READ_TOOL.into(),
+                            arguments: json!({
+                                "references": [{
+                                    "candidate_id": "doc-echo-pg",
+                                    "revision": "v2",
+                                    "cursor": null
+                                }],
+                                "max_result_bytes": 16_384
+                            })
+                            .to_string(),
+                        }),
+                        Item::Call(Invocation {
+                            id: "rev-doc-p2-latest".into(),
+                            name: READ_DOCUMENT_PAGE_TOOL.into(),
+                            arguments: json!({
+                                "document_id": "doc-echo-pg",
+                                "version": null,
+                                "page_number": 2
+                            })
+                            .to_string(),
+                        }),
+                        Item::Call(Invocation {
+                            id: "rev-doc-p2-v1".into(),
+                            name: READ_DOCUMENT_PAGE_TOOL.into(),
+                            arguments: json!({
+                                "document_id": "doc-echo-pg",
+                                "version": 1,
+                                "page_number": 2
+                            })
+                            .to_string(),
+                        }),
+                    ],
+                    receipt: json!({"turn": 1}),
+                    usage: Default::default(),
+                }),
+                2 => {
+                    let out_for = |cid: &str| -> Value {
+                        let raw = request
+                            .items
+                            .iter()
+                            .find_map(|item| match item {
+                                Item::MaterializedResult { call_id, output } if call_id == cid => {
+                                    Some(output.as_str())
+                                }
+                                _ => None,
+                            })
+                            .unwrap();
+                        serde_json::from_str(raw).unwrap()
+                    };
+                    let latest_val = out_for("rev-doc-p2-latest");
+                    assert_eq!(latest_val["version"], 2);
+                    assert!(
+                        latest_val["text"]
+                            .as_str()
+                            .unwrap()
+                            .contains("LVEF 61 PERCENT FINAL ADDENDUM")
+                    );
+                    let v1_val = out_for("rev-doc-p2-v1");
+                    assert_eq!(v1_val["version"], 1);
+                    assert!(
+                        v1_val["text"]
+                            .as_str()
+                            .unwrap()
+                            .contains("LVEF 56 PERCENT PRELIMINARY")
+                    );
+
+                    let complete = CompleteReviewArgs {
+                        disposition: CompleteReviewDisposition::Assessed {
+                            summary: "Corrected echo confirms LVEF 61%.".into(),
+                        },
+                        citations: vec![ExactRecordReference {
+                            candidate_id: "doc-echo-pg".into(),
+                            revision: "v2".into(),
+                        }],
+                        basis_and_limitations: "Clinic EHR corrected echocardiogram v2.".into(),
+                        unfinished_work: vec![],
+                    };
+                    Ok(Turn {
+                        items: vec![Item::Call(Invocation {
+                            id: "rev-complete-echo".into(),
+                            name: COMPLETE_PATIENT_REVIEW_TOOL.into(),
+                            arguments: serde_json::to_string(&complete).unwrap(),
+                        })],
+                        receipt: json!({"turn": 2}),
+                        usage: Default::default(),
+                    })
+                }
+                3 => Ok(Turn {
+                    items: vec![Item::assistant("Completed echo review.")],
+                    receipt: json!({"turn": 3}),
+                    usage: Default::default(),
+                }),
+                other => panic!("unexpected review turn {other}"),
+            }
+        }
+    }
+
+    let mut review_host = PracticeJobHost {
+        store: store.clone(),
+        claim: review_claim,
+        authority: &auth,
+    };
+    review_host
+        .run(
+            &mut ReviewDocPageProvider { turn: 0 },
+            engine::RunLimits::default(),
+            &engine::Cancellation::default(),
+        )
+        .await
+        .unwrap();
+
+    // 2. Run `PhysicianHost` (`physician_chat::recipe`) calling `READ_DOCUMENT_PAGE_TOOL` for `version: null` (`v2`) and `version: 1` (`v1`).
+    let chat_scope = Scope {
+        practice: host_practice.clone(),
+        physician: physician.physician_id.clone(),
+        workspace: host_workspace.clone(),
+        chat: "chat-doc-page-1".into(),
+    };
+    let starting = store.patient_starting_context(&chat_scope).await.unwrap();
+    let recipe = ChatAssignment::for_patient(chat_scope.clone(), starting).recipe(&roles, &skills);
+    assert_eq!(
+        store
+            .start_chat_authorized(
+                &chat_scope,
+                &Input {
+                    key: "cmd-chat-doc-1".into(),
+                    text: "Compare page 2 of the preliminary and corrected echo reports.".into(),
+                    timezone: "America/Los_Angeles".into(),
+                    scenario: None,
+                },
+                session_hash,
+                &skills,
+                &recipe,
+                &mut PostgresDocAuthority,
+            )
+            .await
+            .unwrap(),
+        Accepted::New
+    );
+
+    struct ChatDocPageProvider {
+        turn: usize,
+    }
+    impl Provider for ChatDocPageProvider {
+        async fn exchange(
+            &mut self,
+            request: &Request,
+            _: &engine::Cancellation,
+            _: &engine::RunLimits,
+            _: &mut dyn Observer,
+        ) -> Result<Turn, engine::Cause> {
+            self.turn += 1;
+            let tool_names: Vec<&str> = request
+                .tools
+                .iter()
+                .filter_map(|t| t["name"].as_str())
+                .collect();
+            assert!(
+                tool_names.contains(&READ_DOCUMENT_PAGE_TOOL),
+                "physician_chat recipe must advertise READ_DOCUMENT_PAGE_TOOL: {tool_names:?}"
+            );
+            match self.turn {
+                1 => Ok(Turn {
+                    items: vec![
+                        Item::Call(Invocation {
+                            id: "chat-read-echo-source".into(),
+                            name: READ_TOOL.into(),
+                            arguments: json!({
+                                "references": [{
+                                    "candidate_id": "doc-echo-pg",
+                                    "revision": "v2",
+                                    "cursor": null
+                                }],
+                                "max_result_bytes": 16_384
+                            })
+                            .to_string(),
+                        }),
+                        Item::Call(Invocation {
+                            id: "chat-doc-p2-latest".into(),
+                            name: READ_DOCUMENT_PAGE_TOOL.into(),
+                            arguments: json!({
+                                "document_id": "doc-echo-pg",
+                                "version": null,
+                                "page_number": 2
+                            })
+                            .to_string(),
+                        }),
+                        Item::Call(Invocation {
+                            id: "chat-doc-p2-v1".into(),
+                            name: READ_DOCUMENT_PAGE_TOOL.into(),
+                            arguments: json!({
+                                "document_id": "doc-echo-pg",
+                                "version": 1,
+                                "page_number": 2
+                            })
+                            .to_string(),
+                        }),
+                    ],
+                    receipt: json!({"turn": 1}),
+                    usage: Default::default(),
+                }),
+                2 => {
+                    let out_for = |cid: &str| -> Value {
+                        let raw = request
+                            .items
+                            .iter()
+                            .find_map(|item| match item {
+                                Item::MaterializedResult { call_id, output } if call_id == cid => {
+                                    Some(output.as_str())
+                                }
+                                _ => None,
+                            })
+                            .unwrap();
+                        serde_json::from_str(raw).unwrap()
+                    };
+                    let latest_val = out_for("chat-doc-p2-latest");
+                    assert_eq!(latest_val["version"], 2);
+                    assert!(
+                        latest_val["text"]
+                            .as_str()
+                            .unwrap()
+                            .contains("LVEF 61 PERCENT FINAL ADDENDUM")
+                    );
+                    let v1_val = out_for("chat-doc-p2-v1");
+                    assert_eq!(v1_val["version"], 1);
+                    assert!(
+                        v1_val["text"]
+                            .as_str()
+                            .unwrap()
+                            .contains("LVEF 56 PERCENT PRELIMINARY")
+                    );
+
+                    Ok(Turn {
+                        items: vec![Item::assistant(
+                            "Page 2 changed from preliminary LVEF 56% to final LVEF 61% [1].\n\nBasis and limitations: Clinic EHR echocardiogram reports v1 and v2.",
+                        )],
+                        receipt: json!({"turn": 2}),
+                        usage: Default::default(),
+                    })
+                }
+                other => panic!("unexpected chat turn {other}"),
+            }
+        }
+    }
+
+    let chat_claim = store.claim(&chat_scope, 60).await.unwrap().unwrap();
+    let mut chat_host = PhysicianHost {
+        store: store.clone(),
+        claim: chat_claim,
+        authority: PostgresDocAuthority,
+    };
+    chat_host
+        .run(
+            &mut ChatDocPageProvider { turn: 0 },
+            engine::RunLimits::default(),
+            &engine::Cancellation::default(),
+        )
+        .await
+        .unwrap();
+    assert_eq!(
+        store.conversation(&chat_scope).await.unwrap().status,
+        WorkStatus::Completed
     );
 }

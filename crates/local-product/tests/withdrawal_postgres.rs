@@ -15,26 +15,37 @@ use local_product::{
         HealthSystemStanding, IndexedAnchor, KnownHealthSystem, OperatingIndex,
         READ_UNDERSTANDING_TOOL, SAVE_UNDERSTANDING_TOOL, SaveUnderstandingArgs, SummaryClaimInput,
     },
-    physician_chat::PhysicianSkills,
+    patient_reviews::{
+        COMPLETE_PATIENT_REVIEW_TOOL, CompleteReviewArgs, CompleteReviewDisposition,
+    },
+    physician_chat::{ChatAssignment, PhysicianSkills},
     physician_sources::{
-        MedicalRecordNumber, READ_TOOL, ReadablePart, RecordDate, SourcePatient, SourceRevision,
+        MedicalRecordNumber, READ_TOOL, ReadablePart, RecordDate, SEARCH_TOOL, SourcePatient,
+        SourceRevision,
     },
     runtime::{
-        Authority, PublicationTransaction, Scope, Store, async_trait,
+        Accepted, Authority, Input, PhysicianHost, PublicationTransaction, Scope, Store,
+        WorkStatus, async_trait,
         chat_operations::{
-            MemoryProvenance, MemorySelection, MemoryStanding, PatientMemoryError, PatientMemoryId,
-            PatientMemoryStanding, RecordMemoryCorrection,
+            MemoryProvenance, MemorySelection, MemoryStanding, PATIENT_MEMORY_TOOL,
+            PatientMemoryError, PatientMemoryId, PatientMemoryStanding, RecordMemoryCorrection,
+            RetirePatientMemory,
         },
         concerns::{
             CONCERN_TOOL, CommandKey, ConcernError, ConcernId, ConcernStanding, ConcernUrgency,
             ExactRecordReference, RaiseConcern, ReviseConcern, SourceWork, WorkspaceAccess,
         },
-        engine::{self, Invocation, ToolOutcome},
+        dispatch::StoredObservationChecker,
+        engine::{
+            self, Invocation, Item, ToolOutcome, Turn,
+            recipe::{Observer, Provider, Request},
+        },
         follow_ups::{
             SourceWithdrawalOutcome, WithdrawWrongPatientRequest, WithdrawalFenceViolation,
             WorkspaceWithdrawalBoundary,
         },
         jobs::PracticeJobHost,
+        reviews::PatientReviewReceiver,
         sources::SourcePull,
         understanding::{UnderstandingStanding, UnderstandingTriggerOutcome},
     },
@@ -381,7 +392,7 @@ async fn ac1_and_ac2_wrong_patient_withdrawal_marks_memory_and_summary_entered_i
     auth.ensure_practice(&practice, PracticeClock::RealTime)
         .await
         .unwrap();
-    let (physician, _session_hash) = invite_and_sign_in(&auth, &practice, "dr-morales").await;
+    let (physician, session_hash) = invite_and_sign_in(&auth, &practice, "dr-morales").await;
     auth.register_patient(&practice, &workspace).await.unwrap();
     auth.set_membership(&physician, &workspace, Membership::Allowed)
         .await
@@ -546,6 +557,48 @@ async fn ac1_and_ac2_wrong_patient_withdrawal_marks_memory_and_summary_entered_i
         .await
         .unwrap();
 
+    // Seed a clinically retired memory (`mem-retired-clinical`) so `include_retired: true`
+    // proves retired entries remain visible while `EnteredInError` entries are excluded.
+    store
+        .record_patient_memory(
+            "mem-cmd-retired-seed",
+            &RecordMemoryCorrection {
+                practice: practice.clone(),
+                workspace: workspace.clone(),
+                id: PatientMemoryId::new("mem-retired-clinical").unwrap(),
+                topic: "Prior cough".into(),
+                statement: "Dry cough on lisinopril in 2024; switched to amlodipine.".into(),
+                provenance: MemoryProvenance::PhysicianCorrection {
+                    physician: physician.physician_id.clone(),
+                    chat_id: "chat-clean-1".into(),
+                    message_id: "msg-clean-11".into(),
+                    work_id: "work-clean-chat".into(),
+                    attempt_id: "attempt-1".into(),
+                },
+            },
+        )
+        .await
+        .unwrap();
+    store
+        .retire_patient_memory(
+            "mem-cmd-retired-apply",
+            &RetirePatientMemory {
+                practice: practice.clone(),
+                workspace: workspace.clone(),
+                id: PatientMemoryId::new("mem-retired-clinical").unwrap(),
+                reason: "Documented in EHR allergy list.".into(),
+                retired_by: MemoryProvenance::PhysicianCorrection {
+                    physician: physician.physician_id.clone(),
+                    chat_id: "chat-clean-1".into(),
+                    message_id: "msg-clean-12".into(),
+                    work_id: "work-clean-chat".into(),
+                    attempt_id: "attempt-2".into(),
+                },
+            },
+        )
+        .await
+        .unwrap();
+
     // Queue a pre-withdrawal in-flight background job (`scope_inflight`) after a minor chart bump
     // so it is `Pending` when withdrawal runs and must be automatically fenced!
     let pre_withdraw_note = chart_record(
@@ -598,8 +651,28 @@ async fn ac1_and_ac2_wrong_patient_withdrawal_marks_memory_and_summary_entered_i
     assert_eq!(receipt.active_understanding_revision, Some(1));
     assert_eq!(receipt.withdrawn_memory_ids.len(), 2);
 
-    // AC1: Active memory contains ONLY `mem-clean-allergy`; `All` preserves immutable
-    // `EnteredInError` audit snapshots for both withdrawn memories.
+    // Chart source withdrawal check (BEFORE any `record_chart` call):
+    // `withdraw_wrong_patient_source` tombstones `cand-wrong-msg` in `physician_runtime_sources`
+    // while keeping earlier historical source revision rows immutable in Postgres for audit!
+    let post_withdraw_obs = store.sources(&workspace).await.unwrap();
+    assert!(
+        post_withdraw_obs
+            .sources
+            .iter()
+            .all(|s| s.candidate_id != "cand-wrong-msg"),
+        "withdrawn candidate must be excluded from active chart observation immediately upon withdrawal"
+    );
+    assert!(
+        store
+            .has_sources_outside(&workspace, "clinic-ehr")
+            .await
+            .unwrap(),
+        "immutable historical `spruce` row must remain in `physician_runtime_sources` for audit"
+    );
+
+    // AC1: Active memory contains ONLY `mem-clean-allergy`; `ActiveAndRetired` / `All` contain
+    // `mem-clean-allergy` + `mem-retired-clinical` (excluding `EnteredInError` wrong-patient items);
+    // `AuditAll` preserves immutable `EnteredInError` audit snapshots for both withdrawn memories.
     let active_memories = store
         .patient_memories(&practice, &workspace, MemorySelection::ActiveOnly)
         .await
@@ -607,22 +680,205 @@ async fn ac1_and_ac2_wrong_patient_withdrawal_marks_memory_and_summary_entered_i
     assert_eq!(active_memories.len(), 1);
     assert_eq!(active_memories[0].id.as_str(), "mem-clean-allergy");
 
-    let all_memories = store
-        .patient_memories(&practice, &workspace, MemorySelection::All)
+    for non_audit_selection in [MemorySelection::ActiveAndRetired, MemorySelection::All] {
+        let clinical_memories = store
+            .patient_memories(&practice, &workspace, non_audit_selection)
+            .await
+            .unwrap();
+        let clinical_ids: Vec<&str> = clinical_memories.iter().map(|m| m.id.as_str()).collect();
+        assert_eq!(
+            clinical_ids,
+            vec!["mem-clean-allergy", "mem-retired-clinical"],
+            "EnteredInError memories must never surface in clinical {non_audit_selection:?}"
+        );
+    }
+
+    let audit_memories = store
+        .patient_memories(&practice, &workspace, MemorySelection::AuditAll)
         .await
         .unwrap();
-    assert_eq!(all_memories.len(), 3);
+    assert_eq!(audit_memories.len(), 4);
     for id in ["mem-wrong-msg", "mem-wrong-summary"] {
-        let entry = all_memories
+        let entry = audit_memories
             .iter()
             .find(|m| m.id.as_str() == id)
-            .expect("withdrawn memory retained in audit read");
+            .expect("withdrawn memory retained in explicit AuditAll read");
         assert!(matches!(
             &entry.standing,
             MemoryStanding::EnteredInError { withdrawal_id, .. }
                 if withdrawal_id == "withdraw-msg-42"
         ));
     }
+
+    // End-to-end `PhysicianHost` check: `PATIENT_MEMORY_TOOL` (`include_retired: true`),
+    // `SEARCH_TOOL`, and `READ_TOOL` exclude `EnteredInError` memory and withdrawn chart sources!
+    let verify_chat_scope = Scope {
+        practice: practice.clone(),
+        physician: physician.physician_id.clone(),
+        workspace: workspace.clone(),
+        chat: "chat-post-withdraw-verify".into(),
+    };
+    let verify_starting = store
+        .patient_starting_context(&verify_chat_scope)
+        .await
+        .unwrap();
+    let verify_recipe = ChatAssignment::for_patient(verify_chat_scope.clone(), verify_starting)
+        .recipe(&model_roles, &skills);
+    assert_eq!(
+        store
+            .start_chat_authorized(
+                &verify_chat_scope,
+                &Input {
+                    key: "cmd-verify-post-wd".into(),
+                    text:
+                        "Check durable memory including retired items and check warfarin records."
+                            .into(),
+                    timezone: "America/Los_Angeles".into(),
+                    scenario: None,
+                },
+                session_hash.clone(),
+                &skills,
+                &verify_recipe,
+                &mut PostgresWorkspaceAuthority,
+            )
+            .await
+            .unwrap(),
+        Accepted::New
+    );
+
+    struct VerifyWithdrawnToolsChatProvider {
+        turn: usize,
+    }
+    impl Provider for VerifyWithdrawnToolsChatProvider {
+        async fn exchange(
+            &mut self,
+            request: &Request,
+            _: &engine::Cancellation,
+            _: &engine::RunLimits,
+            _: &mut dyn Observer,
+        ) -> Result<Turn, engine::Cause> {
+            self.turn += 1;
+            match self.turn {
+                1 => Ok(Turn {
+                    items: vec![
+                        Item::Call(Invocation {
+                            id: "mem-read-incl-retired".into(),
+                            name: PATIENT_MEMORY_TOOL.into(),
+                            arguments: json!({
+                                "operation": "read",
+                                "include_retired": true
+                            })
+                            .to_string(),
+                        }),
+                        Item::Call(Invocation {
+                            id: "chart-search-warfarin".into(),
+                            name: SEARCH_TOOL.into(),
+                            arguments: json!({
+                                "query": "warfarin"
+                            })
+                            .to_string(),
+                        }),
+                        Item::Call(Invocation {
+                            id: "chart-read-withdrawn".into(),
+                            name: READ_TOOL.into(),
+                            arguments: json!({
+                                "references": [{
+                                    "candidate_id": "cand-wrong-msg",
+                                    "revision": "rev-w1",
+                                    "cursor": null
+                                }],
+                                "max_result_bytes": 16_384
+                            })
+                            .to_string(),
+                        }),
+                        Item::Call(Invocation {
+                            id: "chart-read-clean".into(),
+                            name: READ_TOOL.into(),
+                            arguments: json!({
+                                "references": [{
+                                    "candidate_id": "cand-clean-htn",
+                                    "revision": "rev-1",
+                                    "cursor": null
+                                }],
+                                "max_result_bytes": 16_384
+                            })
+                            .to_string(),
+                        }),
+                    ],
+                    receipt: json!({"turn": 1}),
+                    usage: Default::default(),
+                }),
+                2 => {
+                    let out_for = |cid: &str| -> String {
+                        request
+                            .items
+                            .iter()
+                            .find_map(|item| match item {
+                                Item::MaterializedResult { call_id, output } if call_id == cid => {
+                                    Some(output.clone())
+                                }
+                                _ => None,
+                            })
+                            .unwrap_or_else(|| panic!("missing output for {cid}"))
+                    };
+                    let mem_out = out_for("mem-read-incl-retired");
+                    assert!(
+                        mem_out.contains("mem-clean-allergy")
+                            && mem_out.contains("mem-retired-clinical"),
+                        "include_retired: true must return active and clinically retired memory: {mem_out}"
+                    );
+                    assert!(
+                        !mem_out.contains("warfarin")
+                            && !mem_out.contains("mechanical valve")
+                            && !mem_out.contains("mem-wrong-msg")
+                            && !mem_out.contains("mem-wrong-summary"),
+                        "EnteredInError wrong-patient memory must never leak via include_retired: true: {mem_out}"
+                    );
+
+                    let search_out = out_for("chart-search-warfarin");
+                    assert!(
+                        !search_out.contains("cand-wrong-msg")
+                            && !search_out.to_ascii_lowercase().contains("mechanical"),
+                        "SEARCH_TOOL must exclude withdrawn wrong-patient source: {search_out}"
+                    );
+
+                    let read_wd_out = out_for("chart-read-withdrawn");
+                    assert!(
+                        !read_wd_out.to_ascii_lowercase().contains("warfarin"),
+                        "READ_TOOL must not return clinical body of withdrawn wrong-patient source: {read_wd_out}"
+                    );
+
+                    Ok(Turn {
+                        items: vec![Item::assistant(
+                            "Active hypertension on amlodipine 5 mg daily [1]; no warfarin records belong to this patient.\n\nBasis and limitations: Clinic EHR note dated 2026-11-01.",
+                        )],
+                        receipt: json!({"turn": 2}),
+                        usage: Default::default(),
+                    })
+                }
+                other => panic!("unexpected verify chat turn {other}"),
+            }
+        }
+    }
+
+    let verify_claim = store.claim(&verify_chat_scope, 60).await.unwrap().unwrap();
+    let mut verify_host = PhysicianHost {
+        store: store.clone(),
+        claim: verify_claim,
+        authority: PostgresWorkspaceAuthority,
+    };
+    verify_host
+        .run(
+            &mut VerifyWithdrawnToolsChatProvider { turn: 0 },
+            engine::RunLimits::default(),
+            &engine::Cancellation::default(),
+        )
+        .await
+        .unwrap();
+    assert_eq!(
+        store.conversation(&verify_chat_scope).await.unwrap().status,
+        WorkStatus::Completed
+    );
 
     // AC1: Immutable revision rows `v1` and `v2` are both preserved in audit, with `v1` Active
     // and `v2` EnteredInError, while active physician summary rolled back to `v1`.
@@ -759,14 +1015,6 @@ async fn ac1_and_ac2_wrong_patient_withdrawal_marks_memory_and_summary_entered_i
         "Basic Metabolic Panel",
         "Serum creatinine 0.92 mg/dL, potassium 4.2 mmol/L.",
     );
-    store
-        .record_chart(
-            &workspace,
-            &[],
-            &source_pull("spruce", "Spruce Messaging", "pt-1", 1_790_250_000),
-        )
-        .await
-        .unwrap();
     store
         .record_chart(
             &workspace,
@@ -941,7 +1189,48 @@ async fn ac3_starting_contexts_exclude_withdrawn_memory_and_summary_and_record_w
         .await
         .unwrap();
 
-    // Withdraw `cand-wrong-only` and `msg-wrong-ctx`, then update retained chart to clean record only.
+    store
+        .record_patient_memory(
+            "ctx-mem-retired-seed",
+            &RecordMemoryCorrection {
+                practice: practice.clone(),
+                workspace: workspace.clone(),
+                id: PatientMemoryId::new("mem-retired-ctx").unwrap(),
+                topic: "Prior supplement".into(),
+                statement: "Stopped fish oil capsule last winter.".into(),
+                provenance: MemoryProvenance::PhysicianCorrection {
+                    physician: physician.physician_id.clone(),
+                    chat_id: "chat-ctx-2".into(),
+                    message_id: "msg-clean-ctx-2".into(),
+                    work_id: "work-ctx-2".into(),
+                    attempt_id: "attempt-2".into(),
+                },
+            },
+        )
+        .await
+        .unwrap();
+    store
+        .retire_patient_memory(
+            "ctx-mem-retired-apply",
+            &RetirePatientMemory {
+                practice: practice.clone(),
+                workspace: workspace.clone(),
+                id: PatientMemoryId::new("mem-retired-ctx").unwrap(),
+                reason: "Confirmed inactive at annual exam.".into(),
+                retired_by: MemoryProvenance::PhysicianCorrection {
+                    physician: physician.physician_id.clone(),
+                    chat_id: "chat-ctx-2".into(),
+                    message_id: "msg-clean-ctx-3".into(),
+                    work_id: "work-ctx-2".into(),
+                    attempt_id: "attempt-3".into(),
+                },
+            },
+        )
+        .await
+        .unwrap();
+
+    // Withdraw `cand-wrong-only` and `msg-wrong-ctx` directly; verify active chart observation
+    // immediately excludes `cand-wrong-only` without any manual empty `spruce` pull!
     store
         .withdraw_wrong_patient_source(&WithdrawWrongPatientRequest {
             practice: practice.clone(),
@@ -955,11 +1244,201 @@ async fn ac3_starting_contexts_exclude_withdrawn_memory_and_summary_and_record_w
         })
         .await
         .unwrap();
+    assert!(
+        store.sources(&workspace).await.unwrap().sources.is_empty(),
+        "withdrawing the only chart record must leave active chart observation empty"
+    );
+
+    // Register patient dispatch BEFORE delivering `clean_after` so `wake_practice_dispatch` wakes
+    // a real `PatientReview` while active `understanding` is `None` and the withdrawal boundary is active!
+    store
+        .register_patient_dispatch(auth.as_ref(), &practice, &workspace, 1_791_025_000)
+        .await
+        .unwrap();
     store
         .record_chart(
             &workspace,
             &[clean_after],
             &source_pull("clinic-ehr", "Clinic EHR", "pt-ctx", 1_791_050_000),
+        )
+        .await
+        .unwrap();
+
+    // 0. Real `PatientReview` starting context (`ReviewStartingContext::developer_text()`) and
+    // `PracticeJobHost` tools exclude withdrawn memory/chart items and surface the withdrawal boundary
+    // even when active `understanding` is `None`!
+    let checker = StoredObservationChecker::new(store.clone());
+    let receiver = PatientReviewReceiver::new(&store, &model_roles, &skills, auth.as_ref());
+    let wake = store
+        .wake_practice_dispatch(auth.as_ref(), &practice, 1_791_050_000, &checker, &receiver)
+        .await
+        .unwrap();
+    assert_eq!(wake.started_reviews.len(), 1);
+    let reviews = store
+        .patient_reviews(&practice, &workspace, auth.as_ref())
+        .await
+        .unwrap();
+    let review_scope = reviews[0].practice_scope();
+    let review_claim = store
+        .claim_practice_job(&review_scope, 60, auth.as_ref())
+        .await
+        .unwrap()
+        .unwrap();
+
+    struct VerifyReviewContextAndToolsProvider {
+        turn: usize,
+    }
+    impl Provider for VerifyReviewContextAndToolsProvider {
+        async fn exchange(
+            &mut self,
+            request: &Request,
+            _: &engine::Cancellation,
+            _: &engine::RunLimits,
+            _: &mut dyn Observer,
+        ) -> Result<Turn, engine::Cause> {
+            self.turn += 1;
+            match self.turn {
+                1 => {
+                    let starting_blob = serde_json::to_string(&request.items).unwrap();
+                    assert!(
+                        !starting_blob.to_ascii_lowercase().contains("lithium"),
+                        "PatientReview starting context must exclude withdrawn wrong-patient claims and memory: {starting_blob}"
+                    );
+                    assert!(
+                        starting_blob.contains("Walks 30 minutes"),
+                        "PatientReview starting context must retain clean memory: {starting_blob}"
+                    );
+                    assert!(
+                        starting_blob.contains("Entered-in-error withdrawal boundary:")
+                            && starting_blob.contains("cand-wrong-only"),
+                        "PatientReview starting context must surface withdrawal boundary even when understanding is None: {starting_blob}"
+                    );
+                    Ok(Turn {
+                        items: vec![
+                            Item::Call(Invocation {
+                                id: "rev-mem-read".into(),
+                                name: PATIENT_MEMORY_TOOL.into(),
+                                arguments: json!({
+                                    "operation": "read",
+                                    "include_retired": true
+                                })
+                                .to_string(),
+                            }),
+                            Item::Call(Invocation {
+                                id: "rev-search-lithium".into(),
+                                name: SEARCH_TOOL.into(),
+                                arguments: json!({
+                                    "query": "lithium"
+                                })
+                                .to_string(),
+                            }),
+                            Item::Call(Invocation {
+                                id: "rev-read-wrong".into(),
+                                name: READ_TOOL.into(),
+                                arguments: json!({
+                                    "references": [{
+                                        "candidate_id": "cand-wrong-only",
+                                        "revision": "rev-w1",
+                                        "cursor": null
+                                    }],
+                                    "max_result_bytes": 16_384
+                                })
+                                .to_string(),
+                            }),
+                            Item::Call(Invocation {
+                                id: "rev-read-lipid".into(),
+                                name: READ_TOOL.into(),
+                                arguments: json!({
+                                    "references": [{
+                                        "candidate_id": "cand-clean-lipid",
+                                        "revision": "rev-1",
+                                        "cursor": null
+                                    }],
+                                    "max_result_bytes": 16_384
+                                })
+                                .to_string(),
+                            }),
+                        ],
+                        receipt: json!({"turn": 1}),
+                        usage: Default::default(),
+                    })
+                }
+                2 => {
+                    let out_for = |cid: &str| -> String {
+                        request
+                            .items
+                            .iter()
+                            .find_map(|item| match item {
+                                Item::MaterializedResult { call_id, output } if call_id == cid => {
+                                    Some(output.clone())
+                                }
+                                _ => None,
+                            })
+                            .unwrap_or_else(|| panic!("missing output for {cid}"))
+                    };
+                    let mem_out = out_for("rev-mem-read");
+                    assert!(
+                        mem_out.contains("mem-exercise-clean")
+                            && mem_out.contains("mem-retired-ctx"),
+                        "PracticeJobHost include_retired: true must return active and clinically retired memory: {mem_out}"
+                    );
+                    assert!(
+                        !mem_out.to_ascii_lowercase().contains("lithium")
+                            && !mem_out.contains("mem-lithium-wrong"),
+                        "PracticeJobHost include_retired: true must never return EnteredInError memory: {mem_out}"
+                    );
+                    assert!(
+                        !out_for("rev-search-lithium")
+                            .to_ascii_lowercase()
+                            .contains("lithium")
+                    );
+                    assert!(
+                        !out_for("rev-read-wrong")
+                            .to_ascii_lowercase()
+                            .contains("lithium")
+                    );
+
+                    let complete = CompleteReviewArgs {
+                        disposition: CompleteReviewDisposition::Assessed {
+                            summary: "LDL cholesterol 98 mg/dL at goal.".into(),
+                        },
+                        citations: vec![ExactRecordReference {
+                            candidate_id: "cand-clean-lipid".into(),
+                            revision: "rev-1".into(),
+                        }],
+                        basis_and_limitations: "Clinic EHR lipid panel dated 2026-11-09.".into(),
+                        unfinished_work: vec![],
+                    };
+                    Ok(Turn {
+                        items: vec![Item::Call(Invocation {
+                            id: "rev-complete".into(),
+                            name: COMPLETE_PATIENT_REVIEW_TOOL.into(),
+                            arguments: serde_json::to_string(&complete).unwrap(),
+                        })],
+                        receipt: json!({"turn": 2}),
+                        usage: Default::default(),
+                    })
+                }
+                3 => Ok(Turn {
+                    items: vec![Item::assistant("Completed lipid review.")],
+                    receipt: json!({"turn": 3}),
+                    usage: Default::default(),
+                }),
+                other => panic!("unexpected review turn {other}"),
+            }
+        }
+    }
+
+    let mut review_host = PracticeJobHost {
+        store: store.clone(),
+        claim: review_claim,
+        authority: auth.as_ref(),
+    };
+    review_host
+        .run(
+            &mut VerifyReviewContextAndToolsProvider { turn: 0 },
+            engine::RunLimits::default(),
+            &engine::Cancellation::default(),
         )
         .await
         .unwrap();

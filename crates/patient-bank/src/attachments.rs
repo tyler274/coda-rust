@@ -2,7 +2,11 @@
 //! scans for deterministic qualification of multimodal attachment and paged
 //! document reading without real patient data.
 
+use std::io::Write as _;
+
 use base64::Engine as _;
+use flate2::{Compression, write::ZlibEncoder};
+use image::codecs::jpeg::JpegEncoder;
 use serde::{Deserialize, Serialize};
 use serde_json::{Value, json};
 use sha2::{Digest, Sha256};
@@ -274,8 +278,38 @@ pub const RASTER_ALPHABET: &[char] = &[
     '-', '/', '.', ',', '%', '(', ')', '+', '#',
 ];
 
-/// Renders `lines` of clinical text into a valid RFC-2083 8-bit grayscale PNG image.
-pub fn render_clinical_png(lines: &[&str], quality: ScanQuality) -> Vec<u8> {
+/// RFC-2083 scanline filter selection for synthetic PNG generation.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum PngScanlineFilter {
+    /// Filter type 0 (`None`).
+    None,
+    /// Filter type 1 (`Sub`).
+    Sub,
+    /// Filter type 2 (`Up`).
+    Up,
+    /// Filter type 3 (`Avg`).
+    Avg,
+    /// Filter type 4 (`Paeth`).
+    Paeth,
+}
+
+impl PngScanlineFilter {
+    const fn into_png_filter(self) -> png::Filter {
+        match self {
+            Self::None => png::Filter::NoFilter,
+            Self::Sub => png::Filter::Sub,
+            Self::Up => png::Filter::Up,
+            Self::Avg => png::Filter::Avg,
+            Self::Paeth => png::Filter::Paeth,
+        }
+    }
+}
+
+/// Renders `lines` of clinical text into an 8-bit grayscale `(width, height, pixels)` buffer.
+pub fn render_clinical_grayscale_pixels(
+    lines: &[&str],
+    quality: ScanQuality,
+) -> (u32, u32, Vec<u8>) {
     const MARGIN_X: usize = 6;
     const MARGIN_Y: usize = 6;
     const CELL_W: usize = 6; // 5px glyph + 1px spacing
@@ -322,174 +356,72 @@ pub fn render_clinical_png(lines: &[&str], quality: ScanQuality) -> Vec<u8> {
         }
     }
 
-    encode_grayscale_png(width as u32, height as u32, &pixels)
+    (
+        u32::try_from(width).expect("raster width fits u32"),
+        u32::try_from(height).expect("raster height fits u32"),
+        pixels,
+    )
 }
 
-/// Encodes an 8-bit grayscale raster into a valid RFC-2083 PNG byte stream.
+/// Renders `lines` of clinical text into a deflate-compressed RFC-2083 8-bit grayscale PNG image.
+pub fn render_clinical_png(lines: &[&str], quality: ScanQuality) -> Vec<u8> {
+    let (width, height, pixels) = render_clinical_grayscale_pixels(lines, quality);
+    encode_grayscale_png(width, height, &pixels)
+}
+
+/// Encodes an 8-bit grayscale raster into a deflate-compressed RFC-2083 PNG byte stream
+/// using Paeth scanline filtering.
 pub fn encode_grayscale_png(width: u32, height: u32, pixels: &[u8]) -> Vec<u8> {
+    encode_grayscale_png_filtered(width, height, pixels, PngScanlineFilter::Paeth)
+}
+
+/// Encodes an 8-bit grayscale raster into a deflate-compressed RFC-2083 PNG byte stream
+/// with the requested scanline filter.
+pub fn encode_grayscale_png_filtered(
+    width: u32,
+    height: u32,
+    pixels: &[u8],
+    filter: PngScanlineFilter,
+) -> Vec<u8> {
     let w = width as usize;
     let h = height as usize;
     assert_eq!(pixels.len(), w * h, "grayscale pixel buffer size mismatch");
 
-    let mut raw_scanlines = Vec::with_capacity(h * (w + 1));
-    for row in 0..h {
-        raw_scanlines.push(0_u8); // Filter type 0 (None)
-        raw_scanlines.extend_from_slice(&pixels[row * w..(row + 1) * w]);
+    let mut out = Vec::new();
+    {
+        let mut encoder = png::Encoder::new(&mut out, width, height);
+        encoder.set_color(png::ColorType::Grayscale);
+        encoder.set_depth(png::BitDepth::Eight);
+        encoder.set_compression(png::Compression::Balanced);
+        encoder.set_filter(filter.into_png_filter());
+        let mut writer = encoder.write_header().expect("valid PNG header");
+        writer
+            .write_image_data(pixels)
+            .expect("valid PNG image data");
     }
-
-    let zlib_data = zlib_store(&raw_scanlines);
-
-    let mut out = Vec::with_capacity(64 + zlib_data.len());
-    out.extend_from_slice(b"\x89PNG\r\n\x1a\n");
-
-    let mut ihdr = Vec::with_capacity(13);
-    ihdr.extend_from_slice(&width.to_be_bytes());
-    ihdr.extend_from_slice(&height.to_be_bytes());
-    ihdr.push(8); // bit depth: 8
-    ihdr.push(0); // color type: 0 (grayscale)
-    ihdr.push(0); // compression: deflate
-    ihdr.push(0); // filter: adaptive
-    ihdr.push(0); // interlace: none
-    write_png_chunk(&mut out, b"IHDR", &ihdr);
-    write_png_chunk(&mut out, b"IDAT", &zlib_data);
-    write_png_chunk(&mut out, b"IEND", &[]);
     out
 }
 
-fn write_png_chunk(out: &mut Vec<u8>, chunk_type: &[u8; 4], data: &[u8]) {
-    let len = u32::try_from(data.len()).expect("PNG chunk fits u32");
-    out.extend_from_slice(&len.to_be_bytes());
-    out.extend_from_slice(chunk_type);
-    out.extend_from_slice(data);
-    let mut crc_input = Vec::with_capacity(4 + data.len());
-    crc_input.extend_from_slice(chunk_type);
-    crc_input.extend_from_slice(data);
-    out.extend_from_slice(&crc32_ieee(&crc_input).to_be_bytes());
-}
-
-fn zlib_store(raw: &[u8]) -> Vec<u8> {
-    let mut out = Vec::with_capacity(raw.len() + (raw.len() / 65_535 + 1) * 5 + 6);
-    out.push(0x78); // CMF: deflate, 32K window
-    out.push(0x01); // FLG: check bits so (0x78*256 + 0x01) % 31 == 0
-
-    if raw.is_empty() {
-        out.push(0x01); // BFINAL=1, BTYPE=00
-        out.extend_from_slice(&0_u16.to_le_bytes());
-        out.extend_from_slice(&(!0_u16).to_le_bytes());
-    } else {
-        let chunks: Vec<&[u8]> = raw.chunks(65_535).collect();
-        for (idx, chunk) in chunks.iter().enumerate() {
-            let is_last = idx + 1 == chunks.len();
-            out.push(u8::from(is_last));
-            let len = u16::try_from(chunk.len()).expect("chunk <= 65535");
-            out.extend_from_slice(&len.to_le_bytes());
-            out.extend_from_slice(&(!len).to_le_bytes());
-            out.extend_from_slice(chunk);
-        }
-    }
-
-    out.extend_from_slice(&adler32(raw).to_be_bytes());
-    out
-}
-
-fn adler32(data: &[u8]) -> u32 {
-    const MOD_ADLER: u32 = 65_521;
-    let mut a: u32 = 1;
-    let mut b: u32 = 0;
-    for &byte in data {
-        a = (a + u32::from(byte)) % MOD_ADLER;
-        b = (b + a) % MOD_ADLER;
-    }
-    (b << 16) | a
-}
-
-fn crc32_ieee(data: &[u8]) -> u32 {
-    let mut crc: u32 = 0xFFFF_FFFF;
-    for &byte in data {
-        crc ^= u32::from(byte);
-        for _ in 0..8 {
-            if crc & 1 != 0 {
-                crc = (crc >> 1) ^ 0xEDB8_8320;
-            } else {
-                crc >>= 1;
-            }
-        }
-    }
-    !crc
-}
-
-/// Renders a valid baseline JFIF/JPEG clinical photo carrying an embedded
-/// grayscale raster frame so JPEG validation and local pixel OCR both operate
-/// on the self-contained image bytes.
+/// Renders a standard ISO/IEC 10918-1 baseline DCT/Huffman grayscale JPEG clinical photo.
 pub fn render_clinical_jpeg(lines: &[&str], quality: ScanQuality) -> Vec<u8> {
-    let png_raster = render_clinical_png(lines, quality);
-    // Extract exact width/height from IHDR bytes 16..24.
-    let width = u16::try_from(u32::from_be_bytes([
-        png_raster[16],
-        png_raster[17],
-        png_raster[18],
-        png_raster[19],
-    ]))
-    .unwrap_or(160);
-    let height = u16::try_from(u32::from_be_bytes([
-        png_raster[20],
-        png_raster[21],
-        png_raster[22],
-        png_raster[23],
-    ]))
-    .unwrap_or(64);
-
-    let mut out = Vec::with_capacity(256 + png_raster.len() * 2);
-    // SOI
-    out.extend_from_slice(&[0xFF, 0xD8]);
-    // APP0 JFIF 1.01
-    out.extend_from_slice(&[
-        0xFF, 0xE0, 0x00, 0x10, b'J', b'F', b'I', b'F', 0x00, 0x01, 0x01, 0x01, 0x00, 0x48, 0x00,
-        0x48, 0x00, 0x00,
-    ]);
-    // DQT (table 0, all 16s)
-    out.extend_from_slice(&[0xFF, 0xDB, 0x00, 0x43, 0x00]);
-    out.extend_from_slice(&[16_u8; 64]);
-    // SOF0 (Baseline DCT, 8-bit, height, width, 1 grayscale component)
-    out.extend_from_slice(&[0xFF, 0xC0, 0x00, 0x0B, 0x08]);
-    out.extend_from_slice(&height.to_be_bytes());
-    out.extend_from_slice(&width.to_be_bytes());
-    out.extend_from_slice(&[0x01, 0x01, 0x11, 0x00]);
-    // DHT minimal valid DC + AC tables
-    out.extend_from_slice(&[
-        0xFF, 0xC4, 0x00, 0x14, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    ]);
-    out.extend_from_slice(&[
-        0xFF, 0xC4, 0x00, 0x14, 0x10, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    ]);
-    // Embedded lossless raster frame segment (`APP2` raster band) so local pixel OCR
-    // decodes exact glyph pixels without external native libjpeg bindings.
-    let encoded_raster = base64::engine::general_purpose::STANDARD.encode(&png_raster);
-    let mut app2_payload = b"CODA_RASTER_PNG:".to_vec();
-    app2_payload.extend_from_slice(encoded_raster.as_bytes());
-    for chunk in app2_payload.chunks(60_000) {
-        let seg_len = u16::try_from(chunk.len() + 2).expect("JPEG segment fits u16");
-        out.extend_from_slice(&[0xFF, 0xE2]);
-        out.extend_from_slice(&seg_len.to_be_bytes());
-        out.extend_from_slice(chunk);
-    }
-    // SOS + minimal entropy byte + EOI
-    out.extend_from_slice(&[
-        0xFF, 0xDA, 0x00, 0x08, 0x01, 0x01, 0x00, 0x00, 0x3F, 0x00, 0x7F,
-    ]);
-    out.extend_from_slice(&[0xFF, 0xD9]);
+    let (width, height, pixels) = render_clinical_grayscale_pixels(lines, quality);
+    let mut out = Vec::new();
+    let mut encoder = JpegEncoder::new_with_quality(&mut out, 98);
+    encoder
+        .encode(&pixels, width, height, image::ExtendedColorType::L8)
+        .expect("valid baseline JPEG encode");
     out
 }
 
 /// Page encoding mode inside a synthetic multi-page PDF-1.4 document.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum PdfPageEncoding {
-    /// Native PDF text operators (`BT /F1 11 Tf ... Tj ET`).
+    /// Native PDF text operators (`BT /F1 11 Tf ... Tj ET`) compressed with `/FlateDecode`.
     NativeText,
-    /// Image-only scanned page carrying a raster bitmap without PDF text operators.
+    /// Image-only scanned page carrying an `/XObject /Subtype /Image` grayscale stream compressed with `/FlateDecode`.
     RasterScan(ScanQuality),
+    /// Image-only scanned page carrying an `/XObject /Subtype /Image` baseline JPEG stream compressed with `/DCTDecode`.
+    JpegScan(ScanQuality),
 }
 
 /// Specification for one page in [`render_multipage_pdf`].
@@ -497,43 +429,57 @@ pub enum PdfPageEncoding {
 pub struct PdfPageSpec {
     /// Lines appearing on this page.
     pub lines: Vec<String>,
-    /// Whether this page uses native PDF text operators or a raster scan image.
+    /// Whether this page uses native PDF text operators or an image XObject scan.
     pub encoding: PdfPageEncoding,
 }
 
-/// Renders a valid ISO 32000 PDF-1.4 document with an exact byte-offset `xref`
-/// table and `1..=pages.len()` page tree.
+fn zlib_compress(raw: &[u8]) -> Vec<u8> {
+    let mut encoder = ZlibEncoder::new(Vec::new(), Compression::default());
+    encoder.write_all(raw).expect("in-memory zlib write");
+    encoder.finish().expect("in-memory zlib finish")
+}
+
+fn build_flate_stream_object(extra_dict_entries: &str, raw_stream: &[u8]) -> Vec<u8> {
+    let compressed = zlib_compress(raw_stream);
+    let header = if extra_dict_entries.trim().is_empty() {
+        format!(
+            "<< /Filter /FlateDecode /Length {} >>\nstream\n",
+            compressed.len()
+        )
+    } else {
+        format!(
+            "<< {} /Filter /FlateDecode /Length {} >>\nstream\n",
+            extra_dict_entries.trim(),
+            compressed.len()
+        )
+    };
+    let mut obj = header.into_bytes();
+    obj.extend_from_slice(&compressed);
+    obj.extend_from_slice(b"\nendstream");
+    obj
+}
+
+/// Renders a valid ISO 32000 PDF-1.4 document with `/FlateDecode` compressed streams,
+/// standard `/Subtype /Image` XObjects for scanned pages, and an exact byte-offset `xref` table.
 pub fn render_multipage_pdf(pages: &[PdfPageSpec]) -> Vec<u8> {
     assert!(!pages.is_empty(), "PDF requires at least one page");
     let page_count = pages.len();
-    // Object numbering:
-    // 1: Catalog
-    // 2: Pages
-    // 3: Font F1
-    // For page index i (0..page_count):
-    //   page_obj = 4 + i * 2
-    //   contents_obj = 5 + i * 2
-    let total_objects = 3 + page_count * 2;
-    let mut bodies: Vec<Vec<u8>> = Vec::with_capacity(total_objects);
+    let mut bodies: Vec<Vec<u8>> = Vec::with_capacity(3 + page_count * 3);
 
+    // 1: Catalog, 2: Pages placeholder, 3: Helvetica Font
     bodies.push(b"<< /Type /Catalog /Pages 2 0 R >>".to_vec());
-
-    let kids: Vec<String> = (0..page_count)
-        .map(|i| format!("{} 0 R", 4 + i * 2))
-        .collect();
-    bodies.push(
-        format!(
-            "<< /Type /Pages /Kids [{}] /Count {} >>",
-            kids.join(" "),
-            page_count
-        )
-        .into_bytes(),
-    );
-
+    bodies.push(Vec::new());
     bodies.push(b"<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>".to_vec());
 
+    let mut page_obj_ids = Vec::with_capacity(page_count);
+
     for page in pages {
-        let stream_bytes = match page.encoding {
+        let page_obj_idx = bodies.len();
+        let page_obj_id = page_obj_idx + 1;
+        bodies.push(Vec::new());
+        page_obj_ids.push(page_obj_id);
+
+        match page.encoding {
             PdfPageEncoding::NativeText => {
                 let mut ops = String::from("BT\n/F1 11 Tf\n54 738 Td\n");
                 for (idx, line) in page.lines.iter().enumerate() {
@@ -545,50 +491,81 @@ pub fn render_multipage_pdf(pages: &[PdfPageSpec]) -> Vec<u8> {
                     ops.push_str(") Tj\n");
                 }
                 ops.push_str("ET\n");
-                ops.into_bytes()
+
+                let contents_obj_id = bodies.len() + 1;
+                bodies.push(build_flate_stream_object("", ops.as_bytes()));
+                bodies[page_obj_idx] = format!(
+                    "<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R >> >> /Contents {contents_obj_id} 0 R >>"
+                )
+                .into_bytes();
             }
             PdfPageEncoding::RasterScan(quality) => {
                 let line_refs: Vec<&str> = page.lines.iter().map(String::as_str).collect();
-                let png_bytes = render_clinical_png(&line_refs, quality);
-                let width = u32::from_be_bytes([
-                    png_bytes[16],
-                    png_bytes[17],
-                    png_bytes[18],
-                    png_bytes[19],
-                ]);
-                let height = u32::from_be_bytes([
-                    png_bytes[20],
-                    png_bytes[21],
-                    png_bytes[22],
-                    png_bytes[23],
-                ]);
-                let encoded_png = base64::engine::general_purpose::STANDARD.encode(&png_bytes);
-                format!(
-                    "q\n612 0 0 792 0 0 cm\nBI\n/W {width}\n/H {height}\n/CS /DeviceGray\n/BPC 8\n/F /ASCIIBase64PngScan\nID\n{encoded_png}\nEI\nQ\n"
+                let (width, height, pixels) = render_clinical_grayscale_pixels(&line_refs, quality);
+
+                let contents_obj_id = bodies.len() + 1;
+                bodies.push(build_flate_stream_object(
+                    "",
+                    b"q\n612 0 0 792 0 0 cm\n/Im0 Do\nQ\n",
+                ));
+
+                let image_obj_id = bodies.len() + 1;
+                let image_dict = format!(
+                    "/Type /XObject /Subtype /Image /Width {width} /Height {height} /ColorSpace /DeviceGray /BitsPerComponent 8"
+                );
+                bodies.push(build_flate_stream_object(&image_dict, &pixels));
+
+                bodies[page_obj_idx] = format!(
+                    "<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R >> /XObject << /Im0 {image_obj_id} 0 R >> >> /Contents {contents_obj_id} 0 R >>"
                 )
-                .into_bytes()
+                .into_bytes();
             }
-        };
+            PdfPageEncoding::JpegScan(quality) => {
+                let line_refs: Vec<&str> = page.lines.iter().map(String::as_str).collect();
+                let (width, height, pixels) = render_clinical_grayscale_pixels(&line_refs, quality);
+                let mut jpeg_bytes = Vec::new();
+                JpegEncoder::new_with_quality(&mut jpeg_bytes, 98)
+                    .encode(&pixels, width, height, image::ExtendedColorType::L8)
+                    .expect("valid JPEG scan XObject");
 
-        let contents_obj_id = 5 + bodies.len().saturating_sub(3);
-        let page_dict = format!(
-            "<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R >> >> /Contents {contents_obj_id} 0 R >>"
-        );
-        bodies.push(page_dict.into_bytes());
+                let contents_obj_id = bodies.len() + 1;
+                bodies.push(build_flate_stream_object(
+                    "",
+                    b"q\n612 0 0 792 0 0 cm\n/Im0 Do\nQ\n",
+                ));
 
-        let mut content_obj =
-            format!("<< /Length {} >>\nstream\n", stream_bytes.len()).into_bytes();
-        content_obj.extend_from_slice(&stream_bytes);
-        content_obj.extend_from_slice(b"\nendstream");
-        bodies.push(content_obj);
+                let image_obj_id = bodies.len() + 1;
+                let mut image_obj = format!(
+                    "<< /Type /XObject /Subtype /Image /Width {width} /Height {height} /ColorSpace /DeviceGray /BitsPerComponent 8 /Filter /DCTDecode /Length {} >>\nstream\n",
+                    jpeg_bytes.len()
+                )
+                .into_bytes();
+                image_obj.extend_from_slice(&jpeg_bytes);
+                image_obj.extend_from_slice(b"\nendstream");
+                bodies.push(image_obj);
+
+                bodies[page_obj_idx] = format!(
+                    "<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R >> /XObject << /Im0 {image_obj_id} 0 R >> >> /Contents {contents_obj_id} 0 R >>"
+                )
+                .into_bytes();
+            }
+        }
     }
+
+    let kids: Vec<String> = page_obj_ids.iter().map(|id| format!("{id} 0 R")).collect();
+    bodies[1] = format!(
+        "<< /Type /Pages /Kids [{}] /Count {} >>",
+        kids.join(" "),
+        page_count
+    )
+    .into_bytes();
 
     assemble_pdf_objects(&bodies)
 }
 
 /// Produces a deterministic copy of a multi-page PDF where `corrupted_page_number`
-/// (`1..=page_count`) has a damaged `/Contents` stream while every other page's
-/// object and stream remain intact.
+/// (`1..=page_count`) has a damaged `/FlateDecode` `/Contents` stream while every
+/// other page's compressed object and stream remain intact.
 pub fn corrupt_single_pdf_page(pages: &[PdfPageSpec], corrupted_page_number: u32) -> Vec<u8> {
     let page_count = pages.len();
     assert!(
@@ -622,7 +599,7 @@ pub fn corrupt_single_pdf_page(pages: &[PdfPageSpec], corrupted_page_number: u32
 
         if page_num == corrupted_page_number {
             bodies.push(
-                b"<< /Filter /CorruptFaxCompression /Length 19 >>\nstream\n\xff\x00CORRUPT_PAGE_DATA\nendstream"
+                b"<< /Filter /FlateDecode /Length 19 >>\nstream\n\xff\x00CORRUPT_PAGE_DATA\nendstream"
                     .to_vec(),
             );
         } else {
@@ -636,12 +613,7 @@ pub fn corrupt_single_pdf_page(pages: &[PdfPageSpec], corrupted_page_number: u32
                 ops.push_str(") Tj\n");
             }
             ops.push_str("ET\n");
-            let stream_bytes = ops.into_bytes();
-            let mut content_obj =
-                format!("<< /Length {} >>\nstream\n", stream_bytes.len()).into_bytes();
-            content_obj.extend_from_slice(&stream_bytes);
-            content_obj.extend_from_slice(b"\nendstream");
-            bodies.push(content_obj);
+            bodies.push(build_flate_stream_object("", ops.as_bytes()));
         }
     }
 
@@ -828,7 +800,7 @@ pub fn synthetic_attachment_corpus() -> Vec<SyntheticAttachmentFixture> {
                 "FOLLOW UP PRIMARY CARE IN 7 DAYS".into(),
                 "SCAN PACKET ID HOSP-9921".into(),
             ],
-            encoding: PdfPageEncoding::RasterScan(ScanQuality::Clean),
+            encoding: PdfPageEncoding::JpegScan(ScanQuality::Clean),
         },
     ];
     let scan_bytes = render_multipage_pdf(&scan_pages);

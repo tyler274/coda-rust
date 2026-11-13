@@ -453,8 +453,12 @@ pub struct PatientMemoryEntry {
 pub enum MemorySelection {
     /// Only active entries carried into current clinical reasoning.
     ActiveOnly,
-    /// Active and retired entries alike.
+    /// Active and clinically retired entries (excludes wrong-patient entered-in-error entries).
+    ActiveAndRetired,
+    /// All clinical entries (active and retired), excluding wrong-patient entered-in-error entries.
     All,
+    /// Active, clinically retired, and wrong-patient entered-in-error entries for audit inspection.
+    AuditAll,
 }
 
 /// Typed input for recording or updating a durable patient memory entry.
@@ -544,6 +548,15 @@ pub enum PatientMemoryError {
     /// Database error from SeaORM.
     #[error("{0}")]
     Database(#[from] DbErr),
+}
+
+impl From<super::follow_ups::WithdrawalFenceCheckError> for PatientMemoryError {
+    fn from(err: super::follow_ups::WithdrawalFenceCheckError) -> Self {
+        match err {
+            super::follow_ups::WithdrawalFenceCheckError::Violation(v) => Self::WithdrawnFence(v),
+            super::follow_ups::WithdrawalFenceCheckError::Database(db) => Self::Database(db),
+        }
+    }
 }
 
 /// Pluggable owner for patient memory reads and mutations so chat and background
@@ -750,8 +763,11 @@ impl PatientMemoryOperation for PostgresPatientMemoryOperation {
             MemorySelection::ActiveOnly => {
                 query = query.filter(patient_memory::Column::Status.eq("active"));
             }
-            MemorySelection::All => {}
+            MemorySelection::ActiveAndRetired
+            | MemorySelection::All
+            | MemorySelection::AuditAll => {}
         }
+        let include_entered_in_error = matches!(selection, MemorySelection::AuditAll);
         let rows = query
             .order_by_desc(patient_memory::Column::UpdatedAt)
             .order_by_asc(patient_memory::Column::Id)
@@ -760,14 +776,14 @@ impl PatientMemoryOperation for PostgresPatientMemoryOperation {
         let mut entries = Vec::with_capacity(rows.len());
         for row in rows {
             if let Some(snapshot) = withdrawn_by_id.remove(&row.id) {
-                if selection == MemorySelection::All {
+                if include_entered_in_error {
                     entries.push(snapshot);
                 }
                 continue;
             }
             entries.push(decode_memory_entry(row)?);
         }
-        if selection == MemorySelection::All {
+        if include_entered_in_error {
             for (_, orphan_snapshot) in withdrawn_by_id {
                 entries.push(orphan_snapshot);
             }
@@ -2100,7 +2116,20 @@ impl Store {
         scope: &Scope,
     ) -> Result<PatientStartingContext, DbErr> {
         scope.validate()?;
-        let observation = self.sources(&scope.workspace).await?;
+        let mut observation = self.sources(&scope.workspace).await?;
+        let withdrawal_boundary = super::follow_ups::load_workspace_withdrawal_boundary(
+            &self.db,
+            &scope.practice,
+            &scope.workspace,
+        )
+        .await?;
+        if let Some(boundary) = &withdrawal_boundary {
+            let withdrawn_set: std::collections::BTreeSet<&str> =
+                boundary.candidate_ids.iter().map(String::as_str).collect();
+            observation
+                .sources
+                .retain(|source| !withdrawn_set.contains(source.candidate_id.as_str()));
+        }
         let pulls = self
             .source_pulls(std::slice::from_ref(&scope.workspace))
             .await?
@@ -2213,12 +2242,7 @@ impl Store {
             .await?;
 
         if understanding.is_none()
-            && let Some(boundary) = super::follow_ups::load_workspace_withdrawal_boundary(
-                &self.db,
-                &scope.practice,
-                &scope.workspace,
-            )
-            .await?
+            && let Some(boundary) = &withdrawal_boundary
         {
             recent_work.insert(
                 0,
@@ -2264,7 +2288,7 @@ impl Store {
         let requested_candidates: Option<Vec<String>> = chart
             .candidates()
             .map(|ids| ids.into_iter().map(str::to_owned).collect());
-        let observation = match self.chart_observation(&scope.workspace, &chart).await {
+        let mut observation = match self.chart_observation(&scope.workspace, &chart).await {
             Ok(obs) => obs,
             Err(db_err) => {
                 if db_err.to_string().contains("corrupt source observation")
@@ -2298,6 +2322,20 @@ impl Store {
                 return Err(persistence_failure(db_err));
             }
         };
+        if let Some(boundary) = super::follow_ups::load_workspace_withdrawal_boundary(
+            &self.db,
+            &scope.practice,
+            &scope.workspace,
+        )
+        .await
+        .map_err(persistence_failure)?
+        {
+            let withdrawn_set: std::collections::BTreeSet<&str> =
+                boundary.candidate_ids.iter().map(String::as_str).collect();
+            observation
+                .sources
+                .retain(|source| !withdrawn_set.contains(source.candidate_id.as_str()));
+        }
 
         let check_standing = self
             .dispatch_check_standing(&scope.practice, &scope.workspace)
@@ -2487,7 +2525,7 @@ impl Store {
             return match parsed {
                 MemoryToolCall::Read { include_retired } => {
                     let selection = if include_retired {
-                        MemorySelection::All
+                        MemorySelection::ActiveAndRetired
                     } else {
                         MemorySelection::ActiveOnly
                     };
