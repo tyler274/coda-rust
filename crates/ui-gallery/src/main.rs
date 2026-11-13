@@ -30,15 +30,15 @@ use ui::{
     IndexedSource, KeyHint, ListRow, LiveDot, MeasurementTile, Menu, MenuItem, MenuSection,
     Message, MessageActions, MessageEditor, MessageQueue, MessageState, MessageStatus, Nav,
     NavigationControl, NavigationRow, Notice, PageTitle, Paper, PaperSection, PartRange,
-    Placeholder, PlaceholderShape, Places, Popover, PreviewContent, ProgressBar, Prose, ProseNames,
-    ProsePart, QueuePlace, Quote, RadioGroup, RailCard, Rating, RawRecord, RecordAbout, RecordBody,
+    Placeholder, PlaceholderShape, Places, PreviewContent, ProgressBar, Prose, ProseNames,
+    ProsePart, QueuePlace, RadioGroup, RailCard, Rating, RawRecord, RecordAbout, RecordBody,
     RecordField, RecordStatus, RowFrame, RowGroup, RunningChart, Screen, ScreenFrame, SearchField,
-    SectionHeader, Segmented, Select, SeriesChart, SeriesPoint, SeriesShape, SettingRow, SortOrder,
-    SourceLink, SourcePane, SourceReading, SourceRecord, SourceState, SourceSummary, SourcesButton,
-    Sparkline, Spinner, StatePill, StatusLine, StepState, Suggestion, TabBar, Table, TableRow,
-    Task, TaskList, TaskState, TaskWords, TextField, TextKind, TextPart, Toast, ToggleChip,
-    ToggleRow, ToggleState, Tone, Tooltip, TopBar, TryAgain, Value, VersionSwitch, WorkStep,
-    WorkTrace, WorkingMark, WorkingPresence, use_live_rows, use_screen_stack,
+    SectionHeader, Segmented, Select, SeriesChart, SeriesPoint, SeriesShape, SortOrder, SourceLink,
+    SourcePane, SourceReading, SourceRecord, SourceState, SourceSummary, SourcesButton, Sparkline,
+    Spinner, StatePill, StatusLine, StepState, Suggestion, TabBar, Table, TableRow, Task, TaskList,
+    TaskState, TaskWords, TextField, TextKind, TextPart, Toast, ToggleChip, ToggleRow, ToggleState,
+    Tone, Tooltip, TopBar, TryAgain, Value, VersionSwitch, WorkStep, WorkTrace, WorkingMark,
+    WorkingPresence, use_live_rows, use_screen_stack,
 };
 #[cfg(feature = "web")]
 use wasm_bindgen::{JsCast, closure::Closure};
@@ -197,7 +197,7 @@ const FAMILIES: [Family; 17] = [
                 Part { title: "Screen headings", note: "A screen's title, what it belongs to above it, and its state or source beneath. A record leads with its icon; a screen with no top bar keeps its actions above the title.",
                     HeadingsDemo {}
                 }
-                Part { title: "Pages and forms", note: "A pushed screen's bar, what actually happened said once, a document page, choices and settings as rows, and actions pinned to the foot.",
+                Part { title: "Pages and forms", note: "A pushed screen's bar, what actually happened said once, a document page, choices as rows, and actions pinned to the foot.",
                     PagesDemo {}
                 }
             }
@@ -591,9 +591,9 @@ fn CardDemo() -> Element {
                 overline: "Original record",
                 title: "Visit note",
                 detail: "Northside Clinic · October 15",
-                Quote { text: "Walks twice a week." }
+                "Walks twice a week."
                 Card { tinted: true, overline: "Your later context", footer: "Added October 21",
-                    Quote { text: "I now walk four mornings a week." }
+                    "I now walk four mornings a week."
                 }
             }
             RailCard {
@@ -824,7 +824,6 @@ fn HeadingsDemo() -> Element {
 fn PagesDemo() -> Element {
     let mut sleep = use_signal(|| true);
     let mut visit = use_signal(|| false);
-    let mut reminder = use_signal(|| true);
     rsx! {
         div { class: "gallery-phone",
             TopBar { title: "Review update", back: "Back", on_back: move |_| {}, action: "Edit", on_action: move |_| {} }
@@ -845,7 +844,6 @@ fn PagesDemo() -> Element {
                 ul { class: "row-list",
                     li { Checkbox { label: "Recorded sleep", detail: "Apple Health · October 14–21", checked: sleep(), on_change: move |on| sleep.set(on) } }
                     li { Checkbox { label: "Visit note", detail: "Northside Clinic · October 15", checked: visit(), on_change: move |on| visit.set(on) } }
-                    li { SettingRow { title: "Remind me", detail: "Daily · 10:30 pm", on: reminder(), on_change: move |on| reminder.set(on) } }
                 }
                 Notice { tone: Tone::Error, icon: IconName::Alert, title: "Your changes weren’t saved", detail: "Your draft is still here.",
                     Button { compact: true, "Try saving again" }
@@ -3094,21 +3092,6 @@ fn MenuDemo() -> Element {
                     MenuItem { icon: IconName::Book, checked: sources(), onclick: move |_| sources.set(!sources()), "Show sources" }
                 }
             }
-            Button {
-                variant: ButtonVariant::Quiet,
-                compact: true,
-                opens: "gallery-popover",
-                Icon { name: IconName::Users }
-                "Who can see this"
-            }
-            Popover { id: "gallery-popover", label: "Who can see this",
-                h3 { "Only you" }
-                p { "This conversation is private. Sharing it makes a copy anyone with the link can read." }
-                Button { compact: true, autofocus: true, onclick: move |_| chosen.set(Some("Copy link")),
-                    Icon { name: IconName::Link }
-                    "Copy link"
-                }
-            }
         }
         div { class: "gallery-row gallery-menu-tools",
             for (name, icon, key) in [
@@ -3277,7 +3260,6 @@ fn ApprovalDemo() -> Element {
                 answered: if summary() == ApprovalState::Answered(Answer::Approved) { "You approved sending it." } else { "You said not now." },
                 on_approve: move |_| give(Answer::Approved),
                 on_decline: move |_| give(Answer::Declined),
-                Quote { text: "Potassium rose from 4.9 to 5.4 since the spironolactone dose went to 25 mg on October 2. No repeat level since. Worth a recheck this week?" }
             }
             if let Some(done) = sent() {
                 WorkTrace { label: if done { "Sent the summary" } else { "Sending the summary" }, working: !done,
@@ -4067,7 +4049,6 @@ fn InputsDemo() -> Element {
     let mut sharing = use_signal(|| [true, false, true]);
     let mut reach = use_signal(|| Some(0usize));
     let mut call = use_signal(|| None::<usize>);
-    let mut on = use_signal(|| true);
     let mut instruction = use_signal(String::new);
     let mut email = use_signal(|| "dana@northside".to_owned());
     let mut phone = use_signal(String::new);
@@ -4138,10 +4119,6 @@ fn InputsDemo() -> Element {
                 selected: call(),
                 on_select: move |index| call.set(Some(index)),
                 options: vec![("Mornings", "Before noon").into(), ("Afternoons", "Noon to five").into()],
-            }
-            div { class: "row-list",
-                SettingRow { title: "Share with her care team", detail: "Clinicians at Northside Clinic", on: on(), on_change: move |value| on.set(value) }
-                SettingRow { title: "Share with research", detail: "Set by the practice", on: false, disabled: true, on_change: move |_| {} }
             }
             Select {
                 label: "Visit type",

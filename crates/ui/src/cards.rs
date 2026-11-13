@@ -143,9 +143,3 @@ pub fn RailCard(
         }
     }
 }
-
-/// Words quoted from a record, in the record's own words.
-#[component]
-pub fn Quote(text: String) -> Element {
-    rsx! { blockquote { class: "quote", "{text}" } }
-}

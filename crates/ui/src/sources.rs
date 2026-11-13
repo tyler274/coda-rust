@@ -111,7 +111,7 @@ impl Bounds {
 /// A popover of the host's content that the control named `control` opens, a `Button` whose `opens`
 /// names this `id`, placed as a citation's preview is: on the side of the control with more room,
 /// chosen once per opening, never over the control, its height held to that side, and following the
-/// control as the page moves. It opens and closes as a `Popover` does; the control going out of
+/// control as the page moves. It opens and closes as a `Menu` does; the control going out of
 /// sight closes it too. `label` names it.
 #[component]
 pub(crate) fn PlacedPopover(

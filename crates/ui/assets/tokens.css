@@ -246,10 +246,6 @@
   --control-large-height: 50px;
   /* A control drawn as a mark: a box or ring to choose, an attachment's remove button. */
   --control-mark-size: 22px;
-  /* A switch: its track and the knob that travels it. */
-  --switch-width: 51px;
-  --switch-height: 31px;
-  --switch-knob: 27px;
   /* Tracks: how far something has got, thinner along an attachment's edge; a sheet's handle. */
   --progress-height: 4px;
   --progress-edge-height: 3px;
@@ -306,7 +302,7 @@
   --ease-in-out: cubic-bezier(.45,0,.2,1);
   --ease-exit: cubic-bezier(.4,0,1,1);
   /* Springs: each a whole timing, its settle time and curve, sampled from a damped spring (mass 1, stiffness (2pi / response)^2, damping 4pi x damping fraction / response) until it rests
-     within 0.05% of its travel. Send is a control's mark settling into place, such as a switch's knob (response .35,
+     within 0.05% of its travel. Send is a control's mark settling into place, such as a radio's dot (response .35,
      damping .8, a slight overshoot); arrive is a small mark or surface arriving (smooth, .24); step is a pane or sheet
      taking its place (smooth, .35). Messages and what arrives in a conversation use --motion-arrive and --ease-out.
      A host names one for a transform, as `transform var(--spring-step)`. Exits keep the shorter eases. */

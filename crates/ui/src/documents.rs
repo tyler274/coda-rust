@@ -1,5 +1,5 @@
 //! Pages, forms and their frame: the bar atop a pushed screen,
-//! a document page, choices and settings as rows, the notices that
+//! a document page, choices as rows, the notices that
 //! say what actually happened, small tags, and the actions pinned to a screen's foot.
 
 use dioxus::prelude::*;
@@ -65,28 +65,6 @@ pub fn PaperSection(heading: String, children: Element) -> Element {
         section { class: "paper-section",
             h3 { class: "overline", "{heading}" }
             {children}
-        }
-    }
-}
-
-/// One setting that is on or off: what it does, and a switch.
-#[component]
-pub fn SettingRow(
-    title: String,
-    #[props(default)] detail: Option<String>,
-    on: bool,
-    #[props(default)] disabled: bool,
-    on_change: EventHandler<bool>,
-) -> Element {
-    rsx! {
-        label { class: "setting-row",
-            span { class: "list-row-text",
-                strong { "{title}" }
-                if let Some(detail) = detail {
-                    small { "{detail}" }
-                }
-            }
-            input { class: "switch", r#type: "checkbox", role: "switch", checked: on, disabled, onchange: move |event| on_change.call(event.checked()) }
         }
     }
 }

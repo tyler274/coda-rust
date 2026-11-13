@@ -1,5 +1,5 @@
 //! Overlays: surfaces that stand over the page in the top layer, so nothing beneath covers or clips
-//! them. A popover, menu or tooltip is the browser's own popover, which the stylesheet places
+//! them. A menu or tooltip is the browser's own popover, which the stylesheet places
 //! against what opens it.
 
 use std::sync::atomic::{AtomicUsize, Ordering};
@@ -8,21 +8,11 @@ use dioxus::prelude::*;
 
 use crate::{Icon, IconName, KeyHint, host_attributes, script};
 
-/// A surface of the host's content beside the control that opens it, a `Button` whose `opens`
-/// names this `id`. It opens under the control from its leading edge, flipping above or across
-/// where there isn't room, and follows the control as the page scrolls. Escape, a press elsewhere or
-/// the control again closes it, and focus returns to the control. `label` names it; content marked
-/// `autofocus` takes focus as it opens.
-#[component]
-pub fn Popover(id: String, label: String, children: Element) -> Element {
-    rsx! {
-        div { id, class: "popover", "popover": "auto", role: "dialog", aria_label: label, {children} }
-    }
-}
-
 /// A menu of the host's choices beside the control that opens it, a `Button` whose `opens` names
-/// this `id` and whose `aria_haspopup` is `menu`. It opens and closes as a `Popover` does, with
-/// focus on its first choice when opened from the keys. The arrow keys, Home and End move through the choices, a letter
+/// this `id` and whose `aria_haspopup` is `menu`. It opens under the control from its leading edge,
+/// flipping above or across where there isn't room, and follows the control as the page scrolls.
+/// Escape, a press elsewhere or the control again closes it, and focus returns to the control. It
+/// opens with focus on its first choice when opened from the keys. The arrow keys, Home and End move through the choices, a letter
 /// moves to the next that begins with it, and pointing at one moves there too. Choosing one, or
 /// Tab, closes it. Its choices are `MenuItem`s, grouped by `MenuSection`s.
 #[component]

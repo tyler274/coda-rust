@@ -713,9 +713,9 @@ fn under_reduced_motion_a_closing_popover_fades_without_scaling() {
     browser.watch_page_errors();
     browser.emulate_reduced_motion();
     open(&mut browser, &gallery.url, "overlays", "Overlays");
-    let popover = "document.getElementById('gallery-popover')";
+    let popover = "document.getElementById('gallery-model-menu')";
 
-    browser.press("[popovertarget='gallery-popover']");
+    browser.press("[popovertarget='gallery-model-menu']");
     wait_true(
         &mut browser,
         &format!(

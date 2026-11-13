@@ -38,7 +38,7 @@ pub use agent::{
     WorkTrace,
 };
 pub use attachments::{AttachButton, Attachment, AttachmentState, Attachments};
-pub use cards::{Card, Quote, RailCard};
+pub use cards::{Card, RailCard};
 pub use charts::{
     ChartHeader, Comparison, ComparisonBars, MeasurementTile, RunningChart, SeriesChart,
     SeriesPoint, SeriesShape, Sparkline, Value,
@@ -49,7 +49,7 @@ pub use conversation::{
     HeaderFact, MessageActions, MessageEditor, MessageQueue, MessageStatus, QueuePlace, Suggestion,
     VersionSwitch,
 };
-pub use documents::{FooterActions, Notice, Paper, PaperSection, SettingRow, TopBar};
+pub use documents::{FooterActions, Notice, Paper, PaperSection, TopBar};
 pub use feedback::{FeedbackRating, Rating, ToggleChip};
 pub use icons::{Icon, IconName};
 pub use inputs::{
@@ -58,7 +58,7 @@ pub use inputs::{
 };
 pub use live::{ListedRow, LiveRows, RowFrame, use_live_rows};
 pub use motion::Stylesheet;
-pub use overlays::{ContextMenu, Menu, MenuItem, MenuSection, Popover, Tooltip};
+pub use overlays::{ContextMenu, Menu, MenuItem, MenuSection, Tooltip};
 pub use prose::{Prose, ProseNames, ProsePart};
 pub use sources::{
     CitationPreview, CitedAt, CitedField, CitedPlace, ExpandSource, FieldGroup, FieldValue,
@@ -577,7 +577,7 @@ pub fn Button(
     /// Submits its form instead of acting on its own.
     #[props(default)]
     submit: bool,
-    /// The id of the `Popover` or `Menu` it opens and closes, which stands beside it.
+    /// The id of the `Menu` it opens and closes, which stands beside it.
     #[props(default)]
     opens: Option<String>,
     onclick: Option<EventHandler<MouseEvent>>,
@@ -1138,12 +1138,12 @@ pub fn CitationChip(
 }
 
 /// The one Sources control under a message: a compact pill with its words and how many sources the message has.
-/// It opens the `Popover` named by `opens`, which stands beside it, or acts through `onclick`.
+/// It opens the popover named by `opens`, which stands beside it, or acts through `onclick`.
 #[component]
 pub fn SourcesButton(
     label: String,
     count: usize,
-    /// The id of the `Popover` it opens and closes, which stands beside it.
+    /// The id of the popover it opens and closes, which stands beside it.
     #[props(default)]
     opens: Option<String>,
     onclick: Option<EventHandler<MouseEvent>>,
