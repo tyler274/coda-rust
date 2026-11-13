@@ -805,6 +805,18 @@ async fn now(tx: &sea_orm::DatabaseTransaction) -> Result<i64, DbErr> {
         .try_get("", "now")
 }
 
+/// One look at the process's pool: how long a connection took to come free,
+/// and how many were open and idle just before.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub struct PoolSample {
+    /// Time spent waiting for a connection.
+    pub waited: std::time::Duration,
+    /// Connections the pool held open, at most [`MAX_CONNECTIONS`].
+    pub open: u32,
+    /// Open connections nobody was using.
+    pub idle: u32,
+}
+
 /// The most Postgres connections one physician process holds, its LISTEN
 /// connection included. Every store in the process shares this one pool; the
 /// connection budget in `book/src/gcp.md` ("Physician scaling") derives the
@@ -837,6 +849,26 @@ impl Store {
     /// process holds one pool.
     pub fn connection(&self) -> &DatabaseConnection {
         &self.db
+    }
+
+    /// How long one connection took to come free from the process's pool,
+    /// and how full the pool was just before. Waits up to the pool's acquire
+    /// timeout; a pool that times out returns the error, never a zero wait.
+    pub async fn pool_sample(&self) -> Result<PoolSample, DbErr> {
+        let pool = self.db.get_postgres_connection_pool();
+        let (open, idle) = (pool.size(), pool.num_idle());
+        let started = std::time::Instant::now();
+        let connection = pool
+            .acquire()
+            .await
+            .map_err(|error| DbErr::Conn(sea_orm::RuntimeErr::SqlxError(error.into())))?;
+        let waited = started.elapsed();
+        drop(connection);
+        Ok(PoolSample {
+            waited,
+            open,
+            idle: u32::try_from(idle).unwrap_or(u32::MAX),
+        })
     }
 
     // Display readback now joins several authoritative rows. One read-only

@@ -7,6 +7,8 @@
 //! other combination refuse to start. The profile serves the synthetic practice
 //! behind IAP; it is not a clinical-data qualification.
 
+use std::time::Duration;
+
 /// The only hosted profile this binary will start under.
 pub const STAGING_PROFILE: &str = "staging-preview";
 
@@ -148,12 +150,16 @@ impl SimulationPractices {
         self.0.contains(practice)
     }
 
-    /// Whether the attempt after `earlier_attempts` on a turn in `practice`
-    /// fails on purpose: only a rehearsal practice honours a `[fail:K]`
-    /// marker in its message (see [`marked_attempt_fails`]). A real practice
-    /// never does, and a production process has no rehearsal practices.
-    pub fn rehearsed_failure(&self, practice: &str, input: &str, earlier_attempts: u32) -> bool {
-        self.contains(practice) && marked_attempt_fails(earlier_attempts, input)
+    /// What the attempt after `earlier_attempts` on a turn in `practice` does
+    /// on purpose. Only a rehearsal practice honours the markers in its
+    /// message (see [`Rehearsal::of`]); a real practice never does, and a
+    /// production process has no rehearsal practices.
+    pub fn rehearsal(&self, practice: &str, input: &str, earlier_attempts: u32) -> Rehearsal {
+        if self.contains(practice) {
+            Rehearsal::of(input, earlier_attempts)
+        } else {
+            Rehearsal::default()
+        }
     }
 
     /// Admits a scenario id sent by a session in `practice`: only a rehearsal
@@ -194,18 +200,59 @@ impl SimulationPractices {
     }
 }
 
-/// Whether the attempt after `earlier_attempts` fails for a message marked
-/// `[fail:K]`: the first K attempts fail. The count is the conversation's
-/// saved attempts on this input, so it survives a worker restart and every
-/// worker instance agrees. Try again keeps the input, so `[fail:5]`
-/// ends the turn failed on its fifth failure and its Try again then succeeds.
-pub fn marked_attempt_fails(earlier_attempts: u32, input: &str) -> bool {
-    marked_failures(input).is_some_and(|failures| earlier_attempts < failures)
+/// The longest `[hold:S]` a rehearsal attempt honours.
+pub const MAX_REHEARSED_HOLD: Duration = Duration::from_secs(120);
+
+/// What one rehearsal attempt does on purpose before it reaches the model.
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
+pub struct Rehearsal {
+    /// How long the attempt waits after its claim, renewing its lease, before
+    /// it goes on. From `[hold:S]`, at most [`MAX_REHEARSED_HOLD`].
+    pub hold: Option<Duration>,
+    /// How the attempt goes on after the hold.
+    pub ending: RehearsedEnding,
 }
 
-/// K from the first `[fail:K]` in `input`, if K is a whole number.
-fn marked_failures(input: &str) -> Option<u32> {
-    let (_, rest) = input.split_once("[fail:")?;
+/// How a rehearsal attempt goes on after its hold.
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
+pub enum RehearsedEnding {
+    /// It runs as any turn does.
+    #[default]
+    Proceed,
+    /// It fails before any model call (`[fail:K]`).
+    Fail,
+    /// The worker process aborts while the attempt holds its lease
+    /// (`[crash:K]`), so only lease expiry can start a successor.
+    Crash,
+}
+
+impl Rehearsal {
+    /// The markers in `input` for the attempt after `earlier_attempts`.
+    /// `[fail:K]` and `[crash:K]` apply to the first K attempts; the count is
+    /// the conversation's saved attempts on this input, so it survives a
+    /// worker restart, every worker instance agrees, and a successor never
+    /// repeats the fault. Try again keeps the input, so `[fail:5]` ends the
+    /// turn failed on its fifth failure and its Try again then succeeds.
+    /// `[hold:S]` holds every attempt. Where both apply, the crash wins.
+    pub fn of(input: &str, earlier_attempts: u32) -> Self {
+        let applies = |name| marker(input, name).is_some_and(|k| earlier_attempts < k);
+        let ending = if applies("crash") {
+            RehearsedEnding::Crash
+        } else if applies("fail") {
+            RehearsedEnding::Fail
+        } else {
+            RehearsedEnding::Proceed
+        };
+        let hold = marker(input, "hold")
+            .filter(|seconds| *seconds > 0)
+            .map(|seconds| Duration::from_secs(seconds.into()).min(MAX_REHEARSED_HOLD));
+        Self { hold, ending }
+    }
+}
+
+/// N from the first `[name:N]` in `input`, if N is a whole number.
+fn marker(input: &str, name: &str) -> Option<u32> {
+    let (_, rest) = input.split_once(&format!("[{name}:"))?;
     let (count, _) = rest.split_once(']')?;
     count.parse().ok()
 }
@@ -645,45 +692,81 @@ mod tests {
         }
     }
 
+    fn ending(input: &str, earlier_attempts: u32) -> RehearsedEnding {
+        Rehearsal::of(input, earlier_attempts).ending
+    }
+
     #[test]
-    fn fail_marker_parses_whole_counts_only() {
-        assert_eq!(marked_failures("Retry [fail:1]"), Some(1));
-        assert_eq!(marked_failures("[fail:5] then text"), Some(5));
-        assert_eq!(marked_failures("Plain turn"), None);
-        assert_eq!(marked_failures("[fail:]"), None);
-        assert_eq!(marked_failures("[fail:-1]"), None);
-        assert_eq!(marked_failures("[fail:2"), None);
-        assert_eq!(marked_failures("[fail:x]"), None);
+    fn markers_parse_whole_counts_only() {
+        assert_eq!(marker("Retry [fail:1]", "fail"), Some(1));
+        assert_eq!(marker("[fail:5] then text", "fail"), Some(5));
+        assert_eq!(marker("[hold:20][crash:1]", "crash"), Some(1));
+        assert_eq!(marker("Plain turn", "fail"), None);
+        for bad in ["[fail:]", "[fail:-1]", "[fail:2", "[fail:x]", "[fail:1.5]"] {
+            assert_eq!(marker(bad, "fail"), None, "{bad}");
+        }
     }
 
     #[test]
     fn fail_marker_fails_the_first_k_saved_attempts() {
         // `[fail:2]` fails its first two attempts, then succeeds for good.
-        assert!(marked_attempt_fails(0, "Retry [fail:2]"));
-        assert!(marked_attempt_fails(1, "Retry [fail:2]"));
-        assert!(!marked_attempt_fails(2, "Retry [fail:2]"));
-        assert!(!marked_attempt_fails(3, "Retry [fail:2]"));
+        assert_eq!(ending("Retry [fail:2]", 0), RehearsedEnding::Fail);
+        assert_eq!(ending("Retry [fail:2]", 1), RehearsedEnding::Fail);
+        assert_eq!(ending("Retry [fail:2]", 2), RehearsedEnding::Proceed);
+        assert_eq!(ending("Retry [fail:2]", 3), RehearsedEnding::Proceed);
         // An unmarked turn never fails, whatever its history.
-        assert!(!marked_attempt_fails(0, "Plain turn"));
-        assert!(!marked_attempt_fails(4, "Plain turn"));
-        assert!(!marked_attempt_fails(0, "[fail:0]"));
+        assert_eq!(Rehearsal::of("Plain turn", 0), Rehearsal::default());
+        assert_eq!(Rehearsal::of("Plain turn", 4), Rehearsal::default());
+        assert_eq!(ending("[fail:0]", 0), RehearsedEnding::Proceed);
     }
 
     #[test]
-    fn only_a_rehearsal_practice_fails_a_marked_turn() {
+    fn crash_marker_aborts_only_the_first_k_attempts_and_wins_over_fail() {
+        assert_eq!(ending("Drill [crash:1]", 0), RehearsedEnding::Crash);
+        assert_eq!(ending("Drill [crash:1]", 1), RehearsedEnding::Proceed);
+        assert_eq!(ending("[fail:2][crash:1]", 0), RehearsedEnding::Crash);
+        assert_eq!(ending("[fail:2][crash:1]", 1), RehearsedEnding::Fail);
+        assert_eq!(ending("[fail:2][crash:1]", 2), RehearsedEnding::Proceed);
+    }
+
+    #[test]
+    fn hold_marker_holds_every_attempt_up_to_the_cap() {
+        let held = Rehearsal::of("[hold:20][crash:1]", 1);
+        assert_eq!(held.hold, Some(Duration::from_secs(20)));
+        assert_eq!(held.ending, RehearsedEnding::Proceed);
+        assert_eq!(
+            Rehearsal::of("[hold:100000]", 0).hold,
+            Some(MAX_REHEARSED_HOLD)
+        );
+        assert_eq!(Rehearsal::of("[hold:0]", 0).hold, None);
+        assert_eq!(Rehearsal::of("[hold:x]", 0).hold, None);
+    }
+
+    #[test]
+    fn only_a_rehearsal_practice_honours_markers() {
         let practices = SimulationPractices::of(["coda-rehearsal-practice"]);
-        assert!(practices.rehearsed_failure("coda-rehearsal-practice", "Drill [fail:1]", 0));
-        assert!(!practices.rehearsed_failure("coda-rehearsal-practice", "Drill [fail:1]", 1));
-        assert!(!practices.rehearsed_failure("coda-rehearsal-practice", "Plain turn", 0));
-        // A real practice never fails, whatever its message says.
-        assert!(!practices.rehearsed_failure("roger-synthetic-practice", "Drill [fail:1]", 0));
-        // Outside the preview profile there are no rehearsal practices, so
-        // nothing fails on purpose.
+        let marked = "Drill [hold:5][crash:1]";
+        assert_eq!(
+            practices.rehearsal("coda-rehearsal-practice", marked, 0),
+            Rehearsal {
+                hold: Some(Duration::from_secs(5)),
+                ending: RehearsedEnding::Crash
+            }
+        );
+        // A real practice never holds or fails, whatever its message says.
+        assert_eq!(
+            practices.rehearsal("roger-synthetic-practice", marked, 0),
+            Rehearsal::default()
+        );
+        // Outside the preview profile there are no rehearsal practices.
         let production = SimulationPractices::from_env(|name| {
             (name == "CODA_HOSTED_PROFILE").then(|| "production".to_owned())
         })
         .unwrap();
-        assert!(!production.rehearsed_failure("coda-rehearsal-practice", "Drill [fail:1]", 0));
+        assert_eq!(
+            production.rehearsal("coda-rehearsal-practice", marked, 0),
+            Rehearsal::default()
+        );
     }
 
     #[test]

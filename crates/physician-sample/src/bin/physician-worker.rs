@@ -42,7 +42,7 @@ use local_product::runtime::{Claim, Conversation, PhysicianHost, RuntimeError, S
 use physician_auth::PostgresAuthStore;
 use physician_bus::{Bus, Event};
 use physician_sample::durable::RuntimeAuthority;
-use physician_sample::hosting::{self, SimulationPractices, is_hosted};
+use physician_sample::hosting::{self, RehearsedEnding, SimulationPractices, is_hosted};
 use serde_json::{Value, json};
 use telemetry::genai::{self, RunContext};
 use tokio::sync::watch;
@@ -88,6 +88,10 @@ async fn run() -> Result<(), hosting::StartupError> {
     // Cloud Run is where the gauges have a project to go to.
     if std::env::var("K_SERVICE").is_ok() {
         tokio::spawn(signals::run(worker.store.clone(), stopped.clone()));
+    }
+    if std::env::var("K_SERVICE").is_ok() || std::env::var("PHYSICIAN_WORKER_POOL_SAMPLES").is_ok()
+    {
+        tokio::spawn(signals::pool_samples(worker.store.clone(), stopped.clone()));
     }
     let work = tokio::spawn(pull::run(Arc::clone(&worker), stopped));
     let served = axum::serve(listener, router(worker))
@@ -219,21 +223,50 @@ async fn chat_attempt(
         &worker.model.roles.chat.adapter,
     );
     genai::record_input(&generation, &input_text);
-    // A rehearsal turn marked `[fail:K]` fails its first K attempts before
-    // any model call, so a drill exercises the real failure path at no cost.
-    if worker.simulation_practices.rehearsed_failure(
-        &claim.scope.practice,
-        &input_text,
-        earlier_attempts,
-    ) {
-        genai::record_error(&generation, Failure::Rehearsed.description());
-        let attempt = Settling {
-            span,
-            generation: &generation,
-            failure: Failure::Rehearsed,
+    // Rehearsal markers act before any model call, so a drill exercises the
+    // real hold, failure and crash paths at no cost.
+    let rehearsal =
+        worker
+            .simulation_practices
+            .rehearsal(&claim.scope.practice, &input_text, earlier_attempts);
+    if let Some(hold) = rehearsal.hold {
+        span.record("coda.rehearsed_hold_ms", hold.as_millis() as u64);
+        let cancel = Cancellation::default();
+        let held = tokio::select! {
+            held = while_owned(
+                claim.lease,
+                STALL,
+                &cancel,
+                || worker.store.renew_claim(&claim),
+                async {
+                    tokio::time::sleep(hold).await;
+                    Ok::<(), harness::engine::Failure>(())
+                },
+            ) => Some(held),
+            () = pull::stopping(stop.clone()) => None,
         };
-        let reason = AttemptFailure::Failed;
-        return settle_attempt(worker, &claim, workspace_id, reason, &attempt).await;
+        match held {
+            None => return released(worker, &claim, span, &generation, &cancel).await,
+            Some(Hosted::Lost) => return lost(span, CHAT_JOB, &claim.attempt),
+            Some(Hosted::Returned(_)) if cancel.is_cancelled() => {
+                return lost(span, CHAT_JOB, &claim.attempt);
+            }
+            Some(Hosted::Returned(_)) => {}
+        }
+    }
+    match rehearsal.ending {
+        RehearsedEnding::Proceed => {}
+        RehearsedEnding::Fail => {
+            genai::record_error(&generation, Failure::Rehearsed.description());
+            let attempt = Settling {
+                span,
+                generation: &generation,
+                failure: Failure::Rehearsed,
+            };
+            let reason = AttemptFailure::Failed;
+            return settle_attempt(worker, &claim, workspace_id, reason, &attempt).await;
+        }
+        RehearsedEnding::Crash => rehearsed_crash(&worker.store, &claim).await,
     }
     let provider = worker.model.provider(worker.quota.clone()).await;
     drop(input_text);
@@ -303,6 +336,34 @@ async fn chat_attempt(
             settle_attempt(worker, &host.claim, workspace_id, reason, &attempt).await
         }
     }
+}
+
+/// A rehearsal attempt marked `[crash:K]`: the process aborts while the
+/// attempt holds its lease, with nothing settled or handed back, so only
+/// lease expiry lets another worker take the turn. The receipt line names
+/// the process and the lease it leaves, and is written before the abort.
+async fn rehearsed_crash(store: &Store, claim: &Claim) -> ! {
+    let attempt = store
+        .read(&claim.scope)
+        .await
+        .ok()
+        .flatten()
+        .and_then(|state| {
+            state
+                .attempts
+                .into_iter()
+                .find(|attempt| attempt.id == claim.attempt)
+        });
+    tracing::error!(
+        event = "physician.worker.rehearsed_crash",
+        process.pid = std::process::id(),
+        service.revision = std::env::var("K_REVISION").ok().as_deref(),
+        coda.run_id = claim.attempt.as_str(),
+        coda.work_id = attempt.as_ref().map(|attempt| attempt.work.as_str()),
+        coda.lease_expires_unix = attempt.as_ref().map(|attempt| attempt.expires),
+        "physician worker aborting on a rehearsal crash marker"
+    );
+    std::process::abort()
 }
 
 /// This worker is stopping: the attempt is cancelled and handed back as

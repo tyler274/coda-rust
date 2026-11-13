@@ -78,6 +78,40 @@ impl std::fmt::Display for ErrorChain<'_> {
     }
 }
 
+/// How often a hosted worker logs a look at its own pool.
+const POOL_INTERVAL: Duration = Duration::from_secs(5);
+
+/// Logs `physician.worker.pool_sample` every [`POOL_INTERVAL`] until the
+/// worker stops: how long one connection took to come free and how full the
+/// pool was, so a burst shows whether turns waited on Postgres connections.
+/// A sample that times out logs its failure class, never a zero wait.
+pub(super) async fn pool_samples(store: Store, stop: watch::Receiver<bool>) {
+    let mut tick = tokio::time::interval(POOL_INTERVAL);
+    tick.set_missed_tick_behavior(tokio::time::MissedTickBehavior::Delay);
+    loop {
+        tokio::select! {
+            () = stopping(stop.clone()) => return,
+            _ = tick.tick() => {}
+        }
+        match store.pool_sample().await {
+            Ok(sample) => tracing::info!(
+                event = "physician.worker.pool_sample",
+                pool.wait_ms = u64::try_from(sample.waited.as_millis()).unwrap_or(u64::MAX),
+                pool.open = sample.open,
+                pool.idle = sample.idle,
+                pool.max = local_product::runtime::MAX_CONNECTIONS,
+                "physician worker pool sample"
+            ),
+            Err(error) => tracing::warn!(
+                event = "physician.worker.pool_sample",
+                error.type = DbFailure::of(&error).error_type(),
+                error = %ErrorChain(&error),
+                "physician worker pool sample failed"
+            ),
+        }
+    }
+}
+
 /// The project and instance the gauges are written for.
 struct Target {
     client: Client,

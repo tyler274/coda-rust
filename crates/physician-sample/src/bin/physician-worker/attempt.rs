@@ -126,6 +126,7 @@ pub(super) fn span(kind: DeliveryKind, job: &'static str, origin: Option<&TraceC
         coda.predecessor_run_id = Empty,
         coda.input_revision = Empty,
         coda.attempt_number = Empty,
+        coda.rehearsed_hold_ms = Empty,
         coda.outcome = Empty,
         otel.status_code = Empty,
         otel.status_description = Empty,
