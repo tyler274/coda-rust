@@ -154,7 +154,7 @@ Each tool result has an inline limit. A result under it goes to the model whole.
 - **Every job in a product can list and open every skill the product has.** Jobs differ in their system prompt and in the skills loaded at the start.
 - **Reading a skill gives no permission.**
 - **The skill package is frozen with the accepted work,** so recovery reads the same version.
-- **Chat** starts small and finds what it needs.
+- **Chat** starts small, with only the skills nearly every answer needs, and finds the rest.
 - **Background work** starts from its assignment, gets all the product's tools, and can preload the skills its assignment always needs, as Hermes's scheduled jobs do.
 - **Text the model reads** has no ticket numbers or porting notes.
 - **Each piece of guidance lives in one place:** the system prompt or a skill, not both.
@@ -365,7 +365,7 @@ Reply text:
   - **Values** are adjusted from traces.
 - **Provider.** Every product streams from the provider.
   - The completed output item is the only source of a turn's content. Streamed pieces are a live preview, and the harness ignores events it doesn't use, as Codex, Pi, OpenClaw and Hermes do. Output items and content parts it doesn't know are skipped the same way.
-  - A refusal from the model is its answer and is shown as text, as Hermes, OpenClaw and Pi do.
+  - A refusal from the model is read as the text of its turn, as Hermes, OpenClaw and Pi do. The product decides what a turn of text does: Chords chat returns it with feedback, because only a finish reaches the physician.
   - If a stream goes silent, the harness tries again after the same idle timeout Codex uses.
   - Provider problems before output that another try can fix are retried in the run and don't count as a failed attempt.
   - A reply the provider filtered, or a provider error that another try can't fix, holds the run as blocked by the provider, with its reason. The same request is not sent again. All four references stop and show the error.

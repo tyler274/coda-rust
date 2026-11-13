@@ -2,8 +2,11 @@
 //! finishes: the versioned source store, per-attempt pins, refreshes recorded
 //! on the attempt, and ingestion serialized against publication.
 use super::*;
+use crate::physician_sources::adapter::{FHIR_R4_TABLE, file_json_record};
 use crate::physician_sources::{
-    ReadablePart, RecordDate, SourcePatient, SourceRevision, exact_read,
+    Bucket, ChartPullReceipt, ChartRequest, ChartScope, DateRole, FiledDate, READ_TOOL,
+    ReadablePart, RecordDate, RecordVersion, SEARCH_TOOL, SourcePatient, SourceRecordKind,
+    SourceRevision, exact_read,
 };
 use crate::runtime::reply::{DraftStatus, FINISH_TOOL, RevisionCommit, RevisionInput};
 use crate::runtime::sources::SourcePull;
@@ -215,7 +218,7 @@ fn pull(source_id: &str, pulled_at: i64) -> SourcePull {
             sex_or_gender: None,
             medical_record_numbers: vec![],
         },
-        pulled_at,
+        pulled_at: Some(pulled_at),
     }
 }
 
@@ -240,7 +243,7 @@ async fn a_later_pull_replaces_only_that_sources_last_pull() {
 
 #[tokio::test]
 #[ignore = "requires explicit local Postgres"]
-async fn a_chart_delivery_is_one_version_and_withdraws_what_the_source_dropped() {
+async fn a_chart_delivery_is_one_version_and_retains_missing_records() {
     let (store, scope) = setup().await;
     let lab = source(&scope, "lab", "r1", "Potassium 4.1");
     let note = source(&scope, "note", "r1", "Seen in clinic");
@@ -269,23 +272,34 @@ async fn a_chart_delivery_is_one_version_and_withdraws_what_the_source_dropped()
     );
     assert_eq!(store.sources(&scope.workspace).await.unwrap(), first);
 
-    // The source dropped the note and corrected the lab. The other source's
-    // record stays.
+    // The source omitted the note and corrected the lab. Both the omitted note
+    // and the other source's record stay saved, and the pull records `note` as missing.
     let corrected = source(&scope, "lab", "r2", "Potassium 4.3");
+    let receipt = store
+        .record_chart_with_receipt(
+            &scope.workspace,
+            std::slice::from_ref(&corrected),
+            &delivery,
+        )
+        .await
+        .unwrap();
     assert_eq!(
-        store
-            .record_chart(
-                &scope.workspace,
-                std::slice::from_ref(&corrected),
-                &delivery
-            )
-            .await
-            .unwrap(),
-        2
+        receipt,
+        ChartPullReceipt {
+            changed: 1,
+            missing_candidates: vec!["note".into()],
+        }
     );
     let after = store.sources(&scope.workspace).await.unwrap();
     assert_eq!(after.version, 3);
-    assert_eq!(after.sources, [corrected, message]);
+    assert_eq!(after.sources, [corrected, message, note]);
+    assert_eq!(
+        store
+            .pull_missing_candidates(&scope.workspace, "ehr")
+            .await
+            .unwrap(),
+        vec!["note".to_owned()]
+    );
 
     // The same identity with other bytes is refused, and the pull stays.
     let conflict = source(&scope, "lab", "r2", "Potassium 9.9");
@@ -345,14 +359,10 @@ async fn unchanged_imports_keep_the_version_and_changes_append() {
     assert_eq!(store.record_source(&corrected).await.unwrap(), 3);
     assert_eq!(
         store
-            .record_chart(
-                &scope.workspace,
-                std::slice::from_ref(&corrected),
-                &pull("ehr", 100)
-            )
+            .withdraw_source(&scope.workspace, "note")
             .await
             .unwrap(),
-        1
+        4
     );
     assert_eq!(
         store
@@ -374,10 +384,13 @@ async fn unchanged_imports_keep_the_version_and_changes_append() {
             .await
             .unwrap()
     );
-    store
-        .record_chart(&scope.workspace, &[], &pull("ehr", 100))
-        .await
-        .unwrap();
+    assert_eq!(
+        store
+            .withdraw_source(&scope.workspace, "lab")
+            .await
+            .unwrap(),
+        5
+    );
     assert!(
         store
             .sources(&scope.workspace)
@@ -439,10 +452,13 @@ async fn restart_imports_do_not_rollback_corrections_or_restore_withdrawals() {
         .await
         .unwrap();
     assert_eq!(restarted.sources(&scope.workspace).await.unwrap(), before);
-    store
-        .record_chart(&scope.workspace, &[], &pull("ehr", 100))
-        .await
-        .unwrap();
+    assert_eq!(
+        store
+            .withdraw_source(&scope.workspace, "lab")
+            .await
+            .unwrap(),
+        3
+    );
     let withdrawn = store.sources(&scope.workspace).await.unwrap();
     restarted
         .import_sources(&[original, corrected])
@@ -482,7 +498,7 @@ async fn source_identity_conflicts_are_refused_throughout_history() {
                 .unwrap();
         } else {
             store
-                .record_chart(&scope.workspace, &[], &pull("ehr", 100))
+                .withdraw_source(&scope.workspace, "lab")
                 .await
                 .unwrap();
         }
@@ -666,11 +682,7 @@ async fn a_correction_replaces_the_pinned_revision_and_keeps_the_old_one_on_reco
     let corrected = source(&scope, "lab", "r2", "Potassium 4.2 (repeat)");
     store.record_source(&corrected).await.unwrap();
     store
-        .record_chart(
-            &scope.workspace,
-            std::slice::from_ref(&corrected),
-            &pull("ehr", 100),
-        )
+        .withdraw_source(&scope.workspace, "note")
         .await
         .unwrap();
     let RevisionCommit::SourcesMoved { refresh, sources } = store
@@ -951,11 +963,7 @@ async fn a_source_change_after_a_lost_revision_reaches_the_model_before_its_save
             .unwrap();
         if withdrawn {
             store
-                .record_chart(
-                    &scope.workspace,
-                    std::slice::from_ref(&lab),
-                    &pull("ehr", 100),
-                )
+                .withdraw_source(&scope.workspace, "note")
                 .await
                 .unwrap();
         } else {
@@ -1034,9 +1042,9 @@ async fn a_chart_delivery_says_what_the_source_holds_now() {
     assert_eq!(rolled_back.sources, std::slice::from_ref(&first));
     assert_eq!(rolled_back.version, 3);
 
-    // Dropped, then delivered again with the same bytes.
+    // Withdrawn, then delivered again with the same bytes.
     store
-        .record_chart(&scope.workspace, &[], &delivery)
+        .withdraw_source(&scope.workspace, "lab")
         .await
         .unwrap();
     assert!(
@@ -1145,4 +1153,326 @@ async fn currency_is_read_only_and_renewal_touches_only_the_current_revision_att
     assert_eq!(preserved.failures, state.failures);
     assert_eq!(preserved.attempts[1].status, AttemptStatus::Active);
     assert_eq!(preserved.attempts[1].id, claim.attempt);
+}
+
+#[tokio::test]
+#[ignore = "requires explicit local Postgres"]
+async fn a_record_missing_from_a_later_pull_stays_saved_and_is_recorded_missing() {
+    let (store, scope) = setup().await;
+    let lab = source(&scope, "lab", "r1", "Potassium 4.1");
+    let note = source(&scope, "note", "r1", "Seen in clinic");
+    let first_pull = pull("ehr", 100);
+    let initial = store
+        .record_chart_with_receipt(&scope.workspace, &[lab.clone(), note.clone()], &first_pull)
+        .await
+        .unwrap();
+    assert_eq!(
+        initial,
+        ChartPullReceipt {
+            changed: 2,
+            missing_candidates: vec![],
+        }
+    );
+
+    // Later pull delivers corrected lab and omits `note`: `note` stays saved and is recorded missing.
+    let corrected_lab = source(&scope, "lab", "r2", "Potassium 4.3");
+    let second_pull = pull("ehr", 200);
+    let receipt = store
+        .record_chart_with_receipt(
+            &scope.workspace,
+            std::slice::from_ref(&corrected_lab),
+            &second_pull,
+        )
+        .await
+        .unwrap();
+    assert_eq!(
+        receipt,
+        ChartPullReceipt {
+            changed: 1,
+            missing_candidates: vec!["note".into()],
+        }
+    );
+
+    let after = store.sources(&scope.workspace).await.unwrap();
+    assert_eq!(
+        after.sources,
+        vec![corrected_lab.clone(), note.clone()],
+        "a record missing from a later pull must stay saved"
+    );
+    assert_eq!(
+        store
+            .pull_missing_candidates(&scope.workspace, "ehr")
+            .await
+            .unwrap(),
+        vec!["note".to_owned()]
+    );
+
+    // When a subsequent pull includes `note` again, `missing_candidates` clears.
+    let third_pull = pull("ehr", 300);
+    let recovered = store
+        .record_chart_with_receipt(&scope.workspace, &[corrected_lab, note], &third_pull)
+        .await
+        .unwrap();
+    assert_eq!(
+        recovered,
+        ChartPullReceipt {
+            changed: 0,
+            missing_candidates: vec![],
+        }
+    );
+    assert!(
+        store
+            .pull_missing_candidates(&scope.workspace, "ehr")
+            .await
+            .unwrap()
+            .is_empty()
+    );
+}
+
+#[tokio::test]
+#[ignore = "requires explicit local Postgres"]
+async fn filed_fhir_record_envelope_round_trips_through_postgres_unchanged() {
+    let (store, scope) = setup().await;
+    let raw_ndjson = r#"{"resourceType":"Observation" , "id":"potassium-9", "meta":{"versionId":"3"}, "status":"final", "category":[{"coding":[{"code":"laboratory"}]}], "code":{"coding":[{"system":"http://loinc.org","code":"2823-3","display":"Potassium"}]}, "effectiveDateTime":"2026-08-21T06:15:00-04:00"}"#;
+    let filed = file_json_record(
+        &FHIR_R4_TABLE,
+        &scope.workspace,
+        "ehr",
+        raw_ndjson,
+        Some("https://ehr.example/Observation/potassium-9".into()),
+    )
+    .unwrap();
+
+    store
+        .record_chart(
+            &scope.workspace,
+            std::slice::from_ref(&filed),
+            &pull("ehr", 100),
+        )
+        .await
+        .unwrap();
+
+    let observed = store.sources(&scope.workspace).await.unwrap();
+    assert_eq!(observed.sources.len(), 1);
+    let saved = &observed.sources[0];
+    assert_eq!(saved, &filed);
+    assert_eq!(saved.content.as_bytes(), raw_ndjson.as_bytes());
+    let env = saved.envelope.as_ref().expect("persisted envelope");
+    assert_eq!(env.bucket, Bucket::Results);
+    assert_eq!(
+        env.source_kind,
+        SourceRecordKind {
+            kind: "Observation".into(),
+            category: Some("laboratory".into()),
+        }
+    );
+    assert_eq!(env.version, RecordVersion::Source("3".into()));
+    assert_eq!(env.status.as_deref(), Some("final"));
+    assert_eq!(
+        env.dates,
+        vec![FiledDate {
+            role: DateRole::Effective,
+            field: "effectiveDateTime".into(),
+            value: "2026-08-21T06:15:00-04:00".into(),
+        }]
+    );
+    assert_eq!(
+        env.native_link.as_deref(),
+        Some("https://ehr.example/Observation/potassium-9")
+    );
+}
+
+#[tokio::test]
+#[ignore = "requires explicit local Postgres"]
+async fn table_filed_delivery_reconciles_legacy_unprefixed_aliases_and_keeps_omitted_legacy_records()
+ {
+    let (store, scope) = setup().await;
+    let raw_lab_v1 = r#"{"resourceType":"Observation","id":"potassium-9","meta":{"versionId":"1"},"status":"preliminary","category":[{"coding":[{"code":"laboratory"}]}],"code":{"text":"Potassium 6.1 hemolyzed"},"effectiveDateTime":"2026-08-21T06:15:00-04:00"}"#;
+    let raw_med = r#"{"resourceType":"MedicationRequest","id":"med-1","meta":{"versionId":"1"},"status":"active","medicationCodeableConcept":{"text":"Lisinopril 10 mg"},"authoredOn":"2026-08-01"}"#;
+    let raw_omitted_note = r#"{"resourceType":"DocumentReference","id":"note-omitted","status":"current","description":"Outside clinic note"}"#;
+
+    let legacy_record = |record_type: &str, id: &str, raw: &str| {
+        let candidate_id = format!("{record_type}/{id}");
+        SourceRevision {
+            workspace: scope.workspace.clone(),
+            source_id: "ehr".into(),
+            candidate_id: candidate_id.clone(),
+            revision: crate::sha256_hex(raw.as_bytes()),
+            record_type: record_type.into(),
+            dates: Vec::new(),
+            content: raw.into(),
+            sha256: crate::sha256_hex(raw.as_bytes()),
+            readable_parts: Vec::new(),
+            provenance: serde_json::json!({"native_record": candidate_id}),
+            envelope: None,
+        }
+    };
+
+    let legacy_lab = legacy_record("Observation", "potassium-9", raw_lab_v1);
+    let legacy_med = legacy_record("MedicationRequest", "med-1", raw_med);
+    let legacy_omitted = legacy_record("DocumentReference", "note-omitted", raw_omitted_note);
+
+    let initial = store
+        .record_chart_with_receipt(
+            &scope.workspace,
+            &[
+                legacy_lab.clone(),
+                legacy_med.clone(),
+                legacy_omitted.clone(),
+            ],
+            &pull("ehr", 100),
+        )
+        .await
+        .unwrap();
+    assert_eq!(initial.changed, 3);
+    assert!(initial.missing_candidates.is_empty());
+
+    let pinned_v1 = store.sources(&scope.workspace).await.unwrap();
+    assert_eq!(pinned_v1.version, 1);
+    let claim_v1 = accepted_claim(&store, &scope, "pinned-v1").await;
+    assert_eq!(claim_v1.sources_version, 1);
+
+    // Upgrade to table-filed records (`ehr/{kind}/{id}`), genuinely omitting `DocumentReference/note-omitted`.
+    let filed_lab_v1 =
+        file_json_record(&FHIR_R4_TABLE, &scope.workspace, "ehr", raw_lab_v1, None).unwrap();
+    let filed_med =
+        file_json_record(&FHIR_R4_TABLE, &scope.workspace, "ehr", raw_med, None).unwrap();
+
+    let upgraded = store
+        .record_chart_with_receipt(
+            &scope.workspace,
+            &[filed_lab_v1.clone(), filed_med.clone()],
+            &pull("ehr", 200),
+        )
+        .await
+        .unwrap();
+    assert_eq!(
+        upgraded,
+        ChartPullReceipt {
+            changed: 2,
+            missing_candidates: vec!["DocumentReference/note-omitted".into()],
+        },
+        "reconciled unprefixed aliases are retired cleanly while genuinely omitted legacy records stay reported"
+    );
+    assert_eq!(
+        store
+            .pull_missing_candidates(&scope.workspace, "ehr")
+            .await
+            .unwrap(),
+        vec!["DocumentReference/note-omitted".to_owned()]
+    );
+
+    let at_v2 = store.sources(&scope.workspace).await.unwrap();
+    assert_eq!(at_v2.version, 2);
+    let active_ids: Vec<&str> = at_v2
+        .sources
+        .iter()
+        .map(|s| s.candidate_id.as_str())
+        .collect();
+    assert_eq!(
+        active_ids,
+        vec![
+            "DocumentReference/note-omitted",
+            "ehr/MedicationRequest/med-1",
+            "ehr/Observation/potassium-9",
+        ]
+    );
+
+    // Historical reads at v1 still resolve the unprefixed row byte-for-byte.
+    let historical_v1 = store.sources_at(&scope.workspace, 1).await.unwrap();
+    assert_eq!(historical_v1.sources.len(), 3);
+    let read_v1 = exact_read(
+        &historical_v1.sources,
+        &scope.workspace,
+        &["Observation/potassium-9".into()],
+        16384,
+    )
+    .unwrap();
+    let read_v1_json: serde_json::Value = serde_json::from_str(read_v1.text().unwrap()).unwrap();
+    assert_eq!(read_v1_json["results"][0]["outcome"], "available");
+    assert_eq!(read_v1_json["results"][0]["content"], raw_lab_v1);
+
+    // Repeat pull is a zero-change no-op.
+    let repeat = store
+        .record_chart_with_receipt(
+            &scope.workspace,
+            &[filed_lab_v1, filed_med.clone()],
+            &pull("ehr", 250),
+        )
+        .await
+        .unwrap();
+    assert_eq!(
+        repeat,
+        ChartPullReceipt {
+            changed: 0,
+            missing_candidates: vec!["DocumentReference/note-omitted".into()],
+        }
+    );
+    assert_eq!(store.sources(&scope.workspace).await.unwrap().version, 2);
+
+    // Subsequent correction updates only the prefixed record, leaving zero stale clinical content.
+    let raw_lab_v2 = r#"{"resourceType":"Observation","id":"potassium-9","meta":{"versionId":"2"},"status":"corrected","category":[{"coding":[{"code":"laboratory"}]}],"code":{"text":"Potassium 4.2 repeat"},"effectiveDateTime":"2026-08-21T06:15:00-04:00"}"#;
+    let filed_lab_v2 =
+        file_json_record(&FHIR_R4_TABLE, &scope.workspace, "ehr", raw_lab_v2, None).unwrap();
+    let corrected = store
+        .record_chart_with_receipt(
+            &scope.workspace,
+            &[filed_lab_v2.clone(), filed_med],
+            &pull("ehr", 300),
+        )
+        .await
+        .unwrap();
+    assert_eq!(
+        corrected,
+        ChartPullReceipt {
+            changed: 1,
+            missing_candidates: vec!["DocumentReference/note-omitted".into()],
+        }
+    );
+
+    let at_v3 = store.sources(&scope.workspace).await.unwrap();
+    assert_eq!(at_v3.version, 3);
+    assert!(
+        !at_v3
+            .sources
+            .iter()
+            .any(|s| str::contains(&s.content, "6.1")),
+        "superseded hemolyzed value must not remain active under legacy candidate_id"
+    );
+
+    let search = ChartRequest::parse(
+        SEARCH_TOOL,
+        &serde_json::json!({"query": "potassium", "bucket": null, "record_type": null, "after": null}),
+        ChartScope::Chat,
+    )
+    .unwrap();
+    let search_json: serde_json::Value = serde_json::from_str(
+        search
+            .run(&scope.workspace, at_v3.version, &at_v3.sources)
+            .unwrap()
+            .text()
+            .unwrap(),
+    )
+    .unwrap();
+    let hits = search_json["results"].as_array().unwrap();
+    assert_eq!(hits.len(), 1);
+    assert_eq!(
+        hits[0]["reference"]["candidate_id"],
+        "ehr/Observation/potassium-9"
+    );
+
+    let read = ChartRequest::parse(
+        READ_TOOL,
+        &serde_json::json!({"references": [hits[0]["reference"].clone()], "max_result_bytes": 16384}),
+        ChartScope::Chat,
+    )
+    .unwrap();
+    let read_json: serde_json::Value = serde_json::from_str(
+        read.run(&scope.workspace, at_v3.version, &at_v3.sources)
+            .unwrap()
+            .text()
+            .unwrap(),
+    )
+    .unwrap();
+    assert_eq!(read_json["results"][0]["content"], raw_lab_v2);
 }

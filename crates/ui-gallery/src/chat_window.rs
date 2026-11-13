@@ -11,10 +11,10 @@ use std::time::Duration;
 use dioxus::prelude::*;
 use ui::{
     AnswerEnding, AnswerSources, Author, Basis, Button, ButtonVariant, ChatColumn, ChatHeader,
-    CitationPreview, CitedPlace, Composer, EndAction, Ending, ExpandSource, FeedbackRating, Icon,
-    IconName, KeyHint, ListRow, Located, Message, PreviewContent, Prose, ProsePart, QueuePlace,
-    Rating, RowGroup, SectionHeader, Segmented, SourcePane, SourceReading, SourceState, StepState,
-    WorkStep, WorkTrace,
+    CitationPreview, CitedAt, CitedField, CitedPlace, Composer, EndAction, Ending, ExpandSource,
+    FeedbackRating, Icon, IconName, KeyHint, ListRow, Message, Places, PreviewContent, Prose,
+    ProsePart, QueuePlace, Rating, RowGroup, SectionHeader, Segmented, SourcePane, SourceReading,
+    SourceState, StepState, WorkStep, WorkTrace,
 };
 
 use crate::{
@@ -430,17 +430,17 @@ impl Cite {
 
     fn place(self) -> CitedPlace {
         match self {
-            Cite::Admission => CitedPlace::Passage(
+            Cite::Admission => CitedPlace::Quoted(Places::passage(
                 "Admitted with decompensated heart failure; diuresed 6 kg.".into(),
-            ),
-            Cite::Potassium => CitedPlace::Field {
+            )),
+            Cite::Potassium => CitedPlace::Quoted(Places::field(CitedField {
                 name: "Potassium".into(),
                 value: "4.0 mmol/L".into(),
-            },
-            Cite::Creatinine => CitedPlace::Field {
+            })),
+            Cite::Creatinine => CitedPlace::Quoted(Places::field(CitedField {
                 name: "Creatinine".into(),
                 value: "124 µmol/L".into(),
-            },
+            })),
             Cite::ConsultPage => CitedPlace::Page("Page 2".into()),
         }
     }
@@ -451,11 +451,11 @@ impl Cite {
             Cite::Admission => Some(SourceState::Shown(Box::new(discharge_record(
                 discharge_passage(),
             )))),
-            Cite::Potassium => Some(SourceState::Shown(Box::new(panel_record(Located::Found(
-                "component[0]".into(),
+            Cite::Potassium => Some(SourceState::Shown(Box::new(panel_record(CitedAt::Places(
+                Places::field("component[0]".into()),
             ))))),
-            Cite::Creatinine => Some(SourceState::Shown(Box::new(panel_record(Located::Found(
-                "component[3]".into(),
+            Cite::Creatinine => Some(SourceState::Shown(Box::new(panel_record(CitedAt::Places(
+                Places::field("component[3]".into()),
             ))))),
             Cite::ConsultPage => None,
         }
@@ -475,7 +475,7 @@ fn Mark(cite: Cite, on_open: EventHandler<Cite>) -> Element {
             eyebrow: "Source {index}",
             citation_label: "Source {index}: {title}. Preview source.",
             close_label: "Close source preview",
-            content: PreviewContent::Cited { about: cited.about(), place: cite.place() },
+            content: PreviewContent::Cited { about: cited.about(), place: Some(cite.place()) },
             expand: cite.reading().map(|_| ExpandSource { label: "Expand".into(), on_expand: EventHandler::new(move |_| on_open.call(cite)) }),
             original: cited.original(),
         }

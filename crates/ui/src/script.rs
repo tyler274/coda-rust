@@ -62,6 +62,12 @@ pub(crate) fn jump_to_latest(scroller: &str, smoothly: bool) {
     fire("jumpToLatest", json!([scroller, smoothly]));
 }
 
+/// Shows the reply that just arrived in conversation `scroller` from its top, when its reader
+/// follows the end and the end would take that top out of sight.
+pub(crate) fn reply_arrived(scroller: &str) {
+    fire("replyArrived", json!([scroller]));
+}
+
 /// Has composer `id` take only drags that carry files.
 pub(crate) fn file_drags(id: &str) {
     fire("fileDrags", json!([id]));

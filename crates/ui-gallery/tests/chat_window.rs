@@ -4,13 +4,14 @@
 //! finishes or shows its answer early, progress in the composer, a queued message sent too soon or
 //! lost, a stop that sends, a source that opens in the wrong place or moves the reading, a Sources
 //! list over its button or the composer, a link to the original that scrolls away, a reply that
-//! pulls a reader who had scrolled back, a header rule that stops short of a narrow area, a phone's
-//! working toolbar on two rows, a small table whose results hide their units behind a sideways
-//! scroll, steps that stand open while Coda works, a transcript that jumps or bounces as work
-//! arrives, a message sent with Enter that arrives without motion, a move back or a selection that
-//! the end pulls away, a press ended on the scrollbar or outside the window that leaves the end
-//! unfollowed, a jump to a growing reply that leaps or stops short, a citation preview away from
-//! its citation, and a transcript that eases under reduced motion.
+//! pulls a reader who had scrolled back, a tall reply that arrives showing its end, a header rule
+//! that stops short of a narrow area, a phone's working toolbar on two rows, a small table whose
+//! results hide their units behind a sideways scroll, steps that stand open while Coda works, a
+//! transcript that jumps or bounces as work arrives, a message sent with Enter that arrives without
+//! motion, a move back or a selection that the end pulls away, a press ended on the scrollbar or
+//! outside the window that leaves the end unfollowed, a jump to a growing reply that leaps or stops
+//! short, a citation preview away from its citation, and a transcript that eases under reduced
+//! motion.
 
 // The shared client also carries helpers for journeys this test doesn't walk.
 #[allow(dead_code)]
@@ -396,59 +397,114 @@ fn without_room_the_source_covers_the_transcript_with_back() {
 }
 
 /// A reader scrolled back while a reply arrives stays where they are; the way to the new reply
-/// stands at the column's edge and takes them to the reply's top, focused.
+/// stands centred on the transcript and takes them to the reply's top, focused. At 1280 and 390.
 #[test]
 #[ignore = "browser qualification; run explicitly with --ignored"]
 fn a_reply_leaves_a_reader_who_scrolled_back_and_jump_reaches_it() {
     let gallery = Gallery::start();
+    for (size, width) in [("1280 × 800", 1280), ("390 × 800", 390)] {
+        let mut browser = open_scene(&gallery, AROUND_DESKTOP);
+        choose_stage(&mut browser, size, width);
+
+        ask(&mut browser, "What was her potassium at discharge?");
+        wait_working(&mut browser);
+        scroll_back(&mut browser, 600.0, 150.0);
+        let before = top_turn(&mut browser);
+
+        wait_true_for(
+            &mut browser,
+            &format!("!!document.querySelector('{LAST_TURN} .answer-words')"),
+            "the reply",
+            RUN_TIME,
+        );
+        wait_true(
+            &mut browser,
+            "!!document.querySelector('.scene-stage .jump-to-latest')",
+            "the way to the new reply",
+        );
+        let after = top_turn(&mut browser);
+        assert_eq!(after.0, before.0, "the reply moved the reading at {width}");
+        assert!(
+            (after.1 - before.1).abs() <= 2.0,
+            "the reading moved from {} to {} at {width}",
+            before.1,
+            after.1
+        );
+        let centred = browser.page().evaluate(&format!(
+            "(() => {{ const jump = document.querySelector('.scene-stage .jump-to-latest').getBoundingClientRect(); \
+             const region = document.querySelector('{SCROLLER}').getBoundingClientRect(); \
+             return Math.abs((jump.left + jump.right) / 2 - (region.left + region.right) / 2) <= 1; }})()"
+        ));
+        assert_eq!(
+            centred,
+            Value::Bool(true),
+            "the jump control isn't centred on the transcript at {width}"
+        );
+
+        press(&mut browser, ".scene-stage .jump-to-latest");
+        wait_true(
+            &mut browser,
+            &format!(
+                "(() => {{ const scroller = document.querySelector('{SCROLLER}').getBoundingClientRect(); \
+                 const replies = document.querySelectorAll('{SCROLLER} .message-assistant'); const reply = replies[replies.length - 1]; \
+                 const top = reply.getBoundingClientRect().top; \
+                 return document.activeElement === reply && top >= scroller.top - 2 && top <= scroller.bottom - 48; }})()"
+            ),
+            "the new reply's top in view, focused",
+        );
+        assert_eq!(browser.take_page_errors(), Vec::<String>::new());
+    }
+}
+
+/// A reply taller than the transcript, arriving while the reader follows the end, shows from its
+/// top: its top stands at the transcript's top once motion ends, short of the end, with no way to
+/// the new reply offered and focus still in the composer. Scrolled to the end again, the next
+/// question's working line is in sight. The stage at 390 × 500.
+#[test]
+#[ignore = "browser qualification; run explicitly with --ignored"]
+fn a_reply_taller_than_the_transcript_arrives_at_its_top() {
+    let gallery = Gallery::start();
     let mut browser = open_scene(&gallery, AROUND_DESKTOP);
+    choose_stage(&mut browser, "390 × 800", 390);
+    browser.page().evaluate(
+        "(() => { const stage = document.querySelector('.scene-stage'); stage.style.height = '500px'; \
+         stage.scrollIntoView({ block: 'start', behavior: 'instant' }); return 0; })()",
+    );
+    std::thread::sleep(Duration::from_millis(300));
 
     ask(&mut browser, "What was her potassium at discharge?");
     wait_working(&mut browser);
-    scroll_back(&mut browser, 600.0, 150.0);
-    let before = top_turn(&mut browser);
-
-    wait_true_for(
-        &mut browser,
-        &format!("!!document.querySelector('{LAST_TURN} .answer-words')"),
-        "the reply",
-        RUN_TIME,
-    );
-    wait_true(
-        &mut browser,
-        "!!document.querySelector('.scene-stage .jump-to-latest')",
-        "the way to the new reply",
-    );
-    let after = top_turn(&mut browser);
-    assert_eq!(after.0, before.0, "the reply moved the reading");
-    assert!(
-        (after.1 - before.1).abs() <= 2.0,
-        "the reading moved from {} to {}",
-        before.1,
-        after.1
-    );
-    let edges = browser.page().evaluate(
-        "(() => { const stage = document.querySelector('.scene-stage'); \
-         const jump = stage.querySelector('.jump-to-latest').getBoundingClientRect(); \
-         const column = stage.querySelector('.chat-dock').getBoundingClientRect(); \
-         return Math.abs(jump.right - column.right) <= 2; })()",
-    );
+    wait_answer(&mut browser);
+    std::thread::sleep(Duration::from_millis(1200));
+    let placed = browser.page().evaluate(&format!(
+        "(() => {{ const scroller = document.querySelector('{SCROLLER}'); \
+         const replies = scroller.querySelectorAll('.message-assistant'); const reply = replies[replies.length - 1]; \
+         const box = reply.getBoundingClientRect(); \
+         return {{ taller: box.height > scroller.clientHeight, \
+           atTop: Math.abs(box.top - scroller.getBoundingClientRect().top) <= 1, \
+           atEnd: scroller.scrollHeight - scroller.clientHeight - scroller.scrollTop <= 1, \
+           jump: !!document.querySelector('.scene-stage .jump-to-latest'), \
+           composerFocused: document.activeElement === document.querySelector('{COMPOSER}') }}; }})()"
+    ));
     assert_eq!(
-        edges,
-        Value::Bool(true),
-        "the jump control isn't at the column's edge"
+        placed,
+        json!({ "taller": true, "atTop": true, "atEnd": false, "jump": false, "composerFocused": true }),
+        "a reply taller than the transcript, as it arrives"
     );
 
-    press(&mut browser, ".scene-stage .jump-to-latest");
+    let (x, y) = middle(&mut browser, SCROLLER);
+    wheel(&mut browser, x, y, 1200.0);
+    wait_at_end(&mut browser);
+    ask(&mut browser, "Show me the whole panel.");
+    wait_working(&mut browser);
     wait_true(
         &mut browser,
         &format!(
-            "(() => {{ const scroller = document.querySelector('{SCROLLER}').getBoundingClientRect(); \
-             const replies = document.querySelectorAll('{SCROLLER} .message-assistant'); const reply = replies[replies.length - 1]; \
-             const top = reply.getBoundingClientRect().top; \
-             return document.activeElement === reply && top >= scroller.top - 2 && top <= scroller.bottom - 48; }})()"
+            "(() => {{ const view = document.querySelector('{SCROLLER}').getBoundingClientRect(); \
+             const line = document.querySelector('{LAST_TURN} .work-trace-line').getBoundingClientRect(); \
+             return line.top >= view.top && line.bottom <= view.bottom; }})()"
         ),
-        "the new reply's top in view, focused",
+        "the next working line in sight",
     );
     assert_eq!(browser.take_page_errors(), Vec::<String>::new());
 }
@@ -1142,16 +1198,16 @@ fn under_reduced_motion_messages_fade_without_moving_and_the_transcript_moves_at
     assert_eq!(browser.take_page_errors(), Vec::<String>::new());
 }
 
-/// What `moves_through` finds when nothing jumps or bounces and the reader ends at the end, driven
-/// by pointer.
+/// What `moves_through` finds when nothing jumps or bounces and the reader ends in their place,
+/// driven by pointer.
 fn still() -> Value {
     still_by("pointer")
 }
 
-/// What `moves_through` finds when nothing jumps or bounces and the reader ends at the end, the
-/// page driven by `interaction`.
+/// What `moves_through` finds when nothing jumps or bounces and the reader ends in their place,
+/// the page driven by `interaction`.
 fn still_by(interaction: &str) -> Value {
-    json!({ "interaction": interaction, "jumps": [], "bounces": [], "atEnd": true })
+    json!({ "interaction": interaction, "jumps": [], "bounces": [], "inPlace": true })
 }
 
 /// Waits until the transcript stands at its end and has stopped moving.
@@ -1179,7 +1235,9 @@ fn mouse(browser: &mut Browser, kind: &str, x: f64, y: f64, buttons: u8) {
 /// Samples the top of the turn that was last when it began, and that turn's work line, on every
 /// frame while `act` runs and for a moment after. A move is a run of frames that move; it names
 /// each move with a frame that carried most of its travel that way, and each move that turned back.
-/// A sampling that starts ends the one before it, which may not yet have seen its own end.
+/// A sampling that starts ends the one before it, which may not yet have seen its own end. The
+/// reader's place is the end, or the newest reply's top at the transcript's top when the end would
+/// take that top out of sight.
 fn moves_through(browser: &mut Browser, act: impl FnOnce(&mut Browser)) -> Value {
     browser.page().evaluate(&format!(
         "(() => {{ const scroller = document.querySelector('{SCROLLER}'); const frames = window.frames = []; window.sampling = true; \
@@ -1207,8 +1265,11 @@ fn moves_through(browser: &mut Browser, act: impl FnOnce(&mut Browser)) -> Value
              if (jump !== undefined) jumps.push(`${{name}} ${{Math.round(jump)}}px of ${{Math.round(travel(Math.sign(jump)))}}px`); \
              const back = move.find((step) => Math.sign(step) !== Math.sign(move[0])); \
              if (back !== undefined) bounces.push(`${{name}} ${{Math.round(move[0])}}px then ${{Math.round(back)}}px`); }} }} \
-         return {{ interaction: document.documentElement.dataset.interaction, jumps, bounces, \
-           atEnd: scroller.scrollHeight - scroller.clientHeight - scroller.scrollTop <= 1 }}; }})()"
+         const replies = scroller.querySelectorAll('.message-assistant'); const reply = replies[replies.length - 1]; \
+         const top = reply ? reply.getBoundingClientRect().top - scroller.getBoundingClientRect().top : 0; \
+         const atEnd = scroller.scrollHeight - scroller.clientHeight - scroller.scrollTop <= 1; \
+         const atReply = Math.abs(top) <= 1 && scroller.scrollHeight - scroller.scrollTop - top > scroller.clientHeight; \
+         return {{ interaction: document.documentElement.dataset.interaction, jumps, bounces, inPlace: atEnd || atReply }}; }})()"
     ))
 }
 

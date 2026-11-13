@@ -66,9 +66,10 @@ pub use overlays::{
 };
 pub use prose::{Prose, ProseNames, ProsePart};
 pub use sources::{
-    CitationPreview, CitedPlace, ExpandSource, FieldGroup, FieldValue, Located, PreviewContent,
-    RawRecord, RecordAbout, RecordBody, RecordField, RecordStatus, SourceLink, SourcePane,
-    SourceReading, SourceRecord, SourceState, SourceSummary,
+    CitationPreview, CitedAt, CitedField, CitedPlace, ExpandSource, FieldGroup, FieldValue,
+    PartRange, Places, PreviewContent, RawRecord, RecordAbout, RecordBody, RecordField,
+    RecordStatus, SourceLink, SourcePane, SourceReading, SourceRecord, SourceState, SourceSummary,
+    TextPart,
 };
 pub use tables::{Column, SortOrder, Table, TableRow};
 pub use toast::{TOAST_MS, Toast};

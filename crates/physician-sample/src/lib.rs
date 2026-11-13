@@ -28,6 +28,7 @@ pub mod patients;
 pub mod rehearsal;
 mod reply;
 pub mod synthetic_chart;
+pub mod synthetic_chart_fhir;
 mod synthetic_reply;
 mod timestamp;
 

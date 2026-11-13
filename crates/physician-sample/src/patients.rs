@@ -111,7 +111,7 @@ pub(crate) fn fixture_pull(workspace: &str) -> SourcePull {
                 })
                 .collect(),
         },
-        pulled_at: 1_787_846_400,
+        pulled_at: Some(1_787_846_400),
     }
 }
 
@@ -251,13 +251,20 @@ impl Patient {
     fn connected_sources(&self) -> Vec<Value> {
         self.pulls
             .iter()
-            .map(|pull| {
-                let pulled = UNIX_EPOCH + Duration::from_secs(pull.pulled_at.unsigned_abs());
-                json!({
+            .map(|pull| match pull.pulled_at {
+                Some(pulled_at) => {
+                    let pulled = UNIX_EPOCH + Duration::from_secs(pulled_at.unsigned_abs());
+                    json!({
+                        "source_id": pull.source_id,
+                        "source_label": pull.source_label,
+                        "state": { "state": "usable", "synchronized_at": format_rfc3339(pulled) },
+                    })
+                }
+                None => json!({
                     "source_id": pull.source_id,
                     "source_label": pull.source_label,
-                    "state": { "state": "usable", "synchronized_at": format_rfc3339(pulled) },
-                })
+                    "state": { "state": "unavailable" },
+                }),
             })
             .collect()
     }

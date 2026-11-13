@@ -31,6 +31,7 @@ One piece of work, as Coda writes it:
 | --- | --- | --- |
 | Working | Coda reads a source | Working: that version has a label, and what Coda read is delivered |
 | Working | Coda starts from a fresh context | Working: nothing read before is delivered until Coda reads it again |
+| Working | Coda writes text without handing in a finish | Working: nothing is saved, and Coda is told that only a finish reaches you and that, when it cannot answer, its finish says why and states that it cites no source |
 | Working | Coda hands in a complete finish | Finished: the work is saved with its citations, or with none, and with its Basis |
 | Working | Coda hands in a finish that is not complete, and it lacks the work or the Basis, or fewer than two finishes of this work were refused | Working: the finish is refused, nothing is saved, and Coda is told what is wrong |
 | Working | Coda hands in a finish that has the work and the Basis but is not complete, after two finishes of this work were refused | Finished: the work is saved with its valid citations and its Basis, and each citation that is not valid is dropped |
@@ -78,6 +79,7 @@ These rules rest on the code, its records and the screen, not on the order of st
 
 - The label is the only part of a citation that is read from the model's text. Places, descriptions and links never come from it, and code never decides anything from the prose of the work or of the Basis.
 - A quote only adds a place to its citation. A quote that is missing, or that is not in the delivered text, leaves the citation without a place. It never makes a finish incomplete, and its words are never shown.
+- Coda is asked for a quote for each label it writes, the words in the source that support the claim, and is told that without one you see the record with nothing marked. A quote is still never required.
 - Quotes for a label are given in the order the label is written. A label written once takes every quote given for it. One quote for a label serves every place it is written. With any other count, every place the label is written takes every quote given for it. The Basis and limitations takes no quotes.
 - A citation that was dropped never shows. The finish that held it stays in the run's record.
 - A source keeps one number through a piece of work, however many claims cite it, and the Basis and limitations uses the same numbers. Each citation still opens the version and the place it names, also when several citations share a source.
