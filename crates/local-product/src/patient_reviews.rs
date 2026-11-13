@@ -417,6 +417,10 @@ pub struct ReviewStartingContext {
     /// Saved patient understanding (including private operating index and summary), when present.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub understanding: Option<PatientUnderstanding>,
+    /// Active workspace wrong-patient withdrawal boundary, when records or messages
+    /// have been entered in error and held back.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub withdrawal_boundary: Option<crate::runtime::follow_ups::WorkspaceWithdrawalBoundary>,
     /// Durable patient memory standing (physician corrections and clinical summaries).
     pub memory_standing: PatientMemoryStanding,
     /// Open patient concerns currently active on Today.
@@ -590,13 +594,11 @@ impl ReviewStartingContext {
             }
         }
 
-        for review in &self.prior_reviews {
-            if review.disposition == "withdrawn_boundary" {
-                lines.push(format!(
-                    "Entered-in-error withdrawal boundary: {}",
-                    review.reason
-                ));
-            }
+        if let Some(boundary) = &self.withdrawal_boundary {
+            lines.push(format!(
+                "Entered-in-error withdrawal boundary: {}",
+                boundary.instruction_line()
+            ));
         }
 
         match &self.memory_standing {
@@ -641,17 +643,12 @@ impl ReviewStartingContext {
             }
         }
 
-        let clinical_prior_reviews: Vec<&PriorPatientReviewSummary> = self
-            .prior_reviews
-            .iter()
-            .filter(|review| review.disposition != "withdrawn_boundary")
-            .collect();
-        if !clinical_prior_reviews.is_empty() {
+        if !self.prior_reviews.is_empty() {
             lines.push(
                 "Prior completed patient reviews (use read_patient_reviews to inspect full details):"
                     .to_owned(),
             );
-            for review in clinical_prior_reviews {
+            for review in &self.prior_reviews {
                 let actions = if review.actions.is_empty() {
                     "no durable mutations".to_owned()
                 } else {
@@ -1262,6 +1259,7 @@ mod tests {
                 checked_at: 1_787_850_000,
             },
             understanding: None,
+            withdrawal_boundary: None,
             memory_standing: PatientMemoryStanding::Available {
                 entries: Vec::new(),
             },

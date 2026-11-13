@@ -656,7 +656,6 @@ pub fn recipe(
         instructions.push_str(&encoded);
     }
     let mut offered = tools();
-    offered.push(crate::attachments::document_page_tool());
     offered.push(super::concerns::concern_tool());
     offered.push(super::follow_ups::follow_up_tool());
     let mut built = RequestRecipe {
@@ -2520,6 +2519,116 @@ mod tests {
                 .tools
                 .iter()
                 .any(|tool| { tool["name"].as_str().is_some_and(is_physician_only_tool) })
+        );
+
+        let assert_unique_tools = |label: &str, candidate: &RequestRecipe| {
+            let names: Vec<&str> = candidate
+                .tools
+                .iter()
+                .map(|tool| tool["name"].as_str().expect("tool name string"))
+                .collect();
+            let unique: std::collections::BTreeSet<&str> = names.iter().copied().collect();
+            assert_eq!(
+                names.len(),
+                unique.len(),
+                "{label} offered duplicate tool names: {names:?}"
+            );
+            assert!(
+                unique.contains(crate::attachments::READ_DOCUMENT_PAGE_TOOL),
+                "{label} must offer read_document_page: {names:?}"
+            );
+        };
+        assert_unique_tools("initial_understanding", &built);
+        assert_unique_tools("jobs_fallback_review", &review_recipe);
+
+        let starting_context = crate::runtime::chat_operations::PatientStartingContext {
+            workspace: "pw-1".into(),
+            patient: None,
+            chart_version: 1,
+            chart_record_count: 1,
+            source_pulls: Vec::new(),
+            check_standing: crate::runtime::chat_operations::DispatchCheckStanding::NotRecorded,
+            understanding: None,
+            withdrawal_boundary: None,
+            memory_standing: crate::runtime::chat_operations::PatientMemoryStanding::Available {
+                entries: Vec::new(),
+            },
+            open_concerns: Vec::new(),
+            recent_work: Vec::new(),
+        };
+        let chat_recipe = crate::physician_chat::ChatAssignment::for_patient(
+            Scope {
+                practice: "practice-a".into(),
+                physician: "dr-1".into(),
+                workspace: "pw-1".into(),
+                chat: "chat-1".into(),
+            },
+            starting_context.clone(),
+        )
+        .recipe(&roles, &skills);
+        assert_unique_tools("physician_chat", &chat_recipe);
+
+        let full_review_assignment = crate::patient_reviews::assignment(
+            "cmd-review-1",
+            crate::patient_reviews::ReviewStartingContext {
+                workspace: "pw-1".into(),
+                review_id: "rev-1".into(),
+                patient: None,
+                trigger: crate::patient_reviews::ReviewTrigger::Periodic {
+                    workspace_version: 1,
+                    record_versions: std::collections::BTreeMap::new(),
+                    last_reviewed_at: None,
+                },
+                additional_inputs: Vec::new(),
+                chart_version: 1,
+                chart_record_count: 1,
+                evidence_scope: crate::initial_understanding::EvidenceScope::DuetPatientSharedOnly,
+                source_pulls: Vec::new(),
+                refresh_statuses: Vec::new(),
+                check_standing: crate::runtime::chat_operations::DispatchCheckStanding::NotRecorded,
+                understanding: None,
+                withdrawal_boundary: None,
+                memory_standing:
+                    crate::runtime::chat_operations::PatientMemoryStanding::Available {
+                        entries: Vec::new(),
+                    },
+                open_concerns: Vec::new(),
+                prior_reviews: Vec::new(),
+            },
+            &skills,
+        )
+        .expect("full patient review assignment");
+        assert_unique_tools(
+            "patient_reviews",
+            &recipe(&roles, &full_review_assignment, &skills),
+        );
+
+        let visit_briefing_assignment = crate::visit_preparation::briefing_assignment(
+            crate::visit_preparation::VisitBriefingContext {
+                practice: "practice-a".into(),
+                workspace: "pw-1".into(),
+                source_id: "clinic-cal".into(),
+                appointment_id: "appt-1".into(),
+                appointment_saved_version: 1,
+                starts_at: "2026-08-27T17:00:00Z".into(),
+                starts_at_unix: 1_787_845_200,
+                ends_at: "2026-08-27T17:30:00Z".into(),
+                ends_at_unix: 1_787_847_000,
+                label: "Hypertension follow-up".into(),
+                source_status: "booked".into(),
+                selection_reason: "Upcoming hypertension follow-up.".into(),
+                target_source_version: 1,
+                queued_at_unix: Some(1_787_800_000),
+                starting_context,
+                source_statuses: Vec::new(),
+                prior_visit_briefings: Vec::new(),
+            },
+            &skills,
+        )
+        .expect("visit preparation assignment");
+        assert_unique_tools(
+            "visit_preparation",
+            &recipe(&roles, &visit_briefing_assignment, &skills),
         );
     }
 

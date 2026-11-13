@@ -1512,6 +1512,7 @@ impl Store {
         self.saved_understanding_outcome_by_key(
             &claim.scope.practice,
             &claim.scope.workspace,
+            &job.work,
             &idempotency_key,
         )
         .await
@@ -1613,6 +1614,7 @@ impl Store {
         self.saved_understanding_outcome_by_key(
             &claim.scope.practice,
             &claim.scope.workspace,
+            &state.work,
             &idempotency_key,
         )
         .await
@@ -1622,6 +1624,7 @@ impl Store {
         &self,
         practice: &str,
         workspace: &str,
+        work_id: &str,
         idempotency_key: &str,
     ) -> Result<Option<ToolOutcome>, engine::Cause> {
         let Some(existing_rev) = patient_understanding_revision::Entity::find()
@@ -1639,6 +1642,30 @@ impl Store {
         else {
             return Ok(None);
         };
+        match super::follow_ups::check_withdrawal_fence_in_tx(
+            &self.db,
+            practice,
+            workspace,
+            &[],
+            None,
+            Some(work_id),
+        )
+        .await
+        {
+            Ok(()) => {}
+            Err(super::follow_ups::WithdrawalFenceCheckError::Violation(violation)) => {
+                return Ok(Some(ToolOutcome::refused(
+                    json!({
+                        "outcome": "withdrawn_fence",
+                        "message": violation.to_string(),
+                    })
+                    .to_string(),
+                )));
+            }
+            Err(super::follow_ups::WithdrawalFenceCheckError::Database(db_err)) => {
+                return Err(super::persistence_failure(db_err));
+            }
+        }
         if let Some(withdrawn) =
             super::follow_ups::understanding_withdrawal_entity::Entity::find_by_id((
                 practice.to_owned(),

@@ -442,6 +442,7 @@ mod tests {
                 checked_at: 1_762_900_050,
             },
             understanding: None,
+            withdrawal_boundary: None,
             memory_standing: crate::runtime::chat_operations::PatientMemoryStanding::Available {
                 entries: Vec::new(),
             },
@@ -530,6 +531,7 @@ mod tests {
             source_pulls: Vec::new(),
             check_standing: crate::runtime::chat_operations::DispatchCheckStanding::NotRecorded,
             understanding: None,
+            withdrawal_boundary: None,
             memory_standing: crate::runtime::chat_operations::PatientMemoryStanding::Available {
                 entries: Vec::new(),
             },

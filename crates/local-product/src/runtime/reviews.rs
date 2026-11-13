@@ -1682,22 +1682,6 @@ impl Store {
                 .then_with(|| left.review_id.cmp(&right.review_id))
         });
 
-        if let Some(boundary) = &withdrawal_boundary {
-            prior_reviews.insert(
-                0,
-                PriorPatientReviewSummary {
-                    review_id: format!("withdrawal-epoch-{}", boundary.latest_epoch),
-                    completed_at: 0,
-                    completed_source_version: observation.version,
-                    triggers: vec!["entered_in_error_boundary".to_owned()],
-                    disposition: "withdrawn_boundary".to_owned(),
-                    reason: boundary.instruction_line(),
-                    actions: Vec::new(),
-                    unfinished_work: Vec::new(),
-                },
-            );
-        }
-
         Ok((
             ReviewStartingContext {
                 workspace: workspace.to_owned(),
@@ -1712,6 +1696,7 @@ impl Store {
                 refresh_statuses,
                 check_standing,
                 understanding,
+                withdrawal_boundary,
                 memory_standing,
                 open_concerns,
                 prior_reviews,
@@ -3333,7 +3318,7 @@ impl Store {
             | PracticeMemoryToolCall::Retire { memory_id, .. } => memory_id,
         };
         let command_key = memory_tool_command_key(work_id, &call.id);
-        match self
+        let entry = match self
             .memory_operation
             .saved_mutation(
                 self,
@@ -3344,18 +3329,40 @@ impl Store {
             )
             .await
         {
-            Ok(Some(entry)) => Ok(Some(ToolOutcome::Returned(
-                json!({
-                    "outcome": "duplicate",
-                    "saved": true,
-                    "entry": entry,
-                })
-                .to_string(),
-            ))),
-            Ok(None) => Ok(None),
-            Err(PatientMemoryError::Database(db_err)) => Err(persistence_failure(db_err)),
-            Err(other) => Err(Box::new(other)),
+            Ok(Some(entry)) => entry,
+            Ok(None) => return Ok(None),
+            Err(PatientMemoryError::WithdrawnFence(violation)) => {
+                return Ok(Some(ToolOutcome::refused(violation.to_string())));
+            }
+            Err(PatientMemoryError::Database(db_err)) => return Err(persistence_failure(db_err)),
+            Err(other) => return Err(Box::new(other)),
+        };
+        match super::follow_ups::check_withdrawal_fence_in_tx(
+            &self.db,
+            &scope.practice,
+            &scope.workspace,
+            &[],
+            None,
+            Some(work_id),
+        )
+        .await
+        {
+            Ok(()) => {}
+            Err(super::follow_ups::WithdrawalFenceCheckError::Violation(violation)) => {
+                return Ok(Some(ToolOutcome::refused(violation.to_string())));
+            }
+            Err(super::follow_ups::WithdrawalFenceCheckError::Database(db_err)) => {
+                return Err(persistence_failure(db_err));
+            }
         }
+        Ok(Some(ToolOutcome::Returned(
+            json!({
+                "outcome": "duplicate",
+                "saved": true,
+                "entry": entry,
+            })
+            .to_string(),
+        )))
     }
 
     /// Executes `read_patient_reviews` or `complete_patient_review` for a

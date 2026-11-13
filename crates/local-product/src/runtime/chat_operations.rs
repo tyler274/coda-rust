@@ -1655,6 +1655,10 @@ pub struct PatientStartingContext {
     /// Saved patient understanding (summary and Coda's private operating index), when initialized.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub understanding: Option<super::understanding::PatientUnderstanding>,
+    /// Active workspace wrong-patient withdrawal boundary, when records or messages
+    /// have been entered in error and held back.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub withdrawal_boundary: Option<super::follow_ups::WorkspaceWithdrawalBoundary>,
     /// Standing of durable patient memory for this workspace.
     pub memory_standing: PatientMemoryStanding,
     /// Open patient concerns on Today.
@@ -1754,6 +1758,13 @@ impl PatientStartingContext {
                     saved.operating_index.open_threads.join("; ")
                 ));
             }
+        }
+
+        if let Some(boundary) = &self.withdrawal_boundary {
+            lines.push(format!(
+                "Entered-in-error withdrawal boundary: {}",
+                boundary.instruction_line()
+            ));
         }
 
         match &self.memory_standing {
@@ -2241,23 +2252,6 @@ impl Store {
             .patient_understanding_internal(&scope.practice, &scope.workspace)
             .await?;
 
-        if understanding.is_none()
-            && let Some(boundary) = &withdrawal_boundary
-        {
-            recent_work.insert(
-                0,
-                PriorWorkPointer {
-                    target: PriorWorkKind::BackgroundJob {
-                        job_id: format!("withdrawal-epoch-{}", boundary.latest_epoch),
-                        job_kind: PracticeJobKind::PatientReview,
-                    },
-                    title: boundary.instruction_line(),
-                    outcome: "Entered in error boundary".to_owned(),
-                    updated_at: 0,
-                },
-            );
-        }
-
         Ok(PatientStartingContext {
             workspace: scope.workspace.clone(),
             patient,
@@ -2266,6 +2260,7 @@ impl Store {
             source_pulls,
             check_standing,
             understanding,
+            withdrawal_boundary,
             memory_standing,
             open_concerns,
             recent_work,
@@ -3124,6 +3119,24 @@ impl Store {
             Err(PatientMemoryError::Database(db_err)) => return Err(persistence_failure(db_err)),
             Err(cause) => return Err(cause.to_string().into()),
         };
+        match super::follow_ups::check_withdrawal_fence_in_tx(
+            &self.db,
+            &claim.scope.practice,
+            &claim.scope.workspace,
+            &[],
+            state.input_id(),
+            Some(&attempt.work),
+        )
+        .await
+        {
+            Ok(()) => {}
+            Err(super::follow_ups::WithdrawalFenceCheckError::Violation(violation)) => {
+                return Ok(Some(ToolOutcome::refused(violation.to_string())));
+            }
+            Err(super::follow_ups::WithdrawalFenceCheckError::Database(db_err)) => {
+                return Err(persistence_failure(db_err));
+            }
+        }
         Ok(Some(ToolOutcome::Returned(
             json!({
                 "outcome": "duplicate",

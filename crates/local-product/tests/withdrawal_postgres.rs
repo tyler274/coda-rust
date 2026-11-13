@@ -28,8 +28,8 @@ use local_product::{
         WorkStatus, async_trait,
         chat_operations::{
             MemoryProvenance, MemorySelection, MemoryStanding, PATIENT_MEMORY_TOOL,
-            PatientMemoryError, PatientMemoryId, PatientMemoryStanding, RecordMemoryCorrection,
-            RetirePatientMemory,
+            PatientMemoryError, PatientMemoryId, PatientMemoryStanding, PriorWorkKind,
+            RecordMemoryCorrection, RetirePatientMemory,
         },
         concerns::{
             CONCERN_TOOL, CommandKey, ConcernError, ConcernId, ConcernStanding, ConcernUrgency,
@@ -41,8 +41,8 @@ use local_product::{
             recipe::{Observer, Provider, Request},
         },
         follow_ups::{
-            SourceWithdrawalOutcome, WithdrawWrongPatientRequest, WithdrawalFenceViolation,
-            WorkspaceWithdrawalBoundary,
+            FOLLOW_UP_TOOL, SourceWithdrawalOutcome, WithdrawWrongPatientRequest,
+            WithdrawalFenceViolation, WorkspaceWithdrawalBoundary,
         },
         jobs::PracticeJobHost,
         reviews::PatientReviewReceiver,
@@ -1279,6 +1279,24 @@ async fn ac3_starting_contexts_exclude_withdrawn_memory_and_summary_and_record_w
         .await
         .unwrap();
     let review_scope = reviews[0].practice_scope();
+    let review_job = store
+        .practice_job(&review_scope)
+        .await
+        .unwrap()
+        .expect("saved review practice job");
+    let review_ctx = review_job
+        .assignment
+        .review
+        .as_ref()
+        .expect("patient review starting context");
+    assert!(
+        review_ctx.starting_context.withdrawal_boundary.is_some(),
+        "ReviewStartingContext must carry typed withdrawal_boundary"
+    );
+    assert!(
+        review_ctx.starting_context.prior_reviews.is_empty(),
+        "ReviewStartingContext.prior_reviews must never contain synthetic withdrawal entries"
+    );
     let review_claim = store
         .claim_practice_job(&review_scope, 60, auth.as_ref())
         .await
@@ -1504,6 +1522,17 @@ async fn ac3_starting_contexts_exclude_withdrawn_memory_and_summary_and_record_w
     };
     let starting = store.patient_starting_context(&chat_scope).await.unwrap();
     assert!(starting.understanding.is_none());
+    assert!(
+        starting.withdrawal_boundary.is_some(),
+        "PatientStartingContext must carry typed withdrawal_boundary"
+    );
+    assert!(
+        !starting.recent_work.iter().any(|w| matches!(
+            &w.target,
+            PriorWorkKind::BackgroundJob { job_id, .. } if job_id.starts_with("withdrawal-epoch-")
+        )),
+        "PatientStartingContext.recent_work must never contain synthetic withdrawal pointers"
+    );
     let PatientMemoryStanding::Available { entries } = &starting.memory_standing else {
         panic!("expected Available memory standing");
     };
@@ -1513,6 +1542,7 @@ async fn ac3_starting_contexts_exclude_withdrawn_memory_and_summary_and_record_w
     let dev_text = starting.developer_text();
     assert!(!dev_text.contains("lithium"));
     assert!(dev_text.contains("Walks 30 minutes"));
+    assert!(dev_text.contains("Entered-in-error withdrawal boundary:"));
     assert!(
         dev_text.contains("Withdrawn wrong-patient boundary (epoch 1)"),
         "starting context must surface withdrawal boundary even when active understanding is None: {dev_text}"
@@ -1634,6 +1664,79 @@ async fn ac4_wrong_patient_withdrawal_holds_back_affected_concerns_fences_stale_
         3
     );
 
+    // Also seed a clean concern and clean follow-up that `wrong_work` retired/stopped before
+    // withdrawal, so we can prove crash-recovery `saved_*_outcome` refuses fenced `work_id`s
+    // even when the target item itself was never marked Withdrawn!
+    store
+        .raise_concern(
+            &CommandKey::new("cmd-c-clean-retired-target").unwrap(),
+            &RaiseConcern {
+                practice: practice.clone(),
+                workspace: workspace.clone(),
+                id: ConcernId::new("concern-clean-retired-target").unwrap(),
+                urgency: ConcernUrgency::Today,
+                reason: "Prior borderline potassium check.".into(),
+                records: vec![ExactRecordReference {
+                    candidate_id: "cand-clean-k".into(),
+                    revision: "rev-1".into(),
+                }],
+                source_work: clean_work.clone(),
+            },
+        )
+        .await
+        .unwrap();
+    let retire_by_fenced_call = Invocation {
+        id: "call-retire-clean-by-fenced".into(),
+        name: CONCERN_TOOL.into(),
+        arguments: json!({
+            "operation": "retire",
+            "concern_id": "concern-clean-retired-target",
+            "reason": "Superseded during pre-withdrawal run."
+        }),
+    };
+    assert!(matches!(
+        store
+            .execute_concern_tool(&practice, &workspace, &wrong_work, &retire_by_fenced_call)
+            .await
+            .unwrap(),
+        ToolOutcome::Returned(_)
+    ));
+
+    let create_clean_fu_call = Invocation {
+        id: "call-create-clean-fu".into(),
+        name: FOLLOW_UP_TOOL.into(),
+        arguments: json!({
+            "operation": "create",
+            "follow_up_id": "fu-clean-completed-target",
+            "summary": "Repeat basic metabolic panel in 2 weeks for potassium 5.5 mmol/L on lisinopril.",
+            "due_at": 1_800_000_000_i64,
+            "records": [{"candidate_id": "cand-clean-k", "revision": "rev-1"}]
+        }),
+    };
+    assert!(matches!(
+        store
+            .execute_follow_up_tool(&practice, &workspace, &clean_work, &create_clean_fu_call)
+            .await
+            .unwrap(),
+        ToolOutcome::Returned(_)
+    ));
+    let stop_by_fenced_call = Invocation {
+        id: "call-complete-clean-fu-by-fenced".into(),
+        name: FOLLOW_UP_TOOL.into(),
+        arguments: json!({
+            "operation": "complete",
+            "follow_up_id": "fu-clean-completed-target",
+            "resolution": "Completed during pre-withdrawal run."
+        }),
+    };
+    assert!(matches!(
+        store
+            .execute_follow_up_tool(&practice, &workspace, &wrong_work, &stop_by_fenced_call)
+            .await
+            .unwrap(),
+        ToolOutcome::Returned(_)
+    ));
+
     // Withdraw `cand-wrong-troponin` and fence `work-wrong-msg`.
     let outcome = store
         .withdraw_wrong_patient_source(&WithdrawWrongPatientRequest {
@@ -1650,7 +1753,8 @@ async fn ac4_wrong_patient_withdrawal_holds_back_affected_concerns_fences_stale_
         .unwrap();
     assert_eq!(outcome.receipt().withdrawn_concern_ids.len(), 2);
 
-    // Today open concerns retain ONLY `concern-clean-k`; Updates retired list excludes withdrawn concerns.
+    // Today open concerns retain ONLY `concern-clean-k`; Updates retired list retains only the
+    // non-withdrawn retirement while excluding both withdrawn concerns.
     let open_after = store
         .open_concerns(&access, &mut PostgresWorkspaceAuthority)
         .await
@@ -1663,16 +1767,20 @@ async fn ac4_wrong_patient_withdrawal_holds_back_affected_concerns_fences_stale_
         .await
         .unwrap();
     assert!(
-        retired_updates.is_empty(),
+        retired_updates
+            .iter()
+            .all(|c| c.id.as_str() != "concern-wrong-chest-pain"
+                && c.id.as_str() != "concern-from-fenced-run"),
         "withdrawn wrong-patient concerns must not appear as clinical retirements in Updates"
     );
 
-    // Full audit history in `workspace_concerns` preserves both withdrawn concerns as `ConcernStanding::Withdrawn`.
+    // Full audit history in `workspace_concerns` preserves all 4 concerns, with both wrong-patient
+    // concerns marked `ConcernStanding::Withdrawn`.
     let audit_all = store
         .workspace_concerns(&access, &mut PostgresWorkspaceAuthority)
         .await
         .unwrap();
-    assert_eq!(audit_all.len(), 3);
+    assert_eq!(audit_all.len(), 4);
     for withdrawn_id in ["concern-wrong-chest-pain", "concern-from-fenced-run"] {
         let item = audit_all
             .iter()
@@ -1685,13 +1793,51 @@ async fn ac4_wrong_patient_withdrawal_holds_back_affected_concerns_fences_stale_
         ));
     }
 
-    // Replaying `CONCERN_TOOL`, revising a withdrawn concern, raising from fenced `work-wrong-msg`,
-    // or raising a new concern citing `cand-wrong-troponin` are all refused!
+    // Replaying `CONCERN_TOOL`, crash-recovery `saved_concern_tool_outcome` /
+    // `saved_follow_up_tool_outcome` for fenced `work-wrong-msg` (even on clean target items!),
+    // revising a withdrawn concern, raising from fenced `work-wrong-msg`, or citing
+    // `cand-wrong-troponin` are all refused!
     let replay_tool = store
         .execute_concern_tool(&practice, &workspace, &wrong_work, &raise_wrong_call)
         .await
         .unwrap();
     assert!(matches!(replay_tool, ToolOutcome::Refused(_)));
+
+    let saved_fenced_concern = store
+        .saved_concern_tool_outcome(
+            &practice,
+            &workspace,
+            &wrong_work.work_id,
+            &Invocation {
+                id: retire_by_fenced_call.id.clone(),
+                name: retire_by_fenced_call.name.clone(),
+                arguments: retire_by_fenced_call.arguments.to_string(),
+            },
+        )
+        .await
+        .unwrap();
+    assert!(
+        matches!(saved_fenced_concern, Some(ToolOutcome::Refused(_))),
+        "crash-recovery saved_concern_tool_outcome must refuse fenced work_id even when target concern is retired rather than Withdrawn: {saved_fenced_concern:?}"
+    );
+
+    let saved_fenced_follow_up = store
+        .saved_follow_up_tool_outcome(
+            &practice,
+            &workspace,
+            &wrong_work.work_id,
+            &Invocation {
+                id: stop_by_fenced_call.id.clone(),
+                name: stop_by_fenced_call.name.clone(),
+                arguments: stop_by_fenced_call.arguments.to_string(),
+            },
+        )
+        .await
+        .unwrap();
+    assert!(
+        matches!(saved_fenced_follow_up, Some(ToolOutcome::Refused(_))),
+        "crash-recovery saved_follow_up_tool_outcome must refuse fenced work_id even when target follow-up is clean: {saved_fenced_follow_up:?}"
+    );
 
     assert!(matches!(
         store

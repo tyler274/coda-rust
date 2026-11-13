@@ -2829,7 +2829,7 @@ impl Store {
 
     /// Reconciles an already-committed [`FOLLOW_UP_TOOL`] receipt read-only when an
     /// attempt was interrupted after `ToolStarted` and before `ToolReturned`.
-    pub(super) async fn saved_follow_up_tool_outcome(
+    pub async fn saved_follow_up_tool_outcome(
         &self,
         practice: &str,
         workspace: &str,
@@ -2858,6 +2858,24 @@ impl Store {
         .map_err(persistence_failure)?;
         if receipt_row.is_none() {
             return Ok(None);
+        }
+        match check_withdrawal_fence_in_tx(
+            &self.db,
+            practice.trim(),
+            workspace.trim(),
+            &[],
+            None,
+            Some(work_id.trim()),
+        )
+        .await
+        {
+            Ok(()) => {}
+            Err(WithdrawalFenceCheckError::Violation(violation)) => {
+                return Ok(Some(ToolOutcome::refused(violation.to_string())));
+            }
+            Err(WithdrawalFenceCheckError::Database(db_err)) => {
+                return Err(persistence_failure(db_err));
+            }
         }
         let Some(follow_up) = load_follow_up(
             &self.db,

@@ -1415,6 +1415,7 @@ mod tests {
                     source_pulls: Vec::new(),
                     check_standing: DispatchCheckStanding::NotRecorded,
                     understanding: None,
+                    withdrawal_boundary: None,
                     memory_standing: PatientMemoryStanding::Available {
                         entries: Vec::new(),
                     },

@@ -1520,7 +1520,7 @@ impl Store {
 
     /// Reconciles an already-committed concern mutation receipt read-only when an
     /// attempt was interrupted after `ToolStarted` and before `ToolReturned`.
-    pub(super) async fn saved_concern_tool_outcome(
+    pub async fn saved_concern_tool_outcome(
         &self,
         practice: &str,
         workspace: &str,
@@ -1563,6 +1563,24 @@ impl Store {
         .map_err(persistence_failure)?;
         if receipt_row.is_none() {
             return Ok(None);
+        }
+        match super::follow_ups::check_withdrawal_fence_in_tx(
+            &self.db,
+            &practice,
+            &workspace,
+            &[],
+            None,
+            Some(&work_id),
+        )
+        .await
+        {
+            Ok(()) => {}
+            Err(super::follow_ups::WithdrawalFenceCheckError::Violation(violation)) => {
+                return Ok(Some(ToolOutcome::refused(violation.to_string())));
+            }
+            Err(super::follow_ups::WithdrawalFenceCheckError::Database(db_err)) => {
+                return Err(persistence_failure(db_err));
+            }
         }
         let Some(concern) = load_concern(&self.db, &practice, &workspace, &concern_id)
             .await
