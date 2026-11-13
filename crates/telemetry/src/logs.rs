@@ -146,7 +146,8 @@ impl Visit for SafeFields<'_> {
         let allowed = match field.name() {
             "event" => matches!(
                 value,
-                "physician.worker.attempt_failed"
+                "physician.worker.attempt_finished"
+                    | "physician.worker.attempt_failed"
                     | "physician.worker.retry_not_persisted"
                     | "physician.queue.publish_failed"
                     | "physician.queue.dispatch_failed"
@@ -167,7 +168,10 @@ impl Visit for SafeFields<'_> {
                     | "publish"
                     | "database"
             ),
-            "coda.job" => matches!(value, "physician_chat" | "physician_reply_revision"),
+            "coda.job" => matches!(
+                value,
+                "physician_chat" | "physician_reply_revision" | "physician_practice_job"
+            ),
             "coda.outcome" => matches!(
                 value,
                 "committed" | "settled" | "retry" | "absent" | "claim_error"
@@ -221,3 +225,82 @@ fn uuid_shaped(value: &str) -> bool {
 
 #[cfg(test)]
 mod tests;
+
+#[cfg(test)]
+mod attempt_finished_tests {
+    use opentelemetry::logs::AnyValue;
+    use opentelemetry::trace::TracerProvider as _;
+    use opentelemetry_sdk::{
+        logs::{InMemoryLogExporter, SdkLoggerProvider},
+        trace::SdkTracerProvider,
+    };
+    use tracing_subscriber::layer::SubscriberExt;
+
+    use super::SafeLogs;
+
+    #[test]
+    fn worker_attempt_finished_keeps_trace_and_safe_fields_without_content() {
+        let exporter = InMemoryLogExporter::default();
+        let logs = SdkLoggerProvider::builder()
+            .with_simple_exporter(exporter.clone())
+            .build();
+        let traces = SdkTracerProvider::builder().build();
+        let subscriber = tracing_subscriber::registry()
+            .with(tracing_opentelemetry::layer().with_tracer(traces.tracer("worker-test")))
+            .with(SafeLogs::new(&logs, "physician-worker"));
+
+        let run_id = "01234567-89ab-cdef-0123-456789abcdef";
+        tracing::subscriber::with_default(subscriber, || {
+            let attempt = tracing::info_span!("physician.worker.attempt");
+            attempt.in_scope(|| {
+                for job in [
+                    "physician_chat",
+                    "physician_reply_revision",
+                    "physician_practice_job",
+                ] {
+                    tracing::info!(
+                        event = "physician.worker.attempt_finished",
+                        coda.job = job,
+                        coda.outcome = "committed",
+                        coda.run_id = run_id,
+                        canary = "canary-secret-text",
+                        "physician worker attempt finished: canary-secret-text"
+                    );
+                }
+            });
+        });
+
+        logs.force_flush().unwrap();
+        let emitted = exporter.get_emitted_logs().unwrap();
+        assert_eq!(emitted.len(), 3);
+        for (record, expected_job) in emitted.iter().zip([
+            "physician_chat",
+            "physician_reply_revision",
+            "physician_practice_job",
+        ]) {
+            let ctx = record.record.trace_context().expect("trace context");
+            assert_ne!(ctx.trace_id, opentelemetry::trace::TraceId::INVALID);
+            assert_ne!(ctx.span_id, opentelemetry::trace::SpanId::INVALID);
+            assert_eq!(
+                record.record.body(),
+                Some(&AnyValue::from("operational event"))
+            );
+            let attr = |key: &str| {
+                record
+                    .record
+                    .attributes_iter()
+                    .find(|(k, _)| k.as_str() == key)
+                    .map(|(_, v)| v)
+            };
+            assert_eq!(
+                attr("event"),
+                Some(&AnyValue::from("physician.worker.attempt_finished"))
+            );
+            assert_eq!(attr("coda.job"), Some(&AnyValue::from(expected_job)));
+            assert_eq!(attr("coda.outcome"), Some(&AnyValue::from("committed")));
+            assert_eq!(attr("coda.run_id"), Some(&AnyValue::from(run_id)));
+            assert_eq!(attr("canary"), None);
+            assert!(!format!("{record:?}").contains("canary-secret-text"));
+        }
+    }
+}
