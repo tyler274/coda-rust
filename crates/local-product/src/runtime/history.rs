@@ -798,7 +798,8 @@ impl Store {
         .limit(bounded)
         .all(&self.db)
         .await?;
-        Self::summarize_conversation_rows(rows)
+        self.summarize_conversation_rows_with_withholding(rows)
+            .await
     }
 
     /// Recent conversations across the physician's currently authorized patient
@@ -835,18 +836,39 @@ impl Store {
             .limit(bounded)
             .all(&self.db)
             .await?;
-        Self::summarize_conversation_rows(rows)
+        self.summarize_conversation_rows_with_withholding(rows)
+            .await
     }
 
-    fn summarize_conversation_rows(
+    async fn summarize_conversation_rows_with_withholding(
+        &self,
         rows: Vec<conversation::Model>,
     ) -> Result<Vec<AuthorizedConversationSummary>, HistoryError> {
+        let mut withheld_by_ws: HashMap<String, super::link_correction::WithheldWorkspaceState> =
+            HashMap::new();
+        for row in &rows {
+            if !withheld_by_ws.contains_key(&row.workspace) {
+                let state = super::link_correction::load_workspace_withheld_state_in_tx(
+                    &self.db,
+                    &row.workspace,
+                )
+                .await?;
+                withheld_by_ws.insert(row.workspace.clone(), state);
+            }
+        }
         let mut items = Vec::with_capacity(rows.len());
         for row in rows {
             let chat = row.chat.clone();
             let workspace = row.workspace.clone();
             let state = control::conversation(row, Vec::new())?;
-            if let Some(summary) = summarize_conversation(&chat, &workspace, &state) {
+            let withheld_reason = withheld_by_ws.get(&workspace).and_then(|w| {
+                w.reason_for_work(&chat)
+                    .or_else(|| w.reason_for_work(&state.work))
+            });
+            if let Some(mut summary) = summarize_conversation(&chat, &workspace, &state) {
+                if let Some(reason) = withheld_reason {
+                    summary.summary = reason;
+                }
                 items.push(summary);
             }
         }
@@ -900,6 +922,11 @@ impl Store {
             .all(&tx)
             .await?;
 
+        let withheld =
+            super::link_correction::load_workspace_withheld_state_in_tx(&tx, workspace).await?;
+        let boundary_fenced_works =
+            super::follow_ups::load_workspace_fenced_work_ids(&tx, practice, workspace).await?;
+
         tx.commit().await?;
 
         let mut archived_by_reply: HashMap<String, (usize, i64)> = HashMap::new();
@@ -914,12 +941,27 @@ impl Store {
             let chat = row.chat.clone();
             let ws = row.workspace.clone();
             let state = control::conversation(row, Vec::new())?;
+            let withheld_reason = withheld
+                .reason_for_work(&chat)
+                .or_else(|| withheld.reason_for_work(&state.work))
+                .or_else(|| {
+                    if boundary_fenced_works.contains(&chat)
+                        || boundary_fenced_works.contains(&state.work)
+                    {
+                        Some(
+                            "Unavailable: patient message content was withdrawn after a wrong-patient link correction."
+                                .to_owned(),
+                        )
+                    } else {
+                        None
+                    }
+                });
             if let Some(conv) = summarize_conversation(&chat, &ws, &state) {
                 items.push(WorkspacePastWorkItem {
                     id: format!("conversation:{chat}"),
                     target: HistoryWorkTarget::Conversation { chat_id: chat },
                     title: conv.title,
-                    summary: conv.summary,
+                    summary: withheld_reason.unwrap_or(conv.summary),
                     outcome: conv.outcome,
                     updated_at: conv.last_activity_at,
                 });
@@ -931,16 +973,21 @@ impl Store {
             let draft = control::draft(row, Vec::new())?;
             let (archived_revisions, latest_archived_at) =
                 archived_by_reply.remove(&reply_id).unwrap_or((0, 0));
-            let title = draft
-                .accepted
-                .as_ref()
-                .map(|accepted| truncate_clean(&accepted.input.instruction, MAX_TITLE_CHARS))
-                .filter(|instruction| !instruction.is_empty())
-                .unwrap_or_else(|| "Patient reply draft".to_owned());
-            let summary = if draft.text.trim().is_empty() {
-                draft_outcome(draft.status).label().to_owned()
+            let (title, summary) = if let Some(reason) = withheld.reason_for_draft_key(&reply_id) {
+                ("Unavailable patient reply draft".to_owned(), reason)
             } else {
-                truncate_clean(&draft.text, MAX_SUMMARY_CHARS)
+                let title = draft
+                    .accepted
+                    .as_ref()
+                    .map(|accepted| truncate_clean(&accepted.input.instruction, MAX_TITLE_CHARS))
+                    .filter(|instruction| !instruction.is_empty())
+                    .unwrap_or_else(|| "Patient reply draft".to_owned());
+                let summary = if draft.text.trim().is_empty() {
+                    draft_outcome(draft.status).label().to_owned()
+                } else {
+                    truncate_clean(&draft.text, MAX_SUMMARY_CHARS)
+                };
+                (title, summary)
             };
             let updated_at = latest_archived_at.max(draft.dispatch_after);
             items.push(WorkspacePastWorkItem {
@@ -1020,7 +1067,27 @@ impl Store {
                 .all(&tx)
                 .await?
         };
+        let withheld =
+            super::link_correction::load_workspace_withheld_state_in_tx(&tx, &scope.workspace)
+                .await?;
+        let boundary = super::follow_ups::load_workspace_withdrawal_boundary(
+            &tx,
+            &scope.practice,
+            &scope.workspace,
+        )
+        .await?;
+        let boundary_works = super::follow_ups::load_workspace_fenced_work_ids(
+            &tx,
+            &scope.practice,
+            &scope.workspace,
+        )
+        .await?;
         tx.commit().await?;
+
+        let boundary_candidates: std::collections::BTreeSet<String> = boundary
+            .as_ref()
+            .map(|b| b.candidate_ids.iter().cloned().collect())
+            .unwrap_or_default();
 
         let mut source_labels: HashMap<String, String> = HashMap::new();
         let mut latest_pull_at: Option<i64> = None;
@@ -1046,6 +1113,7 @@ impl Store {
         let mut all_sources: BTreeMap<String, CitedSourceReadback> = BTreeMap::new();
         let mut sources_by_work: HashMap<String, Vec<CitedSourceReadback>> = HashMap::new();
         let mut version_by_work: HashMap<String, u64> = HashMap::new();
+        let mut tainted_work_reasons: HashMap<String, String> = HashMap::new();
 
         for (work_id, observation) in &work_observations {
             let mut max_version = observation.search_version;
@@ -1053,7 +1121,40 @@ impl Store {
             for (idx, read) in observation.reads.iter().enumerate() {
                 let number = idx + 1;
                 let source_key = format!("{work_id}:{}:{}", read.candidate_id, read.revision);
-                let cited = if let Some((observed_at, rev)) =
+                let withheld_reason = withheld
+                    .reason_for_candidate_or_work(Some(&read.candidate_id), Some(work_id))
+                    .or_else(|| {
+                        if boundary_candidates.contains(&read.candidate_id)
+                            || boundary_works.contains(work_id)
+                        {
+                            Some(
+                                "Unavailable: patient message content was withdrawn after a wrong-patient link correction."
+                                    .to_owned(),
+                            )
+                        } else {
+                            None
+                        }
+                    });
+                let cited = if let Some(reason) = withheld_reason {
+                    tainted_work_reasons
+                        .entry(work_id.clone())
+                        .or_insert_with(|| reason.clone());
+                    CitedSourceReadback {
+                        source_key: source_key.clone(),
+                        number,
+                        source_id: "unavailable".to_owned(),
+                        source_label: "Unavailable".to_owned(),
+                        candidate_id: read.candidate_id.clone(),
+                        revision: read.revision.clone(),
+                        title: "Unavailable · Withheld patient message".to_owned(),
+                        record_type: String::new(),
+                        recorded_at: None,
+                        quote: reason.clone(),
+                        body: reason,
+                        raw_content: String::new(),
+                        external_url: None,
+                    }
+                } else if let Some((observed_at, rev)) =
                     saved_revisions.get(&(read.candidate_id.clone(), read.revision.clone()))
                 {
                     max_version =
@@ -1130,6 +1231,7 @@ impl Store {
         let mut active_work: Option<String> = None;
         let mut cumulative_observed_version: Option<u64> = None;
         let activity_clock = state.latest_activity_at();
+        let chat_withheld_reason = withheld.reason_for_work(&scope.chat);
 
         for Message { role, text } in &state.messages {
             match role {
@@ -1156,6 +1258,46 @@ impl Store {
                         .and_then(|work| sources_by_work.get(work))
                         .map(Vec::as_slice)
                         .unwrap_or(&[]);
+                    let turn_withheld_reason = active_work
+                        .as_deref()
+                        .and_then(|work| {
+                            tainted_work_reasons
+                                .get(work)
+                                .cloned()
+                                .or_else(|| withheld.reason_for_work(work))
+                        })
+                        .or_else(|| chat_withheld_reason.clone());
+                    if let Some(reason) = turn_withheld_reason {
+                        let unavailable_source = work_sources
+                            .iter()
+                            .find(|src| src.source_id == "unavailable");
+                        let segments = if let Some(c0) = unavailable_source {
+                            vec![
+                                HistorySegment::Text {
+                                    text: format!("{reason} "),
+                                },
+                                HistorySegment::Citation {
+                                    source_key: c0.source_key.clone(),
+                                    number: c0.number,
+                                    label: c0.title.clone(),
+                                    quote: reason.clone(),
+                                },
+                            ]
+                        } else {
+                            vec![HistorySegment::Text {
+                                text: reason.clone(),
+                            }]
+                        };
+                        turns.push(SavedTurnReadback {
+                            id: id.clone(),
+                            author: TurnAuthor::Assistant { partial: *partial },
+                            raw_text: reason,
+                            segments,
+                            basis: None,
+                            newer_records: false,
+                        });
+                        continue;
+                    }
                     let (body_text, basis_text) = split_answer_and_basis(text, *partial);
                     let segments = parse_segments_with_citations(body_text, work_sources);
                     let basis = basis_text

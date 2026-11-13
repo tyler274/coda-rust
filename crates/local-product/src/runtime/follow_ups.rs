@@ -1512,6 +1512,42 @@ impl WorkspaceWithdrawalBoundary {
     }
 }
 
+fn follow_up_cites_withheld(
+    item: &FollowUp,
+    withheld: &super::link_correction::WithheldWorkspaceState,
+) -> bool {
+    !withheld.is_empty()
+        && (item
+            .origin
+            .work_id()
+            .is_some_and(|wid| withheld.work_ids.contains(wid))
+            || item
+                .records
+                .iter()
+                .any(|r| withheld.candidate_ids.contains(&r.candidate_id)))
+}
+
+/// Loads all work identifiers fenced by committed wrong-patient withdrawals in `(practice, workspace)`.
+pub(super) async fn load_workspace_fenced_work_ids(
+    db: &impl ConnectionTrait,
+    practice: &str,
+    workspace: &str,
+) -> Result<BTreeSet<String>, DbErr> {
+    let rows = source_withdrawal_entity::Entity::find()
+        .filter(source_withdrawal_entity::Column::Practice.eq(practice))
+        .filter(source_withdrawal_entity::Column::Workspace.eq(workspace))
+        .all(db)
+        .await?;
+    let mut out = BTreeSet::new();
+    for row in rows {
+        let works: Vec<String> = serde_json::from_value(row.fenced_work_ids).map_err(
+            conversion_error("source_withdrawal.fenced_work_ids", "Vec<String>"),
+        )?;
+        out.extend(works);
+    }
+    Ok(out)
+}
+
 /// Single rule owner checking whether a candidate write to durable memory,
 /// patient understanding, concerns, or follow-ups violates a wrong-patient
 /// withdrawal fence in `(practice, workspace)`. Fails closed on any database
@@ -1576,6 +1612,16 @@ pub(super) async fn check_withdrawal_fence_in_tx(
             }
         }
     }
+
+    super::link_correction::check_withheld_fence_in_tx(
+        tx,
+        practice,
+        workspace,
+        cited_candidates,
+        message_id,
+        work_id,
+    )
+    .await?;
 
     Ok(())
 }
@@ -2936,6 +2982,9 @@ impl Store {
             .order_by_asc(follow_up_entity::Column::Id)
             .all(&tx)
             .await?;
+        let withheld =
+            super::link_correction::load_workspace_withheld_state_in_tx(&tx, &scope.workspace)
+                .await?;
         tx.commit().await?;
         let mut out = Vec::with_capacity(rows.len());
         for row in rows {
@@ -2943,7 +2992,8 @@ impl Store {
             if !matches!(
                 item.standing,
                 FollowUpStanding::WithdrawnWrongPatient { .. }
-            ) {
+            ) && !follow_up_cites_withheld(&item, &withheld)
+            {
                 out.push(item);
             }
         }
@@ -2963,16 +3013,20 @@ impl Store {
         let workspace = validate_non_empty_field("workspace", workspace)?;
         let rows = follow_up_entity::Entity::find()
             .filter(follow_up_entity::Column::Practice.eq(practice))
-            .filter(follow_up_entity::Column::Workspace.eq(workspace))
+            .filter(follow_up_entity::Column::Workspace.eq(&workspace))
             .filter(follow_up_entity::Column::Status.eq("active"))
             .order_by_asc(follow_up_entity::Column::DueAt)
             .order_by_asc(follow_up_entity::Column::Id)
             .all(&self.db)
             .await?;
+        let withheld =
+            super::link_correction::load_workspace_withheld_state_in_tx(&self.db, &workspace)
+                .await?;
         let mut due = Vec::new();
         for row in rows {
             let item = decode_follow_up(row)?;
-            if item.standing.is_due_at(clinical_now) {
+            if item.standing.is_due_at(clinical_now) && !follow_up_cites_withheld(&item, &withheld)
+            {
                 due.push(item);
             }
         }
@@ -2995,13 +3049,27 @@ impl Store {
                 return Err(err);
             }
         };
-        let withdrawn_rows = follow_up_entity::Entity::find()
+        let all_follow_ups = follow_up_entity::Entity::find()
             .filter(follow_up_entity::Column::Practice.eq(&scope.practice))
             .filter(follow_up_entity::Column::Workspace.eq(&scope.workspace))
-            .filter(follow_up_entity::Column::Status.eq("withdrawn_wrong_patient"))
             .all(&tx)
             .await?;
-        let withdrawn_ids: BTreeSet<String> = withdrawn_rows.into_iter().map(|r| r.id).collect();
+        let withheld =
+            super::link_correction::load_workspace_withheld_state_in_tx(&tx, &scope.workspace)
+                .await?;
+        let mut withdrawn_ids: BTreeSet<String> = BTreeSet::new();
+        for frow in all_follow_ups {
+            if frow.status == "withdrawn_wrong_patient" {
+                withdrawn_ids.insert(frow.id);
+                continue;
+            }
+            if !withheld.is_empty()
+                && let Ok(item) = decode_follow_up(frow)
+                && follow_up_cites_withheld(&item, &withheld)
+            {
+                withdrawn_ids.insert(item.id.to_string());
+            }
+        }
         let rows = follow_up_update_entity::Entity::find()
             .filter(follow_up_update_entity::Column::Practice.eq(&scope.practice))
             .filter(follow_up_update_entity::Column::Workspace.eq(&scope.workspace))
@@ -3058,7 +3126,7 @@ impl Store {
         let workspace = validate_non_empty_field("workspace", workspace)?;
         let rows = follow_up_entity::Entity::find()
             .filter(follow_up_entity::Column::Practice.eq(practice))
-            .filter(follow_up_entity::Column::Workspace.eq(workspace))
+            .filter(follow_up_entity::Column::Workspace.eq(&workspace))
             .order_by_asc(follow_up_entity::Column::CreatedAt)
             .order_by_asc(follow_up_entity::Column::Id)
             .all(&self.db)

@@ -130,8 +130,12 @@ pub(super) async fn observed_at(
     workspace: &str,
     version: u64,
 ) -> Result<Observation, DbErr> {
+    let withheld = super::link_correction::withheld_candidate_ids_in_tx(tx, workspace).await?;
     let mut sources = Vec::new();
     for row in latest(tx, workspace, version, None).await? {
+        if withheld.contains(&row.candidate) {
+            continue;
+        }
         if let Some(source) = decode(&row)? {
             sources.push(source);
         }
@@ -156,8 +160,12 @@ async fn selected(
     candidates: Option<&[&str]>,
 ) -> Result<Observation, DbErr> {
     let version = pin_version(tx, workspace).await?;
+    let withheld = super::link_correction::withheld_candidate_ids_in_tx(tx, workspace).await?;
     let mut sources = Vec::new();
     for row in latest(tx, workspace, version, candidates).await? {
+        if withheld.contains(&row.candidate) {
+            continue;
+        }
         if let Some(source) = decode(&row)? {
             sources.push(source);
         }
