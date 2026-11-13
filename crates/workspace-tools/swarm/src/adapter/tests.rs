@@ -122,7 +122,8 @@ prompt=$(cat)
 echo '{"type":"system","subtype":"init","session_id":"sess-42"}'
 case "$prompt" in
   *limit*)
-    echo '{"type":"result","is_error":true,"result":"Claude AI usage limit reached|4102444800","session_id":"sess-42"}'
+    echo '{"type":"rate_limit_event","rate_limit_info":{"status":"rejected","resetsAt":4102444800,"rateLimitType":"seven_day"},"session_id":"sess-42"}'
+    echo '{"type":"result","is_error":true,"result":"You have hit your weekly limit","session_id":"sess-42"}'
     exit 1 ;;
   *)
     echo '{"type":"result","is_error":false,"result":"done","session_id":"sess-42"}' ;;
@@ -447,10 +448,7 @@ fn example_registry_parses_and_lists_its_models() {
                     ..
                 }
             ),
-            (
-                "qwen-coder-local",
-                AdapterKind::OpenaiHttp { key: None, .. }
-            ),
+            ("qwen-local", AdapterKind::OpenaiHttp { key: None, .. }),
         ]
     ));
     let adapter = RegistryAdapter::new(registry, Arc::new(FakeKeys::default()));

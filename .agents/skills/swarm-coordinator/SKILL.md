@@ -41,7 +41,10 @@ through the host model proxy except a local Ollama. `claude-cli` and
 `codex-cli` models carry no `key`: in the sandbox container both CLIs
 authenticate through the proxy themselves. `openai-http` models on the proxy
 set `"key": "model-proxy"`, which the server fetches with
-`coda-sandbox token model-proxy`; keyless endpoints omit `key`. Workers run as
+`coda-sandbox token model-proxy`; keyless endpoints omit `key`. Run Claude
+through `claude-cli` only: the proxy drops tools from Claude requests on its
+chat completions route unless they carry Claude Code tool names, so a Claude
+`openai-http` worker cannot reach the board. Workers run as
 children of your server: closing the session or stopping the server stops
 every worker and marks it stopped on the board.
 

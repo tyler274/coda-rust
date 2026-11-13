@@ -12,7 +12,8 @@ use serde_json::{Value, json};
 
 use super::process::{self, LineSink, ProcessLimits, Tail};
 use super::{
-    Cancel, ForkError, TurnOutcome, TurnRequest, WorkerAdapter, ended_outcome, excerpt, quota_retry,
+    Cancel, ForkError, TurnOutcome, TurnRequest, WorkerAdapter, ended_outcome, excerpt,
+    quota_retry, until_epoch,
 };
 use crate::names::MemberName;
 
@@ -177,6 +178,11 @@ impl WorkerAdapter for CliAdapter {
             Ok(status) => status,
             Err(outcome) => return outcome,
         };
+        if let Some(reset) = ran.stdout.limit_reset {
+            return TurnOutcome::QuotaExhausted {
+                retry_after: until_epoch(reset),
+            };
+        }
         if status.success() && !ran.stdout.failed {
             return TurnOutcome::Completed;
         }
@@ -214,6 +220,8 @@ struct Events {
     cli: Cli,
     session: Option<String>,
     failed: bool,
+    /// When a rejected request's usage limit resets, in unix seconds.
+    limit_reset: Option<u64>,
     errors: Tail,
 }
 
@@ -223,6 +231,7 @@ impl Events {
             cli,
             session: None,
             failed: false,
+            limit_reset: None,
             errors: Tail::new(MAX_ERRORS),
         }
     }
@@ -238,6 +247,10 @@ impl LineSink for Events {
             Cli::Claude => {
                 if let Some(id) = event.get("session_id").and_then(text) {
                     self.session = Some(id);
+                }
+                let limit = &event["rate_limit_info"];
+                if event["type"] == "rate_limit_event" && limit["status"] == "rejected" {
+                    self.limit_reset = limit["resetsAt"].as_u64();
                 }
                 if event["type"] == "result" && event["is_error"] == true {
                     self.failed = true;

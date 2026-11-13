@@ -269,16 +269,17 @@ fn quota_retry(error: &str) -> Option<Duration> {
     if !SIGNS.iter().any(|sign| lower.contains(sign)) {
         return None;
     }
-    Some(reset_epoch(error).unwrap_or(DEFAULT_RETRY_AFTER))
+    Some(DEFAULT_RETRY_AFTER)
 }
 
-/// Claude reports its usage limit as `...limit reached|<unix seconds>`.
-fn reset_epoch(error: &str) -> Option<Duration> {
-    let (_, tail) = error.rsplit_once('|')?;
-    let digits: String = tail.chars().take_while(char::is_ascii_digit).collect();
-    let reset = Duration::from_secs(digits.parse().ok()?);
-    let now = SystemTime::now().duration_since(UNIX_EPOCH).ok()?;
-    Some(reset.saturating_sub(now).max(Duration::from_secs(1)))
+/// The wait until a reset given in unix seconds, at least one second.
+fn until_epoch(reset: u64) -> Duration {
+    let now = SystemTime::now()
+        .duration_since(UNIX_EPOCH)
+        .unwrap_or_default();
+    Duration::from_secs(reset)
+        .saturating_sub(now)
+        .max(Duration::from_secs(1))
 }
 
 fn excerpt(text: &str) -> String {
