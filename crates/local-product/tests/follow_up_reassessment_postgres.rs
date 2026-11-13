@@ -29,9 +29,11 @@ use local_product::follow_up_reassessment::{
     FOLLOW_UP_REASSESSMENT_INSTRUCTIONS, FOLLOW_UP_REASSESSMENT_RECIPE_VERSION,
     FollowUpReassessmentError, FollowUpReassessmentInitialLoad, FollowUpReassessmentRequest,
     FollowUpReassessmentTrigger, SavedFollowUpReassessmentOutcome,
-    dispatch_due_follow_up_reassessments, follow_up_reassessment_instructions_sha256,
-    recipe as follow_up_reassessment_recipe, run_follow_up_reassessment,
+    build_follow_up_reassessment_starting_context, dispatch_due_follow_up_reassessments,
+    follow_up_reassessment_instructions_sha256, recipe as follow_up_reassessment_recipe,
+    run_follow_up_reassessment,
 };
+use local_product::initial_understanding::SAVE_UNDERSTANDING_TOOL;
 use local_product::message_review_recipe::{
     MessageReviewRunStatus, RecordedToolDiscovery, ToolDiscoveryDisposition,
 };
@@ -49,11 +51,12 @@ use local_product::runtime::concerns::{
     CONCERN_TOOL, CommandKey, ExactRecordReference, WorkspaceAccess,
 };
 use local_product::runtime::follow_ups::{
-    FOLLOW_UP_TOOL, FollowUpChangeNote, FollowUpCommandKey, FollowUpId, FollowUpStanding,
-    FollowUpSummary, FollowUpUpdateKind, PhysicianChangeFollowUp, PhysicianCreateFollowUp,
+    FOLLOW_UP_TOOL, FollowUpChangeNote, FollowUpCommandKey, FollowUpId, FollowUpReviewSchedule,
+    FollowUpStanding, FollowUpSummary, FollowUpUpdateKind, PhysicianChangeFollowUp,
+    PhysicianCreateFollowUp, WithdrawWrongPatientRequest,
 };
 use local_product::runtime::jobs::is_physician_only_tool;
-use local_product::runtime::reviews::ReviewLifecycleState;
+use local_product::runtime::reviews::{RecordedReviewAction, ReviewLifecycleState};
 use local_product::runtime::sources::SourcePull;
 use local_product::runtime::today_updates::OpenItemRequest;
 use local_product::runtime::{
@@ -1843,6 +1846,25 @@ async fn ac4_longitudinal_three_run_sequence_no_duplicate_concerns_memory_correc
     assert_eq!(dispatched_r3.len(), 1);
     let r3_wire = serde_json::to_string(&r3_reqs.lock().unwrap()[0]["input"]).unwrap();
     assert!(r3_wire.contains("mem-apixaban-switch"));
+    assert!(
+        dispatched_r3[0]
+            .patient_review
+            .actions
+            .iter()
+            .any(|action| {
+                matches!(
+                    action,
+                    RecordedReviewAction::ConcernRetired {
+                        concern_id,
+                        retirement_reason,
+                        ..
+                    } if concern_id == "concern-overdue-inr"
+                        && retirement_reason.contains("transitioned to apixaban 5 mg BID")
+                )
+            }),
+        "Run 3 patient_review.actions must record ConcernRetired with retirement_reason for pre-existing concern: {:?}",
+        dispatched_r3[0].patient_review.actions
+    );
 
     let final_follow_ups = store
         .physician_follow_ups(&access, &mut PostgresWorkspaceAuthority)
@@ -2178,6 +2200,1142 @@ async fn ac5_due_wakeup_and_review_now_dispatch_surfaces_and_stopped_completed_c
         reopened.citations[0]
             .body
             .contains("Complete resolution of right lower lobe infiltrate")
+    );
+}
+
+#[tokio::test]
+async fn round1_complete_citing_unread_understanding_anchor_is_refused_until_read_in_run() {
+    let Some(url) = database_url() else {
+        return;
+    };
+    let (store, auth) = connect_stores(&url).await;
+    let now_ts = current_unix_ts();
+    let practice = format!("prac-fu-r1-unread-{}", Uuid::new_v4().simple());
+    auth.ensure_practice(&practice, PracticeClock::Fixed(now_ts as u64))
+        .await
+        .unwrap();
+
+    let (dr, _tok, dr_hash) =
+        invite_and_sign_in(&auth, &practice, "dr-fu-r1-unread", now_ts as u64).await;
+    let patient = SourcePatient {
+        source_patient_id: format!("pat-fu-r1-unread-{}", Uuid::new_v4().simple()),
+        display_name: "Lydia Okafor".into(),
+        birth_date: Some("1961-08-29".into()),
+        sex_or_gender: Some("female".into()),
+        medical_record_numbers: vec![MedicalRecordNumber {
+            system: "clinic-ehr".into(),
+            value: "MRN-FU-UNREAD".into(),
+        }],
+    };
+    let workspace = workspace_id("clinic-ehr", &patient.source_patient_id);
+    auth.register_patient(&practice, &workspace).await.unwrap();
+    auth.set_membership(&dr, &workspace, Membership::Allowed)
+        .await
+        .unwrap();
+
+    let anchor_lab = chart_record(
+        &workspace,
+        "clinic-ehr",
+        "anchor-lab-1",
+        "rev-1",
+        "Observation",
+        "2026-11-10",
+        "Serum TSH",
+        "TSH 2.1 mIU/L (euthyroid on levothyroxine 75 mcg daily).",
+    );
+    store
+        .record_chart(
+            &workspace,
+            &[anchor_lab],
+            &SourcePull {
+                source_id: "clinic-ehr".into(),
+                source_label: "Clinic EHR".into(),
+                patient,
+                pulled_at: now_ts,
+            },
+        )
+        .await
+        .unwrap();
+
+    let access = WorkspaceAccess {
+        practice: &practice,
+        physician: &dr.physician_id,
+        workspace: &workspace,
+        session_hash: &dr_hash,
+    };
+    let fu_id = FollowUpId::new("fu-r1-unread-anchor").unwrap();
+    store
+        .create_follow_up_for_physician(
+            &access,
+            &FollowUpCommandKey::new("seed-fu-unread-anchor").unwrap(),
+            &PhysicianCreateFollowUp {
+                id: fu_id.clone(),
+                summary: FollowUpSummary::new("Verify 6-week TSH after levothyroxine adjustment")
+                    .unwrap(),
+                due_at: now_ts - 60,
+                records: vec![ExactRecordReference::new("anchor-lab-1", "rev-1").unwrap()],
+            },
+            &mut PostgresWorkspaceAuthority,
+        )
+        .await
+        .unwrap();
+
+    let skills = load_skills();
+    let roles = distinct_roles();
+
+    // Run 1: reads `anchor-lab-1` @ `rev-1` and saves `PatientUnderstanding` indexing `anchor-lab-1`
+    // in BOTH `claims[0].citations` AND `operating_index.anchors`, while keeping the follow-up active.
+    let (mut p_seed_u, _) = spawn_responses_sse_server(vec![
+        vec![sse_function_call(
+            "read-anchor-r1",
+            READ_TOOL,
+            &json!({
+                "references": [{ "candidate_id": "anchor-lab-1", "revision": "rev-1", "cursor": null }],
+                "max_result_bytes": 16_384,
+            }),
+        )],
+        vec![
+            sse_function_call(
+                "save-u-r1",
+                SAVE_UNDERSTANDING_TOOL,
+                &json!({
+                    "expected_revision": 0,
+                    "operating_index": {
+                        "working_overview": "Hypothyroidism on levothyroxine 75 mcg; 2026-11-10 TSH 2.1 mIU/L.",
+                        "known_health_systems": [{
+                            "name": "Clinic EHR",
+                            "standing": { "kind": "connected", "source_id": "clinic-ehr" },
+                            "note": "Primary outpatient chart",
+                        }],
+                        "open_threads": ["Confirm symptom stability alongside euthyroid TSH"],
+                        "anchors": [{
+                            "reference": { "candidate_id": "anchor-lab-1", "revision": "rev-1" },
+                            "source_id": "clinic-ehr",
+                            "topic": "Thyroid monitoring",
+                        }],
+                    },
+                    "claims": [{
+                        "text": "2026-11-10 TSH is 2.1 mIU/L on levothyroxine 75 mcg daily.",
+                        "citations": [{ "candidate_id": "anchor-lab-1", "revision": "rev-1" }],
+                    }],
+                    "material_gaps": ["Symptom check still open before closing follow-up."],
+                }),
+            ),
+            sse_function_call(
+                "done-u-r1",
+                COMPLETE_FOLLOW_UP_REASSESSMENT_TOOL,
+                &json!({
+                    "decision": {
+                        "kind": "continue_unchanged",
+                        "rationale": "Saved longitudinal understanding; awaiting next check.",
+                        "quiet": true,
+                    },
+                    "cited_records": [{ "candidate_id": "anchor-lab-1", "revision": "rev-1" }],
+                    "basis_and_limitations": "Read TSH 2.1 mIU/L in Run 1.",
+                    "explicit_uncertainty": [],
+                    "unfinished_work": [],
+                }),
+            ),
+        ],
+        vec![sse_assistant_message("Seeded understanding in Run 1.")],
+    ])
+    .await;
+    run_follow_up_reassessment(
+        &store,
+        auth.as_ref(),
+        FollowUpReassessmentRequest {
+            practice: practice.clone(),
+            workspace: workspace.clone(),
+            follow_up_id: fu_id.clone(),
+            trigger: FollowUpReassessmentTrigger::PhysicianReviewNow {
+                physician_id: dr.physician_id.clone(),
+            },
+            review_id: None,
+        },
+        &roles,
+        &skills,
+        &mut p_seed_u,
+        engine::RunLimits::default(),
+        &engine::Cancellation::default(),
+    )
+    .await
+    .unwrap();
+
+    // Run 2: attempts `Complete` citing `anchor-lab-1` @ `rev-1` WITHOUT calling `read_patient_sources` in this run!
+    // Must be REFUSED until `read_patient_sources` is called in Run 2.
+    let (mut p_r2, r2_reqs) = spawn_responses_sse_server(vec![
+        vec![sse_function_call(
+            "complete-without-read",
+            COMPLETE_FOLLOW_UP_REASSESSMENT_TOOL,
+            &json!({
+                "decision": {
+                    "kind": "complete",
+                    "resolution_note": "TSH 2.1 mIU/L confirmed euthyroid.",
+                    "rationale": "Attempted completion from prior understanding citation without reading in this run.",
+                },
+                "cited_records": [{ "candidate_id": "anchor-lab-1", "revision": "rev-1" }],
+                "basis_and_limitations": "Relied on prior understanding without reading in Run 2.",
+                "explicit_uncertainty": [],
+                "unfinished_work": [],
+            }),
+        )],
+        vec![sse_function_call(
+            "read-in-r2",
+            READ_TOOL,
+            &json!({
+                "references": [{ "candidate_id": "anchor-lab-1", "revision": "rev-1", "cursor": null }],
+                "max_result_bytes": 16_384,
+            }),
+        )],
+        vec![sse_function_call(
+            "complete-after-read",
+            COMPLETE_FOLLOW_UP_REASSESSMENT_TOOL,
+            &json!({
+                "decision": {
+                    "kind": "complete",
+                    "resolution_note": "Verified 2026-11-10 TSH 2.1 mIU/L directly in Run 2; thyroid replacement stable.",
+                    "rationale": "Read `anchor-lab-1` @ `rev-1` in this run before completing.",
+                },
+                "cited_records": [{ "candidate_id": "anchor-lab-1", "revision": "rev-1" }],
+                "basis_and_limitations": "Directly read `anchor-lab-1` @ `rev-1` in Run 2.",
+                "explicit_uncertainty": [],
+                "unfinished_work": [],
+            }),
+        )],
+        vec![sse_assistant_message("Completed after reading in Run 2.")],
+    ])
+    .await;
+
+    let r2_done = run_follow_up_reassessment(
+        &store,
+        auth.as_ref(),
+        FollowUpReassessmentRequest {
+            practice: practice.clone(),
+            workspace: workspace.clone(),
+            follow_up_id: fu_id,
+            trigger: FollowUpReassessmentTrigger::DueWakeup {
+                clinical_now: now_ts + 30,
+            },
+            review_id: None,
+        },
+        &roles,
+        &skills,
+        &mut p_r2,
+        engine::RunLimits::default(),
+        &engine::Cancellation::default(),
+    )
+    .await
+    .unwrap();
+    assert!(matches!(
+        r2_done.run.saved_outcome,
+        Some(SavedFollowUpReassessmentOutcome::Completed { .. })
+    ));
+    let turn2_wire = serde_json::to_string(&r2_reqs.lock().unwrap()[1]["input"]).unwrap();
+    assert!(
+        turn2_wire.contains("via `read_patient_sources` before citing it"),
+        "Run 2 must refuse Complete citing unread PatientUnderstanding anchor: {turn2_wire}"
+    );
+}
+
+#[tokio::test]
+async fn round1_review_now_continue_unchanged_clears_due_now_back_to_scheduled_until_due_at() {
+    let Some(url) = database_url() else {
+        return;
+    };
+    let (store, auth) = connect_stores(&url).await;
+    let now_ts = current_unix_ts();
+    let practice = format!("prac-fu-r1-duenow-{}", Uuid::new_v4().simple());
+    auth.ensure_practice(&practice, PracticeClock::Fixed(now_ts as u64))
+        .await
+        .unwrap();
+
+    let (dr, _tok, dr_hash) =
+        invite_and_sign_in(&auth, &practice, "dr-fu-r1-duenow", now_ts as u64).await;
+    let patient = SourcePatient {
+        source_patient_id: format!("pat-fu-r1-duenow-{}", Uuid::new_v4().simple()),
+        display_name: "Trevor Alcott".into(),
+        birth_date: Some("1973-02-11".into()),
+        sex_or_gender: Some("male".into()),
+        medical_record_numbers: vec![MedicalRecordNumber {
+            system: "clinic-ehr".into(),
+            value: "MRN-FU-DUENOW".into(),
+        }],
+    };
+    let workspace = workspace_id("clinic-ehr", &patient.source_patient_id);
+    auth.register_patient(&practice, &workspace).await.unwrap();
+    auth.set_membership(&dr, &workspace, Membership::Allowed)
+        .await
+        .unwrap();
+
+    let note = chart_record(
+        &workspace,
+        "clinic-ehr",
+        "note-holter-1",
+        "rev-1",
+        "DocumentReference",
+        "2026-11-10",
+        "Cardiology Referral Note",
+        "14-day ambulatory patch monitor ordered; results expected in two weeks.",
+    );
+    store
+        .record_chart(
+            &workspace,
+            &[note],
+            &SourcePull {
+                source_id: "clinic-ehr".into(),
+                source_label: "Clinic EHR".into(),
+                patient: patient.clone(),
+                pulled_at: now_ts,
+            },
+        )
+        .await
+        .unwrap();
+
+    let access = WorkspaceAccess {
+        practice: &practice,
+        physician: &dr.physician_id,
+        workspace: &workspace,
+        session_hash: &dr_hash,
+    };
+    let future_due_at = now_ts + 86_400 * 14;
+    let fu_id = FollowUpId::new("fu-r1-duenow").unwrap();
+    store
+        .create_follow_up_for_physician(
+            &access,
+            &FollowUpCommandKey::new("create-fu-duenow").unwrap(),
+            &PhysicianCreateFollowUp {
+                id: fu_id.clone(),
+                summary: FollowUpSummary::new("Check 14-day ambulatory patch monitor report")
+                    .unwrap(),
+                due_at: future_due_at,
+                records: vec![ExactRecordReference::new("note-holter-1", "rev-1").unwrap()],
+            },
+            &mut PostgresWorkspaceAuthority,
+        )
+        .await
+        .unwrap();
+
+    // Physician triggers `Review now` well before `future_due_at`:
+    store
+        .review_follow_up_now_for_physician(
+            &access,
+            &FollowUpCommandKey::new("cmd-duenow-1").unwrap(),
+            &fu_id,
+            &mut PostgresWorkspaceAuthority,
+        )
+        .await
+        .unwrap();
+
+    let skills = load_skills();
+    let roles = distinct_roles();
+    let (mut p_r1, _) = spawn_responses_sse_server(vec![
+        vec![sse_function_call(
+            "read-holter-1",
+            READ_TOOL,
+            &json!({
+                "references": [{ "candidate_id": "note-holter-1", "revision": "rev-1", "cursor": null }],
+                "max_result_bytes": 16_384,
+            }),
+        )],
+        vec![sse_function_call(
+            "continue-holter-1",
+            COMPLETE_FOLLOW_UP_REASSESSMENT_TOOL,
+            &json!({
+                "decision": {
+                    "kind": "continue_unchanged",
+                    "rationale": "14-day monitor has not yet resulted; keep scheduled due date in 2 weeks.",
+                    "quiet": true,
+                },
+                "cited_records": [{ "candidate_id": "note-holter-1", "revision": "rev-1" }],
+                "basis_and_limitations": "Checked Clinic EHR; patch monitor report still pending.",
+                "explicit_uncertainty": ["Monitor wear period still in progress."],
+                "unfinished_work": [],
+            }),
+        )],
+        vec![sse_assistant_message("Kept 2-week scheduled due date.")],
+    ])
+    .await;
+
+    let d1 = dispatch_due_follow_up_reassessments(
+        &store,
+        auth.as_ref(),
+        &practice,
+        &workspace,
+        now_ts + 10,
+        &roles,
+        &skills,
+        &mut p_r1,
+        engine::RunLimits::default(),
+        &engine::Cancellation::default(),
+    )
+    .await
+    .unwrap();
+    assert_eq!(d1.len(), 1);
+
+    // Standing MUST be `Scheduled { due_at: future_due_at }`, NOT stuck on `DueNow`!
+    let after_r1 = store
+        .physician_follow_ups(&access, &mut PostgresWorkspaceAuthority)
+        .await
+        .unwrap();
+    assert_eq!(
+        after_r1[0].standing,
+        FollowUpStanding::Active {
+            schedule: FollowUpReviewSchedule::Scheduled {
+                due_at: future_due_at
+            },
+        },
+        "ContinueUnchanged must clear DueNow back to Scheduled"
+    );
+
+    // Unrelated chart pull BEFORE `future_due_at` MUST NOT re-trigger this item!
+    let unrelated = chart_record(
+        &workspace,
+        "clinic-ehr",
+        "obs-flu-shot",
+        "rev-1",
+        "Immunization",
+        "2026-11-12",
+        "Influenza Vaccine",
+        "Routine seasonal influenza immunization administered.",
+    );
+    store.record_source(&unrelated).await.unwrap();
+
+    let due_before_target = store
+        .due_follow_ups(&practice, &workspace, now_ts + 300)
+        .await
+        .unwrap();
+    assert!(
+        due_before_target.is_empty(),
+        "item must not remain due before scheduled due_at: {due_before_target:?}"
+    );
+    let (mut p_empty, _) = spawn_responses_sse_server(vec![]).await;
+    let d_before = dispatch_due_follow_up_reassessments(
+        &store,
+        auth.as_ref(),
+        &practice,
+        &workspace,
+        now_ts + 300,
+        &roles,
+        &skills,
+        &mut p_empty,
+        engine::RunLimits::default(),
+        &engine::Cancellation::default(),
+    )
+    .await
+    .unwrap();
+    assert!(d_before.is_empty());
+
+    // Once `clinical_now >= future_due_at`, scheduled due wakeup MUST dispatch cleanly!
+    let (mut p_due, _) = spawn_responses_sse_server(vec![
+        vec![sse_function_call(
+            "read-holter-due",
+            READ_TOOL,
+            &json!({
+                "references": [{ "candidate_id": "note-holter-1", "revision": "rev-1", "cursor": null }],
+                "max_result_bytes": 16_384,
+            }),
+        )],
+        vec![sse_function_call(
+            "continue-holter-due",
+            COMPLETE_FOLLOW_UP_REASSESSMENT_TOOL,
+            &json!({
+                "decision": {
+                    "kind": "continue_unchanged",
+                    "rationale": "Reached scheduled 14-day due date; report still pending from external lab.",
+                    "quiet": false,
+                },
+                "cited_records": [{ "candidate_id": "note-holter-1", "revision": "rev-1" }],
+                "basis_and_limitations": "Checked at scheduled 14-day due date.",
+                "explicit_uncertainty": ["External Holter report still pending."],
+                "unfinished_work": [],
+            }),
+        )],
+        vec![sse_assistant_message("Ran scheduled due wakeup.")],
+    ])
+    .await;
+    let d_at_due = dispatch_due_follow_up_reassessments(
+        &store,
+        auth.as_ref(),
+        &practice,
+        &workspace,
+        future_due_at + 5,
+        &roles,
+        &skills,
+        &mut p_due,
+        engine::RunLimits::default(),
+        &engine::Cancellation::default(),
+    )
+    .await
+    .unwrap();
+    assert_eq!(d_at_due.len(), 1);
+}
+
+#[tokio::test]
+async fn round1_mid_run_physician_stop_terminal_fences_and_source_change_clears_staged() {
+    let Some(url) = database_url() else {
+        return;
+    };
+    let (store, auth) = connect_stores(&url).await;
+    let now_ts = current_unix_ts();
+    let practice = format!("prac-fu-r1-fence-{}", Uuid::new_v4().simple());
+    auth.ensure_practice(&practice, PracticeClock::Fixed(now_ts as u64))
+        .await
+        .unwrap();
+
+    let (dr, _tok, dr_hash) =
+        invite_and_sign_in(&auth, &practice, "dr-fu-r1-fence", now_ts as u64).await;
+    let patient = SourcePatient {
+        source_patient_id: format!("pat-fu-r1-fence-{}", Uuid::new_v4().simple()),
+        display_name: "Simone Pelletier".into(),
+        birth_date: Some("1959-12-04".into()),
+        sex_or_gender: Some("female".into()),
+        medical_record_numbers: vec![MedicalRecordNumber {
+            system: "clinic-ehr".into(),
+            value: "MRN-FU-FENCE".into(),
+        }],
+    };
+    let workspace = workspace_id("clinic-ehr", &patient.source_patient_id);
+    auth.register_patient(&practice, &workspace).await.unwrap();
+    auth.set_membership(&dr, &workspace, Membership::Allowed)
+        .await
+        .unwrap();
+
+    let obs = chart_record(
+        &workspace,
+        "clinic-ehr",
+        "obs-ferritin-1",
+        "rev-1",
+        "Observation",
+        "2026-11-10",
+        "Serum Ferritin",
+        "Ferritin 22 ng/mL.",
+    );
+    store
+        .record_chart(
+            &workspace,
+            &[obs],
+            &SourcePull {
+                source_id: "clinic-ehr".into(),
+                source_label: "Clinic EHR".into(),
+                patient,
+                pulled_at: now_ts,
+            },
+        )
+        .await
+        .unwrap();
+
+    let access = WorkspaceAccess {
+        practice: &practice,
+        physician: &dr.physician_id,
+        workspace: &workspace,
+        session_hash: &dr_hash,
+    };
+    let fu_stop = FollowUpId::new("fu-mid-stop").unwrap();
+    let fu_cancel = FollowUpId::new("fu-mid-cancel").unwrap();
+    let fu_src = FollowUpId::new("fu-mid-src").unwrap();
+    for id in [&fu_stop, &fu_cancel, &fu_src] {
+        store
+            .create_follow_up_for_physician(
+                &access,
+                &FollowUpCommandKey::new(format!("seed-{}", id.as_str())).unwrap(),
+                &PhysicianCreateFollowUp {
+                    id: id.clone(),
+                    summary: FollowUpSummary::new("Recheck ferritin after oral iron").unwrap(),
+                    due_at: now_ts - 60,
+                    records: vec![ExactRecordReference::new("obs-ferritin-1", "rev-1").unwrap()],
+                },
+                &mut PostgresWorkspaceAuthority,
+            )
+            .await
+            .unwrap();
+    }
+
+    let skills = load_skills();
+    let roles = distinct_roles();
+
+    // --- Sub-case A: Physician pauses (`Stop` -> `Held`) mid-run BEFORE `finish` ---
+    struct MidRunStopProvider {
+        store: Store,
+        practice: String,
+        physician_id: String,
+        workspace: String,
+        session_hash: Vec<u8>,
+        fu_id: FollowUpId,
+        turn: usize,
+    }
+    impl engine::recipe::Provider for MidRunStopProvider {
+        async fn exchange(
+            &mut self,
+            _: &engine::recipe::Request,
+            _: &engine::Cancellation,
+            _: &engine::RunLimits,
+            _: &mut dyn engine::recipe::Observer,
+        ) -> Result<engine::Turn, engine::Cause> {
+            self.turn += 1;
+            match self.turn {
+                1 => Ok(engine::Turn {
+                    items: vec![engine::Item::Call(engine::Invocation {
+                        id: "stage-complete-before-stop".into(),
+                        name: COMPLETE_FOLLOW_UP_REASSESSMENT_TOOL.into(),
+                        arguments: json!({
+                            "decision": {
+                                "kind": "end_without_completion",
+                                "ending_reason": "Would have ended if not paused.",
+                                "rationale": "Testing mid-run Held fence.",
+                            },
+                            "cited_records": [],
+                            "basis_and_limitations": "Testing mid-run physician Stop.",
+                            "explicit_uncertainty": [],
+                            "unfinished_work": [],
+                        })
+                        .to_string(),
+                    })],
+                    receipt: json!({"turn": 1}),
+                    usage: Default::default(),
+                }),
+                2 => {
+                    let access = WorkspaceAccess {
+                        practice: &self.practice,
+                        physician: &self.physician_id,
+                        workspace: &self.workspace,
+                        session_hash: &self.session_hash,
+                    };
+                    self.store
+                        .stop_follow_up_for_physician(
+                            &access,
+                            &FollowUpCommandKey::new("midrun-stop-cmd").unwrap(),
+                            &self.fu_id,
+                            Some(FollowUpChangeNote::new("Paused mid-run by physician").unwrap()),
+                            &mut PostgresWorkspaceAuthority,
+                        )
+                        .await
+                        .unwrap();
+                    Ok(engine::Turn {
+                        items: vec![engine::Item::assistant("Finishing after mid-run Stop.")],
+                        receipt: json!({"turn": 2}),
+                        usage: Default::default(),
+                    })
+                }
+                other => panic!("must abort immediately on Held without looping to turn {other}"),
+            }
+        }
+    }
+
+    let err_held = run_follow_up_reassessment(
+        &store,
+        auth.as_ref(),
+        FollowUpReassessmentRequest {
+            practice: practice.clone(),
+            workspace: workspace.clone(),
+            follow_up_id: fu_stop.clone(),
+            trigger: FollowUpReassessmentTrigger::DueWakeup {
+                clinical_now: now_ts,
+            },
+            review_id: None,
+        },
+        &roles,
+        &skills,
+        &mut MidRunStopProvider {
+            store: store.clone(),
+            practice: practice.clone(),
+            physician_id: dr.physician_id.clone(),
+            workspace: workspace.clone(),
+            session_hash: dr_hash.clone(),
+            fu_id: fu_stop.clone(),
+            turn: 0,
+        },
+        engine::RunLimits::default(),
+        &engine::Cancellation::default(),
+    )
+    .await
+    .unwrap_err();
+    assert!(
+        matches!(
+            err_held,
+            FollowUpReassessmentError::NotEligible {
+                standing: "held",
+                ..
+            }
+        ),
+        "expected NotEligible(held), got {err_held:?}"
+    );
+
+    // --- Sub-case B: Physician cancels (`Cancelled`) mid-run -> aborts immediately without looping to `RunLimits` ---
+    struct MidRunCancelProvider {
+        store: Store,
+        practice: String,
+        physician_id: String,
+        workspace: String,
+        session_hash: Vec<u8>,
+        fu_id: FollowUpId,
+        turn: usize,
+    }
+    impl engine::recipe::Provider for MidRunCancelProvider {
+        async fn exchange(
+            &mut self,
+            _: &engine::recipe::Request,
+            _: &engine::Cancellation,
+            _: &engine::RunLimits,
+            _: &mut dyn engine::recipe::Observer,
+        ) -> Result<engine::Turn, engine::Cause> {
+            self.turn += 1;
+            match self.turn {
+                1 => Ok(engine::Turn {
+                    items: vec![engine::Item::Call(engine::Invocation {
+                        id: "stage-continue-before-cancel".into(),
+                        name: COMPLETE_FOLLOW_UP_REASSESSMENT_TOOL.into(),
+                        arguments: json!({
+                            "decision": {
+                                "kind": "continue_unchanged",
+                                "rationale": "Testing mid-run Cancelled fence.",
+                                "quiet": true,
+                            },
+                            "cited_records": [],
+                            "basis_and_limitations": "Testing mid-run physician Cancel.",
+                            "explicit_uncertainty": [],
+                            "unfinished_work": [],
+                        })
+                        .to_string(),
+                    })],
+                    receipt: json!({"turn": 1}),
+                    usage: Default::default(),
+                }),
+                2 => {
+                    let access = WorkspaceAccess {
+                        practice: &self.practice,
+                        physician: &self.physician_id,
+                        workspace: &self.workspace,
+                        session_hash: &self.session_hash,
+                    };
+                    self.store
+                        .cancel_follow_up_for_physician(
+                            &access,
+                            &FollowUpCommandKey::new("midrun-cancel-cmd").unwrap(),
+                            &self.fu_id,
+                            FollowUpChangeNote::new("Cancelled mid-run by physician").unwrap(),
+                            &mut PostgresWorkspaceAuthority,
+                        )
+                        .await
+                        .unwrap();
+                    Ok(engine::Turn {
+                        items: vec![engine::Item::assistant("Finishing after mid-run Cancel.")],
+                        receipt: json!({"turn": 2}),
+                        usage: Default::default(),
+                    })
+                }
+                other => {
+                    panic!("must abort immediately on Cancelled without looping to turn {other}")
+                }
+            }
+        }
+    }
+
+    let err_cancelled = run_follow_up_reassessment(
+        &store,
+        auth.as_ref(),
+        FollowUpReassessmentRequest {
+            practice: practice.clone(),
+            workspace: workspace.clone(),
+            follow_up_id: fu_cancel.clone(),
+            trigger: FollowUpReassessmentTrigger::DueWakeup {
+                clinical_now: now_ts,
+            },
+            review_id: None,
+        },
+        &roles,
+        &skills,
+        &mut MidRunCancelProvider {
+            store: store.clone(),
+            practice: practice.clone(),
+            physician_id: dr.physician_id.clone(),
+            workspace: workspace.clone(),
+            session_hash: dr_hash.clone(),
+            fu_id: fu_cancel.clone(),
+            turn: 0,
+        },
+        engine::RunLimits::default(),
+        &engine::Cancellation::default(),
+    )
+    .await
+    .unwrap_err();
+    assert!(
+        matches!(
+            err_cancelled,
+            FollowUpReassessmentError::NotEligible {
+                standing: "cancelled",
+                ..
+            }
+        ),
+        "expected NotEligible(cancelled), got {err_cancelled:?}"
+    );
+
+    // Zero `SavedPatientReview` rows should exist after the aborted Held / Cancelled runs, and standings stay intact!
+    let reviews_before_src = store
+        .patient_reviews(&practice, &workspace, auth.as_ref())
+        .await
+        .unwrap();
+    assert!(reviews_before_src.is_empty());
+    let f_list = store
+        .physician_follow_ups(&access, &mut PostgresWorkspaceAuthority)
+        .await
+        .unwrap();
+    assert!(matches!(
+        f_list.iter().find(|f| f.id == fu_stop).unwrap().standing,
+        FollowUpStanding::Held { .. }
+    ));
+    assert!(matches!(
+        f_list.iter().find(|f| f.id == fu_cancel).unwrap().standing,
+        FollowUpStanding::Cancelled { .. }
+    ));
+
+    // --- Sub-case C: `patient_sources_changed` in `finish` clears `staged = None` ---
+    struct MidRunSourceChangeProvider {
+        store: Store,
+        practice: String,
+        workspace: String,
+        fu_id: FollowUpId,
+        turn: usize,
+    }
+    impl engine::recipe::Provider for MidRunSourceChangeProvider {
+        async fn exchange(
+            &mut self,
+            request: &engine::recipe::Request,
+            _: &engine::Cancellation,
+            _: &engine::RunLimits,
+            _: &mut dyn engine::recipe::Observer,
+        ) -> Result<engine::Turn, engine::Cause> {
+            self.turn += 1;
+            let wire = serde_json::to_string(&request.items).unwrap();
+            match self.turn {
+                1 => Ok(engine::Turn {
+                    items: vec![engine::Item::Call(engine::Invocation {
+                        id: "stage-before-ferritin-v2".into(),
+                        name: COMPLETE_FOLLOW_UP_REASSESSMENT_TOOL.into(),
+                        arguments: json!({
+                            "decision": {
+                                "kind": "continue_unchanged",
+                                "rationale": "Staged before repeat ferritin arrived.",
+                                "quiet": true,
+                            },
+                            "cited_records": [],
+                            "basis_and_limitations": "Pre-update check.",
+                            "explicit_uncertainty": [],
+                            "unfinished_work": [],
+                        })
+                        .to_string(),
+                    })],
+                    receipt: json!({"turn": 1}),
+                    usage: Default::default(),
+                }),
+                2 => {
+                    let ferritin_v2 = chart_record(
+                        &self.workspace,
+                        "clinic-ehr",
+                        "obs-ferritin-1",
+                        "rev-2",
+                        "Observation",
+                        "2026-11-12",
+                        "Repeat Serum Ferritin",
+                        "Repeat Ferritin 58 ng/mL (repleted).",
+                    );
+                    self.store.record_source(&ferritin_v2).await.unwrap();
+                    Ok(engine::Turn {
+                        items: vec![engine::Item::assistant(
+                            "Attempting finish before reading ferritin rev-2.",
+                        )],
+                        receipt: json!({"turn": 2}),
+                        usage: Default::default(),
+                    })
+                }
+                3 => {
+                    assert!(
+                        wire.contains("patient_sources_changed"),
+                        "expected patient_sources_changed on Turn 3: {wire}"
+                    );
+                    let runs = self
+                        .store
+                        .follow_up_reassessment_runs_for_item(
+                            &self.practice,
+                            &self.workspace,
+                            &self.fu_id,
+                        )
+                        .await
+                        .unwrap();
+                    assert!(
+                        runs[0].staged.is_none(),
+                        "staged submission must clear on patient_sources_changed"
+                    );
+                    Ok(engine::Turn {
+                        items: vec![engine::Item::Call(engine::Invocation {
+                            id: "read-ferritin-v2".into(),
+                            name: READ_TOOL.into(),
+                            arguments: json!({
+                                "references": [{ "candidate_id": "obs-ferritin-1", "revision": "rev-2", "cursor": null }],
+                                "max_result_bytes": 16_384,
+                            })
+                            .to_string(),
+                        })],
+                        receipt: json!({"turn": 3}),
+                        usage: Default::default(),
+                    })
+                }
+                4 => Ok(engine::Turn {
+                    items: vec![engine::Item::Call(engine::Invocation {
+                        id: "complete-ferritin-v2".into(),
+                        name: COMPLETE_FOLLOW_UP_REASSESSMENT_TOOL.into(),
+                        arguments: json!({
+                            "decision": {
+                                "kind": "complete",
+                                "resolution_note": "Repeat ferritin repleted to 58 ng/mL on 2026-11-12.",
+                                "rationale": "Read updated ferritin rev-2 after patient_sources_changed.",
+                            },
+                            "cited_records": [{ "candidate_id": "obs-ferritin-1", "revision": "rev-2" }],
+                            "basis_and_limitations": "Verified repeat ferritin 58 ng/mL (`obs-ferritin-1` @ `rev-2`).",
+                            "explicit_uncertainty": [],
+                            "unfinished_work": [],
+                        })
+                        .to_string(),
+                    })],
+                    receipt: json!({"turn": 4}),
+                    usage: Default::default(),
+                }),
+                5 => Ok(engine::Turn {
+                    items: vec![engine::Item::assistant("Completed ferritin follow-up.")],
+                    receipt: json!({"turn": 5}),
+                    usage: Default::default(),
+                }),
+                other => panic!("unexpected turn {other}"),
+            }
+        }
+    }
+
+    let ok_src = run_follow_up_reassessment(
+        &store,
+        auth.as_ref(),
+        FollowUpReassessmentRequest {
+            practice: practice.clone(),
+            workspace: workspace.clone(),
+            follow_up_id: fu_src,
+            trigger: FollowUpReassessmentTrigger::DueWakeup {
+                clinical_now: now_ts,
+            },
+            review_id: None,
+        },
+        &roles,
+        &skills,
+        &mut MidRunSourceChangeProvider {
+            store: store.clone(),
+            practice: practice.clone(),
+            workspace: workspace.clone(),
+            fu_id: FollowUpId::new("fu-mid-src").unwrap(),
+            turn: 0,
+        },
+        engine::RunLimits::default(),
+        &engine::Cancellation::default(),
+    )
+    .await
+    .unwrap();
+    assert!(matches!(
+        ok_src.run.saved_outcome,
+        Some(SavedFollowUpReassessmentOutcome::Completed { .. })
+    ));
+}
+
+#[tokio::test]
+async fn round1_withdrawn_wrong_patient_candidates_excluded_from_reassessment_context_and_staging()
+{
+    let Some(url) = database_url() else {
+        return;
+    };
+    let (store, auth) = connect_stores(&url).await;
+    let now_ts = current_unix_ts();
+    let practice = format!("prac-fu-r1-wd-{}", Uuid::new_v4().simple());
+    auth.ensure_practice(&practice, PracticeClock::Fixed(now_ts as u64))
+        .await
+        .unwrap();
+
+    let (dr, _tok, dr_hash) =
+        invite_and_sign_in(&auth, &practice, "dr-fu-r1-wd", now_ts as u64).await;
+    let patient = SourcePatient {
+        source_patient_id: format!("pat-fu-r1-wd-{}", Uuid::new_v4().simple()),
+        display_name: "Arthur Callahan".into(),
+        birth_date: Some("1965-06-15".into()),
+        sex_or_gender: Some("male".into()),
+        medical_record_numbers: vec![MedicalRecordNumber {
+            system: "clinic-ehr".into(),
+            value: "MRN-FU-WD".into(),
+        }],
+    };
+    let workspace = workspace_id("clinic-ehr", &patient.source_patient_id);
+    auth.register_patient(&practice, &workspace).await.unwrap();
+    auth.set_membership(&dr, &workspace, Membership::Allowed)
+        .await
+        .unwrap();
+
+    let clean_psa = chart_record(
+        &workspace,
+        "clinic-ehr",
+        "lab-clean-psa",
+        "rev-1",
+        "Observation",
+        "2026-11-10",
+        "Prostate Specific Antigen",
+        "PSA 1.2 ng/mL (stable).",
+    );
+    let wrong_psa = chart_record(
+        &workspace,
+        "clinic-ehr",
+        "lab-wrong-psa",
+        "rev-1",
+        "Observation",
+        "2026-11-10",
+        "Misfiled PSA",
+        "Wrong-patient PSA 9.8 ng/mL.",
+    );
+    store
+        .record_chart(
+            &workspace,
+            &[clean_psa, wrong_psa.clone()],
+            &SourcePull {
+                source_id: "clinic-ehr".into(),
+                source_label: "Clinic EHR".into(),
+                patient,
+                pulled_at: now_ts,
+            },
+        )
+        .await
+        .unwrap();
+
+    store
+        .withdraw_wrong_patient_source(&WithdrawWrongPatientRequest {
+            practice: practice.clone(),
+            workspace: workspace.clone(),
+            withdrawal_id: "wd-fu-r1".into(),
+            candidate_ids: vec!["lab-wrong-psa".into()],
+            message_id: None,
+            fenced_work_ids: Vec::new(),
+            reason: "Withdrawn wrong-patient lab".into(),
+            actor: dr.physician_id.clone(),
+        })
+        .await
+        .unwrap();
+    // Simulate stale source row present alongside active withdrawal boundary:
+    store.record_source(&wrong_psa).await.unwrap();
+
+    let access = WorkspaceAccess {
+        practice: &practice,
+        physician: &dr.physician_id,
+        workspace: &workspace,
+        session_hash: &dr_hash,
+    };
+    let fu_id = FollowUpId::new("fu-r1-wd-psa").unwrap();
+    store
+        .create_follow_up_for_physician(
+            &access,
+            &FollowUpCommandKey::new("create-fu-wd-psa").unwrap(),
+            &PhysicianCreateFollowUp {
+                id: fu_id.clone(),
+                summary: FollowUpSummary::new("Verify annual PSA screening").unwrap(),
+                due_at: now_ts - 60,
+                records: vec![ExactRecordReference::new("lab-clean-psa", "rev-1").unwrap()],
+            },
+            &mut PostgresWorkspaceAuthority,
+        )
+        .await
+        .unwrap();
+
+    let req = FollowUpReassessmentRequest {
+        practice: practice.clone(),
+        workspace: workspace.clone(),
+        follow_up_id: fu_id.clone(),
+        trigger: FollowUpReassessmentTrigger::DueWakeup {
+            clinical_now: now_ts,
+        },
+        review_id: Some("rev-fu-wd-preview".into()),
+    };
+    let (starting_ctx, clean_sources) =
+        build_follow_up_reassessment_starting_context(&store, auth.as_ref(), &req)
+            .await
+            .unwrap();
+    assert!(
+        clean_sources
+            .iter()
+            .all(|s| s.candidate_id != "lab-wrong-psa"),
+        "clean_sources must exclude withdrawn candidate"
+    );
+    assert_eq!(starting_ctx.review_context.chart_record_count, 1);
+
+    let skills = load_skills();
+    let roles = distinct_roles();
+    let (mut p_wd, wd_reqs) = spawn_responses_sse_server(vec![
+        vec![
+            sse_function_call(
+                "read-clean-psa",
+                READ_TOOL,
+                &json!({
+                    "references": [{ "candidate_id": "lab-clean-psa", "revision": "rev-1", "cursor": null }],
+                    "max_result_bytes": 16_384,
+                }),
+            ),
+            sse_function_call(
+                "cite-withdrawn-psa",
+                COMPLETE_FOLLOW_UP_REASSESSMENT_TOOL,
+                &json!({
+                    "decision": {
+                        "kind": "complete",
+                        "resolution_note": "Attempted citing withdrawn record.",
+                        "rationale": "Should be refused.",
+                    },
+                    "cited_records": [{ "candidate_id": "lab-wrong-psa", "revision": "rev-1" }],
+                    "basis_and_limitations": "Attempted withdrawn citation.",
+                    "explicit_uncertainty": [],
+                    "unfinished_work": [],
+                }),
+            ),
+        ],
+        vec![sse_function_call(
+            "cite-clean-psa",
+            COMPLETE_FOLLOW_UP_REASSESSMENT_TOOL,
+            &json!({
+                "decision": {
+                    "kind": "complete",
+                    "resolution_note": "2026-11-10 PSA 1.2 ng/mL confirmed stable.",
+                    "rationale": "Clean PSA rev-1 verified.",
+                },
+                "cited_records": [{ "candidate_id": "lab-clean-psa", "revision": "rev-1" }],
+                "basis_and_limitations": "Verified clean PSA 1.2 ng/mL (`lab-clean-psa` @ `rev-1`).",
+                "explicit_uncertainty": [],
+                "unfinished_work": [],
+            }),
+        )],
+        vec![sse_assistant_message("Completed PSA follow-up cleanly.")],
+    ])
+    .await;
+
+    run_follow_up_reassessment(
+        &store,
+        auth.as_ref(),
+        FollowUpReassessmentRequest {
+            practice,
+            workspace,
+            follow_up_id: fu_id,
+            trigger: FollowUpReassessmentTrigger::DueWakeup {
+                clinical_now: now_ts,
+            },
+            review_id: None,
+        },
+        &roles,
+        &skills,
+        &mut p_wd,
+        engine::RunLimits::default(),
+        &engine::Cancellation::default(),
+    )
+    .await
+    .unwrap();
+    let wd_turn2_wire = serde_json::to_string(&wd_reqs.lock().unwrap()[1]["input"]).unwrap();
+    assert!(
+        wd_turn2_wire.contains("was withdrawn from this patient workspace and cannot be cited"),
+        "expected withdrawn citation refusal in stage_reassessment: {wd_turn2_wire}"
     );
 }
 

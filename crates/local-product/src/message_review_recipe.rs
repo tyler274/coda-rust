@@ -58,10 +58,10 @@ use crate::runtime::jobs::{
 };
 use crate::runtime::refresh::{REFRESH_TOOL, SavedSourceStatus, is_refresh_tool, refresh_tool};
 use crate::runtime::reply::proposals::{
-    AnsweredMessageClosure, CompleteReplyReview, LinkedPatientMessage, MessageSender,
-    ObservedPracticeMessage, PracticeMessageKind, ReplyProposalBasisInput, ReplyProposalError,
-    ReplyProposalInput, ReplyReviewDecision, ReplyReviewOutcome, ReplyReviewSnapshot,
-    ReplyStanding, ReviewReadState, SavedReviewCompletion,
+    AnsweredMessageClosure, CompleteReplyReview, ConversationLink, LinkedPatientMessage,
+    MessageSender, ObservedPracticeMessage, PROPOSAL_DRAFT_CHAT_PREFIX, PracticeMessageKind,
+    ReplyProposalBasisInput, ReplyProposalError, ReplyProposalInput, ReplyReviewDecision,
+    ReplyReviewOutcome, ReplyReviewSnapshot, ReplyStanding, ReviewReadState, SavedReviewCompletion,
 };
 use crate::runtime::reply::{
     RevisionClaim, RevisionCommit, RevisionContext, requests_finish, revised_text,
@@ -1010,9 +1010,21 @@ pub enum MessageReviewRecipeError {
         /// Revision input key.
         input_id: String,
     },
+    /// Claimed revision binding did not match the built `reply_revision_recipe`.
+    #[error(
+        "reply revision delivery `{input_id}` on `{chat}` carries a frozen recipe that does not match `reply_revision_recipe`"
+    )]
+    RevisionRecipeMismatch {
+        /// Draft scope chat identifier.
+        chat: String,
+        /// Revision input key.
+        input_id: String,
+    },
     /// Harness execution failed.
     #[error("message review harness run `{run_id}` failed: {source}")]
     Harness {
+        /// Conversation review identifier, when executing a linked message review.
+        review_id: Option<String>,
         /// Run identifier.
         run_id: String,
         /// Underlying harness failure.
@@ -1020,8 +1032,12 @@ pub enum MessageReviewRecipeError {
         source: engine::Failure,
     },
     /// Run stopped at a limit backstop without committing a review decision.
-    #[error("message review run `{run_id}` held without committing `complete_message_review`")]
+    #[error(
+        "message review run `{run_id}` (review `{review_id}`) held without committing `complete_message_review`"
+    )]
     HeldWithoutDecision {
+        /// Conversation review identifier.
+        review_id: String,
         /// Run identifier.
         run_id: String,
     },
@@ -1896,6 +1912,96 @@ impl Store {
     }
 }
 
+/// Loads the active wrong-patient source withdrawal boundary for `(practice, workspace)`, if any.
+pub(crate) async fn load_workspace_withdrawal_boundary(
+    store: &Store,
+    practice: &str,
+    workspace: &str,
+) -> Result<Option<WorkspaceWithdrawalBoundary>, DbErr> {
+    let conn = store.spruce_db();
+    let withdrawal_rows = source_withdrawal_record::Entity::find()
+        .filter(source_withdrawal_record::Column::Practice.eq(practice))
+        .filter(source_withdrawal_record::Column::Workspace.eq(workspace))
+        .order_by_asc(source_withdrawal_record::Column::WithdrawalEpoch)
+        .all(conn)
+        .await?;
+    if withdrawal_rows.is_empty() {
+        return Ok(None);
+    }
+    let mut latest_epoch = 0_u64;
+    let mut candidate_ids = BTreeSet::new();
+    let mut message_ids = BTreeSet::new();
+    for row in withdrawal_rows {
+        let ep = u64::try_from(row.withdrawal_epoch).unwrap_or(1);
+        latest_epoch = latest_epoch.max(ep);
+        let cands: Vec<String> = serde_json::from_value(row.candidate_ids).map_err(
+            conversion_error("source_withdrawal.candidate_ids", "Vec<String>"),
+        )?;
+        candidate_ids.extend(cands);
+        if let Some(msg) = row.message_id {
+            message_ids.insert(msg);
+        }
+    }
+    let rev_rows = understanding_withdrawal_record::Entity::find()
+        .filter(understanding_withdrawal_record::Column::Practice.eq(practice))
+        .filter(understanding_withdrawal_record::Column::Workspace.eq(workspace))
+        .order_by_asc(understanding_withdrawal_record::Column::Revision)
+        .all(conn)
+        .await?;
+    let withdrawn_understanding_revisions = rev_rows
+        .into_iter()
+        .filter_map(|rev| u64::try_from(rev.revision).ok())
+        .collect();
+    Ok(Some(WorkspaceWithdrawalBoundary {
+        latest_epoch,
+        candidate_ids: candidate_ids.into_iter().collect(),
+        message_ids: message_ids.into_iter().collect(),
+        withdrawn_understanding_revisions,
+    }))
+}
+
+/// Excludes any retained chart source whose `candidate_id` (or `provenance.document_id`)
+/// has been withdrawn under the workspace's wrong-patient withdrawal boundary.
+pub(crate) fn retain_non_withdrawn_sources(
+    sources: &mut Vec<SourceRevision>,
+    boundary: Option<&WorkspaceWithdrawalBoundary>,
+) {
+    let Some(boundary) = boundary else {
+        return;
+    };
+    let withdrawn_set: BTreeSet<&str> = boundary.candidate_ids.iter().map(String::as_str).collect();
+    sources.retain(|source| {
+        if withdrawn_set.contains(source.candidate_id.as_str()) {
+            return false;
+        }
+        if let Some(doc_id) = source.provenance.get("document_id").and_then(Value::as_str)
+            && withdrawn_set.contains(doc_id)
+        {
+            return false;
+        }
+        true
+    });
+}
+
+/// Loads `(source_version, non_withdrawn_sources, withdrawal_boundary)` for `(practice, workspace)`.
+pub(crate) async fn load_clean_sources(
+    store: &Store,
+    practice: &str,
+    workspace: &str,
+) -> Result<
+    (
+        u64,
+        Vec<SourceRevision>,
+        Option<WorkspaceWithdrawalBoundary>,
+    ),
+    DbErr,
+> {
+    let mut observation = store.sources(workspace).await?;
+    let boundary = load_workspace_withdrawal_boundary(store, practice, workspace).await?;
+    retain_non_withdrawn_sources(&mut observation.sources, boundary.as_ref());
+    Ok((observation.version, observation.sources, boundary))
+}
+
 /// Assembles [`PatientStartingContext`] for a practice-owned background run
 /// (`message-review` or `follow-up-reassessment`) with no physician session.
 pub(crate) async fn load_practice_patient_starting_context(
@@ -1904,56 +2010,8 @@ pub(crate) async fn load_practice_patient_starting_context(
     workspace: &str,
 ) -> Result<PatientStartingContext, DbErr> {
     let conn = store.spruce_db();
-    let mut observation = store.sources(workspace).await?;
-
-    let withdrawal_rows = source_withdrawal_record::Entity::find()
-        .filter(source_withdrawal_record::Column::Practice.eq(practice))
-        .filter(source_withdrawal_record::Column::Workspace.eq(workspace))
-        .order_by_asc(source_withdrawal_record::Column::WithdrawalEpoch)
-        .all(conn)
-        .await?;
-    let withdrawal_boundary = if withdrawal_rows.is_empty() {
-        None
-    } else {
-        let mut latest_epoch = 0_u64;
-        let mut candidate_ids = BTreeSet::new();
-        let mut message_ids = BTreeSet::new();
-        for row in withdrawal_rows {
-            let ep = u64::try_from(row.withdrawal_epoch).unwrap_or(1);
-            latest_epoch = latest_epoch.max(ep);
-            let cands: Vec<String> = serde_json::from_value(row.candidate_ids).map_err(
-                conversion_error("source_withdrawal.candidate_ids", "Vec<String>"),
-            )?;
-            candidate_ids.extend(cands);
-            if let Some(msg) = row.message_id {
-                message_ids.insert(msg);
-            }
-        }
-        let rev_rows = understanding_withdrawal_record::Entity::find()
-            .filter(understanding_withdrawal_record::Column::Practice.eq(practice))
-            .filter(understanding_withdrawal_record::Column::Workspace.eq(workspace))
-            .order_by_asc(understanding_withdrawal_record::Column::Revision)
-            .all(conn)
-            .await?;
-        let withdrawn_understanding_revisions = rev_rows
-            .into_iter()
-            .filter_map(|rev| u64::try_from(rev.revision).ok())
-            .collect();
-        Some(WorkspaceWithdrawalBoundary {
-            latest_epoch,
-            candidate_ids: candidate_ids.into_iter().collect(),
-            message_ids: message_ids.into_iter().collect(),
-            withdrawn_understanding_revisions,
-        })
-    };
-
-    if let Some(boundary) = &withdrawal_boundary {
-        let withdrawn_set: BTreeSet<&str> =
-            boundary.candidate_ids.iter().map(String::as_str).collect();
-        observation
-            .sources
-            .retain(|source| !withdrawn_set.contains(source.candidate_id.as_str()));
-    }
+    let (chart_version, clean_sources, withdrawal_boundary) =
+        load_clean_sources(store, practice, workspace).await?;
 
     let pulls = store
         .source_pulls(&[workspace.to_owned()])
@@ -2031,8 +2089,8 @@ pub(crate) async fn load_practice_patient_starting_context(
     Ok(PatientStartingContext {
         workspace: workspace.to_owned(),
         patient,
-        chart_version: observation.version,
-        chart_record_count: observation.sources.len(),
+        chart_version,
+        chart_record_count: clean_sources.len(),
         source_pulls,
         check_standing,
         understanding,
@@ -2055,6 +2113,18 @@ pub async fn build_message_review_starting_context(
     run_id: &str,
     options: &MessageReviewOptions,
 ) -> Result<(ReplyReviewSnapshot, MessageReviewStartingContext), MessageReviewRecipeError> {
+    if let Some(existing) = store.reply_conversation(practice, conversation_id).await?
+        && let ConversationLink::LinkedPatient { workspace } = &existing.link
+    {
+        authority
+            .check_practice_patient(&PracticeScope {
+                practice: practice.to_owned(),
+                workspace: workspace.clone(),
+                job_id: format!("message-review:{review_id}"),
+            })
+            .await?;
+    }
+
     let snapshot = store
         .start_or_read_reply_review(practice, conversation_id, review_id, run_id)
         .await?;
@@ -2083,8 +2153,36 @@ pub async fn build_message_review_starting_context(
         ReviewReadState::NeedsRead => snapshot.conversation.pending_reply_request.is_some(),
     };
 
-    let mut attachments = options.extra_attachments.clone();
-    let observation = store.sources(&workspace).await?;
+    let withdrawn_candidates: BTreeSet<&str> = patient_ctx
+        .withdrawal_boundary
+        .as_ref()
+        .map(|b| b.candidate_ids.iter().map(String::as_str).collect())
+        .unwrap_or_default();
+    let withdrawn_messages: BTreeSet<&str> = patient_ctx
+        .withdrawal_boundary
+        .as_ref()
+        .map(|b| b.message_ids.iter().map(String::as_str).collect())
+        .unwrap_or_default();
+
+    let mut attachments: Vec<MessageAttachmentDescriptor> = options
+        .extra_attachments
+        .iter()
+        .filter(|att| {
+            att.candidate_id
+                .as_deref()
+                .is_none_or(|cid| !withdrawn_candidates.contains(cid))
+                && att
+                    .message_id
+                    .as_deref()
+                    .is_none_or(|mid| !withdrawn_messages.contains(mid))
+        })
+        .cloned()
+        .collect();
+    let mut observation = store.sources(&workspace).await?;
+    retain_non_withdrawn_sources(
+        &mut observation.sources,
+        patient_ctx.withdrawal_boundary.as_ref(),
+    );
     for src in &observation.sources {
         let is_attachment_or_doc = src.provenance.get("attachment_id").is_some()
             || src.provenance.get("document_id").is_some()
@@ -2096,6 +2194,17 @@ pub async fn build_message_review_starting_context(
                 .and_then(Value::as_str)
                 .unwrap_or(&src.candidate_id)
                 .to_owned();
+            let message_id = src
+                .provenance
+                .get("message_id")
+                .and_then(Value::as_str)
+                .map(str::to_owned);
+            if message_id
+                .as_deref()
+                .is_some_and(|mid| withdrawn_messages.contains(mid))
+            {
+                continue;
+            }
             if !attachments
                 .iter()
                 .any(|existing| existing.candidate_id.as_deref() == Some(doc_id.as_str()))
@@ -2112,11 +2221,6 @@ pub async fn build_message_review_starting_context(
                     .get("page_count")
                     .and_then(Value::as_u64)
                     .and_then(|n| u32::try_from(n).ok());
-                let message_id = src
-                    .provenance
-                    .get("message_id")
-                    .and_then(Value::as_str)
-                    .map(str::to_owned);
                 attachments.push(MessageAttachmentDescriptor {
                     message_id,
                     candidate_id: Some(doc_id),
@@ -2127,6 +2231,13 @@ pub async fn build_message_review_starting_context(
             }
         }
     }
+
+    let coalesced_changed_candidates = options
+        .coalesced_changed_candidates
+        .iter()
+        .filter(|cid| !withdrawn_candidates.contains(cid.as_str()))
+        .cloned()
+        .collect();
 
     let starting = MessageReviewStartingContext {
         practice: practice.to_owned(),
@@ -2142,7 +2253,7 @@ pub async fn build_message_review_starting_context(
         attachments,
         current_reply_standing: snapshot.conversation.reply_standing.clone(),
         saw_physician_reply_request,
-        coalesced_changed_candidates: options.coalesced_changed_candidates.clone(),
+        coalesced_changed_candidates,
         patient: patient_ctx.patient,
         chart_record_count: patient_ctx.chart_record_count,
         source_pulls: patient_ctx.source_pulls,
@@ -2173,10 +2284,7 @@ struct MessageReviewHost<'a> {
 impl MessageReviewHost<'_> {
     fn source_message(ctx: &MessageReviewStartingContext) -> engine::ProductMessage {
         engine::ProductMessage {
-            id: format!(
-                "message-review:{}:{}",
-                ctx.review_id, ctx.conversation_version
-            ),
+            id: format!("message-review:{}", ctx.review_id),
             role: engine::history::Role::User,
             text: ctx.prompt_text(),
         }
@@ -2234,6 +2342,9 @@ impl Product for MessageReviewHost<'_> {
         chat_read_only(name)
             || read_only_review_tool(name)
             || crate::initial_understanding::read_only_understanding_tool(name)
+            || is_library_tool(name)
+            || is_document_page_tool(name)
+            || is_spruce_working_note_tool(name)
     }
 
     fn read_result(&mut self, id: &str) -> engine::recipe::ToolFuture<Option<String>> {
@@ -2589,8 +2700,13 @@ impl Product for MessageReviewHost<'_> {
                     Ok(sub) => sub,
                     Err(reason) => return Ok(ToolOutcome::refused(reason)),
                 };
-                let current_obs = store.sources(&workspace).await?;
-                let evidence = collect_run_evidence(&run.events, &current_obs.sources);
+                let (_, clean_sources, withdrawal_boundary) =
+                    load_clean_sources(&store, &practice, &workspace).await?;
+                let withdrawn_candidates: BTreeSet<&str> = withdrawal_boundary
+                    .as_ref()
+                    .map(|b| b.candidate_ids.iter().map(String::as_str).collect())
+                    .unwrap_or_default();
+                let evidence = collect_run_evidence(&run.events, &clean_sources);
 
                 for auto_id in &evidence.raised_concern_ids_in_events {
                     if !submission.raised_concern_ids.contains(auto_id) {
@@ -2619,11 +2735,17 @@ impl Product for MessageReviewHost<'_> {
                     }
                 }
 
-                // Rule: every cited chart record must have been read in this run.
+                // Rule: every cited chart record must not be withdrawn and must have been read in this run.
                 if let SubmittedMessageReviewDecision::ProposeReply { cited_records, .. } =
                     &submission.decision
                 {
                     for cited in cited_records {
+                        if withdrawn_candidates.contains(cited.candidate_id.as_str()) {
+                            return Ok(ToolOutcome::refused(format!(
+                                "Cited chart record `{}` was withdrawn from this patient workspace and cannot be cited.",
+                                cited.candidate_id
+                            )));
+                        }
                         if !evidence
                             .read_revisions
                             .contains(&(cited.candidate_id.clone(), cited.revision.clone()))
@@ -2808,6 +2930,7 @@ impl Product for MessageReviewHost<'_> {
             .ok_or_else(|| error("message review run missing"))?;
             let mut updated = decode_message_review_run(locked.clone())?;
             updated.last_pinned_source_version = latest_snapshot.source_version;
+            updated.starting_context.source_version = latest_snapshot.source_version;
             updated.staged_submission = None;
             let mut active: runtime_command_record::ActiveModel = locked.into();
             active.command = Set(serde_json::to_value(&updated)
@@ -2872,6 +2995,24 @@ impl Product for MessageReviewHost<'_> {
                 | ReplyProposalError::PhysicianRequestedReplyRequiresProposal
                 | ReplyProposalError::InvalidInput(_)),
             ) => {
+                let tx = self.store.spruce_db().begin().await?;
+                let locked = runtime_command_record::Entity::find_by_id((
+                    self.practice.clone(),
+                    MESSAGE_REVIEW_RUN_ACTOR.to_owned(),
+                    self.run_id.clone(),
+                ))
+                .lock_exclusive()
+                .one(&tx)
+                .await?
+                .ok_or_else(|| error("message review run missing"))?;
+                let mut updated = decode_message_review_run(locked.clone())?;
+                updated.staged_submission = None;
+                let mut active: runtime_command_record::ActiveModel = locked.into();
+                active.command = Set(serde_json::to_value(&updated)
+                    .map_err(conversion_error("MessageReviewRunRecord", "json"))?);
+                active.update(&tx).await?;
+                tx.commit().await?;
+
                 return Ok(Finish::Continue(json!({
                     "outcome": "completion_refused",
                     "reason": err.to_string(),
@@ -3013,8 +3154,8 @@ pub(crate) async fn execute_background_memory_tool(
             )));
         }
     };
-    let current_obs = store.sources(workspace).await?;
-    let evidence = collect_run_evidence(events, &current_obs.sources);
+    let (_, clean_sources, _) = load_clean_sources(store, practice, workspace).await?;
+    let evidence = collect_run_evidence(events, &clean_sources);
     let cited_records: Vec<ExactRecordReference> = evidence
         .read_revisions
         .into_iter()
@@ -3172,10 +3313,40 @@ pub async fn run_message_review<P: Provider>(
 ) -> Result<CompletedMessageReviewRun, MessageReviewRecipeError> {
     let run_id = format!("msg-review-run-{}", Uuid::new_v4());
     let attempt_id = format!("attempt-{}", Uuid::new_v4());
-    let review_id = options
-        .review_id
-        .clone()
-        .unwrap_or_else(|| format!("msg-review-{}", Uuid::new_v4()));
+    let existing_conv = store.reply_conversation(practice, conversation_id).await?;
+    let (review_id, restart_existing_active) = match &options.review_id {
+        Some(explicit) => {
+            let matches_active = existing_conv.as_ref().is_some_and(|conv| {
+                conv.active_review
+                    .as_ref()
+                    .is_some_and(|active| active.review_id == *explicit && active.run_id != run_id)
+            });
+            (explicit.clone(), matches_active)
+        }
+        None => match existing_conv
+            .as_ref()
+            .and_then(|conv| conv.active_review.as_ref())
+        {
+            Some(active) => (active.review_id.clone(), active.run_id != run_id),
+            None => (format!("msg-review-{}", Uuid::new_v4()), false),
+        },
+    };
+    if restart_existing_active {
+        if let Some(conv) = &existing_conv
+            && let ConversationLink::LinkedPatient { workspace } = &conv.link
+        {
+            authority
+                .check_practice_patient(&PracticeScope {
+                    practice: practice.to_owned(),
+                    workspace: workspace.clone(),
+                    job_id: format!("message-review:{review_id}"),
+                })
+                .await?;
+        }
+        store
+            .restart_reply_review(practice, conversation_id, &run_id)
+            .await?;
+    }
 
     let (_snapshot, starting_context) = build_message_review_starting_context(
         store,
@@ -3307,7 +3478,7 @@ pub async fn run_message_review<P: Provider>(
         practice: starting_context.practice.clone(),
         workspace: starting_context.workspace.clone(),
         conversation_id: starting_context.conversation_id.clone(),
-        review_id,
+        review_id: review_id.clone(),
         run_id: run_id.clone(),
         attempt_id: attempt_id.clone(),
         committed_outcome: None,
@@ -3342,6 +3513,9 @@ pub async fn run_message_review<P: Provider>(
     .await;
 
     if let Err(err) = run_result {
+        let _ = store
+            .restart_reply_review(&starting_context.practice, conversation_id, &run_id)
+            .await;
         let fail_clock = store.spruce_now().await?;
         let tx = store.spruce_db().begin().await?;
         if let Some(locked) = runtime_command_record::Entity::find_by_id((
@@ -3365,6 +3539,7 @@ pub async fn run_message_review<P: Provider>(
         }
         tx.commit().await?;
         return Err(MessageReviewRecipeError::Harness {
+            review_id: Some(review_id),
             run_id,
             source: err,
         });
@@ -3375,7 +3550,10 @@ pub async fn run_message_review<P: Provider>(
         .await?
         .ok_or_else(|| error("completed message review run missing"))?;
     let Some(outcome) = host.committed_outcome else {
-        return Err(MessageReviewRecipeError::HeldWithoutDecision { run_id });
+        let _ = store
+            .restart_reply_review(&starting_context.practice, conversation_id, &run_id)
+            .await;
+        return Err(MessageReviewRecipeError::HeldWithoutDecision { review_id, run_id });
     };
 
     Ok(CompletedMessageReviewRun {
@@ -3393,10 +3571,101 @@ fn revision_context_from_claim(claim: &RevisionClaim) -> RevisionContext {
     }
 }
 
+fn parse_proposal_draft_chat_scope(chat: &str) -> Option<(String, u64)> {
+    let rest = chat.strip_prefix(PROPOSAL_DRAFT_CHAT_PREFIX)?;
+    let (conversation_id, reply_id_raw) = rest.rsplit_once(':')?;
+    if conversation_id.is_empty()
+        || conversation_id.trim() != conversation_id
+        || conversation_id.chars().any(char::is_control)
+    {
+        return None;
+    }
+    let reply_id = reply_id_raw.parse::<u64>().ok()?;
+    (reply_id > 0).then(|| (conversation_id.to_owned(), reply_id))
+}
+
+fn extract_skill_view_name(tool_name: &str, raw_arguments: &str) -> Option<String> {
+    if tool_name != SKILL_VIEW {
+        return None;
+    }
+    serde_json::from_str::<Value>(raw_arguments)
+        .ok()
+        .and_then(|v| v.get("name").and_then(Value::as_str).map(str::to_owned))
+}
+
+fn record_event_calls(seen_calls: &mut BTreeMap<String, (String, Option<String>)>, event: &Event) {
+    match &event.kind {
+        EventKind::ToolStarted(call) => {
+            let skill = extract_skill_view_name(&call.name, &call.arguments);
+            seen_calls.insert(call.id.clone(), (call.name.clone(), skill));
+        }
+        EventKind::ProviderReturned(turn) => {
+            for call in turn.calls() {
+                let skill = extract_skill_view_name(&call.name, &call.arguments);
+                seen_calls
+                    .entry(call.id.clone())
+                    .or_insert_with(|| (call.name.clone(), skill));
+            }
+        }
+        EventKind::ProviderStarted { .. }
+        | EventKind::ProviderObservation { .. }
+        | EventKind::ProviderFailed { .. }
+        | EventKind::TransportRetry { .. }
+        | EventKind::ToolReturned { .. }
+        | EventKind::ProviderBlocked { .. }
+        | EventKind::ContextRejected
+        | EventKind::Candidate { .. }
+        | EventKind::WindowOpened { .. } => {}
+    }
+}
+
+#[derive(Clone, Debug)]
+struct PinnedProposalConversation {
+    conversation_id: String,
+    reply_id: u64,
+    conversation_version: u64,
+    patient_messages: Vec<LinkedPatientMessage>,
+    practice_messages: Vec<ObservedPracticeMessage>,
+}
+
+impl PinnedProposalConversation {
+    fn product_message(&self) -> engine::ProductMessage {
+        engine::ProductMessage {
+            id: format!("reply-proposal-conversation:{}", self.conversation_id),
+            role: engine::history::Role::User,
+            text: json!({
+                "kind": "linked_reply_conversation",
+                "conversation_id": self.conversation_id,
+                "reply_id": self.reply_id,
+                "conversation_version": self.conversation_version,
+                "patient_messages": self.patient_messages,
+                "practice_messages": self.practice_messages,
+            })
+            .to_string(),
+        }
+    }
+
+    fn history_message(&self) -> engine::history::Message<Value> {
+        let msg = self.product_message();
+        engine::history::Message {
+            id: msg.id,
+            role: msg.role,
+            text: msg.text,
+            metadata: json!({
+                "conversation_id": self.conversation_id,
+                "reply_id": self.reply_id,
+                "conversation_version": self.conversation_version,
+            }),
+        }
+    }
+}
+
 struct ReplyRevisionHost<'a> {
     store: Store,
     claim: RevisionClaim,
     authority: &'a mut dyn Authority,
+    pinned_conversation: Option<PinnedProposalConversation>,
+    seen_calls: BTreeMap<String, (String, Option<String>)>,
     reconsiderations: u32,
 }
 
@@ -3410,11 +3679,14 @@ impl Product for ReplyRevisionHost<'_> {
             .draft(&self.claim.scope)
             .await?
             .ok_or("revision draft unavailable")?;
-        Ok(Some(
-            self.store
-                .revision_message_sources(&self.claim.scope, &draft)
-                .await?,
-        ))
+        let mut messages = self
+            .store
+            .revision_message_sources(&self.claim.scope, &draft)
+            .await?;
+        if let Some(pinned) = &self.pinned_conversation {
+            messages.push(pinned.product_message());
+        }
+        Ok(Some(messages))
     }
 
     async fn admit_binding(&mut self, recipe: &RequestBinding) -> Result<(), engine::Cause> {
@@ -3439,19 +3711,36 @@ impl Product for ReplyRevisionHost<'_> {
                     .iter()
                     .map(|event| (attempt.input_id.as_str(), event))
             }))?;
+        let boundary = load_workspace_withdrawal_boundary(
+            &self.store,
+            &self.claim.scope.practice,
+            &self.claim.scope.workspace,
+        )
+        .await?;
+        let mut clean_sources = self.claim.sources.clone();
+        retain_non_withdrawn_sources(&mut clean_sources, boundary.as_ref());
+        let mut items = Vec::new();
+        if let Some(pinned) = &self.pinned_conversation {
+            items.push(Item::ProductMessage(pinned.product_message()));
+        }
+        items.extend(revision_context_from_claim(&self.claim).items(&clean_sources));
         Ok(engine::WindowSeed {
-            items: revision_context_from_claim(&self.claim).items(&self.claim.sources),
+            items,
             note_references,
         })
     }
 
     fn read_only(&self, name: &str) -> bool {
         chat_read_only(name)
+            || is_library_tool(name)
+            || is_document_page_tool(name)
+            || is_spruce_working_note_tool(name)
     }
 
     fn read_result(&mut self, id: &str) -> engine::recipe::ToolFuture<Option<String>> {
         let store = self.store.clone();
         let claim = self.claim.clone();
+        let pinned_conversation = self.pinned_conversation.clone();
         let id = id.to_owned();
         Box::pin(async move {
             store.assert_revision_current(&claim).await?;
@@ -3460,7 +3749,10 @@ impl Product for ReplyRevisionHost<'_> {
                 .await?
                 .ok_or("revision draft unavailable")?;
             let records = store.revision_records(&claim.scope, &draft).await?;
-            let messages = store.revision_message_sources(&claim.scope, &draft).await?;
+            let mut messages = store.revision_message_sources(&claim.scope, &draft).await?;
+            if let Some(pinned) = &pinned_conversation {
+                messages.push(pinned.product_message());
+            }
             engine::results::resolve(records.iter(), &id, &messages).map_err(Into::into)
         })
     }
@@ -3477,8 +3769,28 @@ impl Product for ReplyRevisionHost<'_> {
     }
 
     async fn persist(&mut self, event: Event) -> Result<(), engine::Cause> {
+        record_event_calls(&mut self.seen_calls, &event);
         let clock = self.store.spruce_now().await?;
         if let EventKind::ToolReturned { call_id, result } = &event.kind {
+            let (tool_name, discovered_skill_name) =
+                if let Some(found) = self.seen_calls.get(call_id).cloned() {
+                    found
+                } else if let Some(draft) = self.store.draft(&self.claim.scope).await? {
+                    let records = self
+                        .store
+                        .revision_records(&self.claim.scope, &draft)
+                        .await?;
+                    for (prior_event, _) in &records {
+                        record_event_calls(&mut self.seen_calls, prior_event);
+                    }
+                    self.seen_calls
+                        .get(call_id)
+                        .cloned()
+                        .unwrap_or_else(|| ("unknown".to_owned(), None))
+                } else {
+                    ("unknown".to_owned(), None)
+                };
+
             let tx = self.store.spruce_db().begin().await?;
             if let Some(row) = runtime_command_record::Entity::find_by_id((
                 self.claim.scope.practice.clone(),
@@ -3503,8 +3815,8 @@ impl Product for ReplyRevisionHost<'_> {
                 rec.tool_discoveries.push(RecordedToolDiscovery {
                     ordinal: event.ordinal,
                     call_id: call_id.clone(),
-                    tool_name: "revision_tool".to_owned(),
-                    discovered_skill_name: None,
+                    tool_name,
+                    discovered_skill_name,
                     disposition,
                     recorded_at: clock,
                 });
@@ -3525,6 +3837,7 @@ impl Product for ReplyRevisionHost<'_> {
     fn execute(&mut self, call: &Invocation, arguments: Value) -> engine::recipe::ToolFuture {
         let store = self.store.clone();
         let claim = self.claim.clone();
+        let pinned_conversation = self.pinned_conversation.clone();
         let call = call.clone();
         Box::pin(async move {
             store.assert_revision_current(&claim).await?;
@@ -3550,7 +3863,10 @@ impl Product for ReplyRevisionHost<'_> {
                 return Ok(outcome);
             }
             if engine::history::is_tool(&inv.name) {
-                let messages = store.revision_messages(&claim.scope, &draft).await?;
+                let mut messages = store.revision_messages(&claim.scope, &draft).await?;
+                if let Some(pinned) = &pinned_conversation {
+                    messages.push(pinned.history_message());
+                }
                 return Ok(
                     match engine::history::execute(
                         &inv.name,
@@ -3568,11 +3884,19 @@ impl Product for ReplyRevisionHost<'_> {
             if inv.name == SKILL_VIEW {
                 return Ok(claim.skills.execute(&inv.name, &inv.arguments));
             }
+            let boundary = load_workspace_withdrawal_boundary(
+                &store,
+                &claim.scope.practice,
+                &claim.scope.workspace,
+            )
+            .await?;
+            let mut clean_sources = claim.sources.clone();
+            retain_non_withdrawn_sources(&mut clean_sources, boundary.as_ref());
             if is_document_page_tool(&inv.name) {
                 return Ok(
                     crate::attachments::execute_document_page_read_from_revisions(
                         &inv.arguments,
-                        &claim.sources,
+                        &clean_sources,
                     ),
                 );
             }
@@ -3589,7 +3913,7 @@ impl Product for ReplyRevisionHost<'_> {
                     inv.name
                 )));
             }
-            read_sources(&claim.sources, &claim.scope.workspace, &inv)
+            read_sources(&clean_sources, &claim.scope.workspace, &inv)
         })
     }
 
@@ -3597,13 +3921,56 @@ impl Product for ReplyRevisionHost<'_> {
         if let Err(reason) = revised_text(response) {
             return Ok(revision_feedback(reason));
         }
+
+        if let Some(pinned) = &mut self.pinned_conversation
+            && let Some(conv) = self
+                .store
+                .reply_conversation(&self.claim.scope.practice, &pinned.conversation_id)
+                .await
+                .map_err(|err| -> engine::Cause { Box::new(err) })?
+            && matches!(
+                &conv.link,
+                ConversationLink::LinkedPatient { workspace } if workspace == &self.claim.scope.workspace
+            )
+            && matches!(
+                &conv.reply_standing,
+                ReplyStanding::Ready { proposal } if proposal.reply_id == pinned.reply_id
+            )
+            && conv.conversation_version != pinned.conversation_version
+        {
+            let previous_version = pinned.conversation_version;
+            pinned.conversation_version = conv.conversation_version;
+            pinned.patient_messages.clone_from(&conv.patient_messages);
+            pinned.practice_messages.clone_from(&conv.practice_messages);
+            self.reconsiderations = self.reconsiderations.saturating_add(1);
+            return Ok(Finish::Continue(json!({
+                "outcome": "conversation_updated",
+                "conversation_id": conv.conversation_id,
+                "previous_conversation_version": previous_version,
+                "conversation_version": conv.conversation_version,
+                "patient_messages": conv.patient_messages,
+                "practice_messages": conv.practice_messages,
+                "message": "New linked conversation messages arrived while revising this reply. Reconsider affected content and call `finish_reply_revision` again.",
+            })));
+        }
+
         match self
             .store
             .commit_revision(&self.claim, response, self.authority)
             .await?
         {
             RevisionCommit::Committed => Ok(Finish::Committed),
-            RevisionCommit::SourcesMoved { refresh, sources } => {
+            RevisionCommit::SourcesMoved {
+                refresh,
+                mut sources,
+            } => {
+                let boundary = load_workspace_withdrawal_boundary(
+                    &self.store,
+                    &self.claim.scope.practice,
+                    &self.claim.scope.workspace,
+                )
+                .await?;
+                retain_non_withdrawn_sources(&mut sources, boundary.as_ref());
                 self.reconsiderations = self.reconsiderations.saturating_add(1);
                 self.claim.sources = sources;
                 self.claim.sources_version = refresh.to_version;
@@ -3644,14 +4011,49 @@ pub async fn run_physician_reply_revision<P: Provider>(
     limits: engine::RunLimits,
     cancel: &engine::Cancellation,
 ) -> Result<ReplyRevisionRunRecord, MessageReviewRecipeError> {
-    let Some(claim) = store.claim_revision(delivery, lease_seconds).await? else {
+    let Some(mut claim) = store.claim_revision(delivery, lease_seconds).await? else {
         return Err(MessageReviewRecipeError::RevisionNotClaimable {
             chat: delivery.scope.chat.clone(),
             input_id: delivery.input_id.clone(),
         });
     };
 
-    let (_, preloaded_digests) = reply_revision_recipe(roles, skills)?;
+    let (built_recipe, preloaded_digests) = reply_revision_recipe(roles, skills)?;
+    if claim.binding.recipe != built_recipe {
+        let _ = store
+            .settle_revision_attempt(&claim, AttemptFailure::Failed)
+            .await;
+        return Err(MessageReviewRecipeError::RevisionRecipeMismatch {
+            chat: claim.scope.chat.clone(),
+            input_id: claim.accepted.input.key.clone(),
+        });
+    }
+
+    let boundary =
+        load_workspace_withdrawal_boundary(store, &claim.scope.practice, &claim.scope.workspace)
+            .await?;
+    retain_non_withdrawn_sources(&mut claim.sources, boundary.as_ref());
+
+    let pinned_conversation = if let Some((conversation_id, reply_id)) =
+        parse_proposal_draft_chat_scope(&claim.scope.chat)
+        && let Some(conv) = store
+            .reply_conversation(&claim.scope.practice, &conversation_id)
+            .await?
+        && matches!(
+            &conv.link,
+            ConversationLink::LinkedPatient { workspace } if workspace == &claim.scope.workspace
+        ) {
+        Some(PinnedProposalConversation {
+            conversation_id,
+            reply_id,
+            conversation_version: conv.conversation_version,
+            patient_messages: conv.patient_messages,
+            practice_messages: conv.practice_messages,
+        })
+    } else {
+        None
+    };
+
     let provenance = ReplyRevisionProvenance {
         recipe_version: REPLY_REVISION_RECIPE_VERSION.to_owned(),
         guidance_version: REPLY_REVISION_GUIDANCE_VERSION.to_owned(),
@@ -3701,8 +4103,15 @@ pub async fn run_physician_reply_revision<P: Provider>(
         .draft(&claim.scope)
         .await?
         .ok_or_else(|| error("revision draft unavailable"))?;
-    let messages = store.revision_message_sources(&claim.scope, &draft).await?;
+    let mut messages = store.revision_message_sources(&claim.scope, &draft).await?;
+    if let Some(pinned) = &pinned_conversation {
+        messages.push(pinned.product_message());
+    }
     let records = store.revision_records(&claim.scope, &draft).await?;
+    let mut seen_calls = BTreeMap::new();
+    for (prior_event, _) in &records {
+        record_event_calls(&mut seen_calls, prior_event);
+    }
     let source_feedback = draft
         .attempts
         .last()
@@ -3711,9 +4120,15 @@ pub async fn run_physician_reply_revision<P: Provider>(
     let allowance_after = draft.allowance_after;
     drop(draft);
 
+    let mut initial_items = Vec::new();
+    if let Some(pinned) = &pinned_conversation {
+        initial_items.push(Item::ProductMessage(pinned.product_message()));
+    }
+    initial_items.extend(revision_context_from_claim(&claim).items(&claim.sources));
+
     let work_result = claim
         .binding
-        .request(revision_context_from_claim(&claim).items(&claim.sources))
+        .request(initial_items)
         .freeze()
         .and_then(|frozen| {
             frozen.recover(
@@ -3739,6 +4154,8 @@ pub async fn run_physician_reply_revision<P: Provider>(
         store: store.clone(),
         claim: claim.clone(),
         authority,
+        pinned_conversation,
+        seen_calls,
         reconsiderations: 0,
     };
 
@@ -3808,6 +4225,7 @@ pub async fn run_physician_reply_revision<P: Provider>(
             }
             tx.commit().await?;
             Err(MessageReviewRecipeError::Harness {
+                review_id: None,
                 run_id: attempt_id,
                 source: err,
             })

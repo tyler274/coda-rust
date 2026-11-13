@@ -34,7 +34,8 @@ use crate::initial_understanding::{
 use crate::message_review_recipe::{
     AdmittedPracticePatient, MessageReviewRunStatus, PreloadedSkillDigest, RecordedToolDiscovery,
     ToolDiscoveryDisposition, deduplicate_and_verify_unique_tools, discoverable_skill_names,
-    execute_background_memory_tool, preload_skills_from_catalog,
+    execute_background_memory_tool, load_clean_sources, preload_skills_from_catalog,
+    retain_non_withdrawn_sources,
 };
 use crate::patient_reviews::{
     PriorPatientReviewSummary, QuietReviewReason, READ_PATIENT_REVIEWS_TOOL, ReadReviewsCall,
@@ -55,8 +56,9 @@ use crate::runtime::concerns::{
 };
 use crate::runtime::follow_ups::{
     FOLLOW_UP_TOOL, FollowUp, FollowUpActor, FollowUpChangeNote, FollowUpCommandKey, FollowUpError,
-    FollowUpId, FollowUpReviewOutcome, FollowUpStanding, FollowUpSummary, FollowUpToolCall,
-    FollowUpUpdateEntry, WorkspaceWithdrawalBoundary, follow_up_tool, is_follow_up_tool,
+    FollowUpId, FollowUpReviewOutcome, FollowUpReviewSchedule, FollowUpStanding, FollowUpSummary,
+    FollowUpToolCall, FollowUpUpdateEntry, WorkspaceWithdrawalBoundary, follow_up_tool,
+    is_follow_up_tool,
 };
 use crate::runtime::jobs::{
     AssignmentError, PracticeAccessError, PracticeAuthority, PracticeScope, is_physician_only_tool,
@@ -271,6 +273,61 @@ mod workspace_concern_record {
     pub enum Relation {}
 
     impl ActiveModelBehavior for ActiveModel {}
+}
+
+mod follow_up_record {
+    use sea_orm::entity::prelude::*;
+
+    #[derive(Clone, Debug, PartialEq, Eq, DeriveEntityModel)]
+    #[sea_orm(table_name = "physician_runtime_follow_ups")]
+    pub struct Model {
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub practice: String,
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub workspace: String,
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub id: String,
+        #[sea_orm(column_type = "Text")]
+        pub summary: String,
+        #[sea_orm(column_type = "Text")]
+        pub status: String,
+        pub due_at: i64,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub standing_detail: Json,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub records: Json,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub origin: Json,
+        pub version: i64,
+        pub created_at: i64,
+        pub updated_at: i64,
+    }
+
+    #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
+    pub enum Relation {}
+
+    impl ActiveModelBehavior for ActiveModel {}
+}
+
+#[derive(Debug, thiserror::Error)]
+#[error("follow-up `{follow_up_id}` transitioned to `{standing}` during reassessment")]
+struct MidRunFollowUpIneligible {
+    follow_up_id: FollowUpId,
+    standing: &'static str,
+}
+
+fn extract_mid_run_ineligible(failure: &engine::Failure) -> Option<&MidRunFollowUpIneligible> {
+    match failure {
+        engine::Failure::Host(cause) => cause.downcast_ref::<MidRunFollowUpIneligible>(),
+        engine::Failure::Final(inner) => extract_mid_run_ineligible(inner),
+        engine::Failure::Cancelled
+        | engine::Failure::Limit(_)
+        | engine::Failure::ContextRefused
+        | engine::Failure::Protocol(_)
+        | engine::Failure::Provider(_)
+        | engine::Failure::AfterOutput(_)
+        | engine::Failure::Encoding(_) => None,
+    }
 }
 
 /// Closed event that started a follow-up reassessment run.
@@ -1133,7 +1190,11 @@ pub async fn build_follow_up_reassessment_starting_context(
         store, &practice, &workspace,
     )
     .await?;
-    let observation = store.sources(&workspace).await?;
+    let mut observation = store.sources(&workspace).await?;
+    retain_non_withdrawn_sources(
+        &mut observation.sources,
+        patient_ctx.withdrawal_boundary.as_ref(),
+    );
     let record_versions: BTreeMap<String, String> = observation
         .sources
         .iter()
@@ -1298,27 +1359,8 @@ struct RunReadEvidence {
     read_revisions: BTreeSet<(String, String)>,
 }
 
-fn collect_read_revisions(
-    events: &[Event],
-    current_sources: &[SourceRevision],
-    starting_context: &FollowUpReassessmentStartingContext,
-) -> RunReadEvidence {
+fn collect_read_revisions(events: &[Event], current_sources: &[SourceRevision]) -> RunReadEvidence {
     let mut state = RunReadEvidence::default();
-    if let Some(saved) = &starting_context.review_context.understanding {
-        for cit in &saved.summary.citations {
-            state.read_revisions.insert((
-                cit.reference.candidate_id.clone(),
-                cit.reference.revision.clone(),
-            ));
-        }
-        for anchor in &saved.operating_index.anchors {
-            state.read_revisions.insert((
-                anchor.reference.candidate_id.clone(),
-                anchor.reference.revision.clone(),
-            ));
-        }
-    }
-
     let mut call_meta: BTreeMap<String, (String, Value)> = BTreeMap::new();
     for event in events {
         match &event.kind {
@@ -1630,6 +1672,63 @@ impl FollowUpReassessmentHost<'_> {
             .ok_or_else(|| error("follow-up reassessment run missing"))
     }
 
+    async fn ensure_target_follow_up_active(&self) -> Result<FollowUp, engine::Cause> {
+        let current_items = self
+            .store
+            .workspace_follow_ups(&self.practice, &self.workspace)
+            .await
+            .map_err(|err| -> engine::Cause { Box::new(err) })?;
+        let Some(current_item) = current_items
+            .into_iter()
+            .find(|item| item.id == self.follow_up_id)
+        else {
+            return Err(persistence_failure(error(
+                "target follow-up missing during reassessment",
+            )));
+        };
+        if !matches!(current_item.standing, FollowUpStanding::Active { .. }) {
+            return Err(Box::new(MidRunFollowUpIneligible {
+                follow_up_id: current_item.id,
+                standing: current_item.standing.status_str(),
+            }));
+        }
+        Ok(current_item)
+    }
+
+    async fn clear_staged_reassessment(
+        &self,
+        updated_chart_version: Option<u64>,
+    ) -> Result<(), engine::Cause> {
+        let tx = self
+            .store
+            .spruce_db()
+            .begin()
+            .await
+            .map_err(persistence_failure)?;
+        let locked = runtime_command_record::Entity::find_by_id((
+            self.practice.clone(),
+            FOLLOW_UP_REASSESSMENT_RUN_ACTOR.to_owned(),
+            self.run_id.clone(),
+        ))
+        .lock_exclusive()
+        .one(&tx)
+        .await
+        .map_err(persistence_failure)?
+        .ok_or_else(|| persistence_failure(error("follow-up reassessment run missing")))?;
+        let mut latest = decode_reassessment_run(locked.clone()).map_err(persistence_failure)?;
+        latest.staged = None;
+        if let Some(ver) = updated_chart_version {
+            latest.starting_context.review_context.chart_version = ver;
+        }
+        let mut active: runtime_command_record::ActiveModel = locked.into();
+        active.command = Set(serde_json::to_value(&latest)
+            .map_err(conversion_error("FollowUpReassessmentRunRecord", "json"))
+            .map_err(persistence_failure)?);
+        active.update(&tx).await.map_err(persistence_failure)?;
+        tx.commit().await.map_err(persistence_failure)?;
+        Ok(())
+    }
+
     async fn open_concerns_for_work(&self) -> Result<Vec<workspace_concern_record::Model>, DbErr> {
         let rows = workspace_concern_record::Entity::find()
             .filter(workspace_concern_record::Column::Practice.eq(&self.practice))
@@ -1660,11 +1759,11 @@ impl FollowUpReassessmentHost<'_> {
         for row in rows {
             let sw: SourceWork = serde_json::from_value(row.source_work)
                 .map_err(conversion_error("concern.source_work", "SourceWork"))?;
-            if sw.work_id != self.run_id {
-                continue;
-            }
             let rev = u64::try_from(row.revision.max(0)).unwrap_or(0);
             if row.status == "open" {
+                if sw.work_id != self.run_id {
+                    continue;
+                }
                 let urgency: ConcernUrgency = serde_json::from_value(Value::String(row.urgency))
                     .map_err(conversion_error("concern.urgency", "ConcernUrgency"))?;
                 let records: Vec<ExactRecordReference> = serde_json::from_value(row.records)
@@ -1677,11 +1776,21 @@ impl FollowUpReassessmentHost<'_> {
                     records,
                 });
             } else if row.status == "retired" {
-                actions.push(RecordedReviewAction::ConcernRetired {
-                    concern_id: row.id,
-                    retirement_reason: row.reason,
-                    revision: rev,
-                });
+                let retired_in_this_run = match row.retired_by_work {
+                    Some(retired_json) => {
+                        let retired_sw: SourceWork = serde_json::from_value(retired_json)
+                            .map_err(conversion_error("concern.retired_by_work", "SourceWork"))?;
+                        retired_sw.work_id == self.run_id
+                    }
+                    None => sw.work_id == self.run_id,
+                };
+                if retired_in_this_run {
+                    actions.push(RecordedReviewAction::ConcernRetired {
+                        concern_id: row.id,
+                        retirement_reason: row.retirement_reason.unwrap_or(row.reason),
+                        revision: rev,
+                    });
+                }
             }
         }
         Ok(actions)
@@ -1719,22 +1828,23 @@ impl FollowUpReassessmentHost<'_> {
             explicit_uncertainty.push(trimmed.to_owned());
         }
 
-        let current_obs = self
-            .store
-            .sources(&self.workspace)
-            .await
-            .map_err(persistence_failure)?;
-        let by_candidate: BTreeMap<&str, &SourceRevision> = current_obs
-            .sources
+        let (current_chart_version, clean_sources, withdrawal_boundary) =
+            load_clean_sources(&self.store, &self.practice, &self.workspace)
+                .await
+                .map_err(persistence_failure)?;
+        let withdrawn_candidates: BTreeSet<&str> = withdrawal_boundary
+            .as_ref()
+            .map(|b| b.candidate_ids.iter().map(String::as_str).collect())
+            .unwrap_or_default();
+        let by_candidate: BTreeMap<&str, &SourceRevision> = clean_sources
             .iter()
             .map(|s| (s.candidate_id.as_str(), s))
             .collect();
 
-        let read_state =
-            collect_read_revisions(&run.events, &current_obs.sources, &run.starting_context);
+        let read_state = collect_read_revisions(&run.events, &clean_sources);
 
-        // Verify every cited record exists in current sources at the exact cited revision
-        // and was read in this run (or carried forward from verified understanding).
+        // Verify every cited record exists in current non-withdrawn sources at the exact cited
+        // revision and was read in this run.
         let mut normalized_citations = Vec::with_capacity(parsed.cited_records.len());
         let mut seen_refs = BTreeSet::new();
         for reference in &parsed.cited_records {
@@ -1743,6 +1853,12 @@ impl FollowUpReassessmentHost<'_> {
                     Ok(c) => c,
                     Err(err) => return Ok(Err(format!("invalid cited record reference: {err}"))),
                 };
+            if withdrawn_candidates.contains(checked.candidate_id.as_str()) {
+                return Ok(Err(format!(
+                    "cited chart record `{}` was withdrawn from this patient workspace and cannot be cited",
+                    checked.candidate_id
+                )));
+            }
             let Some(current_src) = by_candidate.get(checked.candidate_id.as_str()).copied() else {
                 return Ok(Err(format!(
                     "cited chart record `{}` is not present in current retained patient sources",
@@ -1911,7 +2027,7 @@ impl FollowUpReassessmentHost<'_> {
             basis_and_limitations,
             explicit_uncertainty,
             unfinished_work: parsed.unfinished_work,
-            staged_chart_version: current_obs.version,
+            staged_chart_version: current_chart_version,
         }))
     }
 }
@@ -1983,6 +2099,7 @@ impl Product for FollowUpReassessmentHost<'_> {
         if run.status != MessageReviewRunStatus::Running || run.attempt_id != self.attempt_id {
             return Err(error("follow-up reassessment run is no longer active").into());
         }
+        self.ensure_target_follow_up_active().await?;
         Ok(())
     }
 
@@ -2520,6 +2637,7 @@ impl Product for FollowUpReassessmentHost<'_> {
     }
 
     async fn finish(&mut self, turn: &Turn) -> Result<Finish, engine::Cause> {
+        self.assert_current().await?;
         let run = self.load_run().await.map_err(persistence_failure)?;
         let Some(staged) = run.staged.clone() else {
             return Ok(Finish::Continue(json!({
@@ -2531,16 +2649,17 @@ impl Product for FollowUpReassessmentHost<'_> {
         };
 
         // Re-verify chart currency at commit so mid-run record changes cannot slip past.
-        let current_obs = self
-            .store
-            .sources(&self.workspace)
-            .await
-            .map_err(persistence_failure)?;
-        if current_obs.version != staged.staged_chart_version {
+        let (current_chart_version, clean_sources, _) =
+            load_clean_sources(&self.store, &self.practice, &self.workspace)
+                .await
+                .map_err(persistence_failure)?;
+        if current_chart_version != staged.staged_chart_version {
+            self.clear_staged_reassessment(Some(current_chart_version))
+                .await?;
             return Ok(Finish::Continue(json!({
                 "outcome": "patient_sources_changed",
                 "previous_chart_version": staged.staged_chart_version,
-                "current_chart_version": current_obs.version,
+                "current_chart_version": current_chart_version,
                 "message": "Patient chart sources changed while finalizing this reassessment. Inspect updated records via `search_patient_information` / `read_patient_sources` and call `complete_follow_up_reassessment` again.",
             })));
         }
@@ -2553,26 +2672,22 @@ impl Product for FollowUpReassessmentHost<'_> {
         ))
         .map_err(|err| -> engine::Cause { Box::new(err) })?;
 
+        let mut is_continue_unchanged = false;
         let saved_outcome = match &staged.decision {
             SubmittedFollowUpDecision::ContinueUnchanged { rationale, quiet } => {
-                let current_items = self
-                    .store
-                    .workspace_follow_ups(&self.practice, &self.workspace)
-                    .await
-                    .map_err(|err| -> engine::Cause { Box::new(err) })?;
-                let Some(current_item) = current_items
-                    .into_iter()
-                    .find(|item| item.id == self.follow_up_id)
-                else {
-                    return Err(persistence_failure(error(
-                        "target follow-up missing at reassessment commit",
-                    )));
-                };
-                if let Some(terminal) = current_item.standing.is_terminal() {
-                    return Ok(Finish::Continue(json!({
-                        "outcome": "follow_up_already_terminal",
-                        "terminal": terminal,
-                    })));
+                is_continue_unchanged = true;
+                let mut current_item = self.ensure_target_follow_up_active().await?;
+                if matches!(
+                    current_item.standing,
+                    FollowUpStanding::Active {
+                        schedule: FollowUpReviewSchedule::DueNow { .. },
+                    }
+                ) {
+                    current_item.standing = FollowUpStanding::Active {
+                        schedule: FollowUpReviewSchedule::Scheduled {
+                            due_at: current_item.due_at,
+                        },
+                    };
                 }
                 SavedFollowUpReassessmentOutcome::ContinuedUnchanged {
                     follow_up: current_item,
@@ -2614,6 +2729,8 @@ impl Product for FollowUpReassessmentHost<'_> {
                         return Err(persistence_failure(db_err));
                     }
                     Err(other) => {
+                        self.ensure_target_follow_up_active().await?;
+                        self.clear_staged_reassessment(None).await?;
                         return Ok(Finish::Continue(json!({
                             "outcome": "follow_up_update_refused",
                             "reason": other.to_string(),
@@ -2653,6 +2770,8 @@ impl Product for FollowUpReassessmentHost<'_> {
                         return Err(persistence_failure(db_err));
                     }
                     Err(other) => {
+                        self.ensure_target_follow_up_active().await?;
+                        self.clear_staged_reassessment(None).await?;
                         return Ok(Finish::Continue(json!({
                             "outcome": "follow_up_complete_refused",
                             "reason": other.to_string(),
@@ -2689,6 +2808,8 @@ impl Product for FollowUpReassessmentHost<'_> {
                     )
                     .await?;
                 let ToolOutcome::Returned(raw_cancel) = cancel_outcome else {
+                    self.ensure_target_follow_up_active().await?;
+                    self.clear_staged_reassessment(None).await?;
                     return Ok(Finish::Continue(json!({
                         "outcome": "follow_up_cancel_refused",
                         "reason": format!("{cancel_outcome:?}"),
@@ -2715,8 +2836,7 @@ impl Product for FollowUpReassessmentHost<'_> {
         // Build and persist the corresponding SavedPatientReview so `patient_reviews`,
         // `today_and_updates_for_physician`, and longitudinal `prior_reviews` reflect the reassessment.
         let clock = self.store.spruce_now().await.map_err(persistence_failure)?;
-        let by_candidate: BTreeMap<&str, &SourceRevision> = current_obs
-            .sources
+        let by_candidate: BTreeMap<&str, &SourceRevision> = clean_sources
             .iter()
             .map(|s| (s.candidate_id.as_str(), s))
             .collect();
@@ -2805,8 +2925,7 @@ impl Product for FollowUpReassessmentHost<'_> {
             },
         };
 
-        let read_state =
-            collect_read_revisions(&run.events, &current_obs.sources, &run.starting_context);
+        let read_state = collect_read_revisions(&run.events, &clean_sources);
         let evidence_read: Vec<ExactRecordReference> = read_state
             .read_revisions
             .into_iter()
@@ -2849,7 +2968,7 @@ impl Product for FollowUpReassessmentHost<'_> {
         let completed_state = ReviewLifecycleState::Completed {
             outcome: review_outcome,
             completed_at: clock,
-            completed_source_version: current_obs.version,
+            completed_source_version: current_chart_version,
         };
         let command_key = format!("follow-up-reassessment:{}", self.run_id);
         let job_id = format!(
@@ -2864,6 +2983,50 @@ impl Product for FollowUpReassessmentHost<'_> {
             .begin()
             .await
             .map_err(persistence_failure)?;
+
+        if is_continue_unchanged {
+            let locked_fu = follow_up_record::Entity::find_by_id((
+                self.practice.clone(),
+                self.workspace.clone(),
+                self.follow_up_id.as_str().to_owned(),
+            ))
+            .lock_exclusive()
+            .one(&tx)
+            .await
+            .map_err(persistence_failure)?
+            .ok_or_else(|| {
+                persistence_failure(error("target follow-up missing at reassessment commit"))
+            })?;
+            let current_standing: FollowUpStanding =
+                serde_json::from_value(locked_fu.standing_detail.clone())
+                    .map_err(conversion_error(
+                        "follow_up.standing_detail",
+                        "FollowUpStanding",
+                    ))
+                    .map_err(persistence_failure)?;
+            let FollowUpStanding::Active { schedule } = current_standing else {
+                tx.rollback().await.map_err(persistence_failure)?;
+                return Err(Box::new(MidRunFollowUpIneligible {
+                    follow_up_id: self.follow_up_id.clone(),
+                    standing: current_standing.status_str(),
+                }));
+            };
+            if matches!(schedule, FollowUpReviewSchedule::DueNow { .. }) {
+                let cleared_standing = FollowUpStanding::Active {
+                    schedule: FollowUpReviewSchedule::Scheduled {
+                        due_at: locked_fu.due_at,
+                    },
+                };
+                let due_at = locked_fu.due_at;
+                let mut active_fu: follow_up_record::ActiveModel = locked_fu.into();
+                active_fu.standing_detail = Set(serde_json::to_value(&cleared_standing)
+                    .map_err(conversion_error("FollowUpStanding", "json"))
+                    .map_err(persistence_failure)?);
+                active_fu.due_at = Set(due_at);
+                active_fu.updated_at = Set(clock);
+                active_fu.update(&tx).await.map_err(persistence_failure)?;
+            }
+        }
 
         if saved_review_record::Entity::find_by_id((
             self.practice.clone(),
@@ -2906,12 +3069,12 @@ impl Product for FollowUpReassessmentHost<'_> {
                     .map_err(conversion_error("Vec<SourceRevision>", "json"))
                     .map_err(persistence_failure)?),
                 completed_source_version: Set(Some(
-                    i64::try_from(current_obs.version)
+                    i64::try_from(current_chart_version)
                         .map_err(conversion_error("completed_source_version", "i64"))
                         .map_err(persistence_failure)?,
                 )),
                 completed_sources: Set(Some(
-                    serde_json::to_value(&current_obs.sources)
+                    serde_json::to_value(&clean_sources)
                         .map_err(conversion_error("Vec<SourceRevision>", "json"))
                         .map_err(persistence_failure)?,
                 )),
@@ -3239,6 +3402,13 @@ pub async fn run_follow_up_reassessment<P: Provider>(
             active.update(&tx).await?;
         }
         tx.commit().await?;
+        if let Some(ineligible) = extract_mid_run_ineligible(&err) {
+            return Err(FollowUpReassessmentError::NotEligible {
+                follow_up_id: ineligible.follow_up_id.clone(),
+                standing: ineligible.standing,
+                trigger: request.trigger.kind_label(),
+            });
+        }
         return Err(FollowUpReassessmentError::Harness {
             run_id,
             source: err,
@@ -3292,7 +3462,7 @@ pub async fn dispatch_due_follow_up_reassessments<P: Provider>(
         return Ok(Vec::new());
     }
 
-    let current_obs = store.sources(workspace).await?;
+    let (current_chart_version, _, _) = load_clean_sources(store, practice, workspace).await?;
     let mem_standing = match store
         .patient_memories(practice, workspace, MemorySelection::ActiveOnly)
         .await
@@ -3311,16 +3481,32 @@ pub async fn dispatch_due_follow_up_reassessments<P: Provider>(
         let prior_runs = store
             .follow_up_reassessment_runs_for_item(practice, workspace, &item.id)
             .await?;
-        let already_reassessed_same_state = prior_runs.iter().any(|r| {
-            r.status == MessageReviewRunStatus::Completed
-                && r.initial_follow_up_version == item.version
-                && r.initial_chart_version == current_obs.version
-                && r.initial_memory_fingerprint == current_mem_fp
-        });
+        let is_due_now_schedule = matches!(
+            item.standing,
+            FollowUpStanding::Active {
+                schedule: FollowUpReviewSchedule::DueNow { .. },
+            }
+        );
+        let already_reassessed_same_state = !is_due_now_schedule
+            && prior_runs.iter().any(|r| {
+                let assessed_at_or_after_due = match &r.starting_context.trigger {
+                    FollowUpReassessmentTrigger::DueWakeup {
+                        clinical_now: prior_now,
+                    } => *prior_now >= item.due_at,
+                    FollowUpReassessmentTrigger::PhysicianReviewNow { .. } => {
+                        r.started_at >= item.due_at
+                    }
+                };
+                r.status == MessageReviewRunStatus::Completed
+                    && assessed_at_or_after_due
+                    && r.initial_follow_up_version == item.version
+                    && r.initial_chart_version == current_chart_version
+                    && r.initial_memory_fingerprint == current_mem_fp
+            });
         if already_reassessed_same_state {
             continue;
         }
-        let res = run_follow_up_reassessment(
+        let res = match run_follow_up_reassessment(
             store,
             authority,
             FollowUpReassessmentRequest {
@@ -3336,7 +3522,12 @@ pub async fn dispatch_due_follow_up_reassessments<P: Provider>(
             limits,
             cancel,
         )
-        .await?;
+        .await
+        {
+            Ok(res) => res,
+            Err(FollowUpReassessmentError::NotEligible { .. }) => continue,
+            Err(err) => return Err(err),
+        };
         completed.push(res);
     }
     Ok(completed)
