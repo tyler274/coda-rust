@@ -404,24 +404,41 @@ pub(crate) async fn serve_durable_today(
         .filter(|row| matches!(row.seen_standing, SeenStanding::Seen { .. }))
         .map(|row| row.item_key.as_str().to_owned())
         .collect();
+    let mut failed_parts = map_failed_parts(projection.completeness.failed_parts());
     let mut rows: Vec<Value> = projection.rows.iter().map(serialize_today_row).collect();
     let (messages_to_match_count, spruce_rows) =
-        crate::matching_reply::spruce_today_rows_for_physician(
+        match crate::matching_reply::spruce_today_rows_for_physician(
             store,
             ctx,
+            &*directory,
             extensions,
             &names,
             target_workspace,
         )
-        .await;
-    let follow_up_rows = crate::follow_ups::follow_up_today_rows_for_physician(
+        .await
+        {
+            Ok(pair) => pair,
+            Err(failed) => {
+                failed_parts.push(failed);
+                (0, Vec::new())
+            }
+        };
+    let follow_up_rows = match crate::follow_ups::follow_up_today_rows_for_physician(
         store,
         ctx,
+        extensions,
         &panel,
         &names,
         target_workspace,
     )
-    .await;
+    .await
+    {
+        Ok(rows) => rows,
+        Err(failed) => {
+            failed_parts.push(failed);
+            Vec::new()
+        }
+    };
 
     let mut urgent_spruce = Vec::new();
     let mut ordinary_extra = Vec::new();
@@ -443,13 +460,14 @@ pub(crate) async fn serve_durable_today(
         .iter()
         .map(map_practice_outage)
         .collect();
-    let failed_parts = map_failed_parts(projection.completeness.failed_parts());
 
     let Ok(connections) =
         crate::source_setup::today_connections(extensions, &ctx.identity.practice_id).await
     else {
         return StatusCode::SERVICE_UNAVAILABLE.into_response();
     };
+
+    let incomplete = !projection.completeness.is_complete() || !failed_parts.is_empty();
 
     Json(json!({
         "date": moment.date_iso,
@@ -461,7 +479,7 @@ pub(crate) async fn serve_durable_today(
         "cursors": {},
         "as_of": projection.clinical_now_unix,
         "also_reviewed": projection.also_reviewed_today_count,
-        "incomplete": !projection.completeness.is_complete(),
+        "incomplete": incomplete,
         "practice_outages": practice_outages,
         "failed_parts": failed_parts,
     }))
@@ -500,14 +518,20 @@ pub(crate) async fn serve_durable_updates(
             headline: run.label.clone(),
         })
         .collect();
+    let mut failed_parts = map_failed_parts(projection.completeness.failed_parts());
     let mut today_items: Vec<UpdateItemWire> = projection
         .today_items
         .iter()
         .map(map_update_entry)
         .collect();
-    today_items.extend(
-        crate::follow_ups::follow_up_update_items_for_physician(store, ctx, &panel, &names).await,
-    );
+    match crate::follow_ups::follow_up_update_items_for_physician(
+        store, ctx, extensions, &panel, &names,
+    )
+    .await
+    {
+        Ok(items) => today_items.extend(items),
+        Err(failed) => failed_parts.push(failed),
+    }
     today_items.sort_by(|a, b| b.occurred_at.cmp(&a.occurred_at));
     let reviewed_nothing_for_you: Vec<UpdateItemWire> = projection
         .reviewed_nothing_for_you
@@ -523,7 +547,6 @@ pub(crate) async fn serve_durable_updates(
             items: group.items.iter().map(map_update_entry).collect(),
         })
         .collect();
-    let failed_parts = map_failed_parts(projection.completeness.failed_parts());
 
     let preview_rows: Vec<Value> = today_items
         .iter()

@@ -21,39 +21,40 @@ use local_product::runtime::history::format_cited_source_body;
 use local_product::runtime::jobs::{PracticeAccessError, PracticeAuthority, PracticeScope};
 use local_product::runtime::reply::RevisionInput;
 use local_product::runtime::reply::proposals::{
-    CardChannelBanner, CardReviewState, ChannelConnection, ConversationLink, DisplayedReplyText,
-    ExpectedDisconnectedCard, ExpectedDraftBase, LinkedPatientMessage, MessageSender,
-    ObservedPracticeMessage, PhysicianDraftKind, PhysicianDraftStanding, PhysicianReplySurface,
-    ProposalRevisionAccepted, RecordPatientMessage, ReplyCardView, ReplyConversation,
-    ReplyProposalBasis, ReplyProposalError, ReplyStanding,
+    CardArrivalNotice, CardChannelBanner, CardReviewState, ChannelConnection, ConversationLink,
+    DisplayedReplyText, ExpectedDisconnectedCard, ExpectedDraftBase, LinkedPatientMessage,
+    MessageSender, ObservedPracticeMessage, PhysicianDraftKind, PhysicianDraftStanding,
+    PhysicianReplySurface, ProposalRevisionAccepted, RecordPatientMessage, ReplyCardView,
+    ReplyConversation, ReplyProposalBasis, ReplyProposalError, ReplyStanding,
 };
 use local_product::runtime::spruce_matching::{
     ChannelHealth, ChannelStanding, ConversationLinkState, MatchAssessment, MatchingDecision,
     MessageRoutingOutcome, MessageStanding, MessageUrgency, MoveDestination,
     MoveSpruceConversationCommand, NonPatientCategory, PendingMoveUndo, SavedSpruceConversation,
-    SenderConfirmationPolicy, SpruceAttachmentSummary, SpruceMatchingError, UnmatchedMessageRow,
+    SavedSpruceMessage, SenderConfirmationPolicy, SpruceAttachmentSummary, SpruceMatchingError,
+    UnmatchedMessageRow,
 };
 use local_product::runtime::understanding::SummaryCitation;
 use local_product::runtime::{Authority, PublicationTransaction, Scope, Store, async_trait};
 use local_product::{ModelBinding, ModelRoles};
 use physician_auth::{AuthStore, Membership, PhysicianIdentity, PostgresAuthStore};
 use physician_wire::matching_reply::{
-    CandidatePatientWire, CardChannelBannerWire, CardReviewStateWire, ChannelSenderRoleWire,
-    ChooseCodaReplyUpdateBody, CodaUpdateOfferWire, ConfirmMessageLinkBody,
+    CandidatePatientWire, CardArrivalNoticeWire, CardChannelBannerWire, CardReviewStateWire,
+    ChannelSenderRoleWire, ChooseCodaReplyUpdateBody, CodaUpdateOfferWire, ConfirmMessageLinkBody,
     ConfirmMessageLinkResponseWire, CopyAttributionWire, CopyReplyBody, CopyReplyResponseWire,
     DisconnectedCardStandingWire, DisconnectedReplyDoneBody, DisplayedReplyTextWire,
     ExpectedDraftBaseWire, FilteredMessageWire, FilteredMessagesResponseWire, MatchSuggestionWire,
-    MatchingActionCommandBody, MatchingMessageStatusResponseWire, MessagesToMatchResponseWire,
-    MoveDestinationWire, MoveSpruceConversationBody, NeedsChoiceReasonWire, NoReplyNeededBody,
-    NonPatientCategoryWire, PatientReplyConversationWire, PatientReplyListResponseWire,
-    PendingMoveTargetDisplayWire, PendingSpruceMoveWire, PhysicianDraftKindWire,
-    PracticeMessageKindWire, ReplyCardWire, ReplyCommandKeyBody, ReplyPatientMessageWire,
-    ReplyPracticeMessageWire, RequestReplyProposalRevisionBody, RestoreMyReplyVersionBody,
-    SaveReplyProposalDraftBody, SenderConfirmationPolicyWire, SpruceAttachmentWire,
-    SpruceChannelBannerWire, ThisIsAPatientOutcomeWire, UnmatchedMessageWire, UnmatchedUrgencyWire,
-    UnreadableSpruceMessageWire,
+    MatchedMessageStandingWire, MatchingActionCommandBody, MatchingMessageStatusResponseWire,
+    MessagesToMatchResponseWire, MoveDestinationWire, MoveSpruceConversationBody,
+    NeedsChoiceReasonWire, NoReplyNeededBody, NonPatientCategoryWire, PatientReplyConversationWire,
+    PatientReplyListResponseWire, PendingMoveTargetDisplayWire, PendingSpruceMoveWire,
+    PhysicianDraftKindWire, PracticeMessageKindWire, ReplyCardWire, ReplyCommandKeyBody,
+    ReplyPatientMessageWire, ReplyPracticeMessageWire, RequestReplyProposalRevisionBody,
+    RestoreMyReplyVersionBody, SaveReplyProposalDraftBody, SenderConfirmationPolicyWire,
+    SpruceAttachmentWire, SpruceChannelBannerWire, ThisIsAPatientOutcomeWire, UnmatchedMessageWire,
+    UnmatchedUrgencyWire, UnreadableSpruceMessageWire,
 };
-use physician_wire::today_updates::ItemCitationWire;
+use physician_wire::today_updates::{FailedProducerWire, ItemCitationWire, ProducerSliceWire};
 use serde_json::json;
 
 use crate::auth::{self, AuthContext};
@@ -80,6 +81,8 @@ pub enum MatchingReplyFollowUpsFault {
     FollowUpRead,
     /// Fail `POST`/`PUT` `/patient-workspaces/{id}/follow-ups*` mutations.
     FollowUpCommand,
+    /// Fail discussion-chat seeding inside `POST /patient-workspaces/{id}/follow-ups/{fid}/stop-and-discuss`.
+    StopAndDiscussChat,
 }
 
 /// Test-only fault-injection controller for browser and integration qualification.
@@ -354,9 +357,16 @@ fn reply_error_response(err: ReplyProposalError) -> Response {
             Json(json!({ "code": "conversation_unlinked", "detail": "Conversation is no longer linked to this patient." })),
         )
             .into_response(),
-        ReplyProposalError::InvalidInput { .. } => (
+        ReplyProposalError::InvalidInput(_)
+        | ReplyProposalError::MoveTargetUnchanged { .. }
+        | ReplyProposalError::AutomaticPracticeMessageCannotAnswer { .. }
+        | ReplyProposalError::UnreadPracticeMessage { .. }
+        | ReplyProposalError::UnknownPatientMessage { .. }
+        | ReplyProposalError::NoOpenMessagesForProposal
+        | ReplyProposalError::OpenMessagesRemainUnhandled
+        | ReplyProposalError::PhysicianRequestedReplyRequiresProposal => (
             StatusCode::BAD_REQUEST,
-            Json(json!({ "detail": err.to_string() })),
+            Json(json!({ "detail": format!("Not saved: {err}") })),
         )
             .into_response(),
         ReplyProposalError::StaleDraftVersion { .. }
@@ -366,12 +376,19 @@ fn reply_error_response(err: ReplyProposalError) -> Response {
         | ReplyProposalError::ChannelDisconnected { .. }
         | ReplyProposalError::ChannelStillConnected { .. }
         | ReplyProposalError::IdempotencyCollision { .. }
-        | ReplyProposalError::UndoNoLongerAvailable { .. } => (
+        | ReplyProposalError::UndoNoLongerAvailable { .. }
+        | ReplyProposalError::NoPendingReviewWake { .. }
+        | ReplyProposalError::StaleReview { .. }
+        | ReplyProposalError::StaleConversationRead { .. }
+        | ReplyProposalError::StaleSourceObservation { .. }
+        | ReplyProposalError::UnverifiedCitation { .. } => (
             StatusCode::CONFLICT,
             Json(json!({ "detail": format!("Not saved: {err}") })),
         )
             .into_response(),
-        _ => (
+        ReplyProposalError::Concern(_)
+        | ReplyProposalError::Runtime(_)
+        | ReplyProposalError::Database(_) => (
             StatusCode::SERVICE_UNAVAILABLE,
             Json(json!({ "detail": format!("Not saved: {err}") })),
         )
@@ -480,7 +497,7 @@ async fn map_unmatched_row(
     viewer: &PhysicianIdentity,
     row: &UnmatchedMessageRow,
     identities: &BTreeMap<String, PatientIdentitySummary>,
-) -> UnmatchedMessageWire {
+) -> Result<UnmatchedMessageWire, SpruceMatchingError> {
     let urgency = match &row.urgency {
         MessageUrgency::Ordinary => UnmatchedUrgencyWire::Ordinary,
         MessageUrgency::Urgent { reason, flagged_at } => UnmatchedUrgencyWire::Urgent {
@@ -504,9 +521,7 @@ async fn map_unmatched_row(
         // Inspect stored classification (redacting any candidate workspace outside viewer's panel).
         let saved = store
             .spruce_message(&viewer.practice_id, &row.message_id)
-            .await
-            .ok()
-            .flatten();
+            .await?;
         match saved.and_then(|m| m.saved_classification.map(|c| c.decision)) {
             Some(MatchingDecision::PatientMail { assessment, .. }) => match assessment {
                 MatchAssessment::AmbiguousCandidates {
@@ -585,7 +600,7 @@ async fn map_unmatched_row(
     };
 
     let sender_addr = row.sender_address.as_ref().map(|s| s.as_str().to_owned());
-    UnmatchedMessageWire {
+    Ok(UnmatchedMessageWire {
         message_id: row.message_id.clone(),
         conversation_id: row.conversation_id.clone(),
         sender_display_name: sender_display_label(
@@ -599,7 +614,7 @@ async fn map_unmatched_row(
         waiting_since: unix_to_rfc3339(row.waiting_since),
         urgency,
         suggestion,
-    }
+    })
 }
 
 async fn list_messages_to_match(
@@ -643,17 +658,20 @@ async fn list_messages_to_match(
         Ok(summary) => summary,
         Err(err) => return spruce_error_response(err),
     };
-    let filtered_count = store
+    let filtered_count = match store
         .filtered_spruce_messages_for_physician(auth_store.as_ref(), &identity)
         .await
-        .map(|rows| rows.len())
-        .unwrap_or(0);
+    {
+        Ok(rows) => rows.len(),
+        Err(err) => return spruce_error_response(err),
+    };
 
     let mut messages = Vec::with_capacity(summary.messages_to_match.len());
     for row in &summary.messages_to_match {
-        messages.push(
-            map_unmatched_row(&store, auth_store.as_ref(), &identity, row, &identities).await,
-        );
+        match map_unmatched_row(&store, auth_store.as_ref(), &identity, row, &identities).await {
+            Ok(wire) => messages.push(wire),
+            Err(err) => return spruce_error_response(err),
+        }
     }
     let unreadable_messages = summary
         .unreadable_messages
@@ -706,12 +724,13 @@ async fn list_filtered_messages(
 
     let mut messages = Vec::with_capacity(rows.len());
     for row in rows {
-        let app_url = store
+        let app_url = match store
             .spruce_message(&identity.practice_id, &row.message_id)
             .await
-            .ok()
-            .flatten()
-            .and_then(|m| m.app_url);
+        {
+            Ok(saved) => saved.and_then(|m| m.app_url),
+            Err(err) => return spruce_error_response(err),
+        };
         let sender_addr = row.sender_address.as_ref().map(|a| a.as_str().to_owned());
         messages.push(FilteredMessageWire {
             message_id: row.message_id,
@@ -750,7 +769,7 @@ pub(crate) async fn sync_spruce_conversation_into_reply_store(
     workspace: &str,
     patient_display_name: Option<&str>,
 ) {
-    let _ = store
+    if let Err(ReplyProposalError::IdempotencyCollision { .. }) = store
         .link_reply_conversation(
             practice,
             conversation_id,
@@ -758,7 +777,29 @@ pub(crate) async fn sync_spruce_conversation_into_reply_store(
                 workspace: workspace.to_owned(),
             },
         )
-        .await;
+        .await
+        && let Ok(Some(sc)) = store.spruce_conversation(practice, conversation_id).await
+        && sc.move_undo.is_none()
+        && matches!(
+            &sc.link_state,
+            ConversationLinkState::Linked { workspace: sc_ws, .. } if sc_ws == workspace
+        )
+        && let Ok(cmd_key) = CommandKey::new(format!(
+            "settle-reply-move:{}:{}:{}",
+            practice, conversation_id, sc.move_count
+        ))
+    {
+        let _ = store
+            .act_on_conversation_move(
+                &cmd_key,
+                practice,
+                conversation_id,
+                ConversationLink::LinkedPatient {
+                    workspace: workspace.to_owned(),
+                },
+            )
+            .await;
+    }
 
     let Ok(linked_messages) = store
         .patient_linked_spruce_messages(practice, workspace)
@@ -949,7 +990,7 @@ async fn leave_message_unlinked(
 
     Json(MatchingMessageStatusResponseWire {
         message_id: saved.message_id,
-        standing: saved.standing.kind_str().to_owned(),
+        standing: MatchedMessageStandingWire::Unlinked,
     })
     .into_response()
 }
@@ -1099,7 +1140,7 @@ async fn mark_unreadable_done(
 
     Json(MatchingMessageStatusResponseWire {
         message_id: saved.message_id,
-        standing: saved.standing.kind_str().to_owned(),
+        standing: MatchedMessageStandingWire::Done,
     })
     .into_response()
 }
@@ -1110,6 +1151,7 @@ async fn mark_unreadable_done(
 pub(crate) async fn settle_expired_spruce_moves_and_replies(
     store: &Store,
     auth_store: &dyn AuthStore,
+    directory: &dyn PatientDirectory,
     extensions: &Extensions,
     practice: &str,
     now_ts: i64,
@@ -1124,7 +1166,21 @@ pub(crate) async fn settle_expired_spruce_moves_and_replies(
         return;
     };
 
-    for conv in report.succeeded {
+    let mut settled = report.succeeded;
+    // `act_on_spruce_conversation_move` commits the settled `spruce_conversation` row before
+    // dispatching queued review triggers; if trigger dispatch fails (for instance without a live
+    // model), `move_undo` is already cleared, so reconcile `reply_conversation` as well.
+    for failure in report.failures {
+        if let Ok(Some(conv)) = store
+            .spruce_conversation(practice, &failure.target_id)
+            .await
+            && conv.move_undo.is_none()
+        {
+            settled.push(conv);
+        }
+    }
+
+    for conv in settled {
         let target = match &conv.link_state {
             ConversationLinkState::Linked { workspace, .. } => Some((
                 ConversationLink::LinkedPatient {
@@ -1152,12 +1208,21 @@ pub(crate) async fn settle_expired_spruce_moves_and_replies(
                     .await;
             }
             if let Some(ws) = maybe_ws {
+                let dest_patient_name = read_patients(directory, std::slice::from_ref(&ws))
+                    .await
+                    .ok()
+                    .and_then(|patients| {
+                        patients
+                            .iter()
+                            .find(|p| p.workspace() == ws)
+                            .map(|p| p.display_name().to_owned())
+                    });
                 sync_spruce_conversation_into_reply_store(
                     store,
                     practice,
                     &conv.conversation_id,
                     &ws,
-                    None,
+                    dest_patient_name.as_deref(),
                 )
                 .await;
             }
@@ -1207,23 +1272,63 @@ fn map_citations(
         .collect()
 }
 
+fn channel_participant_label(spruce_conv: Option<&SavedSpruceConversation>) -> Option<String> {
+    let first_outside = spruce_conv?.outside_participants.first()?;
+    first_outside
+        .display_name
+        .as_deref()
+        .map(str::trim)
+        .filter(|s| !s.is_empty())
+        .or_else(|| {
+            first_outside
+                .endpoint_address
+                .as_ref()
+                .map(|a| a.as_str().trim())
+                .filter(|s| !s.is_empty())
+        })
+        .map(str::to_owned)
+}
+
+fn channel_message_sender_label(
+    message_id: &str,
+    spruce_msgs_by_id: &BTreeMap<String, SavedSpruceMessage>,
+    spruce_conv: Option<&SavedSpruceConversation>,
+) -> String {
+    if let Some(sm) = spruce_msgs_by_id.get(message_id) {
+        let addr = sm.sender_address.as_ref().map(|a| a.as_str());
+        if sm
+            .author_name
+            .as_deref()
+            .is_some_and(|s| !s.trim().is_empty())
+            || addr.is_some_and(|s| !s.trim().is_empty())
+        {
+            return sender_display_label(sm.author_name.as_deref(), addr);
+        }
+    }
+    channel_participant_label(spruce_conv).unwrap_or_else(|| "Patient".to_owned())
+}
+
 fn map_patient_messages(
     messages: &[LinkedPatientMessage],
-    patient_display_name: &str,
+    spruce_msgs_by_id: &BTreeMap<String, SavedSpruceMessage>,
+    spruce_conv: Option<&SavedSpruceConversation>,
     proposed_at: Option<i64>,
+    covered_message_ids: Option<&BTreeSet<String>>,
 ) -> Vec<ReplyPatientMessageWire> {
     messages
         .iter()
         .map(|m| {
             let (sender_display_name, sender_role) = match &m.sender {
                 MessageSender::Patient => (
-                    patient_display_name.to_owned(),
+                    channel_message_sender_label(&m.message_id, spruce_msgs_by_id, spruce_conv),
                     ChannelSenderRoleWire::Patient,
                 ),
                 MessageSender::NamedSender { name } => {
                     (name.clone(), ChannelSenderRoleWire::NonPatient)
                 }
             };
+            let arrived_after_proposal = proposed_at.is_some_and(|prop_ts| m.sent_at > prop_ts)
+                && covered_message_ids.is_none_or(|covered| !covered.contains(&m.message_id));
             ReplyPatientMessageWire {
                 message_id: m.message_id.clone(),
                 sequence: m.sequence,
@@ -1231,7 +1336,7 @@ fn map_patient_messages(
                 sender_role,
                 text: m.text.clone(),
                 sent_at: unix_to_rfc3339(m.sent_at),
-                arrived_after_proposal: proposed_at.is_some_and(|prop_ts| m.sent_at > prop_ts),
+                arrived_after_proposal,
             }
         })
         .collect()
@@ -1259,45 +1364,30 @@ fn map_practice_messages(messages: &[ObservedPracticeMessage]) -> Vec<ReplyPract
 
 fn derive_primary_channel_sender(
     messages: &[LinkedPatientMessage],
+    spruce_msgs_by_id: &BTreeMap<String, SavedSpruceMessage>,
     spruce_conv: Option<&SavedSpruceConversation>,
     patient_display_name: &str,
 ) -> (String, ChannelSenderRoleWire) {
-    if let Some(last_named) = messages.iter().rev().find_map(|m| match &m.sender {
-        MessageSender::NamedSender { name } => Some(name.clone()),
-        MessageSender::Patient => None,
-    }) {
-        return (last_named, ChannelSenderRoleWire::NonPatient);
+    if let Some(newest) = messages.last() {
+        return match &newest.sender {
+            MessageSender::NamedSender { name } => {
+                (name.clone(), ChannelSenderRoleWire::NonPatient)
+            }
+            MessageSender::Patient => (
+                channel_message_sender_label(&newest.message_id, spruce_msgs_by_id, spruce_conv),
+                ChannelSenderRoleWire::Patient,
+            ),
+        };
     }
-    if messages
-        .iter()
-        .any(|m| matches!(m.sender, MessageSender::Patient))
-    {
-        return (
-            patient_display_name.to_owned(),
-            ChannelSenderRoleWire::Patient,
-        );
-    }
-    if let Some(conv) = spruce_conv
-        && let Some(first_outside) = conv.outside_participants.first()
-    {
-        let label = first_outside
-            .display_name
-            .as_deref()
-            .filter(|s| !s.trim().is_empty())
-            .or_else(|| first_outside.endpoint_address.as_ref().map(|a| a.as_str()))
-            .unwrap_or(patient_display_name)
-            .to_owned();
-        let role = if label.eq_ignore_ascii_case(patient_display_name) {
+    if let Some(label) = channel_participant_label(spruce_conv) {
+        let role = if label.eq_ignore_ascii_case(patient_display_name.trim()) {
             ChannelSenderRoleWire::Patient
         } else {
             ChannelSenderRoleWire::NonPatient
         };
         return (label, role);
     }
-    (
-        patient_display_name.to_owned(),
-        ChannelSenderRoleWire::Patient,
-    )
+    ("Patient".to_owned(), ChannelSenderRoleWire::Patient)
 }
 
 fn map_pending_move(
@@ -1366,6 +1456,7 @@ async fn project_reply_surface_wire(
     surface: PhysicianReplySurface,
     raw_conv: Option<&ReplyConversation>,
     spruce_conv: Option<&SavedSpruceConversation>,
+    spruce_msgs_by_id: &BTreeMap<String, SavedSpruceMessage>,
     identities: &BTreeMap<String, PatientIdentitySummary>,
     now_ts: i64,
 ) -> PatientReplyConversationWire {
@@ -1374,8 +1465,11 @@ async fn project_reply_surface_wire(
             .as_ref()
             .and_then(|u| map_pending_move(u, &sc.link_state, identities, now_ts))
     });
-    let spruce_app_url =
-        spruce_app_url_for_conversation(store, practice, workspace, conversation_id).await;
+    let spruce_app_url = spruce_msgs_by_id
+        .values()
+        .filter(|m| m.conversation_id == conversation_id)
+        .find_map(|m| m.app_url.clone())
+        .or(spruce_app_url_for_conversation(store, practice, workspace, conversation_id).await);
 
     let sources_by_key: BTreeMap<(String, String), SourceRevision> = store
         .sources(workspace)
@@ -1399,9 +1493,11 @@ async fn project_reply_surface_wire(
                 *card,
                 raw_conv,
                 spruce_conv,
+                spruce_msgs_by_id,
                 spruce_app_url,
                 pending_move,
                 &sources_by_key,
+                now_ts,
             )
             .await
         }
@@ -1413,8 +1509,12 @@ async fn project_reply_surface_wire(
         } => {
             let empty_msgs = Vec::new();
             let msgs = raw_conv.map_or(empty_msgs.as_slice(), |c| c.patient_messages.as_slice());
-            let (primary_sender_name, primary_sender_role) =
-                derive_primary_channel_sender(msgs, spruce_conv, patient_display_name);
+            let (primary_sender_name, primary_sender_role) = derive_primary_channel_sender(
+                msgs,
+                spruce_msgs_by_id,
+                spruce_conv,
+                patient_display_name,
+            );
             PatientReplyConversationWire::ClosedUndoBanner {
                 conversation_id,
                 patient_workspace_id: workspace,
@@ -1440,10 +1540,15 @@ async fn project_reply_surface_wire(
                     open_messages.as_slice()
                 }
             });
-            let (primary_sender_name, primary_sender_role) =
-                derive_primary_channel_sender(all_msgs, spruce_conv, patient_display_name);
+            let (primary_sender_name, primary_sender_role) = derive_primary_channel_sender(
+                all_msgs,
+                spruce_msgs_by_id,
+                spruce_conv,
+                patient_display_name,
+            );
             let started_at = raw_conv
                 .and_then(|c| c.active_review.as_ref().map(|r| r.started_at))
+                .or_else(|| raw_conv.map(|c| c.updated_at))
                 .unwrap_or(now_ts);
             let review_wire = match review_state {
                 CardReviewState::Idle => CardReviewStateWire::Idle,
@@ -1462,7 +1567,13 @@ async fn project_reply_surface_wire(
                 primary_sender_role,
                 non_patient_sender_names,
                 spruce_app_url,
-                patient_messages: map_patient_messages(all_msgs, patient_display_name, None),
+                patient_messages: map_patient_messages(
+                    all_msgs,
+                    spruce_msgs_by_id,
+                    spruce_conv,
+                    None,
+                    None,
+                ),
                 practice_messages: map_practice_messages(&practice_messages),
                 review_state: review_wire,
                 can_ask_coda_to_reply: channel_connected && has_any_patient_msg,
@@ -1485,21 +1596,31 @@ async fn project_open_card_wire(
     card: ReplyCardView,
     raw_conv: Option<&ReplyConversation>,
     spruce_conv: Option<&SavedSpruceConversation>,
+    spruce_msgs_by_id: &BTreeMap<String, SavedSpruceMessage>,
     spruce_app_url: Option<String>,
     pending_move: Option<PendingSpruceMoveWire>,
     sources_by_key: &BTreeMap<(String, String), SourceRevision>,
+    now_ts: i64,
 ) -> PatientReplyConversationWire {
-    let (primary_sender_name, primary_sender_role) =
-        derive_primary_channel_sender(&card.open_messages, spruce_conv, patient_display_name);
+    let (primary_sender_name, primary_sender_role) = derive_primary_channel_sender(
+        &card.open_messages,
+        spruce_msgs_by_id,
+        spruce_conv,
+        patient_display_name,
+    );
 
-    let (proposal_version, proposed_at) = match raw_conv.map(|c| &c.reply_standing) {
-        Some(ReplyStanding::Ready { proposal }) => (proposal.version, Some(proposal.proposed_at)),
+    let (proposal_version, proposed_at, covered_ids) = match raw_conv.map(|c| &c.reply_standing) {
+        Some(ReplyStanding::Ready { proposal }) => (
+            proposal.version,
+            Some(proposal.proposed_at),
+            Some(&proposal.covered_message_ids),
+        ),
         Some(ReplyStanding::Withheld {
             withheld_from_proposal_version,
             ..
-        }) => (*withheld_from_proposal_version, None),
+        }) => (*withheld_from_proposal_version, None, None),
         _ => match &card.displayed_text {
-            DisplayedReplyText::CodaProposal { version, .. } => (*version, None),
+            DisplayedReplyText::CodaProposal { version, .. } => (*version, None, None),
             DisplayedReplyText::PhysicianDraft { .. } => {
                 let v = match &card.draft_standing {
                     PhysicianDraftStanding::Active {
@@ -1508,9 +1629,9 @@ async fn project_open_card_wire(
                     } => *based_on_proposal_version,
                     PhysicianDraftStanding::NoDraft => 1,
                 };
-                (v, None)
+                (v, None, None)
             }
-            DisplayedReplyText::Withheld => (0, None),
+            DisplayedReplyText::Withheld => (0, None, None),
         },
     };
 
@@ -1576,6 +1697,22 @@ async fn project_open_card_wire(
             citations: map_citations(&offer.offered_citations, sources_by_key),
         });
 
+    let notices = card
+        .notices
+        .iter()
+        .map(|n| match n {
+            CardArrivalNotice::NewerReplyReplacedPrevious {
+                previous_version,
+                current_version,
+            } => CardArrivalNoticeWire::NewerReplyReplacedPrevious {
+                previous_version: *previous_version,
+                current_version: *current_version,
+            },
+            CardArrivalNotice::PatientWroteAgain => CardArrivalNoticeWire::PatientWroteAgain,
+            CardArrivalNotice::OlderMessageReadLate => CardArrivalNoticeWire::OlderMessageReadLate,
+        })
+        .collect();
+
     let copied_by_me = if let Some(conv) = raw_conv {
         store
             .reply_copy_records(practice, &card.conversation_id)
@@ -1605,7 +1742,8 @@ async fn project_open_card_wire(
 
     let started_at = raw_conv
         .and_then(|c| c.active_review.as_ref().map(|r| r.started_at))
-        .unwrap_or(0);
+        .or_else(|| raw_conv.map(|c| c.updated_at))
+        .unwrap_or(now_ts);
     let review_state = match card.review_state {
         CardReviewState::Idle => CardReviewStateWire::Idle,
         CardReviewState::Reviewing => CardReviewStateWire::Reviewing {
@@ -1641,13 +1779,16 @@ async fn project_open_card_wire(
         has_open_concern,
         patient_messages: map_patient_messages(
             &card.open_messages,
-            patient_display_name,
+            spruce_msgs_by_id,
+            spruce_conv,
             proposed_at,
+            covered_ids,
         ),
         practice_messages: map_practice_messages(&card.practice_messages),
         displayed_reply,
         revision_run,
         coda_update_offer,
+        notices,
         basis_and_limitations: format_basis(card.basis.as_ref()),
         citations: map_citations(&card.citations, sources_by_key),
         other_physician_copies,
@@ -1669,6 +1810,24 @@ fn token_and_hash(extensions: &Extensions) -> (String, Vec<u8>) {
     }
 }
 
+enum LoadConversationError {
+    AbsentOnPatient,
+    Http(Box<Response>),
+}
+
+impl LoadConversationError {
+    fn into_boxed_response(self) -> Box<Response> {
+        match self {
+            Self::AbsentOnPatient => Box::new(reply_error_response(
+                ReplyProposalError::ConversationNotFound {
+                    conversation_id: String::new(),
+                },
+            )),
+            Self::Http(resp) => resp,
+        }
+    }
+}
+
 async fn load_single_conversation_wire(
     store: &Store,
     connected: &ConnectedCare,
@@ -1676,13 +1835,27 @@ async fn load_single_conversation_wire(
     workspace: &str,
     conversation_id: &str,
 ) -> Result<PatientReplyConversationWire, Box<Response>> {
+    load_conversation_wire_outcome(store, connected, extensions, workspace, conversation_id)
+        .await
+        .map_err(LoadConversationError::into_boxed_response)
+}
+
+async fn load_conversation_wire_outcome(
+    store: &Store,
+    connected: &ConnectedCare,
+    extensions: &Extensions,
+    workspace: &str,
+    conversation_id: &str,
+) -> Result<PatientReplyConversationWire, LoadConversationError> {
     let identity = ConnectedCare::identity(extensions);
     let auth_store = connected.auth_store(extensions);
+    let directory = connected.patients(extensions);
     let now_ts = current_unix_i64();
 
     settle_expired_spruce_moves_and_replies(
         store,
         auth_store.as_ref(),
+        &*directory,
         extensions,
         &identity.practice_id,
         now_ts,
@@ -1690,10 +1863,13 @@ async fn load_single_conversation_wire(
     .await;
 
     let panel = auth_store.panel(&identity).await;
-    let directory = connected.patients(extensions);
     let identities = match authorized_patient_identities(&*directory, &panel).await {
         Ok(identities) => identities,
-        Err(_) => return Err(Box::new(identities_unavailable_response())),
+        Err(_) => {
+            return Err(LoadConversationError::Http(Box::new(
+                identities_unavailable_response(),
+            )));
+        }
     };
     let patient_display_name = identities
         .get(workspace)
@@ -1703,75 +1879,159 @@ async fn load_single_conversation_wire(
     let spruce_conv = store
         .spruce_conversation(&identity.practice_id, conversation_id)
         .await
-        .ok()
-        .flatten();
+        .map_err(|err| LoadConversationError::Http(Box::new(spruce_error_response(err))))?;
 
-    // If a move out of `workspace` is still inside its active Undo window,
-    // `spruce_conv.link_state` already names the destination while `reply_conversation`
-    // has not yet settled `act_on_conversation_move`, OR if we are viewing the destination
-    // workspace during the Undo window, surface a clear pending-move banner!
+    let ws_spruce_msgs = store
+        .patient_linked_spruce_messages(&identity.practice_id, workspace)
+        .await
+        .map_err(|err| LoadConversationError::Http(Box::new(spruce_error_response(err))))?;
+    let spruce_msgs_by_id: BTreeMap<String, SavedSpruceMessage> = ws_spruce_msgs
+        .iter()
+        .filter(|m| m.conversation_id == conversation_id)
+        .map(|m| (m.message_id.clone(), m.clone()))
+        .collect();
+
+    // Handle active `Wrong patient?` Undo window without leaking origin details or hiding destination messages!
     if let Some(sc) = &spruce_conv
         && let Some(undo) = &sc.move_undo
         && undo.is_active_at(now_ts)
     {
         if undo.from_workspace == workspace {
-            // Viewing the original workspace while Undo is active (for example after moving to
-            // `Not a patient` or to another patient): show the pending move Undo banner without
-            // exposing moved-away reply controls.
-            let pending_move = map_pending_move(undo, &sc.link_state, &identities, now_ts);
-            let (primary_sender_name, primary_sender_role) =
-                derive_primary_channel_sender(&[], Some(sc), &patient_display_name);
-            return Ok(PatientReplyConversationWire::NoOpenCard {
+            // Origin workspace: `message-matching` Rule 5 forbids retaining readable conversation
+            // content, sender identity, or Spruce links on the patient the conversation left.
+            let mut wire = PatientReplyConversationWire::NoOpenCard {
                 conversation_id: conversation_id.to_owned(),
                 patient_workspace_id: workspace.to_owned(),
-                primary_sender_name,
-                primary_sender_role,
+                primary_sender_name: "Moved conversation".to_owned(),
+                primary_sender_role: ChannelSenderRoleWire::Patient,
                 non_patient_sender_names: Vec::new(),
-                spruce_app_url: spruce_app_url_for_conversation(
-                    store,
-                    &identity.practice_id,
-                    workspace,
-                    conversation_id,
-                )
-                .await,
+                spruce_app_url: None,
                 patient_messages: Vec::new(),
                 practice_messages: Vec::new(),
                 review_state: CardReviewStateWire::Idle,
                 can_ask_coda_to_reply: false,
-                pending_move,
+                pending_move: map_pending_move(undo, &sc.link_state, &identities, now_ts),
+            };
+            resolve_conversation_physician_names(
+                &mut wire,
+                auth_store.as_ref(),
+                &identity.practice_id,
+            )
+            .await;
+            return Ok(wire);
+        }
+
+        let linked_to_this_destination = matches!(
+            &sc.link_state,
+            ConversationLinkState::Linked { workspace: dest_ws, .. } if dest_ws == workspace
+        );
+        if !linked_to_this_destination {
+            return Err(LoadConversationError::AbsentOnPatient);
+        }
+
+        // Destination workspace during active Undo window (`Rule 9`): show linked Spruce messages,
+        // channel sender, and observed practice messages alongside `Coda is reviewing` and `Undo`,
+        // without prematurely relinking `reply_conversation` before Undo settles!
+        let mut sorted_msgs: Vec<&SavedSpruceMessage> = ws_spruce_msgs
+            .iter()
+            .filter(|m| {
+                m.conversation_id == conversation_id
+                    && matches!(m.standing, MessageStanding::Linked { .. })
+            })
+            .collect();
+        sorted_msgs.sort_by_key(|m| (m.channel_position, m.kept_at));
+
+        let mut non_patient_senders = BTreeSet::new();
+        let mut dest_patient_messages = Vec::with_capacity(sorted_msgs.len());
+        for (idx, sm) in sorted_msgs.iter().enumerate() {
+            let addr = sm.sender_address.as_ref().map(|a| a.as_str());
+            let label = sender_display_label(sm.author_name.as_deref(), addr);
+            let is_patient = sm
+                .author_name
+                .as_deref()
+                .map(str::trim)
+                .is_some_and(|author| author.eq_ignore_ascii_case(patient_display_name.trim()));
+            let role = if is_patient {
+                ChannelSenderRoleWire::Patient
+            } else {
+                non_patient_senders.insert(label.clone());
+                ChannelSenderRoleWire::NonPatient
+            };
+            dest_patient_messages.push(ReplyPatientMessageWire {
+                message_id: sm.message_id.clone(),
+                sequence: (idx + 1) as u64,
+                sender_display_name: label,
+                sender_role: role,
+                text: if sm.body_text.trim().is_empty() {
+                    "(Attachment)".to_owned()
+                } else {
+                    sm.body_text.clone()
+                },
+                sent_at: unix_to_rfc3339(sm.kept_at),
+                arrived_after_proposal: false,
             });
         }
-        // Viewing the destination workspace while Undo is still active before settlement:
-        let pending_move = map_pending_move(undo, &sc.link_state, &identities, now_ts);
-        let (primary_sender_name, primary_sender_role) =
-            derive_primary_channel_sender(&[], Some(sc), &patient_display_name);
-        return Ok(PatientReplyConversationWire::NoOpenCard {
+        let (primary_sender_name, primary_sender_role) = if let Some(last_pm) =
+            dest_patient_messages.last()
+        {
+            (last_pm.sender_display_name.clone(), last_pm.sender_role)
+        } else {
+            derive_primary_channel_sender(&[], &spruce_msgs_by_id, Some(sc), &patient_display_name)
+        };
+        let spruce_app_url = sorted_msgs.iter().find_map(|m| m.app_url.clone());
+        let raw_conv_for_practice = store
+            .reply_conversation(&identity.practice_id, conversation_id)
+            .await
+            .map_err(|err| LoadConversationError::Http(Box::new(reply_error_response(err))))?;
+        let dest_practice_messages = raw_conv_for_practice
+            .as_ref()
+            .map_or_else(Vec::new, |rc| map_practice_messages(&rc.practice_messages));
+
+        let mut wire = PatientReplyConversationWire::NoOpenCard {
             conversation_id: conversation_id.to_owned(),
             patient_workspace_id: workspace.to_owned(),
             primary_sender_name,
             primary_sender_role,
-            non_patient_sender_names: Vec::new(),
-            spruce_app_url: spruce_app_url_for_conversation(
-                store,
-                &identity.practice_id,
-                workspace,
-                conversation_id,
-            )
-            .await,
-            patient_messages: Vec::new(),
-            practice_messages: Vec::new(),
+            non_patient_sender_names: non_patient_senders.into_iter().collect(),
+            spruce_app_url,
+            patient_messages: dest_patient_messages,
+            practice_messages: dest_practice_messages,
             review_state: CardReviewStateWire::Reviewing {
                 started_at: unix_to_rfc3339(undo.moved_at),
             },
             can_ask_coda_to_reply: false,
-            pending_move,
-        });
+            pending_move: map_pending_move(undo, &sc.link_state, &identities, now_ts),
+        };
+        resolve_conversation_physician_names(&mut wire, auth_store.as_ref(), &identity.practice_id)
+            .await;
+        return Ok(wire);
     }
 
-    // Ensure any linked Spruce conversation on `workspace` is synced into `reply_conversation`.
-    if let Some(sc) = &spruce_conv
-        && matches!(&sc.link_state, ConversationLinkState::Linked { workspace: ws, .. } if ws == workspace)
-    {
+    // Outside an active `Wrong patient?` Undo window, a Spruce conversation belongs on this
+    // patient workspace if and only if its settled `link_state` points to `workspace`.
+    if let Some(sc) = &spruce_conv {
+        if matches!(
+            &sc.link_state,
+            ConversationLinkState::MovedNotAPatient { .. }
+        ) && let Ok(cmd_key) = CommandKey::new(format!(
+            "settle-reply-move:{}:{}:{}",
+            identity.practice_id, conversation_id, sc.move_count
+        )) {
+            let _ = store
+                .act_on_conversation_move(
+                    &cmd_key,
+                    &identity.practice_id,
+                    conversation_id,
+                    ConversationLink::NotAPatient,
+                )
+                .await;
+        }
+        if !matches!(
+            &sc.link_state,
+            ConversationLinkState::Linked { workspace: ws, .. } if ws == workspace
+        ) {
+            return Err(LoadConversationError::AbsentOnPatient);
+        }
         sync_spruce_conversation_into_reply_store(
             store,
             &identity.practice_id,
@@ -1825,12 +2085,33 @@ async fn load_single_conversation_wire(
     let raw_conv = store
         .reply_conversation(&identity.practice_id, conversation_id)
         .await
-        .map_err(|err| Box::new(reply_error_response(err)))?;
+        .map_err(|err| match err {
+            ReplyProposalError::ConversationNotFound { .. }
+            | ReplyProposalError::ConversationNotLinkedToPatient { .. } => {
+                LoadConversationError::AbsentOnPatient
+            }
+            other => LoadConversationError::Http(Box::new(reply_error_response(other))),
+        })?;
+    let Some(rc) = &raw_conv else {
+        return Err(LoadConversationError::AbsentOnPatient);
+    };
+    if !matches!(
+        &rc.link,
+        ConversationLink::LinkedPatient { workspace: rc_ws } if rc_ws == workspace
+    ) {
+        return Err(LoadConversationError::AbsentOnPatient);
+    }
 
     let surface = store
         .physician_reply_surface(&access, conversation_id, &mut authority)
         .await
-        .map_err(|err| Box::new(reply_error_response(err)))?;
+        .map_err(|err| match err {
+            ReplyProposalError::ConversationNotFound { .. }
+            | ReplyProposalError::ConversationNotLinkedToPatient { .. } => {
+                LoadConversationError::AbsentOnPatient
+            }
+            other => LoadConversationError::Http(Box::new(reply_error_response(other))),
+        })?;
 
     let mut wire = project_reply_surface_wire(
         store,
@@ -1842,28 +2123,23 @@ async fn load_single_conversation_wire(
         surface,
         raw_conv.as_ref(),
         spruce_conv.as_ref(),
+        &spruce_msgs_by_id,
         &identities,
         now_ts,
     )
     .await;
-    name_copying_physicians(&mut wire, auth_store.as_ref(), &identity.practice_id).await;
+    resolve_conversation_physician_names(&mut wire, auth_store.as_ref(), &identity.practice_id)
+        .await;
     Ok(wire)
 }
 
-/// Replaces each copy attribution's physician id with that physician's display name,
-/// so another physician sees who copied the reply. An id with no readable account
-/// keeps showing the id rather than hiding the attribution.
-async fn name_copying_physicians(
+/// Replaces physician identifiers with display names across copy attributions,
+/// pending `Wrong patient?` move banners, and `No reply needed` undo banners.
+async fn resolve_conversation_physician_names(
     wire: &mut PatientReplyConversationWire,
     auth: &dyn AuthStore,
     practice: &str,
 ) {
-    let PatientReplyConversationWire::OpenCard(card) = wire else {
-        return;
-    };
-    if card.other_physician_copies.is_empty() {
-        return;
-    }
     let Ok(accounts) = auth.practice_accounts(practice).await else {
         return;
     };
@@ -1871,9 +2147,36 @@ async fn name_copying_physicians(
         .iter()
         .map(|a| (a.identity.physician_id.as_str(), a.display_name.as_str()))
         .collect();
-    for copy in &mut card.other_physician_copies {
-        if let Some(name) = names.get(copy.copied_by_physician.as_str()) {
-            copy.copied_by_physician = (*name).to_owned();
+
+    let resolve_pending = |pm: &mut Option<PendingSpruceMoveWire>| {
+        if let Some(m) = pm
+            && let Some(name) = names.get(m.moved_by_physician.as_str())
+        {
+            m.moved_by_physician = (*name).to_owned();
+        }
+    };
+
+    match wire {
+        PatientReplyConversationWire::OpenCard(card) => {
+            for copy in &mut card.other_physician_copies {
+                if let Some(name) = names.get(copy.copied_by_physician.as_str()) {
+                    copy.copied_by_physician = (*name).to_owned();
+                }
+            }
+            resolve_pending(&mut card.pending_move);
+        }
+        PatientReplyConversationWire::ClosedUndoBanner {
+            closed_by_physician,
+            pending_move,
+            ..
+        } => {
+            if let Some(name) = names.get(closed_by_physician.as_str()) {
+                *closed_by_physician = (*name).to_owned();
+            }
+            resolve_pending(pending_move);
+        }
+        PatientReplyConversationWire::NoOpenCard { pending_move, .. } => {
+            resolve_pending(pending_move);
         }
     }
 }
@@ -1903,26 +2206,30 @@ async fn list_patient_replies(
     };
 
     let identity = ConnectedCare::identity(extensions);
-    if matches!(
-        store.spruce_channel_standing(&identity.practice_id).await,
+    match store.spruce_channel_standing(&identity.practice_id).await {
         Ok((
             ChannelStanding::Disconnected {
                 disconnected_at: None,
             },
             _,
-        ))
-    ) {
-        return Json(PatientReplyListResponseWire {
-            patient_workspace_id: workspace,
-            conversations: Vec::new(),
-        })
-        .into_response();
+        )) => {
+            return Json(PatientReplyListResponseWire {
+                patient_workspace_id: workspace,
+                conversations: Vec::new(),
+            })
+            .into_response();
+        }
+        Ok(_) => {}
+        Err(err) => return spruce_error_response(err),
     }
+
     let auth_store = connected.auth_store(extensions);
+    let directory = connected.patients(extensions);
     let now_ts = current_unix_i64();
     settle_expired_spruce_moves_and_replies(
         &store,
         auth_store.as_ref(),
+        &*directory,
         extensions,
         &identity.practice_id,
         now_ts,
@@ -1930,34 +2237,39 @@ async fn list_patient_replies(
     .await;
 
     let mut conv_ids = BTreeSet::new();
-    if let Ok(spruce_convs) = store
+    let spruce_convs = match store
         .open_spruce_conversations_for_physician(auth_store.as_ref(), &identity, now_ts)
         .await
     {
-        for sc in spruce_convs {
-            if sc.workspace == workspace
-                || sc
-                    .move_undo
-                    .as_ref()
-                    .is_some_and(|u| u.is_active_at(now_ts) && u.from_workspace == workspace)
-            {
-                conv_ids.insert(sc.conversation_id);
-            }
+        Ok(rows) => rows,
+        Err(err) => return spruce_error_response(err),
+    };
+    for sc in spruce_convs {
+        if sc.workspace == workspace
+            || sc
+                .move_undo
+                .as_ref()
+                .is_some_and(|u| u.is_active_at(now_ts) && u.from_workspace == workspace)
+        {
+            conv_ids.insert(sc.conversation_id);
         }
     }
-    if let Ok(linked_msgs) = store
+
+    let linked_msgs = match store
         .patient_linked_spruce_messages(&identity.practice_id, &workspace)
         .await
     {
-        for m in linked_msgs {
-            conv_ids.insert(m.conversation_id);
-        }
+        Ok(msgs) => msgs,
+        Err(err) => return spruce_error_response(err),
+    };
+    for m in linked_msgs {
+        conv_ids.insert(m.conversation_id);
     }
 
     // Also discover conversations from durable Spruce review triggers (including conversations
     // currently in their active `Undo` window after `Wrong patient?` -> `Not a patient` or
     // `AnotherPatient`, or after channel disconnect).
-    for cid in discover_reply_conversation_ids_for_workspace(
+    let triggered_ids = match discover_reply_conversation_ids_for_workspace(
         &store,
         &identity.practice_id,
         &workspace,
@@ -1965,15 +2277,20 @@ async fn list_patient_replies(
     )
     .await
     {
+        Ok(ids) => ids,
+        Err(err) => return spruce_error_response(err),
+    };
+    for cid in triggered_ids {
         conv_ids.insert(cid);
     }
 
     let mut conversations = Vec::new();
     for cid in conv_ids {
-        if let Ok(wire) =
-            load_single_conversation_wire(&store, &connected, extensions, &workspace, &cid).await
+        match load_conversation_wire_outcome(&store, &connected, extensions, &workspace, &cid).await
         {
-            conversations.push(wire);
+            Ok(wire) => conversations.push(wire),
+            Err(LoadConversationError::AbsentOnPatient) => continue,
+            Err(LoadConversationError::Http(resp)) => return *resp,
         }
     }
 
@@ -1989,28 +2306,27 @@ pub(crate) async fn discover_reply_conversation_ids_for_workspace(
     practice: &str,
     workspace: &str,
     now_ts: i64,
-) -> Vec<String> {
+) -> Result<Vec<String>, SpruceMatchingError> {
     let mut ids = BTreeSet::new();
-    if let Ok(triggers) = store.spruce_review_triggers(practice).await {
-        let candidate_convs: BTreeSet<String> =
-            triggers.into_iter().map(|t| t.conversation_id).collect();
-        for cid in candidate_convs {
-            if let Ok(Some(sc)) = store.spruce_conversation(practice, &cid).await {
-                let linked_here = matches!(
-                    &sc.link_state,
-                    ConversationLinkState::Linked { workspace: ws, .. } if ws == workspace
-                );
-                let undo_from_here = sc
-                    .move_undo
-                    .as_ref()
-                    .is_some_and(|u| u.is_active_at(now_ts) && u.from_workspace == workspace);
-                if linked_here || undo_from_here {
-                    ids.insert(cid);
-                }
+    let triggers = store.spruce_review_triggers(practice).await?;
+    let candidate_convs: BTreeSet<String> =
+        triggers.into_iter().map(|t| t.conversation_id).collect();
+    for cid in candidate_convs {
+        if let Some(sc) = store.spruce_conversation(practice, &cid).await? {
+            let linked_here = matches!(
+                &sc.link_state,
+                ConversationLinkState::Linked { workspace: ws, .. } if ws == workspace
+            );
+            let undo_from_here = sc
+                .move_undo
+                .as_ref()
+                .is_some_and(|u| u.is_active_at(now_ts) && u.from_workspace == workspace);
+            if linked_here || undo_from_here {
+                ids.insert(cid);
             }
         }
     }
-    ids.into_iter().collect()
+    Ok(ids.into_iter().collect())
 }
 
 async fn get_patient_reply(
@@ -2963,32 +3279,61 @@ async fn mark_disconnected_done(
     }
 }
 
+fn spruce_slice_failed(err: impl std::fmt::Display) -> FailedProducerWire {
+    FailedProducerWire {
+        producer: ProducerSliceWire::SpruceMessages,
+        label: "Spruce messages".to_owned(),
+        message: err.to_string(),
+    }
+}
+
+fn truncate_today_preview(text: &str) -> String {
+    let trimmed = text.trim();
+    const MAX_CHARS: usize = 140;
+    if trimmed.chars().count() <= MAX_CHARS {
+        trimmed.to_owned()
+    } else {
+        let head: String = trimmed.chars().take(MAX_CHARS).collect();
+        format!("{head}…")
+    }
+}
+
 /// Builds supplemental Today rows and `messages_to_match_count` from durable
 /// Spruce matching and open reply cards for the signed-in physician.
 pub(crate) async fn spruce_today_rows_for_physician(
     store: &Store,
     ctx: &AuthContext,
+    directory: &dyn PatientDirectory,
     extensions: &Extensions,
     patient_names: &BTreeMap<String, String>,
     target_workspace: Option<&str>,
-) -> (usize, Vec<serde_json::Value>) {
-    if matches!(
-        store
-            .spruce_channel_standing(&ctx.identity.practice_id)
-            .await,
+) -> Result<(usize, Vec<serde_json::Value>), FailedProducerWire> {
+    if is_faulted(extensions, MatchingReplyFollowUpsFault::MatchingRead)
+        || is_faulted(extensions, MatchingReplyFollowUpsFault::ReplyRead)
+    {
+        return Err(spruce_slice_failed(
+            "Spruce messages could not be loaded right now.",
+        ));
+    }
+    match store
+        .spruce_channel_standing(&ctx.identity.practice_id)
+        .await
+    {
         Ok((
             ChannelStanding::Disconnected {
                 disconnected_at: None,
             },
             _,
-        ))
-    ) {
-        return (0, Vec::new());
+        )) => return Ok((0, Vec::new())),
+        Ok(_) => {}
+        Err(err) => return Err(spruce_slice_failed(err)),
     }
+
     let now_ts = current_unix_i64();
     settle_expired_spruce_moves_and_replies(
         store,
         ctx.auth.store.as_ref(),
+        directory,
         extensions,
         &ctx.identity.practice_id,
         now_ts,
@@ -2996,100 +3341,94 @@ pub(crate) async fn spruce_today_rows_for_physician(
     .await;
 
     let mut rows = Vec::new();
-    let mut waiting_count = 0usize;
-
-    if let Ok(summary) = store
+    let summary = store
         .today_spruce_summary_for_physician(ctx.auth.store.as_ref(), &ctx.identity)
         .await
-    {
-        waiting_count = summary.messages_to_match.len();
-        if target_workspace.is_none() {
-            for unmatched in &summary.messages_to_match {
-                let sender_addr = unmatched.sender_address.as_ref().map(|a| a.as_str());
-                let sender_name =
-                    sender_display_label(unmatched.author_name.as_deref(), sender_addr);
-                let (urgency, title, reason) = match &unmatched.urgency {
-                    MessageUrgency::Urgent { reason, .. } => (
-                        "now",
-                        "Urgent unmatched message",
-                        format!("{reason} — {}", unmatched.body_text),
-                    ),
-                    MessageUrgency::Ordinary => {
-                        ("today", "Message to match", unmatched.body_text.clone())
-                    }
-                };
-                rows.push(json!({
-                    "patient_workspace_id": unmatched
-                        .suggested_patient
-                        .as_ref()
-                        .map(|s| s.workspace.as_str())
-                        .unwrap_or(""),
-                    "patient_display_name": sender_name,
-                    "item_id": format!("spruce-match:{}", unmatched.message_id),
-                    "version_id": format!("waiting:{}", unmatched.waiting_since),
-                    "waiting_since": unix_to_rfc3339(unmatched.waiting_since),
-                    "urgency": urgency,
-                    "kind": "unmatched_message",
-                    "title": title,
-                    "reason": reason,
-                    "seen": false,
-                    "can_mark_done": false,
-                    "matching_message_id": unmatched.message_id,
-                }));
-            }
-            for unreadable in &summary.unreadable_messages {
-                rows.push(json!({
-                    "patient_workspace_id": "",
-                    "patient_display_name": "Spruce message",
-                    "item_id": format!("spruce-unreadable:{}", unreadable.message_id),
-                    "version_id": format!("cant-read:{}", unreadable.kept_at),
-                    "waiting_since": unix_to_rfc3339(unreadable.kept_at),
-                    "urgency": "today",
-                    "kind": "unreadable_message",
-                    "title": "Couldn't read Spruce message",
-                    "reason": unreadable.failure_reason,
-                    "seen": false,
-                    "can_mark_done": false,
-                    "matching_message_id": unreadable.message_id,
-                }));
-            }
+        .map_err(spruce_slice_failed)?;
+    let waiting_count = summary.messages_to_match.len();
+    if target_workspace.is_none() {
+        for unmatched in &summary.messages_to_match {
+            let sender_addr = unmatched.sender_address.as_ref().map(|a| a.as_str());
+            let sender_name = sender_display_label(unmatched.author_name.as_deref(), sender_addr);
+            let (urgency, title, reason) = match &unmatched.urgency {
+                MessageUrgency::Urgent { reason, .. } => (
+                    "now",
+                    "Urgent unmatched message",
+                    format!("{reason} — {}", unmatched.body_text),
+                ),
+                MessageUrgency::Ordinary => {
+                    ("today", "Message to match", unmatched.body_text.clone())
+                }
+            };
+            rows.push(json!({
+                "patient_workspace_id": unmatched
+                    .suggested_patient
+                    .as_ref()
+                    .map(|s| s.workspace.as_str())
+                    .unwrap_or(""),
+                "patient_display_name": sender_name,
+                "item_id": format!("spruce-match:{}", unmatched.message_id),
+                "version_id": format!("waiting:{}", unmatched.waiting_since),
+                "waiting_since": unix_to_rfc3339(unmatched.waiting_since),
+                "urgency": urgency,
+                "kind": "unmatched_message",
+                "title": title,
+                "reason": reason,
+                "seen": false,
+                "can_mark_done": false,
+                "matching_message_id": unmatched.message_id,
+            }));
+        }
+        for unreadable in &summary.unreadable_messages {
+            rows.push(json!({
+                "patient_workspace_id": "",
+                "patient_display_name": "Spruce message",
+                "item_id": format!("spruce-unreadable:{}", unreadable.message_id),
+                "version_id": format!("cant-read:{}", unreadable.kept_at),
+                "waiting_since": unix_to_rfc3339(unreadable.kept_at),
+                "urgency": "today",
+                "kind": "unreadable_message",
+                "title": "Couldn't read Spruce message",
+                "reason": unreadable.failure_reason,
+                "seen": false,
+                "can_mark_done": false,
+                "matching_message_id": unreadable.message_id,
+            }));
         }
     }
 
     // Discover active `(workspace, conversation_id)` pairs from practice-level Spruce tables
     // rather than scanning every workspace in the practice roster.
     let mut convs_by_workspace: BTreeMap<String, BTreeSet<String>> = BTreeMap::new();
-    if let Ok(spruce_convs) = store
+    let spruce_convs = store
         .open_spruce_conversations_for_physician(ctx.auth.store.as_ref(), &ctx.identity, now_ts)
         .await
-    {
-        for sc in spruce_convs {
-            if target_workspace.is_none_or(|target| target == sc.workspace) {
-                convs_by_workspace
-                    .entry(sc.workspace)
-                    .or_default()
-                    .insert(sc.conversation_id);
-            }
+        .map_err(spruce_slice_failed)?;
+    for sc in spruce_convs {
+        if target_workspace.is_none_or(|target| target == sc.workspace) {
+            convs_by_workspace
+                .entry(sc.workspace)
+                .or_default()
+                .insert(sc.conversation_id);
         }
     }
-    if let Ok(triggers) = store
+    let triggers = store
         .spruce_review_triggers(&ctx.identity.practice_id)
         .await
-    {
-        for tr in triggers {
-            if target_workspace.is_none_or(|target| target == tr.workspace) {
-                convs_by_workspace
-                    .entry(tr.workspace)
-                    .or_default()
-                    .insert(tr.conversation_id);
-            }
+        .map_err(spruce_slice_failed)?;
+    for tr in triggers {
+        if target_workspace.is_none_or(|target| target == tr.workspace) {
+            convs_by_workspace
+                .entry(tr.workspace)
+                .or_default()
+                .insert(tr.conversation_id);
         }
     }
-    if let Some(ws) = target_workspace
-        && let Ok(msgs) = store
+    if let Some(ws) = target_workspace {
+        let msgs = store
             .patient_linked_spruce_messages(&ctx.identity.practice_id, ws)
             .await
-    {
+            .map_err(spruce_slice_failed)?;
         for m in msgs {
             convs_by_workspace
                 .entry(ws.to_owned())
@@ -3109,8 +3448,52 @@ pub(crate) async fn spruce_today_rows_for_physician(
             .get(&ws)
             .cloned()
             .unwrap_or_else(|| ws.clone());
+        let ws_spruce_msgs = store
+            .patient_linked_spruce_messages(&ctx.identity.practice_id, &ws)
+            .await
+            .map_err(spruce_slice_failed)?;
+        let ws_msgs_by_id: BTreeMap<String, SavedSpruceMessage> = ws_spruce_msgs
+            .into_iter()
+            .map(|m| (m.message_id.clone(), m))
+            .collect();
 
         for cid in conv_ids {
+            let spruce_conv = store
+                .spruce_conversation(&ctx.identity.practice_id, &cid)
+                .await
+                .map_err(spruce_slice_failed)?;
+            // Never emit a Today reply row during an active `Wrong patient?` Undo window or on a
+            // workspace that does not match the conversation's settled link.
+            if let Some(sc) = &spruce_conv {
+                if sc
+                    .move_undo
+                    .as_ref()
+                    .is_some_and(|u| u.is_active_at(now_ts))
+                {
+                    continue;
+                }
+                if !matches!(
+                    &sc.link_state,
+                    ConversationLinkState::Linked { workspace: linked_ws, .. } if linked_ws == &ws
+                ) {
+                    continue;
+                }
+            }
+
+            let raw_conv = store
+                .reply_conversation(&ctx.identity.practice_id, &cid)
+                .await
+                .map_err(spruce_slice_failed)?;
+            let Some(rc) = &raw_conv else {
+                continue;
+            };
+            if !matches!(
+                &rc.link,
+                ConversationLink::LinkedPatient { workspace: rc_ws } if rc_ws == &ws
+            ) {
+                continue;
+            }
+
             let access = WorkspaceAccess {
                 session_hash: &hash,
                 practice: &ctx.identity.practice_id,
@@ -3122,21 +3505,18 @@ pub(crate) async fn spruce_today_rows_for_physician(
                 token: &ctx.token,
                 now_unix: real_now_unix,
             };
-            let Ok(Some(card)) = store.reply_card(&access, &cid, &mut authority).await else {
-                continue;
+            let card = match store.reply_card(&access, &cid, &mut authority).await {
+                Ok(Some(card)) => card,
+                Ok(None)
+                | Err(
+                    ReplyProposalError::ConversationNotFound { .. }
+                    | ReplyProposalError::ConversationNotLinkedToPatient { .. },
+                ) => continue,
+                Err(err) => return Err(spruce_slice_failed(err)),
             };
-            let raw_conv = store
-                .reply_conversation(&ctx.identity.practice_id, &cid)
-                .await
-                .ok()
-                .flatten();
-            let spruce_conv = store
-                .spruce_conversation(&ctx.identity.practice_id, &cid)
-                .await
-                .ok()
-                .flatten();
             let (sender_name, _) = derive_primary_channel_sender(
                 &card.open_messages,
+                &ws_msgs_by_id,
                 spruce_conv.as_ref(),
                 &patient_name,
             );
@@ -3144,20 +3524,29 @@ pub(crate) async fn spruce_today_rows_for_physician(
                 .as_ref()
                 .is_some_and(|c| !c.associated_concern_ids.is_empty());
             let waiting_ts = raw_conv.as_ref().map_or(now_ts, |c| c.updated_at);
-            let (title, preview) = match &card.displayed_text {
-                DisplayedReplyText::Withheld => (
-                    "Reply withheld while Coda reviews",
-                    format!("For {patient_name}"),
-                ),
-                DisplayedReplyText::CodaProposal { text, .. }
-                | DisplayedReplyText::PhysicianDraft { text, .. } => (
+            // `message-reply/README.md:69-70`: Today row shows the start of the sender's newest words,
+            // never the drafted reply text or the linked patient's chart name.
+            let newest_sender_words = card
+                .open_messages
+                .last()
+                .map(|m| truncate_today_preview(&m.text))
+                .unwrap_or_default();
+            let title = match &card.displayed_text {
+                DisplayedReplyText::Withheld => {
+                    if flagged {
+                        "Reply withheld · Flagged"
+                    } else {
+                        "Reply withheld while Coda reviews"
+                    }
+                }
+                DisplayedReplyText::CodaProposal { .. }
+                | DisplayedReplyText::PhysicianDraft { .. } => {
                     if flagged {
                         "Drafted a reply · Flagged"
                     } else {
                         "Drafted a reply"
-                    },
-                    text.clone(),
-                ),
+                    }
+                }
             };
             rows.push(json!({
                 "patient_workspace_id": ws,
@@ -3168,7 +3557,7 @@ pub(crate) async fn spruce_today_rows_for_physician(
                 "urgency": if flagged { "now" } else { "today" },
                 "kind": "drafted_reply",
                 "title": title,
-                "reason": preview,
+                "reason": newest_sender_words,
                 "seen": false,
                 "can_mark_done": false,
                 "spruce_conversation_id": cid,
@@ -3176,5 +3565,5 @@ pub(crate) async fn spruce_today_rows_for_physician(
         }
     }
 
-    (waiting_count, rows)
+    Ok((waiting_count, rows))
 }

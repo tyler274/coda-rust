@@ -7,7 +7,7 @@ use dioxus::prelude::*;
 use physician_client::{HttpError, PhysicianClient};
 use physician_wire::PatientSearchRow;
 use physician_wire::matching_reply::{
-    CardChannelBannerWire, CardReviewStateWire, ChannelSenderRoleWire,
+    CardArrivalNoticeWire, CardChannelBannerWire, CardReviewStateWire, ChannelSenderRoleWire,
     DisconnectedCardStandingWire, DisconnectedReplyDoneBody, DisplayedReplyTextWire,
     ExpectedDraftBaseWire, FilteredMessageWire, FilteredMessagesResponseWire, MatchSuggestionWire,
     MessagesToMatchResponseWire, MoveDestinationWire, NeedsChoiceReasonWire,
@@ -840,6 +840,13 @@ fn UnmatchedMessageCard(
                                             }
                                         }
                                     }
+                                    Checkbox {
+                                        label: "Also confirm this sender address for future messages".to_owned(),
+                                        detail: None,
+                                        checked: also_confirm_sender,
+                                        disabled: busy,
+                                        on_change: move |checked| on_toggle_sender_policy.call(checked),
+                                    }
                                 }
                             }
                         }
@@ -1186,11 +1193,17 @@ pub(crate) fn use_patient_spruce_replies(
     }
 }
 
+/// Scopes unsaved inline draft text and its pinned `ExpectedDraftBaseWire` to
+/// `(patient_workspace_id, conversation_id, reply_id)` so moves across patients
+/// or reopened reply cycles never leak edits or overwrite newer proposals.
+type DraftEditKey = (String, String, u64);
+
 /// Patient-page Spruce conversations & reply editor section.
 #[component]
 pub(crate) fn PatientSpruceRepliesSection(
     workspace_id: String,
     patient_name: String,
+    browser_tz: String,
     read_state: PatientSpruceRepliesRead,
     client: Signal<PhysicianClient>,
     session: crate::SessionState,
@@ -1202,13 +1215,16 @@ pub(crate) fn PatientSpruceRepliesSection(
     on_open_patient: EventHandler<String>,
     on_patient_gone: EventHandler<String>,
 ) -> Element {
+    let _ = &patient_name;
     let mut local_attempt = read_state.local_attempt;
     let mut cached = read_state.cached;
     let read_res = read_state.read_res;
-    // Local unsaved draft edits keyed by `conversation_id`, storing `(base_when_opened, edited_text)`.
+    // Local unsaved draft edits keyed by `(workspace_id, conversation_id, reply_id)`,
+    // storing `(pinned_base_when_edit_began, edited_text)`.
     // Preserved across failed commands, background reviews, and newer Coda update offers!
-    let mut draft_edits = use_signal(BTreeMap::<String, (ExpectedDraftBaseWire, String)>::new);
-    let mut revise_instructions = use_signal(BTreeMap::<String, String>::new);
+    let mut draft_edits =
+        use_signal(BTreeMap::<DraftEditKey, (ExpectedDraftBaseWire, String)>::new);
+    let mut revise_instructions = use_signal(BTreeMap::<DraftEditKey, String>::new);
     let mut busy_conv = use_signal(|| None::<String>);
     let mut card_errors = use_signal(BTreeMap::<String, String>::new);
     let mut copied_notices = use_signal(BTreeMap::<String, String>::new);
@@ -1397,18 +1413,20 @@ pub(crate) fn PatientSpruceRepliesSection(
                         match conv {
                             PatientReplyConversationWire::OpenCard(card) => {
                                 let cid = card.conversation_id.clone();
+                                let edit_key: DraftEditKey =
+                                    (workspace_id.clone(), cid.clone(), card.reply_id);
                                 let server_base = displayed_expected_base(&card.displayed_reply);
                                 let server_text = displayed_reply_text(&card.displayed_reply)
                                     .unwrap_or_default()
                                     .to_owned();
-                                let current_draft_text = draft_edits
-                                    .read()
-                                    .get(&cid)
-                                    .map(|(_, txt)| txt.clone())
+                                let existing_edit = draft_edits.read().get(&edit_key).cloned();
+                                let pinned_base = existing_edit.as_ref().map(|(b, _)| *b);
+                                let current_draft_text = existing_edit
+                                    .map(|(_, txt)| txt)
                                     .unwrap_or_else(|| server_text.clone());
                                 let current_revise_inst = revise_instructions
                                     .read()
-                                    .get(&cid)
+                                    .get(&edit_key)
                                     .cloned()
                                     .unwrap_or_default();
                                 let err_msg = card_errors.read().get(&cid).cloned();
@@ -1417,40 +1435,51 @@ pub(crate) fn PatientSpruceRepliesSection(
 
                                 rsx! {
                                     OpenReplyCardView {
-                                        key: "{cid}",
+                                        key: "{cid}:{card.reply_id}",
                                         workspace_id: workspace_id.clone(),
-                                        patient_name: patient_name.clone(),
                                         card: *card,
+                                        pinned_base,
                                         draft_text: current_draft_text,
                                         revise_instruction: current_revise_inst,
                                         busy: is_busy,
                                         error_message: err_msg,
                                         copied_notice: copied_msg,
                                         on_edit_text: {
-                                            let cid = cid.clone();
+                                            let edit_key = edit_key.clone();
                                             let base = server_base;
                                             move |next_text: String| {
-                                                let effective_base = base.unwrap_or(
-                                                    ExpectedDraftBaseWire::ProposalVersion {
-                                                        version: 1,
-                                                    },
-                                                );
-                                                draft_edits
-                                                    .write()
-                                                    .insert(cid.clone(), (effective_base, next_text));
+                                                let mut guard = draft_edits.write();
+                                                if let Some(entry) = guard.get_mut(&edit_key) {
+                                                    // Keep the pinned `ExpectedDraftBaseWire` from when editing began!
+                                                    entry.1 = next_text;
+                                                } else if let Some(initial_base) = base {
+                                                    guard.insert(
+                                                        edit_key.clone(),
+                                                        (initial_base, next_text),
+                                                    );
+                                                }
+                                            }
+                                        },
+                                        on_discard_stale_edits: {
+                                            let edit_key = edit_key.clone();
+                                            let cid = cid.clone();
+                                            move |_| {
+                                                draft_edits.write().remove(&edit_key);
+                                                card_errors.write().remove(&cid);
                                             }
                                         },
                                         on_edit_revise_instruction: {
-                                            let cid = cid.clone();
+                                            let edit_key = edit_key.clone();
                                             move |next_inst: String| {
                                                 revise_instructions
                                                     .write()
-                                                    .insert(cid.clone(), next_inst);
+                                                    .insert(edit_key.clone(), next_inst);
                                             }
                                         },
                                         on_save_draft: {
                                             let ws = workspace_id.clone();
                                             let cid = cid.clone();
+                                            let edit_key = edit_key.clone();
                                             let apply = apply_updated_surface.clone();
                                             move |(expected_base, text_to_save): (ExpectedDraftBaseWire, String)| {
                                                 if busy_conv.peek().is_some() {
@@ -1462,17 +1491,13 @@ pub(crate) fn PatientSpruceRepliesSection(
                                                 let presented = api.session().get();
                                                 let ws = ws.clone();
                                                 let cid = cid.clone();
+                                                let edit_key = edit_key.clone();
                                                 let mut apply = apply.clone();
                                                 spawn(async move {
                                                     match api.save_reply_proposal_draft(&ws, &cid, expected_base, &text_to_save).await {
                                                         Ok(updated) => {
                                                             busy_conv.set(None);
-                                                            if let PatientReplyConversationWire::OpenCard(ref c) = updated
-                                                                && let Some(new_base) = displayed_expected_base(&c.displayed_reply)
-                                                                && let Some(new_txt) = displayed_reply_text(&c.displayed_reply)
-                                                            {
-                                                                draft_edits.write().insert(cid.clone(), (new_base, new_txt.to_owned()));
-                                                            }
+                                                            draft_edits.write().remove(&edit_key);
                                                             apply(updated);
                                                         }
                                                         Err(err) => {
@@ -1495,6 +1520,8 @@ pub(crate) fn PatientSpruceRepliesSection(
                                         on_request_revision: {
                                             let ws = workspace_id.clone();
                                             let cid = cid.clone();
+                                            let edit_key = edit_key.clone();
+                                            let tz = browser_tz.clone();
                                             let apply = apply_updated_surface.clone();
                                             move |(expected_base, current_text, instruction): (ExpectedDraftBaseWire, String, String)| {
                                                 if busy_conv.peek().is_some() {
@@ -1507,20 +1534,22 @@ pub(crate) fn PatientSpruceRepliesSection(
                                                 let key = crate::idempotency_key();
                                                 let ws = ws.clone();
                                                 let cid = cid.clone();
+                                                let edit_key = edit_key.clone();
+                                                let tz = tz.clone();
                                                 let mut apply = apply.clone();
                                                 spawn(async move {
                                                     let body = RequestReplyProposalRevisionBody {
                                                         expected_base,
                                                         current_text,
                                                         instruction,
-                                                        physician_time_zone: "America/Los_Angeles".to_owned(),
+                                                        physician_time_zone: tz,
                                                         idempotency_key: key,
                                                     };
                                                     match api.request_reply_proposal_revision(&ws, &cid, &body).await {
                                                         Ok(updated) => {
                                                             busy_conv.set(None);
-                                                            revise_instructions.write().remove(&cid);
-                                                            draft_edits.write().remove(&cid);
+                                                            revise_instructions.write().remove(&edit_key);
+                                                            draft_edits.write().remove(&edit_key);
                                                             apply(updated);
                                                         }
                                                         Err(err) => {
@@ -1543,6 +1572,7 @@ pub(crate) fn PatientSpruceRepliesSection(
                                         on_restore_my_version: {
                                             let ws = workspace_id.clone();
                                             let cid = cid.clone();
+                                            let edit_key = edit_key.clone();
                                             let apply = apply_updated_surface.clone();
                                             move |expected_revision: u64| {
                                                 if busy_conv.peek().is_some() {
@@ -1555,12 +1585,13 @@ pub(crate) fn PatientSpruceRepliesSection(
                                                 let key = crate::idempotency_key();
                                                 let ws = ws.clone();
                                                 let cid = cid.clone();
+                                                let edit_key = edit_key.clone();
                                                 let mut apply = apply.clone();
                                                 spawn(async move {
                                                     match api.restore_my_reply_version(&ws, &cid, expected_revision, &key).await {
                                                         Ok(updated) => {
                                                             busy_conv.set(None);
-                                                            draft_edits.write().remove(&cid);
+                                                            draft_edits.write().remove(&edit_key);
                                                             apply(updated);
                                                         }
                                                         Err(err) => {
@@ -1583,6 +1614,7 @@ pub(crate) fn PatientSpruceRepliesSection(
                                         on_choose_update: {
                                             let ws = workspace_id.clone();
                                             let cid = cid.clone();
+                                            let edit_key = edit_key.clone();
                                             let apply = apply_updated_surface.clone();
                                             move |(expected_draft_revision, target_proposal_version): (u64, u64)| {
                                                 if busy_conv.peek().is_some() {
@@ -1595,6 +1627,7 @@ pub(crate) fn PatientSpruceRepliesSection(
                                                 let key = crate::idempotency_key();
                                                 let ws = ws.clone();
                                                 let cid = cid.clone();
+                                                let edit_key = edit_key.clone();
                                                 let mut apply = apply.clone();
                                                 spawn(async move {
                                                     match api
@@ -1609,7 +1642,7 @@ pub(crate) fn PatientSpruceRepliesSection(
                                                     {
                                                         Ok(updated) => {
                                                             busy_conv.set(None);
-                                                            draft_edits.write().remove(&cid);
+                                                            draft_edits.write().remove(&edit_key);
                                                             apply(updated);
                                                         }
                                                         Err(err) => {
@@ -1632,6 +1665,7 @@ pub(crate) fn PatientSpruceRepliesSection(
                                         on_copy_reply: {
                                             let ws = workspace_id.clone();
                                             let cid = cid.clone();
+                                            let edit_key = edit_key.clone();
                                             let apply = apply_updated_surface.clone();
                                             move |(expected_base, current_text, server_saved_text): (ExpectedDraftBaseWire, String, String)| {
                                                 if busy_conv.peek().is_some() {
@@ -1644,6 +1678,7 @@ pub(crate) fn PatientSpruceRepliesSection(
                                                 let presented = api.session().get();
                                                 let ws = ws.clone();
                                                 let cid = cid.clone();
+                                                let edit_key = edit_key.clone();
                                                 let mut apply = apply.clone();
                                                 spawn(async move {
                                                     let mut base_for_copy = expected_base;
@@ -1695,7 +1730,7 @@ pub(crate) fn PatientSpruceRepliesSection(
                                                         Ok(copied_resp) => {
                                                             let clip_res = copy_text(copied_resp.copied_text.clone()).await;
                                                             busy_conv.set(None);
-                                                            draft_edits.write().remove(&cid);
+                                                            draft_edits.write().remove(&edit_key);
                                                             if clip_res.is_ok() {
                                                                 copied_notices.write().insert(
                                                                     cid.clone(),
@@ -1729,6 +1764,7 @@ pub(crate) fn PatientSpruceRepliesSection(
                                         on_no_reply_needed: {
                                             let ws = workspace_id.clone();
                                             let cid = cid.clone();
+                                            let edit_key = edit_key.clone();
                                             let apply = apply_updated_surface.clone();
                                             move |expected_proposal_version: u64| {
                                                 if busy_conv.peek().is_some() {
@@ -1741,6 +1777,7 @@ pub(crate) fn PatientSpruceRepliesSection(
                                                 let key = crate::idempotency_key();
                                                 let ws = ws.clone();
                                                 let cid = cid.clone();
+                                                let edit_key = edit_key.clone();
                                                 let mut apply = apply.clone();
                                                 spawn(async move {
                                                     match api
@@ -1754,7 +1791,7 @@ pub(crate) fn PatientSpruceRepliesSection(
                                                     {
                                                         Ok(updated) => {
                                                             busy_conv.set(None);
-                                                            draft_edits.write().remove(&cid);
+                                                            draft_edits.write().remove(&edit_key);
                                                             apply(updated);
                                                         }
                                                         Err(err) => {
@@ -1836,19 +1873,25 @@ pub(crate) fn PatientSpruceRepliesSection(
                                 conversation_id,
                                 primary_sender_name,
                                 spruce_app_url,
+                                closed_by_physician,
                                 pending_move,
                                 ..
                             } => {
                                 let cid = conversation_id.clone();
                                 let is_busy = busy_conv.read().as_deref() == Some(cid.as_str());
                                 let err_msg = card_errors.read().get(&cid).cloned();
+                                let detail_text = if closed_by_physician.trim().is_empty() {
+                                    "Marked no reply needed.".to_owned()
+                                } else {
+                                    format!("Marked no reply needed by {closed_by_physician}.")
+                                };
                                 rsx! {
                                     Card {
                                         key: "{cid}",
                                         "data-closed-undo-banner": "{cid}",
                                         overline: "Spruce conversation".to_owned(),
                                         title: primary_sender_name,
-                                        detail: "Marked no reply needed.".to_owned(),
+                                        detail: detail_text,
                                         div { class: "mr-card-inner",
                                             if let Some(err_text) = err_msg {
                                                 div { class: "mr-banner", "data-reply-command-error": "{cid}",
@@ -1948,7 +1991,7 @@ pub(crate) fn PatientSpruceRepliesSection(
                                 let is_busy = busy_conv.read().as_deref() == Some(cid.as_str());
                                 let err_msg = card_errors.read().get(&cid).cloned();
                                 let overline_text = if primary_sender_role == ChannelSenderRoleWire::NonPatient {
-                                    format!("Spruce sender (regarding {patient_name})")
+                                    "Spruce sender".to_owned()
                                 } else {
                                     "Spruce conversation".to_owned()
                                 };
@@ -1961,7 +2004,7 @@ pub(crate) fn PatientSpruceRepliesSection(
                                         div { class: "mr-card-inner",
                                             if !non_patient_sender_names.is_empty() {
                                                 p { class: "mr-non-patient-note", "data-non-patient-sender": "{cid}",
-                                                    "Channel sender: {non_patient_sender_names.join(\", \")} (linked to {patient_name})"
+                                                    "Channel sender: {non_patient_sender_names.join(\", \")}"
                                                 }
                                             }
                                             if let Some(err_text) = err_msg {
@@ -2120,17 +2163,23 @@ fn PendingMoveNotice(
     on_undo: EventHandler<String>,
     on_open_patient: EventHandler<String>,
 ) -> Element {
+    let by_clause = if pending_move.moved_by_physician.trim().is_empty() {
+        String::new()
+    } else {
+        format!(" by {}", pending_move.moved_by_physician)
+    };
     let (title_text, dest_ws) = match &pending_move.destination {
         PendingMoveTargetDisplayWire::AnotherPatient {
             patient_workspace_id,
             patient_label,
         } => (
-            format!("Moved conversation to {patient_label}."),
+            format!("Moved conversation to {patient_label}{by_clause}."),
             patient_workspace_id.clone(),
         ),
-        PendingMoveTargetDisplayWire::NotAPatient => {
-            ("Moved conversation to Not a patient.".to_owned(), None)
-        }
+        PendingMoveTargetDisplayWire::NotAPatient => (
+            format!("Moved conversation to Not a patient{by_clause}."),
+            None,
+        ),
     };
     rsx! {
         div { class: "mr-banner", "data-pending-move-banner": "{conversation_id}",
@@ -2215,17 +2264,35 @@ fn MessageThreadList(
     }
 }
 
+fn card_arrival_notice_words(notice: &CardArrivalNoticeWire) -> String {
+    match notice {
+        CardArrivalNoticeWire::NewerReplyReplacedPrevious {
+            previous_version,
+            current_version,
+        } => format!(
+            "Coda’s newer reply (v{current_version}) replaced its earlier reply (v{previous_version})."
+        ),
+        CardArrivalNoticeWire::OlderMessageReadLate => {
+            "Includes an earlier message from this conversation that Coda read after the previous reply.".to_owned()
+        }
+        CardArrivalNoticeWire::PatientWroteAgain => {
+            "The sender wrote again since this reply was drafted.".to_owned()
+        }
+    }
+}
+
 #[component]
 fn OpenReplyCardView(
     workspace_id: String,
-    patient_name: String,
     card: ReplyCardWire,
+    pinned_base: Option<ExpectedDraftBaseWire>,
     draft_text: String,
     revise_instruction: String,
     busy: bool,
     error_message: Option<String>,
     copied_notice: Option<String>,
     on_edit_text: EventHandler<String>,
+    on_discard_stale_edits: EventHandler,
     on_edit_revise_instruction: EventHandler<String>,
     on_save_draft: EventHandler<(ExpectedDraftBaseWire, String)>,
     on_request_revision: EventHandler<(ExpectedDraftBaseWire, String, String)>,
@@ -2243,11 +2310,22 @@ fn OpenReplyCardView(
     let cid = card.conversation_id.clone();
     let _ = workspace_id;
     let overline_text = if card.primary_sender_role == ChannelSenderRoleWire::NonPatient {
-        format!("Spruce sender (regarding {patient_name})")
+        "Spruce sender".to_owned()
     } else {
         "Spruce reply".to_owned()
     };
-    let expected_base = displayed_expected_base(&card.displayed_reply);
+    let server_expected_base = displayed_expected_base(&card.displayed_reply);
+    let action_base = pinned_base.or(server_expected_base);
+    let newer_server_proposal_while_editing = match (pinned_base, &card.displayed_reply) {
+        (
+            Some(pinned),
+            DisplayedReplyTextWire::CodaProposal {
+                proposal_version,
+                text,
+            },
+        ) if Some(pinned) != server_expected_base => Some((*proposal_version, text.clone())),
+        _ => None,
+    };
     let server_saved_text = displayed_reply_text(&card.displayed_reply)
         .unwrap_or_default()
         .to_owned();
@@ -2259,6 +2337,7 @@ fn OpenReplyCardView(
         } => Some(*revision),
         _ => None,
     };
+    let is_coda_revision_displayed = restore_revision.is_some();
     let active_draft_revision = match &card.displayed_reply {
         DisplayedReplyTextWire::PhysicianDraft { revision, .. } => Some(*revision),
         _ => None,
@@ -2290,7 +2369,16 @@ fn OpenReplyCardView(
             div { class: "mr-card-inner",
                 if !card.non_patient_sender_names.is_empty() {
                     p { class: "mr-non-patient-note", "data-non-patient-sender": "{cid}",
-                        "Channel sender: {card.non_patient_sender_names.join(\", \")} (linked to {patient_name})"
+                        "Channel sender: {card.non_patient_sender_names.join(\", \")}"
+                    }
+                }
+                for (notice_idx, notice) in card.notices.iter().enumerate() {
+                    p {
+                        key: "arrival-notice-{notice_idx}",
+                        class: "mr-non-patient-note",
+                        role: "status",
+                        "data-card-arrival-notice": "{cid}",
+                        "{card_arrival_notice_words(notice)}"
                     }
                 }
                 if let CardChannelBannerWire::Disconnected {
@@ -2412,6 +2500,26 @@ fn OpenReplyCardView(
                         }
                     }
                 }
+                if let Some((newer_ver, newer_text)) = &newer_server_proposal_while_editing {
+                    div { class: "mr-banner", "data-newer-proposal-while-editing": "{cid}",
+                        Notice {
+                            tone: Tone::Primary,
+                            icon: Some(IconName::Sparkle),
+                            title: format!("Coda drafted a newer reply (v{newer_ver}) while you were editing."),
+                            detail: Some(newer_text.clone()),
+                            ActionRow {
+                                Button {
+                                    compact: true,
+                                    variant: ButtonVariant::Secondary,
+                                    disabled: busy,
+                                    "data-use-newer-proposal": "{cid}",
+                                    onclick: move |_| on_discard_stale_edits.call(()),
+                                    "Use newer reply"
+                                }
+                            }
+                        }
+                    }
+                }
                 match &card.displayed_reply {
                     DisplayedReplyTextWire::Withheld { reason, .. } => rsx! {
                         div { class: "mr-banner", "data-reply-withheld": "{cid}",
@@ -2496,12 +2604,14 @@ fn OpenReplyCardView(
                     }
                 }
 
-                if let Some(base) = expected_base {
+                if let Some(base) = action_base {
                     div { class: "mr-revise-box",
                         if let Some(run) = &card.revision_run {
-                            if let Some(words) = revision_run_words(run) {
-                                p { class: "mr-revision-status", role: "status", "data-revision-status": "{run.status}",
-                                    "{words}"
+                            if run.status != "completed" || is_coda_revision_displayed {
+                                if let Some(words) = revision_run_words(run) {
+                                    p { class: "mr-revision-status", role: "status", "data-revision-status": "{run.status}",
+                                        "{words}"
+                                    }
                                 }
                             }
                         }

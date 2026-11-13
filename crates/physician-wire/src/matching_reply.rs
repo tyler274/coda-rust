@@ -243,13 +243,23 @@ pub struct MatchingActionCommandBody {
     pub idempotency_key: String,
 }
 
+/// Closed saved standing returned after leaving a message unlinked or marking an unreadable item done.
+#[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(rename_all = "snake_case")]
+pub enum MatchedMessageStandingWire {
+    /// Left unlinked on the channel (`Leave unlinked`).
+    Unlinked,
+    /// Unreadable delivery acknowledged manually (`Done`).
+    Done,
+}
+
 /// Response body after leaving a message unlinked or marking an unreadable item done.
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct MatchingMessageStatusResponseWire {
     /// Target Spruce message identifier.
     pub message_id: String,
     /// Saved standing (`unlinked` or `done`).
-    pub standing: String,
+    pub standing: MatchedMessageStandingWire,
 }
 
 /// Closed non-patient mail classification category in `Filtered`.
@@ -531,6 +541,23 @@ pub struct PendingSpruceMoveWire {
     pub expires_at: String,
 }
 
+/// One-line arrival or replacement notice shown on an open reply card.
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(tag = "kind", rename_all = "snake_case")]
+pub enum CardArrivalNoticeWire {
+    /// Coda's newer reply replaced an earlier proposal version on the card.
+    NewerReplyReplacedPrevious {
+        /// Replaced proposal version.
+        previous_version: u64,
+        /// Current proposal version.
+        current_version: u64,
+    },
+    /// A new message arrived after the displayed proposal was drafted.
+    PatientWroteAgain,
+    /// An older message was read late; never states that the patient wrote again.
+    OlderMessageReadLate,
+}
+
 /// Full open reply card projected for a single conversation and signed-in physician.
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct ReplyCardWire {
@@ -573,6 +600,9 @@ pub struct ReplyCardWire {
     /// Newer Coda proposal offered without overwriting this physician's private edits.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub coda_update_offer: Option<CodaUpdateOfferWire>,
+    /// Ordered one-line arrival or replacement notices on this card.
+    #[serde(default)]
+    pub notices: Vec<CardArrivalNoticeWire>,
     /// Basis and limitations for the proposal backing this card.
     pub basis_and_limitations: String,
     /// Verified chart citations backing the proposal (`CitationChip` -> `ReaderDialog`).
@@ -867,6 +897,10 @@ mod tests {
             },
             revision_run: None,
             coda_update_offer: None,
+            notices: vec![CardArrivalNoticeWire::NewerReplyReplacedPrevious {
+                previous_version: 2,
+                current_version: 3,
+            }],
             basis_and_limitations: "Based on outpatient BMP from 2026-04-10.".into(),
             citations: vec![],
             other_physician_copies: vec![],
@@ -879,5 +913,15 @@ mod tests {
         let json = serde_json::to_string(&card).expect("serialize");
         let parsed: PatientReplyConversationWire = serde_json::from_str(&json).expect("parse");
         assert_eq!(parsed, card);
+
+        let status = MatchingMessageStatusResponseWire {
+            message_id: "msg-done-1".into(),
+            standing: MatchedMessageStandingWire::Done,
+        };
+        let status_json = serde_json::to_string(&status).expect("serialize status");
+        assert!(status_json.contains("\"standing\":\"done\""));
+        let parsed_status: MatchingMessageStatusResponseWire =
+            serde_json::from_str(&status_json).expect("parse status");
+        assert_eq!(parsed_status, status);
     }
 }

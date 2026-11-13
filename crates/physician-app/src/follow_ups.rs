@@ -224,7 +224,7 @@ pub(crate) fn PatientFollowUpsSection(
     // Create form state (preserved across failed writes).
     let mut create_open = use_signal(|| false);
     let mut new_summary = use_signal(String::new);
-    let mut new_due_date = use_signal(|| "2026-09-03".to_owned());
+    let mut new_due_date = use_signal(String::new);
     let mut create_busy = use_signal(|| false);
     let mut create_error = use_signal(|| None::<String>);
 
@@ -688,6 +688,11 @@ pub(crate) fn PatientFollowUpsSection(
                                                             apply(resp.follow_up, false);
                                                             if let Some(cid) = chat_id {
                                                                 on_open_discuss_chat.call(cid);
+                                                            } else {
+                                                                item_errors.write().insert(
+                                                                    fid,
+                                                                    "Not saved. Follow-up was paused, but Coda couldn’t open a discussion conversation.".to_owned(),
+                                                                );
                                                             }
                                                         }
                                                         Err(err) => {
@@ -704,6 +709,8 @@ pub(crate) fn PatientFollowUpsSection(
                                                                         "Coda couldn’t stop and start a discussion.",
                                                                     ),
                                                                 );
+                                                                *local_attempt.write() += 1;
+                                                                *today_attempt.write() += 1;
                                                             }
                                                         }
                                                     }
@@ -1141,7 +1148,7 @@ fn FollowUpItemCard(
                                                 let s = settle_note.clone();
                                                 move |_| on_cancel.call(s.clone())
                                             },
-                                            "Cancel"
+                                            "Cancel follow-up"
                                         }
                                     }
                                 }
@@ -1198,7 +1205,7 @@ fn FollowUpItemCard(
                                                 let s = settle_note.clone();
                                                 move |_| on_cancel.call(s.clone())
                                             },
-                                            "Cancel"
+                                            "Cancel follow-up"
                                         }
                                     }
                                 }

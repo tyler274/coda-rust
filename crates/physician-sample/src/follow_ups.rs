@@ -29,7 +29,9 @@ use physician_wire::follow_ups::{
     PatientFollowUpsResponseWire, ResolveCannotRestartBody, SettleFollowUpBody, StopFollowUpBody,
     UpdateFollowUpBody,
 };
-use physician_wire::today_updates::{SeenStandingWire, UpdateItemKindWire, UpdateItemWire};
+use physician_wire::today_updates::{
+    FailedProducerWire, ProducerSliceWire, SeenStandingWire, UpdateItemKindWire, UpdateItemWire,
+};
 use serde_json::{Value, json};
 use sha2::{Digest, Sha256};
 
@@ -416,10 +418,13 @@ async fn list_patient_follow_ups(
     let notes = if items.is_empty() {
         BTreeMap::new()
     } else {
-        let updates = store
+        let updates = match store
             .physician_follow_up_updates(&access, &mut authority)
             .await
-            .unwrap_or_default();
+        {
+            Ok(updates) => updates,
+            Err(err) => return follow_up_error_response(err),
+        };
         latest_notes_by_follow_up(updates)
     };
 
@@ -990,59 +995,77 @@ async fn stop_and_discuss_follow_up(
         scenario: None,
     };
 
-    let accepted_chat_id = if let Some(live) = extensions.get::<Arc<Live>>() {
-        match live
-            .chat
-            .accept(&scope, &turn_input, req_ctx.session_hash.clone())
-            .await
-        {
-            Ok(_) => {
-                let _ = live
-                    .bus
-                    .publish(Event::WorkspaceChanged {
-                        workspace_id: workspace.clone(),
-                    })
-                    .await;
-                Some(chat_id)
+    let accepted_chat_result: Result<String, String> =
+        if is_faulted(extensions, MatchingReplyFollowUpsFault::StopAndDiscussChat) {
+            Err("discussion chat unavailable".to_owned())
+        } else if let Some(live) = extensions.get::<Arc<Live>>() {
+            match live
+                .chat
+                .accept(&scope, &turn_input, req_ctx.session_hash.clone())
+                .await
+            {
+                Ok(_) => {
+                    let _ = live
+                        .bus
+                        .publish(Event::WorkspaceChanged {
+                            workspace_id: workspace.clone(),
+                        })
+                        .await;
+                    Ok(chat_id)
+                }
+                Err(err) => {
+                    tracing::warn!(%err, "follow-up discuss chat accept failed");
+                    Err(err.to_string())
+                }
             }
-            Err(err) => {
-                tracing::warn!(%err, "follow-up discuss chat accept failed");
-                None
-            }
-        }
-    } else {
-        let (roles, skills) = with_review_receiver_setup(&store, extensions).await;
-        match store
-            .chat_recipe_with_understanding(
-                &roles.chat,
-                local_product::physician_chat::INSTRUCTIONS,
-                &skills,
-                &scope.practice,
-                &scope.workspace,
-            )
-            .await
-        {
-            Ok(recipe) => store
-                .accept_authorized(
-                    &scope,
-                    &turn_input,
-                    req_ctx.session_hash.clone(),
+        } else {
+            let (roles, skills) = with_review_receiver_setup(&store, extensions).await;
+            match store
+                .chat_recipe_with_understanding(
+                    &roles.chat,
+                    local_product::physician_chat::INSTRUCTIONS,
                     &skills,
-                    &recipe,
+                    &scope.practice,
+                    &scope.workspace,
                 )
                 .await
-                .ok()
-                .map(|_| chat_id),
-            Err(_) => None,
-        }
-    };
+            {
+                Ok(recipe) => store
+                    .accept_authorized(
+                        &scope,
+                        &turn_input,
+                        req_ctx.session_hash.clone(),
+                        &skills,
+                        &recipe,
+                    )
+                    .await
+                    .map(|_| chat_id)
+                    .map_err(|err| err.to_string()),
+                Err(err) => Err(err.to_string()),
+            }
+        };
 
     publish_bus_resync(extensions).await;
+
+    let accepted_chat_id = match accepted_chat_result {
+        Ok(id) => id,
+        Err(err) => {
+            return (
+                StatusCode::SERVICE_UNAVAILABLE,
+                Json(json!({
+                    "detail": format!(
+                        "Not saved: Follow-up was paused, but Coda could not start the discussion conversation ({err})."
+                    )
+                })),
+            )
+                .into_response();
+        }
+    };
 
     Json(FollowUpMutationResponseWire {
         follow_up: map_follow_up_wire(saved, reason.map(|r| r.as_str().to_owned())),
         review_started: false,
-        discuss_chat_id: accepted_chat_id,
+        discuss_chat_id: Some(accepted_chat_id),
     })
     .into_response()
 }
@@ -1436,15 +1459,31 @@ async fn resolve_cannot_restart(
     .into_response()
 }
 
+fn follow_ups_slice_failed(detail: impl std::fmt::Display) -> FailedProducerWire {
+    FailedProducerWire {
+        producer: ProducerSliceWire::FollowUps,
+        label: "Follow-ups".to_owned(),
+        message: detail.to_string(),
+    }
+}
+
 /// Projects `"Can't restart"` follow-ups onto `Today` across the physician's
-/// authorized panel (or `target_workspace`).
+/// authorized panel (or `target_workspace`), surfacing read failures as
+/// `FailedProducerWire` (`ProducerSliceWire::FollowUps`) instead of empty rows.
 pub(crate) async fn follow_up_today_rows_for_physician(
     store: &Store,
     ctx: &AuthContext,
+    extensions: &Extensions,
     panel: &[String],
     patient_names: &BTreeMap<String, String>,
     target_workspace: Option<&str>,
-) -> Vec<Value> {
+) -> Result<Vec<Value>, FailedProducerWire> {
+    if is_faulted(extensions, MatchingReplyFollowUpsFault::FollowUpRead) {
+        return Err(follow_ups_slice_failed(
+            "Coda couldn't read follow-ups right now.",
+        ));
+    }
+
     let workspaces: Vec<&str> = match target_workspace {
         Some(ws) if panel.iter().any(|item| item == ws) => vec![ws],
         Some(_) => Vec::new(),
@@ -1453,12 +1492,10 @@ pub(crate) async fn follow_up_today_rows_for_physician(
     let mut rows = Vec::new();
 
     for ws in workspaces {
-        let Ok(items) = store
+        let items = store
             .workspace_follow_ups(&ctx.identity.practice_id, ws)
             .await
-        else {
-            continue;
-        };
+            .map_err(follow_ups_slice_failed)?;
         if items.is_empty() {
             continue;
         }
@@ -1490,28 +1527,34 @@ pub(crate) async fn follow_up_today_rows_for_physician(
         }
     }
 
-    rows
+    Ok(rows)
 }
 
 /// Projects durable follow-up change entries onto `Updates` across the
-/// physician's authorized panel.
+/// physician's authorized panel, surfacing read failures as
+/// `FailedProducerWire` (`ProducerSliceWire::FollowUps`) instead of empty rows.
 pub(crate) async fn follow_up_update_items_for_physician(
     store: &Store,
     ctx: &AuthContext,
+    extensions: &Extensions,
     panel: &[String],
     patient_names: &BTreeMap<String, String>,
-) -> Vec<UpdateItemWire> {
+) -> Result<Vec<UpdateItemWire>, FailedProducerWire> {
+    if is_faulted(extensions, MatchingReplyFollowUpsFault::FollowUpRead) {
+        return Err(follow_ups_slice_failed(
+            "Coda couldn't read follow-up updates right now.",
+        ));
+    }
+
     let hash = PostgresAuthStore::session_reference(&ctx.token);
     let real_now_unix = auth::now();
     let mut items = Vec::new();
 
     for ws in panel {
-        let Ok(existing) = store
+        let existing = store
             .workspace_follow_ups(&ctx.identity.practice_id, ws)
             .await
-        else {
-            continue;
-        };
+            .map_err(follow_ups_slice_failed)?;
         if existing.is_empty() {
             continue;
         }
@@ -1527,12 +1570,10 @@ pub(crate) async fn follow_up_update_items_for_physician(
             token: &ctx.token,
             now_unix: real_now_unix,
         };
-        let Ok(entries) = store
+        let entries = store
             .physician_follow_up_updates(&access, &mut authority)
             .await
-        else {
-            continue;
-        };
+            .map_err(follow_ups_slice_failed)?;
         for entry in entries {
             let prefix = match entry.kind {
                 FollowUpUpdateKind::Created => "Follow-up scheduled",
@@ -1565,7 +1606,7 @@ pub(crate) async fn follow_up_update_items_for_physician(
     }
 
     items.sort_by(|a, b| b.occurred_at.cmp(&a.occurred_at));
-    items
+    Ok(items)
 }
 
 #[cfg(test)]

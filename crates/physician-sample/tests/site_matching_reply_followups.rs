@@ -25,7 +25,7 @@ use local_product::physician_chat::PhysicianSkills;
 use local_product::physician_sources::{
     MedicalRecordNumber, ReadablePart, RecordDate, SourcePatient, SourceRevision,
 };
-use local_product::runtime::concerns::{CommandKey, ExactRecordReference, SourceWork};
+use local_product::runtime::concerns::{ExactRecordReference, SourceWork};
 use local_product::runtime::delivery::Delivery;
 use local_product::runtime::dispatch::{PracticeJobReviewReceiver, ReviewReceiver};
 use local_product::runtime::engine::{
@@ -1441,6 +1441,25 @@ async fn matching_screen_filtered_override_and_sse_recipe_loop() {
         !lower_matching.contains("confidence") && !visible_matching_text.contains('%'),
         "zero numeric confidence scores or percentages may appear in Messages to match:\n{visible_matching_text}"
     );
+    assert_eq!(
+        tab.eval(
+            "Boolean(document.querySelector('[data-needs-choice-box=\"msg-urgent-bp\"] input[type=\"checkbox\"]'))"
+        )
+        .as_bool(),
+        Some(true),
+        "ambiguous candidate box must expose sender-confirmation checkbox"
+    );
+    let needs_choice_text = tab
+        .eval(
+            "document.querySelector('[data-needs-choice-box=\"msg-urgent-bp\"]')?.innerText ?? ''",
+        )
+        .as_str()
+        .unwrap_or_default()
+        .to_owned();
+    assert!(
+        needs_choice_text.contains("Also confirm this sender address for future messages"),
+        "ambiguous candidate box must label sender-confirmation checkbox:\n{needs_choice_text}"
+    );
 
     tab.assert_no_horizontal_overflow("Messages to match desktop 1440x960");
     tab.save_screenshot("01-messages-to-match-desktop");
@@ -1761,13 +1780,17 @@ async fn reply_editor_basis_private_drafts_moves_withheld_and_disconnected() {
         "reply card must name channel sender Marco Morales (Spouse):\n{card_text_a}"
     );
     assert!(
+        !card_text_a.contains("Elena Morales"),
+        "reply card must name the channel's sender and never the linked patient:\n{card_text_a}"
+    );
+    assert!(
         tab_a
             .eval(&format!(
                 "Boolean(document.querySelector('[data-non-patient-sender=\"{conv_id}\"]'))"
             ))
             .as_bool()
             == Some(true),
-        "non-patient caregiver sender indicator must be shown alongside patient"
+        "non-patient caregiver sender indicator must be shown"
     );
 
     // AC2: Open `Basis` and `Sources` (`CitationChip` -> `ReaderDialog`)
@@ -1883,10 +1906,45 @@ async fn reply_editor_basis_private_drafts_moves_withheld_and_disconnected() {
         );
         std::thread::sleep(Duration::from_millis(60));
     }
+    assert_eq!(
+        tab_a
+            .eval("Boolean(document.querySelector('[data-revision-status=\"completed\"]'))")
+            .as_bool(),
+        Some(false),
+        "completed revision notice must not linger after Restore my version returns to YourText"
+    );
 
-    // AC5: Open second browser Tab B as Dr. Chen -> Dr. Chen sees Coda's proposal v1, NOT Dr. Rivera's private draft!
-    let mut tab_b = Tab::open(&format!("http://{}/?patient={ws_elena}", harness.address));
+    // AC5 + Today row rules (`message-reply/README.md:69-70`):
+    // Open second browser Tab B as Dr. Chen on `Today` first -> verify Today row shows the start of
+    // Marco's newest words, `"Drafted a reply"`, `"Review reply"`, and names Marco (never Elena or drafted reply prose)!
+    let mut tab_b = Tab::open(&format!("http://{}/", harness.address));
     tab_b.sign_in_as("dr.chen@codahealth.test");
+    tab_b.wait_for_selector(
+        &format!("[data-today-item=\"spruce-reply:{conv_id}:1\"]"),
+        Duration::from_secs(20),
+    );
+    let today_reply_row_text = tab_b
+        .eval(&format!(
+            "document.querySelector('[data-today-item=\"spruce-reply:{conv_id}:1\"]')?.innerText ?? ''"
+        ))
+        .as_str()
+        .unwrap_or_default()
+        .to_owned();
+    assert!(
+        today_reply_row_text.contains("Marco Morales (Spouse)")
+            && today_reply_row_text.contains("Drafted a reply")
+            && today_reply_row_text.contains("Review reply")
+            && today_reply_row_text.contains("Hi Dr. Rivera, this is Marco writing"),
+        "Today reply row must name channel sender, Drafted a reply, Review reply, and start of sender's newest words:\n{today_reply_row_text}"
+    );
+    assert!(
+        !today_reply_row_text.contains("Elena Morales")
+            && !today_reply_row_text.contains("potassium on yesterday's metabolic panel"),
+        "Today reply row must never name the linked patient or leak drafted reply text:\n{today_reply_row_text}"
+    );
+    tab_b.click(&format!(
+        "[data-today-review-reply=\"spruce-reply:{conv_id}:1\"]"
+    ));
     tab_b.wait_for_selector(
         &format!("[data-spruce-reply-card=\"{conv_id}\"]"),
         Duration::from_secs(20),
@@ -2074,6 +2132,25 @@ async fn reply_editor_basis_private_drafts_moves_withheld_and_disconnected() {
         .to_owned();
     assert_eq!(chosen_val, proposal_v2_text);
 
+    // On Tab B (Dr. Chen, who had no private draft), reloading shows proposal v2 AND the one-line
+    // `CardArrivalNoticeWire::NewerReplyReplacedPrevious` notice (`message-reply/README.md:73`)!
+    tab_b.reload();
+    tab_b.wait_for_selector(
+        &format!("[data-card-arrival-notice=\"{conv_id}\"]"),
+        Duration::from_secs(15),
+    );
+    let arrival_notice_text = tab_b
+        .eval(&format!(
+            "[...document.querySelectorAll('[data-card-arrival-notice=\"{conv_id}\"]')].map(e => e.innerText).join(' | ')"
+        ))
+        .as_str()
+        .unwrap_or_default()
+        .to_owned();
+    assert!(
+        arrival_notice_text.contains("newer reply (v2) replaced its earlier reply (v1)"),
+        "expected one-line replacement notice on Dr. Chen's card, got:\n{arrival_notice_text}"
+    );
+
     // AC5: New message arrives while Coda reviews -> new message remains visible alongside `"Coda is reviewing"`!
     harness
         .store
@@ -2105,7 +2182,23 @@ async fn reply_editor_basis_private_drafts_moves_withheld_and_disconnected() {
     );
     tab_a.wait_for_text("Coda is reviewing", Duration::from_secs(10));
 
-    // Finish review 3 so we can exercise `No reply needed` + `Undo` and `Wrong patient?`
+    // Reload Tab B while `rev-reply-3` is active (`any_running = true`), then begin unsaved inline
+    // typing on Tab B against proposal `v2` BEFORE `v3` publishes so `pinned_base` is tested live!
+    tab_b.reload();
+    tab_b.wait_for_selector(
+        &format!("[data-coda-reviewing=\"{conv_id}\"]"),
+        Duration::from_secs(15),
+    );
+    let chen_inline_edit =
+        "DR_CHEN_PINNED_V2_EDIT: Please take lisinopril in the morning and log home BP.";
+    tab_b.type_into(
+        &format!("[data-reply-editor=\"{conv_id}\"] textarea"),
+        chen_inline_edit,
+    );
+
+    // Finish review 3 (`proposal_v3`) so Tab B's background poll receives `v3` mid-edit!
+    let proposal_v3_text =
+        "Hi Marco, Elena can take lisinopril in the morning and light walking today is fine.";
     harness
         .store
         .complete_reply_review(&CompleteReplyReview {
@@ -2116,7 +2209,7 @@ async fn reply_editor_basis_private_drafts_moves_withheld_and_disconnected() {
             completion_key: "comp-reply-3".to_owned(),
             answered_closures: Vec::new(),
             decision: ReplyReviewDecision::ProposeReply(ReplyProposalInput {
-                text: "Hi Marco, Elena can take lisinopril in the morning and light walking today is fine.".to_owned(),
+                text: proposal_v3_text.to_owned(),
                 basis: ReplyProposalBasisInput {
                     summary: "Normal BMP and stable routine activity question.".to_owned(),
                     limits: Vec::new(),
@@ -2128,17 +2221,64 @@ async fn reply_editor_basis_private_drafts_moves_withheld_and_disconnected() {
         })
         .await
         .expect("complete proposal v3");
+
+    // Tab B polls into `v3` while preserving `chen_inline_edit` AND its pinned `v2` base!
+    tab_b.wait_for_selector(
+        &format!("[data-newer-proposal-while-editing=\"{conv_id}\"]"),
+        Duration::from_secs(15),
+    );
+    // Clicking `Save draft` on Tab B submits pinned base `v2` and surfaces `409 StaleDraftVersion` (`"Not saved"`)
+    // instead of silently overwriting `v3`!
+    tab_b.click(&format!("[data-save-reply-draft=\"{conv_id}\"]"));
+    tab_b.wait_for_selector(
+        &format!("[data-reply-command-error=\"{conv_id}\"]"),
+        Duration::from_secs(10),
+    );
+    tab_b.wait_for_text("Not saved", Duration::from_secs(10));
+    let chen_preserved_after_conflict = tab_b
+        .eval(&format!(
+            "document.querySelector('[data-reply-editor=\"{conv_id}\"] textarea').value"
+        ))
+        .as_str()
+        .unwrap_or_default()
+        .to_owned();
+    assert_eq!(
+        chen_preserved_after_conflict, chen_inline_edit,
+        "stale-version rejection must preserve unsaved inline typing"
+    );
+    tab_b.click(&format!("[data-use-newer-proposal=\"{conv_id}\"]"));
+    let chen_adopted_v3 = tab_b
+        .eval(&format!(
+            "document.querySelector('[data-reply-editor=\"{conv_id}\"] textarea').value"
+        ))
+        .as_str()
+        .unwrap_or_default()
+        .to_owned();
+    assert_eq!(chen_adopted_v3, proposal_v3_text);
+
     tab_a.reload();
     tab_a.wait_for_selector(
         &format!("[data-no-reply-needed=\"{conv_id}\"]"),
         Duration::from_secs(15),
     );
 
-    // AC2: `No reply needed` + `Undo`
+    // AC2: `No reply needed` + `Undo` (verifying `closed_by_physician` resolves to `"Dr. Rivera"`)
     tab_a.click(&format!("[data-no-reply-needed=\"{conv_id}\"]"));
     tab_a.wait_for_selector(
         &format!("[data-closed-undo-banner=\"{conv_id}\"]"),
         Duration::from_secs(15),
+    );
+    let closed_banner_text = tab_a
+        .eval(&format!(
+            "document.querySelector('[data-closed-undo-banner=\"{conv_id}\"]')?.innerText ?? ''"
+        ))
+        .as_str()
+        .unwrap_or_default()
+        .to_owned();
+    assert!(
+        closed_banner_text.contains("Dr. Rivera")
+            && !closed_banner_text.contains(&dr_rivera.physician_id),
+        "closed undo banner must resolve physician display name, never raw physician_id:\n{closed_banner_text}"
     );
     tab_a.click(&format!("[data-undo-no-reply-needed=\"{conv_id}\"]"));
     tab_a.wait_for_selector(
@@ -2146,7 +2286,7 @@ async fn reply_editor_basis_private_drafts_moves_withheld_and_disconnected() {
         Duration::from_secs(15),
     );
 
-    // AC6: `Wrong patient?` + `Undo`, then settled move -> `Withheld`, then disconnected channel -> `Done`!
+    // AC6: `Wrong patient?` + active `Undo` window checks on BOTH origin (`ws_elena`) and destination (`ws_jake`)!
     tab_a.click(&format!("[data-wrong-patient=\"{conv_id}\"]"));
     tab_a.wait_for_selector(
         "[data-patient-picker-dialog=\"true\"]",
@@ -2162,14 +2302,65 @@ async fn reply_editor_basis_private_drafts_moves_withheld_and_disconnected() {
         &format!("[data-pending-move-banner=\"{conv_id}\"]"),
         Duration::from_secs(15),
     );
-    // Undo the move!
+    let origin_card_during_undo = tab_a
+        .eval(&format!(
+            "document.querySelector('[data-spruce-thread-card=\"{conv_id}\"]')?.innerText ?? ''"
+        ))
+        .as_str()
+        .unwrap_or_default()
+        .to_owned();
+    assert!(
+        origin_card_during_undo.contains("Moved conversation to Jake Patel by Dr. Rivera.")
+            && !origin_card_during_undo.contains(&dr_rivera.physician_id),
+        "origin move undo banner must name destination patient and moving physician:\n{origin_card_during_undo}"
+    );
+    assert!(
+        !origin_card_during_undo.contains("Marco Morales")
+            && tab_a
+                .eval(&format!(
+                    "Boolean(document.querySelector('[data-open-in-spruce=\"{conv_id}\"]'))"
+                ))
+                .as_bool()
+                == Some(false),
+        "origin patient must leak zero sender name, messages, or Spruce URL during move undo:\n{origin_card_during_undo}"
+    );
+
+    // Check destination patient (`ws_jake`) on Tab B DURING active `Undo` window:
+    // linked messages MUST be visible alongside `Coda is reviewing` and `PendingMoveNotice`!
+    tab_b.navigate(&format!("http://{}/?patient={ws_jake}", harness.address));
+    tab_b.wait_for_selector(
+        &format!("[data-pending-move-banner=\"{conv_id}\"]"),
+        Duration::from_secs(15),
+    );
+    tab_b.wait_for_selector(
+        "[data-reply-patient-message=\"msg-marco-1\"]",
+        Duration::from_secs(10),
+    );
+    let dest_card_during_undo = tab_b
+        .eval(&format!(
+            "document.querySelector('[data-spruce-thread-card=\"{conv_id}\"]')?.innerText ?? ''"
+        ))
+        .as_str()
+        .unwrap_or_default()
+        .to_owned();
+    assert!(
+        dest_card_during_undo
+            .contains("Hi Dr. Rivera, this is Marco writing about Elena's morning bloodwork")
+            && dest_card_during_undo.contains("Dr. Rivera")
+            && !dest_card_during_undo.contains(&dr_rivera.physician_id)
+            && !dest_card_during_undo.contains(proposal_v3_text),
+        "destination patient during active Undo must show linked messages and moving physician name, never Elena's reply proposal:\n{dest_card_during_undo}"
+    );
+
+    // Undo the move on Tab A!
     tab_a.click(&format!("[data-undo-move=\"{conv_id}\"]"));
     tab_a.wait_for_selector(
         &format!("[data-reply-editor=\"{conv_id}\"]"),
         Duration::from_secs(15),
     );
 
-    // Now move to Jake Patel with a 1-second undo window and settle past expiry so `Withheld` takes effect!
+    // Now move to Jake Patel with an expired 1-second undo window and let `physician-sample`'s
+    // `settle_expired_spruce_moves_and_replies` settle it automatically on read!
     let move_now = real_now_i64();
     harness
         .store
@@ -2189,25 +2380,8 @@ async fn reply_editor_basis_private_drafts_moves_withheld_and_disconnected() {
         )
         .await
         .expect("move conversation to Jake");
-    harness
-        .store
-        .settle_expired_spruce_moves(STAGING_PRACTICE_ID, None, move_now)
-        .await
-        .expect("settle expired spruce move");
-    harness
-        .store
-        .act_on_conversation_move(
-            &CommandKey::new("move-key-jake-1").expect("valid cmd key"),
-            STAGING_PRACTICE_ID,
-            conv_id,
-            ConversationLink::LinkedPatient {
-                workspace: ws_jake.to_owned(),
-            },
-        )
-        .await
-        .expect("act on conversation move into Withheld");
 
-    // Navigate Tab A to Jake Patel -> reply card shows `Withheld` (zero leaked Elena reply words)!
+    // Navigate Tab A to Jake Patel -> `settle_expired_spruce_moves_and_replies` runs on read and shows `Withheld`!
     tab_a.navigate(&format!("http://{}/?patient={ws_jake}", harness.address));
     tab_a.wait_for_selector(
         &format!("[data-reply-withheld=\"{conv_id}\"]"),
@@ -2232,6 +2406,25 @@ async fn reply_editor_basis_private_drafts_moves_withheld_and_disconnected() {
         );
     }
     tab_a.save_screenshot("08-reply-withheld-after-move");
+
+    // Verify Today also names only the channel sender + sender's newest words on the Withheld row,
+    // never `For Jake Patel` or Elena's withheld proposal (`message-reply/README.md:69-70`).
+    tab_b.navigate(&format!("http://{}/", harness.address));
+    tab_b.wait_for_selector(
+        &format!("[data-today-review-reply^=\"spruce-reply:{conv_id}:\"]"),
+        Duration::from_secs(15),
+    );
+    let today_withheld_text = tab_b
+        .eval("document.querySelector('.today-main')?.innerText ?? ''")
+        .as_str()
+        .unwrap_or_default()
+        .to_owned();
+    assert!(
+        today_withheld_text.contains("Marco Morales (Spouse)")
+            && today_withheld_text.contains("Also, is light walking okay today?")
+            && !today_withheld_text.contains("For Jake Patel"),
+        "Today withheld row must show channel sender and sender's newest words, never 'For Jake Patel':\n{today_withheld_text}"
+    );
 
     // AC6: Disconnect Spruce channel -> card stays readable under current access, links to Spruce, and offers `Done`!
     harness
@@ -2532,8 +2725,52 @@ async fn failed_commands_lookup_unavailable_and_lost_access_closure() {
         Duration::from_secs(10),
     );
 
-    // Navigate to Elena Morales -> edit draft -> force `ReplyCommand` fault -> `"Not saved"` + edits preserved!
+    // Force `ReplyRead` and `FollowUpRead` faults -> `Today` shows partial-failure banner naming
+    // `Spruce messages` and `Follow-ups` (NEVER `"Nothing needs you"`), and patient page shows
+    // `REPLIES_UNAVAILABLE` (`"Coda couldn’t load messages for this patient."`) instead of empty!
+    harness.faults.fail(MatchingReplyFollowUpsFault::ReplyRead);
+    harness
+        .faults
+        .fail(MatchingReplyFollowUpsFault::FollowUpRead);
+    tab.navigate(&format!("http://{}/", harness.address));
+    tab.wait_for_selector(
+        "[data-today-partial-failure=\"true\"]",
+        Duration::from_secs(15),
+    );
+    let partial_banner_text = tab
+        .eval("document.querySelector('[data-today-partial-failure=\"true\"]')?.innerText ?? ''")
+        .as_str()
+        .unwrap_or_default()
+        .to_owned();
+    assert!(
+        partial_banner_text.contains("Spruce messages")
+            && partial_banner_text.contains("Follow-ups"),
+        "Today partial failure banner must name failed Spruce messages and Follow-ups producers:\n{partial_banner_text}"
+    );
+    let today_body_on_fault = tab
+        .eval("document.body?.innerText ?? ''")
+        .as_str()
+        .unwrap_or_default()
+        .to_owned();
+    assert!(
+        !today_body_on_fault.contains("Nothing needs you"),
+        "Today must NEVER claim Nothing needs you when Spruce or Follow-ups producers failed:\n{today_body_on_fault}"
+    );
+
     tab.navigate(&format!("http://{}/?patient={ws_elena}", harness.address));
+    tab.wait_for_text(
+        "couldn’t load messages for this patient",
+        Duration::from_secs(15),
+    );
+    harness
+        .faults
+        .clear_fault(MatchingReplyFollowUpsFault::ReplyRead);
+    harness
+        .faults
+        .clear_fault(MatchingReplyFollowUpsFault::FollowUpRead);
+
+    // Reload Elena Morales -> edit draft -> force `ReplyCommand` fault -> `"Not saved"` + edits preserved!
+    tab.reload();
     tab.wait_for_selector(
         &format!("[data-reply-editor=\"{conv_id}\"] textarea"),
         Duration::from_secs(20),
@@ -2619,11 +2856,20 @@ async fn follow_ups_restart_controls_faults_cannot_restart_and_responsive_layout
         Duration::from_secs(20),
     );
 
-    // AC1: Create a follow-up, edit it, restart the server, and reopen -> saved result shows!
+    // AC1: Create a follow-up (verifying initial due-date input starts empty), edit it, restart the server, and reopen -> saved result shows!
     tab.click("[data-open-create-follow-up=\"true\"]");
     tab.wait_for_selector(
         "[data-create-follow-up-card=\"true\"]",
         Duration::from_secs(10),
+    );
+    let initial_due_date_val = tab
+        .eval("document.querySelector('[data-create-follow-up-due-date=\"true\"] input')?.value ?? ''")
+        .as_str()
+        .unwrap_or_default()
+        .to_owned();
+    assert_eq!(
+        initial_due_date_val, "",
+        "new follow-up due date input must start empty rather than hardcoded"
     );
     tab.type_into(
         "[data-create-follow-up-summary=\"true\"] input",
@@ -2647,6 +2893,17 @@ async fn follow_ups_restart_controls_faults_cannot_restart_and_responsive_layout
         .unwrap_or_default()
         .to_owned();
     assert!(!fid1.is_empty(), "created follow-up id must be present");
+    let open_cancel_label = tab
+        .eval(&format!(
+            "document.querySelector('[data-follow-up-cancel=\"{fid1}\"]')?.innerText?.trim() ?? ''"
+        ))
+        .as_str()
+        .unwrap_or_default()
+        .to_owned();
+    assert_eq!(
+        open_cancel_label, "Cancel follow-up",
+        "open follow-up cancel button must read 'Cancel follow-up' per intent/physician.md"
+    );
 
     // Edit summary and due date
     tab.click(&format!("[data-follow-up-edit=\"{fid1}\"]"));
@@ -2749,6 +3006,29 @@ async fn follow_ups_restart_controls_faults_cannot_restart_and_responsive_layout
 
     // AC2: `Stop` -> `Held`, then `Resume` -> `DueNow`
     tab.click(&format!("[data-follow-up-stop=\"{fid1}\"]"));
+    tab.wait_for_selector(
+        &format!("[data-follow-up-card=\"{fid1}\"][data-follow-up-standing=\"held\"]"),
+        Duration::from_secs(15),
+    );
+    tab.click(&format!("[data-follow-up-resume=\"{fid1}\"]"));
+    tab.wait_for_selector(
+        &format!("[data-follow-up-card=\"{fid1}\"][data-follow-up-standing=\"due_now\"]"),
+        Duration::from_secs(15),
+    );
+
+    // AC2: When discussion-chat seeding fails on `Stop and discuss`, surface `"Not saved"` explicitly instead of silent 200 OK!
+    harness
+        .faults
+        .fail(MatchingReplyFollowUpsFault::StopAndDiscussChat);
+    tab.click(&format!("[data-follow-up-stop-discuss=\"{fid1}\"]"));
+    tab.wait_for_selector(
+        &format!("[data-follow-up-command-error=\"{fid1}\"]"),
+        Duration::from_secs(15),
+    );
+    tab.wait_for_text("Not saved", Duration::from_secs(10));
+    harness
+        .faults
+        .clear_fault(MatchingReplyFollowUpsFault::StopAndDiscussChat);
     tab.wait_for_selector(
         &format!("[data-follow-up-card=\"{fid1}\"][data-follow-up-standing=\"held\"]"),
         Duration::from_secs(15),
@@ -2898,6 +3178,14 @@ async fn follow_ups_restart_controls_faults_cannot_restart_and_responsive_layout
         &format!("[data-cannot-restart-cancel=\"{fid3}\"]"),
         Duration::from_secs(10),
     );
+    let cr_cancel_label = tab
+        .eval(&format!(
+            "document.querySelector('[data-cannot-restart-cancel=\"{fid3}\"]')?.innerText?.trim() ?? ''"
+        ))
+        .as_str()
+        .unwrap_or_default()
+        .to_owned();
+    assert_eq!(cr_cancel_label, "Cancel");
     tab.wait_for_text("Can't restart", Duration::from_secs(10));
 
     // Desktop (1440x960) layout check + screenshot

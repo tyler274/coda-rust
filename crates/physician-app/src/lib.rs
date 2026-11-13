@@ -4219,8 +4219,23 @@ fn TodayRows(
                             span { class: "today-row-reason", "{row.reason}" }
                         }
                     }
-                    if row.resume_work_item_id.is_some() || row.can_mark_done {
+                    if row.resume_work_item_id.is_some()
+                        || row.can_mark_done
+                        || row.kind == "drafted_reply"
+                    {
                         div { class: "today-row-action",
+                            if row.kind == "drafted_reply" {
+                                Button {
+                                    compact: true,
+                                    variant: ButtonVariant::Secondary,
+                                    "data-today-review-reply": "{row.item_id}",
+                                    onclick: {
+                                        let row = row.clone();
+                                        move |_| on_open.call(row.clone())
+                                    },
+                                    "Review reply"
+                                }
+                            }
                             if row.resume_work_item_id.is_some() {
                                 Button {
                                     compact: true,
@@ -4685,6 +4700,7 @@ fn PatientSurface(
                 matching_reply::PatientSpruceRepliesSection {
                     workspace_id: open.patient_workspace_id.clone(),
                     patient_name: heading_name.clone(),
+                    browser_tz: browser_tz.clone(),
                     read_state: spruce_replies_read,
                     client: reviews_context.client,
                     session: reviews_context.session,
