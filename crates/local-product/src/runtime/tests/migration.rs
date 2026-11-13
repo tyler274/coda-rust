@@ -70,6 +70,7 @@ async fn a_second_migrate_records_nothing_new() {
             "m20261112_today_updates_seen",
             "m20261112_conversation_activity",
             "m20261113_01_spruce_matching",
+            "m20261113_02_reply_proposals",
         ]
     );
 }
