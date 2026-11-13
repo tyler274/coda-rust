@@ -206,8 +206,8 @@ fn tiles_spinners_and_retries_show_their_states() {
     wait_for_heading(&mut browser, "Status").expect("the section with the spinner");
     assert_eq!(
         in_part(&mut browser, "Waiting on an action", ".spinner"),
-        2,
-        "the spinner bare and in its busy button"
+        5,
+        "the spinner bare and in its busy buttons"
     );
     assert_eq!(
         in_part(
@@ -215,8 +215,8 @@ fn tiles_spinners_and_retries_show_their_states() {
             "Waiting on an action",
             "button[aria-busy=true] .spinner"
         ),
-        1,
-        "the spinner in its busy button"
+        4,
+        "the spinner in its busy buttons"
     );
 
     assert_eq!(
@@ -225,24 +225,92 @@ fn tiles_spinners_and_retries_show_their_states() {
         "the retry that can be pressed"
     );
     assert_eq!(
-        in_part(&mut browser, "Trying again", "button[disabled]"),
+        in_part(&mut browser, "Trying again", "button[aria-busy=true]"),
         1,
-        "the retry that can't yet"
+        "the retry that runs"
+    );
+    assert_eq!(
+        in_part(&mut browser, "Trying again", "button[disabled]"),
+        2,
+        "the retry that runs and the one that can't yet"
     );
 
     // Pressing one holds it while the retry runs, then offers it again.
-    let enabled = "(() => { const part = Array.from(document.querySelectorAll('.gallery-part')) \
-                   .find((part) => part.querySelector('.gallery-part-title').textContent === 'Trying again'); \
-                   return [part.querySelectorAll('button[disabled]').length]; })()";
     browser.page().evaluate(
         "Array.from(document.querySelectorAll('.gallery-part')) \
          .find((part) => part.querySelector('.gallery-part-title').textContent === 'Trying again') \
          .querySelector('button:not([disabled])').click(); 0",
     );
-    wait_for_value(&mut browser, enabled, |held| held[0] == 2.0)
-        .expect("the pressed retry held while it runs");
-    wait_for_value(&mut browser, enabled, |held| held[0] == 1.0).expect("the retry offered again");
+    let running = "button[aria-busy=true]";
+    wait_for_count(&mut browser, "Trying again", running, 2).expect("the pressed retry running");
+    wait_for_count(&mut browser, "Trying again", running, 1).expect("the retry offered again");
     assert_eq!(browser.take_page_errors(), Vec::<String>::new());
+}
+
+/// Waits until the part titled `title` holds `count` of `selector`.
+fn wait_for_count(
+    browser: &mut Browser,
+    title: &str,
+    selector: &str,
+    count: u64,
+) -> Result<(), String> {
+    let deadline = Instant::now() + Duration::from_secs(10);
+    let mut seen = 0;
+    while Instant::now() < deadline {
+        seen = in_part(browser, title, selector);
+        if seen == count {
+            return Ok(());
+        }
+        std::thread::sleep(Duration::from_millis(25));
+    }
+    Err(format!("last saw {seen}"))
+}
+
+/// A button with words alone keeps its exact size while busy, so nothing around it moves, and its
+/// spinner shows centred in it: each words-only button beside its busy twin, and the retry ready
+/// beside the one running.
+#[test]
+#[ignore = "browser qualification; run explicitly with --ignored"]
+fn a_busy_button_keeps_its_size_and_shows_its_wait() {
+    let gallery = Gallery::start();
+    let mut browser = open_at(&gallery, DESKTOP, "status", "Status");
+    let pairs = browser.page().call_function(
+        include_str!("busy_pairs.js"),
+        &[
+            Value::from("Waiting on an action"),
+            Value::from("Trying again"),
+        ],
+    );
+    let pairs = pairs.as_array().expect("the idle and busy buttons");
+    assert_eq!(
+        pairs.len(),
+        4,
+        "three idle and busy pairs and the retry: {pairs:?}"
+    );
+    for pair in pairs {
+        assert_eq!(
+            (&pair["same_size"], &pair["spinner"], &pair["centred"]),
+            (&Value::Bool(true), &Value::Bool(true), &Value::Bool(true)),
+            "{pair}"
+        );
+    }
+}
+
+/// A group of rings with none chosen stands empty: a ring fills only once it is chosen, while a
+/// box over a list still fills when only some of it is chosen.
+#[test]
+#[ignore = "browser qualification; run explicitly with --ignored"]
+fn a_ring_fills_only_once_it_is_chosen() {
+    let gallery = Gallery::start();
+    let mut browser = open_at(&gallery, DESKTOP, "inputs", "Inputs");
+    let fills = browser
+        .page()
+        .call_function(include_str!("ring_fills.js"), &[]);
+    assert_eq!(
+        fills,
+        serde_json::json!({ "none_chosen": true, "empty_rings": 1, "empty_unlike_chosen": true, "mixed_filled": true }),
+        "every ring not chosen should stand empty, in every group"
+    );
 }
 
 /// An address that names no section opens the first rather than a blank page.

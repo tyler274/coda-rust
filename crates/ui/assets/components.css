@@ -406,16 +406,28 @@ button.source-trigger { cursor: pointer; transition: border-color var(--motion-p
 .list-row-number { min-width: 2.5ch; color: var(--primary); font: var(--type-label-md); font-variant-numeric: tabular-nums; }
 .list-row-text { flex: 1; min-width: 0; overflow-wrap: anywhere; }
 .list-row-text strong { display: block; color: var(--ink); font: var(--type-title-sm); }
+/* A row that opens something, marked by its chevron, cuts its title after two lines with an ellipsis, as opening it
+   shows the whole. A row that opens nothing, and an on/off row, show their whole title. A quiet line is never cut. */
+.list-row:has(> .list-row-chevron) > .list-row-text > strong { display: -webkit-box; overflow: hidden; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
 .list-row-text small { display: block; margin-top: var(--space-hair); color: var(--muted); font: var(--type-body-sm); }
 /* A row's state leads its detail in the detail's colour, set in the label role's weight. */
 .list-row-state { font: var(--type-label-md); }
 .list-row-chevron { flex: none; color: var(--muted); }
 .list-row-chevron .icon { transform: rotate(-90deg); }
 /* A row that is on or off is a list row; on, its tile fills with the brand colour as a control changes state, and its
-   check takes the chevron's place in the brand colour. */
+   check takes the chevron's place in the brand colour. Busy, pressed either way with no answer yet, its tile fills at
+   half strength and a spinner stands in the check's place. The check and the spinner share one box at the trailing
+   edge, so the title keeps its width in every state. Where transitions run, each fades in and out, and the spinner
+   waits one arrival before it shows, so a row pressed while settled and answered within that wait shows none; under
+   reduced motion it shows at once and still, and driven by keyboard at once and turning. It turns only while busy. */
 .toggle-row .icon-tile { transition: background-color var(--motion-control) var(--ease-out), color var(--motion-control) var(--ease-out); }
-.toggle-row[aria-pressed="true"] .icon-tile { background: var(--primary); color: var(--on-primary); }
-.toggle-row-check { flex: none; color: var(--primary); }
+.toggle-row[aria-pressed="true"]:not([aria-busy="true"]) .icon-tile { background: var(--primary); color: var(--on-primary); }
+.toggle-row[aria-busy="true"] .icon-tile { background: color-mix(in srgb, var(--primary) 50%, var(--data-container)); color: var(--on-primary); }
+.toggle-row-end { display: grid; flex: none; color: var(--primary); }
+.toggle-row-end > .icon { grid-area: 1 / 1; opacity: 0; transition: opacity var(--motion-control) var(--ease-out); }
+.toggle-row[aria-pressed="true"]:not([aria-busy="true"]) .toggle-row-end > .icon:not(.spinner) { opacity: 1; }
+.toggle-row[aria-busy="true"] .toggle-row-end > .spinner { opacity: 1; transition-delay: var(--motion-arrive); }
+.toggle-row:not([aria-busy="true"]) .toggle-row-end > .spinner { animation-play-state: paused; }
 .section-header { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); min-height: var(--target); }
 .section-title { margin: 0; color: var(--ink); font: var(--type-title-md); }
 .section-action { min-height: var(--target); margin-block: calc(-1 * var(--space-3)); padding: 0 0 0 var(--space-3); border: 0; background: transparent; color: var(--primary); font: var(--type-body-sm); cursor: pointer; }
@@ -746,7 +758,8 @@ del > .diff-sign, .diff-removed { color: var(--error); }
 .selection-row input[type="checkbox"] { border-radius: var(--radius-sm); }
 .selection-row input[type="radio"] { border-radius: 50%; }
 @media (hover: hover) { .selection-row:hover input:not(:disabled) { border-color: var(--primary); } }
-.selection-row input:is(:checked, :indeterminate) { border-color: var(--primary); background: var(--primary); }
+/* Only a box is ever mixed: a radio in a group with none chosen also matches :indeterminate, and stays empty. */
+.selection-row input:is(:checked, [type="checkbox"]:indeterminate) { border-color: var(--primary); background: var(--primary); }
 .selection-row input[type="checkbox"]::after { content: ""; width: var(--icon-sm); height: var(--icon-sm); background: var(--on-primary); clip-path: inset(0 100% 0 0);
   mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14'%3E%3Cpath d='M2 7.5 5.5 11 12 3.5' fill='none' stroke='%23000' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / contain no-repeat;
   transition: clip-path var(--motion-arrive) var(--ease-out); }
@@ -778,13 +791,15 @@ del > .diff-sign, .diff-removed { color: var(--error); }
 /* A sheet's handle: where it can be held. */
 .dialog-sheet::before { content: ""; display: block; width: var(--sheet-handle-width); height: var(--sheet-handle-height); margin: var(--space-2) auto 0; border-radius: var(--radius-pill); background: var(--outline); }
 /* Waiting on the person's own action: the spinner turns in the control's icon's place. A control
-   without an icon keeps its geometry and says it is busy. Busy is not unavailable, so it keeps full strength. */
+   without an icon turns it in its words' place, centred, the words kept unseen so the control keeps its exact size.
+   Busy is not unavailable, so it keeps full strength. */
 .control[aria-busy="true"] { opacity: 1; }
 .spinner-track { opacity: .22; }
 .spinner { animation: spinner-turn var(--motion-spinner) linear infinite; }
 .control > .spinner { color: inherit; }
 .control[aria-busy="true"] > .icon:not(.spinner) { display: none; }
-.control[aria-busy="true"]:not(:has(> .icon:not(.spinner))) > .spinner { display: none; }
+.control[aria-busy="true"]:not(:has(> .icon:not(.spinner))) { -webkit-text-fill-color: transparent; }
+.control[aria-busy="true"]:not(:has(> .icon:not(.spinner))) > .spinner { position: absolute; inset: 0; margin: auto; }
 @keyframes spinner-turn { to { transform: rotate(1turn); } }
 /* The conversation's scrolling region and its one way back to the newest reply. */
 .conversation-viewport { position: relative; display: grid; min-height: 0; }

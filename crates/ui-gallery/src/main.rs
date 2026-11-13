@@ -19,9 +19,9 @@ use dioxus::prelude::*;
 use std::time::Duration;
 #[cfg(feature = "web")]
 use ui::{
-    ActionRow, Answer, AnswerEnding, AnswerSources, ApprovalCard, ArtifactCard, AttachButton,
-    Attachment, AttachmentState, Attachments, Author, Avatar, AvatarSize, Basis, Button,
-    ButtonVariant, Card, Change, ChartHeader, ChatColumn, ChatHeader, Checkbox, Choice,
+    ActionRow, Answer, AnswerEnding, AnswerSources, ApprovalCard, ApprovalState, ArtifactCard,
+    AttachButton, Attachment, AttachmentState, Attachments, Author, Avatar, AvatarSize, Basis,
+    Button, ButtonVariant, Card, Change, ChartHeader, ChatColumn, ChatHeader, Checkbox, Choice,
     CitationChip, CitationPreview, CitedPlace, CodeBlock, Column, Combobox, Command,
     CommandPalette, CompactField, Comparison, ComparisonBars, Composer, ContextChip, ContextMenu,
     ConversationViewport, CopyButton, CopyWords, Count, DateField, DateKind, DateSeparator, Dialog,
@@ -37,8 +37,9 @@ use ui::{
     SeriesShape, SettingRow, Slider, SortOrder, SourceLink, SourcePane, SourceReading,
     SourceRecord, SourceState, SourceSummary, SourcesButton, Sparkline, Spinner, StatePill,
     StatusLine, StepState, Suggestion, TabBar, Table, TableRow, Task, TaskList, TaskState,
-    TaskWords, TextField, TextKind, Toast, ToggleChip, ToggleRow, Tone, Tooltip, TopBar, TryAgain,
-    Value, VersionSwitch, WorkStep, WorkTrace, WorkingMark, WorkingPresence, use_live_rows,
+    TaskWords, TextField, TextKind, Toast, ToggleChip, ToggleRow, ToggleState, Tone, Tooltip,
+    TopBar, TryAgain, Value, VersionSwitch, WorkStep, WorkTrace, WorkingMark, WorkingPresence,
+    use_live_rows,
 };
 #[cfg(feature = "web")]
 use wasm_bindgen::{JsCast, closure::Closure};
@@ -139,7 +140,7 @@ const FAMILIES: [Family; 17] = [
     Family {
         slug: "inputs",
         title: "Inputs",
-        note: "A few short choices stand side by side, the fill sliding to the one chosen. A longer choice is a real box or ring: the check draws across, the dot springs out, and a box over a list shows when only some of it is chosen. A list opens the platform's own picker; a long one is found by typing, the list narrowing as the words come. An amount moves along a track and says itself; a date or a time opens the platform's own picker. A hint stands under a field, and what is wrong takes its place with the field outlined in red. The text field carries focus on its outline. The search field leads with its mark, which darkens while it has focus, and clears itself without losing focus. A labelled field names what it holds; with several lines, it grows with what is written.",
+        note: "A few short choices stand side by side, the fill sliding to the one chosen. A longer choice is a real box or ring: the check draws across, the dot springs out, and a box over a list shows when only some of it is chosen. Until a ring is chosen, every ring stands empty. A list opens the platform's own picker; a long one is found by typing, the list narrowing as the words come. An amount moves along a track and says itself; a date or a time opens the platform's own picker. A hint stands under a field, and what is wrong takes its place with the field outlined in red. The text field carries focus on its outline. The search field leads with its mark, which darkens while it has focus, and clears itself without losing focus. A labelled field names what it holds; with several lines, it grows with what is written.",
         body: || {
             rsx! {
                 InputsDemo {}
@@ -152,10 +153,10 @@ const FAMILIES: [Family; 17] = [
         note: "",
         body: || {
             rsx! {
-                Part { title: "Rows and sections", note: "Related rows group once, a hairline between them, rather than a card around each. A row leads with an icon, a number or a person's avatar, in three sizes. A section's one action sits beside its title.",
+                Part { title: "Rows and sections", note: "Related rows group once, a hairline between them, rather than a card around each. A row leads with an icon, a number or a person's avatar, in three sizes. A row that opens something is one button with a chevron; a row that only states a fact, such as who your physician is or when a clinic was connected, has neither. A row that opens something cuts its name after two lines, as opening it shows the whole; a row that opens nothing shows its whole name. A section's one action sits beside its title.",
                     RowsDemo {}
                 }
-                Part { title: "Row states, on/off rows and icon actions", note: "Where a row's thing stands leads its quiet line in bold, in the line's own colour. A row that is on or off lines up with ordinary rows: off, its icon on its tile and nothing at its edge; on, the tile filled in the brand colour and a check where a chevron would be. Here it stands off, on (press it to turn it off), and unavailable, beside a row that opens something. A section's one action can be an icon alone, on a full touch target, its words then its spoken name.",
+                Part { title: "Row states, on/off rows and icon actions", note: "Where a row's thing stands leads its quiet line in bold, in the line's own colour. A row that is on or off lines up with ordinary rows: off, its icon on its tile and nothing at its edge; on, the tile filled in the brand colour and a check where a chevron would be; turning on or off, pressed with no answer yet, the tile at half strength and a spinner where the check would be, its words and pressed state still those of the last answer. Here it stands off, turning on, on and turning off; then two scripted rows (press one: it turns, and it is on, or off again, when the answer comes, after 900 ms for the first and 200 ms for the second; pressed while settled, the second answers before its spinner would fade in, though under reduced motion or from the keyboard the spinner shows at once); then unavailable off and unavailable on, beside a row that opens something. Its name is never cut. A section's one action can be an icon alone, on a full touch target, its words then its spoken name.",
                     RowStatesDemo {}
                 }
                 Part { title: "Live lists", note: "A row that joins a list already shown opens and settles from just below; a row the list drops stays in its place as it collapses, then goes. A count fades into its new value, number and words together. A row the list moves up rises over the others, lifted; the selection is one fill that slides to the row chosen and travels with it. Under reduced motion nothing moves: rows arrive and leave in place, and the count still fades.",
@@ -330,13 +331,25 @@ const FAMILIES: [Family; 17] = [
                 Part { title: "Working and loading", note: "The working mark while work runs, the live dot, a placeholder in the shape of what loads (a line, list items, rows or reading), and notices for reads and commands.",
                     LoadingDemo {}
                 }
-                Part { title: "Waiting on an action", note: "A turning ring at icon size, on its own or where a busy button's icon was. Running work keeps the working mark; content still loading keeps its placeholder.",
+                Part { title: "Waiting on an action", note: "A turning ring at icon size, on its own, where a busy button's icon was, or in the place of a busy button's words, the button keeping its size: each button here stands idle, then busy. Running work keeps the working mark; content still loading keeps its placeholder.",
                     div { class: "gallery-row",
                         span { class: "gallery-label", Spinner {} "Sending" }
                         Button { busy: true, pending_label: "Saving", Icon { name: IconName::Check } "Save" }
                     }
+                    div { class: "gallery-row",
+                        Button { variant: ButtonVariant::Primary, "Send to my doctor" }
+                        Button { variant: ButtonVariant::Primary, busy: true, pending_label: "Sending to my doctor", "Send to my doctor" }
+                    }
+                    div { class: "gallery-row",
+                        Button { "Check again" }
+                        Button { busy: true, pending_label: "Checking again", "Check again" }
+                    }
+                    div { class: "gallery-row",
+                        Button { variant: ButtonVariant::Quiet, "Show earlier" }
+                        Button { variant: ButtonVariant::Quiet, busy: true, pending_label: "Showing earlier", "Show earlier" }
+                    }
                 }
-                Part { title: "Trying again", note: "Scripted. The one recovery action after a failure, under the line that says what failed. It takes no input while the retry runs.",
+                Part { title: "Trying again", note: "Scripted. The one recovery action after a failure, under the line that says what failed. While the retry runs it turns in its words' place and takes no input; here it stands ready, running, and unavailable.",
                     TryAgainDemo {}
                 }
                 Part { title: "Progress", note: "Scripted. How far something has got, in the host's words. Not knowing how far, the bar moves and claims no amount. Bare, it stands where something else says what it is, such as a file's tile or a table's cell.",
@@ -1425,7 +1438,8 @@ fn TryAgainDemo() -> Element {
         div { class: "gallery-stack",
             p { class: "gallery-copy", "Couldn’t refresh the visit list." }
             div { class: "gallery-row",
-                TryAgain { label: "Try again", disabled: retrying(), on_retry: retry }
+                TryAgain { label: "Try again", running: retrying().then(|| "Trying again".to_owned()), on_retry: retry }
+                TryAgain { label: "Try again", running: "Trying again", on_retry: move |_| {} }
                 TryAgain { label: "Try again", disabled: true, on_retry: move |_| {} }
             }
         }
@@ -2222,6 +2236,20 @@ fn RowsDemo() -> Element {
                 li { ListRow { icon: IconName::Heart, title: "Blood pressure", detail: "Home cuff · October 20", onclick: move |_| {} } }
                 li { ListRow { icon: IconName::Book, title: "Questions for my visit", detail: "Your note · October 21", onclick: move |_| {} } }
             }
+            SectionHeader { title: "Northside Clinic" }
+            RowGroup {
+                li { ListRow { icon: IconName::User, title: "Dr. Maya Okafor", detail: "Your physician" } }
+                li { ListRow { icon: IconName::Link, title: "Northside Clinic, Internal Medicine and Family Practice, Riverside Campus", detail: "Where you are seen" } }
+                li { ListRow { icon: IconName::Link, title: "Connected", detail: "September 2" } }
+                li { ListRow { icon: IconName::File, title: "Visit notes", detail: "3 from this clinic", onclick: move |_| {} } }
+            }
+            SectionHeader { title: "Lab results" }
+            RowGroup {
+                li { ListRow { icon: IconName::File, title: "Potassium", detail: "October 28", onclick: move |_| {} } }
+                li { ListRow { icon: IconName::File, title: "Comprehensive metabolic panel, serum or plasma", detail: "October 28", onclick: move |_| {} } }
+                li { ListRow { icon: IconName::File, title: "HEMOGLOBIN A1C/HEMOGLOBIN.TOTAL IN BLOOD", detail: "October 28", onclick: move |_| {} } }
+                li { ListRow { icon: IconName::File, title: "GLUCOSE [MASS/VOLUME] IN SERUM OR PLASMA --2 HOURS POST 75 G GLUCOSE BY MOUTH", detail: "October 28", onclick: move |_| {} } }
+            }
             SectionHeader { title: "People" }
             RowGroup {
                 li { ListRow { person: "Maria Delgado", title: "Maria Delgado", detail: "DOB March 4, 1961", onclick: move |_| {} } }
@@ -2244,7 +2272,6 @@ fn RowsDemo() -> Element {
 #[cfg(feature = "web")]
 #[component]
 fn RowStatesDemo() -> Element {
-    let mut marked = use_signal(|| true);
     rsx! {
         div { class: "gallery-rows",
             SectionHeader { title: "For my doctor", action: "Write a note", action_icon: IconName::Plus, on_action: move |_| {} }
@@ -2253,19 +2280,54 @@ fn RowStatesDemo() -> Element {
                 li { ListRow { icon: IconName::Heart, title: "Blood pressure", state: "Not saved yet", onclick: move |_| {} } }
             }
             RowGroup {
-                li { ToggleRow { icon: IconName::Flag, title: "Mark for my doctor", pressed: false, onclick: move |_| {} } }
-                li {
-                    ToggleRow {
-                        icon: IconName::Flag,
-                        title: if marked() { "Marked for my doctor" } else { "Mark for my doctor" },
-                        pressed: marked(),
-                        onclick: move |_| marked.toggle(),
-                    }
-                }
-                li { ToggleRow { icon: IconName::Flag, title: "Mark for my doctor", pressed: false, disabled: true, onclick: move |_| {} } }
+                li { ToggleRow { icon: IconName::Flag, title: "Mark for my doctor", state: ToggleState::Off, onclick: move |_| {} } }
+                li { ToggleRow { icon: IconName::Flag, title: "Mark for my doctor", state: ToggleState::TurningOn, onclick: move |_| {} } }
+                li { ToggleRow { icon: IconName::Flag, title: "Marked for my doctor", state: ToggleState::On, onclick: move |_| {} } }
+                li { ToggleRow { icon: IconName::Flag, title: "Marked for my doctor", state: ToggleState::TurningOff, onclick: move |_| {} } }
+            }
+            RowGroup {
+                li { ScriptedMark { wait_ms: 900 } }
+                li { ScriptedMark { wait_ms: 200 } }
+                li { ToggleRow { icon: IconName::Flag, title: "Mark for my doctor", state: ToggleState::Off, disabled: true, onclick: move |_| {} } }
+                li { ToggleRow { icon: IconName::Flag, title: "Marked for my doctor", state: ToggleState::On, disabled: true, onclick: move |_| {} } }
                 li { ListRow { icon: IconName::Pencil, title: "Write a note", onclick: move |_| {} } }
             }
         }
+    }
+}
+
+/// A scripted on/off row: a press turns it, and the gallery's stand-in for the server answers
+/// `wait_ms` later. It holds what the server last answered, and whether a press still waits.
+#[cfg(feature = "web")]
+#[component]
+fn ScriptedMark(wait_ms: u64) -> Element {
+    let mut marked = use_signal(|| false);
+    let mut waiting = use_signal(|| false);
+    let press = move |_| {
+        if waiting() {
+            return;
+        }
+        waiting.set(true);
+        spawn(async move {
+            futures_timer::Delay::new(Duration::from_millis(wait_ms)).await;
+            marked.toggle();
+            waiting.set(false);
+        });
+    };
+    let state = match (marked(), waiting()) {
+        (false, false) => ToggleState::Off,
+        (false, true) => ToggleState::TurningOn,
+        (true, true) => ToggleState::TurningOff,
+        (true, false) => ToggleState::On,
+    };
+    // While it turns, the row keeps the words of the last answer.
+    let title = if marked() {
+        "Marked for my doctor"
+    } else {
+        "Mark for my doctor"
+    };
+    rsx! {
+        ToggleRow { icon: IconName::Flag, title, state, onclick: press }
     }
 }
 
@@ -2898,17 +2960,15 @@ fn AgentWorkDemo() -> Element {
 #[cfg(feature = "web")]
 #[component]
 fn ApprovalDemo() -> Element {
-    let mut answer = use_signal(|| None::<Answer>);
-    let mut busy = use_signal(|| false);
+    let mut summary = use_signal(|| ApprovalState::Asked);
     // What came of the answer, reported apart from it: None until sending starts.
     let mut sent = use_signal(|| None::<bool>);
-    let mut removal = use_signal(|| None::<Answer>);
+    let mut removal = use_signal(|| ApprovalState::Asked);
     let mut give = move |given: Answer| {
-        busy.set(true);
+        summary.set(ApprovalState::Answering(given));
         spawn(async move {
             futures_timer::Delay::new(Duration::from_millis(700)).await;
-            busy.set(false);
-            answer.set(Some(given));
+            summary.set(ApprovalState::Answered(given));
             if given == Answer::Approved {
                 sent.set(Some(false));
                 futures_timer::Delay::new(Duration::from_millis(1600)).await;
@@ -2923,9 +2983,8 @@ fn ApprovalDemo() -> Element {
                 detail: "Through the practice's secure messages",
                 approve_label: "Send",
                 decline_label: "Not now",
-                busy: busy(),
-                answer: answer(),
-                answered: if answer() == Some(Answer::Approved) { "You approved sending it." } else { "You said not now." },
+                state: summary(),
+                answered: if summary() == ApprovalState::Answered(Answer::Approved) { "You approved sending it." } else { "You said not now." },
                 on_approve: move |_| give(Answer::Approved),
                 on_decline: move |_| give(Answer::Declined),
                 Quote { text: "Potassium rose from 4.9 to 5.4 since the spironolactone dose went to 25 mg on October 2. No repeat level since. Worth a recheck this week?" }
@@ -2945,16 +3004,16 @@ fn ApprovalDemo() -> Element {
                 approve_label: "Remove",
                 decline_label: "Keep it",
                 danger: true,
-                answer: removal(),
-                answered: if removal() == Some(Answer::Approved) { "You approved removing it." } else { "You kept it." },
-                on_approve: move |_| removal.set(Some(Answer::Approved)),
-                on_decline: move |_| removal.set(Some(Answer::Declined)),
+                state: removal(),
+                answered: if removal() == ApprovalState::Answered(Answer::Approved) { "You approved removing it." } else { "You kept it." },
+                on_approve: move |_| removal.set(ApprovalState::Answered(Answer::Approved)),
+                on_decline: move |_| removal.set(ApprovalState::Answered(Answer::Declined)),
             }
             Button { compact: true, variant: ButtonVariant::Quiet,
                 onclick: move |_| {
-                    answer.set(None);
+                    summary.set(ApprovalState::Asked);
                     sent.set(None);
-                    removal.set(None);
+                    removal.set(ApprovalState::Asked);
                 },
                 Icon { name: IconName::Refresh }
                 "Ask again"
@@ -3689,6 +3748,7 @@ const RESULTS: [&str; 3] = ["Labs", "Imaging", "Visit notes"];
 fn InputsDemo() -> Element {
     let mut sharing = use_signal(|| [true, false, true]);
     let mut reach = use_signal(|| Some(0usize));
+    let mut call = use_signal(|| None::<usize>);
     let mut on = use_signal(|| true);
     let mut instruction = use_signal(String::new);
     let mut email = use_signal(|| "dana@northside".to_owned());
@@ -3755,6 +3815,12 @@ fn InputsDemo() -> Element {
                     ("By phone", "For results that need a conversation").into(),
                     Choice { disabled: true, ..("By letter", "No address on file").into() },
                 ],
+            }
+            RadioGroup {
+                label: "When should we call?",
+                selected: call(),
+                on_select: move |index| call.set(Some(index)),
+                options: vec![("Mornings", "Before noon").into(), ("Afternoons", "Noon to five").into()],
             }
             div { class: "row-list",
                 SettingRow { title: "Share with her care team", detail: "Clinicians at Northside Clinic", on: on(), on_change: move |value| on.set(value) }

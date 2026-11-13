@@ -470,11 +470,23 @@ pub enum Answer {
     Declined,
 }
 
+/// Where what an agent asked stands.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum ApprovalState {
+    /// Waiting on the person.
+    Asked,
+    /// The person pressed this answer, and it is on its way.
+    Answering(Answer),
+    /// This answer stands.
+    Answered(Answer),
+}
+
 /// What an agent asks before it acts: what it wants to do, a quieter `detail`, and what it would
 /// act on as the card's content, such as a command, a change or a message to send. The two answers
-/// stand at its foot, approving filled, and red when it removes what the person has; `busy` holds
-/// both while an answer is on its way. Answered, the card keeps what was asked and says the
-/// `answer` in `answered` words, never what came of it: the action's own result is reported apart.
+/// stand at its foot, approving filled, and red when it removes what the person has. While an answer
+/// is on its way, its button is busy and the other takes no press. Answered, the card keeps what was
+/// asked and says the answer in `answered` words, never what came of it: the action's own result is
+/// reported apart.
 #[component]
 pub fn ApprovalCard(
     title: String,
@@ -484,15 +496,21 @@ pub fn ApprovalCard(
     on_approve: EventHandler<MouseEvent>,
     on_decline: EventHandler<MouseEvent>,
     #[props(default)] danger: bool,
-    #[props(default)] busy: bool,
-    answer: Option<Answer>,
+    state: ApprovalState,
     #[props(default)] answered: String,
     children: Element,
 ) -> Element {
     let id = use_hook(|| format!("approval-{}", APPROVALS.fetch_add(1, Ordering::Relaxed)));
+    let on_way = match state {
+        ApprovalState::Answering(answer) => Some(answer),
+        ApprovalState::Asked | ApprovalState::Answered(_) => None,
+    };
+    let waiting = on_way.is_some();
+    let declining = on_way == Some(Answer::Declined);
+    let approving = on_way == Some(Answer::Approved);
     rsx! {
         section {
-            class: if answer.is_some() { "approval is-answered" } else { "approval" },
+            class: if matches!(state, ApprovalState::Answered(_)) { "approval is-answered" } else { "approval" },
             aria_labelledby: "{id}",
             div { class: "approval-heading",
                 strong { id: "{id}", "{title}" }
@@ -501,21 +519,28 @@ pub fn ApprovalCard(
                 }
             }
             div { class: "approval-content", {children} }
-            match answer {
-                None => rsx! {
+            match state {
+                ApprovalState::Asked | ApprovalState::Answering(_) => rsx! {
                     div { class: "approval-actions",
-                        Button { compact: true, disabled: busy, onclick: move |event| on_decline.call(event), "{decline_label}" }
+                        Button {
+                            compact: true,
+                            disabled: waiting,
+                            busy: declining,
+                            onclick: move |event| on_decline.call(event),
+                            "{decline_label}"
+                        }
                         Button {
                             variant: ButtonVariant::Primary,
                             compact: true,
                             danger,
-                            busy,
+                            disabled: waiting,
+                            busy: approving,
                             onclick: move |event| on_approve.call(event),
                             "{approve_label}"
                         }
                     }
                 },
-                Some(answer) => rsx! {
+                ApprovalState::Answered(answer) => rsx! {
                     p { class: "approval-answer", role: "status",
                         Icon { name: if answer == Answer::Approved { IconName::Check } else { IconName::X } }
                         "{answered}"
@@ -592,6 +617,54 @@ mod tests {
             .into_iter()
             .map(|(_, drawn)| drawn)
             .collect()
+    }
+
+    #[test]
+    fn the_answer_on_its_way_is_the_busy_button_and_the_other_takes_no_press() {
+        fn declining() -> Element {
+            rsx! {
+                ApprovalCard {
+                    title: "Send it?",
+                    approve_label: "Send",
+                    decline_label: "Not now",
+                    on_approve: move |_| {},
+                    on_decline: move |_| {},
+                    state: ApprovalState::Answering(Answer::Declined),
+                }
+            }
+        }
+        fn approving() -> Element {
+            rsx! {
+                ApprovalCard {
+                    title: "Send it?",
+                    approve_label: "Send",
+                    decline_label: "Not now",
+                    on_approve: move |_| {},
+                    on_decline: move |_| {},
+                    state: ApprovalState::Answering(Answer::Approved),
+                }
+            }
+        }
+        // Each button's opening tag, found by the words that follow it.
+        let button = |html: &str, words: &str| -> String {
+            let end = html
+                .find(&format!(">{words}<"))
+                .expect("the button's words");
+            let start = html[..end].rfind("<button").expect("its button");
+            html[start..end].to_owned()
+        };
+        for (app, busy, other) in [
+            (declining as fn() -> Element, "Not now", "Send"),
+            (approving, "Send", "Not now"),
+        ] {
+            let mut dom = VirtualDom::new(app);
+            dom.rebuild_in_place();
+            let html = dioxus_ssr::render(&dom);
+            let (pressed, held) = (button(&html, busy), button(&html, other));
+            assert!(pressed.contains("aria-busy=\"true\""), "{pressed}");
+            assert!(held.contains("disabled"), "{held}");
+            assert!(!held.contains("aria-busy"), "{held}");
+        }
     }
 
     #[test]

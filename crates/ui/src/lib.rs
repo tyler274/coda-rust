@@ -32,8 +32,9 @@ mod sources;
 mod tables;
 mod toast;
 pub use agent::{
-    Answer, AnswerEnding, AnswerSources, ApprovalCard, ArtifactCard, Basis, EndAction, Ending,
-    IndexedSource, StepState, Task, TaskList, TaskState, TaskWords, WorkStep, WorkTrace,
+    Answer, AnswerEnding, AnswerSources, ApprovalCard, ApprovalState, ArtifactCard, Basis,
+    EndAction, Ending, IndexedSource, StepState, Task, TaskList, TaskState, TaskWords, WorkStep,
+    WorkTrace,
 };
 pub use attachments::{AttachButton, Attachment, AttachmentState, Attachments};
 pub use cards::{Card, Quote, RailCard};
@@ -218,15 +219,20 @@ fn offered(words: &str, handler: Option<EventHandler>) -> Option<EventHandler> {
 }
 
 /// The one recovery action after a failure: one verb, one shape, one size, under the line that
-/// says what failed.
+/// says what failed. While the retry runs, `running` names it for assistive technology and the
+/// control waits as a busy `Button` does.
 #[component]
 pub fn TryAgain(
     label: String,
     #[props(default)] disabled: bool,
+    /// The retry is running, and this is what it is called meanwhile: "Trying again".
+    #[props(default)]
+    running: Option<String>,
     on_retry: EventHandler,
 ) -> Element {
+    let busy = running.is_some();
     rsx! {
-        Button { compact: true, disabled, onclick: move |_| on_retry.call(()), "{label}" }
+        Button { compact: true, disabled, busy, pending_label: running, onclick: move |_| on_retry.call(()), "{label}" }
     }
 }
 
@@ -1169,9 +1175,11 @@ pub fn SourcesButton(
 }
 
 /// One row in a list of rows: an optional icon on its tile, a number or a person's avatar, the row's name, an
-/// optional detail beneath it, and a chevron, with the whole row one button. Its state, when it has
-/// one, leads the detail in bold. Rows group once, a hairline between them, rather than a card
-/// around each.
+/// optional detail beneath it, and, when it opens something, a chevron, with the whole row one button.
+/// A row with no `onclick` only states its thing: no chevron, no press and no stop for the keyboard.
+/// A row that opens something cuts its title after two lines, as opening it shows the whole; a row
+/// that opens nothing shows its whole title. Its state, when it has one, leads the detail in bold.
+/// Rows group once, a hairline between them, rather than a card around each.
 #[component]
 pub fn ListRow(
     #[props(default)] icon: Option<IconName>,
@@ -1184,25 +1192,33 @@ pub fn ListRow(
     /// Where the row's thing stands, in the host's words: "Sent".
     #[props(default)]
     state: Option<String>,
-    onclick: EventHandler<MouseEvent>,
+    /// What the row opens; without it, the row is not a control.
+    onclick: Option<EventHandler<MouseEvent>>,
     #[props(extends = GlobalAttributes)] attributes: Vec<Attribute>,
 ) -> Element {
-    let mut class = String::from("navigation-row list-row");
+    let mut class = String::from("list-row");
     let rest = host_attributes(&mut class, attributes);
+    let lead = if let Some(icon) = icon {
+        rsx! { IconTile { name: icon, tinted: true } }
+    } else if let Some(number) = number {
+        rsx! { span { class: "list-row-number", "{number}" } }
+    } else if let Some(name) = person {
+        rsx! { Avatar { name } }
+    } else {
+        rsx! {}
+    };
+    let text = row_text(title, detail, state);
+    let Some(open) = onclick else {
+        return rsx! { div { class: "{class}", ..rest, {lead} {text} } };
+    };
     rsx! {
         button {
-            class: "{class}",
+            class: "navigation-row {class}",
             r#type: "button",
-            onclick: move |event| onclick.call(event),
+            onclick: move |event| open.call(event),
             ..rest,
-            if let Some(icon) = icon {
-                IconTile { name: icon, tinted: true }
-            } else if let Some(number) = number {
-                span { class: "list-row-number", "{number}" }
-            } else if let Some(name) = person {
-                Avatar { name }
-            }
-            {row_text(title, detail, state)}
+            {lead}
+            {text}
             span { class: "list-row-chevron", aria_hidden: "true", Icon { name: IconName::ChevronDown } }
         }
     }
@@ -1227,30 +1243,56 @@ fn row_text(title: String, detail: Option<String>, state: Option<String>) -> Ele
     }
 }
 
+/// Where an on/off row stands: the host's last answer, and whether a press waits on the next.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum ToggleState {
+    /// Off.
+    Off,
+    /// Off, pressed to turn on, with the host's answer not back yet.
+    TurningOn,
+    /// On, pressed to turn off, with the host's answer not back yet.
+    TurningOff,
+    /// On.
+    On,
+}
+
 /// A row that is on or off, among list rows: its icon on its tile, its name and an optional detail,
 /// the whole row one button that says whether it is pressed. Off, it shows the icon as any row does
 /// and nothing at its trailing edge, since it opens nothing; on, its tile fills with the brand
-/// colour and a check stands where a chevron would. The words are the host's for each state.
+/// colour and a check stands where a chevron would. Turning either way, it still says the last
+/// answer as pressed or not, and that it is busy; its tile fills at half strength, a spinner stands
+/// where the check would, and it still takes a press unless the host makes it `disabled`. The title
+/// keeps its width in every state. Where transitions run, each change fades and the spinner waits a
+/// moment first, so a quick answer to a row pressed while settled shows no spinner; under reduced
+/// motion or keyboard interaction it shows at once. Its title is never cut. The words are the host's for each state.
 #[component]
 pub fn ToggleRow(
     icon: IconName,
     title: String,
     detail: Option<String>,
-    pressed: bool,
+    state: ToggleState,
     #[props(default)] disabled: bool,
     onclick: EventHandler<MouseEvent>,
 ) -> Element {
+    let (pressed, busy) = match state {
+        ToggleState::Off => ("false", false),
+        ToggleState::TurningOn => ("false", true),
+        ToggleState::TurningOff => ("true", true),
+        ToggleState::On => ("true", false),
+    };
     rsx! {
         button {
             class: "navigation-row list-row toggle-row",
             r#type: "button",
-            aria_pressed: if pressed { "true" } else { "false" },
+            aria_pressed: pressed,
+            aria_busy: if busy { "true" },
             disabled,
             onclick: move |event| onclick.call(event),
             IconTile { name: icon, tinted: true }
             {row_text(title, detail, None)}
-            if pressed {
-                span { class: "toggle-row-check", aria_hidden: "true", Icon { name: IconName::Check } }
+            span { class: "toggle-row-end", aria_hidden: "true",
+                Spinner {}
+                Icon { name: IconName::Check }
             }
         }
     }
@@ -1449,25 +1491,64 @@ mod tests {
     }
 
     #[test]
-    fn a_toggle_row_says_whether_it_is_pressed_and_shows_its_check_only_when_on() {
+    fn a_toggle_row_says_its_last_answer_and_that_it_waits_while_turning() {
         fn off() -> Element {
-            rsx! { ToggleRow { icon: IconName::Flag, title: "Mark", pressed: false, onclick: move |_| {} } }
+            rsx! { ToggleRow { icon: IconName::Flag, title: "Mark", state: ToggleState::Off, onclick: move |_| {} } }
+        }
+        fn turning_on() -> Element {
+            rsx! { ToggleRow { icon: IconName::Flag, title: "Mark", state: ToggleState::TurningOn, onclick: move |_| {} } }
+        }
+        fn turning_off() -> Element {
+            rsx! { ToggleRow { icon: IconName::Flag, title: "Marked", state: ToggleState::TurningOff, onclick: move |_| {} } }
         }
         fn on() -> Element {
-            rsx! { ToggleRow { icon: IconName::Flag, title: "Marked", pressed: true, onclick: move |_| {} } }
+            rsx! { ToggleRow { icon: IconName::Flag, title: "Marked", state: ToggleState::On, onclick: move |_| {} } }
         }
         let render = |app: fn() -> Element| {
             let mut dom = VirtualDom::new(app);
             dom.rebuild_in_place();
             dioxus_ssr::render(&dom)
         };
-        let (off, on) = (render(off), render(on));
-        assert!(off.contains("aria-pressed=\"false\""), "{off}");
-        assert!(!off.contains("toggle-row-check"), "{off}");
-        assert!(!off.contains("list-row-chevron"), "{off}");
-        assert!(on.contains("aria-pressed=\"true\""), "{on}");
-        assert!(on.contains("toggle-row-check"), "{on}");
-        assert!(!on.contains("list-row-chevron"), "{on}");
+        for (app, pressed, busy) in [
+            (off as fn() -> Element, "false", false),
+            (turning_on, "false", true),
+            (turning_off, "true", true),
+            (on, "true", false),
+        ] {
+            let html = render(app);
+            assert!(
+                html.contains(&format!("aria-pressed=\"{pressed}\"")),
+                "{html}"
+            );
+            assert!(!html.contains("mixed"), "{html}");
+            assert_eq!(html.contains("aria-busy=\"true\""), busy, "{html}");
+            assert!(
+                !html.contains("disabled"),
+                "turning leaves the press to the host: {html}"
+            );
+            assert!(!html.contains("list-row-chevron"), "{html}");
+        }
+    }
+
+    #[test]
+    fn a_row_that_opens_nothing_is_no_control_and_has_no_chevron() {
+        fn app() -> Element {
+            rsx! {
+                ListRow { title: "Visit notes", detail: "3 from this clinic", onclick: move |_| {} }
+                ListRow { title: "Dr. Maya Okafor", detail: "Your physician" }
+            }
+        }
+        let mut dom = VirtualDom::new(app);
+        dom.rebuild_in_place();
+        let html = dioxus_ssr::render(&dom);
+        let end = html.find("</button>").expect("the row that opens") + "</button>".len();
+        let (opens, states) = html.split_at(end);
+        assert!(
+            opens.starts_with("<button") && opens.contains("list-row-chevron"),
+            "{opens}"
+        );
+        assert!(states.starts_with("<div class=\"list-row\">"), "{states}");
+        assert!(!states.contains("list-row-chevron"), "{states}");
     }
 
     #[test]
