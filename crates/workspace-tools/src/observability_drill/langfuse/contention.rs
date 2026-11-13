@@ -25,19 +25,25 @@ pub(super) fn drain_bound(turns: u32, instances: u32, hold: Duration) -> Duratio
     hold * turns.div_ceil(slots) + DRAIN_SLACK
 }
 
-/// The worker instances writing one queue gauge, and the count it reads now,
+/// The worker instances writing one queue gauge, and the count it reads,
 /// from a Cloud Monitoring `timeSeries.list` answer. Each instance writes its
 /// own series from the same rows, so the newest point of each is the same
-/// count read at a different moment, and the largest is the reading. `None`
-/// when no instance wrote a point, which proves nothing either way.
-pub(super) fn queue_gauge(body: &Value) -> Option<QueueGauge> {
+/// count read at a different moment, and the largest is the reading. Only
+/// points written at or after `since` count, so an old zero cannot vouch for
+/// the queue now. `None` when no instance wrote such a point, which proves
+/// nothing either way.
+pub(super) fn queue_gauge(body: &Value, since: DateTime<Utc>) -> Option<QueueGauge> {
     let newest: Vec<u64> = body["timeSeries"]
         .as_array()?
         .iter()
         .filter_map(|series| {
             // Cloud Monitoring lists a series' points newest first.
-            let value = &series["points"].as_array()?.first()?["value"]["int64Value"];
-            value.as_str()?.parse().ok()
+            let point = series["points"].as_array()?.first()?;
+            let written: DateTime<Utc> = point["interval"]["endTime"].as_str()?.parse().ok()?;
+            if written < since {
+                return None;
+            }
+            point["value"]["int64Value"].as_str()?.parse().ok()
         })
         .collect();
     let instances = u32::try_from(newest.len())
@@ -73,7 +79,7 @@ impl QueueNow {
         for (name, gauge) in [("due", self.due), ("running", self.running)] {
             match gauge {
                 None => busy.push(format!(
-                    "no worker wrote the {name} gauge in the last five minutes"
+                    "no worker wrote the {name} gauge after the drill began"
                 )),
                 Some(gauge) if gauge.count > 0 => busy.push(format!(
                     "{} turns are {name}; a crash could drop theirs, so the drill needs an idle queue",
@@ -296,18 +302,22 @@ mod tests {
         );
     }
 
+    fn point(value: &str, written: i64) -> Value {
+        json!({
+            "interval": { "endTime": at(written).to_rfc3339() },
+            "value": { "int64Value": value },
+        })
+    }
+
     fn series(newest: &str, older: &str) -> Value {
-        json!({ "points": [
-            { "value": { "int64Value": newest } },
-            { "value": { "int64Value": older } },
-        ]})
+        json!({ "points": [point(newest, 60), point(older, 0)] })
     }
 
     #[test]
     fn the_queue_reads_each_instances_newest_point() {
         let body = json!({ "timeSeries": [series("0", "5"), series("2", "0")] });
         assert_eq!(
-            queue_gauge(&body),
+            queue_gauge(&body, at(30)),
             Some(QueueGauge {
                 instances: 2,
                 count: 2
@@ -315,20 +325,44 @@ mod tests {
         );
         let same_rows = json!({ "timeSeries": [series("3", "0"), series("3", "0")] });
         assert_eq!(
-            queue_gauge(&same_rows).map(|gauge| gauge.count),
+            queue_gauge(&same_rows, at(30)).map(|gauge| gauge.count),
             Some(3),
             "instances count the same rows, so their readings are not added"
         );
         let idle = json!({ "timeSeries": [series("0", "3")] });
-        assert_eq!(queue_gauge(&idle).map(|gauge| gauge.count), Some(0));
+        assert_eq!(queue_gauge(&idle, at(30)).map(|gauge| gauge.count), Some(0));
+    }
+
+    #[test]
+    fn a_point_written_before_the_drill_began_does_not_count() {
+        let stale = json!({ "timeSeries": [series("0", "0")] });
+        assert_eq!(
+            queue_gauge(&stale, at(61)),
+            None,
+            "an old zero cannot vouch for the queue now"
+        );
+        let mixed = json!({ "timeSeries": [
+            { "points": [point("3", 10)] },
+            { "points": [point("0", 90)] },
+        ]});
+        assert_eq!(
+            queue_gauge(&mixed, at(61)),
+            Some(QueueGauge {
+                instances: 1,
+                count: 0
+            }),
+            "only the instance that wrote since counts"
+        );
+        let untimed = json!({ "timeSeries": [{ "points": [{ "value": { "int64Value": "0" } }] }] });
+        assert_eq!(queue_gauge(&untimed, at(0)), None);
     }
 
     #[test]
     fn no_gauge_point_is_not_an_idle_queue() {
-        assert_eq!(queue_gauge(&json!({})), None);
-        assert_eq!(queue_gauge(&json!({ "timeSeries": [] })), None);
+        assert_eq!(queue_gauge(&json!({}), at(0)), None);
+        assert_eq!(queue_gauge(&json!({ "timeSeries": [] }), at(0)), None);
         assert_eq!(
-            queue_gauge(&json!({ "timeSeries": [{ "points": [] }] })),
+            queue_gauge(&json!({ "timeSeries": [{ "points": [] }] }), at(0)),
             None
         );
     }

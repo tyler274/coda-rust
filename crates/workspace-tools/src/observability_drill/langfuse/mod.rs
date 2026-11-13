@@ -92,6 +92,9 @@ const BURST_REPLY: (u32, Duration) = (150, Duration::from_secs(2));
 /// [`contention::HARD_STOP_LIMIT`], while the wait itself ends at that limit
 /// after the submit however long each read takes.
 const HARD_STOP_REPLY: (u32, Duration) = (60, REPLY_PAUSE);
+/// Polls `hard-stop` waits for a queue gauge round written after it began:
+/// the workers write every 60 s, so three minutes allows two missed rounds.
+const QUEUE_POLLS: u32 = 18;
 const CLOUD_LOGGING: &str = "https://logging.googleapis.com/v2/entries:list";
 const CLOUD_MONITORING: &str = "https://monitoring.googleapis.com/v3/projects";
 /// The worker's queue gauges of work runnable now and work a live lease
@@ -1461,8 +1464,12 @@ impl Google {
     }
 
     /// The newest point of queue gauge `metric` from every worker instance
-    /// in the last five minutes.
-    fn queue_gauge(&self, metric: &str) -> Result<Option<contention::QueueGauge>, DrillError> {
+    /// that wrote one at or after `since`.
+    fn queue_gauge(
+        &self,
+        metric: &str,
+        since: DateTime<Utc>,
+    ) -> Result<Option<contention::QueueGauge>, DrillError> {
         let now = Utc::now();
         let start = (now - chrono::Duration::minutes(5)).to_rfc3339();
         let end = now.to_rfc3339();
@@ -1478,15 +1485,27 @@ impl Google {
                 ]),
             "the physician queue gauges",
         )?;
-        Ok(contention::queue_gauge(&body))
+        Ok(contention::queue_gauge(&body, since))
     }
 
-    /// Work due now and work a live lease holds, from the queue gauges.
-    fn queue_now(&self) -> Result<contention::QueueNow, DrillError> {
-        Ok(contention::QueueNow {
-            due: self.queue_gauge(DUE_METRIC)?,
-            running: self.queue_gauge(RUNNING_METRIC)?,
-        })
+    /// Work due and work a live lease holds, from gauge points written after
+    /// this call began. The workers write every minute, so this waits for
+    /// the next round; a gauge still unwritten when the polls run out stays
+    /// `None`.
+    fn queue_now(&self, watch: &Watch) -> Result<contention::QueueNow, DrillError> {
+        let since = Utc::now();
+        let mut queue = contention::QueueNow {
+            due: None,
+            running: None,
+        };
+        watch.poll(QUEUE_POLLS, POLL, |_| {
+            queue = contention::QueueNow {
+                due: self.queue_gauge(DUE_METRIC, since)?,
+                running: self.queue_gauge(RUNNING_METRIC, since)?,
+            };
+            Ok((queue.due.is_some() && queue.running.is_some()).then_some(()))
+        })?;
+        Ok(queue)
     }
 
     /// Waits for attempt `run_id`'s rehearsed-crash log line in Cloud
@@ -1529,7 +1548,7 @@ fn burst(request: &Request, report: &mut Report, watch: &Watch) -> Result<(), Dr
     let datadog = Datadog::open()?;
     let google = Google::open()?;
     let rehearsal = Rehearsal::sign_in()?;
-    let queue = google.queue_gauge(DUE_METRIC)?;
+    let queue = google.queue_gauge(DUE_METRIC, Utc::now() - chrono::Duration::minutes(5))?;
     report.put("queue_before", queue);
     let instances = queue.map_or(1, |queue| queue.instances);
     let bound = contention::drain_bound(BURST_TURNS, instances, BURST_HOLD);
@@ -1612,7 +1631,7 @@ fn burst_wave(
 fn hard_stop(request: &Request, report: &mut Report, watch: &Watch) -> Result<(), DrillError> {
     let datadog = Datadog::open()?;
     let google = Google::open()?;
-    let queue = google.queue_now()?;
+    let queue = google.queue_now(watch)?;
     report.put("queue_before", queue);
     gaps("the physician queue", queue.busy())?;
     let rehearsal = Rehearsal::sign_in()?;

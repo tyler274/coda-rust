@@ -200,11 +200,15 @@ impl Physician {
 
     /// One read of a chat's snapshot.
     pub(super) fn snapshot(&self, workspace: &str, chat: &str) -> Result<Value, DrillError> {
+        send_json(self.snapshot_request(workspace, chat), "chat snapshot")
+    }
+
+    fn snapshot_request(&self, workspace: &str, chat: &str) -> RequestBuilder {
         let path = format!(
             "{}/patient-workspaces/{workspace}/chats/{chat}/snapshot",
             self.origin
         );
-        send_json(self.authorized(self.client.get(&path)), "chat snapshot")
+        self.authorized(self.client.get(&path))
     }
 
     /// Polls the snapshot until the turn is answered or failed, and returns
@@ -222,11 +226,24 @@ impl Physician {
             what: "the rehearsal reply",
             seconds: u64::from(attempts) * pause.as_secs(),
         };
+        // Time left before `deadline`; `Err` once it has passed.
+        let left = || match deadline {
+            None => Ok(None),
+            Some(deadline) => (deadline - Utc::now())
+                .to_std()
+                .ok()
+                .filter(|left| !left.is_zero())
+                .map(Some)
+                .ok_or_else(timeout),
+        };
         let answer = watch.poll(attempts, pause, |_| {
-            if deadline.is_some_and(|deadline| Utc::now() > deadline) {
-                return Err(timeout());
+            let mut request = self.snapshot_request(&turn.workspace, &turn.chat);
+            if let Some(left) = left()? {
+                request = request.timeout(left);
             }
-            let body = self.snapshot(&turn.workspace, &turn.chat)?;
+            let body = send_json(request, "chat snapshot")?;
+            // A reply read after the deadline is still too late.
+            left()?;
             match turn_state(&body) {
                 TurnState::Answered(answer) => Ok(Some((answer, body))),
                 TurnState::Failed(run) => Err(DrillError::TurnFailed { run }),
