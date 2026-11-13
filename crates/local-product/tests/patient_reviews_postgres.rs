@@ -310,6 +310,7 @@ fn patient_review_recipe_and_tools_have_clean_model_text_and_valid_skill_tool_re
             checked_at: 1_790_000_000,
         },
         understanding: None,
+        withdrawal_boundary: None,
         memory_standing: PatientMemoryStanding::Available {
             entries: Vec::new(),
         },
@@ -5671,6 +5672,7 @@ async fn practice_authority_enforced_on_reads_and_stop_atomic_rearm_steering_fen
         refresh_statuses: Vec::new(),
         check_standing: DispatchCheckStanding::NotRecorded,
         understanding: None,
+        withdrawal_boundary: None,
         memory_standing: PatientMemoryStanding::Available {
             entries: Vec::new(),
         },

@@ -142,14 +142,16 @@ background reviews or reply drafts are relevant, inspect them on demand through 
 clear physician direction within available authority.
 
 Use the tools offered in this conversation. For patient-specific chart facts, discover candidate records \
-with search_patient_information and open exact revisions with read_patient_sources. When source currency \
+with search_patient_information, open exact revisions with read_patient_sources, and open individual 1-based \
+pages of multi-page PDFs, faxes or chart scans with read_document_page. When source currency \
 could change clinical judgment or a source pull is stale, call refresh_patient_sources before concluding. \
 When read chart revisions establish, update or resolve an urgent (`now`) or same-day (`today`) clinical \
 concern, record that change with patient_concern grounded in the exact candidate_id and revision values \
-opened in this turn. If chart records are added, corrected or withdrawn before your reply finishes and your \
+opened in this turn. When clinical judgment or physician direction establishes, updates, completes or cancels \
+a dated follow-up item to watch for, record that change with patient_follow_up. If chart records are added, corrected or withdrawn before your reply finishes and your \
 finish is refused with an arrival note, judge whether any added records affect the question, call \
 read_patient_sources on every corrected or withdrawn record you relied on, update any affected memory or \
-concern, and then give your complete updated answer. If any read, refresh, memory or concern call fails or \
+concern, and then give your complete updated answer. If any read, refresh, memory, concern or follow-up call fails or \
 is refused, never treat or describe it as saved.
 
 Name missing, unreadable and unavailable evidence distinctly: `missing` when an expected or requested \
@@ -198,10 +200,12 @@ tools, schemas or runtime IDs.";
 pub fn tools() -> Vec<Tool> {
     let mut offered = work_tools();
     offered.extend(chart_tools());
+    offered.push(crate::attachments::document_page_tool());
     offered.push(crate::runtime::chat_operations::refresh_sources_tool());
     offered.push(crate::runtime::chat_operations::patient_memory_tool());
     offered.push(crate::runtime::chat_operations::retrieve_patient_work_tool());
     offered.push(crate::runtime::concerns::concern_tool());
+    offered.push(crate::runtime::follow_ups::follow_up_tool());
     offered.extend(crate::initial_understanding::understanding_tools());
     offered.extend(crate::clinical_library::tools());
     offered
@@ -215,12 +219,13 @@ pub fn work_tools() -> Vec<Tool> {
     offered
 }
 
-/// Source, clinical library, patient understanding, and prior-work reads have no product effects or shared session mutation.
+/// Source, paged-document, clinical library, patient understanding, and prior-work reads have no product effects or shared session mutation.
 pub fn read_only(name: &str) -> bool {
     matches!(
         name,
         crate::physician_sources::SEARCH_TOOL
             | crate::physician_sources::READ_TOOL
+            | crate::attachments::READ_DOCUMENT_PAGE_TOOL
             | crate::clinical_library::SEARCH_LIBRARY_TOOL
             | crate::clinical_library::READ_LIBRARY_TOOL
             | crate::runtime::chat_operations::RETRIEVE_PATIENT_WORK_TOOL
@@ -437,6 +442,7 @@ mod tests {
                 checked_at: 1_762_900_050,
             },
             understanding: None,
+            withdrawal_boundary: None,
             memory_standing: crate::runtime::chat_operations::PatientMemoryStanding::Available {
                 entries: Vec::new(),
             },
@@ -525,6 +531,7 @@ mod tests {
             source_pulls: Vec::new(),
             check_standing: crate::runtime::chat_operations::DispatchCheckStanding::NotRecorded,
             understanding: None,
+            withdrawal_boundary: None,
             memory_standing: crate::runtime::chat_operations::PatientMemoryStanding::Available {
                 entries: Vec::new(),
             },
@@ -563,6 +570,8 @@ mod tests {
             crate::initial_understanding::SAVE_UNDERSTANDING_TOOL,
             crate::clinical_library::SEARCH_LIBRARY_TOOL,
             crate::clinical_library::READ_LIBRARY_TOOL,
+            crate::attachments::READ_DOCUMENT_PAGE_TOOL,
+            crate::runtime::follow_ups::FOLLOW_UP_TOOL,
             "save_working_note",
             "read_tool_result",
         ] {
@@ -574,6 +583,7 @@ mod tests {
 
         assert!(read_only(crate::physician_sources::SEARCH_TOOL));
         assert!(read_only(crate::physician_sources::READ_TOOL));
+        assert!(read_only(crate::attachments::READ_DOCUMENT_PAGE_TOOL));
         assert!(read_only(crate::clinical_library::SEARCH_LIBRARY_TOOL));
         assert!(read_only(crate::clinical_library::READ_LIBRARY_TOOL));
         assert!(read_only(
@@ -592,6 +602,7 @@ mod tests {
             crate::runtime::chat_operations::PATIENT_MEMORY_TOOL
         ));
         assert!(!read_only(crate::runtime::concerns::CONCERN_TOOL));
+        assert!(!read_only(crate::runtime::follow_ups::FOLLOW_UP_TOOL));
     }
 
     #[test]
