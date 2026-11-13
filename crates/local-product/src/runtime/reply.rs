@@ -41,6 +41,10 @@ use super::{
 };
 use crate::physician_sources::{SourceRefresh, SourceRevision, caught_up_context};
 
+/// Durable reply proposals, conversation review fencing, channel moves and
+/// disconnects, copy attribution, and per-physician draft coordination.
+pub mod proposals;
+
 /// The terminal tool that ends a revision with the complete revised text.
 pub const FINISH_TOOL: &str = "finish_reply_revision";
 
@@ -1382,7 +1386,31 @@ impl Store {
         authority: &mut dyn Authority,
     ) -> Result<RevisionCommit, RuntimeError> {
         let text = revised_text(response).map_err(error)?;
-        let (tx, mut state, _) = self.locked_draft(&claim.scope).await?;
+        let proposal_binding = proposals::parse_proposal_draft_chat(&claim.scope.chat)
+            .map(|(conv_id, reply_id)| (conv_id.to_owned(), reply_id));
+        let (tx, mut state) = if let Some((ref conv_id, reply_id)) = proposal_binding {
+            claim.scope.validate()?;
+            let tx = self.db.begin().await?;
+            proposals::check_proposal_draft_commit_fence_in_tx(
+                &tx,
+                &claim.scope,
+                conv_id,
+                reply_id,
+            )
+            .await?;
+            let row = reply_draft::Entity::find_by_id(keys(&claim.scope))
+                .lock_exclusive()
+                .one(&tx)
+                .await?
+                .ok_or_else(|| error("reply draft not found"))?;
+            proposals::lock_proposal_draft_binding_in_tx(&tx, &claim.scope, conv_id, reply_id)
+                .await?;
+            let state = Self::draft_control(&tx, &claim.scope, row).await?;
+            (tx, state)
+        } else {
+            let (tx, state, _) = self.locked_draft(&claim.scope).await?;
+            (tx, state)
+        };
         Self::revision_events(&tx, &claim.scope, &mut state.attempts).await?;
         authority
             .lock_publication(&tx, &claim.scope, state.session_hash.as_deref())
@@ -1463,8 +1491,21 @@ impl Store {
         }
         attempt.status = AttemptStatus::Completed;
         state.finish_run(RunOutcome::Completed)?;
-        state.restore_text = Some(std::mem::replace(&mut state.text, text));
+        let replaced_text = std::mem::replace(&mut state.text, text);
+        state.restore_text = Some(replaced_text.clone());
         state.revision += 1;
+        if let Some((ref conv_id, reply_id)) = proposal_binding {
+            proposals::record_committed_proposal_draft_revision_in_tx(
+                &tx,
+                &claim.scope,
+                conv_id,
+                reply_id,
+                &replaced_text,
+                state.revision,
+                now,
+            )
+            .await?;
+        }
         Self::save_draft_row(tx, &claim.scope, &state).await?;
         Ok(RevisionCommit::Committed)
     }
