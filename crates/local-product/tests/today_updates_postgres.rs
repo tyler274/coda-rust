@@ -1025,6 +1025,7 @@ async fn seed_running_conversation(
     update
         .table(Alias::new("physician_runtime_conversations"))
         .value(Alias::new("state"), jsonb_expr(&state_val))
+        .value(Alias::new("last_activity_at"), Expr::val(activity_at))
         .and_where(Expr::col(Alias::new("practice")).eq(scope.practice.as_str()))
         .and_where(Expr::col(Alias::new("physician")).eq(scope.physician.as_str()))
         .and_where(Expr::col(Alias::new("workspace")).eq(scope.workspace.as_str()))

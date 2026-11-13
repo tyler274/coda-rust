@@ -7,10 +7,7 @@
 
 use std::collections::{BTreeMap, HashMap};
 
-use sea_orm::{
-    ColumnTrait, DbErr, EntityTrait, QueryFilter, QueryOrder, QuerySelect,
-    sea_query::{Alias, Expr, Func, extension::postgres::PgExpr},
-};
+use sea_orm::{ColumnTrait, DbErr, EntityTrait, QueryFilter, QueryOrder, QuerySelect};
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 
@@ -20,7 +17,7 @@ use super::entities::{
 use super::reply::DraftStatus;
 use super::{
     Attempt, Conversation, MAX_LISTED_CHATS, Message, MessageRole, Scope, Store, WorkStatus,
-    control, conversion_error, engine, keys,
+    control, conversion_error, engine, keys, order_by_latest_activity,
 };
 use crate::physician_sources::{READ_TOOL, ReadablePart, SEARCH_TOOL, SourceRevision};
 
@@ -370,7 +367,7 @@ fn summarize_conversation(
             MessageRole::User { .. } => None,
         });
     let summary = latest_assistant.unwrap_or_else(|| outcome.label().to_owned());
-    let last_activity_at = Ord::max(state.last_activity_at, state.opened_at);
+    let last_activity_at = state.latest_activity_at();
     Some(AuthorizedConversationSummary {
         workspace: workspace.to_owned(),
         chat: chat_id.to_owned(),
@@ -777,6 +774,33 @@ pub fn parse_segments_with_citations(
 }
 
 impl Store {
+    /// A physician's newest conversations across all patients in `practice`,
+    /// ordered from the indexed `last_activity_at` column descending, then chat ID.
+    pub async fn physician_conversations(
+        &self,
+        practice: &str,
+        physician: &str,
+        limit: usize,
+    ) -> Result<Vec<AuthorizedConversationSummary>, HistoryError> {
+        use conversation::Column as C;
+        if practice.trim().is_empty() || physician.trim().is_empty() {
+            return Err(HistoryError::EmptyScope);
+        }
+        if limit == 0 {
+            return Ok(Vec::new());
+        }
+        let bounded = Ord::min(limit as u64, MAX_LISTED_CHATS);
+        let rows = order_by_latest_activity(
+            conversation::Entity::find()
+                .filter(C::Practice.eq(practice))
+                .filter(C::Physician.eq(physician)),
+        )
+        .limit(bounded)
+        .all(&self.db)
+        .await?;
+        Self::summarize_conversation_rows(rows)
+    }
+
     /// Recent conversations across the physician's currently authorized patient
     /// workspaces, ordered by latest activity descending, then chat ID.
     pub async fn recent_conversations(
@@ -787,7 +811,6 @@ impl Store {
         limit: usize,
     ) -> Result<Vec<AuthorizedConversationSummary>, HistoryError> {
         use conversation::Column as C;
-        use sea_orm::sea_query::ExprTrait;
         if practice.trim().is_empty() || physician.trim().is_empty() {
             return Err(HistoryError::EmptyScope);
         }
@@ -800,27 +823,24 @@ impl Store {
             return Ok(Vec::new());
         }
         let bounded = Ord::min(limit as u64, MAX_LISTED_CHATS);
-        let seconds = |field: &str| {
-            Func::coalesce([
-                Expr::col(C::State)
-                    .cast_json_field(field)
-                    .cast_as(Alias::new("bigint")),
-                Expr::val(0_i64),
-            ])
-        };
-        let activity = Func::greatest([
-            Expr::from(seconds("last_activity_at")),
-            Expr::from(seconds("opened_at")),
-        ]);
-        let rows = conversation::Entity::find()
+        let scoped = conversation::Entity::find()
             .filter(C::Practice.eq(practice))
-            .filter(C::Physician.eq(physician))
-            .filter(C::Workspace.is_in(workspaces))
-            .order_by_desc(Expr::from(activity))
-            .order_by_desc(C::Chat)
+            .filter(C::Physician.eq(physician));
+        let filtered = if let [single] = workspaces.as_slice() {
+            scoped.filter(C::Workspace.eq(*single))
+        } else {
+            scoped.filter(C::Workspace.is_in(workspaces))
+        };
+        let rows = order_by_latest_activity(filtered)
             .limit(bounded)
             .all(&self.db)
             .await?;
+        Self::summarize_conversation_rows(rows)
+    }
+
+    fn summarize_conversation_rows(
+        rows: Vec<conversation::Model>,
+    ) -> Result<Vec<AuthorizedConversationSummary>, HistoryError> {
         let mut items = Vec::with_capacity(rows.len());
         for row in rows {
             let chat = row.chat.clone();
@@ -854,14 +874,15 @@ impl Store {
         }
         let tx = self.snapshot().await?;
 
-        let conv_rows = conversation::Entity::find()
-            .filter(conversation::Column::Practice.eq(practice))
-            .filter(conversation::Column::Physician.eq(physician))
-            .filter(conversation::Column::Workspace.eq(workspace))
-            .order_by_desc(conversation::Column::Chat)
-            .limit(MAX_LISTED_CHATS)
-            .all(&tx)
-            .await?;
+        let conv_rows = order_by_latest_activity(
+            conversation::Entity::find()
+                .filter(conversation::Column::Practice.eq(practice))
+                .filter(conversation::Column::Physician.eq(physician))
+                .filter(conversation::Column::Workspace.eq(workspace)),
+        )
+        .limit(MAX_LISTED_CHATS)
+        .all(&tx)
+        .await?;
 
         let draft_rows = reply_draft::Entity::find()
             .filter(reply_draft::Column::Practice.eq(practice))
@@ -1108,7 +1129,7 @@ impl Store {
         let mut turns = Vec::with_capacity(state.messages.len());
         let mut active_work: Option<String> = None;
         let mut cumulative_observed_version: Option<u64> = None;
-        let activity_clock = Ord::max(state.last_activity_at, state.opened_at);
+        let activity_clock = state.latest_activity_at();
 
         for Message { role, text } in &state.messages {
             match role {

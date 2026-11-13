@@ -21,7 +21,7 @@ use sea_orm::sea_query::StringLen;
 use sea_orm::{
     ActiveModelTrait, ColumnTrait, Condition, ConnectionTrait, Database, DatabaseConnection, DbErr,
     EntityTrait, QueryFilter, QueryOrder, QuerySelect, Set, TransactionTrait,
-    sea_query::{Alias, Expr, ExprTrait, OnConflict, Query, extension::postgres::PgExpr},
+    sea_query::{Alias, Expr, ExprTrait, OnConflict, Query},
 };
 use sea_orm_migration::MigratorTrait;
 use serde::{Deserialize, Serialize};
@@ -516,6 +516,20 @@ pub struct ChatSummary {
 pub const MAX_LISTED_CHATS: u64 = 200;
 
 impl Conversation {
+    /// Database-clock seconds of the conversation's latest visible activity:
+    /// the later of `last_activity_at` and `opened_at` (`0` when neither is set).
+    pub const fn latest_activity_at(&self) -> i64 {
+        if self.last_activity_at >= self.opened_at {
+            self.last_activity_at
+        } else {
+            self.opened_at
+        }
+    }
+
+    pub(crate) fn record_activity(&mut self, now: i64) {
+        self.last_activity_at = Ord::max(now, self.opened_at);
+    }
+
     fn new(skills: SkillPackageId) -> Self {
         Self {
             messages: vec![],
@@ -731,7 +745,16 @@ fn conversation_model(
             .map_err(conversion_error("conversation revision", "i64"))?),
         session_hash: Set(state.session_hash.clone()),
         state: Set(control::conversation_state(state)?),
+        last_activity_at: Set(state.latest_activity_at()),
     })
+}
+
+pub(crate) fn order_by_latest_activity(
+    select: sea_orm::Select<conversation::Entity>,
+) -> sea_orm::Select<conversation::Entity> {
+    select
+        .order_by_desc(conversation::Column::LastActivityAt)
+        .order_by_desc(conversation::Column::Chat)
 }
 
 fn database_clock() -> Expr {
@@ -983,7 +1006,7 @@ impl Store {
         if state.messages.is_empty() {
             state.opened_at = now;
         }
-        state.last_activity_at = now;
+        state.record_activity(now);
         state.messages.push(Message {
             role: MessageRole::User {
                 id: input.key.clone(),
@@ -1380,7 +1403,7 @@ impl Store {
         state.end_run(RunOutcome::Held {
             reason: HoldReason::Limit,
         })?;
-        state.last_activity_at = now;
+        state.record_activity(now);
         if !answer.trim().is_empty() {
             state.messages.push(Message {
                 role: MessageRole::Assistant {
@@ -1441,7 +1464,7 @@ impl Store {
         let attempt = state.attempts.last_mut().unwrap();
         attempt.status = AttemptStatus::Completed;
         state.end_run(RunOutcome::Completed)?;
-        state.last_activity_at = now;
+        state.record_activity(now);
         state.messages.push(Message {
             role: MessageRole::Assistant {
                 id: format!("{}:reply", claim.attempt),
@@ -1635,31 +1658,19 @@ impl Store {
         {
             return Err(error("empty physician scope"));
         }
-        // Newest activity first, ordered in Postgres before the limit: a chat
-        // that just got a message must make the list however many older chats
-        // the workspace has. Rows saved before the activity fields existed
-        // count as 0. Chat id breaks ties, as in `chats.sort_by` below.
-        let seconds = |field: &str| {
-            sea_orm::sea_query::Func::coalesce([
-                Expr::col(C::State)
-                    .cast_json_field(field)
-                    .cast_as(Alias::new("bigint")),
-                Expr::val(0_i64),
-            ])
-        };
-        let activity = sea_orm::sea_query::Func::greatest([
-            Expr::from(seconds("last_activity_at")),
-            Expr::from(seconds("opened_at")),
-        ]);
-        let rows = conversation::Entity::find()
-            .filter(C::Practice.eq(practice))
-            .filter(C::Physician.eq(physician))
-            .filter(C::Workspace.eq(workspace))
-            .order_by_desc(Expr::from(activity))
-            .order_by_desc(C::Chat)
-            .limit(MAX_LISTED_CHATS)
-            .all(&self.db)
-            .await?;
+        // Newest activity first, ordered in Postgres from the indexed
+        // `last_activity_at` column before the limit: a chat that just got a
+        // message must make the list however many older chats the workspace
+        // has. Chat id breaks ties.
+        let rows = order_by_latest_activity(
+            conversation::Entity::find()
+                .filter(C::Practice.eq(practice))
+                .filter(C::Physician.eq(physician))
+                .filter(C::Workspace.eq(workspace)),
+        )
+        .limit(MAX_LISTED_CHATS)
+        .all(&self.db)
+        .await?;
         let mut chats = Vec::with_capacity(rows.len());
         for row in rows {
             let chat = row.chat.clone();
@@ -1675,7 +1686,7 @@ impl Store {
                 chat,
                 first_message: first.text.clone(),
                 opened_at: state.opened_at,
-                last_activity_at: Ord::max(state.last_activity_at, state.opened_at),
+                last_activity_at: state.latest_activity_at(),
             });
         }
         chats.sort_by(|a, b| {

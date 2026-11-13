@@ -254,6 +254,7 @@ html, body { margin: 0; height: 100%; background: var(--surface); color: var(--i
 .workspace-title { margin: 0 0 var(--space-4); font: var(--type-headline-md); letter-spacing: var(--title-tracking); }
 
 .patient-search { display: grid; gap: var(--space-3); }
+.patient-search-scroll { max-height: min(24rem, 52dvh); overflow-y: auto; overscroll-behavior: contain; display: grid; gap: var(--space-3); }
 .shortcut { display: flex; justify-content: space-between; gap: var(--space-3); padding: var(--space-2) 0; border-top: var(--hairline) solid var(--outline-variant); }
 .shortcut kbd { color: var(--muted); }
 .dialog-note { color: var(--muted); font: var(--type-body-sm); }

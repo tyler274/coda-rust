@@ -38,18 +38,19 @@ use schedule_briefing::{
     browser_time_zone, history_standing_summary, schedule_pane_freshness, schedule_rows,
 };
 use shell::{
-    CONVERSATION_EMPTY, ChatView, ConnectedSourceStanding, Drawer, KeyInput, NavCommand,
-    PAST_WORK_EMPTY, REPLY_ASK, REPLY_CLOSED_NOTICE, REPLY_COPY, REPLY_NO_NEEDED,
-    REPLY_REVISION_STALE, REPLY_TELL_CODA, RESUME, ReadView, ReplyReviewAction, STOP, SourceChip,
-    SynopsisPiece, TODAY_LOADING, TODAY_QUIET, TODAY_QUIET_DETAIL, TODAY_STALE, TODAY_UNAVAILABLE,
-    TRY_AGAIN, TodayLine, TodayView, WORKSPACE_CLOSED, WORKSPACE_EMPTY, WORKSPACE_UNAVAILABLE,
-    WorkspaceRecordsState, active_now_concern, answer_to, chat_view, chip_name,
-    citation_inspection, connection_lines, demographic_card_view, format_context_time,
+    AppendedRosterPages, CONVERSATION_EMPTY, ChatView, ConnectedSourceStanding, Drawer, KeyInput,
+    NavCommand, PAST_WORK_EMPTY, REPLY_ASK, REPLY_CLOSED_NOTICE, REPLY_COPY, REPLY_NO_NEEDED,
+    REPLY_REVISION_STALE, REPLY_TELL_CODA, RESUME, ReadView, ReplyReviewAction, RosterContinuation,
+    STOP, SourceChip, SynopsisPiece, TODAY_LOADING, TODAY_QUIET, TODAY_QUIET_DETAIL, TODAY_STALE,
+    TODAY_UNAVAILABLE, TRY_AGAIN, TodayLine, TodayView, WORKSPACE_CLOSED, WORKSPACE_EMPTY,
+    WORKSPACE_UNAVAILABLE, WorkspaceRecordsState, active_now_concern, answer_to, chat_view,
+    chip_name, citation_inspection, connection_lines, demographic_card_view, format_context_time,
     format_local_date, format_waited, keyboard_command, message_pieces, need_you_words,
     panel_target, past_work_copy, read_view, reply_channel_label, reply_review_actions,
-    reply_revision_words, reply_urgency_words, row_icon, row_tone, schedule_empty_copy,
-    search_row_detail, shows_today_schedule, source_lines, summary_times, synopsis_pieces,
-    today_lines, today_view, work_end_reason, work_heading, workspace_records_state,
+    reply_revision_words, reply_urgency_words, resolve_roster_view, row_icon, row_tone,
+    schedule_empty_copy, search_row_detail, shows_today_schedule, source_lines, summary_times,
+    synopsis_pieces, today_lines, today_view, work_end_reason, work_heading,
+    workspace_records_state,
 };
 #[cfg(target_arch = "wasm32")]
 use shell::{EventRefetch, event_refetch};
@@ -72,6 +73,12 @@ pub(crate) const SCHEDULE_UNAVAILABLE: &str = "Coda couldn’t load the schedule
 const SEARCH_LOADING: &str = "Searching…";
 const SEARCH_UNAVAILABLE: &str = "Coda couldn’t search patients.";
 const SEARCH_NONE: &str = "No patients match.";
+const ROSTER_LOADING: &str = "Loading patients…";
+const ROSTER_UNAVAILABLE: &str = "Coda couldn’t load patients.";
+const ROSTER_MORE_LOADING: &str = "Loading more patients…";
+const ROSTER_MORE_UNAVAILABLE: &str = "Coda couldn’t load more patients.";
+const ROSTER_EMPTY: &str = "No patients on the roster yet.";
+const ROSTER_SCROLL_THRESHOLD_PX: f64 = 96.0;
 const CONVERSATION_LOADING: &str = "Opening the conversation…";
 const PATIENT_LOADING: &str = "Opening the patient…";
 const PATIENT_UNAVAILABLE: &str = "Coda couldn’t open this patient.";
@@ -953,6 +960,20 @@ fn PhysicianShell(
     let mut snapshot_attempt = use_signal(|| 0u32);
     let mut feedback_desk = feedback::use_feedback(client, session, shown, selected, open_chat);
     let mut search_attempt = use_signal(|| 0u32);
+    let mut roster_pages = use_signal(|| None::<AppendedRosterPages>);
+    let mut open_search_dialog = move || {
+        query.set(String::new());
+        roster_pages.set(None);
+        focus.set(-1);
+        moved.set(false);
+        *search_attempt.write() += 1;
+        search_open.set(true);
+    };
+    let send_refresh = SendRefresh {
+        snapshot: snapshot_attempt,
+        workspace: workspace_attempt,
+        today: today_attempt,
+    };
     let mut today_cache = use_signal(|| None::<Vec<TodayLine>>);
     let mut today_meta_cache = use_signal(today_updates::TodayMeta::default);
     let mut workspace_cache = use_signal(|| None::<PatientWorkspaceResponse>);
@@ -1103,20 +1124,17 @@ fn PhysicianShell(
     });
     let found = use_resource(move || {
         let _attempt = today_attempt();
-        let _search_attempt = search_attempt();
+        let search_gen = search_attempt();
+        let open = search_open();
         let query = query();
         let client = client.read().clone();
         async move {
-            let answer = if query.trim().is_empty() {
-                Ok(Vec::new())
+            let answer = if !open {
+                None
             } else {
-                client
-                    .search(&query)
-                    .await
-                    .map(|page| page.patients)
-                    .map_err(|_| ())
+                Some(client.search_page(&query, None).await.map_err(|_| ()))
             };
-            (query, answer)
+            ((open, query, search_gen), answer)
         }
     });
     let patient_today = use_resource(move || {
@@ -1349,7 +1367,7 @@ fn PhysicianShell(
                         send_slot,
                         client,
                         composer,
-                        snapshot_attempt,
+                        send_refresh,
                         target.clone(),
                         pending,
                     );
@@ -1433,14 +1451,7 @@ fn PhysicianShell(
         // again with its own key; a new command would risk sending twice.
         let unanswered = composer.peek().pending_send(&target);
         if let Some(pending) = unanswered {
-            dispatch_send(
-                send_slot,
-                client,
-                composer,
-                snapshot_attempt,
-                target,
-                pending,
-            );
+            dispatch_send(send_slot, client, composer, send_refresh, target, pending);
             return;
         }
         if text.trim().is_empty() {
@@ -1455,14 +1466,7 @@ fn PhysicianShell(
             .write()
             .begin_send(&target, command.key(), &text, command.0.clone());
         if let Some(pending) = pending {
-            dispatch_send(
-                send_slot,
-                client,
-                composer,
-                snapshot_attempt,
-                target,
-                pending,
-            );
+            dispatch_send(send_slot, client, composer, send_refresh, target, pending);
         }
     };
     let shown_target = draft_target();
@@ -1578,9 +1582,111 @@ fn PhysicianShell(
         .cloned()
         .unwrap_or_default();
     let recent_read = recent.read();
-    // A search answers one query, so an earlier query's rows never stand in for it.
-    let search_state = read_view(None, answer_to(&query(), found.read().as_ref()).cloned());
+    // Each open or query read is keyed by `(open, query, search_attempt)`, so
+    // an earlier query's rows never stand in while a new query is in flight.
+    let found_read = found.read();
+    let roster_first = answer_to(
+        &(search_open(), query(), search_attempt()),
+        found_read.as_ref(),
+    )
+    .and_then(Option::as_ref)
+    .map(|res| res.as_ref().map_err(|_| ()));
+    let roster_view = resolve_roster_view(
+        &query(),
+        search_attempt(),
+        roster_first,
+        roster_pages.read().as_ref(),
+    );
+    let search_state = roster_view.rows;
+    let roster_continuation = roster_view.continuation;
     let search_rows = search_state.content().cloned().unwrap_or_default();
+    let mut load_more_roster = move |allow_retry: bool| {
+        let current_query = query();
+        let current_attempt = search_attempt();
+        if !search_open() || !current_query.trim().is_empty() {
+            return;
+        }
+        let first_ok = found
+            .peek()
+            .as_ref()
+            .filter(|(asked, _)| *asked == (true, current_query.clone(), current_attempt))
+            .and_then(|(_, res)| res.as_ref())
+            .and_then(|res| res.as_ref().ok())
+            .cloned();
+        let Some(first_page) = first_ok else {
+            return;
+        };
+        let existing = roster_pages
+            .peek()
+            .clone()
+            .filter(|extra| extra.query == current_query && extra.attempt == current_attempt);
+        let (extra_patients, continuation) = match existing {
+            Some(extra) => (extra.extra_patients, extra.continuation),
+            None => {
+                let cont = match first_page
+                    .next_after
+                    .as_deref()
+                    .map(str::trim)
+                    .filter(|cursor| !cursor.is_empty())
+                {
+                    Some(cursor) => RosterContinuation::HasMore {
+                        cursor: cursor.to_owned(),
+                    },
+                    None => RosterContinuation::Complete,
+                };
+                (Vec::new(), cont)
+            }
+        };
+        let cursor = match continuation {
+            RosterContinuation::HasMore { cursor } => cursor,
+            RosterContinuation::FailedMore { cursor } if allow_retry => cursor,
+            RosterContinuation::Complete
+            | RosterContinuation::LoadingMore { .. }
+            | RosterContinuation::FailedMore { .. } => return,
+        };
+        roster_pages.set(Some(AppendedRosterPages {
+            query: current_query.clone(),
+            attempt: current_attempt,
+            extra_patients: extra_patients.clone(),
+            continuation: RosterContinuation::LoadingMore {
+                cursor: cursor.clone(),
+            },
+        }));
+        let api = client.read().clone();
+        spawn(async move {
+            let next = api.search_page(&current_query, Some(&cursor)).await;
+            if !*search_open.peek()
+                || *query.peek() != current_query
+                || *search_attempt.peek() != current_attempt
+            {
+                return;
+            }
+            let mut combined = extra_patients;
+            let next_cont = match next {
+                Ok(page) => {
+                    combined.extend(page.patients);
+                    match page
+                        .next_after
+                        .as_deref()
+                        .map(str::trim)
+                        .filter(|c| !c.is_empty())
+                    {
+                        Some(next_cursor) => RosterContinuation::HasMore {
+                            cursor: next_cursor.to_owned(),
+                        },
+                        None => RosterContinuation::Complete,
+                    }
+                }
+                Err(_) => RosterContinuation::FailedMore { cursor },
+            };
+            roster_pages.set(Some(AppendedRosterPages {
+                query: current_query,
+                attempt: current_attempt,
+                extra_patients: combined,
+                continuation: next_cont,
+            }));
+        });
+    };
     let modal =
         shortcuts_open() || connections_open() || past_work_open() || reading.read().is_some();
     let shown_focus = if moved() { Some(focus()) } else { None };
@@ -2012,7 +2118,7 @@ fn PhysicianShell(
                 };
                 event.prevent_default();
                 match command {
-                    NavCommand::Search => search_open.set(true),
+                    NavCommand::Search => open_search_dialog(),
                     NavCommand::Shortcuts => shortcuts_open.set(true),
                     NavCommand::Next => {
                         moved.set(true);
@@ -2116,7 +2222,7 @@ fn PhysicianShell(
                             class: "sidebar-nav-item",
                             aria_label: "Find patient",
                             onclick: move |_| {
-                                search_open.set(true);
+                                open_search_dialog();
                                 drawer.set(Drawer::Dismissed);
                             },
                             Icon { name: IconName::Search }
@@ -2690,8 +2796,19 @@ fn PhysicianShell(
             SearchDialog {
                 query: query(),
                 state: search_state.clone(),
-                on_retry: move |_| *search_attempt.write() += 1,
-                on_query: move |value: String| query.set(value),
+                continuation: roster_continuation.clone(),
+                on_retry: move |_| {
+                    roster_pages.set(None);
+                    *search_attempt.write() += 1;
+                },
+                on_scroll_more: move |_| load_more_roster(false),
+                on_retry_more: move |_| load_more_roster(true),
+                on_query: move |value: String| {
+                    roster_pages.set(None);
+                    focus.set(-1);
+                    moved.set(false);
+                    query.set(value);
+                },
                 on_close: move |_| {
                     search_open.set(false);
                     editing.set(false);
@@ -4641,7 +4758,10 @@ fn PatientSurface(
 fn SearchDialog(
     query: String,
     state: ReadView<Vec<physician_wire::PatientSearchRow>>,
+    continuation: RosterContinuation,
     on_retry: EventHandler,
+    on_scroll_more: EventHandler,
+    on_retry_more: EventHandler,
     on_query: EventHandler<String>,
     on_close: EventHandler,
     on_open: EventHandler<String>,
@@ -4652,7 +4772,31 @@ fn SearchDialog(
     let first = results
         .first()
         .map(|patient| patient.patient_workspace_id.clone());
-    let none = !query.trim().is_empty() && state.content().is_some_and(Vec::is_empty);
+    let is_blank_query = query.trim().is_empty();
+    let empty_message = if state.content().is_some_and(Vec::is_empty) {
+        Some(if is_blank_query {
+            ROSTER_EMPTY
+        } else {
+            SEARCH_NONE
+        })
+    } else {
+        None
+    };
+    let loading_copy = if is_blank_query {
+        ROSTER_LOADING
+    } else {
+        SEARCH_LOADING
+    };
+    let unavailable_copy = if is_blank_query {
+        ROSTER_UNAVAILABLE
+    } else {
+        SEARCH_UNAVAILABLE
+    };
+    let more_stage = match continuation {
+        RosterContinuation::Complete | RosterContinuation::HasMore { .. } => ReadStage::Showing,
+        RosterContinuation::LoadingMore { .. } => ReadStage::Loading,
+        RosterContinuation::FailedMore { .. } => ReadStage::Unavailable,
+    };
     rsx! {
         Dialog { close_label: "Close", title: "Find patient", on_close,
                 div { class: "patient-search",
@@ -4676,33 +4820,53 @@ fn SearchDialog(
                     }
                     ReadNotice {
                         stage: state.stage(),
-                        loading: SEARCH_LOADING,
+                        loading: loading_copy,
                         stale: "",
-                        unavailable: SEARCH_UNAVAILABLE,
+                        unavailable: unavailable_copy,
                         retry: TRY_AGAIN,
                         on_retry,
                     }
-                    if none {
-                        EmptyLine { message: SEARCH_NONE }
+                    if let Some(empty_copy) = empty_message {
+                        EmptyLine { message: empty_copy }
                     }
                     if !results.is_empty() {
-                        ui::RowGroup { class: "dialog-results",
-                            for (index, patient) in results.iter().enumerate() {
-                                li {
-                                    ui::ListRow {
-                                        class: if focused == Some(index as i32) { "is-keyboard-focus" } else { "" },
-                                        title: patient.patient_display_name.clone(),
-                                        detail: search_row_detail(
-                                            patient.birth_date.as_deref(),
-                                            patient.mrn.as_deref(),
-                                        ),
-                                        onclick: {
-                                            let id = patient.patient_workspace_id.clone();
-                                            move |_| on_open.call(id.clone())
-                                        },
+                        div {
+                            class: "patient-search-scroll",
+                            onscroll: move |event| {
+                                let data = event.data();
+                                let from_end = f64::from(data.scroll_height())
+                                    - f64::from(data.client_height())
+                                    - data.scroll_top();
+                                if from_end <= ROSTER_SCROLL_THRESHOLD_PX {
+                                    on_scroll_more.call(());
+                                }
+                            },
+                            ui::RowGroup { class: "dialog-results",
+                                for (index, patient) in results.iter().enumerate() {
+                                    li {
+                                        ui::ListRow {
+                                            class: if focused == Some(index as i32) { "is-keyboard-focus" } else { "" },
+                                            title: patient.patient_display_name.clone(),
+                                            detail: search_row_detail(
+                                                patient.birth_date.as_deref(),
+                                                patient.mrn.as_deref(),
+                                            ),
+                                            onclick: {
+                                                let id = patient.patient_workspace_id.clone();
+                                                move |_| on_open.call(id.clone())
+                                            },
+                                        }
                                     }
                                 }
                             }
+                        }
+                        ReadNotice {
+                            stage: more_stage,
+                            loading: ROSTER_MORE_LOADING,
+                            stale: "",
+                            unavailable: ROSTER_MORE_UNAVAILABLE,
+                            retry: TRY_AGAIN,
+                            on_retry: on_retry_more,
                         }
                     }
                 }
@@ -5376,6 +5540,21 @@ fn autosave(composer: Signal<Composer>, client: Signal<PhysicianClient>, target:
     });
 }
 
+#[derive(Clone, Copy)]
+struct SendRefresh {
+    snapshot: Signal<u32>,
+    workspace: Signal<u32>,
+    today: Signal<u32>,
+}
+
+impl SendRefresh {
+    fn bump(&mut self) {
+        *self.snapshot.write() += 1;
+        *self.workspace.write() += 1;
+        *self.today.write() += 1;
+    }
+}
+
 /// Sends a captured message. Acceptance removes only the submitted text and
 /// queues its durable clear; refusal keeps the text as an ordinary draft; no
 /// answer leaves the Send pending, and Check again (or a reload) asks again
@@ -5384,7 +5563,7 @@ fn dispatch_send(
     slot: CommandSlot,
     client: Signal<PhysicianClient>,
     composer: Signal<Composer>,
-    mut snapshot_attempt: Signal<u32>,
+    mut refresh: SendRefresh,
     target: DraftTarget,
     pending: composer::PendingSend,
 ) {
@@ -5394,7 +5573,7 @@ fn dispatch_send(
         Callback::new(move |()| {
             let mut held = composer;
             held.write().sent(&target, &key, SendAnswer::Accepted);
-            *snapshot_attempt.write() += 1;
+            refresh.bump();
             autosave(composer, client, target.clone());
         })
     };

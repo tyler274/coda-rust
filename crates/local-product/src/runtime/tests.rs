@@ -2347,6 +2347,7 @@ fn an_input_without_a_scenario_serializes_as_before() {
             revision: 0,
             session_hash: None,
             state: untagged,
+            last_activity_at: 0,
         },
         vec![],
     )

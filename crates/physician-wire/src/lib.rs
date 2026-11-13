@@ -529,6 +529,9 @@ pub struct PatientSearchResponse {
     #[serde(default)]
     /// The `patients` value.
     pub patients: Vec<PatientSearchRow>,
+    #[serde(default)]
+    /// Cursor token for the next name-ordered page when more patients remain.
+    pub next_after: Option<String>,
 }
 
 #[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
