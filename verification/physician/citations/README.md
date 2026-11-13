@@ -10,11 +10,11 @@ How Coda cites the sources behind its work, how a citation opens its source, and
 - **Label:** the short name Coda's harness gives one version of a source when the model reads it. The model cites by writing the label beside a claim.
 - **Delivered:** a version, a passage of its text or a page is delivered while it is in what the model is working from. After Coda starts from a fresh context, an earlier read is delivered again only when Coda reads it again.
 - **Citation:** a numbered mark beside a claim. It points to one version of one source and to the place in it that the claim rests on.
-- **Place:** the part of a source a citation points to: a passage or a page.
+- **Place:** the part of a source a citation points to: one or more passages, or a page.
 - **Passage:** words quoted from the source's own text. Differences in spacing, line breaks, quotation marks and dashes do not count. When those words occur more than once in the delivered text, the place is each occurrence.
 - **Field:** one value in a structured record. A passage quoted from a structured record is shown as the fields its words cover.
 - **Page:** one page of a scan or fax that has no text to quote, named by its number.
-- **Valid:** a citation is valid when its label names a version that is delivered and its place is delivered too: the passage is in the delivered text, or the page is one the harness delivered.
+- **Valid:** a citation is valid when its label names a version that is delivered and its place is delivered too: each passage is in the delivered text, or the page is one the harness delivered.
 - **Finish:** what Coda hands in to end the work. It has three typed parts: the work, with its labels; the place of each citation, or the statement that the work cites no source; and the Basis and limitations.
 - **Complete:** a finish is complete when it has the work and the Basis and limitations, every citation in the work is valid, and it states that the work cites no source exactly when the work has no citation.
 - **Coda's description:** Coda's short account of a source, used only when nothing from the source itself can be shown.
@@ -76,6 +76,7 @@ How the panel reads a record:
 These rules rest on the code, its records and the screen, not on the order of steps, so the model doesn't check them:
 
 - The label is the only part of a citation that is read from the model's text. Places, descriptions and links never come from it, and code never decides anything from the prose of the work or of the Basis.
+- Quotes for a label are given in the order the label is written. A label written once takes every quote given for it. One quote for a label serves every place it is written. Any other count is not complete.
 - A citation that was dropped never shows. The finish that held it stays in the run's record.
 - A source keeps one number through a piece of work, however many claims cite it, and the Basis and limitations uses the same numbers. Each citation still opens the version and the place it names, also when several citations share a source.
 - A citation opens the version Coda read, also after the source has changed. The panel shows the source as of the work, with that date, and doesn't mark that a newer version exists.
