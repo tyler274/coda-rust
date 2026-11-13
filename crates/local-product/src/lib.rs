@@ -10,6 +10,8 @@
 
 use sha2::{Digest, Sha256};
 
+/// Local multimodal attachment and page-by-page clinical document reading.
+pub mod attachments;
 pub mod chatgpt;
 /// Clinical library search and exact passage read tools for physician chat.
 pub mod clinical_library;

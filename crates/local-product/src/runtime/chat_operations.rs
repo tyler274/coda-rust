@@ -16,7 +16,7 @@ use serde::{Deserialize, Serialize};
 use serde_json::{Value, json};
 
 use super::concerns::{ConcernUrgency, ExactRecordReference, SourceWork};
-use super::entities::{command, concern, patient_dispatch, patient_memory, practice_job};
+use super::entities::{command, concern, patient_dispatch, patient_memory, practice_job, source};
 use super::jobs::PracticeJobKind;
 use super::sources::SourcePull;
 use super::{
@@ -410,6 +410,16 @@ pub enum MemoryStanding {
         /// Database-clock Unix seconds when retired.
         retired_at: i64,
     },
+    /// Marked entered-in-error when its originating message or run was removed
+    /// as wrong-patient, while preserving the immutable audit snapshot.
+    EnteredInError {
+        /// Withdrawal receipt identifier.
+        withdrawal_id: String,
+        /// Single-line withdrawal reason.
+        reason: String,
+        /// Database-clock Unix seconds when withdrawn.
+        withdrawn_at: i64,
+    },
 }
 
 /// One durable patient memory entry for `(practice, workspace)`.
@@ -521,6 +531,10 @@ pub enum PatientMemoryError {
         /// Retired memory identifier.
         id: PatientMemoryId,
     },
+    /// Mutation cited a withdrawn wrong-patient source, originated from a fenced
+    /// pre-withdrawal run, or targeted an entered-in-error memory entry.
+    #[error("{0}")]
+    WithdrawnFence(#[from] super::follow_ups::WithdrawalFenceViolation),
     /// Backing memory operation failed without saving changes.
     #[error("patient memory operation failed: {reason}")]
     Unavailable {
@@ -625,12 +639,73 @@ fn decode_memory_entry(row: patient_memory::Model) -> Result<PatientMemoryEntry,
     })
 }
 
+fn provenance_fence_inputs(
+    provenance: &MemoryProvenance,
+) -> (Vec<String>, Option<&str>, Option<&str>) {
+    match provenance {
+        MemoryProvenance::PhysicianCorrection {
+            message_id,
+            work_id,
+            ..
+        } => (
+            vec![message_id.clone()],
+            Some(message_id.as_str()),
+            Some(work_id.as_str()),
+        ),
+        MemoryProvenance::ClinicalSummary {
+            work_id, records, ..
+        } => (
+            records.iter().map(|r| r.candidate_id.clone()).collect(),
+            None,
+            Some(work_id.as_str()),
+        ),
+    }
+}
+
+async fn check_not_withdrawn_memory(
+    tx: &impl ConnectionTrait,
+    practice: &str,
+    workspace: &str,
+    id: &PatientMemoryId,
+) -> Result<(), PatientMemoryError> {
+    if let Some(withdrawn) = super::follow_ups::memory_withdrawal_entity::Entity::find_by_id((
+        practice.to_owned(),
+        workspace.to_owned(),
+        id.as_str().to_owned(),
+    ))
+    .one(tx)
+    .await?
+    {
+        return Err(PatientMemoryError::WithdrawnFence(
+            super::follow_ups::WithdrawalFenceViolation::WithdrawnItem {
+                item_id: id.as_str().to_owned(),
+                withdrawal_id: withdrawn.withdrawal_id,
+                withdrawal_epoch: u64::try_from(withdrawn.withdrawal_epoch).unwrap_or(1),
+            },
+        ));
+    }
+    Ok(())
+}
+
 async fn load_memory_entry(
     tx: &impl ConnectionTrait,
     practice: &str,
     workspace: &str,
     id: &PatientMemoryId,
 ) -> Result<Option<PatientMemoryEntry>, DbErr> {
+    if let Some(withdrawn) = super::follow_ups::memory_withdrawal_entity::Entity::find_by_id((
+        practice.to_owned(),
+        workspace.to_owned(),
+        id.as_str().to_owned(),
+    ))
+    .one(tx)
+    .await?
+    {
+        let snapshot: PatientMemoryEntry = serde_json::from_value(withdrawn.snapshot).map_err(
+            conversion_error("memory_withdrawal.snapshot", "PatientMemoryEntry"),
+        )?;
+        return Ok(Some(snapshot));
+    }
     patient_memory::Entity::find_by_id((
         practice.to_owned(),
         workspace.to_owned(),
@@ -651,11 +726,26 @@ impl PatientMemoryOperation for PostgresPatientMemoryOperation {
         workspace: &str,
         selection: MemorySelection,
     ) -> Result<Vec<PatientMemoryEntry>, PatientMemoryError> {
+        use super::follow_ups::memory_withdrawal_entity::Column as WC;
+
         let practice = validate_non_empty("practice", practice)?;
         let workspace = validate_non_empty("workspace", workspace)?;
+        let withdrawn_rows = super::follow_ups::memory_withdrawal_entity::Entity::find()
+            .filter(WC::Practice.eq(&practice))
+            .filter(WC::Workspace.eq(&workspace))
+            .all(&store.db)
+            .await?;
+        let mut withdrawn_by_id = std::collections::BTreeMap::new();
+        for w in withdrawn_rows {
+            let snapshot: PatientMemoryEntry = serde_json::from_value(w.snapshot).map_err(
+                conversion_error("memory_withdrawal.snapshot", "PatientMemoryEntry"),
+            )?;
+            withdrawn_by_id.insert(w.memory_id, snapshot);
+        }
+
         let mut query = patient_memory::Entity::find()
-            .filter(patient_memory::Column::Practice.eq(practice))
-            .filter(patient_memory::Column::Workspace.eq(workspace));
+            .filter(patient_memory::Column::Practice.eq(&practice))
+            .filter(patient_memory::Column::Workspace.eq(&workspace));
         match selection {
             MemorySelection::ActiveOnly => {
                 query = query.filter(patient_memory::Column::Status.eq("active"));
@@ -669,7 +759,18 @@ impl PatientMemoryOperation for PostgresPatientMemoryOperation {
             .await?;
         let mut entries = Vec::with_capacity(rows.len());
         for row in rows {
+            if let Some(snapshot) = withdrawn_by_id.remove(&row.id) {
+                if selection == MemorySelection::All {
+                    entries.push(snapshot);
+                }
+                continue;
+            }
             entries.push(decode_memory_entry(row)?);
+        }
+        if selection == MemorySelection::All {
+            for (_, orphan_snapshot) in withdrawn_by_id {
+                entries.push(orphan_snapshot);
+            }
         }
         Ok(entries)
     }
@@ -686,6 +787,7 @@ impl PatientMemoryOperation for PostgresPatientMemoryOperation {
         let topic = validate_topic(&input.topic)?;
         let statement = validate_statement(&input.statement)?;
         let provenance = input.provenance.validate()?;
+        let (cited_candidates, msg_id, work_id) = provenance_fence_inputs(&provenance);
 
         let command = json!({
             "kind": "memory_record",
@@ -698,6 +800,16 @@ impl PatientMemoryOperation for PostgresPatientMemoryOperation {
         });
 
         let tx = store.db.begin().await?;
+        super::follow_ups::check_withdrawal_fence_in_tx(
+            &tx,
+            &practice,
+            &workspace,
+            &cited_candidates,
+            msg_id,
+            work_id,
+        )
+        .await?;
+        check_not_withdrawn_memory(&tx, &practice, &workspace, &input.id).await?;
         match receipt::record(&tx, &practice, MEMORY_RECEIPT_ACTOR, &key, &command).await? {
             receipt::Receipt::New => {}
             receipt::Receipt::Same => {
@@ -799,6 +911,7 @@ impl PatientMemoryOperation for PostgresPatientMemoryOperation {
         let workspace = validate_non_empty("workspace", &input.workspace)?;
         let reason = validate_retirement_reason(&input.reason)?;
         let retired_by = input.retired_by.validate()?;
+        let (cited_candidates, msg_id, work_id) = provenance_fence_inputs(&retired_by);
 
         let command = json!({
             "kind": "memory_retire",
@@ -810,6 +923,16 @@ impl PatientMemoryOperation for PostgresPatientMemoryOperation {
         });
 
         let tx = store.db.begin().await?;
+        super::follow_ups::check_withdrawal_fence_in_tx(
+            &tx,
+            &practice,
+            &workspace,
+            &cited_candidates,
+            msg_id,
+            work_id,
+        )
+        .await?;
+        check_not_withdrawn_memory(&tx, &practice, &workspace, &input.id).await?;
         match receipt::record(&tx, &practice, MEMORY_RECEIPT_ACTOR, &key, &command).await? {
             receipt::Receipt::New => {}
             receipt::Receipt::Same => {
@@ -838,7 +961,10 @@ impl PatientMemoryOperation for PostgresPatientMemoryOperation {
             });
         };
         let current = decode_memory_entry(row.clone())?;
-        if matches!(current.standing, MemoryStanding::Retired { .. }) {
+        if matches!(
+            current.standing,
+            MemoryStanding::Retired { .. } | MemoryStanding::EnteredInError { .. }
+        ) {
             return Err(PatientMemoryError::AlreadyRetired {
                 id: input.id.clone(),
             });
@@ -900,6 +1026,7 @@ impl PatientMemoryOperation for PostgresPatientMemoryOperation {
         if receipt_row.is_none() {
             return Ok(None);
         }
+        check_not_withdrawn_memory(&store.db, &practice, &workspace, id).await?;
         let existing = load_memory_entry(&store.db, &practice, &workspace, id)
             .await?
             .ok_or_else(|| error("missing memory entry for accepted receipt"))?;
@@ -1930,7 +2057,8 @@ impl Store {
                 cause @ (PatientMemoryError::InvalidInput(_)
                 | PatientMemoryError::IdempotencyCollision { .. }
                 | PatientMemoryError::NotFound { .. }
-                | PatientMemoryError::AlreadyRetired { .. }),
+                | PatientMemoryError::AlreadyRetired { .. }
+                | PatientMemoryError::WithdrawnFence(_)),
             ) => Err(error(&cause.to_string())),
         }
     }
@@ -2083,6 +2211,28 @@ impl Store {
         let understanding = self
             .patient_understanding_internal(&scope.practice, &scope.workspace)
             .await?;
+
+        if understanding.is_none()
+            && let Some(boundary) = super::follow_ups::load_workspace_withdrawal_boundary(
+                &self.db,
+                &scope.practice,
+                &scope.workspace,
+            )
+            .await?
+        {
+            recent_work.insert(
+                0,
+                PriorWorkPointer {
+                    target: PriorWorkKind::BackgroundJob {
+                        job_id: format!("withdrawal-epoch-{}", boundary.latest_epoch),
+                        job_kind: PracticeJobKind::PatientReview,
+                    },
+                    title: boundary.instruction_line(),
+                    outcome: "Entered in error boundary".to_owned(),
+                    updated_at: 0,
+                },
+            );
+        }
 
         Ok(PatientStartingContext {
             workspace: scope.workspace.clone(),
@@ -2375,7 +2525,8 @@ impl Store {
                         Err(
                             cause @ (PatientMemoryError::IdempotencyCollision { .. }
                             | PatientMemoryError::NotFound { .. }
-                            | PatientMemoryError::AlreadyRetired { .. }),
+                            | PatientMemoryError::AlreadyRetired { .. }
+                            | PatientMemoryError::WithdrawnFence(_)),
                         ) => Ok(ToolOutcome::refused(cause.to_string())),
                     }
                 }
@@ -2418,7 +2569,8 @@ impl Store {
                             cause @ (PatientMemoryError::InvalidInput(_)
                             | PatientMemoryError::IdempotencyCollision { .. }
                             | PatientMemoryError::NotFound { .. }
-                            | PatientMemoryError::AlreadyRetired { .. }),
+                            | PatientMemoryError::AlreadyRetired { .. }
+                            | PatientMemoryError::WithdrawnFence(_)),
                         ) => Ok(ToolOutcome::refused(cause.to_string())),
                         Err(PatientMemoryError::Unavailable { reason }) => {
                             Ok(ToolOutcome::Returned(
@@ -2469,7 +2621,8 @@ impl Store {
                             cause @ (PatientMemoryError::InvalidInput(_)
                             | PatientMemoryError::IdempotencyCollision { .. }
                             | PatientMemoryError::NotFound { .. }
-                            | PatientMemoryError::AlreadyRetired { .. }),
+                            | PatientMemoryError::AlreadyRetired { .. }
+                            | PatientMemoryError::WithdrawnFence(_)),
                         ) => Ok(ToolOutcome::refused(cause.to_string())),
                         Err(PatientMemoryError::Unavailable { reason }) => {
                             Ok(ToolOutcome::Returned(
@@ -2514,6 +2667,39 @@ impl Store {
                     &claim.scope.workspace,
                     &source_work,
                     &invocation,
+                )
+                .await;
+        }
+
+        if super::follow_ups::is_follow_up_tool(&call.name) {
+            let attempt = state
+                .attempts
+                .iter()
+                .find(|attempt| attempt.id == claim.attempt)
+                .ok_or("missing hosted attempt")?;
+            let source_work = SourceWork::new("physician_chat", &attempt.work, &claim.attempt)
+                .map_err(|cause| cause.to_string())?;
+            let invocation = Invocation {
+                id: call.id.clone(),
+                name: call.name.clone(),
+                arguments,
+            };
+            return self
+                .execute_follow_up_tool(
+                    &claim.scope.practice,
+                    &claim.scope.workspace,
+                    &source_work,
+                    &invocation,
+                )
+                .await;
+        }
+
+        if crate::attachments::is_document_page_tool(&call.name) {
+            return self
+                .execute_document_page_tool(
+                    &claim.scope.practice,
+                    &claim.scope.workspace,
+                    &arguments,
                 )
                 .await;
         }
@@ -2731,6 +2917,58 @@ impl Store {
         }
     }
 
+    /// Executes [`crate::attachments::READ_DOCUMENT_PAGE_TOOL`] against all
+    /// retained non-withdrawn historical source revisions in `workspace`, so
+    /// current page discovery reads the latest version while earlier citations
+    /// reopen to their exact original `(document_id, version, page_number)`.
+    pub async fn execute_document_page_tool(
+        &self,
+        practice: &str,
+        workspace: &str,
+        arguments: &Value,
+    ) -> Result<ToolOutcome, engine::Cause> {
+        let boundary =
+            super::follow_ups::load_workspace_withdrawal_boundary(&self.db, practice, workspace)
+                .await
+                .map_err(persistence_failure)?;
+        let withdrawn_candidates: std::collections::BTreeSet<String> = boundary
+            .map(|b| b.candidate_ids.into_iter().collect())
+            .unwrap_or_default();
+
+        let rows = source::Entity::find()
+            .filter(source::Column::Workspace.eq(workspace))
+            .order_by_asc(source::Column::ObservedAtVersion)
+            .order_by_asc(source::Column::Candidate)
+            .all(&self.db)
+            .await
+            .map_err(persistence_failure)?;
+
+        let mut latest_is_withdrawn: std::collections::BTreeMap<String, bool> =
+            std::collections::BTreeMap::new();
+        for row in &rows {
+            latest_is_withdrawn.insert(row.candidate.clone(), row.revision.is_none());
+        }
+
+        let mut retained = Vec::new();
+        for row in rows {
+            if withdrawn_candidates.contains(&row.candidate)
+                || latest_is_withdrawn
+                    .get(&row.candidate)
+                    .copied()
+                    .unwrap_or(false)
+            {
+                continue;
+            }
+            if let Some(raw_rev) = row.revision {
+                let decoded: SourceRevision = serde_json::from_value(raw_rev)
+                    .map_err(|_| error("corrupt source observation"))
+                    .map_err(persistence_failure)?;
+                retained.push(decoded);
+            }
+        }
+        Ok(crate::attachments::execute_document_page_read_from_revisions(arguments, &retained))
+    }
+
     /// Reconciles an already-committed durable chat tool effect read-only when an
     /// attempt was interrupted after `ToolStarted` and before `ToolReturned`.
     pub(super) async fn saved_chat_tool_outcome(
@@ -2753,6 +2991,17 @@ impl Store {
         if super::concerns::is_concern_tool(&call.name) {
             return self
                 .saved_concern_tool_outcome(
+                    &claim.scope.practice,
+                    &claim.scope.workspace,
+                    &attempt.work,
+                    call,
+                )
+                .await;
+        }
+
+        if super::follow_ups::is_follow_up_tool(&call.name) {
+            return self
+                .saved_follow_up_tool_outcome(
                     &claim.scope.practice,
                     &claim.scope.workspace,
                     &attempt.work,
@@ -2831,6 +3080,9 @@ impl Store {
         {
             Ok(Some(entry)) => entry,
             Ok(None) => return Ok(None),
+            Err(PatientMemoryError::WithdrawnFence(violation)) => {
+                return Ok(Some(ToolOutcome::refused(violation.to_string())));
+            }
             Err(PatientMemoryError::Database(db_err)) => return Err(persistence_failure(db_err)),
             Err(cause) => return Err(cause.to_string().into()),
         };

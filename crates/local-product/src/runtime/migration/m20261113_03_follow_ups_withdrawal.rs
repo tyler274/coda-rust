@@ -1,0 +1,599 @@
+//! Durable physician and job follow-ups, one-entry-per-change follow-up
+//! updates, and wrong-patient source withdrawal fences and audit tables.
+
+use sea_orm_migration::prelude::*;
+
+/// Creates follow-up and wrong-patient withdrawal runtime tables.
+#[derive(DeriveMigrationName)]
+pub(super) struct Migration;
+
+#[derive(DeriveIden)]
+enum FollowUpTable {
+    #[sea_orm(iden = "physician_runtime_follow_ups")]
+    Table,
+    Practice,
+    Workspace,
+    Id,
+    Summary,
+    Status,
+    DueAt,
+    StandingDetail,
+    Records,
+    Origin,
+    Version,
+    CreatedAt,
+    UpdatedAt,
+}
+
+#[derive(DeriveIden)]
+enum FollowUpUpdateTable {
+    #[sea_orm(iden = "physician_runtime_follow_up_updates")]
+    Table,
+    Practice,
+    Workspace,
+    #[sea_orm(iden = "follow_up_id")]
+    FollowUpId,
+    Version,
+    Kind,
+    Summary,
+    Detail,
+    DueAt,
+    Actor,
+    Records,
+    OccurredAt,
+}
+
+#[derive(DeriveIden)]
+enum SourceWithdrawalTable {
+    #[sea_orm(iden = "physician_runtime_source_withdrawals")]
+    Table,
+    Practice,
+    Workspace,
+    #[sea_orm(iden = "withdrawal_id")]
+    WithdrawalId,
+    #[sea_orm(iden = "withdrawal_epoch")]
+    WithdrawalEpoch,
+    #[sea_orm(iden = "candidate_ids")]
+    CandidateIds,
+    #[sea_orm(iden = "message_id")]
+    MessageId,
+    #[sea_orm(iden = "fenced_work_ids")]
+    FencedWorkIds,
+    Reason,
+    Actor,
+    Receipt,
+    #[sea_orm(iden = "withdrawn_at")]
+    WithdrawnAt,
+}
+
+#[derive(DeriveIden)]
+enum MemoryWithdrawalTable {
+    #[sea_orm(iden = "physician_runtime_memory_withdrawals")]
+    Table,
+    Practice,
+    Workspace,
+    #[sea_orm(iden = "memory_id")]
+    MemoryId,
+    #[sea_orm(iden = "withdrawal_id")]
+    WithdrawalId,
+    #[sea_orm(iden = "withdrawal_epoch")]
+    WithdrawalEpoch,
+    Reason,
+    Snapshot,
+    #[sea_orm(iden = "withdrawn_at")]
+    WithdrawnAt,
+}
+
+#[derive(DeriveIden)]
+enum UnderstandingWithdrawalTable {
+    #[sea_orm(iden = "physician_runtime_understanding_withdrawals")]
+    Table,
+    Practice,
+    Workspace,
+    Revision,
+    #[sea_orm(iden = "withdrawal_id")]
+    WithdrawalId,
+    #[sea_orm(iden = "withdrawal_epoch")]
+    WithdrawalEpoch,
+    Reason,
+    #[sea_orm(iden = "withdrawn_at")]
+    WithdrawnAt,
+}
+
+#[derive(DeriveIden)]
+enum ConcernWithdrawalTable {
+    #[sea_orm(iden = "physician_runtime_concern_withdrawals")]
+    Table,
+    Practice,
+    Workspace,
+    #[sea_orm(iden = "concern_id")]
+    ConcernId,
+    #[sea_orm(iden = "withdrawal_id")]
+    WithdrawalId,
+    #[sea_orm(iden = "withdrawal_epoch")]
+    WithdrawalEpoch,
+    Reason,
+    #[sea_orm(iden = "concern_snapshot")]
+    ConcernSnapshot,
+    #[sea_orm(iden = "withdrawn_at")]
+    WithdrawnAt,
+}
+
+#[async_trait::async_trait]
+impl MigrationTrait for Migration {
+    async fn up(&self, manager: &SchemaManager) -> Result<(), DbErr> {
+        manager
+            .create_table(
+                Table::create()
+                    .table(FollowUpTable::Table)
+                    .col(ColumnDef::new(FollowUpTable::Practice).text().not_null())
+                    .col(ColumnDef::new(FollowUpTable::Workspace).text().not_null())
+                    .col(ColumnDef::new(FollowUpTable::Id).text().not_null())
+                    .col(ColumnDef::new(FollowUpTable::Summary).text().not_null())
+                    .col(
+                        ColumnDef::new(FollowUpTable::Status)
+                            .text()
+                            .not_null()
+                            .check(Expr::col(FollowUpTable::Status).is_in([
+                                "active",
+                                "held",
+                                "cannot_restart",
+                                "completed",
+                                "cancelled",
+                                "withdrawn_wrong_patient",
+                            ])),
+                    )
+                    .col(
+                        ColumnDef::new(FollowUpTable::DueAt)
+                            .big_integer()
+                            .not_null(),
+                    )
+                    .col(
+                        ColumnDef::new(FollowUpTable::StandingDetail)
+                            .json_binary()
+                            .not_null(),
+                    )
+                    .col(
+                        ColumnDef::new(FollowUpTable::Records)
+                            .json_binary()
+                            .not_null(),
+                    )
+                    .col(
+                        ColumnDef::new(FollowUpTable::Origin)
+                            .json_binary()
+                            .not_null(),
+                    )
+                    .col(
+                        ColumnDef::new(FollowUpTable::Version)
+                            .big_integer()
+                            .not_null()
+                            .check(Expr::col(FollowUpTable::Version).gt(0)),
+                    )
+                    .col(
+                        ColumnDef::new(FollowUpTable::CreatedAt)
+                            .big_integer()
+                            .not_null(),
+                    )
+                    .col(
+                        ColumnDef::new(FollowUpTable::UpdatedAt)
+                            .big_integer()
+                            .not_null(),
+                    )
+                    .primary_key(
+                        Index::create()
+                            .name("pk-physician_runtime_follow_ups")
+                            .col(FollowUpTable::Practice)
+                            .col(FollowUpTable::Workspace)
+                            .col(FollowUpTable::Id),
+                    )
+                    .to_owned(),
+            )
+            .await?;
+
+        manager
+            .create_index(
+                Index::create()
+                    .name("idx-physician_runtime_follow_ups-workspace_status_due")
+                    .table(FollowUpTable::Table)
+                    .col(FollowUpTable::Practice)
+                    .col(FollowUpTable::Workspace)
+                    .col(FollowUpTable::Status)
+                    .col(FollowUpTable::DueAt)
+                    .to_owned(),
+            )
+            .await?;
+
+        manager
+            .create_table(
+                Table::create()
+                    .table(FollowUpUpdateTable::Table)
+                    .col(
+                        ColumnDef::new(FollowUpUpdateTable::Practice)
+                            .text()
+                            .not_null(),
+                    )
+                    .col(
+                        ColumnDef::new(FollowUpUpdateTable::Workspace)
+                            .text()
+                            .not_null(),
+                    )
+                    .col(
+                        ColumnDef::new(FollowUpUpdateTable::FollowUpId)
+                            .text()
+                            .not_null(),
+                    )
+                    .col(
+                        ColumnDef::new(FollowUpUpdateTable::Version)
+                            .big_integer()
+                            .not_null()
+                            .check(Expr::col(FollowUpUpdateTable::Version).gt(0)),
+                    )
+                    .col(
+                        ColumnDef::new(FollowUpUpdateTable::Kind)
+                            .text()
+                            .not_null()
+                            .check(Expr::col(FollowUpUpdateTable::Kind).is_in([
+                                "created",
+                                "changed",
+                                "stopped",
+                                "resumed",
+                                "review_requested_now",
+                                "marked_cannot_restart",
+                                "completed",
+                                "cancelled",
+                                "withdrawn_wrong_patient",
+                            ])),
+                    )
+                    .col(
+                        ColumnDef::new(FollowUpUpdateTable::Summary)
+                            .text()
+                            .not_null(),
+                    )
+                    .col(
+                        ColumnDef::new(FollowUpUpdateTable::Detail)
+                            .text()
+                            .not_null(),
+                    )
+                    .col(
+                        ColumnDef::new(FollowUpUpdateTable::DueAt)
+                            .big_integer()
+                            .not_null(),
+                    )
+                    .col(
+                        ColumnDef::new(FollowUpUpdateTable::Actor)
+                            .json_binary()
+                            .not_null(),
+                    )
+                    .col(
+                        ColumnDef::new(FollowUpUpdateTable::Records)
+                            .json_binary()
+                            .not_null(),
+                    )
+                    .col(
+                        ColumnDef::new(FollowUpUpdateTable::OccurredAt)
+                            .big_integer()
+                            .not_null(),
+                    )
+                    .primary_key(
+                        Index::create()
+                            .name("pk-physician_runtime_follow_up_updates")
+                            .col(FollowUpUpdateTable::Practice)
+                            .col(FollowUpUpdateTable::Workspace)
+                            .col(FollowUpUpdateTable::FollowUpId)
+                            .col(FollowUpUpdateTable::Version),
+                    )
+                    .to_owned(),
+            )
+            .await?;
+
+        manager
+            .create_index(
+                Index::create()
+                    .name("idx-physician_runtime_follow_up_updates-workspace_occurred")
+                    .table(FollowUpUpdateTable::Table)
+                    .col(FollowUpUpdateTable::Practice)
+                    .col(FollowUpUpdateTable::Workspace)
+                    .col(FollowUpUpdateTable::OccurredAt)
+                    .to_owned(),
+            )
+            .await?;
+
+        manager
+            .create_table(
+                Table::create()
+                    .table(SourceWithdrawalTable::Table)
+                    .col(
+                        ColumnDef::new(SourceWithdrawalTable::Practice)
+                            .text()
+                            .not_null(),
+                    )
+                    .col(
+                        ColumnDef::new(SourceWithdrawalTable::Workspace)
+                            .text()
+                            .not_null(),
+                    )
+                    .col(
+                        ColumnDef::new(SourceWithdrawalTable::WithdrawalId)
+                            .text()
+                            .not_null(),
+                    )
+                    .col(
+                        ColumnDef::new(SourceWithdrawalTable::WithdrawalEpoch)
+                            .big_integer()
+                            .not_null()
+                            .check(Expr::col(SourceWithdrawalTable::WithdrawalEpoch).gt(0)),
+                    )
+                    .col(
+                        ColumnDef::new(SourceWithdrawalTable::CandidateIds)
+                            .json_binary()
+                            .not_null(),
+                    )
+                    .col(ColumnDef::new(SourceWithdrawalTable::MessageId).text())
+                    .col(
+                        ColumnDef::new(SourceWithdrawalTable::FencedWorkIds)
+                            .json_binary()
+                            .not_null(),
+                    )
+                    .col(
+                        ColumnDef::new(SourceWithdrawalTable::Reason)
+                            .text()
+                            .not_null(),
+                    )
+                    .col(
+                        ColumnDef::new(SourceWithdrawalTable::Actor)
+                            .text()
+                            .not_null(),
+                    )
+                    .col(
+                        ColumnDef::new(SourceWithdrawalTable::Receipt)
+                            .json_binary()
+                            .not_null(),
+                    )
+                    .col(
+                        ColumnDef::new(SourceWithdrawalTable::WithdrawnAt)
+                            .big_integer()
+                            .not_null(),
+                    )
+                    .primary_key(
+                        Index::create()
+                            .name("pk-physician_runtime_source_withdrawals")
+                            .col(SourceWithdrawalTable::Practice)
+                            .col(SourceWithdrawalTable::Workspace)
+                            .col(SourceWithdrawalTable::WithdrawalId),
+                    )
+                    .to_owned(),
+            )
+            .await?;
+
+        manager
+            .create_index(
+                Index::create()
+                    .name("uq-physician_runtime_source_withdrawals-epoch")
+                    .table(SourceWithdrawalTable::Table)
+                    .col(SourceWithdrawalTable::Practice)
+                    .col(SourceWithdrawalTable::Workspace)
+                    .col(SourceWithdrawalTable::WithdrawalEpoch)
+                    .unique()
+                    .to_owned(),
+            )
+            .await?;
+
+        manager
+            .create_table(
+                Table::create()
+                    .table(MemoryWithdrawalTable::Table)
+                    .col(
+                        ColumnDef::new(MemoryWithdrawalTable::Practice)
+                            .text()
+                            .not_null(),
+                    )
+                    .col(
+                        ColumnDef::new(MemoryWithdrawalTable::Workspace)
+                            .text()
+                            .not_null(),
+                    )
+                    .col(
+                        ColumnDef::new(MemoryWithdrawalTable::MemoryId)
+                            .text()
+                            .not_null(),
+                    )
+                    .col(
+                        ColumnDef::new(MemoryWithdrawalTable::WithdrawalId)
+                            .text()
+                            .not_null(),
+                    )
+                    .col(
+                        ColumnDef::new(MemoryWithdrawalTable::WithdrawalEpoch)
+                            .big_integer()
+                            .not_null()
+                            .check(Expr::col(MemoryWithdrawalTable::WithdrawalEpoch).gt(0)),
+                    )
+                    .col(
+                        ColumnDef::new(MemoryWithdrawalTable::Reason)
+                            .text()
+                            .not_null(),
+                    )
+                    .col(
+                        ColumnDef::new(MemoryWithdrawalTable::Snapshot)
+                            .json_binary()
+                            .not_null(),
+                    )
+                    .col(
+                        ColumnDef::new(MemoryWithdrawalTable::WithdrawnAt)
+                            .big_integer()
+                            .not_null(),
+                    )
+                    .primary_key(
+                        Index::create()
+                            .name("pk-physician_runtime_memory_withdrawals")
+                            .col(MemoryWithdrawalTable::Practice)
+                            .col(MemoryWithdrawalTable::Workspace)
+                            .col(MemoryWithdrawalTable::MemoryId),
+                    )
+                    .to_owned(),
+            )
+            .await?;
+
+        manager
+            .create_table(
+                Table::create()
+                    .table(UnderstandingWithdrawalTable::Table)
+                    .col(
+                        ColumnDef::new(UnderstandingWithdrawalTable::Practice)
+                            .text()
+                            .not_null(),
+                    )
+                    .col(
+                        ColumnDef::new(UnderstandingWithdrawalTable::Workspace)
+                            .text()
+                            .not_null(),
+                    )
+                    .col(
+                        ColumnDef::new(UnderstandingWithdrawalTable::Revision)
+                            .big_integer()
+                            .not_null()
+                            .check(Expr::col(UnderstandingWithdrawalTable::Revision).gt(0)),
+                    )
+                    .col(
+                        ColumnDef::new(UnderstandingWithdrawalTable::WithdrawalId)
+                            .text()
+                            .not_null(),
+                    )
+                    .col(
+                        ColumnDef::new(UnderstandingWithdrawalTable::WithdrawalEpoch)
+                            .big_integer()
+                            .not_null()
+                            .check(Expr::col(UnderstandingWithdrawalTable::WithdrawalEpoch).gt(0)),
+                    )
+                    .col(
+                        ColumnDef::new(UnderstandingWithdrawalTable::Reason)
+                            .text()
+                            .not_null(),
+                    )
+                    .col(
+                        ColumnDef::new(UnderstandingWithdrawalTable::WithdrawnAt)
+                            .big_integer()
+                            .not_null(),
+                    )
+                    .primary_key(
+                        Index::create()
+                            .name("pk-physician_runtime_understanding_withdrawals")
+                            .col(UnderstandingWithdrawalTable::Practice)
+                            .col(UnderstandingWithdrawalTable::Workspace)
+                            .col(UnderstandingWithdrawalTable::Revision),
+                    )
+                    .to_owned(),
+            )
+            .await?;
+
+        manager
+            .create_table(
+                Table::create()
+                    .table(ConcernWithdrawalTable::Table)
+                    .col(
+                        ColumnDef::new(ConcernWithdrawalTable::Practice)
+                            .text()
+                            .not_null(),
+                    )
+                    .col(
+                        ColumnDef::new(ConcernWithdrawalTable::Workspace)
+                            .text()
+                            .not_null(),
+                    )
+                    .col(
+                        ColumnDef::new(ConcernWithdrawalTable::ConcernId)
+                            .text()
+                            .not_null(),
+                    )
+                    .col(
+                        ColumnDef::new(ConcernWithdrawalTable::WithdrawalId)
+                            .text()
+                            .not_null(),
+                    )
+                    .col(
+                        ColumnDef::new(ConcernWithdrawalTable::WithdrawalEpoch)
+                            .big_integer()
+                            .not_null()
+                            .check(Expr::col(ConcernWithdrawalTable::WithdrawalEpoch).gt(0)),
+                    )
+                    .col(
+                        ColumnDef::new(ConcernWithdrawalTable::Reason)
+                            .text()
+                            .not_null(),
+                    )
+                    .col(
+                        ColumnDef::new(ConcernWithdrawalTable::ConcernSnapshot)
+                            .json_binary()
+                            .not_null(),
+                    )
+                    .col(
+                        ColumnDef::new(ConcernWithdrawalTable::WithdrawnAt)
+                            .big_integer()
+                            .not_null(),
+                    )
+                    .primary_key(
+                        Index::create()
+                            .name("pk-physician_runtime_concern_withdrawals")
+                            .col(ConcernWithdrawalTable::Practice)
+                            .col(ConcernWithdrawalTable::Workspace)
+                            .col(ConcernWithdrawalTable::ConcernId),
+                    )
+                    .to_owned(),
+            )
+            .await?;
+
+        Ok(())
+    }
+
+    async fn down(&self, manager: &SchemaManager) -> Result<(), DbErr> {
+        manager
+            .drop_table(
+                Table::drop()
+                    .table(ConcernWithdrawalTable::Table)
+                    .if_exists()
+                    .to_owned(),
+            )
+            .await?;
+        manager
+            .drop_table(
+                Table::drop()
+                    .table(UnderstandingWithdrawalTable::Table)
+                    .if_exists()
+                    .to_owned(),
+            )
+            .await?;
+        manager
+            .drop_table(
+                Table::drop()
+                    .table(MemoryWithdrawalTable::Table)
+                    .if_exists()
+                    .to_owned(),
+            )
+            .await?;
+        manager
+            .drop_table(
+                Table::drop()
+                    .table(SourceWithdrawalTable::Table)
+                    .if_exists()
+                    .to_owned(),
+            )
+            .await?;
+        manager
+            .drop_table(
+                Table::drop()
+                    .table(FollowUpUpdateTable::Table)
+                    .if_exists()
+                    .to_owned(),
+            )
+            .await?;
+        manager
+            .drop_table(
+                Table::drop()
+                    .table(FollowUpTable::Table)
+                    .if_exists()
+                    .to_owned(),
+            )
+            .await?;
+        Ok(())
+    }
+}

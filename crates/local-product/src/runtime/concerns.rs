@@ -131,6 +131,10 @@ pub enum ConcernError {
         /// Cited revision identity.
         revision: String,
     },
+    /// Mutation cited a withdrawn wrong-patient source, originated from a fenced
+    /// pre-withdrawal run, or targeted a withdrawn concern.
+    #[error("{0}")]
+    WithdrawnFence(#[from] super::follow_ups::WithdrawalFenceViolation),
     /// Database error from SeaORM.
     #[error("{0}")]
     Database(#[from] DbErr),
@@ -361,7 +365,7 @@ impl SourceWork {
         })
     }
 
-    fn validate(&self) -> Result<Self, ConcernInputError> {
+    pub(crate) fn validate(&self) -> Result<Self, ConcernInputError> {
         Self::new(&self.job, &self.work_id, &self.attempt_id)
     }
 }
@@ -389,6 +393,17 @@ pub enum ConcernStanding {
         source_work: SourceWork,
         /// Database-clock seconds when the concern was retired.
         retired_at: i64,
+    },
+    /// Held back / withdrawn because a cited message or originating run was
+    /// removed as wrong-patient; preserved in audit history and excluded from
+    /// Today and Updates.
+    Withdrawn {
+        /// Withdrawal receipt identifier.
+        withdrawal_id: String,
+        /// Single-line withdrawal reason.
+        reason: String,
+        /// Database-clock seconds when withdrawn.
+        withdrawn_at: i64,
     },
 }
 
@@ -466,7 +481,9 @@ impl Concern {
                 retired_at: *retired_at,
                 revision: self.revision,
             }),
-            ConcernStanding::Open | ConcernStanding::Done { .. } => None,
+            ConcernStanding::Open
+            | ConcernStanding::Done { .. }
+            | ConcernStanding::Withdrawn { .. } => None,
         }
     }
 }
@@ -945,15 +962,55 @@ pub(super) async fn load_concern(
     workspace: &str,
     id: &ConcernId,
 ) -> Result<Option<Concern>, DbErr> {
-    concern::Entity::find_by_id((
+    if let Some(row) = concern::Entity::find_by_id((
         practice.to_owned(),
         workspace.to_owned(),
         id.as_str().to_owned(),
     ))
     .one(tx)
     .await?
-    .map(decode_concern)
-    .transpose()
+    {
+        return decode_concern(row).map(Some);
+    }
+    if let Some(withdrawn) = super::follow_ups::concern_withdrawal_entity::Entity::find_by_id((
+        practice.to_owned(),
+        workspace.to_owned(),
+        id.as_str().to_owned(),
+    ))
+    .one(tx)
+    .await?
+    {
+        let concern: Concern = serde_json::from_value(withdrawn.concern_snapshot).map_err(
+            conversion_error("concern_withdrawal.concern_snapshot", "Concern"),
+        )?;
+        return Ok(Some(concern));
+    }
+    Ok(None)
+}
+
+async fn check_not_withdrawn_concern(
+    tx: &impl ConnectionTrait,
+    practice: &str,
+    workspace: &str,
+    id: &ConcernId,
+) -> Result<(), ConcernError> {
+    if let Some(withdrawn) = super::follow_ups::concern_withdrawal_entity::Entity::find_by_id((
+        practice.to_owned(),
+        workspace.to_owned(),
+        id.as_str().to_owned(),
+    ))
+    .one(tx)
+    .await?
+    {
+        return Err(ConcernError::WithdrawnFence(
+            super::follow_ups::WithdrawalFenceViolation::WithdrawnItem {
+                item_id: id.as_str().to_owned(),
+                withdrawal_id: withdrawn.withdrawal_id,
+                withdrawal_epoch: u64::try_from(withdrawn.withdrawal_epoch).unwrap_or(1),
+            },
+        ));
+    }
+    Ok(())
 }
 
 fn concern_tool_command_key(work_id: &str, call_id: &str) -> Result<CommandKey, ConcernInputError> {
@@ -970,6 +1027,18 @@ pub(super) async fn raise_concern_in_tx(
     let reason = validate_concern_reason(&input.reason)?;
     let records = normalize_records(&input.records)?;
     let source_work = input.source_work.validate()?;
+    let cited_candidates: Vec<String> = records.iter().map(|r| r.candidate_id.clone()).collect();
+
+    super::follow_ups::check_withdrawal_fence_in_tx(
+        tx,
+        &practice,
+        &workspace,
+        &cited_candidates,
+        None,
+        Some(source_work.work_id.as_str()),
+    )
+    .await?;
+    check_not_withdrawn_concern(tx, &practice, &workspace, &input.id).await?;
 
     let command = json!({
         "kind": "concern_raise",
@@ -1070,6 +1139,17 @@ pub(super) async fn retire_concern_in_tx(
     let practice = validate_non_empty_field("practice", &input.practice)?;
     let workspace = validate_non_empty_field("workspace", &input.workspace)?;
     let source_work = input.source_work.validate()?;
+
+    super::follow_ups::check_withdrawal_fence_in_tx(
+        tx,
+        &practice,
+        &workspace,
+        &[],
+        None,
+        Some(source_work.work_id.as_str()),
+    )
+    .await?;
+    check_not_withdrawn_concern(tx, &practice, &workspace, &input.id).await?;
 
     let command = json!({
         "kind": "concern_retire",
@@ -1189,6 +1269,8 @@ impl Store {
         let reason = validate_concern_reason(&input.reason)?;
         let records = normalize_records(&input.records)?;
         let source_work = input.source_work.validate()?;
+        let cited_candidates: Vec<String> =
+            records.iter().map(|r| r.candidate_id.clone()).collect();
 
         let command = json!({
             "kind": "concern_revise",
@@ -1201,6 +1283,16 @@ impl Store {
             "source_work": &source_work,
         });
         let tx = self.db.begin().await?;
+        super::follow_ups::check_withdrawal_fence_in_tx(
+            &tx,
+            &practice,
+            &workspace,
+            &cited_candidates,
+            None,
+            Some(source_work.work_id.as_str()),
+        )
+        .await?;
+        check_not_withdrawn_concern(&tx, &practice, &workspace, &input.id).await?;
         match receipt::record(
             &tx,
             &practice,
@@ -1409,6 +1501,7 @@ impl Store {
                 | ConcernError::NotFound { .. }
                 | ConcernError::NotOpen { .. }
                 | ConcernError::UnverifiedRecord { .. }
+                | ConcernError::WithdrawnFence(_)
                 | ConcernError::IdempotencyCollision { .. }),
             ) => Ok(ToolOutcome::refused(error.to_string())),
             Err(ConcernError::AccessDenied { reason }) => Err(reason.into()),
@@ -1468,6 +1561,12 @@ impl Store {
         else {
             return Err("missing concern for accepted receipt".into());
         };
+        if let ConcernStanding::Withdrawn { withdrawal_id, .. } = &concern.standing {
+            return Ok(Some(ToolOutcome::refused(format!(
+                "concern `{}` was withdrawn as wrong-patient in `{withdrawal_id}` and cannot be restored",
+                concern.id
+            ))));
+        }
         Ok(Some(ToolOutcome::Returned(
             json!({
                 "outcome": "duplicate",
@@ -1555,7 +1654,7 @@ impl Store {
                     concern: Box::new(current),
                 });
             }
-            ConcernStanding::Retired { .. } => {
+            ConcernStanding::Retired { .. } | ConcernStanding::Withdrawn { .. } => {
                 tx.rollback().await?;
                 return Err(ConcernError::NotOpen {
                     id: concern_id.clone(),
@@ -1688,13 +1787,14 @@ impl Store {
         Ok(retired)
     }
 
-    /// Reads every concern (`Open`, `Done`, and `Retired`) in one patient
-    /// workspace after checking the physician's session and panel authority.
+    /// Reads every concern (`Open`, `Done`, `Retired`, and `Withdrawn` audit snapshots)
+    /// in one patient workspace after checking the physician's session and panel authority.
     pub async fn workspace_concerns(
         &self,
         access: &WorkspaceAccess<'_>,
         authority: &mut dyn Authority,
     ) -> Result<Vec<Concern>, ConcernError> {
+        use super::follow_ups::concern_withdrawal_entity::Column as WC;
         use concern::Column as C;
 
         let scope = access.authority_scope()?;
@@ -1712,11 +1812,26 @@ impl Store {
             .order_by_asc(C::Id)
             .all(&tx)
             .await?;
+        let withdrawn_rows = super::follow_ups::concern_withdrawal_entity::Entity::find()
+            .filter(WC::Practice.eq(scope.practice.as_str()))
+            .filter(WC::Workspace.eq(scope.workspace.as_str()))
+            .order_by_asc(WC::ConcernId)
+            .all(&tx)
+            .await?;
         tx.commit().await?;
-        rows.into_iter()
-            .map(decode_concern)
-            .collect::<Result<Vec<_>, _>>()
-            .map_err(ConcernError::from)
+
+        let mut all = Vec::with_capacity(rows.len() + withdrawn_rows.len());
+        for row in rows {
+            all.push(decode_concern(row)?);
+        }
+        for w in withdrawn_rows {
+            let concern: Concern = serde_json::from_value(w.concern_snapshot).map_err(
+                conversion_error("concern_withdrawal.concern_snapshot", "Concern"),
+            )?;
+            all.push(concern);
+        }
+        all.sort_by(|left, right| left.id.cmp(&right.id));
+        Ok(all)
     }
 
     /// Reads all saved concern `Done` feedback rows for evaluation, ordered by
