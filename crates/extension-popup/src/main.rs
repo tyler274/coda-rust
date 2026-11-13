@@ -13,36 +13,51 @@ mod popup {
     use std::time::Duration;
 
     use dioxus::prelude::*;
-    use extension_popup::face::{Action, Activity, Millis, Refusal, Reply, Request, face, refusal};
+    use extension_popup::face::{
+        Action, Activity, Refusal, Reply, Request, Standing, endpoint_origin_pattern, face, refusal,
+    };
     use serde::Deserialize;
     use serde_json::{Value, json};
     use ui::{
         Button, ButtonVariant, Icon, IconName, Menu, MenuItem, MenuSection, Notice, PageTitle,
-        StatusLine, Stylesheet, TaskList, Tone, TopBar,
+        StatusLine, Stylesheet, TaskList, TextField, Tone, TopBar,
     };
     use wasm_bindgen::prelude::*;
 
     #[wasm_bindgen(module = "/assets/chrome.js")]
     extern "C" {
-        #[wasm_bindgen(catch, js_name = send)]
-        fn send_js(action: &str) -> Result<js_sys::Promise, JsValue>;
-        fn open_hint() -> js_sys::Promise;
-        fn clock(ms: f64) -> String;
+        #[wasm_bindgen(catch, js_name = send_message)]
+        fn send_js(payload_json: &str) -> Result<js_sys::Promise, JsValue>;
+        #[wasm_bindgen(catch, js_name = request_origins)]
+        fn request_origins_js(origins_json: &str) -> Result<js_sys::Promise, JsValue>;
+        fn open_source(entry_url: &str, tab_pattern: Option<&str>) -> js_sys::Promise;
     }
 
-    /// The worker's reply to `request`, both read and as it sent it, or why the popup has none.
     async fn send(request: Request) -> Result<(Reply, Value), NoReply> {
-        let sent = send_js(request.name()).map_err(NoReply::Unreachable)?;
+        let wire = request.to_wire().to_string();
+        let sent = send_js(&wire).map_err(NoReply::Unreachable)?;
         let answer = wasm_bindgen_futures::JsFuture::from(sent)
             .await
             .map_err(NoReply::Unreachable)?;
-        // chrome.js answers with the reply's JSON text.
         let text = answer.as_string().ok_or_else(|| {
             NoReply::Unknown(serde::de::Error::custom("the worker's reply wasn't text"))
         })?;
         let words: Value = serde_json::from_str(&text).map_err(NoReply::Unknown)?;
         let reply = Reply::deserialize(&words).map_err(NoReply::Unknown)?;
         Ok((reply, words))
+    }
+
+    async fn request_origins(origins: &[String]) -> bool {
+        let Ok(encoded) = serde_json::to_string(origins) else {
+            return false;
+        };
+        let Ok(promise) = request_origins_js(&encoded) else {
+            return false;
+        };
+        let Ok(value) = wasm_bindgen_futures::JsFuture::from(promise).await else {
+            return false;
+        };
+        value.as_bool().unwrap_or(false)
     }
 
     /// Why the popup has no reply from the worker.
@@ -56,7 +71,6 @@ mod popup {
         Unknown(#[source] serde_json::Error),
     }
 
-    /// Chrome's error in its own words: its message, its text, or what it is.
     fn chrome_words(error: &JsValue) -> String {
         error
             .dyn_ref::<js_sys::Error>()
@@ -66,41 +80,44 @@ mod popup {
     }
 
     /// A notice the popup shows above the state: its tone, icon, title and detail.
-    type Said = (Tone, IconName, &'static str, &'static str);
+    type Said = (Tone, IconName, &'static str, String);
 
-    const UNREACHABLE: Said = (
-        Tone::Error,
-        IconName::Alert,
-        "The extension isn’t responding",
-        "Reload it from chrome://extensions.",
-    );
-    const UNKNOWN_REPLY: Said = (
-        Tone::Error,
-        IconName::Alert,
-        "The extension sent a reply Coda doesn’t understand",
-        "Reload it from chrome://extensions.",
-    );
-    const COPIED: Said = (
-        Tone::Primary,
-        IconName::Check,
-        "Diagnostics copied",
-        "Paste them wherever you’re asking for help.",
-    );
-    const NOT_COPIED: Said = (
-        Tone::Warning,
-        IconName::Alert,
-        "Couldn’t copy diagnostics",
-        "Try again.",
-    );
-    const NOT_OPENED: Said = (
-        Tone::Warning,
-        IconName::Alert,
-        "Couldn’t open Hint",
-        "Open app.hint.com yourself.",
-    );
+    fn unreachable_note() -> Said {
+        (
+            Tone::Error,
+            IconName::Alert,
+            "The extension isn’t responding",
+            "Reload it from chrome://extensions.".to_owned(),
+        )
+    }
 
-    /// Coda's ring of twelve dots, the mark on its icon, beside the name in the header. A wave runs
-    /// round the ring while the popup waits on the worker, and slowly while Coda reads.
+    fn unknown_reply_note() -> Said {
+        (
+            Tone::Error,
+            IconName::Alert,
+            "The extension sent a reply Coda doesn’t understand",
+            "Reload it from chrome://extensions.".to_owned(),
+        )
+    }
+
+    fn copied_note() -> Said {
+        (
+            Tone::Primary,
+            IconName::Check,
+            "Diagnostics copied",
+            "Paste them wherever you’re asking for help.".to_owned(),
+        )
+    }
+
+    fn not_copied_note() -> Said {
+        (
+            Tone::Warning,
+            IconName::Alert,
+            "Couldn’t copy diagnostics",
+            "Try again.".to_owned(),
+        )
+    }
+
     #[component]
     fn BrandMark(working: bool, live: bool) -> Element {
         let dots = (0..12).map(|step| {
@@ -127,16 +144,14 @@ mod popup {
     pub fn Popup() -> Element {
         let mut reply = use_signal(|| None::<(Reply, Value)>);
         let mut busy = use_signal(|| false);
-        // The last action's refusal, and the worker's reply as it sent it, until the next action.
         let mut refused = use_signal(|| None::<(Refusal, Value)>);
-        // Why the popup last had no reply from the worker, until it has one again.
         let mut no_reply = use_signal(|| None::<Rc<NoReply>>);
-        // What the last menu or button action reported, for a moment, numbered by its telling;
-        // the standing state shows otherwise.
         let mut told = use_signal(|| None::<(u64, Said)>);
         let mut tellings = use_signal(|| 0u64);
-        // The state's last title, and how many times it has changed since.
+        let mut chords_endpoint = use_signal(String::new);
+        let mut pairing_code = use_signal(String::new);
         let arrivals = use_hook(|| Rc::new(Cell::new((String::new(), 0u64))));
+
         use_future(move || async move {
             loop {
                 if !*busy.peek() {
@@ -152,6 +167,7 @@ mod popup {
                 futures_timer::Delay::new(Duration::from_secs(1)).await;
             }
         });
+
         let act = move |request: Request| async move {
             busy.set(true);
             refused.set(None);
@@ -166,98 +182,179 @@ mod popup {
             }
             busy.set(false);
         };
-        // A newer telling, even of the same words, outlasts this one's timer.
+
         let tell = move |said: Said, seconds: u64| async move {
             let telling = *tellings.peek() + 1;
             tellings.set(telling);
             told.set(Some((telling, said)));
             futures_timer::Delay::new(Duration::from_secs(seconds)).await;
-            if told.peek().is_some_and(|(shown, _)| shown == telling) {
+            if told
+                .peek()
+                .as_ref()
+                .is_some_and(|(shown, _)| *shown == telling)
+            {
                 told.set(None);
             }
         };
-        // The worker's last reply as it sent it; when the popup has no reply or the last action was
-        // refused, why, beside the last reply.
+
         let diagnostics = move || async move {
             let last = reply.peek().as_ref().map(|(_, words)| words.clone());
             let why = no_reply.peek().as_deref().map(ToString::to_string);
-            let refusal = refused.peek().as_ref().map(|(_, words)| words.clone());
-            let words = if why.is_none() && refusal.is_none() {
+            let refusal_words = refused.peek().as_ref().map(|(_, words)| words.clone());
+            let words = if why.is_none() && refusal_words.is_none() {
                 last
             } else {
-                Some(json!({ "no_reply": why, "refused": refusal, "last_reply": last }))
+                Some(json!({ "no_reply": why, "refused": refusal_words, "last_reply": last }))
             };
             let Some(words) = words else { return };
             told.set(None);
             let copied = ui::copy_text(words.to_string()).await;
             match copied {
-                Ok(()) => tell(COPIED, 2).await,
-                Err(_) => tell(NOT_COPIED, 5).await,
-            }
-        };
-        let go_to_hint = move || async move {
-            told.set(None);
-            let opened = wasm_bindgen_futures::JsFuture::from(open_hint()).await;
-            if opened.is_err() {
-                tell(NOT_OPENED, 5).await;
+                Ok(()) => tell(copied_note(), 2).await,
+                Err(_) => tell(not_copied_note(), 5).await,
             }
         };
 
-        let current = reply()
-            .map(|(status, _)| face(&status, Millis(js_sys::Date::now()), &|at| clock(at.0)));
+        let go_to_source = move || async move {
+            let Some((status, _)) = reply.peek().clone() else {
+                return;
+            };
+            told.set(None);
+            let opened = wasm_bindgen_futures::JsFuture::from(open_source(
+                status.entry_url(),
+                status.tab_pattern(),
+            ))
+            .await;
+            if opened.is_err() {
+                tell(
+                    (
+                        Tone::Warning,
+                        IconName::Alert,
+                        "Couldn’t open tab",
+                        format!("Open {} yourself.", status.entry_url()),
+                    ),
+                    5,
+                )
+                .await;
+            }
+        };
+
+        let pair_action = move || async move {
+            let entered = chords_endpoint.peek().trim().to_owned();
+            let Some(pattern) = endpoint_origin_pattern(&entered) else {
+                let note = refusal(Refusal::InvalidEndpoint, "Coda");
+                tell((note.tone, IconName::Alert, note.title, note.detail), 5).await;
+                return;
+            };
+            let allowed = request_origins(&[pattern]).await;
+            if !allowed {
+                let note = refusal(Refusal::PermissionRequired, "Coda");
+                tell((note.tone, IconName::Alert, note.title, note.detail), 5).await;
+                return;
+            }
+            let code_val = pairing_code.peek().trim().to_owned();
+            act(Request::Pair {
+                endpoint: entered,
+                code: (!code_val.is_empty()).then_some(code_val),
+            })
+            .await;
+        };
+
+        let connect_action = move || async move {
+            if let Some((status, _)) = reply.peek().clone() {
+                let allowed = request_origins(status.hosts()).await;
+                if !allowed {
+                    let note = refusal(Refusal::PermissionRequired, status.source_label());
+                    tell((note.tone, IconName::Alert, note.title, note.detail), 5).await;
+                    return;
+                }
+            }
+            act(Request::Connect).await;
+        };
+
+        let status_snapshot = reply().map(|(status, _)| status);
+        let current = status_snapshot.as_ref().map(face);
+        let source_name = status_snapshot
+            .as_ref()
+            .map(|s| s.source_label().to_owned())
+            .unwrap_or_else(|| "EHR".to_owned());
+        let paired = status_snapshot.as_ref().is_some_and(Reply::is_paired);
         let activity = current
             .as_ref()
-            .map(|face| face.activity)
+            .map(|shown| shown.activity)
             .unwrap_or_default();
         let live = activity == Activity::Reading;
         let running = activity != Activity::Idle;
+
         let note = told()
             .map(|(_, said)| said)
             .or_else(|| match no_reply().as_deref() {
-                Some(NoReply::Unreachable(_)) => Some(UNREACHABLE),
-                Some(NoReply::Unknown(_)) => Some(UNKNOWN_REPLY),
+                Some(NoReply::Unreachable(_)) => Some(unreachable_note()),
+                Some(NoReply::Unknown(_)) => Some(unknown_reply_note()),
                 None => refused().map(|(reason, _)| {
-                    let note = refusal(reason);
-                    (note.tone, IconName::Alert, note.title, note.detail)
+                    let built = refusal(reason, &source_name);
+                    (built.tone, IconName::Alert, built.title, built.detail)
                 }),
             });
 
         let body = match current {
             None if no_reply().is_some() => rsx! {},
-            None => rsx! { StatusLine { message: "Checking Hint…", pending: true } },
-            Some(face) => {
-                // Each new state takes the other of two identical arrivals, so the next one runs again.
+            None => rsx! { StatusLine { message: "Checking connection…", pending: true } },
+            Some(shown) => {
                 let (last, changes) = arrivals.take();
-                let changes = if last == face.title {
+                let changes = if last == shown.title {
                     changes
                 } else {
                     changes + 1
                 };
-                arrivals.set((face.title.clone(), changes));
+                arrivals.set((shown.title.clone(), changes));
                 let arrival = if changes % 2 == 1 {
                     "popup-state popup-arrive"
                 } else {
                     "popup-state popup-arrive-again"
                 };
+                let is_unpaired = status_snapshot
+                    .as_ref()
+                    .is_some_and(|s| s.standing() == Standing::Unpaired);
                 rsx! {
                     div { class: "{arrival}",
-                        PageTitle { eyebrow: "Hint", text: face.title, detail: face.detail, icon: face.icon }
-                        if !face.steps.is_empty() {
-                            TaskList { tasks: face.steps }
+                        PageTitle { eyebrow: shown.eyebrow, text: shown.title, detail: shown.detail, icon: shown.icon }
+                        if is_unpaired {
+                            TextField {
+                                label: "Chords address",
+                                value: chords_endpoint(),
+                                on_input: move |next| chords_endpoint.set(next),
+                                placeholder: "https://...",
+                                disabled: busy(),
+                            }
+                            TextField {
+                                label: "Pairing code",
+                                value: pairing_code(),
+                                on_input: move |next| pairing_code.set(next),
+                                placeholder: "Optional for local bridge",
+                                disabled: busy(),
+                            }
+                        }
+                        if !shown.steps.is_empty() {
+                            TaskList { tasks: shown.steps }
                         }
                     }
-                    if let Some(offer) = face.offer {
+                    if let Some(offer) = shown.offer {
                         div { class: "popup-footer",
                             Button { variant: ButtonVariant::Primary,
                                 busy: busy(),
-                                pending_label: "Connecting…",
-                                onclick: move |_| async move {
-                                    match offer.action {
-                                        Action::OpenHint => go_to_hint().await,
-                                        Action::Connect => act(Request::Connect).await,
+                                pending_label: "Working…",
+                                onclick: move |_| {
+                                    let action = offer.action;
+                                    async move {
+                                        match action {
+                                            Action::Pair => pair_action().await,
+                                            Action::OpenSource => go_to_source().await,
+                                            Action::Connect => connect_action().await,
+                                        }
                                     }
                                 },
-                                Icon { name: match offer.action { Action::OpenHint => IconName::ExternalLink, Action::Connect => IconName::Link } }
+                                Icon { name: match offer.action { Action::OpenSource => IconName::ExternalLink, Action::Pair | Action::Connect => IconName::Link } }
                                 "{offer.label}"
                             }
                         }
@@ -278,9 +375,11 @@ mod popup {
                         }
                         Menu { id: "popup-menu", label: "Coda",
                             MenuSection {
-                                MenuItem { icon: IconName::ExternalLink,
-                                    onclick: move |_| async move { go_to_hint().await },
-                                    "Go to Hint"
+                                if status_snapshot.is_some() {
+                                    MenuItem { icon: IconName::ExternalLink,
+                                        onclick: move |_| async move { go_to_source().await },
+                                        "Go to {source_name}"
+                                    }
                                 }
                                 MenuItem { icon: IconName::Clipboard,
                                     disabled: reply().is_none() && no_reply().is_none(),
@@ -293,6 +392,13 @@ mod popup {
                                     MenuItem { icon: IconName::X, danger: true,
                                         onclick: move |_| async move { act(Request::Stop).await },
                                         "Disconnect"
+                                    }
+                                }
+                            } else if paired {
+                                MenuSection {
+                                    MenuItem { icon: IconName::X, danger: true,
+                                        onclick: move |_| async move { act(Request::Unpair).await },
+                                        "Unpair extension"
                                     }
                                 }
                             }
