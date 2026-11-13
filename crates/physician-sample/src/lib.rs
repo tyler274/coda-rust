@@ -368,6 +368,22 @@ pub fn durable_site_with_feed(
         .with_state(live)
 }
 
+/// Builds the required router over a migrated PostgreSQL database, reading
+/// patients from `runtime` and publishing workspace events on `bus`.
+#[doc(hidden)]
+pub async fn authed_postgres_router(
+    base: Router,
+    _database_url: &str,
+    runtime: local_product::runtime::Store,
+    bus: std::sync::Arc<dyn physician_bus::Bus>,
+) -> Router {
+    let stores = hosting::Readiness::shared(&runtime);
+    let auth = auth::Auth::postgres_with_bus(runtime, &stores, bus, gmail::Delivery::Proof)
+        .await
+        .expect("connect postgres auth router");
+    auth::required_router(base, auth)
+}
+
 fn site<S>() -> Router<S>
 where
     S: Clone + Send + Sync + 'static,
@@ -1375,11 +1391,28 @@ async fn roster(
         return StatusCode::SERVICE_UNAVAILABLE.into_response();
     };
     let directory = connected.patients(extensions);
-    let query = query.query.unwrap_or_default();
-    let Ok(found) = patients::search(&*directory, &registered, &query).await else {
-        return StatusCode::SERVICE_UNAVAILABLE.into_response();
+    let query_text = query.query.unwrap_or_default();
+    let page = match patients::roster_page(
+        &*directory,
+        &registered,
+        &query_text,
+        query.after.as_deref(),
+    )
+    .await
+    {
+        Ok(page) => page,
+        Err(patients::RosterSearchError::InvalidCursor(_)) => {
+            return StatusCode::BAD_REQUEST.into_response();
+        }
+        Err(patients::RosterSearchError::Directory(_)) => {
+            return StatusCode::SERVICE_UNAVAILABLE.into_response();
+        }
     };
-    let mut rows: Vec<Value> = found.iter().map(|patient| patient.roster_row()).collect();
+    let mut rows: Vec<Value> = page
+        .patients
+        .iter()
+        .map(|patient| patient.roster_row())
+        .collect();
     let (connected, store, practice_id) = (&connected, &*store, practice.as_str());
     let links = auth::per_workspace(&rows, |ws_id| async move {
         connected.link_wire(store, practice_id, &ws_id).await
@@ -1391,7 +1424,7 @@ async fn roster(
             row["sharing_consented"] = json!(link.sharing_consented);
         }
     }
-    Json(json!({ "patients": rows, "next_after": null })).into_response()
+    Json(json!({ "patients": rows, "next_after": page.next_after })).into_response()
 }
 
 #[derive(Deserialize)]
@@ -1533,6 +1566,7 @@ fn dictation_unavailable() -> Response {
 #[derive(Deserialize)]
 pub(crate) struct RosterQuery {
     pub(crate) query: Option<String>,
+    pub(crate) after: Option<String>,
 }
 
 /// Returns why this server rejects the command.
@@ -1761,7 +1795,24 @@ mod tests {
         assert!(found.contains("1972-03-18"), "{found}");
         let (status, blank) = get("/patient-roster?query=").await;
         assert_eq!(status, StatusCode::OK);
-        assert!(blank.contains("\"patients\":[]"), "{blank}");
+        let blank_json: Value = serde_json::from_str(&blank).unwrap();
+        let blank_names: Vec<_> = blank_json["patients"]
+            .as_array()
+            .expect("roster patients")
+            .iter()
+            .filter_map(|row| row["patient_display_name"].as_str())
+            .collect();
+        assert_eq!(
+            blank_names,
+            [
+                "Dan Cohen",
+                "Jake Smith",
+                "Mary Louis",
+                "Tanvir Chowdhury",
+                "Teresa Hayes"
+            ]
+        );
+        assert!(blank_json["next_after"].is_null());
         let (status, updates) = get("/updates").await;
         assert_eq!(status, StatusCode::OK);
         assert!(updates.contains("\"rows\":[]"));

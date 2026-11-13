@@ -154,43 +154,47 @@ async fn cross_instance_turn_is_visible_on_the_other_sse_stream_and_valkey_resta
     assert_eq!(status, 200, "{body}\n{}", site_a.tail());
     assert_eq!(body["outcome"], "accepted", "{body}");
 
-    sse.wait_for("event: workspace_changed", Duration::from_secs(20))
-        .await
-        .unwrap_or_else(|error| {
-            panic!(
-                "{error}\n{}\n{}\n{}",
-                site_a.tail(),
-                site_b.tail(),
-                worker.tail()
-            )
-        });
-    assert!(
-        sse.buffer.contains(workspace),
-        "workspace missing from {}",
-        sse.buffer
-    );
-    assert!(
-        !sse.buffer.contains("event: resync"),
-        "resync arrived before Valkey restarted: {}",
-        sse.buffer
-    );
+    let deadline = std::time::Instant::now() + Duration::from_secs(20);
+    loop {
+        let remaining = deadline.saturating_duration_since(std::time::Instant::now());
+        sse.wait_for("event: workspace_changed", remaining)
+            .await
+            .unwrap_or_else(|error| {
+                panic!(
+                    "{error}\n{}\n{}\n{}",
+                    site_a.tail(),
+                    site_b.tail(),
+                    worker.tail()
+                )
+            });
+        assert!(
+            sse.buffer.contains(workspace),
+            "workspace missing from {}",
+            sse.buffer
+        );
+        assert!(
+            !sse.buffer.contains("event: resync"),
+            "resync arrived before Valkey restarted: {}",
+            sse.buffer
+        );
 
-    let (status, snapshot) = get_json(
-        &site_b_listen,
-        &format!("/patient-workspaces/{workspace}/chats/{chat}/snapshot"),
-        &session,
-    )
-    .await;
-    assert_eq!(status, 200, "{snapshot}\n{}", site_b.tail());
-    let texts = support::chat_texts(&snapshot["snapshot"]);
-    assert!(
-        texts.iter().any(|text| text == "Hello from instance A"),
-        "instance B snapshot missing the turn: {texts:?}"
-    );
-    assert!(
-        texts.iter().any(|text| text == support::FIXED_TEXT),
-        "instance B snapshot missing the worker reply: {texts:?}"
-    );
+        let (status, snapshot) = get_json(
+            &site_b_listen,
+            &format!("/patient-workspaces/{workspace}/chats/{chat}/snapshot"),
+            &session,
+        )
+        .await;
+        assert_eq!(status, 200, "{snapshot}\n{}", site_b.tail());
+        let texts = support::chat_texts(&snapshot["snapshot"]);
+        assert!(
+            texts.iter().any(|text| text == "Hello from instance A"),
+            "instance B snapshot missing the turn: {texts:?}"
+        );
+        if texts.iter().any(|text| text == support::FIXED_TEXT) {
+            break;
+        }
+        sse.buffer.clear();
+    }
 
     valkey.restart().await;
     sse.wait_for("event: resync", Duration::from_secs(20))
