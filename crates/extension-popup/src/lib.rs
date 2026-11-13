@@ -1,6 +1,7 @@
 //! The popup of Coda's Chrome extension, built from `ui` like the physician web app. The
-//! extension's worker owns Hint's session and every read; the popup shows where the connection
-//! stands and asks the worker to connect or disconnect.
+//! extension's connector worker owns pairing with Chords, each reader's session in memory, and
+//! every background read; the popup shows where the connection stands and asks the worker to pair,
+//! connect, or disconnect.
 //!
 //! ```sh
 //! cargo build -p extension-popup --target wasm32-unknown-unknown --features web

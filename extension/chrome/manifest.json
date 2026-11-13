@@ -1,21 +1,18 @@
 {
   "manifest_version": 3,
-  "name": "Coda Hint Sandbox Connector",
-  "version": "0.3.2",
+  "name": "Coda",
+  "version": "0.4.0",
   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA2d0FLhSlmSggo13QjASancHULGI8LEZW+Lg92kIglpfi12QRdG+VTSYBYPhCzeHz7oU28/o+rXaI/EKLMHxBfokMLmj7GgsCG8ui5Oh6ibSWpnnbphIKzxpHn3lEAh5v4hIeQGyEIMKNED9p4Ho4KrY+BRKwLFzk3TWrZmbIuHBHNIXNRyqSLEupsnPxG9TFIucPGXd8pOI3GR1npQ0GZvdk9SjKGwl7YMapZMVjHTJ74VtuId7vLRQD/+YwJaX143WXzfIM0I7ZA8Oi22tJKUFErvgCWRZ7rXWYw5H5cqlFacbB/c/do8yobFkHqdJgwEzNGq4A3g95aVNQbODZqwIDAQAB",
-  "description": "Read-only independent connection experiment for four fictional Hint patients.",
+  "description": "Connects your signed-in browser session to Coda in the background, read only.",
   "minimum_chrome_version": "120",
   "permissions": [
     "alarms",
     "storage",
     "scripting"
   ],
-  "host_permissions": [
-    "https://app.hint.com/*",
-    "https://accounts.hint.com/*",
-    "https://api.hint.com/*",
-    "https://api.one.hint.com/*",
-    "http://127.0.0.1/*"
+  "optional_host_permissions": [
+    "https://*/*",
+    "http://*/*"
   ],
   "background": {
     "service_worker": "worker.js"
