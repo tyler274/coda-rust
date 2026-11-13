@@ -29,6 +29,7 @@ mod overlays;
 mod prose;
 mod script;
 mod sources;
+mod stack;
 mod tables;
 mod toast;
 pub use agent::{
@@ -70,6 +71,9 @@ pub use sources::{
     PartRange, Places, PreviewContent, RawRecord, RecordAbout, RecordBody, RecordField,
     RecordStatus, SourceLink, SourcePane, SourceReading, SourceRecord, SourceState, SourceSummary,
     TextPart,
+};
+pub use stack::{
+    Layer, Nav, Opened, Screen, ScreenFrame, ScreenStack, Serial, Standing, use_screen_stack,
 };
 pub use tables::{Column, SortOrder, Table, TableRow};
 pub use toast::{TOAST_MS, Toast};
@@ -1262,7 +1266,7 @@ pub enum ToggleState {
 /// where the check would, and it still takes a press unless the host makes it `disabled`. The title
 /// keeps its width in every state. Where transitions run, each change fades and the spinner waits a
 /// moment first, so a quick answer to a row pressed while settled shows no spinner; under reduced
-/// motion or keyboard interaction it shows at once. Its title is never cut. The words are the host's for each state.
+/// motion it still waits, but stands still. Its title is never cut. The words are the host's for each state.
 #[component]
 pub fn ToggleRow(
     icon: IconName,

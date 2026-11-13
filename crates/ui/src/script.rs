@@ -12,13 +12,37 @@ use std::fmt;
 use std::marker::PhantomData;
 use std::rc::Rc;
 
-use serde::Deserialize;
 use serde::de::DeserializeOwned;
+use serde::{Deserialize, Serialize};
 use serde_json::{Value, json};
 
-/// Installs, once per page, which way the person is driving it and the slide of selection fills.
-pub(crate) fn motion() {
-    fire("motion", json!([]));
+/// Marks the page with the phone `platform` it runs on, if any, and installs, once per page, which
+/// way the person is driving it and the slide of selection fills.
+pub(crate) fn motion(platform: Option<Platform>) {
+    fire("motion", json!([platform]));
+}
+
+/// The phone platform a build runs on, which decides the form of its motion.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize)]
+#[serde(rename_all = "lowercase")]
+pub(crate) enum Platform {
+    /// An iPhone or iPad.
+    Ios,
+    /// An Android phone or tablet.
+    Android,
+}
+
+impl Platform {
+    /// The platform this build is compiled for; none for a browser or a desktop.
+    pub(crate) fn current() -> Option<Self> {
+        if cfg!(target_os = "ios") {
+            Some(Self::Ios)
+        } else if cfg!(target_os = "android") {
+            Some(Self::Android)
+        } else {
+            None
+        }
+    }
 }
 
 /// Installs, once per page, every menu's keys, its focus on opening and its closing on a choice.
@@ -103,9 +127,19 @@ pub(crate) fn scroll_into_view(id: &str) {
     fire("scrollIntoView", json!([id]));
 }
 
-/// Focuses element `id`.
-pub(crate) fn focus_element(id: &str) {
-    fire("focusElement", json!([id]));
+/// Focuses element `id`, bringing it into view or not as `reveal` says.
+pub(crate) fn focus_element(id: &str, reveal: Reveal) {
+    fire("focusElement", json!([id, reveal]));
+}
+
+/// Whether moving focus to an element may scroll to bring it into view.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize)]
+#[serde(rename_all = "lowercase")]
+pub(crate) enum Reveal {
+    /// The browser scrolls it into view, as focus does by default.
+    Scroll,
+    /// Nothing scrolls.
+    Still,
 }
 
 /// Puts the caret at the end of the focused field.
@@ -113,9 +147,35 @@ pub(crate) fn caret_to_end() {
     fire("caretToEnd", json!([]));
 }
 
-/// Watches frame `id`'s collapse: true once it has finished, false if the row came back.
-pub(crate) fn watch_exit(id: &str) -> Asked<bool> {
-    ask("watchExit", json!([id]))
+/// Makes the page's history hold exactly `depth` entries above the one the app stands on with no
+/// screen open. A step back it takes lands later; a depth set while one travels is reached once it
+/// lands.
+pub(crate) fn set_depth(depth: usize) {
+    fire("setDepth", json!([depth]));
+}
+
+/// Watches frame `id`'s `exit`: true once it has finished, false if the frame came back.
+pub(crate) fn watch_exit(id: &str, exit: Exit) -> Asked<bool> {
+    ask("watchExit", json!([id, exit.properties()]))
+}
+
+/// A frame's exit, which its watch waits on.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub(crate) enum Exit {
+    /// A live list's row collapsing.
+    Collapse,
+    /// A screen sliding away, or fading where it does not slide.
+    Slide,
+}
+
+impl Exit {
+    /// Every property whose transition makes up the exit.
+    fn properties(self) -> &'static [&'static str] {
+        match self {
+            Self::Collapse => &["grid-template-rows"],
+            Self::Slide => &["transform", "opacity"],
+        }
+    }
 }
 
 /// Opens dialog `id` modally, focusing its `[autofocus]` or else `focus`: true once it has closed,
@@ -144,6 +204,12 @@ pub(crate) fn watch_page(citation: &str, preview: &str) -> Listening<PageHeard> 
 /// closes it.
 pub(crate) fn watch_popover(control: &str, popover: &str) -> Listening<PopoverHeard> {
     listen("watchPopover", json!([control, popover]))
+}
+
+/// The depth of the history entry the page shows, each time the person steps through history, until
+/// dropped.
+pub(crate) fn watch_depth() -> Listening<usize> {
+    listen("watchDepth", json!([]))
 }
 
 /// Holds the reader's place in conversation `scroller` while its size or content changes, and

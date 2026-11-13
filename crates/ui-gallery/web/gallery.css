@@ -41,6 +41,12 @@ body { margin: 0; background: var(--surface); color: var(--ink); font: var(--typ
 .gallery-phone-tabs { max-width: 390px; background: var(--surface-lowest); }
 .gallery-phone-tabs .tabs { box-shadow: none; padding: 0; background: transparent; }
 .gallery-phone { display: grid; max-width: 390px; overflow: hidden; border: var(--hairline) solid var(--outline-variant); border-radius: var(--radius-xl); background: var(--surface-lowest); }
+.gallery-screens-demo { display: grid; gap: var(--space-4); max-width: 390px; }
+.gallery-screens-demo > .segmented { justify-self: start; }
+.gallery-screens { display: flex; flex-direction: column; height: 640px; overflow: hidden; border: var(--hairline) solid var(--outline-variant); border-radius: var(--radius-xl); background: var(--surface-lowest); }
+.gallery-screens-layers { flex: 1; min-height: 0; }
+.gallery-screens-list { margin: var(--space-4); }
+.gallery-screens-page { display: grid; gap: var(--space-4); padding: var(--space-4); }
 .gallery-phone-thread { display: flex; flex-direction: column; gap: var(--space-5); padding: var(--space-5); }
 .gallery-phone > .composer { width: auto; margin: 0 var(--space-3) var(--space-3); }
 .gallery-companion { display: inline-block; width: 24px; height: 24px; border-radius: 50%; background: var(--data-container); box-shadow: inset 0 0 0 6px var(--data); }

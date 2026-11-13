@@ -7,8 +7,8 @@
 //! `UI_GALLERY_SCREENSHOTS` set to a folder, those walks leave a picture of what
 //! they focused there. The UI library's module behaviour is walked with real input too: a
 //! menu's keys, a dialog's close, a sheet's drag, a copy read back from the clipboard, a
-//! popover's fade out under reduced motion, and a selection fill through quick changes. A source
-//! pane is read for the places its citation marks.
+//! popover's fade out under reduced motion, a selection fill through quick changes, and a screen
+//! stack going back through history. A source pane is read for the places its citation marks.
 
 // The shared client also carries helpers for journeys this test doesn't walk.
 #[allow(dead_code)]
@@ -312,6 +312,288 @@ fn a_ring_fills_only_once_it_is_chosen() {
         serde_json::json!({ "none_chosen": true, "empty_rings": 1, "empty_unlike_chosen": true, "mixed_filled": true }),
         "every ring not chosen should stand empty, in every group"
     );
+}
+
+/// The screen stack keeps history's depth to the screens open over the tab that shows, so the
+/// platform's own back closes the top screen; going back finds the screen beneath, and its scroll
+/// place, as they were; a tab keeps its screens; focus moves to the layer on top when a screen opens
+/// or closes, and stays on the tab pressed; a fast double press opens one screen; and under reduced
+/// motion a closed screen still goes.
+#[test]
+#[ignore = "browser qualification; run explicitly with --ignored"]
+fn the_screen_stack_goes_back_by_history_and_keeps_each_screen_as_it_was() {
+    let gallery = Gallery::start();
+    let mut browser = open_at(
+        &gallery,
+        PHONE,
+        "buttons-and-navigation",
+        "Buttons and navigation",
+    );
+    browser.watch_page_errors();
+    let step = |browser: &mut Browser, action: &str, value: Value| {
+        browser.page().call_function(
+            include_str!("screen_stack.js"),
+            &[Value::from("Screen stack"), Value::from(action), value],
+        )
+    };
+    // After a screen opens or closes, the layer on top has focus.
+    let stack = |depth: u64, layers: &[(&str, &str, bool)], scroll: u64| {
+        let top = layers.iter().find(|(_, standing, _)| *standing == "top");
+        serde_json::json!({ "depth": depth, "focus": top.map(|(title, _, _)| title), "layers": layers, "scroll": scroll })
+    };
+
+    let drawn = step(&mut browser, "read", Value::Null);
+    assert_eq!(
+        drawn["focus"],
+        Value::Null,
+        "on first draw no layer takes focus"
+    );
+    step(&mut browser, "open", Value::from("Visit note"));
+    assert_eq!(
+        step(&mut browser, "open", Value::from("Original record")),
+        stack(
+            2,
+            &[
+                ("Records", "under", false),
+                ("Visit note", "under", false),
+                ("Original record", "top", true),
+                ("You", "away", false)
+            ],
+            0
+        ),
+        "two screens open"
+    );
+    assert_eq!(
+        step(&mut browser, "history-back", Value::Null),
+        stack(
+            1,
+            &[
+                ("Records", "under", false),
+                ("Visit note", "top", true),
+                ("You", "away", false)
+            ],
+            0
+        ),
+        "history's back closes the top screen"
+    );
+
+    step(&mut browser, "back", Value::Null);
+    step(&mut browser, "scroll", Value::from(400));
+    step(&mut browser, "open", Value::from("Blood pressure"));
+    let first = [("Records", "top", true), ("You", "away", false)];
+    assert_eq!(
+        step(&mut browser, "back", Value::Null),
+        stack(0, &first, 400),
+        "the in-app Back finds the list where it was scrolled"
+    );
+
+    let open = stack(
+        1,
+        &[
+            ("Records", "under", false),
+            ("Visit note", "top", true),
+            ("You", "away", false),
+        ],
+        400,
+    );
+    assert_eq!(step(&mut browser, "open", Value::from("Visit note")), open);
+    // A tab change leaves focus on the tab pressed.
+    let mut you = stack(
+        0,
+        &[
+            ("Records", "away", false),
+            ("Visit note", "away", false),
+            ("You", "top", true),
+        ],
+        400,
+    );
+    you["focus"] = Value::from("tab You");
+    assert_eq!(
+        step(&mut browser, "tab", Value::from("You")),
+        you,
+        "the other tab, with history at its depth"
+    );
+    let mut returned = open.clone();
+    returned["focus"] = Value::from("tab Records");
+    assert_eq!(
+        step(&mut browser, "tab", Value::from("Records")),
+        returned,
+        "the first tab as it was left"
+    );
+
+    step(&mut browser, "back", Value::Null);
+    let row = ".gallery-screens .screen-frame.is-top .list-row";
+    let (x, y) = center(&mut browser, row);
+    for kind in [
+        "mousePressed",
+        "mouseReleased",
+        "mousePressed",
+        "mouseReleased",
+    ] {
+        mouse(&mut browser, kind, x, y);
+    }
+    let opened = step(&mut browser, "read", Value::Null);
+    assert_eq!(
+        (&opened["depth"], opened["layers"].as_array().map(Vec::len)),
+        (&Value::from(1), Some(3)),
+        "a fast double press opens one screen: {opened}"
+    );
+
+    browser.emulate_reduced_motion();
+    let settled = step(&mut browser, "back", Value::Null);
+    assert_eq!(
+        settled["layers"],
+        serde_json::json!(first),
+        "under reduced motion the closed screen goes"
+    );
+    assert_eq!(browser.take_page_errors(), Vec::<String>::new());
+}
+
+/// A step back in history lands a while after the stack asks for it, as on a busy phone: a press
+/// made while it travels is kept, and the step is never taken for the person going back. The test's
+/// own script holds each step until all of a turn's presses are made, so every press overlaps it.
+#[test]
+#[ignore = "browser qualification; run explicitly with --ignored"]
+fn a_press_while_the_stacks_own_step_travels_is_kept() {
+    let gallery = Gallery::start();
+    let mut browser = open_at(
+        &gallery,
+        PHONE,
+        "buttons-and-navigation",
+        "Buttons and navigation",
+    );
+    browser.watch_page_errors();
+    let quickly = |browser: &mut Browser, presses: Value| {
+        browser.page().call_function(
+            include_str!("screen_stack.js"),
+            &[Value::from("Screen stack"), Value::from("quickly"), presses],
+        )
+    };
+    let stands = |seen: &Value| (seen["depth"].clone(), seen["layers"].clone());
+    let records = |depth: u64, layers: Value| (Value::from(depth), layers);
+    let two_open = serde_json::json!([
+        ["Records", "under", false],
+        ["Visit note", "under", false],
+        ["Original record", "top", true],
+        ["You", "away", false]
+    ]);
+
+    quickly(
+        &mut browser,
+        serde_json::json!([["open", "Visit note"], ["open", "Original record"]]),
+    );
+    let returned = quickly(
+        &mut browser,
+        serde_json::json!([["tab", "You"], ["tab", "Records"]]),
+    );
+    assert_eq!(
+        stands(&returned),
+        records(2, two_open.clone()),
+        "Records, chosen again while the step to You travels, keeps both its screens"
+    );
+    let you = quickly(&mut browser, serde_json::json!([["tab", "You"]]));
+    assert_eq!(
+        stands(&you),
+        records(
+            0,
+            serde_json::json!([
+                ["Records", "away", false],
+                ["Visit note", "away", false],
+                ["Original record", "away", false],
+                ["You", "top", true]
+            ])
+        ),
+        "You still finds its own first screen"
+    );
+
+    let before = quickly(&mut browser, serde_json::json!([["tab", "Records"]]));
+    assert_eq!(stands(&before), records(2, two_open));
+    let closed = quickly(
+        &mut browser,
+        serde_json::json!([["back", null], ["back", null]]),
+    );
+    let first = serde_json::json!([["Records", "top", true], ["You", "away", false]]);
+    assert_eq!(
+        (stands(&closed), &closed["length"]),
+        (records(0, first), &before["length"]),
+        "two Backs close together close both screens, and history grows no entry"
+    );
+
+    quickly(&mut browser, serde_json::json!([["open", "Visit note"]]));
+    let reopened = quickly(
+        &mut browser,
+        serde_json::json!([["back", null], ["open", "Visit note"]]),
+    );
+    assert_eq!(
+        stands(&reopened),
+        records(
+            1,
+            serde_json::json!([
+                ["Records", "under", false],
+                ["Visit note", "top", true],
+                ["You", "away", false]
+            ])
+        ),
+        "a screen opened while the step back travels stays open"
+    );
+    assert_eq!(browser.take_page_errors(), Vec::<String>::new());
+}
+
+/// Under reduced motion Android's form cross-fades in place: going back, the closed screen stays in
+/// the page where it stood while it fades, and goes once its fade ends, the screen beneath then
+/// taking input.
+#[test]
+#[ignore = "browser qualification; run explicitly with --ignored"]
+fn under_reduced_motion_a_closed_screen_fades_out_on_android() {
+    let gallery = Gallery::start();
+    let mut browser = Browser::launch();
+    browser.watch_page_errors();
+    browser.resize(PHONE);
+    browser.emulate_reduced_motion();
+    open(
+        &mut browser,
+        &gallery.url,
+        "buttons-and-navigation",
+        "Buttons and navigation",
+    );
+    let step = |browser: &mut Browser, action: &str, value: Value| {
+        browser.page().call_function(
+            include_str!("screen_stack.js"),
+            &[Value::from("Screen stack"), Value::from(action), value],
+        )
+    };
+    step(&mut browser, "form", Value::from("Android"));
+    step(&mut browser, "open", Value::from("Visit note"));
+    let back = step(&mut browser, "watched-back", Value::Null);
+    // On each frame, the closed screen's opacity and its left edge from its resting place.
+    let closing: Vec<Option<(f64, f64)>> = back["closing"]
+        .as_array()
+        .expect("the closed screen on each frame")
+        .iter()
+        .map(|seen| Some((seen.get(0)?.as_f64()?, seen.get(1)?.as_f64()?)))
+        .collect();
+    let fading = closing
+        .iter()
+        .any(|seen| seen.is_some_and(|(opacity, _)| opacity > 0.1 && opacity < 0.9));
+    assert!(
+        fading,
+        "partway through its fade the closed screen is still in the page: {closing:?}"
+    );
+    assert!(
+        closing.iter().flatten().all(|&(_, left)| left == 0.0),
+        "the closed screen fades where it stood: {closing:?}"
+    );
+    assert_eq!(
+        closing.last(),
+        Some(&None),
+        "once settled the closed screen is gone: {closing:?}"
+    );
+    assert_eq!(
+        back["layers"],
+        serde_json::json!([["Records", "top", true], ["You", "away", false]]),
+        "the screen beneath takes input"
+    );
+    assert_eq!(browser.take_page_errors(), Vec::<String>::new());
 }
 
 /// An address that names no section opens the first rather than a blank page.

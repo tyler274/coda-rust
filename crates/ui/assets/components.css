@@ -38,6 +38,33 @@
 .row-frame.is-arriving { transition: grid-template-rows var(--motion-step) var(--ease-out), opacity var(--motion-arrive) var(--ease-out),
   transform var(--motion-arrive) var(--ease-out); }
 @starting-style { .row-frame.is-arriving { grid-template-rows: minmax(0, 0fr); opacity: 0; transform: translateY(var(--rise-small)); } }
+/* A screen stack's layer (ScreenFrame): each fills the box its host gives the stack, which clips them, a later layer over an
+   earlier one, the host's bar at its top and its own scroll area beneath. On the step role: an iPhone's form, also a
+   browser's, brings an opened screen in from the trailing edge over the one beneath, which moves back by 0.3 of the width
+   and darkens under an overlay, the new screen casting a soft shadow from its leading edge; going back is the mirror. A
+   layer of a tab that is away is unseen at once and keeps its layout and scroll place, so a tab change arrives at once. */
+:has(> .screen-frame) { position: relative; overflow: clip; isolation: isolate; }
+.screen-frame { position: absolute; inset: 0; display: flex; flex-direction: column; background: var(--surface);
+  box-shadow: var(--elevation-3); transition: transform var(--motion-step) var(--ease-out); }
+.screen-frame::after { content: ""; position: absolute; inset: 0; background: rgb(var(--ref-shadow) / .11); opacity: 0; pointer-events: none;
+  transition: opacity var(--motion-step) var(--ease-out); }
+.screen-frame:focus { outline: none; }
+.screen-frame-body { flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain; }
+.screen-frame.is-under { transform: translateX(-30%); }
+.screen-frame.is-under::after { opacity: 1; }
+.screen-frame.is-exiting { transform: translateX(100%); }
+@starting-style { .screen-frame.is-arriving.is-top { transform: translateX(100%); } }
+/* Android's form, under any element marked `data-platform="android"`: both screens move by the screen shift, the new
+   one fading in and the old one fading out at the start, on the control role; going back is the mirror. The fade is
+   named first, so under reduced motion, where the shift is nothing and only the fade runs, the screens cross-fade in
+   place on its timing. */
+:where([data-platform="android"]) .screen-frame { box-shadow: none;
+  transition: opacity var(--motion-control) var(--ease-out), transform var(--motion-step) var(--ease-emphasized); }
+:where([data-platform="android"]) .screen-frame::after { content: none; }
+:where([data-platform="android"]) .screen-frame.is-under { transform: translateX(calc(-1 * var(--screen-shift))); opacity: 0; }
+:where([data-platform="android"]) .screen-frame.is-exiting { transform: translateX(var(--screen-shift)); opacity: 0; }
+@starting-style { :where([data-platform="android"]) .screen-frame.is-arriving.is-top { transform: translateX(var(--screen-shift)); opacity: 0; } }
+.screen-frame.is-away, .screen-frame.is-away::after { visibility: hidden; transition: none; }
 .row-list > li.row-frame + li.row-frame { border-top: 0; }
 .row-list > li.row-frame + li.row-frame > .row-frame-content { border-top: var(--hairline) solid var(--outline-variant); }
 .title-with-count { display: flex; align-items: center; gap: var(--space-2); min-width: 0; }
@@ -82,13 +109,13 @@
 /* Under reduced motion nothing moves: nothing rises, slides, scales, grows or loops. What fades still fades, on its own
    timing, so what arrives or leaves is still seen to. Transitions keep only opacity, and overlay and display, which move
    nothing and keep a closing popover or tooltip shown while it fades out; each of those names the three first, in that
-   order, so its own timings stay with them. The rise tokens are nothing, and of the animations only the fades run: a
-   count's change, words streaming in, a pending line's reveal after its delay, a preview, a source pane and a dialog
-   arriving or leaving, and a finished task's mark. A sheet fades rather than sliding, and a popover keeps its size.
-   Charts draw whole, busy marks stand still, a focus ring shows at full width. */
+   order, so its own timings stay with them. The rise tokens and the screen shift are nothing, and of the animations only
+   the fades run: a count's change, words streaming in, a pending line's reveal after its delay, a preview, a source pane
+   and a dialog arriving or leaving, and a finished task's mark. A sheet fades rather than sliding, and a popover keeps its
+   size. Charts draw whole, busy marks stand still, a focus ring shows at full width. */
 @keyframes fade-in { from { opacity: 0; } }
 @media (prefers-reduced-motion: reduce) {
-  :root { --rise: 0px !important; --rise-small: 0px !important; }
+  :root { --rise: 0px !important; --rise-small: 0px !important; --screen-shift: 0px !important; }
   *, *::before, *::after, ::backdrop { animation: none !important; transition-property: opacity, overlay, display !important; }
   .count.is-changed { animation: count-change var(--motion-arrive) var(--ease-out) !important; }
   .count.is-changed-again { animation: count-change-again var(--motion-arrive) var(--ease-out) !important; }
@@ -419,7 +446,7 @@ button.source-trigger { cursor: pointer; transition: border-color var(--motion-p
    half strength and a spinner stands in the check's place. The check and the spinner share one box at the trailing
    edge, so the title keeps its width in every state. Where transitions run, each fades in and out, and the spinner
    waits one arrival before it shows, so a row pressed while settled and answered within that wait shows none; under
-   reduced motion it shows at once and still, and driven by keyboard at once and turning. It turns only while busy. */
+   reduced motion it still waits and fades but stands still, and the tile fills at once. It turns only while busy. */
 .toggle-row .icon-tile { transition: background-color var(--motion-control) var(--ease-out), color var(--motion-control) var(--ease-out); }
 .toggle-row[aria-pressed="true"]:not([aria-busy="true"]) .icon-tile { background: var(--primary); color: var(--on-primary); }
 .toggle-row[aria-busy="true"] .icon-tile { background: color-mix(in srgb, var(--primary) 50%, var(--data-container)); color: var(--on-primary); }

@@ -294,7 +294,10 @@ pub fn SeriesChart(
                                         event.prevent_default();
                                         if let Some(next) = next {
                                             choose(Some(next));
-                                            script::focus_element(&format!("{focus_id}-{next}"));
+                                            script::focus_element(
+                                                &format!("{focus_id}-{next}"),
+                                                script::Reveal::Scroll,
+                                            );
                                         }
                                     }
                                 },

@@ -4,13 +4,16 @@
 // answers once, by returning its answer or a promise of it; or keeps listening, reporting through
 // `send` and returning how to stop.
 
-// Installs, once per page: which way the person is driving it (`data-interaction` on the root,
-// pointer or keyboard), which decides where a focus ring shows; `window.codaMotion` for motion
+// Marks the root with the phone `platform` the build runs on (`data-platform`, ios or android),
+// which decides the form of the motion, or with none when it is null. Installs, once per page:
+// which way the person is driving it (`data-interaction` on the root, pointer or keyboard), which
+// decides where a focus ring shows; `window.codaMotion` for motion
 // measured before and after, which runs whichever way the page is driven and only reduced motion
 // stops; and the slide of every selection host's fill when its current item changes.
-function motion() {
-  if (window.codaMotion) return;
+function motion(platform) {
   const root = document.documentElement;
+  if (platform !== null) root.dataset.platform = platform;
+  if (window.codaMotion) return;
   const pointer = () => { if (root.dataset.interaction !== "pointer") root.dataset.interaction = "pointer"; };
   document.addEventListener("pointerdown", pointer, true);
   document.addEventListener("pointermove", pointer, { capture: true, passive: true });
@@ -352,26 +355,87 @@ function reorder(id, keys) {
   }
 }
 
-// Answers true once frame `id`'s collapse has finished, or at once with none to run: under reduced
-// motion. A collapse cancelled by the row coming back answers false; one cancelled while the row
-// still leaves is watched again.
-function watchExit(id) {
-  return new Promise((report) => watchFrameExit(id, report));
+// Answers true once frame `id`'s exit, every running transition of one of its `properties` (a row's
+// collapse, a screen's slide and fade), has finished, or at once with none to run, as under reduced
+// motion where only fades still run. An exit cancelled by the frame coming back answers false; one
+// cancelled while the frame still leaves is watched again.
+function watchExit(id, properties) {
+  return new Promise((report) => watchFrameExit(id, properties, report));
 }
 
-function watchFrameExit(id, report) {
+function watchFrameExit(id, properties, report) {
   const watch = () => requestAnimationFrame(() => {
     const frame = document.getElementById(id);
-    const collapsing = frame ? frame.getAnimations().filter((animation) => animation.transitionProperty === "grid-template-rows") : [];
-    if (collapsing.length === 0) { report(true); return; }
-    Promise.allSettled(collapsing.map((animation) => animation.finished)).then((settled) => {
+    const exiting = frame ? frame.getAnimations().filter((animation) => properties.includes(animation.transitionProperty)) : [];
+    if (exiting.length === 0) { report(true); return; }
+    Promise.allSettled(exiting.map((animation) => animation.finished)).then((settled) => {
       if (settled.every((result) => result.status === "fulfilled")) report(true);
-      // A collapse cancelled while the row still leaves (motion became immediate) is watched again.
+      // An exit cancelled while the frame still leaves (motion became immediate) is watched again.
       else if (frame.classList.contains("is-exiting")) watch();
       else report(false);
     });
   });
   watch();
+}
+
+// The depth of the history entry the page shows: what the screen stack put under `screenDepth` in its
+// state, or 0 for any other state.
+function historyDepth() {
+  const depth = history.state?.screenDepth;
+  return Number.isInteger(depth) && depth > 0 ? depth : 0;
+}
+
+// The screen stack's history, one per page: the depth last wanted, whether the stack's own step back
+// is still travelling (a step lands later, as a `popstate`), and who hears the person's steps. Its
+// one `popstate` listener lives here, for the page's life, not with any watch, so an own step that
+// lands after the stack has gone is still taken as its own.
+const screenHistory = { wanted: 0, travelling: false, hearing: new Set(), listening: false };
+
+function screenHistoryOwner() {
+  if (!screenHistory.listening) {
+    screenHistory.listening = true;
+    addEventListener("popstate", () => {
+      // The first step to land while an own step travels is taken to be that step: it is not
+      // reported, and history settles again toward the depth wanted since it set off. If the
+      // person's step was queued just before it, the two are swapped, and the person's step is lost
+      // or counted against the wrong step.
+      if (screenHistory.travelling) {
+        screenHistory.travelling = false;
+        settleDepth();
+        return;
+      }
+      const depth = historyDepth();
+      for (const send of screenHistory.hearing) send(depth);
+    });
+  }
+  return screenHistory;
+}
+
+// Makes history hold exactly the depth wanted: one entry pushed for each level missing, or one step
+// back over every level too many, which then travels.
+function settleDepth() {
+  const now = historyDepth();
+  const { wanted } = screenHistory;
+  for (let level = now + 1; level <= wanted; level += 1) history.pushState({ screenDepth: level }, "");
+  if (wanted < now) {
+    screenHistory.travelling = true;
+    history.go(wanted - now);
+  }
+}
+
+// Makes history hold exactly `depth` entries above the one the app stands on with no screen open.
+// While an own step travels, the depth is only recorded: the step settles toward it as it lands.
+function setDepth(depth) {
+  const owner = screenHistoryOwner();
+  owner.wanted = depth;
+  if (!owner.travelling) settleDepth();
+}
+
+// Reports the depth of the entry history shows each time the person steps through it, until stopped.
+function watchDepth(send) {
+  const owner = screenHistoryOwner();
+  owner.hearing.add(send);
+  return () => owner.hearing.delete(send);
 }
 
 // Opens a reading surface's own scrolling body, `bodyId`, at its top, or at the passage or field
@@ -806,9 +870,10 @@ function scrollIntoView(id) {
   document.getElementById(id)?.scrollIntoView({ block: 'nearest' });
 }
 
-// Focuses element `id`.
-function focusElement(id) {
-  document.getElementById(id)?.focus();
+// Focuses element `id`, scrolling it into view when `reveal` is "scroll" and moving nothing when it
+// is "still".
+function focusElement(id, reveal) {
+  document.getElementById(id)?.focus({ preventScroll: reveal === "still" });
 }
 
 // Puts the caret at the end of the focused field.
@@ -820,10 +885,10 @@ function caretToEnd() {
 const fires = {
   motion, menuKeys, tooltips, contextHost, disposeContextHost, reorder, scrollToPassage, fileDrags,
   sheetDrag, handOff, indeterminate, togglePopover, openCitation, scrollIntoView, focusElement,
-  caretToEnd, readToEnd, jumpToLatest, replyArrived,
+  caretToEnd, readToEnd, jumpToLatest, replyArrived, setDepth,
 };
 const asks = { watchExit, modal, copy, reducedMotion };
-const listens = { watchPage, watchPopover, watchReading };
+const listens = { watchPage, watchPopover, watchReading, watchDepth };
 
 const running = new Map();
 let calls = 0;

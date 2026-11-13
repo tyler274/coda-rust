@@ -138,6 +138,36 @@ static LISTS: AtomicUsize = AtomicUsize::new(0);
 
 static FRAMES: AtomicUsize = AtomicUsize::new(0);
 
+/// A frame's id, named from `kind`, and the watch on its exit: each time `leaving` turns true the
+/// frame's `exit` is watched, and `on_exited` hears once it has played. Each change of `leaving`
+/// supersedes the exit watched before it, so a frame brought back while leaving never reports the
+/// exit it left.
+pub(crate) fn use_exit_watch(
+    kind: &str,
+    leaving: bool,
+    exit: script::Exit,
+    on_exited: EventHandler,
+) -> String {
+    let id = use_hook(|| format!("{kind}-{}", FRAMES.fetch_add(1, Ordering::Relaxed)));
+    let watched = id.clone();
+    let watch = use_hook(|| Rc::new(std::cell::Cell::new(0u64)));
+    use_effect(use_reactive!(|leaving| {
+        let this = watch.get() + 1;
+        watch.set(this);
+        if leaving {
+            let played = script::watch_exit(&watched, exit);
+            let watch = watch.clone();
+            spawn(async move {
+                let exited = played.answer().await;
+                if matches!(exited, Ok(true)) && watch.get() == this {
+                    on_exited.call(());
+                }
+            });
+        }
+    }));
+    id
+}
+
 /// A live list's row: arriving, it opens and settles from just below with the entry timing;
 /// leaving, it collapses and fades with the shorter timing, takes no input and is hidden from
 /// assistive technology, then reports that it has exited. Spacing between rows belongs inside the
@@ -149,25 +179,7 @@ pub fn RowFrame(
     on_exited: EventHandler,
     children: Element,
 ) -> Element {
-    let id = use_hook(|| format!("row-frame-{}", FRAMES.fetch_add(1, Ordering::Relaxed)));
-    let watched = id.clone();
-    // Each change of `present` supersedes the exit watched before it: a row brought back while
-    // leaving never reports the exit it left.
-    let watch = use_hook(|| Rc::new(std::cell::Cell::new(0u64)));
-    use_effect(use_reactive!(|present| {
-        let this = watch.get() + 1;
-        watch.set(this);
-        if !present {
-            let exit = script::watch_exit(&watched);
-            let watch = watch.clone();
-            spawn(async move {
-                let exited = exit.answer().await;
-                if matches!(exited, Ok(true)) && watch.get() == this {
-                    on_exited.call(());
-                }
-            });
-        }
-    }));
+    let id = use_exit_watch("row-frame", !present, script::Exit::Collapse, on_exited);
     let mut class = String::from("row-frame");
     if !present {
         class.push_str(" is-exiting");

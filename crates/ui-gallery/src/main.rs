@@ -29,17 +29,17 @@ use ui::{
     EmptyLine, EmptyState, EndAction, Ending, ExpandSource, FeedbackRating, FieldGroup, FieldValue,
     FooterActions, HeaderFact, Icon, IconName, IconTile, IndexedSource, KeyHint, ListRow, LiveDot,
     MeasurementTile, Menu, MenuItem, MenuSection, Message, MessageActions, MessageEditor,
-    MessageQueue, MessageState, MessageStatus, NavigationControl, NavigationRow, Notice, PageTitle,
-    Paper, PaperSection, PartRange, Placeholder, PlaceholderShape, Places, Popover, PreviewContent,
-    ProgressBar, ProposedChange, Prose, ProseNames, ProsePart, QueuePlace, Quote, RadioGroup,
-    RailCard, Rating, RawRecord, RecordAbout, RecordBody, RecordField, RecordStatus, RowFrame,
-    RowGroup, RunningChart, SearchField, SectionHeader, Segmented, Select, SeriesChart,
-    SeriesPoint, SeriesShape, SettingRow, Slider, SortOrder, SourceLink, SourcePane, SourceReading,
-    SourceRecord, SourceState, SourceSummary, SourcesButton, Sparkline, Spinner, StatePill,
-    StatusLine, StepState, Suggestion, TabBar, Table, TableRow, Task, TaskList, TaskState,
-    TaskWords, TextField, TextKind, TextPart, Toast, ToggleChip, ToggleRow, ToggleState, Tone,
-    Tooltip, TopBar, TryAgain, Value, VersionSwitch, WorkStep, WorkTrace, WorkingMark,
-    WorkingPresence, use_live_rows,
+    MessageQueue, MessageState, MessageStatus, Nav, NavigationControl, NavigationRow, Notice,
+    PageTitle, Paper, PaperSection, PartRange, Placeholder, PlaceholderShape, Places, Popover,
+    PreviewContent, ProgressBar, ProposedChange, Prose, ProseNames, ProsePart, QueuePlace, Quote,
+    RadioGroup, RailCard, Rating, RawRecord, RecordAbout, RecordBody, RecordField, RecordStatus,
+    RowFrame, RowGroup, RunningChart, Screen, ScreenFrame, SearchField, SectionHeader, Segmented,
+    Select, SeriesChart, SeriesPoint, SeriesShape, SettingRow, Slider, SortOrder, SourceLink,
+    SourcePane, SourceReading, SourceRecord, SourceState, SourceSummary, SourcesButton, Sparkline,
+    Spinner, StatePill, StatusLine, StepState, Suggestion, TabBar, Table, TableRow, Task, TaskList,
+    TaskState, TaskWords, TextField, TextKind, TextPart, Toast, ToggleChip, ToggleRow, ToggleState,
+    Tone, Tooltip, TopBar, TryAgain, Value, VersionSwitch, WorkStep, WorkTrace, WorkingMark,
+    WorkingPresence, use_live_rows, use_screen_stack,
 };
 #[cfg(feature = "web")]
 use wasm_bindgen::{JsCast, closure::Closure};
@@ -134,6 +134,9 @@ const FAMILIES: [Family; 17] = [
                 Part { title: "Tabs", note: "The app's sections, the current one marked; with icons, as a phone's tab bar does.",
                     TabsDemo {}
                 }
+                Part { title: "Screen stack", note: "A phone with two tabs. Records opens on a long list: a row opens its record, and Original record there opens a third screen; You has a short list with one screen to open. Each screen opens on a press, Back closes it, and so does the platform's own back: a browser's Back, or Android's back key and gesture. Going back finds the screen beneath and its scroll place as they were, and a tab finds its screens as it left them. A tab change arrives at once. Choose the form: on an iPhone the new screen comes in from the edge over the old one, which moves back and darkens; on Android both move a little as the new one fades in. Under reduced motion nothing slides: on an iPhone the screens arrive at once and only the darkening still fades, and on Android the two screens cross-fade in place.",
+                    StackDemo {}
+                }
             }
         },
     },
@@ -156,7 +159,7 @@ const FAMILIES: [Family; 17] = [
                 Part { title: "Rows and sections", note: "Related rows group once, a hairline between them, rather than a card around each. A row leads with an icon, a number or a person's avatar, in three sizes. A row that opens something is one button with a chevron; a row that only states a fact, such as who your physician is or when a clinic was connected, has neither. A row that opens something cuts its name after two lines, as opening it shows the whole; a row that opens nothing shows its whole name. A section's one action sits beside its title.",
                     RowsDemo {}
                 }
-                Part { title: "Row states, on/off rows and icon actions", note: "Where a row's thing stands leads its quiet line in bold, in the line's own colour. A row that is on or off lines up with ordinary rows: off, its icon on its tile and nothing at its edge; on, the tile filled in the brand colour and a check where a chevron would be; turning on or off, pressed with no answer yet, the tile at half strength and a spinner where the check would be, its words and pressed state still those of the last answer. Here it stands off, turning on, on and turning off; then two scripted rows (press one: it turns, and it is on, or off again, when the answer comes, after 900 ms for the first and 200 ms for the second; pressed while settled, the second answers before its spinner would fade in, though under reduced motion or from the keyboard the spinner shows at once); then unavailable off and unavailable on, beside a row that opens something. Its name is never cut. A section's one action can be an icon alone, on a full touch target, its words then its spoken name.",
+                Part { title: "Row states, on/off rows and icon actions", note: "Where a row's thing stands leads its quiet line in bold, in the line's own colour. A row that is on or off lines up with ordinary rows: off, its icon on its tile and nothing at its edge; on, the tile filled in the brand colour and a check where a chevron would be; turning on or off, pressed with no answer yet, the tile at half strength and a spinner where the check would be, its words and pressed state still those of the last answer. Here it stands off, turning on, on and turning off; then two scripted rows (press one: it turns, and it is on, or off again, when the answer comes, after 900 ms for the first and 200 ms for the second; pressed while settled, the second answers before its spinner would fade in, and under reduced motion the spinner still waits but stands still); then unavailable off and unavailable on, beside a row that opens something. Its name is never cut. A section's one action can be an icon alone, on a full touch target, its words then its spoken name.",
                     RowStatesDemo {}
                 }
                 Part { title: "Live lists", note: "A row that joins a list already shown opens and settles from just below; a row the list drops stays in its place as it collapses, then goes. A count fades into its new value, number and words together. A row the list moves up rises over the others, lifted; the selection is one fill that slides to the row chosen and travels with it. Under reduced motion nothing moves: rows arrive and leave in place, and the count still fades.",
@@ -2521,6 +2524,140 @@ fn TabsDemo() -> Element {
                 icons: vec![IconName::Message, IconName::Sun, IconName::User],
                 selected: phone(),
                 on_select: move |index| phone.set(index),
+            }
+        }
+    }
+}
+
+/// The screen stack demo's tabs.
+#[cfg(feature = "web")]
+#[derive(Clone, Copy, PartialEq)]
+enum StackTab {
+    Records,
+    You,
+}
+
+/// The screens the demo opens over its tabs.
+#[cfg(feature = "web")]
+#[derive(Clone, PartialEq)]
+enum StackScreen {
+    /// A record, by its place in `STACK_RECORDS`, opened from Records' list.
+    Record(usize),
+    /// A record's original, opened from the record.
+    Original(usize),
+    /// Reminders, opened from You.
+    Reminders,
+}
+
+/// The kinds of record the demo's long list cycles through, with where each came from.
+#[cfg(feature = "web")]
+const STACK_RECORDS: [(&str, &str); 6] = [
+    ("Visit note", "Northside Clinic"),
+    ("Blood pressure", "Home cuff"),
+    ("Potassium", "Lab result"),
+    ("Recorded sleep", "Apple Health"),
+    ("Cardiology note", "Riverside Heart"),
+    ("Questions for my visit", "Your note"),
+];
+
+/// How many rows Records' list holds: more than the phone shows, so it scrolls.
+#[cfg(feature = "web")]
+const STACK_ROWS: usize = 30;
+
+#[cfg(feature = "web")]
+#[component]
+fn StackDemo() -> Element {
+    let mut nav = use_signal(|| Nav::new(StackTab::Records, [StackTab::You]));
+    let mut android = use_signal(|| false);
+    let stack = use_screen_stack(nav);
+    let on_exited = stack.on_exited;
+    let tab = nav.read().tab();
+    let record = |index: usize| {
+        let (kind, source) = STACK_RECORDS[index % STACK_RECORDS.len()];
+        (kind, format!("{source} · October {}", 28 - index % 28))
+    };
+    rsx! {
+        div { class: "gallery-screens-demo",
+            Segmented {
+                label: "Form",
+                options: vec!["iPhone".into(), "Android".into()],
+                selected: usize::from(android()),
+                on_select: move |index| android.set(index == 1),
+            }
+            div { class: "gallery-screens", "data-platform": if android() { "android" } else { "ios" },
+                div { class: "gallery-screens-layers",
+                    for layer in stack.layers {
+                        ScreenFrame {
+                            key: "{layer.key}",
+                            standing: layer.standing,
+                            arriving: layer.arriving,
+                            on_exited: {
+                                let key = layer.key.clone();
+                                move |_| on_exited.call(key.clone())
+                            },
+                            bar: match (&layer.tab, &layer.screen) {
+                                (StackTab::Records, Screen::First) => rsx! { TopBar { title: "Records" } },
+                                (StackTab::You, Screen::First) => rsx! { TopBar { title: "You" } },
+                                (_, Screen::Open(StackScreen::Record(index))) => rsx! {
+                                    TopBar { title: record(*index).0, back: "Records", on_back: move |_| { nav.write().back(); } }
+                                },
+                                (_, Screen::Open(StackScreen::Original(index))) => rsx! {
+                                    TopBar { title: "Original record", back: record(*index).0, on_back: move |_| { nav.write().back(); } }
+                                },
+                                (_, Screen::Open(StackScreen::Reminders)) => rsx! {
+                                    TopBar { title: "Reminders", back: "You", on_back: move |_| { nav.write().back(); } }
+                                },
+                            },
+                            match layer.screen {
+                                Screen::First if layer.tab == StackTab::Records => rsx! {
+                                    RowGroup { class: "gallery-screens-list",
+                                        for index in 0..STACK_ROWS {
+                                            li { key: "{index}",
+                                                ListRow {
+                                                    icon: IconName::File,
+                                                    title: record(index).0,
+                                                    detail: record(index).1,
+                                                    onclick: move |_| nav.write().open(StackScreen::Record(index)),
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                Screen::First => rsx! {
+                                    RowGroup { class: "gallery-screens-list",
+                                        li { ListRow { icon: IconName::Calendar, title: "Reminders", detail: "Daily · 10:30 pm", onclick: move |_| nav.write().open(StackScreen::Reminders) } }
+                                        li { ListRow { icon: IconName::User, title: "Dr. Maya Okafor", detail: "Your physician" } }
+                                    }
+                                },
+                                Screen::Open(StackScreen::Record(index)) => rsx! {
+                                    div { class: "gallery-screens-page",
+                                        p { class: "gallery-copy", "{record(index).1}. Saved with your other records; its original stands as it arrived." }
+                                        RowGroup {
+                                            li { ListRow { icon: IconName::Book, title: "Original record", detail: "As it arrived", onclick: move |_| nav.write().open(StackScreen::Original(index)) } }
+                                        }
+                                    }
+                                },
+                                Screen::Open(StackScreen::Original(index)) => rsx! {
+                                    div { class: "gallery-screens-page",
+                                        p { class: "gallery-copy", "{record(index).0}, {record(index).1}, as the source sent it." }
+                                    }
+                                },
+                                Screen::Open(StackScreen::Reminders) => rsx! {
+                                    div { class: "gallery-screens-page",
+                                        p { class: "gallery-copy", "A reminder each evening at 10:30 pm." }
+                                    }
+                                },
+                            }
+                        }
+                    }
+                }
+                TabBar {
+                    label: "Sections",
+                    labels: vec!["Records".into(), "You".into()],
+                    icons: vec![IconName::File, IconName::User],
+                    selected: usize::from(tab == StackTab::You),
+                    on_select: move |index| nav.write().select(if index == 0 { StackTab::Records } else { StackTab::You }),
+                }
             }
         }
     }
