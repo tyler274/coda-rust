@@ -51,9 +51,7 @@ pub use conversation::{
     HeaderFact, MessageActions, MessageEditor, MessageQueue, MessageStatus, QueuePlace, Suggestion,
     VersionSwitch,
 };
-pub use documents::{
-    FooterActions, Notice, Paper, PaperSection, ProposedChange, SettingRow, TopBar,
-};
+pub use documents::{FooterActions, Notice, Paper, PaperSection, SettingRow, TopBar};
 pub use feedback::{FeedbackRating, Rating, ToggleChip};
 pub use icons::{Icon, IconName};
 pub use inputs::{

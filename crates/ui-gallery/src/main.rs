@@ -31,12 +31,12 @@ use ui::{
     MeasurementTile, Menu, MenuItem, MenuSection, Message, MessageActions, MessageEditor,
     MessageQueue, MessageState, MessageStatus, Nav, NavigationControl, NavigationRow, Notice,
     PageTitle, Paper, PaperSection, PartRange, Placeholder, PlaceholderShape, Places, Popover,
-    PreviewContent, ProgressBar, ProposedChange, Prose, ProseNames, ProsePart, QueuePlace, Quote,
-    RadioGroup, RailCard, Rating, RawRecord, RecordAbout, RecordBody, RecordField, RecordStatus,
-    RowFrame, RowGroup, RunningChart, Screen, ScreenFrame, SearchField, SectionHeader, Segmented,
-    Select, SeriesChart, SeriesPoint, SeriesShape, SettingRow, Slider, SortOrder, SourceLink,
-    SourcePane, SourceReading, SourceRecord, SourceState, SourceSummary, SourcesButton, Sparkline,
-    Spinner, StatePill, StatusLine, StepState, Suggestion, TabBar, Table, TableRow, Task, TaskList,
+    PreviewContent, ProgressBar, Prose, ProseNames, ProsePart, QueuePlace, Quote, RadioGroup,
+    RailCard, Rating, RawRecord, RecordAbout, RecordBody, RecordField, RecordStatus, RowFrame,
+    RowGroup, RunningChart, Screen, ScreenFrame, SearchField, SectionHeader, Segmented, Select,
+    SeriesChart, SeriesPoint, SeriesShape, SettingRow, Slider, SortOrder, SourceLink, SourcePane,
+    SourceReading, SourceRecord, SourceState, SourceSummary, SourcesButton, Sparkline, Spinner,
+    StatePill, StatusLine, StepState, Suggestion, TabBar, Table, TableRow, Task, TaskList,
     TaskState, TaskWords, TextField, TextKind, TextPart, Toast, ToggleChip, ToggleRow, ToggleState,
     Tone, Tooltip, TopBar, TryAgain, Value, VersionSwitch, WorkStep, WorkTrace, WorkingMark,
     WorkingPresence, use_live_rows, use_screen_stack,
@@ -200,9 +200,6 @@ const FAMILIES: [Family; 17] = [
                 }
                 Part { title: "Pages and forms", note: "A pushed screen's bar, what actually happened said once, a document page, choices and settings as rows, and actions pinned to the foot.",
                     PagesDemo {}
-                }
-                Part { title: "Reviewing a proposed update", note: "Section by section: what changed, the proposed words, what was saved before, and the sources each rests on. A section left as it was says so.",
-                    ReviewDemo {}
                 }
             }
         },
@@ -802,44 +799,6 @@ fn ConversationDemo() -> Element {
         if source_open() {
             Dialog { close_label: "Close", sheet: true, title: "Sleep note", on_close: move |_| source_open.set(false),
                 p { class: "gallery-copy", "About seven hours, from the sleep note." }
-            }
-        }
-    }
-}
-
-#[cfg(feature = "web")]
-#[component]
-fn ReviewDemo() -> Element {
-    rsx! {
-        div { class: "gallery-phone",
-            TopBar { title: "Review update", back: "Back", on_back: move |_| {}, action: "Edit", on_action: move |_| {} }
-            div { class: "gallery-phone-thread",
-                PageTitle { text: "Here’s what changed.", detail: "Proposed by Duet · Not saved" }
-                div {
-                    ProposedChange {
-                        title: "What you’ve tried",
-                        tag: "Updated",
-                        previous: ("Previously saved".to_owned(), "Since October 16, Alex has stopped drinking coffee after noon.".to_owned()),
-                        sources: rsx! {
-                            NavigationControl { Icon { name: IconName::File } "Your note · October 21" }
-                        },
-                        p { "Since October 16, Alex has stopped drinking coffee after noon. On October 21, Alex reported that the afternoon tiredness had not improved." }
-                    }
-                    ProposedChange {
-                        title: "Recorded sleep",
-                        tag: "Through Oct 21",
-                        sources: rsx! {
-                            NavigationControl { Icon { name: IconName::Heart } "Apple Health · October 14–21" }
-                        },
-                        p { "Apple Watch recorded 6 hr 18 min on October 20–21, after an average of 7 hr per night across October 14–20 (7 nights)." }
-                    }
-                    ProposedChange { title: "What I want to discuss", unchanged: "Unchanged",
-                        p { "I’d like to understand why I’m so tired in the afternoon. It’s getting in the way of work." }
-                    }
-                }
-            }
-            FooterActions { note: "Saving does not send this page.",
-                Button { variant: ButtonVariant::Primary, "Save updated page" }
             }
         }
     }

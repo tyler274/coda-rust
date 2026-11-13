@@ -4,7 +4,7 @@
 
 use dioxus::prelude::*;
 
-use crate::{Disclosure, Icon, IconName, StatePill, Tone};
+use crate::{Icon, IconName, Tone};
 
 /// The bar atop a pushed screen: an optional way back on the leading edge, the title centred with
 /// an optional mark (who a conversation is with), and the screen's one action on the trailing edge:
@@ -118,44 +118,6 @@ pub fn Notice(
                     span { "{detail}" }
                 }
                 {children}
-            }
-        }
-    }
-}
-
-/// One section of a proposed change, to read against what it replaces: what kind of change it is
-/// (a `tag`: "Updated", "Through Oct 21"), the section's name, the proposed words, the earlier
-/// words in a detail that opens (`previous`: its label, then the words), and the `sources` it
-/// rests on. A section left as it was says so in `unchanged`'s words, and shows the words that stay.
-#[component]
-pub fn ProposedChange(
-    title: String,
-    #[props(default)] tag: Option<String>,
-    #[props(default)] previous: Option<(String, String)>,
-    #[props(default)] unchanged: Option<String>,
-    #[props(default)] sources: Option<Element>,
-    children: Element,
-) -> Element {
-    let is_unchanged = unchanged.is_some();
-    rsx! {
-        section { class: if is_unchanged { "proposed-change is-unchanged" } else { "proposed-change" },
-            header { class: "proposed-change-heading",
-                if let Some(text) = tag.filter(|_| !is_unchanged) {
-                    StatePill { "{text}" }
-                }
-                h3 { "{title}" }
-                if let Some(state) = unchanged {
-                    span { class: "proposed-change-state", "{state}" }
-                }
-            }
-            div { class: "proposed-change-words", {children} }
-            if let Some((label, words)) = previous.filter(|_| !is_unchanged) {
-                Disclosure { title: label, detail: true,
-                    p { class: "proposed-change-previous", "{words}" }
-                }
-            }
-            if let Some(sources) = sources {
-                div { class: "proposed-change-sources", {sources} }
             }
         }
     }

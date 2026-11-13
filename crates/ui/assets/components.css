@@ -762,20 +762,6 @@ del > .diff-sign, .diff-removed { color: var(--error); }
 .paper-title + .card-detail { margin-top: calc(-1 * var(--space-4)); }
 .paper-section { display: grid; gap: var(--space-2); }
 .paper-section > p { margin: 0; color: var(--ink); font: var(--type-body-lg); }
-/* A proposed change, section by section: what changed and its name, the proposed words, the earlier words, and the
-   sources. A section left as it was reads quieter. Sections sit a hairline apart. */
-.proposed-change { display: grid; gap: var(--space-3); min-width: 0; padding-block: var(--space-5); }
-.proposed-change + .proposed-change { border-top: var(--hairline) solid var(--outline-variant); }
-.proposed-change:first-child { padding-top: 0; }
-.proposed-change-heading { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); }
-.proposed-change-heading h3 { margin: 0; color: var(--ink); font: var(--type-title-md); }
-.proposed-change-state { color: var(--muted); font: var(--type-body-sm); }
-.proposed-change-words > p { margin: 0; color: var(--ink); font: var(--type-body-lg); }
-.proposed-change-words > p + p { margin-top: var(--space-2); }
-.is-unchanged .proposed-change-words > p { color: var(--body); }
-.proposed-change-previous { margin: 0; color: var(--muted); font: var(--type-body-md); }
-.proposed-change-sources { display: flex; flex-wrap: wrap; gap: var(--space-1) var(--space-4); }
-.proposed-change-sources .navigation-control { min-height: 0; font: var(--type-body-sm); }
 .selection-row, .setting-row { display: flex; align-items: center; gap: var(--space-3); min-height: var(--target); padding: var(--space-row) 0; cursor: pointer; }
 /* A box or a ring on the outline, filled with the action once chosen: the check draws across, the dot springs out, and a
    mixed box holds a bar. A disabled row stands back and takes no press. */
