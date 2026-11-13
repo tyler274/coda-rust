@@ -1826,7 +1826,8 @@ async fn held_limits_and_provider_blocks_render_without_a_partial_answer() {
     use local_product::runtime::{Input, Scope, Store};
     let _guard = test_lock().lock().await;
     let site = build_site();
-    let server = serve_chat_browser(&site, scale::FIXED_TEXT).await;
+    let mut server = serve_chat_browser(&site, scale::FIXED_TEXT).await;
+    server.worker.kill_now();
     let base = format!("http://{}", server.address);
     let store = Store::connect(&server._database.url).await.unwrap();
     let mut browser = Tab::open(&base);
