@@ -38,6 +38,9 @@ pub enum DirectoryError {
     /// Reading workspace source standings failed.
     #[error("failed to read workspace source standings")]
     Standings(#[from] SourceStatusError),
+    /// Reading saved workspace source refresh statuses failed.
+    #[error("failed to read saved workspace source refresh statuses")]
+    RefreshStatuses(#[from] local_product::runtime::refresh::RefreshError),
     /// Directory store is unavailable.
     #[error(transparent)]
     Unavailable(#[from] StoreUnavailable),
@@ -159,6 +162,68 @@ impl PatientDirectory for Store {
         workspaces: &[String],
     ) -> Result<BTreeMap<String, BTreeMap<String, SourceStanding>>, DirectoryError> {
         Ok(self.workspace_source_standings(workspaces).await?)
+    }
+
+    async fn source_records(
+        &self,
+        workspaces: &[String],
+    ) -> Result<BTreeMap<String, Vec<PatientSourceRecord>>, DirectoryError> {
+        use local_product::runtime::refresh::SourceRefreshOutcome;
+
+        let pulls = self.pulls(workspaces).await?;
+        if pulls.is_empty() {
+            return Ok(BTreeMap::new());
+        }
+        let practices = self
+            .registered_dispatch_practices()
+            .await
+            .map_err(DirectoryError::Pulls)?;
+        let mut out = BTreeMap::new();
+        for (workspace, list) in pulls {
+            let mut statuses = BTreeMap::new();
+            for practice in &practices {
+                let saved = self.saved_source_statuses(practice, &workspace).await?;
+                if !saved.is_empty() {
+                    for status in saved {
+                        statuses.insert(status.source_id.as_str().to_owned(), status.outcome);
+                    }
+                    break;
+                }
+            }
+            let workspace_records = list
+                .into_iter()
+                .map(|pull| {
+                    let delivery = match statuses.get(&pull.source_id) {
+                        Some(SourceRefreshOutcome::Failed {
+                            last_good_pulled_at,
+                            ..
+                        }) => SourceDeliveryState::RefreshFailed {
+                            last_good_pulled_at: (*last_good_pulled_at).or(pull.pulled_at),
+                        },
+                        Some(
+                            SourceRefreshOutcome::Updated { pulled_at, .. }
+                            | SourceRefreshOutcome::PartlyUpdated { pulled_at, .. },
+                        ) => SourceDeliveryState::Usable {
+                            pulled_at: *pulled_at,
+                        },
+                        None => match pull.pulled_at {
+                            Some(pulled_at) => SourceDeliveryState::Usable { pulled_at },
+                            None => SourceDeliveryState::RefreshFailed {
+                                last_good_pulled_at: None,
+                            },
+                        },
+                    };
+                    PatientSourceRecord {
+                        source_id: pull.source_id,
+                        source_label: pull.source_label,
+                        patient: pull.patient,
+                        delivery,
+                    }
+                })
+                .collect();
+            out.insert(workspace, workspace_records);
+        }
+        Ok(out)
     }
 
     async fn synopses(

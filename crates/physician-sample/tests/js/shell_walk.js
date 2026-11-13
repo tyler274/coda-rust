@@ -57,6 +57,11 @@ function (name, ...args) {
       return found ? found.getAttribute(attribute) : null;
     },
 
+    text(selector) {
+      const found = document.querySelector(selector);
+      return found ? found.innerText : '';
+    },
+
     // Chooses the picker's option with these words, as a person does.
     choose(words) {
       const select = document.querySelector('select');

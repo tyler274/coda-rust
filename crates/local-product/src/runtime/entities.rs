@@ -1317,3 +1317,63 @@ pub(super) mod visit_concern {
 
     impl ActiveModelBehavior for ActiveModel {}
 }
+
+/// Per-physician seen state and snapshot for Today and Updates items so
+/// opened items survive server restarts and changed items return as new with
+/// what changed. Created by `m20261112_today_updates_seen`.
+pub(super) mod today_updates_seen {
+    use sea_orm::entity::prelude::*;
+
+    #[derive(Clone, Debug, PartialEq, Eq, DeriveEntityModel)]
+    #[sea_orm(table_name = "physician_runtime_today_updates_seen")]
+    pub struct Model {
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub practice: String,
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub physician: String,
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub item_key: String,
+        #[sea_orm(column_type = "Text")]
+        pub workspace: String,
+        #[sea_orm(column_type = "Text")]
+        pub seen_version: String,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub seen_snapshot: Json,
+        pub seen_at: i64,
+        pub updated_at: i64,
+    }
+
+    #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
+    pub enum Relation {}
+
+    impl ActiveModelBehavior for ActiveModel {}
+}
+
+/// Practice-scoped `Done` clearances for non-restartable unhandled work on
+/// Today, keyed by `(practice, workspace, item_key, version_id)` so clearing a
+/// specific failed run leaves Today clean across restarts while allowing a new
+/// later failure version to surface. Created by `m20261112_today_updates_seen`.
+pub(super) mod today_work_dismissal {
+    use sea_orm::entity::prelude::*;
+
+    #[derive(Clone, Debug, PartialEq, Eq, DeriveEntityModel)]
+    #[sea_orm(table_name = "physician_runtime_today_work_dismissals")]
+    pub struct Model {
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub practice: String,
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub workspace: String,
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub item_key: String,
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub version_id: String,
+        #[sea_orm(column_type = "Text")]
+        pub cleared_by_physician: String,
+        pub cleared_at: i64,
+    }
+
+    #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
+    pub enum Relation {}
+
+    impl ActiveModelBehavior for ActiveModel {}
+}
