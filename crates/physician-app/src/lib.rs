@@ -14,6 +14,7 @@ mod panels;
 mod patient_reviews_panel;
 mod schedule_briefing;
 mod shell;
+mod source_setup;
 mod status;
 mod tabs;
 mod today_updates;
@@ -928,6 +929,8 @@ fn PhysicianShell(
     let mut search_open = use_signal(|| false);
     let mut shortcuts_open = use_signal(|| false);
     let mut connections_open = use_signal(|| false);
+    let mut connections_source =
+        use_signal(|| None::<physician_wire::source_setup::SupportedSourceWire>);
     // Focus goes into the drawer as it opens, and back to the menu when it's dismissed, or once a
     // dialog opened from it closes, since that dialog returns focus to the hidden row it came from.
     use_effect(move || {
@@ -1481,16 +1484,26 @@ fn PhysicianShell(
         .and_then(|result| result.as_ref().ok())
         .map(today_updates::TodayMeta::from_response)
         .unwrap_or_else(|| today_meta_cache.read().clone());
-    let connection_accounts = health
+    let (connection_accounts, practice_sources) = health
         .read()
         .as_ref()
         .and_then(|result| result.as_ref().ok())
         .and_then(|health| health.capabilities.as_ref())
-        .is_some_and(|capabilities| capabilities.connection_accounts);
+        .map_or((false, false), |capabilities| {
+            (
+                capabilities.connection_accounts,
+                capabilities.practice_sources,
+            )
+        });
     let connections = today_read
         .as_ref()
         .and_then(|result| result.as_ref().ok())
         .map(|list| connection_lines(&list.connections))
+        .unwrap_or_default();
+    let source_connections = today_read
+        .as_ref()
+        .and_then(|result| result.as_ref().ok())
+        .map(|list| source_setup::structured_today_connections(&list.connections))
         .unwrap_or_default();
     let practice_state = use_read_view(practice);
     let updates_state = use_read_view(updates);
@@ -2323,10 +2336,11 @@ fn PhysicianShell(
                         if !whoami_name().is_empty() {
                             span { class: "sidebar-physician", "{whoami_name}" }
                         }
-                        if connection_accounts {
+                        if connection_accounts || practice_sources {
                             Button {
                                 variant: ButtonVariant::Quiet,
                                 onclick: move |_| {
+                                    connections_source.set(None);
                                     connections_open.set(true);
                                     drawer.set(Drawer::Dismissed);
                                 },
@@ -2398,6 +2412,11 @@ fn PhysicianShell(
                             state: today_state.clone(),
                             meta: today_meta.clone(),
                             connections: connections.clone(),
+                            source_connections: source_connections.clone(),
+                            on_open_source: move |target_src: Option<physician_wire::source_setup::SupportedSourceWire>| {
+                                connections_source.set(target_src);
+                                connections_open.set(true);
+                            },
                             schedule_rows: today_schedule_rows.clone(),
                             show_schedule,
                             schedule,
@@ -2829,10 +2848,29 @@ fn PhysicianShell(
             ShortcutsDialog { on_close: move |_| shortcuts_open.set(false) }
         }
         if connections_open() {
-            ConnectionsDialog {
-                lines: connections.clone(),
-                failed: matches!(today_state, ReadView::Unavailable),
-                on_close: move |_| connections_open.set(false),
+            if practice_sources {
+                source_setup::PracticeSourcesDialog {
+                    client,
+                    session,
+                    shown: shown(),
+                    practice_zone: practice_zone.clone(),
+                    server_now: server_now.clone(),
+                    initial_source: connections_source(),
+                    on_changed: move |_| {
+                        today_attempt.set(today_attempt() + 1);
+                        workspace_attempt.set(workspace_attempt() + 1);
+                    },
+                    on_close: move |_| {
+                        connections_open.set(false);
+                        connections_source.set(None);
+                    },
+                }
+            } else {
+                ConnectionsDialog {
+                    lines: connections.clone(),
+                    failed: matches!(today_state, ReadView::Unavailable),
+                    on_close: move |_| connections_open.set(false),
+                }
             }
         }
         if let Some(open) = reading().filter(|_| {
@@ -3788,6 +3826,8 @@ fn TodaySurface(
     state: TodayView,
     meta: today_updates::TodayMeta,
     connections: Vec<String>,
+    source_connections: Vec<physician_wire::TodayConnection>,
+    on_open_source: EventHandler<Option<physician_wire::source_setup::SupportedSourceWire>>,
     schedule_rows: Vec<ScheduleVisitRow>,
     show_schedule: bool,
     schedule: ReadStage,
@@ -3837,7 +3877,7 @@ fn TodaySurface(
         }
     });
     let show_quiet = state.content().is_some_and(|rows| {
-        today_updates::today_shows_nothing_needs_you(rows, &connections, &meta)
+        today_updates::today_shows_nothing_needs_you(rows, &connections, &source_connections, &meta)
     });
     rsx! {
         div { class: "reading-workspace",
@@ -3852,6 +3892,12 @@ fn TodaySurface(
             }
             div { class: if scheduled { "today-layout has-schedule" } else { "today-layout" },
                 section { class: "today-main", aria_label: "Needs you",
+                    source_setup::TodaySourceConnections {
+                        connections: source_connections,
+                        practice_zone: browser_tz.clone(),
+                        server_now: server_now.clone(),
+                        on_open_source,
+                    }
                     for line in connections {
                         p { class: "today-connection", "{line}" }
                     }

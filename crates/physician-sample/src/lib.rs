@@ -31,6 +31,8 @@ pub mod rehearsal;
 mod reply;
 mod reviews;
 pub mod schedule;
+pub mod source_setup;
+pub mod staff_setup;
 pub mod synthetic_chart;
 pub mod synthetic_control;
 mod synthetic_reply;
@@ -300,6 +302,7 @@ pub fn fixture_site_with_feed(feed: std::sync::Arc<SampleFeed>) -> Router {
         )
         .route("/patient-workspaces/events", get(quiet_events))
         .layer(axum::Extension(feed))
+        .layer(axum::Extension(source_setup::SourceSetupStore::new()))
         .layer(axum::Extension(care::ConnectedCare::fixture()))
 }
 
@@ -361,6 +364,7 @@ pub fn durable_site_with_feed(
         .layer(axum::Extension(runtime_store))
         .layer(axum::Extension(std::sync::Arc::clone(&live)))
         .layer(axum::Extension(feed))
+        .layer(axum::Extension(source_setup::SourceSetupStore::new()))
         .layer(axum::Extension(care::ConnectedCare::new()))
         .with_state(live)
 }
@@ -380,12 +384,31 @@ pub async fn authed_postgres_router(
     auth::required_router(base, auth)
 }
 
+async fn health_route(request: Request<Body>) -> Response {
+    if request
+        .extensions()
+        .get::<auth::AuthRequiredMarker>()
+        .is_some()
+    {
+        Json(json!({
+            "status": "ok",
+            "capabilities": {
+                "connection_accounts": true,
+                "practice_sources": true,
+            }
+        }))
+        .into_response()
+    } else {
+        Json(json!({ "status": "ok" })).into_response()
+    }
+}
+
 fn site<S>() -> Router<S>
 where
     S: Clone + Send + Sync + 'static,
 {
     Router::new()
-        .route("/health", get(|| async { Json(json!({"status": "ok"})) }))
+        .route("/health", get(health_route))
         .route("/today", get(today))
         .route("/today-updates/open", post(today_updates::open_route))
         .route("/today-updates/done", post(today_updates::done_route))
@@ -409,6 +432,7 @@ where
         )
         .route("/patient-roster", get(roster))
         .route("/dictation", post(|| async { dictation_unavailable() }))
+        .merge(source_setup::routes())
         .route("/", get(site_index))
         .route("/index.html", get(site_index))
         .route("/assets/coda-health-logo-transparent.png", get(logo))
@@ -794,6 +818,11 @@ async fn site_from_env(
     if rehearsal.is_some() && !required {
         return Err("the rehearsal sign-in needs PHYSICIAN_AUTH=required".into());
     }
+    let staff = hosting::StaffSetupAuth::from_env(&get)?;
+    if staff.is_some() && !required {
+        return Err("staff practice setup requires PHYSICIAN_AUTH=required".into());
+    }
+    let mail = gmail::Delivery::from_env(&get);
     let bus = physician_bus::from_env(&get, hosted).await?;
     // One pool per process: durable chat and the patient directory share it.
     let mut runtime = match &database {
@@ -906,8 +935,17 @@ async fn site_from_env(
         base = base.layer(schedule::schedule_source_layer(source));
     }
     let postgres = database.as_deref().zip(runtime);
-    let router =
-        auth::authed_router_with_bus(base, bus, memory_patients, postgres, rehearsal).await;
+    let router = auth::authed_router_configured(
+        base,
+        bus,
+        memory_patients,
+        postgres,
+        required,
+        mail,
+        rehearsal,
+        staff,
+    )
+    .await;
     let recovery = chat.map(|chat| chat.start_recovery());
     Ok((router, recovery))
 }
@@ -1053,11 +1091,12 @@ async fn today(
         }
         None => (Vec::new(), Vec::new()),
     };
+    let connections = source_setup::today_connections(extensions, &identity.practice_id);
     Json(json!({
         "date": practice_date(&now),
         "rows": rows,
         "seen": seen,
-        "connections": [],
+        "connections": connections,
         "cursors": {},
         "as_of": 0,
         "also_reviewed": 0,
@@ -1219,6 +1258,7 @@ async fn workspace(
     };
     let mut enriched =
         care::enrich_workspace(patient.workspace_body(&now), &id, request.extensions()).await;
+    source_setup::enrich_workspace(&mut enriched, &id, &now, request.extensions()).await;
     // A live server lists the signed-in physician's chats. The fixture site
     // has no `Live`.
     if let Some(live) = request.extensions().get::<std::sync::Arc<live::Live>>() {

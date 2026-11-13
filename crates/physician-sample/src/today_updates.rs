@@ -412,11 +412,13 @@ pub(crate) async fn serve_durable_today(
         .collect();
     let failed_parts = map_failed_parts(projection.completeness.failed_parts());
 
+    let connections = crate::source_setup::today_connections(extensions, &ctx.identity.practice_id);
+
     Json(json!({
         "date": crate::practice_date(now_str),
         "rows": rows,
         "seen": seen,
-        "connections": [],
+        "connections": connections,
         "cursors": {},
         "as_of": projection.clinical_now_unix,
         "also_reviewed": projection.also_reviewed_today_count,

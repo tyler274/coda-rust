@@ -9,10 +9,12 @@ use crate::migration::{
     Accounts, Invitations, Memberships, PatientLinks, Patients, Practices, Sessions, SignInTokens,
 };
 use crate::{
-    Account, AuthStore, INVITATION_TTL_SECONDS, Membership, PanelError, PatientLink,
-    PhysicianIdentity, PracticeClock, SIGN_IN_TOKEN_TTL_SECONDS, Session, SessionActivity,
-    SessionError, SessionLifetime, SessionRenewal, SignInError, StoreUnavailable,
-    mint_patient_token, mint_token, token_hash,
+    Account, AccountCreateOutcome, AccountSetupError, AuthStore, INVITATION_TTL_SECONDS,
+    Membership, PanelError, PatientLink, PhysicianIdentity, PracticeClock, PracticeRecord,
+    PracticeSetupError, PracticeSetupOutcome, PracticeTimeZone, SIGN_IN_TOKEN_TTL_SECONDS, Session,
+    SessionActivity, SessionError, SessionLifetime, SessionRenewal, SignInError, StoreUnavailable,
+    mint_patient_token, mint_token, post_fence_mint_second, token_hash, validate_account_fields,
+    validate_practice_id,
 };
 use async_trait::async_trait;
 use sea_orm::{
@@ -94,6 +96,7 @@ impl PostgresAuthStore {
         Memberships::find().one(&self.db).await?;
         PatientLinks::find().one(&self.db).await?;
         Patients::find().one(&self.db).await?;
+        Practices::find().one(&self.db).await?;
         Sessions::find().one(&self.db).await?;
         SignInTokens::find().one(&self.db).await?;
         Ok(())
@@ -344,12 +347,13 @@ impl AuthStore for PostgresAuthStore {
         if consumed.rows_affected != 1 {
             return Err(SignInError::Invalid);
         }
+        let minted_at = post_fence_mint_second(now, account.sessions_ended_before.max(0) as u64);
         let session_token = mint_token();
         let session = crate::migration::SessionActiveModel {
             id: Default::default(),
             account_id: Set(account.id),
             token_hash: Set(token_hash(&session_token).to_vec()),
-            created_at: Set(now as i64),
+            created_at: Set(minted_at as i64),
             expires_at: Set(SessionLifetime::mint(now).expires_at() as i64),
             ends_at: Set(None),
         };
@@ -382,13 +386,14 @@ impl AuthStore for PostgresAuthStore {
         if !account.active {
             return Err(SignInError::Inactive);
         }
+        let minted_at = post_fence_mint_second(now, account.sessions_ended_before.max(0) as u64);
         let lifetime = SessionLifetime::fixed(now, ends_at);
         let session_token = mint_token();
         let session = crate::migration::SessionActiveModel {
             id: Default::default(),
             account_id: Set(account.id),
             token_hash: Set(token_hash(&session_token).to_vec()),
-            created_at: Set(now as i64),
+            created_at: Set(minted_at as i64),
             expires_at: Set(lifetime.expires_at() as i64),
             ends_at: Set(Some(lifetime.expires_at() as i64)),
         };
@@ -726,6 +731,7 @@ impl AuthStore for PostgresAuthStore {
         let practice = crate::migration::PracticeActiveModel {
             practice_id: Set(practice_id.to_owned()),
             fixed_time: Set(fixed_time),
+            time_zone: Set(PracticeTimeZone::DEFAULT_IANA.to_owned()),
             created_at: Set(now),
         };
         Practices::insert(practice)
@@ -741,6 +747,67 @@ impl AuthStore for PostgresAuthStore {
             .await
             .map(|_| ())
             .map_err(|_| StoreUnavailable)
+    }
+
+    async fn upsert_practice(
+        &self,
+        record: &PracticeRecord,
+    ) -> Result<PracticeSetupOutcome, PracticeSetupError> {
+        let practice_id = validate_practice_id(&record.practice_id)?;
+        let now = unix_now();
+        let fixed_time = match record.clock {
+            PracticeClock::RealTime => None,
+            PracticeClock::Fixed(instant) => Some(instant as i64),
+        };
+        let txn = self.db.begin().await.map_err(|_| StoreUnavailable)?;
+        if let Some(existing) = Practices::find_by_id(practice_id.clone())
+            .one(&txn)
+            .await
+            .map_err(|_| StoreUnavailable)?
+        {
+            let existing_clock = match existing.fixed_time {
+                Some(instant) => PracticeClock::Fixed(instant as u64),
+                None => PracticeClock::RealTime,
+            };
+            let existing_time_zone =
+                PracticeTimeZone::parse(&existing.time_zone).unwrap_or_default();
+            if existing_clock == record.clock && existing_time_zone == record.time_zone {
+                txn.commit().await.map_err(|_| StoreUnavailable)?;
+                return Ok(PracticeSetupOutcome::Unchanged);
+            }
+            return Err(PracticeSetupError::Conflict {
+                practice_id,
+                existing_clock,
+                existing_time_zone,
+            });
+        }
+        let practice = crate::migration::PracticeActiveModel {
+            practice_id: Set(practice_id),
+            fixed_time: Set(fixed_time),
+            time_zone: Set(record.time_zone.as_str().to_owned()),
+            created_at: Set(now),
+        };
+        practice.insert(&txn).await.map_err(|_| StoreUnavailable)?;
+        txn.commit().await.map_err(|_| StoreUnavailable)?;
+        Ok(PracticeSetupOutcome::Created)
+    }
+
+    async fn practice(
+        &self,
+        practice_id: &str,
+    ) -> Result<Option<PracticeRecord>, StoreUnavailable> {
+        let row = Practices::find_by_id(practice_id.trim().to_owned())
+            .one(&self.db)
+            .await
+            .map_err(|_| StoreUnavailable)?;
+        Ok(row.map(|row| PracticeRecord {
+            practice_id: row.practice_id,
+            clock: match row.fixed_time {
+                Some(instant) => PracticeClock::Fixed(instant as u64),
+                None => PracticeClock::RealTime,
+            },
+            time_zone: PracticeTimeZone::parse(&row.time_zone).unwrap_or_default(),
+        }))
     }
 
     async fn practice_clock(&self, practice_id: &str) -> Result<PracticeClock, StoreUnavailable> {
@@ -791,6 +858,91 @@ impl AuthStore for PostgresAuthStore {
         Ok(accounts)
     }
 
+    async fn create_account(
+        &self,
+        practice_id: &str,
+        physician_id: Option<&str>,
+        email: &str,
+        display_name: &str,
+        admin: bool,
+        now: u64,
+    ) -> Result<(Account, AccountCreateOutcome), AccountSetupError> {
+        let caller_named_physician = physician_id
+            .map(str::trim)
+            .filter(|id| !id.is_empty())
+            .is_some();
+        let (practice_id, resolved_physician_id, key, clean_name) =
+            validate_account_fields(practice_id, physician_id, email, display_name)?;
+        let txn = self.db.begin().await.map_err(|_| StoreUnavailable)?;
+        if let Some(existing) = Accounts::find()
+            .filter(crate::migration::account::Column::Email.eq(&key))
+            .one(&txn)
+            .await
+            .map_err(|_| StoreUnavailable)?
+        {
+            if existing.practice_id != practice_id {
+                return Err(AccountSetupError::EmailConflict {
+                    email: key,
+                    existing_practice_id: existing.practice_id,
+                });
+            }
+            if caller_named_physician && existing.physician_id != resolved_physician_id {
+                return Err(AccountSetupError::PhysicianIdConflict {
+                    practice_id,
+                    physician_id: resolved_physician_id,
+                });
+            }
+            txn.commit().await.map_err(|_| StoreUnavailable)?;
+            return Ok((Self::account_row(existing), AccountCreateOutcome::Existing));
+        }
+        if Accounts::find()
+            .filter(crate::migration::account::Column::PracticeId.eq(&practice_id))
+            .filter(crate::migration::account::Column::PhysicianId.eq(&resolved_physician_id))
+            .one(&txn)
+            .await
+            .map_err(|_| StoreUnavailable)?
+            .is_some()
+        {
+            return Err(AccountSetupError::PhysicianIdConflict {
+                practice_id,
+                physician_id: resolved_physician_id,
+            });
+        }
+        if let Some(invitation) = Invitations::find()
+            .filter(crate::migration::invitation::Column::Email.eq(&key))
+            .one(&txn)
+            .await
+            .map_err(|_| StoreUnavailable)?
+        {
+            if invitation.practice_id != practice_id {
+                return Err(AccountSetupError::EmailConflict {
+                    email: key,
+                    existing_practice_id: invitation.practice_id,
+                });
+            }
+            Invitations::delete_by_id(invitation.id)
+                .exec(&txn)
+                .await
+                .map_err(|_| StoreUnavailable)?;
+        }
+        let inserted = crate::migration::AccountActiveModel {
+            id: Set(uuid::Uuid::new_v4()),
+            practice_id: Set(practice_id),
+            physician_id: Set(resolved_physician_id),
+            email: Set(key),
+            display_name: Set(clean_name),
+            active: Set(true),
+            admin: Set(admin),
+            sessions_ended_before: Set(0),
+            created_at: Set(now as i64),
+        }
+        .insert(&txn)
+        .await
+        .map_err(|_| StoreUnavailable)?;
+        txn.commit().await.map_err(|_| StoreUnavailable)?;
+        Ok((Self::account_row(inserted), AccountCreateOutcome::Created))
+    }
+
     async fn invite(
         &self,
         practice_id: &str,
@@ -799,8 +951,26 @@ impl AuthStore for PostgresAuthStore {
         admin: bool,
         now: u64,
     ) -> Result<String, SignInError> {
-        let key = email.to_lowercase();
+        let key = email.trim().to_lowercase();
+        if key.is_empty() || !key.contains('@') {
+            return Err(SignInError::Invalid);
+        }
         let token = mint_token();
+        let txn = self.db.begin().await.map_err(stale)?;
+        if let Some(existing) = Invitations::find()
+            .filter(crate::migration::invitation::Column::Email.eq(&key))
+            .one(&txn)
+            .await
+            .map_err(stale)?
+        {
+            if existing.practice_id != practice_id {
+                return Err(SignInError::Invalid);
+            }
+            Invitations::delete_by_id(existing.id)
+                .exec(&txn)
+                .await
+                .map_err(stale)?;
+        }
         let active = crate::migration::InvitationActiveModel {
             id: Default::default(),
             practice_id: Set(practice_id.to_owned()),
@@ -811,7 +981,8 @@ impl AuthStore for PostgresAuthStore {
             created_at: Set(now as i64),
             expires_at: Set((now + INVITATION_TTL_SECONDS) as i64),
         };
-        active.insert(&self.db).await.map_err(stale)?;
+        active.insert(&txn).await.map_err(stale)?;
+        txn.commit().await.map_err(stale)?;
         Ok(token)
     }
 
@@ -862,12 +1033,13 @@ impl AuthStore for PostgresAuthStore {
             created_at: Set(now as i64),
         };
         let account = account.insert(&txn).await.map_err(stale)?;
+        let minted_at = post_fence_mint_second(now, account.sessions_ended_before.max(0) as u64);
         let session_token = mint_token();
         let session = crate::migration::SessionActiveModel {
             id: Default::default(),
             account_id: Set(account.id),
             token_hash: Set(token_hash(&session_token).to_vec()),
-            created_at: Set(now as i64),
+            created_at: Set(minted_at as i64),
             expires_at: Set(SessionLifetime::mint(now).expires_at() as i64),
             ends_at: Set(None),
         };

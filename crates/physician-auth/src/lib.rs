@@ -30,7 +30,10 @@ mod store;
 pub use lifetime::{SessionActivity, SessionLifetime, SessionRenewal};
 
 pub use cache::{AUTHORITY_CHANNEL, CachedAuthStore, ENTRY_TTL, follow};
-pub use error::{PanelError, SessionError, SignInError, StoreUnavailable};
+pub use error::{
+    AccountSetupError, InvalidTimeZone, PanelError, PracticeSetupError, SessionError, SignInError,
+    StoreUnavailable,
+};
 pub use store::PostgresAuthStore;
 pub use tokio::sync::watch;
 
@@ -92,6 +95,167 @@ impl PracticeClock {
             Self::Fixed(instant) => instant,
         }
     }
+}
+
+/// The validated IANA time zone a practice operates in (for example,
+/// `"America/New_York"` or `"America/Los_Angeles"`).
+#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize)]
+#[serde(try_from = "String", into = "String")]
+pub struct PracticeTimeZone(String);
+
+impl PracticeTimeZone {
+    /// The default practice time zone (`"America/New_York"`).
+    pub const DEFAULT_IANA: &'static str = "America/New_York";
+
+    /// Validates a candidate IANA time zone identifier against the bundled tzdb.
+    pub fn parse(raw: &str) -> Result<Self, InvalidTimeZone> {
+        let trimmed = raw.trim();
+        if trimmed.is_empty() || trimmed.starts_with('+') || trimmed.starts_with('-') {
+            let source = jiff::tz::TimeZone::get("").expect_err("empty time zone must be rejected");
+            return Err(InvalidTimeZone {
+                zone: raw.to_owned(),
+                source,
+            });
+        }
+        let tz = jiff::tz::TimeZone::get(trimmed).map_err(|source| InvalidTimeZone {
+            zone: raw.to_owned(),
+            source,
+        })?;
+        let canonical = tz
+            .iana_name()
+            .filter(|name| !name.is_empty())
+            .unwrap_or(trimmed)
+            .to_owned();
+        Ok(Self(canonical))
+    }
+
+    /// Returns the validated IANA time zone name.
+    pub fn as_str(&self) -> &str {
+        &self.0
+    }
+}
+
+impl Default for PracticeTimeZone {
+    fn default() -> Self {
+        Self(Self::DEFAULT_IANA.to_owned())
+    }
+}
+
+impl std::fmt::Display for PracticeTimeZone {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(&self.0)
+    }
+}
+
+impl From<PracticeTimeZone> for String {
+    fn from(zone: PracticeTimeZone) -> Self {
+        zone.0
+    }
+}
+
+impl TryFrom<String> for PracticeTimeZone {
+    type Error = InvalidTimeZone;
+
+    fn try_from(value: String) -> Result<Self, Self::Error> {
+        Self::parse(&value)
+    }
+}
+
+/// One practice record: its identifier, clinical clock, and validated IANA time zone.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct PracticeRecord {
+    /// The practice identifier.
+    pub practice_id: String,
+    /// The clinical clock the practice operates on.
+    pub clock: PracticeClock,
+    /// The validated IANA time zone the practice operates in.
+    pub time_zone: PracticeTimeZone,
+}
+
+/// Whether [`AuthStore::upsert_practice`] created a new practice or verified an unchanged one.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "snake_case")]
+pub enum PracticeSetupOutcome {
+    /// A new practice row was inserted.
+    Created,
+    /// The practice already existed with identical `(clock, time_zone)`.
+    Unchanged,
+}
+
+/// Whether [`AuthStore::create_account`] inserted a new physician account or verified an existing one.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "snake_case")]
+pub enum AccountCreateOutcome {
+    /// A new active physician account was inserted.
+    Created,
+    /// An identical account in the same practice already existed.
+    Existing,
+}
+
+/// Advances a newly minted session's `created_at` past the account's revocation fence
+/// (`sessions_ended_before`) so a post-reactivation sign-in within the same Unix second
+/// resolves while pre-deactivation sessions stay permanently ended.
+pub(crate) fn post_fence_mint_second(now: u64, sessions_ended_before: u64) -> u64 {
+    now.max(sessions_ended_before)
+}
+
+pub(crate) fn validate_practice_id(raw: &str) -> Result<String, PracticeSetupError> {
+    let trimmed = raw.trim();
+    let valid = !trimmed.is_empty()
+        && trimmed.len() <= 96
+        && trimmed
+            .bytes()
+            .all(|b| b.is_ascii_alphanumeric() || b"._-".contains(&b))
+        && !trimmed.contains("..");
+    if valid {
+        Ok(trimmed.to_owned())
+    } else {
+        Err(PracticeSetupError::InvalidPracticeId(raw.to_owned()))
+    }
+}
+
+pub(crate) fn validate_account_fields(
+    practice_id: &str,
+    physician_id: Option<&str>,
+    email: &str,
+    display_name: &str,
+) -> Result<(String, String, String, String), AccountSetupError> {
+    let practice = validate_practice_id(practice_id).map_err(|_| {
+        AccountSetupError::InvalidInput(format!("invalid practice_id `{practice_id}`"))
+    })?;
+    let resolved_physician_id = match physician_id.map(str::trim).filter(|id| !id.is_empty()) {
+        Some(id) => {
+            let valid = id.len() <= 96
+                && id
+                    .bytes()
+                    .all(|b| b.is_ascii_alphanumeric() || b"._-".contains(&b))
+                && !id.contains("..");
+            if !valid {
+                return Err(AccountSetupError::InvalidInput(format!(
+                    "invalid physician_id `{id}`"
+                )));
+            }
+            id.to_owned()
+        }
+        None => Uuid::new_v4().simple().to_string(),
+    };
+    let clean_email = email.trim().to_lowercase();
+    let email_ok = clean_email
+        .split_once('@')
+        .is_some_and(|(local, domain)| !local.is_empty() && domain.contains('.'))
+        && !clean_email.chars().any(char::is_whitespace);
+    if !email_ok {
+        return Err(AccountSetupError::InvalidInput(format!(
+            "invalid email `{email}`"
+        )));
+    }
+    let clean_name = display_name.trim().to_owned();
+    if clean_name.is_empty() || clean_name.len() > 160 {
+        return Err(AccountSetupError::InvalidInput(
+            "display_name must be 1..=160 characters".to_owned(),
+        ));
+    }
+    Ok((practice, resolved_physician_id, clean_email, clean_name))
 }
 
 /// A physician's access to one patient workspace.
@@ -259,6 +423,15 @@ pub trait AuthStore: Send + Sync {
         practice_id: &str,
         clock: PracticeClock,
     ) -> Result<(), StoreUnavailable>;
+    /// Creates `record` with its validated clock and IANA time zone, or verifies
+    /// that an existing practice matches `(clock, time_zone)`.
+    async fn upsert_practice(
+        &self,
+        record: &PracticeRecord,
+    ) -> Result<PracticeSetupOutcome, PracticeSetupError>;
+    /// Reads one practice record if `practice_id` has been created.
+    async fn practice(&self, practice_id: &str)
+    -> Result<Option<PracticeRecord>, StoreUnavailable>;
     /// Reads the clock `practice_id` was created with. A practice with no
     /// record was never made synthetic, so it runs on real time.
     async fn practice_clock(&self, practice_id: &str) -> Result<PracticeClock, StoreUnavailable>;
@@ -279,6 +452,17 @@ pub trait AuthStore: Send + Sync {
     async fn practice_patients(&self, practice_id: &str) -> Result<Vec<String>, StoreUnavailable>;
     /// Lists the physician accounts in `practice_id`, sorted.
     async fn practice_accounts(&self, practice_id: &str) -> Result<Vec<Account>, StoreUnavailable>;
+    /// Creates an active physician account in `practice_id`, or returns an
+    /// identical existing account in `practice_id`.
+    async fn create_account(
+        &self,
+        practice_id: &str,
+        physician_id: Option<&str>,
+        email: &str,
+        display_name: &str,
+        admin: bool,
+        now: u64,
+    ) -> Result<(Account, AccountCreateOutcome), AccountSetupError>;
     /// Records one pending invitation and returns its redeem token.
     async fn invite(
         &self,
@@ -361,7 +545,7 @@ pub(crate) fn mint_patient_token() -> String {
 struct MemoryState {
     accounts: HashMap<String, Account>,
     memberships: HashMap<(String, String, String), Membership>,
-    practices: HashMap<String, PracticeClock>,
+    practices: HashMap<String, (PracticeClock, PracticeTimeZone)>,
     patients: HashMap<String, String>,
     sessions: HashMap<[u8; 32], Session>,
     sign_ins: HashMap<String, (SignInPending, ())>,
@@ -494,14 +678,14 @@ impl MemoryAuthStore {
     }
 
     /// Creates one practice directly, for fixtures and the staging practice.
-    /// A practice that already exists keeps its clock.
+    /// A practice that already exists keeps its clock and time zone.
     pub fn seed_practice(&self, practice_id: &str, clock: PracticeClock) {
         self.state
             .lock()
             .expect("auth state")
             .practices
             .entry(practice_id.to_owned())
-            .or_insert(clock);
+            .or_insert_with(|| (clock, PracticeTimeZone::default()));
     }
 
     /// Lists one practice's accounts, for the admin surface.
@@ -521,13 +705,15 @@ impl MemoryAuthStore {
     pub fn seed_session(&self, email: &str, now: u64) -> Option<String> {
         let _announce = self.announce();
         let mut state = self.state.lock().expect("auth state");
-        let identity = state
-            .accounts
-            .get(&email.to_lowercase())
-            .filter(|account| account.active)?
-            .identity
-            .clone();
-        self.mint_session(&mut state, identity, now)
+        let (identity, fence) = {
+            let account = state
+                .accounts
+                .get(&email.to_lowercase())
+                .filter(|account| account.active)?;
+            (account.identity.clone(), account.sessions_ended_before)
+        };
+        let minted_at = post_fence_mint_second(now, fence);
+        self.mint_session(&mut state, identity, now, minted_at)
     }
 
     fn mint_session(
@@ -535,12 +721,14 @@ impl MemoryAuthStore {
         state: &mut MemoryState,
         identity: PhysicianIdentity,
         now: u64,
+        created_at: u64,
     ) -> Option<String> {
+        let expires_at = SessionLifetime::mint(now).expires_at();
         Some(Self::insert_session(
             state,
             identity,
-            now,
-            SessionLifetime::mint(now),
+            created_at,
+            SessionLifetime::from_persisted(created_at, expires_at, None),
         ))
     }
 
@@ -615,7 +803,8 @@ impl AuthStore for MemoryAuthStore {
             return Err(SignInError::Inactive);
         }
         let identity = account.identity.clone();
-        let session_token = self.mint_session(&mut state, identity.clone(), now);
+        let minted_at = post_fence_mint_second(now, account.sessions_ended_before);
+        let session_token = self.mint_session(&mut state, identity.clone(), now, minted_at);
         Ok((identity, session_token.expect("token minted")))
     }
 
@@ -635,11 +824,13 @@ impl AuthStore for MemoryAuthStore {
         if !account.active {
             return Err(SignInError::Inactive);
         }
+        let minted_at = post_fence_mint_second(now, account.sessions_ended_before);
+        let expires_at = SessionLifetime::fixed(now, ends_at).expires_at();
         Ok(Self::insert_session(
             &mut state,
             identity.clone(),
-            now,
-            SessionLifetime::fixed(now, ends_at),
+            minted_at,
+            SessionLifetime::from_persisted(minted_at, expires_at, Some(expires_at)),
         ))
     }
 
@@ -902,6 +1093,45 @@ impl AuthStore for MemoryAuthStore {
         Ok(())
     }
 
+    async fn upsert_practice(
+        &self,
+        record: &PracticeRecord,
+    ) -> Result<PracticeSetupOutcome, PracticeSetupError> {
+        let practice_id = validate_practice_id(&record.practice_id)?;
+        let _announce = self.announce();
+        let mut state = self.state.lock().expect("auth state");
+        if let Some((existing_clock, existing_time_zone)) = state.practices.get(&practice_id) {
+            if *existing_clock == record.clock && *existing_time_zone == record.time_zone {
+                return Ok(PracticeSetupOutcome::Unchanged);
+            }
+            return Err(PracticeSetupError::Conflict {
+                practice_id,
+                existing_clock: *existing_clock,
+                existing_time_zone: existing_time_zone.clone(),
+            });
+        }
+        state
+            .practices
+            .insert(practice_id, (record.clock, record.time_zone.clone()));
+        Ok(PracticeSetupOutcome::Created)
+    }
+
+    async fn practice(
+        &self,
+        practice_id: &str,
+    ) -> Result<Option<PracticeRecord>, StoreUnavailable> {
+        let trimmed = practice_id.trim();
+        let state = self.state.lock().expect("auth state");
+        Ok(state
+            .practices
+            .get(trimmed)
+            .map(|(clock, time_zone)| PracticeRecord {
+                practice_id: trimmed.to_owned(),
+                clock: *clock,
+                time_zone: time_zone.clone(),
+            }))
+    }
+
     async fn practice_clock(&self, practice_id: &str) -> Result<PracticeClock, StoreUnavailable> {
         Ok(self
             .state
@@ -909,7 +1139,7 @@ impl AuthStore for MemoryAuthStore {
             .expect("auth state")
             .practices
             .get(practice_id)
-            .copied()
+            .map(|(clock, _)| *clock)
             .unwrap_or(PracticeClock::RealTime))
     }
 
@@ -956,6 +1186,71 @@ impl AuthStore for MemoryAuthStore {
         Ok(MemoryAuthStore::practice_accounts(self, practice_id))
     }
 
+    async fn create_account(
+        &self,
+        practice_id: &str,
+        physician_id: Option<&str>,
+        email: &str,
+        display_name: &str,
+        admin: bool,
+        _now: u64,
+    ) -> Result<(Account, AccountCreateOutcome), AccountSetupError> {
+        let caller_named_physician = physician_id
+            .map(str::trim)
+            .filter(|id| !id.is_empty())
+            .is_some();
+        let (practice_id, resolved_physician_id, key, clean_name) =
+            validate_account_fields(practice_id, physician_id, email, display_name)?;
+        let _announce = self.announce();
+        let mut state = self.state.lock().expect("auth state");
+        if let Some(existing) = state.accounts.get(&key) {
+            if existing.identity.practice_id != practice_id {
+                return Err(AccountSetupError::EmailConflict {
+                    email: key,
+                    existing_practice_id: existing.identity.practice_id.clone(),
+                });
+            }
+            if caller_named_physician && existing.identity.physician_id != resolved_physician_id {
+                return Err(AccountSetupError::PhysicianIdConflict {
+                    practice_id,
+                    physician_id: resolved_physician_id,
+                });
+            }
+            return Ok((existing.clone(), AccountCreateOutcome::Existing));
+        }
+        if state.accounts.values().any(|account| {
+            account.identity.practice_id == practice_id
+                && account.identity.physician_id == resolved_physician_id
+        }) {
+            return Err(AccountSetupError::PhysicianIdConflict {
+                practice_id,
+                physician_id: resolved_physician_id,
+            });
+        }
+        if let Some(invitation) = state.invitations.get(&key) {
+            if invitation.practice_id != practice_id {
+                return Err(AccountSetupError::EmailConflict {
+                    email: key,
+                    existing_practice_id: invitation.practice_id.clone(),
+                });
+            }
+            state.invitations.remove(&key);
+        }
+        let account = Account {
+            identity: PhysicianIdentity {
+                practice_id,
+                physician_id: resolved_physician_id,
+            },
+            email: key.clone(),
+            display_name: clean_name,
+            active: true,
+            admin,
+            sessions_ended_before: 0,
+        };
+        state.accounts.insert(key, account.clone());
+        Ok((account, AccountCreateOutcome::Created))
+    }
+
     async fn invite(
         &self,
         practice_id: &str,
@@ -964,9 +1259,19 @@ impl AuthStore for MemoryAuthStore {
         admin: bool,
         now: u64,
     ) -> Result<String, SignInError> {
+        let key = email.trim().to_lowercase();
+        if key.is_empty() || !key.contains('@') {
+            return Err(SignInError::Invalid);
+        }
+        let mut state = self.state.lock().expect("auth state");
+        if let Some(existing) = state.invitations.get(&key)
+            && existing.practice_id != practice_id
+        {
+            return Err(SignInError::Invalid);
+        }
         let token = mint_token();
-        self.state.lock().expect("auth state").invitations.insert(
-            email.to_lowercase(),
+        state.invitations.insert(
+            key,
             InvitationPending {
                 practice_id: practice_id.to_owned(),
                 display_name: display_name.to_owned(),
@@ -1016,7 +1321,7 @@ impl AuthStore for MemoryAuthStore {
             },
         );
         let session_token = self
-            .mint_session(&mut state, identity.clone(), now)
+            .mint_session(&mut state, identity.clone(), now, now)
             .expect("token minted");
         Ok((identity, session_token))
     }
@@ -1858,5 +2163,60 @@ mod tests {
             .expect("link remains");
         assert!(!still.sharing_consented);
         assert_eq!(still.revoked_at, Some(NOW + 60));
+    }
+
+    #[tokio::test]
+    async fn same_second_reactivation_mints_live_session_without_reviving_prior_session() {
+        let store = MemoryAuthStore::new();
+        let (acct, _) = store
+            .create_account(
+                "practice-1",
+                Some("dr-chen"),
+                "dr.chen@practice.org",
+                "Dr. Chen",
+                false,
+                NOW,
+            )
+            .await
+            .expect("create account");
+        let code_1 = store
+            .begin_sign_in("dr.chen@practice.org", NOW)
+            .await
+            .expect("sign-in 1");
+        let (_, session_1) = store
+            .complete_sign_in("dr.chen@practice.org", &code_1, NOW)
+            .await
+            .expect("verify 1");
+        assert_eq!(
+            store.identity(&session_1, NOW).await,
+            Ok(acct.identity.clone())
+        );
+
+        assert!(store.deactivate("dr.chen@practice.org").await);
+        assert_eq!(
+            store.identity(&session_1, NOW).await,
+            Err(SessionError::Inactive)
+        );
+
+        assert!(store.reactivate("dr.chen@practice.org").await);
+        assert_eq!(
+            store.identity(&session_1, NOW).await,
+            Err(SessionError::Inactive),
+            "prior session must stay revoked after reactivation"
+        );
+
+        let code_2 = store
+            .begin_sign_in("dr.chen@practice.org", NOW)
+            .await
+            .expect("sign-in 2 in same second");
+        let (_, session_2) = store
+            .complete_sign_in("dr.chen@practice.org", &code_2, NOW)
+            .await
+            .expect("verify 2 in same second");
+        assert_eq!(
+            store.identity(&session_2, NOW).await,
+            Ok(acct.identity),
+            "new session minted in same second after reactivation must resolve"
+        );
     }
 }

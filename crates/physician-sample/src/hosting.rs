@@ -53,11 +53,86 @@ pub fn validate_startup(get: impl Fn(&str) -> Option<String>) -> Result<(), Stri
     {
         ClinicalLibraryConfig::from_env(&get).map_err(|error| error.to_string())?;
         StagingSyntheticControlConfig::from_env(&get).map_err(|error| error.to_string())?;
+        StaffSetupAuth::from_env(&get)?;
         return Ok(());
     }
     Err(format!(
         "Physician hosted activation is not qualified: hosted runs require CODA_ENVIRONMENT=stg, CODA_HOSTED_PROFILE={STAGING_PROFILE}, PHYSICIAN_AUTH=required and PHYSICIAN_DATABASE_URL; production and every other profile refuse to start"
     ))
+}
+
+/// Environment variable holding the bearer secret for the Coda staff practice and
+/// physician account setup routes (`/auth/staff/*`).
+pub const STAFF_SETUP_TOKEN_ENV: &str = "CODA_STAFF_SETUP_TOKEN";
+
+/// Minimum length of `CODA_STAFF_SETUP_TOKEN` so short tokens fail closed at startup.
+const MIN_STAFF_SETUP_TOKEN_BYTES: usize = 16;
+
+/// Constant-time bearer gate for the Coda staff setup routes (`/auth/staff/*`),
+/// independent of staging rehearsal (`PHYSICIAN_STAGING_ACCOUNTS` and `POST /auth/rehearsal`).
+///
+/// When `CODA_STAFF_SETUP_TOKEN` is unset or blank, `from_env` returns `Ok(None)`
+/// and no `/auth/staff/*` route is mounted (`404 Not Found`).
+#[derive(Clone)]
+pub struct StaffSetupAuth {
+    digest: [u8; 32],
+}
+
+impl std::fmt::Debug for StaffSetupAuth {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("StaffSetupAuth")
+            .field("digest", &"<redacted>")
+            .finish()
+    }
+}
+
+impl PartialEq for StaffSetupAuth {
+    fn eq(&self, other: &Self) -> bool {
+        use subtle::ConstantTimeEq;
+        bool::from(self.digest.ct_eq(&other.digest))
+    }
+}
+
+impl Eq for StaffSetupAuth {}
+
+impl StaffSetupAuth {
+    /// Parses `CODA_STAFF_SETUP_TOKEN` when present, rejecting short or newline-bearing values.
+    pub fn from_env(get: impl Fn(&str) -> Option<String>) -> Result<Option<Self>, String> {
+        let Some(raw) = get(STAFF_SETUP_TOKEN_ENV) else {
+            return Ok(None);
+        };
+        let trimmed = raw.trim();
+        if trimmed.is_empty() {
+            return Ok(None);
+        }
+        Self::from_secret(trimmed).map(Some)
+    }
+
+    /// Builds a verifier from an explicit bearer secret (at least 16 bytes, single-line).
+    pub fn from_secret(secret: &str) -> Result<Self, String> {
+        let trimmed = secret.trim();
+        if trimmed.len() < MIN_STAFF_SETUP_TOKEN_BYTES {
+            return Err(format!(
+                "{STAFF_SETUP_TOKEN_ENV} must be at least {MIN_STAFF_SETUP_TOKEN_BYTES} bytes"
+            ));
+        }
+        if trimmed.bytes().any(|b| matches!(b, b'\r' | b'\n' | 0)) {
+            return Err(format!(
+                "{STAFF_SETUP_TOKEN_ENV} must not contain control characters"
+            ));
+        }
+        use sha2::Digest;
+        let digest: [u8; 32] = sha2::Sha256::digest(trimmed.as_bytes()).into();
+        Ok(Self { digest })
+    }
+
+    /// Verifies a presented bearer token in constant time by comparing fixed-width SHA-256 digests.
+    pub fn verify(&self, presented: &str) -> bool {
+        use sha2::Digest;
+        use subtle::ConstantTimeEq;
+        let candidate: [u8; 32] = sha2::Sha256::digest(presented.as_bytes()).into();
+        bool::from(self.digest.ct_eq(&candidate))
+    }
 }
 
 /// One preview account the staging migration job ensures exists.
