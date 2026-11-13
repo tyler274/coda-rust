@@ -61,7 +61,7 @@ These apply to the physician app and Duet alike, on the web, iOS and Android.
 
 **U7. Liquid motion and real state.** Clean states, clean transitions and clean boundaries. Motion, such as pulsing or loading indicators, shows progress instead of words. New information fades in gracefully, refreshed from the server, without blocking whatever the person is doing. Motion follows the actual run state and respects reduced motion.
 
-**U8. Native and practical on every device.** It feels native, like iMessage in the browser, works across real screen sizes without hard-coding resolutions, and chooses what is practical over what only looks ideal.
+**U8. Native and practical on every device.** It feels native, like iMessage in the browser, works across real screen sizes without hard-coding resolutions, and chooses what is practical over what only looks ideal. Text is set in one decided font on each platform: San Francisco on Mac and iPhone, Segoe UI on Windows, Roboto on Android. On Android that holds on every phone, whatever font its maker set.
 
 **U9. Learn from the best AI interfaces.** The Codex desktop app, shadcn AI Elements and assistant-ui are the references. We adapt their useful interactions to Dioxus and our motion roles; they are references, not dependencies.
 
