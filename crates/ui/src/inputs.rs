@@ -27,7 +27,6 @@ fn note_id(id: &str, hint: &Option<String>, error: &Option<String>) -> Option<St
 fn FieldFrame(
     id: String,
     label: String,
-    reading: Option<String>,
     hint: Option<String>,
     error: Option<String>,
     children: Element,
@@ -36,9 +35,6 @@ fn FieldFrame(
         div { class: "text-field",
             div { class: "field-heading",
                 label { class: "text-field-label", r#for: "{id}", "{label}" }
-                if let Some(reading) = reading {
-                    span { class: "field-reading", aria_hidden: "true", "{reading}" }
-                }
             }
             {children}
             if let Some(error) = error {
@@ -522,52 +518,6 @@ pub fn Combobox(
                 if options.is_empty() && !loading {
                     p { class: "combobox-empty", role: "status", "{empty}" }
                 }
-            }
-        }
-    }
-}
-
-/// An amount along a track from `min` to `max`, moved by `step`, by finger, pointer or arrow key.
-/// `reading` says it in words, such as "4 of 10", beside the label and to assistive technology.
-#[component]
-pub fn Slider(
-    label: String,
-    value: f64,
-    min: f64,
-    max: f64,
-    #[props(default = 1.0)] step: f64,
-    reading: String,
-    on_change: EventHandler<f64>,
-    #[props(default)] disabled: bool,
-    hint: Option<String>,
-) -> Element {
-    let id = use_hook(field_id);
-    let note = note_id(&id, &hint, &None);
-    let filled = if max > min {
-        ((value - min) / (max - min) * 100.0).clamp(0.0, 100.0)
-    } else {
-        0.0
-    };
-    rsx! {
-        FieldFrame { id: id.clone(), label, reading: reading.clone(), hint,
-            input {
-                id: "{id}",
-                class: "slider",
-                r#type: "range",
-                // The range stands before the value, or the browser clamps the value to its own.
-                min: "{min}",
-                max: "{max}",
-                step: "{step}",
-                value: "{value}",
-                disabled,
-                style: "--filled: {filled}%",
-                aria_valuetext: "{reading}",
-                aria_describedby: note,
-                oninput: move |event| {
-                    if let Ok(value) = event.value().parse() {
-                        on_change.call(value);
-                    }
-                },
             }
         }
     }

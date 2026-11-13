@@ -21,25 +21,24 @@ use std::time::Duration;
 use ui::{
     ActionRow, Answer, AnswerEnding, AnswerSources, ApprovalCard, ApprovalState, ArtifactCard,
     AttachButton, Attachment, AttachmentState, Attachments, Author, Avatar, AvatarSize, Basis,
-    Button, ButtonVariant, Card, Change, ChartHeader, ChatColumn, ChatHeader, Checkbox, Choice,
+    Button, ButtonVariant, Card, ChartHeader, ChatColumn, ChatHeader, Checkbox, Choice,
     CitationChip, CitationPreview, CitedAt, CitedField, CitedPlace, CodeBlock, Column, Combobox,
-    Command, CommandPalette, CompactField, Comparison, ComparisonBars, Composer, ContextChip,
-    ContextMenu, ConversationViewport, CopyButton, CopyWords, Count, DateField, DateKind,
-    DateSeparator, Dialog, Dictation, Diff, DiffLine, DiffWords, Disclosure, DraftConflict,
-    EmptyLine, EmptyState, EndAction, Ending, ExpandSource, FeedbackRating, FieldGroup, FieldValue,
-    FooterActions, HeaderFact, Icon, IconName, IconTile, IndexedSource, KeyHint, ListRow, LiveDot,
-    MeasurementTile, Menu, MenuItem, MenuSection, Message, MessageActions, MessageEditor,
-    MessageQueue, MessageState, MessageStatus, Nav, NavigationControl, NavigationRow, Notice,
-    PageTitle, Paper, PaperSection, PartRange, Placeholder, PlaceholderShape, Places, Popover,
-    PreviewContent, ProgressBar, Prose, ProseNames, ProsePart, QueuePlace, Quote, RadioGroup,
-    RailCard, Rating, RawRecord, RecordAbout, RecordBody, RecordField, RecordStatus, RowFrame,
-    RowGroup, RunningChart, Screen, ScreenFrame, SearchField, SectionHeader, Segmented, Select,
-    SeriesChart, SeriesPoint, SeriesShape, SettingRow, Slider, SortOrder, SourceLink, SourcePane,
-    SourceReading, SourceRecord, SourceState, SourceSummary, SourcesButton, Sparkline, Spinner,
-    StatePill, StatusLine, StepState, Suggestion, TabBar, Table, TableRow, Task, TaskList,
-    TaskState, TaskWords, TextField, TextKind, TextPart, Toast, ToggleChip, ToggleRow, ToggleState,
-    Tone, Tooltip, TopBar, TryAgain, Value, VersionSwitch, WorkStep, WorkTrace, WorkingMark,
-    WorkingPresence, use_live_rows, use_screen_stack,
+    CompactField, Comparison, ComparisonBars, Composer, ContextChip, ContextMenu,
+    ConversationViewport, CopyButton, CopyWords, Count, DateField, DateKind, DateSeparator, Dialog,
+    Dictation, Disclosure, DraftConflict, EmptyLine, EmptyState, EndAction, Ending, ExpandSource,
+    FeedbackRating, FieldGroup, FieldValue, FooterActions, HeaderFact, Icon, IconName, IconTile,
+    IndexedSource, KeyHint, ListRow, LiveDot, MeasurementTile, Menu, MenuItem, MenuSection,
+    Message, MessageActions, MessageEditor, MessageQueue, MessageState, MessageStatus, Nav,
+    NavigationControl, NavigationRow, Notice, PageTitle, Paper, PaperSection, PartRange,
+    Placeholder, PlaceholderShape, Places, Popover, PreviewContent, ProgressBar, Prose, ProseNames,
+    ProsePart, QueuePlace, Quote, RadioGroup, RailCard, Rating, RawRecord, RecordAbout, RecordBody,
+    RecordField, RecordStatus, RowFrame, RowGroup, RunningChart, Screen, ScreenFrame, SearchField,
+    SectionHeader, Segmented, Select, SeriesChart, SeriesPoint, SeriesShape, SettingRow, SortOrder,
+    SourceLink, SourcePane, SourceReading, SourceRecord, SourceState, SourceSummary, SourcesButton,
+    Sparkline, Spinner, StatePill, StatusLine, StepState, Suggestion, TabBar, Table, TableRow,
+    Task, TaskList, TaskState, TaskWords, TextField, TextKind, TextPart, Toast, ToggleChip,
+    ToggleRow, ToggleState, Tone, Tooltip, TopBar, TryAgain, Value, VersionSwitch, WorkStep,
+    WorkTrace, WorkingMark, WorkingPresence, use_live_rows, use_screen_stack,
 };
 #[cfg(feature = "web")]
 use wasm_bindgen::{JsCast, closure::Closure};
@@ -143,7 +142,7 @@ const FAMILIES: [Family; 17] = [
     Family {
         slug: "inputs",
         title: "Inputs",
-        note: "A few short choices stand side by side, the fill sliding to the one chosen. A longer choice is a real box or ring: the check draws across, the dot springs out, and a box over a list shows when only some of it is chosen. Until a ring is chosen, every ring stands empty. A list opens the platform's own picker; a long one is found by typing, the list narrowing as the words come. An amount moves along a track and says itself; a date or a time opens the platform's own picker. A hint stands under a field, and what is wrong takes its place with the field outlined in red. The text field carries focus on its outline. The search field leads with its mark, which darkens while it has focus, and clears itself without losing focus. A labelled field names what it holds; with several lines, it grows with what is written.",
+        note: "A few short choices stand side by side, the fill sliding to the one chosen. A longer choice is a real box or ring: the check draws across, the dot springs out, and a box over a list shows when only some of it is chosen. Until a ring is chosen, every ring stands empty. A list opens the platform's own picker; a long one is found by typing, the list narrowing as the words come. A date or a time opens the platform's own picker. A hint stands under a field, and what is wrong takes its place with the field outlined in red. The text field carries focus on its outline. The search field leads with its mark, which darkens while it has focus, and clears itself without losing focus. A labelled field names what it holds; with several lines, it grows with what is written.",
         body: || {
             rsx! {
                 InputsDemo {}
@@ -272,7 +271,7 @@ const FAMILIES: [Family; 17] = [
     Family {
         slug: "agent-work",
         title: "Agent work",
-        note: "What an agent is doing, as it happens: one line for the turn, saying the step under way, its steps folded beneath it until the line is pressed, each step's words shimmering while it runs. Done, the line says what was done; a step with more opens to show it, such as the reasoning or a tool's result. Its plan checks off as it goes, each check drawing in. Before it acts it asks: answered, the card keeps the question and says the answer, and what came of it is reported apart. Its words fade in as they stream, and what it makes stands as a card that opens it, its title shimmering while it is made. Code stands in its own frame, to copy, and a change to it line by line. Every state comes from the run.",
+        note: "What an agent is doing, as it happens: one line for the turn, saying the step under way, its steps folded beneath it until the line is pressed, each step's words shimmering while it runs. Done, the line says what was done; a step with more opens to show it, such as the reasoning or a tool's result. Its plan checks off as it goes, each check drawing in. Before it acts it asks: answered, the card keeps the question and says the answer, and what came of it is reported apart. Its words fade in as they stream, and what it makes stands as a card that opens it, its title shimmering while it is made. Code stands in its own frame, to copy. Every state comes from the run.",
         body: || {
             rsx! {
                 AgentWorkDemo {}
@@ -314,9 +313,6 @@ const FAMILIES: [Family; 17] = [
                 }
                 Part { title: "Menus, popovers and tooltips", note: "A menu or popover opens beside its control, under it from its leading edge, flipping where there isn't room, and arrives from that corner on the arrival spring. The arrow keys, a letter or the pointer move through a menu's choices; choosing one, Escape or a press elsewhere closes it, focus back on the control. A message's menu also opens at a right-click, from the menu key, or, held on touch, lifts the message over the blurred page with its menu beneath. A tooltip names an icon's control once the pointer rests on it, at once from the keys, and never on touch.",
                     MenuDemo {}
-                }
-                Part { title: "Command palette", note: "Every command, found by typing: each word narrows the list, groups keep together, and the first left is active. The arrow keys or the pointer move it; Enter or a press runs it. Press ⌘K, or Ctrl K, while this section is open.",
-                    PaletteDemo {}
                 }
             }
         },
@@ -3151,113 +3147,6 @@ fn MenuDemo() -> Element {
     }
 }
 
-#[cfg(feature = "web")]
-#[component]
-fn PaletteDemo() -> Element {
-    let mut open = use_signal(|| false);
-    let mut ran = use_signal(|| None::<String>);
-    use_hook(move || {
-        let mut keys = document::eval(
-            "document.addEventListener('keydown', (event) => {
-              if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') { event.preventDefault(); dioxus.send(true); }
-            });",
-        );
-        spawn(async move {
-            while keys.recv::<bool>().await.is_ok() {
-                open.set(true);
-            }
-        });
-    });
-    let command =
-        |group: &str, label: &str, icon: IconName, detail: Option<&str>, shortcut: Option<&str>| {
-            Command {
-                group: group.into(),
-                label: label.into(),
-                icon: Some(icon),
-                detail: detail.map(Into::into),
-                shortcut: shortcut.map(Into::into),
-            }
-        };
-    let commands = vec![
-        command(
-            "Suggested",
-            "New conversation",
-            IconName::Message,
-            None,
-            Some("⇧⌘O"),
-        ),
-        command(
-            "Suggested",
-            "Search conversations",
-            IconName::Search,
-            None,
-            Some("⌘F"),
-        ),
-        command(
-            "This conversation",
-            "Copy last reply",
-            IconName::Copy,
-            None,
-            Some("⇧⌘C"),
-        ),
-        command(
-            "This conversation",
-            "Try again",
-            IconName::Refresh,
-            Some("Ask for a new reply"),
-            None,
-        ),
-        command(
-            "This conversation",
-            "Share",
-            IconName::Share,
-            Some("Anyone with the link"),
-            None,
-        ),
-        command(
-            "This conversation",
-            "Archive",
-            IconName::Archive,
-            None,
-            None,
-        ),
-        command(
-            "Settings",
-            "Dark appearance",
-            IconName::Moon,
-            Some("Follow the system otherwise"),
-            None,
-        ),
-        command("Settings", "Settings", IconName::Settings, None, Some("⌘,")),
-    ];
-    let names: Vec<String> = commands
-        .iter()
-        .map(|command| command.label.clone())
-        .collect();
-    rsx! {
-        div { class: "gallery-row",
-            Button { onclick: move |_| open.set(true),
-                Icon { name: IconName::Search }
-                "Search commands"
-                KeyHint { key_label: "⌘K" }
-            }
-            if let Some(name) = ran() {
-                span { class: "gallery-note", "Chose {name}." }
-            }
-        }
-        if open() {
-            CommandPalette {
-                label: "Commands",
-                placeholder: "Type a command",
-                commands,
-                empty: "No commands match.",
-                on_choose: move |index: usize| ran.set(Some(names[index].clone())),
-                on_close: move |_| open.set(false),
-            }
-        }
-    }
-}
-
 /// A scripted run: each step runs, then is done, and the trace's line says what was done once the last is.
 #[cfg(feature = "web")]
 const RUN: [(IconName, &str, &str, &str); 4] = [
@@ -3493,14 +3382,6 @@ fn ReplyDemo() -> Element {
     }
 }
 
-#[cfg(feature = "web")]
-fn line(change: Change, text: &str) -> DiffLine {
-    DiffLine {
-        change,
-        text: text.into(),
-    }
-}
-
 /// A result as a tool returned it.
 #[cfg(feature = "web")]
 const RESULT: &str = "{\n  \"code\": \"2823-3\",\n  \"display\": \"Potassium\",\n  \"value\": 5.4,\n  \"unit\": \"mmol/L\",\n  \"effective\": \"2026-10-28\",\n  \"note\": \"Drawn four hours after the morning dose; repeat within one week if the reading stays above 5.0 mmol/L.\"\n}";
@@ -3515,18 +3396,6 @@ fn CodeDemo() -> Element {
                 label: "json",
                 copy: copy_words(),
                 code: RESULT,
-            }
-            Diff {
-                label: "care-plan.md",
-                words: DiffWords { added: "Added".into(), removed: "Removed".into() },
-                lines: vec![
-                    line(Change::Kept, "## Medications"),
-                    line(Change::Kept, "- Lisinopril 10 mg daily"),
-                    line(Change::Removed, "- Spironolactone 25 mg daily"),
-                    line(Change::Added, "- Spironolactone 12.5 mg daily, until potassium is rechecked"),
-                    line(Change::Added, "- Repeat basic metabolic panel within 1 week"),
-                    line(Change::Kept, "- Metoprolol succinate 50 mg daily"),
-                ],
             }
         }
     }
@@ -4209,7 +4078,6 @@ fn InputsDemo() -> Element {
         "I’d like to understand why I’m so tired in the afternoon. It’s getting in the way of work."
             .to_string()
     });
-    let mut pain = use_signal(|| 4.0);
     let mut day = use_signal(|| "2026-09-10".to_owned());
     let mut time = use_signal(String::new);
     let mut visit = use_signal(|| None::<usize>);
@@ -4318,15 +4186,6 @@ fn InputsDemo() -> Element {
                 clear_label: "Clear search",
                 value: search(),
                 on_input: move |words| search.set(words),
-            }
-            Slider {
-                label: "Pain today",
-                value: pain(),
-                min: 0.0,
-                max: 10.0,
-                reading: format!("{} of 10", pain()),
-                hint: "0 is none, 10 the worst you can imagine.",
-                on_change: move |amount| pain.set(amount),
             }
             div { class: "gallery-when",
                 DateField {

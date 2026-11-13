@@ -43,9 +43,7 @@ pub use charts::{
     ChartHeader, Comparison, ComparisonBars, MeasurementTile, RunningChart, SeriesChart,
     SeriesPoint, SeriesShape, Sparkline, Value,
 };
-pub use code::{
-    Change, CodeBlock, CopyButton, CopyFailed, CopyWords, Diff, DiffLine, DiffWords, copy_text,
-};
+pub use code::{CodeBlock, CopyButton, CopyFailed, CopyWords, copy_text};
 pub use conversation::{
     ChatColumn, ChatHeader, ContextChip, ConversationViewport, DateSeparator, Dictation,
     HeaderFact, MessageActions, MessageEditor, MessageQueue, MessageStatus, QueuePlace, Suggestion,
@@ -56,13 +54,11 @@ pub use feedback::{FeedbackRating, Rating, ToggleChip};
 pub use icons::{Icon, IconName};
 pub use inputs::{
     Checkbox, Choice, Combobox, CompactField, DateField, DateKind, RadioGroup, Segmented, Select,
-    Slider, TextField, TextKind,
+    TextField, TextKind,
 };
 pub use live::{ListedRow, LiveRows, RowFrame, use_live_rows};
 pub use motion::Stylesheet;
-pub use overlays::{
-    Command, CommandPalette, ContextMenu, Menu, MenuItem, MenuSection, Popover, Tooltip,
-};
+pub use overlays::{ContextMenu, Menu, MenuItem, MenuSection, Popover, Tooltip};
 pub use prose::{Prose, ProseNames, ProsePart};
 pub use sources::{
     CitationPreview, CitedAt, CitedField, CitedPlace, ExpandSource, FieldGroup, FieldValue,

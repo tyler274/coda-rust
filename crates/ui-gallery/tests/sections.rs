@@ -619,7 +619,7 @@ fn keys_scroll_a_code_block() {
     let mut browser = open_at(&gallery, PHONE, "agent-work", "Agent work");
     keys_scroll(
         &mut browser,
-        ".gallery-agent > .code-block:not(.diff) > .code-block-body",
+        ".gallery-agent > .code-block > .code-block-body",
         "code-block",
     );
 }

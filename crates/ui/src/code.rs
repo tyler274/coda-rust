@@ -1,5 +1,4 @@
 //! Code as written, to read and take away: a block of code with what it is and a way to copy it,
-//! and a change to code, line by line, what it adds and what it removes. Both stand in one frame,
 //! in the monospace the prose's code uses. The copy control copies any words as written, such as a
 //! message's.
 
@@ -98,104 +97,6 @@ pub fn CodeBlock(
             }
             pre { class: "code-block-body", role: "region", aria_label: "{name}", tabindex: "0",
                 code { "{code}" }
-            }
-        }
-    }
-}
-
-/// What a line of a change does.
-#[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
-pub enum Change {
-    /// Stays as it was, around what changes.
-    #[default]
-    Kept,
-    /// Added.
-    Added,
-    /// Removed.
-    Removed,
-}
-
-/// One line of a `Diff`.
-#[derive(Clone, Debug, Default, PartialEq)]
-pub struct DiffLine {
-    /// What the line does.
-    pub change: Change,
-    /// The line as written.
-    pub text: String,
-}
-
-/// What assistive technology hears before an added or removed line.
-#[derive(Clone, Debug, Default, PartialEq)]
-pub struct DiffWords {
-    /// Before an added line.
-    pub added: String,
-    /// Before a removed line.
-    pub removed: String,
-}
-
-/// A change to code, in its lines: an added line on green after a plus, a removed one on red after
-/// a minus, and the lines kept around them plain. Its heading names what changed, such as the file,
-/// and counts the lines added and removed.
-#[component]
-pub fn Diff(
-    lines: Vec<DiffLine>,
-    label: Option<String>,
-    #[props(default)] words: DiffWords,
-) -> Element {
-    let added = lines
-        .iter()
-        .filter(|line| line.change == Change::Added)
-        .count();
-    let removed = lines
-        .iter()
-        .filter(|line| line.change == Change::Removed)
-        .count();
-    rsx! {
-        div { class: "code-block diff",
-            div { class: "code-block-heading",
-                if let Some(label) = label {
-                    span { class: "code-block-label", "{label}" }
-                }
-                span { class: "diff-counts",
-                    if added > 0 {
-                        span { class: "diff-added", "+{added}" }
-                    }
-                    if removed > 0 {
-                        span { class: "diff-removed", "−{removed}" }
-                    }
-                }
-            }
-            pre { class: "code-block-body",
-                code {
-                    for (index, line) in lines.into_iter().enumerate() {
-                        match line.change {
-                            Change::Added => rsx! {
-                                ins { key: "{index}", class: "diff-line",
-                                    span { class: "diff-sign", aria_hidden: "true", "+" }
-                                    if !words.added.is_empty() {
-                                        span { class: "sr-only", "{words.added}: " }
-                                    }
-                                    "{line.text}"
-                                }
-                            },
-                            Change::Removed => rsx! {
-                                del { key: "{index}", class: "diff-line",
-                                    span { class: "diff-sign", aria_hidden: "true", "−" }
-                                    if !words.removed.is_empty() {
-                                        span { class: "sr-only", "{words.removed}: " }
-                                    }
-                                    "{line.text}"
-                                }
-                            },
-                            Change::Kept => rsx! {
-                                span { key: "{index}", class: "diff-line",
-                                    span { class: "diff-sign", aria_hidden: "true", " " }
-                                    "{line.text}"
-                                }
-                            },
-                        }
-                    }
-                }
             }
         }
     }
