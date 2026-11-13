@@ -801,14 +801,15 @@ del > .diff-sign, .diff-removed { color: var(--error); }
 .control[aria-busy="true"]:not(:has(> .icon:not(.spinner))) { -webkit-text-fill-color: transparent; }
 .control[aria-busy="true"]:not(:has(> .icon:not(.spinner))) > .spinner { position: absolute; inset: 0; margin: auto; }
 @keyframes spinner-turn { to { transform: rotate(1turn); } }
-/* The conversation's scrolling region and its one way back to the newest reply. */
+/* The conversation's scrolling region and its one way back to the newest reply, centred across the region near its foot. */
 .conversation-viewport { position: relative; display: grid; min-height: 0; }
 .conversation-scroll { min-height: 0; overflow-y: auto; overscroll-behavior: contain; overflow-anchor: none; }
 /* What stood in the conversation when it first showed stands at rest; only what arrives after runs its entry. */
 .conversation-scroll:not([data-settled]) :is(.message, .answer-ending, .work-trace, .work-step) { transition: none; }
 .conversation-scroll .message:focus { outline: none; }
 .conversation-scroll .message:focus-visible { outline: var(--focus-ring-width) solid var(--focus-ring-color); outline-offset: var(--focus-ring-offset); border-radius: var(--radius-md); }
-.jump-to-latest { position: absolute; right: var(--space-row); bottom: var(--space-row); box-shadow: var(--elevation-3);
+.jump-to-latest { position: absolute; inset-inline: 0; bottom: var(--space-row); width: fit-content; margin-inline: auto;
+  box-shadow: var(--elevation-3);
   transition: opacity var(--motion-arrive) var(--ease-out), transform var(--motion-arrive) var(--ease-out); }
 @starting-style { .jump-to-latest { opacity: 0; transform: translateY(var(--rise)) scale(.98); } }
 /* A conversation as a window's main area: its header, the transcript, and the dock at its foot, in three rows, so the
@@ -820,8 +821,6 @@ del > .diff-sign, .diff-removed { color: var(--error); }
 .source-reading-main > .chat-column { flex: 1 1 auto; height: auto; }
 .chat-measure { box-sizing: border-box; width: min(100cqi - 2 * var(--page-gutter), var(--measure)); margin-inline: auto; }
 .chat-column .conversation-scroll { scrollbar-gutter: stable both-edges; }
-/* Its way back to the newest reply stands at the column's trailing edge, however wide the region. */
-.chat-column .jump-to-latest { right: max(var(--page-gutter), (100% - var(--measure)) / 2); }
 .conversation-feed { display: grid; align-content: start; gap: var(--space-region); min-width: 0; padding-block: var(--space-section); }
 .chat-dock { display: grid; gap: var(--space-2); min-width: 0; padding-block: var(--space-2) max(var(--space-3), env(safe-area-inset-bottom)); }
 /* Who the conversation is about, over the transcript. It has no room of its own above it: the room above is the shell's

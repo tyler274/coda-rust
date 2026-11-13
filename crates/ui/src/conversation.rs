@@ -113,7 +113,9 @@ pub fn MessageQueue(children: Element) -> Element {
 
 /// The conversation's scrolling region. At its end it follows the end as replies arrive and as
 /// the region or its content changes size, such as when a source opens beside it or the dock
-/// grows, and waits while a button or finger is down in it. Moving back lets go of the end at
+/// grows, and waits while a button or finger is down in it. A reply that arrives there and whose
+/// top the end would take out of sight stands instead with its top at the region's top, where
+/// the jump would bring it, and focus stays where it was. Moving back lets go of the end at
 /// once; scrolled back, the first turn in sight stays where it stood until the reader returns to
 /// the end, and a new reply offers `jump_label`, which takes the reader to that reply's top and
 /// focus to the reply. What the person sends always brings them to the end. Its turns are the
@@ -138,8 +140,12 @@ pub fn ConversationViewport(
         if sent != seen_sent {
             has_new.set(false);
             script::read_to_end(&region);
-        } else if replies != seen_replies && !*at_end.peek() {
-            has_new.set(true);
+        } else if replies != seen_replies {
+            if *at_end.peek() {
+                script::reply_arrived(&region);
+            } else {
+                has_new.set(true);
+            }
         }
     }));
     let watched = id.clone();

@@ -395,8 +395,10 @@ function scrollToPassage(bodyId) {
 // size of the region or of its content. The turns are the children of its one child.
 // The reader's intent decides which: a wheel, finger or key moving back lets go of the end at once, before any of its
 // scroll lands, and so does any scroll toward the start that this watch did not make; only reaching the end again by
-// moving toward it, a send, or the jump to the newest reply changes that. While a button or finger is down in the
-// region, such as while words are being selected, following waits, and takes up again once it is let go.
+// moving toward it, a send, or the jump to the newest reply changes that. A reply that arrives while it follows the end,
+// and whose top the end would take out of sight, is held instead with its top at the region's top, as the jump holds
+// it. While a button or finger is down in the region, such as while words are being selected, following waits, and
+// takes up again once it is let go.
 // Moving to its place, the region eases, closing the same share of the distance each frame so most of it is covered
 // within `--motion-arrive`, and what was in sight moves with new content's own entry instead of jumping; under reduced
 // motion it moves at once. A held turn stays where it stood at once, except on the way to the newest reply.
@@ -502,22 +504,36 @@ function watchReading(scrollerId, send) {
   for (const kind of ['wheel', 'touchmove', 'keydown']) scroller.addEventListener(kind, intent, { passive: true });
   for (const kind of ['pointerdown', 'touchstart']) scroller.addEventListener(kind, press, { passive: true });
   for (const kind of ['pointerup', 'pointercancel', 'touchend', 'touchcancel']) addEventListener(kind, lift, { capture: true, passive: true });
+  const newest = () => {
+    const replies = scroller.querySelectorAll('.message-assistant');
+    return replies[replies.length - 1];
+  };
+  // Holds `reply`'s turn so the reply's top stands at the region's top, reached the way the end is.
+  const holdTop = (reply, smoothly) => {
+    stopEasing();
+    ours = null;
+    const turn = [...content.children].find((child) => child.contains(reply));
+    place = { end: false, turn, offset: turn ? turn.getBoundingClientRect().top - reply.getBoundingClientRect().top : 0 };
+    report();
+    if (smoothly && !immediate()) ease(performance.now());
+    else set(scroller.scrollTop + gap());
+  };
   scroller.codaReading = {
     toEnd() { place = { end: true }; restore(); report(); },
     jump(smoothly) {
-      const replies = scroller.querySelectorAll('.message-assistant');
-      const reply = replies[replies.length - 1];
+      const reply = newest();
       if (!reply) return;
-      stopEasing();
-      ours = null;
-      const turn = [...content.children].find((child) => child.contains(reply));
-      // The reply's turn held so the reply's top stands at the region's top, reached the way the end is.
-      place = { end: false, turn, offset: turn ? turn.getBoundingClientRect().top - reply.getBoundingClientRect().top : 0 };
-      report();
-      if (smoothly && !immediate()) ease(performance.now());
-      else set(scroller.scrollTop + gap());
+      holdTop(reply, smoothly);
       if (!reply.hasAttribute('tabindex')) reply.setAttribute('tabindex', '-1');
       reply.focus({ preventScroll: true });
+    },
+    arrived() {
+      const reply = newest();
+      if (!place.end || !reply) return;
+      // Where the reply's top stands against the region's top now, and where the end would put it.
+      const top = reply.getBoundingClientRect().top - edge();
+      if (top < 0 || top - (end() - scroller.scrollTop) >= 0) return;
+      holdTop(reply, true);
     },
   };
   restore();
@@ -543,6 +559,12 @@ function readToEnd(scrollerId) {
 // Takes the reader of conversation `scrollerId` to the top of its newest reply, `smoothly` or at once, and focuses it.
 function jumpToLatest(scrollerId, smoothly) {
   document.getElementById(scrollerId)?.codaReading?.jump(smoothly);
+}
+
+// Shows the reply that just arrived in conversation `scrollerId` from its top, when the reader follows the end and the
+// end would take that top out of sight.
+function replyArrived(scrollerId) {
+  document.getElementById(scrollerId)?.codaReading?.arrived();
 }
 
 // What the open preview `previewId` hears from the page while it is open, until stopped: the
@@ -798,7 +820,7 @@ function caretToEnd() {
 const fires = {
   motion, menuKeys, tooltips, contextHost, disposeContextHost, reorder, scrollToPassage, fileDrags,
   sheetDrag, handOff, indeterminate, togglePopover, openCitation, scrollIntoView, focusElement,
-  caretToEnd, readToEnd, jumpToLatest,
+  caretToEnd, readToEnd, jumpToLatest, replyArrived,
 };
 const asks = { watchExit, modal, copy, reducedMotion };
 const listens = { watchPage, watchPopover, watchReading };
