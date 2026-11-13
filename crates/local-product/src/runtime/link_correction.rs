@@ -25,7 +25,6 @@ use serde::{Deserialize, Serialize};
 use serde_json::{Value, json};
 use thiserror::Error;
 
-use super::chat_operations::OpenConcernSummary;
 use super::concerns::{CommandKey, Concern};
 use super::dispatch::ReviewReceiver;
 use super::entities::{
@@ -404,17 +403,17 @@ impl WithheldStanding {
     pub fn unavailable_reason(&self, conversation_id: &str) -> String {
         match self {
             Self::UndoPending { .. } => format!(
-                "Unavailable: patient conversation `{conversation_id}` was moved away from this patient while Undo is open."
+                "Unavailable: patient conversation {conversation_id} was moved away from this patient while Undo is open."
             ),
             Self::CleanupFailed {
                 failed_step,
                 failure_reason,
             } => format!(
-                "Unavailable: wrong-patient removal for conversation `{conversation_id}` is unfinished while {} ({failure_reason}).",
+                "Unavailable: wrong-patient removal for conversation {conversation_id} is unfinished while {} ({failure_reason}).",
                 failed_step.label()
             ),
             Self::SettledEnteredInError => format!(
-                "Unavailable: patient conversation `{conversation_id}` was moved away from this patient and marked entered in error."
+                "Unavailable: patient conversation {conversation_id} was moved away from this patient and marked entered in error."
             ),
         }
     }
@@ -666,6 +665,9 @@ pub enum LinkCorrectionError {
         step: LinkCorrectionStep,
         /// Cause message.
         reason: String,
+        /// Underlying store error when caused by a runtime subsystem failure rather than a probe fault.
+        #[source]
+        source: Option<Box<LinkCorrectionError>>,
     },
     /// Underlying Spruce matching failure.
     #[error("spruce matching failure: {0}")]
@@ -673,6 +675,9 @@ pub enum LinkCorrectionError {
     /// Underlying wrong-patient withdrawal / follow-up store failure.
     #[error("follow-up withdrawal failure: {0}")]
     FollowUp(#[from] FollowUpError),
+    /// Underlying concern store failure.
+    #[error("concern failure: {0}")]
+    Concern(#[from] super::concerns::ConcernError),
     /// Underlying reply proposal store failure.
     #[error("reply proposal failure: {0}")]
     ReplyProposal(#[from] ReplyProposalError),
@@ -852,45 +857,48 @@ pub(crate) async fn save_link_correction_in_tx(
     .map(|_| ())
 }
 
-#[allow(clippy::too_many_arguments)]
+pub(crate) struct WorkspaceWithholdingUpsert<'a> {
+    pub workspace: &'a str,
+    pub practice: &'a str,
+    pub correction_id: &'a str,
+    pub conversation_id: &'a str,
+    pub active_withholding: bool,
+    pub withheld_standing: &'a WithheldStanding,
+    pub artifacts: &'a DiscoveredWorkspaceArtifacts,
+    pub updated_at: i64,
+}
+
 pub(crate) async fn upsert_workspace_withholding_in_tx(
     tx: &impl ConnectionTrait,
-    workspace: &str,
-    practice: &str,
-    correction_id: &str,
-    conversation_id: &str,
-    active_withholding: bool,
-    withheld_standing: &WithheldStanding,
-    artifacts: &DiscoveredWorkspaceArtifacts,
-    updated_at: i64,
+    upsert: WorkspaceWithholdingUpsert<'_>,
 ) -> Result<(), DbErr> {
-    let standing_json = serde_json::to_value(withheld_standing)
+    let standing_json = serde_json::to_value(upsert.withheld_standing)
         .map_err(conversion_error("WithheldStanding", "json"))?;
-    let msgs_json = serde_json::to_value(&artifacts.message_ids)
+    let msgs_json = serde_json::to_value(&upsert.artifacts.message_ids)
         .map_err(conversion_error("message_ids", "json"))?;
-    let cands_json = serde_json::to_value(&artifacts.candidate_ids)
+    let cands_json = serde_json::to_value(&upsert.artifacts.candidate_ids)
         .map_err(conversion_error("candidate_ids", "json"))?;
-    let works_json =
-        serde_json::to_value(&artifacts.work_ids).map_err(conversion_error("work_ids", "json"))?;
-    let replies_json = serde_json::to_value(&artifacts.reply_ids)
+    let works_json = serde_json::to_value(&upsert.artifacts.work_ids)
+        .map_err(conversion_error("work_ids", "json"))?;
+    let replies_json = serde_json::to_value(&upsert.artifacts.reply_ids)
         .map_err(conversion_error("reply_ids", "json"))?;
-    let drafts_json = serde_json::to_value(&artifacts.draft_keys)
+    let drafts_json = serde_json::to_value(&upsert.artifacts.draft_keys)
         .map_err(conversion_error("draft_keys", "json"))?;
 
     link_correction_workspace_entity::Entity::insert(
         link_correction_workspace_entity::ActiveModel {
-            workspace: Set(workspace.to_owned()),
-            practice: Set(practice.to_owned()),
-            correction_id: Set(correction_id.to_owned()),
-            conversation_id: Set(conversation_id.to_owned()),
-            active_withholding: Set(active_withholding),
+            workspace: Set(upsert.workspace.to_owned()),
+            practice: Set(upsert.practice.to_owned()),
+            correction_id: Set(upsert.correction_id.to_owned()),
+            conversation_id: Set(upsert.conversation_id.to_owned()),
+            active_withholding: Set(upsert.active_withholding),
             withheld_standing: Set(standing_json),
             message_ids: Set(msgs_json),
             candidate_ids: Set(cands_json),
             work_ids: Set(works_json),
             reply_ids: Set(replies_json),
             draft_keys: Set(drafts_json),
-            updated_at: Set(updated_at),
+            updated_at: Set(upsert.updated_at),
         },
     )
     .on_conflict(
@@ -914,6 +922,135 @@ pub(crate) async fn upsert_workspace_withholding_in_tx(
     .exec_without_returning(tx)
     .await
     .map(|_| ())
+}
+
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub(crate) struct ToolReadReference {
+    pub candidate_id: String,
+    pub revision: Option<String>,
+}
+
+/// Single-owner extractor returning chart candidate and attachment document references
+/// whose clinical text was returned to a model turn via `read_patient_sources` or `read_document_page`.
+pub(crate) fn tool_output_read_references(
+    tool_name: &str,
+    raw_output: &str,
+) -> Vec<ToolReadReference> {
+    let mut out = Vec::new();
+    if tool_name == READ_TOOL {
+        let Ok(val) = serde_json::from_str::<Value>(raw_output) else {
+            return out;
+        };
+        let Some(results) = val.get("results").and_then(Value::as_array) else {
+            return out;
+        };
+        for item in results {
+            let status = item
+                .get("outcome")
+                .or_else(|| item.get("status"))
+                .and_then(Value::as_str);
+            if matches!(status, Some("unavailable" | "over_budget")) {
+                continue;
+            }
+            let Some(reference) = item.get("reference").and_then(Value::as_str) else {
+                continue;
+            };
+            let revision = item
+                .get("revision")
+                .and_then(Value::as_str)
+                .map(str::to_owned);
+            out.push(ToolReadReference {
+                candidate_id: reference.to_owned(),
+                revision,
+            });
+        }
+    } else if tool_name == READ_DOCUMENT_PAGE_TOOL {
+        let Ok(val) = serde_json::from_str::<Value>(raw_output) else {
+            return out;
+        };
+        if val.get("outcome").and_then(Value::as_str) != Some("available") {
+            return out;
+        }
+        let revision = val
+            .get("revision")
+            .and_then(Value::as_str)
+            .map(str::to_owned)
+            .or_else(|| {
+                val.get("version")
+                    .and_then(Value::as_u64)
+                    .map(|v| format!("v{v}"))
+            });
+        if let Some(doc_id) = val.get("document_id").and_then(Value::as_str) {
+            out.push(ToolReadReference {
+                candidate_id: doc_id.to_owned(),
+                revision: revision.clone(),
+            });
+        }
+        if let Some(cand_id) = val.get("candidate_id").and_then(Value::as_str)
+            && !out.iter().any(|r| r.candidate_id == cand_id)
+        {
+            out.push(ToolReadReference {
+                candidate_id: cand_id.to_owned(),
+                revision,
+            });
+        }
+    }
+    out
+}
+
+/// Single-owner extractor returning candidate/document IDs confirmed `unavailable` in a tool return.
+pub(crate) fn tool_output_confirmed_withdrawn_candidates(
+    tool_name: &str,
+    raw_output: &str,
+) -> Vec<String> {
+    let mut out = Vec::new();
+    if tool_name == READ_TOOL {
+        let Ok(val) = serde_json::from_str::<Value>(raw_output) else {
+            return out;
+        };
+        if let Some(results) = val.get("results").and_then(Value::as_array) {
+            for item in results {
+                let status = item
+                    .get("outcome")
+                    .or_else(|| item.get("status"))
+                    .and_then(Value::as_str);
+                if status == Some("unavailable")
+                    && let Some(reference) = item.get("reference").and_then(Value::as_str)
+                {
+                    out.push(reference.to_owned());
+                }
+            }
+        }
+    } else if tool_name == READ_DOCUMENT_PAGE_TOOL {
+        let Ok(val) = serde_json::from_str::<Value>(raw_output) else {
+            return out;
+        };
+        if val.get("outcome").and_then(Value::as_str) == Some("unavailable")
+            && let Some(doc_id) = val
+                .get("document_id")
+                .or_else(|| val.get("candidate_id"))
+                .and_then(Value::as_str)
+        {
+            out.push(doc_id.to_owned());
+        }
+    }
+    out
+}
+
+/// Single-owner rule deciding whether a patient concern (or starting-context concern summary)
+/// is withheld on `workspace` because its producing `source_work_id` or cited `records`
+/// belong to a withheld wrong-patient conversation.
+#[must_use]
+pub(crate) fn concern_is_withheld(
+    withheld: &WithheldWorkspaceState,
+    source_work_id: &str,
+    records: &[super::concerns::ExactRecordReference],
+) -> bool {
+    !withheld.is_empty()
+        && (withheld.work_ids.contains(source_work_id)
+            || records
+                .iter()
+                .any(|r| withheld.candidate_ids.contains(&r.candidate_id)))
 }
 
 pub(crate) async fn set_correction_workspaces_standing_in_tx(
@@ -998,10 +1135,11 @@ pub(crate) async fn discover_conversation_artifacts_in_tx(
                 out.reply_ids.insert(id);
             }
         }
-        if let Some(patient_msgs) = reply_conv_row
-            .state
-            .get("patient_messages")
-            .and_then(Value::as_array)
+        if seed_message_ids.is_empty()
+            && let Some(patient_msgs) = reply_conv_row
+                .state
+                .get("patient_messages")
+                .and_then(Value::as_array)
         {
             for pm in patient_msgs {
                 if let Some(mid) = pm.get("message_id").and_then(Value::as_str) {
@@ -1025,9 +1163,9 @@ pub(crate) async fn discover_conversation_artifacts_in_tx(
                 ))
                 .one(tx)
                 .await?
-                    && let Ok(sw) =
-                        serde_json::from_value::<super::concerns::SourceWork>(crow.source_work)
                 {
+                    let sw: super::concerns::SourceWork = serde_json::from_value(crow.source_work)
+                        .map_err(conversion_error("concern.source_work", "SourceWork"))?;
                     out.work_ids.insert(sw.work_id);
                 }
             }
@@ -1091,15 +1229,11 @@ pub(crate) async fn discover_conversation_artifacts_in_tx(
         .all(tx)
         .await?;
     for srow in source_rows {
-        if out.candidate_ids.contains(&srow.candidate) {
-            continue;
-        }
         let Some(raw_rev) = srow.revision else {
             continue;
         };
-        let Ok(rev) = serde_json::from_value::<SourceRevision>(raw_rev) else {
-            continue;
-        };
+        let rev: SourceRevision = serde_json::from_value(raw_rev)
+            .map_err(conversion_error("source.revision", "SourceRevision"))?;
         let prov = &rev.provenance;
         let matches_conv = prov
             .get("conversation_id")
@@ -1111,8 +1245,11 @@ pub(crate) async fn discover_conversation_artifacts_in_tx(
             .or_else(|| prov.get("spruce_message_id"))
             .and_then(Value::as_str)
             .is_some_and(|mid| out.message_ids.contains(mid));
-        if matches_conv || matches_msg {
+        if matches_conv || matches_msg || out.candidate_ids.contains(&srow.candidate) {
             out.candidate_ids.insert(srow.candidate);
+            if let Some(doc_id) = prov.get("document_id").and_then(Value::as_str) {
+                out.candidate_ids.insert(doc_id.to_owned());
+            }
         }
     }
 
@@ -1128,9 +1265,8 @@ pub(crate) async fn discover_conversation_artifacts_in_tx(
     let mut tainted_job_attempts = BTreeSet::new();
     let mut tainted_revision_attempts = BTreeSet::new();
     for erow in event_rows {
-        let Ok(kind) = serde_json::from_value::<EventKind>(erow.record) else {
-            continue;
-        };
+        let kind: EventKind = serde_json::from_value(erow.record)
+            .map_err(conversion_error("execution_event.record", "EventKind"))?;
         match kind {
             EventKind::ToolStarted(call) => {
                 tool_names_by_attempt_call.insert((erow.attempt, call.id), call.name);
@@ -1145,32 +1281,9 @@ pub(crate) async fn discover_conversation_artifacts_in_tx(
                 else {
                     continue;
                 };
-                let mut read_withheld = false;
-                if name == READ_TOOL {
-                    if let Ok(val) = serde_json::from_str::<Value>(&raw)
-                        && val
-                            .get("results")
-                            .and_then(Value::as_array)
-                            .is_some_and(|arr| {
-                                arr.iter().any(|it| {
-                                    it.get("reference")
-                                        .and_then(Value::as_str)
-                                        .is_some_and(|r| out.candidate_ids.contains(r))
-                                })
-                            })
-                    {
-                        read_withheld = true;
-                    }
-                } else if name == READ_DOCUMENT_PAGE_TOOL
-                    && let Ok(val) = serde_json::from_str::<Value>(&raw)
-                    && val
-                        .get("document_id")
-                        .or_else(|| val.get("candidate_id"))
-                        .and_then(Value::as_str)
-                        .is_some_and(|cid| out.candidate_ids.contains(cid))
-                {
-                    read_withheld = true;
-                }
+                let read_withheld = tool_output_read_references(name, &raw)
+                    .iter()
+                    .any(|r| out.candidate_ids.contains(&r.candidate_id));
                 if read_withheld {
                     match erow.owner {
                         Owner::Chat => {
@@ -1240,13 +1353,15 @@ pub(crate) async fn discover_conversation_artifacts_in_tx(
         .all(tx)
         .await?;
     for crow in concerns_on_ws {
-        if let Ok(records) =
-            serde_json::from_value::<Vec<super::concerns::ExactRecordReference>>(crow.records)
-            && records
-                .iter()
-                .any(|r| out.candidate_ids.contains(&r.candidate_id))
-            && let Ok(sw) = serde_json::from_value::<super::concerns::SourceWork>(crow.source_work)
+        let records: Vec<super::concerns::ExactRecordReference> =
+            serde_json::from_value(crow.records)
+                .map_err(conversion_error("concern.records", "ExactRecordReference"))?;
+        if records
+            .iter()
+            .any(|r| out.candidate_ids.contains(&r.candidate_id))
         {
+            let sw: super::concerns::SourceWork = serde_json::from_value(crow.source_work)
+                .map_err(conversion_error("concern.source_work", "SourceWork"))?;
             out.work_ids.insert(sw.work_id);
         }
     }
@@ -1257,17 +1372,20 @@ pub(crate) async fn discover_conversation_artifacts_in_tx(
         .all(tx)
         .await?;
     for frow in follow_ups_on_ws {
-        let cites_records =
-            serde_json::from_value::<Vec<super::concerns::ExactRecordReference>>(frow.records)
-                .is_ok_and(|recs| {
-                    recs.iter()
-                        .any(|r| out.candidate_ids.contains(&r.candidate_id))
-                });
-        if cites_records
-            && let Ok(FollowUpActor::CodaWork { source_work }) =
-                serde_json::from_value::<FollowUpActor>(frow.origin)
-        {
-            out.work_ids.insert(source_work.work_id);
+        let recs: Vec<super::concerns::ExactRecordReference> = serde_json::from_value(frow.records)
+            .map_err(conversion_error(
+                "follow_up.records",
+                "ExactRecordReference",
+            ))?;
+        let cites_records = recs
+            .iter()
+            .any(|r| out.candidate_ids.contains(&r.candidate_id));
+        if cites_records {
+            let actor: FollowUpActor = serde_json::from_value(frow.origin)
+                .map_err(conversion_error("follow_up.origin", "FollowUpActor"))?;
+            if let FollowUpActor::CodaWork { source_work } = actor {
+                out.work_ids.insert(source_work.work_id);
+            }
         }
     }
 
@@ -1277,37 +1395,36 @@ pub(crate) async fn discover_conversation_artifacts_in_tx(
         .all(tx)
         .await?;
     for mrow in memories_on_ws {
-        if let Ok(prov) =
-            serde_json::from_value::<super::chat_operations::MemoryProvenance>(mrow.provenance)
-        {
-            match prov {
-                super::chat_operations::MemoryProvenance::PhysicianCorrection {
-                    chat_id,
-                    message_id,
-                    work_id,
-                    ..
-                } => {
-                    if out.message_ids.contains(&message_id)
-                        || out.candidate_ids.contains(&message_id)
-                        || out.work_ids.contains(&work_id)
-                        || out.work_ids.contains(&chat_id)
-                    {
-                        out.work_ids.insert(work_id);
-                        out.work_ids.insert(chat_id);
-                    }
+        let prov: super::chat_operations::MemoryProvenance =
+            serde_json::from_value(mrow.provenance).map_err(conversion_error(
+                "patient_memory.provenance",
+                "MemoryProvenance",
+            ))?;
+        match prov {
+            super::chat_operations::MemoryProvenance::PhysicianCorrection {
+                chat_id,
+                message_id,
+                work_id,
+                ..
+            } => {
+                if out.message_ids.contains(&message_id)
+                    || out.candidate_ids.contains(&message_id)
+                    || out.work_ids.contains(&work_id)
+                    || out.work_ids.contains(&chat_id)
+                {
+                    out.work_ids.insert(work_id);
+                    out.work_ids.insert(chat_id);
                 }
-                super::chat_operations::MemoryProvenance::ClinicalSummary {
-                    work_id,
-                    records,
-                    ..
-                } => {
-                    if records
-                        .iter()
-                        .any(|r| out.candidate_ids.contains(&r.candidate_id))
-                        || out.work_ids.contains(&work_id)
-                    {
-                        out.work_ids.insert(work_id);
-                    }
+            }
+            super::chat_operations::MemoryProvenance::ClinicalSummary {
+                work_id, records, ..
+            } => {
+                if records
+                    .iter()
+                    .any(|r| out.candidate_ids.contains(&r.candidate_id))
+                    || out.work_ids.contains(&work_id)
+                {
+                    out.work_ids.insert(work_id);
                 }
             }
         }
@@ -1319,16 +1436,16 @@ pub(crate) async fn discover_conversation_artifacts_in_tx(
         .all(tx)
         .await?;
     for urow in u_revs {
-        let Ok(summary) =
-            serde_json::from_value::<super::understanding::PatientSummary>(urow.summary)
-        else {
-            continue;
-        };
-        let Ok(index) = serde_json::from_value::<crate::initial_understanding::OperatingIndex>(
-            urow.operating_index,
-        ) else {
-            continue;
-        };
+        let summary: super::understanding::PatientSummary = serde_json::from_value(urow.summary)
+            .map_err(conversion_error(
+                "patient_understanding_revision.summary",
+                "PatientSummary",
+            ))?;
+        let index: crate::initial_understanding::OperatingIndex =
+            serde_json::from_value(urow.operating_index).map_err(conversion_error(
+                "patient_understanding_revision.operating_index",
+                "OperatingIndex",
+            ))?;
         let cites = summary
             .citations
             .iter()
@@ -1342,10 +1459,12 @@ pub(crate) async fn discover_conversation_artifacts_in_tx(
                 .anchors
                 .iter()
                 .any(|a| out.candidate_ids.contains(&a.reference.candidate_id));
-        if cites
-            && let Ok(origin) =
-                serde_json::from_value::<super::understanding::RevisionOrigin>(urow.origin)
-        {
+        if cites {
+            let origin: super::understanding::RevisionOrigin = serde_json::from_value(urow.origin)
+                .map_err(conversion_error(
+                    "patient_understanding_revision.origin",
+                    "RevisionOrigin",
+                ))?;
             let wid = match origin {
                 super::understanding::RevisionOrigin::PracticeRun { work_id, .. }
                 | super::understanding::RevisionOrigin::PhysicianConversation { work_id, .. } => {
@@ -1359,7 +1478,8 @@ pub(crate) async fn discover_conversation_artifacts_in_tx(
     Ok(out)
 }
 
-/// Single-owner query returning every active withheld conversation and artifact on `workspace`.
+/// Single-owner query returning every active withheld conversation and artifact on `workspace`,
+/// enriched live with any in-flight `execution_event` tool returns that read withheld candidates.
 pub(crate) async fn load_workspace_withheld_state_in_tx(
     db: &impl ConnectionTrait,
     workspace: &str,
@@ -1409,7 +1529,248 @@ pub(crate) async fn load_workspace_withheld_state_in_tx(
         });
     }
 
+    if !state.entries.is_empty() && !state.candidate_ids.is_empty() {
+        let event_rows = execution_event::Entity::find()
+            .filter(execution_event::Column::Workspace.eq(workspace))
+            .order_by_asc(execution_event::Column::Sequence)
+            .all(db)
+            .await?;
+        let mut tool_names: BTreeMap<(String, String), String> = BTreeMap::new();
+        let mut chat_attempts_by_entry: BTreeMap<usize, BTreeSet<String>> = BTreeMap::new();
+        let mut job_attempts_by_entry: BTreeMap<usize, BTreeSet<String>> = BTreeMap::new();
+        let mut rev_attempts_by_entry: BTreeMap<usize, BTreeSet<String>> = BTreeMap::new();
+        let mut all_chat_attempts = BTreeSet::new();
+        let mut all_job_attempts = BTreeSet::new();
+        let mut all_rev_attempts = BTreeSet::new();
+
+        for erow in event_rows {
+            let kind: EventKind = serde_json::from_value(erow.record)
+                .map_err(conversion_error("execution_event.record", "EventKind"))?;
+            match kind {
+                EventKind::ToolStarted(call) => {
+                    tool_names.insert((erow.attempt, call.id), call.name);
+                }
+                EventKind::ToolReturned {
+                    call_id,
+                    result: harness::engine::results::ToolResult::Original(raw),
+                } => {
+                    let Some(name) = tool_names
+                        .get(&(erow.attempt.clone(), call_id))
+                        .map(String::as_str)
+                    else {
+                        continue;
+                    };
+                    let refs = tool_output_read_references(name, &raw);
+                    if refs.is_empty() {
+                        continue;
+                    }
+                    for (idx, entry) in state.entries.iter_mut().enumerate() {
+                        if refs
+                            .iter()
+                            .any(|r| entry.candidate_ids.contains(&r.candidate_id))
+                        {
+                            match erow.owner {
+                                Owner::Chat => {
+                                    entry.work_ids.insert(erow.target.clone());
+                                    state.work_ids.insert(erow.target.clone());
+                                    chat_attempts_by_entry
+                                        .entry(idx)
+                                        .or_default()
+                                        .insert(erow.attempt.clone());
+                                    all_chat_attempts.insert(erow.attempt.clone());
+                                }
+                                Owner::PracticeJob => {
+                                    entry.work_ids.insert(erow.target.clone());
+                                    state.work_ids.insert(erow.target.clone());
+                                    job_attempts_by_entry
+                                        .entry(idx)
+                                        .or_default()
+                                        .insert(erow.attempt.clone());
+                                    all_job_attempts.insert(erow.attempt.clone());
+                                }
+                                Owner::Revision => {
+                                    entry.draft_keys.insert(erow.target.clone());
+                                    state.draft_keys.insert(erow.target.clone());
+                                    rev_attempts_by_entry
+                                        .entry(idx)
+                                        .or_default()
+                                        .insert(erow.attempt.clone());
+                                    all_rev_attempts.insert(erow.attempt.clone());
+                                }
+                            }
+                        }
+                    }
+                }
+                _ => {}
+            }
+        }
+
+        if !all_chat_attempts.is_empty() {
+            let list: Vec<String> = all_chat_attempts.into_iter().collect();
+            let rows = chat_attempt::Entity::find()
+                .filter(chat_attempt::Column::Workspace.eq(workspace))
+                .filter(chat_attempt::Column::Id.is_in(list))
+                .all(db)
+                .await?;
+            for ca in rows {
+                for (idx, set) in &chat_attempts_by_entry {
+                    if set.contains(&ca.id) {
+                        state.entries[*idx].work_ids.insert(ca.work.clone());
+                        state.entries[*idx].work_ids.insert(ca.chat.clone());
+                        state.work_ids.insert(ca.work.clone());
+                        state.work_ids.insert(ca.chat.clone());
+                    }
+                }
+            }
+        }
+
+        if !all_job_attempts.is_empty() {
+            let list: Vec<String> = all_job_attempts.into_iter().collect();
+            let rows = practice_job_attempt::Entity::find()
+                .filter(practice_job_attempt::Column::Workspace.eq(workspace))
+                .filter(practice_job_attempt::Column::Id.is_in(list))
+                .all(db)
+                .await?;
+            for ja in rows {
+                for (idx, set) in &job_attempts_by_entry {
+                    if set.contains(&ja.id) {
+                        state.entries[*idx].work_ids.insert(ja.work.clone());
+                        state.entries[*idx].work_ids.insert(ja.job_id.clone());
+                        state.work_ids.insert(ja.work.clone());
+                        state.work_ids.insert(ja.job_id.clone());
+                    }
+                }
+            }
+        }
+
+        if !all_rev_attempts.is_empty() {
+            let list: Vec<String> = all_rev_attempts.into_iter().collect();
+            let rows = revision_attempt::Entity::find()
+                .filter(revision_attempt::Column::Workspace.eq(workspace))
+                .filter(revision_attempt::Column::Id.is_in(list))
+                .all(db)
+                .await?;
+            for ra in rows {
+                for (idx, set) in &rev_attempts_by_entry {
+                    if set.contains(&ra.id) {
+                        state.entries[*idx].draft_keys.insert(ra.reply.clone());
+                        state.draft_keys.insert(ra.reply.clone());
+                    }
+                }
+            }
+        }
+    }
+
     Ok(state)
+}
+
+/// Checks at chat-finish publication (`finish_chat_with_currency_check`) whether the current
+/// work read any wrong-patient candidate or attachment document that is now withheld or withdrawn
+/// without subsequently confirming its withdrawal via `read_patient_sources` / `read_document_page`.
+pub(crate) async fn evaluate_withheld_chat_finish_in_tx(
+    db: &impl ConnectionTrait,
+    scope: &Scope,
+    state: &Conversation,
+    workspace_version: u64,
+) -> Result<Option<crate::physician_sources::ChatChartArrivalNote>, DbErr> {
+    let withheld = load_workspace_withheld_state_in_tx(db, &scope.workspace).await?;
+    let boundary = super::follow_ups::load_workspace_withdrawal_boundary(
+        db,
+        &scope.practice,
+        &scope.workspace,
+    )
+    .await?;
+    if withheld.is_empty() && boundary.is_none() {
+        return Ok(None);
+    }
+
+    let boundary_candidates: BTreeSet<String> = boundary
+        .as_ref()
+        .map(|b| b.candidate_ids.iter().cloned().collect())
+        .unwrap_or_default();
+
+    let mut pending_rereads: BTreeMap<String, String> = BTreeMap::new();
+    let mut withdrawn_revs: BTreeMap<String, String> = BTreeMap::new();
+    let mut tool_names: BTreeMap<String, String> = BTreeMap::new();
+
+    let ordered = super::records::ordered(
+        db,
+        scope,
+        super::records::Owner::Chat,
+        &state.work_attempt_ids(),
+    )
+    .await?;
+    for (event, admitted) in &ordered {
+        if !admitted {
+            continue;
+        }
+        match &event.kind {
+            EventKind::ToolStarted(call) => {
+                tool_names.insert(call.id.clone(), call.name.clone());
+            }
+            EventKind::ToolReturned {
+                call_id,
+                result: harness::engine::results::ToolResult::Original(raw),
+            } => {
+                let Some(name) = tool_names.get(call_id).map(String::as_str) else {
+                    continue;
+                };
+                for r in tool_output_read_references(name, raw) {
+                    if withheld.candidate_ids.contains(&r.candidate_id)
+                        || boundary_candidates.contains(&r.candidate_id)
+                    {
+                        let rev = r.revision.unwrap_or_else(|| "v1".to_owned());
+                        withdrawn_revs.insert(r.candidate_id.clone(), rev.clone());
+                        pending_rereads.insert(r.candidate_id, rev);
+                    }
+                }
+                for confirmed in tool_output_confirmed_withdrawn_candidates(name, raw) {
+                    pending_rereads.remove(&confirmed);
+                }
+            }
+            _ => {}
+        }
+    }
+
+    if pending_rereads.is_empty() {
+        return Ok(None);
+    }
+
+    let withdrawn = withdrawn_revs
+        .into_iter()
+        .map(
+            |(cid, withdrawn_revision)| crate::physician_sources::WithdrawnChartRecord {
+                candidate_id: cid,
+                source_id: "spruce".to_owned(),
+                record_type: "patient_message".to_owned(),
+                dates: Vec::new(),
+                shape: crate::physician_sources::WithdrawnShape::RemovedFromObservation {
+                    withdrawn_revision,
+                },
+            },
+        )
+        .collect();
+    let must_read_again = pending_rereads
+        .into_iter()
+        .map(|(candidate_id, withdrawn_revision)| {
+            crate::physician_sources::ReliedRecordRequirement {
+                candidate_id,
+                action: crate::physician_sources::ReliedRereadAction::ConfirmWithdrawnFromChart {
+                    withdrawn_revision,
+                },
+            }
+        })
+        .collect();
+
+    Ok(Some(crate::physician_sources::ChatChartArrivalNote {
+        outcome: crate::physician_sources::ChatArrivalOutcome::SourcesChanged,
+        workspace_version,
+        added: Vec::new(),
+        corrected: Vec::new(),
+        withdrawn,
+        must_read_again,
+        message: "Patient chart records were added, corrected, or withdrawn while you were answering, so your reply was not published yet. Call read_patient_sources on every record in must_read_again, judge whether any added records affect the question, update or retire any affected patient memory or open concern, and then provide your complete updated answer.".to_owned(),
+    }))
 }
 
 /// Returns withheld chart source candidate IDs on `workspace`.
@@ -1510,7 +1871,7 @@ pub(super) async fn check_withheld_fence_in_tx(
 }
 
 /// Redacts assistant turns on display reads (`Store::read` / `Store::conversation`) when a
-/// turn's producing work or chat read a withheld wrong-patient candidate.
+/// turn's producing work or chat read a withheld wrong-patient candidate or document page.
 pub(crate) async fn redact_conversation_if_withheld_in_tx(
     db: &impl ConnectionTrait,
     scope: &Scope,
@@ -1546,29 +1907,22 @@ pub(crate) async fn redact_conversation_if_withheld_in_tx(
                     let Some(name) = tool_names.get(call_id).map(String::as_str) else {
                         continue;
                     };
-                    if name == READ_TOOL
-                        && let Ok(val) = serde_json::from_str::<Value>(raw)
-                        && let Some(results) = val.get("results").and_then(Value::as_array)
-                    {
-                        for item in results {
-                            let Some(cand) = item.get("reference").and_then(Value::as_str) else {
-                                continue;
-                            };
-                            if let Some(reason) = withheld.reason_for_candidate(cand) {
-                                tainted_work_reason.insert(attempt.work.clone(), reason);
-                                break;
-                            }
-                            if let Some(b) = &boundary
-                                && b.candidate_ids.iter().any(|c| c == cand)
-                            {
-                                tainted_work_reason.insert(
-                                    attempt.work.clone(),
-                                    format!(
-                                        "Unavailable: cited patient message `{cand}` was withdrawn after a wrong-patient link correction."
-                                    ),
-                                );
-                                break;
-                            }
+                    for item in tool_output_read_references(name, raw) {
+                        let cand = item.candidate_id.as_str();
+                        if let Some(reason) = withheld.reason_for_candidate(cand) {
+                            tainted_work_reason.insert(attempt.work.clone(), reason);
+                            break;
+                        }
+                        if let Some(b) = &boundary
+                            && b.candidate_ids.iter().any(|c| c == cand)
+                        {
+                            tainted_work_reason.insert(
+                                attempt.work.clone(),
+                                format!(
+                                    "Unavailable: cited patient message {cand} was withdrawn after a wrong-patient link correction."
+                                ),
+                            );
+                            break;
                         }
                     }
                 }
@@ -1651,23 +2005,38 @@ pub(crate) async fn check_unfinished_correction_blocking_workspace_in_tx(
     Ok(())
 }
 
+pub(crate) struct MoveCorrectionWrite<'a> {
+    pub practice: &'a str,
+    pub conversation_id: &'a str,
+    pub actor_physician_id: &'a str,
+    pub departed_workspace: Option<&'a str>,
+    pub departed_linked_ids: &'a BTreeSet<String>,
+    pub active_prior_undo: Option<&'a PendingMoveUndo>,
+    pub new_undo: Option<&'a PendingMoveUndo>,
+    pub returned_to_origin: bool,
+    pub destination: &'a CorrectionDestination,
+    pub move_ordinal: u64,
+    pub now_ts: i64,
+}
+
 /// Synchronizes `physician_runtime_link_corrections` and `physician_runtime_link_correction_workspaces`
 /// when a move occurs inside `tx` (`move_spruce_conversation` or `correct_patient_link`).
-#[allow(clippy::too_many_arguments)]
 pub(crate) async fn record_move_correction_in_tx(
     tx: &impl ConnectionTrait,
-    practice: &str,
-    conversation_id: &str,
-    actor_physician_id: &str,
-    departed_workspace: Option<&str>,
-    departed_linked_ids: &BTreeSet<String>,
-    active_prior_undo: Option<&PendingMoveUndo>,
-    new_undo: Option<&PendingMoveUndo>,
-    returned_to_origin: bool,
-    destination: &CorrectionDestination,
-    move_ordinal: u64,
-    now_ts: i64,
+    write: MoveCorrectionWrite<'_>,
 ) -> Result<LinkCorrectionRecord, DbErr> {
+    let practice = write.practice;
+    let conversation_id = write.conversation_id;
+    let actor_physician_id = write.actor_physician_id;
+    let departed_workspace = write.departed_workspace;
+    let departed_linked_ids = write.departed_linked_ids;
+    let active_prior_undo = write.active_prior_undo;
+    let new_undo = write.new_undo;
+    let returned_to_origin = write.returned_to_origin;
+    let destination = write.destination;
+    let move_ordinal = write.move_ordinal;
+    let now_ts = write.now_ts;
+
     let latest = latest_correction_for_conversation_in_tx(tx, practice, conversation_id).await?;
 
     if returned_to_origin
@@ -1747,14 +2116,16 @@ pub(crate) async fn record_move_correction_in_tx(
                 .extend(hop_artifacts.draft_keys.iter().cloned());
             upsert_workspace_withholding_in_tx(
                 tx,
-                left_ws,
-                practice,
-                &active_rec.correction_id,
-                conversation_id,
-                true,
-                &next_withheld,
-                &hop_artifacts,
-                now_ts,
+                WorkspaceWithholdingUpsert {
+                    workspace: left_ws,
+                    practice,
+                    correction_id: &active_rec.correction_id,
+                    conversation_id,
+                    active_withholding: true,
+                    withheld_standing: &next_withheld,
+                    artifacts: &hop_artifacts,
+                    updated_at: now_ts,
+                },
             )
             .await?;
         }
@@ -1819,14 +2190,16 @@ pub(crate) async fn record_move_correction_in_tx(
     };
     upsert_workspace_withholding_in_tx(
         tx,
-        &origin_ws,
-        practice,
-        &correction_id,
-        conversation_id,
-        true,
-        &withheld_standing,
-        &artifacts,
-        now_ts,
+        WorkspaceWithholdingUpsert {
+            workspace: &origin_ws,
+            practice,
+            correction_id: &correction_id,
+            conversation_id,
+            active_withholding: true,
+            withheld_standing: &withheld_standing,
+            artifacts: &artifacts,
+            updated_at: now_ts,
+        },
     )
     .await?;
 
@@ -1894,56 +2267,6 @@ pub(crate) async fn record_undo_correction_in_tx(
     active_rec.updated_at = now_ts;
     save_link_correction_in_tx(tx, &active_rec).await?;
     Ok(Some(active_rec))
-}
-
-/// Marks a settled `spruce_matching` move on its `LinkCorrectionRecord` when settled via
-/// `settle_expired_move_in_tx` or `dispatch_pending_spruce_reviews`.
-pub(crate) async fn mark_spruce_move_settled_in_tx(
-    tx: &impl ConnectionTrait,
-    practice: &str,
-    conversation_id: &str,
-    entered_in_error_ids: &BTreeSet<String>,
-    review_keys: &BTreeMap<String, String>,
-    now_ts: i64,
-) -> Result<(), DbErr> {
-    let Some(mut rec) =
-        latest_correction_for_conversation_in_tx(tx, practice, conversation_id).await?
-    else {
-        return Ok(());
-    };
-    if !matches!(
-        rec.standing,
-        LinkCorrectionStanding::UndoWindow { .. } | LinkCorrectionStanding::SettlingFailed { .. }
-    ) {
-        return Ok(());
-    }
-    let mut progress = match &rec.standing {
-        LinkCorrectionStanding::SettlingFailed { progress, .. } => progress.clone(),
-        _ => SettlementProgress::default(),
-    };
-    progress
-        .entered_in_error_message_ids
-        .extend(entered_in_error_ids.iter().cloned());
-    for (ws, key) in review_keys {
-        progress
-            .review_command_keys_by_workspace
-            .insert(ws.clone(), key.clone());
-    }
-    set_correction_workspaces_standing_in_tx(
-        tx,
-        practice,
-        &rec.correction_id,
-        true,
-        Some(&WithheldStanding::SettledEnteredInError),
-        now_ts,
-    )
-    .await?;
-    rec.standing = LinkCorrectionStanding::Settled {
-        settled_at: now_ts,
-        progress,
-    };
-    rec.updated_at = now_ts;
-    save_link_correction_in_tx(tx, &rec).await
 }
 
 fn left_workspaces_for_record(record: &LinkCorrectionRecord) -> Vec<String> {
@@ -2504,17 +2827,19 @@ impl Store {
 
         let record = record_move_correction_in_tx(
             &tx,
-            practice,
-            conversation_id,
-            &actor.physician_id,
-            departed_workspace.as_deref(),
-            &current_linked_ids,
-            active_prior_undo.as_ref(),
-            conv.move_undo.as_ref(),
-            returned_to_origin,
-            &cmd.destination,
-            conv.move_count,
-            cmd.now_ts,
+            MoveCorrectionWrite {
+                practice,
+                conversation_id,
+                actor_physician_id: &actor.physician_id,
+                departed_workspace: departed_workspace.as_deref(),
+                departed_linked_ids: &current_linked_ids,
+                active_prior_undo: active_prior_undo.as_ref(),
+                new_undo: conv.move_undo.as_ref(),
+                returned_to_origin,
+                destination: &cmd.destination,
+                move_ordinal: conv.move_count,
+                now_ts: cmd.now_ts,
+            },
         )
         .await?;
 
@@ -2862,7 +3187,8 @@ impl Store {
                     .one(&tx)
                     .await?;
                     let msgs: BTreeSet<String> = match ws_row {
-                        Some(w) => serde_json::from_value(w.message_ids).unwrap_or_default(),
+                        Some(w) => serde_json::from_value(w.message_ids)
+                            .map_err(conversion_error("message_ids", "BTreeSet<String>"))?,
                         None => BTreeSet::new(),
                     };
                     tx.commit().await?;
@@ -2889,6 +3215,7 @@ impl Store {
                     &mut record,
                     LinkCorrectionStep::MarkMessagesEnteredInError,
                     reason,
+                    None,
                     progress,
                     now_ts,
                 )
@@ -2904,11 +3231,13 @@ impl Store {
             )
             .await
         {
+            let reason = err.to_string();
             return self
                 .persist_settlement_failure(
                     &mut record,
                     LinkCorrectionStep::MarkMessagesEnteredInError,
-                    err.to_string(),
+                    reason,
+                    Some(err),
                     progress,
                     now_ts,
                 )
@@ -2926,6 +3255,7 @@ impl Store {
                     &mut record,
                     LinkCorrectionStep::WithdrawOriginEffects,
                     reason,
+                    None,
                     progress,
                     now_ts,
                 )
@@ -2940,11 +3270,13 @@ impl Store {
             )
             .await
         {
+            let reason = err.to_string();
             return self
                 .persist_settlement_failure(
                     &mut record,
                     LinkCorrectionStep::WithdrawOriginEffects,
-                    err.to_string(),
+                    reason,
+                    Some(err),
                     progress,
                     now_ts,
                 )
@@ -2962,6 +3294,7 @@ impl Store {
                     &mut record,
                     LinkCorrectionStep::ApplyReplyMove,
                     reason,
+                    None,
                     progress,
                     now_ts,
                 )
@@ -2971,11 +3304,13 @@ impl Store {
             .execute_apply_reply_move_step(&record, &mut progress)
             .await
         {
+            let reason = err.to_string();
             return self
                 .persist_settlement_failure(
                     &mut record,
                     LinkCorrectionStep::ApplyReplyMove,
-                    err.to_string(),
+                    reason,
+                    Some(err),
                     progress,
                     now_ts,
                 )
@@ -2993,6 +3328,7 @@ impl Store {
                     &mut record,
                     LinkCorrectionStep::RequestAffectedReviews,
                     reason,
+                    None,
                     progress,
                     now_ts,
                 )
@@ -3008,11 +3344,13 @@ impl Store {
             )
             .await
         {
+            let reason = err.to_string();
             return self
                 .persist_settlement_failure(
                     &mut record,
                     LinkCorrectionStep::RequestAffectedReviews,
-                    err.to_string(),
+                    reason,
+                    Some(err),
                     progress,
                     now_ts,
                 )
@@ -3099,6 +3437,7 @@ impl Store {
                     conversation_id,
                     step,
                     reason,
+                    ..
                 }) => report.failed.push(LinkCorrectionBatchFailure {
                     correction_id,
                     conversation_id,
@@ -3116,6 +3455,7 @@ impl Store {
         record: &mut LinkCorrectionRecord,
         step: LinkCorrectionStep,
         reason: String,
+        source: Option<LinkCorrectionError>,
         progress: SettlementProgress,
         now_ts: i64,
     ) -> Result<T, LinkCorrectionError> {
@@ -3147,6 +3487,7 @@ impl Store {
             conversation_id: record.conversation_id.clone(),
             step,
             reason,
+            source: source.map(Box::new),
         })
     }
 
@@ -3174,7 +3515,8 @@ impl Store {
             .one(&tx)
             .await?;
             let msg_ids: BTreeSet<String> = match ws_row {
-                Some(w) => serde_json::from_value(w.message_ids).unwrap_or_default(),
+                Some(w) => serde_json::from_value(w.message_ids)
+                    .map_err(conversion_error("message_ids", "BTreeSet<String>"))?,
                 None if ws == &record.original_workspace => origin_moved_msgs.clone(),
                 None => BTreeSet::new(),
             };
@@ -3236,10 +3578,11 @@ impl Store {
                 ))
                 .one(&tx)
                 .await?;
-                let seed_msgs: BTreeSet<String> = existing_ws
-                    .as_ref()
-                    .and_then(|w| serde_json::from_value(w.message_ids.clone()).ok())
-                    .unwrap_or_default();
+                let seed_msgs: BTreeSet<String> = match &existing_ws {
+                    Some(w) => serde_json::from_value(w.message_ids.clone())
+                        .map_err(conversion_error("message_ids", "BTreeSet<String>"))?,
+                    None => BTreeSet::new(),
+                };
                 let mut fresh = discover_conversation_artifacts_in_tx(
                     &tx,
                     &record.practice,
@@ -3249,31 +3592,33 @@ impl Store {
                 )
                 .await?;
                 if let Some(w) = existing_ws {
-                    if let Ok(c) = serde_json::from_value::<BTreeSet<String>>(w.candidate_ids) {
-                        fresh.candidate_ids.extend(c);
-                    }
-                    if let Ok(wk) = serde_json::from_value::<BTreeSet<String>>(w.work_ids) {
-                        fresh.work_ids.extend(wk);
-                    }
-                    if let Ok(rp) = serde_json::from_value::<BTreeSet<u64>>(w.reply_ids) {
-                        fresh.reply_ids.extend(rp);
-                    }
-                    if let Ok(dk) = serde_json::from_value::<BTreeSet<String>>(w.draft_keys) {
-                        fresh.draft_keys.extend(dk);
-                    }
+                    let prev_cands: BTreeSet<String> = serde_json::from_value(w.candidate_ids)
+                        .map_err(conversion_error("candidate_ids", "BTreeSet<String>"))?;
+                    let prev_works: BTreeSet<String> = serde_json::from_value(w.work_ids)
+                        .map_err(conversion_error("work_ids", "BTreeSet<String>"))?;
+                    let prev_replies: BTreeSet<u64> = serde_json::from_value(w.reply_ids)
+                        .map_err(conversion_error("reply_ids", "BTreeSet<u64>"))?;
+                    let prev_drafts: BTreeSet<String> = serde_json::from_value(w.draft_keys)
+                        .map_err(conversion_error("draft_keys", "BTreeSet<String>"))?;
+                    fresh.candidate_ids.extend(prev_cands);
+                    fresh.work_ids.extend(prev_works);
+                    fresh.reply_ids.extend(prev_replies);
+                    fresh.draft_keys.extend(prev_drafts);
                     let current_standing: WithheldStanding =
                         serde_json::from_value(w.withheld_standing)
-                            .unwrap_or(WithheldStanding::SettledEnteredInError);
+                            .map_err(conversion_error("withheld_standing", "WithheldStanding"))?;
                     upsert_workspace_withholding_in_tx(
                         &tx,
-                        ws,
-                        &record.practice,
-                        &record.correction_id,
-                        &record.conversation_id,
-                        true,
-                        &current_standing,
-                        &fresh,
-                        record.updated_at,
+                        WorkspaceWithholdingUpsert {
+                            workspace: ws,
+                            practice: &record.practice,
+                            correction_id: &record.correction_id,
+                            conversation_id: &record.conversation_id,
+                            active_withholding: true,
+                            withheld_standing: &current_standing,
+                            artifacts: &fresh,
+                            updated_at: record.updated_at,
+                        },
                     )
                     .await?;
                 }
@@ -3290,7 +3635,7 @@ impl Store {
             )[..24];
             let withdrawal_id = format!("lcw-{digest}");
             let reason = format!(
-                "Conversation `{}` moved away from patient `{ws}`.",
+                "Conversation {} moved away from patient {ws}.",
                 record.conversation_id
             );
             let mut candidate_ids: Vec<String> = artifacts.candidate_ids.iter().cloned().collect();
@@ -3602,31 +3947,6 @@ impl Store {
             workspace,
             session_hash,
         };
-        self.open_concerns(&access, authority).await.map_err(|err| {
-            LinkCorrectionError::InvalidTransition {
-                conversation_id: workspace.to_owned(),
-                reason: err.to_string(),
-            }
-        })
-    }
-
-    /// Filters open concern summaries against `withheld` so starting contexts never expose
-    /// concerns citing withheld wrong-patient candidates or works.
-    pub(crate) fn filter_open_concern_summaries_for_withheld(
-        summaries: Vec<OpenConcernSummary>,
-        withheld: &WithheldWorkspaceState,
-    ) -> Vec<OpenConcernSummary> {
-        if withheld.is_empty() {
-            return summaries;
-        }
-        summaries
-            .into_iter()
-            .filter(|item| {
-                !item
-                    .records
-                    .iter()
-                    .any(|r| withheld.candidate_ids.contains(&r.candidate_id))
-            })
-            .collect()
+        Ok(self.open_concerns(&access, authority).await?)
     }
 }

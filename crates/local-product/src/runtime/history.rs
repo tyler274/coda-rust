@@ -19,6 +19,7 @@ use super::{
     Attempt, Conversation, MAX_LISTED_CHATS, Message, MessageRole, Scope, Store, WorkStatus,
     control, conversion_error, engine, keys, order_by_latest_activity,
 };
+use crate::attachments::READ_DOCUMENT_PAGE_TOOL;
 use crate::physician_sources::{READ_TOOL, ReadablePart, SEARCH_TOOL, SourceRevision};
 
 /// A failure while reading saved conversations or work history.
@@ -555,6 +556,48 @@ fn collect_work_observations(attempts: &[Attempt]) -> HashMap<String, WorkObserv
                                 ReadReceiptEntry::Unavailable { .. }
                                 | ReadReceiptEntry::OverBudget { .. } => {}
                             }
+                        }
+                    } else if tool_name == READ_DOCUMENT_PAGE_TOOL
+                        && let Ok(val) = serde_json::from_str::<Value>(output)
+                        && val.get("outcome").and_then(Value::as_str) == Some("available")
+                        && let Some(doc_id) = val
+                            .get("document_id")
+                            .or_else(|| val.get("candidate_id"))
+                            .and_then(Value::as_str)
+                    {
+                        let revision = val
+                            .get("revision")
+                            .and_then(Value::as_str)
+                            .map(str::to_owned)
+                            .or_else(|| {
+                                val.get("version")
+                                    .and_then(Value::as_u64)
+                                    .map(|v| format!("v{v}"))
+                            })
+                            .unwrap_or_else(|| "v1".to_owned());
+                        let page_number =
+                            val.get("page_number").and_then(Value::as_u64).unwrap_or(1);
+                        let text = val
+                            .get("text")
+                            .and_then(Value::as_str)
+                            .unwrap_or_default()
+                            .to_owned();
+                        let label = format!("Document page {page_number}");
+                        let readable_body = format_cited_source_body(&label, &[], &text);
+                        let quote = truncate_clean(&readable_body, 220);
+                        if !entry.reads.iter().any(|existing| {
+                            existing.candidate_id == doc_id && existing.revision == revision
+                        }) {
+                            entry.reads.push(ObservedRead {
+                                candidate_id: doc_id.to_owned(),
+                                revision,
+                                quote,
+                                fallback_record_type: label,
+                                fallback_body: readable_body,
+                                fallback_raw: text,
+                                fallback_date: None,
+                                fallback_provenance: Value::Null,
+                            });
                         }
                     }
                 }

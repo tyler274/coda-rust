@@ -1271,7 +1271,7 @@ async fn withheld_wrong_patient_content_shows_unavailable_with_reason_in_history
         .expect("publish workspace invalidation");
 
     // Open conversation detail updates live in place to unavailable with reason — zero stale text!
-    let undo_reason = "Unavailable: patient conversation `conv-wrong-link` was moved away from this patient while Undo is open.";
+    let undo_reason = "Unavailable: patient conversation conv-wrong-link was moved away from this patient while Undo is open.";
     tab.wait_for_text(undo_reason, Duration::from_secs(15));
     tab.assert_no_stale_secrets("live open conversation after move during Undo");
 
@@ -1348,7 +1348,7 @@ async fn withheld_wrong_patient_content_shows_unavailable_with_reason_in_history
         .await
         .expect("publish workspace invalidation after failed removal");
 
-    let unfinished_reason = "Unavailable: wrong-patient removal for conversation `conv-wrong-link` is unfinished while withdrawing wrong-patient chart effects (injected withdrawal failure).";
+    let unfinished_reason = "Unavailable: wrong-patient removal for conversation conv-wrong-link is unfinished while withdrawing wrong-patient chart effects (injected withdrawal failure).";
     tab.wait_for_text(unfinished_reason, Duration::from_secs(15));
     tab.assert_no_stale_secrets("live open conversation during unfinished removal");
     tab.click("button.citation-chip");
@@ -1380,7 +1380,7 @@ async fn withheld_wrong_patient_content_shows_unavailable_with_reason_in_history
 
     tab.set_viewport(390, 844, true);
     tab.navigate(&origin_url);
-    let settled_reason = "Unavailable: patient conversation `conv-wrong-link` was moved away from this patient and marked entered in error.";
+    let settled_reason = "Unavailable: patient conversation conv-wrong-link was moved away from this patient and marked entered in error.";
     tab.wait_for_text(settled_reason, Duration::from_secs(15));
     tab.assert_no_stale_secrets("mobile open conversation after settled correction");
     tab.assert_no_horizontal_overflow("mobile open conversation after settled correction");

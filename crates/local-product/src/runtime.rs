@@ -1550,6 +1550,17 @@ impl Store {
 
         if mode == CommitMode::CheckChartCurrency {
             let current_obs = sources::observed(&tx, &claim.scope.workspace).await?;
+            if let Some(note) = link_correction::evaluate_withheld_chat_finish_in_tx(
+                &tx,
+                &claim.scope,
+                &state,
+                current_obs.version,
+            )
+            .await?
+            {
+                tx.commit().await?;
+                return Ok(ChatFinish::Refused(note));
+            }
             let pinned_version = state
                 .bindings
                 .get(&state.work)

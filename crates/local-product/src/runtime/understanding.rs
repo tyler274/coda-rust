@@ -1311,10 +1311,7 @@ impl Store {
         let withheld =
             super::link_correction::load_workspace_withheld_state_in_tx(&self.db, workspace)
                 .await?;
-        if let Some(v) = &view
-            && !withheld.is_empty()
-            && understanding_cites_withheld(&v.summary, None, None, &withheld)
-        {
+        if view.is_some() && !withheld.is_empty() {
             let clean = latest_clean_understanding_in_db(
                 &self.db,
                 &identity.practice_id,
@@ -1370,9 +1367,7 @@ impl Store {
                 &view.workspace,
             )
             .await?;
-            if !withheld.is_empty()
-                && understanding_cites_withheld(&view.summary, None, None, &withheld)
-            {
+            if !withheld.is_empty() {
                 if let Some(clean) = latest_clean_understanding_in_db(
                     &self.db,
                     &view.practice,

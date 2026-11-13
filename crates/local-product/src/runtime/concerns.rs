@@ -1797,12 +1797,11 @@ impl Store {
             .into_iter()
             .filter(|c| {
                 c.shows_on_today()
-                    && (withheld.is_empty()
-                        || (!withheld.work_ids.contains(&c.source_work.work_id)
-                            && !c
-                                .records
-                                .iter()
-                                .any(|r| withheld.candidate_ids.contains(&r.candidate_id))))
+                    && !super::link_correction::concern_is_withheld(
+                        &withheld,
+                        &c.source_work.work_id,
+                        &c.records,
+                    )
             })
             .collect();
         sort_today(&mut open);
@@ -1823,12 +1822,11 @@ impl Store {
         let mut retired: Vec<RetiredConcernUpdate> = all
             .iter()
             .filter(|c| {
-                withheld.is_empty()
-                    || (!withheld.work_ids.contains(&c.source_work.work_id)
-                        && !c
-                            .records
-                            .iter()
-                            .any(|r| withheld.candidate_ids.contains(&r.candidate_id)))
+                !super::link_correction::concern_is_withheld(
+                    &withheld,
+                    &c.source_work.work_id,
+                    &c.records,
+                )
             })
             .filter_map(Concern::retired_update)
             .collect();

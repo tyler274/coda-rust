@@ -2223,6 +2223,15 @@ impl Store {
             let records: Vec<ExactRecordReference> = serde_json::from_value(row.records).map_err(
                 conversion_error("stored concern records", "ExactRecordReference"),
             )?;
+            let source_work: super::concerns::SourceWork = serde_json::from_value(row.source_work)
+                .map_err(conversion_error("stored concern source_work", "SourceWork"))?;
+            if super::link_correction::concern_is_withheld(
+                &withheld,
+                &source_work.work_id,
+                &records,
+            ) {
+                continue;
+            }
             open_concerns.push(OpenConcernSummary {
                 concern_id: row.id,
                 urgency,
@@ -2230,8 +2239,6 @@ impl Store {
                 records,
             });
         }
-        let open_concerns =
-            Self::filter_open_concern_summaries_for_withheld(open_concerns, &withheld);
 
         let past_work = self
             .workspace_past_work(&scope.practice, &scope.physician, &scope.workspace)
