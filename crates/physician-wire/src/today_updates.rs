@@ -58,6 +58,10 @@ pub enum ProducerSliceWire {
     RunningConversations,
     /// Connected chart source health and pull standings.
     SourceStatuses,
+    /// Spruce channel matching and reply proposals.
+    SpruceMessages,
+    /// Patient follow-ups.
+    FollowUps,
 }
 
 /// One producer slice that failed while assembling Today or Updates.
@@ -104,6 +108,8 @@ pub enum UpdateItemKindWire {
     PatientSummary,
     /// Scheduled review skipped cleanly with a recorded clinical reason.
     EndedNothingToDo,
+    /// Patient follow-up created, rescheduled, paused, resumed, completed, or cancelled.
+    FollowUpChanged,
 }
 
 /// One typed entry in Updates (`today_items`, `reviewed_nothing_for_you`, or `earlier_days`).

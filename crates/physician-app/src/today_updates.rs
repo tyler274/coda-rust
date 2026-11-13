@@ -33,6 +33,8 @@ pub(crate) struct TodayMeta {
     pub practice_outages: Vec<PracticeOutageWire>,
     /// Distinct authorized patients Coda quietly reviewed today with nothing needing the physician.
     pub also_reviewed: usize,
+    /// Count of patient messages currently waiting in `Messages to match`.
+    pub messages_to_match_count: usize,
 }
 
 impl TodayMeta {
@@ -43,6 +45,7 @@ impl TodayMeta {
             failed_parts: list.failed_parts.clone(),
             practice_outages: list.practice_outages.clone(),
             also_reviewed: list.also_reviewed,
+            messages_to_match_count: list.messages_to_match_count,
         }
     }
 }
@@ -421,6 +424,7 @@ fn update_kind_label(kind: UpdateItemKindWire) -> &'static str {
         UpdateItemKindWire::VisitBriefing => "Visit briefing",
         UpdateItemKindWire::PatientSummary => "Patient summary",
         UpdateItemKindWire::EndedNothingToDo => "Skipped",
+        UpdateItemKindWire::FollowUpChanged => "Follow-up",
     }
 }
 
@@ -429,7 +433,8 @@ fn update_kind_tone(kind: UpdateItemKindWire) -> Tone {
         UpdateItemKindWire::ConcernRaised => Tone::Warning,
         UpdateItemKindWire::AssessedReview
         | UpdateItemKindWire::VisitBriefing
-        | UpdateItemKindWire::PatientSummary => Tone::Primary,
+        | UpdateItemKindWire::PatientSummary
+        | UpdateItemKindWire::FollowUpChanged => Tone::Primary,
         UpdateItemKindWire::ConcernRetired
         | UpdateItemKindWire::QuietReview
         | UpdateItemKindWire::EndedNothingToDo => Tone::Neutral,

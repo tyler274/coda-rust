@@ -7,6 +7,8 @@
 #![deny(missing_docs)]
 
 pub mod briefings;
+pub mod follow_ups;
+pub mod matching_reply;
 pub mod source_setup;
 pub mod today_updates;
 
@@ -73,6 +75,9 @@ pub struct TodayListResponse {
     #[serde(default)]
     /// Individual producer slices that failed during a partial Today load.
     pub failed_parts: Vec<today_updates::FailedProducerWire>,
+    #[serde(default)]
+    /// Count of patient messages currently waiting in `Messages to match`.
+    pub messages_to_match_count: usize,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
@@ -245,6 +250,12 @@ pub struct TodayRow {
     #[serde(default)]
     /// Linked conversation identifier when this row tracks an active physician chat response.
     pub linked_chat_id: Option<String>,
+    #[serde(default)]
+    /// Linked Spruce conversation identifier when this row opens a patient reply card (`Review reply`).
+    pub spruce_conversation_id: Option<String>,
+    #[serde(default)]
+    /// Unmatched Spruce message identifier when this row opens `Messages to match`.
+    pub matching_message_id: Option<String>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]

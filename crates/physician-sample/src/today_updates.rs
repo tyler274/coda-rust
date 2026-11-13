@@ -404,7 +404,40 @@ pub(crate) async fn serve_durable_today(
         .filter(|row| matches!(row.seen_standing, SeenStanding::Seen { .. }))
         .map(|row| row.item_key.as_str().to_owned())
         .collect();
-    let rows: Vec<Value> = projection.rows.iter().map(serialize_today_row).collect();
+    let mut rows: Vec<Value> = projection.rows.iter().map(serialize_today_row).collect();
+    let (messages_to_match_count, spruce_rows) =
+        crate::matching_reply::spruce_today_rows_for_physician(
+            store,
+            ctx,
+            extensions,
+            &names,
+            target_workspace,
+        )
+        .await;
+    let follow_up_rows = crate::follow_ups::follow_up_today_rows_for_physician(
+        store,
+        ctx,
+        &panel,
+        &names,
+        target_workspace,
+    )
+    .await;
+
+    let mut urgent_spruce = Vec::new();
+    let mut ordinary_extra = Vec::new();
+    for extra in spruce_rows.into_iter().chain(follow_up_rows) {
+        if extra.get("urgency").and_then(Value::as_str) == Some("now") {
+            urgent_spruce.push(extra);
+        } else {
+            ordinary_extra.push(extra);
+        }
+    }
+    if !urgent_spruce.is_empty() {
+        urgent_spruce.append(&mut rows);
+        rows = urgent_spruce;
+    }
+    rows.extend(ordinary_extra);
+
     let practice_outages: Vec<PracticeOutageWire> = projection
         .practice_outages
         .iter()
@@ -422,6 +455,7 @@ pub(crate) async fn serve_durable_today(
         "date": moment.date_iso,
         "time_zone": moment.time_zone.as_str(),
         "rows": rows,
+        "messages_to_match_count": messages_to_match_count,
         "seen": seen,
         "connections": connections,
         "cursors": {},
@@ -466,11 +500,15 @@ pub(crate) async fn serve_durable_updates(
             headline: run.label.clone(),
         })
         .collect();
-    let today_items: Vec<UpdateItemWire> = projection
+    let mut today_items: Vec<UpdateItemWire> = projection
         .today_items
         .iter()
         .map(map_update_entry)
         .collect();
+    today_items.extend(
+        crate::follow_ups::follow_up_update_items_for_physician(store, ctx, &panel, &names).await,
+    );
+    today_items.sort_by(|a, b| b.occurred_at.cmp(&a.occurred_at));
     let reviewed_nothing_for_you: Vec<UpdateItemWire> = projection
         .reviewed_nothing_for_you
         .iter()
