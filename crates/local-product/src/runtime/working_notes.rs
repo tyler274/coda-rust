@@ -7,7 +7,7 @@ use serde_json::Value;
 const SAVE_WORKING_NOTE: &str = "save_working_note";
 const READ_WORKING_NOTE: &str = "read_working_note";
 
-pub(super) fn is_tool(name: &str) -> bool {
+pub(crate) fn is_tool(name: &str) -> bool {
     matches!(name, SAVE_WORKING_NOTE | READ_WORKING_NOTE)
 }
 

@@ -9,13 +9,12 @@
 use std::path::PathBuf;
 use std::time::{Duration, Instant};
 
+use physician_wire::{AnswerState, WorkResumeTarget};
 use serde_json::{Value, json};
 
 #[path = "scale/mod.rs"]
 mod support;
-use support::{get_json, sign_in};
-
-const STOPPED: &str = "Coda stopped this response. Your message is saved.";
+use support::{chat_texts as texts, get_json, latest_answer, sign_in};
 
 struct Home(PathBuf);
 
@@ -128,7 +127,7 @@ async fn stop_holds_across_restart_and_again_after_resume_until_a_newer_message(
         });
     let claimed_at = Instant::now();
     let writing = wait_snapshot(&site_listen, &snapshot_path, &session, |snapshot| {
-        mechanical(snapshot).is_some_and(|line| line.get("stop_target").is_some())
+        matches!(latest_answer(snapshot), Some(AnswerState::Working { .. }))
     })
     .await
     .unwrap_or_else(|snapshot| {
@@ -137,10 +136,10 @@ async fn stop_holds_across_restart_and_again_after_resume_until_a_newer_message(
             tails(&site, &worker)
         )
     });
-    let work = mechanical(&writing).unwrap()["stop_target"]["work_item_id"]
-        .as_str()
-        .unwrap()
-        .to_owned();
+    let Some(AnswerState::Working { stop: target }) = latest_answer(&writing) else {
+        unreachable!("waited for a working answer")
+    };
+    let work = target.work_item_id;
     let stop_key = format!("stop-{work}");
     let (status, body) = post_json(
         &site_listen,
@@ -182,17 +181,12 @@ async fn stop_holds_across_restart_and_again_after_resume_until_a_newer_message(
             )
         });
     let held = wait_snapshot(&site_listen, &snapshot_path, &session, |snapshot| {
-        mechanical(snapshot).is_some_and(|line| line["text"] == STOPPED)
+        matches!(latest_answer(snapshot), Some(AnswerState::Stopped { .. }))
     })
     .await
     .unwrap_or_else(|snapshot| panic!("Stop did not hold the turn\n{snapshot}"));
     assert_eq!(texts(&held), ["Hello"]);
-    assert!(!texts(&held).contains(&support::FIXED_TEXT));
-    let run = mechanical(&held).unwrap()["resume_target"]["expected_run_id"]
-        .as_str()
-        .unwrap()
-        .to_owned();
-    assert_eq!(held["runs"][0]["state"], "held");
+    let run = resume_run(&held, &work);
 
     // The fixed reply waits 4s. Stay up past that so a commit that ignored
     // Stop would already be on the snapshot before the worker is dropped.
@@ -211,7 +205,7 @@ async fn stop_holds_across_restart_and_again_after_resume_until_a_newer_message(
         ["Hello"],
         "a late reply published\n{snapshot}"
     );
-    assert_eq!(mechanical(snapshot).unwrap()["text"], STOPPED, "{snapshot}");
+    assert_eq!(resume_run(snapshot, &work), run, "{snapshot}");
 
     worker.kill_now();
     let (status, body) = get_json(&site_listen, &snapshot_path, &session).await;
@@ -219,8 +213,8 @@ async fn stop_holds_across_restart_and_again_after_resume_until_a_newer_message(
     let snapshot = &body["snapshot"];
     assert_eq!(texts(snapshot), ["Hello"], "{snapshot}");
     assert_eq!(
-        mechanical(snapshot).unwrap()["text"],
-        STOPPED,
+        resume_run(snapshot, &work),
+        run,
         "restart released Stop\n{snapshot}"
     );
 
@@ -277,7 +271,7 @@ async fn stop_holds_across_restart_and_again_after_resume_until_a_newer_message(
     assert_eq!(status, 200, "{body}\n{}", tails(&site, &worker));
     assert_eq!(body["outcome"], "accepted", "{body}");
     let held_again = wait_snapshot(&site_listen, &snapshot_path, &session, |snapshot| {
-        mechanical(snapshot).is_some_and(|line| line["text"] == STOPPED)
+        matches!(latest_answer(snapshot), Some(AnswerState::Stopped { .. }))
     })
     .await
     .unwrap_or_else(|snapshot| {
@@ -286,10 +280,7 @@ async fn stop_holds_across_restart_and_again_after_resume_until_a_newer_message(
             tails(&site, &worker)
         )
     });
-    let resumed_run = mechanical(&held_again).unwrap()["resume_target"]["expected_run_id"]
-        .as_str()
-        .unwrap()
-        .to_owned();
+    let resumed_run = resume_run(&held_again, &work);
     assert_ne!(resumed_run, run, "{held_again}");
     let remain = Duration::from_millis(5_000).saturating_sub(resumed_at.elapsed());
     tokio::time::sleep(remain).await;
@@ -301,7 +292,7 @@ async fn stop_holds_across_restart_and_again_after_resume_until_a_newer_message(
         ["Hello"],
         "the resumed run published over the second Stop\n{snapshot}"
     );
-    assert_eq!(mechanical(snapshot).unwrap()["text"], STOPPED, "{snapshot}");
+    assert_eq!(resume_run(snapshot, &work), resumed_run, "{snapshot}");
 
     // Sending something else ends the hold: that message is answered once,
     // and neither stopped run's reply appears.
@@ -324,7 +315,7 @@ async fn stop_holds_across_restart_and_again_after_resume_until_a_newer_message(
     assert_eq!(status, 200, "{body}\n{}", tails(&site, &worker));
     assert_eq!(body["outcome"], "accepted", "{body}");
     let answered = wait_snapshot(&site_listen, &snapshot_path, &session, |snapshot| {
-        texts(snapshot).contains(&support::FIXED_TEXT)
+        matches!(latest_answer(snapshot), Some(AnswerState::Finished { .. }))
     })
     .await
     .unwrap_or_else(|snapshot| {
@@ -337,7 +328,29 @@ async fn stop_holds_across_restart_and_again_after_resume_until_a_newer_message(
         texts(&answered),
         ["Hello", "Something else", support::FIXED_TEXT]
     );
-    assert!(mechanical(&answered).is_none(), "{answered}");
+    // The new message started its own exchange. The stopped answer keeps its
+    // mark, and Resume is gone with its work.
+    let transcript = support::chat(&answered).transcript;
+    assert_eq!(transcript.len(), 2, "{answered}");
+    assert_eq!(
+        transcript[0].answer,
+        AnswerState::Stopped { resume: None },
+        "{answered}"
+    );
+}
+
+/// The run Resume names on the stopped answer of `work`.
+fn resume_run(snapshot: &Value, work: &str) -> String {
+    match latest_answer(snapshot) {
+        Some(AnswerState::Stopped {
+            resume:
+                Some(WorkResumeTarget {
+                    work_item_id,
+                    expected_run_id,
+                }),
+        }) if work_item_id == work => expected_run_id,
+        other => panic!("expected {work} stopped with Resume, found {other:?}\n{snapshot}"),
+    }
 }
 
 async fn wait_claimed(url: &str, chat: &str) -> Result<(), String> {
@@ -384,26 +397,6 @@ fn stop(workspace: &str, chat: &str, work: &str, key: &str) -> Value {
             "work_item_id": work,
         }
     })
-}
-
-fn mechanical(snapshot: &Value) -> Option<&Value> {
-    snapshot["conversation"]
-        .as_array()?
-        .iter()
-        .find(|item| item["kind"] == "mechanical")
-}
-
-fn texts(snapshot: &Value) -> Vec<&str> {
-    snapshot["conversation"]
-        .as_array()
-        .map(|items| {
-            items
-                .iter()
-                .filter(|item| item["kind"] != "mechanical")
-                .filter_map(|item| item["text"].as_str())
-                .collect()
-        })
-        .unwrap_or_default()
 }
 
 async fn wait_snapshot(

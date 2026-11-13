@@ -250,13 +250,24 @@ class Stream:
             self.connection.close()
 
 
+def transcript_items(body):
+    """A snapshot's transcript as (author, text) pairs: each physician message, the
+    text a limit kept, then the answer's text once it finished."""
+    items = []
+    for exchange in (body or {}).get("snapshot", {}).get("transcript", []):
+        items += [("physician", message["text"]) for message in exchange["messages"]]
+        items += [("model", text) for text in exchange["kept"]]
+        if exchange["answer"]["state"] == "finished":
+            items.append(("model", exchange["answer"]["text"]))
+    return items
+
+
 def wait_reply(port, bearer, chat, timeout=60):
     path = f"/patient-workspaces/{WORKSPACE}/chats/{chat}/snapshot"
     deadline = time.monotonic() + timeout
     while time.monotonic() < deadline:
         _, body = http_json(port, "GET", path, bearer=bearer)
-        texts = [item.get("text") for item in (body or {}).get("snapshot", {}).get("conversation", [])]
-        if FIXED_TEXT in texts:
+        if ("model", FIXED_TEXT) in transcript_items(body):
             return True
         time.sleep(0.2)
     return False

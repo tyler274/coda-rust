@@ -38,7 +38,9 @@ mod revision;
 #[path = "physician-worker/signals.rs"]
 mod signals;
 use attempt::{Claimed, Failure, Next, Outcome, Tally};
-use local_product::runtime::{Claim, Conversation, PhysicianHost, RuntimeError, Scope, Store};
+use local_product::runtime::{
+    Claim, Conversation, PhysicianHost, RuntimeError, Scope, ShownStepSaved, ShownSteps, Store,
+};
 use physician_auth::PostgresAuthStore;
 use physician_bus::{Bus, Event};
 use physician_sample::durable::RuntimeAuthority;
@@ -241,6 +243,7 @@ async fn chat_attempt(
         store: worker.store.clone(),
         claim,
         authority: worker.model.authority(),
+        shown_steps: ShownSteps::new(StepNotice(worker)),
     };
     let cancel = Cancellation::default();
     // One provider per turn: concurrent turns on this instance run side by
@@ -501,8 +504,9 @@ async fn absent_claim(worker: &Worker, delivery: &Delivery) {
 }
 
 /// Tells every open page on this workspace to refetch. Sent after each
-/// committed reply and each failed attempt, so a page holding a running turn
-/// learns when it completed or ended as "couldn't finish". Lossy: a page that
+/// committed reply, each failed attempt and each shown step that started or
+/// returned, so a page holding a running turn sees its steps and learns when
+/// it completed or ended as "couldn't finish". Lossy: a page that
 /// misses it still converges on its next refetch or resync.
 async fn announce(worker: &Worker, workspace_id: String) {
     if worker
@@ -512,6 +516,17 @@ async fn announce(worker: &Worker, workspace_id: String) {
         .is_err()
     {
         tracing::warn!("physician workspace invalidation not published");
+    }
+}
+
+/// Tells open pages on the workspace that a step they show started or
+/// returned, so they read it while the run still works.
+struct StepNotice<'a>(&'a Worker);
+
+#[local_product::runtime::async_trait]
+impl ShownStepSaved for StepNotice<'_> {
+    async fn shown_step_saved(&mut self, scope: &Scope) {
+        announce(self.0, scope.workspace.clone()).await;
     }
 }
 

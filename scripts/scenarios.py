@@ -130,8 +130,7 @@ def save(directory, name, value):
 def conversation(port, session, chat):
     _, body = http(port, "GET", f"/patient-workspaces/{stack.WORKSPACE}/chats/{chat}/snapshot",
                    bearer=session)
-    return body, [(item.get("kind"), item.get("text"))
-                  for item in (body or {}).get("snapshot", {}).get("conversation", [])]
+    return body, stack.transcript_items(body)
 
 
 def wait_conversation(port, session, chat, want, timeout=60):

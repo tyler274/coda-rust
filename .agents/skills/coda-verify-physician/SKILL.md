@@ -120,6 +120,13 @@ creates the chat. The drive can also create it with the same `POST /commands`
 `message.submit` that `tests/try_again.rs` and `tests/fanout.rs` use (`$D send`). After
 the first message, a reload without `&chat=` still lists the chat, under its title.
 
+**The snapshot.** `.body.snapshot.transcript` holds one exchange per piece of accepted
+work: `work_item_id`, the physician `messages` (`id`, `text`), Coda's `steps`, the `kept`
+text a limit saved, and the `answer`. `answer.state` is `working` (with `stop`), `finished`
+(with `response_id`, `attempt_id`, `text`, `feedback`), `stopped` (with `resume`), `cut_off`
+or `couldnt_finish` (each with `try_again`). `resume` and `try_again` are
+`{work_item_id, expected_run_id}`, or `null` once a later message replaced the work.
+
 Shared driving conventions:
 
 - Sign in once per stack: `S=$($D sign-in --site a)`. The session works on both sites

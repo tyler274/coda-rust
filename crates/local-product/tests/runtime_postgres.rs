@@ -281,6 +281,7 @@ async fn successor_replaces_the_abandoned_draft_and_reuses_the_confirmed_read() 
         store: s.clone(),
         claim: claim.clone(),
         authority: Allowed,
+        shown_steps: local_product::runtime::ShownSteps::new(()),
     };
     let mut first = Interrupted {
         dispatches: 0,
@@ -317,6 +318,7 @@ async fn successor_replaces_the_abandoned_draft_and_reuses_the_confirmed_read() 
         store: reopened.clone(),
         claim: successor,
         authority: Allowed,
+        shown_steps: local_product::runtime::ShownSteps::new(()),
     };
     let mut provider = Successor {
         dispatches: 0,
@@ -413,6 +415,7 @@ async fn a_read_recorded_after_a_steer_is_retained_by_the_successor() {
         store: s.clone(),
         claim: claim.clone(),
         authority: Allowed,
+        shown_steps: local_product::runtime::ShownSteps::new(()),
     };
     let running = tokio::spawn(async move {
         host.run(
@@ -463,6 +466,7 @@ async fn a_read_recorded_after_a_steer_is_retained_by_the_successor() {
         store: s.clone(),
         claim: s.claim(&scope, 60).await.unwrap().unwrap(),
         authority: Allowed,
+        shown_steps: local_product::runtime::ShownSteps::new(()),
     };
     host.run(
         &mut Successor,
@@ -567,6 +571,7 @@ async fn a_steered_run_that_reaches_its_limit_keeps_the_partial_answer() {
         store: s.clone(),
         claim: claim.clone(),
         authority: Allowed,
+        shown_steps: local_product::runtime::ShownSteps::new(()),
     }
     .run(
         &mut steered,
@@ -596,6 +601,7 @@ async fn a_steered_run_that_reaches_its_limit_keeps_the_partial_answer() {
         store: s.clone(),
         claim: successor,
         authority: Allowed,
+        shown_steps: local_product::runtime::ShownSteps::new(()),
     }
     .run(
         &mut Final,
@@ -650,6 +656,7 @@ async fn successor_publishes_retained_paid_answer_without_redispatch_or_duplicat
             store: s.clone(),
             claim: claim.clone(),
             authority: PublicationInterrupted,
+            shown_steps: local_product::runtime::ShownSteps::new(()),
         };
         assert!(
             host.run(&mut Paid, bounds, &engine::Cancellation::default())
@@ -670,6 +677,7 @@ async fn successor_publishes_retained_paid_answer_without_redispatch_or_duplicat
             store: reopened.clone(),
             claim: successor,
             authority: Allowed,
+            shown_steps: local_product::runtime::ShownSteps::new(()),
         };
         host.run(
             &mut MustNotDispatch,
@@ -752,6 +760,7 @@ async fn resume_after_stop_does_not_replay_an_unpublished_answer_as_visible() {
         store: s.clone(),
         claim: first,
         authority: PublicationInterrupted,
+        shown_steps: local_product::runtime::ShownSteps::new(()),
     };
     assert!(
         host.run(
@@ -791,6 +800,7 @@ async fn resume_after_stop_does_not_replay_an_unpublished_answer_as_visible() {
         store: reopened.clone(),
         claim: reopened.claim(&scope, 60).await.unwrap().unwrap(),
         authority: Allowed,
+        shown_steps: local_product::runtime::ShownSteps::new(()),
     };
     successor
         .run(
@@ -994,6 +1004,7 @@ async fn durable_acceptance_dedup_tenants_successor_and_engine_commit() {
         store: s.clone(),
         claim: successor.clone(),
         authority: Allowed,
+        shown_steps: local_product::runtime::ShownSteps::new(()),
     };
     host.run(&mut Provider, limits(), &engine::Cancellation::default())
         .await
@@ -1335,6 +1346,7 @@ async fn accept_history_assignment(
         store: store.clone(),
         claim: store.claim(scope, 60).await.unwrap().unwrap(),
         authority: Allowed,
+        shown_steps: local_product::runtime::ShownSteps::new(()),
     }
     .run(
         &mut HeldPartial,
@@ -1436,6 +1448,7 @@ async fn first_final_without_a_result_rearms_the_exact_admitted_recipe() {
         store: store.clone(),
         claim: earlier,
         authority: Allowed,
+        shown_steps: local_product::runtime::ShownSteps::new(()),
     }
     .run(
         &mut EarlierPartial,
@@ -1481,6 +1494,7 @@ async fn first_final_without_a_result_rearms_the_exact_admitted_recipe() {
         store: store.clone(),
         claim: first.clone(),
         authority: Allowed,
+        shown_steps: local_product::runtime::ShownSteps::new(()),
     }
     .run(&mut NoFinalReturn, limits, &engine::Cancellation::default())
     .await
@@ -1534,6 +1548,7 @@ async fn first_final_without_a_result_rearms_the_exact_admitted_recipe() {
         store: store.clone(),
         claim: second,
         authority: Allowed,
+        shown_steps: local_product::runtime::ShownSteps::new(()),
     }
     .run(
         &mut RearmedRecipe(accepted),
@@ -1655,6 +1670,7 @@ async fn explicit_retry_keeps_fresh_allowance_and_original_input_across_two_clai
         store: store.clone(),
         claim: first,
         authority: Allowed,
+        shown_steps: local_product::runtime::ShownSteps::new(()),
     }
     .run(&mut provider, limits, &engine::Cancellation::default())
     .await
@@ -1693,6 +1709,7 @@ async fn explicit_retry_keeps_fresh_allowance_and_original_input_across_two_clai
             store: store.clone(),
             claim: second.clone(),
             authority: Allowed,
+            shown_steps: local_product::runtime::ShownSteps::new(()),
         }
         .run(&mut provider, limits, &engine::Cancellation::default())
         .await
@@ -1711,6 +1728,7 @@ async fn explicit_retry_keeps_fresh_allowance_and_original_input_across_two_clai
         store: store.clone(),
         claim: third,
         authority: Allowed,
+        shown_steps: local_product::runtime::ShownSteps::new(()),
     }
     .run(&mut provider, limits, &engine::Cancellation::default())
     .await
@@ -1791,6 +1809,7 @@ async fn accepted_input_ids_survive_interruption_and_identical_message_text() {
         store: initial.clone(),
         claim: first,
         authority: Allowed,
+        shown_steps: local_product::runtime::ShownSteps::new(()),
     };
     assert!(
         host.run(
@@ -1829,6 +1848,7 @@ async fn accepted_input_ids_survive_interruption_and_identical_message_text() {
         store: reopened.clone(),
         claim: successor,
         authority: Allowed,
+        shown_steps: local_product::runtime::ShownSteps::new(()),
     };
     host.run(
         &mut Answer,
@@ -1931,6 +1951,7 @@ async fn reclaimed_hosted_chat_cannot_reset_the_request_limit() {
             store: s.clone(),
             claim,
             authority: Allowed,
+            shown_steps: local_product::runtime::ShownSteps::new(()),
         };
         let error = hosted_attempt(
             &mut host,
@@ -1956,6 +1977,7 @@ async fn reclaimed_hosted_chat_cannot_reset_the_request_limit() {
         store: s.clone(),
         claim,
         authority: Allowed,
+        shown_steps: local_product::runtime::ShownSteps::new(()),
     };
     hosted_attempt(
         &mut host,
@@ -2019,6 +2041,7 @@ async fn history_cursor_pages_preserve_exact_authored_messages() {
         store,
         claim,
         authority: Allowed,
+        shown_steps: local_product::runtime::ShownSteps::new(()),
     };
     for (name, arguments, position) in [
         (
@@ -2184,6 +2207,7 @@ async fn a_starting_fresh_window_can_open_an_earlier_runs_note() {
             store: store.clone(),
             claim,
             authority: Allowed,
+            shown_steps: local_product::runtime::ShownSteps::new(()),
         }
         .run(
             &mut provider,

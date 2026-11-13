@@ -2,6 +2,7 @@
 //! rehearsal service account, send one chat turn, and wait for its reply.
 use std::time::Duration;
 
+use physician_wire::{AnswerState, ChatSnapshotResponse};
 use reqwest::blocking::{Client, RequestBuilder};
 use reqwest::header::PROXY_AUTHORIZATION;
 use serde_json::{Value, json};
@@ -55,36 +56,42 @@ pub(super) enum TurnState {
     Failed(String),
 }
 
-/// Reads a `GET .../snapshot` answer. The snapshot names the run once the
-/// turn failed, was held or was answered, and an answered run names the
-/// attempt that answered it; a turn counts as answered only when its reply
-/// and its `completed` attempt are both there.
-pub(super) fn turn_state(body: &Value) -> TurnState {
-    let snapshot = &body["snapshot"];
-    let latest = |state: &str, id: &str| {
-        snapshot["runs"]
-            .as_array()
+/// Reads a `GET .../snapshot` answer by its latest exchange. A finished
+/// answer names the attempt that published it, which the drill follows into
+/// telemetry. An answer Coda couldn't finish names the run Try again would
+/// continue, which is the run that failed. Anything else is still writing.
+pub(super) fn turn_state(body: Value) -> Result<TurnState, DrillError> {
+    let page: ChatSnapshotResponse =
+        serde_json::from_value(body).map_err(|source| DrillError::Decode {
+            what: "chat snapshot",
+            source,
+        })?;
+    Ok(
+        match page
+            .snapshot
+            .transcript
             .into_iter()
-            .flatten()
-            .find(|run| run["state"] == state)
-            .and_then(|run| run[id].as_str())
-            .map(str::to_owned)
-    };
-    if let Some(run) = latest("failed", "run_id") {
-        return TurnState::Failed(run);
-    }
-    let items = snapshot["conversation"].as_array();
-    let reply = items
-        .and_then(|items| items.last())
-        .filter(|item| item["kind"] == "model")
-        .and_then(|item| item["text"].as_str());
-    match (reply, latest("completed", "attempt_id")) {
-        (Some(text), Some(attempt)) => TurnState::Answered(Answer {
-            text: text.to_owned(),
-            attempt,
-        }),
-        _ => TurnState::Writing,
-    }
+            .last()
+            .map(|exchange| exchange.answer)
+        {
+            Some(AnswerState::Finished {
+                text, attempt_id, ..
+            }) => TurnState::Answered(Answer {
+                text,
+                attempt: attempt_id,
+            }),
+            Some(AnswerState::CouldntFinish {
+                try_again: Some(target),
+            }) => TurnState::Failed(target.expected_run_id),
+            Some(
+                AnswerState::Working { .. }
+                | AnswerState::Stopped { .. }
+                | AnswerState::CutOff { .. }
+                | AnswerState::CouldntFinish { try_again: None },
+            )
+            | None => TurnState::Writing,
+        },
+    )
 }
 
 /// A signed-in rehearsal physician. IAP admits the signed JWT in
@@ -201,7 +208,7 @@ impl Physician {
         );
         let answer = watch.poll(attempts, pause, |_| {
             let body = send_json(self.authorized(self.client.get(&path)), "chat snapshot")?;
-            match turn_state(&body) {
+            match turn_state(body)? {
                 TurnState::Answered(answer) => Ok(Some(answer)),
                 TurnState::Failed(run) => Err(DrillError::TurnFailed { run }),
                 TurnState::Writing => Ok(None),
@@ -246,8 +253,29 @@ pub(super) fn send_json(request: RequestBuilder, what: &'static str) -> Result<V
 mod tests {
     use super::*;
 
-    fn snapshot(conversation: Value, runs: Value) -> Value {
-        json!({ "snapshot": { "conversation": conversation, "runs": runs } })
+    use physician_wire::{
+        ChatSnapshot, Exchange, PhysicianMessage, ResponseId, SnapshotFeedback, WorkResumeTarget,
+        WorkStopTarget,
+    };
+
+    /// A snapshot of one exchange asking "Hi", answered as `answer`.
+    fn snapshot(answer: AnswerState) -> Value {
+        serde_json::to_value(ChatSnapshotResponse {
+            snapshot: ChatSnapshot {
+                transcript: vec![Exchange {
+                    work_item_id: "w-1".into(),
+                    messages: vec![PhysicianMessage {
+                        id: "k".into(),
+                        text: "Hi".into(),
+                    }],
+                    steps: vec![],
+                    kept: vec![],
+                    answer,
+                }],
+                feedback: SnapshotFeedback::Loaded,
+            },
+        })
+        .unwrap()
     }
 
     #[test]
@@ -280,36 +308,40 @@ mod tests {
     }
 
     #[test]
-    fn an_answer_needs_the_reply_and_its_completed_attempt() {
-        let asked = json!([{ "kind": "physician", "text": "Hi" }]);
-        let answered = json!([
-            { "kind": "physician", "text": "Hi" },
-            { "kind": "model", "text": "Hello" }
-        ]);
+    fn a_finished_answer_names_its_attempt_and_couldnt_finish_names_its_run() {
+        let state = |answer| turn_state(snapshot(answer)).unwrap();
         assert_eq!(
-            turn_state(&snapshot(
-                answered.clone(),
-                json!([{ "run_id": "r-1", "state": "completed", "attempt_id": "a-1" }])
-            )),
+            state(AnswerState::Finished {
+                response_id: ResponseId("a-1:reply".into()),
+                attempt_id: "a-1".into(),
+                text: "Hello".into(),
+                feedback: None,
+            }),
             TurnState::Answered(Answer {
                 text: "Hello".into(),
                 attempt: "a-1".into()
             })
         );
         assert_eq!(
-            turn_state(&snapshot(answered, json!([]))),
+            state(AnswerState::Working {
+                stop: WorkStopTarget {
+                    work_item_id: "w-1".into()
+                }
+            }),
             TurnState::Writing
         );
         assert_eq!(
-            turn_state(&snapshot(asked.clone(), json!([]))),
-            TurnState::Writing
+            state(AnswerState::CouldntFinish {
+                try_again: Some(WorkResumeTarget {
+                    work_item_id: "w-1".into(),
+                    expected_run_id: "r-2".into(),
+                })
+            }),
+            TurnState::Failed("r-2".into())
         );
-        assert_eq!(
-            turn_state(&snapshot(
-                asked,
-                json!([{ "run_id": "a-2", "state": "failed" }])
-            )),
-            TurnState::Failed("a-2".into())
+        assert!(
+            turn_state(json!({ "snapshot": { "conversation": [], "runs": [] } })).is_err(),
+            "the older snapshot is refused, not read as still writing"
         );
     }
 }

@@ -322,9 +322,12 @@ async fn empty_snapshot(
     if !care::on_roster(request.extensions(), &id).await {
         return StatusCode::NOT_FOUND.into_response();
     }
-    Json(json!({
-        "snapshot": { "conversation": [], "runs": [] }
-    }))
+    Json(physician_wire::ChatSnapshotResponse {
+        snapshot: physician_wire::ChatSnapshot {
+            transcript: Vec::new(),
+            feedback: physician_wire::SnapshotFeedback::Loaded,
+        },
+    })
     .into_response()
 }
 
@@ -1020,7 +1023,9 @@ mod tests {
             get("/patient-workspaces/pw-39e51534-6ce4-43cf-b5f8-7c1ca6252d8e/chats/none/snapshot")
                 .await;
         assert_eq!(status, StatusCode::OK);
-        assert!(snapshot.contains("\"conversation\":[]"));
+        let snapshot: physician_wire::ChatSnapshotResponse =
+            serde_json::from_str(&snapshot).expect("the page's snapshot shape");
+        assert!(snapshot.snapshot.transcript.is_empty());
     }
 
     #[tokio::test]

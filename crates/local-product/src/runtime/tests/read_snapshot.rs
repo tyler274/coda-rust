@@ -91,6 +91,7 @@ async fn successive_chat_work_reuses_frozen_recipe_and_package() {
             store: reopened,
             claim,
             authority: OpenAuthority,
+            shown_steps: crate::runtime::ShownSteps::new(()),
         }
         .run(
             &mut Answers {

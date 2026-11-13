@@ -1,6 +1,9 @@
 //! On-demand discovery and bounded reads of the physician's workspace.
 use super::{READ_TOOL, SourceRevision};
+use crate::physician_chat::{CallEnding, StepError};
+use harness::engine::results::ToolResult;
 use harness::engine::{Tool, ToolOutcome};
+use physician_wire::{Found, RecordRead, Step, StepState};
 use serde::{Deserialize, Serialize};
 use serde_json::{Value, json};
 
@@ -64,6 +67,13 @@ struct Read {
     max_result_bytes: usize,
 }
 
+/// One page of search results, as the search returns it and its step reads it.
+#[derive(Serialize, Deserialize)]
+struct SearchPage {
+    results: Vec<Value>,
+    next: Option<After>,
+}
+
 /// Chart read receipts have one wire owner for production and delivery checks.
 #[derive(Debug, Serialize, Deserialize)]
 pub(super) struct ReadReceipt {
@@ -125,6 +135,27 @@ impl RecordReceipt {
                 ..
             } => reference == &source.candidate_id && revision == &source.revision,
             Self::Unavailable { .. } | Self::OverBudget { .. } => false,
+        }
+    }
+
+    /// What this record of a read gave, in the receipt's own facts.
+    fn read(&self) -> RecordRead {
+        match self {
+            Self::Available {
+                record_type, dates, ..
+            } => RecordRead::Whole {
+                record_type: record_type.clone(),
+                dates: dates
+                    .iter()
+                    .map(|date| physician_wire::RecordDate {
+                        name: date.name.clone(),
+                        value: date.value.clone(),
+                    })
+                    .collect(),
+            },
+            Self::Passage { .. } => RecordRead::Passage,
+            Self::Unavailable { .. } => RecordRead::Unavailable,
+            Self::OverBudget { .. } => RecordRead::TooLarge,
         }
     }
 
@@ -231,6 +262,14 @@ impl ChartRequest {
         }
     }
 
+    /// The step this call shows the physician, as far as it has ended.
+    pub fn step(&self, ending: CallEnding<'_>) -> Result<Step, StepError> {
+        match &self.0 {
+            Operation::Search(search) => search.step(ending),
+            Operation::Read(read) => read.step(ending),
+        }
+    }
+
     /// Resolve only this workspace's accepted source revisions.
     pub fn run(
         &self,
@@ -317,13 +356,56 @@ impl Search {
         if matches.len() == results.len() {
             next = None;
         }
-        Ok(ToolOutcome::Returned(
-            json!({"results":results,"next":next}).to_string(),
-        ))
+        let page = serde_json::to_value(SearchPage { results, next })
+            .expect("chart search page serializes");
+        Ok(ToolOutcome::Returned(page.to_string()))
+    }
+
+    /// The search with how many records its page found. A refused search
+    /// returned nothing.
+    fn step(&self, ending: CallEnding<'_>) -> Result<Step, StepError> {
+        let state = ending.state(|result| match result {
+            ToolResult::Original(output) => {
+                let page: SearchPage = serde_json::from_str(output).map_err(StepError::Receipt)?;
+                Ok(StepState::Returned {
+                    result: Found {
+                        records: page.results.len(),
+                        more: page.next.is_some(),
+                    },
+                })
+            }
+            ToolResult::Refused(_) => Ok(StepState::Failed),
+            ToolResult::History(_) | ToolResult::View(_) => Err(StepError::UnexpectedResult),
+        })?;
+        Ok(Step::SearchedChart {
+            query: self.query.clone(),
+            record_type: self.record_type.clone(),
+            state,
+        })
     }
 }
 
 impl Read {
+    /// The read with what each requested record gave, from its receipt. A
+    /// refused read returned nothing.
+    fn step(&self, ending: CallEnding<'_>) -> Result<Step, StepError> {
+        let state = ending.state(|result| match result {
+            ToolResult::Original(output) => {
+                let receipt: ReadReceipt =
+                    serde_json::from_str(output).map_err(StepError::Receipt)?;
+                Ok(StepState::Returned {
+                    result: receipt.results.iter().map(RecordReceipt::read).collect(),
+                })
+            }
+            ToolResult::Refused(_) => Ok(StepState::Failed),
+            ToolResult::History(_) | ToolResult::View(_) => Err(StepError::UnexpectedResult),
+        })?;
+        Ok(Step::ReadRecords {
+            requested: self.references.len(),
+            state,
+        })
+    }
+
     fn page(&self, workspace: &str, sources: &[SourceRevision]) -> Result<Value, String> {
         // Reserve the envelope and commas. Each reference has space even when
         // an earlier one is large, and the bound includes JSON escaping.

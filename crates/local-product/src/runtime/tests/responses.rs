@@ -33,6 +33,7 @@ pub(super) async fn run(
         store: store.clone(),
         claim: claim.clone(),
         authority: OpenAuthority,
+        shown_steps: crate::runtime::ShownSteps::new(()),
     }
     .run(
         provider,

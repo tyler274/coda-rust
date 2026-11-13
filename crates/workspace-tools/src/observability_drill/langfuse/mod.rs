@@ -84,6 +84,12 @@ pub(super) enum DrillError {
     },
     #[error("{what} answered HTTP {status}")]
     Status { what: &'static str, status: u16 },
+    #[error("{what} could not be decoded")]
+    Decode {
+        what: &'static str,
+        #[source]
+        source: serde_json::Error,
+    },
     #[error("{what} answered without {field}")]
     Shape {
         what: &'static str,
