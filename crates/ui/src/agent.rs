@@ -97,9 +97,9 @@ static STEPS: AtomicUsize = AtomicUsize::new(0);
 
 /// An agent's work on one turn: its `WorkStep`s under one line that says what it is doing or did,
 /// such as "Read 3 notes and searched twice", with a quieter `detail`, such as how long it took.
-/// While `working` the line also carries the working mark. The steps stay folded under the line,
-/// while working and once done, until the person presses the line; it opens or closes them, and
-/// that choice holds until the work next starts or ends, when they fold again.
+/// While `working` the line also carries the working mark. The steps start folded under the line;
+/// pressing the line opens or closes them, and that choice holds while the work runs and after it
+/// ends: nothing folds them on its own.
 #[component]
 pub fn WorkTrace(
     label: String,
@@ -108,16 +108,8 @@ pub fn WorkTrace(
     children: Element,
 ) -> Element {
     let id = use_hook(|| format!("work-trace-{}", TRACES.fetch_add(1, Ordering::Relaxed)));
-    // Opened only by the person, until the work starts or ends. Folding away when the work ends
-    // brings focus inside the steps back to the line.
+    // Opened and closed only by the person.
     let mut open = use_signal(|| false);
-    let region = id.clone();
-    use_effect(use_reactive!(|working| {
-        open.set(false);
-        if !working {
-            script::refocus_line(&region);
-        }
-    }));
     let open_now = open();
     rsx! {
         section {

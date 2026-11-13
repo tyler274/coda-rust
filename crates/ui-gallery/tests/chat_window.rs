@@ -6,8 +6,11 @@
 //! list over its button or the composer, a link to the original that scrolls away, a reply that
 //! pulls a reader who had scrolled back, a header rule that stops short of a narrow area, a phone's
 //! working toolbar on two rows, a small table whose results hide their units behind a sideways
-//! scroll, steps that stand open while Coda works, and a transcript that jumps or bounces as work
-//! arrives.
+//! scroll, steps that stand open while Coda works, a transcript that jumps or bounces as work
+//! arrives, a message sent with Enter that arrives without motion, a move back or a selection that
+//! the end pulls away, a press ended on the scrollbar or outside the window that leaves the end
+//! unfollowed, a jump to a growing reply that leaps or stops short, a citation preview away from
+//! its citation, and a transcript that eases under reduced motion.
 
 // The shared client also carries helpers for journeys this test doesn't walk.
 #[allow(dead_code)]
@@ -54,8 +57,7 @@ const RECORD_MOTION: &str = "window.motion = []; \
 /// until the answer arrives whole with Sources and Basis, and the steps stay folded. While Coda
 /// works the composer holds
 /// only its controls, with no words of the work and nothing moving. The new turn enters with
-/// motion; the earlier turn, there from the start, never runs an entry. Sent by pointer, because
-/// driving by keyboard makes all motion immediate.
+/// motion; the earlier turn, there from the start, never runs an entry.
 #[test]
 #[ignore = "browser qualification; run explicitly with --ignored"]
 fn a_turn_shows_steps_one_at_a_time_then_the_whole_answer() {
@@ -303,6 +305,8 @@ fn a_citation_opens_its_source_beside_the_reading_without_moving_it() {
     // Two turns, then scrolled back, so the reader is in the middle of the transcript.
     ask(&mut browser, "What was her potassium at discharge?");
     wait_answer(&mut browser);
+    // The transcript eases to the answer; what is pressed next stands still first.
+    wait_at_end(&mut browser);
     scroll_back(&mut browser, 360.0, 150.0);
     let before = top_turn(&mut browser);
 
@@ -458,6 +462,8 @@ fn the_sources_list_opens_the_source_chosen() {
 
     ask(&mut browser, "What was her potassium at discharge?");
     wait_answer(&mut browser);
+    // The transcript eases to the answer; what is pressed next stands still first.
+    wait_at_end(&mut browser);
     press(&mut browser, &format!("{LAST_TURN} {SOURCES_BUTTON}"));
     wait_sources_list(&mut browser);
     press(
@@ -495,6 +501,8 @@ fn a_low_sources_list_opens_above_its_button_and_clear_of_the_composer() {
 
     ask(&mut browser, "What was her potassium at discharge?");
     wait_answer(&mut browser);
+    // The transcript eases to the answer; what is pressed next stands still first.
+    wait_at_end(&mut browser);
     std::thread::sleep(Duration::from_millis(600));
     press(&mut browser, &format!("{LAST_TURN} {SOURCES_BUTTON}"));
     wait_sources_list(&mut browser);
@@ -544,6 +552,8 @@ fn the_link_to_the_original_stays_put_while_the_source_scrolls() {
 
     ask(&mut browser, "What was her potassium at discharge?");
     wait_answer(&mut browser);
+    // The transcript eases to the answer; what is pressed next stands still first.
+    wait_at_end(&mut browser);
     press(&mut browser, &format!("{LAST_TURN} {SOURCES_BUTTON}"));
     wait_sources_list(&mut browser);
     press(
@@ -695,53 +705,59 @@ fn a_small_table_answer_shows_each_result_with_its_unit_at_390() {
     assert_eq!(browser.take_page_errors(), Vec::<String>::new());
 }
 
-/// While Coda works, pressing the line opens its steps; they stay open as more steps arrive, and
-/// fold again when the answer arrives.
+/// While Coda works, pressing the line opens its steps; they stay open as more steps arrive and
+/// once the answer arrives, and nothing in sight jumps or bounces as it does. At 1280 and 900, and
+/// at 390.
 #[test]
 #[ignore = "browser qualification; run explicitly with --ignored"]
-fn the_person_opens_the_steps_and_they_fold_when_the_answer_arrives() {
+fn the_steps_the_person_opened_stay_open_and_still_as_the_answer_arrives() {
     let gallery = Gallery::start();
-    let mut browser = open_scene(&gallery, AROUND_DESKTOP);
-    send_by_pointer(&mut browser, "What was her potassium at discharge?");
-    wait_working(&mut browser);
-    wait_settled(&mut browser);
-    press(&mut browser, &format!("{LAST_TURN} .work-trace-line"));
-    let shown = |browser: &mut Browser| {
-        browser.page().evaluate(&format!(
-            "(() => {{ const turn = document.querySelector('{LAST_TURN}'); \
-             const region = turn.querySelector('.work-trace > .disclosure-region'); \
-             return {{ open: turn.querySelector('.work-trace').dataset.state, steps: turn.querySelectorAll('.work-step').length, \
-             working: !!turn.querySelector('.work-trace.is-working') }}; }})()"
-        ))
-    };
-    let opened = shown(&mut browser);
-    assert_eq!(opened["open"], "open", "the line didn't open its steps");
-    let first = opened["steps"].as_u64().unwrap_or(0);
-    wait_true(
-        &mut browser,
-        &format!("document.querySelectorAll('{LAST_TURN} .work-step').length > {first}"),
-        "another step",
-    );
-    let later = shown(&mut browser);
+    let mut seen = Vec::new();
+    for (size, width) in [("1280 × 800", 1280), ("900 × 800", 900), ("390 × 800", 390)] {
+        let mut browser = open_scene(&gallery, AROUND_DESKTOP);
+        choose_stage(&mut browser, size, width);
+        send_by_pointer(&mut browser, "What was her potassium at discharge?");
+        wait_working(&mut browser);
+        wait_settled(&mut browser);
+        press(&mut browser, &format!("{LAST_TURN} .work-trace-line"));
+        let state = format!("document.querySelector('{LAST_TURN} .work-trace').dataset.state");
+        wait_true(
+            &mut browser,
+            &format!("{state} === 'open'"),
+            "the steps to open",
+        );
+        let first = browser
+            .page()
+            .evaluate(&format!(
+                "document.querySelectorAll('{LAST_TURN} .work-step').length"
+            ))
+            .as_u64()
+            .unwrap_or(0);
+        wait_true(
+            &mut browser,
+            &format!("document.querySelectorAll('{LAST_TURN} .work-step').length > {first}"),
+            "another step",
+        );
+        let working = browser.page().evaluate(&state);
+        std::thread::sleep(Duration::from_millis(500));
+        let arrival = moves_through(&mut browser, wait_answer);
+        let ended = browser.page().evaluate(&state);
+        seen.push(json!({ "width": width, "whileWorking": working, "arrival": arrival, "afterAnswer": ended }));
+        assert_eq!(browser.take_page_errors(), Vec::<String>::new());
+    }
+    let opened = |width: u32| json!({ "width": width, "whileWorking": "open", "arrival": still(), "afterAnswer": "open" });
     assert_eq!(
-        (later["open"].clone(), later["working"].clone()),
-        (json!("open"), json!(true)),
-        "the steps closed by themselves while Coda worked"
+        seen,
+        vec![opened(1280), opened(900), opened(390)],
+        "steps the person opened, as the answer arrives"
     );
-    wait_answer(&mut browser);
-    let ended = shown(&mut browser);
-    assert_eq!(
-        ended["open"], "closed",
-        "the steps stayed open once the answer arrived"
-    );
-    assert_eq!(browser.take_page_errors(), Vec::<String>::new());
 }
 
 /// With the reader at the end, nothing already in sight jumps or bounces as work arrives: the
 /// last turn's top and its work line move by small steps in one direction while the answer arrives
 /// under the working line, while Stop puts its ending with Resume, and while the person opens and
 /// closes the steps, and the reader ends at the end. A frame that carries most of a move at once
-/// is a jump; a move back after a move is a bounce. Driven by pointer, so motion runs.
+/// is a jump; a move back after a move is a bounce. Driven by pointer.
 #[test]
 #[ignore = "browser qualification; run explicitly with --ignored"]
 fn the_transcript_moves_without_jumps_as_work_arrives() {
@@ -773,22 +789,405 @@ fn the_transcript_moves_without_jumps_as_work_arrives() {
     assert_eq!(browser.take_page_errors(), Vec::<String>::new());
 }
 
+/// A message typed and sent with Enter, the pointer never moved, arrives as one sent by pointer
+/// does: the sent bubble, the work line and the answer each run their entry, and the transcript
+/// eases to them without a jump or a bounce.
+#[test]
+#[ignore = "browser qualification; run explicitly with --ignored"]
+fn a_message_sent_with_enter_arrives_with_motion() {
+    let gallery = Gallery::start();
+    let mut browser = open_scene(&gallery, AROUND_DESKTOP);
+    browser
+        .page()
+        .evaluate(&format!("document.querySelector('{COMPOSER}').focus(); 0"));
+    type_words(&mut browser, "What was her potassium at discharge?");
+    let sent = moves_through(&mut browser, |browser| {
+        browser.press_key(Key::ENTER);
+        wait_working(browser);
+    });
+    let answer = moves_through(&mut browser, wait_answer);
+    let entries = browser.page().evaluate(&format!(
+        "(() => {{ const turn = document.querySelector('{LAST_TURN}'); \
+         const ran = (selector) => window.motion.some((target) => target === turn.querySelector(selector)); \
+         return {{ bubble: ran('.message-person'), line: ran('.work-trace'), answer: ran('.answer-ending') }}; }})()"
+    ));
+    assert_eq!(
+        json!({ "sent": sent, "answer": answer, "entries": entries }),
+        json!({ "sent": still_by("keyboard"), "answer": still_by("keyboard"),
+            "entries": { "bubble": true, "line": true, "answer": true } }),
+        "a message sent with Enter"
+    );
+    assert_eq!(browser.take_page_errors(), Vec::<String>::new());
+}
+
+/// A move back lets go of the end at once, by intent rather than distance: a wheel turned back
+/// with content growing in the same frame, before any scroll lands, leaves the reader where they
+/// were; and after one ArrowUp pressed in the transcript, growth at the end leaves them there too.
+#[test]
+#[ignore = "browser qualification; run explicitly with --ignored"]
+fn a_move_back_lets_go_even_when_content_grows_in_the_same_frame() {
+    let gallery = Gallery::start();
+    let mut browser = open_scene(&gallery, AROUND_DESKTOP);
+    send_by_pointer(&mut browser, "What was her potassium at discharge?");
+    wait_answer(&mut browser);
+    wait_at_end(&mut browser);
+    // The wheel and the growth land in one frame; the wheel's own scroll has not landed yet.
+    let wheel_held = browser.page().evaluate(&format!(
+        "(() => {{ const scroller = document.querySelector('{SCROLLER}'); \
+         scroller.dispatchEvent(new WheelEvent('wheel', {{ deltaY: -100, bubbles: true }})); \
+         scroller.firstElementChild.lastElementChild.style.paddingBottom = '240px'; \
+         return scroller.scrollTop; }})()"
+    ));
+    std::thread::sleep(Duration::from_millis(900));
+    let after_wheel = scroll_top(&mut browser);
+    // Back at the end, then one ArrowUp, and growth after it.
+    browser.page().evaluate(&format!(
+        "(() => {{ const scroller = document.querySelector('{SCROLLER}'); \
+         scroller.firstElementChild.lastElementChild.style.paddingBottom = ''; \
+         scroller.scrollTop = scroller.scrollHeight; return 0; }})()"
+    ));
+    wait_at_end(&mut browser);
+    let end = scroll_top(&mut browser);
+    // The key pressed with focus in the transcript, on the answer's rating, so the browser scrolls
+    // the transcript and the transcript hears the key.
+    let focused = browser.page().evaluate(&format!(
+        "(() => {{ const rating = [...document.querySelectorAll(\"{SCROLLER} button[aria-label='Good response']\")].at(-1); \
+         rating.focus({{ preventScroll: true }}); return document.activeElement === rating; }})()"
+    ));
+    assert_eq!(focused, json!(true), "focus on the answer's rating");
+    browser.press_key(Key::ARROW_UP);
+    std::thread::sleep(Duration::from_millis(300));
+    let key_held = scroll_top(&mut browser);
+    browser.page().evaluate(&format!(
+        "document.querySelector('{SCROLLER}').firstElementChild.lastElementChild.style.paddingBottom = '240px'; 0"
+    ));
+    std::thread::sleep(Duration::from_millis(900));
+    let after_key = scroll_top(&mut browser);
+    let key_moved_back = matches!((end, key_held), (Some(end), Some(held)) if held < end);
+    assert_eq!(
+        json!({ "wheel": after_wheel, "keyMovedBack": key_moved_back, "key": after_key }),
+        json!({ "wheel": wheel_held.as_f64().map(f64::round), "keyMovedBack": true, "key": key_held }),
+        "where the reader stood after moving back, with growth"
+    );
+    assert_eq!(browser.take_page_errors(), Vec::<String>::new());
+}
+
+/// The transcript's scroll position, rounded.
+fn scroll_top(browser: &mut Browser) -> Option<f64> {
+    browser
+        .page()
+        .evaluate(&format!("document.querySelector('{SCROLLER}').scrollTop"))
+        .as_f64()
+        .map(f64::round)
+}
+
+/// While the person is selecting words in the transcript, growth at the end does not pull the
+/// view; once they let go, the transcript follows the end again.
+#[test]
+#[ignore = "browser qualification; run explicitly with --ignored"]
+fn a_selection_being_made_is_not_pulled_away_by_growth() {
+    let gallery = Gallery::start();
+    let mut browser = open_scene(&gallery, AROUND_DESKTOP);
+    send_by_pointer(&mut browser, "What was her potassium at discharge?");
+    wait_answer(&mut browser);
+    wait_at_end(&mut browser);
+    let start = browser.page().evaluate(&format!(
+        "(() => {{ const words = document.querySelector('{LAST_TURN} .answer-words p'); \
+         const range = document.createRange(); range.selectNodeContents(words); \
+         const box = range.getClientRects()[0]; return [box.left + 4, box.top + box.height / 2]; }})()"
+    ));
+    let (x, y) = (start[0].as_f64().unwrap(), start[1].as_f64().unwrap());
+    mouse(&mut browser, "mouseMoved", x, y, 0);
+    mouse(&mut browser, "mousePressed", x, y, 1);
+    for step in 1..=3 {
+        mouse(&mut browser, "mouseMoved", x + 20.0 * f64::from(step), y, 1);
+    }
+    let held = browser.page().evaluate(&format!(
+        "(() => {{ const scroller = document.querySelector('{SCROLLER}'); \
+         scroller.firstElementChild.lastElementChild.style.paddingBottom = '240px'; return scroller.scrollTop; }})()"
+    ));
+    std::thread::sleep(Duration::from_millis(900));
+    let during = browser.page().evaluate(&format!(
+        "(() => {{ const selection = getSelection(); \
+         return [document.querySelector('{SCROLLER}').scrollTop, !selection.isCollapsed]; }})()"
+    ));
+    mouse(&mut browser, "mouseReleased", x + 60.0, y, 0);
+    std::thread::sleep(Duration::from_millis(900));
+    let after = browser.page().evaluate(&format!(
+        "(() => {{ const s = document.querySelector('{SCROLLER}'); return s.scrollHeight - s.clientHeight - s.scrollTop <= 1; }})()"
+    ));
+    assert_eq!(
+        json!({ "top": during[0].as_f64().map(f64::round), "selecting": during[1], "followsAfter": after }),
+        json!({ "top": held.as_f64().map(f64::round), "selecting": true, "followsAfter": true }),
+        "growth while words were being selected"
+    );
+    assert_eq!(browser.take_page_errors(), Vec::<String>::new());
+}
+
+/// A press that ends, however it ends, does not leave following waiting: after the transcript's
+/// own scrollbar thumb is dragged up a little and back down to the end, and after a press in the
+/// words is dragged out of the window and let go there, growth at the end is followed with no
+/// further pointer event. Which pointer events reached the page is part of what it reports.
+#[test]
+#[ignore = "browser qualification; run explicitly with --ignored"]
+fn a_press_that_ends_on_the_scrollbar_or_outside_the_window_leaves_following_free() {
+    let gallery = Gallery::start();
+    let mut browser = open_scene(&gallery, AROUND_DESKTOP);
+    // Headless Chromium hides scrollbars unless asked; shown, they are classic ones that take room.
+    browser
+        .page()
+        .call_session("Emulation.setScrollbarsHidden", json!({ "hidden": false }));
+    send_by_pointer(&mut browser, "What was her potassium at discharge?");
+    wait_answer(&mut browser);
+    wait_at_end(&mut browser);
+    browser.page().evaluate(&format!(
+        "(() => {{ window.pointerEvents = []; const s = document.querySelector('{SCROLLER}'); \
+         for (const kind of ['pointerdown', 'pointerup', 'pointercancel']) addEventListener(kind, (event) => {{ \
+           const content = s.getBoundingClientRect().left + s.clientLeft + s.clientWidth; \
+           window.pointerEvents.push(`${{event.type}}@${{Math.round(event.clientX)}},${{Math.round(event.clientY)}}${{event.clientX > content ? ' in the scrollbar' : ''}}`); }}, true); \
+         return 0; }})()"
+    ));
+    // The thumb stands at the foot of the track, at the end; its middle is pressed.
+    let thumb = browser.page().evaluate(&format!(
+        "(() => {{ const s = document.querySelector('{SCROLLER}'); const box = s.getBoundingClientRect(); \
+         const content = box.left + s.clientLeft + s.clientWidth; \
+         const bar = box.right - parseFloat(getComputedStyle(s).borderRightWidth) - content; \
+         const middle = (s.scrollTop + s.clientHeight / 2) / s.scrollHeight * s.clientHeight; \
+         return [content + bar / 2, box.top + s.clientTop + middle, bar]; }})()"
+    ));
+    let (x, y) = (thumb[0].as_f64().unwrap(), thumb[1].as_f64().unwrap());
+    let top_before = scroll_top(&mut browser);
+    mouse(&mut browser, "mouseMoved", x, y, 0);
+    mouse(&mut browser, "mousePressed", x, y, 1);
+    for step in 1..=4 {
+        mouse(&mut browser, "mouseMoved", x, y - 10.0 * f64::from(step), 1);
+    }
+    std::thread::sleep(Duration::from_millis(200));
+    let dragged_back = scroll_top(&mut browser) < top_before;
+    for step in 1..=8 {
+        mouse(&mut browser, "mouseMoved", x, y + 40.0 * f64::from(step), 1);
+    }
+    mouse(&mut browser, "mouseReleased", x, y + 320.0, 0);
+    std::thread::sleep(Duration::from_millis(300));
+    let thumb_events = browser.page().evaluate("window.pointerEvents.splice(0)");
+    let follows = |browser: &mut Browser| {
+        browser.page().evaluate(&format!(
+            "(() => {{ const s = document.querySelector('{SCROLLER}'); \
+             s.firstElementChild.lastElementChild.style.paddingBottom = `${{(parseFloat(s.firstElementChild.lastElementChild.style.paddingBottom) || 0) + 240}}px`; \
+             return 0; }})()"
+        ));
+        std::thread::sleep(Duration::from_millis(900));
+        browser.page().evaluate(&format!(
+            "(() => {{ const s = document.querySelector('{SCROLLER}'); return s.scrollHeight - s.clientHeight - s.scrollTop <= 1; }})()"
+        ))
+    };
+    let after_thumb = follows(&mut browser);
+    // A press in the transcript, dragged up and out of the window and let go there.
+    let start = browser.page().evaluate(&format!(
+        "(() => {{ const s = document.querySelector('{SCROLLER}'); const box = s.getBoundingClientRect(); \
+         return [box.left + s.clientLeft + 40, box.top + s.clientTop + s.clientHeight / 2]; }})()"
+    ));
+    let (x, y) = (start[0].as_f64().unwrap(), start[1].as_f64().unwrap());
+    mouse(&mut browser, "mouseMoved", x, y, 0);
+    mouse(&mut browser, "mousePressed", x, y, 1);
+    for step in 1..=4 {
+        mouse(
+            &mut browser,
+            "mouseMoved",
+            x,
+            y - (y + 40.0) * f64::from(step) / 4.0,
+            1,
+        );
+    }
+    mouse(&mut browser, "mouseReleased", x, -40.0, 0);
+    std::thread::sleep(Duration::from_millis(300));
+    let outside_events = browser.page().evaluate("window.pointerEvents.splice(0)");
+    browser.page().evaluate(&format!(
+        "(() => {{ getSelection().removeAllRanges(); const s = document.querySelector('{SCROLLER}'); s.scrollTop = s.scrollHeight; return 0; }})()"
+    ));
+    wait_at_end(&mut browser);
+    let after_outside = follows(&mut browser);
+    let seen = json!({
+        "scrollbar": thumb[2], "thumbDraggedBack": dragged_back, "thumbEvents": thumb_events,
+        "followsAfterThumb": after_thumb, "outsideEvents": outside_events, "followsAfterOutside": after_outside,
+    });
+    eprintln!("pointer events seen: {seen}");
+    assert_eq!(
+        json!({ "thumbDraggedBack": dragged_back, "followsAfterThumb": after_thumb, "followsAfterOutside": after_outside }),
+        json!({ "thumbDraggedBack": true, "followsAfterThumb": true, "followsAfterOutside": true }),
+        "following after a press that ended on the scrollbar or outside the window; seen: {seen}"
+    );
+    assert_eq!(browser.take_page_errors(), Vec::<String>::new());
+}
+
+/// The jump control moves the transcript to the new reply without a jump, even while the reply
+/// keeps growing on the way, and brings its top to the transcript's top; it grows enough that its
+/// top can get there. No frame carries more than a third of the way.
+#[test]
+#[ignore = "browser qualification; run explicitly with --ignored"]
+fn the_jump_reaches_a_reply_that_is_still_growing() {
+    let gallery = Gallery::start();
+    let mut browser = open_scene(&gallery, AROUND_DESKTOP);
+    send_by_pointer(&mut browser, "What was her potassium at discharge?");
+    wait_working(&mut browser);
+    scroll_back(&mut browser, 600.0, 150.0);
+    wait_answer(&mut browser);
+    wait_true(
+        &mut browser,
+        "!!document.querySelector('.scene-stage .jump-to-latest')",
+        "the way to the new reply",
+    );
+    // From the press, the reply grows a little every frame for most of a second, and where its top
+    // stands is sampled every frame.
+    browser.page().evaluate(&format!(
+        "(() => {{ const scroller = document.querySelector('{SCROLLER}'); \
+         const replies = scroller.querySelectorAll('.message-assistant'); const reply = replies[replies.length - 1]; \
+         const until = performance.now() + 700; let grown = 0; window.offsets = []; window.sampling = true; \
+         const grow = () => {{ grown += 8; reply.style.paddingBottom = `${{grown}}px`; if (performance.now() < until) requestAnimationFrame(grow); }}; \
+         const tick = () => {{ window.offsets.push(reply.getBoundingClientRect().top - scroller.getBoundingClientRect().top); \
+           if (window.sampling) requestAnimationFrame(tick); }}; \
+         requestAnimationFrame(grow); requestAnimationFrame(tick); return 0; }})()"
+    ));
+    press(&mut browser, ".scene-stage .jump-to-latest");
+    std::thread::sleep(Duration::from_millis(1500));
+    let reached = browser.page().evaluate(&format!(
+        "(() => {{ window.sampling = false; const offsets = window.offsets; \
+         const steps = offsets.slice(1).map((offset, index) => offset - offsets[index]); \
+         const replies = document.querySelectorAll('{SCROLLER} .message-assistant'); const reply = replies[replies.length - 1]; \
+         return {{ smooth: steps.every((step) => Math.abs(step) <= Math.max(6, offsets[0] / 3)), \
+           oneWay: steps.every((step) => step <= 0.5), reached: Math.abs(offsets[offsets.length - 1]) <= 2, \
+           focused: document.activeElement === reply }}; }})()"
+    ));
+    assert_eq!(
+        reached,
+        json!({ "smooth": true, "oneWay": true, "reached": true, "focused": true }),
+        "the jump to a reply that kept growing"
+    );
+    assert_eq!(browser.take_page_errors(), Vec::<String>::new());
+}
+
+/// Opened from a citation in the chat window, its column offset from the window's edge, the
+/// preview stands against its citation: just under or over it, overlapping it across, and inside
+/// the window.
+#[test]
+#[ignore = "browser qualification; run explicitly with --ignored"]
+fn a_citation_preview_opens_against_its_citation_in_the_chat_column() {
+    let gallery = Gallery::start();
+    let mut browser = open_scene(&gallery, AROUND_DESKTOP);
+    let (x, y) = visible_citation(&mut browser, 1);
+    mouse(&mut browser, "mouseMoved", x, y, 0);
+    wait_true(
+        &mut browser,
+        "!!document.querySelector('.scene-stage .citation-preview[data-side]')",
+        "the preview",
+    );
+    std::thread::sleep(Duration::from_millis(500));
+    let placed = browser.page().evaluate(
+        "(() => { const chip = window.chosen.getBoundingClientRect(); \
+         const preview = document.querySelector('.scene-stage .citation-preview[data-side]').getBoundingClientRect(); \
+         const column = document.querySelector('.scene-stage .chat-column').getBoundingClientRect(); \
+         const gap = preview.top >= chip.bottom ? preview.top - chip.bottom : chip.top - preview.bottom; \
+         return { columnOffset: column.left > 100, near: gap >= 0 && gap <= 16, \
+           across: preview.left <= chip.right && preview.right >= chip.left, \
+           inside: preview.left >= 0 && preview.right <= innerWidth && preview.top >= 0 && preview.bottom <= innerHeight }; })()",
+    );
+    assert_eq!(
+        placed,
+        json!({ "columnOffset": true, "near": true, "across": true, "inside": true }),
+        "the preview against its citation"
+    );
+    assert_eq!(browser.take_page_errors(), Vec::<String>::new());
+}
+
+/// Under reduced motion the sent message and the answer still fade in, but neither moves: in
+/// every frame each stands untranslated and unscaled while its opacity passes through values
+/// between none and full. The transcript reaches its end at once as the answer arrives: no frame
+/// after the first one that grew stands short of the end.
+#[test]
+#[ignore = "browser qualification; run explicitly with --ignored"]
+fn under_reduced_motion_messages_fade_without_moving_and_the_transcript_moves_at_once() {
+    let gallery = Gallery::start();
+    let mut browser = open_scene(&gallery, AROUND_DESKTOP);
+    browser.emulate_reduced_motion();
+    browser.page().evaluate(&format!(
+        "(() => {{ const scroller = document.querySelector('{SCROLLER}'); const before = document.querySelector('{LAST_TURN}'); \
+         window.seen = {{ bubble: [], answer: [], short: [] }}; window.sampling = true; \
+         const look = (node, into) => {{ if (!node) return; const style = getComputedStyle(node); \
+           into.push([parseFloat(style.opacity), style.transform === 'none' || style.transform === 'matrix(1, 0, 0, 1, 0, 0)']); }}; \
+         const tick = () => {{ const turn = document.querySelector('{LAST_TURN}'); \
+           if (turn !== before) {{ look(turn.querySelector('.message-person'), window.seen.bubble); look(turn.querySelector('.answer-ending'), window.seen.answer); }} \
+           window.seen.short.push(scroller.scrollHeight - scroller.clientHeight - scroller.scrollTop > 1); \
+           if (window.sampling) requestAnimationFrame(tick); }}; \
+         requestAnimationFrame(tick); return 0; }})()"
+    ));
+    send_by_pointer(&mut browser, "What was her potassium at discharge?");
+    wait_working(&mut browser);
+    browser.page().evaluate("window.seen.short = []; 0");
+    wait_answer(&mut browser);
+    std::thread::sleep(Duration::from_millis(600));
+    let seen = browser.page().evaluate(
+        "(() => { window.sampling = false; let run = 0, longest = 0; \
+         for (const short of window.seen.short) { run = short ? run + 1 : 0; longest = Math.max(longest, run); } \
+         const fades = (frames) => frames.filter(([opacity]) => opacity > 0.05 && opacity < 0.95).length >= 2 \
+           && frames[frames.length - 1][0] === 1; \
+         const still = (frames) => frames.every(([, unmoved]) => unmoved); \
+         return { bubble: { fades: fades(window.seen.bubble), still: still(window.seen.bubble) }, \
+           answer: { fades: fades(window.seen.answer), still: still(window.seen.answer) }, transcriptAtOnce: longest <= 1 }; })()",
+    );
+    assert_eq!(
+        seen,
+        json!({ "bubble": { "fades": true, "still": true }, "answer": { "fades": true, "still": true }, "transcriptAtOnce": true }),
+        "a message and its answer under reduced motion"
+    );
+    assert_eq!(browser.take_page_errors(), Vec::<String>::new());
+}
+
 /// What `moves_through` finds when nothing jumps or bounces and the reader ends at the end, driven
 /// by pointer.
 fn still() -> Value {
-    json!({ "interaction": "pointer", "jumps": [], "bounces": [], "atEnd": true })
+    still_by("pointer")
 }
 
-/// Samples the last turn's top and its work line on every frame while `act` runs and for a moment
-/// after. A move is a run of frames that move; it names each move with a frame that carried most
-/// of its travel that way, and each move that turned back.
+/// What `moves_through` finds when nothing jumps or bounces and the reader ends at the end, the
+/// page driven by `interaction`.
+fn still_by(interaction: &str) -> Value {
+    json!({ "interaction": interaction, "jumps": [], "bounces": [], "atEnd": true })
+}
+
+/// Waits until the transcript stands at its end and has stopped moving.
+fn wait_at_end(browser: &mut Browser) {
+    wait_true(
+        browser,
+        &format!(
+            "(() => {{ const s = document.querySelector('{SCROLLER}'); return s.scrollHeight - s.clientHeight - s.scrollTop <= 1; }})()"
+        ),
+        "the transcript at its end",
+    );
+    std::thread::sleep(Duration::from_millis(600));
+}
+
+/// One mouse event of `kind` at `x`, `y`, with `buttons` held.
+fn mouse(browser: &mut Browser, kind: &str, x: f64, y: f64, buttons: u8) {
+    browser.page().call_session(
+        "Input.dispatchMouseEvent",
+        json!({ "type": kind, "x": x, "y": y, "buttons": buttons,
+            "button": if kind == "mouseMoved" && buttons == 0 { "none" } else { "left" },
+            "clickCount": if kind == "mouseMoved" { 0 } else { 1 } }),
+    );
+}
+
+/// Samples the top of the turn that was last when it began, and that turn's work line, on every
+/// frame while `act` runs and for a moment after. A move is a run of frames that move; it names
+/// each move with a frame that carried most of its travel that way, and each move that turned back.
+/// A sampling that starts ends the one before it, which may not yet have seen its own end.
 fn moves_through(browser: &mut Browser, act: impl FnOnce(&mut Browser)) -> Value {
     browser.page().evaluate(&format!(
-        "(() => {{ const scroller = document.querySelector('{SCROLLER}'); window.frames = []; window.sampling = true; \
+        "(() => {{ const scroller = document.querySelector('{SCROLLER}'); const frames = window.frames = []; window.sampling = true; \
+         const turn = document.querySelector('{LAST_TURN}'); \
          const tick = () => {{ const view = scroller.getBoundingClientRect().top; \
-           const turn = document.querySelector('{LAST_TURN}'); const line = turn?.querySelector('.work-trace-line'); \
-           window.frames.push([turn ? turn.getBoundingClientRect().top - view : null, line ? line.getBoundingClientRect().top - view : null]); \
-           if (window.sampling) requestAnimationFrame(tick); }}; \
+           const line = turn?.querySelector('.work-trace-line'); \
+           frames.push([turn ? turn.getBoundingClientRect().top - view : null, line ? line.getBoundingClientRect().top - view : null]); \
+           if (window.sampling && window.frames === frames) requestAnimationFrame(tick); }}; \
          requestAnimationFrame(tick); return 0; }})()"
     ));
     act(browser);
@@ -814,7 +1213,7 @@ fn moves_through(browser: &mut Browser, act: impl FnOnce(&mut Browser)) -> Value
 }
 
 /// Clicks into the composer, types `words` and presses Send, so the pointer is what drives the
-/// page and motion runs.
+/// page.
 fn send_by_pointer(browser: &mut Browser, words: &str) {
     press(browser, COMPOSER);
     type_words(browser, words);

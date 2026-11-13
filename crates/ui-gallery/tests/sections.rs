@@ -6,7 +6,8 @@
 //! keys can reach is walked here too, with real key presses. With
 //! `UI_GALLERY_SCREENSHOTS` set to a folder, those walks leave a picture of what
 //! they focused there. The UI library's module behaviour is walked with real input too: a
-//! menu's keys, a dialog's close, a sheet's drag, and a copy read back from the clipboard.
+//! menu's keys, a dialog's close, a sheet's drag, a copy read back from the clipboard, a
+//! popover's fade out under reduced motion, and a selection fill through quick changes.
 
 // The shared client also carries helpers for journeys this test doesn't walk.
 #[allow(dead_code)]
@@ -316,6 +317,163 @@ fn the_transcript_and_the_composer_share_their_edges() {
             "the transcript's edges against the composer's in a window {width} wide"
         );
     }
+}
+
+/// Under reduced motion a pending line still waits its delay before it shows, so a read that
+/// settles sooner never flashes it; it then shows at once, without its fade.
+#[test]
+#[ignore = "browser qualification; run explicitly with --ignored"]
+fn under_reduced_motion_a_pending_line_still_waits_before_it_shows() {
+    let gallery = Gallery::start();
+    let mut browser = Browser::launch();
+    browser.resize(DESKTOP);
+    browser.emulate_reduced_motion();
+    browser
+        .page()
+        .call_session("Page.enable", serde_json::json!({}));
+    // Each pending line, as it first appears and twice after: whether it shows at each moment.
+    browser.page().call_session(
+        "Page.addScriptToEvaluateOnNewDocument",
+        serde_json::json!({ "source": "window.pending = []; \
+            const shows = (line) => getComputedStyle(line).visibility === 'visible' && parseFloat(getComputedStyle(line).opacity) > 0.5; \
+            new MutationObserver(() => { for (const line of document.querySelectorAll('.pending-status')) { \
+              if (line.seen) continue; line.seen = true; const at = [shows(line)]; window.pending.push(at); \
+              setTimeout(() => at.push(shows(line)), 200); setTimeout(() => at.push(shows(line)), 700); } }) \
+            .observe(document, { subtree: true, childList: true });" }),
+    );
+    browser.page().navigate(&format!("{}#status", gallery.url));
+    wait_for_heading(&mut browser, "Status").expect("the section");
+    std::thread::sleep(SETTLE);
+    let seen = browser.page().evaluate("window.pending[0] ?? null");
+    assert_eq!(
+        seen,
+        serde_json::json!([false, false, true]),
+        "the pending line at first, after 200ms and after 700ms"
+    );
+}
+
+/// Under reduced motion a popover fades out as it faded in and never changes size: partway through
+/// its exit it is still shown, part faded, and on every frame it shows its scale is its resting one.
+#[test]
+#[ignore = "browser qualification; run explicitly with --ignored"]
+fn under_reduced_motion_a_closing_popover_fades_without_scaling() {
+    let gallery = Gallery::start();
+    let mut browser = Browser::launch();
+    browser.watch_page_errors();
+    browser.emulate_reduced_motion();
+    open(&mut browser, &gallery.url, "overlays", "Overlays");
+    let popover = "document.getElementById('gallery-popover')";
+
+    browser.press("[popovertarget='gallery-popover']");
+    wait_true(
+        &mut browser,
+        &format!(
+            "{popover}.matches(':popover-open') && getComputedStyle({popover}).opacity === '1'"
+        ),
+        "the popover to open and finish its fade",
+    );
+    // On every frame: whether it is open, whether it is shown, its opacity and its scale.
+    browser.page().evaluate(&format!(
+        "(() => {{ const popover = {popover}; window.frames = []; window.sampling = true; \
+         const tick = () => {{ const style = getComputedStyle(popover); \
+           window.frames.push([popover.matches(':popover-open'), style.display !== 'none', parseFloat(style.opacity), style.scale]); \
+           if (window.sampling) requestAnimationFrame(tick); }}; \
+         requestAnimationFrame(tick); return 0; }})()"
+    ));
+    // A few frames open first, so its resting scale is seen.
+    std::thread::sleep(Duration::from_millis(100));
+    browser.press_key(Key::ESCAPE);
+    std::thread::sleep(Duration::from_millis(600));
+    let seen = browser.page().evaluate(
+        "(() => { window.sampling = false; const shown = window.frames.filter(([, shown]) => shown); \
+         return { closed: window.frames.some(([open, shown]) => !open && !shown), \
+           fadingOut: shown.some(([open, , opacity]) => !open && opacity > 0.05 && opacity < 0.95), \
+           scales: [...new Set(shown.map(([, , , scale]) => scale))] }; })()",
+    );
+    assert_eq!(
+        seen,
+        serde_json::json!({ "closed": true, "fadingOut": true, "scales": ["1"] }),
+        "a popover closing under reduced motion"
+    );
+    assert_eq!(browser.take_page_errors(), Vec::<String>::new());
+}
+
+/// A selection fill still moving when the selection moves again goes on from where it is drawn:
+/// through five changes about 33ms apart from real keys, an arrow key held on a segmented control
+/// and Enter on one row after another in a list, no frame shows the fill farther from the chosen
+/// item than the frame before it did.
+#[test]
+#[ignore = "browser qualification; run explicitly with --ignored"]
+fn a_moving_selection_fill_goes_on_from_where_it_is() {
+    let gallery = Gallery::start();
+    let mut browser = Browser::launch();
+    browser.watch_page_errors();
+
+    open(&mut browser, &gallery.url, "inputs", "Inputs");
+    let segmented = fill_through(&mut browser, ".segmented", |browser, _| {
+        browser.press_key(Key::ARROW_RIGHT);
+    });
+
+    open(&mut browser, &gallery.url, "rows", "Rows");
+    let list = fill_through(
+        &mut browser,
+        ".gallery-rows .selection-host",
+        |browser, change| {
+            let row = [1, 2, 1, 0, 1][change];
+            browser.page().evaluate(&format!(
+                "document.querySelectorAll('.gallery-rows .selection-host button')[{row}].focus({{ preventScroll: true }}); 0"
+            ));
+            browser.press_key(Key::ENTER);
+        },
+    );
+    assert_eq!(
+        serde_json::json!({ "segmented": segmented, "list": list }),
+        serde_json::json!({ "segmented": { "changes": 5, "farther": [] }, "list": { "changes": 5, "farther": [] } }),
+        "the fill through five quick changes"
+    );
+    assert_eq!(browser.take_page_errors(), Vec::<String>::new());
+}
+
+/// Samples the fill of selection host `host` on every frame while `change` makes five changes of
+/// its current item about 33ms apart, its focus on its current item first. The fill is where the
+/// current item stands, carried by its slide: its translation and size. Answers how many changes
+/// the frames saw, and each frame where the fill stood farther from the current item than in the
+/// frame before.
+fn fill_through(
+    browser: &mut Browser,
+    host: &str,
+    mut change: impl FnMut(&mut Browser, usize),
+) -> Value {
+    browser.page().evaluate(&format!(
+        "(() => {{ const host = document.querySelector({host:?}); \
+         host.scrollIntoView({{ block: 'center', behavior: 'instant' }}); \
+         const current = () => host.querySelector('[aria-current]:not([aria-current=\"false\"])'); \
+         current().querySelector('input')?.focus({{ preventScroll: true }}); \
+         window.fill = []; window.sampling = true; \
+         const tick = () => {{ const item = current(); const style = getComputedStyle(host, '::after'); \
+           const [x = 0, y = 0] = style.translate === 'none' ? [] : style.translate.split(' ').map(parseFloat); \
+           const at = item.getBoundingClientRect(); const left = at.left + x, top = at.top + y; \
+           window.fill.push({{ item, to: [at.left, at.top, at.right, at.bottom], \
+             drawn: [left, top, left + parseFloat(style.width), top + parseFloat(style.height)] }}); \
+           if (window.sampling) requestAnimationFrame(tick); }}; \
+         requestAnimationFrame(tick); return 0; }})()"
+    ));
+    std::thread::sleep(Duration::from_millis(100));
+    for step in 0..5 {
+        change(browser, step);
+        std::thread::sleep(Duration::from_millis(33));
+    }
+    std::thread::sleep(Duration::from_millis(800));
+    browser.page().evaluate(
+        "(() => { window.sampling = false; \
+         const away = (drawn, to) => Math.max(...drawn.map((edge, index) => Math.abs(edge - to[index]))); \
+         let changes = 0; const farther = []; \
+         window.fill.slice(1).forEach((frame, index) => { const before = window.fill[index]; \
+           if (frame.item !== before.item) changes += 1; \
+           const was = away(before.drawn, frame.to), is = away(frame.drawn, frame.to); \
+           if (is > was + 0.5) farther.push(`frame ${index + 1}: ${Math.round(was)}px then ${Math.round(is)}px`); }); \
+         return { changes, farther }; })()",
+    )
 }
 
 /// The section `slug`, titled `title`, in a window `size`, settled.

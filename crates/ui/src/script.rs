@@ -102,11 +102,6 @@ pub(crate) fn focus_element(id: &str) {
     fire("focusElement", json!([id]));
 }
 
-/// Brings focus inside region `id` back to its line.
-pub(crate) fn refocus_line(id: &str) {
-    fire("refocusLine", json!([id]));
-}
-
 /// Puts the caret at the end of the focused field.
 pub(crate) fn caret_to_end() {
     fire("caretToEnd", json!([]));

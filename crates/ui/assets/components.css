@@ -79,8 +79,32 @@
    selection fill if it is the current one. */
 .is-lifted { position: relative; z-index: 1; background: var(--surface-lowest); box-shadow: var(--elevation-3); }
 .is-lifted:has([aria-current]:not([aria-current="false"])) { background: var(--selection-fill, var(--surface-lowest)); }
+/* Under reduced motion nothing moves: nothing rises, slides, scales, grows or loops. What fades still fades, on its own
+   timing, so what arrives or leaves is still seen to. Transitions keep only opacity, and overlay and display, which move
+   nothing and keep a closing popover or tooltip shown while it fades out; each of those names the three first, in that
+   order, so its own timings stay with them. The rise tokens are nothing, and of the animations only the fades run: a
+   count's change, words streaming in, a pending line's reveal after its delay, a preview, a source pane and a dialog
+   arriving or leaving, and a finished task's mark. A sheet fades rather than sliding, and a popover keeps its size.
+   Charts draw whole, busy marks stand still, a focus ring shows at full width. */
+@keyframes fade-in { from { opacity: 0; } }
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { animation: none !important; transition: none !important; }
+  :root { --rise: 0px !important; --rise-small: 0px !important; }
+  *, *::before, *::after, ::backdrop { animation: none !important; transition-property: opacity, overlay, display !important; }
+  .count.is-changed { animation: count-change var(--motion-arrive) var(--ease-out) !important; }
+  .count.is-changed-again { animation: count-change-again var(--motion-arrive) var(--ease-out) !important; }
+  .prose-word { animation: prose-word var(--motion-arrive) var(--ease-out) !important; }
+  .pending-status { animation: pending-status-reveal var(--motion-control) var(--ease-out) var(--pending-status-delay) both !important; }
+  .citation-preview[data-side] { animation: fade-in var(--motion-arrive) var(--ease-out) both !important; }
+  .source-reading-pane { animation: source-enter var(--motion-step) var(--ease-out) both !important; }
+  .source-reading-layout.is-source-closing .source-reading-pane { animation: source-exit var(--motion-control) var(--ease-exit) both !important; }
+  .task.is-done.is-new .task-mark { animation: fade-in var(--motion-arrive) var(--ease-out) both !important; }
+  .popover { scale: 1 !important; }
+  /* A dialog's exit is what closes it, so it still runs, as a fade. */
+  .dialog { --dialog-exit-opacity: 0 !important; --dialog-exit-transform: none !important; }
+  @starting-style { .dialog-sheet[open] { opacity: 0 !important; } }
+  .dialog.is-closing { animation: dialog-exit var(--motion-control) var(--ease-exit) both !important; }
+  .dialog-sheet.is-closing { animation-duration: var(--motion-arrive) !important; }
+  .dialog.is-closing::backdrop { animation: backdrop-exit var(--motion-control) var(--ease-exit) both !important; }
 }
 .quiet-line { margin: 0; color: var(--muted); font: var(--type-body-sm); }
 .sr-only { position: absolute; width: var(--hairline); height: var(--hairline); padding: 0; margin: calc(-1 * var(--hairline)); overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
@@ -125,11 +149,6 @@
 .working-presence-verb { min-width: 0; }
 .working-presence:has(.run-activity) { flex-wrap: wrap; }
 .working-presence > .run-activity { flex-basis: 100%; color: var(--body); font: var(--type-body-sm); }
-@media (prefers-reduced-motion: reduce) {
-  .placeholder-bar, .live-dot, .state-pill, .count { animation: none; transition: none; }
-  .row-frame { transition: none; }
-  .pending-status { animation-duration: 0s; }
-}
 /* Buttons: the one filled action, a white one on a
    hairline, and text alone. A host places a control through its own class; it never restyles one. A surface may set the
    control's component tokens (width, height, shape, quiet colour) once at its root. */
@@ -357,19 +376,6 @@ textarea.text-field-input { min-height: 3lh; field-sizing: content; resize: none
 .dialog-sheet::backdrop { opacity: var(--sheet-shown, 1); }
 .dialog-sheet .dialog-header { touch-action: none; }
 @starting-style { .dialog-sheet[open] { opacity: 1; transform: translateY(100%); } }
-/* Without motion a dialog still runs its exit, in a millisecond, since that exit's end is what closes it; a
-   zero-length animation never ends. */
-@media (prefers-reduced-motion: reduce) {
-  .dialog.is-closing { animation: dialog-exit 1ms both !important; }
-}
-/* Driven by keyboard, motion is immediate too: what transitions simply arrives, and what enters runs at no length rather
-   than not at all, so taking up a pointer again never replays it. An exit whose end closes its surface takes a
-   millisecond. A busy mark keeps turning and a focus ring still grows: they are feedback, not change. */
-:root[data-interaction="keyboard"] *, :root[data-interaction="keyboard"] *::before, :root[data-interaction="keyboard"] *::after, :root[data-interaction="keyboard"] ::backdrop { transition: none !important; }
-:root[data-interaction="keyboard"] :is(.task.is-new .task-mark, .task.is-new .task-mark path, .count, .comparison-bar, .sparkline svg, .chart-point, .series-bar, .series-line, .series-dot,
-  .citation-preview, .source-reading-pane) { animation-duration: 0s !important; animation-delay: 0s !important; }
-:root[data-interaction="keyboard"] :is(.dialog.is-closing, .source-reading-layout.is-source-closing .source-reading-pane),
-:root[data-interaction="keyboard"] .dialog.is-closing::backdrop { animation-duration: 1ms !important; }
 /* Sources: a citation is a small numbered pill in the prose and the Sources
    control a compact pill under the message, both in the primary container. */
 .source-trigger { display: inline-flex; align-items: center; justify-content: center; box-sizing: border-box;
@@ -1023,10 +1029,10 @@ del > .diff-sign, .diff-removed { color: var(--error); }
   max-height: min(var(--popover-max-height), calc(100dvh - 2 * var(--space-3))); padding: var(--space-4); overflow: auto; overscroll-behavior: contain;
   border: var(--hairline) solid var(--outline-variant); border-radius: var(--radius-lg); background: var(--surface-lowest); color: var(--body);
   box-shadow: var(--elevation-4); font: var(--type-body-md); opacity: 0; scale: .96; transform-origin: top left;
-  transition: opacity var(--motion-control) var(--ease-exit), scale var(--motion-control) var(--ease-exit),
-    overlay var(--motion-control) allow-discrete, display var(--motion-control) allow-discrete; }
-.popover:popover-open { opacity: 1; scale: 1; transition: opacity var(--motion-arrive) var(--ease-out), scale var(--spring-arrive),
-  overlay var(--motion-arrive) allow-discrete, display var(--motion-arrive) allow-discrete; }
+  transition: opacity var(--motion-control) var(--ease-exit), overlay var(--motion-control) allow-discrete,
+    display var(--motion-control) allow-discrete, scale var(--motion-control) var(--ease-exit); }
+.popover:popover-open { opacity: 1; scale: 1; transition: opacity var(--motion-arrive) var(--ease-out),
+  overlay var(--motion-arrive) allow-discrete, display var(--motion-arrive) allow-discrete, scale var(--spring-arrive); }
 @starting-style { .popover:popover-open { opacity: 0; scale: .96; } }
 @supports (position-area: block-end) {
   .popover { inset: auto; margin: var(--space-1) 0; position-area: block-end span-inline-end;

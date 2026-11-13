@@ -111,14 +111,15 @@ pub fn MessageQueue(children: Element) -> Element {
     }
 }
 
-/// The conversation's scrolling region. At its end it stays at the end as replies arrive and as
+/// The conversation's scrolling region. At its end it follows the end as replies arrive and as
 /// the region or its content changes size, such as when a source opens beside it or the dock
-/// grows; scrolled back, the first turn in sight stays where it stood, and a new reply offers
-/// `jump_label`, which takes the reader to that reply's top and focus to the reply. What the
-/// person sends always brings them to the end. Its turns are the children of its one child. What
-/// stands in it when it first shows stands at rest; only messages that arrive after run their
-/// entry. The host counts its `replies` and its person's `sent` messages; a change in either is
-/// what arrived.
+/// grows, and waits while a button or finger is down in it. Moving back lets go of the end at
+/// once; scrolled back, the first turn in sight stays where it stood until the reader returns to
+/// the end, and a new reply offers `jump_label`, which takes the reader to that reply's top and
+/// focus to the reply. What the person sends always brings them to the end. Its turns are the
+/// children of its one child. What stands in it when it first shows stands at rest; only messages
+/// that arrive after run their entry. The host counts its `replies` and its person's `sent`
+/// messages; a change in either is what arrived.
 #[component]
 pub fn ConversationViewport(
     replies: usize,

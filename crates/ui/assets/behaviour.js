@@ -5,8 +5,9 @@
 // `send` and returning how to stop.
 
 // Installs, once per page: which way the person is driving it (`data-interaction` on the root,
-// pointer or keyboard), `window.codaMotion` for motion measured before and after, and the slide of
-// every selection host's fill when its current item changes.
+// pointer or keyboard), which decides where a focus ring shows; `window.codaMotion` for motion
+// measured before and after, which runs whichever way the page is driven and only reduced motion
+// stops; and the slide of every selection host's fill when its current item changes.
 function motion() {
   if (window.codaMotion) return;
   const root = document.documentElement;
@@ -15,18 +16,32 @@ function motion() {
   document.addEventListener("pointermove", pointer, { capture: true, passive: true });
   document.addEventListener("keydown", () => { root.dataset.interaction = "keyboard"; }, true);
   const reduced = matchMedia("(prefers-reduced-motion: reduce)");
-  const immediate = () => reduced.matches || root.dataset.interaction === "keyboard";
   const token = (name) => getComputedStyle(root).getPropertyValue(name).trim();
   const milliseconds = (value) => parseFloat(value) * (value.endsWith("ms") ? 1 : 1000);
-  // An element animated on a motion role, or not at all where motion is immediate.
-  const animate = (element, keyframes, role, easing, pseudoElement) => immediate() ? undefined
+  // An element animated on a motion role, or not at all under reduced motion.
+  const animate = (element, keyframes, role, easing, pseudoElement) => reduced.matches ? undefined
     : element.animate(keyframes, { duration: milliseconds(token(`--motion-${role}`)), easing: token(`--ease-${easing}`),
       ...(pseudoElement === undefined ? {} : { pseudoElement }) });
   // The item a selection host's fill is anchored to (components.css).
   const currentItem = (host) => host.querySelector('[aria-current]:not([aria-current="false"])');
-  // Only when the selection itself moves does the fill travel, from where the item it left still stands.
+  // Only when the selection itself moves does the fill travel, from where it is drawn: on the item it
+  // left, or, while a slide to that item is still under way, as far along as the slide has carried it.
+  // That slide stops there, so the new one goes on from the same place.
   const anchored = CSS.supports("anchor-name: --selection");
   const shown = new WeakMap();
+  const slide = "selection-slide";
+  const drawn = (host, item) => {
+    const rest = item.getBoundingClientRect();
+    const sliding = host.getAnimations({ subtree: true }).find((running) => running.id === slide && running.effect.target === host);
+    if (sliding === undefined) return rest;
+    const progress = sliding.effect.getComputedTiming().progress ?? 1;
+    const start = sliding.effect.getKeyframes()[0];
+    sliding.cancel();
+    const [x, y = 0] = start.translate.split(" ").map(parseFloat);
+    const along = (from, to) => from + (to - from) * progress;
+    return { left: along(rest.left + x, rest.left), top: along(rest.top + y, rest.top),
+      width: along(parseFloat(start.width), rest.width), height: along(parseFloat(start.height), rest.height) };
+  };
   const follow = () => {
     for (const host of document.querySelectorAll(".selection-host")) {
       const next = currentItem(host);
@@ -34,10 +49,11 @@ function motion() {
       const from = shown.get(host);
       shown.set(host, next);
       if (!known || from === next || !anchored || !from || !next || !from.isConnected || !host.contains(from)) continue;
-      const was = from.getBoundingClientRect();
+      const was = drawn(host, from);
       const is = next.getBoundingClientRect();
-      animate(host, [{ translate: `${was.left - is.left}px ${was.top - is.top}px`, width: `${was.width}px`,
+      const moving = animate(host, [{ translate: `${was.left - is.left}px ${was.top - is.top}px`, width: `${was.width}px`,
         height: `${was.height}px` }, {}], "step", "emphasized", "::after");
+      if (moving !== undefined) moving.id = slide;
     }
   };
   new MutationObserver(follow).observe(root, { subtree: true, childList: true, attributes: true, attributeFilter: ["aria-current"] });
@@ -137,7 +153,7 @@ function tooltips() {
 // One context menu host's ways in. `hostId` is its id; its menu's is its `data-menu`, read each
 // time it opens. A menu opened at a point keeps that place until it next opens from its own
 // control. Lifting uses one layer per page, `window.codaLift`, which blurs the page beneath; its
-// motion runs on the springs and simply arrives where motion is immediate.
+// motion runs on the springs and simply arrives under reduced motion.
 function contextHost(hostId) {
   const host = document.getElementById(hostId);
   if (!host || host.dataset.contextMenu) return;
@@ -151,7 +167,7 @@ function contextHost(hostId) {
     for (const ending of ["pointerup", "pointercancel"]) addEventListener(ending, () => { window.codaPressed.down = false; }, { capture: true, passive: true });
   }
   const margin = 12, gap = 8;
-  const immediate = () => matchMedia("(prefers-reduced-motion: reduce)").matches || root.dataset.interaction === "keyboard";
+  const immediate = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
   const timing = (name) => {
     const [length, ...curve] = getComputedStyle(root).getPropertyValue(name).trim().split(" ");
     return { duration: parseFloat(length) * (length.endsWith("ms") ? 1 : 1000), easing: curve.join(" ") || "ease-out" };
@@ -375,15 +391,17 @@ function scrollToPassage(bodyId) {
 }
 
 // Holds the reader's place in conversation `scrollerId` while it is watched, in place of the browser's own anchoring.
-// At the end (within 48px of it), the reader stays at the end; scrolled back, the first turn in sight stays where it
-// stood, whatever changes the size of the region or of its content. The turns are the children of its one child.
-// Content that appears at once at the end, such as an answer or an ending, is not followed in one frame: the region
-// eases to the new end, closing the same share of the distance each frame so most of it is covered within
-// `--motion-arrive`, and what was in sight moves with the new content's own entry instead of jumping. While motion is
-// immediate (reduced motion, or driving by keyboard) it sets the end at once. The positions it sets itself are not
-// read as the reader's scrolling; a wheel, touch or key that moves back stops the easing at once.
-// Reports whether the reader is at the end, now and on each change. Two frames after it starts the region is marked
-// settled, so what stood there from the start never runs an entry. Answers how to stop.
+// The place is one of two: following the end, or holding the first turn in sight where it stood, whatever changes the
+// size of the region or of its content. The turns are the children of its one child.
+// The reader's intent decides which: a wheel, finger or key moving back lets go of the end at once, before any of its
+// scroll lands, and so does any scroll toward the start that this watch did not make; only reaching the end again by
+// moving toward it, a send, or the jump to the newest reply changes that. While a button or finger is down in the
+// region, such as while words are being selected, following waits, and takes up again once it is let go.
+// Moving to its place, the region eases, closing the same share of the distance each frame so most of it is covered
+// within `--motion-arrive`, and what was in sight moves with new content's own entry instead of jumping; under reduced
+// motion it moves at once. A held turn stays where it stood at once, except on the way to the newest reply.
+// Reports whether the reader is following the end, now and on each change. Two frames after it starts the region is
+// marked settled, so what stood there from the start never runs an entry. Answers how to stop.
 function watchReading(scrollerId, send) {
   const scroller = document.getElementById(scrollerId);
   const content = scroller?.firstElementChild;
@@ -392,57 +410,98 @@ function watchReading(scrollerId, send) {
   let reported;
   // The position this watch set last, so its own scrolling isn't read as the reader's.
   let ours = null;
+  // Where the last scroll left the region, so the next one's direction is known.
+  let last = scroller.scrollTop;
   let easing = 0;
+  let pressed = false;
+  let touchY = null;
   const pace = parseFloat(getComputedStyle(scroller).getPropertyValue('--motion-arrive')) / 4;
   const edge = () => scroller.getBoundingClientRect().top;
   const end = () => scroller.scrollHeight - scroller.clientHeight;
-  const set = (top) => { scroller.scrollTop = top; ours = scroller.scrollTop; };
-  const immediate = () => !('settled' in scroller.dataset) || !(pace > 0) || reducedMotion()
-    || document.documentElement.dataset.interaction === 'keyboard';
+  const set = (top) => { scroller.scrollTop = top; ours = scroller.scrollTop; last = ours; };
+  const immediate = () => !('settled' in scroller.dataset) || !(pace > 0) || reducedMotion();
   const stopEasing = () => { cancelAnimationFrame(easing); easing = 0; };
   const report = () => { if (place.end !== reported) { reported = place.end; send(place.end); } };
-  const capture = () => {
-    if (ours !== null && Math.abs(scroller.scrollTop - ours) <= 1) return;
-    ours = null;
-    stopEasing();
-    if (end() - scroller.scrollTop <= 48) place = { end: true };
-    else {
-      const top = edge();
-      const turn = [...content.children].find((child) => child.getBoundingClientRect().bottom > top);
-      place = { end: false, turn, offset: turn ? turn.getBoundingClientRect().top - top : 0 };
-    }
-    report();
+  // The first turn in sight, held where it stands now.
+  const held = () => {
+    const top = edge();
+    const turn = [...content.children].find((child) => child.getBoundingClientRect().bottom > top);
+    return { end: false, turn, offset: turn ? turn.getBoundingClientRect().top - top : 0 };
   };
+  // How far the region stands from the reader's place: to the end, or to where the held turn stood.
+  const gap = () => place.end ? end() - scroller.scrollTop
+    : place.turn?.isConnected ? place.turn.getBoundingClientRect().top - edge() - place.offset : 0;
   const ease = (then) => {
     easing = requestAnimationFrame((now) => {
-      const gap = end() - scroller.scrollTop;
-      if (gap <= 0.5) { easing = 0; if (gap > 0) set(end()); return; }
+      easing = 0;
+      const distance = gap();
+      if (Math.abs(distance) <= 0.5) return;
       // At least a whole pixel a frame: a screen that places scrolling on whole pixels drops a smaller step.
-      set(Math.min(end(), scroller.scrollTop + Math.max(1, gap * (1 - Math.exp(-(now - then) / pace)))));
-      ease(now);
+      const step = Math.sign(distance) * Math.min(Math.abs(distance), Math.max(1, Math.abs(distance) * (1 - Math.exp(-(now - then) / pace))));
+      const from = scroller.scrollTop;
+      set(from + step);
+      // Held at the region's edge, it stops; growth that makes room starts it again.
+      if (scroller.scrollTop !== from) ease(now);
     });
   };
+  // Moves the region toward the reader's place, unless following waits for a press or is already on its way.
   const restore = () => {
-    if (!place.end) {
-      if (place.turn?.isConnected) set(scroller.scrollTop + place.turn.getBoundingClientRect().top - edge() - place.offset);
-    } else if (immediate()) {
-      stopEasing();
-      set(end());
-    } else if (!easing && end() - scroller.scrollTop > 0.5) {
-      ease(performance.now());
-    }
+    if ((place.end && pressed) || easing) return;
+    const distance = gap();
+    if (Math.abs(distance) <= 0.5) return;
+    if (immediate() || !place.end) set(scroller.scrollTop + distance);
+    else ease(performance.now());
   };
-  // Moving back by wheel, touch or key is the reader's, before any frame of it lands.
-  const back = (event) => {
-    if (event.type === 'wheel' ? event.deltaY >= 0 : event.type === 'keydown' && !['ArrowUp', 'PageUp', 'Home'].includes(event.key)) return;
+  const capture = () => {
+    const top = scroller.scrollTop;
+    const moved = top - last;
+    last = top;
+    if (ours !== null && Math.abs(top - ours) <= 1) return;
     ours = null;
     stopEasing();
+    const atEnd = end() - top < 1;
+    place = (place.end ? atEnd || moved >= 0 : atEnd && moved > 0) ? { end: true } : held();
+    report();
+  };
+  // Letting go of the end, before the move's own scroll lands, so growth in the same frame can't pull the reader back.
+  const release = () => {
+    stopEasing();
+    ours = null;
+    if (place.end && scroller.scrollTop > 0) { place = held(); report(); }
+  };
+  const editing = (target) => target.closest?.('input, textarea, select, [contenteditable]:not([contenteditable="false"])');
+  const intent = (event) => {
+    if (event.type === 'wheel') { if (event.deltaY < 0) release(); }
+    else if (event.type === 'keydown') {
+      if (!event.defaultPrevented && !editing(event.target)
+        && (['ArrowUp', 'PageUp', 'Home'].includes(event.key) || (event.key === ' ' && event.shiftKey))) release();
+    } else if (event.type === 'touchmove') {
+      const y = event.touches[0]?.clientY;
+      if (y === undefined) return;
+      // A finger moving down moves the content toward its start.
+      if (touchY !== null && y > touchY) release();
+      touchY = y;
+    }
+  };
+  const press = (event) => {
+    if (event.type === 'touchstart') touchY = event.touches[0]?.clientY ?? null;
+    else if (event.button !== 0 || event.pointerType === 'touch') return;
+    pressed = true;
+    stopEasing();
+  };
+  const lift = () => {
+    if (!pressed) return;
+    pressed = false;
+    touchY = null;
+    restore();
   };
   const sizes = new ResizeObserver(restore);
   sizes.observe(scroller);
   sizes.observe(content);
   scroller.addEventListener('scroll', capture, { passive: true });
-  for (const kind of ['wheel', 'touchmove', 'keydown']) scroller.addEventListener(kind, back, { passive: true });
+  for (const kind of ['wheel', 'touchmove', 'keydown']) scroller.addEventListener(kind, intent, { passive: true });
+  for (const kind of ['pointerdown', 'touchstart']) scroller.addEventListener(kind, press, { passive: true });
+  for (const kind of ['pointerup', 'pointercancel', 'touchend', 'touchcancel']) addEventListener(kind, lift, { capture: true, passive: true });
   scroller.codaReading = {
     toEnd() { place = { end: true }; restore(); report(); },
     jump(smoothly) {
@@ -452,8 +511,11 @@ function watchReading(scrollerId, send) {
       stopEasing();
       ours = null;
       const turn = [...content.children].find((child) => child.contains(reply));
+      // The reply's turn held so the reply's top stands at the region's top, reached the way the end is.
       place = { end: false, turn, offset: turn ? turn.getBoundingClientRect().top - reply.getBoundingClientRect().top : 0 };
-      scroller.scrollTo({ top: scroller.scrollTop + reply.getBoundingClientRect().top - edge(), behavior: smoothly ? 'smooth' : 'instant' });
+      report();
+      if (smoothly && !immediate()) ease(performance.now());
+      else set(scroller.scrollTop + gap());
       if (!reply.hasAttribute('tabindex')) reply.setAttribute('tabindex', '-1');
       reply.focus({ preventScroll: true });
     },
@@ -466,7 +528,9 @@ function watchReading(scrollerId, send) {
     stopEasing();
     sizes.disconnect();
     scroller.removeEventListener('scroll', capture);
-    for (const kind of ['wheel', 'touchmove', 'keydown']) scroller.removeEventListener(kind, back);
+    for (const kind of ['wheel', 'touchmove', 'keydown']) scroller.removeEventListener(kind, intent);
+    for (const kind of ['pointerdown', 'touchstart']) scroller.removeEventListener(kind, press);
+    for (const kind of ['pointerup', 'pointercancel', 'touchend', 'touchcancel']) removeEventListener(kind, lift, { capture: true });
     delete scroller.codaReading;
   };
 }
@@ -725,12 +789,6 @@ function focusElement(id) {
   document.getElementById(id)?.focus();
 }
 
-// Brings focus inside region `id` back to its line, `id-line`.
-function refocusLine(id) {
-  const region = document.getElementById(id);
-  if (region && region.contains(document.activeElement)) document.getElementById(`${id}-line`)?.focus();
-}
-
 // Puts the caret at the end of the focused field.
 function caretToEnd() {
   const field = document.activeElement;
@@ -740,7 +798,7 @@ function caretToEnd() {
 const fires = {
   motion, menuKeys, tooltips, contextHost, disposeContextHost, reorder, scrollToPassage, fileDrags,
   sheetDrag, handOff, indeterminate, togglePopover, openCitation, scrollIntoView, focusElement,
-  refocusLine, caretToEnd, readToEnd, jumpToLatest,
+  caretToEnd, readToEnd, jumpToLatest,
 };
 const asks = { watchExit, modal, copy, reducedMotion };
 const listens = { watchPage, watchPopover, watchReading };
