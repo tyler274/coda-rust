@@ -846,7 +846,7 @@ mod tests {
         )
         .unwrap();
         assert_eq!(free["premium"], false, "Duet reads only what is on");
-        assert_eq!(free["cadence"], "weekly");
+        assert!(free.get("cadence").is_none());
         // The front door owns the status; Duet only reads it.
         let luna = store
             .account_by_email("luna@example.test")
@@ -863,7 +863,7 @@ mod tests {
         )
         .unwrap();
         assert_eq!(premium["premium"], true);
-        assert_eq!(premium["cadence"], "weekly-daily-check");
+        assert!(premium.get("cadence").is_none());
     }
 
     #[tokio::test]

@@ -9,9 +9,9 @@ use crate::migration::{
     Accounts, Invitations, Memberships, PatientLinks, Patients, Practices, Sessions, SignInTokens,
 };
 use crate::{
-    Account, AuthStore, Cadence, INVITATION_TTL_SECONDS, Membership, PanelError, PatientLink,
-    PhysicianIdentity, PracticeClock, ReviewCadence, SIGN_IN_TOKEN_TTL_SECONDS, Session,
-    SessionActivity, SessionError, SessionLifetime, SessionRenewal, SignInError, StoreUnavailable,
+    Account, AuthStore, INVITATION_TTL_SECONDS, Membership, PanelError, PatientLink,
+    PhysicianIdentity, PracticeClock, SIGN_IN_TOKEN_TTL_SECONDS, Session, SessionActivity,
+    SessionError, SessionLifetime, SessionRenewal, SignInError, StoreUnavailable,
     mint_patient_token, mint_token, token_hash,
 };
 use async_trait::async_trait;
@@ -37,7 +37,6 @@ async fn register_patient_on(
     Patients::insert(crate::migration::PatientActiveModel {
         patient_workspace_id: Set(workspace.to_owned()),
         practice_id: Set(practice_id.to_owned()),
-        cadence: Set(ReviewCadence::Weekly.as_str().to_owned()),
         created_at: Set(unix_now()),
     })
     .on_conflict(
@@ -766,17 +765,17 @@ impl AuthStore for PostgresAuthStore {
             .map_err(|_| StoreUnavailable)
     }
 
-    async fn practice_patients(&self, practice_id: &str) -> Vec<String> {
+    async fn practice_patients(&self, practice_id: &str) -> Result<Vec<String>, StoreUnavailable> {
         let mut workspaces: Vec<String> = Patients::find()
             .filter(crate::migration::patient::Column::PracticeId.eq(practice_id))
             .all(&self.db)
             .await
-            .unwrap_or_default()
+            .map_err(|_| StoreUnavailable)?
             .into_iter()
             .map(|row| row.patient_workspace_id)
             .collect();
         workspaces.sort();
-        workspaces
+        Ok(workspaces)
     }
 
     async fn practice_accounts(&self, practice_id: &str) -> Result<Vec<Account>, StoreUnavailable> {
@@ -790,45 +789,6 @@ impl AuthStore for PostgresAuthStore {
             .collect();
         accounts.sort();
         Ok(accounts)
-    }
-
-    async fn patient_cadence(&self, patient_workspace_id: &str) -> ReviewCadence {
-        Patients::find_by_id(patient_workspace_id.to_owned())
-            .one(&self.db)
-            .await
-            .ok()
-            .flatten()
-            .and_then(|row| ReviewCadence::parse(&row.cadence))
-            .unwrap_or(ReviewCadence::Weekly)
-    }
-
-    async fn set_patient_cadence(&self, patient_workspace_id: &str, cadence: ReviewCadence) {
-        let existing = Patients::find_by_id(patient_workspace_id.to_owned())
-            .one(&self.db)
-            .await
-            .ok()
-            .flatten();
-        let now = std::time::SystemTime::now()
-            .duration_since(std::time::UNIX_EPOCH)
-            .map(|since| since.as_secs())
-            .unwrap_or(0) as i64;
-        let _ = match existing {
-            Some(row) => {
-                let mut update: crate::migration::PatientActiveModel = row.into();
-                update.cadence = Set(cadence.as_str().to_owned());
-                update.update(&self.db).await
-            }
-            None => {
-                crate::migration::PatientActiveModel {
-                    patient_workspace_id: Set(patient_workspace_id.to_owned()),
-                    practice_id: Set(String::new()),
-                    cadence: Set(cadence.as_str().to_owned()),
-                    created_at: Set(now),
-                }
-                .insert(&self.db)
-                .await
-            }
-        };
     }
 
     async fn invite(
@@ -1039,7 +999,6 @@ impl AuthStore for PostgresAuthStore {
                     consent_version: Set(None),
                     consented_at: Set(None),
                     revoked_at: Set(None),
-                    cadence: Set(Cadence::Weekly.as_str().to_owned()),
                     created_at: Set(now as i64),
                 }
                 .insert(&self.db)
@@ -1156,56 +1115,6 @@ impl AuthStore for PostgresAuthStore {
         Ok(patient_link_from_row(updated))
     }
 
-    async fn set_patient_premium(
-        &self,
-        practice_id: &str,
-        patient_workspace_id: &str,
-        premium: bool,
-    ) {
-        let cadence = if premium {
-            Cadence::DailyWhenChanged
-        } else {
-            Cadence::Weekly
-        };
-        let existing = PatientLinks::find()
-            .filter(crate::migration::patient_link::Column::PracticeId.eq(practice_id))
-            .filter(
-                crate::migration::patient_link::Column::PatientWorkspaceId.eq(patient_workspace_id),
-            )
-            .one(&self.db)
-            .await;
-        let now = std::time::SystemTime::now()
-            .duration_since(std::time::UNIX_EPOCH)
-            .map(|since| since.as_secs())
-            .unwrap_or(0) as i64;
-        let _ = match existing.ok().flatten() {
-            Some(row) => {
-                let mut update: crate::migration::PatientLinkActiveModel = row.into();
-                update.cadence = Set(cadence.as_str().to_owned());
-                update.update(&self.db).await
-            }
-            None => {
-                crate::migration::PatientLinkActiveModel {
-                    id: Default::default(),
-                    practice_id: Set(practice_id.to_owned()),
-                    patient_workspace_id: Set(patient_workspace_id.to_owned()),
-                    pending_token_hash: Set(None),
-                    pending_expires_at: Set(None),
-                    duet_account_id: Set(None),
-                    linked: Set(false),
-                    sharing_consented: Set(false),
-                    consent_version: Set(None),
-                    consented_at: Set(None),
-                    revoked_at: Set(None),
-                    cadence: Set(cadence.as_str().to_owned()),
-                    created_at: Set(now),
-                }
-                .insert(&self.db)
-                .await
-            }
-        };
-    }
-
     async fn patient_link(
         &self,
         practice_id: &str,
@@ -1222,13 +1131,6 @@ impl AuthStore for PostgresAuthStore {
             .flatten()
             .map(patient_link_from_row)
     }
-
-    async fn patient_link_cadence(&self, practice_id: &str, patient_workspace_id: &str) -> Cadence {
-        self.patient_link(practice_id, patient_workspace_id)
-            .await
-            .map(|link| link.cadence)
-            .unwrap_or(Cadence::Weekly)
-    }
 }
 
 fn patient_link_from_row(row: crate::migration::PatientLinkRow) -> PatientLink {
@@ -1241,7 +1143,6 @@ fn patient_link_from_row(row: crate::migration::PatientLinkRow) -> PatientLink {
         consent_version: row.consent_version,
         consented_at: row.consented_at.map(|ts| ts.max(0) as u64),
         revoked_at: row.revoked_at.map(|ts| ts.max(0) as u64),
-        cadence: Cadence::parse(&row.cadence).unwrap_or(Cadence::Weekly),
     }
 }
 

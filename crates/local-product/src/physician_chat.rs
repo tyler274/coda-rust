@@ -57,6 +57,14 @@ patient workspace and open the exact revisions. A search hit identifies a candid
 the content actually returned, name the dated source and distinguish a partial read from a whole one. \
 If chart tools or evidence are unavailable, say what you cannot confirm.
 
+When published clinical literature, drug labeling, or guideline detail would materially support or sharpen \
+the answer, search the clinical library using clinical concepts only — never include patient names, birth \
+dates, medical record numbers, workspace identifiers, or contact details in a library query. Open relevant \
+passages by passage_id to verify exact wording, publication date, publication status, and attribution before \
+citing them; surface any retraction or correction notice prominently. When the clinical library is \
+unavailable, continue answering from the patient chart and state in the basis that clinical literature \
+could not be checked.
+
 The approved skill catalog describes reusable capability guidance and exact packaged resources. Review it \
 when a task begins and whenever the task scope changes. Before relying on a matching, materially \
 overlapping, or explicitly invoked skill whose body is absent, load it through skill_view, even when the \
@@ -75,7 +83,7 @@ verified support, and state material limits beside the conclusion they qualify. 
 dates with the year.
 
 Answer the physician's request directly. Close with a brief, physician-readable basis for the answer: what \
-it rests on (source records, physician input, skill guidance, general medical knowledge) and any limitation that could \
+it rests on (source records, clinical library passages, physician input, skill guidance, general medical knowledge) and any limitation that could \
 materially change interpretation. Usually keep that basis under 80 words. Use physician language, never \
 runtime terminology, private deliberation, or tool activity. Requesting tools continues work; your final \
 response without tool calls is the complete answer the physician reads, so do not leave it to earlier \
@@ -85,6 +93,7 @@ messages. Communicate completed clinical work, not model identities, tools, sche
 pub fn tools() -> Vec<Tool> {
     let mut offered = work_tools();
     offered.extend(chart_tools());
+    offered.extend(crate::clinical_library::tools());
     offered
 }
 
@@ -96,11 +105,14 @@ pub fn work_tools() -> Vec<Tool> {
     offered
 }
 
-/// Source and conversation reads have no product effects or shared session mutation.
+/// Source, clinical library, and conversation reads have no product effects or shared session mutation.
 pub fn read_only(name: &str) -> bool {
     matches!(
         name,
-        crate::physician_sources::SEARCH_TOOL | crate::physician_sources::READ_TOOL
+        crate::physician_sources::SEARCH_TOOL
+            | crate::physician_sources::READ_TOOL
+            | crate::clinical_library::SEARCH_LIBRARY_TOOL
+            | crate::clinical_library::READ_LIBRARY_TOOL
     )
 }
 
@@ -155,6 +167,8 @@ pub enum StepError {
 enum ChatTool {
     /// Chart search and chart read.
     Chart,
+    /// Clinical library search and passage read.
+    ClinicalLibrary,
     /// Earlier conversation: list, read and search.
     Conversation,
     /// A skill's guidance.
@@ -172,6 +186,8 @@ impl ChatTool {
             crate::physician_sources::SEARCH_TOOL | crate::physician_sources::READ_TOOL => {
                 Some(Self::Chart)
             }
+            crate::clinical_library::SEARCH_LIBRARY_TOOL
+            | crate::clinical_library::READ_LIBRARY_TOOL => Some(Self::ClinicalLibrary),
             history::LIST | history::READ | history::SEARCH => Some(Self::Conversation),
             SKILL_VIEW => Some(Self::Skill),
             results::READ => Some(Self::ResultPage),
@@ -189,7 +205,10 @@ pub fn step(call: &Invocation, ending: CallEnding<'_>) -> Result<Option<Step>, S
         ChatTool::named(&call.name).ok_or_else(|| StepError::UnknownTool(call.name.clone()))?;
     let arguments = || serde_json::from_str::<Value>(&call.arguments).map_err(StepError::Arguments);
     match tool {
-        ChatTool::Skill | ChatTool::ResultPage | ChatTool::WorkingNote => Ok(None),
+        ChatTool::ClinicalLibrary
+        | ChatTool::Skill
+        | ChatTool::ResultPage
+        | ChatTool::WorkingNote => Ok(None),
         ChatTool::Chart => {
             let request = crate::physician_sources::ChartRequest::parse(
                 &call.name,
@@ -377,6 +396,9 @@ mod tests {
             assert_clean_model_text(&recipe.instructions);
             assert_clean_model_text(&serde_json::to_string(&recipe.tools).unwrap());
         }
+        let concern = crate::runtime::concerns::concern_tool();
+        assert_clean_model_text(&concern.description);
+        assert_clean_model_text(&serde_json::to_string(&concern.function()).unwrap());
     }
 
     #[test]

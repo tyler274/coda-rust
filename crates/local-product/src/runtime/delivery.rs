@@ -15,7 +15,9 @@ use sea_orm::sqlx::postgres::PgListener;
 use sea_orm::{ColumnTrait, ConnectionTrait, DatabaseTransaction, DbErr, EntityTrait, RuntimeErr};
 use serde::{Deserialize, Serialize};
 
-use super::entities::{chat_attempt, conversation, reply_draft, revision_attempt};
+use super::entities::{
+    chat_attempt, conversation, practice_job, practice_job_attempt, reply_draft, revision_attempt,
+};
 use super::reply::DraftStatus;
 use super::{
     AttemptStatus, Claim, Conversation, RuntimeError, Scope, Store, WorkStatus, database_clock,
@@ -465,6 +467,58 @@ fn owed_reply_revisions() -> Owed {
     }
 }
 
+/// The latest attempt of the practice job row in the enclosing query.
+fn latest_practice_job_attempt() -> SelectStatement {
+    use practice_job::Column as J;
+    use practice_job_attempt::Column as A;
+    let row = |column: J| Expr::col((practice_job::Entity, column));
+    let attempt = |column: A| Expr::col((practice_job_attempt::Entity, column));
+    latest_attempt(
+        practice_job_attempt::Entity,
+        A::Position,
+        Cond::all()
+            .add(attempt(A::Practice).eq(row(J::Practice)))
+            .add(attempt(A::Workspace).eq(row(J::Workspace)))
+            .add(attempt(A::JobId).eq(row(J::JobId))),
+    )
+}
+
+/// Practice jobs: pending past `dispatch_after`, or running whose latest attempt
+/// holds no live lease.
+fn owed_practice_jobs() -> Owed {
+    use practice_job::Column as J;
+    use practice_job_attempt::Column as A;
+    let row = |column: J| Expr::col((practice_job::Entity, column));
+    let dispatch_after = row(J::DispatchAfter);
+    let attempted = Expr::exists(latest_practice_job_attempt().expr(Expr::val(1)).to_owned());
+    let held = Expr::exists(
+        latest_practice_job_attempt()
+            .expr(Expr::val(1))
+            .cond_where(lease_live(DeliveryKind::PracticeJob, A::Status, A::Expires))
+            .to_owned(),
+    );
+    let lease_end = Expr::from(
+        latest_practice_job_attempt()
+            .column((practice_job_attempt::Entity, A::Expires))
+            .to_owned(),
+    );
+    let pending = Cond::all()
+        .add(row(J::Status).eq(WorkStatus::Pending))
+        .add(dispatch_after.clone().lte(database_clock()));
+    let lost = Cond::all()
+        .add(row(J::Status).eq(WorkStatus::Active))
+        .add(attempted)
+        .add(held.not());
+    Owed {
+        pending,
+        pending_since: dispatch_after,
+        lost,
+        lost_since: lease_end,
+        failed: Cond::all().add(row(J::Status).eq(WorkStatus::Failed)),
+        owed: Cond::all(),
+    }
+}
+
 fn connection(source: sea_orm::sqlx::Error) -> DbErr {
     DbErr::Conn(RuntimeErr::SqlxError(source.into()))
 }
@@ -493,14 +547,19 @@ pub enum DeliveryKind {
     /// A reply revision in `physician_runtime_reply_drafts`; `scope.chat`
     /// names the reply work.
     ReplyRevision,
+    /// A practice-owned background job in `physician_runtime_practice_jobs`;
+    /// `scope.physician` is [`super::jobs::PRACTICE_OWNER`] and `scope.chat`
+    /// names `job_id`.
+    PracticeJob,
 }
 
 impl DeliveryKind {
-    /// The kind's name in telemetry: `chat_turn` or `reply_revision`.
+    /// The kind's name in telemetry: `chat_turn`, `reply_revision`, or `practice_job`.
     pub fn as_str(self) -> &'static str {
         match self {
             Self::ChatTurn => "chat_turn",
             Self::ReplyRevision => "reply_revision",
+            Self::PracticeJob => "practice_job",
         }
     }
 
@@ -511,14 +570,14 @@ impl DeliveryKind {
     /// Whether an attempt of this kind in `status` still owns its work until
     /// its lease runs out, so no other attempt may claim it. A chat attempt
     /// that Stop or a steer ended keeps its claim while its calls drain; a
-    /// revision attempt holds it only while it runs. Every claim, due read
-    /// and lease timer applies this rule.
+    /// revision or practice-job attempt holds it only while it runs. Every
+    /// claim, due read and lease timer applies this rule.
     pub(super) fn holds_lease(self, status: AttemptStatus) -> bool {
         match status {
             AttemptStatus::Active => true,
             AttemptStatus::Interrupted | AttemptStatus::Cancelled => match self {
                 Self::ChatTurn => true,
-                Self::ReplyRevision => false,
+                Self::ReplyRevision | Self::PracticeJob => false,
             },
             AttemptStatus::Failed | AttemptStatus::Held | AttemptStatus::Completed => false,
         }
@@ -562,6 +621,17 @@ impl Delivery {
         Self {
             kind: DeliveryKind::ReplyRevision,
             scope,
+            input_id,
+        }
+    }
+
+    /// A practice-job wakeup for `input_id`, normalizing `scope` to
+    /// [`super::jobs::PracticeScope::as_control_scope`] so no physician
+    /// identity ever enters a practice-job broker payload.
+    pub fn practice_job(scope: &super::jobs::PracticeScope, input_id: String) -> Self {
+        Self {
+            kind: DeliveryKind::PracticeJob,
+            scope: scope.as_control_scope(),
             input_id,
         }
     }
@@ -654,8 +724,8 @@ impl Store {
         Ok(DispatchPage { deliveries, next })
     }
 
-    /// How long until the soonest live claim on a chat turn or reply
-    /// revision runs out, when one is held. A worker that died leaves no
+    /// How long until the soonest live claim on a chat turn, reply revision,
+    /// or practice job runs out, when one is held. A worker that died leaves no
     /// notification, so its work becomes due only then. Leases already run
     /// out are left to the poll.
     pub async fn soonest_lease_end(&self) -> Result<Option<Duration>, DbErr> {
@@ -672,6 +742,12 @@ impl Store {
                 revision_attempt::Column::Status,
                 revision_attempt::Column::Expires,
             ),
+            soonest_lease_end(
+                DeliveryKind::PracticeJob,
+                practice_job_attempt::Entity,
+                practice_job_attempt::Column::Status,
+                practice_job_attempt::Column::Expires,
+            ),
         ];
         let mut soonest: Option<i64> = None;
         for query in queries {
@@ -684,12 +760,13 @@ impl Store {
         Ok(soonest.map(|seconds| Duration::from_secs(seconds.unsigned_abs())))
     }
 
-    /// The [`QueueSignals`] of every hosted chat turn and current reply
-    /// revision, by the same due rule the dispatch reads apply.
+    /// The [`QueueSignals`] of every hosted chat turn, current reply
+    /// revision, and practice job, by the same due rule the dispatch reads apply.
     pub async fn queue_signals(&self) -> Result<QueueSignals, DbErr> {
         let queries = [
             owed_chat_turns().select(conversation::Entity),
             owed_reply_revisions().select(reply_draft::Entity),
+            owed_practice_jobs().select(practice_job::Entity),
         ];
         let mut signals = QueueSignals::default();
         for query in queries {
@@ -806,22 +883,29 @@ impl Store {
     /// Where the input named by a delivery stands, read under the
     /// conversation lock. A worker uses it when its claim found nothing to run.
     pub async fn delivery_state(&self, delivery: &Delivery) -> Result<DeliveryState, DbErr> {
-        if delivery.kind == DeliveryKind::ReplyRevision {
-            return self.revision_state(delivery).await;
-        }
-        let (tx, state, now) = self.locked(&delivery.scope).await?;
-        tx.commit().await?;
-        if state.input_id() != Some(&delivery.input_id) {
-            return Ok(DeliveryState::Settled);
-        }
-        Ok(match state.status {
-            WorkStatus::Completed | WorkStatus::Held => DeliveryState::Settled,
-            WorkStatus::Failed => DeliveryState::Failed,
-            WorkStatus::Active if state.attempts.last().is_some_and(|a| a.owns_lease(now)) => {
-                DeliveryState::Claimed
+        match delivery.kind {
+            DeliveryKind::ReplyRevision => self.revision_state(delivery).await,
+            DeliveryKind::PracticeJob => self.practice_job_delivery_state(delivery).await,
+            DeliveryKind::ChatTurn => {
+                let (tx, state, now) = self.locked(&delivery.scope).await?;
+                tx.commit().await?;
+                if state.input_id() != Some(&delivery.input_id) {
+                    return Ok(DeliveryState::Settled);
+                }
+                Ok(match state.status {
+                    WorkStatus::Completed | WorkStatus::Held => DeliveryState::Settled,
+                    WorkStatus::Failed => DeliveryState::Failed,
+                    WorkStatus::Active
+                        if state.attempts.last().is_some_and(|a| a.owns_lease(now)) =>
+                    {
+                        DeliveryState::Claimed
+                    }
+                    WorkStatus::Active | WorkStatus::Pending | WorkStatus::Cancelled => {
+                        DeliveryState::Due
+                    }
+                })
             }
-            WorkStatus::Active | WorkStatus::Pending | WorkStatus::Cancelled => DeliveryState::Due,
-        })
+        }
     }
 }
 
@@ -901,6 +985,10 @@ mod tests {
         );
         assert_eq!(
             DeliveryKind::ReplyRevision.lease_holders(),
+            [AttemptStatus::Active]
+        );
+        assert_eq!(
+            DeliveryKind::PracticeJob.lease_holders(),
             [AttemptStatus::Active]
         );
     }

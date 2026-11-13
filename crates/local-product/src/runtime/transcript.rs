@@ -128,6 +128,9 @@ impl Conversation {
                     response_id: physician_wire::ResponseId(id.0),
                     attempt_id: AttemptId(attempt.id.clone()),
                     text: text.to_owned(),
+                    segments: Vec::new(),
+                    basis: None,
+                    newer_records: false,
                 }
             }
             Some(RunOutcome::Held {
@@ -332,6 +335,9 @@ mod tests {
                     attempt_id: physician_wire::AttemptId("attempt-1".into()),
                     text: "Done.".into(),
                     feedback: None,
+                    segments: Vec::new(),
+                    basis: None,
+                    newer_records: false,
                 },
                 RunOutcome::Held {
                     reason: HoldReason::Stopped,
@@ -433,6 +439,9 @@ mod tests {
                 attempt_id: physician_wire::AttemptId("attempt-3".into()),
                 text: "The rest.".into(),
                 feedback: None,
+                segments: Vec::new(),
+                basis: None,
+                newer_records: false,
             }
         );
     }
@@ -579,6 +588,9 @@ mod tests {
                     attempt_id: physician_wire::AttemptId("attempt-1".into()),
                     text: "Done.".into(),
                     feedback: None,
+                    segments: Vec::new(),
+                    basis: None,
+                    newer_records: false,
                 },
                 "{case}"
             );

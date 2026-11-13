@@ -4,6 +4,8 @@ use sea_orm_migration::prelude::*;
 
 mod m20261111_init;
 mod m20261111_response_feedback;
+mod m20261112_concerns;
+mod m20261112_practice_jobs_dispatch;
 pub(in crate::runtime) mod m20261112_source_pull_missing_candidates;
 pub(in crate::runtime) mod m20261113_source_links_and_standing;
 pub(in crate::runtime) mod m20261114_reconnect_commands_and_adapter_state;
@@ -28,6 +30,8 @@ impl MigratorTrait for Migrator {
             Box::new(m20261112_source_pull_missing_candidates::Migration),
             Box::new(m20261113_source_links_and_standing::Migration),
             Box::new(m20261114_reconnect_commands_and_adapter_state::Migration),
+            Box::new(m20261112_concerns::Migration),
+            Box::new(m20261112_practice_jobs_dispatch::Migration),
         ]
     }
 }

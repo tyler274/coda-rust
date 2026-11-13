@@ -112,6 +112,13 @@ resource "google_cloud_run_v2_service" "app" {
           value = env.value
         }
       }
+      dynamic "env" {
+        for_each = each.key == "physician" ? local.physician_clinical_library_env : {}
+        content {
+          name  = env.key
+          value = env.value
+        }
+      }
       env {
         name  = "DD_ENV"
         value = local.dd_env
@@ -335,13 +342,16 @@ resource "google_project_iam_member" "physician_worker_metrics" {
   member   = "serviceAccount:${google_service_account.physician_worker[each.key].email}"
 }
 
+# Cloud Scheduler HTTP targets originate outside this VPC (like availability.tf),
+# so enabling the schedule opens network ingress while Cloud Run Invoker IAM and
+# in-process route-specific OIDC verification gate every request.
 resource "google_cloud_run_v2_service" "physician_worker" {
   for_each             = local.physician_scale_apps
   project              = google_project.environment.project_id
   name                 = "physician-worker"
   location             = var.region
-  description          = "Physician chat-turn worker; pulls due work from Postgres."
-  ingress              = "INGRESS_TRAFFIC_INTERNAL_ONLY"
+  description          = "Physician worker; pulls due work from Postgres and handles authenticated Cloud Scheduler wakes and availability probes."
+  ingress              = length(local.physician_schedule) > 0 ? "INGRESS_TRAFFIC_ALL" : "INGRESS_TRAFFIC_INTERNAL_ONLY"
   iap_enabled          = false
   invoker_iam_disabled = false
   # Stateless (turns and their queue live in Postgres). Turning the gate
@@ -403,6 +413,20 @@ resource "google_cloud_run_v2_service" "physician_worker" {
       }
       dynamic "env" {
         for_each = try(var.runtime_environment["physician"], {})
+        content {
+          name  = env.key
+          value = env.value
+        }
+      }
+      dynamic "env" {
+        for_each = local.physician_schedule_env
+        content {
+          name  = env.key
+          value = env.value
+        }
+      }
+      dynamic "env" {
+        for_each = local.physician_clinical_library_env
         content {
           name  = env.key
           value = env.value
@@ -480,15 +504,18 @@ resource "google_cloud_run_v2_service" "physician_worker" {
   depends_on = [google_secret_manager_secret_iam_binding.bootstrap_reader, google_sql_user.app, google_project_iam_member.physician_worker_sql]
 }
 
-# Authoritative for run.invoker: only the availability probe, never allUsers,
-# the site runtime or the IAP agent. Without the probe the binding is empty.
+# Authoritative for run.invoker: only the probe and scheduler identities,
+# never allUsers, the site runtime or the IAP agent.
 resource "google_cloud_run_v2_service_iam_binding" "physician_worker_invoker" {
   for_each = local.physician_scale_apps
   project  = google_project.environment.project_id
   location = var.region
   name     = google_cloud_run_v2_service.physician_worker[each.key].name
   role     = "roles/run.invoker"
-  members  = [for identity in google_service_account.availability : "serviceAccount:${identity.email}"]
+  members = concat(
+    [for identity in google_service_account.availability : "serviceAccount:${identity.email}"],
+    [for identity in google_service_account.physician_scheduler : "serviceAccount:${identity.email}"],
+  )
 }
 
 # Release updates the worker image like the app services (deploy-staging).

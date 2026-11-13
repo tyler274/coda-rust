@@ -39,7 +39,8 @@ impl Live {
         self.synthetic_reply.as_deref()
     }
 
-    /// The physician's retained chats in this patient workspace.
+    /// The physician's retained chats in this patient workspace, distinguished
+    /// by question title, answer summary, and outcome.
     pub(crate) async fn chats(
         &self,
         ctx: Option<&AuthContext>,
@@ -49,19 +50,94 @@ impl Live {
         let chats = self
             .chat
             .store
-            .chats(
+            .recent_conversations(
                 &ctx.identity.practice_id,
                 &ctx.identity.physician_id,
-                workspace,
+                &[workspace.to_owned()],
+                200,
             )
             .await
             .map_err(|_| ())?;
-        Ok(chats.into_iter().map(|chat| {
-            let created_at = crate::timestamp::format_rfc3339(
-                std::time::UNIX_EPOCH + std::time::Duration::from_secs(chat.opened_at.max(0) as u64),
-            );
-            json!({"chat_id": chat.chat, "title": chat_title(&chat.first_message), "created_at": created_at})
-        }).collect())
+        Ok(chats
+            .into_iter()
+            .map(|chat| {
+                let created_at = crate::timestamp::format_rfc3339(
+                    std::time::UNIX_EPOCH
+                        + std::time::Duration::from_secs(chat.opened_at.max(0) as u64),
+                );
+                let updated_at = crate::timestamp::format_rfc3339(
+                    std::time::UNIX_EPOCH
+                        + std::time::Duration::from_secs(chat.last_activity_at.max(0) as u64),
+                );
+                json!({
+                    "chat_id": chat.chat,
+                    "title": chat_title(&chat.question),
+                    "summary": chat.summary,
+                    "outcome": chat.outcome,
+                    "created_at": created_at,
+                    "updated_at": updated_at,
+                })
+            })
+            .collect())
+    }
+
+    /// Recent conversations across all workspaces currently on the physician's panel.
+    pub(crate) async fn recent_conversations(
+        &self,
+        ctx: Option<&AuthContext>,
+        panel: &[String],
+        directory: &dyn crate::patients::PatientDirectory,
+    ) -> Result<Vec<Value>, ()> {
+        let ctx = ctx.ok_or(())?;
+        if panel.is_empty() {
+            return Ok(Vec::new());
+        }
+        let found_patients = crate::patients::read_patients(directory, panel)
+            .await
+            .map_err(|_| ())?;
+        let names: BTreeMap<String, String> = found_patients
+            .into_iter()
+            .map(|patient| {
+                let row = patient.list_row();
+                (
+                    row["patient_workspace_id"]
+                        .as_str()
+                        .unwrap_or_default()
+                        .to_owned(),
+                    row["display_name"].as_str().unwrap_or_default().to_owned(),
+                )
+            })
+            .collect();
+        let conversations = self
+            .chat
+            .store
+            .recent_conversations(
+                &ctx.identity.practice_id,
+                &ctx.identity.physician_id,
+                panel,
+                50,
+            )
+            .await
+            .map_err(|_| ())?;
+        Ok(conversations
+            .into_iter()
+            .filter_map(|conv| {
+                let patient_name = names.get(&conv.workspace)?.clone();
+                let updated_at = crate::timestamp::format_rfc3339(
+                    std::time::UNIX_EPOCH
+                        + std::time::Duration::from_secs(conv.last_activity_at.max(0) as u64),
+                );
+                Some(json!({
+                    "chat_id": conv.chat,
+                    "patient_workspace_id": conv.workspace,
+                    "patient_display_name": patient_name,
+                    "title": chat_title(&conv.question),
+                    "summary": conv.summary,
+                    "outcome": conv.outcome,
+                    "updated_at": updated_at,
+                }))
+            })
+            .collect())
     }
 }
 
@@ -137,16 +213,27 @@ struct SubmitPayload {
     scenario: Option<String>,
 }
 
-/// Accepts chat, Stop/Resume and reply-revision commands into the durable owner.
+/// Accepts chat, Stop/Resume, item.open, and reply-revision commands into the durable owner.
 /// Every other command is rejected.
 pub(crate) async fn submit(
     State(live): State<Arc<Live>>,
     auth_ctx: Option<Extension<AuthContext>>,
+    sample_feed: Option<Extension<Arc<crate::SampleFeed>>>,
     body: axum::body::Bytes,
 ) -> Response {
     let Ok(body) = serde_json::from_slice::<CommandBody>(&body) else {
         return rejected_submit();
     };
+    if body.kind == "item.open" {
+        return crate::accept_item_open(
+            auth_ctx.map(|Extension(ctx)| ctx),
+            sample_feed.map(|Extension(feed)| feed),
+            Some(&live.bus),
+            body.idempotency_key,
+            body.payload,
+        )
+        .await;
+    }
     if body.kind == "reply.revise" {
         return revise(live, auth_ctx.map(|Extension(ctx)| ctx), body).await;
     }
@@ -179,6 +266,51 @@ pub(crate) async fn submit(
         return rejected_submit();
     };
     accept_durable(live, auth_ctx, payload, idempotency_key).await
+}
+
+/// Saved conversations and reply work in one authorized patient workspace.
+pub(crate) async fn past_work(
+    State(live): State<Arc<Live>>,
+    auth_ctx: Option<Extension<AuthContext>>,
+    Path(workspace): Path<String>,
+) -> Response {
+    let Some(Extension(ctx)) = auth_ctx else {
+        return StatusCode::UNAUTHORIZED.into_response();
+    };
+    let items = match live
+        .chat
+        .store
+        .workspace_past_work(
+            &ctx.identity.practice_id,
+            &ctx.identity.physician_id,
+            &workspace,
+        )
+        .await
+    {
+        Ok(items) => items,
+        Err(error) => {
+            tracing::error!(%error, "physician workspace past_work read failed");
+            return StatusCode::SERVICE_UNAVAILABLE.into_response();
+        }
+    };
+    let wire_items: Vec<Value> = items
+        .into_iter()
+        .map(|item| {
+            let updated_at = crate::timestamp::format_rfc3339(
+                std::time::UNIX_EPOCH
+                    + std::time::Duration::from_secs(item.updated_at.max(0) as u64),
+            );
+            json!({
+                "id": item.id,
+                "target": item.target,
+                "title": item.title,
+                "summary": item.summary,
+                "outcome": item.outcome,
+                "updated_at": updated_at,
+            })
+        })
+        .collect();
+    Json(json!({ "items": wire_items })).into_response()
 }
 
 async fn revise(live: Arc<Live>, ctx: Option<AuthContext>, body: CommandBody) -> Response {
@@ -285,6 +417,13 @@ async fn durable_snapshot(
             return StatusCode::SERVICE_UNAVAILABLE.into_response();
         }
     };
+    let readback = match chat.store.reopen_conversation(&scope).await {
+        Ok(readback) => readback,
+        Err(error) => {
+            tracing::error!(%error, "physician chat snapshot readback failed");
+            return StatusCode::SERVICE_UNAVAILABLE.into_response();
+        }
+    };
     // The conversation comes even when its feedback can't be read, so one
     // unreadable feedback row never keeps the physician from Coda's replies;
     // the snapshot then says feedback is unavailable instead of showing rated
@@ -296,7 +435,7 @@ async fn durable_snapshot(
             SnapshotFeedback::Unavailable
         }
     };
-    match snapshot_body(conversation.as_ref(), &feedback) {
+    match snapshot_body(conversation.as_ref(), readback.as_ref(), &feedback) {
         Ok(snapshot) => Json(ChatSnapshotResponse { snapshot }).into_response(),
         Err(error) => {
             tracing::error!(%error, "physician chat snapshot transcript unreadable");
@@ -313,20 +452,97 @@ enum SnapshotFeedback {
     Unavailable,
 }
 
-/// The chat's transcript, with the physician's saved feedback on each
-/// finished answer when it was read. A chat with no accepted message yet has
-/// an empty transcript.
+fn wire_segment(
+    segment: &local_product::runtime::history::HistorySegment,
+) -> physician_wire::MessageSegment {
+    match segment {
+        local_product::runtime::history::HistorySegment::Text { text } => {
+            physician_wire::MessageSegment::Text { text: text.clone() }
+        }
+        local_product::runtime::history::HistorySegment::Citation {
+            source_key,
+            number,
+            label,
+            quote,
+        } => physician_wire::MessageSegment::Citation {
+            source_key: source_key.clone(),
+            number: *number,
+            label: label.clone(),
+            quote: quote.clone(),
+        },
+    }
+}
+
+/// The chat's transcript, with the physician's saved feedback and verified
+/// source citations on each finished answer when they were read. A chat with
+/// no accepted message yet has an empty transcript.
 fn snapshot_body(
     conversation: Option<&local_product::runtime::Conversation>,
+    readback: Option<&local_product::runtime::history::SavedConversationReadback>,
     feedback: &SnapshotFeedback,
 ) -> Result<ChatSnapshot, local_product::runtime::TranscriptError> {
-    let transcript = match conversation {
+    let mut transcript = match conversation {
         Some(conversation) => conversation.transcript(|id| match feedback {
             SnapshotFeedback::Loaded(saved) => saved.get(id).cloned().map(crate::feedback::wire),
             SnapshotFeedback::Unavailable => None,
         })?,
         None => Vec::new(),
     };
+    let mut sources = BTreeMap::new();
+    if let Some(readback) = readback {
+        sources = readback
+            .sources
+            .iter()
+            .map(|(key, src)| {
+                (
+                    key.clone(),
+                    physician_wire::CitedSourceWire {
+                        source_key: src.source_key.clone(),
+                        number: src.number,
+                        source_label: src.source_label.clone(),
+                        title: src.title.clone(),
+                        record_type: (!src.record_type.is_empty()).then(|| src.record_type.clone()),
+                        recorded_at: src.recorded_at.clone(),
+                        quote: src.quote.clone(),
+                        body: src.body.clone(),
+                        raw_content: (!src.raw_content.is_empty()).then(|| src.raw_content.clone()),
+                        external_url: src.external_url.clone(),
+                    },
+                )
+            })
+            .collect();
+        let assistant_turns: BTreeMap<&str, &local_product::runtime::history::SavedTurnReadback> =
+            readback
+                .turns
+                .iter()
+                .filter(|turn| {
+                    matches!(
+                        turn.author,
+                        local_product::runtime::history::TurnAuthor::Assistant { partial: false }
+                    )
+                })
+                .map(|turn| (turn.id.as_str(), turn))
+                .collect();
+        for exchange in &mut transcript {
+            if let physician_wire::AnswerState::Finished {
+                response_id,
+                segments,
+                basis,
+                newer_records,
+                ..
+            } = &mut exchange.answer
+                && let Some(turn) = assistant_turns.get(response_id.as_str())
+            {
+                *segments = turn.segments.iter().map(wire_segment).collect();
+                *basis = turn
+                    .basis
+                    .as_ref()
+                    .map(|items| items.iter().map(wire_segment).collect())
+                    .filter(|items: &Vec<_>| !items.is_empty());
+                *newer_records = turn.newer_records;
+            }
+        }
+    }
     let feedback = match feedback {
         SnapshotFeedback::Loaded(_) => physician_wire::SnapshotFeedback::Loaded,
         SnapshotFeedback::Unavailable => physician_wire::SnapshotFeedback::Unavailable,
@@ -334,6 +550,7 @@ fn snapshot_body(
     Ok(ChatSnapshot {
         transcript,
         feedback,
+        sources,
     })
 }
 

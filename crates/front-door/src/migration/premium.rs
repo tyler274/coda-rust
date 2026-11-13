@@ -1,8 +1,8 @@
-//! One linked patient's premium status and cadence, at rest.
+//! One linked patient's premium status, at rest.
 //!
-//! The front door owns premium truth. Agents reads only the cadence setting
-//! and never knows who pays; Duet reads only which premium features are on;
-//! neither stores billing, and payment records hold no clinical content.
+//! The front door owns premium feature state. Duet reads only which premium
+//! features are on; payment records hold no clinical content and never set
+//! care-team review cadence.
 
 use sea_orm::entity::prelude::*;
 
@@ -12,11 +12,8 @@ pub struct Model {
     /// The linked patient the status belongs to.
     #[sea_orm(primary_key, auto_increment = false)]
     pub patient_key: String,
-    /// Whether the patient pays for premium.
+    /// Whether the patient has premium features enabled.
     pub premium: bool,
-    /// The cadence Agents runs for the patient: `"weekly"`, or
-    /// `"weekly-daily-check"` when the daily check is added.
-    pub cadence: String,
     /// The Unix second the status was written.
     pub created_at: i64,
 }

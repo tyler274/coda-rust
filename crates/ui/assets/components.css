@@ -1211,3 +1211,37 @@ button.source-trigger { cursor: pointer; transition: border-color var(--motion-p
 .source-pane-body { min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding-top: var(--space-3); border-top: var(--hairline) solid var(--outline-variant); }
 @keyframes source-enter { from { opacity: 0; transform: translateX(var(--rise)); } }
 @keyframes source-exit { to { opacity: 0; transform: translateX(var(--rise)); } }
+/* The collapsed companion orb: Coda's ambient mark in a floating circle, breathing gently at rest, faster while working,
+   and still when reduced motion is asked for. */
+.coda-orb { position: relative; box-sizing: border-box; display: inline-grid; place-items: center;
+  width: var(--orb-size); height: var(--orb-size); padding: 0; border: var(--hairline) solid var(--primary-outline);
+  border-radius: 50%; background: var(--primary); color: var(--on-primary); box-shadow: var(--elevation-3); cursor: pointer;
+  transition: transform var(--motion-press) var(--ease-out), box-shadow var(--motion-press) var(--ease-out); }
+.coda-orb:hover { box-shadow: var(--elevation-4); transform: translateY(calc(-1 * var(--space-hair))); }
+.coda-orb:active { transform: scale(.96); }
+.coda-orb:focus-visible { outline: var(--focus-ring-width) solid var(--focus-ring-color); outline-offset: var(--focus-ring-offset); }
+.coda-orb-aura { position: absolute; inset: calc(-1 * var(--space-1)); border-radius: 50%;
+  border: var(--stroke) solid var(--primary-outline); pointer-events: none;
+  animation: coda-orb-breathe var(--motion-orb) var(--ease-in-out) infinite; }
+.coda-orb.has-orb-work .coda-orb-aura { border-color: var(--primary); animation-duration: var(--motion-working); }
+.coda-orb.has-orb-urgent .coda-orb-aura { border-color: var(--error); }
+.coda-orb-core { position: relative; z-index: 1; display: grid; place-items: center; font: var(--type-title-md);
+  animation: coda-orb-core var(--motion-orb) var(--ease-in-out) infinite; }
+.coda-orb-core .icon { width: var(--icon-xl); height: var(--icon-xl); }
+.coda-orb-working { position: absolute; right: calc(-1 * var(--space-hair)); bottom: calc(-1 * var(--space-hair)); z-index: 2;
+  display: inline-grid; place-items: center; padding: var(--space-hair) var(--space-1); border-radius: var(--radius-pill);
+  border: var(--hairline) solid var(--outline-variant); background: var(--surface-lowest); color: var(--primary); box-shadow: var(--elevation-1); }
+.coda-orb-urgent-dot { position: absolute; top: var(--space-hair); right: var(--space-hair); z-index: 2;
+  width: calc(var(--unread-dot) + var(--space-1)); height: calc(var(--unread-dot) + var(--space-1)); border-radius: 50%;
+  border: var(--stroke) solid var(--surface-lowest); background: var(--error); }
+@keyframes coda-orb-breathe {
+  0%, 100% { opacity: .45; transform: scale(1); }
+  50% { opacity: .95; transform: scale(1.08); }
+}
+@keyframes coda-orb-core {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.06); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .coda-orb, .coda-orb-aura, .coda-orb-core { animation: none; transition: none; }
+}

@@ -30,15 +30,23 @@ use uuid::Uuid;
 
 /// Hosted chat drafts: the physician's unsent composer text per chat.
 pub mod chat_draft;
+/// Patient concerns raised, revised, and retired by Coda, and cleared `Done` by physicians.
+pub mod concerns;
 mod control;
 pub use control::Lease;
 /// Queue delivery recovery uses the conversation owner, not a parallel ledger.
 pub mod delivery;
+/// Practice patient source checks, review dispatch, and operator cadence controls.
+pub mod dispatch;
 mod entities;
 /// Physician feedback on Coda's responses.
 pub mod feedback;
 mod frozen;
+/// Read-only queries over saved conversations and work.
+pub mod history;
 pub use frozen::{BindingRef, SkillPackageId};
+/// Practice-owned background jobs running on the shared run store and background lane.
+pub mod jobs;
 mod migration;
 mod quota;
 /// Command receipts and their 90-day reduction to a salted digest.
@@ -73,12 +81,15 @@ pub struct Scope {
 }
 
 impl Scope {
-    fn validate(&self) -> Result<(), DbErr> {
+    pub(super) fn validate(&self) -> Result<(), DbErr> {
         if [&self.practice, &self.physician, &self.workspace, &self.chat]
             .iter()
             .any(|s| s.trim().is_empty())
         {
             return Err(error("empty physician scope"));
+        }
+        if self.physician.trim() == jobs::PRACTICE_OWNER {
+            return Err(error("practice run cannot act as a physician"));
         }
         Ok(())
     }
@@ -580,6 +591,7 @@ pub enum Stopped {
 #[derive(Clone)]
 pub struct Store {
     db: DatabaseConnection,
+    clinical_library: crate::clinical_library::ClinicalLibraryClient,
 }
 
 fn error(message: &str) -> DbErr {
@@ -803,11 +815,11 @@ fn database_clock() -> Expr {
     Expr::cust("floor(extract(epoch FROM clock_timestamp()))::bigint")
 }
 
-async fn now(tx: &sea_orm::DatabaseTransaction) -> Result<i64, DbErr> {
+async fn now(db: &impl ConnectionTrait) -> Result<i64, DbErr> {
     let query = Query::select()
         .expr_as(database_clock(), Alias::new("now"))
         .to_owned();
-    tx.query_one(&query)
+    db.query_one(&query)
         .await?
         .ok_or_else(|| error("missing database clock"))?
         .try_get("", "now")
@@ -838,7 +850,24 @@ impl Store {
 
     /// Uses an existing pool without applying migrations or changing its limits.
     pub fn from_connection(db: DatabaseConnection) -> Self {
-        Self { db }
+        Self {
+            db,
+            clinical_library: crate::clinical_library::ClinicalLibraryClient::from_env(),
+        }
+    }
+
+    /// Returns a clone bound to an explicit [`crate::clinical_library::ClinicalLibraryClient`].
+    pub fn with_clinical_library(
+        mut self,
+        clinical_library: crate::clinical_library::ClinicalLibraryClient,
+    ) -> Self {
+        self.clinical_library = clinical_library;
+        self
+    }
+
+    /// Clinical library client configured for chat tool execution.
+    pub fn clinical_library(&self) -> &crate::clinical_library::ClinicalLibraryClient {
+        &self.clinical_library
     }
 
     /// This store's pool, for the process's other stores to share, so the
@@ -941,6 +970,7 @@ impl Store {
         {
             return Err(error("empty command field").into());
         }
+        scope.validate()?;
         let tx = self.db.begin().await?;
         let command = serde_json::json!({"scope": scope, "input": input});
         match receipt::record(&tx, &scope.practice, &scope.physician, &input.key, &command).await? {
@@ -1608,7 +1638,12 @@ impl Store {
             .one(&tx)
             .await?
         else {
-            return Ok(Stopped::Refused);
+            let practice_scope = jobs::PracticeScope {
+                practice: scope.practice.clone(),
+                workspace: scope.workspace.clone(),
+                job_id: scope.chat.clone(),
+            };
+            return Self::stop_practice_job_in_tx(tx, &practice_scope, work_item_id).await;
         };
         let mut state = Self::conversation_control(&tx, scope, row).await?;
         // Another press on work that is already held, from a page that has
@@ -2028,6 +2063,12 @@ impl<A: Authority, S: ShownStepSaved> Product for PhysicianHost<A, S> {
                 return chart
                     .run(workspace, observation.version, &observation.sources)
                     .map_err(Into::into);
+            }
+            if crate::clinical_library::is_library_tool(&call.name) {
+                return Ok(store
+                    .clinical_library()
+                    .execute(&call.name, &arguments)
+                    .await);
             }
             let skills = store.frozen_skills(&claim.scope, &state.skills).await?;
             Ok(skills.execute(&call.name, &arguments))

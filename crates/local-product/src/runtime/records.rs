@@ -7,7 +7,7 @@ use sea_orm::{
 };
 use std::collections::HashMap;
 
-/// The two physician owners have disjoint event namespaces, even for equal IDs.
+/// Runtime owners have disjoint event namespaces, even for equal IDs.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, sea_orm::EnumIter, sea_orm::DeriveActiveEnum)]
 #[sea_orm(rs_type = "String", db_type = "String(StringLen::None)")]
 pub enum Owner {
@@ -17,16 +17,40 @@ pub enum Owner {
     /// A physician reply draft revision.
     #[sea_orm(string_value = "revision")]
     Revision,
+    /// A practice-owned background job.
+    #[sea_orm(string_value = "practice_job")]
+    PracticeJob,
 }
 
-fn scope_filter(scope: &Scope, owner: Owner) -> Condition {
+#[derive(Clone, Copy)]
+pub(super) struct OwnerKey<'a> {
+    pub practice: &'a str,
+    pub actor: &'a str,
+    pub workspace: &'a str,
+    pub target: &'a str,
+    pub owner: Owner,
+}
+
+impl<'a> OwnerKey<'a> {
+    fn physician(scope: &'a Scope, owner: Owner) -> Self {
+        Self {
+            practice: &scope.practice,
+            actor: &scope.physician,
+            workspace: &scope.workspace,
+            target: &scope.chat,
+            owner,
+        }
+    }
+}
+
+fn owner_filter(key: &OwnerKey<'_>) -> Condition {
     use execution_event::Column as C;
     Condition::all()
-        .add(C::Practice.eq(scope.practice.as_str()))
-        .add(C::Physician.eq(scope.physician.as_str()))
-        .add(C::Workspace.eq(scope.workspace.as_str()))
-        .add(C::Target.eq(scope.chat.as_str()))
-        .add(C::Owner.eq(owner))
+        .add(C::Practice.eq(key.practice))
+        .add(C::Physician.eq(key.actor))
+        .add(C::Workspace.eq(key.workspace))
+        .add(C::Target.eq(key.target))
+        .add(C::Owner.eq(key.owner))
 }
 
 fn count(value: u64) -> Result<i64, DbErr> {
@@ -34,17 +58,16 @@ fn count(value: u64) -> Result<i64, DbErr> {
 }
 
 fn model(
-    scope: &Scope,
-    owner: Owner,
+    key: &OwnerKey<'_>,
     event: &engine::Event,
     admissible: bool,
 ) -> Result<execution_event::ActiveModel, DbErr> {
     Ok(execution_event::ActiveModel {
-        practice: Set(scope.practice.clone()),
-        physician: Set(scope.physician.clone()),
-        workspace: Set(scope.workspace.clone()),
-        target: Set(scope.chat.clone()),
-        owner: Set(owner),
+        practice: Set(key.practice.to_owned()),
+        physician: Set(key.actor.to_owned()),
+        workspace: Set(key.workspace.to_owned()),
+        target: Set(key.target.to_owned()),
+        owner: Set(key.owner),
         attempt: Set(event.attempt_id.clone()),
         sequence: Set(count(event.sequence)?),
         ordinal: Set(count(event.ordinal)?),
@@ -54,21 +77,18 @@ fn model(
     })
 }
 
-/// The caller holds the conversation or draft lock. An ambiguous acknowledgment
-/// reuses the same identity; a different fact under that identity is an error.
-pub(super) async fn append(
+pub(super) async fn append_for(
     tx: &impl ConnectionTrait,
-    scope: &Scope,
-    owner: Owner,
+    key: &OwnerKey<'_>,
     event: &engine::Event,
     admissible: bool,
 ) -> Result<(), DbErr> {
     if event.sequence == 0 {
         return Err(error("invalid event sequence"));
     }
-    let row = model(scope, owner, event, admissible)?;
+    let row = model(key, event, admissible)?;
     let records = execution_event::Entity::find()
-        .filter(scope_filter(scope, owner))
+        .filter(owner_filter(key))
         .filter(execution_event::Column::Attempt.eq(event.attempt_id.as_str()));
     if let Some(saved) = records
         .clone()
@@ -97,11 +117,21 @@ pub(super) async fn append(
     Ok(())
 }
 
-/// Reconstruct the public attempt view only when a caller needs its evidence.
-pub(super) async fn load<T>(
-    db: &impl ConnectionTrait,
+/// The caller holds the conversation or draft lock. An ambiguous acknowledgment
+/// reuses the same identity; a different fact under that identity is an error.
+pub(super) async fn append(
+    tx: &impl ConnectionTrait,
     scope: &Scope,
     owner: Owner,
+    event: &engine::Event,
+    admissible: bool,
+) -> Result<(), DbErr> {
+    append_for(tx, &OwnerKey::physician(scope, owner), event, admissible).await
+}
+
+pub(super) async fn load_for<T>(
+    db: &impl ConnectionTrait,
+    key: &OwnerKey<'_>,
     attempts: &[String],
     project: impl Fn(engine::Event, bool) -> T,
 ) -> Result<HashMap<String, Vec<T>>, DbErr> {
@@ -109,7 +139,7 @@ pub(super) async fn load<T>(
         return Ok(HashMap::new());
     }
     let rows = execution_event::Entity::find()
-        .filter(scope_filter(scope, owner))
+        .filter(owner_filter(key))
         .filter(execution_event::Column::Attempt.is_in(attempts.iter().cloned()))
         .order_by_asc(execution_event::Column::Sequence)
         .all(db)
@@ -132,6 +162,29 @@ pub(super) async fn load<T>(
     Ok(events)
 }
 
+/// Reconstruct the public attempt view only when a caller needs its evidence.
+pub(super) async fn load<T>(
+    db: &impl ConnectionTrait,
+    scope: &Scope,
+    owner: Owner,
+    attempts: &[String],
+    project: impl Fn(engine::Event, bool) -> T,
+) -> Result<HashMap<String, Vec<T>>, DbErr> {
+    load_for(db, &OwnerKey::physician(scope, owner), attempts, project).await
+}
+
+pub(super) async fn ordered_for(
+    db: &impl ConnectionTrait,
+    key: &OwnerKey<'_>,
+    attempts: &[String],
+) -> Result<Vec<(engine::Event, bool)>, DbErr> {
+    let mut records = load_for(db, key, attempts, |event, admitted| (event, admitted)).await?;
+    Ok(attempts
+        .iter()
+        .flat_map(|attempt| records.remove(attempt).unwrap_or_default())
+        .collect())
+}
+
 /// Ordered records preserve attempt order and the authority recorded at acknowledgment.
 pub(super) async fn ordered(
     db: &impl ConnectionTrait,
@@ -139,12 +192,5 @@ pub(super) async fn ordered(
     owner: Owner,
     attempts: &[String],
 ) -> Result<Vec<(engine::Event, bool)>, DbErr> {
-    let mut records = load(db, scope, owner, attempts, |event, admitted| {
-        (event, admitted)
-    })
-    .await?;
-    Ok(attempts
-        .iter()
-        .flat_map(|attempt| records.remove(attempt).unwrap_or_default())
-        .collect())
+    ordered_for(db, &OwnerKey::physician(scope, owner), attempts).await
 }

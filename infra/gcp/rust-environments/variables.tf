@@ -187,6 +187,76 @@ variable "enable_physician_scale" {
   description = "Explicit cost gate for physician scaling: Memorystore Redis (workspace_changed fan-out) and the internal physician-worker service, which pulls accepted turns from Postgres. Effective only when enable_workloads is true. Duet is never affected."
 }
 
+variable "physician_schedule_enabled" {
+  type        = bool
+  default     = false
+  description = "Create the Cloud Scheduler wake job, dedicated physician-scheduler invoker identity and failure alert policy for physician-worker. Requires workloads, physician scaling and notification channels; production requires physician_schedule_production_approved."
+  validation {
+    condition     = !var.physician_schedule_enabled || (var.enable_workloads && var.enable_physician_scale && length(var.availability_watchdog_channels) > 0)
+    error_message = "Enabling the physician schedule requires workloads, physician scaling and notification channels in availability_watchdog_channels."
+  }
+  validation {
+    condition     = var.environment != "prd" || !var.physician_schedule_enabled || (var.production_activation_approved && var.physician_schedule_production_approved)
+    error_message = "Enabling the physician schedule in production requires both production_activation_approved and physician_schedule_production_approved."
+  }
+}
+
+variable "physician_schedule_production_approved" {
+  type        = bool
+  default     = false
+  description = "Separate operator authorization for activating the physician Cloud Scheduler wake job in production; never controlled by staging configuration."
+}
+
+variable "physician_schedule_paused" {
+  type        = bool
+  default     = false
+  description = "Pause the physician Cloud Scheduler wake job while retaining its identity, invoker binding and failure alert policy."
+}
+
+variable "physician_schedule_cron" {
+  type        = string
+  default     = "*/5 * * * *"
+  nullable    = false
+  description = "Five-field cron schedule at which Cloud Scheduler posts authenticated wake ticks to physician-worker."
+  validation {
+    condition     = can(regex("^([^\\s]+\\s+){4}[^\\s]+$", trimspace(var.physician_schedule_cron)))
+    error_message = "physician_schedule_cron must be a standard five-field cron expression."
+  }
+}
+
+variable "physician_schedule_time_zone" {
+  type        = string
+  default     = "Etc/UTC"
+  nullable    = false
+  description = "IANA time zone for physician_schedule_cron."
+  validation {
+    condition     = trimspace(var.physician_schedule_time_zone) != ""
+    error_message = "physician_schedule_time_zone must not be empty."
+  }
+}
+
+variable "physician_clinical_library_url" {
+  type        = string
+  default     = null
+  nullable    = true
+  description = "HTTPS Cloud Run origin of the existing read-only clinical-evidence service; null leaves clinical library calls unconfigured. Cross-project run.invoker access stays owned by infra/gcp/clinical-evidence."
+  validation {
+    condition     = var.physician_clinical_library_url == null || can(regex("^https://[a-z0-9-]+(\\.[a-z0-9-]+)?\\.run\\.app$", var.physician_clinical_library_url))
+    error_message = "physician_clinical_library_url must be an HTTPS Cloud Run service origin without path, query, fragment or credentials."
+  }
+}
+
+variable "physician_clinical_library_audience" {
+  type        = string
+  default     = null
+  nullable    = true
+  description = "Optional OIDC audience override for the existing clinical-evidence service; null defaults to physician_clinical_library_url."
+  validation {
+    condition     = var.physician_clinical_library_audience == null || (var.physician_clinical_library_url != null && can(regex("^https://[a-z0-9-]+(\\.[a-z0-9-]+)?\\.run\\.app$", var.physician_clinical_library_audience)))
+    error_message = "physician_clinical_library_audience requires physician_clinical_library_url and must be an HTTPS Cloud Run service origin."
+  }
+}
+
 variable "images" {
   type = map(object({
     runtime   = string

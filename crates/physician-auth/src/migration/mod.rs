@@ -67,6 +67,7 @@ impl MigratorTrait for Migrator {
             Box::new(m20261030_000005_practices),
             Box::new(m20261106_000006_session_lifetime),
             Box::new(m20261109_000007_fixed_sessions),
+            Box::new(m20261112_000008_drop_cadence_columns),
         ]
     }
 }
@@ -408,7 +409,7 @@ impl MigrationTrait for m20260101_000001_init {
                             .null(),
                     )
                     .col(
-                        ColumnDef::new(patient_link::Column::Cadence)
+                        ColumnDef::new(Alias::new("cadence"))
                             .string()
                             .not_null()
                             .default("weekly"),
@@ -483,7 +484,7 @@ impl MigrationTrait for m20260101_000002_practice_patients {
                             .not_null(),
                     )
                     .col(
-                        ColumnDef::new(patient::Column::Cadence)
+                        ColumnDef::new(Alias::new("cadence"))
                             .string()
                             .not_null()
                             .default("weekly"),
@@ -699,6 +700,67 @@ impl MigrationTrait for m20261109_000007_fixed_sessions {
                 Table::alter()
                     .table(Sessions)
                     .drop_column(session::Column::EndsAt)
+                    .to_owned(),
+            )
+            .await
+    }
+}
+
+/// Drops obsolete `cadence` columns from `physician_patients` and
+/// `physician_patient_links`; cadence lives solely in the runtime dispatch store.
+#[allow(non_camel_case_types, missing_docs)]
+pub struct m20261112_000008_drop_cadence_columns;
+impl MigrationName for m20261112_000008_drop_cadence_columns {
+    fn name(&self) -> &str {
+        "physician_auth_20261112_000008_drop_cadence_columns"
+    }
+}
+
+#[async_trait::async_trait]
+impl MigrationTrait for m20261112_000008_drop_cadence_columns {
+    async fn up(&self, manager: &SchemaManager) -> Result<(), DbErr> {
+        manager
+            .alter_table(
+                Table::alter()
+                    .table(Patients)
+                    .drop_column(Alias::new("cadence"))
+                    .to_owned(),
+            )
+            .await?;
+        manager
+            .alter_table(
+                Table::alter()
+                    .table(PatientLinks)
+                    .drop_column(Alias::new("cadence"))
+                    .to_owned(),
+            )
+            .await
+    }
+
+    async fn down(&self, manager: &SchemaManager) -> Result<(), DbErr> {
+        manager
+            .alter_table(
+                Table::alter()
+                    .table(Patients)
+                    .add_column(
+                        ColumnDef::new(Alias::new("cadence"))
+                            .string()
+                            .not_null()
+                            .default("weekly"),
+                    )
+                    .to_owned(),
+            )
+            .await?;
+        manager
+            .alter_table(
+                Table::alter()
+                    .table(PatientLinks)
+                    .add_column(
+                        ColumnDef::new(Alias::new("cadence"))
+                            .string()
+                            .not_null()
+                            .default("weekly"),
+                    )
                     .to_owned(),
             )
             .await

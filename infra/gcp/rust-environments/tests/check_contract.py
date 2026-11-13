@@ -162,11 +162,23 @@ class Contract(unittest.TestCase):
         # Neither site keeps a minimum instance: the worker owns accepted turns.
         app = resource_blocks(workloads, "google_cloud_run_v2_service")["app"]
         self.assertRegex(app, r"min_instance_count = 0\n")
+        scheduler = config_text("scheduler.tf")
+        for kind in ["google_service_account", "google_cloud_scheduler_job", "google_logging_metric", "google_monitoring_alert_policy"]:
+            blocks = resource_blocks(scheduler, kind)
+            self.assertTrue(blocks, kind)
+            for name, body in blocks.items():
+                with self.subTest(scheduler_kind=kind, name=name):
+                    self.assertIn("for_each = local.physician_schedule", re.sub(r"\s+", " ", body))
+                    references = "\n".join(line for line in body.splitlines() if "description" not in line)
+                    self.assertNotIn("duet", references.lower())
 
     def test_worker_is_internal_and_invoked_only_by_the_probe(self):
         workloads = config_text("workloads.tf")
         worker = resource_blocks(workloads, "google_cloud_run_v2_service")["physician_worker"]
-        self.assertRegex(worker, r'ingress\s+= "INGRESS_TRAFFIC_INTERNAL_ONLY"')
+        self.assertRegex(
+            worker,
+            r'ingress\s+= length\(local\.physician_schedule\) > 0 \? "INGRESS_TRAFFIC_ALL" : "INGRESS_TRAFFIC_INTERNAL_ONLY"',
+        )
         self.assertRegex(worker, r"invoker_iam_disabled\s+= false")
         self.assertRegex(worker, r"iap_enabled\s+= false")
         # The worker stays running between requests: one instance, with CPU
@@ -178,13 +190,25 @@ class Contract(unittest.TestCase):
         members = invoker.split("members", 1)[1]
         self.assertEqual(
             re.sub(r"\s+", " ", members).strip(),
-            '= [for identity in google_service_account.availability : "serviceAccount:${identity.email}"]',
+            '= concat( [for identity in google_service_account.availability : "serviceAccount:${identity.email}"], '
+            '[for identity in google_service_account.physician_scheduler : "serviceAccount:${identity.email}"], )',
         )
         # No additive run.invoker grant may widen the authoritative binding.
         for kind in ["google_cloud_run_v2_service_iam_member", "google_cloud_run_service_iam_member", "google_project_iam_member"]:
             for name, body in resource_blocks(config_text(), kind).items():
                 with self.subTest(kind=kind, name=name):
                     self.assertNotIn("roles/run.invoker", body)
+
+    def test_staging_schedule_and_clinical_library_contract(self):
+        staging = (ROOT / "env/staging.tfvars").read_text()
+        self.assertRegex(staging, r'(?m)^physician_schedule_enabled\s*= true$')
+        self.assertRegex(staging, r'(?m)^physician_schedule_cron\s*= "\*/5 \* \* \* \*"$')
+        self.assertRegex(
+            staging,
+            r'(?m)^physician_clinical_library_url\s*= "https://coda-clinical-evidence-720954567292\.us-east4\.run\.app"$',
+        )
+        # Cross-project clinical-evidence IAM stays in infra/gcp/clinical-evidence.
+        self.assertNotIn("coda-health-prod", config_text())
 
     def test_redis_auth_never_leaves_sensitive_output(self):
         text = config_text()

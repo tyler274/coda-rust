@@ -78,21 +78,105 @@ fn router_with(upstream: Option<String>) -> Router {
     routes.layer(middleware::from_fn(cors))
 }
 
+/// In-memory Today, Updates, and fixture history state for sample and browser verification.
+#[doc(hidden)]
+#[derive(Default)]
+pub struct SampleFeed {
+    today_rows: std::sync::Mutex<Vec<Value>>,
+    active_runs: std::sync::Mutex<Vec<Value>>,
+    update_rows: std::sync::Mutex<Vec<Value>>,
+    seen_items: std::sync::Mutex<
+        std::collections::BTreeMap<(String, String), std::collections::BTreeSet<String>>,
+    >,
+    fixture_chats: std::sync::Mutex<std::collections::BTreeMap<String, Vec<Value>>>,
+    fixture_past_work: std::sync::Mutex<std::collections::BTreeMap<String, Vec<Value>>>,
+    fixture_snapshots: std::sync::Mutex<std::collections::BTreeMap<(String, String), Value>>,
+}
+
+impl SampleFeed {
+    /// Creates an empty sample feed.
+    pub fn new() -> std::sync::Arc<Self> {
+        std::sync::Arc::new(Self::default())
+    }
+
+    /// Replaces the Today rows served by `/today`.
+    pub fn set_today_rows(&self, rows: Vec<Value>) {
+        *self.today_rows.lock().expect("sample today rows") = rows;
+    }
+
+    /// Replaces the running reviews and update items served by `/updates`.
+    pub fn set_updates(&self, active_runs: Vec<Value>, rows: Vec<Value>) {
+        *self.active_runs.lock().expect("sample active runs") = active_runs;
+        *self.update_rows.lock().expect("sample update rows") = rows;
+    }
+
+    /// Seeds fixture conversations for a workspace when running without Postgres.
+    pub fn set_fixture_chats(&self, workspace: &str, chats: Vec<Value>) {
+        self.fixture_chats
+            .lock()
+            .expect("sample fixture chats")
+            .insert(workspace.to_owned(), chats);
+    }
+
+    /// Seeds fixture past-work items for a workspace when running without Postgres.
+    pub fn set_fixture_past_work(&self, workspace: &str, items: Vec<Value>) {
+        self.fixture_past_work
+            .lock()
+            .expect("sample fixture past work")
+            .insert(workspace.to_owned(), items);
+    }
+
+    /// Seeds a fixture conversation snapshot when running without Postgres.
+    pub fn set_fixture_snapshot(&self, workspace: &str, chat: &str, snapshot: Value) {
+        self.fixture_snapshots
+            .lock()
+            .expect("sample fixture snapshots")
+            .insert((workspace.to_owned(), chat.to_owned()), snapshot);
+    }
+
+    /// Marks `item_id` as opened once for `(practice_id, physician_id)`.
+    pub fn mark_item_open(&self, practice_id: &str, physician_id: &str, item_id: &str) {
+        self.seen_items
+            .lock()
+            .expect("sample seen items")
+            .entry((practice_id.to_owned(), physician_id.to_owned()))
+            .or_default()
+            .insert(item_id.to_owned());
+    }
+
+    fn seen_for(&self, practice_id: &str, physician_id: &str) -> Vec<String> {
+        self.seen_items
+            .lock()
+            .expect("sample seen items")
+            .get(&(practice_id.to_owned(), physician_id.to_owned()))
+            .map(|items| items.iter().cloned().collect())
+            .unwrap_or_default()
+    }
+}
+
 /// The site over five fixture patients, for integration tests. It runs no
-/// chat, so a command is refused and a draft save answers 409.
+/// chat, so a chat command is refused and a draft save answers 409.
 pub fn fixture_site() -> Router {
+    fixture_site_with_feed(SampleFeed::new())
+}
+
+/// [`fixture_site`] with caller-controlled [`SampleFeed`] state for verification.
+#[doc(hidden)]
+pub fn fixture_site_with_feed(feed: std::sync::Arc<SampleFeed>) -> Router {
     site()
         .route(
             "/physician-state/drafts/{workspace}/{chat}",
             get(empty_draft).put(draft_not_saved),
         )
         .route("/commands", post(reject_command))
+        .route("/patient-workspaces/{id}/past-work", get(fixture_past_work))
         .route(
             "/patient-workspaces/{id}/chats/{chat}/snapshot",
             get(empty_snapshot),
         )
         .route("/patient-workspaces/events", get(quiet_events))
         .layer(middleware::from_fn(sources::intercept_reconnect_command))
+        .layer(axum::Extension(feed))
         .layer(axum::Extension(care::ConnectedCare::fixture()))
 }
 
@@ -101,6 +185,16 @@ pub fn fixture_site() -> Router {
 pub fn durable_site(
     chat: std::sync::Arc<durable::DurableChat>,
     bus: std::sync::Arc<dyn physician_bus::Bus>,
+) -> Router {
+    durable_site_with_feed(chat, bus, SampleFeed::new())
+}
+
+/// [`durable_site`] with caller-controlled [`SampleFeed`] state for Today/Updates verification.
+#[doc(hidden)]
+pub fn durable_site_with_feed(
+    chat: std::sync::Arc<durable::DurableChat>,
+    bus: std::sync::Arc<dyn physician_bus::Bus>,
+    feed: std::sync::Arc<SampleFeed>,
 ) -> Router {
     let live = live::Live::new(std::sync::Arc::clone(&bus), chat);
     site()
@@ -117,6 +211,7 @@ pub fn durable_site(
             "/physician-state/feedback/{workspace}/{chat}/{response}",
             axum::routing::put(feedback::save),
         )
+        .route("/patient-workspaces/{id}/past-work", get(live::past_work))
         .route(
             "/patient-workspaces/{id}/chats/{chat}/snapshot",
             get(live::snapshot),
@@ -129,6 +224,7 @@ pub fn durable_site(
         .layer(middleware::from_fn(sources::intercept_reconnect_command))
         // The shared workspace route lists this server's chats through it.
         .layer(axum::Extension(std::sync::Arc::clone(&live)))
+        .layer(axum::Extension(feed))
         .layer(axum::Extension(care::ConnectedCare::new()))
         .with_state(live)
 }
@@ -142,10 +238,7 @@ where
         .route("/today", get(today))
         .route("/practice-day", get(practice_day))
         .route("/updates", get(updates))
-        .route(
-            "/recent-conversations",
-            get(|| async { Json(json!({ "conversations": [] })) }),
-        )
+        .route("/recent-conversations", get(recent_conversations))
         .route("/connections", get(sources::get_connections))
         .route("/connections/{source_id}/check", post(sources::post_check))
         .route(
@@ -329,20 +422,69 @@ async fn site_index() -> Response {
         .into_response()
 }
 
+async fn on_panel_in_practice(
+    connected: &care::ConnectedCare,
+    extensions: &axum::http::Extensions,
+    id: &str,
+) -> bool {
+    let identity = care::ConnectedCare::identity(extensions);
+    care::on_roster(extensions, id).await
+        && connected
+            .auth_store(extensions)
+            .membership(&identity, id)
+            .await
+            == physician_auth::Membership::Allowed
+}
+
 async fn empty_snapshot(
-    axum::extract::Path((id, _chat)): axum::extract::Path<(String, String)>,
+    axum::extract::Path((id, chat)): axum::extract::Path<(String, String)>,
+    axum::Extension(connected): axum::Extension<care::ConnectedCare>,
     request: Request<Body>,
 ) -> Response {
-    if !care::on_roster(request.extensions(), &id).await {
+    let extensions = request.extensions();
+    if !on_panel_in_practice(&connected, extensions, &id).await {
         return StatusCode::NOT_FOUND.into_response();
+    }
+    if let Some(feed) = extensions.get::<std::sync::Arc<SampleFeed>>()
+        && let Some(snapshot) = feed
+            .fixture_snapshots
+            .lock()
+            .expect("sample fixture snapshots")
+            .get(&(id, chat))
+            .cloned()
+    {
+        return Json(json!({ "snapshot": snapshot })).into_response();
     }
     Json(physician_wire::ChatSnapshotResponse {
         snapshot: physician_wire::ChatSnapshot {
             transcript: Vec::new(),
             feedback: physician_wire::SnapshotFeedback::Loaded,
+            sources: std::collections::BTreeMap::new(),
         },
     })
     .into_response()
+}
+
+async fn fixture_past_work(
+    axum::extract::Path(id): axum::extract::Path<String>,
+    axum::Extension(connected): axum::Extension<care::ConnectedCare>,
+    request: Request<Body>,
+) -> Response {
+    let extensions = request.extensions();
+    if !on_panel_in_practice(&connected, extensions, &id).await {
+        return StatusCode::NOT_FOUND.into_response();
+    }
+    let items = extensions
+        .get::<std::sync::Arc<SampleFeed>>()
+        .and_then(|feed| {
+            feed.fixture_past_work
+                .lock()
+                .expect("sample fixture past work")
+                .get(&id)
+                .cloned()
+        })
+        .unwrap_or_default();
+    Json(json!({ "items": items })).into_response()
 }
 
 async fn quiet_events() -> Response {
@@ -675,22 +817,70 @@ fn practice_date(now: &str) -> &str {
     now.get(..10).unwrap_or_default()
 }
 
+#[derive(Debug, Default, serde::Deserialize)]
+struct TodayQuery {
+    #[serde(default)]
+    patient_workspace_id: Option<String>,
+}
+
 async fn today(
+    axum::extract::Query(query): axum::extract::Query<TodayQuery>,
     axum::Extension(connected): axum::Extension<care::ConnectedCare>,
     request: Request<Body>,
 ) -> Response {
-    let Ok(now) = connected.practice_now(request.extensions()).await else {
+    let extensions = request.extensions();
+    let Ok(now) = connected.practice_now(extensions).await else {
         return StatusCode::SERVICE_UNAVAILABLE.into_response();
     };
     let Ok((connections, source_outages)) =
-        sources::today_connections_and_outages(request.extensions()).await
+        sources::today_connections_and_outages(extensions).await
     else {
         return StatusCode::SERVICE_UNAVAILABLE.into_response();
     };
+    let identity = care::ConnectedCare::identity(extensions);
+    let panel = connected.auth_store(extensions).panel(&identity).await;
+    let panel_set: std::collections::BTreeSet<&str> = panel.iter().map(String::as_str).collect();
+    let target_workspace = query
+        .patient_workspace_id
+        .as_deref()
+        .map(str::trim)
+        .filter(|ws| !ws.is_empty());
+    let (rows, seen) = match extensions.get::<std::sync::Arc<SampleFeed>>() {
+        Some(feed) => {
+            let seen = feed.seen_for(&identity.practice_id, &identity.physician_id);
+            let seen_set: std::collections::BTreeSet<&str> =
+                seen.iter().map(String::as_str).collect();
+            let rows: Vec<Value> = feed
+                .today_rows
+                .lock()
+                .expect("sample today rows")
+                .iter()
+                .filter(|row| {
+                    row.get("patient_workspace_id")
+                        .and_then(Value::as_str)
+                        .is_some_and(|ws| {
+                            panel_set.contains(ws)
+                                && target_workspace.is_none_or(|expected| ws == expected)
+                        })
+                })
+                .cloned()
+                .map(|mut row| {
+                    if let Some(item_id) = row.get("item_id").and_then(Value::as_str)
+                        && seen_set.contains(item_id)
+                    {
+                        row["seen"] = json!(true);
+                    }
+                    row
+                })
+                .collect();
+            (rows, seen)
+        }
+        None => (Vec::new(), Vec::new()),
+    };
     Json(json!({
         "date": practice_date(&now),
-        "rows": [],
-        "seen": [],
+        "rows": rows,
+        "seen": seen,
         "connections": connections,
         "source_outages": source_outages,
         "cursors": {},
@@ -704,19 +894,115 @@ async fn updates(
     axum::Extension(connected): axum::Extension<care::ConnectedCare>,
     request: Request<Body>,
 ) -> Response {
-    let Ok(now) = connected.practice_now(request.extensions()).await else {
+    let extensions = request.extensions();
+    let Ok(now) = connected.practice_now(extensions).await else {
         return StatusCode::SERVICE_UNAVAILABLE.into_response();
+    };
+    let identity = care::ConnectedCare::identity(extensions);
+    let panel = connected.auth_store(extensions).panel(&identity).await;
+    let panel_set: std::collections::BTreeSet<&str> = panel.iter().map(String::as_str).collect();
+    let (active_runs, rows, seen) = match extensions.get::<std::sync::Arc<SampleFeed>>() {
+        Some(feed) => {
+            let seen = feed.seen_for(&identity.practice_id, &identity.physician_id);
+            let active_runs: Vec<Value> = feed
+                .active_runs
+                .lock()
+                .expect("sample active runs")
+                .iter()
+                .filter(|run| {
+                    run.get("patient_workspace_id")
+                        .and_then(Value::as_str)
+                        .is_some_and(|ws| panel_set.contains(ws))
+                })
+                .cloned()
+                .collect();
+            let rows: Vec<Value> = feed
+                .update_rows
+                .lock()
+                .expect("sample update rows")
+                .iter()
+                .filter(|row| {
+                    row.get("patient_workspace_id")
+                        .and_then(Value::as_str)
+                        .is_none_or(|ws| panel_set.contains(ws))
+                })
+                .cloned()
+                .collect();
+            (active_runs, rows, seen)
+        }
+        None => (Vec::new(), Vec::new(), Vec::new()),
     };
     Json(json!({
         "date": practice_date(&now),
-        "rows": [],
-        "seen": [],
+        "active_runs": active_runs,
+        "rows": rows,
+        "seen": seen,
         "as_of": 0,
         "also_reviewed": 0,
         "next_cursor": null,
         "previous_date": null,
     }))
     .into_response()
+}
+
+async fn recent_conversations(
+    axum::Extension(connected): axum::Extension<care::ConnectedCare>,
+    request: Request<Body>,
+) -> Response {
+    let extensions = request.extensions();
+    let identity = care::ConnectedCare::identity(extensions);
+    let store = connected.auth_store(extensions);
+    let panel = store.panel(&identity).await;
+    let directory = connected.patients(extensions);
+    if let Some(live) = extensions.get::<std::sync::Arc<live::Live>>() {
+        let ctx = extensions.get::<auth::AuthContext>();
+        let Ok(conversations) = live.recent_conversations(ctx, &panel, &*directory).await else {
+            return StatusCode::SERVICE_UNAVAILABLE.into_response();
+        };
+        return Json(json!({ "conversations": conversations })).into_response();
+    }
+    let Ok(patients) = patients::read_patients(&*directory, &panel).await else {
+        return StatusCode::SERVICE_UNAVAILABLE.into_response();
+    };
+    let names: std::collections::BTreeMap<String, String> = patients
+        .into_iter()
+        .map(|patient| {
+            let row = patient.list_row();
+            (
+                row["patient_workspace_id"]
+                    .as_str()
+                    .unwrap_or_default()
+                    .to_owned(),
+                row["display_name"].as_str().unwrap_or_default().to_owned(),
+            )
+        })
+        .collect();
+    let conversations: Vec<Value> = match extensions.get::<std::sync::Arc<SampleFeed>>() {
+        Some(feed) => {
+            let chats_by_ws = feed.fixture_chats.lock().expect("sample fixture chats");
+            panel
+                .iter()
+                .filter_map(|ws| {
+                    let patient_name = names.get(ws)?;
+                    let chats = chats_by_ws.get(ws)?;
+                    Some(chats.iter().map(move |chat| {
+                        json!({
+                            "chat_id": chat.get("chat_id"),
+                            "patient_workspace_id": ws,
+                            "patient_display_name": patient_name,
+                            "title": chat.get("title"),
+                            "summary": chat.get("summary"),
+                            "outcome": chat.get("outcome"),
+                            "updated_at": chat.get("updated_at").or_else(|| chat.get("created_at")),
+                        })
+                    }))
+                })
+                .flatten()
+                .collect()
+        }
+        None => Vec::new(),
+    };
+    Json(json!({ "conversations": conversations })).into_response()
 }
 
 /// The practice has no calendar source yet, so the day says so.
@@ -781,6 +1067,7 @@ async fn workspace(
         let Ok(chats) = live.chats(ctx, &id).await else {
             return StatusCode::SERVICE_UNAVAILABLE.into_response();
         };
+        let has_chats = !chats.is_empty();
         enriched["chats"] = Value::Array(chats);
         let name = enriched["display_name"]
             .as_str()
@@ -790,6 +1077,43 @@ async fn workspace(
             Ok(Some(reply)) => enriched["replies"] = json!([reply]),
             Ok(None) => {}
             Err(()) => return StatusCode::SERVICE_UNAVAILABLE.into_response(),
+        }
+        let has_past = match ctx {
+            Some(ctx) => match live
+                .chat
+                .store
+                .workspace_past_work(&ctx.identity.practice_id, &ctx.identity.physician_id, &id)
+                .await
+            {
+                Ok(items) => !items.is_empty(),
+                Err(_) => return StatusCode::SERVICE_UNAVAILABLE.into_response(),
+            },
+            None => has_chats,
+        };
+        if has_past || has_chats {
+            enriched["has_past_work"] = json!(true);
+        }
+    } else if let Some(feed) = request.extensions().get::<std::sync::Arc<SampleFeed>>() {
+        if let Some(chats) = feed
+            .fixture_chats
+            .lock()
+            .expect("sample fixture chats")
+            .get(&id)
+            .cloned()
+        {
+            if !chats.is_empty() {
+                enriched["has_past_work"] = json!(true);
+            }
+            enriched["chats"] = Value::Array(chats);
+        }
+        if feed
+            .fixture_past_work
+            .lock()
+            .expect("sample fixture past work")
+            .get(&id)
+            .is_some_and(|items| !items.is_empty())
+        {
+            enriched["has_past_work"] = json!(true);
         }
     }
     Json(enriched).into_response()
@@ -803,7 +1127,9 @@ async fn roster(
     let extensions = request.extensions();
     let store = connected.auth_store(extensions);
     let practice = care::ConnectedCare::identity(extensions).practice_id;
-    let registered = store.practice_patients(&practice).await;
+    let Ok(registered) = store.practice_patients(&practice).await else {
+        return StatusCode::SERVICE_UNAVAILABLE.into_response();
+    };
     let directory = connected.patients(extensions);
     let query = query.query.unwrap_or_default();
     let Ok(found) = patients::search(&*directory, &registered, &query).await else {
@@ -819,18 +1145,109 @@ async fn roster(
         if let Some(link) = link {
             row["duet_linked"] = json!(link.linked);
             row["sharing_consented"] = json!(link.sharing_consented);
-            row["cadence"] = json!(link.cadence);
         }
     }
     Json(json!({ "patients": rows, "next_after": null })).into_response()
 }
 
-async fn reject_command(body: Option<Json<Value>>) -> Response {
+#[derive(Deserialize)]
+struct ItemOpenPayload {
+    patient_workspace_id: String,
+    item_id: String,
+}
+
+pub(crate) async fn accept_item_open(
+    auth_ctx: Option<auth::AuthContext>,
+    feed: Option<std::sync::Arc<SampleFeed>>,
+    bus: Option<&std::sync::Arc<dyn physician_bus::Bus>>,
+    idempotency_key: Option<String>,
+    payload: Option<Value>,
+) -> Response {
+    let Some(key) = idempotency_key.filter(|k| !k.trim().is_empty()) else {
+        return (
+            StatusCode::OK,
+            Json(json!({
+                "outcome": "rejected",
+                "message": rejection_message("item.open"),
+            })),
+        )
+            .into_response();
+    };
+    let _ = key;
+    let Some(payload) = payload.and_then(|p| serde_json::from_value::<ItemOpenPayload>(p).ok())
+    else {
+        return (
+            StatusCode::OK,
+            Json(json!({
+                "outcome": "rejected",
+                "message": rejection_message("item.open"),
+            })),
+        )
+            .into_response();
+    };
+    if payload.patient_workspace_id.trim().is_empty() || payload.item_id.trim().is_empty() {
+        return (
+            StatusCode::OK,
+            Json(json!({
+                "outcome": "rejected",
+                "message": rejection_message("item.open"),
+            })),
+        )
+            .into_response();
+    }
+    let identity = match auth_ctx {
+        Some(ctx) => ctx.identity,
+        None => care::ConnectedCare::identity(&axum::http::Extensions::new()),
+    };
+    if let Some(feed) = feed {
+        feed.mark_item_open(
+            &identity.practice_id,
+            &identity.physician_id,
+            &payload.item_id,
+        );
+    }
+    if let Some(bus) = bus
+        && let Err(error) = bus.publish(physician_bus::Event::Resync).await
+    {
+        tracing::warn!(%error, "item.open resync publish failed");
+    }
+    Json(json!({
+        "outcome": "accepted",
+        "patient_workspace_id": payload.patient_workspace_id,
+        "item_id": payload.item_id,
+    }))
+    .into_response()
+}
+
+async fn reject_command(
+    auth_ctx: Option<axum::Extension<auth::AuthContext>>,
+    sample_feed: Option<axum::Extension<std::sync::Arc<SampleFeed>>>,
+    body: Option<Json<Value>>,
+) -> Response {
     let command_type = body
         .as_ref()
         .and_then(|json| json.0.get("type"))
         .and_then(Value::as_str)
         .unwrap_or("");
+    if command_type == "item.open" {
+        let idempotency_key = body
+            .as_ref()
+            .and_then(|json| json.0.get("idempotency_key"))
+            .and_then(Value::as_str)
+            .map(str::to_owned);
+        let payload = body
+            .as_ref()
+            .and_then(|json| json.0.get("payload"))
+            .cloned();
+        return accept_item_open(
+            auth_ctx.map(|axum::Extension(ctx)| ctx),
+            sample_feed.map(|axum::Extension(feed)| feed),
+            None,
+            idempotency_key,
+            payload,
+        )
+        .await;
+    }
     (
         StatusCode::OK,
         Json(json!({
@@ -1254,7 +1671,7 @@ mod tests {
             .await
             .unwrap();
 
-        // 3. The patient page carries the link's consent state.
+        // 3. The patient page and roster carry the link's consent state without any cadence copy.
         let (status, ws_body) = request(
             app.clone(),
             "GET",
@@ -1266,6 +1683,82 @@ mod tests {
         let ws_json: Value = serde_json::from_str(&ws_body).unwrap();
         assert_eq!(ws_json["patient_link"]["linked"], true);
         assert_eq!(ws_json["patient_link"]["sharing_consented"], true);
+        assert!(ws_json["patient_link"].get("cadence").is_none());
+        assert!(ws_json.get("review_cadence").is_none());
         assert!(ws_json.get("duet_records").is_none());
+
+        let (roster_status, roster_body) =
+            request(app, "GET", "/patient-roster?query=Mary", Body::empty()).await;
+        assert_eq!(roster_status, StatusCode::OK);
+        let roster_json: Value = serde_json::from_str(&roster_body).unwrap();
+        assert_eq!(roster_json["patients"][0]["duet_linked"], true);
+        assert_eq!(roster_json["patients"][0]["sharing_consented"], true);
+        assert!(roster_json["patients"][0].get("cadence").is_none());
+    }
+
+    #[tokio::test]
+    async fn fixture_snapshot_and_past_work_refuse_off_panel_clinic_demographic_patients() {
+        use physician_auth::{AuthStore, Membership, MemoryAuthStore, PhysicianIdentity};
+        let patient_id = WORKSPACE_IDS[0];
+        let feed = SampleFeed::new();
+        feed.set_fixture_snapshot(
+            patient_id,
+            "chat-seeded",
+            json!({
+                "feedback": "loaded",
+                "transcript": [{
+                    "work_item_id": "w-seeded",
+                    "messages": [],
+                    "steps": { "state": "read", "steps": [] },
+                    "kept": [],
+                    "answer": {
+                        "state": "finished",
+                        "response_id": "a-seeded:reply",
+                        "attempt_id": "a-seeded",
+                        "text": "Saved answer",
+                        "feedback": null
+                    }
+                }]
+            }),
+        );
+        feed.set_fixture_past_work(
+            patient_id,
+            vec![json!({
+                "id": "conversation:chat-seeded",
+                "target": { "kind": "conversation", "chat_id": "chat-seeded" },
+                "title": "Question",
+                "summary": "Saved answer",
+                "outcome": "answered",
+                "updated_at": "2026-08-27T15:00:00Z",
+            })],
+        );
+
+        let store = MemoryAuthStore::new();
+        store.seed_patient("roger-synthetic-practice", patient_id);
+        let preview = PhysicianIdentity {
+            practice_id: "roger-synthetic-practice".to_owned(),
+            physician_id: "local-preview".to_owned(),
+        };
+        store.seed_membership(&preview, patient_id, Membership::ClinicDemographic);
+        let auth_ext: std::sync::Arc<dyn AuthStore> = std::sync::Arc::new(store);
+        let app = fixture_site_with_feed(feed).layer(axum::Extension(auth_ext));
+
+        let (snap_status, _) = request(
+            app.clone(),
+            "GET",
+            &format!("/patient-workspaces/{patient_id}/chats/chat-seeded/snapshot"),
+            Body::empty(),
+        )
+        .await;
+        assert_eq!(snap_status, StatusCode::NOT_FOUND);
+
+        let (pw_status, _) = request(
+            app,
+            "GET",
+            &format!("/patient-workspaces/{patient_id}/past-work"),
+            Body::empty(),
+        )
+        .await;
+        assert_eq!(pw_status, StatusCode::NOT_FOUND);
     }
 }

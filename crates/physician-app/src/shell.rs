@@ -54,6 +54,16 @@ pub const REPLY_REVISION_SUPERSEDED: &str =
 pub const REPLY_REVISION_STALE: &str =
     "Coda couldn’t take that revision. The current draft is shown; review it and ask again.";
 
+/// Whether the signed-in physician has already opened a Today item once.
+#[derive(Debug, Clone, Copy, Default, PartialEq, Eq)]
+pub enum ItemOpenStanding {
+    /// Not yet opened by this physician.
+    #[default]
+    Unopened,
+    /// Opened at least once by this physician.
+    Opened,
+}
+
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct TodayLine {
     pub item_id: String,
@@ -65,6 +75,8 @@ pub struct TodayLine {
     pub waiting_since: String,
     /// Coda marked the concern as needing the physician now, not just today.
     pub now: bool,
+    /// Whether this physician has already opened the item once.
+    pub standing: ItemOpenStanding,
     pub resume_work_item_id: Option<String>,
     pub resume_run_id: Option<String>,
 }
@@ -135,10 +147,21 @@ pub fn answer_to<'a, Q: PartialEq, T>(asking: &Q, answer: Option<&'a (Q, T)>) ->
 pub type TodayView = ReadView<Vec<TodayLine>>;
 
 pub fn today_lines(list: &TodayListResponse) -> Vec<TodayLine> {
-    list.rows.iter().map(today_line).collect()
+    list.rows
+        .iter()
+        .map(|row| today_line(row, &list.seen))
+        .collect()
 }
 
-fn today_line(row: &TodayRow) -> TodayLine {
+/// Returns the first urgent (`now`) concern that has not yet been opened once.
+pub fn active_now_concern(lines: &[TodayLine]) -> Option<&TodayLine> {
+    lines
+        .iter()
+        .find(|line| line.now && line.standing == ItemOpenStanding::Unopened)
+}
+
+fn today_line(row: &TodayRow, seen_ids: &[String]) -> TodayLine {
+    let opened = row.seen || seen_ids.iter().any(|seen| seen == &row.item_id);
     TodayLine {
         item_id: row.item_id.clone(),
         workspace_id: row.patient_workspace_id.clone(),
@@ -148,6 +171,11 @@ fn today_line(row: &TodayRow) -> TodayLine {
         did: row_did(row),
         waiting_since: row.waiting_since.clone(),
         now: row.urgency == "now",
+        standing: if opened {
+            ItemOpenStanding::Opened
+        } else {
+            ItemOpenStanding::Unopened
+        },
         resume_work_item_id: row
             .resume_target
             .as_ref()
@@ -525,6 +553,139 @@ pub fn synopsis_pieces(segments: &[ClinicalSegment]) -> Vec<SynopsisPiece> {
     parts
 }
 
+/// Builds the readable text shown when inspecting a cited source, comparing
+/// whitespace-normalized text (after stripping any trailing ellipsis on
+/// `quote`) so a multiline or truncated `quote` is never duplicated above
+/// `body` when `body` already contains that passage.
+fn citation_preview_body(quote: &str, body: &str) -> String {
+    let trimmed_body = body.trim();
+    if trimmed_body.is_empty() {
+        return quote.trim().to_owned();
+    }
+    let stripped_quote = quote
+        .trim()
+        .trim_end_matches('…')
+        .trim_end_matches("...")
+        .trim();
+    if stripped_quote.is_empty() {
+        return trimmed_body.to_owned();
+    }
+    let norm_quote = normalize_citation_whitespace(stripped_quote);
+    let norm_body = normalize_citation_whitespace(trimmed_body);
+    if norm_quote.is_empty() || norm_body.contains(&norm_quote) {
+        trimmed_body.to_owned()
+    } else {
+        format!("{}\n\n{trimmed_body}", quote.trim())
+    }
+}
+
+fn normalize_citation_whitespace(input: &str) -> String {
+    input
+        .split_whitespace()
+        .collect::<Vec<_>>()
+        .join(" ")
+        .to_lowercase()
+}
+
+/// Converts structured conversation/Basis segments and snapshot sources into [`SynopsisPiece`]s.
+pub fn message_pieces(
+    segments: &[physician_wire::MessageSegment],
+    sources: &std::collections::BTreeMap<String, physician_wire::CitedSourceWire>,
+) -> Vec<SynopsisPiece> {
+    let mut parts = Vec::new();
+    let mut index = 0;
+    while index < segments.len() {
+        match &segments[index] {
+            physician_wire::MessageSegment::Text { text } => {
+                parts.push(SynopsisPiece::Text(text.clone()));
+                index += 1;
+            }
+            physician_wire::MessageSegment::Citation { .. } => {
+                let mut chips = Vec::new();
+                while let physician_wire::MessageSegment::Citation {
+                    source_key,
+                    number,
+                    label,
+                    quote,
+                } = &segments[index]
+                {
+                    let chip = match sources.get(source_key) {
+                        Some(source) => {
+                            let preview = citation_preview_body(quote, &source.body);
+                            let (open_label, open_uri) = match source
+                                .external_url
+                                .as_deref()
+                                .map(str::trim)
+                                .filter(|uri| !uri.is_empty())
+                            {
+                                Some(uri) => {
+                                    let btn = if source.source_label.trim().is_empty() {
+                                        "Open original".to_owned()
+                                    } else {
+                                        format!("Open in {}", source.source_label.trim())
+                                    };
+                                    (Some(btn), Some(uri.to_owned()))
+                                }
+                                None => (None, None),
+                            };
+                            SourceChip {
+                                index: *number,
+                                label: if source.title.trim().is_empty() {
+                                    label.clone()
+                                } else {
+                                    source.title.clone()
+                                },
+                                open: true,
+                                preview,
+                                as_of: source.recorded_at.clone().unwrap_or_default(),
+                                open_label,
+                                open_uri,
+                            }
+                        }
+                        None => SourceChip {
+                            index: *number,
+                            label: label.clone(),
+                            open: !quote.trim().is_empty(),
+                            preview: quote.clone(),
+                            as_of: String::new(),
+                            open_label: None,
+                            open_uri: None,
+                        },
+                    };
+                    chips.push(chip);
+                    if index + 1 < segments.len()
+                        && matches!(
+                            segments[index + 1],
+                            physician_wire::MessageSegment::Citation { .. }
+                        )
+                    {
+                        index += 1;
+                        continue;
+                    }
+                    if index + 2 < segments.len()
+                        && matches!(
+                            segments[index + 2],
+                            physician_wire::MessageSegment::Citation { .. }
+                        )
+                        && matches!(
+                            &segments[index + 1],
+                            physician_wire::MessageSegment::Text { text }
+                                if text.chars().all(|c| c == ' ' || c == '\t')
+                        )
+                    {
+                        index += 2;
+                        continue;
+                    }
+                    break;
+                }
+                parts.push(SynopsisPiece::Chips(chips));
+                index += 1;
+            }
+        }
+    }
+    parts
+}
+
 fn source_chip(
     index: usize,
     state: &str,
@@ -843,6 +1004,135 @@ pub fn summary_times(workspace: &PatientWorkspaceResponse, now: &str) -> Vec<Sum
     times
 }
 
+/// How a patient workspace's connected source records currently stand.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub enum WorkspaceRecordsState {
+    /// Pulled sources are current; carries the oldest `Records as of …` timestamp.
+    Current(SummaryTime),
+    /// A refresh failed, keeping the last good read time: `"Records as of …, couldn't update"`.
+    RefreshFailedWithSnapshot(SummaryTime),
+    /// Sources are still connecting for the first time.
+    Hydrating,
+    /// Sources are configured with no saved successful pull yet.
+    Unavailable(&'static str),
+    /// No sources are attached to this response.
+    Absent,
+}
+
+/// Formats supplied identity fields (`DOB …` and `MRN …`) for a Find patient row, omitting
+/// missing fields rather than fabricating placeholder text.
+pub fn search_row_detail(birth_date: Option<&str>, mrn: Option<&str>) -> String {
+    let mut parts = Vec::new();
+    if let Some(dob) = birth_date.map(str::trim).filter(|value| !value.is_empty()) {
+        parts.push(format!("DOB {}", format_calendar_date(dob)));
+    }
+    if let Some(mrn) = mrn.map(str::trim).filter(|value| !value.is_empty()) {
+        parts.push(format!("MRN {mrn}"));
+    }
+    parts.join(" · ")
+}
+
+/// Physician-facing standing of one connected clinical record source.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub enum ConnectedSourceStanding {
+    /// Source has a saved successful pull.
+    Usable { last_good: String },
+    /// Latest refresh failed; preserves last good pull time when present.
+    RefreshFailed { last_good: Option<String> },
+    /// Initial hydration or active refresh with no completed pull yet.
+    Connecting,
+    /// Configured source with no saved successful read yet.
+    AwaitingFirstRead,
+}
+
+/// One named record source shown on the patient page.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct ConnectedSourceLine {
+    /// Physician-facing source name.
+    pub label: String,
+    /// Standing derived strictly from saved pull state.
+    pub standing: ConnectedSourceStanding,
+}
+
+/// Evaluates per-source standing and last good read time from saved source statuses.
+/// No source reports as usable without a saved successful read timestamp.
+pub fn source_lines(workspace: &PatientWorkspaceResponse, now: &str) -> Vec<ConnectedSourceLine> {
+    if workspace.is_clinic_demographic() {
+        return Vec::new();
+    }
+    let zone = workspace.time_zone.as_deref().unwrap_or("");
+    workspace
+        .connected_sources
+        .iter()
+        .filter_map(|source| {
+            let label = source
+                .source_label
+                .as_deref()
+                .map(str::trim)
+                .filter(|value| !value.is_empty())?
+                .to_owned();
+            let standing = match source.state.state.as_str() {
+                "usable" | "refreshing" => match source
+                    .state
+                    .synchronized_at
+                    .as_deref()
+                    .and_then(|instant| format_context_time(instant, zone, now))
+                {
+                    Some(last_good) => ConnectedSourceStanding::Usable { last_good },
+                    None if source.state.state == "refreshing" => {
+                        ConnectedSourceStanding::Connecting
+                    }
+                    None => ConnectedSourceStanding::AwaitingFirstRead,
+                },
+                "failed" => ConnectedSourceStanding::RefreshFailed {
+                    last_good: source
+                        .state
+                        .usable_snapshot
+                        .as_ref()
+                        .and_then(|snapshot| snapshot.synchronized_at.as_deref())
+                        .and_then(|instant| format_context_time(instant, zone, now)),
+                },
+                "hydrating" => ConnectedSourceStanding::Connecting,
+                _ => ConnectedSourceStanding::AwaitingFirstRead,
+            };
+            Some(ConnectedSourceLine { label, standing })
+        })
+        .collect()
+}
+
+/// Evaluates record freshness and failure status from saved connected-source statuses.
+pub fn workspace_records_state(
+    workspace: &PatientWorkspaceResponse,
+    now: &str,
+) -> WorkspaceRecordsState {
+    if workspace.is_clinic_demographic() || workspace.connected_sources.is_empty() {
+        return WorkspaceRecordsState::Absent;
+    }
+    let any_failed = workspace
+        .connected_sources
+        .iter()
+        .any(|source| source.state.state == "failed");
+    if let Some(time) = records_time(workspace, now) {
+        return if any_failed {
+            WorkspaceRecordsState::RefreshFailedWithSnapshot(time)
+        } else {
+            WorkspaceRecordsState::Current(time)
+        };
+    }
+    if workspace
+        .connected_sources
+        .iter()
+        .any(|source| source.state.state == "hydrating")
+    {
+        return WorkspaceRecordsState::Hydrating;
+    }
+    if any_failed {
+        WorkspaceRecordsState::Unavailable("Records couldn’t be loaded.")
+    } else {
+        WorkspaceRecordsState::Unavailable("Records not yet pulled.")
+    }
+}
+
 /// When the patient's records were last refreshed, beside their identity.
 pub fn records_time(workspace: &PatientWorkspaceResponse, now: &str) -> Option<SummaryTime> {
     let mut times = Vec::new();
@@ -1013,6 +1303,8 @@ pub enum ChatView {
 pub struct ChatLine {
     pub id: String,
     pub title: String,
+    pub summary: Option<String>,
+    pub outcome: Option<physician_wire::HistoryWorkOutcome>,
 }
 
 /// The workspace's conversations. `opened` is the conversation the page has
@@ -1036,12 +1328,16 @@ pub fn chat_view(
                 .map(|chat| ChatLine {
                     id: chat.chat_id.clone(),
                     title: chat.title.clone().unwrap_or_else(|| "Untitled".to_owned()),
+                    summary: chat.summary.clone().filter(|s| !s.trim().is_empty()),
+                    outcome: chat.outcome,
                 })
                 .collect();
             if let Some(id) = opened.filter(|id| lines.iter().all(|line| line.id != *id)) {
                 lines.push(ChatLine {
                     id: id.to_owned(),
                     title: "Untitled".to_owned(),
+                    summary: None,
+                    outcome: None,
                 });
             }
             if lines.is_empty() {
@@ -1060,19 +1356,21 @@ pub struct DemographicCardView {
     pub display_name: String,
     /// Formatted date of birth, such as `Mar 18, 1972`.
     pub birth_date: Option<String>,
-    /// Formatted age in years, such as `54 years`.
+    /// Formatted age in years, omitted for non-panel clinic demographic views.
     pub age: Option<String>,
-    /// Capitalized sex or gender value.
+    /// Capitalized sex or gender value, omitted for non-panel clinic demographic views.
     pub sex_or_gender: Option<String>,
     /// Primary medical record number.
     pub mrn: Option<String>,
-    /// Capitalized record status, such as `Active`.
+    /// Capitalized record status, omitted for non-panel clinic demographic views.
     pub record_state: Option<String>,
 }
 
 /// Extracts the clinic-demographic card fields from a workspace response.
+/// When `workspace.is_clinic_demographic()` is true, only display name, DOB, and MRN are surfaced.
 pub fn demographic_card_view(workspace: &PatientWorkspaceResponse) -> DemographicCardView {
     let identity = workspace.identity.as_ref();
+    let restricted = workspace.is_clinic_demographic();
     let display_name = if !workspace.display_name.trim().is_empty() {
         workspace.display_name.clone()
     } else {
@@ -1083,23 +1381,35 @@ pub fn demographic_card_view(workspace: &PatientWorkspaceResponse) -> Demographi
     let birth_date = identity
         .and_then(|id| id.birth_date.as_deref())
         .map(format_calendar_date);
-    let age = identity
-        .and_then(|id| id.age_years)
-        .map(|years| format!("{years} years"));
-    let sex_or_gender = identity
-        .and_then(|id| id.sex_or_gender.as_ref())
-        .and_then(|gender| gender.value.as_deref())
-        .map(capitalize_first)
-        .filter(|value| !value.is_empty());
+    let age = (!restricted)
+        .then(|| {
+            identity
+                .and_then(|id| id.age_years)
+                .map(|years| format!("{years} years"))
+        })
+        .flatten();
+    let sex_or_gender = (!restricted)
+        .then(|| {
+            identity
+                .and_then(|id| id.sex_or_gender.as_ref())
+                .and_then(|gender| gender.value.as_deref())
+                .map(capitalize_first)
+                .filter(|value| !value.is_empty())
+        })
+        .flatten();
     let mrn = identity.and_then(|id| {
         id.medical_record_numbers
             .iter()
             .find_map(|number| number.value.clone())
     });
-    let record_state = identity
-        .and_then(|id| id.state.as_deref())
-        .map(capitalize_first)
-        .filter(|value| !value.is_empty());
+    let record_state = (!restricted)
+        .then(|| {
+            identity
+                .and_then(|id| id.state.as_deref())
+                .map(capitalize_first)
+                .filter(|value| !value.is_empty())
+        })
+        .flatten();
     DemographicCardView {
         display_name,
         birth_date,
@@ -1349,6 +1659,8 @@ mod tests {
         let morning = ChatLine {
             id: "c1".to_owned(),
             title: "Morning".to_owned(),
+            summary: None,
+            outcome: None,
         };
         assert_eq!(
             chat_view(Some("p1"), Some(Ok(&open)), None),
@@ -1363,6 +1675,8 @@ mod tests {
         let started = ChatLine {
             id: "c9".to_owned(),
             title: "Untitled".to_owned(),
+            summary: None,
+            outcome: None,
         };
         assert_eq!(
             chat_view(Some("p1"), Some(Ok(&empty)), Some("c9")),
@@ -1664,6 +1978,8 @@ mod tests {
         );
         let older = records_as_of(&[
             physician_wire::ConnectedSource {
+                source_id: None,
+                source_label: None,
                 state: physician_wire::SourceConnectionState {
                     state: "usable".to_owned(),
                     synchronized_at: Some("2026-08-27T16:57:53.508Z".to_owned()),
@@ -1671,6 +1987,8 @@ mod tests {
                 },
             },
             physician_wire::ConnectedSource {
+                source_id: None,
+                source_label: None,
                 state: physician_wire::SourceConnectionState {
                     state: "failed".to_owned(),
                     synchronized_at: Some("2026-08-27T18:00:00.000Z".to_owned()),
@@ -1729,11 +2047,92 @@ mod tests {
         let card = demographic_card_view(&workspace);
         assert_eq!(card.display_name, "Jake Test");
         assert_eq!(card.birth_date.as_deref(), Some("Nov 4, 1958"));
-        assert_eq!(card.age.as_deref(), Some("67 years"));
-        assert_eq!(card.sex_or_gender.as_deref(), Some("Male"));
+        assert!(card.age.is_none());
+        assert!(card.sex_or_gender.is_none());
         assert_eq!(card.mrn.as_deref(), Some("00000012"));
-        assert_eq!(card.record_state.as_deref(), Some("Active"));
+        assert!(card.record_state.is_none());
         assert_eq!(past_work_copy(&workspace), None);
+    }
+
+    #[test]
+    fn active_now_concern_persists_until_opened_once() {
+        let unopened: TodayListResponse = serde_json::from_str(
+            r#"{
+                "date": "2026-08-27",
+                "rows": [{
+                    "patient_workspace_id": "pw-1",
+                    "patient_display_name": "Jake Smith",
+                    "item_id": "concern-k-high",
+                    "version_id": "v1",
+                    "waiting_since": "2026-08-27T16:00:00Z",
+                    "urgency": "now",
+                    "kind": "concern",
+                    "reason": "Potassium 6.2 mEq/L on afternoon chemistry"
+                }],
+                "seen": [],
+                "as_of": 1
+            }"#,
+        )
+        .unwrap();
+        let lines = today_lines(&unopened);
+        let active = active_now_concern(&lines).expect("unopened now concern");
+        assert_eq!(active.patient, "Jake Smith");
+        assert_eq!(active.reason, "Potassium 6.2 mEq/L on afternoon chemistry");
+
+        let mut seen_list = unopened;
+        seen_list.seen = vec!["concern-k-high".to_owned()];
+        let seen_lines = today_lines(&seen_list);
+        assert!(active_now_concern(&seen_lines).is_none());
+    }
+
+    #[test]
+    fn records_state_preserves_last_good_time_on_failed_refresh_and_omits_unpulled() {
+        let stale: PatientWorkspaceResponse = serde_json::from_str(
+            r#"{
+                "patient_workspace_id": "pw-1",
+                "display_name": "Mary Louis",
+                "time_zone": "America/New_York",
+                "connected_sources": [{
+                    "source_id": "ehr",
+                    "source_label": "Practice EHR",
+                    "state": {
+                        "state": "failed",
+                        "usable_snapshot": { "synchronized_at": "2026-08-27T16:00:00.000Z" }
+                    }
+                }]
+            }"#,
+        )
+        .unwrap();
+        match workspace_records_state(&stale, "2026-08-27T19:30:00.000Z") {
+            WorkspaceRecordsState::RefreshFailedWithSnapshot(time) => {
+                assert_eq!(time.words, "Today, 12:00 PM");
+            }
+            other => panic!("expected RefreshFailedWithSnapshot, got {other:?}"),
+        }
+
+        let unpulled: PatientWorkspaceResponse = serde_json::from_str(
+            r#"{
+                "patient_workspace_id": "pw-1",
+                "display_name": "Mary Louis",
+                "time_zone": "America/New_York",
+                "connected_sources": [{
+                    "source_id": "ehr",
+                    "source_label": "Practice EHR",
+                    "state": { "state": "not_yet_pulled" }
+                }]
+            }"#,
+        )
+        .unwrap();
+        assert_eq!(
+            workspace_records_state(&unpulled, "2026-08-27T19:30:00.000Z"),
+            WorkspaceRecordsState::Unavailable("Records not yet pulled.")
+        );
+        assert_eq!(
+            search_row_detail(Some("1972-03-18"), Some("00000005")),
+            "DOB Mar 18, 1972 · MRN 00000005"
+        );
+        assert_eq!(search_row_detail(None, Some("00000005")), "MRN 00000005");
+        assert_eq!(search_row_detail(None, None), "");
     }
 
     #[test]
@@ -1847,5 +2246,88 @@ mod tests {
         assert_eq!(reply_channel_label("email"), "Gmail");
         assert_eq!(reply_urgency_words("urgent_ed"), "Urgent, ED");
         assert_eq!(reply_urgency_words("same_day"), "Same day");
+    }
+
+    #[test]
+    fn source_lines_require_saved_successful_read_before_reporting_usable() {
+        let workspace: PatientWorkspaceResponse = serde_json::from_value(serde_json::json!({
+            "patient_workspace_id": "pw-1",
+            "display_name": "Elena Rostova",
+            "time_zone": "America/New_York",
+            "connected_sources": [
+                {
+                    "source_id": "epic-1",
+                    "source_label": "Practice EHR",
+                    "state": {
+                        "state": "usable",
+                        "synchronized_at": "2026-08-27T15:00:00Z"
+                    }
+                },
+                {
+                    "source_id": "quest-1",
+                    "source_label": "Quest Labs",
+                    "state": {
+                        "state": "usable"
+                    }
+                },
+                {
+                    "source_id": "hospital-1",
+                    "source_label": "Mercy Health",
+                    "state": {
+                        "state": "failed",
+                        "usable_snapshot": {
+                            "synchronized_at": "2026-08-27T14:30:00Z"
+                        }
+                    }
+                }
+            ]
+        }))
+        .unwrap();
+        let lines = source_lines(&workspace, "2026-08-27T16:00:00Z");
+        assert_eq!(
+            lines,
+            vec![
+                ConnectedSourceLine {
+                    label: "Practice EHR".to_owned(),
+                    standing: ConnectedSourceStanding::Usable {
+                        last_good: "Today, 11:00 AM".to_owned(),
+                    },
+                },
+                ConnectedSourceLine {
+                    label: "Quest Labs".to_owned(),
+                    standing: ConnectedSourceStanding::AwaitingFirstRead,
+                },
+                ConnectedSourceLine {
+                    label: "Mercy Health".to_owned(),
+                    standing: ConnectedSourceStanding::RefreshFailed {
+                        last_good: Some("Today, 10:30 AM".to_owned()),
+                    },
+                },
+            ]
+        );
+    }
+
+    #[test]
+    fn citation_preview_deduplicates_multiline_and_truncated_quotes_against_body() {
+        let multiline_body = "Specimen comment\nPotassium 5.4 mmol/L (reference 3.5-5.0 mmol/L).\n\nSodium 140 mmol/L.";
+        let collapsed_truncated_quote =
+            "Specimen comment Potassium 5.4 mmol/L (reference 3.5-5.0 mmol/L).…";
+        assert_eq!(
+            citation_preview_body(collapsed_truncated_quote, multiline_body),
+            multiline_body
+        );
+
+        assert_eq!(
+            citation_preview_body(
+                "Addendum from cardiology consult.",
+                "Sinus rhythm at 68 bpm."
+            ),
+            "Addendum from cardiology consult.\n\nSinus rhythm at 68 bpm."
+        );
+
+        assert_eq!(
+            citation_preview_body("Quoted excerpt only.", "   "),
+            "Quoted excerpt only."
+        );
     }
 }

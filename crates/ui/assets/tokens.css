@@ -211,6 +211,7 @@
   /* Frames the shell and its overlays stand in. Overlays are fixed, so their percentages are the window's. */
   --sidebar-width: 244px;
   --sidebar-rail-width: 56px;
+  --orb-size: 56px;
   --drawer-width: min(19rem, calc(100% - var(--target)));
   --dialog-width: 40rem;
   --dialog-margin: max(var(--space-6), 7dvh);
@@ -296,6 +297,7 @@
   /* One pass of the working mark's dots, so work in progress reads the same wherever it shows. */
   --motion-working: 1.2s;
   --motion-spinner: .8s;
+  --motion-orb: 3.6s;
   /* A read that settles sooner shows only its content; a slower one says so before a second passes. */
   --pending-status-delay: 400ms;
   --ease-out: cubic-bezier(.2,.7,.25,1);

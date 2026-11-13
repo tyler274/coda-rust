@@ -16,6 +16,8 @@ reqwest = { version = "0.12", default-features = false, features = ["json", "rus
 thiserror = "2"
 async-trait = "0.1"
 harness = { path = "../harness" }
+patient-work = { path = "../patient-work" }
+physician-auth = { path = "../physician-auth" }
 physician-wire = { path = "../physician-wire" }
 sea-orm = { version = "2", default-features = false, features = ["sqlx-postgres", "runtime-tokio-rustls", "with-json", "macros"] }
 sea-orm-migration = { version = "2", default-features = false, features = [
@@ -30,5 +32,6 @@ sha2 = "0.11"
 tracing = "0.1"
 
 [dev-dependencies]
-physician-auth = { path = "../physician-auth" }
+front-door = { path = "../front-door" }
 tokio = { version = "1", features = ["macros", "rt"] }
+tower = { version = "0.5", features = ["util"] }
