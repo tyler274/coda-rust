@@ -18,32 +18,37 @@ let
   toml = pkgs.formats.toml { };
 
   # The binary's schema: crates/workspace-tools/sandbox/src/config.rs.
-  configFile = toml.generate "coda-sandbox-config.toml" {
-    version = 1;
-    container = {
-      name = cfg.container.name;
-      unit = "container@${cfg.container.name}.service";
-      ssh_host = cfg.container.sshHost;
-      agent_uid = cfg.uidBase + 1000;
-      repo = cfg.paths.repo;
-    };
-    build.root = cfg.paths.build;
-    ci = {
-      spool = "${cfg.paths.ci}/spool";
-      timer = "coda-ci.timer";
-      service = "coda-ci.service";
-    };
-    broker = {
-      socket = cfg.broker.socket;
-      gh_fallback = if cfg.broker.ghFallback then "on" else "off";
-    }
-    // lib.optionalAttrs cfg.ci.enable {
-      ci = {
-        socket = cfg.broker.ciSocket;
-        user = "coda-ci";
+  configFile = toml.generate "coda-sandbox-config.toml" (
+    {
+      version = 1;
+      container = {
+        name = cfg.container.name;
+        unit = "container@${cfg.container.name}.service";
+        ssh_host = cfg.container.sshHost;
+        agent_uid = cfg.uidBase + 1000;
+        repo = cfg.paths.repo;
       };
-    };
-  };
+      build.root = cfg.paths.build;
+      ci = {
+        spool = "${cfg.paths.ci}/spool";
+        timer = "coda-ci.timer";
+        service = "coda-ci.service";
+      };
+      broker = {
+        socket = cfg.broker.socket;
+        gh_fallback = if cfg.broker.ghFallback then "on" else "off";
+      }
+      // lib.optionalAttrs cfg.ci.enable {
+        ci = {
+          socket = cfg.broker.ciSocket;
+          user = "coda-ci";
+        };
+      };
+    }
+    // lib.optionalAttrs cfg.container.modelProxy.enable {
+      model_proxy.url = cfg.container.modelProxy.url;
+    }
+  );
 
   carry = pkgs.callPackage ./carry-package.nix {
     inherit (cfg) user;
@@ -153,6 +158,40 @@ in
         type = lib.types.deferredModule;
         default = { };
         description = "Extra NixOS configuration for the container.";
+      };
+      modelProxy = {
+        enable = lib.mkEnableOption ''
+          Claude Code and Codex in the container sending their requests to a
+          model proxy on the host, such as ungate, which keeps the account
+          sign-ins and records usage per client. They present the broker's
+          `model-proxy` item (`coda-sandbox broker store model-proxy`) as
+          their key. The proxy itself is configured on the host and must
+          listen on hostAddress. Off, `claude auth login` and `codex login`
+          in the container sign in
+        '';
+        port = lib.mkOption {
+          type = lib.types.port;
+          default = 47821;
+          description = "The proxy's port on hostAddress; the container may connect to it and to no other host port.";
+        };
+        url = lib.mkOption {
+          type = lib.types.str;
+          default = "http://${cfg.hostAddress}:${toString cfg.container.modelProxy.port}";
+          defaultText = lib.literalExpression ''"http://''${hostAddress}:''${toString modelProxy.port}"'';
+          readOnly = true;
+          description = "The proxy's address as the container reaches it.";
+        };
+      };
+      hostTcpPorts = lib.mkOption {
+        type = lib.types.listOf lib.types.port;
+        default = [ ];
+        example = [ 11434 ];
+        description = ''
+          Further TCP ports on hostAddress the container may connect to, such
+          as a local model server's; modelProxy adds its own. The server must
+          listen on hostAddress. Every other connection to the host stays
+          dropped.
+        '';
       };
     };
 

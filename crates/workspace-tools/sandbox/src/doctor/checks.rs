@@ -1,12 +1,19 @@
-use std::path::{Path, PathBuf};
+use std::path::Path;
 
 use serde::Serialize;
 
 use super::{Check, Finding, Fix, Outcome, SpoolDir, broker, reflink};
 use crate::config::{Config, Loaded, UnitName};
-use crate::editor_settings::{Editor, ForwardingKey, Setting, Settings};
+use crate::editor_settings::{
+    DEFAULT_EXTENSIONS_KEY, Editor, ForwardingKey, RemoteExtensions, Setting, Settings,
+    SettingsFile,
+};
 use crate::error::Error;
-use crate::probe::{ActiveState, LoadState, PathKind, Probe, SSH_DEADLINE, SshReach, UnitScope};
+use crate::model_proxy::ProxyCheck;
+use crate::probe::{
+    ActiveState, ForwardAgent, FromContainer, LoadState, PROXY_CHECK, PathKind, Probe,
+    SSH_DEADLINE, SshReach, UnitScope,
+};
 
 const REBUILD: &str = "declare it in the NixOS configuration, then `sudo nixos-rebuild switch`";
 
@@ -43,9 +50,11 @@ pub fn run(probe: &dyn Probe, config: &Result<Loaded, Error>) -> Vec<Finding> {
     if let Ok(loaded) = config {
         findings.extend(machine(probe, &loaded.config));
     }
-    findings.extend(Editor::ALL.map(|editor| Finding {
-        check: Check::EditorSettings(editor),
-        outcome: editor_outcome(probe, editor),
+    findings.extend(Editor::ALL.into_iter().filter_map(|editor| {
+        Some(Finding {
+            check: Check::EditorSettings(editor),
+            outcome: editor_outcome(probe, editor)?,
+        })
     }));
     findings
 }
@@ -98,6 +107,10 @@ fn machine(probe: &dyn Probe, config: &Config) -> Vec<Finding> {
         ),
         (Check::Ssh, ssh_outcome(probe, &config.container.ssh_host)),
         (
+            Check::SshForwarding,
+            ssh_forwarding_outcome(probe, &config.container.ssh_host),
+        ),
+        (
             Check::SpoolDir(SpoolDir::Requests),
             spool_outcome(probe, &config.ci.requests()),
         ),
@@ -109,7 +122,8 @@ fn machine(probe: &dyn Probe, config: &Config) -> Vec<Finding> {
             Check::CiTimer,
             unit_outcome(probe, UnitScope::System, &config.ci.timer),
         ),
-        (Check::Broker, broker::outcome(probe, &config.broker)),
+        (Check::Broker, broker::outcome(probe, config)),
+        (Check::ModelProxy, model_proxy_outcome(probe, config)),
     ];
     for dir in LegacyTokenDir::ALL {
         findings.push((Check::LegacyToken(dir), legacy_token_outcome(probe, dir)));
@@ -235,6 +249,86 @@ fn ssh_outcome(probe: &dyn Probe, host: &str) -> Outcome {
     }
 }
 
+/// Asks from inside the container, so the check crosses the same firewall
+/// and presents the same key as Claude Code and Codex do.
+fn model_proxy_outcome(probe: &dyn Probe, config: &Config) -> Outcome {
+    let Some(proxy) = &config.model_proxy else {
+        return Outcome::Skip {
+            reason: "modelProxy is off; the agent CLIs keep their own logins".to_owned(),
+        };
+    };
+    let host = &config.container.ssh_host;
+    let url = &proxy.url;
+    let found = match probe.proxy_check(host) {
+        Ok(FromContainer::Answered(found)) => found,
+        Ok(FromContainer::Failed { stderr, .. }) => {
+            return Outcome::Fail {
+                detail: format!("`ssh {host} {PROXY_CHECK}` failed: {stderr}"),
+                fix: Fix::command("ssh", [host.as_str(), PROXY_CHECK]),
+            };
+        }
+        Ok(FromContainer::TimedOut) => {
+            return Outcome::Fail {
+                detail: format!(
+                    "`ssh {host} {PROXY_CHECK}` did not finish in {} s",
+                    SSH_DEADLINE.as_secs()
+                ),
+                fix: Fix::command("ssh", [host.as_str(), PROXY_CHECK]),
+            };
+        }
+        Err(cause) => return Outcome::CannotCheck { cause },
+    };
+    match found {
+        ProxyCheck::Accepted {
+            client: Some(client),
+        } => Outcome::Pass {
+            detail: format!("{url} takes the key as client {client}"),
+        },
+        ProxyCheck::Accepted { client: None } => Outcome::Warn {
+            detail: format!(
+                "{url} has no client keys, so it serves anything that reaches it \
+                 and cannot tell the container's usage apart"
+            ),
+            fix: Fix::instruction(
+                "mint a key in the proxy's dashboard on the host, then \
+                 `coda-sandbox broker store model-proxy`",
+            ),
+        },
+        ProxyCheck::Refused { status: 401 | 403 } => Outcome::Fail {
+            detail: format!("{url} refuses the broker's model-proxy key"),
+            fix: Fix::instruction(
+                "mint a key in the proxy's dashboard on the host, then \
+                 `coda-sandbox broker store model-proxy`",
+            ),
+        },
+        ProxyCheck::Refused { status } => Outcome::Fail {
+            detail: format!("{url}/v1/client answered {status}"),
+            fix: Fix::instruction("see the proxy's log on the host"),
+        },
+        ProxyCheck::NotTheProxy { error } => Outcome::Fail {
+            detail: format!("{url} answers, but not as the model proxy: {error}"),
+            fix: Fix::instruction(
+                "run a proxy with `GET /v1/client`, such as Coda's ungate, on that port",
+            ),
+        },
+        ProxyCheck::Unreachable { error } => Outcome::Fail {
+            detail: format!("the container cannot reach {url}: {error}"),
+            fix: Fix::instruction(
+                "start the proxy on the host listening on hostAddress, \
+                 such as `systemctl --user status ungate`",
+            ),
+        },
+        ProxyCheck::NoKey { reason } => Outcome::Fail {
+            detail: format!("no model-proxy key to present: {reason}"),
+            fix: Fix::command("coda-sandbox", ["broker", "store", "model-proxy"]),
+        },
+        ProxyCheck::Broker { error } => Outcome::Fail {
+            detail: format!("the container's broker did not answer: {error}"),
+            fix: Fix::command("systemctl", ["--user", "status", broker::UNIT]),
+        },
+    }
+}
+
 fn spool_outcome(probe: &dyn Probe, path: &Path) -> Outcome {
     match probe.path_kind(path) {
         Ok(PathKind::Directory) => Outcome::Pass {
@@ -280,40 +374,129 @@ fn legacy_token_outcome(probe: &dyn Probe, dir: LegacyTokenDir) -> Outcome {
     }
 }
 
-fn editor_outcome(probe: &dyn Probe, editor: Editor) -> Outcome {
-    let Some(home) = probe.home() else {
-        return Outcome::CannotCheck {
-            cause: Error::NoHome,
-        };
-    };
-    let path: PathBuf = editor.settings_path(&home);
-    let text = match probe.read_file(&path) {
-        Ok(Some(text)) => text,
-        Ok(None) => {
-            return Outcome::Skip {
-                reason: format!("no {}", path.display()),
-            };
-        }
+/// Every editor's remote, and Claude Code's and Codex's shells, are SSH
+/// sessions under the user's SSH config, so its `ForwardAgent` decides
+/// whether the host's keys reach the container.
+fn ssh_forwarding_outcome(probe: &dyn Probe, host: &str) -> Outcome {
+    let forward = match probe
+        .ssh_config(host)
+        .and_then(|resolved| resolved.forward_agent())
+    {
+        Ok(forward) => forward,
         Err(cause) => return Outcome::CannotCheck { cause },
     };
-    match Settings::parse(&path, &text) {
-        Ok(settings) => forwarding_outcome(&settings, &path),
+    let agent = match forward {
+        ForwardAgent::No => {
+            return Outcome::Pass {
+                detail: format!("{host}: ForwardAgent no"),
+            };
+        }
+        ForwardAgent::Yes => "yes".to_owned(),
+        ForwardAgent::Socket(socket) => socket,
+    };
+    Outcome::Fail {
+        detail: format!(
+            "{host}: ForwardAgent {agent}, so the editors' SSH sessions carry the host's keys"
+        ),
+        fix: Fix::instruction(format!(
+            "set `ForwardAgent no` under `Host {host}` in ~/.ssh/config"
+        )),
+    }
+}
+
+fn editor_outcome(probe: &dyn Probe, editor: Editor) -> Option<Outcome> {
+    let file = editor.settings()?;
+    let Some(home) = probe.home() else {
+        return Some(Outcome::CannotCheck {
+            cause: Error::NoHome,
+        });
+    };
+    Some(settings_outcome(probe, &file.path(&home), file))
+}
+
+fn settings_outcome(probe: &dyn Probe, path: &Path, file: SettingsFile) -> Outcome {
+    let text = match probe.read_file(path) {
+        Ok(Some(text)) => text,
+        Ok(None) => return no_settings_outcome(probe, path, file),
+        Err(cause) => return Outcome::CannotCheck { cause },
+    };
+    let settings = match Settings::parse(path, &text) {
+        Ok(settings) => settings,
+        Err(cause) => return Outcome::CannotCheck { cause },
+    };
+    if let Some(failure) = forwarding_failure(&settings, file.keys, path) {
+        return failure;
+    }
+    extensions_outcome(&settings, file.extensions, path)
+}
+
+/// An editor that has run keeps its user directory even with no settings
+/// file, and then every forwarding key is at its default, on. An editor
+/// that never ran on this machine has neither.
+fn no_settings_outcome(probe: &dyn Probe, path: &Path, file: SettingsFile) -> Outcome {
+    let Some(user_dir) = path.parent() else {
+        return Outcome::Skip {
+            reason: format!("no {}", path.display()),
+        };
+    };
+    match probe.path_kind(user_dir) {
+        Ok(PathKind::Directory) => {
+            let keys: Vec<&str> = file.keys.iter().map(|key| key.key()).collect();
+            Outcome::Fail {
+                detail: format!(
+                    "no {}, so {} default to true",
+                    path.display(),
+                    keys.join(", ")
+                ),
+                fix: Fix::instruction(format!(
+                    "create {} setting {} to false",
+                    path.display(),
+                    keys.join(", ")
+                )),
+            }
+        }
+        Ok(_) => Outcome::Skip {
+            reason: format!("no {}", path.display()),
+        },
         Err(cause) => Outcome::CannotCheck { cause },
+    }
+}
+
+/// Missing extensions only warn: the remote still works and forwards
+/// nothing, but rust-analyzer and the dev shell wait for a manual install.
+fn extensions_outcome(settings: &Settings, extensions: RemoteExtensions, path: &Path) -> Outcome {
+    let missing = match extensions {
+        RemoteExtensions::Setting => settings.missing_remote_extensions(),
+        RemoteExtensions::ByHand => Vec::new(),
+    };
+    if missing.is_empty() {
+        return Outcome::Pass {
+            detail: "credential forwarding off".to_owned(),
+        };
+    }
+    Outcome::Warn {
+        detail: format!(
+            "credential forwarding off; {DEFAULT_EXTENSIONS_KEY} lacks {}, so the container side has no dev shell or rust-analyzer until they are installed",
+            missing.join(", ")
+        ),
+        fix: Fix::instruction(format!(
+            "add {} to {DEFAULT_EXTENSIONS_KEY} in {}",
+            missing.join(", "),
+            path.display()
+        )),
     }
 }
 
 /// Unset fails like `true`: the editors default these keys on, so an unset
 /// key forwards the host's credentials just the same.
-fn forwarding_outcome(settings: &Settings, path: &Path) -> Outcome {
-    let not_off: Vec<(ForwardingKey, Setting)> = ForwardingKey::ALL
-        .into_iter()
-        .map(|key| (key, settings.get(key)))
+fn forwarding_failure(settings: &Settings, keys: &[ForwardingKey], path: &Path) -> Option<Outcome> {
+    let not_off: Vec<(ForwardingKey, Setting)> = keys
+        .iter()
+        .map(|&key| (key, settings.get(key)))
         .filter(|(_, setting)| *setting != Setting::Off)
         .collect();
     if not_off.is_empty() {
-        return Outcome::Pass {
-            detail: "credential forwarding off".to_owned(),
-        };
+        return None;
     }
     let keys: Vec<&str> = not_off.iter().map(|(key, _)| key.key()).collect();
     let described: Vec<String> = not_off
@@ -324,12 +507,12 @@ fn forwarding_outcome(settings: &Settings, path: &Path) -> Outcome {
             Setting::On | Setting::Off => format!("{} = true", key.key()),
         })
         .collect();
-    Outcome::Fail {
+    Some(Outcome::Fail {
         detail: described.join("; "),
         fix: Fix::instruction(format!(
             "set {} to false in {}",
             keys.join(", "),
             path.display()
         )),
-    }
+    })
 }

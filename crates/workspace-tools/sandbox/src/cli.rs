@@ -7,6 +7,7 @@ use coda_sandbox::broker::Item;
 use coda_sandbox::broker::client::Want;
 use coda_sandbox::config;
 use coda_sandbox::credential::Operation;
+use coda_sandbox::editor_settings::Editor;
 use coda_sandbox::ids::{JobName, Slug};
 use coda_sandbox::worktree::gc::DEFAULT_IDLE_DAYS;
 use coda_sandbox::worktree::new::DEFAULT_FROM;
@@ -59,8 +60,29 @@ pub enum Command {
         #[arg(value_enum)]
         operation: Operation,
     },
+    /// A shell in a container checkout over SSH, with nothing forwarded: a
+    /// login shell, or the command after `--` run in the checkout's dev
+    /// shell, such as `coda-sandbox shell eng-7 -- claude`.
+    Shell {
+        /// The worktree; the main checkout without one.
+        slug: Option<Slug>,
+        #[arg(last = true)]
+        command: Vec<String>,
+    },
+    /// Open a container checkout in an editor on this machine, over its
+    /// SSH remote.
+    Open {
+        /// The worktree; the main checkout without one.
+        slug: Option<Slug>,
+        #[arg(long, value_enum, default_value = "cursor")]
+        editor: Editor,
+    },
+    /// In the container: ask the model proxy whether it takes the broker's
+    /// model-proxy key, and print what it said as JSON. `doctor` on the
+    /// host runs this over SSH.
+    ProxyCheck,
     /// Print a token from the broker, for the container's gh and doppler
-    /// wrappers.
+    /// wrappers and the agent CLIs' key commands.
     Token {
         #[arg(value_enum)]
         want: Want,

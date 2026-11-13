@@ -46,7 +46,7 @@ services.coda-sandbox = {
 
 ## The agent container
 
-`coda-agent` ([nix/container.nix](nix/container.nix) on [nix/nspawn.nix](nix/nspawn.nix)) has its own user namespace (the agent is an unmapped high host UID), a private network that cannot reach the host, the LAN or Tailscale, no sudo and no Docker. It sees only these host paths:
+`coda-agent` ([nix/container.nix](nix/container.nix) on [nix/nspawn.nix](nix/nspawn.nix)) has its own user namespace (the agent is an unmapped high host UID), a private network that cannot reach the host (except the ports `modelProxy` and `hostTcpPorts` open), the LAN or Tailscale, no sudo and no Docker. It sees only these host paths:
 
 | Container path | Host path | Access |
 | --- | --- | --- |
@@ -80,11 +80,45 @@ Inside the container, git asks `coda-sandbox credential` for `https://github.com
 
 With `ci.enable`, the broker also listens on `/run/coda-sandbox/ci/broker.sock`, in a directory only you and the `coda-ci` user can enter, and serves the `github-ci` token there to the CI controller's user alone. Each socket answers only for its own tokens: the container cannot ask for the CI token, even on its own socket, and the controller cannot ask for the container's. Each socket serves at most 16 connections at once, with separate room for you, and gives a caller two seconds to send its request, so a stalled caller on one socket cannot hold up the other, nor stop `broker store` from reaching the running broker. If the socket the controller would use exists but it may not reach it, its pass fails instead of quietly skipping GitHub.
 
-The module's polkit rule lets `user` start, stop and restart `container@<name>.service` and the `coda-ci` units without sudo, so doctor's fixes for them are plain `systemctl`.
+The module's polkit rule lets `user` start, stop and restart `container@<name>.service` and the `coda-ci` units without sudo, so doctor's fixes for them are plain `systemctl`. A switch never restarts the container, so it cannot cut off an agent's work; a change to the container's own configuration takes effect at `systemctl restart container@<name>.service`.
 
-### Working in the sandbox from Cursor
+### Working in the sandbox from an editor or agent CLI
 
-Add an SSH entry for host `coda-agent`: `HostName` is `localAddress`, `User agent`, a dedicated `IdentityFile` whose public key is in `authorizedKeys`, and `ForwardAgent no`. Connect with Remote-SSH and open `/agents/coda/src/coda-rust`. Keep these Cursor settings off so no host credential is forwarded: `remote.SSH.enableAgentForwarding`, `git.terminalAuthentication`, `github.gitAuthentication`; `coda-sandbox doctor` flags them. `coda-sandbox worktree` owns worktrees and their build directories there, and a daily `coda-worktree-gc` timer in the container runs `coda-sandbox worktree gc`.
+Add an SSH entry for host `coda-agent` (`container.sshHost`): `HostName` is `localAddress`, `User agent`, a dedicated `IdentityFile` whose public key is in `authorizedKeys`, and `ForwardAgent no`. Then, on the host:
+
+```bash
+coda-sandbox open                      # the main checkout in Cursor
+coda-sandbox open eng-7 --editor zed   # .worktrees/eng-7 in Zed
+coda-sandbox shell                     # a login shell in the main checkout
+coda-sandbox shell eng-7 -- claude     # Claude Code in that worktree's dev shell
+```
+
+`open` takes `--editor cursor`, `code`, `antigravity` or `zed`, and launches `cursor`, `code` or `antigravity-ide` with `--remote ssh-remote+coda-agent <dir>`, or `zeditor ssh://coda-agent<dir>` (on NixOS `zed` is the ZFS event daemon). `shell` runs a command through `direnv exec`, so it gets the repo's dev shell. Both refuse a worktree that does not exist, and pass `ForwardAgent=no` and `ClearAllForwardings=yes` to their own SSH. The editor window, and its own model sign-in, stay on the host; its remote server, terminals and agent commands run in the container.
+
+Each checkout's `.envrc` is approved once in the container (`direnv allow`). Rust-analyzer and cargo are then the flake's, from the toolchain's own `rust-analyzer` component, started inside the checkout's dev shell:
+
+- **Cursor and VS Code** need the direnv and rust-analyzer extensions on the container side. With `"remote.SSH.defaultExtensions": ["mkhl.direnv", "rust-lang.rust-analyzer"]` in the user settings, the remote server installs them on its first start; doctor warns when the key lacks either. The repo's `.vscode/settings.json` points the extension at the `rust-analyzer` on the dev shell's PATH.
+- **Antigravity** has no such key. Install the two once in its remote server, from `coda-sandbox shell`: `~/.antigravity-ide-server/bin/*/bin/antigravity-ide-server --install-extension mkhl.direnv --install-extension rust-lang.rust-analyzer`, then reload the window. They stay installed until the server's directory is removed.
+- **Zed** loads the dev shell through `load_direnv` in `.zed/settings.json`. It holds language servers back until the project is trusted, so the first open of each checkout asks once.
+
+Nothing forwards a host credential: doctor checks that `ssh -G coda-agent` resolves `ForwardAgent no`, which is all Antigravity's remote and Zed have to go by, and that these settings are off where the editor has them: `remote.SSH.enableAgentForwarding`, `git.terminalAuthentication` and `github.gitAuthentication` for Cursor and VS Code, the two Git ones for Antigravity. An editor that has run here but has no settings file fails too, since every key is then at its default.
+
+Claude Code and Codex run in the container, in `coda-sandbox shell` or an editor's terminal, and come from the dev shell. By default each signs in once there (`claude auth login`, `codex login`) and keeps its login in the agent's home.
+
+With `container.modelProxy.enable`, both send their requests to a model proxy on the host instead, and no account sign-in enters the container. The proxy is [Coda's ungate](https://github.com/Coda-Health/ungate): it keeps the Claude and ChatGPT sign-ins as an account pool, passes Claude Code's `/v1/messages` and Codex's `/v1/responses` through to them, and records usage per client key. Run it on the host listening on `hostAddress` as well as loopback (its `HOST` takes a comma-separated list, and it binds `hostAddress` once the container's interface exists), on `container.modelProxy.port`, 47821 by default. Mint a client key for the container in its dashboard, then store it:
+
+```bash
+coda-sandbox broker store model-proxy
+coda-sandbox doctor                   # "model proxy  http://10.233.1.1:47821 takes the key as client coda-agent"
+```
+
+The container's firewall opens that one port on `hostAddress` and keeps every other host port dropped; `container.hostTcpPorts` opens further ones, such as a local model server's. The option writes the container's system-wide config: Claude Code's `/etc/claude-code/managed-settings.json` sets `ANTHROPIC_BASE_URL` to the proxy and an `apiKeyHelper`, and `/etc/codex/config.toml` makes the proxy's Responses API Codex's provider with a key command. Both run `coda-sandbox token model-proxy` per session, so the key is in no file or environment. Managed settings outrank the agent's own, so every Claude Code session uses the proxy; the agent's `~/.codex/config.toml` can still pick another Codex provider. The proxy's admin routes answer only on loopback, so the container can use its key but cannot mint, list or revoke keys.
+
+With the option on, `status` and doctor's token broker check list `model-proxy` and warn until it is stored, and doctor's model proxy check runs `coda-sandbox proxy-check` in the container over SSH: it asks the proxy's `GET /v1/client` with the stored key, which costs no tokens, and fails when the container cannot reach the proxy or the proxy refuses the key. A proxy with no client keys serves anyone who reaches it, so the check warns. Revoking the key in the dashboard cuts the container off.
+
+The container is the sandbox for both CLIs. Codex's own `workspace-write` sandbox cannot start inside it, since its bubblewrap needs to mount `/proc`, so Codex runs commands there with `-s danger-full-access`, and the container still bounds what they reach.
+
+`coda-sandbox worktree` owns worktrees and their build directories in the container, and a daily `coda-worktree-gc` timer there runs `coda-sandbox worktree gc`.
 
 ### Bringing host worktrees over
 

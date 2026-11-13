@@ -10,9 +10,10 @@ use crate::broker::{Item, Source};
 use crate::config::UnitName;
 use crate::editor_settings::Editor;
 use crate::error::Error;
+use crate::model_proxy::ProxyCheck;
 use crate::probe::{
-    ActiveState, FsType, LoadState, PathKind, PoolFeature, Probe, SshReach, UnitScope, UnitState,
-    ZFS_BCLONE_PARAMETER,
+    ActiveState, FromContainer, FsType, LoadState, PathKind, PoolFeature, Probe, SshOptions,
+    SshReach, UnitScope, UnitState, ZFS_BCLONE_PARAMETER,
 };
 
 /// Paths it does not list are missing; paths under `denied` fail with
@@ -26,8 +27,11 @@ pub(super) struct FakeProbe {
     pub fs: FsType,
     pub pool_feature: Option<PoolFeature>,
     pub ssh: SshReach,
+    /// What `ssh -G` prints for the container's host.
+    pub ssh_options: String,
     /// `None` when no broker listens on the socket.
     pub broker: Option<Report>,
+    pub proxy_check: FromContainer<ProxyCheck>,
 }
 
 fn denied(path: &Path) -> Error {
@@ -92,6 +96,14 @@ impl Probe for FakeProbe {
         Ok(self.ssh.clone())
     }
 
+    fn proxy_check(&self, _: &str) -> Result<FromContainer<ProxyCheck>, Error> {
+        Ok(self.proxy_check.clone())
+    }
+
+    fn ssh_config(&self, _: &str) -> Result<SshOptions, Error> {
+        Ok(SshOptions::parse(&self.ssh_options))
+    }
+
     fn home(&self) -> Option<PathBuf> {
         Some(PathBuf::from("/home/me"))
     }
@@ -104,18 +116,23 @@ impl Probe for FakeProbe {
     }
 }
 
-/// The broker's report on a host with the CI when every token is in the
-/// keyring.
+/// The broker's report on a host with the CI and the model proxy when every
+/// token is in the keyring.
 pub(super) fn stored() -> Report {
     Report {
-        items: [Item::GithubAgent, Item::Doppler, Item::GithubCi]
-            .map(|item| ItemReport {
-                item,
-                state: ItemState::Available {
-                    source: Source::Keyring,
-                },
-            })
-            .to_vec(),
+        items: [
+            Item::GithubAgent,
+            Item::Doppler,
+            Item::ModelProxy,
+            Item::GithubCi,
+        ]
+        .map(|item| ItemReport {
+            item,
+            state: ItemState::Available {
+                source: Source::Keyring,
+            },
+        })
+        .to_vec(),
         gh_fallback: GhFallback::Off,
         fallback_used: false,
     }
@@ -126,6 +143,7 @@ const SAFE_SETTINGS: &str = r#"{
   "remote.SSH.enableAgentForwarding": false,
   "git.terminalAuthentication": false,
   "github.gitAuthentication": false,
+  "remote.SSH.defaultExtensions": ["mkhl.direnv", "rust-lang.rust-analyzer"],
 }"#;
 
 /// Cyrene as it should be, with the legacy token directories gone.
@@ -136,10 +154,7 @@ pub(super) fn healthy() -> FakeProbe {
     };
     let units = ["container@coda-agent.service", "coda-ci.timer"];
     let mut files = HashMap::from([(PathBuf::from(ZFS_BCLONE_PARAMETER), "1\n".to_owned())]);
-    files.insert(
-        Editor::Cursor.settings_path(Path::new("/home/me")),
-        SAFE_SETTINGS.to_owned(),
-    );
+    files.insert(settings_path(Editor::Cursor), SAFE_SETTINGS.to_owned());
     FakeProbe {
         units: units.iter().map(|u| ((*u).to_owned(), active)).collect(),
         dirs: [
@@ -154,6 +169,18 @@ pub(super) fn healthy() -> FakeProbe {
         fs: FsType::Zfs,
         pool_feature: Some(PoolFeature::Active),
         ssh: SshReach::Reachable,
+        ssh_options: "hostname 10.233.1.2\nforwardagent no\nuser agent\n".to_owned(),
         broker: Some(stored()),
+        proxy_check: FromContainer::Answered(ProxyCheck::Accepted {
+            client: Some("coda-agent".to_owned()),
+        }),
     }
+}
+
+/// An editor's settings file under the fake home.
+pub(super) fn settings_path(editor: Editor) -> PathBuf {
+    editor
+        .settings()
+        .expect("the editor has a settings file")
+        .path(Path::new("/home/me"))
 }

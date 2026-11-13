@@ -12,6 +12,34 @@ let
   # shaped like a real token, so the published test log stays clean.
   githubToken = "vmcheck-github-agent-7f3a91";
   dopplerToken = "vmcheck-doppler-2c8e54";
+  proxyKey = "vmcheck-model-proxy-9b4c17";
+  # Stands in for ungate's `GET /v1/client`: 200 with the client's label for
+  # the one key it knows, 403 for any other.
+  stubProxy = pkgs.writers.writePython3 "stub-model-proxy" { } ''
+    import json
+    from http.server import BaseHTTPRequestHandler, HTTPServer
+
+
+    KEY = "Bearer ${proxyKey}"
+
+
+    class Handler(BaseHTTPRequestHandler):
+        def do_GET(self):
+            known = self.headers.get("Authorization") == KEY
+            if self.path != "/v1/client":
+                self.send_response(404)
+                self.end_headers()
+                return
+            self.send_response(200 if known else 403)
+            self.send_header("Content-Type", "application/json")
+            self.end_headers()
+            client = {"id": "c1", "label": "coda-agent"}
+            body = {"client": client} if known else {"error": "unknown key"}
+            self.wfile.write(json.dumps(body).encode())
+
+
+    HTTPServer(("0.0.0.0", 47821), Handler).serve_forever()
+  '';
   # Throwaway key for the sshd login check; never used outside this test.
   testKey = pkgs.runCommand "coda-agent-test-key" { nativeBuildInputs = [ pkgs.openssh ]; } ''
     mkdir $out
@@ -22,7 +50,12 @@ in
   name = "agent-sandbox";
 
   nodes.machine =
-    { config, lib, pkgs, ... }:
+    {
+      config,
+      lib,
+      pkgs,
+      ...
+    }:
     {
       imports = [
         (import ./agents-pool.nix { inherit disk; })
@@ -62,12 +95,21 @@ in
       # pool and this unit binds it over /nix/store on later boots.
       systemd.services.vm-zfs-store = {
         wantedBy = [ "multi-user.target" ];
-        before = [ "container@coda-agent.service" "nix-daemon.service" ];
+        before = [
+          "container@coda-agent.service"
+          "nix-daemon.service"
+        ];
         requiredBy = [ "container@coda-agent.service" ];
         after = [ "local-fs.target" ];
         unitConfig.ConditionPathExists = "/dev/disk/by-id/virtio-store";
-        path = [ config.boot.zfs.package pkgs.util-linux ];
-        serviceConfig = { Type = "oneshot"; RemainAfterExit = true; };
+        path = [
+          config.boot.zfs.package
+          pkgs.util-linux
+        ];
+        serviceConfig = {
+          Type = "oneshot";
+          RemainAfterExit = true;
+        };
         script = ''
           zpool list vmstore >/dev/null 2>&1 || zpool import -N -o cachefile=none vmstore || exit 0
           zfs mount vmstore/store 2>/dev/null || true
@@ -83,6 +125,7 @@ in
         inherit uidBase;
         memoryMax = "1G";
         authorizedKeys = [ (builtins.readFile "${testKey}/key.pub") ];
+        container.modelProxy.enable = true;
         # No desktop session runs a Secret Service here; the stub keeps
         # items as files the broker's user owns.
         broker.keyringPackage = pkgs.callPackage ./fake-secret-tool.nix { dir = keyring; };
@@ -102,6 +145,12 @@ in
       };
       # Open on the host firewall, so only the sandbox rules can block it.
       networking.firewall.allowedTCPPorts = [ 8080 ];
+      # On every address, so only the sandbox rules decide who reaches it;
+      # the module opens its port to the container and nothing else.
+      systemd.services.stub-model-proxy = {
+        wantedBy = [ "multi-user.target" ];
+        serviceConfig.ExecStart = stubProxy;
+      };
       # Lingering, as on Cyrene, so the broker runs without a login.
       users.users.luluco = {
         isNormalUser = true;
@@ -233,6 +282,7 @@ in
 
     github_token = "${githubToken}"
     doppler_token = "${dopplerToken}"
+    proxy_key = "${proxyKey}"
     keyring = "${keyring}"
     host_users_gid = "${toString (uidBase + 100)}"
   ''

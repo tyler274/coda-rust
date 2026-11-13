@@ -16,7 +16,8 @@
 #     container's host UID, so host tools such as git treat them as foreign.
 #   * a private network with a veth pair and NAT; host nftables drops its
 #     traffic to private, CGNAT (Tailscale), link-local and multicast ranges
-#     and every connection it opens to the host itself.
+#     and every connection it opens to the host itself, except to the TCP
+#     ports on hostAddress that hostTcpPorts names.
 #   * cgroup limits on the container unit.
 #
 # Starting a sandbox never gates boot: units it needs are `requires`, the
@@ -38,6 +39,15 @@ let
         };
         hostAddress = lib.mkOption { type = lib.types.str; };
         localAddress = lib.mkOption { type = lib.types.str; };
+        hostTcpPorts = lib.mkOption {
+          type = lib.types.listOf lib.types.port;
+          default = [ ];
+          description = ''
+            TCP ports on hostAddress the container may connect to, such as a
+            model proxy's. Every other connection to the host stays dropped,
+            and so does all IPv6.
+          '';
+        };
         autoStart = lib.mkOption {
           type = lib.types.bool;
           default = false;
@@ -246,11 +256,27 @@ in
       ip-forward-no-drop = true;
     };
 
+    # The host's own firewall filters input too; open each port on its veth
+    # alone, so a server that also listens elsewhere stays closed there.
+    networking.firewall.interfaces = lib.mapAttrs' (
+      name: s: lib.nameValuePair (iface name) { allowedTCPPorts = s.hostTcpPorts; }
+    ) (lib.filterAttrs (_: s: s.hostTcpPorts != [ ]) cfg.containers);
+
     networking.nftables.tables.agent-sandbox = {
       family = "inet";
       content =
         let
           ifaces = lib.concatMapStringsSep ", " (n: ''"${iface n}"'') (lib.attrNames cfg.containers);
+          hostPorts = lib.concatStrings (
+            lib.mapAttrsToList (
+              name: s:
+              lib.optionalString (s.hostTcpPorts != [ ]) ''
+                iifname "${iface name}" ip daddr ${s.hostAddress} tcp dport { ${
+                  lib.concatMapStringsSep ", " toString s.hostTcpPorts
+                } } accept
+              ''
+            ) cfg.containers
+          );
         in
         ''
           set blocked4 {
@@ -269,6 +295,7 @@ in
           chain input {
             type filter hook input priority filter - 10; policy accept;
             iifname { ${ifaces} } ct state established,related accept
+          ${hostPorts}
             iifname { ${ifaces} } drop
           }
         '';

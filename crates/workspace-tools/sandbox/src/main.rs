@@ -15,7 +15,7 @@ use coda_sandbox::credential;
 use coda_sandbox::error::Error;
 use coda_sandbox::probe::SystemProbe;
 use coda_sandbox::worktree::{self, Layout, prune::Confirm};
-use coda_sandbox::{carry, ci, doctor, status};
+use coda_sandbox::{carry, ci, doctor, model_proxy, open, status};
 
 fn main() -> ExitCode {
     let cli = Cli::parse();
@@ -85,6 +85,38 @@ fn dispatch(cli: &Cli) -> Result<ExitCode, Error> {
             let config = Config::load(&cli.config)?;
             let stdin = std::io::stdin().lock();
             credential::run(*operation, &config.broker.socket, stdin, std::io::stdout())?;
+            Ok(ExitCode::SUCCESS)
+        }
+        Command::Shell { slug, command } => {
+            let config = Config::load(&cli.config)?;
+            let run = if command.is_empty() {
+                open::Run::Login
+            } else {
+                open::Run::Command(command.clone())
+            };
+            let status = open::shell(&config, slug.as_ref(), &run)?;
+            // ssh's own failures exit 255; past that it is the command's.
+            Ok(status
+                .code()
+                .and_then(|code| u8::try_from(code).ok())
+                .map_or(ExitCode::FAILURE, ExitCode::from))
+        }
+        Command::Open { slug, editor } => {
+            let config = Config::load(&cli.config)?;
+            let dir = open::open(&config, slug.as_ref(), *editor)?;
+            print(&format!(
+                "Opened {}:{} in {}\n",
+                config.container.ssh_host,
+                dir.display(),
+                editor.name()
+            ))?;
+            Ok(ExitCode::SUCCESS)
+        }
+        Command::ProxyCheck => {
+            let config = Config::load(&cli.config)?;
+            let proxy = config.model_proxy.as_ref().ok_or(Error::NoModelProxy)?;
+            let found = model_proxy::check(&config.broker.socket, proxy);
+            print(&(serde_json::to_string(&found).map_err(Error::Json)? + "\n"))?;
             Ok(ExitCode::SUCCESS)
         }
         Command::Token { want, force } => {

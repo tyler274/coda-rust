@@ -1,14 +1,16 @@
 use std::path::{Path, PathBuf};
 
-use super::fake::{healthy, stored};
+use super::fake::{healthy, settings_path, stored};
 use super::{Check, Fix, LegacyTokenDir, Outcome, SpoolDir, Verdict, render, run, verdict};
 use crate::broker::Source;
 use crate::broker::wire::{GhFallback, ItemState, Unavailable};
 use crate::config::{Config, Loaded};
 use crate::editor_settings::Editor;
 use crate::error::Error;
+use crate::model_proxy::ProxyCheck;
 use crate::probe::{
-    ActiveState, FsType, LoadState, PoolFeature, SshReach, UnitState, ZFS_BCLONE_PARAMETER,
+    ActiveState, FromContainer, FsType, LoadState, PoolFeature, SshReach, UnitState,
+    ZFS_BCLONE_PARAMETER,
 };
 
 const CONFIG: &str = include_str!("../../config/cyrene.toml");
@@ -163,7 +165,8 @@ fn broker_reports_source_and_warns_on_fallback() {
     let findings = run(&healthy(), &config());
     assert!(matches!(
         outcome(&findings, &Check::Broker),
-        Outcome::Pass { detail } if detail == "github-agent: keyring; doppler: keyring; github-ci: keyring"
+        Outcome::Pass { detail }
+            if detail == "github-agent: keyring; doppler: keyring; model-proxy: keyring; github-ci: keyring"
     ));
 
     let mut probe = healthy();
@@ -203,6 +206,125 @@ fn broker_without_the_agent_token_fails_with_the_store_command() {
         panic!("expected Fail")
     };
     assert_eq!(fix.to_string(), "coda-sandbox broker store github-agent");
+}
+
+#[test]
+fn with_the_model_proxy_on_its_key_must_be_stored() {
+    let mut probe = healthy();
+    let mut report = stored();
+    report.items[2].state = ItemState::Unavailable {
+        reason: Unavailable::NotStored,
+    };
+    probe.broker = Some(report);
+    let findings = run(&probe, &config());
+    let Outcome::Warn { detail, fix } = outcome(&findings, &Check::Broker) else {
+        panic!("expected Warn")
+    };
+    assert!(detail.contains("model-proxy: not stored"), "{detail}");
+    assert_eq!(fix.to_string(), "coda-sandbox broker store model-proxy");
+}
+
+#[test]
+fn with_the_model_proxy_off_its_key_is_not_listed_and_the_check_skips() {
+    let off = config_without_proxy();
+    let mut probe = healthy();
+    let mut report = stored();
+    report.items[2].state = ItemState::Unavailable {
+        reason: Unavailable::NotStored,
+    };
+    probe.broker = Some(report);
+    let findings = run(&probe, &off);
+    assert!(matches!(
+        outcome(&findings, &Check::Broker),
+        Outcome::Pass { detail }
+            if detail == "github-agent: keyring; doppler: keyring; github-ci: keyring"
+    ));
+    assert!(matches!(
+        outcome(&findings, &Check::ModelProxy),
+        Outcome::Skip { .. }
+    ));
+}
+
+fn config_without_proxy() -> Result<Loaded, Error> {
+    let start = CONFIG.find("[model_proxy]").expect("cyrene has a proxy");
+    let end = start + CONFIG[start..].find("[carry]").expect("carry follows");
+    let off = format!("{}{}", &CONFIG[..start], &CONFIG[end..]);
+    Config::parse_with_unknown_keys(Path::new("t"), &off)
+}
+
+fn proxy_outcome(found: FromContainer<ProxyCheck>) -> Outcome {
+    let mut probe = healthy();
+    probe.proxy_check = found;
+    let mut findings = run(&probe, &config());
+    let index = findings
+        .iter()
+        .position(|f| f.check == Check::ModelProxy)
+        .expect("check ran");
+    findings.swap_remove(index).outcome
+}
+
+#[test]
+fn model_proxy_taking_the_key_passes_with_its_client() {
+    let found = proxy_outcome(FromContainer::Answered(ProxyCheck::Accepted {
+        client: Some("coda-agent".to_owned()),
+    }));
+    assert!(
+        matches!(&found, Outcome::Pass { detail } if detail.contains("client coda-agent")),
+        "{found:?}"
+    );
+}
+
+#[test]
+fn model_proxy_without_client_keys_warns() {
+    let found = proxy_outcome(FromContainer::Answered(ProxyCheck::Accepted {
+        client: None,
+    }));
+    assert!(
+        matches!(&found, Outcome::Warn { detail, .. } if detail.contains("no client keys")),
+        "{found:?}"
+    );
+}
+
+#[test]
+fn model_proxy_refusing_the_key_fails_and_says_to_store_a_new_one() {
+    let found = proxy_outcome(FromContainer::Answered(ProxyCheck::Refused { status: 403 }));
+    let Outcome::Fail { detail, fix } = found else {
+        panic!("expected Fail, got {found:?}")
+    };
+    assert!(detail.contains("refuses"), "{detail}");
+    assert!(
+        fix.to_string()
+            .contains("coda-sandbox broker store model-proxy")
+    );
+}
+
+#[test]
+fn model_proxy_out_of_reach_fails_and_names_the_address() {
+    let found = proxy_outcome(FromContainer::Answered(ProxyCheck::Unreachable {
+        error: "connection refused".to_owned(),
+    }));
+    assert!(
+        matches!(&found, Outcome::Fail { detail, .. }
+            if detail.contains("http://10.233.1.1:47821") && detail.contains("connection refused")),
+        "{found:?}"
+    );
+}
+
+#[test]
+fn model_proxy_check_that_cannot_reach_the_container_fails() {
+    for unreached in [
+        FromContainer::Failed {
+            exit_code: Some(127),
+            stderr: "coda-sandbox: command not found".to_owned(),
+        },
+        FromContainer::TimedOut,
+    ] {
+        let found = proxy_outcome(unreached);
+        let Outcome::Fail { fix, .. } = found else {
+            panic!("expected Fail, got {found:?}")
+        };
+        assert_eq!(fix.to_string(), "ssh coda-agent 'coda-sandbox proxy-check'");
+    }
 }
 
 #[test]
@@ -280,7 +402,7 @@ fn reflink_pool_feature_and_xfs() {
 
 #[test]
 fn unset_and_enabled_forwarding_both_fail() {
-    let path = Editor::Cursor.settings_path(Path::new("/home/me"));
+    let path = settings_path(Editor::Cursor);
     let mut probe = healthy();
     for text in [
         r#"{ "git.terminalAuthentication": false }"#,
@@ -297,6 +419,115 @@ fn unset_and_enabled_forwarding_both_fail() {
         );
         assert_eq!(verdict(&findings), Verdict::Failing);
     }
+}
+
+#[test]
+fn an_editor_that_ran_without_a_settings_file_fails() {
+    let path = settings_path(Editor::Antigravity);
+    let mut probe = healthy();
+    let findings = run(&probe, &config());
+    assert!(matches!(
+        outcome(&findings, &Check::EditorSettings(Editor::Antigravity)),
+        Outcome::Skip { .. }
+    ));
+
+    probe
+        .dirs
+        .push(path.parent().expect("a user directory").to_owned());
+    let findings = run(&probe, &config());
+    assert!(matches!(
+        outcome(&findings, &Check::EditorSettings(Editor::Antigravity)),
+        Outcome::Fail { detail, .. } if detail.contains("github.gitAuthentication")
+    ));
+}
+
+#[test]
+fn missing_remote_extensions_warn_once_forwarding_is_off() {
+    let path = settings_path(Editor::Cursor);
+    let mut probe = healthy();
+    probe.files.insert(
+        path.clone(),
+        r#"{
+          "remote.SSH.enableAgentForwarding": false,
+          "git.terminalAuthentication": false,
+          "github.gitAuthentication": false,
+          "remote.SSH.defaultExtensions": ["MKHL.direnv"],
+        }"#
+        .to_owned(),
+    );
+    let findings = run(&probe, &config());
+    assert!(matches!(
+        outcome(&findings, &Check::EditorSettings(Editor::Cursor)),
+        Outcome::Warn { detail, fix: Fix::Instruction(fix) }
+            if detail.contains("lacks rust-lang.rust-analyzer")
+                && !detail.contains("mkhl.direnv")
+                && fix.contains("remote.SSH.defaultExtensions")
+    ));
+    assert_eq!(verdict(&findings), Verdict::Healthy);
+
+    // A forwarding failure is the finding, whatever the extensions.
+    probe.files.insert(
+        path,
+        r#"{ "git.terminalAuthentication": false }"#.to_owned(),
+    );
+    let findings = run(&probe, &config());
+    assert!(matches!(
+        outcome(&findings, &Check::EditorSettings(Editor::Cursor)),
+        Outcome::Fail { detail, .. } if !detail.contains("defaultExtensions")
+    ));
+}
+
+#[test]
+fn antigravity_needs_only_its_git_keys_off_and_zed_has_no_settings_check() {
+    let path = settings_path(Editor::Antigravity);
+    assert!(path.ends_with(".config/Antigravity IDE/User/settings.json"));
+    let mut probe = healthy();
+    probe.files.insert(
+        path.clone(),
+        r#"{ "git.terminalAuthentication": false, "github.gitAuthentication": false }"#.to_owned(),
+    );
+    let findings = run(&probe, &config());
+    assert!(matches!(
+        outcome(&findings, &Check::EditorSettings(Editor::Antigravity)),
+        Outcome::Pass { .. }
+    ));
+    assert!(
+        !findings
+            .iter()
+            .any(|f| f.check == Check::EditorSettings(Editor::Zed))
+    );
+    probe.files.insert(
+        path,
+        r#"{ "git.terminalAuthentication": false }"#.to_owned(),
+    );
+    let findings = run(&probe, &config());
+    assert!(matches!(
+        outcome(&findings, &Check::EditorSettings(Editor::Antigravity)),
+        Outcome::Fail { detail, .. } if detail.contains("github.gitAuthentication unset")
+    ));
+}
+
+#[test]
+fn ssh_config_forwarding_the_agent_fails() {
+    let mut probe = healthy();
+    assert!(matches!(
+        outcome(&run(&probe, &config()), &Check::SshForwarding),
+        Outcome::Pass { .. }
+    ));
+    for value in ["yes", "/run/user/1000/ssh-agent"] {
+        probe.ssh_options = format!("user agent\nforwardagent {value}\n");
+        let findings = run(&probe, &config());
+        let Outcome::Fail { detail, fix } = outcome(&findings, &Check::SshForwarding) else {
+            panic!("ForwardAgent {value} should fail")
+        };
+        assert!(detail.contains(value), "{detail}");
+        assert!(fix.to_string().contains("ForwardAgent no"));
+    }
+    probe.ssh_options = "user agent\n".to_owned();
+    assert!(matches!(
+        outcome(&run(&probe, &config()), &Check::SshForwarding),
+        Outcome::CannotCheck { .. }
+    ));
 }
 
 #[test]

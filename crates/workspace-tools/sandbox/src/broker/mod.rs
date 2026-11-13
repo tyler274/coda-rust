@@ -40,6 +40,10 @@ pub enum Item {
     GithubAgent,
     /// The read-only Doppler service token for the container's doppler.
     Doppler,
+    /// The container's client key for the host's model proxy, which Claude
+    /// Code and Codex present instead of their own logins. Needed only
+    /// where the proxy is configured.
+    ModelProxy,
     /// The fine-grained GitHub token the CI controller registers runners
     /// and reads the job queue with. It never enters the container.
     GithubCi,
@@ -51,17 +55,33 @@ pub enum Item {
 
 impl Item {
     /// The items the agent's door serves, in the order reports list them.
-    pub const AGENT: [Self; 2] = [Self::GithubAgent, Self::Doppler];
+    pub const AGENT: [Self; 3] = [Self::GithubAgent, Self::Doppler, Self::ModelProxy];
 
     /// The value of the keyring item's `token` attribute.
     pub fn name(self) -> &'static str {
         match self {
             Self::GithubAgent => "github-agent",
             Self::Doppler => "doppler",
+            Self::ModelProxy => "model-proxy",
             Self::GithubCi => "github-ci",
             Self::SelfTest => "coda-sandbox-selftest",
         }
     }
+
+    /// Whether the sandbox works without it: without the model proxy the
+    /// agent CLIs keep their own logins.
+    pub fn need(self) -> Need {
+        match self {
+            Self::GithubAgent | Self::Doppler | Self::GithubCi | Self::SelfTest => Need::Required,
+            Self::ModelProxy => Need::Optional,
+        }
+    }
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum Need {
+    Required,
+    Optional,
 }
 
 impl fmt::Display for Item {

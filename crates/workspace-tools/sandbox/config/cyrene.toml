@@ -38,6 +38,11 @@ gh_fallback = "off"
 socket = "/run/coda-sandbox/ci/broker.sock"
 user = "coda-ci"
 
+[model_proxy]
+# Where Claude Code and Codex in the container send their requests, with the
+# broker's model-proxy key; ungate on the host keeps the account sign-ins.
+url = "http://10.233.1.1:47821"
+
 [carry]
 repo = "/home/luluco/code/coda/coda-rust"
 out = "/var/lib/coda-carry"

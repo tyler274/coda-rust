@@ -51,6 +51,9 @@ pub enum Want {
     Gh,
     /// The Doppler service token for `doppler`.
     Doppler,
+    /// The model proxy's client key, for Claude Code's `apiKeyHelper` and
+    /// Codex's provider `auth.command`.
+    ModelProxy,
 }
 
 impl Want {
@@ -62,6 +65,7 @@ impl Want {
             },
             Self::Gh => Request::GhToken,
             Self::Doppler => Request::DopplerToken,
+            Self::ModelProxy => Request::ModelProxyKey,
         }
     }
 
@@ -69,6 +73,7 @@ impl Want {
         match self {
             Self::GitCredential | Self::Gh => Item::GithubAgent,
             Self::Doppler => Item::Doppler,
+            Self::ModelProxy => Item::ModelProxy,
         }
     }
 }

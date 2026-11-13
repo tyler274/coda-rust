@@ -9,6 +9,7 @@ use std::str::FromStr;
 
 use serde::{Deserialize, Serialize};
 
+use crate::broker::{Item, Need};
 use crate::error::Error;
 
 pub const DEFAULT_PATH: &str = "/etc/coda-sandbox/config.toml";
@@ -38,6 +39,31 @@ pub struct Config {
     pub carry: Option<Carry>,
     #[serde(default)]
     pub broker: Broker,
+    /// Only a host that serves the container's agent CLIs a model proxy
+    /// has one; without it they keep their own logins.
+    #[serde(default)]
+    pub model_proxy: Option<ModelProxy>,
+}
+
+/// The model proxy on the host (`services.coda-sandbox.container.modelProxy`):
+/// Claude Code and Codex in the container send their requests to it with
+/// the broker's `model-proxy` key, and it holds the account sign-ins.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct ModelProxy {
+    /// Its address as the container reaches it, such as
+    /// `http://10.233.1.1:47821`.
+    pub url: String,
+}
+
+impl ModelProxy {
+    /// Whether a host with `proxy` works without `item`: the proxy's key is
+    /// required once the proxy is configured.
+    pub fn need(proxy: Option<&Self>, item: Item) -> Need {
+        match item {
+            Item::ModelProxy if proxy.is_some() => Need::Required,
+            item => item.need(),
+        }
+    }
 }
 
 /// The token broker: the agent's socket, the same path on the host and in

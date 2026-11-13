@@ -19,6 +19,9 @@ lib.mkIf (cfg.enable && cfg.container.enable) {
       memoryHigh
       authorizedKeys
       ;
+    hostTcpPorts =
+      cfg.container.hostTcpPorts
+      ++ lib.optional cfg.container.modelProxy.enable cfg.container.modelProxy.port;
     autoStart = true;
     requires = cfg.requires ++ [ "coda-ci-spool.service" ];
     binds = {
@@ -62,6 +65,7 @@ lib.mkIf (cfg.enable && cfg.container.enable) {
         (import ./container-guest.nix {
           inherit (cfg.paths) repo;
           inherit (cfg) package;
+          modelProxy = if cfg.container.modelProxy.enable then cfg.container.modelProxy.url else null;
         })
         cfg.container.config
       ];

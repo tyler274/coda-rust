@@ -129,7 +129,14 @@ fn locked_keyring_gives_git_no_answer_and_the_client_a_typed_reason() {
 fn the_owner_pings_but_gets_no_secret() {
     let broker = start(as_owner);
     let report = client::ping(&broker.socket()).expect("ping");
-    assert_eq!(report.items.len(), 2);
+    assert_eq!(
+        report
+            .items
+            .iter()
+            .map(|entry| entry.item)
+            .collect::<Vec<_>>(),
+        Item::AGENT
+    );
     assert!(!report.fallback_used);
     let error = client::secret(&broker.socket(), Want::Gh).expect_err("denied");
     assert!(matches!(error, BrokerError::Denied(Denied::WrongPeer)));

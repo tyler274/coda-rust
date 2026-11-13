@@ -57,9 +57,13 @@
           # dynamic links at activation time.
           chromiumBin = "${pkgs.chromium}/bin/chromium";
           # The same pin as the packages and the CI `ci` job, plus the std
-          # source rust-analyzer needs.
+          # source and a rust-analyzer of the same release, which editors
+          # find on the shell's PATH through direnv.
           rustToolchain = (import ./nix/rust-toolchain.nix pkgs).override {
-            extensions = [ "rust-src" ];
+            extensions = [
+              "rust-src"
+              "rust-analyzer"
+            ];
           };
         in
         {

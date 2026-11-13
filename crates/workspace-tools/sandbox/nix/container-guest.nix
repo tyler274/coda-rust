@@ -1,9 +1,19 @@
 # NixOS configuration inside the coda-agent container (on top of what
 # nspawn.nix sets for every sandbox).
-{ repo, package }:
+{
+  repo,
+  package,
+  # The model proxy's URL as the container reaches it, or null without one.
+  modelProxy,
+}:
 { lib, pkgs, ... }:
 let
   coda-sandbox = lib.getExe' package "coda-sandbox";
+  # Claude Code and Codex come from the repo's dev shell, not from here, so
+  # the proxy reaches them through their system-wide config rather than a
+  # wrapper on PATH: each runs the broker's `token` command per session.
+  toml = pkgs.formats.toml { };
+  proxyKey = "${coda-sandbox} token model-proxy";
   # gh and Doppler read their tokens from the environment and have no
   # credential hook, so each wrapper asks the host's token broker for one
   # per run and hands it to that process alone.
@@ -42,10 +52,41 @@ in
   # With no answer from the broker, git fails instead of waiting at a prompt.
   environment.variables.GIT_TERMINAL_PROMPT = "0";
 
+  # Managed settings outrank the agent's own, and an apiKeyHelper outranks
+  # a `claude auth login`, so every session goes through the proxy while
+  # this is on.
+  environment.etc."claude-code/managed-settings.json" = lib.mkIf (modelProxy != null) {
+    text = builtins.toJSON {
+      apiKeyHelper = proxyKey;
+      env.ANTHROPIC_BASE_URL = modelProxy;
+    };
+  };
+  # The system layer of Codex's config; the agent's ~/.codex/config.toml
+  # can still choose another provider.
+  environment.etc."codex/config.toml" = lib.mkIf (modelProxy != null) {
+    source = toml.generate "codex-config.toml" {
+      model_provider = "model-proxy";
+      model_providers.model-proxy = {
+        name = "Model proxy on the host";
+        base_url = "${modelProxy}/v1";
+        wire_api = "responses";
+        auth = {
+          command = coda-sandbox;
+          args = [
+            "token"
+            "model-proxy"
+          ];
+        };
+      };
+    };
+  };
+
   environment.systemPackages = with pkgs; [
     (wrap "gh" gh "gh" "GH_TOKEN")
     (wrap "doppler" doppler "doppler" "DOPPLER_TOKEN")
     gnumake
+    # Antigravity's remote installer downloads its server with wget only.
+    wget
     ripgrep
     fd
     rsync
