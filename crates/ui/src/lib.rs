@@ -743,26 +743,23 @@ pub fn Message(
         MessageState::Failed => " is-failed",
     });
     let rest = host_attributes(&mut class, attributes);
-    let inside = state == MessageState::Queued && (status.is_some() || actions.is_some());
-    let message = rsx! {
-        article { class: "{class}", ..rest,
-            if !by.is_empty() {
-                span { class: "sr-only", "{by}" }
-            }
-            {children}
-            if inside {
-                div { class: "message-queued-row", {status.clone()} {actions.clone()} }
-            }
-        }
-    };
-    if inside || (status.is_none() && actions.is_none()) {
-        return message;
-    }
+    let queued = state == MessageState::Queued;
+    let row = queued && (status.is_some() || actions.is_some());
     rsx! {
         div { class: if author == Author::Person { "message-turn is-person" } else { "message-turn" },
-            {message}
-            {status}
-            {actions}
+            article { class: "{class}", ..rest,
+                if !by.is_empty() {
+                    span { class: "sr-only", "{by}" }
+                }
+                {children}
+                if row {
+                    div { class: "message-queued-row", {status.clone()} {actions.clone()} }
+                }
+            }
+            if !queued {
+                {status}
+                {actions}
+            }
         }
     }
 }
