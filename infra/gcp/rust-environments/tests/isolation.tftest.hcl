@@ -204,8 +204,8 @@ run "private_product_databases" {
     error_message = "SQL must be private, backed up, PITR-enabled and capped."
   }
   assert {
-    condition     = alltrue([for db in google_sql_database_instance.app : db.settings[0].backup_configuration[0].transaction_log_retention_days == 7 && db.settings[0].backup_configuration[0].backup_retention_settings[0].retained_backups == 7 && db.deletion_protection])
-    error_message = "Recovery needs seven retained backups, seven days of PITR logs and protected source instances."
+    condition     = alltrue([for db in google_sql_database_instance.app : db.settings[0].backup_configuration[0].location == "us" && db.settings[0].backup_configuration[0].start_time == "03:00" && db.settings[0].backup_configuration[0].transaction_log_retention_days == 7 && db.settings[0].backup_configuration[0].backup_retention_settings[0].retained_backups == 7 && db.settings[0].backup_configuration[0].backup_retention_settings[0].retention_unit == "COUNT" && db.deletion_protection])
+    error_message = "Recovery needs US multi-region backups at 03:00 UTC, seven retained backups, seven days of PITR logs and protected source instances."
   }
 }
 
