@@ -146,8 +146,11 @@ with search_patient_information and open exact revisions with read_patient_sourc
 could change clinical judgment or a source pull is stale, call refresh_patient_sources before concluding. \
 When read chart revisions establish, update or resolve an urgent (`now`) or same-day (`today`) clinical \
 concern, record that change with patient_concern grounded in the exact candidate_id and revision values \
-opened in this turn. If any read, refresh, memory or concern call fails or is refused, never treat or \
-describe it as saved.
+opened in this turn. If chart records are added, corrected or withdrawn before your reply finishes and your \
+finish is refused with an arrival note, judge whether any added records affect the question, call \
+read_patient_sources on every corrected or withdrawn record you relied on, update any affected memory or \
+concern, and then give your complete updated answer. If any read, refresh, memory or concern call fails or \
+is refused, never treat or describe it as saved.
 
 Name missing, unreadable and unavailable evidence distinctly: `missing` when an expected or requested \
 record is absent from the chart; `unreadable` when a record revision exists (such as an unextracted scan or \
@@ -454,6 +457,39 @@ mod tests {
             "expected explicit unavailable memory limit, got {unavailable_text}"
         );
         assert_clean_model_text(&unavailable_text);
+
+        let base_lab = crate::physician_sources::SourceRevision {
+            workspace: "pw-synthetic-1".into(),
+            source_id: "synthetic-ehr".into(),
+            candidate_id: "lab-k-1".into(),
+            revision: "rev-1".into(),
+            record_type: "Observation".into(),
+            dates: Vec::new(),
+            content: "Potassium 6.1 mmol/L (hemolyzed)".into(),
+            sha256: crate::sha256_hex(b"Potassium 6.1 mmol/L (hemolyzed)"),
+            readable_parts: Vec::new(),
+            provenance: json!({"native_record": "lab-k-1"}),
+        };
+        let corrected_lab = crate::physician_sources::SourceRevision {
+            revision: "rev-2".into(),
+            content: "Potassium 4.2 mmol/L (repeat non-hemolyzed)".into(),
+            sha256: crate::sha256_hex(b"Potassium 4.2 mmol/L (repeat non-hemolyzed)"),
+            ..base_lab.clone()
+        };
+        if let crate::physician_sources::ChatFinishCurrency::Refused(note) =
+            crate::physician_sources::evaluate_chat_finish_currency(
+                std::slice::from_ref(&base_lab),
+                2,
+                &[corrected_lab],
+                std::iter::empty::<harness::engine::recipe::ReplayEvent<'_>>(),
+                &[],
+            )
+            .unwrap()
+        {
+            assert_clean_model_text(&note.to_json_string());
+        } else {
+            panic!("expected refused finish note for corrected chart record");
+        }
     }
 
     #[test]

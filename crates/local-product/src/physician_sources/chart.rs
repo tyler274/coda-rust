@@ -36,8 +36,8 @@ pub(super) struct Position {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub(super) struct Exact {
-    candidate_id: String,
-    revision: String,
+    pub(super) candidate_id: String,
+    pub(super) revision: String,
     cursor: Option<Position>,
 }
 
@@ -62,6 +62,22 @@ impl Reference {
 struct Read {
     references: Vec<Reference>,
     max_result_bytes: usize,
+}
+
+/// One discovery pointer returned by [`SEARCH_TOOL`].
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub(super) struct SearchHit {
+    pub(super) reference: Exact,
+    pub(super) record_type: String,
+    pub(super) source_id: String,
+    pub(super) dates: Vec<super::RecordDate>,
+}
+
+/// Chart discovery receipts have one wire owner for production and delivery checks.
+#[derive(Debug, Serialize, Deserialize)]
+pub(super) struct SearchReceipt {
+    pub(super) results: Vec<SearchHit>,
+    next: Option<After>,
 }
 
 /// Chart read receipts have one wire owner for production and delivery checks.
@@ -293,14 +309,27 @@ impl Search {
         let mut results = Vec::new();
         let mut next = None;
         for source in matches.iter().take(SEARCH_PAGE) {
-            let hit = json!({"reference":Exact {candidate_id:source.candidate_id.clone(),revision:source.revision.clone(),cursor:None}, "record_type":source.record_type,"source_id":source.source_id,"dates":source.dates});
+            let hit = SearchHit {
+                reference: Exact {
+                    candidate_id: source.candidate_id.clone(),
+                    revision: source.revision.clone(),
+                    cursor: None,
+                },
+                record_type: source.record_type.clone(),
+                source_id: source.source_id.clone(),
+                dates: source.dates.clone(),
+            };
             results.push(hit);
             let continuation = After {
                 version,
                 candidate_id: source.candidate_id.clone(),
             };
-            if json!({"results":results,"next":continuation})
-                .to_string()
+            let candidate_page = SearchReceipt {
+                results: results.clone(),
+                next: Some(continuation.clone()),
+            };
+            if serde_json::to_string(&candidate_page)
+                .expect("chart search receipt serializes")
                 .len()
                 > MAX_PAGE
             {
@@ -318,7 +347,8 @@ impl Search {
             next = None;
         }
         Ok(ToolOutcome::Returned(
-            json!({"results":results,"next":next}).to_string(),
+            serde_json::to_string(&SearchReceipt { results, next })
+                .expect("chart search receipt serializes"),
         ))
     }
 }
