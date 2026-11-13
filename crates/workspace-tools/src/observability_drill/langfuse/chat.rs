@@ -87,6 +87,16 @@ pub(super) fn turn_state(body: &Value) -> TurnState {
     }
 }
 
+/// How many model replies the snapshot's conversation holds.
+pub(super) fn model_replies(body: &Value) -> usize {
+    body["snapshot"]["conversation"]
+        .as_array()
+        .into_iter()
+        .flatten()
+        .filter(|item| item["kind"] == "model")
+        .count()
+}
+
 /// A signed-in rehearsal physician. IAP admits the signed JWT in
 /// `Proxy-Authorization`; the physician session travels in `Authorization`.
 pub(super) struct Physician {
@@ -187,22 +197,28 @@ impl Physician {
         }
     }
 
-    /// Polls the snapshot until the turn is answered or failed.
+    /// One read of a chat's snapshot.
+    pub(super) fn snapshot(&self, workspace: &str, chat: &str) -> Result<Value, DrillError> {
+        let path = format!(
+            "{}/patient-workspaces/{workspace}/chats/{chat}/snapshot",
+            self.origin
+        );
+        send_json(self.authorized(self.client.get(&path)), "chat snapshot")
+    }
+
+    /// Polls the snapshot until the turn is answered or failed, and returns
+    /// the answer with the snapshot that held it.
     pub(super) fn await_reply(
         &self,
         turn: &Turn,
         attempts: u32,
         pause: Duration,
         watch: &Watch,
-    ) -> Result<Answer, DrillError> {
-        let path = format!(
-            "{}/patient-workspaces/{}/chats/{}/snapshot",
-            self.origin, turn.workspace, turn.chat
-        );
+    ) -> Result<(Answer, Value), DrillError> {
         let answer = watch.poll(attempts, pause, |_| {
-            let body = send_json(self.authorized(self.client.get(&path)), "chat snapshot")?;
+            let body = self.snapshot(&turn.workspace, &turn.chat)?;
             match turn_state(&body) {
-                TurnState::Answered(answer) => Ok(Some(answer)),
+                TurnState::Answered(answer) => Ok(Some((answer, body))),
                 TurnState::Failed(run) => Err(DrillError::TurnFailed { run }),
                 TurnState::Writing => Ok(None),
             }
@@ -311,5 +327,16 @@ mod tests {
             )),
             TurnState::Failed("a-2".into())
         );
+    }
+
+    #[test]
+    fn replies_count_only_model_items() {
+        let conversation = json!([
+            { "kind": "physician", "text": "Hi" },
+            { "kind": "model", "text": "Hello" },
+            { "kind": "model", "text": "Hello again" }
+        ]);
+        assert_eq!(model_replies(&snapshot(conversation, json!([]))), 2);
+        assert_eq!(model_replies(&json!({})), 0);
     }
 }

@@ -9,6 +9,7 @@
 //! and the operator's interrupt.
 mod chat;
 mod cluster;
+mod contention;
 mod readback;
 mod watch;
 
@@ -47,6 +48,19 @@ ACTION
                      its successor in the same work and its ERROR generation
                      in Langfuse, Datadog holds no canary, and the monitor
                      recovers
+  burst              one unmarked turn for the idle baseline, then two
+                     sequential waves of 12 turns marked [hold:20]; each turn's
+                     submit, attempt, attempt-span start and duration, hold and
+                     reply are recorded, a missing sample is listed as missing,
+                     and each wave must drain within
+                     ceil(12 / (4 x worker instances)) x 20 s + 10 s
+  hard-stop          (needs --confirm, it aborts a worker instance) refuses
+                     unless the queue gauges show nothing due, sends one turn
+                     marked [hold:30][crash:1] and waits at most five minutes:
+                     the answering attempt must succeed the crashed one in the
+                     same work, the crashed attempt must have logged
+                     physician.worker.rehearsed_crash, and the chat must hold
+                     exactly one reply; a normal rehearse turn ends it
 
 The operator runs it with gcloud signed in as a physician_rehearsal_signers
 account and the rust-observability kubeconfig context; kubectl always names
@@ -61,6 +75,26 @@ const REPLY_POLLS: u32 = 60;
 const READBACK_POLLS: u32 = 36;
 const MONITOR_POLLS: u32 = 60;
 const POLL: Duration = Duration::from_secs(10);
+const REPLY_PAUSE: Duration = Duration::from_secs(5);
+/// Turns in each `burst` wave.
+const BURST_TURNS: u32 = 12;
+/// What each `burst` wave turn is held for, and the marker that holds it.
+const BURST_HOLD: Duration = Duration::from_secs(20);
+const BURST_MARKER: &str = " [hold:20]";
+/// What the `hard-stop` turn carries: the first attempt holds its lease for
+/// 30 seconds, then the worker process aborts.
+const HARD_STOP_MARKER: &str = " [hold:30][crash:1]";
+/// `burst` reads each snapshot this often, so a reply's observed time stays
+/// within a few seconds of the drain bound's 10 s slack.
+const BURST_REPLY: (u32, Duration) = (150, Duration::from_secs(2));
+/// How long `hard-stop` waits for the successor's reply: the 60-second lease
+/// expiry, discovery and the successor's own hold, within five minutes.
+const HARD_STOP_REPLY: (u32, Duration) = (60, REPLY_PAUSE);
+const CLOUD_LOGGING: &str = "https://logging.googleapis.com/v2/entries:list";
+const CLOUD_MONITORING: &str = "https://monitoring.googleapis.com/v3/projects";
+/// The worker's queue gauge of turns runnable now
+/// (`physician-worker/signals.rs`).
+const DUE_METRIC: &str = "custom.googleapis.com/coda/physician/queue/due";
 /// `chat_generation_errors` in `infra/gcp/observability/datadog.tf`.
 const CHAT_FAILURE_MONITOR: &str = "[staging] physician chat generation errors";
 /// The ledger group of a `chat-failure` exercise, apart from the exporter's.
@@ -173,6 +207,8 @@ enum Action {
     AlertToRun,
     Isolation,
     ChatFailure,
+    Burst,
+    HardStop,
 }
 
 impl Action {
@@ -182,6 +218,8 @@ impl Action {
             "alert-to-run" => Self::AlertToRun,
             "isolation" => Self::Isolation,
             "chat-failure" => Self::ChatFailure,
+            "burst" => Self::Burst,
+            "hard-stop" => Self::HardStop,
             _ => return None,
         })
     }
@@ -192,6 +230,8 @@ impl Action {
             Self::AlertToRun => "alert-to-run",
             Self::Isolation => "isolation",
             Self::ChatFailure => "chat-failure",
+            Self::Burst => "burst",
+            Self::HardStop => "hard-stop",
         }
     }
 
@@ -199,7 +239,8 @@ impl Action {
     fn needs_confirmation(self) -> Option<&'static str> {
         match self {
             Self::ChatFailure => Some("it pages #engineering-observability"),
-            Self::Rehearse | Self::AlertToRun | Self::Isolation => None,
+            Self::HardStop => Some("it aborts a staging worker instance"),
+            Self::Rehearse | Self::AlertToRun | Self::Isolation | Self::Burst => None,
         }
     }
 }
@@ -413,6 +454,8 @@ fn run(request: &Request, report: &mut Report, watch: &mut Watch) -> Result<(), 
         Action::AlertToRun => alert_to_run(request, report, watch),
         Action::Isolation => isolation(request, report, watch),
         Action::ChatFailure => chat_failure(request, report, watch),
+        Action::Burst => burst(request, report, watch),
+        Action::HardStop => hard_stop(request, report, watch),
     }
 }
 
@@ -450,6 +493,9 @@ struct Sent {
     /// The scoped attempt that answered, from the chat snapshot.
     attempt: String,
     reply_chars: usize,
+    /// The model replies the answering snapshot holds.
+    replies: usize,
+    answered_at: DateTime<Utc>,
 }
 
 /// The rehearsal physician, signed in, and the patient its turns go to.
@@ -494,11 +540,22 @@ impl Rehearsal {
     }
 
     fn answer(&self, turn: Turn, canary: String, watch: &Watch) -> Result<Sent, DrillError> {
-        let answer =
-            self.physician
-                .await_reply(&turn, REPLY_POLLS, Duration::from_secs(5), watch)?;
+        self.answer_within(turn, canary, (REPLY_POLLS, REPLY_PAUSE), watch)
+    }
+
+    /// [`Self::answer`], reading the snapshot `polls` times `pause` apart.
+    fn answer_within(
+        &self,
+        turn: Turn,
+        canary: String,
+        (polls, pause): (u32, Duration),
+        watch: &Watch,
+    ) -> Result<Sent, DrillError> {
+        let (answer, snapshot) = self.physician.await_reply(&turn, polls, pause, watch)?;
         Ok(Sent {
             reply_chars: answer.text.chars().count(),
+            replies: chat::model_replies(&snapshot),
+            answered_at: Utc::now(),
             turn,
             canary,
             attempt: answer.attempt,
@@ -1371,6 +1428,223 @@ fn follow_failure(
     Ok(found)
 }
 
+/// The operator's Google Cloud reads `hard-stop` and `burst` need: the queue
+/// gauges and the worker's crash receipts.
+struct Google {
+    client: Client,
+    token: String,
+}
+
+impl Google {
+    fn open() -> Result<Self, DrillError> {
+        Ok(Self {
+            client: client()?,
+            token: cluster::access_token()?,
+        })
+    }
+
+    /// The newest `due` gauge point of every worker instance from the last
+    /// five minutes.
+    fn queue_due(&self) -> Result<Option<contention::QueueDue>, DrillError> {
+        let now = Utc::now();
+        let start = (now - chrono::Duration::minutes(5)).to_rfc3339();
+        let end = now.to_rfc3339();
+        let filter = format!("metric.type=\"{DUE_METRIC}\"");
+        let body = chat::send_json(
+            self.client
+                .get(format!("{CLOUD_MONITORING}/{STAGING_PROJECT}/timeSeries"))
+                .bearer_auth(&self.token)
+                .query(&[
+                    ("filter", filter.as_str()),
+                    ("interval.startTime", start.as_str()),
+                    ("interval.endTime", end.as_str()),
+                ]),
+            "the physician queue gauges",
+        )?;
+        Ok(contention::queue_due(&body))
+    }
+
+    /// Waits for attempt `run_id`'s rehearsed-crash log line in Cloud
+    /// Logging, which holds the worker's stdout whatever the telemetry
+    /// backend; `None` once the readback polls run out.
+    fn crash_receipt(
+        &self,
+        run_id: &str,
+        since: DateTime<Utc>,
+        watch: &Watch,
+    ) -> Result<Option<Value>, DrillError> {
+        let filter = format!(
+            "resource.type=\"cloud_run_revision\" resource.labels.service_name=\"physician-worker\" \
+             jsonPayload.event=\"{}\" timestamp>=\"{}\"",
+            readback::CRASH_EVENT,
+            since.to_rfc3339()
+        );
+        let body = json!({
+            "resourceNames": [format!("projects/{STAGING_PROJECT}")],
+            "filter": filter,
+            "orderBy": "timestamp desc",
+            "pageSize": 50,
+        });
+        watch.poll(READBACK_POLLS, POLL, |_| {
+            let found = chat::send_json(
+                self.client
+                    .post(CLOUD_LOGGING)
+                    .bearer_auth(&self.token)
+                    .json(&body),
+                "Cloud Logging",
+            )?;
+            Ok(readback::crash_receipt(&found, run_id))
+        })
+    }
+}
+
+/// `burst`: an idle baseline turn, then two waves of held turns, each judged
+/// against its drain bound.
+fn burst(request: &Request, report: &mut Report, watch: &Watch) -> Result<(), DrillError> {
+    let datadog = Datadog::open()?;
+    let google = Google::open()?;
+    let rehearsal = Rehearsal::sign_in()?;
+    let queue = google.queue_due()?;
+    report.put("queue_before", queue);
+    let instances = queue.map_or(1, |queue| queue.instances);
+    let bound = contention::drain_bound(BURST_TURNS, instances, BURST_HOLD);
+    report.put("drain_bound_seconds", bound.as_secs_f64());
+
+    let baseline = burst_wave(&datadog, &rehearsal, request, 1, "", watch)?;
+    let baseline_summary = contention::WaveSummary::of(&baseline, bound, false);
+    report.put(
+        "baseline",
+        json!({ "turn": baseline, "summary": baseline_summary }),
+    );
+    let mut found = Vec::new();
+    for wave in ["wave 1", "wave 2"] {
+        let samples = burst_wave(
+            &datadog,
+            &rehearsal,
+            request,
+            BURST_TURNS,
+            BURST_MARKER,
+            watch,
+        )?;
+        let summary = contention::WaveSummary::of(&samples, bound, true);
+        found.extend(summary.gaps(wave));
+        report.put(
+            &wave.replace(' ', "_"),
+            json!({ "turns": samples, "summary": summary }),
+        );
+    }
+    gaps("the burst", found)
+}
+
+/// Submits `count` turns marked `marker` at once, awaits each reply, then
+/// reads each answering attempt's span. A reply or span the drill could not
+/// read stays missing in its sample.
+fn burst_wave(
+    datadog: &Datadog,
+    rehearsal: &Rehearsal,
+    request: &Request,
+    count: u32,
+    marker: &str,
+    watch: &Watch,
+) -> Result<Vec<contention::TurnSample>, DrillError> {
+    let mut submitted = Vec::new();
+    for _turn in 0..count {
+        let at = Utc::now();
+        let (turn, canary) = rehearsal.submit(request, marker)?;
+        submitted.push((
+            contention::TurnSample::submitted(turn.chat.clone(), at),
+            turn,
+            canary,
+        ));
+    }
+    let mut samples = Vec::new();
+    for (mut sample, turn, canary) in submitted {
+        match rehearsal.answer_within(turn, canary, BURST_REPLY, watch) {
+            Ok(sent) => {
+                sample.completed = Some(sent.answered_at);
+                sample.attempt_id = Some(sent.attempt);
+            }
+            Err(DrillError::Timeout { .. } | DrillError::TurnFailed { .. }) => {}
+            Err(error) => return Err(error),
+        }
+        samples.push(sample);
+    }
+    for sample in &mut samples {
+        let Some(attempt) = sample.attempt_id.clone() else {
+            continue;
+        };
+        match datadog.attempt(&attempt, watch) {
+            Ok((span, _trace)) => sample.spanned(&span),
+            Err(DrillError::Timeout { .. }) => {}
+            Err(error) => return Err(error),
+        }
+    }
+    Ok(samples)
+}
+
+/// `hard-stop`: one turn whose first attempt aborts its worker, recovered
+/// by another worker once the lease expires, then a normal turn.
+fn hard_stop(request: &Request, report: &mut Report, watch: &Watch) -> Result<(), DrillError> {
+    let datadog = Datadog::open()?;
+    let google = Google::open()?;
+    let queue = google.queue_due()?;
+    report.put("queue_before", queue);
+    match queue {
+        Some(queue) if queue.due == 0 => {}
+        Some(queue) => {
+            return Err(DrillError::Gaps {
+                what: "the physician queue",
+                gaps: vec![format!(
+                    "{} turns are due; a crash would also drop theirs, so the drill needs an empty queue",
+                    queue.due
+                )],
+            });
+        }
+        None => {
+            return Err(DrillError::Gaps {
+                what: "the physician queue",
+                gaps: vec!["no worker wrote a due gauge in the last five minutes".to_owned()],
+            });
+        }
+    }
+    let rehearsal = Rehearsal::sign_in()?;
+    let crashed_from = Utc::now();
+    let (turn, canary) = rehearsal.submit(request, HARD_STOP_MARKER)?;
+    let sent = rehearsal.answer_within(turn, canary, HARD_STOP_REPLY, watch)?;
+    let (successor, _trace) = datadog.attempt(&sent.attempt, watch)?;
+    let receipt = match successor.predecessor_run_id.as_deref() {
+        Some(crashed) => google.crash_receipt(crashed, crashed_from, watch)?,
+        None => None,
+    };
+    // The answering snapshot may predate a second reply; read the chat again
+    // once the readbacks are in.
+    let replies = chat::model_replies(
+        &rehearsal
+            .physician
+            .snapshot(&sent.turn.workspace, &sent.turn.chat)?,
+    );
+    report.put(
+        "hard_stop",
+        json!({
+            "turn": rehearsal.evidence(&sent),
+            "submitted": crashed_from.to_rfc3339(),
+            "answered": sent.answered_at.to_rfc3339(),
+            "replies_when_answered": sent.replies,
+            "replies_after_readback": replies,
+            "successor_attempt": successor,
+            "crash_receipt": receipt,
+        }),
+    );
+    gaps(
+        "the hard stop",
+        contention::hard_stop_gaps(&successor, receipt.as_ref(), replies),
+    )?;
+    let (turn, canary) = rehearsal.submit(request, "")?;
+    let after = rehearsal.answer(turn, canary, watch)?;
+    report.put("rehearse_after", rehearsal.evidence(&after));
+    Ok(())
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -1424,12 +1698,28 @@ mod tests {
     }
 
     #[test]
-    fn only_the_paging_action_needs_confirmation() {
-        let refused =
-            from_args(&args(&["chat-failure", "--output-dir", "/nonexistent/x"])).unwrap_err();
-        assert!(refused.message.contains("--confirm"), "{}", refused.message);
-        for action in [Action::Rehearse, Action::AlertToRun, Action::Isolation] {
+    fn only_the_paging_and_crashing_actions_need_confirmation() {
+        for action in ["chat-failure", "hard-stop"] {
+            let refused =
+                from_args(&args(&[action, "--output-dir", "/nonexistent/x"])).unwrap_err();
+            assert!(refused.message.contains("--confirm"), "{}", refused.message);
+        }
+        for action in [
+            Action::Rehearse,
+            Action::AlertToRun,
+            Action::Isolation,
+            Action::Burst,
+        ] {
             assert!(action.needs_confirmation().is_none());
+        }
+    }
+
+    #[test]
+    fn the_contention_actions_parse() {
+        for (named, action) in [("burst", Action::Burst), ("hard-stop", Action::HardStop)] {
+            let request = parse_args(&args(&[named, "--output-dir", "o"])).unwrap();
+            assert_eq!(request.action, action);
+            assert_eq!(action.slug(), named);
         }
     }
 

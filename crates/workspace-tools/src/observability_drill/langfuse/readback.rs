@@ -1,6 +1,7 @@
 //! Reading one rehearsal turn back from Langfuse and the operations
 //! backends. Parsing is pure so the drill's judgments are unit-tested; the
 //! transport lives in `mod.rs`.
+use chrono::{DateTime, Utc};
 use serde::Serialize;
 use serde_json::Value;
 
@@ -143,6 +144,10 @@ pub(super) struct AttemptSpan {
     /// `coda.trace_relation`: how the attempt's new trace relates to the
     /// request that made its work runnable.
     pub(super) trace_relation: Option<String>,
+    pub(super) start: Option<DateTime<Utc>>,
+    pub(super) duration_ms: Option<i64>,
+    /// `coda.rehearsed_hold_ms`: the hold a `[hold:S]` marker made it take.
+    pub(super) rehearsed_hold_ms: Option<i64>,
 }
 
 /// The attempt span for `run_id` in a Datadog span search answer.
@@ -154,13 +159,45 @@ pub(super) fn attempt_span(body: &Value, run_id: &str) -> Option<AttemptSpan> {
     })?;
     let attributes = &span["attributes"];
     let text = |key: &str| attribute(attributes, key).map(str::to_owned);
+    let at = |key: &str| {
+        attributes[key]
+            .as_str()
+            .and_then(|at| DateTime::parse_from_rfc3339(at).ok())
+            .map(|at| at.with_timezone(&Utc))
+    };
+    let start = at("start_timestamp");
     Some(AttemptSpan {
         run_id: run_id.to_owned(),
         work_id: text("coda.work_id"),
         predecessor_run_id: text("coda.predecessor_run_id"),
         error_type: text("error.type"),
         trace_relation: text("coda.trace_relation"),
+        start,
+        duration_ms: start
+            .zip(at("end_timestamp"))
+            .map(|(start, end)| (end - start).num_milliseconds()),
+        rehearsed_hold_ms: find(attributes, "coda.rehearsed_hold_ms").and_then(|hold| {
+            hold.as_i64()
+                .or_else(|| hold.as_str().and_then(|hold| hold.parse().ok()))
+        }),
     })
+}
+
+/// What the worker logs just before a rehearsed crash aborts it.
+pub(super) const CRASH_EVENT: &str = "physician.worker.rehearsed_crash";
+
+/// The rehearsed-crash receipt of attempt `run_id` in a Cloud Logging
+/// `entries:list` answer. The worker aborts right after writing it, so only
+/// its stdout line reaches a backend.
+pub(super) fn crash_receipt(body: &Value, run_id: &str) -> Option<Value> {
+    body["entries"]
+        .as_array()?
+        .iter()
+        .find(|entry| {
+            let payload = &entry["jsonPayload"];
+            payload["event"] == CRASH_EVENT && payload["coda.run_id"] == run_id
+        })
+        .cloned()
 }
 
 /// Where an attempt misses its relation to the accepting request: the worker
@@ -790,6 +827,9 @@ mod tests {
             predecessor_run_id: None,
             error_type: Some("model".into()),
             trace_relation: None,
+            start: None,
+            duration_ms: None,
+            rehearsed_hold_ms: None,
         };
         let successor = AttemptSpan {
             run_id: "run-2".into(),
@@ -797,6 +837,9 @@ mod tests {
             predecessor_run_id: None,
             error_type: Some("model".into()),
             trace_relation: None,
+            start: None,
+            duration_ms: None,
+            rehearsed_hold_ms: None,
         };
         assert_eq!(retry_gaps(&failed, &successor).len(), 4);
     }

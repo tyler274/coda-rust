@@ -351,7 +351,10 @@ async fn another_worker_finishes(label: &str, stop: Stop, pace: &[(&str, &str)])
         "B took a turn A still holds"
     );
 
+    let pid = a.pid().expect("worker A runs");
     let signalled = Instant::now();
+    let lease = store.read(&delivery.scope).await.unwrap().unwrap().attempts[0].expires;
+    let signalled_unix = support::unix_now();
     match stop {
         Stop::Terminate => a.terminate(),
         Stop::Kill => a.kill_hard(),
@@ -368,6 +371,18 @@ async fn another_worker_finishes(label: &str, stop: Stop, pace: &[(&str, &str)])
     .await;
     let recovered = signalled.elapsed();
     assert_eq!(taken.attempts[0].status, AttemptStatus::Interrupted);
+    assert_eq!(
+        taken.attempts[1].predecessor.as_deref(),
+        Some(taken.attempts[0].id.as_str()),
+        "the successor names the attempt it replaces"
+    );
+    println!(
+        "{label}: receipt pid={pid} signalled_unix={signalled_unix} lease_expires_unix={lease} \
+         taken_unix={} predecessor={} successor={}",
+        support::unix_now(),
+        taken.attempts[0].id,
+        taken.attempts[1].id
+    );
     let done = wait_state(
         &store,
         &delivery,
@@ -454,6 +469,176 @@ async fn a_turn_whose_worker_is_killed_is_taken_by_another_worker_when_its_lease
         recovered < Duration::from_secs(5 + 1 + 1),
         "the turn waited {recovered:?}, longer than its 5 s lease"
     );
+}
+
+/// The rehearsal practice the marker tests run under.
+const REHEARSAL: &str = "coda-rehearsal-practice";
+
+/// Two rehearsal-profile workers with a 5 s lease and a 500 ms poll.
+fn rehearsal_pace() -> [(&'static str, &'static str); 4] {
+    [
+        (
+            "CODA_HOSTED_PROFILE",
+            physician_sample::hosting::STAGING_PROFILE,
+        ),
+        ("PHYSICIAN_SIMULATION_PRACTICES", REHEARSAL),
+        ("PHYSICIAN_WORKER_LEASE_SECONDS", "5"),
+        ("PHYSICIAN_WORKER_POLL_MS", "500"),
+    ]
+}
+
+/// ENG-465 AC3, locally. A rehearsal turn marked `[hold:7][crash:1]` is
+/// claimed by one of two serving workers, which holds it past its 5 s lease
+/// by renewing, then aborts with the attempt unfinished. Only lease expiry
+/// frees it; the other worker's successor names it and answers once.
+#[tokio::test]
+async fn a_rehearsal_crash_is_recovered_by_the_other_worker_after_its_lease() {
+    let _guard = lock().lock().await;
+    let Some(database) = support::Database::create("rehearsed_crash").await else {
+        return;
+    };
+    let home = Home::new("rehearsed-crash");
+    let store = Store::connect(&database.url).await.expect("runtime store");
+    let stub = support::ResponsesStub::start(&home.0, 0, 0, "[]").await;
+    let pace = rehearsal_pace();
+    let mut workers = [
+        spawn_worker("worker-a", &stub, &home, &database.url, None, &pace).await,
+        spawn_worker("worker-b", &stub, &home, &database.url, None, &pace).await,
+    ];
+    let delivery = accepted_in(
+        &database.url,
+        &store,
+        Some(REHEARSAL),
+        "Drill [hold:7][crash:1]",
+    )
+    .await;
+    let logs = |workers: &[support::Process]| {
+        workers
+            .iter()
+            .map(support::Process::tail)
+            .collect::<Vec<_>>()
+            .join("\n")
+    };
+    let claimed = wait_state(
+        &store,
+        &delivery,
+        Duration::from_secs(15),
+        "no worker claimed the turn",
+        &|| logs(&workers),
+        |state| state.status == WorkStatus::Active,
+    )
+    .await;
+    let first = claimed.attempts[0].clone();
+    // Past the 5 s lease, the holding worker still owns the attempt: it
+    // renews while it holds.
+    tokio::time::sleep(Duration::from_secs(6)).await;
+    let held = store.read(&delivery.scope).await.unwrap().unwrap();
+    assert_eq!(
+        statuses(&held),
+        [AttemptStatus::Active],
+        "the hold let its lease run out\n{}",
+        logs(&workers)
+    );
+
+    let deadline = Instant::now() + Duration::from_secs(10);
+    let crashed = loop {
+        if let Some(index) = workers
+            .iter_mut()
+            .position(|worker| worker.exited().is_some())
+        {
+            break index;
+        }
+        assert!(
+            Instant::now() < deadline,
+            "no worker aborted\n{}",
+            logs(&workers)
+        );
+        tokio::time::sleep(Duration::from_millis(20)).await;
+    };
+    let aborted_unix = support::unix_now();
+    assert_eq!(
+        workers[crashed].exit_signal(),
+        Some(6),
+        "the worker ends by SIGABRT\n{}",
+        workers[crashed].tail()
+    );
+    let receipt = workers[crashed]
+        .log()
+        .lines()
+        .find(|line| line.contains("physician.worker.rehearsed_crash"))
+        .map(str::to_owned)
+        .unwrap_or_else(|| panic!("no crash receipt\n{}", workers[crashed].tail()));
+    assert!(receipt.contains(&first.id), "{receipt}");
+    let survivor = &mut workers[1 - crashed];
+    assert!(survivor.exited().is_none(), "{}", survivor.tail());
+
+    let done = wait_state(
+        &store,
+        &delivery,
+        Duration::from_secs(20),
+        "the other worker never finished the crashed turn",
+        &|| logs(&workers),
+        |state| state.status == WorkStatus::Completed,
+    )
+    .await;
+    assert_eq!(
+        statuses(&done),
+        [AttemptStatus::Interrupted, AttemptStatus::Completed]
+    );
+    assert_eq!(done.failures, 1, "a lease that ran out counts as a failure");
+    let (interrupted, successor) = (&done.attempts[0], &done.attempts[1]);
+    assert_eq!(interrupted.id, first.id);
+    assert_eq!(successor.predecessor.as_deref(), Some(first.id.as_str()));
+    assert_eq!(successor.work, first.work, "one work across both attempts");
+    assert_eq!(
+        done.messages
+            .iter()
+            .filter(|message| message.role.as_str() == "assistant")
+            .map(|message| message.text.as_str())
+            .collect::<Vec<_>>(),
+        [support::FIXED_TEXT]
+    );
+    println!(
+        "rehearsed_crash: aborted_unix={aborted_unix} completed_unix={} \
+         predecessor={} successor={}\n  receipt: {receipt}",
+        support::unix_now(),
+        interrupted.id,
+        successor.id
+    );
+}
+
+/// A real practice's turn carrying the same markers is neither held nor
+/// crashed: it answers on its first attempt and the worker keeps serving.
+#[tokio::test]
+async fn a_real_practice_ignores_hold_and_crash_markers() {
+    let _guard = lock().lock().await;
+    let Some(database) = support::Database::create("real_markers").await else {
+        return;
+    };
+    let home = Home::new("real-markers");
+    let store = Store::connect(&database.url).await.expect("runtime store");
+    let stub = support::ResponsesStub::start(&home.0, 0, 0, "[]").await;
+    let mut worker = spawn_worker(
+        "worker",
+        &stub,
+        &home,
+        &database.url,
+        None,
+        &rehearsal_pace(),
+    )
+    .await;
+    let delivery = accepted_in(&database.url, &store, None, "Real [hold:60][crash:1]").await;
+    let done = wait_state(
+        &store,
+        &delivery,
+        Duration::from_secs(10),
+        "the real practice's turn did not answer at once",
+        &|| worker.tail(),
+        |state| state.status == WorkStatus::Completed,
+    )
+    .await;
+    assert_eq!(statuses(&done), [AttemptStatus::Completed]);
+    assert!(worker.exited().is_none(), "{}", worker.tail());
 }
 
 /// AC4 at hosted pacing: a killed worker's turn is taken within the 60 s
@@ -624,13 +809,19 @@ async fn exhausted_leases_fail_the_turn_and_announce_it() {
 
 /// One authorized, accepted turn saved straight to the runtime store.
 async fn accepted(url: &str, store: &Store) -> Delivery {
+    accepted_in(url, store, None, "Hello").await
+}
+
+/// One authorized turn saying `text`, accepted in `practice` or a practice of
+/// its own.
+async fn accepted_in(url: &str, store: &Store, practice: Option<&str>, text: &str) -> Delivery {
     let auth = physician_auth::PostgresAuthStore::connect_without_migrations(url)
         .await
         .expect("auth store");
     let now = support::unix_now();
     let unique = uuid::Uuid::new_v4().simple().to_string();
     let email = format!("lease-{unique}@example.test");
-    let practice = format!("practice-{unique}");
+    let practice = practice.map_or_else(|| format!("practice-{unique}"), str::to_owned);
     let physician = format!("physician-{unique}");
     let workspace = format!("workspace-{unique}");
     auth.ensure_account(
@@ -666,7 +857,7 @@ async fn accepted(url: &str, store: &Store) -> Delivery {
             &scope,
             &local_product::runtime::Input {
                 key: key.clone(),
-                text: "Hello".into(),
+                text: text.into(),
                 timezone: "America/New_York".into(),
                 scenario: None,
             },

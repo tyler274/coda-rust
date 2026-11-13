@@ -351,6 +351,20 @@ impl Process {
         })
     }
 
+    /// The running process's id, while it has one.
+    #[allow(dead_code)]
+    pub fn pid(&self) -> Option<u32> {
+        self.child.as_ref().map(Child::id)
+    }
+
+    /// The signal that ended the process, once it has ended by one.
+    #[allow(dead_code)]
+    pub fn exit_signal(&mut self) -> Option<i32> {
+        use std::os::unix::process::ExitStatusExt;
+        let child = self.child.as_mut()?;
+        child.try_wait().expect("child status")?.signal()
+    }
+
     pub fn tail(&self) -> String {
         let bytes = std::fs::read(&self.log_path).unwrap_or_default();
         let start = bytes.len().saturating_sub(4000);

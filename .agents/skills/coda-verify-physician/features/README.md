@@ -62,3 +62,5 @@ behavior. It then has exactly four H2s: `Sub-features`, `How to get to it (user 
   `resync` and the page refetches; fan-out works again afterward.
 - [Duplicate and retry](./duplicate-and-retry.md): a repeated command or announcement
   runs the turn once, and a failed attempt is retried.
+- [Hard-stop recovery](./hard-stop-recovery.md): a worker that aborts mid-turn leaves it
+  leased; after expiry another worker's successor answers it once.

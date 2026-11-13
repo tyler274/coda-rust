@@ -348,6 +348,13 @@ labels. Correlate a run only in the authorized trace/log investigation surface.
    Grafana Cloud reads them from Cloud Monitoring directly. Compare
    them with the [worker processing/retry contract](physician-site.md) and the
    attempts saved on the rows before acting; do not retry work automatically.
+   To tell Postgres contention from queue delay, read the worker's
+   `physician.worker.pool_sample` log line, written every 5 seconds by each
+   hosted instance: `pool.wait_ms` (how long one connection took to come free
+   from that instance's pool), `pool.open`, `pool.idle` and `pool.max`. A
+   sample that times out carries `error.type` `pool_timeout` instead of a
+   wait. These describe one process's pool; Cloud SQL's backend count covers
+   the whole database.
    Investigate SQL and Redis using the configured exact resource scope and the
    cloud console.
 3. For missing telemetry, inspect Cloud Scheduler/job execution and the direct
@@ -449,6 +456,8 @@ against:
 | `alert-to-run` | The same turn found from Datadog: the snapshot's attempt id, the attempt span, the generation span and Langfuse agree on `coda.run_id` and the trace id, and the attempt span records `coda.trace_relation` `link`: the attempt started its own trace linked to the request that accepted the turn. |
 | `isolation` | Langfuse holds the canary (the positive control) under the snapshot's attempt; the operations spans of the same trace exist in Datadog, and in Tempo under `grafana`, with model and usage, and no canary anywhere; Datadog Logs, and Loki under `grafana`, hold the physician logs of the same trace (their positive control) and no physician log event since the turn carries the canary in any field. |
 | `chat-failure` | The physician chat failure monitor is OK, then the drill sends one more canary turn than its threshold, each marked `[fail:1]`. Every turn answers on a retry and the monitor fires. For one turn, the answering attempt's span names the failed attempt as its predecessor in the same `coda.work_id`; the failed attempt's span has `error.type` `rehearsed`; the monitor's own query, narrowed to that attempt, finds the error generation in the failed attempt's trace; and Langfuse holds that attempt's generation in the same trace at level `ERROR`, with the canary. Both attempts' spans record `coda.trace_relation` `link` to the accepting request. Datadog holds no canary in either attempt's trace, and the monitor recovers after its 10-minute window. |
+| `burst` | One unmarked turn gives the idle baseline, then two sequential waves of 12 turns marked `[hold:20]`. Each turn records its submit time, answering attempt, attempt-span start and duration, `coda.rehearsed_hold_ms` and reply time; a sample the drill could not read is listed as missing, never counted as zero. Each wave drains, first submit to last reply, within `ceil(12 / (4 × worker instances)) × 20 s + 10 s`, the instances counted from the queue gauges. Read the waves beside the workers' `physician.worker.pool_sample` lines to tell queue delay from pool wait. |
+| `hard-stop` | The queue gauges show nothing due, then one turn marked `[hold:30][crash:1]` aborts its worker mid-lease. Within five minutes the turn answers; the answering attempt names the crashed attempt as its predecessor, Cloud Logging holds that attempt's `physician.worker.rehearsed_crash` line in the same `coda.work_id`, and the chat holds exactly one reply. A normal turn then answers. |
 
 The rehearsal physician is the `physician-rehearsal` service account. Its turns
 belong to a practice in `physician_simulation_practices`
@@ -473,6 +482,8 @@ The Langfuse export monitors in
 `langfuse_monitors_enabled`, page when the collector cannot deliver to the
 hosted project; no drill takes the hosted project down to fire them.
 
+`hard-stop` aborts a staging worker instance and every attempt it was
+running, so it needs `--confirm` and an exclusive window.
 `chat-failure` pages `#engineering-observability`, so it needs `--confirm`,
 and runs only with the operator's approval for that window. Its failure is the worker's own: a rehearsal turn marked `[fail:K]` fails
 its first K attempts before any model call, with `error.type` `rehearsed`,
