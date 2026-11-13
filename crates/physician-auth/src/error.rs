@@ -97,6 +97,16 @@ pub enum AccountSetupError {
         /// The conflicting physician identifier.
         physician_id: String,
     },
+    /// An account with this email already exists in the practice with different role, display name, or active standing.
+    #[error(
+        "account `{email}` already exists in practice `{practice_id}` with different role, name, or active standing"
+    )]
+    AccountConflict {
+        /// The practice identifier.
+        practice_id: String,
+        /// The conflicting email address.
+        email: String,
+    },
     /// The store could not read or write the account.
     #[error("account setup store unavailable")]
     Unavailable(#[from] StoreUnavailable),

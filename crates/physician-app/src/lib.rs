@@ -1505,6 +1505,10 @@ fn PhysicianShell(
         .and_then(|result| result.as_ref().ok())
         .map(|list| source_setup::structured_today_connections(&list.connections))
         .unwrap_or_default();
+    let today_zone = today_read
+        .as_ref()
+        .and_then(|result| result.as_ref().ok())
+        .and_then(|list| list.time_zone.clone());
     let practice_state = use_read_view(practice);
     let updates_state = use_read_view(updates);
     let schedule = practice_state.stage();
@@ -1512,6 +1516,7 @@ fn PhysicianShell(
     let server_now = day.map(|day| day.current_time.clone()).unwrap_or_default();
     let practice_zone = day
         .map(|day| day.time_zone.clone())
+        .or(today_zone)
         .unwrap_or_else(|| "America/New_York".to_owned());
     let practice_date = format_local_date(&server_now, &practice_zone);
     let browser_tz = browser_time_zone(&practice_zone);
@@ -2421,6 +2426,7 @@ fn PhysicianShell(
                             show_schedule,
                             schedule,
                             schedule_freshness: schedule_freshness.clone(),
+                            practice_zone: practice_zone.clone(),
                             browser_tz: browser_tz.clone(),
                             on_schedule_retry: move |_| retry_schedule(),
                             schedule_empty: schedule_empty.clone(),
@@ -3832,6 +3838,7 @@ fn TodaySurface(
     show_schedule: bool,
     schedule: ReadStage,
     schedule_freshness: SchedulePaneFreshness,
+    practice_zone: String,
     browser_tz: String,
     on_schedule_retry: EventHandler,
     schedule_empty: String,
@@ -3894,7 +3901,7 @@ fn TodaySurface(
                 section { class: "today-main", aria_label: "Needs you",
                     source_setup::TodaySourceConnections {
                         connections: source_connections,
-                        practice_zone: browser_tz.clone(),
+                        practice_zone: practice_zone.clone(),
                         server_now: server_now.clone(),
                         on_open_source,
                     }

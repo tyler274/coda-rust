@@ -915,18 +915,7 @@ pub fn format_waited(since: &str, now: &str) -> Option<String> {
 
 /// A clock time in the visit's zone, such as `3:30 PM`.
 pub fn format_clock(iso: &str, zone: &str) -> Option<String> {
-    let unix = parse_unix(iso)?;
-    let offset = zone_offset(zone, unix)?;
-    let day_sec = (unix + i64::from(offset)).rem_euclid(86_400);
-    let hour = (day_sec / 3600) as u32;
-    let minute = ((day_sec % 3600) / 60) as u32;
-    let (hour12, suffix) = match hour {
-        0 => (12, "AM"),
-        1..=11 => (hour, "AM"),
-        12 => (12, "PM"),
-        _ => (hour - 12, "PM"),
-    };
-    Some(format!("{hour12}:{minute:02} {suffix}"))
+    crate::schedule_briefing::format_zone_clock(iso, zone)
 }
 
 /// A time against the practice day's clock: `Today, 8:00 AM` on that day.
@@ -951,8 +940,8 @@ pub fn format_local_date(iso: &str, zone: &str) -> Option<String> {
 
 fn local_day(iso: &str, zone: &str) -> Option<i64> {
     let unix = parse_unix(iso)?;
-    let offset = zone_offset(zone, unix)?;
-    Some((unix + i64::from(offset)).div_euclid(86_400))
+    let (year, month, day) = crate::schedule_briefing::zone_ymd(unix, zone)?;
+    Some(days_from_civil(year, month, day))
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -1255,24 +1244,6 @@ pub fn records_as_of(sources: &[ConnectedSource]) -> Option<String> {
     oldest.map(|(_, instant)| instant)
 }
 
-fn zone_offset(zone: &str, unix: i64) -> Option<i32> {
-    if zone == "America/New_York" {
-        return Some(eastern_offset(unix));
-    }
-    None
-}
-
-fn eastern_offset(unix: i64) -> i32 {
-    let year = year_of(unix);
-    let start = days_from_civil(year, 3, nth_sunday(year, 3, 2)) * 86_400 + 7 * 3600;
-    let end = days_from_civil(year, 11, nth_sunday(year, 11, 1)) * 86_400 + 6 * 3600;
-    if unix >= start && unix < end {
-        -4 * 3600
-    } else {
-        -5 * 3600
-    }
-}
-
 pub(crate) fn nth_sunday(year: i32, month: u32, n: u32) -> u32 {
     let first = days_from_civil(year, month, 1);
     let weekday = (first + 4).rem_euclid(7);
@@ -1282,10 +1253,6 @@ pub(crate) fn nth_sunday(year: i32, month: u32, n: u32) -> u32 {
         1 + (7 - weekday as u32)
     };
     first_sunday + (n - 1) * 7
-}
-
-fn year_of(unix: i64) -> i32 {
-    civil_from_days(unix.div_euclid(86_400)).0
 }
 
 pub(crate) fn civil_from_days(days: i64) -> (i32, u32, u32) {

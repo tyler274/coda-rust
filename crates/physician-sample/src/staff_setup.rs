@@ -526,6 +526,14 @@ async fn create_account(
             })),
         )
             .into_response(),
+        Err(AccountSetupError::AccountConflict { practice_id, email }) => (
+            StatusCode::CONFLICT,
+            Json(json!({
+                "detail": format!("Account `{email}` already exists in practice `{practice_id}` with different role, display name, or active standing."),
+                "code": "account_conflict",
+            })),
+        )
+            .into_response(),
         Err(AccountSetupError::Unavailable(_)) => StatusCode::SERVICE_UNAVAILABLE.into_response(),
     }
 }

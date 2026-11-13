@@ -326,6 +326,7 @@ async fn runtime_connection_leaves_schema_untouched_and_migration_job_reruns() {
         "physician_memberships",
         "physician_patient_links",
         "physician_patients",
+        "physician_practice_source_setups",
         "physician_practices",
         "physician_sessions",
         "physician_sign_in_tokens",
@@ -1261,5 +1262,108 @@ async fn failed_revocations_do_not_acknowledge_or_change_access() {
     assert_eq!(
         store.membership(&actor, "patient").await,
         Membership::Allowed
+    );
+}
+
+#[tokio::test]
+async fn postgres_create_account_rejects_attribute_mismatch_and_handles_concurrent_races() {
+    use physician_auth::{AccountCreateOutcome, AccountSetupError};
+
+    let Some(url) = fresh_database("create_account_conflicts").await else {
+        return;
+    };
+    let store = PostgresAuthStore::connect_with_migrations(&url)
+        .await
+        .unwrap();
+
+    // Concurrent creation of two accounts sharing an email across practices maps the loser to EmailConflict, never 503.
+    let barrier = std::sync::Arc::new(tokio::sync::Barrier::new(2));
+    let s1 = store.clone();
+    let b1 = barrier.clone();
+    let t1 = tokio::spawn(async move {
+        b1.wait().await;
+        s1.create_account(
+            "clinic-a",
+            Some("dr-race"),
+            "race@practice.org",
+            "Dr. Race",
+            false,
+            NOW,
+        )
+        .await
+    });
+    let s2 = store.clone();
+    let b2 = barrier.clone();
+    let t2 = tokio::spawn(async move {
+        b2.wait().await;
+        s2.create_account(
+            "clinic-b",
+            Some("dr-race"),
+            "race@practice.org",
+            "Dr. Race",
+            false,
+            NOW,
+        )
+        .await
+    });
+    let (r1, r2) = tokio::join!(t1, t2);
+    let outcomes = [r1.unwrap(), r2.unwrap()];
+    assert_eq!(
+        outcomes
+            .iter()
+            .filter(|res| matches!(res, Ok((_, AccountCreateOutcome::Created))))
+            .count(),
+        1,
+        "one concurrent writer creates: {outcomes:?}"
+    );
+    assert_eq!(
+        outcomes
+            .iter()
+            .filter(|res| matches!(res, Err(AccountSetupError::EmailConflict { .. })))
+            .count(),
+        1,
+        "concurrent email collision maps to EmailConflict, never StoreUnavailable: {outcomes:?}"
+    );
+
+    let winner_practice = outcomes
+        .into_iter()
+        .find_map(|res| res.ok().map(|(acct, _)| acct.identity.practice_id))
+        .unwrap();
+
+    // Role mismatch on existing email returns AccountConflict.
+    assert_eq!(
+        store
+            .create_account(
+                &winner_practice,
+                Some("dr-race"),
+                "race@practice.org",
+                "Dr. Race",
+                true,
+                NOW,
+            )
+            .await,
+        Err(AccountSetupError::AccountConflict {
+            practice_id: winner_practice.clone(),
+            email: "race@practice.org".to_owned(),
+        })
+    );
+
+    // Deactivated account returns AccountConflict.
+    assert!(store.deactivate("race@practice.org").await);
+    assert_eq!(
+        store
+            .create_account(
+                &winner_practice,
+                Some("dr-race"),
+                "race@practice.org",
+                "Dr. Race",
+                false,
+                NOW,
+            )
+            .await,
+        Err(AccountSetupError::AccountConflict {
+            practice_id: winner_practice,
+            email: "race@practice.org".to_owned(),
+        })
     );
 }

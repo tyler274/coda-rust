@@ -17,7 +17,7 @@ use ui::{
     StatePill, StatusLine, TextField, TextKind, Tone,
 };
 
-use crate::shell::format_context_time;
+use crate::shell::{format_clock, format_context_time, format_local_date};
 use crate::{CONNECTIONS, SessionState, TRY_AGAIN, refusal};
 
 const SOURCES_LOADING: &str = "Loading practice connections…";
@@ -45,7 +45,18 @@ pub(crate) fn standing_badge(standing: &SourceStandingWire) -> (Tone, IconName, 
 }
 
 fn format_instant(iso: &str, zone: &str, now: &str) -> String {
-    format_context_time(iso, zone, now).unwrap_or_else(|| iso.to_owned())
+    if let Some(contextual) = format_context_time(iso, zone, now)
+        && (contextual.starts_with("Today,")
+            || contextual.starts_with("Yesterday,")
+            || contextual.starts_with("Tomorrow,"))
+    {
+        return contextual;
+    }
+    match (format_local_date(iso, zone), format_clock(iso, zone)) {
+        (Some(date), Some(clock)) => format!("{date}, {clock}"),
+        (Some(date), None) => date,
+        _ => iso.to_owned(),
+    }
 }
 
 fn format_last_read(timestamp: Option<&str>, zone: &str, now: &str) -> String {
@@ -505,13 +516,21 @@ fn SourceSetupCard(
                             .filter(|text| !text.is_empty())
                             .map(|text| format!(" · Notes: {text}"))
                             .unwrap_or_default();
+                        let can_direct_connect = setup_methods
+                            .iter()
+                            .any(|m| *m != SourceConnectionMethodWire::CodaAssisted);
+                        let follow_up = if can_direct_connect {
+                            "Coda staff will coordinate onboarding, or you can connect directly below."
+                        } else {
+                            "Coda staff will coordinate onboarding; update your contact details below if needed."
+                        };
                         rsx! {
                             Notice {
                                 tone: Tone::Primary,
                                 icon: IconName::Clock,
                                 title: "Coda-assisted setup requested",
                                 detail: Some(format!(
-                                    "Requested {when} for {saved_email}{note_part}. Coda staff will coordinate onboarding, or you can connect directly below."
+                                    "Requested {when} for {saved_email}{note_part}. {follow_up}"
                                 )),
                                 span {}
                             }
@@ -726,19 +745,36 @@ fn SourceSetupCard(
                                 span {}
                             }
                             SpruceRetentionSummary { source: source.clone() }
-                            SourceConnectionForm {
-                                kind,
-                                methods: reconnect_methods,
-                                chosen_method,
-                                account_label,
-                                secret_or_code,
-                                prerequisites_confirmed,
-                                contact_email,
-                                assist_notes,
-                                busy: busy(),
-                                reconnect_mode: true,
-                                on_connect: move |body| run_mutation(SourceMutation::Reconnect(body)),
-                                on_assist: move |_| {},
+                            if !reconnect_methods.is_empty() {
+                                SourceConnectionForm {
+                                    kind,
+                                    methods: reconnect_methods,
+                                    chosen_method,
+                                    account_label,
+                                    secret_or_code,
+                                    prerequisites_confirmed,
+                                    contact_email,
+                                    assist_notes,
+                                    busy: busy(),
+                                    reconnect_mode: true,
+                                    on_connect: move |body| run_mutation(SourceMutation::Reconnect(body)),
+                                    on_assist: move |_| {},
+                                }
+                            } else {
+                                SourceConnectionForm {
+                                    kind,
+                                    methods: setup_methods,
+                                    chosen_method,
+                                    account_label,
+                                    secret_or_code,
+                                    prerequisites_confirmed,
+                                    contact_email,
+                                    assist_notes,
+                                    busy: busy(),
+                                    reconnect_mode: false,
+                                    on_connect: move |body| run_mutation(SourceMutation::Connect(body)),
+                                    on_assist: move |body| run_mutation(SourceMutation::RequestAssist(body)),
+                                }
                             }
                             ActionRow {
                                 Button {
@@ -1069,5 +1105,37 @@ mod tests {
         assert!(access_lost.title.contains("Access lost"));
         assert_eq!(access_lost.action_label, "Reconnect");
         assert!(access_lost.primary_action);
+    }
+
+    #[test]
+    fn format_instant_preserves_calendar_date_across_multi_day_and_practice_zones() {
+        assert_eq!(
+            format_instant(
+                "2026-08-27T16:00:00Z",
+                "America/New_York",
+                "2026-08-27T16:05:00Z"
+            ),
+            "Today, 12:00 PM"
+        );
+        assert_eq!(
+            format_instant(
+                "2026-08-22T16:00:00Z",
+                "America/New_York",
+                "2026-08-27T16:00:00Z"
+            ),
+            "Aug 22, 2026, 12:00 PM"
+        );
+        assert_eq!(
+            format_instant(
+                "2026-08-22T16:00:00Z",
+                "America/Los_Angeles",
+                "2026-08-27T16:00:00Z"
+            ),
+            "Aug 22, 2026, 9:00 AM"
+        );
+        assert_eq!(
+            format_instant("2026-08-22T16:00:00Z", "America/New_York", ""),
+            "Aug 22, 2026, 12:00 PM"
+        );
     }
 }

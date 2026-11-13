@@ -48,6 +48,9 @@ pub struct HealthCapabilities {
 pub struct TodayListResponse {
     /// The `date` value.
     pub date: String,
+    #[serde(default)]
+    /// Saved IANA time zone of the signed-in practice, when provided.
+    pub time_zone: Option<String>,
     /// The `rows` value.
     pub rows: Vec<TodayRow>,
     /// The `as_of` value.

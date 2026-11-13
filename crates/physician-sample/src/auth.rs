@@ -40,8 +40,8 @@ use crate::timestamp::format_rfc3339;
 use front_door::{FrontDoorStore, MemoryFrontDoorStore, PostgresFrontDoorStore, RosterPatient};
 use physician_auth::{
     AuthStore, AuthorityFeed, CachedAuthStore, Membership, MemoryAuthStore, PanelError,
-    PhysicianIdentity, PostgresAuthStore, PracticeClock, SessionError, SignInError,
-    StoreUnavailable,
+    PhysicianIdentity, PostgresAuthStore, PracticeClock, PracticeTimeZone, SessionError,
+    SignInError, StoreUnavailable,
 };
 
 use crate::patients::{MemoryPatients, PatientDirectory, enroll_in_memory, read_patient};
@@ -90,6 +90,9 @@ pub(crate) struct Auth {
     pub(crate) front_door: Arc<dyn FrontDoorStore>,
     /// What each source last delivered about the practice's patients.
     pub(crate) patients: Arc<dyn PatientDirectory>,
+    /// Practice-scoped clinical source setup, recovery, and backlog state:
+    /// PostgreSQL when configured, process memory otherwise.
+    pub(crate) source_setup: Arc<crate::source_setup::SourceSetupStore>,
     /// Workspace invalidation bus shared with chat execution. `live::events`
     /// is the only SSE encoder; the guard filters that stream and does not
     /// subscribe again. Session revocation still arrives on the Postgres
@@ -164,12 +167,31 @@ impl Auth {
         events: Arc<dyn physician_bus::Bus>,
         mail: crate::gmail::Delivery,
     ) -> Arc<Self> {
+        Self::configured_with_source_setup(
+            store,
+            front_door,
+            patients,
+            crate::source_setup::SourceSetupStore::new(),
+            events,
+            mail,
+        )
+    }
+
+    pub(crate) fn configured_with_source_setup(
+        store: Arc<dyn AuthStore>,
+        front_door: Arc<dyn FrontDoorStore>,
+        patients: Arc<dyn PatientDirectory>,
+        source_setup: Arc<crate::source_setup::SourceSetupStore>,
+        events: Arc<dyn physician_bus::Bus>,
+        mail: crate::gmail::Delivery,
+    ) -> Arc<Self> {
         Arc::new(Self {
             store,
             publication: tokio::sync::Mutex::new(()),
             delivery: std::sync::Mutex::new(Vec::new()),
             front_door,
             patients,
+            source_setup,
             events,
             mail,
         })
@@ -182,6 +204,7 @@ impl Auth {
             Arc::default(),
             Arc::new(physician_bus::LocalBus::new(64)),
             crate::gmail::Delivery::Proof,
+            false,
         )
         .await
     }
@@ -190,6 +213,7 @@ impl Auth {
         patients: Arc<MemoryPatients>,
         events: Arc<dyn physician_bus::Bus>,
         mail: crate::gmail::Delivery,
+        forbid_simulation: bool,
     ) -> Arc<Self> {
         let store = Arc::new(MemoryAuthStore::new());
         store.seed_account(
@@ -200,10 +224,11 @@ impl Auth {
             true,
         );
         enroll_in_memory(&store, &patients).await;
-        Self::configured(
+        Self::configured_with_source_setup(
             store,
             Arc::new(MemoryFrontDoorStore::new()),
             patients,
+            crate::source_setup::SourceSetupStore::memory(forbid_simulation),
             events,
             mail,
         )
@@ -231,6 +256,7 @@ impl Auth {
         runtime: local_product::runtime::Store,
         events: Arc<dyn physician_bus::Bus>,
         mail: crate::gmail::Delivery,
+        forbid_simulation: bool,
     ) -> Result<Arc<Self>, String> {
         let store = PostgresAuthStore::connect_without_migrations(database_url)
             .await
@@ -246,13 +272,18 @@ impl Auth {
             .check_schema()
             .await
             .map_err(|error| format!("front-door schema; run migration job: {error}"))?;
+        let source_setup = crate::source_setup::SourceSetupStore::postgres(
+            store.connection().clone(),
+            forbid_simulation,
+        );
         // Authority reads are answered from memory between changes; the
         // database trigger feed invalidates them across replicas.
         let store = CachedAuthStore::postgres(store);
-        Ok(Self::configured(
+        Ok(Self::configured_with_source_setup(
             Arc::new(store),
             Arc::new(front_door),
             Arc::new(runtime),
+            source_setup,
             events,
             mail,
         ))
@@ -339,6 +370,9 @@ pub(crate) async fn guard(
     request.extensions_mut().insert(AuthRequiredMarker);
     request.extensions_mut().insert(Arc::clone(&auth.store));
     request.extensions_mut().insert(Arc::clone(&auth.patients));
+    request
+        .extensions_mut()
+        .insert(Arc::clone(&auth.source_setup));
     if !guarded(request.uri().path()) {
         return next.run(request).await;
     }
@@ -489,13 +523,18 @@ async fn clinic_demographics(
     identity: &PhysicianIdentity,
     workspace: &str,
 ) -> Response {
-    let Ok(clock) = auth.store.practice_clock(&identity.practice_id).await else {
+    let Ok(practice) = auth.store.practice(&identity.practice_id).await else {
         return StatusCode::SERVICE_UNAVAILABLE.into_response();
+    };
+    let (clock, time_zone) = match practice {
+        Some(record) => (record.clock, record.time_zone),
+        None => (PracticeClock::RealTime, PracticeTimeZone::default()),
     };
     match read_patient(&*auth.patients, workspace).await {
         Ok(Some(patient)) => {
             let at = UNIX_EPOCH + Duration::from_secs(clock.now(now()));
-            Json(patient.clinic_demographics(&format_rfc3339(at))).into_response()
+            Json(patient.clinic_demographics_in_zone(&format_rfc3339(at), time_zone.as_str()))
+                .into_response()
         }
         Ok(None) => not_found(),
         Err(_) => StatusCode::SERVICE_UNAVAILABLE.into_response(),
@@ -1272,6 +1311,9 @@ async fn inject_auth_store(
 ) -> Response {
     request.extensions_mut().insert(Arc::clone(&auth.store));
     request.extensions_mut().insert(Arc::clone(&auth.patients));
+    request
+        .extensions_mut()
+        .insert(Arc::clone(&auth.source_setup));
     next.run(request).await
 }
 
@@ -1288,6 +1330,9 @@ pub async fn authed_router(base: axum::Router) -> axum::Router {
     let staff = crate::hosting::StaffSetupAuth::from_env(|key| std::env::var(key).ok())
         .ok()
         .flatten();
+    let forbid_simulation = std::env::var("CODA_ENVIRONMENT")
+        .ok()
+        .is_some_and(|env| env.trim() == "prd");
     authed_router_configured(
         base,
         Arc::new(physician_bus::LocalBus::new(64)),
@@ -1297,12 +1342,16 @@ pub async fn authed_router(base: axum::Router) -> axum::Router {
         mail,
         None,
         staff,
+        forbid_simulation,
     )
     .await
 }
 
 /// Builds the router with auth on `base`, publishing panel changes on `bus`.
-#[allow(clippy::too_many_arguments)]
+#[expect(
+    clippy::too_many_arguments,
+    reason = "process router composition wiring"
+)]
 pub(crate) async fn authed_router_configured(
     base: axum::Router,
     bus: Arc<dyn physician_bus::Bus>,
@@ -1312,6 +1361,7 @@ pub(crate) async fn authed_router_configured(
     mail: crate::gmail::Delivery,
     rehearsal: Option<crate::hosting::RehearsalSignIn>,
     staff: Option<crate::hosting::StaffSetupAuth>,
+    forbid_simulation: bool,
 ) -> axum::Router {
     let mode = if required {
         AuthMode::Required
@@ -1320,7 +1370,7 @@ pub(crate) async fn authed_router_configured(
     };
     let auth = match (&mode, postgres) {
         (AuthMode::Required, Some((url, runtime))) => {
-            match Auth::postgres_with_bus(url, runtime, bus, mail).await {
+            match Auth::postgres_with_bus(url, runtime, bus, mail, forbid_simulation).await {
                 Ok(auth) => auth,
                 Err(error) => {
                     tracing::error!(%error, "physician auth store unavailable");
@@ -1328,7 +1378,7 @@ pub(crate) async fn authed_router_configured(
                 }
             }
         }
-        _ => Auth::memory_with(memory_patients, bus, mail).await,
+        _ => Auth::memory_with(memory_patients, bus, mail, forbid_simulation).await,
     };
     match mode {
         AuthMode::Required => {

@@ -705,6 +705,10 @@ async fn walk_viewport(
     assert_eq!(spruce_imported_json["retained_reply_drafts"], 1);
     assert!(spruce_imported_dom.contains("Spruce Health · Records imported"));
     assert!(spruce_imported_dom.contains("Initial records imported"));
+    assert!(
+        spruce_imported_dom.contains("Aug 22, 2026, 12:00 PM"),
+        "expected multi-day Spruce backlog timestamp with calendar date:\n{spruce_imported_dom}"
+    );
     assert!(spruce_imported_dom.contains("Review backlog"));
     assert!(!spruce_imported_dom.contains("Spruce Health · Up to date"));
     walk.capture("04-spruce-imported-backlog-held");

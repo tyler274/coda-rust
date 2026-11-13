@@ -6,15 +6,16 @@
 use std::time::Duration;
 
 use crate::migration::{
-    Accounts, Invitations, Memberships, PatientLinks, Patients, Practices, Sessions, SignInTokens,
+    Accounts, Invitations, Memberships, PatientLinks, Patients, PracticeSourceSetups, Practices,
+    Sessions, SignInTokens,
 };
 use crate::{
     Account, AccountCreateOutcome, AccountSetupError, AuthStore, INVITATION_TTL_SECONDS,
     Membership, PanelError, PatientLink, PhysicianIdentity, PracticeClock, PracticeRecord,
     PracticeSetupError, PracticeSetupOutcome, PracticeTimeZone, SIGN_IN_TOKEN_TTL_SECONDS, Session,
     SessionActivity, SessionError, SessionLifetime, SessionRenewal, SignInError, StoreUnavailable,
-    mint_patient_token, mint_token, post_fence_mint_second, token_hash, validate_account_fields,
-    validate_practice_id,
+    check_existing_account_match, mint_patient_token, mint_token, post_fence_mint_second,
+    token_hash, validate_account_fields, validate_practice_id,
 };
 use async_trait::async_trait;
 use sea_orm::{
@@ -84,6 +85,11 @@ impl PostgresAuthStore {
         Self { db }
     }
 
+    /// The SeaORM connection handle, shared with practice-scoped stores on the same pool.
+    pub fn connection(&self) -> &DatabaseConnection {
+        &self.db
+    }
+
     /// The runtime pool, for the authority change listener.
     pub fn pool(&self) -> &sea_orm::sqlx::PgPool {
         self.db.get_postgres_connection_pool()
@@ -96,6 +102,7 @@ impl PostgresAuthStore {
         Memberships::find().one(&self.db).await?;
         PatientLinks::find().one(&self.db).await?;
         Patients::find().one(&self.db).await?;
+        PracticeSourceSetups::find().one(&self.db).await?;
         Practices::find().one(&self.db).await?;
         Sessions::find().one(&self.db).await?;
         SignInTokens::find().one(&self.db).await?;
@@ -874,26 +881,23 @@ impl AuthStore for PostgresAuthStore {
         let (practice_id, resolved_physician_id, key, clean_name) =
             validate_account_fields(practice_id, physician_id, email, display_name)?;
         let txn = self.db.begin().await.map_err(|_| StoreUnavailable)?;
-        if let Some(existing) = Accounts::find()
+        if let Some(existing_row) = Accounts::find()
             .filter(crate::migration::account::Column::Email.eq(&key))
             .one(&txn)
             .await
             .map_err(|_| StoreUnavailable)?
         {
-            if existing.practice_id != practice_id {
-                return Err(AccountSetupError::EmailConflict {
-                    email: key,
-                    existing_practice_id: existing.practice_id,
-                });
-            }
-            if caller_named_physician && existing.physician_id != resolved_physician_id {
-                return Err(AccountSetupError::PhysicianIdConflict {
-                    practice_id,
-                    physician_id: resolved_physician_id,
-                });
-            }
+            let existing = Self::account_row(existing_row);
+            check_existing_account_match(
+                &existing,
+                &practice_id,
+                caller_named_physician,
+                &resolved_physician_id,
+                &clean_name,
+                admin,
+            )?;
             txn.commit().await.map_err(|_| StoreUnavailable)?;
-            return Ok((Self::account_row(existing), AccountCreateOutcome::Existing));
+            return Ok((existing, AccountCreateOutcome::Existing));
         }
         if Accounts::find()
             .filter(crate::migration::account::Column::PracticeId.eq(&practice_id))
@@ -925,22 +929,61 @@ impl AuthStore for PostgresAuthStore {
                 .await
                 .map_err(|_| StoreUnavailable)?;
         }
-        let inserted = crate::migration::AccountActiveModel {
+        let insert_res = crate::migration::AccountActiveModel {
             id: Set(uuid::Uuid::new_v4()),
-            practice_id: Set(practice_id),
-            physician_id: Set(resolved_physician_id),
-            email: Set(key),
-            display_name: Set(clean_name),
+            practice_id: Set(practice_id.clone()),
+            physician_id: Set(resolved_physician_id.clone()),
+            email: Set(key.clone()),
+            display_name: Set(clean_name.clone()),
             active: Set(true),
             admin: Set(admin),
             sessions_ended_before: Set(0),
             created_at: Set(now as i64),
         }
         .insert(&txn)
-        .await
-        .map_err(|_| StoreUnavailable)?;
-        txn.commit().await.map_err(|_| StoreUnavailable)?;
-        Ok((Self::account_row(inserted), AccountCreateOutcome::Created))
+        .await;
+        match insert_res {
+            Ok(inserted) => {
+                txn.commit().await.map_err(|_| StoreUnavailable)?;
+                Ok((Self::account_row(inserted), AccountCreateOutcome::Created))
+            }
+            Err(_) => {
+                let _ = txn.rollback().await;
+                if let Some(existing_row) = Accounts::find()
+                    .filter(crate::migration::account::Column::Email.eq(&key))
+                    .one(&self.db)
+                    .await
+                    .map_err(|_| StoreUnavailable)?
+                {
+                    let existing = Self::account_row(existing_row);
+                    check_existing_account_match(
+                        &existing,
+                        &practice_id,
+                        caller_named_physician,
+                        &resolved_physician_id,
+                        &clean_name,
+                        admin,
+                    )?;
+                    return Ok((existing, AccountCreateOutcome::Existing));
+                }
+                if Accounts::find()
+                    .filter(crate::migration::account::Column::PracticeId.eq(&practice_id))
+                    .filter(
+                        crate::migration::account::Column::PhysicianId.eq(&resolved_physician_id),
+                    )
+                    .one(&self.db)
+                    .await
+                    .map_err(|_| StoreUnavailable)?
+                    .is_some()
+                {
+                    return Err(AccountSetupError::PhysicianIdConflict {
+                        practice_id,
+                        physician_id: resolved_physician_id,
+                    });
+                }
+                Err(AccountSetupError::Unavailable(StoreUnavailable))
+            }
+        }
     }
 
     async fn invite(

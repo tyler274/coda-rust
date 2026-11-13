@@ -133,6 +133,21 @@ impl PracticeTimeZone {
     pub fn as_str(&self) -> &str {
         &self.0
     }
+
+    /// Formats the local calendar date (`YYYY-MM-DD`) at `unix_seconds` in this practice's IANA time zone.
+    pub fn calendar_date_iso(&self, unix_seconds: u64) -> String {
+        let tz = jiff::tz::TimeZone::get(&self.0)
+            .unwrap_or_else(|_| jiff::tz::TimeZone::get(Self::DEFAULT_IANA).expect("default tz"));
+        let ts = jiff::Timestamp::from_second(unix_seconds as i64)
+            .unwrap_or(jiff::Timestamp::UNIX_EPOCH);
+        let zoned = ts.to_zoned(tz);
+        format!(
+            "{:04}-{:02}-{:02}",
+            zoned.year(),
+            zoned.month() as u8,
+            zoned.day()
+        )
+    }
 }
 
 impl Default for PracticeTimeZone {
@@ -256,6 +271,35 @@ pub(crate) fn validate_account_fields(
         ));
     }
     Ok((practice, resolved_physician_id, clean_email, clean_name))
+}
+
+pub(crate) fn check_existing_account_match(
+    existing: &Account,
+    practice_id: &str,
+    caller_named_physician: bool,
+    resolved_physician_id: &str,
+    clean_name: &str,
+    admin: bool,
+) -> Result<(), AccountSetupError> {
+    if existing.identity.practice_id != practice_id {
+        return Err(AccountSetupError::EmailConflict {
+            email: existing.email.clone(),
+            existing_practice_id: existing.identity.practice_id.clone(),
+        });
+    }
+    if caller_named_physician && existing.identity.physician_id != resolved_physician_id {
+        return Err(AccountSetupError::PhysicianIdConflict {
+            practice_id: practice_id.to_owned(),
+            physician_id: resolved_physician_id.to_owned(),
+        });
+    }
+    if !existing.active || existing.admin != admin || existing.display_name != clean_name {
+        return Err(AccountSetupError::AccountConflict {
+            practice_id: practice_id.to_owned(),
+            email: existing.email.clone(),
+        });
+    }
+    Ok(())
 }
 
 /// A physician's access to one patient workspace.
@@ -1204,18 +1248,14 @@ impl AuthStore for MemoryAuthStore {
         let _announce = self.announce();
         let mut state = self.state.lock().expect("auth state");
         if let Some(existing) = state.accounts.get(&key) {
-            if existing.identity.practice_id != practice_id {
-                return Err(AccountSetupError::EmailConflict {
-                    email: key,
-                    existing_practice_id: existing.identity.practice_id.clone(),
-                });
-            }
-            if caller_named_physician && existing.identity.physician_id != resolved_physician_id {
-                return Err(AccountSetupError::PhysicianIdConflict {
-                    practice_id,
-                    physician_id: resolved_physician_id,
-                });
-            }
+            check_existing_account_match(
+                existing,
+                &practice_id,
+                caller_named_physician,
+                &resolved_physician_id,
+                &clean_name,
+                admin,
+            )?;
             return Ok((existing.clone(), AccountCreateOutcome::Existing));
         }
         if state.accounts.values().any(|account| {
@@ -2217,6 +2257,104 @@ mod tests {
             store.identity(&session_2, NOW).await,
             Ok(acct.identity),
             "new session minted in same second after reactivation must resolve"
+        );
+    }
+
+    #[test]
+    fn practice_time_zone_computes_local_calendar_date_across_midnight() {
+        // 2026-08-28T05:30:00Z = 01:30 EDT (Aug 28) in New York, 22:30 PDT (Aug 27) in Los Angeles.
+        let instant_unix = 1_787_895_000;
+        let ny = PracticeTimeZone::parse("America/New_York").unwrap();
+        let la = PracticeTimeZone::parse("America/Los_Angeles").unwrap();
+        let london = PracticeTimeZone::parse("Europe/London").unwrap();
+        assert_eq!(ny.calendar_date_iso(instant_unix), "2026-08-28");
+        assert_eq!(la.calendar_date_iso(instant_unix), "2026-08-27");
+        assert_eq!(london.calendar_date_iso(instant_unix), "2026-08-28");
+    }
+
+    #[tokio::test]
+    async fn create_account_requires_matching_role_name_and_active_standing_for_existing_email() {
+        let store = MemoryAuthStore::new();
+        let (created, outcome) = store
+            .create_account(
+                "practice-1",
+                Some("dr-lee"),
+                "dr.lee@practice.org",
+                "Dr. Lee",
+                false,
+                NOW,
+            )
+            .await
+            .expect("create physician");
+        assert_eq!(outcome, AccountCreateOutcome::Created);
+
+        let (replayed, outcome_2) = store
+            .create_account(
+                "practice-1",
+                None,
+                "DR.LEE@practice.org",
+                "Dr. Lee",
+                false,
+                NOW,
+            )
+            .await
+            .expect("idempotent replay");
+        assert_eq!(outcome_2, AccountCreateOutcome::Existing);
+        assert_eq!(replayed, created);
+
+        // Role mismatch (admin=true vs existing admin=false) conflicts instead of pretending Existing.
+        assert_eq!(
+            store
+                .create_account(
+                    "practice-1",
+                    Some("dr-lee"),
+                    "dr.lee@practice.org",
+                    "Dr. Lee",
+                    true,
+                    NOW,
+                )
+                .await,
+            Err(AccountSetupError::AccountConflict {
+                practice_id: "practice-1".to_owned(),
+                email: "dr.lee@practice.org".to_owned(),
+            })
+        );
+
+        // Display-name mismatch conflicts.
+        assert_eq!(
+            store
+                .create_account(
+                    "practice-1",
+                    Some("dr-lee"),
+                    "dr.lee@practice.org",
+                    "Dr. Someone Else",
+                    false,
+                    NOW,
+                )
+                .await,
+            Err(AccountSetupError::AccountConflict {
+                practice_id: "practice-1".to_owned(),
+                email: "dr.lee@practice.org".to_owned(),
+            })
+        );
+
+        // Deactivated account conflicts rather than claiming an active account is ready.
+        assert!(store.deactivate("dr.lee@practice.org").await);
+        assert_eq!(
+            store
+                .create_account(
+                    "practice-1",
+                    Some("dr-lee"),
+                    "dr.lee@practice.org",
+                    "Dr. Lee",
+                    false,
+                    NOW,
+                )
+                .await,
+            Err(AccountSetupError::AccountConflict {
+                practice_id: "practice-1".to_owned(),
+                email: "dr.lee@practice.org".to_owned(),
+            })
         );
     }
 }
