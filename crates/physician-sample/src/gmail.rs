@@ -85,6 +85,27 @@ impl Outbound {
             .map_err(|error| error.to_string())
     }
 
+    /// Mails a single-use physician practice invitation link (`/?code=<token>&email=<email>`).
+    pub(crate) async fn send_physician_invite(&self, to: &str, token: &str) -> Result<(), String> {
+        let link = format!(
+            "{}&email={}",
+            self.link("/", "code", token)?,
+            query_encode(to)
+        );
+        let days = physician_auth::INVITATION_TTL_SECONDS / 86_400;
+        let detail = format!("This invitation link expires in {days} days and can be used once.");
+        let text = format!(
+            "Sign in to Coda\r\n\r\n{link}\r\n\r\n{detail}\r\nIf you weren't expecting this invitation, you can ignore this email.\r\n"
+        );
+        let html = include_str!("sign-in-email.html")
+            .replace("{{link}}", &html_escape(&link))
+            .replace("{{detail}}", &detail);
+        self.sender
+            .send_html(to, "You're invited to Coda", &text, &html)
+            .await
+            .map_err(|error| error.to_string())
+    }
+
     /// Mails the single-use front-door redeem link. The token is only in the message.
     pub(crate) async fn send_invite(&self, to: &str, token: &str) -> Result<(), String> {
         let link = self.link("/invite", "token", token)?;

@@ -1534,7 +1534,17 @@ impl Store {
         trigger: ReviewTrigger,
         additional_inputs: Vec<String>,
     ) -> Result<(ReviewStartingContext, super::sources::Observation), DbErr> {
-        let observation = self.sources(workspace).await?;
+        let mut observation = self.sources(workspace).await?;
+        let withdrawal_boundary =
+            super::follow_ups::load_workspace_withdrawal_boundary(&self.db, practice, workspace)
+                .await?;
+        if let Some(boundary) = &withdrawal_boundary {
+            let withdrawn_set: std::collections::BTreeSet<&str> =
+                boundary.candidate_ids.iter().map(String::as_str).collect();
+            observation
+                .sources
+                .retain(|source| !withdrawn_set.contains(source.candidate_id.as_str()));
+        }
         let pulls = self
             .source_pulls(&[workspace.to_owned()])
             .await?
@@ -1688,6 +1698,7 @@ impl Store {
                 refresh_statuses,
                 check_standing,
                 understanding,
+                withdrawal_boundary,
                 memory_standing,
                 open_concerns,
                 prior_reviews,
@@ -2980,7 +2991,7 @@ impl Store {
         let requested_candidates: Option<Vec<String>> = chart
             .candidates()
             .map(|ids| ids.into_iter().map(str::to_owned).collect());
-        let observation = match self.chart_observation(&scope.workspace, &chart).await {
+        let mut observation = match self.chart_observation(&scope.workspace, &chart).await {
             Ok(obs) => obs,
             Err(db_err) => {
                 if db_err.to_string().contains("corrupt source observation")
@@ -3014,6 +3025,20 @@ impl Store {
                 return Err(persistence_failure(db_err));
             }
         };
+        if let Some(boundary) = super::follow_ups::load_workspace_withdrawal_boundary(
+            &self.db,
+            &scope.practice,
+            &scope.workspace,
+        )
+        .await
+        .map_err(persistence_failure)?
+        {
+            let withdrawn_set: std::collections::BTreeSet<&str> =
+                boundary.candidate_ids.iter().map(String::as_str).collect();
+            observation
+                .sources
+                .retain(|source| !withdrawn_set.contains(source.candidate_id.as_str()));
+        }
 
         let check_standing = self
             .dispatch_check_standing(&scope.practice, &scope.workspace)
@@ -3136,7 +3161,7 @@ impl Store {
         match parsed {
             PracticeMemoryToolCall::Read { include_retired } => {
                 let selection = if include_retired {
-                    MemorySelection::All
+                    MemorySelection::ActiveAndRetired
                 } else {
                     MemorySelection::ActiveOnly
                 };
@@ -3299,7 +3324,7 @@ impl Store {
             | PracticeMemoryToolCall::Retire { memory_id, .. } => memory_id,
         };
         let command_key = memory_tool_command_key(work_id, &call.id);
-        match self
+        let entry = match self
             .memory_operation
             .saved_mutation(
                 self,
@@ -3310,18 +3335,22 @@ impl Store {
             )
             .await
         {
-            Ok(Some(entry)) => Ok(Some(ToolOutcome::Returned(
-                json!({
-                    "outcome": "duplicate",
-                    "saved": true,
-                    "entry": entry,
-                })
-                .to_string(),
-            ))),
-            Ok(None) => Ok(None),
-            Err(PatientMemoryError::Database(db_err)) => Err(persistence_failure(db_err)),
-            Err(other) => Err(engine::ProductError::from(Box::new(other) as engine::Cause)),
-        }
+            Ok(Some(entry)) => entry,
+            Ok(None) => return Ok(None),
+            Err(PatientMemoryError::WithdrawnFence(violation)) => {
+                return Ok(Some(ToolOutcome::refused(violation.to_string())));
+            }
+            Err(PatientMemoryError::Database(db_err)) => return Err(persistence_failure(db_err)),
+            Err(other) => return Err(engine::ProductError::from(Box::new(other) as engine::Cause)),
+        };
+        Ok(Some(ToolOutcome::Returned(
+            json!({
+                "outcome": "duplicate",
+                "saved": true,
+                "entry": entry,
+            })
+            .to_string(),
+        )))
     }
 
     /// Executes `read_patient_reviews` or `complete_patient_review` for a

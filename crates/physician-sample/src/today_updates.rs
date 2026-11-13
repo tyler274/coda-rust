@@ -375,7 +375,7 @@ pub(crate) async fn serve_durable_today(
     ctx: &AuthContext,
     connected: &ConnectedCare,
     extensions: &Extensions,
-    now_str: &str,
+    moment: &crate::care::PracticeMoment,
     target_workspace: Option<&str>,
     connections: Vec<Value>,
     source_outages: Vec<Value>,
@@ -415,8 +415,21 @@ pub(crate) async fn serve_durable_today(
         .collect();
     let failed_parts = map_failed_parts(projection.completeness.failed_parts());
 
+    let Ok(setup_connections) =
+        crate::source_setup::today_connections(extensions, &ctx.identity.practice_id).await
+    else {
+        return StatusCode::SERVICE_UNAVAILABLE.into_response();
+    };
+    let mut connections = connections;
+    connections.extend(
+        setup_connections
+            .into_iter()
+            .map(|conn| serde_json::to_value(conn).expect("serialize today connection")),
+    );
+
     Json(json!({
-        "date": crate::practice_date(now_str),
+        "date": moment.date_iso,
+        "time_zone": moment.time_zone.as_str(),
         "rows": rows,
         "seen": seen,
         "connections": connections,
@@ -437,7 +450,7 @@ pub(crate) async fn serve_durable_updates(
     ctx: &AuthContext,
     connected: &ConnectedCare,
     extensions: &Extensions,
-    now_str: &str,
+    moment: &crate::care::PracticeMoment,
 ) -> Response {
     let panel = ctx.auth.store.panel(&ctx.identity).await;
     let directory = connected.patients(extensions);
@@ -498,7 +511,8 @@ pub(crate) async fn serve_durable_updates(
         .collect();
 
     Json(json!({
-        "date": crate::practice_date(now_str),
+        "date": moment.date_iso,
+        "time_zone": moment.time_zone.as_str(),
         "active_runs": active_runs,
         "rows": preview_rows,
         "today_items": today_items,

@@ -108,6 +108,11 @@ pub(crate) fn registry_from(extensions: &Extensions) -> Option<&Arc<SourceRegist
     extensions.get::<Arc<SourceRegistry>>()
 }
 
+pub(crate) fn has_registered_adapters(extensions: &Extensions) -> bool {
+    registry_from(extensions)
+        .is_some_and(|reg| reg.runtime().is_some() && !reg.registered_source_ids().is_empty())
+}
+
 async fn practice_now_seconds(
     extensions: &Extensions,
     practice_id: &str,

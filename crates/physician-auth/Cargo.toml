@@ -10,6 +10,7 @@ workspace = true
 
 [dependencies]
 async-trait = "0.1"
+jiff = { version = "0.2", features = ["tzdb-bundle-always"] }
 sea-orm = { version = "2", default-features = false, features = [
     "macros",
     "sqlx-postgres",
@@ -23,6 +24,7 @@ sea-orm-migration = { version = "2", default-features = false, features = [
 ] }
 serde = { version = "1", features = ["derive"] }
 sha2 = "0.11"
+thiserror = "2"
 tokio = { version = "1", features = ["macros", "rt-multi-thread", "sync", "time"] }
 tracing = "0.1"
 uuid = { version = "1", features = ["v4"] }

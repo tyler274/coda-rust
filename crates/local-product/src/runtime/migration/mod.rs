@@ -15,6 +15,9 @@ pub(in crate::runtime) mod m20261112_source_pull_missing_candidates;
 mod m20261112_source_refresh;
 mod m20261112_today_updates_seen;
 mod m20261112_visit_briefings;
+mod m20261113_01_spruce_matching;
+mod m20261113_02_reply_proposals;
+mod m20261113_03_follow_ups_withdrawal;
 pub(in crate::runtime) mod m20261113_source_links_and_standing;
 pub(in crate::runtime) mod m20261114_reconnect_commands_and_adapter_state;
 
@@ -48,6 +51,9 @@ impl MigratorTrait for Migrator {
             Box::new(m20261112_visit_briefings::Migration),
             Box::new(m20261112_today_updates_seen::Migration),
             Box::new(m20261112_conversation_activity::Migration),
+            Box::new(m20261113_01_spruce_matching::Migration),
+            Box::new(m20261113_02_reply_proposals::Migration),
+            Box::new(m20261113_03_follow_ups_withdrawal::Migration),
         ]
     }
 }

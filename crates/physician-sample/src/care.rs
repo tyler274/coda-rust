@@ -8,7 +8,8 @@ use serde_json::Value;
 
 use crate::timestamp::format_rfc3339;
 use physician_auth::{
-    AuthStore, Membership, MemoryAuthStore, PatientLink, PhysicianIdentity, StoreUnavailable,
+    AuthStore, Membership, MemoryAuthStore, PatientLink, PhysicianIdentity, PracticeClock,
+    PracticeTimeZone, StoreUnavailable,
 };
 use physician_wire::PatientLinkWire;
 
@@ -21,6 +22,19 @@ pub(crate) enum PatientLookupError {
     Auth,
     #[error(transparent)]
     Directory(#[from] DirectoryError),
+}
+
+/// Authoritative practice clock and time-zone snapshot for a request.
+#[derive(Debug, Clone)]
+pub(crate) struct PracticeMoment {
+    /// Practice clinical "now" in Unix seconds.
+    pub(crate) now_unix: u64,
+    /// Practice clinical "now" formatted as RFC 3339 (`YYYY-MM-DDTHH:MM:SSZ`).
+    pub(crate) now_rfc3339: String,
+    /// Local calendar date (`YYYY-MM-DD`) in the practice's saved IANA time zone.
+    pub(crate) date_iso: String,
+    /// Saved practice IANA time zone (defaulting to `America/New_York` only when no row exists).
+    pub(crate) time_zone: PracticeTimeZone,
 }
 
 /// Shared Connected Care state attached to every request on a physician router.
@@ -120,17 +134,34 @@ impl ConnectedCare {
             })
     }
 
+    /// Resolves the signed-in practice's clinical clock, local calendar date, and saved IANA time zone.
+    pub(crate) async fn practice_moment(
+        &self,
+        extensions: &axum::http::Extensions,
+    ) -> Result<PracticeMoment, StoreUnavailable> {
+        let store = self.auth_store(extensions);
+        let identity = Self::identity(extensions);
+        let (clock, time_zone) = match store.practice(&identity.practice_id).await? {
+            Some(record) => (record.clock, record.time_zone),
+            None => (PracticeClock::RealTime, PracticeTimeZone::default()),
+        };
+        let now_unix = clock.now(now());
+        let now_rfc3339 = format_rfc3339(UNIX_EPOCH + Duration::from_secs(now_unix));
+        let date_iso = time_zone.calendar_date_iso(now_unix);
+        Ok(PracticeMoment {
+            now_unix,
+            now_rfc3339,
+            date_iso,
+            time_zone,
+        })
+    }
+
     /// The signed-in practice's clinical "now", as the wire carries it.
     pub(crate) async fn practice_now(
         &self,
         extensions: &axum::http::Extensions,
     ) -> Result<String, StoreUnavailable> {
-        let store = self.auth_store(extensions);
-        let identity = Self::identity(extensions);
-        let clock = store.practice_clock(&identity.practice_id).await?;
-        Ok(format_rfc3339(
-            UNIX_EPOCH + Duration::from_secs(clock.now(now())),
-        ))
+        Ok(self.practice_moment(extensions).await?.now_rfc3339)
     }
 
     pub(crate) async fn link_wire(
@@ -180,11 +211,23 @@ pub(crate) async fn enrich_workspace(
         let link = care
             .link_wire(&*store, &identity.practice_id, workspace_id)
             .await;
+        let practice_tz = store
+            .practice(&identity.practice_id)
+            .await
+            .ok()
+            .flatten()
+            .map(|rec| rec.time_zone);
         if let Some(obj) = value.as_object_mut() {
             obj.insert(
                 "patient_link".to_owned(),
                 serde_json::to_value(&link).unwrap_or(Value::Null),
             );
+            if let Some(zone) = practice_tz {
+                obj.insert(
+                    "time_zone".to_owned(),
+                    Value::String(zone.as_str().to_owned()),
+                );
+            }
         }
     }
     value

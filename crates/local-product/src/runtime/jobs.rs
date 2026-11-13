@@ -586,12 +586,13 @@ impl From<DbErr> for PracticeJobError {
 }
 
 /// Capabilities offered to a practice-owned background run: patient chart
-/// search/read, on-demand source refresh, approved skill views, retained result
-/// reads, and history.
+/// search/read, paged-document page read, on-demand source refresh, approved
+/// skill views, retained result reads, and history.
 pub fn tools() -> Vec<Tool> {
     let mut offered = work_tools();
     offered.push(search_tool());
     offered.push(read_tool(ChartScope::Chat));
+    offered.push(crate::attachments::document_page_tool());
     offered.push(super::refresh::refresh_tool());
     offered
 }
@@ -656,6 +657,7 @@ pub fn recipe(
     }
     let mut offered = tools();
     offered.push(super::concerns::concern_tool());
+    offered.push(super::follow_ups::follow_up_tool());
     let mut built = RequestRecipe {
         model: background.model.clone(),
         context_window_tokens: background.context_window_tokens,
@@ -1978,18 +1980,20 @@ impl Product for PracticeJobHost<'_> {
         let is_visit_prep = crate::visit_preparation::is_visit_preparation_tool(&call.name);
         let is_refresh = super::refresh::is_refresh_tool(&call.name);
         let is_concern = super::concerns::is_concern_tool(&call.name);
+        let is_follow_up = super::follow_ups::is_follow_up_tool(&call.name);
         let is_memory = super::chat_operations::is_memory_tool(&call.name);
         let is_complete_review = call.name == crate::patient_reviews::COMPLETE_PATIENT_REVIEW_TOOL;
         if !is_understanding
             && !is_visit_prep
             && !is_refresh
             && !is_concern
+            && !is_follow_up
             && !is_memory
             && !is_complete_review
         {
             return Box::pin(async { Ok(None) });
         }
-        if (is_concern || is_memory || is_complete_review)
+        if (is_concern || is_follow_up || is_memory || is_complete_review)
             && self.claim.kind != PracticeJobKind::PatientReview
         {
             return Box::pin(async { Ok(None) });
@@ -2022,6 +2026,16 @@ impl Product for PracticeJobHost<'_> {
             if is_concern {
                 return store
                     .saved_concern_tool_outcome(
+                        &claim.scope.practice,
+                        &claim.scope.workspace,
+                        &job.work,
+                        &call,
+                    )
+                    .await;
+            }
+            if is_follow_up {
+                return store
+                    .saved_follow_up_tool_outcome(
                         &claim.scope.practice,
                         &claim.scope.workspace,
                         &job.work,
@@ -2124,6 +2138,23 @@ impl Product for PracticeJobHost<'_> {
                     .execute_practice_chart_tool(&claim.scope, &call.name, &arguments)
                     .await;
             }
+            if crate::attachments::is_document_page_tool(&call.name) {
+                if let Some(requested_workspace) =
+                    arguments.get("workspace").and_then(Value::as_str)
+                    && requested_workspace != claim.scope.workspace
+                {
+                    return Ok(ToolOutcome::refused(
+                        "practice background job may read only its assigned patient workspace",
+                    ));
+                }
+                return store
+                    .execute_document_page_tool(
+                        &claim.scope.practice,
+                        &claim.scope.workspace,
+                        &arguments,
+                    )
+                    .await;
+            }
             if super::refresh::is_refresh_tool(&call.name) {
                 let refresh_call = Invocation {
                     id: call.id.clone(),
@@ -2194,6 +2225,39 @@ impl Product for PracticeJobHost<'_> {
                 };
                 return store
                     .execute_concern_tool(
+                        &claim.scope.practice,
+                        &claim.scope.workspace,
+                        &source_work,
+                        &invocation,
+                    )
+                    .await;
+            }
+            if super::follow_ups::is_follow_up_tool(&call.name) {
+                if claim.kind == PracticeJobKind::InitialUnderstanding {
+                    return Ok(ToolOutcome::refused(format!(
+                        "initial understanding job cannot modify follow-ups: {} is refused",
+                        call.name
+                    )));
+                }
+                if claim.kind == PracticeJobKind::VisitPreparation {
+                    return Ok(ToolOutcome::refused(format!(
+                        "visit preparation job cannot invoke {} directly",
+                        call.name
+                    )));
+                }
+                let source_work = super::concerns::SourceWork::new(
+                    claim.kind.as_str(),
+                    &job.work,
+                    &claim.attempt,
+                )
+                .map_err(|cause| -> engine::Cause { Box::new(cause) })?;
+                let invocation = Invocation {
+                    id: call.id.clone(),
+                    name: call.name.clone(),
+                    arguments,
+                };
+                return store
+                    .execute_follow_up_tool(
                         &claim.scope.practice,
                         &claim.scope.workspace,
                         &source_work,
@@ -2494,6 +2558,116 @@ mod tests {
                 .tools
                 .iter()
                 .any(|tool| { tool["name"].as_str().is_some_and(is_physician_only_tool) })
+        );
+
+        let assert_unique_tools = |label: &str, candidate: &RequestRecipe| {
+            let names: Vec<&str> = candidate
+                .tools
+                .iter()
+                .map(|tool| tool["name"].as_str().expect("tool name string"))
+                .collect();
+            let unique: std::collections::BTreeSet<&str> = names.iter().copied().collect();
+            assert_eq!(
+                names.len(),
+                unique.len(),
+                "{label} offered duplicate tool names: {names:?}"
+            );
+            assert!(
+                unique.contains(crate::attachments::READ_DOCUMENT_PAGE_TOOL),
+                "{label} must offer read_document_page: {names:?}"
+            );
+        };
+        assert_unique_tools("initial_understanding", &built);
+        assert_unique_tools("jobs_fallback_review", &review_recipe);
+
+        let starting_context = crate::runtime::chat_operations::PatientStartingContext {
+            workspace: "pw-1".into(),
+            patient: None,
+            chart_version: 1,
+            chart_record_count: 1,
+            source_pulls: Vec::new(),
+            check_standing: crate::runtime::chat_operations::DispatchCheckStanding::NotRecorded,
+            understanding: None,
+            withdrawal_boundary: None,
+            memory_standing: crate::runtime::chat_operations::PatientMemoryStanding::Available {
+                entries: Vec::new(),
+            },
+            open_concerns: Vec::new(),
+            recent_work: Vec::new(),
+        };
+        let chat_recipe = crate::physician_chat::ChatAssignment::for_patient(
+            Scope {
+                practice: "practice-a".into(),
+                physician: "dr-1".into(),
+                workspace: "pw-1".into(),
+                chat: "chat-1".into(),
+            },
+            starting_context.clone(),
+        )
+        .recipe(&roles, &skills);
+        assert_unique_tools("physician_chat", &chat_recipe);
+
+        let full_review_assignment = crate::patient_reviews::assignment(
+            "cmd-review-1",
+            crate::patient_reviews::ReviewStartingContext {
+                workspace: "pw-1".into(),
+                review_id: "rev-1".into(),
+                patient: None,
+                trigger: crate::patient_reviews::ReviewTrigger::Periodic {
+                    workspace_version: 1,
+                    record_versions: std::collections::BTreeMap::new(),
+                    last_reviewed_at: None,
+                },
+                additional_inputs: Vec::new(),
+                chart_version: 1,
+                chart_record_count: 1,
+                evidence_scope: crate::initial_understanding::EvidenceScope::DuetPatientSharedOnly,
+                source_pulls: Vec::new(),
+                refresh_statuses: Vec::new(),
+                check_standing: crate::runtime::chat_operations::DispatchCheckStanding::NotRecorded,
+                understanding: None,
+                withdrawal_boundary: None,
+                memory_standing:
+                    crate::runtime::chat_operations::PatientMemoryStanding::Available {
+                        entries: Vec::new(),
+                    },
+                open_concerns: Vec::new(),
+                prior_reviews: Vec::new(),
+            },
+            &skills,
+        )
+        .expect("full patient review assignment");
+        assert_unique_tools(
+            "patient_reviews",
+            &recipe(&roles, &full_review_assignment, &skills),
+        );
+
+        let visit_briefing_assignment = crate::visit_preparation::briefing_assignment(
+            crate::visit_preparation::VisitBriefingContext {
+                practice: "practice-a".into(),
+                workspace: "pw-1".into(),
+                source_id: "clinic-cal".into(),
+                appointment_id: "appt-1".into(),
+                appointment_saved_version: 1,
+                starts_at: "2026-08-27T17:00:00Z".into(),
+                starts_at_unix: 1_787_845_200,
+                ends_at: "2026-08-27T17:30:00Z".into(),
+                ends_at_unix: 1_787_847_000,
+                label: "Hypertension follow-up".into(),
+                source_status: "booked".into(),
+                selection_reason: "Upcoming hypertension follow-up.".into(),
+                target_source_version: 1,
+                queued_at_unix: Some(1_787_800_000),
+                starting_context,
+                source_statuses: Vec::new(),
+                prior_visit_briefings: Vec::new(),
+            },
+            &skills,
+        )
+        .expect("visit preparation assignment");
+        assert_unique_tools(
+            "visit_preparation",
+            &recipe(&roles, &visit_briefing_assignment, &skills),
         );
     }
 
