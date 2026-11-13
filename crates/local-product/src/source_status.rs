@@ -10,7 +10,11 @@
 //! - [`SourceCoordinator`] executes patient checks, practice checks, and
 //!   reconnect operations through [`PatientSource`] over [`Store`].
 
+use std::time::Duration;
+
 use serde::{Deserialize, Serialize};
+use serde_json::json;
+use tokio::time::Instant;
 
 use crate::physician_sources::{
     ChartPullReceipt, PatientSource, SourcePatient, SourceRecordKind, SourceRevision,
@@ -20,6 +24,7 @@ pub use crate::physician_sources::{
     SourcePullOutput,
 };
 use crate::runtime::Store;
+use crate::runtime::source_status::release_reconnect_command_lease_db;
 
 /// Errors returned by source patient linking, status persistence, and connector operations.
 #[derive(Debug, thiserror::Error)]
@@ -66,6 +71,18 @@ pub enum SourceStatusError {
         /// Underlying typed adapter error cause.
         #[source]
         source: SourceAdapterError,
+    },
+    /// Active reconnect command execution lost lease ownership or was already completed.
+    #[error(
+        "reconnect command `{idempotency_key}` for physician `{physician_id}` in practice `{practice_id}` lost lease ownership"
+    )]
+    CommandLeaseLost {
+        /// Owning practice identifier.
+        practice_id: String,
+        /// Physician who issued the command.
+        physician_id: String,
+        /// Client-supplied command idempotency key.
+        idempotency_key: String,
     },
     /// Underlying database read, write, or decoding failure.
     #[error("{0}")]
@@ -634,6 +651,240 @@ pub struct ReconnectReport {
     pub check: PracticeCheckReport,
 }
 
+/// Inputs to [`SourceCoordinator::reconnect_source_command`].
+#[derive(Clone, Copy)]
+pub struct ReconnectCommand<'a> {
+    /// Practice owning the command.
+    pub practice_id: &'a str,
+    /// Physician submitting the command.
+    pub physician_id: &'a str,
+    /// Client-supplied command idempotency key.
+    pub idempotency_key: &'a str,
+    /// Requested source adapter identifier.
+    pub source_id: &'a str,
+    /// Registered adapter for `source_id`, if present.
+    pub source: Option<&'a dyn PatientSource>,
+    /// Practice-clock Unix second when the command is evaluated.
+    pub now: i64,
+}
+
+/// Outcome of an idempotent `reconnect_source` command backed by `physician_runtime_commands`
+/// and `physician_runtime_reconnect_commands`.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub enum ReconnectCommandOutcome {
+    /// Newly executed reconnect and catch-up check, or a duplicate replay of the same command.
+    Accepted {
+        /// Original adapter confirmation receipt persisted for this command key.
+        receipt: ReconnectReceipt,
+        /// Practice-level source access state recorded by this command.
+        access: SourceAccessState,
+        /// Practice-level source summary recorded when this command completed.
+        summary: PracticeSourceSummary,
+    },
+    /// The caller's `idempotency_key` already belongs to a different command or source.
+    ConflictingKey,
+    /// The requested `source_id` is not registered for execution.
+    UnregisteredSource,
+}
+
+/// Lease duration and renewal cadence protecting an in-flight `reconnect_source` command.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub struct ReconnectLeasePolicy {
+    /// Lease duration in database-clock seconds (clamped to `>= 2`).
+    pub lease_seconds: i64,
+    /// Heartbeat interval between background lease renewals while execution remains active.
+    pub renew_interval: Duration,
+}
+
+impl ReconnectLeasePolicy {
+    /// Effective lease TTL in database-clock seconds (`>= 2` so integer-second clock ticks cannot
+    /// expire an freshly acquired lease immediately).
+    pub fn effective_lease_seconds(self) -> i64 {
+        self.lease_seconds.max(2)
+    }
+}
+
+impl Default for ReconnectLeasePolicy {
+    fn default() -> Self {
+        Self {
+            lease_seconds: 30,
+            renew_interval: Duration::from_secs(5),
+        }
+    }
+}
+
+/// Ownership token fencing every store write performed on behalf of an active
+/// `reconnect_source` command so a superseded execution cannot write stale patient data.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub struct ReconnectCommandFence<'a> {
+    /// Practice owning the command.
+    pub practice_id: &'a str,
+    /// Physician who issued the command.
+    pub physician_id: &'a str,
+    /// Client-supplied idempotency key.
+    pub idempotency_key: &'a str,
+    /// Unique lease token assigned to the active runner.
+    pub lease_owner: &'a str,
+    /// Lease duration in database-clock seconds used when refreshing ownership on write.
+    pub lease_seconds: i64,
+}
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub(crate) enum AdapterPresence {
+    Registered,
+    Unregistered,
+}
+
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(tag = "phase", rename_all = "snake_case")]
+pub(crate) enum ReconnectCommandState {
+    Claimed {
+        source_id: String,
+    },
+    Reconnected {
+        receipt: ReconnectReceipt,
+        access: SourceAccessState,
+    },
+    Completed {
+        receipt: ReconnectReceipt,
+        access: SourceAccessState,
+        summary: PracticeSourceSummary,
+    },
+}
+
+pub(crate) enum ReconnectCommandClaim {
+    Execute {
+        lease_owner: String,
+        state: ReconnectCommandState,
+    },
+    AlreadyCompleted {
+        receipt: ReconnectReceipt,
+        access: SourceAccessState,
+        summary: PracticeSourceSummary,
+    },
+    WaitForActiveLease,
+    ConflictingKey,
+    UnregisteredSource,
+}
+
+enum ReconnectExecution {
+    ReadyToComplete {
+        receipt: ReconnectReceipt,
+        access: SourceAccessState,
+        summary: PracticeSourceSummary,
+    },
+    AlreadyCompleted {
+        receipt: ReconnectReceipt,
+        access: SourceAccessState,
+        summary: PracticeSourceSummary,
+    },
+}
+
+#[expect(
+    clippy::too_many_arguments,
+    reason = "heartbeat worker owns cloned scope strings, lease parameters, and oneshot error channel"
+)]
+fn spawn_reconnect_heartbeat(
+    store: Store,
+    practice_id: String,
+    physician_id: String,
+    idempotency_key: String,
+    lease_owner: String,
+    lease_seconds: i64,
+    renew_every: Duration,
+    err_tx: tokio::sync::oneshot::Sender<SourceStatusError>,
+) -> tokio::task::JoinHandle<()> {
+    tokio::spawn(async move {
+        let mut ticker = tokio::time::interval_at(Instant::now() + renew_every, renew_every);
+        let fence = ReconnectCommandFence {
+            practice_id: &practice_id,
+            physician_id: &physician_id,
+            idempotency_key: &idempotency_key,
+            lease_owner: &lease_owner,
+            lease_seconds,
+        };
+        loop {
+            ticker.tick().await;
+            if let Err(error) = store.renew_reconnect_command_lease(fence).await {
+                let _ = err_tx.send(error);
+                break;
+            }
+        }
+    })
+}
+
+struct ReconnectLeaseGuard {
+    armed: bool,
+    heartbeat: Option<tokio::task::JoinHandle<()>>,
+    db: sea_orm::DatabaseConnection,
+    practice_id: String,
+    physician_id: String,
+    key: String,
+    lease_owner: String,
+}
+
+impl ReconnectLeaseGuard {
+    fn disarm(&mut self) {
+        self.armed = false;
+    }
+
+    async fn stop_heartbeat(&mut self) {
+        if let Some(handle) = self.heartbeat.take() {
+            handle.abort();
+            let _ = handle.await;
+        }
+    }
+
+    async fn release_now(&mut self) {
+        self.stop_heartbeat().await;
+        if !self.armed {
+            return;
+        }
+        self.armed = false;
+        let _ = release_reconnect_command_lease_db(
+            &self.db,
+            &self.practice_id,
+            &self.physician_id,
+            &self.key,
+            &self.lease_owner,
+        )
+        .await;
+    }
+}
+
+impl Drop for ReconnectLeaseGuard {
+    fn drop(&mut self) {
+        let heartbeat = self.heartbeat.take();
+        if let Some(ref handle) = heartbeat {
+            handle.abort();
+        }
+        if !self.armed {
+            return;
+        }
+        self.armed = false;
+        if let Ok(runtime) = tokio::runtime::Handle::try_current() {
+            let db = self.db.clone();
+            let practice_id = self.practice_id.clone();
+            let physician_id = self.physician_id.clone();
+            let key = self.key.clone();
+            let lease_owner = self.lease_owner.clone();
+            runtime.spawn(async move {
+                if let Some(handle) = heartbeat {
+                    let _ = handle.await;
+                }
+                let _ = release_reconnect_command_lease_db(
+                    &db,
+                    &practice_id,
+                    &physician_id,
+                    &key,
+                    &lease_owner,
+                )
+                .await;
+            });
+        }
+    }
+}
+
 /// Coordinates patient-link resolution, chart pulling, status recording, and reconnects
 /// across [`Store`] and any [`PatientSource`] implementation.
 pub struct SourceCoordinator;
@@ -652,12 +903,38 @@ impl SourceCoordinator {
         target: LinkTarget<'_>,
         now: i64,
     ) -> Result<PatientCheckReport, SourceStatusError> {
+        Self::check_patient_fenced(
+            store,
+            source,
+            practice_id,
+            source_patient_id,
+            target,
+            now,
+            None,
+        )
+        .await
+    }
+
+    /// Executes [`Self::check_patient`] fenced by `fence` when running inside an active
+    /// `reconnect_source` command so every link resolution and delivery write atomically
+    /// verifies lease ownership before committing.
+    pub async fn check_patient_fenced(
+        store: &Store,
+        source: &dyn PatientSource,
+        practice_id: &str,
+        source_patient_id: &str,
+        target: LinkTarget<'_>,
+        now: i64,
+        fence: Option<ReconnectCommandFence<'_>>,
+    ) -> Result<PatientCheckReport, SourceStatusError> {
         let key = SourcePatientKey {
             practice_id: practice_id.to_owned(),
             source_id: source.source_id().to_owned(),
             source_patient_id: source_patient_id.to_owned(),
         };
-        let (link, ticket) = store.begin_patient_pull(&key, target, now).await?;
+        let (link, ticket) = store
+            .begin_patient_pull_fenced(&key, target, now, fence)
+            .await?;
         let output = source
             .pull_patient(practice_id, source_patient_id, &link.workspace_id)
             .await;
@@ -670,6 +947,7 @@ impl SourceCoordinator {
             output,
             now,
             Some(ticket),
+            fence,
         )
         .await
     }
@@ -698,19 +976,35 @@ impl SourceCoordinator {
         practice_id: &str,
         now: i64,
     ) -> Result<PracticeCheckReport, SourceStatusError> {
+        Self::check_practice_fenced(store, source, practice_id, now, None).await
+    }
+
+    /// Executes [`Self::check_practice`] fenced by `fence` when running inside an active
+    /// `reconnect_source` command so a superseded execution aborts without writing patient data.
+    pub async fn check_practice_fenced(
+        store: &Store,
+        source: &dyn PatientSource,
+        practice_id: &str,
+        now: i64,
+        fence: Option<ReconnectCommandFence<'_>>,
+    ) -> Result<PracticeCheckReport, SourceStatusError> {
         validate_non_empty("practice_id", practice_id)?;
+        if let Some(active_fence) = fence {
+            store.renew_reconnect_command_lease(active_fence).await?;
+        }
         let links = store
             .practice_source_links(practice_id, source.source_id())
             .await?;
         let mut patients = Vec::with_capacity(links.len());
         for link in links {
-            let report = Self::check_patient(
+            let report = Self::check_patient_fenced(
                 store,
                 source,
                 practice_id,
                 &link.key.source_patient_id,
                 LinkTarget::Exact(&link.workspace_id),
                 now,
+                fence,
             )
             .await?;
             patients.push(report);
@@ -756,6 +1050,238 @@ impl SourceCoordinator {
             check,
         })
     }
+
+    /// Executes an idempotent `reconnect_source` command scoped to `(practice_id, physician_id)`
+    /// and coordinated durably in `physician_runtime_commands` + `physician_runtime_reconnect_commands`.
+    ///
+    /// - Conflicting key reuse is detected before adapter lookup or side effects.
+    /// - Concurrent duplicate calls serialize on a durable lease renewed periodically throughout
+    ///   adapter reconnect and practice catch-up so slow work never loses ownership while alive.
+    /// - Adapter reconnect receives `Some(SourceCommandKey)` so pre-checkpoint interruptions
+    ///   recover the original receipt on retry without repeating the external side effect.
+    /// - Every patient link resolution and delivery write is fenced by `(idempotency_key, lease_owner)`.
+    /// - Replaying an accepted key returns its original persisted [`ReconnectReceipt`].
+    pub async fn reconnect_source_command(
+        store: &Store,
+        cmd: ReconnectCommand<'_>,
+    ) -> Result<ReconnectCommandOutcome, SourceStatusError> {
+        Self::reconnect_source_command_with_lease(store, cmd, ReconnectLeasePolicy::default()).await
+    }
+
+    /// Executes [`Self::reconnect_source_command`] with an explicit [`ReconnectLeasePolicy`].
+    pub async fn reconnect_source_command_with_lease(
+        store: &Store,
+        cmd: ReconnectCommand<'_>,
+        policy: ReconnectLeasePolicy,
+    ) -> Result<ReconnectCommandOutcome, SourceStatusError> {
+        validate_non_empty("practice_id", cmd.practice_id)?;
+        validate_non_empty("physician_id", cmd.physician_id)?;
+        validate_non_empty("idempotency_key", cmd.idempotency_key)?;
+        validate_non_empty("source_id", cmd.source_id)?;
+
+        let lease_seconds = policy.effective_lease_seconds();
+        let renew_every = policy.renew_interval.max(Duration::from_millis(10));
+        let command_payload = json!({
+            "scope": {
+                "practice": cmd.practice_id,
+                "physician": cmd.physician_id,
+            },
+            "reconnect_source": {
+                "source_id": cmd.source_id,
+            },
+        });
+        let presence = if cmd.source.is_some() {
+            AdapterPresence::Registered
+        } else {
+            AdapterPresence::Unregistered
+        };
+
+        let (lease_owner, state) = loop {
+            match store
+                .claim_reconnect_command(
+                    cmd.practice_id,
+                    cmd.physician_id,
+                    cmd.idempotency_key,
+                    cmd.source_id,
+                    presence,
+                    &command_payload,
+                    lease_seconds,
+                )
+                .await?
+            {
+                ReconnectCommandClaim::ConflictingKey => {
+                    return Ok(ReconnectCommandOutcome::ConflictingKey);
+                }
+                ReconnectCommandClaim::UnregisteredSource => {
+                    return Ok(ReconnectCommandOutcome::UnregisteredSource);
+                }
+                ReconnectCommandClaim::AlreadyCompleted {
+                    receipt,
+                    access,
+                    summary,
+                } => {
+                    return Ok(ReconnectCommandOutcome::Accepted {
+                        receipt,
+                        access,
+                        summary,
+                    });
+                }
+                ReconnectCommandClaim::WaitForActiveLease => {
+                    tokio::time::sleep(Duration::from_millis(20)).await;
+                }
+                ReconnectCommandClaim::Execute { lease_owner, state } => {
+                    break (lease_owner, state);
+                }
+            }
+        };
+
+        let Some(source) = cmd.source else {
+            return Ok(ReconnectCommandOutcome::UnregisteredSource);
+        };
+
+        // Declare `guard` BEFORE the `work_fut` scope so cancellation drops `work_fut` first
+        // (releasing any open DB transaction's `FOR UPDATE` row lock), aborts/awaits the spawned
+        // heartbeat task second, and releases the lease last.
+        let (heartbeat_err_tx, mut heartbeat_err_rx) = tokio::sync::oneshot::channel();
+        let mut guard = ReconnectLeaseGuard {
+            armed: true,
+            heartbeat: Some(spawn_reconnect_heartbeat(
+                store.clone(),
+                cmd.practice_id.to_owned(),
+                cmd.physician_id.to_owned(),
+                cmd.idempotency_key.to_owned(),
+                lease_owner.clone(),
+                lease_seconds,
+                renew_every,
+                heartbeat_err_tx,
+            )),
+            db: store.connection().clone(),
+            practice_id: cmd.practice_id.to_owned(),
+            physician_id: cmd.physician_id.to_owned(),
+            key: cmd.idempotency_key.to_owned(),
+            lease_owner: lease_owner.clone(),
+        };
+
+        let fence = ReconnectCommandFence {
+            practice_id: cmd.practice_id,
+            physician_id: cmd.physician_id,
+            idempotency_key: cmd.idempotency_key,
+            lease_owner: &lease_owner,
+            lease_seconds,
+        };
+        let command_key = SourceCommandKey {
+            physician_id: cmd.physician_id,
+            idempotency_key: cmd.idempotency_key,
+        };
+
+        let execution: Result<ReconnectExecution, SourceStatusError> = {
+            let work_fut = async {
+                let (receipt, access) = match state {
+                    ReconnectCommandState::Claimed { .. } => {
+                        let receipt = source
+                            .reconnect(cmd.practice_id, cmd.now, Some(command_key))
+                            .await
+                            .map_err(|error| SourceStatusError::SourceAdapter {
+                                source_id: source.source_id().to_owned(),
+                                source: error,
+                            })?;
+                        let access = SourceAccessState::Connected {
+                            connected_at: receipt.reconnected_at,
+                        };
+                        store
+                            .record_reconnect_command_reconnected(fence, &receipt, &access)
+                            .await?;
+                        (receipt, access)
+                    }
+                    ReconnectCommandState::Reconnected { receipt, access } => (receipt, access),
+                    ReconnectCommandState::Completed {
+                        receipt,
+                        access,
+                        summary,
+                    } => {
+                        return Ok(ReconnectExecution::AlreadyCompleted {
+                            receipt,
+                            access,
+                            summary,
+                        });
+                    }
+                };
+
+                let check = Self::check_practice_fenced(
+                    store,
+                    source,
+                    cmd.practice_id,
+                    cmd.now,
+                    Some(fence),
+                )
+                .await?;
+                Ok(ReconnectExecution::ReadyToComplete {
+                    receipt,
+                    access,
+                    summary: check.summary,
+                })
+            };
+            tokio::pin!(work_fut);
+
+            tokio::select! {
+                biased;
+                outcome = &mut work_fut => outcome,
+                heartbeat_err = &mut heartbeat_err_rx => match heartbeat_err {
+                    Ok(error) => Err(error),
+                    Err(_closed) => work_fut.await,
+                },
+            }
+        };
+
+        // Stop and join the spawned heartbeat task BEFORE recording `Completed` so a late
+        // heartbeat renewal never races against `complete_reconnect_command` clearing `lease_owner`.
+        guard.stop_heartbeat().await;
+
+        match execution {
+            Ok(ReconnectExecution::ReadyToComplete {
+                receipt,
+                access,
+                summary,
+            }) => {
+                if let Err(error) = store
+                    .complete_reconnect_command(
+                        fence,
+                        ReconnectCommandState::Completed {
+                            receipt: receipt.clone(),
+                            access: access.clone(),
+                            summary: summary.clone(),
+                        },
+                    )
+                    .await
+                {
+                    guard.release_now().await;
+                    return Err(error);
+                }
+                guard.disarm();
+                Ok(ReconnectCommandOutcome::Accepted {
+                    receipt,
+                    access,
+                    summary,
+                })
+            }
+            Ok(ReconnectExecution::AlreadyCompleted {
+                receipt,
+                access,
+                summary,
+            }) => {
+                guard.disarm();
+                Ok(ReconnectCommandOutcome::Accepted {
+                    receipt,
+                    access,
+                    summary,
+                })
+            }
+            Err(error) => {
+                guard.release_now().await;
+                Err(error)
+            }
+        }
+    }
 }
 
 pub(crate) fn validate_non_empty(
@@ -770,7 +1296,7 @@ pub(crate) fn validate_non_empty(
 
 #[expect(
     clippy::too_many_arguments,
-    reason = "pull application requires store, source, patient keys, output, timestamp, and pull ticket"
+    reason = "pull application requires store, source, patient keys, output, timestamp, pull ticket, and optional command fence"
 )]
 async fn apply_pull_output(
     store: &Store,
@@ -781,6 +1307,7 @@ async fn apply_pull_output(
     output: SourcePullOutput,
     now: i64,
     ticket: Option<PullTicket>,
+    fence: Option<ReconnectCommandFence<'_>>,
 ) -> Result<PatientCheckReport, SourceStatusError> {
     match output {
         SourcePullOutput::Complete { patient, records } => {
@@ -793,16 +1320,19 @@ async fn apply_pull_output(
                 status,
                 applied,
             ) = store
-                .record_complete_pull_ordered(CompleteDelivery {
-                    practice_id,
-                    workspace_id: &workspace_id,
-                    source_id: source.source_id(),
-                    source_label: source.source_label(),
-                    patient: &patient,
-                    records: &records,
-                    pulled_at: now,
-                    ticket,
-                })
+                .record_complete_pull_fenced(
+                    CompleteDelivery {
+                        practice_id,
+                        workspace_id: &workspace_id,
+                        source_id: source.source_id(),
+                        source_label: source.source_label(),
+                        patient: &patient,
+                        records: &records,
+                        pulled_at: now,
+                        ticket,
+                    },
+                    fence,
+                )
                 .await?;
             let access = store
                 .practice_source_access(practice_id, source.source_id())
@@ -833,18 +1363,21 @@ async fn apply_pull_output(
                 status,
                 applied,
             ) = store
-                .record_partial_pull_ordered(PartialDelivery {
-                    practice_id,
-                    workspace_id: &workspace_id,
-                    source_id: source.source_id(),
-                    source_label: source.source_label(),
-                    patient: patient.as_ref(),
-                    succeeded_kinds: &succeeded_kinds,
-                    records: &records,
-                    failed_parts: &failed_parts,
-                    attempted_at: now,
-                    ticket,
-                })
+                .record_partial_pull_fenced(
+                    PartialDelivery {
+                        practice_id,
+                        workspace_id: &workspace_id,
+                        source_id: source.source_id(),
+                        source_label: source.source_label(),
+                        patient: patient.as_ref(),
+                        succeeded_kinds: &succeeded_kinds,
+                        records: &records,
+                        failed_parts: &failed_parts,
+                        attempted_at: now,
+                        ticket,
+                    },
+                    fence,
+                )
                 .await?;
             let access = store
                 .practice_source_access(practice_id, source.source_id())
@@ -868,12 +1401,13 @@ async fn apply_pull_output(
                 },
             };
             let (status, applied) = store
-                .record_pull_status_ordered(
+                .record_pull_status_fenced(
                     practice_id,
                     &workspace_id,
                     source.source_id(),
                     &attempt,
                     ticket,
+                    fence,
                 )
                 .await?;
             let access = store
@@ -898,12 +1432,13 @@ async fn apply_pull_output(
                 },
             };
             let (status, applied) = store
-                .record_pull_status_ordered(
+                .record_pull_status_fenced(
                     practice_id,
                     &workspace_id,
                     source.source_id(),
                     &attempt,
                     ticket,
+                    fence,
                 )
                 .await?;
             let access = store

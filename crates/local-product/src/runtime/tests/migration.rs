@@ -60,7 +60,8 @@ async fn a_second_migrate_records_nothing_new() {
             "m20261111_init",
             "m20261111_response_feedback",
             "m20261112_source_pull_missing_candidates",
-            "m20261113_source_links_and_standing"
+            "m20261113_source_links_and_standing",
+            "m20261114_reconnect_commands_and_adapter_state"
         ]
     );
 }
@@ -149,5 +150,33 @@ async fn source_pull_missing_candidates_migration_refuses_down_rollback() {
         .await
         .iter()
         .any(|n| n == "physician_runtime_patient_source_status")
+    );
+
+    let reconnect_error = migration::m20261114_reconnect_commands_and_adapter_state::Migration
+        .down(&manager)
+        .await
+        .expect_err("forward-only runtime migration must refuse rollback")
+        .to_string();
+    assert!(
+        str::contains(
+            &reconnect_error,
+            "the physician runtime's records can't be rolled back"
+        ),
+        "{reconnect_error}"
+    );
+    let tables = names(
+        &store.db,
+        "SELECT tablename::text AS name FROM pg_tables WHERE schemaname = 'public' ORDER BY name",
+    )
+    .await;
+    assert!(
+        tables
+            .iter()
+            .any(|n| n == "physician_runtime_reconnect_commands")
+    );
+    assert!(
+        tables
+            .iter()
+            .any(|n| n == "physician_runtime_source_adapter_state")
     );
 }

@@ -22,7 +22,8 @@ use super::{Store, error, now};
 pub const RECEIPT_FULL_SECONDS: i64 = 90 * 24 * 60 * 60;
 
 /// Whether a receipt insert found an earlier command under the same key.
-pub(super) enum Receipt {
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub(crate) enum Receipt {
     /// Newly recorded in this transaction.
     New,
     /// The same command was already accepted.
