@@ -23,7 +23,7 @@ use sea_orm::{
 
 use super::entities::{source, source_pull, source_version};
 use super::{Store, conversion_error, error};
-use crate::physician_sources::{ChartPullReceipt, SourcePatient, SourceRevision};
+use crate::physician_sources::{ChartPullReceipt, SourcePatient, SourceRecordKind, SourceRevision};
 
 /// Rows written per insert, inside Postgres's bind limit.
 const CHART_BATCH: usize = 200;
@@ -150,7 +150,29 @@ async fn selected(
     Ok(Observation { version, sources })
 }
 
-/// Single authoritative source-delivery writer for a source pull.
+/// Which held candidates can be evaluated for absence during a source delivery.
+pub(super) enum MissingScope<'a> {
+    /// Complete chart pull: every active candidate for `source_id` is expected.
+    FullChart,
+    /// Partial pull: only active candidates whose resource kind or category succeeded in this pull are checked.
+    SucceededKinds(&'a [SourceRecordKind]),
+}
+
+fn kind_matches_existing(kind_spec: &SourceRecordKind, existing: &SourceRevision) -> bool {
+    if existing.record_type != kind_spec.kind {
+        return false;
+    }
+    match &kind_spec.category {
+        None => true,
+        Some(expected_cat) => existing
+            .envelope
+            .as_ref()
+            .and_then(|env| env.source_kind.category.as_deref())
+            .is_some_and(|actual| actual == expected_cat),
+    }
+}
+
+/// Single authoritative source-delivery writer shared by complete and partial pulls.
 ///
 /// Under the workspace's exclusive `source_version` lock, validates identity consistency
 /// across history, appends changed candidate observations in batches, retires active
@@ -158,11 +180,12 @@ async fn selected(
 /// records from the same `source_id`, bumps `source_version` when observations changed,
 /// and retains previously active candidates genuinely absent from `records` while
 /// reporting them in [`ChartPullReceipt::missing_candidates`].
-async fn apply_source_delivery_tx(
+pub(super) async fn apply_source_delivery_tx(
     tx: &impl ConnectionTrait,
     workspace: &str,
     source_id: &str,
     records: &[SourceRevision],
+    missing_scope: MissingScope<'_>,
 ) -> Result<ChartPullReceipt, DbErr> {
     for record in records {
         record.validate().map_err(|e| error(&e))?;
@@ -256,7 +279,15 @@ async fn apply_source_delivery_tx(
         {
             continue;
         }
-        missing_candidates.push(candidate.clone());
+        let in_scope = match missing_scope {
+            MissingScope::FullChart => true,
+            MissingScope::SucceededKinds(kinds) => kinds
+                .iter()
+                .any(|kind| kind_matches_existing(kind, existing)),
+        };
+        if in_scope {
+            missing_candidates.push(candidate.clone());
+        }
     }
     missing_candidates.sort();
     for batch in rows.chunks(CHART_BATCH) {
@@ -380,7 +411,14 @@ impl Store {
             return Err(error("complete chart delivery requires pulled_at"));
         };
         let tx = self.db.begin().await?;
-        let receipt = apply_source_delivery_tx(&tx, workspace, &pull.source_id, records).await?;
+        let receipt = apply_source_delivery_tx(
+            &tx,
+            workspace,
+            &pull.source_id,
+            records,
+            MissingScope::FullChart,
+        )
+        .await?;
         let patient = serde_json::to_value(&pull.patient)
             .map_err(conversion_error("SourcePatient", "source pull patient"))?;
         let missing_json = serde_json::to_value(&receipt.missing_candidates).map_err(

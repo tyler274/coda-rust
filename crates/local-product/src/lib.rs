@@ -17,6 +17,8 @@ pub mod physician_chat;
 pub mod physician_sources;
 /// Physician-owned durable conversations and execution authority.
 pub mod runtime;
+/// Practice-scoped source patient links, pull status, and check/reconnect operations.
+pub mod source_status;
 
 /// How this process runs a model. A process without a selection does not run models.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
