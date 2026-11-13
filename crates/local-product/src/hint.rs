@@ -26,6 +26,26 @@ pub const HINT_SOURCE_LABEL: &str = "Hint";
 /// Base web URL of the Hint clinician portal used for deep links.
 pub const HINT_APP_BASE_URL: &str = "https://app.hint.com";
 
+/// All 16 patient-scoped Hint chart reads required for a complete whole-chart snapshot.
+pub const HINT_WHOLE_CHART_READS: [&str; 16] = [
+    "patient",
+    "diagnoses",
+    "allergies",
+    "medications",
+    "freeform-medications",
+    "surgeries",
+    "social-history",
+    "family-history",
+    "vaccines",
+    "general",
+    "vitals",
+    "notes",
+    "tasks",
+    "appointments",
+    "messages",
+    "patient-files",
+];
+
 /// Billing and membership-payment fields dropped from Hint patient records.
 pub const PATIENT_BILLING_FIELDS: &[&str] = &[
     "billing",
@@ -1484,15 +1504,55 @@ pub struct FiledHintChart {
     pub read_standings: BTreeMap<String, ReadStanding>,
     /// Full-note completeness standing keyed by `note_id`.
     pub note_standings: BTreeMap<String, ReadStanding>,
+    /// Note IDs from a complete `notes` summary read whose full-note bodies have not been captured
+    /// and whose summary items carry no inline readable text.
+    pub missing_note_reads: Vec<String>,
     /// Unrecognized Hint record kinds that were filed into [`ChartBucket::Other`].
     pub unknown_kinds: Vec<UnknownRecordNotice>,
 }
 
 impl FiledHintChart {
-    /// True when every captured section and full-note read completed without `Partial`, `Changed`, or `Failed`.
+    /// Validates whole-chart completeness: every read in [`HINT_WHOLE_CHART_READS`] is present and
+    /// [`ReadStanding::is_complete`], no additional captured section or full-note read is
+    /// incomplete, and every note in a complete `notes` list either has a complete `full_notes`
+    /// read or inline readable text.
+    pub fn validate_whole_chart(&self) -> Result<(), HintFilingError> {
+        let mut issues = Vec::new();
+        for &required in &HINT_WHOLE_CHART_READS {
+            match self.read_standings.get(required) {
+                None => issues.push(format!("missing_read:{required}")),
+                Some(standing) if !standing.is_complete() => {
+                    issues.push(format!("{required}={standing:?}"));
+                }
+                Some(_) => {}
+            }
+        }
+        for (read_name, standing) in &self.read_standings {
+            if !HINT_WHOLE_CHART_READS.contains(&read_name.as_str()) && !standing.is_complete() {
+                issues.push(format!("{read_name}={standing:?}"));
+            }
+        }
+        for note_id in &self.missing_note_reads {
+            issues.push(format!("missing_note:{note_id}"));
+        }
+        for (note_id, standing) in &self.note_standings {
+            if !standing.is_complete() {
+                issues.push(format!("note:{note_id}={standing:?}"));
+            }
+        }
+        if issues.is_empty() {
+            Ok(())
+        } else {
+            Err(HintFilingError::IncompleteCapture {
+                patient_id: self.patient_id.clone(),
+                details: issues.join(", "),
+            })
+        }
+    }
+
+    /// True when [`Self::validate_whole_chart`] succeeds.
     pub fn is_complete(&self) -> bool {
-        self.read_standings.values().all(ReadStanding::is_complete)
-            && self.note_standings.values().all(ReadStanding::is_complete)
+        self.validate_whole_chart().is_ok()
     }
 
     /// Groups filed records by [`ChartBucket`].
@@ -2233,6 +2293,7 @@ pub fn file_patient_chart(
     let mut records = Vec::new();
     let mut read_standings = BTreeMap::new();
     let mut note_standings = BTreeMap::new();
+    let mut missing_note_reads = BTreeSet::new();
     let mut unknown_kinds = Vec::new();
     let mut consumed_full_notes = BTreeSet::new();
 
@@ -2263,6 +2324,14 @@ pub fn file_patient_chart(
                 let items = items_in_section_body(read_name, body)?;
                 let mut filed_count = 0usize;
                 for item in items {
+                    if read_name == "notes"
+                        && matches!(section_capture, HintReadCapture::Complete { .. })
+                        && let Some(nid) = item.get("id").and_then(Value::as_str)
+                        && !capture.full_notes.contains_key(nid)
+                        && extract_readable_parts(item).is_empty()
+                    {
+                        missing_note_reads.insert(nid.to_owned());
+                    }
                     let effective_item = if read_name == "notes"
                         && let Some(nid) = item.get("id").and_then(Value::as_str)
                         && let Some(
@@ -2349,6 +2418,7 @@ pub fn file_patient_chart(
         records,
         read_standings,
         note_standings,
+        missing_note_reads: missing_note_reads.into_iter().collect(),
         unknown_kinds,
     })
 }
@@ -2473,26 +2543,7 @@ impl PatientSource for HintChartSource {
             .ok_or_else(|| format!("no Hint chart capture for `{}`", patient.source_patient_id))?;
         let filed = file_patient_chart(workspace, &patient.source_patient_id, capture)
             .map_err(|e| e.to_string())?;
-        if !filed.is_complete() {
-            let incomplete: Vec<String> = filed
-                .read_standings
-                .iter()
-                .filter(|(_, s)| !s.is_complete())
-                .map(|(k, s)| format!("{k}={s:?}"))
-                .chain(
-                    filed
-                        .note_standings
-                        .iter()
-                        .filter(|(_, s)| !s.is_complete())
-                        .map(|(k, s)| format!("note:{k}={s:?}")),
-                )
-                .collect();
-            return Err(HintFilingError::IncompleteCapture {
-                patient_id: patient.source_patient_id.clone(),
-                details: incomplete.join(", "),
-            }
-            .to_string());
-        }
+        filed.validate_whole_chart().map_err(|e| e.to_string())?;
         Ok(filed.records.into_iter().map(|r| r.revision).collect())
     }
 }
@@ -2740,6 +2791,25 @@ mod tests {
                 "body": "Call after 2 PM local time."
             })),
         );
+        full_notes.insert(
+            "note-rx-1".to_owned(),
+            complete_capture(json!({
+                "id": "note-rx-1",
+                "patientId": pid,
+                "body": "Dispensed Atorvastatin 20 mg tablet x30 in clinic."
+            })),
+        );
+        for extra in 4..=105 {
+            let nid = format!("note-paged-{extra}");
+            full_notes.insert(
+                nid.clone(),
+                complete_capture(json!({
+                    "id": nid,
+                    "patientId": pid,
+                    "body": format!("Full encounter note text for paged follow-up #{extra}.")
+                })),
+            );
+        }
 
         reads.insert(
             "tasks".to_owned(),
@@ -2973,6 +3043,140 @@ mod tests {
         assert!(err.contains("surgeries"));
         assert!(err.contains("notes"));
         assert!(err.contains("diagnoses"));
+        assert!(err.contains("missing_read:vitals"));
+    }
+
+    #[tokio::test]
+    async fn whole_chart_validation_refuses_missing_sections_and_missing_full_note_bodies() {
+        let pid = "pat-whole-chart-guard";
+        let ws = workspace_id(HINT_SOURCE_ID, pid);
+        let roster = vec![json!({"id": pid, "first_name": "Aria", "last_name": "Patel"})];
+
+        // 1. Empty HintPatientCapture::default() is refused and names every missing section.
+        let empty_filed = file_patient_chart(&ws, pid, &HintPatientCapture::default()).unwrap();
+        assert!(!empty_filed.is_complete());
+        let empty_source = HintChartSource::new(
+            roster.clone(),
+            BTreeMap::from([(pid.to_owned(), HintPatientCapture::default())]),
+        );
+        let sp = empty_source.patient(pid).await.unwrap();
+        let empty_err = empty_source.records(&sp, &ws).await.unwrap_err();
+        for required in HINT_WHOLE_CHART_READS {
+            assert!(
+                empty_err.contains(&format!("missing_read:{required}")),
+                "expected `{required}` in error `{empty_err}`"
+            );
+        }
+
+        // Build a complete 16-section chart capture with one summary-only note.
+        let mut complete_reads = BTreeMap::new();
+        complete_reads.insert(
+            "patient".to_owned(),
+            complete_capture(json!({"id": pid, "first_name": "Aria", "last_name": "Patel"})),
+        );
+        for read_name in HINT_WHOLE_CHART_READS {
+            if read_name == "patient" {
+                continue;
+            }
+            let empty_envelope = match read_name {
+                "appointments" => json!([]),
+                "notes" => json!({
+                    "total": 1,
+                    "data": [{
+                        "id": "note-summary-only-1",
+                        "patientId": pid,
+                        "noteType": "encounter",
+                        "title": "Follow-up Visit",
+                        "status": "signed"
+                    }]
+                }),
+                "messages" | "patient-files" => json!({"total": 0, "data": []}),
+                _ => json!({"total": 0, "entities": []}),
+            };
+            complete_reads.insert(read_name.to_owned(), complete_capture(empty_envelope));
+        }
+
+        // 2. All 16 section reads present, but `full_notes["note-summary-only-1"]` missing -> refused!
+        let missing_note_capture = HintPatientCapture {
+            reads: complete_reads.clone(),
+            full_notes: BTreeMap::new(),
+        };
+        let filed_missing_note = file_patient_chart(&ws, pid, &missing_note_capture).unwrap();
+        assert!(!filed_missing_note.is_complete());
+        assert_eq!(
+            filed_missing_note.missing_note_reads,
+            vec!["note-summary-only-1".to_owned()]
+        );
+        let missing_note_source = HintChartSource::new(
+            roster.clone(),
+            BTreeMap::from([(pid.to_owned(), missing_note_capture)]),
+        );
+        let missing_note_err = missing_note_source.records(&sp, &ws).await.unwrap_err();
+        assert!(missing_note_err.contains("missing_note:note-summary-only-1"));
+
+        // 3. Adding `full_notes["note-summary-only-1"]` makes the capture complete, while dropping
+        //    a single section (`"vitals"`) refuses again with `missing_read:vitals`.
+        let full_notes = BTreeMap::from([(
+            "note-summary-only-1".to_owned(),
+            complete_capture(json!({
+                "id": "note-summary-only-1",
+                "patientId": pid,
+                "body": "Complete signed note body."
+            })),
+        )]);
+        let valid_capture = HintPatientCapture {
+            reads: complete_reads.clone(),
+            full_notes: full_notes.clone(),
+        };
+        let valid_source = HintChartSource::new(
+            roster.clone(),
+            BTreeMap::from([(pid.to_owned(), valid_capture)]),
+        );
+        let valid_revisions = valid_source.records(&sp, &ws).await.unwrap();
+        assert_eq!(valid_revisions.len(), 2);
+
+        let mut missing_vitals_reads = complete_reads.clone();
+        missing_vitals_reads.remove("vitals");
+        let missing_vitals_source = HintChartSource::new(
+            roster.clone(),
+            BTreeMap::from([(
+                pid.to_owned(),
+                HintPatientCapture {
+                    reads: missing_vitals_reads,
+                    full_notes,
+                },
+            )]),
+        );
+        let missing_vitals_err = missing_vitals_source.records(&sp, &ws).await.unwrap_err();
+        assert!(missing_vitals_err.contains("missing_read:vitals"));
+
+        // 4. A `notes` entry carrying inline readable text passes without a separate `full_notes` entry.
+        let mut inline_reads = complete_reads;
+        inline_reads.insert(
+            "notes".to_owned(),
+            complete_capture(json!({
+                "total": 1,
+                "data": [{
+                    "id": "note-inline-1",
+                    "patientId": pid,
+                    "noteType": "encounter",
+                    "title": "Inline Visit",
+                    "body": "Inline body already present on list payload."
+                }]
+            })),
+        );
+        let inline_source = HintChartSource::new(
+            roster,
+            BTreeMap::from([(
+                pid.to_owned(),
+                HintPatientCapture {
+                    reads: inline_reads,
+                    full_notes: BTreeMap::new(),
+                },
+            )]),
+        );
+        let inline_revisions = inline_source.records(&sp, &ws).await.unwrap();
+        assert_eq!(inline_revisions.len(), 2);
     }
 
     #[test]

@@ -1006,8 +1006,33 @@ try {
   readMode = 'ok';
   evidence('Auth replay, 403 access denial, tenant switch fence, and fast Stop abort verified');
 
-  // Synthetic second reader ("acme") runs through the exact same connector loop with zero connector edits.
+  // Synthetic second reader ("acme") runs through the exact same connector loop with zero connector edits,
+  // while cross-source jobs and malformed job IDs/leases are strictly refused.
   await createWorker({includeAcme: true});
+
+  // Cross-source fence while connected to Hint: claiming a job with source "acme" must refuse with
+  // source_mismatch and perform zero outbound fetches to either Hint or Acme!
+  portalCount = 1;
+  assert.equal((await sendMsg({action: 'connect', source: 'hint'})).ok, true);
+  portalCount = 0;
+  const hintReadsBeforeCross = reads.length;
+  const acmeReadsBeforeCross = acmeReads.length;
+  const crossSourceJob = await rpc('enqueue_raw_job', {
+    source: 'hint',
+    wire: {source: 'acme', read: 'roster'},
+  });
+  const afterCrossTick = await tick();
+  assert.equal(afterCrossTick.state.state, 'connected');
+  assert.equal(reads.length, hintReadsBeforeCross, 'Cross-source job must call nothing on Hint');
+  assert.equal(acmeReads.length, acmeReadsBeforeCross, 'Cross-source job must never send Hint Bearer token to Acme');
+  const crossSourceRes = await rpc('read_result', {request_id: crossSourceJob.request_id});
+  assert.equal(crossSourceRes.complete, false);
+  assert.equal(crossSourceRes.reads[0].outcome, 'failed');
+  assert.equal(crossSourceRes.reads[0].result.reason, 'job_refused');
+  assert.equal(crossSourceRes.reads[0].result.detail, 'source_mismatch');
+  await sendMsg('stop');
+
+  // Connect to synthetic second reader ("acme") and run end-to-end.
   acmePortalCount = 1;
   const acmeConnected = await sendMsg({action: 'connect', source: 'acme'});
   assert.equal(acmeConnected.ok, true);
@@ -1030,8 +1055,34 @@ try {
   assert.equal(acmeSummaryRes.complete, true);
   assert.equal(acmeSummaryRes.reads[0].result.body.summary, 'Acme Cardiology Summary');
   assert.equal(acmeSummaryRes.reads[0].result.body.secret_billing_cents, undefined, 'Second reader dropFields enforced');
+
+  // Malformed job.id and job.lease from /claim halt with bridge_refused before staging anything to outbox.
+  const acmeReadsBeforeBadId = acmeReads.length;
+  await rpc('enqueue_raw_job', {
+    source: 'acme',
+    wire: {id: 'https://evil.invalid/job', source: 'acme', read: 'roster'},
+  });
+  const badIdState = await tick();
+  assert.equal(badIdState.state.state, 'bridge_refused');
+  assert.equal(badIdState.pending_delivery, false, 'Malformed job.id must not wedge outbox');
+  assert.equal(vm.storage.local.map.outbox, undefined);
+  assert.equal(acmeReads.length, acmeReadsBeforeBadId);
+
+  acmePortalCount = 1;
+  assert.equal((await sendMsg({action: 'connect', source: 'acme'})).ok, true);
+  acmePortalCount = 0;
+  await rpc('enqueue_raw_job', {
+    source: 'acme',
+    wire: {lease: '', source: 'acme', read: 'roster'},
+  });
+  const badLeaseState = await tick();
+  assert.equal(badLeaseState.state.state, 'bridge_refused');
+  assert.equal(badLeaseState.pending_delivery, false, 'Malformed job.lease must not wedge outbox');
+  assert.equal(vm.storage.local.map.outbox, undefined);
+  assert.equal(acmeReads.length, acmeReadsBeforeBadId);
+
   await sendMsg('stop');
-  evidence('second source reader: synthetic reader (acme) runs end-to-end through unchanged connector loop');
+  evidence('second source reader & source/envelope fences: synthetic reader (acme) runs end-to-end while cross-source and malformed id/lease jobs are refused');
 
   // Bridge origin/auth fencing + MCP stdio check.
   const evilOrigin = await nativeFetch(`http://127.0.0.1:${bridgePort}/heartbeat`, {

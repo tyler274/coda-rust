@@ -76,7 +76,7 @@
     };
   }
 
-  function validateJob(job, readerMap) {
+  function validateJob(job, readerMap, expectedSource) {
     if (!job || typeof job !== 'object' || Array.isArray(job)) {
       return {valid: false, detail: 'invalid_job_envelope'};
     }
@@ -87,6 +87,9 @@
     }
     if (!safeIdentifier(job.id) || !safeIdentifier(job.lease) || !safeIdentifier(job.source) || !safeIdentifier(job.read)) {
       return {valid: false, detail: 'invalid_job_identifier'};
+    }
+    if (expectedSource && job.source !== expectedSource) {
+      return {valid: false, detail: 'source_mismatch'};
     }
     const reader = readerMap.get(job.source);
     if (!reader) {
@@ -572,8 +575,11 @@
         job = claimed.job;
 
         if (job) {
-          const admission = validateJob(job, readerMap);
+          const admission = validateJob(job, readerMap, reader.id);
           if (!admission.valid) {
+            if (!safeIdentifier(job?.id) || !safeIdentifier(job?.lease)) {
+              throw fault('bridge_refused', null, admission.detail);
+            }
             const nowMs = Date.now();
             await stageAndFlush(run, job, {
               outcome: 'failed',
@@ -631,7 +637,7 @@
             worker: workerId,
             reason: code,
             http_status: error.status || null,
-            job_id: job?.id || null,
+            job_id: safeIdentifier(job?.id) ? job.id : null,
             auth_events: (await stored('auth_events')) || [],
           });
           await chrome.storage.local.set({auth_events: []});

@@ -442,8 +442,15 @@ class State:
                 and job.get("run_id") == body["run_id"]
                 and job.get("worker") == body["worker"]
             ):
-                job.update(state="pending")
-                self.event("lease_released_on_halt", job_id=job["id"])
+                if body["reason"] == "bridge_refused":
+                    job.update(
+                        state="done",
+                        outcome="failed",
+                        result={"outcome": "failed", "reason": "bridge_refused"},
+                    )
+                else:
+                    job.update(state="pending")
+                    self.event("lease_released_on_halt", job_id=job["id"])
         self.event("halt", **body)
         self.save()
         return {"outcome": "accepted"}
