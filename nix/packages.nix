@@ -239,6 +239,7 @@ in
     assets = physicianWeb;
     environment = [
       "PHYSICIAN_SKILLS_DIR=${physicianSkills}"
+      "PHYSICIAN_SYNTHETIC_CHARTS=${physicianCharts}"
       "PHYSICIAN_SITE_DIR=${physicianWeb}"
       # Hosted physician chat is API-backed only and sessions are required.
       "PHYSICIAN_AUTH=required"

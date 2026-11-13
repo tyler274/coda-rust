@@ -1420,6 +1420,15 @@ impl Store {
             access_map.insert(key, decode_access(row)?);
         }
 
+        let link_rows = source_patient_link::Entity::find()
+            .filter(source_patient_link::Column::Practice.is_in(practices.clone()))
+            .filter(source_patient_link::Column::Workspace.is_in(workspaces.iter().cloned()))
+            .all(&self.db)
+            .await?;
+        let pull_rows = source_pull::Entity::find()
+            .filter(source_pull::Column::Workspace.is_in(workspaces.iter().cloned()))
+            .all(&self.db)
+            .await?;
         let status_rows = patient_source_status::Entity::find()
             .filter(patient_source_status::Column::Practice.is_in(practices))
             .filter(patient_source_status::Column::Workspace.is_in(workspaces.iter().cloned()))
@@ -1428,19 +1437,31 @@ impl Store {
             .await?;
         let mut status_map: HashMap<(String, String, String), PatientSourceRecordStatus> =
             HashMap::new();
-        let mut sources_by_practice: HashMap<String, BTreeSet<String>> = HashMap::new();
-        for (practice, source_id) in access_map.keys() {
-            sources_by_practice
-                .entry(practice.clone())
-                .or_default()
-                .insert(source_id.clone());
+        let mut sources_by_workspace: HashMap<String, BTreeSet<String>> = HashMap::new();
+        for row in link_rows {
+            if practice_by_ws.get(&row.workspace) == Some(&row.practice) {
+                sources_by_workspace
+                    .entry(row.workspace)
+                    .or_default()
+                    .insert(row.source_id);
+            }
+        }
+        for row in pull_rows {
+            if practice_by_ws.contains_key(&row.workspace) {
+                sources_by_workspace
+                    .entry(row.workspace)
+                    .or_default()
+                    .insert(row.source_id);
+            }
         }
         for row in status_rows {
             let decoded = decode_status(row)?;
-            sources_by_practice
-                .entry(decoded.practice_id.clone())
-                .or_default()
-                .insert(decoded.source_id.clone());
+            if practice_by_ws.get(&decoded.workspace_id) == Some(&decoded.practice_id) {
+                sources_by_workspace
+                    .entry(decoded.workspace_id.clone())
+                    .or_default()
+                    .insert(decoded.source_id.clone());
+            }
             status_map.insert(
                 (
                     decoded.practice_id.clone(),
@@ -1453,7 +1474,7 @@ impl Store {
 
         let mut out: BTreeMap<String, BTreeMap<String, SourceStanding>> = BTreeMap::new();
         for (workspace_id, practice_id) in &practice_by_ws {
-            let Some(source_ids) = sources_by_practice.get(practice_id) else {
+            let Some(source_ids) = sources_by_workspace.get(workspace_id) else {
                 continue;
             };
             let ws_entry = out.entry(workspace_id.clone()).or_default();
