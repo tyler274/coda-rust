@@ -7,6 +7,8 @@ use physician_auth::{AuthStore, Membership, PhysicianIdentity, PostgresAuthStore
 use sea_orm::{Database, TransactionTrait};
 #[path = "support/authority.rs"]
 mod authority;
+#[path = "support/finish.rs"]
+mod finish;
 use authority::Locks;
 
 async fn setup() -> (Store, PostgresAuthStore, Scope, String, String) {
@@ -60,20 +62,13 @@ async fn setup() -> (Store, PostgresAuthStore, Scope, String, String) {
 async fn candidate(store: &Store, scope: &Scope) -> (Claim, Turn) {
     let claim = store.claim(scope, 60).await.unwrap().unwrap();
     let candidate = Turn {
-        items: vec![engine::Item::assistant("controlled completion")],
+        items: finish::answered("controlled completion"),
         receipt: serde_json::json!({"controlled":true}),
         usage: Default::default(),
     };
     // The terminal turn first, so only the authority fence can refuse it.
     let kinds = [
-        EventKind::ProviderReturned(engine::Turn {
-            usage: Default::default(),
-            items: vec![engine::Item::Message {
-                role: "assistant".into(),
-                text: candidate.text(),
-            }],
-            receipt: serde_json::json!({"controlled": true}),
-        }),
+        EventKind::ProviderReturned(candidate.clone()),
         EventKind::Candidate {
             text: candidate.text(),
         },
@@ -202,7 +197,7 @@ impl engine::recipe::Provider for Stream {
         ));
         Ok(engine::Turn {
             usage: Default::default(),
-            items: vec![engine::Item::assistant("controlled completion")],
+            items: finish::answered("controlled completion"),
             receipt: serde_json::json!({"controlled":true}),
         })
     }

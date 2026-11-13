@@ -13,6 +13,8 @@ use harness::skills::Package;
 use physician_wire::{Step, StepState};
 use serde_json::{Value, json};
 
+use crate::physician_sources::citations;
+
 /// Immutable chat recipe selected by the site when it accepts new work.
 pub fn recipe(
     binding: &crate::ModelBinding,
@@ -24,7 +26,7 @@ pub fn recipe(
         context_window_tokens: binding.context_window_tokens,
         max_input_tokens: binding.max_input_tokens,
         options: json!({"effort": binding.effort}),
-        instructions: skills.instructions(instructions),
+        instructions: skills.instructions(instructions, Job::Chat),
         tools: tools().into_iter().map(|tool| tool.function()).collect(),
     };
     harness::engine::offer_working_notes(&mut recipe.instructions, &mut recipe.tools);
@@ -52,13 +54,12 @@ with prior understanding, keep physician-provided information distinct from othe
 material disagreement rather than silently accepting or dismissing it. Honor clear physician direction \
 within available authority.
 
-Use the tools offered in this conversation. For patient-specific chart facts, discover records in the \
-patient workspace and open the exact revisions. A search hit identifies a candidate. Base the answer on \
-the content actually returned, name the dated source and distinguish a partial read from a whole one. \
-If chart tools or evidence are unavailable, say what you cannot confirm.
+Use the tools offered in this conversation. Base patient-specific facts on records you have read in \
+this conversation. If tools or evidence are unavailable, say what you cannot confirm.
 
 The approved skill catalog describes reusable capability guidance and exact packaged resources. Review it \
-when a task begins and whenever the task scope changes. Before relying on a matching, materially \
+when a task begins and whenever the task scope changes. A skill given in full below the catalog is \
+already loaded: follow it, and do not open it again. Before relying on a matching, materially \
 overlapping, or explicitly invoked skill whose body is absent, load it through skill_view, even when the \
 work seems familiar. Read a skill's returned supporting resources when they are useful. Do not reread a \
 body that is already in this conversation. Group independent reads with known arguments in one response; \
@@ -74,17 +75,43 @@ patient-specific fact. Do not invent references or citations. Distinguish provis
 verified support, and state material limits beside the conclusion they qualify. Use unambiguous calendar \
 dates with the year.
 
-Answer the physician's request directly. Close with a brief, physician-readable basis for the answer: what \
-it rests on (source records, physician input, skill guidance, general medical knowledge) and any limitation that could \
-materially change interpretation. Usually keep that basis under 80 words. Use physician language, never \
-runtime terminology, private deliberation, or tool activity. Requesting tools continues work; your final \
-response without tool calls is the complete answer the physician reads, so do not leave it to earlier \
-messages. Communicate completed clinical work, not model identities, tools, schemas or runtime IDs.";
+Answer the physician's request directly, in physician language, never runtime terminology, private \
+deliberation, or tool activity. Requesting tools continues work. Finish with finish_answer: what you hand in \
+there is the complete answer the physician reads, so do not leave it to earlier messages. Communicate \
+completed clinical work, not model identities, tools, schemas or runtime IDs.";
+
+/// Skills the chat job loads at its start.
+pub const START_SKILLS: &[&str] = &["patient-record-retrieval"];
+
+/// A Chords job. Each has its own instructions and the skills it loads at its
+/// start; every job lists and opens the whole package.
+#[derive(Clone, Copy, Debug)]
+pub enum Job {
+    /// Physician chat.
+    Chat,
+    /// A revision of a saved patient reply.
+    ReplyRevision,
+}
+
+impl Job {
+    /// Every Chords job. [`PhysicianSkills::load`] checks each one's start
+    /// skills against the package.
+    const ALL: [Self; 2] = [Self::Chat, Self::ReplyRevision];
+
+    /// The skills this job loads at its start, as written beside its instructions.
+    fn start_skills(self) -> &'static [&'static str] {
+        match self {
+            Self::Chat => START_SKILLS,
+            Self::ReplyRevision => crate::runtime::reply::START_SKILLS,
+        }
+    }
+}
 
 /// Capabilities shared by every ordinary Chords chat request.
 pub fn tools() -> Vec<Tool> {
     let mut offered = work_tools();
     offered.extend(chart_tools());
+    offered.push(citations::finish_tool());
     offered
 }
 
@@ -163,6 +190,8 @@ enum ChatTool {
     ResultPage,
     /// Coda's own working note.
     WorkingNote,
+    /// The finished answer. It never runs as a call.
+    Finish,
 }
 
 impl ChatTool {
@@ -176,6 +205,7 @@ impl ChatTool {
             SKILL_VIEW => Some(Self::Skill),
             results::READ => Some(Self::ResultPage),
             name if crate::runtime::working_notes::is_tool(name) => Some(Self::WorkingNote),
+            citations::FINISH_TOOL => Some(Self::Finish),
             _ => None,
         }
     }
@@ -183,13 +213,16 @@ impl ChatTool {
 
 /// The step a saved chat call shows the physician, or `None` when it shows
 /// none: skill reads, result pages and working notes are Coda's own
-/// bookkeeping, and a call its tool refuses for its arguments did nothing.
+/// bookkeeping, the finish is the answer itself, and a call its tool refuses
+/// for its arguments did nothing.
 pub fn step(call: &Invocation, ending: CallEnding<'_>) -> Result<Option<Step>, StepError> {
     let tool =
         ChatTool::named(&call.name).ok_or_else(|| StepError::UnknownTool(call.name.clone()))?;
     let arguments = || serde_json::from_str::<Value>(&call.arguments).map_err(StepError::Arguments);
     match tool {
-        ChatTool::Skill | ChatTool::ResultPage | ChatTool::WorkingNote => Ok(None),
+        ChatTool::Skill | ChatTool::ResultPage | ChatTool::WorkingNote | ChatTool::Finish => {
+            Ok(None)
+        }
         ChatTool::Chart => {
             let request = crate::physician_sources::ChartRequest::parse(
                 &call.name,
@@ -229,7 +262,9 @@ fn conversation_step(ending: CallEnding<'_>) -> Result<Step, StepError> {
 fn chart_tools() -> [Tool; 2] {
     [
         crate::physician_sources::search_tool(),
-        crate::physician_sources::read_tool(crate::physician_sources::ChartScope::Chat),
+        citations::labelled(crate::physician_sources::read_tool(
+            crate::physician_sources::ChartScope::Chat,
+        )),
     ]
 }
 
@@ -257,6 +292,14 @@ pub enum SkillsError {
         /// Why the package did not load, in the package loader's words.
         reason: String,
     },
+    /// The package at `root` has no skill `name`, which a Chords job loads at its start.
+    #[error("physician skill catalog at {} has no skill {name}, which a Chords job loads at its start", .root.display())]
+    MissingStartSkill {
+        /// The catalog folder.
+        root: PathBuf,
+        /// The skill a job loads at its start.
+        name: String,
+    },
 }
 
 impl PhysicianSkills {
@@ -270,18 +313,39 @@ impl PhysicianSkills {
         Self::load(root)
     }
 
-    /// Loads `root` once. Missing or invalid packaging is an error.
+    /// Loads `root` once. Missing or invalid packaging is an error, and so is
+    /// a package without a skill some Chords job loads at its start.
     pub fn load(root: &Path) -> Result<Self, SkillsError> {
         let package = Package::load("chords", root).map_err(|reason| SkillsError::Package {
             root: root.to_owned(),
             reason,
         })?;
+        let missing = Job::ALL
+            .into_iter()
+            .flat_map(Job::start_skills)
+            .find(|name| package.loaded_skill_section(name).is_none());
+        if let Some(name) = missing {
+            return Err(SkillsError::MissingStartSkill {
+                root: root.to_owned(),
+                name: (*name).to_owned(),
+            });
+        }
         Ok(Self { package })
     }
 
-    /// `base` followed by the catalog section. The accepted recipe keeps the exact text.
-    pub fn instructions(&self, base: &str) -> String {
-        format!("{base}\n\n{}", self.package.catalog_instructions())
+    /// `base`, the catalog section, then one section for each skill `job`
+    /// loads at its start. The accepted recipe keeps the exact text.
+    pub fn instructions(&self, base: &str, job: Job) -> String {
+        let mut text = format!("{base}\n\n{}", self.package.catalog_instructions());
+        for name in job.start_skills() {
+            let section = self
+                .package
+                .loaded_skill_section(name)
+                .expect("loading checks every job's start skills");
+            text.push_str("\n\n");
+            text.push_str(&section);
+        }
+        text
     }
 
     /// The common skill tool offered for this product's package.
@@ -339,12 +403,112 @@ mod tests {
     #[test]
     fn instructions_carry_the_metadata_only_catalog() {
         let skills = skills();
-        let text = skills.instructions(INSTRUCTIONS);
+        let text = skills.instructions(INSTRUCTIONS, Job::Chat);
         assert!(text.starts_with(INSTRUCTIONS));
         assert!(text.contains("\"kind\":\"approved_skill_catalog\""));
         assert!(text.contains("patient-record-retrieval"));
         assert!(!text.contains("\"content\""));
         assert_eq!(PhysicianSkills::tool().name, SKILL_VIEW);
+    }
+
+    /// The chat job starts with patient-record-retrieval loaded: after the
+    /// catalog comes one section with the exact text skill_view returns for
+    /// it, and the working-notes guidance follows it once.
+    #[test]
+    fn chat_recipe_loads_record_retrieval_after_the_catalog() {
+        let skills = skills();
+        let binding = crate::ModelBinding {
+            model: "fixture".into(),
+            effort: "high".into(),
+            context_window_tokens: 272_000,
+            max_input_tokens: 250_000,
+            adapter: "fixture".into(),
+        };
+        let instructions = recipe(&binding, INSTRUCTIONS, &skills).instructions;
+        let ToolOutcome::Returned(opened) =
+            skills.execute(SKILL_VIEW, &json!({"name": "patient-record-retrieval"}))
+        else {
+            panic!("skill_view does not open patient-record-retrieval");
+        };
+        let opened: Value = serde_json::from_str(&opened).unwrap();
+        let catalog = format!(
+            "{INSTRUCTIONS}\n\n{}",
+            skills.package.catalog_instructions()
+        );
+        let after_catalog = instructions
+            .strip_prefix(&catalog)
+            .expect("the catalog section follows INSTRUCTIONS");
+        let section = format!(
+            "\n\nLoaded skill: patient-record-retrieval\n{}",
+            opened["content"].as_str().unwrap()
+        );
+        assert!(
+            after_catalog.starts_with(&section),
+            "after the catalog: {after_catalog:.120}"
+        );
+        assert_eq!(instructions.matches("Loaded skill: ").count(), 1);
+        assert!(
+            after_catalog[section.len()..]
+                .starts_with("\n\nThis work can outlast one context window.")
+        );
+        assert_eq!(
+            instructions
+                .matches("This work can outlast one context window.")
+                .count(),
+            1
+        );
+    }
+
+    /// Reply revision loads no skill at its start: its instructions are its
+    /// own instructions, the catalog and the working-notes guidance, with no
+    /// loaded skill section.
+    #[test]
+    fn revision_recipe_loads_no_skill() {
+        let skills = skills();
+        let binding = crate::ModelBinding {
+            model: "fixture".into(),
+            effort: "high".into(),
+            context_window_tokens: 272_000,
+            max_input_tokens: 250_000,
+            adapter: "fixture".into(),
+        };
+        let instructions = crate::runtime::reply::recipe(&binding, &skills).instructions;
+        let mut composed = format!(
+            "{}\n\n{}",
+            crate::runtime::reply::INSTRUCTIONS,
+            skills.package.catalog_instructions()
+        );
+        harness::engine::offer_working_notes(&mut composed, &mut crate::runtime::reply::tools());
+        assert_eq!(instructions, composed);
+        assert!(!instructions.contains("Loaded skill:"));
+    }
+
+    /// A package without a skill some job loads at its start fails loading
+    /// and names that skill, rather than giving a job a shorter prompt.
+    #[test]
+    fn a_package_without_a_start_skill_fails_loading() {
+        let root = std::env::temp_dir().join(format!(
+            "physician-skills-no-start-{}",
+            uuid::Uuid::new_v4().simple()
+        ));
+        let folder = root.join("patient-communication");
+        std::fs::create_dir_all(&folder).unwrap();
+        std::fs::copy(
+            PathBuf::from(env!("CARGO_MANIFEST_DIR"))
+                .join("../../skills/patient-communication/SKILL.md"),
+            folder.join("SKILL.md"),
+        )
+        .unwrap();
+        let error = PhysicianSkills::load(&root).err().unwrap();
+        std::fs::remove_dir_all(&root).unwrap();
+        assert!(
+            matches!(&error, SkillsError::MissingStartSkill { name, .. } if name == "patient-record-retrieval"),
+            "{error}"
+        );
+        assert!(
+            error.to_string().contains("patient-record-retrieval"),
+            "{error}"
+        );
     }
 
     #[test]

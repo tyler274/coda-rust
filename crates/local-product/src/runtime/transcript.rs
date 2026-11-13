@@ -13,7 +13,9 @@ use physician_wire::{
     ResponseFeedback, Step, WorkItemId, WorkResumeTarget, WorkStopTarget,
 };
 
-use super::{Attempt, AttemptStatus, Conversation, MessageRole, ResponseId, reply_id};
+use super::{
+    AssistantKind, Attempt, AttemptStatus, Conversation, MessageRole, ResponseId, reply_id,
+};
 use crate::physician_chat::{CallEnding, StepError};
 
 /// A saved conversation that does not read as a transcript.
@@ -40,8 +42,8 @@ pub enum TranscriptError {
 struct Gathered<'a> {
     work: &'a str,
     messages: Vec<PhysicianMessage>,
-    /// Each answer's saved id, whether it is partial, and its text.
-    answers: Vec<(&'a str, bool, &'a str)>,
+    /// Each answer's saved id, how it was saved, and its text.
+    answers: Vec<(&'a str, &'a AssistantKind, &'a str)>,
 }
 
 impl Conversation {
@@ -69,11 +71,11 @@ impl Conversation {
                         }),
                     }
                 }
-                MessageRole::Assistant { id, partial } => gathered
+                MessageRole::Assistant { id, kind } => gathered
                     .last_mut()
                     .ok_or(TranscriptError::AnswerBeforeMessage)?
                     .answers
-                    .push((id, *partial, &message.text)),
+                    .push((id, kind, &message.text)),
             }
         }
         gathered
@@ -114,12 +116,15 @@ impl Conversation {
             None => return Err(TranscriptError::ReplacedWorkOpen),
             Some(RunOutcome::Completed) => {
                 // The published answer is the one the run's last attempt saved.
+                // Its text holds no labels.
                 let attempt = attempts.last().ok_or(TranscriptError::MissingAnswer)?;
                 let id = reply_id(&attempt.id);
                 let text = gathered
                     .answers
                     .iter()
-                    .find(|(saved, partial, _)| *saved == id && !partial)
+                    .find(|(saved, kind, _)| {
+                        *saved == id && matches!(kind, AssistantKind::Finished(_))
+                    })
                     .map(|(_, _, text)| *text)
                     .ok_or(TranscriptError::MissingAnswer)?;
                 let id = ResponseId(id);
@@ -155,7 +160,7 @@ impl Conversation {
         let kept = gathered
             .answers
             .iter()
-            .filter(|(_, partial, _)| *partial)
+            .filter(|(_, kind, _)| matches!(kind, AssistantKind::Kept))
             .map(|(_, _, text)| (*text).to_owned())
             .collect();
         Ok(Exchange {
@@ -232,7 +237,8 @@ mod tests {
     use physician_wire::{AnswerState, ExchangeSteps, Found, Step, StepState, WorkResumeTarget};
 
     use super::super::{
-        Attempt, AttemptStatus, Conversation, Message, MessageRole, WorkStatus, reply_id,
+        AssistantKind, Attempt, AttemptStatus, Conversation, Message, MessageRole, WorkStatus,
+        reply_id,
     };
 
     fn ask(conversation: &mut Conversation, work: &str, text: &str) {
@@ -247,10 +253,22 @@ mod tests {
     }
 
     fn answer(conversation: &mut Conversation, attempt: &str, partial: bool, text: &str) {
+        let kind = if partial {
+            AssistantKind::Kept
+        } else {
+            AssistantKind::Finished(
+                serde_json::from_value(serde_json::json!({
+                    "marks": [],
+                    "basis": {"text": "Fixture basis.", "marks": []},
+                    "descriptions": []
+                }))
+                .unwrap(),
+            )
+        };
         conversation.messages.push(Message {
             role: MessageRole::Assistant {
                 id: reply_id(attempt),
-                partial,
+                kind,
             },
             text: text.into(),
         });

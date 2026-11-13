@@ -470,6 +470,27 @@ async fn expired_attempt_recovery_preserves_accepted_work_and_evidence() {
     assert_eq!(state.messages.len(), 1);
 }
 
+/// A turn that ends the chat: `text` as narration, then the same text handed
+/// in through the finish as an answer that cites no source. At a limit only
+/// the narration is kept.
+fn answered(text: &str) -> Vec<Item> {
+    vec![
+        Item::assistant(text),
+        Item::Call(engine::Invocation {
+            id: "finish".into(),
+            name: crate::physician_sources::citations::FINISH_TOOL.into(),
+            arguments: serde_json::json!({
+                "answer": text,
+                "quotes": [],
+                "descriptions": [],
+                "basis": "Fixture basis.",
+                "cites_none": true
+            })
+            .to_string(),
+        }),
+    ]
+}
+
 fn delivery_scope(practice: &str, chat: &str) -> Scope {
     Scope {
         practice: practice.into(),
@@ -2384,7 +2405,7 @@ async fn deleted_history_source_is_absent_from_chords_records_and_successor_requ
             self.requests.push(request.clone());
             if self.resume {
                 return Ok(Turn {
-                    items: vec![Item::assistant("Continued from remaining sources.")],
+                    items: answered("Continued from remaining sources."),
                     receipt: Value::Null,
                     usage: Default::default(),
                 });

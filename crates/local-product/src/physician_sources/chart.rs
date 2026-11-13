@@ -5,7 +5,7 @@ use super::{
 };
 use crate::physician_chat::{CallEnding, StepError};
 use harness::engine::results::ToolResult;
-use harness::engine::{Tool, ToolOutcome};
+use harness::engine::{Event, EventKind, Tool, ToolOutcome};
 use physician_wire::{Found, RecordRead, Step, StepState};
 use serde::{Deserialize, Serialize};
 use serde_json::{Value, json};
@@ -132,6 +132,123 @@ pub(super) enum ReceiptDates {
     Raw(Vec<RecordDate>),
 }
 
+/// A label such as `S3`: the short name of one version in this work.
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(transparent)]
+pub(super) struct Label(pub(super) String);
+
+/// The labels of one work. The Nth distinct version a chart read of this work
+/// asked for is `S{N}`. Reads ask in their saved `ToolStarted` order, which is
+/// fixed before any read runs, so reads that run together agree. A label
+/// names its version for a citation only once a read of this work returned
+/// that version.
+pub struct Labels(Vec<Version>);
+
+/// One version a read of this work asked for.
+struct Version {
+    candidate_id: String,
+    revision: String,
+    /// Whether a read's own result holds a record or passage that carries
+    /// this version's label.
+    returned: bool,
+}
+
+impl Labels {
+    /// The labels of the work whose records these are, in any window.
+    pub fn of_work<'a>(records: impl IntoIterator<Item = &'a (Event, bool)>) -> Self {
+        let mut labels = Self(Vec::new());
+        for (event, _) in records {
+            if let EventKind::ToolStarted(call) = &event.kind {
+                labels.ask(&call.name, &call.arguments);
+            } else if let EventKind::ToolReturned { result, .. } = &event.kind {
+                labels.return_labels(result);
+            }
+        }
+        labels
+    }
+
+    /// Adds each version a chart read asks for that no earlier read asked for.
+    fn ask(&mut self, name: &str, arguments: &str) {
+        let Ok(arguments) = serde_json::from_str::<Value>(arguments) else {
+            return;
+        };
+        let Ok(read) = ChartRequest::parse(name, &arguments, ChartScope::Chat) else {
+            return;
+        };
+        for (candidate_id, revision) in read.versions() {
+            if self.of(candidate_id, revision).is_none() {
+                self.0.push(Version {
+                    candidate_id: candidate_id.to_owned(),
+                    revision: revision.to_owned(),
+                    returned: false,
+                });
+            }
+        }
+    }
+
+    /// Marks returned each version whose label a record or passage of this
+    /// result carries. Only a result's own original counts: a projection of
+    /// an earlier result adds nothing new, and a result that is not a read
+    /// receipt carries no label.
+    fn return_labels(&mut self, result: &ToolResult) {
+        let Some(Ok(receipt)) = result.original().map(serde_json::from_str::<ReadReceipt>) else {
+            return;
+        };
+        for record in &receipt.results {
+            let label = match record {
+                RecordReceipt::Available {
+                    cite_as: Some(label),
+                    ..
+                }
+                | RecordReceipt::Passage {
+                    cite_as: Some(label),
+                    ..
+                } => label,
+                RecordReceipt::Available { cite_as: None, .. }
+                | RecordReceipt::Passage { cite_as: None, .. }
+                | RecordReceipt::Unavailable { .. }
+                | RecordReceipt::OverBudget { .. } => continue,
+            };
+            if let Some(index) = self.index(label) {
+                self.0[index].returned = true;
+            }
+        }
+    }
+
+    fn of(&self, candidate_id: &str, revision: &str) -> Option<Label> {
+        self.0
+            .iter()
+            .position(|known| known.candidate_id == candidate_id && known.revision == revision)
+            .map(label_at)
+    }
+
+    /// Where the version `label` names sits, when it names one.
+    fn index(&self, label: &Label) -> Option<usize> {
+        let index = label
+            .0
+            .strip_prefix('S')?
+            .parse::<usize>()
+            .ok()?
+            .checked_sub(1)?;
+        (index < self.0.len() && label_at(index) == *label).then_some(index)
+    }
+
+    /// The version, as `(candidate_id, revision)`, that a read of this work
+    /// gave this label, or `None` when no read gave it: no read asked for a
+    /// version with this label, or none returned it.
+    pub(super) fn version(&self, label: &Label) -> Option<(&str, &str)> {
+        let version = &self.0[self.index(label)?];
+        version
+            .returned
+            .then_some((version.candidate_id.as_str(), version.revision.as_str()))
+    }
+}
+
+/// The label of the version at `index`.
+fn label_at(index: usize) -> Label {
+    Label(format!("S{}", index + 1))
+}
+
 /// Chart read receipts have one wire owner for production and delivery checks.
 #[derive(Debug, Serialize, Deserialize)]
 pub(super) struct ReadReceipt {
@@ -165,6 +282,9 @@ pub(super) enum RecordReceipt {
         readable_parts: Vec<ReadablePart>,
         sha256: String,
         provenance: Value,
+        /// The version's label, when the work's reads carry labels.
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        cite_as: Option<Label>,
     },
     Passage {
         reference: String,
@@ -176,6 +296,9 @@ pub(super) enum RecordReceipt {
         total_bytes: usize,
         content: String,
         next: Option<Exact>,
+        /// The version's label, when the work's reads carry labels.
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        cite_as: Option<Label>,
     },
     Unavailable {
         #[serde(skip_serializing_if = "Option::is_none")]
@@ -357,6 +480,22 @@ impl ChartRequest {
         }
     }
 
+    /// The versions an exact read names, in order. A search, or a reference
+    /// by candidate alone, names none.
+    pub(super) fn versions(&self) -> Vec<(&str, &str)> {
+        match &self.0 {
+            Operation::Search(_) => Vec::new(),
+            Operation::Read(read) => read
+                .references
+                .iter()
+                .filter_map(|reference| match reference {
+                    Reference::Exact(exact) => Some((&*exact.candidate_id, &*exact.revision)),
+                    Reference::Pinned(_) => None,
+                })
+                .collect(),
+        }
+    }
+
     /// The step this call shows the physician, as far as it has ended.
     pub fn step(&self, ending: CallEnding<'_>) -> Result<Step, StepError> {
         match &self.0 {
@@ -365,17 +504,41 @@ impl ChartRequest {
         }
     }
 
-    /// Resolve only this workspace's accepted source revisions.
+    /// Resolve only this workspace's accepted source revisions. The receipts
+    /// carry no labels.
     pub fn run(
         &self,
         workspace: &str,
         version: u64,
         sources: &[SourceRevision],
     ) -> Result<ToolOutcome, String> {
+        self.outcome(workspace, version, sources, None)
+    }
+
+    /// [`Self::run`] for a job whose reads carry labels: each record and
+    /// passage a read returns has its version's label from the work's
+    /// `labels`, counted in its size.
+    pub fn run_labelled(
+        &self,
+        workspace: &str,
+        version: u64,
+        sources: &[SourceRevision],
+        labels: &Labels,
+    ) -> Result<ToolOutcome, String> {
+        self.outcome(workspace, version, sources, Some(labels))
+    }
+
+    fn outcome(
+        &self,
+        workspace: &str,
+        version: u64,
+        sources: &[SourceRevision],
+        labels: Option<&Labels>,
+    ) -> Result<ToolOutcome, String> {
         match &self.0 {
             Operation::Search(search) => search.page(workspace, version, sources),
             Operation::Read(read) => read
-                .page(workspace, sources)
+                .page(workspace, sources, labels)
                 .map(|value| ToolOutcome::Returned(value.to_string())),
         }
     }
@@ -590,7 +753,12 @@ impl Read {
         })
     }
 
-    fn page(&self, workspace: &str, sources: &[SourceRevision]) -> Result<Value, String> {
+    fn page(
+        &self,
+        workspace: &str,
+        sources: &[SourceRevision],
+        labels: Option<&Labels>,
+    ) -> Result<Value, String> {
         // Reserve the envelope and commas. Each reference has space even when
         // an earlier one is large, and the bound includes JSON escaping.
         let budget = (self.max_result_bytes - r#"{"results":[]}"#.len() - self.references.len())
@@ -610,8 +778,17 @@ impl Read {
                                 reason: "revision_changed_repeat_discovery".into(),
                             }
                         }
-                        Reference::Exact(r) => read_record(source, r.cursor, budget),
-                        Reference::Pinned(_) => read_record(source, None, budget),
+                        Reference::Exact(r) => {
+                            let label = labels
+                                .map(|labels| {
+                                    labels.of(&r.candidate_id, &r.revision).ok_or(
+                                        "a read returned a version that no read of this work asked for",
+                                    )
+                                })
+                                .transpose()?;
+                            read_record(source, r.cursor, budget, label)
+                        }
+                        Reference::Pinned(_) => read_record(source, None, budget, None),
                     }
                 }
                 None => RecordReceipt::Unavailable {
@@ -629,9 +806,16 @@ impl Read {
     }
 }
 
-fn read_record(source: &SourceRevision, cursor: Option<Position>, budget: usize) -> RecordReceipt {
+/// One record of a read, with its label when the read carries labels. The
+/// label is part of the receipt when its size is checked.
+fn read_record(
+    source: &SourceRevision,
+    cursor: Option<Position>,
+    budget: usize,
+    cite_as: Option<Label>,
+) -> RecordReceipt {
     if cursor.is_none() && source.content.len() <= budget {
-        let full = available_receipt(source);
+        let full = available_receipt(source, cite_as.clone());
         if full.encoded_len() <= budget {
             return full;
         }
@@ -679,6 +863,7 @@ fn read_record(source: &SourceRevision, cursor: Option<Position>, budget: usize)
                 revision: source.revision.clone(),
                 cursor: Some(cursor),
             }),
+            cite_as: cite_as.clone(),
         }
     };
     // Search UTF-8 boundaries of at most one page, measuring the encoded
@@ -701,7 +886,7 @@ fn read_record(source: &SourceRevision, cursor: Option<Position>, budget: usize)
     }
 }
 
-fn available_receipt(source: &SourceRevision) -> RecordReceipt {
+fn available_receipt(source: &SourceRevision, cite_as: Option<Label>) -> RecordReceipt {
     match &source.envelope {
         Some(env) => RecordReceipt::Available {
             reference: source.candidate_id.clone(),
@@ -720,6 +905,7 @@ fn available_receipt(source: &SourceRevision) -> RecordReceipt {
             readable_parts: source.readable_parts.clone(),
             sha256: source.sha256.clone(),
             provenance: source.provenance.clone(),
+            cite_as,
         },
         None => RecordReceipt::Available {
             reference: source.candidate_id.clone(),
@@ -738,6 +924,7 @@ fn available_receipt(source: &SourceRevision) -> RecordReceipt {
             readable_parts: source.readable_parts.clone(),
             sha256: source.sha256.clone(),
             provenance: source.provenance.clone(),
+            cite_as,
         },
     }
 }
@@ -806,5 +993,76 @@ pub fn read_tool(scope: ChartScope) -> Tool {
             },
             "required":["references","max_result_bytes"],"additionalProperties":false
         }),
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::physician_sources::adapter::{FHIR_R4_TABLE, file_json_record};
+    use harness::engine::Invocation;
+
+    fn event(kind: EventKind) -> (Event, bool) {
+        (
+            Event {
+                attempt_id: "attempt".into(),
+                sequence: 1,
+                ordinal: 1,
+                kind,
+            },
+            true,
+        )
+    }
+
+    /// A record filed through an adapter table, read with labels, carries
+    /// its label beside its envelope, and the work's labels rebuilt from that
+    /// read's own result give the label the version the read returned.
+    #[test]
+    fn a_filed_record_read_with_labels_carries_its_label_beside_its_envelope() {
+        let source = file_json_record(
+            &FHIR_R4_TABLE,
+            "patient",
+            "ehr",
+            r#"{"resourceType":"Condition","id":"c1","meta":{"versionId":"2"},"code":{"text":"Hypertension"},"recordedDate":"2026-08-01"}"#,
+            None,
+        )
+        .unwrap();
+        let arguments = json!({
+            "references": [{
+                "candidate_id": source.candidate_id,
+                "revision": source.revision,
+                "cursor": null
+            }],
+            "max_result_bytes": 4096
+        });
+        let read = ChartRequest::parse(READ_TOOL, &arguments, ChartScope::Chat).unwrap();
+        let started = event(EventKind::ToolStarted(Invocation {
+            id: "read".into(),
+            name: READ_TOOL.into(),
+            arguments: arguments.to_string(),
+        }));
+        let asked = Labels::of_work([&started]);
+
+        let outcome = read
+            .run_labelled("patient", 1, std::slice::from_ref(&source), &asked)
+            .unwrap();
+        let original = outcome.text().unwrap().to_owned();
+        let receipt: Value = serde_json::from_str(&original).unwrap();
+        let record = &receipt["results"][0];
+        assert_eq!(record["outcome"], "available");
+        assert_eq!(record["bucket"], "problems");
+        assert_eq!(record["title"], "Hypertension");
+        assert_eq!(record["cite_as"], "S1");
+
+        let returned = event(EventKind::ToolReturned {
+            call_id: "read".into(),
+            result: ToolResult::Original(original),
+        });
+        let label = Label("S1".into());
+        assert_eq!(asked.version(&label), None);
+        assert_eq!(
+            Labels::of_work([&started, &returned]).version(&label),
+            Some((source.candidate_id.as_str(), source.revision.as_str()))
+        );
     }
 }

@@ -2,8 +2,8 @@
 //! Construction never migrates or starts work. Expired attempts terminate as
 //! interrupted; a claim creates a successor rather than replaying an attempt.
 //! Hosted chat opens packaged skills and reads the authorized workspace chart
-//! on demand ([`crate::physician_chat`]). A commit publishes only the attempt's
-//! final model response, never narration from earlier tool rounds. Reply
+//! on demand ([`crate::physician_chat`]). A commit publishes only the answer
+//! handed in through the chat's finish, never narration from tool rounds. Reply
 //! drafts and their revisions live in [`reply`]. No process-memory
 //! persistence fallback.
 
@@ -56,7 +56,8 @@ mod transcript;
 pub use transcript::TranscriptError;
 /// Working notes derived from the authorized product record.
 pub mod working_notes;
-use crate::physician_sources::{ChartRequest, ChartScope, READ_TOOL, SEARCH_TOOL};
+use crate::physician_sources::citations::{self, Finished};
+use crate::physician_sources::{ChartRequest, ChartScope, Labels, READ_TOOL, SEARCH_TOOL};
 use entities::conversation;
 
 /// Authenticated product scope, supplied by the server, never the command body.
@@ -126,10 +127,20 @@ pub enum MessageRole {
     Assistant {
         /// Stable identity of the published assistant message.
         id: String,
-        /// A retained terminal answer that did not complete the accepted work.
-        #[serde(default, skip_serializing_if = "std::ops::Not::not")]
-        partial: bool,
+        /// Whether a finish completed the work, or a limit kept the text.
+        kind: AssistantKind,
     },
+}
+
+/// How one of Coda's messages was saved. Only a finished answer holds
+/// citations and a Basis.
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[serde(rename_all = "snake_case")]
+pub enum AssistantKind {
+    /// Text a limit kept from work that did not finish.
+    Kept,
+    /// An accepted finish: the message text is its answer.
+    Finished(Finished),
 }
 
 impl MessageRole {
@@ -469,12 +480,19 @@ impl Conversation {
             .iter()
             .enumerate()
             .filter_map(|(place, message)| match &message.role {
-                MessageRole::Assistant { id, partial: false } => Some(Response {
+                MessageRole::Assistant {
+                    id,
+                    kind: AssistantKind::Finished(_),
+                } => Some(Response {
                     place,
                     id: ResponseId(id.clone()),
                     text: &message.text,
                 }),
-                MessageRole::Assistant { partial: true, .. } | MessageRole::User { .. } => None,
+                MessageRole::Assistant {
+                    kind: AssistantKind::Kept,
+                    ..
+                }
+                | MessageRole::User { .. } => None,
             })
     }
 
@@ -1384,7 +1402,7 @@ impl Store {
         {
             return Err(error("partial result differs from recorded terminal turn").into());
         }
-        let answer = turn.text();
+        let answer = citations::without_labels(&turn.text());
         let attempt = state.attempts.last_mut().unwrap();
         attempt.status = AttemptStatus::Held;
         state.end_run(RunOutcome::Held {
@@ -1395,7 +1413,7 @@ impl Store {
             state.messages.push(Message {
                 role: MessageRole::Assistant {
                     id: reply_id(&claim.attempt),
-                    partial: true,
+                    kind: AssistantKind::Kept,
                 },
                 text: answer,
             });
@@ -1403,13 +1421,15 @@ impl Store {
         Ok(Self::save(tx, &claim.scope, &state).await?)
     }
 
-    /// Locks the real auth owner on this same transaction through reply publication.
+    /// Decides the chat's finish under the real auth owner's publication lock
+    /// on this same transaction, and publishes it when it is accepted. A
+    /// refused finish saves nothing; the transaction drops with its lock.
     pub async fn commit_authorized(
         &self,
         claim: &Claim,
         turn: &Turn,
         authority: &mut dyn Authority,
-    ) -> Result<(), engine::ProductError> {
+    ) -> Result<Finish, engine::ProductError> {
         let (tx, mut state, _) = self.locked(&claim.scope).await?;
         Self::conversation_events(&tx, &claim.scope, &mut state).await?;
         authority
@@ -1447,7 +1467,17 @@ impl Store {
         if terminal != turn {
             return Err(error("completion differs from recorded terminal turn").into());
         }
-        let answer = terminal_answer(terminal)?;
+        let records = records::ordered(
+            &tx,
+            &claim.scope,
+            records::Owner::Chat,
+            &state.work_attempt_ids(),
+        )
+        .await?;
+        let (text, finished) = match citations::decide(turn, &records, &state.message_sources())? {
+            citations::Decision::Refuse(refusal) => return Ok(Finish::Refused(refusal)),
+            citations::Decision::Save { text, finished } => (text, finished),
+        };
         let attempt = state.attempts.last_mut().unwrap();
         attempt.status = AttemptStatus::Completed;
         state.end_run(RunOutcome::Completed)?;
@@ -1455,11 +1485,12 @@ impl Store {
         state.messages.push(Message {
             role: MessageRole::Assistant {
                 id: reply_id(&claim.attempt),
-                partial: false,
+                kind: AssistantKind::Finished(finished),
             },
-            text: answer,
+            text,
         });
-        Ok(Self::save(tx, &claim.scope, &state).await?)
+        Self::save(tx, &claim.scope, &state).await?;
+        Ok(Finish::Committed)
     }
 
     /// Hosted Try again. Resumes only the named work while it is failed or held
@@ -1751,25 +1782,6 @@ impl Store {
     }
 }
 
-/// The physician-visible answer of a completed attempt: the assistant text of
-/// the exact retained terminal provider turn, in order. The publication owner
-/// validates its provenance and current candidate, including a successor that
-/// recovers the same paid result. A terminal answer has no calls or blank text.
-fn terminal_answer(turn: &Turn) -> Result<String, DbErr> {
-    let mut answer = String::new();
-    for item in &turn.items {
-        match item {
-            Item::Call(_) => return Err(error("terminal turn requested a tool")),
-            Item::Message { role, text } if role == "assistant" => answer.push_str(text),
-            _ => {}
-        }
-    }
-    if answer.trim().is_empty() {
-        return Err(error("terminal turn has no authored answer"));
-    }
-    Ok(answer)
-}
-
 /// Product access is checked on every dispatch and again before publication.
 #[async_trait]
 pub trait Authority: Send {
@@ -1872,10 +1884,16 @@ impl Message {
             text: self.text.clone(),
         }
     }
-    /// A retained terminal answer that did not complete the accepted work.
-    /// Physician input is never partial.
+    /// Text a limit kept from work that did not finish. Physician input is
+    /// never partial.
     pub fn partial(&self) -> bool {
-        matches!(self.role, MessageRole::Assistant { partial: true, .. })
+        matches!(
+            self.role,
+            MessageRole::Assistant {
+                kind: AssistantKind::Kept,
+                ..
+            }
+        )
     }
     /// Model-visible history metadata: the partial flag, and authorship as the
     /// role with its identity. Authorship never repeats the partial flag.
@@ -1923,6 +1941,10 @@ impl<A: Authority, S: ShownStepSaved> Product for PhysicianHost<A, S> {
 
     fn read_only(&self, name: &str) -> bool {
         crate::physician_chat::read_only(name)
+    }
+
+    fn terminal(&self, turn: &Turn) -> bool {
+        citations::requests_finish(turn)
     }
 
     fn read_result(&mut self, id: &str) -> harness::engine::recipe::ToolFuture<Option<String>> {
@@ -2025,8 +2047,15 @@ impl<A: Authority, S: ShownStepSaved> Product for PhysicianHost<A, S> {
                 };
                 let workspace = &claim.scope.workspace;
                 let observation = store.chart_observation(workspace, &chart).await?;
+                // A chat's reads carry the work's labels.
+                let labels = Labels::of_work(&records);
                 return chart
-                    .run(workspace, observation.version, &observation.sources)
+                    .run_labelled(
+                        workspace,
+                        observation.version,
+                        &observation.sources,
+                        &labels,
+                    )
                     .map_err(Into::into);
             }
             let skills = store.frozen_skills(&claim.scope, &state.skills).await?;
@@ -2037,8 +2066,7 @@ impl<A: Authority, S: ShownStepSaved> Product for PhysicianHost<A, S> {
         self.assert_current().await?;
         self.store
             .commit_authorized(&self.claim, turn, &mut self.authority)
-            .await?;
-        Ok(Finish::Committed)
+            .await
     }
 
     async fn finish_partial(

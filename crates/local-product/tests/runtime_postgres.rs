@@ -7,9 +7,13 @@ use local_product::runtime::{
 };
 use serde_json::json;
 
+#[path = "support/finish.rs"]
+mod finish;
+
+/// A turn that ends the work: `text` as narration and as the finished answer.
 fn turn(text: &str) -> engine::Turn {
     engine::Turn {
-        items: vec![engine::Item::assistant(text)],
+        items: finish::answered(text),
         receipt: json!({"controlled":true}),
         usage: Default::default(),
     }
@@ -79,14 +83,7 @@ async fn database_crash_restart_retains_acknowledged_command_and_event() {
     accept(&s, &scope, &command).await.unwrap();
     let claim = s.claim(&scope, 60).await.unwrap().unwrap();
     let kinds = [
-        engine::EventKind::ProviderReturned(engine::Turn {
-            usage: Default::default(),
-            items: vec![engine::Item::Message {
-                role: "assistant".into(),
-                text: "durable candidate".into(),
-            }],
-            receipt: json!({"controlled": true}),
-        }),
+        engine::EventKind::ProviderReturned(turn("durable candidate")),
         engine::EventKind::Candidate {
             text: "durable candidate".into(),
         },
@@ -192,14 +189,7 @@ impl engine::recipe::Provider for Provider {
         _: &mut dyn Observer,
     ) -> Result<engine::Turn, engine::Cause> {
         assert!(request.items.iter().any(|i| matches!(i, engine::Item::Message { role, text } if role == "user" && text.contains("Exact input"))));
-        Ok(engine::Turn {
-            usage: Default::default(),
-            items: vec![engine::Item::Message {
-                role: "assistant".into(),
-                text: "Controlled response".into(),
-            }],
-            receipt: json!({"controlled": true}),
-        })
+        Ok(turn("Controlled response"))
     }
 }
 struct MustNotDispatch;
@@ -1594,9 +1584,7 @@ impl engine::recipe::Provider for RearmedAcrossClaims {
             )],
             3 => {
                 assert!(!request.tools.is_empty());
-                vec![engine::Item::assistant(
-                    "Retained partial before explicit retry.",
-                )]
+                finish::answered("Retained partial before explicit retry.")
             }
             4 => {
                 assert!(
@@ -1630,9 +1618,7 @@ impl engine::recipe::Provider for RearmedAcrossClaims {
                 if step == 5 {
                     return Err("synthetic worker interruption in the fresh window".into());
                 }
-                vec![engine::Item::assistant(
-                    "Complete answer after fresh window and second claim.",
-                )]
+                finish::answered("Complete answer after fresh window and second claim.")
             }
             _ => panic!("unexpected provider dispatch"),
         };
@@ -2183,12 +2169,33 @@ async fn accept_with(
 #[path = "../../harness/tests/support/earlier_notes.rs"]
 mod earlier_notes;
 
+/// Hands in a shared fixture's plain-text answer through the chat's finish.
+struct Finishing<P>(P);
+impl<P: engine::recipe::Provider + Send> engine::recipe::Provider for Finishing<P> {
+    async fn exchange(
+        &mut self,
+        request: &Request,
+        cancel: &engine::Cancellation,
+        limits: &engine::RunLimits,
+        observations: &mut dyn Observer,
+    ) -> Result<engine::Turn, engine::Cause> {
+        let mut turn = self
+            .0
+            .exchange(request, cancel, limits, observations)
+            .await?;
+        if turn.calls().next().is_none() {
+            turn.items = finish::answered(&turn.text());
+        }
+        Ok(turn)
+    }
+}
+
 #[tokio::test]
 #[ignore = "requires explicit local Postgres"]
 async fn a_starting_fresh_window_can_open_an_earlier_runs_note() {
     let store = store().await;
     let scope = scope();
-    let mut provider = earlier_notes::AcrossRuns::default();
+    let mut provider = Finishing(earlier_notes::AcrossRuns::default());
     for (key, text, window) in [
         ("earlier", "x".repeat(80), 272_000),
         ("next", "Continue the work".into(), 32_000),
@@ -2219,7 +2226,7 @@ async fn a_starting_fresh_window_can_open_an_earlier_runs_note() {
         .unwrap();
     }
     let saved = store.conversation(&scope).await.unwrap();
-    assert_eq!(provider.calls, 4);
+    assert_eq!(provider.0.calls, 4);
     assert!(
         saved
             .attempts

@@ -1078,7 +1078,7 @@ pub async fn answered_chat(
     responses
 }
 
-/// Answers every request with the same text.
+/// Answers every request with the same text, through the chat's finish.
 struct FixedAnswer<'a>(&'a str);
 
 impl local_product::runtime::engine::recipe::Provider for FixedAnswer<'_> {
@@ -1089,8 +1089,20 @@ impl local_product::runtime::engine::recipe::Provider for FixedAnswer<'_> {
         _: &local_product::runtime::engine::RunLimits,
         _: &mut dyn local_product::runtime::engine::recipe::Observer,
     ) -> Result<local_product::runtime::engine::Turn, local_product::runtime::engine::Cause> {
+        let finish = local_product::runtime::engine::Invocation {
+            id: "finish".into(),
+            name: local_product::physician_sources::citations::FINISH_TOOL.into(),
+            arguments: serde_json::json!({
+                "answer": self.0,
+                "quotes": [],
+                "descriptions": [],
+                "basis": "Fixture basis.",
+                "cites_none": true
+            })
+            .to_string(),
+        };
         Ok(local_product::runtime::engine::Turn {
-            items: vec![local_product::runtime::engine::Item::assistant(self.0)],
+            items: vec![local_product::runtime::engine::Item::Call(finish)],
             receipt: Value::Null,
             usage: Default::default(),
         })

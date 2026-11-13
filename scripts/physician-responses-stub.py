@@ -61,7 +61,27 @@ def output_for(body, rounds, reply):
         if references:
             return [call(identity, "read_patient_sources", {"references": references[:8], "max_result_bytes": 65536})]
         return [call(identity, "finish_reply_revision", {"text": "Noted.", "review_basis": "Synthetic provider response."})]
+    # A chat ends through finish_answer, with the answer also written as text.
+    # On a run's final request the harness keeps only the text.
+    if any(tool.get("name") == "finish_answer" for tool in body["tools"]):
+        arguments = finish_arguments(reply)
+        return [message(arguments["answer"]),
+                call(f"fixed-finish-{len(body['input'])}", "finish_answer", arguments)]
     return [message(reply)]
+
+
+def finish_arguments(reply):
+    """A chat ends through finish_answer. A reply that is a JSON object is the
+    finish's arguments as written, so a script can cite what its rounds read.
+    Any other reply is an answer that rests on no source."""
+    try:
+        scripted = json.loads(reply)
+    except ValueError:
+        scripted = None
+    if isinstance(scripted, dict):
+        return scripted
+    return {"answer": reply, "quotes": [], "descriptions": [],
+            "basis": "Synthetic provider response.", "cites_none": True}
 
 
 def encode_stream(response):

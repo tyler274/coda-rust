@@ -1850,3 +1850,70 @@ async fn hosting_cancels_a_chat_whose_claim_has_been_replaced() {
         started.elapsed().as_secs()
     );
 }
+
+/// The scripted provider hands in a finish that cites what the worker read:
+/// the saved answer has no label, and its mark names the version and the
+/// quoted bytes.
+#[tokio::test]
+async fn a_scripted_finish_cites_the_record_the_worker_read() {
+    let _guard = lock().lock().await;
+    let content = r#"{"code":"2160-0","value":0.9,"unit":"mg/dL"}"#;
+    let revision = local_product::sha256_hex(content.as_bytes());
+    let rounds = serde_json::json!([[
+        {"name":"read_patient_sources","arguments":{"references":[{"candidate_id":"Observation/result","revision":revision,"cursor":null}],"max_result_bytes":4096}}
+    ]])
+    .to_string();
+    let finish = serde_json::json!({
+        "answer": "Creatinine was 0.9 mg/dL [S1].",
+        "quotes": [{"label": "S1", "quote": "\"value\":0.9"}],
+        "descriptions": [],
+        "basis": "The creatinine result [S1].",
+        "cites_none": false
+    })
+    .to_string();
+    let Some(mut running) = running_with("finish", None, None, &rounds, &finish, &[]).await else {
+        return;
+    };
+    // The source is saved before any attempt can read it.
+    running.worker.kill_now();
+    let (scope, _) = accept_turn(&running.database.url, &running.store).await;
+    running
+        .store
+        .record_source(&local_product::physician_sources::SourceRevision {
+            workspace: scope.workspace.clone(),
+            source_id: "synthetic-charts".into(),
+            candidate_id: "Observation/result".into(),
+            revision: revision.clone(),
+            record_type: "Observation".into(),
+            dates: vec![],
+            content: content.into(),
+            sha256: revision.clone(),
+            readable_parts: vec![],
+            provenance: serde_json::json!({"native_record":"Observation/result"}),
+            envelope: None,
+        })
+        .await
+        .unwrap();
+    running.worker.restart();
+    let port = running.port();
+    support::wait_ready(&mut running.worker, port).await;
+    let state = wait_assistant(&running.store, &scope, &running.worker).await;
+    assert_eq!(state.status, WorkStatus::Completed);
+    assert_eq!(assistant_texts(&state), ["Creatinine was 0.9 mg/dL."]);
+    let saved = serde_json::to_value(&state.messages).unwrap();
+    let finished = &saved[1]["kind"]["finished"];
+    let source = serde_json::json!({"candidate_id": "Observation/result", "revision": revision});
+    let value = content.find(r#""value":0.9"#).unwrap();
+    assert_eq!(
+        finished["marks"],
+        serde_json::json!([{"at": 24, "source": source,
+                            "place": {"passage": {"spans": [{"part": 0, "start": value, "end": value + 11}]}}}])
+    );
+    assert_eq!(
+        finished["basis"],
+        serde_json::json!({
+            "text": "The creatinine result.",
+            "marks": [{"at": 21, "source": source, "place": null}]
+        })
+    );
+}

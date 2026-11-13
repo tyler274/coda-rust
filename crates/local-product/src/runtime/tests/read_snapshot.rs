@@ -42,7 +42,7 @@ async fn successive_chat_work_reuses_frozen_recipe_and_package() {
                 engine::Item::MaterializedResult { call_id, output }
                 if call_id == "guidance" && output.as_str().contains(self.guidance.as_str()))));
             Ok(Turn {
-                items: vec![engine::Item::assistant("Reviewed the available guidance.")],
+                items: super::answered("Reviewed the available guidance."),
                 usage: Default::default(),
                 receipt: serde_json::json!({}),
             })

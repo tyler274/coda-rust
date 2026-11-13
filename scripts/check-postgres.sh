@@ -29,6 +29,7 @@ shard_1_targets=(--lib --test migrations_postgres --test postgres
   --test front_door_postgres --test identity --test luna_journal
   --test database_foundation --test pg_moments
   --test runtime_postgres --test runtime_publication --test runtime_recovery --test runtime_quota
+  --test chat_finish
   --test redis --test fanout --test worker --test try_again --test pool_budget
   --bin physician-worker)
 shard_2_targets=(--test stop --test chat_draft --test feedback --test reply_revision
@@ -62,6 +63,7 @@ shard_1() {
   pg_test --test runtime_publication -- --ignored --test-threads=1
   pg_test --test runtime_recovery -- --ignored --test-threads=1
   pg_test --test runtime_quota -- --ignored --test-threads=1
+  pg_test --test chat_finish -- --ignored --test-threads=1
   # The worker's source boundary: a developer plan refuses non-synthetic sources.
   pg_test --bin physician-worker -- --ignored --test-threads=1
   # Physician scale proofs. Valkey comes from the nix dev shell; each test

@@ -126,6 +126,14 @@ impl Package {
     pub fn catalog_instructions(&self) -> String {
         catalog_instructions(&self.skills)
     }
+    /// The section that loads `name` at the start of a job: the line
+    /// `Loaded skill: <name>`, then the whole `SKILL.md`, the text
+    /// `skill_view` returns for that name with no `file_path`. `None` when this
+    /// package has no skill of that name.
+    pub fn loaded_skill_section(&self, name: &str) -> Option<String> {
+        named_skill(&self.skills, name)
+            .map(|skill| format!("Loaded skill: {}\n{}", skill.name, skill.content))
+    }
     /// Open only a name or path present in this admitted package.
     pub fn execute_skill_view(&self, arguments: &Value) -> Result<SkillView, SkillArgumentError> {
         execute_skill_view(&self.skills, arguments)

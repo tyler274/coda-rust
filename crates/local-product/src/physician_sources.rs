@@ -8,7 +8,11 @@ pub mod adapter;
 mod chart;
 /// Shared domain types for chart buckets, filed envelopes, and pull outcomes.
 pub mod types;
-pub use chart::{ChartInputError, ChartRequest, ChartScope, SEARCH_TOOL, read_tool, search_tool};
+pub use chart::{
+    ChartInputError, ChartRequest, ChartScope, Labels, SEARCH_TOOL, read_tool, search_tool,
+};
+/// The chat's typed finish and its citations.
+pub mod citations;
 pub use types::{
     Bucket, ChartPullReceipt, DateRole, FailedPart, FiledDate, PullOutcome, ReconnectReceipt,
     RecordCode, RecordEnvelope, RecordVersion, SourceAdapterError, SourceCommandKey,

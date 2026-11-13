@@ -4,6 +4,8 @@ use physician_auth::{AuthStore, Membership, PhysicianIdentity, PostgresAuthStore
 use tokio::sync::oneshot;
 #[path = "support/authority.rs"]
 mod authority;
+#[path = "support/finish.rs"]
+mod finish;
 use authority::Locks;
 
 struct Paused {
@@ -43,19 +45,12 @@ impl Authority for Paused {
     }
 }
 
-/// The recorded call-free terminal turn and its candidate, as the engine
-/// acknowledges them before publication.
-fn terminal(text: &str) -> Vec<engine::EventKind> {
+/// The recorded finish turn and its candidate, as the engine acknowledges
+/// them before publication.
+fn terminal(turn: &engine::Turn) -> Vec<engine::EventKind> {
     vec![
-        engine::EventKind::ProviderReturned(engine::Turn {
-            usage: Default::default(),
-            items: vec![engine::Item::Message {
-                role: "assistant".into(),
-                text: text.into(),
-            }],
-            receipt: serde_json::json!({"controlled": true}),
-        }),
-        engine::EventKind::Candidate { text: text.into() },
+        engine::EventKind::ProviderReturned(turn.clone()),
+        engine::EventKind::Candidate { text: turn.text() },
     ]
 }
 
@@ -167,11 +162,11 @@ async fn two_rounds(
     (claim, candidate)
 }
 
-/// Pre-tool narration stays in the attempt's events. The physician reads only
-/// the terminal turn, every text part in order.
+/// Narration stays in the attempt's events. The physician reads only the
+/// answer handed in through the finish.
 #[tokio::test]
 #[ignore = "requires local Postgres"]
-async fn only_the_terminal_turn_is_published_with_its_parts_in_order() {
+async fn only_the_finished_answer_is_published() {
     let url = std::env::var("PHYSICIAN_RUNTIME_TEST_DATABASE_URL").unwrap();
     let store = Store::connect(&url).await.unwrap();
     store.migrate().await.unwrap();
@@ -179,31 +174,23 @@ async fn only_the_terminal_turn_is_published_with_its_parts_in_order() {
         .await
         .unwrap();
     let scope = accepted(&store, &auth).await;
-    let (claim, candidate) = two_rounds(
-        &store,
-        &scope,
-        vec![
-            engine::Item::Message {
-                role: "assistant".into(),
-                text: "First part. ".into(),
-            },
-            engine::Item::Opaque(serde_json::json!({"type": "reasoning"})),
-            engine::Item::Message {
-                role: "assistant".into(),
-                text: "Second part.".into(),
-            },
-        ],
-    )
-    .await;
-    assert_eq!(candidate.text(), "First part. Second part.");
-    store
-        .commit_authorized(&claim, &candidate, &mut Locks)
-        .await
-        .unwrap();
+    let mut items = vec![
+        engine::Item::assistant("Narration before the finish. "),
+        engine::Item::Opaque(serde_json::json!({"type": "reasoning"})),
+    ];
+    items.push(finish::answered("The answer.").remove(1));
+    let (claim, candidate) = two_rounds(&store, &scope, items).await;
+    assert!(matches!(
+        store
+            .commit_authorized(&claim, &candidate, &mut Locks)
+            .await
+            .unwrap(),
+        engine::recipe::Finish::Committed
+    ));
     let state = store.conversation(&scope).await.unwrap();
     assert_eq!(state.status, WorkStatus::Completed);
     assert_eq!(state.messages.len(), 2);
-    assert_eq!(state.messages[1].text, "First part. Second part.");
+    assert_eq!(state.messages[1].text, "The answer.");
     // The full exchange is retained, narration included.
     let events = &state.attempts.last().unwrap().events;
     assert_eq!(events.len(), 5);
@@ -214,17 +201,24 @@ async fn only_the_terminal_turn_is_published_with_its_parts_in_order() {
     ));
 }
 
-/// A blank terminal turn never publishes earlier narration or history; the
-/// attempt stays open for its owner to fail or retry.
+/// A blank turn, plain text, or a finish beside another call is refused: it
+/// publishes no narration or history, and the attempt stays open so the
+/// model can finish.
 #[tokio::test]
 #[ignore = "requires local Postgres"]
-async fn a_blank_or_tool_calling_terminal_turn_publishes_nothing() {
+async fn a_terminal_turn_without_a_lone_finish_is_refused_and_publishes_nothing() {
     let url = std::env::var("PHYSICIAN_RUNTIME_TEST_DATABASE_URL").unwrap();
     let store = Store::connect(&url).await.unwrap();
     store.migrate().await.unwrap();
     let auth = PostgresAuthStore::connect_with_migrations(&url)
         .await
         .unwrap();
+    let mut beside_a_call = finish::answered("Answer");
+    beside_a_call.push(engine::Item::Call(engine::Invocation {
+        id: "unexecuted-call".into(),
+        name: "skill_view".into(),
+        arguments: "{}".into(),
+    }));
     for terminal in [
         vec![],
         vec![engine::Item::Message {
@@ -234,23 +228,21 @@ async fn a_blank_or_tool_calling_terminal_turn_publishes_nothing() {
         vec![engine::Item::Opaque(
             serde_json::json!({"type": "reasoning"}),
         )],
-        vec![
-            engine::Item::assistant("Answer"),
-            engine::Item::Call(engine::Invocation {
-                id: "unexecuted-call".into(),
-                name: "skill_view".into(),
-                arguments: "{}".into(),
-            }),
-        ],
+        vec![engine::Item::Message {
+            role: "assistant".into(),
+            text: "A plain answer.".into(),
+        }],
+        beside_a_call,
     ] {
         let scope = accepted(&store, &auth).await;
         let (claim, candidate) = two_rounds(&store, &scope, terminal).await;
-        assert!(
+        assert!(matches!(
             store
                 .commit_authorized(&claim, &candidate, &mut Locks)
                 .await
-                .is_err()
-        );
+                .unwrap(),
+            engine::recipe::Finish::Refused(_)
+        ));
         let state = store.conversation(&scope).await.unwrap();
         assert_eq!(state.messages.len(), 1, "earlier narration was published");
         assert_ne!(state.status, WorkStatus::Completed);
@@ -312,11 +304,11 @@ async fn publication_wins_revocation_or_expires_while_holding_authority() {
             .unwrap();
         let claim = store.claim(&scope, 60).await.unwrap().unwrap();
         let candidate = engine::Turn {
-            items: vec![engine::Item::assistant("controlled")],
+            items: finish::answered("controlled"),
             receipt: serde_json::json!({"controlled":true}),
             usage: Default::default(),
         };
-        for (sequence, kind) in (1..).zip(terminal(&candidate.text())) {
+        for (sequence, kind) in (1..).zip(terminal(&candidate)) {
             store
                 .persist(
                     &claim,

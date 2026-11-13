@@ -2,7 +2,7 @@ use super::super::*;
 use super::{OpenAuthority, accept, delivery_input, delivery_scope};
 use crate::runtime::delivery::Backoff;
 
-/// Answers every request with the same text.
+/// Answers every request with the same text, through the finish.
 pub(super) struct Answer(pub(super) &'static str);
 
 impl Provider for Answer {
@@ -14,7 +14,7 @@ impl Provider for Answer {
         _: &mut dyn engine::recipe::Observer,
     ) -> Result<Turn, engine::Cause> {
         Ok(Turn {
-            items: vec![Item::assistant(self.0)],
+            items: super::answered(self.0),
             receipt: Value::Null,
             usage: Default::default(),
         })
