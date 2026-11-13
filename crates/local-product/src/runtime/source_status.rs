@@ -136,8 +136,23 @@ fn decode_reconnect_state(value: Value) -> Result<ReconnectCommandState, DbErr> 
     serde_json::from_value(value).map_err(conversion_error("Json", "ReconnectCommandState"))
 }
 
-/// Locks the `reconnect_command` row in `tx`, verifies that `fence.lease_owner` still holds active
-/// non-completed ownership, and refreshes `lease_until` using the database clock.
+fn validate_reconnect_owner(
+    row: &reconnect_command::Model,
+    fence: ReconnectCommandFence<'_>,
+) -> Result<(), SourceStatusError> {
+    let state = decode_reconnect_state(row.state.clone())?;
+    if matches!(state, ReconnectCommandState::Completed { .. })
+        || row.lease_owner.as_deref() != Some(fence.lease_owner)
+    {
+        return Err(SourceStatusError::CommandLeaseLost {
+            practice_id: fence.practice_id.to_owned(),
+            physician_id: fence.physician_id.to_owned(),
+            idempotency_key: fence.idempotency_key.to_owned(),
+        });
+    }
+    Ok(())
+}
+
 async fn verify_reconnect_fence_tx(
     tx: &sea_orm::DatabaseTransaction,
     fence: Option<ReconnectCommandFence<'_>>,
@@ -160,12 +175,7 @@ async fn verify_reconnect_fence_tx(
     .await?
     .ok_or_else(lost)?;
 
-    let existing = decode_reconnect_state(row.state.clone())?;
-    if matches!(existing, ReconnectCommandState::Completed { .. })
-        || row.lease_owner.as_deref() != Some(fence.lease_owner)
-    {
-        return Err(lost());
-    }
+    validate_reconnect_owner(&row, fence)?;
 
     let db_now = now(tx).await?;
     reconnect_command::ActiveModel {
@@ -1272,12 +1282,7 @@ impl Store {
         .await?
         .ok_or_else(lost)?;
 
-        let existing = decode_reconnect_state(row.state.clone())?;
-        if matches!(existing, ReconnectCommandState::Completed { .. })
-            || row.lease_owner.as_deref() != Some(fence.lease_owner)
-        {
-            return Err(lost());
-        }
+        validate_reconnect_owner(&row, fence)?;
 
         upsert_practice_source_access_tx(
             &tx,
@@ -1332,12 +1337,7 @@ impl Store {
         .await?
         .ok_or_else(lost)?;
 
-        let existing = decode_reconnect_state(row.state.clone())?;
-        if matches!(existing, ReconnectCommandState::Completed { .. })
-            || row.lease_owner.as_deref() != Some(fence.lease_owner)
-        {
-            return Err(lost());
-        }
+        validate_reconnect_owner(&row, fence)?;
 
         let db_now = now(&tx).await?;
         let state_json = serde_json::to_value(&completed)
