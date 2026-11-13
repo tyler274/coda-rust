@@ -17,7 +17,8 @@ pub enum Role {
 }
 
 impl Role {
-    /// Roles that hear every `@#channel` mention, subscribed or not.
+    /// Roles that see every channel and hear every `@#channel` mention,
+    /// subscribed or not.
     fn hears_all_channels(self) -> bool {
         !matches!(self, Self::Worker)
     }
@@ -359,8 +360,9 @@ impl Roster {
         })
     }
 
-    /// Whether the message is in this member's view: `main`, a subscribed
-    /// channel, or a post that mentions it.
+    /// Whether the message is in this member's view: everything for the
+    /// coordinator and observers; otherwise `main`, a subscribed channel, or
+    /// a post that mentions it.
     pub fn sees(
         &self,
         name: &MemberName,
@@ -368,7 +370,8 @@ impl Roster {
         message: &Message,
         mentions: &[Mention],
     ) -> bool {
-        message.channel.is_main()
+        member.role.hears_all_channels()
+            || message.channel.is_main()
             || member.channels.contains(&message.channel)
             || self.is_mentioned(name, member, mentions)
     }

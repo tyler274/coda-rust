@@ -426,6 +426,45 @@ fn channel_changes_are_board_rows_every_process_replays() {
     assert!(refused.contains("invalid arguments"), "{refused}");
 }
 
+#[test]
+fn the_coordinator_sees_every_channel_and_workers_see_their_own() {
+    let dir = tempfile::tempdir().expect("tempdir");
+    let mut lead = Client::start(dir.path(), "lead", true);
+    lead.ok(
+        "swarm",
+        json!({ "action": "channel", "op": "create", "channel": "ops", "topic": "deploys" }),
+    );
+    lead.ok(
+        "swarm",
+        json!({ "action": "add", "name": "scout", "brief": "deploy", "channels": ["ops"] }),
+    );
+    lead.ok(
+        "swarm",
+        json!({ "action": "add", "name": "peer", "brief": "watch" }),
+    );
+    let head = lead.ok("read_board", json!({}))["head"].clone();
+    let wait = lead.send(
+        "tools/call",
+        json!({ "name": "swarm_wait", "arguments": { "since": head, "mentions_only": false, "timeout": 30 } }),
+    );
+
+    let mut scout = Client::start(dir.path(), "scout", false);
+    scout.ok("post_message", json!({ "text": "ops-only progress" }));
+    let woke = lead.receive(wait)["result"]["structuredContent"].clone();
+    assert_eq!(woke["woken"], true, "{woke}");
+    assert_eq!(woke["messages"][0]["text"], "ops-only progress");
+
+    let mut peer = Client::start(dir.path(), "peer", false);
+    let read = peer.ok("read_board", json!({}));
+    let texts: Vec<&str> = read["messages"]
+        .as_array()
+        .expect("messages")
+        .iter()
+        .map(|m| m["text"].as_str().expect("text"))
+        .collect();
+    assert!(!texts.contains(&"ops-only progress"), "{texts:?}");
+}
+
 /// A worker turn: posts through its own `coda-swarm mcp`, then hangs with a
 /// background child whose pid it writes to `$dir/<member>.child`.
 const STUB_WORKER: &str = r#"#!/bin/sh
