@@ -1810,17 +1810,16 @@ pub struct PhysicianHost<A, S = ()> {
 /// it while the run still works. The host tells its runner because only the
 /// host sees each event as it is saved: the shared loop hands events to
 /// [`Product::persist`], and the runner never sees them.
-#[async_trait]
 pub trait ShownStepSaved: Send {
     /// A shown step started or returned, and its event is saved. It returns
-    /// nothing, so hearing of a step never fails the run.
-    async fn shown_step_saved(&mut self, scope: &Scope);
+    /// nothing and cannot wait, so hearing of a step never fails or delays
+    /// the run; a listener that must do slow work hands it off.
+    fn shown_step_saved(&mut self, scope: &Scope);
 }
 
 /// A host with no page to tell.
-#[async_trait]
 impl ShownStepSaved for () {
-    async fn shown_step_saved(&mut self, _scope: &Scope) {}
+    fn shown_step_saved(&mut self, _scope: &Scope) {}
 }
 
 /// Which saved events are shown steps, and who hears of them. A call's
@@ -1951,8 +1950,7 @@ impl<A: Authority, S: ShownStepSaved> Product for PhysicianHost<A, S> {
         if shown {
             self.shown_steps
                 .listener
-                .shown_step_saved(&self.claim.scope)
-                .await;
+                .shown_step_saved(&self.claim.scope);
         }
         Ok(())
     }

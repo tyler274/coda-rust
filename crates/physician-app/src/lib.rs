@@ -4658,7 +4658,7 @@ mod conversation_line_tests {
                     id: "key-1".into(),
                     text: "Hello".into(),
                 }],
-                steps: vec![],
+                steps: physician_wire::ExchangeSteps::Read(vec![]),
                 kept: kept.iter().map(|text| (*text).to_owned()).collect(),
                 answer,
             }],

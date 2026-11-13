@@ -268,7 +268,7 @@ mod tests {
                         id: "k".into(),
                         text: "Hi".into(),
                     }],
-                    steps: vec![],
+                    steps: physician_wire::ExchangeSteps::Read(vec![]),
                     kept: vec![],
                     answer,
                 }],

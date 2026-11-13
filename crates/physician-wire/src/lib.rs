@@ -668,14 +668,27 @@ pub struct Exchange {
     pub work_item_id: String,
     /// Every physician message that started or steered the work, in order.
     pub messages: Vec<PhysicianMessage>,
-    /// What Coda did for the answer, in the order it started each step.
-    pub steps: Vec<Step>,
+    /// What Coda did for the answer, or that its saved record could not be read.
+    pub steps: ExchangeSteps,
     /// What Coda had written each time a limit cut this answer off, in the
     /// order it was saved. Try again continues after it, so it stays with
     /// the exchange whatever the answer's state.
     pub kept: Vec<String>,
     /// How the answer stands.
     pub answer: AnswerState,
+}
+
+/// The steps of one exchange, or that they could not be read. Like
+/// [`SnapshotFeedback`], an unreadable part is marked, never shown as empty
+/// or as a partial list, and the rest of the exchange still comes.
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(tag = "state", content = "steps", rename_all = "snake_case")]
+pub enum ExchangeSteps {
+    /// Each step, in the order Coda started it.
+    Read(Vec<Step>),
+    /// A saved call of this work could not be read as a step, so none are
+    /// shown and none can be told apart from "took no steps".
+    Unavailable,
 }
 
 /// One message the physician sent.
@@ -1051,7 +1064,7 @@ mod tests {
             r#"{"snapshot": {"feedback": "loaded", "transcript": [{
                 "work_item_id": "w1",
                 "messages": [{"id": "k1", "text": "Hello"}, {"id": "k2", "text": "And sodium?"}],
-                "steps": [
+                "steps": {"state": "read", "steps": [
                     {"did": "searched_chart", "query": "sodium", "record_type": null,
                      "state": {"state": "returned", "result": {"records": 2, "more": false}}},
                     {"did": "read_records", "requested": 2, "state": {"state": "returned", "result": [
@@ -1059,7 +1072,7 @@ mod tests {
                          "dates": [{"name": "effective", "value": "2026-10-01"}]},
                         {"outcome": "unavailable"}]}},
                     {"did": "read_conversation", "state": {"state": "stopped"}}
-                ],
+                ]},
                 "kept": ["Sodium was 139"],
                 "answer": {"state": "stopped",
                            "resume": {"work_item_id": "w1", "expected_run_id": "r1"}}
@@ -1078,8 +1091,11 @@ mod tests {
                 }),
             }
         );
+        let ExchangeSteps::Read(steps) = &exchange.steps else {
+            panic!("the steps were read: {:?}", exchange.steps);
+        };
         assert_eq!(
-            exchange.steps[2],
+            steps[2],
             Step::ReadConversation {
                 state: StepState::Stopped
             }
@@ -1088,6 +1104,21 @@ mod tests {
         assert_eq!(
             serde_json::from_value::<ChatSnapshotResponse>(written).unwrap(),
             page
+        );
+        let mut unreadable = page.clone();
+        unreadable.snapshot.transcript[0].steps = ExchangeSteps::Unavailable;
+        let written = serde_json::to_value(&unreadable).unwrap();
+        assert_eq!(
+            written["snapshot"]["transcript"][0]["steps"],
+            serde_json::json!({"state": "unavailable"})
+        );
+        assert_eq!(
+            serde_json::from_value::<ChatSnapshotResponse>(written).unwrap(),
+            unreadable
+        );
+        assert!(
+            serde_json::from_str::<ExchangeSteps>(r#"[]"#).is_err(),
+            "a bare step list is not read as readable steps"
         );
         assert!(
             serde_json::from_str::<ChatSnapshotResponse>(
@@ -1102,7 +1133,7 @@ mod tests {
     fn reads_a_snapshot_whose_feedback_was_unavailable() {
         let page: ChatSnapshotResponse = serde_json::from_str(
             r#"{"snapshot": {"feedback": "unavailable", "transcript": [{
-                "work_item_id": "w1", "messages": [], "steps": [], "kept": [],
+                "work_item_id": "w1", "messages": [], "steps": {"state": "read", "steps": []}, "kept": [],
                 "answer": {"state": "finished", "response_id": "a1:reply", "attempt_id": "a1",
                            "text": "Sodium is stable.", "feedback": null}
             }]}}"#,

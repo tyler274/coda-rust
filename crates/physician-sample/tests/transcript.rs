@@ -11,7 +11,9 @@ use std::time::{Duration, Instant};
 
 use local_product::physician_sources::{RecordDate, SourceRevision};
 use local_product::runtime::Store;
-use physician_wire::{AnswerState, Exchange, Found, RecordRead, Step, StepState, WorkResumeTarget};
+use physician_wire::{
+    AnswerState, Exchange, ExchangeSteps, Found, RecordRead, Step, StepState, WorkResumeTarget,
+};
 use sea_orm::{ConnectionTrait, DatabaseTransaction, Statement, TransactionTrait};
 use serde_json::{Value, json};
 
@@ -255,6 +257,14 @@ fn last(transcript: &[Exchange]) -> &Exchange {
     transcript.last().expect("an exchange")
 }
 
+/// The exchange's steps; every saved call in these tests reads as a step.
+fn shown(exchange: &Exchange) -> &[Step] {
+    match &exchange.steps {
+        ExchangeSteps::Read(steps) => steps,
+        ExchangeSteps::Unavailable => panic!("the steps were unavailable: {exchange:#?}"),
+    }
+}
+
 fn search_state(step: &Step) -> Option<&StepState<Found>> {
     match step {
         Step::SearchedChart { state, .. } => Some(state),
@@ -308,7 +318,7 @@ async fn steps_show_live_in_start_order_and_stay_with_the_answer() {
     let searching = stack
         .wait("the search never showed as running", |transcript| {
             transcript.last().is_some_and(|exchange| {
-                exchange.steps.first().and_then(search_state) == Some(&StepState::Running)
+                shown(exchange).first().and_then(search_state) == Some(&StepState::Running)
             })
         })
         .await;
@@ -318,12 +328,12 @@ async fn steps_show_live_in_start_order_and_stay_with_the_answer() {
         "{exchange:#?}"
     );
     assert_eq!(
-        exchange.steps.len(),
+        shown(exchange).len(),
         1,
         "the skill read and the working note show no step: {exchange:#?}"
     );
     assert_eq!(
-        exchange.steps[0],
+        shown(exchange)[0],
         Step::SearchedChart {
             query: QUERY.into(),
             record_type: None,
@@ -367,7 +377,7 @@ async fn steps_show_live_in_start_order_and_stay_with_the_answer() {
     );
     assert!(
         matches!(
-            last(&searched).steps[0],
+            shown(last(&searched))[0],
             Step::SearchedChart {
                 state: StepState::Returned { .. },
                 ..
@@ -379,11 +389,11 @@ async fn steps_show_live_in_start_order_and_stay_with_the_answer() {
     let reading = stack
         .wait("the read never showed as running", |transcript| {
             transcript.last().is_some_and(|exchange| {
-                exchange.steps.get(1).and_then(read_state) == Some(&StepState::Running)
+                shown(exchange).get(1).and_then(read_state) == Some(&StepState::Running)
             })
         })
         .await;
-    let steps = &last(&reading).steps;
+    let steps = shown(last(&reading));
     assert_eq!(steps.len(), 2, "{steps:#?}");
     assert!(
         matches!(
@@ -419,9 +429,9 @@ async fn steps_show_live_in_start_order_and_stay_with_the_answer() {
         unreachable!("waited for the answer")
     };
     assert_eq!(text, support::FIXED_TEXT);
-    assert_eq!(exchange.steps.len(), 2, "{exchange:#?}");
-    assert_eq!(exchange.steps[0], searched[0].steps[0]);
-    assert_eq!(read_state(&exchange.steps[1]), Some(&sodium_read()));
+    assert_eq!(shown(exchange).len(), 2, "{exchange:#?}");
+    assert_eq!(shown(exchange)[0], shown(&searched[0])[0]);
+    assert_eq!(read_state(&shown(exchange)[1]), Some(&sodium_read()));
 
     stack.worker.restart();
     support::wait_ready(&mut stack.worker, stack.worker_port).await;
@@ -448,7 +458,7 @@ async fn stop_while_a_read_runs_marks_it_stopped_and_resume_continues_the_exchan
     let reading = stack
         .wait("the read never showed as running", |transcript| {
             transcript.last().is_some_and(|exchange| {
-                exchange.steps.first().and_then(read_state) == Some(&StepState::Running)
+                shown(exchange).first().and_then(read_state) == Some(&StepState::Running)
             })
         })
         .await;
@@ -480,7 +490,7 @@ async fn stop_while_a_read_runs_marks_it_stopped_and_resume_continues_the_exchan
     };
     assert_eq!(work_item_id, &work);
     assert_eq!(
-        read_state(&last(&stopped).steps[0]),
+        read_state(&shown(last(&stopped))[0]),
         Some(&StepState::Stopped)
     );
     // The worker checks every second whether its attempt is still wanted, and
@@ -515,7 +525,7 @@ async fn stop_while_a_read_runs_marks_it_stopped_and_resume_continues_the_exchan
         .await;
     assert_eq!(answered.len(), 1, "{answered:#?}");
     assert_eq!(
-        read_state(&answered[0].steps[0]),
+        read_state(&shown(&answered[0])[0]),
         Some(&StepState::Stopped),
         "the stopped read keeps its mark: {answered:#?}"
     );
@@ -535,7 +545,7 @@ async fn a_steer_while_a_read_runs_joins_the_exchange_and_one_answer_covers_it()
     stack
         .wait("the read never showed as running", |transcript| {
             transcript.last().is_some_and(|exchange| {
-                exchange.steps.first().and_then(read_state) == Some(&StepState::Running)
+                shown(exchange).first().and_then(read_state) == Some(&StepState::Running)
             })
         })
         .await;
@@ -560,7 +570,7 @@ async fn a_steer_while_a_read_runs_joins_the_exchange_and_one_answer_covers_it()
     assert_eq!(answered.len(), 1, "one answer covers both: {answered:#?}");
     assert_eq!(answered[0].messages.len(), 2);
     assert_eq!(
-        read_state(&answered[0].steps[0]),
+        read_state(&shown(&answered[0])[0]),
         Some(&sodium_read()),
         "the read still ends with its result: {answered:#?}"
     );
@@ -581,7 +591,7 @@ async fn a_read_cut_by_a_restart_reads_as_interrupted_and_the_answer_continues()
     stack
         .wait("the read never showed as running", |transcript| {
             transcript.last().is_some_and(|exchange| {
-                exchange.steps.first().and_then(read_state) == Some(&StepState::Running)
+                shown(exchange).first().and_then(read_state) == Some(&StepState::Running)
             })
         })
         .await;
@@ -599,7 +609,7 @@ async fn a_read_cut_by_a_restart_reads_as_interrupted_and_the_answer_continues()
         .await;
     assert_eq!(answered.len(), 1, "{answered:#?}");
     assert_eq!(
-        read_state(&answered[0].steps[0]),
+        read_state(&shown(&answered[0])[0]),
         Some(&StepState::Interrupted),
         "{answered:#?}"
     );
@@ -660,12 +670,11 @@ async fn a_provider_block_and_a_limit_each_end_with_try_again() {
         Some(limited[1].work_item_id.as_str())
     );
     assert!(
-        limited[1]
-            .steps
+        shown(&limited[1])
             .iter()
             .all(|step| matches!(search_state(step), Some(StepState::Returned { .. }))),
         "{:#?}",
-        limited[1].steps
+        shown(&limited[1])
     );
 }
 
@@ -722,8 +731,7 @@ async fn text_a_limit_kept_stays_before_the_answer_try_again_finishes() {
         .wait("Try again never started a held search", |transcript| {
             transcript.last().is_some_and(|exchange| {
                 matches!(exchange.answer, AnswerState::Working { .. })
-                    && exchange
-                        .steps
+                    && shown(exchange)
                         .iter()
                         .any(|step| search_state(step) == Some(&StepState::Running))
             })

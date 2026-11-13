@@ -122,7 +122,9 @@ the first message, a reload without `&chat=` still lists the chat, under its tit
 
 **The snapshot.** `.body.snapshot.transcript` holds one exchange per piece of accepted
 work: `work_item_id`, the physician `messages` (`id`, `text`), Coda's `steps`, the `kept`
-text a limit saved, and the `answer`. `answer.state` is `working` (with `stop`), `finished`
+text a limit saved, and the `answer`. `steps.state` is `read` (with the `steps` in start
+order) or `unavailable` when a saved call could not be read as a step; the site logs
+why, and the rest of the exchange still shows. `answer.state` is `working` (with `stop`), `finished`
 (with `response_id`, `attempt_id`, `text`, `feedback`), `stopped` (with `resume`), `cut_off`
 or `couldnt_finish` (each with `try_again`). `resume` and `try_again` are
 `{work_item_id, expected_run_id}`, or `null` once a later message replaced the work.

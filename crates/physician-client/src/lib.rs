@@ -571,7 +571,7 @@ mod tests {
                             "transcript": [{
                                 "work_item_id": "w1",
                                 "messages": [{ "id": "k1", "text": "Hello" }],
-                                "steps": [],
+                                "steps": {"state": "read", "steps": []},
                                 "kept": [],
                                 "answer": { "state": "working", "stop": { "work_item_id": "w1" } }
                             }]

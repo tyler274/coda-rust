@@ -9,8 +9,8 @@ use harness::engine::results::ToolResult;
 use harness::engine::runs::{HoldReason, RunHistory, RunOutcome};
 use harness::engine::{EventKind, Invocation};
 use physician_wire::{
-    AnswerState, Exchange, PhysicianMessage, ResponseFeedback, Step, WorkResumeTarget,
-    WorkStopTarget,
+    AnswerState, Exchange, ExchangeSteps, PhysicianMessage, ResponseFeedback, Step,
+    WorkResumeTarget, WorkStopTarget,
 };
 
 use super::{Attempt, AttemptStatus, Conversation, MessageRole, ResponseId, reply_id};
@@ -34,9 +34,6 @@ pub enum TranscriptError {
     /// Chat work never ends cancelled.
     #[error("chat work ended cancelled")]
     Cancelled,
-    /// A saved call that cannot be shown as a step.
-    #[error(transparent)]
-    Step(#[from] StepError),
 }
 
 /// One work's messages and Coda's saved answers, in order.
@@ -164,10 +161,27 @@ impl Conversation {
         Ok(Exchange {
             work_item_id: work.to_owned(),
             messages: gathered.messages,
-            steps: steps(&attempts)?,
+            steps: exchange_steps(work, &attempts),
             kept,
             answer,
         })
+    }
+}
+
+/// The steps of one work, or unavailable when one of its saved calls cannot
+/// be read as a step. The rest of the exchange still shows, and a partial
+/// list would read as everything Coda did, so none are shown.
+fn exchange_steps(work: &str, attempts: &[&Attempt]) -> ExchangeSteps {
+    match steps(attempts) {
+        Ok(steps) => ExchangeSteps::Read(steps),
+        Err(error) => {
+            tracing::error!(
+                work,
+                error = &error as &dyn std::error::Error,
+                "a saved chat call does not read as a step; its exchange shows no steps"
+            );
+            ExchangeSteps::Unavailable
+        }
     }
 }
 
@@ -176,7 +190,7 @@ impl Conversation {
 /// it; the latest saved result is the one the work reads. A call with no
 /// saved result is running while its attempt runs, stopped when Stop ended
 /// that attempt, and otherwise interrupted.
-fn steps(attempts: &[&Attempt]) -> Result<Vec<Step>, TranscriptError> {
+fn steps(attempts: &[&Attempt]) -> Result<Vec<Step>, StepError> {
     let mut started: Vec<(&Attempt, &Invocation)> = Vec::new();
     let mut returned: HashMap<&str, &ToolResult> = HashMap::new();
     for attempt in attempts {
@@ -215,7 +229,7 @@ mod tests {
     use harness::engine::results::ToolResult;
     use harness::engine::runs::{HoldReason, RunHistory, RunOutcome};
     use harness::engine::{Event, EventKind, Invocation};
-    use physician_wire::{AnswerState, Found, Step, StepState, WorkResumeTarget};
+    use physician_wire::{AnswerState, ExchangeSteps, Found, Step, StepState, WorkResumeTarget};
 
     use super::super::{
         Attempt, AttemptStatus, Conversation, Message, MessageRole, WorkStatus, reply_id,
@@ -429,13 +443,6 @@ mod tests {
     /// still ends the call.
     #[test]
     fn a_call_without_a_result_reads_by_how_its_attempt_ended() {
-        let search = |id: &str| {
-            EventKind::ToolStarted(Invocation {
-                id: id.into(),
-                name: crate::physician_sources::SEARCH_TOOL.into(),
-                arguments: r#"{"query":"sodium","record_type":null,"after":null}"#.into(),
-            })
-        };
         let found = |id: &str| EventKind::ToolReturned {
             call_id: id.into(),
             result: ToolResult::Original(r#"{"results":[{}, {}],"next":null}"#.into()),
@@ -466,8 +473,8 @@ mod tests {
         runs.start("run-1".into()).unwrap();
         conversation.runs.insert("work-1".into(), runs);
         conversation.status = WorkStatus::Active;
-        let states: Vec<_> = conversation.transcript(|_| None).unwrap()[0]
-            .steps
+        let transcript = conversation.transcript(|_| None).unwrap();
+        let states: Vec<_> = read(&transcript[0].steps)
             .iter()
             .map(|step| match step {
                 Step::SearchedChart { state, .. } => state.clone(),
@@ -490,5 +497,105 @@ mod tests {
                 StepState::Running,
             ]
         );
+    }
+
+    fn read(steps: &ExchangeSteps) -> &[Step] {
+        match steps {
+            ExchangeSteps::Read(steps) => steps,
+            ExchangeSteps::Unavailable => panic!("the steps were unavailable"),
+        }
+    }
+
+    fn search(id: &str) -> EventKind {
+        EventKind::ToolStarted(Invocation {
+            id: id.into(),
+            name: crate::physician_sources::SEARCH_TOOL.into(),
+            arguments: r#"{"query":"sodium","record_type":null,"after":null}"#.into(),
+        })
+    }
+
+    /// `work-1` kept a cut-off part and finished with `unreadable` saved in
+    /// its attempt, and a later `work-2` finished after one readable search.
+    fn two_finished_exchanges(unreadable: Vec<EventKind>) -> Conversation {
+        let mut conversation = ended(RunOutcome::Completed);
+        conversation.attempts[0] =
+            attempt("work-1", "attempt-1", AttemptStatus::Completed, unreadable);
+        answer(&mut conversation, "attempt-0", true, "Kept before the end.");
+        ask(&mut conversation, "work-2", "And potassium?");
+        let mut runs = RunHistory::default();
+        runs.start("run-2".into()).unwrap();
+        runs.end(RunOutcome::Completed).unwrap();
+        conversation.runs.insert("work-2".into(), runs);
+        conversation.work = "work-2".into();
+        conversation.attempts.push(attempt(
+            "work-2",
+            "attempt-2",
+            AttemptStatus::Completed,
+            vec![
+                search("found"),
+                EventKind::ToolReturned {
+                    call_id: "found".into(),
+                    result: ToolResult::Original(r#"{"results":[{}],"next":null}"#.into()),
+                },
+            ],
+        ));
+        answer(&mut conversation, "attempt-2", false, "Potassium is 4.1.");
+        conversation
+    }
+
+    /// A saved call that cannot be read as a step marks only its own
+    /// exchange's steps unavailable. The exchange keeps its messages, kept
+    /// text and answer, and its neighbour still shows its steps.
+    #[test]
+    fn an_unreadable_call_marks_only_its_exchange_steps_unavailable() {
+        let unknown_tool = vec![EventKind::ToolStarted(Invocation {
+            id: "gone".into(),
+            name: "a_tool_chat_never_offered".into(),
+            arguments: "{}".into(),
+        })];
+        let not_its_receipt = vec![
+            search("mangled"),
+            EventKind::ToolReturned {
+                call_id: "mangled".into(),
+                result: ToolResult::Original("not a search receipt".into()),
+            },
+        ];
+        for (case, unreadable) in [
+            ("unknown tool", unknown_tool),
+            ("result is not the receipt", not_its_receipt),
+        ] {
+            let conversation = two_finished_exchanges(unreadable);
+            let transcript = conversation
+                .transcript(|_| None)
+                .unwrap_or_else(|error| panic!("{case}: the transcript failed: {error}"));
+            let first = &transcript[0];
+            assert_eq!(first.steps, ExchangeSteps::Unavailable, "{case}");
+            assert_eq!(first.messages[0].text, "Hello", "{case}");
+            assert_eq!(first.kept, ["Kept before the end."], "{case}");
+            assert_eq!(
+                first.answer,
+                AnswerState::Finished {
+                    response_id: physician_wire::ResponseId(reply_id("attempt-1")),
+                    attempt_id: "attempt-1".into(),
+                    text: "Done.".into(),
+                    feedback: None,
+                },
+                "{case}"
+            );
+            assert_eq!(
+                read(&transcript[1].steps),
+                [Step::SearchedChart {
+                    query: "sodium".into(),
+                    record_type: None,
+                    state: StepState::Returned {
+                        result: Found {
+                            records: 1,
+                            more: false
+                        }
+                    },
+                }],
+                "{case}"
+            );
+        }
     }
 }
