@@ -24,7 +24,7 @@ use crate::store::SwarmId;
 const STUB: &str = r#"#!/bin/sh
 dir="$1"
 prompt=$(cat)
-echo "$CODA_SWARM_MEMBER $prompt" >> "$dir/turns"
+printf "%s %s\n" "$CODA_SWARM_MEMBER" "$(printf "%s" "$prompt" | tr "\n" "|")" >> "$dir/turns"
 echo "$CODA_SWARM_AGENT $CODA_SWARM_DIR $CODA_SWARM_MCP_COMMAND" > "$dir/$CODA_SWARM_MEMBER.board"
 while [ -f "$dir/$CODA_SWARM_MEMBER.hold" ]; do sleep 0.01; done
 case "$CODA_SWARM_MEMBER" in
@@ -222,6 +222,11 @@ impl Harness {
     }
 }
 
+/// The first turn's log line for a worker briefed by `spawn`.
+fn brief(who: &str) -> String {
+    format!("{who} {}||do the thing", worker_prompt(&name("lead")))
+}
+
 fn eventually(what: &str, mut done: impl FnMut() -> bool) {
     let deadline = Instant::now() + Duration::from_secs(10);
     while !done() {
@@ -256,11 +261,7 @@ fn spawn_names_a_group_and_runs_each_member_once_in_its_worktree() {
     turns.sort();
     assert_eq!(
         turns,
-        [
-            "scout-1 do the thing",
-            "scout-2 do the thing",
-            "scout-3 do the thing"
-        ]
+        [brief("scout-1"), brief("scout-2"), brief("scout-3")]
     );
     let models = h.supervisor.member_models().expect("models");
     assert_eq!(models[&name("scout-2")].as_deref(), Some("stub-model"));
@@ -391,15 +392,11 @@ fn waiting_member_wakes_for_a_mention() {
         .store()
         .append(Draft::post(name("lead"), "@scout report"), Utc::now())
         .expect("mention");
-    eventually("second turn", || h.turns().len() == 5);
+    eventually("second turn", || h.turns().len() == 2);
     assert_eq!(
-        h.turns()[1..],
-        [
-            "scout New post #1 from lead in #main:",
-            "status, please",
-            "New post #2 from lead in #main:",
-            "@scout report"
-        ]
+        h.turns()[1],
+        "scout New post #1 from lead in #main:|status, please|\
+         New post #2 from lead in #main:|@scout report"
     );
     eventually("member to park again", || is_waiting(h.state("scout")));
     let MemberState::Waiting { wait_since, .. } = h.state("scout") else {
@@ -440,14 +437,17 @@ fn a_wake_carries_every_visible_post_since_the_cursor_bounded() {
 
     eventually("woken turn", || h.turns_starting("scout [board]") == 1);
     let turns = h.turns();
-    let wake = &turns[1..];
+    let wake: Vec<&str> = turns[1].split('|').collect();
     assert_eq!(
-        wake[0],
-        "scout [board] 3 earlier messages are not shown; read_board has them."
+        wake[..2],
+        [
+            "scout [board] 3 earlier messages are not shown; read_board has them.",
+            "New post #4 from lead in #main:"
+        ]
     );
-    assert_eq!(wake[1], "New post #4 from lead in #main:");
-    assert_eq!(wake.last().expect("text"), "@scout read these");
-    assert!(!turns.iter().any(|t| t.contains("unsubscribed chatter")));
+    assert_eq!(wake.len(), 1 + 2 * WAKE_MESSAGES);
+    assert_eq!(wake.last(), Some(&"@scout read these"));
+    assert!(!turns[1].contains("unsubscribed chatter"));
     eventually("member to park again", || is_waiting(h.state("scout")));
     let MemberState::Waiting { wait_since, .. } = h.state("scout") else {
         unreachable!("checked above");
@@ -464,15 +464,14 @@ fn a_turn_that_starts_behind_the_board_is_nudged_once() {
     let posted = h.post("the parser moved");
     h.hold("flaky", false);
 
-    eventually("retried turn", || h.turns().len() == 4);
+    eventually("retried turn", || h.turns().len() == 2);
     let head = h.supervisor.store().head().expect("head");
     assert_eq!(
-        h.turns()[1..],
-        [
-            format!("flaky [board] the latest message is #{head} (you have read up to #0)"),
-            String::new(),
-            "do the thing".to_owned()
-        ]
+        h.turns()[1],
+        format!(
+            "flaky [board] the latest message is #{head} (you have read up to #0)||{}",
+            worker_prompt(&name("lead"))
+        ) + "||do the thing"
     );
     assert!(posted < head, "the quota notice is the head");
     eventually("member to park", || is_waiting(h.state("flaky")));
@@ -512,8 +511,11 @@ fn a_park_recorded_during_the_turn_sets_how_the_member_wakes() {
         }
     );
     h.post("status, anyone?");
-    eventually("woken by a post that names no one", || h.turns().len() == 3);
-    assert_eq!(h.turns()[1], "scout New post #1 from lead in #main:");
+    eventually("woken by a post that names no one", || h.turns().len() == 2);
+    assert_eq!(
+        h.turns()[1],
+        "scout New post #1 from lead in #main:|status, anyone?"
+    );
 }
 
 #[test]
@@ -551,7 +553,9 @@ fn park_guard_nudges_once_per_head_for_unread_mentions() {
     let h = harness(|_| {});
     h.hold("scout", true);
     h.spawn("scout", Workspace::Inherit, 1);
-    eventually("brief turn", || h.turns_starting("scout do the thing") == 1);
+    eventually("brief turn", || {
+        h.turns_starting("scout You are a worker") == 1
+    });
     let ping = h.post("@scout are you there?");
     h.hold("scout", false);
 
@@ -599,7 +603,7 @@ fn park_guard_leaves_a_member_with_nothing_unread_parked() {
     eventually("member to park", || is_waiting(h.state("scout")));
     h.post("chatter that names nobody");
     thread::sleep(Duration::from_millis(300));
-    assert_eq!(h.turns(), ["scout do the thing"]);
+    assert_eq!(h.turns(), [brief("scout")]);
 }
 
 #[test]

@@ -101,8 +101,12 @@ brief says:
 - The exact scope: paths, crates, branch or worktree, and what is out of bounds.
 - Facts you already established, so the worker does not rediscover them.
 - How to verify: the commands to run and what passing looks like.
-- What to post back and when: a summary with `@coordinator`, the commit or
-  file list, and any blocker the moment it appears.
+- What to post back and when: the commit or file list for the final
+  `[done]` post, and any blocker the moment it appears.
+
+Workers already get board etiquette ahead of the brief: read the board, cite
+posts as `#N`, address you by name, park with `swarm_wait`, and finish with
+`[done] <summary>` mentioning you. Do not repeat it in the brief.
 
 Do not write "as discussed" or "the bug above". Paste the error, the path or
 the decision itself.
@@ -125,20 +129,21 @@ most 3600; call it again with the same `since`.
 
 Never loop on `read_board` or `swarm status` to watch for progress. Each call
 spends context and a turn, and `swarm_wait` already returns the moment a
-worker reports. Workers only wake you when they mention `@coordinator`, so say
-so in the brief.
+worker reports. Workers wake you by mentioning you, which their etiquette
+already asks for.
 
 ## Steer, stop and finish
 
 - Answer a worker's question by posting with its `@name`. Redirect one by
   posting the new instruction. The brief rule applies: make the post stand on
   its own.
-- Kill a worker that is done, stuck or no longer needed with
+- A post starting `[done]` is a worker's completion report. Kill a worker that
+  is done, stuck or no longer needed with
   `{"action": "kill", "name": "..."}`. A group base kills the whole group. Kill
   is final for that name; add a new name to restart the work.
 - Before you report to the user, check each worker's result yourself: read the
   diff, rerun its verification, and reconcile workers that disagree. A worker's
-  "done" is a claim, not evidence.
+  `[done]` is a claim, not evidence.
 - Kill every worker you added once the work is reconciled.
 
 ## Show the board

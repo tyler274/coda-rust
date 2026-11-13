@@ -204,26 +204,24 @@ impl<S: Store + Send + Sync + 'static> Supervisor<S> {
                 })?;
         }
         let since = self.shared.store.head()?;
-        let observer = self
-            .shared
-            .store
-            .roster()?
-            .members
-            .get(&spec.name)
-            .and_then(|member| Observer::of(member.role));
+        let roster = self.shared.store.roster()?;
+        let member = roster.members.get(&spec.name);
+        let observer = member.and_then(|member| Observer::of(member.role));
+        let adder = member
+            .and_then(|member| member.added_by.clone())
+            .unwrap_or_else(|| self.shared.coordinator.clone());
         let (cwd, worktree) = self.place(&mut owned, spec)?;
         let cancel = Cancel::default();
         let thread = {
             let shared = Arc::clone(&self.shared);
             let name = spec.name.clone();
-            let prompt = match observer {
-                Some(observer) => format!(
-                    "{}\n\n{}",
-                    observer.role_prompt(&shared.coordinator, observer.every(&shared.config)),
-                    spec.brief
-                ),
-                None => spec.brief.clone(),
+            let preamble = match observer {
+                Some(observer) => {
+                    observer.role_prompt(&shared.coordinator, observer.every(&shared.config))
+                }
+                None => worker_prompt(&adder),
             };
+            let prompt = format!("{preamble}\n\n{}", spec.brief);
             let cancel = cancel.clone();
             thread::spawn(move || {
                 shared.run_member(&name, observer, cwd, prompt, since, &cancel);
@@ -806,6 +804,20 @@ impl<S: Store> Shared<S> {
             .or_default()
             .last_error = Some(error.to_string());
     }
+}
+
+/// How a worker uses the board, prepended to its brief on its first turn.
+fn worker_prompt(adder: &MemberName) -> String {
+    format!(
+        "You are a worker in a swarm that shares a message board, and @{adder} gave you \
+         the brief below. Use read_board to catch up before you act and whenever a turn \
+         starts with a [board] line. When you refer to a post, cite it as #N. Address \
+         questions, blockers and results to @{adder}; nobody else sees your replies to \
+         this prompt. When the work is finished, post `[done] <summary>` to @{adder} with \
+         what changed and how you checked it. To wait for an answer, call swarm_wait with \
+         the highest seq you have read; if it says you are parked, end your turn, and the \
+         next post that wakes you starts a new one."
+    )
 }
 
 /// Posts a wake prompt carries in full; older ones are counted instead.
