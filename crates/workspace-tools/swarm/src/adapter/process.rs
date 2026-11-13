@@ -56,6 +56,7 @@ pub trait LineSink: Send + 'static {
 pub struct Tail {
     text: String,
     limit: usize,
+    truncated: bool,
 }
 
 impl Tail {
@@ -63,11 +64,15 @@ impl Tail {
         Self {
             text: String::new(),
             limit,
+            truncated: false,
         }
     }
 
     pub fn push(&mut self, line: &str) {
         let room = self.limit.saturating_sub(self.text.len());
+        if line.len() > room {
+            self.truncated = true;
+        }
         if room == 0 {
             return;
         }
@@ -81,6 +86,10 @@ impl Tail {
 
     pub fn text(&self) -> &str {
         &self.text
+    }
+
+    pub fn truncated(&self) -> bool {
+        self.truncated
     }
 }
 

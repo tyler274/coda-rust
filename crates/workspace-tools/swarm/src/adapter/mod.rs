@@ -9,6 +9,7 @@ mod process;
 mod registry;
 #[cfg(test)]
 mod tests;
+mod workspace_tools;
 
 use std::path::PathBuf;
 use std::process::Command;

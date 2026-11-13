@@ -1,7 +1,8 @@
 //! OpenAI-style chat completions driven directly: the host model proxy or a
-//! local Ollama. Each turn starts the swarm MCP command, offers its tools to
-//! the model, and runs tool calls through it until the model answers without
-//! one or the call budget runs out.
+//! local Ollama. Each turn starts the swarm MCP command, offers its tools and
+//! the workspace tools to the model, and runs tool calls until the model
+//! answers without one or the call budget runs out. Replies are requested
+//! whole, not streamed.
 
 use std::collections::{BTreeMap, BTreeSet};
 use std::sync::mpsc;
@@ -14,6 +15,7 @@ use serde_json::{Value, json};
 use super::keys::{KeyItem, KeySource};
 use super::mcp_client::{CallResult, McpClient, McpError, Tool};
 use super::process::ProcessLimits;
+use super::workspace_tools::{Cancelled, Workspace, WorkspaceCall, WorkspaceTool};
 use super::{
     Cancel, DEFAULT_RETRY_AFTER, ForkError, TurnOutcome, TurnRequest, WorkerAdapter, excerpt,
 };
@@ -196,7 +198,19 @@ impl HttpAdapter {
             self.mcp_timeout,
             cancel,
         )?;
-        let tools = mcp.list_tools(cancel)?;
+        let mut tools = mcp.list_tools(cancel)?;
+        if let Some(clash) = tools
+            .iter()
+            .find(|tool| WorkspaceTool::parse(&tool.name).is_some())
+        {
+            return Err(Stop::Failed(format!(
+                "swarm MCP tool `{}` collides with a workspace tool",
+                clash.name
+            )));
+        }
+        tools.extend(WorkspaceTool::ALL.map(WorkspaceTool::declaration));
+        let workspace = Workspace::open(&request.cwd, request.env.clone(), self.limits.clone())
+            .map_err(Stop::Failed)?;
         for _ in 0..self.max_calls {
             let body = self.body(messages, &tools);
             let response = self.post(key, body, cancel)?;
@@ -206,12 +220,21 @@ impl HttpAdapter {
                 return Ok(());
             }
             for call in reply.calls {
-                let called = match call.arguments {
-                    Ok(arguments) => mcp.call_tool(&call.name, arguments, cancel),
-                    Err(message) => Err(McpError::Rpc {
+                let called = match (WorkspaceTool::parse(&call.name), call.arguments) {
+                    (_, Err(message)) => Err(McpError::Rpc {
                         method: call.name.clone(),
                         message,
                     }),
+                    (Some(tool), Ok(arguments)) => match WorkspaceCall::parse(tool, arguments) {
+                        Ok(parsed) => workspace
+                            .run(parsed, cancel)
+                            .map_err(|Cancelled| McpError::Cancelled),
+                        Err(message) => Err(McpError::Rpc {
+                            method: call.name.clone(),
+                            message,
+                        }),
+                    },
+                    (None, Ok(arguments)) => mcp.call_tool(&call.name, arguments, cancel),
                 };
                 let result = match called {
                     Ok(result) => result,
@@ -251,6 +274,7 @@ impl HttpAdapter {
             "model": self.model,
             "messages": messages,
             "tools": tools,
+            "stream": false,
         });
         if let Some(max_tokens) = self.max_tokens {
             body["max_tokens"] = json!(max_tokens);

@@ -390,6 +390,209 @@ fn model_proxy_key_is_a_bearer_header_the_mcp_server_never_sees() {
     assert!(!mcp_env.contains(KEY), "the MCP server never sees the key");
 }
 
+fn calls(calls: &[(&str, Value)]) -> Canned {
+    let calls: Vec<Value> = calls
+        .iter()
+        .enumerate()
+        .map(|(index, (name, arguments))| {
+            json!({ "id": format!("call_{index}"), "type": "function",
+                "function": { "name": name, "arguments": arguments.to_string() } })
+        })
+        .collect();
+    ok(json!({ "choices": [{ "message": {
+        "role": "assistant", "content": null, "tool_calls": calls
+    }}]}))
+}
+
+fn answer() -> Canned {
+    ok(json!({ "choices": [{ "message": { "role": "assistant", "content": "done" } }] }))
+}
+
+/// The tool results the model saw in the request after its calls.
+fn tool_results(exchange: &Exchange) -> Vec<String> {
+    exchange.body["messages"]
+        .as_array()
+        .expect("messages")
+        .iter()
+        .filter(|message| message["role"] == "tool")
+        .map(|message| message["content"].as_str().expect("content").to_owned())
+        .collect()
+}
+
+#[test]
+fn workspace_tools_read_edit_and_run_in_the_workspace() {
+    let dir = TempDir::new().expect("tempdir");
+    fs::write(dir.path().join("greeting.txt"), "hello world\n").expect("seed");
+    let server = FakeServer::start(vec![
+        calls(&[
+            ("read_file", json!({ "path": "greeting.txt" })),
+            (
+                "edit_file",
+                json!({ "path": "greeting.txt", "old": "world", "new": "swarm" }),
+            ),
+            ("shell", json!({ "command": "cat greeting.txt; exit 3" })),
+            (
+                "edit_file",
+                json!({ "path": "greeting.txt", "old": "l", "new": "L" }),
+            ),
+            ("search", json!({ "pattern": "sw.rm", "glob": "*.txt" })),
+            (
+                "write_file",
+                json!({ "path": "notes/abc", "content": "a\nb\nc\n" }),
+            ),
+            (
+                "read_file",
+                json!({ "path": "notes/abc", "offset": 2, "limit": 1 }),
+            ),
+        ]),
+        answer(),
+    ]);
+    let (adapter, req) = http_turn(dir.path(), server.url.clone(), false);
+    assert_eq!(
+        adapter.run_turn(req, &Cancel::default()),
+        TurnOutcome::Completed
+    );
+    let seen = server.finish();
+
+    let offered: Vec<&str> = seen[0].body["tools"]
+        .as_array()
+        .expect("tools")
+        .iter()
+        .map(|tool| tool["function"]["name"].as_str().expect("name"))
+        .collect();
+    assert_eq!(
+        offered,
+        [
+            "post",
+            "read_file",
+            "write_file",
+            "edit_file",
+            "list_dir",
+            "search",
+            "shell"
+        ]
+    );
+    assert_eq!(seen[0].body["stream"], false);
+    let results = tool_results(&seen[1]);
+    assert_eq!(results[0], "hello world\n");
+    assert_eq!(results[1], "replaced 1 occurrence(s) in greeting.txt");
+    assert_eq!(results[2], "hello swarm\n[exit status: 3]");
+    assert!(results[3].contains("occurs 2 times"), "{}", results[3]);
+    assert_eq!(results[4], "./greeting.txt:1:hello swarm\n");
+    assert_eq!(results[6], "b\n\n[truncated: continue with offset 3]");
+    assert_eq!(
+        fs::read_to_string(dir.path().join("greeting.txt")).expect("edited"),
+        "hello swarm\n"
+    );
+}
+
+#[test]
+fn workspace_paths_cannot_escape() {
+    let dir = TempDir::new().expect("tempdir");
+    let outside = TempDir::new().expect("outside");
+    fs::write(outside.path().join("secret"), "s3cret").expect("secret");
+    std::os::unix::fs::symlink(outside.path(), dir.path().join("link")).expect("symlink");
+    let absolute = outside.path().join("secret").display().to_string();
+    let server = FakeServer::start(vec![
+        calls(&[
+            ("read_file", json!({ "path": "../secret" })),
+            ("read_file", json!({ "path": absolute })),
+            ("read_file", json!({ "path": "link/secret" })),
+            ("write_file", json!({ "path": "link/new", "content": "x" })),
+            (
+                "write_file",
+                json!({ "path": "gone/../../new", "content": "x" }),
+            ),
+            ("list_dir", json!({ "path": "link" })),
+        ]),
+        answer(),
+    ]);
+    let (adapter, req) = http_turn(dir.path(), server.url.clone(), false);
+    assert_eq!(
+        adapter.run_turn(req, &Cancel::default()),
+        TurnOutcome::Completed
+    );
+    let seen = server.finish();
+
+    let results = tool_results(&seen[1]);
+    assert_eq!(results.len(), 6);
+    for result in &results {
+        assert!(result.ends_with("outside the workspace"), "{result}");
+    }
+    assert!(!outside.path().join("new").exists());
+    assert!(!dir.path().parent().expect("parent").join("new").exists());
+}
+
+#[test]
+fn shell_output_is_capped_with_a_marker() {
+    let dir = TempDir::new().expect("tempdir");
+    let server = FakeServer::start(vec![
+        calls(&[("shell", json!({ "command": "yes line | head -c 100000" }))]),
+        answer(),
+    ]);
+    let (adapter, req) = http_turn(dir.path(), server.url.clone(), false);
+    assert_eq!(
+        adapter.run_turn(req, &Cancel::default()),
+        TurnOutcome::Completed
+    );
+    let seen = server.finish();
+
+    let output = &tool_results(&seen[1])[0];
+    assert!(
+        output.ends_with("[output truncated at 32768 bytes]\n[exit status: 0]"),
+        "{}",
+        &output[output.len() - 80..]
+    );
+    assert!(output.len() < 33 * 1024, "{}", output.len());
+}
+
+#[test]
+fn cancel_stops_a_running_shell_command() {
+    let dir = TempDir::new().expect("tempdir");
+    let server = FakeServer::start(vec![calls(&[(
+        "shell",
+        json!({ "command": "sleep 30 & echo $! > sleep.pid; wait" }),
+    )])]);
+    let (adapter, req) = http_turn(dir.path(), server.url.clone(), false);
+    let cancel = Cancel::default();
+    let pid_file = dir.path().join("sleep.pid");
+    let canceller = {
+        let cancel = cancel.clone();
+        let pid_file = pid_file.clone();
+        thread::spawn(move || {
+            while !fs::read_to_string(&pid_file).is_ok_and(|text| text.ends_with('\n')) {
+                thread::sleep(Duration::from_millis(5));
+            }
+            cancel.cancel();
+            std::time::Instant::now()
+        })
+    };
+    let outcome = adapter.run_turn(req, &cancel);
+    let ended = std::time::Instant::now();
+    let cancelled_at = canceller.join().expect("canceller");
+    server.finish();
+
+    assert_eq!(outcome, TurnOutcome::Cancelled);
+    assert!(
+        ended - cancelled_at < Duration::from_secs(2),
+        "turn ends promptly after cancel"
+    );
+    let pid: i32 = fs::read_to_string(&pid_file)
+        .expect("pid")
+        .trim()
+        .parse()
+        .expect("pid number");
+    let pid = nix::unistd::Pid::from_raw(pid);
+    let deadline = std::time::Instant::now() + Duration::from_secs(2);
+    while nix::sys::signal::kill(pid, None).is_ok() {
+        assert!(
+            std::time::Instant::now() < deadline,
+            "the shell's sleep outlived the turn"
+        );
+        thread::sleep(Duration::from_millis(10));
+    }
+}
+
 #[test]
 fn http_429_is_quota_and_errors_never_show_the_key() {
     let dir = TempDir::new().expect("tempdir");
