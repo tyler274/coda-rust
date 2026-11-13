@@ -80,7 +80,7 @@ pub async fn load_synthetic_practice(
                 source_id: source.source_id().to_owned(),
                 source_label: source.source_label().to_owned(),
                 patient,
-                pulled_at: clock.now(now()) as i64,
+                pulled_at: Some(clock.now(now()) as i64),
             };
             summary.changed += runtime
                 .record_chart(&workspace, &records, &pull)

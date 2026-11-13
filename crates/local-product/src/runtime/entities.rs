@@ -221,8 +221,12 @@ pub(super) mod source_pull {
         /// The patient as this source identifies them.
         #[sea_orm(column_type = "JsonBinary")]
         pub patient: Json,
-        /// The practice clock's Unix second when the pull finished.
-        pub pulled_at: i64,
+        /// The practice clock's Unix second when a complete pull last finished,
+        /// or `None` when only partial records have landed.
+        pub pulled_at: Option<i64>,
+        /// Previously saved candidate IDs from this source absent on this pull.
+        #[sea_orm(column_type = "JsonBinary")]
+        pub missing_candidates: Json,
     }
 
     #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
