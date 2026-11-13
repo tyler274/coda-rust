@@ -68,6 +68,9 @@ pub struct Member {
     /// member; see [`Member::take_park_block`].
     #[serde(default)]
     pub last_park_blocked_seq: Seq,
+    /// The head the last turn-start `[board]` nudge covered.
+    #[serde(default)]
+    pub last_nudged_seq: Seq,
 }
 
 impl Member {
@@ -80,6 +83,7 @@ impl Member {
             added_by,
             last_read_seq: Seq::ZERO,
             last_park_blocked_seq: Seq::ZERO,
+            last_nudged_seq: Seq::ZERO,
         }
     }
 

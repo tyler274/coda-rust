@@ -38,6 +38,9 @@ case "$CODA_SWARM_MEMBER" in
     sleep 30 &
     echo $! > "$dir/$CODA_SWARM_MEMBER.child"
     wait; wait ;;
+  *flaky*)
+    [ -f "$dir/$CODA_SWARM_MEMBER.spent" ] && exit 0
+    touch "$dir/$CODA_SWARM_MEMBER.spent"; echo retry_after_secs=0; exit 75 ;;
   *quota*) echo retry_after_secs=600; exit 75 ;;
   *) exit 0 ;;
 esac
@@ -450,6 +453,37 @@ fn a_wake_carries_every_visible_post_since_the_cursor_bounded() {
         unreachable!("checked above");
     };
     assert_eq!(wait_since, mention);
+}
+
+#[test]
+fn a_turn_that_starts_behind_the_board_is_nudged_once() {
+    let h = harness(|_| {});
+    h.hold("flaky", true);
+    h.spawn("flaky", Workspace::Inherit, 1);
+    eventually("first turn", || h.turns().len() == 1);
+    let posted = h.post("the parser moved");
+    h.hold("flaky", false);
+
+    eventually("retried turn", || h.turns().len() == 4);
+    let head = h.supervisor.store().head().expect("head");
+    assert_eq!(
+        h.turns()[1..],
+        [
+            format!("flaky [board] the latest message is #{head} (you have read up to #0)"),
+            String::new(),
+            "do the thing".to_owned()
+        ]
+    );
+    assert!(posted < head, "the quota notice is the head");
+    eventually("member to park", || is_waiting(h.state("flaky")));
+    let roster = h.supervisor.store().roster().expect("roster");
+    assert_eq!(
+        roster
+            .member(&name("flaky"))
+            .expect("member")
+            .last_nudged_seq,
+        head
+    );
 }
 
 #[test]

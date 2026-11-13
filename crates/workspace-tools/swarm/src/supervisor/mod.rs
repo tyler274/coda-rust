@@ -450,9 +450,10 @@ impl<S: Store> Shared<S> {
     ) {
         let mut prompt = first_prompt;
         let mut tick_mark = since;
+        let mut announced = since;
         while !cancel.is_cancelled() {
-            let model = match self.begin_turn(name) {
-                Ok(model) => model,
+            let (model, nudge) = match self.begin_turn(name, announced) {
+                Ok(turn) => turn,
                 Err(error) => {
                     self.note_error(name, &error);
                     if self.idle(cancel, self.config.poll) {
@@ -465,7 +466,10 @@ impl<S: Store> Shared<S> {
                 TurnRequest {
                     member: name.clone(),
                     model,
-                    prompt: prompt.clone(),
+                    prompt: match nudge {
+                        Some(nudge) => format!("{nudge}\n\n{prompt}"),
+                        None => prompt.clone(),
+                    },
                     cwd: cwd.clone(),
                     mcp_command: self.config.mcp_command(name),
                     env: self.turn_env(name),
@@ -491,7 +495,11 @@ impl<S: Store> Shared<S> {
                 TurnOutcome::Completed => match self.park_guard(name, since) {
                     Ok(ParkGuard::Clear) => {}
                     Ok(ParkGuard::Spent { head }) => since = since.max(head),
-                    Ok(ParkGuard::Nudge { prompt: nudge }) => {
+                    Ok(ParkGuard::Nudge {
+                        prompt: nudge,
+                        head,
+                    }) => {
+                        announced = head;
                         prompt = nudge;
                         continue;
                     }
@@ -502,7 +510,10 @@ impl<S: Store> Shared<S> {
             let ticks = observer.map(|observer| (observer, &mut tick_mark));
             prompt = match self.wait_for_ring(name, since, ticks, cancel) {
                 None => return,
-                Some(Wake::Tick { observer, head }) => observer.tick_prompt(head),
+                Some(Wake::Tick { observer, head }) => {
+                    announced = head;
+                    observer.tick_prompt(head)
+                }
                 Some(Wake::Ring(message)) => {
                     let (text, delivered) = match self.wake_prompt(name, since, &message) {
                         Ok(wake) => wake,
@@ -512,6 +523,7 @@ impl<S: Store> Shared<S> {
                         }
                     };
                     since = delivered;
+                    announced = delivered;
                     text
                 }
             };
@@ -554,6 +566,7 @@ impl<S: Store> Shared<S> {
             return Ok(ParkGuard::Spent { head });
         }
         Ok(ParkGuard::Nudge {
+            head,
             prompt: format!(
                 "[board] Your turn ended with unread posts that mention you: {}. The board \
                  is at #{head} and you have read up to #{}. Call read_board, answer what \
@@ -590,13 +603,41 @@ impl<S: Store> Shared<S> {
         Ok((render(&visible[earlier..], earlier), last))
     }
 
-    /// Marks the member working and returns the model for this turn.
-    fn begin_turn(&self, name: &MemberName) -> Result<Option<String>, UpdateError<RosterError>> {
-        self.store.update_roster(|roster| {
+    /// Marks the member working and returns the model for this turn, with a
+    /// `[board]` nudge when others posted in its view after what it has
+    /// read, been handed in a prompt (`delivered`) or been nudged about.
+    /// Each head is nudged about at most once.
+    fn begin_turn(
+        &self,
+        name: &MemberName,
+        delivered: Seq,
+    ) -> Result<(Option<String>, Option<String>), BoardError> {
+        let head = self.store.head()?;
+        let roster = self.store.roster()?;
+        let member = roster.member(name)?;
+        let after = member
+            .last_nudged_seq
+            .max(member.last_read_seq)
+            .max(delivered);
+        let behind = head > after
+            && self
+                .store
+                .read_since(after, usize::MAX)?
+                .iter()
+                .any(|m| m.agent != *name && roster.sees(name, member, m, &m.mentions()));
+        let nudge = behind.then(|| {
+            format!(
+                "[board] the latest message is #{head} (you have read up to #{})",
+                member.last_read_seq
+            )
+        });
+        let model = self.store.update_roster(|roster| {
             let member = roster.member_mut(name)?;
             member.state = MemberState::Working;
-            Ok(member.model.clone())
-        })
+            member.last_nudged_seq = member.last_nudged_seq.max(head);
+            Ok::<_, RosterError>(member.model.clone())
+        })?;
+        Ok((model, nudge))
     }
 
     /// The member's board identity.
@@ -798,6 +839,7 @@ enum ParkGuard {
         head: Seq,
     },
     Nudge {
+        head: Seq,
         prompt: String,
     },
 }
