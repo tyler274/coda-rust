@@ -2,6 +2,7 @@
 //! rehearsal service account, send one chat turn, and wait for its reply.
 use std::time::Duration;
 
+use chrono::{DateTime, Utc};
 use reqwest::blocking::{Client, RequestBuilder};
 use reqwest::header::PROXY_AUTHORIZATION;
 use serde_json::{Value, json};
@@ -207,15 +208,24 @@ impl Physician {
     }
 
     /// Polls the snapshot until the turn is answered or failed, and returns
-    /// the answer with the snapshot that held it.
+    /// the answer with the snapshot that held it. A `deadline` ends the wait
+    /// once it passes, so slow snapshot requests cannot stretch it.
     pub(super) fn await_reply(
         &self,
         turn: &Turn,
         attempts: u32,
         pause: Duration,
+        deadline: Option<DateTime<Utc>>,
         watch: &Watch,
     ) -> Result<(Answer, Value), DrillError> {
+        let timeout = || DrillError::Timeout {
+            what: "the rehearsal reply",
+            seconds: u64::from(attempts) * pause.as_secs(),
+        };
         let answer = watch.poll(attempts, pause, |_| {
+            if deadline.is_some_and(|deadline| Utc::now() > deadline) {
+                return Err(timeout());
+            }
             let body = self.snapshot(&turn.workspace, &turn.chat)?;
             match turn_state(&body) {
                 TurnState::Answered(answer) => Ok(Some((answer, body))),
@@ -223,10 +233,7 @@ impl Physician {
                 TurnState::Writing => Ok(None),
             }
         })?;
-        answer.ok_or(DrillError::Timeout {
-            what: "the rehearsal reply",
-            seconds: u64::from(attempts) * pause.as_secs(),
-        })
+        answer.ok_or_else(timeout)
     }
 }
 

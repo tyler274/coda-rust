@@ -25,12 +25,12 @@ pub(super) fn drain_bound(turns: u32, instances: u32, hold: Duration) -> Duratio
     hold * turns.div_ceil(slots) + DRAIN_SLACK
 }
 
-/// The worker instances writing the queue gauges, and the turns they count
-/// due now, from a Cloud Monitoring `timeSeries.list` answer for the `due`
-/// gauge. Each instance writes its own series; the newest point of each is
-/// its current count. `None` when no instance wrote a point, which proves
-/// nothing either way.
-pub(super) fn queue_due(body: &Value) -> Option<QueueDue> {
+/// The worker instances writing one queue gauge, and the count it reads now,
+/// from a Cloud Monitoring `timeSeries.list` answer. Each instance writes its
+/// own series from the same rows, so the newest point of each is the same
+/// count read at a different moment, and the largest is the reading. `None`
+/// when no instance wrote a point, which proves nothing either way.
+pub(super) fn queue_gauge(body: &Value) -> Option<QueueGauge> {
     let newest: Vec<u64> = body["timeSeries"]
         .as_array()?
         .iter()
@@ -43,17 +43,47 @@ pub(super) fn queue_due(body: &Value) -> Option<QueueDue> {
     let instances = u32::try_from(newest.len())
         .ok()
         .filter(|count| *count > 0)?;
-    Some(QueueDue {
+    Some(QueueGauge {
         instances,
-        due: newest.iter().sum(),
+        count: newest.iter().copied().max().unwrap_or(0),
     })
 }
 
-/// What the queue gauges say right now.
+/// What one queue gauge says right now.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize)]
-pub(super) struct QueueDue {
+pub(super) struct QueueGauge {
     pub(super) instances: u32,
-    pub(super) due: u64,
+    pub(super) count: u64,
+}
+
+/// The queue before a hard stop: work runnable now and work a live lease
+/// holds. `None` for a gauge no instance wrote.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize)]
+pub(super) struct QueueNow {
+    pub(super) due: Option<QueueGauge>,
+    pub(super) running: Option<QueueGauge>,
+}
+
+impl QueueNow {
+    /// Why a crash now would cost more than the drill's own turn: an abort
+    /// drops every attempt on the instance, so the queue must hold nothing
+    /// due and nothing running, and an unread gauge proves neither.
+    pub(super) fn busy(&self) -> Vec<String> {
+        let mut busy = Vec::new();
+        for (name, gauge) in [("due", self.due), ("running", self.running)] {
+            match gauge {
+                None => busy.push(format!(
+                    "no worker wrote the {name} gauge in the last five minutes"
+                )),
+                Some(gauge) if gauge.count > 0 => busy.push(format!(
+                    "{} turns are {name}; a crash could drop theirs, so the drill needs an idle queue",
+                    gauge.count
+                )),
+                Some(_) => {}
+            }
+        }
+        busy
+    }
 }
 
 /// One burst turn's samples. A sample the drill could not read stays `None`
@@ -163,16 +193,23 @@ impl WaveSummary {
         }
     }
 
-    /// Where the wave failed its bound: it did not drain, or drained late.
+    /// Where the wave failed: it did not drain, drained late, or left a
+    /// sample unread, since a wave judged on partial samples proves nothing.
     pub(super) fn gaps(&self, wave: &str) -> Vec<String> {
-        match self.drained_seconds {
+        let mut gaps = match self.drained_seconds {
             None => vec![format!("{wave} did not drain: a turn never replied")],
             Some(drained) if drained > self.bound_seconds => vec![format!(
                 "{wave} drained in {drained:.1} s, past its {:.1} s bound",
                 self.bound_seconds
             )],
             Some(_) => Vec::new(),
-        }
+        };
+        gaps.extend(
+            self.missing
+                .iter()
+                .map(|missing| format!("{wave} lacks {missing}")),
+        );
+        gaps
     }
 }
 
@@ -186,15 +223,30 @@ fn seconds(elapsed: chrono::Duration) -> f64 {
     millis / 1000.0
 }
 
-/// What a recovered hard stop must show: the answering attempt succeeded the
+/// How long a hard-stopped turn may take from submit to its reply: the
+/// 30-second held first attempt, the 60-second lease expiry, discovery and
+/// the successor's own hold fit well inside it.
+pub(super) const HARD_STOP_LIMIT: Duration = Duration::from_secs(300);
+
+/// What a recovered hard stop must show: the reply came within
+/// [`HARD_STOP_LIMIT`] of the submit, the answering attempt succeeded the
 /// crashed one in the same work, the crashed one logged its receipt, and the
 /// chat holds exactly one reply.
 pub(super) fn hard_stop_gaps(
+    recovered_in: chrono::Duration,
     successor: &AttemptSpan,
     receipt: Option<&Value>,
     replies: usize,
 ) -> Vec<String> {
     let mut gaps = Vec::new();
+    let limit = chrono::Duration::from_std(HARD_STOP_LIMIT).unwrap_or(chrono::Duration::MAX);
+    if recovered_in > limit {
+        gaps.push(format!(
+            "the turn answered {:.1} s after submit, past the {} s recovery limit",
+            seconds(recovered_in),
+            HARD_STOP_LIMIT.as_secs()
+        ));
+    }
     let Some(crashed) = successor.predecessor_run_id.as_deref() else {
         gaps.push(format!(
             "the answering attempt {} names no predecessor; no attempt was interrupted",
@@ -255,23 +307,63 @@ mod tests {
     fn the_queue_reads_each_instances_newest_point() {
         let body = json!({ "timeSeries": [series("0", "5"), series("2", "0")] });
         assert_eq!(
-            queue_due(&body),
-            Some(QueueDue {
+            queue_gauge(&body),
+            Some(QueueGauge {
                 instances: 2,
-                due: 2
+                count: 2
             })
         );
+        let same_rows = json!({ "timeSeries": [series("3", "0"), series("3", "0")] });
+        assert_eq!(
+            queue_gauge(&same_rows).map(|gauge| gauge.count),
+            Some(3),
+            "instances count the same rows, so their readings are not added"
+        );
         let idle = json!({ "timeSeries": [series("0", "3")] });
-        assert_eq!(queue_due(&idle).map(|queue| queue.due), Some(0));
+        assert_eq!(queue_gauge(&idle).map(|gauge| gauge.count), Some(0));
     }
 
     #[test]
     fn no_gauge_point_is_not_an_idle_queue() {
-        assert_eq!(queue_due(&json!({})), None);
-        assert_eq!(queue_due(&json!({ "timeSeries": [] })), None);
+        assert_eq!(queue_gauge(&json!({})), None);
+        assert_eq!(queue_gauge(&json!({ "timeSeries": [] })), None);
         assert_eq!(
-            queue_due(&json!({ "timeSeries": [{ "points": [] }] })),
+            queue_gauge(&json!({ "timeSeries": [{ "points": [] }] })),
             None
+        );
+    }
+
+    #[test]
+    fn a_hard_stop_needs_nothing_due_and_nothing_running() {
+        let gauge = |count| {
+            Some(QueueGauge {
+                instances: 1,
+                count,
+            })
+        };
+        let idle = QueueNow {
+            due: gauge(0),
+            running: gauge(0),
+        };
+        assert!(idle.busy().is_empty());
+        let running = QueueNow {
+            running: gauge(2),
+            ..idle
+        };
+        assert_eq!(
+            running.busy().len(),
+            1,
+            "leased work is not due but a crash drops it"
+        );
+        assert!(running.busy()[0].contains("2 turns are running"));
+        let unread = QueueNow {
+            running: None,
+            ..idle
+        };
+        assert_eq!(
+            unread.busy().len(),
+            1,
+            "an unread gauge is not an idle queue"
         );
     }
 
@@ -318,6 +410,11 @@ mod tests {
             true,
         );
         assert_eq!(
+            wave.gaps("wave 1").len(),
+            4,
+            "a wave that drained in bound still fails on each unread sample"
+        );
+        assert_eq!(
             wave.max_queue_delay_ms,
             Some(1_000),
             "only read delays count"
@@ -347,7 +444,13 @@ mod tests {
         );
         assert_eq!(wave.drained_seconds, None);
         assert_eq!(wave.missing, ["b: completion"]);
-        assert_eq!(wave.gaps("wave 2").len(), 1);
+        assert_eq!(
+            wave.gaps("wave 2"),
+            [
+                "wave 2 did not drain: a turn never replied",
+                "wave 2 lacks b: completion"
+            ]
+        );
     }
 
     fn successor(predecessor: Option<&str>) -> AttemptSpan {
@@ -371,28 +474,43 @@ mod tests {
         }})
     }
 
+    fn within() -> chrono::Duration {
+        chrono::Duration::seconds(120)
+    }
+
     #[test]
     fn a_recovered_hard_stop_links_its_attempts_and_answers_once() {
         let linked = successor(Some("run-1"));
-        assert!(hard_stop_gaps(&linked, Some(&receipt("work-1")), 1).is_empty());
+        let work = receipt("work-1");
+        assert!(hard_stop_gaps(within(), &linked, Some(&work), 1).is_empty());
         assert_eq!(
-            hard_stop_gaps(&linked, Some(&receipt("work-9")), 1).len(),
+            hard_stop_gaps(within(), &linked, Some(&receipt("work-9")), 1).len(),
             1
         );
-        assert_eq!(hard_stop_gaps(&linked, None, 1).len(), 1);
-        assert_eq!(
-            hard_stop_gaps(&linked, Some(&receipt("work-1")), 2).len(),
-            1
+        assert_eq!(hard_stop_gaps(within(), &linked, None, 1).len(), 1);
+        assert_eq!(hard_stop_gaps(within(), &linked, Some(&work), 2).len(), 1);
+        assert_eq!(hard_stop_gaps(within(), &linked, Some(&work), 0).len(), 1);
+    }
+
+    #[test]
+    fn a_hard_stop_recovered_past_five_minutes_fails() {
+        let linked = successor(Some("run-1"));
+        let work = receipt("work-1");
+        let limit = chrono::Duration::seconds(300);
+        assert!(hard_stop_gaps(limit, &linked, Some(&work), 1).is_empty());
+        let late = hard_stop_gaps(
+            limit + chrono::Duration::seconds(1),
+            &linked,
+            Some(&work),
+            1,
         );
-        assert_eq!(
-            hard_stop_gaps(&linked, Some(&receipt("work-1")), 0).len(),
-            1
-        );
+        assert_eq!(late.len(), 1);
+        assert!(late[0].contains("recovery limit"), "{late:?}");
     }
 
     #[test]
     fn an_answer_without_a_predecessor_never_crashed() {
-        let gaps = hard_stop_gaps(&successor(None), Some(&receipt("work-1")), 1);
+        let gaps = hard_stop_gaps(within(), &successor(None), Some(&receipt("work-1")), 1);
         assert_eq!(gaps.len(), 1);
         assert!(gaps[0].contains("no predecessor"), "{gaps:?}");
     }

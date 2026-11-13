@@ -345,9 +345,18 @@ pub(super) fn revision_pending() -> Cond {
 /// recovers it as a successor.
 pub(super) fn revision_lost() -> Cond {
     use reply_draft::Column as D;
-    use revision_attempt::Column as A;
     let attempted = Expr::exists(latest_revision_attempt().expr(Expr::val(1)).to_owned());
-    let held = Expr::exists(
+    Cond::all()
+        .add(Expr::col((reply_draft::Entity, D::Status)).eq(DraftStatus::Active))
+        .add(attempted)
+        .add(revision_lease_held().not())
+}
+
+/// Whether the latest attempt of the draft row in the enclosing query holds
+/// a live lease.
+fn revision_lease_held() -> Expr {
+    use revision_attempt::Column as A;
+    Expr::exists(
         latest_revision_attempt()
             .expr(Expr::val(1))
             .cond_where(lease_live(
@@ -356,11 +365,7 @@ pub(super) fn revision_lost() -> Cond {
                 A::Expires,
             ))
             .to_owned(),
-    );
-    Cond::all()
-        .add(Expr::col((reply_draft::Entity, D::Status)).eq(DraftStatus::Active))
-        .add(attempted)
-        .add(held.not())
+    )
 }
 
 /// The draft rows [`Store::revisions_due`] hands out.
@@ -373,13 +378,14 @@ pub(super) fn revision_due() -> Cond {
 /// One owner table's share of the [`QueueSignals`], in SQL over its rows.
 /// Work is due when it is pending past `dispatch_after` (`pending`), or
 /// running with no live lease (`lost`); it has waited since `pending_since`
-/// or `lost_since`. `failed` is work recovery gave up on. `owed` narrows the
-/// rows the hosted workers owe at all.
+/// or `lost_since`. `running` is work a live lease holds now, `failed` work
+/// recovery gave up on. `owed` narrows the rows the hosted workers owe at all.
 struct Owed {
     pending: Cond,
     pending_since: Expr,
     lost: Cond,
     lost_since: Expr,
+    running: Cond,
     failed: Cond,
     owed: Cond,
 }
@@ -391,6 +397,7 @@ impl Owed {
             pending_since,
             lost,
             lost_since,
+            running,
             failed,
             owed,
         } = self;
@@ -411,6 +418,7 @@ impl Owed {
                 database_clock().sub(Expr::from(Func::min(waiting_since))),
                 Alias::new("oldest_due"),
             )
+            .expr_as(tally(running), Alias::new("running"))
             .expr_as(tally(failed), Alias::new("failed"))
             .from(table)
             .cond_where(owed)
@@ -437,6 +445,7 @@ fn owed_chat_turns() -> Owed {
         pending_since: dispatch_after.clone(),
         lost: chat_turn_lost(),
         lost_since: Func::coalesce([lease_end, dispatch_after]).into(),
+        running: Cond::all().add(chat_lease_held()),
         failed: Cond::all().add(row(C::Status).eq(WorkStatus::Failed)),
         owed: Cond::all().add(row(C::SessionHash).is_not_null()),
     }
@@ -460,6 +469,7 @@ fn owed_reply_revisions() -> Owed {
         pending_since: state_bigint(row(D::State), "dispatch_after"),
         lost: revision_lost(),
         lost_since: lease_end,
+        running: Cond::all().add(revision_lease_held()),
         failed: Cond::all().add(row(D::Status).eq(DraftStatus::Failed)),
         owed: revision_owed(),
     }
@@ -575,6 +585,8 @@ pub struct QueueSignals {
     /// Work runnable now: pending past its retry delay, or a lease run out.
     /// None when nothing is due.
     pub due: Option<DueWork>,
+    /// Work a live lease holds now: an attempt running on some worker.
+    pub running: u64,
     /// Work that ended failed after [`MAX_FAILED_ATTEMPTS`] and waits for
     /// the physician's Try again.
     pub failed: u64,
@@ -697,6 +709,7 @@ impl Store {
                 return Err(error("queue signal read returned no row"));
             };
             let due: i64 = row.try_get("", "due")?;
+            let running: i64 = row.try_get("", "running")?;
             let failed: i64 = row.try_get("", "failed")?;
             let oldest: Option<i64> = row.try_get("", "oldest_due")?;
             let due = match (NonZeroU64::new(due.unsigned_abs()), oldest) {
@@ -708,6 +721,7 @@ impl Store {
                 (Some(_), None) => return Err(error("queue signal read due work without an age")),
             };
             signals.due = DueWork::merge(signals.due, due);
+            signals.running += running.unsigned_abs();
             signals.failed += failed.unsigned_abs();
         }
         Ok(signals)

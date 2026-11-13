@@ -51,12 +51,13 @@ ACTION
   burst              one unmarked turn for the idle baseline, then two
                      sequential waves of 12 turns marked [hold:20]; each turn's
                      submit, attempt, attempt-span start and duration, hold and
-                     reply are recorded, a missing sample is listed as missing,
-                     and each wave must drain within
+                     reply are recorded; a missing sample is listed as missing
+                     and fails its wave, and each wave must drain within
                      ceil(12 / (4 x worker instances)) x 20 s + 10 s
   hard-stop          (needs --confirm, it aborts a worker instance) refuses
-                     unless the queue gauges show nothing due, sends one turn
-                     marked [hold:30][crash:1] and waits at most five minutes:
+                     unless the queue gauges show nothing due and nothing
+                     running, sends one turn marked [hold:30][crash:1] and
+                     waits at most five minutes from the submit:
                      the answering attempt must succeed the crashed one in the
                      same work, the crashed attempt must have logged
                      physician.worker.rehearsed_crash, and the chat must hold
@@ -87,14 +88,16 @@ const HARD_STOP_MARKER: &str = " [hold:30][crash:1]";
 /// `burst` reads each snapshot this often, so a reply's observed time stays
 /// within a few seconds of the drain bound's 10 s slack.
 const BURST_REPLY: (u32, Duration) = (150, Duration::from_secs(2));
-/// How long `hard-stop` waits for the successor's reply: the 60-second lease
-/// expiry, discovery and the successor's own hold, within five minutes.
+/// How often `hard-stop` reads the snapshot: enough polls to span
+/// [`contention::HARD_STOP_LIMIT`], while the wait itself ends at that limit
+/// after the submit however long each read takes.
 const HARD_STOP_REPLY: (u32, Duration) = (60, REPLY_PAUSE);
 const CLOUD_LOGGING: &str = "https://logging.googleapis.com/v2/entries:list";
 const CLOUD_MONITORING: &str = "https://monitoring.googleapis.com/v3/projects";
-/// The worker's queue gauge of turns runnable now
-/// (`physician-worker/signals.rs`).
+/// The worker's queue gauges of work runnable now and work a live lease
+/// holds (`physician-worker/signals.rs`).
 const DUE_METRIC: &str = "custom.googleapis.com/coda/physician/queue/due";
+const RUNNING_METRIC: &str = "custom.googleapis.com/coda/physician/queue/running";
 /// `chat_generation_errors` in `infra/gcp/observability/datadog.tf`.
 const CHAT_FAILURE_MONITOR: &str = "[staging] physician chat generation errors";
 /// The ledger group of a `chat-failure` exercise, apart from the exporter's.
@@ -548,10 +551,24 @@ impl Rehearsal {
         &self,
         turn: Turn,
         canary: String,
-        (polls, pause): (u32, Duration),
+        polling: (u32, Duration),
         watch: &Watch,
     ) -> Result<Sent, DrillError> {
-        let (answer, snapshot) = self.physician.await_reply(&turn, polls, pause, watch)?;
+        self.answer_by(turn, canary, polling, None, watch)
+    }
+
+    /// [`Self::answer_within`] that also gives up once `deadline` passes.
+    fn answer_by(
+        &self,
+        turn: Turn,
+        canary: String,
+        (polls, pause): (u32, Duration),
+        deadline: Option<DateTime<Utc>>,
+        watch: &Watch,
+    ) -> Result<Sent, DrillError> {
+        let (answer, snapshot) = self
+            .physician
+            .await_reply(&turn, polls, pause, deadline, watch)?;
         Ok(Sent {
             reply_chars: answer.text.chars().count(),
             replies: chat::model_replies(&snapshot),
@@ -1443,13 +1460,13 @@ impl Google {
         })
     }
 
-    /// The newest `due` gauge point of every worker instance from the last
-    /// five minutes.
-    fn queue_due(&self) -> Result<Option<contention::QueueDue>, DrillError> {
+    /// The newest point of queue gauge `metric` from every worker instance
+    /// in the last five minutes.
+    fn queue_gauge(&self, metric: &str) -> Result<Option<contention::QueueGauge>, DrillError> {
         let now = Utc::now();
         let start = (now - chrono::Duration::minutes(5)).to_rfc3339();
         let end = now.to_rfc3339();
-        let filter = format!("metric.type=\"{DUE_METRIC}\"");
+        let filter = format!("metric.type=\"{metric}\"");
         let body = chat::send_json(
             self.client
                 .get(format!("{CLOUD_MONITORING}/{STAGING_PROJECT}/timeSeries"))
@@ -1461,7 +1478,15 @@ impl Google {
                 ]),
             "the physician queue gauges",
         )?;
-        Ok(contention::queue_due(&body))
+        Ok(contention::queue_gauge(&body))
+    }
+
+    /// Work due now and work a live lease holds, from the queue gauges.
+    fn queue_now(&self) -> Result<contention::QueueNow, DrillError> {
+        Ok(contention::QueueNow {
+            due: self.queue_gauge(DUE_METRIC)?,
+            running: self.queue_gauge(RUNNING_METRIC)?,
+        })
     }
 
     /// Waits for attempt `run_id`'s rehearsed-crash log line in Cloud
@@ -1504,7 +1529,7 @@ fn burst(request: &Request, report: &mut Report, watch: &Watch) -> Result<(), Dr
     let datadog = Datadog::open()?;
     let google = Google::open()?;
     let rehearsal = Rehearsal::sign_in()?;
-    let queue = google.queue_due()?;
+    let queue = google.queue_gauge(DUE_METRIC)?;
     report.put("queue_before", queue);
     let instances = queue.map_or(1, |queue| queue.instances);
     let bound = contention::drain_bound(BURST_TURNS, instances, BURST_HOLD);
@@ -1512,11 +1537,11 @@ fn burst(request: &Request, report: &mut Report, watch: &Watch) -> Result<(), Dr
 
     let baseline = burst_wave(&datadog, &rehearsal, request, 1, "", watch)?;
     let baseline_summary = contention::WaveSummary::of(&baseline, bound, false);
+    let mut found = baseline_summary.gaps("the baseline");
     report.put(
         "baseline",
         json!({ "turn": baseline, "summary": baseline_summary }),
     );
-    let mut found = Vec::new();
     for wave in ["wave 1", "wave 2"] {
         let samples = burst_wave(
             &datadog,
@@ -1587,30 +1612,15 @@ fn burst_wave(
 fn hard_stop(request: &Request, report: &mut Report, watch: &Watch) -> Result<(), DrillError> {
     let datadog = Datadog::open()?;
     let google = Google::open()?;
-    let queue = google.queue_due()?;
+    let queue = google.queue_now()?;
     report.put("queue_before", queue);
-    match queue {
-        Some(queue) if queue.due == 0 => {}
-        Some(queue) => {
-            return Err(DrillError::Gaps {
-                what: "the physician queue",
-                gaps: vec![format!(
-                    "{} turns are due; a crash would also drop theirs, so the drill needs an empty queue",
-                    queue.due
-                )],
-            });
-        }
-        None => {
-            return Err(DrillError::Gaps {
-                what: "the physician queue",
-                gaps: vec!["no worker wrote a due gauge in the last five minutes".to_owned()],
-            });
-        }
-    }
+    gaps("the physician queue", queue.busy())?;
     let rehearsal = Rehearsal::sign_in()?;
     let crashed_from = Utc::now();
+    let deadline = crashed_from
+        + chrono::Duration::from_std(contention::HARD_STOP_LIMIT).unwrap_or(chrono::Duration::MAX);
     let (turn, canary) = rehearsal.submit(request, HARD_STOP_MARKER)?;
-    let sent = rehearsal.answer_within(turn, canary, HARD_STOP_REPLY, watch)?;
+    let sent = rehearsal.answer_by(turn, canary, HARD_STOP_REPLY, Some(deadline), watch)?;
     let (successor, _trace) = datadog.attempt(&sent.attempt, watch)?;
     let receipt = match successor.predecessor_run_id.as_deref() {
         Some(crashed) => google.crash_receipt(crashed, crashed_from, watch)?,
@@ -1637,7 +1647,12 @@ fn hard_stop(request: &Request, report: &mut Report, watch: &Watch) -> Result<()
     );
     gaps(
         "the hard stop",
-        contention::hard_stop_gaps(&successor, receipt.as_ref(), replies),
+        contention::hard_stop_gaps(
+            sent.answered_at - crashed_from,
+            &successor,
+            receipt.as_ref(),
+            replies,
+        ),
     )?;
     let (turn, canary) = rehearsal.submit(request, "")?;
     let after = rehearsal.answer(turn, canary, watch)?;

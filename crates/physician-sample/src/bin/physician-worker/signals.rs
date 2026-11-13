@@ -1,9 +1,10 @@
 //! The queue's health as Cloud Monitoring gauges.
 //!
 //! Every minute a hosted worker reads [`QueueSignals`] from Postgres, where
-//! the work lives, and writes three gauges on the `global` resource, the way
+//! the work lives, and writes four gauges on the `global` resource, the way
 //! `availability-probe` writes its own: how long the longest-waiting due
-//! work has been runnable, how much work is due, and how much ended failed.
+//! work has been runnable, how much work is due, how much a live lease holds
+//! now, and how much ended failed.
 //! The observability monitors alert on these. Each instance labels its
 //! points with its own id, since two writers on one series would reject each
 //! other's points; every instance reads the same rows, so monitors take the
@@ -25,6 +26,8 @@ pub(super) const OLDEST_DUE_METRIC: &str =
     "custom.googleapis.com/coda/physician/queue/oldest_due_seconds";
 /// Chat turns and reply revisions runnable now.
 pub(super) const DUE_METRIC: &str = "custom.googleapis.com/coda/physician/queue/due";
+/// Chat turns and reply revisions a live lease holds: running on a worker.
+pub(super) const RUNNING_METRIC: &str = "custom.googleapis.com/coda/physician/queue/running";
 /// Work that ended failed and waits for the physician's Try again.
 pub(super) const FAILED_METRIC: &str = "custom.googleapis.com/coda/physician/queue/failed";
 
@@ -229,6 +232,7 @@ fn time_series(project: &str, instance: &str, signals: QueueSignals, end: &str) 
     let series = [
         (OLDEST_DUE_METRIC, oldest),
         (DUE_METRIC, due),
+        (RUNNING_METRIC, signals.running),
         (FAILED_METRIC, signals.failed),
     ]
     .map(|(metric, value)| {
@@ -269,13 +273,15 @@ mod tests {
                 count: NonZeroU64::new(3).unwrap(),
                 oldest: Duration::from_millis(1_250_900),
             }),
+            running: 4,
             failed: 2,
         };
         let body = time_series("stg-project", "instance-7", signals, "2026-11-10T04:00:00Z");
-        assert_eq!(body["timeSeries"].as_array().map(Vec::len), Some(3));
+        assert_eq!(body["timeSeries"].as_array().map(Vec::len), Some(4));
         for (metric, value) in [
             (OLDEST_DUE_METRIC, "1250"),
             (DUE_METRIC, "3"),
+            (RUNNING_METRIC, "4"),
             (FAILED_METRIC, "2"),
         ] {
             let series = point(&body, metric);
@@ -304,7 +310,7 @@ mod tests {
     #[test]
     fn nothing_due_reports_an_age_of_zero() {
         let body = time_series("p", "i", QueueSignals::default(), "2026-11-10T04:00:00Z");
-        for metric in [OLDEST_DUE_METRIC, DUE_METRIC, FAILED_METRIC] {
+        for metric in [OLDEST_DUE_METRIC, DUE_METRIC, RUNNING_METRIC, FAILED_METRIC] {
             assert_eq!(
                 point(&body, metric)["points"][0]["value"]["int64Value"],
                 "0"

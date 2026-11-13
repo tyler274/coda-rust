@@ -210,21 +210,9 @@ async fn chat_attempt(
         },
     );
     drop(conversation);
-    let generation = genai::generation_span(
-        &RunContext {
-            run_id: claim.attempt.clone(),
-            job: CHAT_JOB,
-            recipe_version: genai::recipe_version(),
-            origin,
-            scenario_id,
-            session_id: Some(session_id),
-        },
-        "openai",
-        &worker.model.roles.chat.adapter,
-    );
-    genai::record_input(&generation, &input_text);
     // Rehearsal markers act before any model call, so a drill exercises the
-    // real hold, failure and crash paths at no cost.
+    // real hold, failure and crash paths at no cost. The generation opens
+    // after the hold, so a held turn does not read as provider latency.
     let rehearsal =
         worker
             .simulation_practices
@@ -246,7 +234,10 @@ async fn chat_attempt(
             () = pull::stopping(stop.clone()) => None,
         };
         match held {
-            None => return released(worker, &claim, span, &generation, &cancel).await,
+            None => {
+                let no_generation = tracing::Span::none();
+                return released(worker, &claim, span, &no_generation, &cancel).await;
+            }
             Some(Hosted::Lost) => return lost(span, CHAT_JOB, &claim.attempt),
             Some(Hosted::Returned(_)) if cancel.is_cancelled() => {
                 return lost(span, CHAT_JOB, &claim.attempt);
@@ -254,6 +245,19 @@ async fn chat_attempt(
             Some(Hosted::Returned(_)) => {}
         }
     }
+    let generation = genai::generation_span(
+        &RunContext {
+            run_id: claim.attempt.clone(),
+            job: CHAT_JOB,
+            recipe_version: genai::recipe_version(),
+            origin,
+            scenario_id,
+            session_id: Some(session_id),
+        },
+        "openai",
+        &worker.model.roles.chat.adapter,
+    );
+    genai::record_input(&generation, &input_text);
     match rehearsal.ending {
         RehearsedEnding::Proceed => {}
         RehearsedEnding::Fail => {
@@ -343,17 +347,26 @@ async fn chat_attempt(
 /// lease expiry lets another worker take the turn. The receipt line names
 /// the process and the lease it leaves, and is written before the abort.
 async fn rehearsed_crash(store: &Store, claim: &Claim) -> ! {
-    let attempt = store
-        .read(&claim.scope)
-        .await
-        .ok()
-        .flatten()
-        .and_then(|state| {
+    let attempt = match store.read(&claim.scope).await {
+        Ok(state) => state.and_then(|state| {
             state
                 .attempts
                 .into_iter()
                 .find(|attempt| attempt.id == claim.attempt)
-        });
+        }),
+        Err(error) => {
+            // The abort still proceeds; the receipt says the lease could not
+            // be read instead of leaving the fields silently empty.
+            tracing::error!(
+                event = "physician.worker.rehearsed_crash_read",
+                error.type = "store_read",
+                coda.run_id = claim.attempt.as_str(),
+                error = %error,
+                "physician worker could not read the crashing attempt's lease"
+            );
+            None
+        }
+    };
     tracing::error!(
         event = "physician.worker.rehearsed_crash",
         process.pid = std::process::id(),

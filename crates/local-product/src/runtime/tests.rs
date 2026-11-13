@@ -2711,6 +2711,11 @@ async fn queue_signals_count_due_and_failed_work_and_age_the_oldest() {
         .await
         .unwrap();
     assert_eq!(due_count(&store).await, 1);
+    assert_eq!(
+        store.queue_signals().await.unwrap().running,
+        1,
+        "only the live lease counts as running; a settled failure does not"
+    );
 
     // The oldest due work is aged from when it became runnable: acceptance
     // for pending work, the lease's end for a lost attempt.
@@ -2720,7 +2725,12 @@ async fn queue_signals_count_due_and_failed_work_and_age_the_oldest() {
     let (tx, mut state, now) = store.locked(&running).await.unwrap();
     state.attempts.last_mut().unwrap().expires = now - 120;
     Store::save(tx, &running, &state).await.unwrap();
-    let due = store.queue_signals().await.unwrap().due.unwrap();
+    let signals = store.queue_signals().await.unwrap();
+    assert_eq!(
+        signals.running, 0,
+        "a lease that ran out is due, not running"
+    );
+    let due = signals.due.unwrap();
     assert_eq!(due.count.get(), 2);
     let oldest = due.oldest.as_secs();
     assert!((300..305).contains(&oldest), "oldest due {oldest}s");
