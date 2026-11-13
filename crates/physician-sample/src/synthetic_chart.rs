@@ -12,7 +12,8 @@ use std::path::{Path, PathBuf};
 use async_trait::async_trait;
 use base64::Engine as _;
 use local_product::physician_sources::{
-    MedicalRecordNumber, PatientSource, ReadablePart, RecordDate, SourcePatient, SourceRevision,
+    MedicalRecordNumber, PatientSource, ReadablePart, RecordDate, SourceAdapterError,
+    SourcePatient, SourceRevision,
 };
 use local_product::sha256_hex;
 use serde_json::{Value, json};
@@ -58,42 +59,54 @@ impl PatientSource for SyntheticCharts {
         SOURCE_LABEL
     }
 
-    async fn patient_ids(&self) -> Result<Vec<String>, String> {
-        let entries = fs::read_dir(&self.patients)
-            .map_err(|error| format!("{}: {error}", self.patients.display()))?;
+    async fn patient_ids(&self) -> Result<Vec<String>, SourceAdapterError> {
+        let entries = fs::read_dir(&self.patients).map_err(|source| SourceAdapterError::Io {
+            path: self.patients.clone(),
+            source,
+        })?;
         let mut ids = Vec::new();
         for entry in entries {
-            let entry = entry.map_err(|error| format!("{}: {error}", self.patients.display()))?;
+            let entry = entry.map_err(|source| SourceAdapterError::Io {
+                path: self.patients.clone(),
+                source,
+            })?;
             ids.push(entry.file_name().to_string_lossy().into_owned());
         }
         ids.sort();
         Ok(ids)
     }
 
-    async fn patient(&self, source_patient_id: &str) -> Result<SourcePatient, String> {
+    async fn patient(&self, source_patient_id: &str) -> Result<SourcePatient, SourceAdapterError> {
         let path = self.patients.join(source_patient_id).join("Patient.ndjson");
         let text = read(&path)?;
-        let line = text
-            .lines()
-            .next()
-            .ok_or_else(|| format!("{}: no Patient record", path.display()))?;
-        source_patient(source_patient_id.to_owned(), line)
-            .map_err(|error| format!("{}: {error}", path.display()))
+        let line =
+            text.lines()
+                .next()
+                .ok_or_else(|| SourceAdapterError::MissingPatientIdentity {
+                    context: path.display().to_string(),
+                    detail: "no Patient record".to_owned(),
+                })?;
+        source_patient(source_patient_id.to_owned(), line, &path)
     }
 
     async fn records(
         &self,
         patient: &SourcePatient,
         workspace: &str,
-    ) -> Result<Vec<SourceRevision>, String> {
+    ) -> Result<Vec<SourceRevision>, SourceAdapterError> {
         let chart = self.patients.join(&patient.source_patient_id);
-        let entries =
-            fs::read_dir(&chart).map_err(|error| format!("{}: {error}", chart.display()))?;
+        let entries = fs::read_dir(&chart).map_err(|source| SourceAdapterError::Io {
+            path: chart.clone(),
+            source,
+        })?;
         let mut files = Vec::new();
         for entry in entries {
             files.push(
                 entry
-                    .map_err(|error| format!("{}: {error}", chart.display()))?
+                    .map_err(|source| SourceAdapterError::Io {
+                        path: chart.clone(),
+                        source,
+                    })?
                     .path(),
             );
         }
@@ -101,22 +114,34 @@ impl PatientSource for SyntheticCharts {
         let mut records = Vec::new();
         for file in files {
             for line in read(&file)?.lines() {
-                records.push(
-                    source_revision(workspace, line)
-                        .map_err(|error| format!("{}: {error}", file.display()))?,
-                );
+                records.push(source_revision(workspace, line).map_err(|error| {
+                    SourceAdapterError::Unavailable {
+                        reason: format!("{}: {error}", file.display()),
+                    }
+                })?);
             }
         }
         Ok(records)
     }
 }
 
-fn read(path: &Path) -> Result<String, String> {
-    fs::read_to_string(path).map_err(|error| format!("{}: {error}", path.display()))
+fn read(path: &Path) -> Result<String, SourceAdapterError> {
+    fs::read_to_string(path).map_err(|source| SourceAdapterError::Io {
+        path: path.to_path_buf(),
+        source,
+    })
 }
 
-fn source_patient(source_patient_id: String, line: &str) -> Result<SourcePatient, String> {
-    let resource: Value = serde_json::from_str(line).map_err(|error| error.to_string())?;
+fn source_patient(
+    source_patient_id: String,
+    line: &str,
+    path: &Path,
+) -> Result<SourcePatient, SourceAdapterError> {
+    let resource: Value =
+        serde_json::from_str(line).map_err(|source| SourceAdapterError::InvalidPatientJson {
+            context: path.display().to_string(),
+            source,
+        })?;
     let name = &resource["name"][0];
     let given = name["given"].as_array().into_iter().flatten();
     let parts: Vec<&str> = given
@@ -124,7 +149,10 @@ fn source_patient(source_patient_id: String, line: &str) -> Result<SourcePatient
         .filter_map(Value::as_str)
         .collect();
     if parts.is_empty() {
-        return Err("patient has no name".into());
+        return Err(SourceAdapterError::MissingPatientIdentity {
+            context: path.display().to_string(),
+            detail: "patient has no name".to_owned(),
+        });
     }
     Ok(SourcePatient {
         source_patient_id,
@@ -164,6 +192,7 @@ fn source_revision(workspace: &str, line: &str) -> Result<SourceRevision, String
         sha256,
         readable_parts: readable_parts(&resource)?,
         provenance: json!({"native_record": candidate_id}),
+        envelope: None,
     };
     source.validate()?;
     Ok(source)
@@ -291,7 +320,11 @@ mod tests {
         let source = SyntheticCharts::open(&bank("scan", &scan));
         let ids = source.patient_ids().await.unwrap();
         let patient = source.patient(&ids[0]).await.unwrap();
-        let error = source.records(&patient, "pw-1").await.unwrap_err();
+        let error = source
+            .records(&patient, "pw-1")
+            .await
+            .unwrap_err()
+            .to_string();
         assert!(error.contains("image/tiff"), "{error}");
     }
 }

@@ -23,6 +23,7 @@ fn exact_reader_rejects_corruption_and_cross_workspace_and_never_truncates_conte
             text: "Potassium 4.1 mmol/L".into(),
         }],
         provenance: json!({"source_id":"native-1"}),
+        envelope: None,
     };
     let read = exact_read(
         std::slice::from_ref(&source),

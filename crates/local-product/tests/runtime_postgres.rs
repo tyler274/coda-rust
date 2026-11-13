@@ -396,6 +396,7 @@ async fn a_read_recorded_after_a_steer_is_retained_by_the_successor() {
         sha256: local_product::sha256_hex(b"Potassium 4.1"),
         readable_parts: vec![],
         provenance: json!({"native_record":"late-read-lab"}),
+        envelope: None,
     })
     .await
     .unwrap();
