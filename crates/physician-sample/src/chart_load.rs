@@ -54,7 +54,11 @@ pub async fn load_synthetic_practice(
         .practice_clock(STAGING_PRACTICE_ID)
         .await
         .map_err(|_| "read the synthetic practice's clock".to_owned())?;
-    for id in source.patient_ids().await? {
+    for id in source
+        .patient_ids()
+        .await
+        .map_err(|error| error.to_string())?
+    {
         let workspace = workspace_id(source.source_id(), &id);
         let loaded: Result<(), String> = async {
             let owner = auth
@@ -64,8 +68,14 @@ pub async fn load_synthetic_practice(
             if owner.as_deref().is_some_and(|id| id != STAGING_PRACTICE_ID) {
                 return Err("belongs to another practice".to_owned());
             }
-            let patient = source.patient(&id).await?;
-            let records = source.records(&patient, &workspace).await?;
+            let patient = source
+                .patient(&id)
+                .await
+                .map_err(|error| error.to_string())?;
+            let records = source
+                .records(&patient, &workspace)
+                .await
+                .map_err(|error| error.to_string())?;
             let pull = SourcePull {
                 source_id: source.source_id().to_owned(),
                 source_label: source.source_label().to_owned(),

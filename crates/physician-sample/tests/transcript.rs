@@ -82,6 +82,7 @@ impl Stack {
                 sha256: revision.clone(),
                 readable_parts: vec![],
                 provenance: json!({"native_record": "Observation/sodium"}),
+                envelope: None,
             })
             .await
             .expect("chart record");

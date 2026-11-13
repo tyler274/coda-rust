@@ -1440,6 +1440,7 @@ mod tests {
                 content,
                 readable_parts: vec![],
                 provenance: json!({"native_record": "Observation"}),
+                envelope: None,
             }
         };
         let synthetic = physician_sample::synthetic_chart::SOURCE_ID;
