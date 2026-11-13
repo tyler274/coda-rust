@@ -504,11 +504,15 @@ impl<S: Store> Shared<S> {
                 None => return,
                 Some(Wake::Tick { observer, head }) => observer.tick_prompt(head),
                 Some(Wake::Ring(message)) => {
-                    since = message.seq;
-                    format!(
-                        "New post #{} from {} in #{}:\n{}",
-                        message.seq, message.agent, message.channel, message.text
-                    )
+                    let (text, delivered) = match self.wake_prompt(name, since, &message) {
+                        Ok(wake) => wake,
+                        Err(error) => {
+                            self.note_error(name, &error);
+                            (render(std::slice::from_ref(&message), 0), message.seq)
+                        }
+                    };
+                    since = delivered;
+                    text
                 }
             };
         }
@@ -519,7 +523,7 @@ impl<S: Store> Shared<S> {
     /// a prompt) that mention it earn one more turn to read and answer them.
     /// At most one such turn per board head, recorded on the roster so a
     /// restart does not repeat it; once spent, the member parks past them.
-    fn park_guard(&self, name: &MemberName, delivered: Seq) -> Result<ParkGuard, GuardError> {
+    fn park_guard(&self, name: &MemberName, delivered: Seq) -> Result<ParkGuard, BoardError> {
         let head = self.store.head()?;
         let roster = self.store.roster()?;
         let member = roster.member(name)?;
@@ -558,6 +562,32 @@ impl<S: Store> Shared<S> {
                 member.last_read_seq
             ),
         })
+    }
+
+    /// The prompt for a member rung by `ring`: every post in its view after
+    /// both `delivered` and its read cursor, the newest [`WAKE_MESSAGES`]
+    /// in full. Returns the prompt and the last seq it carries.
+    fn wake_prompt(
+        &self,
+        name: &MemberName,
+        delivered: Seq,
+        ring: &Message,
+    ) -> Result<(String, Seq), BoardError> {
+        let roster = self.store.roster()?;
+        let member = roster.member(name)?;
+        let after = delivered.max(member.last_read_seq);
+        let mut visible: Vec<Message> = self
+            .store
+            .read_since(after, usize::MAX)?
+            .into_iter()
+            .filter(|m| m.agent != *name && roster.sees(name, member, m, &m.mentions()))
+            .collect();
+        if visible.is_empty() {
+            visible.push(ring.clone());
+        }
+        let earlier = visible.len().saturating_sub(WAKE_MESSAGES);
+        let last = visible.last().map_or(ring.seq, |m| m.seq).max(ring.seq);
+        Ok((render(&visible[earlier..], earlier), last))
     }
 
     /// Marks the member working and returns the model for this turn.
@@ -737,6 +767,25 @@ impl<S: Store> Shared<S> {
     }
 }
 
+/// Posts a wake prompt carries in full; older ones are counted instead.
+const WAKE_MESSAGES: usize = 20;
+
+fn render(messages: &[Message], earlier: usize) -> String {
+    let mut lines = Vec::with_capacity(messages.len() + 1);
+    if earlier > 0 {
+        lines.push(format!(
+            "[board] {earlier} earlier messages are not shown; read_board has them."
+        ));
+    }
+    lines.extend(messages.iter().map(|m| {
+        format!(
+            "New post #{} from {} in #{}:\n{}",
+            m.seq, m.agent, m.channel, m.text
+        )
+    }));
+    lines.join("\n")
+}
+
 enum Wake {
     Ring(Message),
     Tick { observer: Observer, head: Seq },
@@ -754,7 +803,7 @@ enum ParkGuard {
 }
 
 #[derive(Debug, thiserror::Error)]
-enum GuardError {
+enum BoardError {
     #[error(transparent)]
     Store(#[from] StoreError),
     #[error(transparent)]

@@ -11,8 +11,10 @@ use tempfile::TempDir;
 use super::*;
 use crate::adapter::CommandAdapter;
 use crate::file_store::FileStore;
+use crate::message::Control;
+use crate::names::ChannelName;
 use crate::policy::Policy;
-use crate::roster::{Member, Role};
+use crate::roster::{Member, Role, Topic};
 use crate::store::SwarmId;
 
 /// Behavior by member name. Every turn appends `<member> <prompt>` to
@@ -386,15 +388,68 @@ fn waiting_member_wakes_for_a_mention() {
         .store()
         .append(Draft::post(name("lead"), "@scout report"), Utc::now())
         .expect("mention");
-    // The wake prompt is two lines: the header, then the post text.
-    eventually("second turn", || h.turns().len() == 3);
-    assert_eq!(h.turns()[1], "scout New post #2 from lead in #main:");
-    assert_eq!(h.turns()[2], "@scout report");
+    eventually("second turn", || h.turns().len() == 5);
+    assert_eq!(
+        h.turns()[1..],
+        [
+            "scout New post #1 from lead in #main:",
+            "status, please",
+            "New post #2 from lead in #main:",
+            "@scout report"
+        ]
+    );
     eventually("member to park again", || is_waiting(h.state("scout")));
     let MemberState::Waiting { wait_since, .. } = h.state("scout") else {
         unreachable!("checked above");
     };
     assert_eq!(wait_since, Seq(2));
+}
+
+#[test]
+fn a_wake_carries_every_visible_post_since_the_cursor_bounded() {
+    let h = harness(|_| {});
+    h.hold("scout", true);
+    h.spawn("scout", Workspace::Inherit, 1);
+    eventually("first turn", || h.turns().len() == 1);
+    for n in 0..WAKE_MESSAGES + 2 {
+        h.post(&format!("note {n}"));
+    }
+    h.supervisor
+        .store()
+        .record(
+            name("lead"),
+            Control::Create {
+                channel: ChannelName::parse("ops").expect("channel"),
+                topic: Topic::parse("").expect("topic"),
+            },
+            Utc::now(),
+        )
+        .expect("channel");
+    let mut hidden = Draft::post(name("lead"), "unsubscribed chatter");
+    hidden.channel = Some(ChannelName::parse("ops").expect("channel"));
+    h.supervisor
+        .store()
+        .append(hidden, Utc::now())
+        .expect("hidden post");
+    h.hold("scout", false);
+    eventually("member to park", || is_waiting(h.state("scout")));
+    let mention = h.post("@scout read these");
+
+    eventually("woken turn", || h.turns_starting("scout [board]") == 1);
+    let turns = h.turns();
+    let wake = &turns[1..];
+    assert_eq!(
+        wake[0],
+        "scout [board] 3 earlier messages are not shown; read_board has them."
+    );
+    assert_eq!(wake[1], "New post #4 from lead in #main:");
+    assert_eq!(wake.last().expect("text"), "@scout read these");
+    assert!(!turns.iter().any(|t| t.contains("unsubscribed chatter")));
+    eventually("member to park again", || is_waiting(h.state("scout")));
+    let MemberState::Waiting { wait_since, .. } = h.state("scout") else {
+        unreachable!("checked above");
+    };
+    assert_eq!(wait_since, mention);
 }
 
 #[test]
