@@ -848,6 +848,57 @@ fn copy_puts_the_words_on_the_clipboard() {
     assert_eq!(browser.take_page_errors(), Vec::<String>::new());
 }
 
+/// A message that gains its status and actions after it is on screen keeps what it holds: the steps
+/// the person opened stay open and listed, in the same nodes.
+#[test]
+#[ignore = "browser qualification; run explicitly with --ignored"]
+fn a_message_that_gains_its_status_and_actions_keeps_its_opened_steps() {
+    let gallery = Gallery::start();
+    let mut browser = Browser::launch();
+    browser.watch_page_errors();
+    open(&mut browser, &gallery.url, "conversation", "Conversation");
+
+    // The scene's thread is the one its button stands in; the first read marks the line to know it later.
+    let script = include_str!("arriving_answer.js");
+    let words = [
+        Value::from("The answer arrives"),
+        Value::from("Answered at 9:42 AM"),
+    ];
+    let before = browser.page().call_function(script, &words);
+    let (x, y) = (
+        before["at"][0].as_f64().unwrap(),
+        before["at"][1].as_f64().unwrap(),
+    );
+    for kind in ["mousePressed", "mouseReleased"] {
+        mouse(&mut browser, kind, x, y);
+    }
+    wait_for(
+        &mut browser,
+        script,
+        &words,
+        |arrival| arrival["expanded"] == "true",
+        "the steps to open",
+    );
+
+    click_button(&mut browser, "The answer arrives");
+    wait_for(
+        &mut browser,
+        script,
+        &words,
+        |arrival| arrival["joined"] == true,
+        "the status and actions to join the message",
+    );
+    let after = browser.page().call_function(script, &words);
+    assert_eq!(
+        serde_json::json!({ "sameTrace": after["sameTrace"], "expanded": after["expanded"],
+            "stepsHidden": after["stepsHidden"], "steps": after["steps"] }),
+        serde_json::json!({ "sameTrace": true, "expanded": "true", "stepsHidden": "false",
+            "steps": ["Read the discharge summaryApril 25, 2024", "Read the basic metabolic panelApril 25, 2024"] }),
+        "the opened steps, once the status and actions joined the message"
+    );
+    assert_eq!(browser.take_page_errors(), Vec::<String>::new());
+}
+
 /// Opens one section as a fresh page and waits for its heading.
 fn open(browser: &mut Browser, url: &str, slug: &str, title: &str) {
     browser.text_until(&format!("{url}#{slug}"), title);
@@ -869,6 +920,25 @@ fn wait_true(browser: &mut Browser, expression: &str, what: &str) {
     let deadline = Instant::now() + Duration::from_secs(10);
     while Instant::now() < deadline {
         if browser.page().evaluate(expression).as_bool() == Some(true) {
+            return;
+        }
+        std::thread::sleep(Duration::from_millis(25));
+    }
+    panic!("timed out waiting for {what}");
+}
+
+/// Calls the page function `script` with `args` until `holds` accepts what it returns, within the
+/// time `wait_true` gives.
+fn wait_for(
+    browser: &mut Browser,
+    script: &str,
+    args: &[Value],
+    holds: impl Fn(&Value) -> bool,
+    what: &str,
+) {
+    let deadline = Instant::now() + Duration::from_secs(10);
+    while Instant::now() < deadline {
+        if holds(&browser.page().call_function(script, args)) {
             return;
         }
         std::thread::sleep(Duration::from_millis(25));

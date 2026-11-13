@@ -250,8 +250,9 @@ const FAMILIES: [Family; 17] = [
                 Part { title: "Composer states", note: "What is happening leads the toolbar: work running, beside its verb, or the draft's state. The actions keep the far edge, a key hint beside the words where there is a keyboard. A draft saved elsewhere opens under the toolbar with the saved words as written.",
                     ComposerStatesDemo {}
                 }
-                Part { title: "Conversation states", note: "What can be done with a message: under a reply, copy, ask again, rate, and move between its versions; under the person's words, copy and edit. On pointer devices the row shows while the message is hovered or focused; under the latest reply it always shows. Edited in place, the question keeps its earlier version. On its way a message stands quieter, waiting its turn it is outlined, and when it didn't go it says so in red with a way to try again. Files the person adds stand as tiles, an image as its picture; in the composer each uploads, filling its foot, or says why it didn't. Choose files with the plus, or drop them on the composer. Speaking, the composer listens in the words' place, the voice drawn as it comes; Done transcribes into the words, Cancel drops it.",
+                Part { title: "Conversation states", note: "What can be done with a message: under a reply, copy, ask again, rate, and move between its versions; under the person's words, copy and edit. On pointer devices the row shows while the message is hovered or focused; under the latest reply it always shows. Edited in place, the question keeps its earlier version. When the answer arrives, its status and actions join it, and steps the person opened stay open. On its way a message stands quieter, waiting its turn it is outlined, and when it didn't go it says so in red with a way to try again. Files the person adds stand as tiles, an image as its picture; in the composer each uploads, filling its foot, or says why it didn't. Choose files with the plus, or drop them on the composer. Speaking, the composer listens in the words' place, the voice drawn as it comes; Done transcribes into the words, Cancel drops it.",
                     ThreadStatesDemo {}
+                    AnswerArrivesDemo {}
                     DeliveryDemo {}
                     AttachmentsDemo {}
                     DictationDemo {}
@@ -3245,6 +3246,54 @@ fn ThreadStatesDemo() -> Element {
                     },
                     p { "{reply}" }
                 }
+            }
+        }
+    }
+}
+
+/// The answer in the arrival demo.
+#[cfg(feature = "web")]
+const ARRIVED_REPLY: &str = "Her potassium was 4.0 mmol/L at discharge on April 25, 2024.";
+
+/// A reply at work, then answered: once answered, its status and actions join the message that
+/// holds its steps.
+#[cfg(feature = "web")]
+#[component]
+fn AnswerArrivesDemo() -> Element {
+    let mut answered = use_signal(|| false);
+    let done = answered();
+    rsx! {
+        div { class: "gallery-thread",
+            Message { author: Author::Assistant, by: "Coda",
+                status: done.then(|| rsx! { MessageStatus { words: "Answered at 9:42 AM" } }),
+                actions: done.then(|| rsx! {
+                    MessageActions { label: "Response",
+                        CopyButton { text: ARRIVED_REPLY, words: copy_words() }
+                    }
+                }),
+                WorkTrace {
+                    label: if done { "Read 2 records" } else { "Reading the basic metabolic panel" },
+                    working: !done,
+                    detail: done.then(|| "12s".to_owned()),
+                    WorkStep { icon: IconName::File, label: "Read the discharge summary", state: StepState::Done, detail: "April 25, 2024" }
+                    WorkStep {
+                        icon: IconName::File,
+                        label: if done { "Read the basic metabolic panel" } else { "Reading the basic metabolic panel" },
+                        state: if done { StepState::Done } else { StepState::Running },
+                        detail: done.then(|| "April 25, 2024".to_owned()),
+                    }
+                }
+                if done {
+                    p { "{ARRIVED_REPLY}" }
+                }
+            }
+            if done {
+                Button { variant: ButtonVariant::Quiet, compact: true, onclick: move |_| answered.set(false),
+                    Icon { name: IconName::Refresh }
+                    "Show again"
+                }
+            } else {
+                Button { compact: true, onclick: move |_| answered.set(true), "The answer arrives" }
             }
         }
     }
