@@ -10,7 +10,6 @@
 //! removal failed stays owned as pending cleanup and is retried on the next
 //! [`Supervisor::kill`] or [`Supervisor::shutdown`].
 
-mod keys;
 mod observers;
 mod workspaces;
 
@@ -22,10 +21,8 @@ use std::time::{Duration, Instant};
 
 use chrono::{DateTime, Utc};
 
-pub use keys::{KeyError, KeySource, SandboxKeys, Secret};
 pub use workspaces::{SandboxWorkspaces, WorkspaceError, Workspaces, WorktreeMode};
 
-pub use crate::adapter::KeyEnv;
 use crate::adapter::{Cancel, Catalog, ForkError, TurnOutcome, TurnRequest, WorkerAdapter};
 use crate::mcp::{SpawnError, SpawnSpec, Spawner, Workspace};
 use crate::message::{Body, Draft, Message, MessageKind, Seq};
@@ -43,7 +40,6 @@ pub struct SupervisorConfig {
     pub swarm_dir: PathBuf,
     /// The `coda-swarm` executable members run as their MCP server.
     pub mcp_program: PathBuf,
-    pub keys: Vec<KeyEnv>,
     /// Prefix of every worktree slug, so swarms do not collide.
     pub slug_prefix: String,
     pub wake_mode: WakeMode,
@@ -80,7 +76,6 @@ impl SupervisorConfig {
             cwd: cwd.into(),
             swarm_dir: swarm_dir.into(),
             mcp_program: PathBuf::from("coda-swarm"),
-            keys: Vec::new(),
             slug_prefix: slug_prefix.into(),
             wake_mode: WakeMode::Mentions,
             poll: Duration::from_millis(200),
@@ -138,7 +133,6 @@ pub struct Supervisor<S: Store + Send + Sync + 'static> {
 struct Shared<S> {
     store: S,
     adapter: Box<dyn WorkerAdapter>,
-    keys: Box<dyn KeySource>,
     config: SupervisorConfig,
     coordinator: MemberName,
     status: Mutex<BTreeMap<MemberName, MemberStatus>>,
@@ -173,14 +167,12 @@ impl<S: Store + Send + Sync + 'static> Supervisor<S> {
         coordinator: MemberName,
         adapter: Box<dyn WorkerAdapter>,
         workspaces: Box<dyn Workspaces>,
-        keys: Box<dyn KeySource>,
         config: SupervisorConfig,
     ) -> Self {
         Self {
             shared: Arc::new(Shared {
                 store,
                 adapter,
-                keys,
                 config,
                 coordinator,
                 status: Mutex::new(BTreeMap::new()),
@@ -406,6 +398,10 @@ impl<S: Store + Send + Sync + 'static> Spawner for Supervisor<S> {
         Supervisor::models(self)
     }
 
+    fn probe_models(&self) -> Catalog {
+        self.shared.adapter.probe_models()
+    }
+
     fn spawn(&self, spec: &SpawnSpec) -> Result<(), SpawnError> {
         self.start(spec).map_err(|source| SpawnError::Failed {
             action: "start",
@@ -465,22 +461,17 @@ impl<S: Store> Shared<S> {
                     return;
                 }
             };
-            let outcome = match self.turn_env(name, model.as_deref()) {
-                Ok(env) => self.adapter.run_turn(
-                    TurnRequest {
-                        member: name.clone(),
-                        model,
-                        prompt: prompt.clone(),
-                        cwd: cwd.clone(),
-                        mcp_command: self.config.mcp_command(name),
-                        env,
-                    },
-                    cancel,
-                ),
-                Err(error) => TurnOutcome::Failed {
-                    reason: error.to_string(),
+            let outcome = self.adapter.run_turn(
+                TurnRequest {
+                    member: name.clone(),
+                    model,
+                    prompt: prompt.clone(),
+                    cwd: cwd.clone(),
+                    mcp_command: self.config.mcp_command(name),
+                    env: self.turn_env(name),
                 },
-            };
+                cancel,
+            );
             lock(&self.status)
                 .entry(name.clone())
                 .or_default()
@@ -578,31 +569,15 @@ impl<S: Store> Shared<S> {
         })
     }
 
-    /// The member's board identity, then every key the turn needs.
-    fn turn_env(
-        &self,
-        name: &MemberName,
-        model: Option<&str>,
-    ) -> Result<Vec<(String, String)>, KeyError> {
-        let identity = [
+    /// The member's board identity.
+    fn turn_env(&self, name: &MemberName) -> Vec<(String, String)> {
+        vec![
             (
                 "CODA_SWARM_DIR".to_owned(),
                 self.config.swarm_dir.display().to_string(),
             ),
             ("CODA_SWARM_AGENT".to_owned(), name.to_string()),
-        ];
-        let model_keys = self.adapter.keys(model);
-        let keys = self
-            .config
-            .keys
-            .iter()
-            .chain(&model_keys)
-            .map(|key| {
-                let secret = self.keys.get(&key.item)?;
-                Ok((key.var.clone(), secret.expose().to_owned()))
-            })
-            .collect::<Result<Vec<_>, KeyError>>()?;
-        Ok(identity.into_iter().chain(keys).collect())
+        ]
     }
 
     fn pause(&self, name: &MemberName, retry_after: Duration) {

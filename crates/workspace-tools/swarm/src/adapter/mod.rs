@@ -3,25 +3,25 @@
 
 mod cli;
 mod http;
+mod keys;
 mod mcp_client;
 mod process;
 mod registry;
 #[cfg(test)]
 mod tests;
 
-use std::fmt;
 use std::path::PathBuf;
 use std::process::Command;
 use std::sync::Arc;
 use std::sync::atomic::{AtomicBool, Ordering};
 use std::time::{Duration, SystemTime, UNIX_EPOCH};
 
-use serde::{Deserialize, Serialize};
+use serde::Serialize;
 
 pub use cli::Sessions;
 pub use cli::{Cli, CliAdapter};
-pub use http::Histories;
-pub use http::{Api, HttpAdapter};
+pub use http::{Histories, HttpAdapter, HttpKey};
+pub use keys::{KeyError, KeyItem, KeySource, SandboxKeys, Secret};
 pub use process::ProcessLimits;
 pub use registry::{
     AdapterKind, ModelEntry, ModelId, Registry, RegistryAdapter, RegistryError, ResolveError,
@@ -31,7 +31,7 @@ use crate::names::MemberName;
 use process::{Ended, Tail};
 
 /// Everything an adapter needs to run one turn.
-#[derive(Clone)]
+#[derive(Debug, Clone)]
 pub struct TurnRequest {
     pub member: MemberName,
     pub model: Option<String>,
@@ -39,36 +39,8 @@ pub struct TurnRequest {
     pub cwd: PathBuf,
     /// The command a worker runs to reach the swarm MCP server.
     pub mcp_command: Vec<String>,
-    /// Extra child environment. Values may hold keys, so `Debug` omits them.
+    /// The member's board identity, for the child and its MCP server.
     pub env: Vec<(String, String)>,
-}
-
-impl fmt::Debug for TurnRequest {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        f.debug_struct("TurnRequest")
-            .field("member", &self.member)
-            .field("model", &self.model)
-            .field("prompt_bytes", &self.prompt.len())
-            .field("cwd", &self.cwd)
-            .field("mcp_command", &self.mcp_command)
-            .field(
-                "env",
-                &self.env.iter().map(|(name, _)| name).collect::<Vec<_>>(),
-            )
-            .finish()
-    }
-}
-
-impl TurnRequest {
-    /// Replaces every env value (each may be a key) in `text`.
-    fn redact(&self, mut text: String) -> String {
-        for (_, value) in &self.env {
-            if !value.is_empty() {
-                text = text.replace(value.as_str(), "<redacted>");
-            }
-        }
-        text
-    }
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -110,20 +82,26 @@ pub enum ForkError {
     Model(#[from] ResolveError),
 }
 
-/// A child env variable filled from a key source item before each turn.
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
-#[serde(deny_unknown_fields)]
-pub struct KeyEnv {
-    #[serde(rename = "env")]
-    pub var: String,
-    pub item: String,
-}
-
 #[derive(Debug, Clone, PartialEq, Eq, Serialize)]
 pub struct ModelInfo {
     pub name: String,
     pub display_name: String,
     pub notes: String,
+    /// Whether the model's endpoint serves it, for models that were probed.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub availability: Option<Availability>,
+}
+
+/// What an HTTP endpoint's model list said about a registered model.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize)]
+#[serde(tag = "status", rename_all = "kebab-case")]
+pub enum Availability {
+    Available,
+    /// The endpoint answered, but does not list the model.
+    NotServed,
+    Unreachable {
+        reason: String,
+    },
 }
 
 /// The models an adapter can run.
@@ -160,13 +138,14 @@ pub trait WorkerAdapter: Send + Sync {
         model: Option<&str>,
     ) -> Result<(), ForkError>;
 
-    /// Keys a turn on `model` needs in its env, beyond the supervisor's.
-    fn keys(&self, _model: Option<&str>) -> Vec<KeyEnv> {
-        Vec::new()
-    }
-
     fn models(&self) -> Catalog {
         Catalog::Any
+    }
+
+    /// [`Self::models`], with each model's availability checked against its
+    /// endpoint where the adapter can.
+    fn probe_models(&self) -> Catalog {
+        self.models()
     }
 }
 

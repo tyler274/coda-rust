@@ -1,9 +1,9 @@
-//! Chat APIs driven directly: the Anthropic Messages API and OpenAI-style
-//! chat completions (OpenAI, OpenRouter, Ollama). Each turn starts the swarm
-//! MCP command, offers its tools to the model, and runs tool calls through
-//! it until the model answers without one or the call budget runs out.
+//! OpenAI-style chat completions driven directly: the host model proxy or a
+//! local Ollama. Each turn starts the swarm MCP command, offers its tools to
+//! the model, and runs tool calls through it until the model answers without
+//! one or the call budget runs out.
 
-use std::collections::BTreeMap;
+use std::collections::{BTreeMap, BTreeSet};
 use std::sync::mpsc;
 use std::sync::{Arc, Mutex, PoisonError};
 use std::thread;
@@ -11,40 +11,19 @@ use std::time::Duration;
 
 use serde_json::{Value, json};
 
-use super::mcp_client::{McpClient, McpError, Tool};
+use super::keys::{KeyItem, KeySource};
+use super::mcp_client::{CallResult, McpClient, McpError, Tool};
 use super::process::ProcessLimits;
 use super::{
     Cancel, DEFAULT_RETRY_AFTER, ForkError, TurnOutcome, TurnRequest, WorkerAdapter, excerpt,
 };
 use crate::names::MemberName;
 
-const ANTHROPIC_VERSION: &str = "2023-06-01";
+const API: &str = "openai-compatible";
 const MAX_RESPONSE: u64 = 16 * 1024 * 1024;
 
-#[derive(Debug, Clone, PartialEq, Eq)]
-pub enum Api {
-    Anthropic {
-        base_url: String,
-        max_tokens: u32,
-    },
-    /// `max_tokens` is sent only when set: OpenAI's newer models reject it.
-    OpenAi {
-        base_url: String,
-        max_tokens: Option<u32>,
-    },
-}
-
-impl Api {
-    fn name(&self) -> &'static str {
-        match self {
-            Self::Anthropic { .. } => "anthropic",
-            Self::OpenAi { .. } => "openai-compatible",
-        }
-    }
-}
-
-/// Member conversations in one API's message format, shared by every model
-/// entry on that API so a member can fork across them.
+/// Member conversations, shared by every HTTP model entry so a member can
+/// fork across them.
 #[derive(Debug, Default)]
 pub struct Histories(Mutex<BTreeMap<MemberName, Vec<Value>>>);
 
@@ -62,13 +41,23 @@ impl Histories {
     }
 }
 
+/// The broker item an endpoint's key comes from, and where to fetch it.
+#[derive(Debug, Clone)]
+pub struct HttpKey {
+    pub item: KeyItem,
+    pub source: Arc<dyn KeySource>,
+}
+
 #[derive(Debug, Clone)]
 pub struct HttpAdapter {
-    pub api: Api,
+    /// The API base, e.g. `http://10.233.1.1:47821/v1`.
+    pub base_url: String,
     /// The provider model name.
     pub model: String,
-    /// The request env variable holding the API key; `None` sends no key.
-    pub key_env: Option<String>,
+    /// Sent only when set: OpenAI's newer models reject it.
+    pub max_tokens: Option<u32>,
+    /// Sent as a bearer token; `None` sends no key.
+    pub key: Option<HttpKey>,
     /// Model calls per turn before the turn fails without a final answer.
     pub max_calls: u32,
     pub request_timeout: Duration,
@@ -78,20 +67,25 @@ pub struct HttpAdapter {
 }
 
 impl HttpAdapter {
-    pub fn new(api: Api, model: impl Into<String>, key_env: Option<String>) -> Self {
-        Self::with_histories(api, model, key_env, Arc::default())
+    pub fn new(
+        base_url: impl Into<String>,
+        model: impl Into<String>,
+        key: Option<HttpKey>,
+    ) -> Self {
+        Self::with_histories(base_url, model, key, Arc::default())
     }
 
     pub fn with_histories(
-        api: Api,
+        base_url: impl Into<String>,
         model: impl Into<String>,
-        key_env: Option<String>,
+        key: Option<HttpKey>,
         histories: Arc<Histories>,
     ) -> Self {
         Self {
-            api,
+            base_url: base_url.into(),
             model: model.into(),
-            key_env,
+            max_tokens: None,
+            key,
             max_calls: 32,
             request_timeout: Duration::from_secs(600),
             mcp_timeout: Duration::from_secs(300),
@@ -143,52 +137,31 @@ struct Call {
 
 impl WorkerAdapter for HttpAdapter {
     fn run_turn(&self, request: TurnRequest, cancel: &Cancel) -> TurnOutcome {
-        let key = self.key_env.as_ref().map(|var| {
-            request
-                .env
-                .iter()
-                .find(|(name, _)| name == var)
-                .map(|(_, value)| value.clone())
-        });
-        let key = match key {
-            Some(None) => {
+        let key = match self.key.as_ref().map(|key| key.source.get(key.item)) {
+            None => None,
+            Some(Ok(key)) => Some(key),
+            Some(Err(error)) => {
                 return TurnOutcome::Failed {
-                    reason: format!(
-                        "{} key {} is not in the turn env",
-                        self.api.name(),
-                        self.key_env.as_deref().unwrap_or_default()
-                    ),
+                    reason: format!("{API} key: {error}"),
                 };
             }
-            Some(Some(key)) => Some(key),
-            None => None,
         };
-        // The provider key stays in this process; the MCP server never sees it.
-        let mcp_env: Vec<(String, String)> = request
-            .env
-            .iter()
-            .filter(|(name, _)| Some(name) != self.key_env.as_ref())
-            .cloned()
-            .collect();
+        let key = key.as_ref().map(|key| key.expose());
         let mut messages = self.histories.get(&request.member);
         messages.push(json!({ "role": "user", "content": request.prompt }));
-        let ended = self.converse(&request, &mcp_env, key.as_deref(), &mut messages, cancel);
-        match ended {
+        match self.converse(&request, key, &mut messages, cancel) {
             Ok(()) => {
                 self.histories.set(request.member.clone(), messages);
                 TurnOutcome::Completed
             }
             Err(Stop::Cancelled) => TurnOutcome::Cancelled,
             Err(Stop::Quota(retry_after)) => TurnOutcome::QuotaExhausted { retry_after },
-            Err(Stop::Failed(reason)) => {
-                let reason = match &key {
-                    Some(key) => reason.replace(key.as_str(), "<redacted>"),
+            Err(Stop::Failed(reason)) => TurnOutcome::Failed {
+                reason: match key {
+                    Some(key) => reason.replace(key, "<redacted>"),
                     None => reason,
-                };
-                TurnOutcome::Failed {
-                    reason: request.redact(reason),
-                }
-            }
+                },
+            },
         }
     }
 
@@ -211,14 +184,13 @@ impl HttpAdapter {
     fn converse(
         &self,
         request: &TurnRequest,
-        mcp_env: &[(String, String)],
         key: Option<&str>,
         messages: &mut Vec<Value>,
         cancel: &Cancel,
     ) -> Result<(), Stop> {
         let mut mcp = McpClient::start(
             &request.mcp_command,
-            mcp_env,
+            &request.env,
             &request.cwd,
             self.limits.clone(),
             self.mcp_timeout,
@@ -228,12 +200,11 @@ impl HttpAdapter {
         for _ in 0..self.max_calls {
             let body = self.body(messages, &tools);
             let response = self.post(key, body, cancel)?;
-            let reply = self.parse(&response)?;
+            let reply = Self::parse(&response)?;
             messages.push(reply.message);
             if reply.calls.is_empty() {
                 return Ok(());
             }
-            let mut results = Vec::with_capacity(reply.calls.len());
             for call in reply.calls {
                 let called = match call.arguments {
                     Ok(arguments) => mcp.call_tool(&call.name, arguments, cancel),
@@ -245,34 +216,15 @@ impl HttpAdapter {
                 let result = match called {
                     Ok(result) => result,
                     Err(McpError::Cancelled) => return Err(Stop::Cancelled),
-                    Err(McpError::Rpc { message, .. }) => super::mcp_client::CallResult {
+                    Err(McpError::Rpc { message, .. }) => CallResult {
                         text: message,
                         is_error: true,
                     },
                     Err(other) => return Err(other.into()),
                 };
-                results.push((call.id, result));
-            }
-            match self.api {
-                Api::Anthropic { .. } => {
-                    let blocks: Vec<Value> = results
-                        .into_iter()
-                        .map(|(id, result)| {
-                            json!({
-                                "type": "tool_result",
-                                "tool_use_id": id,
-                                "content": result.text,
-                                "is_error": result.is_error,
-                            })
-                        })
-                        .collect();
-                    messages.push(json!({ "role": "user", "content": blocks }));
-                }
-                Api::OpenAi { .. } => {
-                    messages.extend(results.into_iter().map(|(id, result)| {
-                        json!({ "role": "tool", "tool_call_id": id, "content": result.text })
-                    }));
-                }
+                messages.push(
+                    json!({ "role": "tool", "tool_call_id": call.id, "content": result.text }),
+                );
             }
         }
         Err(Stop::Failed(format!(
@@ -282,86 +234,41 @@ impl HttpAdapter {
     }
 
     fn body(&self, messages: &[Value], tools: &[Tool]) -> Value {
-        match &self.api {
-            Api::Anthropic { max_tokens, .. } => {
-                let tools: Vec<Value> = tools
-                    .iter()
-                    .map(|tool| {
-                        json!({
-                            "name": tool.name,
-                            "description": tool.description,
-                            "input_schema": tool.input_schema,
-                        })
-                    })
-                    .collect();
+        let tools: Vec<Value> = tools
+            .iter()
+            .map(|tool| {
                 json!({
-                    "model": self.model,
-                    "max_tokens": max_tokens,
-                    "messages": messages,
-                    "tools": tools,
+                    "type": "function",
+                    "function": {
+                        "name": tool.name,
+                        "description": tool.description,
+                        "parameters": tool.input_schema,
+                    }
                 })
-            }
-            Api::OpenAi { max_tokens, .. } => {
-                let tools: Vec<Value> = tools
-                    .iter()
-                    .map(|tool| {
-                        json!({
-                            "type": "function",
-                            "function": {
-                                "name": tool.name,
-                                "description": tool.description,
-                                "parameters": tool.input_schema,
-                            }
-                        })
-                    })
-                    .collect();
-                let mut body = json!({
-                    "model": self.model,
-                    "messages": messages,
-                    "tools": tools,
-                });
-                if let Some(max_tokens) = max_tokens {
-                    body["max_tokens"] = json!(max_tokens);
-                }
-                body
-            }
+            })
+            .collect();
+        let mut body = json!({
+            "model": self.model,
+            "messages": messages,
+            "tools": tools,
+        });
+        if let Some(max_tokens) = self.max_tokens {
+            body["max_tokens"] = json!(max_tokens);
         }
+        body
     }
 
     /// Posts on a worker thread so cancellation returns at once; an
     /// abandoned request ends on its own timeout.
     fn post(&self, key: Option<&str>, body: Value, cancel: &Cancel) -> Result<Value, Stop> {
-        let (url, headers) = match &self.api {
-            Api::Anthropic { base_url, .. } => {
-                let mut headers = vec![("anthropic-version", ANTHROPIC_VERSION.to_owned())];
-                if let Some(key) = key {
-                    headers.push(("x-api-key", key.to_owned()));
-                }
-                (
-                    format!("{}/v1/messages", base_url.trim_end_matches('/')),
-                    headers,
-                )
-            }
-            Api::OpenAi { base_url, .. } => {
-                let headers = key
-                    .map(|key| vec![("authorization", format!("Bearer {key}"))])
-                    .unwrap_or_default();
-                (
-                    format!("{}/chat/completions", base_url.trim_end_matches('/')),
-                    headers,
-                )
-            }
-        };
-        let agent: ureq::Agent = ureq::Agent::config_builder()
-            .http_status_as_error(false)
-            .timeout_global(Some(self.request_timeout))
-            .build()
-            .into();
+        let url = format!("{}/chat/completions", self.base_url.trim_end_matches('/'));
+        let authorization = key.map(|key| format!("Bearer {key}"));
+        let agent = agent(self.request_timeout);
         let (send, receive) = mpsc::channel();
         thread::spawn(move || {
             let mut call = agent.post(&url).header("content-type", "application/json");
-            for (name, value) in headers {
-                call = call.header(name, value);
+            if let Some(authorization) = authorization {
+                call = call.header("authorization", authorization);
             }
             let result = call.send(body.to_string()).map(|mut response| {
                 let status = response.status().as_u16();
@@ -392,10 +299,9 @@ impl HttpAdapter {
                 }
             }
         };
-        let (status, retry_after, text) = received
-            .map_err(|error| Stop::Failed(format!("{} request: {error}", self.api.name())))?;
-        let text = text
-            .map_err(|error| Stop::Failed(format!("{} response body: {error}", self.api.name())))?;
+        let (status, retry_after, text) =
+            received.map_err(|error| Stop::Failed(format!("{API} request: {error}")))?;
+        let text = text.map_err(|error| Stop::Failed(format!("{API} response body: {error}")))?;
         if status == 429 {
             return Err(Stop::Quota(
                 retry_after.map_or(DEFAULT_RETRY_AFTER, Duration::from_secs),
@@ -403,75 +309,89 @@ impl HttpAdapter {
         }
         if !(200..300).contains(&status) {
             return Err(Stop::Failed(format!(
-                "{} returned HTTP {status}: {}",
-                self.api.name(),
+                "{API} returned HTTP {status}: {}",
                 excerpt(&text)
             )));
         }
         serde_json::from_str(&text).map_err(|error| {
             Stop::Failed(format!(
-                "{} returned invalid JSON ({error}): {}",
-                self.api.name(),
+                "{API} returned invalid JSON ({error}): {}",
                 excerpt(&text)
             ))
         })
     }
 
-    fn parse(&self, response: &Value) -> Result<Reply, Stop> {
+    fn parse(response: &Value) -> Result<Reply, Stop> {
         let malformed = || {
             Stop::Failed(format!(
-                "{} returned an unexpected reply: {}",
-                self.api.name(),
+                "{API} returned an unexpected reply: {}",
                 excerpt(&response.to_string())
             ))
         };
-        match self.api {
-            Api::Anthropic { .. } => {
-                let content = response["content"].as_array().ok_or_else(malformed)?;
-                let calls = content
-                    .iter()
-                    .filter(|block| block["type"] == "tool_use")
-                    .map(|block| {
-                        Some(Call {
-                            id: block["id"].as_str()?.to_owned(),
-                            name: block["name"].as_str()?.to_owned(),
-                            arguments: Ok(block["input"].clone()),
-                        })
-                    })
-                    .collect::<Option<Vec<_>>>()
-                    .ok_or_else(malformed)?;
-                Ok(Reply {
-                    message: json!({ "role": "assistant", "content": content }),
-                    calls,
-                })
-            }
-            Api::OpenAi { .. } => {
-                let message = &response["choices"][0]["message"];
-                if !message.is_object() {
-                    return Err(malformed());
-                }
-                let calls = match message["tool_calls"].as_array() {
-                    None => Vec::new(),
-                    Some(calls) => calls
-                        .iter()
-                        .map(|call| {
-                            let arguments = call["function"]["arguments"].as_str()?;
-                            Some(Call {
-                                id: call["id"].as_str()?.to_owned(),
-                                name: call["function"]["name"].as_str()?.to_owned(),
-                                arguments: serde_json::from_str(arguments).map_err(|error| {
-                                    format!("arguments are not valid JSON: {error}")
-                                }),
-                            })
-                        })
-                        .collect::<Option<Vec<_>>>()
-                        .ok_or_else(malformed)?,
-                };
-                Ok(Reply {
-                    message: message.clone(),
-                    calls,
-                })
-            }
+        let message = &response["choices"][0]["message"];
+        if !message.is_object() {
+            return Err(malformed());
         }
+        let calls = match message["tool_calls"].as_array() {
+            None => Vec::new(),
+            Some(calls) => calls
+                .iter()
+                .map(|call| {
+                    let arguments = call["function"]["arguments"].as_str()?;
+                    Some(Call {
+                        id: call["id"].as_str()?.to_owned(),
+                        name: call["function"]["name"].as_str()?.to_owned(),
+                        arguments: serde_json::from_str(arguments)
+                            .map_err(|error| format!("arguments are not valid JSON: {error}")),
+                    })
+                })
+                .collect::<Option<Vec<_>>>()
+                .ok_or_else(malformed)?,
+        };
+        Ok(Reply {
+            message: message.clone(),
+            calls,
+        })
     }
+}
+
+fn agent(timeout: Duration) -> ureq::Agent {
+    ureq::Agent::config_builder()
+        .http_status_as_error(false)
+        .timeout_global(Some(timeout))
+        .build()
+        .into()
+}
+
+/// The model ids `GET {base_url}/models` lists. Errors never quote the
+/// response body, which could echo the key.
+pub fn served_models(
+    base_url: &str,
+    key: Option<&str>,
+    timeout: Duration,
+) -> Result<BTreeSet<String>, String> {
+    let url = format!("{}/models", base_url.trim_end_matches('/'));
+    let mut call = agent(timeout).get(&url);
+    if let Some(key) = key {
+        call = call.header("authorization", format!("Bearer {key}"));
+    }
+    let mut response = call.call().map_err(|error| error.to_string())?;
+    let status = response.status().as_u16();
+    if !(200..300).contains(&status) {
+        return Err(format!("GET {url} returned HTTP {status}"));
+    }
+    let text = response
+        .body_mut()
+        .with_config()
+        .limit(MAX_RESPONSE)
+        .read_to_string()
+        .map_err(|error| format!("GET {url}: {error}"))?;
+    let list: Value = serde_json::from_str(&text).map_err(|error| format!("GET {url}: {error}"))?;
+    let data = list["data"]
+        .as_array()
+        .ok_or_else(|| format!("GET {url} returned no `data` list"))?;
+    Ok(data
+        .iter()
+        .filter_map(|model| model["id"].as_str().map(str::to_owned))
+        .collect())
 }

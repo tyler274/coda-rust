@@ -6,9 +6,9 @@ use std::thread;
 
 use chrono::Utc;
 use clap::{Parser, Subcommand};
-use coda_swarm::adapter::{Registry, RegistryAdapter, RegistryError};
+use coda_swarm::adapter::{Registry, RegistryAdapter, RegistryError, SandboxKeys};
 use coda_swarm::mcp::{RosterOnlySpawner, Server};
-use coda_swarm::supervisor::{SandboxKeys, SandboxWorkspaces, Supervisor, SupervisorConfig};
+use coda_swarm::supervisor::{SandboxWorkspaces, Supervisor, SupervisorConfig};
 use coda_swarm::{
     FileStore, Member, MemberName, Policy, Role, RosterError, Store, SwarmId, UpdateError,
 };
@@ -109,7 +109,7 @@ fn supervisor(
         }
         Err(error) => return Err(error.into()),
     };
-    let adapter = RegistryAdapter::new(registry);
+    let adapter = RegistryAdapter::new(registry, Arc::new(SandboxKeys::default()));
     let mut config = SupervisorConfig::new(
         std::env::current_dir()?,
         store.dir(),
@@ -121,7 +121,6 @@ fn supervisor(
         agent.clone(),
         Box::new(adapter),
         Box::new(SandboxWorkspaces::default()),
-        Box::new(SandboxKeys::default()),
         config,
     ))))
 }

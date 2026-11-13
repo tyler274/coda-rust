@@ -23,7 +23,7 @@ const STUB: &str = r#"#!/bin/sh
 dir="$1"
 prompt=$(cat)
 echo "$CODA_SWARM_MEMBER $prompt" >> "$dir/turns"
-echo "$CODA_SWARM_AGENT $CODA_SWARM_DIR $API_KEY $CODA_SWARM_MCP_COMMAND" > "$dir/$CODA_SWARM_MEMBER.board"
+echo "$CODA_SWARM_AGENT $CODA_SWARM_DIR $CODA_SWARM_MCP_COMMAND" > "$dir/$CODA_SWARM_MEMBER.board"
 while [ -f "$dir/$CODA_SWARM_MEMBER.hold" ]; do sleep 0.01; done
 case "$CODA_SWARM_MEMBER" in
   *crash*) exit 3 ;;
@@ -75,14 +75,6 @@ impl Workspaces for Arc<FakeWorkspaces> {
     }
 }
 
-struct FakeKeys;
-
-impl KeySource for FakeKeys {
-    fn get(&self, _item: &str) -> Result<Secret, KeyError> {
-        Ok(Secret::new("test-key"))
-    }
-}
-
 struct Harness {
     dir: TempDir,
     workspaces: Arc<FakeWorkspaces>,
@@ -119,16 +111,11 @@ fn harness(configure: impl FnOnce(&mut CommandAdapter)) -> Harness {
     config.poll = Duration::from_millis(20);
     config.narrator_every = Duration::from_millis(100);
     config.monitor_every = Duration::from_millis(100);
-    config.keys = vec![KeyEnv {
-        var: "API_KEY".into(),
-        item: "api".into(),
-    }];
     let supervisor = Supervisor::new(
         store,
         name("lead"),
         Box::new(adapter),
         Box::new(Arc::clone(&workspaces)),
-        Box::new(FakeKeys),
         config,
     );
     Harness {
@@ -297,10 +284,7 @@ fn each_turn_reaches_the_board_as_its_own_member() {
         "scout",
     ])
     .expect("json");
-    assert_eq!(
-        board.trim(),
-        format!("scout {} test-key {mcp}", swarm.display())
-    );
+    assert_eq!(board.trim(), format!("scout {} {mcp}", swarm.display()));
 }
 
 #[test]

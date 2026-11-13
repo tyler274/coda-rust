@@ -1,3 +1,4 @@
+use std::collections::BTreeMap;
 use std::fs;
 use std::io::{BufRead, BufReader, Read, Write};
 use std::net::TcpListener;
@@ -110,29 +111,6 @@ fn codex_command_line() {
     assert_eq!(
         golden_args(&adapter, &req, Some(("t-1", true))),
         line(&["exec", "fork"], &["t-1", "-"])
-    );
-}
-
-#[test]
-fn gemini_command_line_and_no_fork() {
-    let dir = TempDir::new().expect("tempdir");
-    let adapter = CliAdapter::new(Cli::Gemini, "gemini-2.5-pro");
-    let req = request(dir.path(), swarm_mcp(), Vec::new());
-    assert_eq!(
-        golden_args(&adapter, &req, None),
-        [
-            "--model",
-            "gemini-2.5-pro",
-            "--yolo",
-            "--output-format",
-            "json",
-            "--allowed-mcp-server-names",
-            "coda-swarm",
-        ]
-    );
-    assert_eq!(
-        adapter.fork(&name("scout"), &name("twin"), None),
-        Err(ForkError::Unsupported { adapter: "gemini" })
     );
 }
 
@@ -268,7 +246,11 @@ impl FakeServer {
                 reader.read_exact(&mut raw).expect("body");
                 record.lock().expect("seen").push(Exchange {
                     head,
-                    body: serde_json::from_slice(&raw).expect("json body"),
+                    body: if raw.is_empty() {
+                        Value::Null
+                    } else {
+                        serde_json::from_slice(&raw).expect("json body")
+                    },
                 });
                 let text = body.to_string();
                 let extra: String = headers
@@ -295,17 +277,29 @@ impl FakeServer {
     }
 }
 
-fn http_turn(dir: &Path, api: Api, key: Option<&str>) -> (HttpAdapter, TurnRequest) {
+/// Hands out [`KEY`] for every item and counts the fetches.
+#[derive(Debug, Default)]
+struct FakeKeys(Mutex<Vec<KeyItem>>);
+
+impl KeySource for FakeKeys {
+    fn get(&self, item: KeyItem) -> Result<Secret, KeyError> {
+        self.0.lock().expect("fetches").push(item);
+        Ok(Secret::new(KEY))
+    }
+}
+
+fn http_turn(dir: &Path, base_url: String, key: bool) -> (HttpAdapter, TurnRequest) {
     let stub = script(dir, "mcp.sh", STUB_MCP);
-    let mut adapter = HttpAdapter::new(api, "test-model", key.map(|_| "PROVIDER_KEY".into()));
+    let key = key.then(|| HttpKey {
+        item: KeyItem::ModelProxy,
+        source: Arc::new(FakeKeys::default()),
+    });
+    let mut adapter = HttpAdapter::new(base_url, "test-model", key);
     adapter.limits.poll = Duration::from_millis(5);
     adapter.limits.kill_grace = Duration::from_millis(200);
     adapter.mcp_timeout = Duration::from_secs(10);
     adapter.request_timeout = Duration::from_secs(10);
-    let mut env = vec![("CODA_SWARM_AGENT".to_owned(), "scout".to_owned())];
-    if let Some(key) = key {
-        env.push(("PROVIDER_KEY".into(), key.into()));
-    }
+    let env = vec![("CODA_SWARM_AGENT".to_owned(), "scout".to_owned())];
     // Through sh: exec of a script another test thread's fork may still hold
     // open for writing fails with ETXTBSY.
     let mcp = vec![
@@ -314,51 +308,6 @@ fn http_turn(dir: &Path, api: Api, key: Option<&str>) -> (HttpAdapter, TurnReque
         dir.display().to_string(),
     ];
     (adapter, request(dir, mcp, env))
-}
-
-#[test]
-fn anthropic_runs_a_tool_call_through_mcp() {
-    let dir = TempDir::new().expect("tempdir");
-    let server = FakeServer::start(vec![
-        ok(json!({ "content": [
-            { "type": "text", "text": "posting" },
-            { "type": "tool_use", "id": "tu_1", "name": "post", "input": { "text": "hello board" } }
-        ]})),
-        ok(json!({ "content": [{ "type": "text", "text": "all done" }] })),
-    ]);
-    let api = Api::Anthropic {
-        base_url: server.url.clone(),
-        max_tokens: 1024,
-    };
-    let (adapter, req) = http_turn(dir.path(), api, Some(KEY));
-    assert_eq!(
-        adapter.run_turn(req, &Cancel::default()),
-        TurnOutcome::Completed
-    );
-    let seen = server.finish();
-
-    let calls = fs::read_to_string(dir.path().join("calls")).expect("calls");
-    assert!(
-        calls.contains(r#""arguments":{"text":"hello board"}"#),
-        "{calls}"
-    );
-    let mcp_env = fs::read_to_string(dir.path().join("env")).expect("env");
-    assert!(!mcp_env.contains(KEY), "the MCP server never sees the key");
-    let first = &seen[0];
-    assert!(
-        first.head.starts_with("POST /v1/messages "),
-        "{}",
-        first.head
-    );
-    assert!(first.head.contains(&format!("x-api-key: {KEY}")));
-    assert!(first.head.contains("anthropic-version: 2023-06-01"));
-    assert_eq!(first.body["tools"][0]["name"], "post");
-    assert_eq!(first.body["tools"][0]["input_schema"]["type"], "object");
-    assert_eq!(first.body["messages"][0]["content"], "do the thing");
-    let result = &seen[1].body["messages"][2]["content"][0];
-    assert_eq!(result["type"], "tool_result");
-    assert_eq!(result["tool_use_id"], "tu_1");
-    assert_eq!(result["content"], "posted");
 }
 
 #[test]
@@ -374,11 +323,7 @@ fn openai_runs_a_tool_call_and_keeps_history() {
         ok(json!({ "choices": [{ "message": { "role": "assistant", "content": "ok" } }] })),
         ok(json!({ "choices": [{ "message": { "role": "assistant", "content": "again" } }] })),
     ]);
-    let api = Api::OpenAi {
-        base_url: format!("{}/v1", server.url),
-        max_tokens: None,
-    };
-    let (adapter, req) = http_turn(dir.path(), api, None);
+    let (adapter, req) = http_turn(dir.path(), format!("{}/v1", server.url), false);
     assert_eq!(
         adapter.run_turn(req.clone(), &Cancel::default()),
         TurnOutcome::Completed
@@ -411,6 +356,40 @@ fn openai_runs_a_tool_call_and_keeps_history() {
 }
 
 #[test]
+fn model_proxy_key_is_a_bearer_header_the_mcp_server_never_sees() {
+    let dir = TempDir::new().expect("tempdir");
+    let server = FakeServer::start(vec![
+        ok(json!({ "choices": [{ "message": {
+            "role": "assistant",
+            "content": null,
+            "tool_calls": [{ "id": "call_1", "type": "function",
+                "function": { "name": "post", "arguments": "{}" } }]
+        }}]})),
+        ok(json!({ "choices": [{ "message": { "role": "assistant", "content": "ok" } }] })),
+    ]);
+    let (mut adapter, req) = http_turn(dir.path(), format!("{}/v1", server.url), true);
+    adapter.max_tokens = Some(256);
+    assert_eq!(
+        adapter.run_turn(req, &Cancel::default()),
+        TurnOutcome::Completed
+    );
+    let seen = server.finish();
+
+    for exchange in &seen {
+        assert!(
+            exchange
+                .head
+                .contains(&format!("authorization: Bearer {KEY}")),
+            "{}",
+            exchange.head
+        );
+    }
+    assert_eq!(seen[0].body["max_tokens"], 256);
+    let mcp_env = fs::read_to_string(dir.path().join("env")).expect("env");
+    assert!(!mcp_env.contains(KEY), "the MCP server never sees the key");
+}
+
+#[test]
 fn http_429_is_quota_and_errors_never_show_the_key() {
     let dir = TempDir::new().expect("tempdir");
     let server = FakeServer::start(vec![
@@ -425,11 +404,7 @@ fn http_429_is_quota_and_errors_never_show_the_key() {
             body: json!({ "error": { "message": format!("bad key {KEY}") } }),
         },
     ]);
-    let api = Api::OpenAi {
-        base_url: server.url.clone(),
-        max_tokens: Some(256),
-    };
-    let (adapter, req) = http_turn(dir.path(), api, Some(KEY));
+    let (adapter, req) = http_turn(dir.path(), server.url.clone(), true);
     assert_eq!(
         adapter.run_turn(req.clone(), &Cancel::default()),
         TurnOutcome::QuotaExhausted {
@@ -437,13 +412,7 @@ fn http_429_is_quota_and_errors_never_show_the_key() {
         }
     );
     let failed = adapter.run_turn(req, &Cancel::default());
-    let seen = server.finish();
-    assert!(
-        seen[0]
-            .head
-            .contains(&format!("authorization: Bearer {KEY}"))
-    );
-    assert_eq!(seen[0].body["max_tokens"], 256);
+    server.finish();
     let TurnOutcome::Failed { reason } = failed else {
         panic!("HTTP 500 fails the turn: {failed:?}");
     };
@@ -463,34 +432,30 @@ fn example_registry_parses_and_lists_its_models() {
         kinds[..],
         [
             ("claude-opus", AdapterKind::ClaudeCli),
-            ("claude-sonnet-api", AdapterKind::AnthropicHttp { .. }),
-            ("gemini-pro", AdapterKind::GeminiCli),
+            (
+                "gemini-proxy",
+                AdapterKind::OpenaiHttp {
+                    key: Some(KeyItem::ModelProxy),
+                    ..
+                }
+            ),
             ("gpt-codex", AdapterKind::CodexCli),
-            ("qwen-coder-local", AdapterKind::OpenaiHttp { .. }),
-            ("qwen-coder-openrouter", AdapterKind::OpenaiHttp { .. }),
+            (
+                "grok-proxy",
+                AdapterKind::OpenaiHttp {
+                    key: Some(KeyItem::ModelProxy),
+                    ..
+                }
+            ),
+            (
+                "qwen-coder-local",
+                AdapterKind::OpenaiHttp { key: None, .. }
+            ),
         ]
     ));
-    let local = &registry.models[&ModelId::new("qwen-coder-local")];
-    assert_eq!(local.key, None);
-    assert_eq!(
-        local.kind,
-        AdapterKind::OpenaiHttp {
-            base_url: "http://10.233.1.1:11434/v1".into(),
-            max_tokens: None,
-            max_calls: 32,
-        }
-    );
-    let adapter = RegistryAdapter::new(registry);
+    let adapter = RegistryAdapter::new(registry, Arc::new(FakeKeys::default()));
     assert!(adapter.models().admits("gpt-codex"));
     assert!(!adapter.models().admits("gpt-4"));
-    assert_eq!(adapter.keys(Some("claude-opus")), []);
-    assert_eq!(
-        adapter.keys(Some("claude-sonnet-api")),
-        [KeyEnv {
-            var: "ANTHROPIC_API_KEY".into(),
-            item: "anthropic".into()
-        }]
-    );
     assert_eq!(
         adapter.fork(&name("a"), &name("b"), Some("nope")),
         Err(ForkError::Model(ResolveError::Unknown("nope".into())))
@@ -498,11 +463,88 @@ fn example_registry_parses_and_lists_its_models() {
 }
 
 #[test]
-fn registry_rejects_unknown_adapters_and_fields() {
-    let unknown = r#"{"models":{"x":{"adapter":"telepathy","model":"m"}}}"#;
-    assert!(Registry::parse(unknown).is_err());
-    let missing_url = r#"{"models":{"x":{"adapter":"openai-http","model":"m"}}}"#;
-    assert!(Registry::parse(missing_url).is_err());
-    let typo = r#"{"model":{}}"#;
-    assert!(Registry::parse(typo).is_err());
+fn registry_rejects_unknown_adapters_keys_and_fields() {
+    let rejected = [
+        r#"{"models":{"x":{"adapter":"telepathy","model":"m"}}}"#,
+        r#"{"models":{"x":{"adapter":"anthropic-http","model":"m"}}}"#,
+        r#"{"models":{"x":{"adapter":"gemini-cli","model":"m"}}}"#,
+        r#"{"models":{"x":{"adapter":"openai-http","model":"m"}}}"#,
+        r#"{"models":{"x":{"adapter":"openai-http","base_url":"u","model":"m","key":"openrouter"}}}"#,
+        r#"{"models":{"x":{"adapter":"openai-http","base_url":"u","model":"m","key":{"item":"model-proxy","env":"K"}}}}"#,
+        r#"{"model":{}}"#,
+    ];
+    for text in rejected {
+        assert!(Registry::parse(text).is_err(), "{text}");
+    }
+    let proxy = r#"{"models":{"x":{"adapter":"openai-http","base_url":"u","model":"m","key":"model-proxy"}}}"#;
+    let entry = &Registry::parse(proxy).expect("model-proxy key").models[&ModelId::new("x")];
+    assert!(matches!(
+        entry.kind,
+        AdapterKind::OpenaiHttp {
+            key: Some(KeyItem::ModelProxy),
+            ..
+        }
+    ));
+}
+
+fn http_entry(base_url: &str, model: &str, key: Option<&str>) -> Value {
+    json!({ "adapter": "openai-http", "base_url": base_url, "model": model, "key": key })
+}
+
+#[test]
+fn models_report_whether_each_endpoint_serves_them() {
+    let server = FakeServer::start(vec![ok(json!({
+        "object": "list",
+        "data": [{ "id": "ungate-grok-4.7-high", "object": "model", "owned_by": "cursor" }]
+    }))]);
+    let proxy = format!("{}/v1", server.url);
+    let closed = TcpListener::bind("127.0.0.1:0").expect("bind");
+    let gone = format!("http://{}/v1", closed.local_addr().expect("addr"));
+    drop(closed);
+    let registry = json!({ "models": {
+        "grok": http_entry(&proxy, "ungate-grok-4.7-high", Some("model-proxy")),
+        "gemini": http_entry(&proxy, "ungate-gemini-unmapped", Some("model-proxy")),
+        "local": http_entry(&gone, "qwen2.5-coder:32b", None),
+        "claude": { "adapter": "claude-cli", "model": "opus" },
+    }});
+    let registry = Registry::parse(&registry.to_string()).expect("registry");
+    let keys = Arc::new(FakeKeys::default());
+    let source: Arc<dyn KeySource> = keys.clone();
+    let mut adapter = RegistryAdapter::new(registry, source);
+    adapter.probe_timeout = Duration::from_secs(2);
+
+    let Catalog::Listed(models) = adapter.probe_models() else {
+        panic!("a registry lists its models");
+    };
+    let seen = server.finish();
+    let availability: BTreeMap<&str, Option<&Availability>> = models
+        .iter()
+        .map(|model| (model.name.as_str(), model.availability.as_ref()))
+        .collect();
+    assert_eq!(availability["grok"], Some(&Availability::Available));
+    assert_eq!(availability["gemini"], Some(&Availability::NotServed));
+    assert!(
+        matches!(
+            availability["local"],
+            Some(Availability::Unreachable { .. })
+        ),
+        "{availability:?}"
+    );
+    assert_eq!(availability["claude"], None, "CLI models are not probed");
+    assert_eq!(seen.len(), 1, "one GET per endpoint");
+    assert!(
+        seen[0].head.starts_with("GET /v1/models "),
+        "{}",
+        seen[0].head
+    );
+    assert!(
+        seen[0]
+            .head
+            .contains(&format!("authorization: Bearer {KEY}"))
+    );
+    assert_eq!(*keys.0.lock().expect("fetches"), [KeyItem::ModelProxy]);
+    assert!(
+        adapter.models().admits("gemini"),
+        "the registry, not the endpoint, decides what members can use"
+    );
 }

@@ -29,15 +29,19 @@ split is wrong.
 2. Call `swarm` with `action: "title"` to name the swarm after the goal.
 3. Call `swarm` with `action: "models"` to see which models `add` accepts.
    A `note` saying no model registry is configured means added workers are
-   roster entries only and nothing runs them.
+   roster entries only and nothing runs them. Each `openai-http` model carries
+   an `availability` status: `not-served` or `unreachable` means a worker on
+   it will fail, so pick another model or fix the endpoint first.
 
 Your server runs workers only with a model registry. Copy
 `crates/workspace-tools/swarm/models.example.json` to `.swarm/models.json`
 (gitignored), keep the models you can run, and restart the `coda-swarm` MCP
-server; `.cursor/mcp.json` passes that file with `--models`. CLI models carry
-no `key`: in the sandbox container the `claude`, `codex` and `gemini`
-wrappers fetch their own. HTTP models name a broker item in `key`, which the
-server fetches with `coda-sandbox token <item>`. Workers run as
+server; `.cursor/mcp.json` passes that file with `--models`. Every model goes
+through the host model proxy except a local Ollama. `claude-cli` and
+`codex-cli` models carry no `key`: in the sandbox container both CLIs
+authenticate through the proxy themselves. `openai-http` models on the proxy
+set `"key": "model-proxy"`, which the server fetches with
+`coda-sandbox token model-proxy`; keyless endpoints omit `key`. Workers run as
 children of your server: closing the session or stopping the server stops
 every worker and marks it stopped on the board.
 

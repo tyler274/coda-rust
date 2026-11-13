@@ -4,39 +4,35 @@
       "adapter": "claude-cli",
       "model": "opus",
       "display_name": "Claude Opus (Claude Code)",
-      "notes": "Claude Code headless; can fork another claude-cli member"
+      "notes": "Claude Code headless through the host model proxy; can fork another claude-cli member"
     },
     "gpt-codex": {
       "adapter": "codex-cli",
-      "model": "gpt-5-codex",
-      "display_name": "GPT-5 Codex (Codex CLI)",
-      "notes": "Codex exec; can fork another codex-cli member"
+      "model": "gpt-5.5",
+      "display_name": "GPT-5.5 (Codex CLI)",
+      "notes": "Codex exec through the host model proxy; can fork another codex-cli member"
     },
-    "gemini-pro": {
-      "adapter": "gemini-cli",
-      "model": "gemini-2.5-pro",
-      "display_name": "Gemini 2.5 Pro (Gemini CLI)",
-      "notes": "Gemini CLI; no fork"
-    },
-    "claude-sonnet-api": {
-      "adapter": "anthropic-http",
-      "model": "claude-sonnet-4-5",
-      "key": { "item": "anthropic", "env": "ANTHROPIC_API_KEY" },
-      "max_tokens": 8192,
-      "max_calls": 32,
-      "notes": "Messages API with the swarm tools only"
-    },
-    "qwen-coder-openrouter": {
+    "grok-proxy": {
       "adapter": "openai-http",
-      "base_url": "https://openrouter.ai/api/v1",
-      "model": "qwen/qwen3-coder",
-      "key": { "item": "openrouter", "env": "OPENROUTER_API_KEY" },
-      "notes": "OpenRouter chat completions with the swarm tools only"
+      "base_url": "http://10.233.1.1:47821/v1",
+      "key": "model-proxy",
+      "model": "ungate-grok-4.7-high",
+      "display_name": "Grok 4.7 high (Cursor, via ungate)",
+      "notes": "Chat completions through the host model proxy with the swarm tools only"
+    },
+    "gemini-proxy": {
+      "adapter": "openai-http",
+      "base_url": "http://10.233.1.1:47821/v1",
+      "key": "model-proxy",
+      "model": "ungate-gemini-4-carbon-medium",
+      "display_name": "Gemini (via ungate)",
+      "notes": "Placeholder id: Gemini needs a model mapping and a Gemini sign-in in ungate's dashboard; set model to the mapping's id"
     },
     "qwen-coder-local": {
       "adapter": "openai-http",
       "base_url": "http://10.233.1.1:11434/v1",
       "model": "qwen2.5-coder:32b",
+      "display_name": "Qwen2.5 Coder 32B (Ollama)",
       "notes": "Ollama on the sandbox host; no key"
     }
   }

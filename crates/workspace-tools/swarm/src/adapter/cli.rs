@@ -1,9 +1,9 @@
-//! Agent CLIs run headless for one turn each: `claude -p`, `codex exec` and
-//! `gemini`. Each turn reaches the board through the request's MCP command
-//! and continues the member's previous CLI session when the CLI can.
+//! Agent CLIs run headless for one turn each: `claude -p` and `codex exec`.
+//! Each turn reaches the board through the request's MCP command and
+//! continues the member's previous CLI session. In the sandbox container
+//! both CLIs authenticate through the host model proxy on their own.
 
 use std::collections::BTreeMap;
-use std::io::Write;
 use std::path::PathBuf;
 use std::process::Command;
 use std::sync::{Arc, Mutex, PoisonError};
@@ -24,7 +24,6 @@ const MAX_ERRORS: usize = 16 * 1024;
 pub enum Cli {
     Claude,
     Codex,
-    Gemini,
 }
 
 impl Cli {
@@ -32,14 +31,6 @@ impl Cli {
         match self {
             Self::Claude => "claude",
             Self::Codex => "codex",
-            Self::Gemini => "gemini",
-        }
-    }
-
-    fn forks(self) -> bool {
-        match self {
-            Self::Claude | Self::Codex => true,
-            Self::Gemini => false,
         }
     }
 }
@@ -144,33 +135,8 @@ impl CliAdapter {
                 }
                 push(&["-"]);
             }
-            Cli::Gemini => {
-                push(&["--model", &self.model, "--yolo"]);
-                push(&["--output-format", "json"]);
-                push(&["--allowed-mcp-server-names", MCP_SERVER]);
-            }
         }
         out
-    }
-
-    /// Gemini reads MCP servers only from settings files; this one holds
-    /// the server command and nothing secret.
-    fn gemini_settings(request: &TurnRequest) -> Result<tempfile::NamedTempFile, String> {
-        let (program, args) = request
-            .mcp_command
-            .split_first()
-            .map_or(("", &[][..]), |(program, args)| (program.as_str(), args));
-        let settings = json!({
-            "mcpServers": { MCP_SERVER: { "command": program, "args": args, "trust": true } }
-        });
-        let mut file = tempfile::Builder::new()
-            .prefix("coda-swarm-gemini-")
-            .suffix(".json")
-            .tempfile()
-            .map_err(|error| format!("create gemini settings: {error}"))?;
-        file.write_all(settings.to_string().as_bytes())
-            .map_err(|error| format!("write gemini settings: {error}"))?;
-        Ok(file)
     }
 }
 
@@ -191,16 +157,6 @@ impl WorkerAdapter for CliAdapter {
             .args(self.args(&request, session.as_ref()))
             .current_dir(&request.cwd)
             .envs(request.env.iter().map(|(name, value)| (name, value)));
-        let settings = match self.cli {
-            Cli::Gemini => match Self::gemini_settings(&request) {
-                Ok(file) => {
-                    command.env("GEMINI_CLI_SYSTEM_SETTINGS_PATH", file.path());
-                    Some(file)
-                }
-                Err(reason) => return TurnOutcome::Failed { reason },
-            },
-            Cli::Claude | Cli::Codex => None,
-        };
         let ran = process::run(
             &self.limits,
             command,
@@ -209,7 +165,6 @@ impl WorkerAdapter for CliAdapter {
             Tail::new(MAX_ERRORS),
             cancel,
         );
-        drop(settings);
         let ran = match ran {
             Ok(ran) => ran,
             Err(reason) => return TurnOutcome::Failed { reason },
@@ -235,7 +190,7 @@ impl WorkerAdapter for CliAdapter {
             excerpt(&errors)
         };
         TurnOutcome::Failed {
-            reason: request.redact(format!("{} turn failed: {detail}", self.cli.program())),
+            reason: format!("{} turn failed: {detail}", self.cli.program()),
         }
     }
 
@@ -245,11 +200,6 @@ impl WorkerAdapter for CliAdapter {
         to: &MemberName,
         _model: Option<&str>,
     ) -> Result<(), ForkError> {
-        if !self.cli.forks() {
-            return Err(ForkError::Unsupported {
-                adapter: self.cli.program(),
-            });
-        }
         let Some(Session::Resume(id)) = self.sessions.get(from) else {
             return Err(ForkError::NoHistory(from.clone()));
         };
@@ -309,13 +259,6 @@ impl LineSink for Events {
                 }
                 _ => {}
             },
-            Cli::Gemini => {
-                if let Some(error) = event.get("error").filter(|error| !error.is_null()) {
-                    self.failed = true;
-                    let detail = text(&error["message"]).unwrap_or_else(|| error.to_string());
-                    self.errors.push(&detail);
-                }
-            }
         }
     }
 }

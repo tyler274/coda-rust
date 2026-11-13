@@ -283,7 +283,7 @@ impl<S: Store, P: Spawner> Server<S, P> {
     fn swarm(&self, action: SwarmAction) -> Result<Value, ToolError> {
         match action {
             SwarmAction::Status {} => self.status(),
-            SwarmAction::Models {} => Ok(match self.spawner.models() {
+            SwarmAction::Models {} => Ok(match self.spawner.probe_models() {
                 Catalog::Any => json!({ "any": true, "models": [] }),
                 Catalog::Listed(models) => json!({ "any": false, "models": models }),
                 Catalog::Unregistered => json!({

@@ -49,6 +49,10 @@ pub enum SpawnError {
 /// every roster change; a spawner starts, stops and reconfigures what runs.
 pub trait Spawner {
     fn models(&self) -> Catalog;
+    /// [`Self::models`] with endpoint availability, for the `models` action.
+    fn probe_models(&self) -> Catalog {
+        self.models()
+    }
     fn spawn(&self, spec: &SpawnSpec) -> Result<(), SpawnError>;
     fn kill(&self, name: &MemberName) -> Result<(), SpawnError>;
     fn set_model(&self, name: &MemberName, model: &str) -> Result<(), SpawnError>;
@@ -57,6 +61,10 @@ pub trait Spawner {
 impl<T: Spawner + ?Sized> Spawner for Arc<T> {
     fn models(&self) -> Catalog {
         (**self).models()
+    }
+
+    fn probe_models(&self) -> Catalog {
+        (**self).probe_models()
     }
 
     fn spawn(&self, spec: &SpawnSpec) -> Result<(), SpawnError> {

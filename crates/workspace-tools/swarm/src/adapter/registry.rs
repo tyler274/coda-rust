@@ -2,20 +2,25 @@
 //! provider model name, key and endpoint. Parsed once from JSON, then run
 //! by a [`RegistryAdapter`] that dispatches each turn on the member's model.
 
-use std::collections::BTreeMap;
+use std::collections::{BTreeMap, BTreeSet};
 use std::fmt;
 use std::path::{Path, PathBuf};
 use std::sync::Arc;
+use std::thread;
+use std::time::Duration;
 
 use serde::{Deserialize, Serialize};
 
 use super::cli::{Cli, CliAdapter, Sessions};
-use super::http::{Api, Histories, HttpAdapter};
+use super::http::{Histories, HttpAdapter, HttpKey, served_models};
+use super::keys::{KeyItem, KeySource};
 use super::{
-    Cancel, Catalog, CommandAdapter, ForkError, KeyEnv, ModelInfo, TurnOutcome, TurnRequest,
+    Availability, Cancel, Catalog, CommandAdapter, ForkError, ModelInfo, TurnOutcome, TurnRequest,
     WorkerAdapter,
 };
 use crate::names::MemberName;
+
+const PROBE_TIMEOUT: Duration = Duration::from_secs(3);
 
 /// A model id as members and the coordinator name it, e.g. `claude-opus`.
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize)]
@@ -48,32 +53,20 @@ pub enum AdapterKind {
         #[serde(default)]
         args: Vec<String>,
     },
+    /// In the sandbox container the CLI authenticates through the host
+    /// model proxy itself, so the entry carries no key.
     ClaudeCli,
     CodexCli,
-    GeminiCli,
-    AnthropicHttp {
-        #[serde(default = "anthropic_base_url")]
-        base_url: String,
-        #[serde(default = "default_max_tokens")]
-        max_tokens: u32,
-        #[serde(default = "default_max_calls")]
-        max_calls: u32,
-    },
     OpenaiHttp {
         base_url: String,
+        /// Absent for keyless endpoints such as a local Ollama.
+        #[serde(default)]
+        key: Option<KeyItem>,
         #[serde(default)]
         max_tokens: Option<u32>,
         #[serde(default = "default_max_calls")]
         max_calls: u32,
     },
-}
-
-fn anthropic_base_url() -> String {
-    "https://api.anthropic.com".to_owned()
-}
-
-const fn default_max_tokens() -> u32 {
-    8192
 }
 
 const fn default_max_calls() -> u32 {
@@ -86,13 +79,6 @@ pub struct ModelEntry {
     pub kind: AdapterKind,
     /// The provider's model name, passed to the CLI or API.
     pub model: String,
-    /// HTTP adapters keep this key in memory and send it as a header; CLI
-    /// adapters get it in the child env. Absent for keyless endpoints such
-    /// as a local Ollama, and for a CLI that fetches its own key: in the
-    /// sandbox container the claude, codex and gemini wrappers ask the
-    /// token broker themselves.
-    #[serde(default)]
-    pub key: Option<KeyEnv>,
     #[serde(default)]
     pub display_name: Option<String>,
     #[serde(default)]
@@ -142,15 +128,25 @@ impl Registry {
         Catalog::Listed(
             self.models
                 .iter()
-                .map(|(id, entry)| ModelInfo {
-                    name: id.to_string(),
-                    display_name: entry.display_name.clone().unwrap_or_else(|| id.to_string()),
-                    notes: entry.notes.clone(),
-                })
+                .map(|(id, entry)| entry.info(id))
                 .collect(),
         )
     }
 }
+
+impl ModelEntry {
+    fn info(&self, id: &ModelId) -> ModelInfo {
+        ModelInfo {
+            name: id.to_string(),
+            display_name: self.display_name.clone().unwrap_or_else(|| id.to_string()),
+            notes: self.notes.clone(),
+            availability: None,
+        }
+    }
+}
+
+/// An HTTP endpoint as one key reaches it: the unit a probe lists once.
+type Endpoint = (String, Option<KeyItem>);
 
 /// Runs each turn with the adapter its member's model is registered to.
 /// Entries on the same CLI or API share member sessions, so a member can be
@@ -158,21 +154,20 @@ impl Registry {
 pub struct RegistryAdapter {
     registry: Registry,
     adapters: BTreeMap<ModelId, Box<dyn WorkerAdapter>>,
+    keys: Arc<dyn KeySource>,
+    pub probe_timeout: Duration,
 }
 
 impl RegistryAdapter {
-    pub fn new(registry: Registry) -> Self {
+    pub fn new(registry: Registry, keys: Arc<dyn KeySource>) -> Self {
         let claude = Arc::new(Sessions::default());
         let codex = Arc::new(Sessions::default());
-        let gemini = Arc::new(Sessions::default());
-        let anthropic = Arc::new(Histories::default());
         let openai = Arc::new(Histories::default());
         let adapters = registry
             .models
             .iter()
             .map(|(id, entry)| {
                 let model = entry.model.clone();
-                let key_env = entry.key.as_ref().map(|key| key.var.clone());
                 let adapter: Box<dyn WorkerAdapter> = match &entry.kind {
                     AdapterKind::Command { program, args } => {
                         let mut adapter = CommandAdapter::new(program);
@@ -189,40 +184,23 @@ impl RegistryAdapter {
                         model,
                         Arc::clone(&codex),
                     )),
-                    AdapterKind::GeminiCli => Box::new(CliAdapter::with_sessions(
-                        Cli::Gemini,
-                        model,
-                        Arc::clone(&gemini),
-                    )),
-                    AdapterKind::AnthropicHttp {
-                        base_url,
-                        max_tokens,
-                        max_calls,
-                    } => {
-                        let api = Api::Anthropic {
-                            base_url: base_url.clone(),
-                            max_tokens: *max_tokens,
-                        };
-                        let mut adapter = HttpAdapter::with_histories(
-                            api,
-                            model,
-                            key_env,
-                            Arc::clone(&anthropic),
-                        );
-                        adapter.max_calls = *max_calls;
-                        Box::new(adapter)
-                    }
                     AdapterKind::OpenaiHttp {
                         base_url,
+                        key,
                         max_tokens,
                         max_calls,
                     } => {
-                        let api = Api::OpenAi {
-                            base_url: base_url.clone(),
-                            max_tokens: *max_tokens,
-                        };
-                        let mut adapter =
-                            HttpAdapter::with_histories(api, model, key_env, Arc::clone(&openai));
+                        let key = key.map(|item| HttpKey {
+                            item,
+                            source: Arc::clone(&keys),
+                        });
+                        let mut adapter = HttpAdapter::with_histories(
+                            base_url.clone(),
+                            model,
+                            key,
+                            Arc::clone(&openai),
+                        );
+                        adapter.max_tokens = *max_tokens;
                         adapter.max_calls = *max_calls;
                         Box::new(adapter)
                     }
@@ -230,26 +208,66 @@ impl RegistryAdapter {
                 (id.clone(), adapter)
             })
             .collect();
-        Self { registry, adapters }
+        Self {
+            registry,
+            adapters,
+            keys,
+            probe_timeout: PROBE_TIMEOUT,
+        }
     }
 
-    fn resolve(
-        &self,
-        model: Option<&str>,
-    ) -> Result<(&ModelEntry, &dyn WorkerAdapter), ResolveError> {
+    fn resolve(&self, model: Option<&str>) -> Result<&dyn WorkerAdapter, ResolveError> {
         let model = model.ok_or(ResolveError::NoModel)?;
-        let id = ModelId::new(model);
-        match (self.registry.models.get(&id), self.adapters.get(&id)) {
-            (Some(entry), Some(adapter)) => Ok((entry, adapter.as_ref())),
-            _ => Err(ResolveError::Unknown(model.to_owned())),
-        }
+        self.adapters
+            .get(&ModelId::new(model))
+            .map(AsRef::as_ref)
+            .ok_or_else(|| ResolveError::Unknown(model.to_owned()))
+    }
+
+    /// Lists each HTTP endpoint's models once, in parallel.
+    fn probe(&self) -> BTreeMap<Endpoint, Result<BTreeSet<String>, String>> {
+        let endpoints: BTreeSet<Endpoint> = self
+            .registry
+            .models
+            .values()
+            .filter_map(|entry| match &entry.kind {
+                AdapterKind::OpenaiHttp { base_url, key, .. } => Some((base_url.clone(), *key)),
+                _ => None,
+            })
+            .collect();
+        thread::scope(|scope| {
+            let probes: Vec<_> = endpoints
+                .into_iter()
+                .map(|endpoint| {
+                    let (base_url, item) = endpoint.clone();
+                    let probe = scope.spawn(move || {
+                        let key = item
+                            .map(|item| self.keys.get(item))
+                            .transpose()
+                            .map_err(|error| format!("key: {error}"))?;
+                        let key = key.as_ref().map(|key| key.expose());
+                        served_models(&base_url, key, self.probe_timeout)
+                    });
+                    (endpoint, probe)
+                })
+                .collect();
+            probes
+                .into_iter()
+                .map(|(endpoint, probe)| {
+                    let served = probe
+                        .join()
+                        .unwrap_or_else(|_| Err("model probe panicked".to_owned()));
+                    (endpoint, served)
+                })
+                .collect()
+        })
     }
 }
 
 impl WorkerAdapter for RegistryAdapter {
     fn run_turn(&self, request: TurnRequest, cancel: &Cancel) -> TurnOutcome {
         match self.resolve(request.model.as_deref()) {
-            Ok((_, adapter)) => adapter.run_turn(request, cancel),
+            Ok(adapter) => adapter.run_turn(request, cancel),
             Err(error) => TurnOutcome::Failed {
                 reason: error.to_string(),
             },
@@ -262,18 +280,36 @@ impl WorkerAdapter for RegistryAdapter {
         to: &MemberName,
         model: Option<&str>,
     ) -> Result<(), ForkError> {
-        self.resolve(model)?.1.fork(from, to, model)
-    }
-
-    fn keys(&self, model: Option<&str>) -> Vec<KeyEnv> {
-        self.resolve(model)
-            .ok()
-            .and_then(|(entry, _)| entry.key.clone())
-            .into_iter()
-            .collect()
+        self.resolve(model)?.fork(from, to, model)
     }
 
     fn models(&self) -> Catalog {
         self.registry.catalog()
+    }
+
+    fn probe_models(&self) -> Catalog {
+        let probed = self.probe();
+        let availability = |entry: &ModelEntry| {
+            let AdapterKind::OpenaiHttp { base_url, key, .. } = &entry.kind else {
+                return None;
+            };
+            Some(match &probed[&(base_url.clone(), *key)] {
+                Ok(ids) if ids.contains(&entry.model) => Availability::Available,
+                Ok(_) => Availability::NotServed,
+                Err(reason) => Availability::Unreachable {
+                    reason: reason.clone(),
+                },
+            })
+        };
+        Catalog::Listed(
+            self.registry
+                .models
+                .iter()
+                .map(|(id, entry)| ModelInfo {
+                    availability: availability(entry),
+                    ..entry.info(id)
+                })
+                .collect(),
+        )
     }
 }
