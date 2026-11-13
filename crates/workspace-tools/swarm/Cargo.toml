@@ -1,0 +1,25 @@
+[package]
+name = "coda-swarm"
+description = "Shared swarm board, roster and channel model with a locked file store."
+edition.workspace = true
+license.workspace = true
+publish.workspace = true
+version.workspace = true
+
+[lints]
+workspace = true
+
+[dependencies]
+chrono = { version = "0.4", features = ["serde"] }
+clap = { version = "4", features = ["derive", "env"] }
+nix = { version = "0.31", default-features = false, features = ["process", "signal"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+signal-hook = "0.4"
+tempfile = "3"
+thiserror = "2"
+unicode-general-category = "1"
+ureq = { version = "3", default-features = false, features = ["rustls"] }
+
+[dev-dependencies]
+jsonschema = { version = "0.61", default-features = false }

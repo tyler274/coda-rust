@@ -22,6 +22,20 @@
     "langfuse": {
       "url": "http://localhost:3000/api/public/mcp",
       "headers": { "Authorization": "Basic cGstbGYtY29kYS1sb2NhbC1kZXY6c2stbGYtY29kYS1sb2NhbC1kZXY=" }
+    },
+    "coda-swarm": {
+      "type": "stdio",
+      "command": "coda-swarm",
+      "args": [
+        "mcp",
+        "--create",
+        "--agent",
+        "coordinator",
+        "--dir",
+        "${workspaceFolder}/.swarm",
+        "--models",
+        "${workspaceFolder}/.swarm/models.json"
+      ]
     }
   }
 }
