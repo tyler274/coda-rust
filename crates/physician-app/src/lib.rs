@@ -214,70 +214,80 @@ fn count_sign_out() {
 }
 
 // Count consecutive failed/short streams, not successful Cloud Run rotations.
-// A valid SSE response sustained for at least 30 seconds restores all five
-// retries. Even a healthy rotation waits one second; immediate EOF cannot spin.
+// A failure worth retrying is always retried: the wait doubles from one second
+// to sixteen and stays there. A valid SSE response sustained for at least 30
+// seconds starts the count over. Even a healthy rotation waits one second;
+// immediate EOF cannot spin.
 #[cfg(any(target_arch = "wasm32", test))]
 #[derive(Default)]
-struct StreamRetryBudget {
+struct StreamBackoff {
     failures: u32,
 }
 
 #[cfg(any(target_arch = "wasm32", test))]
-impl StreamRetryBudget {
+impl StreamBackoff {
     // None denotes a failed connection/HTTP response, regardless of how long
     // that request took. Some(elapsed_ms) measures only an accepted SSE body.
-    fn next_delay_ms(&mut self, elapsed_ms: Option<f64>) -> Option<i32> {
+    fn next_delay_ms(&mut self, elapsed_ms: Option<f64>) -> i32 {
         if elapsed_ms.is_some_and(|elapsed| elapsed >= 30_000.0) {
             self.failures = 0;
-            return Some(1_000);
+            return 1_000;
         }
         self.failures = self.failures.saturating_add(1);
-        (self.failures <= 5).then(|| 1_000 << (self.failures - 1))
+        1_000 << (self.failures.min(5) - 1)
     }
 }
 
 #[cfg(test)]
 mod stream_retry_tests {
-    use super::StreamRetryBudget;
+    use super::StreamBackoff;
 
     #[test]
-    fn immediate_eof_and_failures_back_off_and_exhaust_the_budget() {
-        let mut retry = StreamRetryBudget::default();
+    fn immediate_eof_and_failures_back_off_to_the_longest_delay() {
+        let mut retry = StreamBackoff::default();
         for (elapsed, expected) in [
-            (Some(0.0), Some(1_000)),
-            (None, Some(2_000)),
-            (Some(29_999.0), Some(4_000)),
-            (None, Some(8_000)),
-            (Some(0.0), Some(16_000)),
-            (None, None),
-            (Some(0.0), None),
+            (Some(0.0), 1_000),
+            (None, 2_000),
+            (Some(29_999.0), 4_000),
+            (None, 8_000),
+            (Some(0.0), 16_000),
         ] {
             assert_eq!(retry.next_delay_ms(elapsed), expected);
         }
     }
 
     #[test]
-    fn sustained_stream_resets_both_backoff_and_entire_retry_budget() {
-        let mut retry = StreamRetryBudget::default();
-        for _ in 0..5 {
-            assert!(retry.next_delay_ms(None).is_some());
+    fn sustained_stream_starts_the_backoff_over() {
+        let mut retry = StreamBackoff::default();
+        for _ in 0..7 {
+            retry.next_delay_ms(None);
         }
-        assert_eq!(retry.next_delay_ms(Some(30_000.0)), Some(1_000));
-        for delay in [1_000, 2_000, 4_000, 8_000, 16_000] {
-            assert_eq!(retry.next_delay_ms(Some(0.0)), Some(delay));
+        assert_eq!(retry.next_delay_ms(Some(30_000.0)), 1_000);
+        for delay in [1_000, 2_000, 4_000, 8_000, 16_000, 16_000] {
+            assert_eq!(retry.next_delay_ms(Some(0.0)), delay);
         }
-        assert_eq!(retry.next_delay_ms(None), None);
     }
 
     #[test]
-    fn cloud_run_rotations_do_not_exhaust_the_budget() {
-        let mut retry = StreamRetryBudget::default();
+    fn the_sixth_and_later_failures_still_retry_at_the_longest_delay() {
+        let mut retry = StreamBackoff::default();
+        for _ in 0..5 {
+            retry.next_delay_ms(None);
+        }
+        for elapsed in [None, Some(0.0), None, Some(29_999.0)] {
+            assert_eq!(retry.next_delay_ms(elapsed), 16_000);
+        }
+    }
+
+    #[test]
+    fn cloud_run_rotations_never_build_up_the_wait() {
+        let mut retry = StreamBackoff::default();
         // Simulate a full day of five-minute responses without browser waits.
         for _ in 0..288 {
-            assert_eq!(retry.next_delay_ms(Some(300_000.0)), Some(1_000));
+            assert_eq!(retry.next_delay_ms(Some(300_000.0)), 1_000);
         }
-        assert_eq!(retry.next_delay_ms(Some(0.0)), Some(1_000));
-        assert_eq!(retry.next_delay_ms(None), Some(2_000));
+        assert_eq!(retry.next_delay_ms(Some(0.0)), 1_000);
+        assert_eq!(retry.next_delay_ms(None), 2_000);
     }
 }
 
@@ -314,9 +324,9 @@ fn follow_workspace_events(
         let Some(clock) = window.performance() else {
             return;
         };
-        let mut retry = StreamRetryBudget::default();
-        let mut next_delay = Some(0);
-        while let Some(delay) = next_delay {
+        let mut retry = StreamBackoff::default();
+        let mut delay = 0;
+        loop {
             if delay > 0 {
                 let wait = js_sys::Promise::new(&mut |resolve, reject| {
                     if let Err(error) = window
@@ -342,7 +352,7 @@ fn follow_workspace_events(
                 wasm_bindgen_futures::JsFuture::from(window.fetch_with_str_and_init(&url, &init))
                     .await
             else {
-                next_delay = retry.next_delay_ms(None);
+                delay = retry.next_delay_ms(None);
                 continue;
             };
             let Ok(response) = value.dyn_into::<web_sys::Response>() else {
@@ -354,7 +364,7 @@ fn follow_workspace_events(
                 today_attempt.set(today_attempt() + 1);
                 workspace_attempt.set(workspace_attempt() + 1);
                 if response.status() == 429 || response.status() >= 500 {
-                    next_delay = retry.next_delay_ms(None);
+                    delay = retry.next_delay_ms(None);
                     continue;
                 }
                 return;
@@ -424,7 +434,7 @@ fn follow_workspace_events(
                     &mut snapshot_attempt,
                 );
             }
-            next_delay = retry.next_delay_ms(Some(clock.now() - started_at));
+            delay = retry.next_delay_ms(Some(clock.now() - started_at));
         }
     })
 }
