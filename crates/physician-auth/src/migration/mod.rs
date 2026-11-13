@@ -29,6 +29,9 @@ pub mod patient_link;
 #[allow(missing_docs)]
 pub mod practice;
 
+#[expect(missing_docs, reason = "SeaORM DeriveEntityModel generated items")]
+pub mod practice_source_setup;
+
 #[allow(missing_docs)]
 pub mod session;
 
@@ -45,6 +48,10 @@ pub use patient::{ActiveModel as PatientActiveModel, Entity as Patients};
 pub use patient_link::Model as PatientLinkRow;
 pub use patient_link::{ActiveModel as PatientLinkActiveModel, Entity as PatientLinks};
 pub use practice::{ActiveModel as PracticeActiveModel, Entity as Practices};
+pub use practice_source_setup::Model as PracticeSourceSetupRow;
+pub use practice_source_setup::{
+    ActiveModel as PracticeSourceSetupActiveModel, Entity as PracticeSourceSetups,
+};
 pub use session::Model as SessionRow;
 pub use session::{ActiveModel as SessionActiveModel, Entity as Sessions};
 pub use sign_in_token::Model as SignInTokenRow;
@@ -68,6 +75,8 @@ impl MigratorTrait for Migrator {
             Box::new(m20261106_000006_session_lifetime),
             Box::new(m20261109_000007_fixed_sessions),
             Box::new(m20261112_000008_drop_cadence_columns),
+            Box::new(m20261113_000009_practice_time_zone),
+            Box::new(m20261113_000010_practice_source_setup),
         ]
     }
 }
@@ -763,6 +772,136 @@ impl MigrationTrait for m20261112_000008_drop_cadence_columns {
                     )
                     .to_owned(),
             )
+            .await
+    }
+}
+
+/// Adds validated IANA `time_zone` storage to `physician_practices`.
+#[expect(
+    non_camel_case_types,
+    reason = "SeaORM migration version naming convention"
+)]
+pub struct m20261113_000009_practice_time_zone;
+impl MigrationName for m20261113_000009_practice_time_zone {
+    fn name(&self) -> &str {
+        "physician_auth_20261113_000009_practice_time_zone"
+    }
+}
+
+#[async_trait::async_trait]
+impl MigrationTrait for m20261113_000009_practice_time_zone {
+    async fn up(&self, manager: &SchemaManager) -> Result<(), DbErr> {
+        manager
+            .alter_table(
+                Table::alter()
+                    .table(Practices)
+                    .add_column(
+                        ColumnDef::new(practice::Column::TimeZone)
+                            .string()
+                            .not_null()
+                            .default("America/New_York"),
+                    )
+                    .to_owned(),
+            )
+            .await
+    }
+
+    async fn down(&self, manager: &SchemaManager) -> Result<(), DbErr> {
+        manager
+            .alter_table(
+                Table::alter()
+                    .table(Practices)
+                    .drop_column(practice::Column::TimeZone)
+                    .to_owned(),
+            )
+            .await
+    }
+}
+
+/// Creates durable per-practice clinical source setup and recovery state storage.
+#[expect(
+    non_camel_case_types,
+    reason = "SeaORM migration version naming convention"
+)]
+pub struct m20261113_000010_practice_source_setup;
+impl MigrationName for m20261113_000010_practice_source_setup {
+    fn name(&self) -> &str {
+        "physician_auth_20261113_000010_practice_source_setup"
+    }
+}
+
+#[async_trait::async_trait]
+impl MigrationTrait for m20261113_000010_practice_source_setup {
+    async fn up(&self, manager: &SchemaManager) -> Result<(), DbErr> {
+        manager
+            .create_table(
+                Table::create()
+                    .table(PracticeSourceSetups)
+                    .if_not_exists()
+                    .col(
+                        ColumnDef::new(practice_source_setup::Column::PracticeId)
+                            .string()
+                            .not_null(),
+                    )
+                    .col(
+                        ColumnDef::new(practice_source_setup::Column::SourceId)
+                            .string()
+                            .not_null(),
+                    )
+                    .col(
+                        ColumnDef::new(practice_source_setup::Column::StandingJson)
+                            .text()
+                            .not_null(),
+                    )
+                    .col(
+                        ColumnDef::new(practice_source_setup::Column::BacklogJson)
+                            .text()
+                            .not_null(),
+                    )
+                    .col(
+                        ColumnDef::new(practice_source_setup::Column::ActivityJson)
+                            .text()
+                            .not_null(),
+                    )
+                    .col(
+                        ColumnDef::new(practice_source_setup::Column::UnlinkedSpruceJson)
+                            .text()
+                            .not_null(),
+                    )
+                    .col(
+                        ColumnDef::new(practice_source_setup::Column::LinkedRecordsJson)
+                            .text()
+                            .not_null(),
+                    )
+                    .col(
+                        ColumnDef::new(practice_source_setup::Column::RetainedDraftsJson)
+                            .text()
+                            .not_null(),
+                    )
+                    .col(
+                        ColumnDef::new(practice_source_setup::Column::ImportGeneration)
+                            .big_integer()
+                            .not_null()
+                            .default(0),
+                    )
+                    .col(
+                        ColumnDef::new(practice_source_setup::Column::UpdatedAt)
+                            .big_integer()
+                            .not_null(),
+                    )
+                    .primary_key(
+                        Index::create()
+                            .col(practice_source_setup::Column::PracticeId)
+                            .col(practice_source_setup::Column::SourceId),
+                    )
+                    .to_owned(),
+            )
+            .await
+    }
+
+    async fn down(&self, manager: &SchemaManager) -> Result<(), DbErr> {
+        manager
+            .drop_table(Table::drop().table(PracticeSourceSetups).to_owned())
             .await
     }
 }

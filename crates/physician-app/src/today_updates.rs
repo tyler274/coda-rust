@@ -53,10 +53,12 @@ impl TodayMeta {
 pub(crate) fn today_shows_nothing_needs_you(
     rows: &[TodayLine],
     connections: &[String],
+    source_connections: &[physician_wire::TodayConnection],
     meta: &TodayMeta,
 ) -> bool {
     rows.is_empty()
         && connections.is_empty()
+        && source_connections.is_empty()
         && !meta.incomplete
         && meta.failed_parts.is_empty()
         && meta.practice_outages.is_empty()
@@ -704,7 +706,7 @@ mod tests {
     #[test]
     fn nothing_needs_you_holds_only_when_every_producer_answered_and_no_outages_exist() {
         let clean = TodayMeta::default();
-        assert!(today_shows_nothing_needs_you(&[], &[], &clean));
+        assert!(today_shows_nothing_needs_you(&[], &[], &[], &clean));
 
         let partial = TodayMeta {
             incomplete: true,
@@ -715,7 +717,7 @@ mod tests {
             }],
             ..TodayMeta::default()
         };
-        assert!(!today_shows_nothing_needs_you(&[], &[], &partial));
+        assert!(!today_shows_nothing_needs_you(&[], &[], &[], &partial));
 
         let outage = TodayMeta {
             practice_outages: vec![PracticeOutageWire {
@@ -727,7 +729,23 @@ mod tests {
             }],
             ..TodayMeta::default()
         };
-        assert!(!today_shows_nothing_needs_you(&[], &[], &outage));
+        assert!(!today_shows_nothing_needs_you(&[], &[], &[], &outage));
+
+        let source_notice = physician_wire::TodayConnection {
+            condition: "source_read_failed".to_owned(),
+            channel: Some("spruce".to_owned()),
+            source_id: Some(physician_wire::source_setup::SupportedSourceWire::Spruce),
+            source_label: Some("Spruce Health".to_owned()),
+            reason: Some("timeout".to_owned()),
+            last_successful_read_at: None,
+            recovery: Some(physician_wire::source_setup::TodayConnectionRecoveryWire::ReadFailed),
+        };
+        assert!(!today_shows_nothing_needs_you(
+            &[],
+            &[],
+            &[source_notice],
+            &clean
+        ));
     }
 
     #[test]

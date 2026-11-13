@@ -202,6 +202,9 @@ pub fn browser_time_zone(fallback: &str) -> String {
 
 /// Formats an RFC-3339 timestamp as a 12-hour clock (`3:30 PM`) in IANA `zone`.
 pub fn format_zone_clock(iso: &str, zone: &str) -> Option<String> {
+    if zone.trim().is_empty() {
+        return None;
+    }
     let unix = parse_unix(iso)?;
     #[cfg(target_arch = "wasm32")]
     if let Some(formatted) = wasm_format_clock(unix, zone) {
@@ -341,7 +344,10 @@ fn wasm_zone_ymd(unix: i64, zone: &str) -> Option<(i32, u32, u32)> {
     Some((year, month, day))
 }
 
-fn zone_ymd(unix: i64, zone: &str) -> Option<(i32, u32, u32)> {
+pub(crate) fn zone_ymd(unix: i64, zone: &str) -> Option<(i32, u32, u32)> {
+    if zone.trim().is_empty() {
+        return None;
+    }
     #[cfg(target_arch = "wasm32")]
     if let Some(ymd) = wasm_zone_ymd(unix, zone) {
         return Some(ymd);
