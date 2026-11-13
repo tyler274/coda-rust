@@ -4417,9 +4417,11 @@ const WRITING: &str = "Coda is writing this response.";
 /// The line when Coda's recovery is used up or the model service refused the work.
 const COULDNT_FINISH: &str = "Coda couldn’t finish this response. Your message is saved.";
 /// The line after a partial answer cut off at a limit.
-const PARTIAL: &str = "Partial response. Choose Try again to continue.";
+const PARTIAL: &str = "Partial response.";
 /// The line when a limit cut off an answer before any of it was kept.
-const LIMIT: &str = "Coda reached its limit for this response. Choose Try again to continue.";
+const LIMIT: &str = "Coda reached its limit for this response.";
+/// Follows a cut-off line only where Try again is offered.
+const TRY_AGAIN_PROMISE: &str = "Choose Try again to continue.";
 
 /// The lines a chat snapshot shows, in order: each exchange's messages, the
 /// text a limit kept, then its answer or the line that says how it ended.
@@ -4472,14 +4474,18 @@ fn conversation_lines(snapshot: &ChatSnapshot) -> Vec<ConversationLine> {
                 ..line(shell::STOPPED, None)
             }),
             AnswerState::CutOff { try_again } => {
-                let text = if exchange.kept.is_empty() {
+                let ending = if exchange.kept.is_empty() {
                     LIMIT
                 } else {
                     PARTIAL
                 };
+                let text = match try_again {
+                    Some(_) => format!("{ending} {TRY_AGAIN_PROMISE}"),
+                    None => ending.to_owned(),
+                };
                 lines.push(ConversationLine {
                     resume: try_again.clone(),
-                    ..line(text, None)
+                    ..line(&text, None)
                 });
             }
             AnswerState::CouldntFinish { try_again } => lines.push(ConversationLine {
@@ -4608,8 +4614,8 @@ fn now_millis() -> u128 {
 #[cfg(test)]
 mod conversation_line_tests {
     use super::{
-        COULDNT_FINISH, ConversationLine, LIMIT, PARTIAL, WRITING, chat_resume_command,
-        chat_stop_command, conversation_lines, new_chat_id,
+        COULDNT_FINISH, ConversationLine, WRITING, chat_resume_command, chat_stop_command,
+        conversation_lines, new_chat_id,
     };
     use crate::feedback;
     use crate::shell::STOPPED;
@@ -4664,7 +4670,8 @@ mod conversation_line_tests {
     /// Each ending draws the line the page drew before the typed transcript:
     /// Stop while working, Resume when stopped, Try again when cut off or
     /// unfinished. Text a limit kept comes first in every state, and the
-    /// cut-off line says whether any was kept.
+    /// cut-off line says whether any was kept and promises Try again only
+    /// where it is offered.
     #[test]
     fn each_answer_state_draws_its_line_and_action() {
         let ask = line("Hello", Some(Author::Person));
@@ -4675,7 +4682,7 @@ mod conversation_line_tests {
             text: "The rest.".into(),
             feedback: None,
         };
-        let cases: [(AnswerState, &[&str], Vec<ConversationLine>); 7] = [
+        let cases: [(AnswerState, &[&str], Vec<ConversationLine>); 9] = [
             (
                 AnswerState::Working {
                     stop: WorkStopTarget {
@@ -4724,7 +4731,7 @@ mod conversation_line_tests {
                     kept.clone(),
                     ConversationLine {
                         resume: Some(target()),
-                        ..line(PARTIAL, None)
+                        ..line("Partial response. Choose Try again to continue.", None)
                     },
                 ],
             ),
@@ -4735,8 +4742,21 @@ mod conversation_line_tests {
                 &[],
                 vec![ConversationLine {
                     resume: Some(target()),
-                    ..line(LIMIT, None)
+                    ..line(
+                        "Coda reached its limit for this response. Choose Try again to continue.",
+                        None,
+                    )
                 }],
+            ),
+            (
+                AnswerState::CutOff { try_again: None },
+                &["The saved part."],
+                vec![kept.clone(), line("Partial response.", None)],
+            ),
+            (
+                AnswerState::CutOff { try_again: None },
+                &[],
+                vec![line("Coda reached its limit for this response.", None)],
             ),
             (
                 AnswerState::CouldntFinish {
