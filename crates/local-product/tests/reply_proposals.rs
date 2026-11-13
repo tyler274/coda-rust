@@ -28,13 +28,14 @@ use local_product::{
                 AnsweredMessageClosure, AskCodaToReplyOutcome, CardArrivalNotice,
                 CardChannelBanner, CardReviewState, ChannelConnection, CompleteReplyReview,
                 ConversationLink, ConversationMoveOutcome, CopiedReplySource, CopyReplyOutcome,
-                DisplayedReplyText, ExpectedDraftBase, MessageIntakeOutcome, MessageSender,
-                NoReplyReason, ObservePracticeMessage, PatientMessageStanding, PhysicianDraftKind,
-                PhysicianDraftStanding, PhysicianReplySurface, PracticeMessageKind,
-                ProposalRevisionAccepted, RecordPatientMessage, ReplyProposalBasisInput,
-                ReplyProposalError, ReplyProposalInput, ReplyProposalInputError,
-                ReplyReviewDecision, ReplyReviewOutcome, ReplyStanding, ReviewReadState,
-                ReviewWakeEvent, proposal_draft_scope,
+                DisplayedReplyText, ExpectedDisconnectedCard, ExpectedDraftBase,
+                MessageIntakeOutcome, MessageSender, NoReplyReason, ObservePracticeMessage,
+                PatientMessageStanding, PhysicianDraftKind, PhysicianDraftStanding,
+                PhysicianReplySurface, PracticeMessageKind, ProposalRevisionAccepted,
+                RecordPatientMessage, ReplyProposalBasisInput, ReplyProposalError,
+                ReplyProposalInput, ReplyProposalInputError, ReplyReviewDecision,
+                ReplyReviewOutcome, ReplyStanding, ReviewReadState, ReviewWakeEvent,
+                proposal_draft_scope,
             },
         },
     },
@@ -830,11 +831,26 @@ async fn ac2_fences_stale_conversation_and_source_reads_and_runs_selected_draft_
         }
     );
 
+    // Stale `restore_my_reply_version` fence fails without writing a receipt.
+    assert!(matches!(
+        store
+            .restore_my_reply_version(
+                &access,
+                &CommandKey::new("restore-ac2").unwrap(),
+                conversation_id,
+                2,
+                &mut PostgresWorkspaceAuthority,
+            )
+            .await,
+        Err(ReplyProposalError::StaleDraftVersion { .. })
+    ));
+
     let restored_card = store
         .restore_my_reply_version(
             &access,
             &CommandKey::new("restore-ac2").unwrap(),
             conversation_id,
+            3,
             &mut PostgresWorkspaceAuthority,
         )
         .await
@@ -847,6 +863,61 @@ async fn ac2_fences_stale_conversation_and_source_reads_and_runs_selected_draft_
             kind: PhysicianDraftKind::YourText,
             text: "Corrected BMP potassium is 4.5 mmol/L (hemolyzed earlier sample); continue regimen."
                 .into(),
+        }
+    );
+    // Lost-receipt retry with the same command key and expected revision succeeds idempotently
+    // even after `draft_revision` advanced to 4 and `kind` returned to `YourText`.
+    let replayed_restore = store
+        .restore_my_reply_version(
+            &access,
+            &CommandKey::new("restore-ac2").unwrap(),
+            conversation_id,
+            3,
+            &mut PostgresWorkspaceAuthority,
+        )
+        .await
+        .unwrap();
+    assert_eq!(
+        replayed_restore.displayed_text,
+        restored_card.displayed_text
+    );
+
+    // `Store::open_draft_authorized` refuses `reply-proposal:` scopes, while `Store::save_draft`
+    // synchronizes `reply_draft_binding` and accepts CRLF text on an active `Ready` binding.
+    assert!(
+        store
+            .open_draft_authorized(
+                &draft_scope,
+                "Bypass proposal draft owner",
+                &dr_hash,
+                &mut PostgresWorkspaceAuthority,
+            )
+            .await
+            .is_err()
+    );
+    let saved_rev = store
+        .save_draft(
+            &draft_scope,
+            4,
+            "Line 1 via save_draft.\r\nLine 2 via save_draft.",
+            &dr_hash,
+            &mut PostgresWorkspaceAuthority,
+        )
+        .await
+        .unwrap();
+    assert_eq!(saved_rev, 5);
+    let synced_card = store
+        .reply_card(&access, conversation_id, &mut PostgresWorkspaceAuthority)
+        .await
+        .unwrap()
+        .unwrap();
+    assert_eq!(
+        synced_card.displayed_text,
+        DisplayedReplyText::PhysicianDraft {
+            reply_id: 1,
+            draft_revision: 5,
+            kind: PhysicianDraftKind::YourText,
+            text: "Line 1 via save_draft.\r\nLine 2 via save_draft.".into(),
         }
     );
 }
@@ -1095,29 +1166,52 @@ async fn ac3_practice_message_partial_closures_both_singletons_automatic_refusal
         workspace: &workspace,
         session_hash: &dr_hash,
     };
+    let card_a = store
+        .reply_card(&access, conv_a, &mut PostgresWorkspaceAuthority)
+        .await
+        .unwrap()
+        .unwrap();
+    assert_eq!(card_a.practice_messages.len(), 2);
+    assert_eq!(
+        card_a.practice_messages[1].practice_message_id,
+        "prac-quest"
+    );
     store
         .copy_reply(
             &access,
             &CommandKey::new("copy-ac3").unwrap(),
             conv_a,
+            ExpectedDraftBase::ProposalVersion(1),
             &mut PostgresWorkspaceAuthority,
         )
         .await
         .unwrap();
 
+    // `Rule 8: HistoryTrue` + untrimmed `\r\n` channel words: exact words from the channel
+    // (including CRLF and leading/trailing spaces) are preserved on `practice_messages`,
+    // `NoOpenCard`, and `recorded_practice_history`!
+    let exact_prac_words =
+        "  Dr. AC3 here — head to the nearest ER right away.\r\nBring your medication list.  ";
     store
         .observe_practice_message(&ObservePracticeMessage {
             practice: practice.clone(),
             conversation_id: conv_a.into(),
             practice_message_id: "prac-ed-now".into(),
             kind: PracticeMessageKind::PracticeSent,
-            text:
-                "Dr. AC3 here — head to the nearest ER right away for an ECG and repeat potassium."
-                    .into(),
+            text: exact_prac_words.into(),
             sent_at: 1_762_901_200,
         })
         .await
         .unwrap();
+    let card_a_before_review = store
+        .reply_card(&access, conv_a, &mut PostgresWorkspaceAuthority)
+        .await
+        .unwrap()
+        .unwrap();
+    assert_eq!(
+        card_a_before_review.practice_messages.last().unwrap().text,
+        exact_prac_words
+    );
     let snap_a2 = store
         .start_or_read_reply_review(&practice, conv_a, "rev-a2", "run-a2")
         .await
@@ -1129,7 +1223,7 @@ async fn ac3_practice_message_partial_closures_both_singletons_automatic_refusal
             .last()
             .unwrap()
             .text,
-        "Dr. AC3 here — head to the nearest ER right away for an ECG and repeat potassium."
+        exact_prac_words
     );
     store
         .complete_reply_review(&CompleteReplyReview {
@@ -1260,9 +1354,13 @@ async fn ac4_moves_withhold_reply_fence_old_work_retire_not_patient_concerns_and
     let ws_b = format!("pw-b-{}", uuid::Uuid::new_v4().simple());
 
     let (dr, _token, dr_hash) = invite_and_sign_in(&auth, &practice, "dr-ac4").await;
+    let (dr_peer, _peer_tok, peer_hash) = invite_and_sign_in(&auth, &practice, "dr-ac4-peer").await;
     for ws in [&ws_a, &ws_b] {
         auth.register_patient(&practice, ws).await.unwrap();
         auth.set_membership(&dr, ws, Membership::Allowed)
+            .await
+            .unwrap();
+        auth.set_membership(&dr_peer, ws, Membership::Allowed)
             .await
             .unwrap();
     }
@@ -1364,6 +1462,18 @@ async fn ac4_moves_withhold_reply_fence_old_work_retire_not_patient_concerns_and
             conv_move,
             ExpectedDraftBase::ProposalVersion(1),
             "Dr private draft written for Patient A.",
+            &mut PostgresWorkspaceAuthority,
+        )
+        .await
+        .unwrap();
+    // `dr` copies `reply_id = 1` on `ws_a` before moving to `ws_b`; that pre-move copy must
+    // NEVER leak into `other_physician_copies` on `ws_b`'s `Withheld` or `Ready` cards!
+    store
+        .copy_reply(
+            &access_a,
+            &CommandKey::new("copy-pre-move-a").unwrap(),
+            conv_move,
+            ExpectedDraftBase::DraftRevision(1),
             &mut PostgresWorkspaceAuthority,
         )
         .await
@@ -1504,20 +1614,60 @@ async fn ac4_moves_withhold_reply_fence_old_work_retire_not_patient_concerns_and
         Some(RunOutcome::Cancelled)
     );
 
-    // On `ws_b`, the card shows `DisplayedReplyText::Withheld` (never Patient A's text or draft!).
+    // `Store::save_draft` and `Store::accept_revision` on the old `ws_a` proposal scope are fenced after move.
+    assert!(
+        store
+            .save_draft(
+                &pre_move_rev,
+                1,
+                "Late save after move",
+                &dr_hash,
+                &mut PostgresWorkspaceAuthority,
+            )
+            .await
+            .is_err()
+    );
+    assert_eq!(
+        store
+            .accept_revision(
+                &pre_move_rev,
+                &RevisionInput {
+                    key: "rev-after-move-fenced".into(),
+                    expected_revision: 1,
+                    instruction: "Late revise after move".into(),
+                    timezone: "UTC".into(),
+                    scenario: None,
+                },
+                dr_hash.clone(),
+                &skills,
+                &recipe,
+            )
+            .await
+            .unwrap(),
+        local_product::runtime::reply::RevisionAccepted::Refused
+    );
+
+    // On `ws_b`, the card shows `DisplayedReplyText::Withheld` (never Patient A's text, draft, or copy!).
     let access_b = WorkspaceAccess {
         practice: &practice,
         physician: &dr.physician_id,
         workspace: &ws_b,
         session_hash: &dr_hash,
     };
+    let peer_access_b = WorkspaceAccess {
+        practice: &practice,
+        physician: &dr_peer.physician_id,
+        workspace: &ws_b,
+        session_hash: &peer_hash,
+    };
     let withheld_card = store
-        .reply_card(&access_b, conv_move, &mut PostgresWorkspaceAuthority)
+        .reply_card(&peer_access_b, conv_move, &mut PostgresWorkspaceAuthority)
         .await
         .unwrap()
         .unwrap();
     assert_eq!(withheld_card.reply_id, 2);
     assert_eq!(withheld_card.displayed_text, DisplayedReplyText::Withheld);
+    assert!(withheld_card.other_physician_copies.is_empty());
     assert_eq!(
         withheld_card.draft_standing,
         PhysicianDraftStanding::NoDraft
@@ -1581,7 +1731,7 @@ async fn ac4_moves_withhold_reply_fence_old_work_retire_not_patient_concerns_and
         .unwrap();
 
     let ready_b_card = store
-        .reply_card(&access_b, conv_move, &mut PostgresWorkspaceAuthority)
+        .reply_card(&peer_access_b, conv_move, &mut PostgresWorkspaceAuthority)
         .await
         .unwrap()
         .unwrap();
@@ -1593,6 +1743,7 @@ async fn ac4_moves_withhold_reply_fence_old_work_retire_not_patient_concerns_and
             text: "Patient B morning potassium is 4.9 mmol/L (within normal range).".into(),
         }
     );
+    assert!(ready_b_card.other_physician_copies.is_empty());
 
     // --- Channel disconnect, retain draft, reconnect, and `Done` while disconnected (`Rule 11`) ---
     // Marking `Done` while still connected is refused (`ChannelStillConnected`).
@@ -1602,6 +1753,10 @@ async fn ac4_moves_withhold_reply_fence_old_work_retire_not_patient_concerns_and
                 &access_b,
                 &CommandKey::new("done-too-early").unwrap(),
                 conv_move,
+                ExpectedDisconnectedCard::Ready {
+                    reply_id: 2,
+                    proposal_version: 2,
+                },
                 &mut PostgresWorkspaceAuthority,
             )
             .await,
@@ -1674,15 +1829,63 @@ async fn ac4_moves_withhold_reply_fence_old_work_retire_not_patient_concerns_and
         )
         .await
         .unwrap();
+    // Stale `Withheld` or wrong `proposal_version` fences on `mark_disconnected_reply_done` fail cleanly!
+    assert!(matches!(
+        store
+            .mark_disconnected_reply_done(
+                &access_b,
+                &CommandKey::new("done-while-disconnected").unwrap(),
+                conv_move,
+                ExpectedDisconnectedCard::Withheld { reply_id: 2 },
+                &mut PostgresWorkspaceAuthority,
+            )
+            .await,
+        Err(ReplyProposalError::StaleDraftVersion { .. })
+    ));
+    assert!(matches!(
+        store
+            .mark_disconnected_reply_done(
+                &access_b,
+                &CommandKey::new("done-while-disconnected").unwrap(),
+                conv_move,
+                ExpectedDisconnectedCard::Ready {
+                    reply_id: 2,
+                    proposal_version: 1,
+                },
+                &mut PostgresWorkspaceAuthority,
+            )
+            .await,
+        Err(ReplyProposalError::StaleDraftVersion { .. })
+    ));
+
     let done_conv = store
         .mark_disconnected_reply_done(
             &access_b,
             &CommandKey::new("done-while-disconnected").unwrap(),
             conv_move,
+            ExpectedDisconnectedCard::Ready {
+                reply_id: 2,
+                proposal_version: 2,
+            },
             &mut PostgresWorkspaceAuthority,
         )
         .await
         .unwrap();
+    // Lost-receipt retry with the same key & fence returns `Ok` idempotently even after standing became `None`.
+    let done_conv_replayed = store
+        .mark_disconnected_reply_done(
+            &access_b,
+            &CommandKey::new("done-while-disconnected").unwrap(),
+            conv_move,
+            ExpectedDisconnectedCard::Ready {
+                reply_id: 2,
+                proposal_version: 2,
+            },
+            &mut PostgresWorkspaceAuthority,
+        )
+        .await
+        .unwrap();
+    assert_eq!(done_conv_replayed.reply_standing, ReplyStanding::None);
     assert_eq!(done_conv.reply_standing, ReplyStanding::None);
     assert!(matches!(
         done_conv.patient_messages[1].standing,
@@ -1979,13 +2182,26 @@ async fn ac5_no_reply_would_help_ask_coda_waiting_or_queuing_undo_window_and_cop
         .await
         .unwrap();
 
-    // `Copy reply` (`Rule 5: CopiesWhatYouSee`): `dr_1` copies Coda's proposal; `dr_2` sees attribution,
-    // edits private draft, and copies their private draft!
+    // `Copy reply` (`Rule 5: CopiesWhatYouSee`): stale copy fence fails without writing a receipt;
+    // `dr_1` copies Coda's proposal; `dr_2` sees attribution, edits private draft, and copies their private draft!
+    assert!(matches!(
+        store
+            .copy_reply(
+                &access_1,
+                &CommandKey::new("copy-dr1").unwrap(),
+                conversation_id,
+                ExpectedDraftBase::ProposalVersion(99),
+                &mut PostgresWorkspaceAuthority,
+            )
+            .await,
+        Err(ReplyProposalError::StaleDraftVersion { .. })
+    ));
     let copy_1 = match store
         .copy_reply(
             &access_1,
             &CommandKey::new("copy-dr1").unwrap(),
             conversation_id,
+            ExpectedDraftBase::ProposalVersion(1),
             &mut PostgresWorkspaceAuthority,
         )
         .await
@@ -2005,6 +2221,20 @@ async fn ac5_no_reply_would_help_ask_coda_waiting_or_queuing_undo_window_and_cop
         copy_1.copied_text,
         "You're very welcome — reach out anytime if anything changes."
     );
+    // Same-key retry returns `Duplicate` with the original copy record.
+    assert!(matches!(
+        store
+            .copy_reply(
+                &access_1,
+                &CommandKey::new("copy-dr1").unwrap(),
+                conversation_id,
+                ExpectedDraftBase::ProposalVersion(1),
+                &mut PostgresWorkspaceAuthority,
+            )
+            .await
+            .unwrap(),
+        CopyReplyOutcome::Duplicate(ref rec) if rec.copy_id == copy_1.copy_id
+    ));
 
     let card_for_dr2 = store
         .reply_card(&access_2, conversation_id, &mut PostgresWorkspaceAuthority)
@@ -2027,11 +2257,25 @@ async fn ac5_no_reply_would_help_ask_coda_waiting_or_queuing_undo_window_and_cop
         )
         .await
         .unwrap();
+    // Stale `ProposalVersion(1)` when `dr_2` now displays `DraftRevision(1)` fails cleanly!
+    assert!(matches!(
+        store
+            .copy_reply(
+                &access_2,
+                &CommandKey::new("copy-dr2").unwrap(),
+                conversation_id,
+                ExpectedDraftBase::ProposalVersion(1),
+                &mut PostgresWorkspaceAuthority,
+            )
+            .await,
+        Err(ReplyProposalError::StaleDraftVersion { .. })
+    ));
     let copy_2 = match store
         .copy_reply(
             &access_2,
             &CommandKey::new("copy-dr2").unwrap(),
             conversation_id,
+            ExpectedDraftBase::DraftRevision(1),
             &mut PostgresWorkspaceAuthority,
         )
         .await
@@ -2063,11 +2307,24 @@ async fn ac5_no_reply_would_help_ask_coda_waiting_or_queuing_undo_window_and_cop
 
     // Close with `No reply needed`, verify `ClosedUndoBanner` & `Undo` (`Rule 12: UndoBringsBack`),
     // then close again and verify `expire_no_reply_undo` AND new message arrival end `Undo`!
+    assert!(matches!(
+        store
+            .close_reply_no_reply_needed(
+                &access_1,
+                &CommandKey::new("close-nrn-1").unwrap(),
+                conversation_id,
+                99,
+                &mut PostgresWorkspaceAuthority,
+            )
+            .await,
+        Err(ReplyProposalError::StaleDraftVersion { .. })
+    ));
     store
         .close_reply_no_reply_needed(
             &access_1,
             &CommandKey::new("close-nrn-1").unwrap(),
             conversation_id,
+            1,
             &mut PostgresWorkspaceAuthority,
         )
         .await
@@ -2110,6 +2367,18 @@ async fn ac5_no_reply_would_help_ask_coda_waiting_or_queuing_undo_window_and_cop
             &access_1,
             &CommandKey::new("close-nrn-2").unwrap(),
             conversation_id,
+            1,
+            &mut PostgresWorkspaceAuthority,
+        )
+        .await
+        .unwrap();
+    // Same-key retry after state became `ClosedWithUndo` succeeds idempotently.
+    store
+        .close_reply_no_reply_needed(
+            &access_1,
+            &CommandKey::new("close-nrn-2").unwrap(),
+            conversation_id,
+            1,
             &mut PostgresWorkspaceAuthority,
         )
         .await
@@ -2131,7 +2400,64 @@ async fn ac5_no_reply_would_help_ask_coda_waiting_or_queuing_undo_window_and_cop
         Err(ReplyProposalError::UndoNoLongerAvailable { .. })
     ));
 
+    // Even BEFORE any practice message is observed (`practice_observation_seq == 0`), a new
+    // patient message opening `reply_id = 2` MUST NOT inherit `reply_id = 1`'s copy attributions!
+    store
+        .record_linked_patient_message(&RecordPatientMessage {
+            practice: practice.clone(),
+            conversation_id: conversation_id.into(),
+            message_id: "m-between-replies".into(),
+            sender: MessageSender::Patient,
+            text: "Quick question before December: is coffee okay?".into(),
+            sent_at: 1_762_904_150,
+        })
+        .await
+        .unwrap();
+    store
+        .start_or_read_reply_review(&practice, conversation_id, "rev-between", "run-between")
+        .await
+        .unwrap();
+    store
+        .complete_reply_review(&CompleteReplyReview {
+            practice: practice.clone(),
+            conversation_id: conversation_id.into(),
+            review_id: "rev-between".into(),
+            run_id: "run-between".into(),
+            completion_key: "comp-between".into(),
+            answered_closures: vec![],
+            decision: ReplyReviewDecision::ProposeReply(ReplyProposalInput {
+                text: "Black coffee or water is fine; avoid cream and sugar if we add lipids."
+                    .into(),
+                basis: ReplyProposalBasisInput {
+                    summary: "New reply_id = 2 before any practice message.".into(),
+                    limits: vec![],
+                    cited_records: vec![],
+                },
+                cited_records: vec![],
+            }),
+            raised_concern_ids: vec![],
+        })
+        .await
+        .unwrap();
+    let reply_2_card = store
+        .reply_card(&access_2, conversation_id, &mut PostgresWorkspaceAuthority)
+        .await
+        .unwrap()
+        .unwrap();
+    assert_eq!(reply_2_card.reply_id, 2);
+    assert!(reply_2_card.other_physician_copies.is_empty());
+
     // Observing a practice message clears copy attributions on future open cards while keeping copy audit rows.
+    store
+        .copy_reply(
+            &access_1,
+            &CommandKey::new("copy-reply2-dr1").unwrap(),
+            conversation_id,
+            ExpectedDraftBase::ProposalVersion(2),
+            &mut PostgresWorkspaceAuthority,
+        )
+        .await
+        .unwrap();
     store
         .observe_practice_message(&ObservePracticeMessage {
             practice: practice.clone(),
@@ -2180,7 +2506,7 @@ async fn ac5_no_reply_would_help_ask_coda_waiting_or_queuing_undo_window_and_cop
         .await
         .unwrap();
     let fresh_card = store
-        .reply_card(&access_1, conversation_id, &mut PostgresWorkspaceAuthority)
+        .reply_card(&access_2, conversation_id, &mut PostgresWorkspaceAuthority)
         .await
         .unwrap()
         .unwrap();
@@ -2191,15 +2517,29 @@ async fn ac5_no_reply_would_help_ask_coda_waiting_or_queuing_undo_window_and_cop
             .await
             .unwrap()
             .len(),
-        2
+        3
     );
 
-    // Closing `fresh_card` with `No reply needed` and receiving a new patient message immediately ends `Undo`.
+    // Closing `fresh_card` (`version = 3`) with stale `expected_proposal_version = 2` fails cleanly;
+    // closing with `expected_proposal_version = 3` succeeds and a new patient message immediately ends `Undo`.
+    assert!(matches!(
+        store
+            .close_reply_no_reply_needed(
+                &access_1,
+                &CommandKey::new("close-nrn-3").unwrap(),
+                conversation_id,
+                2,
+                &mut PostgresWorkspaceAuthority,
+            )
+            .await,
+        Err(ReplyProposalError::StaleDraftVersion { .. })
+    ));
     store
         .close_reply_no_reply_needed(
             &access_1,
             &CommandKey::new("close-nrn-3").unwrap(),
             conversation_id,
+            3,
             &mut PostgresWorkspaceAuthority,
         )
         .await
@@ -2374,6 +2714,7 @@ async fn ac6_two_physicians_isolated_drafts_update_offer_named_senders_late_olde
                     &unauth,
                     &CommandKey::new("unauth-copy").unwrap(),
                     conversation_id,
+                    ExpectedDraftBase::ProposalVersion(1),
                     &mut PostgresWorkspaceAuthority,
                 )
                 .await,
@@ -2537,6 +2878,49 @@ async fn ac6_two_physicians_isolated_drafts_update_offer_named_senders_late_olde
             if text == "Dr 2 private draft: Thanks Jordan, please log evening BP too."
     ));
 
+    // Stale `No reply needed` click against `v1` after `v2` published is refused (`StaleDraftVersion`),
+    // protecting newly arrived `m-newer` from being closed accidentally!
+    assert!(matches!(
+        store
+            .close_reply_no_reply_needed(
+                &access_1,
+                &CommandKey::new("stale-close-v1").unwrap(),
+                conversation_id,
+                1,
+                &mut PostgresWorkspaceAuthority,
+            )
+            .await,
+        Err(ReplyProposalError::StaleDraftVersion { .. })
+    ));
+
+    // Stale `choose_coda_reply_update` fences fail without writing a receipt.
+    assert!(matches!(
+        store
+            .choose_coda_reply_update(
+                &access_1,
+                &CommandKey::new("choose-v2-dr1").unwrap(),
+                conversation_id,
+                99,
+                2,
+                &mut PostgresWorkspaceAuthority,
+            )
+            .await,
+        Err(ReplyProposalError::StaleDraftVersion { .. })
+    ));
+    assert!(matches!(
+        store
+            .choose_coda_reply_update(
+                &access_1,
+                &CommandKey::new("choose-v2-dr1").unwrap(),
+                conversation_id,
+                1,
+                1,
+                &mut PostgresWorkspaceAuthority,
+            )
+            .await,
+        Err(ReplyProposalError::StaleDraftVersion { .. })
+    ));
+
     // `dr_1` chooses Coda's update (`choose_coda_reply_update`), switching to `CodaProposal` v2
     // with `NewerReplyReplacedPrevious`, while `dr_2`'s private draft stays completely untouched!
     let dr1_chose = store
@@ -2544,10 +2928,66 @@ async fn ac6_two_physicians_isolated_drafts_update_offer_named_senders_late_olde
             &access_1,
             &CommandKey::new("choose-v2-dr1").unwrap(),
             conversation_id,
+            1,
+            2,
             &mut PostgresWorkspaceAuthority,
         )
         .await
         .unwrap();
+    // Lost-receipt retry with the same command key and fences returns `Ok(dr1_chose)` idempotently!
+    let dr1_chose_replayed = store
+        .choose_coda_reply_update(
+            &access_1,
+            &CommandKey::new("choose-v2-dr1").unwrap(),
+            conversation_id,
+            1,
+            2,
+            &mut PostgresWorkspaceAuthority,
+        )
+        .await
+        .unwrap();
+    assert_eq!(dr1_chose_replayed.displayed_text, dr1_chose.displayed_text);
+
+    // Once `dr_1`'s draft was detached via `choose_coda_reply_update`, `Store::save_draft` and
+    // `Store::accept_revision` on `dr_1`'s `reply-proposal:` scope are refused until `dr_1` edits again.
+    let detached_scope = proposal_draft_scope(
+        &practice,
+        &dr_1.physician_id,
+        &workspace,
+        conversation_id,
+        1,
+    );
+    assert!(
+        store
+            .save_draft(
+                &detached_scope,
+                1,
+                "Save on detached draft",
+                &hash_1,
+                &mut PostgresWorkspaceAuthority,
+            )
+            .await
+            .is_err()
+    );
+    assert_eq!(
+        store
+            .accept_revision(
+                &detached_scope,
+                &RevisionInput {
+                    key: "rev-on-detached".into(),
+                    expected_revision: 1,
+                    instruction: "Revise detached".into(),
+                    timezone: "UTC".into(),
+                    scenario: None,
+                },
+                hash_1.clone(),
+                &load_skills(),
+                &test_revision_recipe(),
+            )
+            .await
+            .unwrap(),
+        local_product::runtime::reply::RevisionAccepted::Refused
+    );
     assert_eq!(
         dr1_chose.displayed_text,
         DisplayedReplyText::CodaProposal {
@@ -2758,4 +3198,395 @@ async fn ac7_deduplicates_wakes_and_restart_requires_full_reread_without_duplica
             .await,
         Err(ReplyProposalError::NoPendingReviewWake { .. })
     ));
+}
+
+#[tokio::test]
+#[ignore = "requires explicit local Postgres"]
+async fn ac5_ask_coda_edge_cases_empty_thread_active_review_handoff_and_answered_only_thread() {
+    let (_url, store, auth) = setup_stores().await;
+    let practice = uuid::Uuid::new_v4().to_string();
+    let workspace = format!("pw-{}", uuid::Uuid::new_v4().simple());
+
+    let (dr, _token, dr_hash) = invite_and_sign_in(&auth, &practice, "dr-ac5-edges").await;
+    auth.register_patient(&practice, &workspace).await.unwrap();
+    auth.set_membership(&dr, &workspace, Membership::Allowed)
+        .await
+        .unwrap();
+
+    let access = WorkspaceAccess {
+        practice: &practice,
+        physician: &dr.physician_id,
+        workspace: &workspace,
+        session_hash: &dr_hash,
+    };
+
+    // 1. Empty conversation (`patient_messages.is_empty()`): `ask_coda_to_reply` refuses upfront
+    // with `NoOpenMessagesForProposal` and leaves no receipt so the same key can succeed later.
+    let conv_handoff = "conv-ac5-handoff";
+    store
+        .link_reply_conversation(
+            &practice,
+            conv_handoff,
+            ConversationLink::LinkedPatient {
+                workspace: workspace.clone(),
+            },
+        )
+        .await
+        .unwrap();
+    assert!(matches!(
+        store
+            .ask_coda_to_reply(
+                &access,
+                &CommandKey::new("ask-reusable-after-empty").unwrap(),
+                conv_handoff,
+                &mut PostgresWorkspaceAuthority,
+            )
+            .await,
+        Err(ReplyProposalError::NoOpenMessagesForProposal)
+    ));
+
+    // 2. Untrimmed CRLF patient words are preserved verbatim (`Rule 8` / channel fidelity).
+    let exact_patient_words = "  Thanks!\r\nSee you next month.  ";
+    store
+        .record_linked_patient_message(&RecordPatientMessage {
+            practice: practice.clone(),
+            conversation_id: conv_handoff.into(),
+            message_id: "m-crlf-1".into(),
+            sender: MessageSender::Patient,
+            text: exact_patient_words.into(),
+            sent_at: 1_762_906_000,
+        })
+        .await
+        .unwrap();
+    match store
+        .physician_reply_surface(&access, conv_handoff, &mut PostgresWorkspaceAuthority)
+        .await
+        .unwrap()
+    {
+        PhysicianReplySurface::NoOpenCard { open_messages, .. } => {
+            assert_eq!(open_messages.len(), 1);
+            assert_eq!(open_messages[0].text, exact_patient_words);
+        }
+        other => panic!("expected NoOpenCard, got {other:?}"),
+    }
+
+    // 3. Active review starts BEFORE `ask_coda_to_reply` (`saw_physician_reply_request == false`),
+    // then physician clicks `Ask Coda to reply` (reusing `"ask-reusable-after-empty"`!), and the
+    // running review finishes with `NoReplyWouldHelp`: it succeeds cleanly and queues a follow-up wake!
+    let pre_ask_snap = store
+        .start_or_read_reply_review(&practice, conv_handoff, "rev-pre-ask", "run-pre-ask")
+        .await
+        .unwrap();
+    assert!(matches!(
+        pre_ask_snap.review.read_state,
+        ReviewReadState::Current {
+            saw_physician_reply_request: false,
+            ..
+        }
+    ));
+
+    let ask_mid_run = store
+        .ask_coda_to_reply(
+            &access,
+            &CommandKey::new("ask-reusable-after-empty").unwrap(),
+            conv_handoff,
+            &mut PostgresWorkspaceAuthority,
+        )
+        .await
+        .unwrap();
+    assert!(matches!(
+        ask_mid_run,
+        AskCodaToReplyOutcome::WaitingBehindActiveReview { .. }
+    ));
+
+    store
+        .complete_reply_review(&CompleteReplyReview {
+            practice: practice.clone(),
+            conversation_id: conv_handoff.into(),
+            review_id: "rev-pre-ask".into(),
+            run_id: "run-pre-ask".into(),
+            completion_key: "comp-pre-ask-no-reply".into(),
+            answered_closures: vec![],
+            decision: ReplyReviewDecision::NoReplyWouldHelp {
+                reason: "Initial review judged courtesy note needed no reply.".into(),
+            },
+            raised_concern_ids: vec![],
+        })
+        .await
+        .unwrap();
+
+    let after_first_run = store
+        .reply_conversation(&practice, conv_handoff)
+        .await
+        .unwrap()
+        .unwrap();
+    assert!(after_first_run.pending_reply_request.is_some());
+    assert_eq!(after_first_run.woke_events.len(), 1);
+    assert_eq!(
+        after_first_run.patient_messages[0].standing,
+        PatientMessageStanding::Open
+    );
+
+    let followup_snap = store
+        .start_or_read_reply_review(&practice, conv_handoff, "rev-followup", "run-followup")
+        .await
+        .unwrap();
+    assert!(matches!(
+        followup_snap.review.read_state,
+        ReviewReadState::Current {
+            saw_physician_reply_request: true,
+            ..
+        }
+    ));
+    assert!(matches!(
+        store
+            .complete_reply_review(&CompleteReplyReview {
+                practice: practice.clone(),
+                conversation_id: conv_handoff.into(),
+                review_id: "rev-followup".into(),
+                run_id: "run-followup".into(),
+                completion_key: "comp-followup-refuse".into(),
+                answered_closures: vec![],
+                decision: ReplyReviewDecision::NoReplyWouldHelp {
+                    reason: "Refused because physician asked".into(),
+                },
+                raised_concern_ids: vec![],
+            })
+            .await,
+        Err(ReplyProposalError::PhysicianRequestedReplyRequiresProposal)
+    ));
+    store
+        .complete_reply_review(&CompleteReplyReview {
+            practice: practice.clone(),
+            conversation_id: conv_handoff.into(),
+            review_id: "rev-followup".into(),
+            run_id: "run-followup".into(),
+            completion_key: "comp-followup-propose".into(),
+            answered_closures: vec![],
+            decision: ReplyReviewDecision::ProposeReply(ReplyProposalInput {
+                text: "Looking forward to seeing you next month!".into(),
+                basis: ReplyProposalBasisInput {
+                    summary: "Follow-up review satisfied pending physician request.".into(),
+                    limits: vec![],
+                    cited_records: vec![],
+                },
+                cited_records: vec![],
+            }),
+            raised_concern_ids: vec![],
+        })
+        .await
+        .unwrap();
+    let satisfied = store
+        .reply_conversation(&practice, conv_handoff)
+        .await
+        .unwrap()
+        .unwrap();
+    assert!(satisfied.pending_reply_request.is_none());
+    assert!(satisfied.woke_events.is_empty());
+
+    // 4. Conversely, when an active review (`saw_physician_reply_request == false`) finishes with
+    // `ProposeReply`, it satisfies and clears `pending_reply_request` in that single run!
+    let conv_one_run = "conv-ac5-single-run-satisfy";
+    store
+        .link_reply_conversation(
+            &practice,
+            conv_one_run,
+            ConversationLink::LinkedPatient {
+                workspace: workspace.clone(),
+            },
+        )
+        .await
+        .unwrap();
+    store
+        .record_linked_patient_message(&RecordPatientMessage {
+            practice: practice.clone(),
+            conversation_id: conv_one_run.into(),
+            message_id: "m-one-run".into(),
+            sender: MessageSender::Patient,
+            text: "Should I bring my blood pressure cuff?".into(),
+            sent_at: 1_762_906_100,
+        })
+        .await
+        .unwrap();
+    store
+        .start_or_read_reply_review(&practice, conv_one_run, "rev-one-run", "run-one-run")
+        .await
+        .unwrap();
+    store
+        .ask_coda_to_reply(
+            &access,
+            &CommandKey::new("ask-one-run").unwrap(),
+            conv_one_run,
+            &mut PostgresWorkspaceAuthority,
+        )
+        .await
+        .unwrap();
+    store
+        .complete_reply_review(&CompleteReplyReview {
+            practice: practice.clone(),
+            conversation_id: conv_one_run.into(),
+            review_id: "rev-one-run".into(),
+            run_id: "run-one-run".into(),
+            completion_key: "comp-one-run".into(),
+            answered_closures: vec![],
+            decision: ReplyReviewDecision::ProposeReply(ReplyProposalInput {
+                text: "Yes, please bring your home cuff so we can check its calibration.".into(),
+                basis: ReplyProposalBasisInput {
+                    summary: "Satisfied in one run.".into(),
+                    limits: vec![],
+                    cited_records: vec![],
+                },
+                cited_records: vec![],
+            }),
+            raised_concern_ids: vec![],
+        })
+        .await
+        .unwrap();
+    let one_run_after = store
+        .reply_conversation(&practice, conv_one_run)
+        .await
+        .unwrap()
+        .unwrap();
+    assert!(one_run_after.pending_reply_request.is_none());
+    assert!(one_run_after.woke_events.is_empty());
+
+    // 5. Thread whose ONLY patient message is closed as `Answered` (`AllHandled` mid-run while
+    // `ask_coda_to_reply` arrived): `AllHandled` succeeds cleanly without reverting `Answered` to `Open`,
+    // queues `PhysicianAskedForReply`, and the follow-up `ProposeReply` covers that message while
+    // keeping its `Answered` standing intact!
+    let conv_answered = "conv-ac5-answered-only";
+    store
+        .link_reply_conversation(
+            &practice,
+            conv_answered,
+            ConversationLink::LinkedPatient {
+                workspace: workspace.clone(),
+            },
+        )
+        .await
+        .unwrap();
+    store
+        .record_linked_patient_message(&RecordPatientMessage {
+            practice: practice.clone(),
+            conversation_id: conv_answered.into(),
+            message_id: "m-only-answered".into(),
+            sender: MessageSender::Patient,
+            text: "Did you get my pharmacy update?".into(),
+            sent_at: 1_762_906_200,
+        })
+        .await
+        .unwrap();
+    store
+        .observe_practice_message(&ObservePracticeMessage {
+            practice: practice.clone(),
+            conversation_id: conv_answered.into(),
+            practice_message_id: "pm-staff-ack".into(),
+            kind: PracticeMessageKind::PracticeSent,
+            text: "Front desk updated your preferred pharmacy.".into(),
+            sent_at: 1_762_906_210,
+        })
+        .await
+        .unwrap();
+    store
+        .start_or_read_reply_review(&practice, conv_answered, "rev-ans-1", "run-ans-1")
+        .await
+        .unwrap();
+    store
+        .ask_coda_to_reply(
+            &access,
+            &CommandKey::new("ask-on-answered").unwrap(),
+            conv_answered,
+            &mut PostgresWorkspaceAuthority,
+        )
+        .await
+        .unwrap();
+    store
+        .complete_reply_review(&CompleteReplyReview {
+            practice: practice.clone(),
+            conversation_id: conv_answered.into(),
+            review_id: "rev-ans-1".into(),
+            run_id: "run-ans-1".into(),
+            completion_key: "comp-ans-1".into(),
+            answered_closures: vec![AnsweredMessageClosure {
+                practice_message_id: "pm-staff-ack".into(),
+                answered_message_ids: set_of(&["m-only-answered"]),
+            }],
+            decision: ReplyReviewDecision::AllHandled,
+            raised_concern_ids: vec![],
+        })
+        .await
+        .unwrap();
+
+    let mid_answered = store
+        .reply_conversation(&practice, conv_answered)
+        .await
+        .unwrap()
+        .unwrap();
+    assert!(matches!(
+        mid_answered.patient_messages[0].standing,
+        PatientMessageStanding::Answered { .. }
+    ));
+    assert_eq!(mid_answered.woke_events.len(), 1);
+
+    store
+        .start_or_read_reply_review(&practice, conv_answered, "rev-ans-2", "run-ans-2")
+        .await
+        .unwrap();
+    assert!(matches!(
+        store
+            .complete_reply_review(&CompleteReplyReview {
+                practice: practice.clone(),
+                conversation_id: conv_answered.into(),
+                review_id: "rev-ans-2".into(),
+                run_id: "run-ans-2".into(),
+                completion_key: "comp-ans-refuse".into(),
+                answered_closures: vec![],
+                decision: ReplyReviewDecision::AllHandled,
+                raised_concern_ids: vec![],
+            })
+            .await,
+        Err(ReplyProposalError::PhysicianRequestedReplyRequiresProposal)
+    ));
+    let ans_applied = match store
+        .complete_reply_review(&CompleteReplyReview {
+            practice: practice.clone(),
+            conversation_id: conv_answered.into(),
+            review_id: "rev-ans-2".into(),
+            run_id: "run-ans-2".into(),
+            completion_key: "comp-ans-propose".into(),
+            answered_closures: vec![],
+            decision: ReplyReviewDecision::ProposeReply(ReplyProposalInput {
+                text:
+                    "Dr. Edges here as well — confirming your new pharmacy is active for refills."
+                        .into(),
+                basis: ReplyProposalBasisInput {
+                    summary: "Physician requested follow-up confirmation on answered thread."
+                        .into(),
+                    limits: vec![],
+                    cited_records: vec![],
+                },
+                cited_records: vec![],
+            }),
+            raised_concern_ids: vec![],
+        })
+        .await
+        .unwrap()
+    {
+        ReplyReviewOutcome::Applied(done) => *done,
+        other => panic!("expected Applied, got {other:?}"),
+    };
+    assert_eq!(
+        ans_applied.proposal.as_ref().unwrap().covered_message_ids,
+        set_of(&["m-only-answered"])
+    );
+    let final_answered = store
+        .reply_conversation(&practice, conv_answered)
+        .await
+        .unwrap()
+        .unwrap();
+    assert!(matches!(
+        final_answered.patient_messages[0].standing,
+        PatientMessageStanding::Answered { .. }
+    ));
+    assert!(final_answered.pending_reply_request.is_none());
 }
