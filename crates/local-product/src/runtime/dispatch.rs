@@ -33,7 +33,7 @@ use sea_orm::{
 use serde::{Deserialize, Serialize};
 use serde_json::json;
 
-use super::entities::patient_dispatch;
+use super::entities::{patient_dispatch, source_pull};
 use super::follow_ups::{FollowUpError, FollowUpReviewSchedule, FollowUpStanding};
 use super::jobs::{
     Assignment, PRACTICE_OWNER, PracticeAccessError, PracticeAuthority, PracticeJobError,
@@ -46,7 +46,9 @@ use super::reply::proposals::{
 };
 use super::spruce_matching::{SpruceMatchingError, entities::spruce_review_trigger};
 use super::{Accepted, Store, conversion_error, error, now};
+use crate::patient_reviews::ReviewTrigger;
 use crate::physician_chat::PhysicianSkills;
+use crate::physician_sources::SourcePatient;
 
 pub(in crate::runtime) mod tables {
     pub(in crate::runtime) mod dispatch_trigger {
@@ -245,12 +247,25 @@ impl ReviewReceiver for PracticeJobReviewReceiver<'_> {
             workspace: request.patient_workspace_id.clone(),
             job_id: request.command_key.clone(),
         };
-        let reason_label = request.reason.as_str();
+        let is_direct_spruce_trigger = inputs.is_empty()
+            && spruce_review_trigger::Entity::find_by_id((
+                request.practice_id.clone(),
+                request.command_key.clone(),
+            ))
+            .one(&self.store.db)
+            .await?
+            .is_some();
+        let effective_reason = if is_direct_spruce_trigger {
+            ReviewReason::Message
+        } else {
+            request.reason
+        };
+        let reason_label = effective_reason.as_str();
         let prompt = format!(
             "Conduct a {reason_label} chart review for patient workspace {} at source version {}.",
             request.patient_workspace_id, request.workspace_version
         );
-        let includes_message = request.reason == ReviewReason::Message
+        let includes_message = effective_reason == ReviewReason::Message
             || inputs
                 .iter()
                 .any(|item| matches!(item, ReviewDispatchInput::LinkedMessage(_)));
@@ -278,7 +293,29 @@ impl ReviewReceiver for PracticeJobReviewReceiver<'_> {
             .accept_practice_job(&scope, &assignment, self.roles, self.skills, self.authority)
             .await?
         {
-            Accepted::New | Accepted::Duplicate => Ok(()),
+            Accepted::New | Accepted::Duplicate => {
+                if is_direct_spruce_trigger {
+                    self.store
+                        .sync_workspace_spruce_conversations_to_reply(
+                            &request.practice_id,
+                            &request.patient_workspace_id,
+                        )
+                        .await?;
+                    let tx = self.store.db.begin().await?;
+                    let dispatched_at = now(&tx).await?;
+                    record_admitted_message_triggers_in_tx(
+                        &tx,
+                        &request.practice_id,
+                        &request.patient_workspace_id,
+                        &[],
+                        &request.command_key,
+                        dispatched_at,
+                    )
+                    .await?;
+                    tx.commit().await?;
+                }
+                Ok(())
+            }
         }
     }
 }
@@ -399,8 +436,151 @@ async fn load_dispatch_state_with_ledger(
     Ok(state)
 }
 
-async fn record_settled_dispatch_triggers(
+async fn insert_message_dispatch_trigger_in_tx(
     tx: &impl ConnectionTrait,
+    practice_id: &str,
+    workspace_id: &str,
+    trigger_key: String,
+    conversation_id: &str,
+    dispatched_at: i64,
+) -> Result<(), DbErr> {
+    tables::dispatch_trigger::Entity::insert(tables::dispatch_trigger::ActiveModel {
+        practice: Set(practice_id.to_owned()),
+        workspace: Set(workspace_id.to_owned()),
+        trigger_key: Set(trigger_key),
+        trigger_kind: Set("message".to_owned()),
+        target_id: Set(conversation_id.to_owned()),
+        target_version: Set(None),
+        dispatched_at: Set(dispatched_at),
+    })
+    .on_conflict(
+        OnConflict::columns([
+            tables::dispatch_trigger::Column::Practice,
+            tables::dispatch_trigger::Column::Workspace,
+            tables::dispatch_trigger::Column::TriggerKey,
+        ])
+        .do_nothing()
+        .to_owned(),
+    )
+    .exec_without_returning(tx)
+    .await?;
+    Ok(())
+}
+
+async fn settle_conversations_and_spruce_triggers_in_tx(
+    tx: &sea_orm::DatabaseTransaction,
+    practice_id: &str,
+    workspace_id: &str,
+    settled_conversations: &BTreeSet<String>,
+    dispatched_at: i64,
+) -> Result<(), DbErr> {
+    if settled_conversations.is_empty() {
+        return Ok(());
+    }
+    let spruce_rows = spruce_review_trigger::Entity::find()
+        .filter(spruce_review_trigger::Column::Practice.eq(practice_id))
+        .filter(spruce_review_trigger::Column::Workspace.eq(workspace_id))
+        .lock_exclusive()
+        .all(tx)
+        .await?;
+    for row in spruce_rows {
+        if settled_conversations.contains(&row.conversation_id) {
+            let cmd_key = row.command_key.clone();
+            let conv_id = row.conversation_id.clone();
+            if !row.dispatched {
+                let mut active: spruce_review_trigger::ActiveModel = row.into();
+                active.dispatched = Set(true);
+                active.dispatched_at = Set(Some(dispatched_at));
+                active.update(tx).await?;
+            }
+            insert_message_dispatch_trigger_in_tx(
+                tx,
+                practice_id,
+                workspace_id,
+                format!("spruce:{cmd_key}"),
+                &conv_id,
+                dispatched_at,
+            )
+            .await?;
+        }
+    }
+    for conv_id in settled_conversations {
+        let wakes = Store::conversation_woke_events_in_tx(tx, practice_id, conv_id).await?;
+        for event in &wakes {
+            let (wake_key, _) = reply_wake_event_key(conv_id, event);
+            insert_message_dispatch_trigger_in_tx(
+                tx,
+                practice_id,
+                workspace_id,
+                wake_key,
+                conv_id,
+                dispatched_at,
+            )
+            .await?;
+        }
+    }
+    Ok(())
+}
+
+/// Records settled message trigger keys (`spruce:{command_key}` and synced
+/// `reply:{conversation_id}:...` wake keys) inside `admit_patient_review_with_triggers`'s
+/// transaction so a direct `spruce_matching` `ReviewReceiver` handoff or direct
+/// message review admission never causes `wake_practice_dispatch` to start a
+/// duplicate review for the same message.
+pub(super) async fn record_admitted_message_triggers_in_tx(
+    tx: &sea_orm::DatabaseTransaction,
+    practice_id: &str,
+    workspace_id: &str,
+    triggers: &[ReviewTrigger],
+    command_key: &str,
+    dispatched_at: i64,
+) -> Result<(), DbErr> {
+    let mut settled_conversations = BTreeSet::new();
+    for trigger in triggers {
+        if let ReviewTrigger::Message {
+            conversation_id, ..
+        } = trigger
+            && !conversation_id.is_empty()
+        {
+            settled_conversations.insert(conversation_id.clone());
+        }
+    }
+    if let Some(spruce_row) =
+        spruce_review_trigger::Entity::find_by_id((practice_id.to_owned(), command_key.to_owned()))
+            .lock_exclusive()
+            .one(tx)
+            .await?
+    {
+        let conv_id = spruce_row.conversation_id.clone();
+        settled_conversations.insert(conv_id.clone());
+        if !spruce_row.dispatched {
+            let mut active: spruce_review_trigger::ActiveModel = spruce_row.into();
+            active.dispatched = Set(true);
+            active.dispatched_at = Set(Some(dispatched_at));
+            active.update(tx).await?;
+        }
+        insert_message_dispatch_trigger_in_tx(
+            tx,
+            practice_id,
+            workspace_id,
+            format!("spruce:{command_key}"),
+            &conv_id,
+            dispatched_at,
+        )
+        .await?;
+    }
+    settle_conversations_and_spruce_triggers_in_tx(
+        tx,
+        practice_id,
+        workspace_id,
+        &settled_conversations,
+        dispatched_at,
+    )
+    .await
+}
+
+async fn record_settled_dispatch_triggers(
+    tx: &sea_orm::DatabaseTransaction,
     practice_id: &str,
     workspace_id: &str,
     pending: &PendingReview,
@@ -411,25 +591,14 @@ async fn record_settled_dispatch_triggers(
         match input {
             ReviewDispatchInput::LinkedMessage(msg) => {
                 settled_conversations.insert(msg.conversation_id.clone());
-                tables::dispatch_trigger::Entity::insert(tables::dispatch_trigger::ActiveModel {
-                    practice: Set(practice_id.to_owned()),
-                    workspace: Set(workspace_id.to_owned()),
-                    trigger_key: Set(msg.trigger_key.clone()),
-                    trigger_kind: Set("message".to_owned()),
-                    target_id: Set(msg.conversation_id.clone()),
-                    target_version: Set(None),
-                    dispatched_at: Set(dispatched_at),
-                })
-                .on_conflict(
-                    OnConflict::columns([
-                        tables::dispatch_trigger::Column::Practice,
-                        tables::dispatch_trigger::Column::Workspace,
-                        tables::dispatch_trigger::Column::TriggerKey,
-                    ])
-                    .do_nothing()
-                    .to_owned(),
+                insert_message_dispatch_trigger_in_tx(
+                    tx,
+                    practice_id,
+                    workspace_id,
+                    msg.trigger_key.clone(),
+                    &msg.conversation_id,
+                    dispatched_at,
                 )
-                .exec_without_returning(tx)
                 .await?;
             }
             ReviewDispatchInput::DueFollowUp(follow_up) => {
@@ -462,24 +631,14 @@ async fn record_settled_dispatch_triggers(
         }
     }
 
-    if !settled_conversations.is_empty() {
-        let spruce_rows = spruce_review_trigger::Entity::find()
-            .filter(spruce_review_trigger::Column::Practice.eq(practice_id))
-            .filter(spruce_review_trigger::Column::Workspace.eq(workspace_id))
-            .filter(spruce_review_trigger::Column::Dispatched.eq(false))
-            .lock_exclusive()
-            .all(tx)
-            .await?;
-        for row in spruce_rows {
-            if settled_conversations.contains(&row.conversation_id) {
-                let mut active: spruce_review_trigger::ActiveModel = row.into();
-                active.dispatched = Set(true);
-                active.dispatched_at = Set(Some(dispatched_at));
-                active.update(tx).await?;
-            }
-        }
-    }
-    Ok(())
+    settle_conversations_and_spruce_triggers_in_tx(
+        tx,
+        practice_id,
+        workspace_id,
+        &settled_conversations,
+        dispatched_at,
+    )
+    .await
 }
 
 fn reply_wake_event_key(
@@ -813,10 +972,35 @@ impl Store {
                 .push(msg);
         }
 
+        let pull_rows = source_pull::Entity::find()
+            .filter(source_pull::Column::Workspace.eq(workspace_id))
+            .all(&self.db)
+            .await?;
+        let mut patient_chart_names: Vec<String> = Vec::new();
+        for pull_row in pull_rows {
+            if let Ok(patient) = serde_json::from_value::<SourcePatient>(pull_row.patient) {
+                let trimmed = patient.display_name.trim();
+                if !trimmed.is_empty()
+                    && !patient_chart_names
+                        .iter()
+                        .any(|existing| existing.eq_ignore_ascii_case(trimmed))
+                {
+                    patient_chart_names.push(trimmed.to_owned());
+                }
+            }
+        }
+
         let expected_link = ConversationLink::LinkedPatient {
             workspace: workspace_id.to_owned(),
         };
         for (conversation_id, messages) in by_conversation {
+            let spruce_conv = self
+                .spruce_conversation(practice_id, &conversation_id)
+                .await
+                .map_err(map_spruce_error_to_db)?;
+            let sole_outside_participant = spruce_conv
+                .as_ref()
+                .is_none_or(|c| c.outside_participants.len() <= 1);
             let existing = self
                 .reply_conversation(practice_id, &conversation_id)
                 .await
@@ -846,10 +1030,23 @@ impl Store {
                     .map(str::trim)
                     .filter(|name| !name.is_empty())
                 {
-                    Some(name) => MessageSender::NamedSender {
-                        name: name.to_owned(),
-                    },
                     None => MessageSender::Patient,
+                    Some(name) => {
+                        let matches_patient = if patient_chart_names.is_empty() {
+                            sole_outside_participant
+                        } else {
+                            patient_chart_names
+                                .iter()
+                                .any(|pname| pname.eq_ignore_ascii_case(name))
+                        };
+                        if matches_patient {
+                            MessageSender::Patient
+                        } else {
+                            MessageSender::NamedSender {
+                                name: name.to_owned(),
+                            }
+                        }
+                    }
                 };
                 let text = if msg.body_text.trim().is_empty() {
                     "[Attachment]".to_owned()

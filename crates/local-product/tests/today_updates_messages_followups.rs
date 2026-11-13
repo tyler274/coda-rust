@@ -1709,3 +1709,612 @@ async fn practice_message_does_not_clear_reply_row_until_both_reply_and_concern_
         .unwrap();
     assert!(today_final.rows.is_empty());
 }
+
+#[tokio::test]
+async fn channel_sender_display_disconnected_done_with_open_concern_and_message_seen_snapshots() {
+    let Some((store, auth, _cluster)) = connect_stores().await else {
+        return;
+    };
+
+    let now_u64 = current_unix();
+    let now_i64 = now_u64 as i64;
+    let practice = format!("prac-tumf-reg-{}", Uuid::new_v4().simple());
+    auth.ensure_practice(&practice, PracticeClock::Fixed(now_u64))
+        .await
+        .unwrap();
+
+    let (dr, token, hash) = invite_and_sign_in(&auth, &practice, "Dr. SenderSeen", now_u64).await;
+    let ws_linked = format!("pw-linked-sender-{}", Uuid::new_v4().simple());
+    let ws_suggested = format!("pw-sug-sender-{}", Uuid::new_v4().simple());
+    let ws_disc_concern = format!("pw-disc-conc-{}", Uuid::new_v4().simple());
+
+    for (ws, chart_name) in [
+        (&ws_linked, "Clara Oswald"),
+        (&ws_suggested, "Martha Jones"),
+        (&ws_disc_concern, "Danny Pink"),
+    ] {
+        auth.register_patient(&practice, ws).await.unwrap();
+        auth.set_membership(&dr, ws, Membership::Allowed)
+            .await
+            .unwrap();
+        let _ = seed_chart_record(
+            &store,
+            ws,
+            chart_name,
+            "obs-bmp-reg",
+            "rev-1",
+            "Serum potassium 4.4 mmol/L, creatinine 0.90 mg/dL.",
+            now_i64 - 1_800,
+        )
+        .await;
+    }
+
+    let bmp_ref = ExactRecordReference::new("obs-bmp-reg", "rev-1").unwrap();
+    let mut authority = PostgresWorkspaceAuthority;
+
+    // Pass explicit chart patient names so any accidental lookup of `names.get(ws)` would return
+    // `"Clara Oswald"` / `"Martha Jones"` / `"Danny Pink"` instead of the channel's sender!
+    let names = BTreeMap::from([
+        (ws_linked.clone(), "Clara Oswald".to_owned()),
+        (ws_suggested.clone(), "Martha Jones".to_owned()),
+        (ws_disc_concern.clone(), "Danny Pink".to_owned()),
+    ]);
+
+    // 1. Connect Spruce channel and ingest:
+    //    (a) Linked caregiver message on `ws_linked` from `"Rory Williams (Spouse)"` + draft reply proposal
+    //    (b) Unmatched message suggesting `ws_suggested` from `"+14155550922"` (no `author_name`)
+    //    (c) Unreadable message `spruce-unreadable-reg`
+    //    (d) Transient channel problem `channel:spruce`
+    store
+        .connect_spruce_channel(auth.as_ref(), &dr, 0, None, now_i64 - 1_500)
+        .await
+        .unwrap();
+    let lease = store
+        .acquire_spruce_reader_lease(&practice, "worker-tumf-reg", 3_600, now_i64 - 1_500)
+        .await
+        .unwrap();
+    let rory_phone = SenderAddress::parse("+14155550911").unwrap();
+    store
+        .record_spruce_confirmed_sender(
+            &practice,
+            &rory_phone,
+            &ws_linked,
+            &dr.physician_id,
+            now_i64 - 1_500,
+        )
+        .await
+        .unwrap();
+    store
+        .ingest_spruce_item(
+            &practice,
+            &lease.lease_token,
+            &IncomingSpruceItem::Readable(ReadableSpruceItem {
+                message_id: "spruce-rory-1".into(),
+                conversation_id: "conv-rory-clara".into(),
+                channel_position: 1,
+                content_version: "v1".into(),
+                sender_address: Some(rory_phone.clone()),
+                author_name: Some("Rory Williams (Spouse)".into()),
+                body_text: "Clara asked me to check whether her lab panel looked okay.".into(),
+                attachments: Vec::new(),
+                app_url: None,
+                created_at_spruce: None,
+                outside_participants: vec![OutsideParticipant {
+                    display_name: Some("Rory Williams (Spouse)".into()),
+                    endpoint_channel: Some("sms".into()),
+                    endpoint_address: Some(rory_phone),
+                    saved_contact_id: None,
+                }],
+            }),
+            now_i64 - 900,
+        )
+        .await
+        .unwrap();
+    store
+        .record_spruce_message_classification(
+            auth.as_ref(),
+            &practice,
+            "spruce-rory-1",
+            None,
+            RECIPE_VERSION,
+            GUIDANCE_VERSION,
+            MatchingDecision::PatientMail {
+                urgency: MessageUrgencyChoice::Ordinary,
+                assessment: MatchAssessment::SuggestedPatient {
+                    workspace: ws_linked.clone(),
+                    evidence_summary: "Confirmed family thread for Clara Oswald.".into(),
+                },
+                rationale: "Spouse lab question.".into(),
+            },
+            None,
+            now_i64 - 895,
+        )
+        .await
+        .unwrap();
+
+    // Sync via `read_today` once so `conv-rory-clara` exists in `reply_conversation`, then save a reply proposal!
+    let _ = store
+        .read_today(auth.as_ref(), &token, now_u64, &names)
+        .await
+        .unwrap();
+    let _ = store
+        .start_or_read_reply_review(&practice, "conv-rory-clara", "rev-rory-1", "run-rory-1")
+        .await
+        .unwrap();
+    store
+        .complete_reply_review(&CompleteReplyReview {
+            practice: practice.clone(),
+            conversation_id: "conv-rory-clara".into(),
+            review_id: "rev-rory-1".into(),
+            run_id: "run-rory-1".into(),
+            completion_key: "comp-rory-1".into(),
+            answered_closures: Vec::new(),
+            decision: ReplyReviewDecision::ProposeReply(ReplyProposalInput {
+                text: "Clara's metabolic panel is normal with potassium at 4.4 mmol/L.".into(),
+                basis: ReplyProposalBasisInput {
+                    summary: "Reviewed Regional EHR metabolic panel.".into(),
+                    limits: Vec::new(),
+                    cited_records: vec![bmp_ref.clone()],
+                },
+                cited_records: vec![bmp_ref.clone()],
+            }),
+            raised_concern_ids: Vec::new(),
+        })
+        .await
+        .unwrap();
+
+    // (b) Unmatched message suggesting `ws_suggested` ("Martha Jones"), sent from `+14155550922` with `author_name: None`.
+    let martha_work_phone = SenderAddress::parse("+14155550922").unwrap();
+    store
+        .ingest_spruce_item(
+            &practice,
+            &lease.lease_token,
+            &IncomingSpruceItem::Readable(ReadableSpruceItem {
+                message_id: "spruce-match-phone-only".into(),
+                conversation_id: "conv-match-phone-only".into(),
+                channel_position: 2,
+                content_version: "v1".into(),
+                sender_address: Some(martha_work_phone.clone()),
+                author_name: None,
+                body_text: "Texting from a new number — can we refill my inhaler?".into(),
+                attachments: Vec::new(),
+                app_url: None,
+                created_at_spruce: None,
+                outside_participants: vec![OutsideParticipant {
+                    display_name: None,
+                    endpoint_channel: Some("sms".into()),
+                    endpoint_address: Some(martha_work_phone),
+                    saved_contact_id: None,
+                }],
+            }),
+            now_i64 - 800,
+        )
+        .await
+        .unwrap();
+    store
+        .record_spruce_message_classification(
+            auth.as_ref(),
+            &practice,
+            "spruce-match-phone-only",
+            None,
+            RECIPE_VERSION,
+            GUIDANCE_VERSION,
+            MatchingDecision::PatientMail {
+                urgency: MessageUrgencyChoice::Ordinary,
+                assessment: MatchAssessment::SuggestedPatient {
+                    workspace: ws_suggested.clone(),
+                    evidence_summary: "Matches inhaler prescription history.".into(),
+                },
+                rationale: "Unconfirmed phone number.".into(),
+            },
+            None,
+            now_i64 - 795,
+        )
+        .await
+        .unwrap();
+
+    // (c) Unreadable message + (d) transient channel error.
+    store
+        .ingest_spruce_item(
+            &practice,
+            &lease.lease_token,
+            &IncomingSpruceItem::Unreadable(UnreadableSpruceItem {
+                message_id: "spruce-unreadable-reg".into(),
+                conversation_id: "conv-unreadable-reg".into(),
+                channel_position: 3,
+                content_version: "v-err-reg".into(),
+                failure_reason: "Encrypted MMS attachment decode failed".into(),
+                app_url: Some("https://app.sprucehealth.com/items/reg-3".into()),
+                outside_participants: Vec::new(),
+            }),
+            now_i64 - 700,
+        )
+        .await
+        .unwrap();
+    store
+        .record_spruce_channel_failure(
+            &practice,
+            &lease.lease_token,
+            ChannelStopCause::Transient {
+                reason: "Spruce webhook timeout".into(),
+            },
+            now_i64 - 600,
+        )
+        .await
+        .unwrap();
+
+    // 2. Disconnected conversation on `ws_disc_concern` with BOTH an open `Ready` reply AND an open `ConcernId`!
+    let disc_concern_id = ConcernId::new("concern-danny-disc-open").unwrap();
+    store
+        .raise_concern(
+            &CommandKey::new("cmd-raise-danny-disc-open").unwrap(),
+            &RaiseConcern {
+                practice: practice.clone(),
+                workspace: ws_disc_concern.clone(),
+                id: disc_concern_id.clone(),
+                urgency: ConcernUrgency::Today,
+                reason: "Follow up blood pressure cuff reading after channel disconnect.".into(),
+                records: vec![bmp_ref.clone()],
+                source_work: SourceWork {
+                    job: "patient_review".into(),
+                    work_id: "rev-danny-disc-1".into(),
+                    attempt_id: "att-danny-disc-1".into(),
+                },
+            },
+        )
+        .await
+        .unwrap();
+    store
+        .link_reply_conversation(
+            &practice,
+            "conv-danny-disc-concern",
+            ConversationLink::LinkedPatient {
+                workspace: ws_disc_concern.clone(),
+            },
+        )
+        .await
+        .unwrap();
+    store
+        .record_linked_patient_message(&RecordPatientMessage {
+            practice: practice.clone(),
+            conversation_id: "conv-danny-disc-concern".into(),
+            message_id: "msg-danny-disc-1".into(),
+            sender: MessageSender::NamedSender {
+                name: "Danny Pink (Mobile)".into(),
+            },
+            text: "My home cuff read 152/94 this evening.".into(),
+            sent_at: now_i64 - 500,
+        })
+        .await
+        .unwrap();
+    let _ = store
+        .start_or_read_reply_review(
+            &practice,
+            "conv-danny-disc-concern",
+            "rev-danny-disc-1",
+            "run-danny-disc-1",
+        )
+        .await
+        .unwrap();
+    store
+        .complete_reply_review(&CompleteReplyReview {
+            practice: practice.clone(),
+            conversation_id: "conv-danny-disc-concern".into(),
+            review_id: "rev-danny-disc-1".into(),
+            run_id: "run-danny-disc-1".into(),
+            completion_key: "comp-danny-disc-1".into(),
+            answered_closures: Vec::new(),
+            decision: ReplyReviewDecision::ProposeReply(ReplyProposalInput {
+                text: "Please recheck your blood pressure after resting 10 minutes.".into(),
+                basis: ReplyProposalBasisInput {
+                    summary: "Reviewed chart baseline.".into(),
+                    limits: Vec::new(),
+                    cited_records: vec![bmp_ref],
+                },
+                cited_records: Vec::new(),
+            }),
+            raised_concern_ids: vec![disc_concern_id.clone()],
+        })
+        .await
+        .unwrap();
+    store
+        .set_reply_channel_connection(
+            &practice,
+            "conv-danny-disc-concern",
+            ChannelConnection::Disconnected {
+                disconnected_at: now_i64 - 450,
+                note: "Spruce disconnected.".into(),
+            },
+        )
+        .await
+        .unwrap();
+
+    // --- VERIFY 1: Channel sender display names on `read_today` AND `open_today_or_update_item` ---
+    let today1 = store
+        .read_today(auth.as_ref(), &token, now_u64, &names)
+        .await
+        .unwrap();
+
+    let linked_row = today1
+        .rows
+        .iter()
+        .find(|r| r.item_key.as_str() == format!("reply:{ws_linked}:conv-rory-clara"))
+        .expect("linked caregiver MessageThread row")
+        .clone();
+    assert_eq!(
+        linked_row.patient_display_name, "Rory Williams (Spouse)",
+        "MessageThread row must display channel sender, never linked patient chart name `Clara Oswald`"
+    );
+
+    let match_row = today1
+        .rows
+        .iter()
+        .find(|r| r.item_key.as_str() == "match:spruce-match-phone-only")
+        .expect("unmatched phone-only MessageToMatch row")
+        .clone();
+    assert_eq!(
+        match_row.patient_display_name, "+14155550922",
+        "MessageToMatch row must display channel sender number, never suggested patient chart name `Martha Jones`"
+    );
+
+    let unreadable_row = today1
+        .rows
+        .iter()
+        .find(|r| r.item_key.as_str() == "unreadable:spruce-unreadable-reg")
+        .unwrap()
+        .clone();
+    let channel_row = today1
+        .rows
+        .iter()
+        .find(|r| r.item_key.as_str() == "channel:spruce")
+        .unwrap()
+        .clone();
+
+    // Open every message item kind and verify BOTH `patient_display_name` AND subsequent `SeenStanding::Seen`!
+    let opened_linked = store
+        .open_today_or_update_item(
+            auth.as_ref(),
+            &mut authority,
+            &OpenItemRequest {
+                token: &token,
+                real_now_unix: now_u64,
+                workspace: &ws_linked,
+                item_key: &linked_row.item_key,
+                command_key: &CommandKey::new("cmd-open-reg-linked").unwrap(),
+                patient_names: &names,
+            },
+        )
+        .await
+        .unwrap();
+    assert_eq!(opened_linked.patient_display_name, "Rory Williams (Spouse)");
+
+    let opened_match = store
+        .open_today_or_update_item(
+            auth.as_ref(),
+            &mut authority,
+            &OpenItemRequest {
+                token: &token,
+                real_now_unix: now_u64,
+                workspace: PRACTICE_MESSAGING_WORKSPACE,
+                item_key: &match_row.item_key,
+                command_key: &CommandKey::new("cmd-open-reg-match").unwrap(),
+                patient_names: &names,
+            },
+        )
+        .await
+        .unwrap();
+    assert_eq!(opened_match.patient_display_name, "+14155550922");
+
+    let opened_unreadable = store
+        .open_today_or_update_item(
+            auth.as_ref(),
+            &mut authority,
+            &OpenItemRequest {
+                token: &token,
+                real_now_unix: now_u64,
+                workspace: PRACTICE_MESSAGING_WORKSPACE,
+                item_key: &unreadable_row.item_key,
+                command_key: &CommandKey::new("cmd-open-reg-unreadable").unwrap(),
+                patient_names: &names,
+            },
+        )
+        .await
+        .unwrap();
+    assert_eq!(opened_unreadable.patient_display_name, "Practice messaging");
+
+    let opened_channel = store
+        .open_today_or_update_item(
+            auth.as_ref(),
+            &mut authority,
+            &OpenItemRequest {
+                token: &token,
+                real_now_unix: now_u64,
+                workspace: PRACTICE_MESSAGING_WORKSPACE,
+                item_key: &channel_row.item_key,
+                command_key: &CommandKey::new("cmd-open-reg-channel").unwrap(),
+                patient_names: &names,
+            },
+        )
+        .await
+        .unwrap();
+    assert_eq!(opened_channel.patient_display_name, "Practice messaging");
+
+    // Also open `reply-proposal:` in `Updates`!
+    let updates1 = store
+        .read_updates(auth.as_ref(), &token, now_u64, &names)
+        .await
+        .unwrap();
+    let reply_upd = updates1
+        .today_items
+        .iter()
+        .chain(updates1.earlier_days.iter().flat_map(|d| d.items.iter()))
+        .find(|u| {
+            matches!(
+                &u.kind,
+                UpdateEntryKind::ReplyDrafted { conversation_id, .. }
+                if conversation_id == "conv-rory-clara"
+            )
+        })
+        .expect("ReplyDrafted update entry")
+        .clone();
+    assert!(matches!(reply_upd.seen_standing, SeenStanding::Unseen));
+    let _ = store
+        .open_today_or_update_item(
+            auth.as_ref(),
+            &mut authority,
+            &OpenItemRequest {
+                token: &token,
+                real_now_unix: now_u64,
+                workspace: &ws_linked,
+                item_key: &reply_upd.item_key,
+                command_key: &CommandKey::new("cmd-open-reg-reply-upd").unwrap(),
+                patient_names: &names,
+            },
+        )
+        .await
+        .unwrap();
+
+    // --- VERIFY 2: Subsequent `read_today` and `read_updates` report `SeenStanding::Seen` (never `Unseen` or `UpdatedSinceSeen`)! ---
+    let today_after_open = store
+        .read_today(auth.as_ref(), &token, now_u64, &names)
+        .await
+        .unwrap();
+    for expected_seen_key in [
+        linked_row.item_key.as_str(),
+        match_row.item_key.as_str(),
+        unreadable_row.item_key.as_str(),
+        channel_row.item_key.as_str(),
+    ] {
+        let row = today_after_open
+            .rows
+            .iter()
+            .find(|r| r.item_key.as_str() == expected_seen_key)
+            .unwrap_or_else(|| panic!("missing row `{expected_seen_key}` after open"));
+        assert!(
+            matches!(row.seen_standing, SeenStanding::Seen { .. }),
+            "opened Today item `{expected_seen_key}` must transition to SeenStanding::Seen, got: {:?}",
+            row.seen_standing
+        );
+    }
+
+    let updates_after_open = store
+        .read_updates(auth.as_ref(), &token, now_u64, &names)
+        .await
+        .unwrap();
+    let reply_upd_after = updates_after_open
+        .today_items
+        .iter()
+        .chain(
+            updates_after_open
+                .earlier_days
+                .iter()
+                .flat_map(|d| d.items.iter()),
+        )
+        .find(|u| u.item_key == reply_upd.item_key)
+        .expect("ReplyDrafted update entry after open");
+    assert!(
+        matches!(reply_upd_after.seen_standing, SeenStanding::Seen { .. }),
+        "opened ReplyDrafted Updates item must transition to SeenStanding::Seen, got: {:?}",
+        reply_upd_after.seen_standing
+    );
+
+    // --- VERIFY 3: Disconnected open reply `Done` (`MessageReply.tla` Rule 3) closes ONLY the reply, leaving open concerns open! ---
+    let disc_row_step1 = today_after_open
+        .rows
+        .iter()
+        .find(|r| r.workspace == ws_disc_concern)
+        .expect("disconnected reply + open concern row")
+        .clone();
+    assert!(disc_row_step1.can_mark_done);
+    assert_eq!(disc_row_step1.patient_display_name, "Danny Pink (Mobile)");
+    assert!(matches!(
+        &disc_row_step1.payload,
+        TodayRowPayload::MessageThread {
+            reply_ready: true,
+            channel_disconnected: true,
+            open_concern_ids,
+            ..
+        } if open_concern_ids == &vec![disc_concern_id.clone()]
+    ));
+
+    // First `Done` click closes ONLY the disconnected open reply!
+    let done_step1 = store
+        .clear_today_item_done(
+            auth.as_ref(),
+            &mut authority,
+            &ClearItemDoneRequest {
+                token: &token,
+                real_now_unix: now_u64,
+                workspace: &ws_disc_concern,
+                item_key: &disc_row_step1.item_key,
+                version_id: &disc_row_step1.version_id,
+                command_key: &CommandKey::new("cmd-done-disc-step1-reply-only").unwrap(),
+            },
+        )
+        .await
+        .expect("first Done closes disconnected reply only");
+    assert!(matches!(done_step1, TodayDoneResult::Cleared { .. }));
+
+    let conv_after_step1 = store
+        .reply_conversation(&practice, "conv-danny-disc-concern")
+        .await
+        .unwrap()
+        .unwrap();
+    assert!(
+        !conv_after_step1.reply_standing.is_open(),
+        "disconnected reply must be closed by first Done"
+    );
+
+    let today_after_step1 = store
+        .read_today(auth.as_ref(), &token, now_u64, &names)
+        .await
+        .unwrap();
+    let disc_row_step2 = today_after_step1
+        .rows
+        .iter()
+        .find(|r| r.workspace == ws_disc_concern)
+        .expect("open concern must keep row on Today after disconnected reply Done")
+        .clone();
+    assert_eq!(disc_row_step2.title, "Message concern still open");
+    assert!(disc_row_step2.can_mark_done);
+    assert!(matches!(
+        &disc_row_step2.payload,
+        TodayRowPayload::MessageThread {
+            reply_ready: false,
+            open_message_count: 0,
+            open_concern_ids,
+            ..
+        } if open_concern_ids == &vec![disc_concern_id.clone()]
+    ));
+
+    // Second `Done` click (now that reply is closed and only open concern remains) marks the concern `Done` and clears the row!
+    let done_step2 = store
+        .clear_today_item_done(
+            auth.as_ref(),
+            &mut authority,
+            &ClearItemDoneRequest {
+                token: &token,
+                real_now_unix: now_u64,
+                workspace: &ws_disc_concern,
+                item_key: &disc_row_step2.item_key,
+                version_id: &disc_row_step2.version_id,
+                command_key: &CommandKey::new("cmd-done-disc-step2-concern").unwrap(),
+            },
+        )
+        .await
+        .expect("second Done closes remaining open concern");
+    assert!(matches!(done_step2, TodayDoneResult::Cleared { .. }));
+    let _ = hash;
+
+    let today_after_step2 = store
+        .read_today(auth.as_ref(), &token, now_u64, &names)
+        .await
+        .unwrap();
+    assert!(
+        !today_after_step2
+            .rows
+            .iter()
+            .any(|r| r.workspace == ws_disc_concern),
+        "row must clear once both disconnected reply and open concern are handled"
+    );
+}

@@ -34,12 +34,16 @@ use super::follow_ups::{
 use super::jobs::PracticeJobKind;
 use super::receipt::{self, Receipt};
 use super::reply::proposals::{
-    ChannelConnection, ConversationLink, ExpectedDisconnectedCard, ReplyConversation,
-    ReplyProposalBasis, ReplyProposalError, ReplyProposalInputError, ReplyStanding,
+    ChannelConnection, ConversationLink, ExpectedDisconnectedCard, MessageSender,
+    ReplyConversation, ReplyProposalBasis, ReplyProposalError, ReplyProposalInputError,
+    ReplyStanding,
     tables::{reply_conversation, reply_proposal},
 };
 use super::reviews::{RecordedReviewAction, ReviewHoldReason, ReviewLifecycleState};
-use super::spruce_matching::{MessageStanding, SpruceMatchingError, TodayChannelBanner};
+use super::spruce_matching::{
+    MessageStanding, SpruceMatchingError, TodayChannelBanner, UnmatchedMessageRow,
+    entities::spruce_message,
+};
 use super::understanding::{PatientSummary, SummaryCitation};
 use super::{Authority, MessageRole, Store, WorkStatus, control, conversion_error};
 use crate::patient_reviews::{
@@ -1181,6 +1185,127 @@ fn message_thread_can_mark_done(
     }
 }
 
+fn spruce_channel_banner_snapshot(
+    banner: &TodayChannelBanner,
+) -> Option<(&'static str, String, String, SeenItemSnapshot, i64)> {
+    match banner {
+        TodayChannelBanner::Quiet => None,
+        TodayChannelBanner::CannotRead {
+            reason,
+            failed_at,
+            last_read_at,
+        } => {
+            let version_id = format!("cannot_read:{failed_at}:{reason}");
+            let title = "Messaging channel cannot be read".to_owned();
+            let detail = match last_read_at {
+                Some(last_ts) => {
+                    format!("Cannot read messaging channel ({reason}); last read at {last_ts}.")
+                }
+                None => format!("Cannot read messaging channel ({reason})."),
+            };
+            let snapshot = SeenItemSnapshot {
+                version_id,
+                urgency: None,
+                headline: title.clone(),
+                detail: detail.clone(),
+            };
+            Some(("cannot_read", title, detail, snapshot, *failed_at))
+        }
+        TodayChannelBanner::ReconnectRequired {
+            reason,
+            failed_at,
+            last_read_at,
+        } => {
+            let version_id = format!("reconnect_required:{failed_at}:{reason}");
+            let title = "Messaging channel requires reconnect".to_owned();
+            let detail = match last_read_at {
+                Some(last_ts) => {
+                    format!("Messaging channel needs reconnect ({reason}); last read at {last_ts}.")
+                }
+                None => format!("Messaging channel needs reconnect ({reason})."),
+            };
+            let snapshot = SeenItemSnapshot {
+                version_id,
+                urgency: None,
+                headline: title.clone(),
+                detail: detail.clone(),
+            };
+            Some(("reconnect_required", title, detail, snapshot, *failed_at))
+        }
+    }
+}
+
+fn unmatched_channel_sender_name(msg: &UnmatchedMessageRow) -> String {
+    msg.author_name
+        .as_deref()
+        .map(str::trim)
+        .filter(|s| !s.is_empty())
+        .map(ToOwned::to_owned)
+        .or_else(|| msg.sender_address.as_ref().map(|a| a.as_str().to_owned()))
+        .unwrap_or_else(|| "Unknown sender".to_owned())
+}
+
+fn unmatched_message_snapshot(msg: &UnmatchedMessageRow) -> (String, String, SeenItemSnapshot) {
+    let suggested_ws = msg.suggested_patient.as_ref().map(|s| s.workspace.as_str());
+    let urgency_opt = msg.leads_today_as_now.then_some(ConcernUrgency::Now);
+    let version_id = format!(
+        "waiting:{}:{}:{}",
+        msg.waiting_since,
+        msg.leads_today_as_now,
+        suggested_ws.unwrap_or("none")
+    );
+    let title = if msg.leads_today_as_now {
+        "Urgent message to match".to_owned()
+    } else {
+        "Message to match".to_owned()
+    };
+    let detail = if msg.body_text.trim().is_empty() {
+        "Unmatched patient message awaiting confirmation.".to_owned()
+    } else {
+        summarize_one_line(&msg.body_text, 140)
+    };
+    let snapshot = SeenItemSnapshot {
+        version_id,
+        urgency: urgency_opt,
+        headline: title.clone(),
+        detail: detail.clone(),
+    };
+    (title, detail, snapshot)
+}
+
+fn unreadable_message_snapshot(
+    kept_at: i64,
+    failure_reason: &str,
+) -> (String, String, SeenItemSnapshot) {
+    let version_id = format!("cant_read:{kept_at}");
+    let title = "Message couldn't be read".to_owned();
+    let detail = failure_reason.to_owned();
+    let snapshot = SeenItemSnapshot {
+        version_id,
+        urgency: None,
+        headline: title.clone(),
+        detail: detail.clone(),
+    };
+    (title, detail, snapshot)
+}
+
+fn reply_proposal_update_snapshot(
+    reply_id: u64,
+    proposal_version: u64,
+    text: &str,
+) -> (String, String, SeenItemSnapshot) {
+    let version_id = format!("r{reply_id}:v{proposal_version}");
+    let title = format!("Drafted reply (v{proposal_version})");
+    let detail = summarize_one_line(text, 140);
+    let snapshot = SeenItemSnapshot {
+        version_id,
+        urgency: None,
+        headline: title.clone(),
+        detail: detail.clone(),
+    };
+    (title, detail, snapshot)
+}
+
 fn message_thread_version_id(
     conv: &ReplyConversation,
     open_concerns: &[(ConcernId, i64, ConcernUrgency)],
@@ -1399,20 +1524,87 @@ impl Store {
         names
     }
 
+    async fn resolve_conversation_sender_display_name(
+        &self,
+        practice: &str,
+        conv: &ReplyConversation,
+    ) -> String {
+        if let Ok(spruce_rows) = spruce_message::Entity::find()
+            .filter(spruce_message::Column::Practice.eq(practice))
+            .filter(spruce_message::Column::ConversationId.eq(conv.conversation_id.as_str()))
+            .order_by_desc(spruce_message::Column::ChannelPosition)
+            .all(&self.db)
+            .await
+        {
+            for row in &spruce_rows {
+                if let Some(name) = row
+                    .author_name
+                    .as_deref()
+                    .map(str::trim)
+                    .filter(|s| !s.is_empty())
+                {
+                    return name.to_owned();
+                }
+                if let Some(addr) = row
+                    .sender_address
+                    .as_deref()
+                    .map(str::trim)
+                    .filter(|s| !s.is_empty())
+                {
+                    return addr.to_owned();
+                }
+            }
+        }
+        if let Ok(Some(spruce_conv)) = self
+            .spruce_conversation(practice, &conv.conversation_id)
+            .await
+        {
+            for participant in &spruce_conv.outside_participants {
+                if let Some(name) = participant
+                    .display_name
+                    .as_deref()
+                    .map(str::trim)
+                    .filter(|s| !s.is_empty())
+                {
+                    return name.to_owned();
+                }
+                if let Some(addr) = &participant.endpoint_address {
+                    return addr.as_str().to_owned();
+                }
+            }
+        }
+        for msg in conv
+            .patient_messages
+            .iter()
+            .rev()
+            .filter(|m| m.standing.is_open())
+            .chain(conv.patient_messages.iter().rev())
+        {
+            if let MessageSender::NamedSender { name } = &msg.sender
+                && !name.trim().is_empty()
+            {
+                return name.clone();
+            }
+        }
+        format!("Channel sender ({})", conv.conversation_id)
+    }
+
     async fn load_physician_seen_map(
         &self,
         practice: &str,
         physician: &str,
         workspaces: &[String],
     ) -> Result<BTreeMap<String, StoredSeenEntry>, DbErr> {
-        if workspaces.is_empty() {
-            return Ok(BTreeMap::new());
-        }
         let rows = today_updates_seen::Entity::find()
             .filter(today_updates_seen::Column::Practice.eq(practice))
             .filter(today_updates_seen::Column::Physician.eq(physician))
             .filter(
-                today_updates_seen::Column::Workspace.is_in(workspaces.iter().map(String::as_str)),
+                today_updates_seen::Column::Workspace.is_in(
+                    workspaces
+                        .iter()
+                        .map(String::as_str)
+                        .chain(std::iter::once(PRACTICE_MESSAGING_WORKSPACE)),
+                ),
             )
             .all(&self.db)
             .await?;
@@ -1610,7 +1802,7 @@ impl Store {
 
         // 7. Patient messages (linked threads, unmatched messages, unreadable items, channel health).
         match self
-            .read_today_messages_slice(auth, &ctx, workspace_filter, &names, &seen_map, probe)
+            .read_today_messages_slice(auth, &ctx, workspace_filter, &seen_map, probe)
             .await
         {
             Ok((mut msg_rows, absorbed)) => {
@@ -2320,7 +2512,6 @@ impl Store {
         auth: &dyn AuthStore,
         ctx: &AuthorizedReadContext,
         workspace_filter: Option<&str>,
-        names: &BTreeMap<String, String>,
         seen_map: &BTreeMap<String, StoredSeenEntry>,
         probe: &dyn TodayUpdatesProbe,
     ) -> Result<(Vec<TodayRow>, BTreeSet<(String, ConcernId)>), String> {
@@ -2335,115 +2526,37 @@ impl Store {
                 .await
                 .map_err(|err| err.to_string())?;
 
-            match spruce.channel_banner {
-                TodayChannelBanner::Quiet => {}
-                TodayChannelBanner::CannotRead {
-                    reason,
-                    failed_at,
-                    last_read_at,
-                } => {
-                    let key_str = "channel:spruce".to_owned();
-                    let version_id = format!("cannot_read:{failed_at}:{reason}");
-                    let title = "Messaging channel cannot be read".to_owned();
-                    let detail = match last_read_at {
-                        Some(last_ts) => {
-                            format!(
-                                "Cannot read messaging channel ({reason}); last read at {last_ts}."
-                            )
-                        }
-                        None => format!("Cannot read messaging channel ({reason})."),
-                    };
-                    let snapshot = SeenItemSnapshot {
-                        version_id: version_id.clone(),
-                        urgency: None,
-                        headline: title.clone(),
-                        detail: detail.clone(),
-                    };
-                    let seen_standing = evaluate_seen_standing(seen_map.get(&key_str), &snapshot);
-                    out.push(TodayRow {
-                        item_key: SeenItemKey(key_str),
-                        version_id,
-                        workspace: PRACTICE_MESSAGING_WORKSPACE.to_owned(),
-                        patient_display_name: "Practice messaging".to_owned(),
-                        title,
-                        detail,
-                        waiting_since_unix: failed_at,
-                        updated_at_unix: failed_at,
-                        seen_standing,
-                        can_mark_done: false,
-                        payload: TodayRowPayload::MessagingChannelProblem {
-                            problem_kind: "cannot_read".to_owned(),
-                            failed_at_unix: failed_at,
-                        },
-                    });
-                }
-                TodayChannelBanner::ReconnectRequired {
-                    reason,
-                    failed_at,
-                    last_read_at,
-                } => {
-                    let key_str = "channel:spruce".to_owned();
-                    let version_id = format!("reconnect_required:{failed_at}:{reason}");
-                    let title = "Messaging channel requires reconnect".to_owned();
-                    let detail = match last_read_at {
-                        Some(last_ts) => format!(
-                            "Messaging channel needs reconnect ({reason}); last read at {last_ts}."
-                        ),
-                        None => format!("Messaging channel needs reconnect ({reason})."),
-                    };
-                    let snapshot = SeenItemSnapshot {
-                        version_id: version_id.clone(),
-                        urgency: None,
-                        headline: title.clone(),
-                        detail: detail.clone(),
-                    };
-                    let seen_standing = evaluate_seen_standing(seen_map.get(&key_str), &snapshot);
-                    out.push(TodayRow {
-                        item_key: SeenItemKey(key_str),
-                        version_id,
-                        workspace: PRACTICE_MESSAGING_WORKSPACE.to_owned(),
-                        patient_display_name: "Practice messaging".to_owned(),
-                        title,
-                        detail,
-                        waiting_since_unix: failed_at,
-                        updated_at_unix: failed_at,
-                        seen_standing,
-                        can_mark_done: false,
-                        payload: TodayRowPayload::MessagingChannelProblem {
-                            problem_kind: "reconnect_required".to_owned(),
-                            failed_at_unix: failed_at,
-                        },
-                    });
-                }
+            if let Some((problem_kind, title, detail, snapshot, failed_at)) =
+                spruce_channel_banner_snapshot(&spruce.channel_banner)
+            {
+                let key_str = "channel:spruce".to_owned();
+                let version_id = snapshot.version_id.clone();
+                let seen_standing = evaluate_seen_standing(seen_map.get(&key_str), &snapshot);
+                out.push(TodayRow {
+                    item_key: SeenItemKey(key_str),
+                    version_id,
+                    workspace: PRACTICE_MESSAGING_WORKSPACE.to_owned(),
+                    patient_display_name: "Practice messaging".to_owned(),
+                    title,
+                    detail,
+                    waiting_since_unix: failed_at,
+                    updated_at_unix: failed_at,
+                    seen_standing,
+                    can_mark_done: false,
+                    payload: TodayRowPayload::MessagingChannelProblem {
+                        problem_kind: problem_kind.to_owned(),
+                        failed_at_unix: failed_at,
+                    },
+                });
             }
 
             for msg in spruce.messages_to_match {
                 let key_str = format!("match:{}", msg.message_id);
                 let suggested_ws = msg.suggested_patient.as_ref().map(|s| s.workspace.clone());
-                let urgency_opt = msg.leads_today_as_now.then_some(ConcernUrgency::Now);
-                let version_id = format!(
-                    "waiting:{}:{}:{}",
-                    msg.waiting_since,
-                    msg.leads_today_as_now,
-                    suggested_ws.as_deref().unwrap_or("none")
-                );
-                let title = if msg.leads_today_as_now {
-                    "Urgent message to match".to_owned()
-                } else {
-                    "Message to match".to_owned()
-                };
-                let detail = summarize_one_line(&msg.body_text, 140);
-                let snapshot = SeenItemSnapshot {
-                    version_id: version_id.clone(),
-                    urgency: urgency_opt,
-                    headline: title.clone(),
-                    detail: detail.clone(),
-                };
+                let (title, detail, snapshot) = unmatched_message_snapshot(&msg);
+                let version_id = snapshot.version_id.clone();
                 let seen_standing = evaluate_seen_standing(seen_map.get(&key_str), &snapshot);
-                let patient_display_name = suggested_ws
-                    .as_deref()
-                    .and_then(|ws| names.get(ws).cloned())
-                    .unwrap_or_else(|| "Unmatched message".to_owned());
+                let patient_display_name = unmatched_channel_sender_name(&msg);
                 out.push(TodayRow {
                     item_key: SeenItemKey(key_str),
                     version_id,
@@ -2466,15 +2579,9 @@ impl Store {
 
             for msg in spruce.unreadable_messages {
                 let key_str = format!("unreadable:{}", msg.message_id);
-                let version_id = format!("cant_read:{}", msg.kept_at);
-                let title = "Message couldn't be read".to_owned();
-                let detail = msg.failure_reason.clone();
-                let snapshot = SeenItemSnapshot {
-                    version_id: version_id.clone(),
-                    urgency: None,
-                    headline: title.clone(),
-                    detail: detail.clone(),
-                };
+                let (title, detail, snapshot) =
+                    unreadable_message_snapshot(msg.kept_at, &msg.failure_reason);
+                let version_id = snapshot.version_id.clone();
                 let seen_standing = evaluate_seen_standing(seen_map.get(&key_str), &snapshot);
                 out.push(TodayRow {
                     item_key: SeenItemKey(key_str),
@@ -2652,10 +2759,9 @@ impl Store {
                 detail: detail.clone(),
             };
             let seen_standing = evaluate_seen_standing(seen_map.get(&key_str), &snapshot);
-            let patient_display_name = names
-                .get(workspace)
-                .cloned()
-                .unwrap_or_else(|| workspace.clone());
+            let patient_display_name = self
+                .resolve_conversation_sender_display_name(practice, &conv)
+                .await;
 
             out.push(TodayRow {
                 item_key: SeenItemKey(key_str),
@@ -3453,15 +3559,9 @@ impl Store {
                 "reply-proposal:{}:{}:{proposal_version}",
                 row.workspace, row.conversation_id
             );
-            let version_id = format!("v{proposal_version}");
-            let title = format!("Drafted reply (v{proposal_version})");
-            let detail = summarize_one_line(&row.text, 140);
-            let snapshot = SeenItemSnapshot {
-                version_id: version_id.clone(),
-                urgency: None,
-                headline: title.clone(),
-                detail: detail.clone(),
-            };
+            let (title, detail, snapshot) =
+                reply_proposal_update_snapshot(reply_id, proposal_version, &row.text);
+            let version_id = snapshot.version_id.clone();
             let seen_standing = evaluate_seen_standing(seen_map.get(&key_str), &snapshot);
             let patient_display_name = names
                 .get(&row.workspace)
@@ -4915,6 +5015,9 @@ impl Store {
                     conv.conversation_id, conv.conversation_version
                 ));
             }
+            let channel_sender_name = self
+                .resolve_conversation_sender_display_name(practice, &conv)
+                .await;
             let snapshot = SeenItemSnapshot {
                 version_id: version_id.clone(),
                 urgency: Some(thread_urgency),
@@ -4926,7 +5029,7 @@ impl Store {
                     item_key: item_key.clone(),
                     version_id,
                     workspace: workspace.to_owned(),
-                    patient_display_name: patient_display_name.to_owned(),
+                    patient_display_name: channel_sender_name,
                     kind_label: "Patient message".to_owned(),
                     headline,
                     clinical_body: body_parts.join("\n\n"),
@@ -4986,19 +5089,17 @@ impl Store {
             let citations = self
                 .enrich_citations_from_store(workspace, base_citations)
                 .await?;
-            let version_id = format!("r{}:v{}", row.reply_id, row.version);
-            let headline = format!("Reply draft v{} ready", row.version);
-            let detail = summarize_one_line(&row.text, 140);
+            let reply_id_u64 =
+                u64::try_from(row.reply_id).map_err(conversion_error("reply_id", "u64"))?;
+            let version_u64 =
+                u64::try_from(row.version).map_err(conversion_error("version", "u64"))?;
+            let (headline, _detail, snapshot) =
+                reply_proposal_update_snapshot(reply_id_u64, version_u64, &row.text);
+            let version_id = snapshot.version_id.clone();
             let basis_text = if basis.limits.is_empty() {
                 basis.summary
             } else {
                 format!("{} Limits: {}", basis.summary, basis.limits.join("; "))
-            };
-            let snapshot = SeenItemSnapshot {
-                version_id: version_id.clone(),
-                urgency: None,
-                headline: headline.clone(),
-                detail,
             };
             return Ok((
                 ItemWorkEvidence {
@@ -5038,34 +5139,9 @@ impl Store {
                     workspace: workspace.to_owned(),
                     item_key: key.to_owned(),
                 })?;
-            let urgency = if row.leads_today_as_now {
-                ConcernUrgency::Now
-            } else {
-                ConcernUrgency::Today
-            };
-            let suggested_ws = row.suggested_patient.as_ref().map(|s| s.workspace.as_str());
-            let version_id = format!(
-                "match:{}:{}:{}",
-                row.waiting_since,
-                urgency.as_str(),
-                suggested_ws.unwrap_or("none")
-            );
-            let headline = if row.leads_today_as_now {
-                "Urgent message to match".to_owned()
-            } else {
-                "Message to match".to_owned()
-            };
-            let preview = if row.body_text.trim().is_empty() {
-                "Unmatched patient message awaiting confirmation.".to_owned()
-            } else {
-                summarize_one_line(&row.body_text, 140)
-            };
-            let snapshot = SeenItemSnapshot {
-                version_id: version_id.clone(),
-                urgency: Some(urgency),
-                headline: headline.clone(),
-                detail: preview,
-            };
+            let (headline, _preview, snapshot) = unmatched_message_snapshot(&row);
+            let version_id = snapshot.version_id.clone();
+            let sender_display_name = unmatched_channel_sender_name(&row);
             let clinical_body = match &row.suggested_patient {
                 Some(sug) => format!(
                     "{}\n\nSuggested patient ({}): {}",
@@ -5078,7 +5154,7 @@ impl Store {
                     item_key: item_key.clone(),
                     version_id,
                     workspace: workspace.to_owned(),
-                    patient_display_name: patient_display_name.to_owned(),
+                    patient_display_name: sender_display_name,
                     kind_label: "Message to match".to_owned(),
                     headline,
                     clinical_body,
@@ -5127,14 +5203,9 @@ impl Store {
                     });
                 }
             };
-            let version_id = format!("cant_read:{}", msg.kept_at);
-            let headline = "Unreadable Spruce message".to_owned();
-            let snapshot = SeenItemSnapshot {
-                version_id: version_id.clone(),
-                urgency: None,
-                headline: headline.clone(),
-                detail: failure_reason.clone(),
-            };
+            let (headline, _detail, snapshot) =
+                unreadable_message_snapshot(msg.kept_at, &failure_reason);
+            let version_id = snapshot.version_id.clone();
             let clinical_body = match app_url {
                 Some(url) => format!("{failure_reason}\n\nOpen in Spruce: {url}"),
                 None => failure_reason,
@@ -5172,37 +5243,15 @@ impl Store {
             let summary = self
                 .today_spruce_summary_for_physician(auth, &ctx.identity)
                 .await?;
-            let (headline, reason, since_unix, reconnect_required) = match summary.channel_banner {
-                TodayChannelBanner::Quiet => {
-                    return Err(TodayUpdatesError::NotFound {
-                        workspace: workspace.to_owned(),
-                        item_key: key.to_owned(),
-                    });
-                }
-                TodayChannelBanner::CannotRead {
-                    reason, failed_at, ..
-                } => (
-                    "Coda cannot read the Spruce channel".to_owned(),
-                    reason,
-                    failed_at,
-                    false,
-                ),
-                TodayChannelBanner::ReconnectRequired {
-                    reason, failed_at, ..
-                } => (
-                    "Reconnect Spruce channel".to_owned(),
-                    reason,
-                    failed_at,
-                    true,
-                ),
+            let Some((_kind, headline, detail, snapshot, _failed_at)) =
+                spruce_channel_banner_snapshot(&summary.channel_banner)
+            else {
+                return Err(TodayUpdatesError::NotFound {
+                    workspace: workspace.to_owned(),
+                    item_key: key.to_owned(),
+                });
             };
-            let version_id = format!("spruce:{reconnect_required}:{since_unix}");
-            let snapshot = SeenItemSnapshot {
-                version_id: version_id.clone(),
-                urgency: None,
-                headline: headline.clone(),
-                detail: reason.clone(),
-            };
+            let version_id = snapshot.version_id.clone();
             return Ok((
                 ItemWorkEvidence {
                     item_key: item_key.clone(),
@@ -5211,7 +5260,7 @@ impl Store {
                     patient_display_name: patient_display_name.to_owned(),
                     kind_label: "Messaging channel".to_owned(),
                     headline,
-                    clinical_body: reason,
+                    clinical_body: detail,
                     basis_and_limitations: None,
                     citations: Vec::new(),
                     origin_summary: "Spruce messaging channel".to_owned(),
@@ -5664,16 +5713,17 @@ impl Store {
                     authority,
                 )
                 .await?;
-            }
-            for cid in &open_concern_ids {
-                let concern_key = CommandKey::new(format!(
-                    "reply-concern:{}:{}",
-                    command_key.as_str(),
-                    cid.as_str()
-                ))?;
-                let _ = self
-                    .mark_concern_done(&access, &concern_key, cid, authority)
-                    .await?;
+            } else {
+                for cid in &open_concern_ids {
+                    let concern_key = CommandKey::new(format!(
+                        "reply-concern:{}:{}",
+                        command_key.as_str(),
+                        cid.as_str()
+                    ))?;
+                    let _ = self
+                        .mark_concern_done(&access, &concern_key, cid, authority)
+                        .await?;
+                }
             }
 
             let tx = self.db.begin().await?;

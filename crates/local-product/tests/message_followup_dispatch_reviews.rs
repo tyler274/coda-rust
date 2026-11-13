@@ -32,15 +32,17 @@ use local_product::runtime::chat_operations::{
     DispatchCheckStanding, PatientMemoryStanding, SourceFreshnessSummary,
 };
 use local_product::runtime::concerns::{ExactRecordReference, WorkspaceAccess};
-use local_product::runtime::dispatch::StoredObservationChecker;
+use local_product::runtime::dispatch::{PracticeJobReviewReceiver, StoredObservationChecker};
 use local_product::runtime::follow_ups::{
     FOLLOW_UP_TOOL, FollowUpCommandKey, FollowUpId, FollowUpReviewSchedule, FollowUpStanding,
     FollowUpSummary, PhysicianCreateFollowUp, follow_up_tool,
 };
 use local_product::runtime::jobs::{PracticeJobHost, PracticeJobKind, is_physician_only_tool};
 use local_product::runtime::reply::proposals::{
-    ConversationLink, DisplayedReplyText, MessageIntakeOutcome, MessageSender,
-    PhysicianDraftStanding, PhysicianReplySurface, RecordPatientMessage, ReplyStanding,
+    CardReviewState, CompleteReplyReview, ConversationLink, DisplayedReplyText,
+    MessageIntakeOutcome, MessageSender, ObservePracticeMessage, PhysicianDraftStanding,
+    PhysicianReplySurface, PracticeMessageKind, RecordPatientMessage, ReplyReviewDecision,
+    ReplyStanding, ReviewWakeEvent,
 };
 use local_product::runtime::reviews::{
     PatientReviewReceiver, PatientReviewTarget, RecordedReviewAction, ReviewHoldReason,
@@ -2133,4 +2135,823 @@ async fn stop_holds_follow_up_review_across_restart_and_worker_replay() {
         ReviewLifecycleState::Completed { .. }
     ));
     sse_task.abort();
+}
+
+#[tokio::test]
+async fn direct_spruce_receiver_handoff_admits_message_review_without_duplicate_wake_and_classifies_senders()
+ {
+    let Some((store, auth, _url, _cluster)) = connect_stores().await else {
+        return;
+    };
+    let skills = load_skills();
+    let roles = distinct_roles();
+    let reg_time = current_unix_i64();
+    let practice = format!("prac-direct-spruce-{}", Uuid::new_v4().simple());
+    auth.ensure_practice(&practice, PracticeClock::RealTime)
+        .await
+        .unwrap();
+    let (dr, _token, dr_hash) =
+        invite_and_sign_in(&auth, &practice, "DrDirectSpruce", reg_time as u64).await;
+
+    let ws_patient_recv = format!("pw-spruce-ptrecv-{}", Uuid::new_v4().simple());
+    let ws_job_recv = format!("pw-spruce-jobrecv-{}", Uuid::new_v4().simple());
+    for (ws, name) in [
+        (&ws_patient_recv, "Liam Brooks"),
+        (&ws_job_recv, "Maya Lin"),
+    ] {
+        seed_patient_with_baseline_chart(
+            &store,
+            &auth,
+            BaselineChartSeed {
+                practice: &practice,
+                workspace: ws,
+                patient_name: name,
+                candidate_id: "Observation/bmp-direct",
+                revision: "rev-1",
+                text: "Serum potassium 4.1 mmol/L.",
+                reg_time,
+            },
+        )
+        .await;
+        auth.set_membership(&dr, ws, Membership::Allowed)
+            .await
+            .unwrap();
+    }
+
+    let checker = StoredObservationChecker::new(store.clone());
+    let receiver = PatientReviewReceiver::new(&store, &roles, &skills, auth.as_ref());
+    let init_wake = store
+        .wake_practice_dispatch(auth.as_ref(), &practice, reg_time, &checker, &receiver)
+        .await
+        .unwrap();
+    assert!(init_wake.started_reviews.is_empty());
+
+    store
+        .connect_spruce_channel(auth.as_ref(), &dr, 0, None, reg_time)
+        .await
+        .unwrap();
+    let lease = store
+        .acquire_spruce_reader_lease(&practice, "worker-direct-spruce", 300, reg_time)
+        .await
+        .unwrap();
+
+    let liam_phone = SenderAddress::parse("+14155550791").unwrap();
+    let maya_phone = SenderAddress::parse("+14155550792").unwrap();
+    for (phone, ws) in [(&liam_phone, &ws_patient_recv), (&maya_phone, &ws_job_recv)] {
+        store
+            .record_spruce_confirmed_sender(&practice, phone, ws, &dr.physician_id, reg_time)
+            .await
+            .unwrap();
+    }
+
+    // 1. Direct `PatientReviewReceiver` handoff with patient-authored `author_name: Some("Liam Brooks")`.
+    store
+        .ingest_spruce_item(
+            &practice,
+            &lease.lease_token,
+            &IncomingSpruceItem::Readable(ReadableSpruceItem {
+                message_id: "spruce-direct-liam-1".into(),
+                conversation_id: "conv-direct-liam".into(),
+                channel_position: 1,
+                content_version: "v1".into(),
+                sender_address: Some(liam_phone.clone()),
+                author_name: Some("Liam Brooks".into()),
+                body_text: "Should I take my morning dose before lab work?".into(),
+                attachments: Vec::new(),
+                app_url: Some("https://app.sprucehealth.com/conversations/conv-direct-liam".into()),
+                created_at_spruce: Some("2026-11-12T16:00:00Z".into()),
+                outside_participants: vec![OutsideParticipant {
+                    display_name: Some("Liam Brooks".into()),
+                    endpoint_channel: Some("sms".into()),
+                    endpoint_address: Some(liam_phone.clone()),
+                    saved_contact_id: None,
+                }],
+            }),
+            reg_time + 10,
+        )
+        .await
+        .unwrap();
+    store
+        .record_spruce_message_classification(
+            auth.as_ref(),
+            &practice,
+            "spruce-direct-liam-1",
+            None,
+            RECIPE_VERSION,
+            GUIDANCE_VERSION,
+            MatchingDecision::PatientMail {
+                urgency: MessageUrgencyChoice::Ordinary,
+                assessment: MatchAssessment::SuggestedPatient {
+                    workspace: ws_patient_recv.clone(),
+                    evidence_summary: "Confirmed phone for Liam Brooks.".into(),
+                },
+                rationale: "Patient medication timing question.".into(),
+            },
+            Some(&receiver),
+            reg_time + 11,
+        )
+        .await
+        .expect("direct spruce handoff to PatientReviewReceiver");
+
+    // Verify admitted review is `ReviewTrigger::Message` (not `"new records"`) and preloads `patient-communication`.
+    let liam_reviews = store
+        .patient_reviews(&practice, &ws_patient_recv, auth.as_ref())
+        .await
+        .unwrap();
+    assert_eq!(liam_reviews.len(), 1);
+    assert!(matches!(
+        liam_reviews[0].triggers.as_slice(),
+        [ReviewTrigger::Message {
+            conversation_id,
+            message_ids,
+            ..
+        }] if conversation_id == "conv-direct-liam"
+            && message_ids == &vec!["spruce-direct-liam-1".to_owned()]
+    ));
+    let skill_names: BTreeSet<&str> = liam_reviews[0]
+        .recipe_version
+        .preloaded_skills
+        .iter()
+        .map(|s| s.name.as_str())
+        .collect();
+    assert!(skill_names.contains("patient-communication"));
+
+    // Verify patient-authored message mapped to `MessageSender::Patient` (not third-party `NamedSender`).
+    let mut authority = PostgresWorkspaceAuthority;
+    let surface_patient = store
+        .physician_reply_surface(
+            &WorkspaceAccess {
+                practice: &dr.practice_id,
+                physician: &dr.physician_id,
+                workspace: &ws_patient_recv,
+                session_hash: &dr_hash,
+            },
+            "conv-direct-liam",
+            &mut authority,
+        )
+        .await
+        .unwrap();
+    assert!(matches!(
+        &surface_patient,
+        PhysicianReplySurface::NoOpenCard {
+            open_messages,
+            non_patient_sender_names,
+            ..
+        } if open_messages.len() == 1
+            && open_messages[0].sender == MessageSender::Patient
+            && non_patient_sender_names.is_empty()
+    ));
+
+    // Ingest a caregiver message (`"Dana Brooks"`) on the same conversation and verify `NamedSender`.
+    store
+        .ingest_spruce_item(
+            &practice,
+            &lease.lease_token,
+            &IncomingSpruceItem::Readable(ReadableSpruceItem {
+                message_id: "spruce-direct-dana-2".into(),
+                conversation_id: "conv-direct-liam".into(),
+                channel_position: 2,
+                content_version: "v1".into(),
+                sender_address: Some(liam_phone.clone()),
+                author_name: Some("Dana Brooks".into()),
+                body_text: "This is Liam's wife Dana — he also had mild dizziness.".into(),
+                attachments: Vec::new(),
+                app_url: None,
+                created_at_spruce: None,
+                outside_participants: vec![OutsideParticipant {
+                    display_name: Some("Dana Brooks".into()),
+                    endpoint_channel: Some("sms".into()),
+                    endpoint_address: Some(liam_phone),
+                    saved_contact_id: None,
+                }],
+            }),
+            reg_time + 15,
+        )
+        .await
+        .unwrap();
+    store
+        .record_spruce_message_classification(
+            auth.as_ref(),
+            &practice,
+            "spruce-direct-dana-2",
+            None,
+            RECIPE_VERSION,
+            GUIDANCE_VERSION,
+            MatchingDecision::PatientMail {
+                urgency: MessageUrgencyChoice::Ordinary,
+                assessment: MatchAssessment::SuggestedPatient {
+                    workspace: ws_patient_recv.clone(),
+                    evidence_summary: "Confirmed family thread for Liam Brooks.".into(),
+                },
+                rationale: "Spouse symptom report.".into(),
+            },
+            Some(&receiver),
+            reg_time + 16,
+        )
+        .await
+        .unwrap();
+    let surface_caregiver = store
+        .physician_reply_surface(
+            &WorkspaceAccess {
+                practice: &dr.practice_id,
+                physician: &dr.physician_id,
+                workspace: &ws_patient_recv,
+                session_hash: &dr_hash,
+            },
+            "conv-direct-liam",
+            &mut authority,
+        )
+        .await
+        .unwrap();
+    assert!(matches!(
+        &surface_caregiver,
+        PhysicianReplySurface::NoOpenCard {
+            non_patient_sender_names,
+            ..
+        } if non_patient_sender_names == &vec!["Dana Brooks".to_owned()]
+    ));
+
+    // 2. Direct `PracticeJobReviewReceiver` handoff on `ws_job_recv`.
+    let job_receiver =
+        PracticeJobReviewReceiver::new(store.clone(), &roles, &skills, auth.as_ref());
+    store
+        .ingest_spruce_item(
+            &practice,
+            &lease.lease_token,
+            &IncomingSpruceItem::Readable(ReadableSpruceItem {
+                message_id: "spruce-direct-maya-1".into(),
+                conversation_id: "conv-direct-maya".into(),
+                channel_position: 3,
+                content_version: "v1".into(),
+                sender_address: Some(maya_phone.clone()),
+                author_name: Some("Maya Lin".into()),
+                body_text: "Checking in on my blood pressure readings.".into(),
+                attachments: Vec::new(),
+                app_url: None,
+                created_at_spruce: None,
+                outside_participants: vec![OutsideParticipant {
+                    display_name: Some("Maya Lin".into()),
+                    endpoint_channel: Some("sms".into()),
+                    endpoint_address: Some(maya_phone),
+                    saved_contact_id: None,
+                }],
+            }),
+            reg_time + 20,
+        )
+        .await
+        .unwrap();
+    store
+        .record_spruce_message_classification(
+            auth.as_ref(),
+            &practice,
+            "spruce-direct-maya-1",
+            None,
+            RECIPE_VERSION,
+            GUIDANCE_VERSION,
+            MatchingDecision::PatientMail {
+                urgency: MessageUrgencyChoice::Ordinary,
+                assessment: MatchAssessment::SuggestedPatient {
+                    workspace: ws_job_recv.clone(),
+                    evidence_summary: "Confirmed phone for Maya Lin.".into(),
+                },
+                rationale: "Patient BP check-in.".into(),
+            },
+            Some(&job_receiver),
+            reg_time + 21,
+        )
+        .await
+        .unwrap();
+
+    let maya_triggers = store.spruce_review_triggers(&practice).await.unwrap();
+    let maya_trig = maya_triggers
+        .iter()
+        .find(|t| t.workspace == ws_job_recv)
+        .expect("spruce trigger for maya");
+    assert!(maya_trig.dispatched);
+    let maya_job = store
+        .practice_job(&local_product::runtime::jobs::PracticeScope {
+            practice: practice.clone(),
+            workspace: ws_job_recv.clone(),
+            job_id: maya_trig.command_key.clone(),
+        })
+        .await
+        .unwrap()
+        .expect("practice job admitted by PracticeJobReviewReceiver");
+    assert!(
+        maya_job
+            .assignment
+            .prompt
+            .contains("Conduct a message chart review"),
+        "expected message reason prompt, got: {}",
+        maya_job.assignment.prompt
+    );
+    assert!(
+        maya_job
+            .assignment
+            .preloaded_skills
+            .iter()
+            .any(|s| s.name == "patient-communication"),
+        "expected patient-communication skill on PracticeJobReviewReceiver job"
+    );
+
+    // 3. Subsequent `wake_practice_dispatch` starts ZERO duplicate reviews for either patient!
+    let follow_wake = store
+        .wake_practice_dispatch(auth.as_ref(), &practice, reg_time + 30, &checker, &receiver)
+        .await
+        .unwrap();
+    assert!(
+        follow_wake.started_reviews.is_empty(),
+        "direct Spruce receiver handoff must not start duplicate reviews on wake: {:?}",
+        follow_wake.started_reviews
+    );
+}
+
+#[tokio::test]
+async fn reply_review_fence_releases_on_quiet_completion_and_preserves_non_patient_wakes_on_supersession()
+ {
+    let Some((store, auth, _url, _cluster)) = connect_stores().await else {
+        return;
+    };
+    let skills = load_skills();
+    let roles = distinct_roles();
+    let reg_time = current_unix_i64();
+    let practice = format!("prac-fence-rel-{}", Uuid::new_v4().simple());
+    auth.ensure_practice(&practice, PracticeClock::RealTime)
+        .await
+        .unwrap();
+    let (dr, _token, dr_hash) =
+        invite_and_sign_in(&auth, &practice, "DrFenceRel", reg_time as u64).await;
+
+    let ws = format!("pw-fence-rel-{}", Uuid::new_v4().simple());
+    seed_patient_with_baseline_chart(
+        &store,
+        &auth,
+        BaselineChartSeed {
+            practice: &practice,
+            workspace: &ws,
+            patient_name: "Hannah Abbott",
+            candidate_id: "Observation/bmp-fence",
+            revision: "rev-1",
+            text: "Serum sodium 139 mmol/L, potassium 4.0 mmol/L.",
+            reg_time,
+        },
+    )
+    .await;
+    auth.set_membership(&dr, &ws, Membership::Allowed)
+        .await
+        .unwrap();
+
+    let checker = StoredObservationChecker::new(store.clone());
+    let receiver = PatientReviewReceiver::new(&store, &roles, &skills, auth.as_ref());
+    let _ = store
+        .wake_practice_dispatch(auth.as_ref(), &practice, reg_time, &checker, &receiver)
+        .await
+        .unwrap();
+
+    let conv_id = "conv-fence-quiet";
+    store
+        .link_reply_conversation(
+            &practice,
+            conv_id,
+            ConversationLink::LinkedPatient {
+                workspace: ws.clone(),
+            },
+        )
+        .await
+        .unwrap();
+    store
+        .record_linked_patient_message(&RecordPatientMessage {
+            practice: practice.clone(),
+            conversation_id: conv_id.into(),
+            message_id: "msg-fence-1".into(),
+            sender: MessageSender::Patient,
+            text: "Just confirming I picked up my prescription, thank you!".into(),
+            sent_at: reg_time + 10,
+        })
+        .await
+        .unwrap();
+
+    // 1. Dispatch & run `rev1` where the model calls `read_patient_conversation` and finishes
+    //    `complete_patient_review` WITHOUT calling `patient_message_reply`.
+    let wake1 = store
+        .wake_practice_dispatch(auth.as_ref(), &practice, reg_time + 15, &checker, &receiver)
+        .await
+        .unwrap();
+    assert_eq!(wake1.started_reviews.len(), 1);
+    let _ = receiver.take_deliveries().await;
+
+    let rev1 = store
+        .patient_reviews(&practice, &ws, auth.as_ref())
+        .await
+        .unwrap()
+        .into_iter()
+        .find(|r| r.state == ReviewLifecycleState::Pending)
+        .expect("rev1 pending");
+
+    let (sse_state, mut sse_provider, sse_task) = spawn_local_sse_provider(&store).await;
+    sse_state.push_call(
+        "call-read-conv-1",
+        READ_PATIENT_CONVERSATION_TOOL,
+        json!({ "conversation_id": conv_id }),
+    );
+    sse_state.push_call(
+        "call-read-bmp-fence-1",
+        READ_TOOL,
+        json!({
+            "references": [{ "candidate_id": "Observation/bmp-fence", "revision": "rev-1", "cursor": null }],
+            "max_result_bytes": 8192
+        }),
+    );
+    sse_state.push_call(
+        "call-complete-quiet-1",
+        COMPLETE_PATIENT_REVIEW_TOOL,
+        json!({
+            "disposition": "quiet",
+            "explanation": "Reviewed conversation context without drafting a reply.",
+            "citations": [{ "candidate_id": "Observation/bmp-fence", "revision": "rev-1" }],
+            "basis_and_limitations": "Clinic EHR Observation/bmp-fence rev-1.",
+            "unfinished_work": []
+        }),
+    );
+    sse_state.push_assistant("Finished quiet review.");
+
+    let claim1 = store
+        .claim_practice_job(&rev1.practice_scope(), 60, auth.as_ref())
+        .await
+        .unwrap()
+        .unwrap();
+    PracticeJobHost {
+        store: store.clone(),
+        claim: claim1,
+        authority: auth.as_ref(),
+    }
+    .run(
+        &mut sse_provider,
+        engine::RunLimits::default(),
+        &engine::Cancellation::default(),
+    )
+    .await
+    .expect("run rev1 without patient_message_reply");
+
+    // Verify `active_review` was cleanly released on `Completed` (`review_state == Idle`, NOT stuck `Reviewing`!).
+    let conv_after_rev1 = store
+        .reply_conversation(&practice, conv_id)
+        .await
+        .unwrap()
+        .unwrap();
+    assert!(
+        conv_after_rev1.active_review.is_none(),
+        "completed review without patient_message_reply must release active_review: {:?}",
+        conv_after_rev1.active_review
+    );
+    let mut authority = PostgresWorkspaceAuthority;
+    let surface_after_rev1 = store
+        .physician_reply_surface(
+            &WorkspaceAccess {
+                practice: &dr.practice_id,
+                physician: &dr.physician_id,
+                workspace: &ws,
+                session_hash: &dr_hash,
+            },
+            conv_id,
+            &mut authority,
+        )
+        .await
+        .unwrap();
+    assert!(matches!(
+        surface_after_rev1,
+        PhysicianReplySurface::NoOpenCard {
+            review_state: CardReviewState::Idle,
+            ..
+        }
+    ));
+
+    // Verify a subsequent message arrival + review (`rev2`) can acquire the conversation fence
+    // without `StaleReview` (previously blocked forever by leaked `active_review`) and mark `NoReplyWouldHelp`.
+    store
+        .record_linked_patient_message(&RecordPatientMessage {
+            practice: practice.clone(),
+            conversation_id: conv_id.into(),
+            message_id: "msg-fence-2".into(),
+            sender: MessageSender::Patient,
+            text: "No questions on my end — have a good weekend!".into(),
+            sent_at: reg_time + 20,
+        })
+        .await
+        .unwrap();
+    let snap2 = store
+        .start_or_read_reply_review(&practice, conv_id, "rev-manual-2", "run-manual-2")
+        .await
+        .expect("subsequent review acquires released conversation fence cleanly");
+    assert_eq!(snap2.review.review_id, "rev-manual-2");
+    store
+        .complete_reply_review(&CompleteReplyReview {
+            practice: practice.clone(),
+            conversation_id: conv_id.into(),
+            review_id: "rev-manual-2".into(),
+            run_id: "run-manual-2".into(),
+            completion_key: "comp-manual-2".into(),
+            answered_closures: Vec::new(),
+            decision: ReplyReviewDecision::NoReplyWouldHelp {
+                reason: "Patient courtesy confirmation requires no reply.".into(),
+            },
+            raised_concern_ids: Vec::new(),
+        })
+        .await
+        .unwrap();
+
+    // 2. Now all patient messages on `conv-fence-quiet` are closed (`NeedsNoReply`).
+    //    Observe a practice message (`PracticeMessage` wake ONLY — zero open patient messages!).
+    store
+        .observe_practice_message(&ObservePracticeMessage {
+            practice: practice.clone(),
+            conversation_id: conv_id.into(),
+            practice_message_id: "pm-staff-ack-1".into(),
+            kind: PracticeMessageKind::PracticeSent,
+            text: "Glad you got it, Hannah!".into(),
+            sent_at: reg_time + 25,
+        })
+        .await
+        .unwrap();
+
+    // Dispatch `rev3` for that `PracticeMessage` wake and have `rev3` call `start_or_read_reply_review`
+    // (draining `woke_events` into `active_review.consumed_wakes`).
+    let wake3 = store
+        .wake_practice_dispatch(auth.as_ref(), &practice, reg_time + 30, &checker, &receiver)
+        .await
+        .unwrap();
+    assert_eq!(wake3.started_reviews.len(), 1);
+    let _ = receiver.take_deliveries().await;
+    let rev3 = store
+        .patient_reviews(&practice, &ws, auth.as_ref())
+        .await
+        .unwrap()
+        .into_iter()
+        .find(|r| r.state == ReviewLifecycleState::Pending)
+        .expect("rev3 pending");
+    let claim3 = store
+        .claim_practice_job(&rev3.practice_scope(), 60, auth.as_ref())
+        .await
+        .unwrap()
+        .unwrap();
+    let _ = store
+        .start_or_read_reply_review(&practice, conv_id, &rev3.review_id, &claim3.attempt)
+        .await
+        .expect("rev3 drains PracticeMessage wake");
+
+    // Supersede `rev3` via a physician-requested review (`rev4`) before `rev3` finishes!
+    let _ = store
+        .submit_physician_patient_review(
+            auth.as_ref(),
+            &dr,
+            &ws,
+            "cmd-phys-supersede-rev3",
+            "Re-evaluate conversation and latest metabolic panel.",
+            &roles,
+            &skills,
+        )
+        .await
+        .expect("admit rev4 superseding rev3");
+
+    let conv_after_supersede = store
+        .reply_conversation(&practice, conv_id)
+        .await
+        .unwrap()
+        .unwrap();
+    assert!(
+        conv_after_supersede.active_review.is_none(),
+        "superseded review must release active_review"
+    );
+    assert!(
+        conv_after_supersede
+            .woke_events
+            .contains(&ReviewWakeEvent::PracticeMessage {
+                practice_message_id: "pm-staff-ack-1".into(),
+            }),
+        "aborted/superseded review must restore consumed PracticeMessage wake: {:?}",
+        conv_after_supersede.woke_events
+    );
+
+    // Replacement review (`rev4`) can immediately read `conv-fence-quiet` without `NoPendingReviewWake`!
+    let snap4 = store
+        .start_or_read_reply_review(&practice, conv_id, "rev-replacement-4", "run-replacement-4")
+        .await
+        .expect(
+            "replacement review reads restored PracticeMessage wake without NoPendingReviewWake",
+        );
+    assert_eq!(snap4.review.review_id, "rev-replacement-4");
+
+    sse_task.abort();
+}
+
+#[tokio::test]
+async fn stopped_follow_up_review_remains_held_when_later_patient_inputs_admit_new_review() {
+    let Some((store, auth, _url, _cluster)) = connect_stores().await else {
+        return;
+    };
+    let skills = load_skills();
+    let roles = distinct_roles();
+    let reg_time = current_unix_i64();
+    let practice = format!("prac-held-keep-{}", Uuid::new_v4().simple());
+    auth.ensure_practice(&practice, PracticeClock::RealTime)
+        .await
+        .unwrap();
+    let (dr, _token, dr_hash) =
+        invite_and_sign_in(&auth, &practice, "DrHeldKeep", reg_time as u64).await;
+
+    let ws = format!("pw-held-keep-{}", Uuid::new_v4().simple());
+    seed_patient_with_baseline_chart(
+        &store,
+        &auth,
+        BaselineChartSeed {
+            practice: &practice,
+            workspace: &ws,
+            patient_name: "Neville Longbottom",
+            candidate_id: "Observation/inr-base",
+            revision: "rev-1",
+            text: "INR 2.3 (therapeutic).",
+            reg_time,
+        },
+    )
+    .await;
+    auth.set_membership(&dr, &ws, Membership::Allowed)
+        .await
+        .unwrap();
+
+    let checker = StoredObservationChecker::new(store.clone());
+    let receiver = PatientReviewReceiver::new(&store, &roles, &skills, auth.as_ref());
+    let _ = store
+        .wake_practice_dispatch(auth.as_ref(), &practice, reg_time, &checker, &receiver)
+        .await
+        .unwrap();
+
+    // 1. Create due follow-up, dispatch its review (`fu_rev`), and `Stop` it (`Held { reason: Stopped }`).
+    let mut authority = PostgresWorkspaceAuthority;
+    let fu_id = FollowUpId::new("fu-neville-inr").unwrap();
+    store
+        .create_follow_up_for_physician(
+            &WorkspaceAccess {
+                practice: &dr.practice_id,
+                physician: &dr.physician_id,
+                workspace: &ws,
+                session_hash: &dr_hash,
+            },
+            &FollowUpCommandKey::new("cmd-create-neville-fu").unwrap(),
+            &PhysicianCreateFollowUp {
+                id: fu_id.clone(),
+                summary: FollowUpSummary::new("Recheck INR after dietary change").unwrap(),
+                due_at: reg_time + 20,
+                records: vec![ExactRecordReference::new("Observation/inr-base", "rev-1").unwrap()],
+            },
+            &mut authority,
+        )
+        .await
+        .unwrap();
+
+    let wake_fu = store
+        .wake_practice_dispatch(auth.as_ref(), &practice, reg_time + 30, &checker, &receiver)
+        .await
+        .unwrap();
+    assert_eq!(wake_fu.started_reviews.len(), 1);
+    let _ = receiver.take_deliveries().await;
+
+    let fu_rev = store
+        .patient_reviews(&practice, &ws, auth.as_ref())
+        .await
+        .unwrap()
+        .into_iter()
+        .find(|r| r.state == ReviewLifecycleState::Pending)
+        .expect("pending follow-up review");
+    let fu_scope = fu_rev.practice_scope();
+    let fu_job = store.practice_job(&fu_scope).await.unwrap().unwrap();
+    let fu_ver = patient_review_version(&fu_rev, Some(&fu_job));
+
+    let stop_res = store
+        .control_patient_review_versioned(
+            PatientReviewTarget {
+                practice: &practice,
+                workspace: &ws,
+                review_id: &fu_rev.review_id,
+            },
+            &fu_ver,
+            "cmd-stop-neville-fu",
+            VersionedReviewAction::Stop,
+            auth.as_ref(),
+        )
+        .await
+        .expect("stop follow-up review");
+    assert_eq!(
+        stop_res,
+        VersionedReviewControl::Accepted { delivery: None }
+    );
+
+    // 2. While `fu_rev` is Stopped (`Held`), a new linked message AND a new chart record arrive!
+    let new_pull = SourcePull {
+        source_id: "clinic-ehr".to_owned(),
+        source_label: "Clinic EHR".to_owned(),
+        patient: source_patient(&ws, "Neville Longbottom"),
+        pulled_at: reg_time + 86_450,
+    };
+    let new_rec = chart_record(
+        &ws,
+        "Observation/bmp-neville-2",
+        "rev-1",
+        "Basic Metabolic Panel",
+        "2026-11-12",
+        "Serum potassium 4.3 mmol/L, creatinine 0.9 mg/dL.",
+    );
+    store
+        .record_chart(&ws, &[new_rec], &new_pull)
+        .await
+        .unwrap();
+    store
+        .link_reply_conversation(
+            &practice,
+            "conv-neville-1",
+            ConversationLink::LinkedPatient {
+                workspace: ws.clone(),
+            },
+        )
+        .await
+        .unwrap();
+    store
+        .record_linked_patient_message(&RecordPatientMessage {
+            practice: practice.clone(),
+            conversation_id: "conv-neville-1".into(),
+            message_id: "msg-neville-1".into(),
+            sender: MessageSender::Patient,
+            text: "Did my basic metabolic panel look okay?".into(),
+            sent_at: reg_time + 86_460,
+        })
+        .await
+        .unwrap();
+
+    // Wake dispatcher at `reg_time + 86_470`: admits a new review for the new message + record change.
+    let wake_new = store
+        .wake_practice_dispatch(
+            auth.as_ref(),
+            &practice,
+            reg_time + 86_470,
+            &checker,
+            &receiver,
+        )
+        .await
+        .unwrap();
+    assert_eq!(wake_new.started_reviews.len(), 1);
+    let _ = receiver.take_deliveries().await;
+
+    // 3. Verify `fu_rev` was NOT overwritten to `Superseded` — it remains `Held { reason: Stopped }`!
+    let fu_rev_after_new_input = store
+        .patient_review(&practice, &ws, &fu_rev.review_id, auth.as_ref())
+        .await
+        .unwrap()
+        .unwrap();
+    assert!(
+        matches!(
+            fu_rev_after_new_input.state,
+            ReviewLifecycleState::Held {
+                reason: ReviewHoldReason::Stopped,
+                ..
+            }
+        ),
+        "Stopped follow-up review must remain Held across later patient inputs, got: {:?}",
+        fu_rev_after_new_input.state
+    );
+    let fu_job_after = store.practice_job(&fu_scope).await.unwrap().unwrap();
+    assert_eq!(fu_job_after.status, WorkStatus::Held);
+
+    // 4. Verify `Resume` on `fu_rev` still works and completes the follow-up!
+    let held_ver = patient_review_version(&fu_rev_after_new_input, Some(&fu_job_after));
+    let resume_res = store
+        .control_patient_review_versioned(
+            PatientReviewTarget {
+                practice: &practice,
+                workspace: &ws,
+                review_id: &fu_rev.review_id,
+            },
+            &held_ver,
+            "cmd-resume-neville-fu",
+            VersionedReviewAction::Resume {
+                roles: &roles,
+                skills: &skills,
+            },
+            auth.as_ref(),
+        )
+        .await
+        .expect("resume stopped follow-up review after later patient inputs");
+    assert!(matches!(
+        resume_res,
+        VersionedReviewControl::Accepted { delivery: Some(_) }
+    ));
+
+    let resumed_rev = store
+        .patient_review(&practice, &ws, &fu_rev.review_id, auth.as_ref())
+        .await
+        .unwrap()
+        .unwrap();
+    assert_eq!(resumed_rev.state, ReviewLifecycleState::Pending);
+    assert!(matches!(
+        resumed_rev.triggers.as_slice(),
+        [ReviewTrigger::FollowUp { follow_up_id, .. }] if follow_up_id == "fu-neville-inr"
+    ));
 }

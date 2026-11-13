@@ -1971,7 +1971,16 @@ impl Store {
             (baseline, last_rev_ts)
         };
 
-        let has_new_records = request.reason == ReviewReason::NewRecords
+        let direct_spruce_row = if inputs.is_empty() {
+            spruce_review_trigger::Entity::find_by_id((practice.clone(), command_key.clone()))
+                .one(&self.db)
+                .await?
+        } else {
+            None
+        };
+
+        let has_new_records = (direct_spruce_row.is_none()
+            && request.reason == ReviewReason::NewRecords)
             || inputs
                 .iter()
                 .any(|i| matches!(i, ReviewDispatchInput::ChangedRecords { .. }));
@@ -1983,32 +1992,24 @@ impl Store {
 
         let mut effective_inputs: Vec<ReviewDispatchInput> = inputs.to_vec();
         if effective_inputs.is_empty() {
-            match request.reason {
-                ReviewReason::Message => {
-                    if let Some(spruce_row) = spruce_review_trigger::Entity::find_by_id((
-                        practice.clone(),
-                        command_key.clone(),
-                    ))
-                    .one(&self.db)
-                    .await?
-                    {
-                        let record_map: BTreeMap<String, String> =
-                            serde_json::from_value(spruce_row.record_versions).map_err(
-                                conversion_error("spruce_review_trigger.record_versions", "map"),
-                            )?;
-                        let message_ids = record_map
-                            .keys()
-                            .filter_map(|k| k.strip_prefix("spruce:").map(ToOwned::to_owned))
-                            .collect();
-                        effective_inputs.push(ReviewDispatchInput::LinkedMessage(
-                            LinkedMessageTrigger {
-                                trigger_key: format!("spruce:{}", spruce_row.command_key),
-                                conversation_id: spruce_row.conversation_id,
-                                message_ids,
-                                arrived_at: spruce_row.created_at,
-                            },
-                        ));
-                    } else {
+            if let Some(spruce_row) = direct_spruce_row {
+                let record_map: BTreeMap<String, String> =
+                    serde_json::from_value(spruce_row.record_versions).map_err(
+                        conversion_error("spruce_review_trigger.record_versions", "map"),
+                    )?;
+                let message_ids = record_map
+                    .keys()
+                    .filter_map(|k| k.strip_prefix("spruce:").map(ToOwned::to_owned))
+                    .collect();
+                effective_inputs.push(ReviewDispatchInput::LinkedMessage(LinkedMessageTrigger {
+                    trigger_key: format!("spruce:{}", spruce_row.command_key),
+                    conversation_id: spruce_row.conversation_id,
+                    message_ids,
+                    arrived_at: spruce_row.created_at,
+                }));
+            } else {
+                match request.reason {
+                    ReviewReason::Message => {
                         let conv_rows = reply_conversation::Entity::find()
                             .filter(reply_conversation::Column::Practice.eq(&practice))
                             .filter(reply_conversation::Column::LinkKind.eq("linked_patient"))
@@ -2040,28 +2041,28 @@ impl Store {
                             }
                         }
                     }
-                }
-                ReviewReason::FollowUp => {
-                    let now_ts = now(&self.db).await?;
-                    let due = self
-                        .due_follow_ups(&practice, &workspace, now_ts)
-                        .await
-                        .map_err(|err| match err {
-                            super::follow_ups::FollowUpError::Database(db_err) => db_err,
-                            other => error(&other.to_string()),
-                        })?;
-                    for fu in due {
-                        effective_inputs.push(ReviewDispatchInput::DueFollowUp(
-                            DueFollowUpTrigger {
-                                follow_up_id: fu.id.as_str().to_owned(),
-                                version: fu.version,
-                                summary: fu.summary.as_str().to_owned(),
-                                due_at: fu.due_at,
-                            },
-                        ));
+                    ReviewReason::FollowUp => {
+                        let now_ts = now(&self.db).await?;
+                        let due = self
+                            .due_follow_ups(&practice, &workspace, now_ts)
+                            .await
+                            .map_err(|err| match err {
+                                super::follow_ups::FollowUpError::Database(db_err) => db_err,
+                                other => error(&other.to_string()),
+                            })?;
+                        for fu in due {
+                            effective_inputs.push(ReviewDispatchInput::DueFollowUp(
+                                DueFollowUpTrigger {
+                                    follow_up_id: fu.id.as_str().to_owned(),
+                                    version: fu.version,
+                                    summary: fu.summary.as_str().to_owned(),
+                                    due_at: fu.due_at,
+                                },
+                            ));
+                        }
                     }
+                    ReviewReason::NewRecords | ReviewReason::Periodic => {}
                 }
-                ReviewReason::NewRecords | ReviewReason::Periodic => {}
             }
         }
 
@@ -2071,15 +2072,15 @@ impl Store {
             changed_candidates,
             last_reviewed_at,
         );
-        self.admit_patient_review_with_triggers(
-            &practice,
-            &workspace,
-            &command_key,
+        self.admit_patient_review_with_triggers(PatientReviewAdmission {
+            practice: &practice,
+            workspace: &workspace,
+            command_key: &command_key,
             triggers,
             roles,
             skills,
-            &VerifiedPracticePatient,
-        )
+            authority: &VerifiedPracticePatient,
+        })
         .await
     }
 
@@ -2140,7 +2141,27 @@ impl Store {
         )
         .await
     }
+}
 
+/// Admission parameters for once-only multi-trigger patient reviews.
+pub struct PatientReviewAdmission<'a> {
+    /// Practice identifier.
+    pub practice: &'a str,
+    /// Patient workspace identifier.
+    pub workspace: &'a str,
+    /// Once-only command key.
+    pub command_key: &'a str,
+    /// Ordered review triggers (primary trigger first).
+    pub triggers: Vec<ReviewTrigger>,
+    /// Model lane bindings.
+    pub roles: &'a ModelRoles,
+    /// Skill catalog.
+    pub skills: &'a PhysicianSkills,
+    /// Practice patient authority check.
+    pub authority: &'a dyn PracticeAuthority,
+}
+
+impl Store {
     /// Shared once-only review admission owner for single-trigger patient reviews.
     #[allow(clippy::too_many_arguments)]
     pub async fn admit_patient_review_with_trigger(
@@ -2153,31 +2174,33 @@ impl Store {
         skills: &PhysicianSkills,
         authority: &dyn PracticeAuthority,
     ) -> Result<AdmittedPatientReview, PatientReviewError> {
-        self.admit_patient_review_with_triggers(
+        self.admit_patient_review_with_triggers(PatientReviewAdmission {
             practice,
             workspace,
             command_key,
-            vec![trigger],
+            triggers: vec![trigger],
             roles,
             skills,
             authority,
-        )
+        })
         .await
     }
 
     /// Shared once-only review admission owner for changed-record, linked-message,
     /// due-follow-up, periodic, and physician-requested patient reviews.
-    #[allow(clippy::too_many_arguments)]
     pub async fn admit_patient_review_with_triggers(
         &self,
-        practice: &str,
-        workspace: &str,
-        command_key: &str,
-        triggers: Vec<ReviewTrigger>,
-        roles: &ModelRoles,
-        skills: &PhysicianSkills,
-        authority: &dyn PracticeAuthority,
+        admission: PatientReviewAdmission<'_>,
     ) -> Result<AdmittedPatientReview, PatientReviewError> {
+        let PatientReviewAdmission {
+            practice,
+            workspace,
+            command_key,
+            triggers,
+            roles,
+            skills,
+            authority,
+        } = admission;
         if triggers.is_empty() {
             return Err(PatientReviewError::InvalidInput {
                 reason: "patient review requires at least one trigger".into(),
@@ -2208,6 +2231,14 @@ impl Store {
                 review: Box::new(existing),
                 delivery,
             });
+        }
+
+        if triggers
+            .iter()
+            .any(|t| matches!(t, ReviewTrigger::Message { .. }))
+        {
+            self.sync_workspace_spruce_conversations_to_reply(&practice, &workspace)
+                .await?;
         }
 
         let (starting_context, observation) = self
@@ -2259,6 +2290,17 @@ impl Store {
             .all(&tx)
             .await?;
         for prior_row in prior_incomplete {
+            let prior_state: ReviewLifecycleState = serde_json::from_value(prior_row.state.clone())
+                .map_err(conversion_error("ReviewLifecycleState", "json"))?;
+            if matches!(
+                prior_state,
+                ReviewLifecycleState::Held {
+                    reason: ReviewHoldReason::Stopped,
+                    ..
+                }
+            ) {
+                continue;
+            }
             Self::supersede_review_in_tx(
                 &tx,
                 prior_row,
@@ -2270,28 +2312,15 @@ impl Store {
             .await?;
         }
 
-        if let Some(spruce_row) =
-            spruce_review_trigger::Entity::find_by_id((practice.clone(), command_key.clone()))
-                .lock_exclusive()
-                .one(&tx)
-                .await?
-            && !spruce_row.dispatched
-        {
-            spruce_review_trigger::ActiveModel {
-                practice: Unchanged(spruce_row.practice),
-                command_key: Unchanged(spruce_row.command_key),
-                conversation_id: Unchanged(spruce_row.conversation_id),
-                workspace: Unchanged(spruce_row.workspace),
-                workspace_version: Unchanged(spruce_row.workspace_version),
-                record_versions: Unchanged(spruce_row.record_versions),
-                origin: Unchanged(spruce_row.origin),
-                dispatched: Set(true),
-                created_at: Unchanged(spruce_row.created_at),
-                dispatched_at: Set(Some(clock)),
-            }
-            .update(&tx)
-            .await?;
-        }
+        super::dispatch::record_admitted_message_triggers_in_tx(
+            &tx,
+            &practice,
+            &workspace,
+            &triggers,
+            &command_key,
+            clock,
+        )
+        .await?;
 
         let initial_version_i64 = i64::try_from(observation.version)
             .map_err(conversion_error("initial_source_version", "i64"))?;
@@ -2591,6 +2620,24 @@ impl Store {
         job.dispatch_after = 0;
         job.updated_at = clock;
 
+        for trigger in &triggers {
+            if let ReviewTrigger::Message {
+                conversation_id,
+                message_ids,
+                ..
+            } = trigger
+            {
+                Self::rearm_reply_conversation_wake_in_tx(
+                    &tx,
+                    &scope.practice,
+                    &scope.workspace,
+                    conversation_id,
+                    message_ids,
+                    clock,
+                )
+                .await?;
+            }
+        }
         let refreshed_recipe =
             build_recipe_version(roles, &job.binding, &job.skills, &job.assignment)?;
         let next_state = ReviewLifecycleState::Pending;
@@ -2772,17 +2819,17 @@ impl Store {
                     .await?;
                     return Err(PatientReviewError::Access(access_err));
                 }
-                let preview_trigger = existing
-                    .triggers
-                    .first()
-                    .cloned()
-                    .ok_or_else(|| error("corrupt patient review missing primary trigger"))?;
+                if existing.triggers.is_empty() {
+                    return Err(PatientReviewError::Database(error(
+                        "corrupt patient review missing primary trigger",
+                    )));
+                }
                 let (starting_context, observation) = self
                     .review_starting_context(
                         &practice,
                         &workspace,
                         &review_id,
-                        std::slice::from_ref(&preview_trigger),
+                        &existing.triggers,
                         Vec::new(),
                     )
                     .await?;
@@ -2980,17 +3027,17 @@ impl Store {
             RearmKind::Resume => "resume",
             RearmKind::TryAgain => "try_again",
         };
-        let preview_trigger = existing
-            .triggers
-            .first()
-            .cloned()
-            .ok_or_else(|| error("corrupt patient review missing primary trigger"))?;
+        if existing.triggers.is_empty() {
+            return Err(PatientReviewError::Database(error(
+                "corrupt patient review missing primary trigger",
+            )));
+        }
         let (starting_context, observation) = self
             .review_starting_context(
                 &practice,
                 &workspace,
                 &review_id,
-                std::slice::from_ref(&preview_trigger),
+                &existing.triggers,
                 Vec::new(),
             )
             .await?;
@@ -3132,6 +3179,24 @@ impl Store {
         job.dispatch_after = 0;
         job.updated_at = clock;
 
+        for trigger in &locked_review.triggers {
+            if let ReviewTrigger::Message {
+                conversation_id,
+                message_ids,
+                ..
+            } = trigger
+            {
+                Self::rearm_reply_conversation_wake_in_tx(
+                    &tx,
+                    &scope.practice,
+                    &scope.workspace,
+                    conversation_id,
+                    message_ids,
+                    clock,
+                )
+                .await?;
+            }
+        }
         let refreshed_recipe =
             build_recipe_version(roles, &job.binding, &job.skills, &job.assignment)?;
         let next_state = ReviewLifecycleState::Pending;
@@ -3269,75 +3334,15 @@ impl Store {
             &rev_row.work_id,
         )
         .await?;
-        let conv_rows = reply_conversation::Entity::find()
-            .filter(reply_conversation::Column::Practice.eq(&rev_row.practice))
-            .filter(reply_conversation::Column::LinkKind.eq("linked_patient"))
-            .filter(reply_conversation::Column::Workspace.eq(&rev_row.workspace))
-            .lock_exclusive()
-            .all(tx)
-            .await?;
-        for conv_row in conv_rows {
-            let mut conv_state = conv_row.state.clone();
-            let active_matches = conv_state
-                .get("active_review")
-                .and_then(|ar| ar.get("review_id"))
-                .and_then(Value::as_str)
-                == Some(rev_row.review_id.as_str());
-            if active_matches {
-                if let Some(obj) = conv_state.as_object_mut() {
-                    obj.insert("active_review".to_owned(), Value::Null);
-                    let woke_empty = obj
-                        .get("woke_events")
-                        .and_then(Value::as_array)
-                        .is_none_or(Vec::is_empty);
-                    let open_msg_id = obj
-                        .get("patient_messages")
-                        .and_then(Value::as_array)
-                        .and_then(|msgs| {
-                            msgs.iter().rev().find_map(|m| {
-                                let is_open = m
-                                    .get("standing")
-                                    .and_then(|s| s.get("standing"))
-                                    .and_then(Value::as_str)
-                                    == Some("open");
-                                is_open
-                                    .then(|| {
-                                        m.get("message_id")
-                                            .and_then(Value::as_str)
-                                            .map(str::to_owned)
-                                    })
-                                    .flatten()
-                            })
-                        });
-                    if woke_empty && let Some(message_id) = open_msg_id {
-                        obj.insert(
-                            "woke_events".to_owned(),
-                            json!([{ "kind": "patient_message", "message_id": message_id }]),
-                        );
-                    }
-                }
-                reply_conversation::ActiveModel {
-                    practice: Unchanged(conv_row.practice),
-                    conversation_id: Unchanged(conv_row.conversation_id),
-                    link_kind: Unchanged(conv_row.link_kind),
-                    workspace: Unchanged(conv_row.workspace),
-                    channel_state: Unchanged(conv_row.channel_state),
-                    reply_state: Unchanged(conv_row.reply_state),
-                    conversation_version: Unchanged(conv_row.conversation_version),
-                    move_epoch: Unchanged(conv_row.move_epoch),
-                    last_reply_id: Unchanged(conv_row.last_reply_id),
-                    last_proposal_version: Unchanged(conv_row.last_proposal_version),
-                    last_practice_observation_seq: Unchanged(
-                        conv_row.last_practice_observation_seq,
-                    ),
-                    state: Set(conv_state),
-                    created_at: Unchanged(conv_row.created_at),
-                    updated_at: Set(clock),
-                }
-                .update(tx)
-                .await?;
-            }
-        }
+        Self::release_workspace_reply_reviews_in_tx(
+            tx,
+            &rev_row.practice,
+            &rev_row.workspace,
+            &rev_row.review_id,
+            super::reply::proposals::ReplyReviewRelease::Aborted,
+            clock,
+        )
+        .await?;
         let superseded = ReviewLifecycleState::Superseded {
             reason,
             superseded_at: clock,
@@ -4679,6 +4684,15 @@ impl Store {
         }
         .update(tx)
         .await?;
+        Self::release_workspace_reply_reviews_in_tx(
+            tx,
+            &job.scope.practice,
+            &job.scope.workspace,
+            &review_ctx.review_id,
+            super::reply::proposals::ReplyReviewRelease::Completed,
+            clock,
+        )
+        .await?;
         Ok(())
     }
 
@@ -4740,6 +4754,15 @@ impl Store {
             partial_text,
         };
         let started = rev_row.started_at;
+        Self::release_workspace_reply_reviews_in_tx(
+            tx,
+            &job.scope.practice,
+            &job.scope.workspace,
+            &review_ctx.review_id,
+            super::reply::proposals::ReplyReviewRelease::Completed,
+            clock,
+        )
+        .await?;
         update_review_lifecycle_in_tx(tx, rev_row, &job.work, held, started, clock).await
     }
 
@@ -4828,17 +4851,39 @@ impl Store {
             return Ok(());
         };
         let next_state = match job.status {
-            WorkStatus::Failed => ReviewLifecycleState::Failed {
-                reason: reason_label.to_owned(),
-                failed_at: clock,
-                attempts: job.failures.max(1),
-            },
+            WorkStatus::Failed => {
+                Self::release_workspace_reply_reviews_in_tx(
+                    tx,
+                    &job.scope.practice,
+                    &job.scope.workspace,
+                    &review_ctx.review_id,
+                    super::reply::proposals::ReplyReviewRelease::Completed,
+                    clock,
+                )
+                .await?;
+                ReviewLifecycleState::Failed {
+                    reason: reason_label.to_owned(),
+                    failed_at: clock,
+                    attempts: job.failures.max(1),
+                }
+            }
             WorkStatus::Pending => ReviewLifecycleState::Pending,
-            WorkStatus::Held => ReviewLifecycleState::Held {
-                reason: ReviewHoldReason::Stopped,
-                held_at: clock,
-                partial_text: None,
-            },
+            WorkStatus::Held => {
+                Self::release_workspace_reply_reviews_in_tx(
+                    tx,
+                    &job.scope.practice,
+                    &job.scope.workspace,
+                    &review_ctx.review_id,
+                    super::reply::proposals::ReplyReviewRelease::Completed,
+                    clock,
+                )
+                .await?;
+                ReviewLifecycleState::Held {
+                    reason: ReviewHoldReason::Stopped,
+                    held_at: clock,
+                    partial_text: None,
+                }
+            }
             WorkStatus::Active | WorkStatus::Completed | WorkStatus::Cancelled => return Ok(()),
         };
         let started = rev_row.started_at;
