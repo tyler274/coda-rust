@@ -196,16 +196,16 @@ pub struct TodayRow {
 /// The `WorkResumeTarget` value exchanged by this crate.
 pub struct WorkResumeTarget {
     /// The `work_item_id` value.
-    pub work_item_id: String,
+    pub work_item_id: WorkItemId,
     /// The `expected_run_id` value.
     pub expected_run_id: String,
 }
 
-#[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 /// The work a running chat turn's Stop command names.
 pub struct WorkStopTarget {
     /// The `work_item_id` value.
-    pub work_item_id: String,
+    pub work_item_id: WorkItemId,
 }
 
 #[derive(Debug, Clone, Deserialize, PartialEq)]
@@ -643,72 +643,189 @@ pub struct FollowUp {
     pub description: Option<String>,
 }
 
-/// The chat snapshot the React client reads. Extra server fields are ignored.
-#[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
+/// A conversation as the page reads it: one exchange per piece of accepted
+/// work, in the order the physician started them.
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct ChatSnapshotResponse {
     /// The `snapshot` value.
     pub snapshot: ChatSnapshot,
 }
 
-#[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
-/// The run named by a chat snapshot once the turn is held, failed or answered.
-pub struct ChatRun {
-    /// Stable execution identity, independent of attempts.
-    pub run_id: String,
-    /// How the run ended, read from its `state` and that ending's fields.
-    #[serde(flatten)]
-    pub outcome: ChatRunOutcome,
-}
-
-#[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
-#[serde(tag = "state", rename_all = "snake_case")]
-/// The shared terminal run outcome a chat snapshot names, with each ending's data.
-pub enum ChatRunOutcome {
-    /// The run waits for the physician to continue it.
-    Held {
-        /// Why the run needs explicit continuation.
-        hold_reason: HoldReason,
-    },
-    /// Recovery gave up; Try again resumes the run.
-    Failed,
-    /// The run answered.
-    Completed {
-        /// The attempt that answered, so a reply can be matched to its
-        /// telemetry by attempt id.
-        attempt_id: String,
-    },
-}
-
-#[derive(Debug, Clone, Copy, Deserialize, PartialEq, Eq)]
-#[serde(rename_all = "snake_case")]
-/// Why a held chat run needs explicit continuation.
-pub enum HoldReason {
-    /// The physician stopped it; Resume continues it.
-    Stopped,
-    /// It reached its limit; Try again continues it.
-    Limit,
-    /// The provider refused to serve it; Try again continues it.
-    ProviderBlocked,
-    /// A reason this app version does not know. `#[serde(other)]` is here on
-    /// purpose: the site can be newer than an open app, the reason's own text
-    /// comes from the site in the conversation line, and the app treats it as
-    /// any hold that is not a stop. The site never writes this.
-    #[serde(other)]
-    Unrecognized,
-}
-
-#[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
-/// The `ChatSnapshot` value exchanged by this crate.
+/// The conversation's transcript and whether its feedback could be read.
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct ChatSnapshot {
-    #[serde(default)]
-    /// The `conversation` value.
-    pub conversation: Vec<ChatTurn>,
-    /// The held, failed or answered run, or an empty list when there is none.
-    pub runs: Vec<ChatRun>,
-    #[serde(default)]
-    /// Whether the signed-in physician's feedback on the responses could be
-    /// read. Sites without feedback omit it.
+    /// Each piece of accepted work with its messages, steps and answer.
+    pub transcript: Vec<Exchange>,
+    /// Whether the signed-in physician's feedback on the answers could be read.
     pub feedback: SnapshotFeedback,
+}
+
+/// One piece of accepted work: the messages that started or steered it, the
+/// steps Coda took for it and how its answer stands.
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+pub struct Exchange {
+    /// The work these messages belong to.
+    pub work_item_id: WorkItemId,
+    /// Every physician message that started or steered the work, in order.
+    pub messages: Vec<PhysicianMessage>,
+    /// What Coda did for the answer, or that its saved record could not be read.
+    pub steps: ExchangeSteps,
+    /// What Coda had written each time a limit cut this answer off, in the
+    /// order it was saved. Try again continues after it, so it stays with
+    /// the exchange whatever the answer's state.
+    pub kept: Vec<String>,
+    /// How the answer stands.
+    pub answer: AnswerState,
+}
+
+/// The steps of one exchange, or that they could not be read. Like
+/// [`SnapshotFeedback`], an unreadable part is marked, never shown as empty
+/// or as a partial list, and the rest of the exchange still comes.
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(tag = "state", content = "steps", rename_all = "snake_case")]
+pub enum ExchangeSteps {
+    /// Each step, in the order Coda started it.
+    Read(Vec<Step>),
+    /// A saved call of this work could not be read as a step, so none are
+    /// shown and none can be told apart from "took no steps".
+    Unavailable,
+}
+
+/// One message the physician sent.
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+pub struct PhysicianMessage {
+    /// The idempotency key the page sent the message with.
+    pub id: MessageKey,
+    /// The message as the physician wrote it.
+    pub text: String,
+}
+
+/// How one exchange's answer stands. Only the conversation's current work
+/// offers Resume or Try again; an answer whose work a later message replaced
+/// keeps the ending it had, without either.
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(tag = "state", rename_all = "snake_case")]
+pub enum AnswerState {
+    /// Coda is working on the answer. No part of its text is shown yet.
+    Working {
+        /// The work Stop names.
+        stop: WorkStopTarget,
+    },
+    /// Coda finished the answer.
+    Finished {
+        /// The answer's durable name, which feedback names.
+        response_id: ResponseId,
+        /// The attempt that published the answer, so an operator can match
+        /// the reply to its telemetry by attempt id.
+        attempt_id: AttemptId,
+        /// The answer as Coda published it. Text a limit kept before it is
+        /// in the exchange's `kept`.
+        text: String,
+        /// The physician's saved feedback on it, when they rated it and the
+        /// snapshot could read it.
+        feedback: Option<ResponseFeedback>,
+    },
+    /// The physician stopped the work.
+    Stopped {
+        /// The run Resume continues, while this is the current work.
+        resume: Option<WorkResumeTarget>,
+    },
+    /// Coda reached a limit before it finished. What it kept is in the
+    /// exchange's `kept`.
+    CutOff {
+        /// The run Try again continues, while this is the current work.
+        try_again: Option<WorkResumeTarget>,
+    },
+    /// Coda's recovery was used up, or the model service refused the work.
+    CouldntFinish {
+        /// The run Try again continues, while this is the current work.
+        try_again: Option<WorkResumeTarget>,
+    },
+}
+
+/// One thing Coda did for an answer, as typed facts. The page words it.
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(tag = "did", rename_all = "snake_case")]
+pub enum Step {
+    /// Coda searched the patient's chart.
+    SearchedChart {
+        /// The search text, as Coda gave it; empty when it browsed.
+        query: String,
+        /// The record type the search was limited to, if any.
+        record_type: Option<String>,
+        /// How the search stands.
+        state: StepState<Found>,
+    },
+    /// Coda opened records from the patient's chart.
+    ReadRecords {
+        /// How many records it asked for.
+        requested: usize,
+        /// How the read stands, with what each record gave once it returned.
+        state: StepState<Vec<RecordRead>>,
+    },
+    /// Coda looked at earlier messages of the conversation. It may have found nothing.
+    ReadConversation {
+        /// How the look stands.
+        state: StepState<()>,
+    },
+}
+
+/// How one step stands.
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(tag = "state", rename_all = "snake_case")]
+pub enum StepState<T> {
+    /// It started and has not returned.
+    Running,
+    /// It returned this result.
+    Returned {
+        /// What it gave.
+        result: T,
+    },
+    /// It returned no output: it was refused, failed or timed out.
+    Failed,
+    /// The physician stopped the work before it returned. How it ended is
+    /// not known.
+    Stopped,
+    /// The work's attempt ended before it returned, for a reason other than
+    /// Stop, such as a restart. How it ended is not known.
+    Interrupted,
+}
+
+/// What a chart search found.
+#[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq)]
+pub struct Found {
+    /// Records on this page of results.
+    pub records: usize,
+    /// More results follow this page.
+    pub more: bool,
+}
+
+/// What one record of a chart read gave.
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(tag = "outcome", rename_all = "snake_case")]
+pub enum RecordRead {
+    /// The whole record.
+    Whole {
+        /// The source's name for this kind of record.
+        record_type: String,
+        /// The record's dates, in the source's words.
+        dates: Vec<RecordDate>,
+    },
+    /// One passage of a large record.
+    Passage,
+    /// The record is not in the chart, or its revision changed.
+    Unavailable,
+    /// The record did not fit the read's size budget.
+    TooLarge,
+}
+
+/// One date on a record, as the source wrote it.
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+pub struct RecordDate {
+    /// The source's name for this date.
+    pub name: String,
+    /// The value as the source gave it.
+    pub value: String,
 }
 
 /// Whether a chat snapshot could read the physician's feedback. The
@@ -738,31 +855,40 @@ impl ResponseId {
     }
 }
 
-#[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
-/// The `ChatTurn` value exchanged by this crate.
-pub struct ChatTurn {
-    #[serde(default)]
-    /// On one of Coda's published replies: its response id. Physician and
-    /// mechanical lines, and partial answers, have none.
-    pub response_id: Option<ResponseId>,
-    #[serde(default)]
-    /// The `text` value.
-    pub text: Option<String>,
-    #[serde(default)]
-    /// The `authored_text` value.
-    pub authored_text: Option<String>,
-    #[serde(default)]
-    /// `physician`, `model`, or `mechanical`. Older servers omit it.
-    pub kind: Option<String>,
-    #[serde(default)]
-    /// On a mechanical "couldn't finish" or stopped line: the work Resume names.
-    pub resume_target: Option<WorkResumeTarget>,
-    /// On a mechanical line while Coda is still writing: the work Stop names.
-    pub stop_target: Option<WorkStopTarget>,
-    #[serde(default)]
-    /// On one of Coda's replies the signed-in physician rated: their saved
-    /// feedback on it.
-    pub feedback: Option<ResponseFeedback>,
+/// The id of one piece of accepted work, which Stop, Resume and Try again name.
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, PartialOrd, Ord, Hash)]
+#[serde(transparent)]
+pub struct WorkItemId(pub String);
+
+impl WorkItemId {
+    /// The work item id as the server sent it.
+    pub fn as_str(&self) -> &str {
+        &self.0
+    }
+}
+
+/// The idempotency key the page sent one physician message with.
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, PartialOrd, Ord, Hash)]
+#[serde(transparent)]
+pub struct MessageKey(pub String);
+
+impl MessageKey {
+    /// The message key as the server sent it.
+    pub fn as_str(&self) -> &str {
+        &self.0
+    }
+}
+
+/// The id of one attempt at a piece of work, which its telemetry carries.
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, PartialOrd, Ord, Hash)]
+#[serde(transparent)]
+pub struct AttemptId(pub String);
+
+impl AttemptId {
+    /// The attempt id as the server sent it.
+    pub fn as_str(&self) -> &str {
+        &self.0
+    }
 }
 
 /// A physician's rating of one of Coda's responses.
@@ -820,16 +946,6 @@ pub struct ResponseFeedback {
     #[serde(default)]
     /// The saved details, if any.
     pub details: Option<FeedbackDetails>,
-}
-
-impl ChatTurn {
-    /// Returns the response body when this result has one.
-    pub fn body(&self) -> Option<&str> {
-        self.text.as_deref().filter(|text| !text.is_empty()).or(self
-            .authored_text
-            .as_deref()
-            .filter(|text| !text.is_empty()))
-    }
 }
 
 #[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
@@ -976,84 +1092,90 @@ mod tests {
         assert_eq!(list.as_of, 3);
     }
 
+    /// The page reads every answer state and step the site writes, and
+    /// refuses the conversation shape older sites wrote.
     #[test]
-    fn reads_a_couldnt_finish_line_and_an_older_snapshot() {
+    fn reads_a_transcript_and_refuses_the_older_shape() {
         let page: ChatSnapshotResponse = serde_json::from_str(
-            r#"{"snapshot": {
-                "conversation": [
-                    {"text": "Hello", "kind": "physician"},
-                    {"text": "Coda couldn’t finish this response. Your message is saved.",
-                     "kind": "mechanical",
-                     "resume_target": {"work_item_id": "w1", "expected_run_id": "r1"}}
-                ],
-                "runs": [{"run_id": "r1", "state": "failed"}]
-            }}"#,
-        )
-        .unwrap();
-        let failed = &page.snapshot.conversation[1];
-        assert_eq!(failed.kind.as_deref(), Some("mechanical"));
-        assert_eq!(
-            failed.resume_target,
-            Some(WorkResumeTarget {
-                work_item_id: "w1".into(),
-                expected_run_id: "r1".into(),
-            })
-        );
-        assert_eq!(page.snapshot.runs[0].run_id, "r1");
-        assert_eq!(page.snapshot.runs[0].outcome, ChatRunOutcome::Failed);
-        assert!(
-            serde_json::from_str::<ChatSnapshotResponse>(r#"{"snapshot":{"conversation":[]}}"#)
-                .is_err()
-        );
-    }
-
-    #[test]
-    fn reads_a_stop_target_on_a_running_turn() {
-        let page: ChatSnapshotResponse = serde_json::from_str(
-            r#"{"snapshot": {"runs": [], "conversation": [{
-                "text": "Coda is writing this response.",
-                "kind": "mechanical",
-                "stop_target": {"work_item_id": "w1"}
+            r#"{"snapshot": {"feedback": "loaded", "transcript": [{
+                "work_item_id": "w1",
+                "messages": [{"id": "k1", "text": "Hello"}, {"id": "k2", "text": "And sodium?"}],
+                "steps": {"state": "read", "steps": [
+                    {"did": "searched_chart", "query": "sodium", "record_type": null,
+                     "state": {"state": "returned", "result": {"records": 2, "more": false}}},
+                    {"did": "read_records", "requested": 2, "state": {"state": "returned", "result": [
+                        {"outcome": "whole", "record_type": "Observation",
+                         "dates": [{"name": "effective", "value": "2026-10-01"}]},
+                        {"outcome": "unavailable"}]}},
+                    {"did": "read_conversation", "state": {"state": "stopped"}}
+                ]},
+                "kept": ["Sodium was 139"],
+                "answer": {"state": "stopped",
+                           "resume": {"work_item_id": "w1", "expected_run_id": "r1"}}
             }]}}"#,
         )
         .unwrap();
+        let exchange = &page.snapshot.transcript[0];
+        assert_eq!(exchange.messages[1].text, "And sodium?");
+        assert_eq!(exchange.kept, ["Sodium was 139"]);
         assert_eq!(
-            page.snapshot.conversation[0].stop_target,
-            Some(WorkStopTarget {
-                work_item_id: "w1".into(),
-            })
+            exchange.answer,
+            AnswerState::Stopped {
+                resume: Some(WorkResumeTarget {
+                    work_item_id: WorkItemId("w1".into()),
+                    expected_run_id: "r1".into(),
+                }),
+            }
         );
-        assert_eq!(page.snapshot.conversation[0].resume_target, None);
-    }
-
-    #[test]
-    fn reads_the_response_id_of_a_published_reply() {
-        let page: ChatSnapshotResponse = serde_json::from_str(
-            r#"{"snapshot": {"runs": [], "conversation": [
-                {"text": "Hello", "kind": "physician"},
-                {"text": "Sodium is stable.", "kind": "model", "response_id": "a1:reply"}
-            ]}}"#,
-        )
-        .unwrap();
-        let turns = &page.snapshot.conversation;
-        assert_eq!(turns[0].response_id, None);
-        assert_eq!(turns[1].response_id, Some(ResponseId("a1:reply".into())));
-        assert_eq!(page.snapshot.feedback, SnapshotFeedback::Loaded);
+        let ExchangeSteps::Read(steps) = &exchange.steps else {
+            panic!("the steps were read: {:?}", exchange.steps);
+        };
+        assert_eq!(
+            steps[2],
+            Step::ReadConversation {
+                state: StepState::Stopped
+            }
+        );
+        let written = serde_json::to_value(&page).unwrap();
+        assert_eq!(
+            serde_json::from_value::<ChatSnapshotResponse>(written).unwrap(),
+            page
+        );
+        let mut unreadable = page.clone();
+        unreadable.snapshot.transcript[0].steps = ExchangeSteps::Unavailable;
+        let written = serde_json::to_value(&unreadable).unwrap();
+        assert_eq!(
+            written["snapshot"]["transcript"][0]["steps"],
+            serde_json::json!({"state": "unavailable"})
+        );
+        assert_eq!(
+            serde_json::from_value::<ChatSnapshotResponse>(written).unwrap(),
+            unreadable
+        );
+        assert!(
+            serde_json::from_str::<ExchangeSteps>(r#"[]"#).is_err(),
+            "a bare step list is not read as readable steps"
+        );
+        assert!(
+            serde_json::from_str::<ChatSnapshotResponse>(
+                r#"{"snapshot": {"conversation": [], "runs": []}}"#
+            )
+            .is_err(),
+            "the older conversation shape is not read"
+        );
     }
 
     #[test]
     fn reads_a_snapshot_whose_feedback_was_unavailable() {
         let page: ChatSnapshotResponse = serde_json::from_str(
-            r#"{"snapshot": {"runs": [], "feedback": "unavailable", "conversation": [
-                {"text": "Sodium is stable.", "kind": "model", "response_id": "a1:reply"}
-            ]}}"#,
+            r#"{"snapshot": {"feedback": "unavailable", "transcript": [{
+                "work_item_id": "w1", "messages": [], "steps": {"state": "read", "steps": []}, "kept": [],
+                "answer": {"state": "finished", "response_id": "a1:reply", "attempt_id": "a1",
+                           "text": "Sodium is stable.", "feedback": null}
+            }]}}"#,
         )
         .unwrap();
         assert_eq!(page.snapshot.feedback, SnapshotFeedback::Unavailable);
-        assert_eq!(
-            page.snapshot.conversation[0].body(),
-            Some("Sodium is stable.")
-        );
         assert!(
             serde_json::from_str::<SnapshotFeedback>(r#""partial""#).is_err(),
             "an unknown feedback state is refused, not read as loaded"

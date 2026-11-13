@@ -240,6 +240,7 @@ async fn restart_dispatches_original_session_without_new_input_and_holds_stop() 
         store: s.clone(),
         claim,
         authority: Locks,
+        shown_steps: local_product::runtime::ShownSteps::new(()),
     };
     host.run(
         &mut Stream(scope.clone()),

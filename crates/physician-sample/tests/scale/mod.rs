@@ -411,6 +411,7 @@ pub struct ResponsesStub {
     failures: PathBuf,
     rejections: PathBuf,
     rounds: PathBuf,
+    reply: PathBuf,
     requests: PathBuf,
 }
 
@@ -433,6 +434,8 @@ impl ResponsesStub {
         std::fs::write(&rejections, "0").unwrap();
         let script = directory.join("provider-tool-rounds.json");
         std::fs::write(&script, rounds).unwrap();
+        let reply_file = directory.join("provider-reply.txt");
+        std::fs::write(&reply_file, reply).unwrap();
         let requests = directory.join("provider-requests.jsonl");
         std::fs::write(&requests, "").unwrap();
         let mut process = Process::spawn(
@@ -453,8 +456,8 @@ impl ResponsesStub {
                 &delay_ms.to_string(),
                 "--rounds-file",
                 script.to_str().unwrap(),
-                "--reply",
-                reply,
+                "--reply-file",
+                reply_file.to_str().unwrap(),
                 "--requests-file",
                 requests.to_str().unwrap(),
             ],
@@ -468,6 +471,7 @@ impl ResponsesStub {
             failures: counter,
             rejections,
             rounds: script,
+            reply: reply_file,
             requests,
         }
     }
@@ -495,6 +499,11 @@ impl ResponsesStub {
 
     pub fn tool_rounds(&self, rounds: &serde_json::Value) {
         std::fs::write(&self.rounds, serde_json::to_vec(rounds).unwrap()).unwrap();
+    }
+
+    /// The text of every later answer that calls no tool.
+    pub fn reply(&self, text: &str) {
+        std::fs::write(&self.reply, text).unwrap();
     }
 }
 
@@ -716,6 +725,39 @@ async fn read_response(
         body.truncate(length);
     }
     Ok((status, body))
+}
+
+/// A chat snapshot body, read through the page's own wire types.
+pub fn chat(snapshot: &Value) -> physician_wire::ChatSnapshot {
+    serde_json::from_value(snapshot.clone())
+        .unwrap_or_else(|error| panic!("the page cannot read the snapshot: {error}\n{snapshot}"))
+}
+
+/// The words a chat shows, in order: each physician message, the text a
+/// limit kept, then the finished answer.
+pub fn chat_texts(snapshot: &Value) -> Vec<String> {
+    use physician_wire::AnswerState;
+    let mut texts = Vec::new();
+    for exchange in chat(snapshot).transcript {
+        texts.extend(exchange.messages.into_iter().map(|message| message.text));
+        texts.extend(exchange.kept);
+        match exchange.answer {
+            AnswerState::Finished { text, .. } => texts.push(text),
+            AnswerState::Working { .. }
+            | AnswerState::Stopped { .. }
+            | AnswerState::CutOff { .. }
+            | AnswerState::CouldntFinish { .. } => {}
+        }
+    }
+    texts
+}
+
+/// How the chat's latest exchange's answer stands.
+pub fn latest_answer(snapshot: &Value) -> Option<physician_wire::AnswerState> {
+    chat(snapshot)
+        .transcript
+        .pop()
+        .map(|exchange| exchange.answer)
 }
 
 pub struct Sse {
@@ -1015,6 +1057,7 @@ pub async fn answered_chat(
             store: store.clone(),
             claim,
             authority: OpenAuthority,
+            shown_steps: local_product::runtime::ShownSteps::new(()),
         }
         .run(
             &mut FixedAnswer(answer),

@@ -57,6 +57,11 @@ impl Session {
     }
 }
 
+/// How long a command waits for the server's answer. A hung request must end, so the page can ask
+/// again and the person isn't left with an item that stays pending. The cost: a server slower than
+/// this to take a command is treated as having given no answer, and is asked again.
+pub const COMMAND_TIME_LIMIT: std::time::Duration = std::time::Duration::from_secs(10);
+
 #[derive(Debug, Clone, Default)]
 /// The `PhysicianClient` value exchanged by this crate.
 pub struct PhysicianClient {
@@ -109,16 +114,22 @@ impl PhysicianClient {
         path: &str,
         body: &impl serde::Serialize,
     ) -> Result<T, http::HttpError> {
-        self.post_as(self.bearer(), path, body).await
+        self.post_as(self.bearer(), path, body, None).await
     }
 
+    /// Posts `body` to `path` with `bearer`. With a `time_limit`, a request with no answer by then
+    /// ends as a transport error.
     async fn post_as<T: serde::de::DeserializeOwned>(
         &self,
         bearer: Option<String>,
         path: &str,
         body: &impl serde::Serialize,
+        time_limit: Option<std::time::Duration>,
     ) -> Result<T, http::HttpError> {
         let mut request = self.http.post(format!("{}{path}", self.base)).json(body);
+        if let Some(limit) = time_limit {
+            request = request.timeout(limit);
+        }
         if let Some(bearer) = bearer {
             request = request.header(reqwest::header::AUTHORIZATION, bearer);
         }
@@ -198,6 +209,7 @@ impl PhysicianClient {
                 Some(format!("Bearer {session}")),
                 "/auth/sign-out",
                 &serde_json::json!({}),
+                None,
             )
             .await;
         self.session.clear_if(session);
@@ -285,12 +297,14 @@ impl PhysicianClient {
         .await
     }
 
-    /// Sends a physician command.
+    /// Sends a physician command. With no answer within [`COMMAND_TIME_LIMIT`] the request ends
+    /// as a transport error, as any other lost answer does.
     pub async fn command(
         &self,
         body: &serde_json::Value,
     ) -> Result<serde_json::Value, http::HttpError> {
-        self.post("/commands", body).await
+        self.post_as(self.bearer(), "/commands", body, Some(COMMAND_TIME_LIMIT))
+            .await
     }
 
     /// Reads one chat snapshot.
@@ -482,6 +496,30 @@ mod tests {
     use axum::routing::get;
 
     #[tokio::test]
+    async fn a_command_with_no_answer_ends_at_its_time_limit() {
+        let app = axum::Router::new().route(
+            "/commands",
+            axum::routing::post(std::future::pending::<Json<serde_json::Value>>),
+        );
+        let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+        let address = listener.local_addr().unwrap();
+        tokio::spawn(async move { axum::serve(listener, app).await.unwrap() });
+        let client = PhysicianClient::new(format!("http://{address}"));
+        let started = std::time::Instant::now();
+        let answer = tokio::time::timeout(
+            COMMAND_TIME_LIMIT + std::time::Duration::from_secs(5),
+            client.command(&serde_json::json!({ "type": "message.submit" })),
+        )
+        .await
+        .expect("a command with no answer never ended");
+        assert!(
+            matches!(answer, Err(http::HttpError::Transport(_))),
+            "{answer:?}"
+        );
+        assert!(started.elapsed() >= COMMAND_TIME_LIMIT);
+    }
+
+    #[tokio::test]
     async fn reads_today_from_the_server_shape() {
         let app = axum::Router::new().route(
             "/today",
@@ -529,8 +567,14 @@ mod tests {
                     Json(serde_json::json!({
                         "workspace": {},
                         "snapshot": {
-                            "runs": [],
-                            "conversation": [{ "text": "Hello", "authored_text": "" }]
+                            "feedback": "loaded",
+                            "transcript": [{
+                                "work_item_id": "w1",
+                                "messages": [{ "id": "k1", "text": "Hello" }],
+                                "steps": {"state": "read", "steps": []},
+                                "kept": [],
+                                "answer": { "state": "working", "stop": { "work_item_id": "w1" } }
+                            }]
                         }
                     }))
                 }),
@@ -553,7 +597,7 @@ mod tests {
             })
         );
         let snapshot = client.chat_snapshot("ws", "chat").await.unwrap();
-        assert_eq!(snapshot.snapshot.conversation[0].body(), Some("Hello"));
+        assert_eq!(snapshot.snapshot.transcript[0].messages[0].text, "Hello");
     }
 
     /// Only a validated conflict body names the server's current draft; a

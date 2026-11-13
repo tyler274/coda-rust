@@ -5,6 +5,7 @@
 use std::path::PathBuf;
 
 use physician_auth::{AuthStore, Membership, PostgresAuthStore};
+use physician_wire::{AnswerState, Exchange};
 use serde_json::{Value, json};
 
 #[path = "scale/mod.rs"]
@@ -155,13 +156,26 @@ async fn rated_turns(host: &str, bearer: &str, workspace: &str, chat: &str) -> V
     )
     .await;
     assert_eq!(status, 200, "{snapshot}");
-    snapshot["snapshot"]["conversation"]
-        .as_array()
-        .unwrap()
+    support::chat(&snapshot["snapshot"])
+        .transcript
         .iter()
-        .filter(|turn| turn["kind"] == "model")
-        .map(|turn| (turn["response_id"].clone(), turn["feedback"].clone()))
+        .map(|exchange| {
+            let (id, feedback) = finished(exchange);
+            (json!(id), json!(feedback))
+        })
         .collect()
+}
+
+/// A finished answer's response id and the feedback the snapshot carries on it.
+fn finished(exchange: &Exchange) -> (&str, Option<&physician_wire::ResponseFeedback>) {
+    match &exchange.answer {
+        AnswerState::Finished {
+            response_id,
+            feedback,
+            ..
+        } => (response_id.as_str(), feedback.as_ref()),
+        other => panic!("an unfinished answer: {other:?}"),
+    }
 }
 
 /// A save lands on the response it names, replaces its rating and details
@@ -189,28 +203,18 @@ async fn feedback_stays_on_its_response_and_with_its_author() {
     )
     .await;
     assert_eq!(status, 200, "{snapshot}\n{}", running.logs());
-    let named: Vec<_> = snapshot["snapshot"]["conversation"]
-        .as_array()
-        .unwrap()
+    let named: Vec<_> = support::chat(&snapshot["snapshot"])
+        .transcript
         .iter()
-        .map(|turn| (turn["kind"].clone(), turn.get("response_id").cloned()))
+        .map(|exchange| {
+            let (id, feedback) = finished(exchange);
+            (id.to_owned(), feedback.is_none())
+        })
         .collect();
     assert_eq!(
         named,
-        [
-            (json!("physician"), None),
-            (json!("model"), Some(json!(first))),
-            (json!("physician"), None),
-            (json!("model"), Some(json!(second))),
-        ]
-    );
-    assert!(
-        snapshot["snapshot"]["conversation"]
-            .as_array()
-            .unwrap()
-            .iter()
-            .all(|turn| turn.get("response").is_none() && turn.get("feedback").is_none()),
-        "no turn is named by its place, and none is rated yet: {snapshot}"
+        [(first.to_owned(), true), (second.to_owned(), true)],
+        "each answer is named by its response id, and none is rated yet: {snapshot}"
     );
 
     let rated = put(
@@ -367,11 +371,10 @@ async fn feedback_stays_on_its_response_and_with_its_author() {
     .await;
     assert_eq!(status, 200, "{theirs}");
     assert!(
-        theirs["snapshot"]["conversation"]
-            .as_array()
-            .unwrap()
+        support::chat(&theirs["snapshot"])
+            .transcript
             .iter()
-            .all(|turn| turn.get("feedback").is_none()),
+            .all(|exchange| finished(exchange).1.is_none()),
         "a colleague read the author's feedback: {theirs}"
     );
     assert_eq!(
@@ -412,20 +415,21 @@ async fn unreadable_feedback_keeps_the_conversation() {
         snapshot["snapshot"]["feedback"], "unavailable",
         "{snapshot}"
     );
-    let turns: Vec<_> = snapshot["snapshot"]["conversation"]
-        .as_array()
-        .unwrap()
-        .iter()
-        .map(|turn| (turn["text"].clone(), turn.get("feedback").cloned()))
-        .collect();
     assert_eq!(
-        turns,
+        support::chat_texts(&snapshot["snapshot"]),
         [
-            (json!("Latest potassium?"), None),
-            (json!("Potassium was 4.1 on Monday."), None),
-            (json!("And sodium?"), None),
-            (json!("Sodium was 139 on Monday."), None),
+            "Latest potassium?",
+            "Potassium was 4.1 on Monday.",
+            "And sodium?",
+            "Sodium was 139 on Monday.",
         ]
+    );
+    assert!(
+        support::chat(&snapshot["snapshot"])
+            .transcript
+            .iter()
+            .all(|exchange| finished(exchange).1.is_none()),
+        "{snapshot}"
     );
     let logs = running.logs();
     assert!(

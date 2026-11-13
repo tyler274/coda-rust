@@ -38,7 +38,9 @@ mod revision;
 #[path = "physician-worker/signals.rs"]
 mod signals;
 use attempt::{Claimed, Failure, Next, Outcome, Tally};
-use local_product::runtime::{Claim, Conversation, PhysicianHost, RuntimeError, Scope, Store};
+use local_product::runtime::{
+    Claim, Conversation, PhysicianHost, RuntimeError, Scope, ShownStepSaved, ShownSteps, Store,
+};
 use physician_auth::PostgresAuthStore;
 use physician_bus::{Bus, Event};
 use physician_sample::durable::RuntimeAuthority;
@@ -237,10 +239,12 @@ async fn chat_attempt(
     }
     let provider = worker.model.provider(worker.quota.clone()).await;
     drop(input_text);
+    let notice = StepNotice::new(worker.bus.clone(), workspace_id.clone());
     let mut host = PhysicianHost {
         store: worker.store.clone(),
         claim,
         authority: worker.model.authority(),
+        shown_steps: ShownSteps::new(notice),
     };
     let cancel = Cancellation::default();
     // One provider per turn: concurrent turns on this instance run side by
@@ -500,18 +504,51 @@ async fn absent_claim(worker: &Worker, delivery: &Delivery) {
     }
 }
 
-/// Tells every open page on this workspace to refetch. Sent after each
+/// Tells every open page on this workspace to refetch. Awaited after each
 /// committed reply and each failed attempt, so a page holding a running turn
-/// learns when it completed or ended as "couldn't finish". Lossy: a page that
-/// misses it still converges on its next refetch or resync.
+/// learns when it completed or ended as "couldn't finish"; [`StepNotice`]
+/// sends it for shown steps without waiting. Lossy: a page that misses it
+/// still converges on its next refetch or resync.
 async fn announce(worker: &Worker, workspace_id: String) {
-    if worker
-        .bus
+    workspace_changed(worker.bus.as_ref(), workspace_id).await;
+}
+
+async fn workspace_changed(bus: &dyn Bus, workspace_id: String) {
+    if bus
         .publish(Event::WorkspaceChanged { workspace_id })
         .await
         .is_err()
     {
         tracing::warn!("physician workspace invalidation not published");
+    }
+}
+
+/// Tells open pages on one attempt's workspace that a step they show started
+/// or returned, so they read it while the run still works. Its own task
+/// publishes, so a slow bus never delays the run. Notices that arrive while
+/// one publish is in flight become one more publish after it, so a burst of
+/// steps causes few refetches and the last notice is never dropped. Once the
+/// attempt drops its notice, the task sends what is still pending and ends;
+/// the bus bounds each publish by its command timeout.
+struct StepNotice(watch::Sender<()>);
+
+impl StepNotice {
+    fn new(bus: Arc<dyn Bus>, workspace_id: String) -> Self {
+        let (pending, mut notices) = watch::channel(());
+        tokio::spawn(async move {
+            while notices.changed().await.is_ok() {
+                workspace_changed(bus.as_ref(), workspace_id.clone()).await;
+            }
+        });
+        Self(pending)
+    }
+}
+
+impl ShownStepSaved for StepNotice {
+    /// The host's claim, and so its workspace, is fixed for the attempt this
+    /// notice was made for.
+    fn shown_step_saved(&mut self, _scope: &Scope) {
+        self.0.send_replace(());
     }
 }
 
@@ -1208,6 +1245,101 @@ mod tests {
             renewals.load(std::sync::atomic::Ordering::SeqCst),
             8,
             "renewed every 108 seconds through 900 seconds"
+        );
+    }
+
+    /// A bus whose publishes each wait for the test to let one through, and
+    /// that counts the publishes it starts.
+    struct GatedBus {
+        started: std::sync::atomic::AtomicUsize,
+        gate: tokio::sync::Semaphore,
+    }
+
+    impl GatedBus {
+        fn closed() -> Arc<Self> {
+            Arc::new(Self {
+                started: std::sync::atomic::AtomicUsize::new(0),
+                gate: tokio::sync::Semaphore::new(0),
+            })
+        }
+
+        fn started(&self) -> usize {
+            self.started.load(std::sync::atomic::Ordering::SeqCst)
+        }
+
+        /// Waits until `count` publishes have started.
+        async fn until_started(&self, count: usize) {
+            while self.started() < count {
+                tokio::time::sleep(Duration::from_millis(1)).await;
+            }
+        }
+    }
+
+    #[async_trait::async_trait]
+    impl Bus for GatedBus {
+        async fn publish(&self, _: Event) -> Result<(), String> {
+            self.started
+                .fetch_add(1, std::sync::atomic::Ordering::SeqCst);
+            self.gate
+                .acquire()
+                .await
+                .map_err(|e| e.to_string())?
+                .forget();
+            Ok(())
+        }
+        fn subscribe(&self) -> physician_bus::Subscription {
+            physician_bus::LocalBus::new(1).subscribe()
+        }
+        fn live(&self) -> bool {
+            true
+        }
+    }
+
+    fn scope() -> Scope {
+        Scope {
+            practice: "practice".into(),
+            physician: "physician".into(),
+            workspace: "workspace".into(),
+            chat: "chat".into(),
+        }
+    }
+
+    /// A bus that never answers holds no shown step: each notice returns at
+    /// once, so the run that saved the step goes on.
+    #[tokio::test(start_paused = true)]
+    async fn a_hung_bus_never_holds_a_shown_step() {
+        let bus = GatedBus::closed();
+        let mut notice = StepNotice::new(bus.clone(), "workspace".into());
+        for _ in 0..100 {
+            notice.shown_step_saved(&scope());
+        }
+        bus.until_started(1).await;
+        tokio::time::sleep(Duration::from_secs(3600)).await;
+        assert_eq!(bus.started(), 1, "one publish waits on the hung bus");
+        drop(notice);
+    }
+
+    /// Notices that arrive while a publish is in flight become one publish
+    /// after it, so a burst refetches few times and its last step is still
+    /// announced, also once the attempt has dropped its notice.
+    #[tokio::test(start_paused = true)]
+    async fn a_burst_of_shown_steps_publishes_once_more_after_the_last() {
+        let bus = GatedBus::closed();
+        let mut notice = StepNotice::new(bus.clone(), "workspace".into());
+        notice.shown_step_saved(&scope());
+        bus.until_started(1).await;
+        for _ in 0..10 {
+            notice.shown_step_saved(&scope());
+        }
+        drop(notice);
+        bus.gate.add_permits(1);
+        bus.until_started(2).await;
+        bus.gate.add_permits(1);
+        tokio::time::sleep(Duration::from_secs(60)).await;
+        assert_eq!(
+            bus.started(),
+            2,
+            "eleven notices, one publish in flight and one after the burst"
         );
     }
 

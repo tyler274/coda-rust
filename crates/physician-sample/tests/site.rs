@@ -1036,11 +1036,9 @@ async fn the_first_event_connection_reads_changes_after_the_initial_snapshot() {
         .await
         .unwrap();
     assert!(
-        snapshot["snapshot"]["conversation"]
-            .as_array()
-            .unwrap()
+        scale::chat_texts(&snapshot["snapshot"])
             .iter()
-            .any(|line| line["text"] == message),
+            .any(|text| text == message),
         "{snapshot}"
     );
     assert!(
@@ -1827,6 +1825,8 @@ async fn held_limits_and_provider_blocks_render_without_a_partial_answer() {
     let _guard = test_lock().lock().await;
     let site = build_site();
     let mut server = serve_chat_browser(&site, scale::FIXED_TEXT).await;
+    // This journey claims and ends each turn by hand. A running worker would
+    // claim the accepted turn first, so it stops before any turn exists.
     server.worker.kill_now();
     let base = format!("http://{}", server.address);
     let store = Store::connect(&server._database.url).await.unwrap();
@@ -1848,7 +1848,7 @@ async fn held_limits_and_provider_blocks_render_without_a_partial_answer() {
         ),
         (
             true,
-            "Coda couldn’t respond right now. Your message is saved.",
+            "Coda couldn’t finish this response. Your message is saved.",
             "held-provider-blocked",
         ),
     ] {
@@ -2418,12 +2418,17 @@ async fn snapshot_feedback(
     )
     .await;
     assert_eq!(status, 200, "{snapshot}");
-    snapshot["snapshot"]["conversation"]
-        .as_array()
-        .unwrap()
-        .iter()
-        .filter(|turn| turn["kind"] == "model")
-        .map(|turn| (turn["response_id"].clone(), turn["feedback"].clone()))
+    scale::chat(&snapshot["snapshot"])
+        .transcript
+        .into_iter()
+        .map(|exchange| match exchange.answer {
+            physician_wire::AnswerState::Finished {
+                response_id,
+                feedback,
+                ..
+            } => (serde_json::json!(response_id), serde_json::json!(feedback)),
+            other => panic!("an unfinished answer: {other:?}"),
+        })
         .collect()
 }
 

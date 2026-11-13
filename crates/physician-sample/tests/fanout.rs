@@ -182,18 +182,13 @@ async fn cross_instance_turn_is_visible_on_the_other_sse_stream_and_valkey_resta
     )
     .await;
     assert_eq!(status, 200, "{snapshot}\n{}", site_b.tail());
-    let texts: Vec<&str> = snapshot["snapshot"]["conversation"]
-        .as_array()
-        .expect("conversation")
-        .iter()
-        .filter_map(|message| message["text"].as_str())
-        .collect();
+    let texts = support::chat_texts(&snapshot["snapshot"]);
     assert!(
-        texts.contains(&"Hello from instance A"),
+        texts.iter().any(|text| text == "Hello from instance A"),
         "instance B snapshot missing the turn: {texts:?}"
     );
     assert!(
-        texts.contains(&support::FIXED_TEXT),
+        texts.iter().any(|text| text == support::FIXED_TEXT),
         "instance B snapshot missing the worker reply: {texts:?}"
     );
 

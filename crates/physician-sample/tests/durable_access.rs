@@ -11,13 +11,12 @@ use std::path::PathBuf;
 use std::time::{Duration, Instant};
 
 use physician_auth::{AuthStore, Membership, PostgresAuthStore};
+use physician_wire::{AnswerState, WorkResumeTarget};
 use serde_json::{Value, json};
 
 #[path = "scale/mod.rs"]
 mod support;
-use support::{get_json, post, sign_in};
-
-const STOPPED: &str = "Coda stopped this response. Your message is saved.";
+use support::{chat_texts as texts, get_json, latest_answer, post, sign_in};
 
 struct Home(PathBuf);
 
@@ -134,7 +133,7 @@ async fn chat_work_answers_only_its_owner_and_a_repeated_submit_is_one_turn() {
         assert_eq!(body["outcome"], "accepted", "{body}");
     }
     wait_snapshot(&site, &snapshot_path, &owner, |snapshot| {
-        texts(snapshot).contains(&support::FIXED_TEXT)
+        matches!(latest_answer(snapshot), Some(AnswerState::Finished { .. }))
     })
     .await
     .unwrap_or_else(|snapshot| panic!("never answered\n{snapshot}\n{}", tails()));
@@ -148,16 +147,27 @@ async fn chat_work_answers_only_its_owner_and_a_repeated_submit_is_one_turn() {
         ["Hello", support::FIXED_TEXT],
         "{answered}"
     );
-    let reply = &answered["conversation"][1];
-    assert_eq!(reply["kind"], "model", "{answered}");
-    assert_eq!(answered["runs"][0]["state"], "completed", "{answered}");
-    let attempt = answered["runs"][0]["attempt_id"].as_str().unwrap();
+    let Some(AnswerState::Finished { response_id, .. }) = latest_answer(answered) else {
+        panic!("the reply is not finished: {answered}")
+    };
+    let saved = local_product::runtime::Store::connect(&database.url)
+        .await
+        .expect("runtime store")
+        .read(&local_product::runtime::Scope {
+            practice: physician_sample::STAGING_PRACTICE_ID.into(),
+            physician: "staging-physician".into(),
+            workspace: workspace.into(),
+            chat: chat.clone(),
+        })
+        .await
+        .expect("read")
+        .expect("conversation");
+    let attempt = &saved.attempts.last().expect("answering attempt").id;
     assert_eq!(
-        reply["response_id"],
+        response_id.0,
         format!("{attempt}:reply"),
         "the reply is named by the id its answering attempt saved\n{answered}"
     );
-    assert!(answered["conversation"][0].get("response_id").is_none());
 
     // A second message, still writing when the outsiders arrive.
     let (status, body) = post(
@@ -173,14 +183,14 @@ async fn chat_work_answers_only_its_owner_and_a_repeated_submit_is_one_turn() {
         "{body}"
     );
     let writing = wait_snapshot(&site, &snapshot_path, &owner, |snapshot| {
-        mechanical(snapshot).is_some_and(|line| line.get("stop_target").is_some())
+        matches!(latest_answer(snapshot), Some(AnswerState::Working { .. }))
     })
     .await
     .unwrap_or_else(|snapshot| panic!("never offered Stop\n{snapshot}\n{}", tails()));
-    let work = mechanical(&writing).unwrap()["stop_target"]["work_item_id"]
-        .as_str()
-        .unwrap()
-        .to_owned();
+    let Some(AnswerState::Working { stop: target }) = latest_answer(&writing) else {
+        unreachable!("waited for a working answer")
+    };
+    let work = target.work_item_id.0;
 
     let outsiders = [
         outsider(
@@ -217,7 +227,7 @@ async fn chat_work_answers_only_its_owner_and_a_repeated_submit_is_one_turn() {
             assert_eq!(status, 200, "{name}: {body}");
             assert_eq!(
                 body["snapshot"],
-                json!({ "conversation": [], "runs": [] }),
+                json!({ "transcript": [], "feedback": "loaded" }),
                 "{name} read the owner's chat"
             );
         }
@@ -226,7 +236,10 @@ async fn chat_work_answers_only_its_owner_and_a_repeated_submit_is_one_turn() {
     }
     let (_, body) = get_json(&site, &snapshot_path, &owner).await;
     assert!(
-        mechanical(&body["snapshot"]).is_some_and(|line| line.get("stop_target").is_some()),
+        matches!(
+            latest_answer(&body["snapshot"]),
+            Some(AnswerState::Working { .. })
+        ),
         "an outsider's Stop held the owner's work\n{body}"
     );
 
@@ -244,14 +257,11 @@ async fn chat_work_answers_only_its_owner_and_a_repeated_submit_is_one_turn() {
         "{body}"
     );
     let held = wait_snapshot(&site, &snapshot_path, &owner, |snapshot| {
-        mechanical(snapshot).is_some_and(|line| line["text"] == STOPPED)
+        matches!(latest_answer(snapshot), Some(AnswerState::Stopped { .. }))
     })
     .await
     .unwrap_or_else(|snapshot| panic!("Stop did not hold\n{snapshot}"));
-    let run = mechanical(&held).unwrap()["resume_target"]["expected_run_id"]
-        .as_str()
-        .unwrap()
-        .to_owned();
+    let run = resume_run(&held, &work);
     for outsider in &outsiders {
         let name = outsider.name;
         let resume = resume(workspace, &chat, &work, &run, &format!("resume-{name}"));
@@ -280,12 +290,7 @@ async fn chat_work_answers_only_its_owner_and_a_repeated_submit_is_one_turn() {
         ["Hello", support::FIXED_TEXT, "Check sodium"],
         "{after}"
     );
-    assert_eq!(mechanical(after).unwrap()["text"], STOPPED, "{after}");
-    assert_eq!(
-        mechanical(after).unwrap()["resume_target"]["expected_run_id"],
-        run.as_str(),
-        "{after}"
-    );
+    assert_eq!(resume_run(after, &work), run, "{after}");
     // The colleague's message opened their own chat, which holds only it.
     let colleague = &outsiders[0];
     let (status, body) = get_json(&site, &snapshot_path, &colleague.session).await;
@@ -296,7 +301,7 @@ async fn chat_work_answers_only_its_owner_and_a_repeated_submit_is_one_turn() {
         "{}",
         body["snapshot"]
     );
-    assert!(!texts(&body["snapshot"]).contains(&"Hello"));
+    assert!(!texts(&body["snapshot"]).iter().any(|text| text == "Hello"));
 }
 
 /// `command` from `session` is refused: a 404 when the workspace is hidden
@@ -353,24 +358,18 @@ fn resume(workspace: &str, chat: &str, work: &str, run: &str, key: &str) -> Valu
     })
 }
 
-fn mechanical(snapshot: &Value) -> Option<&Value> {
-    snapshot["conversation"]
-        .as_array()?
-        .iter()
-        .find(|item| item["kind"] == "mechanical")
-}
-
-fn texts(snapshot: &Value) -> Vec<&str> {
-    snapshot["conversation"]
-        .as_array()
-        .map(|items| {
-            items
-                .iter()
-                .filter(|item| item["kind"] != "mechanical")
-                .filter_map(|item| item["text"].as_str())
-                .collect()
-        })
-        .unwrap_or_default()
+/// The run Resume names on the stopped answer of `work`.
+fn resume_run(snapshot: &Value, work: &str) -> String {
+    match latest_answer(snapshot) {
+        Some(AnswerState::Stopped {
+            resume:
+                Some(WorkResumeTarget {
+                    work_item_id,
+                    expected_run_id,
+                }),
+        }) if work_item_id.as_str() == work => expected_run_id,
+        other => panic!("expected {work} stopped with Resume, found {other:?}\n{snapshot}"),
+    }
 }
 
 async fn wait_snapshot(

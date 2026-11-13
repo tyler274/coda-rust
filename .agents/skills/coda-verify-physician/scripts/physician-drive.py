@@ -100,18 +100,30 @@ def snapshot(stack, site, session, chat):
     return request("GET", url, bearer=session)
 
 
-def resume_line(body):
-    """The line of a turn that ended and can be resumed. A turn still running
-    also shows a mechanical line, with a stop target and nothing to resume."""
-    for item in (body or {}).get("snapshot", {}).get("conversation", []):
-        if item.get("kind") == "mechanical" and "resume_target" in item:
-            return item
-    return None
+def transcript(body):
+    return (body or {}).get("snapshot", {}).get("transcript", [])
+
+
+def resumable(body):
+    """The answer of the current exchange when it ended and can be resumed or tried
+    again, with its target. An answer still working carries a stop target instead."""
+    exchanges = transcript(body)
+    if not exchanges:
+        return None
+    answer = exchanges[-1]["answer"]
+    target = answer.get("resume") or answer.get("try_again")
+    return (answer, target) if target else None
 
 
 def texts(body):
-    return [item.get("text") for item in (body or {}).get("snapshot", {}).get("conversation", [])
-            if item.get("kind") != "mechanical"]
+    """Each physician message, the text a limit kept, then each finished answer's text."""
+    out = []
+    for exchange in transcript(body):
+        out += [message["text"] for message in exchange["messages"]]
+        out += exchange["kept"]
+        if exchange["answer"]["state"] == "finished":
+            out.append(exchange["answer"]["text"])
+    return out
 
 
 def command(stack, site, session, kind, key, payload):
@@ -173,7 +185,7 @@ def main():
             status, body = snapshot(stack, args.site, args.session, args.chat)
             done = status == 200 and (
                 (args.wait_text and args.wait_text in texts(body))
-                or (args.wait_failed and resume_line(body) is not None)
+                or (args.wait_failed and resumable(body) is not None)
                 or (not args.wait_text and not args.wait_failed))
             if done or time.monotonic() >= deadline:
                 break
@@ -183,16 +195,16 @@ def main():
         return 0 if done else 1
     if args.action == "resume":
         status, body = snapshot(stack, args.site, args.session, args.chat)
-        line = resume_line(body)
-        if line is None:
-            sys.exit(f"no failed turn to resume in {args.chat}: {body}")
-        target = line["resume_target"]
+        ended = resumable(body)
+        if ended is None:
+            sys.exit(f"no ended answer to resume in {args.chat}: {body}")
+        answer, target = ended
         run = args.run or target["expected_run_id"]
         status, answer = command(stack, args.site, args.session, "work.resume",
                                  f"resume-{target['work_item_id']}-{run}", {
                                      "patient_workspace_id": stack["workspace"], "chat_id": args.chat,
                                      "work_item_id": target["work_item_id"], "expected_run_id": run})
-        emit(args, f"resume-{args.site}", {"site": args.site, "mechanical": line, "run": run,
+        emit(args, f"resume-{args.site}", {"site": args.site, "answer": answer, "run": run,
                                            "status": status, "body": answer})
         return 0 if isinstance(answer, dict) and answer.get("outcome") == "accepted" else 1
     if args.action == "watch":

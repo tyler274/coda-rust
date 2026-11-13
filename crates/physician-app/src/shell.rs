@@ -20,8 +20,7 @@ pub const TRY_AGAIN: &str = "Try again";
 pub const STOP: &str = "Stop";
 /// Resumes a turn the physician stopped. Failure still says [`TRY_AGAIN`].
 pub const RESUME: &str = "Resume";
-/// The hosted snapshot's held-turn sentence, checked by the conversation line test.
-#[cfg(test)]
+/// The line after the physician stopped an answer.
 pub const STOPPED: &str = "Coda stopped this response. Your message is saved.";
 /// Past work with no history dates or items on the projection.
 pub const PAST_WORK_EMPTY: &str = "No past conversations or work are available.";
@@ -152,7 +151,7 @@ fn today_line(row: &TodayRow) -> TodayLine {
         resume_work_item_id: row
             .resume_target
             .as_ref()
-            .map(|target| target.work_item_id.clone()),
+            .map(|target| target.work_item_id.0.clone()),
         resume_run_id: row
             .resume_target
             .as_ref()

@@ -16,7 +16,6 @@ use local_product::runtime::delivery::{Delivery, DeliveryState};
 use local_product::runtime::{AttemptStatus, Conversation, Store, WorkStatus};
 use physician_auth::AuthStore;
 use physician_bus::{Bus, Event};
-use serde_json::Value;
 
 #[path = "scale/mod.rs"]
 mod support;
@@ -106,19 +105,6 @@ fn port(listen: &str) -> u16 {
         .rsplit_once(':')
         .and_then(|(_, port)| port.parse().ok())
         .expect("listen port")
-}
-
-fn assistant_texts(snapshot: &Value) -> Vec<&str> {
-    snapshot["conversation"]
-        .as_array()
-        .map(|items| {
-            items
-                .iter()
-                .filter(|item| item["kind"] != "mechanical")
-                .filter_map(|item| item["text"].as_str())
-                .collect()
-        })
-        .unwrap_or_default()
 }
 
 fn statuses(state: &Conversation) -> Vec<AttemptStatus> {
@@ -252,7 +238,10 @@ async fn a_turn_accepted_by_a_dead_site_instance_with_no_worker_is_finished_by_a
         let (status, body) = support::get_json(&b_listen, &snapshot_path, &session).await;
         assert_eq!(status, 200, "{body}");
         let snapshot = body["snapshot"].clone();
-        if assistant_texts(&snapshot).contains(&support::FIXED_TEXT) {
+        if support::chat_texts(&snapshot)
+            .iter()
+            .any(|text| text == support::FIXED_TEXT)
+        {
             break snapshot;
         }
         assert!(
@@ -266,7 +255,10 @@ async fn a_turn_accepted_by_a_dead_site_instance_with_no_worker_is_finished_by_a
         "turn accepted with no worker answered {:?} after a worker began starting",
         started.elapsed()
     );
-    assert_eq!(assistant_texts(&answered), ["Hello", support::FIXED_TEXT]);
+    assert_eq!(
+        support::chat_texts(&answered),
+        ["Hello", support::FIXED_TEXT]
+    );
     let state = store
         .read(&delivery.scope)
         .await
@@ -301,7 +293,7 @@ async fn a_turn_accepted_by_a_dead_site_instance_with_no_worker_is_finished_by_a
     let (status, snapshot) = support::get_json(&b_listen, &snapshot_path, &session).await;
     assert_eq!(status, 200);
     assert_eq!(
-        assistant_texts(&snapshot["snapshot"]),
+        support::chat_texts(&snapshot["snapshot"]),
         ["Hello", support::FIXED_TEXT],
         "a reconnect reads the completed reply without waiting for a past invalidation"
     );

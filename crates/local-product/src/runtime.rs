@@ -52,6 +52,8 @@ pub mod source_status;
 pub mod sources;
 #[cfg(test)]
 mod tests;
+mod transcript;
+pub use transcript::TranscriptError;
 /// Working notes derived from the authorized product record.
 pub mod working_notes;
 use crate::physician_sources::{ChartRequest, ChartScope, READ_TOOL, SEARCH_TOOL};
@@ -176,6 +178,12 @@ impl std::fmt::Display for ResponseId {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         f.write_str(&self.0)
     }
+}
+
+/// The id an attempt saves its answer under, published or partial. The
+/// answer that ended a run is the one its last attempt saved.
+fn reply_id(attempt: &str) -> String {
+    format!("{attempt}:reply")
 }
 
 /// One of Coda's published replies, named by its [`ResponseId`].
@@ -1386,7 +1394,7 @@ impl Store {
         if !answer.trim().is_empty() {
             state.messages.push(Message {
                 role: MessageRole::Assistant {
-                    id: format!("{}:reply", claim.attempt),
+                    id: reply_id(&claim.attempt),
                     partial: true,
                 },
                 text: answer,
@@ -1446,7 +1454,7 @@ impl Store {
         state.last_activity_at = now;
         state.messages.push(Message {
             role: MessageRole::Assistant {
-                id: format!("{}:reply", claim.attempt),
+                id: reply_id(&claim.attempt),
                 partial: false,
             },
             text: answer,
@@ -1789,13 +1797,66 @@ pub type PublicationTransaction = sea_orm::DatabaseTransaction;
 
 /// Ordinary physician chat on the shared execution loop. The product owns
 /// skill admission, workspace access and the retained chart.
-pub struct PhysicianHost<A> {
+pub struct PhysicianHost<A, S = ()> {
     /// Durable owner.
     pub store: Store,
     /// Fenced attempt.
     pub claim: Claim,
     /// Current authorization owner.
     pub authority: A,
+    /// Who hears that a step the physician sees was saved.
+    pub shown_steps: ShownSteps<S>,
+}
+
+/// Hears that a step the physician sees was saved, so an open page can read
+/// it while the run still works. The host tells its runner because only the
+/// host sees each event as it is saved: the shared loop hands events to
+/// [`Product::persist`], and the runner never sees them.
+pub trait ShownStepSaved: Send {
+    /// A shown step started or returned, and its event is saved. It returns
+    /// nothing and cannot wait, so hearing of a step never fails or delays
+    /// the run; a listener that must do slow work hands it off.
+    fn shown_step_saved(&mut self, scope: &Scope);
+}
+
+/// A host with no page to tell.
+impl ShownStepSaved for () {
+    fn shown_step_saved(&mut self, _scope: &Scope) {}
+}
+
+/// Which saved events are shown steps, and who hears of them. A call's
+/// result names only its call, so this remembers the shown calls this
+/// attempt started. The physician host saves no result for a call an
+/// earlier attempt started.
+pub struct ShownSteps<S> {
+    listener: S,
+    started: std::collections::HashSet<String>,
+}
+
+impl<S: ShownStepSaved> ShownSteps<S> {
+    /// Tells `listener` of each shown step this attempt saves.
+    pub fn new(listener: S) -> Self {
+        Self {
+            listener,
+            started: Default::default(),
+        }
+    }
+
+    /// Whether `event` starts or returns a call that shows as a step, by the
+    /// rule the transcript applies.
+    fn shown(&mut self, event: &Event) -> bool {
+        if let engine::EventKind::ToolStarted(call) = &event.kind {
+            if !crate::physician_chat::shows(call) {
+                return false;
+            }
+            self.started.insert(call.id.clone());
+            return true;
+        }
+        if let engine::EventKind::ToolReturned { call_id, .. } = &event.kind {
+            return self.started.contains(call_id);
+        }
+        false
+    }
 }
 
 impl Message {
@@ -1845,7 +1906,7 @@ fn earlier_messages(start: usize) -> Option<Item> {
 }
 
 #[async_trait]
-impl<A: Authority> Product for PhysicianHost<A> {
+impl<A: Authority, S: ShownStepSaved> Product for PhysicianHost<A, S> {
     async fn message_sources(
         &mut self,
     ) -> Result<Option<Vec<engine::ProductMessage>>, engine::ProductError> {
@@ -1883,10 +1944,16 @@ impl<A: Authority> Product for PhysicianHost<A> {
         Ok(())
     }
     async fn persist(&mut self, event: Event) -> Result<(), engine::ProductError> {
+        let shown = self.shown_steps.shown(&event);
         self.store
             .persist(&self.claim, event)
             .await
             .map_err(persistence_failure)?;
+        if shown {
+            self.shown_steps
+                .listener
+                .shown_step_saved(&self.claim.scope);
+        }
         Ok(())
     }
     fn execute(
@@ -2006,7 +2073,7 @@ impl<A: Authority> Product for PhysicianHost<A> {
     }
 }
 
-impl<A: Authority> PhysicianHost<A> {
+impl<A: Authority, S: ShownStepSaved> PhysicianHost<A, S> {
     /// Hydrates one admitted recipe, then publishes through the product fence.
     pub async fn run<P: Provider>(
         &mut self,

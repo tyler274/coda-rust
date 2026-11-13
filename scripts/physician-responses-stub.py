@@ -107,6 +107,7 @@ def main():
     parser.add_argument("--rounds", type=json.loads, default=[])
     parser.add_argument("--rounds-file", type=Path)
     parser.add_argument("--reply", default="Noted.")
+    parser.add_argument("--reply-file", type=Path)
     parser.add_argument("--requests-file", type=Path)
     args = parser.parse_args()
     lock = Lock()
@@ -142,8 +143,9 @@ def main():
                 response = {"id": uuid.uuid4().hex, "status": "failed", "model": body["model"], "output": []}
             else:
                 rounds = json.loads(args.rounds_file.read_text()) if args.rounds_file else args.rounds
+                reply = args.reply_file.read_text() if args.reply_file else args.reply
                 response = {"id": uuid.uuid4().hex, "status": "completed",
-                            "model": body["model"], "output": output_for(body, rounds, args.reply)}
+                            "model": body["model"], "output": output_for(body, rounds, reply)}
             stream = body.get("stream")
             wire = encode_stream(response) if stream else json.dumps(response).encode()
             self.send_response(200)

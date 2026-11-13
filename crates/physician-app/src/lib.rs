@@ -21,7 +21,7 @@ use composer::{Composer, ConflictDraft, DraftTarget, Notice, SaveOutcome, SendAn
 use dioxus::prelude::*;
 use physician_client::{DraftSave, PhysicianClient};
 use physician_wire::{
-    ChatRunOutcome, ChatSnapshot, HoldReason, PatientWorkspaceResponse, PracticeAccountSummary,
+    AnswerState, ChatSnapshot, PatientWorkspaceResponse, PracticeAccountSummary,
     RecentConversation, ResponseId, SignInResponse, SnapshotFeedback, WhoamiResponse,
     WorkResumeTarget, WorkStopTarget, WorkspaceReply,
 };
@@ -2139,7 +2139,7 @@ fn PhysicianShell(
                                 );
                             },
                             on_resume_reply: move |target: WorkResumeTarget| {
-                                let Some(command) = chat_resume_command(selected(), Some(target.work_item_id.clone()), &target) else { return };
+                                let Some(command) = chat_resume_command(selected(), Some(target.work_item_id.0.clone()), &target) else { return };
                                 reply_notice.set(String::new());
                                 reply_slot.run_answered(
                                     client.read().clone(),
@@ -4422,55 +4422,89 @@ struct ConversationLine {
     response: Option<(ResponseId, feedback::Read)>,
 }
 
-/// The lines a chat snapshot shows, in order. Only a mechanical line keeps a
-/// resume target; turns with no text are skipped.
+/// The line while Coda works on an answer.
+const WRITING: &str = "Coda is writing this response.";
+/// The line when Coda's recovery is used up or the model service refused the work.
+const COULDNT_FINISH: &str = "Coda couldn’t finish this response. Your message is saved.";
+/// The line after a partial answer cut off at a limit.
+const PARTIAL: &str = "Partial response.";
+/// The line when a limit cut off an answer before any of it was kept.
+const LIMIT: &str = "Coda reached its limit for this response.";
+/// Follows a cut-off line only where Try again is offered.
+const TRY_AGAIN_PROMISE: &str = "Choose Try again to continue.";
+
+/// The lines a chat snapshot shows, in order: each exchange's messages, the
+/// text a limit kept, then its answer or the line that says how it ended.
 fn conversation_lines(snapshot: &ChatSnapshot) -> Vec<ConversationLine> {
-    snapshot
-        .conversation
-        .iter()
-        .filter_map(|turn| {
-            let text = turn.body()?.to_owned();
-            let mechanical = turn.kind.as_deref() == Some("mechanical");
-            let stop = turn.stop_target.clone().filter(|_| mechanical);
-            let resume = turn
-                .resume_target
-                .clone()
-                .filter(|_| mechanical && stop.is_none());
-            let held = resume.as_ref().is_some_and(|target| {
-                snapshot.runs.iter().any(|run| {
-                    run.run_id == target.expected_run_id
-                        && run.outcome
-                            == ChatRunOutcome::Held {
-                                hold_reason: HoldReason::Stopped,
-                            }
-                })
-            });
-            let author = match turn.kind.as_deref() {
-                Some("physician") => Some(Author::Person),
-                Some("model") => Some(Author::Assistant),
-                _ => None,
-            };
-            let response = turn
-                .response_id
-                .clone()
-                .filter(|_| author == Some(Author::Assistant))
-                .map(|id| {
-                    let read = match snapshot.feedback {
-                        SnapshotFeedback::Loaded => feedback::Read::Loaded(turn.feedback.clone()),
-                        SnapshotFeedback::Unavailable => feedback::Read::Unavailable,
-                    };
-                    (id, read)
-                });
-            Some(ConversationLine {
+    let line = |text: &str, author| ConversationLine {
+        text: text.to_owned(),
+        author,
+        resume: None,
+        stop: None,
+        held: false,
+        response: None,
+    };
+    let mut lines = Vec::new();
+    for exchange in &snapshot.transcript {
+        lines.extend(
+            exchange
+                .messages
+                .iter()
+                .map(|message| line(&message.text, Some(Author::Person))),
+        );
+        lines.extend(
+            exchange
+                .kept
+                .iter()
+                .map(|kept| line(kept, Some(Author::Assistant))),
+        );
+        match &exchange.answer {
+            AnswerState::Working { stop } => lines.push(ConversationLine {
+                stop: Some(stop.clone()),
+                ..line(WRITING, None)
+            }),
+            AnswerState::Finished {
+                response_id,
                 text,
-                author,
-                resume,
-                stop,
-                held,
-                response,
-            })
-        })
-        .collect()
+                feedback: saved,
+                ..
+            } => {
+                let read = match snapshot.feedback {
+                    SnapshotFeedback::Loaded => feedback::Read::Loaded(saved.clone()),
+                    SnapshotFeedback::Unavailable => feedback::Read::Unavailable,
+                };
+                lines.push(ConversationLine {
+                    response: Some((response_id.clone(), read)),
+                    ..line(text, Some(Author::Assistant))
+                });
+            }
+            AnswerState::Stopped { resume } => lines.push(ConversationLine {
+                resume: resume.clone(),
+                held: true,
+                ..line(shell::STOPPED, None)
+            }),
+            AnswerState::CutOff { try_again } => {
+                let ending = if exchange.kept.is_empty() {
+                    LIMIT
+                } else {
+                    PARTIAL
+                };
+                let text = match try_again {
+                    Some(_) => format!("{ending} {TRY_AGAIN_PROMISE}"),
+                    None => ending.to_owned(),
+                };
+                lines.push(ConversationLine {
+                    resume: try_again.clone(),
+                    ..line(&text, None)
+                });
+            }
+            AnswerState::CouldntFinish { try_again } => lines.push(ConversationLine {
+                resume: try_again.clone(),
+                ..line(COULDNT_FINISH, None)
+            }),
+        }
+    }
+    lines
 }
 
 /// Try again on chat or reply-revision work. Like the Today row, its key
@@ -4483,7 +4517,11 @@ fn chat_resume_command(
     let (workspace_id, chat_id) = (workspace_id?, chat_id?);
     Some(Command::keyed(
         "work.resume",
-        format!("resume-{}-{}", target.work_item_id, target.expected_run_id),
+        format!(
+            "resume-{}-{}",
+            target.work_item_id.as_str(),
+            target.expected_run_id
+        ),
         serde_json::json!({
             "patient_workspace_id": workspace_id,
             "chat_id": chat_id,
@@ -4590,12 +4628,14 @@ fn now_millis() -> u128 {
 #[cfg(test)]
 mod conversation_line_tests {
     use super::{
-        ConversationLine, chat_resume_command, chat_stop_command, conversation_lines, new_chat_id,
+        COULDNT_FINISH, ConversationLine, WRITING, chat_resume_command, chat_stop_command,
+        conversation_lines, new_chat_id,
     };
     use crate::feedback;
     use crate::shell::STOPPED;
     use physician_wire::{
-        ChatRunOutcome, ChatSnapshotResponse, HoldReason, ResponseFeedback, ResponseId,
+        AnswerState, AttemptId, ChatSnapshot, Exchange, FeedbackRating, MessageKey,
+        PhysicianMessage, ResponseFeedback, ResponseId, SnapshotFeedback, WorkItemId,
         WorkResumeTarget, WorkStopTarget,
     };
     use ui::Author;
@@ -4609,218 +4649,193 @@ mod conversation_line_tests {
 
     fn target() -> WorkResumeTarget {
         WorkResumeTarget {
-            work_item_id: "work-1".into(),
+            work_item_id: WorkItemId("work-1".into()),
             expected_run_id: "run-1".into(),
         }
     }
 
-    #[test]
-    fn a_couldnt_finish_line_keeps_the_run_its_try_again_resumes() {
-        let page: ChatSnapshotResponse = serde_json::from_value(serde_json::json!({
-            "snapshot": {
-                "conversation": [
-                    { "kind": "physician", "text": "Hello" },
-                    { "kind": "model", "text": "",
-                      "resume_target": { "work_item_id": "x", "expected_run_id": "y" } },
-                    { "kind": "mechanical",
-                      "text": "Coda couldn’t finish this response. Your message is saved.",
-                      "resume_target": { "work_item_id": "work-1", "expected_run_id": "run-1" } },
-                ],
-                "runs": [{ "run_id": "run-1", "state": "failed" }],
-            }
-        }))
-        .unwrap();
-        assert_eq!(
-            conversation_lines(&page.snapshot),
-            vec![
-                ConversationLine {
+    /// One exchange asking "Hello", with `kept` text, answered as `answer`.
+    fn snapshot(answer: AnswerState, kept: &[&str], feedback: SnapshotFeedback) -> ChatSnapshot {
+        ChatSnapshot {
+            transcript: vec![Exchange {
+                work_item_id: WorkItemId("work-1".into()),
+                messages: vec![PhysicianMessage {
+                    id: MessageKey("key-1".into()),
                     text: "Hello".into(),
-                    author: Some(Author::Person),
-                    resume: None,
-                    stop: None,
-                    held: false,
-                    response: None,
+                }],
+                steps: physician_wire::ExchangeSteps::Read(vec![]),
+                kept: kept.iter().map(|text| (*text).to_owned()).collect(),
+                answer,
+            }],
+            feedback,
+        }
+    }
+
+    fn line(text: &str, author: Option<Author>) -> ConversationLine {
+        ConversationLine {
+            text: text.into(),
+            author,
+            resume: None,
+            stop: None,
+            held: false,
+            response: None,
+        }
+    }
+
+    /// Each ending draws the line the page drew before the typed transcript:
+    /// Stop while working, Resume when stopped, Try again when cut off or
+    /// unfinished. Text a limit kept comes first in every state, and the
+    /// cut-off line says whether any was kept and promises Try again only
+    /// where it is offered.
+    #[test]
+    fn each_answer_state_draws_its_line_and_action() {
+        let ask = line("Hello", Some(Author::Person));
+        let kept = line("The saved part.", Some(Author::Assistant));
+        let finished = AnswerState::Finished {
+            response_id: ResponseId("r-1".into()),
+            attempt_id: AttemptId("attempt-1".into()),
+            text: "The rest.".into(),
+            feedback: None,
+        };
+        let cases: [(AnswerState, &[&str], Vec<ConversationLine>); 9] = [
+            (
+                AnswerState::Working {
+                    stop: WorkStopTarget {
+                        work_item_id: WorkItemId("work-1".into()),
+                    },
                 },
-                ConversationLine {
-                    text: "Coda couldn’t finish this response. Your message is saved.".into(),
-                    author: None,
+                &["The saved part."],
+                vec![
+                    kept.clone(),
+                    ConversationLine {
+                        stop: Some(WorkStopTarget {
+                            work_item_id: WorkItemId("work-1".into()),
+                        }),
+                        ..line(WRITING, None)
+                    },
+                ],
+            ),
+            (
+                finished,
+                &["The saved part."],
+                vec![
+                    kept.clone(),
+                    ConversationLine {
+                        response: Some((ResponseId("r-1".into()), feedback::Read::Loaded(None))),
+                        ..line("The rest.", Some(Author::Assistant))
+                    },
+                ],
+            ),
+            (
+                AnswerState::Stopped {
                     resume: Some(target()),
-                    stop: None,
-                    held: false,
-                    response: None,
                 },
-            ]
-        );
+                &[],
+                vec![ConversationLine {
+                    resume: Some(target()),
+                    held: true,
+                    ..line(STOPPED, None)
+                }],
+            ),
+            (
+                AnswerState::CutOff {
+                    try_again: Some(target()),
+                },
+                &["The saved part."],
+                vec![
+                    kept.clone(),
+                    ConversationLine {
+                        resume: Some(target()),
+                        ..line("Partial response. Choose Try again to continue.", None)
+                    },
+                ],
+            ),
+            (
+                AnswerState::CutOff {
+                    try_again: Some(target()),
+                },
+                &[],
+                vec![ConversationLine {
+                    resume: Some(target()),
+                    ..line(
+                        "Coda reached its limit for this response. Choose Try again to continue.",
+                        None,
+                    )
+                }],
+            ),
+            (
+                AnswerState::CutOff { try_again: None },
+                &["The saved part."],
+                vec![kept.clone(), line("Partial response.", None)],
+            ),
+            (
+                AnswerState::CutOff { try_again: None },
+                &[],
+                vec![line("Coda reached its limit for this response.", None)],
+            ),
+            (
+                AnswerState::CouldntFinish {
+                    try_again: Some(target()),
+                },
+                &[],
+                vec![ConversationLine {
+                    resume: Some(target()),
+                    ..line(COULDNT_FINISH, None)
+                }],
+            ),
+            (
+                AnswerState::CouldntFinish { try_again: None },
+                &[],
+                vec![line(COULDNT_FINISH, None)],
+            ),
+        ];
+        for (answer, kept, ending) in cases {
+            let drawn =
+                conversation_lines(&snapshot(answer.clone(), kept, SnapshotFeedback::Loaded));
+            let expected: Vec<_> = std::iter::once(ask.clone()).chain(ending).collect();
+            assert_eq!(drawn, expected, "{answer:?} with {kept:?}");
+        }
     }
 
     #[test]
-    fn only_a_turn_that_names_its_writer_gets_a_speaker() {
-        let page: ChatSnapshotResponse = serde_json::from_value(serde_json::json!({
-            "snapshot": { "runs": [], "conversation": [
-                { "kind": "physician", "text": "Start metoprolol?" },
-                { "kind": "model", "text": "Her heart rate allows it." },
-                { "text": "Recorded work status." },
-            ] }
-        }))
-        .unwrap();
-        let authors: Vec<_> = conversation_lines(&page.snapshot)
-            .into_iter()
-            .map(|line| line.author)
-            .collect();
+    fn a_finished_answer_carries_its_response_id_and_feedback_as_read() {
+        let finished = AnswerState::Finished {
+            response_id: ResponseId("r-1".into()),
+            attempt_id: AttemptId("attempt-1".into()),
+            text: "Her heart rate allows it.".into(),
+            feedback: Some(ResponseFeedback {
+                revision: 2,
+                rating: FeedbackRating::Up,
+                details: None,
+            }),
+        };
+        let loaded = conversation_lines(&snapshot(finished.clone(), &[], SnapshotFeedback::Loaded));
+        assert_eq!(loaded[1].author, Some(Author::Assistant));
+        assert_eq!(loaded[1].text, "Her heart rate allows it.");
         assert_eq!(
-            authors,
-            vec![Some(Author::Person), Some(Author::Assistant), None]
+            loaded[1].response,
+            Some((
+                ResponseId("r-1".into()),
+                feedback::Read::Loaded(Some(ResponseFeedback {
+                    revision: 2,
+                    rating: FeedbackRating::Up,
+                    details: None,
+                }))
+            ))
         );
-    }
-
-    #[test]
-    fn only_codas_responses_carry_the_response_id_feedback_names() {
-        let page: ChatSnapshotResponse = serde_json::from_value(serde_json::json!({
-            "snapshot": { "runs": [], "conversation": [
-                { "kind": "physician", "text": "Start metoprolol?", "response_id": "r-0" },
-                { "kind": "model", "text": "Her heart rate allows it.", "response_id": "r-1",
-                  "feedback": { "revision": 2, "rating": "up" } },
-                { "kind": "model", "text": "From an older server.",
-                  "feedback": { "revision": 1, "rating": "down" } },
-                { "text": "Recorded in local simulation.", "response_id": "r-3" },
-            ] }
-        }))
-        .unwrap();
-        let named: Vec<_> = conversation_lines(&page.snapshot)
-            .into_iter()
-            .map(|line| line.response.map(|(id, read)| (id.0, read)))
-            .collect();
-        // Feedback rides only on a response that names its response id.
+        let unavailable =
+            conversation_lines(&snapshot(finished, &[], SnapshotFeedback::Unavailable));
         assert_eq!(
-            named,
-            vec![
-                None,
-                Some((
-                    "r-1".to_owned(),
-                    feedback::Read::Loaded(Some(ResponseFeedback {
-                        revision: 2,
-                        rating: physician_wire::FeedbackRating::Up,
-                        details: None,
-                    }))
-                )),
-                None,
-                None
-            ]
-        );
-    }
-
-    #[test]
-    fn unavailable_feedback_keeps_every_line_and_marks_each_response() {
-        let page: ChatSnapshotResponse = serde_json::from_value(serde_json::json!({
-            "snapshot": { "runs": [], "feedback": "unavailable", "conversation": [
-                { "kind": "physician", "text": "Start metoprolol?" },
-                { "kind": "model", "text": "Her heart rate allows it.", "response_id": "r-1" },
-            ] }
-        }))
-        .unwrap();
-        let lines = conversation_lines(&page.snapshot);
-        assert_eq!(lines.len(), 2);
-        assert_eq!(lines[1].text, "Her heart rate allows it.");
-        assert_eq!(lines[0].response, None);
-        assert_eq!(
-            lines[1].response,
+            unavailable[1].response,
             Some((ResponseId("r-1".into()), feedback::Read::Unavailable))
         );
-    }
-
-    #[test]
-    fn only_a_mechanical_line_offers_try_again() {
-        let page: ChatSnapshotResponse = serde_json::from_value(serde_json::json!({
-            "snapshot": { "runs": [], "conversation": [
-                { "kind": "model", "text": "Done",
-                  "resume_target": { "work_item_id": "work-1", "expected_run_id": "run-1" } },
-                { "text": "Older server line" },
-            ] }
-        }))
-        .unwrap();
-        assert!(
-            conversation_lines(&page.snapshot)
-                .iter()
-                .all(|line| line.resume.is_none() && line.stop.is_none())
-        );
-    }
-
-    #[test]
-    fn a_writing_line_offers_stop_and_a_stopped_line_offers_resume() {
-        let writing: ChatSnapshotResponse = serde_json::from_value(serde_json::json!({
-            "snapshot": { "runs": [], "conversation": [
-                { "kind": "physician", "text": "Hello" },
-                { "kind": "mechanical", "text": "Coda is writing this response.",
-                  "stop_target": { "work_item_id": "work-1" } },
-            ] }
-        }))
-        .unwrap();
-        let lines = conversation_lines(&writing.snapshot);
-        assert_eq!(
-            lines[1].stop,
-            Some(WorkStopTarget {
-                work_item_id: "work-1".into(),
-            })
-        );
-        assert!(lines[1].resume.is_none());
-        let stopped: ChatSnapshotResponse = serde_json::from_value(serde_json::json!({
-            "snapshot": {
-                "conversation": [
-                    { "kind": "mechanical",
-                      "text": "Coda stopped this response. Your message is saved.",
-                      "resume_target": { "work_item_id": "work-1", "expected_run_id": "run-1" } },
-                ],
-                "runs": [{ "run_id": "run-1", "state": "held", "hold_reason": "stopped" }],
-            }
-        }))
-        .unwrap();
-        let lines = conversation_lines(&stopped.snapshot);
-        assert_eq!(lines[0].text, STOPPED);
-        assert_eq!(lines[0].resume, Some(target()));
-        assert!(lines[0].held);
-        assert!(lines[0].stop.is_none());
-        let mut limited = stopped.snapshot;
-        limited.runs[0].outcome = ChatRunOutcome::Held {
-            hold_reason: HoldReason::Limit,
-        };
-        let limited = conversation_lines(&limited);
-        assert_eq!(limited[0].resume, Some(target()));
-        assert!(
-            !limited[0].held,
-            "a limit offers Try again, never Stop's Resume"
-        );
-    }
-
-    #[test]
-    fn a_hold_reason_this_app_does_not_know_reads_like_a_limit() {
-        let held: ChatSnapshotResponse = serde_json::from_value(serde_json::json!({
-            "snapshot": {
-                "conversation": [
-                    { "kind": "mechanical",
-                      "text": "Coda paused this response. Choose Try again to continue.",
-                      "resume_target": { "work_item_id": "work-1", "expected_run_id": "run-1" } },
-                ],
-                "runs": [{ "run_id": "run-1", "state": "held", "hold_reason": "a_reason_from_a_newer_site" }],
-            }
-        }))
-        .unwrap();
-        let lines = conversation_lines(&held.snapshot);
-        assert_eq!(
-            lines[0].text,
-            "Coda paused this response. Choose Try again to continue."
-        );
-        assert_eq!(lines[0].resume, Some(target()));
-        assert!(
-            !lines[0].held,
-            "an unknown hold offers Try again, never Stop's Resume"
-        );
-        assert!(lines[0].stop.is_none());
+        assert_eq!(loaded[0].response, None);
     }
 
     #[test]
     fn each_stop_press_is_its_own_command_for_the_named_work() {
         let target = WorkStopTarget {
-            work_item_id: "work-1".into(),
+            work_item_id: WorkItemId("work-1".into()),
         };
         let command =
             chat_stop_command(Some("pw-1".into()), Some("chat-1".into()), &target).unwrap();

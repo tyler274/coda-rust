@@ -7,8 +7,10 @@
 
 use std::path::{Path, PathBuf};
 
-use harness::engine::{Tool, ToolOutcome};
+use harness::engine::results::ToolResult;
+use harness::engine::{Invocation, Tool, ToolOutcome};
 use harness::skills::Package;
+use physician_wire::{Step, StepState};
 use serde_json::{Value, json};
 
 /// Immutable chat recipe selected by the site when it accepts new work.
@@ -100,6 +102,128 @@ pub fn read_only(name: &str) -> bool {
         name,
         crate::physician_sources::SEARCH_TOOL | crate::physician_sources::READ_TOOL
     )
+}
+
+/// How far one call has ended, as the saved record of its work shows it.
+#[derive(Clone, Copy, Debug)]
+pub enum CallEnding<'a> {
+    /// It started, has no saved result, and the attempt that started it still runs.
+    Running,
+    /// Its saved result.
+    Returned(&'a ToolResult),
+    /// It has no saved result, and the physician's Stop ended its attempt.
+    Stopped,
+    /// It has no saved result, and its attempt ended another way, such as a restart.
+    Interrupted,
+}
+
+impl<'a> CallEnding<'a> {
+    /// The step state for this ending. Only a returned call needs its
+    /// tool's reading of the result.
+    pub(crate) fn state<T>(
+        self,
+        returned: impl FnOnce(&'a ToolResult) -> Result<StepState<T>, StepError>,
+    ) -> Result<StepState<T>, StepError> {
+        match self {
+            Self::Running => Ok(StepState::Running),
+            Self::Returned(result) => returned(result),
+            Self::Stopped => Ok(StepState::Stopped),
+            Self::Interrupted => Ok(StepState::Interrupted),
+        }
+    }
+}
+
+/// A saved call that cannot be shown as a step.
+#[derive(Debug, thiserror::Error)]
+pub enum StepError {
+    /// A tool name Chords chat never offers.
+    #[error("chat call names a tool Chords chat does not offer: {0}")]
+    UnknownTool(String),
+    /// Saved call arguments that are not JSON.
+    #[error("saved chat call arguments are not JSON")]
+    Arguments(#[source] serde_json::Error),
+    /// A saved result its tool did not write.
+    #[error("saved chat tool result does not match its tool's receipt")]
+    Receipt(#[source] serde_json::Error),
+    /// A kind of result its tool never returns.
+    #[error("saved chat tool result is of a kind its tool never returns")]
+    UnexpectedResult,
+}
+
+/// Each tool Chords chat offers, read once from its name.
+#[derive(Clone, Copy)]
+enum ChatTool {
+    /// Chart search and chart read.
+    Chart,
+    /// Earlier conversation: list, read and search.
+    Conversation,
+    /// A skill's guidance.
+    Skill,
+    /// A page of an earlier result.
+    ResultPage,
+    /// Coda's own working note.
+    WorkingNote,
+}
+
+impl ChatTool {
+    fn named(name: &str) -> Option<Self> {
+        use harness::engine::{history, results};
+        match name {
+            crate::physician_sources::SEARCH_TOOL | crate::physician_sources::READ_TOOL => {
+                Some(Self::Chart)
+            }
+            history::LIST | history::READ | history::SEARCH => Some(Self::Conversation),
+            SKILL_VIEW => Some(Self::Skill),
+            results::READ => Some(Self::ResultPage),
+            name if crate::runtime::working_notes::is_tool(name) => Some(Self::WorkingNote),
+            _ => None,
+        }
+    }
+}
+
+/// The step a saved chat call shows the physician, or `None` when it shows
+/// none: skill reads, result pages and working notes are Coda's own
+/// bookkeeping, and a call its tool refuses for its arguments did nothing.
+pub fn step(call: &Invocation, ending: CallEnding<'_>) -> Result<Option<Step>, StepError> {
+    let tool =
+        ChatTool::named(&call.name).ok_or_else(|| StepError::UnknownTool(call.name.clone()))?;
+    let arguments = || serde_json::from_str::<Value>(&call.arguments).map_err(StepError::Arguments);
+    match tool {
+        ChatTool::Skill | ChatTool::ResultPage | ChatTool::WorkingNote => Ok(None),
+        ChatTool::Chart => {
+            let request = crate::physician_sources::ChartRequest::parse(
+                &call.name,
+                &arguments()?,
+                crate::physician_sources::ChartScope::Chat,
+            );
+            match request {
+                Ok(request) => request.step(ending).map(Some),
+                Err(_) => Ok(None),
+            }
+        }
+        ChatTool::Conversation => {
+            match harness::engine::history::Query::parse(&call.name, &arguments()?) {
+                Ok(_) => conversation_step(ending).map(Some),
+                Err(_) => Ok(None),
+            }
+        }
+    }
+}
+
+/// Whether a saved call shows the physician a step: the rule [`step`] applies.
+pub fn shows(call: &Invocation) -> bool {
+    matches!(step(call, CallEnding::Running), Ok(Some(_)))
+}
+
+/// Coda looked at earlier messages of the conversation; it may have found nothing. A refused
+/// look is a failed step.
+fn conversation_step(ending: CallEnding<'_>) -> Result<Step, StepError> {
+    let state = ending.state(|result| match result {
+        ToolResult::History(_) => Ok(StepState::Returned { result: () }),
+        ToolResult::Refused(_) => Ok(StepState::Failed),
+        ToolResult::Original(_) | ToolResult::View(_) => Err(StepError::UnexpectedResult),
+    })?;
+    Ok(Step::ReadConversation { state })
 }
 
 fn chart_tools() -> [Tool; 2] {
@@ -196,6 +320,20 @@ mod tests {
     fn skills() -> PhysicianSkills {
         PhysicianSkills::load(&PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../../skills"))
             .unwrap()
+    }
+
+    /// The transcript reads every saved chat call by its tool, and a name it
+    /// does not know fails the snapshot. Every tool a chat recipe offers,
+    /// the working notes included, must have a step rule.
+    #[test]
+    fn every_offered_chat_tool_has_a_step_rule() {
+        let mut instructions = String::new();
+        let mut offered: Vec<_> = tools().iter().map(Tool::function).collect();
+        harness::engine::offer_working_notes(&mut instructions, &mut offered);
+        for tool in offered {
+            let name = tool["name"].as_str().unwrap();
+            assert!(ChatTool::named(name).is_some(), "{name} has no step rule");
+        }
     }
 
     #[test]

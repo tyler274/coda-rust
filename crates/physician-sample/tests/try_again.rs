@@ -13,13 +13,12 @@ use std::time::{Duration, Instant};
 
 use local_product::runtime::engine::MAX_FAILED_ATTEMPTS;
 use local_product::runtime::{AttemptStatus, Store, WorkStatus};
+use physician_wire::{AnswerState, WorkResumeTarget};
 use serde_json::{Value, json};
 
 #[path = "scale/mod.rs"]
 mod support;
-use support::{get_json, sign_in};
-
-const COULDNT_FINISH: &str = "Coda couldn’t finish this response. Your message is saved.";
+use support::{chat_texts as texts, get_json, latest_answer, sign_in};
 
 struct Home(PathBuf);
 
@@ -165,7 +164,10 @@ async fn a_turn_that_gave_up_shows_couldnt_finish_and_try_again_gets_the_reply()
 
     // The snapshot keeps the message and names the failed run.
     let failed = wait_snapshot(&site_listen, &snapshot_path, &session, |snapshot| {
-        mechanical(snapshot).is_some()
+        matches!(
+            latest_answer(snapshot),
+            Some(AnswerState::CouldntFinish { .. })
+        )
     })
     .await
     .unwrap_or_else(|last| {
@@ -174,27 +176,23 @@ async fn a_turn_that_gave_up_shows_couldnt_finish_and_try_again_gets_the_reply()
             tails(&site, &worker)
         )
     });
-    let items = failed["conversation"].as_array().expect("conversation");
-    assert_eq!(items[0]["text"], "Hello", "{failed}");
-    assert!(
-        !texts(&failed).contains(&support::FIXED_TEXT),
+    assert_eq!(
+        texts(&failed),
+        ["Hello"],
         "a failed turn has no reply: {failed}"
     );
-    let line = mechanical(&failed).expect("mechanical line");
-    assert_eq!(line["text"], COULDNT_FINISH, "{failed}");
-    let work = line["resume_target"]["work_item_id"]
-        .as_str()
-        .expect("work_item_id")
-        .to_owned();
-    let run = line["resume_target"]["expected_run_id"]
-        .as_str()
-        .expect("expected_run_id")
-        .to_owned();
-    assert_eq!(
-        failed["runs"],
-        json!([{ "run_id": run, "state": "failed", "hold_reason": null }]),
-        "{failed}"
-    );
+    let Some(AnswerState::CouldntFinish {
+        try_again:
+            Some(WorkResumeTarget {
+                work_item_id: physician_wire::WorkItemId(work),
+                expected_run_id: run,
+            }),
+    }) = latest_answer(&failed)
+    else {
+        panic!("couldn't finish offers no Try again: {failed}")
+    };
+    assert_eq!(work, current_work(&store, &scope).await, "{failed}");
+    assert_eq!(run, current_run(&store, &scope).await, "{failed}");
 
     // A run that is not the failed one is refused and changes nothing.
     let (status, body) = post_json(
@@ -220,7 +218,7 @@ async fn a_turn_that_gave_up_shows_couldnt_finish_and_try_again_gets_the_reply()
     assert_eq!(body["outcome"], "accepted", "{body}");
 
     let answered = wait_snapshot(&site_listen, &snapshot_path, &session, |snapshot| {
-        texts(snapshot).contains(&support::FIXED_TEXT)
+        matches!(latest_answer(snapshot), Some(AnswerState::Finished { .. }))
     })
     .await
     .unwrap_or_else(|last| {
@@ -230,11 +228,16 @@ async fn a_turn_that_gave_up_shows_couldnt_finish_and_try_again_gets_the_reply()
         )
     });
     assert_eq!(texts(&answered), ["Hello", support::FIXED_TEXT]);
-    assert!(mechanical(&answered).is_none(), "{answered}");
-    let runs = answered["runs"].as_array().expect("runs");
-    assert_eq!(runs.len(), 1, "{answered}");
-    assert_eq!(runs[0]["state"], "completed", "{answered}");
-    assert_ne!(runs[0]["run_id"], run, "the answer is a successor attempt");
+    assert_eq!(
+        support::chat(&answered).transcript.len(),
+        1,
+        "Try again continues the same exchange: {answered}"
+    );
+    assert_ne!(
+        current_run(&store, &scope).await,
+        run,
+        "the answer is a successor run"
+    );
 
     // A reload without `?chat=` still finds this chat: the workspace lists it,
     // titled by its first message, ahead of the recording's empty list.
@@ -289,24 +292,15 @@ fn resume(workspace: &str, chat: &str, work: &str, run: &str, key: &str) -> Valu
     })
 }
 
-fn mechanical(snapshot: &Value) -> Option<&Value> {
-    snapshot["conversation"]
-        .as_array()?
-        .iter()
-        .find(|item| item["kind"] == "mechanical")
+/// The conversation's current work.
+async fn current_work(store: &Store, scope: &local_product::runtime::Scope) -> String {
+    store.read(scope).await.unwrap().unwrap().work
 }
 
-fn texts(snapshot: &Value) -> Vec<&str> {
-    snapshot["conversation"]
-        .as_array()
-        .map(|items| {
-            items
-                .iter()
-                .filter(|item| item["kind"] != "mechanical")
-                .filter_map(|item| item["text"].as_str())
-                .collect()
-        })
-        .unwrap_or_default()
+/// The current run of the conversation's current work.
+async fn current_run(store: &Store, scope: &local_product::runtime::Scope) -> String {
+    let state = store.read(scope).await.unwrap().unwrap();
+    state.run().unwrap().id.to_owned()
 }
 
 /// Polls the snapshot until `done`; on timeout, returns the last body seen.

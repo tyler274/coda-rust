@@ -52,7 +52,7 @@ pub(crate) fn revision_run(
             status: sea_orm::ActiveEnum::to_value(&draft.status),
             resume_target: draft.resumable_run().map(|resumable| {
                 physician_wire::WorkResumeTarget {
-                    work_item_id: reply.into(),
+                    work_item_id: physician_wire::WorkItemId(reply.into()),
                     expected_run_id: resumable.id.into(),
                 }
             }),

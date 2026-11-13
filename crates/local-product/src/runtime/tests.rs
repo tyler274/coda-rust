@@ -1418,6 +1418,7 @@ async fn engine_failure_stays_leased_until_the_lease_expires() {
             store: store.clone(),
             claim: claim.clone(),
             authority: OpenAuthority,
+            shown_steps: super::ShownSteps::new(()),
         };
         let cancel = engine::Cancellation::default();
         if cancelled {
@@ -2294,6 +2295,7 @@ async fn currency_is_read_only_and_renewal_touches_only_the_current_chat_attempt
         store: store.clone(),
         claim: claim.clone(),
         authority: OpenAuthority,
+        shown_steps: super::ShownSteps::new(()),
     };
     let sources =
         tokio::time::timeout(std::time::Duration::from_secs(1), host.message_sources()).await;
@@ -2427,6 +2429,7 @@ async fn deleted_history_source_is_absent_from_chords_records_and_successor_requ
         store: store.clone(),
         claim,
         authority: OpenAuthority,
+        shown_steps: super::ShownSteps::new(()),
     };
     let bounds = engine::RunLimits {
         max_calls: 8,
