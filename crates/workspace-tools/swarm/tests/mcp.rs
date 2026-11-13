@@ -222,6 +222,41 @@ fn members_post_read_add_and_wake_each_other_across_processes() {
 }
 
 #[test]
+fn a_worker_wait_parks_and_returns_unless_a_post_already_wakes_it() {
+    let dir = tempfile::tempdir().expect("tempdir");
+    let mut lead = Client::start(dir.path(), "lead", true);
+    lead.ok(
+        "swarm",
+        json!({ "action": "add", "name": "scout", "brief": "go" }),
+    );
+    let mut scout = Client::start(dir.path(), "scout", false);
+
+    let started = std::time::Instant::now();
+    let parked = scout.ok(
+        "swarm_wait",
+        json!({ "since": 1, "mentions_only": false, "timeout": 30 }),
+    );
+    assert!(started.elapsed() < std::time::Duration::from_secs(5));
+    assert_eq!(parked["parked"], true, "{parked}");
+    assert!(
+        parked["instruction"]
+            .as_str()
+            .expect("instruction")
+            .contains("End your turn")
+    );
+    let status = lead.ok("swarm", json!({ "action": "status" }));
+    let row = member(&status, "scout");
+    assert_eq!(row["state"], "waiting");
+    assert_eq!(row["wake_mode"], "anything");
+    assert_eq!(row["wait_since"], 1);
+
+    lead.ok("post_message", json!({ "text": "@scout one more thing" }));
+    let woke = scout.ok("swarm_wait", json!({ "since": 1 }));
+    assert_eq!(woke["woken"], true, "{woke}");
+    assert_eq!(woke["messages"][0]["text"], "@scout one more thing");
+}
+
+#[test]
 fn board_view_advertises_a_self_contained_mcp_app() {
     let dir = tempfile::tempdir().expect("tempdir");
     let mut lead = Client::start(dir.path(), "lead", true);

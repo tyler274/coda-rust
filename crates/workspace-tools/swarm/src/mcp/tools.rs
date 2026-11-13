@@ -62,7 +62,9 @@ impl Tool {
                 "Park until a post wakes you, then return every message in your view after \
                  `since`. Pass the highest seq you have read. By default only a post that \
                  mentions you wakes you; set mentions_only=false to wake for any visible post. \
-                 Returns woken=false after `timeout` seconds."
+                 The coordinator blocks and gets woken=false after `timeout` seconds. A worker \
+                 gets the messages at once if one already wakes it; otherwise it gets \
+                 parked=true and must end its turn, and the next wake starts a new turn."
             }
             Self::BoardView => {
                 "Snapshot of the whole swarm for display: title, members with state and model, \

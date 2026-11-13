@@ -398,6 +398,36 @@ fn waiting_member_wakes_for_a_mention() {
 }
 
 #[test]
+fn a_park_recorded_during_the_turn_sets_how_the_member_wakes() {
+    let h = harness(|_| {});
+    h.hold("scout", true);
+    h.spawn("scout", Workspace::Inherit, 1);
+    eventually("first turn", || h.turns().len() == 1);
+    h.supervisor
+        .store()
+        .update_roster(|roster| {
+            roster.member_mut(&name("scout"))?.state = MemberState::Waiting {
+                wake_mode: WakeMode::Anything,
+                wait_since: Seq::ZERO,
+            };
+            Ok::<_, RosterError>(())
+        })
+        .expect("park");
+    h.hold("scout", false);
+    eventually("member to park", || is_waiting(h.state("scout")));
+    assert_eq!(
+        h.state("scout"),
+        MemberState::Waiting {
+            wake_mode: WakeMode::Anything,
+            wait_since: Seq::ZERO,
+        }
+    );
+    h.post("status, anyone?");
+    eventually("woken by a post that names no one", || h.turns().len() == 3);
+    assert_eq!(h.turns()[1], "scout New post #1 from lead in #main:");
+}
+
+#[test]
 fn quota_exhaustion_pauses_and_posts_a_notice() {
     let h = harness(|_| {});
     h.spawn("quota", Workspace::Inherit, 1);

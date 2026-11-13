@@ -639,7 +639,7 @@ impl<S: Store, P: Spawner> Server<S, P> {
                 .unwrap_or(DEFAULT_WAIT_SECS)
                 .clamp(1, MAX_WAIT_SECS),
         );
-        let wait_since = self.store.update_roster(|roster| {
+        let (wait_since, supervised) = self.store.update_roster(|roster| {
             let member = roster.member_mut(&self.caller)?;
             if !member.state.is_live() {
                 return Err(ToolError::Killed(self.caller.clone()));
@@ -649,7 +649,7 @@ impl<S: Store, P: Spawner> Server<S, P> {
                 wake_mode,
                 wait_since,
             };
-            Ok(wait_since)
+            Ok((wait_since, member.role != Role::Coordinator))
         })?;
         let deadline = Instant::now() + timeout;
         loop {
@@ -659,6 +659,15 @@ impl<S: Store, P: Spawner> Server<S, P> {
             let woken = board
                 .iter()
                 .any(|m| rings(&roster, &self.caller, member, m));
+            if supervised && !woken {
+                return Ok(json!({
+                    "parked": true,
+                    "wait_since": wait_since,
+                    "instruction": "You are parked. End your turn now without calling another \
+                                    tool; a post that wakes you starts your next turn with the \
+                                    new messages.",
+                }));
+            }
             if woken || Instant::now() >= deadline {
                 self.store.update_roster(|roster| {
                     let member = roster.member_mut(&self.caller)?;

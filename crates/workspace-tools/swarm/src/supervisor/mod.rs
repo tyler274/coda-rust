@@ -622,9 +622,16 @@ impl<S: Store> Shared<S> {
         let mut cursor = loop {
             let parked = self.store.update_roster(|roster| {
                 let member = roster.member_mut(name)?;
-                let wait_since = since.max(member.last_read_seq);
+                let (wake_mode, wait_since) = match member.state {
+                    MemberState::Waiting {
+                        wake_mode,
+                        wait_since,
+                    } => (wake_mode, wait_since.max(since)),
+                    _ => (self.config.wake_mode, since),
+                };
+                let wait_since = wait_since.max(member.last_read_seq);
                 member.state = MemberState::Waiting {
-                    wake_mode: self.config.wake_mode,
+                    wake_mode,
                     wait_since,
                 };
                 Ok::<_, RosterError>(wait_since)
