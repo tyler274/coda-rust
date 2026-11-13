@@ -1,4 +1,4 @@
-//! Minimal production routes on one durable account context. In-memory care routes are not mounted here.
+//! Minimal production routes on one durable account context.
 use crate::{
     ApiError,
     evidence::{

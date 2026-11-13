@@ -1,7 +1,7 @@
 //! Duet-owned account, privacy, evidence, workspace and publication services.
 //! `main.rs` composes the durable route families and recovery workers.
-//! The earlier router in this module retains moments, front-door join/consent/
-//! premium and in-memory care routes for its callers; the binary does not mount it.
+//! The earlier router in this module retains moments and front-door join/consent/
+//! premium routes for its callers; the binary does not mount it.
 //! Book: `book/src/backend-architecture.md`.
 #![deny(missing_docs)]
 #![allow(
@@ -10,7 +10,6 @@
 )]
 
 pub mod background;
-pub mod care;
 #[expect(
     clippy::disallowed_methods,
     reason = "converting raw SQL to the typed database API"
@@ -311,7 +310,6 @@ impl moment_entity::Model {
 pub(crate) struct AppState {
     moments: Arc<dyn Moments>,
     dev_bearer: bool,
-    pub(crate) care: Arc<Mutex<care::ApiConnectedCare>>,
     pub(crate) accounts: Arc<Mutex<session::Accounts>>,
 }
 
@@ -323,71 +321,14 @@ pub fn router(moments: Arc<dyn Moments>) -> Router {
 
 /// Builds the router, including the dev bearer when asked.
 pub fn router_with(moments: Arc<dyn Moments>, dev_bearer: bool) -> Router {
-    router_with_care(
-        moments,
-        dev_bearer,
-        Arc::new(Mutex::new(care::ApiConnectedCare::default())),
-    )
-}
-
-/// Builds the router with an explicit Connected Care store.
-pub fn router_with_care(
-    moments: Arc<dyn Moments>,
-    dev_bearer: bool,
-    care: Arc<Mutex<care::ApiConnectedCare>>,
-) -> Router {
     // Explicit fixture-only surface. Never expose unauthenticated process-global
-    // care state when production authentication is selected.
+    // account state when production authentication is selected.
     if !dev_bearer {
         return Router::new();
     }
     Router::new()
         .route("/api/moments", get(list_moments))
         .route("/api/moments/{moment_id}", delete(remove_moment))
-        .route(
-            "/api/doctor-collection/share-link",
-            post(care::post_create_share_link).delete(care::delete_share_link),
-        )
-        .route(
-            "/shared/for-my-doctor/{token}",
-            get(care::get_shared_for_my_doctor),
-        )
-        .route(
-            "/api/physician-sharing/status",
-            get(care::get_sharing_status),
-        )
-        .route(
-            "/api/physician-sharing/accept-invitation",
-            post(care::post_accept_invitation),
-        )
-        .route(
-            "/api/physician-sharing/consent",
-            put(care::put_grant_consent),
-        )
-        .route(
-            "/api/physician-sharing/stop-sharing",
-            post(care::post_stop_sharing),
-        )
-        .route(
-            "/api/physician-sharing/records",
-            post(care::post_patient_record),
-        )
-        .route(
-            "/api/physician-sharing/consented-records",
-            get(care::get_consented_records),
-        )
-        .route(
-            "/api/luna-notes/propose",
-            post(care::post_propose_luna_note),
-        )
-        .route(
-            "/api/luna-notes/proposals",
-            get(care::get_luna_note_proposals),
-        )
-        .route(
-            "/api/luna-notes/{id}/approve",
-            post(care::post_approve_luna_note),
-        )
         .route("/api/auth/account", put(session::put_ensure_account))
         .route("/api/auth/account/terms", put(session::put_accept_terms))
         .route(
@@ -401,7 +342,6 @@ pub fn router_with_care(
         .with_state(AppState {
             moments,
             dev_bearer,
-            care,
             accounts: Arc::new(Mutex::new(session::Accounts::default())),
         })
 }
@@ -933,135 +873,6 @@ mod tests {
         assert_eq!(premium.status(), StatusCode::UNAUTHORIZED);
         let grant = request(&app, "POST", "/api/consent", Some("codaf-forged")).await;
         assert_eq!(grant.status(), StatusCode::UNAUTHORIZED);
-    }
-
-    #[tokio::test]
-    async fn connected_care_routes_enforce_consent_and_zero_private_leakage() {
-        let store = Arc::new(Memory {
-            rows: std::sync::Mutex::new(vec![moment()]),
-        });
-        let app = router_with(store, true);
-        let auth = "Bearer dev:00000000-0000-0000-0000-000000000001";
-
-        // Accept invitation & grant consent.
-        let accept = app
-            .clone()
-            .oneshot(
-                Request::builder()
-                    .method("POST")
-                    .uri("/api/physician-sharing/accept-invitation")
-                    .header("authorization", auth)
-                    .header("content-type", "application/json")
-                    .body(Body::from(
-                        r#"{"practice_id":"practice-coda-1","practice_name":"Coda Internal Medicine","patient_workspace_id":"pat-elena","invitation_token":"inv-1"}"#,
-                    ))
-                    .unwrap(),
-            )
-            .await
-            .unwrap();
-        assert_eq!(accept.status(), StatusCode::OK);
-
-        let propose = app
-            .clone()
-            .oneshot(
-                Request::builder()
-                    .method("POST")
-                    .uri("/api/luna-notes/propose")
-                    .header("authorization", auth)
-                    .header("content-type", "application/json")
-                    .body(Body::from(
-                        r#"{"date":"2026-10-13","title":"Sleep consistency","summary":"Sleeping 7.5 hours consistently.","private_operating_note":"private_luna_operating_index_do_not_leak"}"#,
-                    ))
-                    .unwrap(),
-            )
-            .await
-            .unwrap();
-        assert_eq!(propose.status(), StatusCode::OK);
-        let prop_bytes = axum::body::to_bytes(propose.into_body(), 64_000)
-            .await
-            .unwrap();
-        let prop_json: serde_json::Value = serde_json::from_slice(&prop_bytes).unwrap();
-        let prop_id = prop_json["id"].as_str().unwrap();
-
-        let approve = app
-            .clone()
-            .oneshot(
-                Request::builder()
-                    .method("POST")
-                    .uri(format!("/api/luna-notes/{prop_id}/approve"))
-                    .header("authorization", auth)
-                    .body(Body::empty())
-                    .unwrap(),
-            )
-            .await
-            .unwrap();
-        assert_eq!(approve.status(), StatusCode::OK);
-
-        let consent = app
-            .clone()
-            .oneshot(
-                Request::builder()
-                    .method("PUT")
-                    .uri("/api/physician-sharing/consent")
-                    .header("authorization", auth)
-                    .header("content-type", "application/json")
-                    .body(Body::from(r#"{"consent_version":"v1"}"#))
-                    .unwrap(),
-            )
-            .await
-            .unwrap();
-        assert_eq!(consent.status(), StatusCode::OK);
-
-        let read = app
-            .clone()
-            .oneshot(
-                Request::builder()
-                    .uri("/api/physician-sharing/consented-records")
-                    .header("authorization", auth)
-                    .body(Body::empty())
-                    .unwrap(),
-            )
-            .await
-            .unwrap();
-        assert_eq!(read.status(), StatusCode::OK);
-        let read_bytes = axum::body::to_bytes(read.into_body(), 64_000)
-            .await
-            .unwrap();
-        let read_str = String::from_utf8(read_bytes.to_vec()).unwrap();
-        assert!(!read_str.contains("private_luna_operating_index_do_not_leak"));
-        let read_json: serde_json::Value = serde_json::from_str(&read_str).unwrap();
-        assert_eq!(read_json["items"].as_array().unwrap().len(), 1);
-        assert_eq!(
-            read_json["items"][0]["category"],
-            "patient_approved_luna_note"
-        );
-
-        // Stop sharing in one step.
-        let stop = app
-            .clone()
-            .oneshot(
-                Request::builder()
-                    .method("POST")
-                    .uri("/api/physician-sharing/stop-sharing")
-                    .header("authorization", auth)
-                    .body(Body::empty())
-                    .unwrap(),
-            )
-            .await
-            .unwrap();
-        assert_eq!(stop.status(), StatusCode::OK);
-
-        let blocked = app
-            .oneshot(
-                Request::builder()
-                    .uri("/api/physician-sharing/consented-records")
-                    .header("authorization", auth)
-                    .body(Body::empty())
-                    .unwrap(),
-            )
-            .await
-            .unwrap();
-        assert_eq!(blocked.status(), StatusCode::FORBIDDEN);
     }
 
     fn session_app() -> Router {

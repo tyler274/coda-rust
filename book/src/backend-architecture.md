@@ -12,7 +12,7 @@ real-service journey.
 | Startup, configured stores and hosted profile | [`main.rs`](/crates/duet-api/src/main.rs), [`hosting.rs`](/crates/duet-api/src/hosting.rs) |
 | Duet accounts and authentication | [`identity.rs`](/crates/duet-api/src/identity.rs), [`session.rs`](/crates/duet-api/src/session.rs); [security boundaries](security-posture.md) |
 | Evidence identity, ingestion authority, exact reads and paging | [`evidence.rs`](/crates/duet-api/src/evidence.rs), [`evidence_entity.rs`](/crates/duet-api/src/evidence_entity.rs), [`evidence_routes.rs`](/crates/duet-api/src/evidence_routes.rs), [`evidence_paging.rs`](/crates/duet-api/src/evidence_paging.rs) |
-| Saved care, health context and producer grants | [`care.rs`](/crates/duet-api/src/care.rs), [`health_context.rs`](/crates/duet-api/src/health_context.rs), [`producer_routes.rs`](/crates/duet-api/src/producer_routes.rs), [`producer_database.rs`](/crates/duet-api/src/producer_database.rs) |
+| Health context and producer grants | [`health_context.rs`](/crates/duet-api/src/health_context.rs), [`producer_routes.rs`](/crates/duet-api/src/producer_routes.rs), [`producer_database.rs`](/crates/duet-api/src/producer_database.rs) |
 | Doctor preparation and publication implementation | [`workspace.rs`](/crates/duet-api/src/workspace.rs), [`doctor_routes.rs`](/crates/duet-api/src/doctor_routes.rs), [`publication.rs`](/crates/duet-api/src/publication.rs); preparation, review and saving are distinct from later publication to physicians outside Coda |
 | Privacy receipts, replay and deletion archive | [Privacy recovery](privacy-recovery.md) |
 | Schema and moments persistence | [`database.rs`](/crates/duet-api/src/database.rs), [`migrations/`](/crates/duet-api/migrations) |
