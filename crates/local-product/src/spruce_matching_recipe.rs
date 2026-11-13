@@ -31,7 +31,7 @@ use crate::runtime::spruce_matching::{
     MessageRoutingOutcome, MessageStanding, MessageUrgencyChoice, NonPatientCategory,
     OutsideParticipant, PendingSpruceReviewTrigger, SenderAddress, SpruceAttachmentSummary,
     SpruceMatchingError, allowed_workspaces_in_practice, dispatch_single_trigger, entities,
-    evaluate_channel_tie, execute_spruce_working_note, is_spruce_working_note_tool,
+    execute_spruce_working_note, is_spruce_working_note_tool,
     spruce_conversion_error as conversion_error, spruce_db_error as error,
     spruce_working_note_references,
 };
@@ -93,17 +93,23 @@ Follow one disciplined process:
      or family/caregiver relationship statements in the message itself.
    - Never produce numeric confidence scores, percentages, or probability ratings.
    - Select the exact match assessment variant:
-     * `suggested_patient`: permitted identity evidence points cleanly to one registered patient \
-       workspace and nothing points to another patient.
+     * `suggested_patient`: permitted identity evidence (including a confirmed sender address \
+       or unique channel contact/EHR tie when the message contains no contrary third-party \
+       clues) points cleanly to one registered patient workspace and nothing points to another \
+       person.
      * `ambiguous_candidates`: two or more registered patients could plausibly match (for example \
        siblings sharing a parent's phone number, a shared household contact, or matching names \
        without a distinguishing birth date); name every plausible workspace in \
        `candidate_workspaces` and explain the ambiguity in `evidence_summary`.
      * `conflicting_evidence`: sender or channel metadata points to one patient while the message \
-       names or describes a different patient (for example a spouse or parent texting from their \
-       own confirmed phone about another patient); name the conflicting workspaces in \
-       `candidate_workspaces` and state the contradiction plainly in `evidence_summary`.
-     * `no_match_found`: no patient on the practice roster matches the available identity evidence.
+       names or describes a different registered patient (for example a spouse or parent texting \
+       from their own confirmed phone about another registered patient); name the conflicting \
+       workspaces in `candidate_workspaces` and state the contradiction plainly in \
+       `evidence_summary`.
+     * `no_match_found`: no patient on the practice roster matches the person the message is \
+       about — including when a message arrives from a confirmed sender phone/email or linked \
+       channel contact (such as a registered parent, spouse, or family member) but asks about an \
+       unregistered child, relative, or third party who is not on the practice roster.
 
 4. Consult approved skill guidance when helpful and submit once:
    - Review the approved skill catalog metadata below and open a skill via `skill_view` only when \
@@ -853,6 +859,122 @@ impl Store {
             .collect::<Result<Vec<_>, _>>()
             .map_err(Into::into)
     }
+
+    /// Appends one harness execution event to `(practice, run_id)` for `attempt_id`,
+    /// enforcing attempt ownership, currency fencing, contiguous sequence numbers,
+    /// and idempotent `(attempt_id, sequence)` replay without duplicating tool discoveries.
+    pub async fn persist_spruce_matching_run_event(
+        &self,
+        practice: &str,
+        run_id: &str,
+        attempt_id: &str,
+        event: Event,
+    ) -> Result<(), engine::Cause> {
+        if event.attempt_id != attempt_id {
+            return Err(error("spruce matching event belongs to another attempt").into());
+        }
+        if event.sequence == 0 {
+            return Err(error("invalid spruce matching event sequence").into());
+        }
+
+        let clock = self.spruce_now().await?;
+        let tx = self.spruce_db().begin().await?;
+        let row = entities::spruce_matching_run::Entity::find_by_id((
+            practice.to_owned(),
+            run_id.to_owned(),
+        ))
+        .lock_exclusive()
+        .one(&tx)
+        .await?
+        .ok_or_else(|| error("spruce matching run missing"))?;
+        let mut run = decode_run_row(row.clone())?;
+
+        let msg_is_deciding = entities::spruce_message::Entity::find_by_id((
+            practice.to_owned(),
+            run.message_id.clone(),
+        ))
+        .one(&tx)
+        .await?
+        .is_some_and(|m| m.standing_kind == "deciding");
+        let is_current = run.status == MatchingRunStatus::Running
+            && run.attempt_id == attempt_id
+            && msg_is_deciding;
+        if !is_current && !event.kind.survives_loss_of_currency() {
+            return Err(error("stale spruce matching event").into());
+        }
+
+        if let Some(saved) = run
+            .events
+            .iter()
+            .find(|prior| prior.attempt_id == event.attempt_id && prior.sequence == event.sequence)
+        {
+            let saved_record =
+                serde_json::to_value(&saved.kind).map_err(conversion_error("EventKind", "json"))?;
+            let incoming_record =
+                serde_json::to_value(&event.kind).map_err(conversion_error("EventKind", "json"))?;
+            if saved.ordinal != event.ordinal || saved_record != incoming_record {
+                return Err(error("spruce matching event collision").into());
+            }
+            tx.commit().await?;
+            return Ok(());
+        }
+
+        let last_seq = run
+            .events
+            .iter()
+            .filter(|prior| prior.attempt_id == event.attempt_id)
+            .map(|prior| prior.sequence)
+            .max();
+        if event.sequence != last_seq.map_or(1, |seq| seq + 1) {
+            return Err(error("spruce matching event sequence gap").into());
+        }
+
+        if let EventKind::ToolReturned { call_id, result } = &event.kind {
+            let tool_name = run
+                .events
+                .iter()
+                .rev()
+                .find_map(|prior| match &prior.kind {
+                    EventKind::ToolStarted(call) if call.id == *call_id => Some(call.name.clone()),
+                    EventKind::ProviderReturned(turn) => turn
+                        .calls()
+                        .find(|c| c.id == *call_id)
+                        .map(|c| c.name.clone()),
+                    _ => None,
+                })
+                .unwrap_or_else(|| "unknown".to_owned());
+            let disposition = match result {
+                engine::results::ToolResult::Refused(refusal) => {
+                    ToolDiscoveryDisposition::Refused {
+                        reason: refusal.reason().to_owned(),
+                    }
+                }
+                engine::results::ToolResult::Original(_)
+                | engine::results::ToolResult::History(_)
+                | engine::results::ToolResult::View(_) => ToolDiscoveryDisposition::Returned,
+            };
+            run.tool_discoveries.push(RecordedToolDiscovery {
+                ordinal: event.ordinal,
+                call_id: call_id.clone(),
+                tool_name,
+                disposition,
+                recorded_at: clock,
+            });
+        }
+
+        run.events.push(event);
+        let discoveries_json = serde_json::to_value(&run.tool_discoveries)
+            .map_err(conversion_error("Vec<RecordedToolDiscovery>", "json"))?;
+        let events_json =
+            serde_json::to_value(&run.events).map_err(conversion_error("Vec<Event>", "json"))?;
+
+        let mut active: entities::spruce_matching_run::ActiveModel = row.into();
+        active.tool_discoveries = Set(discoveries_json);
+        active.events = Set(events_json);
+        active.update(&tx).await?;
+        tx.commit().await?;
+        Ok(())
+    }
 }
 
 /// Shared-harness [`Product`] host executing one unmatched Spruce message classification run.
@@ -951,71 +1073,14 @@ impl Product for SpruceMatchingHost<'_> {
     }
 
     async fn persist(&mut self, event: Event) -> Result<(), engine::Cause> {
-        let clock = self.store.spruce_now().await?;
-        let tx = self.store.spruce_db().begin().await?;
-        let row = entities::spruce_matching_run::Entity::find_by_id((
-            self.practice.clone(),
-            self.run_id.clone(),
-        ))
-        .lock_exclusive()
-        .one(&tx)
-        .await?
-        .ok_or_else(|| error("spruce matching run missing"))?;
-        let mut run = decode_run_row(row)?;
-
-        if let EventKind::ToolReturned { call_id, result } = &event.kind {
-            let tool_name = run
-                .events
-                .iter()
-                .rev()
-                .find_map(|prior| match &prior.kind {
-                    EventKind::ToolStarted(call) if call.id == *call_id => Some(call.name.clone()),
-                    EventKind::ProviderReturned(turn) => turn
-                        .calls()
-                        .find(|c| c.id == *call_id)
-                        .map(|c| c.name.clone()),
-                    _ => None,
-                })
-                .unwrap_or_else(|| "unknown".to_owned());
-            let disposition = match result {
-                engine::results::ToolResult::Refused(refusal) => {
-                    ToolDiscoveryDisposition::Refused {
-                        reason: refusal.reason().to_owned(),
-                    }
-                }
-                engine::results::ToolResult::Original(_)
-                | engine::results::ToolResult::History(_)
-                | engine::results::ToolResult::View(_) => ToolDiscoveryDisposition::Returned,
-            };
-            run.tool_discoveries.push(RecordedToolDiscovery {
-                ordinal: event.ordinal,
-                call_id: call_id.clone(),
-                tool_name,
-                disposition,
-                recorded_at: clock,
-            });
-        }
-
-        run.events.push(event);
-        let discoveries_json = serde_json::to_value(&run.tool_discoveries)
-            .map_err(conversion_error("Vec<RecordedToolDiscovery>", "json"))?;
-        let events_json =
-            serde_json::to_value(&run.events).map_err(conversion_error("Vec<Event>", "json"))?;
-
-        let mut active: entities::spruce_matching_run::ActiveModel =
-            entities::spruce_matching_run::Entity::find_by_id((
-                self.practice.clone(),
-                self.run_id.clone(),
-            ))
-            .one(&tx)
-            .await?
-            .ok_or_else(|| error("spruce matching run missing"))?
-            .into();
-        active.tool_discoveries = Set(discoveries_json);
-        active.events = Set(events_json);
-        active.update(&tx).await?;
-        tx.commit().await?;
-        Ok(())
+        self.store
+            .persist_spruce_matching_run_event(
+                &self.practice,
+                &self.run_id,
+                &self.attempt_id,
+                event,
+            )
+            .await
     }
 
     fn saved_outcome(
@@ -1346,44 +1411,20 @@ pub async fn build_matching_starting_context(
             id: msg.conversation_id.clone(),
         })?;
 
-    let roster = store
-        .authorized_practice_roster_for_matching(auth, practice)
+    let registered_workspaces: BTreeSet<String> = auth
+        .practice_patients(practice)
+        .await?
+        .into_iter()
+        .collect();
+    let (confirmed_set, channel_tie) = store
+        .evaluate_conversation_identity_for_matching(
+            practice,
+            msg.sender_address.as_ref(),
+            &conv.outside_participants,
+            &registered_workspaces,
+        )
         .await?;
-    let mut confirmed_sender_workspaces = Vec::new();
-    if let Some(sender) = &msg.sender_address {
-        for entry in &roster {
-            if entry.confirmed_senders.contains(sender) {
-                confirmed_sender_workspaces.push(entry.workspace.clone());
-            }
-        }
-    }
-
-    let contact_rows = entities::spruce_contact::Entity::find()
-        .filter(entities::spruce_contact::Column::Practice.eq(practice))
-        .all(store.spruce_db())
-        .await?;
-    let mut contacts_by_id = std::collections::BTreeMap::new();
-    for row in contact_rows {
-        let patients: Vec<crate::runtime::spruce_matching::SpruceContactPatient> =
-            serde_json::from_value(row.spruce_patients).map_err(conversion_error(
-                "spruce_contact.spruce_patients",
-                "Vec<SpruceContactPatient>",
-            ))?;
-        contacts_by_id.insert(row.contact_id, patients);
-    }
-    let mut ehr_map: std::collections::BTreeMap<
-        crate::runtime::spruce_matching::SpruceEhrLink,
-        BTreeSet<String>,
-    > = std::collections::BTreeMap::new();
-    for entry in &roster {
-        for ehr in &entry.ehr_links {
-            ehr_map
-                .entry(ehr.clone())
-                .or_default()
-                .insert(entry.workspace.clone());
-        }
-    }
-    let channel_tie = evaluate_channel_tie(&conv.outside_participants, &contacts_by_id, &ehr_map);
+    let confirmed_sender_workspaces: Vec<String> = confirmed_set.into_iter().collect();
 
     Ok(MatchingStartingContext {
         practice: msg.practice,
