@@ -1,5 +1,6 @@
-//! Loads the built extension in Chromium and drives its popup page, whose content security policy
-//! is the reason the UI library runs without eval.
+//! Loads the built extension in Chromium and drives its popup page: verifies its manifest name,
+//! optional host permissions before connection, CSP `eval` refusal, storage hygiene (no persisted
+//! sign-in tokens), and keyboard menu navigation.
 
 #[allow(dead_code)]
 #[path = "../../mobile/tests/common/devtools.rs"]
@@ -26,7 +27,6 @@ fn the_popup_runs_under_its_own_page_policy() {
 
     let mut browser = Browser::launch_with_extension(&extension);
     browser.watch_page_errors();
-    // Chromium registers the extension a moment after it starts, so the first visit may miss it.
     let page = format!("chrome-extension://{id}/options.html");
     let deadline = Instant::now() + Duration::from_secs(30);
     while !holds(&mut browser, "document.querySelector('.top-bar') !== null") {
@@ -34,7 +34,6 @@ fn the_popup_runs_under_its_own_page_policy() {
         browser.page().navigate(&page);
         std::thread::sleep(Duration::from_millis(500));
     }
-    // Registered now, so one more load is watched whole: what came before it was a missed visit's.
     browser.take_page_errors();
     browser.page().navigate(&page);
     wait(&mut browser, "document.querySelector('.top-bar') !== null");
@@ -48,11 +47,45 @@ fn the_popup_runs_under_its_own_page_policy() {
         "the page should refuse eval, or this proves nothing"
     );
 
-    // No Hint tab is open, so the real worker's reply reads as the first step to ready.
+    assert_eq!(
+        browser.page().evaluate("chrome.runtime.getManifest().name"),
+        Value::String("Coda".to_owned()),
+        "extension manifest name must be Coda"
+    );
+
+    // Reader host permissions are optional and must not be pre-granted before connecting.
+    let pre_granted = browser.page().call_session(
+        "Runtime.evaluate",
+        json!({
+            "expression": "chrome.permissions.contains({ origins: ['https://app.hint.com/*', 'https://api.hint.com/*'] })",
+            "awaitPromise": true,
+            "returnByValue": true
+        }),
+    )["result"]["result"]["value"]
+        .clone();
+    assert_eq!(
+        pre_granted,
+        Value::Bool(false),
+        "optional reader host permissions must not be pre-granted before connecting"
+    );
+
+    // Unpaired fresh extension asks to pair with Coda first.
     wait(
         &mut browser,
-        "document.body.innerText.includes('Open Hint to connect')",
+        "document.body.innerText.includes('Pair with Coda')",
     );
+
+    // Storage hygiene: neither chrome.storage.local nor chrome.storage.session holds any token on disk/start.
+    let storage_clean = browser.page().call_session(
+        "Runtime.evaluate",
+        json!({
+            "expression": "(async () => { const local = await chrome.storage.local.get(null); const sess = await chrome.storage.session.get(null); const s = JSON.stringify({local, sess}); return !s.includes('id_token') && !s.includes('refresh_token') && !s.includes('Bearer '); })()",
+            "awaitPromise": true,
+            "returnByValue": true
+        }),
+    )["result"]["result"]["value"]
+        .clone();
+    assert_eq!(storage_clean, Value::Bool(true));
 
     let at = browser.page().evaluate(
         "(() => { const box = document.querySelector('[popovertarget]').getBoundingClientRect(); \
@@ -86,10 +119,8 @@ fn the_popup_runs_under_its_own_page_policy() {
     assert_eq!(browser.take_page_errors(), Vec::<String>::new());
 }
 
-/// Builds the popup as the extension's README says, so the test can't load an older one.
 fn build_popup(workspace: &PathBuf, extension: &std::path::Path) {
     let run = |command: &mut Command| {
-        // Cargo's own variables for this test would change the inner build's fingerprints.
         for (key, _) in std::env::vars_os() {
             let key = key.to_string_lossy().into_owned();
             let kept = matches!(
@@ -120,12 +151,10 @@ fn build_popup(workspace: &PathBuf, extension: &std::path::Path) {
         .arg(target.join("wasm32-unknown-unknown/debug/extension-popup.wasm")));
 }
 
-/// Whether `expression` holds now, on a page that may not have loaded yet.
 fn holds(browser: &mut Browser, expression: &str) -> bool {
     strictly(browser, expression) == Value::Bool(true)
 }
 
-/// `expression`'s value under the page's own policy, which DevTools otherwise evaluates past.
 fn strictly(browser: &mut Browser, expression: &str) -> Value {
     browser.page().call_session(
         "Runtime.evaluate",
