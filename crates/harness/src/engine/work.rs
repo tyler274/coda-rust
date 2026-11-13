@@ -32,11 +32,14 @@ const EFFECT_TIMED_OUT: &str = "This call timed out before it finished and its o
 // Three identical refusals establish a loop worth drawing to the model's attention.
 const REPEATED_FAILURE_THRESHOLD: u8 = 3;
 
-/// A tool call still running at [`TOOL_DEADLINE`]. Its operation was dropped,
-/// so an effect it started may or may not have happened.
-#[derive(Debug, thiserror::Error)]
-#[error("tool call did not finish within its deadline")]
-struct ToolTimedOut(#[source] tokio::time::error::Elapsed);
+/// Why a tool call that ran gave no outcome.
+enum NoOutcome {
+    /// The product's operation answered with an error.
+    Error(ProductError),
+    /// The call was still running at [`TOOL_DEADLINE`]. Its operation was
+    /// dropped, so an effect it started may or may not have happened.
+    TimedOut,
+}
 
 /// The shared batching rule, also used by product owners to fence writes.
 /// Unknown tools remain barriers; shared tool behavior has one owner.
@@ -474,9 +477,11 @@ impl<'a> Run<'a> {
                             let index = next;
                             next += 1;
                             pending.spawn(async move {
-                                let outcome = tokio::time::timeout(TOOL_DEADLINE, operation)
-                                    .await
-                                    .unwrap_or_else(|elapsed| Err(ToolTimedOut(elapsed).into()));
+                                let outcome =
+                                    match tokio::time::timeout(TOOL_DEADLINE, operation).await {
+                                        Ok(outcome) => outcome.map_err(NoOutcome::Error),
+                                        Err(_) => Err(NoOutcome::TimedOut),
+                                    };
                                 (index, outcome)
                             });
                         }
@@ -504,11 +509,11 @@ impl<'a> Run<'a> {
                 };
                 let (index, outcome) = match completed {
                     Ok((index, Ok(outcome))) => (index, outcome),
-                    Ok((index, Err(error))) => {
-                        match self
-                            .tool_failed(&batch[index], error, failure.is_some())
-                            .await
-                        {
+                    // A failure already ends the batch, so this call's own
+                    // error changes nothing.
+                    Ok((_, Err(_))) if failure.is_some() => continue,
+                    Ok((index, Err(no_outcome))) => {
+                        match self.tool_failed(&batch[index], no_outcome).await {
                             Ok(outcome) => (index, outcome),
                             Err(error) => {
                                 failure.get_or_insert(error);
@@ -559,21 +564,20 @@ impl<'a> Run<'a> {
     /// text is fixed; the error itself never reaches the model. A call that
     /// reached its deadline takes this path too, and its text says it timed
     /// out. A tool whose product answered that the work no longer wants this
-    /// attempt, or a failure already ending the batch, ends the attempt with
-    /// the error. When the attempt is no longer current, the currency check's
-    /// failure ends it, so newer input interrupts it.
+    /// attempt ends the attempt with that answer. When the attempt is no
+    /// longer current, the currency check's failure ends it, so newer input
+    /// interrupts it.
     async fn tool_failed(
         &mut self,
         call: &Invocation,
-        error: ProductError,
-        ending: bool,
+        no_outcome: NoOutcome,
     ) -> Result<ToolOutcome, Failure> {
-        let error = match error {
-            ProductError::Failed(error) if !ending => error,
-            error => return Err(error.into()),
+        let timed_out = match no_outcome {
+            NoOutcome::Error(error @ ProductError::NotCurrent(_)) => return Err(error.into()),
+            NoOutcome::Error(ProductError::Failed(_)) => false,
+            NoOutcome::TimedOut => true,
         };
         while_current(self.cancel, self.check()).await?;
-        let timed_out = error.is::<ToolTimedOut>();
         let read_only = tool_is_read_only(self.product, &call.name);
         Ok(ToolOutcome::Refused(match (read_only, timed_out) {
             (true, false) => recipe::Refusal::new(READ_FAILED),
