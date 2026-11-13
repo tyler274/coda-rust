@@ -9,14 +9,16 @@ use serde_json::{Value, json};
 
 use super::spawner::{SpawnError, SpawnSpec, Spawner, Workspace};
 use super::tools::{
-    DEFAULT_LIMIT, DEFAULT_VIEW_LIMIT, DEFAULT_WAIT_SECS, MAX_LIMIT, MAX_WAIT_SECS, Tool,
+    DEFAULT_LIMIT, DEFAULT_VIEW_LIMIT, DEFAULT_WAIT_SECS, MAX_LIMIT, MAX_SEQS, MAX_WAIT_SECS, Tool,
 };
 use crate::adapter::Catalog;
 use crate::mention::Mention;
 use crate::message::{Control, Draft, Message, MessageKind, Seq};
 use crate::names::{ChannelName, MemberName, NameError};
 use crate::policy::rings;
-use crate::roster::{Member, MemberState, Role, Roster, RosterError, Topic, TopicError, WakeMode};
+use crate::roster::{
+    ChannelError, Member, MemberState, Role, Roster, RosterError, Topic, TopicError, WakeMode,
+};
 use crate::store::{AppendError, Store, StoreError, UpdateError};
 
 const POLL: Duration = Duration::from_millis(200);
@@ -58,6 +60,8 @@ pub enum ToolError {
         action: &'static str,
         param: &'static str,
     },
+    #[error("`seqs` takes 1 to {MAX_SEQS} seqs and cannot be combined with `since`")]
+    Seqs,
     #[error("join needs a shared remote board, which this build does not support yet")]
     JoinUnsupported,
     #[error(
@@ -179,6 +183,27 @@ struct PostArgs {
 struct ReadArgs {
     since: Option<Seq>,
     limit: Option<usize>,
+    seqs: Option<Vec<Seq>>,
+    channel: Option<Scope>,
+}
+
+/// Which channels `read_board` reads: one channel's history, or every
+/// channel (`"*"`). Absent, it reads the caller's view.
+#[derive(Deserialize)]
+#[serde(try_from = "String")]
+enum Scope {
+    All,
+    Channel(ChannelName),
+}
+
+impl TryFrom<String> for Scope {
+    type Error = NameError;
+    fn try_from(text: String) -> Result<Self, NameError> {
+        if text == "*" {
+            return Ok(Self::All);
+        }
+        ChannelName::parse(&text).map(Self::Channel)
+    }
 }
 
 #[derive(Deserialize)]
@@ -612,17 +637,62 @@ impl<S: Store, P: Spawner> Server<S, P> {
     }
 
     fn read(&self, args: ReadArgs) -> Result<Value, ToolError> {
-        let limit = args.limit.unwrap_or(DEFAULT_LIMIT).clamp(1, MAX_LIMIT);
         let roster = self.store.roster()?;
-        let mut visible = self.visible_since(&roster, args.since.unwrap_or(Seq::ZERO))?;
-        if args.since.is_some() {
-            visible.truncate(limit);
-        } else {
-            visible.drain(..visible.len().saturating_sub(limit));
+        let member = roster.member(&self.caller)?;
+        if let Some(Scope::Channel(channel)) = &args.channel
+            && !channel.is_main()
+            && !roster.channels().contains_key(channel)
+        {
+            return Err(RosterError::from(ChannelError::Unknown(channel.clone())).into());
         }
-        let last_read_seq = self.mark_read(visible.last().map(|m| m.seq))?;
+        let in_scope = |m: &Message| match &args.channel {
+            None => roster.sees(&self.caller, member, m, &m.mentions()),
+            Some(Scope::All) => true,
+            Some(Scope::Channel(channel)) => m.channel == *channel,
+        };
+        if let Some(seqs) = args.seqs {
+            let (Some(&first), Some(&last)) = (seqs.iter().min(), seqs.iter().max()) else {
+                return Err(ToolError::Seqs);
+            };
+            if seqs.len() > MAX_SEQS || args.since.is_some() {
+                return Err(ToolError::Seqs);
+            }
+            let span =
+                usize::try_from(last.0 - first.0).map_or(usize::MAX, |n| n.saturating_add(1));
+            let messages: Vec<Message> = self
+                .store
+                .read_since(Seq(first.0.saturating_sub(1)), span)?
+                .into_iter()
+                .filter(|m| seqs.contains(&m.seq) && in_scope(m))
+                .collect();
+            let missing: Vec<Seq> = seqs
+                .iter()
+                .filter(|seq| !messages.iter().any(|m| m.seq == **seq))
+                .copied()
+                .collect();
+            return Ok(json!({
+                "messages": messages,
+                "missing": missing,
+                "head": self.store.head()?,
+            }));
+        }
+        let limit = args.limit.unwrap_or(DEFAULT_LIMIT).clamp(1, MAX_LIMIT);
+        let mut messages: Vec<Message> = self
+            .store
+            .read_since(args.since.unwrap_or(Seq::ZERO), usize::MAX)?
+            .into_iter()
+            .filter(in_scope)
+            .collect();
+        if args.since.is_some() {
+            messages.truncate(limit);
+        } else {
+            messages.drain(..messages.len().saturating_sub(limit));
+        }
+        let covers_view = !matches!(args.channel, Some(Scope::Channel(_)));
+        let last_read_seq =
+            self.mark_read(messages.last().filter(|_| covers_view).map(|m| m.seq))?;
         Ok(json!({
-            "messages": visible,
+            "messages": messages,
             "head": self.store.head()?,
             "last_read_seq": last_read_seq,
         }))

@@ -56,7 +56,10 @@ impl Tool {
             Self::ReadBoard => {
                 "Read board messages in your view (main, your channels, and posts that mention \
                  you). Without `since`, returns the newest `limit`; with `since`, the oldest \
-                 after it, for paging forward. Advances your read cursor."
+                 after it, for paging forward. `seqs` fetches exact messages, such as cited \
+                 #N posts. `channel` reads one channel's history, including one you are not \
+                 in, or \"*\" for every channel. Advances your read cursor, except for `seqs` \
+                 and a single `channel`."
             }
             Self::SwarmWait => {
                 "Park until a post wakes you, then return every message in your view after \
@@ -135,7 +138,18 @@ impl Tool {
             Self::ReadBoard => object(
                 json!({
                     "since": { "type": "integer", "minimum": 0, "description": "Return messages after this seq." },
-                    "limit": { "type": "integer", "minimum": 1, "maximum": MAX_LIMIT, "default": DEFAULT_LIMIT }
+                    "limit": { "type": "integer", "minimum": 1, "maximum": MAX_LIMIT, "default": DEFAULT_LIMIT },
+                    "seqs": {
+                        "type": "array",
+                        "items": { "type": "integer", "minimum": 1 },
+                        "minItems": 1,
+                        "maxItems": MAX_SEQS,
+                        "description": "Fetch exactly these messages; seqs not found are listed in `missing`."
+                    },
+                    "channel": {
+                        "type": "string",
+                        "description": "Read one channel's history, or \"*\" for every channel, instead of your view."
+                    }
                 }),
                 &[],
             ),
@@ -194,6 +208,7 @@ impl Tool {
 pub const DEFAULT_LIMIT: usize = 20;
 pub const DEFAULT_VIEW_LIMIT: usize = 50;
 pub const MAX_LIMIT: usize = 500;
+pub const MAX_SEQS: usize = 100;
 pub const DEFAULT_WAIT_SECS: u64 = 120;
 pub const MAX_WAIT_SECS: u64 = 3600;
 

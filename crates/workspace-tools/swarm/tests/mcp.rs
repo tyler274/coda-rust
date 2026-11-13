@@ -465,6 +465,57 @@ fn the_coordinator_sees_every_channel_and_workers_see_their_own() {
     assert!(!texts.contains(&"ops-only progress"), "{texts:?}");
 }
 
+#[test]
+fn read_board_fetches_exact_seqs_and_any_channel_history() {
+    let dir = tempfile::tempdir().expect("tempdir");
+    let mut lead = Client::start(dir.path(), "lead", true);
+    lead.ok(
+        "swarm",
+        json!({ "action": "channel", "op": "create", "channel": "ops", "topic": "deploys" }),
+    );
+    lead.ok(
+        "swarm",
+        json!({ "action": "add", "name": "scout", "brief": "go" }),
+    );
+    let on_ops = lead.ok(
+        "post_message",
+        json!({ "text": "rollout plan", "channel": "ops" }),
+    )["seq"]
+        .clone();
+    let on_main = lead.ok("post_message", json!({ "text": "general note" }))["seq"].clone();
+
+    let mut scout = Client::start(dir.path(), "scout", false);
+    let fetched = scout.ok("read_board", json!({ "seqs": [on_main, 99] }));
+    assert_eq!(fetched["messages"][0]["text"], "general note");
+    assert_eq!(fetched["missing"], json!([99]));
+    let hidden = scout.ok("read_board", json!({ "seqs": [on_ops] }));
+    assert_eq!(
+        hidden["missing"],
+        json!([on_ops]),
+        "ops is outside scout's view"
+    );
+
+    let ops = scout.ok("read_board", json!({ "channel": "ops" }));
+    let texts: Vec<&str> = ops["messages"]
+        .as_array()
+        .expect("messages")
+        .iter()
+        .map(|m| m["text"].as_str().expect("text"))
+        .collect();
+    assert_eq!(texts, ["[channel] created #ops: deploys", "rollout plan"]);
+    assert_eq!(
+        ops["last_read_seq"], 0,
+        "one channel does not advance the cursor"
+    );
+    let all = scout.ok("read_board", json!({ "channel": "*", "seqs": [on_ops] }));
+    assert_eq!(all["messages"][0]["text"], "rollout plan");
+
+    let refused = scout.refused("read_board", json!({ "channel": "nope" }));
+    assert!(refused.contains("does not exist"), "{refused}");
+    let refused = scout.refused("read_board", json!({ "seqs": [1], "since": 0 }));
+    assert!(refused.contains("`seqs`"), "{refused}");
+}
+
 /// A worker turn: posts through its own `coda-swarm mcp`, then hangs with a
 /// background child whose pid it writes to `$dir/<member>.child`.
 const STUB_WORKER: &str = r#"#!/bin/sh
