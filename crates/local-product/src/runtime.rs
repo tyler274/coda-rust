@@ -30,6 +30,8 @@ use uuid::Uuid;
 
 /// Hosted chat drafts: the physician's unsent composer text per chat.
 pub mod chat_draft;
+/// Patient concerns raised, revised, and retired by Coda, and cleared `Done` by physicians.
+pub mod concerns;
 mod control;
 pub use control::Lease;
 /// Queue delivery recovery uses the conversation owner, not a parallel ledger.
@@ -74,7 +76,7 @@ pub struct Scope {
 }
 
 impl Scope {
-    fn validate(&self) -> Result<(), DbErr> {
+    pub(super) fn validate(&self) -> Result<(), DbErr> {
         if [&self.practice, &self.physician, &self.workspace, &self.chat]
             .iter()
             .any(|s| s.trim().is_empty())
@@ -821,11 +823,11 @@ fn database_clock() -> Expr {
     Expr::cust("floor(extract(epoch FROM clock_timestamp()))::bigint")
 }
 
-async fn now(tx: &sea_orm::DatabaseTransaction) -> Result<i64, DbErr> {
+async fn now(db: &impl ConnectionTrait) -> Result<i64, DbErr> {
     let query = Query::select()
         .expr_as(database_clock(), Alias::new("now"))
         .to_owned();
-    tx.query_one(&query)
+    db.query_one(&query)
         .await?
         .ok_or_else(|| error("missing database clock"))?
         .try_get("", "now")
@@ -959,6 +961,7 @@ impl Store {
         {
             return Err(error("empty command field").into());
         }
+        scope.validate()?;
         let tx = self.db.begin().await?;
         let command = serde_json::json!({"scope": scope, "input": input});
         match receipt::record(&tx, &scope.practice, &scope.physician, &input.key, &command).await? {
