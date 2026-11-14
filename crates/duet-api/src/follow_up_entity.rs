@@ -159,6 +159,21 @@ pub mod command {
         Cancelled,
     }
 
+    /// `duet_commands.work_kind`, as its check constraint allows.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, EnumIter, DeriveActiveEnum)]
+    #[sea_orm(rs_type = "String", db_type = "Text")]
+    pub enum WorkKind {
+        /// Interactive patient conversation command.
+        #[sea_orm(string_value = "message")]
+        Message,
+        /// Proactive Today slot generation.
+        #[sea_orm(string_value = "today")]
+        Today,
+        /// Scheduled proactive follow-up occurrence.
+        #[sea_orm(string_value = "follow_up")]
+        FollowUp,
+    }
+
     /// Mapped subset of one `public.duet_commands` row.
     #[derive(Clone, Debug, PartialEq, DeriveEntityModel)]
     #[sea_orm(schema_name = "public", table_name = "duet_commands")]
@@ -169,6 +184,8 @@ pub mod command {
         /// Command identity.
         #[sea_orm(primary_key, auto_increment = false)]
         pub id: Uuid,
+        /// Kind of accepted work.
+        pub work_kind: WorkKind,
         /// Execution state.
         pub state: State,
         /// Current worker lease; `None` when unleased.

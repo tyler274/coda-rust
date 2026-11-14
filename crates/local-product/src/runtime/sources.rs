@@ -124,8 +124,24 @@ pub(super) async fn observed(
     selected(tx, workspace, None).await
 }
 
+/// Reconstructs the workspace's retained observation as of an earlier or current
+/// `version` inside an already-fenced transaction.
+pub(super) async fn observed_at(
+    tx: &impl ConnectionTrait,
+    workspace: &str,
+    version: u64,
+) -> Result<Observation, DbErr> {
+    let mut sources = Vec::new();
+    for row in latest(tx, workspace, version, None).await? {
+        if let Some(source) = decode(&row)? {
+            sources.push(source);
+        }
+    }
+    Ok(Observation { version, sources })
+}
+
 /// Pins the current source version for every reader that must serialize with ingestion.
-async fn pin_version(tx: &impl ConnectionTrait, workspace: &str) -> Result<u64, DbErr> {
+pub(super) async fn pin_version(tx: &impl ConnectionTrait, workspace: &str) -> Result<u64, DbErr> {
     ensure_version(tx, workspace).await?;
     let row = source_version::Entity::find_by_id(workspace.to_owned())
         .lock_shared()
@@ -537,6 +553,15 @@ impl Store {
     pub async fn sources(&self, workspace: &str) -> Result<Observation, DbErr> {
         let tx = self.db.begin().await?;
         let observation = observed(&tx, workspace).await?;
+        tx.commit().await?;
+        Ok(observation)
+    }
+
+    /// Read-only snapshot of a workspace's committed observation without row locks.
+    pub async fn sources_snapshot(&self, workspace: &str) -> Result<Observation, DbErr> {
+        let tx = self.snapshot().await?;
+        let version = snapshot_version_in_tx(&tx, workspace).await?;
+        let observation = observed_at(&tx, workspace, version).await?;
         tx.commit().await?;
         Ok(observation)
     }
