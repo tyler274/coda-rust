@@ -30,6 +30,8 @@ use uuid::Uuid;
 
 /// Hosted chat drafts: the physician's unsent composer text per chat.
 pub mod chat_draft;
+/// Patient starting context, readability limits, durable memory, source refresh, and chat tool dispatch.
+pub mod chat_operations;
 /// Patient concerns raised, revised, and retired by Coda, and cleared `Done` by physicians.
 pub mod concerns;
 mod control;
@@ -615,6 +617,8 @@ pub struct Store {
     db: DatabaseConnection,
     clinical_library: crate::clinical_library::ClinicalLibraryClient,
     source_refresh: std::sync::Arc<dyn refresh::PatientSourceRefresh>,
+    refresh_operation: std::sync::Arc<dyn chat_operations::PatientRefreshOperation>,
+    memory_operation: std::sync::Arc<dyn chat_operations::PatientMemoryOperation>,
 }
 
 fn error(message: &str) -> DbErr {
@@ -877,6 +881,8 @@ impl Store {
             db,
             clinical_library: crate::clinical_library::ClinicalLibraryClient::from_env(),
             source_refresh: std::sync::Arc::new(refresh::FixedSourceCheck::new()),
+            refresh_operation: std::sync::Arc::new(chat_operations::RuntimeSourceRefreshOperation),
+            memory_operation: std::sync::Arc::new(chat_operations::PostgresPatientMemoryOperation),
         }
     }
 
@@ -887,6 +893,34 @@ impl Store {
     ) -> Self {
         self.clinical_library = clinical_library;
         self
+    }
+
+    /// Returns a clone bound to an explicit [`chat_operations::PatientRefreshOperation`].
+    pub fn with_refresh_operation(
+        mut self,
+        refresh_operation: std::sync::Arc<dyn chat_operations::PatientRefreshOperation>,
+    ) -> Self {
+        self.refresh_operation = refresh_operation;
+        self
+    }
+
+    /// Returns a clone bound to an explicit [`chat_operations::PatientMemoryOperation`].
+    pub fn with_memory_operation(
+        mut self,
+        memory_operation: std::sync::Arc<dyn chat_operations::PatientMemoryOperation>,
+    ) -> Self {
+        self.memory_operation = memory_operation;
+        self
+    }
+
+    /// Returns the configured [`chat_operations::PatientRefreshOperation`].
+    pub fn refresh_operation(&self) -> &dyn chat_operations::PatientRefreshOperation {
+        self.refresh_operation.as_ref()
+    }
+
+    /// Returns the configured [`chat_operations::PatientMemoryOperation`].
+    pub fn memory_operation(&self) -> &dyn chat_operations::PatientMemoryOperation {
+        self.memory_operation.as_ref()
     }
 
     /// Clinical library client configured for chat tool execution.
@@ -906,6 +940,8 @@ impl Store {
         source_refresh: std::sync::Arc<dyn refresh::PatientSourceRefresh>,
     ) -> Self {
         self.source_refresh = source_refresh;
+        self.refresh_operation =
+            std::sync::Arc::new(chat_operations::RuntimeSourceRefreshOperation);
         self
     }
 

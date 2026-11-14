@@ -1033,6 +1033,24 @@ impl Store {
         map_tool_outcome(result)
     }
 
+    /// Executes a [`RefreshRequest`] inside an already-fenced physician chat turn
+    /// after [`Product::assert_current`] verified session and panel access.
+    pub(super) async fn refresh_sources_for_claimed_chat(
+        &self,
+        scope: &Scope,
+        request: &RefreshRequest,
+    ) -> Result<RefreshReport, RefreshError> {
+        let actor = physician_actor(&scope.physician);
+        self.refresh_sources_core(
+            &scope.practice,
+            &actor,
+            &scope.workspace,
+            request,
+            self.source_refresh(),
+        )
+        .await
+    }
+
     /// Executes [`REFRESH_TOOL`] inside an already-fenced [`super::PhysicianHost`]
     /// turn after [`Product::assert_current`] verified session and panel access.
     pub(super) async fn execute_claimed_physician_refresh_tool(

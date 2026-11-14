@@ -985,3 +985,52 @@ pub(super) mod schedule_appointment {
 
     impl ActiveModelBehavior for ActiveModel {}
 }
+
+/// Durable patient memory entry for `(practice, workspace)`, carrying clinical
+/// summaries and dated physician chat corrections across sessions and runs.
+/// Created by `m20261112_chat_memory`.
+pub(super) mod patient_memory {
+    use sea_orm::entity::prelude::*;
+
+    #[derive(Clone, Debug, PartialEq, Eq, DeriveEntityModel)]
+    #[sea_orm(table_name = "physician_runtime_patient_memory")]
+    pub struct Model {
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub practice: String,
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub workspace: String,
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub id: String,
+        /// `active` or `retired`.
+        #[sea_orm(column_type = "Text")]
+        pub status: String,
+        /// Short clinical topic naming what this memory entry covers.
+        #[sea_orm(column_type = "Text")]
+        pub topic: String,
+        /// Durable statement carried forward across conversations and runs.
+        #[sea_orm(column_type = "Text")]
+        pub statement: String,
+        /// Serialized `MemoryProvenance` distinguishing physician chat input from clinical summary jobs.
+        #[sea_orm(column_type = "JsonBinary")]
+        pub provenance: Json,
+        /// Single-line retirement reason, present iff `status = 'retired'`.
+        #[sea_orm(column_type = "Text")]
+        pub retirement_reason: Option<String>,
+        /// Serialized `MemoryProvenance` that retired this entry, present iff `status = 'retired'`.
+        #[sea_orm(column_type = "JsonBinary")]
+        pub retired_by: Option<Json>,
+        /// Database-clock seconds when retired, present iff `status = 'retired'`.
+        pub retired_at: Option<i64>,
+        /// Database-clock seconds when first recorded.
+        pub created_at: i64,
+        /// Database-clock seconds of the latest mutation.
+        pub updated_at: i64,
+        /// 1 when recorded; incremented on every update or retirement.
+        pub revision: i64,
+    }
+
+    #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
+    pub enum Relation {}
+
+    impl ActiveModelBehavior for ActiveModel {}
+}
