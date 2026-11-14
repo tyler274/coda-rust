@@ -70,6 +70,9 @@ async fn a_second_migrate_records_nothing_new() {
             "m20261112_source_refresh",
             "m20261112_today_updates_seen",
             "m20261112_visit_briefings",
+            "m20261113_01_spruce_matching",
+            "m20261113_02_reply_proposals",
+            "m20261113_03_follow_ups_withdrawal",
             "m20261113_source_links_and_standing",
             "m20261114_reconnect_commands_and_adapter_state",
         ]

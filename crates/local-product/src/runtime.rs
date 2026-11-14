@@ -45,6 +45,8 @@ pub mod dispatch;
 mod entities;
 /// Physician feedback on Coda's responses.
 pub mod feedback;
+/// Durable physician and Coda job follow-ups and wrong-patient withdrawal fencing.
+pub mod follow_ups;
 mod frozen;
 /// Read-only queries over saved conversations and work.
 pub mod history;
@@ -68,6 +70,8 @@ pub mod schedule;
 pub mod source_status;
 /// Versioned patient source observations: a stand-in source owner.
 pub mod sources;
+/// Spruce channel reading, patient conversation linking, classification storage, and move controls.
+pub mod spruce_matching;
 #[cfg(test)]
 mod tests;
 /// Cross-producer Today and Updates read model, per-physician seen state, and item detail projection.
@@ -2166,6 +2170,7 @@ impl<A: Authority, S: ShownStepSaved> Product for PhysicianHost<A, S> {
     fn read_only(&self, name: &str) -> bool {
         crate::physician_chat::read_only(name)
             || crate::initial_understanding::read_only_understanding_tool(name)
+            || crate::attachments::is_document_page_tool(name)
     }
 
     fn terminal(&self, turn: &Turn) -> bool {

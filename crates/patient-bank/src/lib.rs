@@ -2,6 +2,7 @@
 //! terminology catalog, the authoring check, one timeline per patient, the FHIR R4
 //! renderer, the practice calendar, the bank build and its validation. See README.md.
 
+pub mod attachments;
 pub mod bank;
 pub mod calendar;
 pub mod catalog;

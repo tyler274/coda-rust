@@ -417,6 +417,10 @@ pub struct ReviewStartingContext {
     /// Saved patient understanding (including private operating index and summary), when present.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub understanding: Option<PatientUnderstanding>,
+    /// Active workspace wrong-patient withdrawal boundary, when records or messages
+    /// have been entered in error and held back.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub withdrawal_boundary: Option<crate::runtime::follow_ups::WorkspaceWithdrawalBoundary>,
     /// Durable patient memory standing (physician corrections and clinical summaries).
     pub memory_standing: PatientMemoryStanding,
     /// Open patient concerns currently active on Today.
@@ -588,6 +592,13 @@ impl ReviewStartingContext {
                     saved.operating_index.open_threads.join("; ")
                 ));
             }
+        }
+
+        if let Some(boundary) = &self.withdrawal_boundary {
+            lines.push(format!(
+                "Entered-in-error withdrawal boundary: {}",
+                boundary.instruction_line()
+            ));
         }
 
         match &self.memory_standing {
@@ -1070,8 +1081,10 @@ pub fn tools() -> Vec<Tool> {
     let mut offered = work_tools();
     offered.push(search_tool());
     offered.push(read_tool(ChartScope::Chat));
+    offered.push(crate::attachments::document_page_tool());
     offered.push(refresh_tool());
     offered.push(concern_tool());
+    offered.push(crate::runtime::follow_ups::follow_up_tool());
     offered.push(patient_memory_tool());
     offered.extend(understanding_tools());
     offered.push(read_patient_reviews_tool());
@@ -1247,6 +1260,7 @@ mod tests {
                 checked_at: 1_787_850_000,
             },
             understanding: None,
+            withdrawal_boundary: None,
             memory_standing: PatientMemoryStanding::Available {
                 entries: Vec::new(),
             },
@@ -1300,8 +1314,10 @@ mod tests {
         for expected in [
             crate::physician_sources::SEARCH_TOOL,
             crate::physician_sources::READ_TOOL,
+            crate::attachments::READ_DOCUMENT_PAGE_TOOL,
             crate::runtime::refresh::REFRESH_TOOL,
             crate::runtime::concerns::CONCERN_TOOL,
+            crate::runtime::follow_ups::FOLLOW_UP_TOOL,
             crate::runtime::chat_operations::PATIENT_MEMORY_TOOL,
             crate::initial_understanding::READ_UNDERSTANDING_TOOL,
             crate::initial_understanding::SAVE_UNDERSTANDING_TOOL,

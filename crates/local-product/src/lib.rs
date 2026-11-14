@@ -10,6 +10,8 @@
 
 use sha2::{Digest, Sha256};
 
+/// Local multimodal attachment and page-by-page clinical document reading.
+pub mod attachments;
 pub mod chatgpt;
 /// Clinical library search and exact passage read tools for physician chat.
 pub mod clinical_library;
@@ -27,6 +29,8 @@ pub mod physician_sources;
 pub mod runtime;
 /// Practice-scoped source patient links, pull status, and check/reconnect operations.
 pub mod source_status;
+/// Unmatched Spruce message classification and patient-match suggestion recipe.
+pub mod spruce_matching_recipe;
 /// Recipe, context, and tool descriptors for visit selection and visit briefings.
 pub mod visit_preparation;
 

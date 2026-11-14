@@ -4,6 +4,7 @@
 
 pub mod briefings;
 mod reviews;
+pub mod source_setup;
 pub mod today_updates;
 
 pub use http::HttpError;
