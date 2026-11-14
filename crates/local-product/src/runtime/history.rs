@@ -524,11 +524,10 @@ fn provenance_string(provenance: &Value, keys: &[&str]) -> Option<String> {
     None
 }
 
-pub(super) fn cited_record_title(
-    provenance: &Value,
-    record_type: &str,
-    candidate_id: &str,
-) -> String {
+/// Selects the physician-facing display title for a cited chart record from
+/// its provenance (`title`, `display`, `label`), falling back to `record_type`
+/// and then `candidate_id`.
+pub fn cited_record_title(provenance: &Value, record_type: &str, candidate_id: &str) -> String {
     provenance_string(provenance, &["title", "display", "label"]).unwrap_or_else(|| {
         let trimmed = record_type.trim();
         if trimmed.is_empty() {
@@ -543,7 +542,7 @@ pub(super) fn cited_record_title(
 /// inspection, omitting a redundant `part.label` when it matches `title`
 /// case-insensitively and rendering JSON `raw_content` as `"Key: value"` lines
 /// when `readable_parts` is empty (`raw_content` stays only in `raw_content`).
-pub(super) fn format_cited_source_body(
+pub fn format_cited_source_body(
     title: &str,
     readable_parts: &[ReadablePart],
     raw_content: &str,

@@ -54,44 +54,57 @@ pub const REPLY_REVISION_SUPERSEDED: &str =
 pub const REPLY_REVISION_STALE: &str =
     "Coda couldn’t take that revision. The current draft is shown; review it and ask again.";
 
-/// Whether the signed-in physician has already opened a Today item once.
-#[derive(Debug, Clone, Copy, Default, PartialEq, Eq)]
+/// Whether the signed-in physician has already opened a Today item at its current version.
+#[derive(Debug, Clone, Default, PartialEq, Eq)]
 pub enum ItemOpenStanding {
     /// Not yet opened by this physician.
     #[default]
     Unopened,
-    /// Opened at least once by this physician.
+    /// Opened at least once by this physician at its current version.
     Opened,
+    /// Opened at an earlier version and revised since then; carries what changed.
+    ChangedSinceOpened {
+        /// Physician-facing summary of what changed since the item was last opened.
+        what_changed: String,
+    },
+}
+
+impl ItemOpenStanding {
+    /// Whether this item needs the physician's eye (`Unopened` or `ChangedSinceOpened`).
+    pub fn needs_eye(&self) -> bool {
+        matches!(self, Self::Unopened | Self::ChangedSinceOpened { .. })
+    }
+
+    /// Summary of what changed since the item was last opened, if any.
+    pub fn changed_summary(&self) -> Option<&str> {
+        match self {
+            Self::ChangedSinceOpened { what_changed } => Some(what_changed.as_str()),
+            Self::Unopened | Self::Opened => None,
+        }
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct TodayLine {
     pub item_id: String,
+    pub version_id: String,
     pub workspace_id: String,
     pub patient: String,
     pub kind: String,
+    pub title: String,
     pub reason: String,
     pub did: String,
     pub waiting_since: String,
     /// Coda marked the concern as needing the physician now, not just today.
     pub now: bool,
-    /// Whether this physician has already opened the item once.
+    /// Whether this physician has already opened the item at its current version.
     pub standing: ItemOpenStanding,
+    /// Whether this Today row can be cleared via `Done`.
+    pub can_mark_done: bool,
+    /// Linked conversation identifier when opening an active chat response.
+    pub linked_chat_id: Option<String>,
     pub resume_work_item_id: Option<String>,
     pub resume_run_id: Option<String>,
-}
-
-#[derive(Debug, Clone, PartialEq, Eq)]
-pub struct VisitLine {
-    pub workspace_id: Option<String>,
-    pub patient: String,
-    pub label: String,
-    pub starts_at: String,
-    pub time_zone: String,
-    /// The long preparation sentence, for the reader. The rail uses `cue`.
-    pub preparation: Option<String>,
-    /// The short preparation cue shown on the visit, such as `Preparation failed`.
-    pub cue: Option<String>,
 }
 
 /// One read the page shows: loading, showing, showing with one quiet line and
@@ -153,29 +166,52 @@ pub fn today_lines(list: &TodayListResponse) -> Vec<TodayLine> {
         .collect()
 }
 
-/// Returns the first urgent (`now`) concern that has not yet been opened once.
+/// Returns the first urgent (`now`) concern that has not yet been opened at its current version.
 pub fn active_now_concern(lines: &[TodayLine]) -> Option<&TodayLine> {
     lines
         .iter()
-        .find(|line| line.now && line.standing == ItemOpenStanding::Unopened)
+        .find(|line| line.now && line.standing.needs_eye())
 }
 
 fn today_line(row: &TodayRow, seen_ids: &[String]) -> TodayLine {
-    let opened = row.seen || seen_ids.iter().any(|seen| seen == &row.item_id);
+    let standing = match &row.standing {
+        Some(physician_wire::today_updates::SeenStandingWire::ChangedSinceSeen {
+            what_changed,
+            ..
+        }) => ItemOpenStanding::ChangedSinceOpened {
+            what_changed: what_changed.clone(),
+        },
+        Some(physician_wire::today_updates::SeenStandingWire::Seen { .. }) => {
+            ItemOpenStanding::Opened
+        }
+        Some(physician_wire::today_updates::SeenStandingWire::Unseen) | None => {
+            if row.seen || seen_ids.iter().any(|seen| seen == &row.item_id) {
+                ItemOpenStanding::Opened
+            } else {
+                ItemOpenStanding::Unopened
+            }
+        }
+    };
+    let reason = row.reason.clone().unwrap_or_default();
+    let title = row
+        .title
+        .clone()
+        .filter(|value| !value.trim().is_empty())
+        .unwrap_or_else(|| reason.clone());
     TodayLine {
         item_id: row.item_id.clone(),
+        version_id: row.version_id.clone(),
         workspace_id: row.patient_workspace_id.clone(),
         patient: row.patient_display_name.clone(),
         kind: row.kind.clone(),
-        reason: row.reason.clone().unwrap_or_default(),
+        title,
+        reason,
         did: row_did(row),
         waiting_since: row.waiting_since.clone(),
         now: row.urgency == "now",
-        standing: if opened {
-            ItemOpenStanding::Opened
-        } else {
-            ItemOpenStanding::Unopened
-        },
+        standing,
+        can_mark_done: row.can_mark_done,
+        linked_chat_id: row.linked_chat_id.clone(),
         resume_work_item_id: row
             .resume_target
             .as_ref()
@@ -191,8 +227,8 @@ fn today_line(row: &TodayRow, seen_ids: &[String]) -> TodayLine {
 /// a drafted reply is ready, a review that couldn't finish failed, and anything else is neutral.
 pub fn row_tone(kind: &str) -> ui::Tone {
     match kind {
-        "concern" => ui::Tone::Warning,
-        "reply" => ui::Tone::Primary,
+        "concern" | "visit_nudge" => ui::Tone::Warning,
+        "reply" | "running_work" => ui::Tone::Primary,
         "failed_review" => ui::Tone::Error,
         _ => ui::Tone::Neutral,
     }
@@ -202,7 +238,9 @@ pub fn row_tone(kind: &str) -> ui::Tone {
 pub fn row_icon(kind: &str) -> Option<ui::IconName> {
     Some(match kind {
         "concern" => ui::IconName::Flag,
+        "visit_nudge" => ui::IconName::Calendar,
         "reply" => ui::IconName::Reply,
+        "running_work" => ui::IconName::Message,
         _ => ui::IconName::Alert,
     })
 }
@@ -211,6 +249,13 @@ pub fn row_icon(kind: &str) -> Option<ui::IconName> {
 pub fn row_did(row: &TodayRow) -> String {
     if row.kind == "failed_review" {
         return format!("{} couldn’t finish", work_subject(row.work_kind.as_deref()));
+    }
+    if let Some(title) = row
+        .title
+        .as_deref()
+        .filter(|value| !value.trim().is_empty())
+    {
+        return title.to_owned();
     }
     row.reason.clone().unwrap_or_default()
 }
@@ -290,55 +335,13 @@ pub fn schedule_empty_copy(day: &PracticeDayResponse) -> &'static str {
     }
 }
 
-/// Visits still ahead on a usable practice day, next first, in the server's order.
-pub fn upcoming_visits(day: &PracticeDayResponse) -> Vec<VisitLine> {
-    if !matches!(day.source_state.state.as_str(), "usable" | "refreshing") {
-        return Vec::new();
-    }
-    let now = parse_unix(&day.current_time);
-    day.visits
-        .iter()
-        .filter(|visit| {
-            visit.status == "scheduled"
-                && match (&visit.ends_at, now) {
-                    (Some(end), Some(now)) => parse_unix(end).is_none_or(|ends| ends > now),
-                    _ => true,
-                }
-        })
-        .map(|visit| visit_line(day, visit))
-        .collect()
-}
-
-fn visit_line(day: &PracticeDayResponse, visit: &physician_wire::PracticeVisit) -> VisitLine {
-    VisitLine {
-        workspace_id: visit.patient_workspace_id.clone(),
-        patient: visit
-            .patient_display_name
-            .clone()
-            .unwrap_or_else(|| visit.label.clone()),
-        label: visit.label.clone(),
-        starts_at: visit.starts_at.clone(),
-        time_zone: visit
-            .patient_time_zone
-            .clone()
-            .unwrap_or_else(|| day.time_zone.clone()),
-        preparation: visit.preparation.as_ref().and_then(preparation_sentence),
-        cue: visit.preparation.as_ref().and_then(preparation_cue),
-    }
-}
-
-/// Visits still ahead for one patient, in the practice day's order.
-pub fn patient_upcoming_visits(day: &PracticeDayResponse, workspace_id: &str) -> Vec<VisitLine> {
-    upcoming_visits(day)
-        .into_iter()
-        .filter(|visit| visit.workspace_id.as_deref() == Some(workspace_id))
-        .collect()
-}
-
 /// The short cue on a visit. Scheduled and not-yet-prepared stays quiet.
 pub fn preparation_cue(preparation: &VisitPreparation) -> Option<String> {
     if matches!(preparation.state.as_str(), "scheduled" | "pending") {
         return None;
+    }
+    if preparation.state == "preparing" {
+        return Some("Preparing visit".to_owned());
     }
     let label = if let Some(attempt) = &preparation.last_attempt {
         match attempt.outcome.as_str() {
@@ -350,7 +353,6 @@ pub fn preparation_cue(preparation: &VisitPreparation) -> Option<String> {
         }
     } else {
         match preparation.state.as_str() {
-            "preparing" => "Preparing visit",
             "prepared" => "Briefing ready",
             "could_not_prepare" => "Couldn’t prepare",
             "unavailable" => "Preparation unavailable",
@@ -358,31 +360,6 @@ pub fn preparation_cue(preparation: &VisitPreparation) -> Option<String> {
         }
     };
     Some(label.to_owned())
-}
-
-pub fn preparation_sentence(preparation: &VisitPreparation) -> Option<String> {
-    if let Some(attempt) = &preparation.last_attempt {
-        return Some(
-            match attempt.outcome.as_str() {
-                "retained" => "Visit preparation was incomplete. No new briefing was completed.",
-                "failed" => "Visit preparation failed. No new briefing was completed.",
-                "cancelled" => "Visit preparation was stopped. No new briefing was completed.",
-                "interrupted" => "Visit preparation was interrupted and has not resumed.",
-                _ => return None,
-            }
-            .to_owned(),
-        );
-    }
-    Some(
-        match preparation.state.as_str() {
-            "scheduled" => "The preparation window has not opened yet.",
-            "pending" => "This visit has not been prepared.",
-            "could_not_prepare" => "Coda couldn’t complete the pre-visit review.",
-            "unavailable" => "This appointment is not connected to an available Coda patient.",
-            _ => return None,
-        }
-        .to_owned(),
-    )
 }
 
 pub fn work_heading(run: &AutomationRun) -> Option<String> {
@@ -559,7 +536,7 @@ pub fn synopsis_pieces(segments: &[ClinicalSegment]) -> Vec<SynopsisPiece> {
 /// whitespace-normalized text (after stripping any trailing ellipsis on
 /// `quote`) so a multiline or truncated `quote` is never duplicated above
 /// `body` when `body` already contains that passage.
-fn citation_preview_body(quote: &str, body: &str) -> String {
+pub(crate) fn citation_preview_body(quote: &str, body: &str) -> String {
     let trimmed_body = body.trim();
     if trimmed_body.is_empty() {
         return quote.trim().to_owned();
@@ -829,10 +806,6 @@ pub fn workspace_event_rereads(event: &str, data: &str, selected: Option<&str>) 
         _ => return false,
     };
     matches!((patient, selected), (Some(patient), Some(selected)) if patient == selected)
-}
-
-pub fn opens_reader(kind: &str) -> bool {
-    kind == "concern" || kind == "reply"
 }
 
 pub fn format_calendar_date(day: &str) -> String {
@@ -1205,7 +1178,7 @@ fn eastern_offset(unix: i64) -> i32 {
     }
 }
 
-fn nth_sunday(year: i32, month: u32, n: u32) -> u32 {
+pub(crate) fn nth_sunday(year: i32, month: u32, n: u32) -> u32 {
     let first = days_from_civil(year, month, 1);
     let weekday = (first + 4).rem_euclid(7);
     let first_sunday = if weekday == 0 {
@@ -1220,7 +1193,7 @@ fn year_of(unix: i64) -> i32 {
     civil_from_days(unix.div_euclid(86_400)).0
 }
 
-fn civil_from_days(days: i64) -> (i32, u32, u32) {
+pub(crate) fn civil_from_days(days: i64) -> (i32, u32, u32) {
     let z = days + 719_468;
     let era = if z >= 0 { z } else { z - 146_096 } / 146_097;
     let doe = (z - era * 146_097) as u64;
@@ -1238,7 +1211,7 @@ fn civil_from_days(days: i64) -> (i32, u32, u32) {
     (year as i32, month as u32, day as u32)
 }
 
-fn days_from_civil(year: i32, month: u32, day: u32) -> i64 {
+pub(crate) fn days_from_civil(year: i32, month: u32, day: u32) -> i64 {
     let year = if month <= 2 { year - 1 } else { year } as i64;
     let era = if year >= 0 { year } else { year - 399 } / 400;
     let yoe = (year - era * 400) as u64;
@@ -1249,7 +1222,7 @@ fn days_from_civil(year: i32, month: u32, day: u32) -> i64 {
     era * 146_097 + day_of_era - 719_468
 }
 
-fn parse_unix(value: &str) -> Option<i64> {
+pub(crate) fn parse_unix(value: &str) -> Option<i64> {
     let (date, rest) = value.split_once('T')?;
     let mut dates = date.split('-');
     let year: i32 = dates.next()?.parse().ok()?;
@@ -1702,8 +1675,6 @@ mod tests {
             format_clock("2026-08-27T19:30:00.000Z", "America/New_York").as_deref(),
             Some("3:30 PM")
         );
-        assert!(opens_reader("concern"));
-        assert!(!opens_reader("failed_review"));
         assert_eq!(
             keyboard_command(&KeyInput {
                 key: "/".to_owned(),
@@ -1744,26 +1715,31 @@ mod tests {
         ))
         .unwrap();
         assert!(shows_today_schedule(&day));
-        let ahead = upcoming_visits(&day);
+        let ahead = crate::schedule_briefing::schedule_rows(&day, None);
         assert_eq!(ahead.len(), 1);
         assert_eq!(ahead[0].patient, "Mary Louis");
         assert_eq!(
-            format_clock(&ahead[0].starts_at, &ahead[0].time_zone).as_deref(),
+            format_clock(&ahead[0].starts_at, &day.time_zone).as_deref(),
             Some("3:30 PM")
         );
         let mary = "pw-39e51534-6ce4-43cf-b5f8-7c1ca6252d8e";
         let jake = "pw-82c44e9b-58c0-4af1-bd21-771bf77e101d";
-        assert!(patient_upcoming_visits(&day, jake).is_empty());
-        let ahead_for_mary = patient_upcoming_visits(&day, mary);
+        assert!(crate::schedule_briefing::schedule_rows(&day, Some(jake)).is_empty());
+        let ahead_for_mary = crate::schedule_briefing::schedule_rows(&day, Some(mary));
         assert_eq!(ahead_for_mary.len(), 1);
         assert_eq!(ahead_for_mary[0].label, "Follow-up visit");
-        assert_eq!(ahead_for_mary[0].cue.as_deref(), Some("Preparation failed"));
         assert_eq!(
-            ahead_for_mary[0].preparation.as_deref(),
-            Some("Visit preparation failed. No new briefing was completed.")
+            ahead_for_mary[0].state,
+            crate::schedule_briefing::ScheduleVisitState::Failed {
+                cue: "Preparation failed".to_owned(),
+            }
         );
         assert_eq!(
-            format_clock(&ahead_for_mary[0].starts_at, &ahead_for_mary[0].time_zone).as_deref(),
+            ahead_for_mary[0].preparation_detail().as_deref(),
+            Some("Preparation failed")
+        );
+        assert_eq!(
+            format_clock(&ahead_for_mary[0].starts_at, &day.time_zone).as_deref(),
             Some("3:30 PM")
         );
         let workspace: PatientWorkspaceResponse = serde_json::from_str(include_str!(
@@ -2014,7 +1990,7 @@ mod tests {
         )
         .unwrap();
         assert!(shows_today_schedule(&day));
-        assert!(upcoming_visits(&day).is_empty());
+        assert!(crate::schedule_briefing::schedule_rows(&day, None).is_empty());
         assert_eq!(schedule_empty_copy(&day), "No visits scheduled today.");
         let gone: PracticeDayResponse = serde_json::from_str(
             r#"{"current_time":"2026-08-30T11:00:00.000Z","time_zone":"America/New_York","source_state":{"state":"unavailable"},"visits":[]}"#,

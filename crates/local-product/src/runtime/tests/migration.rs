@@ -67,6 +67,7 @@ async fn a_second_migrate_records_nothing_new() {
             "m20261112_practice_schedule",
             "m20261112_source_pull_missing_candidates",
             "m20261112_source_refresh",
+            "m20261112_today_updates_seen",
             "m20261112_visit_briefings",
             "m20261113_source_links_and_standing",
             "m20261114_reconnect_commands_and_adapter_state",
