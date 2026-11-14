@@ -334,6 +334,7 @@ fn snapshot_body(
     Ok(ChatSnapshot {
         transcript,
         feedback,
+        sources: std::collections::BTreeMap::new(),
     })
 }
 

@@ -273,6 +273,7 @@ mod tests {
                     answer,
                 }],
                 feedback: SnapshotFeedback::Loaded,
+                sources: Default::default(),
             },
         })
         .unwrap()
@@ -316,6 +317,9 @@ mod tests {
                 attempt_id: AttemptId("a-1".into()),
                 text: "Hello".into(),
                 feedback: None,
+                segments: Vec::new(),
+                basis: None,
+                newer_records: false,
             }),
             TurnState::Answered(Answer {
                 text: "Hello".into(),

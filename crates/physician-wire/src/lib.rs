@@ -48,6 +48,9 @@ pub struct TodayListResponse {
     #[serde(default)]
     /// The `incomplete` value.
     pub incomplete: Option<bool>,
+    #[serde(default)]
+    /// Item identifiers already opened once by the signed-in physician.
+    pub seen: Vec<String>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
@@ -190,6 +193,9 @@ pub struct TodayRow {
     #[serde(default)]
     /// The `resume_target` value.
     pub resume_target: Option<WorkResumeTarget>,
+    #[serde(default)]
+    /// Whether the signed-in physician has already opened this row once.
+    pub seen: bool,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
@@ -237,6 +243,12 @@ pub struct WorkspaceChat {
     #[serde(default)]
     /// The `title` value.
     pub title: Option<String>,
+    #[serde(default)]
+    /// Content-distinguishing answer or status preview.
+    pub summary: Option<String>,
+    #[serde(default)]
+    /// Current outcome of this conversation.
+    pub outcome: Option<HistoryWorkOutcome>,
     /// The `created_at` value.
     pub created_at: String,
 }
@@ -305,6 +317,82 @@ pub struct PreparationAttempt {
     pub outcome: String,
 }
 
+#[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(rename_all = "snake_case")]
+/// How one saved conversation or workspace work item ended or currently stands.
+pub enum HistoryWorkOutcome {
+    /// A finished response was published.
+    Answered,
+    /// Work is accepted or actively running.
+    Running,
+    /// Work is held until the physician resumes it.
+    Held,
+    /// Recovery gave up; Try again can continue it.
+    Failed,
+    /// A saved patient-reply draft is ready for review.
+    DraftReady,
+    /// A patient-reply revision failed; Try again can continue it.
+    RevisionFailed,
+}
+
+impl HistoryWorkOutcome {
+    /// Short physician-facing outcome label.
+    pub const fn label(self) -> &'static str {
+        match self {
+            Self::Answered => "Answered",
+            Self::Running => "In progress",
+            Self::Held => "Paused",
+            Self::Failed => "Couldn't finish",
+            Self::DraftReady => "Reply ready",
+            Self::RevisionFailed => "Revision couldn't finish",
+        }
+    }
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(tag = "kind", rename_all = "snake_case")]
+/// Which saved work item a Past work entry reopens.
+pub enum PastWorkTarget {
+    /// A physician conversation with Coda.
+    Conversation {
+        /// Durable chat identifier.
+        chat_id: String,
+    },
+    /// A patient-message reply draft and its archived revisions.
+    ReplyDraft {
+        /// Durable reply work identifier.
+        reply_id: String,
+        #[serde(default)]
+        /// Number of archived earlier revisions retained for this draft.
+        archived_revisions: usize,
+    },
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+/// One saved entry in a patient workspace's Past work list.
+pub struct PastWorkItem {
+    /// Stable entry identifier.
+    pub id: String,
+    /// Reopen target.
+    pub target: PastWorkTarget,
+    /// Content-distinguishing title (question, instruction, or review subject).
+    pub title: String,
+    /// Content-distinguishing summary of the answer, draft, or finding.
+    pub summary: String,
+    /// Current outcome of the saved work.
+    pub outcome: HistoryWorkOutcome,
+    /// Timestamp when the item last changed.
+    pub updated_at: String,
+}
+
+#[derive(Debug, Clone, Default, Serialize, Deserialize, PartialEq, Eq)]
+/// Saved conversations and work items for one patient workspace.
+pub struct PastWorkResponse {
+    #[serde(default)]
+    /// Ordered history items, latest activity first.
+    pub items: Vec<PastWorkItem>,
+}
+
 #[derive(Debug, Clone, Deserialize, PartialEq)]
 /// The `RecentConversationsResponse` value exchanged by this crate.
 pub struct RecentConversationsResponse {
@@ -317,19 +405,47 @@ pub struct RecentConversationsResponse {
 /// The `RecentConversation` value exchanged by this crate.
 pub struct RecentConversation {
     #[serde(default)]
+    /// Durable conversation identifier used when reopening the conversation.
+    pub chat_id: Option<String>,
+    #[serde(default)]
     /// The `patient_workspace_id` value.
     pub patient_workspace_id: Option<String>,
     #[serde(default)]
     /// The `title` value.
     pub title: Option<String>,
     #[serde(default)]
+    /// Content-distinguishing answer preview or status line.
+    pub summary: Option<String>,
+    #[serde(default)]
+    /// Current outcome of the conversation.
+    pub outcome: Option<HistoryWorkOutcome>,
+    #[serde(default)]
     /// The `patient_display_name` value.
     pub patient_display_name: Option<String>,
+    #[serde(default)]
+    /// Timestamp of latest activity on the conversation.
+    pub updated_at: Option<String>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+/// One running review or background work item surfaced in Updates and the orb preview.
+pub struct ActiveReviewRun {
+    /// Stable run identifier.
+    pub run_id: String,
+    /// Patient workspace identifier.
+    pub patient_workspace_id: String,
+    /// Patient display name.
+    pub patient_display_name: String,
+    /// Physician-facing activity line, such as `"Coda is reviewing"`.
+    pub headline: String,
 }
 
 #[derive(Debug, Clone, Deserialize, PartialEq)]
 /// The `UpdatesResponse` value exchanged by this crate.
 pub struct UpdatesResponse {
+    #[serde(default)]
+    /// Running reviews currently in progress across the physician's panel.
+    pub active_runs: Vec<ActiveReviewRun>,
     #[serde(default)]
     /// The `rows` value.
     pub rows: Vec<Value>,
@@ -353,6 +469,9 @@ pub struct PatientSearchRow {
     #[serde(default)]
     /// The `birth_date` value.
     pub birth_date: Option<String>,
+    #[serde(default)]
+    /// Primary medical record number supplied by the practice roster, if any.
+    pub mrn: Option<String>,
     #[serde(default)]
     /// Whether this roster patient has accepted the explicit practice invitation in Duet.
     pub duet_linked: bool,
@@ -498,6 +617,12 @@ pub struct PatientSynopsis {
 /// One connected record source on the workspace.
 pub struct ConnectedSource {
     #[serde(default)]
+    /// Stable source identifier when supplied.
+    pub source_id: Option<String>,
+    #[serde(default)]
+    /// Physician-facing source name when supplied.
+    pub source_label: Option<String>,
+    #[serde(default)]
     /// The source's current pull state.
     pub state: SourceConnectionState,
 }
@@ -637,6 +762,61 @@ pub struct ChatSnapshotResponse {
     pub snapshot: ChatSnapshot,
 }
 
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+/// One cited record backing claims in a conversation snapshot.
+pub struct CitedSourceWire {
+    /// Lookup key referenced by [`MessageSegment::Citation`].
+    pub source_key: String,
+    /// 1-based citation number within its response.
+    pub number: usize,
+    /// Physician-facing source name.
+    pub source_label: String,
+    /// Record title or kind label.
+    pub title: String,
+    #[serde(default)]
+    /// Source's own record type.
+    pub record_type: Option<String>,
+    #[serde(default)]
+    /// Date recorded on the source record, when supplied.
+    pub recorded_at: Option<String>,
+    /// Quoted excerpt supporting the citation preview.
+    pub quote: String,
+    /// Readable record body opened in the side panel.
+    pub body: String,
+    #[serde(default)]
+    /// Exact source-native record representation for Technical details.
+    pub raw_content: Option<String>,
+    #[serde(default)]
+    /// Direct link into the connected chart when available.
+    pub external_url: Option<String>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(tag = "kind", rename_all = "snake_case")]
+/// One span of text or inline citation in a finished answer or its Basis.
+pub enum MessageSegment {
+    /// Plain prose span.
+    Text {
+        /// Prose text.
+        text: String,
+    },
+    /// Numbered inline citation linked to [`ChatSnapshot::sources`].
+    Citation {
+        /// Key into [`ChatSnapshot::sources`].
+        source_key: String,
+        /// 1-based citation number.
+        number: usize,
+        /// Short preview label.
+        label: String,
+        /// Quoted supporting passage.
+        quote: String,
+    },
+}
+
+fn is_false(value: &bool) -> bool {
+    !*value
+}
+
 /// The conversation's transcript and whether its feedback could be read.
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct ChatSnapshot {
@@ -644,6 +824,9 @@ pub struct ChatSnapshot {
     pub transcript: Vec<Exchange>,
     /// Whether the signed-in physician's feedback on the answers could be read.
     pub feedback: SnapshotFeedback,
+    #[serde(default, skip_serializing_if = "std::collections::BTreeMap::is_empty")]
+    /// Verified cited sources referenced by [`AnswerState::Finished`] segments and Basis.
+    pub sources: std::collections::BTreeMap<String, CitedSourceWire>,
 }
 
 /// One piece of accepted work: the messages that started or steered it, the
@@ -710,6 +893,16 @@ pub enum AnswerState {
         /// The physician's saved feedback on it, when they rated it and the
         /// snapshot could read it.
         feedback: Option<ResponseFeedback>,
+        /// Structured prose and citation segments for the answer's body.
+        #[serde(default, skip_serializing_if = "Vec::is_empty")]
+        segments: Vec<MessageSegment>,
+        /// Collapsed Basis and limitations segments on a finished answer.
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        basis: Option<Vec<MessageSegment>>,
+        /// Whether newer source records exist in the workspace after this
+        /// answer's observed record state.
+        #[serde(default, skip_serializing_if = "is_false")]
+        newer_records: bool,
     },
     /// The physician stopped the work.
     Stopped {

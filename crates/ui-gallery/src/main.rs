@@ -29,16 +29,16 @@ use ui::{
     FeedbackRating, FieldGroup, FieldValue, FooterActions, HeaderFact, Icon, IconName, IconTile,
     IndexedSource, KeyHint, ListRow, LiveDot, MeasurementTile, Menu, MenuItem, MenuSection,
     Message, MessageActions, MessageEditor, MessageQueue, MessageState, MessageStatus, Nav,
-    NavigationControl, NavigationRow, Notice, PageTitle, Paper, PaperSection, PartRange,
-    Placeholder, PlaceholderShape, Places, PreviewContent, ProgressBar, Prose, ProseNames,
-    ProsePart, QueuePlace, RadioGroup, RailCard, Rating, RawRecord, RecordAbout, RecordBody,
-    RecordField, RecordStatus, RowFrame, RowGroup, RunningChart, Screen, ScreenFrame, SearchField,
-    SectionHeader, Segmented, Select, SeriesChart, SeriesPoint, SeriesShape, SortOrder, SourceLink,
-    SourcePane, SourceReading, SourceRecord, SourceState, SourceSummary, SourcesButton, Sparkline,
-    Spinner, StatePill, StatusLine, StepState, Suggestion, TabBar, Table, TableRow, Task, TaskList,
-    TaskState, TaskWords, TextField, TextKind, TextPart, Toast, ToggleChip, ToggleRow, ToggleState,
-    Tone, Tooltip, TopBar, TryAgain, Value, VersionSwitch, WorkStep, WorkTrace, WorkingMark,
-    WorkingPresence, use_live_rows, use_screen_stack,
+    NavigationControl, NavigationRow, Notice, Orb, OrbState, PageTitle, Paper, PaperSection,
+    PartRange, Placeholder, PlaceholderShape, Places, PreviewContent, ProgressBar, Prose,
+    ProseNames, ProsePart, QueuePlace, RadioGroup, RailCard, Rating, RawRecord, RecordAbout,
+    RecordBody, RecordField, RecordStatus, RowFrame, RowGroup, RunningChart, Screen, ScreenFrame,
+    SearchField, SectionHeader, Segmented, Select, SeriesChart, SeriesPoint, SeriesShape,
+    SortOrder, SourceLink, SourcePane, SourceReading, SourceRecord, SourceState, SourceSummary,
+    SourcesButton, Sparkline, Spinner, StatePill, StatusLine, StepState, Suggestion, TabBar, Table,
+    TableRow, Task, TaskList, TaskState, TaskWords, TextField, TextKind, TextPart, Toast,
+    ToggleChip, ToggleRow, ToggleState, Tone, Tooltip, TopBar, TryAgain, Value, VersionSwitch,
+    WorkStep, WorkTrace, WorkingMark, WorkingPresence, use_live_rows, use_screen_stack,
 };
 #[cfg(feature = "web")]
 use wasm_bindgen::{JsCast, closure::Closure};
@@ -3225,6 +3225,20 @@ fn AgentWorkDemo() -> Element {
                     body: rsx! { p { "Asked the regional exchange for results since September; no answer after 8 seconds." } },
                 }
                 WorkStep { icon: IconName::Search, label: "Stopped searching older notes", state: StepState::Stopped, detail: "You stopped it" }
+            }
+            div { class: "gallery-row",
+                span { class: "gallery-label",
+                    Orb { aria_label: "Open Coda", state: OrbState::Idle, onclick: move |_| {} }
+                    "Idle"
+                }
+                span { class: "gallery-label",
+                    Orb { aria_label: "Open Coda", state: OrbState::Working, onclick: move |_| {} }
+                    "Working"
+                }
+                span { class: "gallery-label",
+                    Orb { aria_label: "Open Coda", state: OrbState::Urgent, onclick: move |_| {} }
+                    "Urgent"
+                }
             }
         }
     }
