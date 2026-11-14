@@ -4,9 +4,9 @@
 //! contract is covered by the memory-store unit tests, and these stay quiet.
 
 use front_door::{
-    Account, CADENCE_WEEKLY, CADENCE_WEEKLY_DAILY_CHECK, Consent, FrontDoorStore,
-    INVITATION_TTL_SECONDS, InviteError, LinkError, MemoryFrontDoorStore, PostgresFrontDoorStore,
-    Premium, RosterPatient, SESSION_TTL_SECONDS, SessionError, SignInError,
+    Account, Consent, FrontDoorStore, INVITATION_TTL_SECONDS, InviteError, LinkError,
+    MemoryFrontDoorStore, PostgresFrontDoorStore, Premium, RosterPatient, SESSION_TTL_SECONDS,
+    SessionError, SignInError,
 };
 use sea_orm::{ConnectionTrait, EntityTrait, PaginatorTrait, QuerySelect, TransactionTrait};
 
@@ -179,8 +179,8 @@ async fn a_database_migrated_under_the_shared_table_keeps_its_init() {
     assert!(versions.contains(&(front_door::migration::INIT_MIGRATION_NAME.to_owned(), 42)));
     assert_eq!(
         versions.len(),
-        6,
-        "legacy init plus identity, journal, conversation and admission extensions"
+        7,
+        "legacy init plus identity, journal, conversation, admission and premium cadence cleanup"
     );
     assert!(
         versions
@@ -209,7 +209,7 @@ async fn a_database_migrated_under_the_shared_table_keeps_its_init() {
     assert!(adopted.iter().any(|(name, applied_at)| {
         name == front_door::migration::INIT_MIGRATION_NAME && *applied_at == 43
     }));
-    assert_eq!(adopted.len(), 6);
+    assert_eq!(adopted.len(), 7);
     for legacy in ["seaql_migrations", "front_door_seaql_migrations"] {
         let rows = db
             .query_all_raw(sea_orm::Statement::from_string(
@@ -227,6 +227,9 @@ async fn a_database_migrated_under_the_shared_table_keeps_its_init() {
 /// recorded. Fixture-only: production rollback of these extensions is refused
 /// because they hold durable history and privacy receipts.
 async fn rewind_to_legacy_init(db: &sea_orm::DatabaseConnection) {
+    <front_door::migration::Migrator as sea_orm_migration::MigratorTrait>::down(db, Some(1))
+        .await
+        .expect("restore legacy premium cadence column before rewinding earlier migrations");
     db.execute_unprepared("DROP TABLE duet_model_execution_switch; DROP FUNCTION duet_switch_append_only(); DROP INDEX duet_conversation_allowance; ALTER TABLE duet_conversation_inputs DROP COLUMN admitted_at; DELETE FROM front_door_migrations WHERE version='m20261023_duet_admission'").await.unwrap();
     db.execute_unprepared("DROP TABLE duet_attempt_events,duet_conversation_attempts; DELETE FROM front_door_migrations WHERE version='m20261022_duet_execution'").await.unwrap();
     db.execute_unprepared("DROP TRIGGER duet_permission_interrupt ON front_door_permissions; DROP FUNCTION duet_permission_interrupt(); DROP FUNCTION duet_interrupt_accepted(uuid); DROP TABLE duet_conversation_messages,duet_conversation_inputs,duet_conversation_state; DELETE FROM front_door_migrations WHERE version='m20261021_duet_conversation'").await.unwrap();
@@ -523,29 +526,17 @@ async fn premium_defaults_free_and_follows_the_status_per_patient() {
     let (luna, _, _) = invited_account(&store, "pg-proof").await;
     assert_eq!(
         store.premium(&luna).await,
-        Premium {
-            premium: false,
-            cadence: CADENCE_WEEKLY.to_owned(),
-        },
+        Premium { premium: false },
         "a patient without a status row reads free"
     );
     store.set_premium(&luna, true, NOW).await.unwrap();
     assert_eq!(
         store.premium(&luna).await,
-        Premium {
-            premium: true,
-            cadence: CADENCE_WEEKLY_DAILY_CHECK.to_owned(),
-        },
-        "paying patients add the daily check"
+        Premium { premium: true },
+        "premium status updates per linked patient"
     );
     store.set_premium(&luna, false, NOW).await.unwrap();
-    assert_eq!(
-        store.premium(&luna).await,
-        Premium {
-            premium: false,
-            cadence: CADENCE_WEEKLY.to_owned(),
-        }
-    );
+    assert_eq!(store.premium(&luna).await, Premium { premium: false });
     assert_eq!(
         store
             .set_premium(&patient("pg-proof", "nobody"), true, NOW)
