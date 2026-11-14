@@ -30,11 +30,9 @@ variable "availability_watchdog_channels" {
 locals {
   availability = var.availability_probe_image == null ? toset([]) : toset(["probe"])
 }
-resource "google_project_service" "availability_scheduler" {
-  for_each           = local.availability
-  project            = google_project.environment.project_id
-  service            = "cloudscheduler.googleapis.com"
-  disable_on_destroy = false
+moved {
+  from = google_project_service.availability_scheduler["probe"]
+  to   = google_project_service.api["cloudscheduler.googleapis.com"]
 }
 resource "google_service_account" "availability" {
   for_each   = local.availability
@@ -226,7 +224,7 @@ resource "google_cloud_scheduler_job" "availability" {
       audience              = google_cloud_run_v2_service.availability_dispatch[each.key].uri
     }
   }
-  depends_on = [google_project_service.availability_scheduler, google_cloud_run_v2_service_iam_binding.availability_dispatch]
+  depends_on = [google_project_service.api, google_cloud_run_v2_service_iam_binding.availability_dispatch]
 }
 # Cloud Monitoring refuses an alert policy on a metric that was never written.
 # Declaring the probe's heartbeat lets the watchdog exist before the first run.

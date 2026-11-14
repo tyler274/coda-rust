@@ -264,22 +264,83 @@ impl RehearsalSignIn {
         };
         http::iap::validate_cloud_run_audience(&audience)
             .map_err(|reason| format!("PHYSICIAN_IAP_AUDIENCE: {reason}"))?;
-        let principal = principal.to_lowercase();
-        let service_account = principal.split_once('@').is_some_and(|(name, domain)| {
-            !name.is_empty() && domain.ends_with(".iam.gserviceaccount.com")
-        });
-        if !service_account {
-            return Err(
-                "PHYSICIAN_REHEARSAL_PRINCIPAL must be a service-account email (NAME@PROJECT.iam.gserviceaccount.com)"
-                    .to_owned(),
-            );
-        }
+        let principal = ServiceAccountEmail::parse(&principal)
+            .map_err(|error| format!("PHYSICIAN_REHEARSAL_PRINCIPAL: {error}"))?;
         Ok(Some(Self {
             audience,
-            principal,
+            principal: principal.into_string(),
         }))
     }
 }
+
+/// Validated, lower-cased Google service-account email (`NAME@PROJECT.iam.gserviceaccount.com`).
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct ServiceAccountEmail(String);
+
+impl ServiceAccountEmail {
+    /// Parses and normalizes one Google service-account email, rejecting empty
+    /// values, human accounts, groups, and malformed domains.
+    pub fn parse(raw: &str) -> Result<Self, ServiceAccountError> {
+        let normalized = raw.trim().to_lowercase();
+        if normalized.is_empty() {
+            return Err(ServiceAccountError::Empty);
+        }
+        let valid = normalized.split_once('@').is_some_and(|(name, domain)| {
+            !name.is_empty()
+                && !name.chars().any(char::is_whitespace)
+                && domain
+                    .strip_suffix(".iam.gserviceaccount.com")
+                    .is_some_and(|project| {
+                        !project.is_empty()
+                            && !project.contains('@')
+                            && !project.chars().any(char::is_whitespace)
+                    })
+        });
+        if valid {
+            Ok(Self(normalized))
+        } else {
+            Err(ServiceAccountError::NotServiceAccount { value: normalized })
+        }
+    }
+
+    /// Borrowed lower-cased email string.
+    pub fn as_str(&self) -> &str {
+        &self.0
+    }
+
+    /// Owned lower-cased email string.
+    pub fn into_string(self) -> String {
+        self.0
+    }
+}
+
+/// Why a string could not be parsed as a [`ServiceAccountEmail`].
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub enum ServiceAccountError {
+    /// The input was empty or whitespace.
+    Empty,
+    /// The input did not have the form `NAME@PROJECT.iam.gserviceaccount.com`.
+    NotServiceAccount {
+        /// Normalized candidate value.
+        value: String,
+    },
+}
+
+impl std::fmt::Display for ServiceAccountError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Empty => f.write_str(
+                "must be a service-account email (NAME@PROJECT.iam.gserviceaccount.com), got empty value",
+            ),
+            Self::NotServiceAccount { value } => write!(
+                f,
+                "`{value}` is not a service-account email (NAME@PROJECT.iam.gserviceaccount.com)"
+            ),
+        }
+    }
+}
+
+impl std::error::Error for ServiceAccountError {}
 
 /// Default GCE metadata identity endpoint used by Cloud Run to mint OIDC ID tokens.
 pub const DEFAULT_METADATA_IDENTITY_URL: &str =
@@ -1856,6 +1917,38 @@ mod tests {
         assert!(!message.contains("migration"), "{message}");
         let source = std::error::Error::source(&error).expect("the database error is the source");
         assert_eq!(source.to_string(), error.cause().to_string());
+    }
+
+    #[test]
+    fn service_account_email_normalizes_and_rejects_non_service_principals() {
+        let parsed = ServiceAccountEmail::parse(
+            " Physician-Scheduler@coda-rust-staging.iam.gserviceaccount.com ",
+        )
+        .expect("valid service account");
+        assert_eq!(
+            parsed.as_str(),
+            "physician-scheduler@coda-rust-staging.iam.gserviceaccount.com"
+        );
+        assert_eq!(
+            ServiceAccountEmail::parse("   "),
+            Err(ServiceAccountError::Empty)
+        );
+        for bad in [
+            "doctor@codahealth.test",
+            "group:ops@codahealth.test",
+            "@coda-rust-staging.iam.gserviceaccount.com",
+            "scheduler@.iam.gserviceaccount.com",
+            "scheduler@a@b.iam.gserviceaccount.com",
+            "scheduler name@coda-rust-staging.iam.gserviceaccount.com",
+        ] {
+            assert!(
+                matches!(
+                    ServiceAccountEmail::parse(bad),
+                    Err(ServiceAccountError::NotServiceAccount { .. })
+                ),
+                "{bad} must be rejected"
+            );
+        }
     }
 
     #[test]

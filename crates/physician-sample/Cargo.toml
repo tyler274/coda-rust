@@ -21,6 +21,8 @@ futures-util = { version = "0.3", default-features = false, features = ["std"] }
 gmail = { path = "../gmail" }
 # The rehearsal sign-in verifies physician's own IAP assertion.
 http = { path = "../http", package = "coda-http", features = ["iap"] }
+# Cloud Scheduler wake OIDC verification against Google's RS256 JWKS.
+jsonwebtoken = { version = "11", default-features = false, features = ["aws_lc_rs"] }
 local-product = { path = "../local-product" }
 harness = { path = "../harness" }
 patient-work = { path = "../patient-work" }

@@ -50,6 +50,11 @@ mail_relay_invokers = ["serviceAccount:workspace-web-staging@coda-gym.iam.gservi
 # images.physician.worker is the initial digest. Later releases own that field.
 enable_physician_scale = true
 
+# Fixed-interval Cloud Scheduler wake for physician-worker (scheduler.tf).
+# Failed calls retry and alert on availability_watchdog_channels below.
+physician_schedule_enabled = true
+physician_schedule_cron    = "*/5 * * * *"
+
 # Existing read-only clinical-evidence Cloud Run service in coda-health-prod
 # (us-east4). Cross-project run.invoker access for physician-runtime and
 # physician-worker-runtime stays owned by infra/gcp/clinical-evidence.
