@@ -538,7 +538,15 @@ fn snapshot_body(
                 .map(|turn| (turn.id.as_str(), turn))
                 .collect();
         for exchange in &mut transcript {
+            if readback.chat_withheld
+                || readback
+                    .withheld_work_ids
+                    .contains(exchange.work_item_id.as_str())
+            {
+                exchange.steps = physician_wire::ExchangeSteps::Read(Vec::new());
+            }
             if let physician_wire::AnswerState::Finished {
+                text,
                 response_id,
                 segments,
                 basis,
@@ -547,6 +555,7 @@ fn snapshot_body(
             } = &mut exchange.answer
                 && let Some(turn) = assistant_turns.get(response_id.as_str())
             {
+                *text = turn.raw_text.clone();
                 *segments = turn.segments.iter().map(wire_segment).collect();
                 *basis = turn
                     .basis
@@ -763,4 +772,205 @@ fn rejected_submit() -> Response {
         "message": rejection_message("message.submit"),
     }))
     .into_response()
+}
+
+#[cfg(test)]
+mod tests {
+    use std::collections::{BTreeMap, BTreeSet};
+
+    use harness::engine::results::ToolResult;
+    use harness::engine::runs::{RunHistory, RunOutcome};
+    use harness::engine::{Event, EventKind, Invocation};
+    use local_product::physician_sources::SEARCH_TOOL;
+    use local_product::runtime::history::{
+        HistoryOutcome, HistorySegment, SavedConversationReadback, SavedTurnReadback, TurnAuthor,
+    };
+    use local_product::runtime::{
+        AssistantKind, Attempt, AttemptStatus, Conversation, Message, MessageRole, WorkStatus,
+    };
+    use physician_wire::{AnswerState, ExchangeSteps};
+
+    use super::{SnapshotFeedback, snapshot_body};
+
+    #[test]
+    fn snapshot_body_clears_steps_and_syncs_redacted_text_for_withheld_work() {
+        let mut runs_withheld = RunHistory::default();
+        runs_withheld.start("run-withheld".into()).unwrap();
+        runs_withheld.end(RunOutcome::Completed).unwrap();
+
+        let mut runs_clean = RunHistory::default();
+        runs_clean.start("run-clean".into()).unwrap();
+        runs_clean.end(RunOutcome::Completed).unwrap();
+
+        let search_call = Invocation {
+            id: "call-1".into(),
+            name: SEARCH_TOOL.into(),
+            arguments: r#"{"query":"secret query"}"#.into(),
+        };
+        let search_result = ToolResult::Original(r#"{"results":[{}],"next":null}"#.into());
+
+        let conversation = Conversation {
+            messages: vec![
+                Message {
+                    role: MessageRole::User {
+                        id: "msg-u1".into(),
+                        work: "work-withheld".into(),
+                        revision: 1,
+                    },
+                    text: "Check message".into(),
+                },
+                Message {
+                    role: MessageRole::Assistant {
+                        id: "att-1:reply".into(),
+                        kind: AssistantKind::Finished(
+                            local_product::physician_sources::citations::Finished::redacted(),
+                        ),
+                    },
+                    text: "stale unredacted text".into(),
+                },
+                Message {
+                    role: MessageRole::User {
+                        id: "msg-u2".into(),
+                        work: "work-clean".into(),
+                        revision: 2,
+                    },
+                    text: "Check clean".into(),
+                },
+                Message {
+                    role: MessageRole::Assistant {
+                        id: "att-2:reply".into(),
+                        kind: AssistantKind::Finished(
+                            local_product::physician_sources::citations::Finished::redacted(),
+                        ),
+                    },
+                    text: "Clean answer".into(),
+                },
+            ],
+            revision: 2,
+            status: WorkStatus::Completed,
+            work: "work-clean".into(),
+            runs: BTreeMap::from([
+                ("work-withheld".into(), runs_withheld),
+                ("work-clean".into(), runs_clean),
+            ]),
+            skills: serde_json::from_value(serde_json::json!("pkg-test")).unwrap(),
+            attempts: vec![
+                Attempt {
+                    id: "att-1".into(),
+                    predecessor: None,
+                    work: "work-withheld".into(),
+                    revision: 1,
+                    status: AttemptStatus::Completed,
+                    expires: 0,
+                    events: vec![
+                        Event {
+                            attempt_id: "att-1".into(),
+                            sequence: 1,
+                            ordinal: 0,
+                            kind: EventKind::ToolStarted(search_call.clone()),
+                        },
+                        Event {
+                            attempt_id: "att-1".into(),
+                            sequence: 2,
+                            ordinal: 0,
+                            kind: EventKind::ToolReturned {
+                                call_id: "call-1".into(),
+                                result: search_result.clone(),
+                            },
+                        },
+                    ],
+                },
+                Attempt {
+                    id: "att-2".into(),
+                    predecessor: None,
+                    work: "work-clean".into(),
+                    revision: 2,
+                    status: AttemptStatus::Completed,
+                    expires: 0,
+                    events: vec![
+                        Event {
+                            attempt_id: "att-2".into(),
+                            sequence: 1,
+                            ordinal: 0,
+                            kind: EventKind::ToolStarted(Invocation {
+                                id: "call-2".into(),
+                                name: SEARCH_TOOL.into(),
+                                arguments: r#"{"query":"bp"}"#.into(),
+                            }),
+                        },
+                        Event {
+                            attempt_id: "att-2".into(),
+                            sequence: 2,
+                            ordinal: 0,
+                            kind: EventKind::ToolReturned {
+                                call_id: "call-2".into(),
+                                result: search_result,
+                            },
+                        },
+                    ],
+                },
+            ],
+            session_hash: None,
+            dispatch_after: 0,
+            origin: None,
+            failures: 0,
+            budget_resume_after: 0,
+            bindings: BTreeMap::new(),
+            opened_at: 1,
+            last_activity_at: 2,
+            scenario: None,
+        };
+
+        let redacted =
+            "Unavailable: patient message content was withdrawn after a wrong-patient link correction."
+                .to_owned();
+        let readback = SavedConversationReadback {
+            outcome: HistoryOutcome::Answered,
+            work_id: "work-clean".into(),
+            turns: vec![
+                SavedTurnReadback {
+                    id: "att-1:reply".into(),
+                    author: TurnAuthor::Assistant { partial: false },
+                    raw_text: redacted.clone(),
+                    segments: vec![HistorySegment::Text {
+                        text: redacted.clone(),
+                    }],
+                    basis: None,
+                    newer_records: false,
+                },
+                SavedTurnReadback {
+                    id: "att-2:reply".into(),
+                    author: TurnAuthor::Assistant { partial: false },
+                    raw_text: "Clean answer".into(),
+                    segments: vec![HistorySegment::Text {
+                        text: "Clean answer".into(),
+                    }],
+                    basis: None,
+                    newer_records: false,
+                },
+            ],
+            sources: BTreeMap::new(),
+            workspace_source_version: 1,
+            chat_withheld: false,
+            withheld_work_ids: BTreeSet::from(["work-withheld".to_owned()]),
+        };
+
+        let snap = snapshot_body(
+            Some(&conversation),
+            Some(&readback),
+            &SnapshotFeedback::Loaded(BTreeMap::new()),
+        )
+        .expect("snapshot_body");
+        assert_eq!(snap.transcript.len(), 2);
+        assert_eq!(snap.transcript[0].steps, ExchangeSteps::Read(Vec::new()));
+        let AnswerState::Finished { text, .. } = &snap.transcript[0].answer else {
+            panic!("expected Finished on withheld exchange");
+        };
+        assert_eq!(text, &redacted);
+
+        let ExchangeSteps::Read(clean_steps) = &snap.transcript[1].steps else {
+            panic!("expected Read steps on clean exchange");
+        };
+        assert_eq!(clean_steps.len(), 1);
+    }
 }
