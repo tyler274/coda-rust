@@ -109,6 +109,9 @@ def check(path):
             }
             missing = expected - paths
             assert not missing, f"patient chart files missing from physician image: {sorted(missing)}"
+            assert f"{directory}/calendar/Appointment.ndjson" in paths, (
+                "practice calendar missing from physician image"
+            )
         elif "PHYSICIAN_SYNTHETIC_CHARTS" in env:
             raise AssertionError("only the physician site and migration images carry the chart bank")
         for key in ("PHYSICIAN_SITE_DIR", "DUET_SITE_DIR"):

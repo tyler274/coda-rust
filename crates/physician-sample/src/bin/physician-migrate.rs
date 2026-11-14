@@ -10,12 +10,14 @@
 //! staging-preview only), the job also seeds that practice, its rehearsal
 //! physician and its fixture panel ([`physician_sample::rehearsal`]).
 //!
-//! `physician-migrate load-charts` loads the built synthetic charts in
-//! `PHYSICIAN_SYNTHETIC_CHARTS` into that practice and does nothing else. A
-//! deploy never runs it. It needs the schema and takes the accounts already there,
-//! whose panels start with every patient. It tries every patient and exits
-//! failed if any did not load. Loading again changes only what the charts
-//! changed and leaves panel choices alone.
+//! `physician-migrate load-charts` loads the built synthetic charts and, when
+//! `calendar/Appointment.ndjson` is present, syncs the synthetic practice
+//! schedule in `PHYSICIAN_SYNTHETIC_CHARTS` into that practice and does nothing
+//! else. A deploy never runs it. It needs the schema and takes the accounts
+//! already there, whose panels start with every patient. It tries every patient
+//! and exits failed if any patient or schedule appointment did not load.
+//! Loading again changes only what the charts or calendar changed and leaves
+//! panel choices alone.
 //!
 //! `physician-migrate feedback` prints every physician's feedback on Coda's
 //! responses, one JSON line per rated response, for evaluation by Coda staff.
@@ -208,6 +210,11 @@ enum FeedbackReadError {
 }
 
 async fn load_charts(url: &str) -> Result<(), String> {
+    use local_product::runtime::schedule::{
+        ScheduleFreshness, ScheduleStanding, ScheduleSyncOutcome,
+    };
+    use physician_sample::schedule::{SyntheticBankCalendar, sync_synthetic_schedule};
+
     let charts = synthetic_charts(|key| std::env::var(key).ok())?;
     let db = migration_connection(url)
         .await
@@ -225,10 +232,70 @@ async fn load_charts(url: &str) -> Result<(), String> {
         summary.changed,
         summary.failed.len()
     );
-    if summary.failed.is_empty() {
+    let mut errors = Vec::new();
+    if !summary.failed.is_empty() {
+        errors.push(format!("{} patients failed", summary.failed.len()));
+    }
+
+    let calendar = SyntheticBankCalendar::open(&charts);
+    if calendar.path().is_file() {
+        match sync_synthetic_schedule(&calendar, &auth, &runtime, STAGING_PRACTICE_ID).await {
+            Ok(ScheduleSyncOutcome::Applied(schedule_summary)) => {
+                let schedule_failures = match &schedule_summary.standing {
+                    ScheduleStanding::Usable {
+                        freshness: ScheduleFreshness::Partial { failures, .. },
+                        ..
+                    } => {
+                        for issue in failures.as_slice() {
+                            eprintln!(
+                                "synthetic schedule appointment failed: {}: {}",
+                                issue.target(),
+                                issue.reason()
+                            );
+                        }
+                        failures.len()
+                    }
+                    ScheduleStanding::Absent
+                    | ScheduleStanding::Unavailable { .. }
+                    | ScheduleStanding::Usable { .. } => 0,
+                };
+                println!(
+                    "synthetic schedule: {} appointments ({} matched, {} unmatched), {} changed, {} failed",
+                    schedule_summary.saved_appointments,
+                    schedule_summary.matched_appointments,
+                    schedule_summary.unmatched_appointments,
+                    schedule_summary.changed_appointments,
+                    schedule_failures,
+                );
+                if schedule_failures > 0 {
+                    errors.push(format!("{schedule_failures} schedule appointments failed"));
+                }
+            }
+            Ok(ScheduleSyncOutcome::FailedRead { standing, .. }) => {
+                let reason = match standing {
+                    ScheduleStanding::Unavailable { failure, .. }
+                    | ScheduleStanding::Usable {
+                        freshness: ScheduleFreshness::RefreshFailed { failure },
+                        ..
+                    } => failure.reason,
+                    ScheduleStanding::Absent | ScheduleStanding::Usable { .. } => {
+                        "schedule source read failed".to_owned()
+                    }
+                };
+                eprintln!("synthetic schedule read failed: {reason}");
+                errors.push(format!("synthetic schedule read failed: {reason}"));
+            }
+            Err(error) => {
+                eprintln!("synthetic schedule sync failed: {error}");
+                errors.push(format!("synthetic schedule sync failed: {error}"));
+            }
+        }
+    }
+
+    if errors.is_empty() {
         Ok(())
     } else {
-        Err(format!("{} patients failed", summary.failed.len()))
+        Err(errors.join("; "))
     }
 }
 
