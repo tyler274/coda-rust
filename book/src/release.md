@@ -67,6 +67,40 @@ public or copy credentials into the Nix store. Object-age deletion is not a safe
 cache garbage collector: deleting a NAR while retaining its metadata or references
 can break substitution. Retention changes must account for the reference graph.
 
+### Nix store sticky disks
+
+The bucket is the fallback, not the first layer. Blacksmith runners sit outside
+GCP, so every byte they read from it is billed as internet egress, and a job
+that starts with an empty `/nix` downloads its whole closure. Each Nix job in
+[`ci.yml`](/.github/workflows/ci.yml) therefore starts with
+[`.github/actions/nix-store`](/.github/actions/nix-store/action.yml), which
+mounts `/nix` from the job's own Blacksmith sticky disk, `nix-<job>`, and then
+installs Nix over it. A warm disk already holds most of the closure, so Nix asks
+the bucket only for the paths it lacks, then cache.nixos.org, then builds.
+Signature checks, the publisher and `NIX_CACHE_ENABLED` are unchanged; a cold
+or missing disk only costs a full download.
+
+Only main runs save a disk: pushes to `main`, the weekly schedule and manual
+runs on `main`. Pull requests and merge-queue candidates load the latest main
+snapshot and discard their changes. A PR job has root on its runner and could
+rewrite store paths that Nix doesn't verify again once they are in a local
+store, and the deploy and `nix-cache-publish` jobs load the same disks. The
+`commit` condition in the action keeps routine PR runs from saving, but a PR
+can edit the workflow, so the protection is Blacksmith's sticky disk branch
+protection (Blacksmith dashboard, Settings): with it on, only default-branch
+`push`, `schedule` and `workflow_dispatch` jobs commit, whatever the workflow
+says. Keep it on.
+
+Each job ends with `python3 scripts/nix-cache/nix_store.py finish --cap-gib 60`,
+after the private cache cleanup. It writes a `Nix store summary` line to the job
+summary (store paths at start, paths the job added by fetching or building, and
+`/nix` usage) so warm and cold runs can be compared, and runs `nix store gc`
+down to 80% of the cap when the store is over 60 GiB or 80% of the disk. GC
+deletes only local store paths, so the bucket's no-deletion rule doesn't apply.
+It then stops `nix-daemon` so the sticky disk's post step can unmount and save
+`/nix`. Blacksmith evicts a disk after seven days without use; the job's next
+run then starts cold and refills it from the bucket.
+
 ### Local cache warming with act
 
 [The local workflow](/.github/workflows/nix-cache-local.yml) builds the same
