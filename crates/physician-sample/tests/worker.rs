@@ -1856,44 +1856,53 @@ async fn hosting_cancels_a_chat_whose_claim_has_been_replaced() {
 /// quoted bytes.
 #[tokio::test]
 async fn a_scripted_finish_cites_the_record_the_worker_read() {
+    use local_product::physician_sources::SourcePatient;
+    use local_product::physician_sources::adapter::{FHIR_R4_TABLE, file_json_record};
+    use local_product::runtime::sources::SourcePull;
+
     let _guard = lock().lock().await;
-    let content = r#"{"code":"2160-0","value":0.9,"unit":"mg/dL"}"#;
-    let revision = local_product::sha256_hex(content.as_bytes());
-    let rounds = serde_json::json!([[
-        {"name":"read_patient_sources","arguments":{"references":[{"candidate_id":"Observation/result","revision":revision,"cursor":null}],"max_result_bytes":4096}}
-    ]])
-    .to_string();
+    let content = r#"{"resourceType":"Observation","id":"creatinine","status":"final","code":{"text":"Creatinine"},"valueQuantity":{"value":0.9,"unit":"mg/dL"},"effectiveDateTime":"2026-08-01"}"#;
+    let quote = r#""value":0.9"#;
     let finish = serde_json::json!({
         "answer": "Creatinine was 0.9 mg/dL [S1].",
-        "quotes": [{"label": "S1", "quote": "\"value\":0.9"}],
+        "quotes": [{"label": "S1", "quote": quote}],
         "descriptions": [],
         "basis": "The creatinine result [S1].",
         "cites_none": false
     })
     .to_string();
-    let Some(mut running) = running_with("finish", None, None, &rounds, &finish, &[]).await else {
+    let Some(mut running) = running_with("finish", None, None, "[]", &finish, &[]).await else {
         return;
     };
-    // The source is saved before any attempt can read it.
+    // The record is filed through the FHIR table and stored by a pull, and
+    // the script reads it, before any attempt can run.
     running.worker.kill_now();
     let (scope, _) = accept_turn(&running.database.url, &running.store).await;
-    running
+    let record = file_json_record(&FHIR_R4_TABLE, &scope.workspace, "ehr", content, None).unwrap();
+    let receipt = running
         .store
-        .record_source(&local_product::physician_sources::SourceRevision {
-            workspace: scope.workspace.clone(),
-            source_id: "synthetic-charts".into(),
-            candidate_id: "Observation/result".into(),
-            revision: revision.clone(),
-            record_type: "Observation".into(),
-            dates: vec![],
-            content: content.into(),
-            sha256: revision.clone(),
-            readable_parts: vec![],
-            provenance: serde_json::json!({"native_record":"Observation/result"}),
-            envelope: None,
-        })
+        .record_chart_with_receipt(
+            &scope.workspace,
+            std::slice::from_ref(&record),
+            &SourcePull {
+                source_id: "ehr".into(),
+                source_label: "EHR".into(),
+                patient: SourcePatient {
+                    source_patient_id: "P-1".into(),
+                    display_name: "Nadia Okafor".into(),
+                    birth_date: Some("1984-02-19".into()),
+                    sex_or_gender: None,
+                    medical_record_numbers: Vec::new(),
+                },
+                pulled_at: Some(1_760_000_000),
+            },
+        )
         .await
         .unwrap();
+    assert!(receipt.missing_candidates.is_empty(), "{receipt:?}");
+    running.stub.tool_rounds(&serde_json::json!([[
+        {"name":"read_patient_sources","arguments":{"references":[{"candidate_id":record.candidate_id,"revision":record.revision,"cursor":null}],"max_result_bytes":4096}}
+    ]]));
     running.worker.restart();
     let port = running.port();
     support::wait_ready(&mut running.worker, port).await;
@@ -1902,12 +1911,13 @@ async fn a_scripted_finish_cites_the_record_the_worker_read() {
     assert_eq!(assistant_texts(&state), ["Creatinine was 0.9 mg/dL."]);
     let saved = serde_json::to_value(&state.messages).unwrap();
     let finished = &saved[1]["kind"]["finished"];
-    let source = serde_json::json!({"candidate_id": "Observation/result", "revision": revision});
-    let value = content.find(r#""value":0.9"#).unwrap();
+    let source =
+        serde_json::json!({"candidate_id": record.candidate_id, "revision": record.revision});
+    let start = record.content.find(quote).unwrap();
     assert_eq!(
         finished["marks"],
         serde_json::json!([{"at": 24, "source": source,
-                            "place": {"passage": {"spans": [{"part": 0, "start": value, "end": value + 11}]}}}])
+                            "place": {"passage": {"spans": [{"part": 0, "start": start, "end": start + quote.len()}]}}}])
     );
     assert_eq!(
         finished["basis"],

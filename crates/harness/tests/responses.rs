@@ -195,8 +195,9 @@ async fn real_http_two_turn_skill_loop_preserves_opaque_reasoning_and_exact_resu
             Ok(Finish::Committed)
         }
     }
-    let reasoning = json!({"type":"reasoning","id":"reasoning-skill-1","summary":[],
-        "encrypted_content":"opaque-provider-continuation+/="});
+    let reasoning = json!({"type":"reasoning","id":"reasoning-skill-1",
+        "summary":[{"type":"summary_text","text":"**Reading the preparation skill**"}],
+        "content":[],"encrypted_content":"opaque-provider-continuation+/="});
     let arguments = " { \"name\" : \"patient-record-retrieval\" } ";
     let first = json!({"id":"response-skill-1","status":"completed","output":[
         reasoning.clone(),

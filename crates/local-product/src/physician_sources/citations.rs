@@ -79,12 +79,17 @@ impl Spans {
     }
 }
 
+/// A quoted place with no span.
+#[derive(Debug, thiserror::Error)]
+#[error("a quoted place has at least one span")]
+pub struct NoSpan;
+
 impl TryFrom<Vec<Span>> for Spans {
-    type Error = &'static str;
+    type Error = NoSpan;
 
     fn try_from(spans: Vec<Span>) -> Result<Self, Self::Error> {
         if spans.is_empty() {
-            Err("a quoted place has at least one span")
+            Err(NoSpan)
         } else {
             Ok(Self(spans))
         }
@@ -194,7 +199,7 @@ pub fn finish_tool() -> Tool {
         description: "Hand in your finished answer. Nothing reaches the physician until it is accepted.\n\
 answer: the complete answer. Beside each claim that rests on a source you read, write that source's cite_as label in square brackets, such as [S3]. The label is the citation.\n\
 quotes: for each label you wrote in the answer, the words in that source's text that support the claim, copied exactly. The physician then sees that passage marked in the record; without a quote they see the record with nothing marked. Give them in the order the labels are written.\n\
-descriptions: leave this empty unless a source you cite came to you with no text or fields of its own that a physician could be shown. For such a source, write two or three lines on what it says, in your own words: values with their units, dates, status, and nothing the source does not say. The physician sees your words marked as prepared by Coda.\n\
+descriptions: leave this empty unless a source you cite came to you with no text or fields of its own that a physician could be shown. For such a source, write two or three lines on what it says, in your own words: values with their units, dates, status, and nothing the source does not say.\n\
 cites_none: true only when the answer rests on no source you read.\n\
 basis: what the answer rests on (source records, physician input, skill guidance, general medical knowledge) and any limitation that could materially change interpretation, usually under 80 words. It may carry labels too.\n\
 An answer and basis with no label are refused unless cites_none is true, and so is a label that is not from your reads. You are told which, nothing is saved, and you call finish_answer again.".into(),
@@ -245,35 +250,47 @@ struct Described {
     description: String,
 }
 
+/// Why a turn is not a finish. Its text is what the model is told.
+#[derive(Debug, thiserror::Error)]
+enum NotSubmitted {
+    /// The turn has no call.
+    #[error(
+        "Nothing reaches the physician until you call finish_answer. Call it with your complete answer. If you cannot answer, say why in answer and set cites_none to true."
+    )]
+    NoCall,
+    /// The turn's calls are not one finish alone: a finish beside other calls.
+    #[error(
+        "Call finish_answer by itself, after the other calls have returned. Nothing was run and nothing was saved."
+    )]
+    BesideOtherCalls,
+    /// The finish's arguments do not match its parameters.
+    #[error("finish_answer arguments do not match its parameters ({0}). Nothing was saved.")]
+    Arguments(#[source] serde_json::Error),
+    /// The answer without labels is blank.
+    #[error("Give the complete answer in answer. Nothing was saved.")]
+    EmptyAnswer,
+    /// The Basis without labels is blank.
+    #[error("Give the basis: what the answer rests on and its material limits. Nothing was saved.")]
+    EmptyBasis,
+}
+
 /// A finish turn with its one call's id and arguments, or why it is not one.
 /// An answer or Basis is empty when its text without labels is blank. Such a
 /// refusal never counts toward the two label refusals.
-fn submitted(turn: &Turn) -> Result<(&str, FinishCall), String> {
+fn submitted(turn: &Turn) -> Result<(&str, FinishCall), NotSubmitted> {
     let mut calls = turn.calls();
     let call = match (calls.next(), calls.next()) {
         (Some(call), None) if call.name == FINISH_TOOL => call,
-        (None, _) => {
-            return Err(
-                "Nothing reaches the physician until you call finish_answer. Call it with your complete answer. If you cannot answer, say why in answer and set cites_none to true.".into(),
-            );
-        }
-        (Some(_), _) => {
-            return Err(
-                "Call finish_answer by itself, after the other calls have returned. Nothing was run and nothing was saved.".into(),
-            );
-        }
+        (None, _) => return Err(NotSubmitted::NoCall),
+        (Some(_), _) => return Err(NotSubmitted::BesideOtherCalls),
     };
-    let finish: FinishCall = serde_json::from_str(&call.arguments).map_err(|error| {
-        format!("finish_answer arguments do not match its parameters ({error}). Nothing was saved.")
-    })?;
+    let finish: FinishCall =
+        serde_json::from_str(&call.arguments).map_err(NotSubmitted::Arguments)?;
     if without_labels(&finish.answer).trim().is_empty() {
-        return Err("Give the complete answer in answer. Nothing was saved.".into());
+        return Err(NotSubmitted::EmptyAnswer);
     }
     if without_labels(&finish.basis).trim().is_empty() {
-        return Err(
-            "Give the basis: what the answer rests on and its material limits. Nothing was saved."
-                .into(),
-        );
+        return Err(NotSubmitted::EmptyBasis);
     }
     Ok((&call.id, finish))
 }

@@ -22,7 +22,7 @@ use serde_json::{Value, json};
 
 const FINISH: &str = "finish_answer";
 
-/// A potassium result. Its leaves in document order are f1 to f7.
+/// A potassium result.
 const LAB: &str = r#"{"resourceType":"Observation","id":"k1","status":"final","code":{"text":"Potassium"},"valueQuantity":{"value":4.1,"unit":"mmol/L"},"effectiveDateTime":"2026-08-01"}"#;
 const NOTE_TEXT: &str =
     "Seen in clinic on 2026-08-02. Potassium was normal. Plan: recheck in one month.";

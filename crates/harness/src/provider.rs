@@ -15,6 +15,10 @@ const STREAM_IDLE_TIMEOUT: Duration = Duration::from_secs(300);
 /// The longest provider retry hint the harness waits for. OpenClaw and Pi
 /// stop retrying the same request at the same delay.
 const MAX_RETRY_HINT: Duration = Duration::from_secs(60);
+/// Every request asks the provider for a summary of the model's reasoning,
+/// returned in each reasoning item. With `auto` the provider picks how detailed
+/// the summary is for the model.
+const REASONING_SUMMARY: &str = "auto";
 
 /// The shared provider deadline is further away than the harness waits.
 #[derive(Debug, thiserror::Error)]
@@ -87,7 +91,13 @@ fn encode_for(request: &Request, authorization: Authorization) -> Result<Value, 
         tools,
         request.cache_key.as_ref(),
     );
-    body["reasoning"] = request.options.clone();
+    let mut reasoning = match request.options.clone() {
+        Value::Null => serde_json::Map::new(),
+        Value::Object(options) => options,
+        _ => return Err("reasoning options must be a JSON object".into()),
+    };
+    reasoning.insert("summary".into(), REASONING_SUMMARY.into());
+    body["reasoning"] = Value::Object(reasoning);
     Ok(body)
 }
 
@@ -307,7 +317,15 @@ mod tests {
         assert_eq!(plan["tools"], json!([]));
         assert_eq!(plan["stream"], true);
         assert_eq!(plan["store"], false);
-        assert_eq!(plan["reasoning"], json!({"effort":"high"}));
+        assert_eq!(plan["reasoning"], json!({"effort":"high","summary":"auto"}));
+        let unset = Request {
+            options: Value::Null,
+            ..request.clone()
+        };
+        assert_eq!(
+            encode_for(&unset, Authorization::Api).unwrap()["reasoning"],
+            json!({"summary":"auto"})
+        );
         let api = encode_for(&request, Authorization::Api).unwrap();
         let key = plan["prompt_cache_key"]
             .as_str()
