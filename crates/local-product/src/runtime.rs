@@ -41,6 +41,8 @@ mod entities;
 pub mod feedback;
 mod frozen;
 pub use frozen::{BindingRef, SkillPackageId};
+/// Practice-owned background jobs running on the shared run store and background lane.
+pub mod jobs;
 mod migration;
 mod quota;
 /// Command receipts and their 90-day reduction to a salted digest.
@@ -82,6 +84,9 @@ impl Scope {
             .any(|s| s.trim().is_empty())
         {
             return Err(error("empty physician scope"));
+        }
+        if self.physician.trim() == jobs::PRACTICE_OWNER {
+            return Err(error("practice run cannot act as a physician"));
         }
         Ok(())
     }
@@ -1660,7 +1665,12 @@ impl Store {
             .one(&tx)
             .await?
         else {
-            return Ok(Stopped::Refused);
+            let practice_scope = jobs::PracticeScope {
+                practice: scope.practice.clone(),
+                workspace: scope.workspace.clone(),
+                job_id: scope.chat.clone(),
+            };
+            return Self::stop_practice_job_in_tx(tx, &practice_scope, work_item_id).await;
         };
         let mut state = Self::conversation_control(&tx, scope, row).await?;
         // Another press on work that is already held, from a page that has

@@ -194,26 +194,43 @@ pub(super) async fn run(worker: Arc<Worker>, stop: watch::Receiver<bool>) {
 }
 
 /// Which kind of due work a sweep reads first. A worker that fills up on the
-/// first kind leaves the second unread, so the order alternates sweep by
-/// sweep: a steady stream of chat turns cannot starve due reply revisions.
+/// first kind leaves the rest unread, so the order rotates sweep by sweep:
+/// a steady stream of one kind cannot starve due work of another.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
 enum SweepOrder {
     #[default]
-    ChatTurnsFirst,
-    RevisionsFirst,
+    ChatTurns,
+    Revisions,
+    PracticeJobs,
 }
 
 impl SweepOrder {
-    /// The kinds this sweep reads, in order, and flips the order for the next.
-    fn next(&mut self) -> [DeliveryKind; 2] {
+    /// The kinds this sweep reads, in order, and rotates the order for the next.
+    fn next(&mut self) -> [DeliveryKind; 3] {
         let (kinds, following) = match self {
-            Self::ChatTurnsFirst => (
-                [DeliveryKind::ChatTurn, DeliveryKind::ReplyRevision],
-                Self::RevisionsFirst,
+            Self::ChatTurns => (
+                [
+                    DeliveryKind::ChatTurn,
+                    DeliveryKind::ReplyRevision,
+                    DeliveryKind::PracticeJob,
+                ],
+                Self::Revisions,
             ),
-            Self::RevisionsFirst => (
-                [DeliveryKind::ReplyRevision, DeliveryKind::ChatTurn],
-                Self::ChatTurnsFirst,
+            Self::Revisions => (
+                [
+                    DeliveryKind::ReplyRevision,
+                    DeliveryKind::PracticeJob,
+                    DeliveryKind::ChatTurn,
+                ],
+                Self::PracticeJobs,
+            ),
+            Self::PracticeJobs => (
+                [
+                    DeliveryKind::PracticeJob,
+                    DeliveryKind::ChatTurn,
+                    DeliveryKind::ReplyRevision,
+                ],
+                Self::ChatTurns,
             ),
         };
         *self = following;
@@ -263,6 +280,7 @@ async fn due(
     match kind {
         DeliveryKind::ChatTurn => store.dispatch_due(PAGE, after).await,
         DeliveryKind::ReplyRevision => store.revisions_due(PAGE, after).await,
+        DeliveryKind::PracticeJob => store.practice_jobs_due_page(PAGE, after).await,
     }
 }
 
@@ -292,16 +310,18 @@ mod tests {
     use super::*;
 
     #[test]
-    fn each_sweep_reads_the_other_kind_first() {
+    fn each_sweep_rotates_which_kind_reads_first() {
         let mut order = SweepOrder::default();
-        let firsts: Vec<_> = (0..4).map(|_| order.next()[0]).collect();
+        let firsts: Vec<_> = (0..6).map(|_| order.next()[0]).collect();
         assert_eq!(
             firsts,
             [
                 DeliveryKind::ChatTurn,
                 DeliveryKind::ReplyRevision,
+                DeliveryKind::PracticeJob,
                 DeliveryKind::ChatTurn,
                 DeliveryKind::ReplyRevision,
+                DeliveryKind::PracticeJob,
             ]
         );
     }

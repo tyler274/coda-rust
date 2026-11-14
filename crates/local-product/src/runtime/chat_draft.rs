@@ -32,18 +32,7 @@ pub enum ChatDraftSaved {
 }
 
 fn nonempty(scope: &Scope) -> Result<(), DbErr> {
-    if [
-        &scope.practice,
-        &scope.physician,
-        &scope.workspace,
-        &scope.chat,
-    ]
-    .iter()
-    .any(|s| s.trim().is_empty())
-    {
-        return Err(error("empty physician scope"));
-    }
-    Ok(())
+    scope.validate()
 }
 
 fn draft(row: Option<chat_draft::Model>) -> Result<ChatDraft, DbErr> {

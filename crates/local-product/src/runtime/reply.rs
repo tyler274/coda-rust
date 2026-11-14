@@ -1013,7 +1013,7 @@ impl Store {
             .one(&tx)
             .await?
         else {
-            return Ok(super::Resumed::Refused);
+            return Self::resume_practice_job_in_tx(tx, scope, work_item_id, expected_run_id).await;
         };
         let mut state = Self::draft_control(&tx, scope, row).await?;
         if !state
