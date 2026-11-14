@@ -13,6 +13,8 @@ use sha2::{Digest, Sha256};
 pub mod chatgpt;
 /// Clinical library search and exact passage read tools for physician chat.
 pub mod clinical_library;
+/// Hint chart filing table, bucket mapping, redaction, deep links, and `PatientSource` adapter.
+pub mod hint;
 /// Recipe, initial context, and memory tools for patient understanding runs.
 pub mod initial_understanding;
 /// Rounds recipe, initial context, and review tools for background and physician-requested patient reviews.

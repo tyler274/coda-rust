@@ -31,6 +31,29 @@ resource "google_service_networking_connection" "sql" {
   depends_on              = [google_project_service.api]
 }
 
+variable "sql_backup_location" {
+  type        = string
+  default     = "us"
+  nullable    = false
+  description = "Explicit Cloud SQL backup storage location for both product databases. US multi-region keeps encrypted backups and PITR logs within US residency while surviving a primary-region outage."
+  validation {
+    condition     = var.sql_backup_location == "us"
+    error_message = "sql_backup_location must be the US multi-region (\"us\") under the database backup policy."
+  }
+}
+
+locals {
+  sql_backup_policy = {
+    enabled                        = true
+    location                       = var.sql_backup_location
+    start_time                     = "03:00"
+    point_in_time_recovery_enabled = true
+    transaction_log_retention_days = 7
+    retained_backups               = 7
+    retention_unit                 = "COUNT"
+  }
+}
+
 # Two instances intentionally cost more than two databases in one instance:
 # instance-scoped IAM and PostgreSQL catalog/role authority never cross products.
 # Scale-to-zero Cloud Run does NOT stop SQL billing. No public IP or authorized
@@ -65,11 +88,15 @@ resource "google_sql_database_instance" "app" {
       value = "100"
     }
     backup_configuration {
-      enabled                        = true
-      point_in_time_recovery_enabled = true
-      transaction_log_retention_days = 7
-      start_time                     = "03:00"
-      backup_retention_settings { retained_backups = 7 }
+      enabled                        = local.sql_backup_policy.enabled
+      location                       = local.sql_backup_policy.location
+      point_in_time_recovery_enabled = local.sql_backup_policy.point_in_time_recovery_enabled
+      transaction_log_retention_days = local.sql_backup_policy.transaction_log_retention_days
+      start_time                     = local.sql_backup_policy.start_time
+      backup_retention_settings {
+        retained_backups = local.sql_backup_policy.retained_backups
+        retention_unit   = local.sql_backup_policy.retention_unit
+      }
     }
     maintenance_window {
       day          = 7
@@ -78,7 +105,17 @@ resource "google_sql_database_instance" "app" {
     }
   }
   depends_on = [google_service_networking_connection.sql]
-  lifecycle { prevent_destroy = true }
+  lifecycle {
+    prevent_destroy = true
+    precondition {
+      condition     = startswith(var.region, "us-") && local.sql_backup_policy.location == "us"
+      error_message = "Product databases and their US multi-region backups must remain inside US regions."
+    }
+    precondition {
+      condition     = var.environment != "prd" || !var.production_activation_approved || (var.database_backup_alerts_enabled && length(local.database_alert_channels) > 0)
+      error_message = "Production databases require active backup and physician WAL-archiving alerts routed to explicit notification channels."
+    }
+  }
 }
 
 resource "google_sql_database" "app" {

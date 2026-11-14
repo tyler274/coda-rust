@@ -387,6 +387,60 @@ GiB-second, instance-based) for an instance kept warm for a month:
   nothing. Instance-based CPU would have billed each warm instance for up to 15
   idle minutes after every request, up to about $101 a month at continuous low
   traffic.
+
+### Database backup policy and RPO
+
+[`database.tf`](/infra/gcp/rust-environments/database.tf) and
+[`monitoring.tf`](/infra/gcp/rust-environments/monitoring.tf) enforce the
+database backup and recovery-point policy across `stg` and `prd` (`prd` adds
+`REGIONAL` high availability and requires explicit operator authorization plus
+configured alert notification channels before databases can be planned):
+
+| Policy item | Requirement | Enforcement in `rust-environments` |
+| --- | --- | --- |
+| Frequency and window | Automated daily full backup of both product databases (`rust-physician` and `rust-duet`) | `backup_configuration.enabled = true`, `start_time = "03:00"` (UTC) |
+| Backup location | United States multi-region storage surviving a primary-region outage | `backup_configuration.location = "us"` (`sql_backup_location`), paired with a US-region precondition on `google_sql_database_instance.app` |
+| Physician data RPO | Target **5 minutes**, never more than **15 minutes** | Continuous PostgreSQL Write-Ahead Log (WAL) archiving (`point_in_time_recovery_enabled = true`), not scheduled incremental backups |
+| Retention | **7 retained daily full backups** and **7 days of transaction logs** | `retained_backups = 7` (`retention_unit = "COUNT"`), `transaction_log_retention_days = 7` |
+| Scope | `rust-physician` owns durable physician clinical state; `rust-duet` pairs SQL backups with independent journal replay | Memorystore (`rust-physician-cache`) holds only ephemeral fan-out events, Langfuse holds disposable generation trace copies, and Gmail and Spruce retain their own external source records; Duet restores require [privacy recovery](privacy-recovery.md#isolated-restore-qualification) |
+
+[`monitoring.tf`](/infra/gcp/rust-environments/monitoring.tf) routes Cloud SQL
+backup and physician RPO alerts to `database_backup_alert_channels` (defaulting
+to `availability_watchdog_channels`):
+
+- **Daily backup older than 26 hours (`sql_backup_stale`).** Per-instance
+  `coda/sql_backup_succeeded_<app>` counts `STATUS_SUCCEEDED` entries in
+  `cloudaudit.googleapis.com/system_event`
+  (`protoPayload.methodName="cloudsql.instances.automatedBackup"`), scoped by
+  `resource.labels.database_id` so one product's daily backup cannot mask the
+  other's. `sql_backup_stale` alerts when `absent_over_time(...[24h])` holds
+  continuously for `7200s` (26 hours total, keeping the PromQL lookback plus
+  `300s` evaluation interval inside Cloud Monitoring's 25-hour limit for user
+  log-based metrics).
+- **Daily backup failed or skipped (`sql_backup_failed`).** Per-instance
+  `coda/sql_backup_failed_<app>` and `sql_backup_failed` notify immediately when
+  `cloudsql.instances.automatedBackup` reports `STATUS_FAILED` or
+  `STATUS_SKIPPED`, rather than waiting out the 26-hour absence window.
+- **Physician WAL archiving and disk backpressure (`physician_sql_wal_archive_failed`, `physician_sql_disk_pressure`).**
+  `coda/physician_sql_wal_archive_failed` matches `archive command failed` and
+  `archiving write-ahead log file .* failed` in `rust-physician`'s
+  `cloudsql.googleapis.com/postgres.log` and pages on the first failed archive
+  cycle so low-traffic 5-minute `archive_timeout` cycles notify before 15
+  minutes of committed data are unarchived. `physician_sql_disk_pressure` alerts
+  when `rust-physician` exceeds `0.85` disk utilization for 10 minutes from
+  local `pg_wal` accumulation.
+- **Cloud SQL PITR lag metric boundary.** Google Cloud SQL
+  (`cloudsql.googleapis.com`) exposes no Cloud Monitoring metric for
+  point-in-time recovery-point age, latest recoverable timestamp, or silent
+  asynchronous WAL offload lag into Google-managed Cloud Storage
+  (`write_ahead_log/*_bytes_count` tracks local WAL flush and sits at zero when
+  idle; `bytes_used_by_data_type` tracks stored bytes rather than lag;
+  `replication/replica_byte_lag` exists only on read replicas). Automated alerts
+  therefore catch daily backup failures or >26-hour absence, PostgreSQL
+  `archive_command` failures, and `pg_wal` disk pressure, while actual
+  recovery-point lag against the 5-minute target and 15-minute limit is measured
+  only through isolated point-in-time clone rehearsals.
+
 ### Disposable database recovery rehearsal
 
 [`workspace-tools staging-restore`](/crates/workspace-tools/src/staging_restore.rs)
@@ -428,9 +482,15 @@ Cloud restore completion is explicitly **unqualified**. Before a rehearsal:
    migrator permissions. Run Duet's complete independent journal replay and check
    deletion/withdrawal refusal as described in [privacy recovery](privacy-recovery.md#isolated-restore-qualification).
 4. Record validation commands/results beside the cloud receipt, tied to the
-   target and revision. Record measured recovery duration and recovery-point age;
-   retention settings do not establish an RPO or RTO. No production availability
-   target is implied by this rehearsal.
+   target and revision. Record measured recovery duration and recovery-point age
+   against the [backup policy](#database-backup-policy-and-rpo); retention
+   settings alone do not establish measured RPO or RTO. For physician PITR
+   measurement, clone `rust-physician` with `gcloud sql instances clone ... --point-in-time`
+   into a fresh private `rust-restore-physician-pitr-<run>` instance that is
+   never attached to serving, workers, queues or external channels, verify the
+   sentinel record timestamp, and clear the clone's inherited deletion
+   protection only under the separate cleanup authorization for that exact
+   disposable target.
 5. After separate cleanup authorization, use the receipt-bound cleanup command.
    It checks project, creation identity, private network and drill labels before
    deleting only its disposable target. Record deletion completion; unresolved
