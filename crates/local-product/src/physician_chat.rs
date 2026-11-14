@@ -57,6 +57,14 @@ within available authority.
 Use the tools offered in this conversation. Base patient-specific facts on records you have read in \
 this conversation. If tools or evidence are unavailable, say what you cannot confirm.
 
+When published clinical literature, drug labeling, or guideline detail would materially support or sharpen \
+the answer, search the clinical library using clinical concepts only — never include patient names, birth \
+dates, medical record numbers, workspace identifiers, or contact details in a library query. Open relevant \
+passages by passage_id to verify exact wording, publication date, publication status, and attribution before \
+citing them; surface any retraction or correction notice prominently. When the clinical library is \
+unavailable, continue answering from the patient chart and state in the basis that clinical literature \
+could not be checked.
+
 The approved skill catalog describes reusable capability guidance and exact packaged resources. Review it \
 when a task begins and whenever the task scope changes. A skill given in full below the catalog is \
 already loaded: follow it, and do not open it again. Before relying on a matching, materially \
@@ -111,6 +119,7 @@ impl Job {
 pub fn tools() -> Vec<Tool> {
     let mut offered = work_tools();
     offered.extend(chart_tools());
+    offered.extend(crate::clinical_library::tools());
     offered.push(citations::finish_tool());
     offered
 }
@@ -123,11 +132,14 @@ pub fn work_tools() -> Vec<Tool> {
     offered
 }
 
-/// Source and conversation reads have no product effects or shared session mutation.
+/// Source, clinical library, and conversation reads have no product effects or shared session mutation.
 pub fn read_only(name: &str) -> bool {
     matches!(
         name,
-        crate::physician_sources::SEARCH_TOOL | crate::physician_sources::READ_TOOL
+        crate::physician_sources::SEARCH_TOOL
+            | crate::physician_sources::READ_TOOL
+            | crate::clinical_library::SEARCH_LIBRARY_TOOL
+            | crate::clinical_library::READ_LIBRARY_TOOL
     )
 }
 
@@ -182,6 +194,8 @@ pub enum StepError {
 enum ChatTool {
     /// Chart search and chart read.
     Chart,
+    /// Clinical library search and passage read.
+    ClinicalLibrary,
     /// Earlier conversation: list, read and search.
     Conversation,
     /// A skill's guidance.
@@ -201,6 +215,8 @@ impl ChatTool {
             crate::physician_sources::SEARCH_TOOL | crate::physician_sources::READ_TOOL => {
                 Some(Self::Chart)
             }
+            crate::clinical_library::SEARCH_LIBRARY_TOOL
+            | crate::clinical_library::READ_LIBRARY_TOOL => Some(Self::ClinicalLibrary),
             history::LIST | history::READ | history::SEARCH => Some(Self::Conversation),
             SKILL_VIEW => Some(Self::Skill),
             results::READ => Some(Self::ResultPage),
@@ -220,9 +236,11 @@ pub fn step(call: &Invocation, ending: CallEnding<'_>) -> Result<Option<Step>, S
         ChatTool::named(&call.name).ok_or_else(|| StepError::UnknownTool(call.name.clone()))?;
     let arguments = || serde_json::from_str::<Value>(&call.arguments).map_err(StepError::Arguments);
     match tool {
-        ChatTool::Skill | ChatTool::ResultPage | ChatTool::WorkingNote | ChatTool::Finish => {
-            Ok(None)
-        }
+        ChatTool::ClinicalLibrary
+        | ChatTool::Skill
+        | ChatTool::ResultPage
+        | ChatTool::WorkingNote
+        | ChatTool::Finish => Ok(None),
         ChatTool::Chart => {
             let request = crate::physician_sources::ChartRequest::parse(
                 &call.name,
