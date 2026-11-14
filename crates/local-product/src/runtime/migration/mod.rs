@@ -6,11 +6,13 @@ mod m20261111_init;
 mod m20261111_response_feedback;
 mod m20261112_chat_memory;
 mod m20261112_concerns;
+mod m20261112_patient_reviews;
 mod m20261112_patient_understanding;
 mod m20261112_practice_jobs_dispatch;
 mod m20261112_practice_schedule;
 pub(in crate::runtime) mod m20261112_source_pull_missing_candidates;
 mod m20261112_source_refresh;
+mod m20261112_visit_briefings;
 pub(in crate::runtime) mod m20261113_source_links_and_standing;
 pub(in crate::runtime) mod m20261114_reconnect_commands_and_adapter_state;
 
@@ -40,6 +42,8 @@ impl MigratorTrait for Migrator {
             Box::new(m20261112_practice_schedule::Migration),
             Box::new(m20261112_chat_memory::Migration),
             Box::new(m20261112_patient_understanding::Migration),
+            Box::new(m20261112_patient_reviews::Migration),
+            Box::new(m20261112_visit_briefings::Migration),
         ]
     }
 }

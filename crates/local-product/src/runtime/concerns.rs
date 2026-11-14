@@ -537,7 +537,7 @@ pub struct WorkspaceAccess<'a> {
 }
 
 impl WorkspaceAccess<'_> {
-    fn authority_scope(&self) -> Result<Scope, ConcernError> {
+    pub(super) fn authority_scope(&self) -> Result<Scope, ConcernError> {
         let practice = validate_non_empty_field("practice", self.practice)?;
         let physician = validate_non_empty_field("physician", self.physician)?;
         let workspace = validate_non_empty_field("workspace", self.workspace)?;
@@ -939,7 +939,7 @@ fn sort_today(concerns: &mut [Concern]) {
     });
 }
 
-async fn load_concern(
+pub(super) async fn load_concern(
     tx: &impl ConnectionTrait,
     practice: &str,
     workspace: &str,
@@ -960,6 +960,209 @@ fn concern_tool_command_key(work_id: &str, call_id: &str) -> Result<CommandKey, 
     CommandKey::new(format!("{}:{}", work_id, call_id.trim()))
 }
 
+pub(super) async fn raise_concern_in_tx(
+    tx: &sea_orm::DatabaseTransaction,
+    command_key: &CommandKey,
+    input: &RaiseConcern,
+) -> Result<ConcernMutation, ConcernError> {
+    let practice = validate_non_empty_field("practice", &input.practice)?;
+    let workspace = validate_non_empty_field("workspace", &input.workspace)?;
+    let reason = validate_concern_reason(&input.reason)?;
+    let records = normalize_records(&input.records)?;
+    let source_work = input.source_work.validate()?;
+
+    let command = json!({
+        "kind": "concern_raise",
+        "practice": &practice,
+        "workspace": &workspace,
+        "concern_id": input.id.as_str(),
+        "urgency": input.urgency,
+        "reason": &reason,
+        "records": &records,
+        "source_work": &source_work,
+    });
+    match receipt::record(
+        tx,
+        &practice,
+        JOB_RECEIPT_ACTOR,
+        command_key.as_str(),
+        &command,
+    )
+    .await?
+    {
+        receipt::Receipt::New => {}
+        receipt::Receipt::Same => {
+            let existing = load_concern(tx, &practice, &workspace, &input.id)
+                .await?
+                .ok_or_else(|| error("missing concern for accepted receipt"))?;
+            return Ok(ConcernMutation::Duplicate(existing));
+        }
+        receipt::Receipt::Different => {
+            return Err(ConcernError::IdempotencyCollision {
+                key: command_key.to_string(),
+            });
+        }
+    }
+
+    if concern::Entity::find_by_id((
+        practice.clone(),
+        workspace.clone(),
+        input.id.as_str().to_owned(),
+    ))
+    .lock_exclusive()
+    .one(tx)
+    .await?
+    .is_some()
+    {
+        return Err(ConcernError::AlreadyExists {
+            id: input.id.clone(),
+        });
+    }
+
+    verify_cited_records(tx, &workspace, &records).await?;
+    let timestamp = now(tx).await?;
+    let records_json =
+        serde_json::to_value(&records).map_err(conversion_error("ExactRecordReference", "json"))?;
+    let work_json =
+        serde_json::to_value(&source_work).map_err(conversion_error("SourceWork", "json"))?;
+    concern::Entity::insert(concern::ActiveModel {
+        practice: Set(practice.clone()),
+        workspace: Set(workspace.clone()),
+        id: Set(input.id.as_str().to_owned()),
+        urgency: Set(input.urgency.as_str().to_owned()),
+        status: Set("open".into()),
+        reason: Set(reason.clone()),
+        records: Set(records_json),
+        source_work: Set(work_json),
+        cleared_by_physician: Set(None),
+        cleared_at: Set(None),
+        feedback_revision: Set(None),
+        retirement_reason: Set(None),
+        retired_by_work: Set(None),
+        retired_at: Set(None),
+        created_at: Set(timestamp),
+        updated_at: Set(timestamp),
+        revision: Set(1),
+    })
+    .exec_without_returning(tx)
+    .await?;
+
+    Ok(ConcernMutation::Applied(Concern {
+        practice,
+        workspace,
+        id: input.id.clone(),
+        urgency: input.urgency,
+        reason,
+        records,
+        source_work,
+        revision: 1,
+        created_at: timestamp,
+        updated_at: timestamp,
+        standing: ConcernStanding::Open,
+    }))
+}
+
+pub(super) async fn retire_concern_in_tx(
+    tx: &sea_orm::DatabaseTransaction,
+    command_key: &CommandKey,
+    input: &RetireConcern,
+) -> Result<ConcernMutation, ConcernError> {
+    let practice = validate_non_empty_field("practice", &input.practice)?;
+    let workspace = validate_non_empty_field("workspace", &input.workspace)?;
+    let source_work = input.source_work.validate()?;
+
+    let command = json!({
+        "kind": "concern_retire",
+        "practice": &practice,
+        "workspace": &workspace,
+        "concern_id": input.id.as_str(),
+        "reason": input.reason.as_str(),
+        "source_work": &source_work,
+    });
+    match receipt::record(
+        tx,
+        &practice,
+        JOB_RECEIPT_ACTOR,
+        command_key.as_str(),
+        &command,
+    )
+    .await?
+    {
+        receipt::Receipt::New => {}
+        receipt::Receipt::Same => {
+            let existing = load_concern(tx, &practice, &workspace, &input.id)
+                .await?
+                .ok_or_else(|| error("missing concern for accepted receipt"))?;
+            return Ok(ConcernMutation::Duplicate(existing));
+        }
+        receipt::Receipt::Different => {
+            return Err(ConcernError::IdempotencyCollision {
+                key: command_key.to_string(),
+            });
+        }
+    }
+
+    let Some(row) = concern::Entity::find_by_id((
+        practice.clone(),
+        workspace.clone(),
+        input.id.as_str().to_owned(),
+    ))
+    .lock_exclusive()
+    .one(tx)
+    .await?
+    else {
+        return Err(ConcernError::NotFound {
+            id: input.id.clone(),
+        });
+    };
+    let current = decode_concern(row.clone())?;
+    if !current.shows_on_today() {
+        return Err(ConcernError::NotOpen {
+            id: input.id.clone(),
+        });
+    }
+
+    let timestamp = now(tx).await?;
+    let next_revision = current.revision + 1;
+    let next_revision_i64 =
+        i64::try_from(next_revision).map_err(conversion_error("concern revision", "i64"))?;
+    let retired_work_json =
+        serde_json::to_value(&source_work).map_err(conversion_error("SourceWork", "json"))?;
+
+    concern::ActiveModel {
+        practice: Unchanged(row.practice),
+        workspace: Unchanged(row.workspace),
+        id: Unchanged(row.id),
+        urgency: Unchanged(row.urgency),
+        status: Set("retired".into()),
+        reason: Unchanged(row.reason),
+        records: Unchanged(row.records),
+        source_work: Unchanged(row.source_work),
+        cleared_by_physician: Set(None),
+        cleared_at: Set(None),
+        feedback_revision: Set(None),
+        retirement_reason: Set(Some(input.reason.as_str().to_owned())),
+        retired_by_work: Set(Some(retired_work_json)),
+        retired_at: Set(Some(timestamp)),
+        created_at: Unchanged(row.created_at),
+        updated_at: Set(timestamp),
+        revision: Set(next_revision_i64),
+    }
+    .update(tx)
+    .await?;
+
+    Ok(ConcernMutation::Applied(Concern {
+        standing: ConcernStanding::Retired {
+            reason: input.reason.clone(),
+            source_work,
+            retired_at: timestamp,
+        },
+        revision: next_revision,
+        updated_at: timestamp,
+        ..current
+    }))
+}
+
 impl Store {
     /// Raises a new patient concern once under `command_key`, verifying every
     /// cited chart record revision against the workspace's current observation.
@@ -968,104 +1171,10 @@ impl Store {
         command_key: &CommandKey,
         input: &RaiseConcern,
     ) -> Result<ConcernMutation, ConcernError> {
-        let practice = validate_non_empty_field("practice", &input.practice)?;
-        let workspace = validate_non_empty_field("workspace", &input.workspace)?;
-        let reason = validate_concern_reason(&input.reason)?;
-        let records = normalize_records(&input.records)?;
-        let source_work = input.source_work.validate()?;
-
-        let command = json!({
-            "kind": "concern_raise",
-            "practice": &practice,
-            "workspace": &workspace,
-            "concern_id": input.id.as_str(),
-            "urgency": input.urgency,
-            "reason": &reason,
-            "records": &records,
-            "source_work": &source_work,
-        });
         let tx = self.db.begin().await?;
-        match receipt::record(
-            &tx,
-            &practice,
-            JOB_RECEIPT_ACTOR,
-            command_key.as_str(),
-            &command,
-        )
-        .await?
-        {
-            receipt::Receipt::New => {}
-            receipt::Receipt::Same => {
-                let existing = load_concern(&tx, &practice, &workspace, &input.id)
-                    .await?
-                    .ok_or_else(|| error("missing concern for accepted receipt"))?;
-                tx.commit().await?;
-                return Ok(ConcernMutation::Duplicate(existing));
-            }
-            receipt::Receipt::Different => {
-                return Err(ConcernError::IdempotencyCollision {
-                    key: command_key.to_string(),
-                });
-            }
-        }
-
-        if concern::Entity::find_by_id((
-            practice.clone(),
-            workspace.clone(),
-            input.id.as_str().to_owned(),
-        ))
-        .lock_exclusive()
-        .one(&tx)
-        .await?
-        .is_some()
-        {
-            return Err(ConcernError::AlreadyExists {
-                id: input.id.clone(),
-            });
-        }
-
-        verify_cited_records(&tx, &workspace, &records).await?;
-        let timestamp = now(&tx).await?;
-        let records_json = serde_json::to_value(&records)
-            .map_err(conversion_error("ExactRecordReference", "json"))?;
-        let work_json =
-            serde_json::to_value(&source_work).map_err(conversion_error("SourceWork", "json"))?;
-        concern::Entity::insert(concern::ActiveModel {
-            practice: Set(practice.clone()),
-            workspace: Set(workspace.clone()),
-            id: Set(input.id.as_str().to_owned()),
-            urgency: Set(input.urgency.as_str().to_owned()),
-            status: Set("open".into()),
-            reason: Set(reason.clone()),
-            records: Set(records_json),
-            source_work: Set(work_json),
-            cleared_by_physician: Set(None),
-            cleared_at: Set(None),
-            feedback_revision: Set(None),
-            retirement_reason: Set(None),
-            retired_by_work: Set(None),
-            retired_at: Set(None),
-            created_at: Set(timestamp),
-            updated_at: Set(timestamp),
-            revision: Set(1),
-        })
-        .exec_without_returning(&tx)
-        .await?;
+        let outcome = raise_concern_in_tx(&tx, command_key, input).await?;
         tx.commit().await?;
-
-        Ok(ConcernMutation::Applied(Concern {
-            practice,
-            workspace,
-            id: input.id.clone(),
-            urgency: input.urgency,
-            reason,
-            records,
-            source_work,
-            revision: 1,
-            created_at: timestamp,
-            updated_at: timestamp,
-            standing: ConcernStanding::Open,
-        }))
+        Ok(outcome)
     }
 
     /// Revises an open patient concern once under `command_key`, verifying the
@@ -1191,103 +1300,10 @@ impl Store {
         command_key: &CommandKey,
         input: &RetireConcern,
     ) -> Result<ConcernMutation, ConcernError> {
-        let practice = validate_non_empty_field("practice", &input.practice)?;
-        let workspace = validate_non_empty_field("workspace", &input.workspace)?;
-        let source_work = input.source_work.validate()?;
-
-        let command = json!({
-            "kind": "concern_retire",
-            "practice": &practice,
-            "workspace": &workspace,
-            "concern_id": input.id.as_str(),
-            "reason": input.reason.as_str(),
-            "source_work": &source_work,
-        });
         let tx = self.db.begin().await?;
-        match receipt::record(
-            &tx,
-            &practice,
-            JOB_RECEIPT_ACTOR,
-            command_key.as_str(),
-            &command,
-        )
-        .await?
-        {
-            receipt::Receipt::New => {}
-            receipt::Receipt::Same => {
-                let existing = load_concern(&tx, &practice, &workspace, &input.id)
-                    .await?
-                    .ok_or_else(|| error("missing concern for accepted receipt"))?;
-                tx.commit().await?;
-                return Ok(ConcernMutation::Duplicate(existing));
-            }
-            receipt::Receipt::Different => {
-                return Err(ConcernError::IdempotencyCollision {
-                    key: command_key.to_string(),
-                });
-            }
-        }
-
-        let Some(row) = concern::Entity::find_by_id((
-            practice.clone(),
-            workspace.clone(),
-            input.id.as_str().to_owned(),
-        ))
-        .lock_exclusive()
-        .one(&tx)
-        .await?
-        else {
-            return Err(ConcernError::NotFound {
-                id: input.id.clone(),
-            });
-        };
-        let current = decode_concern(row.clone())?;
-        if !current.shows_on_today() {
-            return Err(ConcernError::NotOpen {
-                id: input.id.clone(),
-            });
-        }
-
-        let timestamp = now(&tx).await?;
-        let next_revision = current.revision + 1;
-        let next_revision_i64 =
-            i64::try_from(next_revision).map_err(conversion_error("concern revision", "i64"))?;
-        let retired_work_json =
-            serde_json::to_value(&source_work).map_err(conversion_error("SourceWork", "json"))?;
-
-        concern::ActiveModel {
-            practice: Unchanged(row.practice),
-            workspace: Unchanged(row.workspace),
-            id: Unchanged(row.id),
-            urgency: Unchanged(row.urgency),
-            status: Set("retired".into()),
-            reason: Unchanged(row.reason),
-            records: Unchanged(row.records),
-            source_work: Unchanged(row.source_work),
-            cleared_by_physician: Set(None),
-            cleared_at: Set(None),
-            feedback_revision: Set(None),
-            retirement_reason: Set(Some(input.reason.as_str().to_owned())),
-            retired_by_work: Set(Some(retired_work_json)),
-            retired_at: Set(Some(timestamp)),
-            created_at: Unchanged(row.created_at),
-            updated_at: Set(timestamp),
-            revision: Set(next_revision_i64),
-        }
-        .update(&tx)
-        .await?;
+        let outcome = retire_concern_in_tx(&tx, command_key, input).await?;
         tx.commit().await?;
-
-        Ok(ConcernMutation::Applied(Concern {
-            standing: ConcernStanding::Retired {
-                reason: input.reason.clone(),
-                source_work,
-                retired_at: timestamp,
-            },
-            revision: next_revision,
-            updated_at: timestamp,
-            ..current
-        }))
+        Ok(outcome)
     }
 
     /// Executes one [`CONCERN_TOOL`] call for a background patient job.

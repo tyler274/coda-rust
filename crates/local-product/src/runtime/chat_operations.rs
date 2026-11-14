@@ -954,9 +954,28 @@ pub enum SourceRefreshError {
         /// Upstream error detail.
         reason: String,
     },
+    /// Source check was interrupted mid-pull before settling every requested source.
+    #[error("{0}")]
+    Interrupted(#[from] super::refresh::SourceRefreshAdapterError),
     /// Database failure while reading or committing refreshed observations.
     #[error("{0}")]
     Database(#[from] DbErr),
+}
+
+/// Read-only crash reconciliation status for a work-scoped chat source refresh.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub enum SavedChatRefresh {
+    /// No complete command receipt has been recorded for this work and target yet.
+    NotYetSaved,
+    /// Every requested source settled and at least one source succeeded or partially succeeded.
+    Refreshed(SourceRefreshReport),
+    /// Every requested source settled with a source-level failure outcome.
+    Failed {
+        /// First failing source identifier.
+        source_id: String,
+        /// Recorded failure detail.
+        reason: String,
+    },
 }
 
 /// Pluggable owner for on-demand patient source refresh in physician chat.
@@ -971,6 +990,32 @@ pub trait PatientRefreshOperation: Send + Sync {
         source_id: Option<&str>,
         reason: &str,
     ) -> Result<SourceRefreshReport, SourceRefreshError>;
+
+    /// Executes an on-demand chat source refresh scoped to `work_id` so retries
+    /// within the same work item reuse already-settled per-source receipts.
+    async fn refresh_sources_for_work(
+        &self,
+        store: &Store,
+        scope: &Scope,
+        _work_id: &str,
+        source_id: Option<&str>,
+        reason: &str,
+    ) -> Result<SourceRefreshReport, SourceRefreshError> {
+        self.refresh_sources(store, scope, source_id, reason).await
+    }
+
+    /// Reconciles a previously completed refresh for `work_id` without invoking
+    /// any live source adapter.
+    async fn saved_refresh_for_work(
+        &self,
+        _store: &Store,
+        _scope: &Scope,
+        _work_id: &str,
+        _source_id: Option<&str>,
+        _reason: &str,
+    ) -> Result<SavedChatRefresh, SourceRefreshError> {
+        Ok(SavedChatRefresh::NotYetSaved)
+    }
 }
 
 /// Adapter-backed [`PatientRefreshOperation`] that pulls from configured
@@ -1134,15 +1179,12 @@ impl PatientRefreshOperation for SourceAdapterRefreshOperation {
 #[derive(Clone, Copy, Debug, Default)]
 pub struct RuntimeSourceRefreshOperation;
 
-#[async_trait]
-impl PatientRefreshOperation for RuntimeSourceRefreshOperation {
-    async fn refresh_sources(
-        &self,
-        store: &Store,
-        scope: &Scope,
+impl RuntimeSourceRefreshOperation {
+    fn chat_refresh_request(
+        work_id: &str,
         source_id: Option<&str>,
         reason: &str,
-    ) -> Result<SourceRefreshReport, SourceRefreshError> {
+    ) -> Result<super::refresh::RefreshRequest, SourceRefreshError> {
         if reason.trim().is_empty() {
             return Err(SourceRefreshError::InvalidInput(
                 "Supply a non-empty clinical reason for refreshing patient sources.".into(),
@@ -1157,67 +1199,17 @@ impl PatientRefreshOperation for RuntimeSourceRefreshOperation {
                     .map_err(|cause| SourceRefreshError::InvalidInput(cause.to_string()))?
             }
         };
-        let command_key = super::refresh::RefreshCommandKey::new(format!(
-            "chat:{}:{}",
-            scope.chat.trim(),
-            uuid::Uuid::new_v4()
-        ))
-        .map_err(|cause| SourceRefreshError::InvalidInput(cause.to_string()))?;
-        let request = super::refresh::RefreshRequest::new(command_key, target);
+        super::refresh::RefreshToolCall {
+            target,
+            request_key: None,
+        }
+        .into_request(work_id)
+        .map_err(|cause| SourceRefreshError::InvalidInput(cause.to_string()))
+    }
 
-        let report = match store
-            .refresh_sources_for_claimed_chat(scope, &request)
-            .await
-        {
-            Ok(report) => report,
-            Err(super::refresh::RefreshError::InvalidInput(cause)) => {
-                return Err(SourceRefreshError::InvalidInput(cause.to_string()));
-            }
-            Err(super::refresh::RefreshError::NoConfiguredSources { workspace }) => {
-                return Err(SourceRefreshError::Unavailable {
-                    subject: workspace,
-                    reason: "no live patient source adapters are configured for this workspace"
-                        .into(),
-                });
-            }
-            Err(super::refresh::RefreshError::UnknownSource {
-                source_id,
-                configured,
-                ..
-            }) => {
-                return Err(SourceRefreshError::Unavailable {
-                    subject: source_id.as_str().to_owned(),
-                    reason: format!(
-                        "no live adapter is configured for the requested source (configured: {configured})"
-                    ),
-                });
-            }
-            Err(super::refresh::RefreshError::Interrupted(cause)) => {
-                return Err(SourceRefreshError::Unavailable {
-                    subject: scope.workspace.clone(),
-                    reason: cause.to_string(),
-                });
-            }
-            Err(super::refresh::RefreshError::IdempotencyCollision { key }) => {
-                return Err(SourceRefreshError::InvalidInput(format!(
-                    "duplicate refresh command key `{key}`"
-                )));
-            }
-            Err(super::refresh::RefreshError::PracticeAccess(cause)) => {
-                return Err(SourceRefreshError::Unavailable {
-                    subject: scope.workspace.clone(),
-                    reason: cause.to_string(),
-                });
-            }
-            Err(super::refresh::RefreshError::PhysicianAccess(db_err))
-            | Err(super::refresh::RefreshError::Database(db_err)) => {
-                return Err(SourceRefreshError::Database(db_err));
-            }
-            Err(super::refresh::RefreshError::Encoding(cause)) => {
-                return Err(SourceRefreshError::InvalidInput(cause.to_string()));
-            }
-        };
-
+    fn classify_refresh_report(
+        report: super::refresh::RefreshReport,
+    ) -> Result<SourceRefreshReport, SourceRefreshError> {
         let mut refreshed = Vec::new();
         let mut limits = Vec::new();
         let mut first_failed: Option<(String, String)> = None;
@@ -1287,6 +1279,121 @@ impl PatientRefreshOperation for RuntimeSourceRefreshOperation {
             sources: refreshed,
             limits,
         })
+    }
+}
+
+#[async_trait]
+impl PatientRefreshOperation for RuntimeSourceRefreshOperation {
+    async fn refresh_sources(
+        &self,
+        store: &Store,
+        scope: &Scope,
+        source_id: Option<&str>,
+        reason: &str,
+    ) -> Result<SourceRefreshReport, SourceRefreshError> {
+        let standalone_work = format!("chat:{}:{}", scope.chat.trim(), uuid::Uuid::new_v4());
+        self.refresh_sources_for_work(store, scope, &standalone_work, source_id, reason)
+            .await
+    }
+
+    async fn refresh_sources_for_work(
+        &self,
+        store: &Store,
+        scope: &Scope,
+        work_id: &str,
+        source_id: Option<&str>,
+        reason: &str,
+    ) -> Result<SourceRefreshReport, SourceRefreshError> {
+        let request = Self::chat_refresh_request(work_id, source_id, reason)?;
+
+        let report = match store
+            .refresh_sources_for_claimed_chat(scope, &request)
+            .await
+        {
+            Ok(report) => report,
+            Err(super::refresh::RefreshError::InvalidInput(cause)) => {
+                return Err(SourceRefreshError::InvalidInput(cause.to_string()));
+            }
+            Err(super::refresh::RefreshError::NoConfiguredSources { workspace }) => {
+                return Err(SourceRefreshError::Unavailable {
+                    subject: workspace,
+                    reason: "no live patient source adapters are configured for this workspace"
+                        .into(),
+                });
+            }
+            Err(super::refresh::RefreshError::UnknownSource {
+                source_id,
+                configured,
+                ..
+            }) => {
+                return Err(SourceRefreshError::Unavailable {
+                    subject: source_id.as_str().to_owned(),
+                    reason: format!(
+                        "no live adapter is configured for the requested source (configured: {configured})"
+                    ),
+                });
+            }
+            Err(super::refresh::RefreshError::Interrupted(cause)) => {
+                return Err(SourceRefreshError::Interrupted(cause));
+            }
+            Err(super::refresh::RefreshError::IdempotencyCollision { key }) => {
+                return Err(SourceRefreshError::InvalidInput(format!(
+                    "duplicate refresh command key `{key}`"
+                )));
+            }
+            Err(super::refresh::RefreshError::PracticeAccess(cause)) => {
+                return Err(SourceRefreshError::Unavailable {
+                    subject: scope.workspace.clone(),
+                    reason: cause.to_string(),
+                });
+            }
+            Err(super::refresh::RefreshError::PhysicianAccess(db_err))
+            | Err(super::refresh::RefreshError::Database(db_err)) => {
+                return Err(SourceRefreshError::Database(db_err));
+            }
+            Err(super::refresh::RefreshError::Encoding(cause)) => {
+                return Err(SourceRefreshError::InvalidInput(cause.to_string()));
+            }
+        };
+
+        Self::classify_refresh_report(report)
+    }
+
+    async fn saved_refresh_for_work(
+        &self,
+        store: &Store,
+        scope: &Scope,
+        work_id: &str,
+        source_id: Option<&str>,
+        reason: &str,
+    ) -> Result<SavedChatRefresh, SourceRefreshError> {
+        let request = Self::chat_refresh_request(work_id, source_id, reason)?;
+        let saved = match store.saved_physician_refresh_report(scope, &request).await {
+            Ok(None) => return Ok(SavedChatRefresh::NotYetSaved),
+            Ok(Some(report)) => report,
+            Err(super::refresh::RefreshError::InvalidInput(cause)) => {
+                return Err(SourceRefreshError::InvalidInput(cause.to_string()));
+            }
+            Err(super::refresh::RefreshError::IdempotencyCollision { key }) => {
+                return Err(SourceRefreshError::InvalidInput(format!(
+                    "duplicate refresh command key `{key}`"
+                )));
+            }
+            Err(super::refresh::RefreshError::PhysicianAccess(db_err))
+            | Err(super::refresh::RefreshError::Database(db_err)) => {
+                return Err(SourceRefreshError::Database(db_err));
+            }
+            Err(other) => {
+                return Err(SourceRefreshError::InvalidInput(other.to_string()));
+            }
+        };
+        match Self::classify_refresh_report(saved) {
+            Ok(report) => Ok(SavedChatRefresh::Refreshed(report)),
+            Err(SourceRefreshError::Upstream { source_id, reason }) => {
+                Ok(SavedChatRefresh::Failed { source_id, reason })
+            }
+            Err(other) => Err(other),
+        }
     }
 }
 
@@ -1802,6 +1909,32 @@ impl Store {
             .await
     }
 
+    /// Reads active durable patient memory standing for `(practice, workspace)`,
+    /// propagating database errors while representing upstream memory outages as
+    /// [`PatientMemoryStanding::Unavailable`].
+    pub(crate) async fn active_memory_standing(
+        &self,
+        practice: &str,
+        workspace: &str,
+    ) -> Result<PatientMemoryStanding, DbErr> {
+        match self
+            .patient_memories(practice, workspace, MemorySelection::ActiveOnly)
+            .await
+        {
+            Ok(entries) => Ok(PatientMemoryStanding::Available { entries }),
+            Err(PatientMemoryError::Unavailable { reason }) => {
+                Ok(PatientMemoryStanding::Unavailable { reason })
+            }
+            Err(PatientMemoryError::Database(db_err)) => Err(db_err),
+            Err(
+                cause @ (PatientMemoryError::InvalidInput(_)
+                | PatientMemoryError::IdempotencyCollision { .. }
+                | PatientMemoryError::NotFound { .. }
+                | PatientMemoryError::AlreadyRetired { .. }),
+            ) => Err(error(&cause.to_string())),
+        }
+    }
+
     /// Reads the practice dispatcher's source-check standing for `(practice, workspace)`.
     pub async fn dispatch_check_standing(
         &self,
@@ -1863,26 +1996,9 @@ impl Store {
             .dispatch_check_standing(&scope.practice, &scope.workspace)
             .await?;
 
-        let memory_standing = match self
-            .patient_memories(
-                &scope.practice,
-                &scope.workspace,
-                MemorySelection::ActiveOnly,
-            )
-            .await
-        {
-            Ok(entries) => PatientMemoryStanding::Available { entries },
-            Err(PatientMemoryError::Unavailable { reason }) => {
-                PatientMemoryStanding::Unavailable { reason }
-            }
-            Err(PatientMemoryError::Database(db_err)) => return Err(db_err),
-            Err(
-                cause @ (PatientMemoryError::InvalidInput(_)
-                | PatientMemoryError::IdempotencyCollision { .. }
-                | PatientMemoryError::NotFound { .. }
-                | PatientMemoryError::AlreadyRetired { .. }),
-            ) => return Err(error(&cause.to_string())),
-        };
+        let memory_standing = self
+            .active_memory_standing(&scope.practice, &scope.workspace)
+            .await?;
 
         let mut raw_open_concerns = concern::Entity::find()
             .filter(concern::Column::Practice.eq(&scope.practice))
@@ -2198,59 +2314,24 @@ impl Store {
             };
             return match self
                 .refresh_operation
-                .refresh_sources(
+                .refresh_sources_for_work(
                     self,
                     &claim.scope,
+                    &state.work,
                     parsed.source_id.as_deref(),
                     &parsed.reason,
                 )
                 .await
             {
-                Ok(report) => {
-                    let mut out = json!({
-                        "outcome": "refreshed",
-                        "saved": true,
-                        "workspace_version": report.workspace_version,
-                        "sources": report.sources,
-                    });
-                    if !report.limits.is_empty()
-                        && let Some(obj) = out.as_object_mut()
-                    {
-                        obj.insert("limits".into(), serde_json::to_value(&report.limits)?);
-                    }
-                    Ok(ToolOutcome::Returned(out.to_string()))
-                }
+                Ok(report) => encode_chat_refresh_report(&report),
                 Err(SourceRefreshError::InvalidInput(reason)) => Ok(ToolOutcome::refused(reason)),
                 Err(SourceRefreshError::Unavailable { subject, reason }) => {
-                    let limit = RecordLimit {
-                        kind: RecordLimitKind::Unavailable,
-                        subject,
-                        detail: reason,
-                    };
-                    Ok(ToolOutcome::Returned(
-                        json!({
-                            "outcome": "failed",
-                            "saved": false,
-                            "limits": [limit],
-                        })
-                        .to_string(),
-                    ))
+                    Ok(encode_chat_refresh_limit(subject, reason))
                 }
                 Err(SourceRefreshError::Upstream { source_id, reason }) => {
-                    let limit = RecordLimit {
-                        kind: RecordLimitKind::Unavailable,
-                        subject: source_id,
-                        detail: reason,
-                    };
-                    Ok(ToolOutcome::Returned(
-                        json!({
-                            "outcome": "failed",
-                            "saved": false,
-                            "limits": [limit],
-                        })
-                        .to_string(),
-                    ))
+                    Ok(encode_chat_refresh_limit(source_id, reason))
                 }
+                Err(SourceRefreshError::Interrupted(cause)) => Err(cause.into()),
                 Err(SourceRefreshError::Database(db_err)) => Err(persistence_failure(db_err)),
             };
         }
@@ -2707,10 +2788,45 @@ impl Store {
                 .await;
         }
 
-        if super::refresh::is_refresh_tool(&call.name) {
-            return self
-                .saved_physician_refresh_outcome(&claim.scope, &attempt.work, call)
-                .await;
+        if is_refresh_tool(&call.name) || super::refresh::is_refresh_tool(&call.name) {
+            let Ok(arguments) = serde_json::from_str::<Value>(&call.arguments) else {
+                return Ok(None);
+            };
+            if arguments
+                .as_object()
+                .is_some_and(|obj| !obj.contains_key("reason") && !obj.contains_key("source_id"))
+            {
+                return self
+                    .saved_physician_refresh_outcome(&claim.scope, &attempt.work, call)
+                    .await;
+            }
+            let Ok(parsed) = serde_json::from_value::<RefreshToolArgs>(arguments) else {
+                return Ok(None);
+            };
+            return match self
+                .refresh_operation
+                .saved_refresh_for_work(
+                    self,
+                    &claim.scope,
+                    &attempt.work,
+                    parsed.source_id.as_deref(),
+                    &parsed.reason,
+                )
+                .await
+            {
+                Ok(SavedChatRefresh::NotYetSaved) => Ok(None),
+                Ok(SavedChatRefresh::Refreshed(report)) => {
+                    encode_chat_refresh_report(&report).map(Some)
+                }
+                Ok(SavedChatRefresh::Failed { source_id, reason }) => {
+                    Ok(Some(encode_chat_refresh_limit(source_id, reason)))
+                }
+                Err(SourceRefreshError::InvalidInput(reason)) => {
+                    Ok(Some(ToolOutcome::refused(reason)))
+                }
+                Err(SourceRefreshError::Database(db_err)) => Err(persistence_failure(db_err)),
+                Err(other) => Err(other.into()),
+            };
         }
 
         if call.name == crate::initial_understanding::SAVE_UNDERSTANDING_TOOL {
@@ -2754,6 +2870,39 @@ impl Store {
             .to_string(),
         )))
     }
+}
+
+fn encode_chat_refresh_report(
+    report: &SourceRefreshReport,
+) -> Result<ToolOutcome, engine::ProductError> {
+    let mut out = json!({
+        "outcome": "refreshed",
+        "saved": true,
+        "workspace_version": report.workspace_version,
+        "sources": report.sources,
+    });
+    if !report.limits.is_empty()
+        && let Some(obj) = out.as_object_mut()
+    {
+        obj.insert("limits".into(), serde_json::to_value(&report.limits)?);
+    }
+    Ok(ToolOutcome::Returned(out.to_string()))
+}
+
+fn encode_chat_refresh_limit(subject: String, detail: String) -> ToolOutcome {
+    let limit = RecordLimit {
+        kind: RecordLimitKind::Unavailable,
+        subject,
+        detail,
+    };
+    ToolOutcome::Returned(
+        json!({
+            "outcome": "failed",
+            "saved": false,
+            "limits": [limit],
+        })
+        .to_string(),
+    )
 }
 
 fn memory_tool_command_key(work_id: &str, call_id: &str) -> String {

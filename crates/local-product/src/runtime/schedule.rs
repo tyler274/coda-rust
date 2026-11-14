@@ -1117,6 +1117,9 @@ impl Store {
                     None,
                 )
                 .await?;
+                super::briefings::reconcile_schedule_changes_in_tx(&tx, &practice, read_at)
+                    .await
+                    .map_err(ScheduleError::Database)?;
                 tx.commit().await?;
                 Ok(ScheduleSyncOutcome::Applied(summary))
             }

@@ -15,6 +15,8 @@ pub mod chatgpt;
 pub mod clinical_library;
 /// Recipe, initial context, and memory tools for patient understanding runs.
 pub mod initial_understanding;
+/// Rounds recipe, initial context, and review tools for background and physician-requested patient reviews.
+pub mod patient_reviews;
 /// Hosted physician chat instructions and the `skill_view` tool.
 pub mod physician_chat;
 /// Shared source record format, adapter mappings, and chart-reading tools.
@@ -23,6 +25,8 @@ pub mod physician_sources;
 pub mod runtime;
 /// Practice-scoped source patient links, pull status, and check/reconnect operations.
 pub mod source_status;
+/// Recipe, context, and tool descriptors for visit selection and visit briefings.
+pub mod visit_preparation;
 
 /// How this process runs a model. A process without a selection does not run models.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
