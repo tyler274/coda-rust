@@ -90,7 +90,9 @@ class WorkflowTests(unittest.TestCase):
         for clause in ("github.ref == 'refs/heads/main'", "github.event_name != 'pull_request'",
                        "github.event_name != 'merge_group'"):
             self.assertIn(clause, mount['with']['commit'])
-        self.assertEqual(steps[1]['uses'], 'cachix/install-nix-action@v31')
+        # Count the disk's paths before the installer adds its own.
+        self.assertEqual(steps[1]['run'], 'python3 scripts/nix-cache/nix_store.py start')
+        self.assertEqual(steps[2]['uses'], 'cachix/install-nix-action@v31')
 
     def test_image_proof_remains_mandatory(self):
         proof = next(s for s in self.jobs['images']['steps'] if 'bash scripts/check-images.sh' in s.get('run', ''))

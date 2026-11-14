@@ -25,11 +25,12 @@ runs:
         key: nix-${{ inputs.job }}
         path: /nix
         commit: ${{ github.ref == 'refs/heads/main' && github.event_name != 'pull_request' && github.event_name != 'merge_group' }}
+    # Before the install adds its own bootstrap paths: what the disk brought.
+    - name: Report the Nix store at start
+      shell: bash
+      run: python3 scripts/nix-cache/nix_store.py start
     # The installer accepts an existing /nix: it takes root ownership of it,
     # replaces its own bootstrap paths, registers them in the existing
     # database, and adds a default-profile generation.
     - name: Install Nix
       uses: cachix/install-nix-action@v31
-    - name: Report the Nix store at start
-      shell: bash
-      run: python3 scripts/nix-cache/nix_store.py start
