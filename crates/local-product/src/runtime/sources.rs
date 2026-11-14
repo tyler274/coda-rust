@@ -410,6 +410,7 @@ impl Store {
         let Some(pulled_at) = pull.pulled_at else {
             return Err(error("complete chart delivery requires pulled_at"));
         };
+        validate_delivery_records(workspace, &pull.source_id, records)?;
         let tx = self.db.begin().await?;
         let receipt = apply_source_delivery_tx(
             &tx,
@@ -523,13 +524,11 @@ impl Store {
             .await?;
         let mut pulls: BTreeMap<String, Vec<SourcePull>> = BTreeMap::new();
         for row in rows {
-            pulls.entry(row.workspace).or_default().push(SourcePull {
-                source_id: row.source_id,
-                source_label: row.source_label,
-                patient: serde_json::from_value(row.patient)
-                    .map_err(|_| error("corrupt source patient"))?,
-                pulled_at: row.pulled_at,
-            });
+            let workspace = row.workspace.clone();
+            pulls
+                .entry(workspace)
+                .or_default()
+                .push(decode_source_pull(row)?);
         }
         Ok(pulls)
     }
@@ -606,4 +605,191 @@ impl Store {
         tx.commit().await?;
         Ok(observation)
     }
+}
+
+/// How an incoming source delivery treats records omitted from `records`.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub(super) enum DeliveryScope {
+    /// Whole-source chart snapshot: withdraws current candidates held by
+    /// `pull.source_id` that are absent from `records`.
+    WholeSource,
+    /// Incremental or partial refresh: appends new and changed revisions for
+    /// `pull.source_id` without withdrawing unmentioned candidates.
+    ChangedRecords,
+}
+
+pub(super) fn validate_delivery_records(
+    workspace: &str,
+    source_id: &str,
+    records: &[SourceRevision],
+) -> Result<(), DbErr> {
+    for record in records {
+        record.validate().map_err(|e| error(&e))?;
+        if record.workspace != workspace || record.source_id != source_id {
+            return Err(error("record outside its delivery"));
+        }
+    }
+    Ok(())
+}
+
+fn decode_source_pull(row: source_pull::Model) -> Result<SourcePull, DbErr> {
+    Ok(SourcePull {
+        source_id: row.source_id,
+        source_label: row.source_label,
+        patient: serde_json::from_value(row.patient)
+            .map_err(|_| error("corrupt source patient"))?,
+        pulled_at: row.pulled_at,
+    })
+}
+
+/// Reads the workspace's current pinned source version under a shared lock.
+pub(super) async fn current_version_in_tx(
+    tx: &impl ConnectionTrait,
+    workspace: &str,
+) -> Result<u64, DbErr> {
+    pin_version(tx, workspace).await
+}
+
+/// Reads the workspace's source version inside a read-only snapshot without
+/// inserting a missing row or acquiring row locks.
+pub(super) async fn snapshot_version_in_tx(
+    tx: &impl ConnectionTrait,
+    workspace: &str,
+) -> Result<u64, DbErr> {
+    match source_version::Entity::find_by_id(workspace.to_owned())
+        .one(tx)
+        .await?
+    {
+        Some(row) => version_of(row.version),
+        None => Ok(0),
+    }
+}
+
+/// Reads one source's last good pull for `workspace` inside `tx`, if any.
+pub(super) async fn last_source_pull_in_tx(
+    tx: &impl ConnectionTrait,
+    workspace: &str,
+    source_id: &str,
+) -> Result<Option<SourcePull>, DbErr> {
+    source_pull::Entity::find_by_id((workspace.to_owned(), source_id.to_owned()))
+        .one(tx)
+        .await?
+        .map(decode_source_pull)
+        .transpose()
+}
+
+/// Records a source delivery inside `tx` under the workspace version row's
+/// exclusive lock and updates `physician_runtime_source_pulls`. Returns
+/// `(workspace_version_after, changed_records)`.
+pub(super) async fn record_delivery_in_tx(
+    tx: &impl ConnectionTrait,
+    workspace: &str,
+    scope: DeliveryScope,
+    records: &[SourceRevision],
+    pull: &SourcePull,
+) -> Result<(u64, usize), DbErr> {
+    validate_delivery_records(workspace, &pull.source_id, records)?;
+    ensure_version(tx, workspace).await?;
+    let row = source_version::Entity::find_by_id(workspace.to_owned())
+        .lock_exclusive()
+        .one(tx)
+        .await?
+        .ok_or_else(|| error("missing source version"))?;
+    let version = version_of(row.version)?;
+    let next_u64 = version
+        .checked_add(1)
+        .ok_or_else(|| error("source version overflow"))?;
+    let next = i64::try_from(next_u64).map_err(conversion_error("source version", "i64"))?;
+    let history = source::Entity::find()
+        .filter(source::Column::Workspace.eq(workspace))
+        .order_by_desc(source::Column::ObservedAtVersion)
+        .all(tx)
+        .await?;
+    let mut seen: HashMap<(String, String), SourceRevision> = HashMap::new();
+    let mut current: HashMap<String, Option<SourceRevision>> = HashMap::new();
+    for row in &history {
+        let decoded = decode(row)?;
+        current
+            .entry(row.candidate.clone())
+            .or_insert_with(|| decoded.clone());
+        if let Some(decoded) = decoded {
+            seen.insert((row.candidate.clone(), decoded.revision.clone()), decoded);
+        }
+    }
+    let mut rows = Vec::new();
+    for record in records {
+        let identity = (record.candidate_id.clone(), record.revision.clone());
+        if seen
+            .get(&identity)
+            .is_some_and(|recorded| recorded != record)
+        {
+            return Err(error("conflicting source revision identity"));
+        }
+        let holding = current.get(&record.candidate_id).and_then(Option::as_ref);
+        if holding.is_some_and(|source| source.revision == record.revision) {
+            continue;
+        }
+        let value = serde_json::to_value(record).map_err(|_| error("invalid source"))?;
+        rows.push(source::ActiveModel {
+            workspace: Set(workspace.into()),
+            candidate: Set(record.candidate_id.clone()),
+            observed_at_version: Set(next),
+            revision: Set(Some(value)),
+        });
+    }
+    if scope == DeliveryScope::WholeSource {
+        let delivered: HashSet<&str> = records.iter().map(|r| r.candidate_id.as_str()).collect();
+        for (candidate, newest) in &current {
+            let held = newest
+                .as_ref()
+                .is_some_and(|source| source.source_id == pull.source_id);
+            if held && !delivered.contains(candidate.as_str()) {
+                rows.push(source::ActiveModel {
+                    workspace: Set(workspace.into()),
+                    candidate: Set(candidate.clone()),
+                    observed_at_version: Set(next),
+                    revision: Set(None),
+                });
+            }
+        }
+    }
+    let changed = rows.len();
+    for batch in rows.chunks(CHART_BATCH) {
+        source::Entity::insert_many(batch.to_vec())
+            .exec_without_returning(tx)
+            .await?;
+    }
+    let version_after = if changed > 0 {
+        let mut bumped: source_version::ActiveModel = row.into();
+        bumped.version = Set(next);
+        bumped.update(tx).await?;
+        next_u64
+    } else {
+        version
+    };
+    let patient =
+        serde_json::to_value(&pull.patient).map_err(|_| error("invalid source patient"))?;
+    source_pull::Entity::insert(source_pull::ActiveModel {
+        workspace: Set(workspace.into()),
+        source_id: Set(pull.source_id.clone()),
+        source_label: Set(pull.source_label.clone()),
+        patient: Set(patient),
+        pulled_at: Set(pull.pulled_at),
+        missing_candidates: Set(serde_json::json!([])),
+    })
+    .on_conflict(
+        OnConflict::columns([
+            source_pull::Column::Workspace,
+            source_pull::Column::SourceId,
+        ])
+        .update_columns([
+            source_pull::Column::SourceLabel,
+            source_pull::Column::Patient,
+            source_pull::Column::PulledAt,
+        ])
+        .to_owned(),
+    )
+    .exec_without_returning(tx)
+    .await?;
+    Ok((version_after, changed))
 }

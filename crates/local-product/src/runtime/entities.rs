@@ -807,3 +807,71 @@ pub(super) mod patient_dispatch {
 
     impl ActiveModelBehavior for ActiveModel {}
 }
+
+/// Latest saved refresh status per `(practice, workspace, source_id)`:
+/// `updated`, `partly_updated`, or `failed`. Created by `m20261112_source_refresh`.
+pub(super) mod source_status {
+    use sea_orm::entity::prelude::*;
+
+    #[derive(Clone, Debug, PartialEq, Eq, DeriveEntityModel)]
+    #[sea_orm(table_name = "physician_runtime_source_statuses")]
+    pub struct Model {
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub practice: String,
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub workspace: String,
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub source_id: String,
+        #[sea_orm(column_type = "Text")]
+        pub source_label: String,
+        /// `updated`, `partly_updated`, or `failed`.
+        #[sea_orm(column_type = "Text")]
+        pub outcome: String,
+        pub checked_at: i64,
+        pub last_good_pulled_at: Option<i64>,
+        pub workspace_version: Option<i64>,
+        pub changed_records: i64,
+        #[sea_orm(column_type = "Text")]
+        pub reason: Option<String>,
+    }
+
+    #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
+    pub enum Relation {}
+
+    impl ActiveModelBehavior for ActiveModel {}
+}
+
+/// Durable once-only per-source refresh receipt, committed in the same
+/// transaction as the source's evidence and saved status update so a retry
+/// after an interrupted source check never repeats a settled source.
+/// Created by `m20261112_source_refresh`.
+pub(super) mod source_refresh_receipt {
+    use sea_orm::entity::prelude::*;
+
+    #[derive(Clone, Debug, PartialEq, Eq, DeriveEntityModel)]
+    #[sea_orm(table_name = "physician_runtime_source_refresh_receipts")]
+    pub struct Model {
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub practice: String,
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub actor: String,
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub workspace: String,
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub command_key: String,
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub source_id: String,
+        pub ordinal: i64,
+        #[sea_orm(column_type = "Text")]
+        pub request_sha256: String,
+        pub workspace_version_after: i64,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub status: Json,
+        pub recorded_at: i64,
+    }
+
+    #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
+    pub enum Relation {}
+
+    impl ActiveModelBehavior for ActiveModel {}
+}
