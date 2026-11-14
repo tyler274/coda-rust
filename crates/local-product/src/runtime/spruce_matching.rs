@@ -1823,7 +1823,7 @@ async fn project_routing_outcome_for_viewer(
     }
 }
 
-async fn require_active_physician(
+pub(super) async fn require_active_physician(
     auth: &dyn AuthStore,
     viewer: &PhysicianIdentity,
 ) -> Result<(), SpruceMatchingError> {
@@ -1895,7 +1895,7 @@ pub(crate) async fn allowed_workspaces_in_practice(
     Ok(allowed)
 }
 
-async fn still_open_viewers(
+pub(super) async fn still_open_viewers(
     auth: &dyn AuthStore,
     practice: &str,
     viewers: &BTreeSet<String>,
@@ -2163,7 +2163,7 @@ async fn ensure_conversation_row(
     Ok(())
 }
 
-async fn lock_conversation_in_tx(
+pub(super) async fn lock_conversation_in_tx(
     tx: &sea_orm::DatabaseTransaction,
     practice: &str,
     conversation_id: &str,
@@ -2179,7 +2179,7 @@ async fn lock_conversation_in_tx(
     .transpose()
 }
 
-async fn save_conversation_in_tx(
+pub(super) async fn save_conversation_in_tx(
     tx: &sea_orm::DatabaseTransaction,
     conv: &SavedSpruceConversation,
 ) -> Result<(), DbErr> {
@@ -2223,7 +2223,7 @@ async fn save_conversation_in_tx(
     Ok(())
 }
 
-async fn save_message_in_tx(
+pub(super) async fn save_message_in_tx(
     tx: &sea_orm::DatabaseTransaction,
     msg: &SavedSpruceMessage,
 ) -> Result<(), DbErr> {
@@ -2378,7 +2378,7 @@ async fn confirmed_workspaces_for_conversation_in_tx(
         .collect())
 }
 
-async fn queue_review_trigger_in_tx(
+pub(super) async fn queue_review_trigger_in_tx(
     tx: &sea_orm::DatabaseTransaction,
     practice: &str,
     conversation_id: &str,
@@ -4608,7 +4608,7 @@ impl Store {
             "destination": destination,
         });
 
-        let tx = self.db.begin().await?;
+        let mut tx = self.db.begin().await?;
         match receipt::check(
             &tx,
             practice,
@@ -4648,35 +4648,66 @@ impl Store {
                 kind: "conversation",
                 id: conversation_id.to_owned(),
             })?;
-        let ConversationLinkState::Linked {
-            workspace: current_workspace,
-            ..
-        } = conv.link_state.clone()
-        else {
-            return Err(SpruceMatchingError::InvalidTransition {
-                id: conversation_id.to_owned(),
-                current_state: "not_linked_to_patient".to_owned(),
-                action: "move_conversation",
-            });
-        };
-        require_patient_access(auth, actor, &current_workspace).await?;
-
-        if let MoveDestination::AnotherPatient { workspace } = &destination
-            && workspace == &current_workspace
+        if let Some(latest) = super::link_correction::latest_correction_for_conversation_in_tx(
+            &tx,
+            practice,
+            conversation_id,
+        )
+        .await?
+            && matches!(
+                latest.standing,
+                super::link_correction::LinkCorrectionStanding::SettlingFailed { .. }
+            )
         {
             return Err(SpruceMatchingError::InvalidTransition {
                 id: conversation_id.to_owned(),
-                current_state: "same_patient".to_owned(),
+                current_state: "unfinished_correction_removal".to_owned(),
                 action: "move_conversation",
             });
         }
+        if let MoveDestination::AnotherPatient { workspace } = &destination {
+            super::link_correction::check_unfinished_correction_blocking_workspace_in_tx(
+                &tx,
+                practice,
+                conversation_id,
+                workspace,
+            )
+            .await
+            .map_err(|err| map_link_correction_err(conversation_id, "move_conversation", err))?;
+        }
 
-        let mut pending_triggers = Vec::new();
+        let mut departed_workspace =
+            validate_move_departure(auth, actor, conversation_id, &conv, &destination, now_ts)
+                .await?;
+
         if let Some(existing_undo) = conv.move_undo.clone() {
             if !existing_undo.is_active_at(now_ts) {
-                let settled =
-                    settle_expired_move_in_tx(&tx, &mut conv, &existing_undo, now_ts).await?;
-                pending_triggers.extend(settled);
+                tx.commit().await?;
+                let _ = self
+                    .act_on_spruce_conversation_move(
+                        practice,
+                        conversation_id,
+                        review_receiver,
+                        now_ts,
+                    )
+                    .await?;
+                tx = self.db.begin().await?;
+                conv = lock_conversation_in_tx(&tx, practice, conversation_id)
+                    .await?
+                    .ok_or_else(|| SpruceMatchingError::NotFound {
+                        practice: practice.to_owned(),
+                        kind: "conversation",
+                        id: conversation_id.to_owned(),
+                    })?;
+                departed_workspace = validate_move_departure(
+                    auth,
+                    actor,
+                    conversation_id,
+                    &conv,
+                    &destination,
+                    now_ts,
+                )
+                .await?;
             } else if existing_undo.by_physician != actor.physician_id {
                 return Err(SpruceMatchingError::InvalidTransition {
                     id: conversation_id.to_owned(),
@@ -4686,12 +4717,40 @@ impl Store {
             }
         }
 
+        let mut pending_triggers = Vec::new();
+
         let current_linked_msgs =
             linked_messages_for_conversation_in_tx(&tx, practice, conversation_id).await?;
-        let current_linked_ids: BTreeSet<String> = current_linked_msgs
+        let mut current_linked_ids: BTreeSet<String> = current_linked_msgs
             .iter()
             .map(|m| m.message_id.clone())
             .collect();
+
+        if departed_workspace.is_none()
+            && matches!(destination, MoveDestination::AnotherPatient { .. })
+        {
+            let msg_rows = entities::spruce_message::Entity::find()
+                .filter(entities::spruce_message::Column::Practice.eq(practice))
+                .filter(entities::spruce_message::Column::ConversationId.eq(conversation_id))
+                .lock_exclusive()
+                .all(&tx)
+                .await?;
+            for row in msg_rows {
+                let mut msg = decode_message_row(row)?;
+                if matches!(msg.standing, MessageStanding::NotAPatient { .. }) {
+                    msg.standing = MessageStanding::Linked {
+                        linked_at: now_ts,
+                        origin: LinkOrigin::RestoredByMoveUndo {
+                            physician_id: actor.physician_id.clone(),
+                        },
+                    };
+                    msg.ever_linked = true;
+                    msg.updated_at = now_ts;
+                    save_message_in_tx(&tx, &msg).await?;
+                    current_linked_ids.insert(msg.message_id);
+                }
+            }
+        }
 
         let target_ws_opt = match &destination {
             MoveDestination::AnotherPatient { workspace } => Some(workspace.as_str()),
@@ -4721,9 +4780,12 @@ impl Store {
                 moved_message_ids: prior.moved_message_ids.clone(),
             })
         } else {
+            let origin_ws = departed_workspace
+                .clone()
+                .ok_or_else(|| error("missing departed workspace for initial move"))?;
             Some(PendingMoveUndo {
                 by_physician: actor.physician_id.clone(),
-                from_workspace: current_workspace.clone(),
+                from_workspace: origin_ws,
                 moved_at: now_ts,
                 expires_at: now_ts.saturating_add(undo_window),
                 moved_message_ids: current_linked_ids.clone(),
@@ -4760,7 +4822,7 @@ impl Store {
                 }
             }
         } else if returned_to_origin
-            && let Some(prior_undo) = active_prior_undo
+            && let Some(prior_undo) = &active_prior_undo
             && current_linked_ids
                 .iter()
                 .any(|id| !prior_undo.moved_message_ids.contains(id))
@@ -4782,6 +4844,26 @@ impl Store {
                 .await?,
             );
         }
+
+        let corr_dest =
+            super::link_correction::CorrectionDestination::from_move_destination(&destination);
+        let _ = super::link_correction::record_move_correction_in_tx(
+            &tx,
+            super::link_correction::MoveCorrectionWrite {
+                practice,
+                conversation_id,
+                actor_physician_id: &actor.physician_id,
+                departed_workspace: departed_workspace.as_deref(),
+                departed_linked_ids: &current_linked_ids,
+                active_prior_undo: active_prior_undo.as_ref(),
+                new_undo: conv.move_undo.as_ref(),
+                returned_to_origin,
+                destination: &corr_dest,
+                move_ordinal: conv.move_count,
+                now_ts,
+            },
+        )
+        .await?;
 
         let _ = receipt::record(
             &tx,
@@ -4862,6 +4944,23 @@ impl Store {
                 kind: "conversation",
                 id: conversation_id.to_owned(),
             })?;
+        if let Some(latest) = super::link_correction::latest_correction_for_conversation_in_tx(
+            &tx,
+            practice,
+            conversation_id,
+        )
+        .await?
+            && matches!(
+                latest.standing,
+                super::link_correction::LinkCorrectionStanding::SettlingFailed { .. }
+            )
+        {
+            return Err(SpruceMatchingError::InvalidTransition {
+                id: conversation_id.to_owned(),
+                current_state: "unfinished_correction_removal".to_owned(),
+                action: "undo_move",
+            });
+        }
         let Some(undo) = conv.move_undo.clone() else {
             return Err(SpruceMatchingError::InvalidTransition {
                 id: conversation_id.to_owned(),
@@ -4884,6 +4983,21 @@ impl Store {
             });
         }
         require_patient_access(auth, actor, &undo.from_workspace).await?;
+        if let ConversationLinkState::Linked {
+            workspace: current_ws,
+            ..
+        } = &conv.link_state
+        {
+            require_patient_access(auth, actor, current_ws).await?;
+        }
+        super::link_correction::check_unfinished_correction_blocking_workspace_in_tx(
+            &tx,
+            practice,
+            conversation_id,
+            &undo.from_workspace,
+        )
+        .await
+        .map_err(|err| map_link_correction_err(conversation_id, "undo_move", err))?;
 
         conv.link_state = ConversationLinkState::Linked {
             workspace: undo.from_workspace.clone(),
@@ -4907,6 +5021,7 @@ impl Store {
             .all(&tx)
             .await?;
         let mut saw_mid_undo_arrival = false;
+        let mut restored_ids = Vec::new();
         for row in msg_rows {
             let mut msg = decode_message_row(row)?;
             if matches!(msg.standing, MessageStanding::NotAPatient { .. }) {
@@ -4924,10 +5039,11 @@ impl Store {
                 msg.updated_at = now_ts;
                 save_message_in_tx(&tx, &msg).await?;
             }
-            if matches!(msg.standing, MessageStanding::Linked { .. })
-                && !undo.moved_message_ids.contains(&msg.message_id)
-            {
-                saw_mid_undo_arrival = true;
+            if matches!(msg.standing, MessageStanding::Linked { .. }) {
+                if !undo.moved_message_ids.contains(&msg.message_id) {
+                    saw_mid_undo_arrival = true;
+                }
+                restored_ids.push(msg.message_id);
             }
         }
 
@@ -4950,6 +5066,16 @@ impl Store {
                 .await?,
             );
         }
+
+        let _ = super::link_correction::record_undo_correction_in_tx(
+            &tx,
+            practice,
+            conversation_id,
+            &actor.physician_id,
+            restored_ids,
+            now_ts,
+        )
+        .await?;
 
         let _ = receipt::record(
             &tx,
@@ -4985,13 +5111,17 @@ impl Store {
             .all(&self.db)
             .await?;
 
+        let mut candidate_conversations = Vec::new();
+        let mut seen = BTreeSet::new();
         let mut succeeded = Vec::new();
         let mut failures = Vec::new();
+
         for row in rows {
             let cid = row.conversation_id.clone();
             let decoded = match decode_conversation_row(row) {
                 Ok(c) => c,
                 Err(err) => {
+                    seen.insert(cid.clone());
                     failures.push(PatientIsolationFailure {
                         target_id: cid,
                         error: SpruceMatchingError::Database(err),
@@ -5003,8 +5133,49 @@ impl Store {
                 continue;
             };
             if undo.is_active_at(now_ts) {
+                seen.insert(cid);
                 continue;
             }
+            if seen.insert(cid.clone()) {
+                candidate_conversations.push(cid);
+            }
+        }
+
+        let corr_rows = super::link_correction::link_correction_entity::Entity::find()
+            .filter(super::link_correction::link_correction_entity::Column::Practice.eq(practice))
+            .filter(
+                super::link_correction::link_correction_entity::Column::StandingKind
+                    .is_in(["undo_window", "settling_failed"]),
+            )
+            .order_by_asc(super::link_correction::link_correction_entity::Column::CreatedAt)
+            .all(&self.db)
+            .await?;
+        for crow in corr_rows {
+            let cid = crow.conversation_id.clone();
+            let rec = match super::link_correction::decode_link_correction_row(crow) {
+                Ok(r) => r,
+                Err(err) => {
+                    if seen.insert(cid.clone()) {
+                        failures.push(PatientIsolationFailure {
+                            target_id: cid,
+                            error: SpruceMatchingError::Database(err),
+                        });
+                    }
+                    continue;
+                }
+            };
+            if let super::link_correction::LinkCorrectionStanding::UndoWindow { expires_at, .. } =
+                &rec.standing
+                && now_ts < *expires_at
+            {
+                continue;
+            }
+            if seen.insert(cid.clone()) {
+                candidate_conversations.push(cid);
+            }
+        }
+
+        for cid in candidate_conversations {
             match self
                 .act_on_spruce_conversation_move(practice, &cid, review_receiver, now_ts)
                 .await
@@ -5023,9 +5194,10 @@ impl Store {
     }
 
     /// Settles `UndoGoesAway` for one conversation (`Rule 8`), refusing early settlement
-    /// while `Undo` is still active (`now_ts < undo.expires_at`), writing permanent
-    /// `entered_in_error` audit rows strictly for `undo.moved_message_ids` on `from_workspace`,
-    /// and submitting one review per affected patient.
+    /// while `Undo` is still active (`now_ts < undo.expires_at`), executing the unified
+    /// 4-step wrong-patient removal (`entered_in_error`, origin/intermediate effect withdrawal,
+    /// reply withholding/closure, and once-per-affected-patient review requests), and returning
+    /// the updated conversation.
     pub async fn act_on_spruce_conversation_move(
         &self,
         practice: &str,
@@ -5035,6 +5207,42 @@ impl Store {
     ) -> Result<SavedSpruceConversation, SpruceMatchingError> {
         let practice = require_id(practice, "practice")?;
         let conversation_id = require_id(conversation_id, "conversation_id")?;
+
+        if let Some(rec) = super::link_correction::latest_correction_for_conversation_in_tx(
+            &self.db,
+            practice,
+            conversation_id,
+        )
+        .await?
+            && matches!(
+                rec.standing,
+                super::link_correction::LinkCorrectionStanding::UndoWindow { .. }
+                    | super::link_correction::LinkCorrectionStanding::SettlingFailed { .. }
+            )
+        {
+            if let super::link_correction::LinkCorrectionStanding::UndoWindow { expires_at, .. } =
+                &rec.standing
+                && now_ts < *expires_at
+            {
+                return Err(SpruceMatchingError::InvalidTransition {
+                    id: conversation_id.to_owned(),
+                    current_state: "undo_still_active".to_owned(),
+                    action: "act_on_move",
+                });
+            }
+            let _ = self
+                .settle_link_correction(practice, &rec.correction_id, review_receiver, now_ts)
+                .await
+                .map_err(|err| map_link_correction_err(conversation_id, "act_on_move", err))?;
+            return self
+                .spruce_conversation(practice, conversation_id)
+                .await?
+                .ok_or_else(|| SpruceMatchingError::NotFound {
+                    practice: practice.to_owned(),
+                    kind: "conversation",
+                    id: conversation_id.to_owned(),
+                });
+        }
 
         let tx = self.db.begin().await?;
         let mut conv = lock_conversation_in_tx(&tx, practice, conversation_id)
@@ -5076,6 +5284,7 @@ impl Store {
 
         let mut succeeded = Vec::new();
         let mut failures = Vec::new();
+        let mut dispatched_convs = BTreeSet::new();
         for row in rows {
             let key = row.command_key.clone();
             let ws = row.workspace.clone();
@@ -5091,6 +5300,7 @@ impl Store {
             };
             match dispatch_single_trigger(self, &trig, review_receiver, now_ts).await {
                 Ok(()) => {
+                    dispatched_convs.insert(trig.conversation_id.clone());
                     trig.dispatched = true;
                     trig.dispatched_at = Some(now_ts);
                     succeeded.push(trig);
@@ -5101,6 +5311,35 @@ impl Store {
                 }),
             }
         }
+
+        for cid in dispatched_convs {
+            if let Some(rec) = super::link_correction::latest_correction_for_conversation_in_tx(
+                &self.db, practice, &cid,
+            )
+            .await?
+                && matches!(
+                    rec.standing,
+                    super::link_correction::LinkCorrectionStanding::SettlingFailed {
+                        failed_step:
+                            super::link_correction::LinkCorrectionStep::RequestAffectedReviews,
+                        ..
+                    }
+                )
+                && undispatched_triggers_for_conversation_in_tx(&self.db, practice, &cid)
+                    .await?
+                    .is_empty()
+            {
+                let _ = self
+                    .settle_link_correction(
+                        practice,
+                        &rec.correction_id,
+                        Some(review_receiver),
+                        now_ts,
+                    )
+                    .await;
+            }
+        }
+
         Ok(BatchStepReport {
             succeeded,
             failures,
@@ -5427,10 +5666,18 @@ impl Store {
             .all(&self.db)
             .await?;
 
+        let withheld =
+            super::link_correction::load_workspace_withheld_state_in_tx(&self.db, workspace)
+                .await?;
         let mut messages = Vec::with_capacity(rows.len());
         for row in rows {
             let decoded = decode_message_row(row)?;
-            if matches!(decoded.standing, MessageStanding::Linked { .. }) {
+            if matches!(decoded.standing, MessageStanding::Linked { .. })
+                && !withheld.message_ids.contains(&decoded.message_id)
+                && withheld
+                    .reason_for_conversation(&decoded.conversation_id)
+                    .is_none()
+            {
                 messages.push(decoded);
             }
         }
@@ -5786,7 +6033,99 @@ async fn settle_expired_move_in_tx(
     Ok(triggers)
 }
 
-async fn undispatched_triggers_for_conversation_in_tx(
+async fn validate_move_departure(
+    auth: &dyn AuthStore,
+    actor: &PhysicianIdentity,
+    conversation_id: &str,
+    conv: &SavedSpruceConversation,
+    destination: &MoveDestination,
+    now_ts: i64,
+) -> Result<Option<String>, SpruceMatchingError> {
+    match conv.link_state.clone() {
+        ConversationLinkState::Linked {
+            workspace: current_workspace,
+            ..
+        } => {
+            require_patient_access(auth, actor, &current_workspace).await?;
+            if let MoveDestination::AnotherPatient { workspace } = destination
+                && workspace == &current_workspace
+            {
+                return Err(SpruceMatchingError::InvalidTransition {
+                    id: conversation_id.to_owned(),
+                    current_state: "same_patient".to_owned(),
+                    action: "move_conversation",
+                });
+            }
+            Ok(Some(current_workspace))
+        }
+        ConversationLinkState::MovedNotAPatient { .. } => {
+            let Some(active_undo) = conv.move_undo.as_ref().filter(|u| u.is_active_at(now_ts))
+            else {
+                return Err(SpruceMatchingError::InvalidTransition {
+                    id: conversation_id.to_owned(),
+                    current_state: "not_linked_to_patient".to_owned(),
+                    action: "move_conversation",
+                });
+            };
+            require_patient_access(auth, actor, &active_undo.from_workspace).await?;
+            if matches!(destination, MoveDestination::NotAPatient) {
+                return Err(SpruceMatchingError::InvalidTransition {
+                    id: conversation_id.to_owned(),
+                    current_state: "already_not_a_patient".to_owned(),
+                    action: "move_conversation",
+                });
+            }
+            Ok(None)
+        }
+        ConversationLinkState::Unlinked => Err(SpruceMatchingError::InvalidTransition {
+            id: conversation_id.to_owned(),
+            current_state: "not_linked_to_patient".to_owned(),
+            action: "move_conversation",
+        }),
+    }
+}
+
+fn map_link_correction_err(
+    conversation_id: &str,
+    action: &'static str,
+    err: super::link_correction::LinkCorrectionError,
+) -> SpruceMatchingError {
+    use super::link_correction::LinkCorrectionError as E;
+    match err {
+        E::SpruceMatching(spruce_err) => spruce_err,
+        E::Database(db_err) => SpruceMatchingError::Database(db_err),
+        E::UnfinishedCorrectionBlocksReturn { .. } => SpruceMatchingError::InvalidTransition {
+            id: conversation_id.to_owned(),
+            current_state: "unfinished_correction_removal".to_owned(),
+            action,
+        },
+        E::RemovalStepFailed {
+            step,
+            source: Some(inner),
+            ..
+        } => match *inner {
+            E::SpruceMatching(spruce_err) => spruce_err,
+            E::Database(db_err) => SpruceMatchingError::Database(db_err),
+            other => SpruceMatchingError::InvalidTransition {
+                id: conversation_id.to_owned(),
+                current_state: format!("unfinished_correction_removal:{}:{other}", step.label()),
+                action,
+            },
+        },
+        E::RemovalStepFailed { step, reason, .. } => SpruceMatchingError::InvalidTransition {
+            id: conversation_id.to_owned(),
+            current_state: format!("unfinished_correction_removal:{}:{reason}", step.label()),
+            action,
+        },
+        other => SpruceMatchingError::InvalidTransition {
+            id: conversation_id.to_owned(),
+            current_state: other.to_string(),
+            action,
+        },
+    }
+}
+
+pub(super) async fn undispatched_triggers_for_conversation_in_tx(
     tx: &impl ConnectionTrait,
     practice: &str,
     conversation_id: &str,
@@ -5802,7 +6141,7 @@ async fn undispatched_triggers_for_conversation_in_tx(
     rows.into_iter().map(decode_trigger_row).collect()
 }
 
-async fn dispatch_trigger_list(
+pub(super) async fn dispatch_trigger_list(
     store: &Store,
     triggers: &[PendingSpruceReviewTrigger],
     review_receiver: Option<&dyn ReviewReceiver>,
@@ -5825,7 +6164,7 @@ async fn dispatch_trigger_list(
     Ok(())
 }
 
-async fn linked_messages_for_conversation_in_tx(
+pub(super) async fn linked_messages_for_conversation_in_tx(
     db: &impl ConnectionTrait,
     practice: &str,
     conversation_id: &str,

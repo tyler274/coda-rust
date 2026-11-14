@@ -1790,7 +1790,20 @@ impl Store {
         authority: &mut dyn Authority,
     ) -> Result<Vec<Concern>, ConcernError> {
         let all = self.workspace_concerns(access, authority).await?;
-        let mut open: Vec<Concern> = all.into_iter().filter(Concern::shows_on_today).collect();
+        let withheld =
+            super::link_correction::load_workspace_withheld_state_in_tx(&self.db, access.workspace)
+                .await?;
+        let mut open: Vec<Concern> = all
+            .into_iter()
+            .filter(|c| {
+                c.shows_on_today()
+                    && !super::link_correction::concern_is_withheld(
+                        &withheld,
+                        &c.source_work.work_id,
+                        &c.records,
+                    )
+            })
+            .collect();
         sort_today(&mut open);
         Ok(open)
     }
@@ -1803,8 +1816,20 @@ impl Store {
         authority: &mut dyn Authority,
     ) -> Result<Vec<RetiredConcernUpdate>, ConcernError> {
         let all = self.workspace_concerns(access, authority).await?;
-        let mut retired: Vec<RetiredConcernUpdate> =
-            all.iter().filter_map(Concern::retired_update).collect();
+        let withheld =
+            super::link_correction::load_workspace_withheld_state_in_tx(&self.db, access.workspace)
+                .await?;
+        let mut retired: Vec<RetiredConcernUpdate> = all
+            .iter()
+            .filter(|c| {
+                !super::link_correction::concern_is_withheld(
+                    &withheld,
+                    &c.source_work.work_id,
+                    &c.records,
+                )
+            })
+            .filter_map(Concern::retired_update)
+            .collect();
         retired.sort_by(|left, right| {
             right
                 .retired_at
