@@ -10,11 +10,19 @@ region           = "us-east1"
 
 # Datadog and Grafana behind the gateway, each with its own exporter queue.
 # Datadog stays the operational notifier; Grafana evaluates in shadow mode,
-# including its native Cloud Monitoring PromQL rules. Datadog monitors, the
-# Datadog GCP integration, Grafana test notifications and availability
-# monitors keep their off defaults until each is separately approved.
+# including its native Cloud Monitoring PromQL rules. Datadog monitors,
+# Grafana test notifications and availability monitors keep their off
+# defaults until each is separately approved.
 telemetry_backend                = "both"
 grafana_cloud_monitoring_enabled = true
+
+# The Datadog GCP integration imports Cloud SQL metrics for coda-rust-staging,
+# whose only instances are rust-physician and rust-duet (README.md, "Cloud SQL
+# monitoring rollout"). Collection only: the Cloud SQL monitors stay off until
+# their series are inspected in Datadog and dependency_metric_scopes carries
+# the verified tags.
+datadog_gcp_integration_enabled   = true
+datadog_gcp_dependency_namespaces = ["cloudsql"]
 
 # The Langfuse HIPAA cloud project (README.md, "Langfuse"). Before the saved
 # plan is applied, the operator sets the project's LANGFUSE_PUBLIC_KEY and

@@ -8,16 +8,25 @@ variable "dependency_metric_scopes" {
   validation {
     condition = alltrue([
       for key, scope in var.dependency_metric_scopes :
-      contains(["physician_sql_up", "duet_sql_up", "physician_sql_storage", "duet_sql_storage", "redis_pressure", "redis_uptime", "worker_oldest_due", "worker_due", "worker_failed"], key) &&
-      can(regex("(^|,)env:staging(,|$)", scope)) &&
+      contains(keys(local.dependency_signals), key) &&
+      can(regex("(^|,)env:${var.environment}(,|$)", scope)) &&
       length(split(",", scope)) >= 3 &&
       !can(regex("[{}*]|patient|run_id|chat_id|conversation", scope))
     ])
-    error_message = "Scopes require a known signal key, env:staging and verified project/resource tags; wildcards, expressions and clinical identifiers are forbidden."
+    error_message = "Scopes require a known signal key, this environment's env tag and verified project/resource tags; wildcards, expressions and clinical identifiers are forbidden."
   }
   # The worker gauges are custom metrics on the global resource, which the
   # GCP integration imports only with global-location collection on; a scope
   # is supplied once their series has been observed in Datadog.
+  # A continuous signal without its own absence monitor relies on its
+  # resource's heartbeat to report telemetry loss, so it is scoped only with it.
+  validation {
+    condition = alltrue([
+      for key in keys(var.dependency_metric_scopes) :
+      contains(keys(var.dependency_metric_scopes), local.dependency_heartbeats[key]) if contains(keys(local.dependency_heartbeats), key)
+    ])
+    error_message = "A Cloud SQL or Redis signal requires its resource's heartbeat scope as well: *_sql_up for the instance, redis_uptime for Redis."
+  }
   validation {
     condition     = var.datadog_gcp_global_location_enabled || length([for key in keys(var.dependency_metric_scopes) : key if startswith(key, "worker_")]) == 0
     error_message = "Worker queue scopes require datadog_gcp_global_location_enabled, which imports the worker's global custom gauges."
@@ -25,12 +34,12 @@ variable "dependency_metric_scopes" {
 }
 
 variable "dependency_monitors_enabled" {
-  description = "Separate qualification gate for dependency monitors; requires the existing monitor gate too. Supply only scopes whose series/query and routing have been verified."
+  description = "Own gate for the dependency monitors whose scopes dependency_metric_scopes supplies. Independent of datadog_monitors_enabled: it does not enable the 5xx, latency, async-failure or memory monitors, and they do not enable it. Supply only scopes whose series, query and routing have been verified."
   type        = bool
   default     = false
   validation {
-    condition     = !var.dependency_monitors_enabled || (var.environment == "staging" && var.datadog_monitors_enabled)
-    error_message = "Dependency monitors require staging and the existing Datadog monitor authorization gate."
+    condition     = !var.dependency_monitors_enabled || (var.alert_notify != "" && contains(["datadog", "both"], var.telemetry_backend))
+    error_message = "Dependency monitors require telemetry_backend datadog or both, and an explicitly confirmed alert handle."
   }
 }
 
@@ -55,19 +64,44 @@ locals {
   # Age is continuous: a running worker writes it even when nothing is due,
   # so its absence means no worker is reporting. Failed work waits for the
   # physician's Try again, so the failed count stays up until then.
+  #
+  # space is how the scope's series combine into one value: Cloud SQL's
+  # num_backends is one series per database on the instance, so the
+  # instance's connections are their sum. absence marks the one signal per
+  # resource that owns a telemetry-absence monitor: every Cloud SQL metric of
+  # an instance arrives through the same integration, so only *_sql_up
+  # reports its loss, and one integration outage pages once per instance;
+  # redis_uptime does the same for the Redis instance. Absence applies only
+  # to continuous signals: sparse ones are legitimately silent.
+  # The CPU and memory thresholds hold for 15 minutes so a vacuum or burst on
+  # the shared-core tier does not page. 80 connections is 80% of the
+  # max_connections = 100 flag in infra/gcp/rust-environments/database.tf.
   dependency_signals = {
-    physician_sql_up      = { service = "physician-sample", metric = "gcp.cloudsql.database.up", aggregation = "max", window = "5m", operator = "<", threshold = 1, continuous = true, symptom = "Cloud SQL reports unavailable" }
-    duet_sql_up           = { service = "duet-api", metric = "gcp.cloudsql.database.up", aggregation = "max", window = "5m", operator = "<", threshold = 1, continuous = true, symptom = "Cloud SQL reports unavailable" }
-    physician_sql_storage = { service = "physician-sample", metric = "gcp.cloudsql.database.disk.utilization", aggregation = "min", window = "15m", operator = ">", threshold = 0.85, continuous = true, symptom = "Cloud SQL disk fraction exceeds 0.85" }
-    duet_sql_storage      = { service = "duet-api", metric = "gcp.cloudsql.database.disk.utilization", aggregation = "min", window = "15m", operator = ">", threshold = 0.85, continuous = true, symptom = "Cloud SQL disk fraction exceeds 0.85" }
-    redis_pressure        = { service = "physician-sample", metric = "gcp.redis.stats.memory.usage_ratio", aggregation = "min", window = "15m", operator = ">", threshold = 0.85, continuous = true, symptom = "Redis memory fraction exceeds 0.85" }
+    physician_sql_up          = { service = "physician-sample", metric = "gcp.cloudsql.database.up", aggregation = "max", space = "max", window = "5m", operator = "<", threshold = 1, continuous = true, absence = true, symptom = "Cloud SQL reports unavailable" }
+    duet_sql_up               = { service = "duet-api", metric = "gcp.cloudsql.database.up", aggregation = "max", space = "max", window = "5m", operator = "<", threshold = 1, continuous = true, absence = true, symptom = "Cloud SQL reports unavailable" }
+    physician_sql_storage     = { service = "physician-sample", metric = "gcp.cloudsql.database.disk.utilization", aggregation = "min", space = "max", window = "15m", operator = ">", threshold = 0.85, continuous = true, absence = false, symptom = "Cloud SQL disk fraction exceeds 0.85" }
+    duet_sql_storage          = { service = "duet-api", metric = "gcp.cloudsql.database.disk.utilization", aggregation = "min", space = "max", window = "15m", operator = ">", threshold = 0.85, continuous = true, absence = false, symptom = "Cloud SQL disk fraction exceeds 0.85" }
+    physician_sql_cpu         = { service = "physician-sample", metric = "gcp.cloudsql.database.cpu.utilization", aggregation = "min", space = "max", window = "15m", operator = ">", threshold = 0.9, continuous = true, absence = false, symptom = "Cloud SQL CPU fraction exceeds 0.9" }
+    duet_sql_cpu              = { service = "duet-api", metric = "gcp.cloudsql.database.cpu.utilization", aggregation = "min", space = "max", window = "15m", operator = ">", threshold = 0.9, continuous = true, absence = false, symptom = "Cloud SQL CPU fraction exceeds 0.9" }
+    physician_sql_memory      = { service = "physician-sample", metric = "gcp.cloudsql.database.memory.utilization", aggregation = "min", space = "max", window = "15m", operator = ">", threshold = 0.9, continuous = true, absence = false, symptom = "Cloud SQL memory fraction exceeds 0.9" }
+    duet_sql_memory           = { service = "duet-api", metric = "gcp.cloudsql.database.memory.utilization", aggregation = "min", space = "max", window = "15m", operator = ">", threshold = 0.9, continuous = true, absence = false, symptom = "Cloud SQL memory fraction exceeds 0.9" }
+    physician_sql_connections = { service = "physician-sample", metric = "gcp.cloudsql.database.postgresql.num_backends", aggregation = "min", space = "sum", window = "15m", operator = ">", threshold = 80, continuous = true, absence = false, symptom = "Cloud SQL connections exceed 80 of 100" }
+    duet_sql_connections      = { service = "duet-api", metric = "gcp.cloudsql.database.postgresql.num_backends", aggregation = "min", space = "sum", window = "15m", operator = ">", threshold = 80, continuous = true, absence = false, symptom = "Cloud SQL connections exceed 80 of 100" }
+    redis_pressure            = { service = "physician-sample", metric = "gcp.redis.stats.memory.usage_ratio", aggregation = "min", space = "max", window = "15m", operator = ">", threshold = 0.85, continuous = true, absence = false, symptom = "Redis memory fraction exceeds 0.85" }
     # Uptime is an availability heartbeat, not a reachability test. Only its
     # absence monitor is generated: a normal Redis restart is not an outage.
-    redis_uptime      = { service = "physician-sample", metric = "gcp.redis.server.uptime", aggregation = "max", window = "5m", operator = "<", threshold = 0, continuous = true, symptom = "Redis uptime telemetry is unavailable" }
-    worker_oldest_due = { service = "physician-worker", metric = "gcp.custom.coda.physician.queue.oldest_due_seconds", aggregation = "min", window = "5m", operator = ">", threshold = 300, continuous = true, symptom = "due physician work has waited more than 300 seconds" }
-    worker_due        = { service = "physician-worker", metric = "gcp.custom.coda.physician.queue.due", aggregation = "min", window = "30m", operator = ">", threshold = 0, continuous = false, symptom = "due physician work persists" }
-    worker_failed     = { service = "physician-worker", metric = "gcp.custom.coda.physician.queue.failed", aggregation = "min", window = "5m", operator = ">", threshold = 0, continuous = false, symptom = "physician work ended failed and waits for Try again" }
+    redis_uptime      = { service = "physician-sample", metric = "gcp.redis.server.uptime", aggregation = "max", space = "max", window = "5m", operator = "<", threshold = 0, continuous = true, absence = true, symptom = "Redis uptime telemetry is unavailable" }
+    worker_oldest_due = { service = "physician-worker", metric = "gcp.custom.coda.physician.queue.oldest_due_seconds", aggregation = "min", space = "max", window = "5m", operator = ">", threshold = 300, continuous = true, absence = true, symptom = "due physician work has waited more than 300 seconds" }
+    worker_due        = { service = "physician-worker", metric = "gcp.custom.coda.physician.queue.due", aggregation = "min", space = "max", window = "30m", operator = ">", threshold = 0, continuous = false, absence = false, symptom = "due physician work persists" }
+    worker_failed     = { service = "physician-worker", metric = "gcp.custom.coda.physician.queue.failed", aggregation = "min", space = "max", window = "5m", operator = ">", threshold = 0, continuous = false, absence = false, symptom = "physician work ended failed and waits for Try again" }
   }
+  # The absence-owning signal each other continuous signal of the same
+  # resource relies on.
+  dependency_heartbeats = merge(
+    { for key, signal in local.dependency_signals : key => "physician_sql_up" if startswith(key, "physician_sql_") && !signal.absence },
+    { for key, signal in local.dependency_signals : key => "duet_sql_up" if startswith(key, "duet_sql_") && !signal.absence },
+    { redis_pressure = "redis_uptime" },
+  )
   active_dependency_signals = {
     for key, signal in local.dependency_signals : key => signal
     if local.datadog_backend && var.dependency_monitors_enabled && contains(keys(var.dependency_metric_scopes), key)
@@ -79,7 +113,7 @@ resource "datadog_monitor" "dependency_symptom" {
   for_each = { for key, signal in local.active_dependency_signals : key => signal if key != "redis_uptime" }
   name     = "[${local.dd_env}] ${each.key}: ${each.value.symptom}"
   type     = "query alert"
-  query    = "${each.value.aggregation}(last_${each.value.window}):max:${each.value.metric}{${var.dependency_metric_scopes[each.key]}}.fill(null) ${each.value.operator} ${each.value.threshold}"
+  query    = "${each.value.aggregation}(last_${each.value.window}):${each.value.space}:${each.value.metric}{${var.dependency_metric_scopes[each.key]}}.fill(null) ${each.value.operator} ${each.value.threshold}"
   message  = <<-EOT
     Environment: ${local.dd_env}; service: ${each.value.service}; owner: Coda engineering.
     {{#is_alert}}Symptom: ${each.value.symptom} throughout ${each.value.window}.{{/is_alert}}
@@ -101,7 +135,7 @@ resource "datadog_monitor" "dependency_symptom" {
 }
 
 resource "datadog_monitor" "dependency_absence" {
-  for_each = { for key, signal in local.active_dependency_signals : key => signal if signal.continuous }
+  for_each = { for key, signal in local.active_dependency_signals : key => signal if signal.absence }
   name     = "[${local.dd_env}] ${each.key}: telemetry absent"
   type     = "query alert"
   # All these gauges are nonnegative. This threshold never fires for a real

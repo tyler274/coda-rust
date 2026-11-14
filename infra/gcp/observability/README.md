@@ -114,11 +114,11 @@ Cloud Monitoring is a default-off datasource through Workload Identity
 (`grafana_cloud_monitoring_enabled`), not through Tempo span metrics. Enabling it
 also provisions native PromQL shadow rules from `grafana-cloud-rules.tf` for the
 three probe targets, the two product databases, the physician Redis instance,
-and worker subscriptions. Readiness uses the probe's durable firing metric,
+and the worker's queue gauges. Readiness uses the probe's durable firing metric,
 which owns three-failure and two-success hysteresis. Missing readiness data
 retains the previous alert state. Separate rules detect missing or stale probe
-observations and 20-minute absence of continuous dependency signals. Sparse
-queues have no absence rules. Resource selectors are fixed to the runtime
+observations and 20-minute absence of each resource's heartbeat signal (the
+catalog's `absence` field). Sparse queues have no absence rules. Resource selectors are fixed to the runtime
 infrastructure's resource names and the selected cluster project. Dependency
 thresholds and sustained durations share the Datadog signal catalog.
 
@@ -360,14 +360,15 @@ returns Grafana to its root path for port-forward.
   are disabled by id because the integration has no namespace allowlist.
   Confirm those ids against the integration's namespace list in Datadog before
   enabling. The Datadog provider's app key must belong to a user allowed to
-  manage integrations. `datadog_gcp_dependency_collection` is a separate,
-  empty-by-default opt-in for SQL and Redis namespaces. Each entry
-  supplies verified exact resource filters to the resource configuration.
-  Namespace metric-name filters stay empty, importing all metrics in each
-  opted-in namespace for matching resources; resource tags are not metric-name
-  filters. Other exclusions, global-location collection and IAM stay unchanged.
-  Inspect resource-filter effectiveness and the projected series volume of all
-  namespace metrics before authorizing collection.
+  manage integrations. `datadog_gcp_dependency_namespaces` is a separate,
+  empty-by-default opt-in for the `cloudsql` and `redis` namespaces.
+  Datadog's monitored-resource filters cover only Cloud Run revisions, Cloud
+  Functions and GCE instances, so an opted-in namespace imports all its metrics
+  for every instance of that kind in `cluster_project`; in the Rust projects
+  those are the runtime infrastructure's own instances. Monitors select one
+  instance through its identity tag in `dependency_metric_scopes`. Other
+  exclusions, global-location collection and IAM stay unchanged. Inspect the
+  projected series volume before authorizing collection.
   `datadog_gcp_global_location_enabled`, off by default, imports metrics with
   no GCP location: the custom gauges on the `global` resource, which are the
   physician worker's queue gauges and the availability probe's series. The
@@ -376,8 +377,21 @@ returns Grafana to its root path for port-forward.
   SQL, Redis and queue rules; `workload-monitors.tf` owns stable deployment,
   StatefulSet and PVC targets. Their gates and qualified scope maps default
   off/empty. Populate only after inspecting actual Datadog series, units and
-  identity tags. Continuously expected gauges have separate absence monitors;
-  sparse queue/failure events do not. Do not register idle scale-to-zero
+  identity tags. `dependency_monitors_enabled` is its own gate: it needs a
+  confirmed `alert_notify` and a Datadog backend, does not enable the 5xx,
+  latency, async-failure or memory monitors behind `datadog_monitors_enabled`,
+  and is not enabled by them. Each scope must carry `env:<environment>`.
+  For each Cloud SQL instance (`physician_*` for `rust-physician`, `duet_*` for
+  `rust-duet`) the catalog has `_sql_up` (not up throughout 5 minutes),
+  `_sql_storage` (disk fraction above 0.85), `_sql_cpu` and `_sql_memory`
+  (fraction above 0.9) and `_sql_connections` (backends summed over the
+  instance's databases above 80 of the `max_connections = 100` flag in
+  `infra/gcp/rust-environments/database.tf`), the last four held throughout
+  15 minutes. Only one signal per resource has an absence monitor, the
+  catalog's `absence` field: `_sql_up` for each instance, `redis_uptime` and
+  `worker_oldest_due`. The other metrics of an instance arrive through the same
+  integration, so an integration outage pages once per instance rather than
+  once per metric; sparse queue/failure events have none. Do not register idle scale-to-zero
   workloads as continuously required. Remove deliberately retired targets from
   the maps rather than retaining per-node absence groups. PVC collection uses
   the Agent's existing kubelet `/metrics` volume gauges; verify both used and
@@ -421,6 +435,34 @@ returns Grafana to its root path for port-forward.
   from the environment: `doppler run --project coda-rust --config stg -- tofu plan`.
 - **Identity.** The collector holds no Google identity; it only verifies
   callers' tokens, and it authenticates to Langfuse with the project key pair.
+
+### Cloud SQL monitoring rollout
+
+Collection and monitors are separate applies, each from a reviewed saved plan
+with the operator's authorization.
+
+1. **Collection.** `datadog_gcp_integration_enabled = true` and
+   `datadog_gcp_dependency_namespaces = ["cloudsql"]`. Applying creates the
+   four read-only project IAM grants, so it needs a project Owner or Dev, and a
+   Datadog app key allowed to manage integrations. Review cost first: the
+   integration also imports the selected Cloud Run revisions' and this
+   cluster's node metrics, and every `cloudsql` metric of each instance in
+   `cluster_project`.
+2. **Inspect the series in Datadog.** Confirm which instances arrive, the
+   metric names, units and tags (`project_id`, `database_id`) and
+   the ingestion delay. Compare each instance's CPU, memory and connection
+   baseline with the thresholds; a shared-core tier can sit near the memory
+   threshold and needs calibrating before monitors are enabled.
+3. **Monitors.** `dependency_metric_scopes` for the ten `*_sql_*` keys with the
+   verified tags, and `dependency_monitors_enabled = true`. They notify
+   `alert_notify`.
+4. **Qualify** one alert and its recovery through the
+   [notification qualification](#notification-qualification-boundary)
+   procedure before treating the route as proven.
+
+The Cloud SQL pieces take their environment from `var.environment` and
+`cluster_project`; production needs only its own tfvars once this root is
+allowed to serve it.
 
 ## Wiring services
 

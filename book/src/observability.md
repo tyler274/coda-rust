@@ -348,13 +348,37 @@ labels. Correlate a run only in the authorized trace/log investigation surface.
    Grafana Cloud reads them from Cloud Monitoring directly. Compare
    them with the [worker processing/retry contract](physician-site.md) and the
    attempts saved on the rows before acting; do not retry work automatically.
-   Investigate SQL and Redis using the configured exact resource scope and the
-   cloud console.
-3. For missing telemetry, inspect Cloud Scheduler/job execution and the direct
+   Investigate Redis using the configured exact resource scope and the cloud
+   console.
+3. For Cloud SQL, each alert names its instance: `physician_*` is
+   `rust-physician`, `duet_*` is `rust-duet`. Start from the instance's
+   overview and Query insights in the cloud console.
+   - `*_sql_up`: Cloud SQL itself reports the instance down for five minutes.
+     Check its operations log for maintenance, a restart or a failover before
+     touching the services that use it.
+   - `*_sql_cpu` and `*_sql_memory`: the fraction stayed above 0.9 for
+     15 minutes. The staging tier is shared-core, so a long query, a vacuum or
+     a backlog of worker turns can hold it there; find the statement in Query
+     insights first, and resize the tier only for sustained load the product
+     should carry.
+   - `*_sql_connections`: open backends across the instance's databases stayed
+     above 80 of its `max_connections` of 100 for 15 minutes. New connections
+     fail at 100. Compare each service's pool size and instance count with the
+     limit, and look for connections left idle in a transaction.
+   - `*_sql_storage`: the disk is more than 85% full. Look for unexpected table
+     growth before raising the disk size.
+   - `*_sql_up` telemetry absent: Datadog stopped receiving the instance's
+     metrics. That is monitoring loss, not an outage; check the GCP
+     integration's permissions and namespace settings, and the instance's
+     state in the console, before acting on the database. The instance's
+     other SQL monitors raise no absence alert of their own, so the loss pages
+     once; an alert of theirs already firing keeps its state and reminders
+     until its data returns.
+4. For missing telemetry, inspect Cloud Scheduler/job execution and the direct
    Monitoring series separately from collector availability, exporter failures,
    queues and Datadog ingestion. Keep heartbeat absence distinct from a failing
    target. A cleared sparse counter or retired pod is not confirmed recovery.
-4. For Grafana/collector loss or storage pressure, inspect stable workload
+5. For Grafana/collector loss or storage pressure, inspect stable workload
    readiness, restart/OOM evidence and mounted PVC used/capacity series. Do not
    resize from host-memory percentage alone or retain stale node groups as
    current workload failures. Use the <a href="/infra/gcp/observability/README%2Emd">private stack access procedure</a>

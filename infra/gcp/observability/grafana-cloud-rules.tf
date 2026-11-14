@@ -1,14 +1,20 @@
 locals {
   grafana_cloud_selectors = {
-    physician_sql_up      = "cloudsql_googleapis_com:database_up{project_id=\"${var.cluster_project}\",database_id=\"${var.cluster_project}:rust-physician\"}"
-    duet_sql_up           = "cloudsql_googleapis_com:database_up{project_id=\"${var.cluster_project}\",database_id=\"${var.cluster_project}:rust-duet\"}"
-    physician_sql_storage = "cloudsql_googleapis_com:database_disk_utilization{project_id=\"${var.cluster_project}\",database_id=\"${var.cluster_project}:rust-physician\"}"
-    duet_sql_storage      = "cloudsql_googleapis_com:database_disk_utilization{project_id=\"${var.cluster_project}\",database_id=\"${var.cluster_project}:rust-duet\"}"
-    redis_pressure        = "redis_googleapis_com:stats_memory_usage_ratio{project_id=\"${var.cluster_project}\",instance_id=\"projects/${var.cluster_project}/locations/${var.cluster_location}/instances/rust-physician-cache\",role=\"primary\"}"
-    redis_uptime          = "redis_googleapis_com:server_uptime{project_id=\"${var.cluster_project}\",instance_id=\"projects/${var.cluster_project}/locations/${var.cluster_location}/instances/rust-physician-cache\",role=\"primary\"}"
-    worker_oldest_due     = "custom_googleapis_com:coda_physician_queue_oldest_due_seconds{${local.grafana_probe_labels}}"
-    worker_due            = "custom_googleapis_com:coda_physician_queue_due{${local.grafana_probe_labels}}"
-    worker_failed         = "custom_googleapis_com:coda_physician_queue_failed{${local.grafana_probe_labels}}"
+    physician_sql_up          = "cloudsql_googleapis_com:database_up{project_id=\"${var.cluster_project}\",database_id=\"${var.cluster_project}:rust-physician\"}"
+    duet_sql_up               = "cloudsql_googleapis_com:database_up{project_id=\"${var.cluster_project}\",database_id=\"${var.cluster_project}:rust-duet\"}"
+    physician_sql_storage     = "cloudsql_googleapis_com:database_disk_utilization{project_id=\"${var.cluster_project}\",database_id=\"${var.cluster_project}:rust-physician\"}"
+    duet_sql_storage          = "cloudsql_googleapis_com:database_disk_utilization{project_id=\"${var.cluster_project}\",database_id=\"${var.cluster_project}:rust-duet\"}"
+    physician_sql_cpu         = "cloudsql_googleapis_com:database_cpu_utilization{project_id=\"${var.cluster_project}\",database_id=\"${var.cluster_project}:rust-physician\"}"
+    duet_sql_cpu              = "cloudsql_googleapis_com:database_cpu_utilization{project_id=\"${var.cluster_project}\",database_id=\"${var.cluster_project}:rust-duet\"}"
+    physician_sql_memory      = "cloudsql_googleapis_com:database_memory_utilization{project_id=\"${var.cluster_project}\",database_id=\"${var.cluster_project}:rust-physician\"}"
+    duet_sql_memory           = "cloudsql_googleapis_com:database_memory_utilization{project_id=\"${var.cluster_project}\",database_id=\"${var.cluster_project}:rust-duet\"}"
+    physician_sql_connections = "cloudsql_googleapis_com:database_postgresql_num_backends{project_id=\"${var.cluster_project}\",database_id=\"${var.cluster_project}:rust-physician\"}"
+    duet_sql_connections      = "cloudsql_googleapis_com:database_postgresql_num_backends{project_id=\"${var.cluster_project}\",database_id=\"${var.cluster_project}:rust-duet\"}"
+    redis_pressure            = "redis_googleapis_com:stats_memory_usage_ratio{project_id=\"${var.cluster_project}\",instance_id=\"projects/${var.cluster_project}/locations/${var.cluster_location}/instances/rust-physician-cache\",role=\"primary\"}"
+    redis_uptime              = "redis_googleapis_com:server_uptime{project_id=\"${var.cluster_project}\",instance_id=\"projects/${var.cluster_project}/locations/${var.cluster_location}/instances/rust-physician-cache\",role=\"primary\"}"
+    worker_oldest_due         = "custom_googleapis_com:coda_physician_queue_oldest_due_seconds{${local.grafana_probe_labels}}"
+    worker_due                = "custom_googleapis_com:coda_physician_queue_due{${local.grafana_probe_labels}}"
+    worker_failed             = "custom_googleapis_com:coda_physician_queue_failed{${local.grafana_probe_labels}}"
   }
   # Custom metrics can sit on many resource types, so Cloud Monitoring PromQL
   # rejects them without a monitored_resource matcher. availability-probe and
@@ -28,7 +34,7 @@ locals {
       no_data  = "NoData"
     } },
     { for key, signal in local.dependency_signals : "dependency-${key}" => {
-      expr     = "max(${local.grafana_cloud_selectors[key]}) ${signal.operator} bool ${signal.threshold}"
+      expr     = "${signal.space}(${local.grafana_cloud_selectors[key]}) ${signal.operator} bool ${signal.threshold}"
       duration = signal.window
       summary  = signal.symptom
       no_data  = signal.continuous ? "KeepLast" : "OK"
@@ -38,12 +44,17 @@ locals {
       duration = "0s"
       summary  = "${key} continuously expected telemetry has been absent for 20 minutes."
       no_data  = "NoData"
-    } if signal.continuous }
+    } if signal.absence }
   )
   grafana_cloud_rule_uids = [for key in keys(local.grafana_cloud_conditions) : "gcp-${key}"]
-  # Provisioning keeps a rule whose UID leaves the file, so the Pub/Sub
-  # subscription rules the queue gauges replaced are deleted by name.
-  grafana_cloud_retired_rule_uids = ["gcp-dependency-worker_age", "gcp-absence-worker_age", "gcp-dependency-worker_backlog", "gcp-dependency-worker_dead_letters"]
+  # Provisioning keeps a rule whose UID leaves the file, so retired rules are
+  # deleted by name: the Pub/Sub subscription rules the queue gauges
+  # replaced, and the absence rules of signals whose resource reports its
+  # telemetry loss through *_sql_up or redis_uptime.
+  grafana_cloud_retired_rule_uids = [
+    "gcp-dependency-worker_age", "gcp-absence-worker_age", "gcp-dependency-worker_backlog", "gcp-dependency-worker_dead_letters",
+    "gcp-absence-physician_sql_storage", "gcp-absence-duet_sql_storage", "gcp-absence-redis_pressure",
+  ]
   grafana_cloud_rules = yamlencode(local.grafana_monitoring_enable ? {
     apiVersion = 1
     groups = [{

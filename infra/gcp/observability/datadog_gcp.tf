@@ -10,20 +10,23 @@
 # this integration adds the platform view Cloud Run itself reports (cold
 # starts, instance counts, container CPU and memory, 5xx answered before the
 # product container).
-variable "datadog_gcp_dependency_collection" {
-  description = "Default-off per-namespace collection opt-ins. Every entry requires exact resource filters verified against Datadog's integration before apply. Only SQL and Redis may be opted in; no IAM roles or global-location collection are added. Imports all metrics in the selected namespace for matching resources, so review series cost before activation."
-  type        = map(object({ verified_resource_filters = set(string) }))
-  default     = {}
+#
+# Datadog's monitored-resource filters cover only Cloud Run revisions, Cloud
+# Functions and GCE instances, so a dependency namespace is collected for every
+# resource of its kind in cluster_project. In the Rust projects that is the
+# runtime infrastructure's own instances; monitors select one instance by
+# its identity tag in dependency_metric_scopes.
+variable "datadog_gcp_dependency_namespaces" {
+  description = "Default-off dependency metric namespaces to collect: cloudsql, redis or both. Imports every metric in the namespace for every instance in cluster_project, so review series cost before activation. Adds no IAM roles or global-location collection."
+  type        = set(string)
+  default     = []
   validation {
-    condition = alltrue([for namespace, config in var.datadog_gcp_dependency_collection :
-      contains(["cloudsql", "redis"], namespace) && length(config.verified_resource_filters) > 0 &&
-      alltrue([for filter in config.verified_resource_filters : can(regex("^[a-z_]+:[A-Za-z0-9_:/.-]+$", filter)) && !can(regex("patient|run_id|chat_id|^(env|environment|project|project_id|region|zone|location|app|service|purpose):", filter))])
-    ])
-    error_message = "Dependency collection requires known namespace keys and nonempty exact verified resource identity filters; broad environment/project/location/service tags, wildcards and boolean scopes are forbidden."
+    condition     = alltrue([for namespace in var.datadog_gcp_dependency_namespaces : contains(["cloudsql", "redis"], namespace)])
+    error_message = "Only the cloudsql and redis namespaces may be collected."
   }
   validation {
-    condition     = length(var.datadog_gcp_dependency_collection) == 0 || (var.environment == "staging" && var.datadog_gcp_integration_enabled)
-    error_message = "Dependency collection requires the staging GCP integration gate."
+    condition     = length(var.datadog_gcp_dependency_namespaces) == 0 || var.datadog_gcp_integration_enabled
+    error_message = "Dependency collection requires the GCP integration gate."
   }
 }
 
@@ -38,7 +41,6 @@ variable "datadog_gcp_global_location_enabled" {
 }
 
 locals {
-  dependency_resource_types = { cloudsql = "cloudsql_database", redis = "redis_instance" }
   # The variable's validation already refuses it under grafana; the backend
   # gate here keeps the resources tied to Datadog regardless.
   datadog_gcp_enabled = local.datadog_backend && var.datadog_gcp_integration_enabled
@@ -55,17 +57,16 @@ locals {
 
   # The integration API has no namespace allowlist: every namespace in the
   # project is collected unless its id is disabled. The project itself only
-  # holds the Rust staging stack, and the monitored-resource filters below
+  # holds one environment's Rust stack, and the monitored-resource filters below
   # narrow Cloud Run and GCE to the selected services and this cluster.
   datadog_gcp_metric_namespace_configs = concat([
-    for namespace in sort(tolist(setsubtract(var.datadog_gcp_disabled_metric_namespaces, toset(keys(var.datadog_gcp_dependency_collection))))) : {
+    for namespace in sort(tolist(setsubtract(var.datadog_gcp_disabled_metric_namespaces, var.datadog_gcp_dependency_namespaces))) : {
       id       = namespace
       disabled = true
       filters  = []
     }
-    # Namespace filters select metric names, not resource tags. Resource
-    # identity restrictions belong only in monitored_resource_configs.
-    ], [for namespace in keys(var.datadog_gcp_dependency_collection) : {
+    # Namespace filters select metric names, not resources.
+    ], [for namespace in sort(tolist(var.datadog_gcp_dependency_namespaces)) : {
       id       = namespace
       disabled = false
       filters  = []
@@ -87,7 +88,14 @@ resource "google_project_iam_member" "datadog_gcp" {
   member   = "serviceAccount:${google_service_account.datadog_gcp["integration"].email}"
 }
 
-resource "datadog_integration_gcp_sts" "staging" {
+moved {
+  from = datadog_integration_gcp_sts.staging
+  to   = datadog_integration_gcp_sts.project
+}
+
+# The integration for cluster_project in whichever environment this root
+# serves; var.environment's own validation decides which environments those are.
+resource "datadog_integration_gcp_sts" "project" {
   for_each     = local.datadog_gcp
   client_email = google_service_account.datadog_gcp[each.key].email
 
@@ -105,13 +113,10 @@ resource "datadog_integration_gcp_sts" "staging" {
 
   # Only the selected Cloud Run services' revisions and this cluster's nodes
   # are imported; other Cloud Run services and VMs in the project are not.
-  monitored_resource_configs = concat([
+  monitored_resource_configs = [
     { type = "cloud_run_revision", filters = [for service in sort(tolist(var.datadog_gcp_cloud_run_services)) : "service_name:${service}"] },
     { type = "gce_instance", filters = ["goog-k8s-cluster-name:${var.cluster_name}"] },
-    ], [for namespace, config in var.datadog_gcp_dependency_collection : {
-      type    = local.dependency_resource_types[namespace]
-      filters = sort(tolist(config.verified_resource_filters))
-  }])
+  ]
 
   metric_namespace_configs = local.datadog_gcp_metric_namespace_configs
 
@@ -123,5 +128,5 @@ resource "google_service_account_iam_member" "datadog_gcp_delegate" {
   for_each           = local.datadog_gcp
   service_account_id = google_service_account.datadog_gcp[each.key].name
   role               = "roles/iam.serviceAccountTokenCreator"
-  member             = "serviceAccount:${datadog_integration_gcp_sts.staging[each.key].delegate_account_email}"
+  member             = "serviceAccount:${datadog_integration_gcp_sts.project[each.key].delegate_account_email}"
 }

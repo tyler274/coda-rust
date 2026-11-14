@@ -88,10 +88,29 @@ run "native_cloud_rules_use_real_source_and_scoped_inventory" {
   }
   assert {
     condition = (
-      toset([for rule in yamldecode(local.grafana_cloud_rules).deleteRules : rule.uid]) == toset(["gcp-dependency-worker_age", "gcp-absence-worker_age", "gcp-dependency-worker_backlog", "gcp-dependency-worker_dead_letters"]) &&
+      alltrue([for key in ["physician_sql_cpu", "duet_sql_cpu", "physician_sql_memory", "duet_sql_memory", "physician_sql_connections", "duet_sql_connections"] :
+        contains(keys(local.grafana_cloud_conditions), "dependency-${key}") && !contains(keys(local.grafana_cloud_conditions), "absence-${key}")
+      ]) &&
+      local.grafana_cloud_conditions["dependency-physician_sql_connections"].expr == "sum(cloudsql_googleapis_com:database_postgresql_num_backends{project_id=\"test-rust-stg-only\",database_id=\"test-rust-stg-only:rust-physician\"}) > bool 80" &&
+      local.grafana_cloud_conditions["dependency-duet_sql_cpu"].expr == "max(cloudsql_googleapis_com:database_cpu_utilization{project_id=\"test-rust-stg-only\",database_id=\"test-rust-stg-only:rust-duet\"}) > bool 0.9" &&
+      strcontains(local.grafana_cloud_conditions["dependency-physician_sql_memory"].expr, "database_memory_utilization") &&
+      toset([for key in keys(local.grafana_cloud_conditions) : key if startswith(key, "absence-")]) == toset(["absence-physician_sql_up", "absence-duet_sql_up", "absence-redis_uptime", "absence-worker_oldest_due"])
+    )
+    error_message = "Cloud SQL CPU, memory and summed connection rules shadow the Datadog monitors; only one absence rule per resource reports its telemetry loss."
+  }
+  assert {
+    condition     = alltrue([for signal in local.dependency_signals : contains(["max", "sum"], signal.space) && (signal.continuous || !signal.absence)])
+    error_message = "Every catalog signal combines series by max or sum, and only a continuous signal may own an absence monitor."
+  }
+  assert {
+    condition = (
+      toset([for rule in yamldecode(local.grafana_cloud_rules).deleteRules : rule.uid]) == toset([
+        "gcp-dependency-worker_age", "gcp-absence-worker_age", "gcp-dependency-worker_backlog", "gcp-dependency-worker_dead_letters",
+        "gcp-absence-physician_sql_storage", "gcp-absence-duet_sql_storage", "gcp-absence-redis_pressure",
+      ]) &&
       length(setintersection(toset([for rule in yamldecode(local.grafana_cloud_rules).deleteRules : rule.uid]), toset(local.grafana_cloud_rule_uids))) == 0
     )
-    error_message = "The retired Pub/Sub subscription rules must be deleted from Grafana state without deleting a live rule."
+    error_message = "The retired Pub/Sub subscription and per-metric absence rules must be deleted from Grafana state without deleting a live rule."
   }
 }
 
@@ -431,7 +450,7 @@ run "gcp_integration_is_off_by_default" {
 
   assert {
     condition = (
-      length(datadog_integration_gcp_sts.staging) == 0 &&
+      length(datadog_integration_gcp_sts.project) == 0 &&
       length(google_service_account.datadog_gcp) == 0 &&
       length(google_project_iam_member.datadog_gcp) == 0 &&
       length(google_service_account_iam_member.datadog_gcp_delegate) == 0
@@ -446,7 +465,7 @@ run "gcp_integration_is_project_scoped_and_keyless" {
 
   assert {
     condition = (
-      length(datadog_integration_gcp_sts.staging) == 1 &&
+      length(datadog_integration_gcp_sts.project) == 1 &&
       google_service_account.datadog_gcp["integration"].project == "test-rust-stg-only" &&
       alltrue([for grant in google_project_iam_member.datadog_gcp : grant.project == "test-rust-stg-only"]) &&
       toset([for grant in google_project_iam_member.datadog_gcp : grant.role]) == toset(["roles/browser", "roles/cloudasset.viewer", "roles/compute.viewer", "roles/monitoring.viewer"])
@@ -464,20 +483,20 @@ run "gcp_integration_is_project_scoped_and_keyless" {
 
   assert {
     condition = (
-      !datadog_integration_gcp_sts.staging["integration"].resource_collection_enabled &&
-      !datadog_integration_gcp_sts.staging["integration"].is_org_folder_resource_collection_enabled &&
-      !datadog_integration_gcp_sts.staging["integration"].is_cspm_enabled &&
-      !datadog_integration_gcp_sts.staging["integration"].is_security_command_center_enabled &&
-      datadog_integration_gcp_sts.staging["integration"].account_tags == toset(["env:staging"])
+      !datadog_integration_gcp_sts.project["integration"].resource_collection_enabled &&
+      !datadog_integration_gcp_sts.project["integration"].is_org_folder_resource_collection_enabled &&
+      !datadog_integration_gcp_sts.project["integration"].is_cspm_enabled &&
+      !datadog_integration_gcp_sts.project["integration"].is_security_command_center_enabled &&
+      datadog_integration_gcp_sts.project["integration"].account_tags == toset(["env:staging"])
     )
     error_message = "The integration must collect metrics for this project only, tagged env:staging."
   }
 
   assert {
     condition = (
-      one([for c in datadog_integration_gcp_sts.staging["integration"].monitored_resource_configs : c.filters if c.type == "cloud_run_revision"]) == toset(["service_name:duet", "service_name:physician", "service_name:physician-worker"]) &&
-      one([for c in datadog_integration_gcp_sts.staging["integration"].monitored_resource_configs : c.filters if c.type == "gce_instance"]) == toset(["goog-k8s-cluster-name:rust-observability"]) &&
-      alltrue([for c in datadog_integration_gcp_sts.staging["integration"].metric_namespace_configs : c.disabled])
+      one([for c in datadog_integration_gcp_sts.project["integration"].monitored_resource_configs : c.filters if c.type == "cloud_run_revision"]) == toset(["service_name:duet", "service_name:physician", "service_name:physician-worker"]) &&
+      one([for c in datadog_integration_gcp_sts.project["integration"].monitored_resource_configs : c.filters if c.type == "gce_instance"]) == toset(["goog-k8s-cluster-name:rust-observability"]) &&
+      alltrue([for c in datadog_integration_gcp_sts.project["integration"].metric_namespace_configs : c.disabled])
     )
     error_message = "Only the three staging services' revisions and the observability cluster's nodes may be imported, and namespace configs may only disable."
   }
@@ -789,7 +808,7 @@ run "grafana_backend_replaces_datadog" {
       length(datadog_monitor.site_5xx_rate) + length(datadog_monitor.chat_generation_errors) +
       length(datadog_monitor.site_p95_latency) + length(datadog_monitor.async_failures) +
       length(datadog_monitor.observability_container_memory) + length(datadog_monitor.observability_container_oom) +
-      length(datadog_integration_gcp_sts.staging) + length(google_service_account.datadog_gcp) +
+      length(datadog_integration_gcp_sts.project) + length(google_service_account.datadog_gcp) +
       length(google_project_iam_member.datadog_gcp) + length(google_service_account_iam_member.datadog_gcp_delegate) == 0
     )
     error_message = "Under grafana no Datadog release, monitor or GCP integration may be planned."
@@ -1282,6 +1301,92 @@ run "dependency_rules_are_opt_in_even_with_existing_monitors" {
   }
 }
 
+run "cloud_sql_monitors_have_their_own_gate" {
+  command = plan
+  variables {
+    dependency_monitors_enabled = true
+    alert_notify                = "@slack-confirmed-test"
+    dependency_metric_scopes = {
+      physician_sql_up          = "env:staging,project_id:test-rust-stg-only,database_id:test-rust-stg-only:rust-physician"
+      duet_sql_up               = "env:staging,project_id:test-rust-stg-only,database_id:test-rust-stg-only:rust-duet"
+      physician_sql_storage     = "env:staging,project_id:test-rust-stg-only,database_id:test-rust-stg-only:rust-physician"
+      duet_sql_storage          = "env:staging,project_id:test-rust-stg-only,database_id:test-rust-stg-only:rust-duet"
+      physician_sql_cpu         = "env:staging,project_id:test-rust-stg-only,database_id:test-rust-stg-only:rust-physician"
+      duet_sql_cpu              = "env:staging,project_id:test-rust-stg-only,database_id:test-rust-stg-only:rust-duet"
+      physician_sql_memory      = "env:staging,project_id:test-rust-stg-only,database_id:test-rust-stg-only:rust-physician"
+      duet_sql_memory           = "env:staging,project_id:test-rust-stg-only,database_id:test-rust-stg-only:rust-duet"
+      physician_sql_connections = "env:staging,project_id:test-rust-stg-only,database_id:test-rust-stg-only:rust-physician"
+      duet_sql_connections      = "env:staging,project_id:test-rust-stg-only,database_id:test-rust-stg-only:rust-duet"
+    }
+  }
+  assert {
+    condition     = length(datadog_monitor.dependency_symptom) == 10 && toset(keys(datadog_monitor.dependency_absence)) == toset(["physician_sql_up", "duet_sql_up"])
+    error_message = "Every scoped Cloud SQL signal gets a symptom monitor; only *_sql_up reports the instance's telemetry loss."
+  }
+  assert {
+    condition = (
+      length(datadog_monitor.site_5xx_rate) == 0 && length(datadog_monitor.site_p95_latency) == 0 && length(datadog_monitor.async_failures) == 0 &&
+      length(datadog_monitor.observability_container_memory) == 0 && length(datadog_monitor.observability_container_oom) == 0 && length(datadog_monitor.collector_availability) == 0
+    )
+    error_message = "The dependency gate must not enable the unqualified service, memory or collector monitors."
+  }
+  assert {
+    condition = (
+      datadog_monitor.dependency_symptom["physician_sql_connections"].query == "min(last_15m):sum:gcp.cloudsql.database.postgresql.num_backends{env:staging,project_id:test-rust-stg-only,database_id:test-rust-stg-only:rust-physician}.fill(null) > 80" &&
+      datadog_monitor.dependency_symptom["duet_sql_connections"].monitor_thresholds[0].critical == "80"
+    )
+    error_message = "Connections sum the per-database backends of one instance against 80 of its 100."
+  }
+  assert {
+    condition = (
+      datadog_monitor.dependency_symptom["duet_sql_cpu"].query == "min(last_15m):max:gcp.cloudsql.database.cpu.utilization{env:staging,project_id:test-rust-stg-only,database_id:test-rust-stg-only:rust-duet}.fill(null) > 0.9" &&
+      datadog_monitor.dependency_symptom["physician_sql_memory"].query == "min(last_15m):max:gcp.cloudsql.database.memory.utilization{env:staging,project_id:test-rust-stg-only,database_id:test-rust-stg-only:rust-physician}.fill(null) > 0.9" &&
+      datadog_monitor.dependency_symptom["physician_sql_cpu"].monitor_thresholds[0].critical == "0.9" &&
+      datadog_monitor.dependency_symptom["duet_sql_memory"].monitor_thresholds[0].critical == "0.9"
+    )
+    error_message = "CPU and memory alert only on a fraction above 0.9 held throughout 15 minutes."
+  }
+  assert {
+    condition     = alltrue([for monitor in datadog_monitor.dependency_symptom : !monitor.notify_no_data && monitor.timeout_h == 0 && strcontains(monitor.message, var.alert_notify)])
+    error_message = "Continuous Cloud SQL symptoms neither page on nor resolve through missing data, and route to the confirmed handle."
+  }
+}
+
+run "dependency_gate_requires_an_alert_handle" {
+  command = plan
+  variables {
+    dependency_monitors_enabled = true
+  }
+  expect_failures = [var.dependency_monitors_enabled]
+}
+
+run "dependency_scopes_carry_this_environment" {
+  command = plan
+  variables {
+    dependency_metric_scopes = { physician_sql_up = "env:production,project_id:test-rust-stg-only,database_id:test-rust-stg-only:rust-physician" }
+  }
+  expect_failures = [var.dependency_metric_scopes]
+}
+
+run "dependency_signals_require_their_heartbeat" {
+  command = plan
+  variables {
+    dependency_metric_scopes = {
+      duet_sql_up       = "env:staging,project_id:test-rust-stg-only,database_id:test-rust-stg-only:rust-duet"
+      physician_sql_cpu = "env:staging,project_id:test-rust-stg-only,database_id:test-rust-stg-only:rust-physician"
+    }
+  }
+  expect_failures = [var.dependency_metric_scopes]
+}
+
+run "redis_pressure_requires_its_heartbeat" {
+  command = plan
+  variables {
+    dependency_metric_scopes = { redis_pressure = "env:staging,project_id:test-rust-stg-only,instance_id:test-redis" }
+  }
+  expect_failures = [var.dependency_metric_scopes]
+}
+
 run "worker_queue_scopes_require_global_location_import" {
   command = plan
   variables {
@@ -1326,7 +1431,7 @@ run "dependency_missing_data_and_idle_contract" {
     error_message = "Worker signals read the Postgres-derived gauges: age past five minutes of polls, positive due work, any failed work."
   }
   assert {
-    condition     = datadog_integration_gcp_sts.staging["integration"].is_global_location_enabled
+    condition     = datadog_integration_gcp_sts.project["integration"].is_global_location_enabled
     error_message = "Worker queue monitors need the global-location import that carries their custom gauges."
   }
   assert {
@@ -1429,25 +1534,25 @@ run "gcp_dependency_opt_in_stays_scoped" {
   command = plan
   variables {
     datadog_gcp_integration_enabled   = true
-    datadog_gcp_dependency_collection = { cloudsql = { verified_resource_filters = ["database_id:test-rust-stg-only:rust-physician"] } }
+    datadog_gcp_dependency_namespaces = ["cloudsql"]
   }
   assert {
-    condition     = length([for config in datadog_integration_gcp_sts.staging["integration"].metric_namespace_configs : config if config.id == "cloudsql" && !config.disabled && length(config.filters) == 0]) == 1 && length([for config in datadog_integration_gcp_sts.staging["integration"].metric_namespace_configs : config if contains(["redis", "pubsub", "storage", "prometheus"], config.id) && config.disabled]) == 4
+    condition     = length([for config in datadog_integration_gcp_sts.project["integration"].metric_namespace_configs : config if config.id == "cloudsql" && !config.disabled && length(config.filters) == 0]) == 1 && length([for config in datadog_integration_gcp_sts.project["integration"].metric_namespace_configs : config if contains(["redis", "pubsub", "storage", "prometheus"], config.id) && config.disabled]) == 4
     error_message = "Only the opted-in namespace may change; its filters select metric names, not resource tags."
   }
   assert {
-    condition     = length([for config in datadog_integration_gcp_sts.staging["integration"].monitored_resource_configs : config if config.type == "cloudsql_database" && config.filters == toset(["database_id:test-rust-stg-only:rust-physician"])]) == 1 && !datadog_integration_gcp_sts.staging["integration"].is_global_location_enabled && length(google_project_iam_member.datadog_gcp) == 4
-    error_message = "Resource allowlist must match the opt-in without global collection or new IAM."
+    condition     = toset([for config in datadog_integration_gcp_sts.project["integration"].monitored_resource_configs : config.type]) == toset(["cloud_run_revision", "gce_instance"]) && !datadog_integration_gcp_sts.project["integration"].is_global_location_enabled && length(google_project_iam_member.datadog_gcp) == 4
+    error_message = "Dependency collection must add only API-supported resource types, no global collection and no new IAM."
   }
 }
 
-run "reject_unbounded_gcp_dependency_opt_in" {
+run "reject_unknown_gcp_dependency_namespace" {
   command = plan
   variables {
     datadog_gcp_integration_enabled   = true
-    datadog_gcp_dependency_collection = { redis = { verified_resource_filters = [] } }
+    datadog_gcp_dependency_namespaces = ["pubsub"]
   }
-  expect_failures = [var.datadog_gcp_dependency_collection]
+  expect_failures = [var.datadog_gcp_dependency_namespaces]
 }
 
 run "autopilot_workloads_declare_admission_defaults" {
@@ -1495,13 +1600,12 @@ run "autopilot_workloads_declare_admission_defaults" {
   }
 }
 
-run "reject_project_wide_dependency_collection" {
+run "dependency_collection_requires_the_integration" {
   command = plan
   variables {
-    datadog_gcp_integration_enabled   = true
-    datadog_gcp_dependency_collection = { cloudsql = { verified_resource_filters = ["project_id:test-rust-stg-only"] } }
+    datadog_gcp_dependency_namespaces = ["cloudsql"]
   }
-  expect_failures = [var.datadog_gcp_dependency_collection]
+  expect_failures = [var.datadog_gcp_dependency_namespaces]
 }
 
 run "new_collection_defaults_remain_off" {
