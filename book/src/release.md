@@ -94,11 +94,15 @@ says. Keep it on.
 Each job ends with `python3 scripts/nix-cache/nix_store.py finish --cap-gib 60`,
 after the private cache cleanup. It writes a `Nix store summary` line to the job
 summary (store paths at start, paths the job added by fetching or building, and
-`/nix` usage) so warm and cold runs can be compared, and runs `nix store gc`
-down to 80% of the cap when the store is over 60 GiB or 80% of the disk. GC
-deletes only local store paths, so the bucket's no-deletion rule doesn't apply.
-It then stops `nix-daemon` so the sticky disk's post step can unmount and save
-`/nix`. Blacksmith evicts a disk after seven days without use; the job's next
+`/nix` usage) so warm and cold runs can be compared. Each `flake.lock` bump
+leaves the previous closure on the disk, so when the store is over 60 GiB or
+80% of the disk the step runs a full `nix store gc`, and the next run refills
+from the bucket. Nothing on a CI disk is rooted, and a size-bounded GC would
+delete random parts of the current closure for every later run to fetch again.
+GC deletes only local store paths, so the bucket's no-deletion rule doesn't
+apply. The step then stops `nix-daemon` and anything still using `/nix` so the
+sticky disk's post step can unmount and save it; when the mount failed and
+`/nix` is a plain directory, it leaves the runner alone. Blacksmith evicts a disk after seven days without use; the job's next
 run then starts cold and refills it from the bucket.
 
 ### Local cache warming with act
