@@ -28,6 +28,7 @@ use super::entities::{
     source, source_pull, source_status, today_updates_seen, today_work_dismissal, visit_briefing,
     visit_concern, visit_preparation,
 };
+use super::follow_ups::{FollowUp, FollowUpActor, follow_up_update_entity};
 use super::jobs::PracticeJobKind;
 use super::receipt::{self, Receipt};
 use super::reviews::{RecordedReviewAction, ReviewHoldReason, ReviewLifecycleState};
@@ -1004,6 +1005,227 @@ fn source_work_summary(work: &SourceWork) -> String {
         "physician_chat" => "physician conversation".to_owned(),
         _ => "clinical review".to_owned(),
     }
+}
+
+#[expect(
+    dead_code,
+    reason = "wired into Today/Updates message & follow-up read model in next slice"
+)]
+#[derive(Clone, Debug, Default)]
+struct WorkspaceWrongPatientFence {
+    withheld: super::link_correction::WithheldWorkspaceState,
+    withdrawn_candidates: BTreeSet<String>,
+    withdrawn_messages: BTreeSet<String>,
+    fenced_work_ids: BTreeSet<String>,
+}
+
+#[expect(
+    dead_code,
+    reason = "wired into Today/Updates message & follow-up read model in next slice"
+)]
+impl WorkspaceWrongPatientFence {
+    fn is_empty(&self) -> bool {
+        self.withheld.is_empty()
+            && self.withdrawn_candidates.is_empty()
+            && self.withdrawn_messages.is_empty()
+            && self.fenced_work_ids.is_empty()
+    }
+
+    fn candidate_fenced(&self, candidate_id: &str) -> bool {
+        self.withheld.candidate_ids.contains(candidate_id)
+            || self.withdrawn_candidates.contains(candidate_id)
+    }
+
+    fn candidate_unavailable_reason(&self, candidate_id: &str) -> Option<String> {
+        self.withheld
+            .reason_for_candidate(candidate_id)
+            .or_else(|| {
+                self.withdrawn_candidates.contains(candidate_id).then(|| {
+                    "Unavailable: patient message content was withdrawn after a wrong-patient link correction."
+                        .to_owned()
+                })
+            })
+    }
+
+    fn work_fenced(&self, work_id: &str) -> bool {
+        self.withheld.work_ids.contains(work_id) || self.fenced_work_ids.contains(work_id)
+    }
+
+    fn follow_up_fenced(&self, item: &FollowUp) -> bool {
+        item.standing.status_str() == "withdrawn_wrong_patient"
+            || super::follow_ups::follow_up_cites_withheld(item, &self.withheld)
+            || item
+                .origin
+                .work_id()
+                .is_some_and(|wid| self.work_fenced(wid))
+            || item
+                .records
+                .iter()
+                .any(|r| self.candidate_fenced(&r.candidate_id))
+    }
+
+    fn follow_up_update_row_fenced(
+        &self,
+        row: &follow_up_update_entity::Model,
+    ) -> Result<bool, DbErr> {
+        if self.is_empty() {
+            return Ok(false);
+        }
+        let actor: FollowUpActor = serde_json::from_value(row.actor.clone())
+            .map_err(conversion_error("follow_up_update.actor", "FollowUpActor"))?;
+        if actor.work_id().is_some_and(|wid| self.work_fenced(wid)) {
+            return Ok(true);
+        }
+        let refs: Vec<ExactRecordReference> = serde_json::from_value(row.records.clone()).map_err(
+            conversion_error("follow_up_update.records", "Vec<ExactRecordReference>"),
+        )?;
+        Ok(refs.iter().any(|r| self.candidate_fenced(&r.candidate_id)))
+    }
+
+    fn trigger_fenced(&self, trigger: &ReviewTrigger) -> bool {
+        match trigger {
+            ReviewTrigger::Message {
+                conversation_id,
+                message_ids,
+                ..
+            } => {
+                self.withheld
+                    .reason_for_conversation(conversation_id)
+                    .is_some()
+                    || message_ids.iter().any(|mid| {
+                        self.withheld.message_ids.contains(mid)
+                            || self.withdrawn_messages.contains(mid)
+                    })
+            }
+            ReviewTrigger::ChangedRecords {
+                record_versions,
+                changed_candidates,
+                ..
+            } => {
+                if !changed_candidates.is_empty() {
+                    changed_candidates
+                        .iter()
+                        .all(|cid| self.candidate_fenced(cid))
+                } else if !record_versions.is_empty() {
+                    record_versions.keys().all(|cid| self.candidate_fenced(cid))
+                } else {
+                    false
+                }
+            }
+            ReviewTrigger::PhysicianRequest { .. }
+            | ReviewTrigger::FollowUp { .. }
+            | ReviewTrigger::Periodic { .. } => false,
+        }
+    }
+
+    fn review_is_fenced(
+        &self,
+        review_id: &str,
+        triggers: &[ReviewTrigger],
+        evidence_refs: &[ExactRecordReference],
+        state: &ReviewLifecycleState,
+    ) -> bool {
+        if self.is_empty() {
+            return false;
+        }
+        if self.work_fenced(review_id) {
+            return true;
+        }
+        if evidence_refs
+            .iter()
+            .any(|r| self.candidate_fenced(&r.candidate_id))
+        {
+            return true;
+        }
+        if let ReviewLifecycleState::Completed { outcome, .. } = state
+            && outcome
+                .citations()
+                .iter()
+                .any(|c| self.candidate_fenced(&c.reference.candidate_id))
+        {
+            return true;
+        }
+        if triggers
+            .iter()
+            .any(|t| matches!(t, ReviewTrigger::Message { .. }) && self.trigger_fenced(t))
+        {
+            return true;
+        }
+        !triggers.is_empty() && triggers.iter().all(|t| self.trigger_fenced(t))
+    }
+
+    fn visit_prep_is_fenced(&self, row: &visit_preparation::Model) -> bool {
+        !self.is_empty()
+            && (self.work_fenced(&row.selection_job_id)
+                || row
+                    .briefing_job_id
+                    .as_deref()
+                    .is_some_and(|jid| self.work_fenced(jid)))
+    }
+
+    fn visit_briefing_is_fenced(&self, row: &visit_briefing::Model) -> Result<bool, DbErr> {
+        if self.is_empty() {
+            return Ok(false);
+        }
+        if self.work_fenced(&row.briefing_id) {
+            return Ok(true);
+        }
+        let origin: super::briefings::BriefingOrigin =
+            serde_json::from_value(row.origin.clone())
+                .map_err(conversion_error("visit_briefing.origin", "BriefingOrigin"))?;
+        if self.work_fenced(&origin.job_id) || self.work_fenced(&origin.work_id) {
+            return Ok(true);
+        }
+        let basis_citations: Vec<ExactRecordReference> =
+            serde_json::from_value(row.basis_citations.clone()).map_err(conversion_error(
+                "visit_briefing.basis_citations",
+                "Vec<ExactRecordReference>",
+            ))?;
+        if basis_citations
+            .iter()
+            .any(|r| self.candidate_fenced(&r.candidate_id))
+        {
+            return Ok(true);
+        }
+        let citations: Vec<SummaryCitation> = serde_json::from_value(row.citations.clone())
+            .map_err(conversion_error(
+                "visit_briefing.citations",
+                "Vec<SummaryCitation>",
+            ))?;
+        Ok(citations
+            .iter()
+            .any(|c| self.candidate_fenced(&c.reference.candidate_id)))
+    }
+}
+
+#[expect(
+    dead_code,
+    reason = "wired into Today/Updates message & follow-up read model in next slice"
+)]
+async fn load_workspace_wrong_patient_fence<C: ConnectionTrait>(
+    conn: &C,
+    practice: &str,
+    workspace: &str,
+) -> Result<WorkspaceWrongPatientFence, DbErr> {
+    let withheld =
+        super::link_correction::load_workspace_withheld_state_in_tx(conn, workspace).await?;
+    let boundary =
+        super::follow_ups::load_workspace_withdrawal_boundary(conn, practice, workspace).await?;
+    let fenced_work_ids =
+        super::follow_ups::load_workspace_fenced_work_ids(conn, practice, workspace).await?;
+    let (withdrawn_candidates, withdrawn_messages) = match boundary {
+        Some(b) => (
+            b.candidate_ids.into_iter().collect(),
+            b.message_ids.into_iter().collect(),
+        ),
+        None => (BTreeSet::new(), BTreeSet::new()),
+    };
+    Ok(WorkspaceWrongPatientFence {
+        withheld,
+        withdrawn_candidates,
+        withdrawn_messages,
+        fenced_work_ids,
+    })
 }
 
 impl Store {
