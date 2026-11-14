@@ -1,19 +1,104 @@
-//! Hosted physician chat: physician-owned instructions and the skill tool.
+//! Hosted physician chat: conversation assignment, model binding, starting context,
+//! guidance, skill discovery, and authorized tool declarations.
 //!
 //! The hosted worker composes these with [`crate::runtime::PhysicianHost`].
-//! The catalog is read once through [`harness::skills::Package`]; this module adds no
-//! parser, filesystem reader or second catalog. A skill is guidance only: it
-//! never grants a tool, a patient read or an action. The chart tools are scoped separately. Book: `book/src/physician-site.md`.
+//! Physician chat starts small: the recipe embeds the resident instructions,
+//! the metadata-only skill catalog, and working-note guidance, while the first
+//! turn supplies [`crate::runtime::chat_operations::PatientStartingContext`] for
+//! the active patient workspace. Skills, chart revisions, clinical library
+//! passages, and prior workspace work are loaded on demand. A skill is guidance
+//! only: it never grants a tool, a patient read, or an action. Book:
+//! `book/src/physician-site.md`.
 
 use std::path::{Path, PathBuf};
 
 use harness::engine::results::ToolResult;
-use harness::engine::{Invocation, Tool, ToolOutcome};
+use harness::engine::{Invocation, Item, ProductMessage, Tool, ToolOutcome};
 use harness::skills::Package;
 use physician_wire::{Step, StepState};
 use serde_json::{Value, json};
 
 use crate::physician_sources::citations;
+use crate::runtime::Scope;
+use crate::runtime::chat_operations::PatientStartingContext;
+use crate::runtime::jobs::PreloadedSkill;
+
+/// Typed conversation assignment for answering a physician's question about one patient.
+///
+/// Chat starts small by default (`preloaded_skills` empty): the model receives
+/// [`PatientStartingContext`] for `scope.workspace` alongside the metadata-only
+/// skill catalog, and opens detailed skills, chart records, clinical literature,
+/// and earlier work on demand.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct ChatAssignment {
+    /// Authenticated practice, physician, patient workspace, and conversation scope.
+    pub scope: Scope,
+    /// Bounded patient starting context assembled from durable workspace state.
+    pub starting_context: PatientStartingContext,
+    /// Optional eagerly loaded skills. Empty for standard physician chat so the
+    /// prompt stays small and discovers skills through `skill_view`.
+    pub preloaded_skills: Vec<PreloadedSkill>,
+}
+
+impl ChatAssignment {
+    /// Builds a standard physician-chat assignment for `scope` and `starting_context`
+    /// with zero eagerly preloaded skill bodies.
+    pub fn for_patient(scope: Scope, starting_context: PatientStartingContext) -> Self {
+        Self {
+            scope,
+            starting_context,
+            preloaded_skills: Vec::new(),
+        }
+    }
+
+    /// Attaches explicit preloaded skills when an assignment requires eager skill bodies.
+    pub fn with_preloaded_skills(mut self, preloaded_skills: Vec<PreloadedSkill>) -> Self {
+        self.preloaded_skills = preloaded_skills;
+        self
+    }
+
+    /// Builds the immutable [`harness::engine::recipe::RequestRecipe`] on the
+    /// interactive chat model role (`roles.chat`).
+    pub fn recipe(
+        &self,
+        roles: &crate::ModelRoles,
+        skills: &PhysicianSkills,
+    ) -> harness::engine::recipe::RequestRecipe {
+        let mut built = recipe(&roles.chat, INSTRUCTIONS, skills);
+        if !self.preloaded_skills.is_empty() {
+            let preloaded: Vec<Value> = self
+                .preloaded_skills
+                .iter()
+                .map(|skill| {
+                    json!({
+                        "name": skill.name,
+                        "sha256": skill.sha256,
+                        "content": skill.content,
+                    })
+                })
+                .collect();
+            let encoded = serde_json::to_string(&json!({
+                "kind": "preloaded_assignment_skills",
+                "skills": preloaded,
+            }))
+            .expect("preloaded skills serialize as JSON");
+            built.instructions.push_str(
+                "\n\nPreloaded assignment skills (already open in this conversation; do not reload via skill_view):\n",
+            );
+            built.instructions.push_str(&encoded);
+        }
+        built
+    }
+
+    /// Initial conversation items placed into the first model request for `question`:
+    /// the patient starting context item followed by the physician's message.
+    pub fn initial_items(&self, question: ProductMessage) -> Vec<Item> {
+        vec![
+            self.starting_context.developer_item(),
+            Item::ProductMessage(question),
+        ]
+    }
+}
 
 /// Immutable chat recipe selected by the site when it accepts new work.
 pub fn recipe(
@@ -43,19 +128,35 @@ You are Coda's lead for this conversation, its chief resident for the physician 
 Own the clinical understanding, investigation, judgment and useful follow-through the physician asks for, \
 within the capabilities available here.
 
-Work from the physician's intent and the conversation so far. Understand what outcome is needed, choose a \
-responsible approach and carry it through. Ordinary conversation is enough to direct this work; the \
-physician need not name tools or use special phrases. Take the next useful cognitive step: make a \
-recommendation and proceed through ordinary uncertainty with responsible assumptions. Ask when a material \
-ambiguity or decision requires physician input.
+Work from the patient starting context, the physician's intent and the conversation so far. Start small and \
+discover what the question requires: the starting context orientates you to patient identity, source pull \
+currency, active patient memory, open concerns and saved workspace work, and is never a substitute for \
+opening exact chart records when patient-specific facts matter. Ordinary conversation is enough to direct \
+this work; the physician need not name tools or use special phrases. Take the next useful cognitive step: \
+make a recommendation and proceed through ordinary uncertainty with responsible assumptions. Ask when a \
+material ambiguity or decision requires physician input.
 
 Treat new physician input as part of a continuing relationship. Reconcile corrections and changed direction \
-with prior understanding, keep physician-provided information distinct from other knowledge, and explain a \
-material disagreement rather than silently accepting or dismissing it. Honor clear physician direction \
-within available authority.
+with prior understanding, record durable physician-stated corrections or clinical context in patient_memory \
+while retiring superseded entries, and keep physician-provided information distinct from chart records. \
+Explain a material disagreement rather than silently accepting or dismissing it. When earlier conversations, \
+background reviews or reply drafts are relevant, inspect them on demand through retrieve_patient_work. Honor \
+clear physician direction within available authority.
 
-Use the tools offered in this conversation. Base patient-specific facts on records you have read in \
-this conversation. If tools or evidence are unavailable, say what you cannot confirm.
+Use the tools offered in this conversation. For patient-specific chart facts, discover candidate records \
+with search_patient_information and open exact revisions with read_patient_sources. When source currency \
+could change clinical judgment or a source pull is stale, call refresh_patient_sources before concluding. \
+When read chart revisions establish, update or resolve an urgent (`now`) or same-day (`today`) clinical \
+concern, record that change with patient_concern grounded in the exact candidate_id and revision values \
+opened in this turn. If any read, refresh, memory or concern call fails or is refused, never treat or \
+describe it as saved.
+
+Name missing, unreadable and unavailable evidence distinctly: `missing` when an expected or requested \
+record is absent from the chart; `unreadable` when a record revision exists (such as an unextracted scan or \
+corrupted document) whose clinical content cannot be read; and `unavailable` when a source refresh, clinical \
+library or prior work store cannot be reached. Base the answer only on readable content actually returned, \
+distinguish a partial read from a whole one, and never claim to have read everything available or imply that \
+unreadable or unavailable records are unremarkable.
 
 When published clinical literature, drug labeling, or guideline detail would materially support or sharpen \
 the answer, search the clinical library using clinical concepts only — never include patient names, birth \
@@ -95,7 +196,7 @@ pub const START_SKILLS: &[&str] = &["patient-record-retrieval"];
 /// start; every job lists and opens the whole package.
 #[derive(Clone, Copy, Debug)]
 pub enum Job {
-    /// Physician chat.
+    /// Ordinary physician chat.
     Chat,
     /// A revision of a saved patient reply.
     ReplyRevision,
@@ -122,6 +223,10 @@ impl Job {
 pub fn tools() -> Vec<Tool> {
     let mut offered = work_tools();
     offered.extend(chart_tools());
+    offered.push(crate::runtime::chat_operations::refresh_sources_tool());
+    offered.push(crate::runtime::chat_operations::patient_memory_tool());
+    offered.push(crate::runtime::chat_operations::retrieve_patient_work_tool());
+    offered.push(crate::runtime::concerns::concern_tool());
     offered.extend(crate::clinical_library::tools());
     offered.push(citations::finish_tool());
     offered
@@ -135,7 +240,7 @@ pub fn work_tools() -> Vec<Tool> {
     offered
 }
 
-/// Source, clinical library, and conversation reads have no product effects or shared session mutation.
+/// Source, clinical library, and prior-work reads have no product effects or shared session mutation.
 pub fn read_only(name: &str) -> bool {
     matches!(
         name,
@@ -143,6 +248,7 @@ pub fn read_only(name: &str) -> bool {
             | crate::physician_sources::READ_TOOL
             | crate::clinical_library::SEARCH_LIBRARY_TOOL
             | crate::clinical_library::READ_LIBRARY_TOOL
+            | crate::runtime::chat_operations::RETRIEVE_PATIENT_WORK_TOOL
     )
 }
 
@@ -199,6 +305,8 @@ enum ChatTool {
     Chart,
     /// Clinical library search and passage read.
     ClinicalLibrary,
+    /// Patient workspace refresh, memory, prior work, concerns, and understanding.
+    PatientWorkspace,
     /// Earlier conversation: list, read and search.
     Conversation,
     /// A skill's guidance.
@@ -220,6 +328,10 @@ impl ChatTool {
             }
             crate::clinical_library::SEARCH_LIBRARY_TOOL
             | crate::clinical_library::READ_LIBRARY_TOOL => Some(Self::ClinicalLibrary),
+            crate::runtime::chat_operations::REFRESH_SOURCES_TOOL
+            | crate::runtime::chat_operations::PATIENT_MEMORY_TOOL
+            | crate::runtime::chat_operations::RETRIEVE_PATIENT_WORK_TOOL
+            | crate::runtime::concerns::CONCERN_TOOL => Some(Self::PatientWorkspace),
             history::LIST | history::READ | history::SEARCH => Some(Self::Conversation),
             SKILL_VIEW => Some(Self::Skill),
             results::READ => Some(Self::ResultPage),
@@ -240,6 +352,7 @@ pub fn step(call: &Invocation, ending: CallEnding<'_>) -> Result<Option<Step>, S
     let arguments = || serde_json::from_str::<Value>(&call.arguments).map_err(StepError::Arguments);
     match tool {
         ChatTool::ClinicalLibrary
+        | ChatTool::PatientWorkspace
         | ChatTool::Skill
         | ChatTool::ResultPage
         | ChatTool::WorkingNote
@@ -562,9 +675,92 @@ mod tests {
             assert_clean_model_text(&recipe.instructions);
             assert_clean_model_text(&serde_json::to_string(&recipe.tools).unwrap());
         }
-        let concern = crate::runtime::concerns::concern_tool();
-        assert_clean_model_text(&concern.description);
-        assert_clean_model_text(&serde_json::to_string(&concern.function()).unwrap());
+        for tool in [
+            crate::runtime::concerns::concern_tool(),
+            crate::runtime::chat_operations::refresh_sources_tool(),
+            crate::runtime::chat_operations::patient_memory_tool(),
+            crate::runtime::chat_operations::retrieve_patient_work_tool(),
+        ] {
+            assert_clean_model_text(&tool.description);
+            assert_clean_model_text(&serde_json::to_string(&tool.function()).unwrap());
+        }
+    }
+
+    #[test]
+    fn chat_assignment_starts_small_on_chat_lane_and_exposes_authorized_tools() {
+        let skills = skills();
+        let roles = crate::ModelRoles {
+            chat: crate::ModelBinding {
+                model: "chat-role-model".into(),
+                effort: "medium".into(),
+                context_window_tokens: 128_000,
+                max_input_tokens: 110_000,
+                adapter: "fixture".into(),
+            },
+            background: crate::ModelBinding {
+                model: "background-role-model".into(),
+                effort: "high".into(),
+                context_window_tokens: 272_000,
+                max_input_tokens: 250_000,
+                adapter: "fixture".into(),
+            },
+        };
+        let scope = Scope {
+            practice: "practice-a".into(),
+            physician: "dr-rivera".into(),
+            workspace: "pw-elena".into(),
+            chat: "chat-1".into(),
+        };
+        let starting_context = PatientStartingContext {
+            workspace: "pw-elena".into(),
+            patient: None,
+            chart_version: 1,
+            chart_record_count: 0,
+            source_pulls: Vec::new(),
+            check_standing: crate::runtime::chat_operations::DispatchCheckStanding::NotRecorded,
+            memory_standing: crate::runtime::chat_operations::PatientMemoryStanding::Available {
+                entries: Vec::new(),
+            },
+            open_concerns: Vec::new(),
+            recent_work: Vec::new(),
+        };
+        let assignment = ChatAssignment::for_patient(scope, starting_context);
+        assert!(assignment.preloaded_skills.is_empty());
+
+        let built = assignment.recipe(&roles, &skills);
+        assert_eq!(built.model, "chat-role-model");
+        assert_eq!(built.options, json!({"effort": "medium"}));
+        assert!(
+            built
+                .instructions
+                .contains("\"kind\":\"approved_skill_catalog\"")
+        );
+        assert!(!built.instructions.contains("preloaded_assignment_skills"));
+
+        let tool_names: Vec<&str> = built
+            .tools
+            .iter()
+            .filter_map(|tool| tool["name"].as_str())
+            .collect();
+        for expected in [
+            SKILL_VIEW,
+            crate::physician_sources::SEARCH_TOOL,
+            crate::physician_sources::READ_TOOL,
+            crate::runtime::chat_operations::REFRESH_SOURCES_TOOL,
+            crate::runtime::chat_operations::PATIENT_MEMORY_TOOL,
+            crate::runtime::chat_operations::RETRIEVE_PATIENT_WORK_TOOL,
+            crate::runtime::concerns::CONCERN_TOOL,
+            crate::clinical_library::SEARCH_LIBRARY_TOOL,
+            crate::clinical_library::READ_LIBRARY_TOOL,
+            citations::FINISH_TOOL,
+            "save_working_note",
+            "read_tool_result",
+        ] {
+            assert!(
+                tool_names.contains(&expected),
+                "missing authorized chat tool {expected} in {tool_names:?}"
+            );
+        }
     }
 
     #[test]

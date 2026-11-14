@@ -7,7 +7,7 @@ use std::fmt;
 use std::sync::Arc;
 
 use async_trait::async_trait;
-use harness::engine::{Item, Tool};
+use harness::engine::{self, Invocation, Item, Tool, ToolOutcome};
 use sea_orm::{
     ActiveModelTrait, ColumnTrait, ConnectionTrait, DbErr, EntityTrait, QueryFilter, QueryOrder,
     QuerySelect, Set, TransactionTrait, Unchanged,
@@ -15,12 +15,18 @@ use sea_orm::{
 use serde::{Deserialize, Serialize};
 use serde_json::{Value, json};
 
-use super::concerns::{ConcernUrgency, ExactRecordReference};
-use super::entities::{command, patient_memory};
+use super::concerns::{ConcernUrgency, ExactRecordReference, SourceWork};
+use super::entities::{command, concern, patient_dispatch, patient_memory, practice_job};
 use super::jobs::PracticeJobKind;
 use super::sources::SourcePull;
-use super::{RuntimeError, Scope, Store, conversion_error, error, now, receipt};
-use crate::physician_sources::{PatientSource, SourcePatient, SourceRevision};
+use super::{
+    Accepted, Authority, Conversation, Input, RuntimeError, Scope, Store, WorkStatus,
+    conversion_error, error, now, persistence_failure, receipt,
+};
+use crate::physician_chat::PhysicianSkills;
+use crate::physician_sources::{
+    ChartRequest, ChartScope, PatientSource, READ_TOOL, SEARCH_TOOL, SourcePatient, SourceRevision,
+};
 
 /// Tool name offered in physician chat to refresh patient source records on demand.
 pub const REFRESH_SOURCES_TOOL: &str = "refresh_patient_sources";
@@ -1545,6 +1551,39 @@ pub enum ChatStartError {
     Runtime(#[from] RuntimeError),
 }
 
+#[derive(Debug, Deserialize)]
+#[serde(deny_unknown_fields)]
+struct RefreshToolArgs {
+    source_id: Option<String>,
+    reason: String,
+}
+
+#[derive(Debug, Deserialize)]
+#[serde(tag = "operation", rename_all = "snake_case", deny_unknown_fields)]
+enum MemoryToolCall {
+    Read {
+        #[serde(default)]
+        include_retired: bool,
+    },
+    RecordCorrection {
+        memory_id: PatientMemoryId,
+        topic: String,
+        statement: String,
+    },
+    Retire {
+        memory_id: PatientMemoryId,
+        reason: String,
+    },
+}
+
+#[derive(Debug, Deserialize)]
+#[serde(tag = "operation", rename_all = "snake_case", deny_unknown_fields)]
+enum RetrieveWorkToolCall {
+    List { limit: Option<usize> },
+    ReadConversation { chat_id: String },
+    ReadBackgroundJob { job_id: String },
+}
+
 /// Tool schema offered in physician chat to refresh patient sources on demand.
 pub fn refresh_sources_tool() -> Tool {
     Tool {
@@ -1641,6 +1680,1026 @@ pub fn retrieve_patient_work_tool() -> Tool {
             ]
         }),
     }
+}
+
+impl Store {
+    /// Accepts new physician chat input only after verifying and locking the
+    /// physician's session, practice membership, and patient panel access in the
+    /// same transaction, then delegating to the single [`Store::accept_in_tx`]
+    /// owner. Unauthorized callers fail closed without saving any receipt,
+    /// conversation row, or pending run.
+    pub async fn start_chat_authorized(
+        &self,
+        scope: &Scope,
+        input: &Input,
+        session_hash: Vec<u8>,
+        skills: &PhysicianSkills,
+        recipe: &engine::recipe::RequestRecipe,
+        authority: &mut dyn Authority,
+    ) -> Result<Accepted, ChatStartError> {
+        if session_hash.len() != 32 {
+            return Err(ChatStartError::AccessDenied {
+                reason: "invalid session reference".into(),
+            });
+        }
+        Self::validate_accept_fields(scope, input)?;
+
+        let tx = self.db.begin().await.map_err(RuntimeError::from)?;
+        if let Err(reason) = authority.check(&tx, scope, Some(&session_hash)).await {
+            tx.rollback().await.map_err(RuntimeError::from)?;
+            return Err(ChatStartError::AccessDenied { reason });
+        }
+        if let Err(reason) = authority
+            .lock_publication(&tx, scope, Some(&session_hash))
+            .await
+        {
+            tx.rollback().await.map_err(RuntimeError::from)?;
+            return Err(ChatStartError::AccessDenied { reason });
+        }
+
+        Self::accept_in_tx(tx, scope, input, session_hash, skills, recipe, None)
+            .await
+            .map_err(ChatStartError::from)
+    }
+
+    /// Reads durable patient memory entries for `(practice, workspace)` through
+    /// the configured [`PatientMemoryOperation`].
+    pub async fn patient_memories(
+        &self,
+        practice: &str,
+        workspace: &str,
+        selection: MemorySelection,
+    ) -> Result<Vec<PatientMemoryEntry>, PatientMemoryError> {
+        self.memory_operation
+            .list_memories(self, practice, workspace, selection)
+            .await
+    }
+
+    /// Records or updates a durable patient memory entry through the configured
+    /// [`PatientMemoryOperation`].
+    pub async fn record_patient_memory(
+        &self,
+        command_key: &str,
+        input: &RecordMemoryCorrection,
+    ) -> Result<MemoryMutation, PatientMemoryError> {
+        self.memory_operation
+            .record_correction(self, command_key, input)
+            .await
+    }
+
+    /// Retires a durable patient memory entry through the configured
+    /// [`PatientMemoryOperation`].
+    pub async fn retire_patient_memory(
+        &self,
+        command_key: &str,
+        input: &RetirePatientMemory,
+    ) -> Result<MemoryMutation, PatientMemoryError> {
+        self.memory_operation
+            .retire_memory(self, command_key, input)
+            .await
+    }
+
+    /// Reads the practice dispatcher's source-check standing for `(practice, workspace)`.
+    pub async fn dispatch_check_standing(
+        &self,
+        practice: &str,
+        workspace: &str,
+    ) -> Result<DispatchCheckStanding, DbErr> {
+        let Some(row) =
+            patient_dispatch::Entity::find_by_id((practice.to_owned(), workspace.to_owned()))
+                .one(&self.db)
+                .await?
+        else {
+            return Ok(DispatchCheckStanding::NotRecorded);
+        };
+        let standing = match (row.last_attempt_at, row.last_success_at) {
+            (None, None) => DispatchCheckStanding::NotRecorded,
+            (None, Some(checked_at)) => DispatchCheckStanding::Current { checked_at },
+            (Some(attempt_at), Some(success_at)) if attempt_at <= success_at => {
+                DispatchCheckStanding::Current {
+                    checked_at: success_at,
+                }
+            }
+            (Some(attempt_at), last_success_at) => DispatchCheckStanding::FailedSinceLastSuccess {
+                last_attempt_at: attempt_at,
+                last_success_at,
+            },
+        };
+        Ok(standing)
+    }
+
+    /// Assembles [`PatientStartingContext`] for `scope` from durable source pulls,
+    /// chart observations, dispatch check status, patient memory, open concerns,
+    /// and saved workspace history.
+    pub async fn patient_starting_context(
+        &self,
+        scope: &Scope,
+    ) -> Result<PatientStartingContext, DbErr> {
+        scope.validate()?;
+        let observation = self.sources(&scope.workspace).await?;
+        let pulls = self
+            .source_pulls(std::slice::from_ref(&scope.workspace))
+            .await?
+            .remove(&scope.workspace)
+            .unwrap_or_default();
+        let patient = pulls
+            .iter()
+            .max_by_key(|pull| pull.pulled_at)
+            .map(|pull| pull.patient.clone());
+        let source_pulls = pulls
+            .into_iter()
+            .filter_map(|pull| {
+                Some(SourceFreshnessSummary {
+                    source_id: pull.source_id,
+                    source_label: pull.source_label,
+                    pulled_at: pull.pulled_at?,
+                })
+            })
+            .collect();
+        let check_standing = self
+            .dispatch_check_standing(&scope.practice, &scope.workspace)
+            .await?;
+
+        let memory_standing = match self
+            .patient_memories(
+                &scope.practice,
+                &scope.workspace,
+                MemorySelection::ActiveOnly,
+            )
+            .await
+        {
+            Ok(entries) => PatientMemoryStanding::Available { entries },
+            Err(PatientMemoryError::Unavailable { reason }) => {
+                PatientMemoryStanding::Unavailable { reason }
+            }
+            Err(PatientMemoryError::Database(db_err)) => return Err(db_err),
+            Err(
+                cause @ (PatientMemoryError::InvalidInput(_)
+                | PatientMemoryError::IdempotencyCollision { .. }
+                | PatientMemoryError::NotFound { .. }
+                | PatientMemoryError::AlreadyRetired { .. }),
+            ) => return Err(error(&cause.to_string())),
+        };
+
+        let mut raw_open_concerns = concern::Entity::find()
+            .filter(concern::Column::Practice.eq(&scope.practice))
+            .filter(concern::Column::Workspace.eq(&scope.workspace))
+            .filter(concern::Column::Status.eq("open"))
+            .all(&self.db)
+            .await?;
+        raw_open_concerns.sort_by(|left, right| {
+            let rank = |urgency: &str| if urgency == "now" { 0_u8 } else { 1_u8 };
+            rank(&left.urgency)
+                .cmp(&rank(&right.urgency))
+                .then_with(|| left.created_at.cmp(&right.created_at))
+                .then_with(|| left.id.cmp(&right.id))
+        });
+        let mut open_concerns = Vec::with_capacity(raw_open_concerns.len());
+        for row in raw_open_concerns {
+            let urgency: ConcernUrgency = serde_json::from_value(Value::String(row.urgency))
+                .map_err(conversion_error("stored concern urgency", "ConcernUrgency"))?;
+            let records: Vec<ExactRecordReference> = serde_json::from_value(row.records).map_err(
+                conversion_error("stored concern records", "ExactRecordReference"),
+            )?;
+            open_concerns.push(OpenConcernSummary {
+                concern_id: row.id,
+                urgency,
+                reason: row.reason,
+                records,
+            });
+        }
+
+        let past_work = self
+            .workspace_past_work(&scope.practice, &scope.physician, &scope.workspace)
+            .await
+            .map_err(|cause| match cause {
+                super::history::HistoryError::EmptyScope => error("empty physician scope"),
+                super::history::HistoryError::Database(db_err) => db_err,
+            })?;
+        let mut recent_work: Vec<PriorWorkPointer> = past_work
+            .into_iter()
+            .filter_map(|item| match item.target {
+                super::history::HistoryWorkTarget::Conversation { chat_id }
+                    if chat_id == scope.chat =>
+                {
+                    None
+                }
+                super::history::HistoryWorkTarget::Conversation { chat_id } => {
+                    Some(PriorWorkPointer {
+                        target: PriorWorkKind::Conversation { chat_id },
+                        title: item.title,
+                        outcome: item.outcome.label().to_owned(),
+                        updated_at: item.updated_at,
+                    })
+                }
+                super::history::HistoryWorkTarget::ReplyDraft { reply_id, .. } => {
+                    Some(PriorWorkPointer {
+                        target: PriorWorkKind::ReplyDraft { reply_id },
+                        title: item.title,
+                        outcome: item.outcome.label().to_owned(),
+                        updated_at: item.updated_at,
+                    })
+                }
+            })
+            .take(5)
+            .collect();
+
+        let completed_jobs = practice_job::Entity::find()
+            .filter(practice_job::Column::Practice.eq(&scope.practice))
+            .filter(practice_job::Column::Workspace.eq(&scope.workspace))
+            .filter(practice_job::Column::Status.eq(WorkStatus::Completed))
+            .order_by_desc(practice_job::Column::UpdatedAt)
+            .all(&self.db)
+            .await?;
+        for job in completed_jobs.into_iter().take(3) {
+            recent_work.push(PriorWorkPointer {
+                target: PriorWorkKind::BackgroundJob {
+                    job_id: job.job_id.clone(),
+                    job_kind: job.kind,
+                },
+                title: format!("{} ({})", job.kind.as_str(), job.job_id),
+                outcome: "Completed".to_owned(),
+                updated_at: job.updated_at,
+            });
+        }
+
+        Ok(PatientStartingContext {
+            workspace: scope.workspace.clone(),
+            patient,
+            chart_version: observation.version,
+            chart_record_count: observation.sources.len(),
+            source_pulls,
+            check_standing,
+            memory_standing,
+            open_concerns,
+            recent_work,
+        })
+    }
+
+    /// Executes `search_patient_information` or `read_patient_sources` for a chat
+    /// turn, classifying distinct `missing`, `unreadable`, and `unavailable`
+    /// limits while preserving exact `ReadReceipt` shapes for citation extraction.
+    pub async fn execute_chat_chart_tool(
+        &self,
+        scope: &Scope,
+        name: &str,
+        arguments: &Value,
+    ) -> Result<ToolOutcome, engine::ProductError> {
+        self.execute_chat_chart_tool_with_labels(scope, name, arguments, None)
+            .await
+    }
+
+    pub(super) async fn execute_chat_chart_tool_with_labels(
+        &self,
+        scope: &Scope,
+        name: &str,
+        arguments: &Value,
+        labels: Option<&crate::physician_sources::Labels>,
+    ) -> Result<ToolOutcome, engine::ProductError> {
+        let chart = match ChartRequest::parse(name, arguments, ChartScope::Chat) {
+            Ok(chart) => chart,
+            Err(reason) => return Ok(ToolOutcome::refused(reason.to_string())),
+        };
+        let requested_candidates: Option<Vec<String>> = chart
+            .candidates()
+            .map(|ids| ids.into_iter().map(str::to_owned).collect());
+        let observation = match self.chart_observation(&scope.workspace, &chart).await {
+            Ok(obs) => obs,
+            Err(db_err) => {
+                if db_err.to_string().contains("corrupt source observation")
+                    || db_err
+                        .to_string()
+                        .contains("invalid retained physician source revision")
+                {
+                    let subject = requested_candidates
+                        .as_ref()
+                        .and_then(|ids| ids.first().cloned())
+                        .unwrap_or_else(|| scope.workspace.clone());
+                    let limit = RecordLimit {
+                        kind: RecordLimitKind::Unreadable,
+                        subject: subject.clone(),
+                        detail: format!(
+                            "Stored source observation for `{subject}` failed integrity validation and cannot be read."
+                        ),
+                    };
+                    return Ok(ToolOutcome::Returned(
+                        json!({
+                            "results": [{
+                                "outcome": "unavailable",
+                                "reference": subject,
+                                "reason": "unreadable_corrupt_observation"
+                            }],
+                            "limits": [limit],
+                        })
+                        .to_string(),
+                    ));
+                }
+                return Err(persistence_failure(db_err));
+            }
+        };
+
+        let check_standing = self
+            .dispatch_check_standing(&scope.practice, &scope.workspace)
+            .await
+            .map_err(persistence_failure)?;
+        let mut limits = Vec::new();
+        if let DispatchCheckStanding::FailedSinceLastSuccess {
+            last_attempt_at,
+            last_success_at,
+        } = check_standing
+        {
+            let detail = match last_success_at {
+                Some(ok_at) => format!(
+                    "Latest patient source pull at unix {last_attempt_at} failed; newer external records are unavailable beyond unix {ok_at}."
+                ),
+                None => format!(
+                    "Latest patient source pull at unix {last_attempt_at} failed before any source records were delivered."
+                ),
+            };
+            limits.push(RecordLimit {
+                kind: RecordLimitKind::Unavailable,
+                subject: scope.workspace.clone(),
+                detail,
+            });
+        }
+
+        let outcome = match labels {
+            Some(labels) => chart.run_labelled(
+                &scope.workspace,
+                observation.version,
+                &observation.sources,
+                labels,
+            ),
+            None => chart.run(&scope.workspace, observation.version, &observation.sources),
+        }
+        .map_err(engine::Cause::from)?;
+        let ToolOutcome::Returned(raw_json) = outcome else {
+            return Ok(outcome);
+        };
+        let Ok(mut payload) = serde_json::from_str::<Value>(&raw_json) else {
+            return Ok(ToolOutcome::Returned(raw_json));
+        };
+
+        if name == SEARCH_TOOL {
+            if observation.version == 0
+                && observation.sources.is_empty()
+                && !matches!(
+                    check_standing,
+                    DispatchCheckStanding::FailedSinceLastSuccess { .. }
+                )
+            {
+                limits.push(RecordLimit {
+                    kind: RecordLimitKind::Missing,
+                    subject: scope.workspace.clone(),
+                    detail: "No chart records have been delivered for this patient workspace."
+                        .into(),
+                });
+            }
+            if let Some(obj) = payload.as_object_mut() {
+                obj.insert("workspace_version".into(), json!(observation.version));
+                if !limits.is_empty() {
+                    obj.insert("limits".into(), serde_json::to_value(&limits)?);
+                }
+            }
+            return Ok(ToolOutcome::Returned(payload.to_string()));
+        }
+
+        if let Some(results) = payload.get("results").and_then(Value::as_array) {
+            for item in results {
+                let item_outcome = item.get("outcome").and_then(Value::as_str);
+                let reference = item
+                    .get("reference")
+                    .and_then(Value::as_str)
+                    .unwrap_or(&scope.workspace);
+                if item_outcome == Some("unavailable") {
+                    let reason = item.get("reason").and_then(Value::as_str).unwrap_or("");
+                    if reason == "not_in_recorded_observation" {
+                        limits.push(RecordLimit {
+                            kind: RecordLimitKind::Missing,
+                            subject: reference.to_owned(),
+                            detail: format!(
+                                "Requested chart record `{reference}` is missing from this patient's retained chart observation."
+                            ),
+                        });
+                    }
+                } else if matches!(item_outcome, Some("available" | "passage"))
+                    && let Some(source) = observation
+                        .sources
+                        .iter()
+                        .find(|source| source.candidate_id == reference)
+                    && let Some(unreadable) = inspect_record_readability(source)
+                {
+                    limits.push(unreadable);
+                }
+            }
+        }
+
+        // Preserve exact byte-for-byte ReadReceipt JSON when no limits apply.
+        if limits.is_empty() {
+            return Ok(ToolOutcome::Returned(raw_json));
+        }
+        if let Some(obj) = payload.as_object_mut() {
+            obj.insert("limits".into(), serde_json::to_value(&limits)?);
+        }
+        Ok(ToolOutcome::Returned(payload.to_string()))
+    }
+
+    /// Executes one chat tool invocation (`refresh`, `memory`, `retrieve_patient_work`,
+    /// `patient_concern`, `clinical_library`, `chart`, or `skill_view`) under `claim`.
+    pub async fn execute_chat_tool(
+        &self,
+        claim: &super::Claim,
+        state: &Conversation,
+        records: &[(engine::Event, bool)],
+        call: &Invocation,
+        arguments: Value,
+    ) -> Result<ToolOutcome, engine::ProductError> {
+        if matches!(call.name.as_str(), SEARCH_TOOL | READ_TOOL) {
+            let labels = crate::physician_sources::Labels::of_work(records);
+            return self
+                .execute_chat_chart_tool_with_labels(
+                    &claim.scope,
+                    &call.name,
+                    &arguments,
+                    Some(&labels),
+                )
+                .await;
+        }
+
+        if is_refresh_tool(&call.name) {
+            if arguments
+                .as_object()
+                .is_some_and(|obj| !obj.contains_key("reason") && !obj.contains_key("source_id"))
+            {
+                let refresh_call = Invocation {
+                    id: call.id.clone(),
+                    name: call.name.clone(),
+                    arguments,
+                };
+                return self
+                    .execute_claimed_physician_refresh_tool(claim, &state.work, &refresh_call)
+                    .await;
+            }
+            let parsed: RefreshToolArgs = match serde_json::from_value(arguments) {
+                Ok(parsed) => parsed,
+                Err(cause) => {
+                    return Ok(ToolOutcome::refused(format!(
+                        "Supply source_id (string or null) and a non-empty reason ({cause})."
+                    )));
+                }
+            };
+            return match self
+                .refresh_operation
+                .refresh_sources(
+                    self,
+                    &claim.scope,
+                    parsed.source_id.as_deref(),
+                    &parsed.reason,
+                )
+                .await
+            {
+                Ok(report) => {
+                    let mut out = json!({
+                        "outcome": "refreshed",
+                        "saved": true,
+                        "workspace_version": report.workspace_version,
+                        "sources": report.sources,
+                    });
+                    if !report.limits.is_empty()
+                        && let Some(obj) = out.as_object_mut()
+                    {
+                        obj.insert("limits".into(), serde_json::to_value(&report.limits)?);
+                    }
+                    Ok(ToolOutcome::Returned(out.to_string()))
+                }
+                Err(SourceRefreshError::InvalidInput(reason)) => Ok(ToolOutcome::refused(reason)),
+                Err(SourceRefreshError::Unavailable { subject, reason }) => {
+                    let limit = RecordLimit {
+                        kind: RecordLimitKind::Unavailable,
+                        subject,
+                        detail: reason,
+                    };
+                    Ok(ToolOutcome::Returned(
+                        json!({
+                            "outcome": "failed",
+                            "saved": false,
+                            "limits": [limit],
+                        })
+                        .to_string(),
+                    ))
+                }
+                Err(SourceRefreshError::Upstream { source_id, reason }) => {
+                    let limit = RecordLimit {
+                        kind: RecordLimitKind::Unavailable,
+                        subject: source_id,
+                        detail: reason,
+                    };
+                    Ok(ToolOutcome::Returned(
+                        json!({
+                            "outcome": "failed",
+                            "saved": false,
+                            "limits": [limit],
+                        })
+                        .to_string(),
+                    ))
+                }
+                Err(SourceRefreshError::Database(db_err)) => Err(persistence_failure(db_err)),
+            };
+        }
+
+        if is_memory_tool(&call.name) {
+            let parsed: MemoryToolCall = match serde_json::from_value(arguments)
+                .map_err(MemoryInputError::MalformedArguments)
+            {
+                Ok(parsed) => parsed,
+                Err(cause) => return Ok(ToolOutcome::refused(cause.to_string())),
+            };
+            let attempt = state
+                .attempts
+                .iter()
+                .find(|attempt| attempt.id == claim.attempt)
+                .ok_or("missing hosted attempt")?;
+            let message_id = state
+                .input_id()
+                .ok_or("missing accepted physician message for memory provenance")?
+                .to_owned();
+            let provenance = MemoryProvenance::PhysicianCorrection {
+                physician: claim.scope.physician.clone(),
+                chat_id: claim.scope.chat.clone(),
+                message_id,
+                work_id: attempt.work.clone(),
+                attempt_id: claim.attempt.clone(),
+            };
+            let command_key = memory_tool_command_key(&attempt.work, &call.id);
+
+            return match parsed {
+                MemoryToolCall::Read { include_retired } => {
+                    let selection = if include_retired {
+                        MemorySelection::All
+                    } else {
+                        MemorySelection::ActiveOnly
+                    };
+                    match self
+                        .patient_memories(&claim.scope.practice, &claim.scope.workspace, selection)
+                        .await
+                    {
+                        Ok(entries) => Ok(ToolOutcome::Returned(
+                            json!({
+                                "outcome": "available",
+                                "entries": entries,
+                            })
+                            .to_string(),
+                        )),
+                        Err(PatientMemoryError::Unavailable { reason }) => {
+                            Ok(ToolOutcome::Returned(
+                                json!({
+                                    "outcome": "failed",
+                                    "saved": false,
+                                    "limits": [{
+                                        "kind": "unavailable",
+                                        "subject": "patient_memory",
+                                        "detail": reason,
+                                    }],
+                                })
+                                .to_string(),
+                            ))
+                        }
+                        Err(PatientMemoryError::InvalidInput(cause)) => {
+                            Ok(ToolOutcome::refused(cause.to_string()))
+                        }
+                        Err(PatientMemoryError::Database(db_err)) => {
+                            Err(persistence_failure(db_err))
+                        }
+                        Err(
+                            cause @ (PatientMemoryError::IdempotencyCollision { .. }
+                            | PatientMemoryError::NotFound { .. }
+                            | PatientMemoryError::AlreadyRetired { .. }),
+                        ) => Ok(ToolOutcome::refused(cause.to_string())),
+                    }
+                }
+                MemoryToolCall::RecordCorrection {
+                    memory_id,
+                    topic,
+                    statement,
+                } => {
+                    match self
+                        .record_patient_memory(
+                            &command_key,
+                            &RecordMemoryCorrection {
+                                practice: claim.scope.practice.clone(),
+                                workspace: claim.scope.workspace.clone(),
+                                id: memory_id,
+                                topic,
+                                statement,
+                                provenance,
+                            },
+                        )
+                        .await
+                    {
+                        Ok(MemoryMutation::Applied(entry)) => Ok(ToolOutcome::Returned(
+                            json!({
+                                "outcome": "applied",
+                                "saved": true,
+                                "entry": entry,
+                            })
+                            .to_string(),
+                        )),
+                        Ok(MemoryMutation::Duplicate(entry)) => Ok(ToolOutcome::Returned(
+                            json!({
+                                "outcome": "duplicate",
+                                "saved": true,
+                                "entry": entry,
+                            })
+                            .to_string(),
+                        )),
+                        Err(
+                            cause @ (PatientMemoryError::InvalidInput(_)
+                            | PatientMemoryError::IdempotencyCollision { .. }
+                            | PatientMemoryError::NotFound { .. }
+                            | PatientMemoryError::AlreadyRetired { .. }),
+                        ) => Ok(ToolOutcome::refused(cause.to_string())),
+                        Err(PatientMemoryError::Unavailable { reason }) => {
+                            Ok(ToolOutcome::Returned(
+                                json!({
+                                    "outcome": "failed",
+                                    "saved": false,
+                                    "error": reason,
+                                })
+                                .to_string(),
+                            ))
+                        }
+                        Err(PatientMemoryError::Database(db_err)) => {
+                            Err(persistence_failure(db_err))
+                        }
+                    }
+                }
+                MemoryToolCall::Retire { memory_id, reason } => {
+                    match self
+                        .retire_patient_memory(
+                            &command_key,
+                            &RetirePatientMemory {
+                                practice: claim.scope.practice.clone(),
+                                workspace: claim.scope.workspace.clone(),
+                                id: memory_id,
+                                reason,
+                                retired_by: provenance,
+                            },
+                        )
+                        .await
+                    {
+                        Ok(MemoryMutation::Applied(entry)) => Ok(ToolOutcome::Returned(
+                            json!({
+                                "outcome": "applied",
+                                "saved": true,
+                                "entry": entry,
+                            })
+                            .to_string(),
+                        )),
+                        Ok(MemoryMutation::Duplicate(entry)) => Ok(ToolOutcome::Returned(
+                            json!({
+                                "outcome": "duplicate",
+                                "saved": true,
+                                "entry": entry,
+                            })
+                            .to_string(),
+                        )),
+                        Err(
+                            cause @ (PatientMemoryError::InvalidInput(_)
+                            | PatientMemoryError::IdempotencyCollision { .. }
+                            | PatientMemoryError::NotFound { .. }
+                            | PatientMemoryError::AlreadyRetired { .. }),
+                        ) => Ok(ToolOutcome::refused(cause.to_string())),
+                        Err(PatientMemoryError::Unavailable { reason }) => {
+                            Ok(ToolOutcome::Returned(
+                                json!({
+                                    "outcome": "failed",
+                                    "saved": false,
+                                    "error": reason,
+                                })
+                                .to_string(),
+                            ))
+                        }
+                        Err(PatientMemoryError::Database(db_err)) => {
+                            Err(persistence_failure(db_err))
+                        }
+                    }
+                }
+            };
+        }
+
+        if is_retrieve_work_tool(&call.name) {
+            return self
+                .execute_retrieve_work_tool(&claim.scope, &arguments)
+                .await;
+        }
+
+        if super::concerns::is_concern_tool(&call.name) {
+            let attempt = state
+                .attempts
+                .iter()
+                .find(|attempt| attempt.id == claim.attempt)
+                .ok_or("missing hosted attempt")?;
+            let source_work = SourceWork::new("physician_chat", &attempt.work, &claim.attempt)
+                .map_err(|cause| cause.to_string())?;
+            let invocation = Invocation {
+                id: call.id.clone(),
+                name: call.name.clone(),
+                arguments,
+            };
+            return self
+                .execute_concern_tool(
+                    &claim.scope.practice,
+                    &claim.scope.workspace,
+                    &source_work,
+                    &invocation,
+                )
+                .await;
+        }
+
+        if crate::clinical_library::is_library_tool(&call.name) {
+            let outcome = self
+                .clinical_library()
+                .execute(&call.name, &arguments)
+                .await;
+            if let ToolOutcome::Returned(raw) = &outcome
+                && let Ok(mut parsed) = serde_json::from_str::<Value>(raw)
+                && parsed.get("outcome").and_then(Value::as_str) == Some("unavailable")
+            {
+                let detail = parsed
+                    .get("reason")
+                    .or_else(|| parsed.get("message"))
+                    .and_then(Value::as_str)
+                    .unwrap_or("Clinical library service is unavailable.")
+                    .to_owned();
+                let limit = RecordLimit {
+                    kind: RecordLimitKind::Unavailable,
+                    subject: "clinical_library".into(),
+                    detail,
+                };
+                if let Some(obj) = parsed.as_object_mut() {
+                    obj.insert("limits".into(), serde_json::to_value([limit])?);
+                }
+                return Ok(ToolOutcome::Returned(parsed.to_string()));
+            }
+            return Ok(outcome);
+        }
+
+        let skills = self.frozen_skills(&claim.scope, &state.skills).await?;
+        Ok(skills.execute(&call.name, &arguments))
+    }
+
+    async fn execute_retrieve_work_tool(
+        &self,
+        scope: &Scope,
+        arguments: &Value,
+    ) -> Result<ToolOutcome, engine::ProductError> {
+        let parsed: RetrieveWorkToolCall = match serde_json::from_value(arguments.clone()) {
+            Ok(parsed) => parsed,
+            Err(cause) => {
+                return Ok(ToolOutcome::refused(format!(
+                    "Supply a valid operation (`list`, `read_conversation`, or `read_background_job`) and its required arguments ({cause})."
+                )));
+            }
+        };
+
+        match parsed {
+            RetrieveWorkToolCall::List { limit } => {
+                let cap = limit.unwrap_or(10).clamp(1, MAX_RETRIEVED_WORK_ITEMS);
+                let items = self
+                    .workspace_past_work(&scope.practice, &scope.physician, &scope.workspace)
+                    .await
+                    .map_err(|cause| match cause {
+                        super::history::HistoryError::EmptyScope => {
+                            engine::ProductError::from("empty physician scope")
+                        }
+                        super::history::HistoryError::Database(db_err) => {
+                            persistence_failure(db_err)
+                        }
+                    })?;
+                let filtered: Vec<_> = items
+                    .into_iter()
+                    .filter(|item| {
+                        !matches!(
+                            &item.target,
+                            super::history::HistoryWorkTarget::Conversation { chat_id }
+                                if chat_id.as_str() == scope.chat
+                        )
+                    })
+                    .take(cap)
+                    .collect();
+                let jobs = practice_job::Entity::find()
+                    .filter(practice_job::Column::Practice.eq(&scope.practice))
+                    .filter(practice_job::Column::Workspace.eq(&scope.workspace))
+                    .filter(practice_job::Column::Status.eq(WorkStatus::Completed))
+                    .order_by_desc(practice_job::Column::UpdatedAt)
+                    .all(&self.db)
+                    .await
+                    .map_err(persistence_failure)?;
+                let background_jobs: Vec<_> = jobs
+                    .into_iter()
+                    .take(cap)
+                    .map(|job| {
+                        json!({
+                            "job_id": job.job_id,
+                            "kind": job.kind.as_str(),
+                            "sources_version": job.sources_version,
+                            "updated_at": job.updated_at,
+                        })
+                    })
+                    .collect();
+                Ok(ToolOutcome::Returned(
+                    json!({
+                        "outcome": "available",
+                        "past_work": filtered,
+                        "background_jobs": background_jobs,
+                    })
+                    .to_string(),
+                ))
+            }
+            RetrieveWorkToolCall::ReadConversation { chat_id } => {
+                let target_chat = chat_id.trim();
+                if target_chat.is_empty() {
+                    return Ok(ToolOutcome::refused("Supply a non-empty chat_id."));
+                }
+                let target_scope = Scope {
+                    practice: scope.practice.clone(),
+                    physician: scope.physician.clone(),
+                    workspace: scope.workspace.clone(),
+                    chat: target_chat.to_owned(),
+                };
+                let readback = self
+                    .reopen_conversation(&target_scope)
+                    .await
+                    .map_err(|cause| match cause {
+                        super::history::HistoryError::EmptyScope => {
+                            engine::ProductError::from("empty physician scope")
+                        }
+                        super::history::HistoryError::Database(db_err) => {
+                            persistence_failure(db_err)
+                        }
+                    })?;
+                let Some(readback) = readback else {
+                    return Ok(ToolOutcome::Returned(
+                        json!({
+                            "outcome": "unavailable",
+                            "limits": [{
+                                "kind": "missing",
+                                "subject": target_chat,
+                                "detail": format!("Conversation `{target_chat}` does not exist in this patient's authorized history."),
+                            }],
+                        })
+                        .to_string(),
+                    ));
+                };
+                let turns: Vec<_> = readback
+                    .turns
+                    .iter()
+                    .map(|turn| {
+                        let role = match turn.author {
+                            super::history::TurnAuthor::Physician => "physician",
+                            super::history::TurnAuthor::Assistant { partial: false } => "assistant",
+                            super::history::TurnAuthor::Assistant { partial: true } => {
+                                "assistant_partial"
+                            }
+                        };
+                        json!({
+                            "id": turn.id,
+                            "author": role,
+                            "text": turn.raw_text,
+                            "newer_records": turn.newer_records,
+                        })
+                    })
+                    .collect();
+                Ok(ToolOutcome::Returned(
+                    json!({
+                        "outcome": "available",
+                        "chat_id": target_chat,
+                        "status": readback.outcome,
+                        "turns": turns,
+                        "sources": readback.sources,
+                    })
+                    .to_string(),
+                ))
+            }
+            RetrieveWorkToolCall::ReadBackgroundJob { job_id } => {
+                let target_job = job_id.trim();
+                if target_job.is_empty() {
+                    return Ok(ToolOutcome::refused("Supply a non-empty job_id."));
+                }
+                let row = practice_job::Entity::find_by_id((
+                    scope.practice.clone(),
+                    scope.workspace.clone(),
+                    target_job.to_owned(),
+                ))
+                .one(&self.db)
+                .await
+                .map_err(persistence_failure)?;
+                let Some(row) = row else {
+                    return Ok(ToolOutcome::Returned(
+                        json!({
+                            "outcome": "unavailable",
+                            "limits": [{
+                                "kind": "missing",
+                                "subject": target_job,
+                                "detail": format!("Background job `{target_job}` does not exist in this patient workspace."),
+                            }],
+                        })
+                        .to_string(),
+                    ));
+                };
+                Ok(ToolOutcome::Returned(
+                    json!({
+                        "outcome": "available",
+                        "job_id": row.job_id,
+                        "kind": row.kind.as_str(),
+                        "status": row.status,
+                        "sources_version": row.sources_version,
+                        "result": row.result,
+                        "updated_at": row.updated_at,
+                    })
+                    .to_string(),
+                ))
+            }
+        }
+    }
+
+    /// Reconciles an already-committed durable chat tool effect read-only when an
+    /// attempt was interrupted after `ToolStarted` and before `ToolReturned`.
+    pub(super) async fn saved_chat_tool_outcome(
+        &self,
+        claim: &super::Claim,
+        call: &Invocation,
+    ) -> Result<Option<ToolOutcome>, engine::ProductError> {
+        let state = self
+            .conversation(&claim.scope)
+            .await
+            .map_err(persistence_failure)?;
+        let Some(attempt) = state
+            .attempts
+            .iter()
+            .find(|attempt| attempt.id == claim.attempt)
+        else {
+            return Ok(None);
+        };
+
+        if super::concerns::is_concern_tool(&call.name) {
+            return self
+                .saved_concern_tool_outcome(
+                    &claim.scope.practice,
+                    &claim.scope.workspace,
+                    &attempt.work,
+                    call,
+                )
+                .await;
+        }
+
+        if super::refresh::is_refresh_tool(&call.name) {
+            return self
+                .saved_physician_refresh_outcome(&claim.scope, &attempt.work, call)
+                .await;
+        }
+
+        if call.name != PATIENT_MEMORY_TOOL {
+            return Ok(None);
+        }
+        let Ok(parsed) = serde_json::from_str::<MemoryToolCall>(&call.arguments) else {
+            return Ok(None);
+        };
+        let memory_id = match parsed {
+            MemoryToolCall::Read { .. } => return Ok(None),
+            MemoryToolCall::RecordCorrection { memory_id, .. }
+            | MemoryToolCall::Retire { memory_id, .. } => memory_id,
+        };
+        let command_key = memory_tool_command_key(&attempt.work, &call.id);
+        let entry = match self
+            .memory_operation
+            .saved_mutation(
+                self,
+                &claim.scope.practice,
+                &claim.scope.workspace,
+                &command_key,
+                &memory_id,
+            )
+            .await
+        {
+            Ok(Some(entry)) => entry,
+            Ok(None) => return Ok(None),
+            Err(PatientMemoryError::Database(db_err)) => return Err(persistence_failure(db_err)),
+            Err(cause) => return Err(cause.to_string().into()),
+        };
+        Ok(Some(ToolOutcome::Returned(
+            json!({
+                "outcome": "duplicate",
+                "saved": true,
+                "entry": entry,
+            })
+            .to_string(),
+        )))
+    }
+}
+
+fn memory_tool_command_key(work_id: &str, call_id: &str) -> String {
+    format!("{}:{}", work_id, call_id.trim())
 }
 
 #[cfg(test)]

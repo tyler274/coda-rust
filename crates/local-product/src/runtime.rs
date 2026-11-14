@@ -71,7 +71,6 @@ pub use transcript::TranscriptError;
 /// Working notes derived from the authorized product record.
 pub mod working_notes;
 use crate::physician_sources::citations::{self, Finished};
-use crate::physician_sources::{ChartRequest, ChartScope, Labels, READ_TOOL, SEARCH_TOOL};
 use entities::conversation;
 
 /// Authenticated product scope, supplied by the server, never the command body.
@@ -913,25 +912,9 @@ impl Store {
         self
     }
 
-    /// Returns the configured [`chat_operations::PatientRefreshOperation`].
-    pub fn refresh_operation(&self) -> &dyn chat_operations::PatientRefreshOperation {
-        self.refresh_operation.as_ref()
-    }
-
-    /// Returns the configured [`chat_operations::PatientMemoryOperation`].
-    pub fn memory_operation(&self) -> &dyn chat_operations::PatientMemoryOperation {
-        self.memory_operation.as_ref()
-    }
-
     /// Clinical library client configured for chat tool execution.
     pub fn clinical_library(&self) -> &crate::clinical_library::ClinicalLibraryClient {
         &self.clinical_library
-    }
-
-    /// This store's pool, for the process's other stores to share, so the
-    /// process holds one pool.
-    pub fn connection(&self) -> &DatabaseConnection {
-        &self.db
     }
 
     /// Returns a clone bound to an explicit [`refresh::PatientSourceRefresh`] adapter.
@@ -948,6 +931,12 @@ impl Store {
     /// Patient source refresh adapter configured for tool execution.
     pub fn source_refresh(&self) -> &dyn refresh::PatientSourceRefresh {
         self.source_refresh.as_ref()
+    }
+
+    /// This store's pool, for the process's other stores to share, so the
+    /// process holds one pool.
+    pub fn connection(&self) -> &DatabaseConnection {
+        &self.db
     }
 
     // Display readback now joins several authoritative rows. One read-only
@@ -1030,6 +1019,12 @@ impl Store {
         if session_hash.len() != 32 {
             return Err(error("invalid session reference").into());
         }
+        Self::validate_accept_fields(scope, input)?;
+        let tx = self.db.begin().await?;
+        Self::accept_in_tx(tx, scope, input, session_hash, skills, recipe, origin).await
+    }
+
+    pub(super) fn validate_accept_fields(scope: &Scope, input: &Input) -> Result<(), RuntimeError> {
         if [
             &input.key,
             &input.text,
@@ -1045,7 +1040,18 @@ impl Store {
             return Err(error("empty command field").into());
         }
         scope.validate()?;
-        let tx = self.db.begin().await?;
+        Ok(())
+    }
+
+    pub(super) async fn accept_in_tx(
+        tx: sea_orm::DatabaseTransaction,
+        scope: &Scope,
+        input: &Input,
+        session_hash: Vec<u8>,
+        skills: &PhysicianSkills,
+        recipe: &RequestRecipe,
+        origin: Option<delivery::TraceContext>,
+    ) -> Result<Accepted, RuntimeError> {
         let command = serde_json::json!({"scope": scope, "input": input});
         match receipt::record(&tx, &scope.practice, &scope.physician, &input.key, &command).await? {
             receipt::Receipt::New => {}
@@ -2053,18 +2059,12 @@ impl<A: Authority, S: ShownStepSaved> Product for PhysicianHost<A, S> {
         &mut self,
         call: &Invocation,
     ) -> harness::engine::recipe::ToolFuture<Option<ToolOutcome>> {
-        if !refresh::is_refresh_tool(&call.name) {
-            return Box::pin(async { Ok(None) });
-        }
         let store = self.store.clone();
         let claim = self.claim.clone();
         let call = call.clone();
         Box::pin(async move {
             store.assert_current(&claim).await?;
-            let (state, _) = store.work_snapshot(&claim.scope).await?;
-            store
-                .saved_physician_refresh_outcome(&claim.scope, &state.work, &call)
-                .await
+            store.saved_chat_tool_outcome(&claim, &call).await
         })
     }
     async fn assert_current(&mut self) -> Result<(), engine::ProductError> {
@@ -2147,44 +2147,9 @@ impl<A: Authority, S: ShownStepSaved> Product for PhysicianHost<A, S> {
                 };
                 return Ok(ToolOutcome::History(page));
             }
-            if matches!(call.name.as_str(), SEARCH_TOOL | READ_TOOL) {
-                let chart = match ChartRequest::parse(&call.name, &arguments, ChartScope::Chat) {
-                    Ok(chart) => chart,
-                    Err(reason) => {
-                        return Ok(ToolOutcome::refused(reason.to_string()));
-                    }
-                };
-                let workspace = &claim.scope.workspace;
-                let observation = store.chart_observation(workspace, &chart).await?;
-                // A chat's reads carry the work's labels.
-                let labels = Labels::of_work(&records);
-                return chart
-                    .run_labelled(
-                        workspace,
-                        observation.version,
-                        &observation.sources,
-                        &labels,
-                    )
-                    .map_err(Into::into);
-            }
-            if refresh::is_refresh_tool(&call.name) {
-                let refresh_call = Invocation {
-                    id: call.id.clone(),
-                    name: call.name.clone(),
-                    arguments,
-                };
-                return store
-                    .execute_claimed_physician_refresh_tool(&claim, &state.work, &refresh_call)
-                    .await;
-            }
-            if crate::clinical_library::is_library_tool(&call.name) {
-                return Ok(store
-                    .clinical_library()
-                    .execute(&call.name, &arguments)
-                    .await);
-            }
-            let skills = store.frozen_skills(&claim.scope, &state.skills).await?;
-            Ok(skills.execute(&call.name, &arguments))
+            store
+                .execute_chat_tool(&claim, &state, &records, &call, arguments)
+                .await
         })
     }
     async fn finish(&mut self, turn: &Turn) -> Result<Finish, engine::ProductError> {
@@ -2210,7 +2175,13 @@ impl<A: Authority, S: ShownStepSaved> Product for PhysicianHost<A, S> {
         self.assert_current().await?;
         let state = self.store.conversation(&self.claim.scope).await?;
         let start = current_work_start(&state)?;
-        let mut seed: Vec<_> = earlier_messages(start).into_iter().collect();
+        let starting_context = self
+            .store
+            .patient_starting_context(&self.claim.scope)
+            .await
+            .map_err(persistence_failure)?;
+        let mut seed = vec![starting_context.developer_item()];
+        seed.extend(earlier_messages(start));
         seed.extend(state.messages[start..].iter().flat_map(Message::items));
         let note_references =
             working_notes::references(state.attempts.iter().flat_map(|attempt| {
@@ -2250,6 +2221,11 @@ impl<A: Authority, S: ShownStepSaved> PhysicianHost<A, S> {
             .await
             .map_err(|cause| engine::Failure::Host(cause.into()))?
             .request(Vec::new());
+        let starting_context = self
+            .store
+            .patient_starting_context(&self.claim.scope)
+            .await
+            .map_err(|cause| engine::Failure::from(persistence_failure(cause)))?;
         let messages = state.messages.as_slice();
         request.items.clear();
         let mut pending: Vec<engine::AcceptedInput> = Vec::new();
@@ -2257,9 +2233,14 @@ impl<A: Authority, S: ShownStepSaved> PhysicianHost<A, S> {
             if let MessageRole::User { id, work, .. } = &message.role
                 && work == &state.work
             {
+                let items = if pending.is_empty() {
+                    vec![starting_context.developer_item()]
+                } else {
+                    Vec::new()
+                };
                 pending.push(engine::AcceptedInput {
                     id: id.clone(),
-                    items: Vec::new(),
+                    items,
                 });
             }
             let target = match pending.last_mut() {
