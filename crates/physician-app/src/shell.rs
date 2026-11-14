@@ -1367,8 +1367,10 @@ pub struct DemographicCardView {
 }
 
 /// Extracts the clinic-demographic card fields from a workspace response.
+/// When `workspace.is_clinic_demographic()` is true, only display name, DOB, and MRN are surfaced.
 pub fn demographic_card_view(workspace: &PatientWorkspaceResponse) -> DemographicCardView {
     let identity = workspace.identity.as_ref();
+    let restricted = workspace.is_clinic_demographic();
     let display_name = if !workspace.display_name.trim().is_empty() {
         workspace.display_name.clone()
     } else {
@@ -1379,23 +1381,35 @@ pub fn demographic_card_view(workspace: &PatientWorkspaceResponse) -> Demographi
     let birth_date = identity
         .and_then(|id| id.birth_date.as_deref())
         .map(format_calendar_date);
-    let age = identity
-        .and_then(|id| id.age_years)
-        .map(|years| format!("{years} years"));
-    let sex_or_gender = identity
-        .and_then(|id| id.sex_or_gender.as_ref())
-        .and_then(|gender| gender.value.as_deref())
-        .map(capitalize_first)
-        .filter(|value| !value.is_empty());
+    let age = (!restricted)
+        .then(|| {
+            identity
+                .and_then(|id| id.age_years)
+                .map(|years| format!("{years} years"))
+        })
+        .flatten();
+    let sex_or_gender = (!restricted)
+        .then(|| {
+            identity
+                .and_then(|id| id.sex_or_gender.as_ref())
+                .and_then(|gender| gender.value.as_deref())
+                .map(capitalize_first)
+                .filter(|value| !value.is_empty())
+        })
+        .flatten();
     let mrn = identity.and_then(|id| {
         id.medical_record_numbers
             .iter()
             .find_map(|number| number.value.clone())
     });
-    let record_state = identity
-        .and_then(|id| id.state.as_deref())
-        .map(capitalize_first)
-        .filter(|value| !value.is_empty());
+    let record_state = (!restricted)
+        .then(|| {
+            identity
+                .and_then(|id| id.state.as_deref())
+                .map(capitalize_first)
+                .filter(|value| !value.is_empty())
+        })
+        .flatten();
     DemographicCardView {
         display_name,
         birth_date,
@@ -2033,10 +2047,10 @@ mod tests {
         let card = demographic_card_view(&workspace);
         assert_eq!(card.display_name, "Jake Test");
         assert_eq!(card.birth_date.as_deref(), Some("Nov 4, 1958"));
-        assert_eq!(card.age.as_deref(), Some("67 years"));
-        assert_eq!(card.sex_or_gender.as_deref(), Some("Male"));
+        assert!(card.age.is_none());
+        assert!(card.sex_or_gender.is_none());
         assert_eq!(card.mrn.as_deref(), Some("00000012"));
-        assert_eq!(card.record_state.as_deref(), Some("Active"));
+        assert!(card.record_state.is_none());
         assert_eq!(past_work_copy(&workspace), None);
     }
 
@@ -2069,6 +2083,56 @@ mod tests {
         seen_list.seen = vec!["concern-k-high".to_owned()];
         let seen_lines = today_lines(&seen_list);
         assert!(active_now_concern(&seen_lines).is_none());
+    }
+
+    #[test]
+    fn records_state_preserves_last_good_time_on_failed_refresh_and_omits_unpulled() {
+        let stale: PatientWorkspaceResponse = serde_json::from_str(
+            r#"{
+                "patient_workspace_id": "pw-1",
+                "display_name": "Mary Louis",
+                "time_zone": "America/New_York",
+                "connected_sources": [{
+                    "source_id": "ehr",
+                    "source_label": "Practice EHR",
+                    "state": {
+                        "state": "failed",
+                        "usable_snapshot": { "synchronized_at": "2026-08-27T16:00:00.000Z" }
+                    }
+                }]
+            }"#,
+        )
+        .unwrap();
+        match workspace_records_state(&stale, "2026-08-27T19:30:00.000Z") {
+            WorkspaceRecordsState::RefreshFailedWithSnapshot(time) => {
+                assert_eq!(time.words, "Today, 12:00 PM");
+            }
+            other => panic!("expected RefreshFailedWithSnapshot, got {other:?}"),
+        }
+
+        let unpulled: PatientWorkspaceResponse = serde_json::from_str(
+            r#"{
+                "patient_workspace_id": "pw-1",
+                "display_name": "Mary Louis",
+                "time_zone": "America/New_York",
+                "connected_sources": [{
+                    "source_id": "ehr",
+                    "source_label": "Practice EHR",
+                    "state": { "state": "not_yet_pulled" }
+                }]
+            }"#,
+        )
+        .unwrap();
+        assert_eq!(
+            workspace_records_state(&unpulled, "2026-08-27T19:30:00.000Z"),
+            WorkspaceRecordsState::Unavailable("Records not yet pulled.")
+        );
+        assert_eq!(
+            search_row_detail(Some("1972-03-18"), Some("00000005")),
+            "DOB Mar 18, 1972 · MRN 00000005"
+        );
+        assert_eq!(search_row_detail(None, Some("00000005")), "MRN 00000005");
+        assert_eq!(search_row_detail(None, None), "");
     }
 
     #[test]
@@ -2182,6 +2246,65 @@ mod tests {
         assert_eq!(reply_channel_label("email"), "Gmail");
         assert_eq!(reply_urgency_words("urgent_ed"), "Urgent, ED");
         assert_eq!(reply_urgency_words("same_day"), "Same day");
+    }
+
+    #[test]
+    fn source_lines_require_saved_successful_read_before_reporting_usable() {
+        let workspace: PatientWorkspaceResponse = serde_json::from_value(serde_json::json!({
+            "patient_workspace_id": "pw-1",
+            "display_name": "Elena Rostova",
+            "time_zone": "America/New_York",
+            "connected_sources": [
+                {
+                    "source_id": "epic-1",
+                    "source_label": "Practice EHR",
+                    "state": {
+                        "state": "usable",
+                        "synchronized_at": "2026-08-27T15:00:00Z"
+                    }
+                },
+                {
+                    "source_id": "quest-1",
+                    "source_label": "Quest Labs",
+                    "state": {
+                        "state": "usable"
+                    }
+                },
+                {
+                    "source_id": "hospital-1",
+                    "source_label": "Mercy Health",
+                    "state": {
+                        "state": "failed",
+                        "usable_snapshot": {
+                            "synchronized_at": "2026-08-27T14:30:00Z"
+                        }
+                    }
+                }
+            ]
+        }))
+        .unwrap();
+        let lines = source_lines(&workspace, "2026-08-27T16:00:00Z");
+        assert_eq!(
+            lines,
+            vec![
+                ConnectedSourceLine {
+                    label: "Practice EHR".to_owned(),
+                    standing: ConnectedSourceStanding::Usable {
+                        last_good: "Today, 11:00 AM".to_owned(),
+                    },
+                },
+                ConnectedSourceLine {
+                    label: "Quest Labs".to_owned(),
+                    standing: ConnectedSourceStanding::AwaitingFirstRead,
+                },
+                ConnectedSourceLine {
+                    label: "Mercy Health".to_owned(),
+                    standing: ConnectedSourceStanding::RefreshFailed {
+                        last_good: Some("Today, 10:30 AM".to_owned()),
+                    },
+                },
+            ]
+        );
     }
 
     #[test]
