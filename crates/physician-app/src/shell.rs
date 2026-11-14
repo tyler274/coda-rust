@@ -649,23 +649,27 @@ pub fn event_refetch(event: &str, data: &str, selected: Option<&str>) -> EventRe
 // exercised by unit tests on every target.
 #[cfg_attr(not(target_arch = "wasm32"), allow(dead_code))]
 pub fn workspace_event_rereads(event: &str, data: &str, selected: Option<&str>) -> bool {
-    let Ok(value) = serde_json::from_str::<serde_json::Value>(data) else {
-        return false;
-    };
+    matches!((event_patient(event, data), selected), (Some(patient), Some(selected)) if patient == selected)
+}
+
+/// The patient workspace a workspace or conversation event is about, whether
+/// open or not.
+#[cfg_attr(not(target_arch = "wasm32"), allow(dead_code))]
+pub fn event_patient(event: &str, data: &str) -> Option<String> {
+    let value = serde_json::from_str::<serde_json::Value>(data).ok()?;
     let patient = match event {
-        "workspace_changed" => value.get("patient_workspace_id").and_then(|id| id.as_str()),
+        "workspace_changed" => value.get("patient_workspace_id"),
         "physician_state_changed" => {
             if value.get("kind").and_then(|kind| kind.as_str()) != Some("conversation") {
-                return false;
+                return None;
             }
             value
                 .get("target")
                 .and_then(|target| target.get("patient_workspace_id"))
-                .and_then(|id| id.as_str())
         }
-        _ => return false,
+        _ => None,
     };
-    matches!((patient, selected), (Some(patient), Some(selected)) if patient == selected)
+    patient.and_then(|id| id.as_str()).map(str::to_owned)
 }
 
 pub fn opens_reader(kind: &str) -> bool {

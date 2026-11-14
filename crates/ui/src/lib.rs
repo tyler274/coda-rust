@@ -23,6 +23,7 @@ mod documents;
 mod feedback;
 mod icons;
 mod inputs;
+mod intent;
 mod live;
 mod motion;
 mod overlays;
@@ -56,6 +57,7 @@ pub use inputs::{
     Checkbox, Choice, Combobox, CompactField, DateField, DateKind, RadioGroup, Segmented, Select,
     TextField, TextKind,
 };
+pub use intent::use_pointer_intent;
 pub use live::{ListedRow, LiveRows, RowFrame, use_live_rows};
 pub use motion::Stylesheet;
 pub use overlays::{ContextMenu, Menu, MenuItem, MenuSection, Tooltip};
@@ -669,11 +671,21 @@ pub fn NavigationControl(
 #[component]
 pub fn NavigationRow(
     onclick: Option<EventHandler<MouseEvent>>,
+    /// The pointer came over the row or focus reached it: the row may open next.
+    #[props(default)]
+    onapproach: Option<EventHandler>,
+    /// The pointer or focus left the row again.
+    #[props(default)]
+    onleave: Option<EventHandler>,
     #[props(extends = GlobalAttributes)] attributes: Vec<Attribute>,
     children: Element,
 ) -> Element {
     let mut class = String::from("navigation-row");
     let rest = host_attributes(&mut class, attributes);
+    let approach = Approach {
+        onapproach,
+        onleave,
+    };
     rsx! {
         button {
             class: "{class}",
@@ -683,6 +695,10 @@ pub fn NavigationRow(
                     handler.call(event);
                 }
             },
+            onpointerenter: move |_| approach.came(),
+            onfocus: move |_| approach.came(),
+            onpointerleave: move |_| approach.left(),
+            onblur: move |_| approach.left(),
             ..rest,
             {children}
         }
@@ -1190,8 +1206,18 @@ pub fn ListRow(
     state: Option<String>,
     /// What the row opens; without it, the row is not a control.
     onclick: Option<EventHandler<MouseEvent>>,
+    /// The pointer came over the row or focus reached it: the row may open next.
+    #[props(default)]
+    onapproach: Option<EventHandler>,
+    /// The pointer or focus left the row again.
+    #[props(default)]
+    onleave: Option<EventHandler>,
     #[props(extends = GlobalAttributes)] attributes: Vec<Attribute>,
 ) -> Element {
+    let approach = Approach {
+        onapproach,
+        onleave,
+    };
     let mut class = String::from("list-row");
     let rest = host_attributes(&mut class, attributes);
     let lead = if let Some(icon) = icon {
@@ -1212,10 +1238,36 @@ pub fn ListRow(
             class: "navigation-row {class}",
             r#type: "button",
             onclick: move |event| open.call(event),
+            onpointerenter: move |_| approach.came(),
+            onfocus: move |_| approach.came(),
+            onpointerleave: move |_| approach.left(),
+            onblur: move |_| approach.left(),
             ..rest,
             {lead}
             {text}
             span { class: "list-row-chevron", aria_hidden: "true", Icon { name: IconName::ChevronDown } }
+        }
+    }
+}
+
+/// A row's report that the pointer or focus came to it or left it, for a host that starts work
+/// before the row is pressed.
+#[derive(Clone, Copy)]
+struct Approach {
+    onapproach: Option<EventHandler>,
+    onleave: Option<EventHandler>,
+}
+
+impl Approach {
+    fn came(&self) {
+        if let Some(handler) = &self.onapproach {
+            handler.call(());
+        }
+    }
+
+    fn left(&self) {
+        if let Some(handler) = &self.onleave {
+            handler.call(());
         }
     }
 }

@@ -438,6 +438,66 @@ function watchDepth(send) {
   return () => owner.hearing.delete(send);
 }
 
+// Reports the `data-intent` key of the element a moving mouse is heading for, before it arrives, until
+// stopped. The pointer's recent path, carried forward `ahead` milliseconds, must cross the element's box;
+// each element is reported once per approach, and again only after the path has left it. A pointer
+// already over an element, a touch or a pen reports nothing: they arrive with no path to read.
+function watchIntent(ahead, send) {
+  const trail = [];
+  const told = new Set();
+  const moved = (event) => {
+    if (event.pointerType !== "mouse") return;
+    const now = event.timeStamp;
+    trail.push({ x: event.clientX, y: event.clientY, at: now });
+    while (trail.length > 2 && now - trail[0].at > 80) trail.shift();
+    if (trail.length < 2) return;
+    const first = trail[0];
+    const span = now - first.at;
+    if (span <= 0) return;
+    const vx = (event.clientX - first.x) / span;
+    const vy = (event.clientY - first.y) / span;
+    if (Math.hypot(vx, vy) < 0.1) return;
+    const to = { x: event.clientX + vx * ahead, y: event.clientY + vy * ahead };
+    const heading = new Set();
+    for (const element of document.querySelectorAll("[data-intent]")) {
+      const box = element.getBoundingClientRect();
+      if (box.width === 0 || box.height === 0) continue;
+      if (!crosses(event.clientX, event.clientY, to.x, to.y, box)) continue;
+      const key = element.dataset.intent;
+      heading.add(key);
+      if (told.has(key)) continue;
+      told.add(key);
+      send(key);
+    }
+    for (const key of told) if (!heading.has(key)) told.delete(key);
+  };
+  addEventListener("pointermove", moved, { capture: true, passive: true });
+  return () => removeEventListener("pointermove", moved, true);
+}
+
+// Whether the segment from (x0, y0) to (x1, y1) touches `box`: the Liang–Barsky clip.
+function crosses(x0, y0, x1, y1, box) {
+  const dx = x1 - x0;
+  const dy = y1 - y0;
+  let low = 0;
+  let high = 1;
+  const edges = [
+    [-dx, x0 - box.left], [dx, box.right - x0],
+    [-dy, y0 - box.top], [dy, box.bottom - y0],
+  ];
+  for (const [p, q] of edges) {
+    if (p === 0) {
+      if (q < 0) return false;
+      continue;
+    }
+    const t = q / p;
+    if (p < 0) low = Math.max(low, t);
+    else high = Math.min(high, t);
+    if (low > high) return false;
+  }
+  return true;
+}
+
 // Opens a reading surface's own scrolling body, `bodyId`, at its top, or at the passage or field
 // marked in it when the mark would be out of sight there, once the surface has its size: only that
 // body moves, never the page beneath. What stands above the record stays in view when it can.
@@ -888,7 +948,7 @@ const fires = {
   caretToEnd, readToEnd, jumpToLatest, replyArrived, setDepth,
 };
 const asks = { watchExit, modal, copy, reducedMotion };
-const listens = { watchPage, watchPopover, watchReading, watchDepth };
+const listens = { watchPage, watchPopover, watchReading, watchDepth, watchIntent };
 
 const running = new Map();
 let calls = 0;

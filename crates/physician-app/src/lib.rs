@@ -11,6 +11,8 @@ mod composer;
 mod feedback;
 mod local_draft;
 mod panels;
+mod patient_reads;
+mod preload;
 mod shell;
 mod status;
 mod tabs;
@@ -27,6 +29,8 @@ use physician_wire::{
 };
 
 use panels::Panel;
+pub use preload::PreloadTrigger;
+use preload::Preloader;
 use shell::{
     CONVERSATION_EMPTY, ChatView, Drawer, KeyInput, NavCommand, PAST_WORK_EMPTY, REPLY_ASK,
     REPLY_CLOSED_NOTICE, REPLY_COPY, REPLY_NO_NEEDED, REPLY_REVISION_STALE, REPLY_TELL_CODA,
@@ -299,6 +303,7 @@ fn follow_workspace_events(
     mut workspace_attempt: Signal<u32>,
     mut snapshot_attempt: Signal<u32>,
     selected: Signal<Option<String>>,
+    reads: patient_reads::PatientReads,
 ) -> dioxus::core::Task {
     let url = format!(
         "{}/patient-workspaces/events?after=0",
@@ -428,6 +433,7 @@ fn follow_workspace_events(
                 buffer.push_str(&String::from_utf8_lossy(&bytes));
                 apply_event_frames(
                     &mut buffer,
+                    &reads,
                     &selected,
                     &mut today_attempt,
                     &mut workspace_attempt,
@@ -442,6 +448,7 @@ fn follow_workspace_events(
 #[cfg(target_arch = "wasm32")]
 fn apply_event_frames(
     buffer: &mut String,
+    reads: &patient_reads::PatientReads,
     selected: &Signal<Option<String>>,
     today_attempt: &mut Signal<u32>,
     workspace_attempt: &mut Signal<u32>,
@@ -460,6 +467,9 @@ fn apply_event_frames(
                 }
                 data.push_str(value.trim_start());
             }
+        }
+        if let Some(patient) = shell::event_patient(&name, &data) {
+            reads.forget(&patient);
         }
         let open = selected.read().clone();
         match event_refetch(&name, &data, open.as_deref()) {
@@ -748,6 +758,9 @@ pub fn PhysicianRoot(
     #[props(default)]
     open_chat: String,
     sign_in: Option<SignInLink>,
+    /// What starts reading a patient before it is opened.
+    #[props(default)]
+    preload: PreloadTrigger,
 ) -> Element {
     // A mailed link goes through the sign-in screen even when this browser
     // already has a session. Otherwise the workspace opens, and its first
@@ -858,6 +871,7 @@ pub fn PhysicianRoot(
                     open_chat: open_chat.clone(),
                     client,
                     session,
+                    preload,
                 }
             }
         }
@@ -871,6 +885,7 @@ fn PhysicianShell(
     open_chat: String,
     client: Signal<PhysicianClient>,
     session: SessionState,
+    preload: PreloadTrigger,
 ) -> Element {
     // The address's conversation belongs to the address's patient only.
     let mut requested_chat = use_signal(|| {
@@ -954,6 +969,13 @@ fn PhysicianShell(
     let mut search_attempt = use_signal(|| 0u32);
     let mut today_cache = use_signal(|| None::<Vec<TodayLine>>);
     let mut workspace_cache = use_signal(|| None::<PatientWorkspaceResponse>);
+    let patient_reads = use_signal(patient_reads::PatientReads::new);
+    let preloader =
+        use_context_provider(|| Preloader::new(preload, patient_reads, client, selected));
+    ui::use_pointer_intent(
+        preloader.trigger().predicts(),
+        EventHandler::new(move |id: String| preloader.predicted(&id)),
+    );
     // The patient the server said isn't there for this physician (a 404 also
     // answers for no access, so presence never leaks).
     let mut gone = use_signal(|| None::<String>);
@@ -1013,6 +1035,7 @@ fn PhysicianShell(
             workspace_attempt,
             snapshot_attempt,
             selected,
+            patient_reads.peek().clone(),
         );
         stream.set(Some(task));
     });
@@ -1092,22 +1115,26 @@ fn PhysicianShell(
         let _workspace_attempt = workspace_attempt();
         let client = client.read().clone();
         let open_id = selected();
+        let reads = patient_reads.peek().clone();
         async move {
             let answer = match &open_id {
-                Some(id) => client.today_for(id).await.map(Some).map_err(|_| ()),
+                Some(id) => reads.today_for(&client, id).await.map(Some).map_err(|_| ()),
                 None => Ok(None),
             };
             (open_id, answer)
         }
     });
+    // The read is the owner's; what opening the patient does to the page
+    // happens here, once its answer is in.
     let workspace = use_resource(move || {
         let _attempt = workspace_attempt();
         let client = client.read().clone();
         let presented = client.session().get();
         let open_id = selected();
+        let reads = patient_reads.peek().clone();
         async move {
             let answer = match open_id.clone() {
-                Some(id) => match client.workspace(&id).await {
+                Some(id) => match reads.workspace(&client, &id).await {
                     Ok(open) => {
                         if open.is_clinic_demographic() {
                             forget_workspace_drafts(composer, &client, whoami, &id);
@@ -1122,7 +1149,7 @@ fn PhysicianShell(
                         if let Some(refused) = refusal(&error) {
                             session.refused(refused, *shown.peek(), presented);
                         } else if matches!(
-                            error,
+                            *error,
                             physician_client::HttpError::Status { status: 404, .. }
                         ) {
                             workspace_cache.set(None);
@@ -1138,6 +1165,12 @@ fn PhysicianShell(
             };
             (open_id, answer)
         }
+    });
+    // A reread of everything (a reconnect, a missed event, a renewed session)
+    // means a kept preload may be stale: drop them all.
+    use_effect(move || {
+        let _attempt = today_attempt();
+        patient_reads.peek().forget_all();
     });
     use_effect(move || {
         if let Some(Ok(list)) = today.read().as_ref() {
@@ -1653,12 +1686,14 @@ fn PhysicianShell(
                         let last = targets.len().saturating_sub(1) as i32;
                         let next = if focus() < 0 { 0 } else { focus() + 1 };
                         focus.set(next.min(last));
+                        approach_target(preloader, targets.get(focus().max(0) as usize));
                     }
                     NavCommand::Previous => {
                         moved.set(true);
                         let last = targets.len().saturating_sub(1) as i32;
                         let next = if focus() < 0 { last } else { focus() - 1 };
                         focus.set(next.max(0));
+                        approach_target(preloader, targets.get(focus().max(0) as usize));
                     }
                     NavCommand::Activate => {
                         let Some(target) = targets.get(focus().max(0) as usize) else { return };
@@ -2963,16 +2998,23 @@ fn TodayRows(
     on_open: EventHandler<TodayLine>,
     on_resume: EventHandler<TodayLine>,
 ) -> Element {
+    let preloader = use_context::<Preloader>();
     rsx! {
         div { class: "today-list",
             for (index, row) in rows.iter().enumerate() {
                 article { class: "today-row",
                     NavigationRow {
                         class: if focused == Some(index) { "today-row-open is-keyboard-focus" } else { "today-row-open" },
+                        "data-intent": "{row.workspace_id}",
                         onclick: {
                             let row = row.clone();
                             move |_| on_open.call(row.clone())
                         },
+                        onapproach: {
+                            let id = row.workspace_id.clone();
+                            move |_| preloader.approach(&id)
+                        },
+                        onleave: move |_| preloader.leave(),
                         span { class: "today-row-line",
                             span { class: "today-row-heading",
                                 LiveDot {}
@@ -3022,6 +3064,7 @@ fn ScheduleRail(
     on_open: EventHandler<VisitLine>,
 ) -> Element {
     let count = visits.len();
+    let preloader = use_context::<Preloader>();
     rsx! {
         ui::RailCard {
             class: if collapsed { "schedule-rail is-collapsed" } else { "schedule-rail" },
@@ -3054,10 +3097,20 @@ fn ScheduleRail(
                     } else {
                         "schedule-visit"
                     },
+                    "data-intent": visit.workspace_id.clone(),
                     onclick: {
                         let visit = visit.clone();
                         move |_| on_open.call(visit.clone())
                     },
+                    onapproach: {
+                        let id = visit.workspace_id.clone();
+                        move |_| {
+                            if let Some(id) = &id {
+                                preloader.approach(id);
+                            }
+                        }
+                    },
+                    onleave: move |_| preloader.leave(),
                     aria_label: "Open {visit.patient}",
                     if let Some(clock) = format_clock(&visit.starts_at, &visit.time_zone) {
                         time { datetime: "{visit.starts_at}", "{clock}" }
@@ -3705,6 +3758,7 @@ fn SearchDialog(
         .first()
         .map(|patient| patient.patient_workspace_id.clone());
     let none = !query.trim().is_empty() && state.content().is_some_and(Vec::is_empty);
+    let preloader = use_context::<Preloader>();
     rsx! {
         Dialog { close_label: "Close", title: "Find patient", on_close,
                 div { class: "patient-search",
@@ -3752,10 +3806,16 @@ fn SearchDialog(
                                                 .map(format_calendar_date)
                                                 .unwrap_or_else(|| "not recorded".to_owned())
                                         ),
+                                        "data-intent": "{patient.patient_workspace_id}",
                                         onclick: {
                                             let id = patient.patient_workspace_id.clone();
                                             move |_| on_open.call(id.clone())
                                         },
+                                        onapproach: {
+                                            let id = patient.patient_workspace_id.clone();
+                                            move |_| preloader.approach(&id)
+                                        },
+                                        onleave: move |_| preloader.leave(),
                                     }
                                 }
                             }
@@ -4111,6 +4171,20 @@ fn focus_targets(
         targets.extend(visits.iter().cloned().map(FocusTarget::Visit));
     }
     targets
+}
+
+/// Keyboard focus came to `target`: the patient it opens may be next.
+fn approach_target(preloader: Preloader, target: Option<&FocusTarget>) {
+    let id = match target {
+        Some(FocusTarget::Patient(id)) => Some(id.as_str()),
+        Some(FocusTarget::Row(line)) => Some(line.workspace_id.as_str()),
+        Some(FocusTarget::Visit(visit)) => visit.workspace_id.as_deref(),
+        None => None,
+    };
+    match id {
+        Some(id) => preloader.approach(id),
+        None => preloader.leave(),
+    }
 }
 
 fn open_target(

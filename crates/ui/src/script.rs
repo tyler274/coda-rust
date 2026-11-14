@@ -212,6 +212,12 @@ pub(crate) fn watch_depth() -> Listening<usize> {
     listen("watchDepth", json!([]))
 }
 
+/// The `data-intent` key of each element a moving mouse heads for, its path carried `ahead_ms`
+/// forward, before it arrives, until dropped.
+pub(crate) fn watch_intent(ahead_ms: u32) -> Listening<String> {
+    listen("watchIntent", json!([ahead_ms]))
+}
+
 /// Holds the reader's place in conversation `scroller` while its size or content changes, and
 /// reports whether the reader is at its end, now and on each change, until dropped.
 pub(crate) fn watch_reading(scroller: &str) -> Listening<bool> {
