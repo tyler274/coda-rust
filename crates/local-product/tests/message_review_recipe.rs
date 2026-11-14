@@ -5,15 +5,6 @@
 //! or `PHYSICIAN_DATABASE_URL` is set; panics if neither is set when
 //! `CODA_REQUIRE_POSTGRES_TESTS=1`.
 
-#![expect(
-    dead_code,
-    reason = "ac6, ac7, and round1 helpers are exercised in companion suite slice"
-)]
-#![expect(
-    unused_imports,
-    reason = "Spruce webhook and Today/Updates imports are exercised in companion suite slice"
-)]
-
 use std::collections::{BTreeMap, VecDeque};
 use std::path::PathBuf;
 use std::sync::{Arc, Mutex};
@@ -2195,4 +2186,2268 @@ async fn ac5_physician_reply_revision_reconsiders_moved_sources_preserves_concur
             ..
         } if text.contains("Physician's own concurrent wording")
     ));
+}
+
+#[tokio::test]
+async fn ac6_already_handled_automatic_vs_real_partial_closures_ask_coda_copy_and_close_orthogonality()
+ {
+    let Some(url) = database_url() else {
+        return;
+    };
+    let (store, auth) = connect_stores(&url).await;
+    let now_ts = current_unix_ts();
+    let practice = format!("prac-ac6-{}", Uuid::new_v4().simple());
+    auth.ensure_practice(&practice, PracticeClock::Fixed(now_ts as u64))
+        .await
+        .unwrap();
+
+    let (dr, _token, dr_hash) = invite_and_sign_in(&auth, &practice, "dr-ac6", now_ts as u64).await;
+    let patient = SourcePatient {
+        source_patient_id: format!("pat-ac6-{}", Uuid::new_v4().simple()),
+        display_name: "Sonia Alvarez".into(),
+        birth_date: Some("1981-09-25".into()),
+        sex_or_gender: Some("female".into()),
+        medical_record_numbers: vec![MedicalRecordNumber {
+            system: "clinic-ehr".into(),
+            value: "MRN-6602".into(),
+        }],
+    };
+    let workspace = workspace_id("clinic-ehr", &patient.source_patient_id);
+    auth.register_patient(&practice, &workspace).await.unwrap();
+    auth.set_membership(&dr, &workspace, Membership::Allowed)
+        .await
+        .unwrap();
+
+    let chart_note = chart_record(
+        &workspace,
+        "clinic-ehr",
+        "note-ac6",
+        "rev-1",
+        "DocumentReference",
+        "2026-11-09",
+        "Clinic Visit Summary",
+        "Vitamin D3 2000 IU daily; repeat 25-OH Vitamin D in 3 months.",
+    );
+    store
+        .record_chart(
+            &workspace,
+            &[chart_note],
+            &SourcePull {
+                source_id: "clinic-ehr".into(),
+                source_label: "Clinic EHR".into(),
+                patient: patient.clone(),
+                pulled_at: Some(now_ts),
+            },
+        )
+        .await
+        .unwrap();
+
+    let skills = load_skills();
+    let roles = distinct_roles();
+    let access = WorkspaceAccess {
+        practice: &practice,
+        physician: &dr.physician_id,
+        workspace: &workspace,
+        session_hash: &dr_hash,
+    };
+
+    // 1. Automatic reply vs real practice reply + partial closure:
+    let conv_partial = "conv-ac6-partial";
+    store
+        .link_reply_conversation(
+            &practice,
+            conv_partial,
+            ConversationLink::LinkedPatient {
+                workspace: workspace.clone(),
+            },
+        )
+        .await
+        .unwrap();
+    store
+        .record_linked_patient_message(&RecordPatientMessage {
+            practice: practice.clone(),
+            conversation_id: conv_partial.into(),
+            message_id: "m1-parking".into(),
+            sender: MessageSender::Patient,
+            text: "Where do I park for the lab draw?".into(),
+            sent_at: now_ts + 10,
+        })
+        .await
+        .unwrap();
+    store
+        .observe_practice_message(&ObservePracticeMessage {
+            practice: practice.clone(),
+            conversation_id: conv_partial.into(),
+            practice_message_id: "auto-ack-1".into(),
+            kind: PracticeMessageKind::Automatic,
+            text: "Thanks for messaging our clinic; we respond within 1 business day.".into(),
+            sent_at: now_ts + 12,
+        })
+        .await
+        .unwrap();
+    store
+        .observe_practice_message(&ObservePracticeMessage {
+            practice: practice.clone(),
+            conversation_id: conv_partial.into(),
+            practice_message_id: "staff-parking-1".into(),
+            kind: PracticeMessageKind::PracticeSent,
+            text: "Parking is validated in Garage B right behind the lab.".into(),
+            sent_at: now_ts + 20,
+        })
+        .await
+        .unwrap();
+    store
+        .record_linked_patient_message(&RecordPatientMessage {
+            practice: practice.clone(),
+            conversation_id: conv_partial.into(),
+            message_id: "m2-vitd".into(),
+            sender: MessageSender::Patient,
+            text: "Thanks! Also, how much Vitamin D3 should I take each day?".into(),
+            sent_at: now_ts + 30,
+        })
+        .await
+        .unwrap();
+
+    // Turn 1 tries closing `m1-parking` and `m2-vitd` with `auto-ack-1` (`Automatic`) -> REFUSED!
+    // Turn 2 reads chart + raises a concern + creates a follow-up.
+    // Turn 3 closes `m1-parking` with `staff-parking-1` (`PracticeSent`) and proposes reply for `m2-vitd`!
+    let (mut p_partial, partial_reqs) = spawn_responses_sse_server(vec![
+        vec![sse_function_call(
+            "bad-auto-close",
+            COMPLETE_MESSAGE_REVIEW_TOOL,
+            &json!({
+                "answered_closures": [
+                    {
+                        "practice_message_id": "auto-ack-1",
+                        "answered_message_ids": ["m1-parking", "m2-vitd"],
+                    }
+                ],
+                "decision": {
+                    "kind": "all_handled",
+                    "basis_summary": "Tried closing with automatic acknowledgement.",
+                },
+                "raised_concern_ids": [],
+            }),
+        )],
+        vec![
+            sse_function_call(
+                "read-vitd",
+                READ_TOOL,
+                &json!({
+                    "references": [{ "candidate_id": "note-ac6", "revision": "rev-1", "cursor": null }],
+                    "max_result_bytes": 16_384,
+                }),
+            ),
+            sse_function_call(
+                "raise-c-ac6",
+                CONCERN_TOOL,
+                &json!({
+                    "operation": "raise",
+                    "concern_id": "concern-ac6-orthog",
+                    "urgency": "today",
+                    "reason": "Confirm Vitamin D recheck lab order is entered for 3 months.",
+                    "records": [{ "candidate_id": "note-ac6", "revision": "rev-1" }],
+                }),
+            ),
+            sse_function_call(
+                "create-fu-ac6",
+                FOLLOW_UP_TOOL,
+                &json!({
+                    "operation": "create",
+                    "follow_up_id": "fu-ac6-vitd",
+                    "summary": "Check 3-month 25-OH Vitamin D lab result",
+                    "due_at": now_ts + 86_400 * 90,
+                    "records": [{ "candidate_id": "note-ac6", "revision": "rev-1" }],
+                }),
+            ),
+        ],
+        vec![sse_function_call(
+            "good-partial-close",
+            COMPLETE_MESSAGE_REVIEW_TOOL,
+            &json!({
+                "answered_closures": [
+                    {
+                        "practice_message_id": "staff-parking-1",
+                        "answered_message_ids": ["m1-parking"],
+                    }
+                ],
+                "decision": {
+                    "kind": "propose_reply",
+                    "reply_text": "Your November 9 visit plan is Vitamin D3 2,000 IU once daily, with a repeat Vitamin D lab check in 3 months.",
+                    "basis_summary": "Front desk answered parking (`m1-parking`); proposed reply for open Vitamin D dosing question (`m2-vitd`).",
+                    "limitations": [],
+                    "cited_records": [{ "candidate_id": "note-ac6", "revision": "rev-1" }],
+                    "addresses_medication_question": false,
+                },
+                "raised_concern_ids": ["concern-ac6-orthog"],
+            }),
+        )],
+        vec![sse_assistant_message(
+            "Closed m1-parking and proposed reply for m2-vitd.",
+        )],
+    ])
+    .await;
+
+    run_message_review(
+        &store,
+        auth.as_ref(),
+        &practice,
+        conv_partial,
+        &MessageReviewOptions::default(),
+        &roles,
+        &skills,
+        &mut p_partial,
+        engine::RunLimits::default(),
+        &engine::Cancellation::default(),
+    )
+    .await
+    .unwrap();
+
+    let partial_wire = serde_json::to_string(&partial_reqs.lock().unwrap()[1]["input"]).unwrap();
+    assert!(
+        partial_wire.contains("automatic") || partial_wire.contains("auto-ack-1"),
+        "Automatic practice message must be refused as closure: {partial_wire}"
+    );
+
+    // Prove `copy_reply` records attribution WITHOUT marking `m2-vitd` `Answered`:
+    let CopyReplyOutcome::Recorded(copy_rec) = store
+        .copy_reply(
+            &access,
+            &CommandKey::new("copy-ac6").unwrap(),
+            conv_partial,
+            ExpectedDraftBase::ProposalVersion(1),
+            &mut PostgresWorkspaceAuthority,
+        )
+        .await
+        .unwrap()
+    else {
+        panic!("expected Recorded copy");
+    };
+    assert_eq!(
+        copy_rec.copied_source,
+        CopiedReplySource::CodaProposal {
+            reply_id: 1,
+            version: 1,
+        }
+    );
+    let after_copy = store
+        .reply_conversation(&practice, conv_partial)
+        .await
+        .unwrap()
+        .unwrap();
+    assert!(matches!(
+        after_copy.patient_messages[0].standing,
+        PatientMessageStanding::Answered { ref practice_message_id, .. }
+            if practice_message_id == "staff-parking-1"
+    ));
+    assert_eq!(
+        after_copy.patient_messages[1].standing,
+        PatientMessageStanding::Open,
+        "copy_reply must never mark open patient messages Answered before channel delivery"
+    );
+
+    // Prove `close_reply_no_reply_needed` closes ONLY the reply card while leaving open concerns and active follow-ups untouched!
+    store
+        .close_reply_no_reply_needed(
+            &access,
+            &CommandKey::new("close-nrn-ac6").unwrap(),
+            conv_partial,
+            1,
+            &mut PostgresWorkspaceAuthority,
+        )
+        .await
+        .unwrap();
+    let concerns_after_close = store
+        .workspace_concerns(&access, &mut PostgresWorkspaceAuthority)
+        .await
+        .unwrap();
+    assert_eq!(concerns_after_close.len(), 1);
+    assert_eq!(concerns_after_close[0].standing, ConcernStanding::Open);
+    let follow_ups_after_close = store
+        .physician_follow_ups(&access, &mut PostgresWorkspaceAuthority)
+        .await
+        .unwrap();
+    assert_eq!(follow_ups_after_close.len(), 1);
+    assert!(matches!(
+        follow_ups_after_close[0].standing,
+        FollowUpStanding::Active { .. }
+    ));
+
+    // 2. `Ask Coda to reply` reopens settled `NoReplyWouldHelp` and refuses `NoReplyWouldHelp` on the requested run:
+    let conv_ask = "conv-ac6-ask-coda";
+    store
+        .link_reply_conversation(
+            &practice,
+            conv_ask,
+            ConversationLink::LinkedPatient {
+                workspace: workspace.clone(),
+            },
+        )
+        .await
+        .unwrap();
+    store
+        .record_linked_patient_message(&RecordPatientMessage {
+            practice: practice.clone(),
+            conversation_id: conv_ask.into(),
+            message_id: "m-thanks-ask".into(),
+            sender: MessageSender::Patient,
+            text: "Got it, appreciate the help!".into(),
+            sent_at: now_ts + 60,
+        })
+        .await
+        .unwrap();
+
+    let (mut p_nr, _) = spawn_responses_sse_server(vec![
+        vec![sse_function_call(
+            "nr-1",
+            COMPLETE_MESSAGE_REVIEW_TOOL,
+            &json!({
+                "answered_closures": [],
+                "decision": {
+                    "kind": "no_reply_would_help",
+                    "reason": "Courtesy thank-you message.",
+                    "basis_summary": "No open clinical question.",
+                    "limitations": [],
+                },
+                "raised_concern_ids": [],
+            }),
+        )],
+        vec![sse_assistant_message("Settled as no reply needed.")],
+    ])
+    .await;
+    run_message_review(
+        &store,
+        auth.as_ref(),
+        &practice,
+        conv_ask,
+        &MessageReviewOptions::default(),
+        &roles,
+        &skills,
+        &mut p_nr,
+        engine::RunLimits::default(),
+        &engine::Cancellation::default(),
+    )
+    .await
+    .unwrap();
+
+    let ask_out = store
+        .ask_coda_to_reply(
+            &access,
+            &CommandKey::new("ask-coda-ac6").unwrap(),
+            conv_ask,
+            &mut PostgresWorkspaceAuthority,
+        )
+        .await
+        .unwrap();
+    assert!(matches!(
+        ask_out,
+        AskCodaToReplyOutcome::QueuedReview { .. }
+    ));
+
+    let (mut p_asked, asked_reqs) = spawn_responses_sse_server(vec![
+        // Turn 1 tries `no_reply_would_help` -> MUST be refused because physician clicked `Ask Coda to reply`!
+        vec![sse_function_call(
+            "refused-nr",
+            COMPLETE_MESSAGE_REVIEW_TOOL,
+            &json!({
+                "answered_closures": [],
+                "decision": {
+                    "kind": "no_reply_would_help",
+                    "reason": "Still just thanks.",
+                    "basis_summary": "Attempted no-reply after physician request.",
+                    "limitations": [],
+                },
+                "raised_concern_ids": [],
+            }),
+        )],
+        vec![sse_function_call(
+            "propose-after-ask",
+            COMPLETE_MESSAGE_REVIEW_TOOL,
+            &json!({
+                "answered_closures": [],
+                "decision": {
+                    "kind": "propose_reply",
+                    "reply_text": "You're very welcome—please message us anytime if questions come up.",
+                    "basis_summary": "Drafted closing acknowledgement requested by physician.",
+                    "limitations": [],
+                    "cited_records": [],
+                    "addresses_medication_question": false,
+                },
+                "raised_concern_ids": [],
+            }),
+        )],
+        vec![sse_assistant_message("Proposed physician-requested reply.")],
+    ])
+    .await;
+    run_message_review(
+        &store,
+        auth.as_ref(),
+        &practice,
+        conv_ask,
+        &MessageReviewOptions::default(),
+        &roles,
+        &skills,
+        &mut p_asked,
+        engine::RunLimits::default(),
+        &engine::Cancellation::default(),
+    )
+    .await
+    .unwrap();
+
+    let asked_wire = serde_json::to_string(&asked_reqs.lock().unwrap()[1]["input"]).unwrap();
+    assert!(
+        asked_wire.contains("Ask Coda to reply") || asked_wire.contains("propose_reply"),
+        "Ask Coda to reply must refuse no_reply_would_help: {asked_wire}"
+    );
+}
+
+#[tokio::test]
+async fn ac7_end_to_end_synthetic_spruce_webhook_match_link_review_surfaces_evidence_reopen_and_later_update()
+ {
+    let Some(url) = database_url() else {
+        return;
+    };
+    let (store, auth) = connect_stores(&url).await;
+    let now_ts = current_unix_ts();
+    let practice = format!("prac-ac7-{}", Uuid::new_v4().simple());
+    auth.ensure_practice(&practice, PracticeClock::Fixed(now_ts as u64))
+        .await
+        .unwrap();
+
+    let (dr, dr_token, dr_hash) =
+        invite_and_sign_in(&auth, &practice, "dr-ac7", now_ts as u64).await;
+    let patient = SourcePatient {
+        source_patient_id: format!("pat-ac7-{}", Uuid::new_v4().simple()),
+        display_name: "Clara Oswald".into(),
+        birth_date: Some("1986-11-23".into()),
+        sex_or_gender: Some("female".into()),
+        medical_record_numbers: vec![MedicalRecordNumber {
+            system: "clinic-ehr".into(),
+            value: "MRN-7701".into(),
+        }],
+    };
+    let workspace = workspace_id("clinic-ehr", &patient.source_patient_id);
+    auth.register_patient(&practice, &workspace).await.unwrap();
+    auth.set_membership(&dr, &workspace, Membership::Allowed)
+        .await
+        .unwrap();
+
+    let bmp_v1 = chart_record(
+        &workspace,
+        "clinic-ehr",
+        "lab-bmp-ac7",
+        "rev-1",
+        "Observation",
+        "2026-11-11",
+        "Basic Metabolic Panel",
+        "Potassium 5.5 mmol/L, Creatinine 1.04 mg/dL on lisinopril 20 mg daily.",
+    );
+    store
+        .record_chart(
+            &workspace,
+            &[bmp_v1],
+            &SourcePull {
+                source_id: "clinic-ehr".into(),
+                source_label: "Clinic EHR".into(),
+                patient: patient.clone(),
+                pulled_at: Some(now_ts),
+            },
+        )
+        .await
+        .unwrap();
+
+    // 1. Connect Spruce channel, confirm sender address, ingest webhook item, and run matching -> auto-link!
+    store
+        .connect_spruce_channel(auth.as_ref(), &dr, 0, None, now_ts)
+        .await
+        .unwrap();
+    let lease = store
+        .acquire_spruce_reader_lease(&practice, "worker-ac7", 120, now_ts)
+        .await
+        .unwrap();
+    let clara_phone = SenderAddress::parse("(415) 555-0199").unwrap();
+    store
+        .record_spruce_confirmed_sender(
+            &practice,
+            &clara_phone,
+            &workspace,
+            &dr.physician_id,
+            now_ts,
+        )
+        .await
+        .unwrap();
+
+    let conv_id = "spruce-conv-ac7";
+    let msg_1_text =
+        "I saw my potassium was 5.5 on yesterday's portal result—do I need a repeat lab?";
+    store
+        .ingest_spruce_item(
+            &practice,
+            &lease.lease_token,
+            &IncomingSpruceItem::Readable(ReadableSpruceItem {
+                message_id: "spruce-msg-1".into(),
+                conversation_id: conv_id.into(),
+                channel_position: 1,
+                content_version: "v1".into(),
+                sender_address: Some(clara_phone.clone()),
+                author_name: Some("Clara Oswald".into()),
+                body_text: msg_1_text.into(),
+                attachments: Vec::new(),
+                app_url: None,
+                created_at_spruce: None,
+                outside_participants: vec![OutsideParticipant {
+                    display_name: Some("Clara Oswald".into()),
+                    endpoint_channel: Some("sms".into()),
+                    endpoint_address: Some(clara_phone),
+                    saved_contact_id: None,
+                }],
+            }),
+            now_ts + 5,
+        )
+        .await
+        .unwrap();
+
+    let skills = load_skills();
+    let roles = distinct_roles();
+    let receiver = RecordingReviewReceiver::default();
+
+    let (mut p_match, _) = spawn_responses_sse_server(vec![
+        vec![sse_function_call(
+            "submit-match",
+            SUBMIT_CLASSIFICATION_TOOL,
+            &json!({
+                "classification": "patient_mail",
+                "urgency": "ordinary",
+                "match_outcome": "suggested_patient",
+                "suggested_workspace": workspace,
+                "evidence_summary": "Confirmed SMS sender +14155550199 uniquely matches Clara Oswald.",
+                "rationale": "Patient portal lab question from confirmed sender.",
+            }),
+        )],
+        vec![sse_assistant_message("Matched and auto-linked message.")],
+    ])
+    .await;
+
+    run_spruce_message_matching(
+        &store,
+        auth.as_ref(),
+        &practice,
+        "spruce-msg-1",
+        &roles,
+        &skills,
+        &mut p_match,
+        Some(&receiver),
+        engine::RunLimits::default(),
+        &engine::Cancellation::default(),
+    )
+    .await
+    .unwrap();
+    assert_eq!(receiver.snapshot().len(), 1);
+    assert_eq!(receiver.snapshot()[0].patient_workspace_id, workspace);
+
+    // 2. Mirror the auto-linked conversation into the reply owner and run `run_message_review`:
+    store
+        .link_reply_conversation(
+            &practice,
+            conv_id,
+            ConversationLink::LinkedPatient {
+                workspace: workspace.clone(),
+            },
+        )
+        .await
+        .unwrap();
+    store
+        .record_linked_patient_message(&RecordPatientMessage {
+            practice: practice.clone(),
+            conversation_id: conv_id.into(),
+            message_id: "spruce-msg-1".into(),
+            sender: MessageSender::Patient,
+            text: msg_1_text.into(),
+            sent_at: now_ts + 5,
+        })
+        .await
+        .unwrap();
+
+    let (mut p_rev1, _) = spawn_responses_sse_server(vec![
+        vec![
+            sse_function_call(
+                "read-bmp-ac7",
+                READ_TOOL,
+                &json!({
+                    "references": [{ "candidate_id": "lab-bmp-ac7", "revision": "rev-1", "cursor": null }],
+                    "max_result_bytes": 16_384,
+                }),
+            ),
+            sse_function_call(
+                "concern-k-ac7",
+                CONCERN_TOOL,
+                &json!({
+                    "operation": "raise",
+                    "concern_id": "concern-mild-hyperkalemia",
+                    "urgency": "today",
+                    "reason": "Potassium 5.5 mmol/L on 2026-11-11 while taking lisinopril 20 mg daily; patient asking whether to repeat BMP.",
+                    "records": [{ "candidate_id": "lab-bmp-ac7", "revision": "rev-1" }],
+                }),
+            ),
+        ],
+        vec![sse_function_call(
+            "done-rev1",
+            COMPLETE_MESSAGE_REVIEW_TOOL,
+            &json!({
+                "answered_closures": [],
+                "decision": {
+                    "kind": "propose_reply",
+                    "reply_text": "Thank you for checking in. Your potassium was mildly elevated at 5.5 mmol/L on November 11; your doctor is reviewing whether to order a repeat lab draw and we will update you shortly.",
+                    "basis_summary": "2026-11-11 BMP shows potassium 5.5 mmol/L on lisinopril 20 mg; physician decision needed on repeat BMP.",
+                    "limitations": [],
+                    "cited_records": [{ "candidate_id": "lab-bmp-ac7", "revision": "rev-1" }],
+                    "addresses_medication_question": false,
+                },
+                "raised_concern_ids": ["concern-mild-hyperkalemia"],
+            }),
+        )],
+        vec![sse_assistant_message("Saved v1 proposal and Today concern.")],
+    ])
+    .await;
+
+    let rev1 = run_message_review(
+        &store,
+        auth.as_ref(),
+        &practice,
+        conv_id,
+        &MessageReviewOptions::default(),
+        &roles,
+        &skills,
+        &mut p_rev1,
+        engine::RunLimits::default(),
+        &engine::Cancellation::default(),
+    )
+    .await
+    .unwrap();
+    assert!(matches!(rev1.outcome, ReplyReviewOutcome::Applied(_)));
+
+    // 3. Inspect physician reply surface, Today projection, Updates projection, and reopen cited evidence:
+    let access = WorkspaceAccess {
+        practice: &practice,
+        physician: &dr.physician_id,
+        workspace: &workspace,
+        session_hash: &dr_hash,
+    };
+    let surface_1 = store
+        .physician_reply_surface(&access, conv_id, &mut PostgresWorkspaceAuthority)
+        .await
+        .unwrap();
+    assert!(matches!(surface_1, PhysicianReplySurface::OpenCard(_)));
+
+    let today = store
+        .read_today(auth.as_ref(), &dr_token, now_ts as u64, &BTreeMap::new())
+        .await
+        .unwrap();
+    let expected_concern_id = ConcernId::new("concern-mild-hyperkalemia").unwrap();
+    let thread_row = today
+        .rows
+        .iter()
+        .find(|r| r.item_key.as_str() == format!("reply:{workspace}:{conv_id}"))
+        .expect("Today unified message thread row visible to panel physician");
+    assert!(
+        matches!(
+            &thread_row.payload,
+            TodayRowPayload::MessageThread {
+                reply_ready: true,
+                open_concern_ids,
+                ..
+            } if open_concern_ids.contains(&expected_concern_id)
+        ),
+        "Today message thread row carries reply_ready and attached open concern: {:?}",
+        thread_row.payload
+    );
+    assert!(
+        !today
+            .rows
+            .iter()
+            .any(|r| r.item_key.as_str().contains("concern-mild-hyperkalemia")),
+        "attached concern is absorbed into the message thread Today row rather than duplicated"
+    );
+    let opened_thread = store
+        .open_today_or_update_item(
+            auth.as_ref(),
+            &mut PostgresWorkspaceAuthority,
+            &OpenItemRequest {
+                token: &dr_token,
+                real_now_unix: now_ts as u64,
+                workspace: &workspace,
+                item_key: &thread_row.item_key,
+                command_key: &CommandKey::new("open-ac7-thread").unwrap(),
+                patient_names: &BTreeMap::new(),
+            },
+        )
+        .await
+        .unwrap();
+    assert_eq!(opened_thread.citations.len(), 1);
+    assert_eq!(
+        opened_thread.citations[0].reference,
+        ExactRecordReference::new("lab-bmp-ac7", "rev-1").unwrap()
+    );
+    assert!(opened_thread.citations[0].body.contains("5.5 mmol/L"));
+    assert!(opened_thread.clinical_body.contains("5.5 mmol/L"));
+
+    let updates = store
+        .read_updates(auth.as_ref(), &dr_token, now_ts as u64, &BTreeMap::new())
+        .await
+        .unwrap();
+    let concern_update = updates
+        .today_items
+        .iter()
+        .find(|u| u.item_key.as_str() == format!("concern:{workspace}:concern-mild-hyperkalemia"))
+        .expect("concern update visible to panel physician");
+    assert!(
+        updates
+            .today_items
+            .iter()
+            .any(|u| u.item_key.as_str() == format!("reply-proposal:{workspace}:{conv_id}:1"))
+    );
+    let opened_evidence = store
+        .open_today_or_update_item(
+            auth.as_ref(),
+            &mut PostgresWorkspaceAuthority,
+            &OpenItemRequest {
+                token: &dr_token,
+                real_now_unix: now_ts as u64,
+                workspace: &workspace,
+                item_key: &concern_update.item_key,
+                command_key: &CommandKey::new("open-ac7-concern").unwrap(),
+                patient_names: &BTreeMap::new(),
+            },
+        )
+        .await
+        .unwrap();
+    assert_eq!(opened_evidence.citations.len(), 1);
+    assert_eq!(
+        opened_evidence.citations[0].reference,
+        ExactRecordReference::new("lab-bmp-ac7", "rev-1").unwrap()
+    );
+    assert!(opened_evidence.citations[0].body.contains("5.5 mmol/L"));
+
+    // 4. Later message arrives BEFORE physician edits draft -> replaces v1 (`NewerReplyReplacedPrevious`):
+    store
+        .record_linked_patient_message(&RecordPatientMessage {
+            practice: practice.clone(),
+            conversation_id: conv_id.into(),
+            message_id: "spruce-msg-2".into(),
+            sender: MessageSender::Patient,
+            text: "Also I have no muscle weakness or palpitations.".into(),
+            sent_at: now_ts + 30,
+        })
+        .await
+        .unwrap();
+
+    let (mut p_rev2, _) = spawn_responses_sse_server(vec![
+        vec![sse_function_call(
+            "read-bmp-2",
+            READ_TOOL,
+            &json!({
+                "references": [{ "candidate_id": "lab-bmp-ac7", "revision": "rev-1", "cursor": null }],
+                "max_result_bytes": 16_384,
+            }),
+        )],
+        vec![sse_function_call(
+            "done-rev2",
+            COMPLETE_MESSAGE_REVIEW_TOOL,
+            &json!({
+                "answered_closures": [],
+                "decision": {
+                    "kind": "propose_reply",
+                    "reply_text": "Glad to hear you feel well without weakness or palpitations. Your doctor is reviewing your 5.5 mmol/L potassium result and will let you know next steps.",
+                    "basis_summary": "Incorporated reassuring symptom update alongside 2026-11-11 BMP.",
+                    "limitations": [],
+                    "cited_records": [{ "candidate_id": "lab-bmp-ac7", "revision": "rev-1" }],
+                    "addresses_medication_question": false,
+                },
+                "raised_concern_ids": [],
+            }),
+        )],
+        vec![sse_assistant_message("Published v2 proposal.")],
+    ])
+    .await;
+    run_message_review(
+        &store,
+        auth.as_ref(),
+        &practice,
+        conv_id,
+        &MessageReviewOptions::default(),
+        &roles,
+        &skills,
+        &mut p_rev2,
+        engine::RunLimits::default(),
+        &engine::Cancellation::default(),
+    )
+    .await
+    .unwrap();
+
+    let card_v2 = store
+        .reply_card(&access, conv_id, &mut PostgresWorkspaceAuthority)
+        .await
+        .unwrap()
+        .unwrap();
+    assert!(matches!(
+        &card_v2.displayed_text,
+        DisplayedReplyText::CodaProposal { version: 2, text, .. }
+            if text.contains("without weakness or palpitations")
+    ));
+
+    // 5. Physician edits v2 (`YourText`), then corrected lab (`rev-2`, 4.4 mmol/L) arrives ->
+    // `run_message_review` publishes v3 while keeping physician's `YourText` and offering `coda_update_offer`!
+    store
+        .edit_reply_proposal_draft(
+            &access,
+            conv_id,
+            ExpectedDraftBase::ProposalVersion(2),
+            "Physician draft: please come to the lab Friday morning for a non-hemolyzed repeat potassium.",
+            &mut PostgresWorkspaceAuthority,
+        )
+        .await
+        .unwrap();
+    let bmp_v2 = chart_record(
+        &workspace,
+        "clinic-ehr",
+        "lab-bmp-ac7",
+        "rev-2",
+        "Observation",
+        "2026-11-12",
+        "Corrected Basic Metabolic Panel",
+        "Addendum: repeat spun potassium 4.4 mmol/L (initial 5.5 was pseudohyperkalemia).",
+    );
+    store.record_source(&bmp_v2).await.unwrap();
+    store
+        .record_linked_patient_message(&RecordPatientMessage {
+            practice: practice.clone(),
+            conversation_id: conv_id.into(),
+            message_id: "spruce-msg-3".into(),
+            sender: MessageSender::Patient,
+            text: "Did the lab post any update on whether that first sample was hemolyzed?".into(),
+            sent_at: now_ts + 45,
+        })
+        .await
+        .unwrap();
+
+    let (mut p_rev3, _) = spawn_responses_sse_server(vec![
+        vec![sse_function_call(
+            "read-bmp-3",
+            READ_TOOL,
+            &json!({
+                "references": [{ "candidate_id": "lab-bmp-ac7", "revision": "rev-2", "cursor": null }],
+                "max_result_bytes": 16_384,
+            }),
+        )],
+        vec![sse_function_call(
+            "done-rev3",
+            COMPLETE_MESSAGE_REVIEW_TOOL,
+            &json!({
+                "answered_closures": [],
+                "decision": {
+                    "kind": "propose_reply",
+                    "reply_text": "Good news—the lab posted a corrected potassium result of 4.4 mmol/L (normal), so no repeat blood draw is needed.",
+                    "basis_summary": "Lab addendum rev-2 corrected potassium to 4.4 mmol/L.",
+                    "limitations": [],
+                    "cited_records": [{ "candidate_id": "lab-bmp-ac7", "revision": "rev-2" }],
+                    "addresses_medication_question": false,
+                },
+                "raised_concern_ids": [],
+            }),
+        )],
+        vec![sse_assistant_message(
+            "Published v3 proposal after lab correction.",
+        )],
+    ])
+    .await;
+    run_message_review(
+        &store,
+        auth.as_ref(),
+        &practice,
+        conv_id,
+        &MessageReviewOptions {
+            review_id: None,
+            coalesced_changed_candidates: vec!["lab-bmp-ac7".into()],
+            extra_attachments: Vec::new(),
+        },
+        &roles,
+        &skills,
+        &mut p_rev3,
+        engine::RunLimits::default(),
+        &engine::Cancellation::default(),
+    )
+    .await
+    .unwrap();
+
+    let card_v3 = store
+        .reply_card(&access, conv_id, &mut PostgresWorkspaceAuthority)
+        .await
+        .unwrap()
+        .unwrap();
+    assert!(matches!(
+        &card_v3.displayed_text,
+        DisplayedReplyText::PhysicianDraft {
+            kind: PhysicianDraftKind::YourText,
+            text,
+            ..
+        } if text.contains("Physician draft: please come to the lab Friday morning")
+    ));
+    let offer = card_v3
+        .coda_update_offer
+        .expect("physician holding a draft must receive coda_update_offer when v3 arrives");
+    assert_eq!(offer.offered_version, 3);
+    assert!(
+        offer
+            .offered_text
+            .contains("corrected potassium result of 4.4 mmol/L")
+    );
+}
+
+#[tokio::test]
+async fn round1_mid_run_conversation_and_source_updates_keep_product_message_id_and_clear_refused_staged_submission()
+ {
+    let Some(url) = database_url() else {
+        return;
+    };
+    let (store, auth) = connect_stores(&url).await;
+    let now_ts = current_unix_ts();
+    let practice = format!("prac-r1-midrun-{}", Uuid::new_v4().simple());
+    auth.ensure_practice(&practice, PracticeClock::Fixed(now_ts as u64))
+        .await
+        .unwrap();
+
+    let (dr, _tok, dr_hash) =
+        invite_and_sign_in(&auth, &practice, "dr-r1-midrun", now_ts as u64).await;
+    let patient = SourcePatient {
+        source_patient_id: format!("pat-r1-midrun-{}", Uuid::new_v4().simple()),
+        display_name: "Nora Takahashi".into(),
+        birth_date: Some("1975-09-12".into()),
+        sex_or_gender: Some("female".into()),
+        medical_record_numbers: vec![MedicalRecordNumber {
+            system: "clinic-ehr".into(),
+            value: "MRN-R1-MID".into(),
+        }],
+    };
+    let workspace = workspace_id("clinic-ehr", &patient.source_patient_id);
+    auth.register_patient(&practice, &workspace).await.unwrap();
+    auth.set_membership(&dr, &workspace, Membership::Allowed)
+        .await
+        .unwrap();
+
+    let bmp_v1 = chart_record(
+        &workspace,
+        "clinic-ehr",
+        "lab-bmp-midrun",
+        "rev-1",
+        "Observation",
+        "2026-11-11",
+        "Basic Metabolic Panel",
+        "Creatinine 0.96 mg/dL, Potassium 4.2 mmol/L.",
+    );
+    store
+        .record_chart(
+            &workspace,
+            &[bmp_v1],
+            &SourcePull {
+                source_id: "clinic-ehr".into(),
+                source_label: "Clinic EHR".into(),
+                patient: patient.clone(),
+                pulled_at: Some(now_ts),
+            },
+        )
+        .await
+        .unwrap();
+
+    let conv_id = "conv-r1-midrun";
+    store
+        .link_reply_conversation(
+            &practice,
+            conv_id,
+            ConversationLink::LinkedPatient {
+                workspace: workspace.clone(),
+            },
+        )
+        .await
+        .unwrap();
+    store
+        .record_linked_patient_message(&RecordPatientMessage {
+            practice: practice.clone(),
+            conversation_id: conv_id.into(),
+            message_id: "pm-midrun-1".into(),
+            sender: MessageSender::Patient,
+            text: "Did my metabolic panel from yesterday look normal?".into(),
+            sent_at: now_ts + 5,
+        })
+        .await
+        .unwrap();
+
+    struct MidRunReconsiderationProvider {
+        store: Store,
+        practice: String,
+        workspace: String,
+        conv_id: String,
+        now_ts: i64,
+        turn: usize,
+    }
+
+    impl engine::recipe::Provider for MidRunReconsiderationProvider {
+        async fn exchange(
+            &mut self,
+            request: &engine::recipe::Request,
+            _: &engine::Cancellation,
+            _: &engine::RunLimits,
+            _: &mut dyn engine::recipe::Observer,
+        ) -> Result<engine::Turn, engine::Cause> {
+            self.turn += 1;
+            let wire = serde_json::to_string(&request.items).unwrap();
+            match self.turn {
+                1 => Ok(engine::Turn {
+                    items: vec![engine::Item::Call(engine::Invocation {
+                        id: "read-v1".into(),
+                        name: READ_TOOL.into(),
+                        arguments: json!({
+                            "references": [{ "candidate_id": "lab-bmp-midrun", "revision": "rev-1", "cursor": null }],
+                            "max_result_bytes": 16_384,
+                        })
+                        .to_string(),
+                    })],
+                    receipt: json!({"turn": 1}),
+                    usage: Default::default(),
+                }),
+                2 => Ok(engine::Turn {
+                    items: vec![engine::Item::Call(engine::Invocation {
+                        id: "stage-before-msg2".into(),
+                        name: COMPLETE_MESSAGE_REVIEW_TOOL.into(),
+                        arguments: json!({
+                            "answered_closures": [],
+                            "decision": {
+                                "kind": "propose_reply",
+                                "reply_text": "Your metabolic panel is normal.",
+                                "basis_summary": "BMP rev-1 normal.",
+                                "limitations": [],
+                                "cited_records": [{ "candidate_id": "lab-bmp-midrun", "revision": "rev-1" }],
+                                "addresses_medication_question": false,
+                            },
+                            "raised_concern_ids": [],
+                        })
+                        .to_string(),
+                    })],
+                    receipt: json!({"turn": 2}),
+                    usage: Default::default(),
+                }),
+                3 => {
+                    // Inject a second linked patient message BEFORE `finish` runs on Turn 3!
+                    self.store
+                        .record_linked_patient_message(&RecordPatientMessage {
+                            practice: self.practice.clone(),
+                            conversation_id: self.conv_id.clone(),
+                            message_id: "pm-midrun-2".into(),
+                            sender: MessageSender::Patient,
+                            text: "Also I noticed mild ankle puffiness after salty soup.".into(),
+                            sent_at: self.now_ts + 25,
+                        })
+                        .await
+                        .unwrap();
+                    Ok(engine::Turn {
+                        items: vec![engine::Item::assistant(
+                            "Attempting to finish before reading pm-midrun-2.",
+                        )],
+                        receipt: json!({"turn": 3}),
+                        usage: Default::default(),
+                    })
+                }
+                4 => {
+                    // Verify `conversation_updated` refreshed the `ProductMessage` cleanly in place
+                    // (stable `ProductMessage.id`, zero `"unavailable"` replacement!).
+                    assert!(
+                        wire.contains("conversation_updated")
+                            && wire.contains("mild ankle puffiness after salty soup")
+                            && !wire.contains("message is no longer available"),
+                        "ProductMessage must refresh cleanly with stable id after conversation_updated: {wire}"
+                    );
+                    let runs = self
+                        .store
+                        .message_review_runs_for_conversation(&self.practice, &self.conv_id)
+                        .await
+                        .unwrap();
+                    assert!(
+                        runs[0].staged_submission.is_none(),
+                        "staged_submission must clear on conversation_updated"
+                    );
+                    // Now submit an invalid `all_handled` with open messages to trigger `completion_refused` in `finish`:
+                    Ok(engine::Turn {
+                        items: vec![engine::Item::Call(engine::Invocation {
+                            id: "stage-refusable".into(),
+                            name: COMPLETE_MESSAGE_REVIEW_TOOL.into(),
+                            arguments: json!({
+                                "answered_closures": [],
+                                "decision": {
+                                    "kind": "all_handled",
+                                    "basis_summary": "Prematurely claiming all handled while open messages exist.",
+                                },
+                                "raised_concern_ids": [],
+                            })
+                            .to_string(),
+                        })],
+                        receipt: json!({"turn": 4}),
+                        usage: Default::default(),
+                    })
+                }
+                5 => Ok(engine::Turn {
+                    items: vec![engine::Item::assistant(
+                        "Attempting to finish with refusable all_handled.",
+                    )],
+                    receipt: json!({"turn": 5}),
+                    usage: Default::default(),
+                }),
+                6 => {
+                    assert!(
+                        wire.contains("completion_refused"),
+                        "expected completion_refused feedback on Turn 6: {wire}"
+                    );
+                    let runs = self
+                        .store
+                        .message_review_runs_for_conversation(&self.practice, &self.conv_id)
+                        .await
+                        .unwrap();
+                    assert!(
+                        runs[0].staged_submission.is_none(),
+                        "staged_submission must be cleared in DB after completion_refused"
+                    );
+                    // Stage a valid proposal, then inject a chart update `rev-2` on Turn 7 before `finish`!
+                    Ok(engine::Turn {
+                        items: vec![engine::Item::Call(engine::Invocation {
+                            id: "stage-before-source-move".into(),
+                            name: COMPLETE_MESSAGE_REVIEW_TOOL.into(),
+                            arguments: json!({
+                                "answered_closures": [],
+                                "decision": {
+                                    "kind": "propose_reply",
+                                    "reply_text": "Your BMP is normal; elevate your ankles and monitor swelling.",
+                                    "basis_summary": "BMP rev-1 normal.",
+                                    "limitations": [],
+                                    "cited_records": [{ "candidate_id": "lab-bmp-midrun", "revision": "rev-1" }],
+                                    "addresses_medication_question": false,
+                                },
+                                "raised_concern_ids": [],
+                            })
+                            .to_string(),
+                        })],
+                        receipt: json!({"turn": 6}),
+                        usage: Default::default(),
+                    })
+                }
+                7 => {
+                    let bmp_v2 = chart_record(
+                        &self.workspace,
+                        "clinic-ehr",
+                        "lab-bmp-midrun",
+                        "rev-2",
+                        "Observation",
+                        "2026-11-12",
+                        "Basic Metabolic Panel Addendum",
+                        "Addendum: Albumin 4.1 g/dL (normal), Creatinine 0.96 mg/dL, Potassium 4.2 mmol/L.",
+                    );
+                    self.store.record_source(&bmp_v2).await.unwrap();
+                    Ok(engine::Turn {
+                        items: vec![engine::Item::assistant(
+                            "Attempting to finish before reading rev-2.",
+                        )],
+                        receipt: json!({"turn": 7}),
+                        usage: Default::default(),
+                    })
+                }
+                8 => {
+                    assert!(
+                        wire.contains("sources_changed"),
+                        "expected sources_changed feedback on Turn 8: {wire}"
+                    );
+                    let runs = self
+                        .store
+                        .message_review_runs_for_conversation(&self.practice, &self.conv_id)
+                        .await
+                        .unwrap();
+                    assert!(
+                        runs[0].staged_submission.is_none(),
+                        "staged_submission must clear on sources_changed"
+                    );
+                    assert_eq!(runs[0].starting_context.source_version, 2);
+                    Ok(engine::Turn {
+                        items: vec![engine::Item::Call(engine::Invocation {
+                            id: "read-v2".into(),
+                            name: READ_TOOL.into(),
+                            arguments: json!({
+                                "references": [{ "candidate_id": "lab-bmp-midrun", "revision": "rev-2", "cursor": null }],
+                                "max_result_bytes": 16_384,
+                            })
+                            .to_string(),
+                        })],
+                        receipt: json!({"turn": 8}),
+                        usage: Default::default(),
+                    })
+                }
+                9 => Ok(engine::Turn {
+                    items: vec![engine::Item::Call(engine::Invocation {
+                        id: "stage-final".into(),
+                        name: COMPLETE_MESSAGE_REVIEW_TOOL.into(),
+                        arguments: json!({
+                            "answered_closures": [],
+                            "decision": {
+                                "kind": "propose_reply",
+                                "reply_text": "Your metabolic panel (including normal albumin 4.1 g/dL and kidney function) looks great. Mild ankle puffiness after salty food often settles with leg elevation; please let us know if swelling persists or you notice shortness of breath.",
+                                "basis_summary": "Verified updated BMP rev-2 (albumin 4.1, Cr 0.96, K 4.2) and addressed pm-midrun-2.",
+                                "limitations": [],
+                                "cited_records": [{ "candidate_id": "lab-bmp-midrun", "revision": "rev-2" }],
+                                "addresses_medication_question": false,
+                            },
+                            "raised_concern_ids": [],
+                        })
+                        .to_string(),
+                    })],
+                    receipt: json!({"turn": 9}),
+                    usage: Default::default(),
+                }),
+                10 => Ok(engine::Turn {
+                    items: vec![engine::Item::assistant("Completed message review.")],
+                    receipt: json!({"turn": 10}),
+                    usage: Default::default(),
+                }),
+                other => panic!("unexpected turn {other}"),
+            }
+        }
+    }
+
+    let skills = load_skills();
+    let roles = distinct_roles();
+    let completed = run_message_review(
+        &store,
+        auth.as_ref(),
+        &practice,
+        conv_id,
+        &MessageReviewOptions::default(),
+        &roles,
+        &skills,
+        &mut MidRunReconsiderationProvider {
+            store: store.clone(),
+            practice: practice.clone(),
+            workspace: workspace.clone(),
+            conv_id: conv_id.into(),
+            now_ts,
+            turn: 0,
+        },
+        engine::RunLimits::default(),
+        &engine::Cancellation::default(),
+    )
+    .await
+    .unwrap();
+    assert_eq!(completed.run.status, MessageReviewRunStatus::Completed);
+
+    let access = WorkspaceAccess {
+        practice: &practice,
+        physician: &dr.physician_id,
+        workspace: &workspace,
+        session_hash: &dr_hash,
+    };
+    let card = store
+        .reply_card(&access, conv_id, &mut PostgresWorkspaceAuthority)
+        .await
+        .unwrap()
+        .unwrap();
+    assert!(matches!(
+        &card.displayed_text,
+        DisplayedReplyText::CodaProposal { text, .. } if text.contains("albumin 4.1 g/dL")
+    ));
+}
+
+#[tokio::test]
+async fn round1_failed_or_held_default_review_id_restarts_cleanly_on_retry() {
+    let Some(url) = database_url() else {
+        return;
+    };
+    let (store, auth) = connect_stores(&url).await;
+    let now_ts = current_unix_ts();
+    let practice = format!("prac-r1-retry-{}", Uuid::new_v4().simple());
+    auth.ensure_practice(&practice, PracticeClock::Fixed(now_ts as u64))
+        .await
+        .unwrap();
+
+    let (dr, _tok, dr_hash) =
+        invite_and_sign_in(&auth, &practice, "dr-r1-retry", now_ts as u64).await;
+    let patient = SourcePatient {
+        source_patient_id: format!("pat-r1-retry-{}", Uuid::new_v4().simple()),
+        display_name: "Caleb Vance".into(),
+        birth_date: Some("1982-04-19".into()),
+        sex_or_gender: Some("male".into()),
+        medical_record_numbers: vec![MedicalRecordNumber {
+            system: "clinic-ehr".into(),
+            value: "MRN-R1-RETRY".into(),
+        }],
+    };
+    let workspace = workspace_id("clinic-ehr", &patient.source_patient_id);
+    auth.register_patient(&practice, &workspace).await.unwrap();
+    auth.set_membership(&dr, &workspace, Membership::Allowed)
+        .await
+        .unwrap();
+
+    let rec = chart_record(
+        &workspace,
+        "clinic-ehr",
+        "obs-a1c-retry",
+        "rev-1",
+        "Observation",
+        "2026-11-11",
+        "Hemoglobin A1c",
+        "Hemoglobin A1c 5.9%.",
+    );
+    store
+        .record_chart(
+            &workspace,
+            &[rec],
+            &SourcePull {
+                source_id: "clinic-ehr".into(),
+                source_label: "Clinic EHR".into(),
+                patient: patient.clone(),
+                pulled_at: Some(now_ts),
+            },
+        )
+        .await
+        .unwrap();
+
+    let conv_id = "conv-r1-retry";
+    store
+        .link_reply_conversation(
+            &practice,
+            conv_id,
+            ConversationLink::LinkedPatient {
+                workspace: workspace.clone(),
+            },
+        )
+        .await
+        .unwrap();
+    store
+        .record_linked_patient_message(&RecordPatientMessage {
+            practice: practice.clone(),
+            conversation_id: conv_id.into(),
+            message_id: "pm-retry-1".into(),
+            sender: MessageSender::Patient,
+            text: "How did my A1c look?".into(),
+            sent_at: now_ts + 10,
+        })
+        .await
+        .unwrap();
+
+    struct FailingProvider;
+    impl engine::recipe::Provider for FailingProvider {
+        async fn exchange(
+            &mut self,
+            _: &engine::recipe::Request,
+            _: &engine::Cancellation,
+            _: &engine::RunLimits,
+            _: &mut dyn engine::recipe::Observer,
+        ) -> Result<engine::Turn, engine::Cause> {
+            Err("simulated provider transport outage".into())
+        }
+    }
+
+    let skills = load_skills();
+    let roles = distinct_roles();
+
+    // 1. Provider error with `MessageReviewOptions::default()` (`review_id: None`) exposes `review_id`
+    //    and leaves the conversation restartable by a subsequent default-options call!
+    let err_failed = run_message_review(
+        &store,
+        auth.as_ref(),
+        &practice,
+        conv_id,
+        &MessageReviewOptions::default(),
+        &roles,
+        &skills,
+        &mut FailingProvider,
+        engine::RunLimits::default(),
+        &engine::Cancellation::default(),
+    )
+    .await
+    .unwrap_err();
+    let failed_review_id = match err_failed {
+        MessageReviewRecipeError::Harness {
+            review_id: Some(review_id),
+            ..
+        } => review_id,
+        other => panic!("expected Harness error with review_id, got {other:?}"),
+    };
+
+    // 2. Subsequent `HeldWithoutDecision` (assistant returns without calling `complete_message_review`)
+    //    with `MessageReviewOptions::default()` reuses the active review without `StaleReview`!
+    let (mut p_held, _) = spawn_responses_sse_server(vec![vec![sse_assistant_message(
+        "Stopped early without decision.",
+    )]])
+    .await;
+    let err_held = run_message_review(
+        &store,
+        auth.as_ref(),
+        &practice,
+        conv_id,
+        &MessageReviewOptions::default(),
+        &roles,
+        &skills,
+        &mut p_held,
+        engine::RunLimits {
+            max_calls: 1,
+            ..engine::RunLimits::default()
+        },
+        &engine::Cancellation::default(),
+    )
+    .await
+    .unwrap_err();
+    match err_held {
+        MessageReviewRecipeError::HeldWithoutDecision { review_id, .. } => {
+            assert_eq!(review_id, failed_review_id);
+        }
+        other => panic!("expected HeldWithoutDecision, got {other:?}"),
+    }
+
+    // 3. Third call with `MessageReviewOptions::default()` completes cleanly!
+    let (mut p_ok, _) = spawn_responses_sse_server(vec![
+        vec![sse_function_call(
+            "read-a1c",
+            READ_TOOL,
+            &json!({
+                "references": [{ "candidate_id": "obs-a1c-retry", "revision": "rev-1", "cursor": null }],
+                "max_result_bytes": 16_384,
+            }),
+        )],
+        vec![sse_function_call(
+            "done-a1c",
+            COMPLETE_MESSAGE_REVIEW_TOOL,
+            &json!({
+                "answered_closures": [],
+                "decision": {
+                    "kind": "propose_reply",
+                    "reply_text": "Your Hemoglobin A1c is 5.9%.",
+                    "basis_summary": "Verified 2026-11-11 A1c 5.9%.",
+                    "limitations": [],
+                    "cited_records": [{ "candidate_id": "obs-a1c-retry", "revision": "rev-1" }],
+                    "addresses_medication_question": false,
+                },
+                "raised_concern_ids": [],
+            }),
+        )],
+        vec![sse_assistant_message("Proposal saved on retry.")],
+    ])
+    .await;
+    let ok_run = run_message_review(
+        &store,
+        auth.as_ref(),
+        &practice,
+        conv_id,
+        &MessageReviewOptions::default(),
+        &roles,
+        &skills,
+        &mut p_ok,
+        engine::RunLimits::default(),
+        &engine::Cancellation::default(),
+    )
+    .await
+    .unwrap();
+    assert_eq!(ok_run.run.review_id, failed_review_id);
+    assert_eq!(ok_run.run.status, MessageReviewRunStatus::Completed);
+
+    let access = WorkspaceAccess {
+        practice: &practice,
+        physician: &dr.physician_id,
+        workspace: &workspace,
+        session_hash: &dr_hash,
+    };
+    let card = store
+        .reply_card(&access, conv_id, &mut PostgresWorkspaceAuthority)
+        .await
+        .unwrap()
+        .unwrap();
+    assert!(matches!(
+        &card.displayed_text,
+        DisplayedReplyText::CodaProposal { text, .. } if text.contains("5.9%")
+    ));
+}
+
+#[tokio::test]
+async fn round1_reply_revision_includes_linked_conversation_reconsiders_new_messages_and_records_tool_names()
+ {
+    let Some(url) = database_url() else {
+        return;
+    };
+    let (store, auth) = connect_stores(&url).await;
+    let now_ts = current_unix_ts();
+    let practice = format!("prac-r1-revconv-{}", Uuid::new_v4().simple());
+    auth.ensure_practice(&practice, PracticeClock::Fixed(now_ts as u64))
+        .await
+        .unwrap();
+
+    let (dr, _tok, dr_hash) =
+        invite_and_sign_in(&auth, &practice, "dr-r1-revconv", now_ts as u64).await;
+    let patient = SourcePatient {
+        source_patient_id: format!("pat-r1-revconv-{}", Uuid::new_v4().simple()),
+        display_name: "Hannah Lindqvist".into(),
+        birth_date: Some("1979-11-03".into()),
+        sex_or_gender: Some("female".into()),
+        medical_record_numbers: vec![MedicalRecordNumber {
+            system: "clinic-ehr".into(),
+            value: "MRN-R1-REVCONV".into(),
+        }],
+    };
+    let workspace = workspace_id("clinic-ehr", &patient.source_patient_id);
+    auth.register_patient(&practice, &workspace).await.unwrap();
+    auth.set_membership(&dr, &workspace, Membership::Allowed)
+        .await
+        .unwrap();
+
+    let lipid = chart_record(
+        &workspace,
+        "clinic-ehr",
+        "lab-ldl-revconv",
+        "rev-1",
+        "Observation",
+        "2026-11-10",
+        "Lipid Panel",
+        "LDL cholesterol 94 mg/dL, Triglycerides 118 mg/dL.",
+    );
+    store
+        .record_chart(
+            &workspace,
+            &[lipid],
+            &SourcePull {
+                source_id: "clinic-ehr".into(),
+                source_label: "Clinic EHR".into(),
+                patient: patient.clone(),
+                pulled_at: Some(now_ts),
+            },
+        )
+        .await
+        .unwrap();
+
+    let conv_id = "conv-r1-revconv";
+    store
+        .link_reply_conversation(
+            &practice,
+            conv_id,
+            ConversationLink::LinkedPatient {
+                workspace: workspace.clone(),
+            },
+        )
+        .await
+        .unwrap();
+    store
+        .record_linked_patient_message(&RecordPatientMessage {
+            practice: practice.clone(),
+            conversation_id: conv_id.into(),
+            message_id: "pm-revconv-1".into(),
+            sender: MessageSender::Patient,
+            text: "Hi Doctor, how did my fasting LDL cholesterol look on Monday's draw?".into(),
+            sent_at: now_ts + 10,
+        })
+        .await
+        .unwrap();
+
+    let skills = load_skills();
+    let roles = distinct_roles();
+    let (mut p_init, _) = spawn_responses_sse_server(vec![
+        vec![sse_function_call(
+            "read-ldl-init",
+            READ_TOOL,
+            &json!({
+                "references": [{ "candidate_id": "lab-ldl-revconv", "revision": "rev-1", "cursor": null }],
+                "max_result_bytes": 16_384,
+            }),
+        )],
+        vec![sse_function_call(
+            "done-ldl-init",
+            COMPLETE_MESSAGE_REVIEW_TOOL,
+            &json!({
+                "answered_closures": [],
+                "decision": {
+                    "kind": "propose_reply",
+                    "reply_text": "Your LDL cholesterol is 94 mg/dL and triglycerides are 118 mg/dL.",
+                    "basis_summary": "2026-11-10 lipid panel LDL 94, TG 118.",
+                    "limitations": [],
+                    "cited_records": [{ "candidate_id": "lab-ldl-revconv", "revision": "rev-1" }],
+                    "addresses_medication_question": false,
+                },
+                "raised_concern_ids": [],
+            }),
+        )],
+        vec![sse_assistant_message("Initial lipid proposal saved.")],
+    ])
+    .await;
+    run_message_review(
+        &store,
+        auth.as_ref(),
+        &practice,
+        conv_id,
+        &MessageReviewOptions::default(),
+        &roles,
+        &skills,
+        &mut p_init,
+        engine::RunLimits::default(),
+        &engine::Cancellation::default(),
+    )
+    .await
+    .unwrap();
+
+    let access = WorkspaceAccess {
+        practice: &practice,
+        physician: &dr.physician_id,
+        workspace: &workspace,
+        session_hash: &dr_hash,
+    };
+    store
+        .edit_reply_proposal_draft(
+            &access,
+            conv_id,
+            ExpectedDraftBase::ProposalVersion(1),
+            "Your fasting LDL is 94 mg/dL—right on target.",
+            &mut PostgresWorkspaceAuthority,
+        )
+        .await
+        .unwrap();
+
+    let (rev_recipe, _) = reply_revision_recipe(&roles, &skills).unwrap();
+    let ProposalRevisionAccepted::New { scope: draft_scope } = store
+        .request_reply_draft_revision(
+            &access,
+            conv_id,
+            &RevisionInput {
+                key: "rev-conv-msg-1".into(),
+                expected_revision: 1,
+                instruction:
+                    "Include triglycerides and answer any follow-up question in the thread.".into(),
+                timezone: "America/Los_Angeles".into(),
+                scenario: None,
+            },
+            &skills,
+            &rev_recipe,
+            &mut PostgresWorkspaceAuthority,
+        )
+        .await
+        .unwrap()
+    else {
+        panic!("expected New revision acceptance");
+    };
+    let delivery = Delivery::reply_revision(draft_scope, "rev-conv-msg-1".into());
+
+    struct MidRevisionConversationProvider {
+        store: Store,
+        practice: String,
+        conv_id: String,
+        now_ts: i64,
+        turn: usize,
+    }
+
+    impl engine::recipe::Provider for MidRevisionConversationProvider {
+        async fn exchange(
+            &mut self,
+            request: &engine::recipe::Request,
+            _: &engine::Cancellation,
+            _: &engine::RunLimits,
+            _: &mut dyn engine::recipe::Observer,
+        ) -> Result<engine::Turn, engine::Cause> {
+            self.turn += 1;
+            let wire = serde_json::to_string(&request.items).unwrap();
+            match self.turn {
+                1 => {
+                    assert!(
+                        wire.contains("linked_reply_conversation")
+                            && wire.contains("how did my fasting LDL cholesterol look on Monday"),
+                        "revision prompt context must include linked conversation messages: {wire}"
+                    );
+                    Ok(engine::Turn {
+                        items: vec![
+                            engine::Item::Call(engine::Invocation {
+                                id: "rev-skill-fu".into(),
+                                name: SKILL_VIEW.into(),
+                                arguments: json!({ "name": "patient-follow-up" }).to_string(),
+                            }),
+                            engine::Item::Call(engine::Invocation {
+                                id: "rev-read-ldl".into(),
+                                name: READ_TOOL.into(),
+                                arguments: json!({
+                                    "references": [{ "candidate_id": "lab-ldl-revconv", "revision": "rev-1", "cursor": null }],
+                                    "max_result_bytes": 16_384,
+                                })
+                                .to_string(),
+                            }),
+                        ],
+                        receipt: json!({"turn": 1}),
+                        usage: Default::default(),
+                    })
+                }
+                2 => {
+                    // Inject a new linked patient message mid-revision BEFORE `finish_reply_revision` commits!
+                    self.store
+                        .record_linked_patient_message(&RecordPatientMessage {
+                            practice: self.practice.clone(),
+                            conversation_id: self.conv_id.clone(),
+                            message_id: "pm-revconv-2".into(),
+                            sender: MessageSender::Patient,
+                            text: "One more thing—should I fast again before my 6-month recheck?"
+                                .into(),
+                            sent_at: self.now_ts + 40,
+                        })
+                        .await
+                        .unwrap();
+                    Ok(engine::Turn {
+                        items: vec![engine::Item::Call(engine::Invocation {
+                            id: "rev-finish-stale-conv".into(),
+                            name: FINISH_TOOL.into(),
+                            arguments: json!({
+                                "text": "Your fasting LDL is 94 mg/dL and triglycerides are 118 mg/dL—right on target.",
+                                "review_basis": "Drafted before pm-revconv-2 arrived.",
+                            })
+                            .to_string(),
+                        })],
+                        receipt: json!({"turn": 2}),
+                        usage: Default::default(),
+                    })
+                }
+                3 => {
+                    assert!(
+                        wire.contains("conversation_updated")
+                            && wire.contains("should I fast again before my 6-month recheck")
+                            && !wire.contains("message is no longer available"),
+                        "mid-revision conversation update must trigger reconsideration and refresh ProductMessage cleanly: {wire}"
+                    );
+                    Ok(engine::Turn {
+                        items: vec![engine::Item::Call(engine::Invocation {
+                            id: "rev-finish-updated".into(),
+                            name: FINISH_TOOL.into(),
+                            arguments: json!({
+                                "text": "Your fasting LDL is 94 mg/dL and triglycerides are 118 mg/dL—right on target, and yes, a 9–12 hour water-only fast before your 6-month recheck is helpful for comparing triglycerides.",
+                                "review_basis": "Incorporated lipid panel rev-1 and answered mid-revision fasting question.",
+                            })
+                            .to_string(),
+                        })],
+                        receipt: json!({"turn": 3}),
+                        usage: Default::default(),
+                    })
+                }
+                other => panic!("unexpected revision turn {other}"),
+            }
+        }
+    }
+
+    let rev_record = run_physician_reply_revision(
+        &store,
+        &mut PostgresWorkspaceAuthority,
+        &delivery,
+        60,
+        &roles,
+        &skills,
+        &mut MidRevisionConversationProvider {
+            store: store.clone(),
+            practice: practice.clone(),
+            conv_id: conv_id.into(),
+            now_ts,
+            turn: 0,
+        },
+        engine::RunLimits::default(),
+        &engine::Cancellation::default(),
+    )
+    .await
+    .unwrap();
+    assert_eq!(rev_record.status, MessageReviewRunStatus::Completed);
+    assert_eq!(rev_record.source_reconsiderations, 1);
+    assert!(
+        rev_record
+            .revised_text
+            .as_deref()
+            .unwrap_or_default()
+            .contains("6-month recheck")
+    );
+    assert!(
+        !rev_record
+            .tool_discoveries
+            .iter()
+            .any(|d| d.tool_name == "revision_tool" || d.tool_name == "unknown"),
+        "tool_discoveries must record real tool names, got: {:?}",
+        rev_record.tool_discoveries
+    );
+    assert!(
+        rev_record.tool_discoveries.iter().any(|d| {
+            d.call_id == "rev-skill-fu"
+                && d.tool_name == SKILL_VIEW
+                && d.discovered_skill_name.as_deref() == Some("patient-follow-up")
+                && d.disposition == ToolDiscoveryDisposition::Returned
+        }),
+        "expected skill_view(patient-follow-up) in tool_discoveries: {:?}",
+        rev_record.tool_discoveries
+    );
+    assert!(
+        rev_record.tool_discoveries.iter().any(|d| {
+            d.call_id == "rev-read-ldl"
+                && d.tool_name == READ_TOOL
+                && d.discovered_skill_name.is_none()
+                && d.disposition == ToolDiscoveryDisposition::Returned
+        }),
+        "expected read_patient_sources in tool_discoveries: {:?}",
+        rev_record.tool_discoveries
+    );
+}
+
+#[tokio::test]
+async fn round1_withdrawn_wrong_patient_candidates_excluded_from_message_review_and_reply_revision()
+{
+    let Some(url) = database_url() else {
+        return;
+    };
+    let (store, auth) = connect_stores(&url).await;
+    let now_ts = current_unix_ts();
+    let practice = format!("prac-r1-withdrawn-{}", Uuid::new_v4().simple());
+    auth.ensure_practice(&practice, PracticeClock::Fixed(now_ts as u64))
+        .await
+        .unwrap();
+
+    let (dr, _tok, dr_hash) =
+        invite_and_sign_in(&auth, &practice, "dr-r1-withdrawn", now_ts as u64).await;
+    let patient = SourcePatient {
+        source_patient_id: format!("pat-r1-withdrawn-{}", Uuid::new_v4().simple()),
+        display_name: "Marcus Delgado".into(),
+        birth_date: Some("1969-07-22".into()),
+        sex_or_gender: Some("male".into()),
+        medical_record_numbers: vec![MedicalRecordNumber {
+            system: "clinic-ehr".into(),
+            value: "MRN-R1-WD".into(),
+        }],
+    };
+    let workspace = workspace_id("clinic-ehr", &patient.source_patient_id);
+    auth.register_patient(&practice, &workspace).await.unwrap();
+    auth.set_membership(&dr, &workspace, Membership::Allowed)
+        .await
+        .unwrap();
+
+    let clean_lab = chart_record(
+        &workspace,
+        "clinic-ehr",
+        "lab-clean-cbc",
+        "rev-1",
+        "Observation",
+        "2026-11-10",
+        "Complete Blood Count",
+        "Hemoglobin 14.3 g/dL, Platelets 240 K/uL.",
+    );
+    let wrong_lab = chart_record(
+        &workspace,
+        "clinic-ehr",
+        "lab-wrong-patient",
+        "rev-1",
+        "Observation",
+        "2026-11-10",
+        "Misfiled Troponin",
+        "Wrong-patient troponin record.",
+    );
+    store
+        .record_chart(
+            &workspace,
+            &[clean_lab, wrong_lab.clone()],
+            &SourcePull {
+                source_id: "clinic-ehr".into(),
+                source_label: "Clinic EHR".into(),
+                patient: patient.clone(),
+                pulled_at: Some(now_ts),
+            },
+        )
+        .await
+        .unwrap();
+
+    let pdf_bytes = build_test_pdf(&[(
+        vec!["Wrong-patient outside cardiology PDF".into()],
+        false,
+        false,
+    )]);
+    let wrong_doc = ingest_paged_document(&PagedDocumentInput {
+        document_id: "doc-wrong-patient".into(),
+        version: 1,
+        workspace: workspace.clone(),
+        source_id: "spruce".into(),
+        authored_date: "2026-11-10".into(),
+        title: "Misfiled Cardiology PDF".into(),
+        media_kind: AttachmentMediaKind::SpruceFaxPdf,
+        pdf_bytes,
+        expected_sha256: None,
+    })
+    .unwrap();
+    store
+        .record_source(&wrong_doc.source_revision)
+        .await
+        .unwrap();
+
+    // Withdraw `lab-wrong-patient` and `doc-wrong-patient`, then simulate a stale connector re-ingest
+    // of `wrong_lab` and `wrong_doc` so `store.sources(&workspace)` would return them unless filtered by `withdrawal_boundary`!
+    store
+        .withdraw_wrong_patient_source(&WithdrawWrongPatientRequest {
+            practice: practice.clone(),
+            workspace: workspace.clone(),
+            withdrawal_id: "wd-r1-msg".into(),
+            candidate_ids: vec![
+                "lab-wrong-patient".into(),
+                "doc-wrong-patient".into(),
+                wrong_doc.source_revision.candidate_id.clone(),
+            ],
+            message_id: Some("pm-wrong-doc".into()),
+            fenced_work_ids: Vec::new(),
+            reason: "Moved misfiled message to another patient".into(),
+            actor: dr.physician_id.clone(),
+        })
+        .await
+        .unwrap();
+    store.record_source(&wrong_lab).await.unwrap();
+    store
+        .record_source(&wrong_doc.source_revision)
+        .await
+        .unwrap();
+
+    let conv_id = "conv-r1-withdrawn";
+    store
+        .link_reply_conversation(
+            &practice,
+            conv_id,
+            ConversationLink::LinkedPatient {
+                workspace: workspace.clone(),
+            },
+        )
+        .await
+        .unwrap();
+    store
+        .record_linked_patient_message(&RecordPatientMessage {
+            practice: practice.clone(),
+            conversation_id: conv_id.into(),
+            message_id: "pm-clean-1".into(),
+            sender: MessageSender::Patient,
+            text: "Did my blood count come back normal?".into(),
+            sent_at: now_ts + 10,
+        })
+        .await
+        .unwrap();
+
+    let wrong_doc_descriptor = MessageAttachmentDescriptor {
+        message_id: Some("pm-wrong-doc".into()),
+        candidate_id: Some("doc-wrong-patient".into()),
+        channel_attachment: None,
+        content_type: "application/pdf".into(),
+        page_count: Some(1),
+    };
+    let options_with_stale = MessageReviewOptions {
+        review_id: Some("rev-wd-check".into()),
+        coalesced_changed_candidates: vec!["lab-wrong-patient".into(), "lab-clean-cbc".into()],
+        extra_attachments: vec![wrong_doc_descriptor.clone()],
+    };
+    let (_, starting_ctx) = build_message_review_starting_context(
+        &store,
+        auth.as_ref(),
+        &practice,
+        conv_id,
+        "rev-wd-check",
+        "run-wd-preview",
+        &options_with_stale,
+    )
+    .await
+    .unwrap();
+    assert!(
+        starting_ctx.attachments.is_empty(),
+        "withdrawn document attachments must be excluded from MessageReviewStartingContext: {:?}",
+        starting_ctx.attachments
+    );
+    assert_eq!(
+        starting_ctx.coalesced_changed_candidates,
+        vec!["lab-clean-cbc".to_owned()]
+    );
+    assert_eq!(starting_ctx.chart_record_count, 1);
+
+    let skills = load_skills();
+    let roles = distinct_roles();
+    let (mut p_rev, rev_reqs) = spawn_responses_sse_server(vec![
+        // Turn 1: try citing withdrawn `lab-wrong-patient` -> REFUSED!
+        vec![
+            sse_function_call(
+                "read-cbc",
+                READ_TOOL,
+                &json!({
+                    "references": [{ "candidate_id": "lab-clean-cbc", "revision": "rev-1", "cursor": null }],
+                    "max_result_bytes": 16_384,
+                }),
+            ),
+            sse_function_call(
+                "cite-withdrawn",
+                COMPLETE_MESSAGE_REVIEW_TOOL,
+                &json!({
+                    "answered_closures": [],
+                    "decision": {
+                        "kind": "propose_reply",
+                        "reply_text": "Should fail citing withdrawn record.",
+                        "basis_summary": "Attempted withdrawn citation.",
+                        "limitations": [],
+                        "cited_records": [{ "candidate_id": "lab-wrong-patient", "revision": "rev-1" }],
+                        "addresses_medication_question": false,
+                    },
+                    "raised_concern_ids": [],
+                }),
+            ),
+        ],
+        vec![sse_function_call(
+            "cite-clean",
+            COMPLETE_MESSAGE_REVIEW_TOOL,
+            &json!({
+                "answered_closures": [],
+                "decision": {
+                    "kind": "propose_reply",
+                    "reply_text": "Your complete blood count is normal (hemoglobin 14.3 g/dL, platelets 240 K/uL).",
+                    "basis_summary": "Verified clean CBC rev-1.",
+                    "limitations": [],
+                    "cited_records": [{ "candidate_id": "lab-clean-cbc", "revision": "rev-1" }],
+                    "addresses_medication_question": false,
+                },
+                "raised_concern_ids": [],
+            }),
+        )],
+        vec![sse_assistant_message("Saved clean CBC proposal.")],
+    ])
+    .await;
+    run_message_review(
+        &store,
+        auth.as_ref(),
+        &practice,
+        conv_id,
+        &MessageReviewOptions {
+            review_id: Some("rev-wd-check".into()),
+            coalesced_changed_candidates: vec!["lab-wrong-patient".into(), "lab-clean-cbc".into()],
+            extra_attachments: vec![wrong_doc_descriptor],
+        },
+        &roles,
+        &skills,
+        &mut p_rev,
+        engine::RunLimits::default(),
+        &engine::Cancellation::default(),
+    )
+    .await
+    .unwrap();
+    let turn2_wire = serde_json::to_string(&rev_reqs.lock().unwrap()[1]["input"]).unwrap();
+    assert!(
+        turn2_wire.contains("withdrawn from this patient workspace"),
+        "expected withdrawn citation refusal in message review: {turn2_wire}"
+    );
+
+    // Also verify `run_physician_reply_revision` filters withdrawn candidates from `claim.sources` and `read_patient_sources`:
+    let access = WorkspaceAccess {
+        practice: &practice,
+        physician: &dr.physician_id,
+        workspace: &workspace,
+        session_hash: &dr_hash,
+    };
+    store
+        .edit_reply_proposal_draft(
+            &access,
+            conv_id,
+            ExpectedDraftBase::ProposalVersion(1),
+            "Your CBC looks normal.",
+            &mut PostgresWorkspaceAuthority,
+        )
+        .await
+        .unwrap();
+    let (draft_rev_recipe, _) = reply_revision_recipe(&roles, &skills).unwrap();
+    let ProposalRevisionAccepted::New { scope: draft_scope } = store
+        .request_reply_draft_revision(
+            &access,
+            conv_id,
+            &RevisionInput {
+                key: "rev-wd-draft-1".into(),
+                expected_revision: 1,
+                instruction: "Include exact hemoglobin value.".into(),
+                timezone: "America/Los_Angeles".into(),
+                scenario: None,
+            },
+            &skills,
+            &draft_rev_recipe,
+            &mut PostgresWorkspaceAuthority,
+        )
+        .await
+        .unwrap()
+    else {
+        panic!("expected New revision acceptance");
+    };
+    let delivery = Delivery::reply_revision(draft_scope, "rev-wd-draft-1".into());
+    let (mut p_draft_rev, draft_rev_reqs) = spawn_responses_sse_server(vec![
+        vec![
+            sse_function_call(
+                "try-read-withdrawn",
+                READ_TOOL,
+                &json!({
+                    "references": [{ "candidate_id": "lab-wrong-patient", "revision": "rev-1", "cursor": null }],
+                    "max_result_bytes": 16_384,
+                }),
+            ),
+            sse_function_call(
+                "read-clean-cbc",
+                READ_TOOL,
+                &json!({
+                    "references": [{ "candidate_id": "lab-clean-cbc", "revision": "rev-1", "cursor": null }],
+                    "max_result_bytes": 16_384,
+                }),
+            ),
+        ],
+        vec![sse_function_call(
+            "finish-wd-rev",
+            FINISH_TOOL,
+            &json!({
+                "text": "Your CBC looks normal, with hemoglobin 14.3 g/dL.",
+                "review_basis": "Read clean CBC rev-1; withdrawn wrong-patient lab excluded.",
+            }),
+        )],
+    ])
+    .await;
+    run_physician_reply_revision(
+        &store,
+        &mut PostgresWorkspaceAuthority,
+        &delivery,
+        60,
+        &roles,
+        &skills,
+        &mut p_draft_rev,
+        engine::RunLimits::default(),
+        &engine::Cancellation::default(),
+    )
+    .await
+    .unwrap();
+    let rev_turn1_wire =
+        serde_json::to_string(&draft_rev_reqs.lock().unwrap()[0]["input"]).unwrap();
+    assert!(
+        !rev_turn1_wire.contains("lab-wrong-patient")
+            && !rev_turn1_wire.contains("Misfiled Troponin"),
+        "withdrawn candidate must be excluded from ReplyRevisionHost prompt context: {rev_turn1_wire}"
+    );
+    let rev_turn2_wire =
+        serde_json::to_string(&draft_rev_reqs.lock().unwrap()[1]["input"]).unwrap();
+    assert!(
+        !rev_turn2_wire.contains("Wrong-patient troponin record"),
+        "ReplyRevisionHost must not return withdrawn record content on read_patient_sources: {rev_turn2_wire}"
+    );
+}
+
+#[tokio::test]
+#[ignore = "requires CODA_ALLOW_MODEL_CALLS=1, live OPENAI_API_KEY, and PHYSICIAN_RUNTIME_TEST_DATABASE_URL"]
+async fn live_openai_message_review_smoke() {
+    let Some(url) = database_url() else {
+        return;
+    };
+    let allow = std::env::var("CODA_ALLOW_MODEL_CALLS").ok();
+    let key = std::env::var("OPENAI_API_KEY").ok();
+    let Ok(api_key) = open_ai_api_key(allow.as_deref(), key.as_deref()) else {
+        return;
+    };
+    let (store, auth) = connect_stores(&url).await;
+    let now_ts = current_unix_ts();
+    let practice = format!("prac-live-{}", Uuid::new_v4().simple());
+    auth.ensure_practice(&practice, PracticeClock::Fixed(now_ts as u64))
+        .await
+        .unwrap();
+
+    let (dr, _tok, _hash) = invite_and_sign_in(&auth, &practice, "dr-live", now_ts as u64).await;
+    let patient = SourcePatient {
+        source_patient_id: format!("pat-live-{}", Uuid::new_v4().simple()),
+        display_name: "Synthetic Live Patient".into(),
+        birth_date: Some("1970-01-01".into()),
+        sex_or_gender: Some("female".into()),
+        medical_record_numbers: vec![MedicalRecordNumber {
+            system: "clinic-ehr".into(),
+            value: "MRN-LIVE-1".into(),
+        }],
+    };
+    let workspace = workspace_id("clinic-ehr", &patient.source_patient_id);
+    auth.register_patient(&practice, &workspace).await.unwrap();
+    auth.set_membership(&dr, &workspace, Membership::Allowed)
+        .await
+        .unwrap();
+
+    let rec = chart_record(
+        &workspace,
+        "clinic-ehr",
+        "obs-live-1",
+        "rev-1",
+        "Observation",
+        "2026-11-11",
+        "Hemoglobin A1c",
+        "Hemoglobin A1c 6.4% (improved from 7.1% six months ago).",
+    );
+    store
+        .record_chart(
+            &workspace,
+            &[rec],
+            &SourcePull {
+                source_id: "clinic-ehr".into(),
+                source_label: "Clinic EHR".into(),
+                patient,
+                pulled_at: Some(now_ts),
+            },
+        )
+        .await
+        .unwrap();
+
+    let conv_id = "conv-live-smoke";
+    store
+        .link_reply_conversation(
+            &practice,
+            conv_id,
+            ConversationLink::LinkedPatient {
+                workspace: workspace.clone(),
+            },
+        )
+        .await
+        .unwrap();
+    store
+        .record_linked_patient_message(&RecordPatientMessage {
+            practice: practice.clone(),
+            conversation_id: conv_id.into(),
+            message_id: "pm-live-1".into(),
+            sender: MessageSender::Patient,
+            text: "Did my A1c lab result come back yet?".into(),
+            sent_at: now_ts + 5,
+        })
+        .await
+        .unwrap();
+
+    let roles = ModelRoles {
+        chat: ModelBinding {
+            model: "gpt-5.4-mini".into(),
+            effort: "low".into(),
+            context_window_tokens: 128_000,
+            max_input_tokens: 100_000,
+            adapter: "responses".into(),
+        },
+        background: ModelBinding {
+            model: "gpt-5.4".into(),
+            effort: "medium".into(),
+            context_window_tokens: 272_000,
+            max_input_tokens: 240_000,
+            adapter: "responses".into(),
+        },
+    };
+    let skills = load_skills();
+    let mut provider = ResponsesProvider::new(
+        harness::responses::ENDPOINT.to_owned(),
+        api_key,
+        Arc::new(NoopQuotaGate),
+    )
+    .unwrap();
+
+    let done = run_message_review(
+        &store,
+        auth.as_ref(),
+        &practice,
+        conv_id,
+        &MessageReviewOptions::default(),
+        &roles,
+        &skills,
+        &mut provider,
+        engine::RunLimits::default(),
+        &engine::Cancellation::default(),
+    )
+    .await
+    .unwrap();
+    assert_eq!(done.run.status, MessageReviewRunStatus::Completed);
 }
