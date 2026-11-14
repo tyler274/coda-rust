@@ -112,6 +112,13 @@ resource "google_cloud_run_v2_service" "app" {
           value = env.value
         }
       }
+      dynamic "env" {
+        for_each = each.key == "physician" ? local.physician_clinical_library_env : {}
+        content {
+          name  = env.key
+          value = env.value
+        }
+      }
       env {
         name  = "DD_ENV"
         value = local.dd_env
@@ -403,6 +410,13 @@ resource "google_cloud_run_v2_service" "physician_worker" {
       }
       dynamic "env" {
         for_each = try(var.runtime_environment["physician"], {})
+        content {
+          name  = env.key
+          value = env.value
+        }
+      }
+      dynamic "env" {
+        for_each = local.physician_clinical_library_env
         content {
           name  = env.key
           value = env.value

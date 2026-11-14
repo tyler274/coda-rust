@@ -82,3 +82,15 @@ output "physician_redis_auth_string" {
   value       = local.physician_scale ? google_redis_instance.physician["physician"].auth_string : null
   sensitive   = true
 }
+
+output "physician_clinical_library" {
+  description = "Read-only clinical-evidence service wiring for physician and physician-worker, with the exact staging runtime principals to admit in infra/gcp/clinical-evidence's clinical_evidence_invokers."
+  value = var.physician_clinical_library_url != null && var.enable_workloads ? {
+    url      = var.physician_clinical_library_url
+    audience = coalesce(var.physician_clinical_library_audience, var.physician_clinical_library_url)
+    caller_principals = compact([
+      "serviceAccount:${google_service_account.app["physician-runtime"].email}",
+      local.physician_scale ? "serviceAccount:${google_service_account.physician_worker["physician"].email}" : "",
+    ])
+  } : null
+}

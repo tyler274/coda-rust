@@ -187,6 +187,29 @@ variable "enable_physician_scale" {
   description = "Explicit cost gate for physician scaling: Memorystore Redis (workspace_changed fan-out) and the internal physician-worker service, which pulls accepted turns from Postgres. Effective only when enable_workloads is true. Duet is never affected."
 }
 
+variable "physician_clinical_library_url" {
+  type        = string
+  default     = null
+  nullable    = true
+  description = "HTTPS Cloud Run origin of the existing read-only clinical-evidence service; null leaves clinical library calls unconfigured. Cross-project run.invoker access stays owned by infra/gcp/clinical-evidence."
+  validation {
+    condition     = var.physician_clinical_library_url == null || can(regex("^https://[a-z0-9-]+(\\.[a-z0-9-]+)?\\.run\\.app$", var.physician_clinical_library_url))
+    error_message = "physician_clinical_library_url must be an HTTPS Cloud Run service origin without path, query, fragment or credentials."
+  }
+}
+
+variable "physician_clinical_library_audience" {
+  type        = string
+  default     = null
+  nullable    = true
+  description = "Optional OIDC audience override for the existing clinical-evidence service; null defaults to physician_clinical_library_url."
+  validation {
+    condition     = var.physician_clinical_library_audience == null || (var.physician_clinical_library_url != null && can(regex("^https://[a-z0-9-]+(\\.[a-z0-9-]+)?\\.run\\.app$", var.physician_clinical_library_audience)))
+    error_message = "physician_clinical_library_audience requires physician_clinical_library_url and must be an HTTPS Cloud Run service origin."
+  }
+}
+
+
 variable "images" {
   type = map(object({
     runtime   = string

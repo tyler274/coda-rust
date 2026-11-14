@@ -50,6 +50,11 @@ mail_relay_invokers = ["serviceAccount:workspace-web-staging@coda-gym.iam.gservi
 # images.physician.worker is the initial digest. Later releases own that field.
 enable_physician_scale = true
 
+# Existing read-only clinical-evidence Cloud Run service in coda-health-prod
+# (us-east4). Cross-project run.invoker access for physician-runtime and
+# physician-worker-runtime stays owned by infra/gcp/clinical-evidence.
+physician_clinical_library_url = "https://coda-clinical-evidence-720954567292.us-east4.run.app"
+
 # Private GKE Autopilot cluster for the OpenTelemetry gateway, Datadog Agent and
 # Grafana stack (observability-cluster.tf); infra/gcp/observability deploys into it.
 observability_cluster_enabled = true
