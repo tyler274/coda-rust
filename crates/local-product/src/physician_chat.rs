@@ -218,12 +218,14 @@ pub enum Job {
     SpruceMatching,
     /// Linked patient message clinical review and reply drafting.
     MessageReview,
+    /// Due follow-up clinical reassessment.
+    FollowUpReassessment,
 }
 
 impl Job {
     /// Every Chords job. [`PhysicianSkills::load`] checks each one's start
     /// skills against the package.
-    const ALL: [Self; 8] = [
+    const ALL: [Self; 9] = [
         Self::Chat,
         Self::ReplyRevision,
         Self::PracticeBackground,
@@ -232,6 +234,7 @@ impl Job {
         Self::VisitPreparation,
         Self::SpruceMatching,
         Self::MessageReview,
+        Self::FollowUpReassessment,
     ];
 
     /// The skills this job loads at its start, as written beside its instructions.
@@ -244,7 +247,8 @@ impl Job {
             | Self::PatientReview
             | Self::VisitPreparation
             | Self::SpruceMatching
-            | Self::MessageReview => &[],
+            | Self::MessageReview
+            | Self::FollowUpReassessment => &[],
         }
     }
 }
@@ -923,6 +927,11 @@ mod tests {
         offered.extend(crate::patient_reviews::tools().iter().map(Tool::function));
         offered.extend(
             crate::visit_preparation::all_tools()
+                .iter()
+                .map(Tool::function),
+        );
+        offered.extend(
+            crate::follow_up_reassessment::tools()
                 .iter()
                 .map(Tool::function),
         );
