@@ -29,7 +29,9 @@
 //! <review_every_seconds>`).
 
 use physician_sample::STAGING_PRACTICE_ID;
-use physician_sample::chart_load::load_synthetic_practice;
+use physician_sample::chart_load::{
+    load_synthetic_practice, load_synthetic_practice_with_understanding,
+};
 use physician_sample::hosting::{
     SimulationPractices, StagingAccount, staging_accounts, staging_physician_id, synthetic_charts,
 };
@@ -221,7 +223,32 @@ async fn load_charts(url: &str) -> Result<(), String> {
         .map_err(|error| format!("physician database connection: {error}"))?;
     let auth = physician_auth::PostgresAuthStore::from_connection(db.clone());
     let runtime = local_product::runtime::Store::from_connection(db);
-    let summary = load_synthetic_practice(&charts, &auth, &runtime).await?;
+    let model_settings: Vec<_> = local_product::MODEL_SETTING_KEYS
+        .into_iter()
+        .filter_map(|key| {
+            std::env::var(key)
+                .ok()
+                .filter(|value| !value.trim().is_empty())
+                .map(|value| (key, value))
+        })
+        .collect();
+    let summary = if model_settings.is_empty() {
+        load_synthetic_practice(&charts, &auth, &runtime).await?
+    } else {
+        let environment: Vec<_> = model_settings
+            .iter()
+            .map(|(key, value)| (*key, value.as_str()))
+            .collect();
+        let roles = local_product::model_roles("responses", &environment)
+            .map_err(|error| format!("model roles configuration: {error}"))?;
+        let skills = local_product::physician_chat::PhysicianSkills::configured(
+            std::env::var("PHYSICIAN_SKILLS_DIR").ok().as_deref(),
+            false,
+        )
+        .map_err(|error| format!("physician skill catalog: {error}"))?;
+        load_synthetic_practice_with_understanding(&charts, &auth, &runtime, &roles, &skills)
+            .await?
+    };
     for failure in &summary.failed {
         eprintln!("synthetic patient failed: {failure}");
     }

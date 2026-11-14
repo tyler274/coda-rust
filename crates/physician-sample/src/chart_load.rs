@@ -42,7 +42,28 @@ pub async fn load_synthetic_practice(
     runtime: &Store,
 ) -> Result<LoadSummary, String> {
     let source = SyntheticCharts::open_with_store(bank, runtime.clone());
-    load_practice_from_source(STAGING_PRACTICE_ID, &source, auth, runtime).await
+    load_practice_from_source_inner(STAGING_PRACTICE_ID, &source, auth, runtime, None).await
+}
+
+/// Loads the synthetic charts built at `bank` into the synthetic practice and
+/// triggers the initial or revision patient understanding assignment for each
+/// loaded patient workspace.
+pub async fn load_synthetic_practice_with_understanding(
+    bank: &Path,
+    auth: &dyn AuthStore,
+    runtime: &Store,
+    roles: &local_product::ModelRoles,
+    skills: &local_product::physician_chat::PhysicianSkills,
+) -> Result<LoadSummary, String> {
+    let source = SyntheticCharts::open_with_store(bank, runtime.clone());
+    load_practice_from_source_inner(
+        STAGING_PRACTICE_ID,
+        &source,
+        auth,
+        runtime,
+        Some((roles, skills)),
+    )
+    .await
 }
 
 /// Why enrolling newly identified source patients into the practice directory failed.
@@ -127,6 +148,19 @@ pub async fn load_practice_from_source(
     source: &dyn PatientSource,
     auth: &dyn AuthStore,
     runtime: &Store,
+) -> Result<LoadSummary, String> {
+    load_practice_from_source_inner(practice_id, source, auth, runtime, None).await
+}
+
+async fn load_practice_from_source_inner(
+    practice_id: &str,
+    source: &dyn PatientSource,
+    auth: &dyn AuthStore,
+    runtime: &Store,
+    understanding: Option<(
+        &local_product::ModelRoles,
+        &local_product::physician_chat::PhysicianSkills,
+    )>,
 ) -> Result<LoadSummary, String> {
     if practice_id == STAGING_PRACTICE_ID {
         auth.ensure_practice(STAGING_PRACTICE_ID, SYNTHETIC_PRACTICE_CLOCK)
@@ -214,6 +248,18 @@ pub async fn load_practice_from_source(
                 .register_patient_dispatch(auth, practice_id, &report.workspace_id, pulled_at)
                 .await
                 .map_err(|error| error.to_string())?;
+            if let Some((roles, skills)) = understanding {
+                runtime
+                    .trigger_patient_understanding(
+                        practice_id,
+                        &report.workspace_id,
+                        roles,
+                        skills,
+                        auth,
+                    )
+                    .await
+                    .map_err(|error| error.to_string())?;
+            }
             summary.records += report.records_delivered;
             summary.patients += 1;
             Ok(())

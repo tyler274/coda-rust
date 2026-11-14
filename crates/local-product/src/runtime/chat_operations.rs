@@ -1107,6 +1107,19 @@ impl PatientRefreshOperation for SourceAdapterRefreshOperation {
             });
         }
         let observation = store.sources(&scope.workspace).await?;
+        if refreshed.iter().any(|summary| summary.changed_records > 0)
+            && let Some(binding) = &store.understanding_trigger
+            && let Err(super::understanding::UnderstandingError::Database(db_err)) = store
+                .trigger_patient_understanding_authorized(
+                    &scope.practice,
+                    &scope.workspace,
+                    &binding.roles,
+                    &binding.skills,
+                )
+                .await
+        {
+            return Err(SourceRefreshError::Database(db_err));
+        }
         Ok(SourceRefreshReport {
             workspace_version: observation.version,
             sources: refreshed,
@@ -1389,6 +1402,9 @@ pub struct PatientStartingContext {
     pub source_pulls: Vec<SourceFreshnessSummary>,
     /// Standing of background source checks for this workspace.
     pub check_standing: DispatchCheckStanding,
+    /// Saved patient understanding (summary and Coda's private operating index), when initialized.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub understanding: Option<super::understanding::PatientUnderstanding>,
     /// Standing of durable patient memory for this workspace.
     pub memory_standing: PatientMemoryStanding,
     /// Open patient concerns on Today.
@@ -1460,6 +1476,33 @@ impl PatientStartingContext {
                 None => lines.push(format!(
                     "Source limit (unavailable): latest source check at unix {last_attempt_at} failed before any source pull succeeded."
                 )),
+            }
+        }
+
+        if let Some(saved) = &self.understanding {
+            lines.push(format!(
+                "Saved patient understanding (revision {}, source version {}; internal working overview is never medication truth and must never be disclosed as internal state to the physician):",
+                saved.revision, saved.source_version
+            ));
+            lines.push(format!("- Patient summary: {}", saved.summary.narrative));
+            if let Some(scope_note) = &saved.summary.scope_note {
+                lines.push(format!("- Evidence scope note: {scope_note}"));
+            }
+            if !saved.summary.material_gaps.is_empty() {
+                lines.push(format!(
+                    "- Material gaps: {}",
+                    saved.summary.material_gaps.join("; ")
+                ));
+            }
+            lines.push(format!(
+                "- Internal working overview: {}",
+                saved.operating_index.working_overview
+            ));
+            if !saved.operating_index.open_threads.is_empty() {
+                lines.push(format!(
+                    "- Internal open threads: {}",
+                    saved.operating_index.open_threads.join("; ")
+                ));
             }
         }
 
@@ -1923,6 +1966,10 @@ impl Store {
             });
         }
 
+        let understanding = self
+            .patient_understanding_internal(&scope.practice, &scope.workspace)
+            .await?;
+
         Ok(PatientStartingContext {
             workspace: scope.workspace.clone(),
             patient,
@@ -1930,6 +1977,7 @@ impl Store {
             chart_record_count: observation.sources.len(),
             source_pulls,
             check_standing,
+            understanding,
             memory_standing,
             open_concerns,
             recent_work,
@@ -2416,6 +2464,12 @@ impl Store {
                 .await;
         }
 
+        if crate::initial_understanding::is_understanding_tool(&call.name) {
+            return self
+                .execute_chat_understanding_tool(claim, call, &arguments)
+                .await;
+        }
+
         if crate::clinical_library::is_library_tool(&call.name) {
             let outcome = self
                 .clinical_library()
@@ -2657,6 +2711,10 @@ impl Store {
             return self
                 .saved_physician_refresh_outcome(&claim.scope, &attempt.work, call)
                 .await;
+        }
+
+        if call.name == crate::initial_understanding::SAVE_UNDERSTANDING_TOOL {
+            return self.saved_chat_understanding_outcome(claim, call).await;
         }
 
         if call.name != PATIENT_MEMORY_TOOL {

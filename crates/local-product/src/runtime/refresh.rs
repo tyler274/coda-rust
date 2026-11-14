@@ -1364,6 +1364,32 @@ impl Store {
         let current_version = current_version_in_tx(&tx, &workspace).await?;
         tx.commit().await?;
 
+        let any_changed = settled_statuses.iter().any(|saved| {
+            matches!(
+                saved.outcome,
+                SourceRefreshOutcome::Updated {
+                    changed_records,
+                    ..
+                } | SourceRefreshOutcome::PartlyUpdated {
+                    changed_records,
+                    ..
+                } if changed_records > 0
+            )
+        });
+        if any_changed
+            && let Some(binding) = &self.understanding_trigger
+            && let Err(super::understanding::UnderstandingError::Database(db_err)) = self
+                .trigger_patient_understanding_authorized(
+                    &practice,
+                    &workspace,
+                    &binding.roles,
+                    &binding.skills,
+                )
+                .await
+        {
+            return Err(RefreshError::Database(db_err));
+        }
+
         Ok(RefreshReport {
             workspace,
             workspace_version: latest_version.max(current_version),

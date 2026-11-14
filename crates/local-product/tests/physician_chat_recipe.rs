@@ -2954,3 +2954,477 @@ async fn interrupted_chat_attempt_reconciles_saved_memory_and_concern_receipts_w
     assert_eq!(saved_conv.status, WorkStatus::Completed);
     assert_eq!(saved_conv.messages.len(), 2);
 }
+
+#[tokio::test]
+#[ignore = "requires explicit local Postgres"]
+async fn chat_receives_initial_understanding_triggers_revision_on_refresh_and_updates_patient_summary()
+ {
+    use local_product::initial_understanding::{
+        HealthSystemStanding, IndexedAnchor, KnownHealthSystem, OperatingIndex,
+        SAVE_UNDERSTANDING_TOOL, SaveUnderstandingArgs, SummaryClaimInput, UnderstandingMode,
+    };
+    use local_product::runtime::{
+        concerns::ExactRecordReference,
+        refresh::{FixedSourceCheck, SourceCheckOutcome, SourceId, SourceRefreshOutcome},
+        understanding::UnderstandingTriggerOutcome,
+    };
+
+    let (base_store, auth, _url) = setup_stores().await;
+    let practice = format!("prac-wave2-seam-{}", uuid::Uuid::new_v4().simple());
+    let (physician, _token, session_hash) =
+        invite_and_sign_in(&auth, &practice, "dr-wave2-seam").await;
+
+    let patient = synthetic_patient("pt-seam", "Clara Vega", "1968-07-12", "MRN-92041");
+    let workspace = workspace_id("synthetic-clinic-ehr", &patient.source_patient_id);
+    auth.register_patient(&practice, &workspace).await.unwrap();
+    auth.set_membership(&physician, &workspace, Membership::Allowed)
+        .await
+        .unwrap();
+
+    let roles = distinct_model_roles();
+    let skills = load_skills();
+    let checker = FixedSourceCheck::new();
+    let store = base_store
+        .with_source_refresh(Arc::new(checker.clone()))
+        .with_understanding_trigger(roles.clone(), skills.clone());
+
+    let baseline_record = readable_chart_record(
+        &workspace,
+        "rev-htn-1",
+        "2026-10-01",
+        "Outpatient Hypertension Note",
+        "Stage 2 hypertension managed on amlodipine 5 mg daily; baseline potassium 4.2 mmol/L.",
+        json!({
+            "resourceType": "Condition",
+            "id": "Condition/htn-1",
+            "text": "Stage 2 hypertension managed on amlodipine 5 mg daily."
+        }),
+    );
+    store
+        .record_chart(
+            &workspace,
+            std::slice::from_ref(&baseline_record),
+            &SourcePull {
+                source_id: "synthetic-clinic-ehr".into(),
+                source_label: "Synthetic Clinic EHR".into(),
+                patient: patient.clone(),
+                pulled_at: Some(1_762_900_000),
+            },
+        )
+        .await
+        .unwrap();
+
+    // 1. Run initial patient understanding on the background lane -> saves revision 1.
+    let UnderstandingTriggerOutcome::Started {
+        scope: job_scope_1,
+        mode: mode_1,
+        ..
+    } = store
+        .trigger_patient_understanding(&practice, &workspace, &roles, &skills, &auth)
+        .await
+        .unwrap()
+    else {
+        panic!("expected initial understanding job to start");
+    };
+    assert_eq!(mode_1, UnderstandingMode::Initial);
+    let job_claim_1 = store
+        .claim_practice_job(&job_scope_1, 60, &auth)
+        .await
+        .unwrap()
+        .unwrap();
+
+    struct InitialUnderstandingSeamProvider {
+        turn: usize,
+    }
+    impl Provider for InitialUnderstandingSeamProvider {
+        async fn exchange(
+            &mut self,
+            _: &Request,
+            _: &engine::Cancellation,
+            _: &engine::RunLimits,
+            _: &mut dyn Observer,
+        ) -> Result<Turn, engine::Cause> {
+            self.turn += 1;
+            match self.turn {
+                1 => Ok(Turn {
+                    items: vec![Item::Call(Invocation {
+                        id: "read-htn".into(),
+                        name: READ_TOOL.into(),
+                        arguments: json!({
+                            "references": [{
+                                "candidate_id": "Condition/htn-1",
+                                "revision": "rev-htn-1",
+                                "cursor": null
+                            }],
+                            "max_result_bytes": 32_768
+                        })
+                        .to_string(),
+                    })],
+                    receipt: json!({"turn": 1}),
+                    usage: Default::default(),
+                }),
+                2 => {
+                    let save_args = SaveUnderstandingArgs {
+                        expected_revision: None,
+                        operating_index: OperatingIndex {
+                            working_overview: "PRIVATE_SEAM_OVERVIEW_V1: Stage 2 hypertension on amlodipine; awaiting repeat renal panel.".into(),
+                            known_health_systems: vec![KnownHealthSystem {
+                                name: "Synthetic Clinic EHR".into(),
+                                standing: HealthSystemStanding::Connected {
+                                    source_id: "synthetic-clinic-ehr".into(),
+                                },
+                                note: "Connected clinic chart".into(),
+                            }],
+                            open_threads: vec!["November renal panel pending".into()],
+                            anchors: vec![IndexedAnchor {
+                                reference: ExactRecordReference {
+                                    candidate_id: "Condition/htn-1".into(),
+                                    revision: "rev-htn-1".into(),
+                                },
+                                source_id: "synthetic-clinic-ehr".into(),
+                                topic: "Hypertension baseline".into(),
+                            }],
+                        },
+                        claims: vec![SummaryClaimInput {
+                            text: "Stage 2 hypertension managed on amlodipine 5 mg daily".into(),
+                            citations: vec![ExactRecordReference {
+                                candidate_id: "Condition/htn-1".into(),
+                                revision: "rev-htn-1".into(),
+                            }],
+                        }],
+                        material_gaps: vec!["November basic metabolic panel pending".into()],
+                        scope_note: None,
+                    };
+                    Ok(Turn {
+                        items: vec![Item::Call(Invocation {
+                            id: "save-u-1".into(),
+                            name: SAVE_UNDERSTANDING_TOOL.into(),
+                            arguments: serde_json::to_string(&save_args).unwrap(),
+                        })],
+                        receipt: json!({"turn": 2}),
+                        usage: Default::default(),
+                    })
+                }
+                3 => Ok(Turn {
+                    items: vec![Item::assistant("Initial patient understanding saved.")],
+                    receipt: json!({"turn": 3}),
+                    usage: Default::default(),
+                }),
+                other => panic!("unexpected background turn {other}"),
+            }
+        }
+    }
+
+    let mut job_host_1 = PracticeJobHost {
+        store: store.clone(),
+        claim: job_claim_1,
+        authority: &auth,
+    };
+    job_host_1
+        .run(
+            &mut InitialUnderstandingSeamProvider { turn: 0 },
+            engine::RunLimits::default(),
+            &engine::Cancellation::default(),
+        )
+        .await
+        .unwrap();
+
+    // Configure a fresh lab revision in FixedSourceCheck to arrive during chat refresh.
+    let refreshed_lab = readable_chart_record(
+        &workspace,
+        "rev-bmp-nov",
+        "2026-11-11",
+        "Basic Metabolic Panel",
+        "Potassium 4.4 mmol/L, creatinine 0.88 mg/dL on 2026-11-11.",
+        json!({
+            "resourceType": "DiagnosticReport",
+            "id": "DiagnosticReport/bmp-nov",
+            "text": "Potassium 4.4 mmol/L, creatinine 0.88 mg/dL."
+        }),
+    );
+    checker.set_source_outcome(
+        &practice,
+        &workspace,
+        SourceId::new("synthetic-clinic-ehr").unwrap(),
+        SourceCheckOutcome::Updated {
+            source_label: "Synthetic Clinic EHR".into(),
+            patient: patient.clone(),
+            pulled_at: 1_762_905_000,
+            records: vec![baseline_record.clone(), refreshed_lab.clone()],
+        },
+    );
+
+    // 2. Start Conversation 1 via `ChatAssignment` and verify:
+    //    - `PatientStartingContext` carries saved `PatientUnderstanding` revision 1
+    //    - `refresh_patient_sources` updates `physician_runtime_source_statuses`
+    //      and triggers background `UnderstandingMode::Revision` via `with_understanding_trigger`
+    //    - `save_patient_understanding` and `patient_memory` update durable state for patient page and Conversation 2.
+    let chat_scope_1 = Scope {
+        practice: practice.clone(),
+        physician: physician.physician_id.clone(),
+        workspace: workspace.clone(),
+        chat: "chat-seam-1".into(),
+    };
+    let starting_1 = store.patient_starting_context(&chat_scope_1).await.unwrap();
+    assert_eq!(starting_1.understanding.as_ref().unwrap().revision, 1);
+    let dev_text_1 = starting_1.developer_text();
+    assert!(dev_text_1.contains("Stage 2 hypertension managed on amlodipine 5 mg daily"));
+    assert!(dev_text_1.contains("PRIVATE_SEAM_OVERVIEW_V1"));
+
+    let assignment_1 = ChatAssignment::for_patient(chat_scope_1.clone(), starting_1);
+    let recipe_1 = assignment_1.recipe(&roles, &skills);
+    assert_eq!(
+        store
+            .start_chat_authorized(
+                &chat_scope_1,
+                &Input {
+                    key: "msg-seam-1".into(),
+                    text: "Refresh Clara's labs, check her potassium, and note she takes amlodipine in the evening.".into(),
+                    timezone: "America/New_York".into(),
+                    scenario: None,
+                },
+                session_hash.clone(),
+                &skills,
+                &recipe_1,
+                &mut PostgresWorkspaceAuthority,
+            )
+            .await
+            .unwrap(),
+        Accepted::New
+    );
+    let claim_1 = store.claim(&chat_scope_1, 60).await.unwrap().unwrap();
+
+    struct SeamChatProvider {
+        turn: usize,
+    }
+    impl Provider for SeamChatProvider {
+        async fn exchange(
+            &mut self,
+            request: &Request,
+            _: &engine::Cancellation,
+            _: &engine::RunLimits,
+            _: &mut dyn Observer,
+        ) -> Result<Turn, engine::Cause> {
+            self.turn += 1;
+            match self.turn {
+                1 => {
+                    let context_seen = request.items.iter().any(|item| {
+                        matches!(
+                            item,
+                            Item::Message { role, text }
+                                if role == "developer"
+                                    && text.contains("PRIVATE_SEAM_OVERVIEW_V1")
+                        )
+                    });
+                    assert!(
+                        context_seen,
+                        "PhysicianHost must seed saved PatientUnderstanding into chat context"
+                    );
+                    Ok(Turn {
+                        items: vec![Item::Call(Invocation {
+                            id: "call-refresh".into(),
+                            name: REFRESH_SOURCES_TOOL.into(),
+                            arguments: json!({
+                                "source_id": "synthetic-clinic-ehr",
+                                "reason": "Check November metabolic panel before advising"
+                            })
+                            .to_string(),
+                        })],
+                        receipt: json!({"turn": 1}),
+                        usage: Default::default(),
+                    })
+                }
+                2 => {
+                    let outputs = materialized_outputs(request);
+                    let refresh_out: Value =
+                        serde_json::from_str(outputs.get("call-refresh").unwrap()).unwrap();
+                    assert_eq!(refresh_out["outcome"], "refreshed", "{refresh_out}");
+                    assert_eq!(refresh_out["workspace_version"], 2);
+                    Ok(Turn {
+                        items: vec![Item::Call(Invocation {
+                            id: "call-read-bmp".into(),
+                            name: READ_TOOL.into(),
+                            arguments: json!({
+                                "references": [{
+                                    "candidate_id": "DiagnosticReport/bmp-nov",
+                                    "revision": "rev-bmp-nov",
+                                    "cursor": null
+                                }],
+                                "max_result_bytes": 32_768
+                            })
+                            .to_string(),
+                        })],
+                        receipt: json!({"turn": 2}),
+                        usage: Default::default(),
+                    })
+                }
+                3 => {
+                    let save_u2 = SaveUnderstandingArgs {
+                        expected_revision: Some(1),
+                        operating_index: OperatingIndex {
+                            working_overview: "PRIVATE_SEAM_OVERVIEW_V2: Hypertension controlled; Nov 2026 potassium 4.4 mmol/L.".into(),
+                            known_health_systems: vec![KnownHealthSystem {
+                                name: "Synthetic Clinic EHR".into(),
+                                standing: HealthSystemStanding::Connected {
+                                    source_id: "synthetic-clinic-ehr".into(),
+                                },
+                                note: "Connected clinic chart".into(),
+                            }],
+                            open_threads: vec!["Routine 6-month blood pressure follow-up".into()],
+                            anchors: vec![
+                                IndexedAnchor {
+                                    reference: ExactRecordReference {
+                                        candidate_id: "Condition/htn-1".into(),
+                                        revision: "rev-htn-1".into(),
+                                    },
+                                    source_id: "synthetic-clinic-ehr".into(),
+                                    topic: "Hypertension baseline".into(),
+                                },
+                                IndexedAnchor {
+                                    reference: ExactRecordReference {
+                                        candidate_id: "DiagnosticReport/bmp-nov".into(),
+                                        revision: "rev-bmp-nov".into(),
+                                    },
+                                    source_id: "synthetic-clinic-ehr".into(),
+                                    topic: "Nov 2026 renal panel".into(),
+                                },
+                            ],
+                        },
+                        claims: vec![
+                            SummaryClaimInput {
+                                text: "Stage 2 hypertension managed on amlodipine 5 mg daily".into(),
+                                citations: vec![ExactRecordReference {
+                                    candidate_id: "Condition/htn-1".into(),
+                                    revision: "rev-htn-1".into(),
+                                }],
+                            },
+                            SummaryClaimInput {
+                                text: "Basic metabolic panel on 2026-11-11 showed potassium 4.4 mmol/L and creatinine 0.88 mg/dL".into(),
+                                citations: vec![ExactRecordReference {
+                                    candidate_id: "DiagnosticReport/bmp-nov".into(),
+                                    revision: "rev-bmp-nov".into(),
+                                }],
+                            },
+                        ],
+                        material_gaps: vec!["Home blood pressure log not yet uploaded".into()],
+                        scope_note: None,
+                    };
+                    Ok(Turn {
+                        items: vec![
+                            Item::Call(Invocation {
+                                id: "call-save-u2".into(),
+                                name: SAVE_UNDERSTANDING_TOOL.into(),
+                                arguments: serde_json::to_string(&save_u2).unwrap(),
+                            }),
+                            Item::Call(Invocation {
+                                id: "call-mem-evening".into(),
+                                name: PATIENT_MEMORY_TOOL.into(),
+                                arguments: json!({
+                                    "operation": "record_correction",
+                                    "memory_id": "mem-amlodipine-evening",
+                                    "topic": "Dosing schedule",
+                                    "statement": "Physician confirmed Clara takes amlodipine 5 mg in the evening."
+                                })
+                                .to_string(),
+                            }),
+                        ],
+                        receipt: json!({"turn": 3}),
+                        usage: Default::default(),
+                    })
+                }
+                4 => Ok(Turn {
+                    items: vec![Item::Call(Invocation {
+                            id: "finish-clara-1".into(),
+                            name: local_product::physician_sources::citations::FINISH_TOOL.into(),
+                            arguments: json!({
+                                "answer": "Clara's refreshed November 11, 2026 metabolic panel shows potassium 4.4 mmol/L and creatinine 0.88 mg/dL [S1], and evening amlodipine dosing is noted.",
+                                "quotes": [],
+                                "descriptions": [],
+                                "basis": "Synthetic Clinic EHR Basic Metabolic Panel (2026-11-11) [S1] and physician dosing note.",
+                                "cites_none": false
+                            })
+                            .to_string(),
+                        })],
+                    receipt: json!({"turn": 4}),
+                    usage: Default::default(),
+                }),
+                other => panic!("unexpected chat turn {other}"),
+            }
+        }
+    }
+
+    let mut chat_host_1 = PhysicianHost {
+        store: store.clone(),
+        claim: claim_1,
+        authority: PostgresWorkspaceAuthority,
+        shown_steps: ShownSteps::new(()),
+    };
+    chat_host_1
+        .run(
+            &mut SeamChatProvider { turn: 0 },
+            engine::RunLimits::default(),
+            &engine::Cancellation::default(),
+        )
+        .await
+        .unwrap();
+
+    // Verify saved source status and background revision trigger for source version 2.
+    let saved_statuses = store
+        .saved_source_statuses(&practice, &workspace)
+        .await
+        .unwrap();
+    assert_eq!(saved_statuses.len(), 1);
+    assert!(matches!(
+        saved_statuses[0].outcome,
+        SourceRefreshOutcome::Updated {
+            workspace_version: 2,
+            changed_records: 1,
+            ..
+        }
+    ));
+    let active_runs = store
+        .active_or_failed_understanding_runs(std::slice::from_ref(&workspace))
+        .await
+        .unwrap();
+    assert!(
+        matches!(
+            active_runs.get(&workspace).map(|r| r.mode),
+            Some(UnderstandingMode::Revision {
+                prior_revision: 1,
+                ..
+            })
+        ),
+        "refresh delivering changed records must trigger a background Revision understanding job: {active_runs:?}"
+    );
+
+    // Verify physician-facing summary projection reflects revision 2 without OperatingIndex.
+    let physician_view = store
+        .patient_summary_for_physician(&auth, &physician, &workspace)
+        .await
+        .unwrap()
+        .unwrap();
+    assert_eq!(physician_view.revision, 2);
+    assert!(
+        physician_view
+            .summary
+            .narrative
+            .contains("potassium 4.4 mmol/L")
+    );
+    let wire_synopsis =
+        serde_json::to_string(&physician_view.to_wire_synopsis("2026-11-11T15:00:00Z".into()))
+            .unwrap();
+    assert!(!wire_synopsis.contains("PRIVATE_SEAM_OVERVIEW"));
+
+    // Verify Conversation 2's `PatientStartingContext` sees both understanding revision 2 and physician memory.
+    let chat_scope_2 = Scope {
+        practice: practice.clone(),
+        physician: physician.physician_id.clone(),
+        workspace: workspace.clone(),
+        chat: "chat-seam-2".into(),
+    };
+    let starting_2 = store.patient_starting_context(&chat_scope_2).await.unwrap();
+    assert_eq!(starting_2.understanding.as_ref().unwrap().revision, 2);
+    let dev_text_2 = starting_2.developer_text();
+    assert!(dev_text_2.contains("PRIVATE_SEAM_OVERVIEW_V2"));
+    assert!(dev_text_2.contains("takes amlodipine 5 mg in the evening"));
+}

@@ -133,6 +133,14 @@ pub trait PatientDirectory: Send + Sync {
     ) -> Result<BTreeMap<String, Value>, DirectoryError> {
         Ok(BTreeMap::new())
     }
+
+    /// Running or failed background understanding runs (`automation_run` JSON) keyed by workspace.
+    async fn automation_runs(
+        &self,
+        _workspaces: &[String],
+    ) -> Result<BTreeMap<String, Value>, DirectoryError> {
+        Ok(BTreeMap::new())
+    }
 }
 
 #[async_trait]
@@ -152,6 +160,43 @@ impl PatientDirectory for Store {
     ) -> Result<BTreeMap<String, BTreeMap<String, SourceStanding>>, DirectoryError> {
         Ok(self.workspace_source_standings(workspaces).await?)
     }
+
+    async fn synopses(
+        &self,
+        workspaces: &[String],
+    ) -> Result<BTreeMap<String, Value>, DirectoryError> {
+        let views = self
+            .patient_summaries_for_workspaces(workspaces)
+            .await
+            .map_err(|_| DirectoryError::Unavailable(StoreUnavailable))?;
+        Ok(views
+            .into_iter()
+            .map(|(workspace, view)| {
+                let authored = UNIX_EPOCH + Duration::from_secs(view.updated_at.unsigned_abs());
+                (workspace, view.to_wire_synopsis(format_rfc3339(authored)))
+            })
+            .collect())
+    }
+
+    async fn automation_runs(
+        &self,
+        workspaces: &[String],
+    ) -> Result<BTreeMap<String, Value>, DirectoryError> {
+        let runs = self
+            .active_or_failed_understanding_runs(workspaces)
+            .await
+            .map_err(|_| DirectoryError::Unavailable(StoreUnavailable))?;
+        Ok(runs
+            .into_iter()
+            .map(|(workspace, status)| {
+                let started = UNIX_EPOCH + Duration::from_secs(status.started_at.unsigned_abs());
+                (
+                    workspace,
+                    status.to_wire_automation_run(format_rfc3339(started)),
+                )
+            })
+            .collect())
+    }
 }
 
 /// The directory of a site with no database, and of tests.
@@ -159,6 +204,7 @@ impl PatientDirectory for Store {
 pub struct MemoryPatients {
     records: Mutex<BTreeMap<String, Vec<PatientSourceRecord>>>,
     synopses: Mutex<BTreeMap<String, Value>>,
+    automation_runs: Mutex<BTreeMap<String, Value>>,
     unavailable: std::sync::atomic::AtomicBool,
 }
 
@@ -192,6 +238,14 @@ impl MemoryPatients {
             .lock()
             .expect("patient synopses")
             .insert(workspace.to_owned(), synopsis);
+    }
+
+    /// Saves an `automation_run` projection for `workspace`.
+    pub fn set_automation_run(&self, workspace: &str, run: Value) {
+        self.automation_runs
+            .lock()
+            .expect("patient automation runs")
+            .insert(workspace.to_owned(), run);
     }
 
     /// Simulates directory unavailability so callers verify failure handling.
@@ -329,6 +383,26 @@ impl PatientDirectory for MemoryPatients {
             })
             .collect())
     }
+
+    async fn automation_runs(
+        &self,
+        workspaces: &[String],
+    ) -> Result<BTreeMap<String, Value>, DirectoryError> {
+        if self.unavailable.load(std::sync::atomic::Ordering::SeqCst) {
+            return Err(DirectoryError::Unavailable(StoreUnavailable));
+        }
+        let runs = self
+            .automation_runs
+            .lock()
+            .expect("patient automation runs");
+        Ok(workspaces
+            .iter()
+            .filter_map(|workspace| {
+                runs.get(workspace)
+                    .map(|run| (workspace.clone(), run.clone()))
+            })
+            .collect())
+    }
 }
 
 /// Creates the synthetic practice in memory, registers `patients` to it and
@@ -403,6 +477,7 @@ pub(crate) struct Patient {
     sources: Vec<PatientSourceRecord>,
     standings: BTreeMap<String, SourceStanding>,
     synopsis: Option<Value>,
+    automation_run: Option<Value>,
 }
 
 fn unix_to_rfc3339(seconds: i64) -> String {
@@ -414,12 +489,14 @@ impl Patient {
         (workspace, sources): (String, Vec<PatientSourceRecord>),
         standings: BTreeMap<String, SourceStanding>,
         synopsis: Option<Value>,
+        automation_run: Option<Value>,
     ) -> Option<Self> {
         (!sources.is_empty()).then_some(Self {
             workspace,
             sources,
             standings,
             synopsis,
+            automation_run,
         })
     }
 
@@ -739,6 +816,7 @@ impl Patient {
             "current_time": now,
             "identity": self.identity(now),
             "patient_synopsis": self.synopsis,
+            "automation_run": self.automation_run,
             "connected_sources": self.connected_sources(registry),
             "chats": [],
             "active_follow_ups": [],
@@ -820,17 +898,24 @@ pub(crate) async fn read_patients(
     directory: &dyn PatientDirectory,
     workspaces: &[String],
 ) -> Result<Vec<Patient>, DirectoryError> {
-    let (records, mut standings, mut synopses) = tokio::try_join!(
+    let (records, mut standings, mut synopses, mut automation_runs) = tokio::try_join!(
         directory.source_records(workspaces),
         directory.standings(workspaces),
         directory.synopses(workspaces),
+        directory.automation_runs(workspaces),
     )?;
     let mut patients: Vec<Patient> = records
         .into_iter()
         .filter_map(|(workspace, ws_records)| {
             let ws_standings = standings.remove(&workspace).unwrap_or_default();
             let synopsis = synopses.remove(&workspace);
-            Patient::from_entry((workspace, ws_records), ws_standings, synopsis)
+            let automation_run = automation_runs.remove(&workspace);
+            Patient::from_entry(
+                (workspace, ws_records),
+                ws_standings,
+                synopsis,
+                automation_run,
+            )
         })
         .collect();
     patients.sort_by(|left, right| left.sort_key().cmp(&right.sort_key()));
@@ -1008,6 +1093,7 @@ mod tests {
                 vec![PatientSourceRecord::from(fixture_pull(ws))],
             ),
             standings,
+            None,
             None,
         )
         .unwrap();
