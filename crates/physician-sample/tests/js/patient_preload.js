@@ -61,6 +61,12 @@ function (name, ...args) {
       return document.body ? document.body.innerText : '';
     },
 
+    // Gives keyboard focus to `selector`, as a physician's click on the page would.
+    focus(selector) {
+      document.querySelector(selector).focus();
+      return document.activeElement === document.querySelector(selector);
+    },
+
     exists(selector) {
       return Boolean(document.querySelector(selector));
     },

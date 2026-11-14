@@ -290,9 +290,7 @@ fn walk(page: &mut Page, path: Path, trigger: Trigger, delay: u64) -> Run {
             page.click_at(to);
         }
         Path::Keyboard => {
-            page.browser
-                .page()
-                .evaluate("document.querySelector('.glass-app').focus(); 'focused'");
+            page.run("focus", &[json!(".glass-app")]);
             // Jake, Dan, Tanvir, the unnamed visit, then Teresa.
             for _ in 0..5 {
                 page.browser.press_key(Key::typing("j", "KeyJ", 74));

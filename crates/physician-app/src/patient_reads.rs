@@ -174,10 +174,13 @@ impl<T: Clone + 'static> Slots<T> {
             request
         };
         let slots = self.clone();
-        // Nobody may await a preload, so it drives itself to an answer.
-        Runtime::current().spawn(self.1, async move {
-            let answer = request.clone().await;
-            slots.settle(&key, &request, answer);
+        // Nobody may await a preload, so it drives itself to an answer. The
+        // task is the owning component's, so leaving the signed-in shell ends it.
+        Runtime::current().in_scope(self.1, || {
+            dioxus::prelude::spawn(async move {
+                let answer = request.clone().await;
+                slots.settle(&key, &request, answer);
+            })
         });
     }
 
