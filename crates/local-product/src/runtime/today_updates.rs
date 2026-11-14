@@ -4094,7 +4094,9 @@ impl Store {
                             limit: None,
                         });
                     }
-                    ReviewTrigger::Periodic { .. } => {}
+                    ReviewTrigger::Periodic { .. }
+                    | ReviewTrigger::Message { .. }
+                    | ReviewTrigger::FollowUp { .. } => {}
                 }
             }
 
@@ -4133,7 +4135,13 @@ impl Store {
         trigger: ReviewTrigger,
     ) -> Result<ReviewStartingContext, TodayUpdatesError> {
         let (ctx, _) = self
-            .review_starting_context(practice, workspace, next_review_id, trigger, Vec::new())
+            .review_starting_context(
+                practice,
+                workspace,
+                next_review_id,
+                std::slice::from_ref(&trigger),
+                Vec::new(),
+            )
             .await?;
         Ok(ctx)
     }

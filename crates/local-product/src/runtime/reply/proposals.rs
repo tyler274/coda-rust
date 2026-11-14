@@ -798,10 +798,6 @@ pub struct ActiveReplyReview {
 /// How an active reply review fence is released when a background patient review
 /// settles without calling `complete_reply_review`.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
-#[expect(
-    dead_code,
-    reason = "wired into patient review settlement in companion slice"
-)]
 pub(in crate::runtime) enum ReplyReviewRelease {
     /// Review finished (`complete_patient_review`) without calling `complete_reply_review`.
     Completed,
@@ -3006,10 +3002,6 @@ impl Store {
     /// wakes when `release == ReplyReviewRelease::Aborted` (`Superseded`, `Stopped`, or
     /// `Failed`) and re-seeding any still-unhandled open messages / reply requests on
     /// `ReplyReviewRelease::Completed`.
-    #[expect(
-        dead_code,
-        reason = "wired into patient review settlement in companion slice"
-    )]
     pub(in crate::runtime) async fn release_workspace_reply_reviews_in_tx(
         tx: &sea_orm::DatabaseTransaction,
         practice: &str,
@@ -3082,10 +3074,6 @@ impl Store {
 
     /// Re-seeds a pending review wake on `(practice, conversation_id)` when an operator or
     /// physician explicitly rearms (`Resume` / `TryAgain`) a stopped or failed message review.
-    #[expect(
-        dead_code,
-        reason = "wired into patient review settlement in companion slice"
-    )]
     pub(in crate::runtime) async fn rearm_reply_conversation_wake_in_tx(
         tx: &sea_orm::DatabaseTransaction,
         practice: &str,

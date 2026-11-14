@@ -536,7 +536,15 @@ pub(super) async fn record_admitted_message_triggers_in_tx(
     dispatched_at: i64,
 ) -> Result<(), DbErr> {
     let mut settled_conversations = BTreeSet::new();
-    let _ = triggers;
+    for trigger in triggers {
+        if let ReviewTrigger::Message {
+            conversation_id, ..
+        } = trigger
+            && !conversation_id.is_empty()
+        {
+            settled_conversations.insert(conversation_id.clone());
+        }
+    }
     if let Some(spruce_row) =
         spruce_review_trigger::Entity::find_by_id((practice_id.to_owned(), command_key.to_owned()))
             .lock_exclusive()

@@ -10,12 +10,12 @@
 //! unapproved considerations for the physician, and can finish quietly with
 //! `"nothing to do"` when nothing needs physician attention.
 
-use std::collections::BTreeMap;
+use std::collections::{BTreeMap, BTreeSet};
 use std::fmt;
 
 use harness::engine::Tool;
 use harness::engine::recipe::RequestRecipe;
-use patient_work::{ReviewReason, ReviewRequest};
+use patient_work::{ReviewDispatchInput, ReviewReason, ReviewRequest};
 use serde::{Deserialize, Serialize};
 use serde_json::{Value, json};
 
@@ -27,14 +27,24 @@ use crate::runtime::chat_operations::{
     DispatchCheckStanding, OpenConcernSummary, PatientMemoryStanding, RecordLimit,
     SourceFreshnessSummary, patient_memory_tool,
 };
-use crate::runtime::concerns::{ConcernInputError, ExactRecordReference, concern_tool};
+use crate::runtime::concerns::{ConcernId, ConcernInputError, ExactRecordReference, concern_tool};
 use crate::runtime::jobs::{Assignment, AssignmentError, PracticeJobKind};
 use crate::runtime::refresh::{SavedSourceStatus, SourceRefreshOutcome, refresh_tool};
+use crate::runtime::reply::proposals::AnsweredMessageClosure;
 use crate::runtime::understanding::PatientUnderstanding;
 
 /// Read-only tool returning saved patient reviews, decisions, and unfinished work
 /// for the current patient workspace.
 pub const READ_PATIENT_REVIEWS_TOOL: &str = "read_patient_reviews";
+
+/// Read tool loading a linked patient messaging conversation and pinning its
+/// current message and chart versions for reply review.
+pub const READ_PATIENT_CONVERSATION_TOOL: &str = "read_patient_conversation";
+
+/// Write tool recording a patient message review decision (proposing a draft
+/// reply, recording why no reply would help, or closing messages answered by a
+/// practice message).
+pub const PATIENT_MESSAGE_REPLY_TOOL: &str = "patient_message_reply";
 
 /// Structured decision barrier recording a patient review's outcome, verified
 /// citations, basis and limitations, and unfinished work before the run finishes.
@@ -114,7 +124,20 @@ elapsed, or a physician requested a focused reassessment, follow one disciplined
      diagnostic step as an accepted or active plan. Frame any potential medication or care \
      adjustment strictly as a consideration for the physician to evaluate and decide.
 
-5. Record your structured review outcome before finishing:
+5. Handle linked patient messages and due follow-up responsibilities when present:
+   - Linked patient messages: call `read_patient_conversation` for each conversation needing \
+     review to read the full conversation thread and pin current sources, read any relevant \
+     chart records with `read_patient_sources`, raise a `patient_concern` if the message reveals \
+     a clinical flag needing physician attention, and call `patient_message_reply` to save a \
+     draft reply (`decision: \"propose_reply\"`), record why no reply would help \
+     (`decision: \"no_reply_would_help\"`), or close patient messages already answered by a \
+     non-automatic practice message (`answered_closures` + `decision: \"all_handled\"`). \
+     Proposed replies are saved strictly as physician drafts and never sent automatically.
+   - Due follow-ups: inspect the current version of each due follow-up alongside the chart \
+     evidence and call `patient_follow_up` to complete a resolved follow-up, revise its \
+     summary or next due date when still awaited, or record any clinical concern.
+
+6. Record your structured review outcome before finishing:
    - Preloaded assignment skills are already open below; do not reload them with `skill_view`. \
      Other skills in the catalog (such as `patient-communication`) remain available via \
      `skill_view` when needed, and working notes help organize multi-step chart review.
@@ -123,8 +146,9 @@ elapsed, or a physician requested a focused reassessment, follow one disciplined
      summary or quiet explanation, exact read `citations`, `basis_and_limitations`, and any \
      remaining `unfinished_work` for future reviews.";
 
-/// Why a patient review was started. Changed-record dispatches, periodic
-/// reassessments, and physician requests share one execution pipeline.
+/// Why a patient review was started. Changed-record dispatches, linked messages,
+/// due follow-ups, periodic reassessments, and physician requests share one
+/// execution pipeline.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(tag = "kind", rename_all = "snake_case")]
 pub enum ReviewTrigger {
@@ -148,6 +172,33 @@ pub enum ReviewTrigger {
         #[serde(default, skip_serializing_if = "Option::is_none")]
         last_reviewed_at: Option<i64>,
     },
+    /// Linked patient message arrival or conversation wake requiring message review.
+    Message {
+        /// Linked conversation identifier.
+        conversation_id: String,
+        /// Message identifiers carried by this trigger, when applicable.
+        #[serde(default)]
+        message_ids: Vec<String>,
+        /// Workspace source version observed when triggered.
+        workspace_version: u64,
+        /// Active `(candidate_id -> revision)` map observed when triggered.
+        record_versions: BTreeMap<String, String>,
+    },
+    /// Active patient follow-up responsibility came due at its current version.
+    FollowUp {
+        /// Follow-up identifier.
+        follow_up_id: String,
+        /// Current follow-up version targeted by this review.
+        version: u64,
+        /// Clinical summary of the follow-up at `version`.
+        summary: String,
+        /// Effective due timestamp of the follow-up.
+        due_at: i64,
+        /// Workspace source version observed when triggered.
+        workspace_version: u64,
+        /// Active `(candidate_id -> revision)` map observed when triggered.
+        record_versions: BTreeMap<String, String>,
+    },
     /// Explicit reassessment requested by an authorized physician.
     PhysicianRequest {
         /// Requesting physician identifier.
@@ -162,12 +213,15 @@ pub enum ReviewTrigger {
 }
 
 impl ReviewTrigger {
-    /// Canonical trigger reason label (`"new records"`, `"periodic"`, or `"physician request"`).
+    /// Canonical trigger reason label (`"new records"`, `"periodic"`, `"message"`,
+    /// `"follow-up"`, or `"physician request"`).
     #[must_use]
     pub const fn reason_label(&self) -> &'static str {
         match self {
             Self::ChangedRecords { .. } => ReviewReason::NewRecords.as_str(),
             Self::Periodic { .. } => ReviewReason::Periodic.as_str(),
+            Self::Message { .. } => ReviewReason::Message.as_str(),
+            Self::FollowUp { .. } => ReviewReason::FollowUp.as_str(),
             Self::PhysicianRequest { .. } => "physician request",
         }
     }
@@ -180,6 +234,12 @@ impl ReviewTrigger {
                 workspace_version, ..
             }
             | Self::Periodic {
+                workspace_version, ..
+            }
+            | Self::Message {
+                workspace_version, ..
+            }
+            | Self::FollowUp {
                 workspace_version, ..
             }
             | Self::PhysicianRequest {
@@ -198,6 +258,12 @@ impl ReviewTrigger {
             | Self::Periodic {
                 record_versions, ..
             }
+            | Self::Message {
+                record_versions, ..
+            }
+            | Self::FollowUp {
+                record_versions, ..
+            }
             | Self::PhysicianRequest {
                 record_versions, ..
             } => record_versions,
@@ -212,18 +278,164 @@ impl ReviewTrigger {
         last_reviewed_at: Option<i64>,
     ) -> Self {
         match request.reason {
-            ReviewReason::NewRecords | ReviewReason::Message | ReviewReason::FollowUp => {
-                Self::ChangedRecords {
-                    workspace_version: request.workspace_version,
-                    record_versions: request.record_versions.clone(),
-                    changed_candidates,
-                }
-            }
+            ReviewReason::NewRecords => Self::ChangedRecords {
+                workspace_version: request.workspace_version,
+                record_versions: request.record_versions.clone(),
+                changed_candidates,
+            },
             ReviewReason::Periodic => Self::Periodic {
                 workspace_version: request.workspace_version,
                 record_versions: request.record_versions.clone(),
                 last_reviewed_at,
             },
+            ReviewReason::Message => Self::Message {
+                conversation_id: String::new(),
+                message_ids: Vec::new(),
+                workspace_version: request.workspace_version,
+                record_versions: request.record_versions.clone(),
+            },
+            ReviewReason::FollowUp => Self::FollowUp {
+                follow_up_id: String::new(),
+                version: 1,
+                summary: String::new(),
+                due_at: 0,
+                workspace_version: request.workspace_version,
+                record_versions: request.record_versions.clone(),
+            },
+        }
+    }
+
+    /// Converts all coalesced [`ReviewDispatchInput`]s on a dispatch request into
+    /// ordered [`ReviewTrigger`]s (placing the primary trigger matching `request.reason`
+    /// first so `ReviewStartingContext.trigger` reflects the headline reason while
+    /// preserving every coalesced trigger).
+    #[must_use]
+    pub fn triggers_from_dispatch(
+        request: &ReviewRequest,
+        inputs: &[ReviewDispatchInput],
+        fallback_changed_candidates: Vec<String>,
+        fallback_last_reviewed_at: Option<i64>,
+    ) -> Vec<Self> {
+        if inputs.is_empty() {
+            return vec![Self::from_dispatch_request(
+                request,
+                fallback_changed_candidates,
+                fallback_last_reviewed_at,
+            )];
+        }
+        let mut by_conv: BTreeMap<String, Vec<String>> = BTreeMap::new();
+        let mut triggers = Vec::new();
+        for input in inputs {
+            match input {
+                ReviewDispatchInput::ChangedRecords {
+                    workspace_version,
+                    changed_candidates,
+                } => {
+                    triggers.push(Self::ChangedRecords {
+                        workspace_version: *workspace_version,
+                        record_versions: request.record_versions.clone(),
+                        changed_candidates: changed_candidates.clone(),
+                    });
+                }
+                ReviewDispatchInput::Periodic {
+                    workspace_version,
+                    last_reviewed_at,
+                } => {
+                    triggers.push(Self::Periodic {
+                        workspace_version: *workspace_version,
+                        record_versions: request.record_versions.clone(),
+                        last_reviewed_at: *last_reviewed_at,
+                    });
+                }
+                ReviewDispatchInput::LinkedMessage(msg) => {
+                    let entry = by_conv.entry(msg.conversation_id.clone()).or_default();
+                    for mid in &msg.message_ids {
+                        if !entry.contains(mid) {
+                            entry.push(mid.clone());
+                        }
+                    }
+                }
+                ReviewDispatchInput::DueFollowUp(fu) => {
+                    triggers.push(Self::FollowUp {
+                        follow_up_id: fu.follow_up_id.clone(),
+                        version: fu.version,
+                        summary: fu.summary.clone(),
+                        due_at: fu.due_at,
+                        workspace_version: request.workspace_version,
+                        record_versions: request.record_versions.clone(),
+                    });
+                }
+            }
+        }
+        for (conversation_id, message_ids) in by_conv {
+            triggers.push(Self::Message {
+                conversation_id,
+                message_ids,
+                workspace_version: request.workspace_version,
+                record_versions: request.record_versions.clone(),
+            });
+        }
+        if let Some(pos) = triggers
+            .iter()
+            .position(|t| t.reason_label() == request.reason.as_str())
+            && pos > 0
+        {
+            let primary = triggers.remove(pos);
+            triggers.insert(0, primary);
+        }
+        triggers
+    }
+
+    /// Concise model-clean description of this trigger when rendered as a
+    /// coalesced secondary input in [`ReviewStartingContext`].
+    #[must_use]
+    pub fn summary_line(&self) -> String {
+        match self {
+            Self::ChangedRecords {
+                workspace_version,
+                changed_candidates,
+                ..
+            } => {
+                if changed_candidates.is_empty() {
+                    format!("coalesced changed records at chart version {workspace_version}")
+                } else {
+                    format!(
+                        "coalesced changed records at chart version {workspace_version}: {}",
+                        changed_candidates.join(", ")
+                    )
+                }
+            }
+            Self::Periodic {
+                workspace_version, ..
+            } => format!("coalesced periodic reassessment at chart version {workspace_version}"),
+            Self::Message {
+                conversation_id,
+                message_ids,
+                ..
+            } => {
+                if message_ids.is_empty() {
+                    format!("coalesced linked message wake on conversation {conversation_id}")
+                } else {
+                    format!(
+                        "coalesced linked message wake on conversation {conversation_id} (messages: {})",
+                        message_ids.join(", ")
+                    )
+                }
+            }
+            Self::FollowUp {
+                follow_up_id,
+                version,
+                summary,
+                due_at,
+                ..
+            } => format!(
+                "coalesced due follow-up {follow_up_id} (version {version}, due unix {due_at}): {summary}"
+            ),
+            Self::PhysicianRequest {
+                physician_id,
+                request_text,
+                ..
+            } => format!("physician request from {physician_id}: {request_text}"),
         }
     }
 }
@@ -497,6 +709,33 @@ impl ReviewStartingContext {
                     "Review trigger: periodic whole-patient reassessment at chart version {workspace_version} ({prior})."
                 ));
             }
+            ReviewTrigger::Message {
+                conversation_id,
+                message_ids,
+                workspace_version,
+                ..
+            } => {
+                let ids = if message_ids.is_empty() {
+                    "read full conversation via read_patient_conversation".to_owned()
+                } else {
+                    message_ids.join(", ")
+                };
+                lines.push(format!(
+                    "Review trigger: message on conversation {conversation_id} at chart version {workspace_version} (message IDs: {ids})."
+                ));
+            }
+            ReviewTrigger::FollowUp {
+                follow_up_id,
+                version,
+                summary,
+                due_at,
+                workspace_version,
+                ..
+            } => {
+                lines.push(format!(
+                    "Review trigger: due follow-up {follow_up_id} (version {version}, due unix {due_at}) at chart version {workspace_version}: {summary}"
+                ));
+            }
             ReviewTrigger::PhysicianRequest {
                 physician_id,
                 request_text,
@@ -719,6 +958,15 @@ pub enum ReviewInputError {
     /// Target `review_id` in `read_patient_reviews` was blank or contained control characters.
     #[error("review_id must be a non-empty identifier without control characters")]
     InvalidReviewId,
+    /// Conversation or message identifier failed validation.
+    #[error("{field} must be a non-empty identifier without control characters")]
+    InvalidIdentifier {
+        /// Argument field name.
+        field: &'static str,
+    },
+    /// Concern identifier in `patient_message_reply` failed boundary validation.
+    #[error("invalid concern identifier in `raised_concern_ids`: {0}")]
+    InvalidConcernId(#[source] ConcernInputError),
 }
 
 /// Validated disposition submitted to `complete_patient_review`.
@@ -955,20 +1203,330 @@ impl ReadReviewsCall {
     }
 }
 
-/// Whether `name` is one of the patient review tools (`read_patient_reviews` or
-/// `complete_patient_review`).
+/// Validated arguments to `read_patient_conversation`.
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub struct ReadConversationCall {
+    /// Target linked conversation identifier.
+    pub conversation_id: String,
+}
+
+#[derive(Debug, Deserialize)]
+#[serde(deny_unknown_fields)]
+struct RawReadConversationCall {
+    conversation_id: String,
+}
+
+impl ReadConversationCall {
+    /// Parses and validates `read_patient_conversation` JSON arguments.
+    pub fn parse(arguments: &Value) -> Result<Self, ReviewInputError> {
+        let raw: RawReadConversationCall =
+            serde_json::from_value(arguments.clone()).map_err(ReviewInputError::MalformedJson)?;
+        let trimmed = raw.conversation_id.trim();
+        if trimmed.is_empty() || trimmed.chars().any(char::is_control) {
+            return Err(ReviewInputError::InvalidIdentifier {
+                field: "conversation_id",
+            });
+        }
+        Ok(Self {
+            conversation_id: trimmed.to_owned(),
+        })
+    }
+}
+
+/// Validated message-review decision submitted to `patient_message_reply`.
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(tag = "decision", rename_all = "snake_case")]
+pub enum MessageReplyDecision {
+    /// Saves a proposed reply draft for physician review.
+    ProposeReply {
+        /// Proposed patient-facing reply text.
+        draft_text: String,
+        /// Basis summary naming dated chart records and freshness relied on.
+        basis_summary: String,
+        /// Explicit missing, stale, or unavailable evidence limits.
+        #[serde(default)]
+        limits: Vec<String>,
+        /// Exact chart record revisions cited by the proposed reply.
+        citations: Vec<ExactRecordReference>,
+    },
+    /// Records why no reply would help on the remaining open patient messages.
+    NoReplyWouldHelp {
+        /// Clinical or operational reason why no reply is needed.
+        reason: String,
+    },
+    /// Confirms all open patient messages were answered by practice messages in `answered_closures`.
+    AllHandled,
+}
+
+/// Validated arguments to `patient_message_reply`.
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub struct MessageReplyCall {
+    /// Target linked conversation identifier.
+    pub conversation_id: String,
+    /// Practice-message closures attributing answered patient messages.
+    pub answered_closures: Vec<AnsweredMessageClosure>,
+    /// Decision for any remaining open patient messages.
+    pub decision: MessageReplyDecision,
+    /// Concerns raised during this message review to attach to the conversation.
+    pub raised_concern_ids: Vec<ConcernId>,
+}
+
+#[derive(Debug, Deserialize)]
+#[serde(deny_unknown_fields)]
+struct RawAnsweredClosure {
+    practice_message_id: String,
+    answered_message_ids: Vec<String>,
+}
+
+#[derive(Debug, Deserialize)]
+#[serde(tag = "decision", rename_all = "snake_case", deny_unknown_fields)]
+enum RawMessageReplyCall {
+    ProposeReply {
+        conversation_id: String,
+        draft_text: String,
+        basis_summary: String,
+        #[serde(default)]
+        limits: Vec<String>,
+        #[serde(default)]
+        citations: Vec<RawExactRef>,
+        #[serde(default)]
+        answered_closures: Vec<RawAnsweredClosure>,
+        #[serde(default)]
+        raised_concern_ids: Vec<String>,
+    },
+    NoReplyWouldHelp {
+        conversation_id: String,
+        reason: String,
+        #[serde(default)]
+        answered_closures: Vec<RawAnsweredClosure>,
+        #[serde(default)]
+        raised_concern_ids: Vec<String>,
+    },
+    AllHandled {
+        conversation_id: String,
+        #[serde(default)]
+        answered_closures: Vec<RawAnsweredClosure>,
+        #[serde(default)]
+        raised_concern_ids: Vec<String>,
+    },
+}
+
+fn validate_non_empty_id(field: &'static str, raw: &str) -> Result<String, ReviewInputError> {
+    let trimmed = raw.trim();
+    if trimmed.is_empty() || trimmed.chars().any(char::is_control) {
+        return Err(ReviewInputError::InvalidIdentifier { field });
+    }
+    Ok(trimmed.to_owned())
+}
+
+fn parse_answered_closures(
+    raw: Vec<RawAnsweredClosure>,
+) -> Result<Vec<AnsweredMessageClosure>, ReviewInputError> {
+    let mut closures = Vec::with_capacity(raw.len());
+    for item in raw {
+        let practice_message_id =
+            validate_non_empty_id("practice_message_id", &item.practice_message_id)?;
+        let mut answered_message_ids = BTreeSet::new();
+        for msg_id in item.answered_message_ids {
+            answered_message_ids.insert(validate_non_empty_id("answered_message_id", &msg_id)?);
+        }
+        closures.push(AnsweredMessageClosure {
+            practice_message_id,
+            answered_message_ids,
+        });
+    }
+    Ok(closures)
+}
+
+fn parse_concern_ids(raw: Vec<String>) -> Result<Vec<ConcernId>, ReviewInputError> {
+    raw.into_iter()
+        .map(|item| ConcernId::new(item).map_err(ReviewInputError::InvalidConcernId))
+        .collect()
+}
+
+impl MessageReplyCall {
+    /// Parses and validates `patient_message_reply` JSON arguments.
+    pub fn parse(arguments: &Value) -> Result<Self, ReviewInputError> {
+        let raw: RawMessageReplyCall =
+            serde_json::from_value(arguments.clone()).map_err(ReviewInputError::MalformedJson)?;
+        match raw {
+            RawMessageReplyCall::ProposeReply {
+                conversation_id,
+                draft_text,
+                basis_summary,
+                limits,
+                citations,
+                answered_closures,
+                raised_concern_ids,
+            } => {
+                let conversation_id = validate_non_empty_id("conversation_id", &conversation_id)?;
+                let draft_text = validate_prose("draft_text", &draft_text)?;
+                let basis_summary = validate_prose("basis_summary", &basis_summary)?;
+                let mut clean_limits = Vec::with_capacity(limits.len());
+                for lim in limits {
+                    clean_limits.push(validate_prose("limits", &lim)?);
+                }
+                let mut clean_citations = Vec::with_capacity(citations.len());
+                for raw_ref in citations {
+                    let parsed = ExactRecordReference::new(raw_ref.candidate_id, raw_ref.revision)
+                        .map_err(|source| ReviewInputError::InvalidReference {
+                            field: "citations",
+                            source,
+                        })?;
+                    clean_citations.push(parsed);
+                }
+                Ok(Self {
+                    conversation_id,
+                    answered_closures: parse_answered_closures(answered_closures)?,
+                    decision: MessageReplyDecision::ProposeReply {
+                        draft_text,
+                        basis_summary,
+                        limits: clean_limits,
+                        citations: clean_citations,
+                    },
+                    raised_concern_ids: parse_concern_ids(raised_concern_ids)?,
+                })
+            }
+            RawMessageReplyCall::NoReplyWouldHelp {
+                conversation_id,
+                reason,
+                answered_closures,
+                raised_concern_ids,
+            } => Ok(Self {
+                conversation_id: validate_non_empty_id("conversation_id", &conversation_id)?,
+                answered_closures: parse_answered_closures(answered_closures)?,
+                decision: MessageReplyDecision::NoReplyWouldHelp {
+                    reason: validate_prose("reason", &reason)?,
+                },
+                raised_concern_ids: parse_concern_ids(raised_concern_ids)?,
+            }),
+            RawMessageReplyCall::AllHandled {
+                conversation_id,
+                answered_closures,
+                raised_concern_ids,
+            } => Ok(Self {
+                conversation_id: validate_non_empty_id("conversation_id", &conversation_id)?,
+                answered_closures: parse_answered_closures(answered_closures)?,
+                decision: MessageReplyDecision::AllHandled,
+                raised_concern_ids: parse_concern_ids(raised_concern_ids)?,
+            }),
+        }
+    }
+}
+
+/// Whether `name` is one of the patient review tools (`read_patient_reviews`,
+/// `read_patient_conversation`, `patient_message_reply`, or `complete_patient_review`).
 #[must_use]
 pub fn is_patient_review_tool(name: &str) -> bool {
     matches!(
         name,
-        READ_PATIENT_REVIEWS_TOOL | COMPLETE_PATIENT_REVIEW_TOOL
+        READ_PATIENT_REVIEWS_TOOL
+            | READ_PATIENT_CONVERSATION_TOOL
+            | PATIENT_MESSAGE_REPLY_TOOL
+            | COMPLETE_PATIENT_REVIEW_TOOL
     )
 }
 
-/// Whether `name` is a read-only patient review tool.
+/// Whether `name` is a read-only patient review tool safe to re-execute on interruption recovery.
 #[must_use]
 pub fn read_only_review_tool(name: &str) -> bool {
-    name == READ_PATIENT_REVIEWS_TOOL
+    matches!(
+        name,
+        READ_PATIENT_REVIEWS_TOOL | READ_PATIENT_CONVERSATION_TOOL
+    )
+}
+
+/// Read tool schema for loading a linked patient messaging conversation and
+/// pinning its current message and chart versions for reply review.
+#[must_use]
+pub fn read_patient_conversation_tool() -> Tool {
+    Tool {
+        name: READ_PATIENT_CONVERSATION_TOOL.into(),
+        description: "Read a linked patient messaging conversation in full, including open patient messages, observed practice messages, current reply standing, and pinned chart version before deciding on a reply.".into(),
+        parameters: json!({
+            "type": "object",
+            "properties": {
+                "conversation_id": { "type": "string", "minLength": 1, "maxLength": 256 }
+            },
+            "required": ["conversation_id"],
+            "additionalProperties": false
+        }),
+    }
+}
+
+/// Write tool schema for recording a message review decision (saving a reply
+/// proposal as a physician draft, recording why no reply would help, or closing
+/// messages answered by a non-automatic practice message).
+#[must_use]
+pub fn patient_message_reply_tool() -> Tool {
+    let citation_schema = json!({
+        "type": "object",
+        "properties": {
+            "candidate_id": { "type": "string", "minLength": 1, "maxLength": 256 },
+            "revision": { "type": "string", "minLength": 1, "maxLength": 256 }
+        },
+        "required": ["candidate_id", "revision"],
+        "additionalProperties": false
+    });
+    let closure_schema = json!({
+        "type": "object",
+        "properties": {
+            "practice_message_id": { "type": "string", "minLength": 1, "maxLength": 256 },
+            "answered_message_ids": {
+                "type": "array",
+                "items": { "type": "string", "minLength": 1, "maxLength": 256 }
+            }
+        },
+        "required": ["practice_message_id", "answered_message_ids"],
+        "additionalProperties": false
+    });
+
+    Tool {
+        name: PATIENT_MESSAGE_REPLY_TOOL.into(),
+        description: "Save a patient message review outcome after reading the conversation with `read_patient_conversation`. Proposed replies are saved strictly as drafts for physician review and are never sent automatically.".into(),
+        parameters: json!({
+            "anyOf": [
+                {
+                    "type": "object",
+                    "properties": {
+                        "decision": { "type": "string", "enum": ["propose_reply"] },
+                        "conversation_id": { "type": "string", "minLength": 1, "maxLength": 256 },
+                        "draft_text": { "type": "string", "minLength": 1, "maxLength": MAX_REVIEW_TEXT_CHARS },
+                        "basis_summary": { "type": "string", "minLength": 1, "maxLength": MAX_REVIEW_TEXT_CHARS },
+                        "limits": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+                        "citations": { "type": "array", "items": citation_schema },
+                        "answered_closures": { "type": "array", "items": closure_schema },
+                        "raised_concern_ids": { "type": "array", "items": { "type": "string", "minLength": 1 } }
+                    },
+                    "required": ["decision", "conversation_id", "draft_text", "basis_summary", "citations"],
+                    "additionalProperties": false
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "decision": { "type": "string", "enum": ["no_reply_would_help"] },
+                        "conversation_id": { "type": "string", "minLength": 1, "maxLength": 256 },
+                        "reason": { "type": "string", "minLength": 1, "maxLength": MAX_REVIEW_TEXT_CHARS },
+                        "answered_closures": { "type": "array", "items": closure_schema },
+                        "raised_concern_ids": { "type": "array", "items": { "type": "string", "minLength": 1 } }
+                    },
+                    "required": ["decision", "conversation_id", "reason"],
+                    "additionalProperties": false
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "decision": { "type": "string", "enum": ["all_handled"] },
+                        "conversation_id": { "type": "string", "minLength": 1, "maxLength": 256 },
+                        "answered_closures": { "type": "array", "items": closure_schema },
+                        "raised_concern_ids": { "type": "array", "items": { "type": "string", "minLength": 1 } }
+                    },
+                    "required": ["decision", "conversation_id", "answered_closures"],
+                    "additionalProperties": false
+                }
+            ]
+        }),
+    }
 }
 
 /// Read-only tool schema for inspecting earlier saved patient reviews, decisions,
@@ -1087,6 +1645,8 @@ pub fn tools() -> Vec<Tool> {
     offered.push(refresh_tool());
     offered.push(concern_tool());
     offered.push(crate::runtime::follow_ups::follow_up_tool());
+    offered.push(read_patient_conversation_tool());
+    offered.push(patient_message_reply_tool());
     offered.push(patient_memory_tool());
     offered.extend(understanding_tools());
     offered.push(read_patient_reviews_tool());
@@ -1096,7 +1656,8 @@ pub fn tools() -> Vec<Tool> {
 }
 
 /// Builds the Patient Review [`Assignment`] for `command_key` and `starting_context`,
-/// preloading `patient-record-retrieval` at assignment start while keeping the
+/// preloading `patient-record-retrieval` (and `patient-communication` when
+/// reviewing linked patient messages) at assignment start while keeping the
 /// rest of the approved skill catalog discoverable via `skill_view`.
 pub fn assignment(
     command_key: impl Into<String>,
@@ -1130,6 +1691,22 @@ pub fn assignment(
         } => format!(
             "Perform a periodic clinical reassessment for patient workspace {workspace} at chart version {workspace_version}."
         ),
+        ReviewTrigger::Message {
+            conversation_id,
+            workspace_version,
+            ..
+        } => format!(
+            "Review linked patient message thread ({conversation_id}) for patient workspace {workspace} at chart version {workspace_version}."
+        ),
+        ReviewTrigger::FollowUp {
+            follow_up_id,
+            version,
+            summary,
+            workspace_version,
+            ..
+        } => format!(
+            "Review due follow-up {follow_up_id} (version {version}: {summary}) for patient workspace {workspace} at chart version {workspace_version}."
+        ),
         ReviewTrigger::PhysicianRequest {
             physician_id,
             request_text,
@@ -1143,16 +1720,34 @@ pub fn assignment(
     let prompt = format!(
         "{trigger_headline}\n\
          Inspect the relevant dated source revisions with `read_patient_sources`, check prior \
-         decisions and open concerns so nothing stale is repeated, record any warranted concern or \
-         memory updates, and call `complete_patient_review` before finishing.\n\n\
+         decisions and open concerns so nothing stale is repeated, handle any linked message \
+         conversations or due follow-ups, record any warranted concern or memory updates, and \
+         call `complete_patient_review` before finishing.\n\n\
          {developer_context}"
     );
+    let includes_message = matches!(starting_context.trigger, ReviewTrigger::Message { .. })
+        || starting_context
+            .additional_inputs
+            .iter()
+            .any(|line| line.contains("linked message"));
+    let has_comm_skill = matches!(
+        skills.execute(
+            crate::physician_chat::SKILL_VIEW,
+            &json!({ "name": "patient-communication" }),
+        ),
+        harness::engine::ToolOutcome::Returned(_)
+    );
+    let preloaded: &[&str] = if includes_message && has_comm_skill {
+        &["patient-record-retrieval", "patient-communication"]
+    } else {
+        &["patient-record-retrieval"]
+    };
     let review_id = starting_context.review_id.clone();
     let mut created = Assignment::new(
         PracticeJobKind::PatientReview,
         key,
         prompt,
-        &["patient-record-retrieval"],
+        preloaded,
         skills,
     )?;
     created.review = Some(ReviewAssignmentContext {
@@ -1323,6 +1918,8 @@ mod tests {
             crate::runtime::chat_operations::PATIENT_MEMORY_TOOL,
             crate::initial_understanding::READ_UNDERSTANDING_TOOL,
             crate::initial_understanding::SAVE_UNDERSTANDING_TOOL,
+            READ_PATIENT_CONVERSATION_TOOL,
+            PATIENT_MESSAGE_REPLY_TOOL,
             READ_PATIENT_REVIEWS_TOOL,
             COMPLETE_PATIENT_REVIEW_TOOL,
             crate::clinical_library::SEARCH_LIBRARY_TOOL,
