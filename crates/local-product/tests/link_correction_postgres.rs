@@ -6,11 +6,11 @@
 
 #![expect(
     dead_code,
-    reason = "ac4, ac5, and Today/Updates withholding tests land in companion slices"
+    reason = "run_chat_direct_answer is exercised in Today/Updates withholding slice"
 )]
 #![expect(
     unused_imports,
-    reason = "Today/Updates fence imports are exercised in the withholding slice"
+    reason = "Today/Updates fence imports are exercised once message/follow-up Today items land"
 )]
 
 use std::collections::{BTreeMap, BTreeSet};
@@ -2694,6 +2694,2092 @@ async fn ac3_undo_window_returns_to_first_patient_includes_mid_window_arrivals_c
             .await
             .unwrap()
             .is_empty()
+    );
+
+    db.cleanup().await;
+}
+
+#[tokio::test]
+async fn ac4_failed_removal_leaves_correction_unfinished_unavailable_with_reason_blocks_restoration_and_recovers_without_duplicate_reviews()
+ {
+    let db = DisposableDb::create("ac4").await;
+    let (store, auth) = connect_stores(&db.url).await;
+    let practice = Uuid::new_v4().to_string();
+    let ws_a = format!("pw-a-{}", Uuid::new_v4().simple());
+    let ws_b = format!("pw-b-{}", Uuid::new_v4().simple());
+    let t0 = 1_790_300_000;
+
+    let (dr, _, dr_hash) = invite_and_sign_in(&auth, &practice, "dr-ac4", true).await;
+    for ws in [&ws_a, &ws_b] {
+        auth.register_patient(&practice, ws).await.unwrap();
+        auth.set_membership(&dr, ws, Membership::Allowed)
+            .await
+            .unwrap();
+    }
+
+    store
+        .connect_spruce_channel(auth.as_ref(), &dr, 0, None, t0)
+        .await
+        .unwrap();
+    let lease = store
+        .acquire_spruce_reader_lease(&practice, "worker-ac4", 3_600, t0)
+        .await
+        .unwrap();
+    let receiver = RecordingReviewReceiver::default();
+
+    let secret = "WRONG_PATIENT_AC4_WARFARIN_INR_SECRET_5541";
+    ingest_waiting_patient_message(
+        &store,
+        auth.as_ref(),
+        &practice,
+        &lease.lease_token,
+        1,
+        "msg-ac4-1",
+        "conv-ac4",
+        "+14155550404",
+        "Patient AC4",
+        secret,
+        &ws_a,
+        &receiver,
+        t0,
+    )
+    .await;
+    store
+        .link_conversation_to_patient(
+            auth.as_ref(),
+            &dr,
+            LinkConversationCommand {
+                command_key: "link-ac4".into(),
+                practice: practice.clone(),
+                conversation_id: "conv-ac4".into(),
+                workspace: ws_a.clone(),
+                sender_policy: SenderConfirmationPolicy::ConversationOnly,
+                now_ts: t0 + 1,
+            },
+            Some(&receiver),
+        )
+        .await
+        .unwrap();
+
+    store
+        .record_chart(
+            &ws_a,
+            &[chart_record_with_provenance(
+                &ws_a,
+                "spruce",
+                "cand-ac4-wrong",
+                "rev-1",
+                "2026-11-12",
+                "Inbound Warfarin Message",
+                secret,
+                json!({"conversation_id": "conv-ac4", "message_id": "msg-ac4-1"}),
+            )],
+            &source_pull("spruce", "Spruce", "pt-a", "Patient A", t0 + 2),
+        )
+        .await
+        .unwrap();
+
+    let chat_scope = Scope {
+        practice: practice.clone(),
+        physician: dr.physician_id.clone(),
+        workspace: ws_a.clone(),
+        chat: "chat-ac4".into(),
+    };
+    run_chat_citing_source(
+        &store,
+        &chat_scope,
+        &dr_hash,
+        "Check warfarin message.",
+        "cand-ac4-wrong",
+        "rev-1",
+        &format!("Message states {secret} [1]."),
+    )
+    .await;
+
+    // Clear initial link review from `receiver` so we measure exact move settlement reviews.
+    let baseline_a_reviews = receiver.accepted_for_workspace(&ws_a).len();
+    let baseline_b_reviews = receiver.accepted_for_workspace(&ws_b).len();
+
+    let moved = store
+        .correct_patient_link(
+            auth.as_ref(),
+            &dr,
+            CorrectPatientLinkCommand {
+                command_key: "move-ac4-a-to-b".into(),
+                practice: practice.clone(),
+                conversation_id: "conv-ac4".into(),
+                destination: CorrectionDestination::Patient {
+                    workspace: ws_b.clone(),
+                },
+                undo_window_seconds: 10,
+                now_ts: t0 + 10,
+            },
+            Some(&receiver),
+        )
+        .await
+        .unwrap();
+    let LinkCorrectionOutcome::Moved { record, .. } = moved else {
+        panic!("expected Moved");
+    };
+
+    // 1. Inject failure at `LinkCorrectionStep::WithdrawOriginEffects` after `Undo` expires (`t0 + 25`):
+    let probe = StepFailureProbe::new(
+        LinkCorrectionStep::WithdrawOriginEffects,
+        "transient storage timeout during concern withdrawal",
+    );
+    let batch_fail1 = store
+        .settle_expired_link_corrections_with_probe(&practice, Some(&receiver), &probe, t0 + 25)
+        .await
+        .unwrap();
+    assert!(batch_fail1.settled.is_empty());
+    assert_eq!(batch_fail1.failed.len(), 1);
+    assert_eq!(
+        batch_fail1.failed[0].failed_step,
+        LinkCorrectionStep::WithdrawOriginEffects
+    );
+
+    let after_fail1 = store
+        .link_correction(&practice, &record.correction_id)
+        .await
+        .unwrap()
+        .unwrap();
+    assert!(matches!(
+        &after_fail1.standing,
+        LinkCorrectionStanding::SettlingFailed {
+            failed_step: LinkCorrectionStep::WithdrawOriginEffects,
+            reason,
+            progress,
+            ..
+        } if reason.contains("transient storage timeout")
+            && progress.entered_in_error_message_ids.contains("msg-ac4-1")
+    ));
+
+    // Content on `ws_a` remains unavailable WITH the unfinished-removal reason (never showing `secret`!):
+    let withheld_a = store.workspace_withheld_state(&ws_a).await.unwrap();
+    assert!(matches!(
+        &withheld_a.entries[0].standing,
+        WithheldStanding::CleanupFailed {
+            failed_step: LinkCorrectionStep::WithdrawOriginEffects,
+            ..
+        }
+    ));
+    let reopened_fail = store
+        .authorized_reopen_conversation(auth.as_ref(), &dr, &ws_a, "chat-ac4")
+        .await
+        .unwrap()
+        .unwrap();
+    let reopened_fail_json = serde_json::to_string(&reopened_fail).unwrap();
+    assert!(!reopened_fail_json.contains(secret));
+    assert!(
+        reopened_fail.turns[1]
+            .raw_text
+            .contains("wrong-patient removal for conversation conv-ac4 is unfinished")
+    );
+    assert!(
+        reopened_fail.turns[1]
+            .raw_text
+            .contains("transient storage timeout")
+    );
+
+    // 2. Repeated commands CANNOT restore wrong-patient content or duplicate review requests:
+    // - Repeating `correct_patient_link` to `ws_b` returns `Duplicate` and leaves `SettlingFailed` untouched.
+    let dup_move = store
+        .correct_patient_link(
+            auth.as_ref(),
+            &dr,
+            CorrectPatientLinkCommand {
+                command_key: "move-ac4-repeat-while-failed".into(),
+                practice: practice.clone(),
+                conversation_id: "conv-ac4".into(),
+                destination: CorrectionDestination::Patient {
+                    workspace: ws_b.clone(),
+                },
+                undo_window_seconds: 10,
+                now_ts: t0 + 26,
+            },
+            Some(&receiver),
+        )
+        .await
+        .unwrap();
+    assert!(matches!(dup_move, LinkCorrectionOutcome::Duplicate { .. }));
+
+    // - Attempting `Undo` while failed is refused (`UnfinishedCorrectionBlocksReturn`).
+    assert!(matches!(
+        store
+            .undo_link_correction(
+                auth.as_ref(),
+                &dr,
+                UndoLinkCorrectionCommand {
+                    command_key: "undo-ac4-while-failed".into(),
+                    practice: practice.clone(),
+                    conversation_id: "conv-ac4".into(),
+                    now_ts: t0 + 27,
+                },
+                Some(&receiver),
+            )
+            .await,
+        Err(LinkCorrectionError::UnfinishedCorrectionBlocksReturn { ref workspace, .. })
+            if workspace == &ws_a
+    ));
+
+    // - Attempting to move `conv-ac4` BACK to `ws_a` while `ws_a` has unfinished cleanup is refused (`UnfinishedCorrectionBlocksReturn`)!
+    assert!(matches!(
+        store
+            .correct_patient_link(
+                auth.as_ref(),
+                &dr,
+                CorrectPatientLinkCommand {
+                    command_key: "move-ac4-back-to-dirty-a".into(),
+                    practice: practice.clone(),
+                    conversation_id: "conv-ac4".into(),
+                    destination: CorrectionDestination::Patient {
+                        workspace: ws_a.clone(),
+                    },
+                    undo_window_seconds: 10,
+                    now_ts: t0 + 28,
+                },
+                Some(&receiver),
+            )
+            .await,
+        Err(LinkCorrectionError::UnfinishedCorrectionBlocksReturn { ref workspace, .. }) if workspace == &ws_a
+    ));
+
+    // - Late/stale write attempting to create a follow-up citing withheld `cand-ac4-wrong` on `ws_a` is fenced (`WithdrawnFence`)!
+    let access_a = WorkspaceAccess {
+        practice: &practice,
+        physician: &dr.physician_id,
+        workspace: &ws_a,
+        session_hash: &dr_hash,
+    };
+    let fenced_fu = store
+        .create_follow_up_for_physician(
+            &access_a,
+            &FollowUpCommandKey::new("cmd-stale-fu-ac4").unwrap(),
+            &PhysicianCreateFollowUp {
+                id: FollowUpId::new("stale-warfarin-fu").unwrap(),
+                summary: FollowUpSummary::new("Recheck INR from wrong-patient message.").unwrap(),
+                due_at: t0 + 86_400,
+                records: vec![ExactRecordReference::new("cand-ac4-wrong", "rev-1").unwrap()],
+            },
+            &mut PostgresWorkspaceAuthority,
+        )
+        .await;
+    assert!(matches!(
+        fenced_fu,
+        Err(FollowUpError::WithdrawnFence(
+            WithdrawalFenceViolation::WithdrawnCandidate { ref candidate_id, .. }
+        )) if candidate_id == "cand-ac4-wrong"
+    ));
+
+    // 3. Now clear `WithdrawOriginEffects` fault, but fail `ReviewReceiver` on `ws_b` (so `ws_a`'s review dispatches once and `ws_b`'s fails!):
+    probe.clear();
+    receiver.fail_workspace(&ws_b);
+    let batch_fail2 = store
+        .settle_expired_link_corrections(&practice, Some(&receiver), t0 + 30)
+        .await
+        .unwrap();
+    assert_eq!(batch_fail2.failed.len(), 1);
+    assert_eq!(
+        batch_fail2.failed[0].failed_step,
+        LinkCorrectionStep::RequestAffectedReviews
+    );
+    // `ws_a` got its 1 review request; `ws_b` failed before acceptance:
+    assert_eq!(
+        receiver.accepted_for_workspace(&ws_a).len() - baseline_a_reviews,
+        1
+    );
+    assert_eq!(
+        receiver.accepted_for_workspace(&ws_b).len() - baseline_b_reviews,
+        0
+    );
+
+    // 4. Clear `ReviewReceiver` failure and recover via `settle_expired_link_corrections` -> finishes `Settled` with ZERO duplicate review requests!
+    receiver.clear_failures();
+    let batch_recovered = store
+        .settle_expired_link_corrections(&practice, Some(&receiver), t0 + 35)
+        .await
+        .unwrap();
+    assert_eq!(batch_recovered.settled.len(), 1);
+    assert!(batch_recovered.failed.is_empty());
+    assert!(matches!(
+        batch_recovered.settled[0].standing,
+        LinkCorrectionStanding::Settled { .. }
+    ));
+    assert_eq!(
+        receiver.accepted_for_workspace(&ws_a).len() - baseline_a_reviews,
+        1,
+        "origin workspace must receive exactly 1 settlement review request across retries"
+    );
+    assert_eq!(
+        receiver.accepted_for_workspace(&ws_b).len() - baseline_b_reviews,
+        1,
+        "target workspace must receive exactly 1 settlement review request"
+    );
+
+    // Re-running batch settlement again is a clean no-op:
+    let batch_noop = store
+        .settle_expired_link_corrections(&practice, Some(&receiver), t0 + 40)
+        .await
+        .unwrap();
+    assert!(batch_noop.settled.is_empty());
+    assert!(batch_noop.failed.is_empty());
+    assert_eq!(
+        receiver.accepted_for_workspace(&ws_a).len() - baseline_a_reviews,
+        1
+    );
+    assert_eq!(
+        receiver.accepted_for_workspace(&ws_b).len() - baseline_b_reviews,
+        1
+    );
+
+    db.cleanup().await;
+}
+
+#[tokio::test]
+async fn ac5_standing_move_withdraws_memory_understanding_concerns_follow_ups_withholds_reply_preserves_draft_identity_and_handled_messages_and_not_a_patient_closes_reply_and_concern()
+ {
+    let db = DisposableDb::create("ac5").await;
+    let (store, auth) = connect_stores(&db.url).await;
+    let practice = Uuid::new_v4().to_string();
+    let ws_a = format!("pw-a-{}", Uuid::new_v4().simple());
+    let ws_b = format!("pw-b-{}", Uuid::new_v4().simple());
+    let ws_c = format!("pw-c-{}", Uuid::new_v4().simple());
+    let t0 = 1_790_400_000;
+
+    let (dr, _, dr_hash) = invite_and_sign_in(&auth, &practice, "dr-ac5", true).await;
+    for ws in [&ws_a, &ws_b, &ws_c] {
+        auth.register_patient(&practice, ws).await.unwrap();
+        auth.set_membership(&dr, ws, Membership::Allowed)
+            .await
+            .unwrap();
+    }
+
+    let skills = load_skills();
+    let model_roles = roles();
+    store
+        .connect_spruce_channel(auth.as_ref(), &dr, 0, None, t0)
+        .await
+        .unwrap();
+    let lease = store
+        .acquire_spruce_reader_lease(&practice, "worker-ac5", 3_600, t0)
+        .await
+        .unwrap();
+    let receiver = RecordingReviewReceiver::default();
+
+    // =========================================================================
+    // PART 1: Standing move `ws_a -> ws_b`
+    // =========================================================================
+    ingest_waiting_patient_message(
+        &store,
+        auth.as_ref(),
+        &practice,
+        &lease.lease_token,
+        1,
+        "msg-ac5-answered",
+        "conv-ac5-ab",
+        "+14155550501",
+        "Elena Vance",
+        "Can I get a copy of last week's lab slip?",
+        &ws_a,
+        &receiver,
+        t0,
+    )
+    .await;
+    store
+        .link_conversation_to_patient(
+            auth.as_ref(),
+            &dr,
+            LinkConversationCommand {
+                command_key: "link-ac5-ab".into(),
+                practice: practice.clone(),
+                conversation_id: "conv-ac5-ab".into(),
+                workspace: ws_a.clone(),
+                sender_policy: SenderConfirmationPolicy::ConversationOnly,
+                now_ts: t0 + 1,
+            },
+            Some(&receiver),
+        )
+        .await
+        .unwrap();
+    ingest_waiting_patient_message(
+        &store,
+        auth.as_ref(),
+        &practice,
+        &lease.lease_token,
+        2,
+        "msg-ac5-open",
+        "conv-ac5-ab",
+        "+14155550501",
+        "Elena Vance",
+        "My lithium tremor is worse this morning.",
+        &ws_a,
+        &receiver,
+        t0 + 2,
+    )
+    .await;
+
+    // Seed clean record `cand-clean-htn` + tainted record `cand-wrong-lithium` on `ws_a`, plus `cand-b-lab` on `ws_b`.
+    let clean_a = chart_record_with_provenance(
+        &ws_a,
+        "clinic-ehr",
+        "cand-clean-htn",
+        "rev-1",
+        "2026-11-01",
+        "Hypertension Visit",
+        "Hypertension controlled on amlodipine 5 mg daily.",
+        json!({}),
+    );
+    store
+        .record_chart(
+            &ws_a,
+            std::slice::from_ref(&clean_a),
+            &source_pull("clinic-ehr", "Clinic EHR", "pt-a", "Clara Morales", t0 + 3),
+        )
+        .await
+        .unwrap();
+
+    // Save clean understanding `v1` on `ws_a`:
+    let UnderstandingTriggerOutcome::Started { scope: u_v1, .. } = store
+        .trigger_patient_understanding(&practice, &ws_a, &model_roles, &skills, auth.as_ref())
+        .await
+        .unwrap()
+    else {
+        panic!("expected understanding v1 Started");
+    };
+    run_understanding_save_job(
+        &store,
+        auth.as_ref(),
+        &u_v1,
+        vec![("cand-clean-htn", "rev-1")],
+        make_save_args(
+            0,
+            "Hypertension controlled on amlodipine 5 mg daily.",
+            "clinic-ehr",
+            "cand-clean-htn",
+            "rev-1",
+            "Hypertension controlled on amlodipine 5 mg daily",
+        ),
+    )
+    .await;
+
+    // Record tainted `cand-wrong-lithium` and save contaminated understanding `v2`:
+    let wrong_a = chart_record_with_provenance(
+        &ws_a,
+        "spruce",
+        "cand-wrong-lithium",
+        "rev-w1",
+        "2026-11-12",
+        "Inbound Lithium Message",
+        "Patient reports worsening lithium tremor.",
+        json!({"conversation_id": "conv-ac5-ab", "message_id": "msg-ac5-open"}),
+    );
+    store
+        .record_chart(
+            &ws_a,
+            std::slice::from_ref(&wrong_a),
+            &source_pull("spruce", "Spruce", "pt-a", "Clara Morales", t0 + 4),
+        )
+        .await
+        .unwrap();
+
+    let UnderstandingTriggerOutcome::Started { scope: u_v2, .. } = store
+        .trigger_patient_understanding(&practice, &ws_a, &model_roles, &skills, auth.as_ref())
+        .await
+        .unwrap()
+    else {
+        panic!("expected understanding v2 Started");
+    };
+    run_understanding_save_job(
+        &store,
+        auth.as_ref(),
+        &u_v2,
+        vec![
+            ("cand-clean-htn", "rev-1"),
+            ("cand-wrong-lithium", "rev-w1"),
+        ],
+        make_save_args(
+            1,
+            "Contaminated overview mentioning lithium tremor.",
+            "spruce",
+            "cand-wrong-lithium",
+            "rev-w1",
+            "Worsening lithium tremor reported today",
+        ),
+    )
+    .await;
+
+    // Seed clean + tainted `patient_memory`, clean + tainted `Concern`, and clean + tainted `FollowUp` on `ws_a`:
+    store
+        .record_patient_memory(
+            "mem-clean-ac5",
+            &RecordMemoryCorrection {
+                practice: practice.clone(),
+                workspace: ws_a.clone(),
+                id: PatientMemoryId::new("mem-clean-amlodipine").unwrap(),
+                topic: "BP regimen".into(),
+                statement: "Takes amlodipine 5 mg every morning.".into(),
+                provenance: MemoryProvenance::PhysicianCorrection {
+                    physician: dr.physician_id.clone(),
+                    chat_id: "chat-clean".into(),
+                    message_id: "msg-clean".into(),
+                    work_id: "work-clean".into(),
+                    attempt_id: "att-1".into(),
+                },
+            },
+        )
+        .await
+        .unwrap();
+    store
+        .record_patient_memory(
+            "mem-tainted-ac5",
+            &RecordMemoryCorrection {
+                practice: practice.clone(),
+                workspace: ws_a.clone(),
+                id: PatientMemoryId::new("mem-tainted-lithium").unwrap(),
+                topic: "Lithium therapy".into(),
+                statement: "Takes lithium carbonate with coarse hand tremor.".into(),
+                provenance: MemoryProvenance::ClinicalSummary {
+                    job_id: "job-tainted".into(),
+                    work_id: "work-tainted-lithium".into(),
+                    attempt_id: "att-1".into(),
+                    records: vec![
+                        ExactRecordReference::new("cand-wrong-lithium", "rev-w1").unwrap(),
+                    ],
+                },
+            },
+        )
+        .await
+        .unwrap();
+
+    store
+        .raise_concern(
+            &CommandKey::new("cmd-conc-clean-ac5").unwrap(),
+            &RaiseConcern {
+                practice: practice.clone(),
+                workspace: ws_a.clone(),
+                id: ConcernId::new("concern-clean-htn").unwrap(),
+                urgency: ConcernUrgency::Today,
+                reason: "Annual BMP check on amlodipine.".into(),
+                records: vec![ExactRecordReference::new("cand-clean-htn", "rev-1").unwrap()],
+                source_work: SourceWork::new("patient_review", "work-clean-c", "att-1").unwrap(),
+            },
+        )
+        .await
+        .unwrap();
+    store
+        .raise_concern(
+            &CommandKey::new("cmd-conc-tainted-ac5").unwrap(),
+            &RaiseConcern {
+                practice: practice.clone(),
+                workspace: ws_a.clone(),
+                id: ConcernId::new("concern-tainted-lithium").unwrap(),
+                urgency: ConcernUrgency::Now,
+                reason: "Possible acute lithium toxicity tremor.".into(),
+                records: vec![ExactRecordReference::new("cand-wrong-lithium", "rev-w1").unwrap()],
+                source_work: SourceWork::new("patient_review", "work-tainted-c", "att-1").unwrap(),
+            },
+        )
+        .await
+        .unwrap();
+
+    create_job_follow_up(
+        &store,
+        &practice,
+        &ws_a,
+        SourceWork::new("patient_review", "work-clean-fu", "att-1").unwrap(),
+        clean_a.clone(),
+        "fu-clean-bp",
+        "Recheck home blood pressure log in 30 days.",
+        t0 + 30 * 86_400,
+    )
+    .await;
+    create_job_follow_up(
+        &store,
+        &practice,
+        &ws_a,
+        SourceWork::new("patient_review", "work-tainted-fu", "att-1").unwrap(),
+        wrong_a.clone(),
+        "fu-tainted-lithium",
+        "Verify stat serum lithium trough level tomorrow.",
+        t0 + 86_400,
+    )
+    .await;
+
+    // Seed `ReplyConversation` on `ws_a` with:
+    // - `msg-ac5-answered` handled (`Answered` by `prac-lab-slip`)
+    // - `msg-ac5-open` still `Open` with `Ready` proposal (`reply_id == 1`, `version == 1`)
+    // - Physician private draft edited on `reply_id == 1`!
+    store
+        .link_reply_conversation(
+            &practice,
+            "conv-ac5-ab",
+            ConversationLink::LinkedPatient {
+                workspace: ws_a.clone(),
+            },
+        )
+        .await
+        .unwrap();
+    for (mid, txt, ts) in [
+        (
+            "msg-ac5-answered",
+            "Can I get a copy of last week's lab slip?",
+            t0,
+        ),
+        (
+            "msg-ac5-open",
+            "My lithium tremor is worse this morning.",
+            t0 + 2,
+        ),
+    ] {
+        let out = store
+            .record_linked_patient_message(&RecordPatientMessage {
+                practice: practice.clone(),
+                conversation_id: "conv-ac5-ab".into(),
+                message_id: mid.into(),
+                sender: MessageSender::Patient,
+                text: txt.into(),
+                sent_at: ts,
+            })
+            .await
+            .unwrap();
+        assert!(matches!(out, MessageIntakeOutcome::Recorded { .. }));
+    }
+    store
+        .observe_practice_message(&ObservePracticeMessage {
+            practice: practice.clone(),
+            conversation_id: "conv-ac5-ab".into(),
+            practice_message_id: "prac-lab-slip".into(),
+            kind: PracticeMessageKind::PracticeSent,
+            text: "Sent your lab slip to the portal.".into(),
+            sent_at: t0 + 3,
+        })
+        .await
+        .unwrap();
+    store
+        .start_or_read_reply_review(&practice, "conv-ac5-ab", "rev-ab-1", "run-ab-1")
+        .await
+        .unwrap();
+    let ReplyReviewOutcome::Applied(applied_ab) = store
+        .complete_reply_review(&CompleteReplyReview {
+            practice: practice.clone(),
+            conversation_id: "conv-ac5-ab".into(),
+            review_id: "rev-ab-1".into(),
+            run_id: "run-ab-1".into(),
+            completion_key: "comp-ab-1".into(),
+            answered_closures: vec![AnsweredMessageClosure {
+                practice_message_id: "prac-lab-slip".into(),
+                answered_message_ids: BTreeSet::from(["msg-ac5-answered".to_owned()]),
+            }],
+            decision: ReplyReviewDecision::ProposeReply(ReplyProposalInput {
+                text: "Wrong-patient proposal on Clara's chart.".into(),
+                basis: ReplyProposalBasisInput {
+                    summary: "Reviewed inbound message.".into(),
+                    limits: vec![],
+                    cited_records: vec![
+                        ExactRecordReference::new("cand-wrong-lithium", "rev-w1").unwrap(),
+                    ],
+                },
+                cited_records: vec![
+                    ExactRecordReference::new("cand-wrong-lithium", "rev-w1").unwrap(),
+                ],
+            }),
+            raised_concern_ids: vec![ConcernId::new("concern-tainted-lithium").unwrap()],
+        })
+        .await
+        .unwrap()
+    else {
+        panic!("expected Applied reply review");
+    };
+    assert_eq!(applied_ab.proposal.as_ref().unwrap().reply_id, 1);
+
+    let access_a = WorkspaceAccess {
+        practice: &practice,
+        physician: &dr.physician_id,
+        workspace: &ws_a,
+        session_hash: &dr_hash,
+    };
+    let saved_draft = store
+        .edit_reply_proposal_draft(
+            &access_a,
+            "conv-ac5-ab",
+            ExpectedDraftBase::ProposalVersion(1),
+            "Dr. AC5 private draft on reply_id 1.",
+            &mut PostgresWorkspaceAuthority,
+        )
+        .await
+        .unwrap();
+    assert_eq!(saved_draft.reply_id, 1);
+
+    // Seed Patient B (`ws_b`) chart so the post-move review on `ws_b` can cite `ws_b`'s real lithium record!
+    store
+        .record_chart(
+            &ws_b,
+            &[chart_record_with_provenance(
+                &ws_b,
+                "clinic-ehr",
+                "cand-b-lithium",
+                "rev-b1",
+                "2026-11-11",
+                "Lithium Level",
+                "Elena Vance serum lithium 1.4 mmol/L.",
+                json!({}),
+            )],
+            &source_pull("clinic-ehr", "Clinic EHR", "pt-b", "Elena Vance", t0 + 5),
+        )
+        .await
+        .unwrap();
+
+    let baseline_a = receiver.accepted_for_workspace(&ws_a).len();
+    let baseline_b = receiver.accepted_for_workspace(&ws_b).len();
+
+    // Move `conv-ac5-ab` from `ws_a -> ws_b` and settle after `Undo` expires:
+    store
+        .correct_patient_link(
+            auth.as_ref(),
+            &dr,
+            CorrectPatientLinkCommand {
+                command_key: "move-ac5-ab".into(),
+                practice: practice.clone(),
+                conversation_id: "conv-ac5-ab".into(),
+                destination: CorrectionDestination::Patient {
+                    workspace: ws_b.clone(),
+                },
+                undo_window_seconds: 10,
+                now_ts: t0 + 10,
+            },
+            Some(&receiver),
+        )
+        .await
+        .unwrap();
+
+    let settled_ab = store
+        .settle_expired_link_corrections(&practice, Some(&receiver), t0 + 25)
+        .await
+        .unwrap();
+    assert_eq!(settled_ab.settled.len(), 1);
+    assert!(settled_ab.failed.is_empty());
+
+    // 1. Verify ONE review request recorded for `ws_a` and ONE for `ws_b`:
+    let new_a_reviews = receiver.accepted_for_workspace(&ws_a);
+    let new_b_reviews = receiver.accepted_for_workspace(&ws_b);
+    assert_eq!(new_a_reviews.len() - baseline_a, 1);
+    assert_eq!(new_b_reviews.len() - baseline_b, 1);
+    assert_eq!(
+        new_a_reviews.last().unwrap().reason,
+        ReviewReason::NewRecords
+    );
+    assert_eq!(
+        new_b_reviews.last().unwrap().reason,
+        ReviewReason::NewRecords
+    );
+
+    // 2. Verify memory on `ws_a`: `mem-tainted-lithium` is `EnteredInError` (hidden even from `ActiveAndRetired`), `mem-clean-amlodipine` stays `Active`!
+    let active_mem_a = store
+        .patient_memories(&practice, &ws_a, MemorySelection::ActiveAndRetired)
+        .await
+        .unwrap();
+    assert_eq!(active_mem_a.len(), 1);
+    assert_eq!(active_mem_a[0].id.as_str(), "mem-clean-amlodipine");
+    assert_eq!(active_mem_a[0].standing, MemoryStanding::Active);
+    let audit_mem_a = store
+        .patient_memories(&practice, &ws_a, MemorySelection::AuditAll)
+        .await
+        .unwrap();
+    let tainted_mem = audit_mem_a
+        .iter()
+        .find(|m| m.id.as_str() == "mem-tainted-lithium")
+        .expect("entered-in-error audit row retained");
+    assert!(matches!(
+        tainted_mem.standing,
+        MemoryStanding::EnteredInError { .. }
+    ));
+
+    // 3. Verify patient understanding on `ws_a`: contaminated `v2` withdrawn (`EnteredInError`), active understanding rolled back to clean `v1`!
+    let u_after = store
+        .patient_understanding_for_practice(&practice, &ws_a, auth.as_ref())
+        .await
+        .unwrap()
+        .expect("rolled back to clean understanding v1");
+    assert_eq!(u_after.revision, 1);
+    assert!(
+        !serde_json::to_string(&u_after.summary)
+            .unwrap()
+            .to_ascii_lowercase()
+            .contains("lithium")
+    );
+    assert!(
+        !u_after
+            .operating_index
+            .working_overview
+            .to_ascii_lowercase()
+            .contains("lithium")
+    );
+    assert!(
+        !serde_json::to_string(&u_after)
+            .unwrap()
+            .to_ascii_lowercase()
+            .contains("tremor")
+    );
+    let u_audits = store
+        .patient_understanding_revision_audits(&practice, &ws_a, auth.as_ref())
+        .await
+        .unwrap();
+    assert_eq!(u_audits.len(), 2);
+    assert_eq!(u_audits[0].standing, UnderstandingStanding::Active);
+    assert!(matches!(
+        u_audits[1].standing,
+        UnderstandingStanding::EnteredInError { .. }
+    ));
+
+    // 4. Verify concerns on `ws_a`: `concern-tainted-lithium` withdrawn, `concern-clean-htn` stays `Open`!
+    let open_concerns_a = store
+        .authorized_open_concerns(
+            auth.as_ref(),
+            &dr,
+            &ws_a,
+            &dr_hash,
+            &mut PostgresWorkspaceAuthority,
+        )
+        .await
+        .unwrap();
+    assert_eq!(open_concerns_a.len(), 1);
+    assert_eq!(open_concerns_a[0].id.as_str(), "concern-clean-htn");
+    let all_concerns_a = store
+        .workspace_concerns(&access_a, &mut PostgresWorkspaceAuthority)
+        .await
+        .unwrap();
+    let tainted_c = all_concerns_a
+        .iter()
+        .find(|c| c.id.as_str() == "concern-tainted-lithium")
+        .unwrap();
+    assert!(matches!(
+        tainted_c.standing,
+        ConcernStanding::Withdrawn { .. }
+    ));
+
+    // 5. Verify follow-ups on `ws_a`: `fu-tainted-lithium` is `WithdrawnWrongPatient` and omitted from `physician_follow_ups`, while `fu-clean-bp` stays `Active`!
+    let visible_fus_a = store
+        .physician_follow_ups(&access_a, &mut PostgresWorkspaceAuthority)
+        .await
+        .unwrap();
+    assert_eq!(visible_fus_a.len(), 1);
+    assert_eq!(visible_fus_a[0].id.as_str(), "fu-clean-bp");
+    assert!(matches!(
+        visible_fus_a[0].standing,
+        FollowUpStanding::Active { .. }
+    ));
+
+    // 6. Verify reply standing on `ws_b`, preserved `Answered` message, and preserved `reply_id == 1` draft identity:
+    let conv_ab_after = store
+        .reply_conversation(&practice, "conv-ac5-ab")
+        .await
+        .unwrap()
+        .unwrap();
+    assert_eq!(
+        conv_ab_after.link,
+        ConversationLink::LinkedPatient {
+            workspace: ws_b.clone(),
+        }
+    );
+    // Handled message stays `Answered`!
+    let answered_msg = conv_ab_after
+        .patient_messages
+        .iter()
+        .find(|m| m.message_id == "msg-ac5-answered")
+        .unwrap();
+    assert!(matches!(
+        answered_msg.standing,
+        PatientMessageStanding::Answered { ref practice_message_id, .. } if practice_message_id == "prac-lab-slip"
+    ));
+    // Open message stays `Open`, and reply is `Withheld` under new `reply_id == 2`!
+    assert!(matches!(
+        &conv_ab_after.reply_standing,
+        ReplyStanding::Withheld {
+            reply_id: 2,
+            workspace,
+            covered_message_ids,
+            ..
+        } if workspace == &ws_b && covered_message_ids == &BTreeSet::from(["msg-ac5-open".to_owned()])
+    ));
+
+    let access_b = WorkspaceAccess {
+        practice: &practice,
+        physician: &dr.physician_id,
+        workspace: &ws_b,
+        session_hash: &dr_hash,
+    };
+    let card_b_withheld = store
+        .reply_card(&access_b, "conv-ac5-ab", &mut PostgresWorkspaceAuthority)
+        .await
+        .unwrap()
+        .expect("withheld card on ws_b");
+    assert_eq!(card_b_withheld.reply_id, 2);
+    assert_eq!(card_b_withheld.displayed_text, DisplayedReplyText::Withheld);
+    assert_eq!(
+        card_b_withheld.draft_standing,
+        PhysicianDraftStanding::NoDraft,
+        "pre-move draft bound to reply_id 1 must keep its reply_id 1 identity and never attach to reply_id 2"
+    );
+    let draft_scope_1 = proposal_draft_scope(&practice, &dr.physician_id, &ws_a, "conv-ac5-ab", 1);
+    assert_eq!(draft_scope_1.chat, "reply-proposal:conv-ac5-ab:1");
+    let saved_draft_1 = store
+        .draft(&draft_scope_1)
+        .await
+        .unwrap()
+        .expect("draft kept its reply_id == 1 identity");
+    assert_eq!(saved_draft_1.text, "Dr. AC5 private draft on reply_id 1.");
+
+    // Verify the reply remains withheld until the new review on `ws_b` writes it again (or closes it):
+    store
+        .start_or_read_reply_review(&practice, "conv-ac5-ab", "rev-b-fresh", "run-b-fresh")
+        .await
+        .unwrap();
+    let still_withheld = store
+        .reply_card(&access_b, "conv-ac5-ab", &mut PostgresWorkspaceAuthority)
+        .await
+        .unwrap()
+        .unwrap();
+    assert_eq!(still_withheld.displayed_text, DisplayedReplyText::Withheld);
+
+    store
+        .complete_reply_review(&CompleteReplyReview {
+            practice: practice.clone(),
+            conversation_id: "conv-ac5-ab".into(),
+            review_id: "rev-b-fresh".into(),
+            run_id: "run-b-fresh".into(),
+            completion_key: "comp-b-fresh".into(),
+            answered_closures: vec![],
+            decision: ReplyReviewDecision::ProposeReply(ReplyProposalInput {
+                text: "Elena, please hold this morning's lithium dose and come in for a repeat level today.".into(),
+                basis: ReplyProposalBasisInput {
+                    summary: "Elena Vance serum lithium 1.4 mmol/L with worsening tremor.".into(),
+                    limits: vec![],
+                    cited_records: vec![
+                        ExactRecordReference::new("cand-b-lithium", "rev-b1").unwrap(),
+                    ],
+                },
+                cited_records: vec![
+                    ExactRecordReference::new("cand-b-lithium", "rev-b1").unwrap(),
+                ],
+            }),
+            raised_concern_ids: vec![],
+        })
+        .await
+        .unwrap();
+
+    let card_b_ready = store
+        .reply_card(&access_b, "conv-ac5-ab", &mut PostgresWorkspaceAuthority)
+        .await
+        .unwrap()
+        .unwrap();
+    assert!(matches!(
+        card_b_ready.displayed_text,
+        DisplayedReplyText::CodaProposal { reply_id: 2, version: 2, ref text }
+            if text.contains("Elena, please hold this morning's lithium dose")
+    ));
+
+    // =========================================================================
+    // PART 2: Standing move `ws_c -> NotAPatient` closes the reply and concern!
+    // =========================================================================
+    store
+        .record_chart(
+            &ws_c,
+            &[chart_record_with_provenance(
+                &ws_c,
+                "clinic-ehr",
+                "cand-c-base",
+                "rev-c1",
+                "2026-11-10",
+                "Baseline Lab",
+                "Routine metabolic panel normal.",
+                json!({}),
+            )],
+            &source_pull("clinic-ehr", "Clinic EHR", "pt-c", "danny Pink", t0 + 50),
+        )
+        .await
+        .unwrap();
+
+    ingest_waiting_patient_message(
+        &store,
+        auth.as_ref(),
+        &practice,
+        &lease.lease_token,
+        3,
+        "msg-ac5-vendor",
+        "conv-ac5-notpt",
+        "+14155550599",
+        "Office Copier Vendor",
+        "Urgent toner invoice reminder.",
+        &ws_c,
+        &receiver,
+        t0 + 51,
+    )
+    .await;
+    store
+        .link_conversation_to_patient(
+            auth.as_ref(),
+            &dr,
+            LinkConversationCommand {
+                command_key: "link-ac5-c".into(),
+                practice: practice.clone(),
+                conversation_id: "conv-ac5-notpt".into(),
+                workspace: ws_c.clone(),
+                sender_policy: SenderConfirmationPolicy::ConversationOnly,
+                now_ts: t0 + 52,
+            },
+            Some(&receiver),
+        )
+        .await
+        .unwrap();
+
+    // Raise a concern associated with `conv-ac5-notpt`'s reply review (citing `cand-c-base` so we also test `act_on_conversation_move` concern closure!):
+    store
+        .raise_concern(
+            &CommandKey::new("cmd-conc-c-notpt").unwrap(),
+            &RaiseConcern {
+                practice: practice.clone(),
+                workspace: ws_c.clone(),
+                id: ConcernId::new("concern-from-notpt-conv").unwrap(),
+                urgency: ConcernUrgency::Today,
+                reason: "Review inbound message on Danny's chart.".into(),
+                records: vec![ExactRecordReference::new("cand-c-base", "rev-c1").unwrap()],
+                source_work: SourceWork::new("reply_review", "work-c-reply", "att-1").unwrap(),
+            },
+        )
+        .await
+        .unwrap();
+
+    store
+        .link_reply_conversation(
+            &practice,
+            "conv-ac5-notpt",
+            ConversationLink::LinkedPatient {
+                workspace: ws_c.clone(),
+            },
+        )
+        .await
+        .unwrap();
+    store
+        .record_linked_patient_message(&RecordPatientMessage {
+            practice: practice.clone(),
+            conversation_id: "conv-ac5-notpt".into(),
+            message_id: "msg-ac5-vendor".into(),
+            sender: MessageSender::Patient,
+            text: "Urgent toner invoice reminder.".into(),
+            sent_at: t0 + 52,
+        })
+        .await
+        .unwrap();
+    store
+        .start_or_read_reply_review(&practice, "conv-ac5-notpt", "rev-c-1", "run-c-1")
+        .await
+        .unwrap();
+    store
+        .complete_reply_review(&CompleteReplyReview {
+            practice: practice.clone(),
+            conversation_id: "conv-ac5-notpt".into(),
+            review_id: "rev-c-1".into(),
+            run_id: "run-c-1".into(),
+            completion_key: "comp-c-1".into(),
+            answered_closures: vec![],
+            decision: ReplyReviewDecision::ProposeReply(ReplyProposalInput {
+                text: "Could you clarify your question?".into(),
+                basis: ReplyProposalBasisInput {
+                    summary: "Inbound message.".into(),
+                    limits: vec![],
+                    cited_records: vec![
+                        ExactRecordReference::new("cand-c-base", "rev-c1").unwrap(),
+                    ],
+                },
+                cited_records: vec![ExactRecordReference::new("cand-c-base", "rev-c1").unwrap()],
+            }),
+            raised_concern_ids: vec![ConcernId::new("concern-from-notpt-conv").unwrap()],
+        })
+        .await
+        .unwrap();
+
+    let baseline_c = receiver.accepted_for_workspace(&ws_c).len();
+    let baseline_total = receiver.accepted_requests().len();
+
+    store
+        .correct_patient_link(
+            auth.as_ref(),
+            &dr,
+            CorrectPatientLinkCommand {
+                command_key: "move-ac5-c-to-notpt".into(),
+                practice: practice.clone(),
+                conversation_id: "conv-ac5-notpt".into(),
+                destination: CorrectionDestination::NotAPatient,
+                undo_window_seconds: 10,
+                now_ts: t0 + 60,
+            },
+            Some(&receiver),
+        )
+        .await
+        .unwrap();
+
+    let settled_notpt = store
+        .settle_expired_link_corrections(&practice, Some(&receiver), t0 + 75)
+        .await
+        .unwrap();
+    assert_eq!(settled_notpt.settled.len(), 1);
+    assert!(settled_notpt.failed.is_empty());
+
+    // Verify 1 review request for `ws_c` and 0 for `NotAPatient` (`total` increased by 1):
+    assert_eq!(receiver.accepted_for_workspace(&ws_c).len() - baseline_c, 1);
+    assert_eq!(receiver.accepted_requests().len() - baseline_total, 1);
+
+    // Verify reply closed (`ReplyStanding::None`, message `MovedToNotPatient`) and concern closed on `ws_c`:
+    let conv_notpt_after = store
+        .reply_conversation(&practice, "conv-ac5-notpt")
+        .await
+        .unwrap()
+        .unwrap();
+    assert_eq!(conv_notpt_after.link, ConversationLink::NotAPatient);
+    assert_eq!(conv_notpt_after.reply_standing, ReplyStanding::None);
+    assert!(matches!(
+        conv_notpt_after.patient_messages[0].standing,
+        PatientMessageStanding::MovedToNotPatient { .. }
+    ));
+
+    let open_concerns_c = store
+        .authorized_open_concerns(
+            auth.as_ref(),
+            &dr,
+            &ws_c,
+            &dr_hash,
+            &mut PostgresWorkspaceAuthority,
+        )
+        .await
+        .unwrap();
+    assert!(
+        open_concerns_c.is_empty(),
+        "moving to not a patient must close associated concerns: {open_concerns_c:?}"
+    );
+    let spruce_msg_notpt = store
+        .spruce_message(&practice, "msg-ac5-vendor")
+        .await
+        .unwrap()
+        .unwrap();
+    assert!(matches!(
+        spruce_msg_notpt.standing,
+        MessageStanding::NotAPatient { .. }
+    ));
+
+    db.cleanup().await;
+}
+
+/// Regression suite covering unified `spruce_matching` move/Undo/settlement enforcement,
+/// in-flight chat `finish_chat_authorized` refusal on withheld candidates,
+/// `READ_DOCUMENT_PAGE_TOOL` turn redaction + reopen citation withholding,
+/// `PatientSummaryView` `origin`/`operating_index` withholding, `PatientStartingContext`
+/// `source_work` concern withholding, and `LinkCorrectionError::Concern` `#[source]` preservation.
+#[tokio::test]
+async fn round1_unified_spruce_settlement_inflight_chat_doc_page_and_summary_concern_withholding() {
+    use local_product::runtime::concerns::{ConcernError, ConcernInputError};
+    use local_product::runtime::spruce_matching::{
+        MoveDestination, MoveSpruceConversationCommand, SpruceMatchingError,
+    };
+
+    // 1. Verify `LinkCorrectionError::Concern` and `RemovalStepFailed` preserve `#[source]`.
+    let concern_err = LinkCorrectionError::from(ConcernError::InvalidInput(
+        ConcernInputError::InvalidField("concern_id"),
+    ));
+    assert!(
+        concern_err.source().is_some(),
+        "LinkCorrectionError::Concern must preserve #[source]"
+    );
+    let removal_err = LinkCorrectionError::RemovalStepFailed {
+        correction_id: "corr:1".into(),
+        conversation_id: "conv-1".into(),
+        step: LinkCorrectionStep::WithdrawOriginEffects,
+        reason: "step failed".into(),
+        source: Some(Box::new(LinkCorrectionError::from(
+            ConcernError::InvalidInput(ConcernInputError::InvalidField("concern_id")),
+        ))),
+    };
+    assert!(
+        removal_err.source().is_some(),
+        "LinkCorrectionError::RemovalStepFailed must preserve #[source] when caused by a store error"
+    );
+
+    let db = DisposableDb::create("r1_unified").await;
+    let (store, auth) = connect_stores(&db.url).await;
+    let practice = format!("prac-r1-{}", Uuid::new_v4().simple());
+    let ws_a = format!("pw-r1-a-{}", Uuid::new_v4().simple());
+    let ws_b = format!("pw-r1-b-{}", Uuid::new_v4().simple());
+    let ws_c = format!("pw-r1-c-{}", Uuid::new_v4().simple());
+    let t0 = 1_790_500_000_i64;
+
+    let (dr, _, dr_hash) = invite_and_sign_in(&auth, &practice, "dr-r1", true).await;
+    for ws in [&ws_a, &ws_b, &ws_c] {
+        auth.register_patient(&practice, ws).await.unwrap();
+        auth.set_membership(&dr, ws, Membership::Allowed)
+            .await
+            .unwrap();
+    }
+
+    let skills = load_skills();
+    let model_roles = roles();
+    store
+        .connect_spruce_channel(auth.as_ref(), &dr, 0, None, t0)
+        .await
+        .unwrap();
+    let lease = store
+        .acquire_spruce_reader_lease(&practice, "worker-r1", 3_600, t0)
+        .await
+        .unwrap();
+    let receiver = RecordingReviewReceiver::default();
+
+    let wrong_secret = "WRONG-R1-SECRET: Elena troponin 0.42 ng/mL at St. Jude.";
+    let wrong_doc_secret = "WRONG-R1-PDF-PAGE: Elena outside cardiology discharge fax page 1.";
+    let clean_text = "Clara Morales baseline A1c 5.6% and lisinopril 10 mg daily.";
+
+    ingest_waiting_patient_message(
+        &store,
+        auth.as_ref(),
+        &practice,
+        &lease.lease_token,
+        1,
+        "msg-r1-1",
+        "conv-r1",
+        "+14155550901",
+        "Elena Vance",
+        wrong_secret,
+        &ws_a,
+        &receiver,
+        t0,
+    )
+    .await;
+
+    store
+        .link_conversation_to_patient(
+            auth.as_ref(),
+            &dr,
+            LinkConversationCommand {
+                command_key: "link-r1-a".into(),
+                practice: practice.clone(),
+                conversation_id: "conv-r1".into(),
+                workspace: ws_a.clone(),
+                sender_policy: SenderConfirmationPolicy::ConversationOnly,
+                now_ts: t0 + 1,
+            },
+            Some(&receiver),
+        )
+        .await
+        .unwrap();
+
+    let clean_rec = chart_record_with_provenance(
+        &ws_a,
+        "clinic-ehr",
+        "cand-r1-clean",
+        "rev-1",
+        "2026-11-10",
+        "Primary Care Note",
+        clean_text,
+        json!({}),
+    );
+    store
+        .record_chart(
+            &ws_a,
+            std::slice::from_ref(&clean_rec),
+            &source_pull("clinic-ehr", "Clinic EHR", "pt-a", "Clara Morales", t0 + 2),
+        )
+        .await
+        .unwrap();
+
+    // Seed clean Revision 1 understanding on `ws_a` first:
+    let UnderstandingTriggerOutcome::Started { scope: u_v1, .. } = store
+        .trigger_patient_understanding(&practice, &ws_a, &model_roles, &skills, auth.as_ref())
+        .await
+        .unwrap()
+    else {
+        panic!("expected understanding v1 Started");
+    };
+    run_understanding_save_job(
+        &store,
+        auth.as_ref(),
+        &u_v1,
+        vec![("cand-r1-clean", "rev-1")],
+        make_save_args(
+            0,
+            clean_text,
+            "clinic-ehr",
+            "cand-r1-clean",
+            "rev-1",
+            clean_text,
+        ),
+    )
+    .await;
+
+    // Now record wrong-patient Spruce message + PDF attachment on `ws_a`:
+    let wrong_rec = chart_record_with_provenance(
+        &ws_a,
+        "spruce",
+        "cand-r1-wrong",
+        "rev-w1",
+        "2026-11-12",
+        "Inbound Spruce Message",
+        wrong_secret,
+        json!({
+            "conversation_id": "conv-r1",
+            "message_id": "msg-r1-1",
+        }),
+    );
+    let wrong_pdf_rec = SourceRevision {
+        workspace: ws_a.clone(),
+        candidate_id: "cand-r1-pdf-source".into(),
+        source_id: "spruce".into(),
+        record_type: "DiagnosticReport".into(),
+        revision: "v1".into(),
+        dates: vec![RecordDate {
+            name: "recorded".into(),
+            value: "2026-11-12".into(),
+        }],
+        content: "Cardiology fax attachment".into(),
+        sha256: sha256_hex(b"Cardiology fax attachment"),
+        readable_parts: vec![ReadablePart {
+            label: "page:doc-r1-fax:v1:p1".into(),
+            text: wrong_doc_secret.into(),
+        }],
+        provenance: json!({
+            "title": "Cardiology Fax",
+            "conversation_id": "conv-r1",
+            "message_id": "msg-r1-1",
+            "document_id": "doc-r1-fax",
+            "document_version": 1,
+            "page_count": 1,
+            "pages": [{
+                "page_number": 1,
+                "status": "ok",
+                "text": wrong_doc_secret,
+                "extraction_method": "pdf_text"
+            }]
+        }),
+        envelope: None,
+    };
+    store
+        .record_chart(
+            &ws_a,
+            &[wrong_rec.clone(), wrong_pdf_rec.clone()],
+            &source_pull("spruce", "Spruce", "pt-a", "Clara Morales", t0 + 3),
+        )
+        .await
+        .unwrap();
+
+    // Seed tainted Revision 2 understanding whose `summary.claims` ONLY cites `cand-r1-clean`
+    // (omitting `cand-r1-wrong` from `summary.citations`!) while its job read `cand-r1-wrong`
+    // (`origin` tainted) and placed `cand-r1-wrong` in `operating_index.anchors`!
+    let UnderstandingTriggerOutcome::Started { scope: u_v2, .. } = store
+        .trigger_patient_understanding(&practice, &ws_a, &model_roles, &skills, auth.as_ref())
+        .await
+        .unwrap()
+    else {
+        panic!("expected understanding v2 Started");
+    };
+    let mut origin_only_tainted_save = make_save_args(
+        1,
+        wrong_secret,
+        "spruce",
+        "cand-r1-wrong",
+        "rev-w1",
+        &format!("Narrative tainted by {wrong_secret}"),
+    );
+    origin_only_tainted_save.claims = vec![SummaryClaimInput {
+        text: format!("Narrative tainted by {wrong_secret}"),
+        citations: vec![ExactRecordReference::new("cand-r1-clean", "rev-1").unwrap()],
+    }];
+    run_understanding_save_job(
+        &store,
+        auth.as_ref(),
+        &u_v2,
+        vec![("cand-r1-clean", "rev-1"), ("cand-r1-wrong", "rev-w1")],
+        origin_only_tainted_save,
+    )
+    .await;
+
+    // Seed a chat turn that read `doc-r1-fax` via `READ_DOCUMENT_PAGE_TOOL` and quoted `wrong_doc_secret` with `[1]`.
+    let doc_chat_scope = Scope {
+        practice: practice.clone(),
+        physician: dr.physician_id.clone(),
+        workspace: ws_a.clone(),
+        chat: "chat-r1-doc-page".into(),
+    };
+    let doc_work_id: String;
+    {
+        struct DocPageChatProvider {
+            step: usize,
+            answer: String,
+        }
+        impl Provider for DocPageChatProvider {
+            async fn exchange(
+                &mut self,
+                _request: &Request,
+                _cancel: &engine::Cancellation,
+                _limits: &engine::RunLimits,
+                _observer: &mut dyn Observer,
+            ) -> Result<Turn, engine::Cause> {
+                self.step += 1;
+                match self.step {
+                    1 => Ok(Turn {
+                        items: vec![Item::Call(Invocation {
+                            id: "call-doc-page".into(),
+                            name: READ_DOCUMENT_PAGE_TOOL.into(),
+                            arguments: json!({
+                                "document_id": "doc-r1-fax",
+                                "version": 1,
+                                "page_number": 1
+                            })
+                            .to_string(),
+                        })],
+                        receipt: json!({"step": 1}),
+                        usage: Default::default(),
+                    }),
+                    2 => Ok(Turn {
+                        items: vec![Item::Call(local_product::runtime::engine::Invocation {
+                            id: "finish-doc-chat".into(),
+                            name: local_product::physician_sources::citations::FINISH_TOOL.into(),
+                            arguments: json!({
+                                "answer": self.answer.replace(" [1]", ""),
+                                "basis": "Document page 1.",
+                                "descriptions": [], "quotes": [],
+                                "cites_none": true,
+                            })
+                            .to_string(),
+                        })],
+                        receipt: json!({"step": 2}),
+                        usage: Default::default(),
+                    }),
+                    other => panic!("unexpected doc page step {other}"),
+                }
+            }
+        }
+        let starting = store
+            .patient_starting_context(&doc_chat_scope)
+            .await
+            .unwrap();
+        let recipe = ChatAssignment::for_patient(doc_chat_scope.clone(), starting)
+            .recipe(&model_roles, &skills);
+        store
+            .accept_authorized(
+                &doc_chat_scope,
+                &Input {
+                    key: "input-doc-page-1".into(),
+                    text: "What was on page 1 of the fax?".into(),
+                    timezone: "America/Los_Angeles".into(),
+                    scenario: None,
+                },
+                dr_hash.clone(),
+                &skills,
+                &recipe,
+                None,
+            )
+            .await
+            .unwrap();
+        let claim = store.claim(&doc_chat_scope, 60).await.unwrap().unwrap();
+        let claim_attempt = claim.attempt.clone();
+        let mut host = PhysicianHost {
+            store: store.clone(),
+            claim,
+            authority: PostgresWorkspaceAuthority,
+            shown_steps: local_product::runtime::ShownSteps::new(()),
+        };
+        let mut provider = DocPageChatProvider {
+            step: 0,
+            answer: format!("Fax page 1 reported {wrong_doc_secret} [1]."),
+        };
+        host.run(
+            &mut provider,
+            engine::RunLimits::default(),
+            &engine::Cancellation::default(),
+        )
+        .await
+        .unwrap();
+        let conv_state = store.read(&doc_chat_scope).await.unwrap().unwrap();
+        doc_work_id = conv_state.work;
+        // Raise an open concern whose `records` cites ONLY `cand-r1-clean` while its `source_work` is
+        // `doc_work_id` (tainted by reading the wrong-patient fax!) — testing `concern_is_withheld`
+        // in `patient_starting_context` and `open_concerns`!
+        store
+            .raise_concern(
+                &CommandKey::new("cmd-r1-concern-work-tainted").unwrap(),
+                &RaiseConcern {
+                    practice: practice.clone(),
+                    workspace: ws_a.clone(),
+                    id: ConcernId::new("concern-r1-work-tainted").unwrap(),
+                    urgency: ConcernUrgency::Now,
+                    reason: format!("Work-tainted concern mentioning {wrong_doc_secret}"),
+                    records: vec![ExactRecordReference::new("cand-r1-clean", "rev-1").unwrap()],
+                    source_work: SourceWork::new("physician_chat", &doc_work_id, &claim_attempt)
+                        .unwrap(),
+                },
+            )
+            .await
+            .unwrap();
+    }
+
+    // Seed wrong-patient memory, follow-up, and reply proposal on `ws_a` for `conv-r1`.
+    let access_a = WorkspaceAccess {
+        practice: &practice,
+        physician: &dr.physician_id,
+        workspace: &ws_a,
+        session_hash: &dr_hash,
+    };
+    store
+        .record_patient_memory(
+            "cmd-r1-mem",
+            &RecordMemoryCorrection {
+                practice: practice.clone(),
+                workspace: ws_a.clone(),
+                id: PatientMemoryId::new("mem-r1-wrong").unwrap(),
+                topic: "Outside cardiology".into(),
+                statement: wrong_secret.into(),
+                provenance: MemoryProvenance::ClinicalSummary {
+                    job_id: "job-r1-mem".into(),
+                    work_id: "work-r1-mem".into(),
+                    attempt_id: "att-1".into(),
+                    records: vec![ExactRecordReference::new("cand-r1-wrong", "rev-w1").unwrap()],
+                },
+            },
+        )
+        .await
+        .unwrap();
+    create_job_follow_up(
+        &store,
+        &practice,
+        &ws_a,
+        SourceWork::new("patient_review", "work-r1-fu", "att-1").unwrap(),
+        wrong_rec.clone(),
+        "fu-r1-wrong",
+        wrong_secret,
+        t0 + 3_600,
+    )
+    .await;
+    store
+        .link_reply_conversation(
+            &practice,
+            "conv-r1",
+            ConversationLink::LinkedPatient {
+                workspace: ws_a.clone(),
+            },
+        )
+        .await
+        .unwrap();
+    store
+        .record_linked_patient_message(&RecordPatientMessage {
+            practice: practice.clone(),
+            conversation_id: "conv-r1".into(),
+            message_id: "msg-r1-1".into(),
+            sender: MessageSender::Patient,
+            text: wrong_secret.into(),
+            sent_at: t0 + 4,
+        })
+        .await
+        .unwrap();
+    store
+        .start_or_read_reply_review(&practice, "conv-r1", "rev-r1-1", "run-r1-1")
+        .await
+        .unwrap();
+    store
+        .complete_reply_review(&CompleteReplyReview {
+            practice: practice.clone(),
+            conversation_id: "conv-r1".into(),
+            review_id: "rev-r1-1".into(),
+            run_id: "run-r1-1".into(),
+            completion_key: "comp-r1-1".into(),
+            answered_closures: vec![],
+            decision: ReplyReviewDecision::ProposeReply(ReplyProposalInput {
+                text: format!("Reply citing {wrong_secret}"),
+                basis: ReplyProposalBasisInput {
+                    summary: "Inbound review".into(),
+                    limits: vec![],
+                    cited_records: vec![
+                        ExactRecordReference::new("cand-r1-wrong", "rev-w1").unwrap(),
+                    ],
+                },
+                cited_records: vec![ExactRecordReference::new("cand-r1-wrong", "rev-w1").unwrap()],
+            }),
+            raised_concern_ids: vec![],
+        })
+        .await
+        .unwrap();
+
+    // 2. Run a real `PhysicianHost` chat turn on `ws_a` where:
+    //    - Step 1 reads `cand-r1-wrong` BEFORE `move_spruce_conversation`.
+    //    - Step 2 moves `conv-r1` (`ws_a -> ws_b`) via `Store::move_spruce_conversation` mid-run,
+    //      then tries to publish an assistant answer quoting `wrong_secret`.
+    //    - `PhysicianHost` / `finish_chat_authorized` REFUSES publication (`ChatFinish::Refused`),
+    //      injecting `ChatChartArrivalNote` into Step 3!
+    //    - Step 3 verifies the refusal note (`model_text::assert_clean_model_text`), confirms nothing
+    //      tainted was published to `Store::read`, re-reads `cand-r1-wrong` (`RecordLimitKind::Unavailable`),
+    //      and Step 4 publishes a clean answer!
+    let inflight_scope = Scope {
+        practice: practice.clone(),
+        physician: dr.physician_id.clone(),
+        workspace: ws_a.clone(),
+        chat: "chat-r1-inflight".into(),
+    };
+    let starting_pre = store
+        .patient_starting_context(&inflight_scope)
+        .await
+        .unwrap();
+    let inflight_recipe = ChatAssignment::for_patient(inflight_scope.clone(), starting_pre)
+        .recipe(&model_roles, &skills);
+    store
+        .accept_authorized(
+            &inflight_scope,
+            &Input {
+                key: "input-inflight-1".into(),
+                text: "Summarize the inbound message.".into(),
+                timezone: "America/Los_Angeles".into(),
+                scenario: None,
+            },
+            dr_hash.clone(),
+            &skills,
+            &inflight_recipe,
+            None,
+        )
+        .await
+        .unwrap();
+    let inflight_claim = store.claim(&inflight_scope, 60).await.unwrap().unwrap();
+
+    struct MidRunWithholdProvider<'a> {
+        step: usize,
+        store: &'a Store,
+        auth: &'a PostgresAuthStore,
+        dr: &'a PhysicianIdentity,
+        receiver: &'a RecordingReviewReceiver,
+        inflight_scope: &'a Scope,
+        ws_b: String,
+        wrong_secret: String,
+        t0: i64,
+    }
+
+    impl Provider for MidRunWithholdProvider<'_> {
+        async fn exchange(
+            &mut self,
+            request: &Request,
+            _cancel: &engine::Cancellation,
+            _limits: &engine::RunLimits,
+            _observer: &mut dyn Observer,
+        ) -> Result<Turn, engine::Cause> {
+            self.step += 1;
+            match self.step {
+                1 => Ok(Turn {
+                    items: vec![Item::Call(Invocation {
+                        id: "call-inflight-read-1".into(),
+                        name: READ_TOOL.into(),
+                        arguments: json!({
+                            "references": [{
+                                "candidate_id": "cand-r1-wrong",
+                                "revision": "rev-w1",
+                                "cursor": null
+                            }],
+                            "max_result_bytes": 16_384
+                        })
+                        .to_string(),
+                    })],
+                    receipt: json!({"step": 1}),
+                    usage: Default::default(),
+                }),
+                2 => {
+                    // Confirm Step 1 read `wrong_secret` while still linked to `ws_a`:
+                    let read_out = request
+                        .items
+                        .iter()
+                        .find_map(|i| match i {
+                            Item::MaterializedResult { call_id, output }
+                                if call_id == "call-inflight-read-1" =>
+                            {
+                                Some(output.clone())
+                            }
+                            _ => None,
+                        })
+                        .expect("step 1 tool output");
+                    assert!(read_out.contains(&self.wrong_secret));
+
+                    // Physician moves `conv-r1` (`ws_a -> ws_b`) via `move_spruce_conversation` MID-RUN!
+                    self.store
+                        .move_spruce_conversation(
+                            self.auth,
+                            self.dr,
+                            MoveSpruceConversationCommand {
+                                conversation_id: "conv-r1".into(),
+                                destination: MoveDestination::AnotherPatient {
+                                    workspace: self.ws_b.clone(),
+                                },
+                                undo_window_seconds: 10,
+                                command_key: "spruce-move-r1-a-to-b".into(),
+                            },
+                            Some(self.receiver),
+                            self.t0 + 10,
+                        )
+                        .await
+                        .expect("mid-run move_spruce_conversation");
+
+                    // Attempt to publish wrong-patient text — `finish_chat_authorized` MUST refuse!
+                    Ok(Turn {
+                        items: vec![Item::Call(local_product::runtime::engine::Invocation {
+                            id: "finish-inflight-step2".into(),
+                            name: local_product::physician_sources::citations::FINISH_TOOL.into(),
+                            arguments: json!({
+                                "answer": format!("Inbound message says {} [S1].", self.wrong_secret),
+                                "basis": "Inbound Spruce message.",
+                                "descriptions": [], "quotes": [{ "label": "S1", "quote": self.wrong_secret }],
+                                "cites_none": false,
+                            })
+                            .to_string(),
+                        })],
+                        receipt: json!({"step": 2}),
+                        usage: Default::default(),
+                    })
+                }
+                3 => {
+                    // Verify `finish_chat_authorized` refused publication and injected `ChatChartArrivalNote`:
+                    let mid_conv = self.store.read(self.inflight_scope).await.unwrap().unwrap();
+                    assert!(
+                        mid_conv
+                            .messages
+                            .iter()
+                            .all(|m| !m.text.contains("WRONG-R1-SECRET")),
+                        "refused in-flight turn must NOT publish wrong-patient text: {:?}",
+                        mid_conv.messages
+                    );
+                    let arrival_note_text = request
+                        .items
+                        .iter()
+                        .rev()
+                        .find_map(|i| match i {
+                            Item::FinishRefused(refusal) => Some(refusal.reason().to_owned()),
+                            Item::Message { role, text } if role == "developer" => {
+                                let env: Value = serde_json::from_str(text).ok()?;
+                                let err_str = env.get("error")?.as_str()?;
+                                err_str
+                                    .contains("must_read_again")
+                                    .then(|| err_str.to_owned())
+                            }
+                            Item::MaterializedResult { output, .. } => {
+                                let env: Value = serde_json::from_str(output).ok()?;
+                                let err_str = env.get("error")?.as_str()?;
+                                err_str
+                                    .contains("must_read_again")
+                                    .then(|| err_str.to_owned())
+                            }
+                            _ => None,
+                        })
+                        .expect("expected ChatChartArrivalNote refusal message in step 3 request");
+                    assert!(arrival_note_text.contains("cand-r1-wrong"));
+                    model_text::assert_clean_model_text(&arrival_note_text);
+
+                    // Confirm withdrawal via `READ_TOOL` on `cand-r1-wrong`:
+                    Ok(Turn {
+                        items: vec![Item::Call(Invocation {
+                            id: "call-inflight-confirm-withdrawn".into(),
+                            name: READ_TOOL.into(),
+                            arguments: json!({
+                                "references": [{
+                                    "candidate_id": "cand-r1-wrong",
+                                    "revision": "rev-w1",
+                                    "cursor": null
+                                }],
+                                "max_result_bytes": 16_384
+                            })
+                            .to_string(),
+                        })],
+                        receipt: json!({"step": 3}),
+                        usage: Default::default(),
+                    })
+                }
+                4 => {
+                    let confirm_out = request
+                        .items
+                        .iter()
+                        .find_map(|i| match i {
+                            Item::MaterializedResult { call_id, output }
+                                if call_id == "call-inflight-confirm-withdrawn" =>
+                            {
+                                Some(output.clone())
+                            }
+                            _ => None,
+                        })
+                        .expect("step 3 confirm output");
+                    assert!(confirm_out.contains("\"kind\":\"unavailable\""));
+                    assert!(!confirm_out.contains("WRONG-R1-SECRET"));
+
+                    Ok(Turn {
+                        items: vec![Item::Call(local_product::runtime::engine::Invocation {
+                            id: "finish-inflight-step4".into(),
+                            name: local_product::physician_sources::citations::FINISH_TOOL.into(),
+                            arguments: json!({
+                                "answer": "No inbound messages belong to Clara Morales.",
+                                "basis": "Confirmed chart withdrawal.",
+                                "descriptions": [], "quotes": [],
+                                "cites_none": true,
+                            })
+                            .to_string(),
+                        })],
+                        receipt: json!({"step": 4}),
+                        usage: Default::default(),
+                    })
+                }
+                other => panic!("unexpected mid-run withhold step {other}"),
+            }
+        }
+    }
+
+    let mut inflight_host = PhysicianHost {
+        store: store.clone(),
+        claim: inflight_claim,
+        authority: PostgresWorkspaceAuthority,
+        shown_steps: local_product::runtime::ShownSteps::new(()),
+    };
+    let mut inflight_provider = MidRunWithholdProvider {
+        step: 0,
+        store: &store,
+        auth: auth.as_ref(),
+        dr: &dr,
+        receiver: &receiver,
+        inflight_scope: &inflight_scope,
+        ws_b: ws_b.clone(),
+        wrong_secret: wrong_secret.to_owned(),
+        t0,
+    };
+    inflight_host
+        .run(
+            &mut inflight_provider,
+            engine::RunLimits::default(),
+            &engine::Cancellation::default(),
+        )
+        .await
+        .unwrap();
+    assert_eq!(
+        inflight_provider.step, 4,
+        "PhysicianHost must refuse step 2 publication and complete after step 3 withdrawal confirmation"
+    );
+
+    let after_inflight = store.read(&inflight_scope).await.unwrap().unwrap();
+    assert!(
+        after_inflight
+            .messages
+            .iter()
+            .all(|m| !m.text.contains("WRONG-R1-SECRET")),
+        "completed turn after withdrawal confirmation must contain zero wrong-patient text"
+    );
+
+    // 3. Verify immediate withholding across `patient_summary_for_physician`, `patient_summaries_for_workspaces`,
+    // `patient_starting_context`, and `READ_DOCUMENT_PAGE_TOOL` conversation display/reopen!
+    let summary_view_a = store
+        .patient_summary_for_physician(auth.as_ref(), &dr, &ws_a)
+        .await
+        .unwrap()
+        .expect("clean fallback summary on ws_a");
+    assert_eq!(
+        summary_view_a.revision, 1,
+        "patient_summary_for_physician must withhold origin/index-tainted rev 2 and serve clean rev 1"
+    );
+    assert!(
+        !serde_json::to_string(&summary_view_a.summary)
+            .unwrap()
+            .contains("WRONG-R1-SECRET")
+    );
+
+    let directory_summaries = store
+        .patient_summaries_for_workspaces(std::slice::from_ref(&ws_a))
+        .await
+        .unwrap();
+    assert_eq!(directory_summaries[&ws_a].revision, 1);
+    assert!(
+        !serde_json::to_string(&directory_summaries[&ws_a].summary)
+            .unwrap()
+            .contains("WRONG-R1-SECRET")
+    );
+
+    let starting_post = store
+        .patient_starting_context(&inflight_scope)
+        .await
+        .unwrap();
+    assert!(
+        starting_post.open_concerns.is_empty(),
+        "patient_starting_context must withhold open concerns whose source_work is tainted: {:?}",
+        starting_post.open_concerns
+    );
+
+    let read_doc_conv = store.read(&doc_chat_scope).await.unwrap().unwrap();
+    for msg in &read_doc_conv.messages {
+        assert!(
+            !msg.text.contains("WRONG-R1-PDF-PAGE"),
+            "Store::read must redact assistant turn that read wrong-patient PDF via READ_DOCUMENT_PAGE_TOOL: {}",
+            msg.text
+        );
+        if matches!(msg.role, MessageRole::Assistant { .. }) {
+            assert!(msg.text.starts_with("Unavailable:"));
+            assert!(!msg.text.contains('`'));
+        }
+    }
+
+    let reopened_doc = store
+        .reopen_conversation(&doc_chat_scope)
+        .await
+        .unwrap()
+        .unwrap();
+    assert!(!reopened_doc.turns[1].raw_text.contains("WRONG-R1-PDF-PAGE"));
+    assert_eq!(reopened_doc.sources.len(), 1);
+    let (_, doc_src) = reopened_doc.sources.iter().next().unwrap();
+    assert_eq!(doc_src.title, "Unavailable · Withheld patient message");
+    assert!(!doc_src.body.contains("WRONG-R1-PDF-PAGE"));
+    assert!(doc_src.raw_content.is_empty());
+
+    // 4. Inject a Step 2 failure (`SettlingFailed`), then verify `move_spruce_conversation`,
+    // `undo_spruce_conversation_move`, and `settle_expired_spruce_moves` NEVER overwrite `SettlingFailed`
+    // or allow moving/undoing while unfinished — and once cleared, `settle_expired_spruce_moves`
+    // executes ALL 4 steps (withdrawing memory, understanding, concern, follow-up, and withholding reply)!
+    struct FailWithdrawOnce {
+        armed: Mutex<bool>,
+    }
+    impl LinkCorrectionRemovalProbe for FailWithdrawOnce {
+        fn before_step(
+            &self,
+            _correction_id: &str,
+            _conversation_id: &str,
+            step: LinkCorrectionStep,
+        ) -> Result<(), String> {
+            let mut flag = self.armed.lock().unwrap();
+            if *flag && step == LinkCorrectionStep::WithdrawOriginEffects {
+                *flag = false;
+                return Err("injected step-2 failure".into());
+            }
+            Ok(())
+        }
+    }
+
+    let probe = FailWithdrawOnce {
+        armed: Mutex::new(true),
+    };
+    let batch_fail = store
+        .settle_expired_link_corrections_with_probe(&practice, Some(&receiver), &probe, t0 + 25)
+        .await
+        .unwrap();
+    assert_eq!(batch_fail.failed.len(), 1);
+    assert_eq!(
+        batch_fail.failed[0].failed_step,
+        LinkCorrectionStep::WithdrawOriginEffects
+    );
+
+    // Both `move_spruce_conversation` (back to `ws_a` or onward to `ws_c`) and `undo_spruce_conversation_move`
+    // MUST refuse while `SettlingFailed`!
+    assert!(matches!(
+        store
+            .move_spruce_conversation(
+                auth.as_ref(),
+                &dr,
+                MoveSpruceConversationCommand {
+                    conversation_id: "conv-r1".into(),
+                    destination: MoveDestination::AnotherPatient {
+                        workspace: ws_a.clone(),
+                    },
+                    undo_window_seconds: 10,
+                    command_key: "spruce-move-blocked-during-failed".into(),
+                },
+                Some(&receiver),
+                t0 + 26,
+            )
+            .await,
+        Err(SpruceMatchingError::InvalidTransition {
+            action: "move_conversation",
+            ..
+        })
+    ));
+    assert!(matches!(
+        store
+            .undo_spruce_conversation_move(
+                auth.as_ref(),
+                &dr,
+                "conv-r1",
+                "spruce-undo-blocked-during-failed",
+                Some(&receiver),
+                t0 + 26,
+            )
+            .await,
+        Err(SpruceMatchingError::InvalidTransition {
+            action: "undo_move",
+            ..
+        })
+    ));
+
+    // Recover via `Store::settle_expired_spruce_moves` (NOT `settle_expired_link_corrections`) to prove
+    // `spruce_matching` delegates to the unified 4-step settlement!
+    let spruce_settle = store
+        .settle_expired_spruce_moves(&practice, Some(&receiver), t0 + 27)
+        .await
+        .unwrap();
+    assert_eq!(spruce_settle.succeeded.len(), 1);
+    assert!(spruce_settle.failures.is_empty());
+
+    let latest_corr = store
+        .latest_conversation_link_correction(&practice, "conv-r1")
+        .await
+        .unwrap()
+        .unwrap();
+    let LinkCorrectionStanding::Settled { progress, .. } = &latest_corr.standing else {
+        panic!(
+            "expected Settled standing after settle_expired_spruce_moves, got {:?}",
+            latest_corr.standing
+        );
+    };
+    assert!(progress.withdrawal_ids_by_workspace.contains_key(&ws_a));
+    assert!(progress.reply_move_applied);
+    assert_eq!(progress.review_command_keys_by_workspace.len(), 2);
+
+    // Verify Step 2 withdrew memory, understanding rev 2, concern, and follow-up on `ws_a`,
+    // and Step 3 withheld the reply proposal on `conv-r1`!
+    let audit_memories_a = store
+        .patient_memories(&practice, &ws_a, MemorySelection::AuditAll)
+        .await
+        .unwrap();
+    assert!(
+        audit_memories_a
+            .iter()
+            .all(|m| matches!(m.standing, MemoryStanding::EnteredInError { .. }))
+    );
+    let u_audits_a = store
+        .patient_understanding_revision_audits(&practice, &ws_a, auth.as_ref())
+        .await
+        .unwrap();
+    assert!(matches!(
+        u_audits_a
+            .iter()
+            .find(|r| r.record.revision == 2)
+            .unwrap()
+            .standing,
+        UnderstandingStanding::EnteredInError { .. }
+    ));
+    let all_concerns_a = store
+        .workspace_concerns(&access_a, &mut PostgresWorkspaceAuthority)
+        .await
+        .unwrap();
+    assert!(matches!(
+        all_concerns_a[0].standing,
+        ConcernStanding::Withdrawn { .. }
+    ));
+    let fu_a = store
+        .physician_follow_ups(&access_a, &mut PostgresWorkspaceAuthority)
+        .await
+        .unwrap();
+    assert!(fu_a.is_empty(), "wrong-patient follow-up must be withdrawn");
+    let reply_conv = store
+        .reply_conversation(&practice, "conv-r1")
+        .await
+        .unwrap()
+        .unwrap();
+    assert_eq!(
+        reply_conv.link,
+        ConversationLink::LinkedPatient {
+            workspace: ws_b.clone()
+        }
+    );
+    assert!(
+        matches!(reply_conv.reply_standing, ReplyStanding::Withheld { .. }),
+        "Step 3 via settle_expired_spruce_moves must withhold origin patient's reply proposal"
     );
 
     db.cleanup().await;
