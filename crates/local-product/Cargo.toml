@@ -32,4 +32,6 @@ sha2 = "0.11"
 tracing = "0.1"
 
 [dev-dependencies]
+front-door = { path = "../front-door" }
 tokio = { version = "1", features = ["macros", "rt"] }
+tower = { version = "0.5", features = ["util"] }

@@ -40,7 +40,7 @@ use crate::timestamp::format_rfc3339;
 use front_door::{FrontDoorStore, MemoryFrontDoorStore, RosterPatient};
 use physician_auth::{
     AuthStore, AuthorityFeed, CachedAuthStore, Membership, MemoryAuthStore, PanelError,
-    PhysicianIdentity, PracticeClock, ReviewCadence, SessionError, SignInError, StoreUnavailable,
+    PhysicianIdentity, PracticeClock, SessionError, SignInError, StoreUnavailable,
 };
 
 use crate::patients::{MemoryPatients, PatientDirectory, enroll_in_memory, read_patient};
@@ -394,11 +394,8 @@ pub(crate) async fn guard(
     if let Some(workspace) = direct_workspace(&path) {
         match auth.store.membership(&identity, workspace).await {
             Membership::Allowed => {
-                let (response, cadence) = tokio::join!(
-                    next.run(Request::from_parts(parts, body)),
-                    auth.store.patient_cadence(workspace),
-                );
-                return enrich_allowed_workspace(response, cadence).await;
+                let response = next.run(Request::from_parts(parts, body)).await;
+                return enrich_allowed_workspace(response).await;
             }
             Membership::ClinicDemographic => {
                 return clinic_demographics(&auth, &identity, workspace).await;
@@ -448,7 +445,7 @@ fn query_param(query: Option<&str>, key: &str) -> Option<String> {
         .map(str::to_owned)
 }
 
-async fn enrich_allowed_workspace(response: Response, cadence: ReviewCadence) -> Response {
+async fn enrich_allowed_workspace(response: Response) -> Response {
     if response.status() != StatusCode::OK {
         return response;
     }
@@ -461,7 +458,6 @@ async fn enrich_allowed_workspace(response: Response, cadence: ReviewCadence) ->
     };
     if let Some(obj) = value.as_object_mut() {
         obj.insert("membership".to_owned(), json!("allowed"));
-        obj.insert("review_cadence".to_owned(), json!(cadence.as_str()));
     }
     Json(value).into_response()
 }
@@ -1355,7 +1351,7 @@ mod tests {
     use super::*;
     use axum::http::{Method, Request, StatusCode};
     use base64::Engine;
-    use physician_auth::{Membership, MemoryAuthStore, PhysicianIdentity, ReviewCadence};
+    use physician_auth::{Membership, MemoryAuthStore, PhysicianIdentity};
     use tower::ServiceExt;
 
     #[test]
@@ -2273,14 +2269,10 @@ mod tests {
 
     #[tokio::test]
     async fn a_physician_cannot_change_review_cadence() {
-        let (app, store, _) = authed_practice().await;
+        let (app, _store, _) = authed_practice().await;
         let session = session_for(&app, STAGING_EMAIL).await;
         let workspace = crate::WORKSPACE_IDS[0];
 
-        // An operator-side change shows on the patient page.
-        store
-            .set_patient_cadence(workspace, ReviewCadence::WeeklyAndDailyWhenChanged)
-            .await;
         let (status, ws_body) = send(
             &app,
             Method::GET.as_str(),
@@ -2291,7 +2283,6 @@ mod tests {
         .await;
         assert_eq!(status, StatusCode::OK);
         let ws_json: Value = serde_json::from_str(&ws_body).unwrap();
-        assert_eq!(ws_json["review_cadence"], "weekly_and_daily_when_changed");
         assert!(ws_json.get("payment_status").is_none());
 
         // The site has no cadence route, and a physician command cannot set it.
@@ -2328,10 +2319,6 @@ mod tests {
         assert!(
             cmd_body.contains("Physicians cannot override patient review cadence."),
             "{cmd_body}"
-        );
-        assert_eq!(
-            store.patient_cadence(workspace).await,
-            ReviewCadence::WeeklyAndDailyWhenChanged
         );
     }
 

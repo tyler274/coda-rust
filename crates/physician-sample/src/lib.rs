@@ -803,7 +803,9 @@ async fn roster(
     let extensions = request.extensions();
     let store = connected.auth_store(extensions);
     let practice = care::ConnectedCare::identity(extensions).practice_id;
-    let registered = store.practice_patients(&practice).await;
+    let Ok(registered) = store.practice_patients(&practice).await else {
+        return StatusCode::SERVICE_UNAVAILABLE.into_response();
+    };
     let directory = connected.patients(extensions);
     let query = query.query.unwrap_or_default();
     let Ok(found) = patients::search(&*directory, &registered, &query).await else {
@@ -819,7 +821,6 @@ async fn roster(
         if let Some(link) = link {
             row["duet_linked"] = json!(link.linked);
             row["sharing_consented"] = json!(link.sharing_consented);
-            row["cadence"] = json!(link.cadence);
         }
     }
     Json(json!({ "patients": rows, "next_after": null })).into_response()

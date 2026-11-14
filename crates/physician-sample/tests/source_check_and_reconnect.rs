@@ -1042,7 +1042,10 @@ impl AuthStore for FailingEnrollmentAuth {
     ) -> Result<Option<String>, physician_auth::StoreUnavailable> {
         self.inner.patient_practice(patient_workspace_id).await
     }
-    async fn practice_patients(&self, practice_id: &str) -> Vec<String> {
+    async fn practice_patients(
+        &self,
+        practice_id: &str,
+    ) -> Result<Vec<String>, physician_auth::StoreUnavailable> {
         self.inner.practice_patients(practice_id).await
     }
     async fn practice_accounts(
@@ -1050,18 +1053,6 @@ impl AuthStore for FailingEnrollmentAuth {
         practice_id: &str,
     ) -> Result<Vec<physician_auth::Account>, physician_auth::StoreUnavailable> {
         self.inner.practice_accounts(practice_id).await
-    }
-    async fn patient_cadence(&self, patient_workspace_id: &str) -> physician_auth::ReviewCadence {
-        self.inner.patient_cadence(patient_workspace_id).await
-    }
-    async fn set_patient_cadence(
-        &self,
-        patient_workspace_id: &str,
-        cadence: physician_auth::ReviewCadence,
-    ) {
-        self.inner
-            .set_patient_cadence(patient_workspace_id, cadence)
-            .await;
     }
     async fn invite(
         &self,
@@ -1140,16 +1131,6 @@ impl AuthStore for FailingEnrollmentAuth {
             .revoke_patient_consent(practice_id, patient_workspace_id, now)
             .await
     }
-    async fn set_patient_premium(
-        &self,
-        practice_id: &str,
-        patient_workspace_id: &str,
-        premium: bool,
-    ) {
-        self.inner
-            .set_patient_premium(practice_id, patient_workspace_id, premium)
-            .await;
-    }
     async fn patient_link(
         &self,
         practice_id: &str,
@@ -1157,15 +1138,6 @@ impl AuthStore for FailingEnrollmentAuth {
     ) -> Option<physician_auth::PatientLink> {
         self.inner
             .patient_link(practice_id, patient_workspace_id)
-            .await
-    }
-    async fn patient_link_cadence(
-        &self,
-        practice_id: &str,
-        patient_workspace_id: &str,
-    ) -> physician_auth::Cadence {
-        self.inner
-            .patient_link_cadence(practice_id, patient_workspace_id)
             .await
     }
 }

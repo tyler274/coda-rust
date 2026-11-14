@@ -36,6 +36,8 @@ mod control;
 pub use control::Lease;
 /// Queue delivery recovery uses the conversation owner, not a parallel ledger.
 pub mod delivery;
+/// Practice patient source checks, review dispatch, and operator cadence controls.
+pub mod dispatch;
 mod entities;
 /// Physician feedback on Coda's responses.
 pub mod feedback;

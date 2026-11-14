@@ -20,6 +20,11 @@
 //! `physician-migrate feedback` prints every physician's feedback on Coda's
 //! responses, one JSON line per rated response, for evaluation by Coda staff.
 //! It only reads, and it refuses to run as a Cloud Run job.
+//!
+//! `physician-migrate cadence` lets operators inspect or update per-patient
+//! source-check and review cadence (`get <practice_id> [patient_workspace_id]`
+//! or `set <practice_id> <patient_workspace_id> <check_every_seconds>
+//! <review_every_seconds>`).
 
 use physician_sample::STAGING_PRACTICE_ID;
 use physician_sample::chart_load::load_synthetic_practice;
@@ -64,6 +69,14 @@ async fn main() {
                     eprintln!("  caused by: {inner}");
                     cause = inner.source();
                 }
+                std::process::exit(1);
+            }
+            return;
+        }
+        Some("cadence") => {
+            let args: Vec<String> = std::env::args().skip(2).collect();
+            if let Err(error) = manage_cadence(&url, &args).await {
+                eprintln!("cadence command failed: {error}");
                 std::process::exit(1);
             }
             return;
@@ -216,5 +229,77 @@ async fn load_charts(url: &str) -> Result<(), String> {
         Ok(())
     } else {
         Err(format!("{} patients failed", summary.failed.len()))
+    }
+}
+
+async fn manage_cadence(url: &str, args: &[String]) -> Result<(), String> {
+    let db = migration_connection(url)
+        .await
+        .map_err(|error| format!("physician database connection: {error}"))?;
+    let auth = physician_auth::PostgresAuthStore::from_connection(db.clone());
+    let runtime = local_product::runtime::Store::from_connection(db);
+    let now_sec = runtime
+        .database_clock_seconds()
+        .await
+        .map_err(|error| format!("database clock: {error}"))?;
+
+    match args.first().map(String::as_str) {
+        Some("get") => match args.len() {
+            2 => {
+                let views = runtime
+                    .practice_dispatch_statuses(&auth, &args[1], now_sec)
+                    .await
+                    .map_err(|error| error.to_string())?;
+                println!(
+                    "{}",
+                    serde_json::to_string(&views).map_err(|error| error.to_string())?
+                );
+                Ok(())
+            }
+            3 => {
+                let view = runtime
+                    .patient_dispatch_status(&auth, &args[1], &args[2], now_sec)
+                    .await
+                    .map_err(|error| error.to_string())?;
+                println!(
+                    "{}",
+                    serde_json::to_string(&view).map_err(|error| error.to_string())?
+                );
+                Ok(())
+            }
+            _ => Err(
+                "usage: physician-migrate cadence get <practice_id> [patient_workspace_id]"
+                    .to_owned(),
+            ),
+        },
+        Some("set") => {
+            if args.len() != 5 {
+                return Err(
+                    "usage: physician-migrate cadence set <practice_id> <patient_workspace_id> <check_every_seconds> <review_every_seconds>"
+                        .to_owned(),
+                );
+            }
+            let check_every: u64 = args[3]
+                .parse()
+                .map_err(|error| format!("invalid check_every_seconds: {error}"))?;
+            let review_every: u64 = args[4]
+                .parse()
+                .map_err(|error| format!("invalid review_every_seconds: {error}"))?;
+            let cadence =
+                patient_work::Cadence::new(check_every, review_every).map_err(|e| e.to_string())?;
+            let view = runtime
+                .set_patient_cadence(&auth, &args[1], &args[2], cadence, now_sec)
+                .await
+                .map_err(|error| error.to_string())?;
+            println!(
+                "{}",
+                serde_json::to_string(&view).map_err(|error| error.to_string())?
+            );
+            Ok(())
+        }
+        _ => Err(
+            "usage: physician-migrate cadence <get|set> <practice_id> [patient_workspace_id] [check_every_seconds review_every_seconds]"
+                .to_owned(),
+        ),
     }
 }
