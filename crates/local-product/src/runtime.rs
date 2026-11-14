@@ -53,6 +53,8 @@ pub mod history;
 pub use frozen::{BindingRef, SkillPackageId};
 /// Practice-owned background jobs running on the shared run store and background lane.
 pub mod jobs;
+/// Wrong-patient conversation link correction, `Undo` lifecycle, and cross-surface withholding.
+pub mod link_correction;
 mod migration;
 mod quota;
 /// Command receipts and their 90-day reduction to a salted digest.
@@ -1351,6 +1353,15 @@ impl Store {
         scope: &Scope,
         state: &mut Conversation,
     ) -> Result<(), DbErr> {
+        Self::conversation_events_raw(db, scope, state).await?;
+        link_correction::redact_conversation_if_withheld_in_tx(db, scope, state).await
+    }
+
+    async fn conversation_events_raw(
+        db: &impl ConnectionTrait,
+        scope: &Scope,
+        state: &mut Conversation,
+    ) -> Result<(), DbErr> {
         let ids: Vec<_> = state
             .attempts
             .iter()
@@ -1545,7 +1556,7 @@ impl Store {
         authority: &mut dyn Authority,
     ) -> Result<(), engine::ProductError> {
         let (tx, mut state, _) = self.locked(&claim.scope).await?;
-        Self::conversation_events(&tx, &claim.scope, &mut state).await?;
+        Self::conversation_events_raw(&tx, &claim.scope, &mut state).await?;
         authority
             .lock_publication(&tx, &claim.scope, state.session_hash.as_deref())
             .await
@@ -1633,7 +1644,7 @@ impl Store {
         mode: CommitMode,
     ) -> Result<Finish, engine::ProductError> {
         let (tx, mut state, _) = self.locked(&claim.scope).await?;
-        Self::conversation_events(&tx, &claim.scope, &mut state).await?;
+        Self::conversation_events_raw(&tx, &claim.scope, &mut state).await?;
         authority
             .lock_publication(&tx, &claim.scope, state.session_hash.as_deref())
             .await
@@ -1686,6 +1697,19 @@ impl Store {
         };
         if mode == CommitMode::CheckChartCurrency {
             let current_obs = sources::observed(&tx, &claim.scope.workspace).await?;
+            if let Some(note) = link_correction::evaluate_withheld_chat_finish_in_tx(
+                &tx,
+                &claim.scope,
+                &state,
+                current_obs.version,
+            )
+            .await?
+            {
+                tx.commit().await?;
+                return Ok(Finish::Refused(harness::engine::recipe::Refusal::new(
+                    note.to_json_string(),
+                )));
+            }
             let pinned_version = state
                 .bindings
                 .get(&state.work)
@@ -1801,7 +1825,7 @@ impl Store {
         let Some(input_id) = state.input_id().filter(|_| resumable).map(str::to_owned) else {
             return Ok(Resumed::Refused);
         };
-        Self::conversation_events(&tx, scope, &mut state).await?;
+        Self::conversation_events_raw(&tx, scope, &mut state).await?;
         state.budget_resume_after = engine::recovery::resume_boundary(
             state.work_attempts().flat_map(|attempt| &attempt.events),
         );

@@ -1846,7 +1846,7 @@ async fn require_active_physician(
     Ok(())
 }
 
-async fn require_patient_access(
+pub(super) async fn require_patient_access(
     auth: &dyn AuthStore,
     viewer: &PhysicianIdentity,
     workspace: &str,
@@ -1983,7 +1983,9 @@ fn decode_conversation_row(
     })
 }
 
-fn decode_message_row(row: entities::spruce_message::Model) -> Result<SavedSpruceMessage, DbErr> {
+pub(super) fn decode_message_row(
+    row: entities::spruce_message::Model,
+) -> Result<SavedSpruceMessage, DbErr> {
     let channel_position = u64::try_from(row.channel_position)
         .map_err(conversion_error("spruce_message.channel_position", "u64"))?;
     let standing: MessageStanding = serde_json::from_value(row.standing).map_err(

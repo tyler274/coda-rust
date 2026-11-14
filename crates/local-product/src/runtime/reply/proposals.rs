@@ -307,6 +307,16 @@ pub enum ReplyProposalError {
         /// Conversation identifier.
         conversation_id: String,
     },
+    /// Conversation content is withheld on `workspace` due to a wrong-patient link correction.
+    #[error("{reason}")]
+    ConversationWithheld {
+        /// Conversation identifier.
+        conversation_id: String,
+        /// Patient workspace where content is withheld.
+        workspace: String,
+        /// Unavailable reason explaining the link correction status.
+        reason: String,
+    },
     /// Move targeted the patient workspace the conversation is already linked to.
     #[error("conversation `{conversation_id}` is already linked to workspace `{workspace}`")]
     MoveTargetUnchanged {
@@ -2244,6 +2254,29 @@ fn verify_conversation_workspace(
     Ok((scope, workspace.clone()))
 }
 
+async fn verify_conversation_workspace_in_tx(
+    tx: &DatabaseTransaction,
+    access: &WorkspaceAccess<'_>,
+    conv: &ReplyConversation,
+) -> Result<(Scope, String), ReplyProposalError> {
+    let scope = verify_physician_access_scope(access)?;
+    if let Some(reason) = super::super::link_correction::conversation_withheld_reason_in_tx(
+        tx,
+        &scope.practice,
+        &scope.workspace,
+        &conv.conversation_id,
+    )
+    .await?
+    {
+        return Err(ReplyProposalError::ConversationWithheld {
+            conversation_id: conv.conversation_id.clone(),
+            workspace: scope.workspace,
+            reason,
+        });
+    }
+    verify_conversation_workspace(access, conv)
+}
+
 async fn check_physician_read_gate_in_tx(
     tx: &DatabaseTransaction,
     scope: &Scope,
@@ -2292,6 +2325,21 @@ async fn verify_conversation_workspace_for_write(
     conv: &ReplyConversation,
     authority: &mut dyn Authority,
 ) -> Result<String, ReplyProposalError> {
+    if let Some(reason) = super::super::link_correction::conversation_withheld_reason_in_tx(
+        tx,
+        &scope.practice,
+        &scope.workspace,
+        &conv.conversation_id,
+    )
+    .await?
+    {
+        lock_proposal_access_in_tx(tx, scope, access.session_hash, authority).await?;
+        return Err(ReplyProposalError::ConversationWithheld {
+            conversation_id: conv.conversation_id.clone(),
+            workspace: scope.workspace.clone(),
+            reason,
+        });
+    }
     let ConversationLink::LinkedPatient { workspace } = &conv.link else {
         lock_proposal_access_in_tx(tx, scope, access.session_hash, authority).await?;
         return Err(ReplyProposalError::ConversationNotLinkedToPatient {
@@ -3741,7 +3789,7 @@ impl Store {
             return Err(ReplyProposalError::ConversationNotFound { conversation_id });
         };
         let conv = decode_conversation(&tx, row).await?;
-        if let Err(err) = verify_conversation_workspace(access, &conv) {
+        if let Err(err) = verify_conversation_workspace_in_tx(&tx, access, &conv).await {
             tx.rollback().await?;
             return Err(err);
         }
@@ -3778,7 +3826,7 @@ impl Store {
             return Err(ReplyProposalError::ConversationNotFound { conversation_id });
         };
         let conv = decode_conversation(&tx, row).await?;
-        let (_, workspace) = match verify_conversation_workspace(access, &conv) {
+        let (_, workspace) = match verify_conversation_workspace_in_tx(&tx, access, &conv).await {
             Ok(pair) => pair,
             Err(err) => {
                 tx.rollback().await?;

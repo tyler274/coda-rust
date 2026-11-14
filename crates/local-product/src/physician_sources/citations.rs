@@ -147,6 +147,19 @@ pub struct Finished {
 }
 
 impl Finished {
+    /// An empty, redacted finish with no marks, Basis, or source descriptions,
+    /// used when a conversation turn is withheld after a wrong-patient link correction.
+    pub fn redacted() -> Self {
+        Self {
+            marks: Vec::new(),
+            basis: CitedText {
+                text: String::new(),
+                marks: Vec::new(),
+            },
+            descriptions: Vec::new(),
+        }
+    }
+
     /// The answer's marks, in text order.
     pub fn marks(&self) -> &[Mark] {
         &self.marks

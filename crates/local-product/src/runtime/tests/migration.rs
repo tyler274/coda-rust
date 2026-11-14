@@ -74,6 +74,7 @@ async fn a_second_migrate_records_nothing_new() {
             "m20261113_02_reply_proposals",
             "m20261113_03_follow_ups_withdrawal",
             "m20261113_source_links_and_standing",
+            "m20261114_01_link_correction",
             "m20261114_reconnect_commands_and_adapter_state",
         ]
     );

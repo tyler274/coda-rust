@@ -12,8 +12,8 @@ use std::collections::{BTreeMap, BTreeSet};
 use harness::engine::{self, Invocation, ToolOutcome, recipe::RequestRecipe};
 use physician_auth::{AuthStore, Membership, PhysicianIdentity};
 use sea_orm::{
-    ActiveModelTrait, ColumnTrait, Condition, DbErr, EntityTrait, QueryFilter, QueryOrder,
-    QuerySelect, Set, TransactionTrait,
+    ActiveModelTrait, ColumnTrait, Condition, ConnectionTrait, DbErr, EntityTrait, QueryFilter,
+    QueryOrder, QuerySelect, Set, TransactionTrait,
 };
 use serde::{Deserialize, Serialize};
 use serde_json::{Value, json};
@@ -843,6 +843,89 @@ fn decode_summary_projection(tuple: SummaryProjectionTuple) -> Result<PatientSum
     })
 }
 
+fn understanding_cites_withheld(
+    summary: &PatientSummary,
+    operating_index: Option<&OperatingIndex>,
+    origin: Option<&RevisionOrigin>,
+    withheld: &super::link_correction::WithheldWorkspaceState,
+) -> bool {
+    if summary
+        .citations
+        .iter()
+        .any(|c| withheld.candidate_ids.contains(&c.reference.candidate_id))
+    {
+        return true;
+    }
+    if summary.claims.iter().any(|cl| {
+        cl.citations
+            .iter()
+            .any(|r| withheld.candidate_ids.contains(&r.candidate_id))
+    }) {
+        return true;
+    }
+    if let Some(idx) = operating_index
+        && idx
+            .anchors
+            .iter()
+            .any(|a| withheld.candidate_ids.contains(&a.reference.candidate_id))
+    {
+        return true;
+    }
+    if let Some(orig) = origin
+        && withheld.work_ids.contains(orig.work_id())
+    {
+        return true;
+    }
+    false
+}
+
+async fn latest_clean_understanding_in_db(
+    db: &impl ConnectionTrait,
+    practice: &str,
+    workspace: &str,
+    withheld: &super::link_correction::WithheldWorkspaceState,
+) -> Result<Option<PatientUnderstanding>, DbErr> {
+    let withdrawn_rows = super::follow_ups::understanding_withdrawal_entity::Entity::find()
+        .filter(super::follow_ups::understanding_withdrawal_entity::Column::Practice.eq(practice))
+        .filter(super::follow_ups::understanding_withdrawal_entity::Column::Workspace.eq(workspace))
+        .all(db)
+        .await?;
+    let withdrawn_revs: std::collections::BTreeSet<i64> =
+        withdrawn_rows.into_iter().map(|r| r.revision).collect();
+
+    let rev_rows = patient_understanding_revision::Entity::find()
+        .filter(patient_understanding_revision::Column::Practice.eq(practice))
+        .filter(patient_understanding_revision::Column::Workspace.eq(workspace))
+        .order_by_desc(patient_understanding_revision::Column::Revision)
+        .all(db)
+        .await?;
+    for row in rev_rows {
+        if withdrawn_revs.contains(&row.revision) {
+            continue;
+        }
+        let rec = decode_revision_record(row)?;
+        if !understanding_cites_withheld(
+            &rec.summary,
+            Some(&rec.operating_index),
+            Some(&rec.origin),
+            withheld,
+        ) {
+            return Ok(Some(PatientUnderstanding {
+                practice: practice.to_owned(),
+                workspace: workspace.to_owned(),
+                revision: rec.revision,
+                source_version: rec.source_version,
+                evidence_scope: rec.evidence_scope,
+                operating_index: rec.operating_index,
+                summary: rec.summary,
+                origin: rec.origin,
+                updated_at: rec.saved_at,
+            }));
+        }
+    }
+    Ok(None)
+}
+
 fn scope_for_membership(practice: &str, workspace: &str) -> PracticeScope {
     PracticeScope {
         practice: practice.to_owned(),
@@ -1121,12 +1204,27 @@ impl Store {
         practice: &str,
         workspace: &str,
     ) -> Result<Option<PatientUnderstanding>, DbErr> {
+        let withheld =
+            super::link_correction::load_workspace_withheld_state_in_tx(&self.db, workspace)
+                .await?;
         let mut saved =
             patient_understanding::Entity::find_by_id((practice.to_owned(), workspace.to_owned()))
                 .one(&self.db)
                 .await?
                 .map(decode_understanding)
                 .transpose()?;
+        if let Some(current) = &saved
+            && !withheld.is_empty()
+            && understanding_cites_withheld(
+                &current.summary,
+                Some(&current.operating_index),
+                Some(&current.origin),
+                &withheld,
+            )
+        {
+            saved =
+                latest_clean_understanding_in_db(&self.db, practice, workspace, &withheld).await?;
+        }
         if let Some(understanding) = saved.as_mut()
             && let Some(boundary) =
                 super::follow_ups::load_workspace_withdrawal_boundary(&self.db, practice, workspace)
@@ -1209,7 +1307,29 @@ impl Store {
         .into_tuple::<SummaryProjectionTuple>()
         .one(&self.db)
         .await?;
-        Ok(tuple.map(decode_summary_projection).transpose()?)
+        let view = tuple.map(decode_summary_projection).transpose()?;
+        let withheld =
+            super::link_correction::load_workspace_withheld_state_in_tx(&self.db, workspace)
+                .await?;
+        if view.is_some() && !withheld.is_empty() {
+            let clean = latest_clean_understanding_in_db(
+                &self.db,
+                &identity.practice_id,
+                workspace,
+                &withheld,
+            )
+            .await?;
+            return Ok(clean.map(|u| PatientSummaryView {
+                practice: u.practice,
+                workspace: u.workspace,
+                revision: u.revision,
+                source_version: u.source_version,
+                evidence_scope: u.evidence_scope,
+                summary: u.summary,
+                updated_at: u.updated_at,
+            }));
+        }
+        Ok(view)
     }
 
     /// Batch physician-facing summary projection keyed by `workspace` for the
@@ -1242,6 +1362,35 @@ impl Store {
         let mut by_workspace = BTreeMap::new();
         for tuple in tuples {
             let view = decode_summary_projection(tuple)?;
+            let withheld = super::link_correction::load_workspace_withheld_state_in_tx(
+                &self.db,
+                &view.workspace,
+            )
+            .await?;
+            if !withheld.is_empty() {
+                if let Some(clean) = latest_clean_understanding_in_db(
+                    &self.db,
+                    &view.practice,
+                    &view.workspace,
+                    &withheld,
+                )
+                .await?
+                {
+                    by_workspace.insert(
+                        clean.workspace.clone(),
+                        PatientSummaryView {
+                            practice: clean.practice,
+                            workspace: clean.workspace,
+                            revision: clean.revision,
+                            source_version: clean.source_version,
+                            evidence_scope: clean.evidence_scope,
+                            summary: clean.summary,
+                            updated_at: clean.updated_at,
+                        },
+                    );
+                }
+                continue;
+            }
             by_workspace.insert(view.workspace.clone(), view);
         }
         Ok(by_workspace)
