@@ -179,6 +179,8 @@ fn map_failed_parts(parts: &[ProducerFailure]) -> Vec<FailedProducerWire> {
                 ProducerKind::PatientUnderstanding => ProducerSliceWire::PatientUnderstanding,
                 ProducerKind::RunningConversations => ProducerSliceWire::RunningConversations,
                 ProducerKind::SourceStatuses => ProducerSliceWire::SourceStatuses,
+                ProducerKind::Messages => ProducerSliceWire::SpruceMessages,
+                ProducerKind::FollowUps => ProducerSliceWire::FollowUps,
             },
             label: part.producer.label().to_owned(),
             message: part.message.clone(),
@@ -217,6 +219,7 @@ fn serialize_today_row(row: &TodayRow) -> Value {
                 UnhandledWorkKind::PatientReview => "review",
                 UnhandledWorkKind::VisitPreparation => "pre_visit_preparation",
                 UnhandledWorkKind::InitialUnderstanding => "initial_understanding",
+                UnhandledWorkKind::FollowUpReview => "follow_up",
             };
             ("today", "failed_review", Some(wk), None)
         }
@@ -228,6 +231,19 @@ fn serialize_today_row(row: &TodayRow) -> Value {
                 RecognizableRunKind::PhysicianRequestedReview => "review",
             };
             ("today", "running_work", Some(wk), chat_id.clone())
+        }
+        TodayRowPayload::MessageThread { urgency, .. } => {
+            (urgency.as_str(), "message_thread", None, None)
+        }
+        TodayRowPayload::MessageToMatch { leads_as_now, .. } => (
+            if *leads_as_now { "now" } else { "today" },
+            "message_to_match",
+            None,
+            None,
+        ),
+        TodayRowPayload::UnreadableMessage { .. } => ("today", "unreadable_message", None, None),
+        TodayRowPayload::MessagingChannelProblem { .. } => {
+            ("today", "messaging_channel", None, None)
         }
     };
     let seen = matches!(row.seen_standing, SeenStanding::Seen { .. });
@@ -268,7 +284,10 @@ fn map_update_entry(entry: &UpdateEntry) -> UpdateItemWire {
         UpdateEntryKind::ConcernRaised { .. } => UpdateItemKindWire::ConcernRaised,
         UpdateEntryKind::ConcernRetired { .. } => UpdateItemKindWire::ConcernRetired,
         UpdateEntryKind::QuietReview { .. } => UpdateItemKindWire::QuietReview,
-        UpdateEntryKind::AssessedReview { .. } => UpdateItemKindWire::AssessedReview,
+        UpdateEntryKind::AssessedReview { .. } | UpdateEntryKind::ReplyDrafted { .. } => {
+            UpdateItemKindWire::AssessedReview
+        }
+        UpdateEntryKind::FollowUpChanged { .. } => UpdateItemKindWire::FollowUpChanged,
         UpdateEntryKind::VisitBriefing { .. } => UpdateItemKindWire::VisitBriefing,
         UpdateEntryKind::PatientSummary { .. } => UpdateItemKindWire::PatientSummary,
         UpdateEntryKind::EndedNothingToDo { .. } => UpdateItemKindWire::EndedNothingToDo,
@@ -335,6 +354,8 @@ fn error_response(err: TodayUpdatesError) -> Response {
         TodayUpdatesError::AuthUnavailable(_)
         | TodayUpdatesError::ItemOpenFailed { .. }
         | TodayUpdatesError::Concern(_)
+        | TodayUpdatesError::SpruceMatching(_)
+        | TodayUpdatesError::ReplyProposal(_)
         | TodayUpdatesError::Database(_) => StatusCode::SERVICE_UNAVAILABLE.into_response(),
     }
 }
