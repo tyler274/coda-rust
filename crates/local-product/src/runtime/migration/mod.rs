@@ -6,6 +6,7 @@ mod m20261111_init;
 mod m20261111_response_feedback;
 mod m20261112_chat_memory;
 mod m20261112_concerns;
+mod m20261112_conversation_activity;
 mod m20261112_patient_reviews;
 mod m20261112_patient_understanding;
 mod m20261112_practice_jobs_dispatch;
@@ -46,6 +47,7 @@ impl MigratorTrait for Migrator {
             Box::new(m20261112_patient_reviews::Migration),
             Box::new(m20261112_visit_briefings::Migration),
             Box::new(m20261112_today_updates_seen::Migration),
+            Box::new(m20261112_conversation_activity::Migration),
         ]
     }
 }

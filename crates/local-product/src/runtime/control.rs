@@ -116,7 +116,9 @@ struct ConversationState {
     failures: u32,
     budget_resume_after: u64,
     bindings: BTreeMap<String, BindingRef>,
+    #[serde(default)]
     opened_at: i64,
+    #[serde(default)]
     last_activity_at: i64,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     scenario: Option<String>,
@@ -171,7 +173,7 @@ pub(super) fn conversation_state(conversation: &Conversation) -> Result<Value, D
         budget_resume_after,
         bindings,
         opened_at,
-        last_activity_at,
+        last_activity_at: _,
         scenario,
         origin,
     } = conversation;
@@ -185,7 +187,7 @@ pub(super) fn conversation_state(conversation: &Conversation) -> Result<Value, D
         budget_resume_after: *budget_resume_after,
         bindings: bindings.clone(),
         opened_at: *opened_at,
-        last_activity_at: *last_activity_at,
+        last_activity_at: conversation.latest_activity_at(),
         scenario: scenario.clone(),
         origin: origin.clone(),
     })
@@ -291,6 +293,7 @@ pub(super) fn conversation(
         scenario,
         origin,
     };
+    conversation.last_activity_at = conversation.latest_activity_at();
     if let Some(outcome) = conversation.run().and_then(|run| run.outcome) {
         conversation.status = outcome.into();
     }

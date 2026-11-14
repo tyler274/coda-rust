@@ -46,6 +46,71 @@ pub enum DirectoryError {
     Unavailable(#[from] StoreUnavailable),
 }
 
+/// Number of patients returned per page when Find patient opens with no search text.
+pub const ROSTER_PAGE_SIZE: usize = 25;
+
+/// A malformed pagination cursor supplied to the patient roster endpoint.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct InvalidRosterCursor;
+
+impl std::fmt::Display for InvalidRosterCursor {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str("invalid patient roster cursor")
+    }
+}
+
+impl std::error::Error for InvalidRosterCursor {}
+
+/// Keyset position in the name-ordered patient roster.
+#[derive(Clone, Debug, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
+pub(crate) struct RosterCursor {
+    name_key: String,
+    workspace: String,
+}
+
+impl RosterCursor {
+    fn from_patient(patient: &Patient) -> Self {
+        Self {
+            name_key: patient.holder().display_name.to_lowercase(),
+            workspace: patient.workspace.clone(),
+        }
+    }
+
+    pub(crate) fn encode(&self) -> String {
+        use base64::Engine as _;
+        let json = serde_json::to_vec(self).expect("serialize roster cursor");
+        base64::engine::general_purpose::URL_SAFE_NO_PAD.encode(json)
+    }
+
+    pub(crate) fn decode(raw: &str) -> Result<Self, InvalidRosterCursor> {
+        use base64::Engine as _;
+        let bytes = base64::engine::general_purpose::URL_SAFE_NO_PAD
+            .decode(raw.trim())
+            .map_err(|_| InvalidRosterCursor)?;
+        let cursor: Self = serde_json::from_slice(&bytes).map_err(|_| InvalidRosterCursor)?;
+        if cursor.workspace.trim().is_empty() {
+            return Err(InvalidRosterCursor);
+        }
+        Ok(cursor)
+    }
+}
+
+/// One page of roster patients and any continuation cursor.
+#[derive(Clone, Debug)]
+pub(crate) struct RosterPage {
+    pub(crate) patients: Vec<Patient>,
+    pub(crate) next_after: Option<String>,
+}
+
+/// Failure reading or paging the practice's patient roster.
+#[derive(Debug, thiserror::Error)]
+pub(crate) enum RosterSearchError {
+    #[error(transparent)]
+    Directory(#[from] DirectoryError),
+    #[error(transparent)]
+    InvalidCursor(#[from] InvalidRosterCursor),
+}
+
 /// How a connected source's records currently stand for a patient.
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub enum SourceDeliveryState {
@@ -1030,6 +1095,50 @@ pub(crate) async fn search(
         .collect())
 }
 
+/// Lists or searches `workspaces`: an empty query returns patients ordered by
+/// name in pages of [`ROSTER_PAGE_SIZE`] with `next_after` when more remain; a
+/// non-empty query returns ranked matches.
+pub(crate) async fn roster_page(
+    directory: &dyn PatientDirectory,
+    workspaces: &[String],
+    query: &str,
+    after: Option<&str>,
+) -> Result<RosterPage, RosterSearchError> {
+    let words: Vec<String> = query.split_whitespace().map(str::to_lowercase).collect();
+    if !words.is_empty() {
+        let patients = search(directory, workspaces, query).await?;
+        return Ok(RosterPage {
+            patients,
+            next_after: None,
+        });
+    }
+    let cursor = match after.map(str::trim).filter(|raw| !raw.is_empty()) {
+        Some(raw) => Some(RosterCursor::decode(raw)?),
+        None => None,
+    };
+    let all = read_patients(directory, workspaces).await?;
+    let mut page: Vec<Patient> = all
+        .into_iter()
+        .filter(|patient| {
+            cursor.as_ref().is_none_or(|after_key| {
+                patient.sort_key() > (after_key.name_key.clone(), after_key.workspace.as_str())
+            })
+        })
+        .take(ROSTER_PAGE_SIZE + 1)
+        .collect();
+    let next_after = if page.len() > ROSTER_PAGE_SIZE {
+        page.truncate(ROSTER_PAGE_SIZE);
+        page.last()
+            .map(|last| RosterCursor::from_patient(last).encode())
+    } else {
+        None
+    };
+    Ok(RosterPage {
+        patients: page,
+        next_after,
+    })
+}
+
 pub(crate) fn workspace_body(id: &str) -> Option<&'static str> {
     Some(match id {
         "pw-67305f4a-7d91-462c-9cc5-1bb30ade34ee" => {
@@ -1326,5 +1435,82 @@ mod tests {
         );
         assert_eq!(sources[1]["state"]["state"], "not_yet_pulled");
         assert!(sources[1]["state"].get("synchronized_at").is_none());
+    }
+
+    #[tokio::test]
+    async fn empty_roster_query_pages_twenty_five_by_name_and_excludes_other_practices() {
+        let directory = MemoryPatients::default();
+        let mut practice_a_workspaces = Vec::new();
+        for idx in (1..=32).rev() {
+            let workspace = format!("pw-a-{idx:02}");
+            let name = format!("Patient {idx:02}");
+            directory.add_source_record(
+                &workspace,
+                sample_record(
+                    &workspace,
+                    &name,
+                    Some("1980-05-14"),
+                    Some(&format!("1000{idx:02}")),
+                    SourceDeliveryState::Usable {
+                        pulled_at: 1_787_846_400,
+                    },
+                ),
+            );
+            practice_a_workspaces.push(workspace);
+        }
+        // Seed a patient belonging to another practice in the shared source store;
+        // practice-a's roster slice must never expose it.
+        directory.add_source_record(
+            "pw-other-practice",
+            sample_record(
+                "pw-other-practice",
+                "Aaron OtherPractice",
+                Some("1975-01-01"),
+                Some("999999"),
+                SourceDeliveryState::Usable {
+                    pulled_at: 1_787_846_400,
+                },
+            ),
+        );
+
+        let first = roster_page(&directory, &practice_a_workspaces, "", None)
+            .await
+            .expect("first page");
+        assert_eq!(first.patients.len(), ROSTER_PAGE_SIZE);
+        let first_names: Vec<_> = first
+            .patients
+            .iter()
+            .map(|p| p.holder().display_name.clone())
+            .collect();
+        let expected_first: Vec<_> = (1..=25).map(|n| format!("Patient {n:02}")).collect();
+        assert_eq!(first_names, expected_first);
+        assert!(
+            !first_names
+                .iter()
+                .any(|name| name.contains("OtherPractice")),
+            "cross-practice patient leaked into page 1"
+        );
+        let cursor = first.next_after.expect("more than 25 patients sets cursor");
+
+        let second = roster_page(&directory, &practice_a_workspaces, "   ", Some(&cursor))
+            .await
+            .expect("second page");
+        let second_names: Vec<_> = second
+            .patients
+            .iter()
+            .map(|p| p.holder().display_name.clone())
+            .collect();
+        let expected_second: Vec<_> = (26..=32).map(|n| format!("Patient {n:02}")).collect();
+        assert_eq!(second_names, expected_second);
+        assert!(second.next_after.is_none());
+        assert!(
+            !second_names
+                .iter()
+                .any(|name| name.contains("OtherPractice")),
+            "cross-practice patient leaked into page 2"
+        );
+
+        let bad = roster_page(&directory, &practice_a_workspaces, "", Some("not-a-cursor")).await;
+        assert!(matches!(bad, Err(RosterSearchError::InvalidCursor(_))));
     }
 }

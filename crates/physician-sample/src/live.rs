@@ -369,12 +369,25 @@ async fn accept_durable(
     };
     let session_hash = physician_auth::PostgresAuthStore::session_reference(&ctx.token);
     match chat.accept(&scope, &input, session_hash).await {
-        Ok(_) => Json(json!({
-            "outcome": "accepted",
-            "patient_workspace_id": payload.patient_workspace_id,
-            "chat_id": payload.chat_id,
-        }))
-        .into_response(),
+        Ok(accepted) => {
+            if accepted == local_product::runtime::Accepted::New
+                && live
+                    .bus
+                    .publish(Event::WorkspaceChanged {
+                        workspace_id: payload.patient_workspace_id.clone(),
+                    })
+                    .await
+                    .is_err()
+            {
+                tracing::warn!("physician workspace invalidation not published");
+            }
+            Json(json!({
+                "outcome": "accepted",
+                "patient_workspace_id": payload.patient_workspace_id,
+                "chat_id": payload.chat_id,
+            }))
+            .into_response()
+        }
         Err(error) => {
             let collision = error.contains("idempotency collision");
             tracing::warn!(collision, "physician chat accept failed");
@@ -591,13 +604,26 @@ async fn resume_durable(
         .await
     {
         Ok(local_product::runtime::Resumed::Refused) => rejected("work.resume"),
-        Ok(_) => Json(json!({
-            "outcome": "accepted",
-            "patient_workspace_id": payload.patient_workspace_id,
-            "chat_id": payload.chat_id,
-            "run_id": payload.expected_run_id,
-        }))
-        .into_response(),
+        Ok(outcome) => {
+            if matches!(outcome, local_product::runtime::Resumed::Pending { .. })
+                && live
+                    .bus
+                    .publish(Event::WorkspaceChanged {
+                        workspace_id: payload.patient_workspace_id.clone(),
+                    })
+                    .await
+                    .is_err()
+            {
+                tracing::warn!("physician workspace invalidation not published");
+            }
+            Json(json!({
+                "outcome": "accepted",
+                "patient_workspace_id": payload.patient_workspace_id,
+                "chat_id": payload.chat_id,
+                "run_id": payload.expected_run_id,
+            }))
+            .into_response()
+        }
         Err(_) => {
             tracing::warn!("physician work resume failed");
             (

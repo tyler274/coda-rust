@@ -1007,6 +1007,97 @@ pub fn search_row_detail(birth_date: Option<&str>, mrn: Option<&str>) -> String 
     parts.join(" · ")
 }
 
+/// Continuation standing below the loaded Find patient rows.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub enum RosterContinuation {
+    /// All matching rows are already shown.
+    Complete,
+    /// More patients follow `cursor` when scrolled near the end.
+    HasMore {
+        /// Keyset cursor token for the next page.
+        cursor: String,
+    },
+    /// Requesting the page after `cursor` is currently in flight.
+    LoadingMore {
+        /// Keyset cursor token currently being fetched.
+        cursor: String,
+    },
+    /// Requesting the page after `cursor` failed; retrying re-requests `cursor`
+    /// rather than treating the loaded prefix as the end of the list.
+    FailedMore {
+        /// Keyset cursor token to retry.
+        cursor: String,
+    },
+}
+
+/// Appended pages bound to one `(query, attempt)` Find patient read.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct AppendedRosterPages {
+    /// Search text that produced these pages.
+    pub query: String,
+    /// Dialog open/retry generation that produced these pages.
+    pub attempt: u32,
+    /// Rows loaded after the first page, in roster order.
+    pub extra_patients: Vec<physician_wire::PatientSearchRow>,
+    /// Current continuation standing after the latest appended page or attempt.
+    pub continuation: RosterContinuation,
+}
+
+/// Resolved Find patient rows and continuation standing for the active read.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct RosterView {
+    /// First-page read state containing all rows loaded so far when ready.
+    pub rows: ReadView<Vec<physician_wire::PatientSearchRow>>,
+    /// Continuation standing below the loaded rows.
+    pub continuation: RosterContinuation,
+}
+
+/// Resolves the Find patient list from the first-page response and any appended
+/// pages belonging to `(query, attempt)`.
+pub fn resolve_roster_view(
+    query: &str,
+    attempt: u32,
+    first_page: Option<Result<&physician_wire::PatientSearchResponse, ()>>,
+    appended: Option<&AppendedRosterPages>,
+) -> RosterView {
+    match first_page {
+        None => RosterView {
+            rows: ReadView::Loading,
+            continuation: RosterContinuation::Complete,
+        },
+        Some(Err(())) => RosterView {
+            rows: ReadView::Unavailable,
+            continuation: RosterContinuation::Complete,
+        },
+        Some(Ok(first)) => {
+            let matching =
+                appended.filter(|extra| extra.query == query && extra.attempt == attempt);
+            let mut patients = first.patients.clone();
+            let continuation = match matching {
+                Some(extra) => {
+                    patients.extend(extra.extra_patients.iter().cloned());
+                    extra.continuation.clone()
+                }
+                None => match first
+                    .next_after
+                    .as_deref()
+                    .map(str::trim)
+                    .filter(|cursor| !cursor.is_empty())
+                {
+                    Some(cursor) => RosterContinuation::HasMore {
+                        cursor: cursor.to_owned(),
+                    },
+                    None => RosterContinuation::Complete,
+                },
+            };
+            RosterView {
+                rows: ReadView::Showing(patients),
+                continuation,
+            }
+        }
+    }
+}
+
 /// Physician-facing standing of one connected clinical record source.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum ConnectedSourceStanding {
@@ -2335,6 +2426,59 @@ mod tests {
         assert_eq!(
             work_heading(&failed),
             Some("Patient summary couldn’t finish".to_owned())
+        );
+    }
+
+    #[test]
+    fn roster_view_tracks_pagination_and_never_reads_failed_page_as_complete() {
+        let first: physician_wire::PatientSearchResponse =
+            serde_json::from_value(serde_json::json!({
+                "patients": [
+                    { "patient_workspace_id": "pw-1", "patient_display_name": "Ada Lovelace", "birth_date": "1985-12-10" }
+                ],
+                "next_after": "cursor-25",
+            }))
+            .unwrap();
+
+        let initial = resolve_roster_view("", 1, Some(Ok(&first)), None);
+        assert_eq!(
+            initial.continuation,
+            RosterContinuation::HasMore {
+                cursor: "cursor-25".to_owned(),
+            }
+        );
+        assert_eq!(initial.rows.content().map(Vec::len), Some(1));
+
+        // Initial page failure surfaces as Unavailable, never an empty complete list.
+        let initial_failed = resolve_roster_view("", 1, Some(Err(())), None);
+        assert_eq!(initial_failed.rows, ReadView::Unavailable);
+
+        // Next-page failure keeps already-loaded rows and reports FailedMore with retry cursor,
+        // never Complete ("end of list").
+        let failed_next = AppendedRosterPages {
+            query: String::new(),
+            attempt: 1,
+            extra_patients: Vec::new(),
+            continuation: RosterContinuation::FailedMore {
+                cursor: "cursor-25".to_owned(),
+            },
+        };
+        let after_failure = resolve_roster_view("", 1, Some(Ok(&first)), Some(&failed_next));
+        assert_eq!(after_failure.rows.content().map(Vec::len), Some(1));
+        assert_eq!(
+            after_failure.continuation,
+            RosterContinuation::FailedMore {
+                cursor: "cursor-25".to_owned(),
+            }
+        );
+
+        // Changing the search text or reopening (bumping attempt) ignores stale appended pages.
+        let reopened = resolve_roster_view("", 2, Some(Ok(&first)), Some(&failed_next));
+        assert_eq!(
+            reopened.continuation,
+            RosterContinuation::HasMore {
+                cursor: "cursor-25".to_owned(),
+            }
         );
     }
 }
