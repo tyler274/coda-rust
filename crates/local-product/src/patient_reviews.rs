@@ -212,11 +212,13 @@ impl ReviewTrigger {
         last_reviewed_at: Option<i64>,
     ) -> Self {
         match request.reason {
-            ReviewReason::NewRecords => Self::ChangedRecords {
-                workspace_version: request.workspace_version,
-                record_versions: request.record_versions.clone(),
-                changed_candidates,
-            },
+            ReviewReason::NewRecords | ReviewReason::Message | ReviewReason::FollowUp => {
+                Self::ChangedRecords {
+                    workspace_version: request.workspace_version,
+                    record_versions: request.record_versions.clone(),
+                    changed_candidates,
+                }
+            }
             ReviewReason::Periodic => Self::Periodic {
                 workspace_version: request.workspace_version,
                 record_versions: request.record_versions.clone(),

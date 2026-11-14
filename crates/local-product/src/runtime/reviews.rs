@@ -1762,7 +1762,9 @@ impl Store {
             patient_work::ReviewReason::NewRecords => {
                 diff_changed_candidates(&baseline_records, &request.record_versions)
             }
-            patient_work::ReviewReason::Periodic => Vec::new(),
+            patient_work::ReviewReason::Periodic
+            | patient_work::ReviewReason::Message
+            | patient_work::ReviewReason::FollowUp => Vec::new(),
         };
         let trigger =
             ReviewTrigger::from_dispatch_request(request, changed_candidates, last_reviewed_at);
