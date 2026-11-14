@@ -972,10 +972,6 @@ fn PhysicianShell(
     let patient_reads = use_signal(patient_reads::PatientReads::new);
     let preloader =
         use_context_provider(|| Preloader::new(preload, patient_reads, client, selected));
-    ui::use_pointer_intent(
-        preloader.trigger().predicts(),
-        EventHandler::new(move |id: String| preloader.predicted(&id)),
-    );
     // The patient the server said isn't there for this physician (a 404 also
     // answers for no access, so presence never leaks).
     let mut gone = use_signal(|| None::<String>);
@@ -3005,7 +3001,6 @@ fn TodayRows(
                 article { class: "today-row",
                     NavigationRow {
                         class: if focused == Some(index) { "today-row-open is-keyboard-focus" } else { "today-row-open" },
-                        "data-intent": "{row.workspace_id}",
                         onclick: {
                             let row = row.clone();
                             move |_| on_open.call(row.clone())
@@ -3097,7 +3092,6 @@ fn ScheduleRail(
                     } else {
                         "schedule-visit"
                     },
-                    "data-intent": visit.workspace_id.clone(),
                     onclick: {
                         let visit = visit.clone();
                         move |_| on_open.call(visit.clone())
@@ -3806,7 +3800,6 @@ fn SearchDialog(
                                                 .map(format_calendar_date)
                                                 .unwrap_or_else(|| "not recorded".to_owned())
                                         ),
-                                        "data-intent": "{patient.patient_workspace_id}",
                                         onclick: {
                                             let id = patient.patient_workspace_id.clone();
                                             move |_| on_open.call(id.clone())

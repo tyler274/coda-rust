@@ -26,7 +26,7 @@ fn App() -> Element {
     rsx! { physician_app::PhysicianRoot { base_url: base, open_patient, open_chat, sign_in, preload } }
 }
 
-/// `?preload=click`, `hover` or `predict` chooses what starts reading a
+/// `?preload=click` or `hover` chooses what starts reading a
 /// patient before it opens, so the triggers can be compared on one build.
 #[cfg(any(feature = "web", feature = "desktop"))]
 fn preload_trigger() -> physician_app::PreloadTrigger {

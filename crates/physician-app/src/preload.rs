@@ -22,9 +22,6 @@ pub enum PreloadTrigger {
     /// The pointer resting on a row, or keyboard focus resting on it.
     #[default]
     HoverFocus,
-    /// As [`Self::HoverFocus`], and also the pointer's path heading for a row
-    /// before it arrives.
-    PointerPredicted,
 }
 
 impl PreloadTrigger {
@@ -33,7 +30,6 @@ impl PreloadTrigger {
         match value {
             "click" => Some(Self::ClickOnly),
             "hover" => Some(Self::HoverFocus),
-            "predict" => Some(Self::PointerPredicted),
             _ => None,
         }
     }
@@ -41,15 +37,7 @@ impl PreloadTrigger {
     fn rests(self) -> bool {
         match self {
             Self::ClickOnly => false,
-            Self::HoverFocus | Self::PointerPredicted => true,
-        }
-    }
-
-    /// Whether this trigger follows the pointer's path.
-    pub(crate) fn predicts(self) -> bool {
-        match self {
-            Self::ClickOnly | Self::HoverFocus => false,
-            Self::PointerPredicted => true,
+            Self::HoverFocus => true,
         }
     }
 }
@@ -81,10 +69,6 @@ impl Preloader {
         }
     }
 
-    pub(crate) fn trigger(&self) -> PreloadTrigger {
-        self.trigger
-    }
-
     /// The pointer or focus came to patient `id`'s row; once it has rested
     /// there, the patient is read.
     pub(crate) fn approach(&self, id: &str) {
@@ -109,13 +93,6 @@ impl Preloader {
         let mut resting = self.resting;
         let ticket = *resting.peek() + 1;
         resting.set(ticket);
-    }
-
-    /// The pointer's path heads for patient `id`'s row: read it now.
-    pub(crate) fn predicted(&self, id: &str) {
-        if self.trigger.predicts() {
-            self.start(id);
-        }
     }
 
     fn start(&self, id: &str) {

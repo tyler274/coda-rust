@@ -3,7 +3,7 @@
 //!
 //! `js/patient_reads.js` answers the page's two patient reads a fixed time late, so the gain does
 //! not depend on a fast local server, and logs every request. The same pointer paths and keyboard
-//! walks replay for each trigger the address can choose (`?preload=click`, `hover`, `predict`).
+//! walks replay for each trigger the address can choose (`?preload=click`, `hover`).
 //! Each open is timed from the click or Enter to "Records as of" on screen, and the log says how
 //! many patient reads went out, how many the open reused, and how many no open used.
 //!
@@ -29,7 +29,6 @@ use required_auth::{SIGNED_IN, STAGING_EMAIL, spawn_required_server};
 
 const JAKE: &str = "pw-82c44e9b-58c0-4af1-bd21-771bf77e101d";
 const DAN: &str = "pw-f5404d89-acde-4bb5-8c42-2fa191766811";
-const TANVIR: &str = "pw-67305f4a-7d91-462c-9cc5-1bb30ade34ee";
 const TERESA: &str = "pw-d11a35f7-0d8d-466f-a48e-5812df0a4971";
 
 /// The staging account `spawn_required_server` signs in.
@@ -53,24 +52,22 @@ const LATENCIES: [u64; 4] = [0, 150, 400, 800];
 enum Trigger {
     ClickOnly,
     HoverFocus,
-    PointerPredicted,
 }
 
 impl Trigger {
-    const ALL: [Self; 3] = [Self::ClickOnly, Self::HoverFocus, Self::PointerPredicted];
+    const ALL: [Self; 2] = [Self::ClickOnly, Self::HoverFocus];
 
     fn address(self) -> &'static str {
         match self {
             Self::ClickOnly => "click",
             Self::HoverFocus => "hover",
-            Self::PointerPredicted => "predict",
         }
     }
 
     fn reads_ahead(self) -> bool {
         match self {
             Self::ClickOnly => false,
-            Self::HoverFocus | Self::PointerPredicted => true,
+            Self::HoverFocus => true,
         }
     }
 }
@@ -639,34 +636,4 @@ async fn a_preload_changes_nothing_the_physician_can_see() {
     })
     .await
     .expect("the read-only walk");
-}
-
-/// The pointer heading for a row reads it ahead before it arrives, and only with prediction on.
-#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
-#[ignore = "browser qualification; run explicitly with --ignored"]
-async fn the_pointer_heading_for_a_row_reads_it_before_arriving() {
-    let server = spawn_required_server().await;
-    let base = format!("http://{}", server.address);
-    tokio::task::spawn_blocking(move || {
-        let mut page = Page::signed_in(&base);
-        for trigger in [Trigger::HoverFocus, Trigger::PointerPredicted] {
-            page.load(trigger, 0, json!([]));
-            let away = (640.0, 420.0);
-            page.mouse("mouseMoved", away);
-            page.requests();
-            let to = page.middle(VISIT, "Tanvir Chowdhury");
-            // Stop short of the row: the pointer never reaches it.
-            let short = (to.0 + (away.0 - to.0) * 0.25, to.1 + (away.1 - to.1) * 0.25);
-            page.glide(away, short, 12);
-            std::thread::sleep(Duration::from_millis(400));
-            let read = page.requests().iter().any(|request| names(request, TANVIR));
-            assert_eq!(
-                read,
-                trigger == Trigger::PointerPredicted,
-                "{trigger:?}: heading for a row read it ahead: {read}"
-            );
-        }
-    })
-    .await
-    .expect("the prediction walk");
 }

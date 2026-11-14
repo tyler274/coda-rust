@@ -23,7 +23,6 @@ mod documents;
 mod feedback;
 mod icons;
 mod inputs;
-mod intent;
 mod live;
 mod motion;
 mod overlays;
@@ -57,7 +56,6 @@ pub use inputs::{
     Checkbox, Choice, Combobox, CompactField, DateField, DateKind, RadioGroup, Segmented, Select,
     TextField, TextKind,
 };
-pub use intent::use_pointer_intent;
 pub use live::{ListedRow, LiveRows, RowFrame, use_live_rows};
 pub use motion::Stylesheet;
 pub use overlays::{ContextMenu, Menu, MenuItem, MenuSection, Tooltip};
