@@ -6,6 +6,7 @@ mod m20261111_init;
 mod m20261111_response_feedback;
 mod m20261112_concerns;
 mod m20261112_practice_jobs_dispatch;
+mod m20261112_practice_schedule;
 pub(in crate::runtime) mod m20261112_source_pull_missing_candidates;
 mod m20261112_source_refresh;
 pub(in crate::runtime) mod m20261113_source_links_and_standing;
@@ -34,6 +35,7 @@ impl MigratorTrait for Migrator {
             Box::new(m20261112_concerns::Migration),
             Box::new(m20261112_practice_jobs_dispatch::Migration),
             Box::new(m20261112_source_refresh::Migration),
+            Box::new(m20261112_practice_schedule::Migration),
         ]
     }
 }

@@ -875,3 +875,113 @@ pub(super) mod source_refresh_receipt {
 
     impl ActiveModelBehavior for ActiveModel {}
 }
+
+/// Practice schedule source standing, `"as of"` timestamp, and partial/failed
+/// refresh diagnostics. Exclusive row lock on `(practice, source_id)` serializes
+/// schedule syncs for that source.
+pub(super) mod schedule_source {
+    use sea_orm::entity::prelude::*;
+
+    #[derive(Clone, Debug, PartialEq, Eq, DeriveEntityModel)]
+    #[sea_orm(table_name = "physician_runtime_schedule_sources")]
+    pub struct Model {
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub practice: String,
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub source_id: String,
+        #[sea_orm(column_type = "Text")]
+        pub source_label: String,
+        pub schedule_version: i64,
+        #[sea_orm(column_type = "Text")]
+        pub standing: String,
+        pub as_of: Option<i64>,
+        pub last_complete_as_of: Option<i64>,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub issues: Json,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub last_failure: Option<Json>,
+    }
+
+    #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
+    pub enum Relation {}
+
+    impl ActiveModelBehavior for ActiveModel {}
+}
+
+/// Seeded schedule patient links mapping `(practice, source_id, source_patient_id)`
+/// to an existing registered Coda `workspace`.
+pub(super) mod schedule_patient_link {
+    use sea_orm::entity::prelude::*;
+
+    #[derive(Clone, Debug, PartialEq, Eq, DeriveEntityModel)]
+    #[sea_orm(table_name = "physician_runtime_schedule_patient_links")]
+    pub struct Model {
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub practice: String,
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub source_id: String,
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub source_patient_id: String,
+        #[sea_orm(column_type = "Text")]
+        pub workspace: String,
+        pub seeded_at: i64,
+    }
+
+    #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
+    pub enum Relation {}
+
+    impl ActiveModelBehavior for ActiveModel {}
+}
+
+/// Saved practice schedule appointments, versioned per appointment and matched
+/// (or retained unmatched) against seeded schedule patient links.
+pub(super) mod schedule_appointment {
+    use super::super::schedule::AppointmentStatus;
+    use sea_orm::entity::prelude::*;
+
+    #[derive(Clone, Debug, PartialEq, Eq, DeriveEntityModel)]
+    #[sea_orm(table_name = "physician_runtime_appointments")]
+    pub struct Model {
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub practice: String,
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub source_id: String,
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub appointment_id: String,
+        pub saved_version: i64,
+        #[sea_orm(column_type = "Text")]
+        pub source_revision: String,
+        #[sea_orm(column_type = "Text")]
+        pub starts_at: String,
+        pub starts_at_unix: i64,
+        #[sea_orm(column_type = "Text")]
+        pub ends_at: String,
+        pub ends_at_unix: i64,
+        pub status: AppointmentStatus,
+        #[sea_orm(column_type = "Text")]
+        pub source_status: String,
+        #[sea_orm(column_type = "Text")]
+        pub label: String,
+        #[sea_orm(column_type = "Text")]
+        pub match_state: String,
+        #[sea_orm(column_type = "Text")]
+        pub workspace: Option<String>,
+        #[sea_orm(column_type = "Text")]
+        pub source_patient_id: Option<String>,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub dates: Json,
+        #[sea_orm(column_type = "Text")]
+        pub content: String,
+        #[sea_orm(column_type = "Text")]
+        pub sha256: String,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub provenance: Json,
+        pub as_of: i64,
+        pub updated_at: i64,
+    }
+
+    #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
+    pub enum Relation {}
+
+    impl ActiveModelBehavior for ActiveModel {}
+}
