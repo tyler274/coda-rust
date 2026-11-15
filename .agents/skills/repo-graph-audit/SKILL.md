@@ -178,5 +178,7 @@ filters, source links, pagination, clipping, and console errors, not just that
 the page opens.
 
 A later implementation request should consume the findings through existing
-owners. Preserve the original map's revision or explicitly update its evidence;
-never silently relabel a historical audit as current.
+owners. Use [codebase-cleanup-mapping](../codebase-cleanup-mapping/SKILL.md) to
+decide whether a proposed removal is safe. Preserve the original map's revision
+or explicitly update its evidence. Keep historical audits labeled with the
+revision they cover.
