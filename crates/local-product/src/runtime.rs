@@ -844,13 +844,37 @@ const IDLE_TIMEOUT: std::time::Duration = std::time::Duration::from_secs(60);
 impl Store {
     /// Opens the process's one pool, at most [`MAX_CONNECTIONS`]. Connects
     /// only; schema-owner credentials belong to the migration job.
+    ///
+    /// A connection the pool takes back is left outside any transaction,
+    /// whatever left it inside one. The pinned `sqlx` counts a transaction
+    /// only once the server answers its `BEGIN`, so a request dropped while
+    /// it waits for that answer returns its connection with the transaction
+    /// still open on the server and nothing to roll it back. On every
+    /// release the pool therefore begins a transaction and rolls it back:
+    /// on a clean connection the pair changes nothing; on a held one the
+    /// `BEGIN` joins the open transaction, with one server warning, and the
+    /// rollback ends it. If either fails, as in an aborted transaction, the
+    /// pool closes the connection, which ends what it held. The hook can go
+    /// when the pinned `sqlx` rolls back a cancelled `BEGIN` itself and
+    /// `tests/cancelled_read.rs` passes without it.
     pub async fn connect(url: &str) -> Result<Self, DbErr> {
         let mut options = sea_orm::ConnectOptions::new(url);
         options
             .max_connections(MAX_CONNECTIONS)
             .acquire_timeout(ACQUIRE_TIMEOUT)
             .idle_timeout(IDLE_TIMEOUT)
-            .sqlx_logging(false);
+            .sqlx_logging(false)
+            .map_sqlx_postgres_pool_opts(|pool| {
+                pool.after_release(|connection, _| {
+                    Box::pin(async move {
+                        sea_orm::sqlx::Connection::begin(connection)
+                            .await?
+                            .rollback()
+                            .await?;
+                        Ok(true)
+                    })
+                })
+            });
         Ok(Self::from_connection(Database::connect(options).await?))
     }
 

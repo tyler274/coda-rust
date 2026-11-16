@@ -527,7 +527,9 @@ Each process opens one Postgres pool,
 and every store in it reads through that pool: the runtime store, auth, the
 front door and `/readyz`. The pool holds at most
 `MAX_CONNECTIONS` = 3 connections, waits up to 10 s for one, and closes a
-connection idle for 60 s. Each process's long-lived `LISTEN` (the site's
+connection idle for 60 s. It keeps a returned connection only outside any
+transaction, so a request cancelled mid-transaction leaves nothing open for
+the next one. Each process's long-lived `LISTEN` (the site's
 authority feed, the worker's wakeups) holds one of those 3 while it runs, so
 two remain for requests and claims.
 
