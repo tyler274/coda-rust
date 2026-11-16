@@ -199,11 +199,6 @@ impl DuetClient {
         .map_err(|error| self.wire_error(error))
     }
 
-    /// Reads the For my doctor collection.
-    pub async fn doctor_collection(&self) -> Result<duet_wire::models::DoctorCollection, String> {
-        self.doctor_workspace().await.map_err(|e| e.to_string())
-    }
-
     /// Saves one medication the person typed. `id` is reused when the save fails.
     pub async fn add_medication(&self, id: uuid::Uuid, name: &str) -> Result<(), String> {
         let mut payload = std::collections::HashMap::new();
@@ -266,17 +261,6 @@ impl DuetClient {
         save: duet_wire::models::DoctorPageSave,
     ) -> Result<duet_wire::models::DoctorCollection, String> {
         self.save_doctor_workspace(&save)
-            .await
-            .map_err(|e| e.to_string())
-    }
-
-    /// Clears the approved page using the same privacy-event identity and generation on retry.
-    pub async fn clear_doctor_page(
-        &self,
-        operation_id: uuid::Uuid,
-        generation: i64,
-    ) -> Result<(), String> {
-        self.clear_doctor_workspace(operation_id, generation)
             .await
             .map_err(|e| e.to_string())
     }
