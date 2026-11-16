@@ -74,7 +74,7 @@ async fn handle(
     genai::record_input(&generation, &claim.accepted.input.instruction);
     let mut owner = RevisionOwner {
         store: worker.store.clone(),
-        authority: worker.model.authority(),
+        authority: WorkerAuthority::of(&worker.model),
         claim,
         usage: Tally::default(),
     };

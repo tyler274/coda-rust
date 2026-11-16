@@ -24,6 +24,7 @@ pub mod hosting;
 mod live;
 #[cfg(test)]
 mod live_tests;
+pub mod model;
 pub mod patients;
 pub mod rehearsal;
 mod reply;

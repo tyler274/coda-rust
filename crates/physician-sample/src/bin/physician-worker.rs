@@ -22,9 +22,7 @@ use axum::Router;
 use axum::extract::State;
 use axum::http::StatusCode;
 use axum::routing::get;
-use harness::engine::recipe::Provider;
 use harness::engine::{AttemptFailure, Cancellation, RunLimits};
-use harness::provider::ResponsesProvider;
 use local_product::runtime::delivery::{
     AttemptSettlement, Backoff, Delivery, DeliveryKind, DeliveryState,
 };
@@ -45,6 +43,7 @@ use physician_auth::PostgresAuthStore;
 use physician_bus::{Bus, Event};
 use physician_sample::durable::RuntimeAuthority;
 use physician_sample::hosting::{self, SimulationPractices, is_hosted};
+use physician_sample::model::{self, ModelSource, ModelTransport, configured};
 use serde_json::{Value, json};
 use telemetry::genai::{self, RunContext};
 use tokio::sync::watch;
@@ -243,7 +242,7 @@ async fn chat_attempt(
     let mut host = PhysicianHost {
         store: worker.store.clone(),
         claim,
-        authority: worker.model.authority(),
+        authority: WorkerAuthority::of(&worker.model),
         shown_steps: ShownSteps::new(notice),
     };
     let cancel = Cancellation::default();
@@ -715,66 +714,9 @@ impl Worker {
     async fn from_env(get: impl Fn(&str) -> Option<String>) -> Result<Self, hosting::StartupError> {
         let hosted = is_hosted(&get);
         let simulation_practices = SimulationPractices::from_env(&get)?;
-        let (transport, origin) = if let Some(port) =
-            configured(&get, "PHYSICIAN_RESPONSES_STUB_PORT")
-        {
-            if hosted {
-                return Err(
-                    "hosted physician worker requires the public Responses endpoint".into(),
-                );
-            }
-            let port: u16 = port
-                .parse()
-                .map_err(|_| "invalid local Responses stub port")?;
-            (
-                ModelTransport::Responses {
-                    endpoint: format!("http://127.0.0.1:{port}/responses"),
-                    key: "local-proof".to_owned(),
-                },
-                genai::Origin::Simulation,
-            )
-        } else {
-            match if hosted {
-                local_product::ModelExecution::Api
-            } else {
-                local_product::model_execution(
-                    configured(&get, "CODA_LOCAL_MODEL_EXECUTION").as_deref(),
-                )?
-            } {
-                local_product::ModelExecution::Subscription => {
-                    local_product::chatgpt::require_sign_in().map_err(|error| error.to_string())?;
-                    (ModelTransport::DeveloperPlan, genai::Origin::Real)
-                }
-                local_product::ModelExecution::Api => {
-                    let key = local_product::open_ai_api_key(
-                        configured(&get, "CODA_ALLOW_MODEL_CALLS").as_deref(),
-                        configured(&get, "OPENAI_API_KEY").as_deref(),
-                    )?;
-                    (
-                        ModelTransport::Responses {
-                            endpoint: harness::responses::ENDPOINT.to_owned(),
-                            key,
-                        },
-                        genai::Origin::Real,
-                    )
-                }
-                local_product::ModelExecution::Disabled => {
-                    return Err(
-                        "physician worker requires CODA_LOCAL_MODEL_EXECUTION=subscription or api"
-                            .into(),
-                    );
-                }
-            }
-        };
+        let (transport, origin) = ModelTransport::from_env(&get, hosted)?;
         let pace = Pace::from_env(&get, hosted).map_err(|error| error.to_string())?;
-        let owned = role_environment(&get);
-        let environment: Vec<_> = owned
-            .iter()
-            .map(|(key, value)| (key.as_str(), value.as_str()))
-            .collect();
-        let roles = local_product::model_roles(transport.adapter(), &environment)
-            .map_err(|error| error.to_string())?;
-        let model = ModelSource { transport, roles };
+        let model = ModelSource::from_env(transport, &get)?;
         let database = configured(&get, "PHYSICIAN_DATABASE_URL")
             .ok_or("PHYSICIAN_DATABASE_URL is required")?;
         // One pool per process: the auth store reads through the runtime's.
@@ -805,108 +747,21 @@ fn listen_addr(get: &impl Fn(&str) -> Option<String>) -> String {
     })
 }
 
-fn configured(get: &impl Fn(&str) -> Option<String>, key: &str) -> Option<String> {
-    get(key)
-        .map(|value| value.trim().to_owned())
-        .filter(|value| !value.is_empty())
-}
-
-fn role_environment(get: &impl Fn(&str) -> Option<String>) -> Vec<(String, String)> {
-    local_product::MODEL_SETTING_KEYS
-        .into_iter()
-        .filter_map(|key| configured(get, key).map(|value| (key.to_owned(), value)))
-        .collect()
-}
-
-/// Credentials stay in the worker; both choices run the same durable job.
-enum ModelTransport {
-    Responses { endpoint: String, key: String },
-    DeveloperPlan,
-}
-
-impl ModelTransport {
-    fn adapter(&self) -> &'static str {
-        match self {
-            Self::Responses { .. } => "openai-responses",
-            Self::DeveloperPlan => "chatgpt-plan",
-        }
-    }
-}
-
-/// Transport and model configuration shared by chat and reply revision.
-struct ModelSource {
-    transport: ModelTransport,
-    roles: local_product::ModelRoles,
-}
-
-impl ModelSource {
-    async fn provider(
-        &self,
-        quota: Arc<dyn harness::provider::QuotaGate>,
-    ) -> Result<ModelProvider, harness::engine::Cause> {
-        let provider = match &self.transport {
-            ModelTransport::Responses { endpoint, key } => {
-                ResponsesProvider::new(endpoint.clone(), key.clone(), quota.clone())?
-            }
-            ModelTransport::DeveloperPlan => {
-                let token = local_product::chatgpt::access_token().await?;
-                ResponsesProvider::chatgpt_plan(token, quota.clone())?
-            }
-        };
-        Ok(ModelProvider {
-            provider,
-            developer_plan: matches!(self.transport, ModelTransport::DeveloperPlan),
-            quota,
-        })
-    }
-
-    fn authority(&self) -> WorkerAuthority {
-        WorkerAuthority {
-            inner: RuntimeAuthority,
-            synthetic_only: match self.transport {
-                ModelTransport::DeveloperPlan => true,
-                ModelTransport::Responses { .. } => false,
-            },
-        }
-    }
-}
-
-/// The plan grant may refresh during a long durable run. Request execution and
-/// quota handling remain with the shared Responses provider.
-struct ModelProvider {
-    provider: ResponsesProvider,
-    developer_plan: bool,
-    quota: Arc<dyn harness::provider::QuotaGate>,
-}
-
-impl Provider for ModelProvider {
-    async fn ready(&mut self) -> Result<(), harness::engine::Cause> {
-        self.provider.ready().await
-    }
-
-    async fn exchange(
-        &mut self,
-        request: &harness::engine::recipe::Request,
-        cancel: &Cancellation,
-        limits: &RunLimits,
-        observer: &mut dyn harness::engine::recipe::Observer,
-    ) -> Result<harness::engine::Turn, harness::engine::Cause> {
-        tracing::Span::current().record("gen_ai.request.model", request.model.as_str());
-        if self.developer_plan {
-            let token = local_product::chatgpt::access_token().await?;
-            self.provider = ResponsesProvider::chatgpt_plan(token, self.quota.clone())?;
-        }
-        self.provider
-            .exchange(request, cancel, limits, observer)
-            .await
-    }
-}
-
 /// Developer-plan inference retains the synthetic-chart boundary of local
 /// practice. The same auth owner still fences chat and revision publication.
 struct WorkerAuthority {
     inner: RuntimeAuthority,
     synthetic_only: bool,
+}
+
+impl WorkerAuthority {
+    /// The worker's authority for runs `model`'s transport makes.
+    fn of(model: &ModelSource) -> Self {
+        Self {
+            inner: RuntimeAuthority,
+            synthetic_only: model.synthetic_only(),
+        }
+    }
 }
 
 #[local_product::runtime::async_trait]
@@ -940,20 +795,7 @@ impl WorkerAuthority {
         tx: &local_product::runtime::PublicationTransaction,
         scope: &Scope,
     ) -> Result<(), String> {
-        if !self.synthetic_only {
-            return Ok(());
-        }
-        let outside = Store::has_sources_outside_in(
-            tx,
-            &scope.workspace,
-            physician_sample::synthetic_chart::SOURCE_ID,
-        )
-        .await
-        .map_err(|e| e.to_string())?;
-        if outside {
-            return Err("Developer ChatGPT plans can read only the synthetic practice".into());
-        }
-        Ok(())
+        model::source_boundary(self.synthetic_only, tx, &scope.workspace).await
     }
 }
 
@@ -975,6 +817,9 @@ async fn shutdown() {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use harness::engine::recipe::Provider;
+    use harness::provider::ResponsesProvider;
+    use model::ModelProvider;
 
     /// A lease long enough that its renewal beat is slower than a stall check.
     const LEASE_SECONDS: i64 = 540;
@@ -1577,7 +1422,7 @@ mod tests {
 
         // A developer plan refuses the mixed workspace before the auth owner runs,
         // for the check and for publication.
-        let mut plan = model(ModelTransport::DeveloperPlan).authority();
+        let mut plan = WorkerAuthority::of(&model(ModelTransport::DeveloperPlan));
         // The check reads on the caller's transaction: on a pool of one, a
         // second connection taken while it is held would time out.
         let mut single = sea_orm::ConnectOptions::new(url.as_str());
@@ -1599,11 +1444,10 @@ mod tests {
         tx.rollback().await.unwrap();
 
         // A Responses key may read the same workspace.
-        let responses = model(ModelTransport::Responses {
+        let responses = WorkerAuthority::of(&model(ModelTransport::Responses {
             endpoint: "http://127.0.0.1:1/responses".into(),
             key: "synthetic-key".into(),
-        })
-        .authority();
+        }));
         let tx = db.begin().await.unwrap();
         responses
             .check_source_boundary(&tx, &scope(&mixed))

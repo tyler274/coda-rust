@@ -13,6 +13,8 @@ mod read_snapshot;
 mod reply_tests;
 #[path = "tests/responses.rs"]
 mod response_tests;
+#[path = "tests/rounds.rs"]
+mod rounds_tests;
 #[path = "tests/sources.rs"]
 mod source_tests;
 
@@ -2602,6 +2604,15 @@ fn calls<const N: usize>(calls: [(&str, &str, Value); N]) -> Turn {
                 })
             })
             .collect(),
+        usage: usage(10),
+        receipt: Value::Null,
+    }
+}
+
+/// A last message with no tool call.
+fn says(text: &str) -> Turn {
+    Turn {
+        items: vec![Item::assistant(text)],
         usage: usage(10),
         receipt: Value::Null,
     }

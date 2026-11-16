@@ -385,6 +385,8 @@ pub const START_NOTES_CHARACTERS: usize = 8_000;
 pub(super) enum StartOf {
     /// A conversation: a chat, or a reply and its revisions.
     Conversation,
+    /// A patient rounds run.
+    RoundsRun,
 }
 
 /// The patient memory a conversation or a rounds run starts with, each file
@@ -407,6 +409,7 @@ pub(super) fn at_start(
     }
     let started = match of {
         StartOf::Conversation => "This patient's memory as this conversation started.",
+        StartOf::RoundsRun => "This patient's memory as this run started.",
     };
     let mut parts = vec![format!(
         "{started} list_patient_memory lists every file, and read_patient_memory reads one."

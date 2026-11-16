@@ -6,7 +6,9 @@
 //! [`MemoryTool::execute`] runs a call from its arguments to its outcome for
 //! the run's authorized scope, [`saved_outcome`] answers for a note call
 //! after a restart, and `guidance!` is what both jobs tell the
-//! model about memory.
+//! model about memory. The reads alone are a [`ReadTool`]: they need only the
+//! patient's key, so patient rounds, which no physician starts, are offered
+//! them and the edit tool, and not the note.
 use harness::engine::{Invocation, Tool, ToolOutcome};
 use sea_orm::DbErr;
 use serde::Deserialize;
@@ -61,6 +63,13 @@ pub enum ReadTool {
 }
 
 impl ReadTool {
+    const ALL: [Self; 3] = [Self::List, Self::Read, Self::Search];
+
+    /// The read tool called `name`, if it is one.
+    pub fn named(name: &str) -> Option<Self> {
+        Self::ALL.into_iter().find(|tool| tool.name() == name)
+    }
+
     fn name(self) -> &'static str {
         match self {
             Self::List => "list_patient_memory",
@@ -189,6 +198,11 @@ impl MemoryTool {
 /// The memory tools, in the order they are offered.
 pub fn tools() -> [Tool; 5] {
     MemoryTool::ALL.map(MemoryTool::definition)
+}
+
+/// The memory reads alone, in the order they are offered.
+pub fn read_tools() -> [Tool; 3] {
+    ReadTool::ALL.map(ReadTool::definition)
 }
 
 /// An object schema in which every property is required and no other is

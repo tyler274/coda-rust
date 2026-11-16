@@ -248,6 +248,14 @@ in the file exactly, in one place, and changes only that text. An edit that cann
 is left out with its reason, and the others are saved as one new version. A log day is
 generated from its notes and the rounds marks on every read.
 
+Patient rounds are the regular pass that tidies the summary, the direction and the
+pages. `rounds::run` runs one patient's rounds on the background role with no physician
+present. It reads memory and the chart with the same read tools and writes with the
+same `edit_patient_memory`. A finished run saves a rounds mark. A run that
+stops early saves none, and what it wrote stays. Nothing schedules rounds: the
+`physician-rounds` command runs one patient once, and the code marks with `Infra seam:`
+what production must supply around a run.
+
 Memory loads once per conversation. Every request and fresh window of a chat, or of a
 reply and its revisions, opens with one developer message that `Store::memory_at_start`
 builds from the patient's memory as the conversation started: the summary up to 16,000

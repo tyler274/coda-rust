@@ -96,18 +96,21 @@ pub enum Job {
     Chat,
     /// A revision of a saved patient reply.
     ReplyRevision,
+    /// Patient rounds.
+    PatientRounds,
 }
 
 impl Job {
     /// Every Chords job. [`PhysicianSkills::load`] checks each one's start
     /// skills against the package.
-    const ALL: [Self; 2] = [Self::Chat, Self::ReplyRevision];
+    const ALL: [Self; 3] = [Self::Chat, Self::ReplyRevision, Self::PatientRounds];
 
     /// The skills this job loads at its start, as written beside its instructions.
     fn start_skills(self) -> &'static [&'static str] {
         match self {
             Self::Chat => START_SKILLS,
             Self::ReplyRevision => crate::runtime::reply::START_SKILLS,
+            Self::PatientRounds => crate::runtime::rounds::START_SKILLS,
         }
     }
 }
@@ -496,6 +499,73 @@ mod tests {
         assert!(!instructions.contains("Loaded skill:"));
     }
 
+    /// Patient rounds load patient-memory-upkeep: after the catalog comes one
+    /// section with the exact text skill_view returns for it, then the
+    /// working-notes guidance. Rounds are offered the skill tool, the result
+    /// page, the memory reads, the edit tool and the chart, and not the
+    /// note, the conversation reads or the chat's finish.
+    #[test]
+    fn rounds_recipe_loads_memory_upkeep_and_offers_exactly_its_tools() {
+        use crate::runtime::rounds;
+        let skills = skills();
+        let binding = crate::ModelBinding {
+            model: "fixture".into(),
+            effort: "high".into(),
+            context_window_tokens: 272_000,
+            max_input_tokens: 250_000,
+            adapter: "fixture".into(),
+        };
+        let recipe = rounds::recipe(&binding, &skills);
+        let ToolOutcome::Returned(opened) =
+            skills.execute(SKILL_VIEW, &json!({"name": "patient-memory-upkeep"}))
+        else {
+            panic!("skill_view does not open patient-memory-upkeep");
+        };
+        let opened: Value = serde_json::from_str(&opened).unwrap();
+        let catalog = format!(
+            "{}\n\n{}",
+            rounds::INSTRUCTIONS,
+            skills.package.catalog_instructions()
+        );
+        let after_catalog = recipe
+            .instructions
+            .strip_prefix(&catalog)
+            .expect("the catalog section follows the rounds instructions");
+        let section = format!(
+            "\n\nLoaded skill: patient-memory-upkeep\n{}",
+            opened["content"].as_str().unwrap()
+        );
+        assert!(
+            after_catalog.starts_with(&section),
+            "after the catalog: {after_catalog:.120}"
+        );
+        assert_eq!(recipe.instructions.matches("Loaded skill: ").count(), 1);
+        assert!(
+            after_catalog[section.len()..]
+                .starts_with("\n\nThis work can outlast one context window.")
+        );
+        let offered: Vec<&str> = recipe
+            .tools
+            .iter()
+            .map(|tool| tool["name"].as_str().unwrap())
+            .collect();
+        assert_eq!(
+            offered,
+            [
+                SKILL_VIEW,
+                harness::engine::results::READ,
+                "list_patient_memory",
+                "read_patient_memory",
+                "search_patient_memory",
+                "edit_patient_memory",
+                crate::physician_sources::SEARCH_TOOL,
+                crate::physician_sources::READ_TOOL,
+                "save_working_note",
+                "read_working_note",
+            ]
+        );
+    }
+
     /// A package without a skill some job loads at its start fails loading
     /// and names that skill, rather than giving a job a shorter prompt.
     #[test]
@@ -550,6 +620,7 @@ mod tests {
         for recipe in [
             recipe(&binding, INSTRUCTIONS, &skills),
             crate::runtime::reply::recipe(&binding, &skills),
+            crate::runtime::rounds::recipe(&binding, &skills),
         ] {
             assert_clean_model_text(&recipe.instructions);
             assert_clean_model_text(&serde_json::to_string(&recipe.tools).unwrap());
@@ -569,6 +640,7 @@ mod tests {
         for recipe in [
             recipe(&binding, INSTRUCTIONS, &skills),
             crate::runtime::reply::recipe(&binding, &skills),
+            crate::runtime::rounds::recipe(&binding, &skills),
         ] {
             assert_eq!(
                 recipe
@@ -630,6 +702,7 @@ mod tests {
     fn chords_skills_only_name_tools_some_chords_job_offers() {
         let mut offered = tools().iter().map(Tool::function).collect::<Vec<_>>();
         offered.extend(crate::runtime::reply::tools());
+        offered.extend(crate::runtime::rounds::tools().iter().map(Tool::function));
         assert_skill_tools(&serde_json::to_value(skills()).unwrap(), &offered, &[]);
     }
 }

@@ -1,5 +1,7 @@
 //! The patient memory tool that changes the summary, the direction, the
-//! person page and the subject pages, each a file of markdown text.
+//! person page and the subject pages, each a file of markdown text. Chat and
+//! reply revisions run it through [`MemoryTool`](super::tools::MemoryTool),
+//! and patient rounds run it beside the reads with their own patient key.
 //! Arguments parse once into an `EditRequest` of the store's own types; past
 //! the parse no code reads a wire field. The patient is always the run's,
 //! never an argument.

@@ -50,6 +50,9 @@ pub mod receipt;
 mod records;
 /// Hosted physician reply drafts and their revision work.
 pub mod reply;
+/// Patient rounds: the job that keeps a patient's pages, summary and
+/// direction.
+pub mod rounds;
 /// Durable source patient links, access state, and pull status.
 pub mod source_status;
 /// Versioned patient source observations: a stand-in source owner.
@@ -2000,6 +2003,31 @@ impl Store {
     }
 }
 
+impl Store {
+    /// Runs one chart search or read for `workspace` against its current
+    /// chart. A request the model can correct comes back refused. A job
+    /// whose reads carry labels gives its work's `labels`.
+    async fn chart_tool(
+        &self,
+        workspace: &str,
+        name: &str,
+        arguments: &Value,
+        labels: Option<&Labels>,
+    ) -> Result<ToolOutcome, engine::ProductError> {
+        let chart = match ChartRequest::parse(name, arguments, ChartScope::Chat) {
+            Ok(chart) => chart,
+            Err(reason) => return Ok(ToolOutcome::refused(reason.to_string())),
+        };
+        let observation = self.chart_observation(workspace, &chart).await?;
+        let (version, sources) = (observation.version, &observation.sources);
+        match labels {
+            Some(labels) => chart.run_labelled(workspace, version, sources, labels),
+            None => chart.run(workspace, version, sources),
+        }
+        .map_err(Into::into)
+    }
+}
+
 fn earlier_messages(start: usize) -> Option<Item> {
     (start > 0).then(engine::history::earlier_messages)
 }
@@ -2143,24 +2171,16 @@ impl<A: Authority, S: ShownStepSaved> Product for PhysicianHost<A, S> {
                 return Ok(ToolOutcome::History(page));
             }
             if matches!(call.name.as_str(), SEARCH_TOOL | READ_TOOL) {
-                let chart = match ChartRequest::parse(&call.name, &arguments, ChartScope::Chat) {
-                    Ok(chart) => chart,
-                    Err(reason) => {
-                        return Ok(ToolOutcome::refused(reason.to_string()));
-                    }
-                };
-                let workspace = &claim.scope.workspace;
-                let observation = store.chart_observation(workspace, &chart).await?;
                 // A chat's reads carry the work's labels.
                 let labels = Labels::of_work(&records);
-                return chart
-                    .run_labelled(
-                        workspace,
-                        observation.version,
-                        &observation.sources,
-                        &labels,
+                return store
+                    .chart_tool(
+                        &claim.scope.workspace,
+                        &call.name,
+                        &arguments,
+                        Some(&labels),
                     )
-                    .map_err(Into::into);
+                    .await;
             }
             let skills = store.frozen_skills(&claim.scope, &state.skills).await?;
             Ok(skills.execute(&call.name, &arguments))

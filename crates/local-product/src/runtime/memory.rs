@@ -4,12 +4,12 @@
 //!
 //! Every function reads or writes only one practice and patient, named by a
 //! [`PatientKey`] that an authorized [`Scope`] makes, or by that scope
-//! itself.
-//! A run adds notes through [`Store::append_note`];
+//! itself. Patient rounds, which no physician starts, have their own maker
+//! of a [`PatientKey`]. A run adds notes through [`Store::append_note`];
 //! [`Store::edit_memory`] is the one write of the summary, the direction,
 //! the person page and the subject pages, each of which is its markdown
-//! text.
-//! The memory tables are insert and
+//! text. A patient rounds run that finishes saves a rounds mark, and
+//! [`Store::last_rounds`] reads the newest. The memory tables are insert and
 //! select only, so a saved note never changes and every earlier version
 //! stays readable. A write applies to the file as it stands: writes for one
 //! patient take the patient's memory lock, so they apply one after the other
@@ -19,7 +19,9 @@
 //! with no I/O. The [`tools`] module holds the tools a chat run and a reply
 //! revision are offered: three reads, the note and the edit. Every request
 //! of a chat or a reply opens with the memory the conversation started
-//! with, which [`Store::memory_at_start`] builds.
+//! with, which [`Store::memory_at_start`] builds. The [`edit`] module holds
+//! the edit tool, which chat, reply revisions and patient rounds
+//! ([`super::rounds`]) all run.
 use std::collections::BTreeMap;
 use std::fmt;
 
@@ -55,11 +57,48 @@ impl StartMemory {
     }
 }
 
-/// One patient in one practice.
+/// What a patient rounds run starts with, from [`Store::rounds_start`].
+pub(super) struct RoundsStart {
+    /// The memory message, built as a conversation's is.
+    pub(super) memory: StartMemory,
+    /// The newest rounds mark saved before the run started; `None` when no
+    /// run had finished.
+    pub(super) last: Option<RoundsMark>,
+    /// Each log day with notes the memory message chose from, and how many,
+    /// oldest day first.
+    pub(super) new_notes: Vec<(Day, usize)>,
+}
+
+/// One patient in one practice. An authorized [`Scope`] makes one, and so
+/// does [`PatientKey::for_rounds`] for patient rounds, so no memory function
+/// takes a loose practice or workspace.
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 pub struct PatientKey {
     practice: String,
     workspace: String,
+}
+
+impl PatientKey {
+    /// The patient of a rounds run. No physician starts rounds, so no
+    /// signed-in scope can make this key. A blank practice or workspace is
+    /// an error.
+    ///
+    /// Infra seam: production must confirm the practice has this patient
+    /// before making it.
+    pub fn for_rounds(practice: &str, workspace: &str) -> Result<Self, DbErr> {
+        if practice.trim().is_empty() || workspace.trim().is_empty() {
+            return Err(error("empty rounds patient"));
+        }
+        Ok(Self {
+            practice: practice.to_owned(),
+            workspace: workspace.to_owned(),
+        })
+    }
+
+    /// The patient's workspace, whose chart a run reads.
+    pub(crate) fn workspace(&self) -> &str {
+        &self.workspace
+    }
 }
 
 impl TryFrom<&Scope> for PatientKey {
@@ -1032,6 +1071,57 @@ impl Store {
         let read = read_at_start(&tx, key, start).await?;
         tx.commit().await?;
         Ok(read.message(StartOf::Conversation))
+    }
+
+    /// What a patient rounds run starts with, as of `start`, read in one
+    /// snapshot: the memory message as a conversation's is built, and the
+    /// last rounds and the notes since, from the same read.
+    pub(super) async fn rounds_start(
+        &self,
+        key: &PatientKey,
+        start: DateTime<Utc>,
+    ) -> Result<RoundsStart, DbErr> {
+        let tx = self.snapshot().await?;
+        let read = read_at_start(&tx, key, start.timestamp()).await?;
+        tx.commit().await?;
+        Ok(RoundsStart {
+            memory: read.message(StartOf::RoundsRun),
+            last: read.last,
+            new_notes: read
+                .days
+                .iter()
+                .map(|(day, notes)| (*day, notes.len()))
+                .collect(),
+        })
+    }
+
+    /// Saves the rounds mark of a patient rounds run that finished: the run,
+    /// the time it was given as its start, and the store's clock now.
+    pub(super) async fn save_rounds_mark(
+        &self,
+        key: &PatientKey,
+        run: &str,
+        started: DateTime<Utc>,
+    ) -> Result<RoundsMark, DbErr> {
+        let tx = self.db.begin().await?;
+        let saved_at = now(&tx).await?;
+        let row = memory_rounds::ActiveModel {
+            practice: Set(key.practice.clone()),
+            workspace: Set(key.workspace.clone()),
+            run: Set(run.to_owned()),
+            started_at: Set(started.timestamp()),
+            saved_at: Set(saved_at),
+        }
+        .insert(&tx)
+        .await?;
+        tx.commit().await?;
+        stored_mark(row)
+    }
+
+    /// When patient rounds last finished for this patient: the newest rounds
+    /// mark, or `None` when no run has finished.
+    pub async fn last_rounds(&self, key: &PatientKey) -> Result<Option<RoundsMark>, DbErr> {
+        newest_mark(&self.db, patient_marks(key)).await
     }
 
     /// Searches the current text of every file that exists and every log
