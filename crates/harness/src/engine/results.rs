@@ -859,6 +859,7 @@ pub fn delivered_originals<'a>(
             EventKind::ToolReturned { .. }
             | EventKind::ProviderStarted { .. }
             | EventKind::ProviderObservation { .. }
+            | EventKind::CallBegan { .. }
             | EventKind::ProviderFailed { .. }
             | EventKind::TransportRetry { .. }
             | EventKind::ProviderReturned(_)
@@ -933,6 +934,7 @@ impl<'a> AcceptedRequests<'a> {
                 self.pending.remove(&key);
             }
             EventKind::ProviderObservation { .. }
+            | EventKind::CallBegan { .. }
             | EventKind::ToolStarted(_)
             | EventKind::ToolReturned { .. }
             | EventKind::Candidate { .. } => (),

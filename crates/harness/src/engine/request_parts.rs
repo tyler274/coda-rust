@@ -130,6 +130,7 @@ impl Parts {
                 return Ok(());
             }
             EventKind::ProviderObservation { .. }
+            | EventKind::CallBegan { .. }
             | EventKind::ProviderFailed { .. }
             | EventKind::TransportRetry { .. }
             | EventKind::ToolStarted(_)

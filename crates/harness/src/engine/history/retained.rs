@@ -105,6 +105,7 @@ pub(super) fn entries<'a>(
             }
             EventKind::ProviderStarted { .. }
             | EventKind::ProviderObservation { .. }
+            | EventKind::CallBegan { .. }
             | EventKind::ProviderFailed { .. }
             | EventKind::TransportRetry { .. }
             | EventKind::ProviderReturned(_)

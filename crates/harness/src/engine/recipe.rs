@@ -201,6 +201,7 @@ pub(crate) fn replay_events<'a>(
             | EventKind::ToolReturned { .. }
             | EventKind::ProviderStarted { .. }
             | EventKind::ProviderObservation { .. }
+            | EventKind::CallBegan { .. }
             | EventKind::ProviderFailed { .. }
             | EventKind::TransportRetry { .. }
             | EventKind::ProviderReturned(_)
@@ -333,6 +334,7 @@ pub(crate) fn recovery<'a>(
             | EventKind::ToolStarted(_)
             | EventKind::ToolReturned { .. }
             | EventKind::ProviderObservation { .. }
+            | EventKind::CallBegan { .. }
             | EventKind::Candidate { .. } => (),
         }
     }
@@ -357,6 +359,12 @@ pub enum StreamEvent {
     Text(crate::engine::TextDelta),
     /// Provider usage observation.
     Usage(Usage),
+    /// The provider announced a function call, named `name`, before its
+    /// arguments are complete. Its completed item stays the truth for the turn.
+    CallBegan {
+        /// The name the announced call gives.
+        name: String,
+    },
     /// Provider response identity observed before termination. Persist it for
     /// interrupted-call reconciliation; it is not a completion receipt.
     Receipt {
@@ -430,7 +438,8 @@ impl CallUsage {
                 self.usage.merge(&turn.usage);
                 self.returned_output = context::estimate_items(&turn.items);
             }
-            EventKind::ProviderFailed { .. }
+            EventKind::CallBegan { .. }
+            | EventKind::ProviderFailed { .. }
             | EventKind::TransportRetry { .. }
             | EventKind::ToolStarted(_)
             | EventKind::ToolReturned { .. }
@@ -489,7 +498,8 @@ impl Progress {
                 | EventKind::ProviderObservation { .. }
                 | EventKind::ProviderReturned(_)
                 | EventKind::TransportRetry { .. } => (),
-                EventKind::ProviderFailed { .. }
+                EventKind::CallBegan { .. }
+                | EventKind::ProviderFailed { .. }
                 | EventKind::ToolStarted(_)
                 | EventKind::ToolReturned { .. }
                 | EventKind::ProviderBlocked { .. }

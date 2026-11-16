@@ -1480,6 +1480,7 @@ impl Store {
                 engine::EventKind::ProviderStarted { .. } => Some(None),
                 engine::EventKind::ProviderReturned(retained) => Some(Some(retained)),
                 engine::EventKind::ProviderObservation { .. }
+                | engine::EventKind::CallBegan { .. }
                 | engine::EventKind::ProviderFailed { .. }
                 | engine::EventKind::TransportRetry { .. }
                 | engine::EventKind::ToolStarted(_)

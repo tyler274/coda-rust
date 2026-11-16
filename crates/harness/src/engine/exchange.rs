@@ -117,6 +117,7 @@ pub(super) async fn dispatch<P: Provider + ?Sized>(
                             call.usage.merge(&reported);
                             EventKind::ProviderObservation { usage: call.usage.clone(), receipt: receipt.clone() }
                         }
+                        StreamEvent::CallBegan { name } => EventKind::CallBegan { name },
                         StreamEvent::Text(delta) => {
                             if presentation.is_some() {
                                 drop(ack);

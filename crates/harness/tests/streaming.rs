@@ -220,6 +220,78 @@ async fn failed_terminal_retains_reported_usage_and_provider_identity() {
     }
 }
 
+/// A call the provider announces is saved as begun, with its name, while its
+/// request is still under way: after the request starts and before it ends,
+/// here cut off before the call completed. An item announced that is not a
+/// call begins nothing.
+#[tokio::test]
+async fn an_announced_call_is_saved_as_begun_before_its_request_ends() {
+    let frames = [
+        json!({"type":"response.created","response":{"id":"r-begun"}}),
+        json!({"type":"response.output_item.added","output_index":0,"item":{"type":"reasoning","id":"rs","summary":[]}}),
+        json!({"type":"response.output_item.done","output_index":0,"item":{"type":"reasoning","id":"rs","summary":[]}}),
+        json!({"type":"response.output_item.added","output_index":1,"item":{"type":"function_call","id":"fc","call_id":"c","name":"finish_answer","arguments":"","status":"in_progress"}}),
+        json!({"type":"response.function_call_arguments.delta","output_index":1,"item_id":"fc","delta":"{\"answer\":"}),
+        json!({"type":"response.incomplete","response":{"id":"r-begun","status":"incomplete"}}),
+    ];
+    let frames = frames
+        .into_iter()
+        .enumerate()
+        .map(|(index, mut value)| {
+            value["sequence_number"] = json!(index);
+            event(value)
+        })
+        .collect();
+    let mut provider = ResponsesProvider::new(
+        server(frames, None).await,
+        "synthetic".into(),
+        std::sync::Arc::new(quota::Gate::default()),
+    )
+    .unwrap();
+    let mut owner = TestProduct::default();
+    let ended = recover::work(request().freeze().unwrap(), "test", &[], 0)
+        .unwrap()
+        .run(
+            &mut provider,
+            &mut owner,
+            RunLimits::default(),
+            &Cancellation::default(),
+        )
+        .await;
+    assert!(ended.is_err());
+    // The server answers only the first request; later requests fail.
+    let kinds: Vec<&EventKind> = owner
+        .0
+        .iter()
+        .filter(|event| event.ordinal == 1)
+        .map(|event| &event.kind)
+        .collect();
+    let began: Vec<usize> = kinds
+        .iter()
+        .enumerate()
+        .filter(|(_, kind)| matches!(kind, EventKind::CallBegan { .. }))
+        .map(|(index, _)| index)
+        .collect();
+    assert!(
+        matches!(&began[..], [at] if matches!(kinds[*at], EventKind::CallBegan { name } if name == "finish_answer")),
+        "{kinds:?}"
+    );
+    let started = kinds
+        .iter()
+        .position(|kind| matches!(kind, EventKind::ProviderStarted { .. }));
+    let ended = kinds.iter().position(|kind| {
+        matches!(
+            kind,
+            EventKind::ProviderFailed { .. } | EventKind::TransportRetry { .. }
+        )
+    });
+    assert!(
+        started.is_some_and(|started| started < began[0])
+            && ended.is_some_and(|ended| began[0] < ended),
+        "{kinds:?}"
+    );
+}
+
 #[tokio::test]
 async fn presentation_rejection_cannot_discard_late_usage_or_publish() {
     struct Late;
@@ -901,10 +973,18 @@ async fn partial_usage_snapshots_merge_per_field_for_success_and_interruption() 
     }
 }
 
+/// What the observer received while a fixture replayed: each text piece, and
+/// the name of each call the provider announced as begun.
+#[derive(Default)]
+struct Observed {
+    pieces: Vec<String>,
+    began: Vec<String>,
+}
+
 /// Replays a scrubbed real provider stream from `fixtures/provider-streams`
-/// over local HTTP. Returns the finished turn, the text pieces the observer
-/// received, and the fixture's events.
-async fn replay(fixture: &str) -> (Turn, Vec<String>, Vec<Value>) {
+/// over local HTTP. Returns the finished turn, what the observer received, and
+/// the fixture's events.
+async fn replay(fixture: &str) -> (Turn, Observed, Vec<Value>) {
     // One frame's data payload per line; `#` lines are the fixture's header.
     let payloads: Vec<&str> = fixture
         .lines()
@@ -925,22 +1005,24 @@ async fn replay(fixture: &str) -> (Turn, Vec<String>, Vec<Value>) {
         std::sync::Arc::new(quota::Gate::default()),
     )
     .unwrap();
-    let mut pieces = vec![];
+    let mut observed = Observed::default();
     let turn = provider
         .exchange(
             &request(),
             &Cancellation::default(),
             &RunLimits::default(),
             &mut |event| {
-                if let StreamEvent::Text(delta) = event {
-                    pieces.push(delta.text);
+                match event {
+                    StreamEvent::Text(delta) => observed.pieces.push(delta.text),
+                    StreamEvent::CallBegan { name } => observed.began.push(name),
+                    StreamEvent::Usage(_) | StreamEvent::Receipt { .. } => {}
                 }
                 Ok(())
             },
         )
         .await
         .unwrap();
-    (turn, pieces, events)
+    (turn, observed, events)
 }
 fn of_type<'a>(events: &'a [Value], kind: &'a str) -> impl Iterator<Item = &'a Value> {
     events.iter().filter(move |event| event["type"] == kind)
@@ -1000,7 +1082,7 @@ fn assert_holds(events: &[Value], kinds: &[&str], keys: &[&str]) {
 
 #[tokio::test]
 async fn captured_call_with_argument_deltas_yields_the_completed_call() {
-    let (turn, pieces, events) = replay(include_str!(
+    let (turn, observed, events) = replay(include_str!(
         "fixtures/provider-streams/call-with-argument-deltas.txt"
     ))
     .await;
@@ -1017,13 +1099,15 @@ async fn captured_call_with_argument_deltas_yields_the_completed_call() {
     let expected = completed_items(&events);
     assert!(matches!(&expected[..], [engine::Item::Call(call)] if call.name == "skill_view"));
     assert_eq!(turn.items, expected);
-    assert!(pieces.is_empty());
+    assert!(observed.pieces.is_empty());
+    // The call is announced before its arguments arrive, and begins once.
+    assert_eq!(observed.began, ["skill_view"]);
     assert_eq!(turn.usage, completed_usage(&events));
 }
 
 #[tokio::test]
 async fn captured_calls_without_argument_deltas_yield_the_completed_calls() {
-    let (turn, _, events) = replay(include_str!(
+    let (turn, observed, events) = replay(include_str!(
         "fixtures/provider-streams/reasoning-then-calls-without-argument-deltas.txt"
     ))
     .await;
@@ -1049,12 +1133,23 @@ async fn captured_calls_without_argument_deltas_yield_the_completed_calls() {
             && calls.iter().all(|item| matches!(item, engine::Item::Call(_)))
     ));
     assert_eq!(turn.items, expected);
+    // Each announced call begins once, in the order announced; the reasoning
+    // item begins no call.
+    assert_eq!(
+        observed.began,
+        [
+            "search_patient_information",
+            "search_patient_information",
+            "search_patient_information",
+            "read_patient_sources"
+        ]
+    );
     assert_eq!(turn.usage, completed_usage(&events));
 }
 
 #[tokio::test]
 async fn captured_text_answer_is_the_completed_message_not_the_joined_deltas() {
-    let (turn, pieces, events) = replay(include_str!(
+    let (turn, observed, events) = replay(include_str!(
         "fixtures/provider-streams/text-answer-trimmed.txt"
     ))
     .await;
@@ -1077,7 +1172,8 @@ async fn captured_text_answer_is_the_completed_message_not_the_joined_deltas() {
     let deltas: Vec<&str> = of_type(&events, "response.output_text.delta")
         .map(|event| event["delta"].as_str().unwrap())
         .collect();
-    assert_eq!(pieces, deltas);
+    assert_eq!(observed.pieces, deltas);
+    assert!(observed.began.is_empty());
     // The fixture keeps only the first and last deltas, so they no longer
     // join to the completed text.
     let expected = completed_items(&events);

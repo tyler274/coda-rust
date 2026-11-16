@@ -110,6 +110,7 @@ pub fn pending_input_ids<'a>(
                 Some(context.carried_inputs.iter().map(String::as_str))
             }
             EventKind::ProviderObservation { .. }
+            | EventKind::CallBegan { .. }
             | EventKind::ProviderFailed { .. }
             | EventKind::TransportRetry { .. }
             | EventKind::ProviderReturned(_)

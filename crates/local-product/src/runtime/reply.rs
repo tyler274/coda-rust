@@ -481,6 +481,7 @@ pub fn messages<'a>(
                 EventKind::ProviderReturned(response) => revised_text(response).ok(),
                 EventKind::ProviderStarted { .. }
                 | EventKind::ProviderObservation { .. }
+                | EventKind::CallBegan { .. }
                 | EventKind::ProviderFailed { .. }
                 | EventKind::TransportRetry { .. }
                 | EventKind::ToolStarted(_)
@@ -1467,6 +1468,7 @@ impl Store {
                 EventKind::ProviderStarted { .. } => Some(None),
                 EventKind::ProviderReturned(turn) => Some(Some(turn)),
                 EventKind::ProviderObservation { .. }
+                | EventKind::CallBegan { .. }
                 | EventKind::ProviderFailed { .. }
                 | EventKind::TransportRetry { .. }
                 | EventKind::ToolStarted(_)

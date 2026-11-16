@@ -160,6 +160,7 @@ fn event_name(kind: &EventKind) -> &'static str {
         EventKind::ToolStarted(_) => "tool_start",
         EventKind::ToolReturned { .. } => "tool_return",
         EventKind::ProviderObservation { .. } => "observation",
+        EventKind::CallBegan { .. } => "call_began",
         EventKind::Candidate { .. } => "candidate",
         EventKind::WindowOpened { .. } => "window_opened",
     }

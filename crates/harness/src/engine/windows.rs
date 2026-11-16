@@ -206,6 +206,7 @@ pub(crate) fn saved_notes(events: &[&Event]) -> Vec<Handoff> {
                     EventKind::ToolStarted(_)
                     | EventKind::ProviderStarted { .. }
                     | EventKind::ProviderObservation { .. }
+                    | EventKind::CallBegan { .. }
                     | EventKind::ProviderFailed { .. }
                     | EventKind::TransportRetry { .. }
                     | EventKind::ProviderReturned(_)

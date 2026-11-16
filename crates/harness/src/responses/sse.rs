@@ -231,7 +231,7 @@ impl Stream {
         };
         match kind {
             "response.created" => self.created(&event, sink).await,
-            "response.output_item.added" => self.added(&event),
+            "response.output_item.added" => self.added(&event, sink).await,
             "response.output_item.done" => self.done(&event),
             "response.output_text.delta" => self.text(&event, sink).await,
             "response.completed" => self.completed(&event, sink).await,
@@ -260,7 +260,11 @@ impl Stream {
             .map_err(Failure::Host)
     }
 
-    fn added(&mut self, event: &Value) -> Result<(), Failure> {
+    /// An announced item holds its output position. An announced call also
+    /// goes to the observer as begun, with its name: the model has started it
+    /// and its arguments are still to come. An announced call with no name or
+    /// an empty one, and an item that only completes, announce nothing.
+    async fn added(&mut self, event: &Value, sink: &mut dyn Observer) -> Result<(), Failure> {
         let item = &event["item"];
         if !used(item) {
             return Ok(());
@@ -273,7 +277,21 @@ impl Stream {
             return Err(protocol("output index already holds an item"));
         }
         output.added = Some(item.clone());
-        Ok(())
+        if item.get("type").and_then(Value::as_str) != Some("function_call") {
+            return Ok(());
+        }
+        let Some(name) = item
+            .get("name")
+            .and_then(Value::as_str)
+            .filter(|name| !name.is_empty())
+        else {
+            return Ok(());
+        };
+        sink.emit(StreamEvent::CallBegan {
+            name: name.to_owned(),
+        })
+        .await
+        .map_err(Failure::Host)
     }
 
     /// The completed item is the truth for the turn. It may arrive without an
@@ -704,6 +722,100 @@ mod tests {
                 "announced: {announced}"
             );
         }
+    }
+
+    /// The names of the calls the observer heard begin while `events` streamed, and the turn.
+    async fn began(events: &[Value]) -> (Result<Turn, Failure>, Vec<String>) {
+        let mut names = Vec::new();
+        let result = {
+            let mut sink = |event: StreamEvent| -> Result<(), Cause> {
+                if let StreamEvent::CallBegan { name } = event {
+                    names.push(name);
+                }
+                Ok(())
+            };
+            let mut stream = Stream::new(Authorization::ChatGptPlan);
+            async {
+                for payload in payloads(events) {
+                    let frame = Frame {
+                        event: None,
+                        data: payload,
+                    };
+                    stream.accept(frame, &mut sink).await?;
+                }
+                stream.finish()
+            }
+            .await
+        };
+        (result, names)
+    }
+
+    /// Each function call the provider announces begins once, by its name, when it is announced,
+    /// before its arguments arrive. A call that arrives only completed begins nothing, nor does an
+    /// announced call with no name, nor an announced message or reasoning item. The completed
+    /// items stay the turn.
+    #[tokio::test]
+    async fn each_announced_call_begins_once_and_a_completed_item_announces_nothing() {
+        let pending = |id: &str, call_id: &str, name: &str| json!({"type":"function_call","id":id,"call_id":call_id,"name":name,"arguments":"","status":"in_progress"});
+        let reasoning = json!({"type":"reasoning","id":"rs","summary":[]});
+        let events = numbered(vec![
+            created(),
+            added(0, reasoning.clone()),
+            done(0, reasoning.clone()),
+            added(
+                1,
+                json!({"type":"message","id":"m","role":"assistant","content":[]}),
+            ),
+            done(1, message("Reading.")),
+            added(2, pending("f", "c", "search")),
+            json!({"type":"response.function_call_arguments.delta","output_index":2,"item_id":"f","delta":"{}"}),
+            done(2, call("f", "c", "search")),
+            done(3, call("g", "d", "read")),
+            added(4, pending("h", "e", "finish")),
+            done(4, call("h", "e", "finish")),
+            added(
+                5,
+                json!({"type":"function_call","id":"k","call_id":"n","arguments":"","status":"in_progress"}),
+            ),
+            done(5, call("k", "n", "save")),
+            added(6, pending("p", "q", "")),
+            done(6, call("p", "q", "write")),
+            completed(),
+        ]);
+        let (result, names) = began(&events).await;
+        assert_eq!(names, ["search", "finish"]);
+        assert_eq!(
+            result.unwrap().items,
+            vec![
+                Item::Opaque(reasoning),
+                Item::Message {
+                    role: "assistant".into(),
+                    text: "Reading.".into()
+                },
+                invocation("c", "search"),
+                invocation("d", "read"),
+                invocation("e", "finish"),
+                invocation("n", "save"),
+                invocation("q", "write"),
+            ]
+        );
+    }
+
+    /// A call announced in a stream that then fails began all the same: the observer heard it
+    /// while the stream ran.
+    #[tokio::test]
+    async fn a_call_announced_before_the_stream_fails_has_begun() {
+        let events = numbered(vec![
+            created(),
+            added(
+                0,
+                json!({"type":"function_call","id":"f","call_id":"c","name":"finish","arguments":"","status":"in_progress"}),
+            ),
+            json!({"type":"response.failed","response":{"id":"r","status":"failed"}}),
+        ]);
+        let (result, names) = began(&events).await;
+        assert!(result.is_err());
+        assert_eq!(names, ["finish"]);
     }
 
     #[tokio::test]

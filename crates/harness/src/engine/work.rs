@@ -211,6 +211,7 @@ impl ToolFailures {
                 }
                 EventKind::ProviderStarted { .. }
                 | EventKind::ProviderObservation { .. }
+                | EventKind::CallBegan { .. }
                 | EventKind::ProviderFailed { .. }
                 | EventKind::TransportRetry { .. }
                 | EventKind::ProviderBlocked { .. }

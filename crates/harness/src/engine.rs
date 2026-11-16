@@ -546,6 +546,13 @@ pub enum EventKind {
         /// Cumulative token counts available at this observation.
         usage: recipe::Usage,
     },
+    /// The provider announced a call of this request, named `name`, before
+    /// its arguments were complete. It is not the call: the returned turn holds
+    /// the calls the run makes.
+    CallBegan {
+        /// The name the announced call gives.
+        name: String,
+    },
     /// Transport failed after dispatch. Later receipts still belong to the same request.
     ProviderFailed {
         /// Failure reported by the transport.
@@ -598,6 +605,7 @@ impl EventKind {
     pub fn survives_loss_of_currency(&self) -> bool {
         match self {
             Self::ProviderObservation { .. }
+            | Self::CallBegan { .. }
             | Self::ProviderReturned(_)
             | Self::ProviderFailed { .. }
             | Self::TransportRetry { .. }
