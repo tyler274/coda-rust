@@ -6,6 +6,11 @@
 //! and is not sent again, and the fifth failure ends the turn as failed so
 //! nothing starts it again. A worker whose listener is gone still finds
 //! accepted work by polling. Concurrent turns on one worker run side by side.
+//! A chat run's memory tools save notes under the run's own scope, and so
+//! do a reply revision's, each with the quote the model gave. Every request
+//! of a chat opens with the memory the chat started with, the next chat for
+//! the same patient starts with those notes, and a recovered run sends the
+//! memory its first attempt sent.
 
 use std::time::{Duration, Instant};
 
@@ -142,17 +147,31 @@ async fn accept_as(
     origin: Option<TraceContext>,
 ) -> (Scope, Delivery) {
     let (scope, session) = signed_in(url, practice).await;
+    let delivery = accept_signed_in(store, &scope, &session, text, skills, scenario, origin).await;
+    (scope, delivery)
+}
+
+/// Accepts one turn in `scope` from the physician signed in as `session`.
+async fn accept_signed_in(
+    store: &Store,
+    scope: &Scope,
+    session: &str,
+    text: &str,
+    skills: &PhysicianSkills,
+    scenario: Option<&str>,
+    origin: Option<TraceContext>,
+) -> Delivery {
     let key = format!("input-{}", uuid::Uuid::new_v4().simple());
     store
         .accept_authorized(
-            &scope,
+            scope,
             &Input {
                 key: key.clone(),
                 text: text.into(),
                 timezone: "America/New_York".into(),
                 scenario: scenario.map(str::to_owned),
             },
-            PostgresAuthStore::session_reference(&session),
+            PostgresAuthStore::session_reference(session),
             skills,
             &local_product::physician_chat::recipe(
                 &support::models::roles().chat,
@@ -163,7 +182,7 @@ async fn accept_as(
         )
         .await
         .expect("accept");
-    (scope.clone(), Delivery::chat_turn(scope, key))
+    Delivery::chat_turn(scope.clone(), key)
 }
 
 /// A new physician in `practice` (a new one when `None`), signed in and
@@ -1570,11 +1589,16 @@ fn copied_skills(home: &std::path::Path) -> std::path::PathBuf {
 
 /// Each saved receipt: its original output, or the reason of its refusal.
 fn tool_returned(state: &Conversation) -> Vec<(String, String, bool)> {
+    receipts(state.attempts.iter().flat_map(|attempt| &attempt.events))
+}
+
+/// Each receipt among `events`: its original output, or the reason of its
+/// refusal.
+fn receipts<'a>(
+    events: impl Iterator<Item = &'a harness::engine::Event>,
+) -> Vec<(String, String, bool)> {
     use harness::engine::results::ToolResult;
-    state
-        .attempts
-        .iter()
-        .flat_map(|attempt| &attempt.events)
+    events
         .filter_map(|event| match &event.kind {
             harness::engine::EventKind::ToolReturned {
                 call_id,
@@ -1773,6 +1797,666 @@ async fn skill_reads_run_through_the_worker_and_only_the_answer_is_published() {
     }
     drop(running);
     let _ = std::fs::remove_dir_all(&staging);
+}
+
+/// The real worker binary, its host and Postgres, with a scripted provider:
+/// round one adds a note quoting the physician's message, adds a note whose
+/// quote the message does not hold and whose chart record the chart does not
+/// hold, and lists memory; round two searches for a word of the first note
+/// and reads the patient's summary. The notes are saved under the run's scope
+/// with the work and call as their identity, each keeps its quote as given,
+/// and each saved result says what the store holds. A second chat about the
+/// patient starts with those notes.
+#[tokio::test]
+async fn memory_tools_run_through_the_worker_and_notes_keep_their_quotes() {
+    use local_product::runtime::memory::{MemoryPath, OneLine, PatientKey};
+    let _guard = lock().lock().await;
+    let message = "Please stop the lisinopril and call her Friday.";
+    let summary = "Patient with stage 3 chronic kidney disease.";
+    let kept = serde_json::json!({"text": "Physician stopped lisinopril for the cough.", "quote": "stop the lisinopril"});
+    let reworded = serde_json::json!({"text": "Recheck potassium in May.", "quote": "recheck potassium in May"});
+    let rounds = serde_json::json!([
+        [
+            {"name": "add_patient_memory_note", "arguments": kept},
+            {"name": "add_patient_memory_note", "arguments": reworded},
+            {"name": "list_patient_memory", "arguments": {}}
+        ],
+        [
+            {"name": "search_patient_memory", "arguments": {"query": "lisinopril"}},
+            {"name": "read_patient_memory", "arguments": {"path": "summary.md", "version": null}}
+        ]
+    ])
+    .to_string();
+    let Some(running) = running_with("memory", None, None, &rounds, support::FIXED_TEXT, &[]).await
+    else {
+        return;
+    };
+    let skills = PhysicianSkills::configured(None, false).unwrap();
+    let (scope, session) = signed_in(&running.database.url, None).await;
+    let key = PatientKey::try_from(&scope).unwrap();
+    running
+        .store
+        .edit_memory(
+            &key,
+            &local_product::runtime::memory::VersionedFile::Summary,
+            &[Ok(local_product::runtime::memory::Edit::Create {
+                text: local_product::runtime::memory::Words::parse(summary).unwrap(),
+            })],
+        )
+        .await
+        .unwrap();
+    // The chat starts in a later clock second than the summary's save.
+    tokio::time::sleep(Duration::from_secs(1)).await;
+    accept_signed_in(
+        &running.store,
+        &scope,
+        &session,
+        message,
+        &skills,
+        None,
+        None,
+    )
+    .await;
+    let state = wait_assistant(&running.store, &scope, &running.worker).await;
+    assert_eq!(state.status, WorkStatus::Completed);
+    assert_eq!(assistant_texts(&state), [support::FIXED_TEXT]);
+
+    // Durable readback through a fresh connection.
+    let store = Store::connect(&running.database.url)
+        .await
+        .expect("fresh store");
+    let saved = store
+        .read(&scope)
+        .await
+        .expect("read")
+        .expect("conversation");
+    let recipe = store
+        .frozen_binding(&scope, saved.bindings.get(&saved.work).unwrap())
+        .await
+        .unwrap();
+    let requests: Vec<_> = saved.attempts[0]
+        .events
+        .iter()
+        .filter_map(|event| match &event.kind {
+            harness::engine::EventKind::ProviderStarted {
+                request: context, ..
+            } => Some(
+                recipe.request(
+                    context
+                        .restore(&saved.attempts[0].events, &saved.message_sources())
+                        .unwrap()
+                        .expect("saved request sources remain available"),
+                ),
+            ),
+            _ => None,
+        })
+        .collect();
+    assert_eq!(requests.len(), 3, "two tool rounds and one answer");
+    let offered = local_product::physician_chat::recipe(
+        &support::models::roles().chat,
+        local_product::physician_chat::INSTRUCTIONS,
+        &PhysicianSkills::configured(None, false).unwrap(),
+    )
+    .tools;
+    for name in [
+        "list_patient_memory",
+        "read_patient_memory",
+        "search_patient_memory",
+        "add_patient_memory_note",
+        "edit_patient_memory",
+    ] {
+        assert!(offered.iter().any(|tool| tool["name"] == name), "{name}");
+    }
+    for context in &requests {
+        assert_eq!(context.tools, offered);
+    }
+
+    // The notes the worker saved, each by the run's work and its call; the
+    // readback adds nothing.
+    let physician_message = saved.messages[0].source();
+    let note = |call: &'static str| {
+        let (store, key, work) = (store.clone(), key.clone(), saved.work.clone());
+        async move {
+            store
+                .saved_note(&key, &work, call)
+                .await
+                .unwrap()
+                .unwrap_or_else(|| panic!("the worker saved the note of {call}"))
+        }
+    };
+    let first = note("fixed-1-0").await;
+    let second = note("fixed-1-1").await;
+    assert_eq!(first.text, kept["text"].as_str().unwrap());
+    assert_eq!(second.text, reworded["text"].as_str().unwrap());
+    for saved_note in [&first, &second] {
+        assert_eq!(saved_note.physician, scope.physician);
+        assert_eq!(saved_note.chat, scope.chat);
+        assert_eq!(saved_note.message, physician_message.id);
+    }
+    assert_eq!(
+        first.physician_words.as_ref().map(OneLine::as_str),
+        Some("stop the lisinopril")
+    );
+    assert_eq!(
+        second.physician_words.as_ref().map(OneLine::as_str),
+        Some("recheck potassium in May")
+    );
+    let day = first.time.format("%Y-%m-%d").to_string();
+    let log = format!("log/{day}.md");
+    let listing = store.list_memory(&key).await.unwrap();
+    assert_eq!(
+        listing
+            .log_days
+            .iter()
+            .map(ToString::to_string)
+            .collect::<Vec<_>>(),
+        [day]
+    );
+    let path = MemoryPath::parse(&log).unwrap();
+    let markdown = match store.read_memory(&key, &path, None).await.unwrap() {
+        local_product::runtime::memory::FileRead::Log { markdown } => markdown,
+        other => panic!("a log day has no versions: {other:?}"),
+    };
+    for number in [&first.number, &second.number] {
+        assert_eq!(
+            markdown
+                .matches(&format!("note {number}, physician {}\n", scope.physician))
+                .count(),
+            1,
+            "{markdown}"
+        );
+    }
+    assert_eq!(markdown.matches("Quoted:").count(), 2, "{markdown}");
+
+    // Each saved result says what the store holds.
+    let returned = tool_returned(&saved);
+    assert_eq!(returned.len(), 5);
+    let output = |id: &str| -> serde_json::Value {
+        let (_, output, executed) = returned
+            .iter()
+            .find(|(call, ..)| call == id)
+            .unwrap_or_else(|| panic!("no result for {id}"));
+        assert!(executed, "{id} was refused: {output}");
+        serde_json::from_str(output).unwrap()
+    };
+    assert_eq!(
+        output("fixed-1-0"),
+        serde_json::json!({"note": first.number.to_string(), "path": log})
+    );
+    assert_eq!(
+        output("fixed-1-1"),
+        serde_json::json!({"note": second.number.to_string(), "path": log})
+    );
+    assert_eq!(
+        output("fixed-1-2"),
+        serde_json::json!({"summary": {"path": "summary.md", "version": 1, "characters": summary.chars().count()}, "direction": null, "person": null, "pages": [], "log": [log]})
+    );
+    let hits: Vec<_> = store
+        .search_memory(&key, "lisinopril")
+        .await
+        .unwrap()
+        .into_iter()
+        .map(|hit| serde_json::json!({"path": hit.path.to_string(), "line": hit.line, "text": hit.text}))
+        .collect();
+    assert_eq!(hits.len(), 2, "the note's words and its text: {hits:?}");
+    assert_eq!(output("fixed-2-0"), serde_json::json!({"results": hits}));
+    assert_eq!(
+        output("fixed-2-1"),
+        serde_json::json!({"path": "summary.md", "version": 1, "markdown": summary})
+    );
+
+    // The run started with the summary and no note. A second chat about the
+    // same patient, started in a later clock second, opens with the summary
+    // and both notes the first run added.
+    let notes = [
+        kept["text"].as_str().unwrap(),
+        reworded["text"].as_str().unwrap(),
+    ];
+    let sent = running.stub.requests();
+    assert!(memory_place(&sent[0], summary).is_some(), "{}", sent[0]);
+    for words in notes {
+        assert_eq!(memory_place(&sent[0], words), None, "{words}");
+    }
+    running.stub.tool_rounds(&serde_json::json!([]));
+    tokio::time::sleep(Duration::from_secs(1)).await;
+    let next = Scope {
+        chat: format!("{}-next", scope.chat),
+        ..scope.clone()
+    };
+    let asked = "What did I decide about her lisinopril?";
+    accept_signed_in(&running.store, &next, &session, asked, &skills, None, None).await;
+    let answered = wait_assistant(&running.store, &next, &running.worker).await;
+    assert_eq!(answered.status, WorkStatus::Completed);
+    let opening = running
+        .stub
+        .requests()
+        .into_iter()
+        .find(|request| input_place(request, asked).is_some())
+        .expect("the second chat's request");
+    for words in [summary].into_iter().chain(notes) {
+        assert_eq!(memory_place(&opening, words), Some(0), "{words}: {opening}");
+    }
+}
+
+/// The real worker binary, its host and Postgres, with a scripted provider.
+/// The patient has a summary when the chat starts. The first message's run
+/// adds a note; the second message's run saves a working note and opens a
+/// fresh window. Every request of the chat, the fresh window's included,
+/// opens with the same memory: the summary, without the note.
+#[tokio::test]
+async fn every_request_of_a_chat_opens_with_the_memory_it_started_with() {
+    use local_product::runtime::memory::PatientKey;
+    let _guard = lock().lock().await;
+    let summary = "Patient with stage 3 chronic kidney disease.";
+    let added = "Physician stopped lisinopril for the cough.";
+    let working = "Continue from the patient's memory. Do not send anything.";
+    let rounds = serde_json::json!([[
+        {"name": "add_patient_memory_note", "arguments": {"text": added, "quote": null}}
+    ]])
+    .to_string();
+    let Some(running) =
+        running_with("memory_once", None, None, &rounds, support::FIXED_TEXT, &[]).await
+    else {
+        return;
+    };
+    let skills = PhysicianSkills::configured(None, false).unwrap();
+    let (scope, session) = signed_in(&running.database.url, None).await;
+    let key = PatientKey::try_from(&scope).unwrap();
+    running
+        .store
+        .edit_memory(
+            &key,
+            &local_product::runtime::memory::VersionedFile::Summary,
+            &[Ok(local_product::runtime::memory::Edit::Create {
+                text: local_product::runtime::memory::Words::parse(summary).unwrap(),
+            })],
+        )
+        .await
+        .unwrap();
+    // The chat starts in a later clock second than the summary's save.
+    tokio::time::sleep(Duration::from_secs(1)).await;
+    let first = "Please stop the lisinopril.";
+    accept_signed_in(&running.store, &scope, &session, first, &skills, None, None).await;
+    wait_assistant(&running.store, &scope, &running.worker).await;
+    assert!(
+        running
+            .store
+            .search_memory(&key, "lisinopril")
+            .await
+            .unwrap()
+            .iter()
+            .any(|hit| hit.text.contains(added)),
+        "the first run saved its note"
+    );
+
+    running.stub.tool_rounds(&serde_json::json!([[
+        {"name": "save_working_note", "arguments": {"text": working, "fresh_window": true}}
+    ]]));
+    let second = "What did I decide?";
+    accept_signed_in(
+        &running.store,
+        &scope,
+        &session,
+        second,
+        &skills,
+        None,
+        None,
+    )
+    .await;
+    let deadline = Instant::now() + Duration::from_secs(30);
+    loop {
+        let state = running.store.conversation(&scope).await.unwrap();
+        if assistant_texts(&state).len() == 2 {
+            break;
+        }
+        assert!(
+            Instant::now() < deadline,
+            "the second message was not answered: {state:?}\n{}",
+            running.worker.tail()
+        );
+        tokio::time::sleep(Duration::from_millis(50)).await;
+    }
+
+    let sent = running.stub.requests();
+    let second_requests: Vec<_> = sent
+        .iter()
+        .filter(|request| input_place(request, second).is_some())
+        .collect();
+    assert!(
+        second_requests.iter().any(|request| {
+            request["input"].as_array().unwrap().iter().any(|item| {
+                item["content"]
+                    .as_str()
+                    .is_some_and(|text| text.contains(working))
+            })
+        }),
+        "the second run opened a fresh window: {second_requests:?}"
+    );
+    let opening = &sent[0]["input"][0];
+    assert_eq!(memory_place(&sent[0], summary), Some(0), "{}", sent[0]);
+    for request in &sent {
+        assert_eq!(&request["input"][0], opening, "{request}");
+        assert_eq!(memory_place(request, added), None, "{request}");
+    }
+    assert!(second_requests.len() >= 2, "{second_requests:?}");
+}
+
+/// Where in a request the provider received an item whose text is `text`.
+fn input_place(request: &serde_json::Value, text: &str) -> Option<usize> {
+    request["input"]
+        .as_array()?
+        .iter()
+        .position(|item| item["content"] == text)
+}
+
+/// Where in a request the provider received a developer message that holds
+/// `words`.
+fn memory_place(request: &serde_json::Value, words: &str) -> Option<usize> {
+    request["input"].as_array()?.iter().position(|item| {
+        item["role"] == "developer"
+            && item["content"]
+                .as_str()
+                .is_some_and(|text| text.contains(words))
+    })
+}
+
+/// The real worker binary, its host and Postgres, with a provider whose
+/// first response breaks, so the first attempt fails and the next one
+/// recovers the run. A note added between the two attempts is not in what
+/// the recovered run sends: it sends the memory the first attempt sent.
+#[tokio::test]
+async fn a_recovered_run_sends_the_memory_it_first_sent() {
+    use local_product::runtime::memory::{NoteDraft, NoteOrigin, PatientKey};
+    let _guard = lock().lock().await;
+    let message = "Please stop the lisinopril.";
+    let summary = "Patient with stage 3 chronic kidney disease.";
+    let between = "Added between the two attempts.";
+    let Some(running) = running_with(
+        "memory_recovery",
+        Some(1),
+        None,
+        "[]",
+        support::FIXED_TEXT,
+        &[("PHYSICIAN_WORKER_RETRY_SECONDS", "3")],
+    )
+    .await
+    else {
+        return;
+    };
+    let (scope, session) = signed_in(&running.database.url, None).await;
+    let key = PatientKey::try_from(&scope).unwrap();
+    running
+        .store
+        .edit_memory(
+            &key,
+            &local_product::runtime::memory::VersionedFile::Summary,
+            &[Ok(local_product::runtime::memory::Edit::Create {
+                text: local_product::runtime::memory::Words::parse(summary).unwrap(),
+            })],
+        )
+        .await
+        .unwrap();
+    // The chat starts in a later clock second than the summary's save.
+    tokio::time::sleep(Duration::from_secs(1)).await;
+    let skills = PhysicianSkills::configured(None, false).unwrap();
+    accept_signed_in(
+        &running.store,
+        &scope,
+        &session,
+        message,
+        &skills,
+        None,
+        None,
+    )
+    .await;
+    // The first attempt fails; its retry waits three seconds.
+    let deadline = Instant::now() + Duration::from_secs(30);
+    let failed = loop {
+        let state = running.store.conversation(&scope).await.unwrap();
+        if attempt_statuses(&state) == ["failed"] {
+            break state;
+        }
+        assert!(
+            Instant::now() < deadline,
+            "the first attempt did not fail: {state:?}\n{}",
+            running.worker.tail()
+        );
+        tokio::time::sleep(Duration::from_millis(20)).await;
+    };
+    let physician_message = failed.messages[0].source();
+    running
+        .store
+        .append_note(
+            &scope,
+            &NoteOrigin {
+                work: failed.work.clone(),
+                call: "between".into(),
+                message: physician_message.id,
+            },
+            &NoteDraft {
+                text: between.into(),
+                quote: None,
+            },
+        )
+        .await
+        .unwrap();
+    let state = wait_assistant(&running.store, &scope, &running.worker).await;
+    assert_eq!(attempt_statuses(&state), ["failed", "completed"]);
+
+    let sent = running.stub.requests();
+    assert_eq!(sent.len(), 2, "one request for each attempt");
+    let memory: Vec<&serde_json::Value> = sent
+        .iter()
+        .map(|request| {
+            let place = memory_place(request, summary).expect("the memory message");
+            &request["input"][place]
+        })
+        .collect();
+    assert_eq!(memory[0], memory[1]);
+    assert!(
+        !memory[1]["content"].as_str().unwrap().contains(between),
+        "{}",
+        memory[1]
+    );
+}
+
+/// The real worker binary, its host and Postgres, with a scripted provider
+/// running a reply revision: round one adds a note quoting the physician's
+/// instruction and a note whose quote the instruction does not hold; round
+/// two searches memory for a word of both notes and reads the summary; then
+/// the provider finishes the revision. Each note's work is the accepted
+/// revision, its message is the instruction, and it keeps its quote as
+/// given.
+#[tokio::test]
+async fn a_reply_revision_reads_memory_and_its_notes_come_from_the_instruction() {
+    use local_product::runtime::memory::{FileRead, MemoryPath, OneLine, PatientKey};
+    use local_product::runtime::reply::{DraftStatus, RevisionAccepted, RevisionInput};
+    let _guard = lock().lock().await;
+    let instruction = "Drop the statin line, she stopped it in March.";
+    let summary = "Patient with hyperlipidemia.";
+    let Some(running) = running_with(
+        "revision_memory",
+        None,
+        None,
+        "[]",
+        support::FIXED_TEXT,
+        &[],
+    )
+    .await
+    else {
+        return;
+    };
+    let (scope, session) = signed_in(&running.database.url, None).await;
+    let kept = serde_json::json!({"text": "Patient stopped her statin in March.", "quote": "she stopped it in March"});
+    let unquoted = serde_json::json!({"text": "Statin stopped for muscle aches.", "quote": "stopped it for muscle aches"});
+    running.stub.tool_rounds(&serde_json::json!([
+        [
+            {"name": "add_patient_memory_note", "arguments": kept},
+            {"name": "add_patient_memory_note", "arguments": unquoted}
+        ],
+        [
+            {"name": "search_patient_memory", "arguments": {"query": "statin"}},
+            {"name": "read_patient_memory", "arguments": {"path": "summary.md", "version": null}}
+        ]
+    ]));
+    let hash = PostgresAuthStore::session_reference(&session);
+    running
+        .store
+        .open_draft_authorized(
+            &scope,
+            "Keep taking your statin every night.",
+            &hash,
+            &mut physician_sample::durable::RuntimeAuthority,
+        )
+        .await
+        .expect("open draft")
+        .expect("authorized draft");
+    // The summary is saved in an earlier clock second than the revision's
+    // acceptance, so the reply work starts with it.
+    let key = PatientKey::try_from(&scope).unwrap();
+    running
+        .store
+        .edit_memory(
+            &key,
+            &local_product::runtime::memory::VersionedFile::Summary,
+            &[Ok(local_product::runtime::memory::Edit::Create {
+                text: local_product::runtime::memory::Words::parse(summary).unwrap(),
+            })],
+        )
+        .await
+        .unwrap();
+    tokio::time::sleep(Duration::from_secs(1)).await;
+    let skills = PhysicianSkills::configured(None, false).unwrap();
+    let input = RevisionInput {
+        key: format!("revise-{}", uuid::Uuid::new_v4().simple()),
+        expected_revision: 1,
+        instruction: instruction.into(),
+        timezone: "America/New_York".into(),
+        scenario: None,
+    };
+    let accepted = running
+        .store
+        .accept_revision(
+            &scope,
+            &input,
+            hash,
+            &skills,
+            &local_product::runtime::reply::recipe(&support::models::roles().background, &skills),
+            None,
+        )
+        .await
+        .expect("accept revision");
+    assert_eq!(accepted, RevisionAccepted::New);
+    let deadline = Instant::now() + Duration::from_secs(30);
+    let draft = loop {
+        let draft = running
+            .store
+            .draft(&scope)
+            .await
+            .expect("draft")
+            .expect("draft row");
+        if draft.status == DraftStatus::Completed {
+            break draft;
+        }
+        assert!(
+            Instant::now() < deadline,
+            "the revision did not finish: {:?}\n{}",
+            draft.status,
+            running.worker.tail()
+        );
+        tokio::time::sleep(Duration::from_millis(50)).await;
+    };
+
+    // The revision still publishes its reply.
+    assert_eq!(draft.revision, 2);
+    assert_eq!(draft.text, support::FIXED_TEXT);
+
+    // The notes the worker saved, each by the revision's work and its call;
+    // the readback adds nothing. The note's work is the accepted revision,
+    // and its one message is the instruction.
+    let store = Store::connect(&running.database.url)
+        .await
+        .expect("fresh store");
+    let note = |call: &'static str| {
+        let (store, key, work) = (store.clone(), key.clone(), input.key.clone());
+        async move {
+            store
+                .saved_note(&key, &work, call)
+                .await
+                .unwrap()
+                .unwrap_or_else(|| panic!("the worker saved the note of {call}"))
+        }
+    };
+    let first = note("fixed-1-0").await;
+    let second = note("fixed-1-1").await;
+    assert_eq!(first.text, kept["text"].as_str().unwrap());
+    assert_eq!(second.text, unquoted["text"].as_str().unwrap());
+    for saved_note in [&first, &second] {
+        assert_eq!(saved_note.physician, scope.physician);
+        assert_eq!(saved_note.chat, scope.chat);
+        assert_eq!(saved_note.message, format!("{}:instruction", input.key));
+    }
+    assert_eq!(
+        first.physician_words.as_ref().map(OneLine::as_str),
+        Some("she stopped it in March")
+    );
+    assert_eq!(
+        second.physician_words.as_ref().map(OneLine::as_str),
+        Some("stopped it for muscle aches")
+    );
+    let log = format!("log/{}.md", first.time.format("%Y-%m-%d"));
+    let markdown = match store
+        .read_memory(&key, &MemoryPath::parse(&log).unwrap(), None)
+        .await
+        .unwrap()
+    {
+        FileRead::Log { markdown } => markdown,
+        other => panic!("a log day has no versions: {other:?}"),
+    };
+    assert_eq!(markdown.matches(", note ").count(), 2, "{markdown}");
+    assert_eq!(markdown.matches("Quoted:").count(), 2, "{markdown}");
+
+    // Each saved result says what the store holds.
+    let returned = receipts(draft.attempts.iter().flat_map(|attempt| &attempt.events));
+    let output = |id: &str| -> serde_json::Value {
+        let (_, output, executed) = returned
+            .iter()
+            .find(|(call, ..)| call == id)
+            .unwrap_or_else(|| panic!("no result for {id}"));
+        assert!(executed, "{id} was refused: {output}");
+        serde_json::from_str(output).unwrap()
+    };
+    assert_eq!(
+        output("fixed-1-0"),
+        serde_json::json!({"note": first.number.to_string(), "path": log})
+    );
+    assert_eq!(
+        output("fixed-1-1"),
+        serde_json::json!({"note": second.number.to_string(), "path": log})
+    );
+    let hits: Vec<_> = store
+        .search_memory(&key, "statin")
+        .await
+        .unwrap()
+        .into_iter()
+        .map(|hit| serde_json::json!({"path": hit.path.to_string(), "line": hit.line, "text": hit.text}))
+        .collect();
+    assert_eq!(hits.len(), 2, "the text of each note: {hits:?}");
+    assert_eq!(output("fixed-2-0"), serde_json::json!({"results": hits}));
+    assert_eq!(
+        output("fixed-2-1"),
+        serde_json::json!({"path": "summary.md", "version": 1, "markdown": summary})
+    );
+
+    // The revision started with the summary and no note.
+    let sent = running.stub.requests();
+    assert_eq!(memory_place(&sent[0], summary), Some(0), "{}", sent[0]);
+    for words in [
+        kept["text"].as_str().unwrap(),
+        unquoted["text"].as_str().unwrap(),
+    ] {
+        assert_eq!(memory_place(&sent[0], words), None, "{words}");
+    }
 }
 
 #[tokio::test]

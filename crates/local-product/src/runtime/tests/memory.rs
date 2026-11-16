@@ -4,7 +4,7 @@
 //! once one after the other, takes a deleted file out of the list and the
 //! search and brings it back with a create, finds words in every file that
 //! exists, and never crosses a practice or a patient.
-use super::{Scope, Store};
+use super::{ConversationStart, Scope, Store};
 use crate::runtime::memory::{
     Edit, EditRefusal, FileRead, Hit, Listed, Listing, MemoryError, MemoryPath, MemoryRefusal,
     NotApplied, Note, NoteDraft, NoteId, NoteOrigin, OneLine, PageId, PatientKey, VersionedFile,
@@ -755,4 +755,502 @@ async fn notes_added_at_the_same_time_each_take_a_place_and_one_call_saves_one_n
         );
     }
     assert!(!logged.contains("note N4"), "{logged}");
+}
+
+/// A chat adds a note: the note is its words, its log heading gives its
+/// number, and the result gives its number and its log day.
+#[tokio::test]
+#[ignore = "requires explicit local Postgres"]
+async fn a_chat_note_is_its_words_and_its_result_gives_its_number_and_day() {
+    use super::{Script, calls};
+    use harness::engine::results::ToolResult;
+    use harness::engine::{self, EventKind};
+    let store = store().await;
+    let scope = patient();
+    let key = key(&scope);
+    super::accept(&store, &scope, &super::delivery_input("asked"), 0)
+        .await
+        .unwrap();
+    let claim = store.claim(&scope, 60).await.unwrap().unwrap();
+    let mut host = super::PhysicianHost {
+        store: store.clone(),
+        claim,
+        authority: super::OpenAuthority,
+        shown_steps: super::ShownSteps::new(()),
+    };
+    let mut model = Script::new([
+        calls([(
+            "note",
+            "add_patient_memory_note",
+            serde_json::json!({"text": "She holds ibuprofen. [chart]", "quote": null}),
+        )]),
+        harness::engine::Turn {
+            items: super::answered("Noted."),
+            usage: Default::default(),
+            receipt: serde_json::Value::Null,
+        },
+    ]);
+    host.run(
+        &mut model,
+        engine::RunLimits::default(),
+        &engine::Cancellation::default(),
+    )
+    .await
+    .unwrap();
+    let state = store.conversation(&scope).await.unwrap();
+    let result = state
+        .attempts
+        .iter()
+        .flat_map(|attempt| &attempt.events)
+        .find_map(|event| match &event.kind {
+            EventKind::ToolReturned { call_id, result } if call_id == "note" => Some(result),
+            _ => None,
+        })
+        .expect("the note's result");
+    let ToolResult::Original(text) = result else {
+        panic!("{result:?}");
+    };
+    let listing = store.list_memory(&key).await.unwrap();
+    let [day] = &listing.log_days[..] else {
+        panic!("{listing:?}");
+    };
+    let log = MemoryPath::Log(*day);
+    assert_eq!(
+        serde_json::from_str::<serde_json::Value>(text).unwrap(),
+        serde_json::json!({"note": "N1", "path": log.to_string()})
+    );
+    let logged = read(&store, &key, &log).await;
+    assert!(
+        logged.contains(", note N1, physician dr-okafor\n\nShe holds ibuprofen. [chart]\n"),
+        "{logged}"
+    );
+}
+
+/// After a restart the harness asks the chat host for the saved outcome of
+/// a note call that started and has no recorded result. A saved note
+/// answers with the result the tool returned when it saved it, and the log
+/// still holds one note; a call with no saved note has no saved outcome.
+#[tokio::test]
+#[ignore = "requires explicit local Postgres"]
+async fn a_chat_host_answers_a_saved_notes_outcome_and_adds_nothing() {
+    use harness::engine::{Invocation, Product};
+    let store = store().await;
+    let scope = patient();
+    let key = key(&scope);
+    super::accept(&store, &scope, &super::delivery_input("asked"), 0)
+        .await
+        .unwrap();
+    let claim = store.claim(&scope, 60).await.unwrap().unwrap();
+    let mut host = super::PhysicianHost {
+        store: store.clone(),
+        claim,
+        authority: super::OpenAuthority,
+        shown_steps: super::ShownSteps::new(()),
+    };
+    let arguments = serde_json::json!({"text": "She holds ibuprofen. [chart]", "quote": null});
+    let call = |id: &str| Invocation {
+        id: id.into(),
+        name: "add_patient_memory_note".into(),
+        arguments: arguments.to_string(),
+    };
+    // The note commits; the run stops before its result is recorded.
+    let saved = host
+        .execute(&call("note"), arguments.clone())
+        .await
+        .unwrap();
+    assert_eq!(
+        host.saved_outcome(&call("note")).await.unwrap(),
+        Some(saved)
+    );
+    assert_eq!(host.saved_outcome(&call("other")).await.unwrap(), None);
+    // Another patient's scope finds no note of this work and call.
+    let work = store.conversation(&scope).await.unwrap().work;
+    let elsewhere = Scope {
+        workspace: uuid::Uuid::new_v4().to_string(),
+        ..scope.clone()
+    };
+    assert_eq!(
+        crate::runtime::memory::tools::saved_outcome(&store, &elsewhere, &work, &call("note"))
+            .await
+            .unwrap(),
+        None
+    );
+    let listing = store.list_memory(&key).await.unwrap();
+    let [day] = &listing.log_days[..] else {
+        panic!("{listing:?}");
+    };
+    let logged = read(&store, &key, &MemoryPath::Log(*day)).await;
+    assert_eq!(logged.matches(", note ").count(), 1, "{logged}");
+}
+
+#[tokio::test]
+#[ignore = "requires explicit local Postgres"]
+async fn a_notes_origin_is_the_newest_message_of_its_steered_work() {
+    use crate::runtime::delivery::Backoff;
+    use harness::engine::AttemptFailure;
+    let store = store().await;
+    let scope = super::delivery_scope(&uuid::Uuid::new_v4().to_string(), "chat");
+    super::accept(&store, &scope, &super::delivery_input("earlier"), 5)
+        .await
+        .unwrap();
+    let earlier = store.claim(&scope, 60).await.unwrap().unwrap();
+    let earlier_work = store.conversation(&scope).await.unwrap().work;
+    store
+        .stop_authorized(&scope, "stop", vec![6; 32], &earlier_work)
+        .await
+        .unwrap();
+    // After Stop the next message starts a new work, and a message that
+    // arrives while it runs steers that work.
+    super::accept(&store, &scope, &super::delivery_input("asked"), 5)
+        .await
+        .unwrap();
+    store
+        .settle_chat_attempt(&earlier, AttemptFailure::Interrupted, Backoff::IMMEDIATE)
+        .await
+        .unwrap();
+    let claim = store.claim(&scope, 60).await.unwrap().unwrap();
+    super::accept(&store, &scope, &super::delivery_input("steered"), 5)
+        .await
+        .unwrap();
+
+    let (state, _) = store.work_snapshot(&scope).await.unwrap();
+    assert_ne!(state.work, earlier_work);
+    let origin = state.note_origin(&claim.attempt, "call-1").unwrap();
+    assert_eq!(
+        (origin.work.as_str(), origin.call.as_str()),
+        (state.work.as_str(), "call-1")
+    );
+    // The note comes from the newest message of the work.
+    assert_eq!(origin.message, "steered");
+}
+
+/// The text of the memory a conversation for the patient that started at
+/// `start` opens with.
+async fn memory_text(store: &Store, key: &PatientKey, start: ConversationStart) -> Option<String> {
+    let items = store.memory_at_start(key, start).await.unwrap().first([]);
+    match items.as_slice() {
+        [] => None,
+        [harness::engine::Item::Message { role, text }] if role == "developer" => {
+            Some(text.clone())
+        }
+        other => panic!("memory opens a conversation as one developer message: {other:?}"),
+    }
+}
+
+/// The text of the memory a conversation that starts after every save in
+/// the test opens with.
+async fn at_start(store: &Store, key: &PatientKey) -> Option<String> {
+    memory_text(store, key, ConversationStart(i64::MAX)).await
+}
+
+#[tokio::test]
+#[ignore = "requires explicit local Postgres"]
+async fn memory_as_a_conversation_started_leaves_out_what_was_saved_after_it() {
+    let store = store().await;
+    let scope = patient();
+    let key = key(&scope);
+    let quoted = note(&store, &scope, "quoted", Some("stop the lisinopril")).await;
+    store
+        .edit_memory(&key, &VersionedFile::Summary, &[create("- First summary.")])
+        .await
+        .unwrap();
+    store
+        .edit_memory(
+            &key,
+            &VersionedFile::Direction,
+            &[create("- Stop the lisinopril. [N1]")],
+        )
+        .await
+        .unwrap();
+    // The chat starts in a later clock second than every save above.
+    tokio::time::sleep(std::time::Duration::from_secs(1)).await;
+    super::accept(&store, &scope, &super::delivery_input("first"), 5)
+        .await
+        .unwrap();
+    let start = store.conversation(&scope).await.unwrap().started().unwrap();
+    // The conversation's first request reads memory before the later saves.
+    let first_request = memory_text(&store, &key, start).await.unwrap();
+    let later = note(&store, &scope, "later", Some("call her Friday")).await;
+    store
+        .edit_memory(
+            &key,
+            &VersionedFile::Summary,
+            &[replace("First summary.", "Second summary.")],
+        )
+        .await
+        .unwrap();
+    store
+        .edit_memory(
+            &key,
+            &VersionedFile::Direction,
+            &[append("- Call her Friday.")],
+        )
+        .await
+        .unwrap();
+
+    // A later request of the same conversation sends the same text.
+    let started = memory_text(&store, &key, start).await.unwrap();
+    assert_eq!(started, first_request);
+    // The summary, the direction and the note were saved on the note's day.
+    let saved = day(&quoted);
+    for held in [
+        format!("summary.md, version 1, saved {saved}:\n- First summary."),
+        format!("direction.md, version 1, saved {saved}:\n- Stop the lisinopril. [N1]"),
+        "note N1, physician dr-okafor\n".to_owned(),
+    ] {
+        assert!(started.contains(&held), "{held}: {started}");
+    }
+    for left_out in ["Second summary.", "version 2", "Call her Friday", "note N2"] {
+        assert!(!started.contains(left_out), "{left_out}: {started}");
+    }
+
+    // A chat that starts after the later saves opens with them.
+    tokio::time::sleep(std::time::Duration::from_secs(1)).await;
+    let next = Scope {
+        chat: "next".into(),
+        ..scope.clone()
+    };
+    super::accept(&store, &next, &super::delivery_input("next"), 5)
+        .await
+        .unwrap();
+    let next_start = store.conversation(&next).await.unwrap().started().unwrap();
+    let reached = memory_text(&store, &key, next_start).await.unwrap();
+    let saved = day(&later);
+    for held in [
+        format!("summary.md, version 2, saved {saved}:\n- Second summary."),
+        format!("direction.md, version 2, saved {saved}:"),
+        "- Call her Friday.\n".to_owned(),
+        "note N2, physician dr-okafor\n".to_owned(),
+    ] {
+        assert!(reached.contains(&held), "{held}: {reached}");
+    }
+}
+
+/// The time of the note's stamp, as its log heading gives it.
+fn time(saved: &Note) -> String {
+    saved.time.format("%H:%M:%S").to_string()
+}
+
+#[tokio::test]
+#[ignore = "requires explicit local Postgres"]
+async fn a_conversation_starts_with_the_summary_the_direction_and_the_newest_notes() {
+    let store = store().await;
+    let scope = patient();
+    let key = key(&scope);
+    let quoted = note(&store, &scope, "quoted", Some("stop the lisinopril")).await;
+    let later = note(&store, &scope, "later", None).await;
+    store
+        .edit_memory(
+            &key,
+            &VersionedFile::Summary,
+            &[create("- Patient with CKD stage 3.")],
+        )
+        .await
+        .unwrap();
+    store
+        .edit_memory(
+            &key,
+            &VersionedFile::Summary,
+            &[append(
+                "\n## Open\n\n- Recheck potassium in May, see [[ckd]].",
+            )],
+        )
+        .await
+        .unwrap();
+    store
+        .edit_memory(
+            &key,
+            &VersionedFile::Direction,
+            &[create(
+                "- Stop the lisinopril. [N1]\n- Call her daughter before any change.",
+            )],
+        )
+        .await
+        .unwrap();
+    // Each file under its path and current version; the notes newest first,
+    // as their log day reads them.
+    assert_eq!(
+        at_start(&store, &key).await.unwrap(),
+        format!(
+            "This patient's memory as this conversation started. list_patient_memory lists every file, and read_patient_memory reads one.\n\
+             \n\
+             summary.md, version 2, saved {day}:\n\
+             - Patient with CKD stage 3.\n\
+             \n\
+             ## Open\n\
+             \n\
+             - Recheck potassium in May, see [[ckd]].\n\
+             \n\
+             direction.md, version 1, saved {day}:\n\
+             - Stop the lisinopril. [N1]\n\
+             - Call her daughter before any change.\n\
+             \n\
+             Notes saved for this patient, newest first:\n\
+             \n\
+             # Log {day}\n\
+             \n\
+             ## {later_time} UTC, note N2, physician dr-okafor\n\
+             \n\
+             Note later\n\
+             \n\
+             ## {quoted_time} UTC, note N1, physician dr-okafor\n\
+             \n\
+             Quoted: \"stop the lisinopril\"\n\
+             \n\
+             Note quoted",
+            day = day(&quoted),
+            later_time = time(&later),
+            quoted_time = time(&quoted),
+        )
+    );
+}
+
+#[tokio::test]
+#[ignore = "requires explicit local Postgres"]
+async fn a_summary_over_its_start_budget_is_cut_at_a_line_end_and_points_to_the_rest() {
+    use crate::runtime::memory::START_SUMMARY_CHARACTERS;
+    let store = store().await;
+    let key = key(&patient());
+    // Each line is 99 characters and its line end one more.
+    let lines: Vec<String> = (0..200)
+        .map(|n| format!("- {n:03} {}", "x".repeat(93)))
+        .collect();
+    store
+        .edit_memory(&key, &VersionedFile::Summary, &[create(&lines.join("\n"))])
+        .await
+        .unwrap();
+    // The store's clock is the test's: Postgres runs on the same host.
+    let saved = chrono::Utc::now().format("%Y-%m-%d");
+    let fitting = START_SUMMARY_CHARACTERS / 100;
+    assert!(fitting < lines.len());
+    let text = at_start(&store, &key).await.unwrap();
+    assert!(
+        text.ends_with(&format!(
+            "\n\nsummary.md, version 1, saved {saved}:\n{}\nsummary.md continues; read_patient_memory reads it whole.",
+            lines[..fitting].join("\n")
+        )),
+        "{text}"
+    );
+    assert!(!text.contains(&lines[fitting]), "{text}");
+}
+
+#[tokio::test]
+#[ignore = "requires explicit local Postgres"]
+async fn notes_over_their_start_budget_load_newest_first_whole_with_the_count_and_days_of_the_rest()
+{
+    let store = store().await;
+    let scope = patient();
+    let key = key(&scope);
+    // Each note reads as about 1,035 characters, so seven of ten fit.
+    let text = |n: usize| format!("Note {n:02} {}", "y".repeat(990));
+    let mut saved = Vec::new();
+    for n in 1..=10 {
+        saved.push(
+            store
+                .append_note(
+                    &scope,
+                    &origin(&format!("call-{n:02}")),
+                    &draft(&text(n), None),
+                )
+                .await
+                .unwrap(),
+        );
+    }
+    let loaded = at_start(&store, &key).await.unwrap();
+    let place = |n: usize| loaded.find(&format!("note N{n}, physician dr-okafor\n"));
+    let shown: Vec<usize> = (4..=10).rev().collect();
+    for pair in shown.windows(2) {
+        assert!(
+            place(pair[0]).unwrap() < place(pair[1]).unwrap(),
+            "{pair:?}: {loaded}"
+        );
+    }
+    for n in &shown {
+        assert!(loaded.contains(&text(*n)), "note {n} is whole: {loaded}");
+    }
+    for n in 1..=3 {
+        assert_eq!(place(n), None, "note {n}: {loaded}");
+    }
+    assert!(
+        loaded.ends_with(&format!(
+            "\n\n3 more notes are in log/{}.md.",
+            day(&saved[0])
+        )),
+        "{loaded}"
+    );
+}
+
+#[tokio::test]
+#[ignore = "requires explicit local Postgres"]
+async fn a_patient_with_no_summary_direction_or_note_starts_with_no_memory() {
+    let store = store().await;
+    assert_eq!(at_start(&store, &key(&patient())).await, None);
+}
+
+#[tokio::test]
+#[ignore = "requires explicit local Postgres"]
+async fn a_deleted_summary_leaves_the_memory_a_conversation_starts_with() {
+    let store = store().await;
+    let key = key(&patient());
+    store
+        .edit_memory(&key, &VersionedFile::Summary, &[create("- Has gout.")])
+        .await
+        .unwrap();
+    assert!(
+        at_start(&store, &key)
+            .await
+            .unwrap()
+            .contains("- Has gout.")
+    );
+    store
+        .edit_memory(&key, &VersionedFile::Summary, &[Ok(Edit::Delete)])
+        .await
+        .unwrap();
+    assert_eq!(at_start(&store, &key).await, None);
+}
+
+#[tokio::test]
+#[ignore = "requires explicit local Postgres"]
+async fn a_conversation_starts_with_only_its_own_patients_memory() {
+    let store = store().await;
+    let scope = patient();
+    let other_practice = Scope {
+        practice: uuid::Uuid::new_v4().to_string(),
+        ..scope.clone()
+    };
+    let other_patient = Scope {
+        workspace: uuid::Uuid::new_v4().to_string(),
+        ..scope.clone()
+    };
+    let patients = [
+        (&scope, "Ours"),
+        (&other_practice, "Other practice"),
+        (&other_patient, "Other patient"),
+    ];
+    for (patient, words) in patients {
+        store
+            .edit_memory(
+                &key(patient),
+                &VersionedFile::Summary,
+                &[create(&format!("{words} summary"))],
+            )
+            .await
+            .unwrap();
+        store
+            .append_note(
+                patient,
+                &origin(&format!("{words} call")),
+                &draft(&format!("{words} note"), None),
+            )
+            .await
+            .unwrap();
+    }
+    for (patient, words) in patients {
+        let text = at_start(&store, &key(patient)).await.unwrap();
+        for (_, others) in patients {
+            let holds = text.contains(&format!("{others} summary"))
+                || text.contains(&format!("{others} note"));
+            assert_eq!(holds, others == words, "{words} holds {others}: {text}");
+        }
+    }
 }

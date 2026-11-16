@@ -1,6 +1,8 @@
 use harness::engine::MAX_FAILED_ATTEMPTS;
 #[path = "tests/feedback.rs"]
 mod feedback_tests;
+#[path = "tests/memory_edit.rs"]
+mod memory_edit_tests;
 #[path = "tests/memory.rs"]
 mod memory_tests;
 #[path = "tests/migration.rs"]
@@ -17,7 +19,8 @@ mod source_tests;
 use super::delivery::{Backoff, Delivery, DeliveryState};
 use super::entities::command;
 use super::*;
-use harness::engine::recipe::Request;
+use harness::engine::recipe::{Request, Usage};
+use std::collections::VecDeque;
 
 #[test]
 fn a_pool_timeout_is_not_a_failed_query() {
@@ -2547,6 +2550,63 @@ fn test_chat_recipe() -> harness::engine::recipe::RequestRecipe {
 fn test_revision_recipe() -> harness::engine::recipe::RequestRecipe {
     crate::runtime::reply::recipe(&test_binding(), &test_skills())
 }
+/// A model that answers each request with the next turn of its script and
+/// keeps every request it was sent.
+struct Script {
+    turns: VecDeque<Turn>,
+    requests: Vec<Request>,
+}
+
+impl Script {
+    fn new(turns: impl IntoIterator<Item = Turn>) -> Self {
+        Self {
+            turns: turns.into_iter().collect(),
+            requests: Vec::new(),
+        }
+    }
+}
+
+impl Provider for Script {
+    async fn exchange(
+        &mut self,
+        request: &Request,
+        _: &engine::Cancellation,
+        _: &engine::RunLimits,
+        _: &mut dyn engine::recipe::Observer,
+    ) -> Result<Turn, engine::Cause> {
+        self.requests.push(request.clone());
+        self.turns
+            .pop_front()
+            .ok_or_else(|| "the script has no turn left".into())
+    }
+}
+
+fn usage(input: u64) -> Usage {
+    Usage {
+        input_tokens: Some(input),
+        cached_input_tokens: None,
+        output_tokens: Some(5),
+    }
+}
+
+/// A turn that calls each tool with its arguments, the call named by `id`.
+fn calls<const N: usize>(calls: [(&str, &str, Value); N]) -> Turn {
+    Turn {
+        items: calls
+            .into_iter()
+            .map(|(id, name, arguments)| {
+                Item::Call(Invocation {
+                    id: id.into(),
+                    name: name.into(),
+                    arguments: arguments.to_string(),
+                })
+            })
+            .collect(),
+        usage: usage(10),
+        receipt: Value::Null,
+    }
+}
+
 /// Accepts a chat input with the test skills and recipe under one session byte.
 async fn accept(
     store: &Store,

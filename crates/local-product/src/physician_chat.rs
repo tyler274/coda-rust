@@ -3,7 +3,7 @@
 //! The hosted worker composes these with [`crate::runtime::PhysicianHost`].
 //! The catalog is read once through [`harness::skills::Package`]; this module adds no
 //! parser, filesystem reader or second catalog. A skill is guidance only: it
-//! never grants a tool, a patient read or an action. The chart tools are scoped separately. Book: `book/src/physician-site.md`.
+//! never grants a tool, a patient read or an action. The chart and patient memory tools are scoped separately. Book: `book/src/physician-site.md`.
 
 use std::path::{Path, PathBuf};
 
@@ -14,6 +14,7 @@ use physician_wire::{Step, StepState};
 use serde_json::{Value, json};
 
 use crate::physician_sources::citations;
+use crate::runtime::memory::tools as memory;
 
 /// Immutable chat recipe selected by the site when it accepts new work.
 pub fn recipe(
@@ -37,8 +38,10 @@ pub fn recipe(
 pub use harness::engine::history::LIST as LIST_CONVERSATION;
 pub use harness::skills::SKILL_VIEW;
 
-/// Resident guidance for Chords chat.
-pub const INSTRUCTIONS: &str = "\
+/// Resident guidance for Chords chat, with the patient memory guidance that
+/// reply revisions also give.
+pub const INSTRUCTIONS: &str = concat!(
+    "\
 You are Coda's lead for this conversation, its chief resident for the physician and this patient. \
 Own the clinical understanding, investigation, judgment and useful follow-through the physician asks for, \
 within the capabilities available here.
@@ -55,8 +58,9 @@ material disagreement rather than silently accepting or dismissing it. Honor cle
 within available authority.
 
 Use the tools offered in this conversation. Base patient-specific facts on records you have read in \
-this conversation. If tools or evidence are unavailable, say what you cannot confirm.
-
+this conversation. If tools or evidence are unavailable, say what you cannot confirm.\n\n",
+    memory::guidance!(),
+    "\n\n\
 The approved skill catalog describes reusable capability guidance and exact packaged resources. Review it \
 when a task begins and whenever the task scope changes. A skill given in full below the catalog is \
 already loaded: follow it, and do not open it again. Before relying on a matching, materially \
@@ -78,7 +82,8 @@ dates with the year.
 Answer the physician's request directly, in physician language, never runtime terminology, private \
 deliberation, or tool activity. Requesting tools continues work. Finish with finish_answer: what you hand in \
 there is the complete answer the physician reads, so do not leave it to earlier messages. Communicate \
-completed clinical work, not model identities, tools, schemas or runtime IDs.";
+completed clinical work, not model identities, tools, schemas or runtime IDs."
+);
 
 /// Skills the chat job loads at its start.
 pub const START_SKILLS: &[&str] = &["patient-record-retrieval"];
@@ -107,7 +112,8 @@ impl Job {
     }
 }
 
-/// Capabilities shared by every ordinary Chords chat request.
+/// Capabilities shared by every ordinary Chords chat request: the work
+/// tools, the chart tools and the finish tool.
 pub fn tools() -> Vec<Tool> {
     let mut offered = work_tools();
     offered.extend(chart_tools());
@@ -115,20 +121,22 @@ pub fn tools() -> Vec<Tool> {
     offered
 }
 
-/// Shared capabilities implemented by durable Chords chat and revision work.
-/// Each recipe adds the working notes with their guidance.
+/// Shared capabilities implemented by durable Chords chat and revision work,
+/// the patient memory tools among them. Each recipe adds the working notes
+/// with their guidance.
 pub fn work_tools() -> Vec<Tool> {
     let mut offered = vec![PhysicianSkills::tool(), harness::engine::results::tool()];
     offered.extend(harness::engine::history::tools());
+    offered.extend(memory::tools());
     offered
 }
 
-/// Source and conversation reads have no product effects or shared session mutation.
+/// Source and memory reads have no product effects or shared session mutation.
 pub fn read_only(name: &str) -> bool {
     matches!(
         name,
         crate::physician_sources::SEARCH_TOOL | crate::physician_sources::READ_TOOL
-    )
+    ) || memory::MemoryTool::named(name).is_some_and(memory::MemoryTool::reads)
 }
 
 /// How far one call has ended, as the saved record of its work shows it.
@@ -190,6 +198,8 @@ enum ChatTool {
     ResultPage,
     /// Coda's own working note.
     WorkingNote,
+    /// Patient memory: list, read, search, add a note and edit a file.
+    Memory,
     /// The finished answer. It never runs as a call.
     Finish,
 }
@@ -206,23 +216,26 @@ impl ChatTool {
             results::READ => Some(Self::ResultPage),
             name if crate::runtime::working_notes::is_tool(name) => Some(Self::WorkingNote),
             citations::FINISH_TOOL => Some(Self::Finish),
+            name if memory::MemoryTool::named(name).is_some() => Some(Self::Memory),
             _ => None,
         }
     }
 }
 
 /// The step a saved chat call shows the physician, or `None` when it shows
-/// none: skill reads, result pages and working notes are Coda's own
-/// bookkeeping, the finish is the answer itself, and a call its tool refuses
-/// for its arguments did nothing.
+/// none: skill reads, result pages, working notes and patient memory reads,
+/// notes and edits are Coda's own bookkeeping, the finish is the answer itself, and
+/// a call its tool refuses for its arguments did nothing.
 pub fn step(call: &Invocation, ending: CallEnding<'_>) -> Result<Option<Step>, StepError> {
     let tool =
         ChatTool::named(&call.name).ok_or_else(|| StepError::UnknownTool(call.name.clone()))?;
     let arguments = || serde_json::from_str::<Value>(&call.arguments).map_err(StepError::Arguments);
     match tool {
-        ChatTool::Skill | ChatTool::ResultPage | ChatTool::WorkingNote | ChatTool::Finish => {
-            Ok(None)
-        }
+        ChatTool::Skill
+        | ChatTool::ResultPage
+        | ChatTool::WorkingNote
+        | ChatTool::Memory
+        | ChatTool::Finish => Ok(None),
         ChatTool::Chart => {
             let request = crate::physician_sources::ChartRequest::parse(
                 &call.name,
@@ -571,6 +584,46 @@ mod tests {
                     .any(|tool| tool["name"] == "save_working_note")
             );
         }
+    }
+
+    #[test]
+    fn every_recipe_offers_the_memory_tools_and_their_guidance_once() {
+        let skills = skills();
+        let binding = crate::ModelBinding {
+            model: "fixture".into(),
+            effort: "high".into(),
+            context_window_tokens: 272_000,
+            max_input_tokens: 250_000,
+            adapter: "fixture".into(),
+        };
+        for recipe in [
+            recipe(&binding, INSTRUCTIONS, &skills),
+            crate::runtime::reply::recipe(&binding, &skills),
+        ] {
+            assert_eq!(recipe.instructions.matches(memory::guidance!()).count(), 1);
+            for tool in memory::tools() {
+                assert_eq!(
+                    recipe
+                        .tools
+                        .iter()
+                        .filter(|offered| offered["name"] == tool.name.as_str())
+                        .count(),
+                    1,
+                    "{}",
+                    tool.name
+                );
+            }
+        }
+        // The harness runs read-only calls at once: of the memory tools,
+        // only the three reads are, and the note and the edit are not.
+        for tool in memory::tools() {
+            let reads = memory::MemoryTool::named(&tool.name)
+                .expect("a memory tool")
+                .reads();
+            assert_eq!(read_only(&tool.name), reads, "{}", tool.name);
+        }
+        assert!(!read_only("add_patient_memory_note"));
+        assert!(!read_only("edit_patient_memory"));
     }
 
     #[test]

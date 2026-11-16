@@ -1,9 +1,12 @@
-//! Nothing here touches the database.
+//! The pure half of patient memory: a versioned file's stored text, how
+//! edits change it, how a log day reads as markdown, and the memory text a
+//! conversation starts with. Nothing here touches the database.
 //!
 //! The summary, the direction, the person page and each subject page are
 //! their markdown text, as the model wrote it. Code reads none of it: no
 //! front matter, heading, bullet or link has a meaning here. A log day is
 //! generated from its notes and rounds marks on every read.
+use std::collections::BTreeMap;
 use std::fmt;
 use std::ops::Range;
 
@@ -11,7 +14,7 @@ use chrono::{DateTime, NaiveDate, Utc};
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 
-use super::{EditRefusal, MemoryPath, MemoryRefusal, NotApplied, Note, RoundsMark};
+use super::{EditRefusal, MemoryPath, MemoryRefusal, NotApplied, Note, RoundsMark, Version};
 
 /// The digits of `part` as a number, when `part` is exactly `len` ASCII digits.
 fn number(part: &str, len: usize) -> Option<u32> {
@@ -367,6 +370,154 @@ fn note_lines(note: &Note) -> Vec<String> {
     }
     lines.extend(note.text.lines().map(str::to_owned));
     lines
+}
+
+/// The most of the summary a conversation starts with, in characters. A
+/// first value for local real-model tests.
+pub const START_SUMMARY_CHARACTERS: usize = 16_000;
+
+/// The most of the log a conversation starts with, in characters of whole
+/// notes. A first value for local real-model tests.
+pub const START_NOTES_CHARACTERS: usize = 8_000;
+
+/// What a memory message is read for. Only its first sentence differs.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub(super) enum StartOf {
+    /// A conversation: a chat, or a reply and its revisions.
+    Conversation,
+}
+
+/// The patient memory a conversation or a rounds run starts with, each file
+/// under its path, version and saved day: the summary up to
+/// [`START_SUMMARY_CHARACTERS`], cut at a line end; the whole direction; and
+/// the newest whole notes of `days` up to [`START_NOTES_CHARACTERS`], newest
+/// first, under a heading that says whether they are the notes saved since
+/// the last finished rounds run started (`last`) or every note. What does not
+/// fit is named by its path. `None` when there is no summary, no direction
+/// and no note.
+pub(super) fn at_start(
+    of: StartOf,
+    summary: Option<&Version>,
+    direction: Option<&Version>,
+    last: Option<&RoundsMark>,
+    days: &BTreeMap<Day, Vec<Note>>,
+) -> Option<String> {
+    if summary.is_none() && direction.is_none() && days.is_empty() {
+        return None;
+    }
+    let started = match of {
+        StartOf::Conversation => "This patient's memory as this conversation started.",
+    };
+    let mut parts = vec![format!(
+        "{started} list_patient_memory lists every file, and read_patient_memory reads one."
+    )];
+    if let Some(summary) = summary {
+        parts.push(summary_at_start(summary));
+    }
+    if let Some(direction) = direction {
+        parts.push(format!(
+            "{}\n{}",
+            start_heading(&MemoryPath::Direction, direction),
+            direction.text.as_str()
+        ));
+    }
+    if !days.is_empty() {
+        parts.push(notes_at_start(last, days));
+    }
+    let parts: Vec<&str> = parts
+        .iter()
+        .map(|part| part.trim_end_matches('\n'))
+        .collect();
+    Some(parts.join("\n\n"))
+}
+
+/// The line a file starts under in the start memory: its path, its version
+/// and the day that version was saved.
+fn start_heading(path: &MemoryPath, version: &Version) -> String {
+    format!(
+        "{path}, version {}, saved {}:",
+        version.number, version.saved
+    )
+}
+
+/// The summary under its heading: whole when it fits, otherwise its first
+/// lines that fit and a line that says it continues.
+fn summary_at_start(summary: &Version) -> String {
+    let heading = start_heading(&MemoryPath::Summary, summary);
+    let text = summary.text.as_str();
+    if summary.text.characters() <= START_SUMMARY_CHARACTERS {
+        return format!("{heading}\n{text}");
+    }
+    let mut kept = String::new();
+    let mut size = 0;
+    for line in text.split_inclusive('\n') {
+        size += line.chars().count();
+        if size > START_SUMMARY_CHARACTERS {
+            break;
+        }
+        kept.push_str(line);
+    }
+    format!(
+        "{heading}\n{kept}{} continues; read_patient_memory reads it whole.",
+        MemoryPath::Summary
+    )
+}
+
+/// The newest whole notes that fit, newest first, under their log days, and
+/// a line that counts the rest and names their days. The heading says they
+/// are the notes saved since the last finished rounds run started when a run
+/// has finished, `last`.
+fn notes_at_start(last: Option<&RoundsMark>, days: &BTreeMap<Day, Vec<Note>>) -> String {
+    let newest = days
+        .iter()
+        .rev()
+        .flat_map(|(day, notes)| notes.iter().rev().map(move |note| (*day, note)));
+    let mut shown: Vec<(Day, Vec<Note>)> = Vec::new();
+    // Once a note does not fit, it and every older note are left out.
+    let mut more = 0;
+    let mut more_days: Vec<Day> = Vec::new();
+    let mut size = 0;
+    for (day, note) in newest {
+        if more == 0 {
+            size += markdown(&note_lines(note)).chars().count();
+        }
+        if more == 0 && size <= START_NOTES_CHARACTERS {
+            match shown.last_mut() {
+                Some((shown_day, notes)) if *shown_day == day => notes.push(note.clone()),
+                Some(_) | None => shown.push((day, vec![note.clone()])),
+            }
+            continue;
+        }
+        more += 1;
+        if more_days.last() != Some(&day) {
+            more_days.push(day);
+        }
+    }
+    let heading = match last {
+        Some(_) => "Notes saved since the last finished patient rounds started, newest first:",
+        None => "Notes saved for this patient, newest first:",
+    };
+    let mut lines = vec![String::from(heading)];
+    for (day, notes) in &shown {
+        lines.push(String::new());
+        lines.extend(log_lines(*day, notes, &[]));
+    }
+    if more > 0 {
+        // Oldest day first, as the list gives the log.
+        let paths: Vec<String> = more_days
+            .iter()
+            .rev()
+            .map(|day| MemoryPath::Log(*day).to_string())
+            .collect();
+        let count = if more == 1 {
+            String::from("1 more note is")
+        } else {
+            format!("{more} more notes are")
+        };
+        lines.push(String::new());
+        lines.push(format!("{count} in {}.", paths.join(", ")));
+    }
+    markdown(&lines)
 }
 
 #[cfg(test)]

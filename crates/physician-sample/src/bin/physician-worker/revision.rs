@@ -9,6 +9,7 @@ use harness::engine::{self, Cancellation, Event, Invocation, Product, ProductErr
 use local_product::physician_sources::{self, read_sources};
 use local_product::runtime::Store;
 use local_product::runtime::delivery::{Delivery, DeliveryKind};
+use local_product::runtime::memory::tools::MemoryTool;
 use local_product::runtime::reply::{
     RevisionClaim, RevisionCommit, requests_finish, revised_text, revision_feedback,
 };
@@ -117,10 +118,17 @@ async fn handle(
             .revision_records(&owner.claim.scope, &draft)
             .await
             .map_err(|error| engine::Failure::Host(error.into()))?;
+        // The opening starts with the memory the reply work started with; a
+        // recovered run replays its saved request instead.
+        let memory = worker
+            .store
+            .reply_memory(&owner.claim.scope)
+            .await
+            .map_err(|error| engine::Failure::Host(error.into()))?;
         let work = owner
             .claim
             .binding
-            .request(context(&owner.claim).items(&owner.claim.sources))
+            .request(context(&owner.claim).items(&owner.claim.sources, memory))
             .freeze()?
             .recover(
                 &owner.claim.attempt,
@@ -294,8 +302,9 @@ impl Product for RevisionOwner {
                     .map(|event| (attempt.input_id.as_str(), event))
             }),
         )?;
+        let memory = self.store.reply_memory(&self.claim.scope).await?;
         Ok(engine::WindowSeed {
-            items: context(&self.claim).items(&self.claim.sources),
+            items: context(&self.claim).items(&self.claim.sources, memory),
             note_references,
         })
     }
@@ -324,6 +333,27 @@ impl Product for RevisionOwner {
             let records = store.revision_records(&claim.scope, &draft).await?;
             let messages = store.revision_message_sources(&claim.scope, &draft).await?;
             engine::results::resolve(records.iter(), &id, &messages).map_err(Into::into)
+        })
+    }
+
+    /// A started memory note's saved result, for the revision's work. The
+    /// harness checks the revision is current before it asks.
+    fn saved_outcome(
+        &mut self,
+        call: &Invocation,
+    ) -> harness::engine::recipe::ToolFuture<Option<engine::ToolOutcome>> {
+        let store = self.store.clone();
+        let scope = self.claim.scope.clone();
+        let origin = self.claim.accepted.input.note_origin(&call.id);
+        let call = call.clone();
+        Box::pin(async move {
+            Ok(local_product::runtime::memory::tools::saved_outcome(
+                &store,
+                &scope,
+                &origin.work,
+                &call,
+            )
+            .await?)
         })
     }
 
@@ -390,6 +420,13 @@ impl Product for RevisionOwner {
                 records,
             )? {
                 return Ok(outcome);
+            }
+            if let Some(tool) = MemoryTool::named(&call.name) {
+                return Ok(tool
+                    .execute(&store, &claim.scope, &call.arguments, || {
+                        Ok(claim.accepted.input.note_origin(&call.id))
+                    })
+                    .await?);
             }
             if engine::history::is_tool(&call.name) {
                 let messages = store.revision_messages(&claim.scope, &draft).await?;
@@ -499,6 +536,131 @@ mod tests {
             panic!("unoffered action must be refused")
         };
         assert!(!unoffered.reason().is_empty());
+    }
+
+    /// Opens every draft it is asked to.
+    struct OpenAuthority;
+
+    #[async_trait]
+    impl local_product::runtime::Authority for OpenAuthority {
+        async fn check(
+            &mut self,
+            _: &local_product::runtime::PublicationTransaction,
+            _: &local_product::runtime::Scope,
+            _: Option<&[u8]>,
+        ) -> Result<(), String> {
+            Ok(())
+        }
+
+        async fn lock_publication(
+            &mut self,
+            _: &local_product::runtime::PublicationTransaction,
+            _: &local_product::runtime::Scope,
+            _: Option<&[u8]>,
+        ) -> Result<(), String> {
+            Ok(())
+        }
+    }
+
+    /// After a restart the harness asks the revision host for the saved
+    /// outcome of a note call that started and has no recorded result. A
+    /// saved note answers with the result the tool returns for it, and the
+    /// log still holds one note; a call with no saved note has none.
+    #[tokio::test]
+    #[ignore = "requires explicit local Postgres"]
+    async fn a_revision_host_answers_a_saved_notes_outcome_and_adds_nothing() {
+        use local_product::runtime::memory::{FileRead, MemoryPath, NoteDraft, PatientKey};
+        let url = std::env::var("PHYSICIAN_RUNTIME_TEST_DATABASE_URL").unwrap();
+        let store = Store::connect(&url).await.unwrap();
+        store.migrate().await.unwrap();
+        let scope = local_product::runtime::Scope {
+            practice: uuid::Uuid::new_v4().to_string(),
+            physician: "physician".into(),
+            workspace: uuid::Uuid::new_v4().to_string(),
+            chat: "reply".into(),
+        };
+        store
+            .open_draft_authorized(&scope, "Original", &[7; 32], &mut OpenAuthority)
+            .await
+            .unwrap()
+            .expect("an open draft");
+        let skills =
+            local_product::physician_chat::PhysicianSkills::configured(None, false).unwrap();
+        let binding = local_product::ModelBinding {
+            model: "controlled".into(),
+            effort: "none".into(),
+            adapter: "fixed".into(),
+            context_window_tokens: 272_000,
+            max_input_tokens: 272_000,
+        };
+        let input = local_product::runtime::reply::RevisionInput {
+            key: "revision".into(),
+            expected_revision: 1,
+            instruction: "Shorten the reply".into(),
+            timezone: "UTC".into(),
+            scenario: None,
+        };
+        store
+            .accept_revision(
+                &scope,
+                &input,
+                vec![7; 32],
+                &skills,
+                &local_product::runtime::reply::recipe(&binding, &skills),
+                None,
+            )
+            .await
+            .unwrap();
+        let claim = store
+            .claim_revision(&Delivery::reply_revision(scope.clone(), input.key), 60)
+            .await
+            .unwrap()
+            .expect("a claimed revision");
+        // The note commits; the run stops before its result is recorded.
+        let saved = store
+            .append_note(
+                &claim.scope,
+                &claim.accepted.input.note_origin("note"),
+                &NoteDraft {
+                    text: "She holds ibuprofen. [chart]".into(),
+                    quote: None,
+                },
+            )
+            .await
+            .unwrap();
+        let log = format!("log/{}.md", saved.time.format("%Y-%m-%d"));
+        let mut owner = RevisionOwner {
+            store: store.clone(),
+            claim,
+            authority: WorkerAuthority {
+                inner: super::super::RuntimeAuthority,
+                synthetic_only: false,
+            },
+            usage: Tally::default(),
+        };
+        let call = |id: &str| Invocation {
+            id: id.into(),
+            name: "add_patient_memory_note".into(),
+            arguments: json!({"text": "She holds ibuprofen. [chart]", "quote": null}).to_string(),
+        };
+        let Some(ToolOutcome::Returned(text)) = owner.saved_outcome(&call("note")).await.unwrap()
+        else {
+            panic!("a saved note has its result");
+        };
+        assert_eq!(
+            serde_json::from_str::<Value>(&text).unwrap(),
+            json!({"note": "N1", "path": log})
+        );
+        assert_eq!(owner.saved_outcome(&call("other")).await.unwrap(), None);
+        let key = PatientKey::try_from(&scope).unwrap();
+        let FileRead::Log { markdown } = store
+            .read_memory(&key, &MemoryPath::parse(&log).unwrap(), None)
+            .await
+            .unwrap()
+        else {
+            panic!("a log day has no versions");
+        };
+        assert_eq!(markdown.matches(", note ").count(), 1, "{markdown}");
     }
 
     #[test]

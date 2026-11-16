@@ -1,8 +1,9 @@
 //! Physician operational truth. Every mutation locks its conversation in Postgres.
 //! Construction never migrates or starts work. Expired attempts terminate as
 //! interrupted; a claim creates a successor rather than replaying an attempt.
-//! Hosted chat opens packaged skills and reads the authorized workspace chart
-//! on demand ([`crate::physician_chat`]). A commit publishes only the answer
+//! Hosted chat opens packaged skills, reads the authorized workspace chart
+//! on demand ([`crate::physician_chat`]), and reads the patient's memory,
+//! adds notes to it and edits its files ([`memory::tools`]). A commit publishes only the answer
 //! handed in through the chat's finish, never narration from tool rounds. Reply
 //! drafts and their revisions live in [`reply`]. No process-memory
 //! persistence fallback.
@@ -62,6 +63,7 @@ pub mod working_notes;
 use crate::physician_sources::citations::{self, Finished};
 use crate::physician_sources::{ChartRequest, ChartScope, Labels, READ_TOOL, SEARCH_TOOL};
 use entities::conversation;
+use memory::tools::MemoryTool;
 
 /// Authenticated product scope, supplied by the server, never the command body.
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq, Hash)]
@@ -383,6 +385,12 @@ use harness::engine::{
     runs::{HoldReason, RunHistory, RunOutcome},
 };
 
+/// When a conversation started: the database-clock second its first work was
+/// accepted. Only the conversation's own start functions make one, so no
+/// other caller can load a conversation's memory as of another moment.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub struct ConversationStart(i64);
+
 /// Ends one attempt under the shared failure rule. Returns the outcome when
 /// the attempt also ended the run; `None` leaves the work pending.
 fn settle_attempt(
@@ -428,6 +436,14 @@ impl Conversation {
         )?;
         self.status = outcome.map_or(WorkStatus::Pending, WorkStatus::from);
         Ok(())
+    }
+
+    /// When this chat started: when its first physician message was accepted.
+    fn started(&self) -> Result<ConversationStart, DbErr> {
+        if self.messages.is_empty() {
+            return Err(error("the chat has no accepted message"));
+        }
+        Ok(ConversationStart(self.opened_at))
     }
 
     /// The current run is independent of worker attempts and survives recovery.
@@ -1947,6 +1963,43 @@ fn current_work_start(state: &Conversation) -> Result<usize, DbErr> {
         .ok_or_else(|| error("accepted work input is missing"))
 }
 
+impl Conversation {
+    /// The run's part of a memory note's origin: the attempt's work, the
+    /// call, and the newest physician message of that work in transcript
+    /// order, the one that started it or the last one that steered it.
+    fn note_origin(&self, attempt: &str, call: &str) -> Result<memory::NoteOrigin, DbErr> {
+        let attempt = self
+            .attempts
+            .iter()
+            .find(|candidate| candidate.id == attempt)
+            .ok_or_else(|| error("missing hosted attempt"))?;
+        let message = self
+            .messages
+            .iter()
+            .rev()
+            .find(|message| matches!(&message.role, MessageRole::User { work, .. } if work == &attempt.work))
+            .ok_or_else(|| error("accepted work input is missing"))?;
+        Ok(memory::NoteOrigin {
+            work: attempt.work.clone(),
+            call: call.to_owned(),
+            message: message.source().id,
+        })
+    }
+}
+
+impl Store {
+    /// The memory this chat started with. Its opening requests and fresh
+    /// windows all open with it.
+    async fn chat_memory(
+        &self,
+        scope: &Scope,
+        state: &Conversation,
+    ) -> Result<memory::StartMemory, DbErr> {
+        self.memory_at_start(&memory::PatientKey::try_from(scope)?, state.started()?)
+            .await
+    }
+}
+
 fn earlier_messages(start: usize) -> Option<Item> {
     (start > 0).then(engine::history::earlier_messages)
 }
@@ -1984,6 +2037,21 @@ impl<A: Authority, S: ShownStepSaved> Product for PhysicianHost<A, S> {
             let (state, records) = store.work_snapshot(&claim.scope).await?;
             engine::results::resolve(records.iter(), &id, &state.message_sources())
                 .map_err(Into::into)
+        })
+    }
+    /// A started memory note's saved result, for the work the claim's
+    /// attempt runs. The harness checks the work is current before it asks.
+    fn saved_outcome(
+        &mut self,
+        call: &Invocation,
+    ) -> harness::engine::recipe::ToolFuture<Option<ToolOutcome>> {
+        let store = self.store.clone();
+        let claim = self.claim.clone();
+        let call = call.clone();
+        Box::pin(async move {
+            let state = store.conversation(&claim.scope).await?;
+            let origin = state.note_origin(&claim.attempt, &call.id)?;
+            Ok(memory::tools::saved_outcome(&store, &claim.scope, &origin.work, &call).await?)
         })
     }
     async fn assert_current(&mut self) -> Result<(), engine::ProductError> {
@@ -2041,6 +2109,14 @@ impl<A: Authority, S: ShownStepSaved> Product for PhysicianHost<A, S> {
                 .ok_or_else(|| "working note tool was not handled".into());
             }
             let (state, records) = store.work_snapshot(&claim.scope).await?;
+            if let Some(tool) = MemoryTool::named(&call.name) {
+                return tool
+                    .execute(&store, &claim.scope, &arguments, || {
+                        state.note_origin(&claim.attempt, &call.id)
+                    })
+                    .await
+                    .map_err(Into::into);
+            }
             if engine::history::is_tool(&call.name) {
                 let messages: Vec<_> = state
                     .messages
@@ -2113,8 +2189,15 @@ impl<A: Authority, S: ShownStepSaved> Product for PhysicianHost<A, S> {
         self.assert_current().await?;
         let state = self.store.conversation(&self.claim.scope).await?;
         let start = current_work_start(&state)?;
-        let mut seed: Vec<_> = earlier_messages(start).into_iter().collect();
-        seed.extend(state.messages[start..].iter().flat_map(Message::items));
+        let seed = self
+            .store
+            .chat_memory(&self.claim.scope, &state)
+            .await?
+            .first(
+                earlier_messages(start)
+                    .into_iter()
+                    .chain(state.messages[start..].iter().flat_map(Message::items)),
+            );
         let note_references =
             working_notes::references(state.attempts.iter().flat_map(|attempt| {
                 attempt
@@ -2154,7 +2237,7 @@ impl<A: Authority, S: ShownStepSaved> PhysicianHost<A, S> {
             .map_err(|cause| engine::Failure::Host(cause.into()))?
             .request(Vec::new());
         let messages = state.messages.as_slice();
-        request.items.clear();
+        let mut earlier = Vec::new();
         let mut pending: Vec<engine::AcceptedInput> = Vec::new();
         for message in messages {
             if let MessageRole::User { id, work, .. } = &message.role
@@ -2167,10 +2250,18 @@ impl<A: Authority, S: ShownStepSaved> PhysicianHost<A, S> {
             }
             let target = match pending.last_mut() {
                 Some(input) => &mut input.items,
-                None => &mut request.items,
+                None => &mut earlier,
             };
             target.extend(message.items());
         }
+        // The memory the chat started with opens the request, before the
+        // earlier conversation. A recovered run replays its saved request.
+        request.items = self
+            .store
+            .chat_memory(&self.claim.scope, &state)
+            .await
+            .map_err(|cause| engine::Failure::Host(cause.into()))?
+            .first(earlier);
         let work_start =
             current_work_start(&state).map_err(|cause| engine::Failure::Host(cause.into()))?;
         let messages = state.message_sources();

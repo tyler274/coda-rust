@@ -432,7 +432,7 @@ async fn held_revision_saves_one_limit_outcome_with_its_visible_status() {
             physician_time_zone: "UTC".into(),
             expected_draft_revision: 1,
         }
-        .items(&[]),
+        .items(&[], crate::runtime::memory::StartMemory(None)),
     );
     store
         .admit_revision_binding(&claim, &frozen.binding())
@@ -934,7 +934,7 @@ async fn late_evidence_for_an_archived_attempt_joins_its_history_and_never_publi
             physician_time_zone: "UTC".into(),
             expected_draft_revision: 1,
         }
-        .items(&[]),
+        .items(&[], crate::runtime::memory::StartMemory(None)),
     );
     store
         .admit_revision_binding(&late, &frozen.binding())

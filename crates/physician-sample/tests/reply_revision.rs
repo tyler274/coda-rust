@@ -686,6 +686,7 @@ async fn physician_save_cancels_an_in_flight_revision_and_preserves_the_edit() {
 
 #[tokio::test]
 async fn revision_capabilities_survive_a_window_and_worker_replacement_between_attempts() {
+    use local_product::runtime::memory::{Edit, PatientKey, VersionedFile, Words};
     // A retry delay holds the failed revision pending until the worker is
     // replaced, rather than the old worker retrying it at once.
     let Some(mut running) = Running::start_full(
@@ -701,12 +702,40 @@ async fn revision_capabilities_survive_a_window_and_worker_replacement_between_a
         return;
     };
     let scope = running.seed().await;
+    let key = PatientKey::try_from(&scope).unwrap();
+    let summary = "Patient with hyperlipidemia.";
+    let changed = "Statin restarted in May.";
+    running
+        .store
+        .edit_memory(
+            &key,
+            &VersionedFile::Summary,
+            &[Ok(Edit::Create {
+                text: Words::parse(summary).unwrap(),
+            })],
+        )
+        .await
+        .unwrap();
+    // The reply work starts in a later clock second than the summary's save.
+    tokio::time::sleep(Duration::from_secs(1)).await;
     running
         .command(0, &revise(&scope, "revision-before", 1), "accepted")
         .await;
     running
         .wait_draft(&scope, |draft| draft.status == DraftStatus::Completed)
         .await;
+    // The summary changes after the reply has started.
+    running
+        .store
+        .edit_memory(
+            &key,
+            &VersionedFile::Summary,
+            &[Ok(Edit::Append {
+                text: Words::parse(changed).unwrap(),
+            })],
+        )
+        .await
+        .unwrap();
     let note = "Continue this revision using the saved skill result and earlier reply. Do not send anything.";
     running.stub.tool_rounds(&json!([
         [
@@ -814,6 +843,126 @@ async fn revision_capabilities_survive_a_window_and_worker_replacement_between_a
         assert_eq!(status, 200);
         assert_eq!(read["text"], support::FIXED_TEXT);
         assert_eq!(read["revision"], 3);
+    }
+    // Every request of the reply, across the fresh window and the worker
+    // replacement, opens with the memory as the reply started.
+    let sent = running.stub.requests();
+    let opening = &sent[0]["input"][0];
+    assert_eq!(opening["role"], "developer", "{}", sent[0]);
+    let memory = opening["content"].as_str().unwrap();
+    assert!(memory.contains(summary), "{memory}");
+    assert!(!memory.contains(changed), "{memory}");
+    for request in &sent {
+        assert_eq!(&request["input"][0], opening, "{request}");
+    }
+}
+
+/// The patient has a summary when the reply's first revision is accepted,
+/// and that revision adds a note and edits the summary, which saves for the
+/// reply's own patient. A second revision of the same reply opens with the
+/// memory the reply work started with: the first summary, without the note
+/// or the edit.
+#[tokio::test]
+async fn a_second_revision_opens_with_the_memory_the_reply_started_with() {
+    use local_product::runtime::memory::PatientKey;
+    let Some(running) = Running::start("reply_memory_once", 0, 0).await else {
+        return;
+    };
+    let scope = running.seed().await;
+    let key = PatientKey::try_from(&scope).unwrap();
+    let summary = "Patient with hyperlipidemia.";
+    let added = "Patient stopped her statin in March.";
+    let edited = "Statin stopped in March; restart is open.";
+    running
+        .store
+        .edit_memory(
+            &key,
+            &local_product::runtime::memory::VersionedFile::Summary,
+            &[Ok(local_product::runtime::memory::Edit::Create {
+                text: local_product::runtime::memory::Words::parse(summary).unwrap(),
+            })],
+        )
+        .await
+        .unwrap();
+    // The reply work starts in a later clock second than the summary's save.
+    tokio::time::sleep(Duration::from_secs(1)).await;
+    running.stub.tool_rounds(&json!([[
+        {"name":"add_patient_memory_note","arguments":{"text":added,"quote":null}},
+        {"name":"edit_patient_memory","arguments":{"path":"summary.md","edits":[{"append":{"text":edited}}]}}
+    ]]));
+    running
+        .command(0, &revise(&scope, "revision-first", 1), "accepted")
+        .await;
+    running
+        .wait_draft(&scope, |draft| draft.status == DraftStatus::Completed)
+        .await;
+    assert!(
+        running
+            .store
+            .search_memory(&key, "statin")
+            .await
+            .unwrap()
+            .iter()
+            .any(|hit| hit.text.contains(added)),
+        "the first revision saved its note"
+    );
+    assert_eq!(
+        running
+            .store
+            .read_memory(
+                &key,
+                &local_product::runtime::memory::MemoryPath::Summary,
+                None
+            )
+            .await
+            .unwrap(),
+        local_product::runtime::memory::FileRead::Version {
+            version: 2,
+            markdown: format!("{summary}\n{edited}"),
+        },
+        "the first revision saved its edit for its own patient"
+    );
+    running.stub.tool_rounds(&json!([]));
+    running
+        .command(0, &revise(&scope, "revision-second", 2), "accepted")
+        .await;
+    let done = running
+        .wait_draft(&scope, |draft| {
+            draft.revision == 3 && draft.status == DraftStatus::Completed
+        })
+        .await;
+
+    let sent = running.stub.requests();
+    let opening = &sent[0]["input"][0];
+    assert_eq!(opening["role"], "developer", "{}", sent[0]);
+    let memory = opening["content"].as_str().unwrap();
+    assert!(memory.contains(summary), "{memory}");
+    assert!(
+        sent.iter().any(
+            |request| request["input"]
+                .as_array()
+                .unwrap()
+                .iter()
+                .any(|item| item["content"]
+                    .as_str()
+                    .is_some_and(|text| text.contains("\"expected_draft_revision\":2")))
+        ),
+        "the second revision was sent"
+    );
+    for request in &sent {
+        assert_eq!(&request["input"][0], opening, "{request}");
+    }
+    assert!(!memory.contains(added), "{memory}");
+    assert!(!memory.contains(edited), "{memory}");
+    // The second revision's saved request opens with the same text.
+    let saved = dispatches(&running, &scope, &done).await;
+    assert!(!saved.is_empty());
+    for request in &saved {
+        assert!(
+            matches!(&request.items[0], Item::Message { role, text } if role == "developer" && text == memory),
+            "{:?}",
+            request.items[0]
+        );
     }
 }
 

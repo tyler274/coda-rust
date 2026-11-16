@@ -121,6 +121,23 @@ pub(super) async fn record(
     })
 }
 
+/// When the command under `key` was accepted, in database-clock seconds.
+/// Compaction keeps this time, and no receipt is ever deleted.
+pub(super) async fn accepted_at(
+    db: &impl sea_orm::ConnectionTrait,
+    practice: &str,
+    physician: &str,
+    key: &str,
+) -> Result<i64, DbErr> {
+    command::Entity::find_by_id((practice.to_owned(), physician.to_owned(), key.to_owned()))
+        .select_only()
+        .column(command::Column::AcceptedAt)
+        .into_tuple::<i64>()
+        .one(db)
+        .await?
+        .ok_or_else(|| error("missing command receipt"))
+}
+
 impl Store {
     /// Reduces up to `limit` full receipts accepted at least
     /// `max_age_seconds` ago to a salted digest, oldest first, and returns

@@ -16,23 +16,44 @@
 //! and none loses another's edits.
 //!
 //! The `page` module holds the stored text, the edits and the generated log,
-//! with no I/O.
+//! with no I/O. The [`tools`] module holds the tools a chat run and a reply
+//! revision are offered: three reads, the note and the edit. Every request
+//! of a chat or a reply opens with the memory the conversation started
+//! with, which [`Store::memory_at_start`] builds.
 use std::collections::BTreeMap;
 use std::fmt;
 
 use chrono::{DateTime, Utc};
+use harness::engine::Item;
 use sea_orm::{
     ActiveModelTrait, ColumnTrait, ConnectionTrait, DatabaseTransaction, DbErr, EntityTrait,
     QueryFilter, QueryOrder, QuerySelect, Set, TransactionTrait,
     sea_query::{Alias, Expr, Func, Query},
 };
 
+pub mod edit;
 mod page;
-pub use page::{Day, Edit, NoteId, NoteNumber, OneLine, Words};
+pub mod tools;
+pub use page::{
+    Day, Edit, NoteId, NoteNumber, OneLine, START_NOTES_CHARACTERS, START_SUMMARY_CHARACTERS, Words,
+};
 
 use super::entities::{memory_note, memory_rounds, memory_version};
-use super::{Scope, Store, conversion_error, error, now};
-use page::Text;
+use super::{ConversationStart, Scope, Store, conversion_error, error, now};
+use page::{StartOf, Text};
+
+/// The memory a conversation started with, from [`Store::memory_at_start`]:
+/// the developer message every request and fresh window of the conversation
+/// opens with, or nothing when the patient had no memory then.
+#[derive(Clone, Debug, PartialEq)]
+pub struct StartMemory(pub(super) Option<Item>);
+
+impl StartMemory {
+    /// `items` with the memory message first.
+    pub fn first(self, items: impl IntoIterator<Item = Item>) -> Vec<Item> {
+        self.0.into_iter().chain(items).collect()
+    }
+}
 
 /// One patient in one practice.
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
@@ -435,6 +456,8 @@ pub struct Hit {
 /// One saved version of a versioned file.
 struct Version {
     number: u64,
+    /// The UTC day the store's clock saved it.
+    saved: Day,
     text: Text,
 }
 
@@ -445,8 +468,11 @@ fn version_number(stored: i64) -> Result<u64, DbErr> {
 /// The one reader of a version row: its number, the day it was saved, and
 /// its text.
 fn stored_version(row: memory_version::Model) -> Result<Version, DbErr> {
+    let saved = DateTime::from_timestamp(row.saved_at, 0)
+        .ok_or_else(|| error("stored memory version time out of range"))?;
     Ok(Version {
         number: version_number(row.version)?,
+        saved: Day::of(saved),
         text: Text::of(&row.content),
     })
 }
@@ -499,6 +525,21 @@ fn patient_marks(key: &PatientKey) -> sea_orm::Select<memory_rounds::Entity> {
         .filter(R::Workspace.eq(key.workspace.as_str()))
 }
 
+/// The newest of the marks `marks` selects: the last saved, and of marks
+/// saved in one second, the last started.
+async fn newest_mark(
+    db: &impl ConnectionTrait,
+    marks: sea_orm::Select<memory_rounds::Entity>,
+) -> Result<Option<RoundsMark>, DbErr> {
+    marks
+        .order_by_desc(memory_rounds::Column::SavedAt)
+        .order_by_desc(memory_rounds::Column::StartedAt)
+        .one(db)
+        .await?
+        .map(stored_mark)
+        .transpose()
+}
+
 fn patient_versions(key: &PatientKey) -> sea_orm::Select<memory_version::Entity> {
     use memory_version::Column as V;
     memory_version::Entity::find()
@@ -527,6 +568,24 @@ async fn latest_row(
         .order_by_desc(memory_version::Column::Version)
         .one(db)
         .await
+}
+
+/// The file's newest version saved before the database-clock second
+/// `start`, when the file existed then.
+async fn existing_before(
+    db: &impl ConnectionTrait,
+    key: &PatientKey,
+    path: &MemoryPath,
+    start: i64,
+) -> Result<Option<Version>, DbErr> {
+    let newest = file_versions(key, path)
+        .filter(memory_version::Column::SavedAt.lt(start))
+        .order_by_desc(memory_version::Column::Version)
+        .one(db)
+        .await?
+        .map(stored_version)
+        .transpose()?;
+    Ok(newest.filter(|version| version.text.exists()))
 }
 
 /// The version `number` of the file, when it has one.
@@ -677,6 +736,69 @@ async fn save_version(
     Ok(version)
 }
 
+/// What memory holds as of a start, from [`read_at_start`].
+struct AtStart {
+    summary: Option<Version>,
+    direction: Option<Version>,
+    /// The newest rounds mark saved before the start.
+    last: Option<RoundsMark>,
+    /// The notes saved before the start and since `last` started, by log
+    /// day.
+    days: BTreeMap<Day, Vec<Note>>,
+}
+
+impl AtStart {
+    /// The memory message for `of`, rendered by `page::at_start`.
+    fn message(&self, of: StartOf) -> StartMemory {
+        StartMemory(
+            page::at_start(
+                of,
+                self.summary.as_ref(),
+                self.direction.as_ref(),
+                self.last.as_ref(),
+                &self.days,
+            )
+            .map(|text| Item::Message {
+                role: "developer".into(),
+                text,
+            }),
+        )
+    }
+}
+
+/// What memory holds as of the database-clock second `start`: the newest
+/// summary and direction versions saved before it, when those files existed
+/// then, the newest rounds mark
+/// saved before it, and the notes saved before it, at or after that mark's
+/// start when there is one. Clock seconds are whole, so a row saved in the
+/// start's own second is left out: the conversation's own first run may
+/// have saved it.
+async fn read_at_start(
+    db: &impl ConnectionTrait,
+    key: &PatientKey,
+    start: i64,
+) -> Result<AtStart, DbErr> {
+    use memory_note::Column as N;
+    let summary = existing_before(db, key, &MemoryPath::Summary, start).await?;
+    let direction = existing_before(db, key, &MemoryPath::Direction, start).await?;
+    let last = newest_mark(
+        db,
+        patient_marks(key).filter(memory_rounds::Column::SavedAt.lt(start)),
+    )
+    .await?;
+    let mut notes = patient_notes(key).filter(N::SavedAt.lt(start));
+    if let Some(mark) = &last {
+        notes = notes.filter(N::SavedAt.gte(mark.started.timestamp()));
+    }
+    let days = days_of(db, notes).await?;
+    Ok(AtStart {
+        summary,
+        direction,
+        last,
+        days,
+    })
+}
+
 /// The two-key advisory lock space for one patient's memory, apart from the
 /// single-key lock that serializes migration.
 const MEMORY_LOCK: i32 = 804_082;
@@ -761,6 +883,17 @@ impl Store {
         let note = stored_note(row)?;
         tx.commit().await?;
         Ok(note)
+    }
+
+    /// The note a run's `work` added for the patient with the tool call
+    /// `call`, when it is saved. It reads only.
+    pub async fn saved_note(
+        &self,
+        key: &PatientKey,
+        work: &str,
+        call: &str,
+    ) -> Result<Option<Note>, DbErr> {
+        saved_note(&self.db, key, &NoteId::of_call(work, call)).await
     }
 
     /// Edits the summary, the direction, the person page or a subject page:
@@ -882,6 +1015,23 @@ impl Store {
             version: chosen.number,
             markdown: chosen.text.as_str().to_owned(),
         })
+    }
+
+    /// The memory a conversation started with, as one developer message:
+    /// what [`read_at_start`] reads as of `start` in one snapshot, rendered
+    /// by `page::at_start`. The memory tables are insert and select only, so
+    /// every request of the conversation reads the same text, and a rounds
+    /// mark saved after the start never changes it.
+    pub async fn memory_at_start(
+        &self,
+        key: &PatientKey,
+        start: ConversationStart,
+    ) -> Result<StartMemory, DbErr> {
+        let ConversationStart(start) = start;
+        let tx = self.snapshot().await?;
+        let read = read_at_start(&tx, key, start).await?;
+        tx.commit().await?;
+        Ok(read.message(StartOf::Conversation))
     }
 
     /// Searches the current text of every file that exists and every log
