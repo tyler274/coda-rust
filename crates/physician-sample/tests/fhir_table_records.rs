@@ -30,7 +30,7 @@ fn temp_bank_dir(tag: &str) -> PathBuf {
 #[tokio::test]
 async fn synthetic_chart_files_every_fhir_row_and_routes_unmapped_kinds_to_other() {
     let bank = temp_bank_dir("all-rows");
-    let chart = bank.join("patients/MRN-FHIR-1");
+    let chart = bank.join("patients/pat-1");
     fs::create_dir_all(&chart).unwrap();
 
     let note_b64 = base64::engine::general_purpose::STANDARD.encode("Assessment: stable HTN.");
@@ -40,7 +40,7 @@ async fn synthetic_chart_files_every_fhir_row_and_routes_unmapped_kinds_to_other
         (
             "Patient.ndjson",
             &[
-                r#"{"resourceType":"Patient","id":"pat-1","meta":{"versionId":"1","lastUpdated":"2026-08-27T00:00:00+00:00"},"identifier":[{"system":"urn:mrn","value":"MRN-FHIR-1"}],"name":[{"use":"official","family":"Rivera","given":["Elena"]}],"gender":"female","birthDate":"1980-04-12"}"#,
+                r#"{"resourceType":"Patient","id":"pat-1","meta":{"versionId":"1","lastUpdated":"2026-08-27T00:00:00+00:00"},"identifier":[{"system":"urn:mrn","value":"pat-1"}],"name":[{"use":"official","family":"Rivera","given":["Elena"]}],"gender":"female","birthDate":"1980-04-12"}"#,
             ],
         ),
         (
@@ -73,12 +73,12 @@ async fn synthetic_chart_files_every_fhir_row_and_routes_unmapped_kinds_to_other
         (
             "Observation.ndjson",
             &[
-                r#"{"resourceType":"Observation","id":"obs-lab","status":"final","category":[{"coding":[{"code":"laboratory"}]}],"code":{"coding":[{"system":"http://loinc.org","code":"2823-3","display":"Potassium"}],"text":"Potassium"},"effectiveDateTime":"2026-08-01T08:00:00Z"}"#,
-                r#"{"resourceType":"Observation","id":"obs-img","status":"final","category":[{"coding":[{"code":"imaging"}]}],"code":{"text":"Carotid IMT"},"effectiveDateTime":"2026-07-10"}"#,
-                r#"{"resourceType":"Observation","id":"obs-vital","status":"final","category":[{"coding":[{"code":"vital-signs"}]}],"code":{"text":"Systolic blood pressure"},"effectiveDateTime":"2026-08-12T11:55:00Z"}"#,
-                r#"{"resourceType":"Observation","id":"obs-soc","status":"final","category":[{"coding":[{"code":"social-history"}]}],"code":{"text":"Tobacco smoking status"},"effectiveDateTime":"2026-08-12"}"#,
-                r#"{"resourceType":"Observation","id":"obs-survey","status":"final","category":[{"coding":[{"code":"survey"}]}],"code":{"text":"PHQ-9 total score"},"effectiveDateTime":"2026-08-12"}"#,
-                r#"{"resourceType":"Observation","id":"obs-exam","status":"final","category":[{"coding":[{"code":"exam"}]}],"code":{"text":"Foot monofilament exam"},"effectiveDateTime":"2026-08-12"}"#,
+                r#"{"resourceType":"Observation","id":"obs-lab","status":"final","category":[{"coding":[{"system":"http://terminology.hl7.org/CodeSystem/observation-category","code":"laboratory"}]}],"code":{"coding":[{"system":"http://loinc.org","code":"2823-3","display":"Potassium"}],"text":"Potassium"},"effectiveDateTime":"2026-08-01T08:00:00Z"}"#,
+                r#"{"resourceType":"Observation","id":"obs-img","status":"final","category":[{"coding":[{"system":"http://terminology.hl7.org/CodeSystem/observation-category","code":"imaging"}]}],"code":{"text":"Carotid IMT"},"effectiveDateTime":"2026-07-10"}"#,
+                r#"{"resourceType":"Observation","id":"obs-vital","status":"final","category":[{"coding":[{"system":"http://terminology.hl7.org/CodeSystem/observation-category","code":"vital-signs"}]}],"code":{"text":"Systolic blood pressure"},"effectiveDateTime":"2026-08-12T11:55:00Z"}"#,
+                r#"{"resourceType":"Observation","id":"obs-soc","status":"final","category":[{"coding":[{"system":"http://terminology.hl7.org/CodeSystem/observation-category","code":"social-history"}]}],"code":{"text":"Tobacco smoking status"},"effectiveDateTime":"2026-08-12"}"#,
+                r#"{"resourceType":"Observation","id":"obs-survey","status":"final","category":[{"coding":[{"system":"http://terminology.hl7.org/CodeSystem/observation-category","code":"survey"}]}],"code":{"text":"PHQ-9 total score"},"effectiveDateTime":"2026-08-12"}"#,
+                r#"{"resourceType":"Observation","id":"obs-exam","status":"final","category":[{"coding":[{"system":"http://terminology.hl7.org/CodeSystem/observation-category","code":"exam"}]}],"code":{"text":"Foot monofilament exam"},"effectiveDateTime":"2026-08-12"}"#,
                 r#"{"resourceType":"Observation","id":"obs-nocat","status":"final","code":{"text":"Uncategorized observation"},"effectiveDateTime":"2026-08-12"}"#,
             ],
         ),
@@ -86,7 +86,7 @@ async fn synthetic_chart_files_every_fhir_row_and_routes_unmapped_kinds_to_other
             "DocumentReference.ndjson",
             &[
                 &format!(
-                    r#"{{"resourceType":"DocumentReference","id":"doc-note","status":"current","category":[{{"coding":[{{"code":"clinical-note"}}]}}],"type":{{"text":"Progress note"}},"date":"2026-08-12T12:05:00+00:00","description":"Office visit note","content":[{{"attachment":{{"contentType":"text/plain; charset=utf-8","data":"{note_b64}"}}}}]}}"#
+                    r#"{{"resourceType":"DocumentReference","id":"doc-note","status":"current","category":[{{"coding":[{{"system":"http://hl7.org/fhir/us/core/CodeSystem/us-core-documentreference-category","code":"clinical-note"}}]}}],"type":{{"text":"Progress note"}},"date":"2026-08-12T12:05:00+00:00","description":"Office visit note","content":[{{"attachment":{{"contentType":"text/plain; charset=utf-8","data":"{note_b64}"}}}}]}}"#
                 ),
                 &format!(
                     r#"{{"resourceType":"DocumentReference","id":"doc-fax","status":"current","category":[{{"coding":[{{"code":"consult-scan"}}]}}],"type":{{"text":"External consult"}},"date":"2026-08-10T09:00:00+00:00","description":"Outside cardiology fax","content":[{{"attachment":{{"contentType":"text/plain; charset=utf-8","data":"{doc_b64}"}}}}]}}"#
@@ -142,7 +142,7 @@ async fn synthetic_chart_files_every_fhir_row_and_routes_unmapped_kinds_to_other
     }
 
     let source = SyntheticCharts::open(&bank);
-    let patient = source.patient("MRN-FHIR-1").await.unwrap();
+    let patient = source.patient("pat-1").await.unwrap();
     let records = source.records(&patient, "pw-elena").await.unwrap();
     assert_eq!(
         records.len(),
@@ -189,7 +189,7 @@ async fn synthetic_chart_files_every_fhir_row_and_routes_unmapped_kinds_to_other
         ("synthetic-charts/Observation/obs-img", Bucket::Results),
         ("synthetic-charts/Observation/obs-vital", Bucket::Vitals),
         ("synthetic-charts/Observation/obs-soc", Bucket::History),
-        ("synthetic-charts/Observation/obs-survey", Bucket::Forms),
+        ("synthetic-charts/Observation/obs-survey", Bucket::Other),
         ("synthetic-charts/Observation/obs-exam", Bucket::Other),
         ("synthetic-charts/Observation/obs-nocat", Bucket::Other),
         ("synthetic-charts/DocumentReference/doc-note", Bucket::Notes),
@@ -260,7 +260,7 @@ async fn saved_record_equals_source_bytes_and_absent_parts_stay_absent() {
     // Deliberate irregular spacing, field ordering, and exact precision to prove
     // zero re-serialization or normalization of source bytes, dates, or status.
     let raw_patient = r#"{"resourceType":"Patient",  "id":"MRN-FID-1","name":[{"family":"Chen","given":["David"]}],"birthDate":"1965-09"}"#;
-    let raw_versioned_lab = r#"{"resourceType":"Observation" , "id":"k-1", "meta":{"versionId":"v7"}, "status":"preliminary", "category":[{"coding":[{"code":"laboratory"}]}], "code":{"coding":[{"system":"http://loinc.org","code":"2823-3","display":"Potassium [Moles/volume] in Serum or Plasma"}]}, "effectiveDateTime":"2026-08-19T07:42:11.120-04:00", "valueQuantity":{"value":4.10,"unit":"mmol/L"}}"#;
+    let raw_versioned_lab = r#"{"resourceType":"Observation" , "id":"k-1", "meta":{"versionId":"v7"}, "status":"preliminary", "category":[{"coding":[{"system":"http://terminology.hl7.org/CodeSystem/observation-category","code":"laboratory"}]}], "code":{"coding":[{"system":"http://loinc.org","code":"2823-3","display":"Potassium [Moles/volume] in Serum or Plasma"}]}, "effectiveDateTime":"2026-08-19T07:42:11.120-04:00", "valueQuantity":{"value":4.10,"unit":"mmol/L"}}"#;
     let raw_sparse_unmapped = r#"{"resourceType":"Basic","id":"sparse-1"}"#;
 
     fs::write(chart.join("Patient.ndjson"), format!("{raw_patient}\n")).unwrap();
@@ -341,18 +341,15 @@ async fn saved_record_equals_source_bytes_and_absent_parts_stay_absent() {
 
 #[test]
 fn multi_category_fhir_records_and_attachment_edge_cases_file_faithfully() {
-    use local_product::physician_sources::adapter::{
-        FHIR_R4_TABLE, RecordFilingError, file_json_record,
-    };
+    use local_product::physician_sources::adapter::file_fhir_record;
 
     // Multi-category DocumentReference with local LOINC code first and `clinical-note` second
     // files into Bucket::Notes with uppercase MIME type `TEXT/PLAIN; charset=UTF-8`.
     let note_b64 = base64::engine::general_purpose::STANDARD.encode("Follow-up note body.");
     let multi_cat_note = format!(
-        r#"{{"resourceType":"DocumentReference","id":"doc-multi","status":"current","category":[{{"coding":[{{"system":"http://loinc.org","code":"11506-3"}}]}},{{"coding":[{{"code":"clinical-note"}}]}}],"content":[{{"attachment":{{"contentType":"TEXT/PLAIN; charset=UTF-8","data":"{note_b64}"}}}}]}}"#
+        r#"{{"resourceType":"DocumentReference","id":"doc-multi","status":"current","category":[{{"coding":[{{"system":"http://loinc.org","code":"11506-3"}}]}},{{"coding":[{{"system":"http://hl7.org/fhir/us/core/CodeSystem/us-core-documentreference-category","code":"clinical-note"}}]}}],"content":[{{"attachment":{{"contentType":"TEXT/PLAIN; charset=UTF-8","data":"{note_b64}"}}}}]}}"#
     );
-    let filed_note =
-        file_json_record(&FHIR_R4_TABLE, "pw-multi", "ehr", &multi_cat_note, None).unwrap();
+    let filed_note = file_fhir_record("pw-multi", "ehr", &multi_cat_note, None).unwrap();
     let note_env = filed_note.envelope.as_ref().unwrap();
     assert_eq!(note_env.bucket, Bucket::Notes);
     assert_eq!(
@@ -366,9 +363,8 @@ fn multi_category_fhir_records_and_attachment_edge_cases_file_faithfully() {
     assert_eq!(filed_note.readable_parts[0].text, "Follow-up note body.");
 
     // Multi-coded Observation category with vendor code first and `laboratory` second files into Bucket::Results.
-    let multi_cat_obs = r#"{"resourceType":"Observation","id":"obs-multi","status":"final","category":[{"coding":[{"code":"local-chem"},{"code":"laboratory"}]}],"code":{"text":"Sodium"}}"#;
-    let filed_obs =
-        file_json_record(&FHIR_R4_TABLE, "pw-multi", "ehr", multi_cat_obs, None).unwrap();
+    let multi_cat_obs = r#"{"resourceType":"Observation","id":"obs-multi","status":"final","category":[{"coding":[{"code":"local-chem"},{"system":"http://terminology.hl7.org/CodeSystem/observation-category","code":"laboratory"}]}],"code":{"text":"Sodium"}}"#;
+    let filed_obs = file_fhir_record("pw-multi", "ehr", multi_cat_obs, None).unwrap();
     let obs_env = filed_obs.envelope.as_ref().unwrap();
     assert_eq!(obs_env.bucket, Bucket::Results);
     assert_eq!(
@@ -380,22 +376,19 @@ fn multi_category_fhir_records_and_attachment_edge_cases_file_faithfully() {
     );
 
     // Attachment with contentType `text/plain` and absent `data` (and no external URL) does NOT synthesize an empty ReadablePart.
-    let metadata_only_doc = r#"{"resourceType":"DocumentReference","id":"doc-nodata","status":"current","category":[{"coding":[{"code":"clinical-note"}]}],"content":[{"attachment":{"contentType":"text/plain"}}]}"#;
-    let filed_nodata =
-        file_json_record(&FHIR_R4_TABLE, "pw-multi", "ehr", metadata_only_doc, None).unwrap();
+    let metadata_only_doc = r#"{"resourceType":"DocumentReference","id":"doc-nodata","status":"current","category":[{"coding":[{"system":"http://hl7.org/fhir/us/core/CodeSystem/us-core-documentreference-category","code":"clinical-note"}]}],"content":[{"attachment":{"contentType":"text/plain"}}]}"#;
+    let filed_nodata = file_fhir_record("pw-multi", "ehr", metadata_only_doc, None).unwrap();
     assert!(
         filed_nodata.readable_parts.is_empty(),
         "absent attachment.data must not synthesize an empty ReadablePart"
     );
 
-    // Attachment pointing only to an external `url` without inline `data` fails explicitly.
+    // A valid external attachment does not make the parent record inadmissible.
     let external_url_doc = r#"{"resourceType":"DocumentReference","id":"doc-url","status":"current","content":[{"attachment":{"contentType":"text/plain","url":"https://ehr.example/Binary/99"}}]}"#;
-    let err =
-        file_json_record(&FHIR_R4_TABLE, "pw-multi", "ehr", external_url_doc, None).unwrap_err();
-    assert!(
-        matches!(err, RecordFilingError::ExternalAttachment { .. }),
-        "expected ExternalAttachment error, got {err:?}"
-    );
+    let external = file_fhir_record("pw-multi", "ehr", external_url_doc, None)
+        .expect("an unread attachment must not discard its parent record");
+    assert_eq!(external.content, external_url_doc);
+    assert!(external.readable_parts.is_empty());
 }
 
 #[tokio::test]
@@ -418,13 +411,13 @@ async fn source_tools_return_bucket_kind_and_dated_roles_and_filter_by_bucket() 
     .unwrap();
     fs::write(
         chart.join("Observation.ndjson"),
-        r#"{"resourceType":"Observation","id":"obs-20","meta":{"versionId":"1"},"status":"final","category":[{"coding":[{"code":"laboratory"}]}],"code":{"coding":[{"system":"http://loinc.org","code":"2823-3","display":"Potassium"}],"text":"Potassium"},"effectiveDateTime":"2026-08-10T08:30:00Z","issued":"2026-08-10T11:00:00Z"}"#.to_owned() + "\n",
+        r#"{"resourceType":"Observation","id":"obs-20","meta":{"versionId":"1"},"status":"final","category":[{"coding":[{"system":"http://terminology.hl7.org/CodeSystem/observation-category","code":"laboratory"}]}],"code":{"coding":[{"system":"http://loinc.org","code":"2823-3","display":"Potassium"}],"text":"Potassium"},"effectiveDateTime":"2026-08-10T08:30:00Z","issued":"2026-08-10T11:00:00Z"}"#.to_owned() + "\n",
     )
     .unwrap();
     fs::write(
         chart.join("DocumentReference.ndjson"),
         format!(
-            r#"{{"resourceType":"DocumentReference","id":"note-30","meta":{{"versionId":"1"}},"status":"current","category":[{{"coding":[{{"code":"clinical-note"}}]}}],"type":{{"text":"Progress note"}},"date":"2026-08-11T15:00:00Z","description":"Primary care follow-up","content":[{{"attachment":{{"contentType":"text/plain; charset=utf-8","data":"{note_b64}"}}}}]}}"#
+            r#"{{"resourceType":"DocumentReference","id":"note-30","meta":{{"versionId":"1"}},"status":"current","category":[{{"coding":[{{"system":"http://hl7.org/fhir/us/core/CodeSystem/us-core-documentreference-category","code":"clinical-note"}}]}}],"type":{{"text":"Progress note"}},"date":"2026-08-11T15:00:00Z","description":"Primary care follow-up","content":[{{"attachment":{{"contentType":"text/plain; charset=utf-8","data":"{note_b64}"}}}}]}}"#
         ) + "\n",
     )
     .unwrap();
@@ -632,10 +625,10 @@ async fn refreshing_pre_table_synthetic_workspace_reconciles_unprefixed_ids_with
     fs::create_dir_all(&chart).unwrap();
 
     let patient_line = r#"{"resourceType":"Patient","id":"MRN-UPGRADE-1","meta":{"versionId":"1"},"name":[{"family":"Vance","given":["Clara"]}],"birthDate":"1975-06-14"}"#;
-    let obs_v1_line = r#"{"resourceType":"Observation","id":"obs-k1","meta":{"versionId":"1"},"status":"preliminary","category":[{"coding":[{"code":"laboratory"}]}],"code":{"text":"Potassium 6.4 hemolyzed"},"effectiveDateTime":"2026-08-12T08:00:00Z"}"#;
+    let obs_v1_line = r#"{"resourceType":"Observation","id":"obs-k1","meta":{"versionId":"1"},"status":"preliminary","category":[{"coding":[{"system":"http://terminology.hl7.org/CodeSystem/observation-category","code":"laboratory"}]}],"code":{"text":"Potassium 6.4 hemolyzed"},"effectiveDateTime":"2026-08-12T08:00:00Z"}"#;
     let note_b64 = base64::engine::general_purpose::STANDARD.encode("Initial visit note.");
     let note_line = format!(
-        r#"{{"resourceType":"DocumentReference","id":"note-1","meta":{{"versionId":"1"}},"status":"current","category":[{{"coding":[{{"code":"clinical-note"}}]}}],"type":{{"text":"Progress note"}},"date":"2026-08-12T09:00:00Z","content":[{{"attachment":{{"contentType":"text/plain; charset=utf-8","data":"{note_b64}"}}}}]}}"#
+        r#"{{"resourceType":"DocumentReference","id":"note-1","meta":{{"versionId":"1"}},"status":"current","category":[{{"coding":[{{"system":"http://hl7.org/fhir/us/core/CodeSystem/us-core-documentreference-category","code":"clinical-note"}}]}}],"type":{{"text":"Progress note"}},"date":"2026-08-12T09:00:00Z","content":[{{"attachment":{{"contentType":"text/plain; charset=utf-8","data":"{note_b64}"}}}}]}}"#
     );
 
     fs::write(chart.join("Patient.ndjson"), format!("{patient_line}\n")).unwrap();
@@ -715,7 +708,7 @@ async fn refreshing_pre_table_synthetic_workspace_reconciles_unprefixed_ids_with
     );
 
     // Update Observation on disk with a corrected potassium value and refresh again.
-    let obs_v2_line = r#"{"resourceType":"Observation","id":"obs-k1","meta":{"versionId":"2"},"status":"corrected","category":[{"coding":[{"code":"laboratory"}]}],"code":{"text":"Potassium 4.1 corrected"},"effectiveDateTime":"2026-08-12T08:00:00Z"}"#;
+    let obs_v2_line = r#"{"resourceType":"Observation","id":"obs-k1","meta":{"versionId":"2"},"status":"corrected","category":[{"coding":[{"system":"http://terminology.hl7.org/CodeSystem/observation-category","code":"laboratory"}]}],"code":{"text":"Potassium 4.1 corrected"},"effectiveDateTime":"2026-08-12T08:00:00Z"}"#;
     fs::write(chart.join("Observation.ndjson"), format!("{obs_v2_line}\n")).unwrap();
     let corrected_records = source.records(&patient, &ws).await.unwrap();
     let corrected = store
@@ -831,4 +824,138 @@ async fn refreshing_pre_table_synthetic_workspace_reconciles_unprefixed_ids_with
     assert_eq!(v1_json["results"][0]["content"], obs_v1_line);
 
     let _ = fs::remove_dir_all(&bank);
+}
+
+#[test]
+fn fhir_classification_uses_namespace_and_context_not_array_order() {
+    use local_product::physician_sources::adapter::file_fhir_record;
+    let cases = [
+        (
+            json!({"resourceType":"Observation", "id":"foreign-category", "status":"final",
+            "category":[{"coding":[{"system":"https://example.test/local", "code":"laboratory"}]}],
+            "code":{"text":"Local observation"}}),
+            Bucket::Other,
+        ),
+        (
+            json!({"resourceType":"Observation", "id":"conflict", "status":"final",
+            "category":[{"coding":[
+                {"system":"http://terminology.hl7.org/CodeSystem/observation-category", "code":"vital-signs"},
+                {"system":"http://terminology.hl7.org/CodeSystem/observation-category", "code":"laboratory"}]}],
+            "code":{"coding":[{"system":"http://loinc.org", "code":"2708-6"}]}}),
+            Bucket::Other,
+        ),
+        (
+            json!({"resourceType":"Observation", "id":"temperature", "status":"final",
+            "code":{"coding":[{"system":"http://loinc.org", "code":"8310-5"}]},
+            "valueQuantity":{"value":37,"unit":"Cel"}}),
+            Bucket::Vitals,
+        ),
+        (
+            json!({"resourceType":"Observation", "id":"blood-gas", "status":"final",
+            "category":[{"coding":[{"system":"http://terminology.hl7.org/CodeSystem/observation-category", "code":"laboratory"}]}],
+            "code":{"coding":[{"system":"http://loinc.org", "code":"2708-6"}]}}),
+            Bucket::Results,
+        ),
+    ];
+    for (mut resource, bucket) in cases {
+        for _ in 0..2 {
+            let raw = resource.to_string();
+            let filed = file_fhir_record("mapping", "ehr", &raw, None).unwrap();
+            assert_eq!(filed.envelope.unwrap().bucket, bucket, "{}", resource["id"]);
+            assert_eq!(filed.content, raw);
+            if let Some(codings) = resource
+                .pointer_mut("/category/0/coding")
+                .and_then(Value::as_array_mut)
+            {
+                codings.reverse();
+            }
+        }
+    }
+}
+
+#[tokio::test]
+async fn a_bad_fhir_item_does_not_discard_usable_chart_records() {
+    use local_product::physician_sources::SourcePullOutput;
+    let bank = temp_bank_dir("partial-items");
+    let chart = bank.join("patients/mixed");
+    fs::create_dir_all(&chart).unwrap();
+    fs::write(chart.join("Patient.ndjson"), r#"{"resourceType":"Patient","id":"mixed","name":[{"given":["Fixture"],"family":"Patient"}],"birthDate":"1980-01-01","gender":"unknown"}"#).unwrap();
+    fs::write(chart.join("Observation.ndjson"), concat!(
+        "{\"resourceType\":\"Basic\",\"id\":\"unfamiliar\",\"code\":{\"text\":\"Unfamiliar retained evidence\"}}\n",
+        "{not-json}\n",
+        "{\"resourceType\":\"Observation\",\"id\":\"temperature\",\"status\":\"final\",\"code\":{\"coding\":[{\"system\":\"http://loinc.org\",\"code\":\"8310-5\"}]}}\n"
+    )).unwrap();
+    let source = SyntheticCharts::open(&bank);
+    let pull = source.pull_patient("practice", "mixed", "workspace").await;
+    let SourcePullOutput::Partial {
+        records,
+        failed_parts,
+        ..
+    } = pull
+    else {
+        panic!("one malformed item must produce partial delivery, got {pull:?}");
+    };
+    assert_eq!(records.len(), 3, "patient and both valid records survive");
+    assert_eq!(failed_parts.len(), 1);
+    assert!(failed_parts[0].reason.contains("JSON"));
+    assert_eq!(
+        records
+            .iter()
+            .find(|r| r.candidate_id.ends_with("/unfamiliar"))
+            .unwrap()
+            .envelope
+            .as_ref()
+            .unwrap()
+            .bucket,
+        Bucket::Other
+    );
+    fs::remove_dir_all(bank).unwrap();
+}
+
+#[tokio::test]
+#[ignore = "requires explicit local Postgres"]
+async fn corrected_filing_of_unchanged_bytes_keeps_the_previous_revision_readable() {
+    use local_product::physician_sources::adapter::file_fhir_record;
+    let store = Store::connect(&std::env::var("PHYSICIAN_RUNTIME_TEST_DATABASE_URL").unwrap())
+        .await
+        .unwrap();
+    store.migrate().await.unwrap();
+    let ws = format!("mapping-correction-{}", uuid::Uuid::new_v4());
+    let raw = r#"{"resourceType":"Observation","id":"temperature","code":{"coding":[{"system":"http://loinc.org","code":"8310-5"}]},"valueQuantity":{"value":37,"unit":"Cel"}}"#;
+    let corrected = file_fhir_record(&ws, "ehr", raw, None).unwrap();
+    // The old filer used only the raw hash as revision and did not recognize this code.
+    let mut earlier = corrected.clone();
+    earlier.revision = earlier.sha256.clone();
+    earlier.envelope.as_mut().unwrap().bucket = Bucket::Other;
+    store.record_source(&earlier).await.unwrap();
+    let old = store.sources(&ws).await.unwrap();
+    store
+        .record_source(&corrected)
+        .await
+        .expect("a mapping correction must not conflict with the retained earlier revision");
+    let current = store.sources(&ws).await.unwrap();
+    assert_eq!(current.sources.len(), 1);
+    assert_eq!(
+        current.sources[0].envelope.as_ref().unwrap().bucket,
+        Bucket::Vitals
+    );
+    assert_ne!(current.sources[0].revision, earlier.revision);
+    let retained = store.sources_at(&ws, old.version).await.unwrap();
+    assert_eq!(retained.sources, vec![earlier]);
+    assert_eq!(retained.sources[0].content, raw);
+}
+
+#[test]
+fn appointment_patient_participant_must_match_acquisition_scope() {
+    let raw = r#"{"resourceType":"Appointment","id":"appointment","participant":[{"actor":{"reference":"Practitioner/doctor"}},{"actor":{"reference":"Patient/someone-else"}}]}"#;
+    let result = physician_sample::synthetic_chart_fhir::patient_source_revision(
+        "workspace",
+        "ehr",
+        "patient",
+        raw,
+    );
+    assert!(
+        result.is_err(),
+        "an appointment for another patient must not enter this chart"
+    );
 }

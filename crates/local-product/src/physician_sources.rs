@@ -6,6 +6,8 @@
 /// Declared adapter mapping tables and shared record filing.
 pub mod adapter;
 mod chart;
+/// Hint Chrome capture extraction into shared records and delivery outcomes.
+pub mod hint;
 /// Shared domain types for chart buckets, filed envelopes, and pull outcomes.
 pub mod types;
 pub use chart::{
@@ -742,6 +744,7 @@ mod tests {
             codes: Vec::new(),
             title: Some("Potassium".into()),
             native_link: None,
+            unavailable_parts: Vec::new(),
         });
         let refresh = SourceRefresh::between(0, &[], 1, std::slice::from_ref(&current));
         let exact = exact_read(

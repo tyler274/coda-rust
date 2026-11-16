@@ -1,0 +1,369 @@
+{
+  "request": {
+    "patient_id": "sbx-pat-QItKCySDsdET"
+  },
+  "sections": [
+    {
+      "section": "diagnoses",
+      "state": "done",
+      "result": {
+        "body": {
+          "items": [
+            {
+              "body": {
+                "ident": "diagnosis-1",
+                "patientId": "sbx-pat-QItKCySDsdET",
+                "name": "FICTIONAL COND-101",
+                "description": "FICTIONAL COND-101",
+                "icd10CodeId": {
+                  "code": "I10",
+                  "ident": "lookup-1",
+                  "description": "Hypertension"
+                }
+              },
+              "unavailable_parts": []
+            },
+            {
+              "body": {
+                "patientId": "sbx-pat-QItKCySDsdET",
+                "description": "Missing native identity"
+              },
+              "unavailable_parts": []
+            },
+            {
+              "body": {
+                "ident": "foreign-diagnosis",
+                "patientId": "another-patient",
+                "name": "Must not enter this chart"
+              },
+              "unavailable_parts": []
+            }
+          ],
+          "failed_parts": []
+        }
+      }
+    },
+    {
+      "section": "allergies",
+      "state": "done",
+      "result": {
+        "body": {
+          "items": [
+            {
+              "body": {
+                "ident": "allergy-1",
+                "patientId": "sbx-pat-QItKCySDsdET",
+                "name": "Penicillin",
+                "startDate": "2020",
+                "active": false,
+                "icd10CodeId": {
+                  "code": "Z88.0",
+                  "description": "Source allergy label"
+                }
+              },
+              "unavailable_parts": []
+            }
+          ],
+          "failed_parts": []
+        }
+      }
+    },
+    {
+      "section": "medications",
+      "state": "done",
+      "result": {
+        "body": {
+          "items": [
+            {
+              "body": {
+                "ident": "medication-1",
+                "patientId": "sbx-pat-QItKCySDsdET",
+                "productName": "Lisinopril",
+                "status": "ACTIVE",
+                "start": "2026-01-01",
+                "sigText": "Source directions",
+                "unexpected": "retained"
+              },
+              "unavailable_parts": []
+            }
+          ],
+          "failed_parts": []
+        }
+      }
+    },
+    {
+      "section": "freeform-medications",
+      "state": "done",
+      "result": {
+        "body": {
+          "items": [],
+          "failed_parts": []
+        }
+      }
+    },
+    {
+      "section": "surgeries",
+      "state": "done",
+      "result": {
+        "body": {
+          "items": [
+            {
+              "body": {
+                "ident": "surgery-1",
+                "patientId": "sbx-pat-QItKCySDsdET",
+                "name": "Source surgery entry",
+                "date": "2019",
+                "description": "Native lifecycle unspecified"
+              },
+              "unavailable_parts": []
+            }
+          ],
+          "failed_parts": []
+        }
+      }
+    },
+    {
+      "section": "social-history",
+      "state": "done",
+      "result": {
+        "body": {
+          "items": [
+            {
+              "body": {
+                "ident": "social-1",
+                "patientId": "sbx-pat-QItKCySDsdET",
+                "question": "Tobacco use",
+                "answers": [
+                  {
+                    "ident": "answer-1",
+                    "answer": "Never",
+                    "patientId": "sbx-pat-QItKCySDsdET"
+                  }
+                ],
+                "startDate": "2020"
+              },
+              "unavailable_parts": []
+            }
+          ],
+          "failed_parts": []
+        }
+      }
+    },
+    {
+      "section": "family-history",
+      "state": "done",
+      "result": {
+        "body": {
+          "items": [
+            {
+              "body": {
+                "ident": "family-1",
+                "patientId": "sbx-pat-QItKCySDsdET",
+                "diagnosis": "Diabetes",
+                "family": [
+                  "Mother"
+                ],
+                "icd10Code": {
+                  "code": "E11.9",
+                  "description": "Source family condition"
+                }
+              },
+              "unavailable_parts": []
+            }
+          ],
+          "failed_parts": []
+        }
+      }
+    },
+    {
+      "section": "vaccines",
+      "state": "done",
+      "result": {
+        "body": {
+          "items": [
+            {
+              "body": {
+                "ident": "vaccine-1",
+                "patientId": "sbx-pat-QItKCySDsdET",
+                "name": "Influenza",
+                "date": "2025-10-01",
+                "cvxCode": "140",
+                "doseNumber": 1
+              },
+              "unavailable_parts": []
+            }
+          ],
+          "failed_parts": []
+        }
+      }
+    },
+    {
+      "section": "general",
+      "state": "done",
+      "result": {
+        "body": {
+          "items": [
+            {
+              "body": {
+                "ident": "general-1",
+                "name": "Unclassified evidence",
+                "details": "Retained native general detail",
+                "unexpected": {
+                  "value": "keep me"
+                }
+              },
+              "unavailable_parts": []
+            },
+            {
+              "body": {
+                "ident": "wrong-patient",
+                "patientId": "another-patient",
+                "name": "Must not enter this chart"
+              },
+              "unavailable_parts": []
+            }
+          ],
+          "failed_parts": []
+        }
+      }
+    },
+    {
+      "section": "patient",
+      "state": "done",
+      "result": {
+        "body": {
+          "items": [
+            {
+              "body": {
+                "id": "sbx-pat-QItKCySDsdET",
+                "first_name": "Fictional",
+                "last_name": "Patient",
+                "dob": "1980-01-01",
+                "default_source": "opaque",
+                "clinical": {
+                  "autopay": "clinical sibling"
+                }
+              },
+              "unavailable_parts": []
+            }
+          ],
+          "failed_parts": []
+        }
+      }
+    },
+    {
+      "section": "notes",
+      "state": "done",
+      "result": {
+        "body": {
+          "items": [
+            {
+              "body": {
+                "noteId": "note-1",
+                "patientId": "sbx-pat-QItKCySDsdET",
+                "noteType": "NOTE",
+                "noteVersion": 2,
+                "recordVersion": 9,
+                "eventTimestamp": "2026-08-01",
+                "status": "SIGNED",
+                "data": {
+                  "text": "Temperature 37 and BP 120/80 mentioned in note prose.",
+                  "formattedText": "<p>Detail-only evidence retained</p>"
+                }
+              },
+              "unavailable_parts": []
+            },
+            {
+              "body": {
+                "noteId": "vital-1",
+                "patientId": "sbx-pat-QItKCySDsdET",
+                "noteType": "VITALS",
+                "eventTimestamp": "2026-08-02",
+                "data": {
+                  "systolic": 120,
+                  "diastolic": 80,
+                  "heartRate": 72,
+                  "formattedText": "<p>Detail-only evidence retained</p>"
+                }
+              },
+              "unavailable_parts": []
+            },
+            {
+              "body": {
+                "noteId": "unknown-1",
+                "patientId": "sbx-pat-QItKCySDsdET",
+                "noteType": "UNFAMILIAR",
+                "data": {
+                  "text": "New native subtype"
+                }
+              },
+              "unavailable_parts": [
+                {
+                  "part": "full note detail",
+                  "reason": "read_failed"
+                }
+              ]
+            }
+          ],
+          "failed_parts": [
+            {
+              "part": "unknown-1: full note detail",
+              "reason": "read_failed"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "section": "tasks",
+      "state": "done",
+      "result": {
+        "body": {
+          "items": [
+            {
+              "body": {
+                "ident": "task-1",
+                "patientId": "sbx-pat-QItKCySDsdET",
+                "text": "Review retained records",
+                "status": "COMPLETED",
+                "dueOn": "2026-12-01"
+              },
+              "unavailable_parts": []
+            }
+          ],
+          "failed_parts": [
+            {
+              "part": "tasks",
+              "reason": "page made no progress toward the reported total"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "section": "appointments",
+      "state": "done",
+      "result": {
+        "body": {
+          "items": [],
+          "failed_parts": [
+            {
+              "part": "appointment date range",
+              "reason": "native chart window 2019-01-01T00:00:00.000Z through 2028-11-15T23:59:59.999Z; appointments outside it were not acquired"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "section": "files",
+      "state": "done",
+      "result": {
+        "body": {
+          "items": [],
+          "failed_parts": []
+        }
+      }
+    }
+  ]
+}

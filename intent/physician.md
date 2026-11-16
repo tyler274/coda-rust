@@ -305,12 +305,12 @@ Everything Coda reads in the MVP is read only.
 
 Every EHR names and shapes its records in its own way. If each part of Coda had to learn each EHR, every new practice would mean changes everywhere. So Coda files every patient record into one fixed set of buckets, and search, reviews, visit preparation and citations find records through the buckets. A new source then needs only its own adapter. The adapter says where each record goes and never changes what the record says, so nothing clinical is lost or guessed on the way in.
 
-Each adapter files every record it reads into one bucket. The bucket comes from the source's own name for that kind of record. A record whose kind the adapter doesn't know goes to Other and is never dropped. One record has one bucket, and Coda never splits a record to file its parts. The bucket only says where to find a record. Its status, dates, codes and values stay exactly as the source sent them, and what they mean is the model's judgment. The buckets are a filing index, not a schema. They limit nothing the model may read or conclude.
+Each adapter files every record it reads into one bucket. The bucket comes from the source's declared record kind: its documented endpoint, type, subtype, category or coded name for the record. A coded name identifies what the record is, such as a temperature observation; it does not interpret its value. A record whose kind the adapter doesn't know goes to Other and is never dropped. One record has one bucket, and Coda never splits a record to file its parts. The bucket only says where to find a record. Its status, dates, codes and values stay exactly as the source sent them, and what they mean is the model's judgment. The buckets are a filing index, not a schema. They limit nothing the model may read or conclude.
 
 | Bucket | What belongs in it |
 |---|---|
 | Patient | Who the patient is: name, birth date, sex, identifiers and contact details. |
-| Problems | Diagnoses and health concerns on the problem list. |
+| Problems | Source diagnoses and health concerns, with their clinical and verification states. |
 | Medications | Medications prescribed, dispensed or reported, including stopped ones. |
 | Allergies | Allergies and intolerances, including a record that none are known. |
 | Results | Results of tests: laboratory results, and imaging, pathology and other diagnostic reports. |
@@ -318,15 +318,21 @@ Each adapter files every record it reads into one bucket. The bucket comes from 
 | Notes | Notes written into the record: visit notes, phone notes, other chart notes and notes a patient saved. |
 | Documents | Files kept in the chart: scans, faxes, letters and outside records. |
 | Visits | Appointments and encounters. |
-| Procedures | Procedures and surgeries that were done. |
-| Immunizations | Vaccines given or reported. |
+| Procedures | Procedure and surgery records, including explicit not-done states. |
+| Immunizations | Vaccination records, including explicit not-done states. |
 | Orders | Orders and referrals. |
 | History | Family, social, past medical and past surgical history. |
 | Forms | Forms and questionnaires that were filled in. |
 | Messages | Messages between the patient and the practice. |
 | Other | Any kind of record that has no bucket here. |
 
-A record is filed by what its source calls it, never by what it contains. Where a source labels a record with a category, the category is part of the source's name for it. A lab result that arrives as a scanned file is a document. A new bucket is added here first, and adapters follow. A connected patient's Duet data comes through its own adapter. Each item is filed by what Duet calls it and keeps its origin.
+The [source mapping rules](record-mapping.md) declare supported Hint and FHIR dispositions. A record is filed by its declared identity, never by interpreting its clinical values or narrative. Codes are matched within their coding system and source context; a display label or a bare code does not establish equivalence across systems. The adapter applies explicit, source-specific precedence: a supported specific subtype or coded identity can refine a broad category, and a specific mapping precedes a general kind fallback. Overlapping mappings have a declared disposition; neither payload order nor accidental table order chooses the bucket. All supplied categories and codings remain in the retained record. The native record ID and retained history are independent of filing, so changing a bucket does not create a new record.
+
+A note remains a note when its prose mentions measurements. A lab result that arrives as a scanned file is a document. A documented source subtype can identify a different record kind within a shared endpoint. Runtime filing uses declared adapter rules; it does not call a model to choose a bucket. A new bucket is added here first, and adapters follow. A connected patient's Duet data comes through its own adapter. Each item is filed by what Duet calls it and keeps its origin.
+
+The model finds, reads and cites evidence through the same tools for every source. Reads expose retained native content and any decoded parts, with their source and version. Source-specific bodies can keep their own structure; they need no universal clinical rewrite. A failed detail read or unreadable attachment does not erase a usable parent record, and the read says which content is unavailable. Successfully acquiring the records refreshes the source even when retained attachment content is unreadable; failed item acquisition, incomplete collections and failed detail acquisition remain partial reads.
+
+Unsupported or unresolved classifications remain whole in Other. A malformed, unidentified or misbound item is reported as failed while valid siblings proceed through partial delivery; Other never conceals an admission or acquisition failure.
 
 Every source shows when its records were last refreshed, and one source's failure never blocks the others.
 
@@ -368,7 +374,7 @@ How it is built today:
 
 **Reliability.** If a startup piece can't start, the server still starts, the piece retries, and readiness reports it truthfully. Once a practice holds real data, storage changes never refuse to start or wipe data, and permanent records are never rewritten to add fields. Until then the cutover is clean, as the [harness](harness.md) says. Chart answers work without the literature service.
 
-**Sources.** Each source has its own adapter that translates its format into Coda's common evidence, and new sources come as new adapters. An adapter's mapping is a declared table. For each kind of record the source has, the table names its bucket, the role of each date field, and where its status, codes and title are. Every record carries the same envelope: its bucket, the source's own name for its kind, its source, ID and version, its dates with their role and the source's field name, its status in the source's words, its codes, a title, and the exact record with its hash, readable text and link into the source. A record with no version from its source is versioned by its content. Search uses the envelope, and citations point into the exact record. Sources that share a format share a table. Synthetic patients come in the same way, through their own adapter. Reads happen automatically for authorized patient work.
+**Sources.** Each source has its own adapter that translates its format into Coda's common evidence under the [filing and reading rules](#where-codas-information-comes-from). The adapter owns acquisition and source-specific extraction; common envelope construction and retained revisions have one shared owner. Adapters reuse the rules of a shared format and declare mappings for source-local kinds and coding systems. The common envelope identifies the bucket, source kind, source, native ID and version, and exposes supplied dates with their roles and field names, status metadata, codes, title and source link for locating evidence. Index fields do not replace the whole retained record or its full set of source facts. The retained representation carries its hash and any decoded readable parts. A record with no version from its source is versioned by its content. Search uses the envelope, and citations point into the retained record. Synthetic patients come in the same way, through their own adapter. Reads happen automatically for authorized patient work.
 
 **Not in Chords.**
 

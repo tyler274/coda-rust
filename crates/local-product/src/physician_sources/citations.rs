@@ -1040,6 +1040,7 @@ mod tests {
         let returned = |candidate: &str, label: &str| {
             let receipt = ReadReceipt {
                 results: vec![RecordReceipt::Passage {
+                    unavailable_parts: Vec::new(),
                     reference: candidate.into(),
                     revision: "r".into(),
                     part: 1,

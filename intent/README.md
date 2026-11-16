@@ -11,6 +11,8 @@ These specs say what we're building and why. They are the source of truth for wh
    - `connected-care.md`: how a Duet patient and a Coda practice connect.
    - `harness.md`: the shared agent loop. It stays outside product behavior and meets the products only through tools and events.
 
+[Source record mapping](record-mapping.md) declares the physician product’s source-specific filing rules under its shared evidence contract.
+
 Each spec has the same shape: what the product is and the point of it, principles, concepts, journeys, rules and scope. Scope says what exists now, what the product does not have, and what is parked: work nobody has started, which we spec when we pick it up. A spec holds what is decided. An undecided point lives in the Linear ticket that needs it. Nothing here is owned by a person.
 
 **Changing them.** Edit the line so it says what's true now. When an undecided point is answered, the answer goes into every spec it touches. A Linear ticket, doc or website line that disagrees with a spec gets corrected at its source.

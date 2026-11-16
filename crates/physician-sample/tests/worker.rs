@@ -1857,7 +1857,7 @@ async fn hosting_cancels_a_chat_whose_claim_has_been_replaced() {
 #[tokio::test]
 async fn a_scripted_finish_cites_the_record_the_worker_read() {
     use local_product::physician_sources::SourcePatient;
-    use local_product::physician_sources::adapter::{FHIR_R4_TABLE, file_json_record};
+    use local_product::physician_sources::adapter::file_fhir_record;
     use local_product::runtime::sources::SourcePull;
 
     let _guard = lock().lock().await;
@@ -1878,7 +1878,7 @@ async fn a_scripted_finish_cites_the_record_the_worker_read() {
     // the script reads it, before any attempt can run.
     running.worker.kill_now();
     let (scope, _) = accept_turn(&running.database.url, &running.store).await;
-    let record = file_json_record(&FHIR_R4_TABLE, &scope.workspace, "ehr", content, None).unwrap();
+    let record = file_fhir_record(&scope.workspace, "ehr", content, None).unwrap();
     let receipt = running
         .store
         .record_chart_with_receipt(

@@ -6,8 +6,8 @@
 use base64::Engine as _;
 use engine::recipe::{Observer, Request};
 use local_product::physician_sources::adapter::{
-    AdapterRow, AdapterTable, AttachmentRule, CategoryMatch, FHIR_R4_TABLE, UnmappedRecordRule,
-    ValueExtractor, file_json_record,
+    AdapterRow, AdapterTable, AttachmentRule, CategoryMatch, UnmappedRecordRule, ValueExtractor,
+    file_fhir_record, file_json_record,
 };
 use local_product::physician_sources::{
     Bucket, DateRole, READ_TOOL, SourcePatient, SourceRevision,
@@ -39,7 +39,7 @@ const EHR: &str = "ehr";
 
 /// One FHIR record filed through the FHIR table, as a pull files it.
 fn filed(workspace: &str, content: &str) -> SourceRevision {
-    file_json_record(&FHIR_R4_TABLE, workspace, EHR, content, None).unwrap()
+    file_fhir_record(workspace, EHR, content, None).unwrap()
 }
 
 /// The version a saved citation names for `record`.
@@ -1817,5 +1817,85 @@ async fn a_steer_keeps_labels_and_refusals_of_the_work() {
     assert_eq!(
         answers[0]["kind"]["finished"]["marks"][0]["source"],
         version(&chat.lab)
+    );
+}
+
+/// A captured unfamiliar Hint subtype remains Other and its native content can
+/// support a saved citation, with the missing full-note detail visible in the read.
+#[tokio::test]
+#[ignore = "requires explicit local Postgres"]
+async fn hint_other_is_cited_from_its_persisted_native_record_with_read_limits() {
+    use local_product::physician_sources::{SourcePullOutput, hint::ChartCapture};
+    use local_product::source_status::PartialDelivery;
+    let chat = Chat::open().await;
+    let capture = json!({"request":{"patient_id":"hint-patient"},"sections":[
+        {"section":"patient","state":"done","result":{"body":{"items":[{"body":{"id":"hint-patient","first_name":"Nadia","last_name":"Okafor"},"unavailable_parts":[]}],"failed_parts":[]}}},
+        {"section":"notes","state":"done","result":{"body":{"items":[{"body":{"noteId":"native-note","patientId":"hint-patient","noteType":"UNFAMILIAR","data":{"text":"Retained unfamiliar clinical evidence"}},"unavailable_parts":[{"part":"full note detail","reason":"full note detail was not acquired"}]}],"failed_parts":[]}}}
+    ]});
+    let SourcePullOutput::Partial {
+        patient,
+        records,
+        failed_parts,
+        succeeded_kinds,
+    } = serde_json::from_value::<ChartCapture>(capture)
+        .unwrap()
+        .file(&chat.scope.workspace, "hint", "hint-patient")
+    else {
+        panic!("bounded capture");
+    };
+    chat.store
+        .record_partial_pull(PartialDelivery {
+            practice_id: &chat.scope.practice,
+            workspace_id: &chat.scope.workspace,
+            source_id: "hint",
+            source_label: "Hint capture",
+            patient: patient.as_ref(),
+            records: &records,
+            failed_parts: &failed_parts,
+            succeeded_kinds: &succeeded_kinds,
+            attempted_at: 1_760_000_000,
+            ticket: None,
+        })
+        .await
+        .unwrap();
+    let record = records
+        .iter()
+        .find(|record| record.candidate_id == "hint/notes/native-note")
+        .unwrap();
+    let mut script = Script::new([
+        vec![read("native", record)],
+        vec![finish(
+            "finish",
+            "The captured evidence is retained [S1].",
+            &[("S1", "Retained unfamiliar clinical evidence")],
+            "The acquired note list; full detail was unavailable [S1].",
+            false,
+        )],
+    ]);
+    chat.attempt(Allowed, &mut script, 10).await.unwrap();
+    assert_eq!(chat.status().await, WorkStatus::Completed);
+    let reads = chat.reads().await;
+    assert_eq!(reads[0]["results"][0]["bucket"], "other");
+    assert!(
+        reads[0]["results"][0]["unavailable_parts"][0]["reason"]
+            .as_str()
+            .unwrap()
+            .contains("full note detail")
+    );
+    let reopened = Store::connect(&std::env::var("PHYSICIAN_RUNTIME_TEST_DATABASE_URL").unwrap())
+        .await
+        .unwrap();
+    let saved = reopened.conversation(&chat.scope).await.unwrap();
+    let messages = serde_json::to_value(saved.messages).unwrap();
+    let answers = assistant(&messages);
+    let mark = &answers[0]["kind"]["finished"]["marks"][0];
+    assert_eq!(mark["source"], version(record));
+    let start = record
+        .content
+        .find("Retained unfamiliar clinical evidence")
+        .unwrap();
+    assert_eq!(
+        mark["place"]["passage"]["spans"],
+        json!([{"part":0,"start":start,"end":start + "Retained unfamiliar clinical evidence".len()}])
     );
 }

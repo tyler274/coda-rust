@@ -2,7 +2,7 @@
 //! finishes: the versioned source store, per-attempt pins, refreshes recorded
 //! on the attempt, and ingestion serialized against publication.
 use super::*;
-use crate::physician_sources::adapter::{FHIR_R4_TABLE, file_json_record};
+use crate::physician_sources::adapter::file_fhir_record;
 use crate::physician_sources::{
     Bucket, ChartPullReceipt, ChartRequest, ChartScope, DateRole, FiledDate, READ_TOOL,
     ReadablePart, RecordDate, RecordVersion, SEARCH_TOOL, SourcePatient, SourceRecordKind,
@@ -1233,9 +1233,8 @@ async fn a_record_missing_from_a_later_pull_stays_saved_and_is_recorded_missing(
 #[ignore = "requires explicit local Postgres"]
 async fn filed_fhir_record_envelope_round_trips_through_postgres_unchanged() {
     let (store, scope) = setup().await;
-    let raw_ndjson = r#"{"resourceType":"Observation" , "id":"potassium-9", "meta":{"versionId":"3"}, "status":"final", "category":[{"coding":[{"code":"laboratory"}]}], "code":{"coding":[{"system":"http://loinc.org","code":"2823-3","display":"Potassium"}]}, "effectiveDateTime":"2026-08-21T06:15:00-04:00"}"#;
-    let filed = file_json_record(
-        &FHIR_R4_TABLE,
+    let raw_ndjson = r#"{"resourceType":"Observation" , "id":"potassium-9", "meta":{"versionId":"3"}, "status":"final", "category":[{"coding":[{"system":"http://terminology.hl7.org/CodeSystem/observation-category","code":"laboratory"}]}], "code":{"coding":[{"system":"http://loinc.org","code":"2823-3","display":"Potassium"}]}, "effectiveDateTime":"2026-08-21T06:15:00-04:00"}"#;
+    let filed = file_fhir_record(
         &scope.workspace,
         "ehr",
         raw_ndjson,
@@ -1287,7 +1286,7 @@ async fn filed_fhir_record_envelope_round_trips_through_postgres_unchanged() {
 async fn table_filed_delivery_reconciles_legacy_unprefixed_aliases_and_keeps_omitted_legacy_records()
  {
     let (store, scope) = setup().await;
-    let raw_lab_v1 = r#"{"resourceType":"Observation","id":"potassium-9","meta":{"versionId":"1"},"status":"preliminary","category":[{"coding":[{"code":"laboratory"}]}],"code":{"text":"Potassium 6.1 hemolyzed"},"effectiveDateTime":"2026-08-21T06:15:00-04:00"}"#;
+    let raw_lab_v1 = r#"{"resourceType":"Observation","id":"potassium-9","meta":{"versionId":"1"},"status":"preliminary","category":[{"coding":[{"system":"http://terminology.hl7.org/CodeSystem/observation-category","code":"laboratory"}]}],"code":{"text":"Potassium 6.1 hemolyzed"},"effectiveDateTime":"2026-08-21T06:15:00-04:00"}"#;
     let raw_med = r#"{"resourceType":"MedicationRequest","id":"med-1","meta":{"versionId":"1"},"status":"active","medicationCodeableConcept":{"text":"Lisinopril 10 mg"},"authoredOn":"2026-08-01"}"#;
     let raw_omitted_note = r#"{"resourceType":"DocumentReference","id":"note-omitted","status":"current","description":"Outside clinic note"}"#;
 
@@ -1333,10 +1332,8 @@ async fn table_filed_delivery_reconciles_legacy_unprefixed_aliases_and_keeps_omi
     assert_eq!(claim_v1.sources_version, 1);
 
     // Upgrade to table-filed records (`ehr/{kind}/{id}`), genuinely omitting `DocumentReference/note-omitted`.
-    let filed_lab_v1 =
-        file_json_record(&FHIR_R4_TABLE, &scope.workspace, "ehr", raw_lab_v1, None).unwrap();
-    let filed_med =
-        file_json_record(&FHIR_R4_TABLE, &scope.workspace, "ehr", raw_med, None).unwrap();
+    let filed_lab_v1 = file_fhir_record(&scope.workspace, "ehr", raw_lab_v1, None).unwrap();
+    let filed_med = file_fhir_record(&scope.workspace, "ehr", raw_med, None).unwrap();
 
     let upgraded = store
         .record_chart_with_receipt(
@@ -1411,9 +1408,8 @@ async fn table_filed_delivery_reconciles_legacy_unprefixed_aliases_and_keeps_omi
     assert_eq!(store.sources(&scope.workspace).await.unwrap().version, 2);
 
     // Subsequent correction updates only the prefixed record, leaving zero stale clinical content.
-    let raw_lab_v2 = r#"{"resourceType":"Observation","id":"potassium-9","meta":{"versionId":"2"},"status":"corrected","category":[{"coding":[{"code":"laboratory"}]}],"code":{"text":"Potassium 4.2 repeat"},"effectiveDateTime":"2026-08-21T06:15:00-04:00"}"#;
-    let filed_lab_v2 =
-        file_json_record(&FHIR_R4_TABLE, &scope.workspace, "ehr", raw_lab_v2, None).unwrap();
+    let raw_lab_v2 = r#"{"resourceType":"Observation","id":"potassium-9","meta":{"versionId":"2"},"status":"corrected","category":[{"coding":[{"system":"http://terminology.hl7.org/CodeSystem/observation-category","code":"laboratory"}]}],"code":{"text":"Potassium 4.2 repeat"},"effectiveDateTime":"2026-08-21T06:15:00-04:00"}"#;
+    let filed_lab_v2 = file_fhir_record(&scope.workspace, "ehr", raw_lab_v2, None).unwrap();
     let corrected = store
         .record_chart_with_receipt(
             &scope.workspace,

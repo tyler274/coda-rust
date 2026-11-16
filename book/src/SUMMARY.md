@@ -13,6 +13,7 @@
 - [Physician site](physician-site.md)
 - [Public site](public-site.md)
 - [Synthetic patients](patient-bank.md)
+- [Recorded adapter verification](record-adapters.md)
 
 # Operations and proof
 

@@ -338,7 +338,7 @@ impl SyntheticCharts {
         Ok(state.effective_mode(source_patient_id))
     }
 
-    fn partial_pull(
+    fn acquire_chart(
         &self,
         source_patient_id: &str,
         workspace: &str,
@@ -382,6 +382,13 @@ impl SyntheticCharts {
         }
         files.sort();
 
+        let mut failed_parts: Vec<FailedPart> = failed_families
+            .iter()
+            .map(|family| FailedPart {
+                part: family.clone(),
+                reason: reason.to_owned(),
+            })
+            .collect();
         let mut succeeded_family_names = BTreeSet::new();
         let mut records = Vec::new();
         for file in files {
@@ -392,28 +399,35 @@ impl SyntheticCharts {
             if failed_families.contains(family) {
                 continue;
             }
-            if !family.is_empty() {
-                succeeded_family_names.insert(family.to_owned());
-            }
             let text = match read(&file) {
                 Ok(text) => text,
-                Err(error) => return SourcePullOutput::Failed { error },
+                Err(error) => {
+                    failed_parts.push(FailedPart {
+                        part: family.to_owned(),
+                        reason: error.to_string(),
+                    });
+                    continue;
+                }
             };
-            for line in text.lines() {
-                match crate::synthetic_chart_fhir::source_revision(workspace, SOURCE_ID, line) {
+            let failures_before = failed_parts.len();
+            for (index, line) in text.lines().enumerate() {
+                match crate::synthetic_chart_fhir::patient_source_revision(
+                    workspace,
+                    SOURCE_ID,
+                    source_patient_id,
+                    line,
+                ) {
                     Ok(revision) => {
-                        succeeded_family_names.insert(revision.record_type.clone());
                         records.push(revision);
                     }
-                    Err(source) => {
-                        return SourcePullOutput::Failed {
-                            error: SourceAdapterError::RecordFiling {
-                                context: file.display().to_string(),
-                                source,
-                            },
-                        };
-                    }
+                    Err(source) => failed_parts.push(FailedPart {
+                        part: format!("{family}:{}", index + 1),
+                        reason: source.to_string(),
+                    }),
                 }
+            }
+            if failed_parts.len() == failures_before {
+                succeeded_family_names.insert(family.to_owned());
             }
         }
 
@@ -425,13 +439,11 @@ impl SyntheticCharts {
             })
             .collect();
 
-        let failed_parts = failed_families
-            .iter()
-            .map(|family| FailedPart {
-                part: family.clone(),
-                reason: reason.to_owned(),
-            })
-            .collect();
+        if failed_parts.is_empty()
+            && let Some(patient) = patient.clone()
+        {
+            return SourcePullOutput::Complete { patient, records };
+        }
 
         SourcePullOutput::Partial {
             patient,
@@ -494,36 +506,15 @@ impl PatientSource for SyntheticCharts {
         patient: &SourcePatient,
         workspace: &str,
     ) -> Result<Vec<SourceRevision>, SourceAdapterError> {
-        let chart = self.patients.join(&patient.source_patient_id);
-        let entries = fs::read_dir(&chart).map_err(|source| SourceAdapterError::Io {
-            path: chart.clone(),
-            source,
-        })?;
-        let mut files = Vec::new();
-        for entry in entries {
-            files.push(
-                entry
-                    .map_err(|source| SourceAdapterError::Io {
-                        path: chart.clone(),
-                        source,
-                    })?
-                    .path(),
-            );
-        }
-        files.sort();
-        let mut records = Vec::new();
-        for file in files {
-            for line in read(&file)?.lines() {
-                records.push(
-                    crate::synthetic_chart_fhir::source_revision(workspace, SOURCE_ID, line)
-                        .map_err(|source| SourceAdapterError::RecordFiling {
-                            context: file.display().to_string(),
-                            source,
-                        })?,
-                );
+        match self.acquire_chart(&patient.source_patient_id, workspace, &BTreeSet::new(), "") {
+            SourcePullOutput::Complete { records, .. } => Ok(records),
+            SourcePullOutput::Partial { failed_parts, .. } => {
+                Err(SourceAdapterError::Incomplete { failed_parts })
+            }
+            SourcePullOutput::Failed { error } | SourcePullOutput::LapsedAccess { error } => {
+                Err(error)
             }
         }
-        Ok(records)
     }
 
     async fn pull_patient(
@@ -537,13 +528,9 @@ impl PatientSource for SyntheticCharts {
             Err(error) => return SourcePullOutput::Failed { error },
         };
         match mode {
-            SyntheticSourceMode::Healthy => match self.patient(source_patient_id).await {
-                Ok(patient) => match self.records(&patient, workspace).await {
-                    Ok(records) => SourcePullOutput::Complete { patient, records },
-                    Err(error) => SourcePullOutput::Failed { error },
-                },
-                Err(error) => SourcePullOutput::Failed { error },
-            },
+            SyntheticSourceMode::Healthy => {
+                self.acquire_chart(source_patient_id, workspace, &BTreeSet::new(), "")
+            }
             SyntheticSourceMode::LapsedAccess { reason } => SourcePullOutput::LapsedAccess {
                 error: SourceAdapterError::LapsedAccess { reason },
             },
@@ -553,19 +540,7 @@ impl PatientSource for SyntheticCharts {
             SyntheticSourceMode::Partial {
                 failed_families,
                 reason,
-            } => {
-                if failed_families.is_empty() {
-                    match self.patient(source_patient_id).await {
-                        Ok(patient) => match self.records(&patient, workspace).await {
-                            Ok(records) => SourcePullOutput::Complete { patient, records },
-                            Err(error) => SourcePullOutput::Failed { error },
-                        },
-                        Err(error) => SourcePullOutput::Failed { error },
-                    }
-                } else {
-                    self.partial_pull(source_patient_id, workspace, &failed_families, &reason)
-                }
-            }
+            } => self.acquire_chart(source_patient_id, workspace, &failed_families, &reason),
         }
     }
 
@@ -599,6 +574,20 @@ fn source_patient(
             context: path.display().to_string(),
             source,
         })?;
+    if resource["resourceType"] != "Patient" {
+        return Err(SourceAdapterError::MissingPatientIdentity {
+            context: path.display().to_string(),
+            detail: "identity resource is not a Patient".into(),
+        });
+    }
+    local_product::physician_sources::adapter::validate_fhir_patient_binding(
+        &resource,
+        &source_patient_id,
+    )
+    .map_err(|source| SourceAdapterError::RecordFiling {
+        context: path.display().to_string(),
+        source,
+    })?;
     let name = &resource["name"][0];
     let given = name["given"].as_array().into_iter().flatten();
     let parts: Vec<&str> = given
@@ -717,17 +706,22 @@ mod tests {
     }
 
     #[tokio::test]
-    async fn an_attachment_coda_cannot_read_stops_the_chart() {
+    async fn an_unread_attachment_keeps_its_parent_and_chart_siblings() {
         let scan = NOTE.replace("text/plain; charset=utf-8", "image/tiff");
         let source = SyntheticCharts::open(&bank("scan", &scan));
-        let ids = source.patient_ids().await.unwrap();
-        let patient = source.patient(&ids[0]).await.unwrap();
-        let error = source.records(&patient, "pw-1").await.unwrap_err();
-        assert!(error.to_string().contains("image/tiff"), "{error}");
-        assert!(
-            std::error::Error::source(&error).is_some(),
-            "RecordFilingError cause must be preserved on SourceAdapterError"
-        );
+        let SourcePullOutput::Complete { records, .. } =
+            source.pull_patient("practice", "MRN1", "pw-1").await
+        else {
+            panic!("completed acquisition must refresh despite unreadable attachment content");
+        };
+        assert_eq!(records.len(), 3);
+        let note = records
+            .iter()
+            .find(|record| record.record_type == "DocumentReference")
+            .unwrap();
+        assert_eq!(note.content, scan);
+        assert!(note.readable_parts.is_empty());
+        assert_eq!(note.envelope.as_ref().unwrap().unavailable_parts.len(), 1);
     }
 
     #[tokio::test]

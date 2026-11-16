@@ -1,17 +1,15 @@
 //! Declared adapter mapping tables and shared record filing.
 //!
-//! Each external source declares one [`AdapterTable`] naming its record kinds,
-//! categories, target [`Bucket`]s, date fields with semantic [`DateRole`]s,
-//! status/code/title extractors, and encoded text attachment paths. A single
-//! generic filing routine ([`file_json_record`]) interprets that table while
-//! keeping [`SourceRevision::content`] byte-for-byte identical to what the
-//! source sent.
+//! Source-aware extraction and simple declared tables share one retained
+//! revision constructor. FHIR interprets its namespaced declarations through
+//! [`file_fhir_record`]; table-based formats use [`file_json_record`]. Native
+//! content and unavailable parts remain distinct from derived index metadata.
 
 use base64::Engine as _;
 use serde_json::{Value, json};
 
 use super::{
-    Bucket, DateRole, FiledDate, ReadablePart, RecordCode, RecordDate, RecordEnvelope,
+    Bucket, DateRole, FailedPart, FiledDate, ReadablePart, RecordCode, RecordDate, RecordEnvelope,
     RecordVersion, SourceRecordKind, SourceRevision,
 };
 
@@ -116,12 +114,26 @@ pub struct AdapterTable {
 /// Failure while filing a raw source record through an [`AdapterTable`].
 #[derive(Debug, thiserror::Error)]
 pub enum RecordFilingError {
+    /// A supplied patient identity contradicts the acquisition scope.
+    #[error("patient binding mismatch: expected {expected}, received {actual}")]
+    PatientMismatch {
+        /// Patient whose chart is being acquired.
+        expected: String,
+        /// Contradictory source identity.
+        actual: String,
+    },
     /// Raw payload is not valid JSON.
     #[error("invalid JSON source record: {0}")]
     InvalidJson(#[source] serde_json::Error),
     /// Required identity or kind field was absent or empty.
     #[error("record is missing required field `{0}`")]
     MissingField(&'static str),
+    /// Attachment metadata contains neither inline bytes nor a location to read.
+    #[error("{label} has no inline data or external URL")]
+    UnavailableAttachment {
+        /// Declared attachment label.
+        label: &'static str,
+    },
     /// Attachment carried a non-text media type that Coda cannot decode as text.
     #[error("{label} is not text: {content_type}")]
     UnsupportedAttachment {
@@ -199,7 +211,7 @@ const DOCUMENT_TITLE: &[ValueExtractor] = &[
 ];
 
 /// Declared mapping table for FHIR R4 resources across all sixteen chart buckets.
-pub const FHIR_R4_TABLE: AdapterTable = AdapterTable {
+const FHIR_R4_TABLE: AdapterTable = AdapterTable {
     source_id: "fhir-r4",
     kind_field: "resourceType",
     id_field: "id",
@@ -307,46 +319,6 @@ pub const FHIR_R4_TABLE: AdapterTable = AdapterTable {
         },
         AdapterRow {
             kind: "Observation",
-            category: CategoryMatch::OneOf(&["laboratory", "imaging"]),
-            bucket: Bucket::Results,
-            dates: OBSERVATION_DATES,
-            status: STATUS_SCALAR,
-            codes: &["code"],
-            title: CODE_CONCEPT_LABEL,
-            attachments: &[],
-        },
-        AdapterRow {
-            kind: "Observation",
-            category: CategoryMatch::OneOf(&["vital-signs"]),
-            bucket: Bucket::Vitals,
-            dates: OBSERVATION_DATES,
-            status: STATUS_SCALAR,
-            codes: &["code"],
-            title: CODE_CONCEPT_LABEL,
-            attachments: &[],
-        },
-        AdapterRow {
-            kind: "Observation",
-            category: CategoryMatch::OneOf(&["social-history"]),
-            bucket: Bucket::History,
-            dates: OBSERVATION_DATES,
-            status: STATUS_SCALAR,
-            codes: &["code"],
-            title: CODE_CONCEPT_LABEL,
-            attachments: &[],
-        },
-        AdapterRow {
-            kind: "Observation",
-            category: CategoryMatch::OneOf(&["survey"]),
-            bucket: Bucket::Forms,
-            dates: OBSERVATION_DATES,
-            status: STATUS_SCALAR,
-            codes: &["code"],
-            title: CODE_CONCEPT_LABEL,
-            attachments: &[],
-        },
-        AdapterRow {
-            kind: "Observation",
             category: CategoryMatch::OtherOrNone,
             bucket: Bucket::Other,
             dates: OBSERVATION_DATES,
@@ -354,16 +326,6 @@ pub const FHIR_R4_TABLE: AdapterTable = AdapterTable {
             codes: &["code"],
             title: CODE_CONCEPT_LABEL,
             attachments: &[],
-        },
-        AdapterRow {
-            kind: "DocumentReference",
-            category: CategoryMatch::OneOf(&["clinical-note"]),
-            bucket: Bucket::Notes,
-            dates: DOCUMENT_REFERENCE_DATES,
-            status: STATUS_SCALAR,
-            codes: &["type"],
-            title: DOCUMENT_TITLE,
-            attachments: DOCUMENT_REFERENCE_ATTACHMENTS,
         },
         AdapterRow {
             kind: "DocumentReference",
@@ -493,6 +455,150 @@ pub const FHIR_R4_TABLE: AdapterTable = AdapterTable {
     },
 };
 
+/// Checks explicit FHIR patient identities against a patient-scoped acquisition.
+/// Records without explicit patient references inherit that acquisition scope.
+pub fn validate_fhir_patient_binding(
+    value: &serde_json::Value,
+    patient_id: &str,
+) -> Result<(), RecordFilingError> {
+    if value["resourceType"] == "Patient" {
+        let actual = value["id"]
+            .as_str()
+            .filter(|id| !id.is_empty())
+            .ok_or(RecordFilingError::MissingField("id"))?;
+        return compare_patient(patient_id, actual);
+    }
+    let mut references = ["/subject/reference", "/patient/reference"]
+        .into_iter()
+        .filter_map(|pointer| value.pointer(pointer).and_then(Value::as_str))
+        .collect::<Vec<_>>();
+    if value["resourceType"] == "Appointment" {
+        references.extend(
+            value["participant"]
+                .as_array()
+                .into_iter()
+                .flatten()
+                .filter_map(|participant| {
+                    participant
+                        .pointer("/actor/reference")
+                        .and_then(Value::as_str)
+                }),
+        );
+    }
+    for reference in references {
+        // Absolute references retain the server in native content; a contradictory
+        // Patient ID still cannot be admitted to this patient-scoped bank.
+        let parsed = reqwest::Url::parse(reference).ok();
+        let path = parsed.as_ref().map_or(reference, |url| url.path());
+        let segments: Vec<_> = path.trim_matches('/').split('/').collect();
+        if let Some(index) = segments.iter().position(|segment| *segment == "Patient")
+            && let Some(actual) = segments.get(index + 1)
+        {
+            compare_patient(patient_id, actual)?;
+        }
+    }
+    Ok(())
+}
+
+fn compare_patient(expected: &str, actual: &str) -> Result<(), RecordFilingError> {
+    if actual != expected {
+        return Err(RecordFilingError::PatientMismatch {
+            expected: expected.to_owned(),
+            actual: actual.to_owned(),
+        });
+    }
+    Ok(())
+}
+
+/// Files FHIR R4 evidence using namespaced source declarations. Unknown and
+/// contradictory classifications retain the whole record in Other.
+pub fn file_fhir_record(
+    workspace: &str,
+    source_id: &str,
+    raw_json: &str,
+    native_link: Option<String>,
+) -> Result<SourceRevision, RecordFilingError> {
+    let resource: Value = serde_json::from_str(raw_json).map_err(RecordFilingError::InvalidJson)?;
+    let classification = match resource.get("resourceType").and_then(Value::as_str) {
+        Some("Observation") => Some(observation_classification(&resource)),
+        Some("DocumentReference") => {
+            let note = extract_all_codes(&resource, &["category"]).iter().any(|code|
+                code.system.as_deref() == Some("http://hl7.org/fhir/us/core/CodeSystem/us-core-documentreference-category")
+                && code.code.as_deref() == Some("clinical-note"));
+            Some((
+                if note {
+                    Bucket::Notes
+                } else {
+                    Bucket::Documents
+                },
+                note.then(|| "clinical-note".to_owned()),
+            ))
+        }
+        _ => None,
+    };
+    file_parsed_record(
+        &FHIR_R4_TABLE,
+        workspace,
+        source_id,
+        raw_json,
+        native_link,
+        &resource,
+        classification,
+    )
+}
+
+fn observation_classification(resource: &Value) -> (Bucket, Option<String>) {
+    let categories = extract_all_codes(resource, &["category"]);
+    let mut recognized = categories
+        .iter()
+        .filter(|code| {
+            code.system.as_deref()
+                == Some("http://terminology.hl7.org/CodeSystem/observation-category")
+        })
+        .filter_map(|code| match code.code.as_deref() {
+            Some("laboratory" | "imaging") => Some((Bucket::Results, code.code.clone())),
+            Some("vital-signs") => Some((Bucket::Vitals, code.code.clone())),
+            Some("social-history") => Some((Bucket::History, code.code.clone())),
+            _ => None,
+        })
+        .collect::<Vec<_>>();
+    recognized.sort();
+    if let Some((bucket, category)) = recognized.first() {
+        return if recognized.iter().all(|(other, _)| other == bucket) {
+            (*bucket, category.clone())
+        } else {
+            (Bucket::Other, None)
+        };
+    }
+    // A source-local category needs its own mapping; code matching cannot silently
+    // reinterpret unknown declarations. These exact identities apply without categories.
+    if !categories.is_empty() {
+        return (Bucket::Other, None);
+    }
+    let mut buckets = extract_all_codes(resource, &["code"])
+        .iter()
+        .filter(|code| code.system.as_deref() == Some("http://loinc.org"))
+        .filter_map(|code| match code.code.as_deref() {
+            Some(
+                "9279-1" | "8867-4" | "8310-5" | "8302-2" | "9843-4" | "29463-7" | "39156-5"
+                | "85353-1" | "85354-9" | "8480-6" | "8462-4",
+            ) => Some(Bucket::Vitals),
+            Some("2823-3") => Some(Bucket::Results),
+            _ => None,
+        })
+        .collect::<Vec<_>>();
+    buckets.sort();
+    buckets.dedup();
+    (
+        if buckets.len() == 1 {
+            buckets[0]
+        } else {
+            Bucket::Other
+        },
+        None,
+    )
+}
+
 /// Files one raw JSON record from `source_id` into `workspace` using `table`,
 /// preserving `raw_json` byte-for-byte in [`SourceRevision::content`].
 pub fn file_json_record(
@@ -503,43 +609,55 @@ pub fn file_json_record(
     native_link: Option<String>,
 ) -> Result<SourceRevision, RecordFilingError> {
     let resource: Value = serde_json::from_str(raw_json).map_err(RecordFilingError::InvalidJson)?;
-    let kind = lookup_path(&resource, table.kind_field)
+    file_parsed_record(
+        table,
+        workspace,
+        source_id,
+        raw_json,
+        native_link,
+        &resource,
+        None,
+    )
+}
+
+fn file_parsed_record(
+    table: &AdapterTable,
+    workspace: &str,
+    source_id: &str,
+    raw_json: &str,
+    native_link: Option<String>,
+    resource: &Value,
+    classification: Option<(Bucket, Option<String>)>,
+) -> Result<SourceRevision, RecordFilingError> {
+    let kind = lookup_path(resource, table.kind_field)
         .and_then(scalar_string)
         .ok_or(RecordFilingError::MissingField(table.kind_field))?;
-    let native_id = lookup_path(&resource, table.id_field)
+    let native_id = lookup_path(resource, table.id_field)
         .and_then(scalar_string)
         .ok_or(RecordFilingError::MissingField(table.id_field))?;
 
-    let categories = extract_all_values(&resource, table.category_extractors);
+    let categories = extract_all_values(resource, table.category_extractors);
     let (matched, category) = match_row(table, &kind, &categories);
 
-    let filed_dates = extract_dates(&resource, matched.dates);
-    let legacy_dates: Vec<RecordDate> = filed_dates
-        .iter()
-        .map(|d| RecordDate {
-            name: d.field.clone(),
-            value: d.value.clone(),
-        })
-        .collect();
-    let status = first_extracted(&resource, matched.status);
-    let codes = extract_all_codes(&resource, matched.codes);
-    let title = first_extracted(&resource, matched.title);
-    let readable_parts = extract_attachments(&resource, matched.attachments)?;
+    let filed_dates = extract_dates(resource, matched.dates);
+    let status = first_extracted(resource, matched.status);
+    let codes = extract_all_codes(resource, matched.codes);
+    let title = first_extracted(resource, matched.title);
+    let (readable_parts, unavailable_parts) = extract_attachments(resource, matched.attachments);
 
     let sha256 = crate::sha256_hex(raw_json.as_bytes());
     let version = match table
         .version_field
-        .and_then(|path| lookup_path(&resource, path))
+        .and_then(|path| lookup_path(resource, path))
         .and_then(scalar_string)
     {
         Some(source_version) => RecordVersion::Source(source_version),
         None => RecordVersion::ContentHash(sha256.clone()),
     };
 
-    let native_record = format!("{kind}/{native_id}");
-    let candidate_id = format!("{source_id}/{native_record}");
+    let (bucket, category) = classification.unwrap_or((matched.bucket, category));
     let envelope = RecordEnvelope {
-        bucket: matched.bucket,
+        bucket,
         source_kind: SourceRecordKind {
             kind: kind.clone(),
             category,
@@ -551,13 +669,44 @@ pub fn file_json_record(
         codes,
         title,
         native_link,
+        unavailable_parts,
     };
+    file_record(workspace, source_id, raw_json, envelope, readable_parts)
+}
 
+/// Builds a retained revision from source-specific metadata and native content.
+/// Identity depends on source family and native ID, never on classification.
+pub(super) fn file_record(
+    workspace: &str,
+    source_id: &str,
+    raw_json: &str,
+    envelope: RecordEnvelope,
+    readable_parts: Vec<ReadablePart>,
+) -> Result<SourceRevision, RecordFilingError> {
+    let kind = envelope.source_kind.kind.clone();
+    let native_record = format!("{kind}/{}", envelope.native_id);
+    let candidate_id = format!("{source_id}/{native_record}");
+    let sha256 = crate::sha256_hex(raw_json.as_bytes());
+    let legacy_dates = envelope
+        .dates
+        .iter()
+        .map(|d| RecordDate {
+            name: d.field.clone(),
+            value: d.value.clone(),
+        })
+        .collect();
+    // Filing metadata and decoded parts are retained evidence too. Re-filing
+    // unchanged native bytes after a mapping correction must preserve the old
+    // observation rather than conflict with its immutable revision identity.
+    let revision_id = crate::sha256_hex(
+        &serde_json::to_vec(&(raw_json, &envelope, &readable_parts))
+            .expect("filed evidence serializes"),
+    );
     let revision = SourceRevision {
         workspace: workspace.to_owned(),
         source_id: source_id.to_owned(),
         candidate_id,
-        revision: sha256.clone(),
+        revision: revision_id,
         record_type: kind,
         dates: legacy_dates,
         content: raw_json.to_owned(),
@@ -882,66 +1031,72 @@ fn extract_codes_from_value(field: &str, value: &Value, out: &mut Vec<RecordCode
 fn extract_attachments(
     resource: &Value,
     rules: &[AttachmentRule],
-) -> Result<Vec<ReadablePart>, RecordFilingError> {
+) -> (Vec<ReadablePart>, Vec<FailedPart>) {
     let mut parts = Vec::new();
+    let mut unavailable = Vec::new();
     for rule in rules {
-        match *rule {
-            AttachmentRule::Base64Text {
-                items_path,
-                label,
-                content_type_path,
-                data_path,
-            } => {
-                let Some(items) = lookup_path(resource, items_path).and_then(Value::as_array)
-                else {
-                    continue;
-                };
-                for item in items {
-                    let content_type_opt =
-                        lookup_path(item, content_type_path).and_then(Value::as_str);
-                    if let Some(ct) = content_type_opt
-                        && !ct.trim().to_ascii_lowercase().starts_with("text/")
-                    {
-                        return Err(RecordFilingError::UnsupportedAttachment {
-                            label,
-                            content_type: ct.to_owned(),
-                        });
-                    }
-
-                    let data_opt = lookup_path(item, data_path).and_then(Value::as_str);
-                    let Some(encoded) = data_opt else {
-                        let parent_obj = match data_path.rsplit_once('.') {
-                            Some((prefix, _)) => lookup_path(item, prefix),
-                            None => Some(item),
-                        };
-                        if let Some(url) = parent_obj
-                            .and_then(|obj| obj.get("url"))
-                            .and_then(scalar_string)
-                        {
-                            return Err(RecordFilingError::ExternalAttachment { label, url });
-                        }
-                        continue;
-                    };
-
-                    if content_type_opt.is_none() {
-                        return Err(RecordFilingError::UnsupportedAttachment {
-                            label,
-                            content_type: String::new(),
-                        });
-                    }
-
-                    let bytes = base64::engine::general_purpose::STANDARD
-                        .decode(encoded)
-                        .map_err(|source| RecordFilingError::InvalidBase64 { label, source })?;
-                    let text = String::from_utf8(bytes)
-                        .map_err(|source| RecordFilingError::InvalidUtf8 { label, source })?;
-                    parts.push(ReadablePart {
-                        label: label.to_owned(),
-                        text,
-                    });
-                }
+        let AttachmentRule::Base64Text {
+            items_path,
+            label,
+            content_type_path,
+            data_path,
+        } = *rule;
+        let Some(items) = lookup_path(resource, items_path).and_then(Value::as_array) else {
+            continue;
+        };
+        for (index, item) in items.iter().enumerate() {
+            match decode_attachment(item, label, content_type_path, data_path) {
+                Ok(part) => parts.push(part),
+                Err(error) => unavailable.push(FailedPart {
+                    part: format!("{items_path}[{index}]"),
+                    reason: error.to_string(),
+                }),
             }
         }
     }
-    Ok(parts)
+    (parts, unavailable)
+}
+
+fn decode_attachment(
+    item: &Value,
+    label: &'static str,
+    content_type_path: &str,
+    data_path: &str,
+) -> Result<ReadablePart, RecordFilingError> {
+    let content_type = lookup_path(item, content_type_path)
+        .and_then(Value::as_str)
+        .unwrap_or_default();
+    let data = lookup_path(item, data_path).and_then(Value::as_str);
+    let Some(encoded) = data else {
+        let parent = match data_path.rsplit_once('.') {
+            Some((prefix, _)) => lookup_path(item, prefix),
+            None => Some(item),
+        };
+        if let Some(url) = parent
+            .and_then(|obj| obj.get("url"))
+            .and_then(scalar_string)
+        {
+            return Err(RecordFilingError::ExternalAttachment { label, url });
+        }
+        return Err(RecordFilingError::UnavailableAttachment { label });
+    };
+    if !content_type
+        .trim()
+        .to_ascii_lowercase()
+        .starts_with("text/")
+    {
+        return Err(RecordFilingError::UnsupportedAttachment {
+            label,
+            content_type: content_type.to_owned(),
+        });
+    }
+    let bytes = base64::engine::general_purpose::STANDARD
+        .decode(encoded)
+        .map_err(|source| RecordFilingError::InvalidBase64 { label, source })?;
+    let text = String::from_utf8(bytes)
+        .map_err(|source| RecordFilingError::InvalidUtf8 { label, source })?;
+    Ok(ReadablePart {
+        label: label.to_owned(),
+        text,
+    })
 }

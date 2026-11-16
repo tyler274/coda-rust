@@ -5,8 +5,8 @@
 use async_trait::async_trait;
 use base64::Engine as _;
 use local_product::physician_sources::adapter::{
-    AdapterRow, AdapterTable, AttachmentRule, CategoryMatch, FHIR_R4_TABLE, UnmappedRecordRule,
-    ValueExtractor, file_json_record,
+    AdapterRow, AdapterTable, AttachmentRule, CategoryMatch, UnmappedRecordRule, ValueExtractor,
+    file_fhir_record, file_json_record,
 };
 use local_product::physician_sources::{
     Bucket, ChartRequest, ChartScope, DateRole, FiledDate, MedicalRecordNumber, PatientSource,
@@ -358,24 +358,17 @@ async fn distinct_sources_with_colliding_native_ids_coexist_in_workspace_and_too
     store.migrate().await.unwrap();
 
     let ws = format!("pw-multi-src-{}", uuid::Uuid::new_v4());
-    let shared_identical_raw = r#"{"resourceType":"Observation","id":"2","status":"final","category":[{"coding":[{"code":"laboratory"}]}],"code":{"text":"Sodium"},"effectiveDateTime":"2026-08-20T08:00:00Z"}"#;
-    let source_a_obs1 = r#"{"resourceType":"Observation","id":"1","status":"final","category":[{"coding":[{"code":"laboratory"}]}],"code":{"text":"Potassium (Hospital A)"},"effectiveDateTime":"2026-08-19T08:00:00Z"}"#;
-    let source_b_obs1 = r#"{"resourceType":"Observation","id":"1","status":"preliminary","category":[{"coding":[{"code":"laboratory"}]}],"code":{"text":"Potassium (Clinic B)"},"effectiveDateTime":"2026-08-19T09:00:00Z"}"#;
+    let shared_identical_raw = r#"{"resourceType":"Observation","id":"2","status":"final","category":[{"coding":[{"system":"http://terminology.hl7.org/CodeSystem/observation-category","code":"laboratory"}]}],"code":{"text":"Sodium"},"effectiveDateTime":"2026-08-20T08:00:00Z"}"#;
+    let source_a_obs1 = r#"{"resourceType":"Observation","id":"1","status":"final","category":[{"coding":[{"system":"http://terminology.hl7.org/CodeSystem/observation-category","code":"laboratory"}]}],"code":{"text":"Potassium (Hospital A)"},"effectiveDateTime":"2026-08-19T08:00:00Z"}"#;
+    let source_b_obs1 = r#"{"resourceType":"Observation","id":"1","status":"preliminary","category":[{"coding":[{"system":"http://terminology.hl7.org/CodeSystem/observation-category","code":"laboratory"}]}],"code":{"text":"Potassium (Clinic B)"},"effectiveDateTime":"2026-08-19T09:00:00Z"}"#;
 
     let a_records = vec![
-        file_json_record(&FHIR_R4_TABLE, &ws, "hospital-a", source_a_obs1, None).unwrap(),
-        file_json_record(
-            &FHIR_R4_TABLE,
-            &ws,
-            "hospital-a",
-            shared_identical_raw,
-            None,
-        )
-        .unwrap(),
+        file_fhir_record(&ws, "hospital-a", source_a_obs1, None).unwrap(),
+        file_fhir_record(&ws, "hospital-a", shared_identical_raw, None).unwrap(),
     ];
     let b_records = vec![
-        file_json_record(&FHIR_R4_TABLE, &ws, "clinic-b", source_b_obs1, None).unwrap(),
-        file_json_record(&FHIR_R4_TABLE, &ws, "clinic-b", shared_identical_raw, None).unwrap(),
+        file_fhir_record(&ws, "clinic-b", source_b_obs1, None).unwrap(),
+        file_fhir_record(&ws, "clinic-b", shared_identical_raw, None).unwrap(),
     ];
 
     assert_eq!(a_records[0].candidate_id, "hospital-a/Observation/1");

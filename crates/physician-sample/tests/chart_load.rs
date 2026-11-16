@@ -333,10 +333,36 @@ async fn a_chart_that_cannot_load_is_reported_and_the_rest_still_load() {
             .unwrap();
 
         let refused = workspace_id("synthetic-charts", &format!("{run}-a"));
-        assert_eq!(summary.failed.len(), 1, "{:?}", summary.failed);
-        assert!(summary.failed[0].contains(&refused), "{:?}", summary.failed);
-        assert_eq!(summary.patients, 1);
-        assert!(auth.patient_practice(&refused).await.unwrap().is_none());
+        if note.is_some() {
+            assert!(summary.failed.is_empty(), "{:?}", summary.failed);
+            assert_eq!(summary.patients, 2);
+            assert!(auth.patient_practice(&refused).await.unwrap().is_some());
+            let saved = runtime.sources(&refused).await.unwrap();
+            assert_eq!(
+                saved.sources.len(),
+                2,
+                "unread scan retains its parent and patient"
+            );
+            assert!(saved.sources.iter().any(|record| {
+                record
+                    .envelope
+                    .as_ref()
+                    .is_some_and(|env| !env.unavailable_parts.is_empty())
+            }));
+            let pulls = runtime
+                .source_pulls(std::slice::from_ref(&refused))
+                .await
+                .unwrap();
+            assert!(
+                pulls[&refused][0].pulled_at.is_some(),
+                "completed acquisition refreshes the source while the record names its content limits"
+            );
+        } else {
+            assert_eq!(summary.failed.len(), 1, "{:?}", summary.failed);
+            assert!(summary.failed[0].contains(&refused), "{:?}", summary.failed);
+            assert_eq!(summary.patients, 1);
+            assert!(auth.patient_practice(&refused).await.unwrap().is_none());
+        }
         let loaded = workspace_id("synthetic-charts", &format!("{run}-b"));
         assert!(auth.patient_practice(&loaded).await.unwrap().is_some());
     }
@@ -450,13 +476,20 @@ async fn the_load_tries_every_patient_and_fails_when_one_failed() {
     let (auth, _runtime) = stores().await;
     let url = std::env::var("PHYSICIAN_TEST_DATABASE_URL").unwrap();
     let run = run_id();
-    let scan = NOTE.replace("text/plain; charset=utf-8", "image/tiff");
-
-    let load = load_charts(&url, &bank(&run, &scan));
+    let charts = bank(&run, NOTE);
+    fs::write(
+        charts
+            .join("patients")
+            .join(format!("{run}-a"))
+            .join("Patient.ndjson"),
+        "not json",
+    )
+    .unwrap();
+    let load = load_charts(&url, &charts);
 
     let stderr = String::from_utf8_lossy(&load.stderr);
     assert!(!load.status.success(), "{stderr}");
-    assert!(stderr.contains("image/tiff"), "{stderr}");
+    assert!(stderr.contains("invalid patient JSON"), "{stderr}");
     let stdout = String::from_utf8_lossy(&load.stdout);
     assert!(
         stdout.contains("1 patients") && stdout.trim_end().ends_with("1 failed"),

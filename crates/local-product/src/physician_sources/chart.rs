@@ -1,6 +1,6 @@
 //! On-demand discovery and bounded reads of the physician's workspace.
 use super::{
-    Bucket, FiledDate, READ_TOOL, ReadablePart, RecordCode, RecordDate, RecordVersion,
+    Bucket, FailedPart, FiledDate, READ_TOOL, ReadablePart, RecordCode, RecordDate, RecordVersion,
     SourceRecordKind, SourceRevision, UnknownBucketError,
 };
 use crate::physician_chat::{CallEnding, StepError};
@@ -280,6 +280,8 @@ pub(super) enum RecordReceipt {
         read_representation: ReadRepresentation,
         content: String,
         readable_parts: Vec<ReadablePart>,
+        #[serde(default, skip_serializing_if = "Vec::is_empty")]
+        unavailable_parts: Vec<FailedPart>,
         sha256: String,
         provenance: Value,
         /// The version's label, when the work's reads carry labels.
@@ -296,6 +298,8 @@ pub(super) enum RecordReceipt {
         total_bytes: usize,
         content: String,
         next: Option<Exact>,
+        #[serde(default, skip_serializing_if = "Vec::is_empty")]
+        unavailable_parts: Vec<FailedPart>,
         /// The version's label, when the work's reads carry labels.
         #[serde(default, skip_serializing_if = "Option::is_none")]
         cite_as: Option<Label>,
@@ -850,6 +854,11 @@ fn read_record(
             None
         };
         RecordReceipt::Passage {
+            unavailable_parts: source
+                .envelope
+                .as_ref()
+                .map(|env| env.unavailable_parts.clone())
+                .unwrap_or_default(),
             reference: source.candidate_id.clone(),
             revision: source.revision.clone(),
             part: position.part,
@@ -903,6 +912,11 @@ fn available_receipt(source: &SourceRevision, cite_as: Option<Label>) -> RecordR
             read_representation: ReadRepresentation::NativeRecord,
             content: source.content.clone(),
             readable_parts: source.readable_parts.clone(),
+            unavailable_parts: source
+                .envelope
+                .as_ref()
+                .map(|env| env.unavailable_parts.clone())
+                .unwrap_or_default(),
             sha256: source.sha256.clone(),
             provenance: source.provenance.clone(),
             cite_as,
@@ -922,6 +936,11 @@ fn available_receipt(source: &SourceRevision, cite_as: Option<Label>) -> RecordR
             read_representation: ReadRepresentation::NativeRecord,
             content: source.content.clone(),
             readable_parts: source.readable_parts.clone(),
+            unavailable_parts: source
+                .envelope
+                .as_ref()
+                .map(|env| env.unavailable_parts.clone())
+                .unwrap_or_default(),
             sha256: source.sha256.clone(),
             provenance: source.provenance.clone(),
             cite_as,
@@ -999,7 +1018,7 @@ pub fn read_tool(scope: ChartScope) -> Tool {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::physician_sources::adapter::{FHIR_R4_TABLE, file_json_record};
+    use crate::physician_sources::adapter::file_fhir_record;
     use harness::engine::Invocation;
 
     fn event(kind: EventKind) -> (Event, bool) {
@@ -1019,8 +1038,7 @@ mod tests {
     /// read's own result give the label the version the read returned.
     #[test]
     fn a_filed_record_read_with_labels_carries_its_label_beside_its_envelope() {
-        let source = file_json_record(
-            &FHIR_R4_TABLE,
+        let source = file_fhir_record(
             "patient",
             "ehr",
             r#"{"resourceType":"Condition","id":"c1","meta":{"versionId":"2"},"code":{"text":"Hypertension"},"recordedDate":"2026-08-01"}"#,

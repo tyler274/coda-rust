@@ -11,6 +11,12 @@ use super::{SourcePatient, SourceRevision};
 /// Typed connector failure from a [`super::PatientSource`], preserving underlying error causes.
 #[derive(Debug, thiserror::Error)]
 pub enum SourceAdapterError {
+    /// This interface requires a complete read; use pull_patient to receive usable partial records.
+    #[error("incomplete source read ({} parts unavailable)", failed_parts.len())]
+    Incomplete {
+        /// Source parts that did not complete.
+        failed_parts: Vec<FailedPart>,
+    },
     /// Failed to file a source record through the adapter's mapping table.
     #[error("failed to file record from `{context}`: {source}")]
     RecordFiling {
@@ -337,6 +343,9 @@ pub struct RecordEnvelope {
     /// Direct link into the source system when available.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub native_link: Option<String>,
+    /// Content that was supplied but could not be acquired or decoded.
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub unavailable_parts: Vec<FailedPart>,
 }
 
 /// Receipt returned when recording a source chart delivery.
