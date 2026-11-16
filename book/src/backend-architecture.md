@@ -1,9 +1,8 @@
 # Duet backend
 
 [`duet-api`](/crates/duet-api/src/lib.rs) owns Duet's Rust service. It has identity,
-evidence, doctor workspace, health-context and privacy owners beyond the
-original moments slice. A module's presence does not establish the complete
-real-service journey.
+evidence, doctor workspace, health-context and privacy owners. A module's presence
+does not establish the complete real-service journey.
 
 ## Ownership
 
@@ -15,7 +14,7 @@ real-service journey.
 | Health context and producer grants | [`health_context.rs`](/crates/duet-api/src/health_context.rs), [`producer_routes.rs`](/crates/duet-api/src/producer_routes.rs), [`producer_database.rs`](/crates/duet-api/src/producer_database.rs) |
 | Doctor preparation and publication implementation | [`workspace.rs`](/crates/duet-api/src/workspace.rs), [`doctor_routes.rs`](/crates/duet-api/src/doctor_routes.rs), [`publication.rs`](/crates/duet-api/src/publication.rs); preparation, review and saving are distinct from later publication to physicians outside Coda |
 | Privacy receipts, replay and deletion archive | [Privacy recovery](privacy-recovery.md) |
-| Schema and moments persistence | [`database.rs`](/crates/duet-api/src/database.rs), [`migrations/`](/crates/duet-api/migrations) |
+| Schema and migrations | [`database.rs`](/crates/duet-api/src/database.rs), [`migrations/`](/crates/duet-api/migrations) |
 | Practice invitations and connection adapter | [Accounts and practice connection](front-door.md) |
 
 ## Canonical evidence ingestion
@@ -90,11 +89,7 @@ chain when `FRONT_DOOR_DATABASE_URL` is supplied. Do not replay the coda-app
 migration ledger to initialize this service.
 
 Queries go through the typed database API, as <a href="/AGENTS%2Emd#writing-code">AGENTS.md</a> asks.
-`PgMoments` uses a Duet-owned SeaORM entity over the SQLx pool. It keeps
-user-scoped list and delete, descending `(occurred_at, id)` order, unknown-kind
-errors, affected-row semantics and the privacy-journal deletion gate; prove
-changes on disposable Postgres, including cross-account refusal. Schema/account
-transactions and other adapters use SQLx. `src/sql/has_migration.sql` is a
+Schema/account transactions use SQLx. `src/sql/has_migration.sql` is a
 schema-readiness query, not a CRUD pattern, and `duet-migrate` keeps the separate
 reference `schema_migrations` ledger. Ordinary CRUD belongs to the owning
 product's typed entities; products do not share stores.

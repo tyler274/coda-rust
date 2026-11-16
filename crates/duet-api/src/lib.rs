@@ -1,7 +1,7 @@
 //! Duet-owned account, privacy, evidence, workspace and publication services.
 //! `main.rs` composes the durable route families and recovery workers.
-//! The earlier router in this module retains moments and front-door join/consent/
-//! premium routes for its callers; the binary does not mount it.
+//! This module also holds the front-door join, consent and premium routes,
+//! which the binary does not mount.
 //! Book: `book/src/backend-architecture.md`.
 #![deny(missing_docs)]
 #![allow(
@@ -39,7 +39,6 @@ pub mod hosting;
 )]
 pub mod identity;
 pub mod journal_gcs;
-mod moment_entity;
 #[expect(
     clippy::disallowed_methods,
     reason = "converting raw SQL to the typed database API"
@@ -65,20 +64,15 @@ pub mod site;
 )]
 pub mod workspace;
 
-use std::env;
-use std::sync::{Arc, Mutex};
+use std::sync::Arc;
 
-use async_trait::async_trait;
 use axum::Json;
 use axum::Router;
-use axum::extract::{Path, State};
 use axum::http::{HeaderMap, StatusCode};
 use axum::response::{IntoResponse, Response};
-use axum::routing::{delete, get, post, put};
-use duet_wire::models::{AccountMoment, MomentKind};
+use axum::routing::{get, post};
 use front_door::http::{ConsentView, FrontDoorState, SessionView};
 use front_door::{FrontDoorStore, LinkError, Premium, SessionError, SignInError};
-use sea_orm::{ColumnTrait, EntityTrait, QueryFilter, QueryOrder};
 use uuid::Uuid;
 
 /// The `REQUIRED_MIGRATION` constant.
@@ -231,121 +225,6 @@ impl From<LinkError> for ApiError {
     }
 }
 
-#[async_trait]
-/// Behavior implemented by `Moments`.
-pub trait Moments: Send + Sync {
-    /// The `user_id` value.
-    async fn list(&self, user_id: Uuid) -> Result<Vec<AccountMoment>, ApiError>;
-    /// The `user_id` value.
-    async fn remove(&self, user_id: Uuid, moment_id: Uuid) -> Result<bool, ApiError>;
-}
-
-/// The `PgMoments` value exchanged by this crate.
-pub struct PgMoments {
-    database: sea_orm::DatabaseConnection,
-}
-
-impl PgMoments {
-    /// Reuses the existing pool without changing schema or transaction ownership.
-    pub fn new(pool: sqlx::PgPool) -> Self {
-        Self {
-            database: sea_orm::SqlxPostgresConnector::from_sqlx_postgres_pool(pool),
-        }
-    }
-}
-
-#[async_trait]
-impl Moments for PgMoments {
-    async fn list(&self, user_id: Uuid) -> Result<Vec<AccountMoment>, ApiError> {
-        let rows = moment_entity::Entity::find()
-            .filter(moment_entity::Column::UserId.eq(user_id))
-            .order_by_desc(moment_entity::Column::OccurredAt)
-            .order_by_desc(moment_entity::Column::Id)
-            .all(&self.database)
-            .await
-            .map_err(|error| ApiError::Storage(error.to_string()))?;
-        rows.into_iter()
-            .map(moment_entity::Model::into_moment)
-            .collect()
-    }
-
-    async fn remove(&self, user_id: Uuid, moment_id: Uuid) -> Result<bool, ApiError> {
-        if env::var("DUET_PRIVACY_JOURNAL_BUCKET")
-            .map(|value| !value.trim().is_empty())
-            .unwrap_or(false)
-        {
-            return Err(ApiError::Unavailable(
-                "Privacy journal confirmation is not served by this process.",
-            ));
-        }
-        let deleted = moment_entity::Entity::delete_many()
-            .filter(moment_entity::Column::Id.eq(moment_id))
-            .filter(moment_entity::Column::UserId.eq(user_id))
-            .exec(&self.database)
-            .await
-            .map_err(|error| ApiError::Storage(error.to_string()))?;
-        Ok(deleted.rows_affected == 1)
-    }
-}
-
-impl moment_entity::Model {
-    fn into_moment(self) -> Result<AccountMoment, ApiError> {
-        let kind = match self.kind.as_str() {
-            "first_summary_prepared" => MomentKind::FirstSummaryPrepared,
-            _ => {
-                return Err(ApiError::Storage(
-                    "account moment kind is not a known value".to_owned(),
-                ));
-            }
-        };
-        Ok(AccountMoment::new(
-            self.id,
-            kind,
-            self.occurred_at.fixed_offset(),
-        ))
-    }
-}
-
-#[derive(Clone)]
-pub(crate) struct AppState {
-    moments: Arc<dyn Moments>,
-    dev_bearer: bool,
-    pub(crate) accounts: Arc<Mutex<session::Accounts>>,
-}
-
-/// Builds the HTTP router.
-pub fn router(moments: Arc<dyn Moments>) -> Router {
-    let dev_bearer = env::var("DUET_API_AUTH").ok().as_deref() == Some("dev-bearer");
-    router_with(moments, dev_bearer)
-}
-
-/// Builds the router, including the dev bearer when asked.
-pub fn router_with(moments: Arc<dyn Moments>, dev_bearer: bool) -> Router {
-    // Explicit fixture-only surface. Never expose unauthenticated process-global
-    // account state when production authentication is selected.
-    if !dev_bearer {
-        return Router::new();
-    }
-    Router::new()
-        .route("/api/moments", get(list_moments))
-        .route("/api/moments/{moment_id}", delete(remove_moment))
-        .route("/api/auth/account", put(session::put_ensure_account))
-        .route("/api/auth/account/terms", put(session::put_accept_terms))
-        .route(
-            "/api/auth/session/revoke",
-            post(session::post_revoke_sessions),
-        )
-        .route(
-            "/api/auth/account/today-stats",
-            put(session::put_today_stats),
-        )
-        .with_state(AppState {
-            moments,
-            dev_bearer,
-            accounts: Arc::new(Mutex::new(session::Accounts::default())),
-        })
-}
-
 /// The front-door side of the Duet API: Duet joins through the front door,
 /// keeps the resulting session as its bearer, and reads consent and premium
 /// from the front-door store. Duet never stores billing and never sees
@@ -405,16 +284,6 @@ pub fn front_door_router(api: DuetApi) -> Router {
         // open (the token is the proof), and the account, link, consent, and
         // premium reads resolve the presented bearer session.
         .merge(front_door::http::router_with(api.front_door, true))
-}
-
-/// Builds the router with the front door embedded: join, consent, premium,
-/// plus the front-door account routes and the existing moments routes.
-pub fn router_with_front_door(api: DuetApi, moments: Arc<dyn Moments>) -> Router {
-    front_door_router(api).merge(router_with(moments, dev_bearer_from_env()))
-}
-
-fn dev_bearer_from_env() -> bool {
-    env::var("DUET_API_AUTH").ok().as_deref() == Some("dev-bearer")
 }
 
 /// The join request: the invitation email and token the practice delivered.
@@ -495,50 +364,6 @@ async fn premium_read(
     Ok(Json(front_door.store.premium(&patient).await))
 }
 
-async fn list_moments(
-    State(state): State<AppState>,
-    headers: HeaderMap,
-) -> Result<Json<Vec<AccountMoment>>, ApiError> {
-    let user_id = account_id(&state, &headers)?;
-    Ok(Json(state.moments.list(user_id).await?))
-}
-
-async fn remove_moment(
-    State(state): State<AppState>,
-    headers: HeaderMap,
-    Path(moment_id): Path<Uuid>,
-) -> Result<StatusCode, ApiError> {
-    let user_id = account_id(&state, &headers)?;
-    if state.moments.remove(user_id, moment_id).await? {
-        Ok(StatusCode::NO_CONTENT)
-    } else {
-        Err(ApiError::NotFound)
-    }
-}
-
-pub(crate) fn account_id(state: &AppState, headers: &HeaderMap) -> Result<Uuid, ApiError> {
-    if !state.dev_bearer {
-        return Err(ApiError::Unavailable("Auth is not configured."));
-    }
-    let header = headers
-        .get(axum::http::header::AUTHORIZATION)
-        .and_then(|value| value.to_str().ok())
-        .unwrap_or("");
-    let token = header
-        .strip_prefix("Bearer dev:")
-        .ok_or(ApiError::Unauthorized)?;
-    let user_id = Uuid::parse_str(token).map_err(|_| ApiError::Unauthorized)?;
-    if state
-        .accounts
-        .lock()
-        .expect("accounts lock")
-        .is_revoked(user_id)
-    {
-        return Err(ApiError::SessionRevoked);
-    }
-    Ok(user_id)
-}
-
 /// Reports whether the required migration is applied.
 #[expect(
     clippy::disallowed_methods,
@@ -556,81 +381,13 @@ mod tests {
     use super::*;
     use axum::body::Body;
     use axum::http::Request;
-    use chrono::TimeZone;
     use front_door::MemoryFrontDoorStore;
     use tower::ServiceExt;
 
     const NOW: u64 = 1_760_000_000;
 
-    struct Memory {
-        rows: std::sync::Mutex<Vec<AccountMoment>>,
-    }
-
-    #[async_trait]
-    impl Moments for Memory {
-        async fn list(&self, _user_id: Uuid) -> Result<Vec<AccountMoment>, ApiError> {
-            Ok(self.rows.lock().unwrap().clone())
-        }
-
-        async fn remove(&self, _user_id: Uuid, moment_id: Uuid) -> Result<bool, ApiError> {
-            let mut rows = self.rows.lock().unwrap();
-            let before = rows.len();
-            rows.retain(|row| row.id != moment_id);
-            Ok(rows.len() != before)
-        }
-    }
-
-    fn moment() -> AccountMoment {
-        AccountMoment::new(
-            Uuid::nil(),
-            MomentKind::FirstSummaryPrepared,
-            chrono::Utc
-                .with_ymd_and_hms(2026, 1, 2, 3, 4, 5)
-                .unwrap()
-                .fixed_offset(),
-        )
-    }
-
-    #[tokio::test]
-    async fn lists_and_deletes_one_account_moment() {
-        let store = Arc::new(Memory {
-            rows: std::sync::Mutex::new(vec![moment()]),
-        });
-        let app = router_with(store, true);
-        let response = app
-            .clone()
-            .oneshot(
-                Request::builder()
-                    .uri("/api/moments")
-                    .header(
-                        "authorization",
-                        "Bearer dev:00000000-0000-0000-0000-000000000001",
-                    )
-                    .body(Body::empty())
-                    .unwrap(),
-            )
-            .await
-            .unwrap();
-        assert_eq!(response.status(), StatusCode::OK);
-        let deleted = app
-            .oneshot(
-                Request::builder()
-                    .method("DELETE")
-                    .uri("/api/moments/00000000-0000-0000-0000-000000000000")
-                    .header(
-                        "authorization",
-                        "Bearer dev:00000000-0000-0000-0000-000000000001",
-                    )
-                    .body(Body::empty())
-                    .unwrap(),
-            )
-            .await
-            .unwrap();
-        assert_eq!(deleted.status(), StatusCode::NO_CONTENT);
-    }
-
     #[test]
-    fn moments_keep_the_external_schema_readiness_contract() {
+    fn the_schema_readiness_check_names_the_required_migration() {
         assert_eq!(REQUIRED_MIGRATION, "0120_one_review_bookmark");
     }
 
@@ -638,10 +395,7 @@ mod tests {
         let store = Arc::new(MemoryFrontDoorStore::new());
         let mut front_door = FrontDoorState::new(store.clone());
         front_door.now = Arc::new(|| NOW);
-        let moments: Arc<dyn Moments> = Arc::new(Memory {
-            rows: std::sync::Mutex::new(Vec::new()),
-        });
-        let app = router_with_front_door(DuetApi { front_door }, moments);
+        let app = front_door_router(DuetApi { front_door });
         (app, store)
     }
 
@@ -873,232 +627,5 @@ mod tests {
         assert_eq!(premium.status(), StatusCode::UNAUTHORIZED);
         let grant = request(&app, "POST", "/api/consent", Some("codaf-forged")).await;
         assert_eq!(grant.status(), StatusCode::UNAUTHORIZED);
-    }
-
-    fn session_app() -> Router {
-        router_with(
-            Arc::new(Memory {
-                rows: std::sync::Mutex::new(Vec::new()),
-            }),
-            true,
-        )
-    }
-
-    async fn auth_call(
-        app: &Router,
-        method: &str,
-        uri: &str,
-        auth: Option<&str>,
-        body: Option<&str>,
-    ) -> (StatusCode, serde_json::Value) {
-        let mut builder = Request::builder().method(method).uri(uri);
-        if let Some(auth) = auth {
-            builder = builder.header("authorization", auth);
-        }
-        let body = match body {
-            Some(body) => {
-                builder = builder.header("content-type", "application/json");
-                Body::from(body.to_owned())
-            }
-            None => Body::empty(),
-        };
-        let response = app
-            .clone()
-            .oneshot(builder.body(body).unwrap())
-            .await
-            .unwrap();
-        let status = response.status();
-        let bytes = axum::body::to_bytes(response.into_body(), 64_000)
-            .await
-            .unwrap();
-        let value = if bytes.is_empty() {
-            serde_json::Value::Null
-        } else {
-            serde_json::from_slice(&bytes).unwrap()
-        };
-        (status, value)
-    }
-
-    #[tokio::test]
-    async fn session_routes_ensure_terms_stats_revoke_then_bearer_fails() {
-        let app = session_app();
-        let ada = "Bearer dev:00000000-0000-0000-0000-000000000001";
-        let other = "Bearer dev:00000000-0000-0000-0000-000000000002";
-        let terms = format!(r#"{{"version":"{}"}}"#, session::CURRENT_TERMS_VERSION);
-
-        let (status, body) = auth_call(&app, "PUT", "/api/auth/account", None, Some("{}")).await;
-        assert_eq!(status, StatusCode::UNAUTHORIZED);
-        assert_eq!(body["detail"]["code"], "session_invalid");
-        assert!(body["detail"]["correlation_id"].as_str().is_some());
-
-        let (status, _) = auth_call(
-            &app,
-            "PUT",
-            "/api/auth/account",
-            Some("Bearer not-a-dev-token"),
-            Some("{}"),
-        )
-        .await;
-        assert_eq!(status, StatusCode::UNAUTHORIZED);
-
-        let (status, _) = auth_call(
-            &app,
-            "PUT",
-            "/api/auth/account",
-            Some("Bearer dev:not-a-uuid"),
-            Some("{}"),
-        )
-        .await;
-        assert_eq!(status, StatusCode::UNAUTHORIZED);
-
-        let (status, body) = auth_call(
-            &app,
-            "PUT",
-            "/api/auth/account/terms",
-            Some(ada),
-            Some(&terms),
-        )
-        .await;
-        assert_eq!(status, StatusCode::UNAUTHORIZED);
-        assert_eq!(body["detail"]["code"], "account_absent");
-        assert!(body["detail"]["correlation_id"].as_str().is_some());
-
-        let (status, body) = auth_call(
-            &app,
-            "PUT",
-            "/api/auth/account/today-stats",
-            Some(ada),
-            Some(r#"{"stat_ids":["metric:steps"]}"#),
-        )
-        .await;
-        assert_eq!(status, StatusCode::UNAUTHORIZED);
-        assert_eq!(body["detail"]["code"], "account_absent");
-        assert!(body["detail"]["correlation_id"].as_str().is_some());
-
-        let (status, ensured) = auth_call(
-            &app,
-            "PUT",
-            "/api/auth/account",
-            Some(ada),
-            Some(r#"{"display_name":"  Ada   Lovelace  "}"#),
-        )
-        .await;
-        assert_eq!(status, StatusCode::OK);
-        assert_eq!(ensured["display_name"], "Ada Lovelace");
-        assert_eq!(ensured["setup_complete"], false);
-        assert_eq!(ensured["terms_accepted"], false);
-        assert_eq!(ensured["terms_accepted_at"], serde_json::Value::Null);
-        assert_eq!(ensured["terms_version"], session::CURRENT_TERMS_VERSION);
-        assert_eq!(ensured["intelligence_enabled"], true);
-        assert_eq!(ensured["intelligence_available"], false);
-        assert_eq!(ensured["luna_consent"], "undecided");
-        assert_eq!(ensured["today_stat_ids"], serde_json::Value::Null);
-
-        let (status, kept) =
-            auth_call(&app, "PUT", "/api/auth/account", Some(ada), Some("{}")).await;
-        assert_eq!(status, StatusCode::OK);
-        assert_eq!(kept["display_name"], "Ada Lovelace");
-
-        let (status, body) = auth_call(
-            &app,
-            "PUT",
-            "/api/auth/account/today-stats",
-            Some(ada),
-            Some(r#"{"stat_ids":["metric:steps"]}"#),
-        )
-        .await;
-        assert_eq!(status, StatusCode::FORBIDDEN);
-        assert_eq!(body["detail"]["code"], "terms_acceptance_required");
-
-        let (status, accepted) = auth_call(
-            &app,
-            "PUT",
-            "/api/auth/account/terms",
-            Some(ada),
-            Some(&terms),
-        )
-        .await;
-        assert_eq!(status, StatusCode::OK);
-        assert_eq!(accepted["terms_accepted"], true);
-        let accepted_at = accepted["terms_accepted_at"].as_str().unwrap().to_owned();
-
-        let (status, again) = auth_call(
-            &app,
-            "PUT",
-            "/api/auth/account/terms",
-            Some(ada),
-            Some(&terms),
-        )
-        .await;
-        assert_eq!(status, StatusCode::OK);
-        assert_eq!(again["terms_accepted_at"], accepted_at);
-
-        let (status, stale) = auth_call(
-            &app,
-            "PUT",
-            "/api/auth/account/terms",
-            Some(ada),
-            Some(r#"{"version":"2026-01-01"}"#),
-        )
-        .await;
-        assert_eq!(status, StatusCode::CONFLICT);
-        assert_eq!(stale["detail"]["code"], "agreement_version_changed");
-
-        let (status, still) =
-            auth_call(&app, "PUT", "/api/auth/account", Some(ada), Some("{}")).await;
-        assert_eq!(status, StatusCode::OK);
-        assert_eq!(still["terms_accepted"], true);
-        assert_eq!(still["terms_accepted_at"], accepted_at);
-
-        let (status, _) = auth_call(
-            &app,
-            "PUT",
-            "/api/auth/account/today-stats",
-            Some(ada),
-            Some(r#"{"stat_ids":["metric:not_a_real_metric"]}"#),
-        )
-        .await;
-        assert_eq!(status, StatusCode::UNPROCESSABLE_ENTITY);
-
-        let (status, saved) = auth_call(
-            &app,
-            "PUT",
-            "/api/auth/account/today-stats",
-            Some(ada),
-            Some(r#"{"stat_ids":["metric:steps","signal:hrv_overnight"]}"#),
-        )
-        .await;
-        assert_eq!(status, StatusCode::OK);
-        assert_eq!(
-            saved["stat_ids"],
-            serde_json::json!(["metric:steps", "signal:hrv_overnight"])
-        );
-
-        let (status, with_stats) =
-            auth_call(&app, "PUT", "/api/auth/account", Some(ada), Some("{}")).await;
-        assert_eq!(status, StatusCode::OK);
-        assert_eq!(
-            with_stats["today_stat_ids"],
-            serde_json::json!(["metric:steps", "signal:hrv_overnight"])
-        );
-
-        let (status, revoked) =
-            auth_call(&app, "POST", "/api/auth/session/revoke", Some(ada), None).await;
-        assert_eq!(status, StatusCode::OK);
-        assert_eq!(revoked["status"], "confirmed");
-
-        let (status, refused) =
-            auth_call(&app, "PUT", "/api/auth/account", Some(ada), Some("{}")).await;
-        assert_eq!(status, StatusCode::UNAUTHORIZED);
-        assert_eq!(refused["detail"]["code"], "session_revoked");
-
-        let (status, _) = auth_call(&app, "GET", "/api/moments", Some(ada), None).await;
-        assert_eq!(status, StatusCode::UNAUTHORIZED);
-
-        let (status, other_account) =
-            auth_call(&app, "PUT", "/api/auth/account", Some(other), Some("{}")).await;
-        assert_eq!(status, StatusCode::OK);
-        assert_eq!(other_account["terms_accepted"], false);
-        assert_eq!(other_account["display_name"], serde_json::Value::Null);
     }
 }

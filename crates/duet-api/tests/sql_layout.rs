@@ -1,5 +1,4 @@
-//! Preserve the external schema-readiness query. Moments CRUD is now typed ORM;
-//! it has behavioral PostgreSQL proof rather than an authored-SQL quota.
+//! Preserve the external schema-readiness query.
 
 #[test]
 fn schema_readiness_query_preserves_the_original_sql() {

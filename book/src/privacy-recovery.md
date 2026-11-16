@@ -8,7 +8,7 @@ the original Python service is historical reference, not its runtime owner.
 | Receipt types, journal interface, local file journal and replay | [`privacy.rs`](/crates/duet-api/src/privacy.rs) |
 | Independent hosted journal | [`journal_gcs.rs`](/crates/duet-api/src/journal_gcs.rs) |
 | Archive behavior for privacy operations | [`privacy_archive.rs`](/crates/duet-api/src/privacy_archive.rs) |
-| Persistence and deletion integration | [`database.rs`](/crates/duet-api/src/database.rs), [`lib.rs`](/crates/duet-api/src/lib.rs) |
+| Persistence and deletion integration | [`database.rs`](/crates/duet-api/src/database.rs), [`privacy.rs`](/crates/duet-api/src/privacy.rs) |
 | Configured hosted stores and startup checks | [`main.rs`](/crates/duet-api/src/main.rs); [GCP](gcp.md) |
 
 Inspect these owners and their tests together when changing deletion or replay.

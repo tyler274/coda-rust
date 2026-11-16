@@ -160,9 +160,9 @@ mod tests {
         let fresh = DuetClient::new(&url, "fresh", "0", "0")
             .unwrap()
             .bind_session(session.clone(), fence.clone(), sender);
-        assert!(old.list_moments().await.is_err());
+        assert!(old.doctor_preview_svg().await.is_err());
         assert!(session.is_current(&fence));
-        assert!(fresh.list_moments().await.is_ok());
+        assert!(fresh.doctor_preview_svg().await.is_ok());
         assert!(session.is_current(&fence));
         server.abort();
     }

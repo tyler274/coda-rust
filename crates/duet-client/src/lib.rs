@@ -20,7 +20,6 @@ pub mod session;
 pub mod refusal;
 
 use duet_wire::apis::configuration::Configuration;
-pub use duet_wire::models::AccountMoment;
 pub use duet_wire::models::EvidenceLibraryPage;
 pub use duet_wire::models::EvidenceLibraryQuery;
 pub use duet_wire::models::evidence_library_query::Scope as EvidenceLibraryScope;
@@ -70,13 +69,6 @@ impl DuetClient {
                 api_key: None,
             },
         })
-    }
-
-    /// Lists account moments.
-    pub async fn list_moments(&self) -> Result<Vec<AccountMoment>, String> {
-        duet_wire::apis::moments_api::list_moments_api_moments_get(&self.configuration)
-            .await
-            .map_err(|error| self.wire_error(error))
     }
 
     /// Reads the evidence library.
@@ -554,33 +546,6 @@ mod tests {
     use super::*;
     use axum::Json;
     use axum::routing::get;
-    use duet_wire::models::MomentKind;
-
-    #[tokio::test]
-    async fn lists_moments_from_a_json_server() {
-        let moment = AccountMoment::new(
-            uuid::Uuid::nil(),
-            MomentKind::FirstSummaryPrepared,
-            chrono::DateTime::parse_from_rfc3339("2026-01-02T03:04:05Z").unwrap(),
-        );
-        let body = vec![moment];
-        let app = axum::Router::new().route(
-            "/api/moments",
-            get(move || {
-                let body = body.clone();
-                async move { Json(body) }
-            }),
-        );
-        let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
-        let address = listener.local_addr().unwrap();
-        tokio::spawn(async move { axum::serve(listener, app).await.unwrap() });
-
-        let client =
-            DuetClient::new(format!("http://{address}"), "test-token", "200", "1.0.0").unwrap();
-        let moments = client.list_moments().await.unwrap();
-        assert_eq!(moments.len(), 1);
-        assert_eq!(moments[0].kind, MomentKind::FirstSummaryPrepared);
-    }
 
     #[tokio::test]
     async fn reads_the_library() {
