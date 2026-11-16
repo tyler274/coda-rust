@@ -345,17 +345,9 @@ async fn empty_snapshot(
     .into_response()
 }
 
+/// A change stream on which nothing ever changes; it still keeps alive.
 async fn quiet_events() -> Response {
-    let stream = futures_util::stream::pending::<Result<String, std::convert::Infallible>>();
-    (
-        StatusCode::OK,
-        [(
-            axum::http::header::CONTENT_TYPE,
-            HeaderValue::from_static("text/event-stream"),
-        )],
-        Body::from_stream(stream),
-    )
-        .into_response()
+    live::change_stream(futures_util::stream::pending())
 }
 
 async fn site_file(request: Request<Body>) -> Response {

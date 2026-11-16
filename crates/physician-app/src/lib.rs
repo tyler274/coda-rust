@@ -238,9 +238,36 @@ impl StreamBackoff {
     }
 }
 
+/// How long the change stream may go without any bytes before the page takes the connection as
+/// dropped: twice the server's keep-alive interval (axum's default, 15 seconds). SignalR documents
+/// the same rule for its client timeout: "The recommended value is a number at least double the
+/// server's keep-alive interval ... to allow time for pings to arrive", and its default is 30
+/// seconds.
+#[cfg(any(target_arch = "wasm32", test))]
+const STREAM_SILENCE_MS: f64 = 30_000.0;
+
+/// How much longer the change stream may stay silent when bytes last arrived at `last_bytes_at`
+/// and it is `now`, in the page clock's milliseconds; none once it has been silent for
+/// [`STREAM_SILENCE_MS`], and the connection is taken as dropped. Any bytes count, a keep-alive
+/// comment too.
+#[cfg(any(target_arch = "wasm32", test))]
+fn silence_left_ms(last_bytes_at: f64, now: f64) -> Option<f64> {
+    let left = STREAM_SILENCE_MS - (now - last_bytes_at);
+    (left > 0.0).then_some(left)
+}
+
 #[cfg(test)]
 mod stream_retry_tests {
-    use super::StreamBackoff;
+    use super::{StreamBackoff, silence_left_ms};
+
+    /// A stream is not silent just under 30 seconds after its last bytes, and is at 30 seconds.
+    #[test]
+    fn a_stream_is_silent_30_seconds_after_its_last_bytes() {
+        let last = 120_000.0;
+        assert_eq!(silence_left_ms(last, last), Some(30_000.0));
+        assert_eq!(silence_left_ms(last, last + 29_999.0), Some(1.0));
+        assert_eq!(silence_left_ms(last, last + 30_000.0), None);
+    }
 
     #[test]
     fn immediate_eof_and_failures_back_off_to_the_longest_delay() {
@@ -390,33 +417,61 @@ fn follow_workspace_events(
             let started_at = clock.now();
             let reader = body.get_reader();
             let mut buffer = String::new();
+            let mut last_bytes_at = started_at;
+            // A read the silence timer woke before, still on its way.
+            let mut on_its_way: Option<js_sys::Promise> = None;
             loop {
-                let Ok(read) = js_sys::Reflect::get(&reader, &"read".into()) else {
-                    return;
+                let promise = match on_its_way.take() {
+                    Some(promise) => promise,
+                    None => {
+                        let Ok(read) = js_sys::Reflect::get(&reader, &"read".into()) else {
+                            return;
+                        };
+                        let Ok(read) = read.dyn_into::<js_sys::Function>() else {
+                            return;
+                        };
+                        let Ok(promise) = read.call0(&reader) else {
+                            return;
+                        };
+                        let Ok(promise) = promise.dyn_into::<js_sys::Promise>() else {
+                            return;
+                        };
+                        promise
+                    }
                 };
-                let Ok(read) = read.dyn_into::<js_sys::Function>() else {
-                    return;
-                };
-                let Ok(promise) = read.call0(&reader) else {
-                    return;
-                };
-                let Ok(promise) = promise.dyn_into::<js_sys::Promise>() else {
-                    return;
-                };
-                let Ok(chunk) = wasm_bindgen_futures::JsFuture::from(promise).await else {
-                    today_attempt.set(today_attempt() + 1);
-                    workspace_attempt.set(workspace_attempt() + 1);
-                    snapshot_attempt.set(snapshot_attempt() + 1);
+                let Some(left) = silence_left_ms(last_bytes_at, clock.now()) else {
+                    // Silent too long: the connection is taken as dropped, and let go.
+                    if let Ok(cancel) = js_sys::Reflect::get(&reader, &"cancel".into())
+                        && let Ok(cancel) = cancel.dyn_into::<js_sys::Function>()
+                    {
+                        let _ = cancel.call0(&reader);
+                    }
                     break;
                 };
+                // The silence timer resolves with nothing; a read always resolves with an object.
+                let timer = js_sys::Promise::new(&mut |resolve, reject| {
+                    if let Err(error) = window
+                        .set_timeout_with_callback_and_timeout_and_arguments_0(
+                            &resolve,
+                            left.ceil() as i32,
+                        )
+                    {
+                        let _ = reject.call1(&wasm_bindgen::JsValue::NULL, &error);
+                    }
+                });
+                let first = js_sys::Promise::race(&js_sys::Array::of2(&promise, &timer));
+                let Ok(chunk) = wasm_bindgen_futures::JsFuture::from(first).await else {
+                    break;
+                };
+                if chunk.is_undefined() {
+                    on_its_way = Some(promise);
+                    continue;
+                }
                 let done = js_sys::Reflect::get(&chunk, &"done".into())
                     .ok()
                     .and_then(|value| value.as_bool())
                     .unwrap_or(true);
                 if done {
-                    today_attempt.set(today_attempt() + 1);
-                    workspace_attempt.set(workspace_attempt() + 1);
-                    snapshot_attempt.set(snapshot_attempt() + 1);
                     break;
                 }
                 let Some(bytes) = js_sys::Reflect::get(&chunk, &"value".into())
@@ -425,6 +480,7 @@ fn follow_workspace_events(
                 else {
                     return;
                 };
+                last_bytes_at = clock.now();
                 buffer.push_str(&String::from_utf8_lossy(&bytes));
                 apply_event_frames(
                     &mut buffer,
@@ -434,6 +490,11 @@ fn follow_workspace_events(
                     &mut snapshot_attempt,
                 );
             }
+            // The stream ended: it closed, its read failed, or it went silent. Read everything
+            // again, then connect again after the backoff.
+            today_attempt.set(today_attempt() + 1);
+            workspace_attempt.set(workspace_attempt() + 1);
+            snapshot_attempt.set(snapshot_attempt() + 1);
             delay = retry.next_delay_ms(Some(clock.now() - started_at));
         }
     })

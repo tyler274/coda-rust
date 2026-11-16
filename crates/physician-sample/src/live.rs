@@ -4,18 +4,20 @@
 use std::collections::BTreeMap;
 use std::convert::Infallible;
 use std::sync::Arc;
+use std::time::Duration;
 
 use axum::Json;
-use axum::body::Body;
 use axum::extract::{Extension, Path, State};
-use axum::http::{HeaderValue, StatusCode};
+use axum::http::StatusCode;
+use axum::response::sse::{self, Sse};
 use axum::response::{IntoResponse, Response};
-use futures_util::stream;
+use futures_util::{Stream, StreamExt, stream};
 use local_product::runtime::feedback::Feedback;
 use physician_bus::{Bus, Event};
 use physician_wire::{ChatSnapshot, ChatSnapshotResponse};
 use serde::Deserialize;
 use serde_json::{Value, json};
+use tokio::time::{Instant, MissedTickBehavior, interval_at};
 
 use crate::auth::AuthContext;
 use crate::rejection_message;
@@ -475,29 +477,63 @@ fn rejected(kind: &str) -> Response {
     .into_response()
 }
 
-/// `workspace_changed` and `resync` frames. The body stays open. A client
-/// refetches what it shows on `resync` (bus lag or a Redis reconnect).
+/// The practice's change stream over the bus: a `workspace_changed` or
+/// `resync` frame for each change. The body stays open. A client refetches
+/// what it shows on `resync` (bus lag or a Redis reconnect).
 pub(crate) async fn events(State(bus): State<Arc<dyn Bus>>) -> Response {
-    let rx = bus.subscribe();
-    let stream = stream::unfold(rx, |mut rx| async move {
-        let frame = match rx.recv().await.ok()? {
-            Event::WorkspaceChanged { workspace_id } | Event::WorkspaceSettled { workspace_id } => {
-                let data = json!({ "patient_workspace_id": workspace_id }).to_string();
-                format!("event: workspace_changed\ndata: {data}\n\n")
-            }
-            Event::Resync => "event: resync\ndata: {}\n\n".to_owned(),
-        };
-        Some((Ok::<String, Infallible>(frame), rx))
+    let changes = stream::unfold(bus.subscribe(), |mut rx| async move {
+        let change = rx.recv().await.ok()?;
+        Some((change, rx))
     });
-    (
-        StatusCode::OK,
-        [(
-            axum::http::header::CONTENT_TYPE,
-            HeaderValue::from_static("text/event-stream"),
-        )],
-        Body::from_stream(stream),
-    )
-        .into_response()
+    change_stream(changes)
+}
+
+/// How often the change stream sends its keep-alive comment: 15 s, axum's `KeepAlive` default
+/// (docs.rs, `KeepAlive::new`: "Default is 15 seconds"), ASP.NET SignalR's `KeepAliveInterval`
+/// default, and sse-starlette's `DEFAULT_PING_INTERVAL` (3.7.0), whose `_ping` loop sleeps that
+/// long and sends a comment, whatever else the stream sends.
+pub(crate) const KEEP_ALIVE_EVERY: Duration = Duration::from_secs(15);
+
+/// The change stream's response for `changes`: one frame for each change, and an empty comment
+/// every [`KEEP_ALIVE_EVERY`] from the moment it opens, so a client can tell a quiet stream from
+/// a connection that died without closing. The beat is fixed, not reset by a change: the sign-in
+/// layer drops, after they were framed, the changes a reader may not see, so a change sent here
+/// may never reach the reader. The stream ends when `changes` ends.
+pub(crate) fn change_stream(changes: impl Stream<Item = Event> + Send + 'static) -> Response {
+    // A reader slow to take bytes misses beats; `Delay` sends one comment when it takes bytes
+    // again and the next a full interval later, where tokio's default `Burst` would send every
+    // missed one at once. sse-starlette's `_ping` loop does the same: it sleeps after each send.
+    let mut beat = interval_at(Instant::now() + KEEP_ALIVE_EVERY, KEEP_ALIVE_EVERY);
+    beat.set_missed_tick_behavior(MissedTickBehavior::Delay);
+    let frames = stream::unfold(
+        (Box::pin(changes), beat),
+        |(mut changes, mut beat)| async move {
+            let frame = tokio::select! {
+                // The beat first. For a reader that takes frames faster than one an interval,
+                // the beat cannot hold changes back, because it is due at most once an interval;
+                // changes that stay ready would hold a due beat back without end. The stream
+                // still ends at the first poll of `changes` after they end.
+                biased;
+                // The empty comment axum's own `KeepAlive` sends.
+                _ = beat.tick() => sse::Event::DEFAULT_KEEP_ALIVE,
+                change = changes.next() => change_frame(change?),
+            };
+            Some((Ok::<_, Infallible>(frame), (changes, beat)))
+        },
+    );
+    Sse::new(frames).into_response()
+}
+
+/// The frame for one change.
+fn change_frame(change: Event) -> sse::Event {
+    match change {
+        Event::WorkspaceChanged { workspace_id } | Event::WorkspaceSettled { workspace_id } => {
+            sse::Event::default()
+                .event("workspace_changed")
+                .data(json!({ "patient_workspace_id": workspace_id }).to_string())
+        }
+        Event::Resync => sse::Event::default().event("resync").data("{}"),
+    }
 }
 
 /// A scenario tag from a session that may not send one, or a malformed tag.

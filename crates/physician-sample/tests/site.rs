@@ -1056,6 +1056,105 @@ async fn the_first_event_connection_reads_changes_after_the_initial_snapshot() {
     );
 }
 
+/// The change stream of a signed-in page that is not a chat, quiet and then a connection that
+/// dies without closing. Where nothing changes for longer than 30 seconds, Today keeps its first
+/// change stream: the keep-alive comments pass the sign-in guard and reach it. Then the page's
+/// change stream stops handing the page any bytes, keep-alives too, and stays open. Today reads
+/// on no timer, so no Today read leaves the page meanwhile. Once nothing has reached it for 30
+/// seconds, the page gives that stream up, reads Today again and connects again.
+#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+#[ignore = "browser and disposable Postgres qualification; run explicitly with --ignored"]
+async fn a_quiet_page_keeps_its_change_stream_and_a_silent_one_is_dropped_and_read_again() {
+    let _guard = test_lock().lock().await;
+    let site = build_site();
+    let server = serve_chat_browser(&site, scale::FIXED_TEXT).await;
+    let base = format!("http://{}", server.address);
+    let mut tab = Tab::open(&base);
+    tab.wait_for_text("Work email", Duration::from_secs(20));
+    tab.request_sign_in("physician@codahealth.test");
+    tab.wait_for_text("Nothing needs you right now.", Duration::from_secs(20));
+    tab.call(
+        "Page.addScriptToEvaluateOnNewDocument",
+        serde_json::json!({"source": include_str!("js/silence_event_stream.js")}),
+    );
+    tab.reload();
+    tab.wait_for_text("Nothing needs you right now.", Duration::from_secs(20));
+
+    // Quiet past the page's 30-second silence limit by one server keep-alive interval (the
+    // server's own `live::KEEP_ALIVE_EVERY`, 15 seconds): a page that heard no keep-alive would
+    // have given its stream up.
+    tokio::time::sleep(Duration::from_secs(30 + 15)).await;
+    let quiet = tab.step("eventStreamHeard", serde_json::json!([]));
+    assert!(
+        quiet["streams"] == 1
+            && quiet["sinceBytes"].as_f64().is_some_and(|ms| ms < 30_000.0)
+            && quiet["lastChunk"]
+                .as_str()
+                .is_some_and(|chunk| chunk.starts_with(':')),
+        "a quiet signed-in page lost its change stream or heard no keep-alive: {quiet}"
+    );
+
+    // From here on the browser holds each Today read the page starts before it leaves for the
+    // server.
+    tab.call(
+        "Fetch.enable",
+        serde_json::json!({ "patterns": [{ "urlPattern": "*/today" }] }),
+    );
+    assert_eq!(
+        tab.eval("window.__silenceEvents()"),
+        serde_json::json!(1),
+        "the page holds more than one change stream"
+    );
+    // The page gives the stream up 30 seconds after its last bytes at the latest, and those came
+    // before the silence.
+    let silenced = Instant::now();
+    let stream = loop {
+        let reads = tab.browser.take_paused_requests();
+        let stream = tab.step("silencedEventStream", serde_json::json!([]));
+        if !stream["droppedAt"].is_null() {
+            tab.held.extend(reads);
+            break stream;
+        }
+        assert!(
+            reads.is_empty(),
+            "the page read Today again before it gave the silent stream up: {reads:?}"
+        );
+        assert!(
+            silenced.elapsed() < Duration::from_secs(30 + 15),
+            "the page never gave the silent stream up: {stream}"
+        );
+        std::thread::sleep(Duration::from_millis(100));
+    };
+    let at = |name: &str| stream[name].as_f64().unwrap_or(f64::NAN);
+    assert!(
+        at("droppedAt") - at("lastBytes") >= 30_000.0,
+        "the page gave the stream up before 30 seconds without bytes: {stream}"
+    );
+    eprintln!(
+        "the stream was silent {:.1} s before the page gave it up",
+        (at("droppedAt") - at("silencedAt")) / 1000.0
+    );
+
+    let read = tab.held_request("GET");
+    assert!(
+        read["request"]["url"]
+            .as_str()
+            .is_some_and(|url| url.ends_with("/today")),
+        "the page did not read Today again after it gave the stream up: {read}"
+    );
+    tab.release(&read);
+    let reconnected = Instant::now();
+    while tab.step("eventStreams", serde_json::json!([])) != serde_json::json!(2) {
+        assert!(
+            reconnected.elapsed() < Duration::from_secs(20),
+            "the page never connected again"
+        );
+        std::thread::sleep(Duration::from_millis(100));
+    }
+    tab.release_all();
+    tab.call("Fetch.disable", serde_json::json!({}));
+}
+
 #[tokio::test(flavor = "multi_thread", worker_threads = 2)]
 #[ignore = "browser qualification; run explicitly with --ignored"]
 async fn the_same_bundle_runs_under_a_stripped_physician_prefix_and_reconnects() {

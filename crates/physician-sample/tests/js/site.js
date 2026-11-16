@@ -200,6 +200,28 @@ function (step, ...args) {
         }, 10000);
       });
     },
+    // What `silence_event_stream.js` saw of the page's change streams: how many it opened, how
+    // long ago the page was last handed bytes, and those bytes as text.
+    eventStreamHeard() {
+      return {
+        streams: window.__eventRequests,
+        sinceBytes: performance.now() - window.__lastBytes,
+        lastChunk: window.__lastChunk,
+      };
+    },
+    // When `silence_event_stream.js` silenced the page's change stream, when the page was last
+    // handed bytes, and when it gave that stream up (null while it holds it).
+    silencedEventStream() {
+      return {
+        silencedAt: window.__silencedAt,
+        lastBytes: window.__lastBytes,
+        droppedAt: window.__droppedAt,
+      };
+    },
+    // How many change streams the page opened, as `silence_event_stream.js` counts them.
+    eventStreams() {
+      return window.__eventRequests;
+    },
     // Whether the logo and favicon load from under the `/physician/` prefix.
     async prefixAssetsLoad() {
       const logo = one("img.coda-logo");
