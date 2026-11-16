@@ -22,6 +22,8 @@ pub mod status;
 pub mod worktree;
 
 #[cfg(test)]
+mod fake_http;
+#[cfg(test)]
 mod port_tests;
 #[cfg(test)]
 mod tests;

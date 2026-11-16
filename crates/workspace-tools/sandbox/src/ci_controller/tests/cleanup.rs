@@ -3,11 +3,11 @@
 
 use serde_json::{Value, json};
 
-use super::fake_github::{Call, FakeGitHub};
 use super::*;
 use crate::ci_controller::github::{Job, JobId, JobStatus};
 use crate::ci_controller::guest::GuestFailure;
 use crate::ci_controller::results::GUEST_FAILED;
+use crate::fake_http::{Call, FakeHttp};
 
 const JITCONFIG: &str = "repos/Coda-Health/coda-rust/actions/runners/generate-jitconfig";
 const RUNNER: &str = "repos/Coda-Health/coda-rust/actions/runners/7";
@@ -21,8 +21,8 @@ fn job() -> Job {
     }
 }
 
-fn github_with_delete(delete_status: u16) -> FakeGitHub {
-    FakeGitHub::builder()
+fn github_with_delete(delete_status: u16) -> FakeHttp {
+    FakeHttp::builder()
         .route(
             "POST",
             JITCONFIG,
@@ -61,7 +61,7 @@ fn request_sigterm_soon(controller: &Controller<'_>) {
     });
 }
 
-fn assert_runner_deleted(fake: &FakeGitHub) {
+fn assert_runner_deleted(fake: &FakeHttp) {
     assert_eq!(fake.paths().last(), Some(&Call::new("DELETE", RUNNER)));
 }
 

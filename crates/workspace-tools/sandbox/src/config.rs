@@ -10,6 +10,7 @@ use std::str::FromStr;
 use serde::{Deserialize, Serialize};
 
 use crate::broker::{Item, Need};
+use crate::editor_settings::Editor;
 use crate::error::Error;
 
 pub const DEFAULT_PATH: &str = "/etc/coda-sandbox/config.toml";
@@ -43,6 +44,16 @@ pub struct Config {
     /// has one; without it they keep their own logins.
     #[serde(default)]
     pub model_proxy: Option<ModelProxy>,
+    #[serde(default)]
+    pub open: Open,
+}
+
+/// `coda-sandbox open`'s defaults. Host only.
+#[derive(Debug, Clone, Default, PartialEq, Eq, Deserialize)]
+pub struct Open {
+    /// The editor `open` uses without `--editor`; Cursor when unset.
+    #[serde(default)]
+    pub editor: Editor,
 }
 
 /// The model proxy on the host (`services.coda-sandbox.container.modelProxy`):
@@ -53,6 +64,15 @@ pub struct ModelProxy {
     /// Its address as the container reaches it, such as
     /// `http://10.233.1.1:47821`.
     pub url: String,
+    /// Its address on the host's loopback, where it answers the admin
+    /// routes `broker mint model-proxy` uses. Host only.
+    #[serde(default = "default_admin_url")]
+    pub admin_url: String,
+}
+
+/// Ungate's default port on loopback.
+fn default_admin_url() -> String {
+    "http://127.0.0.1:47821".to_owned()
 }
 
 impl ModelProxy {
@@ -110,11 +130,19 @@ pub use crate::broker::wire::GhFallback;
 /// `coda-sandbox carry`: which checkout to record and where the bundle goes.
 #[derive(Debug, Clone, PartialEq, Eq, Deserialize)]
 pub struct Carry {
-    /// The host's main checkout; all its worktrees are carried.
+    /// The host's main checkout, whose worktrees are carried. Host only.
     pub repo: PathBuf,
-    /// Receives `carry.bundle`, `ignored.txt` and `summary.txt`; the
-    /// container binds it read-only.
+    /// Receives `carry.bundle`, `ignored.txt` and `summary.txt`. Host only.
     pub out: PathBuf,
+    /// `out` as the container sees it, bound read-only, where
+    /// `carry import` reads. The one path that differs between the sides:
+    /// the host's copy stays off the agent-owned tree.
+    #[serde(default = "default_carry_mount")]
+    pub mount: PathBuf,
+}
+
+fn default_carry_mount() -> PathBuf {
+    PathBuf::from("/agents/coda/carry")
 }
 
 /// The config schema's version, `version = 1` in the file.

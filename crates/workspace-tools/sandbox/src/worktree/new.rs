@@ -20,6 +20,10 @@ pub fn branch_ref(slug: &Slug) -> String {
     format!("refs/heads/{slug}")
 }
 
+fn heads_ref(branch: &str) -> String {
+    format!("refs/heads/{branch}")
+}
+
 /// The repository's record of the worktree at `tree`, if it has one.
 pub fn registered(layout: &Layout, tree: &Path) -> Result<Option<Entry>, Error> {
     let text = git(&layout.main)
@@ -35,10 +39,16 @@ pub fn registered(layout: &Layout, tree: &Path) -> Result<Option<Entry>, Error> 
 /// slug's branch is kept, a target the link already names is kept, and
 /// anything else is (re)made. Returns the worktree's path.
 pub fn new(layout: &Layout, slug: &Slug, from: &str) -> Result<PathBuf, Error> {
+    new_on(layout, slug, slug.as_str(), from)
+}
+
+/// [`new`] with the worktree on `branch` rather than a branch named after
+/// the slug, as `carry import` gives a worktree its host branch's name.
+pub fn new_on(layout: &Layout, slug: &Slug, branch: &str, from: &str) -> Result<PathBuf, Error> {
     layout.need_build_root()?;
     let tree = layout.tree(slug);
     let dest = layout.target(slug);
-    let branch = branch_ref(slug);
+    let wanted = heads_ref(branch);
     match registered(layout, &tree)? {
         Some(Entry {
             state: EntryState::Present,
@@ -48,8 +58,11 @@ pub fn new(layout: &Layout, slug: &Slug, from: &str) -> Result<PathBuf, Error> {
                     ..
                 },
             ..
-        }) if found == branch => {
-            eprintln!("{} already exists on {slug}; finishing it.", tree.display());
+        }) if found == wanted => {
+            eprintln!(
+                "{} already exists on {branch}; finishing it.",
+                tree.display()
+            );
         }
         Some(Entry {
             state: EntryState::Prunable,
@@ -57,21 +70,21 @@ pub fn new(layout: &Layout, slug: &Slug, from: &str) -> Result<PathBuf, Error> {
         }) => {
             // Registered but its directory is gone: git's own record is stale.
             git(&layout.main).args(["worktree", "prune"]).run()?;
-            add(layout, &tree, slug, from)?;
+            add(layout, &tree, branch, from)?;
         }
         Some(_) => {
             return Err(Error::WorktreeConflict {
                 path: tree,
-                branch: slug.to_string(),
+                branch: branch.to_owned(),
             });
         }
         None if tree.exists() => {
             return Err(Error::WorktreeConflict {
                 path: tree,
-                branch: slug.to_string(),
+                branch: branch.to_owned(),
             });
         }
-        None => add(layout, &tree, slug, from)?,
+        None => add(layout, &tree, branch, from)?,
     }
     let linked = std::fs::read_link(tree.join("target")).is_ok_and(|to| to == dest);
     if !(linked && dest.is_dir()) {
@@ -82,30 +95,34 @@ pub fn new(layout: &Layout, slug: &Slug, from: &str) -> Result<PathBuf, Error> {
     Ok(tree)
 }
 
-fn add(layout: &Layout, tree: &Path, slug: &Slug, from: &str) -> Result<(), Error> {
+fn add(layout: &Layout, tree: &Path, branch: &str, from: &str) -> Result<(), Error> {
     create_dir(&layout.trees)?;
-    let exists = git(&layout.main)
-        .args(["show-ref", "--verify", "--quiet"])
-        .arg(branch_ref(slug))
-        .succeeds()?;
-    if exists {
+    if branch_commit(layout, branch)?.is_some() {
         git(&layout.main)
             .args(["worktree", "add"])
             .arg(tree)
-            .arg(slug.as_str())
+            .arg(branch)
             .run()
     } else {
         // No upstream: the first push names the branch's own remote ref.
         git(&layout.main)
-            .args(["worktree", "add", "--no-track", "-b", slug.as_str()])
+            .args(["worktree", "add", "--no-track", "-b", branch])
             .arg(tree)
             .arg(from)
             .run()
     }
 }
 
+/// The commit local branch `branch` points at, if it exists.
+pub fn branch_commit(layout: &Layout, branch: &str) -> Result<Option<String>, Error> {
+    git(&layout.main)
+        .args(["rev-parse", "--verify", "--quiet"])
+        .arg(format!("{}^{{commit}}", heads_ref(branch)))
+        .line_if_ok()
+}
+
 /// `direnv allow` when the worktree has an `.envrc` and direnv is installed.
-fn allow_direnv(tree: &Path) -> Result<(), Error> {
+pub fn allow_direnv(tree: &Path) -> Result<(), Error> {
     if !tree.join(".envrc").is_file() {
         return Ok(());
     }

@@ -66,15 +66,30 @@ impl Scratch {
 
     /// Writes a config whose build root, carry repo and spool are given.
     pub fn config(&self, build: &Path, carry_repo: &Path, spool: &Path) -> PathBuf {
-        let path = self.path().join("config.toml");
+        self.config_at("config.toml", build, carry_repo, carry_repo, spool)
+    }
+
+    /// A config named `name` whose container checkout differs from the
+    /// host checkout carry reads, as on a real host and container. The
+    /// carry directory is `carry-out` on both sides.
+    pub fn config_at(
+        &self,
+        name: &str,
+        build: &Path,
+        container_repo: &Path,
+        carry_repo: &Path,
+        spool: &Path,
+    ) -> PathBuf {
+        let path = self.path().join(name);
         let text = format!(
             "version = 1\n\
              [container]\nname = \"coda-agent\"\nunit = \"container@coda-agent.service\"\n\
-             ssh_host = \"coda-agent\"\nagent_uid = 1\nrepo = {repo:?}\n\
+             ssh_host = \"coda-agent\"\nagent_uid = 1\nrepo = {container:?}\n\
              [build]\nroot = {build:?}\n\
              [ci]\nspool = {spool:?}\ntimeout_seconds = 60\n\
              timer = \"coda-ci.timer\"\nservice = \"coda-ci.service\"\n\
-             [carry]\nrepo = {repo:?}\nout = {out:?}\n",
+             [carry]\nrepo = {repo:?}\nout = {out:?}\nmount = {out:?}\n",
+            container = container_repo.display().to_string(),
             repo = carry_repo.display().to_string(),
             build = build.display().to_string(),
             spool = spool.display().to_string(),

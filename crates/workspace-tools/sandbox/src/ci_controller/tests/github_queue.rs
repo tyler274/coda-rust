@@ -2,9 +2,9 @@ use std::collections::HashSet;
 
 use serde_json::{Value, json};
 
-use super::fake_github::{Call, FakeGitHub};
 use super::*;
 use crate::ci_controller::github::{JobId, LABEL};
+use crate::fake_http::{Call, FakeHttp};
 
 const RUNS: &str = "repos/Coda-Health/coda-rust/actions/runs?status=queued&per_page=50";
 const JITCONFIG: &str = "repos/Coda-Health/coda-rust/actions/runners/generate-jitconfig";
@@ -19,7 +19,7 @@ fn job(id: u64, status: &str, label: &str) -> Value {
 
 #[test]
 fn routes_only_jobs_labelled_for_cyrene() {
-    let fake = FakeGitHub::builder()
+    let fake = FakeHttp::builder()
         .route(
             "GET",
             RUNS,
@@ -53,7 +53,7 @@ fn routes_only_jobs_labelled_for_cyrene() {
 
 #[test]
 fn no_labelled_job_means_none() {
-    let fake = FakeGitHub::builder()
+    let fake = FakeHttp::builder()
         .route(
             "GET",
             RUNS,
@@ -72,7 +72,7 @@ fn no_labelled_job_means_none() {
 
 #[test]
 fn a_failed_queue_read_is_an_error_not_an_empty_queue() {
-    let fake = FakeGitHub::builder()
+    let fake = FakeHttp::builder()
         .route("GET", RUNS, 500, json!({}))
         .start();
     assert!(api(&fake.base).next_job().is_err());
@@ -80,7 +80,7 @@ fn a_failed_queue_read_is_an_error_not_an_empty_queue() {
 
 #[test]
 fn registration_uses_the_shared_label_and_a_unique_name() {
-    let fake = FakeGitHub::builder()
+    let fake = FakeHttp::builder()
         .route(
             "POST",
             JITCONFIG,
@@ -124,7 +124,7 @@ fn github_runs_before_local_requests() {
     let mut setup = Setup::new();
     setup.guest_script("CODA_JOB_EXIT=0", 0);
     add_request(&setup.requests(), &a12(), "ci", b"bundle", None);
-    let fake = FakeGitHub::builder()
+    let fake = FakeHttp::builder()
         .route(
             "GET",
             RUNS,

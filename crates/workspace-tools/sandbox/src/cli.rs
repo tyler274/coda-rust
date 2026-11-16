@@ -41,10 +41,17 @@ pub enum Command {
     /// The Firecracker CI.
     #[command(subcommand)]
     Ci(Ci),
-    /// Record every host worktree as refs/carry/<slug>/{head,dirty} and
-    /// bundle them into the carry directory for the sandbox. Runs as the
-    /// checkout's owner, never as root.
-    Carry,
+    /// On the host: record the named worktrees, or every one, as
+    /// refs/carry/<slug>/{head,dirty} and bundle them into the carry
+    /// directory with their branch names. Runs as the checkout's owner,
+    /// never as root. `carry import` in the container makes them.
+    #[command(args_conflicts_with_subcommands = true)]
+    Carry {
+        #[command(subcommand)]
+        command: Option<Carry>,
+        /// Worktrees by directory name, as the summary lists them.
+        slugs: Vec<String>,
+    },
     /// Run one Coda CI pass, or build a fresh seed with `seed`. Run by the
     /// coda-ci units, configured by their CODA_CI_* environment.
     CiController {
@@ -74,8 +81,9 @@ pub enum Command {
     Open {
         /// The worktree; the main checkout without one.
         slug: Option<Slug>,
-        #[arg(long, value_enum, default_value = "cursor")]
-        editor: Editor,
+        /// The editor; the config's `[open] editor` without it, else Cursor.
+        #[arg(long, value_enum)]
+        editor: Option<Editor>,
     },
     /// In the container: ask the model proxy whether it takes the broker's
     /// model-proxy key, and print what it said as JSON. `doctor` on the
@@ -93,6 +101,18 @@ pub enum Command {
 }
 
 #[derive(Debug, Subcommand)]
+pub enum Carry {
+    /// In the container: make each carried worktree, or the named ones,
+    /// from its carried commit on its host branch, with its uncommitted
+    /// files back and tracking origin's branch when there is one. A
+    /// worktree already there is left alone.
+    Import {
+        /// Carried worktrees by the summary's names.
+        slugs: Vec<String>,
+    },
+}
+
+#[derive(Debug, Subcommand)]
 pub enum Broker {
     /// Serve the socket; run by the coda-sandbox-broker user service.
     Serve,
@@ -102,6 +122,12 @@ pub enum Broker {
         #[arg(value_enum)]
         item: Item,
     },
+    /// Have the service that issues a token mint a new one, store it in
+    /// your keyring without showing it, and reload the running broker.
+    Mint {
+        #[arg(value_enum)]
+        item: Mintable,
+    },
     /// Remove a token from your keyring and reload the running broker.
     Delete {
         #[arg(value_enum)]
@@ -109,6 +135,14 @@ pub enum Broker {
     },
     /// Store, read back and delete a throwaway keyring item.
     SelfTest,
+}
+
+/// The items a local service can mint.
+#[derive(Debug, Clone, Copy, clap::ValueEnum)]
+pub enum Mintable {
+    /// A client key from the model proxy's loopback admin route, labelled
+    /// with the container's name. The key it replaces is revoked.
+    ModelProxy,
 }
 
 #[derive(Debug, Clone, Copy, clap::ValueEnum)]

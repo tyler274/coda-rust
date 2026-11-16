@@ -7,7 +7,7 @@ use std::path::Path;
 use std::process::ExitCode;
 
 use clap::Parser as _;
-use cli::{Broker, Ci, Cli, Command, ControllerMode, Worktree};
+use cli::{Broker, Carry, Ci, Cli, Command, ControllerMode, Worktree};
 use coda_sandbox::broker::client;
 use coda_sandbox::broker::error::BrokerError;
 use coda_sandbox::config::Config;
@@ -69,11 +69,22 @@ fn dispatch(cli: &Cli) -> Result<ExitCode, Error> {
             let status = ci::run(&config.ci, &target, job)?;
             Ok(ExitCode::from(status.0))
         }
-        Command::Carry => {
+        Command::Carry { command, slugs } => {
             let config = Config::load(&cli.config)?;
             let carry_config = config.carry.as_ref().ok_or(Error::NoCarry)?;
-            let carried = carry::carry(carry_config)?;
-            print(&carry::render(&carried, &carry_config.out))?;
+            match command {
+                None => {
+                    let select = carry::Select::from_names(slugs.clone());
+                    let carried = carry::carry(carry_config, &select)?;
+                    print(&carry::render(&carried, &carry_config.out))?;
+                }
+                Some(Carry::Import { slugs }) => {
+                    let select = carry::Select::from_names(slugs.clone());
+                    let layout = current_layout(&config)?;
+                    let imported = carry::import::import(&layout, &carry_config.mount, &select)?;
+                    print(&carry::import::render(&imported))?;
+                }
+            }
             Ok(ExitCode::SUCCESS)
         }
         Command::CiController { mode } => Ok(ci_controller(*mode)),
@@ -103,13 +114,24 @@ fn dispatch(cli: &Cli) -> Result<ExitCode, Error> {
         }
         Command::Open { slug, editor } => {
             let config = Config::load(&cli.config)?;
-            let dir = open::open(&config, slug.as_ref(), *editor)?;
-            print(&format!(
+            let editor = editor.unwrap_or(config.open.editor);
+            let opened = open::open(&config, slug.as_ref(), editor)?;
+            let mut text = String::new();
+            if !opened.installed.is_empty() {
+                text.push_str(&format!(
+                    "Installed {} into {}'s server in {}\n",
+                    opened.installed.join(", "),
+                    editor.name(),
+                    config.container.ssh_host
+                ));
+            }
+            text.push_str(&format!(
                 "Opened {}:{} in {}\n",
                 config.container.ssh_host,
-                dir.display(),
+                opened.dir.display(),
                 editor.name()
-            ))?;
+            ));
+            print(&text)?;
             Ok(ExitCode::SUCCESS)
         }
         Command::ProxyCheck => {
@@ -145,6 +167,28 @@ fn broker_command(config_path: &Path, command: &Broker) -> Result<(), Error> {
             let stored = commands::store(&Config::load(config_path)?, *item)?;
             print(&report(item, stored))
         }
+        Broker::Mint {
+            item: cli::Mintable::ModelProxy,
+        } => {
+            let config = Config::load(config_path)?;
+            let proxy = config.model_proxy.as_ref().ok_or(Error::NoModelProxy)?;
+            let keyring = coda_sandbox::broker::keyring::SecretTool::default();
+            let minted = commands::mint_model_proxy(&config, proxy, &keyring)?;
+            let item = coda_sandbox::broker::Item::ModelProxy;
+            let mut text = format!(
+                "minted client {} ({}); {}",
+                minted.client.label,
+                minted.client.id,
+                report(&item, minted.stored)
+            );
+            if let Some(old) = minted.revoked {
+                text.push_str(&format!(
+                    "revoked the replaced client {} ({})\n",
+                    old.label, old.id
+                ));
+            }
+            print(&text)
+        }
         Broker::Delete { item } => {
             let stored = commands::delete(&Config::load(config_path)?, *item)?;
             print(&report(item, stored).replace("saved", "deleted"))
@@ -156,12 +200,17 @@ fn broker_command(config_path: &Path, command: &Broker) -> Result<(), Error> {
     }
 }
 
-fn worktree_command(config: &Config, command: &Worktree) -> Result<(), Error> {
+/// The configured checkout's layout, refusing another repository.
+fn current_layout(config: &Config) -> Result<Layout, Error> {
     let cwd = std::env::current_dir().map_err(|source| Error::Inspect {
         path: ".".into(),
         source,
     })?;
-    let layout = Layout::discover(&cwd, &config.container.repo, &config.build)?;
+    Layout::discover(&cwd, &config.container.repo, &config.build)
+}
+
+fn worktree_command(config: &Config, command: &Worktree) -> Result<(), Error> {
+    let layout = current_layout(config)?;
     match command {
         Worktree::New { slug, from } => {
             let tree = worktree::new::new(&layout, slug, from)?;

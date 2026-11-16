@@ -2,7 +2,6 @@
 //! reports and a fake GitHub API.
 
 mod cleanup;
-mod fake_github;
 mod github_queue;
 mod guest_failure;
 mod local_requests;

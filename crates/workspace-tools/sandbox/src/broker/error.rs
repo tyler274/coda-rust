@@ -78,4 +78,39 @@ pub enum BrokerError {
     Signals(#[source] io::Error),
     #[error("cannot turn off core dumps for the broker")]
     NotDumpable(#[source] io::Error),
+    #[error("the model proxy at {url} did not answer")]
+    ProxyRequest {
+        url: String,
+        #[source]
+        source: Box<ureq::Error>,
+    },
+    #[error("the model proxy at {url} answered {status}: {body}")]
+    ProxyStatus {
+        url: String,
+        status: u16,
+        body: String,
+    },
+    #[error("the model proxy at {url} sent an answer this binary cannot read")]
+    ProxyAnswer {
+        url: String,
+        #[source]
+        source: serde_json::Error,
+    },
+    #[error("the model proxy at {url} minted a key that is not a token")]
+    ProxyKey {
+        url: String,
+        #[source]
+        source: SecretError,
+    },
+    /// The new key is stored and works; the one it replaced still does too.
+    #[error(
+        "the new model-proxy key is stored, but the client {label} ({id}) of the key it \
+         replaced is still active"
+    )]
+    PreviousNotRevoked {
+        label: String,
+        id: String,
+        #[source]
+        source: Box<BrokerError>,
+    },
 }

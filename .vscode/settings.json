@@ -1,5 +1,12 @@
 {
   // The rust-analyzer the dev shell puts on PATH through direnv, the same
   // release as the toolchain, rather than the one bundled with the extension.
-  "rust-analyzer.server.path": "rust-analyzer"
+  "rust-analyzer.server.path": "rust-analyzer",
+  // The toolchain's server reads this as a boolean, while newer extensions
+  // default it to the string "never", which the server rejects. The editor
+  // checks it against the extension's schema and may flag the type.
+  "rust-analyzer.inlayHints.implicitDrops.enable": false,
+  // Restart the extension host once direnv has loaded the dev shell, so
+  // rust-analyzer and the terminals start with the flake's cargo on PATH.
+  "direnv.restart.automatic": true
 }

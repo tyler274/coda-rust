@@ -2,7 +2,9 @@ use std::path::{Path, PathBuf};
 
 use crate::config::{Config, UnitKind, UnitName, Version};
 use crate::doctor::Fix;
-use crate::editor_settings::{ForwardingKey, Setting, Settings};
+use crate::editor_settings::{
+    Editor, ForwardingKey, RemoteServer, ServerExtensions, Setting, Settings,
+};
 use crate::error::Error;
 use crate::ids::{IdKind, JobName, RequestId, SLUG_MAX_BYTES, SeedKey, Slug};
 use crate::probe::{ActiveState, LoadState, UnitState};
@@ -153,6 +155,50 @@ fn settings_report_absent_keys_and_reject_broken_files() {
         Err(Error::SettingsParse { .. })
     ));
     assert!(Settings::parse(Path::new("s"), "[]").is_err());
+}
+
+#[test]
+fn a_remote_server_listing_reads_as_present_absent_or_failed() {
+    let listing = "MKHL.direnv\nvadimcn.vscode-lldb\n";
+    assert_eq!(
+        ServerExtensions::read(Some(0), listing),
+        Some(ServerExtensions::Missing(vec!["rust-lang.rust-analyzer"]))
+    );
+    assert_eq!(
+        ServerExtensions::read(Some(RemoteServer::ABSENT_EXIT), ""),
+        Some(ServerExtensions::NoServer)
+    );
+    assert_eq!(ServerExtensions::read(Some(255), ""), None);
+    assert_eq!(ServerExtensions::read(None, ""), None);
+    let install = RemoteServer::ANTIGRAVITY.install_line(&["mkhl.direnv"]);
+    assert!(
+        install.ends_with("exec \"$1\" --install-extension mkhl.direnv"),
+        "{install}"
+    );
+    assert!(install.contains("\"$HOME\"/.antigravity-ide-server/bin/*/bin/antigravity-ide-server"));
+}
+
+#[test]
+fn open_editor_defaults_to_cursor_and_reads_the_config() {
+    let config = Config::parse(Path::new("t"), CYRENE).expect("cyrene.toml parses");
+    assert_eq!(config.open.editor, Editor::Cursor);
+    let without = CYRENE
+        .replace("[open]\n", "[unused]\n")
+        .replace("editor = \"cursor\"\n", "");
+    let config = Config::parse(Path::new("t"), &without).expect("no [open]");
+    assert_eq!(config.open.editor, Editor::Cursor);
+    for (name, editor) in [
+        ("antigravity", Editor::Antigravity),
+        ("code", Editor::VsCode),
+        ("zed", Editor::Zed),
+    ] {
+        assert_eq!(editor.value_name(), name);
+        let text = CYRENE.replace("editor = \"cursor\"", &format!("editor = \"{name}\""));
+        let config = Config::parse(Path::new("t"), &text).expect("an editor name");
+        assert_eq!(config.open.editor, editor);
+    }
+    let typo = CYRENE.replace("editor = \"cursor\"", "editor = \"vim\"");
+    assert!(Config::parse(Path::new("t"), &typo).is_err());
 }
 
 #[test]

@@ -10,6 +10,7 @@ use std::time::Duration;
 
 use serde::{Deserialize, Serialize};
 
+use crate::broker::Secret;
 use crate::broker::client::{self, Want};
 use crate::broker::error::BrokerError;
 use crate::broker::wire::Unavailable;
@@ -95,6 +96,117 @@ pub fn check(socket: &Path, proxy: &ModelProxy) -> ProxyCheck {
         }
     };
     read_answer(&body)
+}
+
+/// A client the proxy knows a key by; never the key.
+#[derive(Debug, Clone, PartialEq, Eq, Deserialize)]
+pub struct ClientView {
+    pub id: String,
+    pub label: String,
+}
+
+/// `POST /clients`: the only answer that carries the key.
+#[derive(Deserialize)]
+struct Created {
+    client: ClientView,
+    key: String,
+}
+
+/// The proxy's routes on the host's loopback, where it answers its admin
+/// routes to direct local callers only.
+pub struct Admin {
+    url: String,
+    agent: ureq::Agent,
+}
+
+impl Admin {
+    pub fn new(proxy: &ModelProxy) -> Self {
+        let agent = ureq::Agent::config_builder()
+            .timeout_global(Some(TIMEOUT))
+            .http_status_as_error(false)
+            .build()
+            .into();
+        Self {
+            url: proxy.admin_url.trim_end_matches('/').to_owned(),
+            agent,
+        }
+    }
+
+    /// Mints a client key labelled `label`.
+    pub fn create(&self, label: &str) -> Result<(ClientView, Secret), BrokerError> {
+        let url = format!("{}/clients", self.url);
+        let body = serde_json::json!({ "label": label }).to_string();
+        let request = self
+            .agent
+            .post(&url)
+            .header("Content-Type", "application/json")
+            .send(body);
+        let created: Created = read_json(&url, request, 200)?;
+        let key = Secret::new(&created.key).map_err(|source| BrokerError::ProxyKey {
+            url: url.clone(),
+            source,
+        })?;
+        Ok((created.client, key))
+    }
+
+    /// The client `key` belongs to; `None` when the proxy refuses it, as
+    /// it does a revoked key, or serves anyone.
+    pub fn client_of(&self, key: &Secret) -> Result<Option<ClientView>, BrokerError> {
+        let url = format!("{}/v1/client", self.url);
+        let response = self
+            .agent
+            .get(&url)
+            .header("Authorization", format!("Bearer {}", key.expose()))
+            .call();
+        if let Ok(refused) = &response
+            && matches!(refused.status().as_u16(), 401 | 403)
+        {
+            return Ok(None);
+        }
+        #[derive(Deserialize)]
+        struct Named {
+            #[serde(deserialize_with = "Option::deserialize")]
+            client: Option<ClientView>,
+        }
+        let named: Named = read_json(&url, response, 200)?;
+        Ok(named.client)
+    }
+
+    pub fn revoke(&self, id: &str) -> Result<(), BrokerError> {
+        let url = format!("{}/clients/{id}/revoke", self.url);
+        let response = self.agent.post(&url).send_empty();
+        read_json::<serde_json::Value>(&url, response, 200).map(drop)
+    }
+}
+
+/// The body of a `want` answer, read as `T`; any other status is an error
+/// that carries the proxy's own message.
+fn read_json<T: serde::de::DeserializeOwned>(
+    url: &str,
+    response: Result<ureq::http::Response<ureq::Body>, ureq::Error>,
+    want: u16,
+) -> Result<T, BrokerError> {
+    let request_error = |source| BrokerError::ProxyRequest {
+        url: url.to_owned(),
+        source: Box::new(source),
+    };
+    let mut response = response.map_err(request_error)?;
+    let status = response.status().as_u16();
+    let body = response
+        .body_mut()
+        .read_to_string()
+        .map_err(request_error)?;
+    if status != want {
+        return Err(BrokerError::ProxyStatus {
+            url: url.to_owned(),
+            status,
+            body,
+        });
+    }
+    serde_json::from_str(&body).map_err(|source| BrokerError::ProxyAnswer {
+        url: url.to_owned(),
+        source,
+    })
 }
 
 /// What a 200 from `GET /v1/client` says.

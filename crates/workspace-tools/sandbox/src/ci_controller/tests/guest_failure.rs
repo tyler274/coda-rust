@@ -1,11 +1,11 @@
 use serde_json::{Value, json};
 
-use super::fake_github::{Call, FakeGitHub};
 use super::*;
 use crate::ci_controller::disk::SystemDisks;
 use crate::ci_controller::github::{Job, JobId, JobStatus};
 use crate::ci_controller::guest::run_guest;
 use crate::ci_controller::results::GUEST_FAILED;
+use crate::fake_http::{Call, FakeHttp};
 
 /// Disks that record the job directory they were asked to fill.
 #[derive(Default)]
@@ -98,7 +98,7 @@ fn runner_is_deleted_after_guest_failure() {
     let _serial = serial();
     let mut setup = Setup::new();
     setup.guest_script("booting\n", 1);
-    let fake = FakeGitHub::builder()
+    let fake = FakeHttp::builder()
         .route(
             "POST",
             "repos/Coda-Health/coda-rust/actions/runners/generate-jitconfig",

@@ -17,6 +17,7 @@ pub use systemd::{ActiveState, LoadState, UnitScope, UnitState};
 use crate::broker::error::BrokerError;
 use crate::broker::wire::Report;
 use crate::config::UnitName;
+use crate::editor_settings::{RemoteServer, ServerExtensions};
 use crate::error::Error;
 use crate::model_proxy::ProxyCheck;
 
@@ -42,6 +43,12 @@ pub trait Probe {
     fn ssh(&self, host: &str) -> Result<SshReach, Error>;
     /// The model proxy as the container sees it, through [`PROXY_CHECK`].
     fn proxy_check(&self, host: &str) -> Result<FromContainer<ProxyCheck>, Error>;
+    /// Which of the editors' remote extensions `server` in the container lacks.
+    fn server_extensions(
+        &self,
+        host: &str,
+        server: RemoteServer,
+    ) -> Result<FromContainer<ServerExtensions>, Error>;
     /// The options `ssh` resolves for `host` from the user's SSH config.
     fn ssh_config(&self, host: &str) -> Result<SshOptions, Error>;
     fn home(&self) -> Option<PathBuf>;
@@ -281,6 +288,14 @@ impl Probe for SystemProbe {
         ssh_proxy_check(host)
     }
 
+    fn server_extensions(
+        &self,
+        host: &str,
+        server: RemoteServer,
+    ) -> Result<FromContainer<ServerExtensions>, Error> {
+        ssh_server_extensions(host, server)
+    }
+
     fn ssh_config(&self, host: &str) -> Result<SshOptions, Error> {
         run("ssh", ["-G", host]).map(|text| SshOptions::parse(&text))
     }
@@ -325,6 +340,28 @@ fn ssh_proxy_check(host: &str) -> Result<FromContainer<ProxyCheck>, Error> {
             }),
         SshRun::TimedOut => Ok(FromContainer::TimedOut),
     }
+}
+
+/// Lists `server`'s extensions in the container; `coda-sandbox open` asks
+/// this too, before it installs what is missing.
+pub fn ssh_server_extensions(
+    host: &str,
+    server: RemoteServer,
+) -> Result<FromContainer<ServerExtensions>, Error> {
+    Ok(match ssh_run(host, &server.list_line())? {
+        SshRun::Finished {
+            status,
+            stdout,
+            stderr,
+        } => match ServerExtensions::read(status.code(), &stdout) {
+            Some(found) => FromContainer::Answered(found),
+            None => FromContainer::Failed {
+                exit_code: status.code(),
+                stderr,
+            },
+        },
+        SshRun::TimedOut => FromContainer::TimedOut,
+    })
 }
 
 enum SshRun {

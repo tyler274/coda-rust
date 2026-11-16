@@ -52,3 +52,17 @@ with subtest("gc unit runs coda-sandbox worktree gc in the checkout"):
     assert "Removing /agents/coda/build/wt/orphan" in journal, journal
     machine.fail("test -e /agents/coda/build/wt/orphan")
     machine.succeed("test -e /agents/coda/build/wt/live/kept")
+
+with subtest("arp_ignore: the container sets its own, whatever the host held"):
+    # Raise the host's to 2, as the Mullvad daemon does, and restart the
+    # container: it copies 2 at start, then its own systemd-sysctl sets 1.
+    machine.succeed("sysctl -w net.ipv4.conf.all.arp_ignore=2")
+    machine.succeed("systemctl restart container@coda-agent.service")
+    machine.wait_until_succeeds(
+        in_container + "systemctl is-active systemd-sysctl.service", timeout=60
+    )
+    inside = machine.succeed(
+        in_container + "cat /proc/sys/net/ipv4/conf/all/arp_ignore"
+    ).strip()
+    assert inside == "1", inside
+    machine.succeed("sysctl -w net.ipv4.conf.all.arp_ignore=1")

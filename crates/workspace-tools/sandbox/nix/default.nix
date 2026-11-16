@@ -2,7 +2,7 @@
 #
 # One option set declares the coda-agent container (container.nix on the
 # hardened nspawn module nspawn.nix), its token broker (broker.nix), the
-# Firecracker CI (ci.nix), the coda-carry bundler, and
+# Firecracker CI (ci.nix), the carry directory, and
 # /etc/coda-sandbox/config.toml, which the
 # coda-sandbox binary reads by default. The flake passes its packages and
 # the microvm module in, so a host needs only this module.
@@ -46,15 +46,22 @@ let
       };
     }
     // lib.optionalAttrs cfg.container.modelProxy.enable {
-      model_proxy.url = cfg.container.modelProxy.url;
+      model_proxy = {
+        inherit (cfg.container.modelProxy) url;
+        admin_url = "http://127.0.0.1:${toString cfg.container.modelProxy.port}";
+      };
+    }
+    // lib.optionalAttrs (cfg.open.editor != null) {
+      open.editor = cfg.open.editor;
+    }
+    // {
+      carry = {
+        repo = cfg.carry.sourceRepo;
+        out = cfg.carry.dir;
+        mount = "${cfg.paths.root}/carry";
+      };
     }
   );
-
-  carry = pkgs.callPackage ./carry-package.nix {
-    inherit (cfg) user;
-    repo = cfg.carry.sourceRepo;
-    out = cfg.carry.dir;
-  };
 in
 {
   imports = [
@@ -65,7 +72,7 @@ in
   ];
 
   options.services.coda-sandbox = {
-    enable = lib.mkEnableOption "the Coda agent sandbox: the coda-agent container, its CI spool and coda-carry";
+    enable = lib.mkEnableOption "the Coda agent sandbox: the coda-agent container, its CI spool and the carry directory";
 
     package = lib.mkOption {
       type = lib.types.package;
@@ -85,7 +92,7 @@ in
     user = lib.mkOption {
       type = lib.types.str;
       example = "luluco";
-      description = "The host user who works with the sandbox and owns the host checkout coda-carry bundles.";
+      description = "The host user who works with the sandbox and owns the host checkout `coda-sandbox carry` bundles.";
     };
 
     requires = lib.mkOption {
@@ -142,7 +149,7 @@ in
       enable = lib.mkOption {
         type = lib.types.bool;
         default = true;
-        description = "Declare the agent container. Off leaves the CI spool, CI and coda-carry.";
+        description = "Declare the agent container. Off leaves the CI spool, CI and the carry directory.";
       };
       name = lib.mkOption {
         type = lib.types.str;
@@ -164,7 +171,7 @@ in
           Claude Code and Codex in the container sending their requests to a
           model proxy on the host, such as ungate, which keeps the account
           sign-ins and records usage per client. They present the broker's
-          `model-proxy` item (`coda-sandbox broker store model-proxy`) as
+          `model-proxy` item (`coda-sandbox broker mint model-proxy`) as
           their key. The proxy itself is configured on the host and must
           listen on hostAddress. Off, `claude auth login` and `codex login`
           in the container sign in
@@ -235,22 +242,38 @@ in
       dir = lib.mkOption {
         type = lib.types.str;
         default = "/var/lib/coda-carry";
-        description = "Where coda-carry installs its bundle; bound read-only into the container.";
+        description = "Where `coda-sandbox carry` writes its bundle, owned by `user`; bound read-only into the container.";
       };
       sourceRepo = lib.mkOption {
         type = lib.types.str;
         default = "/home/${cfg.user}/code/coda/coda-rust";
         defaultText = lib.literalExpression ''"/home/''${user}/code/coda/coda-rust"'';
-        description = "The host checkout whose worktrees coda-carry bundles.";
+        description = "The host checkout whose worktrees `coda-sandbox carry` bundles.";
       };
+    };
+
+    open.editor = lib.mkOption {
+      type = lib.types.nullOr (
+        lib.types.enum [
+          "cursor"
+          "code"
+          "antigravity"
+          "zed"
+        ]
+      );
+      default = null;
+      example = "antigravity";
+      description = "The editor `coda-sandbox open` uses without `--editor`; Cursor when null.";
     };
   };
 
   config = lib.mkIf cfg.enable {
-    environment.systemPackages = [
-      cfg.package
-      carry
-    ];
+    environment.systemPackages = [ cfg.package ];
     environment.etc."coda-sandbox/config.toml".source = cfg.configFile;
+    # `coda-sandbox carry` runs on the host whether or not the container is
+    # declared, so the module itself makes its directory.
+    systemd.tmpfiles.rules = [
+      "d ${cfg.carry.dir} 0755 ${cfg.user} - -"
+    ];
   };
 }

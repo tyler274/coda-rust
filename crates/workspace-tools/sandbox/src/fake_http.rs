@@ -1,4 +1,4 @@
-//! A local HTTP server that answers GitHub API paths from a fixed table and
+//! A local HTTP server that answers paths from a fixed table and
 //! records every request it receives.
 
 use std::collections::HashMap;
@@ -27,7 +27,7 @@ impl Call {
 
 type Routes = HashMap<(String, String), (u16, String)>;
 
-pub struct FakeGitHub {
+pub struct FakeHttp {
     pub base: String,
     calls: Arc<Mutex<Vec<Call>>>,
 }
@@ -50,7 +50,7 @@ impl Builder {
         self
     }
 
-    pub fn start(self) -> FakeGitHub {
+    pub fn start(self) -> FakeHttp {
         let listener = TcpListener::bind("127.0.0.1:0").expect("bind a local port");
         let base = format!("http://{}", listener.local_addr().expect("local address"));
         let calls = Arc::new(Mutex::new(Vec::new()));
@@ -62,11 +62,11 @@ impl Builder {
                 serve(stream, &routes, &recorded);
             }
         });
-        FakeGitHub { base, calls }
+        FakeHttp { base, calls }
     }
 }
 
-impl FakeGitHub {
+impl FakeHttp {
     pub fn builder() -> Builder {
         Builder {
             routes: HashMap::new(),

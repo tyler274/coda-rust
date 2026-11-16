@@ -24,6 +24,8 @@ pub enum Check {
     BuildRoot,
     Reflinks,
     ContainerUnit,
+    /// The host's `conf.all.arp_ignore` lets it reach the container's veth.
+    ArpIgnore,
     Ssh,
     /// The SSH config does not forward the host's agent to the container.
     SshForwarding,
@@ -51,6 +53,7 @@ impl Check {
             Self::BuildRoot => "build root".to_owned(),
             Self::Reflinks => "reflinks".to_owned(),
             Self::ContainerUnit => "container".to_owned(),
+            Self::ArpIgnore => "arp_ignore".to_owned(),
             Self::Ssh => "ssh".to_owned(),
             Self::SshForwarding => "ssh agent forwarding".to_owned(),
             Self::SpoolDir(SpoolDir::Requests) => "spool requests".to_owned(),

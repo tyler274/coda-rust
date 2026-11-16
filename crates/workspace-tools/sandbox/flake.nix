@@ -108,13 +108,6 @@
         agent-sandbox = pkgs.testers.runNixOSTest (import ./nix/tests/agent-sandbox.nix { inherit sandboxModule; });
         coda-firecracker = pkgs.testers.runNixOSTest (import ./nix/tests/coda-firecracker.nix { inherit sandboxModule; });
       };
-
-      carryCheck = pkgs:
-        let carry = pkgs.callPackage ./nix/carry-package.nix { };
-        in pkgs.runCommand "coda-carry-test" { nativeBuildInputs = [ pkgs.git ]; } ''
-          bash ${./nix/tests/coda-carry.sh} ${carry}/bin/coda-carry
-          touch $out
-        '';
     in
     {
       packages = forEachSystem (pkgs:
@@ -125,7 +118,6 @@
 
       checks = forEachSystem (pkgs: (build pkgs).checks // {
         package = self.packages.${pkgs.stdenv.hostPlatform.system}.coda-sandbox;
-        coda-carry = carryCheck pkgs;
       } // lib.optionalAttrs (pkgs.stdenv.hostPlatform.system == "x86_64-linux") (vmChecks pkgs));
 
       # The CI guest on its own, for building or inspecting it:

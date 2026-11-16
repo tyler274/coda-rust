@@ -3,8 +3,8 @@
 The Coda agent sandbox: a hardened NixOS container where coding agents (and you, over Remote-SSH) work on `coda-rust`, and disposable Firecracker microVMs that run its CI. The crate is a member of the root Cargo workspace; this directory is also its own flake, apart from the product flake, which builds only this crate from the root manifest and lockfile, so a host deploys it without the product flake's toolchain or other crates. It provides:
 
 - `packages.coda-sandbox`: the `coda-sandbox` binary ([src](src)), with `doctor` and `status`.
-- `nixosModules.default`: `services.coda-sandbox` ([nix/default.nix](nix/default.nix)), which declares the container, its token broker, the CI and `coda-carry`, and writes `/etc/coda-sandbox/config.toml` for the binary.
-- `checks`: the binary's tests, Clippy and rustfmt; the `coda-carry` test; and two VM tests, `agent-sandbox` and `coda-firecracker`, that need KVM.
+- `nixosModules.default`: `services.coda-sandbox` ([nix/default.nix](nix/default.nix)), which declares the container, its token broker, the CI and the carry directory, and writes `/etc/coda-sandbox/config.toml` for the binary.
+- `checks`: the binary's tests, Clippy and rustfmt; and two VM tests, `agent-sandbox` and `coda-firecracker`, that need KVM.
 
 ## Using the module
 
@@ -13,7 +13,7 @@ Add the flake as an input with `inputs.nixpkgs.follows = "nixpkgs"`, import `inp
 ```nix
 services.coda-sandbox = {
   enable = true;
-  user = "alice";                           # owns the host checkout coda-carry bundles
+  user = "alice";                           # owns the host checkout carry bundles
   requires = [ "agents-pool.service" ];     # units that make paths.root ready
   authorizedKeys = [ "ssh-ed25519 AAAA... coda-agent" ];
   memoryHigh = "20G";
@@ -23,19 +23,20 @@ services.coda-sandbox = {
 
 | Option | Default | Meaning |
 | --- | --- | --- |
-| `enable` | `false` | The container, the CI spool, `coda-carry` and the config file |
+| `enable` | `false` | The container, the CI spool, the carry directory and the config file |
 | `user` | none | The host user who works with the sandbox |
 | `requires` | `[ ]` | Units the container, spool and CI need; a missing disk fails only them |
 | `uidBase` | `655360` | First host UID of the container's range; the agent is `uidBase + 1000` |
 | `hostAddress`, `localAddress` | `10.233.1.1`, `10.233.1.2` | The container's veth pair |
 | `memoryMax`, `memoryHigh` | `24G`, `memoryMax` | The container unit's memory limits |
 | `authorizedKeys` | `[ ]` | Keys that may log in as `agent`; sshd runs only with one |
-| `container.enable` | `true` | Off leaves the spool, CI and `coda-carry` |
+| `container.enable` | `true` | Off leaves the spool, CI and the carry directory |
 | `container.name`, `container.sshHost` | `coda-agent` | The container's name and the SSH `Host` alias |
 | `container.config` | `{ }` | Extra NixOS configuration inside the container |
 | `paths.root` | `/agents/coda` | Holds `src`, `build` and `ci`; each is its own option |
 | `paths.repo` | `${paths.src}/coda-rust` | The checkout inside the container |
-| `carry.dir`, `carry.sourceRepo` | `/var/lib/coda-carry`, `~user/code/coda/coda-rust` | Where `coda-carry` writes, and what it reads |
+| `carry.dir`, `carry.sourceRepo` | `/var/lib/coda-carry`, `~user/code/coda/coda-rust` | Where `coda-sandbox carry` writes, and what it reads |
+| `open.editor` | `null` | The editor `coda-sandbox open` uses without `--editor`; Cursor when null |
 | `broker.ghFallback` | `false` | Let the broker serve `gh auth token` when no `github-agent` is stored |
 | `broker.keyringPackage` | `pkgs.libsecret` | Provides `secret-tool` for the broker |
 | `ci.enable` | `false` | The Firecracker controller, its timer and the seed unit |
@@ -57,6 +58,8 @@ services.coda-sandbox = {
 | `/agents/coda/carry` | `/var/lib/coda-carry` | read-only |
 | `/run/coda-sandbox/agent` | `/run/coda-sandbox/agent` | read-only; the token broker's socket |
 | `/nix/store`, daemon socket | host store | read-only; the agent is an untrusted daemon user |
+
+Each veth end has a /32 address, so the host and the container reach each other only while `net.ipv4.conf.all.arp_ignore` is 1 or 0 on both sides; at 2, which the Mullvad daemon sets when it starts, neither answers the other's ARP. The module sets 1 on the host and inside the container, so the container no longer depends on the host's value when it starts. A switch does not reapply the host's, so doctor's `arp_ignore` check fails at 2 with the fix `sudo sysctl -w net.ipv4.conf.all.arp_ignore=1`.
 
 Paths equal the host's so the host Nix daemon's GC roots for each worktree's dev shell stay valid. Starting the container never gates boot: it is wanted only by `machines.target`, and if a unit in `requires` fails, only the container and the CI fail. `nix build ./crates/workspace-tools/sandbox#checks.x86_64-linux.agent-sandbox -L` runs the container on a late-imported ZFS pool in a throwaway VM and checks these boundaries.
 
@@ -93,28 +96,30 @@ coda-sandbox shell                     # a login shell in the main checkout
 coda-sandbox shell eng-7 -- claude     # Claude Code in that worktree's dev shell
 ```
 
-`open` takes `--editor cursor`, `code`, `antigravity` or `zed`, and launches `cursor`, `code` or `antigravity-ide` with `--remote ssh-remote+coda-agent <dir>`, or `zeditor ssh://coda-agent<dir>` (on NixOS `zed` is the ZFS event daemon). `shell` runs a command through `direnv exec`, so it gets the repo's dev shell. Both refuse a worktree that does not exist, and pass `ForwardAgent=no` and `ClearAllForwardings=yes` to their own SSH. The editor window, and its own model sign-in, stay on the host; its remote server, terminals and agent commands run in the container.
+`open` takes `--editor cursor`, `code`, `antigravity` or `zed`, defaulting to `open.editor` (the config's `[open] editor`) and then Cursor, and launches `cursor`, `code` or `antigravity-ide` with `--remote ssh-remote+coda-agent <dir>`, or `zeditor ssh://coda-agent<dir>` (on NixOS `zed` is the ZFS event daemon). `shell` runs a command through `direnv exec`, so it gets the repo's dev shell. Both refuse a worktree that does not exist, and pass `ForwardAgent=no` and `ClearAllForwardings=yes` to their own SSH. The editor window, and its own model sign-in, stay on the host; its remote server, terminals and agent commands run in the container.
 
 Each checkout's `.envrc` is approved once in the container (`direnv allow`). Rust-analyzer and cargo are then the flake's, from the toolchain's own `rust-analyzer` component, started inside the checkout's dev shell:
 
-- **Cursor and VS Code** need the direnv and rust-analyzer extensions on the container side. With `"remote.SSH.defaultExtensions": ["mkhl.direnv", "rust-lang.rust-analyzer"]` in the user settings, the remote server installs them on its first start; doctor warns when the key lacks either. The repo's `.vscode/settings.json` points the extension at the `rust-analyzer` on the dev shell's PATH.
-- **Antigravity** has no such key. Install the two once in its remote server, from `coda-sandbox shell`: `~/.antigravity-ide-server/bin/*/bin/antigravity-ide-server --install-extension mkhl.direnv --install-extension rust-lang.rust-analyzer`, then reload the window. They stay installed until the server's directory is removed.
+- **Cursor and VS Code** need the direnv and rust-analyzer extensions on the container side. With `"remote.SSH.defaultExtensions": ["mkhl.direnv", "rust-lang.rust-analyzer"]` in the user settings, the remote server installs them on its first start; doctor warns when the key lacks either. The repo's `.vscode/settings.json` points the extension at the `rust-analyzer` on the dev shell's PATH, and sets `direnv.restart.automatic` so the editor restarts its extensions, rust-analyzer among them, once the dev shell has loaded.
+- **Antigravity** has no such key. `coda-sandbox open --editor antigravity` lists the extensions of its server in the container (`~/.antigravity-ide-server`) and installs whichever of the two it lacks before opening the window. The editor installs that server on its first connection, so the second `open` installs them; reload the window afterwards. Doctor warns while the server lacks either, with that command as the fix.
 - **Zed** loads the dev shell through `load_direnv` in `.zed/settings.json`. It holds language servers back until the project is trusted, so the first open of each checkout asks once.
 
 Nothing forwards a host credential: doctor checks that `ssh -G coda-agent` resolves `ForwardAgent no`, which is all Antigravity's remote and Zed have to go by, and that these settings are off where the editor has them: `remote.SSH.enableAgentForwarding`, `git.terminalAuthentication` and `github.gitAuthentication` for Cursor and VS Code, the two Git ones for Antigravity. An editor that has run here but has no settings file fails too, since every key is then at its default.
 
 Claude Code and Codex run in the container, in `coda-sandbox shell` or an editor's terminal, and come from the dev shell. By default each signs in once there (`claude auth login`, `codex login`) and keeps its login in the agent's home.
 
-With `container.modelProxy.enable`, both send their requests to a model proxy on the host instead, and no account sign-in enters the container. The proxy is [Coda's ungate](https://github.com/Coda-Health/ungate): it keeps the Claude and ChatGPT sign-ins as an account pool, passes Claude Code's `/v1/messages` and Codex's `/v1/responses` through to them, and records usage per client key. Run it on the host listening on `hostAddress` as well as loopback (its `HOST` takes a comma-separated list, and it binds `hostAddress` once the container's interface exists), on `container.modelProxy.port`, 47821 by default. Mint a client key for the container in its dashboard, then store it:
+With `container.modelProxy.enable`, both send their requests to a model proxy on the host instead, and no account sign-in enters the container. The proxy is [Coda's ungate](https://github.com/Coda-Health/ungate): it keeps the Claude and ChatGPT sign-ins as an account pool, passes Claude Code's `/v1/messages` and Codex's `/v1/responses` through to them, and records usage per client key. Run it on the host listening on `hostAddress` as well as loopback (its `HOST` takes a comma-separated list, and it binds `hostAddress` once the container's interface exists), on `container.modelProxy.port`, 47821 by default. Mint the container's client key and store it, as yourself:
 
 ```bash
-coda-sandbox broker store model-proxy
+coda-sandbox broker mint model-proxy
 coda-sandbox doctor                   # "model proxy  http://10.233.1.1:47821 takes the key as client coda-agent"
 ```
 
+`broker mint model-proxy` asks the proxy's loopback admin route (`POST /clients` at the config's `model_proxy.admin_url`) for a key labelled with the container's name, stores it in the keyring without printing it, tells the running broker, and then revokes the client of the key it replaced. It checks the old key first, so a proxy that cannot answer changes nothing. `broker store model-proxy` stores a key minted some other way.
+
 The container's firewall opens that one port on `hostAddress` and keeps every other host port dropped; `container.hostTcpPorts` opens further ones, such as a local model server's. The option writes the container's system-wide config: Claude Code's `/etc/claude-code/managed-settings.json` sets `ANTHROPIC_BASE_URL` to the proxy and an `apiKeyHelper`, and `/etc/codex/config.toml` makes the proxy's Responses API Codex's provider with a key command. Both run `coda-sandbox token model-proxy` per session, so the key is in no file or environment. Managed settings outrank the agent's own, so every Claude Code session uses the proxy; the agent's `~/.codex/config.toml` can still pick another Codex provider. The proxy's admin routes answer only on loopback, so the container can use its key but cannot mint, list or revoke keys.
 
-With the option on, `status` and doctor's token broker check list `model-proxy` and warn until it is stored, and doctor's model proxy check runs `coda-sandbox proxy-check` in the container over SSH: it asks the proxy's `GET /v1/client` with the stored key, which costs no tokens, and fails when the container cannot reach the proxy or the proxy refuses the key. A proxy with no client keys serves anyone who reaches it, so the check warns. Revoking the key in the dashboard cuts the container off.
+With the option on, `status` and doctor's token broker check list `model-proxy` and warn until it is stored, and doctor's model proxy check runs `coda-sandbox proxy-check` in the container over SSH: it asks the proxy's `GET /v1/client` with the stored key, which costs no tokens, and fails when the container cannot reach the proxy or the proxy refuses the key. A proxy with no client keys serves anyone who reaches it, so the check warns. Revoking the client at the proxy (`POST /clients/<id>/revoke` on loopback) cuts the container off; minting again replaces it.
 
 The container is the sandbox for both CLIs. Codex's own `workspace-write` sandbox cannot start inside it, since its bubblewrap needs to mount `/proc`, so Codex runs commands there with `-s danger-full-access`, and the container still bounds what they reach.
 
@@ -122,7 +127,16 @@ The container is the sandbox for both CLIs. Codex's own `workspace-write` sandbo
 
 ### Bringing host worktrees over
 
-`sudo -u <user> coda-carry` records every host worktree of `carry.sourceRepo` as refs, publishing nothing: `refs/carry/<slug>/head` for its commit and `refs/carry/<slug>/dirty` for a snapshot of uncommitted and untracked files, built with a temporary index so the worktree is untouched. It runs git as `user`, then installs one bundle into `carry.dir` with `ignored.txt` beside it, listing ignored files outside `target/`. Inside the container, `git fetch /agents/coda/carry/carry.bundle 'refs/carry/*:refs/carry/*'` makes all of it available to `coda-sandbox worktree new <slug> --from carry/<slug>/dirty`.
+On the host, as `user`:
+
+```bash
+coda-sandbox carry eng-7 misc     # only these worktrees; without slugs, every one
+coda-sandbox shell -- coda-sandbox carry import eng-7
+```
+
+`carry [slug...]` records the named host worktrees of `carry.sourceRepo` (by slug: the directory name lowercased, with anything a worktree slug cannot hold turned into `-`; every worktree without names) as refs, publishing nothing: `refs/carry/<slug>/head` for its commit and `refs/carry/<slug>/dirty` for a snapshot of uncommitted and untracked files, built with a temporary index so the worktree is untouched. It refuses to run as root, so no hook or config in the trees runs with privilege. It installs into `carry.dir` a bundle of those refs less what the host's `origin/main` already holds (no bundle when that leaves nothing), `ignored.txt`, listing ignored files outside `target/`, and `summary.txt`, one line per worktree with its commits, its branch and whether it is the main checkout.
+
+`carry import [slug...]` in the container reads `summary.txt` and the bundle from `/agents/coda/carry`, fetches `origin`, and for each worktree it names (every one without names) makes `.worktrees/<slug>` through `coda-sandbox worktree`, on the host's branch name at the carried commit, restores its uncommitted and untracked files into the tree (leaving the index clean), and sets the branch's upstream to `origin/<branch>` when `origin` has it. It records its progress in the checkout's git directory under `coda-carry/`, so a rerun finishes a worktree whose import was interrupted and leaves alone one it finished or that was made some other way; a local branch that has moved since the carry is refused rather than reset. The host's main checkout is not made: the container's checkout stands for it, and import prints the `git restore` that brings its uncommitted files over.
 
 ## Coda CI in Firecracker
 

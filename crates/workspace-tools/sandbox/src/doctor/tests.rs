@@ -5,7 +5,7 @@ use super::{Check, Fix, LegacyTokenDir, Outcome, SpoolDir, Verdict, render, run,
 use crate::broker::Source;
 use crate::broker::wire::{GhFallback, ItemState, Unavailable};
 use crate::config::{Config, Loaded};
-use crate::editor_settings::Editor;
+use crate::editor_settings::{Editor, ServerExtensions};
 use crate::error::Error;
 use crate::model_proxy::ProxyCheck;
 use crate::probe::{
@@ -108,6 +108,48 @@ fn permission_denied_is_cannot_check_and_makes_the_verdict_incomplete() {
     probe.ssh = SshReach::TimedOut;
     let findings = run(&probe, &config());
     assert_eq!(verdict(&findings), Verdict::Failing, "a failure outranks");
+}
+
+#[test]
+fn arp_ignore_two_fails_with_the_sysctl_that_restores_one() {
+    let arp = PathBuf::from("/proc/sys/net/ipv4/conf/all/arp_ignore");
+    let mut probe = healthy();
+    let findings = run(&probe, &config());
+    assert!(matches!(
+        outcome(&findings, &Check::ArpIgnore),
+        Outcome::Pass { .. }
+    ));
+
+    probe.files.insert(arp.clone(), "2\n".to_owned());
+    let findings = run(&probe, &config());
+    let Outcome::Fail { fix, detail } = outcome(&findings, &Check::ArpIgnore) else {
+        panic!("2 should fail")
+    };
+    assert!(detail.contains("/32"), "{detail}");
+    assert_eq!(
+        fix.to_string(),
+        "sudo sysctl -w net.ipv4.conf.all.arp_ignore=1"
+    );
+    assert_eq!(verdict(&findings), Verdict::Failing);
+
+    probe.files.insert(arp.clone(), "0\n".to_owned());
+    let findings = run(&probe, &config());
+    assert!(matches!(
+        outcome(&findings, &Check::ArpIgnore),
+        Outcome::Warn { .. }
+    ));
+
+    probe.files.insert(arp.clone(), "8\n".to_owned());
+    assert!(matches!(
+        outcome(&run(&probe, &config()), &Check::ArpIgnore),
+        Outcome::Fail { .. }
+    ));
+
+    probe.files.insert(arp, "x\n".to_owned());
+    assert!(matches!(
+        outcome(&run(&probe, &config()), &Check::ArpIgnore),
+        Outcome::CannotCheck { .. }
+    ));
 }
 
 #[test]
@@ -221,7 +263,7 @@ fn with_the_model_proxy_on_its_key_must_be_stored() {
         panic!("expected Warn")
     };
     assert!(detail.contains("model-proxy: not stored"), "{detail}");
-    assert_eq!(fix.to_string(), "coda-sandbox broker store model-proxy");
+    assert_eq!(fix.to_string(), "coda-sandbox broker mint model-proxy");
 }
 
 #[test]
@@ -286,7 +328,7 @@ fn model_proxy_without_client_keys_warns() {
 }
 
 #[test]
-fn model_proxy_refusing_the_key_fails_and_says_to_store_a_new_one() {
+fn model_proxy_refusing_the_key_fails_and_says_to_mint_a_new_one() {
     let found = proxy_outcome(FromContainer::Answered(ProxyCheck::Refused { status: 403 }));
     let Outcome::Fail { detail, fix } = found else {
         panic!("expected Fail, got {found:?}")
@@ -294,7 +336,7 @@ fn model_proxy_refusing_the_key_fails_and_says_to_store_a_new_one() {
     assert!(detail.contains("refuses"), "{detail}");
     assert!(
         fix.to_string()
-            .contains("coda-sandbox broker store model-proxy")
+            .contains("coda-sandbox broker mint model-proxy")
     );
 }
 
@@ -505,6 +547,48 @@ fn antigravity_needs_only_its_git_keys_off_and_zed_has_no_settings_check() {
         outcome(&findings, &Check::EditorSettings(Editor::Antigravity)),
         Outcome::Fail { detail, .. } if detail.contains("github.gitAuthentication unset")
     ));
+}
+
+#[test]
+fn antigravity_server_lacking_extensions_warns_and_names_open() {
+    let mut probe = healthy();
+    probe.files.insert(
+        settings_path(Editor::Antigravity),
+        r#"{ "git.terminalAuthentication": false, "github.gitAuthentication": false }"#.to_owned(),
+    );
+    let antigravity = |probe: &super::fake::FakeProbe| {
+        let findings = run(probe, &config());
+        let found = format!(
+            "{:?}",
+            outcome(&findings, &Check::EditorSettings(Editor::Antigravity))
+        );
+        (verdict(&findings), found)
+    };
+
+    probe.server_extensions =
+        FromContainer::Answered(ServerExtensions::Missing(vec!["rust-lang.rust-analyzer"]));
+    let findings = run(&probe, &config());
+    let Outcome::Warn { detail, fix } =
+        outcome(&findings, &Check::EditorSettings(Editor::Antigravity))
+    else {
+        panic!("a server lacking an extension should warn")
+    };
+    assert!(detail.contains("lacks rust-lang.rust-analyzer"), "{detail}");
+    assert_eq!(fix.to_string(), "coda-sandbox open --editor antigravity");
+    assert_eq!(verdict(&findings), Verdict::Healthy);
+
+    probe.server_extensions = FromContainer::Answered(ServerExtensions::NoServer);
+    let (found_verdict, found) = antigravity(&probe);
+    assert!(
+        found.contains("Pass") && found.contains("no Antigravity server"),
+        "{found}"
+    );
+    assert_eq!(found_verdict, Verdict::Healthy);
+
+    probe.server_extensions = FromContainer::TimedOut;
+    let (found_verdict, found) = antigravity(&probe);
+    assert!(found.contains("CannotCheck"), "{found}");
+    assert_eq!(found_verdict, Verdict::Incomplete);
 }
 
 #[test]

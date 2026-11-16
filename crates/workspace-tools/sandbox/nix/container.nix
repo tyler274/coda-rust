@@ -44,7 +44,7 @@ lib.mkIf (cfg.enable && cfg.container.enable) {
         hostPath = "${cfg.paths.ci}/spool/results";
         readOnly = true;
       };
-      # Bundles of the host worktrees written by coda-carry. Kept off the
+      # Bundles of the host worktrees written by `coda-sandbox carry`. Kept off the
       # agent-owned tree, so the host never writes where the agent can plant
       # a symlink.
       "${cfg.paths.root}/carry" = {
@@ -73,10 +73,6 @@ lib.mkIf (cfg.enable && cfg.container.enable) {
       environment.etc."coda-sandbox/config.toml".source = cfg.configFile;
     };
   };
-
-  systemd.tmpfiles.rules = [
-    "d ${cfg.carry.dir} 0755 root root -"
-  ];
 
   environment.etc."coda-agent/uid".text = toString (cfg.uidBase + 1000);
 }

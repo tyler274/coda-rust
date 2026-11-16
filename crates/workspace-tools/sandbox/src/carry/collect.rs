@@ -3,38 +3,51 @@
 use std::path::{Path, PathBuf};
 
 use super::naming::{CarrySlug, Names, under_target};
+use super::summary::{Carried, Checkout, Dirty};
 use crate::error::Error;
 use crate::git::git;
 use crate::porcelain::{self, EntryState, Head};
+use crate::worktree::same_path;
 
-/// One carried worktree.
+/// The commits the container already has from `origin`, so the bundle need
+/// not carry them. A worktree whose commits are all in it is left out of the
+/// bundle by git, which is why the summary, not the bundle's refs, names
+/// each worktree's commits.
+const BASIS: &str = "refs/remotes/origin/main";
+
+/// Which worktrees to carry.
 #[derive(Debug, Clone, PartialEq, Eq)]
-pub struct Carried {
-    pub slug: CarrySlug,
-    pub head: String,
-    pub dirty: Dirty,
-    pub path: PathBuf,
+pub enum Select {
+    All,
+    /// Only these, by their carry slug; each must name a worktree.
+    Named(Vec<String>),
 }
 
-/// Whether the worktree had changes, and so a `dirty` ref.
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-pub enum Dirty {
-    Clean,
-    Snapshot,
-}
+impl Select {
+    pub fn from_names(names: Vec<String>) -> Self {
+        if names.is_empty() {
+            Self::All
+        } else {
+            Self::Named(names)
+        }
+    }
 
-impl Carried {
-    pub fn summary_line(&self) -> String {
-        let dirty = match self.dirty {
-            Dirty::Clean => "no",
-            Dirty::Snapshot => "yes",
-        };
-        format!(
-            "{}\t{}\tdirty={dirty}\t{}\n",
-            self.slug,
-            self.head,
-            self.path.display()
-        )
+    pub fn takes(&self, slug: &str) -> bool {
+        match self {
+            Self::All => true,
+            Self::Named(names) => names.iter().any(|name| name == slug),
+        }
+    }
+
+    /// The first named slug none of `found` answers to.
+    pub fn missing<'a>(&'a self, found: &[&str]) -> Option<&'a str> {
+        match self {
+            Self::All => None,
+            Self::Named(names) => names
+                .iter()
+                .map(String::as_str)
+                .find(|name| !found.contains(name)),
+        }
     }
 }
 
@@ -87,9 +100,90 @@ fn snapshot(path: &Path, head: &str, slug: &CarrySlug) -> Result<String, Error> 
         .line()
 }
 
-/// Records each present worktree of `repo` and writes `carry.bundle`,
-/// `ignored.txt` and `summary.txt` into `staging`.
-pub fn collect(repo: &Path, staging: &Path) -> Result<Vec<Carried>, Error> {
+/// Records one worktree's refs and appends its ignored files.
+fn record(
+    repo: &Path,
+    path: PathBuf,
+    slug: CarrySlug,
+    head: &str,
+    branch: Option<&str>,
+    ignored: &mut String,
+) -> Result<Carried, Error> {
+    let checkout = if same_path(&path, repo) {
+        Checkout::Main
+    } else {
+        Checkout::Linked
+    };
+    git(repo)
+        .args(["update-ref", &slug.head_ref(), head])
+        .run()?;
+    let changes = git(&path)
+        .args(["status", "--porcelain", "--ignore-submodules=dirty"])
+        .output()?;
+    let dirty = if changes.is_empty() {
+        Dirty::Clean
+    } else {
+        let commit = snapshot(&path, head, &slug)?;
+        git(repo)
+            .args(["update-ref", &slug.dirty_ref(), &commit])
+            .run()?;
+        Dirty::Snapshot(commit)
+    };
+    let others = git(&path)
+        .args([
+            "ls-files",
+            "--others",
+            "--ignored",
+            "--exclude-standard",
+            "--directory",
+        ])
+        .output()?;
+    for file in others.lines().filter(|file| !under_target(file)) {
+        ignored.push_str(&format!("{slug}: {file}\n"));
+    }
+    Ok(Carried {
+        slug,
+        head: head.to_owned(),
+        dirty,
+        branch: branch.map(|name| name.strip_prefix("refs/heads/").unwrap_or(name).to_owned()),
+        checkout,
+        path,
+    })
+}
+
+/// Writes `carry.bundle` with every `refs/carry` ref, less what [`BASIS`]
+/// holds when the repository has it. Writes nothing when that leaves no
+/// commit to carry, as git refuses an empty bundle.
+fn bundle(repo: &Path, to: &Path) -> Result<(), Error> {
+    let basis = git(repo)
+        .args(["rev-parse", "--verify", "--quiet", BASIS])
+        .line_if_ok()?;
+    let Some(basis) = basis else {
+        return git(repo)
+            .args(["bundle", "create", "--quiet"])
+            .arg(to)
+            .arg("--glob=refs/carry/*")
+            .run();
+    };
+    let exclude = format!("^{basis}");
+    let new = git(repo)
+        .args(["rev-list", "-n1", "--glob=refs/carry/*", &exclude])
+        .line()?;
+    if new.is_empty() {
+        return Ok(());
+    }
+    git(repo)
+        .args(["bundle", "create", "--quiet"])
+        .arg(to)
+        .args(["--glob=refs/carry/*", &exclude])
+        .run()
+}
+
+/// Records each present worktree of `repo` that `select` takes and writes
+/// `carry.bundle`, `ignored.txt` and `summary.txt` into `staging`. Every
+/// worktree claims its slug, carried or not, so a name means the same
+/// worktree whichever are selected.
+pub fn collect(repo: &Path, staging: &Path, select: &Select) -> Result<Vec<Carried>, Error> {
     clear(repo)?;
     let listing = git(repo)
         .args(["worktree", "list", "--porcelain"])
@@ -98,56 +192,36 @@ pub fn collect(repo: &Path, staging: &Path) -> Result<Vec<Carried>, Error> {
     let mut carried = Vec::new();
     let mut ignored = String::new();
     for entry in porcelain::parse(&listing) {
-        let (EntryState::Present, Head::Commit { oid: head, .. }) = (&entry.state, &entry.head)
+        let (EntryState::Present, Head::Commit { oid: head, branch }) = (&entry.state, &entry.head)
         else {
             continue;
         };
         if !entry.path.is_dir() {
             continue;
         }
-        let path = entry.path.clone();
-        let slug = names.claim(&path);
-        git(repo)
-            .args(["update-ref", &slug.head_ref(), head])
-            .run()?;
-        let changes = git(&path)
-            .args(["status", "--porcelain", "--ignore-submodules=dirty"])
-            .output()?;
-        let dirty = if changes.is_empty() {
-            Dirty::Clean
-        } else {
-            let commit = snapshot(&path, head, &slug)?;
-            git(repo)
-                .args(["update-ref", &slug.dirty_ref(), &commit])
-                .run()?;
-            Dirty::Snapshot
-        };
-        let others = git(&path)
-            .args([
-                "ls-files",
-                "--others",
-                "--ignored",
-                "--exclude-standard",
-                "--directory",
-            ])
-            .output()?;
-        for file in others.lines().filter(|file| !under_target(file)) {
-            ignored.push_str(&format!("{slug}: {file}\n"));
+        let slug = names.claim(&entry.path);
+        if !select.takes(slug.as_str()) {
+            continue;
         }
-        carried.push(Carried {
+        carried.push(record(
+            repo,
+            entry.path.clone(),
             slug,
-            head: head.clone(),
-            dirty,
-            path,
+            head,
+            branch.as_deref(),
+            &mut ignored,
+        )?);
+    }
+    let found: Vec<&str> = carried.iter().map(|one| one.slug.as_str()).collect();
+    if let Some(name) = select.missing(&found) {
+        return Err(Error::NotCarried {
+            slug: name.to_owned(),
+            source_name: repo.display().to_string(),
         });
     }
     write(&staging.join("ignored.txt"), &ignored)?;
     let summary: String = carried.iter().map(Carried::summary_line).collect();
     write(&staging.join("summary.txt"), &summary)?;
-    git(repo)
-        .args(["bundle", "create", "--quiet"])
-        .arg(staging.join("carry.bundle"))
-        .arg("--glob=refs/carry/*")
-        .run()?;
+    bundle(repo, &staging.join("carry.bundle"))?;
     Ok(carried)
 }

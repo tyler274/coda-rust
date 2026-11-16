@@ -1,7 +1,7 @@
 use serde_json::{Value, json};
 
-use super::fake_github::{Call, FakeGitHub};
 use super::*;
+use crate::fake_http::{Call, FakeHttp};
 
 const PAGE_1: &str = "repos/Coda-Health/coda-rust/actions/runners?per_page=100&page=1";
 
@@ -12,7 +12,7 @@ fn removes_owned_idle_runners_and_all_job_directories() {
     fs::create_dir(jobs.join("local-old")).unwrap();
     fs::write(jobs.join("local-old").join("work.img"), "").unwrap();
     fs::write(jobs.join("stray"), "").unwrap();
-    let fake = FakeGitHub::builder()
+    let fake = FakeHttp::builder()
         .route(
             "GET",
             PAGE_1,
@@ -48,7 +48,7 @@ fn busy_runner_prevents_cleanup() {
     let setup = Setup::new();
     let jobs = setup.config.jobs();
     fs::create_dir(jobs.join("github-1")).unwrap();
-    let fake = FakeGitHub::builder()
+    let fake = FakeHttp::builder()
         .route(
             "GET",
             PAGE_1,
@@ -73,7 +73,7 @@ fn runners_are_read_page_by_page_and_a_gone_runner_counts_as_deleted() {
         .map(|id| json!({"id": id, "name": format!("someone-{id}"), "busy": false}))
         .collect();
     let page_2 = "repos/Coda-Health/coda-rust/actions/runners?per_page=100&page=2";
-    let fake = FakeGitHub::builder()
+    let fake = FakeHttp::builder()
         .route("GET", PAGE_1, 200, json!({ "runners": full }))
         .route(
             "GET",

@@ -1,4 +1,4 @@
-//! The host's `broker` subcommands: serve, store, delete and self-test.
+//! The host's `broker` subcommands: serve, store, mint, delete and self-test.
 
 use std::io::{BufRead as _, IsTerminal as _, Write as _};
 use std::sync::Arc;
@@ -6,10 +6,11 @@ use std::sync::Arc;
 use super::audit::Record;
 use super::core::Broker;
 use super::error::BrokerError;
-use super::keyring::{GhCli, Keyring, SecretTool};
+use super::keyring::{GhCli, Keyring, KeyringError, SecretTool};
 use super::peer::{Door, PeerMap};
 use super::{Item, Secret, client, serve};
-use crate::config::Config;
+use crate::config::{Config, ModelProxy};
+use crate::model_proxy::{Admin, ClientView};
 
 /// Runs the broker on the config's sockets until a listener fails.
 pub fn serve(config: &Config) -> Result<(), BrokerError> {
@@ -112,6 +113,59 @@ pub fn store(config: &Config, item: Item) -> Result<Stored, BrokerError> {
             source,
         })?;
     reload(config)
+}
+
+/// What `mint model-proxy` did.
+#[derive(Debug, PartialEq, Eq)]
+pub struct Minted {
+    /// The new key's client at the proxy.
+    pub client: ClientView,
+    pub stored: Stored,
+    /// The client of the key it replaced, now revoked.
+    pub revoked: Option<ClientView>,
+}
+
+/// Mints a model-proxy key labelled with the container's name from the
+/// proxy's loopback admin route, stores it in `keyring` without showing
+/// it, and revokes the client of the key it replaces. The old key is
+/// checked before anything is minted, so a proxy that cannot answer
+/// changes nothing.
+pub fn mint_model_proxy(
+    config: &Config,
+    proxy: &ModelProxy,
+    keyring: &dyn Keyring,
+) -> Result<Minted, BrokerError> {
+    let item = Item::ModelProxy;
+    let keyring_error = |op| move |source| BrokerError::Keyring { op, item, source };
+    let admin = Admin::new(proxy);
+    // A stored value that is not a token names no client, so there is
+    // nothing to revoke and the new key replaces it.
+    let previous = match keyring.lookup(item) {
+        Ok(Some(key)) => admin.client_of(&key)?,
+        Ok(None) | Err(KeyringError::NotAToken { .. }) => None,
+        Err(source) => return Err(keyring_error("read")(source)),
+    };
+    let (client, key) = admin.create(&config.container.name)?;
+    keyring.store(item, &key).map_err(keyring_error("store"))?;
+    let stored = reload(config)?;
+    let revoked = match previous {
+        Some(old) if old.id != client.id => {
+            admin
+                .revoke(&old.id)
+                .map_err(|source| BrokerError::PreviousNotRevoked {
+                    label: old.label.clone(),
+                    id: old.id.clone(),
+                    source: Box::new(source),
+                })?;
+            Some(old)
+        }
+        Some(_) | None => None,
+    };
+    Ok(Minted {
+        client,
+        stored,
+        revoked,
+    })
 }
 
 pub fn delete(config: &Config, item: Item) -> Result<Stored, BrokerError> {

@@ -24,6 +24,8 @@ pub mod serve;
 pub mod wire;
 
 #[cfg(test)]
+mod mint_tests;
+#[cfg(test)]
 mod tests;
 
 use std::fmt;

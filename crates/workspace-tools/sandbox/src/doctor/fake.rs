@@ -4,11 +4,12 @@ use std::collections::HashMap;
 use std::io;
 use std::path::{Path, PathBuf};
 
+use super::checks::ARP_IGNORE;
 use crate::broker::error::BrokerError;
 use crate::broker::wire::{GhFallback, ItemReport, ItemState, Report};
 use crate::broker::{Item, Source};
 use crate::config::UnitName;
-use crate::editor_settings::Editor;
+use crate::editor_settings::{Editor, RemoteServer, ServerExtensions};
 use crate::error::Error;
 use crate::model_proxy::ProxyCheck;
 use crate::probe::{
@@ -32,6 +33,8 @@ pub(super) struct FakeProbe {
     /// `None` when no broker listens on the socket.
     pub broker: Option<Report>,
     pub proxy_check: FromContainer<ProxyCheck>,
+    /// What listing an editor server's extensions in the container gives.
+    pub server_extensions: FromContainer<ServerExtensions>,
 }
 
 fn denied(path: &Path) -> Error {
@@ -100,6 +103,14 @@ impl Probe for FakeProbe {
         Ok(self.proxy_check.clone())
     }
 
+    fn server_extensions(
+        &self,
+        _: &str,
+        _: RemoteServer,
+    ) -> Result<FromContainer<ServerExtensions>, Error> {
+        Ok(self.server_extensions.clone())
+    }
+
     fn ssh_config(&self, _: &str) -> Result<SshOptions, Error> {
         Ok(SshOptions::parse(&self.ssh_options))
     }
@@ -153,7 +164,10 @@ pub(super) fn healthy() -> FakeProbe {
         active: ActiveState::Active,
     };
     let units = ["container@coda-agent.service", "coda-ci.timer"];
-    let mut files = HashMap::from([(PathBuf::from(ZFS_BCLONE_PARAMETER), "1\n".to_owned())]);
+    let mut files = HashMap::from([
+        (PathBuf::from(ZFS_BCLONE_PARAMETER), "1\n".to_owned()),
+        (PathBuf::from(ARP_IGNORE), "1\n".to_owned()),
+    ]);
     files.insert(settings_path(Editor::Cursor), SAFE_SETTINGS.to_owned());
     FakeProbe {
         units: units.iter().map(|u| ((*u).to_owned(), active)).collect(),
@@ -174,6 +188,7 @@ pub(super) fn healthy() -> FakeProbe {
         proxy_check: FromContainer::Answered(ProxyCheck::Accepted {
             client: Some("coda-agent".to_owned()),
         }),
+        server_extensions: FromContainer::Answered(ServerExtensions::Missing(Vec::new())),
     }
 }
 

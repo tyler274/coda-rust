@@ -156,6 +156,17 @@ pub enum Error {
     NoModelProxy,
     #[error("carry runs git in your worktrees, so it runs as their owner, never as root")]
     CarryAsRoot,
+    #[error("{source_name} has no worktree {slug} to carry")]
+    NotCarried { slug: String, source_name: String },
+    #[error(
+        "branch {branch} is at {found} here but was carried at {carried}; \
+         rename or remove it, then rerun `carry import`"
+    )]
+    CarriedBranchMoved {
+        branch: String,
+        found: String,
+        carried: String,
+    },
     #[error("cannot read git's credential query")]
     CredentialQuery(#[source] io::Error),
     #[error(transparent)]
@@ -170,6 +181,19 @@ pub enum Error {
     EditorFailed {
         program: &'static str,
         status: ExitStatus,
+    },
+    #[error("`ssh {host}` to {what} exited {}: {stderr}", exit_code.map_or_else(|| "on a signal".to_owned(), |code| code.to_string()))]
+    ContainerFailed {
+        host: String,
+        what: &'static str,
+        exit_code: Option<i32>,
+        stderr: String,
+    },
+    #[error("`ssh {host}` to {what} did not finish in {seconds} s")]
+    ContainerTimedOut {
+        host: String,
+        what: &'static str,
+        seconds: u64,
     },
     #[error(
         "{host} has no checkout at {path}; `coda-sandbox shell -- coda-sandbox worktree new <slug>` makes one"

@@ -103,16 +103,19 @@ fn absent_by_choice(entry: &ItemReport, proxy: Option<&ModelProxy>) -> bool {
             }
 }
 
+/// The command that puts a working `item` in the keyring: the model proxy
+/// mints its own key, and every other token is pasted in.
+pub fn fill(item: Item) -> Fix {
+    let verb = match item {
+        Item::ModelProxy => "mint",
+        Item::GithubAgent | Item::Doppler | Item::GithubCi | Item::SelfTest => "store",
+    };
+    Fix::command("coda-sandbox", ["broker", verb, item.name()])
+}
+
 fn unavailable_fix(item: Item, reason: Unavailable) -> Fix {
     match reason {
-        Unavailable::NotStored | Unavailable::NotAToken => Fix::command(
-            "coda-sandbox",
-            [
-                "broker".to_owned(),
-                "store".to_owned(),
-                item.name().to_owned(),
-            ],
-        ),
+        Unavailable::NotStored | Unavailable::NotAToken => fill(item),
         Unavailable::KeyringLocked => Fix::instruction(
             "log in on the host's desktop so the wallet unlocks, then rerun doctor",
         ),

@@ -42,7 +42,19 @@ user = "coda-ci"
 # Where Claude Code and Codex in the container send their requests, with the
 # broker's model-proxy key; ungate on the host keeps the account sign-ins.
 url = "http://10.233.1.1:47821"
+# The same proxy on the host's loopback, which alone answers its admin
+# routes; `coda-sandbox broker mint model-proxy` mints the key there.
+admin_url = "http://127.0.0.1:47821"
+
+[open]
+# The editor `coda-sandbox open` uses without `--editor`: cursor, code,
+# antigravity or zed. Cursor when unset.
+editor = "cursor"
 
 [carry]
+# `coda-sandbox carry` on the host records this checkout's worktrees into
+# `out`; the container sees `out` read-only at `mount`, where
+# `coda-sandbox carry import` reads it.
 repo = "/home/luluco/code/coda/coda-rust"
 out = "/var/lib/coda-carry"
+mount = "/agents/coda/carry"

@@ -5,8 +5,8 @@ use serde::Serialize;
 use super::{Check, Finding, Fix, Outcome, SpoolDir, broker, reflink};
 use crate::config::{Config, Loaded, UnitName};
 use crate::editor_settings::{
-    DEFAULT_EXTENSIONS_KEY, Editor, ForwardingKey, RemoteExtensions, Setting, Settings,
-    SettingsFile,
+    DEFAULT_EXTENSIONS_KEY, Editor, ForwardingKey, RemoteExtensions, RemoteServer,
+    ServerExtensions, Setting, Settings, SettingsFile,
 };
 use crate::error::Error;
 use crate::model_proxy::ProxyCheck;
@@ -50,10 +50,14 @@ pub fn run(probe: &dyn Probe, config: &Result<Loaded, Error>) -> Vec<Finding> {
     if let Ok(loaded) = config {
         findings.extend(machine(probe, &loaded.config));
     }
+    let host = config
+        .as_ref()
+        .ok()
+        .map(|loaded| loaded.config.container.ssh_host.as_str());
     findings.extend(Editor::ALL.into_iter().filter_map(|editor| {
         Some(Finding {
             check: Check::EditorSettings(editor),
-            outcome: editor_outcome(probe, editor)?,
+            outcome: editor_outcome(probe, host, editor)?,
         })
     }));
     findings
@@ -105,6 +109,7 @@ fn machine(probe: &dyn Probe, config: &Config) -> Vec<Finding> {
             Check::ContainerUnit,
             unit_outcome(probe, UnitScope::System, &config.container.unit),
         ),
+        (Check::ArpIgnore, arp_ignore_outcome(probe)),
         (Check::Ssh, ssh_outcome(probe, &config.container.ssh_host)),
         (
             Check::SshForwarding,
@@ -225,6 +230,80 @@ fn unit_outcome(probe: &dyn Probe, scope: UnitScope, unit: &UnitName) -> Outcome
     }
 }
 
+/// The host's `net.ipv4.conf.all.arp_ignore`.
+pub(super) const ARP_IGNORE: &str = "/proc/sys/net/ipv4/conf/all/arp_ignore";
+
+/// The kernel's `arp_ignore` modes (Documentation/networking/ip-sysctl.rst).
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+enum ArpIgnore {
+    /// 0: answer for any local address on any interface.
+    Any,
+    /// 1: answer only for addresses on the interface asked.
+    Interface,
+    /// 2: as 1, and only when the sender is in the target's subnet. Each
+    /// veth end is a /32, so neither end answers the other.
+    Subnet,
+    /// 3 to 8: scope or never-answer modes the sandbox does not use.
+    Other(u8),
+}
+
+impl ArpIgnore {
+    fn parse(text: &str) -> Option<Self> {
+        Some(match text.trim().parse::<u8>().ok()? {
+            0 => Self::Any,
+            1 => Self::Interface,
+            2 => Self::Subnet,
+            other => Self::Other(other),
+        })
+    }
+}
+
+/// The module sets 1 at boot, but `nixos-rebuild switch` does not reapply
+/// sysctls, and the Mullvad daemon raises 0 to 2 when it starts. A host at
+/// 2 cannot ARP its containers' /32 addresses, and a container started then
+/// copies the value.
+fn arp_ignore_outcome(probe: &dyn Probe) -> Outcome {
+    let path = Path::new(ARP_IGNORE);
+    let text = match probe.read_file(path) {
+        Ok(Some(text)) => text,
+        Ok(None) => {
+            return Outcome::Skip {
+                reason: format!("no {ARP_IGNORE}"),
+            };
+        }
+        Err(cause) => return Outcome::CannotCheck { cause },
+    };
+    let fix = || Fix::command("sudo", ["sysctl", "-w", "net.ipv4.conf.all.arp_ignore=1"]);
+    match ArpIgnore::parse(&text) {
+        Some(ArpIgnore::Interface) => Outcome::Pass {
+            detail: "1".to_owned(),
+        },
+        Some(ArpIgnore::Any) => Outcome::Warn {
+            detail: "0, not the module's 1; a daemon such as Mullvad may raise it to 2 \
+                     and cut the host off from the container"
+                .to_owned(),
+            fix: fix(),
+        },
+        Some(ArpIgnore::Subnet) => Outcome::Fail {
+            detail: "2, so the host gets no ARP answer from the container's /32 address, \
+                     and a container started now copies it"
+                .to_owned(),
+            fix: fix(),
+        },
+        Some(ArpIgnore::Other(mode)) => Outcome::Fail {
+            detail: format!("{mode}, not the module's 1"),
+            fix: fix(),
+        },
+        None => Outcome::CannotCheck {
+            cause: Error::UnexpectedOutput {
+                what: "arp_ignore",
+                source_name: ARP_IGNORE.to_owned(),
+                found: text,
+            },
+        },
+    }
+}
+
 fn ssh_outcome(probe: &dyn Probe, host: &str) -> Outcome {
     let why = || Fix::command("ssh", ["-v", host, "true"]);
     match probe.ssh(host) {
@@ -247,6 +326,10 @@ fn ssh_outcome(probe: &dyn Probe, host: &str) -> Outcome {
         },
         Err(cause) => Outcome::CannotCheck { cause },
     }
+}
+
+fn mint() -> Fix {
+    broker::fill(crate::broker::Item::ModelProxy)
 }
 
 /// Asks from inside the container, so the check crosses the same firewall
@@ -289,17 +372,11 @@ fn model_proxy_outcome(probe: &dyn Probe, config: &Config) -> Outcome {
                 "{url} has no client keys, so it serves anything that reaches it \
                  and cannot tell the container's usage apart"
             ),
-            fix: Fix::instruction(
-                "mint a key in the proxy's dashboard on the host, then \
-                 `coda-sandbox broker store model-proxy`",
-            ),
+            fix: mint(),
         },
         ProxyCheck::Refused { status: 401 | 403 } => Outcome::Fail {
             detail: format!("{url} refuses the broker's model-proxy key"),
-            fix: Fix::instruction(
-                "mint a key in the proxy's dashboard on the host, then \
-                 `coda-sandbox broker store model-proxy`",
-            ),
+            fix: mint(),
         },
         ProxyCheck::Refused { status } => Outcome::Fail {
             detail: format!("{url}/v1/client answered {status}"),
@@ -320,7 +397,7 @@ fn model_proxy_outcome(probe: &dyn Probe, config: &Config) -> Outcome {
         },
         ProxyCheck::NoKey { reason } => Outcome::Fail {
             detail: format!("no model-proxy key to present: {reason}"),
-            fix: Fix::command("coda-sandbox", ["broker", "store", "model-proxy"]),
+            fix: mint(),
         },
         ProxyCheck::Broker { error } => Outcome::Fail {
             detail: format!("the container's broker did not answer: {error}"),
@@ -404,17 +481,30 @@ fn ssh_forwarding_outcome(probe: &dyn Probe, host: &str) -> Outcome {
     }
 }
 
-fn editor_outcome(probe: &dyn Probe, editor: Editor) -> Option<Outcome> {
+/// `host` is the container's SSH alias, when the config loaded.
+fn editor_outcome(probe: &dyn Probe, host: Option<&str>, editor: Editor) -> Option<Outcome> {
     let file = editor.settings()?;
     let Some(home) = probe.home() else {
         return Some(Outcome::CannotCheck {
             cause: Error::NoHome,
         });
     };
-    Some(settings_outcome(probe, &file.path(&home), file))
+    Some(settings_outcome(
+        probe,
+        host,
+        editor,
+        &file.path(&home),
+        file,
+    ))
 }
 
-fn settings_outcome(probe: &dyn Probe, path: &Path, file: SettingsFile) -> Outcome {
+fn settings_outcome(
+    probe: &dyn Probe,
+    host: Option<&str>,
+    editor: Editor,
+    path: &Path,
+    file: SettingsFile,
+) -> Outcome {
     let text = match probe.read_file(path) {
         Ok(Some(text)) => text,
         Ok(None) => return no_settings_outcome(probe, path, file),
@@ -427,7 +517,7 @@ fn settings_outcome(probe: &dyn Probe, path: &Path, file: SettingsFile) -> Outco
     if let Some(failure) = forwarding_failure(&settings, file.keys, path) {
         return failure;
     }
-    extensions_outcome(&settings, file.extensions, path)
+    extensions_outcome(probe, host, editor, &settings, file.extensions, path)
 }
 
 /// An editor that has run keeps its user directory even with no settings
@@ -463,12 +553,29 @@ fn no_settings_outcome(probe: &dyn Probe, path: &Path, file: SettingsFile) -> Ou
 }
 
 /// Missing extensions only warn: the remote still works and forwards
-/// nothing, but rust-analyzer and the dev shell wait for a manual install.
-fn extensions_outcome(settings: &Settings, extensions: RemoteExtensions, path: &Path) -> Outcome {
-    let missing = match extensions {
-        RemoteExtensions::Setting => settings.missing_remote_extensions(),
-        RemoteExtensions::ByHand => Vec::new(),
-    };
+/// nothing, but rust-analyzer and the dev shell wait for an install.
+fn extensions_outcome(
+    probe: &dyn Probe,
+    host: Option<&str>,
+    editor: Editor,
+    settings: &Settings,
+    extensions: RemoteExtensions,
+    path: &Path,
+) -> Outcome {
+    match extensions {
+        RemoteExtensions::Setting => setting_extensions_outcome(settings, path),
+        RemoteExtensions::Server(server) => match host {
+            Some(host) => server_extensions_outcome(probe, host, editor, server),
+            None => Outcome::Pass {
+                detail: "credential forwarding off; its server's extensions need the config"
+                    .to_owned(),
+            },
+        },
+    }
+}
+
+fn setting_extensions_outcome(settings: &Settings, path: &Path) -> Outcome {
+    let missing = settings.missing_remote_extensions();
     if missing.is_empty() {
         return Outcome::Pass {
             detail: "credential forwarding off".to_owned(),
@@ -484,6 +591,61 @@ fn extensions_outcome(settings: &Settings, extensions: RemoteExtensions, path: &
             missing.join(", "),
             path.display()
         )),
+    }
+}
+
+/// The extensions in the editor's server in the container, which
+/// `coda-sandbox open` installs.
+fn server_extensions_outcome(
+    probe: &dyn Probe,
+    host: &str,
+    editor: Editor,
+    server: RemoteServer,
+) -> Outcome {
+    const WHAT: &str = "list the editor server's extensions";
+    let open = || Fix::command("coda-sandbox", ["open", "--editor", editor.value_name()]);
+    let missing = match probe.server_extensions(host, server) {
+        Ok(FromContainer::Answered(ServerExtensions::NoServer)) => {
+            return Outcome::Pass {
+                detail: format!(
+                    "credential forwarding off; no {} server in the container yet",
+                    editor.name()
+                ),
+            };
+        }
+        Ok(FromContainer::Answered(ServerExtensions::Missing(missing))) => missing,
+        Ok(FromContainer::Failed { exit_code, stderr }) => {
+            return Outcome::CannotCheck {
+                cause: Error::ContainerFailed {
+                    host: host.to_owned(),
+                    what: WHAT,
+                    exit_code,
+                    stderr,
+                },
+            };
+        }
+        Ok(FromContainer::TimedOut) => {
+            return Outcome::CannotCheck {
+                cause: Error::ContainerTimedOut {
+                    host: host.to_owned(),
+                    what: WHAT,
+                    seconds: SSH_DEADLINE.as_secs(),
+                },
+            };
+        }
+        Err(cause) => return Outcome::CannotCheck { cause },
+    };
+    if missing.is_empty() {
+        return Outcome::Pass {
+            detail: "credential forwarding off; its server has the remote extensions".to_owned(),
+        };
+    }
+    Outcome::Warn {
+        detail: format!(
+            "credential forwarding off; its server in {host} lacks {}, so the container side has no dev shell or rust-analyzer",
+            missing.join(", ")
+        ),
+        fix: open(),
     }
 }
 

@@ -10,9 +10,10 @@ use std::path::{Path, PathBuf};
 use std::process::{Command, ExitStatus, Stdio};
 
 use crate::config::Config;
-use crate::editor_settings::{Editor, Remote};
+use crate::editor_settings::{Editor, Remote, RemoteExtensions, RemoteServer, ServerExtensions};
 use crate::error::Error;
 use crate::ids::Slug;
+use crate::probe::{self, FromContainer};
 use crate::worktree::Layout;
 
 /// Options for every SSH session these commands start: no agent, X11 or
@@ -108,13 +109,89 @@ pub fn editor_command(editor: Editor, host: &str, dir: &Path) -> (&'static str, 
     (editor.program(), args)
 }
 
+/// What `open` did.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct Opened {
+    pub dir: PathBuf,
+    /// The remote extensions it installed into the editor's server first.
+    pub installed: Vec<&'static str>,
+}
+
 /// Opens the checkout in `editor`, after checking over SSH that it exists,
-/// since an editor opens a missing folder without saying so.
-pub fn open(config: &Config, slug: Option<&Slug>, editor: Editor) -> Result<PathBuf, Error> {
+/// since an editor opens a missing folder without saying so. For an editor
+/// whose settings cannot install the remote extensions, it installs the
+/// missing ones into the editor's server in the container first; before
+/// the editor's first connection there is no server yet, and the next
+/// `open` installs them.
+pub fn open(config: &Config, slug: Option<&Slug>, editor: Editor) -> Result<Opened, Error> {
     let host = &config.container.ssh_host;
     let dir = checkout(config, slug);
     need_dir(host, &dir)?;
-    let (program, args) = editor_command(editor, host, &dir);
+    let installed = match editor.settings().map(|file| file.extensions) {
+        Some(RemoteExtensions::Server(server)) => install_missing(host, server)?,
+        Some(RemoteExtensions::Setting) | None => Vec::new(),
+    };
+    launch(editor, host, &dir)?;
+    Ok(Opened { dir, installed })
+}
+
+/// Installs the [`crate::editor_settings::REMOTE_EXTENSIONS`] `server` lacks
+/// and returns them.
+fn install_missing(host: &str, server: RemoteServer) -> Result<Vec<&'static str>, Error> {
+    let Some(missing) = missing_on(host, server)? else {
+        return Ok(Vec::new());
+    };
+    if missing.is_empty() {
+        return Ok(missing);
+    }
+    // No deadline: the server downloads each extension from its gallery.
+    let output = Command::new("ssh")
+        .args(SSH_OPTIONS)
+        .args(["-o", "BatchMode=yes", "-o", "ConnectTimeout=5", host])
+        .arg(server.install_line(&missing))
+        .stdin(Stdio::null())
+        .output()
+        .map_err(|source| Error::Spawn {
+            program: "ssh",
+            source,
+        })?;
+    // Antigravity's server can exit 1 from an unrelated error after it
+    // installed everything, so what it now lists is the verdict.
+    let still = missing_on(host, server)?.unwrap_or_else(|| missing.clone());
+    if !still.is_empty() {
+        return Err(Error::ContainerFailed {
+            host: host.to_owned(),
+            what: "install the editor server's extensions",
+            exit_code: output.status.code(),
+            stderr: String::from_utf8_lossy(&output.stderr).trim().to_owned(),
+        });
+    }
+    Ok(missing)
+}
+
+/// The remote extensions `server` lacks, or `None` before the editor has
+/// installed it.
+fn missing_on(host: &str, server: RemoteServer) -> Result<Option<Vec<&'static str>>, Error> {
+    const WHAT: &str = "list the editor server's extensions";
+    match probe::ssh_server_extensions(host, server)? {
+        FromContainer::Answered(ServerExtensions::NoServer) => Ok(None),
+        FromContainer::Answered(ServerExtensions::Missing(missing)) => Ok(Some(missing)),
+        FromContainer::Failed { exit_code, stderr } => Err(Error::ContainerFailed {
+            host: host.to_owned(),
+            what: WHAT,
+            exit_code,
+            stderr,
+        }),
+        FromContainer::TimedOut => Err(Error::ContainerTimedOut {
+            host: host.to_owned(),
+            what: WHAT,
+            seconds: probe::SSH_DEADLINE.as_secs(),
+        }),
+    }
+}
+
+fn launch(editor: Editor, host: &str, dir: &Path) -> Result<(), Error> {
+    let (program, args) = editor_command(editor, host, dir);
     let status = Command::new(program)
         .args(args)
         .stdin(Stdio::null())
@@ -130,7 +207,7 @@ pub fn open(config: &Config, slug: Option<&Slug>, editor: Editor) -> Result<Path
     if !status.success() {
         return Err(Error::EditorFailed { program, status });
     }
-    Ok(dir)
+    Ok(())
 }
 
 fn need_dir(host: &str, dir: &Path) -> Result<(), Error> {

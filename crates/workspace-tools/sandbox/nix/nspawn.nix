@@ -131,6 +131,13 @@ let
       networking.firewall.enable = true;
       networking.firewall.allowedTCPPorts = lib.optional (s.authorizedKeys != [ ]) 22;
 
+      # The container's network namespace copies the host's conf.all values
+      # when it is created, so a host that held arp_ignore = 2 at that moment
+      # (see the host's setting below) leaves eth0 answering no ARP from the
+      # host. Its own systemd-sysctl sets the value it needs; /proc/sys/net
+      # is writable in a private network namespace.
+      boot.kernel.sysctl."net.ipv4.conf.all.arp_ignore" = 1;
+
       users.mutableUsers = false;
       # Root is reached only from the host (machinectl / nixos-container run).
       users.allowNoPasswordLogin = true;
