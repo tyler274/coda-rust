@@ -531,6 +531,126 @@ pub(super) mod execution_event {
     impl ActiveModelBehavior for ActiveModel {}
 }
 
+/// One saved version of one patient memory file. Insert and select only: a
+/// write adds the next version, and no row is ever changed or removed. The
+/// table is created by the runtime chain's `m20261115_patient_memory`.
+pub(super) mod memory_version {
+    use sea_orm::entity::prelude::*;
+
+    #[derive(Clone, Debug, PartialEq, Eq, DeriveEntityModel)]
+    #[sea_orm(table_name = "physician_runtime_memory_versions")]
+    pub struct Model {
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub practice: String,
+        /// The patient workspace.
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub workspace: String,
+        /// The file's `MemoryPath`, as text.
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub path: String,
+        /// 1 for the first write; each later write adds one.
+        #[sea_orm(primary_key, auto_increment = false)]
+        pub version: i64,
+        /// The file's markdown text at this version; empty for a version
+        /// that deletes the file.
+        #[sea_orm(column_type = "Text")]
+        pub content: String,
+        /// Database-clock seconds of the write.
+        pub saved_at: i64,
+    }
+
+    #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
+    pub enum Relation {}
+
+    impl ActiveModelBehavior for ActiveModel {}
+}
+
+/// One note in a patient's log. Insert and select only. The table is created
+/// by the runtime chain's `m20261115_patient_memory`.
+pub(super) mod memory_note {
+    use sea_orm::entity::prelude::*;
+
+    #[derive(Clone, Debug, PartialEq, Eq, DeriveEntityModel)]
+    #[sea_orm(table_name = "physician_runtime_memory_notes")]
+    pub struct Model {
+        #[sea_orm(
+            primary_key,
+            auto_increment = false,
+            column_type = "Text",
+            unique_key = "patient_position"
+        )]
+        pub practice: String,
+        /// The patient workspace.
+        #[sea_orm(
+            primary_key,
+            auto_increment = false,
+            column_type = "Text",
+            unique_key = "patient_position"
+        )]
+        pub workspace: String,
+        /// The `NoteId`: the run's work and the tool call that added it.
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub note: String,
+        /// The note's place among the patient's notes, from 1, assigned under
+        /// the patient's note lock: the note's number. Reads order by it:
+        /// `saved_at` has one-second resolution and the note id is not
+        /// ordered.
+        #[sea_orm(unique_key = "patient_position")]
+        pub position: i64,
+        /// Database-clock seconds when the note was saved.
+        pub saved_at: i64,
+        /// The physician whose run added the note.
+        #[sea_orm(column_type = "Text")]
+        pub physician: String,
+        /// The chat or reply work the run belongs to.
+        #[sea_orm(column_type = "Text")]
+        pub chat: String,
+        /// The id of the message the run answers.
+        #[sea_orm(column_type = "Text")]
+        pub message: String,
+        #[sea_orm(column_type = "Text")]
+        pub text: String,
+        /// The physician's words, as the model quoted them.
+        #[sea_orm(column_type = "Text")]
+        pub physician_words: Option<String>,
+    }
+
+    #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
+    pub enum Relation {}
+
+    impl ActiveModelBehavior for ActiveModel {}
+}
+
+/// One rounds mark: a patient rounds run that finished. Insert and select
+/// only. The table is created by the runtime chain's
+/// `m20261115_patient_memory`.
+pub(super) mod memory_rounds {
+    use sea_orm::entity::prelude::*;
+
+    #[derive(Clone, Debug, PartialEq, Eq, DeriveEntityModel)]
+    #[sea_orm(table_name = "physician_runtime_memory_rounds")]
+    pub struct Model {
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub practice: String,
+        /// The patient workspace.
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub workspace: String,
+        /// The run's identity.
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub run: String,
+        /// Unix seconds of the time the run was given as its start.
+        pub started_at: i64,
+        /// Database-clock seconds when the run finished and this row was
+        /// saved.
+        pub saved_at: i64,
+    }
+
+    #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
+    pub enum Relation {}
+
+    impl ActiveModelBehavior for ActiveModel {}
+}
+
 /// One product-wide provider cooldown, shared by hosted worker replicas.
 pub(super) mod provider_quota {
     use sea_orm::entity::prelude::*;

@@ -39,6 +39,9 @@ mod entities;
 pub mod feedback;
 mod frozen;
 pub use frozen::{BindingRef, SkillPackageId};
+/// Patient memory: notes, pages, the summary and the direction, with their
+/// write rules.
+pub mod memory;
 mod migration;
 mod quota;
 /// Command receipts and their 90-day reduction to a salted digest.

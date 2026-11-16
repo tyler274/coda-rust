@@ -61,7 +61,8 @@ async fn a_second_migrate_records_nothing_new() {
             "m20261111_response_feedback",
             "m20261112_source_pull_missing_candidates",
             "m20261113_source_links_and_standing",
-            "m20261114_reconnect_commands_and_adapter_state"
+            "m20261114_reconnect_commands_and_adapter_state",
+            "m20261115_patient_memory"
         ]
     );
 }
