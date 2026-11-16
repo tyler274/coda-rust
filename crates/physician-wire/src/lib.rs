@@ -698,7 +698,15 @@ pub struct PhysicianMessage {
     pub id: MessageKey,
     /// The message as the physician wrote it.
     pub text: String,
+    /// When the server saved it.
+    pub saved_at: SavedAt,
 }
+
+/// When the server saved a message or finished an answer: its database
+/// clock's reading, in whole seconds since the Unix epoch.
+#[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq, PartialOrd, Ord, Hash)]
+#[serde(transparent)]
+pub struct SavedAt(pub i64);
 
 /// How one exchange's answer stands. Only the conversation's current work
 /// offers Resume or Try again; an answer whose work a later message replaced
@@ -710,6 +718,10 @@ pub enum AnswerState {
     Working {
         /// The work Stop names.
         stop: WorkStopTarget,
+        /// Coda has begun handing in the answer and is writing it: the model
+        /// began the finish in its latest request, and no request has started
+        /// or failed since. The finish's return does not end it.
+        writing: bool,
     },
     /// Coda finished the answer.
     Finished {
@@ -718,6 +730,8 @@ pub enum AnswerState {
         /// The attempt that published the answer, so an operator can match
         /// the reply to its telemetry by attempt id.
         attempt_id: AttemptId,
+        /// When the server saved the finished answer.
+        finished_at: SavedAt,
         /// The answer as Coda published it. Text a limit kept before it is
         /// in the exchange's `kept`.
         text: String,
@@ -751,8 +765,10 @@ pub enum Step {
     SearchedChart {
         /// The search text, as Coda gave it; empty when it browsed.
         query: String,
-        /// The record type the search was limited to, if any.
-        record_type: Option<String>,
+        /// The group the search was limited to, if any.
+        group: Option<RecordGroup>,
+        /// Whether Coda began the search or went on to its next page.
+        page: SearchPage,
         /// How the search stands.
         state: StepState<Found>,
     },
@@ -768,6 +784,16 @@ pub enum Step {
         /// How the look stands.
         state: StepState<()>,
     },
+}
+
+/// Which page of its results a chart search got.
+#[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(rename_all = "snake_case")]
+pub enum SearchPage {
+    /// Its first page: Coda began the search.
+    First,
+    /// The page after one Coda got before, for the same search.
+    More,
 }
 
 /// How one step stands.
@@ -806,26 +832,123 @@ pub struct Found {
 pub enum RecordRead {
     /// The whole record.
     Whole {
-        /// The source's name for this kind of record.
-        record_type: String,
-        /// The record's dates, in the source's words.
-        dates: Vec<RecordDate>,
+        /// The version of the record that was read.
+        version: SourceVersion,
+        /// What the record says about itself.
+        about: RecordAbout,
     },
     /// One passage of a large record.
-    Passage,
+    Passage {
+        /// The version of the record the passage is part of.
+        version: SourceVersion,
+    },
     /// The record is not in the chart, or its revision changed.
     Unavailable,
     /// The record did not fit the read's size budget.
     TooLarge,
 }
 
+/// One version of a chart record, as a read names it: the record's id in the patient's chart and
+/// the revision of it that was read. Every read of that version, whole or in part, names it alike.
+/// It is compared, never shown.
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash)]
+pub struct SourceVersion {
+    /// The record's id in the patient's chart.
+    pub candidate_id: String,
+    /// The revision of the record that was read.
+    pub revision: String,
+}
+
+/// The group Coda files a record under: the sixteen groups of the shared record envelope.
+#[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(rename_all = "snake_case")]
+pub enum RecordGroup {
+    /// Patient demographics and identifiers.
+    Patient,
+    /// Active and historical problems or diagnoses.
+    Problems,
+    /// Prescriptions, medication statements, dispenses, and administrations.
+    Medications,
+    /// Allergies and intolerances.
+    Allergies,
+    /// Laboratory, imaging, and diagnostic report results.
+    Results,
+    /// Vital signs.
+    Vitals,
+    /// Clinical notes.
+    Notes,
+    /// Non-note clinical documents and attachments.
+    Documents,
+    /// Encounters and appointments.
+    Visits,
+    /// Procedures.
+    Procedures,
+    /// Immunizations.
+    Immunizations,
+    /// Service requests and orders.
+    Orders,
+    /// Social and family history.
+    History,
+    /// Questionnaires and survey observations.
+    Forms,
+    /// Patient and care-team communications.
+    Messages,
+    /// Source records whose kind has no more specific group.
+    Other,
+}
+
+/// What a record says about itself, from its envelope.
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+pub struct RecordAbout {
+    /// The group it is filed under. None for a record filed without an envelope, which a
+    /// read's receipt still allows.
+    pub group: Option<RecordGroup>,
+    /// Its title, when the source gave one.
+    pub title: Option<String>,
+    /// Its dates in the source's words, in the order the adapter's table declares them.
+    pub dates: Vec<RecordDate>,
+}
+
 /// One date on a record, as the source wrote it.
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct RecordDate {
-    /// The source's name for this date.
-    pub name: String,
+    /// What the date marks, as the source's adapter declares it. None for a
+    /// date the record carries without a declared role.
+    pub role: Option<DateRole>,
     /// The value as the source gave it.
     pub value: String,
+}
+
+/// What a date on a record marks, as the source's adapter declares it.
+#[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(rename_all = "snake_case")]
+pub enum DateRole {
+    /// Patient date of birth.
+    BirthDate,
+    /// Condition or allergy onset.
+    Onset,
+    /// Condition abatement or resolution.
+    Abatement,
+    /// When the record was recorded or documented.
+    Recorded,
+    /// When an order, request, or response was authored.
+    Authored,
+    /// Clinical effective time of an observation, medication, or report.
+    Effective,
+    /// When a report or observation was issued.
+    Issued,
+    /// When a procedure was performed.
+    Performed,
+    /// When an immunization or dispense occurred.
+    Occurred,
+    /// Start of a clinical period or appointment.
+    Start,
+    /// End of a clinical period or appointment.
+    End,
+    /// When a communication was sent.
+    Sent,
+    /// When a communication was received.
+    Received,
 }
 
 /// Whether a chat snapshot could read the physician's feedback. The
@@ -1099,13 +1222,16 @@ mod tests {
         let page: ChatSnapshotResponse = serde_json::from_str(
             r#"{"snapshot": {"feedback": "loaded", "transcript": [{
                 "work_item_id": "w1",
-                "messages": [{"id": "k1", "text": "Hello"}, {"id": "k2", "text": "And sodium?"}],
+                "messages": [{"id": "k1", "text": "Hello", "saved_at": 1794600000},
+                             {"id": "k2", "text": "And sodium?", "saved_at": 1794600030}],
                 "steps": {"state": "read", "steps": [
-                    {"did": "searched_chart", "query": "sodium", "record_type": null,
+                    {"did": "searched_chart", "query": "sodium", "group": null, "page": "first",
                      "state": {"state": "returned", "result": {"records": 2, "more": false}}},
                     {"did": "read_records", "requested": 2, "state": {"state": "returned", "result": [
-                        {"outcome": "whole", "record_type": "Observation",
-                         "dates": [{"name": "effective", "value": "2026-10-01"}]},
+                        {"outcome": "whole",
+                         "version": {"candidate_id": "ehr/Observation/sodium", "revision": "1"},
+                         "about": {"group": "results", "title": "Sodium",
+                         "dates": [{"role": "effective", "value": "2026-10-01"}]}},
                         {"outcome": "unavailable"}]}},
                     {"did": "read_conversation", "state": {"state": "stopped"}}
                 ]},
@@ -1165,12 +1291,145 @@ mod tests {
         );
     }
 
+    /// A search step says whether Coda began the search or went on to its
+    /// next page. A search step that does not say is not read.
+    #[test]
+    fn a_search_step_says_which_page_it_got() {
+        for (page, name) in [(SearchPage::First, "first"), (SearchPage::More, "more")] {
+            let step = Step::SearchedChart {
+                query: "a1c".into(),
+                group: None,
+                page,
+                state: StepState::Returned {
+                    result: Found {
+                        records: 4,
+                        more: false,
+                    },
+                },
+            };
+            let written = serde_json::to_value(&step).unwrap();
+            assert_eq!(written["page"], name);
+            assert_eq!(serde_json::from_value::<Step>(written).unwrap(), step);
+        }
+        assert!(
+            serde_json::from_value::<Step>(serde_json::json!({
+                "did": "searched_chart", "query": "a1c", "group": null,
+                "state": {"state": "running"}
+            }))
+            .is_err(),
+            "a search step without its page is read"
+        );
+    }
+
+    /// A step names a record by its filing group and title. A step with a
+    /// source's type name in their place is not read.
+    #[test]
+    fn a_step_names_a_record_by_its_group_and_title() {
+        let steps = vec![
+            Step::SearchedChart {
+                query: "a1c".into(),
+                group: Some(RecordGroup::Results),
+                page: SearchPage::First,
+                state: StepState::Returned {
+                    result: Found {
+                        records: 1,
+                        more: false,
+                    },
+                },
+            },
+            Step::ReadRecords {
+                requested: 3,
+                state: StepState::Returned {
+                    result: vec![
+                        RecordRead::Whole {
+                            version: SourceVersion {
+                                candidate_id: "ehr/Observation/a1c".into(),
+                                revision: "3".into(),
+                            },
+                            about: RecordAbout {
+                                group: Some(RecordGroup::History),
+                                title: Some("Hemoglobin A1c".into()),
+                                dates: vec![RecordDate {
+                                    role: Some(DateRole::Effective),
+                                    value: "2025-01-21".into(),
+                                }],
+                            },
+                        },
+                        RecordRead::Whole {
+                            version: SourceVersion {
+                                candidate_id: "ehr/Binary/scan".into(),
+                                revision: "1".into(),
+                            },
+                            about: RecordAbout {
+                                group: None,
+                                title: None,
+                                dates: Vec::new(),
+                            },
+                        },
+                        RecordRead::Passage {
+                            version: SourceVersion {
+                                candidate_id: "ehr/DocumentReference/note".into(),
+                                revision: "2".into(),
+                            },
+                        },
+                    ],
+                },
+            },
+        ];
+        let written = serde_json::to_value(&steps).unwrap();
+        assert_eq!(written[0]["group"], "results");
+        assert_eq!(
+            written[1]["state"]["result"][0]["about"]["group"],
+            "history"
+        );
+        assert_eq!(
+            written[1]["state"]["result"][0]["about"]["title"],
+            "Hemoglobin A1c"
+        );
+        assert_eq!(
+            written[1]["state"]["result"][2],
+            serde_json::json!({"outcome": "passage", "version": {
+                "candidate_id": "ehr/DocumentReference/note", "revision": "2"}})
+        );
+        assert_eq!(serde_json::from_value::<Vec<Step>>(written).unwrap(), steps);
+        let groups = [
+            "patient",
+            "problems",
+            "medications",
+            "allergies",
+            "results",
+            "vitals",
+            "notes",
+            "documents",
+            "visits",
+            "procedures",
+            "immunizations",
+            "orders",
+            "history",
+            "forms",
+            "messages",
+            "other",
+        ];
+        for name in groups {
+            let group: RecordGroup = serde_json::from_value(serde_json::json!(name)).unwrap();
+            assert_eq!(serde_json::to_value(group).unwrap(), name);
+        }
+        assert!(
+            serde_json::from_str::<RecordRead>(
+                r#"{"outcome": "whole", "record_type": "Observation", "dates": []}"#
+            )
+            .is_err(),
+            "a read that names a source's type is not read"
+        );
+    }
+
     #[test]
     fn reads_a_snapshot_whose_feedback_was_unavailable() {
         let page: ChatSnapshotResponse = serde_json::from_str(
             r#"{"snapshot": {"feedback": "unavailable", "transcript": [{
                 "work_item_id": "w1", "messages": [], "steps": {"state": "read", "steps": []}, "kept": [],
                 "answer": {"state": "finished", "response_id": "a1:reply", "attempt_id": "a1",
+                           "finished_at": 1794600000,
                            "text": "Sodium is stable.", "feedback": null}
             }]}}"#,
         )

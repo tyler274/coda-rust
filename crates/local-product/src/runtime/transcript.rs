@@ -14,7 +14,8 @@ use physician_wire::{
 };
 
 use super::{
-    AssistantKind, Attempt, AttemptStatus, Conversation, MessageRole, ResponseId, reply_id,
+    AssistantKind, Attempt, AttemptStatus, Conversation, Message, MessageRole, ResponseId, SavedAt,
+    reply_id,
 };
 use crate::physician_chat::{CallEnding, StepError};
 
@@ -42,8 +43,13 @@ pub enum TranscriptError {
 struct Gathered<'a> {
     work: &'a str,
     messages: Vec<PhysicianMessage>,
-    /// Each answer's saved id, how it was saved, and its text.
-    answers: Vec<(&'a str, &'a AssistantKind, &'a str)>,
+    /// Each answer's saved id, how it was saved, and the message it was saved as.
+    answers: Vec<(&'a str, &'a AssistantKind, &'a Message)>,
+}
+
+/// When the server saved a message, as the wire carries it.
+fn wire_time(saved_at: SavedAt) -> physician_wire::SavedAt {
+    physician_wire::SavedAt(saved_at.seconds())
 }
 
 impl Conversation {
@@ -61,6 +67,7 @@ impl Conversation {
                     let message = PhysicianMessage {
                         id: MessageKey(id.clone()),
                         text: message.text.clone(),
+                        saved_at: wire_time(message.saved_at),
                     };
                     match gathered.last_mut().filter(|exchange| exchange.work == work) {
                         Some(exchange) => exchange.messages.push(message),
@@ -75,7 +82,7 @@ impl Conversation {
                     .last_mut()
                     .ok_or(TranscriptError::AnswerBeforeMessage)?
                     .answers
-                    .push((id, kind, &message.text)),
+                    .push((id, kind, message)),
             }
         }
         gathered
@@ -112,6 +119,7 @@ impl Conversation {
                 stop: WorkStopTarget {
                     work_item_id: WorkItemId(work.to_owned()),
                 },
+                writing: writing(&attempts),
             },
             None => return Err(TranscriptError::ReplacedWorkOpen),
             Some(RunOutcome::Completed) => {
@@ -119,20 +127,21 @@ impl Conversation {
                 // Its text holds no labels.
                 let attempt = attempts.last().ok_or(TranscriptError::MissingAnswer)?;
                 let id = reply_id(&attempt.id);
-                let text = gathered
+                let message = gathered
                     .answers
                     .iter()
                     .find(|(saved, kind, _)| {
                         *saved == id && matches!(kind, AssistantKind::Finished(_))
                     })
-                    .map(|(_, _, text)| *text)
+                    .map(|(_, _, message)| *message)
                     .ok_or(TranscriptError::MissingAnswer)?;
                 let id = ResponseId(id);
                 AnswerState::Finished {
                     feedback: feedback(&id),
                     response_id: physician_wire::ResponseId(id.0),
                     attempt_id: AttemptId(attempt.id.clone()),
-                    text: text.to_owned(),
+                    finished_at: wire_time(message.saved_at),
+                    text: message.text.clone(),
                 }
             }
             Some(RunOutcome::Held {
@@ -161,7 +170,7 @@ impl Conversation {
             .answers
             .iter()
             .filter(|(_, kind, _)| matches!(kind, AssistantKind::Kept))
-            .map(|(_, _, text)| (*text).to_owned())
+            .map(|(_, _, message)| message.text.clone())
             .collect();
         Ok(Exchange {
             work_item_id: WorkItemId(work.to_owned()),
@@ -187,6 +196,44 @@ fn exchange_steps(work: &str, attempts: &[&Attempt]) -> ExchangeSteps {
             );
             ExchangeSteps::Unavailable
         }
+    }
+}
+
+/// Whether Coda is writing the running work's answer: the work's latest
+/// attempt still runs, and [`writing_after`] says so over that attempt's
+/// saved events.
+fn writing(attempts: &[&Attempt]) -> bool {
+    let Some(attempt) = attempts.last() else {
+        return false;
+    };
+    let writing = attempt
+        .events
+        .iter()
+        .fold(false, |writing, event| writing_after(writing, &event.kind));
+    writing && attempt.status == AttemptStatus::Active
+}
+
+/// Whether Coda is writing the answer after `event`, when it was `writing`
+/// before it. Writing begins when a request begins the finish. It ends when
+/// the next request starts, or when the request fails, is retried, is blocked
+/// or its context is refused. The finish's return does not end it: its answer
+/// is saved next, which ends the work, and a refused finish ends it when the
+/// next request starts. The snapshot and the listener that tells an open page
+/// both step by this rule.
+pub(super) fn writing_after(writing: bool, event: &EventKind) -> bool {
+    match event {
+        EventKind::CallBegan { name } => writing || crate::physician_chat::hands_in_answer(name),
+        EventKind::ProviderStarted { .. }
+        | EventKind::ProviderFailed { .. }
+        | EventKind::TransportRetry { .. }
+        | EventKind::ProviderBlocked { .. }
+        | EventKind::ContextRejected => false,
+        EventKind::ProviderReturned(_)
+        | EventKind::ProviderObservation { .. }
+        | EventKind::ToolStarted(_)
+        | EventKind::ToolReturned { .. }
+        | EventKind::Candidate { .. }
+        | EventKind::WindowOpened { .. } => writing,
     }
 }
 
@@ -237,11 +284,16 @@ mod tests {
     use physician_wire::{AnswerState, ExchangeSteps, Found, Step, StepState, WorkResumeTarget};
 
     use super::super::{
-        AssistantKind, Attempt, AttemptStatus, Conversation, Message, MessageRole, WorkStatus,
-        reply_id,
+        AssistantKind, Attempt, AttemptStatus, Conversation, Message, MessageRole, SavedAt,
+        WorkStatus, reply_id,
     };
 
-    fn ask(conversation: &mut Conversation, work: &str, text: &str) {
+    /// When [`ended`] saved its physician message and its answer.
+    const ASKED: i64 = 1_794_600_000;
+    const ANSWERED: i64 = ASKED + 42;
+
+    /// The physician's `text` on `work`, saved `at` the database clock's seconds.
+    fn ask(conversation: &mut Conversation, work: &str, text: &str, at: i64) {
         conversation.messages.push(Message {
             role: MessageRole::User {
                 id: format!("key-{text}"),
@@ -249,10 +301,13 @@ mod tests {
                 revision: 1,
             },
             text: text.into(),
+            saved_at: SavedAt(at),
         });
     }
 
-    fn answer(conversation: &mut Conversation, attempt: &str, partial: bool, text: &str) {
+    /// Coda's `text` from `attempt`, kept by a limit when `partial`, saved `at` the database
+    /// clock's seconds.
+    fn answer(conversation: &mut Conversation, attempt: &str, partial: bool, text: &str, at: i64) {
         let kind = if partial {
             AssistantKind::Kept
         } else {
@@ -271,6 +326,7 @@ mod tests {
                 kind,
             },
             text: text.into(),
+            saved_at: SavedAt(at),
         });
     }
 
@@ -301,7 +357,7 @@ mod tests {
         let mut conversation = Conversation::new(
             serde_json::from_value(serde_json::json!("fixture-package")).unwrap(),
         );
-        ask(&mut conversation, "work-1", "Hello");
+        ask(&mut conversation, "work-1", "Hello", ASKED);
         let mut runs = RunHistory::default();
         runs.start("run-1".into()).unwrap();
         runs.end(outcome).unwrap();
@@ -315,10 +371,18 @@ mod tests {
             vec![],
         )];
         match outcome {
-            RunOutcome::Completed => answer(&mut conversation, "attempt-1", false, "Done."),
+            RunOutcome::Completed => {
+                answer(&mut conversation, "attempt-1", false, "Done.", ANSWERED);
+            }
             RunOutcome::Held {
                 reason: HoldReason::Limit,
-            } => answer(&mut conversation, "attempt-1", true, "The saved part."),
+            } => answer(
+                &mut conversation,
+                "attempt-1",
+                true,
+                "The saved part.",
+                ANSWERED,
+            ),
             RunOutcome::Held { .. } | RunOutcome::Failed | RunOutcome::Cancelled => {}
         }
         conversation
@@ -338,7 +402,7 @@ mod tests {
         ] {
             let current = ended(outcome);
             let mut replaced = current.clone();
-            ask(&mut replaced, "work-2", "Something else");
+            ask(&mut replaced, "work-2", "Something else", ANSWERED + 60);
             let mut runs = RunHistory::default();
             runs.start("run-2".into()).unwrap();
             replaced.runs.insert("work-2".into(), runs);
@@ -348,6 +412,7 @@ mod tests {
                 RunOutcome::Completed => AnswerState::Finished {
                     response_id: physician_wire::ResponseId(reply_id("attempt-1")),
                     attempt_id: physician_wire::AttemptId("attempt-1".into()),
+                    finished_at: physician_wire::SavedAt(ANSWERED),
                     text: "Done.".into(),
                     feedback: None,
                 },
@@ -441,7 +506,13 @@ mod tests {
             AttemptStatus::Completed,
             vec![],
         ));
-        answer(&mut conversation, "attempt-3", false, "The rest.");
+        answer(
+            &mut conversation,
+            "attempt-3",
+            false,
+            "The rest.",
+            ANSWERED + 120,
+        );
         let transcript = conversation.transcript(|_| None).unwrap();
         assert_eq!(transcript[0].kept, ["The saved part."]);
         assert_eq!(
@@ -449,6 +520,7 @@ mod tests {
             AnswerState::Finished {
                 response_id: physician_wire::ResponseId(reply_id("attempt-3")),
                 attempt_id: physician_wire::AttemptId("attempt-3".into()),
+                finished_at: physician_wire::SavedAt(ANSWERED + 120),
                 text: "The rest.".into(),
                 feedback: None,
             }
@@ -517,6 +589,222 @@ mod tests {
         );
     }
 
+    /// One saved event, as `attempt-1` saves it.
+    fn saved(kind: EventKind) -> Event {
+        Event {
+            attempt_id: "attempt-1".into(),
+            sequence: 1,
+            ordinal: 0,
+            kind,
+        }
+    }
+
+    /// What the snapshot says of writing the answer when `attempt-1` has `status` and saved
+    /// `events`, after an earlier attempt that began the finish was interrupted.
+    fn snapshot_writing(status: AttemptStatus, events: &[EventKind]) -> bool {
+        let mut conversation = ended(RunOutcome::Completed);
+        conversation.messages.truncate(1);
+        let mut runs = RunHistory::default();
+        runs.start("run-1".into()).unwrap();
+        conversation.runs.insert("work-1".into(), runs);
+        conversation.status = WorkStatus::Active;
+        conversation.attempts = vec![
+            attempt(
+                "work-1",
+                "attempt-0",
+                AttemptStatus::Interrupted,
+                vec![
+                    writing_request(),
+                    EventKind::CallBegan {
+                        name: crate::physician_sources::citations::FINISH_TOOL.into(),
+                    },
+                ],
+            ),
+            attempt("work-1", "attempt-1", status, events.to_vec()),
+        ];
+        match &conversation.transcript(|_| None).unwrap()[0].answer {
+            AnswerState::Working { writing, .. } => *writing,
+            other => panic!("a working answer: {other:?}"),
+        }
+    }
+
+    fn writing_request() -> EventKind {
+        EventKind::ProviderStarted {
+            dispatched_at_unix_ms: 1,
+            context: Default::default(),
+            request: harness::engine::SavedRequest {
+                added: vec![],
+                items: vec![],
+            },
+        }
+    }
+
+    /// The event lists both readers of writing the answer are held to: the snapshot, and the
+    /// listener that tells an open page. Each row is its case, its attempt's status, its saved
+    /// events, and whether the snapshot then says Coda is writing.
+    fn writing_cases() -> Vec<(&'static str, AttemptStatus, Vec<EventKind>, bool)> {
+        let started = writing_request;
+        let began = |name: &str| EventKind::CallBegan { name: name.into() };
+        let finish = crate::physician_sources::citations::FINISH_TOOL;
+        let search = crate::physician_sources::SEARCH_TOOL;
+        let returned = || {
+            EventKind::ProviderReturned(harness::engine::Turn {
+                items: vec![],
+                receipt: serde_json::Value::Null,
+                usage: Default::default(),
+            })
+        };
+        let failed = || EventKind::ProviderFailed {
+            reason: "the stream broke".into(),
+        };
+        let active = AttemptStatus::Active;
+        vec![
+            ("nothing sent yet", active, vec![], false),
+            (
+                "a search began",
+                active,
+                vec![started(), began(search)],
+                false,
+            ),
+            (
+                "the finish began",
+                active,
+                vec![started(), began(finish)],
+                true,
+            ),
+            (
+                "the finish was announced twice in one request",
+                active,
+                vec![started(), began(finish), began(finish)],
+                true,
+            ),
+            (
+                "a search, then the finish, began",
+                active,
+                vec![started(), began(search), began(finish)],
+                true,
+            ),
+            (
+                "the finish returned and its answer is not saved yet",
+                active,
+                vec![started(), began(finish), returned()],
+                true,
+            ),
+            (
+                "the finish was refused and Coda is asked again",
+                active,
+                vec![started(), began(finish), returned(), started()],
+                false,
+            ),
+            (
+                "the finish began again after a refusal",
+                active,
+                vec![
+                    started(),
+                    began(finish),
+                    returned(),
+                    started(),
+                    began(finish),
+                ],
+                true,
+            ),
+            (
+                "the request failed",
+                active,
+                vec![started(), began(finish), failed()],
+                false,
+            ),
+            (
+                "the attempt ended",
+                AttemptStatus::Interrupted,
+                vec![started(), began(finish)],
+                false,
+            ),
+        ]
+    }
+
+    /// The working answer says Coda is writing it from the moment the latest request began the
+    /// finish, through that request's return, until the next request starts or the request
+    /// fails, and only while its attempt runs. A call that is not the finish never makes it
+    /// writing. A refused finish ends it when the next request starts; a saved answer ends the
+    /// work.
+    #[test]
+    fn the_working_answer_is_writing_from_the_finish_until_the_next_request() {
+        for (case, status, events, expected) in writing_cases() {
+            assert_eq!(snapshot_writing(status, &events), expected, "{case}");
+        }
+    }
+
+    /// An open page is told of writing the answer exactly when the snapshot's value changes: over
+    /// the same event lists, each saved event tells the listener if and only if the snapshot read
+    /// after it says otherwise than the snapshot read before it.
+    #[test]
+    fn the_page_is_told_exactly_when_the_snapshot_says_otherwise_of_writing() {
+        for (case, _, events, _) in writing_cases() {
+            let mut shown = super::super::ShownSteps::new(());
+            for (at, kind) in events.iter().enumerate() {
+                let before = snapshot_writing(AttemptStatus::Active, &events[..at]);
+                let after = snapshot_writing(AttemptStatus::Active, &events[..=at]);
+                assert_eq!(
+                    shown.shown(&saved(kind.clone())),
+                    before != after,
+                    "{case}, event {at}"
+                );
+            }
+        }
+    }
+
+    /// Each physician message carries when the server saved it, and a finished answer when the
+    /// server saved that answer: its own message's time, never the time of a part a limit kept
+    /// before it or of the message that asked. An ending that is not a finished answer carries no
+    /// time.
+    #[test]
+    fn the_snapshot_carries_when_each_message_and_finished_answer_were_saved() {
+        let conversation = two_finished_exchanges(vec![]);
+        let transcript = conversation.transcript(|_| None).unwrap();
+        let times: Vec<_> = transcript
+            .iter()
+            .map(|exchange| {
+                let AnswerState::Finished { finished_at, .. } = &exchange.answer else {
+                    panic!("a finished answer: {:?}", exchange.answer)
+                };
+                let asked: Vec<_> = exchange
+                    .messages
+                    .iter()
+                    .map(|message| message.saved_at)
+                    .collect();
+                (asked, *finished_at)
+            })
+            .collect();
+        let at = physician_wire::SavedAt;
+        assert_eq!(
+            times,
+            [
+                (vec![at(ASKED)], at(ANSWERED)),
+                (vec![at(ANSWERED + 60)], at(ANSWERED + 90)),
+            ]
+        );
+        assert_eq!(
+            serde_json::to_value(&transcript[1].messages[0]).unwrap()["saved_at"],
+            serde_json::json!(ANSWERED + 60),
+            "the wire carries the time as a number of seconds"
+        );
+
+        let stopped = ended(RunOutcome::Held {
+            reason: HoldReason::Stopped,
+        })
+        .transcript(|_| None)
+        .unwrap();
+        assert_eq!(stopped[0].messages[0].saved_at, at(ASKED));
+        let ending = serde_json::to_value(&stopped[0].answer).unwrap();
+        assert_eq!(
+            ending,
+            serde_json::json!({"state": "stopped", "resume": {
+                "work_item_id": "work-1", "expected_run_id": "run-1"}}),
+            "a stopped answer carries no time"
+        );
+    }
+
     fn read(steps: &ExchangeSteps) -> &[Step] {
         match steps {
             ExchangeSteps::Read(steps) => steps,
@@ -538,8 +826,14 @@ mod tests {
         let mut conversation = ended(RunOutcome::Completed);
         conversation.attempts[0] =
             attempt("work-1", "attempt-1", AttemptStatus::Completed, unreadable);
-        answer(&mut conversation, "attempt-0", true, "Kept before the end.");
-        ask(&mut conversation, "work-2", "And potassium?");
+        answer(
+            &mut conversation,
+            "attempt-0",
+            true,
+            "Kept before the end.",
+            ANSWERED - 20,
+        );
+        ask(&mut conversation, "work-2", "And potassium?", ANSWERED + 60);
         let mut runs = RunHistory::default();
         runs.start("run-2".into()).unwrap();
         runs.end(RunOutcome::Completed).unwrap();
@@ -557,7 +851,13 @@ mod tests {
                 },
             ],
         ));
-        answer(&mut conversation, "attempt-2", false, "Potassium is 4.1.");
+        answer(
+            &mut conversation,
+            "attempt-2",
+            false,
+            "Potassium is 4.1.",
+            ANSWERED + 90,
+        );
         conversation
     }
 
@@ -595,6 +895,7 @@ mod tests {
                 AnswerState::Finished {
                     response_id: physician_wire::ResponseId(reply_id("attempt-1")),
                     attempt_id: physician_wire::AttemptId("attempt-1".into()),
+                    finished_at: physician_wire::SavedAt(ANSWERED),
                     text: "Done.".into(),
                     feedback: None,
                 },
@@ -604,7 +905,8 @@ mod tests {
                 read(&transcript[1].steps),
                 [Step::SearchedChart {
                     query: "sodium".into(),
-                    record_type: None,
+                    group: None,
+                    page: physician_wire::SearchPage::First,
                     state: StepState::Returned {
                         result: Found {
                             records: 1,

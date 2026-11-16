@@ -254,7 +254,7 @@ mod tests {
     use super::*;
 
     use physician_wire::{
-        AttemptId, ChatSnapshot, Exchange, MessageKey, PhysicianMessage, ResponseId,
+        AttemptId, ChatSnapshot, Exchange, MessageKey, PhysicianMessage, ResponseId, SavedAt,
         SnapshotFeedback, WorkItemId, WorkResumeTarget, WorkStopTarget,
     };
 
@@ -267,6 +267,7 @@ mod tests {
                     messages: vec![PhysicianMessage {
                         id: MessageKey("k".into()),
                         text: "Hi".into(),
+                        saved_at: SavedAt(1_794_600_000),
                     }],
                     steps: physician_wire::ExchangeSteps::Read(vec![]),
                     kept: vec![],
@@ -314,6 +315,7 @@ mod tests {
             state(AnswerState::Finished {
                 response_id: ResponseId("a-1:reply".into()),
                 attempt_id: AttemptId("a-1".into()),
+                finished_at: SavedAt(1_794_600_060),
                 text: "Hello".into(),
                 feedback: None,
             }),
@@ -326,7 +328,8 @@ mod tests {
             state(AnswerState::Working {
                 stop: WorkStopTarget {
                     work_item_id: WorkItemId("w-1".into())
-                }
+                },
+                writing: false,
             }),
             TurnState::Writing
         );

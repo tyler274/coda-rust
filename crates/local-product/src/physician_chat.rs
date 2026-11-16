@@ -264,6 +264,12 @@ pub fn shows(call: &Invocation) -> bool {
     matches!(step(call, CallEnding::Running), Ok(Some(_)))
 }
 
+/// Whether a call named `name` hands in the answer: the finish, which the
+/// physician reads as the answer being written, never as a step.
+pub fn hands_in_answer(name: &str) -> bool {
+    matches!(ChatTool::named(name), Some(ChatTool::Finish))
+}
+
 /// Coda looked at earlier messages of the conversation; it may have found nothing. A refused
 /// look is a failed step.
 fn conversation_step(ending: CallEnding<'_>) -> Result<Step, StepError> {

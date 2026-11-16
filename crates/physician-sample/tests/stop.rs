@@ -136,7 +136,7 @@ async fn stop_holds_across_restart_and_again_after_resume_until_a_newer_message(
             tails(&site, &worker)
         )
     });
-    let Some(AnswerState::Working { stop: target }) = latest_answer(&writing) else {
+    let Some(AnswerState::Working { stop: target, .. }) = latest_answer(&writing) else {
         unreachable!("waited for a working answer")
     };
     let work = target.work_item_id.0;

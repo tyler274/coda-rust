@@ -169,6 +169,22 @@ pub struct Message {
     pub role: MessageRole,
     /// Exact authored text.
     pub text: String,
+    /// When the server saved it.
+    pub saved_at: SavedAt,
+}
+
+/// When the server saved a message: the database clock's reading, in whole
+/// seconds since the Unix epoch, taken in the transaction that saved it. Only
+/// this runtime reads that clock, so only it makes one.
+#[derive(Clone, Copy, Debug, Serialize, Deserialize, PartialEq, Eq, PartialOrd, Ord)]
+#[serde(transparent)]
+pub struct SavedAt(i64);
+
+impl SavedAt {
+    /// Seconds since the Unix epoch.
+    pub fn seconds(self) -> i64 {
+        self.0
+    }
 }
 
 /// The durable name of one of Coda's published replies: the id its
@@ -1062,6 +1078,7 @@ impl Store {
                 revision: state.revision,
             },
             text: input.text.clone(),
+            saved_at: SavedAt(now),
         });
         // New input steers ordinary work. After Stop it is the physician
         // sending something else, which releases the hold and drops Resume.
@@ -1462,6 +1479,7 @@ impl Store {
                     kind: AssistantKind::Kept,
                 },
                 text: answer,
+                saved_at: SavedAt(now),
             });
         }
         Ok(Self::save(tx, &claim.scope, &state).await?)
@@ -1535,6 +1553,7 @@ impl Store {
                 kind: AssistantKind::Finished(finished),
             },
             text,
+            saved_at: SavedAt(now),
         });
         Self::save(tx, &claim.scope, &state).await?;
         Ok(Finish::Committed)
@@ -1867,14 +1886,16 @@ pub struct PhysicianHost<A, S = ()> {
     pub shown_steps: ShownSteps<S>,
 }
 
-/// Hears that a step the physician sees was saved, so an open page can read
-/// it while the run still works. The host tells its runner because only the
-/// host sees each event as it is saved: the shared loop hands events to
-/// [`Product::persist`], and the runner never sees them.
+/// Hears that a step the physician sees was saved, or that Coda began or
+/// stopped writing the answer, so an open page can read it while the run still
+/// works. The host tells its runner because only the host sees each event as
+/// it is saved: the shared loop hands events to [`Product::persist`], and the
+/// runner never sees them.
 pub trait ShownStepSaved: Send {
-    /// A shown step started or returned, and its event is saved. It returns
-    /// nothing and cannot wait, so hearing of a step never fails or delays
-    /// the run; a listener that must do slow work hands it off.
+    /// A shown step started or returned, or writing the answer began or
+    /// stopped, and its event is saved. It returns nothing and cannot wait, so
+    /// hearing of it never fails or delays the run; a listener that must do
+    /// slow work hands it off.
     fn shown_step_saved(&mut self, scope: &Scope);
 }
 
@@ -1883,38 +1904,57 @@ impl ShownStepSaved for () {
     fn shown_step_saved(&mut self, _scope: &Scope) {}
 }
 
-/// Which saved events are shown steps, and who hears of them. A call's
-/// result names only its call, so this remembers the shown calls this
-/// attempt started. The physician host saves no result for a call an
-/// earlier attempt started.
+/// Which saved events change what the page shows of the running work, and
+/// who hears of them. A call's result names only its call, so this remembers
+/// the shown calls this attempt started. The physician host saves no result
+/// for a call an earlier attempt started.
 pub struct ShownSteps<S> {
     listener: S,
     started: std::collections::HashSet<String>,
+    /// Whether Coda is writing the answer, as [`transcript::writing_after`]
+    /// steps it over this attempt's events.
+    writing: bool,
 }
 
 impl<S: ShownStepSaved> ShownSteps<S> {
-    /// Tells `listener` of each shown step this attempt saves.
+    /// Tells `listener` of each shown step this attempt saves, and of each
+    /// start and end of writing the answer.
     pub fn new(listener: S) -> Self {
         Self {
             listener,
             started: Default::default(),
+            writing: false,
         }
     }
 
     /// Whether `event` starts or returns a call that shows as a step, by the
-    /// rule the transcript applies.
+    /// rule the transcript applies, or changes whether Coda is writing the
+    /// answer, by [`transcript::writing_after`], the rule the snapshot reads.
     fn shown(&mut self, event: &Event) -> bool {
-        if let engine::EventKind::ToolStarted(call) = &event.kind {
-            if !crate::physician_chat::shows(call) {
-                return false;
+        use engine::EventKind;
+        let writing = transcript::writing_after(self.writing, &event.kind);
+        let writing_changed = std::mem::replace(&mut self.writing, writing) != writing;
+        let call_shown = match &event.kind {
+            EventKind::ToolStarted(call) => {
+                let shows = crate::physician_chat::shows(call);
+                if shows {
+                    self.started.insert(call.id.clone());
+                }
+                shows
             }
-            self.started.insert(call.id.clone());
-            return true;
-        }
-        if let engine::EventKind::ToolReturned { call_id, .. } = &event.kind {
-            return self.started.contains(call_id);
-        }
-        false
+            EventKind::ToolReturned { call_id, .. } => self.started.contains(call_id),
+            EventKind::CallBegan { .. }
+            | EventKind::ProviderStarted { .. }
+            | EventKind::ProviderReturned(_)
+            | EventKind::ProviderFailed { .. }
+            | EventKind::TransportRetry { .. }
+            | EventKind::ProviderBlocked { .. }
+            | EventKind::ContextRejected
+            | EventKind::ProviderObservation { .. }
+            | EventKind::Candidate { .. }
+            | EventKind::WindowOpened { .. } => false,
+        };
+        writing_changed || call_shown
     }
 }
 

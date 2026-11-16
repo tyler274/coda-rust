@@ -154,7 +154,17 @@ async fn cross_instance_turn_is_visible_on_the_other_sse_stream_and_valkey_resta
     assert_eq!(status, 200, "{body}\n{}", site_a.tail());
     assert_eq!(body["outcome"], "accepted", "{body}");
 
-    sse.wait_for("event: workspace_changed", Duration::from_secs(20))
+    // The worker announces each change it saves, such as that Coda began writing the answer,
+    // and then the reply. Instance B is read after each announcement until it shows the reply.
+    let deadline = tokio::time::Instant::now() + Duration::from_secs(20);
+    let mut heard = 0;
+    let texts = loop {
+        heard += 1;
+        sse.wait_for_nth(
+            "event: workspace_changed",
+            heard,
+            deadline.saturating_duration_since(tokio::time::Instant::now()),
+        )
         .await
         .unwrap_or_else(|error| {
             panic!(
@@ -164,6 +174,18 @@ async fn cross_instance_turn_is_visible_on_the_other_sse_stream_and_valkey_resta
                 worker.tail()
             )
         });
+        let (status, snapshot) = get_json(
+            &site_b_listen,
+            &format!("/patient-workspaces/{workspace}/chats/{chat}/snapshot"),
+            &session,
+        )
+        .await;
+        assert_eq!(status, 200, "{snapshot}\n{}", site_b.tail());
+        let texts = support::chat_texts(&snapshot["snapshot"]);
+        if texts.iter().any(|text| text == support::FIXED_TEXT) {
+            break texts;
+        }
+    };
     assert!(
         sse.buffer.contains(workspace),
         "workspace missing from {}",
@@ -174,22 +196,9 @@ async fn cross_instance_turn_is_visible_on_the_other_sse_stream_and_valkey_resta
         "resync arrived before Valkey restarted: {}",
         sse.buffer
     );
-
-    let (status, snapshot) = get_json(
-        &site_b_listen,
-        &format!("/patient-workspaces/{workspace}/chats/{chat}/snapshot"),
-        &session,
-    )
-    .await;
-    assert_eq!(status, 200, "{snapshot}\n{}", site_b.tail());
-    let texts = support::chat_texts(&snapshot["snapshot"]);
     assert!(
         texts.iter().any(|text| text == "Hello from instance A"),
         "instance B snapshot missing the turn: {texts:?}"
-    );
-    assert!(
-        texts.iter().any(|text| text == support::FIXED_TEXT),
-        "instance B snapshot missing the worker reply: {texts:?}"
     );
 
     valkey.restart().await;

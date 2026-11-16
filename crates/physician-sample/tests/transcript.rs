@@ -9,21 +9,28 @@
 use std::path::PathBuf;
 use std::time::{Duration, Instant};
 
-use local_product::physician_sources::{RecordDate, SourceRevision};
+use local_product::physician_sources::adapter::{file_fhir_record, file_json_record};
 use local_product::runtime::Store;
 use physician_wire::{
-    AnswerState, Exchange, ExchangeSteps, Found, RecordRead, Step, StepState, WorkResumeTarget,
+    AnswerState, Exchange, ExchangeSteps, Found, RecordAbout, RecordGroup, RecordRead, SearchPage,
+    SourceVersion, Step, StepState, WorkResumeTarget,
 };
 use sea_orm::{ConnectionTrait, DatabaseTransaction, TransactionTrait};
 use serde_json::{Value, json};
 
+#[allow(dead_code)]
+#[path = "../../local-product/tests/support/hint.rs"]
+mod hint;
+#[allow(dead_code)]
+#[path = "../../local-product/tests/support/northwind.rs"]
+mod northwind;
 #[path = "scale/mod.rs"]
 mod support;
 
-/// The chart record the scripted provider searches for and reads. Its
-/// marker word matches no fixture record, so a search finds only it.
-const SODIUM: &str =
-    r#"{"code":"2951-2","name":"sodium","value":139,"unit":"mmol/L","marker":"transcriptproof"}"#;
+/// The chart record the scripted provider searches for and reads, a FHIR
+/// result filed through the FHIR adapter. Its marker word matches no fixture
+/// record, so a search finds only it.
+const SODIUM: &str = r#"{"resourceType":"Observation","id":"sodium","status":"final","category":[{"coding":[{"system":"http://terminology.hl7.org/CodeSystem/observation-category","code":"laboratory"}]}],"code":{"text":"Sodium","coding":[{"code":"2951-2"}]},"valueQuantity":{"value":139,"unit":"mmol/L"},"effectiveDateTime":"2026-10-01","note":[{"text":"transcriptproof"}]}"#;
 /// The search text that finds only [`SODIUM`].
 const QUERY: &str = "transcriptproof";
 
@@ -66,26 +73,12 @@ impl Stack {
         std::fs::create_dir_all(&home.0).expect("home");
         let valkey = support::Valkey::start().await;
         let stub = support::ResponsesStub::start(&home.0, 0, delay_ms, "[]").await;
-        let revision = local_product::sha256_hex(SODIUM.as_bytes());
+        let sodium = sodium();
+        let revision = sodium.revision.clone();
         Store::connect(&database.url)
             .await
             .expect("runtime store")
-            .record_source(&SourceRevision {
-                workspace: workspace().into(),
-                source_id: "synthetic-charts".into(),
-                candidate_id: "Observation/sodium".into(),
-                revision: revision.clone(),
-                record_type: "Observation".into(),
-                dates: vec![RecordDate {
-                    name: "effective".into(),
-                    value: "2026-10-01".into(),
-                }],
-                content: SODIUM.into(),
-                sha256: revision.clone(),
-                readable_parts: vec![],
-                provenance: json!({"native_record": "Observation/sodium"}),
-                envelope: None,
-            })
+            .record_source(&sodium)
             .await
             .expect("chart record");
         let rounds = rounds.to_string().replace("{revision}", &revision);
@@ -186,6 +179,13 @@ impl Stack {
         body["snapshot"].clone()
     }
 
+    /// The physician's Today as the page reads it.
+    async fn today(&self) -> Value {
+        let (status, body) = support::get_json(&self.host(), "/today", &self.session).await;
+        assert_eq!(status, 200, "{body}\n{}", self.logs());
+        body
+    }
+
     async fn transcript(&self) -> Vec<Exchange> {
         support::chat(&self.snapshot().await).transcript
     }
@@ -241,6 +241,12 @@ impl Stack {
     }
 }
 
+/// [`SODIUM`] filed through the FHIR adapter into the chart.
+fn sodium() -> local_product::physician_sources::SourceRevision {
+    file_fhir_record(workspace(), "synthetic-charts", SODIUM, None)
+        .expect("the adapter files the record")
+}
+
 fn workspace() -> &'static str {
     physician_sample::WORKSPACE_IDS[0]
 }
@@ -252,7 +258,7 @@ fn search_call() -> Value {
 
 fn read_call(revision: &str) -> Value {
     json!({"name": "read_patient_sources", "arguments": {
-        "references": [{"candidate_id": "Observation/sodium", "revision": revision, "cursor": null}],
+        "references": [{"candidate_id": "synthetic-charts/Observation/sodium", "revision": revision, "cursor": null}],
         "max_result_bytes": 4096}})
 }
 
@@ -286,11 +292,18 @@ fn read_state(step: &Step) -> Option<&StepState<Vec<RecordRead>>> {
 fn sodium_read() -> StepState<Vec<RecordRead>> {
     StepState::Returned {
         result: vec![RecordRead::Whole {
-            record_type: "Observation".into(),
-            dates: vec![physician_wire::RecordDate {
-                name: "effective".into(),
-                value: "2026-10-01".into(),
-            }],
+            version: SourceVersion {
+                candidate_id: "synthetic-charts/Observation/sodium".into(),
+                revision: sodium().revision,
+            },
+            about: RecordAbout {
+                group: Some(RecordGroup::Results),
+                title: Some("Sodium".into()),
+                dates: vec![physician_wire::RecordDate {
+                    role: Some(physician_wire::DateRole::Effective),
+                    value: "2026-10-01".into(),
+                }],
+            },
         }],
     }
 }
@@ -299,8 +312,8 @@ fn sodium_read() -> StepState<Vec<RecordRead>> {
 /// search shows as running while it waits, and the open page hears of it
 /// while the answer is still being written. It ends, the page hears again,
 /// and the read that follows shows as running after it. When the answer is
-/// published the steps are unchanged, and they read the same after the site
-/// and the worker restart.
+/// published the steps are unchanged, Today reads as it did before the
+/// message, and the steps read the same after the site and the worker restart.
 #[tokio::test]
 async fn steps_show_live_in_start_order_and_stay_with_the_answer() {
     let rounds = json!([
@@ -315,6 +328,7 @@ async fn steps_show_live_in_start_order_and_stay_with_the_answer() {
         return;
     };
     let mut events = stack.events().await;
+    let today_before = stack.today().await;
     let hold = stack.hold_chart().await;
     stack.send("What is her latest sodium?").await;
 
@@ -339,7 +353,8 @@ async fn steps_show_live_in_start_order_and_stay_with_the_answer() {
         shown(exchange)[0],
         Step::SearchedChart {
             query: QUERY.into(),
-            record_type: None,
+            group: None,
+            page: SearchPage::First,
             state: StepState::Running,
         }
     );
@@ -435,6 +450,11 @@ async fn steps_show_live_in_start_order_and_stay_with_the_answer() {
     assert_eq!(shown(exchange).len(), 2, "{exchange:#?}");
     assert_eq!(shown(exchange)[0], shown(&searched[0])[0]);
     assert_eq!(read_state(&shown(exchange)[1]), Some(&sodium_read()));
+    assert_eq!(
+        stack.today().await,
+        today_before,
+        "the exchange, its chart search and its read changed Today"
+    );
 
     stack.worker.restart();
     support::wait_ready(&mut stack.worker, stack.worker_port).await;
@@ -614,6 +634,142 @@ async fn a_read_cut_by_a_restart_reads_as_interrupted_and_the_answer_continues()
     assert_eq!(
         read_state(&shown(&answered[0])[0]),
         Some(&StepState::Interrupted),
+        "{answered:#?}"
+    );
+}
+
+/// A read of records from sources that are not FHIR names each by what that source's adapter
+/// filed: its group, its whole title and its dates as the source wrote them. The records are
+/// stored as each source's delivery, as a connected source's would be: the made-up portal's
+/// intake sheet, filed through its table, and a social history entry and a visit note captured
+/// from the Hint EHR and filed by the Hint filer.
+#[tokio::test]
+async fn a_read_names_records_from_sources_that_are_not_fhir() {
+    let Some(stack) = Stack::start("second_source_step", 0, &json!([])).await else {
+        return;
+    };
+    let store = Store::connect(&stack.database.url)
+        .await
+        .expect("runtime store");
+    let patient = store
+        .source_pulls(&[workspace().to_owned()])
+        .await
+        .expect("the chart's pulls")
+        .remove(workspace())
+        .and_then(|pulls| pulls.into_iter().next())
+        .expect("the chart patient's pull")
+        .patient;
+    let portal = &northwind::NORTHWIND_PORTAL_TABLE;
+    let sheet = file_json_record(
+        portal,
+        workspace(),
+        portal.source_id,
+        northwind::INTAKE_SHEET,
+        None,
+    )
+    .expect("the adapter files the record");
+    store
+        .record_chart_with_receipt(
+            workspace(),
+            std::slice::from_ref(&sheet),
+            &local_product::runtime::sources::SourcePull {
+                source_id: portal.source_id.to_owned(),
+                source_label: portal.source_id.to_owned(),
+                patient,
+                pulled_at: Some(1_787_846_400),
+            },
+        )
+        .await
+        .expect("the pull");
+    let captured = hint::filed(workspace());
+    hint::deliver(
+        &store,
+        physician_sample::STAGING_PRACTICE_ID,
+        workspace(),
+        &captured,
+    )
+    .await;
+    let (mut references, mut versions) = (Vec::new(), Vec::new());
+    for records in [
+        vec![sheet],
+        vec![
+            captured.record(hint::SOCIAL_HISTORY).clone(),
+            captured.record(hint::NOTE).clone(),
+        ],
+    ] {
+        references.extend(records.iter().map(|record| {
+            json!({"candidate_id": record.candidate_id, "revision": record.revision, "cursor": null})
+        }));
+        versions.extend(records.iter().map(|record| SourceVersion {
+            candidate_id: record.candidate_id.clone(),
+            revision: record.revision.clone(),
+        }));
+    }
+    stack
+        .stub
+        .tool_rounds(&json!([[{"name": "read_patient_sources", "arguments": {
+        "references": references, "max_result_bytes": 16384}}]]));
+    stack
+        .send("What did her intake sheet, her social history and her visit note say?")
+        .await;
+    let answered = stack
+        .wait("the answer never arrived", |transcript| {
+            matches!(
+                transcript.last().map(|exchange| &exchange.answer),
+                Some(AnswerState::Finished { .. })
+            )
+        })
+        .await;
+    let about = |version: &SourceVersion,
+                 group,
+                 title: &str,
+                 dates: &[(physician_wire::DateRole, &str)]| RecordRead::Whole {
+        version: version.clone(),
+        about: RecordAbout {
+            group: Some(group),
+            title: Some(title.into()),
+            dates: dates
+                .iter()
+                .map(|(role, value)| physician_wire::RecordDate {
+                    role: Some(*role),
+                    value: (*value).into(),
+                })
+                .collect(),
+        },
+    };
+    assert_eq!(
+        shown(last(&answered)),
+        [Step::ReadRecords {
+            requested: 3,
+            state: StepState::Returned {
+                result: vec![
+                    about(
+                        &versions[0],
+                        RecordGroup::Forms,
+                        "Pre-visit symptom check, cardiology clinic, after emergency department visit, with home medication list",
+                        &[(
+                            physician_wire::DateRole::Recorded,
+                            "2026-03-22T08:45:00-05:00"
+                        )],
+                    ),
+                    about(
+                        &versions[1],
+                        RecordGroup::History,
+                        "Tobacco use",
+                        &[(physician_wire::DateRole::Start, "2020")],
+                    ),
+                    about(
+                        &versions[2],
+                        RecordGroup::Notes,
+                        "Annual wellness visit",
+                        &[
+                            (physician_wire::DateRole::Occurred, "2026-10-12"),
+                            (physician_wire::DateRole::Recorded, "2026-10-12T17:00:00Z"),
+                        ],
+                    ),
+                ],
+            },
+        }],
         "{answered:#?}"
     );
 }

@@ -4,10 +4,9 @@
 
 use async_trait::async_trait;
 use base64::Engine as _;
-use local_product::physician_sources::adapter::{
-    AdapterRow, AdapterTable, AttachmentRule, CategoryMatch, UnmappedRecordRule, ValueExtractor,
-    file_fhir_record, file_json_record,
-};
+use harness::engine::results::ToolResult;
+use local_product::physician_chat::CallEnding;
+use local_product::physician_sources::adapter::{file_fhir_record, file_json_record};
 use local_product::physician_sources::{
     Bucket, ChartRequest, ChartScope, DateRole, FiledDate, MedicalRecordNumber, PatientSource,
     READ_TOOL, RecordVersion, SEARCH_TOOL, SourceAdapterError, SourcePatient, SourcePullOutput,
@@ -15,87 +14,17 @@ use local_product::physician_sources::{
 };
 use local_product::runtime::{Store, sources::SourcePull};
 use local_product::sha256_hex;
-use serde_json::{Value, json};
-
-const MEMO_ATTACHMENTS: &[AttachmentRule] = &[AttachmentRule::Base64Text {
-    items_path: "blobs",
-    label: "memo_body",
-    content_type_path: "mime",
-    data_path: "b64",
-}];
-
-const WORKFLOW_STATE: &[ValueExtractor] = &[ValueExtractor::Scalar("workflow_state")];
-
-const NORTHWIND_PORTAL_TABLE: AdapterTable = AdapterTable {
-    source_id: "northwind-portal",
-    kind_field: "entry_kind",
-    id_field: "record_id",
-    version_field: None,
-    category_extractors: &[ValueExtractor::Scalar("section")],
-    rows: &[
-        AdapterRow {
-            kind: "member_profile",
-            category: CategoryMatch::Any,
-            bucket: Bucket::Patient,
-            dates: &[(DateRole::BirthDate, "dob")],
-            status: &[],
-            codes: &[],
-            title: &[ValueExtractor::Scalar("full_name")],
-            attachments: &[],
-        },
-        AdapterRow {
-            kind: "assay_panel",
-            category: CategoryMatch::OneOf(&["chemistry", "hematology"]),
-            bucket: Bucket::Results,
-            dates: &[
-                (DateRole::Effective, "collected_at"),
-                (DateRole::Issued, "released_at"),
-            ],
-            status: WORKFLOW_STATE,
-            codes: &["assay_code"],
-            title: &[ValueExtractor::Scalar("panel_title")],
-            attachments: &[],
-        },
-        AdapterRow {
-            kind: "clinician_memo",
-            category: CategoryMatch::OneOf(&["visit_summary"]),
-            bucket: Bucket::Notes,
-            dates: &[(DateRole::Authored, "signed_on")],
-            status: WORKFLOW_STATE,
-            codes: &[],
-            title: &[ValueExtractor::Scalar("subject_line")],
-            attachments: MEMO_ATTACHMENTS,
-        },
-        AdapterRow {
-            kind: "clinician_memo",
-            category: CategoryMatch::OtherOrNone,
-            bucket: Bucket::Documents,
-            dates: &[(DateRole::Authored, "signed_on")],
-            status: WORKFLOW_STATE,
-            codes: &[],
-            title: &[ValueExtractor::Scalar("subject_line")],
-            attachments: MEMO_ATTACHMENTS,
-        },
-        AdapterRow {
-            kind: "intake_sheet",
-            category: CategoryMatch::Any,
-            bucket: Bucket::Forms,
-            dates: &[(DateRole::Recorded, "submitted_at")],
-            status: WORKFLOW_STATE,
-            codes: &[],
-            title: &[ValueExtractor::Scalar("sheet_name")],
-            attachments: &[],
-        },
-    ],
-    unmapped: UnmappedRecordRule {
-        bucket: Bucket::Other,
-        dates: &[],
-        status: WORKFLOW_STATE,
-        codes: &[],
-        title: &[ValueExtractor::Scalar("title")],
-        attachments: &[],
-    },
+use physician_wire::{
+    RecordAbout, RecordDate, RecordGroup, RecordRead, SearchPage, Step, StepState,
 };
+use serde_json::{Value, json};
+use support::northwind::{INTAKE_SHEET, NORTHWIND_PORTAL_TABLE};
+
+mod support {
+    // Each test binary uses its own part of the shared sources.
+    #[allow(dead_code)]
+    pub mod northwind;
+}
 
 struct NorthwindPortalSource {
     raw_lines: Vec<String>,
@@ -480,4 +409,197 @@ async fn distinct_sources_with_colliding_native_ids_coexist_in_workspace_and_too
             && item["provenance"]["source_id"] == "clinic-b"
             && item["content"] == source_b_obs1
     }));
+}
+
+/// Reads `reference` from `records` and returns the step the page is given
+/// for it, from the saved read output.
+fn read_step(ws: &str, records: &[SourceRevision], reference: Value) -> Step {
+    let read = ChartRequest::parse(
+        READ_TOOL,
+        &json!({"references": [reference], "max_result_bytes": 8192}),
+        ChartScope::Chat,
+    )
+    .unwrap();
+    let saved = read.run(ws, 1, records).unwrap().text().unwrap().to_owned();
+    read.step(CallEnding::Returned(&ToolResult::Original(saved)))
+        .unwrap()
+}
+
+fn whole(step: Step) -> RecordAbout {
+    match step {
+        Step::ReadRecords {
+            state: StepState::Returned { result },
+            ..
+        } => match <[RecordRead; 1]>::try_from(result) {
+            Ok([RecordRead::Whole { about, .. }]) => about,
+            other => panic!("one whole record was read: {other:?}"),
+        },
+        other => panic!("a returned read: {other:?}"),
+    }
+}
+
+fn reference(records: &[SourceRevision], candidate: &str) -> Value {
+    let record = records
+        .iter()
+        .find(|record| record.candidate_id == candidate)
+        .unwrap();
+    json!({"candidate_id": record.candidate_id, "revision": record.revision})
+}
+
+/// A read step names each record by the group, title and dates its source's
+/// adapter table filed, for FHIR and for a source with its own names alike.
+#[tokio::test]
+async fn a_read_step_names_each_record_by_what_its_adapter_filed() {
+    let ws = "pw-step-words";
+    let observation = r#"{"resourceType":"Observation","id":"a1c","status":"final","category":[{"coding":[{"system":"http://terminology.hl7.org/CodeSystem/observation-category","code":"laboratory"}]}],"code":{"text":"Hemoglobin A1c"},"effectiveDateTime":"2025-01-21"}"#;
+    let mut records = vec![file_fhir_record(ws, "hospital-a", observation, None).unwrap()];
+    let northwind = NorthwindPortalSource::sample();
+    for line in northwind
+        .raw_lines
+        .iter()
+        .map(String::as_str)
+        .chain([INTAKE_SHEET])
+    {
+        records.push(
+            file_json_record(
+                &NORTHWIND_PORTAL_TABLE,
+                ws,
+                NORTHWIND_PORTAL_TABLE.source_id,
+                line,
+                None,
+            )
+            .unwrap(),
+        );
+    }
+
+    let fhir = reference(&records, "hospital-a/Observation/a1c");
+    assert_eq!(
+        whole(read_step(ws, &records, fhir)),
+        RecordAbout {
+            group: Some(RecordGroup::Results),
+            title: Some("Hemoglobin A1c".into()),
+            dates: vec![RecordDate {
+                role: Some(physician_wire::DateRole::Effective),
+                value: "2025-01-21".into(),
+            }],
+        }
+    );
+
+    let panel = reference(&records, "northwind-portal/assay_panel/LAB-44");
+    assert_eq!(
+        whole(read_step(ws, &records, panel)),
+        RecordAbout {
+            group: Some(RecordGroup::Results),
+            title: Some("Basic chemistry panel".into()),
+            dates: vec![
+                RecordDate {
+                    role: Some(physician_wire::DateRole::Effective),
+                    value: "2026-08-18T07:15:00-05:00".into(),
+                },
+                RecordDate {
+                    role: Some(physician_wire::DateRole::Issued),
+                    value: "2026-08-18T10:02:00-05:00".into(),
+                },
+            ],
+        }
+    );
+    let memo = reference(&records, "northwind-portal/clinician_memo/MEMO-8");
+    assert_eq!(
+        whole(read_step(ws, &records, memo)),
+        RecordAbout {
+            group: Some(RecordGroup::Documents),
+            title: Some("Retinal screening".into()),
+            dates: vec![RecordDate {
+                role: Some(physician_wire::DateRole::Authored),
+                value: "2026-08-10".into(),
+            }],
+        }
+    );
+    let voucher = reference(&records, "northwind-portal/parking_voucher/VOUCH-1");
+    assert_eq!(
+        whole(read_step(ws, &records, voucher)),
+        RecordAbout {
+            group: Some(RecordGroup::Other),
+            title: None,
+            dates: Vec::new(),
+        }
+    );
+    // A long title that holds commas, and the portal's own timestamp, come whole.
+    let sheet = reference(&records, "northwind-portal/intake_sheet/FORM-9");
+    assert_eq!(
+        whole(read_step(ws, &records, sheet)),
+        RecordAbout {
+            group: Some(RecordGroup::Forms),
+            title: Some("Pre-visit symptom check, cardiology clinic, after emergency department visit, with home medication list".into()),
+            dates: vec![RecordDate {
+                role: Some(physician_wire::DateRole::Recorded),
+                value: "2026-03-22T08:45:00-05:00".into(),
+            }],
+        }
+    );
+}
+
+/// A search step names the group it was limited to, and none when it searched
+/// the whole chart.
+#[tokio::test]
+async fn a_search_step_names_the_group_it_searched() {
+    for (bucket, group) in [
+        (json!("results"), Some(RecordGroup::Results)),
+        (json!("immunizations"), Some(RecordGroup::Immunizations)),
+        (Value::Null, None),
+    ] {
+        let search = ChartRequest::parse(
+            SEARCH_TOOL,
+            &json!({"query": "a1c", "bucket": bucket, "record_type": null, "after": null}),
+            ChartScope::Chat,
+        )
+        .unwrap();
+        let saved = search
+            .run("pw-step-words", 1, &[])
+            .unwrap()
+            .text()
+            .unwrap()
+            .to_owned();
+        let Step::SearchedChart {
+            group: searched, ..
+        } = search
+            .step(CallEnding::Returned(&ToolResult::Original(saved)))
+            .unwrap()
+        else {
+            panic!("a search step");
+        };
+        assert_eq!(searched, group);
+    }
+}
+
+/// A search step says it went on to the next page when its call continued an
+/// earlier page with `after`, and that it began the search when it did not.
+#[tokio::test]
+async fn a_continued_search_step_says_it_got_more() {
+    let source = NorthwindPortalSource::sample();
+    let ws = "pw-step-words";
+    let patient = source.patient("NW-900").await.unwrap();
+    let records = source.records(&patient, ws).await.unwrap();
+    let after = json!({"version": 1, "candidate_id": records[0].candidate_id});
+    for (after, page) in [(Value::Null, SearchPage::First), (after, SearchPage::More)] {
+        let search = ChartRequest::parse(
+            SEARCH_TOOL,
+            &json!({"query": "", "bucket": null, "record_type": null, "after": after}),
+            ChartScope::Chat,
+        )
+        .unwrap();
+        let saved = search
+            .run(ws, 1, &records)
+            .unwrap()
+            .text()
+            .unwrap()
+            .to_owned();
+        let Step::SearchedChart { page: got, .. } = search
+            .step(CallEnding::Returned(&ToolResult::Original(saved)))
+            .unwrap()
+        else {
+            panic!("a search step");
+        };
+        assert_eq!(got, page, "after {after}");
+    }
 }

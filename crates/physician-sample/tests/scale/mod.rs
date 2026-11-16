@@ -809,9 +809,19 @@ impl Sse {
     }
 
     pub async fn wait_for(&mut self, needle: &str, timeout: Duration) -> Result<(), String> {
+        self.wait_for_nth(needle, 1, timeout).await
+    }
+
+    /// Waits until the stream has sent `needle` at least `nth` times.
+    pub async fn wait_for_nth(
+        &mut self,
+        needle: &str,
+        nth: usize,
+        timeout: Duration,
+    ) -> Result<(), String> {
         let deadline = Instant::now() + timeout;
         let mut tmp = [0u8; 2048];
-        while !self.buffer.contains(needle) {
+        while self.buffer.matches(needle).count() < nth {
             if Instant::now() >= deadline {
                 return Err(format!("missing {needle} in {}", self.buffer));
             }

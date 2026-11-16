@@ -4520,7 +4520,7 @@ fn conversation_lines(snapshot: &ChatSnapshot) -> Vec<ConversationLine> {
                 .map(|kept| line(kept, Some(Author::Assistant))),
         );
         match &exchange.answer {
-            AnswerState::Working { stop } => lines.push(ConversationLine {
+            AnswerState::Working { stop, .. } => lines.push(ConversationLine {
                 stop: Some(stop.clone()),
                 ..line(WRITING, None)
             }),
@@ -4723,6 +4723,7 @@ mod conversation_line_tests {
                 messages: vec![PhysicianMessage {
                     id: MessageKey("key-1".into()),
                     text: "Hello".into(),
+                    saved_at: physician_wire::SavedAt(1_794_600_000),
                 }],
                 steps: physician_wire::ExchangeSteps::Read(vec![]),
                 kept: kept.iter().map(|text| (*text).to_owned()).collect(),
@@ -4755,6 +4756,7 @@ mod conversation_line_tests {
         let finished = AnswerState::Finished {
             response_id: ResponseId("r-1".into()),
             attempt_id: AttemptId("attempt-1".into()),
+            finished_at: physician_wire::SavedAt(1_794_600_060),
             text: "The rest.".into(),
             feedback: None,
         };
@@ -4764,6 +4766,7 @@ mod conversation_line_tests {
                     stop: WorkStopTarget {
                         work_item_id: WorkItemId("work-1".into()),
                     },
+                    writing: false,
                 },
                 &["The saved part."],
                 vec![
@@ -4863,6 +4866,7 @@ mod conversation_line_tests {
         let finished = AnswerState::Finished {
             response_id: ResponseId("r-1".into()),
             attempt_id: AttemptId("attempt-1".into()),
+            finished_at: physician_wire::SavedAt(1_794_600_060),
             text: "Her heart rate allows it.".into(),
             feedback: Some(ResponseFeedback {
                 revision: 2,

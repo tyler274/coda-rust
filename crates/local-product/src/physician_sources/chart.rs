@@ -1,12 +1,12 @@
 //! On-demand discovery and bounded reads of the physician's workspace.
 use super::{
-    Bucket, FailedPart, FiledDate, READ_TOOL, ReadablePart, RecordCode, RecordDate, RecordVersion,
-    SourceRecordKind, SourceRevision, UnknownBucketError,
+    Bucket, DateRole, FailedPart, FiledDate, READ_TOOL, ReadablePart, RecordCode, RecordDate,
+    RecordVersion, SourceRecordKind, SourceRevision, UnknownBucketError,
 };
 use crate::physician_chat::{CallEnding, StepError};
 use harness::engine::results::ToolResult;
 use harness::engine::{Event, EventKind, Tool, ToolOutcome};
-use physician_wire::{Found, RecordRead, Step, StepState};
+use physician_wire::{Found, RecordAbout, RecordGroup, RecordRead, SourceVersion, Step, StepState};
 use serde::{Deserialize, Serialize};
 use serde_json::{Value, json};
 
@@ -320,6 +320,63 @@ pub(super) enum ReadRepresentation {
     NativeRecord,
 }
 
+/// The group a step names for a record filed in `bucket`.
+impl From<Bucket> for RecordGroup {
+    fn from(bucket: Bucket) -> Self {
+        match bucket {
+            Bucket::Patient => Self::Patient,
+            Bucket::Problems => Self::Problems,
+            Bucket::Medications => Self::Medications,
+            Bucket::Allergies => Self::Allergies,
+            Bucket::Results => Self::Results,
+            Bucket::Vitals => Self::Vitals,
+            Bucket::Notes => Self::Notes,
+            Bucket::Documents => Self::Documents,
+            Bucket::Visits => Self::Visits,
+            Bucket::Procedures => Self::Procedures,
+            Bucket::Immunizations => Self::Immunizations,
+            Bucket::Orders => Self::Orders,
+            Bucket::History => Self::History,
+            Bucket::Forms => Self::Forms,
+            Bucket::Messages => Self::Messages,
+            Bucket::Other => Self::Other,
+        }
+    }
+}
+
+/// The role a step or a citation names for a date filed with `role`.
+impl From<DateRole> for physician_wire::DateRole {
+    fn from(role: DateRole) -> Self {
+        match role {
+            DateRole::BirthDate => Self::BirthDate,
+            DateRole::Onset => Self::Onset,
+            DateRole::Abatement => Self::Abatement,
+            DateRole::Recorded => Self::Recorded,
+            DateRole::Authored => Self::Authored,
+            DateRole::Effective => Self::Effective,
+            DateRole::Issued => Self::Issued,
+            DateRole::Performed => Self::Performed,
+            DateRole::Occurred => Self::Occurred,
+            DateRole::Start => Self::Start,
+            DateRole::End => Self::End,
+            DateRole::Sent => Self::Sent,
+            DateRole::Received => Self::Received,
+        }
+    }
+}
+
+/// A date filed through an adapter table, as a step or a citation names it:
+/// its declared role and the source's value. The source's own name for the
+/// date field stays with the record.
+impl From<&FiledDate> for physician_wire::RecordDate {
+    fn from(date: &FiledDate) -> Self {
+        Self {
+            role: Some(date.role.into()),
+            value: date.value.clone(),
+        }
+    }
+}
+
 impl RecordReceipt {
     pub(super) fn names(&self, source: &SourceRevision) -> bool {
         match self {
@@ -341,27 +398,46 @@ impl RecordReceipt {
     fn read(&self) -> RecordRead {
         match self {
             Self::Available {
-                record_type, dates, ..
+                reference,
+                revision,
+                bucket,
+                title,
+                dates,
+                ..
             } => RecordRead::Whole {
-                record_type: record_type.clone(),
-                dates: match dates {
-                    ReceiptDates::Filed(dates) => dates
-                        .iter()
-                        .map(|date| physician_wire::RecordDate {
-                            name: date.field.clone(),
-                            value: date.value.clone(),
-                        })
-                        .collect(),
-                    ReceiptDates::Raw(dates) => dates
-                        .iter()
-                        .map(|date| physician_wire::RecordDate {
-                            name: date.name.clone(),
-                            value: date.value.clone(),
-                        })
-                        .collect(),
+                version: SourceVersion {
+                    candidate_id: reference.clone(),
+                    revision: revision.clone(),
+                },
+                about: RecordAbout {
+                    group: bucket.map(RecordGroup::from),
+                    title: title.clone(),
+                    dates: match dates {
+                        ReceiptDates::Filed(dates) => {
+                            dates.iter().map(physician_wire::RecordDate::from).collect()
+                        }
+                        // A date the record carries without an adapter
+                        // table declares no role.
+                        ReceiptDates::Raw(dates) => dates
+                            .iter()
+                            .map(|date| physician_wire::RecordDate {
+                                role: None,
+                                value: date.value.clone(),
+                            })
+                            .collect(),
+                    },
                 },
             },
-            Self::Passage { .. } => RecordRead::Passage,
+            Self::Passage {
+                reference,
+                revision,
+                ..
+            } => RecordRead::Passage {
+                version: SourceVersion {
+                    candidate_id: reference.clone(),
+                    revision: revision.clone(),
+                },
+            },
             Self::Unavailable { .. } => RecordRead::Unavailable,
             Self::OverBudget { .. } => RecordRead::TooLarge,
         }
@@ -598,8 +674,8 @@ impl Search {
         Ok(ToolOutcome::Returned(page.to_string()))
     }
 
-    /// The search with how many records its page found. A refused search
-    /// returned nothing.
+    /// The search with how many records its page found, and whether the call
+    /// went on from an earlier page. A refused search returned nothing.
     fn step(&self, ending: CallEnding<'_>) -> Result<Step, StepError> {
         let state = ending.state(|result| match result {
             ToolResult::Original(output) => {
@@ -616,7 +692,12 @@ impl Search {
         })?;
         Ok(Step::SearchedChart {
             query: self.query.clone(),
-            record_type: self.record_type.clone(),
+            group: self.bucket.map(RecordGroup::from),
+            page: if self.after.is_some() {
+                physician_wire::SearchPage::More
+            } else {
+                physician_wire::SearchPage::First
+            },
             state,
         })
     }

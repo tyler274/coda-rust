@@ -153,3 +153,70 @@ async fn try_again_refuses_another_physician_or_practice() {
     assert_eq!(unchanged.status, WorkStatus::Failed);
     assert_eq!(unchanged.session_hash.as_deref(), Some(&[5u8; 32][..]));
 }
+
+/// The physician's message and Coda's finished answer each keep the database
+/// clock's reading from the transaction that saved them: between readings of
+/// that clock taken before and after the save. The answer is saved in a later
+/// clock second than the message, so neither bound can hold the other's time.
+/// A later exchange's are not earlier than the first's.
+#[tokio::test]
+#[ignore = "requires explicit local Postgres"]
+async fn each_saved_message_keeps_the_database_clock_of_its_own_save() {
+    let url = std::env::var("PHYSICIAN_RUNTIME_TEST_DATABASE_URL").unwrap();
+    let store = Store::connect(&url).await.unwrap();
+    store.migrate().await.unwrap();
+    let scope = delivery_scope(&uuid::Uuid::new_v4().to_string(), "chat");
+    let clock = async || {
+        let tx = store.connection().begin().await.unwrap();
+        let read = now(&tx).await.unwrap();
+        tx.commit().await.unwrap();
+        read
+    };
+    let saved = |state: &Conversation| -> Vec<i64> {
+        state
+            .messages
+            .iter()
+            .map(|message| message.saved_at.seconds())
+            .collect()
+    };
+
+    let before = clock().await;
+    accept(&store, &scope, &delivery_input("first"), 0)
+        .await
+        .unwrap();
+    let accepted = clock().await;
+    // The answer runs only once the clock has passed the second the message was saved in, so the
+    // two saves fall in different seconds and each bound holds one save alone.
+    let answering = loop {
+        let read = clock().await;
+        if read > accepted {
+            break read;
+        }
+        tokio::time::sleep(std::time::Duration::from_millis(20)).await;
+    };
+    run(&store, &scope, &mut Answer("Sodium is stable."), 8).await;
+    let finished = clock().await;
+    let first = saved(&store.conversation(&scope).await.unwrap());
+    let [asked, answered] = first[..] else {
+        panic!("one message and its answer: {first:?}")
+    };
+    assert!(
+        (before..=accepted).contains(&asked),
+        "the message was saved at {asked}, outside {before}..={accepted}"
+    );
+    assert!(
+        (answering..=finished).contains(&answered),
+        "the answer was saved at {answered}, outside {answering}..={finished}"
+    );
+
+    accept(&store, &scope, &delivery_input("second"), 0)
+        .await
+        .unwrap();
+    run(&store, &scope, &mut Answer("Potassium is low."), 8).await;
+    let both = saved(&store.conversation(&scope).await.unwrap());
+    assert_eq!(both.len(), 4, "{both:?}");
+    assert!(
+        both.is_sorted() && both[2] >= answered,
+        "a later exchange was saved earlier: {both:?}"
+    );
+}

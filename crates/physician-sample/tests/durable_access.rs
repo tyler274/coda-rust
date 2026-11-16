@@ -187,7 +187,7 @@ async fn chat_work_answers_only_its_owner_and_a_repeated_submit_is_one_turn() {
     })
     .await
     .unwrap_or_else(|snapshot| panic!("never offered Stop\n{snapshot}\n{}", tails()));
-    let Some(AnswerState::Working { stop: target }) = latest_answer(&writing) else {
+    let Some(AnswerState::Working { stop: target, .. }) = latest_answer(&writing) else {
         unreachable!("waited for a working answer")
     };
     let work = target.work_item_id.0;
