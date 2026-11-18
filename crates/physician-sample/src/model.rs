@@ -27,6 +27,7 @@ fn role_environment(get: &impl Fn(&str) -> Option<String>) -> Vec<(String, Strin
 }
 
 /// Credentials stay in the process; both choices run the same durable job.
+#[derive(Clone)]
 pub enum ModelTransport {
     /// A Responses endpoint and its key.
     Responses {
@@ -110,6 +111,7 @@ impl ModelTransport {
 
 /// Transport and model configuration shared by chat, reply revision and
 /// patient rounds.
+#[derive(Clone)]
 pub struct ModelSource {
     /// The transport.
     pub transport: ModelTransport,

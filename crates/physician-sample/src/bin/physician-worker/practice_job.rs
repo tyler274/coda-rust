@@ -1004,4 +1004,445 @@ mod tests {
             "expected preserved SkillsError::Package source, got: {source}"
         );
     }
+
+    #[tokio::test]
+    async fn scheduled_wake_handler_executes_both_patient_dispatch_and_visit_preparation_in_one_tick()
+     {
+        use local_product::physician_sources::{
+            MedicalRecordNumber, READ_TOOL, ReadablePart, RecordDate, SourcePatient,
+            SourceRevision, workspace_id,
+        };
+        use local_product::runtime::briefings::VisitSlotKey;
+        use local_product::runtime::concerns::ExactRecordReference;
+        use local_product::runtime::schedule::AppointmentWindow;
+        use local_product::runtime::sources::SourcePull;
+        use local_product::visit_preparation::{
+            BriefingClaimInput, BriefingDecisionInput, SAVE_BRIEFING_TOOL, SELECT_VISITS_TOOL,
+            SaveBriefingArgs,
+        };
+
+        let gate_url = match std::env::var("PHYSICIAN_RUNTIME_TEST_DATABASE_URL")
+            .or_else(|_| std::env::var("PHYSICIAN_DATABASE_URL"))
+        {
+            Ok(v) if !v.trim().is_empty() => v.trim().to_owned(),
+            _ => {
+                assert!(
+                    std::env::var_os("CODA_REQUIRE_POSTGRES_TESTS").is_none(),
+                    "PHYSICIAN_RUNTIME_TEST_DATABASE_URL is required when CODA_REQUIRE_POSTGRES_TESTS=1"
+                );
+                return;
+            }
+        };
+
+        let (server, _) = gate_url.rsplit_once('/').expect("database URL");
+        let admin_url = format!("{server}/postgres");
+        let db_name = format!(
+            "worker_sched_wake_{}",
+            &Uuid::new_v4().simple().to_string()[..12]
+        );
+        let admin = sea_orm::Database::connect(&admin_url).await.unwrap();
+        crate::disposable::replace_database(&admin, &db_name).await;
+        admin.close().await.unwrap();
+        let url = format!("{server}/{db_name}");
+
+        let store = Store::connect(&url).await.unwrap();
+        store.migrate().await.unwrap();
+        let auth = PostgresAuthStore::connect_with_migrations(&url)
+            .await
+            .unwrap();
+
+        let practice = format!("practice-sched-wake-{}", Uuid::new_v4().simple());
+        let fixed_now: u64 = 1_787_846_400; // 2026-08-27T16:00:00Z
+        auth.ensure_practice(&practice, PracticeClock::Fixed(fixed_now))
+            .await
+            .unwrap();
+
+        let mrn = format!("MRN-SW-{}", &Uuid::new_v4().simple().to_string()[..8]);
+        let workspace = workspace_id(physician_sample::synthetic_chart::SOURCE_ID, &mrn);
+        auth.register_patient(&practice, &workspace).await.unwrap();
+
+        // Register dispatch baseline, then record a new chart observation so dispatch is due.
+        store
+            .register_patient_dispatch(&auth, &practice, &workspace, 1_000_000)
+            .await
+            .unwrap();
+        let note_text = "Stage 3a CKD (eGFR 51 mL/min), A1c 8.1%, and potassium 5.8 mmol/L on spironolactone ahead of tomorrow's follow-up.";
+        store
+            .record_chart(
+                &workspace,
+                &[SourceRevision {
+                    workspace: workspace.clone(),
+                    source_id: physician_sample::synthetic_chart::SOURCE_ID.into(),
+                    candidate_id: "Observation/ckd-k-1".into(),
+                    revision: "rev-sw-1".into(),
+                    record_type: "Observation".into(),
+                    dates: vec![RecordDate {
+                        name: "effectiveDateTime".into(),
+                        value: "2026-08-26".into(),
+                    }],
+                    sha256: local_product::sha256_hex(note_text.as_bytes()),
+                    content: note_text.into(),
+                    readable_parts: vec![ReadablePart {
+                        label: "Renal, A1c & Potassium".into(),
+                        text: note_text.into(),
+                    }],
+                    provenance: json!({ "title": "Renal, A1c & Potassium" }),
+                    envelope: None,
+                }],
+                &SourcePull {
+                    source_id: physician_sample::synthetic_chart::SOURCE_ID.into(),
+                    source_label: "Synthetic chart".into(),
+                    patient: SourcePatient {
+                        source_patient_id: mrn.clone(),
+                        display_name: "Scheduled Wake Patient".into(),
+                        birth_date: Some("1965-09-12".into()),
+                        sex_or_gender: Some("male".into()),
+                        medical_record_numbers: vec![MedicalRecordNumber {
+                            system: "urn:mrn".into(),
+                            value: mrn.clone(),
+                        }],
+                    },
+                    pulled_at: Some(fixed_now as i64 - 600),
+                },
+            )
+            .await
+            .unwrap();
+
+        let temp_dir =
+            std::env::temp_dir().join(format!("coda-sched-wake-cal-{}", Uuid::new_v4().simple()));
+        std::fs::create_dir_all(temp_dir.join("calendar")).unwrap();
+        let appt_line = format!(
+            r#"{{"resourceType":"Appointment","id":"appt-sw-tomorrow","meta":{{"versionId":"1","lastUpdated":"2026-08-27T00:00:00+00:00"}},"status":"booked","description":"CKD & diabetes follow-up","start":"2026-08-28T15:00:00+00:00","end":"2026-08-28T15:30:00+00:00","participant":[{{"actor":{{"reference":"Patient/{mrn}"}},"status":"accepted"}}]}}"#
+        );
+        std::fs::write(
+            temp_dir.join("calendar/Appointment.ndjson"),
+            format!("{appt_line}\n"),
+        )
+        .unwrap();
+        let calendar = physician_sample::schedule::SyntheticBankCalendar::open(&temp_dir);
+
+        let starts_at_unix =
+            AppointmentWindow::parse("2026-08-28T15:00:00+00:00", "2026-08-28T15:30:00+00:00")
+                .unwrap()
+                .starts_at_unix();
+        let save_briefing = serde_json::to_value(SaveBriefingArgs {
+            visit_card_orientation:
+                "CKD 3a (eGFR 51), A1c 8.1%, and potassium 5.8 mmol/L on spironolactone ahead of tomorrow's visit."
+                    .into(),
+            trajectory: vec![BriefingClaimInput {
+                text: "Stage 3a CKD (eGFR 51 mL/min) with A1c 8.1% and potassium 5.8 mmol/L.".into(),
+                uncertainty: None,
+                citations: vec![ExactRecordReference {
+                    candidate_id: "Observation/ckd-k-1".into(),
+                    revision: "rev-sw-1".into(),
+                }],
+            }],
+            meaningful_changes: vec![BriefingClaimInput {
+                text: "Potassium rose to 5.8 mmol/L on spironolactone.".into(),
+                uncertainty: None,
+                citations: vec![ExactRecordReference {
+                    candidate_id: "Observation/ckd-k-1".into(),
+                    revision: "rev-sw-1".into(),
+                }],
+            }],
+            unresolved_issues: vec![BriefingClaimInput {
+                text: "Spot urine albumin-to-creatinine ratio is not in the connected chart.".into(),
+                uncertainty: Some(
+                    "Albuminuria severity is unconfirmed pending spot UACR.".into(),
+                ),
+                citations: vec![ExactRecordReference {
+                    candidate_id: "Observation/ckd-k-1".into(),
+                    revision: "rev-sw-1".into(),
+                }],
+            }],
+            visit_decisions: vec![BriefingDecisionInput {
+                decision: "Potassium management and glycemic regimen adjustment".into(),
+                clinical_rationale:
+                    "Potassium 5.8 mmol/L on spironolactone alongside A1c 8.1% warrants medication adjustment.".into(),
+                options_or_questions: vec![
+                    "Assess spironolactone dose and discuss adding an SGLT2 inhibitor.".into(),
+                ],
+                uncertainty: None,
+                citations: vec![ExactRecordReference {
+                    candidate_id: "Observation/ckd-k-1".into(),
+                    revision: "rev-sw-1".into(),
+                }],
+            }],
+            basis_and_limitations: "Prepared from synthetic chart panel 2026-08-26.".into(),
+            basis_citations: Vec::new(),
+            limits: Vec::new(),
+            visit_concern: None,
+        })
+        .unwrap();
+
+        let turn_counter = Arc::new(Mutex::new(0_usize));
+        let counter_ref = turn_counter.clone();
+        let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+        let port = listener.local_addr().unwrap().port();
+        let stub = Router::new().route(
+            "/responses",
+            post(move |_body: axum::body::Bytes| {
+                let counter_ref = counter_ref.clone();
+                let save_briefing = save_briefing.clone();
+                async move {
+                    let step = {
+                        let mut g = counter_ref.lock().unwrap();
+                        *g += 1;
+                        *g
+                    };
+                    let sse = match step {
+                        1 => sse_function_calls(
+                            "resp_vp_1",
+                            &[(
+                                "call_sel",
+                                SELECT_VISITS_TOOL,
+                                json!({
+                                    "decisions": [{
+                                        "source_id": physician_sample::schedule::SOURCE_ID,
+                                        "appointment_id": "appt-sw-tomorrow",
+                                        "starts_at_unix": starts_at_unix,
+                                        "action": "prepare_now",
+                                        "reason": "Tomorrow's CKD follow-up has K+ 5.8 and A1c 8.1%."
+                                    }]
+                                }),
+                            )],
+                        ),
+                        2 => sse_assistant_reply("Selected tomorrow's visit."),
+                        3 => sse_function_calls(
+                            "resp_vp_3",
+                            &[(
+                                "call_vp_read",
+                                READ_TOOL,
+                                json!({
+                                    "references": [{
+                                        "candidate_id": "Observation/ckd-k-1",
+                                        "revision": "rev-sw-1",
+                                        "cursor": null
+                                    }],
+                                    "max_result_bytes": 16_384
+                                }),
+                            )],
+                        ),
+                        4 => sse_function_calls(
+                            "resp_vp_4",
+                            &[("call_vp_save", SAVE_BRIEFING_TOOL, save_briefing)],
+                        ),
+                        5 => sse_assistant_reply("Saved tomorrow's visit briefing."),
+                        6 => sse_function_calls(
+                            "resp_pr_1",
+                            &[(
+                                "call_pr_read",
+                                READ_TOOL,
+                                json!({
+                                    "references": [{
+                                        "candidate_id": "Observation/ckd-k-1",
+                                        "revision": "rev-sw-1",
+                                        "cursor": null
+                                    }],
+                                    "max_result_bytes": 16_384
+                                }),
+                            )],
+                        ),
+                        7 => sse_function_calls(
+                            "resp_pr_2",
+                            &[
+                                (
+                                    "call_pr_raise",
+                                    local_product::runtime::concerns::CONCERN_TOOL,
+                                    json!({
+                                        "operation": "raise",
+                                        "concern_id": "concern-sw-k",
+                                        "urgency": "today",
+                                        "reason": "Potassium 5.8 mmol/L on spironolactone ahead of CKD visit.",
+                                        "records": [{
+                                            "candidate_id": "Observation/ckd-k-1",
+                                            "revision": "rev-sw-1"
+                                        }]
+                                    }),
+                                ),
+                                (
+                                    "call_pr_done",
+                                    local_product::patient_reviews::COMPLETE_PATIENT_REVIEW_TOOL,
+                                    json!({
+                                        "disposition": "assessed",
+                                        "summary": "Potassium 5.8 mmol/L and A1c 8.1% reviewed ahead of CKD visit.",
+                                        "citations": [{
+                                            "candidate_id": "Observation/ckd-k-1",
+                                            "revision": "rev-sw-1"
+                                        }],
+                                        "basis_and_limitations": "Synthetic chart panel (2026-08-26).",
+                                        "unfinished_work": []
+                                    }),
+                                ),
+                            ],
+                        ),
+                        8 => sse_assistant_reply("Completed scheduled patient review."),
+                        other => panic!("unexpected SSE step {other}"),
+                    };
+                    (
+                        StatusCode::OK,
+                        [("content-type", "text/event-stream")],
+                        sse,
+                    )
+                }
+            }),
+        );
+        let stub_task = tokio::spawn(async move {
+            axum::serve(listener, stub).await.unwrap();
+        });
+
+        let roles = ModelRoles {
+            chat: ModelBinding {
+                model: "chat-interactive-lane".into(),
+                effort: "low".into(),
+                context_window_tokens: 128_000,
+                max_input_tokens: 100_000,
+                adapter: "openai-responses".into(),
+            },
+            background: ModelBinding {
+                model: "background-worker-lane".into(),
+                effort: "high".into(),
+                context_window_tokens: 272_000,
+                max_input_tokens: 250_000,
+                adapter: "openai-responses".into(),
+            },
+        };
+        let model = ModelSource {
+            transport: ModelTransport::Responses {
+                endpoint: format!("http://127.0.0.1:{port}/responses"),
+                key: "local-proof".into(),
+            },
+            roles: roles.clone(),
+        };
+        let quota: Arc<dyn harness::provider::QuotaGate> = Arc::new(store.clone());
+        let mut wakeups = store.wakeups().await.unwrap();
+
+        let wake = Arc::new(crate::WakeService {
+            auth: crate::WakeAuth::LoopbackEmulator,
+            mode: crate::WakeMode::RehearsalAllowed,
+            handler: Arc::new(crate::ScheduledWakeHandler {
+                dispatch: crate::StoreWakeHandler {
+                    store: store.clone(),
+                    auth: auth.clone(),
+                    roles: roles.clone(),
+                    skills: Err(local_product::physician_chat::SkillsError::Unconfigured),
+                },
+                visit_prep: crate::VisitPrepWakeHandler {
+                    store: store.clone(),
+                    auth: auth.clone(),
+                    model: model.clone(),
+                    quota: quota.clone(),
+                    skills_dir: None,
+                    calendar: Some(crate::PracticeSyntheticCalendar {
+                        practice: practice.clone(),
+                        source: calendar,
+                    }),
+                },
+            }),
+            clinical_library: None,
+        });
+        let worker = Arc::new(Worker {
+            store: store.clone(),
+            auth: auth.clone(),
+            bus: physician_bus::from_env(|_| None, false).await.unwrap(),
+            model,
+            quota,
+            pace: Pace {
+                poll: Duration::from_secs(1),
+                lease: 60,
+                concurrency: 4,
+                backoff: Backoff::IMMEDIATE,
+            },
+            wake,
+            origin: telemetry::genai::Origin::Simulation,
+            simulation_practices: physician_sample::hosting::SimulationPractices::from_env(|_| {
+                None
+            })
+            .unwrap(),
+        });
+        let app = router(Arc::clone(&worker));
+
+        let wake_resp = app
+            .oneshot(
+                HttpRequest::builder()
+                    .method("POST")
+                    .uri("/schedule/wake")
+                    .header("content-type", "application/json")
+                    .body(Body::from("{}"))
+                    .unwrap(),
+            )
+            .await
+            .unwrap();
+        assert_eq!(wake_resp.status(), StatusCode::OK);
+        let wake_bytes = axum::body::to_bytes(wake_resp.into_body(), 64 * 1024)
+            .await
+            .unwrap();
+        let wake_json: Value = serde_json::from_slice(&wake_bytes).unwrap();
+        assert_eq!(wake_json["status"], "ok");
+        assert_eq!(wake_json["reviews_started"], 1);
+        assert_eq!(wake_json["practices_checked"], 1);
+        assert_eq!(wake_json["briefings_prepared"], 1);
+        assert_eq!(wake_json["due_patients_checked"], 2);
+
+        let saved_briefing = store
+            .visit_briefing(
+                &VisitSlotKey {
+                    practice: practice.clone(),
+                    source_id: physician_sample::schedule::SOURCE_ID.into(),
+                    appointment_id: "appt-sw-tomorrow".into(),
+                    starts_at_unix,
+                },
+                &auth,
+            )
+            .await
+            .unwrap()
+            .expect("POST /schedule/wake saved tomorrow's visit briefing");
+        assert!(
+            saved_briefing
+                .visit_card_orientation
+                .contains("potassium 5.8")
+        );
+
+        let our_delivery = tokio::time::timeout(Duration::from_secs(5), async {
+            loop {
+                let d = wakeups
+                    .next()
+                    .await
+                    .unwrap()
+                    .expect("work notification stream open");
+                if d.scope.practice == practice && d.scope.workspace == workspace {
+                    return d;
+                }
+            }
+        })
+        .await
+        .expect("announced practice-job wakeup for due patient review");
+        assert_eq!(our_delivery.kind, DeliveryKind::PracticeJob);
+
+        let (_stop_tx, stop_rx) = watch::channel(false);
+        assert_eq!(
+            run_delivery(&worker, &our_delivery, stop_rx).await,
+            Next::Done
+        );
+
+        let reviews = store
+            .patient_reviews(&practice, &workspace, &auth)
+            .await
+            .unwrap();
+        assert_eq!(reviews.len(), 1);
+        assert_eq!(reviews[0].state.status_str(), "completed");
+        assert_eq!(reviews[0].actions.len(), 1);
+        assert!(matches!(
+            reviews[0].usage,
+            local_product::runtime::reviews::ReviewUsage::Known { exchanges: 3, .. }
+        ));
+
+        stub_task.abort();
+        drop(store);
+        drop(auth);
+        let cleanup = sea_orm::Database::connect(&admin_url).await.unwrap();
+        crate::disposable::drop_database(&cleanup, &db_name).await;
+        let _ = cleanup.close().await;
+        let _ = std::fs::remove_dir_all(&temp_dir);
+    }
 }
