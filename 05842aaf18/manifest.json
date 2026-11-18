@@ -1,0 +1,86 @@
+{
+  "branch": "tyler-eng-258-durable-history-reopen",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC1",
+      "label": "Finished turn byte-mark slicing, deduplicated numbering, passage quotes, and description fallback",
+      "kind": "run",
+      "revision": "05842aaf18b1dce914551524030dd4ec525b97a9",
+      "dirty": false,
+      "recorded": "2026-11-18T20:48:30+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "local-product",
+        "--lib",
+        "runtime::history"
+      ],
+      "expect": "[1-9][0-9]* passed; 0 failed",
+      "expect_fail": false,
+      "files": [
+        "01-Finished-turn-byte-mark-slicing-deduplicated-num.log"
+      ],
+      "seconds": 32.7,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true
+    },
+    {
+      "id": 2,
+      "claim": "AC2",
+      "label": "Boundaries, physician-wire, physician-demo-db, and physician-sample unit suites",
+      "kind": "run",
+      "revision": "05842aaf18b1dce914551524030dd4ec525b97a9",
+      "dirty": false,
+      "recorded": "2026-11-18T20:49:03+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "boundaries",
+        "-p",
+        "physician-wire",
+        "-p",
+        "physician-demo-db",
+        "-p",
+        "physician-sample",
+        "--lib"
+      ],
+      "expect": "[1-9][0-9]* passed; 0 failed",
+      "expect_fail": false,
+      "files": [
+        "02-Boundaries-physician-wire-physician-demo-db-and-.log"
+      ],
+      "seconds": 56.9,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true
+    },
+    {
+      "id": 3,
+      "claim": "AC2",
+      "label": "",
+      "kind": "gap",
+      "revision": "05842aaf18b1dce914551524030dd4ec525b97a9",
+      "dirty": false,
+      "recorded": "2026-11-18T20:50:00+00:00",
+      "reason": "Valkey-backed Chromium reopen test (past_conversations_and_work_reopen_across_restart_mark_newer_records_and_enforce_access) failed at Valkey::start because host valkey-server 9.1.2 segfaults (exit 139) with or without LD_PRELOAD; runtime::history and physician-sample --lib pass and workflow_dispatch CI runs browser qualification.",
+      "ok": false,
+      "files": []
+    },
+    {
+      "id": 4,
+      "claim": "AC3",
+      "label": "",
+      "kind": "gap",
+      "revision": "05842aaf18b1dce914551524030dd4ec525b97a9",
+      "dirty": false,
+      "recorded": "2026-11-18T20:50:00+00:00",
+      "reason": "Valkey-backed Chromium rich reply test (a_reply_draws_code_and_a_table_that_scroll_by_key) failed at Valkey::start because host valkey-server 9.1.2 segfaults (exit 139) with or without LD_PRELOAD; unit tests pass and workflow_dispatch CI runs browser qualification.",
+      "ok": false,
+      "files": []
+    }
+  ]
+}
