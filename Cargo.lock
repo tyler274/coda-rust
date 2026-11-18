@@ -6343,11 +6343,27 @@ version = "0.1.0"
 dependencies = [
  "axum",
  "coda-http",
+ "physician-demo-db",
  "physician-wire",
  "reqwest 0.12.28",
  "serde",
  "serde_json",
  "tokio",
+]
+
+[[package]]
+name = "physician-demo-db"
+version = "0.1.0"
+dependencies = [
+ "physician-wire",
+ "rusqlite",
+ "sea-query",
+ "serde",
+ "serde_json",
+ "thiserror 2.0.21",
+ "tokio",
+ "wasm-bindgen",
+ "wasm-bindgen-futures",
 ]
 
 [[package]]
@@ -7741,6 +7757,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "546040c653a705e60ec65ecd3191a809603734bebbc225775916dea9ae409b31"
 dependencies = [
  "chrono",
+ "itoa",
  "ordered-float",
  "rust_decimal",
  "sea-query-derive",

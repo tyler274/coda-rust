@@ -29,7 +29,9 @@ jobs:
         id: pages
         uses: actions/configure-pages@v5
       - name: Install Rust
-        run: rustup toolchain install
+        run: |
+          rustup toolchain install
+          rustup target add wasm32-unknown-unknown
       - name: Rustc version
         id: rustc
         run: |
@@ -60,24 +62,35 @@ jobs:
           tar -xzf /tmp/mdbook-v0.4.52-x86_64-unknown-linux-gnu.tar.gz -C /tmp
           install -m 755 /tmp/mdbook "${CARGO_HOME:-$HOME/.cargo}/bin/mdbook"
           mdbook --version
-      - name: Export public-site and book
+      - name: Download wasm-bindgen
+        uses: ./.github/actions/release-archive
+        with:
+          repo: wasm-bindgen/wasm-bindgen
+          tag: 0.2.129
+          asset: wasm-bindgen-0.2.129-x86_64-unknown-linux-musl.tar.gz
+          sha256: 82d12bb940e2d4e72e0d5605387fc1b8ca179044e012b620f0ce4e7440e8320e
+      - name: Install wasm-bindgen
+        run: |
+          tar -xzf /tmp/wasm-bindgen-0.2.129-x86_64-unknown-linux-musl.tar.gz -C /tmp
+          install -m 755 /tmp/wasm-bindgen-0.2.129-x86_64-unknown-linux-musl/wasm-bindgen "${CARGO_HOME:-$HOME/.cargo}/bin/wasm-bindgen"
+          wasm-bindgen --version
+      - name: Download sql.js WASM runtime
+        uses: ./.github/actions/release-archive
+        with:
+          repo: sql-js/sql.js
+          tag: v1.16.0
+          asset: sqljs-wasm.zip
+          sha256: 5ac3671ec7d03a0fb73b92031f576bccd4c591a1a454fca01b125610fc691bd6
+      - name: Export public-site, book, and browser SQLite physician demo
         env:
           BASE_PATH: ${{ steps.pages.outputs.base_path }}
           BASE_URL: ${{ steps.pages.outputs.base_url }}
+          SQLJS_ARCHIVE: /tmp/sqljs-wasm.zip
         run: |
-          base_path="${BASE_PATH:-/}"
-          origin="${BASE_URL:-https://codahealth.ai}"
-          book_url="/book/"
-          if [ "$base_path" != "/" ]; then
-            book_url="${base_path}/book/"
-          fi
-          rm -rf _site
-          cargo run --locked -p public-site --bin public-site -- \
-            --export-dir _site \
-            --base-path "$base_path" \
-            --origin "$origin"
-          MDBOOK_OUTPUT__HTML__SITE_URL="$book_url" \
-            mdbook build book -d "$PWD/_site/book"
+          export BASE_PATH="${BASE_PATH:-/}"
+          export ORIGIN="${BASE_URL:-https://codahealth.ai}"
+          export OUT_DIR="$PWD/_site"
+          bash scripts/build-pages-site.sh
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:

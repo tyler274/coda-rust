@@ -127,6 +127,65 @@ fn exported_subpath_site_serves_zero_404s_and_renders_in_chromium() {
     );
 }
 
+#[test]
+#[ignore = "browser qualification; run explicitly with --ignored"]
+fn exported_subpath_browser_sql_demo_e2e() {
+    struct TempDir(PathBuf);
+    impl Drop for TempDir {
+        fn drop(&mut self) {
+            let _ = fs::remove_dir_all(&self.0);
+        }
+    }
+    let root = TempDir(std::env::temp_dir().join(format!(
+        "coda-public-site-demo-export-{}",
+        std::process::id()
+    )));
+    let _ = fs::remove_dir_all(&root.0);
+    let mount = root.0.join("coda-rust");
+    fs::create_dir_all(&mount).unwrap();
+
+    let repo_root = Path::new(env!("CARGO_MANIFEST_DIR")).join("../..");
+    let build_status = Command::new("bash")
+        .arg(repo_root.join("scripts/build-pages-site.sh"))
+        .current_dir(&repo_root)
+        .env("OUT_DIR", &mount)
+        .env("BASE_PATH", "/coda-rust")
+        .env("ORIGIN", "https://tyler274.github.io/coda-rust")
+        .status()
+        .expect("run scripts/build-pages-site.sh");
+    assert!(build_status.success(), "build-pages-site.sh failed");
+
+    let rt = tokio::runtime::Runtime::new().unwrap();
+    let (addr, server_handle) = rt.block_on(async {
+        let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+        let addr = listener.local_addr().unwrap();
+        let serve_root = Arc::new(root.0.clone());
+        let app = Router::new().fallback(move |uri: Uri| {
+            let serve_root = Arc::clone(&serve_root);
+            async move { serve_static(&serve_root, uri.path()) }
+        });
+        let handle = tokio::spawn(async move {
+            axum::serve(listener, app).await.unwrap();
+        });
+        (addr, handle)
+    });
+
+    let result = Command::new("node")
+        .arg(concat!(
+            env!("CARGO_MANIFEST_DIR"),
+            "/tests/demo_browser.mjs"
+        ))
+        .arg(format!("http://{addr}"))
+        .arg("/coda-rust")
+        .status()
+        .expect("Node and Chromium are required for browser demo proof");
+    server_handle.abort();
+    assert!(
+        result.success(),
+        "Chromium exported /coda-rust/ browser SQLite demo E2E failed"
+    );
+}
+
 fn serve_static(root: &Path, uri_path: &str) -> Response {
     let trimmed = uri_path.trim_start_matches('/');
     if trimmed.contains("..") || trimmed.contains('\\') {

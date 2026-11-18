@@ -22,7 +22,8 @@ fn App() -> Element {
     let open_patient = open_patient();
     let open_chat = open_chat();
     let sign_in = use_hook(sign_in_link);
-    rsx! { physician_app::PhysicianRoot { base_url: base, open_patient, open_chat, sign_in } }
+    let demo_db = option_env!("PHYSICIAN_DEMO_DB").map(str::to_owned);
+    rsx! { physician_app::PhysicianRoot { base_url: base, open_patient, open_chat, sign_in, demo_db } }
 }
 
 #[cfg(all(any(feature = "web", feature = "desktop"), target_arch = "wasm32"))]

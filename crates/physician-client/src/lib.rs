@@ -62,18 +62,65 @@ impl Session {
 /// this to take a command is treated as having given no answer, and is asked again.
 pub const COMMAND_TIME_LIMIT: std::time::Duration = std::time::Duration::from_secs(10);
 
+/// Preview details for a cited chart source record in interactive demo mode.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct DemoSourcePreview {
+    /// Clinical record title.
+    pub title: String,
+    /// Recorded date string.
+    pub recorded_at: String,
+    /// Full clinical prose.
+    pub body: String,
+    /// Source system label.
+    pub source_label: String,
+}
+
+#[cfg(target_arch = "wasm32")]
+use physician_demo_db::SqliteDriver;
+#[cfg(any(target_arch = "wasm32", test))]
+use physician_demo_db::{DbError, DemoStore, DraftSaveOutcome};
+
+#[derive(Debug, Clone)]
+enum ClientTransport {
+    Http(reqwest::Client),
+    #[cfg(any(target_arch = "wasm32", test))]
+    Demo(DemoStore),
+}
+
+impl Default for ClientTransport {
+    fn default() -> Self {
+        Self::Http(reqwest::Client::new())
+    }
+}
+
 #[derive(Debug, Clone, Default)]
 /// The `PhysicianClient` value exchanged by this crate.
 pub struct PhysicianClient {
     base: String,
-    http: reqwest::Client,
+    transport: ClientTransport,
     session: Session,
 }
 
 impl PartialEq for PhysicianClient {
     fn eq(&self, other: &Self) -> bool {
-        self.base == other.base && self.session == other.session
+        self.base == other.base
+            && self.session == other.session
+            && self.is_demo() == other.is_demo()
     }
+}
+
+#[cfg(any(target_arch = "wasm32", test))]
+macro_rules! try_demo {
+    ($self:ident, $store:ident => $call:expr) => {
+        if let ClientTransport::Demo($store) = &$self.transport {
+            return $call.await.map_err(demo_error);
+        }
+    };
+}
+
+#[cfg(not(any(target_arch = "wasm32", test)))]
+macro_rules! try_demo {
+    ($self:ident, $store:ident => $call:expr) => {};
 }
 
 impl PhysicianClient {
@@ -81,8 +128,90 @@ impl PhysicianClient {
     pub fn new(base: impl Into<String>) -> Self {
         Self {
             base: base.into().trim_end_matches('/').to_owned(),
-            http: reqwest::Client::new(),
+            transport: ClientTransport::Http(reqwest::Client::new()),
             session: Session::new(),
+        }
+    }
+
+    /// Creates a browser-local SQLite demo client backed by `db_url`.
+    #[cfg(target_arch = "wasm32")]
+    pub fn demo_sqlite(db_url: impl Into<String>) -> Self {
+        let session = Session::new();
+        session.set("demo-session".to_owned());
+        Self {
+            base: String::new(),
+            transport: ClientTransport::Demo(DemoStore::new(SqliteDriver::from_browser_url(
+                db_url,
+            ))),
+            session,
+        }
+    }
+
+    /// Creates a demo client wrapping an in-process SQLite store (tests).
+    #[cfg(test)]
+    pub fn demo_store(store: DemoStore) -> Self {
+        let session = Session::new();
+        session.set("demo-session".to_owned());
+        Self {
+            base: String::new(),
+            transport: ClientTransport::Demo(store),
+            session,
+        }
+    }
+
+    /// Whether this client serves requests from the local browser SQLite demo store.
+    pub fn is_demo(&self) -> bool {
+        match &self.transport {
+            ClientTransport::Http(_) => false,
+            #[cfg(any(target_arch = "wasm32", test))]
+            ClientTransport::Demo(_) => true,
+        }
+    }
+
+    /// Resets the browser SQLite demo database back to its initial snapshot.
+    pub async fn demo_reset(&self) -> Result<(), http::HttpError> {
+        match &self.transport {
+            ClientTransport::Http(_) => Ok(()),
+            #[cfg(any(target_arch = "wasm32", test))]
+            ClientTransport::Demo(store) => store.reset().await.map_err(demo_error),
+        }
+    }
+
+    /// Reads one full chart source record for demo citation inspection.
+    pub async fn demo_source_preview(
+        &self,
+        workspace_id: &str,
+        record_id: &str,
+    ) -> Result<DemoSourcePreview, http::HttpError> {
+        #[cfg(not(any(target_arch = "wasm32", test)))]
+        let _ = (workspace_id, record_id);
+        match &self.transport {
+            ClientTransport::Http(_) => Err(http::HttpError::Transport(
+                "source_record lookup is only available in demo mode".to_owned(),
+            )),
+            #[cfg(any(target_arch = "wasm32", test))]
+            ClientTransport::Demo(store) => {
+                let rec = store
+                    .source_record(workspace_id, record_id)
+                    .await
+                    .map_err(demo_error)?;
+                Ok(DemoSourcePreview {
+                    title: rec.title,
+                    recorded_at: rec.recorded_at,
+                    body: rec.body,
+                    source_label: rec.source_label,
+                })
+            }
+        }
+    }
+
+    fn http_client(&self) -> Result<&reqwest::Client, http::HttpError> {
+        match &self.transport {
+            ClientTransport::Http(client) => Ok(client),
+            #[cfg(any(target_arch = "wasm32", test))]
+            ClientTransport::Demo(_) => Err(http::HttpError::Transport(
+                "HTTP client requested on demo transport".to_owned(),
+            )),
         }
     }
 
@@ -98,7 +227,7 @@ impl PhysicianClient {
     }
 
     async fn get<T: serde::de::DeserializeOwned>(&self, path: &str) -> Result<T, http::HttpError> {
-        let mut request = self.http.get(format!("{}{path}", self.base));
+        let mut request = self.http_client()?.get(format!("{}{path}", self.base));
         if let Some(bearer) = self.bearer() {
             request = request.header(reqwest::header::AUTHORIZATION, bearer);
         }
@@ -126,7 +255,10 @@ impl PhysicianClient {
         body: &impl serde::Serialize,
         time_limit: Option<std::time::Duration>,
     ) -> Result<T, http::HttpError> {
-        let mut request = self.http.post(format!("{}{path}", self.base)).json(body);
+        let mut request = self
+            .http_client()?
+            .post(format!("{}{path}", self.base))
+            .json(body);
         if let Some(limit) = time_limit {
             request = request.timeout(limit);
         }
@@ -145,7 +277,10 @@ impl PhysicianClient {
         path: &str,
         body: &impl serde::Serialize,
     ) -> Result<T, http::HttpError> {
-        let mut request = self.http.put(format!("{}{path}", self.base)).json(body);
+        let mut request = self
+            .http_client()?
+            .put(format!("{}{path}", self.base))
+            .json(body);
         if let Some(bearer) = self.bearer() {
             request = request.header(reqwest::header::AUTHORIZATION, bearer);
         }
@@ -160,7 +295,7 @@ impl PhysicianClient {
         &self,
         path: &str,
     ) -> Result<T, http::HttpError> {
-        let mut request = self.http.delete(format!("{}{path}", self.base));
+        let mut request = self.http_client()?.delete(format!("{}{path}", self.base));
         if let Some(bearer) = self.bearer() {
             request = request.header(reqwest::header::AUTHORIZATION, bearer);
         }
@@ -173,6 +308,11 @@ impl PhysicianClient {
 
     /// Reads the physician health check.
     pub async fn health(&self) -> Result<HealthResponse, http::HttpError> {
+        #[cfg(any(target_arch = "wasm32", test))]
+        if let ClientTransport::Demo(store) = &self.transport {
+            store.ensure_ready().await.map_err(demo_error)?;
+            return Ok(store.health());
+        }
         self.get("/health").await
     }
 
@@ -218,6 +358,11 @@ impl PhysicianClient {
 
     /// Reads the session's physician when the held session still resolves.
     pub async fn whoami(&self) -> Result<WhoamiResponse, http::HttpError> {
+        #[cfg(any(target_arch = "wasm32", test))]
+        if let ClientTransport::Demo(store) = &self.transport {
+            store.ensure_ready().await.map_err(demo_error)?;
+            return Ok(store.whoami());
+        }
         self.get("/auth/whoami").await
     }
 
@@ -260,16 +405,19 @@ impl PhysicianClient {
 
     /// Reads Today.
     pub async fn today(&self) -> Result<TodayListResponse, http::HttpError> {
+        try_demo!(self, s => s.today());
         self.get("/today").await
     }
 
     /// Reads the patient workspaces.
     pub async fn workspaces(&self) -> Result<PatientWorkspacesResponse, http::HttpError> {
+        try_demo!(self, s => s.workspaces());
         self.get("/patient-workspaces").await
     }
 
     /// Reads the practice day.
     pub async fn practice_day(&self) -> Result<PracticeDayResponse, http::HttpError> {
+        try_demo!(self, s => s.practice_day());
         self.get("/practice-day").await
     }
 
@@ -277,11 +425,13 @@ impl PhysicianClient {
     pub async fn recent_conversations(
         &self,
     ) -> Result<RecentConversationsResponse, http::HttpError> {
+        try_demo!(self, s => s.recent_conversations());
         self.get("/recent-conversations").await
     }
 
     /// Reads Updates.
     pub async fn updates(&self) -> Result<UpdatesResponse, http::HttpError> {
+        try_demo!(self, s => s.updates());
         self.get("/updates").await
     }
 
@@ -290,6 +440,7 @@ impl PhysicianClient {
         &self,
         workspace_id: &str,
     ) -> Result<TodayListResponse, http::HttpError> {
+        try_demo!(self, s => s.today_for(workspace_id));
         self.get(&format!(
             "/today?patient_workspace_id={}",
             query_escape(workspace_id)
@@ -303,6 +454,7 @@ impl PhysicianClient {
         &self,
         body: &serde_json::Value,
     ) -> Result<serde_json::Value, http::HttpError> {
+        try_demo!(self, s => s.command(body));
         self.post_as(self.bearer(), "/commands", body, Some(COMMAND_TIME_LIMIT))
             .await
     }
@@ -313,6 +465,7 @@ impl PhysicianClient {
         workspace_id: &str,
         chat_id: &str,
     ) -> Result<ChatSnapshotResponse, http::HttpError> {
+        try_demo!(self, s => s.chat_snapshot(workspace_id, chat_id));
         self.get(&format!(
             "/patient-workspaces/{workspace_id}/chats/{chat_id}/snapshot"
         ))
@@ -325,6 +478,7 @@ impl PhysicianClient {
         workspace_id: &str,
         chat_id: &str,
     ) -> Result<PhysicianDraft, http::HttpError> {
+        try_demo!(self, s => s.read_draft(workspace_id, chat_id));
         self.get(&format!("/physician-state/drafts/{workspace_id}/{chat_id}"))
             .await
     }
@@ -341,6 +495,17 @@ impl PhysicianClient {
         revision: i64,
         text: &str,
     ) -> Result<DraftSave, http::HttpError> {
+        #[cfg(any(target_arch = "wasm32", test))]
+        if let ClientTransport::Demo(store) = &self.transport {
+            return match store
+                .save_draft(workspace_id, chat_id, revision, text)
+                .await
+                .map_err(demo_error)?
+            {
+                DraftSaveOutcome::Saved(saved) => Ok(DraftSave::Saved(saved)),
+                DraftSaveOutcome::Conflict(current) => Ok(DraftSave::Conflict(current)),
+            };
+        }
         let answer = self
             .put::<PhysicianDraft>(
                 &format!("/physician-state/drafts/{workspace_id}/{chat_id}"),
@@ -367,6 +532,7 @@ impl PhysicianClient {
         response: &ResponseId,
         feedback: &SaveFeedback,
     ) -> Result<ResponseFeedback, http::HttpError> {
+        try_demo!(self, s => s.save_feedback(workspace_id, chat_id, response, feedback));
         self.put(
             &format!(
                 "/physician-state/feedback/{workspace_id}/{chat_id}/{}",
@@ -383,6 +549,7 @@ impl PhysicianClient {
         workspace_id: &str,
         reply_work_id: &str,
     ) -> Result<ReplyDraftWire, http::HttpError> {
+        try_demo!(self, s => s.read_reply_draft(workspace_id, reply_work_id));
         self.get(&format!(
             "/physician-state/reply-drafts/{workspace_id}/{reply_work_id}"
         ))
@@ -399,7 +566,7 @@ impl PhysicianClient {
         }
         Self {
             base: self.base.clone(),
-            http: self.http.clone(),
+            transport: self.transport.clone(),
             session,
         }
     }
@@ -417,18 +584,35 @@ impl PhysicianClient {
 
     /// Searches the patient roster.
     pub async fn search(&self, query: &str) -> Result<PatientSearchResponse, http::HttpError> {
+        try_demo!(self, s => s.search(query));
         self.get(&format!("/patient-roster?query={}", query_escape(query)))
             .await
     }
 
     /// Reads one patient workspace.
     pub async fn workspace(&self, id: &str) -> Result<PatientWorkspaceResponse, http::HttpError> {
+        try_demo!(self, s => s.workspace(id));
         self.get(&format!("/patient-workspaces/{id}")).await
     }
 
     /// Returns the event stream path for this client.
     pub fn events_path(&self) -> String {
         format!("{}/patient-workspaces/events", self.base)
+    }
+}
+
+#[cfg(any(target_arch = "wasm32", test))]
+fn demo_error(err: DbError) -> http::HttpError {
+    match err {
+        DbError::NotFound { .. } => http::HttpError::Status {
+            status: 404,
+            body: err.to_string(),
+        },
+        DbError::InvalidCommand(_) => http::HttpError::Status {
+            status: 400,
+            body: err.to_string(),
+        },
+        other => http::HttpError::Transport(other.to_string()),
     }
 }
 
@@ -789,5 +973,41 @@ mod tests {
             client.today().await,
             Err(http::HttpError::Status { status: 401, .. })
         ));
+    }
+
+    #[tokio::test]
+    async fn demo_transport_serves_sqlite_reads_search_and_chat() {
+        let driver = physician_demo_db::SqliteDriver::open_in_memory().unwrap();
+        let store = physician_demo_db::DemoStore::new(driver);
+        let units = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../../patients/units");
+        physician_demo_db::seed::seed_from_units_dir(&store, &units, 4).unwrap();
+        let client = PhysicianClient::demo_store(store);
+        assert!(client.is_demo());
+        assert_eq!(
+            client.whoami().await.unwrap().display_name,
+            "Dr. Hannah Alvarez"
+        );
+        assert_eq!(client.search("Kowalczyk").await.unwrap().patients.len(), 1);
+        assert_eq!(
+            client.workspace("unit-2013").await.unwrap().display_name,
+            "Gary Kowalczyk"
+        );
+        client
+            .command(&serde_json::json!({
+                "type": "message.submit",
+                "idempotency_key": "k-demo-1",
+                "payload": {
+                    "patient_workspace_id": "unit-2013",
+                    "chat_id": "chat-unit-2013-1",
+                    "text": "Review metformin and diabetes history"
+                }
+            }))
+            .await
+            .unwrap();
+        let snap = client
+            .chat_snapshot("unit-2013", "chat-unit-2013-1")
+            .await
+            .unwrap();
+        assert_eq!(snap.snapshot.transcript.len(), 2);
     }
 }

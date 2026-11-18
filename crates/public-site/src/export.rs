@@ -40,7 +40,11 @@ pub enum ExportError {
 /// Renders all public routes, error page, metadata files, and embedded/hashed
 /// assets to `config.output_dir`, resolved under `config.base_path` and `config.origin`.
 pub fn export_site(config: &ExportConfig) -> Result<ExportReport, ExportError> {
-    let table = prerender_with_target(&Config::default(), &config.origin, &config.base_path)?;
+    let render_config = Config {
+        physician_demo: config.physician_demo,
+        ..Config::default()
+    };
+    let table = prerender_with_target(&render_config, &config.origin, &config.base_path)?;
     let legal = Legal::load()?;
     let assets = AssetTable::embedded_with_base([], &config.base_path);
 
@@ -183,6 +187,7 @@ mod tests {
             output_dir: dir.0.clone(),
             base_path,
             origin,
+            physician_demo: false,
         })
         .unwrap();
         assert!(report.pages_written >= 20);

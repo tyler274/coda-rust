@@ -809,15 +809,34 @@ pub fn PhysicianRoot(
     #[props(default)]
     open_chat: String,
     sign_in: Option<SignInLink>,
+    /// Optional browser SQLite database URL powering the static product demo.
+    #[props(default)]
+    demo_db: Option<String>,
 ) -> Element {
     // A mailed link goes through the sign-in screen even when this browser
     // already has a session. Otherwise the workspace opens, and its first
     // `/today` read handles the auth gate.
-    let mut signed_in = use_signal(|| sign_in.is_none());
-    let mut whoami_name = use_signal(String::new);
+    #[cfg(target_arch = "wasm32")]
+    let demo_active = demo_db.is_some();
+    #[cfg(not(target_arch = "wasm32"))]
+    let demo_active = false;
+    let mut signed_in = use_signal(|| demo_active || sign_in.is_none());
+    let mut whoami_name = use_signal(|| {
+        if demo_active {
+            "Dr. Hannah Alvarez".to_owned()
+        } else {
+            String::new()
+        }
+    });
     let mut whoami = use_signal(|| None::<WhoamiResponse>);
     #[cfg(target_arch = "wasm32")]
-    let owner = use_signal(|| read_stored_session().and_then(|_| read_stored_owner()));
+    let owner = use_signal(|| {
+        if demo_active {
+            None
+        } else {
+            read_stored_session().and_then(|_| read_stored_owner())
+        }
+    });
     #[cfg(not(target_arch = "wasm32"))]
     let owner = use_signal(|| None::<String>);
     let expired = use_signal(|| false);
@@ -829,6 +848,12 @@ pub fn PhysicianRoot(
     let mut sign_in_link = use_signal(|| sign_in);
     // The bearer session rides the client, so one client is built once.
     let client = use_signal(|| {
+        #[cfg(target_arch = "wasm32")]
+        if let Some(ref db_url) = demo_db {
+            return PhysicianClient::demo_sqlite(db_url.clone());
+        }
+        #[cfg(not(target_arch = "wasm32"))]
+        let _ = &demo_db;
         let client = PhysicianClient::new(base_url.clone());
         #[cfg(target_arch = "wasm32")]
         if let Some(session) = read_stored_session() {
@@ -1063,7 +1088,7 @@ fn PhysicianShell(
         if let Some(task) = stream.write().take() {
             task.cancel();
         }
-        if expired() {
+        if expired() || client.read().is_demo() {
             return;
         }
         let session = client.read().session().get();
@@ -1365,6 +1390,7 @@ fn PhysicianShell(
                         client,
                         composer,
                         snapshot_attempt,
+                        workspace_attempt,
                         target.clone(),
                         pending,
                     );
@@ -1453,6 +1479,7 @@ fn PhysicianShell(
                 client,
                 composer,
                 snapshot_attempt,
+                workspace_attempt,
                 target,
                 pending,
             );
@@ -1475,6 +1502,7 @@ fn PhysicianShell(
                 client,
                 composer,
                 snapshot_attempt,
+                workspace_attempt,
                 target,
                 pending,
             );
@@ -1871,6 +1899,26 @@ fn PhysicianShell(
                         if !whoami_name().is_empty() {
                             span { class: "sidebar-physician", "{whoami_name}" }
                         }
+                        if client.read().is_demo() {
+                            StatePill { "SQLite demo" }
+                            Button {
+                                variant: ButtonVariant::Quiet,
+                                aria_label: "Reset demo database",
+                                onclick: move |_| {
+                                    let demo_client = client.read().clone();
+                                    spawn(async move {
+                                        if demo_client.demo_reset().await.is_ok() {
+                                            *today_attempt.write() += 1;
+                                            *workspace_attempt.write() += 1;
+                                            *snapshot_attempt.write() += 1;
+                                            reading.set(None);
+                                            drawer.set(Drawer::Dismissed);
+                                        }
+                                    });
+                                },
+                                "Reset demo"
+                            }
+                        }
                         if connection_accounts {
                             Button {
                                 variant: ButtonVariant::Quiet,
@@ -1891,12 +1939,14 @@ fn PhysicianShell(
                             Icon { name: IconName::Keyboard }
                             "Keyboard shortcuts"
                         }
-                        Button {
-                            variant: ButtonVariant::Quiet,
-                            aria_label: "Sign out of Coda",
-                            onclick: move |_| sign_out_everywhere(session),
-                            Icon { name: IconName::Users }
-                            "Sign out"
+                        if !client.read().is_demo() {
+                            Button {
+                                variant: ButtonVariant::Quiet,
+                                aria_label: "Sign out of Coda",
+                                onclick: move |_| sign_out_everywhere(session),
+                                Icon { name: IconName::Users }
+                                "Sign out"
+                            }
                         }
                     }
                 }
@@ -2131,6 +2181,28 @@ fn PhysicianShell(
                             on_open_source: move |chip: SourceChip| {
                                 reading.set(Some(source_reading(chip)));
                             },
+                            on_open_demo_source: client.read().is_demo().then(|| {
+                                Callback::new(move |record_id: String| {
+                                    let Some(ws_id) = selected() else { return };
+                                    let demo_client = client.read().clone();
+                                    spawn(async move {
+                                        if let Ok(rec) =
+                                            demo_client.demo_source_preview(&ws_id, &record_id).await
+                                        {
+                                            let chip = SourceChip {
+                                                index: 1,
+                                                label: rec.title,
+                                                open: true,
+                                                preview: rec.body,
+                                                as_of: rec.recorded_at,
+                                                open_label: Some(rec.source_label),
+                                                open_uri: None,
+                                            };
+                                            reading.set(Some(source_reading(chip)));
+                                        }
+                                    });
+                                })
+                            }),
                             on_draft: move |value: String| {
                                 let target = draft_target();
                                 composer.write().edit(target.as_ref(), value);
@@ -3161,6 +3233,9 @@ fn UpdatesSurface(state: ReadView<Vec<serde_json::Value>>, on_retry: EventHandle
                         for row in rows {
                             article { class: "today-row",
                                 strong { class: "today-row-who", "{row.get(\"patient_display_name\").and_then(|value| value.as_str()).unwrap_or(\"Update\")}" }
+                                if let Some(summary) = row.get("summary").and_then(|value| value.as_str()) {
+                                    span { class: "today-row-reason", "{summary}" }
+                                }
                             }
                         }
                     }
@@ -3209,6 +3284,7 @@ fn PatientSurface(
     on_decide_recommendation: EventHandler<String>,
     on_read: EventHandler<(String, String)>,
     on_open_source: EventHandler<SourceChip>,
+    #[props(default)] on_open_demo_source: Option<EventHandler<String>>,
     on_draft: EventHandler<String>,
     on_send: EventHandler,
     on_dictate: EventHandler,
@@ -3672,6 +3748,25 @@ fn PatientSurface(
                                         feedback::ResponseRating { chat, response, read }
                                     }),
                                     MessageWords { text: line.text }
+                                    if !line.sources.is_empty()
+                                        && let Some(open_demo_source) = on_open_demo_source
+                                    {
+                                        div { class: "message-sources",
+                                            for (idx, src) in line.sources.iter().enumerate() {
+                                                {
+                                                    let record_id = src.record_id.clone();
+                                                    let label = src.title.clone();
+                                                    rsx! {
+                                                        ui::CitationChip {
+                                                            index: idx + 1,
+                                                            label,
+                                                            onclick: move |_| open_demo_source.call(record_id.clone()),
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
                                 }
                             } else {
                                 MessageWords { text: line.text }
@@ -4408,6 +4503,7 @@ fn dispatch_send(
     client: Signal<PhysicianClient>,
     composer: Signal<Composer>,
     mut snapshot_attempt: Signal<u32>,
+    mut workspace_attempt: Signal<u32>,
     target: DraftTarget,
     pending: composer::PendingSend,
 ) {
@@ -4418,6 +4514,7 @@ fn dispatch_send(
             let mut held = composer;
             held.write().sent(&target, &key, SendAnswer::Accepted);
             *snapshot_attempt.write() += 1;
+            *workspace_attempt.write() += 1;
             autosave(composer, client, target.clone());
         })
     };
@@ -4467,6 +4564,12 @@ fn message_command(
 /// One line of the open conversation. A turn Coda couldn't finish carries the
 /// work and run its Try again resumes. A running turn carries Stop, and a
 /// stopped turn carries Resume.
+#[derive(Debug, Clone, PartialEq, Eq)]
+struct DemoLineSource {
+    record_id: String,
+    title: String,
+}
+
 #[derive(Debug, Clone, PartialEq)]
 struct ConversationLine {
     text: String,
@@ -4481,6 +4584,8 @@ struct ConversationLine {
     /// feedback names, and the physician's feedback on it as the snapshot
     /// read it.
     response: Option<(ResponseId, feedback::Read)>,
+    /// Chart records read for this response, for interactive demo citation opening.
+    sources: Vec<DemoLineSource>,
 }
 
 /// The line while Coda works on an answer.
@@ -4494,6 +4599,33 @@ const LIMIT: &str = "Coda reached its limit for this response.";
 /// Follows a cut-off line only where Try again is offered.
 const TRY_AGAIN_PROMISE: &str = "Choose Try again to continue.";
 
+fn extract_exchange_sources(steps: &physician_wire::ExchangeSteps) -> Vec<DemoLineSource> {
+    let physician_wire::ExchangeSteps::Read(step_list) = steps else {
+        return Vec::new();
+    };
+    let mut out = Vec::new();
+    for step in step_list {
+        if let physician_wire::Step::ReadRecords {
+            state: physician_wire::StepState::Returned { result },
+            ..
+        } = step
+        {
+            for rec in result {
+                if let physician_wire::RecordRead::Whole { version, about } = rec {
+                    out.push(DemoLineSource {
+                        record_id: version.candidate_id.clone(),
+                        title: about
+                            .title
+                            .clone()
+                            .unwrap_or_else(|| "Chart record".to_owned()),
+                    });
+                }
+            }
+        }
+    }
+    out
+}
+
 /// The lines a chat snapshot shows, in order: each exchange's messages, the
 /// text a limit kept, then its answer or the line that says how it ended.
 fn conversation_lines(snapshot: &ChatSnapshot) -> Vec<ConversationLine> {
@@ -4504,9 +4636,11 @@ fn conversation_lines(snapshot: &ChatSnapshot) -> Vec<ConversationLine> {
         stop: None,
         held: false,
         response: None,
+        sources: Vec::new(),
     };
     let mut lines = Vec::new();
     for exchange in &snapshot.transcript {
+        let exchange_sources = extract_exchange_sources(&exchange.steps);
         lines.extend(
             exchange
                 .messages
@@ -4536,6 +4670,7 @@ fn conversation_lines(snapshot: &ChatSnapshot) -> Vec<ConversationLine> {
                 };
                 lines.push(ConversationLine {
                     response: Some((response_id.clone(), read)),
+                    sources: exchange_sources,
                     ..line(text, Some(Author::Assistant))
                 });
             }
@@ -4741,6 +4876,7 @@ mod conversation_line_tests {
             stop: None,
             held: false,
             response: None,
+            sources: Vec::new(),
         }
     }
 

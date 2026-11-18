@@ -1,6 +1,15 @@
 use crate::site::{BasePath, DEFAULT_LISTEN_ADDR, SiteOrigin, SiteUrlError};
 use std::{ffi::OsString, net::SocketAddr, path::PathBuf};
 
+/// How the public website links to `/physician/`.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Default)]
+pub enum PhysicianLink {
+    #[default]
+    None,
+    SignIn,
+    LiveDemo,
+}
+
 /// Startup-only rendering/listener configuration. Upstream transport settings
 /// belong to RuntimeConfig, never to page content or navigation destinations.
 #[derive(Clone, Debug, PartialEq)]
@@ -9,6 +18,8 @@ pub struct Config {
     /// Whether the nav offers "Sign in". The binary sets it from
     /// `RuntimeConfig::physician_proxy`, so the link exists exactly when `/physician/` does.
     pub physician_sign_in: bool,
+    /// Whether static export links "Try live demo" to the browser-SQLite `/physician/` bundle.
+    pub physician_demo: bool,
 }
 
 impl Default for Config {
@@ -18,6 +29,7 @@ impl Default for Config {
                 .parse()
                 .expect("constant socket address"),
             physician_sign_in: false,
+            physician_demo: false,
         }
     }
 }
@@ -30,6 +42,16 @@ impl Config {
         }
         Ok(config)
     }
+
+    pub fn physician_link(&self) -> PhysicianLink {
+        if self.physician_sign_in {
+            PhysicianLink::SignIn
+        } else if self.physician_demo {
+            PhysicianLink::LiveDemo
+        } else {
+            PhysicianLink::None
+        }
+    }
 }
 
 /// Static export configuration for writing prerendered HTML and assets to disk.
@@ -38,6 +60,7 @@ pub struct ExportConfig {
     pub output_dir: PathBuf,
     pub base_path: BasePath,
     pub origin: SiteOrigin,
+    pub physician_demo: bool,
 }
 
 /// Parsed binary invocation mode.
@@ -68,6 +91,7 @@ impl Command {
         let mut export_dir: Option<PathBuf> = None;
         let mut base_path: Option<String> = None;
         let mut origin: Option<String> = None;
+        let mut physician_demo = false;
 
         while let Some(raw) = iter.next() {
             let arg = raw.into_string().map_err(|_| CliError::InvalidEncoding)?;
@@ -83,13 +107,15 @@ impl Command {
                 origin = Some(next_flag_value("--origin", &mut iter)?);
             } else if let Some(val) = arg.strip_prefix("--origin=") {
                 origin = Some(val.to_owned());
+            } else if arg == "--physician-demo" {
+                physician_demo = true;
             } else {
                 return Err(CliError::UnknownArgument(arg));
             }
         }
 
         let Some(output_dir) = export_dir else {
-            if base_path.is_some() || origin.is_some() {
+            if base_path.is_some() || origin.is_some() || physician_demo {
                 return Err(CliError::MissingExportDir);
             }
             return Ok(Self::Serve);
@@ -110,6 +136,7 @@ impl Command {
             output_dir,
             base_path,
             origin,
+            physician_demo,
         }))
     }
 }
@@ -145,6 +172,7 @@ mod tests {
             "--base-path=/coda-rust",
             "--origin",
             "https://tyler274.github.io/coda-rust",
+            "--physician-demo",
         ]))
         .unwrap();
         assert_eq!(
@@ -157,6 +185,7 @@ mod tests {
                     &BasePath::parse("/coda-rust").unwrap()
                 )
                 .unwrap(),
+                physician_demo: true,
             })
         );
         assert!(Command::from_args(os(&["public-site", "--base-path", "/coda-rust"])).is_err());

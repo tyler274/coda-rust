@@ -164,7 +164,7 @@ pub struct TodayConnection {
     pub channel: Option<String>,
 }
 
-#[derive(Debug, Clone, Deserialize, PartialEq)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 /// The `TodayRow` value exchanged by this crate.
 pub struct TodayRow {
     /// The `patient_workspace_id` value.
@@ -229,7 +229,7 @@ pub struct PatientWorkspaceSummary {
     pub cursor: i64,
 }
 
-#[derive(Debug, Clone, Deserialize, PartialEq)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 /// The `WorkspaceChat` value exchanged by this crate.
 pub struct WorkspaceChat {
     /// The `chat_id` value.
@@ -262,7 +262,7 @@ pub struct PracticeSourceState {
     pub state: String,
 }
 
-#[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 /// The `PracticeVisit` value exchanged by this crate.
 pub struct PracticeVisit {
     #[serde(default)]
@@ -288,7 +288,7 @@ pub struct PracticeVisit {
     pub preparation: Option<VisitPreparation>,
 }
 
-#[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 /// The `VisitPreparation` value exchanged by this crate.
 pub struct VisitPreparation {
     /// The `state` value.
@@ -298,7 +298,7 @@ pub struct VisitPreparation {
     pub last_attempt: Option<PreparationAttempt>,
 }
 
-#[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 /// The `PreparationAttempt` value exchanged by this crate.
 pub struct PreparationAttempt {
     /// The `outcome` value.
@@ -364,7 +364,7 @@ pub struct PatientSearchRow {
     pub cadence: Option<String>,
 }
 
-#[derive(Debug, Clone, Copy, Deserialize, PartialEq, Eq, Default)]
+#[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq, Default)]
 #[serde(rename_all = "snake_case")]
 /// The caller's membership level for a patient workspace.
 pub enum WorkspaceMembership {
@@ -375,7 +375,7 @@ pub enum WorkspaceMembership {
     ClinicDemographic,
 }
 
-#[derive(Debug, Clone, Copy, Deserialize, PartialEq, Eq, Default)]
+#[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq, Default)]
 #[serde(rename_all = "snake_case")]
 /// Per-patient review cadence reported on a workspace without payment status.
 pub enum ReviewCadenceWire {
@@ -386,7 +386,7 @@ pub enum ReviewCadenceWire {
     WeeklyAndDailyWhenChanged,
 }
 
-#[derive(Debug, Clone, Deserialize, PartialEq)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 /// The `PatientWorkspaceResponse` value exchanged by this crate.
 pub struct PatientWorkspaceResponse {
     /// The `patient_workspace_id` value.
@@ -450,7 +450,7 @@ impl PatientWorkspaceResponse {
     }
 }
 
-#[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 /// The `PatientIdentity` value exchanged by this crate.
 pub struct PatientIdentity {
     #[serde(default)]
@@ -473,7 +473,7 @@ pub struct PatientIdentity {
     pub state: Option<String>,
 }
 
-#[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 /// One medical record number on the patient identity.
 pub struct MedicalRecordNumber {
     #[serde(default)]
@@ -481,7 +481,7 @@ pub struct MedicalRecordNumber {
     pub value: Option<String>,
 }
 
-#[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 /// The `SexOrGender` value exchanged by this crate.
 pub struct SexOrGender {
     #[serde(default)]
@@ -492,7 +492,7 @@ pub struct SexOrGender {
     pub label: Option<String>,
 }
 
-#[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 /// The `PatientSynopsis` value exchanged by this crate.
 pub struct PatientSynopsis {
     /// The `version_id` value.
@@ -508,7 +508,7 @@ pub struct PatientSynopsis {
     pub authored_at: Option<String>,
 }
 
-#[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 /// One connected record source on the workspace.
 pub struct ConnectedSource {
     #[serde(default)]
@@ -516,7 +516,7 @@ pub struct ConnectedSource {
     pub state: SourceConnectionState,
 }
 
-#[derive(Debug, Clone, Deserialize, PartialEq, Eq, Default)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Default)]
 /// The pull state of one connected source.
 pub struct SourceConnectionState {
     #[serde(default)]
@@ -530,7 +530,7 @@ pub struct SourceConnectionState {
     pub usable_snapshot: Option<SourceSnapshot>,
 }
 
-#[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 /// A retained good pull.
 pub struct SourceSnapshot {
     #[serde(default)]
@@ -538,7 +538,7 @@ pub struct SourceSnapshot {
     pub synchronized_at: Option<String>,
 }
 
-#[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(tag = "kind", rename_all = "snake_case")]
 /// One piece of authored clinical text.
 // The Citation variant carries six option fields against Text's one String,
@@ -577,7 +577,7 @@ pub enum ClinicalSegment {
     },
 }
 
-#[derive(Debug, Clone, Deserialize, PartialEq, Eq, Default)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Default)]
 /// The preview stored on a citation.
 pub struct SourcePresentation {
     #[serde(default)]
@@ -585,7 +585,7 @@ pub struct SourcePresentation {
     pub content: Option<SourcePreviewContent>,
 }
 
-#[derive(Debug, Clone, Deserialize, PartialEq, Eq, Default)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Default)]
 /// The text a source chip opens.
 pub struct SourcePreviewContent {
     #[serde(default)]
@@ -596,7 +596,7 @@ pub struct SourcePreviewContent {
     pub as_of: String,
 }
 
-#[derive(Debug, Clone, Deserialize, PartialEq, Eq, Default)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Default)]
 /// A link from a citation back to its record.
 pub struct CitationDestination {
     #[serde(default)]
@@ -610,7 +610,7 @@ pub struct CitationDestination {
     pub uri: Option<String>,
 }
 
-#[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 /// The `AutomationRun` value exchanged by this crate.
 pub struct AutomationRun {
     /// The `kind` value.
@@ -625,7 +625,7 @@ pub struct AutomationRun {
     pub purpose: Option<WorkPurpose>,
 }
 
-#[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 /// The `WorkPurpose` value exchanged by this crate.
 pub struct WorkPurpose {
     #[serde(default)]
@@ -633,7 +633,7 @@ pub struct WorkPurpose {
     pub headline: Option<String>,
 }
 
-#[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 /// The `FollowUp` value exchanged by this crate.
 pub struct FollowUp {
     /// The `follow_up_id` value.
