@@ -1,0 +1,113 @@
+{
+  "branch": "tyler-eng-266-2-understanding-host-and-ui",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC1",
+      "label": "Physician app patient summary shell and state unit suite",
+      "kind": "run",
+      "revision": "01b26cc722ee40f209d9bf59d7253e447db27c7d",
+      "dirty": false,
+      "recorded": "2026-11-18T22:10:57+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-app",
+        "--lib"
+      ],
+      "expect": "\\b87 passed\\b",
+      "expect_fail": false,
+      "files": [
+        "01-Physician-app-patient-summary-shell-and-state-un.log"
+      ],
+      "seconds": 16.4,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true
+    },
+    {
+      "id": 2,
+      "claim": "AC1",
+      "label": "Physician wire response and transcript snapshot schema tests",
+      "kind": "run",
+      "revision": "01b26cc722ee40f209d9bf59d7253e447db27c7d",
+      "dirty": false,
+      "recorded": "2026-11-18T22:11:13+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-wire",
+        "--lib"
+      ],
+      "expect": "\\b5 passed\\b",
+      "expect_fail": false,
+      "files": [
+        "02-Physician-wire-response-and-transcript-snapshot-.log"
+      ],
+      "seconds": 11.4,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true
+    },
+    {
+      "id": 3,
+      "claim": "AC2",
+      "label": "End-to-end chat, source refresh trigger, and understanding revision PostgreSQL suite",
+      "kind": "run",
+      "revision": "01b26cc722ee40f209d9bf59d7253e447db27c7d",
+      "dirty": false,
+      "recorded": "2026-11-18T22:11:25+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "local-product",
+        "--test",
+        "physician_chat_recipe",
+        "--",
+        "--ignored",
+        "--test-threads=1"
+      ],
+      "expect": "\\b7 passed\\b",
+      "expect_fail": false,
+      "files": [
+        "03-End-to-end-chat-source-refresh-trigger-and-under.log"
+      ],
+      "seconds": 37.3,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true
+    },
+    {
+      "id": 4,
+      "claim": "AC3",
+      "label": "Chromium browser verification of patient summary, citations, and OperatingIndex exclusion",
+      "kind": "run",
+      "revision": "01b26cc722ee40f209d9bf59d7253e447db27c7d",
+      "dirty": false,
+      "recorded": "2026-11-18T22:12:02+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-sample",
+        "--test",
+        "site",
+        "first_source_path_renders_saved_patient_summary_and_evidence_without_private_operating_index",
+        "--",
+        "--ignored"
+      ],
+      "expect": "\\b1 passed\\b",
+      "expect_fail": false,
+      "files": [
+        "04-Chromium-browser-verification-of-patient-summary.log"
+      ],
+      "seconds": 94.2,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true
+    }
+  ]
+}
