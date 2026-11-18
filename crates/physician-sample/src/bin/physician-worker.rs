@@ -26,9 +26,12 @@ use harness::engine::{AttemptFailure, Cancellation, RunLimits};
 use local_product::runtime::delivery::{
     AttemptSettlement, Backoff, Delivery, DeliveryKind, DeliveryState,
 };
+use sea_orm::TransactionTrait;
 
 #[path = "physician-worker/attempt.rs"]
 mod attempt;
+#[path = "physician-worker/practice_job.rs"]
+mod practice_job;
 #[path = "physician-worker/pull.rs"]
 mod pull;
 #[path = "physician-worker/revision.rs"]
@@ -145,7 +148,7 @@ async fn run_delivery(worker: &Worker, delivery: &Delivery, stop: watch::Receive
     match delivery.kind {
         DeliveryKind::ChatTurn => chat_turn(worker, delivery, stop).await,
         DeliveryKind::ReplyRevision => revision::deliver(worker, delivery, stop).await,
-        DeliveryKind::PracticeJob => Next::Done,
+        DeliveryKind::PracticeJob => practice_job::deliver(worker, delivery, stop).await,
     }
 }
 
@@ -1383,6 +1386,24 @@ impl WorkerAuthority {
         scope: &Scope,
     ) -> Result<(), String> {
         model::source_boundary(self.synthetic_only, tx, &scope.workspace).await
+    }
+
+    pub(crate) async fn check_store_source_boundary(
+        &self,
+        store: &Store,
+        scope: &Scope,
+    ) -> Result<(), String> {
+        if !self.synthetic_only {
+            return Ok(());
+        }
+        let tx = store
+            .connection()
+            .begin()
+            .await
+            .map_err(|e| e.to_string())?;
+        let check = self.check_source_boundary(&tx, scope).await;
+        let _ = tx.commit().await;
+        check
     }
 }
 
