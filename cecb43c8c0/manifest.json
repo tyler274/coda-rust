@@ -1,0 +1,87 @@
+{
+  "branch": "tyler-fix-lettre-and-runner-docs",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC1",
+      "label": "cargo-deny advisories bans licenses sources (lettre 0.11.24)",
+      "kind": "run",
+      "revision": "cecb43c8c0c7c20c84fea7f81b60e6e423197348",
+      "dirty": false,
+      "recorded": "2026-11-18T15:33:03+00:00",
+      "command": [
+        "cargo",
+        "deny",
+        "--all-features",
+        "check",
+        "advisories",
+        "bans",
+        "licenses",
+        "sources"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "01-cargo-deny-advisories-bans-licenses-sources-lett.log"
+      ],
+      "seconds": 15.3,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 2,
+      "claim": "AC2",
+      "label": "mdbook build and lychee link check",
+      "kind": "run",
+      "revision": "cecb43c8c0c7c20c84fea7f81b60e6e423197348",
+      "dirty": false,
+      "recorded": "2026-11-18T15:33:18+00:00",
+      "command": [
+        "./scripts/check-book-links.sh"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "02-mdbook-build-and-lychee-link-check.log"
+      ],
+      "seconds": 2.0,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 3,
+      "claim": "AC3",
+      "label": "actionlint workflow check",
+      "kind": "run",
+      "revision": "cecb43c8c0c7c20c84fea7f81b60e6e423197348",
+      "dirty": false,
+      "recorded": "2026-11-18T15:33:21+00:00",
+      "command": [
+        "actionlint",
+        ".github/workflows/ci.yml"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "03-actionlint-workflow-check.log"
+      ],
+      "seconds": 0.1,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 4,
+      "claim": "AC4",
+      "label": "pre-commit rustfmt, workspace clippy, wasm32 clippy",
+      "kind": "file",
+      "revision": "cecb43c8c0c7c20c84fea7f81b60e6e423197348",
+      "dirty": false,
+      "recorded": "2026-11-18T15:33:21+00:00",
+      "files": [
+        "04-pre-commit-clean.log"
+      ],
+      "source": "target/verification/pr8/pre-commit-clean.log",
+      "ok": true
+    }
+  ]
+}
