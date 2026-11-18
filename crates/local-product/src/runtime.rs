@@ -77,6 +77,8 @@ pub mod source_status;
 pub mod sources;
 #[cfg(test)]
 mod tests;
+/// Cross-producer Today and Updates read model, per-physician seen state, and item detail projection.
+pub mod today_updates;
 mod transcript;
 pub use transcript::TranscriptError;
 /// Durable patient understanding: private operating index and patient-page summary.
