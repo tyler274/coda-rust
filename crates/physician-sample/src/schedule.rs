@@ -18,6 +18,9 @@ use axum::http::{Request, StatusCode};
 use axum::response::{IntoResponse, Response};
 use local_product::physician_sources::RecordDate;
 use local_product::runtime::Store;
+use local_product::runtime::briefings::{
+    VisitPreparationRecord, VisitPreparationState, visit_can_start_preparation,
+};
 use local_product::runtime::schedule::{
     AppointmentId, AppointmentStatus, AppointmentWindow, PatientMatch, SavedAppointment,
     ScheduleDelivery, ScheduleDomainError, ScheduleError, ScheduleFreshness, ScheduleReadIssue,
@@ -511,8 +514,32 @@ pub(crate) async fn practice_day(
     }
 
     let auth_store = connected.auth_store(extensions);
+    let Ok(clock) = auth_store.practice_clock(&identity.practice_id).await else {
+        return StatusCode::SERVICE_UNAVAILABLE.into_response();
+    };
+    let current_time_unix = clock.now(now()) as i64;
     let panel = auth_store.panel(&identity).await;
     let panel_set: BTreeSet<&str> = panel.iter().map(String::as_str).collect();
+
+    let Ok(preparations) = runtime_store
+        .visit_preparations_for_practice(&identity.practice_id, auth_store.as_ref())
+        .await
+    else {
+        return StatusCode::SERVICE_UNAVAILABLE.into_response();
+    };
+    let prep_by_slot: BTreeMap<(String, String, i64), VisitPreparationRecord> = preparations
+        .into_iter()
+        .map(|rec| {
+            (
+                (
+                    rec.slot.source_id.clone(),
+                    rec.slot.appointment_id.clone(),
+                    rec.slot.starts_at_unix,
+                ),
+                rec,
+            )
+        })
+        .collect();
 
     let matched_workspaces: Vec<String> = schedule
         .appointments
@@ -554,7 +581,15 @@ pub(crate) async fn practice_day(
         schedule
             .appointments
             .iter()
-            .filter_map(|appointment| visit_json(appointment, &panel_set, &display_names))
+            .filter_map(|appointment| {
+                visit_json(
+                    appointment,
+                    &panel_set,
+                    &display_names,
+                    &prep_by_slot,
+                    current_time_unix,
+                )
+            })
             .collect()
     } else {
         Vec::new()
@@ -664,6 +699,8 @@ fn visit_json(
     appointment: &SavedAppointment,
     panel_set: &BTreeSet<&str>,
     display_names: &BTreeMap<String, String>,
+    prep_by_slot: &BTreeMap<(String, String, i64), VisitPreparationRecord>,
+    current_time_unix: i64,
 ) -> Option<Value> {
     let encounter = json!({
         "source_code": appointment.source_id.as_str(),
@@ -681,6 +718,16 @@ fn visit_json(
             if !panel_set.contains(workspace_id.as_str()) {
                 return None;
             }
+            let slot_key = (
+                appointment.source_id.as_str().to_owned(),
+                appointment.appointment_id.as_str().to_owned(),
+                appointment.window.starts_at_unix(),
+            );
+            let preparation = matched_visit_preparation_json(
+                appointment,
+                prep_by_slot.get(&slot_key),
+                current_time_unix,
+            );
             Some(json!({
                 "encounter": encounter,
                 "starts_at": appointment.window.starts_at(),
@@ -693,7 +740,7 @@ fn visit_json(
                 "patient_workspace_id": workspace_id,
                 "patient_display_name": display_names.get(workspace_id),
                 "patient_time_zone": PRACTICE_TIME_ZONE,
-                "preparation": { "state": "scheduled" },
+                "preparation": preparation,
             }))
         }
         PatientMatch::Unmatched { source_patient_id } => Some(json!({
@@ -710,6 +757,85 @@ fn visit_json(
             "patient_time_zone": Value::Null,
             "preparation": { "state": "unavailable" },
         })),
+    }
+}
+
+fn matched_visit_preparation_json(
+    appointment: &SavedAppointment,
+    prep: Option<&VisitPreparationRecord>,
+    current_time_unix: i64,
+) -> Value {
+    let default_state = || {
+        if visit_can_start_preparation(
+            appointment.status,
+            appointment.window.ends_at_unix(),
+            current_time_unix,
+        ) {
+            json!({ "state": "scheduled" })
+        } else {
+            json!({ "state": "pending" })
+        }
+    };
+    let Some(prep) = prep else {
+        return default_state();
+    };
+    match &prep.state {
+        VisitPreparationState::Ready {
+            briefing_id,
+            prepared_at,
+            visit_card_orientation,
+            reason: _,
+        } => json!({
+            "state": "prepared",
+            "briefing_id": briefing_id,
+            "prepared_at": format_unix_rfc3339(*prepared_at),
+            "visit_card_orientation": visit_card_orientation,
+        }),
+        VisitPreparationState::Preparing {
+            job_id,
+            started_at: _,
+            reason: _,
+        } => json!({
+            "state": "preparing",
+            "run_id": job_id,
+        }),
+        VisitPreparationState::CouldNotFinish {
+            job_id,
+            failed_at,
+            reason,
+        } => {
+            let occurred_at = format_unix_rfc3339(*failed_at);
+            json!({
+                "state": "could_not_prepare",
+                "run_id": job_id,
+                "occurred_at": occurred_at,
+                "reason": reason,
+                "last_attempt": {
+                    "run_id": job_id,
+                    "outcome": "failed",
+                    "occurred_at": occurred_at,
+                },
+            })
+        }
+        VisitPreparationState::Skipped { reason } => json!({
+            "state": "pending",
+            "reason": reason,
+        }),
+        VisitPreparationState::EndedVisitChanged { ended_at, reason } => {
+            let occurred_at = format_unix_rfc3339(*ended_at);
+            json!({
+                "state": "pending",
+                "occurred_at": occurred_at,
+                "reason": reason,
+                "last_attempt": {
+                    "outcome": "cancelled",
+                    "occurred_at": occurred_at,
+                },
+            })
+        }
+        VisitPreparationState::Scheduled { .. } | VisitPreparationState::Deferred { .. } => {
+            default_state()
+        }
     }
 }
 

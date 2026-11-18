@@ -1989,11 +1989,18 @@ impl Product for PracticeJobHost<'_> {
         call: &Invocation,
     ) -> engine::recipe::ToolFuture<Option<ToolOutcome>> {
         let is_understanding = call.name == crate::initial_understanding::SAVE_UNDERSTANDING_TOOL;
+        let is_visit_prep = crate::visit_preparation::is_visit_preparation_tool(&call.name);
         let is_refresh = super::refresh::is_refresh_tool(&call.name);
         let is_concern = super::concerns::is_concern_tool(&call.name);
         let is_memory = super::memory::tools::MemoryTool::named(&call.name).is_some();
         let is_complete_review = call.name == crate::patient_reviews::COMPLETE_PATIENT_REVIEW_TOOL;
-        if !is_understanding && !is_refresh && !is_concern && !is_memory && !is_complete_review {
+        if !is_understanding
+            && !is_visit_prep
+            && !is_refresh
+            && !is_concern
+            && !is_memory
+            && !is_complete_review
+        {
             return Box::pin(async { Ok(None) });
         }
         if (is_concern || is_memory || is_complete_review)
@@ -2006,9 +2013,18 @@ impl Product for PracticeJobHost<'_> {
         let call = call.clone();
         Box::pin(async move {
             if is_understanding {
+                if claim.kind == PracticeJobKind::VisitPreparation {
+                    return Ok(None);
+                }
                 return store
                     .saved_practice_understanding_outcome(&claim, &call)
                     .await;
+            }
+            if is_visit_prep {
+                if claim.kind != PracticeJobKind::VisitPreparation {
+                    return Ok(None);
+                }
+                return store.saved_visit_preparation_outcome(&claim, &call).await;
             }
             store.assert_practice_job_current(&claim).await?;
             let (job, _, _) = store.practice_job_snapshot(&claim.scope).await?;
@@ -2104,6 +2120,20 @@ impl Product for PracticeJobHost<'_> {
             if call.name == SKILL_VIEW {
                 return Ok(skills.execute(&call.name, &arguments));
             }
+            if job.assignment.visit_selection.is_some() {
+                if call.name == crate::visit_preparation::SELECT_VISITS_TOOL
+                    && claim.kind == PracticeJobKind::VisitPreparation
+                {
+                    return store
+                        .execute_visit_preparation_tool_fenced(&claim, &call, &arguments)
+                        .await;
+                }
+                return Ok(ToolOutcome::refused(format!(
+                    "tool {} is not available to multi-visit selection jobs; use starting selection context and {}",
+                    call.name,
+                    crate::visit_preparation::SELECT_VISITS_TOOL
+                )));
+            }
             if matches!(call.name.as_str(), SEARCH_TOOL | READ_TOOL) {
                 return store
                     .execute_practice_chart_tool(&claim.scope, &call.name, &arguments)
@@ -2120,8 +2150,26 @@ impl Product for PracticeJobHost<'_> {
                     .await;
             }
             if crate::initial_understanding::is_understanding_tool(&call.name) {
+                if call.name == crate::initial_understanding::SAVE_UNDERSTANDING_TOOL
+                    && claim.kind == PracticeJobKind::VisitPreparation
+                {
+                    return Ok(ToolOutcome::refused(
+                        "save_patient_understanding is not available to visit preparation jobs",
+                    ));
+                }
                 return store
                     .execute_practice_understanding_tool_fenced(&claim, &call, &arguments)
+                    .await;
+            }
+            if crate::visit_preparation::is_visit_preparation_tool(&call.name) {
+                if claim.kind != PracticeJobKind::VisitPreparation {
+                    return Ok(ToolOutcome::refused(format!(
+                        "tool {} is only available to visit preparation jobs",
+                        call.name
+                    )));
+                }
+                return store
+                    .execute_visit_preparation_tool_fenced(&claim, &call, &arguments)
                     .await;
             }
             if crate::patient_reviews::is_patient_review_tool(&call.name) {
@@ -2139,6 +2187,12 @@ impl Product for PracticeJobHost<'_> {
                 if claim.kind == PracticeJobKind::InitialUnderstanding {
                     return Ok(ToolOutcome::refused(format!(
                         "initial understanding job cannot modify concerns: {} is refused",
+                        call.name
+                    )));
+                }
+                if claim.kind == PracticeJobKind::VisitPreparation {
+                    return Ok(ToolOutcome::refused(format!(
+                        "visit preparation job cannot invoke {} directly; record pre-visit concerns through save_visit_briefing",
                         call.name
                     )));
                 }
@@ -2238,6 +2292,14 @@ impl Product for PracticeJobHost<'_> {
                 return Ok(Finish::Continue(payload));
             }
         }
+        if job.kind == PracticeJobKind::VisitPreparation
+            && let Some(feedback) = self
+                .store
+                .finish_visit_preparation_gate(&self.claim, &job)
+                .await?
+        {
+            return Ok(Finish::Continue(feedback));
+        }
         self.store
             .commit_practice_job(&self.claim, turn, self.authority)
             .await?;
@@ -2317,11 +2379,18 @@ impl PracticeJobHost<'_> {
             .review_message_sources_for_job(&job)
             .await
             .map_err(|err| engine::Failure::Host(err.into()))?;
-        let (accepted, source_feedback) = self
+        let (accepted, mut source_feedback) = self
             .store
             .practice_job_recovery_inputs(&job, &ordered)
             .await
             .map_err(|err| engine::Failure::Host(err.into()))?;
+        if self.claim.kind == PracticeJobKind::VisitPreparation {
+            source_feedback = self
+                .store
+                .visit_preparation_recovery_feedback(&self.claim, &job, &ordered)
+                .await
+                .map_err(|err| engine::Failure::Host(err.into()))?;
+        }
         let work = request.freeze()?.recover(
             &self.claim.attempt,
             engine::recovery::Records {
