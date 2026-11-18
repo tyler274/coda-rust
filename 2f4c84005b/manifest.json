@@ -1,0 +1,85 @@
+{
+  "branch": "tyler-eng-264-1-source-refresh-runtime",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC1",
+      "label": "Refresh tool schema, target validation, and once-only request digest unit suite",
+      "kind": "run",
+      "revision": "2f4c84005bf88a244666b94981b02b0a6756c6e7",
+      "dirty": false,
+      "recorded": "2026-11-18T22:04:29+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "local-product",
+        "--lib",
+        "refresh"
+      ],
+      "expect": "\\b6 passed\\b",
+      "expect_fail": false,
+      "files": [
+        "01-Refresh-tool-schema-target-validation-and-once-o.log"
+      ],
+      "seconds": 34.7,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true
+    },
+    {
+      "id": 2,
+      "claim": "AC1",
+      "label": "Clean model-visible text and offered tools gate on physician chat catalog",
+      "kind": "run",
+      "revision": "2f4c84005bf88a244666b94981b02b0a6756c6e7",
+      "dirty": false,
+      "recorded": "2026-11-18T22:05:04+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "local-product",
+        "--lib",
+        "physician_chat::tests"
+      ],
+      "expect": "\\b11 passed\\b",
+      "expect_fail": false,
+      "files": [
+        "02-Clean-model-visible-text-and-offered-tools-gate-.log"
+      ],
+      "seconds": 2.5,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true
+    },
+    {
+      "id": 3,
+      "claim": "AC2",
+      "label": "Idempotent m20261118_03_source_refresh PostgreSQL migration chain",
+      "kind": "run",
+      "revision": "2f4c84005bf88a244666b94981b02b0a6756c6e7",
+      "dirty": false,
+      "recorded": "2026-11-18T22:05:07+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "local-product",
+        "--lib",
+        "runtime::tests::migration",
+        "--",
+        "--include-ignored"
+      ],
+      "expect": "\\b3 passed\\b",
+      "expect_fail": false,
+      "files": [
+        "03-Idempotent-m20261118_03_source_refresh-PostgreSQ.log"
+      ],
+      "seconds": 2.6,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true
+    }
+  ]
+}
