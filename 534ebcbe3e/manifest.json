@@ -1,0 +1,43 @@
+{
+  "branch": "tyler-eng-400-visit-preparation-recipe",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC1",
+      "label": "Visit preparation recipe, bundled fallback skill parity, and local-product unit suite",
+      "kind": "run",
+      "revision": "534ebcbe3e07919bb8eb68dd670c87d558a9f025",
+      "dirty": false,
+      "recorded": "2026-11-18T23:10:07+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "local-product",
+        "--lib"
+      ],
+      "expect": "test result: ok\\. [1-9][0-9]* passed",
+      "expect_fail": false,
+      "files": [
+        "01-Visit-preparation-recipe-bundled-fallback-skill-.log"
+      ],
+      "seconds": 38.2,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true
+    },
+    {
+      "id": 2,
+      "claim": "AC4",
+      "label": "",
+      "kind": "gap",
+      "revision": "534ebcbe3e07919bb8eb68dd670c87d558a9f025",
+      "dirty": false,
+      "recorded": "2026-11-18T23:10:45+00:00",
+      "reason": "Live frontier-model clinical briefing evaluation requires OPENAI_API_KEY or Doppler model credentials.",
+      "ok": false,
+      "files": []
+    }
+  ]
+}
