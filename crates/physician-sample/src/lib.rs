@@ -212,7 +212,7 @@ pub fn durable_site_with_feed(
             "/physician-state/feedback/{workspace}/{chat}/{response}",
             axum::routing::put(feedback::save),
         )
-        .route("/patient-workspaces/{id}/past-work", get(fixture_past_work))
+        .route("/patient-workspaces/{id}/past-work", get(live::past_work))
         .route(
             "/patient-workspaces/{id}/chats/{chat}/snapshot",
             get(live::snapshot),
@@ -947,6 +947,13 @@ async fn recent_conversations(
     let store = connected.auth_store(extensions);
     let panel = store.panel(&identity).await;
     let directory = connected.patients(extensions);
+    if let Some(live) = extensions.get::<std::sync::Arc<live::Live>>() {
+        let ctx = extensions.get::<auth::AuthContext>();
+        let Ok(conversations) = live.recent_conversations(ctx, &panel, &*directory).await else {
+            return StatusCode::SERVICE_UNAVAILABLE.into_response();
+        };
+        return Json(json!({ "conversations": conversations })).into_response();
+    }
     let Ok(patients) = patients::read_patients(&*directory, &panel).await else {
         return StatusCode::SERVICE_UNAVAILABLE.into_response();
     };
@@ -1064,7 +1071,19 @@ async fn workspace(
             Ok(None) => {}
             Err(()) => return StatusCode::SERVICE_UNAVAILABLE.into_response(),
         }
-        if has_chats {
+        let has_past = match ctx {
+            Some(ctx) => match live
+                .chat
+                .store
+                .workspace_past_work(&ctx.identity.practice_id, &ctx.identity.physician_id, &id)
+                .await
+            {
+                Ok(items) => !items.is_empty(),
+                Err(_) => return StatusCode::SERVICE_UNAVAILABLE.into_response(),
+            },
+            None => has_chats,
+        };
+        if has_past || has_chats {
             enriched["has_past_work"] = json!(true);
         }
     } else if let Some(feed) = request.extensions().get::<std::sync::Arc<SampleFeed>>() {

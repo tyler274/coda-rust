@@ -2046,7 +2046,7 @@ async fn a_reply_draws_code_and_a_table_that_scroll_by_key() {
         "clickNamed",
         serde_json::json!([".composer-toolbar button", "Send"]),
     );
-    browser.wait_for_text("Recheck on Friday", Duration::from_secs(30));
+    browser.wait_for_text("Synthetic Regional Laboratory", Duration::from_secs(30));
     browser.save_pictures("thread-reply", ".message-assistant");
 
     // Reached by reopening the conversation, as the page itself would.
@@ -2065,7 +2065,7 @@ async fn a_reply_draws_code_and_a_table_that_scroll_by_key() {
         "clickNamed",
         serde_json::json!(["[aria-label=\"Conversation\"] button", "Try again"]),
     );
-    browser.wait_for_text("Recheck on Friday", Duration::from_secs(20));
+    browser.wait_for_text("Synthetic Regional Laboratory", Duration::from_secs(20));
     browser.save_pictures("thread-recovered", ".message-assistant");
 
     // Physicians don't write Markdown, so their words show as they wrote them.
@@ -3538,6 +3538,635 @@ async fn find_patient_and_patient_page_enforce_practice_panel_and_source_states(
     browser.save_picture("find-patient-search-unavailable");
 
     server_task.abort();
+    unsafe {
+        env::remove_var("PHYSICIAN_AUTH");
+        env::remove_var("PHYSICIAN_AUTH_PROOF_TOKENS");
+    }
+}
+
+/// Durable Postgres conversation & work history across server restart:
+/// exact saved answer, Basis, and source citation readback, content-distinguished
+/// lists, newer-records marker on old answers without altering saved text, and
+/// post-load access revocation refusal across desktop and phone.
+#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+#[ignore = "browser and disposable Postgres qualification; run explicitly with --ignored"]
+async fn past_conversations_and_work_reopen_across_restart_mark_newer_records_and_enforce_access() {
+    use harness::engine::AttemptFailure;
+    use local_product::physician_sources::{
+        MedicalRecordNumber, READ_TOOL, ReadablePart, RecordDate, SEARCH_TOOL, SourcePatient,
+        SourceRevision,
+    };
+    use local_product::runtime::sources::SourcePull;
+    use local_product::runtime::{Input, PhysicianHost, Scope, ShownSteps, Store, engine};
+    use physician_auth::PostgresAuthStore;
+
+    struct CitedAnswerProvider {
+        round: usize,
+        candidate_id: String,
+    }
+
+    impl engine::recipe::Provider for CitedAnswerProvider {
+        async fn exchange(
+            &mut self,
+            _: &engine::recipe::Request,
+            _: &engine::Cancellation,
+            _: &engine::RunLimits,
+            _: &mut dyn engine::recipe::Observer,
+        ) -> Result<engine::Turn, engine::Cause> {
+            let items = if self.round == 0 {
+                self.round += 1;
+                vec![
+                    engine::Item::Call(engine::Invocation {
+                        id: "call-search-1".to_owned(),
+                        name: SEARCH_TOOL.to_owned(),
+                        arguments: serde_json::json!({
+                            "query": "potassium",
+                            "record_type": null,
+                            "after": null,
+                        })
+                        .to_string(),
+                    }),
+                    engine::Item::Call(engine::Invocation {
+                        id: "call-read-1".to_owned(),
+                        name: READ_TOOL.to_owned(),
+                        arguments: serde_json::json!({
+                            "references": [{
+                                "candidate_id": self.candidate_id,
+                                "revision": "rev-1",
+                                "cursor": null,
+                            }],
+                            "max_result_bytes": 16_384,
+                        })
+                        .to_string(),
+                    }),
+                ]
+            } else {
+                vec![engine::Item::Call(engine::Invocation {
+                    id: "call-finish-1".to_owned(),
+                    name: local_product::physician_sources::citations::FINISH_TOOL.to_owned(),
+                    arguments: serde_json::json!({
+                        "answer": "Potassium is 5.4 mmol/L on Tuesday's panel [S1].",
+                        "quotes": [{"label": "S1", "quote": "Potassium 5.4 mmol/L"}],
+                        "descriptions": [],
+                        "basis": "Based on Regional Lab Basic metabolic panel [S1]; hemolysis status was not reported.",
+                        "cites_none": false,
+                    })
+                    .to_string(),
+                })]
+            };
+            Ok(engine::Turn {
+                items,
+                receipt: serde_json::Value::Null,
+                usage: Default::default(),
+            })
+        }
+    }
+
+    struct TestOpenAuthority;
+
+    #[local_product::runtime::async_trait]
+    impl local_product::runtime::Authority for TestOpenAuthority {
+        async fn check(
+            &mut self,
+            _: &local_product::runtime::PublicationTransaction,
+            _: &Scope,
+            _: Option<&[u8]>,
+        ) -> Result<(), String> {
+            Ok(())
+        }
+
+        async fn lock_publication(
+            &mut self,
+            _: &local_product::runtime::PublicationTransaction,
+            _: &Scope,
+            _: Option<&[u8]>,
+        ) -> Result<(), String> {
+            Ok(())
+        }
+    }
+
+    let _guard = test_lock().lock().await;
+    let database = scale::Database::create("history_reopen_browser")
+        .await
+        .expect("browser proof database");
+    let site = build_site();
+    unsafe {
+        env::set_var("PHYSICIAN_SITE_DIR", &site);
+        env::set_var("PHYSICIAN_AUTH", "required");
+        env::set_var("PHYSICIAN_AUTH_PROOF_TOKENS", "1");
+        env::remove_var("PHYSICIAN_UPSTREAM");
+    }
+    scale::staging_account(&database.url).await;
+
+    let patient_a = physician_sample::WORKSPACE_IDS[0];
+    let patient_b = physician_sample::WORKSPACE_IDS[1];
+    let store = Store::connect(&database.url).await.expect("runtime store");
+
+    // Seed real retained clinical record v1 on patient_a so tool reads produce real receipts.
+    let raw_lab_v1 = r#"{"test":"Basic metabolic panel","potassium_mmol_l":5.4}"#;
+    let pull_v1 = SourcePull {
+        source_id: "fixture-chart".to_owned(),
+        source_label: "Regional Lab".to_owned(),
+        patient: SourcePatient {
+            source_patient_id: patient_a.to_owned(),
+            display_name: "Tanvir Chowdhury".to_owned(),
+            birth_date: Some("1964-11-02".to_owned()),
+            sex_or_gender: Some("Male".to_owned()),
+            medical_record_numbers: vec![MedicalRecordNumber {
+                system: "Practice MRN".to_owned(),
+                value: "00000003".to_owned(),
+            }],
+        },
+        pulled_at: Some(1_787_846_400),
+    };
+    let rev_v1 = SourceRevision {
+        workspace: patient_a.to_owned(),
+        source_id: "fixture-chart".to_owned(),
+        candidate_id: "bmp-2026-08-27".to_owned(),
+        revision: "rev-1".to_owned(),
+        record_type: "Laboratory result".to_owned(),
+        dates: vec![RecordDate {
+            name: "Collected".to_owned(),
+            value: "2026-08-27".to_owned(),
+        }],
+        content: raw_lab_v1.to_owned(),
+        sha256: local_product::sha256_hex(raw_lab_v1.as_bytes()),
+        readable_parts: vec![ReadablePart {
+            label: "Basic metabolic panel".to_owned(),
+            text: "Potassium 5.4 mmol/L (reference 3.5-5.0 mmol/L), collected Tuesday morning."
+                .to_owned(),
+        }],
+        provenance: serde_json::json!({
+            "source_label": "Regional Lab",
+            "title": "Basic metabolic panel",
+        }),
+        envelope: None,
+    };
+    store
+        .record_chart(patient_a, &[rev_v1], &pull_v1)
+        .await
+        .expect("record initial chart");
+
+    let skills = local_product::physician_chat::PhysicianSkills::configured(None, false).unwrap();
+    let chat_cited = "chat-potassium-cited";
+    let scope_cited = Scope {
+        practice: physician_sample::STAGING_PRACTICE_ID.into(),
+        physician: "staging-physician".into(),
+        workspace: patient_a.into(),
+        chat: chat_cited.into(),
+    };
+    store
+        .accept_authorized(
+            &scope_cited,
+            &Input {
+                key: "turn-potassium-1".into(),
+                text: "What was Tuesday's potassium and its basis?".into(),
+                timezone: "America/New_York".into(),
+                scenario: None,
+            },
+            vec![7; 32],
+            &skills,
+            &scale::models::chat_recipe(),
+            None,
+        )
+        .await
+        .unwrap();
+    let claim = store.claim(&scope_cited, 60).await.unwrap().unwrap();
+    PhysicianHost {
+        store: store.clone(),
+        claim,
+        authority: TestOpenAuthority,
+        shown_steps: ShownSteps::new(()),
+    }
+    .run(
+        &mut CitedAnswerProvider {
+            round: 0,
+            candidate_id: "bmp-2026-08-27".to_owned(),
+        },
+        engine::RunLimits::default(),
+        &engine::Cancellation::default(),
+    )
+    .await
+    .expect("complete cited turn");
+
+    // Seed a second conversation on patient_a that ended Held so Past work &
+    // Conversations distinguish items by question, summary, and outcome!
+    let chat_held = "chat-renal-dosing-held";
+    let scope_held = Scope {
+        practice: physician_sample::STAGING_PRACTICE_ID.into(),
+        physician: "staging-physician".into(),
+        workspace: patient_a.into(),
+        chat: chat_held.into(),
+    };
+    store
+        .accept_authorized(
+            &scope_held,
+            &Input {
+                key: "turn-renal-held-1".into(),
+                text: "Check lisinopril renal dosing options".into(),
+                timezone: "America/New_York".into(),
+                scenario: None,
+            },
+            vec![7; 32],
+            &skills,
+            &scale::models::chat_recipe(),
+            None,
+        )
+        .await
+        .unwrap();
+    let held_claim = store.claim(&scope_held, 60).await.unwrap().unwrap();
+    store
+        .settle_chat_attempt(
+            &held_claim,
+            AttemptFailure::Limit,
+            local_product::runtime::delivery::Backoff::IMMEDIATE,
+        )
+        .await
+        .unwrap();
+
+    // Seed a saved reply draft on patient_a so Past work includes `PastWorkTarget::ReplyDraft`
+    // alongside `Conversation` items for both reopen and revoked-access verification!
+    let scope_reply = Scope {
+        practice: physician_sample::STAGING_PRACTICE_ID.into(),
+        physician: "staging-physician".into(),
+        workspace: patient_a.into(),
+        chat: "reply-k-followup".into(),
+    };
+    store
+        .open_draft_authorized(
+            &scope_reply,
+            "Recheck serum potassium Friday morning at Regional Lab.",
+            &[7; 32],
+            &mut TestOpenAuthority,
+        )
+        .await
+        .unwrap()
+        .expect("seed saved reply draft");
+
+    // Also seed a conversation on patient_b so `/recent-conversations` spans multiple workspaces.
+    scale::answered_chat(
+        &store,
+        patient_b,
+        "chat-jake-anticoag",
+        &[(
+            "Summarize anticoagulation hold window",
+            "Hold apixaban 48 hours prior to high-bleed-risk procedure.",
+        )],
+    )
+    .await;
+
+    let valkey = scale::Valkey::start().await;
+    let redis_url = valkey.url();
+
+    let spawn_durable_instance = |db_url: String, redis: String| async move {
+        let runtime_store = Store::connect(&db_url).await.unwrap();
+        let bus: Arc<dyn physician_bus::Bus> = Arc::new(
+            physician_bus::RedisBus::connect(&redis, None)
+                .await
+                .unwrap(),
+        );
+        let chat = Arc::new(physician_sample::durable::DurableChat::new(
+            runtime_store,
+            local_product::physician_chat::PhysicianSkills::configured(None, false).unwrap(),
+            &scale::models::roles(),
+        ));
+        let auth = PostgresAuthStore::connect_without_migrations(&db_url)
+            .await
+            .unwrap();
+        let front = front_door::PostgresFrontDoorStore::connect_without_migrations(&db_url)
+            .await
+            .unwrap();
+        let app = physician_sample::authed_router_on(
+            physician_sample::durable_site(chat, bus),
+            Arc::new(auth),
+            Arc::new(front),
+        )
+        .await;
+        let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+        let addr = listener.local_addr().unwrap();
+        let handle = tokio::spawn(async move { axum::serve(listener, app).await.unwrap() });
+        wait_until_ready(addr).await;
+        (addr, handle)
+    };
+
+    // Start server instance 1, verify initial reachability, then drop it to simulate server restart.
+    let (addr_1, server_1) = spawn_durable_instance(database.url.clone(), redis_url.clone()).await;
+    let session_1 = scale::sign_in(&addr_1.to_string()).await;
+    let (status_1, _) =
+        scale::get_json(&addr_1.to_string(), "/recent-conversations", &session_1).await;
+    assert_eq!(status_1, 200);
+    server_1.abort();
+
+    // Start fresh server instance 2 on the same Postgres database ("after server restart").
+    let (addr_2, server_2) = spawn_durable_instance(database.url.clone(), redis_url.clone()).await;
+    let host_2 = addr_2.to_string();
+    let session_2 = scale::sign_in(&host_2).await;
+
+    // AC1 & AC3: Compare HTTP query results directly against Store saved records.
+    let store_readback = store
+        .reopen_conversation(&scope_cited)
+        .await
+        .unwrap()
+        .expect("saved conversation in Postgres");
+    let (snap_status, snap_wire) = scale::get_json(
+        &host_2,
+        &format!("/patient-workspaces/{patient_a}/chats/{chat_cited}/snapshot"),
+        &session_2,
+    )
+    .await;
+    assert_eq!(snap_status, 200, "{snap_wire}");
+    let assistant_wire = snap_wire["snapshot"]["transcript"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .filter_map(|exchange| exchange.get("answer"))
+        .find(|answer| answer["state"] == "finished")
+        .expect("finished assistant answer in snapshot");
+    assert!(!assistant_wire["newer_records"].as_bool().unwrap_or(false));
+    assert!(
+        assistant_wire["basis"].is_array()
+            && !assistant_wire["basis"].as_array().unwrap().is_empty(),
+        "reopened snapshot must carry Basis segments: {assistant_wire}"
+    );
+    assert_eq!(
+        snap_wire["snapshot"]["sources"].as_object().unwrap().len(),
+        store_readback.sources.len(),
+        "wire sources must match saved store receipts"
+    );
+
+    let (rec_status, rec_wire) =
+        scale::get_json(&host_2, "/recent-conversations", &session_2).await;
+    assert_eq!(rec_status, 200, "{rec_wire}");
+    let rec_items = rec_wire["conversations"].as_array().unwrap();
+    assert_eq!(
+        rec_items.len(),
+        3,
+        "expected 3 durable recent conversations across workspaces: {rec_wire}"
+    );
+    let (pw_status, pw_wire) = scale::get_json(
+        &host_2,
+        &format!("/patient-workspaces/{patient_a}/past-work"),
+        &session_2,
+    )
+    .await;
+    assert_eq!(pw_status, 200, "{pw_wire}");
+    assert_eq!(pw_wire["items"].as_array().unwrap().len(), 3);
+    println!(
+        "Restarted site durable history verified: recent_count={}, past_work_count={}, sources_count={}",
+        rec_items.len(),
+        pw_wire["items"].as_array().unwrap().len(),
+        store_readback.sources.len()
+    );
+
+    // Browser verification on fresh server instance 2:
+    let mut browser = Tab::open(&format!("http://{host_2}/"));
+    browser.set_viewport(1280, 800, false);
+    browser.wait_for_text("Work email", Duration::from_secs(20));
+    browser.request_sign_in("physician@codahealth.test");
+    let today_dom = browser.wait_for_text(
+        "What was Tuesday's potassium and its basis?",
+        Duration::from_secs(20),
+    );
+    // AC3: Recent conversations list distinguishes items by question, summary, and outcome!
+    assert!(
+        today_dom.contains("Potassium is **5.4 mmol/L** on Tuesday's panel")
+            || today_dom.contains("Potassium is 5.4 mmol/L")
+            || today_dom.contains("5.4 mmol/L"),
+        "recent conversation row must show answer summary:\n{today_dom}"
+    );
+    assert!(
+        today_dom.contains("Check lisinopril renal dosing options")
+            && today_dom.contains("Paused")
+            && today_dom.contains("Answered"),
+        "recent conversations must distinguish items by content and outcome:\n{today_dom}"
+    );
+    browser.save_picture("history-recent-conversations");
+
+    // Click the cited conversation in Recent conversations to reopen it!
+    browser.eval(
+        "([...document.querySelectorAll('.sidebar-recent button')].find(b => b.innerText.includes(\"What was Tuesday's potassium\"))?.click(), true)",
+    );
+    browser.wait_for_text("Basis and limitations", Duration::from_secs(15));
+    // Open Past work dialog on the patient page and verify content distinction + ReplyDraft reopen.
+    browser.click_named("button", "Past work");
+    browser.wait_for_text(
+        "Check lisinopril renal dosing options",
+        Duration::from_secs(10),
+    );
+    let past_work_dialog = browser.dialog_text();
+    assert!(
+        past_work_dialog.contains("What was Tuesday's potassium and its basis?")
+            && past_work_dialog.contains("Patient reply draft")
+            && past_work_dialog.contains("Answered")
+            && past_work_dialog.contains("Paused")
+            && past_work_dialog.contains("Reply ready"),
+        "Past work dialog must distinguish conversations and reply drafts by content and outcome:\n{past_work_dialog}"
+    );
+    std::thread::sleep(Duration::from_millis(250));
+    browser.save_picture("history-past-work-dialog");
+    browser.eval(
+        "([...document.querySelectorAll('dialog.past-work-dialog button')].find(b => b.innerText.includes('Patient reply draft'))?.click(), true)",
+    );
+    let reply_reader_deadline = Instant::now() + Duration::from_secs(10);
+    while browser
+        .eval("document.querySelector('dialog.reader[open]')?.innerText ?? ''")
+        .as_str()
+        .is_none_or(|t| !t.contains("Recheck serum potassium Friday morning at Regional Lab."))
+    {
+        assert!(
+            Instant::now() < reply_reader_deadline,
+            "ReaderDialog did not open with saved reply draft"
+        );
+        std::thread::sleep(Duration::from_millis(40));
+    }
+    browser.click("dialog.reader[open] button[aria-label=\"Close\"]");
+    let close_deadline = Instant::now() + Duration::from_secs(5);
+    while !browser.dialog_text().is_empty() {
+        assert!(
+            Instant::now() < close_deadline,
+            "ReaderDialog did not finish closing"
+        );
+        std::thread::sleep(Duration::from_millis(40));
+    }
+
+    // Expand Basis and open citation [1] in ReaderDialog; compare against saved record!
+    browser.click_named(".basis-disclosure button", "Basis and limitations");
+    browser.wait_for_text(
+        "Based on Regional Lab Basic metabolic panel",
+        Duration::from_secs(10),
+    );
+    browser.click("button.citation-chip");
+    browser.wait_for_text(
+        "Potassium 5.4 mmol/L (reference 3.5-5.0 mmol/L), collected Tuesday morning.",
+        Duration::from_secs(10),
+    );
+    let citation_dialog = browser.dialog_text();
+    assert_eq!(
+        citation_dialog
+            .matches("Potassium 5.4 mmol/L (reference 3.5-5.0 mmol/L), collected Tuesday morning.")
+            .count(),
+        1,
+        "citation dialog must render the cited passage once without duplication:\n{citation_dialog}"
+    );
+    assert_eq!(
+        citation_dialog.matches("Basic metabolic panel").count(),
+        1,
+        "citation dialog must not repeat the record title inside readable parts:\n{citation_dialog}"
+    );
+    assert!(
+        !citation_dialog.contains('{'),
+        "citation dialog must never show raw JSON:\n{citation_dialog}"
+    );
+    std::thread::sleep(Duration::from_millis(250));
+    browser.save_picture("history-reopened-answer-basis-citation");
+    browser.click("dialog.citation-inspection button[aria-label=\"Close\"]");
+    let cite_close_deadline = Instant::now() + Duration::from_secs(5);
+    while !browser.dialog_text().is_empty() {
+        assert!(
+            Instant::now() < cite_close_deadline,
+            "citation ReaderDialog did not finish closing"
+        );
+        std::thread::sleep(Duration::from_millis(40));
+    }
+
+    // Record a newer source revision in Postgres after the answer's records version.
+    // The old answer must stay unchanged AND show the newer-records marker!
+    let raw_lab_v2 = r#"{"test":"Repeat metabolic panel","potassium_mmol_l":4.6}"#;
+    let pull_v2 = SourcePull {
+        pulled_at: Some(1_787_850_000),
+        ..pull_v1
+    };
+    let rev_v2 = SourceRevision {
+        workspace: patient_a.to_owned(),
+        source_id: "fixture-chart".to_owned(),
+        candidate_id: "bmp-2026-08-27-repeat".to_owned(),
+        revision: "rev-2".to_owned(),
+        record_type: "Laboratory result".to_owned(),
+        dates: vec![RecordDate {
+            name: "Collected".to_owned(),
+            value: "2026-08-27".to_owned(),
+        }],
+        content: raw_lab_v2.to_owned(),
+        sha256: local_product::sha256_hex(raw_lab_v2.as_bytes()),
+        readable_parts: vec![ReadablePart {
+            label: "Repeat metabolic panel".to_owned(),
+            text: "Potassium 4.6 mmol/L (repeat specimen).".to_owned(),
+        }],
+        provenance: serde_json::json!({
+            "source_label": "Regional Lab",
+            "title": "Repeat metabolic panel",
+        }),
+        envelope: None,
+    };
+    store
+        .record_chart(patient_a, &[rev_v2], &pull_v2)
+        .await
+        .expect("record newer chart");
+
+    browser.reload();
+    let newer_dom = browser.wait_for_text(
+        "Newer records arrived after this answer.",
+        Duration::from_secs(15),
+    );
+    assert!(
+        newer_dom.contains("5.4 mmol/L") && newer_dom.contains("Update"),
+        "old answer must stay unchanged and show the Update marker:\n{newer_dom}"
+    );
+    browser.save_picture("history-newer-records-marker");
+
+    // Phone viewport (<900px) verification of reopened conversation + newer-records marker.
+    browser.set_viewport(390, 844, true);
+    browser.wait_for_text(
+        "Newer records arrived after this answer.",
+        Duration::from_secs(10),
+    );
+    let phone_shell = browser.step("readShell", serde_json::json!([]));
+    assert_eq!(phone_shell["pageWidth"], 390, "{phone_shell}");
+    browser.set_viewport(1280, 800, false);
+
+    // AC4 (part 1): Load Past work dialog on patient_a, remove panel access, then click
+    // `PastWorkTarget::ReplyDraft` from the already-loaded dialog -> server returns 404,
+    // ReaderDialog never opens, PastWorkDialog closes, and clinical content closes immediately!
+    browser.click_named("button", "Past work");
+    browser.wait_for_text("Patient reply draft", Duration::from_secs(10));
+    let auth_pg = PostgresAuthStore::connect_without_migrations(&database.url)
+        .await
+        .unwrap();
+    let staging_identity = PhysicianIdentity {
+        practice_id: physician_sample::STAGING_PRACTICE_ID.to_owned(),
+        physician_id: "staging-physician".to_owned(),
+    };
+    auth_pg
+        .set_membership(&staging_identity, patient_a, Membership::Denied)
+        .await
+        .unwrap();
+    let (revoked_pw_status, _) = scale::get_json(
+        &host_2,
+        &format!("/patient-workspaces/{patient_a}/past-work"),
+        &session_2,
+    )
+    .await;
+    assert_eq!(
+        revoked_pw_status, 404,
+        "revoked panel access must refuse past-work read with 404"
+    );
+    browser.eval(
+        "([...document.querySelectorAll('dialog.past-work-dialog button')].find(b => b.innerText.includes('Patient reply draft'))?.click(), true)",
+    );
+    let blocked_draft_dom =
+        browser.wait_for_text("Clinic record · Not on your panel", Duration::from_secs(15));
+    assert!(
+        browser.dialog_text().is_empty()
+            && !blocked_draft_dom.contains("Recheck serum potassium Friday morning"),
+        "revoked access must block ReplyDraft reopen and close dialogs:\ndialog={}\ndom={blocked_draft_dom}",
+        browser.dialog_text()
+    );
+
+    // Restore access briefly so Today loads Recent conversations, then remove panel access
+    // again and attempt to reopen the conversation from the loaded Recent list (AC4 part 2)!
+    auth_pg
+        .set_membership(&staging_identity, patient_a, Membership::Allowed)
+        .await
+        .unwrap();
+    browser.navigate(&format!("http://{host_2}/"));
+    browser.wait_for_text(
+        "What was Tuesday's potassium and its basis?",
+        Duration::from_secs(15),
+    );
+    auth_pg
+        .set_membership(&staging_identity, patient_a, Membership::Denied)
+        .await
+        .unwrap();
+
+    let (revoked_snap_status, _) = scale::get_json(
+        &host_2,
+        &format!("/patient-workspaces/{patient_a}/chats/{chat_cited}/snapshot"),
+        &session_2,
+    )
+    .await;
+    assert_eq!(
+        revoked_snap_status, 404,
+        "revoked panel access must refuse conversation reopen with 404"
+    );
+
+    browser.eval(
+        "([...document.querySelectorAll('.sidebar-recent button')].find(b => b.innerText.includes(\"What was Tuesday's potassium\"))?.click(), true)",
+    );
+    let blocked_dom =
+        browser.wait_for_text("Clinic record · Not on your panel", Duration::from_secs(15));
+    assert!(
+        !blocked_dom.contains("5.4 mmol/L")
+            && !blocked_dom.contains("Based on Regional Lab Basic metabolic panel"),
+        "revoked access after list load must block reopening saved clinical answers:\n{blocked_dom}"
+    );
+    browser.save_picture("history-access-removed-blocked");
+
+    // Verify phone (<900px) also blocks reopening cleanly.
+    browser.set_viewport(390, 844, true);
+    assert!(browser.dom().contains("Clinic record · Not on your panel"));
+
+    drop(browser);
+    server_2.abort();
     unsafe {
         env::remove_var("PHYSICIAN_AUTH");
         env::remove_var("PHYSICIAN_AUTH_PROOF_TOKENS");
