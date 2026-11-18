@@ -1,0 +1,71 @@
+{
+  "branch": "tyler-eng-436-2-clinical-library-tool-tests",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC1",
+      "label": "Ephemeral ClinicalEvidenceServer search, exact read, PHI guard, and unavailable modes",
+      "kind": "run",
+      "revision": "e1e2c904a8141844f07d5b78da24d5ccefe1f701",
+      "dirty": false,
+      "recorded": "2026-11-18T20:29:48+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "local-product",
+        "--test",
+        "clinical_library"
+      ],
+      "expect": "[1-9][0-9]* passed; 0 failed",
+      "expect_fail": false,
+      "files": [
+        "01-Ephemeral-ClinicalEvidenceServer-search-exact-re.log"
+      ],
+      "seconds": 22.1,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true
+    },
+    {
+      "id": 2,
+      "claim": "AC2",
+      "label": "End-to-end PhysicianHost finish_answer turns with chart fallback and passage citation",
+      "kind": "run",
+      "revision": "e1e2c904a8141844f07d5b78da24d5ccefe1f701",
+      "dirty": false,
+      "recorded": "2026-11-18T20:30:10+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "local-product",
+        "--test",
+        "clinical_library",
+        "--",
+        "--ignored"
+      ],
+      "expect": "[1-9][0-9]* passed; 0 failed",
+      "expect_fail": false,
+      "files": [
+        "02-End-to-end-PhysicianHost-finish_answer-turns-wit.log"
+      ],
+      "seconds": 2.7,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true
+    },
+    {
+      "id": 3,
+      "claim": "AC3",
+      "label": "",
+      "kind": "gap",
+      "revision": "e1e2c904a8141844f07d5b78da24d5ccefe1f701",
+      "dirty": false,
+      "recorded": "2026-11-18T20:30:13+00:00",
+      "reason": "Live staging calls against clinical-evidence require reviewed OpenTofu apply and cross-project roles/run.invoker authorization.",
+      "ok": false,
+      "files": []
+    }
+  ]
+}
