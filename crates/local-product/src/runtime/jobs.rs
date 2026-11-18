@@ -224,6 +224,10 @@ pub struct Assignment {
     pub prompt: String,
     /// Skills loaded from [`PhysicianSkills`] at assignment creation.
     pub preloaded_skills: Vec<PreloadedSkill>,
+    /// Optional structured context when this assignment runs initial or revised
+    /// patient understanding.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub understanding: Option<crate::initial_understanding::UnderstandingContext>,
 }
 
 impl Assignment {
@@ -261,6 +265,7 @@ impl Assignment {
             key,
             prompt,
             preloaded_skills,
+            understanding: None,
         })
     }
 
@@ -458,7 +463,7 @@ impl PracticeJob {
         self.runs.current()
     }
 
-    fn message_sources(&self) -> Vec<engine::ProductMessage> {
+    pub(super) fn message_sources(&self) -> Vec<engine::ProductMessage> {
         let mut sources = vec![self.assignment.message()];
         if let Some(saved) = &self.result {
             sources.push(engine::ProductMessage {
@@ -618,6 +623,9 @@ pub fn recipe(
     assignment: &Assignment,
     skills: &PhysicianSkills,
 ) -> RequestRecipe {
+    if assignment.kind == PracticeJobKind::InitialUnderstanding {
+        return crate::initial_understanding::recipe(&roles.background, assignment, skills);
+    }
     let background = &roles.background;
     let mut instructions = skills.instructions(INSTRUCTIONS, Job::PracticeBackground);
     if !assignment.preloaded_skills.is_empty() {
@@ -898,13 +906,13 @@ impl Store {
     /// with no physician session, verifying practice patient membership, freezing
     /// the background-lane recipe (`roles.background`), and recording the
     /// assignment's preloaded skills with the run.
-    pub async fn accept_practice_job(
+    pub async fn accept_practice_job<A: PracticeAuthority + ?Sized>(
         &self,
         scope: &PracticeScope,
         assignment: &Assignment,
         roles: &crate::ModelRoles,
         skills: &PhysicianSkills,
-        authority: &dyn PracticeAuthority,
+        authority: &A,
     ) -> Result<Accepted, PracticeJobError> {
         authority.check_practice_patient(scope).await?;
         if assignment.key.trim().is_empty() || assignment.prompt.trim().is_empty() {
@@ -1775,7 +1783,7 @@ impl Store {
         Ok(Resumed::Pending { delivery })
     }
 
-    async fn practice_job_snapshot(
+    pub(super) async fn practice_job_snapshot(
         &self,
         scope: &PracticeScope,
     ) -> Result<(PracticeJob, Vec<(Event, bool)>, PhysicianSkills), DbErr> {

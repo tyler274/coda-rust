@@ -76,6 +76,8 @@ pub mod sources;
 mod tests;
 mod transcript;
 pub use transcript::TranscriptError;
+/// Durable patient understanding: private operating index and patient-page summary.
+pub mod understanding;
 /// Working notes derived from the authorized product record.
 pub mod working_notes;
 use crate::physician_sources::citations::{self, Finished};

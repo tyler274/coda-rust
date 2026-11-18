@@ -67,6 +67,7 @@ async fn a_second_migrate_records_nothing_new() {
             "m20261118_02_practice_jobs_dispatch",
             "m20261118_03_source_refresh",
             "m20261118_04_practice_schedule",
+            "m20261118_05_patient_understanding",
         ]
     );
 }

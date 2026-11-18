@@ -210,16 +210,19 @@ pub enum Job {
     PatientRounds,
     /// A practice-owned background job.
     PracticeBackground,
+    /// Initial and revised patient understanding background job.
+    InitialUnderstanding,
 }
 
 impl Job {
     /// Every Chords job. [`PhysicianSkills::load`] checks each one's start
     /// skills against the package.
-    const ALL: [Self; 4] = [
+    const ALL: [Self; 5] = [
         Self::Chat,
         Self::ReplyRevision,
         Self::PatientRounds,
         Self::PracticeBackground,
+        Self::InitialUnderstanding,
     ];
 
     /// The skills this job loads at its start, as written beside its instructions.
@@ -228,7 +231,7 @@ impl Job {
             Self::Chat => START_SKILLS,
             Self::ReplyRevision => crate::runtime::reply::START_SKILLS,
             Self::PatientRounds => crate::runtime::rounds::START_SKILLS,
-            Self::PracticeBackground => &[],
+            Self::PracticeBackground | Self::InitialUnderstanding => &[],
         }
     }
 }

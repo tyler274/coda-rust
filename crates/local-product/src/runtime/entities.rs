@@ -929,7 +929,7 @@ pub(super) mod patient_dispatch {
 }
 
 /// Latest saved refresh status per `(practice, workspace, source_id)`:
-/// `updated`, `partly_updated`, or `failed`. Created by `m20261112_source_refresh`.
+/// `updated`, `partly_updated`, or `failed`. Created by `m20261118_03_source_refresh`.
 pub(super) mod source_status {
     use sea_orm::entity::prelude::*;
 
@@ -964,7 +964,7 @@ pub(super) mod source_status {
 /// Durable once-only per-source refresh receipt, committed in the same
 /// transaction as the source's evidence and saved status update so a retry
 /// after an interrupted source check never repeats a settled source.
-/// Created by `m20261112_source_refresh`.
+/// Created by `m20261118_03_source_refresh`.
 pub(super) mod source_refresh_receipt {
     use sea_orm::entity::prelude::*;
 
@@ -1098,6 +1098,71 @@ pub(super) mod schedule_appointment {
         pub provenance: Json,
         pub as_of: i64,
         pub updated_at: i64,
+    }
+
+    #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
+    pub enum Relation {}
+
+    impl ActiveModelBehavior for ActiveModel {}
+}
+
+/// Durable patient understanding per `(practice, workspace)`: private operating
+/// index for Coda's runs and physician-facing summary for the patient page.
+/// Created by `m20261118_05_patient_understanding`.
+pub(super) mod patient_understanding {
+    use sea_orm::entity::prelude::*;
+
+    #[derive(Clone, Debug, PartialEq, Eq, DeriveEntityModel)]
+    #[sea_orm(table_name = "physician_runtime_patient_understanding")]
+    pub struct Model {
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub practice: String,
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub workspace: String,
+        pub revision: i64,
+        pub source_version: i64,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub evidence_scope: Json,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub operating_index: Json,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub summary: Json,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub origin: Json,
+        pub updated_at: i64,
+    }
+
+    #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
+    pub enum Relation {}
+
+    impl ActiveModelBehavior for ActiveModel {}
+}
+
+/// Append-only revision and once-only idempotency ledger for patient understanding.
+pub(super) mod patient_understanding_revision {
+    use sea_orm::entity::prelude::*;
+
+    #[derive(Clone, Debug, PartialEq, Eq, DeriveEntityModel)]
+    #[sea_orm(table_name = "physician_runtime_patient_understanding_revisions")]
+    pub struct Model {
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub practice: String,
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub workspace: String,
+        #[sea_orm(primary_key, auto_increment = false)]
+        pub revision: i64,
+        #[sea_orm(column_type = "Text")]
+        pub idempotency_key: String,
+        pub source_version: i64,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub evidence_scope: Json,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub operating_index: Json,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub summary: Json,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub origin: Json,
+        pub saved_at: i64,
     }
 
     #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]

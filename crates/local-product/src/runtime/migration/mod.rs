@@ -12,6 +12,7 @@ mod m20261118_01_concerns;
 mod m20261118_02_practice_jobs_dispatch;
 mod m20261118_03_source_refresh;
 mod m20261118_04_practice_schedule;
+mod m20261118_05_patient_understanding;
 
 /// The table this chain records applied migrations in. The runtime shares the
 /// physician database with other chains, and each chain owns its own ledger.
@@ -38,6 +39,7 @@ impl MigratorTrait for Migrator {
             Box::new(m20261118_02_practice_jobs_dispatch::Migration),
             Box::new(m20261118_03_source_refresh::Migration),
             Box::new(m20261118_04_practice_schedule::Migration),
+            Box::new(m20261118_05_patient_understanding::Migration),
         ]
     }
 }
