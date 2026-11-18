@@ -1,0 +1,61 @@
+{
+  "branch": "tyler-eng-315-1-visit-briefings-store",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC2",
+      "label": "PostgreSQL migration lockstep test for m20261118_07_visit_briefings",
+      "kind": "run",
+      "revision": "5de9fdd95ba476a0e06226e770e46cc34b2a0827",
+      "dirty": false,
+      "recorded": "2026-11-18T23:10:46+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "local-product",
+        "--lib",
+        "runtime::tests::migration",
+        "--",
+        "--ignored",
+        "--test-threads=1"
+      ],
+      "expect": "test result: ok\\. [1-9][0-9]* passed",
+      "expect_fail": false,
+      "files": [
+        "01-PostgreSQL-migration-lockstep-test-for-m20261118.log"
+      ],
+      "seconds": 40.8,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true
+    },
+    {
+      "id": 2,
+      "claim": "AC6",
+      "label": "local-product clippy and unit test suite",
+      "kind": "run",
+      "revision": "5de9fdd95ba476a0e06226e770e46cc34b2a0827",
+      "dirty": false,
+      "recorded": "2026-11-18T23:11:27+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "local-product",
+        "--lib"
+      ],
+      "expect": "test result: ok\\. [1-9][0-9]* passed",
+      "expect_fail": false,
+      "files": [
+        "02-local-product-clippy-and-unit-test-suite.log"
+      ],
+      "seconds": 2.7,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true
+    }
+  ]
+}
