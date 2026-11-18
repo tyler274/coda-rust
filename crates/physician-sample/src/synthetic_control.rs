@@ -1,39 +1,71 @@
-//! Staging-only synthetic event intake and mutable bank source adapter for
-//! [`crate::STAGING_PRACTICE_ID`].
+//! Staging-only synthetic event intake, source failure injection, rounds/visit
+//! execution triggers, and practice reset for [`crate::STAGING_PRACTICE_ID`].
 //!
 //! Synthetic events never write to PostgreSQL. Accepted chart events write
 //! NDJSON records exclusively into the mutable staging working bank's
 //! `patients/` directory, and accepted schedule events write NDJSON records
 //! exclusively into `calendar/Appointment.ndjson`. Records enter PostgreSQL
-//! solely through [`PatientSourceRefresh`] / [`PatientSource`] and
-//! [`ScheduleSource`].
+//! solely through [`PatientSourceRefresh`] / [`PatientSource`] (`rounds` or
+//! source refresh) and [`ScheduleSource`] (`prepare-visits` or schedule sync),
+//! executing [`PracticeJobHost`] on the shared harness with zero synthetic
+//! branches in product code.
 
+use std::collections::BTreeSet;
 use std::fs;
+use std::io::Write as _;
 use std::path::{Path, PathBuf};
-use std::sync::RwLock;
 use std::sync::atomic::{AtomicU64, Ordering};
+use std::sync::{Arc, RwLock};
 use std::time::{SystemTime, UNIX_EPOCH};
 
 use async_trait::async_trait;
+use axum::Json;
+use axum::Router;
+use axum::body::Body;
+use axum::extract::State;
+use axum::http::{Request, StatusCode};
+use axum::response::{IntoResponse, Response};
+use axum::routing::{get, post};
 use base64::Engine as _;
+use harness::engine::{self, Cancellation, RunLimits};
+use harness::provider::ResponsesProvider;
 use local_product::physician_sources::{
     PatientSource, SourcePatient, SourceRevision, workspace_id,
 };
+use local_product::runtime::briefings::{
+    BriefingError, SavedVisitBriefing, ScheduledWakeSummary, VisitPreparationRecord,
+};
+use local_product::runtime::concerns::{Concern, WorkspaceAccess};
+use local_product::runtime::dispatch::{
+    DispatchError, PatientSourceChecker, SourceCheckError, StoredObservationChecker, WakeSummary,
+};
+use local_product::runtime::jobs::{PracticeJobHost, PracticeScope};
+use local_product::runtime::memory::PatientKey;
 use local_product::runtime::refresh::{
-    PatientSourceRefresh, SourceCheckOutcome, SourceId as RefreshSourceId,
-    SourceRefreshAdapterError,
+    PatientSourceRefresh, RefreshCommandKey, RefreshError, RefreshReport, RefreshRequest,
+    RefreshTarget, SavedSourceStatus, SourceCheckOutcome, SourceId as RefreshSourceId,
+    SourceRefreshAdapterError, SourceRefreshOutcome,
+};
+use local_product::runtime::reviews::{
+    PatientReviewError, PatientReviewReceiver, SavedPatientReview,
 };
 use local_product::runtime::schedule::{
-    AppointmentWindow, ScheduleDelivery, ScheduleSource, ScheduleSourceError, SourceAppointment,
-    SourceId as ScheduleSourceId,
+    AppointmentWindow, ScheduleDelivery, ScheduleError, ScheduleSource, ScheduleSourceError,
+    ScheduleSyncOutcome, SourceAppointment, SourceId as ScheduleSourceId,
 };
+use local_product::runtime::{Authority, PublicationTransaction, Scope, Store};
+use patient_work::CheckedSources;
+use physician_auth::{AuthStore, PostgresAuthStore, SessionError};
+use sea_orm::sea_query::{Expr, Iden, Query};
+use sea_orm::{ConnectionTrait, DatabaseConnection, DbErr, TransactionTrait};
 use serde::{Deserialize, Serialize};
 use serde_json::{Value, json};
 
-use crate::auth::STAGING_PRACTICE_ID;
+use crate::auth::{STAGING_PRACTICE_ID, bearer, now};
 use crate::hosting::StagingSyntheticControlConfig;
 use crate::schedule::{self, SyntheticBankCalendar};
 use crate::synthetic_chart::{self, ChartRecordError, SyntheticCharts};
+
 /// HTTP method and path of one published route on the physician server.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize)]
 pub struct PublishedRouteEntry {
@@ -315,6 +347,20 @@ impl SyntheticEventRefusal {
             Self::StorageIo { .. } => "source_storage_io",
         }
     }
+
+    fn status_code(&self) -> StatusCode {
+        match self {
+            Self::StorageIo { .. } => StatusCode::SERVICE_UNAVAILABLE,
+            Self::SourceUnavailable { .. }
+            | Self::UnknownPatient { .. }
+            | Self::EmptyRecordTitle
+            | Self::EmptyRecordText
+            | Self::InvalidTimestamp { .. }
+            | Self::UnsupportedAttachmentMedia { .. }
+            | Self::MalformedFhirResource { .. }
+            | Self::InvalidAppointment { .. } => StatusCode::UNPROCESSABLE_ENTITY,
+        }
+    }
 }
 
 impl std::fmt::Display for SyntheticEventRefusal {
@@ -468,6 +514,20 @@ impl StagingSyntheticSources {
             .filter(|line| !line.is_empty())
             .filter_map(|line| serde_json::from_str::<SavedSyntheticEvent>(line).ok())
             .collect()
+    }
+
+    fn append_accepted_event(&self, event: &SavedSyntheticEvent) -> Result<(), std::io::Error> {
+        if !self.working_bank_dir.is_dir() {
+            return Ok(());
+        }
+        let mut line = serde_json::to_string(event)
+            .map_err(|err| std::io::Error::new(std::io::ErrorKind::InvalidData, err))?;
+        line.push('\n');
+        let mut file = fs::OpenOptions::new()
+            .create(true)
+            .append(true)
+            .open(self.working_bank_dir.join(ACCEPTED_EVENTS_FILE))?;
+        file.write_all(line.as_bytes())
     }
 
     /// Restores `working_bank_dir` cleanly from `base_bank_dir` and clears any
@@ -921,6 +981,1427 @@ impl ScheduleSource for StagingSyntheticSources {
             .await
     }
 }
+
+/// [`PatientSourceChecker`] bridging `wake_practice_dispatch` through
+/// [`Store::refresh_patient_sources_for_practice`] and [`StoredObservationChecker`].
+struct RefreshingSourceChecker<'a> {
+    store: &'a Store,
+    auth: &'a PostgresAuthStore,
+    sources: &'a StagingSyntheticSources,
+    command_seq: &'a AtomicU64,
+}
+
+#[async_trait]
+impl PatientSourceChecker for RefreshingSourceChecker<'_> {
+    async fn check_patient_sources(
+        &self,
+        practice_id: &str,
+        workspace_id: &str,
+        now_sec: i64,
+    ) -> Result<CheckedSources, SourceCheckError> {
+        // Record previous observation BEFORE refreshing so `CheckedSources` compares
+        // the newly refreshed source store against what dispatch last checked!
+        let observed = StoredObservationChecker::new(self.store.clone());
+        self.sources
+            .set_clock_unix(u64::try_from(now_sec.max(0)).unwrap_or(0));
+        let seq = self.command_seq.fetch_add(1, Ordering::SeqCst) + 1;
+        let command_key = RefreshCommandKey::new(format!("rounds-refresh-{now_sec}-{seq}"))
+            .map_err(|err| SourceCheckError::Upstream(std::io::Error::other(err.to_string())))?;
+        let request = RefreshRequest::new(command_key, RefreshTarget::AllSources);
+        let scope = PracticeScope {
+            practice: practice_id.to_owned(),
+            workspace: workspace_id.to_owned(),
+            job_id: format!("rounds-check-{seq}"),
+        };
+        let report = self
+            .store
+            .refresh_patient_sources_for_practice(&scope, self.auth, &request, self.sources)
+            .await
+            .map_err(|err| SourceCheckError::Upstream(std::io::Error::other(err.to_string())))?;
+        for status in &report.sources {
+            if let SourceRefreshOutcome::Failed { reason, .. } = &status.outcome {
+                return Err(SourceCheckError::Upstream(std::io::Error::other(
+                    reason.clone(),
+                )));
+            }
+        }
+        observed
+            .check_patient_sources(practice_id, workspace_id, now_sec)
+            .await
+    }
+}
+
+/// Model endpoint configuration for executing background review and visit-preparation
+/// jobs triggered from the staging synthetic control surface.
+#[derive(Clone, Debug)]
+pub enum SyntheticModelEndpoint {
+    /// OpenAI Responses HTTP endpoint (production API or local `ResponsesStub`).
+    Responses {
+        /// Full Responses URL (`https://api.openai.com/v1/responses` or `http://127.0.0.1:PORT/responses`).
+        endpoint: String,
+        /// Bearer API key.
+        key: String,
+    },
+    /// Local developer ChatGPT plan subscription token (unhosted local runs only).
+    DeveloperPlan,
+    /// No model execution configured on this process.
+    Unconfigured,
+}
+
+impl SyntheticModelEndpoint {
+    /// Resolves model execution settings from environment variables.
+    pub fn from_env(get: impl Fn(&str) -> Option<String>, hosted: bool) -> Result<Self, String> {
+        let configured = |key: &str| {
+            get(key)
+                .map(|value| value.trim().to_owned())
+                .filter(|value| !value.is_empty())
+        };
+        if let Some(port) = configured("PHYSICIAN_RESPONSES_STUB_PORT") {
+            if hosted {
+                return Err(
+                    "PHYSICIAN_RESPONSES_STUB_PORT is forbidden in hosted execution".into(),
+                );
+            }
+            let port: u16 = port
+                .parse()
+                .map_err(|err| format!("invalid PHYSICIAN_RESPONSES_STUB_PORT: {err}"))?;
+            return Ok(Self::Responses {
+                endpoint: format!("http://127.0.0.1:{port}/responses"),
+                key: "local-proof".to_owned(),
+            });
+        }
+        if hosted {
+            if let Ok(key) = local_product::open_ai_api_key(
+                configured("CODA_ALLOW_MODEL_CALLS").as_deref(),
+                configured("OPENAI_API_KEY").as_deref(),
+            ) {
+                return Ok(Self::Responses {
+                    endpoint: harness::responses::ENDPOINT.to_owned(),
+                    key,
+                });
+            }
+            return Ok(Self::Unconfigured);
+        }
+        match local_product::model_execution(configured("CODA_LOCAL_MODEL_EXECUTION").as_deref())? {
+            local_product::ModelExecution::Subscription => Ok(Self::DeveloperPlan),
+            local_product::ModelExecution::Api => {
+                let key = local_product::open_ai_api_key(
+                    configured("CODA_ALLOW_MODEL_CALLS").as_deref(),
+                    configured("OPENAI_API_KEY").as_deref(),
+                )?;
+                Ok(Self::Responses {
+                    endpoint: harness::responses::ENDPOINT.to_owned(),
+                    key,
+                })
+            }
+            local_product::ModelExecution::Disabled => Ok(Self::Unconfigured),
+        }
+    }
+
+    /// Adapter identifier passed to [`local_product::model_roles`].
+    pub const fn adapter(&self) -> &'static str {
+        match self {
+            Self::DeveloperPlan => "chatgpt-plan",
+            Self::Responses { .. } | Self::Unconfigured => "responses",
+        }
+    }
+
+    async fn provider(&self, store: &Store) -> Result<ResponsesProvider, SyntheticControlError> {
+        let quota: Arc<dyn harness::provider::QuotaGate> = Arc::new(store.clone());
+        match self {
+            Self::Responses { endpoint, key } => {
+                ResponsesProvider::new(endpoint.clone(), key.clone(), quota)
+                    .map_err(SyntheticControlError::ModelProviderInit)
+            }
+            Self::DeveloperPlan => {
+                let token = local_product::chatgpt::access_token()
+                    .await
+                    .map_err(|err| SyntheticControlError::ModelProviderInit(err.to_string()))?;
+                ResponsesProvider::chatgpt_plan(token, quota)
+                    .map_err(SyntheticControlError::ModelProviderInit)
+            }
+            Self::Unconfigured => Err(SyntheticControlError::ModelUnconfigured),
+        }
+    }
+}
+
+/// Errors produced by staging synthetic control operations.
+#[derive(Debug)]
+pub enum SyntheticControlError {
+    /// Synthetic event failed source-level validation.
+    EventRefused(SyntheticEventRefusal),
+    /// Working bank restoration failed on disk.
+    WorkingBankIo(std::io::Error),
+    /// Loading base synthetic charts failed.
+    ChartLoad(String),
+    /// Auth store query failed.
+    AuthUnavailable(physician_auth::StoreUnavailable),
+    /// Runtime database query failed.
+    Database(DbErr),
+    /// Source refresh failed.
+    Refresh(RefreshError),
+    /// Practice dispatch wake failed.
+    Dispatch(DispatchError),
+    /// Patient review query failed.
+    Review(PatientReviewError),
+    /// Schedule sync failed.
+    Schedule(ScheduleError),
+    /// Visit preparation wake or briefing query failed.
+    Briefing(BriefingError),
+    /// Model provider is not configured on this process.
+    ModelUnconfigured,
+    /// Model provider initialization failed.
+    ModelProviderInit(String),
+    /// Background practice job execution failed.
+    JobExecution(String),
+}
+
+impl std::fmt::Display for SyntheticControlError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::EventRefused(err) => write!(f, "{err}"),
+            Self::WorkingBankIo(err) => write!(f, "working bank I/O failed: {err}"),
+            Self::ChartLoad(reason) => write!(f, "synthetic chart load failed: {reason}"),
+            Self::AuthUnavailable(err) => write!(f, "auth store unavailable: {err}"),
+            Self::Database(err) => write!(f, "runtime database error: {err}"),
+            Self::Refresh(err) => write!(f, "source refresh error: {err}"),
+            Self::Dispatch(err) => write!(f, "practice dispatch error: {err}"),
+            Self::Review(err) => write!(f, "patient review error: {err}"),
+            Self::Schedule(err) => write!(f, "schedule sync error: {err}"),
+            Self::Briefing(err) => write!(f, "visit preparation error: {err}"),
+            Self::ModelUnconfigured => {
+                f.write_str("model execution is not configured for staging synthetic control")
+            }
+            Self::ModelProviderInit(reason) => {
+                write!(f, "model provider initialization failed: {reason}")
+            }
+            Self::JobExecution(reason) => write!(f, "practice job execution failed: {reason}"),
+        }
+    }
+}
+
+impl std::error::Error for SyntheticControlError {
+    fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
+        match self {
+            Self::EventRefused(err) => Some(err),
+            Self::WorkingBankIo(err) => Some(err),
+            Self::AuthUnavailable(err) => Some(err),
+            Self::Database(err) => Some(err),
+            Self::Refresh(err) => Some(err),
+            Self::Dispatch(err) => Some(err),
+            Self::Review(err) => Some(err),
+            Self::Schedule(err) => Some(err),
+            Self::Briefing(err) => Some(err),
+            Self::ChartLoad(_)
+            | Self::ModelUnconfigured
+            | Self::ModelProviderInit(_)
+            | Self::JobExecution(_) => None,
+        }
+    }
+}
+
+impl IntoResponse for SyntheticControlError {
+    fn into_response(self) -> Response {
+        match self {
+            Self::EventRefused(refusal) => (
+                refusal.status_code(),
+                Json(json!({
+                    "status": "refused",
+                    "reason_code": refusal.code(),
+                    "detail": refusal.to_string(),
+                })),
+            )
+                .into_response(),
+            other => {
+                let status = match &other {
+                    Self::ModelUnconfigured
+                    | Self::ModelProviderInit(_)
+                    | Self::AuthUnavailable(_)
+                    | Self::Database(_)
+                    | Self::WorkingBankIo(_) => StatusCode::SERVICE_UNAVAILABLE,
+                    Self::ChartLoad(_)
+                    | Self::Refresh(_)
+                    | Self::Dispatch(_)
+                    | Self::Review(_)
+                    | Self::Schedule(_)
+                    | Self::Briefing(_)
+                    | Self::JobExecution(_) => StatusCode::BAD_GATEWAY,
+                    Self::EventRefused(_) => unreachable!(),
+                };
+                (
+                    status,
+                    Json(json!({
+                        "status": "failed",
+                        "detail": other.to_string(),
+                    })),
+                )
+                    .into_response()
+            }
+        }
+    }
+}
+
+/// Summary of one synthetic patient on `GET /staging-synthetic/patients`.
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub struct SyntheticPatientSummary {
+    /// Coda patient workspace ID (`pw-...`).
+    pub patient_workspace_id: String,
+    /// Native synthetic chart folder ID (`MRN...`).
+    pub source_patient_id: String,
+    /// Patient display name.
+    pub display_name: String,
+    /// ISO birth date, if present.
+    pub birth_date: Option<String>,
+    /// Primary MRN value, if present.
+    pub mrn: Option<String>,
+    /// Current saved chart observation version in PostgreSQL.
+    pub chart_version: u64,
+    /// Number of active chart records stored in PostgreSQL for this workspace.
+    pub chart_record_count: usize,
+}
+
+/// Response body of `GET /staging-synthetic/patients`.
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub struct SyntheticPatientListResponse {
+    /// Shared staging practice ID (`"roger-synthetic-practice"`).
+    pub practice_id: String,
+    /// Registered synthetic patients ordered by display name.
+    pub patients: Vec<SyntheticPatientSummary>,
+}
+
+/// Aggregate counts of runtime state held for [`STAGING_PRACTICE_ID`].
+#[derive(Clone, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
+pub struct PracticeStateCounts {
+    /// Registered synthetic patients.
+    pub patients: usize,
+    /// Saved physician conversations across the practice.
+    pub conversations: usize,
+    /// Saved patient reviews across all workspaces.
+    pub reviews: usize,
+    /// Open Today concerns across all workspaces.
+    pub open_concerns: usize,
+    /// Active or retired patient memory entries across all workspaces.
+    pub memories: usize,
+    /// Saved patient understandings across all workspaces.
+    pub understandings: usize,
+    /// Saved schedule appointments across the practice.
+    pub appointments: usize,
+    /// Saved visit preparation decision rows across the practice.
+    pub visit_preparations: usize,
+    /// Saved pre-visit briefings across all workspaces.
+    pub briefings: usize,
+}
+
+/// Full readback of the staging synthetic practice (`GET /staging-synthetic/status`
+/// and `POST /staging-synthetic/reset`).
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub struct PracticeSyntheticStatus {
+    /// Shared staging practice ID (`"roger-synthetic-practice"`).
+    pub practice_id: String,
+    /// Current simulated health state of the synthetic chart and calendar adapters.
+    pub source_health: SourceHealthSnapshot,
+    /// Aggregate runtime counts in PostgreSQL.
+    pub counts: PracticeStateCounts,
+    /// Per-patient chart versions and metadata.
+    pub patients: Vec<SyntheticPatientSummary>,
+    /// Events accepted by the synthetic sources since startup or the last reset.
+    pub accepted_events: Vec<SavedSyntheticEvent>,
+}
+
+/// Request payload for `POST /staging-synthetic/source-failure`.
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub struct SourceFailureRequest {
+    /// Target synthetic source adapter (`chart` or `calendar`).
+    pub source: SyntheticSourceKind,
+    /// Desired health directive (`healthy` or `failing`).
+    pub directive: SourceHealthDirective,
+    /// Optional single patient workspace to refresh immediately when `source == chart`;
+    /// when `None`, refreshes every registered patient in the staging practice.
+    #[serde(default)]
+    pub patient_workspace_id: Option<String>,
+}
+
+/// Response payload for `POST /staging-synthetic/source-failure`.
+#[derive(Clone, Debug, Serialize, Deserialize)]
+pub struct SourceFailureResponse {
+    /// Updated source health snapshot.
+    pub source_health: SourceHealthSnapshot,
+    /// Per-workspace saved chart refresh statuses when `source == chart`.
+    pub chart_statuses: Vec<SavedSourceStatus>,
+    /// Schedule sync outcome message when `source == calendar`.
+    pub calendar_sync_error: Option<String>,
+}
+
+/// Optional parameters for `POST /staging-synthetic/rounds`.
+#[derive(Clone, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
+pub struct RoundsRequest {
+    /// Optional explicit Unix timestamp for dispatch wake evaluation.
+    /// Defaults to the next due daily-rounds check second so newly arrived source
+    /// records are checked immediately without crossing the weekly periodic window.
+    #[serde(default)]
+    pub now_unix: Option<i64>,
+}
+
+/// Summary of one executed patient review returned by `POST /staging-synthetic/rounds`.
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub struct ExecutedReviewSummary {
+    /// Patient workspace reviewed.
+    pub patient_workspace_id: String,
+    /// Durable patient review ID.
+    pub review_id: String,
+    /// Trigger reason (`"new records"` or `"periodic"`).
+    pub trigger_reason: String,
+    /// Final review status (`"completed"`, `"failed"`, `"held"`, etc.).
+    pub status: String,
+    /// Observed workspace chart version when completed.
+    pub completed_source_version: Option<u64>,
+    /// Number of authoritative actions (`patient_concern`, `save_patient_understanding`, etc.) recorded.
+    pub action_count: usize,
+}
+
+/// Response payload for `POST /staging-synthetic/rounds`.
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub struct RoundsExecutionReport {
+    /// Unix timestamp at which rounds ran.
+    pub evaluated_at_unix: i64,
+    /// Raw dispatch wake summary (`checked_patients`, `failed_checks`, `started_reviews`).
+    pub dispatch: WakeSummary,
+    /// Patient reviews executed through the shared harness during this rounds pass.
+    pub executed_reviews: Vec<ExecutedReviewSummary>,
+    /// Open concerns currently visible across the staging practice after rounds settled.
+    pub open_concerns: Vec<Concern>,
+}
+
+/// Optional parameters for `POST /staging-synthetic/visits/prepare`.
+#[derive(Clone, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
+pub struct PrepareVisitsRequest {
+    /// Optional explicit Unix timestamp for visit-preparation selection and briefing execution.
+    /// Defaults to the staging practice clock's current Unix second.
+    #[serde(default)]
+    pub now_unix: Option<i64>,
+}
+
+/// Response payload for `POST /staging-synthetic/visits/prepare`.
+#[derive(Clone, Debug, Serialize, Deserialize)]
+pub struct VisitPreparationExecutionReport {
+    /// Unix timestamp at which visit preparation ran.
+    pub evaluated_at_unix: i64,
+    /// Outcome of syncing `working_bank/calendar/Appointment.ndjson` into PostgreSQL.
+    pub schedule_sync: ScheduleSyncOutcome,
+    /// Summary of visit selection and briefing jobs run on the shared harness.
+    pub wake_summary: ScheduledWakeSummary,
+    /// Saved visit preparation records across the staging practice.
+    pub preparations: Vec<VisitPreparationRecord>,
+    /// Saved pre-visit briefings across the staging practice.
+    pub briefings: Vec<SavedVisitBriefing>,
+}
+
+/// Staging synthetic control coordinator shared by the `/staging-synthetic/*` routes.
+pub struct StagingSyntheticControl {
+    sources: Arc<StagingSyntheticSources>,
+    db: DatabaseConnection,
+    store: Store,
+    auth: PostgresAuthStore,
+    bus: Arc<dyn physician_bus::Bus>,
+    roles: local_product::ModelRoles,
+    skills_dir: Option<String>,
+    model: SyntheticModelEndpoint,
+    accepted_events: tokio::sync::Mutex<Vec<SavedSyntheticEvent>>,
+    refresh_seq: AtomicU64,
+}
+
+/// Dependencies used to construct a [`StagingSyntheticControl`] instance.
+pub struct StagingSyntheticControlDeps {
+    /// Validated base and working bank directories.
+    pub config: StagingSyntheticControlConfig,
+    /// Shared Postgres connection used for atomic practice resets.
+    pub db: DatabaseConnection,
+    /// Runtime store bound to the same Postgres database.
+    pub store: Store,
+    /// Auth store bound to the same Postgres database.
+    pub auth: PostgresAuthStore,
+    /// Workspace invalidation bus notifying open browser tabs.
+    pub bus: Arc<dyn physician_bus::Bus>,
+    /// Model bindings for chat and background jobs.
+    pub roles: local_product::ModelRoles,
+    /// Optional explicit skills directory override.
+    pub skills_dir: Option<String>,
+    /// Model execution endpoint for background review and visit-preparation runs.
+    pub model: SyntheticModelEndpoint,
+}
+
+impl StagingSyntheticControl {
+    /// Initializes the working bank from the base bank, wires [`StagingSyntheticSources`]
+    /// into `Store::with_source_refresh`, and loads the base synthetic charts and
+    /// practice schedule if not already loaded.
+    pub async fn initialize(deps: StagingSyntheticControlDeps) -> Result<Arc<Self>, String> {
+        let initial_clock = crate::auth::SYNTHETIC_PRACTICE_CLOCK.now(now());
+        let sources = Arc::new(StagingSyntheticSources::new(&deps.config, initial_clock));
+        sources
+            .ensure_working_bank_initialized()
+            .map_err(|err| format!("initialize staging synthetic working bank: {err}"))?;
+
+        let refresh_trait: Arc<dyn PatientSourceRefresh> =
+            Arc::clone(&sources) as Arc<dyn PatientSourceRefresh>;
+        let store = deps.store.with_source_refresh(refresh_trait);
+
+        let existing_patients = deps
+            .auth
+            .practice_patients(STAGING_PRACTICE_ID)
+            .await
+            .map_err(|err| format!("query staging practice patients: {err}"))?;
+        if existing_patients.is_empty() {
+            let load_summary = crate::chart_load::load_synthetic_practice(
+                sources.working_bank_dir(),
+                &deps.auth,
+                &store,
+            )
+            .await?;
+            if !load_summary.failed.is_empty() {
+                return Err(format!(
+                    "synthetic practice chart load reported failures: {}",
+                    load_summary.failed.join("; ")
+                ));
+            }
+            if sources
+                .working_bank_dir()
+                .join("calendar")
+                .join("Appointment.ndjson")
+                .is_file()
+            {
+                schedule::sync_synthetic_schedule(
+                    sources.as_ref(),
+                    &deps.auth,
+                    &store,
+                    STAGING_PRACTICE_ID,
+                )
+                .await
+                .map_err(|err| format!("initial synthetic schedule sync failed: {err}"))?;
+            }
+        }
+
+        let initial_events = sources.read_accepted_events();
+        Ok(Arc::new(Self {
+            sources,
+            db: deps.db,
+            store,
+            auth: deps.auth,
+            bus: deps.bus,
+            roles: deps.roles,
+            skills_dir: deps.skills_dir,
+            model: deps.model,
+            accepted_events: tokio::sync::Mutex::new(initial_events),
+            refresh_seq: AtomicU64::new(initial_monotonic_seed()),
+        }))
+    }
+
+    /// Underlying synthetic source adapters (`PatientSource`, `PatientSourceRefresh`,
+    /// and `ScheduleSource`).
+    pub fn sources(&self) -> Arc<StagingSyntheticSources> {
+        Arc::clone(&self.sources)
+    }
+
+    /// Runtime [`Store`] wired to [`Self::sources`].
+    pub fn store(&self) -> &Store {
+        &self.store
+    }
+
+    /// Lists every synthetic patient registered in [`STAGING_PRACTICE_ID`].
+    pub async fn list_patients(
+        &self,
+    ) -> Result<SyntheticPatientListResponse, SyntheticControlError> {
+        let patients = self.collect_patient_summaries().await?;
+        Ok(SyntheticPatientListResponse {
+            practice_id: STAGING_PRACTICE_ID.to_owned(),
+            patients,
+        })
+    }
+
+    /// Reads full synthetic practice status and counts from PostgreSQL.
+    pub async fn status(&self) -> Result<PracticeSyntheticStatus, SyntheticControlError> {
+        let patients = self.collect_patient_summaries().await?;
+        let workspaces: Vec<String> = patients
+            .iter()
+            .map(|p| p.patient_workspace_id.clone())
+            .collect();
+
+        let conversations = count_practice_conversations(&self.db, STAGING_PRACTICE_ID)
+            .await
+            .map_err(SyntheticControlError::Database)?;
+
+        let mut reviews = 0_usize;
+        let mut memories = 0_usize;
+        let mut understandings = 0_usize;
+        let mut briefings = 0_usize;
+        for ws in &workspaces {
+            reviews += self
+                .store
+                .patient_reviews(STAGING_PRACTICE_ID, ws, &self.auth)
+                .await
+                .map_err(SyntheticControlError::Review)?
+                .len();
+            let mem_key = PatientKey::for_rounds(STAGING_PRACTICE_ID, ws).map_err(|err| {
+                SyntheticControlError::JobExecution(format!("patient memory key: {err}"))
+            })?;
+            let mem_listing = self.store.list_memory(&mem_key).await.map_err(|err| {
+                SyntheticControlError::JobExecution(format!("read patient memories: {err}"))
+            })?;
+            memories += usize::from(mem_listing.summary.is_some())
+                + usize::from(mem_listing.direction.is_some())
+                + usize::from(mem_listing.person.is_some())
+                + mem_listing.pages.len()
+                + mem_listing.log_days.len();
+            if self
+                .store
+                .patient_understanding_for_practice(STAGING_PRACTICE_ID, ws, &self.auth)
+                .await
+                .map_err(|err| {
+                    SyntheticControlError::JobExecution(format!("read understanding: {err}"))
+                })?
+                .is_some()
+            {
+                understandings += 1;
+            }
+            briefings += self
+                .store
+                .visit_briefings_for_workspace(STAGING_PRACTICE_ID, ws, &self.auth)
+                .await
+                .map_err(SyntheticControlError::Briefing)?
+                .len();
+        }
+
+        let open_concerns = self.collect_all_open_concerns(&workspaces).await?.len();
+        let schedule_view = self
+            .store
+            .practice_schedule(STAGING_PRACTICE_ID)
+            .await
+            .map_err(SyntheticControlError::Schedule)?;
+        let preparations = self
+            .store
+            .visit_preparations_for_practice(STAGING_PRACTICE_ID, &self.auth)
+            .await
+            .map_err(SyntheticControlError::Briefing)?;
+        let accepted_events = {
+            let guard = self.accepted_events.lock().await;
+            let persisted = self.sources.read_accepted_events();
+            if persisted.is_empty() {
+                guard.clone()
+            } else {
+                persisted
+            }
+        };
+
+        Ok(PracticeSyntheticStatus {
+            practice_id: STAGING_PRACTICE_ID.to_owned(),
+            source_health: self.sources.health_snapshot(),
+            counts: PracticeStateCounts {
+                patients: patients.len(),
+                conversations,
+                reviews,
+                open_concerns,
+                memories,
+                understandings,
+                appointments: schedule_view.appointments.len(),
+                visit_preparations: preparations.len(),
+                briefings,
+            },
+            patients,
+            accepted_events,
+        })
+    }
+
+    /// Validates and records a synthetic event in `working_bank_dir` without touching PostgreSQL.
+    pub async fn send_event(
+        &self,
+        spec: SyntheticEventSpec,
+    ) -> Result<SavedSyntheticEvent, SyntheticControlError> {
+        let clock = self
+            .auth
+            .practice_clock(STAGING_PRACTICE_ID)
+            .await
+            .map_err(SyntheticControlError::AuthUnavailable)?;
+        let accepted_at = clock.now(now());
+        let saved = self
+            .sources
+            .accept_event(spec, accepted_at)
+            .await
+            .map_err(SyntheticControlError::EventRefused)?;
+        let mut guard = self.accepted_events.lock().await;
+        self.sources
+            .append_accepted_event(&saved)
+            .map_err(SyntheticControlError::WorkingBankIo)?;
+        guard.push(saved.clone());
+        Ok(saved)
+    }
+
+    /// Injects or clears a source failure on the synthetic chart or calendar adapter
+    /// and runs a source refresh / schedule sync so the product observes the outcome
+    /// through the real [`PatientSourceRefresh`] or [`ScheduleSource`] boundary.
+    pub async fn set_source_failure(
+        &self,
+        request: SourceFailureRequest,
+    ) -> Result<SourceFailureResponse, SyntheticControlError> {
+        self.sources
+            .set_source_health(request.source, request.directive);
+        let clock = self
+            .auth
+            .practice_clock(STAGING_PRACTICE_ID)
+            .await
+            .map_err(SyntheticControlError::AuthUnavailable)?;
+        let now_unix = clock.now(now());
+        self.sources.set_clock_unix(now_unix);
+
+        let mut chart_statuses = Vec::new();
+        let mut calendar_sync_error = None;
+
+        match request.source {
+            SyntheticSourceKind::Chart => {
+                let targets = match request.patient_workspace_id {
+                    Some(ws) => vec![ws],
+                    None => self
+                        .auth
+                        .practice_patients(STAGING_PRACTICE_ID)
+                        .await
+                        .map_err(SyntheticControlError::AuthUnavailable)?,
+                };
+                for ws in targets {
+                    let seq = self.refresh_seq.fetch_add(1, Ordering::SeqCst) + 1;
+                    let key = RefreshCommandKey::new(format!("source-health-{now_unix}-{seq}"))
+                        .map_err(|err| {
+                            SyntheticControlError::JobExecution(format!(
+                                "invalid refresh key: {err}"
+                            ))
+                        })?;
+                    let refresh_req = RefreshRequest::new(key, RefreshTarget::AllSources);
+                    let scope = PracticeScope {
+                        practice: STAGING_PRACTICE_ID.to_owned(),
+                        workspace: ws.clone(),
+                        job_id: format!("source-health-{seq}"),
+                    };
+                    let report: RefreshReport = self
+                        .store
+                        .refresh_patient_sources_for_practice(
+                            &scope,
+                            &self.auth,
+                            &refresh_req,
+                            self.sources.as_ref(),
+                        )
+                        .await
+                        .map_err(SyntheticControlError::Refresh)?;
+                    chart_statuses.extend(report.sources);
+                    let _ = self
+                        .bus
+                        .publish(physician_bus::Event::WorkspaceChanged { workspace_id: ws })
+                        .await;
+                }
+            }
+            SyntheticSourceKind::Calendar => {
+                if let Err(err) = schedule::sync_synthetic_schedule(
+                    self.sources.as_ref(),
+                    &self.auth,
+                    &self.store,
+                    STAGING_PRACTICE_ID,
+                )
+                .await
+                {
+                    calendar_sync_error = Some(err.to_string());
+                }
+            }
+        }
+
+        Ok(SourceFailureResponse {
+            source_health: self.sources.health_snapshot(),
+            chart_statuses,
+            calendar_sync_error,
+        })
+    }
+
+    /// Runs daily rounds for [`STAGING_PRACTICE_ID`]: refreshes due patient sources
+    /// via [`PatientSourceRefresh`], dispatches changed/periodic reviews via
+    /// [`Store::wake_practice_dispatch`], and runs admitted review jobs to settlement
+    /// on the shared harness (`PracticeJobHost` + `ResponsesProvider`).
+    pub async fn run_rounds(
+        &self,
+        request: RoundsRequest,
+    ) -> Result<RoundsExecutionReport, SyntheticControlError> {
+        let evaluated_at_unix = match request.now_unix {
+            Some(explicit) => explicit,
+            None => self.next_daily_rounds_unix().await?,
+        };
+        let skills = self
+            .store
+            .resolve_worker_skills(self.skills_dir.as_deref())
+            .await
+            .map_err(SyntheticControlError::Briefing)?;
+
+        let checker = RefreshingSourceChecker {
+            store: &self.store,
+            auth: &self.auth,
+            sources: self.sources.as_ref(),
+            command_seq: &self.refresh_seq,
+        };
+        let receiver = PatientReviewReceiver::new(&self.store, &self.roles, &skills, &self.auth);
+
+        let dispatch = self
+            .store
+            .wake_practice_dispatch(
+                &self.auth,
+                STAGING_PRACTICE_ID,
+                evaluated_at_unix,
+                &checker,
+                &receiver,
+            )
+            .await
+            .map_err(SyntheticControlError::Dispatch)?;
+
+        let mut executed_reviews = Vec::new();
+        if !dispatch.started_reviews.is_empty() {
+            let mut provider = self.model.provider(&self.store).await?;
+            for review_req in &dispatch.started_reviews {
+                let queued_reviews = self
+                    .store
+                    .patient_reviews(
+                        STAGING_PRACTICE_ID,
+                        &review_req.patient_workspace_id,
+                        &self.auth,
+                    )
+                    .await
+                    .map_err(SyntheticControlError::Review)?;
+                let Some(queued) = queued_reviews
+                    .iter()
+                    .find(|rev| rev.command_key == review_req.command_key)
+                else {
+                    continue;
+                };
+                let scope = queued.practice_scope();
+                if let Some(claim) = self
+                    .store
+                    .claim_practice_job(&scope, 60, &self.auth)
+                    .await
+                    .map_err(|err| SyntheticControlError::JobExecution(err.to_string()))?
+                {
+                    let cancel = Cancellation::default();
+                    let mut host = PracticeJobHost {
+                        store: self.store.clone(),
+                        claim: claim.clone(),
+                        authority: &self.auth,
+                    };
+                    if let Err(err) = host.run(&mut provider, RunLimits::default(), &cancel).await {
+                        let reason = engine::AttemptFailure::of(&err, &cancel);
+                        let _ = self
+                            .store
+                            .settle_practice_job_attempt(
+                                &claim,
+                                reason,
+                                local_product::runtime::delivery::Backoff::IMMEDIATE,
+                            )
+                            .await;
+                        return Err(SyntheticControlError::JobExecution(err.to_string()));
+                    }
+                }
+                let reviews = self
+                    .store
+                    .patient_reviews(
+                        STAGING_PRACTICE_ID,
+                        &review_req.patient_workspace_id,
+                        &self.auth,
+                    )
+                    .await
+                    .map_err(SyntheticControlError::Review)?;
+                if let Some(saved) = reviews
+                    .iter()
+                    .find(|rev| rev.command_key == review_req.command_key)
+                {
+                    executed_reviews
+                        .push(summarize_saved_review(saved, review_req.reason.as_str()));
+                }
+                let _ = self
+                    .bus
+                    .publish(physician_bus::Event::WorkspaceChanged {
+                        workspace_id: review_req.patient_workspace_id.clone(),
+                    })
+                    .await;
+            }
+        }
+        for failed in &dispatch.failed_checks {
+            let _ = self
+                .bus
+                .publish(physician_bus::Event::WorkspaceChanged {
+                    workspace_id: failed.patient_workspace_id.clone(),
+                })
+                .await;
+        }
+
+        let workspaces = self
+            .auth
+            .practice_patients(STAGING_PRACTICE_ID)
+            .await
+            .map_err(SyntheticControlError::AuthUnavailable)?;
+        let open_concerns = self.collect_all_open_concerns(&workspaces).await?;
+
+        Ok(RoundsExecutionReport {
+            evaluated_at_unix,
+            dispatch,
+            executed_reviews,
+            open_concerns,
+        })
+    }
+
+    /// Syncs the synthetic calendar via [`ScheduleSource`] and runs pre-visit
+    /// selection + briefing preparation via [`Store::wake_visit_preparation`] on the
+    /// shared harness.
+    pub async fn prepare_visits(
+        &self,
+        request: PrepareVisitsRequest,
+    ) -> Result<VisitPreparationExecutionReport, SyntheticControlError> {
+        let clock = self
+            .auth
+            .practice_clock(STAGING_PRACTICE_ID)
+            .await
+            .map_err(SyntheticControlError::AuthUnavailable)?;
+        let evaluated_at_unix = request.now_unix.unwrap_or_else(|| clock.now(now()) as i64);
+
+        let schedule_sync = schedule::sync_synthetic_schedule(
+            self.sources.as_ref(),
+            &self.auth,
+            &self.store,
+            STAGING_PRACTICE_ID,
+        )
+        .await
+        .map_err(SyntheticControlError::Schedule)?;
+
+        let skills = self
+            .store
+            .resolve_worker_skills(self.skills_dir.as_deref())
+            .await
+            .map_err(SyntheticControlError::Briefing)?;
+        let mut provider = self.model.provider(&self.store).await?;
+
+        let wake_summary = self
+            .store
+            .wake_visit_preparation(
+                &self.auth,
+                STAGING_PRACTICE_ID,
+                &self.roles,
+                &skills,
+                &mut provider,
+                evaluated_at_unix,
+            )
+            .await
+            .map_err(SyntheticControlError::Briefing)?;
+
+        let preparations = self
+            .store
+            .visit_preparations_for_practice(STAGING_PRACTICE_ID, &self.auth)
+            .await
+            .map_err(SyntheticControlError::Briefing)?;
+
+        let workspaces = self
+            .auth
+            .practice_patients(STAGING_PRACTICE_ID)
+            .await
+            .map_err(SyntheticControlError::AuthUnavailable)?;
+        let mut briefings = Vec::new();
+        for ws in &workspaces {
+            let mut ws_briefings = self
+                .store
+                .visit_briefings_for_workspace(STAGING_PRACTICE_ID, ws, &self.auth)
+                .await
+                .map_err(SyntheticControlError::Briefing)?;
+            briefings.append(&mut ws_briefings);
+            let _ = self
+                .bus
+                .publish(physician_bus::Event::WorkspaceChanged {
+                    workspace_id: ws.clone(),
+                })
+                .await;
+        }
+
+        Ok(VisitPreparationExecutionReport {
+            evaluated_at_unix,
+            schedule_sync,
+            wake_summary,
+            preparations,
+            briefings,
+        })
+    }
+
+    /// Restores `working_bank_dir` from `base_bank_dir`, purges all runtime state for
+    /// [`STAGING_PRACTICE_ID`] (conversations, reviews, concerns, memories,
+    /// understandings, briefings, dispatches, source versions, schedule rows, and
+    /// panel overrides), reloads the base charts and base calendar, restores default
+    /// staging panel memberships, and returns the verified readback.
+    pub async fn reset(&self) -> Result<PracticeSyntheticStatus, SyntheticControlError> {
+        self.reset_with_auth(None).await
+    }
+
+    async fn reset_with_auth(
+        &self,
+        auth_override: Option<&dyn AuthStore>,
+    ) -> Result<PracticeSyntheticStatus, SyntheticControlError> {
+        let auth_target: &dyn AuthStore = auth_override.unwrap_or(&self.auth);
+        self.sources
+            .restore_working_bank_from_base()
+            .map_err(SyntheticControlError::WorkingBankIo)?;
+        self.accepted_events.lock().await.clear();
+
+        let mut workspaces = auth_target
+            .practice_patients(STAGING_PRACTICE_ID)
+            .await
+            .map_err(SyntheticControlError::AuthUnavailable)?;
+        let base_charts = SyntheticCharts::open(self.sources.working_bank_dir());
+        let seeded_ids = base_charts
+            .patient_ids()
+            .await
+            .map_err(|err| SyntheticControlError::ChartLoad(err.to_string()))?;
+        let seeded_workspaces: Vec<String> = seeded_ids
+            .iter()
+            .map(|id| workspace_id(base_charts.source_id(), id))
+            .collect();
+        for ws in &seeded_workspaces {
+            if !workspaces.contains(ws) {
+                workspaces.push(ws.clone());
+            }
+        }
+
+        purge_practice_runtime_state(&self.db, STAGING_PRACTICE_ID, &workspaces)
+            .await
+            .map_err(SyntheticControlError::Database)?;
+
+        let load_summary = crate::chart_load::load_synthetic_practice(
+            self.sources.working_bank_dir(),
+            auth_target,
+            &self.store,
+        )
+        .await
+        .map_err(SyntheticControlError::ChartLoad)?;
+        if !load_summary.failed.is_empty() {
+            return Err(SyntheticControlError::ChartLoad(
+                load_summary.failed.join("; "),
+            ));
+        }
+
+        let panel_identities = crate::auth::staging_panel(auth_target)
+            .await
+            .map_err(SyntheticControlError::AuthUnavailable)?;
+        for identity in &panel_identities {
+            for seeded_ws in &seeded_workspaces {
+                auth_target
+                    .set_membership(identity, seeded_ws, physician_auth::Membership::Allowed)
+                    .await
+                    .map_err(SyntheticControlError::AuthUnavailable)?;
+            }
+        }
+
+        if self
+            .sources
+            .working_bank_dir()
+            .join("calendar")
+            .join("Appointment.ndjson")
+            .is_file()
+        {
+            schedule::sync_synthetic_schedule(
+                self.sources.as_ref(),
+                auth_target,
+                &self.store,
+                STAGING_PRACTICE_ID,
+            )
+            .await
+            .map_err(SyntheticControlError::Schedule)?;
+        }
+
+        for ws in &workspaces {
+            let _ = self
+                .bus
+                .publish(physician_bus::Event::WorkspaceChanged {
+                    workspace_id: ws.clone(),
+                })
+                .await;
+        }
+
+        self.status().await
+    }
+
+    async fn next_daily_rounds_unix(&self) -> Result<i64, SyntheticControlError> {
+        let clock = self
+            .auth
+            .practice_clock(STAGING_PRACTICE_ID)
+            .await
+            .map_err(SyntheticControlError::AuthUnavailable)?;
+        let practice_now = clock.now(now()) as i64;
+        let statuses = self
+            .store
+            .practice_dispatch_statuses(&self.auth, STAGING_PRACTICE_ID, practice_now)
+            .await
+            .map_err(SyntheticControlError::Dispatch)?;
+        let mut target = practice_now;
+        for (_, view) in statuses {
+            if let Some(last_success) = view.last_success_at {
+                let next_check =
+                    last_success.saturating_add(view.cadence.check_every_seconds().cast_signed());
+                target = target.max(next_check);
+            }
+        }
+        Ok(target)
+    }
+
+    async fn collect_patient_summaries(
+        &self,
+    ) -> Result<Vec<SyntheticPatientSummary>, SyntheticControlError> {
+        let workspaces = self
+            .auth
+            .practice_patients(STAGING_PRACTICE_ID)
+            .await
+            .map_err(SyntheticControlError::AuthUnavailable)?;
+        let pulls = self
+            .store
+            .source_pulls(&workspaces)
+            .await
+            .map_err(SyntheticControlError::Database)?;
+        let mut summaries = Vec::new();
+        for ws in workspaces {
+            let Some(first_pull) = pulls.get(&ws).and_then(|list| list.first()) else {
+                continue;
+            };
+            let observation = self
+                .store
+                .sources(&ws)
+                .await
+                .map_err(SyntheticControlError::Database)?;
+            let mrn = first_pull
+                .patient
+                .medical_record_numbers
+                .first()
+                .map(|m| m.value.clone());
+            summaries.push(SyntheticPatientSummary {
+                patient_workspace_id: ws,
+                source_patient_id: first_pull.patient.source_patient_id.clone(),
+                display_name: first_pull.patient.display_name.clone(),
+                birth_date: first_pull.patient.birth_date.clone(),
+                mrn,
+                chart_version: observation.version,
+                chart_record_count: observation.sources.len(),
+            });
+        }
+        summaries.sort_by(|left, right| {
+            left.display_name
+                .to_lowercase()
+                .cmp(&right.display_name.to_lowercase())
+                .then_with(|| left.patient_workspace_id.cmp(&right.patient_workspace_id))
+        });
+        Ok(summaries)
+    }
+
+    async fn collect_all_open_concerns(
+        &self,
+        workspaces: &[String],
+    ) -> Result<Vec<Concern>, SyntheticControlError> {
+        let mut authority = StagingPracticeReadAuthority { auth: &self.auth };
+        let dummy_session = [0_u8; 32];
+        let mut concerns = Vec::new();
+        for ws in workspaces {
+            let access = WorkspaceAccess {
+                practice: STAGING_PRACTICE_ID,
+                physician: "staging-physician",
+                workspace: ws,
+                session_hash: &dummy_session,
+            };
+            let mut open = self
+                .store
+                .open_concerns(&access, &mut authority)
+                .await
+                .map_err(|err| {
+                    SyntheticControlError::JobExecution(format!("read open concerns: {err}"))
+                })?;
+            concerns.append(&mut open);
+        }
+        Ok(concerns)
+    }
+}
+
+struct StagingPracticeReadAuthority<'a> {
+    auth: &'a PostgresAuthStore,
+}
+
+#[async_trait]
+impl Authority for StagingPracticeReadAuthority<'_> {
+    async fn check(
+        &mut self,
+        _tx: &PublicationTransaction,
+        scope: &Scope,
+        _session_hash: Option<&[u8]>,
+    ) -> Result<(), String> {
+        let owner = self
+            .auth
+            .patient_practice(&scope.workspace)
+            .await
+            .map_err(|err| err.to_string())?;
+        if owner.as_deref() == Some(scope.practice.as_str()) {
+            Ok(())
+        } else {
+            Err("workspace does not belong to practice".to_owned())
+        }
+    }
+
+    async fn lock_publication(
+        &mut self,
+        tx: &PublicationTransaction,
+        scope: &Scope,
+        session_hash: Option<&[u8]>,
+    ) -> Result<(), String> {
+        self.check(tx, scope, session_hash).await
+    }
+}
+
+/// Builds the Axum router mounting `/staging-synthetic/*` routes.
+pub fn router(control: Arc<StagingSyntheticControl>) -> Router {
+    Router::new()
+        .route("/staging-synthetic/patients", get(list_patients_route))
+        .route("/staging-synthetic/status", get(status_route))
+        .route("/staging-synthetic/events", post(send_event_route))
+        .route(
+            "/staging-synthetic/source-failure",
+            post(source_failure_route),
+        )
+        .route("/staging-synthetic/rounds", post(rounds_route))
+        .route(
+            "/staging-synthetic/visits/prepare",
+            post(prepare_visits_route),
+        )
+        .route("/staging-synthetic/reset", post(reset_route))
+        .with_state(control)
+}
+
+fn extract_auth_inputs(request: &Request<Body>) -> (Option<String>, Option<Arc<dyn AuthStore>>) {
+    let token = bearer(request);
+    let store = request.extensions().get::<Arc<dyn AuthStore>>().cloned();
+    (token, store)
+}
+
+async fn authorize_staging_request(
+    control: &StagingSyntheticControl,
+    token: Option<String>,
+    auth_ext: Option<Arc<dyn AuthStore>>,
+) -> Option<Response> {
+    let Some(token) = token else {
+        return Some(
+            (
+                StatusCode::UNAUTHORIZED,
+                Json(json!({
+                    "detail": "Sign in to operate staging synthetic control.",
+                    "reason": "no_session",
+                })),
+            )
+                .into_response(),
+        );
+    };
+    let resolved = match auth_ext {
+        Some(store) => store.identity(&token, now()).await,
+        None => AuthStore::identity(&control.auth, &token, now()).await,
+    };
+    let identity = match resolved {
+        Ok(identity) => identity,
+        Err(SessionError::Invalid) => {
+            return Some(
+                (
+                    StatusCode::UNAUTHORIZED,
+                    Json(json!({
+                        "detail": "Sign in to operate staging synthetic control.",
+                        "reason": "no_session",
+                    })),
+                )
+                    .into_response(),
+            );
+        }
+        Err(SessionError::Inactive) => {
+            return Some(
+                (
+                    StatusCode::UNAUTHORIZED,
+                    Json(json!({
+                        "detail": "Sign in to operate staging synthetic control.",
+                        "reason": "access_removed",
+                    })),
+                )
+                    .into_response(),
+            );
+        }
+    };
+    if identity.practice_id != STAGING_PRACTICE_ID {
+        return Some(
+            (
+                StatusCode::FORBIDDEN,
+                Json(json!({
+                    "status": "forbidden",
+                    "detail": format!(
+                        "staging synthetic control operates exclusively in `{STAGING_PRACTICE_ID}`"
+                    ),
+                })),
+            )
+                .into_response(),
+        );
+    }
+    None
+}
+
+async fn list_patients_route(
+    State(control): State<Arc<StagingSyntheticControl>>,
+    request: Request<Body>,
+) -> Response {
+    let (token, auth_ext) = extract_auth_inputs(&request);
+    if let Some(denied) = authorize_staging_request(&control, token, auth_ext).await {
+        return denied;
+    }
+    match control.list_patients().await {
+        Ok(list) => Json(list).into_response(),
+        Err(err) => err.into_response(),
+    }
+}
+
+async fn status_route(
+    State(control): State<Arc<StagingSyntheticControl>>,
+    request: Request<Body>,
+) -> Response {
+    let (token, auth_ext) = extract_auth_inputs(&request);
+    if let Some(denied) = authorize_staging_request(&control, token, auth_ext).await {
+        return denied;
+    }
+    match control.status().await {
+        Ok(status) => Json(status).into_response(),
+        Err(err) => err.into_response(),
+    }
+}
+
+const MAX_CONTROL_BODY_BYTES: usize = 1024 * 1024;
+
+fn bad_request_response(detail: String) -> Response {
+    (
+        StatusCode::BAD_REQUEST,
+        Json(json!({ "status": "bad_request", "detail": detail })),
+    )
+        .into_response()
+}
+
+async fn read_json_body<T: serde::de::DeserializeOwned>(
+    request: Request<Body>,
+) -> Result<T, String> {
+    let bytes = axum::body::to_bytes(request.into_body(), MAX_CONTROL_BODY_BYTES)
+        .await
+        .map_err(|err| err.to_string())?;
+    serde_json::from_slice(&bytes).map_err(|err| err.to_string())
+}
+
+async fn read_optional_json_body<T: serde::de::DeserializeOwned + Default>(
+    request: Request<Body>,
+) -> Result<T, String> {
+    let bytes = axum::body::to_bytes(request.into_body(), MAX_CONTROL_BODY_BYTES)
+        .await
+        .map_err(|err| err.to_string())?;
+    if bytes.is_empty() {
+        return Ok(T::default());
+    }
+    serde_json::from_slice(&bytes).map_err(|err| err.to_string())
+}
+
+async fn send_event_route(
+    State(control): State<Arc<StagingSyntheticControl>>,
+    request: Request<Body>,
+) -> Response {
+    let (token, auth_ext) = extract_auth_inputs(&request);
+    if let Some(denied) = authorize_staging_request(&control, token, auth_ext).await {
+        return denied;
+    }
+    let spec: SyntheticEventSpec = match read_json_body(request).await {
+        Ok(parsed) => parsed,
+        Err(detail) => return bad_request_response(detail),
+    };
+    match control.send_event(spec).await {
+        Ok(saved) => (StatusCode::CREATED, Json(saved)).into_response(),
+        Err(err) => err.into_response(),
+    }
+}
+
+async fn source_failure_route(
+    State(control): State<Arc<StagingSyntheticControl>>,
+    request: Request<Body>,
+) -> Response {
+    let (token, auth_ext) = extract_auth_inputs(&request);
+    if let Some(denied) = authorize_staging_request(&control, token, auth_ext).await {
+        return denied;
+    }
+    let payload: SourceFailureRequest = match read_json_body(request).await {
+        Ok(parsed) => parsed,
+        Err(detail) => return bad_request_response(detail),
+    };
+    match control.set_source_failure(payload).await {
+        Ok(resp) => Json(resp).into_response(),
+        Err(err) => err.into_response(),
+    }
+}
+
+async fn rounds_route(
+    State(control): State<Arc<StagingSyntheticControl>>,
+    request: Request<Body>,
+) -> Response {
+    let (token, auth_ext) = extract_auth_inputs(&request);
+    if let Some(denied) = authorize_staging_request(&control, token, auth_ext).await {
+        return denied;
+    }
+    let payload: RoundsRequest = match read_optional_json_body(request).await {
+        Ok(parsed) => parsed,
+        Err(detail) => return bad_request_response(detail),
+    };
+    match control.run_rounds(payload).await {
+        Ok(report) => Json(report).into_response(),
+        Err(err) => err.into_response(),
+    }
+}
+
+async fn prepare_visits_route(
+    State(control): State<Arc<StagingSyntheticControl>>,
+    request: Request<Body>,
+) -> Response {
+    let (token, auth_ext) = extract_auth_inputs(&request);
+    if let Some(denied) = authorize_staging_request(&control, token, auth_ext).await {
+        return denied;
+    }
+    let payload: PrepareVisitsRequest = match read_optional_json_body(request).await {
+        Ok(parsed) => parsed,
+        Err(detail) => return bad_request_response(detail),
+    };
+    match control.prepare_visits(payload).await {
+        Ok(report) => Json(report).into_response(),
+        Err(err) => err.into_response(),
+    }
+}
+
+async fn reset_route(
+    State(control): State<Arc<StagingSyntheticControl>>,
+    request: Request<Body>,
+) -> Response {
+    let (token, auth_ext) = extract_auth_inputs(&request);
+    if let Some(denied) = authorize_staging_request(&control, token, auth_ext.clone()).await {
+        return denied;
+    }
+    match control.reset_with_auth(auth_ext.as_deref()).await {
+        Ok(status) => Json(status).into_response(),
+        Err(err) => err.into_response(),
+    }
+}
+
+fn summarize_saved_review(
+    saved: &SavedPatientReview,
+    trigger_reason: &str,
+) -> ExecutedReviewSummary {
+    ExecutedReviewSummary {
+        patient_workspace_id: saved.workspace.clone(),
+        review_id: saved.review_id.clone(),
+        trigger_reason: trigger_reason.to_owned(),
+        status: saved.state.status_str().to_owned(),
+        completed_source_version: saved.completed_source_version,
+        action_count: saved.actions.len(),
+    }
+}
+
 fn validate_fhir_id(id: &str) -> Result<(), SyntheticEventRefusal> {
     if id.is_empty() || id.len() > 128 || id.contains('/') || id.chars().any(char::is_whitespace) {
         return Err(SyntheticEventRefusal::MalformedFhirResource {
@@ -1284,5 +2765,257 @@ fn copy_dir_recursive(src: &Path, dst: &Path) -> Result<(), std::io::Error> {
             fs::copy(entry.path(), &target)?;
         }
     }
+    Ok(())
+}
+
+/// Typed `sea_query` identifiers for atomic staging practice runtime reset and
+/// conversation count queries (zero raw SQL strings).
+mod runtime_tables {
+    use super::Iden;
+
+    #[derive(Clone, Copy)]
+    pub(super) enum PracticeTable {
+        Events,
+        ChatAttempts,
+        ChatDrafts,
+        ResponseFeedback,
+        Conversations,
+        RevisionAttempts,
+        ReplyRevisions,
+        ReplyDrafts,
+        PracticeJobAttempts,
+        PracticeJobs,
+        PatientReviews,
+        VisitConcerns,
+        VisitBriefings,
+        VisitPreparations,
+        ConcernFeedback,
+        Concerns,
+        MemoryVersions,
+        MemoryNotes,
+        MemoryRounds,
+        PatientUnderstandingRevisions,
+        PatientUnderstanding,
+        SourceRefreshReceipts,
+        SourceStatuses,
+        PatientDispatch,
+        Appointments,
+        SchedulePatientLinks,
+        ScheduleSources,
+        Commands,
+        Recipes,
+        SkillPackages,
+        TodayUpdatesSeen,
+        TodayWorkDismissals,
+    }
+
+    impl Iden for PracticeTable {
+        fn unquoted(&self) -> &'static str {
+            match self {
+                Self::Events => "physician_runtime_events",
+                Self::ChatAttempts => "physician_runtime_chat_attempts",
+                Self::ChatDrafts => "physician_runtime_chat_drafts",
+                Self::ResponseFeedback => "physician_runtime_response_feedback",
+                Self::Conversations => "physician_runtime_conversations",
+                Self::RevisionAttempts => "physician_runtime_revision_attempts",
+                Self::ReplyRevisions => "physician_runtime_reply_revisions",
+                Self::ReplyDrafts => "physician_runtime_reply_drafts",
+                Self::PracticeJobAttempts => "physician_runtime_practice_job_attempts",
+                Self::PracticeJobs => "physician_runtime_practice_jobs",
+                Self::PatientReviews => "physician_runtime_patient_reviews",
+                Self::VisitConcerns => "physician_runtime_visit_concerns",
+                Self::VisitBriefings => "physician_runtime_visit_briefings",
+                Self::VisitPreparations => "physician_runtime_visit_preparations",
+                Self::ConcernFeedback => "physician_runtime_concern_feedback",
+                Self::Concerns => "physician_runtime_concerns",
+                Self::MemoryVersions => "physician_runtime_memory_versions",
+                Self::MemoryNotes => "physician_runtime_memory_notes",
+                Self::MemoryRounds => "physician_runtime_memory_rounds",
+                Self::PatientUnderstandingRevisions => {
+                    "physician_runtime_patient_understanding_revisions"
+                }
+                Self::PatientUnderstanding => "physician_runtime_patient_understanding",
+                Self::SourceRefreshReceipts => "physician_runtime_source_refresh_receipts",
+                Self::SourceStatuses => "physician_runtime_source_statuses",
+                Self::PatientDispatch => "physician_runtime_patient_dispatch",
+                Self::Appointments => "physician_runtime_appointments",
+                Self::SchedulePatientLinks => "physician_runtime_schedule_patient_links",
+                Self::ScheduleSources => "physician_runtime_schedule_sources",
+                Self::Commands => "physician_runtime_commands",
+                Self::Recipes => "physician_runtime_recipes",
+                Self::SkillPackages => "physician_runtime_skill_packages",
+                Self::TodayUpdatesSeen => "physician_runtime_today_updates_seen",
+                Self::TodayWorkDismissals => "physician_runtime_today_work_dismissals",
+            }
+        }
+    }
+
+    #[derive(Clone, Copy)]
+    pub(super) enum WorkspaceTable {
+        Sources,
+        SourcePulls,
+        SourceVersions,
+    }
+
+    impl Iden for WorkspaceTable {
+        fn unquoted(&self) -> &'static str {
+            match self {
+                Self::Sources => "physician_runtime_sources",
+                Self::SourcePulls => "physician_runtime_source_pulls",
+                Self::SourceVersions => "physician_runtime_source_versions",
+            }
+        }
+    }
+
+    #[derive(Clone, Copy)]
+    pub(super) enum AuthPracticeTable {
+        PatientLinks,
+        Memberships,
+        Patients,
+    }
+
+    impl Iden for AuthPracticeTable {
+        fn unquoted(&self) -> &'static str {
+            match self {
+                Self::PatientLinks => "physician_patient_links",
+                Self::Memberships => "physician_memberships",
+                Self::Patients => "physician_patients",
+            }
+        }
+    }
+
+    #[derive(Clone, Copy)]
+    pub(super) enum RuntimeCol {
+        Practice,
+        PracticeId,
+        Workspace,
+        Chat,
+    }
+
+    impl Iden for RuntimeCol {
+        fn unquoted(&self) -> &'static str {
+            match self {
+                Self::Practice => "practice",
+                Self::PracticeId => "practice_id",
+                Self::Workspace => "workspace",
+                Self::Chat => "chat",
+            }
+        }
+    }
+
+    pub(super) const ALL_PRACTICE_TABLES: &[PracticeTable] = &[
+        PracticeTable::Events,
+        PracticeTable::ChatAttempts,
+        PracticeTable::ChatDrafts,
+        PracticeTable::ResponseFeedback,
+        PracticeTable::Conversations,
+        PracticeTable::RevisionAttempts,
+        PracticeTable::ReplyRevisions,
+        PracticeTable::ReplyDrafts,
+        PracticeTable::PracticeJobAttempts,
+        PracticeTable::PracticeJobs,
+        PracticeTable::PatientReviews,
+        PracticeTable::VisitConcerns,
+        PracticeTable::VisitBriefings,
+        PracticeTable::VisitPreparations,
+        PracticeTable::ConcernFeedback,
+        PracticeTable::Concerns,
+        PracticeTable::MemoryVersions,
+        PracticeTable::MemoryNotes,
+        PracticeTable::MemoryRounds,
+        PracticeTable::PatientUnderstandingRevisions,
+        PracticeTable::PatientUnderstanding,
+        PracticeTable::SourceRefreshReceipts,
+        PracticeTable::SourceStatuses,
+        PracticeTable::PatientDispatch,
+        PracticeTable::Appointments,
+        PracticeTable::SchedulePatientLinks,
+        PracticeTable::ScheduleSources,
+        PracticeTable::Commands,
+        PracticeTable::Recipes,
+        PracticeTable::SkillPackages,
+        PracticeTable::TodayUpdatesSeen,
+        PracticeTable::TodayWorkDismissals,
+    ];
+
+    pub(super) const ALL_WORKSPACE_TABLES: &[WorkspaceTable] = &[
+        WorkspaceTable::Sources,
+        WorkspaceTable::SourcePulls,
+        WorkspaceTable::SourceVersions,
+    ];
+
+    pub(super) const ALL_AUTH_PRACTICE_TABLES: &[AuthPracticeTable] = &[
+        AuthPracticeTable::PatientLinks,
+        AuthPracticeTable::Memberships,
+        AuthPracticeTable::Patients,
+    ];
+}
+
+async fn count_practice_conversations(
+    db: &DatabaseConnection,
+    practice_id: &str,
+) -> Result<usize, DbErr> {
+    use runtime_tables::{PracticeTable, RuntimeCol};
+    use sea_orm::sea_query::ExprTrait as _;
+
+    let select = Query::select()
+        .expr(Expr::col(RuntimeCol::Chat).count())
+        .from(PracticeTable::Conversations)
+        .and_where(Expr::col(RuntimeCol::Practice).eq(practice_id))
+        .to_owned();
+    let Some(row) = db.query_one(&select).await? else {
+        return Ok(0);
+    };
+    let count: i64 = row.try_get_by_index(0)?;
+    Ok(usize::try_from(count).unwrap_or(0))
+}
+
+async fn purge_practice_runtime_state(
+    db: &DatabaseConnection,
+    practice_id: &str,
+    workspaces: &[String],
+) -> Result<(), DbErr> {
+    use runtime_tables::{
+        ALL_AUTH_PRACTICE_TABLES, ALL_PRACTICE_TABLES, ALL_WORKSPACE_TABLES, PracticeTable,
+        RuntimeCol,
+    };
+    use sea_orm::sea_query::ExprTrait as _;
+
+    let _ = PracticeTable::TodayUpdatesSeen;
+    let tx = db.begin().await?;
+
+    for table in ALL_PRACTICE_TABLES {
+        let delete = Query::delete()
+            .from_table(*table)
+            .and_where(Expr::col(RuntimeCol::Practice).eq(practice_id))
+            .to_owned();
+        tx.execute(&delete).await?;
+    }
+
+    let workspace_set: BTreeSet<String> = workspaces
+        .iter()
+        .map(|w| w.trim().to_owned())
+        .filter(|w| !w.is_empty())
+        .collect();
+    if !workspace_set.is_empty() {
+        let ws_list: Vec<String> = workspace_set.into_iter().collect();
+        for table in ALL_WORKSPACE_TABLES {
+            let delete = Query::delete()
+                .from_table(*table)
+                .and_where(Expr::col(RuntimeCol::Workspace).is_in(ws_list.clone()))
+                .to_owned();
+            tx.execute(&delete).await?;
+        }
+    }
+
+    for table in ALL_AUTH_PRACTICE_TABLES {
+        let delete = Query::delete()
+            .from_table(*table)
+            .and_where(Expr::col(RuntimeCol::PracticeId).eq(practice_id))
+            .to_owned();
+        tx.execute(&delete).await?;
+    }
+
+    tx.commit().await?;
     Ok(())
 }

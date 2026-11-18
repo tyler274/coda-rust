@@ -607,11 +607,25 @@ fn configured(get: &impl Fn(&str) -> Option<String>, key: &str) -> Option<String
         .filter(|value| !value.is_empty())
 }
 
+/// Builds the site router from an environment lookup function.
+pub async fn site_router_from_env(
+    get: impl Fn(&str) -> Option<String>,
+) -> Result<(Router, Option<tokio::task::JoinHandle<()>>), String> {
+    site_from_env(
+        get,
+        std::sync::Arc::new(patients::MemoryPatients::default()),
+    )
+    .await
+    .map_err(|err| err.to_string())
+}
+
 async fn site_from_env(
     get: impl Fn(&str) -> Option<String>,
     memory_patients: std::sync::Arc<patients::MemoryPatients>,
 ) -> Result<(Router, Option<tokio::task::JoinHandle<()>>), hosting::StartupError> {
     let hosted = hosting::is_hosted(&get);
+    let staging_synthetic = hosting::StagingSyntheticControlConfig::from_env(&get)
+        .map_err(|error| error.to_string())?;
     let mode = ChatMode::from_env(&get)?;
     let database = configured(&get, "PHYSICIAN_DATABASE_URL");
     if mode == ChatMode::DurableByTopic {
@@ -640,6 +654,12 @@ async fn site_from_env(
     if durable && !required {
         return Err("durable physician chat requires PHYSICIAN_AUTH=required".into());
     }
+    if staging_synthetic.is_some() && !required {
+        return Err("staging synthetic control requires PHYSICIAN_AUTH=required".into());
+    }
+    if staging_synthetic.is_some() && database.is_none() {
+        return Err("staging synthetic control requires PHYSICIAN_DATABASE_URL".into());
+    }
     // Their patients are not the practice's, so access has nothing to enforce.
     if required && configured(&get, "PHYSICIAN_UPSTREAM").is_some() {
         return Err("PHYSICIAN_UPSTREAM cannot run with required sign-in".into());
@@ -662,7 +682,7 @@ async fn site_from_env(
     // front door and `/readyz` all read through it.
     // A site that serves from the database refuses to start without it; one
     // that only reports readiness from it starts and answers 503.
-    let runtime = match &database {
+    let mut runtime = match &database {
         Some(url) => match local_product::runtime::Store::connect(url).await {
             Ok(store) => Some(store),
             Err(error) if required || durable => {
@@ -674,6 +694,48 @@ async fn site_from_env(
             }
         },
         None => None,
+    };
+    let staging_control = if let Some(syn_cfg) = staging_synthetic {
+        let url = database.as_deref().ok_or_else(|| {
+            "staging synthetic control requires PHYSICIAN_DATABASE_URL".to_string()
+        })?;
+        let store = runtime.clone().ok_or_else(|| {
+            "staging synthetic control requires PHYSICIAN_AUTH=required".to_string()
+        })?;
+        let db = sea_orm::Database::connect(url)
+            .await
+            .map_err(|_| "physician runtime database unavailable".to_string())?;
+        let pg_auth = physician_auth::PostgresAuthStore::connect_without_migrations(url)
+            .await
+            .map_err(|_| "physician auth database unavailable".to_string())?;
+        let model = synthetic_control::SyntheticModelEndpoint::from_env(&get, hosted)?;
+        let settings: Vec<_> = local_product::MODEL_SETTING_KEYS
+            .into_iter()
+            .filter_map(|key| configured(&get, key).map(|value| (key, value)))
+            .collect();
+        let environment: Vec<_> = settings
+            .iter()
+            .map(|(key, value)| (*key, value.as_str()))
+            .collect();
+        let roles = local_product::model_roles(model.adapter(), &environment)
+            .map_err(|error| error.to_string())?;
+        let control = synthetic_control::StagingSyntheticControl::initialize(
+            synthetic_control::StagingSyntheticControlDeps {
+                config: syn_cfg,
+                db,
+                store,
+                auth: pg_auth,
+                bus: std::sync::Arc::clone(&bus),
+                roles,
+                skills_dir: configured(&get, "PHYSICIAN_SKILLS_DIR"),
+                model,
+            },
+        )
+        .await?;
+        runtime = Some(control.store().clone());
+        Some(control)
+    } else {
+        None
     };
     let readiness = runtime.as_ref().map(hosting::Readiness::shared);
     let (mut base, chat) = if let (Some(skills), Some(store)) = (skills, runtime.clone()) {
@@ -740,6 +802,9 @@ async fn site_from_env(
         base = base.merge(sources::local_proof_routes());
     }
     base = base.layer(axum::Extension(source_registry));
+    if let Some(ref control) = staging_control {
+        base = base.merge(synthetic_control::router(std::sync::Arc::clone(control)));
+    }
     if let Some(ref store) = runtime {
         base = base.layer(axum::Extension(store.clone()));
         if chat.is_none() {
@@ -751,7 +816,11 @@ async fn site_from_env(
             )));
         }
     }
-    if let Some(calendar) = schedule::SyntheticBankCalendar::from_env(&get) {
+    if let Some(ref control) = staging_control {
+        let source: std::sync::Arc<dyn local_product::runtime::schedule::ScheduleSource> =
+            control.sources();
+        base = base.layer(schedule::schedule_source_layer(source));
+    } else if let Some(calendar) = schedule::SyntheticBankCalendar::from_env(&get) {
         let source: std::sync::Arc<dyn local_product::runtime::schedule::ScheduleSource> =
             std::sync::Arc::new(calendar);
         base = base.layer(schedule::schedule_source_layer(source));
