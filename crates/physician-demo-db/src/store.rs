@@ -205,6 +205,11 @@ impl DemoStore {
             time_zone: DEMO_ZONE.into(),
             source_state: PracticeSourceState {
                 state: "usable".into(),
+                source_label: Some("Demo Clinic Calendar".into()),
+                snapshot_as_of: Some(DEMO_NOW.into()),
+                synchronized_at: Some(DEMO_NOW.into()),
+                freshness: Some("current".into()),
+                last_error: None,
             },
             visits,
         })

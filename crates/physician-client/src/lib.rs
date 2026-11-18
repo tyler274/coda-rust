@@ -2,6 +2,7 @@
 //! Book: `book/src/physician-site.md`.
 #![deny(missing_docs)]
 
+pub mod briefings;
 mod reviews;
 
 pub use http::HttpError;

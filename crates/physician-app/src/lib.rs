@@ -12,6 +12,8 @@ mod feedback;
 mod local_draft;
 mod panels;
 mod patient_reviews_panel;
+/// Schedule pane states, browser time-zone formatting, and the pre-visit briefing view.
+pub mod schedule_briefing;
 mod shell;
 mod status;
 mod tabs;
@@ -46,12 +48,14 @@ use shell::{
 };
 #[cfg(target_arch = "wasm32")]
 use shell::{EventRefetch, event_refetch};
-use status::{CommandNotice, CommandStage, ReadNotice, ReadStage};
+pub(crate) use status::ReadNotice;
+use status::{CommandNotice, CommandStage, ReadStage};
 use ui::{
-    ActionRow, Author, Button, ButtonVariant, Card, Count, Dialog, DraftConflict, EmptyLine, Icon,
-    IconName, LiveDot, NavigationControl, NavigationRow, Orb, OrbState, PageTitle, ProgressBar,
-    SearchField, StatePill, StatusLine, TextField, TextKind, Tone, WorkingMark,
+    ActionRow, Author, Button, ButtonVariant, Card, Count, Dialog, DraftConflict, Icon, IconName,
+    LiveDot, NavigationRow, Orb, OrbState, PageTitle, ProgressBar, SearchField, StatePill,
+    StatusLine, TextField, TextKind, Tone, WorkingMark,
 };
+pub(crate) use ui::{EmptyLine, NavigationControl};
 
 const SHELL_STYLES: &str = include_str!("../assets/shell.css");
 const UPDATES_LOADING: &str = "Loading updates…";
@@ -64,8 +68,8 @@ const PAST_WORK_UNAVAILABLE: &str = "Coda couldn’t load past work.";
 const PAST_WORK_STALE: &str = "Coda couldn’t refresh past work. Showing the last list.";
 const ANSWER_NEWER_RECORDS: &str = "Newer records arrived after this answer.";
 const UPDATE_ANSWER_PROMPT: &str = "Update this answer with the latest records.";
-const SCHEDULE_LOADING: &str = "Loading the schedule…";
-const SCHEDULE_UNAVAILABLE: &str = "Coda couldn’t load the schedule.";
+pub(crate) const SCHEDULE_LOADING: &str = "Loading the schedule…";
+pub(crate) const SCHEDULE_UNAVAILABLE: &str = "Coda couldn’t load the schedule.";
 const SCHEDULE_STALE: &str = "Coda couldn’t refresh the schedule. Showing the last one.";
 const SEARCH_LOADING: &str = "Searching…";
 const SEARCH_UNAVAILABLE: &str = "Coda couldn’t search patients.";
@@ -4770,7 +4774,10 @@ fn past_work_item_detail(item: &PastWorkItem, time_zone: &str, server_now: &str)
 }
 
 #[component]
-fn CitedMessage(pieces: Vec<SynopsisPiece>, on_open_source: EventHandler<SourceChip>) -> Element {
+pub(crate) fn CitedMessage(
+    pieces: Vec<SynopsisPiece>,
+    on_open_source: EventHandler<SourceChip>,
+) -> Element {
     let parts = pieces
         .into_iter()
         .map(|piece| match piece {
