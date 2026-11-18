@@ -56,6 +56,8 @@ mod quota;
 /// Command receipts and their 90-day reduction to a salted digest.
 pub mod receipt;
 mod records;
+/// On-demand patient source refresh tool, saved per-source status, and once-only receipts.
+pub mod refresh;
 /// Hosted physician reply drafts and their revision work.
 pub mod reply;
 /// Patient rounds: the job that keeps a patient's pages, summary and
@@ -648,6 +650,7 @@ pub enum Stopped {
 pub struct Store {
     db: DatabaseConnection,
     clinical_library: crate::clinical_library::ClinicalLibraryClient,
+    source_refresh: std::sync::Arc<dyn refresh::PatientSourceRefresh>,
 }
 
 fn error(message: &str) -> DbErr {
@@ -933,6 +936,7 @@ impl Store {
         Self {
             db,
             clinical_library: crate::clinical_library::ClinicalLibraryClient::from_env(),
+            source_refresh: std::sync::Arc::new(refresh::FixedSourceCheck::new()),
         }
     }
 
@@ -954,6 +958,20 @@ impl Store {
     /// process holds one pool.
     pub fn connection(&self) -> &DatabaseConnection {
         &self.db
+    }
+
+    /// Returns a clone bound to an explicit [`refresh::PatientSourceRefresh`] adapter.
+    pub fn with_source_refresh(
+        mut self,
+        source_refresh: std::sync::Arc<dyn refresh::PatientSourceRefresh>,
+    ) -> Self {
+        self.source_refresh = source_refresh;
+        self
+    }
+
+    /// Patient source refresh adapter configured for tool execution.
+    pub fn source_refresh(&self) -> &dyn refresh::PatientSourceRefresh {
+        self.source_refresh.as_ref()
     }
 
     // Display readback now joins several authoritative rows. One read-only
@@ -2142,8 +2160,9 @@ impl<A: Authority, S: ShownStepSaved> Product for PhysicianHost<A, S> {
                 .map_err(Into::into)
         })
     }
-    /// A started memory note's saved result, for the work the claim's
-    /// attempt runs. The harness checks the work is current before it asks.
+    /// A started memory note or source-refresh call's saved result, for the
+    /// work the claim's attempt runs. The harness checks the work is current
+    /// before it asks.
     fn saved_outcome(
         &mut self,
         call: &Invocation,
@@ -2152,6 +2171,13 @@ impl<A: Authority, S: ShownStepSaved> Product for PhysicianHost<A, S> {
         let claim = self.claim.clone();
         let call = call.clone();
         Box::pin(async move {
+            if refresh::is_refresh_tool(&call.name) {
+                store.assert_current(&claim).await?;
+                let (state, _) = store.work_snapshot(&claim.scope).await?;
+                return store
+                    .saved_physician_refresh_outcome(&claim.scope, &state.work, &call)
+                    .await;
+            }
             let state = store.conversation(&claim.scope).await?;
             let origin = state.note_origin(&claim.attempt, &call.id)?;
             Ok(memory::tools::saved_outcome(&store, &claim.scope, &origin.work, &call).await?)
@@ -2255,6 +2281,16 @@ impl<A: Authority, S: ShownStepSaved> Product for PhysicianHost<A, S> {
                         &arguments,
                         Some(&labels),
                     )
+                    .await;
+            }
+            if refresh::is_refresh_tool(&call.name) {
+                let refresh_call = Invocation {
+                    id: call.id.clone(),
+                    name: call.name.clone(),
+                    arguments,
+                };
+                return store
+                    .execute_claimed_physician_refresh_tool(&claim, &state.work, &refresh_call)
                     .await;
             }
             if crate::clinical_library::is_library_tool(&call.name) {
