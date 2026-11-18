@@ -1,0 +1,112 @@
+dev-check: checking crates: public-site
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.89s
+     Running unittests src/lib.rs (target/debug/deps/public_site-9e98eaa7c58cf180)
+
+running 39 tests
+test assets::tests::rewrites_only_complete_root_relative_urls ... ok
+test access::tests::secret_needs_one_exact_value ... ok
+test config::tests::cli_defaults_to_serve_and_parses_static_export_flags ... ok
+test proxy::tests::location_policy_never_exposes_an_upstream_origin ... ok
+test proxy::tests::fixed_origins_reject_credentials_and_nonlocal_plaintext ... ok
+test proxy::tests::mounted_location_stays_inside_its_prefix_on_known_origins ... ok
+test proxy::tests::mounts_own_only_their_path_family ... ok
+test representation::tests::digest_is_lowercase_sha256 ... ok
+test runtime::tests::local_production_and_probe_contract_remain_explicit ... ok
+test runtime::tests::observability_relay_is_staging_only_https_and_signed ... ok
+test runtime::tests::bare_container_bind_address_uses_a_loopback_browser_origin ... ok
+test site::tests::base_path_normalizes_and_rejects_invalid_inputs ... ok
+test runtime::tests::staging_requires_well_formed_direct_cloud_run_audience ... ok
+test runtime::tests::staging_requires_proxy_signer_and_deployed_upstream_https ... ok
+test runtime::tests::sign_in_exists_only_with_a_physician_upstream ... ok
+test representation::tests::q_values ... ok
+test representation::tests::gzip_vector_crc_round_trip ... ok
+test site::tests::origin_supports_host_only_or_matching_base_path_without_double_prefix ... ok
+test representation::tests::compressed_bytes_round_trip ... ok
+test representation::tests::variants_head_and_weak_conditional ... ok
+test server::tests::observability_relay_never_mounts_outside_staging - should panic ... ok
+test proxy::tests::credential_responses_are_size_bounded_and_never_follow_redirects ... ok
+test proxy::tests::observability_mounts_keep_prefix_drop_spoofed_assertion_cookies_and_off_origin_redirects ... ok
+test access::tests::gate_uses_this_services_audience ... ok
+test proxy::tests::jwt_claims_cache_serialization_and_refresh_failure_are_closed ... ok
+test server::tests::overload_and_timeout_are_bounded_and_private ... ok
+test pages::tests::home_preserves_motion_targets_and_shared_phones ... ok
+test pages::tests::every_document_renders_its_body ... ok
+test assets::tests::every_embedded_asset_has_alias_and_content_address ... ok
+test assets::tests::rewrites_page_routes_and_assets_under_subpath_without_touching_text_slashes ... ok
+test server::tests::no_methods_or_conditional_requests_bypass_staging ... ok
+test server::tests::health_requires_access_and_optional_health_token ... ok
+test server::tests::trailing_slash_redirect_stays_on_this_origin ... ok
+test server::tests::head_assets_are_empty ... ok
+test server::tests::observability_mounts_keep_prefixes_and_forward_only_the_verified_assertion ... ok
+test export::tests::static_export_under_subpath_resolves_every_page_asset_and_metadata_file ... ok
+test server::tests::staging_gates_every_public_resource_and_never_shared_caches ... ok
+test server::tests::rewritten_assets_cache_and_readiness ... ok
+test server::tests::physician_proxy_preserves_access_and_waits_for_upstream_responses ... ok
+
+test result: ok. 39 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.55s
+
+     Running unittests src/bin/public-site.rs (target/debug/deps/public_site-ce8b83873c1a190e)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/access.rs (target/debug/deps/access-878652ccc80e671b)
+
+running 2 tests
+test executable_refuses_missing_or_malformed_staging_configuration ... ok
+test staging_denies_every_page_and_resource_without_signed_iap ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.44s
+
+     Running tests/foundation.rs (target/debug/deps/foundation-2f8cbf76312a0e60)
+
+running 3 tests
+test sign_in_appears_on_every_page_only_when_offered ... ok
+test every_enumerated_route_uses_real_router_ssr_and_shared_chrome ... ok
+test axum_serves_only_startup_bytes_and_preserves_404s ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.65s
+
+     Running tests/proxy.rs (target/debug/deps/proxy-01e2996750898c2c)
+
+running 3 tests
+test preserves_transport_and_strips_credentials_and_hops ... ok
+test sse_delivers_first_chunk_while_upstream_body_is_still_open ... ok
+test redirect_rewriting_errors_origin_checks_and_limits ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.44s
+
+     Running tests/routes.rs (target/debug/deps/routes-2e6e74b589792823)
+
+running 5 tests
+test staging_denies_pages_and_assets_without_access ... ok
+test staging_sign_in_reaches_the_physician_service ... ok
+test every_route_metadata_sitemap_and_retired_routes ... ok
+test urls_resolve_redirect_and_set_hsts ... ok
+test real_scripts_are_content_addressed_and_immutable ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.46s
+
+     Running tests/site.rs (target/debug/deps/site-81265a49fce1c7ba)
+
+running 2 tests
+test desktop_mobile_motion_reduced_motion_and_static_fallback ... ignored, browser qualification; run explicitly with --ignored
+test exported_subpath_site_serves_zero_404s_and_renders_in_chromium ... ignored, browser qualification; run explicitly with --ignored
+
+test result: ok. 0 passed; 0 failed; 2 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/stylesheets.rs (target/debug/deps/stylesheets-ab3b377b27c0ea81)
+
+running 2 tests
+test layout_stylesheets_declare_no_motion ... ok
+test duet_story_styles_stay_inside_its_stage ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests public_site
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

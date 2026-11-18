@@ -3,12 +3,12 @@
   "entries": [
     {
       "id": 1,
-      "claim": "CI-1: All GitHub Actions workflows use GitHub-hosted ubuntu-24.04 runners and pass actionlint",
+      "claim": "CI-1: All GitHub Actions workflows use GitHub-hosted ubuntu-24.04 runners, Magic Nix Cache, and pass actionlint",
       "label": "actionlint",
       "kind": "run",
-      "revision": "893493777bcbf917a2118e35c5717722902ba015",
+      "revision": "b28e7fb675ce57c18c8c17c384de6f6d5d121d04",
       "dirty": false,
-      "recorded": "2026-11-18T08:43:23+00:00",
+      "recorded": "2026-11-18T09:01:23+00:00",
       "command": [
         "actionlint"
       ],
@@ -26,9 +26,9 @@
       "claim": "CI-2: CI scope selection, warm-run cache topology, skill checks, and timing tests pass",
       "label": "ci-scope-and-skills",
       "kind": "run",
-      "revision": "893493777bcbf917a2118e35c5717722902ba015",
+      "revision": "b28e7fb675ce57c18c8c17c384de6f6d5d121d04",
       "dirty": false,
-      "recorded": "2026-11-18T08:43:23+00:00",
+      "recorded": "2026-11-18T09:01:23+00:00",
       "command": [
         "bash",
         "-c",
@@ -39,38 +39,88 @@
       "files": [
         "02-ci-scope-and-skills.log"
       ],
-      "seconds": 15.2,
+      "seconds": 15.6,
       "exit": 0,
       "ok": true
     },
     {
       "id": 3,
+      "claim": "CI-3: cargo-deny advisories, bans, licenses, and sources pass (including RUSTSEC-2026-0543)",
+      "label": "cargo-deny",
+      "kind": "run",
+      "revision": "b28e7fb675ce57c18c8c17c384de6f6d5d121d04",
+      "dirty": false,
+      "recorded": "2026-11-18T09:01:39+00:00",
+      "command": [
+        "cargo",
+        "deny",
+        "--all-features",
+        "check",
+        "advisories",
+        "bans",
+        "licenses",
+        "sources"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "03-cargo-deny.log"
+      ],
+      "seconds": 15.7,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 4,
+      "claim": "DX-1: scripts/dev-check.sh runs crate-scoped fmt, clippy, and unit tests cleanly",
+      "label": "dev-check",
+      "kind": "run",
+      "revision": "b28e7fb675ce57c18c8c17c384de6f6d5d121d04",
+      "dirty": false,
+      "recorded": "2026-11-18T09:01:55+00:00",
+      "command": [
+        "bash",
+        "scripts/dev-check.sh",
+        "--base",
+        "FETCH_HEAD"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "04-dev-check.log"
+      ],
+      "seconds": 44.7,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 5,
       "claim": "PAGES-1: mdBook documentation builds cleanly with zero broken internal links",
       "label": "check-book-links",
       "kind": "run",
-      "revision": "893493777bcbf917a2118e35c5717722902ba015",
+      "revision": "b28e7fb675ce57c18c8c17c384de6f6d5d121d04",
       "dirty": false,
-      "recorded": "2026-11-18T08:43:39+00:00",
+      "recorded": "2026-11-18T09:02:40+00:00",
       "command": [
         "scripts/check-book-links.sh"
       ],
       "expect": null,
       "expect_fail": false,
       "files": [
-        "03-check-book-links.log"
+        "05-check-book-links.log"
       ],
       "seconds": 2.1,
       "exit": 0,
       "ok": true
     },
     {
-      "id": 4,
-      "claim": "PAGES-2: public-site unit, subpath rewrite, static export, and boundaries suites pass",
+      "id": 6,
+      "claim": "PAGES-2: public-site unit, subpath rewrite, static export, /scheduling/dev removal, and boundaries suites pass",
       "label": "public-site-and-boundaries",
       "kind": "run",
-      "revision": "893493777bcbf917a2118e35c5717722902ba015",
+      "revision": "b28e7fb675ce57c18c8c17c384de6f6d5d121d04",
       "dirty": false,
-      "recorded": "2026-11-18T08:43:41+00:00",
+      "recorded": "2026-11-18T09:02:42+00:00",
       "command": [
         "cargo",
         "test",
@@ -83,20 +133,20 @@
       "expect": null,
       "expect_fail": false,
       "files": [
-        "04-public-site-and-boundaries.log"
+        "06-public-site-and-boundaries.log"
       ],
-      "seconds": 5.7,
+      "seconds": 5.4,
       "exit": 0,
       "ok": true
     },
     {
-      "id": 5,
-      "claim": "PAGES-3: Chromium renders both root Axum site and exported /coda-rust/ subpath tree + /book/ with zero 404s or JS errors",
+      "id": 7,
+      "claim": "PAGES-3: Chromium renders both root Axum site and exported /coda-rust/ + /book/ tree with footer link and zero 404s or JS errors",
       "label": "chromium-site-and-export",
       "kind": "run",
-      "revision": "893493777bcbf917a2118e35c5717722902ba015",
+      "revision": "b28e7fb675ce57c18c8c17c384de6f6d5d121d04",
       "dirty": false,
-      "recorded": "2026-11-18T08:43:47+00:00",
+      "recorded": "2026-11-18T09:02:47+00:00",
       "command": [
         "env",
         "PUBLIC_SITE_SCREENSHOTS=/tmp/public-site-shots",
@@ -113,52 +163,38 @@
       "expect": null,
       "expect_fail": false,
       "files": [
-        "05-chromium-site-and-export.log"
+        "07-chromium-site-and-export.log"
       ],
-      "seconds": 40.8,
+      "seconds": 31.5,
       "exit": 0,
       "ok": true
     },
     {
-      "id": 6,
+      "id": 8,
       "claim": "PAGES-3: Desktop (1440x1000) screenshot of exported /coda-rust/ site in Chromium",
       "label": "exported-coda-rust-desktop",
       "kind": "screenshot",
-      "revision": "893493777bcbf917a2118e35c5717722902ba015",
+      "revision": "b28e7fb675ce57c18c8c17c384de6f6d5d121d04",
       "dirty": false,
-      "recorded": "2026-11-18T08:44:28+00:00",
+      "recorded": "2026-11-18T09:03:19+00:00",
       "files": [
-        "06-coda-rust-desktop.png"
+        "08-coda-rust-desktop.png"
       ],
       "source": "/tmp/public-site-shots/coda-rust-desktop.png",
       "ok": true
     },
     {
-      "id": 7,
+      "id": 9,
       "claim": "PAGES-3: Mobile (390x844) screenshot of exported /coda-rust/ site in Chromium",
       "label": "exported-coda-rust-mobile",
       "kind": "screenshot",
-      "revision": "893493777bcbf917a2118e35c5717722902ba015",
+      "revision": "b28e7fb675ce57c18c8c17c384de6f6d5d121d04",
       "dirty": false,
-      "recorded": "2026-11-18T08:44:28+00:00",
+      "recorded": "2026-11-18T09:03:19+00:00",
       "files": [
-        "07-coda-rust-mobile.png"
+        "09-coda-rust-mobile.png"
       ],
       "source": "/tmp/public-site-shots/coda-rust-mobile.png",
-      "ok": true
-    },
-    {
-      "id": 8,
-      "claim": "PAGES-3: No-script (390x844) screenshot of exported /coda-rust/ site in Chromium",
-      "label": "exported-coda-rust-noscript",
-      "kind": "screenshot",
-      "revision": "893493777bcbf917a2118e35c5717722902ba015",
-      "dirty": false,
-      "recorded": "2026-11-18T08:44:28+00:00",
-      "files": [
-        "08-coda-rust-no-script.png"
-      ],
-      "source": "/tmp/public-site-shots/coda-rust-no-script.png",
       "ok": true
     }
   ]
