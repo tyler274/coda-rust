@@ -1,0 +1,83 @@
+{
+  "branch": "tyler-eng-266-1-understanding-recipe-and-store",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC1",
+      "label": "Initial understanding recipe, background-lane exclusion, and save argument schema tests",
+      "kind": "run",
+      "revision": "1dccbb7137cb928e5349515c8d4f85fbe02818a7",
+      "dirty": false,
+      "recorded": "2026-11-18T22:10:14+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "local-product",
+        "--lib",
+        "initial_understanding"
+      ],
+      "expect": "\\b3 passed\\b",
+      "expect_fail": false,
+      "files": [
+        "01-Initial-understanding-recipe-background-lane-exc.log"
+      ],
+      "seconds": 33.7,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true
+    },
+    {
+      "id": 2,
+      "claim": "AC2",
+      "label": "Idempotent m20261118_05_patient_understanding PostgreSQL migration chain",
+      "kind": "run",
+      "revision": "1dccbb7137cb928e5349515c8d4f85fbe02818a7",
+      "dirty": false,
+      "recorded": "2026-11-18T22:10:47+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "local-product",
+        "--lib",
+        "runtime::tests::migration",
+        "--",
+        "--include-ignored"
+      ],
+      "expect": "\\b3 passed\\b",
+      "expect_fail": false,
+      "files": [
+        "02-Idempotent-m20261118_05_patient_understanding-Po.log"
+      ],
+      "seconds": 2.6,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true
+    },
+    {
+      "id": 3,
+      "claim": "AC3",
+      "label": "Product privacy boundary and cross-crate isolation check",
+      "kind": "run",
+      "revision": "1dccbb7137cb928e5349515c8d4f85fbe02818a7",
+      "dirty": false,
+      "recorded": "2026-11-18T22:10:50+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "boundaries"
+      ],
+      "expect": "\\b25 passed\\b",
+      "expect_fail": false,
+      "files": [
+        "03-Product-privacy-boundary-and-cross-crate-isolati.log"
+      ],
+      "seconds": 4.6,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true
+    }
+  ]
+}
