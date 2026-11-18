@@ -1,0 +1,129 @@
+{
+  "branch": "tyler-eng-306-2-single-cadence-owner",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC1",
+      "label": "PostgreSQL due-patient wakeup, baseline chart registration, and stop-between-phases replay",
+      "kind": "run",
+      "revision": "f7668e4802759ef3f96aca3655cd6909e4c0a091",
+      "dirty": false,
+      "recorded": "2026-11-18T20:40:59+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "local-product",
+        "--test",
+        "practice_jobs_dispatch",
+        "wakeup_",
+        "--",
+        "--test-threads=1"
+      ],
+      "expect": "[1-9][0-9]* passed; 0 failed",
+      "expect_fail": false,
+      "files": [
+        "01-PostgreSQL-due-patient-wakeup-baseline-chart-reg.log"
+      ],
+      "seconds": 28.7,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true
+    },
+    {
+      "id": 2,
+      "claim": "AC2",
+      "label": "Operator cadence controls and per-patient failed source-check isolation",
+      "kind": "run",
+      "revision": "f7668e4802759ef3f96aca3655cd6909e4c0a091",
+      "dirty": false,
+      "recorded": "2026-11-18T20:41:28+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "local-product",
+        "--test",
+        "practice_jobs_dispatch",
+        "operator_",
+        "--",
+        "--test-threads=1"
+      ],
+      "expect": "[1-9][0-9]* passed; 0 failed",
+      "expect_fail": false,
+      "files": [
+        "02-Operator-cadence-controls-and-per-patient-failed.log"
+      ],
+      "seconds": 2.4,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true
+    },
+    {
+      "id": 3,
+      "claim": "AC3",
+      "label": "physician-auth and front-door suites after removing duplicate cadence copies",
+      "kind": "run",
+      "revision": "f7668e4802759ef3f96aca3655cd6909e4c0a091",
+      "dirty": false,
+      "recorded": "2026-11-18T20:41:30+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-auth",
+        "-p",
+        "front-door"
+      ],
+      "expect": "[1-9][0-9]* passed; 0 failed",
+      "expect_fail": false,
+      "files": [
+        "03-physician-auth-and-front-door-suites-after-remov.log"
+      ],
+      "seconds": 17.2,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true
+    },
+    {
+      "id": 4,
+      "claim": "AC4",
+      "label": "PostgreSQL cross-store migration upgrade chain",
+      "kind": "run",
+      "revision": "f7668e4802759ef3f96aca3655cd6909e4c0a091",
+      "dirty": false,
+      "recorded": "2026-11-18T20:41:47+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-sample",
+        "--test",
+        "migrations_postgres",
+        "--",
+        "--ignored"
+      ],
+      "expect": "[1-9][0-9]* passed; 0 failed",
+      "expect_fail": false,
+      "files": [
+        "04-PostgreSQL-cross-store-migration-upgrade-chain.log"
+      ],
+      "seconds": 42.5,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true
+    },
+    {
+      "id": 5,
+      "claim": "AC5",
+      "label": "",
+      "kind": "gap",
+      "revision": "f7668e4802759ef3f96aca3655cd6909e4c0a091",
+      "dirty": false,
+      "recorded": "2026-11-18T20:42:30+00:00",
+      "reason": "Live staging synthetic patient check and review dispatch across scheduled ticks require applying scheduler.tf and deploying physician-worker to staging.",
+      "ok": false,
+      "files": []
+    }
+  ]
+}
