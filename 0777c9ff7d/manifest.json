@@ -1,0 +1,33 @@
+{
+  "branch": "tyler-eng-264-2-source-refresh-postgres-suite",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC1",
+      "label": "PostgreSQL source refresh outcomes, PartlyUpdated pulled_at preservation, and crash-replay suite",
+      "kind": "run",
+      "revision": "0777c9ff7d3eaef1c5dceceeacb62fef25acb61e",
+      "dirty": false,
+      "recorded": "2026-11-18T22:05:10+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "local-product",
+        "--test",
+        "source_refresh_postgres",
+        "--",
+        "--test-threads=1"
+      ],
+      "expect": "\\b4 passed\\b",
+      "expect_fail": false,
+      "files": [
+        "01-PostgreSQL-source-refresh-outcomes-PartlyUpdated.log"
+      ],
+      "seconds": 29.9,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true
+    }
+  ]
+}
