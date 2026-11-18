@@ -29,13 +29,16 @@ use local_product::physician_sources::{
     SourceRevision,
 };
 use local_product::runtime::chat_operations::{
-    DispatchCheckStanding, PatientMemoryStanding, SourceFreshnessSummary,
+    DispatchCheckStanding, PatientMemoryStanding, RecordLimit, RecordLimitKind,
+    SourceFreshnessSummary,
 };
 use local_product::runtime::concerns::{
     CONCERN_TOOL, CommandKey, ConcernDoneOutcome, ConcernId, ConcernUrgency, ExactRecordReference,
     WorkspaceAccess,
 };
-use local_product::runtime::dispatch::StoredObservationChecker;
+use local_product::runtime::dispatch::{
+    PatientSourceChecker, SourceCheckError, StoredObservationChecker,
+};
 use local_product::runtime::jobs::{
     PracticeAccessError, PracticeAuthority, PracticeJobHost, PracticeJobKind, PracticeScope,
     is_physician_only_tool,
@@ -55,7 +58,7 @@ use local_product::runtime::{
     Authority, PublicationTransaction, Scope, Stopped, Store, async_trait, engine,
 };
 use local_product::{ModelBinding, ModelRoles, sha256_hex};
-use patient_work::ReviewReason;
+use patient_work::{Cadence, ReviewReason};
 use physician_auth::{AuthStore, Membership, PhysicianIdentity, PostgresAuthStore, PracticeClock};
 use serde_json::{Value, json};
 use uuid::Uuid;
@@ -4487,4 +4490,1729 @@ async fn periodic_reassessment_respects_prior_decisions_avoids_duplicate_alerts_
         memory::FileRead::Version { markdown, .. } | memory::FileRead::Log { markdown } => markdown,
     };
     assert!(summary_after_run3.contains("prior dry cough on lisinopril; prefers losartan."));
+}
+
+#[tokio::test]
+async fn corrected_evidence_revises_outputs_missing_sources_stay_explicit_limits_and_medication_stays_unapproved_consideration()
+ {
+    let Some(url) = database_url() else {
+        return;
+    };
+    let (store, auth) = connect_stores(&url).await;
+    let skills = load_skills();
+    let roles = distinct_roles();
+
+    let practice = format!("practice-limits-{}", Uuid::new_v4().simple());
+    let workspace = format!("pw-limits-{}", Uuid::new_v4().simple());
+    auth.ensure_practice(&practice, PracticeClock::RealTime)
+        .await
+        .unwrap();
+    auth.register_patient(&practice, &workspace).await.unwrap();
+    let (dr, dr_hash) = invite_and_sign_in(&auth, &practice, "dr-limits").await;
+    auth.set_membership(&dr, &workspace, Membership::Allowed)
+        .await
+        .unwrap();
+    let access = WorkspaceAccess {
+        practice: &practice,
+        physician: &dr.physician_id,
+        workspace: &workspace,
+        session_hash: &dr_hash,
+    };
+    let mut authority = PostgresWorkspaceAuthority;
+
+    // Seed initial records:
+    // 1. Preliminary troponin elevation (`Observation/troponin-1` rev-1)
+    // 2. Unreadable binary scanned PDF external cardiology fax (`DocumentReference/scanned-echo-pdf` rev-1)
+    let scanned_pdf = SourceRevision {
+        workspace: workspace.to_owned(),
+        source_id: "clinic-ehr".into(),
+        candidate_id: "DocumentReference/scanned-echo-pdf".into(),
+        revision: "rev-1".into(),
+        record_type: "DocumentReference".into(),
+        dates: vec![RecordDate {
+            name: "date".into(),
+            value: "2026-10-18".into(),
+        }],
+        content: r#"{"resourceType":"DocumentReference","content":[{"attachment":{"contentType":"application/pdf","data":"JVBERi0xLjQK"}}]}"#.into(),
+        sha256: sha256_hex(
+            br#"{"resourceType":"DocumentReference","content":[{"attachment":{"contentType":"application/pdf","data":"JVBERi0xLjQK"}}]}"#,
+        ),
+        readable_parts: vec![], // Binary PDF without extracted text -> RecordLimitKind::Unreadable!
+        provenance: json!({
+            "title": "Scanned Outside Stress Echo Fax",
+            "record_locator": "DocumentReference/scanned-echo-pdf"
+        }),
+        envelope: None,
+    };
+    let troponin_v1 = chart_record(ChartRecordSpec {
+        workspace: &workspace,
+        source_id: "clinic-ehr",
+        candidate_id: "Observation/troponin-1",
+        revision: "rev-1",
+        record_type: "Observation",
+        title: "High-Sensitivity Troponin I",
+        date: "2026-10-18",
+        text: "Preliminary hs-Troponin I: 118 ng/L (elevated; 99th percentile URL 18 ng/L). Patient seen in clinic yesterday for atypical chest discomfort; outside St. Jude Cardiology discharge records not yet connected.",
+    });
+    store
+        .record_chart(
+            &workspace,
+            &[troponin_v1, scanned_pdf.clone()],
+            &SourcePull {
+                source_id: "clinic-ehr".into(),
+                source_label: "Clinic EHR".into(),
+                patient: source_patient("pt-limits", "Nadia Haddad"),
+                pulled_at: Some(1_790_800_000),
+            },
+        )
+        .await
+        .unwrap();
+
+    // Enroll cadence and record a failed upstream source pull so `DispatchCheckStanding::FailedSinceLastSuccess`
+    // (`RecordLimitKind::Unavailable`) is ALSO active alongside `RecordLimitKind::Unreadable`!
+    store
+        .set_patient_cadence(
+            auth.as_ref(),
+            &practice,
+            &workspace,
+            Cadence::default(),
+            1_790_700_000,
+        )
+        .await
+        .unwrap();
+
+    struct FailingExternalFeedChecker;
+    #[async_trait]
+    impl PatientSourceChecker for FailingExternalFeedChecker {
+        async fn check_patient_sources(
+            &self,
+            _practice_id: &str,
+            _workspace_id: &str,
+            _now: i64,
+        ) -> Result<patient_work::CheckedSources, SourceCheckError> {
+            Err(SourceCheckError::Upstream(std::io::Error::new(
+                std::io::ErrorKind::TimedOut,
+                "St. Jude HIE gateway timed out",
+            )))
+        }
+    }
+    let failed_wake = store
+        .check_due_patients(
+            auth.as_ref(),
+            &practice,
+            1_790_800_100,
+            &FailingExternalFeedChecker,
+        )
+        .await
+        .unwrap();
+    assert_eq!(failed_wake.failed_checks.len(), 1);
+
+    // --- Run 1: Preliminary elevated troponin -> raises `now` concern, surfaces unreadable + unavailable
+    // limits explicitly, and frames aspirin/statin strictly as an unapproved physician consideration ---
+    let AdmittedPatientReview::New {
+        review: rev_initial,
+        ..
+    } = store
+        .admit_patient_review_with_trigger(
+            &practice,
+            &workspace,
+            "cmd-limits-run-1",
+            ReviewTrigger::ChangedRecords {
+                workspace_version: 1,
+                record_versions: BTreeMap::from([
+                    ("DocumentReference/scanned-echo-pdf".into(), "rev-1".into()),
+                    ("Observation/troponin-1".into(), "rev-1".into()),
+                ]),
+                changed_candidates: vec!["Observation/troponin-1".into()],
+            },
+            &roles,
+            &skills,
+            auth.as_ref(),
+        )
+        .await
+        .unwrap()
+    else {
+        panic!("expected initial review");
+    };
+    let claim_initial = store
+        .claim_practice_job(&rev_initial.practice_scope(), 60, auth.as_ref())
+        .await
+        .unwrap()
+        .unwrap();
+
+    struct Run1PreliminaryAndLimitsProvider {
+        turn: usize,
+    }
+    impl engine::recipe::Provider for Run1PreliminaryAndLimitsProvider {
+        async fn exchange(
+            &mut self,
+            request: &engine::recipe::Request,
+            _: &engine::Cancellation,
+            _: &engine::RunLimits,
+            _: &mut dyn engine::recipe::Observer,
+        ) -> Result<engine::Turn, engine::Cause> {
+            self.turn += 1;
+            match self.turn {
+                1 => {
+                    let wire = serde_json::to_string(&request.items).unwrap();
+                    // Starting context MUST carry the failed upstream HIE pull limit (`unavailable`),
+                    // and Turn 2 verifies `read_patient_sources` returns both `unreadable` (binary PDF)
+                    // and `unavailable`!
+                    assert!(
+                        wire.contains(
+                            "Source limit (unavailable): latest source check at unix 1790800100 failed"
+                        ),
+                        "starting context must surface failed source pull limit: {wire}"
+                    );
+                    Ok(engine::Turn {
+                        items: vec![engine::Item::Call(engine::Invocation {
+                            id: "read-trop-and-pdf".into(),
+                            name: READ_TOOL.into(),
+                            arguments: json!({
+                                "references": [
+                                    {
+                                        "candidate_id": "Observation/troponin-1",
+                                        "revision": "rev-1",
+                                        "cursor": null
+                                    },
+                                    {
+                                        "candidate_id": "DocumentReference/scanned-echo-pdf",
+                                        "revision": "rev-1",
+                                        "cursor": null
+                                    }
+                                ],
+                                "max_result_bytes": 16_384
+                            })
+                            .to_string(),
+                        })],
+                        receipt: json!({"turn": 1}),
+                        usage: Default::default(),
+                    })
+                }
+                2 => {
+                    let read_out = materialized_output(request, "read-trop-and-pdf");
+                    let parsed_read: Value = serde_json::from_str(read_out).unwrap();
+                    let limit_kinds: BTreeSet<&str> = parsed_read["limits"]
+                        .as_array()
+                        .expect("tool read limits array")
+                        .iter()
+                        .filter_map(|l| l.get("kind").and_then(Value::as_str))
+                        .collect();
+                    assert!(
+                        limit_kinds.contains(RecordLimitKind::Unreadable.as_str())
+                            && limit_kinds.contains(RecordLimitKind::Unavailable.as_str()),
+                        "read_patient_sources must return explicit unreadable + unavailable limits: {read_out}"
+                    );
+
+                    // Also verify attempting a physician-only tool (such as drafting/sending a reply or approving a plan)
+                    // is absent from offered tools and refused if ever invoked by a rogue provider!
+                    let save_u1 = SaveUnderstandingArgs {
+                        expected_revision: Some(0),
+                        operating_index: OperatingIndex {
+                            working_overview: "Preliminary elevated hs-Troponin I (118 ng/L) with atypical chest discomfort; scanned echo PDF unreadable and St. Jude HIE pull failed.".into(),
+                            known_health_systems: vec![
+                                KnownHealthSystem {
+                                    name: "Clinic EHR".into(),
+                                    standing: HealthSystemStanding::Connected {
+                                        source_id: "clinic-ehr".into(),
+                                    },
+                                    note: "Outpatient chart".into(),
+                                },
+                                KnownHealthSystem {
+                                    name: "St. Jude Cardiology".into(),
+                                    standing: HealthSystemStanding::MentionedInRecords,
+                                    note: "Discharge records missing; latest HIE pull failed".into(),
+                                },
+                            ],
+                            open_threads: vec![
+                                "Urgent evaluation of preliminary hs-Troponin I 118 ng/L".into(),
+                            ],
+                            anchors: vec![IndexedAnchor {
+                                reference: ExactRecordReference {
+                                    candidate_id: "Observation/troponin-1".into(),
+                                    revision: "rev-1".into(),
+                                },
+                                source_id: "clinic-ehr".into(),
+                                topic: "Preliminary hs-Troponin I".into(),
+                            }],
+                        },
+                        claims: vec![SummaryClaimInput {
+                            text: "Preliminary hs-Troponin I 118 ng/L reported on 2026-10-18 after atypical chest discomfort".into(),
+                            citations: vec![ExactRecordReference {
+                                candidate_id: "Observation/troponin-1".into(),
+                                revision: "rev-1".into(),
+                            }],
+                        }],
+                        material_gaps: vec![
+                            "Scanned outside stress echo PDF (`DocumentReference/scanned-echo-pdf`) has no extracted text and is unreadable".into(),
+                            "St. Jude Cardiology external records are missing and latest source pull failed".into(),
+                        ],
+                        scope_note: None,
+                    };
+                    let complete = CompleteReviewArgs {
+                        disposition: CompleteReviewDisposition::Assessed {
+                            summary: "Preliminary hs-Troponin I 118 ng/L with atypical chest discomfort; raised `now` concern. Antiplatelet or statin initiation remains strictly a consideration for physician evaluation (no accepted medication plan).".into(),
+                        },
+                        citations: vec![ExactRecordReference {
+                            candidate_id: "Observation/troponin-1".into(),
+                            revision: "rev-1".into(),
+                        }],
+                        basis_and_limitations: "Explicit limits: `DocumentReference/scanned-echo-pdf` is an unreadable binary PDF without extracted text; St. Jude Cardiology records are missing and the latest external source pull failed.".into(),
+                        unfinished_work: vec![UnfinishedReviewWork {
+                            topic: "Obtain readable stress echo text and St. Jude Cardiology records".into(),
+                            detail: "External source pull failed and scanned echo fax lacks OCR/extracted text.".into(),
+                            limit: Some(RecordLimit {
+                                kind: RecordLimitKind::Unreadable,
+                                subject: "DocumentReference/scanned-echo-pdf".into(),
+                                detail: "Scanned echo PDF has no extracted clinical text".into(),
+                            }),
+                        }],
+                    };
+                    Ok(engine::Turn {
+                        items: vec![
+                            engine::Item::Call(engine::Invocation {
+                                id: "raise-trop-now".into(),
+                                name: CONCERN_TOOL.into(),
+                                arguments: json!({
+                                    "operation": "raise",
+                                    "concern_id": "concern-troponin-118",
+                                    "urgency": "now",
+                                    "reason": "Preliminary hs-Troponin I elevated at 118 ng/L with recent atypical chest discomfort; urgent physician evaluation needed (any antiplatelet/statin change is unapproved pending physician decision).",
+                                    "records": [{
+                                        "candidate_id": "Observation/troponin-1",
+                                        "revision": "rev-1"
+                                    }]
+                                })
+                                .to_string(),
+                            }),
+                            engine::Item::Call(engine::Invocation {
+                                id: "save-u-trop-1".into(),
+                                name: SAVE_UNDERSTANDING_TOOL.into(),
+                                arguments: serde_json::to_string(&save_u1).unwrap(),
+                            }),
+                            engine::Item::Call(engine::Invocation {
+                                id: "complete-trop-1".into(),
+                                name: COMPLETE_PATIENT_REVIEW_TOOL.into(),
+                                arguments: serde_json::to_string(&complete).unwrap(),
+                            }),
+                        ],
+                        receipt: json!({"turn": 2}),
+                        usage: Default::default(),
+                    })
+                }
+                3 => Ok(engine::Turn {
+                    items: vec![engine::Item::assistant(
+                        "Preliminary troponin review saved.",
+                    )],
+                    receipt: json!({"turn": 3}),
+                    usage: Default::default(),
+                }),
+                other => panic!("unexpected turn {other}"),
+            }
+        }
+    }
+    PracticeJobHost {
+        store: store.clone(),
+        claim: claim_initial,
+        authority: auth.as_ref(),
+    }
+    .run(
+        &mut Run1PreliminaryAndLimitsProvider { turn: 0 },
+        engine::RunLimits::default(),
+        &engine::Cancellation::default(),
+    )
+    .await
+    .unwrap();
+
+    assert_eq!(
+        store
+            .open_concerns(&access, &mut authority)
+            .await
+            .unwrap()
+            .len(),
+        1
+    );
+
+    // --- Corrected lab report (`Observation/troponin-1` rev-2) arrives: heterophile antibody assay
+    // interference confirmed on rev-1; corrected hs-Troponin I is < 3 ng/L (normal)! ---
+    let troponin_v2 = chart_record(ChartRecordSpec {
+        workspace: &workspace,
+        source_id: "clinic-ehr",
+        candidate_id: "Observation/troponin-1",
+        revision: "rev-2",
+        record_type: "Observation",
+        title: "High-Sensitivity Troponin I (Corrected Final)",
+        date: "2026-10-18",
+        text: "CORRECTED FINAL REPORT: Preliminary 118 ng/L result superseded due to confirmed heterophile antibody assay interference. Corrected hs-Troponin I on blocking-reagent platform is < 3 ng/L (normal, below 99th percentile URL 18 ng/L).",
+    });
+    store
+        .record_chart(
+            &workspace,
+            &[troponin_v2, scanned_pdf],
+            &SourcePull {
+                source_id: "clinic-ehr".into(),
+                source_label: "Clinic EHR".into(),
+                patient: source_patient("pt-limits", "Nadia Haddad"),
+                pulled_at: Some(1_790_801_000),
+            },
+        )
+        .await
+        .unwrap();
+
+    let AdmittedPatientReview::New {
+        review: rev_corrected,
+        ..
+    } = store
+        .admit_patient_review_with_trigger(
+            &practice,
+            &workspace,
+            "cmd-limits-run-2-corrected",
+            ReviewTrigger::ChangedRecords {
+                workspace_version: 2,
+                record_versions: BTreeMap::from([
+                    ("DocumentReference/scanned-echo-pdf".into(), "rev-1".into()),
+                    ("Observation/troponin-1".into(), "rev-2".into()),
+                ]),
+                changed_candidates: vec!["Observation/troponin-1".into()],
+            },
+            &roles,
+            &skills,
+            auth.as_ref(),
+        )
+        .await
+        .unwrap()
+    else {
+        panic!("expected corrected review");
+    };
+    let claim_corrected = store
+        .claim_practice_job(&rev_corrected.practice_scope(), 60, auth.as_ref())
+        .await
+        .unwrap()
+        .unwrap();
+
+    struct Run2CorrectedEvidenceProvider {
+        turn: usize,
+    }
+    impl engine::recipe::Provider for Run2CorrectedEvidenceProvider {
+        async fn exchange(
+            &mut self,
+            _: &engine::recipe::Request,
+            _: &engine::Cancellation,
+            _: &engine::RunLimits,
+            _: &mut dyn engine::recipe::Observer,
+        ) -> Result<engine::Turn, engine::Cause> {
+            self.turn += 1;
+            match self.turn {
+                1 => Ok(engine::Turn {
+                    items: vec![engine::Item::Call(engine::Invocation {
+                        id: "read-trop-v2".into(),
+                        name: READ_TOOL.into(),
+                        arguments: json!({
+                            "references": [{
+                                "candidate_id": "Observation/troponin-1",
+                                "revision": "rev-2",
+                                "cursor": null
+                            }],
+                            "max_result_bytes": 16_384
+                        })
+                        .to_string(),
+                    })],
+                    receipt: json!({"turn": 1}),
+                    usage: Default::default(),
+                }),
+                2 => {
+                    let save_u2 = SaveUnderstandingArgs {
+                        expected_revision: Some(1),
+                        operating_index: OperatingIndex {
+                            working_overview: "Corrected hs-Troponin I is normal (< 3 ng/L; preliminary elevation was heterophile antibody interference). Unreadable stress echo PDF and missing St. Jude Cardiology records remain open limits.".into(),
+                            known_health_systems: vec![
+                                KnownHealthSystem {
+                                    name: "Clinic EHR".into(),
+                                    standing: HealthSystemStanding::Connected {
+                                        source_id: "clinic-ehr".into(),
+                                    },
+                                    note: "Outpatient chart".into(),
+                                },
+                                KnownHealthSystem {
+                                    name: "St. Jude Cardiology".into(),
+                                    standing: HealthSystemStanding::MentionedInRecords,
+                                    note: "Discharge records missing; latest HIE pull failed".into(),
+                                },
+                            ],
+                            open_threads: vec![
+                                "Obtain readable outside stress echo report and St. Jude Cardiology records".into(),
+                            ],
+                            anchors: vec![IndexedAnchor {
+                                reference: ExactRecordReference {
+                                    candidate_id: "Observation/troponin-1".into(),
+                                    revision: "rev-2".into(),
+                                },
+                                source_id: "clinic-ehr".into(),
+                                topic: "Corrected normal hs-Troponin I".into(),
+                            }],
+                        },
+                        claims: vec![SummaryClaimInput {
+                            text: "Corrected final hs-Troponin I on 2026-10-18 is normal (< 3 ng/L) after blocking-reagent testing confirmed heterophile antibody interference on the preliminary result".into(),
+                            citations: vec![ExactRecordReference {
+                                candidate_id: "Observation/troponin-1".into(),
+                                revision: "rev-2".into(),
+                            }],
+                        }],
+                        material_gaps: vec![
+                            "Scanned outside stress echo PDF (`DocumentReference/scanned-echo-pdf`) remains unreadable without extracted text".into(),
+                            "St. Jude Cardiology external records remain missing after failed upstream source pull".into(),
+                        ],
+                        scope_note: None,
+                    };
+                    let complete = CompleteReviewArgs {
+                        disposition: CompleteReviewDisposition::Assessed {
+                            summary: "Corrected hs-Troponin I (`rev-2`) is normal (< 3 ng/L; preliminary 118 ng/L was heterophile antibody interference). Retired urgent troponin concern and revised patient understanding; no antiplatelet or statin plan was accepted, and any lipid/preventive therapy remains a physician consideration.".into(),
+                        },
+                        citations: vec![ExactRecordReference {
+                            candidate_id: "Observation/troponin-1".into(),
+                            revision: "rev-2".into(),
+                        }],
+                        basis_and_limitations: "Assessed from corrected Clinic EHR hs-Troponin I (`rev-2`). Explicit limits remain: `DocumentReference/scanned-echo-pdf` is unreadable (binary PDF without text) and St. Jude Cardiology records are unavailable after a failed upstream source check.".into(),
+                        unfinished_work: vec![UnfinishedReviewWork {
+                            topic: "Unreadable stress echo fax and unavailable St. Jude Cardiology records".into(),
+                            detail: "Retry external source check and obtain readable stress echo interpretation.".into(),
+                            limit: Some(RecordLimit {
+                                kind: RecordLimitKind::Unavailable,
+                                subject: "st-jude-hie".into(),
+                                detail: "Latest upstream HIE pull timed out".into(),
+                            }),
+                        }],
+                    };
+                    Ok(engine::Turn {
+                        items: vec![
+                            engine::Item::Call(engine::Invocation {
+                                id: "retire-trop-now".into(),
+                                name: CONCERN_TOOL.into(),
+                                arguments: json!({
+                                    "operation": "retire",
+                                    "concern_id": "concern-troponin-118",
+                                    "reason": "Corrected final lab report (rev-2) confirmed heterophile antibody interference; repeat hs-Troponin I is normal (< 3 ng/L)."
+                                })
+                                .to_string(),
+                            }),
+                            engine::Item::Call(engine::Invocation {
+                                id: "save-u-trop-2".into(),
+                                name: SAVE_UNDERSTANDING_TOOL.into(),
+                                arguments: serde_json::to_string(&save_u2).unwrap(),
+                            }),
+                            engine::Item::Call(engine::Invocation {
+                                id: "complete-trop-2".into(),
+                                name: COMPLETE_PATIENT_REVIEW_TOOL.into(),
+                                arguments: serde_json::to_string(&complete).unwrap(),
+                            }),
+                        ],
+                        receipt: json!({"turn": 2}),
+                        usage: Default::default(),
+                    })
+                }
+                3 => Ok(engine::Turn {
+                    items: vec![engine::Item::assistant(
+                        "Corrected troponin review saved; urgent concern retired and limits retained.",
+                    )],
+                    receipt: json!({"turn": 3}),
+                    usage: Default::default(),
+                }),
+                other => panic!("unexpected turn {other}"),
+            }
+        }
+    }
+    PracticeJobHost {
+        store: store.clone(),
+        claim: claim_corrected,
+        authority: auth.as_ref(),
+    }
+    .run(
+        &mut Run2CorrectedEvidenceProvider { turn: 0 },
+        engine::RunLimits::default(),
+        &engine::Cancellation::default(),
+    )
+    .await
+    .unwrap();
+
+    // Verify corrected evidence retired the concern from Today into Updates, revised PatientUnderstanding
+    // to cite rev-2, kept missing/unreadable/unavailable limits explicit, and produced zero accepted medication plan!
+    assert!(
+        store
+            .open_concerns(&access, &mut authority)
+            .await
+            .unwrap()
+            .is_empty()
+    );
+    let retired_updates = store
+        .retired_concern_updates(&access, &mut authority)
+        .await
+        .unwrap();
+    assert_eq!(retired_updates.len(), 1);
+    assert!(
+        retired_updates[0]
+            .retirement_reason
+            .as_str()
+            .contains("< 3 ng/L")
+    );
+
+    let revised_u = store
+        .patient_understanding_for_practice(&practice, &workspace, auth.as_ref())
+        .await
+        .unwrap()
+        .unwrap();
+    assert_eq!(revised_u.revision, 2);
+    assert_eq!(revised_u.source_version, 2);
+    assert_eq!(revised_u.summary.claims.len(), 1);
+    assert_eq!(revised_u.summary.claims[0].citations[0].revision, "rev-2");
+    assert_eq!(revised_u.summary.material_gaps.len(), 2);
+
+    let saved_corr_review = store
+        .patient_review(
+            &practice,
+            &workspace,
+            &rev_corrected.review_id,
+            auth.as_ref(),
+        )
+        .await
+        .unwrap()
+        .unwrap();
+    let ReviewLifecycleState::Completed {
+        outcome:
+            ReviewOutcome::Assessed {
+                summary,
+                citations,
+                basis_and_limitations,
+            },
+        ..
+    } = &saved_corr_review.state
+    else {
+        panic!("expected Assessed corrected review");
+    };
+    assert_eq!(citations.len(), 1);
+    assert_eq!(citations[0].reference.revision, "rev-2");
+    assert!(
+        basis_and_limitations.contains("unreadable")
+            && basis_and_limitations.contains("unavailable")
+    );
+    assert!(summary.contains("no antiplatelet or statin plan was accepted"));
+    assert_eq!(saved_corr_review.unfinished_work.len(), 1);
+}
+
+#[tokio::test]
+async fn new_review_supersedes_incomplete_review_withdrawn_records_fence_recovery_and_completed_sources_baseline_tracks_mid_run_refresh()
+ {
+    let Some(url) = database_url() else {
+        return;
+    };
+    let (store, auth) = connect_stores(&url).await;
+    let skills = load_skills();
+    let roles = distinct_roles();
+
+    let practice = format!("prac-rev-fences-{}", Uuid::new_v4().simple());
+    let workspace = format!("ws-rev-fences-{}", Uuid::new_v4().simple());
+    auth.ensure_practice(&practice, PracticeClock::RealTime)
+        .await
+        .unwrap();
+    auth.register_patient(&practice, &workspace).await.unwrap();
+    let patient = source_patient("pt-fences", "Morgan Ellis");
+
+    // --- 1. Duplicate dispatch does NOT enqueue a second wakeup delivery, and
+    // admitting a new review supersedes an incomplete review (`NewInput`). ---
+    let lab_a = chart_record(ChartRecordSpec {
+        workspace: &workspace,
+        source_id: "quest-labs",
+        candidate_id: "lab-a",
+        revision: "rev-1",
+        record_type: "Observation",
+        title: "Basic Metabolic Panel",
+        date: "2026-11-10",
+        text: "Basic Metabolic Panel (2026-11-10): Potassium 4.1 mmol/L (normal). Creatinine 0.9 mg/dL.",
+    });
+    store
+        .record_chart(
+            &workspace,
+            std::slice::from_ref(&lab_a),
+            &SourcePull {
+                source_id: "quest-labs".into(),
+                source_label: "Quest Diagnostics".into(),
+                pulled_at: Some(1_700_400_000),
+                patient: patient.clone(),
+            },
+        )
+        .await
+        .unwrap();
+
+    let req_first = patient_work::ReviewRequest {
+        practice_id: practice.clone(),
+        patient_workspace_id: workspace.clone(),
+        reason: ReviewReason::NewRecords,
+        command_key: format!("dispatch:{practice}:{workspace}:new-records:v1"),
+        workspace_version: 1,
+        record_versions: BTreeMap::from([("lab-a".to_owned(), "rev-1".to_owned())]),
+    };
+    let receiver = PatientReviewReceiver::new(&store, &roles, &skills, auth.as_ref());
+    local_product::runtime::dispatch::ReviewReceiver::submit_review(&receiver, &req_first)
+        .await
+        .unwrap();
+    let first_deliveries = receiver.take_deliveries().await;
+    assert_eq!(first_deliveries.len(), 1);
+
+    // Duplicate replay with identical command_key must NOT emit another wakeup delivery!
+    local_product::runtime::dispatch::ReviewReceiver::submit_review(&receiver, &req_first)
+        .await
+        .unwrap();
+    let duplicate_deliveries = receiver.take_deliveries().await;
+    assert!(
+        duplicate_deliveries.is_empty(),
+        "duplicate review admission must not publish a second wakeup delivery"
+    );
+
+    let initial_reviews = store
+        .patient_reviews(&practice, &workspace, auth.as_ref())
+        .await
+        .unwrap();
+    assert_eq!(initial_reviews.len(), 1);
+    let rev_old = initial_reviews[0].clone();
+    let claim_old = store
+        .claim_practice_job(&rev_old.practice_scope(), 60, auth.as_ref())
+        .await
+        .unwrap()
+        .expect("claim old review");
+
+    // Admit a new review while `rev_old` is actively Running -> `rev_old` must become
+    // `Superseded(NewInput { replacement_review_id: Some(rev_mid_id) })` and `claim_old`
+    // must be cancelled/held so it cannot complete!
+    let lab_b = chart_record(ChartRecordSpec {
+        workspace: &workspace,
+        source_id: "quest-labs",
+        candidate_id: "lab-b",
+        revision: "rev-1",
+        record_type: "Observation",
+        title: "Lipid Panel",
+        date: "2026-11-11",
+        text: "Lipid Panel (2026-11-11): LDL 102 mg/dL.",
+    });
+    let req_superseding = patient_work::ReviewRequest {
+        practice_id: practice.clone(),
+        patient_workspace_id: workspace.clone(),
+        reason: ReviewReason::NewRecords,
+        command_key: format!("dispatch:{practice}:{workspace}:new-records:v2-supersede"),
+        workspace_version: 1,
+        record_versions: BTreeMap::from([("lab-a".to_owned(), "rev-1".to_owned())]),
+    };
+    let rev_mid = store
+        .submit_dispatched_patient_review(&req_superseding, &roles, &skills, auth.as_ref())
+        .await
+        .unwrap()
+        .review()
+        .clone();
+
+    let old_after = store
+        .patient_review(&practice, &workspace, &rev_old.review_id, auth.as_ref())
+        .await
+        .unwrap()
+        .unwrap();
+    assert_eq!(
+        old_after.state,
+        ReviewLifecycleState::Superseded {
+            reason: ReviewSupersededReason::NewInput {
+                replacement_review_id: Some(rev_mid.review_id.clone()),
+            },
+            superseded_at: old_after.updated_at,
+        }
+    );
+    let mut stale_old_host = PracticeJobHost {
+        store: store.clone(),
+        claim: claim_old,
+        authority: auth.as_ref(),
+    };
+    let stale_err = stale_old_host
+        .run(
+            &mut FailIfCalledProvider,
+            engine::RunLimits::default(),
+            &engine::Cancellation::default(),
+        )
+        .await
+        .expect_err("superseded old review claim must not execute or complete");
+    assert_eq!(
+        engine::AttemptFailure::of(&stale_err, &engine::Cancellation::default()),
+        engine::AttemptFailure::Interrupted
+    );
+
+    // --- 2. Mid-run record arrival during `rev_mid` (`completed_source_version = 2 > 1`)
+    // updates `completed_sources` so the next changed-record dispatch only reports `lab-c`! ---
+    let claim_mid = store
+        .claim_practice_job(&rev_mid.practice_scope(), 60, auth.as_ref())
+        .await
+        .unwrap()
+        .expect("claim rev_mid");
+    // Deliver `lab_b` mid-run while `rev_mid` is executing (advancing chart v1 -> v2).
+    store
+        .record_chart(
+            &workspace,
+            &[lab_a.clone(), lab_b.clone()],
+            &SourcePull {
+                source_id: "quest-labs".into(),
+                source_label: "Quest Diagnostics".into(),
+                pulled_at: Some(1_700_400_030),
+                patient: patient.clone(),
+            },
+        )
+        .await
+        .unwrap();
+
+    struct CompleteMidRunArrivalProvider;
+    impl engine::recipe::Provider for CompleteMidRunArrivalProvider {
+        async fn exchange(
+            &mut self,
+            request: &engine::recipe::Request,
+            _: &engine::Cancellation,
+            _: &engine::RunLimits,
+            _: &mut dyn engine::recipe::Observer,
+        ) -> Result<engine::Turn, engine::Cause> {
+            let has_read = request.items.iter().any(|item| {
+                matches!(
+                    item,
+                    engine::Item::MaterializedResult { call_id, .. }
+                        if call_id == "call-read-both"
+                )
+            });
+            let has_staged = request.items.iter().any(|item| {
+                matches!(
+                    item,
+                    engine::Item::MaterializedResult { call_id, .. }
+                        if call_id == "call-complete-mid"
+                )
+            });
+            if !has_read {
+                Ok(engine::Turn {
+                    items: vec![engine::Item::Call(engine::Invocation {
+                        id: "call-read-both".into(),
+                        name: READ_TOOL.into(),
+                        arguments: json!({
+                            "references": [
+                                { "candidate_id": "lab-a", "revision": "rev-1", "cursor": null },
+                                { "candidate_id": "lab-b", "revision": "rev-1", "cursor": null }
+                            ],
+                            "max_result_bytes": 16_384
+                        })
+                        .to_string(),
+                    })],
+                    receipt: json!({"turn": 1}),
+                    usage: engine::recipe::Usage::default(),
+                })
+            } else if !has_staged {
+                Ok(engine::Turn {
+                    items: vec![engine::Item::Call(engine::Invocation {
+                        id: "call-complete-mid".into(),
+                        name: COMPLETE_PATIENT_REVIEW_TOOL.into(),
+                        arguments: json!({
+                            "disposition": "quiet",
+                            "explanation": "BMP and mid-run Lipid Panel are within stable baseline limits.",
+                            "citations": [
+                                { "candidate_id": "lab-a", "revision": "rev-1" },
+                                { "candidate_id": "lab-b", "revision": "rev-1" }
+                            ],
+                            "basis_and_limitations": "Reviewed BMP and Lipid Panel at chart version 2.",
+                            "unfinished_work": []
+                        })
+                        .to_string(),
+                    })],
+                    receipt: json!({"turn": 2}),
+                    usage: engine::recipe::Usage::default(),
+                })
+            } else {
+                Ok(engine::Turn {
+                    items: vec![engine::Item::assistant(
+                        "Completed review at chart version 2.",
+                    )],
+                    receipt: json!({"turn": 3}),
+                    usage: engine::recipe::Usage::default(),
+                })
+            }
+        }
+    }
+
+    let mut host_mid = PracticeJobHost {
+        store: store.clone(),
+        claim: claim_mid,
+        authority: auth.as_ref(),
+    };
+    host_mid
+        .run(
+            &mut CompleteMidRunArrivalProvider,
+            engine::RunLimits::default(),
+            &engine::Cancellation::default(),
+        )
+        .await
+        .expect("rev_mid completes at chart v2");
+
+    let saved_mid = store
+        .patient_review(&practice, &workspace, &rev_mid.review_id, auth.as_ref())
+        .await
+        .unwrap()
+        .unwrap();
+    assert_eq!(saved_mid.initial_source_version, 1);
+    assert_eq!(saved_mid.completed_source_version, Some(2));
+
+    // Now `lab_c` arrives at chart v3; dispatch a new `NewRecords` review ->
+    // `changed_candidates` MUST contain ONLY `["lab-c"]`, NOT `lab-b`!
+    let lab_c = chart_record(ChartRecordSpec {
+        workspace: &workspace,
+        source_id: "quest-labs",
+        candidate_id: "lab-c",
+        revision: "rev-1",
+        record_type: "Observation",
+        title: "TSH",
+        date: "2026-11-12",
+        text: "TSH (2026-11-12): 2.1 mIU/L (normal).",
+    });
+    store
+        .record_chart(
+            &workspace,
+            &[lab_a.clone(), lab_b.clone(), lab_c.clone()],
+            &SourcePull {
+                source_id: "quest-labs".into(),
+                source_label: "Quest Diagnostics".into(),
+                pulled_at: Some(1_700_400_060),
+                patient: patient.clone(),
+            },
+        )
+        .await
+        .unwrap();
+
+    let req_v3 = patient_work::ReviewRequest {
+        practice_id: practice.clone(),
+        patient_workspace_id: workspace.clone(),
+        reason: ReviewReason::NewRecords,
+        command_key: format!("dispatch:{practice}:{workspace}:new-records:v3"),
+        workspace_version: 3,
+        record_versions: BTreeMap::from([
+            ("lab-a".to_owned(), "rev-1".to_owned()),
+            ("lab-b".to_owned(), "rev-1".to_owned()),
+            ("lab-c".to_owned(), "rev-1".to_owned()),
+        ]),
+    };
+    let rev_v3 = store
+        .submit_dispatched_patient_review(&req_v3, &roles, &skills, auth.as_ref())
+        .await
+        .unwrap()
+        .review()
+        .clone();
+    assert_eq!(
+        rev_v3.triggers,
+        vec![ReviewTrigger::ChangedRecords {
+            workspace_version: 3,
+            record_versions: BTreeMap::from([
+                ("lab-a".to_owned(), "rev-1".to_owned()),
+                ("lab-b".to_owned(), "rev-1".to_owned()),
+                ("lab-c".to_owned(), "rev-1".to_owned()),
+            ]),
+            changed_candidates: vec!["lab-c".to_owned()],
+        }],
+        "baseline must use prev review's completed_sources so lab-b is not misreported as changed"
+    );
+
+    // --- 3. Pure withdrawn-record recovery (`lab-c` withdrawn with NO added or corrected
+    // records) injects patient-review `SOURCES_CHANGED` feedback naming `complete_patient_review`
+    // and NEVER `finish_reply_revision`! ---
+    let claim_v3_a1 = store
+        .claim_practice_job(&rev_v3.practice_scope(), 60, auth.as_ref())
+        .await
+        .unwrap()
+        .expect("claim v3 attempt 1");
+    let cancel_after_read = engine::Cancellation::default();
+    struct ReadThenInterrupt {
+        cancel: engine::Cancellation,
+    }
+    impl engine::recipe::Provider for ReadThenInterrupt {
+        async fn exchange(
+            &mut self,
+            request: &engine::recipe::Request,
+            _: &engine::Cancellation,
+            _: &engine::RunLimits,
+            _: &mut dyn engine::recipe::Observer,
+        ) -> Result<engine::Turn, engine::Cause> {
+            let has_read = request.items.iter().any(|item| {
+                matches!(
+                    item,
+                    engine::Item::MaterializedResult { call_id, .. }
+                        if call_id == "call-read-c"
+                )
+            });
+            if !has_read {
+                Ok(engine::Turn {
+                    items: vec![engine::Item::Call(engine::Invocation {
+                        id: "call-read-c".into(),
+                        name: READ_TOOL.into(),
+                        arguments: json!({
+                            "references": [
+                                { "candidate_id": "lab-a", "revision": "rev-1", "cursor": null },
+                                { "candidate_id": "lab-c", "revision": "rev-1", "cursor": null }
+                            ],
+                            "max_result_bytes": 16_384
+                        })
+                        .to_string(),
+                    })],
+                    receipt: json!({"turn": 1}),
+                    usage: engine::recipe::Usage::default(),
+                })
+            } else {
+                self.cancel.cancel();
+                std::future::pending::<Result<engine::Turn, engine::Cause>>().await
+            }
+        }
+    }
+    let mut host_v3_a1 = PracticeJobHost {
+        store: store.clone(),
+        claim: claim_v3_a1.clone(),
+        authority: auth.as_ref(),
+    };
+    let int_err = host_v3_a1
+        .run(
+            &mut ReadThenInterrupt {
+                cancel: cancel_after_read.clone(),
+            },
+            engine::RunLimits::default(),
+            &cancel_after_read,
+        )
+        .await
+        .expect_err("cancelled after reading lab-c");
+    store
+        .settle_practice_job_attempt(
+            &claim_v3_a1,
+            engine::AttemptFailure::of(&int_err, &cancel_after_read),
+            local_product::runtime::delivery::Backoff::IMMEDIATE,
+        )
+        .await
+        .unwrap();
+
+    // Withdraw `lab_c` cleanly (chart v3 -> v4: `[lab_a, lab_b]`, zero added or corrected!).
+    store
+        .record_chart(
+            &workspace,
+            &[lab_a, lab_b],
+            &SourcePull {
+                source_id: "quest-labs".into(),
+                source_label: "Quest Diagnostics".into(),
+                pulled_at: Some(1_700_400_090),
+                patient,
+            },
+        )
+        .await
+        .unwrap();
+
+    let claim_v3_a2 = store
+        .claim_practice_job(&rev_v3.practice_scope(), 60, auth.as_ref())
+        .await
+        .unwrap()
+        .expect("claim v3 recovery attempt after withdrawal");
+
+    struct InspectWithdrawnFeedbackProvider {
+        saw_withdrawn_feedback: bool,
+    }
+    impl engine::recipe::Provider for InspectWithdrawnFeedbackProvider {
+        async fn exchange(
+            &mut self,
+            request: &engine::recipe::Request,
+            _: &engine::Cancellation,
+            _: &engine::RunLimits,
+            _: &mut dyn engine::recipe::Observer,
+        ) -> Result<engine::Turn, engine::Cause> {
+            let rendered_items = serde_json::to_string(&request.items).unwrap();
+            assert!(
+                !rendered_items.contains("finish_reply_revision"),
+                "patient review recovery feedback must never name finish_reply_revision: {rendered_items}"
+            );
+            if rendered_items.contains("lab-c")
+                && rendered_items.contains("complete_patient_review")
+                && rendered_items.contains("withdrawn")
+            {
+                self.saw_withdrawn_feedback = true;
+            }
+            let has_staged = request.items.iter().any(|item| {
+                matches!(
+                    item,
+                    engine::Item::MaterializedResult { call_id, .. }
+                        if call_id == "call-complete-after-withdraw"
+                )
+            });
+            if !has_staged {
+                Ok(engine::Turn {
+                    items: vec![engine::Item::Call(engine::Invocation {
+                        id: "call-complete-after-withdraw".into(),
+                        name: COMPLETE_PATIENT_REVIEW_TOOL.into(),
+                        arguments: json!({
+                            "disposition": "quiet",
+                            "explanation": "TSH record lab-c was withdrawn; remaining BMP and Lipid Panel remain normal.",
+                            "citations": [
+                                { "candidate_id": "lab-a", "revision": "rev-1" }
+                            ],
+                            "basis_and_limitations": "Reviewed current chart version 4 after withdrawal of lab-c.",
+                            "unfinished_work": []
+                        })
+                        .to_string(),
+                    })],
+                    receipt: json!({"turn": 1}),
+                    usage: engine::recipe::Usage::default(),
+                })
+            } else {
+                Ok(engine::Turn {
+                    items: vec![engine::Item::assistant(
+                        "Completed quiet review after withdrawn record.",
+                    )],
+                    receipt: json!({"turn": 2}),
+                    usage: engine::recipe::Usage::default(),
+                })
+            }
+        }
+    }
+
+    let mut inspector = InspectWithdrawnFeedbackProvider {
+        saw_withdrawn_feedback: false,
+    };
+    let mut host_v3_a2 = PracticeJobHost {
+        store: store.clone(),
+        claim: claim_v3_a2,
+        authority: auth.as_ref(),
+    };
+    host_v3_a2
+        .run(
+            &mut inspector,
+            engine::RunLimits::default(),
+            &engine::Cancellation::default(),
+        )
+        .await
+        .expect("recovery after withdrawn record succeeds with complete_patient_review");
+    assert!(
+        inspector.saw_withdrawn_feedback,
+        "recovery after pure record withdrawal must inject patient-review source_feedback naming complete_patient_review"
+    );
+}
+
+#[tokio::test]
+async fn practice_authority_enforced_on_reads_and_stop_atomic_rearm_steering_fences_and_understanding_tool_boundary()
+ {
+    use harness::engine::recipe::Product as _;
+    use local_product::patient_reviews::review_job_id;
+    use local_product::runtime::dispatch::ReviewReceiver as _;
+    use local_product::runtime::jobs::Assignment;
+
+    let Some(url) = database_url() else {
+        return;
+    };
+    let (store, auth) = connect_stores(&url).await;
+    let skills = load_skills();
+    let roles = distinct_roles();
+
+    let practice = format!("practice-guard-{}", Uuid::new_v4().simple());
+    let other_practice = format!("practice-other-{}", Uuid::new_v4().simple());
+    let workspace = format!("pw-guard-{}", Uuid::new_v4().simple());
+    let unregistered_ws = format!("pw-unreg-{}", Uuid::new_v4().simple());
+    auth.ensure_practice(&practice, PracticeClock::RealTime)
+        .await
+        .unwrap();
+    auth.ensure_practice(&other_practice, PracticeClock::RealTime)
+        .await
+        .unwrap();
+    auth.register_patient(&practice, &workspace).await.unwrap();
+
+    let patient = source_patient("pt-guard", "Nadia Patel");
+    let lab_v1 = chart_record(ChartRecordSpec {
+        workspace: &workspace,
+        source_id: "quest-labs",
+        candidate_id: "Observation/k-guard",
+        revision: "rev-1",
+        record_type: "Observation",
+        title: "Serum Potassium",
+        date: "2026-11-10",
+        text: "Serum Potassium (2026-11-10): 4.4 mmol/L.",
+    });
+    store
+        .record_chart(
+            &workspace,
+            std::slice::from_ref(&lab_v1),
+            &SourcePull {
+                source_id: "quest-labs".into(),
+                source_label: "Quest Diagnostics".into(),
+                pulled_at: Some(1_700_500_000),
+                patient: patient.clone(),
+            },
+        )
+        .await
+        .unwrap();
+
+    // --- 1. Partial admission recovery: if `accept_practice_job` already committed before
+    // `patient_review` row insertion, retrying `submit_review` still yields `New` + wakeup delivery! ---
+    let partial_cmd_key = format!("dispatch:{practice}:{workspace}:new-records:partial-1");
+    let partial_digest = &sha256_hex(format!("{workspace}|{partial_cmd_key}").as_bytes())[..20];
+    let partial_review_id = format!("rev-{partial_digest}");
+    let partial_scope = PracticeScope {
+        practice: practice.clone(),
+        workspace: workspace.clone(),
+        job_id: review_job_id(&partial_review_id),
+    };
+    let partial_trigger = ReviewTrigger::ChangedRecords {
+        workspace_version: 1,
+        record_versions: BTreeMap::from([("Observation/k-guard".into(), "rev-1".into())]),
+        changed_candidates: vec!["Observation/k-guard".into()],
+    };
+    let partial_ctx = ReviewStartingContext {
+        workspace: workspace.clone(),
+        review_id: partial_review_id.clone(),
+        patient: Some(patient.clone()),
+        trigger: partial_trigger,
+        additional_inputs: Vec::new(),
+        chart_version: 1,
+        chart_record_count: 1,
+        evidence_scope: EvidenceScope::ClinicalChart {
+            connected_sources: vec![ConnectedSourceBrief {
+                source_id: "quest-labs".into(),
+                source_label: "Quest Diagnostics".into(),
+                pulled_at: 1_700_500_000,
+            }],
+        },
+        source_pulls: vec![SourceFreshnessSummary {
+            source_id: "quest-labs".into(),
+            source_label: "Quest Diagnostics".into(),
+            pulled_at: 1_700_500_000,
+        }],
+        refresh_statuses: Vec::new(),
+        check_standing: DispatchCheckStanding::NotRecorded,
+        understanding: None,
+        memory_standing: PatientMemoryStanding::Available {
+            summary_markdown: None,
+            direction_markdown: None,
+            has_person_page: false,
+            page_paths: Vec::new(),
+            log_days: Vec::new(),
+        },
+        open_concerns: Vec::new(),
+        prior_reviews: Vec::new(),
+    };
+    let pre_assignment = review_assignment(&partial_cmd_key, partial_ctx, &skills).unwrap();
+    let pre_accepted = store
+        .accept_practice_job(
+            &partial_scope,
+            &pre_assignment,
+            &roles,
+            &skills,
+            auth.as_ref(),
+        )
+        .await
+        .unwrap();
+    assert_eq!(pre_accepted, local_product::runtime::Accepted::New);
+
+    let receiver = PatientReviewReceiver::new(&store, &roles, &skills, auth.as_ref());
+    let partial_req = patient_work::ReviewRequest {
+        practice_id: practice.clone(),
+        patient_workspace_id: workspace.clone(),
+        reason: ReviewReason::NewRecords,
+        command_key: partial_cmd_key.clone(),
+        workspace_version: 1,
+        record_versions: BTreeMap::from([("Observation/k-guard".into(), "rev-1".into())]),
+    };
+    receiver
+        .submit_review(&partial_req)
+        .await
+        .expect("retry after partial practice job admission succeeds");
+    let recovered_deliveries = receiver.take_deliveries().await;
+    assert_eq!(
+        recovered_deliveries.len(),
+        1,
+        "partial admission retry must return AdmittedPatientReview::New and publish wakeup delivery"
+    );
+
+    let rev = store
+        .patient_review(&practice, &workspace, &partial_review_id, auth.as_ref())
+        .await
+        .unwrap()
+        .expect("saved review inserted on retry");
+
+    // --- 2. `PracticeAuthority` enforcement on `patient_review`, `patient_reviews`, and `stop_patient_review` ---
+    assert!(matches!(
+        store
+            .patient_review(&other_practice, &workspace, &rev.review_id, auth.as_ref())
+            .await,
+        Err(PatientReviewError::Access(
+            PracticeAccessError::ForeignPractice { .. }
+        ))
+    ));
+    assert!(matches!(
+        store
+            .patient_review(&practice, &unregistered_ws, &rev.review_id, auth.as_ref())
+            .await,
+        Err(PatientReviewError::Access(
+            PracticeAccessError::UnregisteredPatient { .. }
+        ))
+    ));
+    assert!(matches!(
+        store
+            .patient_reviews(&other_practice, &workspace, auth.as_ref())
+            .await,
+        Err(PatientReviewError::Access(
+            PracticeAccessError::ForeignPractice { .. }
+        ))
+    ));
+    assert!(matches!(
+        store
+            .patient_reviews(&practice, &unregistered_ws, auth.as_ref())
+            .await,
+        Err(PatientReviewError::Access(
+            PracticeAccessError::UnregisteredPatient { .. }
+        ))
+    ));
+    assert!(matches!(
+        store
+            .stop_patient_review(
+                &other_practice,
+                &workspace,
+                &rev.review_id,
+                "unauth-stop-1",
+                auth.as_ref(),
+            )
+            .await,
+        Err(PatientReviewError::Access(
+            PracticeAccessError::ForeignPractice { .. }
+        ))
+    ));
+    assert!(matches!(
+        store
+            .stop_patient_review(
+                &practice,
+                &unregistered_ws,
+                &rev.review_id,
+                "unauth-stop-2",
+                auth.as_ref(),
+            )
+            .await,
+        Err(PatientReviewError::Access(
+            PracticeAccessError::UnregisteredPatient { .. }
+        ))
+    ));
+    // Verify unauthorized stop did NOT hold `rev`!
+    assert_eq!(
+        store
+            .patient_review(&practice, &workspace, &rev.review_id, auth.as_ref())
+            .await
+            .unwrap()
+            .unwrap()
+            .state,
+        ReviewLifecycleState::Pending
+    );
+
+    // --- 3. Atomic `rearm_patient_review_internal` receipt + locked eligibility ---
+    // Calling `resume_patient_review` while `Pending` (not `Stopped`) must return `ControlRefused`
+    // AND roll back `receipt::record` so `"cmd-atomic-rearm"` is NOT burned!
+    let refused_rearm = store
+        .resume_patient_review(
+            rev.target(),
+            "cmd-atomic-rearm",
+            &roles,
+            &skills,
+            auth.as_ref(),
+        )
+        .await
+        .expect_err("Resume while Pending must be refused");
+    assert!(matches!(
+        refused_rearm,
+        PatientReviewError::ControlRefused {
+            action: "resume",
+            ..
+        }
+    ));
+    // Now actually Stop `rev`, then Resume with the SAME `"cmd-atomic-rearm"` key -> must transition to Pending!
+    assert_eq!(
+        store
+            .stop_patient_review(
+                &practice,
+                &workspace,
+                &rev.review_id,
+                "cmd-valid-stop",
+                auth.as_ref(),
+            )
+            .await
+            .unwrap(),
+        Stopped::Held
+    );
+    store
+        .resume_patient_review(
+            rev.target(),
+            "cmd-atomic-rearm",
+            &roles,
+            &skills,
+            auth.as_ref(),
+        )
+        .await
+        .expect("unburned command_key succeeds once review is Stopped");
+    assert_eq!(
+        store
+            .patient_review(&practice, &workspace, &rev.review_id, auth.as_ref())
+            .await
+            .unwrap()
+            .unwrap()
+            .state,
+        ReviewLifecycleState::Pending
+    );
+    // Idempotent `Receipt::Same` retry of `"cmd-atomic-rearm"` returns `Ok(Delivery)`, while
+    // reusing `"cmd-atomic-rearm"` for `try_again_patient_review` returns `IdempotencyCollision`!
+    store
+        .resume_patient_review(
+            rev.target(),
+            "cmd-atomic-rearm",
+            &roles,
+            &skills,
+            auth.as_ref(),
+        )
+        .await
+        .expect("idempotent same-key Resume succeeds");
+    assert!(matches!(
+        store
+            .try_again_patient_review(
+                rev.target(),
+                "cmd-atomic-rearm",
+                &roles,
+                &skills,
+                auth.as_ref(),
+            )
+            .await,
+        Err(PatientReviewError::IdempotencyCollision { key }) if key == "cmd-atomic-rearm"
+    ));
+
+    // --- 4. `submit_patient_review_input` preserves `initial_source_version` / `initial_sources`
+    // and enforces idempotency collision + terminal-state refusal under row locks ---
+    // Deliver `lab_v2` (`rev-1` -> `rev-2`, chart v1 -> v2) BEFORE steering `rev`!
+    let lab_v2 = chart_record(ChartRecordSpec {
+        workspace: &workspace,
+        source_id: "quest-labs",
+        candidate_id: "Observation/k-guard",
+        revision: "rev-2",
+        record_type: "Observation",
+        title: "Serum Potassium (Corrected)",
+        date: "2026-11-10",
+        text: "Serum Potassium (Corrected, 2026-11-10): 5.8 mmol/L hyperkalemia.",
+    });
+    store
+        .record_chart(
+            &workspace,
+            &[lab_v2],
+            &SourcePull {
+                source_id: "quest-labs".into(),
+                source_label: "Quest Diagnostics".into(),
+                pulled_at: Some(1_700_500_100),
+                patient: patient.clone(),
+            },
+        )
+        .await
+        .unwrap();
+
+    store
+        .submit_patient_review_input(
+            rev.target(),
+            ReviewInputSubmission {
+                input_key: "steer-guard-1",
+                input_text: "Prioritize checking potassium trend.",
+                additional_trigger: None,
+            },
+            &roles,
+            &skills,
+            auth.as_ref(),
+        )
+        .await
+        .expect("steer input accepted");
+    // Same `(input_key, text)` is idempotent; same `input_key` with different text is `IdempotencyCollision`!
+    store
+        .submit_patient_review_input(
+            rev.target(),
+            ReviewInputSubmission {
+                input_key: "steer-guard-1",
+                input_text: "Prioritize checking potassium trend.",
+                additional_trigger: None,
+            },
+            &roles,
+            &skills,
+            auth.as_ref(),
+        )
+        .await
+        .expect("duplicate steer input is idempotent");
+    assert!(matches!(
+        store
+            .submit_patient_review_input(
+                rev.target(),
+                ReviewInputSubmission {
+                    input_key: "steer-guard-1",
+                    input_text: "Conflicting steer payload.",
+                    additional_trigger: None,
+                },
+                &roles,
+                &skills,
+                auth.as_ref(),
+            )
+            .await,
+        Err(PatientReviewError::IdempotencyCollision { key }) if key == "steer-guard-1"
+    ));
+
+    let after_steer = store
+        .patient_review(&practice, &workspace, &rev.review_id, auth.as_ref())
+        .await
+        .unwrap()
+        .unwrap();
+    assert_eq!(
+        after_steer.initial_source_version, 1,
+        "submit_patient_review_input must preserve initial_source_version so pre-steer chart changes stay fenced"
+    );
+
+    // Execute the steered review: Turn 1 tries to complete WITHOUT reading `rev-2` -> must be
+    // refused by `review_source_change_feedback` (`sources_changed`), proving `initial_sources`
+    // was preserved across steering! Turn 2 reads `rev-2`, Turn 3 stages completion, Turn 4 finishes.
+    let steered_claim = store
+        .claim_practice_job(&rev.practice_scope(), 60, auth.as_ref())
+        .await
+        .unwrap()
+        .expect("claim steered review");
+
+    struct SteeredSourceFenceProvider {
+        turn: usize,
+    }
+    impl engine::recipe::Provider for SteeredSourceFenceProvider {
+        async fn exchange(
+            &mut self,
+            request: &engine::recipe::Request,
+            _: &engine::Cancellation,
+            _: &engine::RunLimits,
+            _: &mut dyn engine::recipe::Observer,
+        ) -> Result<engine::Turn, engine::Cause> {
+            self.turn += 1;
+            match self.turn {
+                1 => {
+                    let premature = CompleteReviewArgs {
+                        disposition: CompleteReviewDisposition::Quiet {
+                            explanation: "Unverified completion without reading rev-2.".into(),
+                        },
+                        citations: vec![ExactRecordReference {
+                            candidate_id: "Observation/k-guard".into(),
+                            revision: "rev-2".into(),
+                        }],
+                        basis_and_limitations: "None.".into(),
+                        unfinished_work: vec![],
+                    };
+                    Ok(engine::Turn {
+                        items: vec![engine::Item::Call(engine::Invocation {
+                            id: "try-unread-rev2".into(),
+                            name: COMPLETE_PATIENT_REVIEW_TOOL.into(),
+                            arguments: serde_json::to_string(&premature).unwrap(),
+                        })],
+                        receipt: json!({"turn": 1}),
+                        usage: Default::default(),
+                    })
+                }
+                2 => {
+                    let wire = serde_json::to_string(&request.items).unwrap();
+                    assert!(
+                        wire.contains("sources_changed") && wire.contains("Observation/k-guard"),
+                        "preserved initial_sources must fence unread rev-2 after steering: {wire}"
+                    );
+                    Ok(engine::Turn {
+                        items: vec![engine::Item::Call(engine::Invocation {
+                            id: "read-k-rev2".into(),
+                            name: READ_TOOL.into(),
+                            arguments: json!({
+                                "references": [{
+                                    "candidate_id": "Observation/k-guard",
+                                    "revision": "rev-2",
+                                    "cursor": null
+                                }],
+                                "max_result_bytes": 16_384
+                            })
+                            .to_string(),
+                        })],
+                        receipt: json!({"turn": 2}),
+                        usage: Default::default(),
+                    })
+                }
+                3 => {
+                    let complete = CompleteReviewArgs {
+                        disposition: CompleteReviewDisposition::Assessed {
+                            summary:
+                                "Verified corrected potassium 5.8 mmol/L; raised today concern."
+                                    .into(),
+                        },
+                        citations: vec![ExactRecordReference {
+                            candidate_id: "Observation/k-guard".into(),
+                            revision: "rev-2".into(),
+                        }],
+                        basis_and_limitations: "Quest Diagnostics corrected potassium (rev-2)."
+                            .into(),
+                        unfinished_work: vec![],
+                    };
+                    Ok(engine::Turn {
+                        items: vec![
+                            engine::Item::Call(engine::Invocation {
+                                id: "raise-k-guard".into(),
+                                name: CONCERN_TOOL.into(),
+                                arguments: json!({
+                                    "operation": "raise",
+                                    "concern_id": "concern-k-guard",
+                                    "urgency": "today",
+                                    "reason": "Hyperkalemia 5.8 mmol/L on corrected lab report.",
+                                    "records": [{
+                                        "candidate_id": "Observation/k-guard",
+                                        "revision": "rev-2"
+                                    }]
+                                })
+                                .to_string(),
+                            }),
+                            engine::Item::Call(engine::Invocation {
+                                id: "complete-k-guard".into(),
+                                name: COMPLETE_PATIENT_REVIEW_TOOL.into(),
+                                arguments: serde_json::to_string(&complete).unwrap(),
+                            }),
+                        ],
+                        receipt: json!({"turn": 3}),
+                        usage: Default::default(),
+                    })
+                }
+                4 => Ok(engine::Turn {
+                    items: vec![engine::Item::assistant("Steered review completed.")],
+                    receipt: json!({"turn": 4}),
+                    usage: Default::default(),
+                }),
+                other => panic!("unexpected turn {other}"),
+            }
+        }
+    }
+
+    PracticeJobHost {
+        store: store.clone(),
+        claim: steered_claim,
+        authority: auth.as_ref(),
+    }
+    .run(
+        &mut SteeredSourceFenceProvider { turn: 0 },
+        engine::RunLimits::default(),
+        &engine::Cancellation::default(),
+    )
+    .await
+    .expect("steered review completes after reading rev-2");
+
+    // Once `Completed`, both `submit_patient_review_input` and `try_again_patient_review`
+    // are refused under row locks without overwriting `Completed`!
+    assert!(matches!(
+        store
+            .submit_patient_review_input(
+                rev.target(),
+                ReviewInputSubmission {
+                    input_key: "steer-after-complete",
+                    input_text: "Late input after completion.",
+                    additional_trigger: None,
+                },
+                &roles,
+                &skills,
+                auth.as_ref(),
+            )
+            .await,
+        Err(PatientReviewError::ControlRefused {
+            action: "steer",
+            ..
+        })
+    ));
+    assert!(matches!(
+        store
+            .try_again_patient_review(
+                rev.target(),
+                "cmd-try-after-complete",
+                &roles,
+                &skills,
+                auth.as_ref(),
+            )
+            .await,
+        Err(PatientReviewError::ControlRefused {
+            action: "try_again",
+            ..
+        })
+    ));
+    assert_eq!(
+        store
+            .patient_review(&practice, &workspace, &rev.review_id, auth.as_ref())
+            .await
+            .unwrap()
+            .unwrap()
+            .state
+            .status_str(),
+        "completed"
+    );
+
+    // --- 5. `PracticeJobKind::InitialUnderstanding` refuses concern, memory, and review tools,
+    // and `PracticeJobHost` preserves typed `PracticeAccessError` causes! ---
+    let iu_scope = PracticeScope {
+        practice: practice.clone(),
+        workspace: workspace.clone(),
+        job_id: "iu-boundary-check".into(),
+    };
+    let iu_assign = Assignment::synthetic_patient_stub(&workspace, &skills).unwrap();
+    store
+        .accept_practice_job(&iu_scope, &iu_assign, &roles, &skills, auth.as_ref())
+        .await
+        .unwrap();
+    let iu_claim = store
+        .claim_practice_job(&iu_scope, 60, auth.as_ref())
+        .await
+        .unwrap()
+        .unwrap();
+    assert_eq!(iu_claim.kind, PracticeJobKind::InitialUnderstanding);
+
+    let revocable = RevocablePracticeAuthority {
+        inner: auth.clone(),
+        revoked: AtomicBool::new(false),
+    };
+    let mut iu_host = PracticeJobHost {
+        store: store.clone(),
+        claim: iu_claim,
+        authority: &revocable,
+    };
+    for (tool_name, args) in [
+        (CONCERN_TOOL, json!({"operation": "list"})),
+        (
+            "add_patient_memory_note",
+            json!({
+                "text": "s",
+                "quote": null
+            }),
+        ),
+        (
+            COMPLETE_PATIENT_REVIEW_TOOL,
+            json!({
+                "disposition": "quiet",
+                "explanation": "x",
+                "citations": [],
+                "basis_and_limitations": "b",
+                "unfinished_work": []
+            }),
+        ),
+    ] {
+        let call = engine::Invocation {
+            id: format!("iu-refuse-{tool_name}"),
+            name: tool_name.into(),
+            arguments: args.to_string(),
+        };
+        let out = iu_host.execute(&call, args).await.unwrap();
+        assert!(
+            matches!(out, engine::recipe::ToolOutcome::Refused(_)),
+            "InitialUnderstanding job must refuse {tool_name}, got: {out:?}"
+        );
+    }
+
+    revocable.revoked.store(true, Ordering::SeqCst);
+    let cause = iu_host
+        .assert_current()
+        .await
+        .expect_err("revoked authority must fail assert_current");
+    assert!(
+        matches!(
+            &cause,
+            engine::ProductError::Failed(inner)
+                if inner.downcast_ref::<PracticeAccessError>().is_some()
+        ),
+        "PracticeJobHost::assert_current must preserve typed PracticeAccessError cause, got: {cause:?}"
+    );
 }
