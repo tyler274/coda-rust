@@ -25,7 +25,7 @@ pub struct DurableChat {
     /// Existing authoritative Postgres runtime.
     pub store: Store,
     skills: local_product::physician_chat::PhysicianSkills,
-    chat_binding: local_product::ModelBinding,
+    roles: local_product::ModelRoles,
     revision_recipe: harness::engine::recipe::RequestRecipe,
     /// Practices whose sessions may tag their inputs with a rehearsal scenario.
     simulation_practices: SimulationPractices,
@@ -40,11 +40,21 @@ impl DurableChat {
     ) -> Self {
         Self {
             store,
-            chat_binding: roles.chat.clone(),
+            roles: roles.clone(),
             revision_recipe: local_product::runtime::reply::recipe(&roles.background, &skills),
             skills,
             simulation_practices: SimulationPractices::default(),
         }
+    }
+
+    /// Configured model roles for physician chat and background practice runs.
+    pub fn roles(&self) -> &local_product::ModelRoles {
+        &self.roles
+    }
+
+    /// Approved clinical skills catalog shared by chat and practice runs.
+    pub fn skills(&self) -> &local_product::physician_chat::PhysicianSkills {
+        &self.skills
     }
 
     /// The same owner, accepting scenario tags from `practices`' sessions.
@@ -79,7 +89,7 @@ impl DurableChat {
         let chat_recipe = self
             .store
             .chat_recipe_with_understanding(
-                &self.chat_binding,
+                &self.roles.chat,
                 local_product::physician_chat::INSTRUCTIONS,
                 &self.skills,
                 &scope.practice,

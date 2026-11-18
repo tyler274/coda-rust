@@ -21,6 +21,7 @@ use sea_orm::{
 };
 use serde::{Deserialize, Serialize};
 use serde_json::{Value, json};
+use sha2::{Digest, Sha256};
 use uuid::Uuid;
 
 use super::chat_operations::{
@@ -59,6 +60,7 @@ use crate::physician_sources::{
 
 const REVIEW_EXCERPT_MAX_CHARS: usize = 280;
 const REVIEW_MEMORY_ACTOR: &str = "coda:patient-review-control";
+const REVIEW_CONTROL_RECEIPT_ACTOR: &str = "coda:patient-review-versioned-control";
 
 /// Preloaded skill digest recorded with a saved patient review's recipe version.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -170,7 +172,7 @@ pub enum RecordedReviewAction {
 }
 
 impl RecordedReviewAction {
-    fn summary_label(&self) -> String {
+    pub(super) fn summary_label(&self) -> String {
         match self {
             Self::ConcernOpen {
                 concern_id,
@@ -415,6 +417,83 @@ impl SavedPatientReview {
             | ReviewLifecycleState::Superseded { .. } => None,
         }
     }
+}
+
+/// Version-fenced lifecycle control requested on a saved patient review.
+#[derive(Clone, Copy, Debug)]
+pub enum VersionedReviewAction<'a> {
+    /// Hold a `Pending` or `Running` review (`Stop`).
+    Stop,
+    /// Resume a `Stopped` review with refreshed context and current chart evidence.
+    Resume {
+        /// Configured model bindings for the background lane.
+        roles: &'a ModelRoles,
+        /// Configured skill catalog for assignment preloading.
+        skills: &'a PhysicianSkills,
+    },
+    /// Retry a `Failed` or limit-`Held` review (`Try again`).
+    TryAgain {
+        /// Configured model bindings for the background lane.
+        roles: &'a ModelRoles,
+        /// Configured skill catalog for assignment preloading.
+        skills: &'a PhysicianSkills,
+    },
+}
+
+/// Outcome of a version-fenced, durably idempotent patient review control command.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub enum VersionedReviewControl {
+    /// Command succeeded (or matched a previously committed receipt for `command_key`).
+    Accepted {
+        /// Practice-job delivery notification when the review is queued to run.
+        delivery: Option<Delivery>,
+    },
+    /// Review's current version differed from `expected_version` and no matching prior receipt existed.
+    StaleVersion {
+        /// Current authoritative version token of the review.
+        current_version: String,
+    },
+    /// Review's current lifecycle state does not admit the requested control action.
+    InvalidState,
+    /// `command_key` was previously committed for a different action or version on this review.
+    IdempotencyConflict,
+}
+
+/// Computes the monotonic opaque version token (`"rv-<16-hex>"`) for a saved
+/// patient review and its backing practice job so every lifecycle, run-history,
+/// input, or committed-action transition advances the token.
+#[must_use]
+pub fn patient_review_version(review: &SavedPatientReview, job: Option<&PracticeJob>) -> String {
+    let mut hasher = Sha256::new();
+    hasher.update(review.review_id.as_bytes());
+    hasher.update(b"|");
+    hasher.update(review.work_id.as_bytes());
+    hasher.update(b"|");
+    if let Ok(state_bytes) = serde_json::to_vec(&review.state) {
+        hasher.update(&state_bytes);
+    }
+    hasher.update(b"|");
+    hasher.update(review.updated_at.to_le_bytes());
+    hasher.update(review.triggers.len().to_le_bytes());
+    hasher.update(review.accepted_inputs.len().to_le_bytes());
+    hasher.update(review.actions.len().to_le_bytes());
+    hasher.update(review.evidence_read.len().to_le_bytes());
+    if let Some(job) = job {
+        hasher.update(b"|job:");
+        hasher.update(job.revision.to_le_bytes());
+        hasher.update(job.updated_at.to_le_bytes());
+        hasher.update(job.attempts.len().to_le_bytes());
+        if let Ok(runs_bytes) = serde_json::to_vec(&job.runs) {
+            hasher.update(&runs_bytes);
+        }
+    }
+    let digest = hasher.finalize();
+    let mut hex = String::with_capacity(16);
+    for byte in &digest[..8] {
+        use std::fmt::Write as _;
+        let _ = write!(&mut hex, "{byte:02x}");
+    }
+    format!("rv-{hex}")
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -1339,6 +1418,31 @@ fn known_understanding_refs(
     pairs
 }
 
+struct PreparedRearm<'a> {
+    starting_context: ReviewStartingContext,
+    observation: super::sources::Observation,
+    roles: &'a ModelRoles,
+    skills: &'a PhysicianSkills,
+}
+
+fn rearm_state_eligible(state: &ReviewLifecycleState, rearm_kind: RearmKind) -> bool {
+    matches!(
+        (state, rearm_kind),
+        (
+            ReviewLifecycleState::Held {
+                reason: ReviewHoldReason::Stopped,
+                ..
+            },
+            RearmKind::Resume,
+        ) | (
+            ReviewLifecycleState::Held {
+                reason: ReviewHoldReason::Limit,
+                ..
+            } | ReviewLifecycleState::Failed { .. },
+            RearmKind::TryAgain,
+        )
+    )
+}
 impl Store {
     /// Returns the database clock's current Unix timestamp in seconds.
     pub async fn current_unix_seconds(&self) -> Result<i64, DbErr> {
@@ -1362,7 +1466,7 @@ impl Store {
     /// authoritative patient pulls, chart observations, source refresh statuses,
     /// dispatch standing, saved understanding, durable memory, open concerns,
     /// and prior completed patient reviews.
-    async fn review_starting_context(
+    pub(super) async fn review_starting_context(
         &self,
         practice: &str,
         workspace: &str,
@@ -2164,6 +2268,220 @@ impl Store {
         .await
     }
 
+    /// Executes a version-fenced, durably idempotent lifecycle control (`Stop`,
+    /// `Resume`, or `Try again`) on a saved patient review.
+    ///
+    /// Reconciles any committed receipt in `physician_runtime_commands` inside the
+    /// locked transaction *before* checking `expected_version`, so lost-receipt
+    /// retries (`Check again`) across process restarts or separate server instances
+    /// return [`VersionedReviewControl::Accepted`] even after the review's version
+    /// has advanced, while reusing `command_key` for a different action or version
+    /// returns [`VersionedReviewControl::IdempotencyConflict`].
+    pub async fn control_patient_review_versioned(
+        &self,
+        target: PatientReviewTarget<'_>,
+        expected_version: &str,
+        command_key: &str,
+        action: VersionedReviewAction<'_>,
+        authority: &dyn PracticeAuthority,
+    ) -> Result<VersionedReviewControl, PatientReviewError> {
+        let practice = validate_id(target.practice)?;
+        let workspace = validate_id(target.workspace)?;
+        let review_id = validate_id(target.review_id)?;
+        let expected_version = validate_id(expected_version)?;
+        let command_key = validate_id(command_key)?;
+
+        let membership_scope = review_membership_scope(&practice, &workspace);
+        if let Err(access_err) = authority.check_practice_patient(&membership_scope).await {
+            if !matches!(action, VersionedReviewAction::Stop) {
+                self.mark_review_access_lost(
+                    &practice,
+                    &workspace,
+                    &review_id,
+                    &access_err.to_string(),
+                )
+                .await?;
+            }
+            return Err(PatientReviewError::Access(access_err));
+        }
+
+        let existing = self
+            .patient_review_internal(&practice, &workspace, &review_id)
+            .await?
+            .ok_or_else(|| PatientReviewError::NotFound {
+                practice: practice.clone(),
+                workspace: workspace.clone(),
+                review_id: review_id.clone(),
+            })?;
+        let scope = existing.practice_scope();
+        let prepared_rearm = match action {
+            VersionedReviewAction::Stop => None,
+            VersionedReviewAction::Resume { roles, skills }
+            | VersionedReviewAction::TryAgain { roles, skills } => {
+                if let Err(access_err) = authority.check_practice_patient(&scope).await {
+                    self.mark_review_access_lost(
+                        &practice,
+                        &workspace,
+                        &review_id,
+                        &access_err.to_string(),
+                    )
+                    .await?;
+                    return Err(PatientReviewError::Access(access_err));
+                }
+                let preview_trigger = existing
+                    .triggers
+                    .first()
+                    .cloned()
+                    .ok_or_else(|| error("corrupt patient review missing primary trigger"))?;
+                let (starting_context, observation) = self
+                    .review_starting_context(
+                        &practice,
+                        &workspace,
+                        &review_id,
+                        preview_trigger,
+                        Vec::new(),
+                    )
+                    .await?;
+                Some(PreparedRearm {
+                    starting_context,
+                    observation,
+                    roles,
+                    skills,
+                })
+            }
+        };
+
+        let (tx, mut job, clock) = self.locked_practice_job(&scope).await?;
+        let Some(rev_row) = patient_review::Entity::find_by_id((
+            practice.clone(),
+            workspace.clone(),
+            review_id.clone(),
+        ))
+        .lock_exclusive()
+        .one(&tx)
+        .await?
+        else {
+            return Err(PatientReviewError::NotFound {
+                practice,
+                workspace,
+                review_id,
+            });
+        };
+        let locked_review = decode_saved_review(rev_row.clone())?;
+
+        let action_label = match action {
+            VersionedReviewAction::Stop => "stop",
+            VersionedReviewAction::Resume { .. } => "resume",
+            VersionedReviewAction::TryAgain { .. } => "try_again",
+        };
+        let receipt_key = format!("{workspace}:{review_id}:{command_key}");
+        let receipt_envelope = json!({
+            "practice": &practice,
+            "workspace": &workspace,
+            "review_id": &review_id,
+            "expected_version": &expected_version,
+            "action": action_label,
+        });
+
+        match receipt::check(
+            &tx,
+            &practice,
+            REVIEW_CONTROL_RECEIPT_ACTOR,
+            &receipt_key,
+            &receipt_envelope,
+        )
+        .await?
+        {
+            Some(Receipt::Same) => {
+                let delivery = match action {
+                    VersionedReviewAction::Stop => None,
+                    VersionedReviewAction::Resume { .. }
+                    | VersionedReviewAction::TryAgain { .. } => job
+                        .status
+                        .running()
+                        .then(|| Delivery::practice_job(&scope, job.assignment.key.clone())),
+                };
+                tx.commit().await?;
+                return Ok(VersionedReviewControl::Accepted { delivery });
+            }
+            Some(Receipt::Different) => {
+                tx.rollback().await?;
+                return Ok(VersionedReviewControl::IdempotencyConflict);
+            }
+            Some(Receipt::New) | None => {}
+        }
+
+        let current_version = patient_review_version(&locked_review, Some(&job));
+        if current_version != expected_version {
+            tx.rollback().await?;
+            return Ok(VersionedReviewControl::StaleVersion { current_version });
+        }
+
+        let eligible = match action {
+            VersionedReviewAction::Stop => {
+                matches!(
+                    locked_review.state,
+                    ReviewLifecycleState::Pending | ReviewLifecycleState::Running { .. }
+                ) && job.status.running()
+                    && job.work == locked_review.work_id
+            }
+            VersionedReviewAction::Resume { .. } => {
+                rearm_state_eligible(&locked_review.state, RearmKind::Resume)
+            }
+            VersionedReviewAction::TryAgain { .. } => {
+                rearm_state_eligible(&locked_review.state, RearmKind::TryAgain)
+            }
+        };
+        if !eligible {
+            tx.rollback().await?;
+            return Ok(VersionedReviewControl::InvalidState);
+        }
+
+        match receipt::record(
+            &tx,
+            &practice,
+            REVIEW_CONTROL_RECEIPT_ACTOR,
+            &receipt_key,
+            &receipt_envelope,
+        )
+        .await?
+        {
+            Receipt::New | Receipt::Same => {}
+            Receipt::Different => {
+                tx.rollback().await?;
+                return Ok(VersionedReviewControl::IdempotencyConflict);
+            }
+        }
+
+        match prepared_rearm {
+            None => {
+                match Self::stop_practice_job_in_tx(tx, &scope, &locked_review.work_id).await? {
+                    Stopped::Held | Stopped::Duplicate => {
+                        Ok(VersionedReviewControl::Accepted { delivery: None })
+                    }
+                    Stopped::Refused => Ok(VersionedReviewControl::InvalidState),
+                }
+            }
+            Some(prepared) => {
+                super::jobs::load_attempt_events_for_reviews(&tx, &scope, &mut job.attempts)
+                    .await?;
+                let delivery = Self::apply_rearm_in_tx(
+                    tx,
+                    &scope,
+                    job,
+                    clock,
+                    rev_row,
+                    &locked_review,
+                    prepared,
+                )
+                .await?;
+                Ok(VersionedReviewControl::Accepted {
+                    delivery: Some(delivery),
+                })
+            }
+        }
+    }
+
     async fn rearm_patient_review_internal(
         &self,
         target: PatientReviewTarget<'_>,
@@ -2223,7 +2541,7 @@ impl Store {
             .first()
             .cloned()
             .ok_or_else(|| error("corrupt patient review missing primary trigger"))?;
-        let (mut starting_context, observation) = self
+        let (starting_context, observation) = self
             .review_starting_context(
                 &practice,
                 &workspace,
@@ -2279,23 +2597,7 @@ impl Store {
             }
         }
 
-        let eligible = matches!(
-            (&locked_review.state, rearm_kind),
-            (
-                ReviewLifecycleState::Held {
-                    reason: ReviewHoldReason::Stopped,
-                    ..
-                },
-                RearmKind::Resume,
-            ) | (
-                ReviewLifecycleState::Held {
-                    reason: ReviewHoldReason::Limit,
-                    ..
-                } | ReviewLifecycleState::Failed { .. },
-                RearmKind::TryAgain,
-            )
-        );
-        if !eligible {
+        if !rearm_state_eligible(&locked_review.state, rearm_kind) {
             tx.rollback().await?;
             return Err(PatientReviewError::ControlRefused {
                 review_id,
@@ -2304,6 +2606,38 @@ impl Store {
             });
         }
 
+        Self::apply_rearm_in_tx(
+            tx,
+            &scope,
+            job,
+            clock,
+            rev_row,
+            &locked_review,
+            PreparedRearm {
+                starting_context,
+                observation,
+                roles,
+                skills,
+            },
+        )
+        .await
+    }
+
+    async fn apply_rearm_in_tx(
+        tx: sea_orm::DatabaseTransaction,
+        scope: &PracticeScope,
+        mut job: PracticeJob,
+        clock: i64,
+        rev_row: patient_review::Model,
+        locked_review: &SavedPatientReview,
+        prepared: PreparedRearm<'_>,
+    ) -> Result<Delivery, PatientReviewError> {
+        let PreparedRearm {
+            mut starting_context,
+            observation,
+            roles,
+            skills,
+        } = prepared;
         let primary_trigger = locked_review
             .triggers
             .first()
@@ -2329,8 +2663,7 @@ impl Store {
         .is_empty();
 
         let (binding, package) =
-            Self::refresh_job_binding_in_tx(&tx, &scope, &updated_assignment, roles, skills)
-                .await?;
+            Self::refresh_job_binding_in_tx(&tx, scope, &updated_assignment, roles, skills).await?;
         job.assignment = updated_assignment;
         job.binding = binding;
         job.skills = package;
@@ -2399,7 +2732,7 @@ impl Store {
         .update(&tx)
         .await?;
 
-        let delivery = Delivery::practice_job(&scope, job.assignment.key.clone());
+        let delivery = Delivery::practice_job(scope, job.assignment.key.clone());
         super::delivery::notify(&tx, &delivery).await?;
         Self::save_practice_job_in_tx(tx, &job).await?;
         Ok(delivery)

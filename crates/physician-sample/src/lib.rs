@@ -28,6 +28,7 @@ pub mod model;
 pub mod patients;
 pub mod rehearsal;
 mod reply;
+mod reviews;
 pub mod schedule;
 pub mod sources;
 pub mod synthetic_chart;
@@ -173,6 +174,18 @@ pub fn fixture_site_with_feed(feed: std::sync::Arc<SampleFeed>) -> Router {
         .route("/commands", post(reject_command))
         .route("/patient-workspaces/{id}/past-work", get(fixture_past_work))
         .route(
+            "/patient-workspaces/{id}/reviews",
+            get(reviews::list_fixture),
+        )
+        .route(
+            "/patient-workspaces/{id}/reviews/{review_id}",
+            get(reviews::get_fixture),
+        )
+        .route(
+            "/patient-workspaces/{id}/reviews/{review_id}/control",
+            post(reviews::control_fixture),
+        )
+        .route(
             "/patient-workspaces/{id}/chats/{chat}/snapshot",
             get(empty_snapshot),
         )
@@ -215,6 +228,18 @@ pub fn durable_site_with_feed(
             axum::routing::put(feedback::save),
         )
         .route("/patient-workspaces/{id}/past-work", get(live::past_work))
+        .route(
+            "/patient-workspaces/{id}/reviews",
+            get(reviews::list_durable),
+        )
+        .route(
+            "/patient-workspaces/{id}/reviews/{review_id}",
+            get(reviews::get_durable),
+        )
+        .route(
+            "/patient-workspaces/{id}/reviews/{review_id}/control",
+            post(reviews::control_durable),
+        )
         .route(
             "/patient-workspaces/{id}/chats/{chat}/snapshot",
             get(live::snapshot),
@@ -716,6 +741,14 @@ async fn site_from_env(
     base = base.layer(axum::Extension(source_registry));
     if let Some(ref store) = runtime {
         base = base.layer(axum::Extension(store.clone()));
+        if chat.is_none() {
+            base = base.layer(axum::Extension(reviews::StandaloneReviews::from_env(
+                &get,
+                store.clone(),
+                std::sync::Arc::clone(&bus),
+                hosted,
+            )));
+        }
     }
     if let Some(calendar) = schedule::SyntheticBankCalendar::from_env(&get) {
         let source: std::sync::Arc<dyn local_product::runtime::schedule::ScheduleSource> =

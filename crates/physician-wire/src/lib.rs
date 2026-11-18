@@ -9,6 +9,9 @@
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 
+pub mod reviews;
+pub use reviews::*;
+
 #[derive(Debug, Clone, Deserialize, PartialEq)]
 /// The `HealthResponse` value exchanged by this crate.
 pub struct HealthResponse {
