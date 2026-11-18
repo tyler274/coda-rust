@@ -58,6 +58,11 @@ impl Representation {
         }
     }
 
+    /// Returns the uncompressed identity payload bytes.
+    pub fn identity_bytes(&self) -> &[u8] {
+        &self.identity.bytes
+    }
+
     pub fn respond(
         &self,
         headers: &HeaderMap,

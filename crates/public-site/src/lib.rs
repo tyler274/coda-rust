@@ -7,6 +7,7 @@ pub mod access;
 pub mod assets;
 pub mod chrome;
 pub mod config;
+pub mod export;
 pub mod legal;
 pub mod pages;
 pub mod prerender;
@@ -17,6 +18,7 @@ pub mod runtime;
 pub mod server;
 pub mod site;
 
-pub use config::Config;
+pub use config::{Command, Config, ExportConfig};
+pub use export::{ExportError, ExportReport, export_site};
 pub use prerender::{Page, PageTable, prerender};
 pub use route::{PageMeta, Route};

@@ -1,5 +1,5 @@
 use public_site::{
-    Config, prerender,
+    Command, Config, export_site, prerender,
     runtime::RuntimeConfig,
     server::{Readiness, internal_probe_router, router_with_options},
 };
@@ -7,6 +7,14 @@ use std::time::Duration;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    match Command::from_args(std::env::args_os())? {
+        Command::Export(export) => {
+            export_site(&export)?;
+            return Ok(());
+        }
+        Command::Serve => {}
+    }
+
     let runtime = RuntimeConfig::from_env()?;
     let config = Config {
         physician_sign_in: runtime.physician_proxy.is_some(),

@@ -125,21 +125,31 @@ impl Route {
         ]
     }
 
-    /// The page's metadata. An archived version the records don't hold gets the
-    /// not-found page's.
+    /// The page's metadata against the default canonical origin (`/`).
     pub fn meta(&self, legal: &Legal) -> PageMeta {
+        self.meta_for(legal, &site::SiteOrigin::default(), &site::BasePath::root())
+    }
+
+    /// The page's metadata resolved against an explicit origin and base path.
+    /// An archived version the records don't hold gets the not-found page's.
+    pub fn meta_for(
+        &self,
+        legal: &Legal,
+        origin: &site::SiteOrigin,
+        base_path: &site::BasePath,
+    ) -> PageMeta {
         let (title, description) = match self {
             Self::Home {} => (site::HOME_TITLE.to_owned(), "Coda is a physician-directed AI care team that handles what happens between visits.".to_owned()),
             Self::Duet {} => ("Duet".into(), "Duet helps you bring your health information together, notice what matters, and prepare for conversations with your doctor.".into()),
             Self::DuetPrivacy {} => ("Duet Privacy Policy".into(), "How Duet handles the health information and sources you choose to connect.".into()),
             Self::DuetPrivacyArchive { version } => match legal.version(Archive::DuetPrivacy, version) {
                 Some(entry) => (format!("Duet Privacy Policy, last updated {}", entry.last_updated), "An earlier version of the Privacy Policy for Duet by Coda Health.".into()),
-                None => return Self::NotFound { segments: Vec::new() }.meta(legal),
+                None => return Self::NotFound { segments: Vec::new() }.meta_for(legal, origin, base_path),
             },
             Self::DuetTerms {} => ("Duet Terms of Service".into(), "Terms of Service for Duet, Coda Health's patient-facing iPhone app.".into()),
             Self::DuetTermsArchive { version } => match legal.version(Archive::DuetTerms, version).and_then(|entry| entry.version.as_deref()) {
                 Some(accepted) => (format!("Duet Terms of Service, version {accepted}"), format!("Version {accepted} of the Terms of Service for Duet by Coda Health.")),
-                None => return Self::NotFound { segments: Vec::new() }.meta(legal),
+                None => return Self::NotFound { segments: Vec::new() }.meta_for(legal, origin, base_path),
             },
             Self::ConsumerHealthData {} => ("Duet Consumer Health Data Privacy Policy".into(), "Consumer Health Data Privacy Policy for Duet by Coda Health, under Washington's My Health My Data Act.".into()),
             Self::Privacy {} => ("Privacy Policy".into(), "How Coda Health handles information through its website and related services.".into()),
@@ -158,13 +168,17 @@ impl Route {
             canonical_url: if matches!(self, Self::NotFound { .. }) {
                 String::new()
             } else {
-                site::absolute_url(&self.to_string())
+                origin.absolute_url(base_path, &self.to_string())
             },
             image_url: match self {
-                Self::Duet {} => site::absolute_url("/brand/duet/social-preview-v1.png"),
-                Self::Scheduling {} => site::absolute_url("/scheduling/dev/opengraph-image"),
+                Self::Duet {} => {
+                    origin.absolute_url(base_path, "/brand/duet/social-preview-v1.png")
+                }
+                Self::Scheduling {} => {
+                    origin.absolute_url(base_path, "/scheduling/dev/opengraph-image")
+                }
                 Self::NotFound { .. } => String::new(),
-                _ => site::absolute_url("/brand/coda-health-social-preview-v4.png"),
+                _ => origin.absolute_url(base_path, "/brand/coda-health-social-preview-v4.png"),
             },
             image_alt: match self {
                 Self::Duet {} => "Duet by Coda Health. A clearer picture of you.",

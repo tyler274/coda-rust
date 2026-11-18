@@ -6,6 +6,10 @@ import {tmpdir} from 'node:os';
 import {join} from 'node:path';
 import {setTimeout as delay} from 'node:timers/promises';
 const origin = process.argv[2];
+const rawBasePath = process.argv[3] || '';
+const basePath = rawBasePath === '/' ? '' : rawBasePath.replace(/\/+$/, '');
+const withBase = path => (path === '/' ? (basePath ? `${basePath}/` : '/') : `${basePath}${path}`);
+const shotPrefix = basePath ? `${basePath.replace(/^\//, '').replaceAll('/', '-')}-` : '';
 const profile = mkdtempSync(join(tmpdir(), 'public-site-browser-'));
 const env = {...process.env}; delete env.LD_LIBRARY_PATH;
 const child = spawn(process.env.CHROMIUM || 'chromium', ['--headless=new', '--no-sandbox', '--disable-gpu', '--remote-debugging-port=0', `--user-data-dir=${profile}`, 'about:blank'], {env, stdio: ['ignore', 'ignore', 'pipe']});
@@ -37,13 +41,15 @@ try {
   await call('Page.setLifecycleEventsEnabled',{enabled:true});
   const navigate = async path => {
     lifecycle.length=0;
-    const navigation = await call('Page.navigate',{url:origin+path});
+    const target = withBase(path);
+    const navigation = await call('Page.navigate',{url:origin+target});
     assert(!navigation.errorText, navigation.errorText);
     assert(navigation.loaderId, 'navigation must create a new document');
     // Events may precede the navigate reply. Buffer them and match the new loader,
     // never a readyState/content predicate that the previous document can satisfy.
     await until(() => lifecycle.some(event => event.loaderId === navigation.loaderId && event.frameId === navigation.frameId && event.name === 'load'));
-    assert.equal(await evaluate('location.pathname'),path);
+    const actualPath = await evaluate('location.pathname');
+    assert(actualPath === target || actualPath === `${target}/`, `expected ${target}, got ${actualPath}`);
   };
   const stages = "#heroStage, #memStage, .f-today, .f-brief, .f-ask, .f-follow, .t-src, .t-you, .duet-story";
   const snapshot = `JSON.stringify([...document.querySelectorAll(${JSON.stringify(stages)})].map(stage => stage.outerHTML))`;
@@ -95,7 +101,7 @@ try {
       await evaluate('scrollTo(0, 0)'); await until(`scrollY === 0 && !document.querySelector('nav.nav').classList.contains('scrolled')`);
     }
     const shot=await call('Page.captureScreenshot',{format:'png',captureBeyondViewport:false});
-    const path=join(screenshots,`${label}.png`); writeFileSync(path,Buffer.from(shot.data,'base64')); console.log(`Screenshot: ${path}`);
+    const path=join(screenshots,`${shotPrefix}${label}.png`); writeFileSync(path,Buffer.from(shot.data,'base64')); console.log(`Screenshot: ${path}`);
     assert.deepEqual(failures,[],`${label}: failed local assets`); assert.deepEqual(errors,[],`${label}: uncaught JavaScript errors`);
     await navigate('/duet');
     assert.equal(await evaluate(`document.body.innerText.includes('A clearer picture of you.')`),true);
@@ -110,6 +116,20 @@ try {
       assert.equal(await evaluate(lastFrame),true,`${label}: Duet story's last frame`);
     }
     assert.deepEqual(failures,[],`${label}: Duet failed local assets`); assert.deepEqual(errors,[],`${label}: Duet uncaught JavaScript errors`);
+    if (basePath && label === 'desktop') {
+      for (const extra of ['/clinical-transparency', '/duet/privacy', '/duet/privacy/2026-09-09', '/privacy', '/terms', '/scheduling/dev']) {
+        await navigate(extra);
+        assert.equal(await evaluate('document.readyState === "complete" && !!document.querySelector("h1")'), true, `${extra}: missing heading`);
+        assert.deepEqual(failures, [], `${extra}: failed local assets`);
+        assert.deepEqual(errors, [], `${extra}: uncaught JavaScript errors`);
+      }
+      if (process.env.PUBLIC_SITE_BOOK_TEST === '1') {
+        await navigate('/book/');
+        assert.equal(await evaluate('document.readyState === "complete" && document.body.innerText.includes("Coda Rust")'), true, 'book did not render');
+        assert.deepEqual(failures, [], '/book/: failed local assets');
+        assert.deepEqual(errors, [], '/book/: uncaught JavaScript errors');
+      }
+    }
     console.log(`${label}: content, assets, overflow, navigation and motion passed`);
   }
   await call('Emulation.setScriptExecutionDisabled',{value:false});

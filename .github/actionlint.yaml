@@ -1,9 +1,5 @@
-# Runner labels outside GitHub's hosted set. Blacksmith (ENG-76) registers
-# these through its GitHub App; cyrene-coda is the disposable Firecracker
-# runner on Cyrene. actionlint cannot know them on its own.
+# Runner labels outside GitHub's hosted set. cyrene-coda is the disposable
+# Firecracker runner on Cyrene. actionlint cannot know it on its own.
 self-hosted-runner:
   labels:
-    - blacksmith-2vcpu-ubuntu-2404
-    - blacksmith-4vcpu-ubuntu-2404
-    - blacksmith-8vcpu-ubuntu-2404
     - cyrene-coda
