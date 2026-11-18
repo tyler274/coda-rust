@@ -91,6 +91,8 @@ pub(super) mod conversation {
         pub revision: i64,
         pub session_hash: Option<Vec<u8>>,
         pub state: Json,
+        /// Database-clock seconds of the conversation's latest visible activity.
+        pub last_activity_at: i64,
     }
 
     #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]

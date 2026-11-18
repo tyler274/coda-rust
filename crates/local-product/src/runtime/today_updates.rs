@@ -1870,6 +1870,7 @@ impl Store {
                 .cloned()
                 .unwrap_or_else(|| workspace.clone());
 
+            let activity_at = state.latest_activity_at();
             out.push(TodayRow {
                 item_key: SeenItemKey(key_str),
                 version_id,
@@ -1877,8 +1878,8 @@ impl Store {
                 patient_display_name,
                 title,
                 detail,
-                waiting_since_unix: state.last_activity_at,
-                updated_at_unix: state.last_activity_at,
+                waiting_since_unix: activity_at,
+                updated_at_unix: activity_at,
                 seen_standing,
                 can_mark_done: false,
                 payload: TodayRowPayload::RunningWork {
