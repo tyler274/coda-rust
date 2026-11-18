@@ -1,0 +1,73 @@
+{
+  "branch": "tyler-eng-285-2-patient-reviews-execution",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC1-worker-and-lib",
+      "label": "physician-worker practice_job PostgreSQL tests",
+      "kind": "run",
+      "revision": "968315b63f620fd9f8f826aa9a781834ca98be8e",
+      "dirty": false,
+      "recorded": "2026-11-18T23:04:24+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "physician-sample",
+        "--bin",
+        "physician-worker",
+        "--",
+        "practice_job",
+        "--test-threads=1"
+      ],
+      "expect": "test result: ok\\. [1-9][0-9]* passed",
+      "expect_fail": false,
+      "files": [
+        "01-physician-worker-practice_job-PostgreSQL-tests.log"
+      ],
+      "seconds": 53.7,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true
+    },
+    {
+      "id": 2,
+      "claim": "AC2-lib-units",
+      "label": "local-product unit tests after patient reviews execution",
+      "kind": "run",
+      "revision": "968315b63f620fd9f8f826aa9a781834ca98be8e",
+      "dirty": false,
+      "recorded": "2026-11-18T23:05:18+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "local-product",
+        "--lib"
+      ],
+      "expect": "test result: ok\\. [1-9][0-9]* passed",
+      "expect_fail": false,
+      "files": [
+        "02-local-product-unit-tests-after-patient-reviews-e.log"
+      ],
+      "seconds": 35.0,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true
+    },
+    {
+      "id": 3,
+      "claim": "AC3-live-gcp",
+      "label": "",
+      "kind": "gap",
+      "revision": "968315b63f620fd9f8f826aa9a781834ca98be8e",
+      "dirty": false,
+      "recorded": "2026-11-18T23:05:53+00:00",
+      "reason": "Live Cloud Scheduler -> staging physician-worker Cloud Run execution requires GCP staging apply; verified by local PostgreSQL practice_job harness tests.",
+      "ok": false,
+      "files": []
+    }
+  ]
+}
