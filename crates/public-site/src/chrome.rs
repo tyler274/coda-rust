@@ -76,6 +76,7 @@ fn Footer() -> Element {
                     div {
                         span { class: "micro", "Coda Health" }
                         a { href: site::contact_mailto(), "{site::CONTACT_EMAIL}" }
+                        a { href: "/book/", "Architecture Book" }
                         a { href: "/privacy", "Privacy" }
                         a { href: "/terms", "Terms" }
                     }

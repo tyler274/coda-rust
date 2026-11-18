@@ -20,7 +20,7 @@ This repository owns the Coda toolchain, dev-container setup and repository hook
 ## Start
 
 ```sh
-git clone --recurse-submodules git@github.com:Coda-Health/coda-rust.git
+git clone --recurse-submodules https://github.com/tyler274/coda-rust.git
 cd coda-rust
 nix develop
 cargo test --workspace
@@ -123,6 +123,16 @@ The sandbox [README](crates/workspace-tools/sandbox/README.md#agent-sandbox-cred
 says which tokens to create and what the broker checks.
 
 ### Local CI checks
+
+For fast inner-loop checks scoped to modified workspace crates (formatting, Clippy with warnings denied, and targeted unit tests):
+
+```sh
+nix develop .#agent --command bash scripts/dev-check.sh
+# Or opt in to crate-scoped pre-commit checks on staged changes:
+CODA_FAST_PRECOMMIT=1 git commit -m "..."
+```
+
+The default `.githooks/pre-commit` gate runs full workspace formatting and Clippy (`host` + `wasm32`).
 
 From the repository's agent dev shell, install the small validation dependency
 into a virtual environment and run the same lightweight checks as CI:

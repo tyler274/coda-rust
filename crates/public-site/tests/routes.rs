@@ -170,6 +170,7 @@ async fn every_route_metadata_sitemap_and_retired_routes() {
     );
     for path in [
         "/physicians",
+        "/scheduling/dev",
         "/api/physician-waitlist",
         "/duet/privacy/unknown",
         "/duet/terms/unknown",
@@ -221,7 +222,6 @@ async fn urls_resolve_redirect_and_set_hsts() {
         "/privacy",
         "/terms",
         "/clinical-transparency",
-        "/scheduling/dev",
     ];
     let mut probes: Vec<(String, u16, Option<String>)> = Vec::new();
     for page in pages {
@@ -327,7 +327,7 @@ async fn real_scripts_are_content_addressed_and_immutable() {
         .clone()
         .oneshot(
             Request::builder()
-                .uri("/scheduling/dev/opengraph-image")
+                .uri("/brand/coda-health-social-preview-v4.png")
                 .body(Body::empty())
                 .unwrap(),
         )
@@ -337,8 +337,6 @@ async fn real_scripts_are_content_addressed_and_immutable() {
     assert_eq!(social.headers()["content-type"], "image/png");
     let png = to_bytes(social.into_body(), usize::MAX).await.unwrap();
     assert_eq!(&png[..8], b"\x89PNG\r\n\x1a\n");
-    assert_eq!(u32::from_be_bytes(png[16..20].try_into().unwrap()), 1200);
-    assert_eq!(u32::from_be_bytes(png[20..24].try_into().unwrap()), 630);
     for coding in ["br", "gzip"] {
         let response = app
             .clone()

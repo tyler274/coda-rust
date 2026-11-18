@@ -93,28 +93,10 @@ fn router_with_gate(
         ),
         noindex: page.meta.noindex,
     };
-    // Each location resolves its path against the origin, so the homepage is listed
-    // with its slash.
-    let sitemap = format!(
-        "<?xml version=\"1.0\" encoding=\"UTF-8\"?><urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">{}</urlset>",
-        crate::Route::sitemap()
-            .iter()
-            .map(|route| format!(
-                "<url><loc>{}</loc></url>",
-                xml_escape(&format!("{}{route}", crate::site::SITE_ORIGIN))
-            ))
-            .collect::<String>()
-    );
-    let origin = reqwest::Url::parse(crate::site::SITE_ORIGIN)
-        .expect("site origin")
-        .origin()
-        .ascii_serialization();
-    // Allow all, with host and sitemap.
-    let robots = if runtime.staging {
-        "User-agent: *\nDisallow: /\n".to_owned()
-    } else {
-        format!("User-Agent: *\nAllow: /\n\nHost: {origin}\nSitemap: {origin}/sitemap.xml\n")
-    };
+    let origin = crate::site::SiteOrigin::default();
+    let base_path = crate::site::BasePath::root();
+    let sitemap = crate::site::sitemap_xml(&origin, &base_path);
+    let robots = crate::site::robots_txt(&origin, &base_path, runtime.staging);
     let health = serde_json::to_vec(&serde_json::json!({"ok": true, "app": "coda-health-public", "env": runtime.environment, "release_sha": runtime.release_sha})).unwrap();
     let state = Arc::new(SiteState {
         pages: pages
@@ -150,15 +132,6 @@ fn router_with_gate(
         // Outermost middleware gates even health, assets, rejected methods and
         // body-limit failures, and forcibly removes every public cache policy.
         .layer(middleware::from_fn_with_state(state, boundary))
-}
-
-fn xml_escape(value: &str) -> String {
-    value
-        .replace('&', "&amp;")
-        .replace('<', "&lt;")
-        .replace('>', "&gt;")
-        .replace('"', "&quot;")
-        .replace('\'', "&apos;")
 }
 
 fn mount<S>(proxy: crate::proxy::Proxy) -> Router<S> {

@@ -29,7 +29,7 @@ permissions:
 jobs:
   scope:
     name: Select CI scope
-    runs-on: blacksmith-2vcpu-ubuntu-2404
+    runs-on: ubuntu-24.04
     permissions:
       contents: read
     outputs:
@@ -48,7 +48,7 @@ jobs:
 
   lightweight:
     name: Documentation and engineering skills
-    runs-on: blacksmith-2vcpu-ubuntu-2404
+    runs-on: ubuntu-24.04
     permissions:
       contents: read
     steps:
@@ -107,7 +107,7 @@ jobs:
     name: CI result
     if: always()
     needs: [scope, lightweight, ci, foundations, images, postgres, observability, cargo-deny, android-emulator, sandbox]
-    runs-on: blacksmith-2vcpu-ubuntu-2404
+    runs-on: ubuntu-24.04
     permissions:
       contents: read
       actions: read
@@ -152,14 +152,40 @@ jobs:
     name: Build, test and lint coda-sandbox
     needs: [scope, lightweight]
     if: needs.scope.outputs.sandbox == 'true'
-    runs-on: blacksmith-2vcpu-ubuntu-2404
+    runs-on: ubuntu-24.04
     permissions:
       contents: read
     steps:
       - uses: actions/checkout@v7
         with:
           persist-credentials: false
+      - name: Free runner disk
+        run: |
+          df -h /
+          avail_gib=$(( $(df -B1 --output=avail / | awk 'NR==2 { print $1 }') / 1073741824 ))
+          if [ "$avail_gib" -ge 40 ]; then
+            echo "${avail_gib} GiB free; skipping SDK removal"
+            exit 0
+          fi
+          sudo rm -rf \
+            /usr/share/dotnet \
+            /usr/local/lib/android \
+            /opt/ghc \
+            /opt/hostedtoolcache \
+            /usr/local/share/boost \
+            /usr/share/swift \
+            /usr/local/share/powershell \
+            /usr/local/.ghcup
+          if [ "${GITHUB_EVENT_NAME:-}" != workflow_dispatch ]; then
+            sudo rm -rf /usr/local/share/chromium
+          fi
+          sudo docker image prune --all --force || true
+          df -h
       - uses: cachix/install-nix-action@v31
+      - name: Magic Nix Cache
+        uses: DeterminateSystems/magic-nix-cache-action@v15
+        with:
+          use-flakehub: false
       # Every check but the VM tests (agent-sandbox, coda-firecracker).
       - name: Flake checks (build, cargo test, clippy, rustfmt, coda-carry)
         run: |
@@ -170,13 +196,10 @@ jobs:
   ci:
     needs: [scope, lightweight]
     if: needs.scope.outputs.full == 'true'
-    # Blacksmith runner (ENG-76) by default: same image as GitHub's
-    # ubuntu-24.04, and actions/cache talks to Blacksmith's colocated cache
-    # with no change. 4 vCPU because this job compiles the workspace;
-    # cargo-deny below stays on 2 vCPU. The repository variable CI_JOB_RUNNER
-    # overrides the label, for example `cyrene-coda` for the disposable
-    # Firecracker runner on Cyrene; deleting the variable returns here.
-    runs-on: ${{ vars.CI_JOB_RUNNER || 'blacksmith-4vcpu-ubuntu-2404' }}
+    # The repository variable CI_JOB_RUNNER overrides the label, for example
+    # `cyrene-coda` for the disposable Firecracker runner on Cyrene; deleting
+    # the variable returns to GitHub-hosted ubuntu-24.04.
+    runs-on: ${{ vars.CI_JOB_RUNNER || 'ubuntu-24.04' }}
     # The Duet, physician and front-door PostgreSQL proofs fail closed without
     # a disposable loopback server; they never skip (ENG-46). Each test creates
     # and drops its own database and role on this throwaway container.
@@ -255,8 +278,10 @@ jobs:
             /usr/local/share/boost \
             /usr/share/swift \
             /usr/local/share/powershell \
-            /usr/local/share/chromium \
             /usr/local/.ghcup
+          if [ "${GITHUB_EVENT_NAME:-}" != workflow_dispatch ]; then
+            sudo rm -rf /usr/local/share/chromium
+          fi
           sudo docker image prune --all --force || true
           df -h
       # Installs the rust-toolchain.toml pin, the same one Nix builds with, so
@@ -505,12 +530,36 @@ jobs:
     needs: [scope, lightweight]
     if: needs.scope.outputs.full == 'true'
     name: Offline cloud foundation contracts
-    runs-on: blacksmith-2vcpu-ubuntu-2404
+    runs-on: ubuntu-24.04
     permissions:
       contents: read
     steps:
       - uses: actions/checkout@v7
+      - name: Free runner disk
+        run: |
+          df -h /
+          avail_gib=$(( $(df -B1 --output=avail / | awk 'NR==2 { print $1 }') / 1073741824 ))
+          if [ "$avail_gib" -ge 40 ]; then
+            echo "${avail_gib} GiB free; skipping SDK removal"
+            exit 0
+          fi
+          sudo rm -rf \
+            /usr/share/dotnet \
+            /usr/local/lib/android \
+            /opt/ghc \
+            /opt/hostedtoolcache \
+            /usr/local/share/boost \
+            /usr/share/swift \
+            /usr/local/share/powershell \
+            /usr/local/share/chromium \
+            /usr/local/.ghcup
+          sudo docker image prune --all --force || true
+          df -h
       - uses: cachix/install-nix-action@v31
+      - name: Magic Nix Cache
+        uses: DeterminateSystems/magic-nix-cache-action@v15
+        with:
+          use-flakehub: false
       - name: Read private Nix cache
         uses: ./.github/actions/nix-cache
         with:
@@ -566,7 +615,7 @@ jobs:
     needs: [scope, lightweight]
     if: needs.scope.outputs.mobile == 'true'
     name: Android emulator
-    runs-on: blacksmith-4vcpu-ubuntu-2404
+    runs-on: ubuntu-24.04
     timeout-minutes: 60
     permissions:
       contents: read
@@ -641,9 +690,7 @@ jobs:
     needs: [scope, lightweight]
     if: needs.scope.outputs.full == 'true'
     name: Locked Nix images (build, run, migrate; no push)
-    # A dependency change rebuilds the Rust dependency derivations from
-    # source, which takes 15-40 min on 2 vCPU. Warm runs only fetch them.
-    runs-on: ${{ needs.scope.outputs.deps == 'true' && 'blacksmith-8vcpu-ubuntu-2404' || 'blacksmith-2vcpu-ubuntu-2404' }}
+    runs-on: ubuntu-24.04
     # Proofs stay out of the writer concurrency group: a pending job in that
     # group is cancelled by the next main push (run 42121621650).
     timeout-minutes: 90
@@ -654,8 +701,32 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v7
+      - name: Free runner disk
+        run: |
+          df -h /
+          avail_gib=$(( $(df -B1 --output=avail / | awk 'NR==2 { print $1 }') / 1073741824 ))
+          if [ "$avail_gib" -ge 40 ]; then
+            echo "${avail_gib} GiB free; skipping SDK removal"
+            exit 0
+          fi
+          sudo rm -rf \
+            /usr/share/dotnet \
+            /usr/local/lib/android \
+            /opt/ghc \
+            /opt/hostedtoolcache \
+            /usr/local/share/boost \
+            /usr/share/swift \
+            /usr/local/share/powershell \
+            /usr/local/share/chromium \
+            /usr/local/.ghcup
+          sudo docker image prune --all --force || true
+          df -h
       - name: Install Nix
         uses: cachix/install-nix-action@v31
+      - name: Magic Nix Cache
+        uses: DeterminateSystems/magic-nix-cache-action@v15
+        with:
+          use-flakehub: false
       - name: Read private Nix cache
         uses: ./.github/actions/nix-cache
         with:
@@ -746,7 +817,7 @@ jobs:
     needs: [scope, images]
     if: github.event_name == 'push' && github.ref == 'refs/heads/main' && vars.NIX_CACHE_ENABLED == 'true' && needs.images.result == 'success'
     name: Publish reusable Nix outputs
-    runs-on: ${{ needs.scope.outputs.deps == 'true' && 'blacksmith-8vcpu-ubuntu-2404' || 'blacksmith-2vcpu-ubuntu-2404' }}
+    runs-on: ubuntu-24.04
     # The write environment must restrict deployment branches to main. Its
     # signing key and writer credentials must never be repository-level secrets.
     environment: nix-cache-write
@@ -805,7 +876,7 @@ jobs:
     needs: [scope, lightweight]
     if: needs.scope.outputs.full == 'true'
     name: Fresh Postgres migrations and tests (shard ${{ matrix.shard }})
-    runs-on: blacksmith-2vcpu-ubuntu-2404
+    runs-on: ubuntu-24.04
     timeout-minutes: 30
     # check-postgres.sh splits its suites in two; together the shards run every
     # suite once. `result` needs postgres, which fails if either shard fails.
@@ -836,8 +907,32 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v7
+      - name: Free runner disk
+        run: |
+          df -h /
+          avail_gib=$(( $(df -B1 --output=avail / | awk 'NR==2 { print $1 }') / 1073741824 ))
+          if [ "$avail_gib" -ge 40 ]; then
+            echo "${avail_gib} GiB free; skipping SDK removal"
+            exit 0
+          fi
+          sudo rm -rf \
+            /usr/share/dotnet \
+            /usr/local/lib/android \
+            /opt/ghc \
+            /opt/hostedtoolcache \
+            /usr/local/share/boost \
+            /usr/share/swift \
+            /usr/local/share/powershell \
+            /usr/local/share/chromium \
+            /usr/local/.ghcup
+          sudo docker image prune --all --force || true
+          df -h
       - name: Install Nix
         uses: cachix/install-nix-action@v31
+      - name: Magic Nix Cache
+        uses: DeterminateSystems/magic-nix-cache-action@v15
+        with:
+          use-flakehub: false
       - name: Read private Nix cache
         uses: ./.github/actions/nix-cache
         with:
@@ -918,7 +1013,7 @@ jobs:
     # routine run skips; the implicit success() would treat that skip as a
     # failure, so the gate names `result` itself.
     if: "!cancelled() && needs.result.result == 'success' && needs.scope.outputs.full == 'true' && github.ref == 'refs/heads/main' && github.event_name == 'push' && vars.PUBLIC_SITE_STAGING_DEPLOY == 'enabled'"
-    runs-on: blacksmith-4vcpu-ubuntu-2404
+    runs-on: ubuntu-24.04
     timeout-minutes: 45
     concurrency:
       group: public-site-staging-release
@@ -1090,7 +1185,7 @@ jobs:
     # deployer service account, project and region (book/src/gcp.md).
     # Gated on `result` and `images` explicitly, as in deploy-public-site-staging.
     if: "!cancelled() && needs.result.result == 'success' && needs.images.result == 'success' && needs.scope.outputs.full == 'true' && github.ref == 'refs/heads/main' && github.event_name == 'push' && vars.RUST_STAGING_DEPLOY == 'enabled'"
-    runs-on: blacksmith-2vcpu-ubuntu-2404
+    runs-on: ubuntu-24.04
     timeout-minutes: 120
     concurrency:
       group: rust-staging-release
@@ -1184,7 +1279,7 @@ jobs:
     needs: [scope, lightweight]
     if: needs.scope.outputs.full == 'true'
     name: Collector config and observability OpenTofu
-    runs-on: blacksmith-2vcpu-ubuntu-2404
+    runs-on: ubuntu-24.04
     timeout-minutes: 20
     env:
       # Placeholders only; validate checks the config, never connects.
@@ -1199,8 +1294,32 @@ jobs:
         with:
           submodules: false
           persist-credentials: false
+      - name: Free runner disk
+        run: |
+          df -h /
+          avail_gib=$(( $(df -B1 --output=avail / | awk 'NR==2 { print $1 }') / 1073741824 ))
+          if [ "$avail_gib" -ge 40 ]; then
+            echo "${avail_gib} GiB free; skipping SDK removal"
+            exit 0
+          fi
+          sudo rm -rf \
+            /usr/share/dotnet \
+            /usr/local/lib/android \
+            /opt/ghc \
+            /opt/hostedtoolcache \
+            /usr/local/share/boost \
+            /usr/share/swift \
+            /usr/local/share/powershell \
+            /usr/local/share/chromium \
+            /usr/local/.ghcup
+          sudo docker image prune --all --force || true
+          df -h
       - name: Install Nix
         uses: cachix/install-nix-action@v31
+      - name: Magic Nix Cache
+        uses: DeterminateSystems/magic-nix-cache-action@v15
+        with:
+          use-flakehub: false
       - name: Read private Nix cache
         uses: ./.github/actions/nix-cache
         with:
@@ -1286,7 +1405,7 @@ jobs:
   cargo-deny:
     needs: [scope, lightweight]
     if: needs.scope.outputs.full == 'true'
-    runs-on: blacksmith-2vcpu-ubuntu-2404
+    runs-on: ubuntu-24.04
     steps:
       - name: Check out repository
         uses: actions/checkout@v7

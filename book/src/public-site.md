@@ -13,7 +13,7 @@ link. Staging sets it; production doesn't, so production offers no sign-in and
 
 The application design is Dioxus route components prerendered at startup, served
 by a stateless axum binary. The sitemap lists only current documents; archived
-versions stay reachable from their policy pages, and `/scheduling/dev` is noindex.
+versions stay reachable from their policy pages.
 `/physicians` and `/api/physician-waitlist` are 404.
 
 Startup builds the page/asset tables and their identity, gzip and Brotli
@@ -52,11 +52,15 @@ Every page shares `chrome.css`, which owns the tokens, type, page opening, cards
 and footer. Pages belong to one of two families (`Route::shell`) that differ in the
 stylesheets they load and the layout around their content. `/` and `/duet` add
 `site.css`, the motion script and the Duet story. Every other page, the legal
-documents, scheduling and not-found, adds `css/document.css`, a hand-written
+documents and not-found, adds `css/document.css`, a hand-written
 stylesheet with its own reset and named classes for those pages, and sits in the
-`.page` layout, which keeps the footer at the foot of a short page. The `/scheduling/dev`
-social image is a static PNG. A trailing slash is removed with a 308 that keeps the
+`.page` layout, which keeps the footer at the foot of a short page. A trailing slash is removed with a 308 that keeps the
 query.
+
+Static export mode (`public-site --export-dir <dir> --base-path <prefix> --origin <url>`)
+renders the same startup pages, `404.html`, `sitemap.xml`, `robots.txt`, `.nojekyll`,
+and hashed/raw assets to disk for subpath hosting such as GitHub Pages (with the
+architecture book built alongside under `/book/` by [`.github/workflows/pages.yml`](/.github/workflows/pages.yml)).
 
 Legal documents are data. Each current document is one record in
 `data/<document>.json` holding every word of it: heading, title, intro, date and
@@ -512,7 +516,7 @@ sign-in, and no protected content served from a cache, on both
 
 Production serves the image staging tested, without sign-in, at `codahealth.ai`
 and `www.codahealth.ai` from `coda-health-prod`. Operator applies and DNS changes
-need Dev's explicit authorization.
+require explicit operator authorization.
 
 - **State.** `backend/production.gcs.tfbackend` selects a dedicated state bucket,
   as staging has its own. The deployer has no access to the shared production state
@@ -533,8 +537,8 @@ need Dev's explicit authorization.
 `scripts/production-admin-bootstrap.sh` prepares what the root does not own: APIs,
 the state bucket, the private image repository, the keyless
 `public-site-prod-deployer` account, and a Workload Identity Federation provider
-accepting only `Coda-Health/coda-rust` on `refs/heads/main` in the `production`
-environment. An administrator of `coda-health-prod` runs it with Dev's authorization;
+accepting only `tyler274/coda-rust` on `refs/heads/main` in the `production`
+environment. An administrator of `coda-health-prod` runs it with explicit operator authorization;
 one step needs an administrator of `coda-health-staging`. `--print` shows every
 command without calling gcloud. It is safe to rerun, and a first apply is followed by
 a rerun for the bindings that need the service and runtime account to exist.
@@ -579,7 +583,7 @@ workflow with that commit's SHA.
 
 ### Rebuilding production
 
-Each step needs Dev's authorization at the time it runs.
+Each step requires explicit operator authorization at the time it runs.
 
 1. Run the [production admin bootstrap](#production-admin-bootstrap).
 2. Copy the staging-tested digest into the production repository as the workflow

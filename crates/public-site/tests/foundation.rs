@@ -47,8 +47,11 @@ fn every_enumerated_route_uses_real_router_ssr_and_shared_chrome() {
             assert!(html.contains(&version));
         }
     }
-    let scheduling = std::str::from_utf8(&table.pages["/scheduling/dev"].html).unwrap();
-    assert!(scheduling.contains("noindex, nofollow"));
+    assert!(
+        std::str::from_utf8(&table.not_found.html)
+            .unwrap()
+            .contains("noindex, nofollow")
+    );
     assert!(
         std::str::from_utf8(&table.not_found.html)
             .unwrap()

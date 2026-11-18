@@ -31,6 +31,9 @@ if [ "${CODA_DEV_SHELL:-}" != 1 ]; then
 fi
 
 cd "$root"
+if [ "${CODA_FAST_PRECOMMIT:-0}" = 1 ]; then
+  exec bash scripts/dev-check.sh --pre-commit
+fi
 cargo fmt --all --check
 cargo clippy --workspace --all-targets --quiet -- -D warnings
 cargo clippy -p physician-app -p duet-app -p mobile -p ui-gallery --target wasm32-unknown-unknown \

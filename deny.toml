@@ -71,6 +71,7 @@ ignore = [
     # (fontdb) and oxifont-parser pin the same crate. Replace with skrifa when
     # those move (ENG-46).
     { id = "RUSTSEC-2026-0192", reason = "ttf-parser is unmaintained; parses only bundled fonts in duet-page, also via fontdb/oxifont-parser (ENG-46)" },
+    { id = "RUSTSEC-2026-0543", reason = "chrono v0.4.45 is unmaintained with no safe upgrade; required by sea-orm/sqlx and workspace crates until migrated to jiff/time" },
 ]
 
 [sources]

@@ -1,0 +1,97 @@
+name: Deploy public site and book to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Build static site and documentation book
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+        with:
+          submodules: false
+          persist-credentials: false
+      - name: Configure GitHub Pages
+        id: pages
+        uses: actions/configure-pages@v5
+      - name: Install Rust
+        run: rustup toolchain install
+      - name: Rustc version
+        id: rustc
+        run: |
+          version="$(rustc -vV | awk '/^release:/{r=$2} /^commit-hash:/{c=$2} END{print r "-" substr(c,1,12)}')"
+          echo "version=${version}" >> "$GITHUB_OUTPUT"
+      - name: Restore Rust build cache
+        continue-on-error: true
+        uses: actions/cache/restore@v6
+        with:
+          path: |
+            ~/.cargo/registry/index
+            ~/.cargo/registry/cache
+            ~/.cargo/git/db
+            target
+          key: rust-v2-${{ runner.os }}-${{ steps.rustc.outputs.version }}-${{ hashFiles('Cargo.lock') }}
+          restore-keys: |
+            rust-v2-${{ runner.os }}-${{ steps.rustc.outputs.version }}-
+            rust-v2-${{ runner.os }}-
+      - name: Download mdBook
+        uses: ./.github/actions/release-archive
+        with:
+          repo: rust-lang/mdBook
+          tag: v0.4.52
+          asset: mdbook-v0.4.52-x86_64-unknown-linux-gnu.tar.gz
+          sha256: c0b903f01dd8f4edc644372ad2b80b1fdddd12552d37b6a098657cbd8eddd768
+      - name: Install mdBook
+        run: |
+          tar -xzf /tmp/mdbook-v0.4.52-x86_64-unknown-linux-gnu.tar.gz -C /tmp
+          install -m 755 /tmp/mdbook "${CARGO_HOME:-$HOME/.cargo}/bin/mdbook"
+          mdbook --version
+      - name: Export public-site and book
+        env:
+          BASE_PATH: ${{ steps.pages.outputs.base_path }}
+          BASE_URL: ${{ steps.pages.outputs.base_url }}
+        run: |
+          base_path="${BASE_PATH:-/}"
+          origin="${BASE_URL:-https://codahealth.ai}"
+          book_url="/book/"
+          if [ "$base_path" != "/" ]; then
+            book_url="${base_path}/book/"
+          fi
+          rm -rf _site
+          cargo run --locked -p public-site --bin public-site -- \
+            --export-dir _site \
+            --base-path "$base_path" \
+            --origin "$origin"
+          MDBOOK_OUTPUT__HTML__SITE_URL="$book_url" \
+            mdbook build book -d "$PWD/_site/book"
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    name: Deploy to GitHub Pages
+    needs: build
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

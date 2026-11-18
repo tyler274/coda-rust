@@ -26,17 +26,37 @@ pub struct PageTable {
 /// All Dioxus work happens here, before accepting any HTTP requests. The legal records
 /// load first, so a malformed one stops startup before anything renders.
 pub fn prerender(config: &Config) -> Result<PageTable, LegalError> {
+    prerender_with_target(
+        config,
+        &site::SiteOrigin::default(),
+        &site::BasePath::root(),
+    )
+}
+
+/// Renders all pages resolved against an explicit origin and base path.
+pub fn prerender_with_target(
+    config: &Config,
+    origin: &site::SiteOrigin,
+    base_path: &site::BasePath,
+) -> Result<PageTable, LegalError> {
     let legal = Rc::new(Legal::load()?);
     let pages = Route::pages(&legal)
         .into_iter()
-        .map(|route| (route.to_string(), render_page(&route, config, &legal)))
+        .map(|route| {
+            (
+                route.to_string(),
+                render_page_with_target(&route, config, &legal, origin, base_path),
+            )
+        })
         .collect();
-    let not_found = render_page(
+    let not_found = render_page_with_target(
         &Route::NotFound {
             segments: vec!["404".into()],
         },
         config,
         &legal,
+        origin,
+        base_path,
     );
     Ok(PageTable { pages, not_found })
 }
@@ -44,7 +64,24 @@ pub fn prerender(config: &Config) -> Result<PageTable, LegalError> {
 /// Render with an explicit per-document memory history, so Router/Outlet select
 /// the requested route rather than silently falling back to the homepage.
 pub fn render_page(route: &Route, config: &Config, legal: &Rc<Legal>) -> Page {
-    let meta = route.meta(legal);
+    render_page_with_target(
+        route,
+        config,
+        legal,
+        &site::SiteOrigin::default(),
+        &site::BasePath::root(),
+    )
+}
+
+/// Variant of [`render_page`] resolving metadata against an explicit origin and base path.
+pub fn render_page_with_target(
+    route: &Route,
+    config: &Config,
+    legal: &Rc<Legal>,
+    origin: &site::SiteOrigin,
+    base_path: &site::BasePath,
+) -> Page {
+    let meta = route.meta_for(legal, origin, base_path);
     let mut dom = VirtualDom::new_with_props(
         Document,
         DocumentProps {

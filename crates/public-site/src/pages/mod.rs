@@ -5,7 +5,6 @@ mod home;
 mod legal;
 mod not_found;
 mod phones;
-mod scheduling;
 
 pub use duet::Duet;
 pub use home::Home;
@@ -14,7 +13,6 @@ pub use legal::{
     DuetTermsArchive, Privacy, Terms,
 };
 pub use not_found::NotFound;
-pub use scheduling::Scheduling;
 
 #[cfg(test)]
 mod tests {
