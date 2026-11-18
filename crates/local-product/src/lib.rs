@@ -11,6 +11,8 @@
 use sha2::{Digest, Sha256};
 
 pub mod chatgpt;
+/// Clinical library search and exact passage read tools for physician chat.
+pub mod clinical_library;
 /// Hosted physician chat instructions and the `skill_view` tool.
 pub mod physician_chat;
 /// Shared source record format, adapter mappings, and chart-reading tools.
