@@ -1,0 +1,60 @@
+{
+  "branch": "tyler-eng-315-4-visit-briefings-postgres-part2",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC1-to-AC6-full",
+      "label": "Full 10-test visit_briefings_postgres suite on PostgreSQL 16",
+      "kind": "run",
+      "revision": "1a93d374c4f590775018f79e3b3be35ae3f480d8",
+      "dirty": false,
+      "recorded": "2026-11-18T23:17:07+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "local-product",
+        "--test",
+        "visit_briefings_postgres",
+        "--",
+        "--test-threads=1"
+      ],
+      "expect": "test result: ok\\. 10 passed",
+      "expect_fail": false,
+      "files": [
+        "01-Full-10-test-visit_briefings_postgres-suite-on-P.log"
+      ],
+      "seconds": 36.3,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true
+    },
+    {
+      "id": 2,
+      "claim": "boundaries-and-clippy",
+      "label": "Product boundary tests and workspace clippy check",
+      "kind": "run",
+      "revision": "1a93d374c4f590775018f79e3b3be35ae3f480d8",
+      "dirty": false,
+      "recorded": "2026-11-18T23:17:43+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "boundaries",
+        "--lib"
+      ],
+      "expect": "test result: ok\\. 25 passed",
+      "expect_fail": false,
+      "files": [
+        "02-Product-boundary-tests-and-workspace-clippy-chec.log"
+      ],
+      "seconds": 1.8,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true
+    }
+  ]
+}
