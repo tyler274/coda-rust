@@ -1,0 +1,61 @@
+{
+  "branch": "tyler-eng-285-1-patient-reviews-store",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC1-migration",
+      "label": "PostgreSQL migration lockstep test for m20261118_06_patient_reviews",
+      "kind": "run",
+      "revision": "8ff87203bd4ecf823f8409aad31d50505e98bf16",
+      "dirty": false,
+      "recorded": "2026-11-18T23:00:13+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "local-product",
+        "--lib",
+        "runtime::tests::migration",
+        "--",
+        "--ignored",
+        "--test-threads=1"
+      ],
+      "expect": "test result: ok\\. [1-9][0-9]* passed",
+      "expect_fail": false,
+      "files": [
+        "01-PostgreSQL-migration-lockstep-test-for-m20261118.log"
+      ],
+      "seconds": 32.8,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true
+    },
+    {
+      "id": 2,
+      "claim": "AC2-lib",
+      "label": "local-product unit tests after patient reviews store",
+      "kind": "run",
+      "revision": "8ff87203bd4ecf823f8409aad31d50505e98bf16",
+      "dirty": false,
+      "recorded": "2026-11-18T23:00:46+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "local-product",
+        "--lib"
+      ],
+      "expect": "test result: ok\\. [1-9][0-9]* passed",
+      "expect_fail": false,
+      "files": [
+        "02-local-product-unit-tests-after-patient-reviews-s.log"
+      ],
+      "seconds": 2.5,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true
+    }
+  ]
+}
