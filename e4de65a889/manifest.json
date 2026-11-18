@@ -1,0 +1,85 @@
+{
+  "branch": "tyler-eng-361-1-practice-jobs-runtime",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC1",
+      "label": "Practice-scoped background job recipes, Job::PracticeBackground skills, and tool gating",
+      "kind": "run",
+      "revision": "e4de65a889482ae0d6039ab04e88bed921b50c4a",
+      "dirty": false,
+      "recorded": "2026-11-18T20:33:11+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "local-product",
+        "--lib",
+        "jobs"
+      ],
+      "expect": "[1-9][0-9]* passed; 0 failed",
+      "expect_fail": false,
+      "files": [
+        "01-Practice-scoped-background-job-recipes-Job-Pract.log"
+      ],
+      "seconds": 30.3,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true
+    },
+    {
+      "id": 2,
+      "claim": "AC2",
+      "label": "PostgreSQL practice_jobs and patient_dispatch schema migration verification",
+      "kind": "run",
+      "revision": "e4de65a889482ae0d6039ab04e88bed921b50c4a",
+      "dirty": false,
+      "recorded": "2026-11-18T20:33:41+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "local-product",
+        "--lib",
+        "runtime::tests::migration",
+        "--",
+        "--include-ignored"
+      ],
+      "expect": "[1-9][0-9]* passed; 0 failed",
+      "expect_fail": false,
+      "files": [
+        "02-PostgreSQL-practice_jobs-and-patient_dispatch-sc.log"
+      ],
+      "seconds": 2.5,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true
+    },
+    {
+      "id": 3,
+      "claim": "AC3",
+      "label": "Physician-only boundary and clean model-text audit",
+      "kind": "run",
+      "revision": "e4de65a889482ae0d6039ab04e88bed921b50c4a",
+      "dirty": false,
+      "recorded": "2026-11-18T20:33:44+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "local-product",
+        "--lib",
+        "physician_chat::tests"
+      ],
+      "expect": "[1-9][0-9]* passed; 0 failed",
+      "expect_fail": false,
+      "files": [
+        "03-Physician-only-boundary-and-clean-model-text-aud.log"
+      ],
+      "seconds": 2.4,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true
+    }
+  ]
+}
