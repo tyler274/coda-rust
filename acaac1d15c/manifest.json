@@ -1,0 +1,87 @@
+{
+  "branch": "tyler-eng-314-2-schedule-sync-and-suites",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC1",
+      "label": "Synthetic bank calendar FHIR parsing and multi-patient issue reporting tests",
+      "kind": "run",
+      "revision": "acaac1d15c1eeded32e6dd08e3dfd344b06eef97",
+      "dirty": false,
+      "recorded": "2026-11-18T22:06:17+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-sample",
+        "--lib",
+        "schedule"
+      ],
+      "expect": "\\b3 passed\\b",
+      "expect_fail": false,
+      "files": [
+        "01-Synthetic-bank-calendar-FHIR-parsing-and-multi-p.log"
+      ],
+      "seconds": 51.6,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true
+    },
+    {
+      "id": 2,
+      "claim": "AC2",
+      "label": "PostgreSQL practice schedule store, link seeding, and advisory error suite",
+      "kind": "run",
+      "revision": "acaac1d15c1eeded32e6dd08e3dfd344b06eef97",
+      "dirty": false,
+      "recorded": "2026-11-18T22:07:08+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "local-product",
+        "--test",
+        "practice_schedule_postgres",
+        "--",
+        "--test-threads=1"
+      ],
+      "expect": "\\b5 passed\\b",
+      "expect_fail": false,
+      "files": [
+        "02-PostgreSQL-practice-schedule-store-link-seeding-.log"
+      ],
+      "seconds": 26.7,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true
+    },
+    {
+      "id": 3,
+      "claim": "AC3",
+      "label": "Sample practice schedule route, patient resolution, and authorization suite",
+      "kind": "run",
+      "revision": "acaac1d15c1eeded32e6dd08e3dfd344b06eef97",
+      "dirty": false,
+      "recorded": "2026-11-18T22:07:35+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-sample",
+        "--test",
+        "practice_schedule",
+        "--",
+        "--test-threads=1"
+      ],
+      "expect": "\\b2 passed\\b",
+      "expect_fail": false,
+      "files": [
+        "03-Sample-practice-schedule-route-patient-resolutio.log"
+      ],
+      "seconds": 32.9,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true
+    }
+  ]
+}
