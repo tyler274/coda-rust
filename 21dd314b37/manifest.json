@@ -1,0 +1,60 @@
+{
+  "branch": "tyler-eng-254-2-physician-chat-host-wiring",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC1",
+      "label": "Physician chat recipe catalog, skill preloading, and model-text audit",
+      "kind": "run",
+      "revision": "21dd314b379d9ae40f6f567f124f1df292121fb4",
+      "dirty": false,
+      "recorded": "2026-11-18T22:08:45+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "local-product",
+        "--lib",
+        "physician_chat::tests"
+      ],
+      "expect": "\\b12 passed\\b",
+      "expect_fail": false,
+      "files": [
+        "01-Physician-chat-recipe-catalog-skill-preloading-a.log"
+      ],
+      "seconds": 33.7,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true
+    },
+    {
+      "id": 2,
+      "claim": "AC2",
+      "label": "Wired PhysicianHost initial chat recipe, panel gating, and evidence limit PostgreSQL tests",
+      "kind": "run",
+      "revision": "21dd314b379d9ae40f6f567f124f1df292121fb4",
+      "dirty": false,
+      "recorded": "2026-11-18T22:09:19+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "local-product",
+        "--test",
+        "physician_chat_recipe",
+        "--",
+        "--ignored",
+        "--test-threads=1"
+      ],
+      "expect": "\\b3 passed\\b",
+      "expect_fail": false,
+      "files": [
+        "02-Wired-PhysicianHost-initial-chat-recipe-panel-ga.log"
+      ],
+      "seconds": 32.8,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true
+    }
+  ]
+}
