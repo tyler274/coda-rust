@@ -1,0 +1,176 @@
+{
+  "branch": "tyler-eng-438-collapsed-orb-now-banner",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC1",
+      "label": "Shared ui::Orb, ui-gallery export coverage (CI Fix #1), physician-demo-db, and physician-app suites",
+      "kind": "run",
+      "revision": "0bfe7adbc310fe23a42b9b780e0390b3eb31d0c6",
+      "dirty": false,
+      "recorded": "2026-11-18T20:45:01+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "ui",
+        "-p",
+        "ui-gallery",
+        "-p",
+        "physician-demo-db",
+        "-p",
+        "physician-app"
+      ],
+      "expect": "[1-9][0-9]* passed; 0 failed",
+      "expect_fail": false,
+      "files": [
+        "01-Shared-ui-Orb-ui-gallery-export-coverage-CI-Fix-.log"
+      ],
+      "seconds": 20.4,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true
+    },
+    {
+      "id": 2,
+      "claim": "AC2",
+      "label": "Chromium collapsed Orb, reduced-motion, Updates preview, and cross-page Now banner",
+      "kind": "run",
+      "revision": "0bfe7adbc310fe23a42b9b780e0390b3eb31d0c6",
+      "dirty": false,
+      "recorded": "2026-11-18T20:45:21+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-sample",
+        "--test",
+        "site",
+        "collapsed_orb_and_persistent_now_banner_across_pages_and_motion_modes",
+        "--",
+        "--ignored"
+      ],
+      "expect": "[1-9][0-9]* passed; 0 failed",
+      "expect_fail": false,
+      "files": [
+        "02-Chromium-collapsed-Orb-reduced-motion-Updates-pr.log"
+      ],
+      "seconds": 90.3,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true
+    },
+    {
+      "id": 3,
+      "claim": "AC2",
+      "label": "Persistent Now banner on Today (desktop)",
+      "kind": "screenshot",
+      "revision": "0bfe7adbc310fe23a42b9b780e0390b3eb31d0c6",
+      "dirty": false,
+      "recorded": "2026-11-18T20:46:52+00:00",
+      "files": [
+        "03-now-banner-today-desktop.png"
+      ],
+      "source": "/tmp/pr11-shots-3303407/now-banner-today-desktop.png",
+      "ok": true
+    },
+    {
+      "id": 4,
+      "claim": "AC2",
+      "label": "Persistent Now banner on Today (phone <900px)",
+      "kind": "screenshot",
+      "revision": "0bfe7adbc310fe23a42b9b780e0390b3eb31d0c6",
+      "dirty": false,
+      "recorded": "2026-11-18T20:46:52+00:00",
+      "files": [
+        "04-now-banner-today-phone.png"
+      ],
+      "source": "/tmp/pr11-shots-3303407/now-banner-today-phone.png",
+      "ok": true
+    },
+    {
+      "id": 5,
+      "claim": "AC2",
+      "label": "Persistent cross-page Now banner while viewing another patient",
+      "kind": "screenshot",
+      "revision": "0bfe7adbc310fe23a42b9b780e0390b3eb31d0c6",
+      "dirty": false,
+      "recorded": "2026-11-18T20:46:52+00:00",
+      "files": [
+        "05-now-banner-other-patient.png"
+      ],
+      "source": "/tmp/pr11-shots-3303407/now-banner-other-patient.png",
+      "ok": true
+    },
+    {
+      "id": 6,
+      "claim": "AC2",
+      "label": "Collapsed Orb with urgent Now concern banner",
+      "kind": "screenshot",
+      "revision": "0bfe7adbc310fe23a42b9b780e0390b3eb31d0c6",
+      "dirty": false,
+      "recorded": "2026-11-18T20:46:52+00:00",
+      "files": [
+        "06-orb-collapsed-with-now.png"
+      ],
+      "source": "/tmp/pr11-shots-3303407/orb-collapsed-with-now.png",
+      "ok": true
+    },
+    {
+      "id": 7,
+      "claim": "AC2",
+      "label": "Collapsed Orb honoring prefers-reduced-motion",
+      "kind": "screenshot",
+      "revision": "0bfe7adbc310fe23a42b9b780e0390b3eb31d0c6",
+      "dirty": false,
+      "recorded": "2026-11-18T20:46:52+00:00",
+      "files": [
+        "07-orb-reduced-motion.png"
+      ],
+      "source": "/tmp/pr11-shots-3303407/orb-reduced-motion.png",
+      "ok": true
+    },
+    {
+      "id": 8,
+      "claim": "AC2",
+      "label": "Collapsed Orb hover/focus Updates preview (desktop)",
+      "kind": "screenshot",
+      "revision": "0bfe7adbc310fe23a42b9b780e0390b3eb31d0c6",
+      "dirty": false,
+      "recorded": "2026-11-18T20:46:52+00:00",
+      "files": [
+        "08-orb-updates-preview-desktop.png"
+      ],
+      "source": "/tmp/pr11-shots-3303407/orb-updates-preview-desktop.png",
+      "ok": true
+    },
+    {
+      "id": 9,
+      "claim": "AC2",
+      "label": "Collapsed Orb Updates preview (phone <900px)",
+      "kind": "screenshot",
+      "revision": "0bfe7adbc310fe23a42b9b780e0390b3eb31d0c6",
+      "dirty": false,
+      "recorded": "2026-11-18T20:46:52+00:00",
+      "files": [
+        "09-orb-updates-preview-phone.png"
+      ],
+      "source": "/tmp/pr11-shots-3303407/orb-updates-preview-phone.png",
+      "ok": true
+    },
+    {
+      "id": 10,
+      "claim": "AC2",
+      "label": "Now banner cleared after opening concern once",
+      "kind": "screenshot",
+      "revision": "0bfe7adbc310fe23a42b9b780e0390b3eb31d0c6",
+      "dirty": false,
+      "recorded": "2026-11-18T20:46:53+00:00",
+      "files": [
+        "10-now-banner-cleared-after-open.png"
+      ],
+      "source": "/tmp/pr11-shots-3303407/now-banner-cleared-after-open.png",
+      "ok": true
+    }
+  ]
+}
