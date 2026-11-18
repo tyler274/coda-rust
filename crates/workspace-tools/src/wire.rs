@@ -161,11 +161,6 @@ pub fn post_edit(out: &Path) -> Result<(), Failure> {
             format!("could not read {}: {error}", cargo_path.display()),
         )
     })?;
-    let cargo = replace_prefix(
-        &cargo,
-        "license = \"Unlicense\"",
-        "license = \"UNLICENSED\"",
-    );
     let cargo = replace_prefix(&cargo, "edition = \"2021\"", "edition = \"2024\"");
     fs::write(&cargo_path, cargo).map_err(|error| {
         Failure::new(
@@ -427,9 +422,8 @@ mod tests {
         post_edit(&out).unwrap();
 
         let cargo = fs::read_to_string(out.join("Cargo.toml")).unwrap();
-        assert!(cargo.contains("license = \"UNLICENSED\""));
+        assert!(cargo.contains("license = \"Unlicense\""));
         assert!(cargo.contains("edition = \"2024\""));
-        assert!(!cargo.contains("Unlicense"));
         assert!(!cargo.contains("edition = \"2021\""));
 
         let models = fs::read_to_string(out.join("src/models/mod.rs")).unwrap();
