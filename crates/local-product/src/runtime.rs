@@ -79,7 +79,6 @@ pub use transcript::TranscriptError;
 /// Working notes derived from the authorized product record.
 pub mod working_notes;
 use crate::physician_sources::citations::{self, Finished};
-use crate::physician_sources::{ChartRequest, ChartScope, Labels, READ_TOOL, SEARCH_TOOL};
 use entities::conversation;
 use memory::tools::MemoryTool;
 
@@ -2135,14 +2134,18 @@ impl Store {
     /// Runs one chart search or read for `workspace` against its current
     /// chart. A request the model can correct comes back refused. A job
     /// whose reads carry labels gives its work's `labels`.
-    async fn chart_tool(
+    pub(super) async fn chart_tool(
         &self,
         workspace: &str,
         name: &str,
         arguments: &Value,
-        labels: Option<&Labels>,
+        labels: Option<&crate::physician_sources::Labels>,
     ) -> Result<ToolOutcome, engine::ProductError> {
-        let chart = match ChartRequest::parse(name, arguments, ChartScope::Chat) {
+        let chart = match crate::physician_sources::ChartRequest::parse(
+            name,
+            arguments,
+            crate::physician_sources::ChartScope::Chat,
+        ) {
             Ok(chart) => chart,
             Err(reason) => return Ok(ToolOutcome::refused(reason.to_string())),
         };
@@ -2195,7 +2198,7 @@ impl<A: Authority, S: ShownStepSaved> Product for PhysicianHost<A, S> {
                 .map_err(Into::into)
         })
     }
-    /// A started memory note or source-refresh call's saved result, for the
+    /// A started memory note's or durable chat tool's saved result, for the
     /// work the claim's attempt runs. The harness checks the work is current
     /// before it asks.
     fn saved_outcome(
@@ -2206,16 +2209,15 @@ impl<A: Authority, S: ShownStepSaved> Product for PhysicianHost<A, S> {
         let claim = self.claim.clone();
         let call = call.clone();
         Box::pin(async move {
-            if refresh::is_refresh_tool(&call.name) {
-                store.assert_current(&claim).await?;
-                let (state, _) = store.work_snapshot(&claim.scope).await?;
-                return store
-                    .saved_physician_refresh_outcome(&claim.scope, &state.work, &call)
-                    .await;
+            store.assert_current(&claim).await?;
+            if MemoryTool::named(&call.name).is_some() {
+                let state = store.conversation(&claim.scope).await?;
+                let origin = state.note_origin(&claim.attempt, &call.id)?;
+                return Ok(
+                    memory::tools::saved_outcome(&store, &claim.scope, &origin.work, &call).await?,
+                );
             }
-            let state = store.conversation(&claim.scope).await?;
-            let origin = state.note_origin(&claim.attempt, &call.id)?;
-            Ok(memory::tools::saved_outcome(&store, &claim.scope, &origin.work, &call).await?)
+            store.saved_chat_tool_outcome(&claim, &call).await
         })
     }
     async fn assert_current(&mut self) -> Result<(), engine::ProductError> {
@@ -2306,36 +2308,9 @@ impl<A: Authority, S: ShownStepSaved> Product for PhysicianHost<A, S> {
                 };
                 return Ok(ToolOutcome::History(page));
             }
-            if matches!(call.name.as_str(), SEARCH_TOOL | READ_TOOL) {
-                // A chat's reads carry the work's labels.
-                let labels = Labels::of_work(&records);
-                return store
-                    .chart_tool(
-                        &claim.scope.workspace,
-                        &call.name,
-                        &arguments,
-                        Some(&labels),
-                    )
-                    .await;
-            }
-            if refresh::is_refresh_tool(&call.name) {
-                let refresh_call = Invocation {
-                    id: call.id.clone(),
-                    name: call.name.clone(),
-                    arguments,
-                };
-                return store
-                    .execute_claimed_physician_refresh_tool(&claim, &state.work, &refresh_call)
-                    .await;
-            }
-            if crate::clinical_library::is_library_tool(&call.name) {
-                return Ok(store
-                    .clinical_library()
-                    .execute(&call.name, &arguments)
-                    .await);
-            }
-            let skills = store.frozen_skills(&claim.scope, &state.skills).await?;
-            Ok(skills.execute(&call.name, &arguments))
+            store
+                .execute_chat_tool(&claim, &state, &records, &call, arguments)
+                .await
         })
     }
     async fn finish(&mut self, turn: &Turn) -> Result<Finish, engine::ProductError> {
@@ -2361,13 +2336,18 @@ impl<A: Authority, S: ShownStepSaved> Product for PhysicianHost<A, S> {
         self.assert_current().await?;
         let state = self.store.conversation(&self.claim.scope).await?;
         let start = current_work_start(&state)?;
+        let starting_context = self
+            .store
+            .patient_starting_context(&self.claim.scope)
+            .await
+            .map_err(persistence_failure)?;
         let seed = self
             .store
             .chat_memory(&self.claim.scope, &state)
             .await?
             .first(
-                earlier_messages(start)
-                    .into_iter()
+                std::iter::once(starting_context.developer_item())
+                    .chain(earlier_messages(start))
                     .chain(state.messages[start..].iter().flat_map(Message::items)),
             );
         let note_references =
@@ -2408,6 +2388,11 @@ impl<A: Authority, S: ShownStepSaved> PhysicianHost<A, S> {
             .await
             .map_err(|cause| engine::Failure::Host(cause.into()))?
             .request(Vec::new());
+        let starting_context = self
+            .store
+            .patient_starting_context(&self.claim.scope)
+            .await
+            .map_err(|cause| engine::Failure::from(persistence_failure(cause)))?;
         let messages = state.messages.as_slice();
         let mut earlier = Vec::new();
         let mut pending: Vec<engine::AcceptedInput> = Vec::new();
@@ -2415,9 +2400,14 @@ impl<A: Authority, S: ShownStepSaved> PhysicianHost<A, S> {
             if let MessageRole::User { id, work, .. } = &message.role
                 && work == &state.work
             {
+                let items = if pending.is_empty() {
+                    vec![starting_context.developer_item()]
+                } else {
+                    Vec::new()
+                };
                 pending.push(engine::AcceptedInput {
                     id: id.clone(),
-                    items: Vec::new(),
+                    items,
                 });
             }
             let target = match pending.last_mut() {
