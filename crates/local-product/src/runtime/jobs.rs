@@ -296,7 +296,7 @@ impl Assignment {
         )
     }
 
-    fn message(&self) -> engine::ProductMessage {
+    pub(super) fn message(&self) -> engine::ProductMessage {
         engine::ProductMessage {
             id: format!("{}:assignment", self.key),
             role: engine::history::Role::User,
@@ -885,8 +885,34 @@ fn job_current(
     )
 }
 
+pub(super) async fn decode_job_for_reviews(
+    tx: &impl ConnectionTrait,
+    scope: &PracticeScope,
+    row: practice_job::Model,
+) -> Result<PracticeJob, DbErr> {
+    let attempts = load_attempts(tx, scope).await?;
+    decode_job(row, attempts)
+}
+
+pub(super) async fn load_attempt_events_for_reviews(
+    db: &impl ConnectionTrait,
+    scope: &PracticeScope,
+    attempts: &mut [PracticeJobAttempt],
+) -> Result<(), DbErr> {
+    load_attempt_events(db, scope, attempts).await
+}
+
+pub(super) async fn write_practice_job_in_tx(
+    tx: &impl ConnectionTrait,
+    job: &PracticeJob,
+) -> Result<(), DbErr> {
+    save_attempts(tx, &job.scope, &job.attempts).await?;
+    job_active_model(job)?.update(tx).await?;
+    Ok(())
+}
+
 impl Store {
-    async fn locked_practice_job(
+    pub(super) async fn locked_practice_job(
         &self,
         scope: &PracticeScope,
     ) -> Result<(sea_orm::DatabaseTransaction, PracticeJob, i64), DbErr> {
@@ -907,9 +933,15 @@ impl Store {
         tx: sea_orm::DatabaseTransaction,
         job: &PracticeJob,
     ) -> Result<(), DbErr> {
-        save_attempts(&tx, &job.scope, &job.attempts).await?;
-        job_active_model(job)?.update(&tx).await?;
+        write_practice_job_in_tx(&tx, job).await?;
         tx.commit().await
+    }
+
+    pub(super) async fn save_practice_job_in_tx(
+        tx: sea_orm::DatabaseTransaction,
+        job: &PracticeJob,
+    ) -> Result<(), DbErr> {
+        Self::save_practice_job(tx, job).await
     }
 
     /// Accepts one practice-owned background job for `(scope.practice, scope.workspace)`

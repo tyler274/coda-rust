@@ -62,6 +62,8 @@ mod records;
 pub mod refresh;
 /// Hosted physician reply drafts and their revision work.
 pub mod reply;
+/// Shared-harness execution, fencing, lifecycle controls, and storage for patient reviews.
+pub mod reviews;
 /// Patient rounds: the job that keeps a patient's pages, summary and
 /// direction.
 pub mod rounds;

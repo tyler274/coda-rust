@@ -1170,3 +1170,67 @@ pub(super) mod patient_understanding_revision {
 
     impl ActiveModelBehavior for ActiveModel {}
 }
+
+/// Durable patient review record per `(practice, workspace, review_id)` pairing
+/// trigger provenance, recipe/source versions, read evidence, authoritative tool
+/// actions, controlled outcome (`"nothing to do"` vs assessed), unfinished work,
+/// duration, usage (`Unknown` vs `Known`), and lifecycle state with its
+/// underlying `physician_runtime_practice_jobs` execution run.
+pub(super) mod patient_review {
+    use sea_orm::entity::prelude::*;
+
+    #[derive(Clone, Debug, PartialEq, Eq, DeriveEntityModel)]
+    #[sea_orm(table_name = "physician_runtime_patient_reviews")]
+    pub struct Model {
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub practice: String,
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub workspace: String,
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub review_id: String,
+        #[sea_orm(column_type = "Text")]
+        pub command_key: String,
+        #[sea_orm(column_type = "Text")]
+        pub job_id: String,
+        #[sea_orm(column_type = "Text")]
+        pub work_id: String,
+        #[sea_orm(column_type = "Text")]
+        pub status: String,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub patient_snapshot: Option<Json>,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub triggers: Json,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub accepted_inputs: Json,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub recipe_version: Json,
+        pub initial_source_version: i64,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub initial_sources: Json,
+        pub completed_source_version: Option<i64>,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub completed_sources: Option<Json>,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub evidence_read: Json,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub actions: Json,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub unfinished_work: Json,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub state: Json,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub usage: Json,
+        pub duration_ms: Option<i64>,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub staged_completion: Option<Json>,
+        pub queued_at: i64,
+        pub started_at: Option<i64>,
+        pub completed_at: Option<i64>,
+        pub updated_at: i64,
+    }
+
+    #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
+    pub enum Relation {}
+
+    impl ActiveModelBehavior for ActiveModel {}
+}
