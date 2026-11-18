@@ -18,8 +18,10 @@ serde_json = "1"
 reqwest = { version = "0.12", default-features = false, features = ["json", "rustls-tls"] }
 
 [target.'cfg(target_arch = "wasm32")'.dependencies]
+physician-demo-db = { path = "../physician-demo-db" }
 reqwest = { version = "0.12", default-features = false, features = ["json"] }
 
 [dev-dependencies]
 axum = "0.8"
+physician-demo-db = { path = "../physician-demo-db" }
 tokio = { version = "1", features = ["macros", "rt-multi-thread", "net", "time"] }

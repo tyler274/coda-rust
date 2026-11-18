@@ -18,7 +18,7 @@ pub mod runtime;
 pub mod server;
 pub mod site;
 
-pub use config::{Command, Config, ExportConfig};
+pub use config::{Command, Config, ExportConfig, PhysicianLink};
 pub use export::{ExportError, ExportReport, export_site};
 pub use prerender::{Page, PageTable, prerender};
 pub use route::{PageMeta, Route};

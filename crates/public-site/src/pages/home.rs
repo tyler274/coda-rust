@@ -1,18 +1,28 @@
 use super::brand::{Product, ProductLockup};
 use super::phones::Phones;
+use crate::{Config, PhysicianLink};
 use dioxus::prelude::*;
 
 #[component]
 pub fn Home() -> Element {
+    let demo = use_context::<Config>().physician_link() == PhysicianLink::LiveDemo;
     rsx! {
         header { class: "hero",
             div { class: "hero-copy",
                 h1 { class: "rv", style: "--d:.06s", "Coda handles what happens between visits." }
                 p { class: "lede rv", style: "--d:.12s", "A physician-directed AI care team." }
                 div { class: "hero-cta rv", style: "--d:.18s",
-                    a { class: "btn", href: "mailto:hello@codahealth.ai",
-                        "Partner with us "
-                        icons::arrow_right {}
+                    div { class: "hero-cta-row",
+                        a { class: "btn", href: "mailto:hello@codahealth.ai",
+                            "Partner with us "
+                            icons::arrow_right {}
+                        }
+                        if demo {
+                            a { class: "btn btn-secondary", href: "/physician/",
+                                "Try live demo "
+                                icons::arrow_right {}
+                            }
+                        }
                     }
                 }
             }
@@ -1363,10 +1373,18 @@ pub fn Home() -> Element {
                                 "Partner with Coda "
                                 icons::arrow_right {}
                             }
-                            a {
-                                class: "btn-ghost",
-                                href: "mailto:hello@codahealth.ai",
-                                "hello@codahealth.ai"
+                            if demo {
+                                a {
+                                    class: "btn-ghost",
+                                    href: "/physician/",
+                                    "Try live demo"
+                                }
+                            } else {
+                                a {
+                                    class: "btn-ghost",
+                                    href: "mailto:hello@codahealth.ai",
+                                    "hello@codahealth.ai"
+                                }
                             }
                         }
                     }

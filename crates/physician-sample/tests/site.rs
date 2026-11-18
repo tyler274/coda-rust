@@ -1272,6 +1272,7 @@ fn public_proxy(upstream: std::net::SocketAddr, public: std::net::SocketAddr) ->
         public_site::prerender(&public_site::Config {
             listen_addr: public,
             physician_sign_in: true,
+            ..Default::default()
         })
         .unwrap(),
         runtime,
