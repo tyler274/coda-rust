@@ -38,6 +38,9 @@ pub enum DirectoryError {
     /// Reading workspace source standings failed.
     #[error("failed to read workspace source standings")]
     Standings(#[from] SourceStatusError),
+    /// Reading saved workspace source refresh statuses failed.
+    #[error("failed to read saved workspace source refresh statuses")]
+    RefreshStatuses(#[from] local_product::runtime::refresh::RefreshError),
     /// Directory store is unavailable.
     #[error(transparent)]
     Unavailable(#[from] StoreUnavailable),
@@ -159,6 +162,68 @@ impl PatientDirectory for Store {
         workspaces: &[String],
     ) -> Result<BTreeMap<String, BTreeMap<String, SourceStanding>>, DirectoryError> {
         Ok(self.workspace_source_standings(workspaces).await?)
+    }
+
+    async fn source_records(
+        &self,
+        workspaces: &[String],
+    ) -> Result<BTreeMap<String, Vec<PatientSourceRecord>>, DirectoryError> {
+        use local_product::runtime::refresh::SourceRefreshOutcome;
+
+        let pulls = self.pulls(workspaces).await?;
+        if pulls.is_empty() {
+            return Ok(BTreeMap::new());
+        }
+        let practices = self
+            .registered_dispatch_practices()
+            .await
+            .map_err(DirectoryError::Pulls)?;
+        let mut out = BTreeMap::new();
+        for (workspace, list) in pulls {
+            let mut statuses = BTreeMap::new();
+            for practice in &practices {
+                let saved = self.saved_source_statuses(practice, &workspace).await?;
+                if !saved.is_empty() {
+                    for status in saved {
+                        statuses.insert(status.source_id.as_str().to_owned(), status.outcome);
+                    }
+                    break;
+                }
+            }
+            let workspace_records = list
+                .into_iter()
+                .map(|pull| {
+                    let delivery = match statuses.get(&pull.source_id) {
+                        Some(SourceRefreshOutcome::Failed {
+                            last_good_pulled_at,
+                            ..
+                        }) => SourceDeliveryState::RefreshFailed {
+                            last_good_pulled_at: (*last_good_pulled_at).or(pull.pulled_at),
+                        },
+                        Some(
+                            SourceRefreshOutcome::Updated { pulled_at, .. }
+                            | SourceRefreshOutcome::PartlyUpdated { pulled_at, .. },
+                        ) => SourceDeliveryState::Usable {
+                            pulled_at: *pulled_at,
+                        },
+                        None => match pull.pulled_at {
+                            Some(pulled_at) => SourceDeliveryState::Usable { pulled_at },
+                            None => SourceDeliveryState::RefreshFailed {
+                                last_good_pulled_at: None,
+                            },
+                        },
+                    };
+                    PatientSourceRecord {
+                        source_id: pull.source_id,
+                        source_label: pull.source_label,
+                        patient: pull.patient,
+                        delivery,
+                    }
+                })
+                .collect();
+            out.insert(workspace, workspace_records);
+        }
+        Ok(out)
     }
 
     async fn synopses(
@@ -663,37 +728,8 @@ impl Patient {
                             })
                         }
                         SourceDeliveryState::RefreshFailed {
-                            last_good_pulled_at: Some(pulled_at),
-                        } => {
-                            let good = unix_to_rfc3339(pulled_at);
-                            json!({
-                                "source_id": source_id,
-                                "source_label": source_label,
-                                "standing": "failed",
-                                "reconnect_needed": false,
-                                "last_good_read_at": good,
-                                "state": {
-                                    "state": "failed",
-                                    "usable_snapshot": {
-                                        "synchronized_at": good,
-                                    },
-                                },
-                            })
-                        }
-                        SourceDeliveryState::RefreshFailed {
-                            last_good_pulled_at: None,
-                        } => json!({
-                            "source_id": source_id,
-                            "source_label": source_label,
-                            "standing": "partial",
-                            "reconnect_needed": false,
-                            "last_good_read_at": null,
-                            "state": {
-                                "state": "failed",
-                                "synchronized_at": null,
-                                "usable_snapshot": null,
-                            },
-                        }),
+                            last_good_pulled_at,
+                        } => failed_source_json(source_id, &source_label, last_good_pulled_at, &[]),
                         SourceDeliveryState::Hydrating => json!({
                             "source_id": source_id,
                             "source_label": source_label,
@@ -715,21 +751,31 @@ impl Patient {
                 Some(SourceStanding::UpToDate {
                     last_good_read_at,
                     missing_candidates,
-                }) => {
-                    let synchronized_at = unix_to_rfc3339(*last_good_read_at);
-                    json!({
-                        "source_id": source_id,
-                        "source_label": source_label,
-                        "standing": "up_to_date",
-                        "reconnect_needed": false,
-                        "last_good_read_at": synchronized_at,
-                        "missing_candidates": missing_candidates,
-                        "state": {
-                            "state": "usable",
-                            "synchronized_at": synchronized_at,
-                        },
-                    })
-                }
+                }) => match record.map(|rec| &rec.delivery) {
+                    Some(SourceDeliveryState::RefreshFailed {
+                        last_good_pulled_at,
+                    }) => failed_source_json(
+                        source_id,
+                        &source_label,
+                        (*last_good_pulled_at).or(Some(*last_good_read_at)),
+                        missing_candidates,
+                    ),
+                    _ => {
+                        let synchronized_at = unix_to_rfc3339(*last_good_read_at);
+                        json!({
+                            "source_id": source_id,
+                            "source_label": source_label,
+                            "standing": "up_to_date",
+                            "reconnect_needed": false,
+                            "last_good_read_at": synchronized_at,
+                            "missing_candidates": missing_candidates,
+                            "state": {
+                                "state": "usable",
+                                "synchronized_at": synchronized_at,
+                            },
+                        })
+                    }
+                },
                 Some(SourceStanding::Partial {
                     last_good_read_at,
                     attempted_at,
@@ -851,6 +897,46 @@ impl Patient {
             "has_past_work": false,
             "connected_sources": [],
         })
+    }
+}
+
+fn failed_source_json(
+    source_id: &str,
+    source_label: &str,
+    last_good_pulled_at: Option<i64>,
+    missing_candidates: &[String],
+) -> Value {
+    match last_good_pulled_at {
+        Some(pulled_at) => {
+            let good = unix_to_rfc3339(pulled_at);
+            json!({
+                "source_id": source_id,
+                "source_label": source_label,
+                "standing": "failed",
+                "reconnect_needed": false,
+                "last_good_read_at": good,
+                "missing_candidates": missing_candidates,
+                "state": {
+                    "state": "failed",
+                    "usable_snapshot": {
+                        "synchronized_at": good,
+                    },
+                },
+            })
+        }
+        None => json!({
+            "source_id": source_id,
+            "source_label": source_label,
+            "standing": "partial",
+            "reconnect_needed": false,
+            "last_good_read_at": null,
+            "missing_candidates": missing_candidates,
+            "state": {
+                "state": "failed",
+                "synchronized_at": null,
+                "usable_snapshot": null,
+            },
+        }),
     }
 }
 

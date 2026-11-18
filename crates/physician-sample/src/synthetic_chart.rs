@@ -24,6 +24,55 @@ use serde_json::Value;
 pub const SOURCE_ID: &str = "synthetic-charts";
 const SOURCE_LABEL: &str = "Synthetic chart";
 
+/// The fields that date a FHIR chart record, in the source's names.
+pub(crate) const DATE_FIELDS: [&str; 9] = [
+    "abatementDateTime",
+    "authoredOn",
+    "date",
+    "effectiveDateTime",
+    "issued",
+    "occurrenceDateTime",
+    "onsetDateTime",
+    "performedDateTime",
+    "recordedDate",
+];
+
+/// Why a synthetic FHIR chart record line failed adapter validation.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub(crate) enum ChartRecordError {
+    /// Structural JSON, missing FHIR fields, or `SourceRevision` validation error.
+    Malformed(String),
+    /// Non-text `contentType`, external URL, invalid base64, or non-UTF-8 attachment payload.
+    UnsupportedAttachment(String),
+}
+
+/// Parses one NDJSON FHIR chart line into a validated [`SourceRevision`] using
+/// the synthetic chart adapter's single-owner [`crate::synthetic_chart_fhir`] rules.
+pub(crate) fn parse_source_revision(
+    workspace: &str,
+    line: &str,
+) -> Result<SourceRevision, ChartRecordError> {
+    use local_product::physician_sources::adapter::RecordFilingError;
+
+    crate::synthetic_chart_fhir::source_revision(workspace, SOURCE_ID, line).map_err(
+        |err| match err {
+            RecordFilingError::UnsupportedAttachment { .. }
+            | RecordFilingError::UnavailableAttachment { .. }
+            | RecordFilingError::ExternalAttachment { .. }
+            | RecordFilingError::InvalidBase64 { .. }
+            | RecordFilingError::InvalidUtf8 { .. } => {
+                ChartRecordError::UnsupportedAttachment(err.to_string())
+            }
+            RecordFilingError::InvalidJson(_)
+            | RecordFilingError::MissingField(_)
+            | RecordFilingError::InvalidRevision(_)
+            | RecordFilingError::PatientMismatch { .. } => {
+                ChartRecordError::Malformed(err.to_string())
+            }
+        },
+    )
+}
+
 /// Controllable connector condition for [`SyntheticCharts`] in tests and local proof runs.
 #[derive(Clone, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(tag = "mode", rename_all = "snake_case")]

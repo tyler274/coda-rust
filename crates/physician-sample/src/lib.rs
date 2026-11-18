@@ -33,6 +33,7 @@ pub mod schedule;
 pub mod sources;
 pub mod synthetic_chart;
 pub mod synthetic_chart_fhir;
+pub mod synthetic_control;
 mod synthetic_reply;
 mod timestamp;
 
