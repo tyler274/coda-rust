@@ -17,6 +17,8 @@ pub mod chatgpt;
 pub mod clinical_library;
 /// Recipe, initial context, and memory tools for patient understanding runs.
 pub mod initial_understanding;
+/// Linked patient message review and physician-requested reply revision recipes.
+pub mod message_review_recipe;
 /// Rounds recipe, initial context, and review tools for background and physician-requested patient reviews.
 pub mod patient_reviews;
 /// Hosted physician chat instructions and the `skill_view` tool.

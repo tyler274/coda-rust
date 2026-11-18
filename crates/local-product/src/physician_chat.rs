@@ -224,12 +224,14 @@ pub enum Job {
     VisitPreparation,
     /// Inbound Spruce patient message matching and classification.
     SpruceMatching,
+    /// Linked patient message clinical review and reply drafting.
+    MessageReview,
 }
 
 impl Job {
     /// Every Chords job. [`PhysicianSkills::load`] checks each one's start
     /// skills against the package.
-    const ALL: [Self; 8] = [
+    const ALL: [Self; 9] = [
         Self::Chat,
         Self::ReplyRevision,
         Self::PatientRounds,
@@ -238,6 +240,7 @@ impl Job {
         Self::PatientReview,
         Self::VisitPreparation,
         Self::SpruceMatching,
+        Self::MessageReview,
     ];
 
     /// The skills this job loads at its start, as written beside its instructions.
@@ -250,7 +253,8 @@ impl Job {
             | Self::InitialUnderstanding
             | Self::PatientReview
             | Self::VisitPreparation
-            | Self::SpruceMatching => &[],
+            | Self::SpruceMatching
+            | Self::MessageReview => &[],
         }
     }
 }
