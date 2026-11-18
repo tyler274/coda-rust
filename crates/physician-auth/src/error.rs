@@ -22,6 +22,14 @@ pub enum SignInError {
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct StoreUnavailable;
 
+impl std::fmt::Display for StoreUnavailable {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str("auth store unavailable")
+    }
+}
+
+impl std::error::Error for StoreUnavailable {}
+
 /// Why a panel assignment failed.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum PanelError {

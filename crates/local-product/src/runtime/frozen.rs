@@ -43,19 +43,19 @@ async fn identity(db: &impl ConnectionTrait, body: &Value) -> Result<String, DbE
         .try_get("", "id")
 }
 
-pub(super) async fn keep_binding(
+pub(super) async fn keep_owner_binding(
     db: &impl ConnectionTrait,
-    scope: &Scope,
+    practice: &str,
+    owner: &str,
     binding: &RequestBinding,
 ) -> Result<BindingRef, DbErr> {
-    scope.validate()?;
     let cache_key = binding.cache_key.clone();
     let body = serde_json::to_value(&binding.recipe)
         .map_err(conversion_error("RequestRecipe", "frozen recipe body"))?;
     let id = identity(db, &body).await?;
     frozen_recipe::Entity::insert(frozen_recipe::ActiveModel {
-        practice: Set(scope.practice.clone()),
-        physician: Set(scope.physician.clone()),
+        practice: Set(practice.to_owned()),
+        physician: Set(owner.to_owned()),
         id: Set(id.clone()),
         body: Set(body),
     })
@@ -73,18 +73,27 @@ pub(super) async fn keep_binding(
     Ok(BindingRef { id, cache_key })
 }
 
-pub(super) async fn keep_skills(
+pub(super) async fn keep_binding(
     db: &impl ConnectionTrait,
     scope: &Scope,
+    binding: &RequestBinding,
+) -> Result<BindingRef, DbErr> {
+    scope.validate()?;
+    keep_owner_binding(db, &scope.practice, &scope.physician, binding).await
+}
+
+pub(super) async fn keep_owner_skills(
+    db: &impl ConnectionTrait,
+    practice: &str,
+    owner: &str,
     skills: &PhysicianSkills,
 ) -> Result<SkillPackageId, DbErr> {
-    scope.validate()?;
     let body = serde_json::to_value(skills)
         .map_err(conversion_error("PhysicianSkills", "skill package body"))?;
     let id = identity(db, &body).await?;
     skill_package::Entity::insert(skill_package::ActiveModel {
-        practice: Set(scope.practice.clone()),
-        physician: Set(scope.physician.clone()),
+        practice: Set(practice.to_owned()),
+        physician: Set(owner.to_owned()),
         id: Set(id.clone()),
         body: Set(body),
     })
@@ -102,15 +111,24 @@ pub(super) async fn keep_skills(
     Ok(SkillPackageId(id))
 }
 
-pub(super) async fn binding(
+pub(super) async fn keep_skills(
     db: &impl ConnectionTrait,
     scope: &Scope,
+    skills: &PhysicianSkills,
+) -> Result<SkillPackageId, DbErr> {
+    scope.validate()?;
+    keep_owner_skills(db, &scope.practice, &scope.physician, skills).await
+}
+
+pub(super) async fn owner_binding(
+    db: &impl ConnectionTrait,
+    practice: &str,
+    owner: &str,
     reference: &BindingRef,
 ) -> Result<RequestBinding, DbErr> {
-    scope.validate()?;
     let body = frozen_recipe::Entity::find_by_id((
-        scope.practice.clone(),
-        scope.physician.clone(),
+        practice.to_owned(),
+        owner.to_owned(),
         reference.id.clone(),
     ))
     .select_only()
@@ -124,22 +142,37 @@ pub(super) async fn binding(
     Ok(recipe.bind(reference.cache_key.clone()))
 }
 
+pub(super) async fn binding(
+    db: &impl ConnectionTrait,
+    scope: &Scope,
+    reference: &BindingRef,
+) -> Result<RequestBinding, DbErr> {
+    scope.validate()?;
+    owner_binding(db, &scope.practice, &scope.physician, reference).await
+}
+
+pub(super) async fn owner_skills(
+    db: &impl ConnectionTrait,
+    practice: &str,
+    owner: &str,
+    id: &SkillPackageId,
+) -> Result<PhysicianSkills, DbErr> {
+    let body =
+        skill_package::Entity::find_by_id((practice.to_owned(), owner.to_owned(), id.0.clone()))
+            .select_only()
+            .column(skill_package::Column::Body)
+            .into_tuple::<Value>()
+            .one(db)
+            .await?
+            .ok_or_else(|| error("accepted skill package is missing"))?;
+    serde_json::from_value(body).map_err(conversion_error("skill package body", "PhysicianSkills"))
+}
+
 pub(super) async fn skills(
     db: &impl ConnectionTrait,
     scope: &Scope,
     id: &SkillPackageId,
 ) -> Result<PhysicianSkills, DbErr> {
     scope.validate()?;
-    let body = skill_package::Entity::find_by_id((
-        scope.practice.clone(),
-        scope.physician.clone(),
-        id.0.clone(),
-    ))
-    .select_only()
-    .column(skill_package::Column::Body)
-    .into_tuple::<Value>()
-    .one(db)
-    .await?
-    .ok_or_else(|| error("accepted skill package is missing"))?;
-    serde_json::from_value(body).map_err(conversion_error("skill package body", "PhysicianSkills"))
+    owner_skills(db, &scope.practice, &scope.physician, id).await
 }

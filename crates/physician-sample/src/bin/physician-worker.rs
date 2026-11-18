@@ -145,6 +145,7 @@ async fn run_delivery(worker: &Worker, delivery: &Delivery, stop: watch::Receive
     match delivery.kind {
         DeliveryKind::ChatTurn => chat_turn(worker, delivery, stop).await,
         DeliveryKind::ReplyRevision => revision::deliver(worker, delivery, stop).await,
+        DeliveryKind::PracticeJob => Next::Done,
     }
 }
 

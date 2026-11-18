@@ -15,6 +15,12 @@ pub const DAY_MS: u64 = 86_400_000;
 /// One week in milliseconds (`604_800_000`).
 pub const WEEK_MS: u64 = 7 * DAY_MS;
 
+/// Default interval between patient source checks: one day (`86_400` seconds).
+pub const DEFAULT_CHECK_EVERY_SECONDS: u64 = 24 * 60 * 60;
+
+/// Default interval between periodic whole-patient reviews: seven days (`604_800` seconds).
+pub const DEFAULT_REVIEW_EVERY_SECONDS: u64 = 7 * 24 * 60 * 60;
+
 /// Per-patient review cadence read by Agents without knowing payment status.
 ///
 /// Every patient receives a settled weekly whole-patient review. A patient with
