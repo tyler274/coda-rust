@@ -1,0 +1,54 @@
+   Compiling rustls-webpki v0.103.16
+   Compiling rustls v0.23.46
+   Compiling tokio-rustls v0.26.6
+   Compiling hyper-rustls v0.27.10
+   Compiling reqwest v0.12.28
+   Compiling coda-http v0.1.0 (./crates/http)
+   Compiling public-site v0.1.0 (./crates/public-site)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 11.36s
+     Running tests/site.rs (target/debug/deps/site-81265a49fce1c7ba)
+
+running 3 tests
+ INFO Book building has started
+ INFO Running the html backend
+   Compiling ring v0.17.14
+ INFO HTML book written to `/tmp/nix-shell.A9fRru/coda-public-site-browser-export-2143192/coda-rust/book`
+   Compiling rustls v0.23.46
+   Compiling rustls-webpki v0.103.16
+   Compiling tokio-rustls v0.26.6
+   Compiling hyper-rustls v0.27.10
+   Compiling reqwest v0.12.28
+   Compiling coda-http v0.1.0 (./crates/http)
+   Compiling public-site v0.1.0 (./crates/public-site)
+Screenshot: /tmp/coda-pr10-recheck/desktop.png
+Screenshot: /tmp/coda-pr10-recheck/coda-rust-desktop.png
+desktop: content, assets, overflow, navigation and motion passed
+desktop: content, assets, overflow, navigation and motion passed
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 14.07s
+     Running `target/debug/public-site --export-dir /tmp/nix-shell.A9fRru/coda-public-site-demo-export-2143192/coda-rust --base-path /coda-rust --origin 'https://tyler274.github.io/coda-rust' --physician-demo`
+ INFO Book building has started
+ INFO Running the html backend
+ INFO HTML book written to `/tmp/nix-shell.A9fRru/coda-public-site-demo-export-2143192/coda-rust/book`
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 1.28s
+     Running `target/debug/seed_demo_db --units ./patients/units --out /tmp/nix-shell.A9fRru/coda-public-site-demo-export-2143192/coda-rust/physician/demo.sqlite --limit 60`
+Screenshot: /tmp/coda-pr10-recheck/mobile.png
+Seeded 39 patients into /tmp/nix-shell.A9fRru/coda-public-site-demo-export-2143192/coda-rust/physician/demo.sqlite
+Screenshot: /tmp/coda-pr10-recheck/coda-rust-mobile.png
+    Finished `release` profile [optimized] target(s) in 1.97s
+mobile: content, assets, overflow, navigation and motion passed
+Browser SQLite Chords demo E2E passed with 0 errors and 0 HTTP failures.
+test exported_subpath_browser_sql_demo_e2e ... ok
+mobile: content, assets, overflow, navigation and motion passed
+Screenshot: /tmp/coda-pr10-recheck/reduced.png
+reduced: content, assets, overflow, navigation and motion passed
+Screenshot: /tmp/coda-pr10-recheck/no-script.png
+no-script: content, assets, overflow, navigation and motion passed
+test desktop_mobile_motion_reduced_motion_and_static_fallback ... ok
+Screenshot: /tmp/coda-pr10-recheck/coda-rust-reduced.png
+reduced: content, assets, overflow, navigation and motion passed
+Screenshot: /tmp/coda-pr10-recheck/coda-rust-no-script.png
+no-script: content, assets, overflow, navigation and motion passed
+test exported_subpath_site_serves_zero_404s_and_renders_in_chromium ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 29.22s
+

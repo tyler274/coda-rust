@@ -1,0 +1,299 @@
+   Compiling ring v0.17.14
+   Compiling rustls v0.23.46
+   Compiling rustls-webpki v0.103.16
+   Compiling tokio-rustls v0.26.6
+   Compiling hyper-rustls v0.27.10
+   Compiling reqwest v0.12.28
+   Compiling coda-http v0.1.0 (./crates/http)
+   Compiling public-site v0.1.0 (./crates/public-site)
+   Compiling physician-client v0.1.0 (./crates/physician-client)
+   Compiling physician-app v0.1.0 (./crates/physician-app)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 15.56s
+     Running unittests src/lib.rs (target/debug/deps/boundaries-59432a8e7fca9eb9)
+
+running 25 tests
+test shared_ui::a_count_going_down_says_to_lower_the_number ... ok
+test shared_ui::a_new_file_counts_as_going_up_from_zero ... ok
+test shared_ui::a_matching_count_passes ... ok
+test shared_ui::a_count_reaching_zero_says_to_remove_the_entry ... ok
+test shared_ui::a_count_going_up_says_to_use_the_shared_component_or_add_an_exception ... ok
+test shared_ui::every_table_entry_has_one_row_and_a_reason ... ok
+test shared_ui::a_whole_test_file_counts_nothing ... ok
+test shared_ui::counts_css_rules_naming_control_elements ... ok
+test shared_ui::counts_card_classes_set_apart_by_escaped_whitespace ... ok
+test shared_ui::counts_rsx_held_in_other_macros_and_nested_rsx ... ok
+test tests::shipping_clients_stay_until_the_rust_journeys_match ... ok
+test shared_ui::counts_card_markup_by_class_family_once_per_element ... ok
+test tests::apps_do_not_import_each_others_clinical_crates ... ok
+test shared_ui::counts_css_rules_naming_library_classes ... ok
+test shared_ui::counts_each_raw_control_inside_rsx ... ok
+test tests::duet_screens_do_not_read_device_health_directly ... ok
+test shared_ui::ignores_comments_strings_and_lookalikes ... ok
+test tests::the_clinical_library_is_product_neutral ... ok
+test shared_ui::ignores_test_code_but_not_code_kept_out_of_tests ... ok
+test tests::gmail_and_spruce_are_product_neutral ... ok
+test shared_ui::the_check_reads_the_real_library ... ok
+test tests::every_ui_behaviour_is_run_as_its_kind ... ok
+test tests::shared_harness_is_product_neutral_and_has_no_product_store ... ok
+test tests::the_ui_library_runs_its_browser_behaviour_without_eval ... ok
+test shared_ui::the_apps_match_the_shared_ui_table ... ok
+
+test result: ok. 25 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.34s
+
+     Running unittests src/lib.rs (target/debug/deps/physician_app-3671a41758b05801)
+
+running 79 tests
+test composer::tests::before_a_chat_opens_the_draft_is_saved_under_the_draft_chat_id ... ok
+test composer::tests::a_failure_is_not_a_conflict_and_an_edit_makes_the_save_eligible_again ... ok
+test composer::tests::a_stale_recovered_baseline_reconciles_or_asks ... ok
+test composer::tests::another_patients_chat_of_the_same_id_is_its_own_draft ... ok
+test composer::tests::a_validated_conflict_pauses_autosave_until_the_physician_chooses ... ok
+test composer::tests::a_read_older_than_this_pages_own_save_or_during_it_changes_nothing ... ok
+test composer::tests::a_lost_answer_reconciles_when_the_server_holds_this_pages_text ... ok
+test composer::tests::nothing_saves_when_the_text_is_already_the_saved_text ... ok
+test composer::tests::a_newer_notice_outlives_the_save_it_replaced ... ok
+test composer::tests::a_never_saved_draft_saves_over_revision_zero ... ok
+test composer::tests::edits_during_a_save_keep_the_typing_and_need_a_trailing_save ... ok
+test composer::tests::a_save_that_ends_after_navigation_marks_neither_surface ... ok
+test composer::tests::retry_names_exactly_the_conflicting_revision_and_conflicts_again_if_it_moved ... ok
+test composer::tests::an_answer_for_an_attempt_that_is_not_running_changes_nothing ... ok
+test composer::tests::acceptance_after_navigation_clears_the_sending_chat_only ... ok
+test composer::tests::leaving_the_patient_page_clears_the_mark ... ok
+test composer::tests::a_send_that_was_never_autosaved_needs_no_durable_clear ... ok
+test composer::tests::a_refused_send_keeps_the_text_as_an_ordinary_draft ... ok
+test composer::tests::a_clear_waits_behind_the_revision_zero_save ... ok
+test composer::tests::another_tabs_newer_revision_is_never_cleared_automatically ... ok
+test composer::tests::a_pending_clear_survives_reload_until_confirmed ... ok
+test composer::tests::recovery_never_replaces_typing_after_reload ... ok
+test composer::tests::edited_text_that_no_longer_starts_with_the_message_is_kept_whole ... ok
+test composer::tests::text_typed_before_the_saved_draft_arrives_is_kept_and_a_newer_draft_conflicts ... ok
+test composer::tests::an_accepted_send_clears_only_the_submitted_text ... ok
+test composer::tests::recovery_restores_unsent_text_and_drops_once_saved ... ok
+test composer::tests::replayed_first_save_preserves_another_writers_text ... ok
+test composer::tests::recovered_send_never_clears_another_writers_newer_draft ... ok
+test composer::tests::the_saved_draft_is_shown_and_saved_over_its_own_revision ... ok
+test composer::tests::a_pending_send_survives_reload_until_answered ... ok
+test command_answer_tests::a_command_is_taken_refused_with_its_reason_or_unconfirmed ... ok
+test composer::tests::use_newer_text_discards_the_local_edit_and_takes_the_baseline ... ok
+test composer::tests::reload_replays_unanswered_first_save_before_clearing_sent_text ... ok
+test local_draft::tests::an_unknown_identity_has_no_scope ... ok
+test conversation_line_tests::a_finished_answer_carries_its_response_id_and_feedback_as_read ... ok
+test panels::tests::panel_keys_are_recognised_and_others_are_not ... ok
+test feedback::tests::the_snapshot_shows_until_the_page_saves ... ok
+test draft_notice_tests::routine_draft_saves_are_silent_but_failures_remain_visible ... ok
+test conversation_line_tests::try_again_is_one_keyed_resume_of_the_named_run ... ok
+test feedback::tests::one_save_at_a_time_and_the_choice_shows_while_it_saves ... ok
+test shell::tests::an_answer_counts_only_for_the_question_it_answered ... ok
+test feedback::tests::a_failed_save_says_so_shows_the_saved_rating_and_retries ... ok
+test feedback::tests::a_rating_change_keeps_the_saved_details ... ok
+test feedback::tests::details_save_with_the_shown_rating_and_a_landed_save_closes_its_dialog ... ok
+test feedback::tests::a_thumb_after_a_failed_details_save_sends_those_details ... ok
+test conversation_line_tests::each_stop_press_is_its_own_command_for_the_named_work ... ok
+test feedback::tests::a_read_the_page_saw_still_shows_when_a_later_read_fails ... ok
+test feedback::tests::an_older_revision_never_replaces_a_newer_one ... ok
+test feedback::tests::unavailable_feedback_disables_thumbs_the_page_saved_nothing_on ... ok
+test feedback::tests::a_failed_read_never_falls_back_below_a_newer_revision_read ... ok
+test conversation_line_tests::new_conversation_ids_are_distinct_chat_ids ... ok
+test sign_in_followup_tests::another_message_stays_a_failure ... ok
+test stream_retry_tests::a_stream_is_silent_30_seconds_after_its_last_bytes ... ok
+test sign_in_followup_tests::proof_delivery_provides_the_token_for_redemption ... ok
+test feedback::tests::a_save_outlives_a_chat_switch_and_a_failure_keeps_its_draft ... ok
+test stream_retry_tests::cloud_run_rotations_never_build_up_the_wait ... ok
+test shell::tests::a_panel_change_is_never_for_a_physician_the_practice_no_longer_lists ... ok
+test shell::tests::a_panel_change_is_for_the_physician_chosen_while_the_practice_lists_them ... ok
+test local_draft::tests::ids_containing_the_separator_stay_unambiguous ... ok
+test local_draft::tests::a_full_store_reports_failure_and_keeps_the_older_copy ... ok
+test conversation_line_tests::each_answer_state_draws_its_line_and_action ... ok
+test local_draft::tests::a_new_document_claims_the_previous_documents_record ... ok
+test local_draft::tests::a_record_comes_back_only_for_its_own_backend_practice_physician_and_target ... ok
+test stream_retry_tests::the_sixth_and_later_failures_still_retry_at_the_longest_delay ... ok
+test sign_in_followup_tests::a_hosted_link_waits_for_email ... ok
+test tabs::tests::malformed_news_reads_as_nothing ... ok
+test shell::tests::a_usable_day_with_no_visits_still_shows_the_schedule ... ok
+test stream_retry_tests::sustained_stream_starts_the_backoff_over ... ok
+test shell::tests::clinic_demographic_workspace_extracts_card_fields_without_clinical_sections ... ok
+test tabs::tests::a_tab_hears_another_tabs_news_and_ignores_its_own ... ok
+test shell::tests::ready_replies_can_be_reviewed ... ok
+test stream_retry_tests::immediate_eof_and_failures_back_off_to_the_longest_delay ... ok
+test shell::tests::today_covers_loading_empty_error_stale_and_loaded ... ok
+test local_draft::tests::removed_access_and_sign_out_forget_records ... ok
+test sign_in_followup_tests::a_hosted_response_is_not_token_issued ... ok
+test shell::tests::a_row_says_when_coda_marked_it_now ... ok
+test shell::tests::workspace_chats_and_reader_use_the_open_selection ... ok
+test shell::tests::recorded_past_work_is_the_empty_history_screen ... ok
+test shell::tests::recorded_practice_keeps_synopsis_search_and_an_ended_visit ... ok
+
+test result: ok. 79 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running unittests src/main.rs (target/debug/deps/physician_app-72809e1d74e610ff)
+
+running 3 tests
+test tests::explicit_api_overrides_are_not_prefixed ... ok
+test tests::runtime_mount_is_segment_bounded ... ok
+test tests::query_api_override_is_loopback_only ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (target/debug/deps/physician_client-10863113e0636a34)
+
+running 9 tests
+test tests::ending_an_old_session_keeps_the_one_that_replaced_it ... ok
+test tests::a_pinned_client_keeps_the_session_it_was_pinned_with ... ok
+test tests::reads_a_reply_draft_with_its_revision_run ... ok
+test tests::reads_today_from_the_server_shape ... ok
+test tests::saves_a_draft_at_the_revision_node_returns ... ok
+test tests::only_a_validated_conflict_body_is_a_draft_conflict ... ok
+test tests::sign_in_attaches_the_bearer_and_sign_out_ends_it ... ok
+test tests::demo_transport_serves_sqlite_reads_search_and_chat ... ok
+test tests::a_command_with_no_answer_ends_at_its_time_limit ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 10.01s
+
+     Running unittests src/lib.rs (target/debug/deps/physician_demo_db-b8426978de9cc07c)
+
+running 1 test
+test tests::seeds_queries_mutates_and_resets ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.30s
+
+     Running unittests src/bin/seed_demo_db.rs (target/debug/deps/seed_demo_db-df414d681c43af83)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (target/debug/deps/public_site-23a04a6193ca7894)
+
+running 39 tests
+test proxy::tests::mounts_own_only_their_path_family ... ok
+test assets::tests::rewrites_only_complete_root_relative_urls ... ok
+test runtime::tests::sign_in_exists_only_with_a_physician_upstream ... ok
+test config::tests::cli_defaults_to_serve_and_parses_static_export_flags ... ok
+test runtime::tests::staging_requires_proxy_signer_and_deployed_upstream_https ... ok
+test proxy::tests::fixed_origins_reject_credentials_and_nonlocal_plaintext ... ok
+test runtime::tests::bare_container_bind_address_uses_a_loopback_browser_origin ... ok
+test representation::tests::digest_is_lowercase_sha256 ... ok
+test runtime::tests::observability_relay_is_staging_only_https_and_signed ... ok
+test proxy::tests::location_policy_never_exposes_an_upstream_origin ... ok
+test proxy::tests::mounted_location_stays_inside_its_prefix_on_known_origins ... ok
+test runtime::tests::local_production_and_probe_contract_remain_explicit ... ok
+test runtime::tests::staging_requires_well_formed_direct_cloud_run_audience ... ok
+test site::tests::base_path_normalizes_and_rejects_invalid_inputs ... ok
+test representation::tests::q_values ... ok
+test site::tests::origin_supports_host_only_or_matching_base_path_without_double_prefix ... ok
+test access::tests::secret_needs_one_exact_value ... ok
+test representation::tests::gzip_vector_crc_round_trip ... ok
+test representation::tests::variants_head_and_weak_conditional ... ok
+test representation::tests::compressed_bytes_round_trip ... ok
+test server::tests::observability_relay_never_mounts_outside_staging - should panic ... ok
+test proxy::tests::credential_responses_are_size_bounded_and_never_follow_redirects ... ok
+test proxy::tests::observability_mounts_keep_prefix_drop_spoofed_assertion_cookies_and_off_origin_redirects ... ok
+test proxy::tests::jwt_claims_cache_serialization_and_refresh_failure_are_closed ... ok
+test access::tests::gate_uses_this_services_audience ... ok
+test server::tests::overload_and_timeout_are_bounded_and_private ... ok
+test pages::tests::home_preserves_motion_targets_and_shared_phones ... ok
+test pages::tests::every_document_renders_its_body ... ok
+test assets::tests::rewrites_page_routes_and_assets_under_subpath_without_touching_text_slashes ... ok
+test assets::tests::every_embedded_asset_has_alias_and_content_address ... ok
+test server::tests::no_methods_or_conditional_requests_bypass_staging ... ok
+test server::tests::head_assets_are_empty ... ok
+test server::tests::health_requires_access_and_optional_health_token ... ok
+test server::tests::trailing_slash_redirect_stays_on_this_origin ... ok
+test server::tests::observability_mounts_keep_prefixes_and_forward_only_the_verified_assertion ... ok
+test export::tests::static_export_under_subpath_resolves_every_page_asset_and_metadata_file ... ok
+test server::tests::rewritten_assets_cache_and_readiness ... ok
+test server::tests::staging_gates_every_public_resource_and_never_shared_caches ... ok
+test server::tests::physician_proxy_preserves_access_and_waits_for_upstream_responses ... ok
+
+test result: ok. 39 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.51s
+
+     Running unittests src/bin/public-site.rs (target/debug/deps/public_site-f7ae8b99193465f6)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/access.rs (target/debug/deps/access-fd64ad9f0538ab08)
+
+running 2 tests
+test executable_refuses_missing_or_malformed_staging_configuration ... ok
+test staging_denies_every_page_and_resource_without_signed_iap ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.44s
+
+     Running tests/foundation.rs (target/debug/deps/foundation-b0771f694308aaf9)
+
+running 3 tests
+test sign_in_appears_on_every_page_only_when_offered ... ok
+test every_enumerated_route_uses_real_router_ssr_and_shared_chrome ... ok
+test axum_serves_only_startup_bytes_and_preserves_404s ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.63s
+
+     Running tests/proxy.rs (target/debug/deps/proxy-96c1da8476361305)
+
+running 3 tests
+test preserves_transport_and_strips_credentials_and_hops ... ok
+test sse_delivers_first_chunk_while_upstream_body_is_still_open ... ok
+test redirect_rewriting_errors_origin_checks_and_limits ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.44s
+
+     Running tests/routes.rs (target/debug/deps/routes-17e8a8a57462973b)
+
+running 5 tests
+test staging_denies_pages_and_assets_without_access ... ok
+test staging_sign_in_reaches_the_physician_service ... ok
+test urls_resolve_redirect_and_set_hsts ... ok
+test every_route_metadata_sitemap_and_retired_routes ... ok
+test real_scripts_are_content_addressed_and_immutable ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.45s
+
+     Running tests/site.rs (target/debug/deps/site-0a166b496e7e34fb)
+
+running 3 tests
+test desktop_mobile_motion_reduced_motion_and_static_fallback ... ignored, browser qualification; run explicitly with --ignored
+test exported_subpath_browser_sql_demo_e2e ... ignored, browser qualification; run explicitly with --ignored
+test exported_subpath_site_serves_zero_404s_and_renders_in_chromium ... ignored, browser qualification; run explicitly with --ignored
+
+test result: ok. 0 passed; 0 failed; 3 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/stylesheets.rs (target/debug/deps/stylesheets-594dcba9d9ddbbd9)
+
+running 2 tests
+test layout_stylesheets_declare_no_motion ... ok
+test duet_story_styles_stay_inside_its_stage ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests boundaries
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests physician_app
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests physician_client
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests physician_demo_db
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests public_site
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

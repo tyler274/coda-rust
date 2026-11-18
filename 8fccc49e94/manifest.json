@@ -1,0 +1,201 @@
+{
+  "branch": "tyler-browser-sql-demo",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC-precommit",
+      "label": "fmt, host clippy, wasm32 clippy",
+      "kind": "run",
+      "revision": "8fccc49e942165a4044318b2d148200cdd567bcd",
+      "dirty": false,
+      "recorded": "2026-11-18T16:55:19+00:00",
+      "command": [
+        "./.githooks/pre-commit"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "01-fmt-host-clippy-wasm32-clippy.log"
+      ],
+      "seconds": 43.9,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 2,
+      "claim": "AC-mobile-scope",
+      "label": "Android mobile crate scope check",
+      "kind": "run",
+      "revision": "8fccc49e942165a4044318b2d148200cdd567bcd",
+      "dirty": false,
+      "recorded": "2026-11-18T16:56:03+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "cargo tree --locked -p mobile --features mobile --target x86_64-linux-android -e normal --prefix none | python3 scripts/ci_scope.py check-mobile-crates"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "02-Android-mobile-crate-scope-check.log"
+      ],
+      "seconds": 2.8,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 3,
+      "claim": "AC-unit-tests",
+      "label": "boundaries, demo-db, client, app, public-site tests",
+      "kind": "run",
+      "revision": "8fccc49e942165a4044318b2d148200cdd567bcd",
+      "dirty": false,
+      "recorded": "2026-11-18T16:56:06+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "boundaries",
+        "-p",
+        "physician-demo-db",
+        "-p",
+        "physician-client",
+        "-p",
+        "physician-app",
+        "-p",
+        "public-site"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "03-boundaries-demo-db-client-app-public-site-tests.log"
+      ],
+      "seconds": 29.8,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 4,
+      "claim": "AC-supply-chain-docs",
+      "label": "cargo deny, actionlint pages.yml, book links",
+      "kind": "run",
+      "revision": "8fccc49e942165a4044318b2d148200cdd567bcd",
+      "dirty": false,
+      "recorded": "2026-11-18T16:56:35+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "cargo deny --all-features check advisories bans licenses sources && actionlint .github/workflows/pages.yml && ./scripts/check-book-links.sh"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "04-cargo-deny-actionlint-pages.yml-book-links.log"
+      ],
+      "seconds": 17.3,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 5,
+      "claim": "AC-browser-e2e",
+      "label": "Chromium E2E public site + subpath + interactive SQLite demo",
+      "kind": "run",
+      "revision": "8fccc49e942165a4044318b2d148200cdd567bcd",
+      "dirty": false,
+      "recorded": "2026-11-18T16:56:53+00:00",
+      "command": [
+        "env",
+        "DEMO_SCREENSHOTS=/tmp/coda-pr10-recheck",
+        "PUBLIC_SITE_SCREENSHOTS=/tmp/coda-pr10-recheck",
+        "cargo",
+        "test",
+        "-p",
+        "public-site",
+        "--test",
+        "site",
+        "--",
+        "--ignored",
+        "--nocapture"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "05-Chromium-E2E-public-site-subpath-interactive-SQL.log"
+      ],
+      "seconds": 40.8,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 6,
+      "claim": "AC-screenshots",
+      "label": "Homepage Try live demo CTA",
+      "kind": "screenshot",
+      "revision": "8fccc49e942165a4044318b2d148200cdd567bcd",
+      "dirty": false,
+      "recorded": "2026-11-18T16:57:34+00:00",
+      "files": [
+        "06-01-public-home-demo-cta.png"
+      ],
+      "source": "target/verification/pr10/screenshots/01-public-home-demo-cta.png",
+      "ok": true
+    },
+    {
+      "id": 7,
+      "claim": "AC-screenshots",
+      "label": "SQLite demo Today and Schedule",
+      "kind": "screenshot",
+      "revision": "8fccc49e942165a4044318b2d148200cdd567bcd",
+      "dirty": false,
+      "recorded": "2026-11-18T16:57:34+00:00",
+      "files": [
+        "07-02-demo-today.png"
+      ],
+      "source": "target/verification/pr10/screenshots/02-demo-today.png",
+      "ok": true
+    },
+    {
+      "id": 8,
+      "claim": "AC-screenshots",
+      "label": "Patient search Kristen Marchetti workspace",
+      "kind": "screenshot",
+      "revision": "8fccc49e942165a4044318b2d148200cdd567bcd",
+      "dirty": false,
+      "recorded": "2026-11-18T16:57:34+00:00",
+      "files": [
+        "08-03-demo-search-workspace.png"
+      ],
+      "source": "target/verification/pr10/screenshots/03-demo-search-workspace.png",
+      "ok": true
+    },
+    {
+      "id": 9,
+      "claim": "AC-screenshots",
+      "label": "SQLite Q&A citation reader",
+      "kind": "screenshot",
+      "revision": "8fccc49e942165a4044318b2d148200cdd567bcd",
+      "dirty": false,
+      "recorded": "2026-11-18T16:57:34+00:00",
+      "files": [
+        "09-04-demo-chat-sql-citation.png"
+      ],
+      "source": "target/verification/pr10/screenshots/04-demo-chat-sql-citation.png",
+      "ok": true
+    },
+    {
+      "id": 10,
+      "claim": "AC-screenshots",
+      "label": "Reset demo restores baseline",
+      "kind": "screenshot",
+      "revision": "8fccc49e942165a4044318b2d148200cdd567bcd",
+      "dirty": false,
+      "recorded": "2026-11-18T16:57:34+00:00",
+      "files": [
+        "10-05-demo-after-reset.png"
+      ],
+      "source": "target/verification/pr10/screenshots/05-demo-after-reset.png",
+      "ok": true
+    }
+  ]
+}
