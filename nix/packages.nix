@@ -13,6 +13,7 @@ let
       ../Cargo.toml
       ../Cargo.lock
       ../crates
+      ../skills
       ../platform/ios/build_bridge.rs
     ];
   };
@@ -59,7 +60,8 @@ let
     cargoArtifacts = patientBankDeps;
   });
   # Committed ledgers and seeds enter the offline chart build. The migration
-  # image carries only the rendered charts and manifest, never the toolchain.
+  # image carries only the rendered charts, practice calendar and manifest,
+  # never the toolchain.
   patientBankInputs = lib.fileset.toSource {
     root = ../patients;
     fileset = lib.fileset.fileFilter
@@ -75,7 +77,7 @@ let
   } ''
     patient-bank build --out bank
     mkdir -p $out
-    cp -r bank/patients bank/manifest.json $out/
+    cp -r bank/patients bank/calendar bank/manifest.json $out/
   '';
 
   webPackages = [ "physician-app" "duet-app" ];
