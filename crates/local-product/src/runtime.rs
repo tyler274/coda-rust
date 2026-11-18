@@ -31,6 +31,9 @@ use uuid::Uuid;
 
 /// Hosted chat drafts: the physician's unsent composer text per chat.
 pub mod chat_draft;
+/// Physician chat recipe operations: starting context, evidence limit
+/// classifications, authorized chat admission, source refresh, and work retrieval.
+pub mod chat_operations;
 /// Patient concerns raised, revised, and retired by Coda, and cleared `Done` by physicians.
 pub mod concerns;
 mod control;
@@ -653,6 +656,7 @@ pub struct Store {
     db: DatabaseConnection,
     clinical_library: crate::clinical_library::ClinicalLibraryClient,
     source_refresh: std::sync::Arc<dyn refresh::PatientSourceRefresh>,
+    refresh_operation: std::sync::Arc<dyn chat_operations::PatientRefreshOperation>,
 }
 
 fn error(message: &str) -> DbErr {
@@ -939,6 +943,7 @@ impl Store {
             db,
             clinical_library: crate::clinical_library::ClinicalLibraryClient::from_env(),
             source_refresh: std::sync::Arc::new(refresh::FixedSourceCheck::new()),
+            refresh_operation: std::sync::Arc::new(chat_operations::RuntimeSourceRefreshOperation),
         }
     }
 
@@ -951,15 +956,18 @@ impl Store {
         self
     }
 
+    /// Returns a clone bound to an explicit [`chat_operations::PatientRefreshOperation`].
+    pub fn with_refresh_operation(
+        mut self,
+        refresh_operation: std::sync::Arc<dyn chat_operations::PatientRefreshOperation>,
+    ) -> Self {
+        self.refresh_operation = refresh_operation;
+        self
+    }
+
     /// Clinical library client configured for chat tool execution.
     pub fn clinical_library(&self) -> &crate::clinical_library::ClinicalLibraryClient {
         &self.clinical_library
-    }
-
-    /// This store's pool, for the process's other stores to share, so the
-    /// process holds one pool.
-    pub fn connection(&self) -> &DatabaseConnection {
-        &self.db
     }
 
     /// Returns a clone bound to an explicit [`refresh::PatientSourceRefresh`] adapter.
@@ -968,12 +976,20 @@ impl Store {
         source_refresh: std::sync::Arc<dyn refresh::PatientSourceRefresh>,
     ) -> Self {
         self.source_refresh = source_refresh;
+        self.refresh_operation =
+            std::sync::Arc::new(chat_operations::RuntimeSourceRefreshOperation);
         self
     }
 
     /// Patient source refresh adapter configured for tool execution.
     pub fn source_refresh(&self) -> &dyn refresh::PatientSourceRefresh {
         self.source_refresh.as_ref()
+    }
+
+    /// This store's pool, for the process's other stores to share, so the
+    /// process holds one pool.
+    pub fn connection(&self) -> &DatabaseConnection {
+        &self.db
     }
 
     // Display readback now joins several authoritative rows. One read-only
@@ -1056,6 +1072,12 @@ impl Store {
         if session_hash.len() != 32 {
             return Err(error("invalid session reference").into());
         }
+        Self::validate_accept_fields(scope, input)?;
+        let tx = self.db.begin().await?;
+        Self::accept_in_tx(tx, scope, input, session_hash, skills, recipe, origin).await
+    }
+
+    pub(super) fn validate_accept_fields(scope: &Scope, input: &Input) -> Result<(), RuntimeError> {
         if [
             &input.key,
             &input.text,
@@ -1071,7 +1093,18 @@ impl Store {
             return Err(error("empty command field").into());
         }
         scope.validate()?;
-        let tx = self.db.begin().await?;
+        Ok(())
+    }
+
+    pub(super) async fn accept_in_tx(
+        tx: sea_orm::DatabaseTransaction,
+        scope: &Scope,
+        input: &Input,
+        session_hash: Vec<u8>,
+        skills: &PhysicianSkills,
+        recipe: &RequestRecipe,
+        origin: Option<delivery::TraceContext>,
+    ) -> Result<Accepted, RuntimeError> {
         let command = serde_json::json!({"scope": scope, "input": input});
         match receipt::record(&tx, &scope.practice, &scope.physician, &input.key, &command).await? {
             receipt::Receipt::New => {}
