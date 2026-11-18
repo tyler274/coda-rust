@@ -186,6 +186,15 @@ class Contract(unittest.TestCase):
                 with self.subTest(kind=kind, name=name):
                     self.assertNotIn("roles/run.invoker", body)
 
+    def test_staging_clinical_library_contract(self):
+        staging = (ROOT / "env/staging.tfvars").read_text()
+        self.assertRegex(
+            staging,
+            r'(?m)^physician_clinical_library_url\s*= "https://coda-clinical-evidence-720954567292\.us-east4\.run\.app"$',
+        )
+        # Cross-project clinical-evidence IAM stays in infra/gcp/clinical-evidence.
+        self.assertNotIn("coda-health-prod", config_text())
+
     def test_redis_auth_never_leaves_sensitive_output(self):
         text = config_text()
         uses = [line for line in text.splitlines() if ".auth_string" in line]

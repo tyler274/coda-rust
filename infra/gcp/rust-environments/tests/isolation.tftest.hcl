@@ -1245,3 +1245,34 @@ run "observability_grafana_backend" {
     error_message = "With the grafana backend every product container gets CODA_TELEMETRY_BACKEND=grafana once, defaults to no content, and still names its environment."
   }
 }
+
+run "reject_non_cloud_run_clinical_library_url" {
+  command = plan
+  variables {
+    physician_clinical_library_url = "https://example.com/search"
+  }
+  expect_failures = [var.physician_clinical_library_url]
+}
+
+run "reject_runtime_override_of_schedule_or_clinical_library_env" {
+  command = plan
+  variables {
+    runtime_environment = {
+      physician = { CLINICAL_LIBRARY_URL = "https://coda-clinical-evidence-720954567292.us-east4.run.app" }
+      duet      = { TEST_CONTRACT_ONLY = "true" }
+    }
+  }
+  expect_failures = [google_project.environment]
+}
+
+run "reject_duet_clinical_library_env" {
+  command = plan
+  variables {
+    runtime_environment = {
+      physician = { TEST_CONTRACT_ONLY = "true" }
+      duet      = { CLINICAL_LIBRARY_CUSTOM = "forbidden" }
+    }
+  }
+  expect_failures = [google_project.environment]
+}
+

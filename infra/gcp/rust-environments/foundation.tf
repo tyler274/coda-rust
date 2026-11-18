@@ -15,7 +15,22 @@ locals {
   physician_durable_chat_env = local.physician_scale ? { PHYSICIAN_DURABLE_CHAT = "1" } : {}
   # Infrastructure-owned (or Doppler-owned) physician settings that the
   # nonsecret runtime_environment map may not set or override.
-  scale_owned_env = ["PHYSICIAN_DURABLE_CHAT", "PHYSICIAN_REDIS_URL", "PHYSICIAN_REDIS_CA_PEM", "PHYSICIAN_SIMULATION_PRACTICES", "PHYSICIAN_IAP_AUDIENCE", "PHYSICIAN_REHEARSAL_PRINCIPAL"]
+  scale_owned_env = [
+    "PHYSICIAN_DURABLE_CHAT",
+    "PHYSICIAN_REDIS_URL",
+    "PHYSICIAN_REDIS_CA_PEM",
+    "PHYSICIAN_SIMULATION_PRACTICES",
+    "PHYSICIAN_IAP_AUDIENCE",
+    "PHYSICIAN_REHEARSAL_PRINCIPAL",
+    "CLINICAL_LIBRARY_URL",
+    "CLINICAL_LIBRARY_AUDIENCE",
+  ]
+  # Read-only clinical-evidence endpoint and OIDC audience passed to physician
+  # and physician-worker only; Duet never receives them here.
+  physician_clinical_library_env = var.physician_clinical_library_url != null ? {
+    CLINICAL_LIBRARY_URL      = var.physician_clinical_library_url
+    CLINICAL_LIBRARY_AUDIENCE = coalesce(var.physician_clinical_library_audience, var.physician_clinical_library_url)
+  } : {}
   # Rehearsal practices (physician_simulation_practices): the same list on the
   # site, the worker and the migration job, which seeds the rehearsal practice.
   physician_simulation_env = length(var.physician_simulation_practices) > 0 ? { PHYSICIAN_SIMULATION_PRACTICES = join(",", sort(tolist(var.physician_simulation_practices))) } : {}
@@ -77,9 +92,9 @@ resource "google_project" "environment" {
     }
     precondition {
       condition = alltrue(flatten([for app, config in var.runtime_environment : [
-        for key in keys(config) : !contains(local.scale_owned_env, key) && (app == "physician" || !startswith(key, "PHYSICIAN_"))
+        for key in keys(config) : !contains(local.scale_owned_env, key) && (app == "physician" || (!startswith(key, "PHYSICIAN_") && !startswith(key, "CLINICAL_LIBRARY_")))
       ]]))
-      error_message = "Physician scaling and rehearsal settings are owned by infrastructure (the durable chat switch, simulation practices, rehearsal sign-in) or Doppler (Redis URL and CA); runtime_environment may not set them, and Duet gets no PHYSICIAN_* settings."
+      error_message = "Physician scaling, clinical-library and rehearsal settings are owned by infrastructure or Doppler; runtime_environment may not set them, and Duet gets no PHYSICIAN_* or CLINICAL_LIBRARY_* settings."
     }
     precondition {
       condition     = !var.observability_enabled || var.observability_cluster_enabled
