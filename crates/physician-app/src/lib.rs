@@ -12,8 +12,7 @@ mod feedback;
 mod local_draft;
 mod panels;
 mod patient_reviews_panel;
-/// Schedule pane states, browser time-zone formatting, and the pre-visit briefing view.
-pub mod schedule_briefing;
+mod schedule_briefing;
 mod shell;
 mod status;
 mod tabs;
@@ -23,6 +22,7 @@ use std::sync::atomic::{AtomicU64, Ordering};
 use composer::{Composer, ConflictDraft, DraftTarget, Notice, SaveOutcome, SendAnswer};
 use dioxus::prelude::*;
 use physician_client::{DraftSave, PhysicianClient};
+use physician_wire::briefings::BriefingSummaryItemWire;
 use physician_wire::{
     ActiveReviewRun, AnswerState, ChatSnapshot, HistoryWorkOutcome, PastWorkItem, PastWorkTarget,
     PatientWorkspaceResponse, PracticeAccountSummary, RecentConversation, ResponseId,
@@ -31,31 +31,34 @@ use physician_wire::{
 };
 
 use panels::Panel;
+use schedule_briefing::{
+    BriefingWorkspaceView, OpenBriefingTarget, PatientBriefingsSection, RailContext,
+    SchedulePaneFreshness, ScheduleRailPane, ScheduleVisitActivation, ScheduleVisitRow,
+    browser_time_zone, history_standing_summary, schedule_pane_freshness, schedule_rows,
+};
 use shell::{
     CONVERSATION_EMPTY, ChatView, ConnectedSourceStanding, Drawer, KeyInput, NavCommand,
     PAST_WORK_EMPTY, REPLY_ASK, REPLY_CLOSED_NOTICE, REPLY_COPY, REPLY_NO_NEEDED,
     REPLY_REVISION_STALE, REPLY_TELL_CODA, RESUME, ReadView, ReplyReviewAction, STOP, SourceChip,
     SynopsisPiece, TODAY_LOADING, TODAY_QUIET, TODAY_QUIET_DETAIL, TODAY_STALE, TODAY_UNAVAILABLE,
-    TRY_AGAIN, TodayLine, TodayView, VisitLine, WORKSPACE_CLOSED, WORKSPACE_EMPTY,
-    WORKSPACE_UNAVAILABLE, WorkspaceRecordsState, active_now_concern, answer_to, chat_view,
-    chip_name, citation_inspection, connection_lines, demographic_card_view, format_clock,
-    format_context_time, format_local_date, format_waited, keyboard_command, message_pieces,
-    need_you_words, opens_reader, panel_target, past_work_copy, patient_upcoming_visits, read_view,
-    reply_channel_label, reply_review_actions, reply_revision_words, reply_urgency_words, row_icon,
-    row_tone, schedule_empty_copy, search_row_detail, shows_today_schedule, source_lines,
-    summary_times, synopsis_pieces, today_lines, today_view, upcoming_visits, work_end_reason,
-    work_heading, workspace_records_state,
+    TRY_AGAIN, TodayLine, TodayView, WORKSPACE_CLOSED, WORKSPACE_EMPTY, WORKSPACE_UNAVAILABLE,
+    WorkspaceRecordsState, active_now_concern, answer_to, chat_view, chip_name,
+    citation_inspection, connection_lines, demographic_card_view, format_context_time,
+    format_local_date, format_waited, keyboard_command, message_pieces, need_you_words,
+    opens_reader, panel_target, past_work_copy, read_view, reply_channel_label,
+    reply_review_actions, reply_revision_words, reply_urgency_words, row_icon, row_tone,
+    schedule_empty_copy, search_row_detail, shows_today_schedule, source_lines, summary_times,
+    synopsis_pieces, today_lines, today_view, work_end_reason, work_heading,
+    workspace_records_state,
 };
 #[cfg(target_arch = "wasm32")]
 use shell::{EventRefetch, event_refetch};
-pub(crate) use status::ReadNotice;
-use status::{CommandNotice, CommandStage, ReadStage};
+use status::{CommandNotice, CommandStage, ReadNotice, ReadStage};
 use ui::{
-    ActionRow, Author, Button, ButtonVariant, Card, Count, Dialog, DraftConflict, Icon, IconName,
-    LiveDot, NavigationRow, Orb, OrbState, PageTitle, ProgressBar, SearchField, StatePill,
-    StatusLine, TextField, TextKind, Tone, WorkingMark,
+    ActionRow, Author, Button, ButtonVariant, Card, Count, Dialog, DraftConflict, EmptyLine, Icon,
+    IconName, LiveDot, NavigationControl, NavigationRow, Orb, OrbState, PageTitle, ProgressBar,
+    SearchField, StatePill, StatusLine, TextField, TextKind, Tone, WorkingMark,
 };
-pub(crate) use ui::{EmptyLine, NavigationControl};
 
 const SHELL_STYLES: &str = include_str!("../assets/shell.css");
 const UPDATES_LOADING: &str = "Loading updates…";
@@ -70,7 +73,6 @@ const ANSWER_NEWER_RECORDS: &str = "Newer records arrived after this answer.";
 const UPDATE_ANSWER_PROMPT: &str = "Update this answer with the latest records.";
 pub(crate) const SCHEDULE_LOADING: &str = "Loading the schedule…";
 pub(crate) const SCHEDULE_UNAVAILABLE: &str = "Coda couldn’t load the schedule.";
-const SCHEDULE_STALE: &str = "Coda couldn’t refresh the schedule. Showing the last one.";
 const SEARCH_LOADING: &str = "Searching…";
 const SEARCH_UNAVAILABLE: &str = "Coda couldn’t search patients.";
 const SEARCH_NONE: &str = "No patients match.";
@@ -1040,6 +1042,7 @@ fn PhysicianShell(
     // Draft text and the Save mark, per patient workspace and chat.
     let mut composer = use_signal(Composer::default);
     let mut reading = use_signal(|| None::<OpenReading>);
+    let mut open_briefing = use_signal(|| None::<OpenBriefingTarget>);
     let mut focus = use_signal(|| -1i32);
     let mut open_chat = use_signal(|| None::<String>);
     let mut moved = use_signal(|| false);
@@ -1067,11 +1070,40 @@ fn PhysicianShell(
     let chat_resume_slot = use_command_slot();
     let chat_stop_slot = use_command_slot();
     let work_slot = use_command_slot();
+    let workspace_briefings_res = use_resource(move || {
+        let _today = today_attempt();
+        let _workspace = workspace_attempt();
+        let _past_work = past_work_attempt();
+        let open_id = if place() == Place::Workspace {
+            selected()
+        } else {
+            None
+        };
+        let api = client.read().clone();
+        async move {
+            let answer = match &open_id {
+                Some(id) => api
+                    .workspace_briefings(id)
+                    .await
+                    .map(|resp| resp.briefings)
+                    .map_err(|_| ()),
+                None => Ok(Vec::new()),
+            };
+            (open_id, answer)
+        }
+    });
     use_effect(move || {
         let open = workspace_cache.read().clone();
         let showing = place();
-        let allowed =
-            showing == Place::Workspace && open.as_ref().and_then(past_work_copy).is_some();
+        let has_briefings = workspace_briefings_res
+            .read()
+            .as_ref()
+            .is_some_and(|(asked, res)| {
+                *asked == selected() && res.as_ref().is_ok_and(|items| !items.is_empty())
+            });
+        let allowed = showing == Place::Workspace
+            && open.as_ref().is_some_and(|ws| !ws.is_clinic_demographic())
+            && (open.as_ref().and_then(past_work_copy).is_some() || has_briefings);
         if !allowed && past_work_open() {
             past_work_open.set(false);
         }
@@ -1212,6 +1244,7 @@ fn PhysicianShell(
                             forget_workspace_drafts(composer, &client, whoami, &id);
                             if selected.peek().as_deref() == Some(id.as_str()) {
                                 reading.set(None);
+                                open_briefing.set(None);
                                 past_work_open.set(false);
                             }
                         }
@@ -1237,6 +1270,7 @@ fn PhysicianShell(
                             forget_workspace_drafts(composer, &client, whoami, &id);
                             if selected.peek().as_deref() == Some(id.as_str()) {
                                 reading.set(None);
+                                open_briefing.set(None);
                                 past_work_open.set(false);
                             }
                             gone.set(Some(id));
@@ -1578,7 +1612,11 @@ fn PhysicianShell(
         .map(|day| day.time_zone.clone())
         .unwrap_or_else(|| "America/New_York".to_owned());
     let practice_date = format_local_date(&server_now, &practice_zone);
-    let visits = day.map(upcoming_visits).unwrap_or_default();
+    let browser_tz = browser_time_zone(&practice_zone);
+    let today_schedule_rows = day.map(|day| schedule_rows(day, None)).unwrap_or_default();
+    let schedule_freshness = schedule_pane_freshness(day, schedule, &browser_tz);
+    let should_refresh_schedule_source =
+        day.is_some_and(|day| day.source_state.freshness.as_deref() == Some("refresh_failed"));
     let show_schedule = schedule_unanswered(schedule) || day.is_some_and(shows_today_schedule);
     let schedule_empty = day.map(schedule_empty_copy).unwrap_or("").to_owned();
     let need_you = today_state.content().map_or(0, Vec::len);
@@ -1640,13 +1678,19 @@ fn PhysicianShell(
         .and_then(|list| list.as_ref())
         .map(today_lines)
         .unwrap_or_default();
-    let patient_visits = day
+    let patient_schedule_rows = day
         .and_then(|day| {
             selected
                 .read()
                 .as_deref()
-                .map(|id| patient_upcoming_visits(day, id))
+                .map(|id| schedule_rows(day, Some(id)))
         })
+        .unwrap_or_default();
+    let show_patient_schedule =
+        show_schedule && (!patient_schedule_rows.is_empty() || schedule_unanswered(schedule));
+    let patient_briefings = answer_to(&selected(), workspace_briefings_res.read().as_ref())
+        .and_then(|res| res.as_ref().ok())
+        .cloned()
         .unwrap_or_default();
     let recent_read = recent.read();
     // A search answers one query, so an earlier query's rows never stand in for it.
@@ -1734,6 +1778,9 @@ fn PhysicianShell(
             if reading.peek().is_some() {
                 reading.set(None);
             }
+            if open_briefing.peek().is_some() {
+                open_briefing.set(None);
+            }
             if *past_work_open.peek() {
                 past_work_open.set(false);
             }
@@ -1790,6 +1837,46 @@ fn PhysicianShell(
         .content()
         .map(|page| page.rows.clone())
         .unwrap_or_default();
+    let mut retry_schedule = move || {
+        if should_refresh_schedule_source {
+            let api = client.read().clone();
+            spawn(async move {
+                let _ = api.refresh_practice_day().await;
+                *today_attempt.write() += 1;
+                *workspace_attempt.write() += 1;
+            });
+        } else {
+            *today_attempt.write() += 1;
+        }
+    };
+    let mut activate_schedule_visit = move |row: ScheduleVisitRow| match row.activation() {
+        ScheduleVisitActivation::OpenBriefing {
+            workspace_id,
+            briefing_id,
+        } => {
+            reading.set(None);
+            selected.set(Some(workspace_id.clone()));
+            open_briefing.set(Some(OpenBriefingTarget {
+                workspace_id,
+                briefing_id,
+            }));
+            place.set(Place::Workspace);
+            app_collapsed.set(false);
+            search_open.set(false);
+            drawer.set(Drawer::Dismissed);
+            workspace_attempt.set(workspace_attempt() + 1);
+        }
+        ScheduleVisitActivation::OpenPatient { workspace_id } => {
+            open_briefing.set(None);
+            selected.set(Some(workspace_id));
+            place.set(Place::Workspace);
+            app_collapsed.set(false);
+            search_open.set(false);
+            drawer.set(Drawer::Dismissed);
+            workspace_attempt.set(workspace_attempt() + 1);
+        }
+        ScheduleVisitActivation::None => {}
+    };
     let mut open_today_line = move |line: TodayLine| {
         let reading_text = if opens_reader(&line.kind) {
             Some(prose_reading(line.patient.clone(), line.reason.clone()))
@@ -1825,6 +1912,7 @@ fn PhysicianShell(
         if selected().is_none() {
             return;
         }
+        open_briefing.set(None);
         // The new chat is its own draft target, so its composer starts empty.
         open_chat.set(Some(new_chat_id()));
     };
@@ -1883,9 +1971,9 @@ fn PhysicianShell(
                     return;
                 }
                 let rail = if place() == Place::Workspace {
-                    patient_visits.clone()
+                    patient_schedule_rows.clone()
                 } else {
-                    visits.clone()
+                    today_schedule_rows.clone()
                 };
                 let targets = focus_targets(
                     search_open(),
@@ -1928,14 +2016,14 @@ fn PhysicianShell(
                         };
                         match target {
                             FocusTarget::Row(line) => open_today_line(line),
-                            other => open_target(
-                                other,
-                                &mut selected,
-                                &mut place,
-                                &mut search_open,
-                                &mut reading,
-                                &mut workspace_attempt,
-                            ),
+                            FocusTarget::Visit(row) => activate_schedule_visit(row),
+                            FocusTarget::Patient(id) => {
+                                open_briefing.set(None);
+                                selected.set(Some(id));
+                                place.set(Place::Workspace);
+                                search_open.set(false);
+                                workspace_attempt.set(workspace_attempt() + 1);
+                            }
                         }
                     }
                 }
@@ -1948,6 +2036,7 @@ fn PhysicianShell(
                             class: "sidebar-brand",
                             aria_label: "Coda Health",
                             onclick: move |_| {
+                                open_briefing.set(None);
                                 place.set(Place::Today);
                                 drawer.set(Drawer::Dismissed);
                             },
@@ -1985,6 +2074,7 @@ fn PhysicianShell(
                             aria_label: "Open Today",
                             aria_current: (place() == Place::Today).then_some("page"),
                             onclick: move |_| {
+                                open_briefing.set(None);
                                 place.set(Place::Today);
                                 drawer.set(Drawer::Dismissed);
                             },
@@ -1999,6 +2089,7 @@ fn PhysicianShell(
                             class: "sidebar-nav-item",
                             aria_current: (place() == Place::Updates).then_some("page"),
                             onclick: move |_| {
+                                open_briefing.set(None);
                                 place.set(Place::Updates);
                                 drawer.set(Drawer::Dismissed);
                             },
@@ -2053,6 +2144,7 @@ fn PhysicianShell(
                                                 onclick: {
                                                     let id = line.id.clone();
                                                     move |_| {
+                                                        open_briefing.set(None);
                                                         open_chat.set(Some(id.clone()));
                                                         drawer.set(Drawer::Dismissed);
                                                     }
@@ -2087,6 +2179,7 @@ fn PhysicianShell(
                                         RecentRow {
                                             conversation,
                                             on_open: move |(workspace_id, chat_id): (String, String)| {
+                                                open_briefing.set(None);
                                                 requested_chat.set(Some((
                                                     workspace_id.clone(),
                                                     chat_id.clone(),
@@ -2204,10 +2297,12 @@ fn PhysicianShell(
                         TodaySurface {
                             state: today_state.clone(),
                             connections: connections.clone(),
-                            visits: visits.clone(),
+                            schedule_rows: today_schedule_rows.clone(),
                             show_schedule,
                             schedule,
-                            on_schedule_retry: move |_| *today_attempt.write() += 1,
+                            schedule_freshness: schedule_freshness.clone(),
+                            browser_tz: browser_tz.clone(),
+                            on_schedule_retry: move |_| retry_schedule(),
                             schedule_empty: schedule_empty.clone(),
                             schedule_collapsed: schedule_collapsed(),
                             on_schedule_collapsed: move |collapsed| remember(Panel::Schedule, collapsed),
@@ -2217,19 +2312,14 @@ fn PhysicianShell(
                             focused: shown_focus,
                             on_retry: move |_| today_attempt.set(today_attempt() + 1),
                             on_open_patient: move |id: String| {
+                                open_briefing.set(None);
                                 selected.set(Some(id));
                                 place.set(Place::Workspace);
                                 search_open.set(false);
                                 workspace_attempt.set(workspace_attempt() + 1);
                             },
                             on_open_row: move |line: TodayLine| open_today_line(line),
-                            on_open_visit: move |visit: VisitLine| {
-                                let Some(id) = visit.workspace_id.clone() else { return };
-                                selected.set(Some(id));
-                                place.set(Place::Workspace);
-                                search_open.set(false);
-                                workspace_attempt.set(workspace_attempt() + 1);
-                            },
+                            on_activate_visit: move |row: ScheduleVisitRow| activate_schedule_visit(row),
                             on_resume: {
                                 let zone = practice_zone.clone();
                                 move |line: TodayLine| {
@@ -2246,13 +2336,44 @@ fn PhysicianShell(
                             state: updates_state.clone(),
                             on_retry: move |_| *today_attempt.write() += 1,
                             on_open_patient: move |id: String| {
+                                open_briefing.set(None);
                                 selected.set(Some(id));
                                 place.set(Place::Workspace);
                                 workspace_attempt.set(workspace_attempt() + 1);
                             },
                         }
                     },
-                    Place::Workspace => rsx! {
+                    Place::Workspace => {
+                        if let Some(target) = open_briefing().filter(|t| {
+                            selected.read().as_deref() == Some(t.workspace_id.as_str())
+                                && !clinical_dialogs_blocked(
+                                    place(),
+                                    selected.read().as_deref(),
+                                    gone.read().as_deref(),
+                                    cached_workspace.as_ref(),
+                                )
+                        }) {
+                            rsx! {
+                                BriefingWorkspaceView {
+                                    client,
+                                    target,
+                                    browser_tz: browser_tz.clone(),
+                                    server_now: server_now.clone(),
+                                    refresh_tick: workspace_attempt(),
+                                    on_back_today: move |_| {
+                                        open_briefing.set(None);
+                                        place.set(Place::Today);
+                                    },
+                                    on_open_patient_page: move |_| {
+                                        open_briefing.set(None);
+                                    },
+                                    on_open_source: move |chip: SourceChip| {
+                                        reading.set(Some(source_reading(chip)));
+                                    },
+                                }
+                            }
+                        } else {
+                            rsx! {
                         PatientSurface {
                             gone: patient_gone,
                             read: patient_read,
@@ -2264,17 +2385,27 @@ fn PhysicianShell(
                                 today_attempt,
                             },
                             on_go_today: move |_| {
+                                open_briefing.set(None);
                                 selected.set(None);
                                 place.set(Place::Today);
                             },
+                            workspace_id: selected().unwrap_or_default(),
                             name: open_name.clone().unwrap_or_default(),
                             workspace: open_workspace.clone(),
                             rows: patient_rows.clone(),
-                            visits: patient_visits.clone(),
+                            schedule_rows: patient_schedule_rows.clone(),
+                            show_schedule: show_patient_schedule,
+                            schedule_freshness: schedule_freshness.clone(),
+                            browser_tz: browser_tz.clone(),
                             schedule_collapsed: schedule_collapsed(),
                             on_schedule_collapsed: move |collapsed| remember(Panel::Schedule, collapsed),
                             schedule,
-                            on_schedule_retry: move |_| *today_attempt.write() += 1,
+                            on_schedule_retry: move |_| retry_schedule(),
+                            on_activate_visit: move |row: ScheduleVisitRow| activate_schedule_visit(row),
+                            briefings: patient_briefings.clone(),
+                            on_open_briefing: move |target: OpenBriefingTarget| {
+                                open_briefing.set(Some(target));
+                            },
                             focused: shown_focus,
                             chats: chats.clone(),
                             server_now: server_now.clone(),
@@ -2475,7 +2606,8 @@ fn PhysicianShell(
                             feedback_chat: selected().zip(open_chat()).map(|(workspace, chat)| {
                                 feedback::ChatKey { workspace, chat }
                             }),
-                            past_work: open_workspace.as_ref().is_some_and(|open| past_work_copy(open).is_some()),
+                            past_work: open_workspace.as_ref().is_some_and(|open| past_work_copy(open).is_some())
+                                || !patient_briefings.is_empty(),
                             reply_notice: reply_notice(),
                             reply_busy: reply_slot.sending(),
                             reply_command_notice: reply_slot.notice(client),
@@ -2541,6 +2673,8 @@ fn PhysicianShell(
                                 );
                             },
                         }
+                            }
+                        }
                     },
                 }
             }
@@ -2556,6 +2690,7 @@ fn PhysicianShell(
                     editing.set(false);
                 },
                 on_open: move |id: String| {
+                    open_briefing.set(None);
                     selected.set(Some(id));
                     place.set(Place::Workspace);
                     search_open.set(false);
@@ -2599,11 +2734,19 @@ fn PhysicianShell(
             )
         {
             PastWorkDialog {
+                workspace_id: selected().unwrap_or_default(),
                 patient: open_name.clone().unwrap_or_default(),
                 state: past_work_state.clone(),
+                briefings: patient_briefings.clone(),
+                browser_tz: browser_tz.clone(),
                 time_zone: practice_zone.clone(),
                 server_now: server_now.clone(),
                 on_retry: move |_| *past_work_attempt.write() += 1,
+                on_open_briefing: move |target: OpenBriefingTarget| {
+                    reading.set(None);
+                    open_briefing.set(Some(target));
+                    past_work_open.set(false);
+                },
                 on_open_item: move |item: PastWorkItem| {
                     match item.target {
                         PastWorkTarget::Conversation { chat_id } => {
@@ -3521,9 +3664,11 @@ fn CodaOrbDock(
 fn TodaySurface(
     state: TodayView,
     connections: Vec<String>,
-    visits: Vec<VisitLine>,
+    schedule_rows: Vec<ScheduleVisitRow>,
     show_schedule: bool,
     schedule: ReadStage,
+    schedule_freshness: SchedulePaneFreshness,
+    browser_tz: String,
     on_schedule_retry: EventHandler,
     schedule_empty: String,
     schedule_collapsed: bool,
@@ -3535,10 +3680,11 @@ fn TodaySurface(
     on_retry: EventHandler,
     on_open_patient: EventHandler<String>,
     on_open_row: EventHandler<TodayLine>,
-    on_open_visit: EventHandler<VisitLine>,
+    on_activate_visit: EventHandler<ScheduleVisitRow>,
     on_resume: EventHandler<TodayLine>,
     resume_notice: Element,
 ) -> Element {
+    let _ = on_open_patient;
     let words = need_you_words(need_you);
     let scheduled = show_schedule;
     let connections_quiet = connections.is_empty();
@@ -3597,17 +3743,18 @@ fn TodaySurface(
                     }
                 }
                 if show_schedule {
-                    ScheduleRail {
-                        visits: visits.clone(),
-                        title: "Schedule",
+                    ScheduleRailPane {
+                        rows: schedule_rows,
+                        context: RailContext::PracticeToday,
                         read: schedule,
+                        freshness: schedule_freshness,
+                        browser_tz,
                         on_retry: on_schedule_retry,
                         empty: schedule_empty.clone(),
                         collapsed: schedule_collapsed,
                         on_collapsed: on_schedule_collapsed,
-                        name_the_visit: false,
                         focused: visit_focus,
-                        on_open: on_open_visit,
+                        on_activate: on_activate_visit,
                     }
                 }
             }
@@ -3660,72 +3807,6 @@ fn TodayRows(
                                 },
                                 "{TRY_AGAIN}"
                             }
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
-
-#[component]
-fn ScheduleRail(
-    visits: Vec<VisitLine>,
-    title: &'static str,
-    read: ReadStage,
-    on_retry: EventHandler,
-    empty: String,
-    collapsed: bool,
-    on_collapsed: EventHandler<bool>,
-    name_the_visit: bool,
-    focused: Option<usize>,
-    on_open: EventHandler<VisitLine>,
-) -> Element {
-    let count = visits.len();
-    rsx! {
-        ui::RailCard {
-            class: if collapsed { "schedule-rail is-collapsed" } else { "schedule-rail" },
-            aria_label: "{title}",
-            icon: IconName::Calendar,
-            title,
-            count,
-            count_words: "left",
-            collapsed,
-            on_collapsed: move |folded| on_collapsed.call(folded),
-            expand_label: "Show {title}",
-            collapse_label: "Collapse {title}",
-            ReadNotice {
-                stage: read,
-                loading: SCHEDULE_LOADING,
-                stale: SCHEDULE_STALE,
-                unavailable: SCHEDULE_UNAVAILABLE,
-                retry: TRY_AGAIN,
-                on_retry,
-            }
-            if visits.is_empty() && read == ReadStage::Showing {
-                p { class: "schedule-rail-empty", "{empty}" }
-            }
-            for (index, visit) in visits.iter().enumerate() {
-                NavigationRow {
-                    class: if focused == Some(index) {
-                        "schedule-visit is-next is-keyboard-focus"
-                    } else if index == 0 {
-                        "schedule-visit is-next"
-                    } else {
-                        "schedule-visit"
-                    },
-                    onclick: {
-                        let visit = visit.clone();
-                        move |_| on_open.call(visit.clone())
-                    },
-                    aria_label: "Open {visit.patient}",
-                    if let Some(clock) = format_clock(&visit.starts_at, &visit.time_zone) {
-                        time { datetime: "{visit.starts_at}", "{clock}" }
-                    }
-                    strong { if name_the_visit { "{visit.label}" } else { "{visit.patient}" } }
-                    if name_the_visit {
-                        if let Some(cue) = &visit.cue {
-                            span { class: "schedule-visit-preparation", "{cue}" }
                         }
                     }
                 }
@@ -3835,14 +3916,21 @@ fn PatientSurface(
     read: ReadStage,
     reviews_context: patient_reviews_panel::PatientReviewsContext,
     on_go_today: EventHandler,
+    workspace_id: String,
     name: String,
     workspace: Option<PatientWorkspaceResponse>,
     rows: Vec<TodayLine>,
-    visits: Vec<VisitLine>,
+    schedule_rows: Vec<ScheduleVisitRow>,
+    show_schedule: bool,
+    schedule_freshness: SchedulePaneFreshness,
+    browser_tz: String,
     schedule_collapsed: bool,
     on_schedule_collapsed: EventHandler<bool>,
     schedule: ReadStage,
     on_schedule_retry: EventHandler,
+    on_activate_visit: EventHandler<ScheduleVisitRow>,
+    briefings: Vec<BriefingSummaryItemWire>,
+    on_open_briefing: EventHandler<OpenBriefingTarget>,
     focused: Option<i32>,
     chats: ChatView,
     server_now: String,
@@ -3964,13 +4052,13 @@ fn PatientSurface(
         .map(|open| source_lines(open, &server_now))
         .unwrap_or_default();
     let visit_focus = focused.and_then(|index| {
-        if index >= 0 && (index as usize) < visits.len() {
+        if index >= 0 && (index as usize) < schedule_rows.len() {
             Some(index as usize)
         } else {
             None
         }
     });
-    let scheduled = !visits.is_empty();
+    let scheduled = show_schedule;
     let heading_name = demographic
         .as_ref()
         .map(|card| card.display_name.clone())
@@ -4220,9 +4308,9 @@ fn PatientSurface(
                             class: "today-row-open",
                             onclick: {
                                 let heading = heading.clone();
-                                let preparation = visits
+                                let preparation = schedule_rows
                                     .first()
-                                    .and_then(|visit| visit.preparation.clone());
+                                    .and_then(ScheduleVisitRow::preparation_detail);
                                 let ended_cause = run.ended_cause.clone();
                                 move |_| {
                                     let body = preparation
@@ -4247,6 +4335,15 @@ fn PatientSurface(
                     time_zone: open.time_zone.clone().unwrap_or_default(),
                     context: reviews_context,
                     on_open_source,
+                }
+            }
+            if !briefings.is_empty() && !workspace_id.is_empty() {
+                PatientBriefingsSection {
+                    workspace_id: workspace_id.clone(),
+                    briefings,
+                    browser_tz: browser_tz.clone(),
+                    server_now: server_now.clone(),
+                    on_open_briefing,
                 }
             }
             if !segments.is_empty() || synopsis_text.is_some() {
@@ -4497,24 +4594,19 @@ fn PatientSurface(
             }
             }
             }
-            if !visits.is_empty() || schedule_unanswered(schedule) {
-                ScheduleRail {
-                    visits: visits.clone(),
-                    title: "Upcoming visits",
+            if show_schedule {
+                ScheduleRailPane {
+                    rows: schedule_rows,
+                    context: RailContext::PatientUpcoming,
                     read: schedule,
+                    freshness: schedule_freshness,
+                    browser_tz,
                     on_retry: on_schedule_retry,
                     empty: String::new(),
                     collapsed: schedule_collapsed,
                     on_collapsed: on_schedule_collapsed,
-                    name_the_visit: true,
                     focused: visit_focus,
-                    on_open: move |visit: VisitLine| {
-                        let clock = format_clock(&visit.starts_at, &visit.time_zone).unwrap_or_default();
-                        on_read.call((
-                            format!("{} {clock}", visit.label),
-                            visit.preparation.clone().unwrap_or_default(),
-                        ));
-                    },
+                    on_activate: on_activate_visit,
                 }
             }
         }
@@ -4710,11 +4802,15 @@ fn ReaderDialog(reading: OpenReading, on_close: EventHandler) -> Element {
 
 #[component]
 fn PastWorkDialog(
+    workspace_id: String,
     patient: String,
     state: ReadView<Vec<PastWorkItem>>,
+    briefings: Vec<BriefingSummaryItemWire>,
+    browser_tz: String,
     time_zone: String,
     server_now: String,
     on_retry: EventHandler,
+    on_open_briefing: EventHandler<OpenBriefingTarget>,
     on_open_item: EventHandler<PastWorkItem>,
     on_close: EventHandler,
 ) -> Element {
@@ -4734,29 +4830,63 @@ fn PastWorkDialog(
                 on_retry,
             }
             match state.content().cloned() {
-                None => rsx! {},
-                Some(items) if items.is_empty() => rsx! {
+                None if briefings.is_empty() => rsx! {},
+                Some(items) if items.is_empty() && briefings.is_empty() => rsx! {
                     p { class: "past-work-empty", "{PAST_WORK_EMPTY}" }
                 },
-                Some(items) => rsx! {
-                    ui::RowGroup { class: "past-work-items",
-                        for item in items {
-                            li {
-                                ui::ListRow {
-                                    icon: Some(IconName::Message),
-                                    title: item.title.clone(),
-                                    detail: past_work_item_detail(&item, &time_zone, &server_now),
-                                    onclick: {
-                                        let item = item.clone();
-                                        move |_| on_open_item.call(item.clone())
-                                    },
+                maybe_items => {
+                    let items = maybe_items.unwrap_or_default();
+                    rsx! {
+                        ui::RowGroup { class: "past-work-items",
+                            for briefing in briefings {
+                                li {
+                                    ui::ListRow {
+                                        icon: Some(IconName::Calendar),
+                                        title: format!("{} · Visit briefing", briefing.visit_label),
+                                        detail: Some(past_work_briefing_detail(&briefing, &server_now, &browser_tz)),
+                                        onclick: {
+                                            let ws = workspace_id.clone();
+                                            let bid = briefing.briefing_id.clone();
+                                            move |_| {
+                                                on_open_briefing.call(OpenBriefingTarget {
+                                                    workspace_id: ws.clone(),
+                                                    briefing_id: bid.clone(),
+                                                });
+                                            }
+                                        },
+                                    }
+                                }
+                            }
+                            for item in items {
+                                li {
+                                    ui::ListRow {
+                                        icon: Some(IconName::Message),
+                                        title: item.title.clone(),
+                                        detail: past_work_item_detail(&item, &time_zone, &server_now),
+                                        onclick: {
+                                            let item = item.clone();
+                                            move |_| on_open_item.call(item.clone())
+                                        },
+                                    }
                                 }
                             }
                         }
                     }
-                },
+                }
             }
         }
+    }
+}
+
+fn past_work_briefing_detail(
+    briefing: &BriefingSummaryItemWire,
+    server_now: &str,
+    browser_tz: &str,
+) -> String {
+    let (badge, detail) = history_standing_summary(briefing, server_now, browser_tz);
+    match badge {
+        Some((label, _)) => format!("{label} · {detail}"),
+        None => detail,
     }
 }
 
@@ -5000,7 +5130,7 @@ fn ShortcutsDialog(on_close: EventHandler) -> Element {
 #[derive(Clone)]
 enum FocusTarget {
     Row(TodayLine),
-    Visit(VisitLine),
+    Visit(ScheduleVisitRow),
     Patient(String),
 }
 
@@ -5008,7 +5138,7 @@ fn focus_targets(
     search_open: bool,
     place: Place,
     today: &TodayView,
-    visits: &[VisitLine],
+    visits: &[ScheduleVisitRow],
     search_rows: &[physician_wire::PatientSearchRow],
 ) -> Vec<FocusTarget> {
     if search_open {
@@ -5029,50 +5159,6 @@ fn focus_targets(
         targets.extend(visits.iter().cloned().map(FocusTarget::Visit));
     }
     targets
-}
-
-fn open_target(
-    target: FocusTarget,
-    selected: &mut Signal<Option<String>>,
-    place: &mut Signal<Place>,
-    search_open: &mut Signal<bool>,
-    reading: &mut Signal<Option<OpenReading>>,
-    workspace_attempt: &mut Signal<u32>,
-) {
-    match target {
-        FocusTarget::Patient(id) => {
-            selected.set(Some(id));
-            place.set(Place::Workspace);
-            search_open.set(false);
-            workspace_attempt.set(workspace_attempt() + 1);
-        }
-        FocusTarget::Row(line) => {
-            if opens_reader(&line.kind) {
-                reading.set(Some(prose_reading(
-                    line.patient.clone(),
-                    line.reason.clone(),
-                )));
-            }
-            selected.set(Some(line.workspace_id));
-            place.set(Place::Workspace);
-            search_open.set(false);
-            workspace_attempt.set(workspace_attempt() + 1);
-        }
-        FocusTarget::Visit(visit) => {
-            let Some(id) = visit.workspace_id.clone() else {
-                return;
-            };
-            let clock = format_clock(&visit.starts_at, &visit.time_zone).unwrap_or_default();
-            reading.set(Some(prose_reading(
-                format!("{} {clock}", visit.patient),
-                visit.preparation.clone().unwrap_or_default(),
-            )));
-            selected.set(Some(id));
-            place.set(Place::Workspace);
-            search_open.set(false);
-            workspace_attempt.set(workspace_attempt() + 1);
-        }
-    }
 }
 
 /// How the server answered a draft save. Only a validated conflict body

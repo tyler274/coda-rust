@@ -81,19 +81,6 @@ pub struct TodayLine {
     pub resume_run_id: Option<String>,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq)]
-pub struct VisitLine {
-    pub workspace_id: Option<String>,
-    pub patient: String,
-    pub label: String,
-    pub starts_at: String,
-    pub time_zone: String,
-    /// The long preparation sentence, for the reader. The rail uses `cue`.
-    pub preparation: Option<String>,
-    /// The short preparation cue shown on the visit, such as `Preparation failed`.
-    pub cue: Option<String>,
-}
-
 /// One read the page shows: loading, showing, showing with one quiet line and
 /// Retry, or couldn't load with Retry.
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -290,55 +277,13 @@ pub fn schedule_empty_copy(day: &PracticeDayResponse) -> &'static str {
     }
 }
 
-/// Visits still ahead on a usable practice day, next first, in the server's order.
-pub fn upcoming_visits(day: &PracticeDayResponse) -> Vec<VisitLine> {
-    if !matches!(day.source_state.state.as_str(), "usable" | "refreshing") {
-        return Vec::new();
-    }
-    let now = parse_unix(&day.current_time);
-    day.visits
-        .iter()
-        .filter(|visit| {
-            visit.status == "scheduled"
-                && match (&visit.ends_at, now) {
-                    (Some(end), Some(now)) => parse_unix(end).is_none_or(|ends| ends > now),
-                    _ => true,
-                }
-        })
-        .map(|visit| visit_line(day, visit))
-        .collect()
-}
-
-fn visit_line(day: &PracticeDayResponse, visit: &physician_wire::PracticeVisit) -> VisitLine {
-    VisitLine {
-        workspace_id: visit.patient_workspace_id.clone(),
-        patient: visit
-            .patient_display_name
-            .clone()
-            .unwrap_or_else(|| visit.label.clone()),
-        label: visit.label.clone(),
-        starts_at: visit.starts_at.clone(),
-        time_zone: visit
-            .patient_time_zone
-            .clone()
-            .unwrap_or_else(|| day.time_zone.clone()),
-        preparation: visit.preparation.as_ref().and_then(preparation_sentence),
-        cue: visit.preparation.as_ref().and_then(preparation_cue),
-    }
-}
-
-/// Visits still ahead for one patient, in the practice day's order.
-pub fn patient_upcoming_visits(day: &PracticeDayResponse, workspace_id: &str) -> Vec<VisitLine> {
-    upcoming_visits(day)
-        .into_iter()
-        .filter(|visit| visit.workspace_id.as_deref() == Some(workspace_id))
-        .collect()
-}
-
 /// The short cue on a visit. Scheduled and not-yet-prepared stays quiet.
 pub fn preparation_cue(preparation: &VisitPreparation) -> Option<String> {
     if matches!(preparation.state.as_str(), "scheduled" | "pending") {
         return None;
+    }
+    if preparation.state == "preparing" {
+        return Some("Preparing visit".to_owned());
     }
     let label = if let Some(attempt) = &preparation.last_attempt {
         match attempt.outcome.as_str() {
@@ -350,7 +295,6 @@ pub fn preparation_cue(preparation: &VisitPreparation) -> Option<String> {
         }
     } else {
         match preparation.state.as_str() {
-            "preparing" => "Preparing visit",
             "prepared" => "Briefing ready",
             "could_not_prepare" => "Couldn’t prepare",
             "unavailable" => "Preparation unavailable",
@@ -358,31 +302,6 @@ pub fn preparation_cue(preparation: &VisitPreparation) -> Option<String> {
         }
     };
     Some(label.to_owned())
-}
-
-pub fn preparation_sentence(preparation: &VisitPreparation) -> Option<String> {
-    if let Some(attempt) = &preparation.last_attempt {
-        return Some(
-            match attempt.outcome.as_str() {
-                "retained" => "Visit preparation was incomplete. No new briefing was completed.",
-                "failed" => "Visit preparation failed. No new briefing was completed.",
-                "cancelled" => "Visit preparation was stopped. No new briefing was completed.",
-                "interrupted" => "Visit preparation was interrupted and has not resumed.",
-                _ => return None,
-            }
-            .to_owned(),
-        );
-    }
-    Some(
-        match preparation.state.as_str() {
-            "scheduled" => "The preparation window has not opened yet.",
-            "pending" => "This visit has not been prepared.",
-            "could_not_prepare" => "Coda couldn’t complete the pre-visit review.",
-            "unavailable" => "This appointment is not connected to an available Coda patient.",
-            _ => return None,
-        }
-        .to_owned(),
-    )
 }
 
 pub fn work_heading(run: &AutomationRun) -> Option<String> {
@@ -1744,26 +1663,31 @@ mod tests {
         ))
         .unwrap();
         assert!(shows_today_schedule(&day));
-        let ahead = upcoming_visits(&day);
+        let ahead = crate::schedule_briefing::schedule_rows(&day, None);
         assert_eq!(ahead.len(), 1);
         assert_eq!(ahead[0].patient, "Mary Louis");
         assert_eq!(
-            format_clock(&ahead[0].starts_at, &ahead[0].time_zone).as_deref(),
+            format_clock(&ahead[0].starts_at, &day.time_zone).as_deref(),
             Some("3:30 PM")
         );
         let mary = "pw-39e51534-6ce4-43cf-b5f8-7c1ca6252d8e";
         let jake = "pw-82c44e9b-58c0-4af1-bd21-771bf77e101d";
-        assert!(patient_upcoming_visits(&day, jake).is_empty());
-        let ahead_for_mary = patient_upcoming_visits(&day, mary);
+        assert!(crate::schedule_briefing::schedule_rows(&day, Some(jake)).is_empty());
+        let ahead_for_mary = crate::schedule_briefing::schedule_rows(&day, Some(mary));
         assert_eq!(ahead_for_mary.len(), 1);
         assert_eq!(ahead_for_mary[0].label, "Follow-up visit");
-        assert_eq!(ahead_for_mary[0].cue.as_deref(), Some("Preparation failed"));
         assert_eq!(
-            ahead_for_mary[0].preparation.as_deref(),
-            Some("Visit preparation failed. No new briefing was completed.")
+            ahead_for_mary[0].state,
+            crate::schedule_briefing::ScheduleVisitState::Failed {
+                cue: "Preparation failed".to_owned(),
+            }
         );
         assert_eq!(
-            format_clock(&ahead_for_mary[0].starts_at, &ahead_for_mary[0].time_zone).as_deref(),
+            ahead_for_mary[0].preparation_detail().as_deref(),
+            Some("Preparation failed")
+        );
+        assert_eq!(
+            format_clock(&ahead_for_mary[0].starts_at, &day.time_zone).as_deref(),
             Some("3:30 PM")
         );
         let workspace: PatientWorkspaceResponse = serde_json::from_str(include_str!(
@@ -2014,7 +1938,7 @@ mod tests {
         )
         .unwrap();
         assert!(shows_today_schedule(&day));
-        assert!(upcoming_visits(&day).is_empty());
+        assert!(crate::schedule_briefing::schedule_rows(&day, None).is_empty());
         assert_eq!(schedule_empty_copy(&day), "No visits scheduled today.");
         let gone: PracticeDayResponse = serde_json::from_str(
             r#"{"current_time":"2026-08-30T11:00:00.000Z","time_zone":"America/New_York","source_state":{"state":"unavailable"},"visits":[]}"#,
