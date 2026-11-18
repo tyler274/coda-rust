@@ -1,0 +1,92 @@
+{
+  "branch": "tyler-eng-309-2-concerns-postgres-suite",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC1",
+      "label": "Raise, revise, and retire concerns across restart and Updates readback",
+      "kind": "run",
+      "revision": "206fe979e86332eacbc23b424c291aaa7e021af7",
+      "dirty": false,
+      "recorded": "2026-11-18T20:28:42+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "local-product",
+        "--test",
+        "concerns_postgres",
+        "raise_revise_and_retire",
+        "--",
+        "--ignored"
+      ],
+      "expect": "[1-9][0-9]* passed; 0 failed",
+      "expect_fail": false,
+      "files": [
+        "01-Raise-revise-and-retire-concerns-across-restart-.log"
+      ],
+      "seconds": 22.1,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true
+    },
+    {
+      "id": 2,
+      "claim": "AC2",
+      "label": "Two-physician shared panel Done clearing and evaluation feedback",
+      "kind": "run",
+      "revision": "206fe979e86332eacbc23b424c291aaa7e021af7",
+      "dirty": false,
+      "recorded": "2026-11-18T20:29:04+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "local-product",
+        "--test",
+        "concerns_postgres",
+        "shared_patient_done",
+        "--",
+        "--ignored"
+      ],
+      "expect": "[1-9][0-9]* passed; 0 failed",
+      "expect_fail": false,
+      "files": [
+        "02-Two-physician-shared-panel-Done-clearing-and-eva.log"
+      ],
+      "seconds": 2.9,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true
+    },
+    {
+      "id": 3,
+      "claim": "AC3",
+      "label": "Full concerns_postgres suite including once-only receipts and panel refusal",
+      "kind": "run",
+      "revision": "206fe979e86332eacbc23b424c291aaa7e021af7",
+      "dirty": false,
+      "recorded": "2026-11-18T20:29:07+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "local-product",
+        "--test",
+        "concerns_postgres",
+        "--",
+        "--ignored",
+        "--test-threads=1"
+      ],
+      "expect": "[1-9][0-9]* passed; 0 failed",
+      "expect_fail": false,
+      "files": [
+        "03-Full-concerns_postgres-suite-including-once-only.log"
+      ],
+      "seconds": 5.1,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true
+    }
+  ]
+}
