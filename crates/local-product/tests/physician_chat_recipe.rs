@@ -34,17 +34,18 @@ use local_product::{
         Accepted, Authority, Input, PhysicianHost, PublicationTransaction, Scope, ShownSteps,
         Store, WorkStatus, async_trait,
         chat_operations::{
-            ChatStartError, DispatchCheckStanding, PatientMemoryStanding, REFRESH_SOURCES_TOOL,
-            RETRIEVE_PATIENT_WORK_TOOL, RecordLimit, RecordLimitKind,
+            ChatStartError, DispatchCheckStanding, PatientMemoryStanding, PriorWorkKind,
+            REFRESH_SOURCES_TOOL, RETRIEVE_PATIENT_WORK_TOOL, RecordLimit, RecordLimitKind,
             SourceAdapterRefreshOperation,
         },
         concerns::{CONCERN_TOOL, ConcernStanding, ConcernUrgency, WorkspaceAccess},
         dispatch::{PatientSourceChecker, SourceCheckError},
         engine::{
-            self, Invocation, Item, Turn,
+            self, Event, EventKind, Invocation, Item, Product, Turn,
             recipe::{Observer, Provider, Request},
         },
-        history::HistoryOutcome,
+        history::{HistoryOutcome, HistorySegment, TurnAuthor},
+        jobs::{Assignment, PracticeJobHost, PracticeJobKind, PracticeScope},
         memory::{self, MemoryPath, PatientKey},
         sources::SourcePull,
     },
@@ -1739,4 +1740,1184 @@ async fn chat_operations_execute_persist_refuse_failed_saves_and_enforce_workspa
         .await
         .expect_err("revoked panel access must fail assert_current");
     assert!(matches!(run_err, engine::Failure::Host(_)), "{run_err}");
+}
+
+#[tokio::test]
+#[ignore = "requires explicit local Postgres"]
+async fn later_conversation_uses_earlier_memory_correction_and_retrieves_earlier_work() {
+    let (store, auth, _url) = setup_stores().await;
+    let practice = format!("practice-seq-{}", uuid::Uuid::new_v4().simple());
+    let (physician, _token, session_hash) = invite_and_sign_in(&auth, &practice, "dr-lin").await;
+    let patient = synthetic_patient("syn-elena-4", "Elena Morales", "1961-04-19", "MRN-10482");
+    let workspace = workspace_id("synthetic-clinic-ehr", &patient.source_patient_id);
+    auth.register_patient(&practice, &workspace).await.unwrap();
+    auth.set_membership(&physician, &workspace, Membership::Allowed)
+        .await
+        .unwrap();
+
+    let rx_metformin = readable_chart_record(
+        &workspace,
+        "rev-1",
+        "2026-09-10",
+        "Metformin 500 mg oral tablet",
+        "Chart prescription: Metformin 500 mg orally twice daily.",
+        json!({
+            "resourceType": "MedicationRequest",
+            "id": "med-metformin-2026-09",
+            "dosage": "500 mg twice daily"
+        }),
+    );
+    store
+        .record_chart(
+            &workspace,
+            &[rx_metformin],
+            &SourcePull {
+                source_id: "synthetic-clinic-ehr".into(),
+                source_label: "Synthetic Clinic EHR".into(),
+                patient: patient.clone(),
+                pulled_at: Some(1_762_900_300),
+            },
+        )
+        .await
+        .unwrap();
+
+    // Seed an unrelated clinical summary memory page to verify non-destructive updates.
+    let seed_scope = Scope {
+        practice: practice.clone(),
+        physician: physician.physician_id.clone(),
+        workspace: workspace.clone(),
+        chat: "chat-seed".into(),
+    };
+    memory::tools::MemoryTool::Edit
+        .execute(
+            &store,
+            &seed_scope,
+            &json!({
+                "path": "summary.md",
+                "edits": [{
+                    "append": {
+                        "text": "Beta-lactam allergy: childhood maculopapular rash to amoxicillin; tolerates cefazolin."
+                    }
+                }]
+            }),
+            || Ok(memory::NoteOrigin {
+                work: "work-bg-1".into(),
+                call: "seed-allergy-summary".into(),
+                message: "msg-bg-1".into(),
+            }),
+        )
+        .await
+        .unwrap();
+
+    // Also run a real completed practice background job so Conversation 2 can retrieve it.
+    let skills = load_skills();
+    let roles = distinct_model_roles();
+    let bg_scope = PracticeScope {
+        practice: practice.clone(),
+        workspace: workspace.clone(),
+        job_id: "job-initial-understanding".into(),
+    };
+    let bg_assignment = Assignment::synthetic_patient_stub(&workspace, &skills).unwrap();
+    store
+        .accept_practice_job(&bg_scope, &bg_assignment, &roles, &skills, &auth)
+        .await
+        .unwrap();
+    let bg_claim = store
+        .claim_practice_job(&bg_scope, 60, &auth)
+        .await
+        .unwrap()
+        .unwrap();
+
+    struct BackgroundSummaryProvider;
+    impl Provider for BackgroundSummaryProvider {
+        async fn exchange(
+            &mut self,
+            _: &Request,
+            _: &engine::Cancellation,
+            _: &engine::RunLimits,
+            _: &mut dyn Observer,
+        ) -> Result<Turn, engine::Cause> {
+            Ok(Turn {
+                items: vec![Item::assistant(
+                    "Initial chart understanding: Type 2 diabetes with chart prescription for metformin 500 mg twice daily (2026-09-10).",
+                )],
+                receipt: json!({"bg": 1}),
+                usage: Default::default(),
+            })
+        }
+    }
+    let mut bg_host = PracticeJobHost {
+        store: store.clone(),
+        claim: bg_claim,
+        authority: &auth,
+    };
+    bg_host
+        .run(
+            &mut BackgroundSummaryProvider,
+            engine::RunLimits::default(),
+            &engine::Cancellation::default(),
+        )
+        .await
+        .unwrap();
+
+    // Conversation 1 (`chat-1`): Physician supplies dosing correction -> saved in `patient_memory`.
+    let chat1_scope = Scope {
+        practice: practice.clone(),
+        physician: physician.physician_id.clone(),
+        workspace: workspace.clone(),
+        chat: "chat-1-metformin-correction".into(),
+    };
+    let chat1_recipe = ChatAssignment::for_patient(
+        chat1_scope.clone(),
+        store.patient_starting_context(&chat1_scope).await.unwrap(),
+    )
+    .recipe(&roles, &skills);
+    store
+        .start_chat_authorized(
+            &chat1_scope,
+            &Input {
+                key: "cmd-chat1-1".into(),
+                text: "Elena dropped her morning metformin because of GI upset and is taking 500 mg once daily with dinner now. Please note that and check her chart prescription.".into(),
+                timezone: "America/Los_Angeles".into(),
+                scenario: None,
+            },
+            session_hash.clone(),
+            &skills,
+            &chat1_recipe,
+            &mut PostgresWorkspaceAuthority,
+        )
+        .await
+        .unwrap();
+
+    struct Chat1Provider {
+        turn: usize,
+    }
+    impl Provider for Chat1Provider {
+        async fn exchange(
+            &mut self,
+            request: &Request,
+            _: &engine::Cancellation,
+            _: &engine::RunLimits,
+            _: &mut dyn Observer,
+        ) -> Result<Turn, engine::Cause> {
+            self.turn += 1;
+            match self.turn {
+                1 => Ok(Turn {
+                    items: vec![
+                        Item::Call(Invocation {
+                            id: "read-rx".into(),
+                            name: READ_TOOL.into(),
+                            arguments: json!({
+                                "references": [{
+                                    "candidate_id": "med-metformin-2026-09",
+                                    "revision": "rev-1",
+                                    "cursor": null
+                                }],
+                                "max_result_bytes": 16384
+                            })
+                            .to_string(),
+                        }),
+                        Item::Call(Invocation {
+                            id: "record-metformin-correction".into(),
+                            name: "add_patient_memory_note".into(),
+                            arguments: json!({
+                                "text": "Taking metformin 500 mg once daily with dinner after stopping morning dose for GI upset (reported by physician).",
+                                "quote": null
+                            })
+                            .to_string(),
+                        }),
+                    ],
+                    receipt: json!({"chat": 1, "turn": 1}),
+                    usage: Default::default(),
+                }),
+                2 => {
+                    let outputs = materialized_outputs(request);
+                    let mem_saved: Value = serde_json::from_str(
+                        outputs.get("record-metformin-correction").unwrap(),
+                    )
+                    .unwrap();
+                    assert_eq!(mem_saved["note"], "N1");
+                    assert!(mem_saved["path"].as_str().unwrap().starts_with("log/"));
+                    Ok(Turn {
+                        items: vec![Item::Call(Invocation {
+                            id: "finish-chat1-1".into(),
+                            name: local_product::physician_sources::citations::FINISH_TOOL.into(),
+                            arguments: json!({
+                                "answer": "Noted that Elena is taking metformin 500 mg once daily with dinner due to GI upset, whereas the September 10, 2026 chart prescription still lists 500 mg twice daily [S1]. Consider switching to extended-release metformin if glycemic control requires uptitration.",
+                                "quotes": [],
+                                "descriptions": [],
+                                "basis": "Synthetic Clinic EHR Metformin prescription (2026-09-10) [S1] and physician-reported dosing update saved to patient memory.",
+                                "cites_none": false
+                            })
+                            .to_string(),
+                        })],
+                        receipt: json!({"chat": 1, "turn": 2}),
+                        usage: Default::default(),
+                    })
+                }
+                other => panic!("unexpected chat1 turn {other}"),
+            }
+        }
+    }
+
+    let chat1_claim = store.claim(&chat1_scope, 60).await.unwrap().unwrap();
+    let mut chat1_host = PhysicianHost {
+        store: store.clone(),
+        claim: chat1_claim,
+        authority: PostgresWorkspaceAuthority,
+        shown_steps: ShownSteps::new(()),
+    };
+    chat1_host
+        .run(
+            &mut Chat1Provider { turn: 0 },
+            engine::RunLimits::default(),
+            &engine::Cancellation::default(),
+        )
+        .await
+        .unwrap();
+
+    // Verify saved memory files between Conversation 1 and Conversation 2.
+    let mem_key = PatientKey::for_rounds(&practice, &workspace).unwrap();
+    let listing = store.list_memory(&mem_key).await.unwrap();
+    assert!(listing.summary.is_some());
+    assert_eq!(listing.log_days.len(), 1);
+    let summary_text = match store
+        .read_memory(&mem_key, &MemoryPath::Summary, None)
+        .await
+        .unwrap()
+    {
+        memory::FileRead::Version { markdown, .. } | memory::FileRead::Log { markdown } => markdown,
+    };
+    assert!(
+        summary_text.contains("childhood maculopapular rash to amoxicillin"),
+        "unrelated allergy memory must remain intact: {summary_text}"
+    );
+    let log_text = match store
+        .read_memory(&mem_key, &MemoryPath::Log(listing.log_days[0]), None)
+        .await
+        .unwrap()
+    {
+        memory::FileRead::Log { markdown } | memory::FileRead::Version { markdown, .. } => markdown,
+    };
+    assert!(
+        log_text.contains("Taking metformin 500 mg once daily with dinner"),
+        "expected metformin correction in log: {log_text}"
+    );
+
+    // Conversation 2 (`chat-2`): Starts with the saved memory summary + log days in starting context
+    // and retrieves both `chat-1` and `job-initial-understanding`.
+    let chat2_scope = Scope {
+        practice: practice.clone(),
+        physician: physician.physician_id.clone(),
+        workspace: workspace.clone(),
+        chat: "chat-2-followup".into(),
+    };
+    let chat2_starting = store.patient_starting_context(&chat2_scope).await.unwrap();
+    match &chat2_starting.memory_standing {
+        PatientMemoryStanding::Available {
+            summary_markdown,
+            log_days,
+            ..
+        } => {
+            assert!(
+                summary_markdown
+                    .as_deref()
+                    .unwrap_or("")
+                    .contains("amoxicillin")
+            );
+            assert_eq!(log_days.len(), 1);
+        }
+        other => panic!("expected available memories, got {other:?}"),
+    }
+    assert!(chat2_starting.recent_work.iter().any(|w| matches!(
+        &w.target,
+        PriorWorkKind::Conversation { chat_id } if chat_id == "chat-1-metformin-correction"
+    )));
+    assert!(chat2_starting.recent_work.iter().any(|w| matches!(
+        &w.target,
+        PriorWorkKind::BackgroundJob { job_id, job_kind }
+            if job_id == "job-initial-understanding"
+                && *job_kind == PracticeJobKind::InitialUnderstanding
+    )));
+
+    let chat2_recipe =
+        ChatAssignment::for_patient(chat2_scope.clone(), chat2_starting).recipe(&roles, &skills);
+    store
+        .start_chat_authorized(
+            &chat2_scope,
+            &Input {
+                key: "cmd-chat2-1".into(),
+                text:
+                    "Where did we land on Elena's metformin dose compared with our initial review?"
+                        .into(),
+                timezone: "America/Los_Angeles".into(),
+                scenario: None,
+            },
+            session_hash,
+            &skills,
+            &chat2_recipe,
+            &mut PostgresWorkspaceAuthority,
+        )
+        .await
+        .unwrap();
+
+    struct Chat2Provider {
+        turn: usize,
+    }
+    impl Provider for Chat2Provider {
+        async fn exchange(
+            &mut self,
+            request: &Request,
+            _: &engine::Cancellation,
+            _: &engine::RunLimits,
+            _: &mut dyn Observer,
+        ) -> Result<Turn, engine::Cause> {
+            self.turn += 1;
+            match self.turn {
+                1 => {
+                    let seed_text = request
+                        .items
+                        .iter()
+                        .filter_map(|item| match item {
+                            Item::Message { text, .. } | Item::Feedback { text } => {
+                                Some(text.as_str())
+                            }
+                            _ => None,
+                        })
+                        .collect::<Vec<_>>()
+                        .join("\n");
+                    assert!(
+                        seed_text.contains("- log days:"),
+                        "chat-2 starting context must list saved log day: {seed_text}"
+                    );
+                    assert!(
+                        seed_text.contains(
+                            "Beta-lactam allergy: childhood maculopapular rash to amoxicillin"
+                        ),
+                        "chat-2 starting context must preserve unrelated memory: {seed_text}"
+                    );
+                    assert!(
+                        seed_text.contains("chat-1-metformin-correction"),
+                        "chat-2 starting context must reference earlier conversation: {seed_text}"
+                    );
+
+                    Ok(Turn {
+                        items: vec![
+                            Item::Call(Invocation {
+                                id: "search-metformin-log".into(),
+                                name: "search_patient_memory".into(),
+                                arguments: json!({"query": "metformin"}).to_string(),
+                            }),
+                            Item::Call(Invocation {
+                                id: "list-work".into(),
+                                name: RETRIEVE_PATIENT_WORK_TOOL.into(),
+                                arguments: json!({
+                                    "operation": "list",
+                                    "limit": 10
+                                })
+                                .to_string(),
+                            }),
+                            Item::Call(Invocation {
+                                id: "open-chat-1".into(),
+                                name: RETRIEVE_PATIENT_WORK_TOOL.into(),
+                                arguments: json!({
+                                    "operation": "read_conversation",
+                                    "chat_id": "chat-1-metformin-correction"
+                                })
+                                .to_string(),
+                            }),
+                            Item::Call(Invocation {
+                                id: "open-bg-job".into(),
+                                name: RETRIEVE_PATIENT_WORK_TOOL.into(),
+                                arguments: json!({
+                                    "operation": "read_background_job",
+                                    "job_id": "job-initial-understanding"
+                                })
+                                .to_string(),
+                            }),
+                        ],
+                        receipt: json!({"chat": 2, "turn": 1}),
+                        usage: Default::default(),
+                    })
+                }
+                2 => {
+                    let outputs = materialized_outputs(request);
+                    let search_out: Value =
+                        serde_json::from_str(outputs.get("search-metformin-log").unwrap()).unwrap();
+                    let results = search_out["results"].as_array().unwrap();
+                    assert!(
+                        results.iter().any(|hit| {
+                            hit["text"]
+                                .as_str()
+                                .unwrap_or("")
+                                .contains("500 mg once daily with dinner")
+                        }),
+                        "chat-2 search must find chat-1 metformin correction: {search_out}"
+                    );
+
+                    let list_out: Value =
+                        serde_json::from_str(outputs.get("list-work").unwrap()).unwrap();
+                    assert_eq!(list_out["outcome"], "available");
+                    assert!(!list_out["past_work"].as_array().unwrap().is_empty());
+                    assert_eq!(list_out["background_jobs"].as_array().unwrap().len(), 1);
+
+                    let prev_chat: Value =
+                        serde_json::from_str(outputs.get("open-chat-1").unwrap()).unwrap();
+                    assert_eq!(prev_chat["outcome"], "available");
+                    assert_eq!(prev_chat["chat_id"], "chat-1-metformin-correction");
+                    assert!(
+                        prev_chat["turns"][1]["text"]
+                            .as_str()
+                            .unwrap()
+                            .contains("extended-release metformin")
+                    );
+
+                    let bg_job: Value =
+                        serde_json::from_str(outputs.get("open-bg-job").unwrap()).unwrap();
+                    assert_eq!(bg_job["outcome"], "available");
+                    assert_eq!(bg_job["job_id"], "job-initial-understanding");
+                    assert!(
+                        bg_job["result"]["output_text"]
+                            .as_str()
+                            .unwrap()
+                            .contains("Initial chart understanding")
+                    );
+
+                    Ok(Turn {
+                        items: vec![Item::Call(Invocation {
+                            id: "finish-chat2-1".into(),
+                            name: local_product::physician_sources::citations::FINISH_TOOL.into(),
+                            arguments: json!({
+                                "answer": "In our earlier conversation, you reported that Elena is taking metformin 500 mg once daily with dinner after stopping the morning dose for GI upset (saved physician update), whereas the initial chart review reflected the September 10, 2026 EHR prescription for 500 mg twice daily, and we discussed extended-release metformin if uptitration is needed.",
+                                "quotes": [],
+                                "descriptions": [],
+                                "basis": "Saved physician memory correction (mem-metformin-evening-only), earlier conversation chat-1-metformin-correction, and initial chart understanding job-initial-understanding.",
+                                "cites_none": true
+                            })
+                            .to_string(),
+                        })],
+                        receipt: json!({"chat": 2, "turn": 2}),
+                        usage: Default::default(),
+                    })
+                }
+                other => panic!("unexpected chat2 turn {other}"),
+            }
+        }
+    }
+
+    let chat2_claim = store.claim(&chat2_scope, 60).await.unwrap().unwrap();
+    let mut chat2_host = PhysicianHost {
+        store: store.clone(),
+        claim: chat2_claim,
+        authority: PostgresWorkspaceAuthority,
+        shown_steps: ShownSteps::new(()),
+    };
+    chat2_host
+        .run(
+            &mut Chat2Provider { turn: 0 },
+            engine::RunLimits::default(),
+            &engine::Cancellation::default(),
+        )
+        .await
+        .unwrap();
+
+    let chat2_saved = store
+        .reopen_conversation(&chat2_scope)
+        .await
+        .unwrap()
+        .unwrap();
+    assert_eq!(chat2_saved.outcome, HistoryOutcome::Answered);
+    assert!(
+        chat2_saved.turns[1]
+            .raw_text
+            .contains("500 mg once daily with dinner")
+    );
+}
+
+#[tokio::test]
+#[ignore = "requires explicit local Postgres"]
+async fn synthetic_patient_end_to_end_question_saves_answer_and_opens_citations() {
+    let (store, auth, url) = setup_stores().await;
+    let practice = format!("practice-e2e-{}", uuid::Uuid::new_v4().simple());
+    let (physician, _token, session_hash) = invite_and_sign_in(&auth, &practice, "dr-chen").await;
+    let patient = synthetic_patient("syn-samuel-5", "Samuel Okafor", "1958-07-23", "MRN-55204");
+    let workspace = workspace_id("synthetic-clinic-ehr", &patient.source_patient_id);
+    auth.register_patient(&practice, &workspace).await.unwrap();
+    auth.set_membership(&physician, &workspace, Membership::Allowed)
+        .await
+        .unwrap();
+
+    let renal_lab = readable_chart_record(
+        &workspace,
+        "rev-3",
+        "2026-11-08",
+        "Renal Function Panel",
+        "Serum creatinine 1.42 mg/dL, eGFR 44 mL/min/1.73 m2, Urine ACR 180 mg/g on 2026-11-08.",
+        json!({
+            "resourceType": "Observation",
+            "id": "lab-renal-2026-11-08",
+            "creatinine_mg_dL": 1.42,
+            "egfr_mL_min": 44,
+            "uacr_mg_g": 180
+        }),
+    );
+    let empagliflozin = readable_chart_record(
+        &workspace,
+        "rev-1",
+        "2026-10-01",
+        "Empagliflozin 10 mg oral tablet",
+        "Empagliflozin 10 mg orally once daily (active, started 2026-10-01).",
+        json!({
+            "resourceType": "MedicationRequest",
+            "id": "med-empagliflozin-2026-10-01",
+            "medication": "Empagliflozin 10 mg oral tablet",
+            "status": "active"
+        }),
+    );
+    store
+        .record_chart(
+            &workspace,
+            &[renal_lab, empagliflozin],
+            &SourcePull {
+                source_id: "synthetic-clinic-ehr".into(),
+                source_label: "Synthetic Clinic EHR".into(),
+                patient,
+                pulled_at: Some(1_762_901_000),
+            },
+        )
+        .await
+        .unwrap();
+
+    let scope = Scope {
+        practice: practice.clone(),
+        physician: physician.physician_id.clone(),
+        workspace: workspace.clone(),
+        chat: "chat-synthetic-e2e-ac5".into(),
+    };
+    let skills = load_skills();
+    let roles = distinct_model_roles();
+    let recipe = ChatAssignment::for_patient(
+        scope.clone(),
+        store.patient_starting_context(&scope).await.unwrap(),
+    )
+    .recipe(&roles, &skills);
+
+    store
+        .start_chat_authorized(
+            &scope,
+            &Input {
+                key: "cmd-ac5-1".into(),
+                text: "Should Samuel continue empagliflozin given his November 2026 kidney labs?"
+                    .into(),
+                timezone: "America/Los_Angeles".into(),
+                scenario: None,
+            },
+            session_hash,
+            &skills,
+            &recipe,
+            &mut PostgresWorkspaceAuthority,
+        )
+        .await
+        .unwrap();
+
+    struct EndToEndSyntheticProvider {
+        turn: usize,
+    }
+    impl Provider for EndToEndSyntheticProvider {
+        async fn exchange(
+            &mut self,
+            _: &Request,
+            _: &engine::Cancellation,
+            _: &engine::RunLimits,
+            _: &mut dyn Observer,
+        ) -> Result<Turn, engine::Cause> {
+            self.turn += 1;
+            match self.turn {
+                1 => Ok(Turn {
+                    items: vec![Item::Call(Invocation {
+                        id: "search-samuel".into(),
+                        name: SEARCH_TOOL.into(),
+                        arguments: json!({"query": "", "record_type": null, "after": null})
+                            .to_string(),
+                    })],
+                    receipt: json!({"turn": 1}),
+                    usage: Default::default(),
+                }),
+                2 => Ok(Turn {
+                    items: vec![Item::Call(Invocation {
+                        id: "read-samuel".into(),
+                        name: READ_TOOL.into(),
+                        arguments: json!({
+                            "references": [
+                                {
+                                    "candidate_id": "lab-renal-2026-11-08",
+                                    "revision": "rev-3",
+                                    "cursor": null
+                                },
+                                {
+                                    "candidate_id": "med-empagliflozin-2026-10-01",
+                                    "revision": "rev-1",
+                                    "cursor": null
+                                }
+                            ],
+                            "max_result_bytes": 16384
+                        })
+                        .to_string(),
+                    })],
+                    receipt: json!({"turn": 2}),
+                    usage: Default::default(),
+                }),
+                3 => Ok(Turn {
+                    items: vec![Item::Call(Invocation {
+                            id: "finish-samuel-1".into(),
+                            name: local_product::physician_sources::citations::FINISH_TOOL.into(),
+                            arguments: json!({
+                                "answer": "His November 8, 2026 renal panel shows eGFR 44 mL/min/1.73 m2 with persistent albuminuria (urine ACR 180 mg/g) [S1], well above the continuation threshold for renoprotection, so continue Samuel's empagliflozin 10 mg once daily [S2].",
+                                "quotes": [{"label": "S1", "quote": "eGFR 44 mL/min/1.73 m2"}, {"label": "S2", "quote": "Empagliflozin 10 mg orally once daily"}],
+                                "descriptions": [],
+                                "basis": "Synthetic Clinic EHR Renal Function Panel (2026-11-08) [S1] and active empagliflozin 10 mg order (2026-10-01) [S2]. No pre-initiation baseline creatinine prior to October 2026 is present in the chart.",
+                                "cites_none": false
+                            })
+                            .to_string(),
+                        })],
+                    receipt: json!({"turn": 3}),
+                    usage: Default::default(),
+                }),
+                other => panic!("unexpected turn {other}"),
+            }
+        }
+    }
+
+    let claim = store.claim(&scope, 60).await.unwrap().unwrap();
+    let mut host = PhysicianHost {
+        store,
+        claim,
+        authority: PostgresWorkspaceAuthority,
+        shown_steps: ShownSteps::new(()),
+    };
+    host.run(
+        &mut EndToEndSyntheticProvider { turn: 0 },
+        engine::RunLimits::default(),
+        &engine::Cancellation::default(),
+    )
+    .await
+    .unwrap();
+    drop(host);
+
+    // Reopen from a brand-new database connection pool and inspect the saved answer + opened citations.
+    let fresh_store = Store::connect(&url).await.unwrap();
+    let reopened = fresh_store
+        .reopen_conversation(&scope)
+        .await
+        .unwrap()
+        .expect("saved synthetic conversation reopens");
+    assert_eq!(reopened.outcome, HistoryOutcome::Answered);
+    assert_eq!(reopened.turns.len(), 2);
+    assert_eq!(reopened.turns[0].author, TurnAuthor::Physician);
+    assert_eq!(
+        reopened.turns[1].author,
+        TurnAuthor::Assistant { partial: false }
+    );
+    assert!(!reopened.turns[1].newer_records);
+    assert!(reopened.turns[1].basis.is_some());
+
+    let citations: Vec<_> = reopened.turns[1]
+        .segments
+        .iter()
+        .filter_map(|segment| match segment {
+            HistorySegment::Citation {
+                source_key,
+                number,
+                label,
+                quote,
+            } => Some((source_key.clone(), *number, label.clone(), quote.clone())),
+            HistorySegment::Text { .. } => None,
+        })
+        .collect();
+    assert_eq!(citations.len(), 2, "both [2] and [1] citations resolve");
+
+    for (source_key, number, label, quote) in &citations {
+        let opened = reopened
+            .sources
+            .get(source_key)
+            .unwrap_or_else(|| panic!("missing opened citation {source_key}"));
+        assert_eq!(opened.number, *number);
+        assert_eq!(opened.source_label, "Synthetic Clinic EHR");
+        assert!(!label.trim().is_empty());
+        assert!(!quote.trim().is_empty());
+        assert!(!opened.body.trim().is_empty());
+        assert!(!opened.raw_content.trim().is_empty());
+    }
+
+    let opened_lab = reopened
+        .sources
+        .values()
+        .find(|source| source.candidate_id == "lab-renal-2026-11-08")
+        .expect("opened renal lab citation");
+    assert_eq!(opened_lab.number, 1);
+    assert_eq!(opened_lab.revision, "rev-3");
+    assert_eq!(opened_lab.title, "Renal Function Panel");
+    assert_eq!(opened_lab.recorded_at.as_deref(), Some("2026-11-08"));
+    assert!(opened_lab.body.contains("eGFR 44 mL/min/1.73 m2"));
+
+    let opened_med = reopened
+        .sources
+        .values()
+        .find(|source| source.candidate_id == "med-empagliflozin-2026-10-01")
+        .expect("opened empagliflozin citation");
+    assert_eq!(opened_med.number, 2);
+    assert_eq!(opened_med.revision, "rev-1");
+    assert_eq!(opened_med.title, "Empagliflozin 10 mg oral tablet");
+    assert!(
+        opened_med
+            .body
+            .contains("Empagliflozin 10 mg orally once daily")
+    );
+}
+
+#[tokio::test]
+#[ignore = "requires explicit local Postgres"]
+async fn interrupted_chat_attempt_reconciles_saved_memory_and_concern_receipts_without_unknown_or_reexecution()
+ {
+    let (store, auth, _url) = setup_stores().await;
+    let practice = format!("practice-reconcile-{}", uuid::Uuid::new_v4().simple());
+    let (physician, _token, session_hash) = invite_and_sign_in(&auth, &practice, "dr-shah").await;
+    let patient = synthetic_patient("syn-nora-6", "Nora Alvarez", "1968-02-14", "MRN-66019");
+    let workspace = workspace_id("synthetic-clinic-ehr", &patient.source_patient_id);
+    auth.register_patient(&practice, &workspace).await.unwrap();
+    auth.set_membership(&physician, &workspace, Membership::Allowed)
+        .await
+        .unwrap();
+
+    let k_lab = readable_chart_record(
+        &workspace,
+        "rev-1",
+        "2026-11-11",
+        "Serum Potassium",
+        "Serum potassium 5.7 mmol/L on 2026-11-11.",
+        json!({
+            "resourceType": "Observation",
+            "id": "lab-k-recovery",
+            "potassium_mmol_L": 5.7
+        }),
+    );
+    store
+        .record_chart(
+            &workspace,
+            &[k_lab],
+            &SourcePull {
+                source_id: "synthetic-clinic-ehr".into(),
+                source_label: "Synthetic Clinic EHR".into(),
+                patient,
+                pulled_at: Some(1_762_902_000),
+            },
+        )
+        .await
+        .unwrap();
+
+    // Seed an initial memory note (`note 1`) prior to the interrupted turn.
+    let seed_scope = Scope {
+        practice: practice.clone(),
+        physician: physician.physician_id.clone(),
+        workspace: workspace.clone(),
+        chat: "chat-seed".into(),
+    };
+    memory::tools::MemoryTool::AddNote
+        .execute(
+            &store,
+            &seed_scope,
+            &json!({
+                "text": "Previously taking potassium chloride 20 mEq daily.",
+                "quote": null
+            }),
+            || {
+                Ok(memory::NoteOrigin {
+                    work: "work-seed".into(),
+                    call: "seed-prior-kcl".into(),
+                    message: "msg-seed".into(),
+                })
+            },
+        )
+        .await
+        .unwrap();
+
+    let scope = Scope {
+        practice: practice.clone(),
+        physician: physician.physician_id.clone(),
+        workspace: workspace.clone(),
+        chat: "chat-crash-reconcile".into(),
+    };
+    let skills = load_skills();
+    let roles = distinct_model_roles();
+    let recipe = ChatAssignment::for_patient(
+        scope.clone(),
+        store.patient_starting_context(&scope).await.unwrap(),
+    )
+    .recipe(&roles, &skills);
+
+    store
+        .start_chat_authorized(
+            &scope,
+            &Input {
+                key: "cmd-reconcile-1".into(),
+                text: "Nora stopped potassium chloride yesterday and switched to a low-potassium diet; flag her potassium of 5.7 on Today.".into(),
+                timezone: "America/Los_Angeles".into(),
+                scenario: None,
+            },
+            session_hash.clone(),
+            &skills,
+            &recipe,
+            &mut PostgresWorkspaceAuthority,
+        )
+        .await
+        .unwrap();
+
+    let call_refresh_unsettled = Invocation {
+        id: "call-refresh-unsettled".into(),
+        name: REFRESH_SOURCES_TOOL.into(),
+        arguments: json!({
+            "source_id": "synthetic-clinic-ehr",
+            "reason": "Simulated crash while waiting on EHR refresh."
+        })
+        .to_string(),
+    };
+    let call_mem_record = Invocation {
+        id: "call-mem-record".into(),
+        name: "add_patient_memory_note".into(),
+        arguments: json!({
+            "text": "Switched to a low-potassium diet on November 10, 2026 per physician.",
+            "quote": null
+        })
+        .to_string(),
+    };
+    let call_concern_raise = Invocation {
+        id: "call-concern-raise".into(),
+        name: CONCERN_TOOL.into(),
+        arguments: json!({
+            "operation": "raise",
+            "concern_id": "concern-k-5-7",
+            "urgency": "now",
+            "reason": "Serum potassium 5.7 mmol/L on November 11, 2026 requires prompt repeat check.",
+            "records": [{
+                "candidate_id": "lab-k-recovery",
+                "revision": "rev-1"
+            }]
+        })
+        .to_string(),
+    };
+    let call_concern_uncommitted = Invocation {
+        id: "call-concern-uncommitted".into(),
+        name: CONCERN_TOOL.into(),
+        arguments: json!({
+            "operation": "revise",
+            "concern_id": "concern-k-5-7",
+            "urgency": "today",
+            "reason": "Uncommitted revision started just before worker crash.",
+            "records": [{
+                "candidate_id": "lab-k-recovery",
+                "revision": "rev-1"
+            }]
+        })
+        .to_string(),
+    };
+
+    // Synthetic source adapter that cancels `Attempt 1` when `call-refresh-unsettled` runs,
+    // stalling before `ToolReturned` can be persisted.
+    struct CancelOnRefreshSource {
+        cancel: engine::Cancellation,
+    }
+
+    #[async_trait]
+    impl PatientSource for CancelOnRefreshSource {
+        fn source_id(&self) -> &str {
+            "synthetic-clinic-ehr"
+        }
+
+        fn source_label(&self) -> &str {
+            "Synthetic Clinic EHR"
+        }
+
+        async fn patient_ids(&self) -> Result<Vec<String>, SourceAdapterError> {
+            Ok(vec!["syn-nora-5".into()])
+        }
+
+        async fn patient(&self, patient_id: &str) -> Result<SourcePatient, SourceAdapterError> {
+            Ok(synthetic_patient(
+                patient_id,
+                "Nora Singh",
+                "1968-09-02",
+                "MRN-55810",
+            ))
+        }
+
+        async fn records(
+            &self,
+            _patient: &SourcePatient,
+            _workspace: &str,
+        ) -> Result<Vec<SourceRevision>, SourceAdapterError> {
+            self.cancel.cancel();
+            std::future::pending::<()>().await;
+            unreachable!()
+        }
+    }
+
+    struct FirstAttemptProvider {
+        calls: Vec<Invocation>,
+    }
+
+    impl Provider for FirstAttemptProvider {
+        async fn exchange(
+            &mut self,
+            _: &Request,
+            _: &engine::Cancellation,
+            _: &engine::RunLimits,
+            _: &mut dyn Observer,
+        ) -> Result<Turn, engine::Cause> {
+            Ok(Turn {
+                items: self.calls.iter().cloned().map(Item::Call).collect(),
+                receipt: json!({"attempt": 1, "turn": 1}),
+                usage: Default::default(),
+            })
+        }
+    }
+
+    let cancel_attempt_1 = engine::Cancellation::default();
+    let crashing_store =
+        store
+            .clone()
+            .with_refresh_operation(Arc::new(SourceAdapterRefreshOperation::new(vec![
+                Arc::new(CancelOnRefreshSource {
+                    cancel: cancel_attempt_1.clone(),
+                }),
+            ])));
+
+    let claim_1 = crashing_store.claim(&scope, 60).await.unwrap().unwrap();
+    let mut host_1 = PhysicianHost {
+        store: crashing_store,
+        claim: claim_1.clone(),
+        authority: PostgresWorkspaceAuthority,
+        shown_steps: ShownSteps::new(()),
+    };
+    let attempt_1_err = host_1
+        .run(
+            &mut FirstAttemptProvider {
+                calls: vec![
+                    call_refresh_unsettled.clone(),
+                    call_mem_record.clone(),
+                    call_concern_raise.clone(),
+                    call_concern_uncommitted.clone(),
+                ],
+            },
+            engine::RunLimits::default(),
+            &cancel_attempt_1,
+        )
+        .await
+        .expect_err("attempt 1 must abort during refresh before ToolReturned");
+    assert!(
+        matches!(attempt_1_err, engine::Failure::Cancelled),
+        "expected cancellation failure, got {attempt_1_err}"
+    );
+
+    // Inspect Attempt 1's persisted events so we append `ToolStarted` for the remaining 3 calls:
+    // `call-mem-record` and `call-concern-raise` execute through real `PhysicianHost::execute`
+    // without persisting `ToolReturned`, while `call-concern-uncommitted` never executes at all.
+    let after_crash = store.conversation(&scope).await.unwrap();
+    let last_seq = after_crash
+        .attempts
+        .last()
+        .unwrap()
+        .events
+        .last()
+        .unwrap()
+        .sequence;
+    let last_ordinal = after_crash
+        .attempts
+        .last()
+        .unwrap()
+        .events
+        .last()
+        .unwrap()
+        .ordinal;
+
+    let mut exec_host = PhysicianHost {
+        store: store.clone(),
+        claim: claim_1.clone(),
+        authority: PostgresWorkspaceAuthority,
+        shown_steps: ShownSteps::new(()),
+    };
+    for (offset, (call, should_execute)) in [
+        (&call_mem_record, true),
+        (&call_concern_raise, true),
+        (&call_concern_uncommitted, false),
+    ]
+    .into_iter()
+    .enumerate()
+    {
+        let sequence = last_seq + (offset as u64) + 1;
+        store
+            .persist(
+                &claim_1,
+                Event {
+                    attempt_id: claim_1.attempt.clone(),
+                    ordinal: last_ordinal,
+                    sequence,
+                    kind: EventKind::ToolStarted(call.clone()),
+                },
+            )
+            .await
+            .unwrap();
+        if should_execute {
+            let parsed_args: Value = serde_json::from_str(&call.arguments).unwrap();
+            let outcome = Product::execute(&mut exec_host, call, parsed_args)
+                .await
+                .unwrap();
+            assert!(
+                matches!(outcome, engine::ToolOutcome::Returned(_)),
+                "expected committed tool outcome before simulated crash"
+            );
+        }
+    }
+
+    // Settle Attempt 1 as interrupted so a successor worker claims the same work deterministically.
+    assert_eq!(
+        store
+            .settle_chat_attempt(
+                &claim_1,
+                engine::AttemptFailure::Interrupted,
+                local_product::runtime::delivery::Backoff::IMMEDIATE,
+            )
+            .await
+            .unwrap(),
+        local_product::runtime::delivery::AttemptSettlement::Applied
+    );
+    let claim_2 = store
+        .claim(&scope, 60)
+        .await
+        .unwrap()
+        .expect("successor attempt claims interrupted chat turn");
+    assert_ne!(claim_2.attempt, claim_1.attempt);
+
+    struct SuccessorRecoveryProvider {
+        turn: usize,
+    }
+
+    impl Provider for SuccessorRecoveryProvider {
+        async fn exchange(
+            &mut self,
+            request: &Request,
+            _: &engine::Cancellation,
+            _: &engine::RunLimits,
+            _: &mut dyn Observer,
+        ) -> Result<Turn, engine::Cause> {
+            self.turn += 1;
+            assert_eq!(self.turn, 1, "successor completes in a single resumed turn");
+            let outputs = materialized_outputs(request);
+
+            // 1. `call-mem-record` reconciled via `memory::tools::saved_outcome` with note 2 (NOT `"unknown"`).
+            let mem_record_out: Value =
+                serde_json::from_str(outputs.get("call-mem-record").unwrap()).unwrap();
+            assert_eq!(mem_record_out["note"], "N2", "{mem_record_out}");
+            assert!(mem_record_out["path"].as_str().unwrap().starts_with("log/"));
+
+            // 2. `call-refresh-unsettled` never completed, so it remains `"unknown"`.
+            let refresh_unsettled_out: Value =
+                serde_json::from_str(outputs.get("call-refresh-unsettled").unwrap()).unwrap();
+            assert_eq!(
+                refresh_unsettled_out["outcome"], "unknown",
+                "{refresh_unsettled_out}"
+            );
+
+            // 3. `call-concern-raise` reconciled via `saved_outcome` as `"duplicate"` (NOT `"unknown"`).
+            let concern_raise_out: Value =
+                serde_json::from_str(outputs.get("call-concern-raise").unwrap()).unwrap();
+            assert_eq!(
+                concern_raise_out["outcome"], "duplicate",
+                "{concern_raise_out}"
+            );
+            assert_eq!(concern_raise_out["concern"]["id"], "concern-k-5-7");
+            assert_eq!(concern_raise_out["concern"]["urgency"], "now");
+            assert_eq!(concern_raise_out["concern"]["revision"], 1);
+
+            // 4. `call-concern-uncommitted` had no committed receipt, so it MUST remain `"unknown"`,
+            // even though `concern-k-5-7` exists in Postgres from `call-concern-raise`!
+            let uncommitted_out: Value =
+                serde_json::from_str(outputs.get("call-concern-uncommitted").unwrap()).unwrap();
+            assert_eq!(uncommitted_out["outcome"], "unknown", "{uncommitted_out}");
+
+            Ok(Turn {
+                items: vec![Item::Call(Invocation {
+                            id: "finish-nora-1".into(),
+                            name: local_product::physician_sources::citations::FINISH_TOOL.into(),
+                            arguments: json!({
+                                "answer": "Recorded Nora's switch to a low-potassium diet, noted her prior potassium chloride stop, and flagged her November 11, 2026 potassium of 5.7 mmol/L as an urgent concern.",
+                                "quotes": [],
+                                "descriptions": [],
+                                "basis": "Synthetic Clinic EHR Serum Potassium (2026-11-11) and physician-reported medication/diet updates.",
+                                "cites_none": true
+                            })
+                            .to_string(),
+                        })],
+                receipt: json!({"attempt": 2, "turn": 1}),
+                usage: Default::default(),
+            })
+        }
+    }
+
+    let mut host_2 = PhysicianHost {
+        store: store.clone(),
+        claim: claim_2,
+        authority: PostgresWorkspaceAuthority,
+        shown_steps: ShownSteps::new(()),
+    };
+    host_2
+        .run(
+            &mut SuccessorRecoveryProvider { turn: 0 },
+            engine::RunLimits::default(),
+            &engine::Cancellation::default(),
+        )
+        .await
+        .unwrap();
+
+    // Verify none of the reconciled mutations double-incremented or mutated further.
+    let nora_key = PatientKey::for_rounds(&practice, &workspace).unwrap();
+    let nora_listing = store.list_memory(&nora_key).await.unwrap();
+    assert_eq!(nora_listing.log_days.len(), 1);
+    let nora_log = match store
+        .read_memory(&nora_key, &MemoryPath::Log(nora_listing.log_days[0]), None)
+        .await
+        .unwrap()
+    {
+        memory::FileRead::Log { markdown } | memory::FileRead::Version { markdown, .. } => markdown,
+    };
+    assert!(nora_log.contains("Previously taking potassium chloride 20 mEq daily."));
+    assert!(
+        nora_log.contains("Switched to a low-potassium diet on November 10, 2026 per physician.")
+    );
+    assert_eq!(
+        nora_log
+            .matches("Switched to a low-potassium diet on November 10, 2026 per physician.")
+            .count(),
+        1
+    );
+
+    let open_concerns = store
+        .open_concerns(
+            &WorkspaceAccess {
+                practice: &practice,
+                physician: &physician.physician_id,
+                workspace: &workspace,
+                session_hash: &session_hash,
+            },
+            &mut PostgresWorkspaceAuthority,
+        )
+        .await
+        .unwrap();
+    assert_eq!(open_concerns.len(), 1);
+    assert_eq!(open_concerns[0].id.as_str(), "concern-k-5-7");
+    assert_eq!(open_concerns[0].urgency, ConcernUrgency::Now);
+    assert_eq!(open_concerns[0].revision, 1);
+
+    let saved_conv = store.conversation(&scope).await.unwrap();
+    assert_eq!(saved_conv.status, WorkStatus::Completed);
+    assert_eq!(saved_conv.messages.len(), 2);
 }
