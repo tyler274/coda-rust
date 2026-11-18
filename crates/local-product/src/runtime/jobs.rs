@@ -232,6 +232,14 @@ pub struct Assignment {
     /// physician-requested patient review.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub review: Option<crate::patient_reviews::ReviewAssignmentContext>,
+    /// Optional structured context when this assignment selects upcoming visits
+    /// and preparation times from a practice schedule wake-up.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub visit_selection: Option<crate::visit_preparation::VisitSelectionContext>,
+    /// Optional structured context when this assignment prepares and saves one
+    /// visit's clinical briefing.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub visit_briefing: Option<crate::visit_preparation::VisitBriefingContext>,
 }
 
 impl Assignment {
@@ -271,6 +279,8 @@ impl Assignment {
             preloaded_skills,
             understanding: None,
             review: None,
+            visit_selection: None,
+            visit_briefing: None,
         })
     }
 
@@ -633,6 +643,9 @@ pub fn recipe(
     }
     if assignment.kind == PracticeJobKind::PatientReview && assignment.review.is_some() {
         return crate::patient_reviews::recipe(&roles.background, assignment, skills);
+    }
+    if assignment.kind == PracticeJobKind::VisitPreparation {
+        return crate::visit_preparation::recipe(&roles.background, assignment, skills);
     }
     let background = &roles.background;
     let mut instructions = skills.instructions(INSTRUCTIONS, Job::PracticeBackground);

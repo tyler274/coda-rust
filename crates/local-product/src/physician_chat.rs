@@ -215,18 +215,21 @@ pub enum Job {
     InitialUnderstanding,
     /// Background or physician-requested patient review.
     PatientReview,
+    /// Scheduled pre-visit briefing preparation.
+    VisitPreparation,
 }
 
 impl Job {
     /// Every Chords job. [`PhysicianSkills::load`] checks each one's start
     /// skills against the package.
-    const ALL: [Self; 6] = [
+    const ALL: [Self; 7] = [
         Self::Chat,
         Self::ReplyRevision,
         Self::PatientRounds,
         Self::PracticeBackground,
         Self::InitialUnderstanding,
         Self::PatientReview,
+        Self::VisitPreparation,
     ];
 
     /// The skills this job loads at its start, as written beside its instructions.
@@ -235,7 +238,10 @@ impl Job {
             Self::Chat => START_SKILLS,
             Self::ReplyRevision => crate::runtime::reply::START_SKILLS,
             Self::PatientRounds => crate::runtime::rounds::START_SKILLS,
-            Self::PracticeBackground | Self::InitialUnderstanding | Self::PatientReview => &[],
+            Self::PracticeBackground
+            | Self::InitialUnderstanding
+            | Self::PatientReview
+            | Self::VisitPreparation => &[],
         }
     }
 }
@@ -503,6 +509,50 @@ impl PhysicianSkills {
         Ok(Self { package })
     }
 
+    /// Loads the embedded core Chords skills through [`Self::load`] when a
+    /// background worker container has neither `PHYSICIAN_SKILLS_DIR` nor a
+    /// previously saved catalog package in Postgres.
+    pub fn bundled_fallback() -> Result<Self, SkillsError> {
+        let dir = std::env::temp_dir().join(format!(
+            "coda-bundled-skills-{}",
+            uuid::Uuid::new_v4().simple()
+        ));
+        let embedded = [
+            (
+                "patient-communication",
+                include_str!("../../../skills/patient-communication/SKILL.md"),
+            ),
+            (
+                "patient-memory-upkeep",
+                include_str!("../../../skills/patient-memory-upkeep/SKILL.md"),
+            ),
+            (
+                "patient-record-retrieval",
+                include_str!("../../../skills/patient-record-retrieval/SKILL.md"),
+            ),
+            (
+                "visit-preparation",
+                include_str!("../../../skills/visit-preparation/SKILL.md"),
+            ),
+        ];
+        for (name, body) in embedded {
+            let skill_dir = dir.join(name);
+            std::fs::create_dir_all(&skill_dir).map_err(|err| SkillsError::Package {
+                root: dir.clone(),
+                reason: err.to_string(),
+            })?;
+            std::fs::write(skill_dir.join("SKILL.md"), body).map_err(|err| {
+                SkillsError::Package {
+                    root: dir.clone(),
+                    reason: err.to_string(),
+                }
+            })?;
+        }
+        let loaded = Self::load(&dir);
+        let _ = std::fs::remove_dir_all(&dir);
+        loaded
+    }
+
     /// `base`, the catalog section, then one section for each skill `job`
     /// loads at its start. The accepted recipe keeps the exact text.
     pub fn instructions(&self, base: &str, job: Job) -> String {
@@ -543,7 +593,7 @@ fn refusal(reason: &str) -> ToolOutcome {
 
 #[cfg(test)]
 #[path = "../../../verification/model_text.rs"]
-mod model_text;
+pub(crate) mod model_text;
 
 #[cfg(test)]
 mod tests {
@@ -951,6 +1001,19 @@ mod tests {
         offered.extend(crate::runtime::reply::tools());
         offered.extend(crate::runtime::rounds::tools().iter().map(Tool::function));
         offered.extend(crate::patient_reviews::tools().iter().map(Tool::function));
+        offered.extend(
+            crate::visit_preparation::all_tools()
+                .iter()
+                .map(Tool::function),
+        );
         assert_skill_tools(&serde_json::to_value(skills()).unwrap(), &offered, &[]);
+    }
+
+    #[test]
+    fn bundled_fallback_matches_workspace_skill_catalog() {
+        assert_eq!(
+            PhysicianSkills::bundled_fallback().unwrap(),
+            PhysicianSkills::configured(None, false).unwrap()
+        );
     }
 }

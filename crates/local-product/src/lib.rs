@@ -25,6 +25,8 @@ pub mod physician_sources;
 pub mod runtime;
 /// Practice-scoped source patient links, pull status, and check/reconnect operations.
 pub mod source_status;
+/// Recipe, context, and tool descriptors for visit selection and visit briefings.
+pub mod visit_preparation;
 
 /// How this process runs a model. A process without a selection does not run models.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
