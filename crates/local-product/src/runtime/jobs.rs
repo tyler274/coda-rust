@@ -228,6 +228,10 @@ pub struct Assignment {
     /// patient understanding.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub understanding: Option<crate::initial_understanding::UnderstandingContext>,
+    /// Optional structured context when this assignment runs a background or
+    /// physician-requested patient review.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub review: Option<crate::patient_reviews::ReviewAssignmentContext>,
 }
 
 impl Assignment {
@@ -266,6 +270,7 @@ impl Assignment {
             prompt,
             preloaded_skills,
             understanding: None,
+            review: None,
         })
     }
 
@@ -625,6 +630,9 @@ pub fn recipe(
 ) -> RequestRecipe {
     if assignment.kind == PracticeJobKind::InitialUnderstanding {
         return crate::initial_understanding::recipe(&roles.background, assignment, skills);
+    }
+    if assignment.kind == PracticeJobKind::PatientReview && assignment.review.is_some() {
+        return crate::patient_reviews::recipe(&roles.background, assignment, skills);
     }
     let background = &roles.background;
     let mut instructions = skills.instructions(INSTRUCTIONS, Job::PracticeBackground);

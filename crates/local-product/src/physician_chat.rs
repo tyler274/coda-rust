@@ -213,17 +213,20 @@ pub enum Job {
     PracticeBackground,
     /// Initial and revised patient understanding background job.
     InitialUnderstanding,
+    /// Background or physician-requested patient review.
+    PatientReview,
 }
 
 impl Job {
     /// Every Chords job. [`PhysicianSkills::load`] checks each one's start
     /// skills against the package.
-    const ALL: [Self; 5] = [
+    const ALL: [Self; 6] = [
         Self::Chat,
         Self::ReplyRevision,
         Self::PatientRounds,
         Self::PracticeBackground,
         Self::InitialUnderstanding,
+        Self::PatientReview,
     ];
 
     /// The skills this job loads at its start, as written beside its instructions.
@@ -232,7 +235,7 @@ impl Job {
             Self::Chat => START_SKILLS,
             Self::ReplyRevision => crate::runtime::reply::START_SKILLS,
             Self::PatientRounds => crate::runtime::rounds::START_SKILLS,
-            Self::PracticeBackground | Self::InitialUnderstanding => &[],
+            Self::PracticeBackground | Self::InitialUnderstanding | Self::PatientReview => &[],
         }
     }
 }
@@ -947,6 +950,7 @@ mod tests {
         let mut offered = tools().iter().map(Tool::function).collect::<Vec<_>>();
         offered.extend(crate::runtime::reply::tools());
         offered.extend(crate::runtime::rounds::tools().iter().map(Tool::function));
+        offered.extend(crate::patient_reviews::tools().iter().map(Tool::function));
         assert_skill_tools(&serde_json::to_value(skills()).unwrap(), &offered, &[]);
     }
 }
