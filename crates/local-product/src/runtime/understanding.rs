@@ -492,11 +492,29 @@ fn record_display_label(source: &SourceRevision) -> String {
     )
 }
 
-fn record_excerpt(source: &SourceRevision) -> String {
+pub(super) fn record_excerpt(source: &SourceRevision) -> String {
     let title = record_display_label(source);
     let body =
         super::history::format_cited_source_body(&title, &source.readable_parts, &source.content);
     truncate_excerpt(&body)
+}
+
+pub(super) fn build_summary_citation(
+    workspace: &str,
+    reference: &ExactRecordReference,
+    source: &SourceRevision,
+    pulls: &[SourcePull],
+) -> SummaryCitation {
+    SummaryCitation {
+        reference: reference.clone(),
+        source_id: source.source_id.clone(),
+        source_label: source_label_for(&source.source_id, pulls),
+        sha256: source.sha256.clone(),
+        display_label: record_display_label(source),
+        as_of: record_as_of(source),
+        excerpt: record_excerpt(source),
+        native_uri: record_native_uri(workspace, source),
+    }
 }
 
 fn record_as_of(source: &SourceRevision) -> Option<String> {
@@ -525,7 +543,9 @@ fn record_native_uri(workspace: &str, source: &SourceRevision) -> Option<String>
 /// Single rule owner collecting `(candidate_id, revision)` pairs already
 /// verified and stored on `saved` (across both summary citations and
 /// operating-index anchors).
-fn known_understanding_pairs(saved: &PatientUnderstanding) -> BTreeSet<(String, String)> {
+pub(super) fn known_understanding_pairs(
+    saved: &PatientUnderstanding,
+) -> BTreeSet<(String, String)> {
     let mut pairs: BTreeSet<(String, String)> = saved
         .summary
         .citations
@@ -647,16 +667,7 @@ fn build_verified_summary(
                 existing
             } else {
                 let next_idx = citations.len();
-                citations.push(SummaryCitation {
-                    reference: reference.clone(),
-                    source_id: source.source_id.clone(),
-                    source_label: source_label_for(&source.source_id, pulls),
-                    sha256: source.sha256.clone(),
-                    display_label: record_display_label(source),
-                    as_of: record_as_of(source),
-                    excerpt: record_excerpt(source),
-                    native_uri: record_native_uri(workspace, source),
-                });
+                citations.push(build_summary_citation(workspace, reference, source, pulls));
                 citation_index_by_ref.insert(key, next_idx);
                 next_idx
             };

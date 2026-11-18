@@ -69,6 +69,7 @@ async fn a_second_migrate_records_nothing_new() {
             "m20261118_04_practice_schedule",
             "m20261118_05_patient_understanding",
             "m20261118_06_patient_reviews",
+            "m20261118_07_visit_briefings",
         ]
     );
 }

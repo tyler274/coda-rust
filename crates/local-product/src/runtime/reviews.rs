@@ -24,8 +24,8 @@ use serde_json::{Value, json};
 use uuid::Uuid;
 
 use super::chat_operations::{
-    DispatchCheckStanding, MAX_RETRIEVED_WORK_ITEMS, OpenConcernSummary, RecordLimit,
-    RecordLimitKind, SourceFreshnessSummary, inspect_record_readability,
+    DispatchCheckStanding, OpenConcernSummary, RecordLimit, RecordLimitKind,
+    SourceFreshnessSummary, inspect_record_readability,
 };
 use super::concerns::{ConcernUrgency, ExactRecordReference, SourceWork};
 use super::delivery::Delivery;
@@ -3452,133 +3452,6 @@ impl Store {
         };
         let started = rev_row.started_at;
         update_review_lifecycle_in_tx(tx, rev_row, &job.work, next_state, started, clock).await
-    }
-
-    pub(super) async fn execute_practice_retrieve_work_tool(
-        &self,
-        scope: &PracticeScope,
-        arguments: &Value,
-    ) -> Result<ToolOutcome, engine::ProductError> {
-        let operation = arguments
-            .get("operation")
-            .and_then(Value::as_str)
-            .unwrap_or("");
-        match operation {
-            "list" => {
-                let cap = arguments
-                    .get("limit")
-                    .and_then(Value::as_u64)
-                    .and_then(|n| usize::try_from(n).ok())
-                    .unwrap_or(10)
-                    .clamp(1, MAX_RETRIEVED_WORK_ITEMS);
-                let jobs = practice_job::Entity::find()
-                    .filter(practice_job::Column::Practice.eq(&scope.practice))
-                    .filter(practice_job::Column::Workspace.eq(&scope.workspace))
-                    .filter(practice_job::Column::Status.eq(WorkStatus::Completed))
-                    .order_by_desc(practice_job::Column::UpdatedAt)
-                    .limit(cap as u64)
-                    .all(&self.db)
-                    .await
-                    .map_err(persistence_failure)?;
-                let background_jobs: Vec<_> = jobs
-                    .into_iter()
-                    .map(|job| {
-                        json!({
-                            "job_id": job.job_id,
-                            "kind": job.kind.as_str(),
-                            "sources_version": job.sources_version,
-                            "updated_at": job.updated_at,
-                        })
-                    })
-                    .collect();
-                Ok(ToolOutcome::Returned(
-                    json!({
-                        "outcome": "available",
-                        "background_jobs": background_jobs,
-                        "saved_briefings": Vec::<Value>::new(),
-                    })
-                    .to_string(),
-                ))
-            }
-            "read_background_job" => {
-                let Some(job_id) = arguments
-                    .get("job_id")
-                    .and_then(Value::as_str)
-                    .map(str::trim)
-                    .filter(|s| !s.is_empty())
-                else {
-                    return Ok(ToolOutcome::refused("Supply a non-empty `job_id`."));
-                };
-                let target_scope = PracticeScope {
-                    practice: scope.practice.clone(),
-                    workspace: scope.workspace.clone(),
-                    job_id: job_id.to_owned(),
-                };
-                let Some(job) = self
-                    .practice_job(&target_scope)
-                    .await
-                    .map_err(persistence_failure)?
-                else {
-                    return Ok(ToolOutcome::Returned(
-                        json!({
-                            "outcome": "unavailable",
-                            "limits": [{
-                                "kind": "missing",
-                                "subject": job_id,
-                                "detail": format!("Background job `{job_id}` was not found in this patient workspace."),
-                            }],
-                        })
-                        .to_string(),
-                    ));
-                };
-                Ok(ToolOutcome::Returned(
-                    json!({
-                        "outcome": "available",
-                        "job_id": job.scope.job_id,
-                        "kind": job.kind.as_str(),
-                        "status": job.status,
-                        "sources_version": job.sources_version,
-                        "result": job.result,
-                    })
-                    .to_string(),
-                ))
-            }
-            "read_conversation" => Ok(ToolOutcome::refused(
-                "practice background job has no physician session and cannot read private physician conversations",
-            )),
-            _ => Ok(ToolOutcome::refused(
-                "Supply `operation` as `list` or `read_background_job`.",
-            )),
-        }
-    }
-
-    pub(super) async fn execute_practice_clinical_library_tool(
-        &self,
-        name: &str,
-        arguments: &Value,
-    ) -> Result<ToolOutcome, engine::ProductError> {
-        let outcome = self.clinical_library().execute(name, arguments).await;
-        if let ToolOutcome::Returned(raw) = &outcome
-            && let Ok(mut parsed) = serde_json::from_str::<Value>(raw)
-            && parsed.get("outcome").and_then(Value::as_str) == Some("unavailable")
-        {
-            let detail = parsed
-                .get("reason")
-                .or_else(|| parsed.get("message"))
-                .and_then(Value::as_str)
-                .unwrap_or("Clinical library service is unavailable.")
-                .to_owned();
-            let limit = RecordLimit {
-                kind: RecordLimitKind::Unavailable,
-                subject: "clinical_library".into(),
-                detail,
-            };
-            if let Some(obj) = parsed.as_object_mut() {
-                obj.insert("limits".into(), serde_json::to_value([limit])?);
-            }
-            return Ok(ToolOutcome::Returned(parsed.to_string()));
-        }
-        Ok(outcome)
     }
 }
 

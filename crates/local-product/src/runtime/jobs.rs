@@ -947,6 +947,7 @@ impl Store {
         job: &PracticeJob,
     ) -> Result<(), DbErr> {
         write_practice_job_in_tx(&tx, job).await?;
+        super::briefings::sync_visit_preparation_job_in_tx(&tx, job).await?;
         tx.commit().await
     }
 
@@ -1843,6 +1844,56 @@ impl Store {
         super::delivery::notify(&tx, &delivery).await?;
         Self::save_practice_job(tx, &job).await?;
         Ok(Resumed::Pending { delivery })
+    }
+
+    /// Cancels a pending, active, or held practice job inside caller-supplied
+    /// transaction `tx` without committing `tx`. Returns `true` when the job
+    /// transitioned to [`WorkStatus::Cancelled`].
+    pub(super) async fn cancel_practice_job_in_tx(
+        tx: &sea_orm::DatabaseTransaction,
+        scope: &PracticeScope,
+        now_unix: i64,
+    ) -> Result<bool, RuntimeError> {
+        let Some(row) = practice_job::Entity::find_by_id(job_keys(scope))
+            .lock_exclusive()
+            .one(tx)
+            .await?
+        else {
+            return Ok(false);
+        };
+        let attempts = load_attempts(tx, scope).await?;
+        let mut job = decode_job(row, attempts)?;
+        if matches!(
+            job.status,
+            WorkStatus::Completed | WorkStatus::Failed | WorkStatus::Cancelled
+        ) {
+            return Ok(false);
+        }
+        if let Some(attempt) = job
+            .attempts
+            .last_mut()
+            .filter(|attempt| attempt.status == AttemptStatus::Active)
+        {
+            attempt.status = AttemptStatus::Cancelled;
+        }
+        if let Some(current) = job.runs.current() {
+            match current.outcome {
+                None => {
+                    job.runs.end(RunOutcome::Cancelled)?;
+                }
+                Some(RunOutcome::Held { .. }) => {
+                    job.runs.start(Uuid::new_v4().to_string())?;
+                    job.runs.end(RunOutcome::Cancelled)?;
+                }
+                Some(RunOutcome::Completed | RunOutcome::Failed | RunOutcome::Cancelled) => {}
+            }
+        }
+        job.status = WorkStatus::Cancelled;
+        job.updated_at = now_unix;
+        save_attempts(tx, &job.scope, &job.attempts).await?;
+        job_active_model(&job)?.update(tx).await?;
+        super::briefings::sync_visit_preparation_job_in_tx(tx, &job).await?;
+        Ok(true)
     }
 
     pub(super) async fn practice_job_snapshot(
