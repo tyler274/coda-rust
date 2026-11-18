@@ -1,0 +1,113 @@
+{
+  "branch": "tyler-eng-306-1-patient-dispatch-engine",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC1",
+      "label": "patient-work domain evaluation for unchanged, new records, periodic, and defaults",
+      "kind": "run",
+      "revision": "24e2bf87b031f713a4818c58119342125f25c3e6",
+      "dirty": false,
+      "recorded": "2026-11-18T20:36:43+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "patient-work",
+        "--lib"
+      ],
+      "expect": "[1-9][0-9]* passed; 0 failed",
+      "expect_fail": false,
+      "files": [
+        "01-patient-work-domain-evaluation-for-unchanged-new.log"
+      ],
+      "seconds": 4.1,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true
+    },
+    {
+      "id": 2,
+      "claim": "AC2",
+      "label": "Durable dispatch lease and retained source-context PostgreSQL unit tests",
+      "kind": "run",
+      "revision": "24e2bf87b031f713a4818c58119342125f25c3e6",
+      "dirty": false,
+      "recorded": "2026-11-18T20:36:48+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "local-product",
+        "--lib",
+        "dispatch",
+        "--",
+        "--ignored",
+        "--test-threads=1"
+      ],
+      "expect": "[1-9][0-9]* passed; 0 failed",
+      "expect_fail": false,
+      "files": [
+        "02-Durable-dispatch-lease-and-retained-source-conte.log"
+      ],
+      "seconds": 32.1,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true
+    },
+    {
+      "id": 3,
+      "claim": "AC2",
+      "label": "Idempotent fresh and shared PostgreSQL migration chains",
+      "kind": "run",
+      "revision": "24e2bf87b031f713a4818c58119342125f25c3e6",
+      "dirty": false,
+      "recorded": "2026-11-18T20:37:20+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-sample",
+        "--test",
+        "migrations_postgres",
+        "--",
+        "--ignored"
+      ],
+      "expect": "[1-9][0-9]* passed; 0 failed",
+      "expect_fail": false,
+      "files": [
+        "03-Idempotent-fresh-and-shared-PostgreSQL-migration.log"
+      ],
+      "seconds": 43.0,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true
+    },
+    {
+      "id": 4,
+      "claim": "AC3",
+      "label": "Synthetic chart load baseline registration tests",
+      "kind": "run",
+      "revision": "24e2bf87b031f713a4818c58119342125f25c3e6",
+      "dirty": false,
+      "recorded": "2026-11-18T20:38:03+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-sample",
+        "--lib",
+        "chart_load"
+      ],
+      "expect": "[1-9][0-9]* passed; 0 failed",
+      "expect_fail": false,
+      "files": [
+        "04-Synthetic-chart-load-baseline-registration-tests.log"
+      ],
+      "seconds": 27.3,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true
+    }
+  ]
+}
