@@ -11,6 +11,7 @@ mod composer;
 mod feedback;
 mod local_draft;
 mod panels;
+mod patient_reviews_panel;
 mod shell;
 mod status;
 mod tabs;
@@ -2251,6 +2252,13 @@ fn PhysicianShell(
                         PatientSurface {
                             gone: patient_gone,
                             read: patient_read,
+                            reviews_context: patient_reviews_panel::PatientReviewsContext {
+                                client,
+                                session,
+                                shown,
+                                workspace_attempt,
+                                today_attempt,
+                            },
                             on_go_today: move |_| {
                                 selected.set(None);
                                 place.set(Place::Today);
@@ -3821,6 +3829,7 @@ fn UpdatesSurface(
 fn PatientSurface(
     gone: bool,
     read: ReadStage,
+    reviews_context: patient_reviews_panel::PatientReviewsContext,
     on_go_today: EventHandler,
     name: String,
     workspace: Option<PatientWorkspaceResponse>,
@@ -4225,6 +4234,15 @@ fn PatientSurface(
                             }
                         }
                     }
+                }
+            }
+            if let Some(open) = workspace.as_ref().filter(|_| !clinic_demographic) {
+                patient_reviews_panel::PatientReviewsPanel {
+                    workspace_id: open.patient_workspace_id.clone(),
+                    server_now: server_now.clone(),
+                    time_zone: open.time_zone.clone().unwrap_or_default(),
+                    context: reviews_context,
+                    on_open_source,
                 }
             }
             if !segments.is_empty() || synopsis_text.is_some() {
@@ -5551,7 +5569,7 @@ fn resume_command(line: &TodayLine, time_zone: &str) -> Option<Command> {
     ))
 }
 
-fn idempotency_key() -> String {
+pub(crate) fn idempotency_key() -> String {
     static NEXT: AtomicU64 = AtomicU64::new(1);
     let n = NEXT.fetch_add(1, Ordering::Relaxed);
     format!("submit-{}-{n}", now_millis())
@@ -5573,6 +5591,8 @@ fn write_address(patient: Option<&str>, chat: Option<&str>) {
         && let Ok(href) = window.location().href()
         && let Ok(url) = web_sys::Url::new(&href)
     {
+        let same_patient =
+            patient.is_some() && url.search_params().get("patient").as_deref() == patient;
         match patient {
             Some(patient) => url.search_params().set("patient", patient),
             None => url.search_params().delete("patient"),
@@ -5580,6 +5600,9 @@ fn write_address(patient: Option<&str>, chat: Option<&str>) {
         match chat.filter(|_| patient.is_some()) {
             Some(chat) => url.search_params().set("chat", chat),
             None => url.search_params().delete("chat"),
+        }
+        if !same_patient {
+            url.search_params().delete("review");
         }
         if let Ok(history) = window.history() {
             let _ =
