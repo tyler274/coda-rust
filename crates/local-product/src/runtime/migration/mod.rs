@@ -8,6 +8,7 @@ pub(in crate::runtime) mod m20261112_source_pull_missing_candidates;
 pub(in crate::runtime) mod m20261113_source_links_and_standing;
 pub(in crate::runtime) mod m20261114_reconnect_commands_and_adapter_state;
 mod m20261115_patient_memory;
+mod m20261118_01_concerns;
 
 /// The table this chain records applied migrations in. The runtime shares the
 /// physician database with other chains, and each chain owns its own ledger.
@@ -30,6 +31,7 @@ impl MigratorTrait for Migrator {
             Box::new(m20261113_source_links_and_standing::Migration),
             Box::new(m20261114_reconnect_commands_and_adapter_state::Migration),
             Box::new(m20261115_patient_memory::Migration),
+            Box::new(m20261118_01_concerns::Migration),
         ]
     }
 }

@@ -631,6 +631,9 @@ mod tests {
             assert_clean_model_text(&recipe.instructions);
             assert_clean_model_text(&serde_json::to_string(&recipe.tools).unwrap());
         }
+        let concern = crate::runtime::concerns::concern_tool();
+        assert_clean_model_text(&concern.description);
+        assert_clean_model_text(&serde_json::to_string(&concern.function()).unwrap());
     }
 
     #[test]
