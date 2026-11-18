@@ -9,6 +9,7 @@
 use std::collections::{BTreeMap, BTreeSet};
 use std::path::PathBuf;
 use std::sync::Arc;
+use std::sync::atomic::{AtomicBool, Ordering};
 
 use local_product::clinical_library::{READ_LIBRARY_TOOL, SEARCH_LIBRARY_TOOL};
 use local_product::initial_understanding::{
@@ -31,22 +32,27 @@ use local_product::runtime::chat_operations::{
     DispatchCheckStanding, PatientMemoryStanding, SourceFreshnessSummary,
 };
 use local_product::runtime::concerns::{
-    CONCERN_TOOL, ConcernId, ConcernUrgency, ExactRecordReference, WorkspaceAccess,
+    CONCERN_TOOL, CommandKey, ConcernDoneOutcome, ConcernId, ConcernUrgency, ExactRecordReference,
+    WorkspaceAccess,
 };
 use local_product::runtime::dispatch::StoredObservationChecker;
-use local_product::runtime::jobs::{PracticeJobHost, PracticeJobKind, is_physician_only_tool};
-use local_product::runtime::memory::{self, MemoryPath, PatientKey};
+use local_product::runtime::jobs::{
+    PracticeAccessError, PracticeAuthority, PracticeJobHost, PracticeJobKind, PracticeScope,
+    is_physician_only_tool,
+};
+use local_product::runtime::memory::{self, MemoryPath, PatientKey, tools::MemoryTool};
 use local_product::runtime::refresh::{
     FixedSourceCheck, PatientSourceRefresh, REFRESH_TOOL, SourceCheckOutcome, SourceId,
     SourceRefreshAdapterError,
 };
 use local_product::runtime::reviews::{
     AdmittedPatientReview, PatientReviewError, PatientReviewReceiver, RecordedReviewAction,
-    ReviewLifecycleState, ReviewUsage,
+    ReviewHoldReason, ReviewInputSubmission, ReviewLifecycleState, ReviewSupersededReason,
+    ReviewUsage,
 };
 use local_product::runtime::sources::SourcePull;
 use local_product::runtime::{
-    Authority, PublicationTransaction, Scope, Store, async_trait, engine,
+    Authority, PublicationTransaction, Scope, Stopped, Store, async_trait, engine,
 };
 use local_product::{ModelBinding, ModelRoles, sha256_hex};
 use patient_work::ReviewReason;
@@ -237,6 +243,27 @@ fn materialized_output<'a>(request: &'a engine::recipe::Request, call_id: &str) 
                 request.items
             )
         })
+}
+
+struct RevocablePracticeAuthority {
+    inner: Arc<PostgresAuthStore>,
+    revoked: AtomicBool,
+}
+
+#[async_trait]
+impl PracticeAuthority for RevocablePracticeAuthority {
+    async fn check_practice_patient(
+        &self,
+        scope: &PracticeScope,
+    ) -> Result<(), PracticeAccessError> {
+        if self.revoked.load(Ordering::SeqCst) {
+            return Err(PracticeAccessError::UnregisteredPatient {
+                practice: scope.practice.clone(),
+                workspace: scope.workspace.clone(),
+            });
+        }
+        self.inner.check_practice_patient(scope).await
+    }
 }
 
 #[test]
@@ -2433,4 +2460,2031 @@ async fn saved_review_records_metadata_keeps_unknown_usage_unknown_and_feeds_lat
             exchanges: 3,
         }
     );
+}
+
+#[tokio::test]
+async fn stop_holds_across_restart_resume_and_try_again_refresh_evidence_and_new_input_access_loss_or_correction_block_stale_completion()
+ {
+    let Some(url) = database_url() else {
+        return;
+    };
+    let (store, auth) = connect_stores(&url).await;
+    let skills = load_skills();
+    let roles = distinct_roles();
+
+    let practice = format!("practice-ctrl-{}", Uuid::new_v4().simple());
+    let stop_ws = format!("pw-ctrl-stop-{}", Uuid::new_v4().simple());
+    auth.ensure_practice(&practice, PracticeClock::RealTime)
+        .await
+        .unwrap();
+    auth.register_patient(&practice, &stop_ws).await.unwrap();
+
+    let pull_1 = SourcePull {
+        source_id: "clinic-ehr".into(),
+        source_label: "Clinic EHR".into(),
+        patient: source_patient("pt-stop", "Gideon Osei"),
+        pulled_at: Some(1_790_400_000),
+    };
+    let cr_v1 = chart_record(ChartRecordSpec {
+        workspace: &stop_ws,
+        source_id: "clinic-ehr",
+        candidate_id: "Observation/creatinine-1",
+        revision: "rev-1",
+        record_type: "Observation",
+        title: "Serum Creatinine",
+        date: "2026-10-17",
+        text: "Preliminary serum creatinine 2.4 mg/dL.",
+    });
+    store
+        .record_chart(&stop_ws, &[cr_v1], &pull_1)
+        .await
+        .unwrap();
+
+    // --- Case 1: Stop holds across restart; record corrected while Stopped; Resume uses current evidence ---
+    let AdmittedPatientReview::New {
+        review: stop_rev, ..
+    } = store
+        .admit_patient_review_with_trigger(
+            &practice,
+            &stop_ws,
+            "cmd-stop-resume-1",
+            ReviewTrigger::ChangedRecords {
+                workspace_version: 1,
+                record_versions: BTreeMap::from([(
+                    "Observation/creatinine-1".into(),
+                    "rev-1".into(),
+                )]),
+                changed_candidates: vec!["Observation/creatinine-1".into()],
+            },
+            &roles,
+            &skills,
+            auth.as_ref(),
+        )
+        .await
+        .unwrap()
+    else {
+        panic!("expected new review");
+    };
+    let stop_scope = stop_rev.practice_scope();
+    let active_claim = store
+        .claim_practice_job(&stop_scope, 60, auth.as_ref())
+        .await
+        .unwrap()
+        .unwrap();
+
+    assert_eq!(
+        store
+            .stop_patient_review(
+                &practice,
+                &stop_ws,
+                &stop_rev.review_id,
+                "cmd-stop-1",
+                auth.as_ref(),
+            )
+            .await
+            .unwrap(),
+        Stopped::Held
+    );
+    // Old claimed attempt lost currency immediately on Stop.
+    let mut stale_stopped_host = PracticeJobHost {
+        store: store.clone(),
+        claim: active_claim,
+        authority: auth.as_ref(),
+    };
+    let stopped_err = stale_stopped_host
+        .run(
+            &mut FailIfCalledProvider,
+            engine::RunLimits::default(),
+            &engine::Cancellation::default(),
+        )
+        .await
+        .expect_err("stopped attempt must not execute or complete");
+    assert_eq!(
+        engine::AttemptFailure::of(&stopped_err, &engine::Cancellation::default()),
+        engine::AttemptFailure::Interrupted
+    );
+
+    // Reconnect Store ("after restart") and verify review stays Held(Stopped) and is NOT due!
+    let restarted = Store::connect(&url).await.unwrap();
+    let held_after_restart = restarted
+        .patient_review(&practice, &stop_ws, &stop_rev.review_id, auth.as_ref())
+        .await
+        .unwrap()
+        .unwrap();
+    assert!(matches!(
+        held_after_restart.state,
+        ReviewLifecycleState::Held {
+            reason: ReviewHoldReason::Stopped,
+            ..
+        }
+    ));
+    let due_jobs = restarted.practice_jobs_due(&practice, 50).await.unwrap();
+    assert!(
+        !due_jobs.contains(&stop_scope),
+        "held review must remain held across restart until explicit Resume"
+    );
+
+    // Correct the creatinine record while Stopped (`rev-1` -> `rev-2`), then Resume!
+    let pull_2 = SourcePull {
+        source_id: "clinic-ehr".into(),
+        source_label: "Clinic EHR".into(),
+        patient: source_patient("pt-stop", "Gideon Osei"),
+        pulled_at: Some(1_790_400_500),
+    };
+    let cr_v2 = chart_record(ChartRecordSpec {
+        workspace: &stop_ws,
+        source_id: "clinic-ehr",
+        candidate_id: "Observation/creatinine-1",
+        revision: "rev-2",
+        record_type: "Observation",
+        title: "Serum Creatinine (Corrected)",
+        date: "2026-10-17",
+        text: "Corrected serum creatinine 1.0 mg/dL (specimen mislabeled in lab; repeat verified normal).",
+    });
+    restarted
+        .record_chart(&stop_ws, &[cr_v2], &pull_2)
+        .await
+        .unwrap();
+
+    let _resume_delivery = restarted
+        .resume_patient_review(
+            stop_rev.target(),
+            "cmd-resume-1",
+            &roles,
+            &skills,
+            auth.as_ref(),
+        )
+        .await
+        .expect("Resume rearms stopped review with current evidence");
+
+    let resumed_claim = restarted
+        .claim_practice_job(&stop_scope, 60, auth.as_ref())
+        .await
+        .unwrap()
+        .expect("claim resumed review");
+
+    struct ResumedOnCorrectedEvidenceProvider {
+        turn: usize,
+    }
+    impl engine::recipe::Provider for ResumedOnCorrectedEvidenceProvider {
+        async fn exchange(
+            &mut self,
+            request: &engine::recipe::Request,
+            _: &engine::Cancellation,
+            _: &engine::RunLimits,
+            _: &mut dyn engine::recipe::Observer,
+        ) -> Result<engine::Turn, engine::Cause> {
+            self.turn += 1;
+            match self.turn {
+                1 => {
+                    let wire = serde_json::to_string(&request.items).unwrap();
+                    assert!(
+                        wire.contains("Retained chart: version 2"),
+                        "Resume must refresh starting context to current chart version 2: {wire}"
+                    );
+                    // Prove trying to cite old `rev-1` is refused (`stale_cited_revision`).
+                    let stale_complete = CompleteReviewArgs {
+                        disposition: CompleteReviewDisposition::Assessed {
+                            summary: "Acute kidney injury creatinine 2.4 mg/dL.".into(),
+                        },
+                        citations: vec![ExactRecordReference {
+                            candidate_id: "Observation/creatinine-1".into(),
+                            revision: "rev-1".into(),
+                        }],
+                        basis_and_limitations: "Old rev-1.".into(),
+                        unfinished_work: vec![],
+                    };
+                    Ok(engine::Turn {
+                        items: vec![engine::Item::Call(engine::Invocation {
+                            id: "try-stale-rev1".into(),
+                            name: COMPLETE_PATIENT_REVIEW_TOOL.into(),
+                            arguments: serde_json::to_string(&stale_complete).unwrap(),
+                        })],
+                        receipt: json!({"turn": 1}),
+                        usage: Default::default(),
+                    })
+                }
+                2 => {
+                    let refused = serde_json::to_string(&request.items).unwrap();
+                    assert!(
+                        refused.contains("sources_changed")
+                            && refused.contains("Observation/creatinine-1"),
+                        "old rev-1 result must not complete after correction: {refused}"
+                    );
+                    Ok(engine::Turn {
+                        items: vec![engine::Item::Call(engine::Invocation {
+                            id: "read-cr-v2".into(),
+                            name: READ_TOOL.into(),
+                            arguments: json!({
+                                "references": [{
+                                    "candidate_id": "Observation/creatinine-1",
+                                    "revision": "rev-2",
+                                    "cursor": null
+                                }],
+                                "max_result_bytes": 16_384
+                            })
+                            .to_string(),
+                        })],
+                        receipt: json!({"turn": 2}),
+                        usage: Default::default(),
+                    })
+                }
+                3 => {
+                    let complete_v2 = CompleteReviewArgs {
+                        disposition: CompleteReviewDisposition::Quiet {
+                            explanation: "Corrected creatinine report (rev-2) verified normal renal function (1.0 mg/dL).".into(),
+                        },
+                        citations: vec![ExactRecordReference {
+                            candidate_id: "Observation/creatinine-1".into(),
+                            revision: "rev-2".into(),
+                        }],
+                        basis_and_limitations: "Based on corrected Clinic EHR creatinine rev-2.".into(),
+                        unfinished_work: vec![],
+                    };
+                    Ok(engine::Turn {
+                        items: vec![engine::Item::Call(engine::Invocation {
+                            id: "complete-cr-v2".into(),
+                            name: COMPLETE_PATIENT_REVIEW_TOOL.into(),
+                            arguments: serde_json::to_string(&complete_v2).unwrap(),
+                        })],
+                        receipt: json!({"turn": 3}),
+                        usage: Default::default(),
+                    })
+                }
+                4 => Ok(engine::Turn {
+                    items: vec![engine::Item::assistant(
+                        "Resumed review completed on rev-2.",
+                    )],
+                    receipt: json!({"turn": 4}),
+                    usage: Default::default(),
+                }),
+                other => panic!("unexpected turn {other}"),
+            }
+        }
+    }
+
+    let mut resumed_host = PracticeJobHost {
+        store: restarted.clone(),
+        claim: resumed_claim,
+        authority: auth.as_ref(),
+    };
+    resumed_host
+        .run(
+            &mut ResumedOnCorrectedEvidenceProvider { turn: 0 },
+            engine::RunLimits::default(),
+            &engine::Cancellation::default(),
+        )
+        .await
+        .expect("resumed review completes on corrected evidence");
+
+    let saved_resumed = restarted
+        .patient_review(&practice, &stop_ws, &stop_rev.review_id, auth.as_ref())
+        .await
+        .unwrap()
+        .unwrap();
+    assert_eq!(saved_resumed.completed_source_version, Some(2));
+
+    // --- Case 2: Failed review -> Try again refreshes evidence and completes; Access lost blocks Try again ---
+    let retry_ws = format!("pw-ctrl-retry-{}", Uuid::new_v4().simple());
+    auth.register_patient(&practice, &retry_ws).await.unwrap();
+    let retry_pull = SourcePull {
+        source_id: "clinic-ehr".into(),
+        source_label: "Clinic EHR".into(),
+        patient: source_patient("pt-retry", "Miriam Solis"),
+        pulled_at: Some(1_790_401_000),
+    };
+    let retry_lab = chart_record(ChartRecordSpec {
+        workspace: &retry_ws,
+        source_id: "clinic-ehr",
+        candidate_id: "Observation/tsh-1",
+        revision: "rev-1",
+        record_type: "Observation",
+        title: "TSH",
+        date: "2026-10-17",
+        text: "TSH 2.1 mIU/L (euthyroid on levothyroxine 75 mcg daily).",
+    });
+    restarted
+        .record_chart(&retry_ws, &[retry_lab], &retry_pull)
+        .await
+        .unwrap();
+
+    let AdmittedPatientReview::New {
+        review: fail_rev, ..
+    } = restarted
+        .admit_patient_review_with_trigger(
+            &practice,
+            &retry_ws,
+            "cmd-fail-try-again-1",
+            ReviewTrigger::ChangedRecords {
+                workspace_version: 1,
+                record_versions: BTreeMap::from([("Observation/tsh-1".into(), "rev-1".into())]),
+                changed_candidates: vec!["Observation/tsh-1".into()],
+            },
+            &roles,
+            &skills,
+            auth.as_ref(),
+        )
+        .await
+        .unwrap()
+    else {
+        panic!("expected new review");
+    };
+    let fail_scope = fail_rev.practice_scope();
+    for _ in 0..harness::engine::MAX_FAILED_ATTEMPTS {
+        let c = restarted
+            .claim_practice_job(&fail_scope, 60, auth.as_ref())
+            .await
+            .unwrap()
+            .unwrap();
+        restarted
+            .settle_practice_job_attempt(
+                &c,
+                engine::AttemptFailure::Failed,
+                local_product::runtime::delivery::Backoff::IMMEDIATE,
+            )
+            .await
+            .unwrap();
+    }
+    let failed_state = restarted
+        .patient_review(&practice, &retry_ws, &fail_rev.review_id, auth.as_ref())
+        .await
+        .unwrap()
+        .unwrap();
+    assert!(matches!(
+        failed_state.state,
+        ReviewLifecycleState::Failed { .. }
+    ));
+
+    restarted
+        .try_again_patient_review(
+            fail_rev.target(),
+            "cmd-try-again-1",
+            &roles,
+            &skills,
+            auth.as_ref(),
+        )
+        .await
+        .expect("Try again rearms Failed review");
+    let rearmed_claim = restarted
+        .claim_practice_job(&fail_scope, 60, auth.as_ref())
+        .await
+        .unwrap()
+        .unwrap();
+
+    struct SimpleQuietTshProvider {
+        turn: usize,
+    }
+    impl engine::recipe::Provider for SimpleQuietTshProvider {
+        async fn exchange(
+            &mut self,
+            _: &engine::recipe::Request,
+            _: &engine::Cancellation,
+            _: &engine::RunLimits,
+            _: &mut dyn engine::recipe::Observer,
+        ) -> Result<engine::Turn, engine::Cause> {
+            self.turn += 1;
+            match self.turn {
+                1 => Ok(engine::Turn {
+                    items: vec![engine::Item::Call(engine::Invocation {
+                        id: "read-tsh".into(),
+                        name: READ_TOOL.into(),
+                        arguments: json!({
+                            "references": [{
+                                "candidate_id": "Observation/tsh-1",
+                                "revision": "rev-1",
+                                "cursor": null
+                            }],
+                            "max_result_bytes": 16_384
+                        })
+                        .to_string(),
+                    })],
+                    receipt: json!({"turn": 1}),
+                    usage: Default::default(),
+                }),
+                2 => {
+                    let complete = CompleteReviewArgs {
+                        disposition: CompleteReviewDisposition::Quiet {
+                            explanation: "TSH 2.1 mIU/L is euthyroid on stable levothyroxine."
+                                .into(),
+                        },
+                        citations: vec![ExactRecordReference {
+                            candidate_id: "Observation/tsh-1".into(),
+                            revision: "rev-1".into(),
+                        }],
+                        basis_and_limitations: "Clinic EHR TSH (2026-10-17).".into(),
+                        unfinished_work: vec![],
+                    };
+                    Ok(engine::Turn {
+                        items: vec![engine::Item::Call(engine::Invocation {
+                            id: "complete-tsh".into(),
+                            name: COMPLETE_PATIENT_REVIEW_TOOL.into(),
+                            arguments: serde_json::to_string(&complete).unwrap(),
+                        })],
+                        receipt: json!({"turn": 2}),
+                        usage: Default::default(),
+                    })
+                }
+                3 => Ok(engine::Turn {
+                    items: vec![engine::Item::assistant("Completed after Try again.")],
+                    receipt: json!({"turn": 3}),
+                    usage: Default::default(),
+                }),
+                other => panic!("unexpected turn {other}"),
+            }
+        }
+    }
+
+    let mut rearmed_host = PracticeJobHost {
+        store: restarted.clone(),
+        claim: rearmed_claim,
+        authority: auth.as_ref(),
+    };
+    rearmed_host
+        .run(
+            &mut SimpleQuietTshProvider { turn: 0 },
+            engine::RunLimits::default(),
+            &engine::Cancellation::default(),
+        )
+        .await
+        .expect("Try again completes cleanly");
+
+    // --- Case 3: New input (`submit_patient_review_input`) fences out in-flight old attempt;
+    // AND access loss (`RevocablePracticeAuthority`) transitions review to Superseded(AccessLost) ---
+    let steer_ws = format!("pw-ctrl-steer-{}", Uuid::new_v4().simple());
+    auth.register_patient(&practice, &steer_ws).await.unwrap();
+    restarted
+        .record_chart(
+            &steer_ws,
+            &[chart_record(ChartRecordSpec {
+                workspace: &steer_ws,
+                source_id: "clinic-ehr",
+                candidate_id: "Observation/bp-steer",
+                revision: "rev-1",
+                record_type: "Observation",
+                title: "Home BP Summary",
+                date: "2026-10-17",
+                text: "Home blood pressure averaging 148/92 mmHg over 7 days.",
+            })],
+            &SourcePull {
+                source_id: "clinic-ehr".into(),
+                source_label: "Clinic EHR".into(),
+                patient: source_patient("pt-steer", "Devon Brooks"),
+                pulled_at: Some(1_790_402_000),
+            },
+        )
+        .await
+        .unwrap();
+
+    let revocable = RevocablePracticeAuthority {
+        inner: auth.clone(),
+        revoked: AtomicBool::new(false),
+    };
+    let AdmittedPatientReview::New {
+        review: steer_rev, ..
+    } = restarted
+        .admit_patient_review_with_trigger(
+            &practice,
+            &steer_ws,
+            "cmd-steer-1",
+            ReviewTrigger::Periodic {
+                workspace_version: 1,
+                record_versions: BTreeMap::from([("Observation/bp-steer".into(), "rev-1".into())]),
+                last_reviewed_at: None,
+            },
+            &roles,
+            &skills,
+            &revocable,
+        )
+        .await
+        .unwrap()
+    else {
+        panic!("expected new steer review");
+    };
+    let steer_scope = steer_rev.practice_scope();
+    let old_claim = restarted
+        .claim_practice_job(&steer_scope, 60, &revocable)
+        .await
+        .unwrap()
+        .unwrap();
+
+    // New input arrives while `old_claim` is running -> advances revision and cancels `old_claim`!
+    restarted
+        .submit_patient_review_input(
+            steer_rev.target(),
+            ReviewInputSubmission {
+                input_key: "input-steer-focus",
+                input_text: "Focus on 7-day home blood pressure elevation before next visit.",
+                additional_trigger: None,
+            },
+            &roles,
+            &skills,
+            &revocable,
+        )
+        .await
+        .expect("new input accepted onto in-flight review");
+
+    let mut old_host = PracticeJobHost {
+        store: restarted.clone(),
+        claim: old_claim,
+        authority: &revocable,
+    };
+    let superseded_err = old_host
+        .run(
+            &mut FailIfCalledProvider,
+            engine::RunLimits::default(),
+            &engine::Cancellation::default(),
+        )
+        .await
+        .expect_err("superseded attempt must not complete old result");
+    assert_eq!(
+        engine::AttemptFailure::of(&superseded_err, &engine::Cancellation::default()),
+        engine::AttemptFailure::Interrupted
+    );
+
+    // Stop the steered review, then revoke practice access and attempt Resume ->
+    // must fail Access AND transition SavedPatientReview to Superseded(AccessLost)!
+    assert_eq!(
+        restarted
+            .stop_patient_review(
+                &practice,
+                &steer_ws,
+                &steer_rev.review_id,
+                "cmd-stop-steer",
+                &revocable,
+            )
+            .await
+            .unwrap(),
+        Stopped::Held
+    );
+    revocable.revoked.store(true, Ordering::SeqCst);
+
+    let access_err = restarted
+        .resume_patient_review(
+            steer_rev.target(),
+            "cmd-resume-after-revoke",
+            &roles,
+            &skills,
+            &revocable,
+        )
+        .await
+        .expect_err("Resume after access loss must fail");
+    assert!(matches!(access_err, PatientReviewError::Access(_)));
+
+    assert!(matches!(
+        restarted
+            .patient_review(&practice, &steer_ws, &steer_rev.review_id, &revocable)
+            .await,
+        Err(PatientReviewError::Access(_))
+    ));
+    let superseded_review = restarted
+        .patient_review(&practice, &steer_ws, &steer_rev.review_id, auth.as_ref())
+        .await
+        .unwrap()
+        .unwrap();
+    assert!(matches!(
+        superseded_review.state,
+        ReviewLifecycleState::Superseded {
+            reason: ReviewSupersededReason::AccessLost { .. },
+            ..
+        }
+    ));
+}
+
+struct FailIfCalledProvider;
+impl engine::recipe::Provider for FailIfCalledProvider {
+    async fn exchange(
+        &mut self,
+        _: &engine::recipe::Request,
+        _: &engine::Cancellation,
+        _: &engine::RunLimits,
+        _: &mut dyn engine::recipe::Observer,
+    ) -> Result<engine::Turn, engine::Cause> {
+        panic!("stale or stopped attempt must fail currency check before calling provider");
+    }
+}
+
+#[tokio::test]
+async fn clinical_cases_urgent_abnormal_nonurgent_change_conflicting_sources_and_normal_quiet_review()
+ {
+    let Some(url) = database_url() else {
+        return;
+    };
+    let (store, auth) = connect_stores(&url).await;
+    let skills = load_skills();
+    let roles = distinct_roles();
+
+    let practice = format!("practice-cases-{}", Uuid::new_v4().simple());
+    auth.ensure_practice(&practice, PracticeClock::RealTime)
+        .await
+        .unwrap();
+    let (dr, dr_hash) = invite_and_sign_in(&auth, &practice, "dr-cases").await;
+    let mut authority = PostgresWorkspaceAuthority;
+
+    // --- Case 1: Urgent abnormal result (`now`) ---
+    let urgent_ws = format!("pw-case-urgent-{}", Uuid::new_v4().simple());
+    auth.register_patient(&practice, &urgent_ws).await.unwrap();
+    auth.set_membership(&dr, &urgent_ws, Membership::Allowed)
+        .await
+        .unwrap();
+    store
+        .record_chart(
+            &urgent_ws,
+            &[chart_record(ChartRecordSpec {
+                workspace: &urgent_ws,
+                source_id: "stat-labs",
+                candidate_id: "Observation/k-critical-63",
+                revision: "rev-1",
+                record_type: "Observation",
+                title: "STAT Potassium",
+                date: "2026-10-18",
+                text: "Serum potassium 6.3 mmol/L (critical high; non-hemolyzed venous sample) in CKD stage 3b patient on spironolactone 25 mg daily.",
+            })],
+            &SourcePull {
+                source_id: "stat-labs".into(),
+                source_label: "Hospital STAT Lab".into(),
+                patient: source_patient("pt-urgent", "Caleb Nwosu"),
+                pulled_at: Some(1_790_500_000),
+            },
+        )
+        .await
+        .unwrap();
+
+    let AdmittedPatientReview::New {
+        review: urgent_rev, ..
+    } = store
+        .admit_patient_review_with_trigger(
+            &practice,
+            &urgent_ws,
+            "cmd-case-urgent",
+            ReviewTrigger::ChangedRecords {
+                workspace_version: 1,
+                record_versions: BTreeMap::from([(
+                    "Observation/k-critical-63".into(),
+                    "rev-1".into(),
+                )]),
+                changed_candidates: vec!["Observation/k-critical-63".into()],
+            },
+            &roles,
+            &skills,
+            auth.as_ref(),
+        )
+        .await
+        .unwrap()
+    else {
+        panic!("expected new urgent review");
+    };
+    let urgent_claim = store
+        .claim_practice_job(&urgent_rev.practice_scope(), 60, auth.as_ref())
+        .await
+        .unwrap()
+        .unwrap();
+
+    struct UrgentHyperkalemiaProvider {
+        turn: usize,
+    }
+    impl engine::recipe::Provider for UrgentHyperkalemiaProvider {
+        async fn exchange(
+            &mut self,
+            _: &engine::recipe::Request,
+            _: &engine::Cancellation,
+            _: &engine::RunLimits,
+            _: &mut dyn engine::recipe::Observer,
+        ) -> Result<engine::Turn, engine::Cause> {
+            self.turn += 1;
+            match self.turn {
+                1 => Ok(engine::Turn {
+                    items: vec![engine::Item::Call(engine::Invocation {
+                        id: "read-k-63".into(),
+                        name: READ_TOOL.into(),
+                        arguments: json!({
+                            "references": [{
+                                "candidate_id": "Observation/k-critical-63",
+                                "revision": "rev-1",
+                                "cursor": null
+                            }],
+                            "max_result_bytes": 16_384
+                        })
+                        .to_string(),
+                    })],
+                    receipt: json!({"turn": 1}),
+                    usage: Default::default(),
+                }),
+                2 => {
+                    let complete = CompleteReviewArgs {
+                        disposition: CompleteReviewDisposition::Assessed {
+                            summary: "Critical non-hemolyzed serum potassium 6.3 mmol/L in CKD stage 3b on spironolactone; raised `now` concern for immediate physician evaluation and ECG assessment.".into(),
+                        },
+                        citations: vec![ExactRecordReference {
+                            candidate_id: "Observation/k-critical-63".into(),
+                            revision: "rev-1".into(),
+                        }],
+                        basis_and_limitations: "Based on Hospital STAT Lab potassium result (2026-10-18); current ECG not yet in chart.".into(),
+                        unfinished_work: vec![],
+                    };
+                    Ok(engine::Turn {
+                        items: vec![
+                            engine::Item::Call(engine::Invocation {
+                                id: "raise-k-now".into(),
+                                name: CONCERN_TOOL.into(),
+                                arguments: json!({
+                                    "operation": "raise",
+                                    "concern_id": "concern-k-63-now",
+                                    "urgency": "now",
+                                    "reason": "Critical non-hemolyzed potassium 6.3 mmol/L in CKD stage 3b on spironolactone 25 mg daily; prompt physician review and ECG evaluation needed.",
+                                    "records": [{
+                                        "candidate_id": "Observation/k-critical-63",
+                                        "revision": "rev-1"
+                                    }]
+                                })
+                                .to_string(),
+                            }),
+                            engine::Item::Call(engine::Invocation {
+                                id: "complete-urgent".into(),
+                                name: COMPLETE_PATIENT_REVIEW_TOOL.into(),
+                                arguments: serde_json::to_string(&complete).unwrap(),
+                            }),
+                        ],
+                        receipt: json!({"turn": 2}),
+                        usage: Default::default(),
+                    })
+                }
+                3 => Ok(engine::Turn {
+                    items: vec![engine::Item::assistant(
+                        "Urgent hyperkalemia review complete.",
+                    )],
+                    receipt: json!({"turn": 3}),
+                    usage: Default::default(),
+                }),
+                other => panic!("unexpected turn {other}"),
+            }
+        }
+    }
+    PracticeJobHost {
+        store: store.clone(),
+        claim: urgent_claim,
+        authority: auth.as_ref(),
+    }
+    .run(
+        &mut UrgentHyperkalemiaProvider { turn: 0 },
+        engine::RunLimits::default(),
+        &engine::Cancellation::default(),
+    )
+    .await
+    .unwrap();
+
+    let urgent_open = store
+        .open_concerns(
+            &WorkspaceAccess {
+                practice: &practice,
+                physician: &dr.physician_id,
+                workspace: &urgent_ws,
+                session_hash: &dr_hash,
+            },
+            &mut authority,
+        )
+        .await
+        .unwrap();
+    assert_eq!(urgent_open.len(), 1);
+    assert_eq!(urgent_open[0].urgency, ConcernUrgency::Now);
+
+    // --- Case 2: Important nonurgent change (`today`, not `now`) ---
+    let nonurgent_ws = format!("pw-case-nonurgent-{}", Uuid::new_v4().simple());
+    auth.register_patient(&practice, &nonurgent_ws)
+        .await
+        .unwrap();
+    auth.set_membership(&dr, &nonurgent_ws, Membership::Allowed)
+        .await
+        .unwrap();
+    store
+        .record_chart(
+            &nonurgent_ws,
+            &[chart_record(ChartRecordSpec {
+                workspace: &nonurgent_ws,
+                source_id: "quest-labs",
+                candidate_id: "Observation/hba1c-worsening",
+                revision: "rev-1",
+                record_type: "Observation",
+                title: "Hemoglobin A1c and Urine ACR",
+                date: "2026-10-18",
+                text: "Hemoglobin A1c rose to 7.9% (up from 6.8% six months ago); urine albumin-to-creatinine ratio 64 mg/g (up from 22 mg/g) on metformin monotherapy.",
+            })],
+            &SourcePull {
+                source_id: "quest-labs".into(),
+                source_label: "Quest Diagnostics".into(),
+                patient: source_patient("pt-nonurgent", "Rosa Delgado"),
+                pulled_at: Some(1_790_501_000),
+            },
+        )
+        .await
+        .unwrap();
+
+    let AdmittedPatientReview::New {
+        review: nonurgent_rev,
+        ..
+    } = store
+        .admit_patient_review_with_trigger(
+            &practice,
+            &nonurgent_ws,
+            "cmd-case-nonurgent",
+            ReviewTrigger::ChangedRecords {
+                workspace_version: 1,
+                record_versions: BTreeMap::from([(
+                    "Observation/hba1c-worsening".into(),
+                    "rev-1".into(),
+                )]),
+                changed_candidates: vec!["Observation/hba1c-worsening".into()],
+            },
+            &roles,
+            &skills,
+            auth.as_ref(),
+        )
+        .await
+        .unwrap()
+    else {
+        panic!("expected new nonurgent review");
+    };
+    let nonurgent_claim = store
+        .claim_practice_job(&nonurgent_rev.practice_scope(), 60, auth.as_ref())
+        .await
+        .unwrap()
+        .unwrap();
+
+    struct NonurgentChronicChangeProvider {
+        turn: usize,
+    }
+    impl engine::recipe::Provider for NonurgentChronicChangeProvider {
+        async fn exchange(
+            &mut self,
+            _: &engine::recipe::Request,
+            _: &engine::Cancellation,
+            _: &engine::RunLimits,
+            _: &mut dyn engine::recipe::Observer,
+        ) -> Result<engine::Turn, engine::Cause> {
+            self.turn += 1;
+            match self.turn {
+                1 => Ok(engine::Turn {
+                    items: vec![engine::Item::Call(engine::Invocation {
+                        id: "read-a1c".into(),
+                        name: READ_TOOL.into(),
+                        arguments: json!({
+                            "references": [{
+                                "candidate_id": "Observation/hba1c-worsening",
+                                "revision": "rev-1",
+                                "cursor": null
+                            }],
+                            "max_result_bytes": 16_384
+                        })
+                        .to_string(),
+                    })],
+                    receipt: json!({"turn": 1}),
+                    usage: Default::default(),
+                }),
+                2 => {
+                    let complete = CompleteReviewArgs {
+                        disposition: CompleteReviewDisposition::Assessed {
+                            summary: "Important nonurgent glycemic and albuminuria progression (HbA1c 6.8% -> 7.9%, uACR 22 -> 64 mg/g); raised `today` concern for physician review.".into(),
+                        },
+                        citations: vec![ExactRecordReference {
+                            candidate_id: "Observation/hba1c-worsening".into(),
+                            revision: "rev-1".into(),
+                        }],
+                        basis_and_limitations: "Based on Quest Diagnostics HbA1c and urine ACR panel (2026-10-18).".into(),
+                        unfinished_work: vec![],
+                    };
+                    Ok(engine::Turn {
+                        items: vec![
+                            engine::Item::Call(engine::Invocation {
+                                id: "raise-a1c-today".into(),
+                                name: CONCERN_TOOL.into(),
+                                arguments: json!({
+                                    "operation": "raise",
+                                    "concern_id": "concern-a1c-uacr",
+                                    "urgency": "today",
+                                    "reason": "HbA1c worsened from 6.8% to 7.9% with new microalbuminuria (uACR 64 mg/g) on metformin alone; physician review warranted for regimen and renal-protective considerations.",
+                                    "records": [{
+                                        "candidate_id": "Observation/hba1c-worsening",
+                                        "revision": "rev-1"
+                                    }]
+                                })
+                                .to_string(),
+                            }),
+                            engine::Item::Call(engine::Invocation {
+                                id: "complete-a1c".into(),
+                                name: COMPLETE_PATIENT_REVIEW_TOOL.into(),
+                                arguments: serde_json::to_string(&complete).unwrap(),
+                            }),
+                        ],
+                        receipt: json!({"turn": 2}),
+                        usage: Default::default(),
+                    })
+                }
+                3 => Ok(engine::Turn {
+                    items: vec![engine::Item::assistant(
+                        "Nonurgent chronic progression review complete.",
+                    )],
+                    receipt: json!({"turn": 3}),
+                    usage: Default::default(),
+                }),
+                other => panic!("unexpected turn {other}"),
+            }
+        }
+    }
+    PracticeJobHost {
+        store: store.clone(),
+        claim: nonurgent_claim,
+        authority: auth.as_ref(),
+    }
+    .run(
+        &mut NonurgentChronicChangeProvider { turn: 0 },
+        engine::RunLimits::default(),
+        &engine::Cancellation::default(),
+    )
+    .await
+    .unwrap();
+
+    let nonurgent_open = store
+        .open_concerns(
+            &WorkspaceAccess {
+                practice: &practice,
+                physician: &dr.physician_id,
+                workspace: &nonurgent_ws,
+                session_hash: &dr_hash,
+            },
+            &mut authority,
+        )
+        .await
+        .unwrap();
+    assert_eq!(nonurgent_open.len(), 1);
+    assert_eq!(nonurgent_open[0].urgency, ConcernUrgency::Today);
+
+    // --- Case 3: Conflicting cross-source evidence ---
+    let conflict_ws = format!("pw-case-conflict-{}", Uuid::new_v4().simple());
+    auth.register_patient(&practice, &conflict_ws)
+        .await
+        .unwrap();
+    auth.set_membership(&dr, &conflict_ws, Membership::Allowed)
+        .await
+        .unwrap();
+    store
+        .record_chart(
+            &conflict_ws,
+            &[chart_record(ChartRecordSpec {
+                workspace: &conflict_ws,
+                source_id: "clinic-ehr",
+                candidate_id: "MedicationStatement/metoprolol-clinic",
+                revision: "rev-1",
+                record_type: "MedicationStatement",
+                title: "Outpatient Medication List",
+                date: "2026-10-10",
+                text: "Active medication: metoprolol succinate ER 25 mg once daily (reduced at 2026-10-10 visit for bradycardia HR 48 bpm).",
+            })],
+            &SourcePull {
+                source_id: "clinic-ehr".into(),
+                source_label: "Clinic EHR".into(),
+                patient: source_patient("pt-conflict", "Victor Petrov"),
+                pulled_at: Some(1_790_502_000),
+            },
+        )
+        .await
+        .unwrap();
+    store
+        .record_chart(
+            &conflict_ws,
+            &[chart_record(ChartRecordSpec {
+                workspace: &conflict_ws,
+                source_id: "surescripts-pharmacy",
+                candidate_id: "MedicationDispense/metoprolol-dispense",
+                revision: "rev-1",
+                record_type: "MedicationDispense",
+                title: "Pharmacy Dispense Event",
+                date: "2026-10-18",
+                text: "Dispensed 2026-10-18: metoprolol succinate ER 100 mg tablets (#90, take 1 tablet daily) from prior standing refill.",
+            })],
+            &SourcePull {
+                source_id: "surescripts-pharmacy".into(),
+                source_label: "SureScripts Pharmacy".into(),
+                patient: source_patient("pt-conflict", "Victor Petrov"),
+                pulled_at: Some(1_790_502_300),
+            },
+        )
+        .await
+        .unwrap();
+
+    let AdmittedPatientReview::New {
+        review: conflict_rev,
+        ..
+    } = store
+        .admit_patient_review_with_trigger(
+            &practice,
+            &conflict_ws,
+            "cmd-case-conflict",
+            ReviewTrigger::ChangedRecords {
+                workspace_version: 2,
+                record_versions: BTreeMap::from([
+                    (
+                        "MedicationDispense/metoprolol-dispense".into(),
+                        "rev-1".into(),
+                    ),
+                    (
+                        "MedicationStatement/metoprolol-clinic".into(),
+                        "rev-1".into(),
+                    ),
+                ]),
+                changed_candidates: vec!["MedicationDispense/metoprolol-dispense".into()],
+            },
+            &roles,
+            &skills,
+            auth.as_ref(),
+        )
+        .await
+        .unwrap()
+    else {
+        panic!("expected new conflict review");
+    };
+    let conflict_claim = store
+        .claim_practice_job(&conflict_rev.practice_scope(), 60, auth.as_ref())
+        .await
+        .unwrap()
+        .unwrap();
+
+    struct ConflictingSourcesProvider {
+        turn: usize,
+    }
+    impl engine::recipe::Provider for ConflictingSourcesProvider {
+        async fn exchange(
+            &mut self,
+            _: &engine::recipe::Request,
+            _: &engine::Cancellation,
+            _: &engine::RunLimits,
+            _: &mut dyn engine::recipe::Observer,
+        ) -> Result<engine::Turn, engine::Cause> {
+            self.turn += 1;
+            match self.turn {
+                1 => Ok(engine::Turn {
+                    items: vec![engine::Item::Call(engine::Invocation {
+                        id: "read-both-meds".into(),
+                        name: READ_TOOL.into(),
+                        arguments: json!({
+                            "references": [
+                                {
+                                    "candidate_id": "MedicationStatement/metoprolol-clinic",
+                                    "revision": "rev-1",
+                                    "cursor": null
+                                },
+                                {
+                                    "candidate_id": "MedicationDispense/metoprolol-dispense",
+                                    "revision": "rev-1",
+                                    "cursor": null
+                                }
+                            ],
+                            "max_result_bytes": 16_384
+                        })
+                        .to_string(),
+                    })],
+                    receipt: json!({"turn": 1}),
+                    usage: Default::default(),
+                }),
+                2 => {
+                    let complete = CompleteReviewArgs {
+                        disposition: CompleteReviewDisposition::Assessed {
+                            summary: "Conflicting metoprolol succinate dosing across sources: Clinic EHR reduced dose to 25 mg daily on 2026-10-10 for bradycardia (HR 48), whereas SureScripts Pharmacy dispensed 100 mg daily on 2026-10-18.".into(),
+                        },
+                        citations: vec![
+                            ExactRecordReference {
+                                candidate_id: "MedicationStatement/metoprolol-clinic".into(),
+                                revision: "rev-1".into(),
+                            },
+                            ExactRecordReference {
+                                candidate_id: "MedicationDispense/metoprolol-dispense".into(),
+                                revision: "rev-1".into(),
+                            },
+                        ],
+                        basis_and_limitations: "Cross-source conflict between Clinic EHR (25 mg daily) and SureScripts Pharmacy fill (100 mg daily); actual tablet strength patient is taking at home is unconfirmed.".into(),
+                        unfinished_work: vec![],
+                    };
+                    Ok(engine::Turn {
+                        items: vec![
+                            engine::Item::Call(engine::Invocation {
+                                id: "raise-med-conflict".into(),
+                                name: CONCERN_TOOL.into(),
+                                arguments: json!({
+                                    "operation": "raise",
+                                    "concern_id": "concern-metoprolol-conflict",
+                                    "urgency": "today",
+                                    "reason": "Conflicting metoprolol succinate records: Clinic EHR lowered dose to 25 mg daily on 2026-10-10 for bradycardia, but SureScripts Pharmacy dispensed 100 mg tablets on 2026-10-18.",
+                                    "records": [
+                                        {
+                                            "candidate_id": "MedicationStatement/metoprolol-clinic",
+                                            "revision": "rev-1"
+                                        },
+                                        {
+                                            "candidate_id": "MedicationDispense/metoprolol-dispense",
+                                            "revision": "rev-1"
+                                        }
+                                    ]
+                                })
+                                .to_string(),
+                            }),
+                            engine::Item::Call(engine::Invocation {
+                                id: "complete-conflict".into(),
+                                name: COMPLETE_PATIENT_REVIEW_TOOL.into(),
+                                arguments: serde_json::to_string(&complete).unwrap(),
+                            }),
+                        ],
+                        receipt: json!({"turn": 2}),
+                        usage: Default::default(),
+                    })
+                }
+                3 => Ok(engine::Turn {
+                    items: vec![engine::Item::assistant(
+                        "Cross-source medication conflict surfaced.",
+                    )],
+                    receipt: json!({"turn": 3}),
+                    usage: Default::default(),
+                }),
+                other => panic!("unexpected turn {other}"),
+            }
+        }
+    }
+    PracticeJobHost {
+        store: store.clone(),
+        claim: conflict_claim,
+        authority: auth.as_ref(),
+    }
+    .run(
+        &mut ConflictingSourcesProvider { turn: 0 },
+        engine::RunLimits::default(),
+        &engine::Cancellation::default(),
+    )
+    .await
+    .unwrap();
+
+    let conflict_open = store
+        .open_concerns(
+            &WorkspaceAccess {
+                practice: &practice,
+                physician: &dr.physician_id,
+                workspace: &conflict_ws,
+                session_hash: &dr_hash,
+            },
+            &mut authority,
+        )
+        .await
+        .unwrap();
+    assert_eq!(conflict_open.len(), 1);
+    assert_eq!(conflict_open[0].records.len(), 2);
+    let saved_conflict = store
+        .patient_review(
+            &practice,
+            &conflict_ws,
+            &conflict_rev.review_id,
+            auth.as_ref(),
+        )
+        .await
+        .unwrap()
+        .unwrap();
+    let ReviewLifecycleState::Completed {
+        outcome: ReviewOutcome::Assessed { citations, .. },
+        ..
+    } = &saved_conflict.state
+    else {
+        panic!("expected Assessed conflict review");
+    };
+    assert_eq!(citations.len(), 2);
+    let cited_sources: BTreeSet<&str> = citations.iter().map(|c| c.source_id.as_str()).collect();
+    assert_eq!(
+        cited_sources,
+        BTreeSet::from(["clinic-ehr", "surescripts-pharmacy"])
+    );
+
+    // --- Case 4: Normal result with nothing open permits a quiet review (`"nothing to do"`) ---
+    let normal_ws = format!("pw-case-normal-{}", Uuid::new_v4().simple());
+    auth.register_patient(&practice, &normal_ws).await.unwrap();
+    auth.set_membership(&dr, &normal_ws, Membership::Allowed)
+        .await
+        .unwrap();
+    store
+        .record_chart(
+            &normal_ws,
+            &[chart_record(ChartRecordSpec {
+                workspace: &normal_ws,
+                source_id: "quest-labs",
+                candidate_id: "Observation/lipid-normal-1",
+                revision: "rev-1",
+                record_type: "Observation",
+                title: "Screening Lipid Panel",
+                date: "2026-10-18",
+                text: "Total cholesterol 162 mg/dL, HDL 58 mg/dL, LDL 82 mg/dL, Triglycerides 96 mg/dL (all within normal limits).",
+            })],
+            &SourcePull {
+                source_id: "quest-labs".into(),
+                source_label: "Quest Diagnostics".into(),
+                patient: source_patient("pt-normal", "Amara Mensah"),
+                pulled_at: Some(1_790_503_000),
+            },
+        )
+        .await
+        .unwrap();
+
+    let AdmittedPatientReview::New {
+        review: normal_rev, ..
+    } = store
+        .admit_patient_review_with_trigger(
+            &practice,
+            &normal_ws,
+            "cmd-case-normal",
+            ReviewTrigger::ChangedRecords {
+                workspace_version: 1,
+                record_versions: BTreeMap::from([(
+                    "Observation/lipid-normal-1".into(),
+                    "rev-1".into(),
+                )]),
+                changed_candidates: vec!["Observation/lipid-normal-1".into()],
+            },
+            &roles,
+            &skills,
+            auth.as_ref(),
+        )
+        .await
+        .unwrap()
+    else {
+        panic!("expected new normal review");
+    };
+    let normal_claim = store
+        .claim_practice_job(&normal_rev.practice_scope(), 60, auth.as_ref())
+        .await
+        .unwrap()
+        .unwrap();
+
+    struct NormalLipidQuietProvider {
+        turn: usize,
+    }
+    impl engine::recipe::Provider for NormalLipidQuietProvider {
+        async fn exchange(
+            &mut self,
+            _: &engine::recipe::Request,
+            _: &engine::Cancellation,
+            _: &engine::RunLimits,
+            _: &mut dyn engine::recipe::Observer,
+        ) -> Result<engine::Turn, engine::Cause> {
+            self.turn += 1;
+            match self.turn {
+                1 => Ok(engine::Turn {
+                    items: vec![engine::Item::Call(engine::Invocation {
+                        id: "read-lipid".into(),
+                        name: READ_TOOL.into(),
+                        arguments: json!({
+                            "references": [{
+                                "candidate_id": "Observation/lipid-normal-1",
+                                "revision": "rev-1",
+                                "cursor": null
+                            }],
+                            "max_result_bytes": 16_384
+                        })
+                        .to_string(),
+                    })],
+                    receipt: json!({"turn": 1}),
+                    usage: Default::default(),
+                }),
+                2 => {
+                    let complete = CompleteReviewArgs {
+                        disposition: CompleteReviewDisposition::Quiet {
+                            explanation: "Routine screening lipid panel is optimal (LDL 82 mg/dL, HDL 58 mg/dL, TG 96 mg/dL) with nothing open requiring physician action.".into(),
+                        },
+                        citations: vec![ExactRecordReference {
+                            candidate_id: "Observation/lipid-normal-1".into(),
+                            revision: "rev-1".into(),
+                        }],
+                        basis_and_limitations: "Verified Quest Diagnostics screening lipid panel (2026-10-18).".into(),
+                        unfinished_work: vec![],
+                    };
+                    Ok(engine::Turn {
+                        items: vec![engine::Item::Call(engine::Invocation {
+                            id: "complete-lipid-quiet".into(),
+                            name: COMPLETE_PATIENT_REVIEW_TOOL.into(),
+                            arguments: serde_json::to_string(&complete).unwrap(),
+                        })],
+                        receipt: json!({"turn": 2}),
+                        usage: Default::default(),
+                    })
+                }
+                3 => Ok(engine::Turn {
+                    items: vec![engine::Item::assistant(
+                        "Normal lipid panel quiet completion.",
+                    )],
+                    receipt: json!({"turn": 3}),
+                    usage: Default::default(),
+                }),
+                other => panic!("unexpected turn {other}"),
+            }
+        }
+    }
+    PracticeJobHost {
+        store: store.clone(),
+        claim: normal_claim,
+        authority: auth.as_ref(),
+    }
+    .run(
+        &mut NormalLipidQuietProvider { turn: 0 },
+        engine::RunLimits::default(),
+        &engine::Cancellation::default(),
+    )
+    .await
+    .unwrap();
+
+    assert!(
+        store
+            .open_concerns(
+                &WorkspaceAccess {
+                    practice: &practice,
+                    physician: &dr.physician_id,
+                    workspace: &normal_ws,
+                    session_hash: &dr_hash,
+                },
+                &mut authority,
+            )
+            .await
+            .unwrap()
+            .is_empty()
+    );
+    let saved_normal = store
+        .patient_review(&practice, &normal_ws, &normal_rev.review_id, auth.as_ref())
+        .await
+        .unwrap()
+        .unwrap();
+    assert!(matches!(
+        saved_normal.state,
+        ReviewLifecycleState::Completed {
+            outcome: ReviewOutcome::Quiet {
+                reason: QuietReviewReason::NothingToDo,
+                ..
+            },
+            ..
+        }
+    ));
+}
+
+#[tokio::test]
+async fn periodic_reassessment_respects_prior_decisions_avoids_duplicate_alerts_and_updates_memory_only_when_warranted()
+ {
+    let Some(url) = database_url() else {
+        return;
+    };
+    let (store, auth) = connect_stores(&url).await;
+    let skills = load_skills();
+    let roles = distinct_roles();
+
+    let practice = format!("practice-long-{}", Uuid::new_v4().simple());
+    let workspace = format!("pw-long-{}", Uuid::new_v4().simple());
+    auth.ensure_practice(&practice, PracticeClock::RealTime)
+        .await
+        .unwrap();
+    auth.register_patient(&practice, &workspace).await.unwrap();
+    let (dr, dr_hash) = invite_and_sign_in(&auth, &practice, "dr-long").await;
+    auth.set_membership(&dr, &workspace, Membership::Allowed)
+        .await
+        .unwrap();
+    let access = WorkspaceAccess {
+        practice: &practice,
+        physician: &dr.physician_id,
+        workspace: &workspace,
+        session_hash: &dr_hash,
+    };
+    let mut authority = PostgresWorkspaceAuthority;
+
+    // Seed physician-authored memory correction in `summary.md` so we also verify periodic reviews preserve it!
+    let seed_scope = Scope {
+        practice: practice.clone(),
+        physician: dr.physician_id.clone(),
+        workspace: workspace.clone(),
+        chat: "chat-intake".into(),
+    };
+    MemoryTool::Edit
+        .execute(
+            &store,
+            &seed_scope,
+            &json!({
+                "path": "summary.md",
+                "edits": [{
+                    "append": {
+                        "text": "Medication intolerance: prior dry cough on lisinopril; prefers losartan."
+                    }
+                }]
+            }),
+            || Ok(memory::NoteOrigin {
+                work: "work-intake".into(),
+                call: "cmd-dr-allergy-note".into(),
+                message: "msg-intake-1".into(),
+            }),
+        )
+        .await
+        .unwrap();
+
+    let pull_1 = SourcePull {
+        source_id: "clinic-ehr".into(),
+        source_label: "Clinic EHR".into(),
+        patient: source_patient("pt-long", "Marcus Vance"),
+        pulled_at: Some(1_790_600_000),
+    };
+    let bmp_1 = chart_record(ChartRecordSpec {
+        workspace: &workspace,
+        source_id: "clinic-ehr",
+        candidate_id: "Observation/egfr-baseline",
+        revision: "rev-1",
+        record_type: "Observation",
+        title: "Renal Function Panel",
+        date: "2026-10-01",
+        text: "eGFR 48 mL/min/1.73m2 (down from 56 last year), creatinine 1.52 mg/dL on losartan 50 mg daily. BP 142/88 mmHg.",
+    });
+    store
+        .record_chart(&workspace, std::slice::from_ref(&bmp_1), &pull_1)
+        .await
+        .unwrap();
+
+    // --- Run 1 (`ChangedRecords`): raises `concern-egfr-trend` + `concern-bp-log`, writes initial
+    // memory `mem-ckd-stage` (rev 1) + initial `PatientUnderstanding` (rev 1), and records unfinished work ---
+    let AdmittedPatientReview::New { review: run1, .. } = store
+        .admit_patient_review_with_trigger(
+            &practice,
+            &workspace,
+            "cmd-long-run-1",
+            ReviewTrigger::ChangedRecords {
+                workspace_version: 1,
+                record_versions: BTreeMap::from([(
+                    "Observation/egfr-baseline".into(),
+                    "rev-1".into(),
+                )]),
+                changed_candidates: vec!["Observation/egfr-baseline".into()],
+            },
+            &roles,
+            &skills,
+            auth.as_ref(),
+        )
+        .await
+        .unwrap()
+    else {
+        panic!("expected run 1");
+    };
+    let claim_1 = store
+        .claim_practice_job(&run1.practice_scope(), 60, auth.as_ref())
+        .await
+        .unwrap()
+        .unwrap();
+
+    struct Run1InitialAssessmentProvider {
+        turn: usize,
+    }
+    impl engine::recipe::Provider for Run1InitialAssessmentProvider {
+        async fn exchange(
+            &mut self,
+            _: &engine::recipe::Request,
+            _: &engine::Cancellation,
+            _: &engine::RunLimits,
+            _: &mut dyn engine::recipe::Observer,
+        ) -> Result<engine::Turn, engine::Cause> {
+            self.turn += 1;
+            match self.turn {
+                1 => Ok(engine::Turn {
+                    items: vec![engine::Item::Call(engine::Invocation {
+                        id: "read-bmp-1".into(),
+                        name: READ_TOOL.into(),
+                        arguments: json!({
+                            "references": [{
+                                "candidate_id": "Observation/egfr-baseline",
+                                "revision": "rev-1",
+                                "cursor": null
+                            }],
+                            "max_result_bytes": 16_384
+                        })
+                        .to_string(),
+                    })],
+                    receipt: json!({"turn": 1}),
+                    usage: Default::default(),
+                }),
+                2 => {
+                    let save_u = SaveUnderstandingArgs {
+                        expected_revision: Some(0),
+                        operating_index: OperatingIndex {
+                            working_overview: "CKD stage 3a/3b transition (eGFR 48 mL/min/1.73m2) and hypertension on losartan 50 mg daily.".into(),
+                            known_health_systems: vec![KnownHealthSystem {
+                                name: "Clinic EHR".into(),
+                                standing: HealthSystemStanding::Connected {
+                                    source_id: "clinic-ehr".into(),
+                                },
+                                note: "Primary nephrology/internal medicine chart".into(),
+                            }],
+                            open_threads: vec!["Repeat BMP and urine albumin check in 2 weeks".into()],
+                            anchors: vec![IndexedAnchor {
+                                reference: ExactRecordReference {
+                                    candidate_id: "Observation/egfr-baseline".into(),
+                                    revision: "rev-1".into(),
+                                },
+                                source_id: "clinic-ehr".into(),
+                                topic: "Renal function".into(),
+                            }],
+                        },
+                        claims: vec![SummaryClaimInput {
+                            text: "eGFR declined from 56 to 48 mL/min/1.73m2 (creatinine 1.52 mg/dL) on losartan 50 mg daily".into(),
+                            citations: vec![ExactRecordReference {
+                                candidate_id: "Observation/egfr-baseline".into(),
+                                revision: "rev-1".into(),
+                            }],
+                        }],
+                        material_gaps: vec!["Repeat BMP pending in 2 weeks".into()],
+                        scope_note: None,
+                    };
+                    let complete = CompleteReviewArgs {
+                        disposition: CompleteReviewDisposition::Assessed {
+                            summary: "Declining eGFR (56 -> 48) and elevated office BP (142/88); raised renal trend and BP log concerns and initialized understanding.".into(),
+                        },
+                        citations: vec![ExactRecordReference {
+                            candidate_id: "Observation/egfr-baseline".into(),
+                            revision: "rev-1".into(),
+                        }],
+                        basis_and_limitations: "Clinic EHR Renal Function Panel (2026-10-01).".into(),
+                        unfinished_work: vec![UnfinishedReviewWork {
+                            topic: "Repeat BMP in 2 weeks".into(),
+                            detail: "Reassess eGFR and serum potassium once repeat renal panel arrives.".into(),
+                            limit: None,
+                        }],
+                    };
+                    Ok(engine::Turn {
+                        items: vec![
+                            engine::Item::Call(engine::Invocation {
+                                id: "raise-egfr".into(),
+                                name: CONCERN_TOOL.into(),
+                                arguments: json!({
+                                    "operation": "raise",
+                                    "concern_id": "concern-egfr-trend",
+                                    "urgency": "today",
+                                    "reason": "eGFR declined from 56 to 48 mL/min/1.73m2 (Cr 1.52 mg/dL); repeat renal panel and urine albumin check warranted.",
+                                    "records": [{
+                                        "candidate_id": "Observation/egfr-baseline",
+                                        "revision": "rev-1"
+                                    }]
+                                })
+                                .to_string(),
+                            }),
+                            engine::Item::Call(engine::Invocation {
+                                id: "raise-bp-office".into(),
+                                name: CONCERN_TOOL.into(),
+                                arguments: json!({
+                                    "operation": "raise",
+                                    "concern_id": "concern-bp-log",
+                                    "urgency": "today",
+                                    "reason": "Office blood pressure 142/88 mmHg on losartan 50 mg daily; request 7-day home BP log.",
+                                    "records": [{
+                                        "candidate_id": "Observation/egfr-baseline",
+                                        "revision": "rev-1"
+                                    }]
+                                })
+                                .to_string(),
+                            }),
+                            engine::Item::Call(engine::Invocation {
+                                id: "mem-ckd".into(),
+                                name: "edit_patient_memory".into(),
+                                arguments: json!({
+                                    "path": "pages/ckd.md",
+                                    "edits": [{
+                                        "append": {
+                                            "text": "eGFR 48 mL/min/1.73m2 (creatinine 1.52 mg/dL) as of 2026-10-01 on losartan 50 mg daily."
+                                        }
+                                    }]
+                                })
+                                .to_string(),
+                            }),
+                            engine::Item::Call(engine::Invocation {
+                                id: "save-u-1".into(),
+                                name: SAVE_UNDERSTANDING_TOOL.into(),
+                                arguments: serde_json::to_string(&save_u).unwrap(),
+                            }),
+                            engine::Item::Call(engine::Invocation {
+                                id: "complete-run-1".into(),
+                                name: COMPLETE_PATIENT_REVIEW_TOOL.into(),
+                                arguments: serde_json::to_string(&complete).unwrap(),
+                            }),
+                        ],
+                        receipt: json!({"turn": 2}),
+                        usage: Default::default(),
+                    })
+                }
+                3 => Ok(engine::Turn {
+                    items: vec![engine::Item::assistant("Run 1 completed.")],
+                    receipt: json!({"turn": 3}),
+                    usage: Default::default(),
+                }),
+                other => panic!("unexpected turn {other}"),
+            }
+        }
+    }
+    PracticeJobHost {
+        store: store.clone(),
+        claim: claim_1,
+        authority: auth.as_ref(),
+    }
+    .run(
+        &mut Run1InitialAssessmentProvider { turn: 0 },
+        engine::RunLimits::default(),
+        &engine::Cancellation::default(),
+    )
+    .await
+    .unwrap();
+
+    // Physician clears `concern-bp-log` as `Done` after ordering home BP cuff!
+    let done = store
+        .mark_concern_done(
+            &access,
+            &CommandKey::new("cmd-dr-done-bp").unwrap(),
+            &ConcernId::new("concern-bp-log").unwrap(),
+            &mut authority,
+        )
+        .await
+        .unwrap();
+    assert!(matches!(done, ConcernDoneOutcome::Cleared { .. }));
+
+    // --- Run 2 (`Periodic` with unchanged chart): sees open `concern-egfr-trend`, prior review
+    // decisions (which raised `concern-bp-log`, now cleared by physician), and unfinished work;
+    // finishes quietly WITHOUT repeating alerts or churning memory / understanding! ---
+    let saved_run1 = store
+        .patient_review(&practice, &workspace, &run1.review_id, auth.as_ref())
+        .await
+        .unwrap()
+        .unwrap();
+    let AdmittedPatientReview::New { review: run2, .. } = store
+        .admit_patient_review_with_trigger(
+            &practice,
+            &workspace,
+            "cmd-long-run-2-periodic",
+            ReviewTrigger::Periodic {
+                workspace_version: 1,
+                record_versions: BTreeMap::from([(
+                    "Observation/egfr-baseline".into(),
+                    "rev-1".into(),
+                )]),
+                last_reviewed_at: saved_run1.completed_at,
+            },
+            &roles,
+            &skills,
+            auth.as_ref(),
+        )
+        .await
+        .unwrap()
+    else {
+        panic!("expected run 2");
+    };
+    let claim_2 = store
+        .claim_practice_job(&run2.practice_scope(), 60, auth.as_ref())
+        .await
+        .unwrap()
+        .unwrap();
+
+    struct Run2PeriodicNoDuplicateProvider {
+        turn: usize,
+    }
+    impl engine::recipe::Provider for Run2PeriodicNoDuplicateProvider {
+        async fn exchange(
+            &mut self,
+            request: &engine::recipe::Request,
+            _: &engine::Cancellation,
+            _: &engine::RunLimits,
+            _: &mut dyn engine::recipe::Observer,
+        ) -> Result<engine::Turn, engine::Cause> {
+            self.turn += 1;
+            match self.turn {
+                1 => {
+                    let wire = serde_json::to_string(&request.items).unwrap();
+                    // Verify starting context surfaces active `concern-egfr-trend`, durable memories,
+                    // saved understanding, and Run 1's decisions + unfinished work!
+                    assert!(wire.contains("concern-egfr-trend"));
+                    assert!(wire.contains("Repeat BMP in 2 weeks"));
+                    assert!(wire.contains("prior dry cough on lisinopril"));
+                    assert!(wire.contains("pages/ckd.md"));
+                    Ok(engine::Turn {
+                        items: vec![engine::Item::Call(engine::Invocation {
+                            id: "read-bmp-periodic".into(),
+                            name: READ_TOOL.into(),
+                            arguments: json!({
+                                "references": [{
+                                    "candidate_id": "Observation/egfr-baseline",
+                                    "revision": "rev-1",
+                                    "cursor": null
+                                }],
+                                "max_result_bytes": 16_384
+                            })
+                            .to_string(),
+                        })],
+                        receipt: json!({"turn": 1}),
+                        usage: Default::default(),
+                    })
+                }
+                2 => {
+                    let complete = CompleteReviewArgs {
+                        disposition: CompleteReviewDisposition::Quiet {
+                            explanation: "Periodic reassessment: `concern-egfr-trend` is already open on Today, `concern-bp-log` was addressed by physician, and repeat 2-week BMP has not yet resulted; no duplicate alert or memory rewrite warranted.".into(),
+                        },
+                        citations: vec![ExactRecordReference {
+                            candidate_id: "Observation/egfr-baseline".into(),
+                            revision: "rev-1".into(),
+                        }],
+                        basis_and_limitations: "Reviewed Clinic EHR chart v1, open Today concerns, and prior review unfinished work.".into(),
+                        unfinished_work: vec![UnfinishedReviewWork {
+                            topic: "Repeat BMP in 2 weeks".into(),
+                            detail: "Reassess eGFR and serum potassium once repeat renal panel arrives.".into(),
+                            limit: None,
+                        }],
+                    };
+                    Ok(engine::Turn {
+                        items: vec![engine::Item::Call(engine::Invocation {
+                            id: "complete-run-2".into(),
+                            name: COMPLETE_PATIENT_REVIEW_TOOL.into(),
+                            arguments: serde_json::to_string(&complete).unwrap(),
+                        })],
+                        receipt: json!({"turn": 2}),
+                        usage: Default::default(),
+                    })
+                }
+                3 => Ok(engine::Turn {
+                    items: vec![engine::Item::assistant(
+                        "Periodic review 2 quiet completion.",
+                    )],
+                    receipt: json!({"turn": 3}),
+                    usage: Default::default(),
+                }),
+                other => panic!("unexpected turn {other}"),
+            }
+        }
+    }
+    PracticeJobHost {
+        store: store.clone(),
+        claim: claim_2,
+        authority: auth.as_ref(),
+    }
+    .run(
+        &mut Run2PeriodicNoDuplicateProvider { turn: 0 },
+        engine::RunLimits::default(),
+        &engine::Cancellation::default(),
+    )
+    .await
+    .unwrap();
+
+    // Verify Run 2 did NOT duplicate concerns or churn memory/understanding!
+    let open_after_run2 = store.open_concerns(&access, &mut authority).await.unwrap();
+    assert_eq!(open_after_run2.len(), 1);
+    assert_eq!(open_after_run2[0].id.as_str(), "concern-egfr-trend");
+    assert_eq!(open_after_run2[0].revision, 1);
+    assert_eq!(
+        store
+            .patient_understanding_for_practice(&practice, &workspace, auth.as_ref())
+            .await
+            .unwrap()
+            .unwrap()
+            .revision,
+        1,
+        "understanding must not be rewritten when unwarranted"
+    );
+    let mem_key = PatientKey::for_rounds(&practice, &workspace).unwrap();
+    let listing_run2 = store.list_memory(&mem_key).await.unwrap();
+    assert_eq!(listing_run2.summary.unwrap().version, 1);
+    assert_eq!(
+        listing_run2.pages[&memory::PageId::parse("ckd").unwrap()].version,
+        1
+    );
+
+    // --- Run 3 (`Periodic` after new repeat BMP & nephrology note arrive): updates memory and
+    // understanding when clinically warranted, retires resolved concern, and clears unfinished work ---
+    let bmp_followup = chart_record(ChartRecordSpec {
+        workspace: &workspace,
+        source_id: "clinic-ehr",
+        candidate_id: "Observation/egfr-followup-2",
+        revision: "rev-1",
+        record_type: "Observation",
+        title: "Repeat Renal Function Panel and Urine ACR",
+        date: "2026-10-16",
+        text: "Repeat eGFR recovered to 57 mL/min/1.73m2 (creatinine 1.28 mg/dL) after resolving transient NSAID use; urine ACR normal at 11 mg/g; home BP average 124/76 mmHg.",
+    });
+    store
+        .record_chart(
+            &workspace,
+            &[bmp_1, bmp_followup],
+            &SourcePull {
+                source_id: "clinic-ehr".into(),
+                source_label: "Clinic EHR".into(),
+                patient: source_patient("pt-long", "Marcus Vance"),
+                pulled_at: Some(1_790_700_000),
+            },
+        )
+        .await
+        .unwrap();
+
+    let saved_run2 = store
+        .patient_review(&practice, &workspace, &run2.review_id, auth.as_ref())
+        .await
+        .unwrap()
+        .unwrap();
+    let AdmittedPatientReview::New { review: run3, .. } = store
+        .admit_patient_review_with_trigger(
+            &practice,
+            &workspace,
+            "cmd-long-run-3-warranted",
+            ReviewTrigger::Periodic {
+                workspace_version: 2,
+                record_versions: BTreeMap::from([
+                    ("Observation/egfr-baseline".into(), "rev-1".into()),
+                    ("Observation/egfr-followup-2".into(), "rev-1".into()),
+                ]),
+                last_reviewed_at: saved_run2.completed_at,
+            },
+            &roles,
+            &skills,
+            auth.as_ref(),
+        )
+        .await
+        .unwrap()
+    else {
+        panic!("expected run 3");
+    };
+    let claim_3 = store
+        .claim_practice_job(&run3.practice_scope(), 60, auth.as_ref())
+        .await
+        .unwrap()
+        .unwrap();
+
+    struct Run3WarrantedUpdateProvider {
+        turn: usize,
+    }
+    impl engine::recipe::Provider for Run3WarrantedUpdateProvider {
+        async fn exchange(
+            &mut self,
+            _: &engine::recipe::Request,
+            _: &engine::Cancellation,
+            _: &engine::RunLimits,
+            _: &mut dyn engine::recipe::Observer,
+        ) -> Result<engine::Turn, engine::Cause> {
+            self.turn += 1;
+            match self.turn {
+                1 => Ok(engine::Turn {
+                    items: vec![engine::Item::Call(engine::Invocation {
+                        id: "read-bmp-2".into(),
+                        name: READ_TOOL.into(),
+                        arguments: json!({
+                            "references": [
+                                {
+                                    "candidate_id": "Observation/egfr-baseline",
+                                    "revision": "rev-1",
+                                    "cursor": null
+                                },
+                                {
+                                    "candidate_id": "Observation/egfr-followup-2",
+                                    "revision": "rev-1",
+                                    "cursor": null
+                                }
+                            ],
+                            "max_result_bytes": 16_384
+                        })
+                        .to_string(),
+                    })],
+                    receipt: json!({"turn": 1}),
+                    usage: Default::default(),
+                }),
+                2 => {
+                    let save_u2 = SaveUnderstandingArgs {
+                        expected_revision: Some(1),
+                        operating_index: OperatingIndex {
+                            working_overview: "Renal function recovered to baseline eGFR 57 mL/min/1.73m2 (uACR 11 mg/g) after discontinuing transient NSAID; hypertension controlled at 124/76 mmHg on losartan 50 mg daily.".into(),
+                            known_health_systems: vec![KnownHealthSystem {
+                                name: "Clinic EHR".into(),
+                                standing: HealthSystemStanding::Connected {
+                                    source_id: "clinic-ehr".into(),
+                                },
+                                note: "Primary nephrology/internal medicine chart".into(),
+                            }],
+                            open_threads: vec![],
+                            anchors: vec![IndexedAnchor {
+                                reference: ExactRecordReference {
+                                    candidate_id: "Observation/egfr-followup-2".into(),
+                                    revision: "rev-1".into(),
+                                },
+                                source_id: "clinic-ehr".into(),
+                                topic: "Recovered renal panel".into(),
+                            }],
+                        },
+                        claims: vec![SummaryClaimInput {
+                            text: "Repeat renal panel on 2026-10-16 showed recovery to eGFR 57 mL/min/1.73m2, normal uACR 11 mg/g, and home BP 124/76 mmHg after stopping transient NSAID".into(),
+                            citations: vec![ExactRecordReference {
+                                candidate_id: "Observation/egfr-followup-2".into(),
+                                revision: "rev-1".into(),
+                            }],
+                        }],
+                        material_gaps: vec![
+                            "Routine annual renal monitoring due in 12 months".into(),
+                        ],
+                        scope_note: None,
+                    };
+                    let complete = CompleteReviewArgs {
+                        disposition: CompleteReviewDisposition::Assessed {
+                            summary: "Repeat renal panel confirmed recovery to baseline eGFR 57 mL/min/1.73m2 and normal uACR 11 mg/g; retired open renal concern and updated longitudinal memory and summary.".into(),
+                        },
+                        citations: vec![ExactRecordReference {
+                            candidate_id: "Observation/egfr-followup-2".into(),
+                            revision: "rev-1".into(),
+                        }],
+                        basis_and_limitations: "Clinic EHR repeat renal panel and home BP summary (2026-10-16).".into(),
+                        unfinished_work: vec![],
+                    };
+                    Ok(engine::Turn {
+                        items: vec![
+                            engine::Item::Call(engine::Invocation {
+                                id: "retire-egfr".into(),
+                                name: CONCERN_TOOL.into(),
+                                arguments: json!({
+                                    "operation": "retire",
+                                    "concern_id": "concern-egfr-trend",
+                                    "reason": "Repeat renal panel on 2026-10-16 showed eGFR recovery to 57 mL/min/1.73m2 and normal uACR 11 mg/g after stopping NSAID."
+                                })
+                                .to_string(),
+                            }),
+                            engine::Item::Call(engine::Invocation {
+                                id: "update-mem-ckd".into(),
+                                name: "edit_patient_memory".into(),
+                                arguments: json!({
+                                    "path": "pages/ckd.md",
+                                    "edits": [{
+                                        "replace": {
+                                            "old_text": "eGFR 48 mL/min/1.73m2 (creatinine 1.52 mg/dL) as of 2026-10-01 on losartan 50 mg daily.",
+                                            "text": "Baseline eGFR ~56-57 mL/min/1.73m2; transient dip to 48 in Oct 2026 resolved to 57 (uACR 11 mg/g) off NSAIDs."
+                                        }
+                                    }]
+                                })
+                                .to_string(),
+                            }),
+                            engine::Item::Call(engine::Invocation {
+                                id: "save-u-2".into(),
+                                name: SAVE_UNDERSTANDING_TOOL.into(),
+                                arguments: serde_json::to_string(&save_u2).unwrap(),
+                            }),
+                            engine::Item::Call(engine::Invocation {
+                                id: "complete-run-3".into(),
+                                name: COMPLETE_PATIENT_REVIEW_TOOL.into(),
+                                arguments: serde_json::to_string(&complete).unwrap(),
+                            }),
+                        ],
+                        receipt: json!({"turn": 2}),
+                        usage: Default::default(),
+                    })
+                }
+                3 => Ok(engine::Turn {
+                    items: vec![engine::Item::assistant(
+                        "Run 3 warranted updates completed.",
+                    )],
+                    receipt: json!({"turn": 3}),
+                    usage: Default::default(),
+                }),
+                other => panic!("unexpected turn {other}"),
+            }
+        }
+    }
+    PracticeJobHost {
+        store: store.clone(),
+        claim: claim_3,
+        authority: auth.as_ref(),
+    }
+    .run(
+        &mut Run3WarrantedUpdateProvider { turn: 0 },
+        engine::RunLimits::default(),
+        &engine::Cancellation::default(),
+    )
+    .await
+    .unwrap();
+
+    assert!(
+        store
+            .open_concerns(&access, &mut authority)
+            .await
+            .unwrap()
+            .is_empty()
+    );
+    assert_eq!(
+        store
+            .patient_understanding_for_practice(&practice, &workspace, auth.as_ref())
+            .await
+            .unwrap()
+            .unwrap()
+            .revision,
+        2
+    );
+    let listing_run3 = store.list_memory(&mem_key).await.unwrap();
+    assert_eq!(
+        listing_run3.pages[&memory::PageId::parse("ckd").unwrap()].version,
+        2
+    );
+    // Physician-supplied medication intolerance memory stayed untouched at version 1!
+    assert_eq!(listing_run3.summary.unwrap().version, 1);
+    let summary_after_run3 = match store
+        .read_memory(&mem_key, &MemoryPath::Summary, None)
+        .await
+        .unwrap()
+    {
+        memory::FileRead::Version { markdown, .. } | memory::FileRead::Log { markdown } => markdown,
+    };
+    assert!(summary_after_run3.contains("prior dry cough on lisinopril; prefers losartan."));
 }
