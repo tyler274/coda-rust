@@ -346,7 +346,7 @@ def main(argv=None, api=gh_api):
     commands = parser.add_subparsers(dest="command", required=True)
     for mode in ("history", "run"):
         sub = commands.add_parser(mode)
-        sub.add_argument("--repo", default=os.environ.get("GITHUB_REPOSITORY", "Coda-Health/coda-rust"))
+        sub.add_argument("--repo", default=os.environ.get("GITHUB_REPOSITORY", "tyler274/coda-rust"))
         sub.add_argument("--output", type=Path, default=Path(f"ci-timings-{mode}.html"))
         sub.add_argument("--summary", type=Path, help="Markdown destination (default: output with .md suffix); appended for GITHUB_STEP_SUMMARY")
         if mode == "history":

@@ -182,6 +182,10 @@ jobs:
           sudo docker image prune --all --force || true
           df -h
       - uses: cachix/install-nix-action@v31
+      - name: Magic Nix Cache
+        uses: DeterminateSystems/magic-nix-cache-action@v15
+        with:
+          use-flakehub: false
       # Every check but the VM tests (agent-sandbox, coda-firecracker).
       - name: Flake checks (build, cargo test, clippy, rustfmt, coda-carry)
         run: |
@@ -552,6 +556,10 @@ jobs:
           sudo docker image prune --all --force || true
           df -h
       - uses: cachix/install-nix-action@v31
+      - name: Magic Nix Cache
+        uses: DeterminateSystems/magic-nix-cache-action@v15
+        with:
+          use-flakehub: false
       - name: Read private Nix cache
         uses: ./.github/actions/nix-cache
         with:
@@ -715,6 +723,10 @@ jobs:
           df -h
       - name: Install Nix
         uses: cachix/install-nix-action@v31
+      - name: Magic Nix Cache
+        uses: DeterminateSystems/magic-nix-cache-action@v15
+        with:
+          use-flakehub: false
       - name: Read private Nix cache
         uses: ./.github/actions/nix-cache
         with:
@@ -917,6 +929,10 @@ jobs:
           df -h
       - name: Install Nix
         uses: cachix/install-nix-action@v31
+      - name: Magic Nix Cache
+        uses: DeterminateSystems/magic-nix-cache-action@v15
+        with:
+          use-flakehub: false
       - name: Read private Nix cache
         uses: ./.github/actions/nix-cache
         with:
@@ -1300,6 +1316,10 @@ jobs:
           df -h
       - name: Install Nix
         uses: cachix/install-nix-action@v31
+      - name: Magic Nix Cache
+        uses: DeterminateSystems/magic-nix-cache-action@v15
+        with:
+          use-flakehub: false
       - name: Read private Nix cache
         uses: ./.github/actions/nix-cache
         with:

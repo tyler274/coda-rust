@@ -201,9 +201,6 @@ mod tests {
             "duet/privacy/2026-09-09.html",
             "duet/privacy/2026-09-09/index.html",
             "clinical-transparency.html",
-            "scheduling/dev.html",
-            "scheduling/dev/opengraph-image",
-            "scheduling/dev/opengraph-image.png",
             "favicon.ico",
             "css/chrome.css",
             "homepage/site.js",
@@ -211,6 +208,7 @@ mod tests {
         ] {
             assert!(dir.0.join(file).is_file(), "missing exported file {file}");
         }
+        assert!(!dir.0.join("scheduling/dev.html").exists());
 
         let sitemap = fs::read_to_string(dir.0.join("sitemap.xml")).unwrap();
         assert!(sitemap.contains("<loc>https://tyler274.github.io/coda-rust/</loc>"));
@@ -239,6 +237,11 @@ mod tests {
                 html_count += 1;
                 let html = fs::read_to_string(&path).unwrap();
                 assert!(!html.contains("/coda-rust/coda-rust"), "{}", path.display());
+                assert!(
+                    html.contains("href=\"/coda-rust/book/\""),
+                    "missing architecture book footer link in {}",
+                    path.display()
+                );
                 for url in extract_attr_urls(&html, "href")
                     .into_iter()
                     .chain(extract_attr_urls(&html, "src"))
@@ -249,6 +252,9 @@ mod tests {
                             "unprefixed root-relative URL {url} in {}",
                             path.display()
                         );
+                        if url == "/coda-rust/book/" {
+                            continue;
+                        }
                         assert!(
                             exported_target_exists(&dir.0, "/coda-rust", &url),
                             "dangling local target {url} in {}",

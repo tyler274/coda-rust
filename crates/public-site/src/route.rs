@@ -30,8 +30,6 @@ pub enum Route {
     Terms {},
     #[route("/clinical-transparency")]
     ClinicalTransparency {},
-    #[route("/scheduling/dev")]
-    Scheduling {},
     #[route("/:..segments")]
     NotFound { segments: Vec<String> },
 }
@@ -52,7 +50,7 @@ pub struct PageMeta {
 pub enum Shell {
     /// The homepage and /duet: the homepage styles and motion script.
     Homepage,
-    /// Every other page: the legal documents, scheduling and not-found, styled by
+    /// Every other page: the legal documents and not-found, styled by
     /// `document.css`.
     Document,
 }
@@ -76,7 +74,6 @@ impl Route {
             Self::Privacy {},
             Self::Terms {},
             Self::ClinicalTransparency {},
-            Self::Scheduling {},
         ];
         for archive in [Archive::DuetPrivacy, Archive::DuetTerms] {
             pages.extend(
@@ -155,7 +152,6 @@ impl Route {
             Self::Privacy {} => ("Privacy Policy".into(), "How Coda Health handles information through its website and related services.".into()),
             Self::Terms {} => ("Terms of Service".into(), "Terms of Service for the Coda Health website and related services.".into()),
             Self::ClinicalTransparency {} => ("Clinical Transparency".into(), "How Chords supports physician-directed care, preserves reviewable evidence, and keeps clinical authority with the physician.".into()),
-            Self::Scheduling {} => ("Schedule with Dev Patale".into(), "Book a conversation with Dev Patale about clinical environments, health-agent evaluation, and health AI research.".into()),
             Self::NotFound { .. } => ("Page Not Found".into(), "The requested page could not be found.".into()),
         };
         PageMeta {
@@ -174,20 +170,16 @@ impl Route {
                 Self::Duet {} => {
                     origin.absolute_url(base_path, "/brand/duet/social-preview-v1.png")
                 }
-                Self::Scheduling {} => {
-                    origin.absolute_url(base_path, "/scheduling/dev/opengraph-image")
-                }
                 Self::NotFound { .. } => String::new(),
                 _ => origin.absolute_url(base_path, "/brand/coda-health-social-preview-v4.png"),
             },
             image_alt: match self {
                 Self::Duet {} => "Duet by Coda Health. A clearer picture of you.",
-                Self::Scheduling {} => "Schedule with Dev Patale at Coda Health",
                 Self::NotFound { .. } => "",
                 _ => "Coda Health: Coda handles what happens between visits.",
             }
             .into(),
-            noindex: matches!(self, Self::Scheduling {} | Self::NotFound { .. }),
+            noindex: matches!(self, Self::NotFound { .. }),
         }
     }
 }

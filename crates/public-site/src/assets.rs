@@ -76,17 +76,6 @@ impl AssetTable {
             );
             table.aliases.insert(path, base_path.join(&hashed));
         }
-        // The social image's public URL is extensionless; serve the embedded PNG there
-        // with its correct image content type.
-        if let Some(image) = table
-            .assets
-            .get("/scheduling/dev/opengraph-image.png")
-            .cloned()
-        {
-            table
-                .assets
-                .insert("/scheduling/dev/opengraph-image".into(), image);
-        }
         table
     }
 

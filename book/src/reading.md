@@ -1,9 +1,9 @@
 # How to use this book
 
-The <a href="/intent/README%2Emd">intent specs</a> own product intent: principles, product specs and Dev's
+The <a href="/intent/README%2Emd">intent specs</a> own product intent: principles, product specs and owner
 decisions. Linear tracks scope, work and acceptance. This book documents Rust
 owners, setup and proof. Code establishes what is implemented; it does not
-turn an old implementation into an approved product decision. Dev's latest
+turn an old implementation into an approved product decision. The project owner's latest
 explicit decisions take precedence. When an outcome and implementation disagree,
 Linear tracks the gap, and the responsible owner changes as the work lands.
 

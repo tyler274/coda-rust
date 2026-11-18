@@ -117,7 +117,8 @@ try {
     }
     assert.deepEqual(failures,[],`${label}: Duet failed local assets`); assert.deepEqual(errors,[],`${label}: Duet uncaught JavaScript errors`);
     if (basePath && label === 'desktop') {
-      for (const extra of ['/clinical-transparency', '/duet/privacy', '/duet/privacy/2026-09-09', '/privacy', '/terms', '/scheduling/dev']) {
+      assert.equal(await evaluate(`!!document.querySelector('footer a[href="${withBase('/book/')}"]')`), true, 'missing footer Architecture Book link');
+      for (const extra of ['/clinical-transparency', '/duet/privacy', '/duet/privacy/2026-09-09', '/privacy', '/terms']) {
         await navigate(extra);
         assert.equal(await evaluate('document.readyState === "complete" && !!document.querySelector("h1")'), true, `${extra}: missing heading`);
         assert.deepEqual(failures, [], `${extra}: failed local assets`);

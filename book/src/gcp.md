@@ -44,7 +44,7 @@ not to a product, so both environments live in the Coda Health projects:
 `coda-health-prod`, apart from the physician and Duet projects such as
 `coda-rust-staging`. The root shares no physician/Duet databases. CI deploys
 staging from `main`; production receives staging-tested images through manual
-promotion, and operator applies need Dev's explicit authorization. [Public
+promotion, and operator applies require explicit operator authorization. [Public
 site](public-site.md) owns the architecture, IAP and cache controls, runtime
 configuration, checks, and the
 [staging](public-site.md#staging-state-and-deployment) and
