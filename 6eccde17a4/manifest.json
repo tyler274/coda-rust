@@ -1,0 +1,57 @@
+{
+  "branch": "tyler-eng-266-3-understanding-postgres-suite",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC1",
+      "label": "PostgreSQL initial understanding lifecycle, currency fencing, retry, and panel-access suite",
+      "kind": "run",
+      "revision": "6eccde17a479e010c8cb756144caa96706ec5910",
+      "dirty": false,
+      "recorded": "2026-11-18T22:13:37+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "local-product",
+        "--test",
+        "initial_understanding_postgres",
+        "--",
+        "--test-threads=1"
+      ],
+      "expect": "\\b7 passed\\b",
+      "expect_fail": false,
+      "files": [
+        "01-PostgreSQL-initial-understanding-lifecycle-curre.log"
+      ],
+      "seconds": 20.4,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true
+    },
+    {
+      "id": 2,
+      "claim": "AC2",
+      "label": "Product privacy boundary and shared harness isolation check",
+      "kind": "run",
+      "revision": "6eccde17a479e010c8cb756144caa96706ec5910",
+      "dirty": false,
+      "recorded": "2026-11-18T22:13:58+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "boundaries"
+      ],
+      "expect": "\\b25 passed\\b",
+      "expect_fail": false,
+      "files": [
+        "02-Product-privacy-boundary-and-shared-harness-isol.log"
+      ],
+      "seconds": 1.7,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true
+    }
+  ]
+}
