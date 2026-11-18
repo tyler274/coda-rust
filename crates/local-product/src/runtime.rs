@@ -63,6 +63,8 @@ pub mod reply;
 /// Patient rounds: the job that keeps a patient's pages, summary and
 /// direction.
 pub mod rounds;
+/// Practice schedule reads, patient matching, and versioned saved appointments.
+pub mod schedule;
 /// Durable source patient links, access state, and pull status.
 pub mod source_status;
 /// Versioned patient source observations: a stand-in source owner.

@@ -1,0 +1,339 @@
+//! Practice schedule source standing, seeded patient links, and saved appointments.
+use super::super::entities::{
+    schedule_appointment::{Column as AppointmentColumn, Entity as AppointmentEntity},
+    schedule_patient_link::{Column as LinkColumn, Entity as LinkEntity},
+    schedule_source::{Column as SourceColumn, Entity as SourceEntity},
+};
+use sea_orm_migration::prelude::*;
+
+/// Creates `physician_runtime_schedule_sources`,
+/// `physician_runtime_schedule_patient_links`, and
+/// `physician_runtime_appointments`.
+#[derive(DeriveMigrationName)]
+pub(super) struct Migration;
+
+#[async_trait::async_trait]
+impl MigrationTrait for Migration {
+    async fn up(&self, manager: &SchemaManager) -> Result<(), DbErr> {
+        let empty_issues = serde_json::json!([]);
+
+        let unavailable_standing = Condition::all()
+            .add(Expr::col(SourceColumn::Standing).eq("unavailable"))
+            .add(Expr::col(SourceColumn::AsOf).is_null())
+            .add(Expr::col(SourceColumn::ScheduleVersion).eq(0))
+            .add(Expr::col(SourceColumn::LastFailure).is_not_null());
+        let current_standing = Condition::all()
+            .add(Expr::col(SourceColumn::Standing).eq("current"))
+            .add(Expr::col(SourceColumn::AsOf).is_not_null())
+            .add(Expr::col(SourceColumn::ScheduleVersion).gt(0))
+            .add(Expr::col(SourceColumn::LastFailure).is_null());
+        let partial_standing = Condition::all()
+            .add(Expr::col(SourceColumn::Standing).eq("partial"))
+            .add(Expr::col(SourceColumn::AsOf).is_not_null())
+            .add(Expr::col(SourceColumn::ScheduleVersion).gt(0))
+            .add(Expr::col(SourceColumn::LastFailure).is_null());
+        let refresh_failed_standing = Condition::all()
+            .add(Expr::col(SourceColumn::Standing).eq("refresh_failed"))
+            .add(Expr::col(SourceColumn::AsOf).is_not_null())
+            .add(Expr::col(SourceColumn::ScheduleVersion).gt(0))
+            .add(Expr::col(SourceColumn::LastFailure).is_not_null());
+
+        manager
+            .create_table(
+                Table::create()
+                    .table(SourceEntity)
+                    .col(
+                        ColumnDef::new(SourceColumn::Practice)
+                            .text()
+                            .not_null()
+                            .check(Expr::col(SourceColumn::Practice).ne("")),
+                    )
+                    .col(
+                        ColumnDef::new(SourceColumn::SourceId)
+                            .text()
+                            .not_null()
+                            .check(Expr::col(SourceColumn::SourceId).ne("")),
+                    )
+                    .col(
+                        ColumnDef::new(SourceColumn::SourceLabel)
+                            .text()
+                            .not_null()
+                            .check(Expr::col(SourceColumn::SourceLabel).ne("")),
+                    )
+                    .col(
+                        ColumnDef::new(SourceColumn::ScheduleVersion)
+                            .big_integer()
+                            .not_null()
+                            .check(Expr::col(SourceColumn::ScheduleVersion).gte(0)),
+                    )
+                    .col(
+                        ColumnDef::new(SourceColumn::Standing)
+                            .text()
+                            .not_null()
+                            .check(Expr::col(SourceColumn::Standing).is_in([
+                                "unavailable",
+                                "current",
+                                "partial",
+                                "refresh_failed",
+                            ])),
+                    )
+                    .col(ColumnDef::new(SourceColumn::AsOf).big_integer())
+                    .col(ColumnDef::new(SourceColumn::LastCompleteAsOf).big_integer())
+                    .col(
+                        ColumnDef::new(SourceColumn::Issues)
+                            .json_binary()
+                            .not_null()
+                            .default(empty_issues),
+                    )
+                    .col(ColumnDef::new(SourceColumn::LastFailure).json_binary())
+                    .check(
+                        Condition::any()
+                            .add(unavailable_standing)
+                            .add(current_standing)
+                            .add(partial_standing)
+                            .add(refresh_failed_standing),
+                    )
+                    .primary_key(
+                        Index::create()
+                            .name("pk-physician_runtime_schedule_sources")
+                            .col(SourceColumn::Practice)
+                            .col(SourceColumn::SourceId),
+                    )
+                    .to_owned(),
+            )
+            .await?;
+
+        manager
+            .create_table(
+                Table::create()
+                    .table(LinkEntity)
+                    .col(
+                        ColumnDef::new(LinkColumn::Practice)
+                            .text()
+                            .not_null()
+                            .check(Expr::col(LinkColumn::Practice).ne("")),
+                    )
+                    .col(
+                        ColumnDef::new(LinkColumn::SourceId)
+                            .text()
+                            .not_null()
+                            .check(Expr::col(LinkColumn::SourceId).ne("")),
+                    )
+                    .col(
+                        ColumnDef::new(LinkColumn::SourcePatientId)
+                            .text()
+                            .not_null()
+                            .check(Expr::col(LinkColumn::SourcePatientId).ne("")),
+                    )
+                    .col(
+                        ColumnDef::new(LinkColumn::Workspace)
+                            .text()
+                            .not_null()
+                            .check(Expr::col(LinkColumn::Workspace).ne("")),
+                    )
+                    .col(
+                        ColumnDef::new(LinkColumn::SeededAt)
+                            .big_integer()
+                            .not_null(),
+                    )
+                    .primary_key(
+                        Index::create()
+                            .name("pk-physician_runtime_schedule_patient_links")
+                            .col(LinkColumn::Practice)
+                            .col(LinkColumn::SourceId)
+                            .col(LinkColumn::SourcePatientId),
+                    )
+                    .to_owned(),
+            )
+            .await?;
+
+        manager
+            .create_index(
+                Index::create()
+                    .name("idx-physician_runtime_schedule_patient_links-workspace")
+                    .table(LinkEntity)
+                    .col(LinkColumn::Practice)
+                    .col(LinkColumn::Workspace)
+                    .to_owned(),
+            )
+            .await?;
+
+        let matched_appointment = Condition::all()
+            .add(Expr::col(AppointmentColumn::MatchState).eq("matched"))
+            .add(Expr::col(AppointmentColumn::Workspace).is_not_null())
+            .add(Expr::col(AppointmentColumn::Workspace).ne(""))
+            .add(Expr::col(AppointmentColumn::SourcePatientId).is_not_null())
+            .add(Expr::col(AppointmentColumn::SourcePatientId).ne(""));
+        let unmatched_appointment = Condition::all()
+            .add(Expr::col(AppointmentColumn::MatchState).eq("unmatched"))
+            .add(Expr::col(AppointmentColumn::Workspace).is_null());
+
+        manager
+            .create_table(
+                Table::create()
+                    .table(AppointmentEntity)
+                    .col(
+                        ColumnDef::new(AppointmentColumn::Practice)
+                            .text()
+                            .not_null()
+                            .check(Expr::col(AppointmentColumn::Practice).ne("")),
+                    )
+                    .col(
+                        ColumnDef::new(AppointmentColumn::SourceId)
+                            .text()
+                            .not_null()
+                            .check(Expr::col(AppointmentColumn::SourceId).ne("")),
+                    )
+                    .col(
+                        ColumnDef::new(AppointmentColumn::AppointmentId)
+                            .text()
+                            .not_null()
+                            .check(Expr::col(AppointmentColumn::AppointmentId).ne("")),
+                    )
+                    .col(
+                        ColumnDef::new(AppointmentColumn::SavedVersion)
+                            .big_integer()
+                            .not_null()
+                            .check(Expr::col(AppointmentColumn::SavedVersion).gt(0)),
+                    )
+                    .col(
+                        ColumnDef::new(AppointmentColumn::SourceRevision)
+                            .text()
+                            .not_null()
+                            .check(Expr::col(AppointmentColumn::SourceRevision).ne("")),
+                    )
+                    .col(
+                        ColumnDef::new(AppointmentColumn::StartsAt)
+                            .text()
+                            .not_null()
+                            .check(Expr::col(AppointmentColumn::StartsAt).ne("")),
+                    )
+                    .col(
+                        ColumnDef::new(AppointmentColumn::StartsAtUnix)
+                            .big_integer()
+                            .not_null(),
+                    )
+                    .col(
+                        ColumnDef::new(AppointmentColumn::EndsAt)
+                            .text()
+                            .not_null()
+                            .check(Expr::col(AppointmentColumn::EndsAt).ne("")),
+                    )
+                    .col(
+                        ColumnDef::new(AppointmentColumn::EndsAtUnix)
+                            .big_integer()
+                            .not_null(),
+                    )
+                    .col(
+                        ColumnDef::new(AppointmentColumn::Status)
+                            .text()
+                            .not_null()
+                            .check(Expr::col(AppointmentColumn::Status).is_in([
+                                "scheduled",
+                                "cancelled",
+                                "fulfilled",
+                                "noshow",
+                            ])),
+                    )
+                    .col(
+                        ColumnDef::new(AppointmentColumn::SourceStatus)
+                            .text()
+                            .not_null()
+                            .check(Expr::col(AppointmentColumn::SourceStatus).ne("")),
+                    )
+                    .col(
+                        ColumnDef::new(AppointmentColumn::Label)
+                            .text()
+                            .not_null()
+                            .check(Expr::col(AppointmentColumn::Label).ne("")),
+                    )
+                    .col(
+                        ColumnDef::new(AppointmentColumn::MatchState)
+                            .text()
+                            .not_null()
+                            .check(
+                                Expr::col(AppointmentColumn::MatchState)
+                                    .is_in(["matched", "unmatched"]),
+                            ),
+                    )
+                    .col(ColumnDef::new(AppointmentColumn::Workspace).text())
+                    .col(ColumnDef::new(AppointmentColumn::SourcePatientId).text())
+                    .col(
+                        ColumnDef::new(AppointmentColumn::Dates)
+                            .json_binary()
+                            .not_null(),
+                    )
+                    .col(ColumnDef::new(AppointmentColumn::Content).text().not_null())
+                    .col(
+                        ColumnDef::new(AppointmentColumn::Sha256)
+                            .text()
+                            .not_null()
+                            .check(Expr::col(AppointmentColumn::Sha256).ne("")),
+                    )
+                    .col(
+                        ColumnDef::new(AppointmentColumn::Provenance)
+                            .json_binary()
+                            .not_null(),
+                    )
+                    .col(
+                        ColumnDef::new(AppointmentColumn::AsOf)
+                            .big_integer()
+                            .not_null(),
+                    )
+                    .col(
+                        ColumnDef::new(AppointmentColumn::UpdatedAt)
+                            .big_integer()
+                            .not_null(),
+                    )
+                    .check(
+                        Expr::col(AppointmentColumn::StartsAtUnix)
+                            .lte(Expr::col(AppointmentColumn::EndsAtUnix)),
+                    )
+                    .check(
+                        Condition::any()
+                            .add(matched_appointment)
+                            .add(unmatched_appointment),
+                    )
+                    .primary_key(
+                        Index::create()
+                            .name("pk-physician_runtime_appointments")
+                            .col(AppointmentColumn::Practice)
+                            .col(AppointmentColumn::SourceId)
+                            .col(AppointmentColumn::AppointmentId),
+                    )
+                    .to_owned(),
+            )
+            .await?;
+
+        manager
+            .create_index(
+                Index::create()
+                    .name("idx-physician_runtime_appointments-schedule")
+                    .table(AppointmentEntity)
+                    .col(AppointmentColumn::Practice)
+                    .col(AppointmentColumn::StartsAtUnix)
+                    .col(AppointmentColumn::AppointmentId)
+                    .to_owned(),
+            )
+            .await?;
+
+        manager
+            .create_index(
+                Index::create()
+                    .name("idx-physician_runtime_appointments-workspace")
+                    .table(AppointmentEntity)
+                    .col(AppointmentColumn::Practice)
+                    .col(AppointmentColumn::Workspace)
+                    .col(AppointmentColumn::StartsAtUnix)
+                    .to_owned(),
+            )
+            .await
+    }
+
+    async fn down(&self, _: &SchemaManager) -> Result<(), DbErr> {
+        Err(DbErr::Custom(
+            "practice schedule sources, patient links, and saved appointments cannot be rolled back"
+                .into(),
+        ))
+    }
+}
