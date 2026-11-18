@@ -83,6 +83,20 @@ output "physician_redis_auth_string" {
   sensitive   = true
 }
 
+output "physician_schedule" {
+  description = "Nonsecret physician Cloud Scheduler wake contract (null while physician_schedule_enabled or physician scaling is off)."
+  value = length(local.physician_schedule) > 0 ? {
+    job_name        = google_cloud_scheduler_job.physician_schedule["physician"].name
+    schedule        = google_cloud_scheduler_job.physician_schedule["physician"].schedule
+    time_zone       = google_cloud_scheduler_job.physician_schedule["physician"].time_zone
+    paused          = google_cloud_scheduler_job.physician_schedule["physician"].paused
+    wake_url        = google_cloud_scheduler_job.physician_schedule["physician"].http_target[0].uri
+    service_account = google_service_account.physician_scheduler["physician"].email
+    audience        = local.physician_schedule_audience
+    alert_policy    = google_monitoring_alert_policy.physician_schedule_failure["physician"].display_name
+  } : null
+}
+
 output "physician_clinical_library" {
   description = "Read-only clinical-evidence service wiring for physician and physician-worker, with the exact staging runtime principals to admit in infra/gcp/clinical-evidence's clinical_evidence_invokers."
   value = var.physician_clinical_library_url != null && var.enable_workloads ? {

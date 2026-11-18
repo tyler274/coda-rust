@@ -1246,6 +1246,65 @@ run "observability_grafana_backend" {
   }
 }
 
+# --- Physician schedule & clinical library (scheduler.tf, workloads.tf) ------
+
+run "reject_schedule_without_scale_or_channels" {
+  command = plan
+  variables {
+    physician_schedule_enabled = true
+  }
+  expect_failures = [var.physician_schedule_enabled]
+}
+
+run "reject_invalid_schedule_cron" {
+  command = plan
+  variables {
+    physician_schedule_cron = "every 5 minutes"
+  }
+  expect_failures = [var.physician_schedule_cron]
+}
+
+run "reject_production_schedule_without_dedicated_approval" {
+  command = plan
+  variables {
+    environment                            = "prd"
+    enable_databases                       = true
+    enable_workloads                       = true
+    enable_physician_scale                 = true
+    runtime_and_database_contract_approved = true
+    production_activation_approved         = true
+    # Intentionally omit physician_schedule_production_approved.
+    physician_schedule_enabled     = true
+    availability_watchdog_channels = ["projects/test-rust-prd-only/notificationChannels/1"]
+    images = {
+      physician = {
+        runtime   = "us-east1-docker.pkg.dev/test-rust-prd-only/apps/physician@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        migration = "us-east1-docker.pkg.dev/test-rust-prd-only/apps/physician-migrate@sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+        worker    = "us-east1-docker.pkg.dev/test-rust-prd-only/apps/physician-worker@sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+      }
+      duet = {
+        runtime   = "us-east1-docker.pkg.dev/test-rust-prd-only/apps/duet@sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+        migration = "us-east1-docker.pkg.dev/test-rust-prd-only/apps/duet-migrate@sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+      }
+    }
+    doppler_configs = {
+      physician-runtime   = "prd_physician_runtime"
+      physician-migration = "prd_physician_migration"
+      duet-runtime        = "prd_duet_runtime"
+      duet-migration      = "prd_duet_migration"
+    }
+    doppler_token_versions = {
+      physician = { runtime = "1", migration = "2" }
+      duet      = { runtime = "3", migration = "4" }
+    }
+    runtime_environment = {
+      physician = { TEST_CONTRACT_ONLY = "true" }
+      duet      = { TEST_CONTRACT_ONLY = "true" }
+    }
+  }
+  expect_failures = [var.physician_schedule_enabled]
+}
+
 run "reject_non_cloud_run_clinical_library_url" {
   command = plan
   variables {
@@ -1276,3 +1335,129 @@ run "reject_duet_clinical_library_env" {
   expect_failures = [google_project.environment]
 }
 
+run "physician_schedule_and_clinical_library_staging" {
+  command = plan
+  override_resource {
+    target = google_service_account.physician_worker
+    values = {
+      name  = "projects/test-rust-stg-only/serviceAccounts/physician-worker-runtime@test-rust-stg-only.iam.gserviceaccount.com"
+      email = "physician-worker-runtime@test-rust-stg-only.iam.gserviceaccount.com"
+    }
+  }
+  override_resource {
+    target = google_service_account.physician_scheduler
+    values = {
+      name  = "projects/test-rust-stg-only/serviceAccounts/physician-scheduler@test-rust-stg-only.iam.gserviceaccount.com"
+      email = "physician-scheduler@test-rust-stg-only.iam.gserviceaccount.com"
+    }
+  }
+  override_resource {
+    target = google_cloud_run_v2_service.physician_worker
+    values = {
+      uri = "https://physician-worker-123456789012.us-east1.run.app"
+    }
+  }
+  variables {
+    enable_databases                       = true
+    enable_workloads                       = true
+    enable_physician_scale                 = true
+    runtime_and_database_contract_approved = true
+    physician_schedule_enabled             = true
+    physician_schedule_cron                = "*/15 * * * *"
+    availability_watchdog_channels         = ["projects/test-rust-stg-only/notificationChannels/99"]
+    physician_clinical_library_url         = "https://coda-clinical-evidence-720954567292.us-east4.run.app"
+    images = {
+      physician = {
+        runtime   = "us-east1-docker.pkg.dev/test-rust-stg-only/apps/physician@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        migration = "us-east1-docker.pkg.dev/test-rust-stg-only/apps/physician-migrate@sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+        worker    = "us-east1-docker.pkg.dev/test-rust-stg-only/apps/physician-worker@sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+      }
+      duet = {
+        runtime   = "us-east1-docker.pkg.dev/test-rust-stg-only/apps/duet@sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+        migration = "us-east1-docker.pkg.dev/test-rust-stg-only/apps/duet-migrate@sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+      }
+    }
+    doppler_configs = {
+      physician-runtime   = "stg_physician_runtime"
+      physician-migration = "stg_physician_migration"
+      duet-runtime        = "stg_duet_runtime"
+      duet-migration      = "stg_duet_migration"
+    }
+    doppler_token_versions = {
+      physician = { runtime = "1", migration = "2" }
+      duet      = { runtime = "3", migration = "4" }
+    }
+    runtime_environment = {
+      physician = { TEST_CONTRACT_ONLY = "true" }
+      duet      = { TEST_CONTRACT_ONLY = "true" }
+    }
+  }
+
+  assert {
+    condition = (
+      contains(keys(google_project_service.api), "cloudscheduler.googleapis.com") &&
+      keys(google_service_account.physician_scheduler) == ["physician"] &&
+      keys(google_cloud_scheduler_job.physician_schedule) == ["physician"] &&
+      google_cloud_scheduler_job.physician_schedule["physician"].schedule == "*/15 * * * *" &&
+      google_cloud_scheduler_job.physician_schedule["physician"].time_zone == "Etc/UTC" &&
+      !google_cloud_scheduler_job.physician_schedule["physician"].paused &&
+      google_cloud_scheduler_job.physician_schedule["physician"].http_target[0].http_method == "POST" &&
+      google_cloud_scheduler_job.physician_schedule["physician"].http_target[0].uri == "https://physician-worker-123456789012.us-east1.run.app/schedule/wake" &&
+      google_cloud_scheduler_job.physician_schedule["physician"].http_target[0].oidc_token[0].service_account_email == "physician-scheduler@test-rust-stg-only.iam.gserviceaccount.com" &&
+      google_cloud_scheduler_job.physician_schedule["physician"].http_target[0].oidc_token[0].audience == "https://physician-worker-123456789012.us-east1.run.app" &&
+      google_cloud_scheduler_job.physician_schedule["physician"].retry_config[0].retry_count == 3 &&
+      google_cloud_scheduler_job.physician_schedule["physician"].retry_config[0].min_backoff_duration == "10s" &&
+      google_cloud_scheduler_job.physician_schedule["physician"].retry_config[0].max_backoff_duration == "120s"
+    )
+    error_message = "The physician schedule enables Cloud Scheduler, posts OIDC-authenticated wakes to /schedule/wake at the configured interval, and retries failures."
+  }
+
+  assert {
+    condition = (
+      google_cloud_run_v2_service.physician_worker["physician"].ingress == "INGRESS_TRAFFIC_ALL" &&
+      !google_cloud_run_v2_service.physician_worker["physician"].invoker_iam_disabled &&
+      !google_cloud_run_v2_service.physician_worker["physician"].iap_enabled &&
+      google_cloud_run_v2_service_iam_binding.physician_worker_invoker["physician"].members == toset([
+        "serviceAccount:physician-scheduler@test-rust-stg-only.iam.gserviceaccount.com",
+      ]) &&
+      contains(
+        [for env in google_cloud_run_v2_service.physician_worker["physician"].template[0].containers[0].env : "${env.name}=${coalesce(env.value, "<secret>")}"],
+        "PHYSICIAN_SCHEDULER_SERVICE_ACCOUNT=physician-scheduler@test-rust-stg-only.iam.gserviceaccount.com",
+      ) &&
+      contains(
+        [for env in google_cloud_run_v2_service.physician_worker["physician"].template[0].containers[0].env : "${env.name}=${coalesce(env.value, "<secret>")}"],
+        "PHYSICIAN_WORKER_AUDIENCE=https://physician-worker-123456789012.us-east1.run.app",
+      )
+    )
+    error_message = "The worker admits the dedicated physician-scheduler principal in its authoritative invoker binding and learns that exact service account and audience for in-process OIDC verification."
+  }
+
+  assert {
+    condition = (
+      google_monitoring_alert_policy.physician_schedule_failure["physician"].enabled &&
+      google_monitoring_alert_policy.physician_schedule_failure["physician"].severity == "ERROR" &&
+      toset(google_monitoring_alert_policy.physician_schedule_failure["physician"].notification_channels) == toset(["projects/test-rust-stg-only/notificationChannels/99"]) &&
+      google_monitoring_alert_policy.physician_schedule_failure["physician"].conditions[0].condition_matched_log[0].filter == google_logging_metric.physician_schedule_wake_failure["physician"].filter &&
+      strcontains(google_logging_metric.physician_schedule_wake_failure["physician"].filter, "physician.worker.schedule_wake_failed") &&
+      strcontains(google_logging_metric.physician_schedule_wake_success["physician"].filter, "physician.worker.schedule_wake")
+    )
+    error_message = "Schedule wake failures are counted and routed to the configured Cloud Monitoring notification channels."
+  }
+
+  assert {
+    condition = (
+      alltrue([for envs in [
+        google_cloud_run_v2_service.app["physician"].template[0].containers[0].env,
+        google_cloud_run_v2_service.physician_worker["physician"].template[0].containers[0].env,
+        ] : (
+        contains([for env in envs : "${env.name}=${coalesce(env.value, "<secret>")}"], "CLINICAL_LIBRARY_URL=https://coda-clinical-evidence-720954567292.us-east4.run.app") &&
+        contains([for env in envs : "${env.name}=${coalesce(env.value, "<secret>")}"], "CLINICAL_LIBRARY_AUDIENCE=https://coda-clinical-evidence-720954567292.us-east4.run.app")
+      )]) &&
+      length([for env in google_cloud_run_v2_service.app["duet"].template[0].containers[0].env : env.name if startswith(env.name, "CLINICAL_LIBRARY_") || startswith(env.name, "PHYSICIAN_")]) == 0 &&
+      output.physician_clinical_library.url == "https://coda-clinical-evidence-720954567292.us-east4.run.app" &&
+      output.physician_clinical_library.audience == "https://coda-clinical-evidence-720954567292.us-east4.run.app" &&
+      contains(output.physician_clinical_library.caller_principals, "serviceAccount:physician-worker-runtime@test-rust-stg-only.iam.gserviceaccount.com")
+    )
+    error_message = "Physician and physician-worker receive the read-only clinical library URL and OIDC audience while Duet receives neither."
+  }
+}
