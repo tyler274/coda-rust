@@ -1669,4 +1669,70 @@ mod tests {
         assert_eq!(roster_json["patients"][0]["sharing_consented"], true);
         assert!(roster_json["patients"][0].get("cadence").is_none());
     }
+
+    #[tokio::test]
+    async fn fixture_snapshot_and_past_work_refuse_off_panel_clinic_demographic_patients() {
+        use physician_auth::{AuthStore, Membership, MemoryAuthStore, PhysicianIdentity};
+        let patient_id = WORKSPACE_IDS[0];
+        let feed = SampleFeed::new();
+        feed.set_fixture_snapshot(
+            patient_id,
+            "chat-seeded",
+            json!({
+                "feedback": "loaded",
+                "transcript": [{
+                    "work_item_id": "w-seeded",
+                    "messages": [],
+                    "steps": { "state": "read", "steps": [] },
+                    "kept": [],
+                    "answer": {
+                        "state": "finished",
+                        "response_id": "a-seeded:reply",
+                        "attempt_id": "a-seeded",
+                        "text": "Saved answer",
+                        "feedback": null
+                    }
+                }]
+            }),
+        );
+        feed.set_fixture_past_work(
+            patient_id,
+            vec![json!({
+                "id": "conversation:chat-seeded",
+                "target": { "kind": "conversation", "chat_id": "chat-seeded" },
+                "title": "Question",
+                "summary": "Saved answer",
+                "outcome": "answered",
+                "updated_at": "2026-08-27T15:00:00Z",
+            })],
+        );
+
+        let store = MemoryAuthStore::new();
+        store.seed_patient("roger-synthetic-practice", patient_id);
+        let preview = PhysicianIdentity {
+            practice_id: "roger-synthetic-practice".to_owned(),
+            physician_id: "local-preview".to_owned(),
+        };
+        store.seed_membership(&preview, patient_id, Membership::ClinicDemographic);
+        let auth_ext: std::sync::Arc<dyn AuthStore> = std::sync::Arc::new(store);
+        let app = fixture_site_with_feed(feed).layer(axum::Extension(auth_ext));
+
+        let (snap_status, _) = request(
+            app.clone(),
+            "GET",
+            &format!("/patient-workspaces/{patient_id}/chats/chat-seeded/snapshot"),
+            Body::empty(),
+        )
+        .await;
+        assert_eq!(snap_status, StatusCode::NOT_FOUND);
+
+        let (pw_status, _) = request(
+            app,
+            "GET",
+            &format!("/patient-workspaces/{patient_id}/past-work"),
+            Body::empty(),
+        )
+        .await;
+        assert_eq!(pw_status, StatusCode::NOT_FOUND);
+    }
 }
