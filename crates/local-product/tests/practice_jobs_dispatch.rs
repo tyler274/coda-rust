@@ -5,12 +5,22 @@
 //! `PHYSICIAN_DATABASE_URL` is set; panics if neither is set when
 //! `CODA_REQUIRE_POSTGRES_TESTS=1`.
 
+use std::collections::BTreeMap;
 use std::path::PathBuf;
-use std::sync::Arc;
+use std::sync::{Arc, Mutex};
 
+use axum::body::{Body, to_bytes};
+use axum::http::{Request as HttpRequest, StatusCode};
+use front_door::{FrontDoorStore, PostgresFrontDoorStore, RosterPatient};
 use local_product::physician_chat::PhysicianSkills;
 use local_product::physician_sources::{
-    READ_TOOL, ReadablePart, RecordDate, SEARCH_TOOL, SourceRevision,
+    MedicalRecordNumber, READ_TOOL, ReadablePart, RecordDate, SEARCH_TOOL, SourcePatient,
+    SourceRevision,
+};
+use local_product::runtime::dispatch::{
+    DispatchEndpointState, DispatchError, PatientSourceChecker, PracticeJobReviewReceiver,
+    ReviewReceiver, SetCadenceBody, SourceCheckError, StoredObservationChecker, WakeSummary,
+    operator_router,
 };
 use local_product::runtime::engine::Product;
 use local_product::runtime::jobs::{
@@ -23,9 +33,17 @@ use local_product::runtime::{
     Store, WorkStatus, async_trait, engine,
 };
 use local_product::{ModelBinding, ModelRoles, sha256_hex};
+use patient_work::{
+    Cadence, CheckedSources, DEFAULT_CHECK_EVERY_SECONDS, DEFAULT_REVIEW_EVERY_SECONDS,
+    OperatorCadenceView, ReviewReason, ReviewRequest,
+};
 use physician_auth::{AuthStore, PostgresAuthStore, PracticeClock};
 use serde_json::{Value, json};
+use tower::ServiceExt;
 use uuid::Uuid;
+
+#[path = "../../../verification/model_text.rs"]
+mod model_text;
 
 fn database_url() -> Option<String> {
     if let Ok(url) = std::env::var("PHYSICIAN_RUNTIME_TEST_DATABASE_URL")
@@ -95,6 +113,19 @@ fn chart_record(
             "native_id": candidate_id,
         }),
         envelope: None,
+    }
+}
+
+fn source_patient(id: &str, name: &str) -> SourcePatient {
+    SourcePatient {
+        source_patient_id: id.to_owned(),
+        display_name: name.to_owned(),
+        birth_date: Some("1980-04-12".to_owned()),
+        sex_or_gender: Some("female".to_owned()),
+        medical_record_numbers: vec![MedicalRecordNumber {
+            system: "clinic-mrn".to_owned(),
+            value: format!("MRN-{id}"),
+        }],
     }
 }
 
@@ -1025,4 +1056,861 @@ async fn direct_push_delivery_respects_active_retry_backoff_dispatch_after() {
         premature.is_none(),
         "direct push delivery must not claim a job still in retry backoff"
     );
+}
+
+#[derive(Default)]
+struct RecordingReceiver {
+    requests: Mutex<Vec<ReviewRequest>>,
+}
+
+#[async_trait]
+impl ReviewReceiver for RecordingReceiver {
+    async fn submit_review(&self, request: &ReviewRequest) -> Result<(), PracticeJobError> {
+        self.requests.lock().unwrap().push(request.clone());
+        Ok(())
+    }
+}
+
+struct TeeReceiver<'a> {
+    recorder: &'a RecordingReceiver,
+    practice_jobs: PracticeJobReviewReceiver<'a>,
+}
+
+#[async_trait]
+impl ReviewReceiver for TeeReceiver<'_> {
+    async fn submit_review(&self, request: &ReviewRequest) -> Result<(), PracticeJobError> {
+        self.practice_jobs.submit_review(request).await?;
+        self.recorder.submit_review(request).await
+    }
+}
+
+#[tokio::test]
+async fn wakeup_evaluates_unchanged_changed_and_periodic_reviews_with_daily_weekly_defaults() {
+    let Some(url) = database_url() else {
+        return;
+    };
+    let (store, auth) = connect_stores(&url).await;
+    let skills = load_skills();
+    let roles = distinct_roles();
+
+    let practice = format!("practice-dispatch-rules-{}", Uuid::new_v4().simple());
+    let workspace = format!("pw-dispatch-rules-{}", Uuid::new_v4().simple());
+    auth.ensure_practice(&practice, PracticeClock::RealTime)
+        .await
+        .unwrap();
+    auth.register_patient(&practice, &workspace).await.unwrap();
+
+    let t0 = 1_760_000_000_i64;
+    let initial_view = store
+        .patient_dispatch_status(auth.as_ref(), &practice, &workspace, t0)
+        .await
+        .unwrap();
+    assert_eq!(
+        initial_view.cadence.check_every_seconds(),
+        DEFAULT_CHECK_EVERY_SECONDS
+    );
+    assert_eq!(
+        initial_view.cadence.review_every_seconds(),
+        DEFAULT_REVIEW_EVERY_SECONDS
+    );
+    assert_eq!(DEFAULT_CHECK_EVERY_SECONDS, 86_400);
+    assert_eq!(DEFAULT_REVIEW_EVERY_SECONDS, 604_800);
+
+    let checker = StoredObservationChecker::new(store.clone());
+    let recorder = RecordingReceiver::default();
+    let receiver = TeeReceiver {
+        recorder: &recorder,
+        practice_jobs: PracticeJobReviewReceiver::new(
+            store.clone(),
+            &roles,
+            &skills,
+            auth.as_ref(),
+        ),
+    };
+
+    // 1. Initial wake-up with no chart changes -> check runs, zero reviews started.
+    let wake0 = store
+        .wake_practice_dispatch(auth.as_ref(), &practice, t0, &checker, &receiver)
+        .await
+        .unwrap();
+    assert_eq!(wake0.checked_patients, vec![workspace.clone()]);
+    assert!(wake0.started_reviews.is_empty());
+
+    // 2. Wake-up 12 hours later -> not due yet (default daily check = 86_400s).
+    let wake_early = store
+        .wake_practice_dispatch(auth.as_ref(), &practice, t0 + 43_200, &checker, &receiver)
+        .await
+        .unwrap();
+    assert_eq!(wake_early.skipped_not_due, vec![workspace.clone()]);
+    assert!(wake_early.checked_patients.is_empty());
+    assert!(wake_early.started_reviews.is_empty());
+
+    // 3. New lab record arrives before Day 1 wake-up -> exactly one review, reason "new records".
+    let pull1 = local_product::runtime::sources::SourcePull {
+        source_id: "clinic-ehr".into(),
+        source_label: "Clinic EHR".into(),
+        patient: source_patient("pt-1", "Jordan Rivera"),
+        pulled_at: Some(t0 + 80_000),
+    };
+    store
+        .record_chart(
+            &workspace,
+            &[chart_record(
+                &workspace,
+                "cmp-2026-10",
+                "rev-1",
+                "2026-10-05",
+                "Potassium 4.2 mmol/L",
+            )],
+            &pull1,
+        )
+        .await
+        .unwrap();
+
+    let day1 = t0 + 86_400;
+    let wake1 = store
+        .wake_practice_dispatch(auth.as_ref(), &practice, day1, &checker, &receiver)
+        .await
+        .unwrap();
+    assert_eq!(wake1.checked_patients, vec![workspace.clone()]);
+    assert_eq!(wake1.started_reviews.len(), 1);
+    let rev1 = &wake1.started_reviews[0];
+    assert_eq!(rev1.reason, ReviewReason::NewRecords);
+    assert_eq!(rev1.reason.as_str(), "new records");
+    assert_eq!(rev1.workspace_version, 1);
+    assert_eq!(
+        rev1.record_versions,
+        BTreeMap::from([("cmp-2026-10".to_owned(), "rev-1".to_owned())])
+    );
+
+    // Confirm PracticeJobReviewReceiver created the PatientReview job in the run store.
+    let review_job = store
+        .practice_job(&PracticeScope {
+            practice: practice.clone(),
+            workspace: workspace.clone(),
+            job_id: rev1.command_key.clone(),
+        })
+        .await
+        .unwrap()
+        .expect("patient review job created in run store");
+    assert_eq!(review_job.kind, PracticeJobKind::PatientReview);
+
+    // 4. Daily checks on Days 2..=7 with unchanged records -> no review until 7 days elapsed.
+    for day_offset in 1..7 {
+        let ts = day1 + day_offset * 86_400;
+        let daily_wake = store
+            .wake_practice_dispatch(auth.as_ref(), &practice, ts, &checker, &receiver)
+            .await
+            .unwrap();
+        assert_eq!(daily_wake.checked_patients, vec![workspace.clone()]);
+        assert!(
+            daily_wake.started_reviews.is_empty(),
+            "unexpected review before weekly window at day offset {day_offset}"
+        );
+    }
+
+    // 5. Day 8 (+604_800s after Day 1 review) with unchanged records -> one periodic review!
+    let day8 = day1 + 604_800;
+    let wake_periodic = store
+        .wake_practice_dispatch(auth.as_ref(), &practice, day8, &checker, &receiver)
+        .await
+        .unwrap();
+    assert_eq!(wake_periodic.checked_patients, vec![workspace.clone()]);
+    assert_eq!(wake_periodic.started_reviews.len(), 1);
+    let rev_periodic = &wake_periodic.started_reviews[0];
+    assert_eq!(rev_periodic.reason, ReviewReason::Periodic);
+    assert_eq!(rev_periodic.reason.as_str(), "periodic");
+    assert_eq!(rev_periodic.workspace_version, 1);
+    assert_eq!(recorder.requests.lock().unwrap().len(), 2);
+}
+
+#[tokio::test]
+async fn stop_between_source_check_and_review_start_then_replay_creates_one_review_request() {
+    let Some(url) = database_url() else {
+        return;
+    };
+    let (store, auth) = connect_stores(&url).await;
+    let skills = load_skills();
+    let roles = distinct_roles();
+
+    let practice = format!("practice-replay-{}", Uuid::new_v4().simple());
+    let workspace = format!("pw-replay-{}", Uuid::new_v4().simple());
+    auth.ensure_practice(&practice, PracticeClock::RealTime)
+        .await
+        .unwrap();
+    auth.register_patient(&practice, &workspace).await.unwrap();
+
+    store
+        .import_sources(&[chart_record(
+            &workspace,
+            "lipid-panel-1",
+            "rev-1",
+            "2026-10-08",
+            "LDL cholesterol 98 mg/dL",
+        )])
+        .await
+        .unwrap();
+
+    let t0 = 1_760_100_000_i64;
+    let checker = StoredObservationChecker::new(store.clone());
+
+    // Phase 1 executes and commits durable check + pending_review; process stops BEFORE Phase 2!
+    let phase1 = store
+        .check_due_patients(auth.as_ref(), &practice, t0, &checker)
+        .await
+        .unwrap();
+    assert_eq!(phase1.checked_patients, vec![workspace.clone()]);
+    assert!(
+        store
+            .practice_jobs_due(&practice, 10)
+            .await
+            .unwrap()
+            .is_empty(),
+        "no review job should exist before Phase 2 starts"
+    );
+    drop(checker);
+    drop(store);
+
+    // Reconnect on a fresh Store instance and replay wake-up twice.
+    let reconnected = Store::connect(&url).await.unwrap();
+    let checker2 = StoredObservationChecker::new(reconnected.clone());
+    let recorder = RecordingReceiver::default();
+    let receiver = TeeReceiver {
+        recorder: &recorder,
+        practice_jobs: PracticeJobReviewReceiver::new(
+            reconnected.clone(),
+            &roles,
+            &skills,
+            auth.as_ref(),
+        ),
+    };
+
+    let replay1 = reconnected
+        .wake_practice_dispatch(auth.as_ref(), &practice, t0 + 30, &checker2, &receiver)
+        .await
+        .unwrap();
+    assert_eq!(replay1.started_reviews.len(), 1);
+    assert_eq!(replay1.started_reviews[0].reason, ReviewReason::NewRecords);
+
+    let replay2 = reconnected
+        .wake_practice_dispatch(auth.as_ref(), &practice, t0 + 60, &checker2, &receiver)
+        .await
+        .unwrap();
+    assert!(replay2.started_reviews.is_empty());
+
+    assert_eq!(
+        recorder.requests.lock().unwrap().len(),
+        1,
+        "replay after interruption must emit exactly one review request"
+    );
+    let due_jobs = reconnected.practice_jobs_due(&practice, 10).await.unwrap();
+    assert_eq!(
+        due_jobs.len(),
+        1,
+        "exactly one PatientReview job exists in the run store"
+    );
+}
+
+struct SelectiveFailureChecker {
+    failing_workspace: String,
+    changed_workspace: String,
+}
+
+#[async_trait]
+impl PatientSourceChecker for SelectiveFailureChecker {
+    async fn check_patient_sources(
+        &self,
+        _practice_id: &str,
+        workspace_id: &str,
+        _now: i64,
+    ) -> Result<CheckedSources, SourceCheckError> {
+        if workspace_id == self.failing_workspace {
+            return Err(SourceCheckError::Upstream(std::io::Error::other(
+                "source adapter upstream 503",
+            )));
+        }
+        if workspace_id == self.changed_workspace {
+            return Ok(CheckedSources::changed(
+                2,
+                BTreeMap::from([("note-1".to_owned(), "rev-2".to_owned())]),
+            ));
+        }
+        Ok(CheckedSources::unchanged(0, BTreeMap::new()))
+    }
+}
+
+#[tokio::test]
+async fn operator_endpoints_read_and_update_cadence_and_failed_check_isolates_per_patient() {
+    let Some(url) = database_url() else {
+        return;
+    };
+    let (store, auth) = connect_stores(&url).await;
+
+    let practice = format!("practice-op-{}", Uuid::new_v4().simple());
+    let pw_failing = format!("pw-a-fail-{}", Uuid::new_v4().simple());
+    let pw_healthy = format!("pw-b-ok-{}", Uuid::new_v4().simple());
+    auth.ensure_practice(&practice, PracticeClock::RealTime)
+        .await
+        .unwrap();
+    auth.register_patient(&practice, &pw_failing).await.unwrap();
+    auth.register_patient(&practice, &pw_healthy).await.unwrap();
+
+    let recorder = Arc::new(RecordingReceiver::default());
+    let app = operator_router(DispatchEndpointState {
+        store: store.clone(),
+        auth: auth.clone(),
+        checker: Arc::new(SelectiveFailureChecker {
+            failing_workspace: pw_failing.clone(),
+            changed_workspace: pw_healthy.clone(),
+        }),
+        receiver: recorder.clone(),
+    });
+
+    let t0 = 1_760_200_000_i64;
+
+    // 1. Operator GET reads default cadence and initial due timestamp.
+    let get_resp = app
+        .clone()
+        .oneshot(
+            HttpRequest::builder()
+                .method("GET")
+                .uri(format!(
+                    "/operator/practices/{practice}/patients/{pw_healthy}/cadence?now={t0}"
+                ))
+                .body(Body::empty())
+                .unwrap(),
+        )
+        .await
+        .unwrap();
+    assert_eq!(get_resp.status(), StatusCode::OK);
+    let initial: OperatorCadenceView =
+        serde_json::from_slice(&to_bytes(get_resp.into_body(), 64 * 1024).await.unwrap()).unwrap();
+    assert_eq!(initial.cadence, Cadence::default());
+    assert_eq!(initial.next_due_at, t0);
+    assert_eq!(initial.last_attempt_at, None);
+    assert_eq!(initial.last_success_at, None);
+
+    // 2. Invalid cadence (zero check interval) is rejected with 400.
+    let bad_put = app
+        .clone()
+        .oneshot(
+            HttpRequest::builder()
+                .method("PUT")
+                .uri(format!(
+                    "/operator/practices/{practice}/patients/{pw_healthy}/cadence?now={t0}"
+                ))
+                .header("content-type", "application/json")
+                .body(Body::from(
+                    serde_json::to_vec(&SetCadenceBody {
+                        check_every_seconds: 0,
+                        review_every_seconds: 3_600,
+                    })
+                    .unwrap(),
+                ))
+                .unwrap(),
+        )
+        .await
+        .unwrap();
+    assert_eq!(bad_put.status(), StatusCode::BAD_REQUEST);
+
+    // 3. Operator PUT updates cadence for pw_healthy to hourly check / 2-day periodic review.
+    let put_resp = app
+        .clone()
+        .oneshot(
+            HttpRequest::builder()
+                .method("PUT")
+                .uri(format!(
+                    "/operator/practices/{practice}/patients/{pw_healthy}/cadence?now={t0}"
+                ))
+                .header("content-type", "application/json")
+                .body(Body::from(
+                    serde_json::to_vec(&SetCadenceBody {
+                        check_every_seconds: 3_600,
+                        review_every_seconds: 172_800,
+                    })
+                    .unwrap(),
+                ))
+                .unwrap(),
+        )
+        .await
+        .unwrap();
+    assert_eq!(put_resp.status(), StatusCode::OK);
+    let updated: OperatorCadenceView =
+        serde_json::from_slice(&to_bytes(put_resp.into_body(), 64 * 1024).await.unwrap()).unwrap();
+    assert_eq!(updated.cadence.check_every_seconds(), 3_600);
+    assert_eq!(updated.cadence.review_every_seconds(), 172_800);
+
+    // 4. Wake-up at t0 + 120: pw_failing fails check, pw_healthy still checks & starts review!
+    let wake_ts = t0 + 120;
+    let wake_resp = app
+        .clone()
+        .oneshot(
+            HttpRequest::builder()
+                .method("POST")
+                .uri(format!(
+                    "/internal/practices/{practice}/dispatch/wake?now={wake_ts}"
+                ))
+                .body(Body::empty())
+                .unwrap(),
+        )
+        .await
+        .unwrap();
+    assert_eq!(wake_resp.status(), StatusCode::OK);
+    let summary: WakeSummary =
+        serde_json::from_slice(&to_bytes(wake_resp.into_body(), 64 * 1024).await.unwrap()).unwrap();
+    assert_eq!(summary.failed_checks.len(), 1);
+    assert_eq!(summary.failed_checks[0].patient_workspace_id, pw_failing);
+    assert_eq!(summary.checked_patients, vec![pw_healthy.clone()]);
+    assert_eq!(summary.started_reviews.len(), 1);
+    assert_eq!(summary.started_reviews[0].patient_workspace_id, pw_healthy);
+
+    // 5. Operator readback proves failed check recorded attempt, NOT success, and stays due;
+    //    healthy patient recorded both attempt and success and moved next_due_at by 3600s.
+    let fail_view = store
+        .patient_dispatch_status(auth.as_ref(), &practice, &pw_failing, wake_ts + 10)
+        .await
+        .unwrap();
+    assert_eq!(fail_view.last_attempt_at, Some(wake_ts));
+    assert_eq!(fail_view.last_success_at, None);
+    assert_eq!(fail_view.next_due_at, wake_ts);
+
+    let ok_view_resp = app
+        .oneshot(
+            HttpRequest::builder()
+                .method("GET")
+                .uri(format!(
+                    "/operator/practices/{practice}/patients/{pw_healthy}/cadence?now={}",
+                    wake_ts + 10
+                ))
+                .body(Body::empty())
+                .unwrap(),
+        )
+        .await
+        .unwrap();
+    assert_eq!(ok_view_resp.status(), StatusCode::OK);
+    let ok_view: OperatorCadenceView =
+        serde_json::from_slice(&to_bytes(ok_view_resp.into_body(), 64 * 1024).await.unwrap())
+            .unwrap();
+    assert_eq!(ok_view.last_attempt_at, Some(wake_ts));
+    assert_eq!(ok_view.last_success_at, Some(wake_ts));
+    assert_eq!(ok_view.next_due_at, wake_ts + 3_600);
+}
+
+#[tokio::test]
+async fn single_cadence_owner_unaffected_by_billing_and_duet_connection_changes() {
+    let Some(url) = database_url() else {
+        return;
+    };
+    let (store, auth) = connect_stores(&url).await;
+    let front_door = PostgresFrontDoorStore::connect_with_migrations(&url)
+        .await
+        .expect("connect and migrate front-door store");
+
+    let practice = format!("practice-billing-{}", Uuid::new_v4().simple());
+    let pw_with_duet = format!("pw-duet-{}", Uuid::new_v4().simple());
+    let pw_clinic_only = format!("pw-noduet-{}", Uuid::new_v4().simple());
+    auth.ensure_practice(&practice, PracticeClock::RealTime)
+        .await
+        .unwrap();
+    auth.register_patient(&practice, &pw_with_duet)
+        .await
+        .unwrap();
+    auth.register_patient(&practice, &pw_clinic_only)
+        .await
+        .unwrap();
+
+    let recorder = Arc::new(RecordingReceiver::default());
+    let app = operator_router(DispatchEndpointState {
+        store: store.clone(),
+        auth: auth.clone(),
+        checker: Arc::new(StoredObservationChecker::new(store.clone())),
+        receiver: recorder,
+    });
+
+    let t0 = 1_760_300_000_i64;
+    let custom_cadence = Cadence::new(7_200, 172_800).unwrap();
+    store
+        .set_patient_cadence(auth.as_ref(), &practice, &pw_with_duet, custom_cadence, t0)
+        .await
+        .unwrap();
+
+    // Link pw_with_duet to Duet, grant consent, toggle premium ON and OFF, then withdraw consent.
+    let now_u64 = t0 as u64;
+    let roster_patient = RosterPatient {
+        practice_id: practice.clone(),
+        patient_id: pw_with_duet.clone(),
+    };
+    let email = format!("patient-{}@codahealth.test", Uuid::new_v4().simple());
+    let fd_invite = front_door
+        .invite(&roster_patient, &email, "Alex Patient", now_u64)
+        .await
+        .unwrap();
+    let (duet_account_id, _session) = front_door
+        .redeem_invitation(&email, &fd_invite, now_u64 + 1)
+        .await
+        .unwrap();
+    front_door
+        .grant_consent(duet_account_id, now_u64 + 2)
+        .await
+        .unwrap();
+
+    let auth_invite = auth
+        .invite_patient(&practice, &pw_with_duet, now_u64 + 3)
+        .await
+        .unwrap();
+    let duet_id_str = duet_account_id.to_string();
+    auth.accept_patient_invitation(&auth_invite, &duet_id_str, now_u64 + 4)
+        .await
+        .unwrap();
+    auth.grant_patient_consent(&practice, &pw_with_duet, &duet_id_str, "v1", now_u64 + 5)
+        .await
+        .unwrap();
+
+    // Toggle billing/premium ON, verify operator readback for both Duet and non-Duet patients.
+    front_door
+        .set_premium(&roster_patient, true, now_u64 + 6)
+        .await
+        .unwrap();
+    let premium_on = front_door.premium(&roster_patient).await;
+    assert!(premium_on.premium);
+    let premium_json: Value = serde_json::to_value(&premium_on).unwrap();
+    assert!(
+        premium_json.get("cadence").is_none(),
+        "Premium wire state must not carry cadence: {premium_json}"
+    );
+
+    for (pw, expected) in [
+        (&pw_with_duet, custom_cadence),
+        (&pw_clinic_only, Cadence::default()),
+    ] {
+        let resp = app
+            .clone()
+            .oneshot(
+                HttpRequest::builder()
+                    .method("GET")
+                    .uri(format!(
+                        "/operator/practices/{practice}/patients/{pw}/cadence?now={}",
+                        t0 + 10
+                    ))
+                    .body(Body::empty())
+                    .unwrap(),
+            )
+            .await
+            .unwrap();
+        assert_eq!(resp.status(), StatusCode::OK);
+        let view: OperatorCadenceView =
+            serde_json::from_slice(&to_bytes(resp.into_body(), 64 * 1024).await.unwrap()).unwrap();
+        assert_eq!(view.cadence, expected);
+    }
+
+    // Run initial scheduled wake-up at t0 + 20: both patients check and set their schedules.
+    let wake1_resp = app
+        .clone()
+        .oneshot(
+            HttpRequest::builder()
+                .method("POST")
+                .uri(format!(
+                    "/internal/practices/{practice}/dispatch/wake?now={}",
+                    t0 + 20
+                ))
+                .body(Body::empty())
+                .unwrap(),
+        )
+        .await
+        .unwrap();
+    assert_eq!(wake1_resp.status(), StatusCode::OK);
+    let wake1: WakeSummary =
+        serde_json::from_slice(&to_bytes(wake1_resp.into_body(), 64 * 1024).await.unwrap())
+            .unwrap();
+    assert_eq!(wake1.checked_patients.len(), 2);
+
+    // Toggle premium OFF and disconnect sharing on both front-door and physician-auth.
+    front_door
+        .set_premium(&roster_patient, false, now_u64 + 30)
+        .await
+        .unwrap();
+    let premium_off = front_door.premium(&roster_patient).await;
+    assert!(!premium_off.premium);
+    front_door
+        .withdraw_consent(duet_account_id, now_u64 + 31)
+        .await
+        .unwrap();
+    auth.revoke_patient_consent(&practice, &pw_with_duet, now_u64 + 32)
+        .await
+        .unwrap();
+
+    // Operator readback and scheduled wake-up at t0 + 20 + 7_200 confirm neither patient's
+    // cadence nor due schedule changed after billing and connection transitions!
+    let duet_after = store
+        .patient_dispatch_status(auth.as_ref(), &practice, &pw_with_duet, t0 + 40)
+        .await
+        .unwrap();
+    assert_eq!(duet_after.cadence, custom_cadence);
+    assert_eq!(duet_after.next_due_at, t0 + 20 + 7_200);
+
+    let clinic_after = store
+        .patient_dispatch_status(auth.as_ref(), &practice, &pw_clinic_only, t0 + 40)
+        .await
+        .unwrap();
+    assert_eq!(clinic_after.cadence, Cadence::default());
+    assert_eq!(clinic_after.next_due_at, t0 + 20 + 86_400);
+
+    let wake2_resp = app
+        .oneshot(
+            HttpRequest::builder()
+                .method("POST")
+                .uri(format!(
+                    "/internal/practices/{practice}/dispatch/wake?now={}",
+                    t0 + 20 + 7_200
+                ))
+                .body(Body::empty())
+                .unwrap(),
+        )
+        .await
+        .unwrap();
+    assert_eq!(wake2_resp.status(), StatusCode::OK);
+    let wake2: WakeSummary =
+        serde_json::from_slice(&to_bytes(wake2_resp.into_body(), 64 * 1024).await.unwrap())
+            .unwrap();
+    assert_eq!(wake2.checked_patients, vec![pw_with_duet]);
+    assert_eq!(wake2.skipped_not_due, vec![pw_clinic_only]);
+}
+
+#[tokio::test]
+async fn baseline_chart_registered_patient_skips_first_review_until_records_change_or_periodic_due()
+{
+    let Some(url) = database_url() else {
+        return;
+    };
+    let (store, auth) = connect_stores(&url).await;
+    let skills = load_skills();
+    let roles = distinct_roles();
+
+    let practice = format!("practice-baseline-{}", Uuid::new_v4().simple());
+    let pw_changes = format!("pw-base-chg-{}", Uuid::new_v4().simple());
+    let pw_periodic = format!("pw-base-per-{}", Uuid::new_v4().simple());
+    auth.ensure_practice(&practice, PracticeClock::RealTime)
+        .await
+        .unwrap();
+
+    let t0 = 1_760_400_000_i64;
+
+    // Load non-empty baseline charts BEFORE joining the practice, then register
+    // and seed registration dispatch baselines (matching `load_synthetic_practice`).
+    for (workspace, patient_id, name, note_id, summary) in [
+        (
+            &pw_changes,
+            "pt-base-1",
+            "Amara Singh",
+            "baseline-labs-1",
+            "Hemoglobin A1c 6.4%",
+        ),
+        (
+            &pw_periodic,
+            "pt-base-2",
+            "Devon Brooks",
+            "baseline-labs-2",
+            "Blood pressure 122/76 mmHg",
+        ),
+    ] {
+        let baseline_pull = local_product::runtime::sources::SourcePull {
+            source_id: "clinic-ehr".into(),
+            source_label: "Clinic EHR".into(),
+            patient: source_patient(patient_id, name),
+            pulled_at: Some(t0),
+        };
+        store
+            .record_chart(
+                workspace,
+                &[chart_record(
+                    workspace,
+                    note_id,
+                    "rev-1",
+                    "2026-10-01",
+                    summary,
+                )],
+                &baseline_pull,
+            )
+            .await
+            .unwrap();
+        auth.register_patient(&practice, workspace).await.unwrap();
+        store
+            .register_patient_dispatch(auth.as_ref(), &practice, workspace, t0)
+            .await
+            .unwrap();
+    }
+
+    let checker = StoredObservationChecker::new(store.clone());
+    let recorder = RecordingReceiver::default();
+    let receiver = TeeReceiver {
+        recorder: &recorder,
+        practice_jobs: PracticeJobReviewReceiver::new(
+            store.clone(),
+            &roles,
+            &skills,
+            auth.as_ref(),
+        ),
+    };
+
+    // 1. First wake-up at `t0`: both pre-loaded charts are unchanged since registration -> no review.
+    let wake0 = store
+        .wake_practice_dispatch(auth.as_ref(), &practice, t0, &checker, &receiver)
+        .await
+        .unwrap();
+    let mut expected_checked = vec![pw_changes.clone(), pw_periodic.clone()];
+    expected_checked.sort();
+    assert_eq!(wake0.checked_patients, expected_checked);
+    assert!(wake0.failed_checks.is_empty());
+    assert!(
+        wake0.started_reviews.is_empty(),
+        "baseline chart unchanged since registration must not start a spurious review: {wake0:?}"
+    );
+    assert!(recorder.requests.lock().unwrap().is_empty());
+
+    // 2. Re-running chart load on `pw_changes` with an updated record + idempotent
+    //    `register_patient_dispatch` preserves the baseline, so Day 1 starts `"new records"`.
+    let day1 = t0 + DEFAULT_CHECK_EVERY_SECONDS.cast_signed();
+    let updated_pull = local_product::runtime::sources::SourcePull {
+        source_id: "clinic-ehr".into(),
+        source_label: "Clinic EHR".into(),
+        patient: source_patient("pt-base-1", "Amara Singh"),
+        pulled_at: Some(day1 - 60),
+    };
+    store
+        .record_chart(
+            &pw_changes,
+            &[chart_record(
+                &pw_changes,
+                "baseline-labs-1",
+                "rev-2",
+                "2026-10-02",
+                "Hemoglobin A1c 7.1%",
+            )],
+            &updated_pull,
+        )
+        .await
+        .unwrap();
+    store
+        .register_patient_dispatch(auth.as_ref(), &practice, &pw_changes, day1 - 60)
+        .await
+        .unwrap();
+
+    let wake1 = store
+        .wake_practice_dispatch(auth.as_ref(), &practice, day1, &checker, &receiver)
+        .await
+        .unwrap();
+    assert_eq!(wake1.checked_patients, expected_checked);
+    assert_eq!(wake1.started_reviews.len(), 1);
+    assert_eq!(wake1.started_reviews[0].patient_workspace_id, pw_changes);
+    assert_eq!(wake1.started_reviews[0].reason, ReviewReason::NewRecords);
+    assert_eq!(wake1.started_reviews[0].reason.as_str(), "new records");
+
+    // 3. Days 2..6 with no further changes start no reviews; Day 7 starts `"periodic"` for `pw_periodic`.
+    for day_idx in 2..7 {
+        let day_t = t0 + day_idx * DEFAULT_CHECK_EVERY_SECONDS.cast_signed();
+        let mid_wake = store
+            .wake_practice_dispatch(auth.as_ref(), &practice, day_t, &checker, &receiver)
+            .await
+            .unwrap();
+        assert!(
+            mid_wake.started_reviews.is_empty(),
+            "day {day_idx} must not start any review before weekly window: {mid_wake:?}"
+        );
+    }
+
+    let day7 = t0 + DEFAULT_REVIEW_EVERY_SECONDS.cast_signed();
+    let wake7 = store
+        .wake_practice_dispatch(auth.as_ref(), &practice, day7, &checker, &receiver)
+        .await
+        .unwrap();
+    assert_eq!(wake7.started_reviews.len(), 1);
+    assert_eq!(wake7.started_reviews[0].patient_workspace_id, pw_periodic);
+    assert_eq!(wake7.started_reviews[0].reason, ReviewReason::Periodic);
+    assert_eq!(wake7.started_reviews[0].reason.as_str(), "periodic");
+}
+
+#[tokio::test]
+async fn unavailable_practice_patients_fails_dispatch_reads_and_wakeups_instead_of_reading_empty() {
+    let Some(url) = database_url() else {
+        return;
+    };
+    let (store, _shared_auth) = connect_stores(&url).await;
+    let lost_auth = PostgresAuthStore::connect_with_migrations(&url)
+        .await
+        .expect("connect disposable PostgresAuthStore");
+
+    let practice = format!("practice-lost-auth-{}", Uuid::new_v4().simple());
+    let workspace = format!("pw-lost-auth-{}", Uuid::new_v4().simple());
+    lost_auth
+        .ensure_practice(&practice, PracticeClock::RealTime)
+        .await
+        .unwrap();
+    lost_auth
+        .register_patient(&practice, &workspace)
+        .await
+        .unwrap();
+    lost_auth.pool().close().await;
+
+    let t0 = 1_760_500_000_i64;
+    let checker = StoredObservationChecker::new(store.clone());
+    let recorder = RecordingReceiver::default();
+
+    assert!(matches!(
+        store
+            .practice_dispatch_statuses(&lost_auth, &practice, t0)
+            .await,
+        Err(DispatchError::Access(
+            PracticeAccessError::StoreUnavailable(_)
+        ))
+    ));
+    assert!(matches!(
+        store
+            .check_due_patients(&lost_auth, &practice, t0, &checker)
+            .await,
+        Err(DispatchError::Access(
+            PracticeAccessError::StoreUnavailable(_)
+        ))
+    ));
+    assert!(matches!(
+        store
+            .deliver_pending_reviews(&lost_auth, &practice, &recorder)
+            .await,
+        Err(DispatchError::Access(
+            PracticeAccessError::StoreUnavailable(_)
+        ))
+    ));
+    assert!(matches!(
+        store
+            .wake_practice_dispatch(&lost_auth, &practice, t0, &checker, &recorder)
+            .await,
+        Err(DispatchError::Access(
+            PracticeAccessError::StoreUnavailable(_)
+        ))
+    ));
+}
+
+#[test]
+fn practice_job_recipe_keeps_clean_model_text_and_valid_skill_tools() {
+    let skills =
+        PhysicianSkills::load(&PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../../skills"))
+            .expect("physician skills catalog loads");
+    let roles = distinct_roles();
+    let assignment = Assignment::synthetic_patient_stub("pw-synthetic-model-text", &skills)
+        .expect("synthetic patient assignment loads");
+    let built = local_product::runtime::jobs::recipe(&roles, &assignment, &skills);
+
+    model_text::assert_clean_model_text(&built.instructions);
+    model_text::assert_clean_model_text(&serde_json::to_string(&built.tools).unwrap());
+
+    let preloaded_package = json!({
+        "skills": assignment
+            .preloaded_skills
+            .iter()
+            .map(|skill| json!({
+                "name": skill.name,
+                "content": skill.content,
+            }))
+            .collect::<Vec<_>>(),
+    });
+    model_text::assert_skill_tools(&preloaded_package, &built.tools, &[]);
 }

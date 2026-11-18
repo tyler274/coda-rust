@@ -420,7 +420,7 @@ async fn premium(
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::{CADENCE_WEEKLY, INVITATION_TTL_SECONDS, MemoryFrontDoorStore};
+    use crate::{INVITATION_TTL_SECONDS, MemoryFrontDoorStore};
     use axum::body::Body;
     use axum::http::Request;
     use tower::ServiceExt;
@@ -660,7 +660,7 @@ mod tests {
         )
         .unwrap();
         assert_eq!(body["premium"], false);
-        assert_eq!(body["cadence"], CADENCE_WEEKLY);
+        assert!(body.get("cadence").is_none());
     }
 
     #[tokio::test]
