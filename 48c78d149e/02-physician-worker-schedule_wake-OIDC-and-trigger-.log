@@ -1,0 +1,13 @@
+    Blocking waiting for file lock on package cache
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 3.00s
+     Running unittests src/bin/physician-worker.rs (target/debug/deps/physician_worker-6f0369b1672a0e6e)
+
+running 5 tests
+test tests::schedule_wake_forced_failure_returns_503_for_scheduler_retry_and_emits_alert_log ... ok
+test tests::schedule_wake_accepts_dedicated_scheduler_principal_and_logs_wake_tick ... ok
+test tests::schedule_wake_refuses_missing_invalid_and_wrong_service_account_tokens_before_dispatch ... ok
+test practice_job::tests::schedule_wake_dispatches_due_patient_reviews_and_pubsub_push_commits_saved_review ... ok
+test tests::schedule_wake_executes_visit_preparation_against_synthetic_calendar_and_responses_stub ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 26 filtered out; finished in 0.94s
+

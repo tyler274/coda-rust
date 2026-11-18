@@ -1,0 +1,105 @@
+{
+  "branch": "tyler-eng-315-3-visit-briefings-worker-and-part1",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC5-worker",
+      "label": "physician-worker practice_job and schedule_wake unit/PostgreSQL tests",
+      "kind": "run",
+      "revision": "48c78d149e0ed8dd98e4b1e4931d6ebfe5605e9f",
+      "dirty": false,
+      "recorded": "2026-11-18T23:13:04+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "physician-sample",
+        "--bin",
+        "physician-worker",
+        "--",
+        "practice_job",
+        "--test-threads=1"
+      ],
+      "expect": "test result: ok\\. [1-9][0-9]* passed",
+      "expect_fail": false,
+      "files": [
+        "01-physician-worker-practice_job-and-schedule_wake-.log"
+      ],
+      "seconds": 41.3,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true
+    },
+    {
+      "id": 2,
+      "claim": "AC5-wake-auth",
+      "label": "physician-worker schedule_wake OIDC and trigger tests",
+      "kind": "run",
+      "revision": "48c78d149e0ed8dd98e4b1e4931d6ebfe5605e9f",
+      "dirty": false,
+      "recorded": "2026-11-18T23:13:45+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "physician-sample",
+        "--bin",
+        "physician-worker",
+        "--",
+        "schedule_wake"
+      ],
+      "expect": "test result: ok\\. [1-9][0-9]* passed",
+      "expect_fail": false,
+      "files": [
+        "02-physician-worker-schedule_wake-OIDC-and-trigger-.log"
+      ],
+      "seconds": 4.2,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true
+    },
+    {
+      "id": 3,
+      "claim": "AC6-postgres-part1",
+      "label": "visit_briefings_postgres Part 1 (AC5 wake, AC6 concern lifecycle, prior-concern isolation)",
+      "kind": "run",
+      "revision": "48c78d149e0ed8dd98e4b1e4931d6ebfe5605e9f",
+      "dirty": false,
+      "recorded": "2026-11-18T23:13:50+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "local-product",
+        "--test",
+        "visit_briefings_postgres",
+        "--",
+        "--test-threads=1"
+      ],
+      "expect": "test result: ok\\. 3 passed",
+      "expect_fail": false,
+      "files": [
+        "03-visit_briefings_postgres-Part-1-AC5-wake-AC6-con.log"
+      ],
+      "seconds": 48.4,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true
+    },
+    {
+      "id": 4,
+      "claim": "AC5-live-gcp",
+      "label": "",
+      "kind": "gap",
+      "revision": "48c78d149e0ed8dd98e4b1e4931d6ebfe5605e9f",
+      "dirty": false,
+      "recorded": "2026-11-18T23:14:38+00:00",
+      "reason": "Live Cloud Scheduler -> staging physician-worker Cloud Run wake invocation requires GCP staging deployment; covered by schedule_wake and visit_briefings_postgres harness tests.",
+      "ok": false,
+      "files": []
+    }
+  ]
+}

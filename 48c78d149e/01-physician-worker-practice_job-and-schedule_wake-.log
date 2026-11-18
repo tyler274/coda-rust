@@ -1,0 +1,12 @@
+   Compiling physician-sample v0.1.0 (<worktree>/physician-sample)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 37.97s
+     Running unittests src/bin/physician-worker.rs (target/debug/deps/physician_worker-6f0369b1672a0e6e)
+
+running 4 tests
+test practice_job::tests::schedule_wake_dispatches_due_patient_reviews_and_pubsub_push_commits_saved_review ... ok
+test practice_job::tests::scheduled_wake_handler_executes_both_patient_dispatch_and_visit_preparation_in_one_tick ... ok
+test practice_job::tests::wake_skills_error_preserves_package_cause_and_invalid_skills_dir_fails_from_env ... ok
+test practice_job::tests::worker_pull_delivery_executes_resumed_practice_job_on_background_lane_and_ignores_redelivery ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 27 filtered out; finished in 2.97s
+
