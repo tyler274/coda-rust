@@ -1068,9 +1068,9 @@ async fn ac3_retry_after_interrupted_source_check_saves_each_result_once_and_rec
         .await
         .unwrap();
 
-    // --- Attempt 1: short 1-second lease; `ehr` commits, `labs` interrupts Attempt 1 ---
+    // --- Attempt 1: short 5-second lease; `ehr` commits, `labs` interrupts Attempt 1 ---
     let claim_1 = store
-        .claim_practice_job(&scope, 1, &revocable_practice_auth)
+        .claim_practice_job(&scope, 5, &revocable_practice_auth)
         .await
         .unwrap()
         .expect("claim attempt 1");
@@ -1201,8 +1201,8 @@ async fn ac3_retry_after_interrupted_source_check_saves_each_result_once_and_rec
     assert_eq!(checker.call_count(&practice, &workspace, &labs_id), 1);
     assert_eq!(store.sources(&workspace).await.unwrap().version, 3);
 
-    // Wait for Attempt 1's 1-second lease to expire before retrying.
-    tokio::time::sleep(Duration::from_millis(1200)).await;
+    // Wait for Attempt 1's 5-second lease to expire before retrying.
+    tokio::time::sleep(Duration::from_millis(5200)).await;
 
     // Revoke practice patient access BEFORE retry: both job claim and direct
     // refresh retry must recheck access first and refuse without touching any source!

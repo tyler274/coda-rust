@@ -887,6 +887,8 @@ impl Store {
                     .add(practice_job::Column::Kind.eq(PracticeJobKind::InitialUnderstanding)),
             )
             .order_by_desc(practice_job::Column::CreatedAt)
+            .order_by_desc(practice_job::Column::SourcesVersion)
+            .order_by_desc(practice_job::Column::JobId)
             .all(&tx)
             .await?;
         tx.commit().await?;
@@ -1159,6 +1161,8 @@ impl Store {
                     .add(practice_job::Column::Kind.eq(PracticeJobKind::InitialUnderstanding)),
             )
             .order_by_asc(practice_job::Column::UpdatedAt)
+            .order_by_asc(practice_job::Column::SourcesVersion)
+            .order_by_asc(practice_job::Column::JobId)
             .all(&self.db)
             .await?;
         let mut latest_by_workspace: BTreeMap<String, practice_job::Model> = BTreeMap::new();
@@ -1369,7 +1373,19 @@ impl Store {
                     UnderstandingMode::Revision { prior_revision, .. } => prior_revision,
                 };
                 let idempotency_key = practice_job_save_idempotency_key(&job.work, &call.id);
-                let work_source_version = job.sources_version;
+                let refreshed_max = super::refresh::load_practice_work_refreshes(
+                    &self.db,
+                    &claim.scope.practice,
+                    &claim.scope.workspace,
+                    &job.work,
+                )
+                .await
+                .map_err(super::persistence_failure)?
+                .into_iter()
+                .filter_map(|row| u64::try_from(row.workspace_version_after).ok())
+                .max()
+                .unwrap_or(0);
+                let work_source_version = job.sources_version.max(refreshed_max);
                 let origin = RevisionOrigin::PracticeRun {
                     job_id: claim.scope.job_id.clone(),
                     work_id: job.work,

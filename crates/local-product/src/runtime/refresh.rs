@@ -314,13 +314,13 @@ impl RefreshToolCall {
     /// sources are not repeated.
     pub fn into_request(self, work_id: &str) -> Result<RefreshRequest, RefreshInputError> {
         let work_trimmed = validate_text_field("work_id", work_id, 256)?;
-        let work_digest = &crate::sha256_hex(work_trimmed.as_bytes())[..24];
+        let prefix = work_refresh_prefix(&work_trimmed);
         let raw_key = match &self.request_key {
             Some(explicit) => {
                 let explicit_digest = &crate::sha256_hex(explicit.as_str().as_bytes())[..24];
-                format!("refresh:{work_digest}:key:{explicit_digest}")
+                format!("{prefix}key:{explicit_digest}")
             }
-            None => format!("refresh:{work_digest}:{}", self.target.fingerprint()),
+            None => format!("{prefix}{}", self.target.fingerprint()),
         };
         let command_key = RefreshCommandKey::new(raw_key)?;
         Ok(RefreshRequest {
@@ -878,6 +878,30 @@ async fn upsert_source_status_in_tx(
     Ok(())
 }
 
+fn work_refresh_prefix(work_id: &str) -> String {
+    let work_digest = &crate::sha256_hex(work_id.trim().as_bytes())[..24];
+    format!("refresh:{work_digest}:")
+}
+
+/// Loads every source refresh receipt recorded by `work_id` as a practice
+/// background run on `(practice, workspace)`, ordered by receipt ordinal.
+pub(super) async fn load_practice_work_refreshes(
+    db: &impl ConnectionTrait,
+    practice: &str,
+    workspace: &str,
+    work_id: &str,
+) -> Result<Vec<source_refresh_receipt::Model>, DbErr> {
+    use source_refresh_receipt::Column as C;
+    source_refresh_receipt::Entity::find()
+        .filter(C::Practice.eq(practice))
+        .filter(C::Actor.eq(PRACTICE_REFRESH_ACTOR))
+        .filter(C::Workspace.eq(workspace))
+        .filter(C::CommandKey.starts_with(work_refresh_prefix(work_id)))
+        .order_by_asc(C::Ordinal)
+        .all(db)
+        .await
+}
+
 async fn load_receipt_rows(
     db: &impl ConnectionTrait,
     practice: &str,
@@ -1163,6 +1187,19 @@ impl Store {
         .await
     }
 
+    /// Read-only lookup of a settled [`RefreshReport`] for `scope` and `request`
+    /// without invoking any source check. Returns `Ok(None)` when the command had
+    /// not yet settled every requested source before interruption.
+    pub(super) async fn saved_physician_refresh_report(
+        &self,
+        scope: &Scope,
+        request: &RefreshRequest,
+    ) -> Result<Option<RefreshReport>, RefreshError> {
+        let actor = physician_actor(&scope.physician);
+        self.saved_refresh_report_inner(&scope.practice, &actor, &scope.workspace, request)
+            .await
+    }
+
     async fn saved_refresh_outcome_inner(
         &self,
         practice: &str,
@@ -1183,39 +1220,54 @@ impl Store {
         let Ok(request) = parsed.into_request(work_id) else {
             return Ok(None);
         };
+        match self
+            .saved_refresh_report_inner(practice, actor, workspace, &request)
+            .await
+        {
+            Ok(None) => Ok(None),
+            Ok(Some(report)) => {
+                let encoded = serde_json::to_string(&report).map_err(RefreshError::Encoding)?;
+                Ok(Some(ToolOutcome::Returned(encoded)))
+            }
+            Err(RefreshError::IdempotencyCollision { key }) => Ok(Some(ToolOutcome::refused(
+                RefreshError::IdempotencyCollision { key }.to_string(),
+            ))),
+            Err(RefreshError::Database(db_err)) => Err(super::persistence_failure(db_err)),
+            Err(other) => Err(other.into()),
+        }
+    }
+
+    async fn saved_refresh_report_inner(
+        &self,
+        practice: &str,
+        actor: &str,
+        workspace: &str,
+        request: &RefreshRequest,
+    ) -> Result<Option<RefreshReport>, RefreshError> {
         let envelope = command_envelope(workspace, &request.target);
-        let tx = self.snapshot().await.map_err(super::persistence_failure)?;
+        let tx = self.snapshot().await?;
         let Some(saved_command) = command::Entity::find_by_id((
             practice.to_owned(),
             actor.to_owned(),
             request.command_key.as_str().to_owned(),
         ))
         .one(&tx)
-        .await
-        .map_err(super::persistence_failure)?
+        .await?
         else {
-            tx.commit().await.map_err(super::persistence_failure)?;
+            tx.commit().await?;
             return Ok(None);
         };
         if !receipt::matches(&saved_command.command, &envelope) {
-            tx.commit().await.map_err(super::persistence_failure)?;
-            return Ok(Some(ToolOutcome::refused(
-                RefreshError::IdempotencyCollision {
-                    key: request.command_key,
-                }
-                .to_string(),
-            )));
+            tx.commit().await?;
+            return Err(RefreshError::IdempotencyCollision {
+                key: request.command_key.clone(),
+            });
         }
-        let rows = load_receipt_rows(&tx, practice, actor, workspace, &request.command_key)
-            .await
-            .map_err(super::persistence_failure)?;
-        let fallback_version = super::sources::snapshot_version_in_tx(&tx, workspace)
-            .await
-            .map_err(super::persistence_failure)?;
-        tx.commit().await.map_err(super::persistence_failure)?;
+        let rows = load_receipt_rows(&tx, practice, actor, workspace, &request.command_key).await?;
+        let fallback_version = super::sources::snapshot_version_in_tx(&tx, workspace).await?;
+        tx.commit().await?;
         let report = report_from_receipts(workspace, rows, fallback_version)?;
-        let encoded = serde_json::to_string(&report).map_err(RefreshError::Encoding)?;
-        Ok(Some(ToolOutcome::Returned(encoded)))
+        Ok(Some(report))
     }
 
     async fn refresh_sources_core(

@@ -648,13 +648,15 @@ pub fn recipe(
         instructions.push_str("\n\nPreloaded assignment skills (already open in this run; do not reload via skill_view):\n");
         instructions.push_str(&encoded);
     }
+    let mut offered = tools();
+    offered.push(super::concerns::concern_tool());
     let mut built = RequestRecipe {
         model: background.model.clone(),
         context_window_tokens: background.context_window_tokens,
         max_input_tokens: background.max_input_tokens,
         options: json!({ "effort": background.effort }),
         instructions,
-        tools: tools().into_iter().map(|tool| tool.function()).collect(),
+        tools: offered.into_iter().map(|tool| tool.function()).collect(),
     };
     engine::offer_working_notes(&mut built.instructions, &mut built.tools);
     built
@@ -1412,10 +1414,7 @@ impl Store {
         turn: &Turn,
         authority: &dyn PracticeAuthority,
     ) -> Result<(), engine::ProductError> {
-        authority
-            .check_practice_patient(&claim.scope)
-            .await
-            .map_err(|err| error(&err.to_string()))?;
+        authority.check_practice_patient(&claim.scope).await?;
         let (tx, mut job, clock) = self.locked_practice_job(&claim.scope).await?;
         load_attempt_events(&tx, &claim.scope, &mut job.attempts).await?;
         job_current(&job, claim, clock)?;
@@ -1485,10 +1484,7 @@ impl Store {
         turn: &Turn,
         authority: &dyn PracticeAuthority,
     ) -> Result<PracticeJobResult, engine::ProductError> {
-        authority
-            .check_practice_patient(&claim.scope)
-            .await
-            .map_err(|err| error(&err.to_string()))?;
+        authority.check_practice_patient(&claim.scope).await?;
         let (tx, mut job, clock) = self.locked_practice_job(&claim.scope).await?;
         load_attempt_events(&tx, &claim.scope, &mut job.attempts).await?;
         job_current(&job, claim, clock)?;
@@ -1823,8 +1819,7 @@ impl Product for PracticeJobHost<'_> {
     async fn admit_binding(&mut self, recipe: &RequestBinding) -> Result<(), engine::ProductError> {
         self.authority
             .check_practice_patient(&self.claim.scope)
-            .await
-            .map_err(|err| error(&err.to_string()))?;
+            .await?;
         self.store
             .admit_practice_job_binding(&self.claim, recipe)
             .await?;
@@ -1851,8 +1846,7 @@ impl Product for PracticeJobHost<'_> {
     async fn assert_current(&mut self) -> Result<(), engine::ProductError> {
         self.authority
             .check_practice_patient(&self.claim.scope)
-            .await
-            .map_err(|err| error(&err.to_string()))?;
+            .await?;
         self.store.assert_practice_job_current(&self.claim).await
     }
 
@@ -1869,7 +1863,11 @@ impl Product for PracticeJobHost<'_> {
     ) -> engine::recipe::ToolFuture<Option<ToolOutcome>> {
         let is_understanding = call.name == crate::initial_understanding::SAVE_UNDERSTANDING_TOOL;
         let is_refresh = super::refresh::is_refresh_tool(&call.name);
-        if !is_understanding && !is_refresh {
+        let is_concern = super::concerns::is_concern_tool(&call.name);
+        if !is_understanding && !is_refresh && !is_concern {
+            return Box::pin(async { Ok(None) });
+        }
+        if is_concern && self.claim.kind != PracticeJobKind::PatientReview {
             return Box::pin(async { Ok(None) });
         }
         let store = self.store.clone();
@@ -1883,6 +1881,16 @@ impl Product for PracticeJobHost<'_> {
             }
             store.assert_practice_job_current(&claim).await?;
             let (job, _, _) = store.practice_job_snapshot(&claim.scope).await?;
+            if is_concern {
+                return store
+                    .saved_concern_tool_outcome(
+                        &claim.scope.practice,
+                        &claim.scope.workspace,
+                        &job.work,
+                        &call,
+                    )
+                    .await;
+            }
             store
                 .saved_practice_refresh_outcome(&claim.scope, &job.work, &call)
                 .await
@@ -1994,6 +2002,33 @@ impl Product for PracticeJobHost<'_> {
             if crate::initial_understanding::is_understanding_tool(&call.name) {
                 return store
                     .execute_practice_understanding_tool_fenced(&claim, &call, &arguments)
+                    .await;
+            }
+            if super::concerns::is_concern_tool(&call.name) {
+                if claim.kind == PracticeJobKind::InitialUnderstanding {
+                    return Ok(ToolOutcome::refused(format!(
+                        "initial understanding job cannot modify concerns: {} is refused",
+                        call.name
+                    )));
+                }
+                let source_work = super::concerns::SourceWork::new(
+                    claim.kind.as_str(),
+                    &job.work,
+                    &claim.attempt,
+                )
+                .map_err(|cause| -> engine::Cause { Box::new(cause) })?;
+                let invocation = Invocation {
+                    id: call.id.clone(),
+                    name: call.name.clone(),
+                    arguments,
+                };
+                return store
+                    .execute_concern_tool(
+                        &claim.scope.practice,
+                        &claim.scope.workspace,
+                        &source_work,
+                        &invocation,
+                    )
                     .await;
             }
             Ok(ToolOutcome::refused(format!(
@@ -2192,8 +2227,38 @@ mod tests {
             !built
                 .tools
                 .iter()
+                .any(|tool| tool["name"] == super::super::concerns::CONCERN_TOOL),
+            "initial patient understanding recipe must not offer patient_concern"
+        );
+        assert!(
+            !built
+                .tools
+                .iter()
                 .any(|tool| { tool["name"].as_str().is_some_and(is_physician_only_tool) }),
             "practice background recipe must never offer physician-only tools"
+        );
+
+        let review_assignment = Assignment::new(
+            PracticeJobKind::PatientReview,
+            "review-1",
+            "Review updated labs.",
+            &["patient-record-retrieval"],
+            &skills,
+        )
+        .expect("patient review assignment");
+        let review_recipe = recipe(&roles, &review_assignment, &skills);
+        assert!(
+            review_recipe
+                .tools
+                .iter()
+                .any(|tool| tool["name"] == super::super::concerns::CONCERN_TOOL),
+            "patient review recipe must offer patient_concern"
+        );
+        assert!(
+            !review_recipe
+                .tools
+                .iter()
+                .any(|tool| { tool["name"].as_str().is_some_and(is_physician_only_tool) })
         );
     }
 
