@@ -1,0 +1,59 @@
+{
+  "branch": "tyler-eng-314-1-practice-schedule-store",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC1",
+      "label": "Practice schedule domain validation and read-only issue classification tests",
+      "kind": "run",
+      "revision": "c7ab8d6fdd0c6b279caba4f489b0cb1be48741ab",
+      "dirty": false,
+      "recorded": "2026-11-18T22:05:41+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "local-product",
+        "--lib",
+        "schedule"
+      ],
+      "expect": "\\b3 passed\\b",
+      "expect_fail": false,
+      "files": [
+        "01-Practice-schedule-domain-validation-and-read-onl.log"
+      ],
+      "seconds": 30.5,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true
+    },
+    {
+      "id": 2,
+      "claim": "AC2",
+      "label": "Idempotent m20261118_04_practice_schedule PostgreSQL migration chain",
+      "kind": "run",
+      "revision": "c7ab8d6fdd0c6b279caba4f489b0cb1be48741ab",
+      "dirty": false,
+      "recorded": "2026-11-18T22:06:12+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "local-product",
+        "--lib",
+        "runtime::tests::migration",
+        "--",
+        "--include-ignored"
+      ],
+      "expect": "\\b3 passed\\b",
+      "expect_fail": false,
+      "files": [
+        "02-Idempotent-m20261118_04_practice_schedule-Postgr.log"
+      ],
+      "seconds": 3.0,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true
+    }
+  ]
+}
