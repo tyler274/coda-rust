@@ -1,0 +1,18 @@
+   Compiling local-product v0.1.0 (<worktree>/local-product)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 16.69s
+     Running tests/physician_run_recovery.rs (target/debug/deps/physician_run_recovery-6b89e87a5b75c7a0)
+
+running 10 tests
+test ac1_chat_mid_run_restart_reconciles_saved_effects_and_unknown_calls_into_one_reply ... ok
+test ac1_practice_job_mid_run_restart_resumes_in_new_attempt_with_one_result_and_no_repeated_effects ... ok
+test ac2_effects_commit_before_reply_and_run_commits_before_acknowledgment ... ok
+test ac2_storage_failure_after_model_call_reuses_paid_output_in_run_and_across_attempts ... ok
+test ac3_concurrent_chat_and_background_job_run_simultaneously_without_interference ... ok
+test ac3_context_change_draft_edit_and_lost_access_block_stale_output ... ok
+test ac3_steering_drains_started_tool_skips_unstarted_discards_draft_and_blocks_stale_output ... ok
+test ac3_stop_cancels_without_waiting_for_running_tool_while_interruption_stays_auto_recoverable ... ok
+test ac4_source_failure_and_mid_refresh_interruption_leave_chat_and_job_recoverable ... ok
+test ac4_used_up_credits_lost_access_and_retryable_interruption_read_distinctly ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 8.26s
+
