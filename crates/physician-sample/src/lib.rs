@@ -661,6 +661,7 @@ async fn site_from_env(
             .collect();
         let roles = local_product::model_roles("responses", &environment)
             .map_err(|error| error.to_string())?;
+        let store = store.with_understanding_trigger(roles.clone(), skills.clone());
         // The retained snapshot is the stand-in source owner's only import
         // path. Importing it again changes nothing, so every instance can.
         store

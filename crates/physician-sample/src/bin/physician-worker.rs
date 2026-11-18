@@ -747,9 +747,15 @@ impl Worker {
         let database = configured(&get, "PHYSICIAN_DATABASE_URL")
             .ok_or("PHYSICIAN_DATABASE_URL is required")?;
         // One pool per process: the auth store reads through the runtime's.
-        let store = Store::connect(&database)
+        let mut store = Store::connect(&database)
             .await
             .map_err(hosting::StartupError::RuntimeStore)?;
+        if let Ok(skills) = local_product::physician_chat::PhysicianSkills::configured(
+            configured(&get, "PHYSICIAN_SKILLS_DIR").as_deref(),
+            hosted,
+        ) {
+            store = store.with_understanding_trigger(model.roles.clone(), skills);
+        }
         let auth = PostgresAuthStore::from_connection(store.connection().clone());
         let bus = physician_bus::from_env(&get, hosted).await?;
         let quota: Arc<dyn harness::provider::QuotaGate> = Arc::new(store.clone());

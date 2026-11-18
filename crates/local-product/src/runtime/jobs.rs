@@ -1257,11 +1257,7 @@ impl Store {
                 return Ok(None);
             }
         }
-        if job.status != WorkStatus::Pending {
-            tx.commit().await?;
-            return Ok(None);
-        }
-        if job.dispatch_after > clock {
+        if job.status != WorkStatus::Pending || job.dispatch_after > clock {
             tx.commit().await?;
             return Ok(None);
         }
@@ -1516,7 +1512,6 @@ impl Store {
                 EventKind::ProviderStarted { .. } => Some(None),
                 EventKind::ProviderReturned(retained) => Some(Some(retained)),
                 EventKind::ProviderObservation { .. }
-                | EventKind::CallBegan { .. }
                 | EventKind::ProviderFailed { .. }
                 | EventKind::TransportRetry { .. }
                 | EventKind::ToolStarted(_)
@@ -1524,6 +1519,7 @@ impl Store {
                 | EventKind::ProviderBlocked { .. }
                 | EventKind::ContextRejected
                 | EventKind::Candidate { .. }
+                | EventKind::CallBegan { .. }
                 | EventKind::WindowOpened { .. } => None,
             })
             .flatten()
@@ -1837,6 +1833,7 @@ impl Product for PracticeJobHost<'_> {
 
     fn read_only(&self, name: &str) -> bool {
         crate::physician_chat::read_only(name)
+            || crate::initial_understanding::read_only_understanding_tool(name)
     }
 
     fn read_result(&mut self, id: &str) -> engine::recipe::ToolFuture<Option<String>> {
@@ -1870,13 +1867,20 @@ impl Product for PracticeJobHost<'_> {
         &mut self,
         call: &Invocation,
     ) -> engine::recipe::ToolFuture<Option<ToolOutcome>> {
-        if !super::refresh::is_refresh_tool(&call.name) {
+        let is_understanding = call.name == crate::initial_understanding::SAVE_UNDERSTANDING_TOOL;
+        let is_refresh = super::refresh::is_refresh_tool(&call.name);
+        if !is_understanding && !is_refresh {
             return Box::pin(async { Ok(None) });
         }
         let store = self.store.clone();
         let claim = self.claim.clone();
         let call = call.clone();
         Box::pin(async move {
+            if is_understanding {
+                return store
+                    .saved_practice_understanding_outcome(&claim, &call)
+                    .await;
+            }
             store.assert_practice_job_current(&claim).await?;
             let (job, _, _) = store.practice_job_snapshot(&claim.scope).await?;
             store
@@ -1987,6 +1991,11 @@ impl Product for PracticeJobHost<'_> {
             if call.name == SKILL_VIEW {
                 return Ok(skills.execute(&call.name, &arguments));
             }
+            if crate::initial_understanding::is_understanding_tool(&call.name) {
+                return store
+                    .execute_practice_understanding_tool_fenced(&claim, &call, &arguments)
+                    .await;
+            }
             Ok(ToolOutcome::refused(format!(
                 "tool {} is not available to a practice background job",
                 call.name
@@ -1996,6 +2005,22 @@ impl Product for PracticeJobHost<'_> {
 
     async fn finish(&mut self, turn: &Turn) -> Result<Finish, engine::ProductError> {
         self.assert_current().await?;
+        let (job, _, _) = self.store.practice_job_snapshot(&self.claim.scope).await?;
+        if job.assignment.understanding.is_some()
+            && !self
+                .store
+                .has_saved_understanding_for_work(
+                    &self.claim.scope.practice,
+                    &self.claim.scope.workspace,
+                    &job.work,
+                )
+                .await?
+        {
+            return Ok(Finish::Continue(json!({
+                "outcome": "understanding_not_saved",
+                "message": "Call save_patient_understanding to record the operating index and physician-facing summary before finishing.",
+            })));
+        }
         self.store
             .commit_practice_job(&self.claim, turn, self.authority)
             .await?;

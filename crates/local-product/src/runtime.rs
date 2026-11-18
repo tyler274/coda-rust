@@ -31,8 +31,7 @@ use uuid::Uuid;
 
 /// Hosted chat drafts: the physician's unsent composer text per chat.
 pub mod chat_draft;
-/// Physician chat recipe operations: starting context, evidence limit
-/// classifications, authorized chat admission, source refresh, and work retrieval.
+/// Patient starting context, readability limits, durable memory, source refresh, and chat tool dispatch.
 pub mod chat_operations;
 /// Patient concerns raised, revised, and retired by Coda, and cleared `Done` by physicians.
 pub mod concerns;
@@ -658,6 +657,7 @@ pub struct Store {
     clinical_library: crate::clinical_library::ClinicalLibraryClient,
     source_refresh: std::sync::Arc<dyn refresh::PatientSourceRefresh>,
     refresh_operation: std::sync::Arc<dyn chat_operations::PatientRefreshOperation>,
+    understanding_trigger: Option<std::sync::Arc<understanding::UnderstandingTriggerBinding>>,
 }
 
 fn error(message: &str) -> DbErr {
@@ -945,7 +945,21 @@ impl Store {
             clinical_library: crate::clinical_library::ClinicalLibraryClient::from_env(),
             source_refresh: std::sync::Arc::new(refresh::FixedSourceCheck::new()),
             refresh_operation: std::sync::Arc::new(chat_operations::RuntimeSourceRefreshOperation),
+            understanding_trigger: None,
         }
+    }
+
+    /// Configures automatic background patient understanding triggers (`roles.background`)
+    /// whenever refreshed source observations record new or changed chart revisions.
+    pub fn with_understanding_trigger(
+        mut self,
+        roles: crate::ModelRoles,
+        skills: PhysicianSkills,
+    ) -> Self {
+        self.understanding_trigger = Some(std::sync::Arc::new(
+            understanding::UnderstandingTriggerBinding { roles, skills },
+        ));
+        self
     }
 
     /// Returns a clone bound to an explicit [`crate::clinical_library::ClinicalLibraryClient`].
@@ -2136,7 +2150,7 @@ impl Store {
     /// Runs one chart search or read for `workspace` against its current
     /// chart. A request the model can correct comes back refused. A job
     /// whose reads carry labels gives its work's `labels`.
-    pub(super) async fn chart_tool(
+    async fn chart_tool(
         &self,
         workspace: &str,
         name: &str,
@@ -2183,6 +2197,7 @@ impl<A: Authority, S: ShownStepSaved> Product for PhysicianHost<A, S> {
 
     fn read_only(&self, name: &str) -> bool {
         crate::physician_chat::read_only(name)
+            || crate::initial_understanding::read_only_understanding_tool(name)
     }
 
     fn terminal(&self, turn: &Turn) -> bool {

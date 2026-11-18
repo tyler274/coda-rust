@@ -811,6 +811,15 @@ fn scope_for_membership(practice: &str, workspace: &str) -> PracticeScope {
     }
 }
 
+/// Configured model roles and skill catalog used by [`Store`] to queue
+/// background patient understanding runs when source refreshes deliver new or
+/// revised records.
+#[derive(Clone)]
+pub(crate) struct UnderstandingTriggerBinding {
+    pub(crate) roles: ModelRoles,
+    pub(crate) skills: PhysicianSkills,
+}
+
 /// Internal [`PracticeAuthority`] witness constructed only after an entrypoint
 /// has already verified practice or physician panel membership for `(practice, workspace)`.
 struct VerifiedPracticePatient;
@@ -1385,6 +1394,33 @@ impl Store {
         }
     }
 
+    /// Reconciles an already-committed `save_patient_understanding` receipt
+    /// for a claimed practice job when an earlier attempt crashed between
+    /// `ToolStarted` and `ToolReturned`. Never mutates state.
+    pub(crate) async fn saved_practice_understanding_outcome(
+        &self,
+        claim: &PracticeJobClaim,
+        call: &Invocation,
+    ) -> Result<Option<ToolOutcome>, engine::ProductError> {
+        if call.name != SAVE_UNDERSTANDING_TOOL {
+            return Ok(None);
+        }
+        self.assert_practice_job_current(claim)
+            .await
+            .map_err(super::persistence_failure)?;
+        let (job, _, _) = self
+            .practice_job_snapshot(&claim.scope)
+            .await
+            .map_err(super::persistence_failure)?;
+        let idempotency_key = practice_job_save_idempotency_key(&job.work, &call.id);
+        self.saved_understanding_outcome_by_key(
+            &claim.scope.practice,
+            &claim.scope.workspace,
+            &idempotency_key,
+        )
+        .await
+    }
+
     /// Executes `read_patient_understanding` or `save_patient_understanding`
     /// inside an authorized [`super::PhysicianHost`] chat run.
     pub async fn execute_chat_understanding_tool(
@@ -1451,6 +1487,65 @@ impl Store {
                 "unknown patient understanding tool {other}"
             ))),
         }
+    }
+
+    /// Reconciles an already-committed `save_patient_understanding` receipt
+    /// for a claimed chat run when an earlier attempt crashed between
+    /// `ToolStarted` and `ToolReturned`. Never mutates state.
+    pub(crate) async fn saved_chat_understanding_outcome(
+        &self,
+        claim: &Claim,
+        call: &Invocation,
+    ) -> Result<Option<ToolOutcome>, engine::ProductError> {
+        if call.name != SAVE_UNDERSTANDING_TOOL {
+            return Ok(None);
+        }
+        self.assert_current(claim)
+            .await
+            .map_err(super::persistence_failure)?;
+        let (state, _) = self
+            .work_snapshot(&claim.scope)
+            .await
+            .map_err(super::persistence_failure)?;
+        let idempotency_key = chat_save_idempotency_key(&state.work, &call.id);
+        self.saved_understanding_outcome_by_key(
+            &claim.scope.practice,
+            &claim.scope.workspace,
+            &idempotency_key,
+        )
+        .await
+    }
+
+    async fn saved_understanding_outcome_by_key(
+        &self,
+        practice: &str,
+        workspace: &str,
+        idempotency_key: &str,
+    ) -> Result<Option<ToolOutcome>, engine::ProductError> {
+        let Some(existing_rev) = patient_understanding_revision::Entity::find()
+            .filter(
+                Condition::all()
+                    .add(patient_understanding_revision::Column::Practice.eq(practice))
+                    .add(patient_understanding_revision::Column::Workspace.eq(workspace))
+                    .add(
+                        patient_understanding_revision::Column::IdempotencyKey.eq(idempotency_key),
+                    ),
+            )
+            .one(&self.db)
+            .await
+            .map_err(super::persistence_failure)?
+        else {
+            return Ok(None);
+        };
+        let decoded = decode_revision_record(existing_rev).map_err(super::persistence_failure)?;
+        Ok(Some(render_saved_understanding_receipt(
+            workspace,
+            decoded.revision,
+            decoded.source_version,
+            decoded.summary.citations.len(),
+            &decoded.summary.material_gaps,
+            true,
+        )))
     }
 
     #[allow(clippy::too_many_arguments)]

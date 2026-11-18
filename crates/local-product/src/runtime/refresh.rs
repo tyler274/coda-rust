@@ -1253,7 +1253,10 @@ impl Store {
                         .await?;
                 let current_version = current_version_in_tx(&tx, &workspace).await?;
                 tx.commit().await?;
-                return Ok(report_from_receipts(&workspace, rows, current_version)?);
+                let report = report_from_receipts(&workspace, rows, current_version)?;
+                self.trigger_understanding_if_changed(&practice, &workspace, &report.sources)
+                    .await?;
+                return Ok(report);
             }
 
             let prior_rows =
@@ -1387,11 +1390,53 @@ impl Store {
         let current_version = current_version_in_tx(&tx, &workspace).await?;
         tx.commit().await?;
 
+        self.trigger_understanding_if_changed(&practice, &workspace, &settled_statuses)
+            .await?;
+
         Ok(RefreshReport {
             workspace,
             workspace_version: latest_version.max(current_version),
             sources: settled_statuses,
         })
+    }
+
+    async fn trigger_understanding_if_changed(
+        &self,
+        practice: &str,
+        workspace: &str,
+        settled_statuses: &[SavedSourceStatus],
+    ) -> Result<(), RefreshError> {
+        let any_changed = settled_statuses.iter().any(|saved| {
+            matches!(
+                saved.outcome,
+                SourceRefreshOutcome::Updated {
+                    changed_records,
+                    ..
+                } | SourceRefreshOutcome::PartlyUpdated {
+                    changed_records,
+                    ..
+                } if changed_records > 0
+            )
+        });
+        if any_changed
+            && let Some(binding) = &self.understanding_trigger
+            && let Err(
+                super::understanding::UnderstandingError::Database(db_err)
+                | super::understanding::UnderstandingError::PracticeJob(
+                    super::jobs::PracticeJobError::Runtime(super::RuntimeError::Database(db_err)),
+                ),
+            ) = self
+                .trigger_patient_understanding_authorized(
+                    practice,
+                    workspace,
+                    &binding.roles,
+                    &binding.skills,
+                )
+                .await
+        {
+            return Err(RefreshError::Database(db_err));
+        }
+        Ok(())
     }
 
     #[allow(clippy::too_many_arguments)]
