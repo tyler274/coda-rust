@@ -1,0 +1,34 @@
+{
+  "branch": "tyler-eng-285-5-patient-reviews-postgres-part3",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC3-to-AC4",
+      "label": "Full 11-test PostgreSQL patient reviews suite",
+      "kind": "run",
+      "revision": "9e3ee56efcf1bf022c465782ac5a0e2fa38b7f5b",
+      "dirty": false,
+      "recorded": "2026-11-18T23:09:30+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "local-product",
+        "--test",
+        "patient_reviews_postgres",
+        "--",
+        "--test-threads=1"
+      ],
+      "expect": "test result: ok\\. 11 passed",
+      "expect_fail": false,
+      "files": [
+        "01-Full-11-test-PostgreSQL-patient-reviews-suite.log"
+      ],
+      "seconds": 35.5,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true
+    }
+  ]
+}
