@@ -1,0 +1,88 @@
+{
+  "branch": "tyler-eng-436-3-staging-clinical-library-host",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC1",
+      "label": "Hosted ClinicalLibraryClient config, Cloud Run OIDC audience, and corpus rights/SHA-256 checks",
+      "kind": "run",
+      "revision": "6256fb87d969be7a42734007250d5a761661ce4f",
+      "dirty": false,
+      "recorded": "2026-11-18T20:31:38+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-sample",
+        "--lib",
+        "hosting::tests::clinical_library"
+      ],
+      "expect": "[1-9][0-9]* passed; 0 failed",
+      "expect_fail": false,
+      "files": [
+        "01-Hosted-ClinicalLibraryClient-config-Cloud-Run-OI.log"
+      ],
+      "seconds": 39.0,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true
+    },
+    {
+      "id": 2,
+      "claim": "AC2",
+      "label": "OpenTofu rust-environments test suite for CLINICAL_LIBRARY_URL and CLINICAL_LIBRARY_AUDIENCE",
+      "kind": "run",
+      "revision": "6256fb87d969be7a42734007250d5a761661ce4f",
+      "dirty": false,
+      "recorded": "2026-11-18T20:32:17+00:00",
+      "command": [
+        "tofu",
+        "-chdir=infra/gcp/rust-environments",
+        "test"
+      ],
+      "expect": "Success!",
+      "expect_fail": false,
+      "files": [
+        "02-OpenTofu-rust-environments-test-suite-for-CLINIC.log"
+      ],
+      "seconds": 10.4,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true
+    },
+    {
+      "id": 3,
+      "claim": "AC2",
+      "label": "GCP rust-environments contract verification",
+      "kind": "run",
+      "revision": "6256fb87d969be7a42734007250d5a761661ce4f",
+      "dirty": false,
+      "recorded": "2026-11-18T20:32:27+00:00",
+      "command": [
+        "python3",
+        "infra/gcp/rust-environments/tests/check_contract.py"
+      ],
+      "expect": "OK",
+      "expect_fail": false,
+      "files": [
+        "03-GCP-rust-environments-contract-verification.log"
+      ],
+      "seconds": 0.1,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true
+    },
+    {
+      "id": 4,
+      "claim": "AC3",
+      "label": "",
+      "kind": "gap",
+      "revision": "6256fb87d969be7a42734007250d5a761661ce4f",
+      "dirty": false,
+      "recorded": "2026-11-18T20:32:28+00:00",
+      "reason": "Applying CLINICAL_LIBRARY_URL/AUDIENCE in staging and cross-project roles/run.invoker require reviewed saved OpenTofu plans and operator authorization.",
+      "ok": false,
+      "files": []
+    }
+  ]
+}
