@@ -210,6 +210,10 @@ pub async fn load_practice_from_source(
             )
             .await
             .map_err(|error| error.to_string())?;
+            runtime
+                .register_patient_dispatch(auth, practice_id, &report.workspace_id, pulled_at)
+                .await
+                .map_err(|error| error.to_string())?;
             summary.records += report.records_delivered;
             summary.patients += 1;
             Ok(())

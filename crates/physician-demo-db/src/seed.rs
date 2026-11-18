@@ -6,8 +6,8 @@ use crate::store::{DEMO_NOW, DEMO_ZONE, DemoStore, build_exchange};
 use physician_wire::{
     AutomationRun, ChatSnapshot, CitationDestination, ClinicalSegment, ConnectedSource, FollowUp,
     MedicalRecordNumber, PatientIdentity, PatientLinkWire, PatientSynopsis,
-    PatientWorkspaceResponse, RecordGroup, ReviewCadenceWire, SexOrGender, SnapshotFeedback,
-    SourceConnectionState, SourcePresentation, SourcePreviewContent, SourceSnapshot, WorkPurpose,
+    PatientWorkspaceResponse, RecordGroup, SexOrGender, SnapshotFeedback, SourceConnectionState,
+    SourcePresentation, SourcePreviewContent, SourceSnapshot, WorkPurpose,
     WorkspaceMedicationRecommendation, WorkspaceMembership, WorkspacePlanItem, WorkspaceReply,
 };
 use serde_json::{Value, json};
@@ -126,7 +126,6 @@ fn insert_patient_unit(
         patient_workspace_id: ws_id.into(),
         display_name: display_name.clone(),
         membership: WorkspaceMembership::Allowed,
-        review_cadence: Some(ReviewCadenceWire::WeeklyAndDailyWhenChanged),
         time_zone: Some(DEMO_ZONE.into()),
         chats: Vec::new(),
         identity: Some(PatientIdentity {
@@ -190,12 +189,6 @@ fn insert_patient_unit(
             consent_version: Some("v1".into()),
             consented_at: Some(1_785_000_000),
             revoked_at: None,
-            cadence: if idx < 8 {
-                "daily_when_changed"
-            } else {
-                "weekly"
-            }
-            .into(),
         }),
     };
     let json = serde_json::to_string(&workspace)?;

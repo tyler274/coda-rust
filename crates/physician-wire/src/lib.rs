@@ -375,17 +375,6 @@ pub enum WorkspaceMembership {
     ClinicDemographic,
 }
 
-#[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq, Default)]
-#[serde(rename_all = "snake_case")]
-/// Per-patient review cadence reported on a workspace without payment status.
-pub enum ReviewCadenceWire {
-    /// Settled weekly whole-patient review only.
-    #[default]
-    Weekly,
-    /// Settled weekly whole-patient review plus a daily review when changed.
-    WeeklyAndDailyWhenChanged,
-}
-
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 /// The `PatientWorkspaceResponse` value exchanged by this crate.
 pub struct PatientWorkspaceResponse {
@@ -396,9 +385,6 @@ pub struct PatientWorkspaceResponse {
     #[serde(default)]
     /// The caller's membership level (`allowed` or `clinic_demographic`).
     pub membership: WorkspaceMembership,
-    #[serde(default)]
-    /// Per-patient review cadence read without knowing payment status.
-    pub review_cadence: Option<ReviewCadenceWire>,
     #[serde(default)]
     /// The `time_zone` value.
     pub time_zone: Option<String>,
@@ -439,7 +425,7 @@ pub struct PatientWorkspaceResponse {
     /// Undecided medication recommendations held out of the active plan.
     pub undecided_recommendations: Vec<WorkspaceMedicationRecommendation>,
     #[serde(default)]
-    /// The patient front-door link, versioned consent state, and review cadence (`ENG-44`).
+    /// The patient front-door link and versioned consent state.
     pub patient_link: Option<PatientLinkWire>,
 }
 
@@ -1156,7 +1142,7 @@ pub struct PanelAssignmentResponse {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-/// The wire representation of a roster patient's front-door link, consent, and cadence (`ENG-44`).
+/// The wire representation of a roster patient's front-door link and consent state.
 pub struct PatientLinkWire {
     /// The practice that owns the roster patient.
     pub practice_id: String,
@@ -1180,9 +1166,6 @@ pub struct PatientLinkWire {
     #[serde(default)]
     /// The Unix second consent was revoked, if revoked.
     pub revoked_at: Option<u64>,
-    #[serde(default)]
-    /// The per-patient review cadence exposed to Agents (`"weekly"` or `"daily_when_changed"`).
-    pub cadence: String,
 }
 
 #[cfg(test)]
