@@ -1,0 +1,57 @@
+{
+  "branch": "tyler-eng-254-1-chat-memory-and-context",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC1",
+      "label": "Chat starting context and record readability limit unit suite",
+      "kind": "run",
+      "revision": "7104295404a8505e21bfbf076144030e7d03c339",
+      "dirty": false,
+      "recorded": "2026-11-18T22:08:09+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "local-product",
+        "--lib",
+        "chat_operations"
+      ],
+      "expect": "\\b2 passed\\b",
+      "expect_fail": false,
+      "files": [
+        "01-Chat-starting-context-and-record-readability-lim.log"
+      ],
+      "seconds": 32.7,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true
+    },
+    {
+      "id": 2,
+      "claim": "AC2",
+      "label": "Clean model-visible text and memory tool catalog gate",
+      "kind": "run",
+      "revision": "7104295404a8505e21bfbf076144030e7d03c339",
+      "dirty": false,
+      "recorded": "2026-11-18T22:08:42+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "local-product",
+        "--lib",
+        "physician_chat::tests"
+      ],
+      "expect": "\\b11 passed\\b",
+      "expect_fail": false,
+      "files": [
+        "02-Clean-model-visible-text-and-memory-tool-catalog.log"
+      ],
+      "seconds": 2.7,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true
+    }
+  ]
+}
