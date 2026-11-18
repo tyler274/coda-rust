@@ -12,7 +12,7 @@
 use std::collections::{BTreeMap, BTreeSet};
 
 use async_trait::async_trait;
-use harness::engine;
+use harness::engine::{self, Event, EventKind, Invocation, Item, ProductMessage, ToolOutcome};
 use patient_work::ReviewRequest;
 use physician_auth::{AuthStore, Membership, PhysicianIdentity};
 use sea_orm::{
@@ -23,7 +23,10 @@ use serde::{Deserialize, Serialize};
 use serde_json::{Value, json};
 use uuid::Uuid;
 
-use super::chat_operations::{OpenConcernSummary, SourceFreshnessSummary};
+use super::chat_operations::{
+    DispatchCheckStanding, MAX_RETRIEVED_WORK_ITEMS, OpenConcernSummary, RecordLimit,
+    RecordLimitKind, SourceFreshnessSummary, inspect_record_readability,
+};
 use super::concerns::{ConcernUrgency, ExactRecordReference, SourceWork};
 use super::delivery::Delivery;
 use super::dispatch::ReviewReceiver;
@@ -32,23 +35,29 @@ use super::entities::{
     practice_job,
 };
 use super::jobs::{
-    AssignmentError, PRACTICE_OWNER, PracticeAccessError, PracticeAuthority, PracticeJobError,
-    PracticeScope,
+    AssignmentError, PRACTICE_OWNER, PracticeAccessError, PracticeAuthority, PracticeJob,
+    PracticeJobClaim, PracticeJobCompletion, PracticeJobError, PracticeScope,
 };
 use super::receipt::{self, Receipt};
+use super::sources::SourcePull;
 use super::{
     AttemptStatus, BindingRef, RuntimeError, SkillPackageId, Stopped, Store, WorkStatus,
-    conversion_error, error, frozen, now,
+    conversion_error, error, frozen, now, persistence_failure,
 };
 use crate::ModelRoles;
 use crate::initial_understanding::{ConnectedSourceBrief, EvidenceScope};
 use crate::patient_reviews::{
-    PriorPatientReviewSummary, ReviewOutcome, ReviewStartingContext, ReviewTrigger,
-    UnfinishedReviewWork, assignment as build_review_assignment, review_job_id,
+    COMPLETE_PATIENT_REVIEW_TOOL, CompleteReviewArgs, CompleteReviewDisposition,
+    PriorPatientReviewSummary, QuietReviewReason, READ_PATIENT_REVIEWS_TOOL, ReadReviewsCall,
+    ReviewCitation, ReviewOutcome, ReviewStartingContext, ReviewTrigger, UnfinishedReviewWork,
+    assignment as build_review_assignment, review_job_id,
 };
 use crate::physician_chat::PhysicianSkills;
-use crate::physician_sources::{SourcePatient, SourceRefresh, SourceRevision};
+use crate::physician_sources::{
+    ChartRequest, ChartScope, SEARCH_TOOL, SourcePatient, SourceRefresh, SourceRevision,
+};
 
+const REVIEW_EXCERPT_MAX_CHARS: usize = 280;
 const REVIEW_MEMORY_ACTOR: &str = "coda:patient-review-control";
 
 /// Preloaded skill digest recorded with a saved patient review's recipe version.
@@ -408,6 +417,17 @@ impl SavedPatientReview {
     }
 }
 
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+struct StagedReviewCompletion {
+    work_id: String,
+    call_id: String,
+    staged_source_version: u64,
+    staged_record_versions: BTreeMap<String, String>,
+    outcome: ReviewOutcome,
+    unfinished_work: Vec<UnfinishedReviewWork>,
+    staged_at: i64,
+}
+
 /// Result of admitting a patient review request.
 #[derive(Clone, Debug)]
 pub enum AdmittedPatientReview {
@@ -509,6 +529,17 @@ pub enum PatientReviewError {
     /// Database error from SeaORM.
     #[error("{0}")]
     Database(#[from] DbErr),
+}
+
+/// Internal check result when `PracticeJobHost::finish` verifies a patient review commit.
+pub(super) enum ReviewCommitCheck {
+    /// Not a `PatientReview` assignment (or legacy bare job without `Assignment::review`).
+    NotApplicable,
+    /// Staged review completion passed live evidence currency checks and may commit.
+    Ready,
+    /// Review is missing `complete_patient_review` or patient sources changed mid-run;
+    /// return `Finish::Continue` with this developer feedback payload.
+    Continue(Value),
 }
 
 /// [`ReviewReceiver`] implementation bridging practice dispatch wakeups into
@@ -630,6 +661,59 @@ fn diff_changed_candidates(
     changed.into_iter().collect()
 }
 
+fn truncate_excerpt(text: &str) -> String {
+    let trimmed = text.trim();
+    if trimmed.chars().count() <= REVIEW_EXCERPT_MAX_CHARS {
+        return trimmed.to_owned();
+    }
+    let prefix: String = trimmed.chars().take(REVIEW_EXCERPT_MAX_CHARS).collect();
+    let cut = match prefix.rfind(char::is_whitespace) {
+        Some(idx) if idx > REVIEW_EXCERPT_MAX_CHARS / 2 => &prefix[..idx],
+        _ => prefix.as_str(),
+    };
+    format!("{}…", cut.trim_end())
+}
+
+fn source_label_for(source_id: &str, pulls: &[SourcePull]) -> String {
+    pulls
+        .iter()
+        .find(|pull| pull.source_id == source_id)
+        .map(|pull| pull.source_label.clone())
+        .filter(|label| !label.trim().is_empty())
+        .unwrap_or_else(|| source_id.to_owned())
+}
+
+fn build_review_citation(source: &SourceRevision, pulls: &[SourcePull]) -> ReviewCitation {
+    let display_label = super::history::cited_record_title(
+        &source.provenance,
+        &source.record_type,
+        &source.candidate_id,
+    );
+    let body = super::history::format_cited_source_body(
+        &display_label,
+        &source.readable_parts,
+        &source.content,
+    );
+    let as_of = source
+        .dates
+        .first()
+        .map(|d| d.value.trim())
+        .filter(|v| !v.is_empty())
+        .map(|raw| raw.split('T').next().unwrap_or(raw).trim().to_owned());
+    ReviewCitation {
+        reference: ExactRecordReference {
+            candidate_id: source.candidate_id.clone(),
+            revision: source.revision.clone(),
+        },
+        source_id: source.source_id.clone(),
+        source_label: source_label_for(&source.source_id, pulls),
+        sha256: source.sha256.clone(),
+        display_label,
+        as_of,
+        excerpt: truncate_excerpt(&body),
+    }
+}
+
 fn decode_saved_review(row: patient_review::Model) -> Result<SavedPatientReview, DbErr> {
     let patient: Option<SourcePatient> = row
         .patient_snapshot
@@ -717,6 +801,408 @@ fn decode_sources_json(raw: Value, field: &'static str) -> Result<Vec<SourceRevi
 
 fn decode_initial_sources(raw: Value) -> Result<Vec<SourceRevision>, DbErr> {
     decode_sources_json(raw, "patient_review.initial_sources")
+}
+
+fn decode_staged(raw: Option<Value>) -> Result<Option<StagedReviewCompletion>, DbErr> {
+    raw.map(serde_json::from_value)
+        .transpose()
+        .map_err(conversion_error(
+            "patient_review.staged_completion",
+            "StagedReviewCompletion",
+        ))
+}
+
+/// Single rule owner computing [`ReviewUsage`] and elapsed `duration_ms` from
+/// admitted execution events. Unknown token usage is never coerced to zero.
+pub(super) fn compute_review_usage_and_duration(
+    ordered: &[(Event, bool)],
+    started_at: Option<i64>,
+    completed_at: i64,
+) -> (ReviewUsage, u64) {
+    #[derive(Default)]
+    struct ExchangeTally {
+        observed: engine::recipe::Usage,
+        completed: bool,
+    }
+
+    let mut earliest_dispatch_ms: Option<u64> = None;
+    let mut exchanges: BTreeMap<(String, u64), ExchangeTally> = BTreeMap::new();
+
+    for (event, admitted) in ordered {
+        if !*admitted {
+            continue;
+        }
+        let key = (event.attempt_id.clone(), event.ordinal);
+        match &event.kind {
+            EventKind::ProviderStarted {
+                dispatched_at_unix_ms,
+                ..
+            } => {
+                earliest_dispatch_ms =
+                    Some(earliest_dispatch_ms.map_or(*dispatched_at_unix_ms, |prev| {
+                        prev.min(*dispatched_at_unix_ms)
+                    }));
+                exchanges.entry(key).or_default();
+            }
+            EventKind::ProviderObservation { usage, .. } => {
+                let entry = exchanges.entry(key).or_default();
+                if usage.input_tokens.is_some() {
+                    entry.observed.input_tokens = usage.input_tokens;
+                }
+                if usage.cached_input_tokens.is_some() {
+                    entry.observed.cached_input_tokens = usage.cached_input_tokens;
+                }
+                if usage.output_tokens.is_some() {
+                    entry.observed.output_tokens = usage.output_tokens;
+                }
+            }
+            EventKind::ProviderReturned(turn) => {
+                let entry = exchanges.entry(key).or_default();
+                entry.completed = true;
+                if turn.usage.input_tokens.is_some() {
+                    entry.observed.input_tokens = turn.usage.input_tokens;
+                }
+                if turn.usage.cached_input_tokens.is_some() {
+                    entry.observed.cached_input_tokens = turn.usage.cached_input_tokens;
+                }
+                if turn.usage.output_tokens.is_some() {
+                    entry.observed.output_tokens = turn.usage.output_tokens;
+                }
+            }
+            EventKind::ProviderFailed { .. }
+            | EventKind::TransportRetry { .. }
+            | EventKind::ToolStarted(_)
+            | EventKind::ToolReturned { .. }
+            | EventKind::ProviderBlocked { .. }
+            | EventKind::ContextRejected
+            | EventKind::Candidate { .. }
+            | EventKind::CallBegan { .. }
+            | EventKind::WindowOpened { .. } => {}
+        }
+    }
+
+    let completed_exchanges: Vec<&ExchangeTally> =
+        exchanges.values().filter(|e| e.completed).collect();
+    let usage = if completed_exchanges.is_empty() {
+        ReviewUsage::Unknown
+    } else {
+        let mut total_input = 0_u64;
+        let mut total_output = 0_u64;
+        let mut total_cached = Some(0_u64);
+        let mut all_known = true;
+        for ex in &completed_exchanges {
+            let (Some(inp), Some(out)) = (ex.observed.input_tokens, ex.observed.output_tokens)
+            else {
+                all_known = false;
+                break;
+            };
+            total_input = total_input.saturating_add(inp);
+            total_output = total_output.saturating_add(out);
+            total_cached = match (total_cached, ex.observed.cached_input_tokens) {
+                (Some(acc), Some(cached)) => Some(acc.saturating_add(cached)),
+                _ => None,
+            };
+        }
+        if all_known {
+            ReviewUsage::Known {
+                input_tokens: total_input,
+                cached_input_tokens: total_cached,
+                output_tokens: total_output,
+                exchanges: u32::try_from(completed_exchanges.len()).unwrap_or(u32::MAX),
+            }
+        } else {
+            ReviewUsage::Unknown
+        }
+    };
+
+    let completed_sec_ms = u64::try_from(completed_at.max(0))
+        .unwrap_or(0)
+        .saturating_mul(1_000);
+    let wall_now_ms = std::time::SystemTime::now()
+        .duration_since(std::time::UNIX_EPOCH)
+        .map(|d| u64::try_from(d.as_millis()).unwrap_or(completed_sec_ms))
+        .unwrap_or(completed_sec_ms);
+    let duration_ms = if let Some(start_ms) = earliest_dispatch_ms {
+        let end_ms = wall_now_ms.max(completed_sec_ms);
+        end_ms.saturating_sub(start_ms)
+    } else {
+        let start_sec = started_at.unwrap_or(completed_at);
+        u64::try_from(completed_at.saturating_sub(start_sec))
+            .unwrap_or(0)
+            .saturating_mul(1_000)
+    };
+
+    (usage, duration_ms)
+}
+
+struct OpenWorkConcern {
+    id: String,
+    records: Vec<ExactRecordReference>,
+}
+
+enum SourceFenceContext<'a> {
+    ToolCall,
+    Recovery {
+        staged: Option<&'a StagedReviewCompletion>,
+    },
+    Commit {
+        staged: &'a StagedReviewCompletion,
+    },
+}
+
+/// Single rule owner checking whether patient chart sources were added,
+/// corrected, or withdrawn relative to a patient review's baseline, delivered
+/// `read_patient_sources` receipts, and optional staged completion across live
+/// tool execution, crash/restart recovery, and final commit.
+fn review_source_change_feedback(
+    initial_version: u64,
+    initial_sources: &[SourceRevision],
+    current_version: u64,
+    current_sources: &[SourceRevision],
+    read_in_work: &BTreeSet<(String, String)>,
+    context: SourceFenceContext<'_>,
+) -> Option<Value> {
+    let by_candidate: BTreeMap<&str, &SourceRevision> = current_sources
+        .iter()
+        .map(|source| (source.candidate_id.as_str(), source))
+        .collect();
+    let refresh = SourceRefresh::between(
+        initial_version,
+        initial_sources,
+        current_version,
+        current_sources,
+    );
+
+    let mut unread_changed: BTreeSet<String> = BTreeSet::new();
+    for cid in refresh.to_read() {
+        if let Some(current) = by_candidate.get(cid.as_str())
+            && !read_in_work.contains(&(cid.clone(), current.revision.clone()))
+        {
+            unread_changed.insert(cid);
+        }
+    }
+    for (read_cid, read_rev) in read_in_work {
+        if let Some(current) = by_candidate.get(read_cid.as_str())
+            && &current.revision != read_rev
+            && !read_in_work.contains(&(read_cid.clone(), current.revision.clone()))
+        {
+            unread_changed.insert(read_cid.clone());
+        }
+    }
+    if let SourceFenceContext::Recovery {
+        staged: Some(staged),
+    }
+    | SourceFenceContext::Commit { staged } = context
+    {
+        for (cid, current) in &by_candidate {
+            if staged.staged_record_versions.get(*cid) != Some(&current.revision)
+                && !read_in_work.contains(&((*cid).to_owned(), current.revision.clone()))
+            {
+                unread_changed.insert((*cid).to_owned());
+            }
+        }
+    }
+
+    let triggered = match context {
+        SourceFenceContext::ToolCall => !unread_changed.is_empty(),
+        SourceFenceContext::Recovery { staged } => {
+            !unread_changed.is_empty()
+                || (!refresh.withdrawn.is_empty()
+                    && staged.is_none_or(|s| {
+                        refresh
+                            .withdrawn
+                            .iter()
+                            .any(|w| s.staged_record_versions.contains_key(&w.candidate_id))
+                    }))
+        }
+        SourceFenceContext::Commit { staged } => {
+            current_version != staged.staged_source_version
+                || record_versions_map(current_sources) != staged.staged_record_versions
+                || !unread_changed.is_empty()
+        }
+    };
+    if !triggered {
+        return None;
+    }
+
+    let unread_vec: Vec<String> = unread_changed.into_iter().collect();
+    let message = if unread_vec.is_empty() {
+        "Patient records were withdrawn or updated while this review was running, so nothing was published. Review the current chart state, update or retire any affected concern or summary, and call complete_patient_review again."
+    } else {
+        "Patient records were added, corrected, or withdrawn while this review was running, so nothing was published. Read the updated references with read_patient_sources, update or retire any affected concern or summary, and call complete_patient_review again."
+    };
+    Some(json!({
+        "outcome": crate::physician_sources::SOURCES_CHANGED,
+        "message": message,
+        "added": refresh.added.iter().map(|s| &s.candidate_id).collect::<Vec<_>>(),
+        "corrected": refresh.corrected.iter().map(|c| &c.current.candidate_id).collect::<Vec<_>>(),
+        "withdrawn": refresh.withdrawn.iter().map(|s| &s.candidate_id).collect::<Vec<_>>(),
+        "unread_references": unread_vec,
+        "workspace_version": current_version,
+    }))
+}
+
+/// Single rule owner checking mid-run source record currency, open-concern
+/// coherence, and citation read verification across `complete_patient_review`
+/// and `commit_practice_job`.
+#[allow(clippy::too_many_arguments)]
+fn verify_review_evidence_currency(
+    initial_version: u64,
+    initial_sources: &[SourceRevision],
+    current_version: u64,
+    current_sources: &[SourceRevision],
+    pulls: &[SourcePull],
+    read_in_work: &BTreeSet<(String, String)>,
+    carried_forward_refs: &BTreeSet<(String, String)>,
+    open_work_concerns: &[OpenWorkConcern],
+    args: &CompleteReviewArgs,
+) -> Result<ReviewOutcome, Value> {
+    if let Some(changed_payload) = review_source_change_feedback(
+        initial_version,
+        initial_sources,
+        current_version,
+        current_sources,
+        read_in_work,
+        SourceFenceContext::ToolCall,
+    ) {
+        return Err(changed_payload);
+    }
+
+    let by_candidate: BTreeMap<&str, &SourceRevision> = current_sources
+        .iter()
+        .map(|source| (source.candidate_id.as_str(), source))
+        .collect();
+
+    // 2. Ensure no open concern raised or revised by this review cites a withdrawn
+    // record or superseded revision.
+    for open in open_work_concerns {
+        for ref_item in &open.records {
+            match by_candidate.get(ref_item.candidate_id.as_str()) {
+                None => {
+                    return Err(json!({
+                        "outcome": "stale_concern_citation",
+                        "concern_id": open.id,
+                        "candidate_id": ref_item.candidate_id,
+                        "cited_revision": ref_item.revision,
+                        "message": format!(
+                            "Open concern `{}` cites record `{}` which was withdrawn from current patient sources. Revise or retire that concern with `patient_concern` before completing the review.",
+                            open.id, ref_item.candidate_id
+                        ),
+                    }));
+                }
+                Some(current) if current.revision != ref_item.revision => {
+                    return Err(json!({
+                        "outcome": "stale_concern_citation",
+                        "concern_id": open.id,
+                        "candidate_id": ref_item.candidate_id,
+                        "cited_revision": ref_item.revision,
+                        "current_revision": current.revision,
+                        "message": format!(
+                            "Open concern `{}` still cites superseded revision `{}` of `{}` (current revision `{}`). Read the corrected record and revise or retire that concern via `patient_concern` before completing the review.",
+                            open.id, ref_item.revision, ref_item.candidate_id, current.revision
+                        ),
+                    }));
+                }
+                Some(_) => {}
+            }
+        }
+    }
+
+    // 3. Refuse a quiet ("nothing to do") completion if this review raised or
+    // revised an open concern.
+    if matches!(args.disposition, CompleteReviewDisposition::Quiet { .. })
+        && !open_work_concerns.is_empty()
+    {
+        return Err(json!({
+            "outcome": "quiet_with_open_concern",
+            "open_concern_ids": open_work_concerns.iter().map(|c| &c.id).collect::<Vec<_>>(),
+            "message": "This review raised or revised an open patient concern on Today, so it cannot finish as `quiet` (\"nothing to do\"). Use `disposition: \"assessed\"` or retire the concern if resolved.",
+        }));
+    }
+
+    // 4. Verify every citation exists in current sources at the cited revision
+    // and was read via `read_patient_sources` (or carried forward from verified understanding).
+    let mut verified_citations = Vec::with_capacity(args.citations.len());
+    for reference in &args.citations {
+        let Some(source) = by_candidate.get(reference.candidate_id.as_str()).copied() else {
+            return Err(json!({
+                "outcome": "missing_cited_record",
+                "candidate_id": reference.candidate_id,
+                "message": format!(
+                    "Cited record `{}` is not present in the patient's current chart observation.",
+                    reference.candidate_id
+                ),
+            }));
+        };
+        if source.revision != reference.revision {
+            return Err(json!({
+                "outcome": "stale_cited_revision",
+                "candidate_id": reference.candidate_id,
+                "cited_revision": reference.revision,
+                "current_revision": source.revision,
+                "message": format!(
+                    "Cited revision `{}` for `{}` is outdated; current revision is `{}`. Read `{}` with `read_patient_sources` and update your assessment before completing.",
+                    reference.revision, reference.candidate_id, source.revision, reference.candidate_id
+                ),
+            }));
+        }
+        let key = (reference.candidate_id.clone(), reference.revision.clone());
+        if !read_in_work.contains(&key) && !carried_forward_refs.contains(&key) {
+            return Err(json!({
+                "outcome": "unread_cited_revision",
+                "candidate_id": reference.candidate_id,
+                "revision": reference.revision,
+                "message": format!(
+                    "Read `{}` at revision `{}` via `read_patient_sources` before citing it in `complete_patient_review`.",
+                    reference.candidate_id, reference.revision
+                ),
+            }));
+        }
+        verified_citations.push(build_review_citation(source, pulls));
+    }
+
+    Ok(match &args.disposition {
+        CompleteReviewDisposition::Quiet { explanation } => ReviewOutcome::Quiet {
+            reason: QuietReviewReason::NothingToDo,
+            explanation: explanation.clone(),
+            citations: verified_citations,
+            basis_and_limitations: args.basis_and_limitations.clone(),
+        },
+        CompleteReviewDisposition::Assessed { summary } => ReviewOutcome::Assessed {
+            summary: summary.clone(),
+            citations: verified_citations,
+            basis_and_limitations: args.basis_and_limitations.clone(),
+        },
+    })
+}
+
+async fn open_concerns_from_work_in_tx(
+    tx: &impl ConnectionTrait,
+    practice: &str,
+    workspace: &str,
+    work_id: &str,
+) -> Result<Vec<OpenWorkConcern>, DbErr> {
+    let rows = concern::Entity::find()
+        .filter(concern::Column::Practice.eq(practice))
+        .filter(concern::Column::Workspace.eq(workspace))
+        .filter(concern::Column::Status.eq("open"))
+        .all(tx)
+        .await?;
+    let mut matched = Vec::new();
+    for row in rows {
+        let sw: SourceWork = serde_json::from_value(row.source_work)
+            .map_err(conversion_error("concern.source_work", "SourceWork"))?;
+        if sw.work_id == work_id {
+            let records: Vec<ExactRecordReference> = serde_json::from_value(row.records).map_err(
+                conversion_error("concern.records", "Vec<ExactRecordReference>"),
+            )?;
+            matched.push(OpenWorkConcern {
+                id: row.id,
+                records,
+            });
+        }
+    }
+    Ok(matched)
 }
 
 async fn collect_review_actions_in_tx(
@@ -825,6 +1311,32 @@ async fn collect_review_actions_in_tx(
     }
 
     Ok(actions)
+}
+
+fn known_understanding_refs(
+    saved: Option<&super::understanding::PatientUnderstanding>,
+) -> BTreeSet<(String, String)> {
+    let Some(saved) = saved else {
+        return BTreeSet::new();
+    };
+    let mut pairs: BTreeSet<(String, String)> = saved
+        .summary
+        .citations
+        .iter()
+        .map(|c| {
+            (
+                c.reference.candidate_id.clone(),
+                c.reference.revision.clone(),
+            )
+        })
+        .collect();
+    for anchor in &saved.operating_index.anchors {
+        pairs.insert((
+            anchor.reference.candidate_id.clone(),
+            anchor.reference.revision.clone(),
+        ));
+    }
+    pairs
 }
 
 impl Store {
@@ -2031,11 +2543,1121 @@ impl Store {
             frozen::keep_owner_binding(tx, &scope.practice, PRACTICE_OWNER, &built).await?;
         Ok((binding, package))
     }
+
+    /// Executes `search_patient_information` or `read_patient_sources` for a
+    /// practice background job, enforcing workspace isolation and classifying
+    /// `missing`, `unreadable`, and `unavailable` evidence limits.
+    pub(super) async fn execute_practice_chart_tool(
+        &self,
+        scope: &PracticeScope,
+        name: &str,
+        arguments: &Value,
+    ) -> Result<ToolOutcome, engine::ProductError> {
+        if let Some(requested_workspace) = arguments.get("workspace").and_then(Value::as_str)
+            && requested_workspace != scope.workspace
+        {
+            return Ok(ToolOutcome::refused(
+                "practice background job may read only its assigned patient workspace",
+            ));
+        }
+        let chart = match ChartRequest::parse(name, arguments, ChartScope::Chat) {
+            Ok(chart) => chart,
+            Err(reason) => return Ok(ToolOutcome::refused(reason.to_string())),
+        };
+        let requested_candidates: Option<Vec<String>> = chart
+            .candidates()
+            .map(|ids| ids.into_iter().map(str::to_owned).collect());
+        let observation = match self.chart_observation(&scope.workspace, &chart).await {
+            Ok(obs) => obs,
+            Err(db_err) => {
+                if db_err.to_string().contains("corrupt source observation")
+                    || db_err
+                        .to_string()
+                        .contains("invalid retained physician source revision")
+                {
+                    let subject = requested_candidates
+                        .as_ref()
+                        .and_then(|ids| ids.first().cloned())
+                        .unwrap_or_else(|| scope.workspace.clone());
+                    let limit = RecordLimit {
+                        kind: RecordLimitKind::Unreadable,
+                        subject: subject.clone(),
+                        detail: format!(
+                            "Stored source observation for `{subject}` failed integrity validation and cannot be read."
+                        ),
+                    };
+                    return Ok(ToolOutcome::Returned(
+                        json!({
+                            "results": [{
+                                "outcome": "unavailable",
+                                "reference": subject,
+                                "reason": "unreadable_corrupt_observation"
+                            }],
+                            "limits": [limit],
+                        })
+                        .to_string(),
+                    ));
+                }
+                return Err(persistence_failure(db_err));
+            }
+        };
+
+        let check_standing = self
+            .dispatch_check_standing(&scope.practice, &scope.workspace)
+            .await
+            .map_err(persistence_failure)?;
+        let mut limits = Vec::new();
+        if let DispatchCheckStanding::FailedSinceLastSuccess {
+            last_attempt_at,
+            last_success_at,
+        } = check_standing
+        {
+            let detail = match last_success_at {
+                Some(ok_at) => format!(
+                    "Latest patient source pull at unix {last_attempt_at} failed; newer external records are unavailable beyond unix {ok_at}."
+                ),
+                None => format!(
+                    "Latest patient source pull at unix {last_attempt_at} failed before any source records were delivered."
+                ),
+            };
+            limits.push(RecordLimit {
+                kind: RecordLimitKind::Unavailable,
+                subject: scope.workspace.clone(),
+                detail,
+            });
+        }
+
+        let outcome = chart
+            .run(&scope.workspace, observation.version, &observation.sources)
+            .map_err(engine::Cause::from)?;
+        let ToolOutcome::Returned(raw_json) = outcome else {
+            return Ok(outcome);
+        };
+        let Ok(mut payload) = serde_json::from_str::<Value>(&raw_json) else {
+            return Ok(ToolOutcome::Returned(raw_json));
+        };
+
+        if name == SEARCH_TOOL {
+            if observation.version == 0
+                && observation.sources.is_empty()
+                && !matches!(
+                    check_standing,
+                    DispatchCheckStanding::FailedSinceLastSuccess { .. }
+                )
+            {
+                limits.push(RecordLimit {
+                    kind: RecordLimitKind::Missing,
+                    subject: scope.workspace.clone(),
+                    detail: "No chart records have been delivered for this patient workspace."
+                        .into(),
+                });
+            }
+            if let Some(obj) = payload.as_object_mut() {
+                obj.insert("workspace_version".into(), json!(observation.version));
+                if !limits.is_empty() {
+                    obj.insert("limits".into(), serde_json::to_value(&limits)?);
+                }
+            }
+            return Ok(ToolOutcome::Returned(payload.to_string()));
+        }
+
+        if let Some(results) = payload.get("results").and_then(Value::as_array) {
+            for item in results {
+                let item_outcome = item.get("outcome").and_then(Value::as_str);
+                let reference = item
+                    .get("reference")
+                    .and_then(Value::as_str)
+                    .unwrap_or(&scope.workspace);
+                if item_outcome == Some("unavailable") {
+                    let reason = item.get("reason").and_then(Value::as_str).unwrap_or("");
+                    if reason == "not_in_recorded_observation" {
+                        limits.push(RecordLimit {
+                            kind: RecordLimitKind::Missing,
+                            subject: reference.to_owned(),
+                            detail: format!(
+                                "Requested chart record `{reference}` is missing from this patient's retained chart observation."
+                            ),
+                        });
+                    }
+                } else if matches!(item_outcome, Some("available" | "passage"))
+                    && let Some(source) = observation
+                        .sources
+                        .iter()
+                        .find(|source| source.candidate_id == reference)
+                    && let Some(unreadable) = inspect_record_readability(source)
+                {
+                    limits.push(unreadable);
+                }
+            }
+        }
+
+        if limits.is_empty() {
+            return Ok(ToolOutcome::Returned(raw_json));
+        }
+        if let Some(obj) = payload.as_object_mut() {
+            obj.insert("limits".into(), serde_json::to_value(&limits)?);
+        }
+        Ok(ToolOutcome::Returned(payload.to_string()))
+    }
+
+    /// Executes `read_patient_reviews` or `complete_patient_review` for a
+    /// claimed practice job.
+    pub(super) async fn execute_patient_review_tool(
+        &self,
+        claim: &PracticeJobClaim,
+        job: &PracticeJob,
+        ordered: &[(Event, bool)],
+        call: &Invocation,
+        arguments: &Value,
+    ) -> Result<ToolOutcome, engine::ProductError> {
+        match call.name.as_str() {
+            READ_PATIENT_REVIEWS_TOOL => {
+                let parsed = match ReadReviewsCall::parse(arguments) {
+                    Ok(parsed) => parsed,
+                    Err(err) => return Ok(ToolOutcome::refused(err.to_string())),
+                };
+                let active_review_id = job
+                    .assignment
+                    .review
+                    .as_ref()
+                    .map(|ctx| ctx.review_id.as_str());
+                match parsed {
+                    ReadReviewsCall::List {
+                        limit,
+                        include_incomplete,
+                    } => {
+                        let mut query = patient_review::Entity::find()
+                            .filter(patient_review::Column::Practice.eq(&claim.scope.practice))
+                            .filter(patient_review::Column::Workspace.eq(&claim.scope.workspace));
+                        if !include_incomplete {
+                            query = query.filter(patient_review::Column::Status.eq("completed"));
+                        }
+                        if let Some(current_id) = active_review_id {
+                            query = query.filter(patient_review::Column::ReviewId.ne(current_id));
+                        }
+                        let rows = query
+                            .order_by_desc(patient_review::Column::UpdatedAt)
+                            .order_by_desc(patient_review::Column::ReviewId)
+                            .all(&self.db)
+                            .await
+                            .map_err(persistence_failure)?;
+                        let mut reviews = Vec::new();
+                        for row in rows.into_iter().take(limit) {
+                            reviews.push(decode_saved_review(row).map_err(persistence_failure)?);
+                        }
+                        Ok(ToolOutcome::Returned(
+                            json!({
+                                "outcome": "available",
+                                "reviews": reviews,
+                            })
+                            .to_string(),
+                        ))
+                    }
+                    ReadReviewsCall::Read { review_id } => {
+                        let row = patient_review::Entity::find_by_id((
+                            claim.scope.practice.clone(),
+                            claim.scope.workspace.clone(),
+                            review_id.clone(),
+                        ))
+                        .one(&self.db)
+                        .await
+                        .map_err(persistence_failure)?;
+                        let Some(row) = row else {
+                            return Ok(ToolOutcome::Returned(
+                                json!({
+                                    "outcome": "unavailable",
+                                    "limits": [{
+                                        "kind": "missing",
+                                        "subject": review_id,
+                                        "detail": format!("Saved patient review `{review_id}` does not exist in this patient workspace."),
+                                    }],
+                                })
+                                .to_string(),
+                            ));
+                        };
+                        let decoded = decode_saved_review(row).map_err(persistence_failure)?;
+                        Ok(ToolOutcome::Returned(
+                            json!({
+                                "outcome": "available",
+                                "review": decoded,
+                            })
+                            .to_string(),
+                        ))
+                    }
+                }
+            }
+            COMPLETE_PATIENT_REVIEW_TOOL => {
+                let args = match CompleteReviewArgs::parse(arguments) {
+                    Ok(args) => args,
+                    Err(err) => return Ok(ToolOutcome::refused(err.to_string())),
+                };
+                let Some(review_ctx) = &job.assignment.review else {
+                    return Ok(ToolOutcome::refused(
+                        "complete_patient_review is only available on patient review assignments",
+                    ));
+                };
+                let read_in_work = self
+                    .delivered_review_revisions(job, ordered)
+                    .await
+                    .map_err(persistence_failure)?;
+                let pulls = self
+                    .source_pulls(std::slice::from_ref(&claim.scope.workspace))
+                    .await
+                    .map_err(persistence_failure)?
+                    .remove(&claim.scope.workspace)
+                    .unwrap_or_default();
+                let current_understanding = self
+                    .patient_understanding_internal(&claim.scope.practice, &claim.scope.workspace)
+                    .await
+                    .map_err(persistence_failure)?;
+                let carried_forward = known_understanding_refs(current_understanding.as_ref());
+
+                let tx = self.db.begin().await.map_err(persistence_failure)?;
+                let Some(rev_row) = patient_review::Entity::find_by_id((
+                    claim.scope.practice.clone(),
+                    claim.scope.workspace.clone(),
+                    review_ctx.review_id.clone(),
+                ))
+                .lock_exclusive()
+                .one(&tx)
+                .await
+                .map_err(persistence_failure)?
+                else {
+                    return Err(persistence_failure(error("patient review row missing")));
+                };
+
+                if let Some(existing_staged) =
+                    decode_staged(rev_row.staged_completion.clone()).map_err(persistence_failure)?
+                    && existing_staged.work_id == job.work
+                    && existing_staged.call_id == call.id
+                {
+                    tx.commit().await.map_err(persistence_failure)?;
+                    return Ok(render_staged_review_receipt(
+                        &review_ctx.review_id,
+                        &existing_staged,
+                        true,
+                    ));
+                }
+
+                let current_obs = super::sources::observed(&tx, &claim.scope.workspace)
+                    .await
+                    .map_err(persistence_failure)?;
+                let initial_version = u64::try_from(rev_row.initial_source_version.max(0))
+                    .map_err(conversion_error("initial_source_version", "u64"))
+                    .map_err(persistence_failure)?;
+                let initial_sources = decode_initial_sources(rev_row.initial_sources.clone())
+                    .map_err(persistence_failure)?;
+                let open_work_concerns = open_concerns_from_work_in_tx(
+                    &tx,
+                    &claim.scope.practice,
+                    &claim.scope.workspace,
+                    &job.work,
+                )
+                .await
+                .map_err(persistence_failure)?;
+
+                let outcome = match verify_review_evidence_currency(
+                    initial_version,
+                    &initial_sources,
+                    current_obs.version,
+                    &current_obs.sources,
+                    &pulls,
+                    &read_in_work,
+                    &carried_forward,
+                    &open_work_concerns,
+                    &args,
+                ) {
+                    Ok(outcome) => outcome,
+                    Err(refusal_payload) => {
+                        tx.rollback().await.map_err(persistence_failure)?;
+                        return Ok(ToolOutcome::refused(refusal_payload.to_string()));
+                    }
+                };
+
+                let clock = now(&tx).await.map_err(persistence_failure)?;
+                let staged = StagedReviewCompletion {
+                    work_id: job.work.clone(),
+                    call_id: call.id.clone(),
+                    staged_source_version: current_obs.version,
+                    staged_record_versions: record_versions_map(&current_obs.sources),
+                    outcome,
+                    unfinished_work: args.unfinished_work,
+                    staged_at: clock,
+                };
+                let staged_json = serde_json::to_value(&staged)
+                    .map_err(conversion_error("StagedReviewCompletion", "json"))
+                    .map_err(persistence_failure)?;
+
+                patient_review::ActiveModel {
+                    practice: Unchanged(rev_row.practice),
+                    workspace: Unchanged(rev_row.workspace),
+                    review_id: Unchanged(rev_row.review_id),
+                    command_key: Unchanged(rev_row.command_key),
+                    job_id: Unchanged(rev_row.job_id),
+                    work_id: Unchanged(rev_row.work_id),
+                    status: Unchanged(rev_row.status),
+                    patient_snapshot: Unchanged(rev_row.patient_snapshot),
+                    triggers: Unchanged(rev_row.triggers),
+                    accepted_inputs: Unchanged(rev_row.accepted_inputs),
+                    recipe_version: Unchanged(rev_row.recipe_version),
+                    initial_source_version: Unchanged(rev_row.initial_source_version),
+                    initial_sources: Unchanged(rev_row.initial_sources),
+                    completed_source_version: Unchanged(rev_row.completed_source_version),
+                    completed_sources: Unchanged(rev_row.completed_sources),
+                    evidence_read: Unchanged(rev_row.evidence_read),
+                    actions: Unchanged(rev_row.actions),
+                    unfinished_work: Unchanged(rev_row.unfinished_work),
+                    state: Unchanged(rev_row.state),
+                    usage: Unchanged(rev_row.usage),
+                    duration_ms: Unchanged(rev_row.duration_ms),
+                    staged_completion: Set(Some(staged_json)),
+                    queued_at: Unchanged(rev_row.queued_at),
+                    started_at: Unchanged(rev_row.started_at),
+                    completed_at: Unchanged(rev_row.completed_at),
+                    updated_at: Set(clock),
+                }
+                .update(&tx)
+                .await
+                .map_err(persistence_failure)?;
+                tx.commit().await.map_err(persistence_failure)?;
+
+                Ok(render_staged_review_receipt(
+                    &review_ctx.review_id,
+                    &staged,
+                    false,
+                ))
+            }
+            other => Ok(ToolOutcome::refused(format!(
+                "unknown patient review tool {other}"
+            ))),
+        }
+    }
+
+    /// Reconciles an already-staged `complete_patient_review` call read-only
+    /// when a worker attempt crashed before acknowledging `ToolReturned`.
+    pub(super) async fn saved_complete_review_outcome(
+        &self,
+        scope: &PracticeScope,
+        work_id: &str,
+        call: &Invocation,
+    ) -> Result<Option<ToolOutcome>, engine::ProductError> {
+        if call.name != COMPLETE_PATIENT_REVIEW_TOOL {
+            return Ok(None);
+        }
+        let tx = self.snapshot().await.map_err(persistence_failure)?;
+        let Some(rev_row) = patient_review::Entity::find()
+            .filter(patient_review::Column::Practice.eq(&scope.practice))
+            .filter(patient_review::Column::Workspace.eq(&scope.workspace))
+            .filter(patient_review::Column::JobId.eq(&scope.job_id))
+            .one(&tx)
+            .await
+            .map_err(persistence_failure)?
+        else {
+            tx.commit().await.map_err(persistence_failure)?;
+            return Ok(None);
+        };
+        let review_id = rev_row.review_id.clone();
+        let staged = decode_staged(rev_row.staged_completion).map_err(persistence_failure)?;
+        tx.commit().await.map_err(persistence_failure)?;
+        if let Some(staged) = staged
+            && staged.work_id == work_id
+            && staged.call_id == call.id
+        {
+            return Ok(Some(render_staged_review_receipt(
+                &review_id, &staged, true,
+            )));
+        }
+        Ok(None)
+    }
+
+    async fn delivered_review_revisions(
+        &self,
+        job: &PracticeJob,
+        ordered: &[(Event, bool)],
+    ) -> Result<BTreeSet<(String, String)>, DbErr> {
+        let messages = self.review_message_sources_for_job(job).await?;
+        crate::physician_sources::delivered_exact_revisions(ordered.iter(), &messages)
+            .map_err(|msg| error(&msg))
+    }
+
+    /// Returns all `ProductMessage` sources for `job` (including any steered
+    /// `ReviewAcceptedInput`s when `job` backs a `SavedPatientReview`).
+    pub(super) async fn review_message_sources_for_job(
+        &self,
+        job: &PracticeJob,
+    ) -> Result<Vec<ProductMessage>, DbErr> {
+        Self::review_message_sources_in_tx(&self.db, job).await
+    }
+
+    pub(super) async fn review_message_sources_in_tx(
+        db: &impl ConnectionTrait,
+        job: &PracticeJob,
+    ) -> Result<Vec<ProductMessage>, DbErr> {
+        let mut messages = job.message_sources();
+        let Some(review_ctx) = &job.assignment.review else {
+            return Ok(messages);
+        };
+        let Some(row) = patient_review::Entity::find_by_id((
+            job.scope.practice.clone(),
+            job.scope.workspace.clone(),
+            review_ctx.review_id.clone(),
+        ))
+        .one(db)
+        .await?
+        else {
+            return Ok(messages);
+        };
+        let accepted_inputs: Vec<ReviewAcceptedInput> = serde_json::from_value(row.accepted_inputs)
+            .map_err(conversion_error(
+                "patient_review.accepted_inputs",
+                "Vec<ReviewAcceptedInput>",
+            ))?;
+        for input in accepted_inputs {
+            messages.push(ProductMessage {
+                id: format!("{}:review-input", input.id),
+                role: engine::history::Role::User,
+                text: input.text,
+            });
+        }
+        Ok(messages)
+    }
+
+    /// Builds recovery `AcceptedInput`s and any `source_feedback` for a practice
+    /// job, ensuring that new review inputs or chart record corrections prevent
+    /// settling stale candidate turns on recovery.
+    pub(super) async fn practice_job_recovery_inputs(
+        &self,
+        job: &PracticeJob,
+        ordered: &[(Event, bool)],
+    ) -> Result<(Vec<engine::AcceptedInput>, Option<Value>), DbErr> {
+        let mut initial_items = vec![Item::ProductMessage(job.assignment.message())];
+        if let Some(saved) = &job.result
+            && saved.completion == PracticeJobCompletion::Partial
+        {
+            initial_items.push(Item::ProductMessage(ProductMessage {
+                id: format!("{}:result", saved.attempt_id),
+                role: engine::history::Role::Assistant,
+                text: saved.output_text.clone(),
+            }));
+            initial_items.push(engine::history::partial_answer());
+        }
+        let mut accepted = vec![engine::AcceptedInput {
+            id: job.work.clone(),
+            items: initial_items,
+        }];
+
+        let Some(review_ctx) = &job.assignment.review else {
+            return Ok((accepted, None));
+        };
+        let Some(row) = patient_review::Entity::find_by_id((
+            job.scope.practice.clone(),
+            job.scope.workspace.clone(),
+            review_ctx.review_id.clone(),
+        ))
+        .one(&self.db)
+        .await?
+        else {
+            return Ok((accepted, None));
+        };
+        let accepted_inputs: Vec<ReviewAcceptedInput> =
+            serde_json::from_value(row.accepted_inputs.clone()).map_err(conversion_error(
+                "patient_review.accepted_inputs",
+                "Vec<ReviewAcceptedInput>",
+            ))?;
+        for extra in accepted_inputs {
+            accepted.push(engine::AcceptedInput {
+                id: extra.id.clone(),
+                items: vec![Item::ProductMessage(ProductMessage {
+                    id: format!("{}:review-input", extra.id),
+                    role: engine::history::Role::User,
+                    text: extra.text,
+                })],
+            });
+        }
+
+        let current_obs = self.sources(&job.scope.workspace).await?;
+        let initial_version = u64::try_from(row.initial_source_version)
+            .map_err(conversion_error("initial_source_version", "u64"))?;
+        let initial_sources = decode_initial_sources(row.initial_sources)?;
+        let staged = decode_staged(row.staged_completion)?;
+        let read_in_work = self.delivered_review_revisions(job, ordered).await?;
+        let source_feedback = review_source_change_feedback(
+            initial_version,
+            &initial_sources,
+            current_obs.version,
+            &current_obs.sources,
+            &read_in_work,
+            SourceFenceContext::Recovery {
+                staged: staged.as_ref().filter(|s| s.work_id == job.work),
+            },
+        );
+        Ok((accepted, source_feedback))
+    }
+
+    /// Checks before `commit_practice_job` whether a `PatientReview` assignment
+    /// has a staged completion that still satisfies the live evidence currency
+    /// fence against `physician_runtime_sources`.
+    pub(super) async fn check_patient_review_ready_to_commit(
+        &self,
+        claim: &PracticeJobClaim,
+        job: &PracticeJob,
+        ordered: &[(Event, bool)],
+    ) -> Result<ReviewCommitCheck, DbErr> {
+        let Some(review_ctx) = &job.assignment.review else {
+            return Ok(ReviewCommitCheck::NotApplicable);
+        };
+        let tx = self.db.begin().await?;
+        let Some(rev_row) = patient_review::Entity::find_by_id((
+            claim.scope.practice.clone(),
+            claim.scope.workspace.clone(),
+            review_ctx.review_id.clone(),
+        ))
+        .lock_exclusive()
+        .one(&tx)
+        .await?
+        else {
+            return Err(error("patient review row missing"));
+        };
+        if rev_row.status == "superseded" {
+            tx.commit().await?;
+            return Err(error("patient review was superseded before commit"));
+        }
+        let staged = decode_staged(rev_row.staged_completion.clone())?;
+        let Some(staged) = staged.filter(|s| s.work_id == job.work) else {
+            tx.commit().await?;
+            return Ok(ReviewCommitCheck::Continue(json!({
+                "outcome": "review_not_completed",
+                "message": "Call `complete_patient_review` to record your disposition (`quiet` with reason \"nothing to do\" or `assessed`), citations, basis_and_limitations, and unfinished_work before finishing.",
+            })));
+        };
+
+        let current_obs = super::sources::observed(&tx, &claim.scope.workspace).await?;
+        let initial_version = u64::try_from(rev_row.initial_source_version)
+            .map_err(conversion_error("initial_source_version", "u64"))?;
+        let initial_sources = decode_initial_sources(rev_row.initial_sources.clone())?;
+        let read_in_work = self.delivered_review_revisions(job, ordered).await?;
+        if let Some(changed_payload) = review_source_change_feedback(
+            initial_version,
+            &initial_sources,
+            current_obs.version,
+            &current_obs.sources,
+            &read_in_work,
+            SourceFenceContext::Commit { staged: &staged },
+        ) {
+            let clock = now(&tx).await?;
+            patient_review::ActiveModel {
+                practice: Unchanged(rev_row.practice),
+                workspace: Unchanged(rev_row.workspace),
+                review_id: Unchanged(rev_row.review_id),
+                command_key: Unchanged(rev_row.command_key),
+                job_id: Unchanged(rev_row.job_id),
+                work_id: Unchanged(rev_row.work_id),
+                status: Unchanged(rev_row.status),
+                patient_snapshot: Unchanged(rev_row.patient_snapshot),
+                triggers: Unchanged(rev_row.triggers),
+                accepted_inputs: Unchanged(rev_row.accepted_inputs),
+                recipe_version: Unchanged(rev_row.recipe_version),
+                initial_source_version: Unchanged(rev_row.initial_source_version),
+                initial_sources: Unchanged(rev_row.initial_sources),
+                completed_source_version: Unchanged(rev_row.completed_source_version),
+                completed_sources: Unchanged(rev_row.completed_sources),
+                evidence_read: Unchanged(rev_row.evidence_read),
+                actions: Unchanged(rev_row.actions),
+                unfinished_work: Unchanged(rev_row.unfinished_work),
+                state: Unchanged(rev_row.state),
+                usage: Unchanged(rev_row.usage),
+                duration_ms: Unchanged(rev_row.duration_ms),
+                staged_completion: Set(None),
+                queued_at: Unchanged(rev_row.queued_at),
+                started_at: Unchanged(rev_row.started_at),
+                completed_at: Unchanged(rev_row.completed_at),
+                updated_at: Set(clock),
+            }
+            .update(&tx)
+            .await?;
+            tx.commit().await?;
+
+            return Ok(ReviewCommitCheck::Continue(changed_payload));
+        }
+
+        tx.commit().await?;
+        Ok(ReviewCommitCheck::Ready)
+    }
+
+    /// Finalizes `physician_runtime_patient_reviews` inside the same database
+    /// transaction that commits the completed `PracticeJob`, re-verifying live
+    /// chart currency under the transaction's row locks so no concurrent record
+    /// correction can slip past.
+    pub(super) async fn finalize_patient_review_in_tx(
+        tx: &sea_orm::DatabaseTransaction,
+        job: &PracticeJob,
+        ordered: &[(Event, bool)],
+        messages: &[ProductMessage],
+        current_obs: &super::sources::Observation,
+        clock: i64,
+    ) -> Result<(), DbErr> {
+        let Some(review_ctx) = &job.assignment.review else {
+            return Ok(());
+        };
+        let Some(rev_row) = patient_review::Entity::find_by_id((
+            job.scope.practice.clone(),
+            job.scope.workspace.clone(),
+            review_ctx.review_id.clone(),
+        ))
+        .lock_exclusive()
+        .one(tx)
+        .await?
+        else {
+            return Err(error("patient review row missing at commit"));
+        };
+        if rev_row.status == "superseded" {
+            return Err(error("patient review was superseded before commit"));
+        }
+        let staged = decode_staged(rev_row.staged_completion.clone())?
+            .filter(|s| s.work_id == job.work)
+            .ok_or_else(|| error("patient review commit missing staged completion"))?;
+
+        let current_map = record_versions_map(&current_obs.sources);
+        if current_obs.version != staged.staged_source_version
+            || current_map != staged.staged_record_versions
+        {
+            return Err(error(
+                "patient sources changed concurrently during review commit",
+            ));
+        }
+
+        let read_pairs =
+            crate::physician_sources::delivered_exact_revisions(ordered.iter(), messages)
+                .map_err(|msg| error(&msg))?;
+        let evidence_read: Vec<ExactRecordReference> = read_pairs
+            .into_iter()
+            .filter_map(|(cid, rev)| ExactRecordReference::new(cid, rev).ok())
+            .collect();
+        let actions =
+            collect_review_actions_in_tx(tx, &job.scope.practice, &job.scope.workspace, &job.work)
+                .await?;
+        let (usage, duration_ms) =
+            compute_review_usage_and_duration(ordered, rev_row.started_at, clock);
+        let completed_state = ReviewLifecycleState::Completed {
+            outcome: staged.outcome,
+            completed_at: clock,
+            completed_source_version: current_obs.version,
+        };
+
+        patient_review::ActiveModel {
+            practice: Unchanged(rev_row.practice),
+            workspace: Unchanged(rev_row.workspace),
+            review_id: Unchanged(rev_row.review_id),
+            command_key: Unchanged(rev_row.command_key),
+            job_id: Unchanged(rev_row.job_id),
+            work_id: Set(job.work.clone()),
+            status: Set(completed_state.status_str().to_owned()),
+            patient_snapshot: Unchanged(rev_row.patient_snapshot),
+            triggers: Unchanged(rev_row.triggers),
+            accepted_inputs: Unchanged(rev_row.accepted_inputs),
+            recipe_version: Unchanged(rev_row.recipe_version),
+            initial_source_version: Unchanged(rev_row.initial_source_version),
+            initial_sources: Unchanged(rev_row.initial_sources),
+            completed_source_version: Set(Some(
+                i64::try_from(current_obs.version)
+                    .map_err(conversion_error("completed_source_version", "i64"))?,
+            )),
+            completed_sources: Set(Some(
+                serde_json::to_value(&current_obs.sources)
+                    .map_err(conversion_error("Vec<SourceRevision>", "json"))?,
+            )),
+            evidence_read: Set(serde_json::to_value(&evidence_read)
+                .map_err(conversion_error("Vec<ExactRecordReference>", "json"))?),
+            actions: Set(serde_json::to_value(&actions)
+                .map_err(conversion_error("Vec<RecordedReviewAction>", "json"))?),
+            unfinished_work: Set(serde_json::to_value(&staged.unfinished_work)
+                .map_err(conversion_error("Vec<UnfinishedReviewWork>", "json"))?),
+            state: Set(serde_json::to_value(&completed_state)
+                .map_err(conversion_error("ReviewLifecycleState", "json"))?),
+            usage: Set(
+                serde_json::to_value(&usage).map_err(conversion_error("ReviewUsage", "json"))?
+            ),
+            duration_ms: Set(Some(
+                i64::try_from(duration_ms).map_err(conversion_error("duration_ms", "i64"))?,
+            )),
+            staged_completion: Set(None),
+            queued_at: Unchanged(rev_row.queued_at),
+            started_at: Set(Some(rev_row.started_at.unwrap_or(clock))),
+            completed_at: Set(Some(clock)),
+            updated_at: Set(clock),
+        }
+        .update(tx)
+        .await?;
+        Ok(())
+    }
+
+    pub(super) async fn sync_review_on_claim_in_tx(
+        tx: &sea_orm::DatabaseTransaction,
+        job: &PracticeJob,
+        attempt_id: &str,
+        clock: i64,
+    ) -> Result<(), DbErr> {
+        let Some(review_ctx) = &job.assignment.review else {
+            return Ok(());
+        };
+        let Some(rev_row) = patient_review::Entity::find_by_id((
+            job.scope.practice.clone(),
+            job.scope.workspace.clone(),
+            review_ctx.review_id.clone(),
+        ))
+        .lock_exclusive()
+        .one(tx)
+        .await?
+        else {
+            return Ok(());
+        };
+        let started = rev_row.started_at.unwrap_or(clock);
+        let running = ReviewLifecycleState::Running {
+            attempt_id: attempt_id.to_owned(),
+            started_at: started,
+        };
+        update_review_lifecycle_in_tx(tx, rev_row, &job.work, running, Some(started), clock).await
+    }
+
+    pub(super) async fn sync_review_on_stop_in_tx(
+        tx: &sea_orm::DatabaseTransaction,
+        job: &PracticeJob,
+        clock: i64,
+    ) -> Result<(), DbErr> {
+        let Some(review_ctx) = &job.assignment.review else {
+            return Ok(());
+        };
+        let Some(rev_row) = patient_review::Entity::find_by_id((
+            job.scope.practice.clone(),
+            job.scope.workspace.clone(),
+            review_ctx.review_id.clone(),
+        ))
+        .lock_exclusive()
+        .one(tx)
+        .await?
+        else {
+            return Ok(());
+        };
+        let partial_text = job
+            .result
+            .as_ref()
+            .filter(|r| r.completion == PracticeJobCompletion::Partial)
+            .map(|r| r.output_text.clone());
+        let held = ReviewLifecycleState::Held {
+            reason: ReviewHoldReason::Stopped,
+            held_at: clock,
+            partial_text,
+        };
+        let started = rev_row.started_at;
+        update_review_lifecycle_in_tx(tx, rev_row, &job.work, held, started, clock).await
+    }
+
+    pub(super) async fn sync_review_on_partial_hold_in_tx(
+        tx: &sea_orm::DatabaseTransaction,
+        job: &PracticeJob,
+        partial_text: &str,
+        clock: i64,
+    ) -> Result<(), DbErr> {
+        let Some(review_ctx) = &job.assignment.review else {
+            return Ok(());
+        };
+        let Some(rev_row) = patient_review::Entity::find_by_id((
+            job.scope.practice.clone(),
+            job.scope.workspace.clone(),
+            review_ctx.review_id.clone(),
+        ))
+        .lock_exclusive()
+        .one(tx)
+        .await?
+        else {
+            return Ok(());
+        };
+        let held = ReviewLifecycleState::Held {
+            reason: ReviewHoldReason::Limit,
+            held_at: clock,
+            partial_text: if partial_text.trim().is_empty() {
+                None
+            } else {
+                Some(partial_text.to_owned())
+            },
+        };
+        let started = rev_row.started_at;
+        update_review_lifecycle_in_tx(tx, rev_row, &job.work, held, started, clock).await
+    }
+
+    pub(super) async fn sync_review_on_resume_in_tx(
+        tx: &sea_orm::DatabaseTransaction,
+        job: &PracticeJob,
+        clock: i64,
+    ) -> Result<(), DbErr> {
+        let Some(review_ctx) = &job.assignment.review else {
+            return Ok(());
+        };
+        let Some(rev_row) = patient_review::Entity::find_by_id((
+            job.scope.practice.clone(),
+            job.scope.workspace.clone(),
+            review_ctx.review_id.clone(),
+        ))
+        .lock_exclusive()
+        .one(tx)
+        .await?
+        else {
+            return Ok(());
+        };
+        let started = rev_row.started_at;
+        update_review_lifecycle_in_tx(
+            tx,
+            rev_row,
+            &job.work,
+            ReviewLifecycleState::Pending,
+            started,
+            clock,
+        )
+        .await
+    }
+
+    pub(super) async fn sync_review_on_settlement_in_tx(
+        tx: &sea_orm::DatabaseTransaction,
+        job: &PracticeJob,
+        reason_label: &str,
+        clock: i64,
+    ) -> Result<(), DbErr> {
+        let Some(review_ctx) = &job.assignment.review else {
+            return Ok(());
+        };
+        let Some(rev_row) = patient_review::Entity::find_by_id((
+            job.scope.practice.clone(),
+            job.scope.workspace.clone(),
+            review_ctx.review_id.clone(),
+        ))
+        .lock_exclusive()
+        .one(tx)
+        .await?
+        else {
+            return Ok(());
+        };
+        let next_state = match job.status {
+            WorkStatus::Failed => ReviewLifecycleState::Failed {
+                reason: reason_label.to_owned(),
+                failed_at: clock,
+                attempts: job.failures.max(1),
+            },
+            WorkStatus::Pending => ReviewLifecycleState::Pending,
+            WorkStatus::Held => ReviewLifecycleState::Held {
+                reason: ReviewHoldReason::Stopped,
+                held_at: clock,
+                partial_text: None,
+            },
+            WorkStatus::Active | WorkStatus::Completed | WorkStatus::Cancelled => return Ok(()),
+        };
+        let started = rev_row.started_at;
+        update_review_lifecycle_in_tx(tx, rev_row, &job.work, next_state, started, clock).await
+    }
+
+    pub(super) async fn execute_practice_retrieve_work_tool(
+        &self,
+        scope: &PracticeScope,
+        arguments: &Value,
+    ) -> Result<ToolOutcome, engine::ProductError> {
+        let operation = arguments
+            .get("operation")
+            .and_then(Value::as_str)
+            .unwrap_or("");
+        match operation {
+            "list" => {
+                let cap = arguments
+                    .get("limit")
+                    .and_then(Value::as_u64)
+                    .and_then(|n| usize::try_from(n).ok())
+                    .unwrap_or(10)
+                    .clamp(1, MAX_RETRIEVED_WORK_ITEMS);
+                let jobs = practice_job::Entity::find()
+                    .filter(practice_job::Column::Practice.eq(&scope.practice))
+                    .filter(practice_job::Column::Workspace.eq(&scope.workspace))
+                    .filter(practice_job::Column::Status.eq(WorkStatus::Completed))
+                    .order_by_desc(practice_job::Column::UpdatedAt)
+                    .limit(cap as u64)
+                    .all(&self.db)
+                    .await
+                    .map_err(persistence_failure)?;
+                let background_jobs: Vec<_> = jobs
+                    .into_iter()
+                    .map(|job| {
+                        json!({
+                            "job_id": job.job_id,
+                            "kind": job.kind.as_str(),
+                            "sources_version": job.sources_version,
+                            "updated_at": job.updated_at,
+                        })
+                    })
+                    .collect();
+                Ok(ToolOutcome::Returned(
+                    json!({
+                        "outcome": "available",
+                        "background_jobs": background_jobs,
+                        "saved_briefings": Vec::<Value>::new(),
+                    })
+                    .to_string(),
+                ))
+            }
+            "read_background_job" => {
+                let Some(job_id) = arguments
+                    .get("job_id")
+                    .and_then(Value::as_str)
+                    .map(str::trim)
+                    .filter(|s| !s.is_empty())
+                else {
+                    return Ok(ToolOutcome::refused("Supply a non-empty `job_id`."));
+                };
+                let target_scope = PracticeScope {
+                    practice: scope.practice.clone(),
+                    workspace: scope.workspace.clone(),
+                    job_id: job_id.to_owned(),
+                };
+                let Some(job) = self
+                    .practice_job(&target_scope)
+                    .await
+                    .map_err(persistence_failure)?
+                else {
+                    return Ok(ToolOutcome::Returned(
+                        json!({
+                            "outcome": "unavailable",
+                            "limits": [{
+                                "kind": "missing",
+                                "subject": job_id,
+                                "detail": format!("Background job `{job_id}` was not found in this patient workspace."),
+                            }],
+                        })
+                        .to_string(),
+                    ));
+                };
+                Ok(ToolOutcome::Returned(
+                    json!({
+                        "outcome": "available",
+                        "job_id": job.scope.job_id,
+                        "kind": job.kind.as_str(),
+                        "status": job.status,
+                        "sources_version": job.sources_version,
+                        "result": job.result,
+                    })
+                    .to_string(),
+                ))
+            }
+            "read_conversation" => Ok(ToolOutcome::refused(
+                "practice background job has no physician session and cannot read private physician conversations",
+            )),
+            _ => Ok(ToolOutcome::refused(
+                "Supply `operation` as `list` or `read_background_job`.",
+            )),
+        }
+    }
+
+    pub(super) async fn execute_practice_clinical_library_tool(
+        &self,
+        name: &str,
+        arguments: &Value,
+    ) -> Result<ToolOutcome, engine::ProductError> {
+        let outcome = self.clinical_library().execute(name, arguments).await;
+        if let ToolOutcome::Returned(raw) = &outcome
+            && let Ok(mut parsed) = serde_json::from_str::<Value>(raw)
+            && parsed.get("outcome").and_then(Value::as_str) == Some("unavailable")
+        {
+            let detail = parsed
+                .get("reason")
+                .or_else(|| parsed.get("message"))
+                .and_then(Value::as_str)
+                .unwrap_or("Clinical library service is unavailable.")
+                .to_owned();
+            let limit = RecordLimit {
+                kind: RecordLimitKind::Unavailable,
+                subject: "clinical_library".into(),
+                detail,
+            };
+            if let Some(obj) = parsed.as_object_mut() {
+                obj.insert("limits".into(), serde_json::to_value([limit])?);
+            }
+            return Ok(ToolOutcome::Returned(parsed.to_string()));
+        }
+        Ok(outcome)
+    }
 }
 
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
 enum RearmKind {
     Resume,
     TryAgain,
+}
+
+async fn update_review_lifecycle_in_tx(
+    tx: &sea_orm::DatabaseTransaction,
+    rev_row: patient_review::Model,
+    work_id: &str,
+    next_state: ReviewLifecycleState,
+    started_at: Option<i64>,
+    clock: i64,
+) -> Result<(), DbErr> {
+    if matches!(rev_row.status.as_str(), "completed" | "superseded") {
+        return Ok(());
+    }
+    let actions =
+        collect_review_actions_in_tx(tx, &rev_row.practice, &rev_row.workspace, work_id).await?;
+    patient_review::ActiveModel {
+        practice: Unchanged(rev_row.practice),
+        workspace: Unchanged(rev_row.workspace),
+        review_id: Unchanged(rev_row.review_id),
+        command_key: Unchanged(rev_row.command_key),
+        job_id: Unchanged(rev_row.job_id),
+        work_id: Set(work_id.to_owned()),
+        status: Set(next_state.status_str().to_owned()),
+        patient_snapshot: Unchanged(rev_row.patient_snapshot),
+        triggers: Unchanged(rev_row.triggers),
+        accepted_inputs: Unchanged(rev_row.accepted_inputs),
+        recipe_version: Unchanged(rev_row.recipe_version),
+        initial_source_version: Unchanged(rev_row.initial_source_version),
+        initial_sources: Unchanged(rev_row.initial_sources),
+        completed_source_version: Unchanged(rev_row.completed_source_version),
+        completed_sources: Unchanged(rev_row.completed_sources),
+        evidence_read: Unchanged(rev_row.evidence_read),
+        actions: Set(serde_json::to_value(&actions)
+            .map_err(conversion_error("Vec<RecordedReviewAction>", "json"))?),
+        unfinished_work: Unchanged(rev_row.unfinished_work),
+        state: Set(serde_json::to_value(&next_state)
+            .map_err(conversion_error("ReviewLifecycleState", "json"))?),
+        usage: Unchanged(rev_row.usage),
+        duration_ms: Unchanged(rev_row.duration_ms),
+        staged_completion: Unchanged(rev_row.staged_completion),
+        queued_at: Unchanged(rev_row.queued_at),
+        started_at: Set(started_at),
+        completed_at: Unchanged(rev_row.completed_at),
+        updated_at: Set(clock),
+    }
+    .update(tx)
+    .await?;
+    Ok(())
+}
+
+fn render_staged_review_receipt(
+    review_id: &str,
+    staged: &StagedReviewCompletion,
+    replayed: bool,
+) -> ToolOutcome {
+    let (disposition, reason) = match &staged.outcome {
+        ReviewOutcome::Quiet { reason, .. } => ("quiet", reason.as_str()),
+        ReviewOutcome::Assessed { summary, .. } => ("assessed", summary.as_str()),
+    };
+    ToolOutcome::Returned(
+        json!({
+            "outcome": if replayed { "duplicate" } else { "staged" },
+            "saved": true,
+            "review_id": review_id,
+            "disposition": disposition,
+            "reason": reason,
+            "citations_verified": staged.outcome.citations().len(),
+            "unfinished_work_count": staged.unfinished_work.len(),
+            "source_version": staged.staged_source_version,
+        })
+        .to_string(),
+    )
 }
 
 fn build_recipe_version(

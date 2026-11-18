@@ -95,6 +95,15 @@ impl PatientKey {
         })
     }
 
+    /// The patient of a practice-owned background job. No physician owns a
+    /// practice job, so no signed-in `Scope` can make this key.
+    pub(crate) fn for_practice_job(scope: &super::jobs::PracticeScope) -> Result<Self, DbErr> {
+        if scope.job_id.trim().is_empty() {
+            return Err(error("empty practice job id"));
+        }
+        Self::for_rounds(&scope.practice, &scope.workspace)
+    }
+
     /// The patient's workspace, whose chart a run reads.
     pub(crate) fn workspace(&self) -> &str {
         &self.workspace
@@ -882,6 +891,37 @@ impl Store {
         draft: &NoteDraft,
     ) -> Result<Note, MemoryError> {
         let key = PatientKey::try_from(scope)?;
+        self.append_note_for_key(&key, &scope.physician, &scope.chat, origin, draft)
+            .await
+    }
+
+    /// Adds a note attributed to a practice-owned job (`PRACTICE_OWNER`,
+    /// `job_id`). Physician-authored calls go through [`Self::append_note`].
+    pub(crate) async fn append_practice_note(
+        &self,
+        scope: &super::jobs::PracticeScope,
+        origin: &NoteOrigin,
+        draft: &NoteDraft,
+    ) -> Result<Note, MemoryError> {
+        let key = PatientKey::for_practice_job(scope)?;
+        self.append_note_for_key(
+            &key,
+            super::jobs::PRACTICE_OWNER,
+            &scope.job_id,
+            origin,
+            draft,
+        )
+        .await
+    }
+
+    async fn append_note_for_key(
+        &self,
+        key: &PatientKey,
+        physician: &str,
+        chat: &str,
+        origin: &NoteOrigin,
+        draft: &NoteDraft,
+    ) -> Result<Note, MemoryError> {
         let blank = |field: &String| field.trim().is_empty();
         if blank(&origin.work) || blank(&origin.call) || blank(&origin.message) {
             return Err(error("empty note origin").into());
@@ -889,15 +929,15 @@ impl Store {
         draft.check()?;
         let id = NoteId::of_call(&origin.work, &origin.call);
         let tx = self.db.begin().await?;
-        lock_memory(&tx, &key).await?;
-        if let Some(saved) = saved_note(&tx, &key, &id).await? {
+        lock_memory(&tx, key).await?;
+        if let Some(saved) = saved_note(&tx, key, &id).await? {
             if saved.text != draft.text {
                 return Err(error("memory note identity collision").into());
             }
             tx.commit().await?;
             return Ok(saved);
         }
-        let last = patient_notes(&key)
+        let last = patient_notes(key)
             .select_only()
             .column(memory_note::Column::Position)
             .order_by_desc(memory_note::Column::Position)
@@ -911,8 +951,8 @@ impl Store {
             note: Set(id.as_str().to_owned()),
             position: Set(last.unwrap_or(0) + 1),
             saved_at: Set(saved_at),
-            physician: Set(scope.physician.clone()),
-            chat: Set(scope.chat.clone()),
+            physician: Set(physician.to_owned()),
+            chat: Set(chat.to_owned()),
             message: Set(origin.message.clone()),
             text: Set(draft.text.clone()),
             physician_words: Set(draft.quote.clone().map(String::from)),

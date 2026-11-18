@@ -33,7 +33,7 @@ use super::{
 };
 use crate::physician_chat::{Job, PhysicianSkills, SKILL_VIEW, work_tools};
 use crate::physician_sources::{
-    ChartRequest, ChartScope, READ_TOOL, SEARCH_TOOL, SourceRevision, read_tool, search_tool,
+    ChartScope, READ_TOOL, SEARCH_TOOL, SourceRevision, read_tool, search_tool,
 };
 
 /// Reserved non-physician actor key for shared runtime recipe, skill, receipt,
@@ -1218,7 +1218,9 @@ impl Store {
             return Ok(DeliveryState::Settled);
         }
         Ok(match job.status {
-            WorkStatus::Completed | WorkStatus::Held => DeliveryState::Settled,
+            WorkStatus::Completed | WorkStatus::Held | WorkStatus::Cancelled => {
+                DeliveryState::Settled
+            }
             WorkStatus::Failed => DeliveryState::Failed,
             WorkStatus::Active
                 if job.attempts.last().is_some_and(|attempt| {
@@ -1227,7 +1229,7 @@ impl Store {
             {
                 DeliveryState::Claimed
             }
-            WorkStatus::Active | WorkStatus::Pending | WorkStatus::Cancelled => DeliveryState::Due,
+            WorkStatus::Active | WorkStatus::Pending => DeliveryState::Due,
         })
     }
 
@@ -1294,6 +1296,13 @@ impl Store {
                 job.dispatch_after = clock;
             }
             job.updated_at = clock;
+            Self::sync_review_on_settlement_in_tx(
+                &tx,
+                &job,
+                "abandoned attempt lease expired",
+                clock,
+            )
+            .await?;
             if job.status == WorkStatus::Failed {
                 Self::save_practice_job(tx, &job).await?;
                 return Ok(None);
@@ -1319,6 +1328,7 @@ impl Store {
         });
         job.status = WorkStatus::Active;
         job.updated_at = clock;
+        Self::sync_review_on_claim_in_tx(&tx, &job, &id, clock).await?;
         let claim = PracticeJobClaim {
             lease,
             scope: scope.clone(),
@@ -1439,6 +1449,7 @@ impl Store {
                 .await?;
             }
             job.updated_at = clock;
+            Self::sync_review_on_settlement_in_tx(&tx, &job, "provider blocked", clock).await?;
             Self::save_practice_job(tx, &job).await?;
             return Ok(());
         }
@@ -1472,14 +1483,10 @@ impl Store {
             records::ordered_for(&tx, &claim.scope.owner_key(), &job.attempt_ids()).await?;
         let recipe =
             frozen::owner_binding(&tx, &claim.scope.practice, PRACTICE_OWNER, &job.binding).await?;
-        if !engine::pending_final(
-            &recipe,
-            ordered.iter(),
-            job.allowance_after,
-            &job.message_sources(),
-        )
-        .map_err(RuntimeError::PendingFinal)?
-        .is_some_and(|saved| saved.turn == *turn)
+        let messages = Self::review_message_sources_in_tx(&tx, &job).await?;
+        if !engine::pending_final(&recipe, ordered.iter(), job.allowance_after, &messages)
+            .map_err(RuntimeError::PendingFinal)?
+            .is_some_and(|saved| saved.turn == *turn)
         {
             return Err(error("partial result differs from recorded terminal turn").into());
         }
@@ -1487,6 +1494,7 @@ impl Store {
         job.sources_version = observation.version;
         job.sources = observation.sources;
         let text = turn.text();
+        let partial_copy = text.clone();
         if let Some(attempt) = job.attempts.last_mut() {
             attempt.status = AttemptStatus::Held;
         }
@@ -1512,6 +1520,7 @@ impl Store {
             });
         }
         job.updated_at = clock;
+        Self::sync_review_on_partial_hold_in_tx(&tx, &job, &partial_copy, clock).await?;
         Self::save_practice_job(tx, &job).await?;
         Ok(())
     }
@@ -1564,7 +1573,12 @@ impl Store {
             return Err(error("completion differs from recorded terminal turn").into());
         }
         let output_text = terminal_answer(terminal)?;
+        let ordered =
+            records::ordered_for(&tx, &claim.scope.owner_key(), &job.attempt_ids()).await?;
+        let messages = Self::review_message_sources_in_tx(&tx, &job).await?;
         let observation = super::sources::observed(&tx, &claim.scope.workspace).await?;
+        Self::finalize_patient_review_in_tx(&tx, &job, &ordered, &messages, &observation, clock)
+            .await?;
         job.sources_version = observation.version;
         job.sources = observation.sources;
         if let Some(attempt) = job.attempts.last_mut() {
@@ -1641,6 +1655,7 @@ impl Store {
                 .await?;
             }
             job.updated_at = clock;
+            Self::sync_review_on_settlement_in_tx(&tx, &job, &format!("{reason:?}"), clock).await?;
             Self::save_practice_job(tx, &job).await?;
             Ok(settlement)
         } else {
@@ -1765,6 +1780,7 @@ impl Store {
         })?;
         job.status = WorkStatus::Held;
         job.updated_at = now(&tx).await?;
+        Self::sync_review_on_stop_in_tx(&tx, &job, job.updated_at).await?;
         Self::save_practice_job(tx, &job).await?;
         Ok(Stopped::Held)
     }
@@ -1809,6 +1825,7 @@ impl Store {
         job.dispatch_after = 0;
         job.updated_at = now(&tx).await?;
         let input_id = job.assignment.key.clone();
+        Self::sync_review_on_resume_in_tx(&tx, &job, job.updated_at).await?;
         let delivery = Delivery::practice_job(&practice_scope, input_id);
         super::delivery::notify(&tx, &delivery).await?;
         Self::save_practice_job(tx, &job).await?;
@@ -1835,6 +1852,12 @@ impl Store {
     }
 }
 
+pub(crate) fn practice_job_tool_is_read_only(_kind: PracticeJobKind, name: &str) -> bool {
+    crate::physician_chat::read_only(name)
+        || crate::initial_understanding::read_only_understanding_tool(name)
+        || crate::patient_reviews::read_only_review_tool(name)
+}
+
 /// Shared-harness host for one claimed practice background job. Enforces
 /// practice-only chart access, refuses physician-only actions, and records all
 /// effects under the practice and job.
@@ -1853,7 +1876,8 @@ impl Product for PracticeJobHost<'_> {
         &mut self,
     ) -> Result<Option<Vec<engine::ProductMessage>>, engine::ProductError> {
         let (job, _, _) = self.store.practice_job_snapshot(&self.claim.scope).await?;
-        Ok(Some(job.message_sources()))
+        let messages = self.store.review_message_sources_for_job(&job).await?;
+        Ok(Some(messages))
     }
 
     async fn admit_binding(&mut self, recipe: &RequestBinding) -> Result<(), engine::ProductError> {
@@ -1867,8 +1891,7 @@ impl Product for PracticeJobHost<'_> {
     }
 
     fn read_only(&self, name: &str) -> bool {
-        crate::physician_chat::read_only(name)
-            || crate::initial_understanding::read_only_understanding_tool(name)
+        practice_job_tool_is_read_only(self.claim.kind, name)
     }
 
     fn read_result(&mut self, id: &str) -> engine::recipe::ToolFuture<Option<String>> {
@@ -1878,8 +1901,8 @@ impl Product for PracticeJobHost<'_> {
         Box::pin(async move {
             store.assert_practice_job_current(&claim).await?;
             let (job, ordered, _) = store.practice_job_snapshot(&claim.scope).await?;
-            engine::results::resolve(ordered.iter(), &id, &job.message_sources())
-                .map_err(Into::into)
+            let messages = store.review_message_sources_for_job(&job).await?;
+            engine::results::resolve(ordered.iter(), &id, &messages).map_err(Into::into)
         })
     }
 
@@ -1904,10 +1927,14 @@ impl Product for PracticeJobHost<'_> {
         let is_understanding = call.name == crate::initial_understanding::SAVE_UNDERSTANDING_TOOL;
         let is_refresh = super::refresh::is_refresh_tool(&call.name);
         let is_concern = super::concerns::is_concern_tool(&call.name);
-        if !is_understanding && !is_refresh && !is_concern {
+        let is_memory = super::memory::tools::MemoryTool::named(&call.name).is_some();
+        let is_complete_review = call.name == crate::patient_reviews::COMPLETE_PATIENT_REVIEW_TOOL;
+        if !is_understanding && !is_refresh && !is_concern && !is_memory && !is_complete_review {
             return Box::pin(async { Ok(None) });
         }
-        if is_concern && self.claim.kind != PracticeJobKind::PatientReview {
+        if (is_concern || is_memory || is_complete_review)
+            && self.claim.kind != PracticeJobKind::PatientReview
+        {
             return Box::pin(async { Ok(None) });
         }
         let store = self.store.clone();
@@ -1921,6 +1948,11 @@ impl Product for PracticeJobHost<'_> {
             }
             store.assert_practice_job_current(&claim).await?;
             let (job, _, _) = store.practice_job_snapshot(&claim.scope).await?;
+            if is_refresh {
+                return store
+                    .saved_practice_refresh_outcome(&claim.scope, &job.work, &call)
+                    .await;
+            }
             if is_concern {
                 return store
                     .saved_concern_tool_outcome(
@@ -1931,8 +1963,14 @@ impl Product for PracticeJobHost<'_> {
                     )
                     .await;
             }
+            if is_memory {
+                let key = super::memory::PatientKey::for_practice_job(&claim.scope)?;
+                return super::memory::tools::saved_outcome_for_key(&store, &key, &job.work, &call)
+                    .await
+                    .map_err(Into::into);
+            }
             store
-                .saved_practice_refresh_outcome(&claim.scope, &job.work, &call)
+                .saved_complete_review_outcome(&claim.scope, &job.work, &call)
                 .await
         })
     }
@@ -1974,27 +2012,20 @@ impl Product for PracticeJobHost<'_> {
                 .ok_or_else(|| "working note tool was not handled".into());
             }
             if engine::history::is_tool(&call.name) {
-                let mut messages = vec![engine::history::Message {
-                    id: job.assignment.message().id,
-                    role: engine::history::Role::User,
-                    text: job.assignment.prompt.clone(),
-                    metadata: json!({
-                        "practice": claim.scope.practice,
-                        "job_id": claim.scope.job_id,
-                        "kind": claim.kind,
-                    }),
-                }];
-                if let Some(saved) = &job.result {
-                    messages.push(engine::history::Message {
-                        id: format!("{}:result", saved.attempt_id),
-                        role: engine::history::Role::Assistant,
-                        text: saved.output_text.clone(),
+                let raw_messages = store.review_message_sources_for_job(&job).await?;
+                let messages: Vec<engine::history::Message<Value>> = raw_messages
+                    .into_iter()
+                    .map(|msg| engine::history::Message {
+                        id: msg.id,
+                        role: msg.role,
+                        text: msg.text,
                         metadata: json!({
-                            "completion": saved.completion,
-                            "attribution": saved.attribution,
+                            "practice": claim.scope.practice,
+                            "job_id": claim.scope.job_id,
+                            "kind": claim.kind,
                         }),
-                    });
-                }
+                    })
+                    .collect();
                 let page = match engine::history::execute(
                     &call.name,
                     &arguments,
@@ -2006,25 +2037,13 @@ impl Product for PracticeJobHost<'_> {
                 };
                 return Ok(ToolOutcome::History(page));
             }
+            if call.name == SKILL_VIEW {
+                return Ok(skills.execute(&call.name, &arguments));
+            }
             if matches!(call.name.as_str(), SEARCH_TOOL | READ_TOOL) {
-                // Reject any attempt to pass a foreign workspace argument.
-                if let Some(requested_workspace) =
-                    arguments.get("workspace").and_then(Value::as_str)
-                    && requested_workspace != claim.scope.workspace
-                {
-                    return Ok(ToolOutcome::refused(
-                        "practice background job may read only its assigned patient workspace",
-                    ));
-                }
-                let chart = match ChartRequest::parse(&call.name, &arguments, ChartScope::Chat) {
-                    Ok(chart) => chart,
-                    Err(reason) => return Ok(ToolOutcome::refused(reason.to_string())),
-                };
-                let workspace = &claim.scope.workspace;
-                let observation = store.chart_observation(workspace, &chart).await?;
-                return chart
-                    .run(workspace, observation.version, &observation.sources)
-                    .map_err(Into::into);
+                return store
+                    .execute_practice_chart_tool(&claim.scope, &call.name, &arguments)
+                    .await;
             }
             if super::refresh::is_refresh_tool(&call.name) {
                 let refresh_call = Invocation {
@@ -2036,12 +2055,20 @@ impl Product for PracticeJobHost<'_> {
                     .execute_claimed_practice_refresh_tool(&claim, &job.work, &refresh_call)
                     .await;
             }
-            if call.name == SKILL_VIEW {
-                return Ok(skills.execute(&call.name, &arguments));
-            }
             if crate::initial_understanding::is_understanding_tool(&call.name) {
                 return store
                     .execute_practice_understanding_tool_fenced(&claim, &call, &arguments)
+                    .await;
+            }
+            if crate::patient_reviews::is_patient_review_tool(&call.name) {
+                if claim.kind != PracticeJobKind::PatientReview {
+                    return Ok(ToolOutcome::refused(format!(
+                        "tool {} is only available to patient review jobs",
+                        call.name
+                    )));
+                }
+                return store
+                    .execute_patient_review_tool(&claim, &job, &ordered, &call, &arguments)
                     .await;
             }
             if super::concerns::is_concern_tool(&call.name) {
@@ -2071,6 +2098,46 @@ impl Product for PracticeJobHost<'_> {
                     )
                     .await;
             }
+            if let Some(mem_tool) = super::memory::tools::MemoryTool::named(&call.name) {
+                if !mem_tool.reads() && claim.kind != PracticeJobKind::PatientReview {
+                    return Ok(ToolOutcome::refused(format!(
+                        "{} job cannot modify patient memory: {} is refused",
+                        claim.kind.as_str(),
+                        call.name
+                    )));
+                }
+                return mem_tool
+                    .execute_for_practice(&store, &claim.scope, &arguments, || {
+                        Ok(super::memory::NoteOrigin {
+                            work: job.work.clone(),
+                            call: call.id.clone(),
+                            message: job.work.clone(),
+                        })
+                    })
+                    .await
+                    .map_err(Into::into);
+            }
+            if super::chat_operations::is_retrieve_work_tool(&call.name) {
+                if claim.kind == PracticeJobKind::InitialUnderstanding {
+                    return Ok(ToolOutcome::refused(
+                        "retrieve_patient_work is not available to initial understanding jobs",
+                    ));
+                }
+                return store
+                    .execute_practice_retrieve_work_tool(&claim.scope, &arguments)
+                    .await;
+            }
+            if crate::clinical_library::is_library_tool(&call.name) {
+                if claim.kind == PracticeJobKind::InitialUnderstanding {
+                    return Ok(ToolOutcome::refused(format!(
+                        "tool {} is not available to initial understanding jobs",
+                        call.name
+                    )));
+                }
+                return store
+                    .execute_practice_clinical_library_tool(&call.name, &arguments)
+                    .await;
+            }
             Ok(ToolOutcome::refused(format!(
                 "tool {} is not available to a practice background job",
                 call.name
@@ -2080,7 +2147,7 @@ impl Product for PracticeJobHost<'_> {
 
     async fn finish(&mut self, turn: &Turn) -> Result<Finish, engine::ProductError> {
         self.assert_current().await?;
-        let (job, _, _) = self.store.practice_job_snapshot(&self.claim.scope).await?;
+        let (job, ordered, _) = self.store.practice_job_snapshot(&self.claim.scope).await?;
         if job.assignment.understanding.is_some()
             && !self
                 .store
@@ -2095,6 +2162,17 @@ impl Product for PracticeJobHost<'_> {
                 "outcome": "understanding_not_saved",
                 "message": "Call save_patient_understanding to record the operating index and physician-facing summary before finishing.",
             })));
+        }
+        match self
+            .store
+            .check_patient_review_ready_to_commit(&self.claim, &job, &ordered)
+            .await?
+        {
+            super::reviews::ReviewCommitCheck::NotApplicable
+            | super::reviews::ReviewCommitCheck::Ready => {}
+            super::reviews::ReviewCommitCheck::Continue(payload) => {
+                return Ok(Finish::Continue(payload));
+            }
         }
         self.store
             .commit_practice_job(&self.claim, turn, self.authority)
@@ -2116,14 +2194,17 @@ impl Product for PracticeJobHost<'_> {
     async fn window_seed(&mut self) -> Result<engine::WindowSeed, engine::ProductError> {
         self.assert_current().await?;
         let (job, _, _) = self.store.practice_job_snapshot(&self.claim.scope).await?;
-        let mut items = vec![Item::ProductMessage(job.assignment.message())];
-        if let Some(saved) = &job.result {
-            items.push(Item::ProductMessage(engine::ProductMessage {
-                id: format!("{}:result", saved.attempt_id),
-                role: engine::history::Role::Assistant,
-                text: saved.output_text.clone(),
-            }));
-            if saved.completion == PracticeJobCompletion::Partial {
+        let messages = self.store.review_message_sources_for_job(&job).await?;
+        let partial_id = job
+            .result
+            .as_ref()
+            .filter(|saved| saved.completion == PracticeJobCompletion::Partial)
+            .map(|saved| format!("{}:result", saved.attempt_id));
+        let mut items = Vec::with_capacity(messages.len() + 1);
+        for message in messages {
+            let is_partial = partial_id.as_deref() == Some(message.id.as_str());
+            items.push(Item::ProductMessage(message));
+            if is_partial {
                 items.push(engine::history::partial_answer());
             }
         }
@@ -2162,21 +2243,21 @@ impl PracticeJobHost<'_> {
             .map_err(|err| engine::Failure::Host(err.into()))?
             .request(Vec::new());
         request.items.clear();
-        let mut accepted_items = vec![Item::ProductMessage(job.assignment.message())];
-        let mut partial_id = None;
-        if let Some(saved) = &job.result
-            && saved.completion == PracticeJobCompletion::Partial
-        {
-            let id = format!("{}:result", saved.attempt_id);
-            accepted_items.push(Item::ProductMessage(engine::ProductMessage {
-                id: id.clone(),
-                role: engine::history::Role::Assistant,
-                text: saved.output_text.clone(),
-            }));
-            accepted_items.push(engine::history::partial_answer());
-            partial_id = Some(id);
-        }
-        let messages = job.message_sources();
+        let partial_id = job
+            .result
+            .as_ref()
+            .filter(|saved| saved.completion == PracticeJobCompletion::Partial)
+            .map(|saved| format!("{}:result", saved.attempt_id));
+        let messages = self
+            .store
+            .review_message_sources_for_job(&job)
+            .await
+            .map_err(|err| engine::Failure::Host(err.into()))?;
+        let (accepted, source_feedback) = self
+            .store
+            .practice_job_recovery_inputs(&job, &ordered)
+            .await
+            .map_err(|err| engine::Failure::Host(err.into()))?;
         let work = request.freeze()?.recover(
             &self.claim.attempt,
             engine::recovery::Records {
@@ -2188,11 +2269,8 @@ impl PracticeJobHost<'_> {
                 partial: partial_id,
             },
             engine::recovery::Inputs {
-                accepted: vec![engine::AcceptedInput {
-                    id: job.work.clone(),
-                    items: accepted_items,
-                }],
-                source_feedback: None,
+                accepted,
+                source_feedback,
             },
         )?;
         work.run(provider, self, limits, cancel).await.map(|_| ())
@@ -2341,5 +2419,29 @@ mod tests {
                 .contains("practice run cannot act as a physician"),
             "unexpected error: {err}"
         );
+    }
+
+    #[test]
+    fn memory_reads_are_read_only_while_notes_are_not() {
+        assert!(super::practice_job_tool_is_read_only(
+            PracticeJobKind::VisitPreparation,
+            "read_patient_memory"
+        ));
+        assert!(super::practice_job_tool_is_read_only(
+            PracticeJobKind::PatientReview,
+            "list_patient_memory"
+        ));
+        assert!(!super::practice_job_tool_is_read_only(
+            PracticeJobKind::PatientReview,
+            "add_patient_memory_note"
+        ));
+        assert!(!super::practice_job_tool_is_read_only(
+            PracticeJobKind::InitialUnderstanding,
+            "edit_patient_memory"
+        ));
+        assert!(super::practice_job_tool_is_read_only(
+            PracticeJobKind::PatientReview,
+            crate::physician_sources::READ_TOOL
+        ));
     }
 }

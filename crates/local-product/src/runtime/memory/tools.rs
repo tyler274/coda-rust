@@ -158,18 +158,34 @@ impl MemoryTool {
         arguments: &Value,
         origin: impl FnOnce() -> Result<NoteOrigin, DbErr>,
     ) -> Result<ToolOutcome, DbErr> {
+        self.execute_target(store, NoteTarget::Physician(scope), arguments, origin)
+            .await
+    }
+
+    /// Runs one call of this tool for a practice-owned background job.
+    pub(crate) async fn execute_for_practice(
+        self,
+        store: &Store,
+        scope: &super::super::jobs::PracticeScope,
+        arguments: &Value,
+        origin: impl FnOnce() -> Result<NoteOrigin, DbErr>,
+    ) -> Result<ToolOutcome, DbErr> {
+        self.execute_target(store, NoteTarget::Practice(scope), arguments, origin)
+            .await
+    }
+
+    async fn execute_target(
+        self,
+        store: &Store,
+        target: NoteTarget<'_>,
+        arguments: &Value,
+        origin: impl FnOnce() -> Result<NoteOrigin, DbErr>,
+    ) -> Result<ToolOutcome, DbErr> {
         match self {
-            Self::Read(read) => {
-                read.execute(store, &PatientKey::try_from(scope)?, arguments)
-                    .await
-            }
-            Self::Edit => {
-                EditTool
-                    .execute(store, &PatientKey::try_from(scope)?, arguments)
-                    .await
-            }
+            Self::Read(read) => read.execute(store, &target.key()?, arguments).await,
+            Self::Edit => EditTool.execute(store, &target.key()?, arguments).await,
             Self::AddNote => match note_draft(arguments) {
-                Ok(draft) => add_note(store, scope, &origin()?, &draft).await,
+                Ok(draft) => add_note(store, target, &origin()?, &draft).await,
                 Err(reason) => Ok(ToolOutcome::refused(reason)),
             },
         }
@@ -362,25 +378,52 @@ pub async fn saved_outcome(
         return Ok(None);
     }
     let key = PatientKey::try_from(scope)?;
-    match store.saved_note(&key, work, &call.id).await? {
+    saved_outcome_for_key(store, &key, work, call).await
+}
+
+/// Shared key-based lookup for [`saved_outcome`] and practice-owned jobs.
+pub(crate) async fn saved_outcome_for_key(
+    store: &Store,
+    key: &PatientKey,
+    work: &str,
+    call: &Invocation,
+) -> Result<Option<ToolOutcome>, DbErr> {
+    if MemoryTool::named(&call.name) != Some(MemoryTool::AddNote) {
+        return Ok(None);
+    }
+    match store.saved_note(key, work, &call.id).await? {
         Some(saved) => outcome(Ok(note(&saved))).map(Some),
         None => Ok(None),
     }
 }
 
-/// Adds the note to the log of the scope's patient, with the run's origin.
+#[derive(Clone, Copy)]
+enum NoteTarget<'a> {
+    Physician(&'a Scope),
+    Practice(&'a super::super::jobs::PracticeScope),
+}
+
+impl NoteTarget<'_> {
+    fn key(self) -> Result<PatientKey, DbErr> {
+        match self {
+            Self::Physician(scope) => PatientKey::try_from(scope),
+            Self::Practice(scope) => PatientKey::for_practice_job(scope),
+        }
+    }
+}
+
+/// Adds the note to the log of the target's patient, with the run's origin.
 async fn add_note(
     store: &Store,
-    scope: &Scope,
+    target: NoteTarget<'_>,
     origin: &NoteOrigin,
     draft: &NoteDraft,
 ) -> Result<ToolOutcome, DbErr> {
-    outcome(
-        store
-            .append_note(scope, origin, draft)
-            .await
-            .map(|saved| note(&saved)),
-    )
+    let saved = match target {
+        NoteTarget::Physician(scope) => store.append_note(scope, origin, draft).await,
+        NoteTarget::Practice(scope) => store.append_practice_note(scope, origin, draft).await,
+    };
+    outcome(saved.map(|saved| note(&saved)))
 }
 
 pub(super) fn outcome(result: Result<Value, MemoryError>) -> Result<ToolOutcome, DbErr> {
