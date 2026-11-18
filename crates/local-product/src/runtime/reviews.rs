@@ -1593,6 +1593,16 @@ impl Store {
                 });
             }
         }
+        prior_reviews.extend(
+            self.handed_off_unhandled_reviews(practice, workspace, review_id)
+                .await?,
+        );
+        prior_reviews.sort_by(|left, right| {
+            right
+                .completed_at
+                .cmp(&left.completed_at)
+                .then_with(|| left.review_id.cmp(&right.review_id))
+        });
 
         Ok((
             ReviewStartingContext {

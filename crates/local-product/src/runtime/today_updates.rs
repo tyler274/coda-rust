@@ -10,24 +10,37 @@ use std::collections::{BTreeMap, BTreeSet};
 use std::fmt;
 
 use physician_auth::{AuthStore, Membership, PhysicianIdentity, SessionError, StoreUnavailable};
-use sea_orm::{ColumnTrait, DbErr, EntityTrait, QueryFilter, QueryOrder, QuerySelect};
+use sea_orm::{
+    ColumnTrait, ConnectionTrait, DbErr, EntityTrait, QueryFilter, QueryOrder, QuerySelect, Set,
+    TransactionTrait, sea_query::OnConflict,
+};
 use serde::{Deserialize, Serialize};
-use serde_json::Value;
+use serde_json::{Value, json};
+use sha2::{Digest, Sha256};
 
+use super::briefings::ConcernOpenOutcome;
 use super::concerns::{
-    CommandKey, ConcernError, ConcernId, ConcernInputError, ConcernUrgency, ExactRecordReference,
+    CommandKey, ConcernDoneOutcome, ConcernError, ConcernId, ConcernInputError, ConcernUrgency,
+    ExactRecordReference, SourceWork, WorkspaceAccess,
 };
 use super::entities::{
     concern, conversation, patient_review, patient_understanding, practice_job, schedule_source,
-    source_pull, source_status, today_updates_seen, today_work_dismissal, visit_concern,
-    visit_preparation,
+    source, source_pull, source_status, today_updates_seen, today_work_dismissal, visit_briefing,
+    visit_concern, visit_preparation,
 };
 use super::jobs::PracticeJobKind;
-use super::reviews::{ReviewHoldReason, ReviewLifecycleState};
-use super::{MessageRole, Store, WorkStatus, control, conversion_error};
-use crate::patient_reviews::{ReviewOutcome, ReviewTrigger, UnfinishedReviewWork};
-use crate::physician_sources::SourcePatient;
+use super::receipt::{self, Receipt};
+use super::reviews::{RecordedReviewAction, ReviewHoldReason, ReviewLifecycleState};
+use super::understanding::{PatientSummary, SummaryCitation};
+use super::{Authority, MessageRole, Store, WorkStatus, control, conversion_error};
+use crate::patient_reviews::{
+    PriorPatientReviewSummary, ReviewCitation, ReviewOutcome, ReviewStartingContext, ReviewTrigger,
+    UnfinishedReviewWork,
+};
+use crate::physician_sources::{ReadablePart, SourcePatient, SourceRevision};
+use crate::visit_preparation::VisitPreparationDecision;
 
+const EXCERPT_CHARS: usize = 320;
 const SECONDS_PER_DAY: i64 = 86_400;
 
 /// Which durable runtime producer owns one slice of Today or Updates.
@@ -773,9 +786,16 @@ pub enum TodayDoneResult {
 
 struct AuthorizedReadContext {
     identity: PhysicianIdentity,
+    session_hash: Vec<u8>,
     clinical_now_unix: i64,
     allowed_workspaces: Vec<String>,
     practice_workspaces: Vec<String>,
+}
+
+fn sha256_bytes(token: &str) -> Vec<u8> {
+    let mut hasher = Sha256::new();
+    hasher.update(token.as_bytes());
+    hasher.finalize().to_vec()
 }
 
 fn summarize_one_line(text: &str, max_chars: usize) -> String {
@@ -789,6 +809,44 @@ fn summarize_one_line(text: &str, max_chars: usize) -> String {
 
 fn utc_day_number(unix_seconds: i64) -> i64 {
     unix_seconds.div_euclid(SECONDS_PER_DAY)
+}
+
+fn civil_from_days(days_since_unix_epoch: i64) -> (i32, u32, u32) {
+    let z = days_since_unix_epoch + 719_468;
+    let era = if z >= 0 { z } else { z - 146_096 } / 146_097;
+    let doe = (z - era * 146_097) as u64;
+    let yoe = (doe - doe / 1_460 + doe / 36_524 - doe / 146_096) / 365;
+    let y = yoe as i64 + era * 400;
+    let doy = doe - (365 * yoe + yoe / 4 - yoe / 100);
+    let mp = (5 * doy + 2) / 153;
+    let d = doy - (153 * mp + 2) / 5 + 1;
+    let m = if mp < 10 { mp + 3 } else { mp - 9 };
+    let year = if m <= 2 { y + 1 } else { y };
+    (year as i32, m as u32, d as u32)
+}
+
+fn format_day_iso_and_label(day_number: i64, today_day_number: i64) -> (String, String) {
+    let (year, month, day) = civil_from_days(day_number);
+    let iso = format!("{year:04}-{month:02}-{day:02}");
+    if day_number == today_day_number - 1 {
+        return (iso, "Yesterday".to_owned());
+    }
+    let month_name = match month {
+        1 => "Jan",
+        2 => "Feb",
+        3 => "Mar",
+        4 => "Apr",
+        5 => "May",
+        6 => "Jun",
+        7 => "Jul",
+        8 => "Aug",
+        9 => "Sep",
+        10 => "Oct",
+        11 => "Nov",
+        12 => "Dec",
+        _ => "Day",
+    };
+    (iso, format!("{month_name} {day}, {year}"))
 }
 
 fn is_physician_requested_review(triggers: &[ReviewTrigger]) -> bool {
@@ -938,6 +996,16 @@ fn collapse_unhandled_today_rows(
     out
 }
 
+fn source_work_summary(work: &SourceWork) -> String {
+    match work.job.as_str() {
+        "patient_review" => "chart review".to_owned(),
+        "visit_briefing" | "visit_preparation" => "visit preparation".to_owned(),
+        "initial_understanding" | "patient_summary" => "patient summary review".to_owned(),
+        "physician_chat" => "physician conversation".to_owned(),
+        _ => "clinical review".to_owned(),
+    }
+}
+
 impl Store {
     async fn authorize_physician_read(
         &self,
@@ -995,6 +1063,7 @@ impl Store {
 
         Ok(AuthorizedReadContext {
             identity,
+            session_hash: sha256_bytes(trimmed_token),
             clinical_now_unix,
             allowed_workspaces,
             practice_workspaces,
@@ -1914,5 +1983,2490 @@ impl Store {
 
         outages.sort_by(|left, right| left.source_id.cmp(&right.source_id));
         Ok(outages)
+    }
+
+    /// Reads the Updates projection across the signed-in physician's authorized
+    /// panel patients, including active runs, today's items, `"Reviewed, nothing
+    /// for you"`, and earlier calendar days.
+    pub async fn read_updates(
+        &self,
+        auth: &dyn AuthStore,
+        token: &str,
+        real_now_unix: u64,
+        patient_names: &BTreeMap<String, String>,
+    ) -> Result<UpdatesProjection, TodayUpdatesError> {
+        self.read_updates_with_probe(
+            auth,
+            token,
+            real_now_unix,
+            patient_names,
+            &NoopTodayUpdatesProbe,
+        )
+        .await
+    }
+
+    /// Reads Updates using `probe` so tests can force individual producer failures.
+    pub async fn read_updates_with_probe(
+        &self,
+        auth: &dyn AuthStore,
+        token: &str,
+        real_now_unix: u64,
+        patient_names: &BTreeMap<String, String>,
+        probe: &dyn TodayUpdatesProbe,
+    ) -> Result<UpdatesProjection, TodayUpdatesError> {
+        let ctx = self
+            .authorize_physician_read(auth, token, real_now_unix, None)
+            .await?;
+        let names = self
+            .resolve_patient_names(&ctx.allowed_workspaces, patient_names)
+            .await;
+        let seen_map = self
+            .load_physician_seen_map(
+                &ctx.identity.practice_id,
+                &ctx.identity.physician_id,
+                &ctx.allowed_workspaces,
+            )
+            .await?;
+
+        let mut active_runs = Vec::new();
+        let mut completed_entries = Vec::new();
+        let mut failed_parts = Vec::new();
+
+        // 1. Concerns (raised + retired with one-line reason).
+        match self
+            .read_updates_concerns_slice(&ctx, &names, &seen_map, probe)
+            .await
+        {
+            Ok(mut entries) => completed_entries.append(&mut entries),
+            Err(message) => failed_parts.push(ProducerFailure {
+                producer: ProducerKind::Concerns,
+                message,
+            }),
+        }
+
+        // 2. Patient reviews (active runs + assessed reviews + quiet reviews).
+        match self
+            .read_updates_reviews_slice(&ctx, &names, &seen_map, probe)
+            .await
+        {
+            Ok((mut runs, mut entries)) => {
+                active_runs.append(&mut runs);
+                completed_entries.append(&mut entries);
+            }
+            Err(message) => failed_parts.push(ProducerFailure {
+                producer: ProducerKind::PatientReviews,
+                message,
+            }),
+        }
+
+        // 3. Visit preparation (preparing runs + saved briefings + skipped/ended with reason).
+        match self
+            .read_updates_visit_slice(&ctx, &names, &seen_map, probe)
+            .await
+        {
+            Ok((mut runs, mut entries)) => {
+                active_runs.append(&mut runs);
+                completed_entries.append(&mut entries);
+            }
+            Err(message) => failed_parts.push(ProducerFailure {
+                producer: ProducerKind::VisitPreparation,
+                message,
+            }),
+        }
+
+        // 4. Patient summaries (active initial understanding + saved summary revisions).
+        match self
+            .read_updates_understanding_slice(&ctx, &names, &seen_map, probe)
+            .await
+        {
+            Ok((mut runs, mut entries)) => {
+                active_runs.append(&mut runs);
+                completed_entries.append(&mut entries);
+            }
+            Err(message) => failed_parts.push(ProducerFailure {
+                producer: ProducerKind::PatientUnderstanding,
+                message,
+            }),
+        }
+
+        active_runs.sort_by(|left, right| {
+            right
+                .started_at_unix
+                .cmp(&left.started_at_unix)
+                .then_with(|| left.run_id.cmp(&right.run_id))
+        });
+
+        completed_entries.sort_by(|left, right| {
+            right
+                .occurred_at_unix
+                .cmp(&left.occurred_at_unix)
+                .then_with(|| left.item_key.cmp(&right.item_key))
+        });
+
+        let today_day = utc_day_number(ctx.clinical_now_unix);
+        let mut today_items = Vec::new();
+        let mut reviewed_nothing_for_you = Vec::new();
+        let mut earlier_by_day: BTreeMap<i64, Vec<UpdateEntry>> = BTreeMap::new();
+
+        for entry in completed_entries {
+            let day = utc_day_number(entry.occurred_at_unix);
+            if day >= today_day {
+                if matches!(entry.kind, UpdateEntryKind::QuietReview { .. }) {
+                    reviewed_nothing_for_you.push(entry);
+                } else {
+                    today_items.push(entry);
+                }
+            } else {
+                earlier_by_day.entry(day).or_default().push(entry);
+            }
+        }
+
+        let earlier_days = earlier_by_day
+            .into_iter()
+            .rev()
+            .map(|(day_number, items)| {
+                let (day_iso, day_label) = format_day_iso_and_label(day_number, today_day);
+                EarlierDayUpdatesGroup {
+                    day_iso,
+                    day_label,
+                    items,
+                }
+            })
+            .collect();
+
+        Ok(UpdatesProjection {
+            clinical_now_unix: ctx.clinical_now_unix,
+            active_runs,
+            today_items,
+            reviewed_nothing_for_you,
+            earlier_days,
+            completeness: ReadCompleteness::from_failures(failed_parts),
+        })
+    }
+
+    async fn read_updates_concerns_slice(
+        &self,
+        ctx: &AuthorizedReadContext,
+        names: &BTreeMap<String, String>,
+        seen_map: &BTreeMap<String, StoredSeenEntry>,
+        probe: &dyn TodayUpdatesProbe,
+    ) -> Result<Vec<UpdateEntry>, String> {
+        probe.check_producer(ProducerKind::Concerns)?;
+        if ctx.allowed_workspaces.is_empty() {
+            return Ok(Vec::new());
+        }
+        self.reconcile_visit_concerns(&ctx.identity.practice_id, ctx.clinical_now_unix)
+            .await
+            .map_err(|err| err.to_string())?;
+
+        let rows = concern::Entity::find()
+            .filter(concern::Column::Practice.eq(ctx.identity.practice_id.as_str()))
+            .filter(
+                concern::Column::Workspace.is_in(ctx.allowed_workspaces.iter().map(String::as_str)),
+            )
+            .all(&self.db)
+            .await
+            .map_err(|err| err.to_string())?;
+
+        let mut entries = Vec::with_capacity(rows.len());
+        for row in rows {
+            let urgency = match row.urgency.as_str() {
+                "now" => ConcernUrgency::Now,
+                "today" => ConcernUrgency::Today,
+                other => return Err(format!("invalid concern urgency `{other}`")),
+            };
+            let concern_id = ConcernId::new(row.id.clone())
+                .map_err(|err| format!("invalid concern id: {err}"))?;
+            let patient_display_name = names
+                .get(&row.workspace)
+                .cloned()
+                .unwrap_or_else(|| row.workspace.clone());
+
+            match row.status.as_str() {
+                "retired" => {
+                    let retirement_reason = row
+                        .retirement_reason
+                        .clone()
+                        .unwrap_or_else(|| "No longer needed".to_owned());
+                    let retired_at = row.retired_at.unwrap_or(row.updated_at);
+                    let key_str = format!("concern-retired:{}:{}", row.workspace, row.id);
+                    let version_id = format!("rev:{}", row.revision);
+                    let title = summarize_one_line(&row.reason, 120);
+                    let detail = retirement_reason.clone();
+                    let snapshot = SeenItemSnapshot {
+                        version_id: version_id.clone(),
+                        urgency: None,
+                        headline: title.clone(),
+                        detail: detail.clone(),
+                    };
+                    let seen_standing = evaluate_seen_standing(seen_map.get(&key_str), &snapshot);
+                    entries.push(UpdateEntry {
+                        item_key: SeenItemKey(key_str),
+                        version_id,
+                        workspace: row.workspace,
+                        patient_display_name,
+                        title,
+                        detail,
+                        occurred_at_unix: retired_at,
+                        seen_standing,
+                        kind: UpdateEntryKind::ConcernRetired {
+                            concern_id,
+                            retirement_reason,
+                        },
+                    });
+                }
+                "open" | "done" => {
+                    let key_str = format!("concern:{}:{}", row.workspace, row.id);
+                    let version_id = format!("rev:{}", row.revision);
+                    let headline = summarize_one_line(&row.reason, 96);
+                    let snapshot = SeenItemSnapshot {
+                        version_id: version_id.clone(),
+                        urgency: Some(urgency),
+                        headline: headline.clone(),
+                        detail: row.reason.clone(),
+                    };
+                    let seen_standing = evaluate_seen_standing(seen_map.get(&key_str), &snapshot);
+                    let detail = if row.status == "done" {
+                        "Cleared with Done".to_owned()
+                    } else {
+                        String::new()
+                    };
+                    entries.push(UpdateEntry {
+                        item_key: SeenItemKey(key_str),
+                        version_id,
+                        workspace: row.workspace,
+                        patient_display_name,
+                        title: headline,
+                        detail,
+                        occurred_at_unix: row.updated_at,
+                        seen_standing,
+                        kind: UpdateEntryKind::ConcernRaised {
+                            concern_id,
+                            urgency,
+                            standing_label: row.status,
+                        },
+                    });
+                }
+                other => return Err(format!("invalid concern status `{other}`")),
+            }
+        }
+        Ok(entries)
+    }
+
+    async fn read_updates_reviews_slice(
+        &self,
+        ctx: &AuthorizedReadContext,
+        names: &BTreeMap<String, String>,
+        seen_map: &BTreeMap<String, StoredSeenEntry>,
+        probe: &dyn TodayUpdatesProbe,
+    ) -> Result<(Vec<ActiveUpdateRun>, Vec<UpdateEntry>), String> {
+        probe.check_producer(ProducerKind::PatientReviews)?;
+        if ctx.allowed_workspaces.is_empty() {
+            return Ok((Vec::new(), Vec::new()));
+        }
+        let rows = patient_review::Entity::find()
+            .filter(patient_review::Column::Practice.eq(ctx.identity.practice_id.as_str()))
+            .filter(
+                patient_review::Column::Workspace
+                    .is_in(ctx.allowed_workspaces.iter().map(String::as_str)),
+            )
+            .all(&self.db)
+            .await
+            .map_err(|err| err.to_string())?;
+
+        let mut active_runs = Vec::new();
+        let mut entries = Vec::new();
+        for row in rows {
+            let state: ReviewLifecycleState = serde_json::from_value(row.state)
+                .map_err(|err| format!("decode review state: {err}"))?;
+            let patient_display_name = names
+                .get(&row.workspace)
+                .cloned()
+                .unwrap_or_else(|| row.workspace.clone());
+
+            match state {
+                ReviewLifecycleState::Pending => {
+                    active_runs.push(ActiveUpdateRun {
+                        run_id: row.review_id,
+                        workspace: row.workspace,
+                        patient_display_name,
+                        label: "Queued chart review".to_owned(),
+                        started_at_unix: row.queued_at,
+                    });
+                }
+                ReviewLifecycleState::Running { started_at, .. } => {
+                    active_runs.push(ActiveUpdateRun {
+                        run_id: row.review_id,
+                        workspace: row.workspace,
+                        patient_display_name,
+                        label: "Reviewing new chart records".to_owned(),
+                        started_at_unix: started_at,
+                    });
+                }
+                ReviewLifecycleState::Completed {
+                    outcome,
+                    completed_at,
+                    completed_source_version,
+                } => {
+                    let key_str = format!("review:{}:{}", row.workspace, row.review_id);
+                    let version_id = format!("completed:{completed_source_version}:{completed_at}");
+                    match outcome {
+                        ReviewOutcome::Quiet {
+                            reason,
+                            explanation,
+                            ..
+                        } => {
+                            let title = summarize_one_line(&explanation, 120);
+                            let snapshot = SeenItemSnapshot {
+                                version_id: version_id.clone(),
+                                urgency: None,
+                                headline: title.clone(),
+                                detail: explanation,
+                            };
+                            let seen_standing =
+                                evaluate_seen_standing(seen_map.get(&key_str), &snapshot);
+                            entries.push(UpdateEntry {
+                                item_key: SeenItemKey(key_str),
+                                version_id,
+                                workspace: row.workspace,
+                                patient_display_name,
+                                title,
+                                detail: String::new(),
+                                occurred_at_unix: completed_at,
+                                seen_standing,
+                                kind: UpdateEntryKind::QuietReview {
+                                    review_id: row.review_id,
+                                    quiet_reason: reason.as_str().to_owned(),
+                                },
+                            });
+                        }
+                        ReviewOutcome::Assessed { summary, .. } => {
+                            let title = summarize_one_line(&summary, 120);
+                            let snapshot = SeenItemSnapshot {
+                                version_id: version_id.clone(),
+                                urgency: None,
+                                headline: title.clone(),
+                                detail: summary,
+                            };
+                            let seen_standing =
+                                evaluate_seen_standing(seen_map.get(&key_str), &snapshot);
+                            entries.push(UpdateEntry {
+                                item_key: SeenItemKey(key_str),
+                                version_id,
+                                workspace: row.workspace,
+                                patient_display_name,
+                                title,
+                                detail: String::new(),
+                                occurred_at_unix: completed_at,
+                                seen_standing,
+                                kind: UpdateEntryKind::AssessedReview {
+                                    review_id: row.review_id,
+                                },
+                            });
+                        }
+                    }
+                }
+                ReviewLifecycleState::Held { .. }
+                | ReviewLifecycleState::Failed { .. }
+                | ReviewLifecycleState::Superseded { .. } => {}
+            }
+        }
+        Ok((active_runs, entries))
+    }
+
+    async fn read_updates_visit_slice(
+        &self,
+        ctx: &AuthorizedReadContext,
+        names: &BTreeMap<String, String>,
+        seen_map: &BTreeMap<String, StoredSeenEntry>,
+        probe: &dyn TodayUpdatesProbe,
+    ) -> Result<(Vec<ActiveUpdateRun>, Vec<UpdateEntry>), String> {
+        probe.check_producer(ProducerKind::VisitPreparation)?;
+        if ctx.allowed_workspaces.is_empty() {
+            return Ok((Vec::new(), Vec::new()));
+        }
+        let prep_rows = visit_preparation::Entity::find()
+            .filter(visit_preparation::Column::Practice.eq(ctx.identity.practice_id.as_str()))
+            .filter(
+                visit_preparation::Column::Workspace
+                    .is_in(ctx.allowed_workspaces.iter().map(String::as_str)),
+            )
+            .all(&self.db)
+            .await
+            .map_err(|err| err.to_string())?;
+
+        let mut active_runs = Vec::new();
+        let mut entries = Vec::new();
+
+        for row in prep_rows {
+            let patient_display_name = names
+                .get(&row.workspace)
+                .cloned()
+                .unwrap_or_else(|| row.workspace.clone());
+
+            match row.state.as_str() {
+                "preparing" => {
+                    let run_id = row
+                        .briefing_job_id
+                        .unwrap_or_else(|| row.selection_job_id.clone());
+                    active_runs.push(ActiveUpdateRun {
+                        run_id,
+                        workspace: row.workspace,
+                        patient_display_name,
+                        label: "Preparing visit briefing".to_owned(),
+                        started_at_unix: row.updated_at,
+                    });
+                }
+                "skipped" => {
+                    let decision: VisitPreparationDecision =
+                        serde_json::from_value(row.decision)
+                            .map_err(|err| format!("decode visit decision: {err}"))?;
+                    let reason = decision.reason().to_owned();
+                    let key_str = format!(
+                        "visit-skipped:{}:{}:{}:{}",
+                        row.workspace, row.source_id, row.appointment_id, row.starts_at_unix
+                    );
+                    let version_id = format!("skipped:{}", row.updated_at);
+                    let title = summarize_one_line(&reason, 120);
+                    let snapshot = SeenItemSnapshot {
+                        version_id: version_id.clone(),
+                        urgency: None,
+                        headline: title.clone(),
+                        detail: reason.clone(),
+                    };
+                    let seen_standing = evaluate_seen_standing(seen_map.get(&key_str), &snapshot);
+                    entries.push(UpdateEntry {
+                        item_key: SeenItemKey(key_str),
+                        version_id,
+                        workspace: row.workspace,
+                        patient_display_name,
+                        title,
+                        detail: String::new(),
+                        occurred_at_unix: row.updated_at,
+                        seen_standing,
+                        kind: UpdateEntryKind::EndedNothingToDo {
+                            work_label: "Visit preparation".to_owned(),
+                            reason,
+                        },
+                    });
+                }
+                "ended_visit_changed" => {
+                    let reason = row.failed_reason.unwrap_or_else(|| {
+                        "Appointment ended or changed before preparation.".to_owned()
+                    });
+                    let key_str = format!(
+                        "visit-ended:{}:{}:{}:{}",
+                        row.workspace, row.source_id, row.appointment_id, row.starts_at_unix
+                    );
+                    let version_id = format!("ended:{}", row.updated_at);
+                    let title = summarize_one_line(&reason, 120);
+                    let snapshot = SeenItemSnapshot {
+                        version_id: version_id.clone(),
+                        urgency: None,
+                        headline: title.clone(),
+                        detail: reason.clone(),
+                    };
+                    let seen_standing = evaluate_seen_standing(seen_map.get(&key_str), &snapshot);
+                    entries.push(UpdateEntry {
+                        item_key: SeenItemKey(key_str),
+                        version_id,
+                        workspace: row.workspace,
+                        patient_display_name,
+                        title,
+                        detail: String::new(),
+                        occurred_at_unix: row.updated_at,
+                        seen_standing,
+                        kind: UpdateEntryKind::EndedNothingToDo {
+                            work_label: "Visit preparation".to_owned(),
+                            reason,
+                        },
+                    });
+                }
+                _ => {}
+            }
+        }
+
+        let briefing_rows = visit_briefing::Entity::find()
+            .filter(visit_briefing::Column::Practice.eq(ctx.identity.practice_id.as_str()))
+            .filter(
+                visit_briefing::Column::Workspace
+                    .is_in(ctx.allowed_workspaces.iter().map(String::as_str)),
+            )
+            .all(&self.db)
+            .await
+            .map_err(|err| err.to_string())?;
+
+        for row in briefing_rows {
+            let patient_display_name = names
+                .get(&row.workspace)
+                .cloned()
+                .unwrap_or_else(|| row.workspace.clone());
+            let key_str = format!("briefing:{}:{}", row.workspace, row.briefing_id);
+            let version_id = format!("v{}:{}", row.source_version, row.updated_at);
+            let title = summarize_one_line(&row.visit_card_orientation, 120);
+            let snapshot = SeenItemSnapshot {
+                version_id: version_id.clone(),
+                urgency: None,
+                headline: title.clone(),
+                detail: row.visit_card_orientation,
+            };
+            let seen_standing = evaluate_seen_standing(seen_map.get(&key_str), &snapshot);
+            entries.push(UpdateEntry {
+                item_key: SeenItemKey(key_str),
+                version_id,
+                workspace: row.workspace,
+                patient_display_name,
+                title,
+                detail: String::new(),
+                occurred_at_unix: row.prepared_at,
+                seen_standing,
+                kind: UpdateEntryKind::VisitBriefing {
+                    briefing_id: row.briefing_id,
+                    starts_at_unix: row.starts_at_unix,
+                },
+            });
+        }
+
+        Ok((active_runs, entries))
+    }
+
+    async fn read_updates_understanding_slice(
+        &self,
+        ctx: &AuthorizedReadContext,
+        names: &BTreeMap<String, String>,
+        seen_map: &BTreeMap<String, StoredSeenEntry>,
+        probe: &dyn TodayUpdatesProbe,
+    ) -> Result<(Vec<ActiveUpdateRun>, Vec<UpdateEntry>), String> {
+        probe.check_producer(ProducerKind::PatientUnderstanding)?;
+        if ctx.allowed_workspaces.is_empty() {
+            return Ok((Vec::new(), Vec::new()));
+        }
+
+        let running_jobs = practice_job::Entity::find()
+            .filter(practice_job::Column::Practice.eq(ctx.identity.practice_id.as_str()))
+            .filter(
+                practice_job::Column::Workspace
+                    .is_in(ctx.allowed_workspaces.iter().map(String::as_str)),
+            )
+            .filter(practice_job::Column::Kind.eq(PracticeJobKind::InitialUnderstanding))
+            .filter(practice_job::Column::Status.is_in([WorkStatus::Pending, WorkStatus::Active]))
+            .all(&self.db)
+            .await
+            .map_err(|err| err.to_string())?;
+
+        let mut active_runs = Vec::with_capacity(running_jobs.len());
+        for job in running_jobs {
+            let patient_display_name = names
+                .get(&job.workspace)
+                .cloned()
+                .unwrap_or_else(|| job.workspace.clone());
+            active_runs.push(ActiveUpdateRun {
+                run_id: job.job_id,
+                workspace: job.workspace,
+                patient_display_name,
+                label: "Preparing patient summary".to_owned(),
+                started_at_unix: job.created_at,
+            });
+        }
+
+        // Select ONLY summary columns — never OperatingIndex.
+        let summary_rows = patient_understanding::Entity::find()
+            .select_only()
+            .column(patient_understanding::Column::Workspace)
+            .column(patient_understanding::Column::Revision)
+            .column(patient_understanding::Column::Summary)
+            .column(patient_understanding::Column::UpdatedAt)
+            .filter(patient_understanding::Column::Practice.eq(ctx.identity.practice_id.as_str()))
+            .filter(
+                patient_understanding::Column::Workspace
+                    .is_in(ctx.allowed_workspaces.iter().map(String::as_str)),
+            )
+            .into_tuple::<(String, i64, Value, i64)>()
+            .all(&self.db)
+            .await
+            .map_err(|err| err.to_string())?;
+
+        let mut entries = Vec::with_capacity(summary_rows.len());
+        for (workspace, revision_i64, summary_json, updated_at) in summary_rows {
+            let revision =
+                u64::try_from(revision_i64).map_err(|err| format!("summary revision: {err}"))?;
+            let summary: PatientSummary = serde_json::from_value(summary_json)
+                .map_err(|err| format!("decode patient summary: {err}"))?;
+            let patient_display_name = names
+                .get(&workspace)
+                .cloned()
+                .unwrap_or_else(|| workspace.clone());
+            let key_str = format!("summary:{workspace}");
+            let version_id = format!("rev:{revision}");
+            let title = summarize_one_line(&summary.narrative, 120);
+            let detail = if revision > 1 {
+                format!("Updated summary (v{revision})")
+            } else {
+                String::new()
+            };
+            let snapshot = SeenItemSnapshot {
+                version_id: version_id.clone(),
+                urgency: None,
+                headline: title.clone(),
+                detail: summary.narrative,
+            };
+            let seen_standing = evaluate_seen_standing(seen_map.get(&key_str), &snapshot);
+            entries.push(UpdateEntry {
+                item_key: SeenItemKey(key_str),
+                version_id,
+                workspace,
+                patient_display_name,
+                title,
+                detail,
+                occurred_at_unix: updated_at,
+                seen_standing,
+                kind: UpdateEntryKind::PatientSummary { revision },
+            });
+        }
+
+        Ok((active_runs, entries))
+    }
+
+    /// Opens a Today row or Updates entry on behalf of the signed-in physician,
+    /// recording per-physician seen state in `physician_runtime_today_updates_seen`,
+    /// reconciling any opened visit concern via [`Store::open_concern`], and
+    /// returning the item's clinical work and cited chart evidence.
+    pub async fn open_today_or_update_item(
+        &self,
+        auth: &dyn AuthStore,
+        authority: &mut dyn Authority,
+        request: &OpenItemRequest<'_>,
+    ) -> Result<ItemWorkEvidence, TodayUpdatesError> {
+        self.open_today_or_update_item_with_probe(auth, authority, request, &NoopTodayUpdatesProbe)
+            .await
+    }
+
+    /// Opens a Today or Updates item using `probe` so forced item-open failures
+    /// can be exercised cleanly.
+    pub async fn open_today_or_update_item_with_probe(
+        &self,
+        auth: &dyn AuthStore,
+        authority: &mut dyn Authority,
+        request: &OpenItemRequest<'_>,
+        probe: &dyn TodayUpdatesProbe,
+    ) -> Result<ItemWorkEvidence, TodayUpdatesError> {
+        let workspace = request.workspace;
+        let item_key = request.item_key;
+        let ctx = self
+            .authorize_physician_read(auth, request.token, request.real_now_unix, Some(workspace))
+            .await?;
+        if let Err(detail) = probe.check_open_item(workspace, item_key.as_str()) {
+            return Err(TodayUpdatesError::ItemOpenFailed {
+                item_key: item_key.to_string(),
+                detail,
+            });
+        }
+        let names = self
+            .resolve_patient_names(&ctx.allowed_workspaces, request.patient_names)
+            .await;
+        let patient_display_name = names
+            .get(workspace)
+            .cloned()
+            .unwrap_or_else(|| workspace.to_owned());
+
+        let (mut detail, snapshot, open_concern_id) = self
+            .load_item_work_evidence_and_snapshot(&ctx, workspace, item_key, &patient_display_name)
+            .await?;
+
+        if let Some(concern_id) = open_concern_id {
+            let access = WorkspaceAccess {
+                practice: &ctx.identity.practice_id,
+                physician: &ctx.identity.physician_id,
+                workspace,
+                session_hash: &ctx.session_hash,
+            };
+            let concern_cmd =
+                CommandKey::new(format!("open-concern:{}", request.command_key.as_str()))?;
+            let outcome = self
+                .open_concern(
+                    &access,
+                    &concern_cmd,
+                    &concern_id,
+                    authority,
+                    ctx.clinical_now_unix,
+                )
+                .await?;
+            let (ConcernOpenOutcome::Opened { concern, .. }
+            | ConcernOpenOutcome::Duplicate { concern }) = outcome;
+            detail.version_id = format!("rev:{}", concern.revision);
+        }
+
+        let final_snapshot = SeenItemSnapshot {
+            version_id: detail.version_id.clone(),
+            ..snapshot
+        };
+        let seen_at = ctx.clinical_now_unix;
+        self.save_physician_seen_snapshot(
+            &ctx.identity.practice_id,
+            &ctx.identity.physician_id,
+            workspace,
+            item_key,
+            &final_snapshot,
+            seen_at,
+        )
+        .await?;
+
+        detail.seen_standing = SeenStanding::Seen { seen_at };
+        Ok(detail)
+    }
+
+    async fn save_physician_seen_snapshot(
+        &self,
+        practice: &str,
+        physician: &str,
+        workspace: &str,
+        item_key: &SeenItemKey,
+        snapshot: &SeenItemSnapshot,
+        seen_at: i64,
+    ) -> Result<(), DbErr> {
+        use today_updates_seen::Column as S;
+
+        let snapshot_json =
+            serde_json::to_value(snapshot).map_err(conversion_error("SeenItemSnapshot", "json"))?;
+        today_updates_seen::Entity::insert(today_updates_seen::ActiveModel {
+            practice: Set(practice.to_owned()),
+            physician: Set(physician.to_owned()),
+            item_key: Set(item_key.as_str().to_owned()),
+            workspace: Set(workspace.to_owned()),
+            seen_version: Set(snapshot.version_id.clone()),
+            seen_snapshot: Set(snapshot_json),
+            seen_at: Set(seen_at),
+            updated_at: Set(seen_at),
+        })
+        .on_conflict(
+            OnConflict::columns([S::Practice, S::Physician, S::ItemKey])
+                .update_columns([
+                    S::Workspace,
+                    S::SeenVersion,
+                    S::SeenSnapshot,
+                    S::SeenAt,
+                    S::UpdatedAt,
+                ])
+                .to_owned(),
+        )
+        .exec_without_returning(&self.db)
+        .await
+        .map(|_| ())
+    }
+
+    async fn resolve_exact_record_citations(
+        &self,
+        workspace: &str,
+        refs: &[ExactRecordReference],
+    ) -> Result<Vec<ItemEvidenceCitation>, DbErr> {
+        if refs.is_empty() {
+            return Ok(Vec::new());
+        }
+        let candidate_ids: Vec<&str> = refs.iter().map(|r| r.candidate_id.as_str()).collect();
+        let rows = source::Entity::find()
+            .filter(source::Column::Workspace.eq(workspace))
+            .filter(source::Column::Candidate.is_in(candidate_ids))
+            .order_by_desc(source::Column::ObservedAtVersion)
+            .all(&self.db)
+            .await?;
+
+        let mut by_ref: BTreeMap<(String, String), SourceRevision> = BTreeMap::new();
+        for row in rows {
+            let Some(rev_json) = row.revision else {
+                continue;
+            };
+            let decoded: SourceRevision = serde_json::from_value(rev_json)
+                .map_err(conversion_error("source revision", "SourceRevision"))?;
+            by_ref
+                .entry((row.candidate, decoded.revision.clone()))
+                .or_insert(decoded);
+        }
+
+        let source_labels: BTreeMap<String, String> = source_pull::Entity::find()
+            .filter(source_pull::Column::Workspace.eq(workspace))
+            .all(&self.db)
+            .await?
+            .into_iter()
+            .map(|row| (row.source_id, row.source_label))
+            .collect();
+
+        let mut citations = Vec::with_capacity(refs.len());
+        for reference in refs {
+            if let Some(found) =
+                by_ref.get(&(reference.candidate_id.clone(), reference.revision.clone()))
+            {
+                let display_label = super::history::cited_record_title(
+                    &found.provenance,
+                    &found.record_type,
+                    &reference.candidate_id,
+                );
+                let formatted =
+                    format_today_cited_body(&display_label, &found.readable_parts, &found.content);
+                let body = if formatted.trim().is_empty() {
+                    "Chart record on file.".to_owned()
+                } else {
+                    formatted
+                };
+                let readable_only: String = found
+                    .readable_parts
+                    .iter()
+                    .map(|part| part.text.trim())
+                    .filter(|text| !text.is_empty())
+                    .collect::<Vec<_>>()
+                    .join(" ");
+                let excerpt = if !readable_only.is_empty() {
+                    summarize_one_line(&readable_only, EXCERPT_CHARS)
+                } else if body == "Chart record on file." {
+                    body.clone()
+                } else {
+                    summarize_one_line(&body, EXCERPT_CHARS)
+                };
+                let as_of = found
+                    .dates
+                    .first()
+                    .map(|date| date.value.trim())
+                    .filter(|val| !val.is_empty())
+                    .map(|raw| raw.split('T').next().unwrap_or(raw).trim().to_owned());
+                let source_label = source_labels
+                    .get(&found.source_id)
+                    .cloned()
+                    .filter(|label| !label.trim().is_empty())
+                    .unwrap_or_else(|| found.source_id.clone());
+                let native_uri = extract_record_native_uri(workspace, found);
+                citations.push(ItemEvidenceCitation {
+                    reference: reference.clone(),
+                    source_id: found.source_id.clone(),
+                    source_label,
+                    display_label,
+                    as_of,
+                    excerpt,
+                    body,
+                    native_uri,
+                });
+            } else {
+                citations.push(ItemEvidenceCitation {
+                    reference: reference.clone(),
+                    source_id: "chart".to_owned(),
+                    source_label: "Chart record".to_owned(),
+                    display_label: reference.candidate_id.clone(),
+                    as_of: None,
+                    excerpt: "Referenced chart record.".to_owned(),
+                    body: "Referenced chart record.".to_owned(),
+                    native_uri: None,
+                });
+            }
+        }
+        Ok(citations)
+    }
+
+    async fn enrich_citations_from_store(
+        &self,
+        workspace: &str,
+        mut citations: Vec<ItemEvidenceCitation>,
+    ) -> Result<Vec<ItemEvidenceCitation>, DbErr> {
+        if citations.is_empty() {
+            return Ok(citations);
+        }
+        let candidate_ids: Vec<&str> = citations
+            .iter()
+            .map(|c| c.reference.candidate_id.as_str())
+            .collect();
+        let rows = source::Entity::find()
+            .filter(source::Column::Workspace.eq(workspace))
+            .filter(source::Column::Candidate.is_in(candidate_ids))
+            .order_by_desc(source::Column::ObservedAtVersion)
+            .all(&self.db)
+            .await?;
+        let mut by_ref: BTreeMap<(String, String), SourceRevision> = BTreeMap::new();
+        for row in rows {
+            let Some(rev_json) = row.revision else {
+                continue;
+            };
+            let decoded: SourceRevision = serde_json::from_value(rev_json)
+                .map_err(conversion_error("source revision", "SourceRevision"))?;
+            by_ref
+                .entry((row.candidate, decoded.revision.clone()))
+                .or_insert(decoded);
+        }
+        for citation in &mut citations {
+            if let Some(found) = by_ref.get(&(
+                citation.reference.candidate_id.clone(),
+                citation.reference.revision.clone(),
+            )) {
+                let formatted = format_today_cited_body(
+                    &citation.display_label,
+                    &found.readable_parts,
+                    &found.content,
+                );
+                if !formatted.trim().is_empty() {
+                    citation.body = formatted;
+                } else if citation.body.trim().is_empty() {
+                    citation.body = citation.excerpt.clone();
+                }
+                if let Some(uri) = extract_record_native_uri(workspace, found) {
+                    citation.native_uri = Some(uri);
+                }
+            } else if citation.body.trim().is_empty() {
+                citation.body = citation.excerpt.clone();
+            }
+        }
+        Ok(citations)
+    }
+
+    async fn load_item_work_evidence_and_snapshot(
+        &self,
+        ctx: &AuthorizedReadContext,
+        workspace: &str,
+        item_key: &SeenItemKey,
+        patient_display_name: &str,
+    ) -> Result<(ItemWorkEvidence, SeenItemSnapshot, Option<ConcernId>), TodayUpdatesError> {
+        let key = item_key.as_str();
+        let practice = ctx.identity.practice_id.as_str();
+
+        if let Some(ws_part) = key.strip_prefix("unhandled:") {
+            if ws_part != workspace {
+                return Err(TodayUpdatesError::NotFound {
+                    workspace: workspace.to_owned(),
+                    item_key: key.to_owned(),
+                });
+            }
+            let dismissals = load_workspace_dismissals(&self.db, practice, workspace).await?;
+            let constituents = active_workspace_unhandled_constituents(
+                &self.db,
+                practice,
+                workspace,
+                ctx.clinical_now_unix,
+                patient_display_name,
+                &dismissals,
+            )
+            .await?;
+            if constituents.is_empty() {
+                return Err(TodayUpdatesError::NotFound {
+                    workspace: workspace.to_owned(),
+                    item_key: key.to_owned(),
+                });
+            }
+            let mut collapsed_rows = collapse_unhandled_today_rows(
+                constituents.clone(),
+                &BTreeMap::new(),
+                &BTreeSet::new(),
+            );
+            let collapsed = collapsed_rows
+                .pop()
+                .ok_or_else(|| TodayUpdatesError::NotFound {
+                    workspace: workspace.to_owned(),
+                    item_key: key.to_owned(),
+                })?;
+            let snapshot = SeenItemSnapshot {
+                version_id: collapsed.version_id.clone(),
+                urgency: None,
+                headline: collapsed.title.clone(),
+                detail: collapsed.detail.clone(),
+            };
+            if constituents.len() == 1 {
+                let (mut sub_detail, _, _) = Box::pin(self.load_item_work_evidence_and_snapshot(
+                    ctx,
+                    workspace,
+                    &constituents[0].item_key,
+                    patient_display_name,
+                ))
+                .await?;
+                sub_detail.item_key = item_key.clone();
+                sub_detail.version_id = collapsed.version_id;
+                sub_detail.headline = collapsed.title;
+                return Ok((sub_detail, snapshot, None));
+            }
+
+            let mut sections = Vec::with_capacity(constituents.len());
+            let mut origins = Vec::with_capacity(constituents.len());
+            let mut citations = Vec::new();
+            let mut seen_refs = BTreeSet::new();
+            for constituent in &constituents {
+                let (sub, _, _) = Box::pin(self.load_item_work_evidence_and_snapshot(
+                    ctx,
+                    workspace,
+                    &constituent.item_key,
+                    patient_display_name,
+                ))
+                .await?;
+                sections.push(format!("{}\n{}", sub.headline, sub.clinical_body));
+                origins.push(sub.origin_summary);
+                for citation in sub.citations {
+                    if seen_refs.insert((
+                        citation.reference.candidate_id.clone(),
+                        citation.reference.revision.clone(),
+                    )) {
+                        citations.push(citation);
+                    }
+                }
+            }
+            return Ok((
+                ItemWorkEvidence {
+                    item_key: item_key.clone(),
+                    version_id: collapsed.version_id,
+                    workspace: workspace.to_owned(),
+                    patient_display_name: patient_display_name.to_owned(),
+                    kind_label: "Unhandled patient work".to_owned(),
+                    headline: collapsed.title,
+                    clinical_body: sections.join("\n\n"),
+                    basis_and_limitations: Some(
+                        "Non-restartable work stopped before completion; clearing with Done hands any unreviewed chart results to the next review."
+                            .to_owned(),
+                    ),
+                    citations,
+                    origin_summary: origins.join(", "),
+                    chat_id: None,
+                    seen_standing: SeenStanding::Unseen,
+                },
+                snapshot,
+                None,
+            ));
+        }
+
+        if let Some(rest) = key
+            .strip_prefix("concern:")
+            .or_else(|| key.strip_prefix("concern-retired:"))
+        {
+            let is_retired_key = key.starts_with("concern-retired:");
+            let (ws_part, id_part) =
+                rest.split_once(':')
+                    .ok_or_else(|| TodayUpdatesError::NotFound {
+                        workspace: workspace.to_owned(),
+                        item_key: key.to_owned(),
+                    })?;
+            if ws_part != workspace {
+                return Err(TodayUpdatesError::NotFound {
+                    workspace: workspace.to_owned(),
+                    item_key: key.to_owned(),
+                });
+            }
+            let row = concern::Entity::find_by_id((
+                practice.to_owned(),
+                workspace.to_owned(),
+                id_part.to_owned(),
+            ))
+            .one(&self.db)
+            .await?
+            .ok_or_else(|| TodayUpdatesError::NotFound {
+                workspace: workspace.to_owned(),
+                item_key: key.to_owned(),
+            })?;
+
+            let urgency = match row.urgency.as_str() {
+                "now" => ConcernUrgency::Now,
+                _ => ConcernUrgency::Today,
+            };
+            let concern_id = ConcernId::new(row.id.clone())?;
+            let refs: Vec<ExactRecordReference> = serde_json::from_value(row.records).map_err(
+                conversion_error("concern records", "Vec<ExactRecordReference>"),
+            )?;
+            let source_work: SourceWork = serde_json::from_value(row.source_work)
+                .map_err(conversion_error("concern source_work", "SourceWork"))?;
+            let citations = self
+                .resolve_exact_record_citations(workspace, &refs)
+                .await?;
+            let version_id = format!("rev:{}", row.revision);
+
+            let visit_link = visit_concern::Entity::find_by_id((
+                practice.to_owned(),
+                workspace.to_owned(),
+                row.id.clone(),
+            ))
+            .one(&self.db)
+            .await?;
+
+            if is_retired_key || row.status == "retired" {
+                let retirement_reason = row
+                    .retirement_reason
+                    .clone()
+                    .unwrap_or_else(|| "No longer needed".to_owned());
+                let title = summarize_one_line(&row.reason, 120);
+                let clinical_body = format!(
+                    "Retired reason: {retirement_reason}\n\nEarlier clinical concern: {}",
+                    row.reason
+                );
+                let snapshot = SeenItemSnapshot {
+                    version_id: version_id.clone(),
+                    urgency: None,
+                    headline: title.clone(),
+                    detail: retirement_reason,
+                };
+                return Ok((
+                    ItemWorkEvidence {
+                        item_key: item_key.clone(),
+                        version_id,
+                        workspace: workspace.to_owned(),
+                        patient_display_name: patient_display_name.to_owned(),
+                        kind_label: "Retired concern".to_owned(),
+                        headline: title,
+                        clinical_body,
+                        basis_and_limitations: Some(format!(
+                            "Grounded in {} cited chart {}.",
+                            citations.len(),
+                            if citations.len() == 1 {
+                                "record"
+                            } else {
+                                "records"
+                            }
+                        )),
+                        citations,
+                        origin_summary: source_work_summary(&source_work),
+                        chat_id: None,
+                        seen_standing: SeenStanding::Unseen,
+                    },
+                    snapshot,
+                    None,
+                ));
+            }
+
+            let base_headline = summarize_one_line(&row.reason, 96);
+            let headline = if visit_link.is_some() {
+                format!("Pre-visit: {base_headline}")
+            } else {
+                base_headline.clone()
+            };
+            let kind_label = match urgency {
+                ConcernUrgency::Now => "Now concern".to_owned(),
+                ConcernUrgency::Today => {
+                    if visit_link.is_some() {
+                        "Pre-visit nudge".to_owned()
+                    } else {
+                        "Today concern".to_owned()
+                    }
+                }
+            };
+            let mut clinical_body = row.reason.clone();
+            let mut basis = Some(format!(
+                "Backed by {} verified chart {} from {}.",
+                citations.len(),
+                if citations.len() == 1 {
+                    "record"
+                } else {
+                    "records"
+                },
+                source_work_summary(&source_work)
+            ));
+            if let Some(vlink) = &visit_link
+                && let Some(briefing_row) = visit_briefing::Entity::find_by_id((
+                    practice.to_owned(),
+                    vlink.source_id.clone(),
+                    vlink.appointment_id.clone(),
+                    vlink.starts_at_unix,
+                ))
+                .one(&self.db)
+                .await?
+            {
+                clinical_body = format!(
+                    "{}\n\nVisit briefing:\n{}",
+                    row.reason, briefing_row.narrative
+                );
+                basis = Some(briefing_row.basis_and_limitations);
+            }
+
+            let snapshot = SeenItemSnapshot {
+                version_id: version_id.clone(),
+                urgency: Some(urgency),
+                headline: base_headline,
+                detail: row.reason,
+            };
+            let open_concern_target = (row.status == "open").then_some(concern_id);
+            return Ok((
+                ItemWorkEvidence {
+                    item_key: item_key.clone(),
+                    version_id,
+                    workspace: workspace.to_owned(),
+                    patient_display_name: patient_display_name.to_owned(),
+                    kind_label,
+                    headline,
+                    clinical_body,
+                    basis_and_limitations: basis,
+                    citations,
+                    origin_summary: source_work_summary(&source_work),
+                    chat_id: None,
+                    seen_standing: SeenStanding::Unseen,
+                },
+                snapshot,
+                open_concern_target,
+            ));
+        }
+
+        if let Some(rest) = key
+            .strip_prefix("review:")
+            .or_else(|| key.strip_prefix("unhandled-review:"))
+            .or_else(|| key.strip_prefix("running-review:"))
+        {
+            let (ws_part, review_id) =
+                rest.split_once(':')
+                    .ok_or_else(|| TodayUpdatesError::NotFound {
+                        workspace: workspace.to_owned(),
+                        item_key: key.to_owned(),
+                    })?;
+            if ws_part != workspace {
+                return Err(TodayUpdatesError::NotFound {
+                    workspace: workspace.to_owned(),
+                    item_key: key.to_owned(),
+                });
+            }
+            let row = patient_review::Entity::find_by_id((
+                practice.to_owned(),
+                workspace.to_owned(),
+                review_id.to_owned(),
+            ))
+            .one(&self.db)
+            .await?
+            .ok_or_else(|| TodayUpdatesError::NotFound {
+                workspace: workspace.to_owned(),
+                item_key: key.to_owned(),
+            })?;
+            let state: ReviewLifecycleState = serde_json::from_value(row.state)
+                .map_err(conversion_error("review state", "ReviewLifecycleState"))?;
+            let unfinished: Vec<UnfinishedReviewWork> = serde_json::from_value(row.unfinished_work)
+                .map_err(conversion_error(
+                    "unfinished_work",
+                    "Vec<UnfinishedReviewWork>",
+                ))?;
+            let evidence_refs: Vec<ExactRecordReference> =
+                serde_json::from_value(row.evidence_read).map_err(conversion_error(
+                    "evidence_read",
+                    "Vec<ExactRecordReference>",
+                ))?;
+
+            match state {
+                ReviewLifecycleState::Completed {
+                    outcome,
+                    completed_at,
+                    completed_source_version,
+                } => {
+                    let version_id = format!("completed:{completed_source_version}:{completed_at}");
+                    let base_citations = outcome
+                        .citations()
+                        .iter()
+                        .map(review_citation_to_evidence)
+                        .collect();
+                    let citations = self
+                        .enrich_citations_from_store(workspace, base_citations)
+                        .await?;
+                    let basis = Some(outcome.basis_and_limitations().to_owned());
+                    let (kind_label, headline, detail) = match &outcome {
+                        ReviewOutcome::Quiet { explanation, .. } => (
+                            "Reviewed, nothing for you".to_owned(),
+                            summarize_one_line(explanation, 120),
+                            explanation.clone(),
+                        ),
+                        ReviewOutcome::Assessed { summary, .. } => (
+                            "Patient review".to_owned(),
+                            summarize_one_line(summary, 120),
+                            summary.clone(),
+                        ),
+                    };
+                    let snapshot = SeenItemSnapshot {
+                        version_id: version_id.clone(),
+                        urgency: None,
+                        headline: headline.clone(),
+                        detail: detail.clone(),
+                    };
+                    return Ok((
+                        ItemWorkEvidence {
+                            item_key: item_key.clone(),
+                            version_id,
+                            workspace: workspace.to_owned(),
+                            patient_display_name: patient_display_name.to_owned(),
+                            kind_label,
+                            headline,
+                            clinical_body: detail,
+                            basis_and_limitations: basis,
+                            citations,
+                            origin_summary: format!("Patient review ({})", row.review_id),
+                            chat_id: None,
+                            seen_standing: SeenStanding::Unseen,
+                        },
+                        snapshot,
+                        None,
+                    ));
+                }
+                ReviewLifecycleState::Failed {
+                    reason, failed_at, ..
+                } => {
+                    let version_id = format!("failed:{failed_at}:{}", row.updated_at);
+                    let topics: Vec<String> = unfinished
+                        .iter()
+                        .map(|item| format!("{}: {}", item.topic, item.detail))
+                        .collect();
+                    let headline = "Patient review couldn't finish".to_owned();
+                    let detail = if topics.is_empty() {
+                        format!("Couldn't finish requested review: {reason}")
+                    } else {
+                        format!("Unhandled follow-up: {}", topics.join("; "))
+                    };
+                    let citations = self
+                        .resolve_exact_record_citations(workspace, &evidence_refs)
+                        .await?;
+                    let snapshot = SeenItemSnapshot {
+                        version_id: version_id.clone(),
+                        urgency: None,
+                        headline: headline.clone(),
+                        detail: detail.clone(),
+                    };
+                    return Ok((
+                        ItemWorkEvidence {
+                            item_key: item_key.clone(),
+                            version_id,
+                            workspace: workspace.to_owned(),
+                            patient_display_name: patient_display_name.to_owned(),
+                            kind_label: "Unhandled review work".to_owned(),
+                            headline,
+                            clinical_body: format!("{detail}\n\nFailure detail: {reason}"),
+                            basis_and_limitations: Some(
+                                "Review stopped before saving a complete assessment.".to_owned(),
+                            ),
+                            citations,
+                            origin_summary: format!("Patient review ({})", row.review_id),
+                            chat_id: None,
+                            seen_standing: SeenStanding::Unseen,
+                        },
+                        snapshot,
+                        None,
+                    ));
+                }
+                ReviewLifecycleState::Held {
+                    reason, held_at, ..
+                } => {
+                    let reason_label = match reason {
+                        ReviewHoldReason::Stopped => "paused",
+                        ReviewHoldReason::Limit => "reached run limit",
+                    };
+                    let version_id = format!("held:{held_at}:{}", row.updated_at);
+                    let topics: Vec<String> = unfinished
+                        .iter()
+                        .map(|item| format!("{}: {}", item.topic, item.detail))
+                        .collect();
+                    let headline = format!("Patient review {reason_label} with unhandled items");
+                    let detail = if topics.is_empty() {
+                        format!("Requested review {reason_label} before finishing.")
+                    } else {
+                        format!("Unhandled follow-up: {}", topics.join("; "))
+                    };
+                    let citations = self
+                        .resolve_exact_record_citations(workspace, &evidence_refs)
+                        .await?;
+                    let snapshot = SeenItemSnapshot {
+                        version_id: version_id.clone(),
+                        urgency: None,
+                        headline: headline.clone(),
+                        detail: detail.clone(),
+                    };
+                    return Ok((
+                        ItemWorkEvidence {
+                            item_key: item_key.clone(),
+                            version_id,
+                            workspace: workspace.to_owned(),
+                            patient_display_name: patient_display_name.to_owned(),
+                            kind_label: "Unhandled review work".to_owned(),
+                            headline,
+                            clinical_body: detail,
+                            basis_and_limitations: Some(
+                                "Review held before completing assessment.".to_owned(),
+                            ),
+                            citations,
+                            origin_summary: format!("Patient review ({})", row.review_id),
+                            chat_id: None,
+                            seen_standing: SeenStanding::Unseen,
+                        },
+                        snapshot,
+                        None,
+                    ));
+                }
+                other => {
+                    let version_id = format!("{}:{}", other.status_str(), row.updated_at);
+                    let headline = "Reviewing patient chart as requested".to_owned();
+                    let detail =
+                        "Coda is reviewing the requested records for this patient.".to_owned();
+                    let citations = self
+                        .resolve_exact_record_citations(workspace, &evidence_refs)
+                        .await?;
+                    let snapshot = SeenItemSnapshot {
+                        version_id: version_id.clone(),
+                        urgency: None,
+                        headline: headline.clone(),
+                        detail: detail.clone(),
+                    };
+                    return Ok((
+                        ItemWorkEvidence {
+                            item_key: item_key.clone(),
+                            version_id,
+                            workspace: workspace.to_owned(),
+                            patient_display_name: patient_display_name.to_owned(),
+                            kind_label: "Running review".to_owned(),
+                            headline,
+                            clinical_body: detail,
+                            basis_and_limitations: None,
+                            citations,
+                            origin_summary: format!("Patient review ({})", row.review_id),
+                            chat_id: None,
+                            seen_standing: SeenStanding::Unseen,
+                        },
+                        snapshot,
+                        None,
+                    ));
+                }
+            }
+        }
+
+        if let Some(rest) = key.strip_prefix("briefing:") {
+            let (ws_part, briefing_id) =
+                rest.split_once(':')
+                    .ok_or_else(|| TodayUpdatesError::NotFound {
+                        workspace: workspace.to_owned(),
+                        item_key: key.to_owned(),
+                    })?;
+            if ws_part != workspace {
+                return Err(TodayUpdatesError::NotFound {
+                    workspace: workspace.to_owned(),
+                    item_key: key.to_owned(),
+                });
+            }
+            let row = visit_briefing::Entity::find()
+                .filter(visit_briefing::Column::Practice.eq(practice))
+                .filter(visit_briefing::Column::Workspace.eq(workspace))
+                .filter(visit_briefing::Column::BriefingId.eq(briefing_id))
+                .one(&self.db)
+                .await?
+                .ok_or_else(|| TodayUpdatesError::NotFound {
+                    workspace: workspace.to_owned(),
+                    item_key: key.to_owned(),
+                })?;
+            let raw_citations: Vec<SummaryCitation> = serde_json::from_value(row.citations)
+                .map_err(conversion_error(
+                    "briefing citations",
+                    "Vec<SummaryCitation>",
+                ))?;
+            let base_citations = raw_citations
+                .iter()
+                .map(summary_citation_to_evidence)
+                .collect();
+            let citations = self
+                .enrich_citations_from_store(workspace, base_citations)
+                .await?;
+            let version_id = format!("v{}:{}", row.source_version, row.updated_at);
+            let headline = summarize_one_line(&row.visit_card_orientation, 120);
+            let snapshot = SeenItemSnapshot {
+                version_id: version_id.clone(),
+                urgency: None,
+                headline: headline.clone(),
+                detail: row.visit_card_orientation,
+            };
+            return Ok((
+                ItemWorkEvidence {
+                    item_key: item_key.clone(),
+                    version_id,
+                    workspace: workspace.to_owned(),
+                    patient_display_name: patient_display_name.to_owned(),
+                    kind_label: "Visit briefing".to_owned(),
+                    headline,
+                    clinical_body: row.narrative,
+                    basis_and_limitations: Some(row.basis_and_limitations),
+                    citations,
+                    origin_summary: format!("Visit briefing ({})", row.briefing_id),
+                    chat_id: None,
+                    seen_standing: SeenStanding::Unseen,
+                },
+                snapshot,
+                None,
+            ));
+        }
+
+        if let Some(ws_part) = key.strip_prefix("summary:") {
+            if ws_part != workspace {
+                return Err(TodayUpdatesError::NotFound {
+                    workspace: workspace.to_owned(),
+                    item_key: key.to_owned(),
+                });
+            }
+            let row = patient_understanding::Entity::find()
+                .select_only()
+                .column(patient_understanding::Column::Revision)
+                .column(patient_understanding::Column::SourceVersion)
+                .column(patient_understanding::Column::Summary)
+                .filter(patient_understanding::Column::Practice.eq(practice))
+                .filter(patient_understanding::Column::Workspace.eq(workspace))
+                .into_tuple::<(i64, i64, Value)>()
+                .one(&self.db)
+                .await?
+                .ok_or_else(|| TodayUpdatesError::NotFound {
+                    workspace: workspace.to_owned(),
+                    item_key: key.to_owned(),
+                })?;
+            let (revision_i64, source_version, summary_json) = row;
+            let summary: PatientSummary = serde_json::from_value(summary_json)
+                .map_err(conversion_error("patient summary", "PatientSummary"))?;
+            let base_citations = summary
+                .citations
+                .iter()
+                .map(summary_citation_to_evidence)
+                .collect();
+            let citations = self
+                .enrich_citations_from_store(workspace, base_citations)
+                .await?;
+            let version_id = format!("rev:{revision_i64}");
+            let headline = summarize_one_line(&summary.narrative, 120);
+            let basis = if summary.material_gaps.is_empty() {
+                summary
+                    .scope_note
+                    .clone()
+                    .or_else(|| Some(format!("Grounded in chart version {source_version}.")))
+            } else {
+                Some(format!(
+                    "Chart version {source_version}. Gaps: {}",
+                    summary.material_gaps.join("; ")
+                ))
+            };
+            let snapshot = SeenItemSnapshot {
+                version_id: version_id.clone(),
+                urgency: None,
+                headline: headline.clone(),
+                detail: summary.narrative.clone(),
+            };
+            return Ok((
+                ItemWorkEvidence {
+                    item_key: item_key.clone(),
+                    version_id,
+                    workspace: workspace.to_owned(),
+                    patient_display_name: patient_display_name.to_owned(),
+                    kind_label: "Patient summary".to_owned(),
+                    headline,
+                    clinical_body: summary.narrative,
+                    basis_and_limitations: basis,
+                    citations,
+                    origin_summary: format!("Patient summary v{revision_i64}"),
+                    chat_id: None,
+                    seen_standing: SeenStanding::Unseen,
+                },
+                snapshot,
+                None,
+            ));
+        }
+
+        if let Some(rest) = key
+            .strip_prefix("unhandled-visit:")
+            .or_else(|| key.strip_prefix("visit-skipped:"))
+            .or_else(|| key.strip_prefix("visit-ended:"))
+        {
+            let parts: Vec<&str> = rest.splitn(4, ':').collect();
+            if parts.len() != 4 || parts[0] != workspace {
+                return Err(TodayUpdatesError::NotFound {
+                    workspace: workspace.to_owned(),
+                    item_key: key.to_owned(),
+                });
+            }
+            let starts_at_unix: i64 =
+                parts[3].parse().map_err(|_| TodayUpdatesError::NotFound {
+                    workspace: workspace.to_owned(),
+                    item_key: key.to_owned(),
+                })?;
+            let row = visit_preparation::Entity::find_by_id((
+                practice.to_owned(),
+                parts[1].to_owned(),
+                parts[2].to_owned(),
+                starts_at_unix,
+            ))
+            .one(&self.db)
+            .await?
+            .ok_or_else(|| TodayUpdatesError::NotFound {
+                workspace: workspace.to_owned(),
+                item_key: key.to_owned(),
+            })?;
+
+            let (kind_label, headline, detail, version_id) = match row.state.as_str() {
+                "could_not_finish" => {
+                    let reason = row
+                        .failed_reason
+                        .unwrap_or_else(|| "Pre-visit briefing could not finish.".to_owned());
+                    let detail = format!("Upcoming visit: {reason}");
+                    (
+                        "Unhandled visit preparation".to_owned(),
+                        "Visit briefing couldn't finish".to_owned(),
+                        detail,
+                        format!("could_not_finish:{}", row.updated_at),
+                    )
+                }
+                "skipped" => {
+                    let decision: VisitPreparationDecision = serde_json::from_value(row.decision)
+                        .map_err(conversion_error(
+                        "visit decision",
+                        "VisitPreparationDecision",
+                    ))?;
+                    let reason = decision.reason().to_owned();
+                    let headline = summarize_one_line(&reason, 120);
+                    (
+                        "Visit preparation".to_owned(),
+                        headline,
+                        reason,
+                        format!("skipped:{}", row.updated_at),
+                    )
+                }
+                _ => {
+                    let reason = row.failed_reason.unwrap_or_else(|| {
+                        "Appointment ended or changed before preparation.".to_owned()
+                    });
+                    let headline = summarize_one_line(&reason, 120);
+                    (
+                        "Visit preparation".to_owned(),
+                        headline,
+                        reason,
+                        format!("ended:{}", row.updated_at),
+                    )
+                }
+            };
+            let snapshot = SeenItemSnapshot {
+                version_id: version_id.clone(),
+                urgency: None,
+                headline: headline.clone(),
+                detail: detail.clone(),
+            };
+            return Ok((
+                ItemWorkEvidence {
+                    item_key: item_key.clone(),
+                    version_id,
+                    workspace: workspace.to_owned(),
+                    patient_display_name: patient_display_name.to_owned(),
+                    kind_label,
+                    headline,
+                    clinical_body: detail,
+                    basis_and_limitations: None,
+                    citations: Vec::new(),
+                    origin_summary: format!("Visit preparation ({})", row.appointment_id),
+                    chat_id: None,
+                    seen_standing: SeenStanding::Unseen,
+                },
+                snapshot,
+                None,
+            ));
+        }
+
+        if let Some(rest) = key.strip_prefix("unhandled-understanding:") {
+            let (ws_part, job_id) =
+                rest.split_once(':')
+                    .ok_or_else(|| TodayUpdatesError::NotFound {
+                        workspace: workspace.to_owned(),
+                        item_key: key.to_owned(),
+                    })?;
+            if ws_part != workspace {
+                return Err(TodayUpdatesError::NotFound {
+                    workspace: workspace.to_owned(),
+                    item_key: key.to_owned(),
+                });
+            }
+            let job = practice_job::Entity::find_by_id((
+                practice.to_owned(),
+                workspace.to_owned(),
+                job_id.to_owned(),
+            ))
+            .one(&self.db)
+            .await?
+            .ok_or_else(|| TodayUpdatesError::NotFound {
+                workspace: workspace.to_owned(),
+                item_key: key.to_owned(),
+            })?;
+            let status_tag = match job.status {
+                WorkStatus::Failed => "failed",
+                WorkStatus::Held => "held",
+                _ => "incomplete",
+            };
+            let version_id = format!("{status_tag}:{}:{}", job.failures, job.updated_at);
+            let headline = "Initial patient summary couldn't finish".to_owned();
+            let detail = format!(
+                "Chart summary for version {} could not complete automatically.",
+                job.sources_version
+            );
+            let snapshot = SeenItemSnapshot {
+                version_id: version_id.clone(),
+                urgency: None,
+                headline: headline.clone(),
+                detail: detail.clone(),
+            };
+            return Ok((
+                ItemWorkEvidence {
+                    item_key: item_key.clone(),
+                    version_id,
+                    workspace: workspace.to_owned(),
+                    patient_display_name: patient_display_name.to_owned(),
+                    kind_label: "Unhandled summary work".to_owned(),
+                    headline,
+                    clinical_body: detail,
+                    basis_and_limitations: Some(
+                        "Summary job exhausted automatic retry attempts.".to_owned(),
+                    ),
+                    citations: Vec::new(),
+                    origin_summary: format!("Initial understanding ({})", job.job_id),
+                    chat_id: None,
+                    seen_standing: SeenStanding::Unseen,
+                },
+                snapshot,
+                None,
+            ));
+        }
+
+        if let Some(rest) = key.strip_prefix("running-chat:") {
+            let (ws_part, chat_id) =
+                rest.split_once(':')
+                    .ok_or_else(|| TodayUpdatesError::NotFound {
+                        workspace: workspace.to_owned(),
+                        item_key: key.to_owned(),
+                    })?;
+            if ws_part != workspace {
+                return Err(TodayUpdatesError::NotFound {
+                    workspace: workspace.to_owned(),
+                    item_key: key.to_owned(),
+                });
+            }
+            let row = conversation::Entity::find_by_id((
+                practice.to_owned(),
+                ctx.identity.physician_id.clone(),
+                workspace.to_owned(),
+                chat_id.to_owned(),
+            ))
+            .one(&self.db)
+            .await?
+            .ok_or_else(|| TodayUpdatesError::NotFound {
+                workspace: workspace.to_owned(),
+                item_key: key.to_owned(),
+            })?;
+            let revision = row.revision;
+            let state = control::conversation(row, Vec::new())?;
+            let latest_question = state
+                .messages
+                .iter()
+                .rev()
+                .find(|msg| matches!(msg.role, MessageRole::User { .. }))
+                .map(|msg| msg.text.clone())
+                .unwrap_or_else(|| "Writing response".to_owned());
+            let version_id = format!("rev:{revision}");
+            let headline = format!(
+                "Writing response: {}",
+                summarize_one_line(&latest_question, 80)
+            );
+            let detail = "Coda is answering your question in this conversation.".to_owned();
+            let snapshot = SeenItemSnapshot {
+                version_id: version_id.clone(),
+                urgency: None,
+                headline: headline.clone(),
+                detail: detail.clone(),
+            };
+            return Ok((
+                ItemWorkEvidence {
+                    item_key: item_key.clone(),
+                    version_id,
+                    workspace: workspace.to_owned(),
+                    patient_display_name: patient_display_name.to_owned(),
+                    kind_label: "Active conversation".to_owned(),
+                    headline,
+                    clinical_body: format!("Question: {latest_question}\n\n{detail}"),
+                    basis_and_limitations: None,
+                    citations: Vec::new(),
+                    origin_summary: format!("Conversation ({chat_id})"),
+                    chat_id: Some(chat_id.to_owned()),
+                    seen_standing: SeenStanding::Unseen,
+                },
+                snapshot,
+                None,
+            ));
+        }
+
+        Err(TodayUpdatesError::NotFound {
+            workspace: workspace.to_owned(),
+            item_key: key.to_owned(),
+        })
+    }
+
+    /// Clears a Today item as `Done`: delegates open concerns to
+    /// [`Store::mark_concern_done`] (clearing for every physician sharing the
+    /// patient and recording evaluation feedback) and records durable once-only
+    /// dismissals for non-restartable unhandled work (handing any unreviewed
+    /// chart results from unhandled reviews to the next review).
+    pub async fn clear_today_item_done(
+        &self,
+        auth: &dyn AuthStore,
+        authority: &mut dyn Authority,
+        request: &ClearItemDoneRequest<'_>,
+    ) -> Result<TodayDoneResult, TodayUpdatesError> {
+        let workspace = request.workspace;
+        let item_key = request.item_key;
+        let command_key = request.command_key;
+        let ctx = self
+            .authorize_physician_read(auth, request.token, request.real_now_unix, Some(workspace))
+            .await?;
+        let key = item_key.as_str();
+
+        if let Some(rest) = key.strip_prefix("concern:") {
+            let (ws_part, id_part) =
+                rest.split_once(':')
+                    .ok_or_else(|| TodayUpdatesError::NotFound {
+                        workspace: workspace.to_owned(),
+                        item_key: key.to_owned(),
+                    })?;
+            if ws_part != workspace {
+                return Err(TodayUpdatesError::NotFound {
+                    workspace: workspace.to_owned(),
+                    item_key: key.to_owned(),
+                });
+            }
+            let concern_id = ConcernId::new(id_part.to_owned())?;
+            let access = WorkspaceAccess {
+                practice: &ctx.identity.practice_id,
+                physician: &ctx.identity.physician_id,
+                workspace,
+                session_hash: &ctx.session_hash,
+            };
+            return match self
+                .mark_concern_done(&access, command_key, &concern_id, authority)
+                .await?
+            {
+                ConcernDoneOutcome::Cleared { .. } => Ok(TodayDoneResult::Cleared {
+                    item_key: item_key.clone(),
+                }),
+                ConcernDoneOutcome::Duplicate { .. } => Ok(TodayDoneResult::Duplicate {
+                    item_key: item_key.clone(),
+                }),
+                ConcernDoneOutcome::AlreadyCleared { .. } => Ok(TodayDoneResult::AlreadyCleared {
+                    item_key: item_key.clone(),
+                }),
+            };
+        }
+
+        if !key.starts_with("unhandled:") && !key.starts_with("unhandled-") {
+            return Err(TodayUpdatesError::CannotMarkDone {
+                item_key: key.to_owned(),
+            });
+        }
+        if let Some(ws_part) = key.strip_prefix("unhandled:")
+            && ws_part != workspace
+        {
+            return Err(TodayUpdatesError::NotFound {
+                workspace: workspace.to_owned(),
+                item_key: key.to_owned(),
+            });
+        }
+        let trimmed_version = request.version_id.trim();
+        if trimmed_version.is_empty() {
+            return Err(TodayUpdatesError::InvalidInput {
+                field: "version_id",
+            });
+        }
+
+        let access = WorkspaceAccess {
+            practice: &ctx.identity.practice_id,
+            physician: &ctx.identity.physician_id,
+            workspace,
+            session_hash: &ctx.session_hash,
+        };
+        let scope = access.authority_scope()?;
+        let tx = self.db.begin().await?;
+        if let Err(reason) = authority
+            .lock_publication(&tx, &scope, Some(access.session_hash))
+            .await
+        {
+            tx.rollback().await?;
+            return Err(TodayUpdatesError::AccessDenied { reason });
+        }
+
+        let command_json = json!({
+            "kind": "today_work_done",
+            "practice": &scope.practice,
+            "physician": &scope.physician,
+            "workspace": &scope.workspace,
+            "item_key": key,
+            "version_id": trimmed_version,
+        });
+        match receipt::record(
+            &tx,
+            &scope.practice,
+            &scope.physician,
+            command_key.as_str(),
+            &command_json,
+        )
+        .await?
+        {
+            Receipt::New => {}
+            Receipt::Same => {
+                tx.commit().await?;
+                return Ok(TodayDoneResult::Duplicate {
+                    item_key: item_key.clone(),
+                });
+            }
+            Receipt::Different => {
+                tx.rollback().await?;
+                return Err(TodayUpdatesError::IdempotencyCollision {
+                    key: command_key.to_string(),
+                });
+            }
+        }
+
+        let existing = today_work_dismissal::Entity::find_by_id((
+            scope.practice.clone(),
+            scope.workspace.clone(),
+            key.to_owned(),
+            trimmed_version.to_owned(),
+        ))
+        .one(&tx)
+        .await?;
+        if existing.is_some() {
+            tx.commit().await?;
+            return Ok(TodayDoneResult::AlreadyCleared {
+                item_key: item_key.clone(),
+            });
+        }
+
+        if key.starts_with("unhandled:") {
+            let dismissals =
+                load_workspace_dismissals(&tx, &scope.practice, &scope.workspace).await?;
+            let constituents = active_workspace_unhandled_constituents(
+                &tx,
+                &scope.practice,
+                &scope.workspace,
+                ctx.clinical_now_unix,
+                &scope.workspace,
+                &dismissals,
+            )
+            .await?;
+            if constituents.is_empty() {
+                tx.commit().await?;
+                return Ok(TodayDoneResult::AlreadyCleared {
+                    item_key: item_key.clone(),
+                });
+            }
+            let current_version = compute_unhandled_group_version(&constituents);
+            if current_version != trimmed_version {
+                tx.rollback().await?;
+                return Err(TodayUpdatesError::CannotMarkDone {
+                    item_key: key.to_owned(),
+                });
+            }
+            for constituent in &constituents {
+                insert_work_dismissal_idempotent(
+                    &tx,
+                    &scope.practice,
+                    &scope.workspace,
+                    constituent.item_key.as_str(),
+                    &constituent.version_id,
+                    &scope.physician,
+                    ctx.clinical_now_unix,
+                )
+                .await?;
+            }
+            insert_work_dismissal_idempotent(
+                &tx,
+                &scope.practice,
+                &scope.workspace,
+                key,
+                trimmed_version,
+                &scope.physician,
+                ctx.clinical_now_unix,
+            )
+            .await?;
+        } else {
+            insert_work_dismissal_idempotent(
+                &tx,
+                &scope.practice,
+                &scope.workspace,
+                key,
+                trimmed_version,
+                &scope.physician,
+                ctx.clinical_now_unix,
+            )
+            .await?;
+        }
+        tx.commit().await?;
+
+        Ok(TodayDoneResult::Cleared {
+            item_key: item_key.clone(),
+        })
+    }
+
+    /// Returns unhandled reviews on `(practice, workspace)` whose Today row was
+    /// cleared with `Done` and not yet superseded by a later completed review,
+    /// handing their unreviewed trigger inputs and `unfinished_work` into the
+    /// next review's [`ReviewStartingContext`].
+    pub(super) async fn handed_off_unhandled_reviews(
+        &self,
+        practice: &str,
+        workspace: &str,
+        exclude_review_id: &str,
+    ) -> Result<Vec<PriorPatientReviewSummary>, DbErr> {
+        let dismissal_rows = today_work_dismissal::Entity::find()
+            .filter(today_work_dismissal::Column::Practice.eq(practice))
+            .filter(today_work_dismissal::Column::Workspace.eq(workspace))
+            .all(&self.db)
+            .await?;
+        if dismissal_rows.is_empty() {
+            return Ok(Vec::new());
+        }
+        let dismissed_versions: BTreeMap<(String, String), i64> = dismissal_rows
+            .into_iter()
+            .map(|row| ((row.item_key, row.version_id), row.cleared_at))
+            .collect();
+
+        let review_rows = patient_review::Entity::find()
+            .filter(patient_review::Column::Practice.eq(practice))
+            .filter(patient_review::Column::Workspace.eq(workspace))
+            .filter(patient_review::Column::ReviewId.ne(exclude_review_id))
+            .all(&self.db)
+            .await?;
+
+        let latest_completed_at = review_rows
+            .iter()
+            .filter(|row| row.status == "completed")
+            .filter_map(|row| row.completed_at.or(Some(row.updated_at)))
+            .max();
+
+        let mut handed_off = Vec::new();
+        for row in review_rows {
+            let state: ReviewLifecycleState = serde_json::from_value(row.state)
+                .map_err(conversion_error("review state", "ReviewLifecycleState"))?;
+            let triggers: Vec<ReviewTrigger> = serde_json::from_value(row.triggers)
+                .map_err(conversion_error("review triggers", "Vec<ReviewTrigger>"))?;
+            let unfinished_work: Vec<UnfinishedReviewWork> =
+                serde_json::from_value(row.unfinished_work).map_err(conversion_error(
+                    "unfinished_work",
+                    "Vec<UnfinishedReviewWork>",
+                ))?;
+            let actions: Vec<RecordedReviewAction> = serde_json::from_value(row.actions)
+                .map_err(conversion_error("actions", "Vec<RecordedReviewAction>"))?;
+
+            if !review_creates_unhandled_today_row(&triggers, &unfinished_work, &state) {
+                continue;
+            }
+            let (version_id, reason_summary) = match &state {
+                ReviewLifecycleState::Failed {
+                    reason, failed_at, ..
+                } => (
+                    format!("failed:{failed_at}:{}", row.updated_at),
+                    format!("failed: {reason}"),
+                ),
+                ReviewLifecycleState::Held {
+                    reason: ReviewHoldReason::Limit,
+                    held_at,
+                    ..
+                } => (
+                    format!("held:{held_at}:{}", row.updated_at),
+                    "reached run limit".to_owned(),
+                ),
+                _ => continue,
+            };
+            let key_str = format!("unhandled-review:{workspace}:{}", row.review_id);
+            let Some(&cleared_at) = dismissed_versions.get(&(key_str, version_id)) else {
+                continue;
+            };
+            if latest_completed_at.is_some_and(|completed_at| {
+                completed_at > cleared_at && completed_at > row.updated_at
+            }) {
+                continue;
+            }
+
+            let mut handed_work = unfinished_work;
+            for trigger in &triggers {
+                match trigger {
+                    ReviewTrigger::ChangedRecords {
+                        workspace_version,
+                        record_versions,
+                        changed_candidates,
+                    } => {
+                        let candidates: Vec<String> = if changed_candidates.is_empty() {
+                            record_versions.keys().cloned().collect()
+                        } else {
+                            changed_candidates.clone()
+                        };
+                        if !candidates.is_empty() {
+                            handed_work.push(UnfinishedReviewWork {
+                                topic: format!("Unreviewed chart results from {}", row.review_id),
+                                detail: format!(
+                                    "Chart v{workspace_version} candidates awaiting review after prior run cleared with Done: {}",
+                                    candidates.join(", ")
+                                ),
+                                limit: None,
+                            });
+                        }
+                    }
+                    ReviewTrigger::PhysicianRequest { request_text, .. } => {
+                        handed_work.push(UnfinishedReviewWork {
+                            topic: format!("Unreviewed physician request from {}", row.review_id),
+                            detail: request_text.clone(),
+                            limit: None,
+                        });
+                    }
+                    ReviewTrigger::Periodic { .. } => {}
+                }
+            }
+
+            handed_off.push(PriorPatientReviewSummary {
+                review_id: row.review_id,
+                completed_at: cleared_at,
+                completed_source_version: u64::try_from(row.initial_source_version.max(0))
+                    .unwrap_or(0),
+                triggers: triggers
+                    .iter()
+                    .map(|t| t.reason_label().to_owned())
+                    .collect(),
+                disposition: "unhandled_handed_off_on_done".to_owned(),
+                reason: format!(
+                    "Unhandled review ({reason_summary}) cleared on Today with Done; unreviewed results handed forward"
+                ),
+                actions: actions
+                    .iter()
+                    .map(RecordedReviewAction::summary_label)
+                    .collect(),
+                unfinished_work: handed_work,
+            });
+        }
+
+        Ok(handed_off)
+    }
+
+    /// Assembles the [`ReviewStartingContext`] that the next patient review on
+    /// `(practice, workspace)` receives, including any `Done`-cleared unhandled
+    /// reviews handed forward.
+    pub async fn next_review_starting_context(
+        &self,
+        practice: &str,
+        workspace: &str,
+        next_review_id: &str,
+        trigger: ReviewTrigger,
+    ) -> Result<ReviewStartingContext, TodayUpdatesError> {
+        let (ctx, _) = self
+            .review_starting_context(practice, workspace, next_review_id, trigger, Vec::new())
+            .await?;
+        Ok(ctx)
+    }
+}
+
+async fn insert_work_dismissal_idempotent<C: ConnectionTrait>(
+    conn: &C,
+    practice: &str,
+    workspace: &str,
+    item_key: &str,
+    version_id: &str,
+    physician: &str,
+    cleared_at: i64,
+) -> Result<(), DbErr> {
+    use today_work_dismissal::Column as D;
+
+    today_work_dismissal::Entity::insert(today_work_dismissal::ActiveModel {
+        practice: Set(practice.to_owned()),
+        workspace: Set(workspace.to_owned()),
+        item_key: Set(item_key.to_owned()),
+        version_id: Set(version_id.to_owned()),
+        cleared_by_physician: Set(physician.to_owned()),
+        cleared_at: Set(cleared_at),
+    })
+    .on_conflict(
+        OnConflict::columns([D::Practice, D::Workspace, D::ItemKey, D::VersionId])
+            .do_nothing()
+            .to_owned(),
+    )
+    .exec_without_returning(conn)
+    .await
+    .map(|_| ())
+}
+
+async fn load_workspace_dismissals<C: ConnectionTrait>(
+    conn: &C,
+    practice: &str,
+    workspace: &str,
+) -> Result<BTreeSet<(String, String, String)>, DbErr> {
+    Ok(today_work_dismissal::Entity::find()
+        .filter(today_work_dismissal::Column::Practice.eq(practice))
+        .filter(today_work_dismissal::Column::Workspace.eq(workspace))
+        .all(conn)
+        .await?
+        .into_iter()
+        .map(|row| (row.workspace, row.item_key, row.version_id))
+        .collect())
+}
+
+async fn active_workspace_unhandled_constituents<C: ConnectionTrait>(
+    conn: &C,
+    practice: &str,
+    workspace: &str,
+    clinical_now_unix: i64,
+    patient_display_name: &str,
+    dismissals: &BTreeSet<(String, String, String)>,
+) -> Result<Vec<TodayRow>, DbErr> {
+    let mut constituents = Vec::new();
+
+    let review_rows = patient_review::Entity::find()
+        .filter(patient_review::Column::Practice.eq(practice))
+        .filter(patient_review::Column::Workspace.eq(workspace))
+        .all(conn)
+        .await?;
+    for row in review_rows {
+        let triggers: Vec<ReviewTrigger> = serde_json::from_value(row.triggers)
+            .map_err(conversion_error("review triggers", "Vec<ReviewTrigger>"))?;
+        let unfinished_work: Vec<UnfinishedReviewWork> =
+            serde_json::from_value(row.unfinished_work).map_err(conversion_error(
+                "unfinished_work",
+                "Vec<UnfinishedReviewWork>",
+            ))?;
+        let state: ReviewLifecycleState = serde_json::from_value(row.state)
+            .map_err(conversion_error("review state", "ReviewLifecycleState"))?;
+        if !review_creates_unhandled_today_row(&triggers, &unfinished_work, &state) {
+            continue;
+        }
+        let key_str = format!("unhandled-review:{workspace}:{}", row.review_id);
+        let topics: Vec<String> = unfinished_work
+            .iter()
+            .map(|item| format!("{}: {}", item.topic, item.detail))
+            .collect();
+        match &state {
+            ReviewLifecycleState::Failed {
+                reason, failed_at, ..
+            } => {
+                let version_id = format!("failed:{failed_at}:{}", row.updated_at);
+                if dismissals.contains(&(workspace.to_owned(), key_str.clone(), version_id.clone()))
+                {
+                    continue;
+                }
+                let title = "Patient review couldn't finish".to_owned();
+                let detail = if topics.is_empty() {
+                    format!("Couldn't finish requested review: {reason}")
+                } else {
+                    format!("Unhandled follow-up: {}", topics.join("; "))
+                };
+                constituents.push(TodayRow {
+                    item_key: SeenItemKey(key_str),
+                    version_id,
+                    workspace: workspace.to_owned(),
+                    patient_display_name: patient_display_name.to_owned(),
+                    title,
+                    detail,
+                    waiting_since_unix: *failed_at,
+                    updated_at_unix: row.updated_at,
+                    seen_standing: SeenStanding::Unseen,
+                    can_mark_done: true,
+                    payload: TodayRowPayload::UnhandledWork {
+                        work_kind: UnhandledWorkKind::PatientReview,
+                        work_id: row.review_id,
+                        unfinished_topics: topics,
+                    },
+                });
+            }
+            ReviewLifecycleState::Held {
+                reason: ReviewHoldReason::Limit,
+                held_at,
+                ..
+            } => {
+                let version_id = format!("held:{held_at}:{}", row.updated_at);
+                if dismissals.contains(&(workspace.to_owned(), key_str.clone(), version_id.clone()))
+                {
+                    continue;
+                }
+                let title = "Patient review reached run limit with unhandled items".to_owned();
+                let detail = if topics.is_empty() {
+                    "Requested review reached run limit before finishing.".to_owned()
+                } else {
+                    format!("Unhandled follow-up: {}", topics.join("; "))
+                };
+                constituents.push(TodayRow {
+                    item_key: SeenItemKey(key_str),
+                    version_id,
+                    workspace: workspace.to_owned(),
+                    patient_display_name: patient_display_name.to_owned(),
+                    title,
+                    detail,
+                    waiting_since_unix: *held_at,
+                    updated_at_unix: row.updated_at,
+                    seen_standing: SeenStanding::Unseen,
+                    can_mark_done: true,
+                    payload: TodayRowPayload::UnhandledWork {
+                        work_kind: UnhandledWorkKind::PatientReview,
+                        work_id: row.review_id,
+                        unfinished_topics: topics,
+                    },
+                });
+            }
+            _ => {}
+        }
+    }
+
+    let prep_rows = visit_preparation::Entity::find()
+        .filter(visit_preparation::Column::Practice.eq(practice))
+        .filter(visit_preparation::Column::Workspace.eq(workspace))
+        .filter(visit_preparation::Column::State.eq("could_not_finish"))
+        .filter(visit_preparation::Column::EndsAtUnix.gt(clinical_now_unix))
+        .all(conn)
+        .await?;
+    for row in prep_rows {
+        let key_str = format!(
+            "unhandled-visit:{workspace}:{}:{}:{}",
+            row.source_id, row.appointment_id, row.starts_at_unix
+        );
+        let version_id = format!("could_not_finish:{}", row.updated_at);
+        if dismissals.contains(&(workspace.to_owned(), key_str.clone(), version_id.clone())) {
+            continue;
+        }
+        let reason = row
+            .failed_reason
+            .unwrap_or_else(|| "Pre-visit briefing could not finish.".to_owned());
+        let title = "Visit briefing couldn't finish".to_owned();
+        let detail = format!("Upcoming visit: {reason}");
+        let work_id = row
+            .briefing_job_id
+            .unwrap_or_else(|| row.selection_job_id.clone());
+        constituents.push(TodayRow {
+            item_key: SeenItemKey(key_str),
+            version_id,
+            workspace: workspace.to_owned(),
+            patient_display_name: patient_display_name.to_owned(),
+            title,
+            detail,
+            waiting_since_unix: row.updated_at,
+            updated_at_unix: row.updated_at,
+            seen_standing: SeenStanding::Unseen,
+            can_mark_done: true,
+            payload: TodayRowPayload::UnhandledWork {
+                work_kind: UnhandledWorkKind::VisitPreparation,
+                work_id,
+                unfinished_topics: vec![reason],
+            },
+        });
+    }
+
+    let failed_jobs = practice_job::Entity::find()
+        .filter(practice_job::Column::Practice.eq(practice))
+        .filter(practice_job::Column::Workspace.eq(workspace))
+        .filter(practice_job::Column::Kind.eq(PracticeJobKind::InitialUnderstanding))
+        .filter(practice_job::Column::Status.is_in([WorkStatus::Failed, WorkStatus::Held]))
+        .all(conn)
+        .await?;
+    if !failed_jobs.is_empty() {
+        let saved_version = patient_understanding::Entity::find()
+            .select_only()
+            .column(patient_understanding::Column::SourceVersion)
+            .filter(patient_understanding::Column::Practice.eq(practice))
+            .filter(patient_understanding::Column::Workspace.eq(workspace))
+            .into_tuple::<i64>()
+            .one(conn)
+            .await?;
+        for job in failed_jobs {
+            if job.sources_version <= 0 || saved_version.is_some_and(|v| v >= job.sources_version) {
+                continue;
+            }
+            let key_str = format!("unhandled-understanding:{workspace}:{}", job.job_id);
+            let status_tag = match job.status {
+                WorkStatus::Failed => "failed",
+                WorkStatus::Held => "held",
+                _ => "incomplete",
+            };
+            let version_id = format!("{status_tag}:{}:{}", job.failures, job.updated_at);
+            if dismissals.contains(&(workspace.to_owned(), key_str.clone(), version_id.clone())) {
+                continue;
+            }
+            let title = "Initial patient summary couldn't finish".to_owned();
+            let detail = format!(
+                "Chart summary for version {} could not complete automatically.",
+                job.sources_version
+            );
+            constituents.push(TodayRow {
+                item_key: SeenItemKey(key_str),
+                version_id,
+                workspace: workspace.to_owned(),
+                patient_display_name: patient_display_name.to_owned(),
+                title,
+                detail: detail.clone(),
+                waiting_since_unix: job.updated_at,
+                updated_at_unix: job.updated_at,
+                seen_standing: SeenStanding::Unseen,
+                can_mark_done: true,
+                payload: TodayRowPayload::UnhandledWork {
+                    work_kind: UnhandledWorkKind::InitialUnderstanding,
+                    work_id: job.job_id,
+                    unfinished_topics: vec![detail],
+                },
+            });
+        }
+    }
+
+    constituents.sort_by(|left, right| {
+        left.waiting_since_unix
+            .cmp(&right.waiting_since_unix)
+            .then_with(|| left.item_key.cmp(&right.item_key))
+    });
+    Ok(constituents)
+}
+
+fn is_generic_structural_part_label(label: &str) -> bool {
+    matches!(
+        label.trim().to_ascii_lowercase().as_str(),
+        "attachment" | "presentedform" | "presented form" | "text" | "note" | "body"
+    )
+}
+
+fn format_today_cited_body(
+    display_label: &str,
+    readable_parts: &[ReadablePart],
+    raw_content: &str,
+) -> String {
+    let cleaned_parts: Vec<ReadablePart> = readable_parts
+        .iter()
+        .map(|part| ReadablePart {
+            label: if is_generic_structural_part_label(&part.label) {
+                String::new()
+            } else {
+                part.label.clone()
+            },
+            text: part.text.clone(),
+        })
+        .collect();
+    super::history::format_cited_source_body(display_label, &cleaned_parts, raw_content)
+}
+
+fn extract_record_native_uri(workspace: &str, found: &SourceRevision) -> Option<String> {
+    for key in ["external_url", "native_uri", "uri", "url", "href"] {
+        if let Some(raw) = found
+            .provenance
+            .get(key)
+            .and_then(Value::as_str)
+            .map(str::trim)
+            .filter(|val| !val.is_empty())
+        {
+            return Some(raw.to_owned());
+        }
+    }
+    if let Some(locator) = found
+        .provenance
+        .get("record_locator")
+        .or_else(|| found.provenance.get("native_id"))
+        .and_then(Value::as_str)
+        .map(str::trim)
+        .filter(|val| !val.is_empty())
+    {
+        return Some(format!(
+            "/local-ehr/{workspace}/{locator}#/resources/{locator}"
+        ));
+    }
+    None
+}
+
+fn review_citation_to_evidence(citation: &ReviewCitation) -> ItemEvidenceCitation {
+    ItemEvidenceCitation {
+        reference: citation.reference.clone(),
+        source_id: citation.source_id.clone(),
+        source_label: citation.source_label.clone(),
+        display_label: citation.display_label.clone(),
+        as_of: citation.as_of.clone(),
+        excerpt: citation.excerpt.clone(),
+        body: citation.excerpt.clone(),
+        native_uri: None,
+    }
+}
+
+fn summary_citation_to_evidence(citation: &SummaryCitation) -> ItemEvidenceCitation {
+    ItemEvidenceCitation {
+        reference: citation.reference.clone(),
+        source_id: citation.source_id.clone(),
+        source_label: citation.source_label.clone(),
+        display_label: citation.display_label.clone(),
+        as_of: citation.as_of.clone(),
+        excerpt: citation.excerpt.clone(),
+        body: citation.excerpt.clone(),
+        native_uri: citation.native_uri.clone(),
     }
 }
