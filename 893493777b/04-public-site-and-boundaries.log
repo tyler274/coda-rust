@@ -1,0 +1,148 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.96s
+     Running unittests src/lib.rs (target/debug/deps/boundaries-59432a8e7fca9eb9)
+
+running 25 tests
+test shared_ui::a_count_going_down_says_to_lower_the_number ... ok
+test shared_ui::a_count_going_up_says_to_use_the_shared_component_or_add_an_exception ... ok
+test tests::duet_screens_do_not_read_device_health_directly ... ok
+test shared_ui::a_count_reaching_zero_says_to_remove_the_entry ... ok
+test shared_ui::a_matching_count_passes ... ok
+test shared_ui::a_new_file_counts_as_going_up_from_zero ... ok
+test shared_ui::a_whole_test_file_counts_nothing ... ok
+test shared_ui::counts_css_rules_naming_library_classes ... ok
+test shared_ui::counts_card_classes_set_apart_by_escaped_whitespace ... ok
+test shared_ui::counts_css_rules_naming_control_elements ... ok
+test shared_ui::counts_rsx_held_in_other_macros_and_nested_rsx ... ok
+test tests::shipping_clients_stay_until_the_rust_journeys_match ... ok
+test shared_ui::every_table_entry_has_one_row_and_a_reason ... ok
+test shared_ui::counts_card_markup_by_class_family_once_per_element ... ok
+test tests::apps_do_not_import_each_others_clinical_crates ... ok
+test shared_ui::ignores_comments_strings_and_lookalikes ... ok
+test shared_ui::counts_each_raw_control_inside_rsx ... ok
+test tests::the_clinical_library_is_product_neutral ... ok
+test shared_ui::ignores_test_code_but_not_code_kept_out_of_tests ... ok
+test tests::gmail_and_spruce_are_product_neutral ... ok
+test shared_ui::the_check_reads_the_real_library ... ok
+test tests::every_ui_behaviour_is_run_as_its_kind ... ok
+test tests::shared_harness_is_product_neutral_and_has_no_product_store ... ok
+test tests::the_ui_library_runs_its_browser_behaviour_without_eval ... ok
+test shared_ui::the_apps_match_the_shared_ui_table ... ok
+
+test result: ok. 25 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.34s
+
+     Running unittests src/lib.rs (target/debug/deps/public_site-5bc75d1fd9ad36e6)
+
+running 39 tests
+test proxy::tests::mounts_own_only_their_path_family ... ok
+test runtime::tests::bare_container_bind_address_uses_a_loopback_browser_origin ... ok
+test runtime::tests::sign_in_exists_only_with_a_physician_upstream ... ok
+test config::tests::cli_defaults_to_serve_and_parses_static_export_flags ... ok
+test proxy::tests::fixed_origins_reject_credentials_and_nonlocal_plaintext ... ok
+test runtime::tests::staging_requires_proxy_signer_and_deployed_upstream_https ... ok
+test representation::tests::digest_is_lowercase_sha256 ... ok
+test runtime::tests::observability_relay_is_staging_only_https_and_signed ... ok
+test runtime::tests::local_production_and_probe_contract_remain_explicit ... ok
+test runtime::tests::staging_requires_well_formed_direct_cloud_run_audience ... ok
+test proxy::tests::location_policy_never_exposes_an_upstream_origin ... ok
+test proxy::tests::mounted_location_stays_inside_its_prefix_on_known_origins ... ok
+test assets::tests::rewrites_only_complete_root_relative_urls ... ok
+test access::tests::secret_needs_one_exact_value ... ok
+test representation::tests::q_values ... ok
+test site::tests::base_path_normalizes_and_rejects_invalid_inputs ... ok
+test site::tests::origin_supports_host_only_or_matching_base_path_without_double_prefix ... ok
+test representation::tests::gzip_vector_crc_round_trip ... ok
+test representation::tests::compressed_bytes_round_trip ... ok
+test representation::tests::variants_head_and_weak_conditional ... ok
+test server::tests::observability_relay_never_mounts_outside_staging - should panic ... ok
+test proxy::tests::credential_responses_are_size_bounded_and_never_follow_redirects ... ok
+test proxy::tests::observability_mounts_keep_prefix_drop_spoofed_assertion_cookies_and_off_origin_redirects ... ok
+test proxy::tests::jwt_claims_cache_serialization_and_refresh_failure_are_closed ... ok
+test access::tests::gate_uses_this_services_audience ... ok
+test server::tests::overload_and_timeout_are_bounded_and_private ... ok
+test pages::tests::home_preserves_motion_targets_and_shared_phones ... ok
+test pages::tests::every_document_renders_its_body ... ok
+test assets::tests::rewrites_page_routes_and_assets_under_subpath_without_touching_text_slashes ... ok
+test assets::tests::every_embedded_asset_has_alias_and_content_address ... ok
+test server::tests::head_assets_are_empty ... ok
+test server::tests::trailing_slash_redirect_stays_on_this_origin ... ok
+test server::tests::health_requires_access_and_optional_health_token ... ok
+test server::tests::no_methods_or_conditional_requests_bypass_staging ... ok
+test server::tests::observability_mounts_keep_prefixes_and_forward_only_the_verified_assertion ... ok
+test export::tests::static_export_under_subpath_resolves_every_page_asset_and_metadata_file ... ok
+test server::tests::rewritten_assets_cache_and_readiness ... ok
+test server::tests::staging_gates_every_public_resource_and_never_shared_caches ... ok
+test server::tests::physician_proxy_preserves_access_and_waits_for_upstream_responses ... ok
+
+test result: ok. 39 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.55s
+
+     Running unittests src/bin/public-site.rs (target/debug/deps/public_site-9085c4d1912a70e2)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/access.rs (target/debug/deps/access-a78117cfc9972481)
+
+running 2 tests
+test executable_refuses_missing_or_malformed_staging_configuration ... ok
+test staging_denies_every_page_and_resource_without_signed_iap ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.47s
+
+     Running tests/foundation.rs (target/debug/deps/foundation-f1724287fa1a98a7)
+
+running 3 tests
+test sign_in_appears_on_every_page_only_when_offered ... ok
+test every_enumerated_route_uses_real_router_ssr_and_shared_chrome ... ok
+test axum_serves_only_startup_bytes_and_preserves_404s ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.68s
+
+     Running tests/proxy.rs (target/debug/deps/proxy-ad32858fd8725a4c)
+
+running 3 tests
+test sse_delivers_first_chunk_while_upstream_body_is_still_open ... ok
+test redirect_rewriting_errors_origin_checks_and_limits ... ok
+test preserves_transport_and_strips_credentials_and_hops ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.48s
+
+     Running tests/routes.rs (target/debug/deps/routes-c5a321cfd43b0b63)
+
+running 5 tests
+test staging_denies_pages_and_assets_without_access ... ok
+test staging_sign_in_reaches_the_physician_service ... ok
+test real_scripts_are_content_addressed_and_immutable ... ok
+test every_route_metadata_sitemap_and_retired_routes ... ok
+test urls_resolve_redirect_and_set_hsts ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.49s
+
+     Running tests/site.rs (target/debug/deps/site-dc533bc22e338e65)
+
+running 2 tests
+test desktop_mobile_motion_reduced_motion_and_static_fallback ... ignored, browser qualification; run explicitly with --ignored
+test exported_subpath_site_serves_zero_404s_and_renders_in_chromium ... ignored, browser qualification; run explicitly with --ignored
+
+test result: ok. 0 passed; 0 failed; 2 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/stylesheets.rs (target/debug/deps/stylesheets-f7211fd3effe5466)
+
+running 2 tests
+test layout_stylesheets_declare_no_motion ... ok
+test duet_story_styles_stay_inside_its_stage ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests boundaries
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests public_site
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

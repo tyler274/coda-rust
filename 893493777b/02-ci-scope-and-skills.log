@@ -1,0 +1,72 @@
+test_runner_names_exactly_the_tests_in_its_suites (test_ci_scenarios.DuetSuites.test_runner_names_exactly_the_tests_in_its_suites) ... ok
+test_complete_only_with_steps_and_no_gaps (test_ci_scenarios.ReceiptOutcome.test_complete_only_with_steps_and_no_gaps) ... PASS P1 step: observed
+ok
+test_failed_step_outranks_missing (test_ci_scenarios.ReceiptOutcome.test_failed_step_outranks_missing) ... PASS P1 step: observed
+FAIL P1 step: observed
+ok
+test_missing_capability_is_incomplete_not_complete (test_ci_scenarios.ReceiptOutcome.test_missing_capability_is_incomplete_not_complete) ... PASS P1 step: observed
+ok
+test_no_steps_is_not_a_pass (test_ci_scenarios.ReceiptOutcome.test_no_steps_is_not_a_pass) ... ok
+test_empty_selection_is_a_usage_error (test_ci_scenarios.RunnerFailures.test_empty_selection_is_a_usage_error) ... usage: scenarios.py [-h] [--only ONLY] [--require-complete]
+                    [--evidence EVIDENCE]
+scenarios.py: error: --only selected no journeys; available: P1, D1
+ok
+test_nonzero_cargo_exit_fails_even_when_every_test_reports_ok (test_ci_scenarios.RunnerFailures.test_nonzero_cargo_exit_fails_even_when_every_test_reports_ok) ... FAIL D1 cargo test exit: cargo test --locked -p duet-api --test database_foundation --test public_budget -- --test-threads=1 exited 101
+PASS D1 fresh_and_upgrade_keep_identity_and_enforce_account_scope: ok: fresh and upgraded schema keep identity; one account cannot read another's rows
+PASS D1 public_retrieval_budget_spans_pools_and_publication: ok: the public retrieval budget holds across pools and counts publication reads and misses
+ok
+test_readiness_file_mid_write_is_retried (test_ci_scenarios.RunnerFailures.test_readiness_file_mid_write_is_retried) ... ok
+test_emulator_result_follows_mobile_not_full (test_ci_scope.ResultTests.test_emulator_result_follows_mobile_not_full) ... ok
+test_gate_covers_every_validation_job_and_deployment_consumes_gate (test_ci_scope.ResultTests.test_gate_covers_every_validation_job_and_deployment_consumes_gate) ... ok
+test_sandbox_result_follows_its_own_scope (test_ci_scope.ResultTests.test_sandbox_result_follows_its_own_scope) ... ok
+test_selected_checks_must_pass_even_when_actions_skips_dependents (test_ci_scope.ResultTests.test_selected_checks_must_pass_even_when_actions_skips_dependents) ... ok
+test_android_build_changes_select_the_emulator (test_ci_scope.ScopeTests.test_android_build_changes_select_the_emulator) ... ok
+test_change_selection_runs_the_emulator_only_for_the_apk_build (test_ci_scope.ScopeTests.test_change_selection_runs_the_emulator_only_for_the_apk_build) ... ok
+test_complete_pr_and_push_include_earlier_code_change (test_ci_scope.ScopeTests.test_complete_pr_and_push_include_earlier_code_change) ... ok
+test_dependency_changes_report_deps (test_ci_scope.ScopeTests.test_dependency_changes_report_deps) ... ok
+test_emulator_is_manual_only_while_change_selection_is_off (test_ci_scope.ScopeTests.test_emulator_is_manual_only_while_change_selection_is_off) ... ok
+test_many_files_and_unusual_names_do_not_truncate_comparison (test_ci_scope.ScopeTests.test_many_files_and_unusual_names_do_not_truncate_comparison) ... ok
+test_merge_queue_candidate_is_scoped_by_what_it_adds_to_its_base (test_ci_scope.ScopeTests.test_merge_queue_candidate_is_scoped_by_what_it_adds_to_its_base) ... ok
+test_mobile_crate_list_check_reads_cargo_tree (test_ci_scope.ScopeTests.test_mobile_crate_list_check_reads_cargo_tree) ... ok
+test_pr_uses_merge_base_not_unrelated_base_branch_changes (test_ci_scope.ScopeTests.test_pr_uses_merge_base_not_unrelated_base_branch_changes) ... ok
+test_renames_and_deletions_cover_both_paths (test_ci_scope.ScopeTests.test_renames_and_deletions_cover_both_paths) ... ok
+test_sandbox_changes_select_only_the_sandbox_job (test_ci_scope.ScopeTests.test_sandbox_changes_select_only_the_sandbox_job) ... ok
+test_scope_matches_approved_categories_not_file_size (test_ci_scope.ScopeTests.test_scope_matches_approved_categories_not_file_size) ... ok
+test_uncertain_comparison_and_manual_dispatch_select_full (test_ci_scope.ScopeTests.test_uncertain_comparison_and_manual_dispatch_select_full) ... ok
+test_merge_queue_candidates_are_checked_without_deploying_or_saving_caches (test_ci_scope.WarmRunTests.test_merge_queue_candidates_are_checked_without_deploying_or_saving_caches) ... ok
+test_postgres_saves_per_commit_and_restores_by_prefix (test_ci_scope.WarmRunTests.test_postgres_saves_per_commit_and_restores_by_prefix) ... ok
+test_scheduled_runs_skip_browsers_and_deployments (test_ci_scope.WarmRunTests.test_scheduled_runs_skip_browsers_and_deployments) ... ok
+test_validation_cannot_dispatch_other_workflows (test_ci_scope.WarmRunTests.test_validation_cannot_dispatch_other_workflows) ... ok
+test_weekly_schedule_and_manual_dispatch_both_trigger (test_ci_scope.WarmRunTests.test_weekly_schedule_and_manual_dispatch_both_trigger) ... ok
+test_discovery_must_resolve_to_canonical_skill (test_ci_skills.SkillChecks.test_discovery_must_resolve_to_canonical_skill) ... ok
+test_invalid_metadata_fails (test_ci_skills.SkillChecks.test_invalid_metadata_fails) ... ok
+test_invalid_script_and_configuration_fail (test_ci_skills.SkillChecks.test_invalid_script_and_configuration_fail) ... ok
+test_portable_skill_and_script_are_validated_without_execution (test_ci_skills.SkillChecks.test_portable_skill_and_script_are_validated_without_execution) ... ok
+test_cache_publication_is_not_validation_time (test_ci_timings.AnalysisTests.test_cache_publication_is_not_validation_time) ... ok
+test_deployment_steps_are_separate (test_ci_timings.AnalysisTests.test_deployment_steps_are_separate) ... ok
+test_invalid_missing_skipped_times_are_not_zero (test_ci_timings.AnalysisTests.test_invalid_missing_skipped_times_are_not_zero) ... ok
+test_light_cancelled_manual_failed_and_unknown_separate (test_ci_timings.AnalysisTests.test_light_cancelled_manual_failed_and_unknown_separate) ... ok
+test_missing_attempt_start_prevents_baseline (test_ci_timings.AnalysisTests.test_missing_attempt_start_prevents_baseline) ... ok
+test_running_result_is_explicitly_omitted_including_steps (test_ci_timings.AnalysisTests.test_running_result_is_explicitly_omitted_including_steps) ... ok
+test_skipped_steps_reported_and_zero_duration_valid (test_ci_timings.AnalysisTests.test_skipped_steps_reported_and_zero_duration_valid) ... ok
+test_slow_cache_setup_is_flagged (test_ci_timings.AnalysisTests.test_slow_cache_setup_is_flagged) ... ok
+test_validation_does_not_include_deployment_or_sum_parallel_jobs (test_ci_timings.AnalysisTests.test_validation_does_not_include_deployment_or_sum_parallel_jobs) ... ok
+test_empty_page_without_total_ends_pagination (test_ci_timings.CollectorTests.test_empty_page_without_total_ends_pagination) ... ok
+test_history_fetches_every_attempt (test_ci_timings.CollectorTests.test_history_fetches_every_attempt) ... ok
+test_invalid_repo_and_limits (test_ci_timings.CollectorTests.test_invalid_repo_and_limits) ... ok
+test_latest_attempt_pins_metadata_and_jobs (test_ci_timings.CollectorTests.test_latest_attempt_pins_metadata_and_jobs) ... ok
+test_only_gh_api_and_propagates_failure (test_ci_timings.CollectorTests.test_only_gh_api_and_propagates_failure) ... ok
+test_paginated_jobs_and_explicit_attempt (test_ci_timings.CollectorTests.test_paginated_jobs_and_explicit_attempt) ... ok
+test_pagination_keeps_page_size_constant_for_nonmultiple_limit (test_ci_timings.CollectorTests.test_pagination_keeps_page_size_constant_for_nonmultiple_limit) ... ok
+test_cli_failure_returns_nonzero_without_fake_report (test_ci_timings.OutputTests.test_cli_failure_returns_nonzero_without_fake_report) ... ok
+test_cli_history_default_summary_path (test_ci_timings.OutputTests.test_cli_history_default_summary_path) ... ok
+test_cli_rejects_same_output_and_summary (test_ci_timings.OutputTests.test_cli_rejects_same_output_and_summary) ... ok
+test_cli_writes_report_and_appends_step_summary (test_ci_timings.OutputTests.test_cli_writes_report_and_appends_step_summary) ... ok
+test_empty_history (test_ci_timings.OutputTests.test_empty_history) ... ok
+test_self_contained_escaped_html_and_attempt_links (test_ci_timings.OutputTests.test_self_contained_escaped_html_and_attempt_links) ... ok
+
+----------------------------------------------------------------------
+Ran 56 tests in 14.871s
+
+OK
+Validated 21 engineering skills, discovery links, metadata and script syntax.
