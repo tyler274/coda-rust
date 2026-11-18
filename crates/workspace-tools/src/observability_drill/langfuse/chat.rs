@@ -274,6 +274,7 @@ mod tests {
                     answer,
                 }],
                 feedback: SnapshotFeedback::Loaded,
+                sources: Default::default(),
             },
         })
         .unwrap()
@@ -318,6 +319,9 @@ mod tests {
                 finished_at: SavedAt(1_794_600_060),
                 text: "Hello".into(),
                 feedback: None,
+                segments: Vec::new(),
+                basis: None,
+                newer_records: false,
             }),
             TurnState::Answered(Answer {
                 text: "Hello".into(),

@@ -159,6 +159,7 @@ impl DemoStore {
         Ok(TodayListResponse {
             date: DEMO_DATE.into(),
             rows,
+            seen: Vec::new(),
             as_of: 1,
             connections,
             incomplete: Some(false),
@@ -214,8 +215,10 @@ impl DemoStore {
         let join = Expr::col((Chats::Table, Chats::WorkspaceId))
             .equals((Patients::Table, Patients::WorkspaceId));
         let q = Query::select()
+            .column((Chats::Table, Chats::ChatId))
             .column((Chats::Table, Chats::WorkspaceId))
             .column((Chats::Table, Chats::Title))
+            .column((Chats::Table, Chats::CreatedAt))
             .column((Patients::Table, Patients::DisplayName))
             .from(Chats::Table)
             .inner_join(Patients::Table, join)
@@ -225,9 +228,13 @@ impl DemoStore {
         let conversations = self
             .map_select(&q, |r| {
                 Ok(RecentConversation {
+                    chat_id: Some(r.get_str("chat_id")?),
                     patient_workspace_id: Some(r.get_str("workspace_id")?),
                     title: Some(r.get_str("title")?),
+                    summary: None,
+                    outcome: None,
                     patient_display_name: Some(r.get_str("display_name")?),
+                    updated_at: Some(r.get_str("created_at")?),
                 })
             })
             .await?;
@@ -246,7 +253,10 @@ impl DemoStore {
                 Ok(serde_json::from_str(&r.get_str("payload_json")?)?)
             })
             .await?;
-        Ok(UpdatesResponse { rows })
+        Ok(UpdatesResponse {
+            active_runs: Vec::new(),
+            rows,
+        })
     }
 
     /// Searches patients by name, MRN, or birth date using SQL `LIKE`.
@@ -258,6 +268,7 @@ impl DemoStore {
             Patients::WorkspaceId,
             Patients::DisplayName,
             Patients::BirthDate,
+            Patients::Mrn,
         ])
         .from(Patients::Table);
         if !trimmed.is_empty() {
@@ -275,6 +286,7 @@ impl DemoStore {
                     patient_workspace_id: r.get_str("workspace_id")?,
                     patient_display_name: r.get_str("display_name")?,
                     birth_date: Some(r.get_str("birth_date")?),
+                    mrn: Some(r.get_str("mrn")?),
                     duet_linked: true,
                     sharing_consented: true,
                     cadence: Some("daily_when_changed".into()),
@@ -334,6 +346,7 @@ impl DemoStore {
         let snapshot = match rows.first() {
             Some(row) => serde_json::from_str(&row.get_str("snapshot_json")?)?,
             None => ChatSnapshot {
+                sources: Default::default(),
                 transcript: Vec::new(),
                 feedback: SnapshotFeedback::Loaded,
             },
@@ -702,6 +715,8 @@ impl DemoStore {
                 Ok(WorkspaceChat {
                     chat_id: r.get_str("chat_id")?,
                     title: Some(r.get_str("title")?),
+                    summary: None,
+                    outcome: None,
                     created_at: r.get_str("created_at")?,
                 })
             })
@@ -775,6 +790,9 @@ pub(crate) fn build_exchange(
             attempt_id: AttemptId(format!("att-{prefix}-{suffix}")),
             finished_at: SavedAt(ts + 2),
             text: answer_text,
+            segments: Vec::new(),
+            basis: None,
+            newer_records: false,
             feedback: None,
         },
     }

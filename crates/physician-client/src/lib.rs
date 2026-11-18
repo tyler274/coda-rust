@@ -4,10 +4,11 @@
 
 pub use http::HttpError;
 use physician_wire::{
-    ChatSnapshotResponse, HealthResponse, PanelAssignmentResponse, PatientSearchResponse,
-    PatientWorkspaceResponse, PatientWorkspacesResponse, PhysicianDraft, PracticeDayResponse,
-    RecentConversationsResponse, ReplyDraftWire, ResponseFeedback, ResponseId, SaveFeedback,
-    SignInResponse, TodayListResponse, UpdatesResponse, VerifyResponse, WhoamiResponse,
+    ChatSnapshotResponse, HealthResponse, PanelAssignmentResponse, PastWorkResponse,
+    PatientSearchResponse, PatientWorkspaceResponse, PatientWorkspacesResponse, PhysicianDraft,
+    PracticeDayResponse, RecentConversationsResponse, ReplyDraftWire, ResponseFeedback, ResponseId,
+    SaveFeedback, SignInResponse, TodayListResponse, UpdatesResponse, VerifyResponse,
+    WhoamiResponse,
 };
 use std::sync::Arc;
 
@@ -593,6 +594,30 @@ impl PhysicianClient {
     pub async fn workspace(&self, id: &str) -> Result<PatientWorkspaceResponse, http::HttpError> {
         try_demo!(self, s => s.workspace(id));
         self.get(&format!("/patient-workspaces/{id}")).await
+    }
+
+    /// Reads saved conversations and past work for one authorized patient workspace.
+    pub async fn past_work(&self, id: &str) -> Result<PastWorkResponse, http::HttpError> {
+        self.get(&format!("/patient-workspaces/{id}/past-work"))
+            .await
+    }
+
+    /// Records that the signed-in physician opened an attention item at least once.
+    pub async fn open_item(
+        &self,
+        workspace_id: &str,
+        item_id: &str,
+        idempotency_key: &str,
+    ) -> Result<serde_json::Value, http::HttpError> {
+        self.command(&serde_json::json!({
+            "type": "item.open",
+            "idempotency_key": idempotency_key,
+            "payload": {
+                "patient_workspace_id": workspace_id,
+                "item_id": item_id,
+            }
+        }))
+        .await
     }
 
     /// Returns the event stream path for this client.

@@ -168,6 +168,8 @@ fn insert_patient_unit(
         has_past_work: false,
         last_reviewed_at: Some(DEMO_NOW.into()),
         connected_sources: vec![ConnectedSource {
+            source_id: Some("synthetic-ehr".into()),
+            source_label: Some("Primary EHR".into()),
             state: SourceConnectionState {
                 state: "usable".into(),
                 synchronized_at: Some(DEMO_NOW.into()),
@@ -577,6 +579,7 @@ fn seed_featured(
         ),
     };
     let snap = ChatSnapshot {
+        sources: Default::default(),
         transcript: vec![build_exchange(
             "seed",
             ws_id,

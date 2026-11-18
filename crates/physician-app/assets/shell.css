@@ -22,7 +22,6 @@ html, body { margin: 0; height: 100%; background: var(--surface); color: var(--i
   .glass-app.has-collapsed-sidebar .sidebar-nav-item { justify-content: center; width: var(--target); padding: 0; }
   .glass-app.has-collapsed-sidebar .glass-sidebar .sidebar-expand { display: inline-flex; }
 }
-.coda-restore { position: fixed; z-index: 2; top: var(--space-4); left: var(--space-4); }
 .reader-provenance { margin: 0; color: var(--muted); font: var(--type-body-sm); }
 
 .glass-sidebar {
@@ -155,6 +154,9 @@ html, body { margin: 0; height: 100%; background: var(--surface); color: var(--i
     grid-template-rows: auto minmax(0, 1fr);
     scroll-padding-top: var(--toolbar-height);
   }
+  .glass-stage:has(.now-banner) {
+    grid-template-rows: auto auto minmax(0, 1fr);
+  }
   .glass-stage .schedule-rail { top: var(--toolbar-height); }
   .glass-toolbar {
     position: sticky;
@@ -245,7 +247,7 @@ html, body { margin: 0; height: 100%; background: var(--surface); color: var(--i
 .dialog-note { color: var(--muted); font: var(--type-body-sm); }
 .is-keyboard-focus { outline: 2px solid var(--primary); outline-offset: 2px; }
 .patient-identity { display: grid; gap: var(--space-2); margin-bottom: var(--space-4); }
-.patient-facts { display: flex; gap: var(--space-3); color: var(--muted); font: var(--type-body-sm); }
+.patient-facts { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-3); color: var(--muted); font: var(--type-body-sm); }
 .patient-section { display: grid; gap: var(--space-2); margin-top: var(--space-5); }
 .patient-section h2 { margin: 0; font: var(--type-title-sm); }
 .patient-synopsis-meta { margin: 0; color: var(--muted); font: var(--type-body-sm); }
@@ -315,3 +317,133 @@ html, body { margin: 0; height: 100%; background: var(--surface); color: var(--i
 /* The expired-session prompt covers and hides the page beneath it. */
 .session-prompt { position: fixed; inset: 0; width: auto; height: auto; max-width: none; max-height: none; margin: 0; padding: 0; border: 0; overflow: auto; background: transparent; color: inherit; }
 .feedback-details-host { display: contents; }
+
+.now-banner {
+  box-sizing: border-box;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2) var(--space-3);
+  margin: var(--space-3) var(--page-gutter) 0;
+  padding: var(--space-2) var(--space-3);
+  border: var(--hairline) solid var(--error);
+  border-radius: var(--radius-md);
+  background: var(--error-container);
+  color: var(--on-error-container);
+  box-shadow: var(--elevation-1);
+}
+@media (width >= 56.25rem) {
+  .now-banner { margin-inline-end: calc(var(--page-gutter) + 9rem); }
+}
+.now-banner-body {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 0;
+}
+.now-banner-who { font: var(--type-title-sm); font-weight: var(--weight-strong); }
+.now-banner-reason { min-width: 0; overflow-wrap: anywhere; font: var(--type-body-sm); }
+
+.orb-dock {
+  position: fixed;
+  z-index: 30;
+  top: var(--space-4);
+  left: var(--space-4);
+  display: grid;
+  justify-items: start;
+  gap: var(--space-2);
+  max-width: calc(100vw - 2 * var(--space-4));
+}
+.orb-dock-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  max-width: 100%;
+}
+.orb-now-pill {
+  box-sizing: border-box;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  max-width: min(28rem, calc(100vw - 2 * var(--space-4)));
+  padding: var(--space-2) var(--space-3);
+  border: var(--hairline) solid var(--error);
+  border-radius: var(--radius-lg);
+  background: var(--surface-lowest);
+  color: var(--ink);
+  box-shadow: var(--elevation-3);
+}
+.orb-now-copy {
+  display: grid;
+  gap: var(--space-hair);
+  min-width: 0;
+  font: var(--type-body-sm);
+}
+.orb-now-copy strong { font: var(--type-title-sm); font-weight: var(--weight-strong); }
+.orb-preview {
+  box-sizing: border-box;
+  display: grid;
+  gap: var(--space-3);
+  width: min(22rem, calc(100vw - 2 * var(--space-4)));
+  padding: var(--space-3);
+  border: var(--hairline) solid var(--outline-variant);
+  border-radius: var(--radius-lg);
+  background: var(--surface-lowest);
+  color: var(--ink);
+  box-shadow: var(--elevation-3);
+}
+.orb-preview-head { display: flex; align-items: center; justify-content: space-between; font: var(--type-title-sm); }
+.orb-preview-section { display: grid; gap: var(--space-2); }
+.orb-preview-run, .orb-preview-item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  min-width: 0;
+  font: var(--type-body-sm);
+}
+.orb-preview-item { display: grid; gap: var(--space-hair); }
+.orb-preview-item-copy { display: grid; gap: var(--space-hair); min-width: 0; }
+.orb-preview-empty { margin: 0; color: var(--muted); font: var(--type-body-sm); }
+.orb-preview-actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: var(--space-2); }
+
+.chat-row-copy { display: grid; gap: var(--space-hair); flex: 1 1 auto; min-width: 0; }
+.chat-row-meta { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-1); min-width: 0; }
+.chat-row-summary {
+  color: var(--muted);
+  font: var(--type-body-sm);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.records-stale-status { color: var(--error); font-weight: var(--weight-strong); }
+.patient-sources { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+.patient-source-status {
+  padding: var(--space-hair) var(--space-2);
+  border-radius: var(--radius-pill);
+  background: var(--surface-low);
+  color: var(--muted);
+  font: var(--type-label-sm);
+}
+.patient-source-status.is-stale-source {
+  background: var(--error-container);
+  color: var(--on-error-container);
+}
+.answer-update-banner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  margin-bottom: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  background: var(--surface-low);
+  color: var(--ink);
+  font: var(--type-body-sm);
+}
+.basis-disclosure { margin-top: var(--space-2); }
+.past-work-items { display: grid; gap: var(--space-1); }

@@ -601,6 +601,52 @@ pub fn ArtifactCard(
     }
 }
 
+/// Ambient state of Coda's collapsed companion [`Orb`].
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
+pub enum OrbState {
+    /// Quiet ambient presence at rest.
+    #[default]
+    Idle,
+    /// One or more background reviews are actively running.
+    Working,
+    /// An urgent concern awaits opening.
+    Urgent,
+}
+
+/// Coda's collapsed companion mark: a circular control carrying Coda's icon and ambient motion
+/// that respects `prefers-reduced-motion`.
+#[component]
+pub fn Orb(
+    aria_label: String,
+    #[props(default)] state: OrbState,
+    #[props(default)] expanded: Option<bool>,
+    onclick: EventHandler<MouseEvent>,
+) -> Element {
+    let class = match state {
+        OrbState::Idle => "coda-orb",
+        OrbState::Working => "coda-orb has-orb-work",
+        OrbState::Urgent => "coda-orb has-orb-urgent",
+    };
+    rsx! {
+        button {
+            class,
+            r#type: "button",
+            aria_label: "{aria_label}",
+            aria_expanded: expanded.map(|open| if open { "true" } else { "false" }),
+            onclick: move |event| onclick.call(event),
+            span { class: "coda-orb-aura", aria_hidden: "true" }
+            span { class: "coda-orb-core", aria_hidden: "true",
+                Icon { name: IconName::Sparkle }
+            }
+            if state == OrbState::Working {
+                span { class: "coda-orb-working", aria_hidden: "true", WorkingMark {} }
+            } else if state == OrbState::Urgent {
+                span { class: "coda-orb-urgent-dot", aria_hidden: "true" }
+            }
+        }
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

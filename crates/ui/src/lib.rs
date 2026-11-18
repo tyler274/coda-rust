@@ -34,8 +34,8 @@ mod tables;
 mod toast;
 pub use agent::{
     Answer, AnswerEnding, AnswerSources, ApprovalCard, ApprovalState, ArtifactCard, Basis,
-    EndAction, Ending, IndexedSource, StepState, Task, TaskList, TaskState, TaskWords, WorkStep,
-    WorkTrace,
+    EndAction, Ending, IndexedSource, Orb, OrbState, StepState, Task, TaskList, TaskState,
+    TaskWords, WorkStep, WorkTrace,
 };
 pub use attachments::{AttachButton, Attachment, AttachmentState, Attachments};
 pub use cards::{Card, RailCard};

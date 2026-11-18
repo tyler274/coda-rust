@@ -2643,7 +2643,11 @@ async fn feedback_stays_on_its_response_across_site_restart() {
     let retry = tab.held_request("PUT");
     tab.click_named(".sidebar-nav-item", "Today");
     let left = Instant::now();
-    while tab.dom().contains("Sodium was 139 on Monday.") {
+    while tab
+        .step("readText", serde_json::json!(["main.glass-stage"]))
+        .as_str()
+        .is_some_and(|stage| stage.contains("Sodium was 139 on Monday."))
+    {
         assert!(
             left.elapsed() < Duration::from_secs(5),
             "Today left the chat on screen"
@@ -3070,6 +3074,234 @@ async fn feedback_stays_on_its_response_across_site_restart() {
     drop(fresh);
     drop(sites);
     fs::remove_dir_all(home).unwrap();
+}
+
+/// Collapsed orb icon, motion / `prefers-reduced-motion` handling, hover/focus
+/// Updates preview (active reviews + recent items + controls), and persistent
+/// cross-page `Now` banner until opened once, on desktop and phone (`<900px`).
+#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+#[ignore = "browser qualification; run explicitly with --ignored"]
+async fn collapsed_orb_and_persistent_now_banner_across_pages_and_motion_modes() {
+    let _guard = test_lock().lock().await;
+    let site = build_site();
+    unsafe {
+        env::set_var("PHYSICIAN_SITE_DIR", &site);
+        env::remove_var("PHYSICIAN_AUTH");
+        env::remove_var("PHYSICIAN_AUTH_PROOF_TOKENS");
+        env::remove_var("PHYSICIAN_UPSTREAM");
+    }
+
+    let patient_a = physician_sample::WORKSPACE_IDS[0]; // Tanvir Chowdhury
+    let patient_b = physician_sample::WORKSPACE_IDS[4]; // Mary Louis
+
+    let feed = physician_sample::SampleFeed::new();
+    feed.set_today_rows(vec![
+        serde_json::json!({
+            "item_id": "concern-now-tanvir-k",
+            "version_id": "v1",
+            "waiting_since": "2026-08-27T15:45:00Z",
+            "kind": "concern",
+            "patient_workspace_id": patient_a,
+            "patient_display_name": "Tanvir Chowdhury",
+            "urgency": "now",
+            "reason": "Critical potassium 6.2 mmol/L from Regional Lab",
+            "seen": false,
+        }),
+        serde_json::json!({
+            "item_id": "concern-today-mary-bp",
+            "version_id": "v1",
+            "waiting_since": "2026-08-27T15:30:00Z",
+            "kind": "concern",
+            "patient_workspace_id": patient_b,
+            "patient_display_name": "Mary Louis",
+            "urgency": "today",
+            "reason": "Home blood pressure log ready for review",
+            "seen": false,
+        }),
+    ]);
+    feed.set_updates(
+        vec![serde_json::json!({
+            "run_id": "run-review-tanvir-1",
+            "patient_workspace_id": patient_a,
+            "patient_display_name": "Tanvir Chowdhury",
+            "headline": "Coda is reviewing repeat nephrology labs",
+            "started_at": "2026-08-27T15:58:00Z",
+        })],
+        vec![serde_json::json!({
+            "item_id": "update-mary-discharge",
+            "patient_workspace_id": patient_b,
+            "patient_display_name": "Mary Louis",
+            "headline": "Cardiology clinic note imported",
+        })],
+    );
+
+    let app = physician_sample::fixture_site_with_feed(Arc::clone(&feed));
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let address = listener.local_addr().unwrap();
+    let server_task = tokio::spawn(async move { axum::serve(listener, app).await.unwrap() });
+    wait_until_ready(address).await;
+
+    // 1. Desktop Today: persistent NowBanner shows at top naming patient + concern + Open control.
+    let mut browser = Tab::open(&format!("http://{address}/"));
+    browser.set_viewport(1280, 800, false);
+    let today_dom = browser.wait_for_text(
+        "Critical potassium 6.2 mmol/L from Regional Lab",
+        Duration::from_secs(20),
+    );
+    assert!(
+        today_dom.contains("now-banner") && today_dom.contains("Tanvir Chowdhury"),
+        "Today must render persistent NowBanner:\n{today_dom}"
+    );
+    browser.save_picture("now-banner-today-desktop");
+
+    // Phone Today (<900px): NowBanner fits cleanly with zero sideways scroll.
+    browser.set_viewport(390, 844, false);
+    std::thread::sleep(Duration::from_millis(350));
+    browser.wait_for_text(
+        "Critical potassium 6.2 mmol/L from Regional Lab",
+        Duration::from_secs(10),
+    );
+    let phone_today = browser.step("readShell", serde_json::json!([]));
+    assert_eq!(phone_today["pageWidth"], 390, "{phone_today}");
+    browser.save_picture("now-banner-today-phone");
+    browser.set_viewport(1280, 800, false);
+
+    // Navigate to ANOTHER patient's page (Mary Louis) -> NowBanner for Tanvir stays at top!
+    browser.navigate(&format!("http://{address}/?patient={patient_b}"));
+    let other_patient_dom = browser.wait_for_text("Mary Louis", Duration::from_secs(15));
+    let banner_text = browser
+        .eval("document.querySelector('.now-banner')?.innerText ?? ''")
+        .as_str()
+        .unwrap_or_default()
+        .to_owned();
+    assert!(
+        banner_text.contains("Tanvir Chowdhury")
+            && banner_text.contains("Critical potassium 6.2 mmol/L from Regional Lab")
+            && banner_text.contains("Open"),
+        "NowBanner must persist at the top of another patient's page:\n{banner_text}\n{other_patient_dom}"
+    );
+    browser.save_picture("now-banner-other-patient");
+
+    // Collapse Coda -> orb renders with icon, breathing aura animation under
+    // `no-preference`, honors `prefers-reduced-motion: reduce`, AND shows the Now concern pill!
+    browser.click("button.stage-minimize");
+    browser.wait_for_text(
+        "Critical potassium 6.2 mmol/L from Regional Lab",
+        Duration::from_secs(10),
+    );
+    let orb_motion = browser.eval(
+        "(() => { const aura = document.querySelector('.coda-orb-aura'); const svg = document.querySelector('button.coda-orb svg'); return { hasOrb: Boolean(svg), auraAnim: aura ? getComputedStyle(aura).animationName : null }; })()",
+    );
+    assert_eq!(orb_motion["hasOrb"], serde_json::json!(true));
+    assert_ne!(
+        orb_motion["auraAnim"],
+        serde_json::json!("none"),
+        "orb aura should animate when motion is allowed: {orb_motion}"
+    );
+    let orb_pill = browser
+        .eval("document.querySelector('.orb-now-pill')?.innerText ?? ''")
+        .as_str()
+        .unwrap_or_default()
+        .to_owned();
+    assert!(
+        orb_pill.contains("Tanvir Chowdhury")
+            && orb_pill.contains("Critical potassium 6.2 mmol/L from Regional Lab"),
+        "collapsed orb must surface the Now concern:\n{orb_pill}"
+    );
+    browser.save_picture("orb-collapsed-with-now");
+
+    // Verify `prefers-reduced-motion: reduce` disables orb animations!
+    browser.set_viewport(1280, 800, true);
+    let reduced_motion = browser.eval(
+        "(() => { const orb = document.querySelector('button.coda-orb'); const aura = document.querySelector('.coda-orb-aura'); return { orbAnim: orb ? getComputedStyle(orb).animationName : null, auraAnim: aura ? getComputedStyle(aura).animationName : null }; })()",
+    );
+    assert_eq!(
+        reduced_motion,
+        serde_json::json!({ "orbAnim": "none", "auraAnim": "none" }),
+        "prefers-reduced-motion: reduce must disable orb animations: {reduced_motion}"
+    );
+    browser.save_picture("orb-reduced-motion");
+
+    // Hover/focus the collapsed orb -> previews Updates (active reviews + new items +
+    // controls to open Coda and All updates), on both desktop and phone (<900px)!
+    browser.eval(
+        "Boolean(document.querySelector('.orb-dock')?.dispatchEvent(new FocusEvent('focusin', { bubbles: true })))",
+    );
+    browser.wait_for_text(
+        "Coda is reviewing repeat nephrology labs",
+        Duration::from_secs(10),
+    );
+    let preview_text = browser
+        .eval("document.querySelector('.orb-preview')?.innerText ?? ''")
+        .as_str()
+        .unwrap_or_default()
+        .to_owned();
+    assert!(
+        preview_text.contains("Updates")
+            && preview_text.contains("Coda is reviewing repeat nephrology labs")
+            && preview_text.contains("Cardiology clinic note imported")
+            && preview_text.contains("Open Coda")
+            && preview_text.contains("All updates"),
+        "orb preview missing active review, recent item, or action buttons:\n{preview_text}"
+    );
+    browser.save_picture("orb-updates-preview-desktop");
+
+    browser.set_viewport(390, 844, true);
+    let phone_orb_overflow = browser
+        .eval("document.scrollingElement.scrollWidth - document.scrollingElement.clientWidth");
+    assert!(
+        phone_orb_overflow.as_f64().is_some_and(|by| by <= 0.0),
+        "orb preview overflowed phone viewport by {phone_orb_overflow}"
+    );
+    browser.save_picture("orb-updates-preview-phone");
+    browser.set_viewport(1280, 800, false);
+
+    // Click "All updates" in the orb preview -> expands Coda to Updates surface, NowBanner still at top!
+    browser.click_named(".orb-preview button", "All updates");
+    browser.wait_for_text("Collapse Coda", Duration::from_secs(10));
+    assert!(
+        browser
+            .eval("Boolean(document.querySelector('.now-banner'))")
+            .as_bool()
+            == Some(true),
+        "NowBanner must stay visible on Updates until opened once"
+    );
+
+    // Click "Open" on NowBanner -> opens Tanvir Chowdhury, sends `item.open`, and clears NowBanner!
+    browser.click_named(".now-banner button", "Open");
+    browser.wait_for_text("MRN 00000003", Duration::from_secs(10));
+    let cleared_deadline = Instant::now() + Duration::from_secs(10);
+    while browser
+        .eval("Boolean(document.querySelector('.now-banner'))")
+        .as_bool()
+        == Some(true)
+    {
+        assert!(
+            Instant::now() < cleared_deadline,
+            "NowBanner did not clear after opening the concern once"
+        );
+        std::thread::sleep(Duration::from_millis(60));
+    }
+    std::thread::sleep(Duration::from_millis(250));
+    browser.save_picture("now-banner-cleared-after-open");
+
+    // Collapsing again after opening confirms `.orb-now-pill` is also gone.
+    browser.click("button.stage-minimize");
+    let orb_deadline = Instant::now() + Duration::from_secs(5);
+    while browser
+        .eval("Boolean(document.querySelector('button.coda-orb[aria-label=\"Open Coda\"]'))")
+        .as_bool()
+        != Some(true)
+    {
+        assert!(Instant::now() < orb_deadline, "orb did not render");
+        std::thread::sleep(Duration::from_millis(40));
+    }
+    assert_eq!(
+        browser.eval("Boolean(document.querySelector('.orb-now-pill'))"),
+        serde_json::json!(false)
+    );
+
+    server_task.abort();
 }
 
 async fn dump_dom(chrome: &std::path::Path, url: &str) -> String {

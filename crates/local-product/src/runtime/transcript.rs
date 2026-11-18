@@ -142,6 +142,9 @@ impl Conversation {
                     attempt_id: AttemptId(attempt.id.clone()),
                     finished_at: wire_time(message.saved_at),
                     text: message.text.clone(),
+                    segments: Vec::new(),
+                    basis: None,
+                    newer_records: false,
                 }
             }
             Some(RunOutcome::Held {
@@ -415,6 +418,9 @@ mod tests {
                     finished_at: physician_wire::SavedAt(ANSWERED),
                     text: "Done.".into(),
                     feedback: None,
+                    segments: Vec::new(),
+                    basis: None,
+                    newer_records: false,
                 },
                 RunOutcome::Held {
                     reason: HoldReason::Stopped,
@@ -523,6 +529,9 @@ mod tests {
                 finished_at: physician_wire::SavedAt(ANSWERED + 120),
                 text: "The rest.".into(),
                 feedback: None,
+                segments: Vec::new(),
+                basis: None,
+                newer_records: false,
             }
         );
     }
@@ -898,6 +907,9 @@ mod tests {
                     finished_at: physician_wire::SavedAt(ANSWERED),
                     text: "Done.".into(),
                     feedback: None,
+                    segments: Vec::new(),
+                    basis: None,
+                    newer_records: false,
                 },
                 "{case}"
             );
