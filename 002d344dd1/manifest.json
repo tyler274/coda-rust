@@ -1,0 +1,233 @@
+{
+  "branch": "tyler-eng-316-2-schedule-shell-and-site-suite",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC1",
+      "label": "Desktop and phone schedule rail and pre-visit briefing Chromium suite",
+      "kind": "run",
+      "revision": "5605985565e8aa574ec7924043b7aadf1ddbb635",
+      "dirty": false,
+      "recorded": "2026-11-19T00:23:14+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-sample",
+        "--test",
+        "site_schedule_briefing",
+        "--",
+        "--include-ignored",
+        "--test-threads=1"
+      ],
+      "expect": "\\b1 passed; 0 failed\\b",
+      "expect_fail": false,
+      "files": [
+        "01-Desktop-and-phone-schedule-rail-and-pre-visit-br.log"
+      ],
+      "seconds": 81.0,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true,
+      "kept": {
+        "revision": "002d344dd1953e40823bc8b6f7586dd136b55fcf",
+        "reason": "Clean rebase onto Batch 3 tip (#46, 1a93d374c); workspace and wasm32 clippy and unit checks re-verified"
+      }
+    },
+    {
+      "id": 2,
+      "claim": "AC2",
+      "label": "Shell screen state and timezone Chromium check",
+      "kind": "run",
+      "revision": "5605985565e8aa574ec7924043b7aadf1ddbb635",
+      "dirty": false,
+      "recorded": "2026-11-19T00:24:36+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-sample",
+        "--test",
+        "shell_states",
+        "--",
+        "--include-ignored",
+        "--test-threads=1"
+      ],
+      "expect": "\\b1 passed; 0 failed\\b",
+      "expect_fail": false,
+      "files": [
+        "02-Shell-screen-state-and-timezone-Chromium-check.log"
+      ],
+      "seconds": 59.4,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true,
+      "kept": {
+        "revision": "002d344dd1953e40823bc8b6f7586dd136b55fcf",
+        "reason": "Clean rebase onto Batch 3 tip (#46, 1a93d374c); workspace and wasm32 clippy and unit checks re-verified"
+      }
+    },
+    {
+      "id": 3,
+      "claim": "AC3",
+      "label": "Screenshot briefing-schedule-01-desktop-today",
+      "kind": "screenshot",
+      "revision": "5605985565e8aa574ec7924043b7aadf1ddbb635",
+      "dirty": false,
+      "recorded": "2026-11-19T00:25:35+00:00",
+      "files": [
+        "03-briefing-schedule-01-desktop-today.png"
+      ],
+      "source": "/home/luluco/.gemini/antigravity/brain/2d80a44e-a5ca-4fbe-b7bb-e18040ee666a/scratch/shots_pr44/briefing-schedule-01-desktop-today.png",
+      "ok": true,
+      "kept": {
+        "revision": "002d344dd1953e40823bc8b6f7586dd136b55fcf",
+        "reason": "Clean rebase onto Batch 3 tip (#46, 1a93d374c); workspace and wasm32 clippy and unit checks re-verified"
+      }
+    },
+    {
+      "id": 4,
+      "claim": "AC3",
+      "label": "Screenshot briefing-schedule-02-phone-today-next-visit",
+      "kind": "screenshot",
+      "revision": "5605985565e8aa574ec7924043b7aadf1ddbb635",
+      "dirty": false,
+      "recorded": "2026-11-19T00:25:35+00:00",
+      "files": [
+        "04-briefing-schedule-02-phone-today-next-visit.png"
+      ],
+      "source": "/home/luluco/.gemini/antigravity/brain/2d80a44e-a5ca-4fbe-b7bb-e18040ee666a/scratch/shots_pr44/briefing-schedule-02-phone-today-next-visit.png",
+      "ok": true,
+      "kept": {
+        "revision": "002d344dd1953e40823bc8b6f7586dd136b55fcf",
+        "reason": "Clean rebase onto Batch 3 tip (#46, 1a93d374c); workspace and wasm32 clippy and unit checks re-verified"
+      }
+    },
+    {
+      "id": 5,
+      "claim": "AC3",
+      "label": "Screenshot briefing-schedule-03-phone-briefing",
+      "kind": "screenshot",
+      "revision": "5605985565e8aa574ec7924043b7aadf1ddbb635",
+      "dirty": false,
+      "recorded": "2026-11-19T00:25:35+00:00",
+      "files": [
+        "05-briefing-schedule-03-phone-briefing.png"
+      ],
+      "source": "/home/luluco/.gemini/antigravity/brain/2d80a44e-a5ca-4fbe-b7bb-e18040ee666a/scratch/shots_pr44/briefing-schedule-03-phone-briefing.png",
+      "ok": true,
+      "kept": {
+        "revision": "002d344dd1953e40823bc8b6f7586dd136b55fcf",
+        "reason": "Clean rebase onto Batch 3 tip (#46, 1a93d374c); workspace and wasm32 clippy and unit checks re-verified"
+      }
+    },
+    {
+      "id": 6,
+      "claim": "AC3",
+      "label": "Screenshot briefing-schedule-04-desktop-briefing",
+      "kind": "screenshot",
+      "revision": "5605985565e8aa574ec7924043b7aadf1ddbb635",
+      "dirty": false,
+      "recorded": "2026-11-19T00:25:36+00:00",
+      "files": [
+        "06-briefing-schedule-04-desktop-briefing.png"
+      ],
+      "source": "/home/luluco/.gemini/antigravity/brain/2d80a44e-a5ca-4fbe-b7bb-e18040ee666a/scratch/shots_pr44/briefing-schedule-04-desktop-briefing.png",
+      "ok": true,
+      "kept": {
+        "revision": "002d344dd1953e40823bc8b6f7586dd136b55fcf",
+        "reason": "Clean rebase onto Batch 3 tip (#46, 1a93d374c); workspace and wasm32 clippy and unit checks re-verified"
+      }
+    },
+    {
+      "id": 7,
+      "claim": "AC3",
+      "label": "Screenshot briefing-schedule-05-desktop-citation",
+      "kind": "screenshot",
+      "revision": "5605985565e8aa574ec7924043b7aadf1ddbb635",
+      "dirty": false,
+      "recorded": "2026-11-19T00:25:36+00:00",
+      "files": [
+        "07-briefing-schedule-05-desktop-citation.png"
+      ],
+      "source": "/home/luluco/.gemini/antigravity/brain/2d80a44e-a5ca-4fbe-b7bb-e18040ee666a/scratch/shots_pr44/briefing-schedule-05-desktop-citation.png",
+      "ok": true,
+      "kept": {
+        "revision": "002d344dd1953e40823bc8b6f7586dd136b55fcf",
+        "reason": "Clean rebase onto Batch 3 tip (#46, 1a93d374c); workspace and wasm32 clippy and unit checks re-verified"
+      }
+    },
+    {
+      "id": 8,
+      "claim": "AC3",
+      "label": "Screenshot briefing-schedule-06-desktop-basis-sources",
+      "kind": "screenshot",
+      "revision": "5605985565e8aa574ec7924043b7aadf1ddbb635",
+      "dirty": false,
+      "recorded": "2026-11-19T00:25:36+00:00",
+      "files": [
+        "08-briefing-schedule-06-desktop-basis-sources.png"
+      ],
+      "source": "/home/luluco/.gemini/antigravity/brain/2d80a44e-a5ca-4fbe-b7bb-e18040ee666a/scratch/shots_pr44/briefing-schedule-06-desktop-basis-sources.png",
+      "ok": true,
+      "kept": {
+        "revision": "002d344dd1953e40823bc8b6f7586dd136b55fcf",
+        "reason": "Clean rebase onto Batch 3 tip (#46, 1a93d374c); workspace and wasm32 clippy and unit checks re-verified"
+      }
+    },
+    {
+      "id": 9,
+      "claim": "AC3",
+      "label": "Screenshot briefing-schedule-07-desktop-stale-refresh",
+      "kind": "screenshot",
+      "revision": "5605985565e8aa574ec7924043b7aadf1ddbb635",
+      "dirty": false,
+      "recorded": "2026-11-19T00:25:36+00:00",
+      "files": [
+        "09-briefing-schedule-07-desktop-stale-refresh.png"
+      ],
+      "source": "/home/luluco/.gemini/antigravity/brain/2d80a44e-a5ca-4fbe-b7bb-e18040ee666a/scratch/shots_pr44/briefing-schedule-07-desktop-stale-refresh.png",
+      "ok": true,
+      "kept": {
+        "revision": "002d344dd1953e40823bc8b6f7586dd136b55fcf",
+        "reason": "Clean rebase onto Batch 3 tip (#46, 1a93d374c); workspace and wasm32 clippy and unit checks re-verified"
+      }
+    },
+    {
+      "id": 10,
+      "claim": "AC3",
+      "label": "Screenshot briefing-schedule-08-desktop-moved-history",
+      "kind": "screenshot",
+      "revision": "5605985565e8aa574ec7924043b7aadf1ddbb635",
+      "dirty": false,
+      "recorded": "2026-11-19T00:25:36+00:00",
+      "files": [
+        "10-briefing-schedule-08-desktop-moved-history.png"
+      ],
+      "source": "/home/luluco/.gemini/antigravity/brain/2d80a44e-a5ca-4fbe-b7bb-e18040ee666a/scratch/shots_pr44/briefing-schedule-08-desktop-moved-history.png",
+      "ok": true,
+      "kept": {
+        "revision": "002d344dd1953e40823bc8b6f7586dd136b55fcf",
+        "reason": "Clean rebase onto Batch 3 tip (#46, 1a93d374c); workspace and wasm32 clippy and unit checks re-verified"
+      }
+    },
+    {
+      "id": 11,
+      "claim": "AC3",
+      "label": "Screenshot briefing-schedule-09-desktop-patient-history",
+      "kind": "screenshot",
+      "revision": "5605985565e8aa574ec7924043b7aadf1ddbb635",
+      "dirty": false,
+      "recorded": "2026-11-19T00:25:36+00:00",
+      "files": [
+        "11-briefing-schedule-09-desktop-patient-history.png"
+      ],
+      "source": "/home/luluco/.gemini/antigravity/brain/2d80a44e-a5ca-4fbe-b7bb-e18040ee666a/scratch/shots_pr44/briefing-schedule-09-desktop-patient-history.png",
+      "ok": true,
+      "kept": {
+        "revision": "002d344dd1953e40823bc8b6f7586dd136b55fcf",
+        "reason": "Clean rebase onto Batch 3 tip (#46, 1a93d374c); workspace and wasm32 clippy and unit checks re-verified"
+      }
+    }
+  ]
+}
