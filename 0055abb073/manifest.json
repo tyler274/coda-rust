@@ -1,0 +1,146 @@
+{
+  "branch": "tyler-eng-307-3-site-patient-reviews-suite",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC1",
+      "label": "Chromium browser qualification for patient reviews controls reload and panel access",
+      "kind": "run",
+      "revision": "c57b6890c4f4464b5ca8b468644b38a0ff28f84c",
+      "dirty": false,
+      "recorded": "2026-11-19T00:15:11+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-sample",
+        "--test",
+        "site_patient_reviews",
+        "--",
+        "--include-ignored",
+        "--test-threads=1"
+      ],
+      "expect": "\\b2 passed; 0 failed\\b",
+      "expect_fail": false,
+      "files": [
+        "01-Chromium-browser-qualification-for-patient-revie.log"
+      ],
+      "seconds": 80.9,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true,
+      "kept": {
+        "revision": "0055abb0737fd5e478afcd7623610b387904b7a4",
+        "reason": "Clean rebase onto Batch 3 tip (#46, 1a93d374c); workspace and wasm32 clippy and unit checks re-verified"
+      }
+    },
+    {
+      "id": 2,
+      "claim": "AC2",
+      "label": "Screenshot patient-reviews-access-revoked-desktop",
+      "kind": "screenshot",
+      "revision": "c57b6890c4f4464b5ca8b468644b38a0ff28f84c",
+      "dirty": false,
+      "recorded": "2026-11-19T00:16:32+00:00",
+      "files": [
+        "02-patient-reviews-access-revoked-desktop.png"
+      ],
+      "source": "/home/luluco/.gemini/antigravity/brain/2d80a44e-a5ca-4fbe-b7bb-e18040ee666a/scratch/shots_pr39/patient-reviews-access-revoked-desktop.png",
+      "ok": true,
+      "kept": {
+        "revision": "0055abb0737fd5e478afcd7623610b387904b7a4",
+        "reason": "Clean rebase onto Batch 3 tip (#46, 1a93d374c); workspace and wasm32 clippy and unit checks re-verified"
+      }
+    },
+    {
+      "id": 3,
+      "claim": "AC2",
+      "label": "Screenshot patient-reviews-completed-desktop",
+      "kind": "screenshot",
+      "revision": "c57b6890c4f4464b5ca8b468644b38a0ff28f84c",
+      "dirty": false,
+      "recorded": "2026-11-19T00:16:32+00:00",
+      "files": [
+        "03-patient-reviews-completed-desktop.png"
+      ],
+      "source": "/home/luluco/.gemini/antigravity/brain/2d80a44e-a5ca-4fbe-b7bb-e18040ee666a/scratch/shots_pr39/patient-reviews-completed-desktop.png",
+      "ok": true,
+      "kept": {
+        "revision": "0055abb0737fd5e478afcd7623610b387904b7a4",
+        "reason": "Clean rebase onto Batch 3 tip (#46, 1a93d374c); workspace and wasm32 clippy and unit checks re-verified"
+      }
+    },
+    {
+      "id": 4,
+      "claim": "AC2",
+      "label": "Screenshot patient-reviews-couldnt-finish-desktop",
+      "kind": "screenshot",
+      "revision": "c57b6890c4f4464b5ca8b468644b38a0ff28f84c",
+      "dirty": false,
+      "recorded": "2026-11-19T00:16:32+00:00",
+      "files": [
+        "04-patient-reviews-couldnt-finish-desktop.png"
+      ],
+      "source": "/home/luluco/.gemini/antigravity/brain/2d80a44e-a5ca-4fbe-b7bb-e18040ee666a/scratch/shots_pr39/patient-reviews-couldnt-finish-desktop.png",
+      "ok": true,
+      "kept": {
+        "revision": "0055abb0737fd5e478afcd7623610b387904b7a4",
+        "reason": "Clean rebase onto Batch 3 tip (#46, 1a93d374c); workspace and wasm32 clippy and unit checks re-verified"
+      }
+    },
+    {
+      "id": 5,
+      "claim": "AC2",
+      "label": "Screenshot patient-reviews-failed-control-desktop",
+      "kind": "screenshot",
+      "revision": "c57b6890c4f4464b5ca8b468644b38a0ff28f84c",
+      "dirty": false,
+      "recorded": "2026-11-19T00:16:32+00:00",
+      "files": [
+        "05-patient-reviews-failed-control-desktop.png"
+      ],
+      "source": "/home/luluco/.gemini/antigravity/brain/2d80a44e-a5ca-4fbe-b7bb-e18040ee666a/scratch/shots_pr39/patient-reviews-failed-control-desktop.png",
+      "ok": true,
+      "kept": {
+        "revision": "0055abb0737fd5e478afcd7623610b387904b7a4",
+        "reason": "Clean rebase onto Batch 3 tip (#46, 1a93d374c); workspace and wasm32 clippy and unit checks re-verified"
+      }
+    },
+    {
+      "id": 6,
+      "claim": "AC2",
+      "label": "Screenshot patient-reviews-phone",
+      "kind": "screenshot",
+      "revision": "c57b6890c4f4464b5ca8b468644b38a0ff28f84c",
+      "dirty": false,
+      "recorded": "2026-11-19T00:16:32+00:00",
+      "files": [
+        "06-patient-reviews-phone.png"
+      ],
+      "source": "/home/luluco/.gemini/antigravity/brain/2d80a44e-a5ca-4fbe-b7bb-e18040ee666a/scratch/shots_pr39/patient-reviews-phone.png",
+      "ok": true,
+      "kept": {
+        "revision": "0055abb0737fd5e478afcd7623610b387904b7a4",
+        "reason": "Clean rebase onto Batch 3 tip (#46, 1a93d374c); workspace and wasm32 clippy and unit checks re-verified"
+      }
+    },
+    {
+      "id": 7,
+      "claim": "AC2",
+      "label": "Screenshot patient-reviews-stopped-desktop",
+      "kind": "screenshot",
+      "revision": "c57b6890c4f4464b5ca8b468644b38a0ff28f84c",
+      "dirty": false,
+      "recorded": "2026-11-19T00:16:33+00:00",
+      "files": [
+        "07-patient-reviews-stopped-desktop.png"
+      ],
+      "source": "/home/luluco/.gemini/antigravity/brain/2d80a44e-a5ca-4fbe-b7bb-e18040ee666a/scratch/shots_pr39/patient-reviews-stopped-desktop.png",
+      "ok": true,
+      "kept": {
+        "revision": "0055abb0737fd5e478afcd7623610b387904b7a4",
+        "reason": "Clean rebase onto Batch 3 tip (#46, 1a93d374c); workspace and wasm32 clippy and unit checks re-verified"
+      }
+    }
+  ]
+}
