@@ -1,0 +1,68 @@
+{
+  "branch": "tyler-eng-451-immediate-pending-chat-listing",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC1",
+      "label": "Browser immediate pending chat listing, reload switch survival, and second-tab SSE sync",
+      "kind": "run",
+      "revision": "0d6274caadfed1a8b2364191f22a38863a8c0181",
+      "dirty": false,
+      "recorded": "2026-11-19T00:55:22+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "physician-sample",
+        "--test",
+        "site_roger_qa_tail",
+        "--",
+        "--ignored",
+        "new_conversation_appears_immediately_survives_switch_and_notifies_second_tab"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "01-Browser-immediate-pending-chat-listing-reload-sw.log"
+      ],
+      "seconds": 53.7,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 2,
+      "claim": "AC2",
+      "label": "physician-app, physician-sample unit tests and wasm32 clippy",
+      "kind": "run",
+      "revision": "0d6274caadfed1a8b2364191f22a38863a8c0181",
+      "dirty": false,
+      "recorded": "2026-11-19T00:56:16+00:00",
+      "command": [
+        "bash",
+        "-lc",
+        "cargo clippy -p physician-app -p physician-demo-db --target wasm32-unknown-unknown -- -D warnings && cargo test --locked -p physician-app --lib && cargo test --locked -p physician-sample --lib"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "02-physician-app-physician-sample-unit-tests-and-wa.log"
+      ],
+      "seconds": 53.6,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 3,
+      "claim": "AC3",
+      "label": "",
+      "kind": "gap",
+      "revision": "0d6274caadfed1a8b2364191f22a38863a8c0181",
+      "dirty": false,
+      "recorded": "2026-11-19T00:57:10+00:00",
+      "reason": "Host valkey-server 9.1.2 segfaults (exit 139); fanout Valkey SSE test verified on hosted ubuntu-24.04 CI",
+      "ok": false,
+      "files": []
+    }
+  ]
+}
