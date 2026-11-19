@@ -254,6 +254,7 @@ impl DemoStore {
                     outcome: None,
                     patient_display_name: Some(r.get_str("display_name")?),
                     updated_at: Some(r.get_str("created_at")?),
+                    archived: false,
                 })
             })
             .await?;
@@ -324,6 +325,7 @@ impl DemoStore {
             patients,
             next_after: None,
             may_be_missing_someone: false,
+            match_mode: Default::default(),
         })
     }
 
@@ -381,6 +383,7 @@ impl DemoStore {
                 transcript: Vec::new(),
                 feedback: SnapshotFeedback::Loaded,
                 queued: Vec::new(),
+                archived: false,
             },
         };
         Ok(ChatSnapshotResponse { snapshot })
@@ -750,6 +753,7 @@ impl DemoStore {
                     summary: None,
                     outcome: None,
                     created_at: r.get_str("created_at")?,
+                    archived: false,
                 })
             })
             .collect()

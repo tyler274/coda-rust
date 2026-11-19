@@ -8,7 +8,9 @@
 )]
 
 mod access_notice;
+mod citations_panel;
 mod composer;
+mod dictation;
 mod feedback;
 mod follow_ups;
 mod invitations;
@@ -17,6 +19,7 @@ mod local_draft;
 mod matching_reply;
 mod memory_view;
 mod panels;
+mod patient_finder;
 mod patient_reviews_panel;
 mod schedule_briefing;
 mod shell;
@@ -27,8 +30,11 @@ mod today_updates;
 
 use std::sync::atomic::{AtomicU64, Ordering};
 
+use citations_panel::SourcePanelLoad;
 use composer::{Composer, ConflictDraft, DraftTarget, Notice, SaveOutcome, SendAnswer};
+use dictation::DictationState;
 use dioxus::prelude::*;
+use patient_finder::{FindPatientAction, FindPatientSearch};
 use physician_client::{DraftSave, PhysicianClient};
 use physician_wire::briefings::BriefingSummaryItemWire;
 use physician_wire::{
@@ -51,13 +57,13 @@ use shell::{
     ReplyReviewAction, RosterContinuation, STOP, SourceChip, SynopsisPiece, TODAY_LOADING,
     TODAY_QUIET, TODAY_QUIET_DETAIL, TODAY_STALE, TODAY_UNAVAILABLE, TRY_AGAIN, TodayLine,
     TodayView, WORKSPACE_CLOSED, WORKSPACE_EMPTY, WORKSPACE_UNAVAILABLE, WorkspaceRecordsState,
-    active_now_concern, answer_to, chat_view, chip_name, citation_inspection, connection_lines,
-    demographic_card_view, format_context_time, format_local_date, format_waited, keyboard_command,
-    message_pieces, need_you_words, panel_target, past_work_copy, project_steps, read_view,
-    reply_channel_label, reply_review_actions, reply_revision_words, reply_urgency_words,
-    resolve_roster_view, row_icon, row_tone, schedule_empty_copy, search_row_detail,
-    shows_today_schedule, source_lines, summary_times, synopsis_pieces, today_lines, today_view,
-    work_end_reason, work_heading, workspace_records_state,
+    active_now_concern, answer_to, chat_view, chip_name, connection_lines, demographic_card_view,
+    format_context_time, format_local_date, format_waited, keyboard_command, message_pieces,
+    need_you_words, panel_target, past_work_copy, project_steps, read_view, reply_channel_label,
+    reply_review_actions, reply_revision_words, reply_urgency_words, resolve_roster_view, row_icon,
+    row_tone, schedule_empty_copy, shows_today_schedule, source_lines, summary_times,
+    synopsis_pieces, today_lines, today_view, work_end_reason, work_heading,
+    workspace_records_state,
 };
 #[cfg(target_arch = "wasm32")]
 use shell::{EventRefetch, event_refetch};
@@ -65,8 +71,8 @@ use status::{CommandNotice, CommandStage, ReadNotice, ReadStage};
 use ui::{
     ActionRow, Author, Button, ButtonVariant, Card, Count, DateField, DateKind, Dialog,
     DraftConflict, EmptyLine, Icon, IconName, LiveDot, NavigationControl, NavigationRow, Orb,
-    OrbState, PageTitle, ProgressBar, SearchField, StatePill, StatusLine, TextField, TextKind,
-    Tone, WorkingMark,
+    OrbState, PageTitle, ProgressBar, StatePill, StatusLine, TextField, TextKind, Tone,
+    WorkingMark,
 };
 
 const SHELL_STYLES: &str = include_str!("../assets/shell.css");
@@ -1121,9 +1127,15 @@ fn PhysicianShell(
     // Draft text and the Save mark, per patient workspace and chat.
     let mut composer = use_signal(Composer::default);
     let mut reading = use_signal(|| None::<OpenReading>);
+    let mut source_panel = use_signal(|| SourcePanelLoad::Idle);
+    let mut source_request_id = use_signal(|| 0u64);
+    let mut dictation_state = use_signal(DictationState::default);
+    let mut dictation_stream = use_signal(|| None::<ui::Listening<ui::DictationHeard>>);
+    let mut dictation_task = use_signal(|| None::<dioxus::core::Task>);
     let mut open_briefing = use_signal(|| None::<OpenBriefingTarget>);
     let mut focus = use_signal(|| -1i32);
     let mut open_chat = use_signal(|| None::<String>);
+    let mut last_archived = use_signal(|| None::<(String, String)>);
     let mut moved = use_signal(|| false);
     let mut editing = use_signal(|| false);
     let mut query = use_signal(String::new);
@@ -1161,6 +1173,19 @@ fn PhysicianShell(
     let reply_slot = use_command_slot();
     let send_slot = use_command_slot();
     let resume_slot = use_command_slot();
+    let archive_slot = use_command_slot();
+    let discuss_slot = use_persisted_command_slot(
+        "chat-discuss",
+        client,
+        whoami,
+        selected,
+        open_chat,
+        move |value| {
+            restore_returned_queue_from_response(&value, None, composer, client);
+            *snapshot_attempt.write() += 1;
+            *workspace_attempt.write() += 1;
+        },
+    );
     let chat_resume_slot = use_persisted_command_slot(
         "chat-resume",
         client,
@@ -1850,6 +1875,7 @@ fn PhysicianShell(
         roster_pages.read().as_ref(),
     );
     let search_state = roster_view.rows;
+    let search_match_mode = roster_view.match_mode;
     let roster_continuation = roster_view.continuation;
     let search_rows = search_state.content().cloned().unwrap_or_default();
     let mut load_more_roster = move |allow_retry: bool| {
@@ -1962,6 +1988,11 @@ fn PhysicianShell(
         workspace_cache.set(None);
         forget_workspace_drafts(composer, &client.peek(), whoami, &gone_ws);
         reading.set(None);
+        let closed = source_panel
+            .peek()
+            .clone()
+            .into_unavailable("Panel access is required to view this patient’s records.");
+        source_panel.set(closed);
         open_briefing.set(None);
         past_work_open.set(false);
         gone.set(Some(gone_ws));
@@ -1995,6 +2026,7 @@ fn PhysicianShell(
                         Ok(page) => Ok((
                             conversation_lines(&page.snapshot),
                             page.snapshot.queued.clone(),
+                            page.snapshot.archived,
                         )),
                         Err(error) => {
                             if matches!(
@@ -2011,7 +2043,7 @@ fn PhysicianShell(
                         }
                     }
                 }
-                _ => Ok((Vec::new(), Vec::new())),
+                _ => Ok((Vec::new(), Vec::new(), false)),
             };
             (asked, answer)
         }
@@ -2065,6 +2097,13 @@ fn PhysicianShell(
             if reading.peek().is_some() {
                 reading.set(None);
             }
+            if source_panel.peek().active_chip().is_some() {
+                let blocked = source_panel
+                    .peek()
+                    .clone()
+                    .into_unavailable("Panel access is required to view this patient’s records.");
+                source_panel.set(blocked);
+            }
             if open_briefing.peek().is_some() {
                 open_briefing.set(None);
             }
@@ -2097,8 +2136,16 @@ fn PhysicianShell(
     let mut last_conversation = use_signal(|| None);
     let mut last_queued = use_signal(|| None);
     use_effect(move || {
-        if let Some((asked, Ok((lines, queued_items)))) = snapshot.read().as_ref() {
+        if let Some((asked, Ok((lines, queued_items, archived)))) = snapshot.read().as_ref() {
             if let (Some(workspace), Some(chat)) = asked.clone() {
+                if !archived
+                    && last_archived
+                        .peek()
+                        .as_ref()
+                        .is_some_and(|(ws, c)| ws == &workspace && c == &chat)
+                {
+                    last_archived.set(None);
+                }
                 let reads = lines.iter().filter_map(|line| match &line.response {
                     Some((id, feedback::Read::Loaded(Some(saved)))) => Some((id, saved)),
                     _ => None,
@@ -2115,13 +2162,13 @@ fn PhysicianShell(
     let conversation = read_view(
         answer_to(&asking, last_conversation.read().as_ref()).cloned(),
         answer_to(&asking, snapshot.read().as_ref()).map(|res| match res {
-            Ok((lines, _)) => Ok(lines.clone()),
+            Ok((lines, _, _)) => Ok(lines.clone()),
             Err(()) => Err(()),
         }),
     );
     let queued = answer_to(&asking, snapshot.read().as_ref())
         .and_then(|res| res.as_ref().ok())
-        .map(|(_, queued)| queued.clone())
+        .map(|(_, queued, _)| queued.clone())
         .or_else(|| answer_to(&asking, last_queued.read().as_ref()).cloned())
         .unwrap_or_default();
     let active_now = today_state.content().and_then(|rows| {
@@ -2404,6 +2451,248 @@ fn PhysicianShell(
         // The new chat is its own draft target, so its composer starts empty.
         open_chat.set(Some(new_chat_id()));
     };
+
+    let open_source_chip = move |chip: SourceChip| {
+        let next_id = *source_request_id.peek() + 1;
+        source_request_id.set(next_id);
+        let current_ws = selected.peek().clone();
+        let current_chat = open_chat.peek().clone();
+        let source_key = chip.source_key.clone();
+        let api = client.peek().clone();
+        let presented = api.session().get();
+        let can_fetch_chat_source = matches!(place(), Place::Workspace)
+            && current_ws.is_some()
+            && current_chat.is_some()
+            && source_key.is_some()
+            && !api.is_demo();
+        if can_fetch_chat_source
+            && let (Some(ws_id), Some(chat_id), Some(key)) = (current_ws, current_chat, source_key)
+        {
+            source_panel.set(SourcePanelLoad::Loading {
+                request_id: next_id,
+                chip: Box::new(chip.clone()),
+            });
+            spawn(async move {
+                match api.cited_source(&ws_id, &chat_id, &key).await {
+                    Ok(resp) => {
+                        if *source_request_id.peek() != next_id {
+                            return;
+                        }
+                        if clinical_dialogs_blocked(
+                            place(),
+                            selected.peek().as_deref(),
+                            gone.peek().as_deref(),
+                            workspace_cache.peek().as_ref(),
+                        ) {
+                            source_panel.set(SourcePanelLoad::Unavailable {
+                                eyebrow: format!("Source {}", chip.index),
+                                title: chip.label.clone(),
+                                reason: "Panel access is required to view this patient’s records."
+                                    .to_owned(),
+                            });
+                            return;
+                        }
+                        source_panel.set(SourcePanelLoad::Loaded {
+                            chip: Box::new(chip),
+                            source: Box::new(resp.source),
+                        });
+                    }
+                    Err(error) => {
+                        if *source_request_id.peek() != next_id {
+                            return;
+                        }
+                        if let Some(refused) = refusal(&error) {
+                            session.refused(refused, *shown.peek(), presented);
+                            source_panel.set(SourcePanelLoad::Idle);
+                            return;
+                        }
+                        if let physician_client::HttpError::Status {
+                            status: 403 | 404,
+                            ref body,
+                        } = error
+                        {
+                            let detail = serde_json::from_str::<serde_json::Value>(body)
+                                .ok()
+                                .and_then(|v| {
+                                    v.get("detail")
+                                        .and_then(|d| d.as_str())
+                                        .map(str::trim)
+                                        .filter(|s| !s.is_empty())
+                                        .map(str::to_owned)
+                                })
+                                .unwrap_or_else(|| {
+                                    "This source is no longer available with your current access."
+                                        .to_owned()
+                                });
+                            source_panel.set(SourcePanelLoad::Unavailable {
+                                eyebrow: format!("Source {}", chip.index),
+                                title: chip.label.clone(),
+                                reason: detail,
+                            });
+                            *workspace_attempt.write() += 1;
+                            return;
+                        }
+                        source_panel.set(SourcePanelLoad::Failed {
+                            request_id: next_id,
+                            chip: Box::new(chip),
+                            message: "Coda couldn’t load this cited source.".to_owned(),
+                        });
+                    }
+                }
+            });
+        } else {
+            source_panel.set(SourcePanelLoad::from_chip(chip));
+        }
+    };
+
+    let mut cancel_active_dictation = move || {
+        if let Some(task) = dictation_task.write().take() {
+            task.cancel();
+        }
+        dictation_stream.set(None);
+        ui::cancel_dictation();
+        dictation_state.set(DictationState::Idle);
+    };
+
+    let mut finish_active_dictation = move || {
+        if !dictation_state.peek().is_listening() {
+            return;
+        }
+        if let Some(task) = dictation_task.write().take() {
+            task.cancel();
+        }
+        let next_state = dictation_state.peek().clone().into_transcribing();
+        dictation_state.set(next_state);
+        let api = client.read().clone();
+        let target = draft_target();
+        spawn(async move {
+            let stop_result = ui::stop_dictation().answer().await;
+            dictation_stream.set(None);
+            let Ok(audio) = stop_result else {
+                dictation_state.set(DictationState::Idle);
+                composer.write().say(DICTATION_UNAVAILABLE);
+                return;
+            };
+            let request = physician_wire::DictationRequest {
+                audio_base64: audio.audio_base64,
+                mime_type: audio.mime_type,
+                sample_rate_hz: None,
+            };
+            match api.dictate(&request).await {
+                Ok(resp) => {
+                    dictation_state.set(DictationState::Idle);
+                    composer
+                        .write()
+                        .insert_dictation(target.as_ref(), &resp.transcript);
+                    if let Some(t) = target {
+                        autosave_after(composer, client, t, AUTOSAVE_DEBOUNCE_MS);
+                    }
+                }
+                Err(_) => {
+                    dictation_state.set(DictationState::Idle);
+                    composer.write().say(DICTATION_UNAVAILABLE);
+                }
+            }
+        });
+    };
+
+    let mut start_active_dictation = move |trigger: ui::DictationTrigger| {
+        if dictation_state.peek().is_active() {
+            return;
+        }
+        if let Some(task) = dictation_task.write().take() {
+            task.cancel();
+        }
+        dictation_state.set(DictationState::start(now_millis() as f64));
+        let listening = ui::start_dictation(trigger);
+        dictation_stream.set(Some(listening.clone()));
+        let task = spawn(async move {
+            loop {
+                match listening.next().await {
+                    Ok(ui::DictationHeard::Started) => {}
+                    Ok(ui::DictationHeard::Level { level }) => {
+                        dictation_state
+                            .write()
+                            .push_level(level, now_millis() as f64);
+                    }
+                    Ok(ui::DictationHeard::Released) => {
+                        finish_active_dictation();
+                        break;
+                    }
+                    Ok(ui::DictationHeard::Error { .. }) | Err(_) => {
+                        dictation_stream.set(None);
+                        dictation_task.set(None);
+                        dictation_state.set(DictationState::Idle);
+                        composer.write().say(DICTATION_UNAVAILABLE);
+                        break;
+                    }
+                }
+            }
+        });
+        dictation_task.set(Some(task));
+    };
+
+    let archive_open_chat = move || {
+        let (Some(ws_id), Some(chat_id)) = (selected(), open_chat()) else {
+            return;
+        };
+        let command = Command::new(
+            "conversation.archive",
+            serde_json::json!({
+                "patient_workspace_id": ws_id,
+                "chat_id": chat_id,
+            }),
+        );
+        archive_slot.run(client.read().clone(), command, move || {
+            last_archived.set(Some((ws_id.clone(), chat_id.clone())));
+            *workspace_attempt.write() += 1;
+            *today_attempt.write() += 1;
+            *snapshot_attempt.write() += 1;
+        });
+    };
+
+    let restore_archived_chat = move || {
+        let target = last_archived
+            .peek()
+            .clone()
+            .or_else(|| selected().zip(open_chat()));
+        let Some((ws_id, chat_id)) = target else {
+            return;
+        };
+        let command = Command::new(
+            "conversation.restore",
+            serde_json::json!({
+                "patient_workspace_id": ws_id,
+                "chat_id": chat_id,
+            }),
+        );
+        archive_slot.run(client.read().clone(), command, move || {
+            last_archived.set(None);
+            *workspace_attempt.write() += 1;
+            *today_attempt.write() += 1;
+            *snapshot_attempt.write() += 1;
+        });
+    };
+
+    let discuss_chat = move |work_item_id: Option<String>| {
+        let (Some(ws_id), Some(chat_id)) = (selected(), open_chat()) else {
+            return;
+        };
+        let command = Command::new(
+            "discussion.open",
+            serde_json::json!({
+                "patient_workspace_id": ws_id,
+                "chat_id": chat_id,
+                "work_item_id": work_item_id,
+            }),
+        );
+        let fallback = command_target(&command);
+        discuss_slot.run_with_response(client.read().clone(), command, move |value| {
+            restore_returned_queue_from_response(&value, fallback.clone(), composer, client);
+            *snapshot_attempt.write() += 1;
+            *workspace_attempt.write() += 1;
+        });
+    };
     let drawer_open = drawer() == Drawer::Open;
     let shell_class = format!(
         "glass-app{}{}{}",
@@ -2446,11 +2735,7 @@ fn PhysicianShell(
                 }
                 if key == " " && event.modifiers().ctrl() && event.modifiers().shift() {
                     event.prevent_default();
-                    let client = client.read().clone();
-                    spawn(async move {
-                        let _ = client.dictate().await;
-                        composer.write().say(DICTATION_UNAVAILABLE);
-                    });
+                    start_active_dictation(ui::DictationTrigger::HoldShortcut);
                     return;
                 }
                 let rail = if place() == Place::Workspace {
@@ -2879,6 +3164,64 @@ fn PhysicianShell(
                         },
                     }
                 }
+                {
+                    let failed_chip_for_retry = match &*source_panel.read() {
+                        SourcePanelLoad::Failed { chip, .. } => Some((**chip).clone()),
+                        _ => None,
+                    };
+                    let mut retry_open_source = open_source_chip;
+                    let on_retry_source = Callback::new(move |()| {
+                        if let Some(chip) = failed_chip_for_retry.clone() {
+                            retry_open_source(chip);
+                        }
+                    });
+                    let open_source_pane =
+                        citations_panel::build_source_pane(&source_panel(), on_retry_source);
+                    let dictation_element = match dictation_state() {
+                        DictationState::Idle => None,
+                        DictationState::Listening {
+                            elapsed_seconds,
+                            levels,
+                            ..
+                        } => Some(rsx! {
+                            ui::Dictation {
+                                label: "Listening".to_owned(),
+                                levels,
+                                elapsed: dictation::format_elapsed(elapsed_seconds),
+                                transcribing: false,
+                                cancel_label: "Cancel dictation".to_owned(),
+                                done_label: "Finish dictation".to_owned(),
+                                on_cancel: move |_| cancel_active_dictation(),
+                                on_done: move |_| finish_active_dictation(),
+                            }
+                        }),
+                        DictationState::Transcribing { elapsed, levels } => Some(rsx! {
+                            ui::Dictation {
+                                label: "Transcribing".to_owned(),
+                                levels,
+                                elapsed,
+                                transcribing: true,
+                                cancel_label: "Cancel dictation".to_owned(),
+                                done_label: "Finish dictation".to_owned(),
+                                on_cancel: move |_| cancel_active_dictation(),
+                                on_done: move |_| {},
+                            }
+                        }),
+                    };
+                    let archive_undo = last_archived
+                        .read()
+                        .as_ref()
+                        .is_some_and(|(ws, _)| Some(ws.as_str()) == selected.read().as_deref());
+                    let archive_busy = archive_slot.sending();
+                    let archive_notice = archive_slot.notice(client);
+                    let discuss_busy = discuss_slot.sending();
+                    let discuss_notice = discuss_slot.notice(client);
+                    let has_open_source = open_source_pane.is_some();
+                    rsx! {
+                        div { class: if has_open_source { "stage-body has-open-source" } else { "stage-body" },
+                            ui::SourceReading {
+                                source: open_source_pane,
+                                on_close: move |_| source_panel.set(SourcePanelLoad::Idle),
                 match place() {
                     Place::Today => rsx! {
                         TodaySurface {
@@ -3013,8 +3356,9 @@ fn PhysicianShell(
                                     on_open_patient_page: move |_| {
                                         open_briefing.set(None);
                                     },
-                                    on_open_source: move |chip: SourceChip| {
-                                        reading.set(Some(source_reading(chip)));
+                                    on_open_source: {
+                                        let mut open_source = open_source_chip;
+                                        move |chip: SourceChip| open_source(chip)
                                     },
                                 }
                             }
@@ -3171,10 +3515,12 @@ fn PhysicianShell(
                             on_read: move |(title, body): (String, String)| {
                                 reading.set(Some(prose_reading(title, body)));
                             },
-                            on_open_source: move |chip: SourceChip| {
-                                reading.set(Some(source_reading(chip)));
+                            on_open_source: {
+                                let mut open_source = open_source_chip;
+                                move |chip: SourceChip| open_source(chip)
                             },
                             on_open_demo_source: client.read().is_demo().then(|| {
+                                let mut open_source = open_source_chip;
                                 Callback::new(move |record_id: String| {
                                     let Some(ws_id) = selected() else { return };
                                     let demo_client = client.read().clone();
@@ -3184,15 +3530,23 @@ fn PhysicianShell(
                                         {
                                             let chip = SourceChip {
                                                 index: 1,
+                                                source_key: None,
                                                 label: rec.title,
                                                 open: true,
+                                                target: physician_wire::CitationTargetKind::WholeRecord,
+                                                quote: String::new(),
                                                 preview: rec.body,
                                                 as_of: rec.recorded_at,
+                                                record_kind: None,
+                                                record_status: None,
+                                                readable_parts: Vec::new(),
+                                                fields: Vec::new(),
+                                                raw_content: None,
                                                 open_label: Some(rec.source_label),
                                                 open_uri: None,
                                                 origin: physician_wire::CitationOrigin::SourceRecord,
                                             };
-                                            reading.set(Some(source_reading(chip)));
+                                            open_source(chip);
                                         }
                                     });
                                 })
@@ -3297,13 +3651,16 @@ fn PhysicianShell(
                             on_retry_open: move |target: today_updates::OpenItemTarget| open_item_target(target),
                             on_dismiss_open_failure: move |_| open_item_failure.set(None),
                             on_dismiss_done_failure: move |_| done_state.set(today_updates::DoneActionState::Idle),
-                            on_dictate: move |_| {
-                                let client = client.read().clone();
-                                spawn(async move {
-                                    let _ = client.dictate().await;
-                                    composer.write().say(DICTATION_UNAVAILABLE);
-                                });
-                            },
+                            dictation_element,
+                            on_dictate: move |_| start_active_dictation(ui::DictationTrigger::ClickButton),
+                            archive_busy,
+                            archive_notice,
+                            archive_undo,
+                            on_archive_chat: move |_| archive_open_chat(),
+                            on_restore_chat: move |_| restore_archived_chat(),
+                            discuss_busy,
+                            discuss_notice,
+                            on_discuss_work: move |work_id: Option<String>| discuss_chat(work_id),
                             on_editing: move |value: bool| editing.set(value),
                             conversation_open: open_chat.read().is_some(),
                             feedback_chat: selected().zip(open_chat()).map(|(workspace, chat)| {
@@ -3404,12 +3761,17 @@ fn PhysicianShell(
                         }
                     },
                 }
+                        }
+                        }
+                    }
+                }
             }
         }
         if search_open() {
             SearchDialog {
                 query: query(),
                 state: search_state.clone(),
+                match_mode: search_match_mode,
                 continuation: roster_continuation.clone(),
                 may_be_missing_someone: roster_first
                     .and_then(|res| res.ok())
@@ -5124,7 +5486,16 @@ fn PatientSurface(
     on_draft: EventHandler<String>,
     on_send: EventHandler,
     on_send_next: EventHandler,
+    dictation_element: Option<Element>,
     on_dictate: EventHandler,
+    archive_busy: bool,
+    archive_notice: Element,
+    archive_undo: bool,
+    on_archive_chat: EventHandler,
+    on_restore_chat: EventHandler,
+    discuss_busy: bool,
+    discuss_notice: Element,
+    on_discuss_work: EventHandler<Option<String>>,
     on_editing: EventHandler<bool>,
     conversation: ReadView<Vec<ConversationLine>>,
     queued: Vec<physician_wire::QueuedMessageWire>,
@@ -5692,7 +6063,42 @@ fn PatientSurface(
                 }
             }
             section { class: "patient-section", aria_label: "Conversation",
-                h2 { "Conversation" }
+                div { class: "patient-section-header",
+                    h2 { "Conversation" }
+                    if conversation_open
+                        && conversation.content().is_some_and(|items| !items.is_empty())
+                    {
+                        Button {
+                            compact: true,
+                            variant: ButtonVariant::Quiet,
+                            disabled: archive_busy,
+                            "data-archive-conversation": "true",
+                            onclick: move |_| on_archive_chat.call(()),
+                            Icon { name: IconName::Archive }
+                            "Archive"
+                        }
+                    }
+                }
+                if archive_undo {
+                    div { class: "mr-banner", "data-archive-undo-banner": "true",
+                        ui::Notice {
+                            tone: Tone::Neutral,
+                            icon: Some(IconName::Archive),
+                            title: "Conversation archived.".to_owned(),
+                            ActionRow {
+                                Button {
+                                    compact: true,
+                                    disabled: archive_busy,
+                                    "data-restore-conversation": "true",
+                                    onclick: move |_| on_restore_chat.call(()),
+                                    "Undo"
+                                }
+                            }
+                        }
+                    }
+                }
+                {archive_notice}
+                {discuss_notice}
                 match chats {
                     ChatView::Closed => rsx! { EmptyLine { message: WORKSPACE_CLOSED.to_owned() } },
                     ChatView::Pending => rsx! {},
@@ -5781,16 +6187,29 @@ fn PatientSurface(
                                                 }
                                             }
                                             if let Some(target) = line.stop {
-                                                div { class: "conversation-mechanical", role: "status",
-                                                    if !has_trace {
-                                                        ui::WorkingMark {}
-                                                    }
-                                                    p { "{line.text}" }
-                                                    Button {
-                                                        compact: true,
-                                                        disabled: conversation_stop_busy,
-                                                        onclick: move |_| on_conversation_stop.call(target.clone()),
-                                                        "{STOP}"
+                                                {
+                                                    let discuss_work = target.work_item_id.0.clone();
+                                                    rsx! {
+                                                        div { class: "conversation-mechanical", role: "status",
+                                                            if !has_trace {
+                                                                ui::WorkingMark {}
+                                                            }
+                                                            p { "{line.text}" }
+                                                            Button {
+                                                                compact: true,
+                                                                disabled: conversation_stop_busy,
+                                                                onclick: move |_| on_conversation_stop.call(target.clone()),
+                                                                "{STOP}"
+                                                            }
+                                                            Button {
+                                                                compact: true,
+                                                                variant: ButtonVariant::Quiet,
+                                                                disabled: discuss_busy,
+                                                                "data-discuss-response": "true",
+                                                                onclick: move |_| on_discuss_work.call(Some(discuss_work.clone())),
+                                                                "Discuss"
+                                                            }
+                                                        }
                                                     }
                                                 }
                                             } else if let Some(target) = line.resume {
@@ -5804,44 +6223,95 @@ fn PatientSurface(
                                                     }
                                                 }
                                             } else if line.author == Some(Author::Assistant) {
-                                                ui::Message { author: Author::Assistant, by: "Coda",
-                                                    actions: feedback_chat.clone().zip(line.response).map(|(chat, (response, read))| rsx! {
-                                                        feedback::ResponseRating { chat, response, read }
-                                                    }),
-                                                    if line.freshness == AnswerFreshness::NewerRecordsArrived {
-                                                        div {
-                                                            class: "answer-update-banner",
-                                                            role: "status",
-                                                            "data-answer-freshness": "newer-records",
-                                                            span { "{ANSWER_NEWER_RECORDS}" }
-                                                            Button {
-                                                                compact: true,
-                                                                onclick: move |_| on_update_answer.call(()),
-                                                                "Update"
-                                                            }
-                                                        }
-                                                    }
-                                                    if !line.body_pieces.is_empty() {
-                                                        CitedMessage { pieces: line.body_pieces, on_open_source }
+                                                {
+                                                    let answer_sources = citations_panel::answer_sources(
+                                                        &line.body_pieces,
+                                                        &line.basis_pieces,
+                                                    );
+                                                    let answer_dom_id = format!("answer-finished-{line_idx}");
+                                                    let body_pieces = line.body_pieces;
+                                                    let basis_pieces = line.basis_pieces;
+                                                    let text = line.text;
+                                                    let words = if !body_pieces.is_empty() {
+                                                        rsx! { CitedMessage { pieces: body_pieces, on_open_source } }
                                                     } else {
-                                                        MessageWords { text: line.text }
-                                                    }
-                                                    if !line.basis_pieces.is_empty() {
-                                                        AnswerBasis { pieces: line.basis_pieces, on_open_source }
-                                                    }
-                                                    if !line.sources.is_empty()
-                                                        && let Some(open_demo_source) = on_open_demo_source
-                                                    {
-                                                        div { class: "message-sources",
-                                                            for (idx, src) in line.sources.iter().enumerate() {
-                                                                {
-                                                                    let record_id = src.record_id.clone();
-                                                                    let label = src.title.clone();
+                                                        rsx! { MessageWords { text } }
+                                                    };
+                                                    rsx! {
+                                                        ui::Message { author: Author::Assistant, by: "Coda",
+                                                            actions: Some({
+                                                                let discuss_button = rsx! {
+                                                                    Button {
+                                                                        compact: true,
+                                                                        variant: ButtonVariant::Quiet,
+                                                                        disabled: discuss_busy,
+                                                                        "data-discuss-response": "true",
+                                                                        onclick: move |_| on_discuss_work.call(None),
+                                                                        "Discuss"
+                                                                    }
+                                                                };
+                                                                if let Some((chat, (response, read))) = feedback_chat.clone().zip(line.response) {
+                                                                    rsx! { feedback::ResponseRating { chat, response, read, extra: Some(discuss_button) } }
+                                                                } else {
                                                                     rsx! {
-                                                                        ui::CitationChip {
-                                                                            index: idx + 1,
-                                                                            label,
-                                                                            onclick: move |_| open_demo_source.call(record_id.clone()),
+                                                                        ui::MessageActions { label: "Response actions".to_owned(), shown: false,
+                                                                            {discuss_button}
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }),
+                                                            if line.freshness == AnswerFreshness::NewerRecordsArrived {
+                                                                div {
+                                                                    class: "answer-update-banner",
+                                                                    role: "status",
+                                                                    "data-answer-freshness": "newer-records",
+                                                                    span { "{ANSWER_NEWER_RECORDS}" }
+                                                                    Button {
+                                                                        compact: true,
+                                                                        onclick: move |_| on_update_answer.call(()),
+                                                                        "Update"
+                                                                    }
+                                                                }
+                                                            }
+                                                            if !basis_pieces.is_empty() {
+                                                                ui::AnswerEnding {
+                                                                    ending: ui::Ending::Finished {
+                                                                        words,
+                                                                        sources: answer_sources,
+                                                                        basis: ui::Basis {
+                                                                            title: "Basis and limitations".to_owned(),
+                                                                            words: rsx! {
+                                                                                CitedMessage { pieces: basis_pieces, on_open_source }
+                                                                            },
+                                                                        },
+                                                                        rating: rsx! {},
+                                                                    },
+                                                                }
+                                                            } else {
+                                                                div { id: "{answer_dom_id}", class: "answer-ending",
+                                                                    div { class: "answer-words", {words} }
+                                                                    if let Some(sources) = answer_sources {
+                                                                        div { class: "answer-ending-row",
+                                                                            ui::SourcesPopover { answer: answer_dom_id.clone(), sources }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                            if !line.sources.is_empty()
+                                                                && let Some(open_demo_source) = on_open_demo_source
+                                                            {
+                                                                div { class: "message-sources",
+                                                                    for (idx, src) in line.sources.iter().enumerate() {
+                                                                        {
+                                                                            let record_id = src.record_id.clone();
+                                                                            let label = src.title.clone();
+                                                                            rsx! {
+                                                                                ui::CitationChip {
+                                                                                    index: idx + 1,
+                                                                                    label,
+                                                                                    onclick: move |_| open_demo_source.call(record_id.clone()),
+                                                                                }
+                                                                            }
                                                                         }
                                                                     }
                                                                 }
@@ -5967,6 +6437,7 @@ fn PatientSurface(
                                 label: "Message",
                                 placeholder: "Write a message",
                                 value: draft.clone(),
+                                dictation: dictation_element,
                                 on_input: move |text| on_draft.call(text),
                                 on_submit: move |_| on_send.call(()),
                                 on_key_down: move |event: KeyboardEvent| {
@@ -6053,6 +6524,7 @@ fn PatientSurface(
 fn SearchDialog(
     query: String,
     state: ReadView<Vec<physician_wire::PatientSearchRow>>,
+    match_mode: physician_wire::SearchMatchMode,
     continuation: RosterContinuation,
     #[props(default)] may_be_missing_someone: bool,
     on_retry: EventHandler,
@@ -6064,19 +6536,11 @@ fn SearchDialog(
     on_editing: EventHandler<bool>,
     focused: Option<i32>,
 ) -> Element {
-    let results = state.content().cloned().unwrap_or_default();
-    let first = results
-        .first()
-        .map(|patient| patient.patient_workspace_id.clone());
     let is_blank_query = query.trim().is_empty();
-    let empty_message = if state.content().is_some_and(Vec::is_empty) && !may_be_missing_someone {
-        Some(if is_blank_query {
-            ROSTER_EMPTY
-        } else {
-            SEARCH_NONE
-        })
+    let empty_copy = if is_blank_query {
+        ROSTER_EMPTY
     } else {
-        None
+        SEARCH_NONE
     };
     let loading_copy = if is_blank_query {
         ROSTER_LOADING
@@ -6088,87 +6552,30 @@ fn SearchDialog(
     } else {
         SEARCH_UNAVAILABLE
     };
-    let more_stage = match continuation {
-        RosterContinuation::Complete | RosterContinuation::HasMore { .. } => ReadStage::Showing,
-        RosterContinuation::LoadingMore { .. } => ReadStage::Loading,
-        RosterContinuation::FailedMore { .. } => ReadStage::Unavailable,
-    };
     rsx! {
         Dialog { close_label: "Close", title: "Find patient", on_close,
-                div { class: "patient-search",
-                    SearchField {
-                        label: "Search your panel",
-                        placeholder: "Name, DOB or MRN",
-                        clear_label: "Clear search",
-                        value: query.clone(),
-                        autofocus: true,
-                        onfocus: move |_| on_editing.call(true),
-                        onblur: move |_| on_editing.call(false),
-                        on_input: move |words| on_query.call(words),
-                        onkeydown: move |event: KeyboardEvent| {
-                            if event.key().to_string() == "Enter" {
-                                event.stop_propagation();
-                                if let Some(id) = first.clone() {
-                                    on_open.call(id);
-                                }
-                            }
-                        },
-                    }
-                    ReadNotice {
-                        stage: state.stage(),
-                        loading: loading_copy,
-                        stale: "",
-                        unavailable: unavailable_copy,
-                        retry: TRY_AGAIN,
-                        on_retry,
-                    }
-                    access_notice::MayBeMissingSomeoneNotice {
-                        visible: may_be_missing_someone,
-                    }
-                    if let Some(empty_copy) = empty_message {
-                        EmptyLine { message: empty_copy }
-                    }
-                    if !results.is_empty() {
-                        div {
-                            class: "patient-search-scroll",
-                            onscroll: move |event| {
-                                let data = event.data();
-                                let from_end = f64::from(data.scroll_height())
-                                    - f64::from(data.client_height())
-                                    - data.scroll_top();
-                                if from_end <= ROSTER_SCROLL_THRESHOLD_PX {
-                                    on_scroll_more.call(());
-                                }
-                            },
-                            ui::RowGroup { class: "dialog-results",
-                                for (index, patient) in results.iter().enumerate() {
-                                    li {
-                                        ui::ListRow {
-                                            class: if focused == Some(index as i32) { "is-keyboard-focus" } else { "" },
-                                            title: patient.patient_display_name.clone(),
-                                            detail: search_row_detail(
-                                                patient.birth_date.as_deref(),
-                                                patient.mrn.as_deref(),
-                                            ),
-                                            onclick: {
-                                                let id = patient.patient_workspace_id.clone();
-                                                move |_| on_open.call(id.clone())
-                                            },
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        ReadNotice {
-                            stage: more_stage,
-                            loading: ROSTER_MORE_LOADING,
-                            stale: "",
-                            unavailable: ROSTER_MORE_UNAVAILABLE,
-                            retry: TRY_AGAIN,
-                            on_retry: on_retry_more,
-                        }
-                    }
-                }
+            FindPatientSearch {
+                query,
+                label: "Search your panel".to_owned(),
+                placeholder: "Name, DOB or MRN".to_owned(),
+                rows: state,
+                match_mode,
+                continuation,
+                loading_copy: loading_copy.to_owned(),
+                unavailable_copy: unavailable_copy.to_owned(),
+                empty_copy: empty_copy.to_owned(),
+                may_be_missing_someone,
+                action: FindPatientAction::OpenRow,
+                focused,
+                on_query,
+                on_retry,
+                on_scroll_more,
+                on_retry_more,
+                on_select: move |patient: physician_wire::PatientSearchRow| {
+                    on_open.call(patient.patient_workspace_id);
+                },
+                on_editing,
+            }
         }
     }
 }
@@ -6217,30 +6624,22 @@ fn prose_reading(title: String, body: String) -> OpenReading {
     }
 }
 
-fn source_reading(chip: SourceChip) -> OpenReading {
-    let inspection = citation_inspection(&chip);
-    OpenReading {
-        eyebrow: Some(inspection.eyebrow),
-        title: inspection.title,
-        paragraphs: inspection.paragraphs,
-        provenance: inspection.provenance,
-        unavailable: inspection.unavailable.map(str::to_owned),
-        link_label: inspection.open_label,
-        link_uri: inspection.open_uri,
-    }
-}
-
 #[component]
 pub(crate) fn CitationChip(chip: SourceChip, on_open: EventHandler<SourceChip>) -> Element {
-    let label = chip_name(&chip);
-    let index = chip.index;
-    if chip.open {
-        rsx! {
-            ui::CitationChip { index, label, onclick: move |_| on_open.call(chip.clone()) }
-        }
-    } else {
-        rsx! {
-            ui::CitationChip { index, label }
+    let citation_label = chip_name(&chip);
+    let content = citations_panel::preview_content(&chip);
+    let expand = citations_panel::expand_source(&chip, on_open);
+    let original = citations_panel::chip_original_link(&chip);
+    rsx! {
+        ui::CitationPreview {
+            index: chip.index,
+            label: chip.label.clone(),
+            eyebrow: format!("Source {}", chip.index),
+            citation_label,
+            close_label: "Close preview".to_owned(),
+            content,
+            expand,
+            original,
         }
     }
 }
@@ -7420,6 +7819,7 @@ mod conversation_line_tests {
             queued: Vec::new(),
             feedback,
             sources: std::collections::BTreeMap::new(),
+            archived: false,
         }
     }
 

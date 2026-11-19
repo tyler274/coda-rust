@@ -1384,25 +1384,25 @@ async fn schedule_pane_and_briefing_view_pass_desktop_and_phone_browser_checks()
     std::thread::sleep(Duration::from_millis(250));
     browser.capture_screenshot("briefing-schedule-04-desktop-briefing.png");
 
-    // AC1: Inline citation chip opens the exact cited passage in `ReaderDialog` without losing the briefing underneath.
+    // AC1: Inline citation chip opens the exact cited passage in the side panel without losing the briefing underneath.
     browser.press_first("button.citation-chip");
-    browser.wait_exists("dialog[open].citation-inspection");
+    browser.wait_exists(".source-reading-pane");
     let with_citation = browser
         .browser
         .wait_for("loop diuretic switched from bumetanide to oral torsemide 20 mg daily");
     assert!(
         browser.exists(".briefing-document"),
-        "briefing document must stay mounted underneath citation dialog:\n{with_citation}"
+        "briefing document must stay mounted beside citation side panel:\n{with_citation}"
     );
     assert!(
         !with_citation
             .lines()
             .any(|line| line.trim().eq_ignore_ascii_case("attachment")),
-        "citation dialog must omit generic `attachment` part labels:\n{with_citation}"
+        "citation side panel must omit generic `attachment` part labels:\n{with_citation}"
     );
     browser.capture_screenshot("briefing-schedule-05-desktop-citation.png");
     browser.press("Close");
-    browser.wait_absent("dialog[open].citation-inspection");
+    browser.wait_absent(".source-reading-pane");
 
     // AC5: Basis and limitations and Sources open directly from the briefing footer.
     browser.press_first("button.briefing-basis-toggle");
@@ -1420,11 +1420,11 @@ async fn schedule_pane_and_briefing_view_pass_desktop_and_phone_browser_checks()
     browser.reveal(".briefing-footer");
     browser.capture_screenshot("briefing-schedule-06-desktop-basis-sources.png");
 
-    // Clicking a source row inside `Sources` also opens the citation inspection dialog.
+    // Clicking a source row inside `Sources` also opens the citation inspection side panel.
     browser.press_first(".briefing-sources-list button");
-    browser.wait_exists("dialog[open].citation-inspection");
+    browser.wait_exists(".source-reading-pane");
     browser.press("Close");
-    browser.wait_absent("dialog[open].citation-inspection");
+    browser.wait_absent(".source-reading-pane");
 
     browser.reveal(".briefing-nav");
     browser.press("Back to Today");

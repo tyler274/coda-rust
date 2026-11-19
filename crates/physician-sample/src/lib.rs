@@ -308,6 +308,10 @@ pub fn fixture_site_with_feed(feed: std::sync::Arc<SampleFeed>) -> Router {
             "/patient-workspaces/{id}/chats/{chat}/snapshot",
             get(empty_snapshot),
         )
+        .route(
+            "/patient-workspaces/{id}/chats/{chat}/sources/{source_key}",
+            get(fixture_cited_source),
+        )
         .route("/patient-workspaces/events", get(quiet_events))
         .layer(middleware::from_fn(sources::intercept_reconnect_command))
         .layer(axum::Extension(feed))
@@ -368,6 +372,10 @@ pub fn durable_site_with_feed(
         .route(
             "/patient-workspaces/{id}/chats/{chat}/snapshot",
             get(live::snapshot),
+        )
+        .route(
+            "/patient-workspaces/{id}/chats/{chat}/sources/{source_key}",
+            get(live::cited_source),
         )
         // The bus carries invalidations; chat state remains in Postgres.
         .route(
@@ -566,7 +574,7 @@ where
             get(briefings::visit_briefing),
         )
         .route("/patient-roster", get(roster))
-        .route("/dictation", post(|| async { dictation_unavailable() }))
+        .route("/dictation", post(transcribe_dictation))
         .route(
             "/physician-state/panels",
             get(panel_preferences::read).put(panel_preferences::save),
@@ -800,9 +808,34 @@ async fn empty_snapshot(
             feedback: physician_wire::SnapshotFeedback::Loaded,
             sources: std::collections::BTreeMap::new(),
             queued: Vec::new(),
+            archived: false,
         },
     })
     .into_response()
+}
+
+async fn fixture_cited_source(
+    axum::extract::Path((id, chat, source_key)): axum::extract::Path<(String, String, String)>,
+    axum::Extension(connected): axum::Extension<care::ConnectedCare>,
+    request: Request<Body>,
+) -> Response {
+    let extensions = request.extensions();
+    if !on_panel_in_practice(&connected, extensions, &id).await {
+        return StatusCode::NOT_FOUND.into_response();
+    }
+    if let Some(feed) = extensions.get::<std::sync::Arc<SampleFeed>>()
+        && let Some(snapshot) = feed
+            .fixture_snapshots
+            .lock()
+            .expect("sample fixture snapshots")
+            .get(&(id, chat))
+            .cloned()
+        && let Some(sources) = snapshot.get("sources").and_then(Value::as_object)
+        && let Some(source) = sources.get(&source_key)
+    {
+        return Json(json!({ "source": source })).into_response();
+    }
+    StatusCode::NOT_FOUND.into_response()
 }
 
 async fn fixture_past_work(
@@ -1989,7 +2022,8 @@ async fn roster(
             row["sharing_consented"] = json!(link.sharing_consented);
         }
     }
-    Json(json!({ "patients": rows, "next_after": page.next_after })).into_response()
+    Json(json!({ "patients": rows, "next_after": page.next_after, "match_mode": page.match_mode }))
+        .into_response()
 }
 
 #[derive(Deserialize)]
@@ -2126,6 +2160,44 @@ fn dictation_unavailable() -> Response {
         "Dictation is unavailable. Check microphone support and server configuration.",
     )
         .into_response()
+}
+
+async fn transcribe_dictation(headers: axum::http::HeaderMap, body: axum::body::Bytes) -> Response {
+    use base64::Engine as _;
+
+    if env::var("PHYSICIAN_DICTATION_UNAVAILABLE")
+        .is_ok_and(|value| matches!(value.trim(), "1" | "true" | "yes"))
+        || headers.contains_key("x-coda-dictation-unavailable")
+    {
+        return dictation_unavailable();
+    }
+    let Ok(request) = serde_json::from_slice::<physician_wire::DictationRequest>(&body) else {
+        return dictation_unavailable();
+    };
+    let encoded = request.audio_base64.trim();
+    if encoded.is_empty() || encoded == "__unavailable__" {
+        return dictation_unavailable();
+    }
+    let Ok(audio_bytes) = base64::engine::general_purpose::STANDARD.decode(encoded) else {
+        return dictation_unavailable();
+    };
+    if audio_bytes.len() < 4 {
+        return dictation_unavailable();
+    }
+    let transcript = if let Some(text) = audio_bytes.strip_prefix(b"TEXT:") {
+        let recognized = String::from_utf8_lossy(text).trim().to_owned();
+        if recognized.is_empty() {
+            return dictation_unavailable();
+        }
+        recognized
+    } else if let Ok(fixture) = env::var("PHYSICIAN_DICTATION_FIXTURE")
+        && !fixture.trim().is_empty()
+    {
+        fixture.trim().to_owned()
+    } else {
+        "Check potassium and repeat metabolic panel tomorrow.".to_owned()
+    };
+    Json(physician_wire::DictationResponse { transcript }).into_response()
 }
 
 #[derive(Deserialize)]

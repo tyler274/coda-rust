@@ -882,13 +882,171 @@ function caretToEnd() {
   if (field && field.setSelectionRange) field.setSelectionRange(field.value.length, field.value.length);
 }
 
+let activeDictation = null;
+
+function stopDictationHardware(state) {
+  if (!state) return;
+  if (state.timer !== null) {
+    clearInterval(state.timer);
+    state.timer = null;
+  }
+  if (state.onKeyUp) {
+    globalThis.removeEventListener('keyup', state.onKeyUp, true);
+    state.onKeyUp = null;
+  }
+  const stream = state.stream;
+  state.stream = null;
+  stream?.getTracks?.().forEach((track) => {
+    try { track.stop(); } catch { /* ignore */ }
+  });
+  const audioCtx = state.audioCtx;
+  state.audioCtx = null;
+  if (audioCtx?.close) {
+    try {
+      Promise.resolve(audioCtx.close()).catch(() => {});
+    } catch {
+      /* ignore */
+    }
+  }
+}
+
+// Starts microphone audio capture and streams normalized loudness levels (`0..1`) until stopped
+// or cancelled. When `stopOnKeyRelease` is true, releasing Control, Shift, or Space emits `released`.
+function watchDictation(stopOnKeyRelease, send) {
+  cancelDictation();
+  const nav = globalThis.navigator;
+  if (!nav?.mediaDevices?.getUserMedia || typeof MediaRecorder === 'undefined') {
+    send({ kind: 'error', message: 'Microphone recording is not supported in this browser.' });
+    return () => {};
+  }
+  const state = {
+    cancelled: false,
+    stream: null,
+    recorder: null,
+    audioCtx: null,
+    timer: null,
+    onKeyUp: null,
+    chunks: [],
+    mimeType: 'audio/webm',
+  };
+  if (stopOnKeyRelease) {
+    let emitted = false;
+    state.onKeyUp = (event) => {
+      if (emitted || state.cancelled || activeDictation !== state) return;
+      if (event.key === 'Control' || event.key === 'Shift' || event.key === ' ') {
+        emitted = true;
+        send({ kind: 'released' });
+      }
+    };
+    globalThis.addEventListener('keyup', state.onKeyUp, true);
+  }
+  activeDictation = state;
+  nav.mediaDevices.getUserMedia({ audio: true }).then((stream) => {
+    if (state.cancelled || activeDictation !== state) {
+      stream.getTracks().forEach((track) => track.stop());
+      return;
+    }
+    state.stream = stream;
+    try {
+      const recorder = new MediaRecorder(stream);
+      state.recorder = recorder;
+      state.mimeType = recorder.mimeType || 'audio/webm';
+      recorder.ondataavailable = (event) => {
+        if (event.data && event.data.size > 0) state.chunks.push(event.data);
+      };
+      recorder.start(100);
+      try {
+        const AudioCtx = globalThis.AudioContext || globalThis.webkitAudioContext;
+        if (AudioCtx) {
+          const audioCtx = new AudioCtx();
+          state.audioCtx = audioCtx;
+          const source = audioCtx.createMediaStreamSource(stream);
+          const analyser = audioCtx.createAnalyser();
+          analyser.fftSize = 256;
+          source.connect(analyser);
+          const samples = new Uint8Array(analyser.frequencyBinCount);
+          state.timer = setInterval(() => {
+            if (state.cancelled || activeDictation !== state) return;
+            analyser.getByteTimeDomainData(samples);
+            let sum = 0;
+            for (let i = 0; i < samples.length; i += 1) {
+              const delta = (samples[i] - 128) / 128;
+              sum += delta * delta;
+            }
+            const rms = Math.min(1, Math.sqrt(sum / samples.length) * 3);
+            send({ kind: 'level', level: rms });
+          }, 80);
+        }
+      } catch {
+        // Optional loudness meter is unavailable for this audio stream; recording continues.
+      }
+      send({ kind: 'started' });
+    } catch (error) {
+      stopDictationHardware(state);
+      if (activeDictation === state) activeDictation = null;
+      send({ kind: 'error', message: error?.message ?? 'Could not start recording.' });
+    }
+  }).catch((error) => {
+    if (activeDictation === state) activeDictation = null;
+    send({ kind: 'error', message: error?.message ?? 'Microphone access was denied.' });
+  });
+  return () => {
+    state.cancelled = true;
+    stopDictationHardware(state);
+    if (activeDictation === state) activeDictation = null;
+  };
+}
+
+function bytesToBase64(bytes) {
+  let binary = '';
+  const chunk = 0x8000;
+  for (let i = 0; i < bytes.length; i += chunk) {
+    binary += String.fromCharCode(...bytes.subarray(i, i + chunk));
+  }
+  return btoa(binary);
+}
+
+// Stops the active dictation recording and resolves with base64 audio bytes and MIME type.
+async function stopDictation() {
+  const state = activeDictation;
+  activeDictation = null;
+  if (!state || !state.recorder) {
+    throw new Error('No active dictation session.');
+  }
+  const recorder = state.recorder;
+  if (recorder.state !== 'inactive') {
+    await new Promise((resolve) => {
+      recorder.addEventListener('stop', resolve, { once: true });
+      recorder.stop();
+    });
+  }
+  stopDictationHardware(state);
+  const blob = new Blob(state.chunks, { type: state.mimeType });
+  const buffer = await blob.arrayBuffer();
+  return {
+    audio_base64: bytesToBase64(new Uint8Array(buffer)),
+    mime_type: blob.type || state.mimeType || 'audio/webm',
+  };
+}
+
+function cancelDictation() {
+  const state = activeDictation;
+  activeDictation = null;
+  if (!state) return;
+  state.cancelled = true;
+  if (state.recorder && state.recorder.state !== 'inactive') {
+    try { state.recorder.stop(); } catch { /* ignore */ }
+  }
+  stopDictationHardware(state);
+}
+
 const fires = {
   motion, menuKeys, tooltips, contextHost, disposeContextHost, reorder, scrollToPassage, fileDrags,
   sheetDrag, handOff, indeterminate, togglePopover, openCitation, scrollIntoView, focusElement,
-  caretToEnd, readToEnd, jumpToLatest, replyArrived, setDepth,
+  caretToEnd, readToEnd, jumpToLatest, replyArrived, setDepth, cancelDictation,
 };
-const asks = { watchExit, modal, copy, reducedMotion };
-const listens = { watchPage, watchPopover, watchReading, watchDepth };
+const asks = { watchExit, modal, copy, reducedMotion, stopDictation };
+const listens = { watchPage, watchPopover, watchReading, watchDepth, watchDictation };
 
 const running = new Map();
 let calls = 0;

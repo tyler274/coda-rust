@@ -330,6 +330,9 @@ pub struct WorkspaceChat {
     pub outcome: Option<HistoryWorkOutcome>,
     /// The `created_at` value.
     pub created_at: String,
+    #[serde(default, skip_serializing_if = "is_false")]
+    /// Whether this conversation is archived.
+    pub archived: bool,
 }
 
 #[derive(Debug, Clone, Deserialize, PartialEq)]
@@ -543,6 +546,9 @@ pub struct RecentConversation {
     #[serde(default)]
     /// Timestamp of latest activity on the conversation.
     pub updated_at: Option<String>,
+    #[serde(default)]
+    /// Whether this conversation is archived.
+    pub archived: bool,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
@@ -584,6 +590,18 @@ pub struct UpdatesResponse {
     pub may_be_missing_someone: bool,
 }
 
+/// How a `Find patient` query matched rows, so the UI surfaces an explicit
+/// notice when exact or prefix matching fell back to keyword matching.
+#[derive(Debug, Clone, Copy, Default, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(rename_all = "snake_case")]
+pub enum SearchMatchMode {
+    /// Matched by exact identifier, name prefix, or substring.
+    #[default]
+    ExactOrPrefix,
+    /// No exact/prefix match succeeded, so results came from keyword fallback.
+    KeywordFallback,
+}
+
 #[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
 /// The `PatientSearchResponse` value exchanged by this crate.
 pub struct PatientSearchResponse {
@@ -596,6 +614,9 @@ pub struct PatientSearchResponse {
     #[serde(default)]
     /// True when one or more patients could not have panel access verified and were skipped.
     pub may_be_missing_someone: bool,
+    #[serde(default)]
+    /// How rows were matched for the submitted query.
+    pub match_mode: SearchMatchMode,
 }
 
 #[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
@@ -912,6 +933,56 @@ pub enum CitationOrigin {
     PreparedByCoda,
 }
 
+/// Where a citation points in its source record.
+#[derive(Debug, Clone, Copy, Default, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(rename_all = "snake_case")]
+pub enum CitationTargetKind {
+    /// Names the record as a whole rather than a specific passage.
+    #[default]
+    WholeRecord,
+    /// Names one or more cited passages inside the record.
+    Passage,
+    /// Named a passage that could not be matched inside this record's text.
+    PassageNotFound,
+}
+
+/// One labeled or unlabeled readable section of a cited source record.
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+pub struct CitedTextPartWire {
+    #[serde(default)]
+    /// Section heading if different from the record title.
+    pub label: Option<String>,
+    /// Human-readable prose for this section.
+    pub text: String,
+}
+
+/// One structured clinical field inside a cited record.
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+pub struct CitedFieldWire {
+    /// Stable key identifying this field inside the record.
+    pub key: String,
+    /// Physician-facing field name.
+    pub name: String,
+    /// Recorded value.
+    pub value: String,
+    #[serde(default)]
+    /// Measurement unit, when supplied.
+    pub unit: Option<String>,
+    #[serde(default)]
+    /// Reference range, when supplied.
+    pub range: Option<String>,
+    #[serde(default)]
+    /// Field status or abnormality flag, when supplied.
+    pub status: Option<String>,
+}
+
+/// Authoritative response for reading a single cited source record on demand.
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+pub struct CitedSourceResponse {
+    /// The requested cited source record.
+    pub source: CitedSourceWire,
+}
+
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 /// One cited record backing claims in a conversation snapshot.
 pub struct CitedSourceWire {
@@ -929,10 +1000,19 @@ pub struct CitedSourceWire {
     #[serde(default)]
     /// Date recorded on the source record, when supplied.
     pub recorded_at: Option<String>,
+    #[serde(default)]
+    /// Source's own verification or clinical status (e.g. `"preliminary"`, `"final"`).
+    pub record_status: Option<String>,
     /// Quoted excerpt supporting the citation preview.
     pub quote: String,
     /// Readable record body opened in the side panel.
     pub body: String,
+    #[serde(default)]
+    /// Structured readable sections of the source record, in reading order.
+    pub readable_parts: Vec<CitedTextPartWire>,
+    #[serde(default)]
+    /// Structured fields decoded from the record, when available.
+    pub fields: Vec<CitedFieldWire>,
     #[serde(default)]
     /// Exact source-native record representation for Technical details.
     pub raw_content: Option<String>,
@@ -963,7 +1043,31 @@ pub enum MessageSegment {
         label: String,
         /// Quoted supporting passage.
         quote: String,
+        #[serde(default)]
+        /// Whether this mark points at a specific passage, an unmatched passage, or the whole record.
+        target: CitationTargetKind,
     },
+}
+
+/// Request sent to `POST /dictation` carrying recorded audio and/or metadata.
+#[derive(Debug, Clone, Default, Serialize, Deserialize, PartialEq, Eq)]
+pub struct DictationRequest {
+    #[serde(default)]
+    /// Base64-encoded captured audio bytes (WebM/Opus, WAV/PCM, or sample audio).
+    pub audio_base64: String,
+    #[serde(default)]
+    /// MIME type of the captured audio stream.
+    pub mime_type: String,
+    #[serde(default)]
+    /// Sample rate in Hz when provided by the audio recorder.
+    pub sample_rate_hz: Option<u32>,
+}
+
+/// Transcribed plain text returned by `POST /dictation`.
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+pub struct DictationResponse {
+    /// Recognized plain text ready for insertion into the focused field.
+    pub transcript: String,
 }
 
 fn is_false(value: &bool) -> bool {
@@ -1005,6 +1109,9 @@ pub struct ChatSnapshot {
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     /// Physician messages queued behind active/cut-off/failed work.
     pub queued: Vec<QueuedMessageWire>,
+    #[serde(default, skip_serializing_if = "is_false")]
+    /// Whether this conversation is currently archived.
+    pub archived: bool,
 }
 
 /// One piece of accepted work: the messages that started or steered it, the

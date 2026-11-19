@@ -34,8 +34,8 @@ mod tables;
 mod toast;
 pub use agent::{
     Answer, AnswerEnding, AnswerSources, ApprovalCard, ApprovalState, ArtifactCard, Basis,
-    EndAction, Ending, IndexedSource, Orb, OrbState, StepState, Task, TaskList, TaskState,
-    TaskWords, WorkStep, WorkTrace,
+    EndAction, Ending, IndexedSource, Orb, OrbState, SourcesPopover, StepState, Task, TaskList,
+    TaskState, TaskWords, WorkStep, WorkTrace,
 };
 pub use attachments::{AttachButton, Attachment, AttachmentState, Attachments};
 pub use cards::{Card, RailCard};
@@ -60,6 +60,10 @@ pub use live::{ListedRow, LiveRows, RowFrame, use_live_rows};
 pub use motion::Stylesheet;
 pub use overlays::{ContextMenu, Menu, MenuItem, MenuSection, Tooltip};
 pub use prose::{Prose, ProseNames, ProsePart};
+pub use script::{
+    Asked, DictationAudio, DictationHeard, DictationTrigger, Listening, Unheard, cancel_dictation,
+    start_dictation, stop_dictation,
+};
 pub use sources::{
     CitationPreview, CitedAt, CitedField, CitedPlace, ExpandSource, FieldGroup, FieldValue,
     PartRange, Places, PreviewContent, RawRecord, RecordAbout, RecordBody, RecordField,
@@ -1362,7 +1366,7 @@ fn host_attributes(class: &mut String, attributes: Vec<Attribute>) -> Vec<Attrib
 
 /// Whether an address the host gives may open as a link: a web, mail or phone address, or a place
 /// on the same page. Any other scheme, `javascript:` among them, never becomes a link.
-pub(crate) fn opens(url: &str) -> bool {
+pub fn opens(url: &str) -> bool {
     let url = url.trim();
     match url.split_once(':') {
         Some((scheme, _)) if !scheme.contains(['/', '?', '#']) => {

@@ -271,8 +271,11 @@ fn project_briefing(
             title: title.clone(),
             record_type,
             recorded_at: citation.as_of.clone(),
+            record_status: None,
             quote: quote.clone(),
             body,
+            readable_parts: Vec::new(),
+            fields: Vec::new(),
             raw_content,
             external_url: citation.native_uri.clone(),
             origin: Default::default(),
@@ -687,6 +690,7 @@ fn segments_with_citations(
             number: entry.number,
             label: entry.label.clone(),
             quote: entry.quote.clone(),
+            target: Default::default(),
         });
     }
     segments

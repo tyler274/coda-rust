@@ -493,6 +493,8 @@ pub struct Conversation {
     pub queued: Vec<QueuedMessage>,
     /// Queued message texts returned when Stop held the current work, so repeated Stop returns them.
     pub stopped_queue: Option<StoppedQueue>,
+    /// Whether this conversation is archived out of default active/recent lists.
+    pub archived: bool,
 }
 
 use harness::engine::{
@@ -687,6 +689,7 @@ impl Conversation {
             scenario: None,
             queued: Vec::new(),
             stopped_queue: None,
+            archived: false,
         }
     }
 }
@@ -747,6 +750,28 @@ pub enum Stopped {
     Duplicate,
     /// Nothing open to hold: missing, completed, or a different work identity,
     /// or a command field is blank.
+    Refused,
+}
+
+/// Outcome of a physician archiving an idle conversation.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub enum ArchiveOutcome {
+    /// The conversation is archived.
+    Archived,
+    /// The exact same Archive command was already taken or the chat was already archived.
+    Duplicate,
+    /// Refused because the chat has running work, queued follow-ups, or missing scope.
+    RefusedBusyOrInvalid,
+}
+
+/// Outcome of restoring an archived conversation.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub enum RestoreOutcome {
+    /// The conversation was restored to active lists.
+    Restored,
+    /// The exact same Restore command was already taken or the chat was already active.
+    Duplicate,
+    /// Missing scope, empty key, or unknown conversation.
     Refused,
 }
 
@@ -1343,6 +1368,7 @@ impl Store {
         let mut state = Self::conversation_control(&tx, scope, row).await?;
         let now = now(&tx).await?;
         if delivery == physician_wire::SubmitDelivery::SendNext && state.status.running() {
+            state.archived = false;
             state.record_activity(now);
             state.queued.push(QueuedMessage {
                 id: input.key.clone(),
@@ -1392,6 +1418,7 @@ impl Store {
             .last()
             .map(|(id, _, _)| id.clone())
             .ok_or_else(|| error("empty chat message batch"))?;
+        state.archived = false;
         if !state.status.running() {
             let prev_work = state.work.clone();
             state.work = Uuid::new_v4().to_string();
@@ -2330,6 +2357,7 @@ impl Store {
             .get_mut(&state.work)
             .ok_or_else(|| error("missing work lifecycle"))?
             .start(Uuid::new_v4().to_string())?;
+        state.archived = false;
         state.status = WorkStatus::Pending;
         state.dispatch_after = now(&tx).await?;
         state.origin = origin;
@@ -2486,6 +2514,123 @@ impl Store {
         })
     }
 
+    /// Archives a physician conversation when it has no active work and no
+    /// queued follow-up messages. Archiving never ends patient follow-ups or
+    /// clears Today attention items.
+    pub async fn archive_conversation_authorized(
+        &self,
+        scope: &Scope,
+        key: &str,
+        session_hash: Vec<u8>,
+    ) -> Result<ArchiveOutcome, RuntimeError> {
+        if session_hash.len() != 32 {
+            return Err(error("invalid session reference").into());
+        }
+        if [
+            key,
+            &scope.practice,
+            &scope.physician,
+            &scope.workspace,
+            &scope.chat,
+        ]
+        .iter()
+        .any(|part| part.trim().is_empty())
+        {
+            return Ok(ArchiveOutcome::RefusedBusyOrInvalid);
+        }
+        scope.validate()?;
+        let tx = self.db.begin().await?;
+        let command = serde_json::json!({
+            "scope": scope,
+            "archive": {},
+        });
+        match receipt::record(&tx, &scope.practice, &scope.physician, key, &command).await? {
+            receipt::Receipt::New => {}
+            receipt::Receipt::Same => {
+                tx.commit().await?;
+                return Ok(ArchiveOutcome::Duplicate);
+            }
+            receipt::Receipt::Different => {
+                tx.commit().await?;
+                return Ok(ArchiveOutcome::RefusedBusyOrInvalid);
+            }
+        }
+        let Some(row) = conversation::Entity::find_by_id(keys(scope))
+            .lock_exclusive()
+            .one(&tx)
+            .await?
+        else {
+            return Ok(ArchiveOutcome::RefusedBusyOrInvalid);
+        };
+        let mut state = Self::conversation_control(&tx, scope, row).await?;
+        if state.status.running() || !state.queued.is_empty() {
+            return Ok(ArchiveOutcome::RefusedBusyOrInvalid);
+        }
+        if state.archived {
+            return Ok(ArchiveOutcome::Duplicate);
+        }
+        state.archived = true;
+        state.session_hash = Some(session_hash);
+        Self::save(tx, scope, &state).await?;
+        Ok(ArchiveOutcome::Archived)
+    }
+
+    /// Restores an archived physician conversation back to active/recent lists.
+    pub async fn restore_conversation_authorized(
+        &self,
+        scope: &Scope,
+        key: &str,
+        session_hash: Vec<u8>,
+    ) -> Result<RestoreOutcome, RuntimeError> {
+        if session_hash.len() != 32 {
+            return Err(error("invalid session reference").into());
+        }
+        if [
+            key,
+            &scope.practice,
+            &scope.physician,
+            &scope.workspace,
+            &scope.chat,
+        ]
+        .iter()
+        .any(|part| part.trim().is_empty())
+        {
+            return Ok(RestoreOutcome::Refused);
+        }
+        scope.validate()?;
+        let tx = self.db.begin().await?;
+        let command = serde_json::json!({
+            "scope": scope,
+            "restore": {},
+        });
+        match receipt::record(&tx, &scope.practice, &scope.physician, key, &command).await? {
+            receipt::Receipt::New => {}
+            receipt::Receipt::Same => {
+                tx.commit().await?;
+                return Ok(RestoreOutcome::Duplicate);
+            }
+            receipt::Receipt::Different => {
+                tx.commit().await?;
+                return Ok(RestoreOutcome::Refused);
+            }
+        }
+        let Some(row) = conversation::Entity::find_by_id(keys(scope))
+            .lock_exclusive()
+            .one(&tx)
+            .await?
+        else {
+            return Ok(RestoreOutcome::Refused);
+        };
+        let mut state = Self::conversation_control(&tx, scope, row).await?;
+        if !state.archived {
+            return Ok(RestoreOutcome::Duplicate);
+        }
+        state.archived = false;
+        state.session_hash = Some(session_hash);
+        Self::save(tx, scope, &state).await?;
+        Ok(RestoreOutcome::Restored)
+    }
+
     /// The physician's chats in one workspace, latest activity first, then
     /// chat id descending. Another physician's chats are never listed.
     pub async fn chats(
@@ -2518,6 +2663,9 @@ impl Store {
         for row in rows {
             let chat = row.chat.clone();
             let state = control::conversation(row, vec![])?;
+            if state.archived {
+                continue;
+            }
             let Some(first) = state
                 .messages
                 .iter()

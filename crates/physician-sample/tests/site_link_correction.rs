@@ -1305,7 +1305,7 @@ async fn withheld_wrong_patient_content_shows_unavailable_with_reason_in_history
     tab.save_screenshot("01-desktop-withheld-open-detail-and-citation");
 
     // Step 2: Close citation inspection and open `Past work` history list.
-    tab.click("dialog.reader button[aria-label=\"Close\"]");
+    tab.click(".source-reading-pane button[aria-label=\"Close\"]");
     std::thread::sleep(Duration::from_millis(200));
     tab.click("button.past-work-button");
     let (past_work_text, _) =
@@ -1378,7 +1378,7 @@ async fn withheld_wrong_patient_content_shows_unavailable_with_reason_in_history
     tab.wait_for_text(unfinished_reason, Duration::from_secs(10));
     tab.assert_no_stale_secrets("open citation inspection during unfinished removal");
     tab.save_screenshot("04-desktop-unfinished-removal-unavailable");
-    tab.click("dialog.reader button[aria-label=\"Close\"]");
+    tab.click(".source-reading-pane button[aria-label=\"Close\"]");
     std::thread::sleep(Duration::from_millis(200));
 
     // Step 5: Recover settlement cleanly, switch to 390x844 mobile viewport, and verify settled entered-in-error withholding in open detail & Past work.

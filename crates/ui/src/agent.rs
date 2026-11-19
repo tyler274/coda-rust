@@ -147,6 +147,56 @@ pub fn WorkTrace(
 
 static TRACES: AtomicUsize = AtomicUsize::new(0);
 
+#[component]
+fn SourcesControl(
+    answer: String,
+    list: String,
+    control: String,
+    label: String,
+    sources: Vec<IndexedSource>,
+) -> Element {
+    rsx! {
+        SourcesButton { id: control.clone(), label: label.clone(), count: sources.len(), opens: list.clone() }
+        PlacedPopover { id: list.clone(), label, control,
+            ol { class: "row-list sources-index",
+                for source in sources {
+                    li { key: "{source.number}",
+                        ListRow {
+                            number: source.number,
+                            title: source.title,
+                            detail: source.detail,
+                            onclick: {
+                                let (answer, list) = (answer.clone(), list.clone());
+                                move |_| {
+                                    script::toggle_popover(&list, false);
+                                    script::open_citation(&answer, source.number);
+                                }
+                            },
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+/// Standalone Sources pill and popover for a finished answer whose host renders
+/// without a `Basis` block. Choosing an entry focuses and opens that citation
+/// in `answer`.
+#[component]
+pub fn SourcesPopover(answer: String, sources: AnswerSources) -> Element {
+    let id = use_hook(|| format!("sources-only-{}", BASES.fetch_add(1, Ordering::Relaxed)));
+    rsx! {
+        SourcesControl {
+            answer,
+            list: format!("{id}-list"),
+            control: format!("{id}-control"),
+            label: sources.label,
+            sources: sources.sources,
+        }
+    }
+}
+
 /// One source in a finished answer's Sources list: its number, as the answer's citations show it,
 /// its title, and a quieter detail, such as its date.
 #[derive(Clone, Debug, PartialEq)]
@@ -272,27 +322,7 @@ pub fn AnswerEnding(ending: Ending) -> Element {
                             Icon { name: IconName::ChevronDown }
                         }
                         if let Some(AnswerSources { label, sources }) = sources {
-                            SourcesButton { id: control.clone(), label: label.clone(), count: sources.len(), opens: list.clone() }
-                            PlacedPopover { id: list.clone(), label, control,
-                                ol { class: "row-list sources-index",
-                                    for source in sources {
-                                        li { key: "{source.number}",
-                                            ListRow {
-                                                number: source.number,
-                                                title: source.title,
-                                                detail: source.detail,
-                                                onclick: {
-                                                    let (answer, list) = (answer.clone(), list.clone());
-                                                    move |_| {
-                                                        script::toggle_popover(&list, false);
-                                                        script::open_citation(&answer, source.number);
-                                                    }
-                                                },
-                                            }
-                                        }
-                                    }
-                                }
-                            }
+                            SourcesControl { answer: answer.clone(), list, control, label, sources }
                         }
                         {rating}
                     }

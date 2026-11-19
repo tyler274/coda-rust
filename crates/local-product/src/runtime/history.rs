@@ -108,6 +108,9 @@ pub struct AuthorizedConversationSummary {
     pub opened_at: i64,
     /// Database-clock seconds of the latest accepted input or published reply.
     pub last_activity_at: i64,
+    /// Whether this conversation is archived.
+    #[serde(default)]
+    pub archived: bool,
 }
 
 /// One saved item in a patient workspace's Past work list.
@@ -185,10 +188,19 @@ pub struct CitedSourceReadback {
     pub record_type: String,
     /// Primary date recorded by the source, if supplied.
     pub recorded_at: Option<String>,
+    /// Source's own status (e.g. `"preliminary"`, `"final"`), when supplied.
+    #[serde(default)]
+    pub record_status: Option<String>,
     /// Quoted passage read by the answering run.
     pub quote: String,
     /// Readable record text for the side panel.
     pub body: String,
+    /// Structured readable sections preserving exact text parts for highlighting.
+    #[serde(default)]
+    pub readable_parts: Vec<physician_wire::CitedTextPartWire>,
+    /// Structured fields decoded from the record when `readable_parts` is absent.
+    #[serde(default)]
+    pub fields: Vec<physician_wire::CitedFieldWire>,
     /// Exact source-native representation for Technical details.
     pub raw_content: String,
     /// Direct link into the originating EHR or source when available.
@@ -210,9 +222,15 @@ pub struct SavedTurnReadback {
     pub raw_text: String,
     /// Main body segments with verified citations resolved.
     pub segments: Vec<HistorySegment>,
+    /// Target kind for each citation in [`Self::segments`], in order.
+    #[serde(default)]
+    pub segment_targets: Vec<physician_wire::CitationTargetKind>,
     /// Collapsed Basis and limitations segments, present on finished answers
     /// that recorded a Basis section.
     pub basis: Option<Vec<HistorySegment>>,
+    /// Target kind for each citation in [`Self::basis`], in order.
+    #[serde(default)]
+    pub basis_targets: Vec<physician_wire::CitationTargetKind>,
     /// Whether newer source observations exist in the workspace after this
     /// answer's observed workspace version.
     pub newer_records: bool,
@@ -331,6 +349,7 @@ fn summarize_conversation(
         outcome,
         opened_at: state.opened_at,
         last_activity_at,
+        archived: state.archived,
     })
 }
 
@@ -778,6 +797,170 @@ pub fn format_cited_source_body_with_layout(
     format_readable_fallback_with_layout(raw_content, layout)
 }
 
+fn cited_record_status(provenance: &Value, raw_content: &str) -> Option<String> {
+    if let Some(status) = provenance_string(
+        provenance,
+        &[
+            "record_status",
+            "status",
+            "verification_status",
+            "clinical_status",
+        ],
+    ) {
+        return Some(status);
+    }
+    let parsed: Value = serde_json::from_str(raw_content.trim()).ok()?;
+    for key in [
+        "record_status",
+        "status",
+        "verificationStatus",
+        "clinicalStatus",
+    ] {
+        if let Some(status) = parsed.get(key).and_then(Value::as_str) {
+            let trimmed = status.trim();
+            if !trimmed.is_empty() {
+                return Some(trimmed.to_owned());
+            }
+        }
+    }
+    None
+}
+
+fn cited_readable_parts(
+    title: &str,
+    readable_parts: &[ReadablePart],
+) -> Vec<physician_wire::CitedTextPartWire> {
+    let normalized_title = collapse_whitespace(title).to_lowercase();
+    readable_parts
+        .iter()
+        .filter_map(|part| {
+            let label = part.label.trim();
+            let text = part.text.trim();
+            let same_as_title =
+                !label.is_empty() && collapse_whitespace(label).to_lowercase() == normalized_title;
+            let kept_label = (!label.is_empty() && !same_as_title).then(|| label.to_owned());
+            if kept_label.is_none() && text.is_empty() {
+                return None;
+            }
+            Some(physician_wire::CitedTextPartWire {
+                label: kept_label,
+                text: part.text.trim().to_owned(),
+            })
+        })
+        .collect()
+}
+
+fn cited_fields(
+    readable_parts: &[ReadablePart],
+    raw_content: &str,
+) -> Vec<physician_wire::CitedFieldWire> {
+    if !readable_parts.is_empty() {
+        return Vec::new();
+    }
+    let Ok(Value::Object(map)) = serde_json::from_str::<Value>(raw_content.trim()) else {
+        return Vec::new();
+    };
+    let mut fields = Vec::new();
+    for (key, value) in map {
+        let name = super::citation_layouts::humanize_json_key(&key);
+        let display = match value {
+            Value::Null => continue,
+            Value::Bool(flag) => (if flag { "Yes" } else { "No" }).to_owned(),
+            Value::Number(num) => num.to_string(),
+            Value::String(s) => {
+                let trimmed = s.trim();
+                if trimmed.is_empty() {
+                    continue;
+                }
+                trimmed.to_owned()
+            }
+            Value::Array(_) | Value::Object(_) => {
+                let mut lines = Vec::new();
+                render_json_lines(None, &value, &mut lines);
+                if lines.is_empty() {
+                    continue;
+                }
+                lines.join(", ")
+            }
+        };
+        fields.push(physician_wire::CitedFieldWire {
+            key,
+            name,
+            value: display,
+            unit: None,
+            range: None,
+            status: None,
+        });
+    }
+    fields
+}
+
+fn render_json_lines(prefix: Option<&str>, value: &Value, out: &mut Vec<String>) {
+    match value {
+        Value::Null => {}
+        Value::Bool(flag) => {
+            let word = if *flag { "Yes" } else { "No" };
+            match prefix {
+                Some(key) if !key.is_empty() => out.push(format!("{key}: {word}")),
+                _ => out.push(word.to_owned()),
+            }
+        }
+        Value::Number(num) => match prefix {
+            Some(key) if !key.is_empty() => out.push(format!("{key}: {num}")),
+            _ => out.push(num.to_string()),
+        },
+        Value::String(text) => {
+            let trimmed = text.trim();
+            if !trimmed.is_empty() {
+                match prefix {
+                    Some(key) if !key.is_empty() => out.push(format!("{key}: {trimmed}")),
+                    _ => out.push(trimmed.to_owned()),
+                }
+            }
+        }
+        Value::Array(items) => {
+            let all_scalar = items
+                .iter()
+                .all(|item| matches!(item, Value::String(_) | Value::Number(_) | Value::Bool(_)));
+            if all_scalar {
+                let joined: Vec<String> = items
+                    .iter()
+                    .filter_map(|item| match item {
+                        Value::String(s) if !s.trim().is_empty() => Some(s.trim().to_owned()),
+                        Value::Number(n) => Some(n.to_string()),
+                        Value::Bool(b) => Some(if *b { "Yes" } else { "No" }.to_owned()),
+                        _ => None,
+                    })
+                    .collect();
+                if !joined.is_empty() {
+                    let list = joined.join(", ");
+                    match prefix {
+                        Some(key) if !key.is_empty() => out.push(format!("{key}: {list}")),
+                        _ => out.push(list),
+                    }
+                }
+            } else {
+                for item in items {
+                    render_json_lines(prefix, item, out);
+                }
+            }
+        }
+        Value::Object(map) => {
+            for (key, nested) in map {
+                let label = super::citation_layouts::humanize_json_key(key);
+                let full_key = match prefix {
+                    Some(parent) if !parent.is_empty() && !label.is_empty() => {
+                        format!("{parent} · {label}")
+                    }
+                    Some(parent) if !parent.is_empty() => parent.to_owned(),
+                    _ => label,
+                };
+                render_json_lines(Some(&full_key), nested, out);
+            }
+        }
+    }
+}
+
 fn format_readable_fallback_with_layout(
     raw_content: &str,
     layout: Option<&CitationLayoutSpec>,
@@ -856,7 +1039,9 @@ struct TurnCitationContext<'a> {
 
 struct ReconstructedFinishedTurn {
     segments: Vec<HistorySegment>,
+    segment_targets: Vec<physician_wire::CitationTargetKind>,
     basis: Option<Vec<HistorySegment>>,
+    basis_targets: Vec<physician_wire::CitationTargetKind>,
     sources: BTreeMap<String, CitedSourceReadback>,
     max_cited_version: Option<u64>,
 }
@@ -914,8 +1099,11 @@ fn reconstruct_finished_turn(
                 title: "Unavailable · Withdrawn chart record".to_owned(),
                 record_type: String::new(),
                 recorded_at: None,
+                record_status: None,
                 quote: withdrawn_note.clone(),
                 body: withdrawn_note,
+                readable_parts: Vec::new(),
+                fields: Vec::new(),
                 raw_content: String::new(),
                 external_url: None,
                 origin: physician_wire::CitationOrigin::SourceRecord,
@@ -934,6 +1122,9 @@ fn reconstruct_finished_turn(
             let layout = LayoutSourceKey::new(&rev.source_id, &rev.record_type)
                 .ok()
                 .and_then(|key| ctx.citation_layouts.get(&key));
+            let record_status = cited_record_status(&rev.provenance, &rev.content);
+            let readable_parts = cited_readable_parts(&title, &rev.readable_parts);
+            let fields = cited_fields(&rev.readable_parts, &rev.content);
             let raw_body = format_cited_source_body_with_layout(
                 &title,
                 &rev.readable_parts,
@@ -953,8 +1144,11 @@ fn reconstruct_finished_turn(
                 title,
                 record_type: rev.record_type.clone(),
                 recorded_at: rev.dates.first().map(|d| d.value.clone()),
+                record_status,
                 quote,
                 body,
+                readable_parts,
+                fields,
                 raw_content: rev.content.clone(),
                 external_url,
                 origin,
@@ -970,6 +1164,9 @@ fn reconstruct_finished_turn(
             );
             let external_url =
                 provenance_string(&read.fallback_provenance, &["external_url", "url", "href"]);
+            let record_status = cited_record_status(&read.fallback_provenance, &read.fallback_raw);
+            let readable_parts = cited_readable_parts(&title, &read.fallback_readable_parts);
+            let fields = cited_fields(&read.fallback_readable_parts, &read.fallback_raw);
             let (body, origin) = apply_description_fallback(
                 read.fallback_body.clone(),
                 &mark.source,
@@ -994,8 +1191,11 @@ fn reconstruct_finished_turn(
                 title,
                 record_type: read.fallback_record_type.clone(),
                 recorded_at: read.fallback_date.clone(),
+                record_status,
                 quote,
                 body,
+                readable_parts,
+                fields,
                 raw_content: read.fallback_raw.clone(),
                 external_url,
                 origin,
@@ -1014,8 +1214,11 @@ fn reconstruct_finished_turn(
                 title: mark.source.candidate_id.clone(),
                 record_type: String::new(),
                 recorded_at: None,
+                record_status: None,
                 quote,
                 body,
+                readable_parts: Vec::new(),
+                fields: Vec::new(),
                 raw_content: String::new(),
                 external_url: None,
                 origin,
@@ -1025,22 +1228,23 @@ fn reconstruct_finished_turn(
         cited_by_version.insert(version_key, cited);
     }
 
-    let segments = slice_marked_segments(answer_text, finished.marks(), &cited_by_version, ctx);
+    let (segments, segment_targets) =
+        slice_marked_segments(answer_text, finished.marks(), &cited_by_version, ctx);
     let basis_text = finished.basis().text();
-    let basis = if basis_text.trim().is_empty() && finished.basis().marks().is_empty() {
-        None
-    } else {
-        Some(slice_marked_segments(
-            basis_text,
-            finished.basis().marks(),
-            &cited_by_version,
-            ctx,
-        ))
-    };
+    let (basis, basis_targets) =
+        if basis_text.trim().is_empty() && finished.basis().marks().is_empty() {
+            (None, Vec::new())
+        } else {
+            let (segs, targets) =
+                slice_marked_segments(basis_text, finished.basis().marks(), &cited_by_version, ctx);
+            (Some(segs), targets)
+        };
 
     ReconstructedFinishedTurn {
         segments,
+        segment_targets,
         basis,
+        basis_targets,
         sources: turn_sources,
         max_cited_version,
     }
@@ -1083,11 +1287,12 @@ fn slice_marked_segments(
     marks: &[Mark],
     cited_by_version: &HashMap<(String, String), CitedSourceReadback>,
     ctx: &TurnCitationContext<'_>,
-) -> Vec<HistorySegment> {
+) -> (Vec<HistorySegment>, Vec<physician_wire::CitationTargetKind>) {
     if text.is_empty() && marks.is_empty() {
-        return Vec::new();
+        return (Vec::new(), Vec::new());
     }
     let mut segments: Vec<HistorySegment> = Vec::new();
+    let mut targets: Vec<physician_wire::CitationTargetKind> = Vec::new();
     let mut cursor = 0usize;
     for mark in marks {
         let at = clamp_char_boundary(text, mark.at);
@@ -1102,13 +1307,26 @@ fn slice_marked_segments(
             mark.source.revision.clone(),
         );
         if let Some(cited) = cited_by_version.get(&key) {
-            let quote = mark_quote_for_version(mark, ctx).unwrap_or_else(|| cited.quote.clone());
+            let matched_quote = mark_quote_for_version(mark, ctx);
+            let target = if mark.place.is_none()
+                || ctx
+                    .tombstone_withdrawn_candidates
+                    .contains(&mark.source.candidate_id)
+            {
+                physician_wire::CitationTargetKind::WholeRecord
+            } else if matched_quote.is_some() {
+                physician_wire::CitationTargetKind::Passage
+            } else {
+                physician_wire::CitationTargetKind::PassageNotFound
+            };
+            let quote = matched_quote.unwrap_or_else(|| cited.quote.clone());
             segments.push(HistorySegment::Citation {
                 source_key: cited.source_key.clone(),
                 number: cited.number,
                 label: format!("{} · {}", cited.source_label, cited.title),
                 quote,
             });
+            targets.push(target);
         }
     }
     if cursor < text.len() {
@@ -1116,7 +1334,7 @@ fn slice_marked_segments(
             text: text[cursor..].to_owned(),
         });
     }
-    segments
+    (segments, targets)
 }
 
 impl Store {
@@ -1182,8 +1400,11 @@ impl Store {
             .limit(bounded)
             .all(&self.db)
             .await?;
-        self.summarize_conversation_rows_with_withholding(rows)
-            .await
+        let mut items = self
+            .summarize_conversation_rows_with_withholding(rows)
+            .await?;
+        items.retain(|summary| !summary.archived);
+        Ok(items)
     }
 
     async fn summarize_conversation_rows_with_withholding(
@@ -1525,8 +1746,11 @@ impl Store {
                             title: "Unavailable · Withheld patient message".to_owned(),
                             record_type: String::new(),
                             recorded_at: None,
+                            record_status: None,
                             quote: reason.clone(),
                             body: reason,
+                            readable_parts: Vec::new(),
+                            fields: Vec::new(),
                             raw_content: String::new(),
                             external_url: None,
                             origin: physician_wire::CitationOrigin::SourceRecord,
@@ -1638,7 +1862,9 @@ impl Store {
                         author: TurnAuthor::Physician,
                         raw_text: text.clone(),
                         segments: vec![HistorySegment::Text { text: text.clone() }],
+                        segment_targets: Vec::new(),
                         basis: None,
+                        basis_targets: Vec::new(),
                         newer_records: false,
                     });
                 }
@@ -1663,23 +1889,29 @@ impl Store {
                         let unavailable_source = active_work
                             .as_deref()
                             .and_then(|work| unavailable_by_work.get(work));
-                        let segments = if let Some(c0) = unavailable_source {
+                        let (segments, segment_targets) = if let Some(c0) = unavailable_source {
                             all_sources.insert(c0.source_key.clone(), c0.clone());
-                            vec![
-                                HistorySegment::Text {
-                                    text: format!("{reason} "),
-                                },
-                                HistorySegment::Citation {
-                                    source_key: c0.source_key.clone(),
-                                    number: c0.number,
-                                    label: c0.title.clone(),
-                                    quote: reason.clone(),
-                                },
-                            ]
+                            (
+                                vec![
+                                    HistorySegment::Text {
+                                        text: format!("{reason} "),
+                                    },
+                                    HistorySegment::Citation {
+                                        source_key: c0.source_key.clone(),
+                                        number: c0.number,
+                                        label: c0.title.clone(),
+                                        quote: reason.clone(),
+                                    },
+                                ],
+                                vec![physician_wire::CitationTargetKind::WholeRecord],
+                            )
                         } else {
-                            vec![HistorySegment::Text {
-                                text: reason.clone(),
-                            }]
+                            (
+                                vec![HistorySegment::Text {
+                                    text: reason.clone(),
+                                }],
+                                Vec::new(),
+                            )
                         };
                         turns.push(SavedTurnReadback {
                             id: id.clone(),
@@ -1688,7 +1920,9 @@ impl Store {
                             },
                             raw_text: reason,
                             segments,
+                            segment_targets,
                             basis: None,
+                            basis_targets: Vec::new(),
                             newer_records: false,
                         });
                         continue;
@@ -1705,7 +1939,9 @@ impl Store {
                                 author: TurnAuthor::Assistant { partial: true },
                                 raw_text: text.clone(),
                                 segments,
+                                segment_targets: Vec::new(),
                                 basis: None,
+                                basis_targets: Vec::new(),
                                 newer_records: false,
                             });
                         }
@@ -1724,7 +1960,9 @@ impl Store {
                             };
                             let ReconstructedFinishedTurn {
                                 segments,
+                                segment_targets,
                                 basis,
+                                basis_targets,
                                 sources: turn_sources,
                                 max_cited_version,
                             } = reconstruct_finished_turn(text, finished, &ctx);
@@ -1754,7 +1992,9 @@ impl Store {
                                 author: TurnAuthor::Assistant { partial: false },
                                 raw_text: text.clone(),
                                 segments,
+                                segment_targets,
                                 basis,
+                                basis_targets,
                                 newer_records,
                             });
                         }
@@ -1885,10 +2125,20 @@ mod unit_tests {
         };
         let ReconstructedFinishedTurn {
             segments,
+            segment_targets,
             basis,
+            basis_targets,
             sources,
             max_cited_version: max_ver,
         } = reconstruct_finished_turn(&text, &finished, &ctx);
+        assert_eq!(
+            segment_targets,
+            vec![
+                physician_wire::CitationTargetKind::Passage,
+                physician_wire::CitationTargetKind::WholeRecord,
+            ]
+        );
+        assert_eq!(basis_targets.len(), 2);
         assert_eq!(max_ver, Some(3));
         assert_eq!(
             sources.len(),

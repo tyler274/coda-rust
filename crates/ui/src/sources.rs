@@ -930,8 +930,10 @@ fn RecordView(body: RecordBody, raw: RawRecord) -> Element {
                     RecordFields { groups, cited: keys, range_label }
                 }
             }
-            Disclosure { title: raw.label, detail: true,
-                pre { class: "source-raw", "{raw.text}" }
+            if !raw.text.trim().is_empty() {
+                Disclosure { title: raw.label, detail: true,
+                    pre { class: "source-raw", "{raw.text}" }
+                }
             }
         }
     }

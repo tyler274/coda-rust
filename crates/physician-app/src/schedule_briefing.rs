@@ -1262,10 +1262,22 @@ fn source_chip_from_cited(source: &CitedSourceWire) -> SourceChip {
     };
     SourceChip {
         index: source.number,
+        source_key: Some(source.source_key.clone()),
         label: source.title.clone(),
         open: true,
+        target: if source.quote.trim().is_empty() {
+            physician_wire::CitationTargetKind::WholeRecord
+        } else {
+            physician_wire::CitationTargetKind::Passage
+        },
+        quote: source.quote.clone(),
         preview,
         as_of: source.recorded_at.clone().unwrap_or_default(),
+        record_kind: source.record_type.clone(),
+        record_status: source.record_status.clone(),
+        readable_parts: source.readable_parts.clone(),
+        fields: source.fields.clone(),
+        raw_content: source.raw_content.clone(),
         open_label,
         open_uri,
         origin: source.origin,

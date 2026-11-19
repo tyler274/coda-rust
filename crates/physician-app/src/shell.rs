@@ -26,8 +26,6 @@ pub const STOPPED: &str = "Coda stopped this response. Your message is saved.";
 pub const PAST_WORK_EMPTY: &str = "No past conversations or work are available.";
 /// An open conversation whose snapshot has no turns.
 pub const CONVERSATION_EMPTY: &str = "What would you like Coda to review?";
-/// A resolved citation whose preview prose is missing.
-pub const SOURCE_UNAVAILABLE: &str = "Source content is unavailable here.";
 /// Copies the reply draft as shown.
 pub const REPLY_COPY: &str = "Copy reply";
 /// Closes a ready reply without sending it.
@@ -410,14 +408,30 @@ pub enum SynopsisPiece {
 pub struct SourceChip {
     /// The visible source number.
     pub index: usize,
+    /// Durable key into chat sources when loaded on demand.
+    pub source_key: Option<String>,
     /// The source title.
     pub label: String,
     /// A resolved citation opens. An unresolved one stays a static chip.
     pub open: bool,
+    /// Whether this citation targets a passage, missing passage, or whole record.
+    pub target: physician_wire::CitationTargetKind,
+    /// Exact claim-specific supporting excerpt when naming a passage.
+    pub quote: String,
     /// The lead's preview prose. Empty when the chip stays closed.
     pub preview: String,
     /// The preview's as-of date, as the citation recorded it.
     pub as_of: String,
+    /// Record kind label when different from the title.
+    pub record_kind: Option<String>,
+    /// Source's own verification/clinical status when supplied.
+    pub record_status: Option<String>,
+    /// Structured readable sections preserving passage locations.
+    pub readable_parts: Vec<physician_wire::CitedTextPartWire>,
+    /// Structured clinical fields decoded from the record.
+    pub fields: Vec<physician_wire::CitedFieldWire>,
+    /// Source-native raw representation for Technical details.
+    pub raw_content: Option<String>,
     /// `Open in {chart}` or `Open original` when a native link exists.
     pub open_label: Option<String>,
     /// The native destination URI.
@@ -433,37 +447,6 @@ pub fn chip_name(chip: &SourceChip) -> String {
     } else {
         format!("Source {} unavailable", chip.index)
     }
-}
-
-/// Splits preview prose on a blank line, the way the React preview does.
-pub fn preview_paragraphs(text: &str) -> Vec<String> {
-    let mut paragraphs = Vec::new();
-    let bytes = text.as_bytes();
-    let mut start = 0;
-    let mut index = 0;
-    while index < bytes.len() {
-        if bytes[index] == b'\n' {
-            let mut end = index;
-            while end < bytes.len() && bytes[end] == b'\n' {
-                end += 1;
-            }
-            if end - index >= 2 {
-                let piece = text[start..index].trim();
-                if !piece.is_empty() {
-                    paragraphs.push(piece.to_owned());
-                }
-                start = end;
-            }
-            index = end;
-        } else {
-            index += 1;
-        }
-    }
-    let piece = text[start..].trim();
-    if !piece.is_empty() {
-        paragraphs.push(piece.to_owned());
-    }
-    paragraphs
 }
 
 /// Provenance line for an open citation in the side panel:
@@ -607,6 +590,7 @@ pub fn message_pieces(
                     number,
                     label,
                     quote,
+                    target,
                 } = &segments[index]
                 {
                     let chip = match sources.get(source_key) {
@@ -630,14 +614,22 @@ pub fn message_pieces(
                             };
                             SourceChip {
                                 index: *number,
+                                source_key: Some(source_key.clone()),
                                 label: if source.title.trim().is_empty() {
                                     label.clone()
                                 } else {
                                     source.title.clone()
                                 },
                                 open: true,
+                                target: *target,
+                                quote: quote.clone(),
                                 preview,
                                 as_of: source.recorded_at.clone().unwrap_or_default(),
+                                record_kind: source.record_type.clone(),
+                                record_status: source.record_status.clone(),
+                                readable_parts: source.readable_parts.clone(),
+                                fields: source.fields.clone(),
+                                raw_content: source.raw_content.clone(),
                                 open_label,
                                 open_uri,
                                 origin: source.origin,
@@ -645,10 +637,18 @@ pub fn message_pieces(
                         }
                         None => SourceChip {
                             index: *number,
+                            source_key: Some(source_key.clone()),
                             label: label.clone(),
                             open: !quote.trim().is_empty(),
+                            target: *target,
+                            quote: quote.clone(),
                             preview: quote.clone(),
                             as_of: String::new(),
+                            record_kind: None,
+                            record_status: None,
+                            readable_parts: Vec::new(),
+                            fields: Vec::new(),
+                            raw_content: None,
                             open_label: None,
                             open_uri: None,
                             origin: physician_wire::CitationOrigin::SourceRecord,
@@ -716,10 +716,22 @@ fn source_chip(
     let (open_label, open_uri) = native_open(open, destination);
     SourceChip {
         index,
+        source_key: None,
         label: label.to_owned(),
         open,
+        target: if preview.trim().is_empty() {
+            physician_wire::CitationTargetKind::WholeRecord
+        } else {
+            physician_wire::CitationTargetKind::Passage
+        },
+        quote: preview.clone(),
         preview,
         as_of,
+        record_kind: None,
+        record_status: None,
+        readable_parts: Vec::new(),
+        fields: Vec::new(),
+        raw_content: None,
         open_label,
         open_uri,
         origin: physician_wire::CitationOrigin::SourceRecord,
@@ -1089,6 +1101,8 @@ pub struct RosterView {
     pub rows: ReadView<Vec<physician_wire::PatientSearchRow>>,
     /// Continuation standing below the loaded rows.
     pub continuation: RosterContinuation,
+    /// Whether the results matched strictly or fell back to keyword matching.
+    pub match_mode: physician_wire::SearchMatchMode,
 }
 
 /// Resolves the Find patient list from the first-page response and any appended
@@ -1103,10 +1117,12 @@ pub fn resolve_roster_view(
         None => RosterView {
             rows: ReadView::Loading,
             continuation: RosterContinuation::Complete,
+            match_mode: physician_wire::SearchMatchMode::ExactOrPrefix,
         },
         Some(Err(())) => RosterView {
             rows: ReadView::Unavailable,
             continuation: RosterContinuation::Complete,
+            match_mode: physician_wire::SearchMatchMode::ExactOrPrefix,
         },
         Some(Ok(first)) => {
             let matching =
@@ -1132,6 +1148,7 @@ pub fn resolve_roster_view(
             RosterView {
                 rows: ReadView::Showing(patients),
                 continuation,
+                match_mode: first.match_mode,
             }
         }
     }
@@ -1408,6 +1425,7 @@ pub fn chat_view(
             let mut lines: Vec<ChatLine> = workspace
                 .chats
                 .iter()
+                .filter(|chat| !chat.archived)
                 .map(|chat| ChatLine {
                     id: chat.chat_id.clone(),
                     title: chat.title.clone().unwrap_or_else(|| "Untitled".to_owned()),
@@ -1594,48 +1612,6 @@ pub fn reply_urgency_words(urgency: &str) -> String {
         "urgent_ed" => "Urgent, ED".to_owned(),
         "routine" => "Routine".to_owned(),
         other => capitalize_first(&other.replace('_', " ")),
-    }
-}
-
-/// The citation inspection the reader shows from the preview already on the chip.
-#[derive(Debug, Clone, PartialEq, Eq)]
-pub struct CitationInspection {
-    /// `Source {n}`.
-    pub eyebrow: String,
-    /// The source title.
-    pub title: String,
-    /// Preview paragraphs. Empty when the citation recorded none.
-    pub paragraphs: Vec<String>,
-    /// `Prepared by Coda · as of {date}` when the preview has a date.
-    pub provenance: Option<String>,
-    /// Set when a resolved citation has no preview prose.
-    pub unavailable: Option<&'static str>,
-    /// `Open in {chart}` or `Open original`.
-    pub open_label: Option<String>,
-    /// The native destination URI.
-    pub open_uri: Option<String>,
-}
-
-/// Builds the inspection surface from a chip. It does not fetch the record.
-pub fn citation_inspection(chip: &SourceChip) -> CitationInspection {
-    let paragraphs = preview_paragraphs(&chip.preview);
-    let unavailable = if chip.open && paragraphs.is_empty() {
-        Some(SOURCE_UNAVAILABLE)
-    } else {
-        None
-    };
-    CitationInspection {
-        eyebrow: format!("Source {}", chip.index),
-        title: chip.label.clone(),
-        paragraphs,
-        provenance: if unavailable.is_some() {
-            None
-        } else {
-            source_provenance_line(chip.origin, &chip.as_of)
-        },
-        open_label: chip.open_label.clone(),
-        open_uri: chip.open_uri.clone(),
-        unavailable,
     }
 }
 
@@ -2187,13 +2163,6 @@ mod tests {
             chip_name(discharge),
             "Source 2: Discharge Summary. Preview source."
         );
-        assert_eq!(
-            preview_paragraphs("First paragraph.\n\nSecond paragraph."),
-            vec![
-                "First paragraph.".to_owned(),
-                "Second paragraph.".to_owned()
-            ]
-        );
         let closed = synopsis_pieces(&[ClinicalSegment::Citation {
             state: "unavailable".to_owned(),
             display_label: Some("Missing note".to_owned()),
@@ -2548,21 +2517,23 @@ mod tests {
             .flatten()
             .collect();
         let discharge = chips.iter().find(|chip| chip.index == 2).expect("chip 2");
-        let inspection = citation_inspection(discharge);
-        assert_eq!(inspection.eyebrow, "Source 2");
-        assert_eq!(inspection.title, "Discharge Summary");
-        assert!(inspection.unavailable.is_none());
-        assert_eq!(
-            inspection.provenance.as_deref(),
-            Some("As of April 13, 2026")
-        );
-        assert_eq!(inspection.open_label.as_deref(), Some("Open in Demo chart"));
+        let pane = crate::citations_panel::build_source_pane_with(
+            &crate::citations_panel::SourcePanelLoad::from_chip(discharge.clone()),
+            || panic!("non-failure should not allocate retry handler"),
+        )
+        .expect("open source pane");
+        assert_eq!(pane.eyebrow, "Source 2");
+        assert_eq!(pane.title, "Discharge Summary");
+        assert!(matches!(pane.state, ui::SourceState::Shown(_)));
         let mut closed = discharge.clone();
         closed.preview.clear();
         closed.as_of.clear();
-        let missing = citation_inspection(&closed);
-        assert_eq!(missing.unavailable, Some(SOURCE_UNAVAILABLE));
-        assert!(missing.provenance.is_none());
+        let missing = crate::citations_panel::build_source_pane_with(
+            &crate::citations_panel::SourcePanelLoad::from_chip(closed),
+            || panic!("non-failure should not allocate retry handler"),
+        )
+        .expect("missing pane");
+        assert!(matches!(missing.state, ui::SourceState::Unavailable(_)));
     }
 
     #[test]
@@ -2805,34 +2776,6 @@ mod tests {
             RosterContinuation::HasMore {
                 cursor: "cursor-25".to_owned(),
             }
-        );
-    }
-
-    #[test]
-    fn native_source_citation_does_not_say_prepared_by_coda() {
-        let chip = SourceChip {
-            index: 1,
-            label: "Basic metabolic panel".to_owned(),
-            open: true,
-            preview: "Potassium 4.4 mmol/L".to_owned(),
-            as_of: "April 13, 2026".to_owned(),
-            open_label: Some("Open in EHR".to_owned()),
-            open_uri: Some("https://ehr.example/lab/1".to_owned()),
-            origin: physician_wire::CitationOrigin::SourceRecord,
-        };
-        let inspection = citation_inspection(&chip);
-        assert_eq!(
-            inspection.provenance.as_deref(),
-            Some("As of April 13, 2026")
-        );
-
-        let fallback = SourceChip {
-            origin: physician_wire::CitationOrigin::PreparedByCoda,
-            ..chip
-        };
-        assert_eq!(
-            citation_inspection(&fallback).provenance.as_deref(),
-            Some("Prepared by Coda · as of April 13, 2026")
         );
     }
 

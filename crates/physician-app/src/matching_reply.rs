@@ -18,7 +18,7 @@ use physician_wire::matching_reply::{
 };
 use ui::{
     ActionRow, Button, ButtonVariant, Card, Checkbox, Dialog, EmptyLine, Icon, IconName, Notice,
-    PageTitle, SearchField, StatePill, TextField, TextKind, Tone, WorkingPresence, copy_text,
+    PageTitle, StatePill, TextField, TextKind, Tone, WorkingPresence, copy_text,
 };
 
 use crate::shell::{ReadView, SourceChip, TRY_AGAIN, read_view};
@@ -218,12 +218,7 @@ fn PatientPickerDialog(
         let q = query();
         let _attempt = lookup_attempt();
         let api = client.read().clone();
-        async move {
-            api.search(&q)
-                .await
-                .map(|page| page.patients)
-                .map_err(|_| ())
-        }
+        async move { api.search(&q).await.map_err(|_| ()) }
     });
 
     let title = match &purpose {
@@ -274,14 +269,6 @@ fn PatientPickerDialog(
                         }
                     }
                 }
-                SearchField {
-                    label: "Search practice patients".to_owned(),
-                    value: query(),
-                    on_input: move |next| query.set(next),
-                    placeholder: "Name, birth date, or MRN".to_owned(),
-                    clear_label: "Clear search".to_owned(),
-                    autofocus: true,
-                }
                 if show_sender_policy {
                     Checkbox {
                         label: "Also confirm this sender address for future messages".to_owned(),
@@ -291,81 +278,55 @@ fn PatientPickerDialog(
                         on_change: move |checked| also_confirm_sender.set(checked),
                     }
                 }
-                match roster_val {
-                    None => rsx! {
-                        p { class: "mr-picker-status", role: "status", "Searching…" }
-                    },
-                    Some(Err(())) => rsx! {
-                        div { class: "mr-banner", "data-picker-lookup-error": "true",
-                            Notice {
-                                tone: Tone::Error,
-                                icon: Some(IconName::Alert),
-                                title: PICKER_SEARCH_UNAVAILABLE.to_owned(),
-                                ActionRow {
-                                    Button {
-                                        compact: true,
-                                        "data-picker-lookup-retry": "true",
-                                        onclick: move |_| *lookup_attempt.write() += 1,
-                                        "Retry"
-                                    }
-                                }
-                            }
+                {
+                    let (rows_view, match_mode) = match roster_val {
+                        None => (
+                            crate::shell::ReadView::Loading,
+                            physician_wire::SearchMatchMode::ExactOrPrefix,
+                        ),
+                        Some(Err(())) => (
+                            crate::shell::ReadView::Unavailable,
+                            physician_wire::SearchMatchMode::ExactOrPrefix,
+                        ),
+                        Some(Ok(resp)) => {
+                            let eligible: Vec<PatientSearchRow> = resp
+                                .patients
+                                .into_iter()
+                                .filter(|p| {
+                                    exclude_workspace_id
+                                        .as_deref()
+                                        .is_none_or(|ex| ex != p.patient_workspace_id)
+                                })
+                                .collect();
+                            (crate::shell::ReadView::Showing(eligible), resp.match_mode)
                         }
-                    },
-                    Some(Ok(patients)) => {
-                        let eligible: Vec<PatientSearchRow> = patients
-                            .into_iter()
-                            .filter(|p| {
-                                exclude_workspace_id
-                                    .as_deref()
-                                    .is_none_or(|ex| ex != p.patient_workspace_id)
-                            })
-                            .collect();
-                        if eligible.is_empty() {
-                            rsx! {
-                                EmptyLine { message: PICKER_SEARCH_EMPTY.to_owned() }
-                            }
-                        } else {
-                            rsx! {
-                                div { class: "mr-picker-results",
-                                    for p in eligible {
-                                        div {
-                                            key: "{p.patient_workspace_id}",
-                                            class: "mr-picker-row",
-                                            "data-picker-patient": "{p.patient_workspace_id}",
-                                            div { class: "mr-picker-who",
-                                                strong { "{p.patient_display_name}" }
-                                                span { class: "mr-picker-meta",
-                                                    if let Some(dob) = p.birth_date.as_deref() {
-                                                        "DOB {dob}"
-                                                    }
-                                                    if let Some(mrn) = p.mrn.as_deref() {
-                                                        " · MRN {mrn}"
-                                                    }
-                                                }
-                                            }
-                                            Button {
-                                                compact: true,
-                                                variant: ButtonVariant::Primary,
-                                                disabled: busy,
-                                                "data-picker-select": "{p.patient_workspace_id}",
-                                                onclick: {
-                                                    let ws = p.patient_workspace_id.clone();
-                                                    move |_| {
-                                                        let policy = if also_confirm_sender() {
-                                                            SenderConfirmationPolicyWire::AlsoConfirmSenderForPatient
-                                                        } else {
-                                                            SenderConfirmationPolicyWire::ConversationOnly
-                                                        };
-                                                        on_pick_patient.call((ws.clone(), policy));
-                                                    }
-                                                },
-                                                "Choose patient"
-                                            }
-                                        }
-                                    }
-                                }
-                            }
+                    };
+                    rsx! {
+                        crate::patient_finder::FindPatientSearch {
+                            query: query(),
+                            label: "Search practice patients".to_owned(),
+                            placeholder: "Name, birth date, or MRN".to_owned(),
+                            rows: rows_view,
+                            match_mode,
+                            continuation: crate::shell::RosterContinuation::Complete,
+                            loading_copy: "Searching…".to_owned(),
+                            unavailable_copy: PICKER_SEARCH_UNAVAILABLE.to_owned(),
+                            empty_copy: PICKER_SEARCH_EMPTY.to_owned(),
+                            action: crate::patient_finder::FindPatientAction::ChooseButton { busy },
+                            focused: None,
+                            on_query: move |next| query.set(next),
+                            on_retry: move |_| *lookup_attempt.write() += 1,
+                            on_scroll_more: move |_| {},
+                            on_retry_more: move |_| {},
+                            on_select: move |picked: PatientSearchRow| {
+                                let policy = if also_confirm_sender() {
+                                    SenderConfirmationPolicyWire::AlsoConfirmSenderForPatient
+                                } else {
+                                    SenderConfirmationPolicyWire::ConversationOnly
+                                };
+                                on_pick_patient.call((picked.patient_workspace_id, policy));
+                            },
+                            on_editing: move |_| {},
                         }
                     }
                 }

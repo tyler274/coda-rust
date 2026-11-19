@@ -11,13 +11,13 @@ pub mod today_updates;
 
 pub use http::HttpError;
 use physician_wire::{
-    ChatSnapshotResponse, ColleagueInvitationResponse, HealthResponse, InviteColleagueRequest,
-    InvitePatientRequest, PanelAssignmentResponse, PastWorkResponse, PatientInvitationResponse,
-    PatientMemoryResponse, PatientSearchResponse, PatientWorkspaceResponse,
-    PatientWorkspacesResponse, PhysicianDraft, PracticeDayResponse, RecentConversationsResponse,
-    ReplyDraftWire, ResponseFeedback, ResponseId, SaveFeedback, SavePhysicianMemoryEditRequest,
-    SavePhysicianMemoryEditResponse, SignInResponse, TodayListResponse, UpdatesResponse,
-    VerifyResponse, WhoamiResponse,
+    ChatSnapshotResponse, CitedSourceResponse, ColleagueInvitationResponse, DictationRequest,
+    DictationResponse, HealthResponse, InviteColleagueRequest, InvitePatientRequest,
+    PanelAssignmentResponse, PastWorkResponse, PatientInvitationResponse, PatientMemoryResponse,
+    PatientSearchResponse, PatientWorkspaceResponse, PatientWorkspacesResponse, PhysicianDraft,
+    PracticeDayResponse, RecentConversationsResponse, ReplyDraftWire, ResponseFeedback, ResponseId,
+    SaveFeedback, SavePhysicianMemoryEditRequest, SavePhysicianMemoryEditResponse, SignInResponse,
+    TodayListResponse, UpdatesResponse, VerifyResponse, WhoamiResponse,
 };
 use std::sync::Arc;
 
@@ -648,9 +648,25 @@ impl PhysicianClient {
     }
 
     /// Sends recorded audio for transcription.
-    pub async fn dictate(&self) -> Result<(), http::HttpError> {
-        let _: serde_json::Value = self.post("/dictation", &serde_json::json!({})).await?;
-        Ok(())
+    pub async fn dictate(
+        &self,
+        request: &DictationRequest,
+    ) -> Result<DictationResponse, http::HttpError> {
+        self.post("/dictation", request).await
+    }
+
+    /// Reads one cited source record on demand for an open conversation.
+    pub async fn cited_source(
+        &self,
+        workspace_id: &str,
+        chat_id: &str,
+        source_key: &str,
+    ) -> Result<CitedSourceResponse, http::HttpError> {
+        let encoded_key = query_escape(source_key);
+        self.get(&format!(
+            "/patient-workspaces/{workspace_id}/chats/{chat_id}/sources/{encoded_key}"
+        ))
+        .await
     }
 
     /// Searches the patient roster.
@@ -673,6 +689,7 @@ impl PhysicianClient {
                     patients: Vec::new(),
                     next_after: None,
                     may_be_missing_someone: false,
+                    match_mode: Default::default(),
                 })
             });
         }

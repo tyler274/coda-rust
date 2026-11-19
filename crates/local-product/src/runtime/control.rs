@@ -104,6 +104,10 @@ fn decode<T: serde::de::DeserializeOwned>(state: Value, from: &'static str) -> R
     serde_json::from_value(state).map_err(conversion_error(from, std::any::type_name::<T>()))
 }
 
+fn is_false(value: &bool) -> bool {
+    !*value
+}
+
 /// The conversation row's `state`: each [`Conversation`] field that has no
 /// column or rows of its own.
 #[derive(Serialize, Deserialize)]
@@ -128,6 +132,8 @@ struct ConversationState {
     queued: Vec<QueuedMessage>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     stopped_queue: Option<StoppedQueue>,
+    #[serde(default, skip_serializing_if = "is_false")]
+    archived: bool,
 }
 
 /// The reply draft row's `state`: each [`Draft`] field that has no column or
@@ -182,6 +188,7 @@ pub(super) fn conversation_state(conversation: &Conversation) -> Result<Value, D
         origin,
         queued,
         stopped_queue,
+        archived,
     } = conversation;
     serde_json::to_value(ConversationState {
         messages: messages.clone(),
@@ -198,6 +205,7 @@ pub(super) fn conversation_state(conversation: &Conversation) -> Result<Value, D
         origin: origin.clone(),
         queued: queued.clone(),
         stopped_queue: stopped_queue.clone(),
+        archived: *archived,
     })
     .map_err(conversion_error("Conversation", "conversation state"))
 }
@@ -282,6 +290,7 @@ pub(super) fn conversation(
         origin,
         queued,
         stopped_queue,
+        archived,
     } = serde_json::from_value(row.state)
         .map_err(conversion_error("conversation state", "ConversationState"))?;
     let mut conversation = Conversation {
@@ -304,6 +313,7 @@ pub(super) fn conversation(
         origin,
         queued,
         stopped_queue,
+        archived,
     };
     conversation.last_activity_at = conversation.latest_activity_at();
     if let Some(outcome) = conversation.run().and_then(|run| run.outcome) {

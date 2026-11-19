@@ -581,6 +581,7 @@ fn seed_featured(
     let snap = ChatSnapshot {
         sources: Default::default(),
         queued: Vec::new(),
+        archived: false,
         transcript: vec![build_exchange(
             "seed",
             ws_id,

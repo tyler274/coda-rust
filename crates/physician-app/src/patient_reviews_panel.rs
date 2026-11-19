@@ -935,6 +935,7 @@ fn evidence_source_chip(
         number: evidence.number,
         label: evidence.display_label.clone(),
         quote: evidence.excerpt.clone(),
+        target: Default::default(),
     }];
     for piece in message_pieces(&segment, sources) {
         if let crate::shell::SynopsisPiece::Chips(mut chips) = piece
@@ -945,10 +946,18 @@ fn evidence_source_chip(
     }
     SourceChip {
         index: evidence.number,
+        source_key: Some(evidence.source_key.clone()),
         label: evidence.display_label.clone(),
         open: false,
+        target: physician_wire::CitationTargetKind::WholeRecord,
+        quote: String::new(),
         preview: String::new(),
         as_of: String::new(),
+        record_kind: None,
+        record_status: None,
+        readable_parts: Vec::new(),
+        fields: Vec::new(),
+        raw_content: None,
         open_label: None,
         open_uri: None,
         origin: physician_wire::CitationOrigin::SourceRecord,

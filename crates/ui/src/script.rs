@@ -218,6 +218,60 @@ pub(crate) fn watch_reading(scroller: &str) -> Listening<bool> {
     listen("watchReading", json!([scroller]))
 }
 
+/// How a dictation capture session was initiated.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum DictationTrigger {
+    /// Started via the toolbar button; ends only on explicit Finish or Cancel.
+    ClickButton,
+    /// Started via hold-shortcut (`Ctrl+Shift+Space`); ends when a held key releases.
+    HoldShortcut,
+}
+
+/// Starts capturing microphone audio for dictation, streaming start/level/release/error events until stopped.
+pub fn start_dictation(trigger: DictationTrigger) -> Listening<DictationHeard> {
+    let stop_on_key_release = matches!(trigger, DictationTrigger::HoldShortcut);
+    listen("watchDictation", json!([stop_on_key_release]))
+}
+
+/// Stops active dictation capture and returns encoded audio for transcription.
+pub fn stop_dictation() -> Asked<DictationAudio> {
+    ask("stopDictation", json!([]))
+}
+
+/// Cancels any active dictation capture and releases the microphone.
+pub fn cancel_dictation() {
+    fire("cancelDictation", json!([]));
+}
+
+/// Event streamed while dictation listens on the browser microphone.
+#[derive(Clone, Debug, Deserialize, PartialEq)]
+#[serde(tag = "kind", rename_all = "lowercase")]
+pub enum DictationHeard {
+    /// Microphone capture started cleanly.
+    Started,
+    /// Normalized RMS voice loudness sample in `0.0..=1.0`.
+    Level {
+        /// Loudness sample.
+        level: f32,
+    },
+    /// Physician released a held push-to-talk shortcut key.
+    Released,
+    /// Recording could not start or access the microphone.
+    Error {
+        /// Human-readable error detail.
+        message: String,
+    },
+}
+
+/// Encoded audio bytes captured when dictation finishes listening.
+#[derive(Clone, Debug, Deserialize, PartialEq, Eq)]
+pub struct DictationAudio {
+    /// Base64-encoded audio stream.
+    pub audio_base64: String,
+    /// MediaRecorder MIME type.
+    pub mime_type: String,
+}
+
 /// One thing `watchPage` reports.
 #[derive(Clone, Copy, Debug, Deserialize, PartialEq)]
 #[serde(tag = "kind", rename_all = "lowercase")]
@@ -277,7 +331,7 @@ pub(crate) struct Bounds {
 
 /// Why a behaviour has nothing for its caller.
 #[derive(Debug)]
-pub(crate) enum Unheard {
+pub enum Unheard {
     /// The behaviour threw or its promise rejected, or the module it lives in wouldn't load.
     Failed(String),
     /// It reported something its caller can't read: `assets/behaviour.js` and this file disagree.
@@ -299,7 +353,7 @@ impl fmt::Display for Unheard {
 }
 
 /// A behaviour that answers once. It starts when asked; [`Asked::answer`] waits for what it says.
-pub(crate) struct Asked<T> {
+pub struct Asked<T> {
     name: &'static str,
     running: transport::Running,
     answer: PhantomData<T>,
@@ -308,14 +362,14 @@ pub(crate) struct Asked<T> {
 impl<T: DeserializeOwned> Asked<T> {
     /// The behaviour's answer, or why there is none, which also goes to the console. It waits only
     /// on the behaviour: `assets/behaviour.js` settles every one, unless its promise never does.
-    pub(crate) async fn answer(self) -> Result<T, Unheard> {
+    pub async fn answer(self) -> Result<T, Unheard> {
         hear(self.name, &self.running).await
     }
 }
 
 /// A behaviour that keeps reporting. Dropping the last copy stops it.
 #[derive(Clone)]
-pub(crate) struct Listening<T> {
+pub struct Listening<T> {
     name: &'static str,
     running: Rc<Stopping>,
     report: PhantomData<T>,
@@ -331,7 +385,7 @@ impl Drop for Stopping {
 
 impl<T: DeserializeOwned> Listening<T> {
     /// The next thing the behaviour reports, or why there is none, which also goes to the console.
-    pub(crate) async fn next(&self) -> Result<T, Unheard> {
+    pub async fn next(&self) -> Result<T, Unheard> {
         hear(self.name, &self.running.0).await
     }
 }
