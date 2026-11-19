@@ -151,7 +151,8 @@ inspect them on demand through retrieve_patient_work. Honor clear physician dire
     memory::guidance!(),
     "\n\n\
 Use the tools offered in this conversation. For patient-specific chart facts, discover candidate records \
-with search_patient_information and open exact revisions with read_patient_sources. When source currency \
+with search_patient_information, open exact revisions with read_patient_sources, and inspect specific pages \
+of multi-page PDFs, faxes or chart scans with read_document_page. When source currency \
 could change clinical judgment or a source pull is stale, call refresh_patient_sources before concluding. \
 When read chart revisions establish, update or resolve an urgent (`now`) or same-day (`today`) clinical \
 concern, record that change with patient_concern grounded in the exact candidate_id and revision values \
@@ -258,6 +259,7 @@ impl Job {
 pub fn tools() -> Vec<Tool> {
     let mut offered = work_tools();
     offered.extend(chart_tools());
+    offered.push(crate::attachments::document_page_tool());
     offered.push(crate::runtime::chat_operations::refresh_sources_tool());
     offered.push(crate::runtime::chat_operations::retrieve_patient_work_tool());
     offered.push(crate::runtime::concerns::concern_tool());
@@ -284,12 +286,13 @@ pub fn work_tools() -> Vec<Tool> {
     offered
 }
 
-/// Source, clinical library, memory, patient understanding, and prior-work reads have no product effects or shared session mutation.
+/// Source, paged-document, clinical library, memory, patient understanding, and prior-work reads have no product effects or shared session mutation.
 pub fn read_only(name: &str) -> bool {
     matches!(
         name,
         crate::physician_sources::SEARCH_TOOL
             | crate::physician_sources::READ_TOOL
+            | crate::attachments::READ_DOCUMENT_PAGE_TOOL
             | crate::clinical_library::SEARCH_LIBRARY_TOOL
             | crate::clinical_library::READ_LIBRARY_TOOL
             | crate::runtime::chat_operations::RETRIEVE_PATIENT_WORK_TOOL
@@ -375,7 +378,8 @@ impl ChatTool {
             }
             crate::clinical_library::SEARCH_LIBRARY_TOOL
             | crate::clinical_library::READ_LIBRARY_TOOL => Some(Self::ClinicalLibrary),
-            crate::runtime::chat_operations::REFRESH_SOURCES_TOOL
+            crate::attachments::READ_DOCUMENT_PAGE_TOOL
+            | crate::runtime::chat_operations::REFRESH_SOURCES_TOOL
             | crate::runtime::chat_operations::RETRIEVE_PATIENT_WORK_TOOL
             | crate::runtime::concerns::CONCERN_TOOL
             | crate::initial_understanding::READ_UNDERSTANDING_TOOL
@@ -961,6 +965,7 @@ mod tests {
             crate::initial_understanding::SAVE_UNDERSTANDING_TOOL,
             crate::clinical_library::SEARCH_LIBRARY_TOOL,
             crate::clinical_library::READ_LIBRARY_TOOL,
+            crate::attachments::READ_DOCUMENT_PAGE_TOOL,
             citations::FINISH_TOOL,
             "save_working_note",
             "read_tool_result",

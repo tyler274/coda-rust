@@ -1092,6 +1092,7 @@ pub fn briefing_tools() -> Vec<Tool> {
     let mut offered = crate::physician_chat::work_tools();
     offered.push(crate::physician_sources::search_tool());
     offered.push(crate::physician_sources::read_tool(ChartScope::Chat));
+    offered.push(crate::attachments::document_page_tool());
     offered.push(crate::runtime::refresh::refresh_tool());
     offered.push(
         crate::initial_understanding::understanding_tools()

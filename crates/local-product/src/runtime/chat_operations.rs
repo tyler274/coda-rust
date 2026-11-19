@@ -12,7 +12,7 @@ use serde::{Deserialize, Serialize};
 use serde_json::{Value, json};
 
 use super::concerns::{ConcernUrgency, ExactRecordReference, SourceWork};
-use super::entities::{concern, patient_dispatch, practice_job};
+use super::entities::{concern, patient_dispatch, practice_job, source};
 use super::jobs::PracticeJobKind;
 use super::memory::{FileRead, MemoryError, MemoryPath, MemoryRefusal, PatientKey};
 use super::sources::SourcePull;
@@ -1597,6 +1597,16 @@ impl Store {
                 .await;
         }
 
+        if crate::attachments::is_document_page_tool(&call.name) {
+            return self
+                .execute_document_page_tool(
+                    &claim.scope.practice,
+                    &claim.scope.workspace,
+                    &arguments,
+                )
+                .await;
+        }
+
         if crate::initial_understanding::is_understanding_tool(&call.name) {
             return self
                 .execute_chat_understanding_tool(claim, call, &arguments)
@@ -1808,6 +1818,49 @@ impl Store {
                 ))
             }
         }
+    }
+
+    /// Executes [`crate::attachments::READ_DOCUMENT_PAGE_TOOL`] against all
+    /// retained non-withdrawn historical source revisions in `workspace`, so
+    /// current page discovery reads the latest version while earlier citations
+    /// reopen to their exact original `(document_id, version, page_number)`.
+    pub async fn execute_document_page_tool(
+        &self,
+        _practice: &str,
+        workspace: &str,
+        arguments: &Value,
+    ) -> Result<ToolOutcome, engine::ProductError> {
+        let rows = source::Entity::find()
+            .filter(source::Column::Workspace.eq(workspace))
+            .order_by_asc(source::Column::ObservedAtVersion)
+            .order_by_asc(source::Column::Candidate)
+            .all(&self.db)
+            .await
+            .map_err(persistence_failure)?;
+
+        let mut latest_is_withdrawn: std::collections::BTreeMap<String, bool> =
+            std::collections::BTreeMap::new();
+        for row in &rows {
+            latest_is_withdrawn.insert(row.candidate.clone(), row.revision.is_none());
+        }
+
+        let mut retained = Vec::new();
+        for row in rows {
+            if latest_is_withdrawn
+                .get(&row.candidate)
+                .copied()
+                .unwrap_or(false)
+            {
+                continue;
+            }
+            if let Some(raw_rev) = row.revision {
+                let decoded: SourceRevision = serde_json::from_value(raw_rev)
+                    .map_err(|_| error("corrupt source observation"))
+                    .map_err(persistence_failure)?;
+                retained.push(decoded);
+            }
+        }
+        Ok(crate::attachments::execute_document_page_read_from_revisions(arguments, &retained))
     }
 
     /// Reconciles an already-committed durable chat tool effect read-only when an

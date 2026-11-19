@@ -1086,6 +1086,7 @@ pub fn tools() -> Vec<Tool> {
     let mut offered = work_tools();
     offered.push(search_tool());
     offered.push(read_tool(ChartScope::Chat));
+    offered.push(crate::attachments::document_page_tool());
     offered.push(refresh_tool());
     offered.push(concern_tool());
     offered.extend(understanding_tools());
@@ -1319,6 +1320,7 @@ mod tests {
         for expected in [
             crate::physician_sources::SEARCH_TOOL,
             crate::physician_sources::READ_TOOL,
+            crate::attachments::READ_DOCUMENT_PAGE_TOOL,
             crate::runtime::refresh::REFRESH_TOOL,
             crate::runtime::concerns::CONCERN_TOOL,
             "list_patient_memory",
