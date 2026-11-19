@@ -771,19 +771,45 @@ fn chip_number(
 pub enum EventRefetch {
     /// Nothing changed that this view shows.
     Nothing,
+    /// Practice-level lists (`Today`, `Updates`, and the schedule pane),
+    /// without disturbing the open patient workspace, focus, or active draft.
+    Today,
     /// The open patient's workspace and chat.
     OpenPatient,
+    /// Both practice-level lists (`Today`/`Schedule`/`Updates`) and the open
+    /// patient's workspace and chat.
+    TodayAndOpenPatient,
     /// Every projection on screen: the server missed events (bus lag or a
     /// Redis reconnect), so any of them may be stale.
     Everything,
 }
 
-/// Classifies one frame. `resync` refetches everything once; other events
-/// refetch only what belongs to the open patient.
+/// Classifies one frame. `resync` refetches everything once; `workspace_changed`
+/// always refreshes practice-level lists (`Today`, schedule rail, `Updates`) and
+/// also refreshes the open patient when it matches `selected`; conversation
+/// state events refresh only the open patient.
 #[cfg_attr(not(target_arch = "wasm32"), allow(dead_code))]
 pub fn event_refetch(event: &str, data: &str, selected: Option<&str>) -> EventRefetch {
     if event == "resync" {
         return EventRefetch::Everything;
+    }
+    if event == "workspace_changed" {
+        return if workspace_event_rereads(event, data, selected) {
+            EventRefetch::TodayAndOpenPatient
+        } else if serde_json::from_str::<serde_json::Value>(data)
+            .ok()
+            .and_then(|value| {
+                value
+                    .get("patient_workspace_id")
+                    .and_then(|id| id.as_str())
+                    .map(|id| !id.trim().is_empty())
+            })
+            .unwrap_or(false)
+        {
+            EventRefetch::Today
+        } else {
+            EventRefetch::Nothing
+        };
     }
     if workspace_event_rereads(event, data, selected) {
         EventRefetch::OpenPatient
@@ -1933,7 +1959,7 @@ mod tests {
                 r#"{"patient_workspace_id":"pw-mary"}"#,
                 Some("pw-mary")
             ),
-            EventRefetch::OpenPatient
+            EventRefetch::TodayAndOpenPatient
         );
         assert_eq!(
             event_refetch(
@@ -1941,7 +1967,23 @@ mod tests {
                 r#"{"patient_workspace_id":"pw-other"}"#,
                 Some("pw-mary")
             ),
-            EventRefetch::Nothing
+            EventRefetch::Today
+        );
+        assert_eq!(
+            event_refetch(
+                "workspace_changed",
+                r#"{"patient_workspace_id":"pw-mary"}"#,
+                None
+            ),
+            EventRefetch::Today
+        );
+        assert_eq!(
+            event_refetch(
+                "physician_state_changed",
+                r#"{"kind":"conversation","target":{"patient_workspace_id":"pw-mary"}}"#,
+                Some("pw-mary")
+            ),
+            EventRefetch::OpenPatient
         );
         assert!(pieces.iter().all(|piece| match piece {
             SynopsisPiece::Text(text) => !text.contains("[[patient_source"),

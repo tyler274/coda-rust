@@ -1317,6 +1317,7 @@ mod tests {
         let quota: Arc<dyn harness::provider::QuotaGate> = Arc::new(store.clone());
         let mut wakeups = store.wakeups().await.unwrap();
 
+        let bus = physician_bus::from_env(|_| None, false).await.unwrap();
         let wake = Arc::new(crate::WakeService {
             auth: crate::WakeAuth::LoopbackEmulator,
             mode: crate::WakeMode::RehearsalAllowed,
@@ -1330,6 +1331,7 @@ mod tests {
                 visit_prep: crate::VisitPrepWakeHandler {
                     store: store.clone(),
                     auth: auth.clone(),
+                    bus: Arc::clone(&bus),
                     model: model.clone(),
                     quota: quota.clone(),
                     skills_dir: None,
@@ -1337,6 +1339,7 @@ mod tests {
                         practice: practice.clone(),
                         source: calendar,
                     }),
+                    elation: None,
                 },
             }),
             clinical_library: None,
@@ -1344,7 +1347,7 @@ mod tests {
         let worker = Arc::new(Worker {
             store: store.clone(),
             auth: auth.clone(),
-            bus: physician_bus::from_env(|_| None, false).await.unwrap(),
+            bus,
             model,
             quota,
             pace: Pace {

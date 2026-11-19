@@ -92,6 +92,21 @@ pub const fn visit_can_start_preparation(
     matches!(status, AppointmentStatus::Scheduled) && now_unix < ends_at_unix
 }
 
+/// Single rule deciding whether a visit briefing slot accepts a write from
+/// `current_work_id`.
+///
+/// Once a briefing has been saved for `(practice, source_id, appointment_id,
+/// starts_at_unix)`, only the originating briefing job (`existing_work_id ==
+/// Some(current_work_id)`) may revise it during a mid-run evidence-change retry
+/// before completion. Later chart input after completion must never rewrite the
+/// briefing; a subsequent patient review raises its own concern if needed.
+pub fn slot_allows_briefing_write(existing_work_id: Option<&str>, current_work_id: &str) -> bool {
+    match existing_work_id {
+        None => true,
+        Some(owner) => owner == current_work_id,
+    }
+}
+
 /// Single rule deciding whether an open visit concern retires automatically.
 ///
 /// - Ordinary (`Today`) visit concerns retire as soon as the visit ends or is
@@ -2118,26 +2133,25 @@ impl Store {
                 .map_err(persistence_failure)?
                 .filter(|b| b.visit_standing == "current");
 
-            let (final_state_str, preserved_briefing_job_id, preserved_briefing_id) =
-                match (&item.decision, existing_current_briefing.as_ref()) {
-                    (VisitPreparationDecision::Skip { .. }, Some(saved_briefing)) => (
-                        "ready",
-                        existing_prep
-                            .as_ref()
-                            .and_then(|prep| prep.briefing_job_id.clone()),
-                        Some(saved_briefing.briefing_id.clone()),
-                    ),
-                    (_, Some(saved_briefing)) => {
-                        (state_str, None, Some(saved_briefing.briefing_id.clone()))
-                    }
-                    (_, None) => (
-                        state_str,
-                        None,
-                        existing_prep
-                            .as_ref()
-                            .and_then(|prep| prep.briefing_id.clone()),
-                    ),
-                };
+            if let Some(saved_briefing) = existing_current_briefing.as_ref() {
+                return Ok(ToolOutcome::refused(
+                    json!({
+                        "outcome": "briefing_already_prepared",
+                        "appointment_id": item.appointment_id,
+                        "briefing_id": saved_briefing.briefing_id,
+                        "message": "A completed briefing already exists for this visit time. Later chart updates must not rewrite a finished briefing; handle them through a regular patient review.",
+                    })
+                    .to_string(),
+                ));
+            }
+
+            let (final_state_str, preserved_briefing_job_id, preserved_briefing_id) = (
+                state_str,
+                None,
+                existing_prep
+                    .as_ref()
+                    .and_then(|prep| prep.briefing_id.clone()),
+            );
 
             let obs = sources::observed(&tx, &cand.workspace)
                 .await
@@ -2492,6 +2506,23 @@ impl Store {
             .one(&tx)
             .await
             .map_err(persistence_failure)?;
+        if let Some(existing_row) = existing_slot_briefing.as_ref() {
+            let existing_origin: BriefingOrigin =
+                serde_json::from_value(existing_row.origin.clone())
+                    .map_err(conversion_error("visit_briefing.origin", "BriefingOrigin"))
+                    .map_err(persistence_failure)?;
+            if !slot_allows_briefing_write(Some(&existing_origin.work_id), &job.work) {
+                return Ok(ToolOutcome::refused(
+                    json!({
+                        "outcome": "briefing_immutable_after_completion",
+                        "briefing_id": existing_row.briefing_id,
+                        "appointment_id": briefing_ctx.appointment_id,
+                        "message": "A completed briefing already exists for this visit time and cannot be rewritten by a later job. Later chart updates are handled by regular patient reviews.",
+                    })
+                    .to_string(),
+                ));
+            }
+        }
         let briefing_id = existing_slot_briefing
             .as_ref()
             .map(|row| row.briefing_id.clone())
@@ -3731,15 +3762,8 @@ impl Store {
                         obs.version > rec.observed_source_version
                             || appt.saved_version > rec.appointment_saved_version
                     }
-                    VisitPreparationState::Ready { briefing_id, .. } => {
-                        let saved = self
-                            .visit_briefing_by_id_internal(practice, briefing_id)
-                            .await?;
-                        saved.is_none_or(|b| {
-                            obs.version > b.source_version.max(rec.observed_source_version)
-                        })
-                    }
-                    VisitPreparationState::Preparing { .. }
+                    VisitPreparationState::Ready { .. }
+                    | VisitPreparationState::Preparing { .. }
                     | VisitPreparationState::CouldNotFinish { .. }
                     | VisitPreparationState::EndedVisitChanged { .. } => false,
                 },
@@ -3755,6 +3779,77 @@ impl Store {
         Ok(candidates)
     }
 
+    /// Single-owner pre-preparation source readiness check (`P4.4`).
+    ///
+    /// Checks whether the patient's configured sources have updates before
+    /// starting a visit briefing job. A source that fails to update never blocks
+    /// preparation: its failed status and `last_good_pulled_at` are recorded in
+    /// Postgres so the briefing works from the last good records and states so.
+    async fn ensure_previsit_sources_checked<A: AuthStore>(
+        &self,
+        auth: &A,
+        practice: &str,
+        workspace: &str,
+        slot: &VisitSlotKey,
+        now_unix: i64,
+    ) {
+        let configured = match self
+            .source_refresh()
+            .configured_sources(practice, workspace)
+            .await
+        {
+            Ok(sources) if !sources.is_empty() => sources,
+            Ok(_) => return,
+            Err(error) => {
+                tracing::warn!(
+                    %error,
+                    practice,
+                    workspace,
+                    "pre-preparation source discovery failed; continuing from retained records"
+                );
+                return;
+            }
+        };
+        let _ = configured;
+        let key_digest = &crate::sha256_hex(
+            format!(
+                "previsit-refresh:{practice}:{workspace}:{}:{}:{}:{now_unix}",
+                slot.source_id, slot.appointment_id, slot.starts_at_unix
+            )
+            .as_bytes(),
+        )[..24];
+        let Ok(command_key) =
+            super::refresh::RefreshCommandKey::new(format!("previsit-refresh:{key_digest}"))
+        else {
+            return;
+        };
+        let refresh_scope = PracticeScope {
+            practice: practice.to_owned(),
+            workspace: workspace.to_owned(),
+            job_id: format!("previsit-refresh:{key_digest}"),
+        };
+        let request = super::refresh::RefreshRequest {
+            command_key,
+            target: super::refresh::RefreshTarget::AllSources,
+        };
+        if let Err(error) = self
+            .refresh_patient_sources_for_practice(
+                &refresh_scope,
+                auth,
+                &request,
+                self.source_refresh(),
+            )
+            .await
+        {
+            tracing::warn!(
+                %error,
+                practice,
+                workspace,
+                "pre-preparation source refresh failed; continuing from last good records"
+            );
+        }
+    }
+
     async fn accept_due_briefing_job<A: AuthStore>(
         &self,
         auth: &A,
@@ -3768,6 +3863,8 @@ impl Store {
         if !visit_can_start_preparation(appt.status, appt.window.ends_at_unix(), now_unix) {
             return Ok(None);
         }
+        self.ensure_previsit_sources_checked(auth, practice, &prep.workspace, &prep.slot, now_unix)
+            .await;
         let starting_context = self
             .practice_starting_context(practice, &prep.workspace)
             .await?;

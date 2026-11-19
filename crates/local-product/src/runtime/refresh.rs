@@ -578,6 +578,67 @@ struct FixedSourceEntry {
     calls: usize,
 }
 
+/// Composes multiple [`PatientSourceRefresh`] adapters (such as Elation FHIR,
+/// Hint Chrome bridge, and synthetic charts) into one ordered refresh owner.
+#[derive(Clone, Default)]
+pub struct CompositePatientSourceRefresh {
+    adapters: Vec<Arc<dyn PatientSourceRefresh>>,
+}
+
+impl CompositePatientSourceRefresh {
+    /// Creates an empty composite refresh adapter.
+    pub fn new() -> Self {
+        Self::default()
+    }
+
+    /// Appends one [`PatientSourceRefresh`] adapter to this composite.
+    pub fn push(&mut self, adapter: Arc<dyn PatientSourceRefresh>) {
+        self.adapters.push(adapter);
+    }
+
+    /// Returns whether no underlying adapters have been registered.
+    pub fn is_empty(&self) -> bool {
+        self.adapters.is_empty()
+    }
+}
+
+#[async_trait]
+impl PatientSourceRefresh for CompositePatientSourceRefresh {
+    async fn configured_sources(
+        &self,
+        practice: &str,
+        workspace: &str,
+    ) -> Result<Vec<SourceId>, SourceRefreshAdapterError> {
+        let mut combined = BTreeSet::new();
+        for adapter in &self.adapters {
+            for id in adapter.configured_sources(practice, workspace).await? {
+                combined.insert(id);
+            }
+        }
+        Ok(combined.into_iter().collect())
+    }
+
+    async fn check_source(
+        &self,
+        practice: &str,
+        workspace: &str,
+        source_id: &SourceId,
+    ) -> Result<SourceCheckOutcome, SourceRefreshAdapterError> {
+        for adapter in &self.adapters {
+            let configured = adapter.configured_sources(practice, workspace).await?;
+            if configured.iter().any(|id| id == source_id) {
+                return adapter.check_source(practice, workspace, source_id).await;
+            }
+        }
+        Err(SourceRefreshAdapterError::Interrupted {
+            source_id: source_id.clone(),
+            reason: format!(
+                "no registered source refresh adapter owns `{source_id}` for workspace `{workspace}`"
+            ),
+        })
+    }
+}
+
 type FixedMap = BTreeMap<(String, String), BTreeMap<SourceId, FixedSourceEntry>>;
 
 /// Deterministic fake source check stub that delivers configured record

@@ -48,6 +48,17 @@ function (name, ...args) {
       return Boolean(document.querySelector(selector));
     },
 
+    focus(selector) {
+      const found = root().querySelector(selector);
+      if (!found) return false;
+      found.focus();
+      return document.activeElement === found;
+    },
+
+    activeMatches(selector) {
+      return Boolean(document.activeElement && document.activeElement.matches(selector));
+    },
+
     reveal(selector) {
       document.querySelector(selector).scrollIntoView({ block: 'start' });
     },

@@ -49,6 +49,8 @@ pub mod feedback;
 /// Durable physician and Coda job follow-ups and wrong-patient withdrawal fencing.
 pub mod follow_ups;
 mod frozen;
+/// Durable Hint Health Chrome connector bridge state and adapters.
+pub mod hint_bridge;
 /// Read-only queries over saved conversations and work.
 pub mod history;
 pub use frozen::{BindingRef, SkillPackageId};
@@ -60,6 +62,8 @@ pub mod link_correction;
 /// write rules.
 pub mod memory;
 mod migration;
+/// Per-physician server-persisted sidebar and schedule panel collapse choices.
+pub mod panel_preferences;
 mod quota;
 /// Command receipts and their 90-day reduction to a salted digest.
 pub mod receipt;

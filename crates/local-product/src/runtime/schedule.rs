@@ -917,7 +917,124 @@ pub enum ScheduleSyncOutcome {
     },
 }
 
+/// Summary of reconciling an EHR roster batch (Hint Health or Elation FHIR)
+/// into a practice's patient roster, source pulls, and schedule patient links.
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub struct RosterSyncSummary {
+    /// Total patients processed from the roster source.
+    pub roster_patients: usize,
+    /// Workspaces newly registered on the practice roster.
+    pub newly_registered: usize,
+    /// Schedule patient links seeded or updated for the source.
+    pub seeded_links: usize,
+}
+
 impl Store {
+    /// Reconciles EHR roster entries (`SourcePatient`) from `source_id` (Hint
+    /// Health or Elation FHIR) into `practice`'s patient roster, seeding a
+    /// schedule patient link and patient dispatch record for each patient while
+    /// never removing absent patients or overwriting retained chart records.
+    pub async fn sync_practice_roster(
+        &self,
+        auth: &dyn AuthStore,
+        practice: &str,
+        source_id: &SourceId,
+        source_label: &str,
+        patients: &[crate::physician_sources::SourcePatient],
+        synced_at: i64,
+    ) -> Result<RosterSyncSummary, ScheduleError> {
+        let practice = trim_non_empty(practice, ScheduleDomainError::EmptyPractice)?;
+        let source_label = trim_non_empty(source_label, ScheduleDomainError::EmptySourceLabel)?;
+        let existing_roster: BTreeSet<String> = auth
+            .practice_patients(&practice)
+            .await
+            .map_err(ScheduleError::AuthStore)?
+            .into_iter()
+            .collect();
+
+        let mut newly_registered = 0_usize;
+        let mut seeded_links = 0_usize;
+
+        for patient in patients {
+            let trimmed_pid = patient.source_patient_id.trim();
+            if trimmed_pid.is_empty() {
+                continue;
+            }
+            let workspace = crate::physician_sources::workspace_id(source_id.as_str(), trimmed_pid);
+            let was_present = existing_roster.contains(&workspace);
+            auth.register_patient(&practice, &workspace)
+                .await
+                .map_err(ScheduleError::AuthStore)?;
+            if !was_present {
+                newly_registered += 1;
+            }
+
+            // Preserve any existing chart records while ensuring a directory pull row exists.
+            let pulls = self.source_pulls(std::slice::from_ref(&workspace)).await?;
+            let has_source_pull = pulls
+                .get(&workspace)
+                .into_iter()
+                .flatten()
+                .any(|pull| pull.source_id == source_id.as_str());
+            if !has_source_pull {
+                let observation = self.sources(&workspace).await?;
+                self.record_chart(
+                    &workspace,
+                    &observation.sources,
+                    &super::sources::SourcePull {
+                        source_id: source_id.as_str().to_owned(),
+                        source_label: source_label.clone(),
+                        patient: patient.clone(),
+                        pulled_at: Some(synced_at),
+                    },
+                )
+                .await?;
+            }
+
+            let source_patient_id = SourcePatientId::new(trimmed_pid).map_err(|source| {
+                ScheduleError::CorruptStoredDomain {
+                    context: "roster source_patient_id",
+                    source,
+                }
+            })?;
+            self.seed_schedule_patient_link(
+                auth,
+                &practice,
+                source_id,
+                &source_patient_id,
+                &workspace,
+                synced_at,
+            )
+            .await?;
+            seeded_links += 1;
+
+            if let Err(err) = self
+                .register_patient_dispatch(auth, &practice, &workspace, synced_at)
+                .await
+            {
+                match err {
+                    super::dispatch::DispatchError::Database(db) => {
+                        return Err(ScheduleError::Database(db));
+                    }
+                    other => {
+                        tracing::warn!(
+                            %other,
+                            practice = %practice,
+                            workspace = %workspace,
+                            "roster sync dispatch registration skipped"
+                        );
+                    }
+                }
+            }
+        }
+
+        Ok(RosterSyncSummary {
+            roster_patients: patients.len(),
+            newly_registered,
+            seeded_links,
+        })
+    }
+
     /// Seeds one schedule patient link mapping `(practice, source_id, source_patient_id)`
     /// to `workspace`.
     ///

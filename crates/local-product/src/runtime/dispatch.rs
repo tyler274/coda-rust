@@ -205,6 +205,82 @@ impl PatientSourceChecker for StoredObservationChecker {
     }
 }
 
+/// Source checker that triggers a real external re-pull through
+/// [`Store::source_refresh`] (`P2.1`, `Rule.DailyRePull`) whenever external
+/// sources are configured for `(practice_id, workspace_id)`, then compares
+/// the resulting versioned observations against `patient_dispatch`.
+///
+/// Workspaces without configured external refresh adapters fall back cleanly
+/// to inspecting retained observations via [`StoredObservationChecker`], and
+/// a failed external source refresh is persisted in `physician_runtime_source_status`
+/// without blocking other patients in the practice.
+pub struct RefreshingSourceChecker<'a, A: PracticeAuthority> {
+    store: Store,
+    authority: &'a A,
+}
+
+impl<'a, A: PracticeAuthority> RefreshingSourceChecker<'a, A> {
+    /// Wraps `store` and `authority` to re-pull configured external sources on wake.
+    pub fn new(store: Store, authority: &'a A) -> Self {
+        Self { store, authority }
+    }
+}
+
+#[async_trait]
+impl<A: PracticeAuthority + Sync> PatientSourceChecker for RefreshingSourceChecker<'_, A> {
+    async fn check_patient_sources(
+        &self,
+        practice_id: &str,
+        workspace_id: &str,
+        now: i64,
+    ) -> Result<CheckedSources, SourceCheckError> {
+        let configured = self
+            .store
+            .source_refresh()
+            .configured_sources(practice_id, workspace_id)
+            .await
+            .map_err(|err| SourceCheckError::Upstream(std::io::Error::other(err.to_string())))?;
+        if !configured.is_empty() {
+            let digest = &crate::sha256_hex(
+                format!("dispatch-pull:{practice_id}:{workspace_id}:{now}").as_bytes(),
+            )[..24];
+            if let Ok(command_key) =
+                super::refresh::RefreshCommandKey::new(format!("dispatch-pull:{digest}"))
+            {
+                let scope = PracticeScope {
+                    practice: practice_id.to_owned(),
+                    workspace: workspace_id.to_owned(),
+                    job_id: format!("dispatch-pull:{digest}"),
+                };
+                let request = super::refresh::RefreshRequest {
+                    command_key,
+                    target: super::refresh::RefreshTarget::AllSources,
+                };
+                if let Err(err) = self
+                    .store
+                    .refresh_patient_sources_for_practice(
+                        &scope,
+                        self.authority,
+                        &request,
+                        self.store.source_refresh(),
+                    )
+                    .await
+                {
+                    tracing::warn!(
+                        %err,
+                        practice = practice_id,
+                        workspace = workspace_id,
+                        "scheduled external source re-pull failed; evaluating retained records"
+                    );
+                }
+            }
+        }
+        StoredObservationChecker::new(self.store.clone())
+            .check_patient_sources(practice_id, workspace_id, now)
+            .await
+    }
+}
+
 /// Review receiver that hands each [`ReviewRequest`] to the Chords run store as
 /// a [`PracticeJobKind::PatientReview`] practice background job.
 pub struct PracticeJobReviewReceiver<'a> {

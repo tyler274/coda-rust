@@ -22,12 +22,14 @@ pub mod durable;
 mod feedback;
 pub mod follow_ups;
 mod gmail;
+pub mod hint_bridge;
 pub mod hosting;
 mod live;
 #[cfg(test)]
 mod live_tests;
 pub mod matching_reply;
 pub mod model;
+mod panel_preferences;
 pub mod patients;
 pub mod rehearsal;
 mod reply;
@@ -310,6 +312,9 @@ pub fn fixture_site_with_feed(feed: std::sync::Arc<SampleFeed>) -> Router {
         .layer(axum::Extension(source_setup::FallbackSourceSetup(
             source_setup::SourceSetupStore::new(),
         )))
+        .layer(axum::Extension(
+            panel_preferences::FallbackPanelPreferences::new(),
+        ))
         .layer(axum::Extension(care::ConnectedCare::fixture()))
 }
 
@@ -375,6 +380,9 @@ pub fn durable_site_with_feed(
         .layer(axum::Extension(source_setup::FallbackSourceSetup(
             source_setup::SourceSetupStore::new(),
         )))
+        .layer(axum::Extension(
+            panel_preferences::FallbackPanelPreferences::new(),
+        ))
         .layer(axum::Extension(care::ConnectedCare::new()))
         .with_state(live)
 }
@@ -454,7 +462,12 @@ where
         )
         .route("/patient-roster", get(roster))
         .route("/dictation", post(|| async { dictation_unavailable() }))
+        .route(
+            "/physician-state/panels",
+            get(panel_preferences::read).put(panel_preferences::save),
+        )
         .merge(source_setup::routes())
+        .merge(hint_bridge::routes())
         .merge(matching_reply::routes())
         .merge(follow_ups::routes())
         .route("/", get(site_index))
@@ -540,6 +553,7 @@ async fn forward(upstream: &str, request: Request<Body>) -> Response {
     let accept = request.headers().get(axum::http::header::ACCEPT).cloned();
     let last_event = request.headers().get("last-event-id").cloned();
     let idempotency_key = request.headers().get("idempotency-key").cloned();
+    let coda_pair = request.headers().get(hint_bridge::PAIR_HEADER).cloned();
     let body = axum::body::to_bytes(request.into_body(), 1_000_000)
         .await
         .unwrap_or_default();
@@ -557,6 +571,9 @@ async fn forward(upstream: &str, request: Request<Body>) -> Response {
     }
     if let Some(value) = idempotency_key {
         outgoing = outgoing.header("idempotency-key", value);
+    }
+    if let Some(value) = coda_pair {
+        outgoing = outgoing.header(hint_bridge::PAIR_HEADER, value);
     }
     let Ok(incoming) = outgoing.send().await else {
         return StatusCode::BAD_GATEWAY.into_response();
@@ -921,6 +938,35 @@ async fn site_from_env(
     } else {
         None
     };
+    let elation_client =
+        match local_product::physician_sources::elation_fhir::ElationFhirConfig::from_env(&get)
+            .map_err(|err| err.to_string())?
+        {
+            Some(config) => {
+                let mut client =
+                    local_product::physician_sources::elation_fhir::ElationFhirClient::new(config)
+                        .map_err(|err| err.to_string())?;
+                if let Some(ref store) = runtime {
+                    client = client.with_store(store.clone());
+                }
+                Some(std::sync::Arc::new(client))
+            }
+            None => None,
+        };
+    if let Some(ref mut store) = runtime {
+        let mut composite = local_product::runtime::refresh::CompositePatientSourceRefresh::new();
+        composite.push(std::sync::Arc::new(
+            local_product::runtime::hint_bridge::HintBridgeSourceRefresh::new(store.clone()),
+        ));
+        if let Some(ref client) = elation_client {
+            let adapter: std::sync::Arc<dyn local_product::runtime::refresh::PatientSourceRefresh> =
+                client.clone();
+            composite.push(adapter);
+        }
+        *store = store
+            .clone()
+            .with_source_refresh(std::sync::Arc::new(composite));
+    }
     let readiness = runtime.as_ref().map(hosting::Readiness::shared);
     let (mut base, chat) = if let (Some(skills), Some(store)) = (skills, runtime.clone()) {
         let settings: Vec<_> = local_product::MODEL_SETTING_KEYS
@@ -1003,6 +1049,10 @@ async fn site_from_env(
     if let Some(ref control) = staging_control {
         let source: std::sync::Arc<dyn local_product::runtime::schedule::ScheduleSource> =
             control.sources();
+        base = base.layer(schedule::schedule_source_layer(source));
+    } else if let Some(ref client) = elation_client {
+        let source: std::sync::Arc<dyn local_product::runtime::schedule::ScheduleSource> =
+            client.clone();
         base = base.layer(schedule::schedule_source_layer(source));
     } else if let Some(calendar) = schedule::SyntheticBankCalendar::from_env(&get) {
         let source: std::sync::Arc<dyn local_product::runtime::schedule::ScheduleSource> =
@@ -1707,7 +1757,7 @@ fn cors_headers(mut response: Response) -> Response {
     );
     headers.insert(
         axum::http::header::ACCESS_CONTROL_ALLOW_HEADERS,
-        HeaderValue::from_static("content-type, authorization"),
+        HeaderValue::from_static("content-type, authorization, x-coda-pair"),
     );
     response
 }

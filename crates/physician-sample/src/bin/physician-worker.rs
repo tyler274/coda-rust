@@ -762,6 +762,28 @@ impl Worker {
         let mut store = Store::connect(&database)
             .await
             .map_err(hosting::StartupError::RuntimeStore)?;
+        let elation_client =
+            match local_product::physician_sources::elation_fhir::ElationFhirConfig::from_env(&get)
+                .map_err(|err| err.to_string())?
+            {
+                Some(config) => Some(Arc::new(
+                    local_product::physician_sources::elation_fhir::ElationFhirClient::new(config)
+                        .map_err(|err| err.to_string())?
+                        .with_store(store.clone()),
+                )),
+                None => None,
+            };
+        let mut refresh_composite =
+            local_product::runtime::refresh::CompositePatientSourceRefresh::new();
+        refresh_composite.push(Arc::new(
+            local_product::runtime::hint_bridge::HintBridgeSourceRefresh::new(store.clone()),
+        ));
+        if let Some(ref client) = elation_client {
+            let adapter: Arc<dyn local_product::runtime::refresh::PatientSourceRefresh> =
+                client.clone();
+            refresh_composite.push(adapter);
+        }
+        store = store.with_source_refresh(Arc::new(refresh_composite));
         if let Ok(skills) = local_product::physician_chat::PhysicianSkills::configured(
             configured(&get, "PHYSICIAN_SKILLS_DIR").as_deref(),
             hosted,
@@ -779,6 +801,11 @@ impl Worker {
                     source,
                 }
             });
+        let elation = elation_client.map(|client| PracticeElationSource {
+            practice: configured(&get, "PHYSICIAN_ELATION_PRACTICE_ID")
+                .unwrap_or_else(|| physician_sample::STAGING_PRACTICE_ID.to_owned()),
+            client,
+        });
         let wake = Arc::new(WakeService {
             auth: schedule_auth,
             mode: wake_mode,
@@ -792,10 +819,12 @@ impl Worker {
                 visit_prep: VisitPrepWakeHandler {
                     store: store.clone(),
                     auth: auth.clone(),
+                    bus: Arc::clone(&bus),
                     model: model.clone(),
                     quota: quota.clone(),
                     skills_dir,
                     calendar,
+                    elation,
                 },
             }),
             clinical_library,
@@ -1039,8 +1068,10 @@ impl StoreWakeHandler {
             }
             Err(err) => return Err(WakeError::SkillsUnavailable(clone_skills_error(err))),
         };
-        let checker =
-            local_product::runtime::dispatch::StoredObservationChecker::new(self.store.clone());
+        let checker = local_product::runtime::dispatch::RefreshingSourceChecker::new(
+            self.store.clone(),
+            &self.auth,
+        );
         let mut due_patients_checked = 0_usize;
         let mut reviews_started = 0_usize;
         for practice in practices {
@@ -1092,18 +1123,26 @@ struct PracticeSyntheticCalendar {
     source: physician_sample::schedule::SyntheticBankCalendar,
 }
 
+struct PracticeElationSource {
+    practice: String,
+    client: Arc<local_product::physician_sources::elation_fhir::ElationFhirClient>,
+}
+
 struct VisitPrepWakeHandler {
     store: Store,
     auth: PostgresAuthStore,
+    bus: Arc<dyn Bus>,
     model: ModelSource,
     quota: Arc<dyn harness::provider::QuotaGate>,
     skills_dir: Option<String>,
     calendar: Option<PracticeSyntheticCalendar>,
+    elation: Option<PracticeElationSource>,
 }
 
 #[async_trait::async_trait]
 impl WakeHandler for VisitPrepWakeHandler {
     async fn wake(&self, tick: &WakeTick) -> Result<WakeReport, WakeError> {
+        use local_product::runtime::schedule::ScheduleSource as _;
         use physician_auth::AuthStore as _;
 
         if tick.directive == WakeDirective::RehearseFailure {
@@ -1116,6 +1155,23 @@ impl WakeHandler for VisitPrepWakeHandler {
             .scheduled_practices()
             .await
             .map_err(WakeError::RuntimeStore)?;
+        let hint_practices: std::collections::BTreeSet<String> = self
+            .store
+            .hint_bridge_schedule_practices()
+            .await
+            .map_err(WakeError::RuntimeStore)?
+            .into_iter()
+            .collect();
+        for hint_practice in &hint_practices {
+            if !practices.iter().any(|id| id == hint_practice) {
+                practices.push(hint_practice.clone());
+            }
+        }
+        if let Some(elation) = &self.elation
+            && !practices.iter().any(|id| id == &elation.practice)
+        {
+            practices.push(elation.practice.clone());
+        }
         if let Some(cal) = &self.calendar
             && !practices.iter().any(|id| id == &cal.practice)
             && !self
@@ -1148,6 +1204,63 @@ impl WakeHandler for VisitPrepWakeHandler {
 
         let mut report = WakeReport::default();
         for practice in practices {
+            let mut schedule_synced = false;
+            let clock = self
+                .auth
+                .practice_clock(&practice)
+                .await
+                .map_err(WakeError::AuthUnavailable)?;
+            let now_unix = clock.now(real_now) as i64;
+            if let Some(elation) = &self.elation
+                && practice == elation.practice
+            {
+                match elation.client.read_roster().await {
+                    Ok(roster) => {
+                        if let Err(err) = self
+                            .store
+                            .sync_practice_roster(
+                                &self.auth,
+                                &practice,
+                                elation.client.source_id(),
+                                elation.client.source_label(),
+                                &roster.patients,
+                                now_unix,
+                            )
+                            .await
+                        {
+                            tracing::warn!(%err, %practice, "elation roster sync failed");
+                        }
+                    }
+                    Err(err) => {
+                        tracing::warn!(%err, %practice, "elation roster read failed");
+                    }
+                }
+                physician_sample::schedule::sync_synthetic_schedule(
+                    &*elation.client,
+                    &self.auth,
+                    &self.store,
+                    &practice,
+                )
+                .await
+                .map_err(WakeError::ScheduleSync)?;
+                schedule_synced = true;
+            }
+            if hint_practices.contains(&practice) {
+                let hint_source =
+                    local_product::runtime::hint_bridge::HintBridgeScheduleSource::new(
+                        self.store.clone(),
+                        practice.clone(),
+                    );
+                physician_sample::schedule::sync_synthetic_schedule(
+                    &hint_source,
+                    &self.auth,
+                    &self.store,
+                    &practice,
+                )
+                .await
+                .map_err(WakeError::ScheduleSync)?;
+                schedule_synced = true;
+            }
             if let Some(cal) = &self.calendar
                 && practice == cal.practice
             {
@@ -1159,6 +1272,7 @@ impl WakeHandler for VisitPrepWakeHandler {
                 )
                 .await
                 .map_err(WakeError::ScheduleSync)?;
+                schedule_synced = true;
             }
             let roster = self
                 .auth
@@ -1179,12 +1293,6 @@ impl WakeHandler for VisitPrepWakeHandler {
                     .await
                     .map_err(WakeError::DeveloperPlanBoundary)?;
             }
-            let clock = self
-                .auth
-                .practice_clock(&practice)
-                .await
-                .map_err(WakeError::AuthUnavailable)?;
-            let now_unix = clock.now(real_now) as i64;
             let summary = self
                 .store
                 .wake_visit_preparation(
@@ -1197,6 +1305,26 @@ impl WakeHandler for VisitPrepWakeHandler {
                 )
                 .await
                 .map_err(WakeError::VisitPreparation)?;
+            let mut changed_workspaces = std::collections::BTreeSet::new();
+            for job in &summary.queued_briefing_jobs {
+                changed_workspaces.insert(job.workspace.clone());
+            }
+            for job in &summary.failed_jobs {
+                changed_workspaces.insert(job.workspace.clone());
+            }
+            let prep_changed = !summary.completed_briefings.is_empty()
+                || !summary.queued_briefing_jobs.is_empty()
+                || !summary.failed_jobs.is_empty()
+                || !summary.retired_concerns.is_empty();
+            for workspace_id in changed_workspaces {
+                let _ = self
+                    .bus
+                    .publish(Event::WorkspaceChanged { workspace_id })
+                    .await;
+            }
+            if schedule_synced || prep_changed {
+                let _ = self.bus.publish(Event::Resync).await;
+            }
             report.practices_checked += 1;
             report.due_patients_checked += roster.len();
             report.briefings_prepared += summary.completed_briefings.len();
@@ -3225,12 +3353,15 @@ mod tests {
             effort: "medium".into(),
             adapter: "openai-responses".into(),
         };
+        let wake_bus = Arc::new(physician_bus::LocalBus::new(16));
+        let mut bus_events = wake_bus.subscribe();
         let app = wake_router(Arc::new(WakeService {
             auth: WakeAuth::LoopbackEmulator,
             mode: WakeMode::RehearsalAllowed,
             handler: Arc::new(VisitPrepWakeHandler {
                 store: store.clone(),
                 auth: auth.clone(),
+                bus: wake_bus,
                 model: ModelSource {
                     transport: ModelTransport::Responses {
                         endpoint,
@@ -3247,6 +3378,7 @@ mod tests {
                     practice: practice.clone(),
                     source: calendar,
                 }),
+                elation: None,
             }),
             clinical_library: None,
         }));
@@ -3285,6 +3417,21 @@ mod tests {
             .unwrap()
             .expect("POST /schedule/wake saved tomorrow's visit briefing");
         assert!(saved.visit_card_orientation.contains("CKD 3a"));
+
+        // Verify background wake published live bus invalidation (`P4.Rule.BackgroundNoStealFocus`):
+        let mut saw_resync = false;
+        while let Ok(Ok(ev)) =
+            tokio::time::timeout(Duration::from_millis(200), bus_events.recv()).await
+        {
+            if matches!(ev, Event::Resync) {
+                saw_resync = true;
+                break;
+            }
+        }
+        assert!(
+            saw_resync,
+            "VisitPrepWakeHandler must publish Event::Resync on physician_bus after schedule/briefing updates"
+        );
 
         // Verify `other_practice`'s schedule was NOT overwritten by `practice`'s synthetic calendar:
         let other_sched = store.practice_schedule(&other_practice).await.unwrap();

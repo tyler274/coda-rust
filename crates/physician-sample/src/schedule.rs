@@ -16,17 +16,17 @@ use axum::Json;
 use axum::body::Body;
 use axum::http::{Request, StatusCode};
 use axum::response::{IntoResponse, Response};
-use local_product::physician_sources::RecordDate;
+use local_product::physician_sources::elation_fhir::parse_fhir_appointment;
 use local_product::runtime::Store;
 use local_product::runtime::briefings::{
     SavedVisitBriefing, VisitPreparationRecord, VisitPreparationState, VisitStanding,
     visit_can_start_preparation,
 };
 use local_product::runtime::schedule::{
-    AppointmentId, AppointmentStatus, AppointmentWindow, PatientMatch, SavedAppointment,
-    ScheduleDelivery, ScheduleDomainError, ScheduleError, ScheduleFreshness, ScheduleReadIssue,
-    ScheduleSource, ScheduleSourceError, ScheduleStanding, ScheduleSyncOutcome, SourceAppointment,
-    SourceAppointmentParts, SourceId, SourcePatientId, format_unix_rfc3339,
+    AppointmentId, AppointmentStatus, PatientMatch, SavedAppointment, ScheduleDelivery,
+    ScheduleError, ScheduleFreshness, ScheduleReadIssue, ScheduleSource, ScheduleSourceError,
+    ScheduleStanding, ScheduleSyncOutcome, SourceAppointment, SourceId, SourcePatientId,
+    format_unix_rfc3339,
 };
 use physician_auth::AuthStore;
 use serde_json::{Value, json};
@@ -97,58 +97,6 @@ impl SyntheticBankCalendar {
     /// Underlying `Appointment.ndjson` path read by this adapter.
     pub fn path(&self) -> &Path {
         &self.appointments_file
-    }
-}
-
-#[derive(Debug)]
-enum AppointmentParseError {
-    Json(serde_json::Error),
-    WrongResourceType(Option<String>),
-    MissingField(&'static str),
-    UnsupportedStatus(String),
-    Domain(ScheduleDomainError),
-}
-
-impl std::fmt::Display for AppointmentParseError {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        match self {
-            Self::Json(error) => write!(f, "invalid JSON: {error}"),
-            Self::WrongResourceType(got) => {
-                write!(f, "expected resourceType \"Appointment\", got {got:?}")
-            }
-            Self::MissingField(field) => {
-                write!(
-                    f,
-                    "Appointment is missing required string field \"{field}\""
-                )
-            }
-            Self::UnsupportedStatus(status) => {
-                write!(f, "unsupported Appointment status {status:?}")
-            }
-            Self::Domain(error) => write!(f, "{error}"),
-        }
-    }
-}
-
-impl std::error::Error for AppointmentParseError {
-    fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
-        match self {
-            Self::Json(error) => Some(error),
-            Self::Domain(error) => Some(error),
-            Self::WrongResourceType(_) | Self::MissingField(_) | Self::UnsupportedStatus(_) => None,
-        }
-    }
-}
-
-impl From<serde_json::Error> for AppointmentParseError {
-    fn from(value: serde_json::Error) -> Self {
-        Self::Json(value)
-    }
-}
-
-impl From<ScheduleDomainError> for AppointmentParseError {
-    fn from(value: ScheduleDomainError) -> Self {
-        Self::Domain(value)
     }
 }
 
@@ -235,162 +183,12 @@ fn extract_target_label(raw_line: &str, file_label: &str, line_no: usize) -> Str
     format!("{file_label}:{line_no}")
 }
 
-/// Parses one NDJSON FHIR `Appointment` line using the synthetic calendar
-/// adapter's single-owner status, participant, window, and label rules.
+/// Parses one NDJSON FHIR `Appointment` line using the shared single-owner
+/// FHIR R4 status, participant, window, and label rules.
 pub(crate) fn parse_fhir_appointment_line(line: &str) -> Result<SourceAppointment, String> {
     parse_fhir_appointment(line)
         .map(|(appt, _)| appt)
         .map_err(|err| err.to_string())
-}
-
-fn parse_fhir_appointment(
-    line: &str,
-) -> Result<(SourceAppointment, Option<ScheduleReadIssue>), AppointmentParseError> {
-    let resource: Value = serde_json::from_str(line)?;
-    let resource_type = resource.get("resourceType").and_then(Value::as_str);
-    if resource_type != Some("Appointment") {
-        return Err(AppointmentParseError::WrongResourceType(
-            resource_type.map(str::to_owned),
-        ));
-    }
-    let raw_id = resource
-        .get("id")
-        .and_then(Value::as_str)
-        .ok_or(AppointmentParseError::MissingField("id"))?;
-    let appointment_id = AppointmentId::new(raw_id)?;
-
-    let source_status = resource
-        .get("status")
-        .and_then(Value::as_str)
-        .ok_or(AppointmentParseError::MissingField("status"))?
-        .trim()
-        .to_owned();
-    let status = parse_fhir_status(&source_status)?;
-
-    let start = resource
-        .get("start")
-        .and_then(Value::as_str)
-        .ok_or(AppointmentParseError::MissingField("start"))?;
-    let end = resource
-        .get("end")
-        .and_then(Value::as_str)
-        .ok_or(AppointmentParseError::MissingField("end"))?;
-    let window = AppointmentWindow::parse(start, end)?;
-
-    let label = extract_appointment_label(&resource)
-        .ok_or(AppointmentParseError::MissingField("description"))?;
-    let candidate_id = format!("Appointment/{appointment_id}");
-    let (source_patient_id, participant_issue) =
-        extract_patient_participant(&resource, &candidate_id)?;
-    let dates = extract_appointment_dates(&resource);
-
-    let appointment = SourceAppointment::new(SourceAppointmentParts {
-        appointment_id,
-        source_revision: None,
-        window,
-        status,
-        source_status,
-        label,
-        source_patient_id,
-        dates,
-        content: line.to_owned(),
-        provenance: json!({ "native_record": candidate_id }),
-    })?;
-    Ok((appointment, participant_issue))
-}
-
-fn parse_fhir_status(status: &str) -> Result<AppointmentStatus, AppointmentParseError> {
-    match status {
-        "booked" | "pending" | "proposed" | "arrived" | "checked-in" | "waitlist" | "scheduled" => {
-            Ok(AppointmentStatus::Scheduled)
-        }
-        "cancelled" | "entered-in-error" => Ok(AppointmentStatus::Cancelled),
-        "fulfilled" => Ok(AppointmentStatus::Fulfilled),
-        "noshow" => Ok(AppointmentStatus::NoShow),
-        other => Err(AppointmentParseError::UnsupportedStatus(other.to_owned())),
-    }
-}
-
-fn extract_appointment_label(resource: &Value) -> Option<String> {
-    let candidates = [
-        resource.get("description").and_then(Value::as_str),
-        resource
-            .get("appointmentType")
-            .and_then(|v| v.get("text"))
-            .and_then(Value::as_str),
-        resource
-            .get("serviceType")
-            .and_then(Value::as_array)
-            .and_then(|arr| arr.first())
-            .and_then(|v| v.get("text"))
-            .and_then(Value::as_str),
-    ];
-    candidates
-        .into_iter()
-        .flatten()
-        .map(str::trim)
-        .find(|text| !text.is_empty())
-        .map(str::to_owned)
-}
-
-fn extract_patient_participant(
-    resource: &Value,
-    target_label: &str,
-) -> Result<(Option<SourcePatientId>, Option<ScheduleReadIssue>), AppointmentParseError> {
-    let mut matched: Option<SourcePatientId> = None;
-    for participant in resource
-        .get("participant")
-        .and_then(Value::as_array)
-        .into_iter()
-        .flatten()
-    {
-        let Some(reference) = participant
-            .get("actor")
-            .and_then(|actor| actor.get("reference"))
-            .and_then(Value::as_str)
-            .map(str::trim)
-        else {
-            continue;
-        };
-        let Some(raw_patient_id) = reference.strip_prefix("Patient/") else {
-            continue;
-        };
-        let patient_id = SourcePatientId::new(raw_patient_id)?;
-        if let Some(existing) = &matched
-            && existing != &patient_id
-        {
-            let issue = ScheduleReadIssue::new(
-                target_label,
-                "Appointment lists multiple distinct Patient participants",
-            )
-            .expect("non-empty issue target and reason");
-            return Ok((None, Some(issue)));
-        }
-        matched = Some(patient_id);
-    }
-    Ok((matched, None))
-}
-
-fn extract_appointment_dates(resource: &Value) -> Vec<RecordDate> {
-    let mut dates = Vec::new();
-    for (name, value) in [
-        ("start", resource.get("start")),
-        ("end", resource.get("end")),
-        (
-            "meta.lastUpdated",
-            resource
-                .get("meta")
-                .and_then(|meta| meta.get("lastUpdated")),
-        ),
-    ] {
-        if let Some(text) = value.and_then(Value::as_str) {
-            dates.push(RecordDate {
-                name: name.to_owned(),
-                value: text.to_owned(),
-            });
-        }
-    }
-    dates
 }
 
 /// Seeds schedule patient links for `practice_id` from already-loaded roster
@@ -473,20 +271,28 @@ pub(crate) async fn sync_route(
     .await
     {
         Ok(ScheduleSyncOutcome::Applied(summary)) => {
+            if let Some(live) = extensions.get::<Arc<crate::live::Live>>() {
+                let _ = live.bus.publish(physician_bus::Event::Resync).await;
+            }
             (StatusCode::OK, Json(sync_applied_json(&summary))).into_response()
         }
         Ok(ScheduleSyncOutcome::FailedRead {
             standing,
             retained_appointments,
-        }) => (
-            StatusCode::BAD_GATEWAY,
-            Json(json!({
-                "outcome": "failed_read",
-                "retained_appointments": retained_appointments,
-                "source_state": source_state_json(&standing),
-            })),
-        )
-            .into_response(),
+        }) => {
+            if let Some(live) = extensions.get::<Arc<crate::live::Live>>() {
+                let _ = live.bus.publish(physician_bus::Event::Resync).await;
+            }
+            (
+                StatusCode::BAD_GATEWAY,
+                Json(json!({
+                    "outcome": "failed_read",
+                    "retained_appointments": retained_appointments,
+                    "source_state": source_state_json(&standing),
+                })),
+            )
+                .into_response()
+        }
         Err(error) => {
             tracing::error!(%error, "practice schedule sync failed");
             (
