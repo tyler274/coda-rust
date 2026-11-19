@@ -1,0 +1,78 @@
+{
+  "branch": "tyler-eng-366-2-connector-bridge-and-harness",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC1",
+      "label": "worker syntax, bridge/runner py_compile, and sandbox test_connector.mjs",
+      "kind": "run",
+      "revision": "9147cc48bbf503651d5a832f20de8d0f9c0821ad",
+      "dirty": false,
+      "recorded": "2026-11-19T03:33:46+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "node --check extension/chrome/worker.js && python3 -m py_compile extension/sandbox/bridge.py extension/sandbox/run_agent.py && node extension/sandbox/test_connector.mjs"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "01-worker-syntax-bridge-runner-py_compile-and-sandb.log"
+      ],
+      "seconds": 3.5,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 2,
+      "claim": "AC2",
+      "label": "workspace clippy, wasm32 clippy, and unit/contract tests",
+      "kind": "run",
+      "revision": "9147cc48bbf503651d5a832f20de8d0f9c0821ad",
+      "dirty": false,
+      "recorded": "2026-11-19T03:33:50+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "cargo clippy --workspace --all-targets -- -D warnings && cargo clippy -p physician-app -p duet-app -p extension-popup -p physician-demo-db --target wasm32-unknown-unknown -- -D warnings && cargo test --locked -p extension-popup -p physician-demo-db -p boundaries"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "02-workspace-clippy-wasm32-clippy-and-unit-contract.log"
+      ],
+      "seconds": 19.5,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 3,
+      "claim": "AC3",
+      "label": "extension-popup headless Chrome integration test",
+      "kind": "run",
+      "revision": "9147cc48bbf503651d5a832f20de8d0f9c0821ad",
+      "dirty": false,
+      "recorded": "2026-11-19T03:34:09+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "extension-popup",
+        "--test",
+        "popup",
+        "--",
+        "--ignored",
+        "--test-threads=1"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "03-extension-popup-headless-Chrome-integration-test.log"
+      ],
+      "seconds": 10.7,
+      "exit": 0,
+      "ok": true
+    }
+  ]
+}
