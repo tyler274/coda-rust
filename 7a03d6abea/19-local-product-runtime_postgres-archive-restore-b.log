@@ -1,0 +1,25 @@
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on package cache
+   Compiling local-product v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/local-product)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 39.75s
+     Running tests/runtime_postgres.rs (/tmp/coda-target-physician-ui/debug/deps/runtime_postgres-fdb5cda88353d223)
+
+running 1 test
+test archive_restore_busy_refusal_and_auto_unarchive_in_postgres ... FAILED
+
+failures:
+
+---- archive_restore_busy_refusal_and_auto_unarchive_in_postgres stdout ----
+
+thread 'archive_restore_busy_refusal_and_auto_unarchive_in_postgres' (1094936) panicked at crates/local-product/tests/runtime_postgres.rs:41:44:
+called `Result::unwrap()` on an `Err` value: Conn(SqlxError(PoolTimedOut))
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    archive_restore_busy_refusal_and_auto_unarchive_in_postgres
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 15 filtered out; finished in 10.01s
+
+error: test failed, to rerun pass `-p local-product --test runtime_postgres`

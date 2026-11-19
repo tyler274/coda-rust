@@ -1,0 +1,23 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.33s
+     Running tests/runtime_postgres.rs (/tmp/coda-target-physician-ui/debug/deps/runtime_postgres-fdb5cda88353d223)
+
+running 1 test
+test archive_restore_busy_refusal_and_auto_unarchive_in_postgres ... FAILED
+
+failures:
+
+---- archive_restore_busy_refusal_and_auto_unarchive_in_postgres stdout ----
+
+thread 'archive_restore_busy_refusal_and_auto_unarchive_in_postgres' (1101795) panicked at crates/local-product/tests/runtime_postgres.rs:191:9:
+assertion failed: request.items.iter().any(|i|
+        matches!(i, engine::Item::Message { role, text } if role == "user" &&
+            text.contains("Exact input")))
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    archive_restore_busy_refusal_and_auto_unarchive_in_postgres
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 15 filtered out; finished in 0.57s
+
+error: test failed, to rerun pass `-p local-product --test runtime_postgres`

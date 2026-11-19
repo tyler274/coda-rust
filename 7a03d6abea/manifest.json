@@ -1,0 +1,827 @@
+{
+  "branch": "feat-p1-citations-panel-archive-discuss-dictation",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "gates",
+      "label": "cargo fmt --check, boundaries, host and wasm32 clippy -D warnings",
+      "kind": "run",
+      "revision": "57dd652f6cc0a9a57d39fc84ca6bfd8f811a3229",
+      "dirty": false,
+      "recorded": "2026-11-19T19:54:55+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "\n  set -euo pipefail\n  cargo fmt --check\n  cargo test -p boundaries\n  cargo clippy --workspace --all-targets -- -D warnings\n  cargo clippy -p physician-app -p duet-app -p extension-popup --target wasm32-unknown-unknown -- -D warnings\n"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "01-cargo-fmt---check-boundaries-host-and-wasm32-cli.log"
+      ],
+      "seconds": 161.5,
+      "exit": 0,
+      "ok": true,
+      "kept": {
+        "revision": "3fb134901e49ba1de30e92e79a4cd5bf25b70c21",
+        "reason": "only crates/physician-sample/tests/site.rs readable-body assertion changed; production code identical to 57dd652f6"
+      },
+      "superseded": "Superseded by clean-HEAD review fixes and fresh proof captures at 7a03d6abea"
+    },
+    {
+      "id": 2,
+      "claim": "AC1-AC5",
+      "label": "unit test suites across ui, physician-wire, physician-demo-db, physician-client, physician-app, physician-sample, local-product",
+      "kind": "run",
+      "revision": "57dd652f6cc0a9a57d39fc84ca6bfd8f811a3229",
+      "dirty": false,
+      "recorded": "2026-11-19T19:57:37+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "\n  set -euo pipefail\n  cargo test -p ui -p physician-wire -p physician-demo-db -p physician-client -p physician-app -p physician-sample --lib\n  cargo test -p local-product --lib\n"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "02-unit-test-suites-across-ui-physician-wire-physic.log"
+      ],
+      "seconds": 239.4,
+      "exit": 0,
+      "ok": true,
+      "kept": {
+        "revision": "3fb134901e49ba1de30e92e79a4cd5bf25b70c21",
+        "reason": "only crates/physician-sample/tests/site.rs readable-body assertion changed; production code identical to 57dd652f6"
+      },
+      "superseded": "Superseded by clean-HEAD review fixes and fresh proof captures at 7a03d6abea"
+    },
+    {
+      "id": 3,
+      "claim": "AC2",
+      "label": "local-product runtime_postgres archive, restore, busy refusal, and auto-unarchive",
+      "kind": "run",
+      "revision": "57dd652f6cc0a9a57d39fc84ca6bfd8f811a3229",
+      "dirty": false,
+      "recorded": "2026-11-19T20:01:37+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "local-product",
+        "--test",
+        "runtime_postgres",
+        "archive_restore_busy_refusal_and_auto_unarchive_in_postgres",
+        "--",
+        "--ignored",
+        "--nocapture"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "03-local-product-runtime_postgres-archive-restore-b.log"
+      ],
+      "seconds": 61.5,
+      "exit": 0,
+      "ok": true,
+      "kept": {
+        "revision": "3fb134901e49ba1de30e92e79a4cd5bf25b70c21",
+        "reason": "only crates/physician-sample/tests/site.rs readable-body assertion changed; production code identical to 57dd652f6"
+      },
+      "superseded": "Superseded by clean-HEAD review fixes and fresh proof captures at 7a03d6abea"
+    },
+    {
+      "id": 4,
+      "claim": "AC1-AC5",
+      "label": "local-product Postgres history, reviews, today_updates, and source_status suites",
+      "kind": "run",
+      "revision": "57dd652f6cc0a9a57d39fc84ca6bfd8f811a3229",
+      "dirty": false,
+      "recorded": "2026-11-19T20:02:39+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "\n  set -euo pipefail\n  cargo test -p local-product --test source_status_and_links -- --ignored\n  cargo test -p local-product --test patient_reviews_postgres -- --ignored\n  cargo test -p local-product --test today_updates_postgres -- --ignored\n"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "04-local-product-Postgres-history-reviews-today_upd.log"
+      ],
+      "seconds": 53.8,
+      "exit": 0,
+      "ok": true,
+      "superseded": "re-run without --ignored so all non-ignored Postgres integration tests actually execute"
+    },
+    {
+      "id": 5,
+      "claim": "AC1-AC5",
+      "label": "local-product Postgres source_status_and_links (16), patient_reviews_postgres (12), today_updates_postgres (5), migration_tests (6)",
+      "kind": "run",
+      "revision": "57dd652f6cc0a9a57d39fc84ca6bfd8f811a3229",
+      "dirty": false,
+      "recorded": "2026-11-19T20:13:51+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "\n  set -euo pipefail\n  cargo test -p local-product --test source_status_and_links\n  cargo test -p local-product --test patient_reviews_postgres\n  cargo test -p local-product --test today_updates_postgres\n  cargo test -p local-product --lib migration -- --ignored\n"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "05-local-product-Postgres-source_status_and_links-1.log"
+      ],
+      "seconds": 25.5,
+      "exit": 0,
+      "ok": true,
+      "kept": {
+        "revision": "3fb134901e49ba1de30e92e79a4cd5bf25b70c21",
+        "reason": "only crates/physician-sample/tests/site.rs readable-body assertion changed; production code identical to 57dd652f6"
+      },
+      "superseded": "Superseded by clean-HEAD review fixes and fresh proof captures at 7a03d6abea"
+    },
+    {
+      "id": 6,
+      "claim": "AC1-AC5",
+      "label": "physician-sample --test site -- --ignored (full 25-test Chromium qualification)",
+      "kind": "run",
+      "revision": "57dd652f6cc0a9a57d39fc84ca6bfd8f811a3229",
+      "dirty": false,
+      "recorded": "2026-11-19T20:14:17+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-sample",
+        "--test",
+        "site",
+        "--",
+        "--ignored"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "06-physician-sample---test-site------ignored-full-2.log"
+      ],
+      "seconds": 445.4,
+      "exit": 101,
+      "ok": false,
+      "superseded": "re-run tests/site after updating site.rs readable-body assertion"
+    },
+    {
+      "id": 7,
+      "claim": "AC1-AC5",
+      "label": "physician-sample --test site -- --ignored (full 25-test Chromium qualification)",
+      "kind": "run",
+      "revision": "3fb134901e49ba1de30e92e79a4cd5bf25b70c21",
+      "dirty": false,
+      "recorded": "2026-11-19T20:25:06+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-sample",
+        "--test",
+        "site",
+        "--",
+        "--ignored"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "07-physician-sample---test-site------ignored-full-2.log"
+      ],
+      "seconds": 314.4,
+      "exit": 0,
+      "ok": true,
+      "superseded": "Superseded by clean-HEAD review fixes and fresh proof captures at 7a03d6abea"
+    },
+    {
+      "id": 8,
+      "claim": "AC1",
+      "label": "Chromium citation side-panel regression suites (shell_states, site_schedule_briefing, site_today_updates, site_link_correction, site_patient_reviews)",
+      "kind": "run",
+      "revision": "3fb134901e49ba1de30e92e79a4cd5bf25b70c21",
+      "dirty": false,
+      "recorded": "2026-11-19T20:30:21+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "\n  set -euo pipefail\n  cargo test -p physician-sample --test shell_states -- --ignored\n  cargo test -p physician-sample --test site_schedule_briefing -- --ignored\n  cargo test -p physician-sample --test site_today_updates -- --ignored\n  cargo test -p physician-sample --test site_link_correction -- --ignored\n  cargo test -p physician-sample --test site_patient_reviews -- --ignored\n"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "08-Chromium-citation-side-panel-regression-suites-s.log"
+      ],
+      "seconds": 389.4,
+      "exit": 0,
+      "ok": true,
+      "superseded": "Superseded by clean-HEAD review fixes and fresh proof captures at 7a03d6abea"
+    },
+    {
+      "id": 9,
+      "claim": "AC1",
+      "label": "Hover CitationPreview popover and AnswerSources pill",
+      "kind": "screenshot",
+      "revision": "3fb134901e49ba1de30e92e79a4cd5bf25b70c21",
+      "dirty": false,
+      "recorded": "2026-11-19T20:37:36+00:00",
+      "files": [
+        "09-p1b2-hover-preview-and-sources.png"
+      ],
+      "source": "/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/target/verification/proof/shots/p1b2-hover-preview-and-sources.png",
+      "ok": true,
+      "superseded": "Superseded by clean-HEAD review fixes and fresh proof captures at 7a03d6abea"
+    },
+    {
+      "id": 10,
+      "claim": "AC1",
+      "label": "Desktop non-modal citation side panel with highlighted passage and collapsed Technical details",
+      "kind": "screenshot",
+      "revision": "3fb134901e49ba1de30e92e79a4cd5bf25b70c21",
+      "dirty": false,
+      "recorded": "2026-11-19T20:37:36+00:00",
+      "files": [
+        "10-p1b2-citations-panel-desktop.png"
+      ],
+      "source": "/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/target/verification/proof/shots/p1b2-citations-panel-desktop.png",
+      "ok": true,
+      "superseded": "Superseded by clean-HEAD review fixes and fresh proof captures at 7a03d6abea"
+    },
+    {
+      "id": 11,
+      "claim": "AC1",
+      "label": "Phone (<900px) citation side panel with Back control, flagged status, and unmatched-passage notice",
+      "kind": "screenshot",
+      "revision": "3fb134901e49ba1de30e92e79a4cd5bf25b70c21",
+      "dirty": false,
+      "recorded": "2026-11-19T20:37:36+00:00",
+      "files": [
+        "11-p1b2-citations-panel-phone.png"
+      ],
+      "source": "/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/target/verification/proof/shots/p1b2-citations-panel-phone.png",
+      "ok": true,
+      "superseded": "Superseded by clean-HEAD review fixes and fresh proof captures at 7a03d6abea"
+    },
+    {
+      "id": 12,
+      "claim": "AC1",
+      "label": "Citation side panel Unavailable transition after panel-access removal",
+      "kind": "screenshot",
+      "revision": "3fb134901e49ba1de30e92e79a4cd5bf25b70c21",
+      "dirty": false,
+      "recorded": "2026-11-19T20:37:36+00:00",
+      "files": [
+        "12-p1b2-citations-panel-revoked.png"
+      ],
+      "source": "/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/target/verification/proof/shots/p1b2-citations-panel-revoked.png",
+      "ok": true,
+      "superseded": "Superseded by clean-HEAD review fixes and fresh proof captures at 7a03d6abea"
+    },
+    {
+      "id": 13,
+      "claim": "AC2",
+      "label": "Archived conversation removed from sidebar with Undo banner",
+      "kind": "screenshot",
+      "revision": "3fb134901e49ba1de30e92e79a4cd5bf25b70c21",
+      "dirty": false,
+      "recorded": "2026-11-19T20:37:36+00:00",
+      "files": [
+        "13-p1b2-archive-undo-banner.png"
+      ],
+      "source": "/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/target/verification/proof/shots/p1b2-archive-undo-banner.png",
+      "ok": true,
+      "superseded": "Superseded by clean-HEAD review fixes and fresh proof captures at 7a03d6abea"
+    },
+    {
+      "id": 14,
+      "claim": "AC3",
+      "label": "Discuss stops active turn cleanly and restores queued follow-up to composer",
+      "kind": "screenshot",
+      "revision": "3fb134901e49ba1de30e92e79a4cd5bf25b70c21",
+      "dirty": false,
+      "recorded": "2026-11-19T20:37:37+00:00",
+      "files": [
+        "14-p1b2-discuss-stopped-restored.png"
+      ],
+      "source": "/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/target/verification/proof/shots/p1b2-discuss-stopped-restored.png",
+      "ok": true,
+      "superseded": "Superseded by clean-HEAD review fixes and fresh proof captures at 7a03d6abea"
+    },
+    {
+      "id": 15,
+      "claim": "AC4",
+      "label": "Ctrl+Shift+Space hold-release dictation transcribed into composer without auto-sending",
+      "kind": "screenshot",
+      "revision": "3fb134901e49ba1de30e92e79a4cd5bf25b70c21",
+      "dirty": false,
+      "recorded": "2026-11-19T20:37:37+00:00",
+      "files": [
+        "15-p1b2-dictation-transcribed.png"
+      ],
+      "source": "/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/target/verification/proof/shots/p1b2-dictation-transcribed.png",
+      "ok": true,
+      "superseded": "Superseded by clean-HEAD review fixes and fresh proof captures at 7a03d6abea"
+    },
+    {
+      "id": 16,
+      "claim": "AC5",
+      "label": "Shared Find patient component displaying KeywordFallback notice",
+      "kind": "screenshot",
+      "revision": "3fb134901e49ba1de30e92e79a4cd5bf25b70c21",
+      "dirty": false,
+      "recorded": "2026-11-19T20:37:37+00:00",
+      "files": [
+        "16-p1b2-find-patient-fallback.png"
+      ],
+      "source": "/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/target/verification/proof/shots/p1b2-find-patient-fallback.png",
+      "ok": true,
+      "superseded": "Superseded by clean-HEAD review fixes and fresh proof captures at 7a03d6abea"
+    },
+    {
+      "id": 17,
+      "claim": "gates",
+      "label": "cargo fmt --check, boundaries, host and wasm32 clippy -D warnings",
+      "kind": "run",
+      "revision": "5f7c4e10e800b852ab806cc2d1e90accf2f27e98",
+      "dirty": false,
+      "recorded": "2026-11-19T21:12:08+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "cargo fmt --check && cargo test -p boundaries && cargo clippy --workspace --all-targets -- -D warnings && cargo clippy -p physician-app -p duet-app -p extension-popup --target wasm32-unknown-unknown -- -D warnings"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "17-cargo-fmt---check-boundaries-host-and-wasm32-cli.log"
+      ],
+      "seconds": 85.8,
+      "exit": 0,
+      "ok": true,
+      "superseded": "Superseded by clean-HEAD review fixes and fresh proof captures at 7a03d6abea"
+    },
+    {
+      "id": 18,
+      "claim": "AC1-AC5",
+      "label": "unit test suites across ui, physician-wire, physician-demo-db, physician-client, physician-app, physician-sample, local-product",
+      "kind": "run",
+      "revision": "5f7c4e10e800b852ab806cc2d1e90accf2f27e98",
+      "dirty": false,
+      "recorded": "2026-11-19T21:13:34+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "cargo test -p ui --lib && cargo test -p physician-wire --lib && cargo test -p physician-demo-db --lib && cargo test -p physician-client --lib && cargo test -p physician-app --lib && cargo test -p physician-sample --lib && cargo test -p local-product --lib"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "18-unit-test-suites-across-ui-physician-wire-physic.log"
+      ],
+      "seconds": 96.1,
+      "exit": 0,
+      "ok": true,
+      "superseded": "Superseded by clean-HEAD review fixes and fresh proof captures at 7a03d6abea"
+    },
+    {
+      "id": 19,
+      "claim": "AC2",
+      "label": "local-product runtime_postgres archive, restore, busy refusal, auto-unarchive, and SQL limit non-starvation",
+      "kind": "run",
+      "revision": "5f7c4e10e800b852ab806cc2d1e90accf2f27e98",
+      "dirty": false,
+      "recorded": "2026-11-19T21:15:10+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "local-product",
+        "--test",
+        "runtime_postgres",
+        "archive_restore_busy_refusal_and_auto_unarchive_in_postgres",
+        "--",
+        "--ignored"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "19-local-product-runtime_postgres-archive-restore-b.log"
+      ],
+      "seconds": 50.0,
+      "exit": 101,
+      "ok": false,
+      "superseded": "Superseded by clean-HEAD review fixes and fresh proof captures at 7a03d6abea"
+    },
+    {
+      "id": 20,
+      "claim": "AC2",
+      "label": "local-product runtime_postgres archive, restore, busy refusal, auto-unarchive, and SQL limit non-starvation",
+      "kind": "run",
+      "revision": "5f7c4e10e800b852ab806cc2d1e90accf2f27e98",
+      "dirty": false,
+      "recorded": "2026-11-19T21:16:50+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "local-product",
+        "--test",
+        "runtime_postgres",
+        "archive_restore_busy_refusal_and_auto_unarchive_in_postgres",
+        "--",
+        "--ignored"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "20-local-product-runtime_postgres-archive-restore-b.log"
+      ],
+      "seconds": 3.1,
+      "exit": 101,
+      "ok": false,
+      "superseded": "Superseded by clean-HEAD review fixes and fresh proof captures at 7a03d6abea"
+    },
+    {
+      "id": 21,
+      "claim": "gates",
+      "label": "cargo fmt --check, boundaries, host and wasm32 clippy -D warnings",
+      "kind": "run",
+      "revision": "fa36c521b280ebda8c60253ee442472469d9edbe",
+      "dirty": false,
+      "recorded": "2026-11-19T21:19:08+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "cargo fmt --check && cargo test -p boundaries && cargo clippy --workspace --all-targets -- -D warnings && cargo clippy -p physician-app -p duet-app -p extension-popup --target wasm32-unknown-unknown -- -D warnings"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "21-cargo-fmt---check-boundaries-host-and-wasm32-cli.log"
+      ],
+      "seconds": 84.9,
+      "exit": 0,
+      "ok": true,
+      "superseded": "Superseded by clean-HEAD review fixes and fresh proof captures at 7a03d6abea"
+    },
+    {
+      "id": 22,
+      "claim": "AC1-AC5",
+      "label": "unit test suites across ui, physician-wire, physician-demo-db, physician-client, physician-app, physician-sample, local-product",
+      "kind": "run",
+      "revision": "fa36c521b280ebda8c60253ee442472469d9edbe",
+      "dirty": false,
+      "recorded": "2026-11-19T21:20:33+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "cargo test -p ui --lib && cargo test -p physician-wire --lib && cargo test -p physician-demo-db --lib && cargo test -p physician-client --lib && cargo test -p physician-app --lib && cargo test -p physician-sample --lib && cargo test -p local-product --lib"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "22-unit-test-suites-across-ui-physician-wire-physic.log"
+      ],
+      "seconds": 26.9,
+      "exit": 0,
+      "ok": true,
+      "superseded": "Superseded by clean-HEAD review fixes and fresh proof captures at 7a03d6abea"
+    },
+    {
+      "id": 23,
+      "claim": "AC2",
+      "label": "local-product runtime_postgres archive, restore, busy refusal, auto-unarchive, and SQL limit non-starvation",
+      "kind": "run",
+      "revision": "fa36c521b280ebda8c60253ee442472469d9edbe",
+      "dirty": false,
+      "recorded": "2026-11-19T21:21:00+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "local-product",
+        "--test",
+        "runtime_postgres",
+        "archive_restore_busy_refusal_and_auto_unarchive_in_postgres",
+        "--",
+        "--ignored"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "23-local-product-runtime_postgres-archive-restore-b.log"
+      ],
+      "seconds": 37.6,
+      "exit": 0,
+      "ok": true,
+      "superseded": "Superseded by clean-HEAD review fixes and fresh proof captures at 7a03d6abea"
+    },
+    {
+      "id": 24,
+      "claim": "AC1-AC5",
+      "label": "local-product Postgres source_status_and_links (16), patient_reviews_postgres (12), today_updates_postgres (5), migration_tests (6)",
+      "kind": "run",
+      "revision": "fa36c521b280ebda8c60253ee442472469d9edbe",
+      "dirty": false,
+      "recorded": "2026-11-19T21:21:38+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "cargo test -p local-product --test source_status_and_links -- --ignored && cargo test -p local-product --test patient_reviews_postgres -- --ignored && cargo test -p local-product --test today_updates_postgres -- --ignored && cargo test -p local-product --lib migration -- --ignored"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "24-local-product-Postgres-source_status_and_links-1.log"
+      ],
+      "seconds": 65.5,
+      "exit": 0,
+      "ok": true,
+      "superseded": "Superseded by clean-HEAD review fixes and fresh proof captures at 7a03d6abea"
+    },
+    {
+      "id": 25,
+      "claim": "AC1-AC5",
+      "label": "physician-sample --test site -- --ignored (full 25-test Chromium qualification)",
+      "kind": "run",
+      "revision": "fa36c521b280ebda8c60253ee442472469d9edbe",
+      "dirty": false,
+      "recorded": "2026-11-19T21:22:44+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-sample",
+        "--test",
+        "site",
+        "--",
+        "--ignored"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "25-physician-sample---test-site------ignored-full-2.log"
+      ],
+      "seconds": 344.2,
+      "exit": 101,
+      "ok": false,
+      "superseded": "Superseded by clean-HEAD review fixes and fresh proof captures at 7a03d6abea"
+    },
+    {
+      "id": 26,
+      "claim": "gates",
+      "label": "cargo fmt --check, boundaries, host and wasm32 clippy -D warnings",
+      "kind": "run",
+      "revision": "7a03d6abead1fa1bac66eae30b2ffa6f8500ff60",
+      "dirty": false,
+      "recorded": "2026-11-19T21:56:24+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "cargo fmt --check && cargo test -p boundaries && cargo clippy --workspace --all-targets -- -D warnings && cargo clippy -p physician-app -p duet-app -p extension-popup --target wasm32-unknown-unknown -- -D warnings"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "26-cargo-fmt---check-boundaries-host-and-wasm32-cli.log"
+      ],
+      "seconds": 85.5,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 27,
+      "claim": "AC1-AC5",
+      "label": "unit test suites across ui, physician-wire, physician-demo-db, physician-client, physician-app, physician-sample, local-product",
+      "kind": "run",
+      "revision": "7a03d6abead1fa1bac66eae30b2ffa6f8500ff60",
+      "dirty": false,
+      "recorded": "2026-11-19T21:57:49+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "cargo test -p ui --lib && cargo test -p physician-wire --lib && cargo test -p physician-demo-db --lib && cargo test -p physician-client --lib && cargo test -p physician-app --lib && cargo test -p physician-sample --lib && cargo test -p local-product --lib"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "27-unit-test-suites-across-ui-physician-wire-physic.log"
+      ],
+      "seconds": 47.6,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 28,
+      "claim": "AC2",
+      "label": "local-product runtime_postgres archive, restore, busy refusal, auto-unarchive, and SQL limit non-starvation",
+      "kind": "run",
+      "revision": "7a03d6abead1fa1bac66eae30b2ffa6f8500ff60",
+      "dirty": false,
+      "recorded": "2026-11-19T21:58:37+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "local-product",
+        "--test",
+        "runtime_postgres",
+        "archive_restore_busy_refusal_and_auto_unarchive_in_postgres",
+        "--",
+        "--ignored"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "28-local-product-runtime_postgres-archive-restore-b.log"
+      ],
+      "seconds": 18.2,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 29,
+      "claim": "AC1-AC5",
+      "label": "local-product Postgres source_status_and_links (16), patient_reviews_postgres (12), today_updates_postgres (5), migration_tests (6)",
+      "kind": "run",
+      "revision": "7a03d6abead1fa1bac66eae30b2ffa6f8500ff60",
+      "dirty": false,
+      "recorded": "2026-11-19T21:58:56+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "cargo test -p local-product --test source_status_and_links -- --ignored && cargo test -p local-product --test patient_reviews_postgres -- --ignored && cargo test -p local-product --test today_updates_postgres -- --ignored && cargo test -p local-product --lib migration -- --ignored"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "29-local-product-Postgres-source_status_and_links-1.log"
+      ],
+      "seconds": 16.1,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 30,
+      "claim": "AC1-AC5",
+      "label": "physician-sample --test site -- --ignored (full 25-test Chromium qualification)",
+      "kind": "run",
+      "revision": "7a03d6abead1fa1bac66eae30b2ffa6f8500ff60",
+      "dirty": false,
+      "recorded": "2026-11-19T21:59:12+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-sample",
+        "--test",
+        "site",
+        "--",
+        "--ignored"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "30-physician-sample---test-site------ignored-full-2.log"
+      ],
+      "seconds": 292.9,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 31,
+      "claim": "AC1",
+      "label": "Chromium citation side-panel regression suites (shell_states, site_schedule_briefing, site_today_updates, site_link_correction, site_patient_reviews)",
+      "kind": "run",
+      "revision": "7a03d6abead1fa1bac66eae30b2ffa6f8500ff60",
+      "dirty": false,
+      "recorded": "2026-11-19T22:04:05+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "cargo test -p physician-sample --test shell_states -- --ignored && cargo test -p physician-sample --test site_schedule_briefing -- --ignored && cargo test -p physician-sample --test site_today_updates -- --ignored && cargo test -p physician-sample --test site_link_correction -- --ignored && cargo test -p physician-sample --test site_patient_reviews -- --ignored"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "31-Chromium-citation-side-panel-regression-suites-s.log"
+      ],
+      "seconds": 314.6,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 32,
+      "claim": "AC1",
+      "label": "Hover CitationPreview popover and AnswerSources pill",
+      "kind": "screenshot",
+      "revision": "7a03d6abead1fa1bac66eae30b2ffa6f8500ff60",
+      "dirty": false,
+      "recorded": "2026-11-19T22:11:05+00:00",
+      "files": [
+        "32-p1b2-hover-preview-and-sources.png"
+      ],
+      "source": "/tmp/coda-b2-shots/p1b2-hover-preview-and-sources.png",
+      "ok": true
+    },
+    {
+      "id": 33,
+      "claim": "AC1",
+      "label": "Desktop non-modal citation side panel with highlighted passage and collapsed Technical details",
+      "kind": "screenshot",
+      "revision": "7a03d6abead1fa1bac66eae30b2ffa6f8500ff60",
+      "dirty": false,
+      "recorded": "2026-11-19T22:11:05+00:00",
+      "files": [
+        "33-p1b2-citations-panel-desktop.png"
+      ],
+      "source": "/tmp/coda-b2-shots/p1b2-citations-panel-desktop.png",
+      "ok": true
+    },
+    {
+      "id": 34,
+      "claim": "AC1",
+      "label": "Phone (<900px) citation side panel with Back control, flagged status, and unmatched-passage notice",
+      "kind": "screenshot",
+      "revision": "7a03d6abead1fa1bac66eae30b2ffa6f8500ff60",
+      "dirty": false,
+      "recorded": "2026-11-19T22:11:05+00:00",
+      "files": [
+        "34-p1b2-citations-panel-phone.png"
+      ],
+      "source": "/tmp/coda-b2-shots/p1b2-citations-panel-phone.png",
+      "ok": true
+    },
+    {
+      "id": 35,
+      "claim": "AC1",
+      "label": "Citation side panel Unavailable transition after panel-access removal",
+      "kind": "screenshot",
+      "revision": "7a03d6abead1fa1bac66eae30b2ffa6f8500ff60",
+      "dirty": false,
+      "recorded": "2026-11-19T22:11:05+00:00",
+      "files": [
+        "35-p1b2-citations-panel-revoked.png"
+      ],
+      "source": "/tmp/coda-b2-shots/p1b2-citations-panel-revoked.png",
+      "ok": true
+    },
+    {
+      "id": 36,
+      "claim": "AC2",
+      "label": "Archived conversation removed from sidebar with Undo banner",
+      "kind": "screenshot",
+      "revision": "7a03d6abead1fa1bac66eae30b2ffa6f8500ff60",
+      "dirty": false,
+      "recorded": "2026-11-19T22:11:06+00:00",
+      "files": [
+        "36-p1b2-archive-undo-banner.png"
+      ],
+      "source": "/tmp/coda-b2-shots/p1b2-archive-undo-banner.png",
+      "ok": true
+    },
+    {
+      "id": 37,
+      "claim": "AC3",
+      "label": "Discuss stops active turn cleanly and restores queued follow-up to composer",
+      "kind": "screenshot",
+      "revision": "7a03d6abead1fa1bac66eae30b2ffa6f8500ff60",
+      "dirty": false,
+      "recorded": "2026-11-19T22:11:06+00:00",
+      "files": [
+        "37-p1b2-discuss-stopped-restored.png"
+      ],
+      "source": "/tmp/coda-b2-shots/p1b2-discuss-stopped-restored.png",
+      "ok": true
+    },
+    {
+      "id": 38,
+      "claim": "AC4",
+      "label": "Ctrl+Shift+Space hold-release dictation transcribed into composer without auto-sending",
+      "kind": "screenshot",
+      "revision": "7a03d6abead1fa1bac66eae30b2ffa6f8500ff60",
+      "dirty": false,
+      "recorded": "2026-11-19T22:11:06+00:00",
+      "files": [
+        "38-p1b2-dictation-transcribed.png"
+      ],
+      "source": "/tmp/coda-b2-shots/p1b2-dictation-transcribed.png",
+      "ok": true
+    },
+    {
+      "id": 39,
+      "claim": "AC5",
+      "label": "Shared Find patient component displaying KeywordFallback notice",
+      "kind": "screenshot",
+      "revision": "7a03d6abead1fa1bac66eae30b2ffa6f8500ff60",
+      "dirty": false,
+      "recorded": "2026-11-19T22:11:06+00:00",
+      "files": [
+        "39-p1b2-find-patient-fallback.png"
+      ],
+      "source": "/tmp/coda-b2-shots/p1b2-find-patient-fallback.png",
+      "ok": true
+    }
+  ]
+}
