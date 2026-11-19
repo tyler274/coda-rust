@@ -1,0 +1,64 @@
+{
+  "branch": "tyler-eng-317-2-staff-practice-accounts-suite",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC3-concurrent-account-race-postgres",
+      "label": "",
+      "kind": "run",
+      "revision": "57f7a3176b94a6f63e6c815b78147f9cca44dedf",
+      "dirty": false,
+      "recorded": "2026-11-19T00:05:01+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-auth",
+        "--test",
+        "postgres",
+        "postgres_create_account"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "01-cargo.log"
+      ],
+      "seconds": 11.6,
+      "exit": 0,
+      "ok": true,
+      "kept": {
+        "revision": "0678685d10a3036ff06a89dd3a43561aa1fea0fc",
+        "reason": "Rebased cleanly onto PR 60 (e374cd7738); slice diff and behavior unchanged"
+      }
+    },
+    {
+      "id": 2,
+      "claim": "AC4-staff-practice-accounts-postgres-suite",
+      "label": "",
+      "kind": "run",
+      "revision": "57f7a3176b94a6f63e6c815b78147f9cca44dedf",
+      "dirty": false,
+      "recorded": "2026-11-19T00:05:13+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-sample",
+        "--test",
+        "staff_practice_accounts"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "02-cargo.log"
+      ],
+      "seconds": 35.6,
+      "exit": 0,
+      "ok": true,
+      "kept": {
+        "revision": "0678685d10a3036ff06a89dd3a43561aa1fea0fc",
+        "reason": "Rebased cleanly onto PR 60 (e374cd7738); slice diff and behavior unchanged"
+      }
+    }
+  ]
+}
