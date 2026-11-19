@@ -1,0 +1,99 @@
+{
+  "branch": "spec-chords-settled-decisions",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC1",
+      "label": "",
+      "kind": "run",
+      "revision": "167b6594981b484bce5ad486f01000b039fed8db",
+      "dirty": false,
+      "recorded": "2026-11-19T10:58:29+00:00",
+      "command": [
+        "rg",
+        "-n",
+        "assigned panel of patients|invite a patient from that patient.s page and invite colleague",
+        "intent/physician.md"
+      ],
+      "expect": "assigned panel of patients",
+      "expect_fail": false,
+      "files": [
+        "01-rg.log"
+      ],
+      "seconds": 0.0,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true
+    },
+    {
+      "id": 2,
+      "claim": "AC2",
+      "label": "",
+      "kind": "run",
+      "revision": "167b6594981b484bce5ad486f01000b039fed8db",
+      "dirty": false,
+      "recorded": "2026-11-19T10:58:29+00:00",
+      "command": [
+        "rg",
+        "-n",
+        "Hint Health and Elation FHIR",
+        "intent/physician.md"
+      ],
+      "expect": "Hint Health and Elation FHIR",
+      "expect_fail": false,
+      "files": [
+        "02-rg.log"
+      ],
+      "seconds": 0.0,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true
+    },
+    {
+      "id": 3,
+      "claim": "AC3",
+      "label": "",
+      "kind": "run",
+      "revision": "167b6594981b484bce5ad486f01000b039fed8db",
+      "dirty": false,
+      "recorded": "2026-11-19T10:58:29+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "rg -n \"simulation clock\" intent/harness.md intent/physician.md && ! rg -n \"E11\\\\.|not decided yet\" intent/harness.md intent/physician.md"
+      ],
+      "expect": "persisted, advancing practice simulation clock",
+      "expect_fail": false,
+      "files": [
+        "03-bash.log"
+      ],
+      "seconds": 0.1,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true
+    },
+    {
+      "id": 4,
+      "claim": "AC4",
+      "label": "",
+      "kind": "run",
+      "revision": "167b6594981b484bce5ad486f01000b039fed8db",
+      "dirty": false,
+      "recorded": "2026-11-19T10:58:29+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "scripts/check-book-links.sh && lychee --offline --no-progress --include-fragments --root-dir \"$PWD\" intent/*.md verification/**/*.md \".agents/skills/**/*.md\""
+      ],
+      "expect": "Errors\\.\\.\\.\\.\\.\\.\\.\\.\\.\\.\\.0",
+      "expect_fail": false,
+      "files": [
+        "04-bash.log"
+      ],
+      "seconds": 2.4,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true
+    }
+  ]
+}
