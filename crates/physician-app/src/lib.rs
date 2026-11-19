@@ -15,6 +15,7 @@ mod invitations;
 mod local_command;
 mod local_draft;
 mod matching_reply;
+mod memory_view;
 mod panels;
 mod patient_reviews_panel;
 mod schedule_briefing;
@@ -5592,6 +5593,11 @@ fn PatientSurface(
                     context: reviews_context,
                     on_open_source,
                 }
+                memory_view::PatientMemorySection {
+                    workspace_id: open.patient_workspace_id.clone(),
+                    client: reviews_context.client,
+                    workspace_attempt: reviews_context.workspace_attempt,
+                }
             }
             if !briefings.is_empty() && !workspace_id.is_empty() {
                 PatientBriefingsSection {
@@ -6889,7 +6895,7 @@ fn writer_id() -> String {
 fn step_icon(kind: ProjectedStepKind) -> IconName {
     match kind {
         ProjectedStepKind::Search => IconName::Search,
-        ProjectedStepKind::Read => IconName::File,
+        ProjectedStepKind::Read | ProjectedStepKind::Memory => IconName::File,
         ProjectedStepKind::Conversation => IconName::Message,
     }
 }

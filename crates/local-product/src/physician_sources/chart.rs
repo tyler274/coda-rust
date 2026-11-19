@@ -5,7 +5,7 @@ use super::{
 };
 use crate::physician_chat::{CallEnding, StepError};
 use harness::engine::results::ToolResult;
-use harness::engine::{Event, EventKind, Tool, ToolOutcome};
+use harness::engine::{Event, EventKind, Item, Tool, ToolOutcome};
 use physician_wire::{Found, RecordAbout, RecordGroup, RecordRead, SourceVersion, Step, StepState};
 use serde::{Deserialize, Serialize};
 use serde_json::{Value, json};
@@ -176,6 +176,7 @@ pub struct Labels {
     chart: Vec<Version>,
     library: Vec<LibraryReadLabel>,
     document_pages: Vec<DocumentPageReadLabel>,
+    notes: Vec<NoteCitationLabel>,
 }
 
 /// One version a chart read of this work asked for.
@@ -203,6 +204,139 @@ struct DocumentPageReadLabel {
     returned: bool,
 }
 
+/// One patient memory note (`N{n}`) visible to this work via starting memory,
+/// a `read_patient_memory` log read, or an `add_patient_memory_note` save.
+struct NoteCitationLabel {
+    label: String,
+    candidate_id: String,
+    revision: String,
+}
+
+/// Parsed patient memory note from starting memory or a `log/YYYY-MM-DD.md`
+/// read. Shared between `Labels`, `Delivered`, and `history` so note citation
+/// parsing lives in one owner.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub(crate) struct MemoryNoteRef {
+    /// Citation label such as `"N1"`.
+    pub label: String,
+    /// Canonical candidate id `"memory/note/N1"`.
+    pub candidate_id: String,
+    /// Revision naming the log day path, e.g. `"log/2026-11-19.md"`.
+    pub revision: String,
+    /// Physician id printed on the note heading.
+    pub physician: String,
+    /// Optional `YYYY-MM-DD` log day.
+    pub log_day: Option<String>,
+    /// Optional quoted physician words.
+    pub quote: Option<String>,
+    /// Note body text.
+    pub body: String,
+}
+
+/// Canonical candidate id for a patient memory note label such as `"N1"`.
+pub(crate) fn memory_note_candidate_id(label: &str) -> Option<String> {
+    let rest = label.strip_prefix('N')?;
+    let number = rest.parse::<u64>().ok()?;
+    if number == 0 || format!("N{number}") != label {
+        return None;
+    }
+    Some(format!("memory/note/{label}"))
+}
+
+/// Parses memory notes (`## HH:MM:SS UTC, note N{n}, physician <id>`) from
+/// starting memory markdown or a `log/YYYY-MM-DD.md` file read.
+pub(crate) fn parse_memory_notes_markdown(
+    markdown: &str,
+    fallback_path: Option<&str>,
+) -> Vec<MemoryNoteRef> {
+    struct PendingMemoryNote {
+        label: String,
+        candidate_id: String,
+        physician: String,
+        day: Option<String>,
+        quote: Option<String>,
+        body_lines: Vec<String>,
+    }
+
+    let mut notes = Vec::new();
+    let mut current_day: Option<String> = fallback_path
+        .and_then(|p| p.strip_prefix("log/"))
+        .and_then(|p| p.strip_suffix(".md"))
+        .map(str::to_owned);
+    let mut active: Option<PendingMemoryNote> = None;
+
+    let flush = |active: &mut Option<PendingMemoryNote>, notes: &mut Vec<MemoryNoteRef>| {
+        let Some(mut pending) = active.take() else {
+            return;
+        };
+        while pending.body_lines.first().is_some_and(|l| l.is_empty()) {
+            pending.body_lines.remove(0);
+        }
+        while pending.body_lines.last().is_some_and(|l| l.is_empty()) {
+            pending.body_lines.pop();
+        }
+        let revision = pending
+            .day
+            .as_deref()
+            .map(|d| format!("log/{d}.md"))
+            .or_else(|| fallback_path.map(str::to_owned))
+            .unwrap_or_else(|| "memory/log".to_owned());
+        notes.push(MemoryNoteRef {
+            label: pending.label,
+            candidate_id: pending.candidate_id,
+            revision,
+            physician: pending.physician,
+            log_day: pending.day,
+            quote: pending.quote,
+            body: pending.body_lines.join("\n"),
+        });
+    };
+
+    for line in markdown.lines() {
+        if let Some(day) = line.strip_prefix("# Log ") {
+            flush(&mut active, &mut notes);
+            let trimmed = day.trim();
+            if !trimmed.is_empty() {
+                current_day = Some(trimmed.to_owned());
+            }
+            continue;
+        }
+        if let Some(rest) = line.strip_prefix("## ") {
+            flush(&mut active, &mut notes);
+            if let Some((_, after_note)) = rest.split_once(" UTC, note ")
+                && let Some((label_part, physician_part)) = after_note.split_once(", physician ")
+            {
+                let label = label_part.trim();
+                let physician = physician_part.trim();
+                if let Some(candidate_id) = memory_note_candidate_id(label) {
+                    active = Some(PendingMemoryNote {
+                        label: label.to_owned(),
+                        candidate_id,
+                        physician: physician.to_owned(),
+                        day: current_day.clone(),
+                        quote: None,
+                        body_lines: Vec::new(),
+                    });
+                }
+            }
+            continue;
+        }
+        if let Some(pending) = &mut active {
+            if pending.quote.is_none()
+                && pending.body_lines.iter().all(|l| l.is_empty())
+                && let Some(raw_quote) = line.strip_prefix("Quoted: ")
+                && let Ok(decoded) = serde_json::from_str::<String>(raw_quote.trim())
+            {
+                pending.quote = Some(decoded);
+                continue;
+            }
+            pending.body_lines.push(line.to_owned());
+        }
+    }
+    flush(&mut active, &mut notes);
+    notes
+}
+
 impl Labels {
     /// The labels of the work whose records these are, in any window.
     pub fn of_work<'a>(records: impl IntoIterator<Item = &'a (Event, bool)>) -> Self {
@@ -210,15 +344,43 @@ impl Labels {
             chart: Vec::new(),
             library: Vec::new(),
             document_pages: Vec::new(),
+            notes: Vec::new(),
         };
         for (event, _) in records {
-            if let EventKind::ToolStarted(call) = &event.kind {
-                labels.ask(&call.name, &call.arguments);
-            } else if let EventKind::ToolReturned { result, .. } = &event.kind {
-                labels.return_labels(result);
+            match &event.kind {
+                EventKind::ProviderStarted { request, .. } => {
+                    for item in &request.added {
+                        if let Item::Message { role, text } = item
+                            && role == "developer"
+                        {
+                            for note in parse_memory_notes_markdown(text, None) {
+                                labels.record_note(note.label, note.candidate_id, note.revision);
+                            }
+                        }
+                    }
+                }
+                EventKind::ToolStarted(call) => {
+                    labels.ask(&call.name, &call.arguments);
+                }
+                EventKind::ToolReturned { result, .. } => {
+                    labels.return_labels(result);
+                }
+                _ => {}
             }
         }
         labels
+    }
+
+    fn record_note(&mut self, label: String, candidate_id: String, revision: String) {
+        if let Some(existing) = self.notes.iter_mut().find(|n| n.label == label) {
+            existing.revision = revision;
+            return;
+        }
+        self.notes.push(NoteCitationLabel {
+            label,
+            candidate_id,
+            revision,
+        });
     }
 
     /// Returns the assigned `L{N}` citation label for a `read_clinical_library`
@@ -380,6 +542,24 @@ impl Labels {
                 .unwrap_or_else(|| "v1".to_owned());
             entry.revision = format!("{base_rev}:p{page_number}");
             entry.returned = true;
+            return;
+        }
+        if let Ok(val) = serde_json::from_str::<Value>(original) {
+            if let Some(note_label) = val.get("note").and_then(Value::as_str)
+                && let Some(path) = val.get("path").and_then(Value::as_str)
+                && let Some(candidate_id) = memory_note_candidate_id(note_label)
+            {
+                self.record_note(note_label.to_owned(), candidate_id, path.to_owned());
+                return;
+            }
+            if let Some(path) = val.get("path").and_then(Value::as_str)
+                && path.starts_with("log/")
+                && let Some(markdown) = val.get("markdown").and_then(Value::as_str)
+            {
+                for note in parse_memory_notes_markdown(markdown, Some(path)) {
+                    self.record_note(note.label, note.candidate_id, note.revision);
+                }
+            }
         }
     }
 
@@ -414,6 +594,9 @@ impl Labels {
             let entry = &self.document_pages[index];
             return (entry.returned && !entry.revision.is_empty())
                 .then_some((entry.document_id.as_str(), entry.revision.as_str()));
+        }
+        if let Some(entry) = self.notes.iter().find(|n| n.label == label.0) {
+            return Some((entry.candidate_id.as_str(), entry.revision.as_str()));
         }
         None
     }

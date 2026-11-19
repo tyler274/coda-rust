@@ -35,10 +35,23 @@ work out something that took several records to put together. When a note comes 
 words. When the summary, the direction or a page is wrong or is missing something that matters now, you can \
 change it with edit_patient_memory; patient rounds tidy memory later. Do not log the work you did or the answer \
 you gave, and do not copy what a chart record already says. \
-Memory can be behind the chart. Current medications, doses and values always come from the chart."
+Memory can be behind the chart. Current medications, doses and values always come from the chart. \
+When the physician and the chart disagree, follow the physician, and state both in memory, each with its date."
     };
 }
 pub(crate) use guidance;
+
+/// What physician-visible step a memory tool call shows, when it shows one.
+///
+/// A saved note or a memory edit shows the physician one step; a memory read
+/// shows none (`Memory.Code.21`).
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum MemoryStepKind {
+    /// A note saved to the patient's memory log (`add_patient_memory_note`).
+    SavedNote,
+    /// An edit to one of the patient's memory files (`edit_patient_memory`).
+    EditedMemory,
+}
 
 /// One memory tool.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -143,6 +156,29 @@ impl MemoryTool {
         match self {
             Self::Read(_) => true,
             Self::AddNote | Self::Edit => false,
+        }
+    }
+
+    /// The single owner of which memory tools show a step to the physician:
+    /// saving a note and editing memory each show one step; memory reads show
+    /// none (`Memory.Code.21`).
+    pub const fn physician_step(self) -> Option<MemoryStepKind> {
+        match self {
+            Self::Read(_) => None,
+            Self::AddNote => Some(MemoryStepKind::SavedNote),
+            Self::Edit => Some(MemoryStepKind::EditedMemory),
+        }
+    }
+
+    /// Validates `arguments` for a step-showing memory write tool. Calls with
+    /// malformed arguments that are refused at the boundary did nothing and
+    /// show no step.
+    pub fn parse_step_request(self, arguments: &Value) -> Option<MemoryStepKind> {
+        let kind = self.physician_step()?;
+        match self {
+            Self::Read(_) => None,
+            Self::AddNote => note_draft(arguments).ok().map(|_| kind),
+            Self::Edit => EditTool::accepts_arguments(arguments).then_some(kind),
         }
     }
 

@@ -30,6 +30,7 @@ mod live_tests;
 pub mod matching_reply;
 pub mod model;
 mod panel_preferences;
+pub mod patient_memory;
 pub mod patients;
 pub mod rehearsal;
 mod reply;
@@ -574,6 +575,7 @@ where
         .merge(hint_bridge::routes())
         .merge(matching_reply::routes())
         .merge(follow_ups::routes())
+        .merge(patient_memory::routes())
         .route("/", get(site_index))
         .route("/index.html", get(site_index))
         .route("/assets/coda-health-logo-transparent.png", get(logo))

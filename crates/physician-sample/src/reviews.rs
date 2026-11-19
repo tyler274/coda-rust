@@ -1673,9 +1673,25 @@ mod tests {
             "list_conversation_history",
             "read_conversation_message",
             "search_conversation_history",
+            "list_patient_memory",
+            "read_patient_memory",
+            "search_patient_memory",
         ] {
-            assert_eq!(describe_tool_step(plumbing, "{}", &context), None);
+            assert_eq!(
+                describe_tool_step(plumbing, "{}", &context),
+                None,
+                "{plumbing} must not project a physician step"
+            );
         }
+
+        assert_eq!(
+            describe_tool_step("add_patient_memory_note", "{}", &context),
+            Some(("Saved note to patient memory".to_owned(), None))
+        );
+        assert_eq!(
+            describe_tool_step("edit_patient_memory", "{}", &context),
+            Some(("Updated patient memory".to_owned(), None))
+        );
 
         let fallback = describe_tool_step("future_internal_tool_name", "{}", &context)
             .expect("fallback step label");

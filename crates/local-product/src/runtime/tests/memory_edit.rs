@@ -493,5 +493,10 @@ async fn a_chat_run_edits_its_own_patients_memory() {
     assert_eq!(list(&store, &other).await["summary"], Value::Null);
     let shown =
         crate::physician_chat::step(&call, crate::physician_chat::CallEnding::Running).unwrap();
-    assert!(shown.is_none(), "{shown:?}");
+    assert_eq!(
+        shown,
+        Some(physician_wire::Step::EditedMemory {
+            state: physician_wire::StepState::Running,
+        })
+    );
 }

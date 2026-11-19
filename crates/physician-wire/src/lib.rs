@@ -1141,6 +1141,16 @@ pub enum Step {
         /// How the look stands.
         state: StepState<()>,
     },
+    /// Coda saved a note to the patient's memory log.
+    SavedMemoryNote {
+        /// How the save stands.
+        state: StepState<()>,
+    },
+    /// Coda edited a patient memory file.
+    EditedMemory {
+        /// How the edit stands.
+        state: StepState<()>,
+    },
 }
 
 /// Which page of its results a chart search got.
@@ -1600,6 +1610,66 @@ pub struct ColleagueInvitationResponse {
     pub sign_in_path: Option<String>,
 }
 
+/// One physician-facing patient memory document (`summary.md` or `direction.md`).
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+pub struct MemoryDocumentWire {
+    /// The current version number.
+    pub version: u64,
+    /// The UTC day this version was saved (`YYYY-MM-DD`).
+    pub saved_at: String,
+    /// The markdown body.
+    pub markdown: String,
+}
+
+/// The physician-facing patient memory view (`GET /patient-workspaces/{id}/memory`).
+/// Carries only the summary and the direction (`Memory.Code.20`); pages and
+/// the log are Coda's working files and are never exposed on this surface.
+#[derive(Debug, Clone, Default, Serialize, Deserialize, PartialEq, Eq)]
+pub struct PatientMemoryResponse {
+    /// Patient workspace identifier.
+    pub patient_workspace_id: String,
+    /// Whether this server is backed by durable Postgres memory storage.
+    #[serde(default)]
+    pub durable: bool,
+    /// Current `summary.md`, when present.
+    pub summary: Option<MemoryDocumentWire>,
+    /// Current `direction.md`, when present.
+    pub direction: Option<MemoryDocumentWire>,
+}
+
+/// Which physician-facing memory document the physician is editing (`Memory.Code.22`).
+#[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(rename_all = "snake_case")]
+pub enum MemoryEditTarget {
+    /// `summary.md`.
+    Summary,
+    /// `direction.md`.
+    Direction,
+}
+
+/// Request body for `POST /patient-workspaces/{id}/memory`: saves the
+/// physician's edit as a note in their words so patient rounds fold it in.
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+pub struct SavePhysicianMemoryEditRequest {
+    /// Which document (`summary` or `direction`) the edit addresses.
+    pub target: MemoryEditTarget,
+    /// The physician's own words.
+    pub text: String,
+    /// Client idempotency key so retries save one note.
+    pub idempotency_key: String,
+}
+
+/// Response body for `POST /patient-workspaces/{id}/memory`.
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+pub struct SavePhysicianMemoryEditResponse {
+    /// Assigned note number (for example `"N1"`).
+    pub note_number: String,
+    /// Log path holding the saved note (for example `"log/2026-11-19.md"`).
+    pub log_path: String,
+    /// RFC-3339 timestamp when the note was saved.
+    pub saved_at: String,
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -1853,6 +1923,65 @@ mod tests {
         assert!(
             serde_json::from_str::<SnapshotFeedback>(r#""partial""#).is_err(),
             "an unknown feedback state is refused, not read as loaded"
+        );
+    }
+
+    #[test]
+    fn memory_steps_and_patient_memory_wire_round_trip() {
+        let steps = vec![
+            Step::SavedMemoryNote {
+                state: StepState::Returned { result: () },
+            },
+            Step::EditedMemory {
+                state: StepState::Running,
+            },
+        ];
+        let json = serde_json::to_value(&steps).unwrap();
+        assert_eq!(json[0]["did"], "saved_memory_note");
+        assert_eq!(json[1]["did"], "edited_memory");
+        assert_eq!(serde_json::from_value::<Vec<Step>>(json).unwrap(), steps);
+
+        let memory = PatientMemoryResponse {
+            patient_workspace_id: "pw-1".into(),
+            durable: true,
+            summary: Some(MemoryDocumentWire {
+                version: 2,
+                saved_at: "2026-11-19".into(),
+                markdown: "# Summary\nCKD stage 3b.".into(),
+            }),
+            direction: Some(MemoryDocumentWire {
+                version: 1,
+                saved_at: "2026-11-19".into(),
+                markdown: "Hold lisinopril.".into(),
+            }),
+        };
+        let encoded = serde_json::to_value(&memory).unwrap();
+        assert_eq!(
+            serde_json::from_value::<PatientMemoryResponse>(encoded).unwrap(),
+            memory
+        );
+
+        let req = SavePhysicianMemoryEditRequest {
+            target: MemoryEditTarget::Direction,
+            text: "Keep potassium above 4.0.".into(),
+            idempotency_key: "key-1".into(),
+        };
+        let encoded = serde_json::to_value(&req).unwrap();
+        assert_eq!(encoded["target"], "direction");
+        assert_eq!(
+            serde_json::from_value::<SavePhysicianMemoryEditRequest>(encoded).unwrap(),
+            req
+        );
+
+        let resp = SavePhysicianMemoryEditResponse {
+            note_number: "N2".into(),
+            log_path: "log/2026-11-19.md".into(),
+            saved_at: "2026-11-19T20:00:00Z".into(),
+        };
+        let encoded = serde_json::to_value(&resp).unwrap();
+        assert_eq!(
+            serde_json::from_value::<SavePhysicianMemoryEditResponse>(encoded).unwrap(),
+            resp
         );
     }
 }

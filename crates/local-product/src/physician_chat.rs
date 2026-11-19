@@ -374,7 +374,7 @@ enum ChatTool {
     /// Coda's own working note.
     WorkingNote,
     /// Patient memory: list, read, search, add a note and edit a file.
-    Memory,
+    Memory(memory::MemoryTool),
     /// The finished answer. It never runs as a call.
     Finish,
 }
@@ -397,7 +397,9 @@ impl ChatTool {
             ToolClass::Skill => Some(Self::Skill),
             ToolClass::ResultPage => Some(Self::ResultPage),
             ToolClass::WorkingNote => Some(Self::WorkingNote),
-            ToolClass::MemoryRead | ToolClass::MemoryWrite => Some(Self::Memory),
+            ToolClass::MemoryRead | ToolClass::MemoryWrite => {
+                memory::MemoryTool::named(name).map(Self::Memory)
+            }
             ToolClass::Finish => Some(Self::Finish),
             ToolClass::PatientReviewsRead
             | ToolClass::PatientReviewComplete
@@ -411,9 +413,10 @@ impl ChatTool {
 }
 
 /// The step a saved chat call shows the physician, or `None` when it shows
-/// none: skill reads, result pages, working notes and patient memory reads,
-/// notes and edits are Coda's own bookkeeping, the finish is the answer itself, and
-/// a call its tool refuses for its arguments did nothing.
+/// none: skill reads, result pages, working notes and patient memory reads
+/// are Coda's own bookkeeping, the finish is the answer itself, and a call
+/// its tool refuses for its arguments did nothing. A saved memory note or a
+/// memory edit shows one step (`Memory.Code.21`).
 pub fn step(call: &Invocation, ending: CallEnding<'_>) -> Result<Option<Step>, StepError> {
     let tool =
         ChatTool::named(&call.name).ok_or_else(|| StepError::UnknownTool(call.name.clone()))?;
@@ -424,8 +427,16 @@ pub fn step(call: &Invocation, ending: CallEnding<'_>) -> Result<Option<Step>, S
         | ChatTool::Skill
         | ChatTool::ResultPage
         | ChatTool::WorkingNote
-        | ChatTool::Memory
         | ChatTool::Finish => Ok(None),
+        ChatTool::Memory(memory_tool) => {
+            if memory_tool.physician_step().is_none() {
+                return Ok(None);
+            }
+            match memory_tool.parse_step_request(&arguments()?) {
+                Some(kind) => memory_step(kind, ending).map(Some),
+                None => Ok(None),
+            }
+        }
         ChatTool::Chart => {
             let request = crate::physician_sources::ChartRequest::parse(
                 &call.name,
@@ -455,6 +466,19 @@ pub fn shows(call: &Invocation) -> bool {
 /// physician reads as the answer being written, never as a step.
 pub fn hands_in_answer(name: &str) -> bool {
     matches!(ChatTool::named(name), Some(ChatTool::Finish))
+}
+
+/// Coda saved a note to or edited patient memory. A refused write is a failed step.
+fn memory_step(kind: memory::MemoryStepKind, ending: CallEnding<'_>) -> Result<Step, StepError> {
+    let state = ending.state(|result| match result {
+        ToolResult::Original(_) | ToolResult::View(_) => Ok(StepState::Returned { result: () }),
+        ToolResult::Refused(_) => Ok(StepState::Failed),
+        ToolResult::History(_) => Err(StepError::UnexpectedResult),
+    })?;
+    Ok(match kind {
+        memory::MemoryStepKind::SavedNote => Step::SavedMemoryNote { state },
+        memory::MemoryStepKind::EditedMemory => Step::EditedMemory { state },
+    })
 }
 
 /// Coda looked at earlier messages of the conversation; it may have found nothing. A refused
@@ -1068,6 +1092,120 @@ mod tests {
         }
         assert!(!read_only("add_patient_memory_note"));
         assert!(!read_only("edit_patient_memory"));
+    }
+
+    #[test]
+    fn memory_step_visibility_matches_memory_code_21() {
+        let read_calls = [
+            Invocation {
+                id: "c1".into(),
+                name: "list_patient_memory".into(),
+                arguments: "{}".into(),
+            },
+            Invocation {
+                id: "c2".into(),
+                name: "read_patient_memory".into(),
+                arguments: json!({"path": "summary.md", "version": null}).to_string(),
+            },
+            Invocation {
+                id: "c3".into(),
+                name: "search_patient_memory".into(),
+                arguments: json!({"query": "lisinopril"}).to_string(),
+            },
+        ];
+        for call in &read_calls {
+            assert_eq!(
+                step(call, CallEnding::Running).unwrap(),
+                None,
+                "memory read {} must not show a step",
+                call.name
+            );
+            assert!(!shows(call));
+        }
+
+        let note_call = Invocation {
+            id: "c4".into(),
+            name: "add_patient_memory_note".into(),
+            arguments: json!({"text": "Physician holds lisinopril due to cough.", "quote": "hold lisinopril"}).to_string(),
+        };
+        assert!(shows(&note_call));
+        assert_eq!(
+            step(&note_call, CallEnding::Running).unwrap(),
+            Some(Step::SavedMemoryNote {
+                state: StepState::Running
+            })
+        );
+        let returned_note =
+            ToolResult::Original("{\"note\":\"N1\",\"path\":\"log/2026-11-19.md\"}".into());
+        assert_eq!(
+            step(&note_call, CallEnding::Returned(&returned_note)).unwrap(),
+            Some(Step::SavedMemoryNote {
+                state: StepState::Returned { result: () }
+            })
+        );
+        let refused_note = ToolResult::Refused(harness::engine::recipe::Refusal::new("withdrawn"));
+        assert_eq!(
+            step(&note_call, CallEnding::Returned(&refused_note)).unwrap(),
+            Some(Step::SavedMemoryNote {
+                state: StepState::Failed
+            })
+        );
+        let blank_note = Invocation {
+            id: "c4-bad".into(),
+            name: "add_patient_memory_note".into(),
+            arguments: json!({"text": "   "}).to_string(),
+        };
+        assert_eq!(step(&blank_note, CallEnding::Running).unwrap(), None);
+
+        let edit_call = Invocation {
+            id: "c5".into(),
+            name: "edit_patient_memory".into(),
+            arguments: json!({"path": "direction.md", "edits": [{"append": {"text": "- Hold lisinopril."}}]}).to_string(),
+        };
+        assert!(shows(&edit_call));
+        assert_eq!(
+            step(&edit_call, CallEnding::Running).unwrap(),
+            Some(Step::EditedMemory {
+                state: StepState::Running
+            })
+        );
+        let returned_edit = ToolResult::Original(
+            "{\"path\":\"direction.md\",\"version\":1,\"characters\":18,\"not_applied\":[]}".into(),
+        );
+        assert_eq!(
+            step(&edit_call, CallEnding::Returned(&returned_edit)).unwrap(),
+            Some(Step::EditedMemory {
+                state: StepState::Returned { result: () }
+            })
+        );
+    }
+
+    #[test]
+    fn memory_guidance_states_physician_over_chart_rule() {
+        let skills = skills();
+        let binding = crate::ModelBinding {
+            model: "fixture".into(),
+            effort: "high".into(),
+            context_window_tokens: 272_000,
+            max_input_tokens: 250_000,
+            adapter: "fixture".into(),
+        };
+        let rule = "When the physician and the chart disagree, follow the physician, and state both in memory, each with its date.";
+        for built in [
+            recipe(&binding, INSTRUCTIONS, &skills),
+            crate::runtime::reply::recipe(&binding, &skills),
+        ] {
+            assert!(
+                built.instructions.contains(rule),
+                "missing Memory.Code.7 guidance in recipe instructions"
+            );
+        }
+        let rounds_built = crate::runtime::rounds::recipe(&binding, &skills);
+        assert!(
+            rounds_built.instructions.contains(
+                "When the physician and the chart disagree, state both with their dates."
+            )
+        );
     }
 
     #[test]

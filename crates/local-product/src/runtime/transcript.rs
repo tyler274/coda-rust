@@ -589,7 +589,10 @@ mod tests {
             .iter()
             .map(|step| match step {
                 Step::SearchedChart { state, .. } => state.clone(),
-                Step::ReadRecords { .. } | Step::ReadConversation { .. } => {
+                Step::ReadRecords { .. }
+                | Step::ReadConversation { .. }
+                | Step::SavedMemoryNote { .. }
+                | Step::EditedMemory { .. } => {
                     panic!("only searches started: {step:?}")
                 }
             })

@@ -277,14 +277,20 @@ fn shown(exchange: &Exchange) -> &[Step] {
 fn search_state(step: &Step) -> Option<&StepState<Found>> {
     match step {
         Step::SearchedChart { state, .. } => Some(state),
-        Step::ReadRecords { .. } | Step::ReadConversation { .. } => None,
+        Step::ReadRecords { .. }
+        | Step::ReadConversation { .. }
+        | Step::SavedMemoryNote { .. }
+        | Step::EditedMemory { .. } => None,
     }
 }
 
 fn read_state(step: &Step) -> Option<&StepState<Vec<RecordRead>>> {
     match step {
         Step::ReadRecords { state, .. } => Some(state),
-        Step::SearchedChart { .. } | Step::ReadConversation { .. } => None,
+        Step::SearchedChart { .. }
+        | Step::ReadConversation { .. }
+        | Step::SavedMemoryNote { .. }
+        | Step::EditedMemory { .. } => None,
     }
 }
 
