@@ -1,0 +1,101 @@
+   Compiling physician-sample v0.1.0 (/tmp/pr-f1-rebase/crates/physician-sample)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 37.47s
+     Running tests/synthetic_staging_control.rs (/tmp/coda-target-integrator/debug/deps/synthetic_staging_control-e89096a7acc91d7f)
+
+running 6 tests
+test staging_synthetic_end_to_end_walk_browser_and_cli ... ignored, browser and Postgres qualification; run explicitly with --ignored
+test ac6_product_code_contains_zero_synthetic_checks ... ok
+test ac4_source_refuses_unacceptable_events_without_saving ... ok
+test ac10_clock_spruce_duet_care_plan_and_l1_measure ... ok
+test ac7_production_omits_staging_synthetic_routes_and_refuses_startup ... ok
+test ac9_reset_covers_every_physician_runtime_table_in_postgres ... ok
+
+test result: ok. 5 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 2.42s
+
+   Compiling boundaries v0.1.0 (/tmp/pr-f1-rebase/crates/boundaries)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 4.43s
+     Running unittests src/lib.rs (/tmp/coda-target-integrator/debug/deps/boundaries-94cce9dbaff1c954)
+
+running 25 tests
+test shared_ui::a_whole_test_file_counts_nothing ... ok
+test shared_ui::a_matching_count_passes ... ok
+test shared_ui::a_new_file_counts_as_going_up_from_zero ... ok
+test shared_ui::a_count_going_down_says_to_lower_the_number ... ok
+test shared_ui::a_count_reaching_zero_says_to_remove_the_entry ... ok
+test shared_ui::a_count_going_up_says_to_use_the_shared_component_or_add_an_exception ... ok
+test shared_ui::counts_css_rules_naming_library_classes ... ok
+test shared_ui::counts_css_rules_naming_control_elements ... ok
+test shared_ui::every_table_entry_has_one_row_and_a_reason ... ok
+test shared_ui::counts_rsx_held_in_other_macros_and_nested_rsx ... ok
+test shared_ui::counts_card_classes_set_apart_by_escaped_whitespace ... ok
+test tests::duet_screens_do_not_read_device_health_directly ... ok
+test tests::apps_do_not_import_each_others_clinical_crates ... ok
+test shared_ui::counts_card_markup_by_class_family_once_per_element ... ok
+test tests::shipping_clients_stay_until_the_rust_journeys_match ... ok
+test shared_ui::ignores_comments_strings_and_lookalikes ... ok
+test shared_ui::counts_each_raw_control_inside_rsx ... ok
+test shared_ui::ignores_test_code_but_not_code_kept_out_of_tests ... ok
+test tests::the_clinical_library_is_product_neutral ... ok
+test tests::gmail_and_spruce_are_product_neutral ... ok
+test shared_ui::the_check_reads_the_real_library ... ok
+test tests::every_ui_behaviour_is_run_as_its_kind ... ok
+test tests::shared_harness_is_product_neutral_and_has_no_product_store ... ok
+test tests::the_ui_library_runs_its_browser_behaviour_without_eval ... ok
+test shared_ui::the_apps_match_the_shared_ui_table ... ok
+
+test result: ok. 25 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.62s
+
+   Doc-tests boundaries
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+Checked 10 authored SQL files with pg_format version 5.11
+    Blocking waiting for file lock on package cache
+    Checking physician-wire v0.1.0 (/tmp/pr-f1-rebase/crates/physician-wire)
+    Checking patient-work v0.1.0 (/tmp/pr-f1-rebase/crates/patient-work)
+    Checking agent-skills v0.1.0 (/tmp/pr-f1-rebase/crates/agent-skills)
+   Compiling public-site v0.1.0 (/tmp/pr-f1-rebase/crates/public-site)
+   Compiling duet-health v0.1.0 (/tmp/pr-f1-rebase/crates/duet-health)
+    Checking coda-http v0.1.0 (/tmp/pr-f1-rebase/crates/http)
+    Checking spruce v0.1.0 (/tmp/pr-f1-rebase/crates/spruce)
+    Checking gmail v0.1.0 (/tmp/pr-f1-rebase/crates/gmail)
+   Compiling duet-client v0.1.0 (/tmp/pr-f1-rebase/crates/duet-client)
+    Checking physician-bus v0.1.0 (/tmp/pr-f1-rebase/crates/physician-bus)
+    Checking telemetry v0.1.0 (/tmp/pr-f1-rebase/crates/telemetry)
+    Checking duet_wire v0.1.0 (/tmp/pr-f1-rebase/crates/duet-wire)
+    Checking duet-page v0.1.0 (/tmp/pr-f1-rebase/crates/duet-page)
+   Compiling duet-notify v0.1.0 (/tmp/pr-f1-rebase/crates/duet-notify)
+    Checking ui v0.1.0 (/tmp/pr-f1-rebase/crates/ui)
+    Checking front-door v0.1.0 (/tmp/pr-f1-rebase/crates/front-door)
+    Checking physician-auth v0.1.0 (/tmp/pr-f1-rebase/crates/physician-auth)
+    Checking clinical-library v0.1.0 (/tmp/pr-f1-rebase/crates/clinical-library)
+    Checking coda-sandbox v0.1.0 (/tmp/pr-f1-rebase/crates/workspace-tools/sandbox)
+    Checking harness v0.1.0 (/tmp/pr-f1-rebase/crates/harness)
+    Checking patient-bank v0.1.0 (/tmp/pr-f1-rebase/crates/patient-bank)
+    Checking encoder v0.1.0 (/tmp/pr-f1-rebase/crates/encoder)
+    Checking boundaries v0.1.0 (/tmp/pr-f1-rebase/crates/boundaries)
+    Checking availability-probe v0.1.0 (/tmp/pr-f1-rebase/crates/availability-probe)
+    Checking observability-relay v0.1.0 (/tmp/pr-f1-rebase/crates/observability-relay)
+    Checking android v0.1.0 (/tmp/pr-f1-rebase/crates/android)
+    Checking local-product v0.1.0 (/tmp/pr-f1-rebase/crates/local-product)
+    Checking physician-client v0.1.0 (/tmp/pr-f1-rebase/crates/physician-client)
+    Checking physician-demo-db v0.1.0 (/tmp/pr-f1-rebase/crates/physician-demo-db)
+    Checking workspace-tools v0.1.0 (/tmp/pr-f1-rebase/crates/workspace-tools)
+    Checking duet-api v0.1.0 (/tmp/pr-f1-rebase/crates/duet-api)
+    Checking duet-stub v0.1.0 (/tmp/pr-f1-rebase/crates/duet-stub)
+    Checking physician-app v0.1.0 (/tmp/pr-f1-rebase/crates/physician-app)
+    Checking extension-popup v0.1.0 (/tmp/pr-f1-rebase/crates/extension-popup)
+    Checking ui-gallery v0.1.0 (/tmp/pr-f1-rebase/crates/ui-gallery)
+    Checking duet-app v0.1.0 (/tmp/pr-f1-rebase/crates/duet-app)
+    Checking mobile v0.1.0 (/tmp/pr-f1-rebase/crates/mobile)
+    Checking physician-sample v0.1.0 (/tmp/pr-f1-rebase/crates/physician-sample)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 57.09s
+    Checking physician-wire v0.1.0 (/tmp/pr-f1-rebase/crates/physician-wire)
+    Checking ui v0.1.0 (/tmp/pr-f1-rebase/crates/ui)
+    Checking coda-http v0.1.0 (/tmp/pr-f1-rebase/crates/http)
+    Checking physician-demo-db v0.1.0 (/tmp/pr-f1-rebase/crates/physician-demo-db)
+    Checking physician-client v0.1.0 (/tmp/pr-f1-rebase/crates/physician-client)
+    Checking physician-app v0.1.0 (/tmp/pr-f1-rebase/crates/physician-app)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 14.97s
