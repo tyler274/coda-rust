@@ -1,0 +1,39 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.34s
+     Running tests/message_review_recipe.rs (target/debug/deps/message_review_recipe-c5ef70214046d803)
+
+running 13 tests
+test live_openai_message_review_smoke ... ignored, requires CODA_ALLOW_MODEL_CALLS=1, live OPENAI_API_KEY, and PHYSICIAN_RUNTIME_TEST_DATABASE_URL
+test recipe_and_reply_revision_guidance_are_clean_and_enforce_tool_boundaries ... ok
+test ac1_linked_message_and_coalesced_result_runs_on_background_lane_with_preloads_and_discoveries ... ok
+test round1_reply_revision_includes_linked_conversation_reconsiders_new_messages_and_records_tool_names ... ok
+test round1_withdrawn_wrong_patient_candidates_excluded_from_message_review_and_reply_revision ... ok
+test round1_failed_or_held_default_review_id_restarts_cleanly_on_retry ... ok
+test ac5_physician_reply_revision_reconsiders_moved_sources_preserves_concurrent_physician_edit_and_fences_tools ... ok
+test ac2_multimodal_photo_paged_pdf_fax_unreadable_limit_and_medication_refresh_discipline ... ok
+test ac4_longitudinal_memory_and_follow_up_updates_carry_into_later_run_preserving_siblings_and_no_change ... ok
+test round1_mid_run_conversation_and_source_updates_keep_product_message_id_and_clear_refused_staged_submission ... ok
+test ac6_already_handled_automatic_vs_real_partial_closures_ask_coda_copy_and_close_orthogonality ... ok
+test ac7_end_to_end_synthetic_spruce_webhook_match_link_review_surfaces_evidence_reopen_and_later_update ... ok
+test ac3_four_clinical_cases_routine_nonurgent_concern_urgent_emergency_and_no_reply ... ok
+
+test result: ok. 12 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 3.59s
+
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on package cache
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.97s
+     Running tests/message_followup_dispatch_reviews.rs (target/debug/deps/message_followup_dispatch_reviews-12e49bcebdf52573)
+
+running 10 tests
+test message_and_follow_up_review_recipe_and_tools_have_clean_model_text ... ok
+test linked_message_and_record_change_coalesce_into_single_review ... ok
+test linked_message_arrival_starts_one_review_with_reason_message ... ok
+test stopped_follow_up_review_remains_held_when_later_patient_inputs_admit_new_review ... ok
+test due_follow_up_starts_one_review_of_current_version_while_held_completed_cancelled_start_none ... ok
+test direct_spruce_receiver_handoff_admits_message_review_without_duplicate_wake_and_classifies_senders ... ok
+test lab_correction_retires_stale_ready_reply_preserving_physician_draft ... ok
+test reply_review_fence_releases_on_quiet_completion_and_preserves_non_patient_wakes_on_supersession ... ok
+test stop_holds_follow_up_review_across_restart_and_worker_replay ... ok
+test end_to_end_sse_dispatch_executes_message_followup_and_combined_reviews_once_and_saves_reply_drafts ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.16s
+

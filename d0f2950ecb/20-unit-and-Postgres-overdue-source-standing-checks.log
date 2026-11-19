@@ -1,0 +1,78 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.33s
+     Running unittests src/lib.rs (target/debug/deps/patient_work-742232d95e232f75)
+
+running 9 tests
+test tests::default_cadence_checks_daily_and_reviews_weekly ... ok
+test tests::review_reason_serializes_exact_wire_labels ... ok
+test tests::failed_check_records_attempt_without_advancing_last_success_or_next_due ... ok
+test tests::unchanged_sources_within_weekly_window_start_no_review ... ok
+test tests::changed_records_queue_one_new_records_review ... ok
+test tests::elapsed_weekly_window_without_changes_queues_one_periodic_review ... ok
+test tests::linked_message_and_record_change_coalesce_into_one_review ... ok
+test tests::due_follow_up_starts_one_review_of_current_version_and_inactive_start_none ... ok
+test tests::linked_message_starts_one_review_with_message_reason ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests patient_work
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.53s
+     Running unittests src/lib.rs (target/debug/deps/local_product-6f36f001022b46cc)
+
+running 4 tests
+test source_status::tests::decide_pull_order_rejects_superseded_tickets_and_pre_reconnect_lapses ... ok
+test source_status::tests::derive_standing_preserves_last_good_read_across_failed_partial_and_lapsed_attempts ... ok
+test source_status::tests::derive_standing_with_schedule_promotes_overdue_fetches_without_age_threshold ... ok
+test source_status::tests::summarize_practice_source_collapses_majority_failures_into_one_outage_without_patient_rows ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 204 filtered out; finished in 0.01s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.30s
+     Running tests/source_status_and_links.rs (target/debug/deps/source_status_and_links-232c570b26f4e05d)
+
+running 16 tests
+test pure_standing_and_outage_rules_cover_partial_failed_lapsed_and_majority_thresholds ... ok
+test partial_and_complete_deliveries_commit_atomically_with_pull_status_and_nullable_pulled_at ... ok
+test partial_pull_reports_missing_candidates_for_empty_succeeded_kinds_without_flagging_failed_kinds ... ok
+test pre_reconnect_lapsed_pull_held_across_practice_access_restore_is_superseded_before_catch_up ... ok
+test failed_partial_and_lapsed_pulls_keep_last_good_read_time_and_reconnect_recovers ... ok
+test source_patient_resolves_to_one_chords_patient_across_pulls_and_refuses_other_practice_writes ... ok
+test overdue_scheduled_fetch_reports_couldn_t_update_standing ... ok
+test practice_report_returns_one_outage_instead_of_patient_rows_when_majority_fails ... ok
+test same_timestamp_practice_check_keeps_third_patient_up_to_date_when_two_colleagues_lapse ... ok
+test late_lapsed_check_held_across_reconnect_command_does_not_overwrite_recovery ... ok
+test initial_onboarding_handles_partial_identity_and_records_initial_failed_or_lapsed_attempts ... ok
+test interrupted_reconnect_before_db_checkpoint_recovers_cached_adapter_receipt_without_second_effect ... ok
+test single_patient_lapsed_access_stays_patient_scoped_and_later_success_recovers_cleanly ... ok
+test older_complete_pulls_held_across_newer_check_and_distinct_key_reconnect_do_not_regress_chart_or_timestamps ... ok
+test reconnect_command_serializes_concurrent_duplicates_recovers_interrupted_check_and_preserves_original_receipt ... ok
+test active_slow_reconnect_and_catch_up_renew_lease_while_superseded_fence_cannot_write ... ok
+
+test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 6.73s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.83s
+     Running unittests src/lib.rs (target/debug/deps/physician_sample-f8fff605cfe6ed57)
+
+running 1 test
+test chart_load::tests::enrollment_error_preserves_sea_orm_source_and_describes_auth_store_failures ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 100 filtered out; finished in 0.01s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.68s
+     Running tests/source_check_and_reconnect.rs (target/debug/deps/source_check_and_reconnect-5f65596b3095769d)
+
+running 7 tests
+test local_proof_mode_endpoint_is_absent_when_local_proof_is_disabled ... ok
+test check_and_reconnect_routes_propagate_enrollment_failures_as_500_and_repair_on_retry ... ok
+test post_connections_reconnect_requires_key_replays_after_500_and_deduplicates_across_instances ... ok
+test newly_linked_pull_less_source_standing_projects_on_identified_workspace_without_enrolling_unidentified ... ok
+test pre_checkpoint_interrupted_reconnect_recovers_original_receipt_across_fresh_synthetic_charts_instance ... ok
+test off_panel_colleague_sees_practice_outage_without_patient_failure_strings_and_reconnect_command_is_idempotent ... ok
+test check_and_reconnect_flow_preserves_last_good_read_and_collapses_practice_outage_over_http ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.69s
+

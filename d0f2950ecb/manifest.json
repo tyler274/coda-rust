@@ -1,0 +1,791 @@
+{
+  "branch": "fix-p2-overdue-standing-and-lab-reply-retirement",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC1",
+      "label": "baseline overdue source reads UpToDate",
+      "kind": "run",
+      "revision": "b8e37e634c329dfab5af4849f9b046045d03aac8",
+      "dirty": true,
+      "recorded": "2026-11-19T12:32:36+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "local-product",
+        "--test",
+        "source_status_and_links",
+        "overdue_scheduled_fetch_reports_couldn_t_update_standing"
+      ],
+      "expect": "overdue scheduled fetch must report",
+      "expect_fail": true,
+      "files": [
+        "01-baseline-overdue-source-reads-UpToDate.log"
+      ],
+      "seconds": 3.2,
+      "exit": 101,
+      "expect_matched": true,
+      "ok": true,
+      "kept": {
+        "revision": "d0f2950ecb0997945d5fa225fb92633d2fdff39c",
+        "reason": "pre-fix failing baselines before fix"
+      }
+    },
+    {
+      "id": 2,
+      "claim": "AC2",
+      "label": "baseline lab correction leaves Ready reply intact",
+      "kind": "run",
+      "revision": "b8e37e634c329dfab5af4849f9b046045d03aac8",
+      "dirty": true,
+      "recorded": "2026-11-19T12:32:39+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "local-product",
+        "--test",
+        "message_followup_dispatch_reviews",
+        "lab_correction_retires_stale_ready_reply_preserving_physician_draft"
+      ],
+      "expect": "correcting cited lab record must automatically retire stale Ready reply",
+      "expect_fail": true,
+      "files": [
+        "02-baseline-lab-correction-leaves-Ready-reply-intac.log"
+      ],
+      "seconds": 3.7,
+      "exit": 101,
+      "expect_matched": true,
+      "ok": true,
+      "kept": {
+        "revision": "d0f2950ecb0997945d5fa225fb92633d2fdff39c",
+        "reason": "pre-fix failing baselines before fix"
+      }
+    },
+    {
+      "id": 3,
+      "claim": "AC3",
+      "label": "baseline ProviderBlocked flattens to Stopped",
+      "kind": "run",
+      "revision": "b8e37e634c329dfab5af4849f9b046045d03aac8",
+      "dirty": true,
+      "recorded": "2026-11-19T12:32:43+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "local-product",
+        "--test",
+        "patient_reviews_postgres",
+        "provider_blocked_hold_preserves_refusal_and_reason_instead_of_stopped"
+      ],
+      "expect": "ProviderBlocked hold must preserve refusal reason",
+      "expect_fail": true,
+      "files": [
+        "03-baseline-ProviderBlocked-flattens-to-Stopped.log"
+      ],
+      "seconds": 2.7,
+      "exit": 101,
+      "expect_matched": true,
+      "ok": true,
+      "kept": {
+        "revision": "d0f2950ecb0997945d5fa225fb92633d2fdff39c",
+        "reason": "pre-fix failing baselines before fix"
+      }
+    },
+    {
+      "id": 4,
+      "claim": "AC4",
+      "label": "baseline 2/3 source failure skips outage",
+      "kind": "run",
+      "revision": "b8e37e634c329dfab5af4849f9b046045d03aac8",
+      "dirty": true,
+      "recorded": "2026-11-19T12:32:46+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "local-product",
+        "--test",
+        "today_updates_postgres",
+        "ac4_majority_source_failure_two_of_three_reports_practice_outage"
+      ],
+      "expect": "2 of 3 patients failing",
+      "expect_fail": true,
+      "files": [
+        "04-baseline-2-3-source-failure-skips-outage.log"
+      ],
+      "seconds": 2.7,
+      "exit": 101,
+      "expect_matched": true,
+      "ok": true,
+      "kept": {
+        "revision": "d0f2950ecb0997945d5fa225fb92633d2fdff39c",
+        "reason": "pre-fix failing baselines before fix"
+      }
+    },
+    {
+      "id": 5,
+      "claim": "AC1",
+      "label": "unit and Postgres overdue source standing checks",
+      "kind": "run",
+      "revision": "3232481e221d6762777eff80f2d5b2eae4b32880",
+      "dirty": false,
+      "recorded": "2026-11-19T13:07:02+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "cargo test -p patient-work && cargo test -p local-product --lib source_status && cargo test -p local-product --test source_status_and_links && cargo test -p physician-sample --test chart_load && cargo test -p physician-sample --test source_check_and_reconnect"
+      ],
+      "expect": "test result: ok\\.",
+      "expect_fail": false,
+      "files": [
+        "05-unit-and-Postgres-overdue-source-standing-checks.log"
+      ],
+      "seconds": 162.4,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true,
+      "superseded": "superseded by ac04be1fe with lab-reply revision guard + site.rs second-patient wait fix"
+    },
+    {
+      "id": 6,
+      "claim": "AC2",
+      "label": "Postgres lab correction retires Ready reply preserving draft",
+      "kind": "run",
+      "revision": "3232481e221d6762777eff80f2d5b2eae4b32880",
+      "dirty": false,
+      "recorded": "2026-11-19T13:09:44+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "local-product",
+        "--test",
+        "message_followup_dispatch_reviews"
+      ],
+      "expect": "10 passed; 0 failed",
+      "expect_fail": false,
+      "files": [
+        "06-Postgres-lab-correction-retires-Ready-reply-pres.log"
+      ],
+      "seconds": 30.5,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true,
+      "superseded": "superseded by ac04be1fe with lab-reply revision guard + site.rs second-patient wait fix"
+    },
+    {
+      "id": 7,
+      "claim": "AC3",
+      "label": "wire unit and Postgres ProviderBlocked hold checks",
+      "kind": "run",
+      "revision": "3232481e221d6762777eff80f2d5b2eae4b32880",
+      "dirty": false,
+      "recorded": "2026-11-19T13:10:15+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "cargo test -p physician-wire && cargo test -p local-product --test patient_reviews_postgres"
+      ],
+      "expect": "test result: ok\\.",
+      "expect_fail": false,
+      "files": [
+        "07-wire-unit-and-Postgres-ProviderBlocked-hold-chec.log"
+      ],
+      "seconds": 33.1,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true,
+      "superseded": "superseded by ac04be1fe with lab-reply revision guard + site.rs second-patient wait fix"
+    },
+    {
+      "id": 8,
+      "claim": "AC4",
+      "label": "Postgres majority outage and physician-app item open copy",
+      "kind": "run",
+      "revision": "3232481e221d6762777eff80f2d5b2eae4b32880",
+      "dirty": false,
+      "recorded": "2026-11-19T13:10:48+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "cargo test -p physician-app && cargo test -p local-product --test today_updates_postgres"
+      ],
+      "expect": "test result: ok\\.",
+      "expect_fail": false,
+      "files": [
+        "08-Postgres-majority-outage-and-physician-app-item-.log"
+      ],
+      "seconds": 50.9,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true,
+      "superseded": "superseded by ac04be1fe with lab-reply revision guard + site.rs second-patient wait fix"
+    },
+    {
+      "id": 9,
+      "claim": "ALL",
+      "label": "boundaries and workspace fmt/clippy pre-commit gates",
+      "kind": "run",
+      "revision": "3232481e221d6762777eff80f2d5b2eae4b32880",
+      "dirty": false,
+      "recorded": "2026-11-19T13:11:39+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "bash .githooks/pre-commit && cargo test -p boundaries"
+      ],
+      "expect": "25 passed; 0 failed",
+      "expect_fail": false,
+      "files": [
+        "09-boundaries-and-workspace-fmt-clippy-pre-commit-g.log"
+      ],
+      "seconds": 91.7,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true,
+      "superseded": "superseded by ac04be1fe with lab-reply revision guard + site.rs second-patient wait fix"
+    },
+    {
+      "id": 10,
+      "claim": "AC4",
+      "label": "Chromium site_today_updates item-open Couldnt load this and retry",
+      "kind": "run",
+      "revision": "3232481e221d6762777eff80f2d5b2eae4b32880",
+      "dirty": false,
+      "recorded": "2026-11-19T13:13:54+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-sample",
+        "--test",
+        "site_today_updates",
+        "ac3_partial_failure_practice_outage_failed_open_retry_and_nothing_needs_you_guard",
+        "--",
+        "--ignored"
+      ],
+      "expect": "1 passed; 0 failed",
+      "expect_fail": false,
+      "files": [
+        "10-Chromium-site_today_updates-item-open-Couldnt-lo.log"
+      ],
+      "seconds": 21.3,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true,
+      "superseded": "superseded by ac04be1fe with lab-reply revision guard + site.rs second-patient wait fix"
+    },
+    {
+      "id": 11,
+      "claim": "ALL",
+      "label": "Chromium physician-sample site suite",
+      "kind": "run",
+      "revision": "3232481e221d6762777eff80f2d5b2eae4b32880",
+      "dirty": false,
+      "recorded": "2026-11-19T13:14:15+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-sample",
+        "--test",
+        "site",
+        "--",
+        "--ignored"
+      ],
+      "expect": "23 passed; 0 failed",
+      "expect_fail": false,
+      "files": [
+        "11-Chromium-physician-sample-site-suite.log"
+      ],
+      "seconds": 193.5,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true,
+      "superseded": "superseded by ac04be1fe with lab-reply revision guard + site.rs second-patient wait fix"
+    },
+    {
+      "id": 12,
+      "claim": "AC1",
+      "label": "unit and Postgres overdue source standing checks",
+      "kind": "run",
+      "revision": "91f5fc9cb720df7f6653f7d0b0c8275f55fa8675",
+      "dirty": false,
+      "recorded": "2026-11-19T14:05:38+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "cargo test -p patient-work && cargo test -p local-product --lib source_status && cargo test -p local-product --test source_status_and_links && cargo test -p physician-sample --lib chart_load && cargo test -p physician-sample --test source_check_and_reconnect"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "12-unit-and-Postgres-overdue-source-standing-checks.log"
+      ],
+      "seconds": 306.7,
+      "exit": 0,
+      "ok": true,
+      "superseded": "superseded by ac04be1fe with lab-reply revision guard + site.rs second-patient wait fix"
+    },
+    {
+      "id": 13,
+      "claim": "AC2",
+      "label": "Postgres lab correction retires Ready reply preserving draft and review recipe ac5/ac7",
+      "kind": "run",
+      "revision": "91f5fc9cb720df7f6653f7d0b0c8275f55fa8675",
+      "dirty": false,
+      "recorded": "2026-11-19T14:10:45+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "cargo test -p local-product --test message_review_recipe && cargo test -p local-product --test message_followup_dispatch_reviews"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "13-Postgres-lab-correction-retires-Ready-reply-pres.log"
+      ],
+      "seconds": 14.1,
+      "exit": 0,
+      "ok": true,
+      "superseded": "superseded by ac04be1fe with lab-reply revision guard + site.rs second-patient wait fix"
+    },
+    {
+      "id": 14,
+      "claim": "AC3",
+      "label": "wire unit and Postgres ProviderBlocked hold checks",
+      "kind": "run",
+      "revision": "91f5fc9cb720df7f6653f7d0b0c8275f55fa8675",
+      "dirty": false,
+      "recorded": "2026-11-19T14:11:00+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "cargo test -p physician-wire && cargo test -p local-product --test patient_reviews_postgres"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "14-wire-unit-and-Postgres-ProviderBlocked-hold-chec.log"
+      ],
+      "seconds": 12.9,
+      "exit": 0,
+      "ok": true,
+      "superseded": "superseded by ac04be1fe with lab-reply revision guard + site.rs second-patient wait fix"
+    },
+    {
+      "id": 15,
+      "claim": "AC4",
+      "label": "Postgres majority outage and physician-app item open copy",
+      "kind": "run",
+      "revision": "91f5fc9cb720df7f6653f7d0b0c8275f55fa8675",
+      "dirty": false,
+      "recorded": "2026-11-19T14:11:13+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "cargo test -p physician-app && cargo test -p local-product --test today_updates_postgres && cargo test -p physician-sample --lib"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "15-Postgres-majority-outage-and-physician-app-item-.log"
+      ],
+      "seconds": 33.4,
+      "exit": 0,
+      "ok": true,
+      "superseded": "superseded by ac04be1fe with lab-reply revision guard + site.rs second-patient wait fix"
+    },
+    {
+      "id": 16,
+      "claim": "ALL",
+      "label": "boundaries and workspace fmt/clippy pre-commit gates",
+      "kind": "run",
+      "revision": "91f5fc9cb720df7f6653f7d0b0c8275f55fa8675",
+      "dirty": false,
+      "recorded": "2026-11-19T14:11:46+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "bash .githooks/pre-commit && cargo test -p boundaries"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "16-boundaries-and-workspace-fmt-clippy-pre-commit-g.log"
+      ],
+      "seconds": 99.9,
+      "exit": 0,
+      "ok": true,
+      "superseded": "superseded by ac04be1fe with lab-reply revision guard + site.rs second-patient wait fix"
+    },
+    {
+      "id": 17,
+      "claim": "AC4",
+      "label": "Chromium site_today_updates item-open Couldnt load this and retry",
+      "kind": "run",
+      "revision": "91f5fc9cb720df7f6653f7d0b0c8275f55fa8675",
+      "dirty": false,
+      "recorded": "2026-11-19T14:13:26+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-sample",
+        "--test",
+        "site_today_updates",
+        "ac3_partial_failure_practice_outage_failed_open_retry_and_nothing_needs_you_guard",
+        "--",
+        "--ignored"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "17-Chromium-site_today_updates-item-open-Couldnt-lo.log"
+      ],
+      "seconds": 77.9,
+      "exit": 0,
+      "ok": true,
+      "superseded": "superseded by ac04be1fe with lab-reply revision guard + site.rs second-patient wait fix"
+    },
+    {
+      "id": 18,
+      "claim": "ALL",
+      "label": "Chromium physician-sample site suite",
+      "kind": "run",
+      "revision": "91f5fc9cb720df7f6653f7d0b0c8275f55fa8675",
+      "dirty": false,
+      "recorded": "2026-11-19T14:14:45+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-sample",
+        "--test",
+        "site",
+        "--",
+        "--ignored"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "18-Chromium-physician-sample-site-suite.log"
+      ],
+      "seconds": 279.0,
+      "exit": 101,
+      "ok": false,
+      "superseded": "superseded by ac04be1fe with lab-reply revision guard + site.rs second-patient wait fix"
+    },
+    {
+      "id": 19,
+      "claim": "ALL",
+      "label": "Chromium physician-sample site suite",
+      "kind": "run",
+      "revision": "91f5fc9cb720df7f6653f7d0b0c8275f55fa8675",
+      "dirty": false,
+      "recorded": "2026-11-19T14:20:17+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-sample",
+        "--test",
+        "site",
+        "--",
+        "--ignored"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "19-Chromium-physician-sample-site-suite.log"
+      ],
+      "seconds": 228.0,
+      "exit": 101,
+      "ok": false,
+      "superseded": "superseded by ac04be1fe with lab-reply revision guard + site.rs second-patient wait fix"
+    },
+    {
+      "id": 20,
+      "claim": "AC1",
+      "label": "unit and Postgres overdue source standing checks",
+      "kind": "run",
+      "revision": "91f5fc9cb720df7f6653f7d0b0c8275f55fa8675",
+      "dirty": true,
+      "recorded": "2026-11-19T14:26:06+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "cargo test -p patient-work && cargo test -p local-product --lib source_status && cargo test -p local-product --test source_status_and_links && cargo test -p physician-sample --lib chart_load && cargo test -p physician-sample --test source_check_and_reconnect"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "20-unit-and-Postgres-overdue-source-standing-checks.log"
+      ],
+      "seconds": 21.5,
+      "exit": 0,
+      "ok": true,
+      "superseded": "superseded by clean committed d0f2950ecb runs"
+    },
+    {
+      "id": 21,
+      "claim": "AC2",
+      "label": "Postgres lab correction retires Ready reply preserving draft and review recipe ac5/ac7",
+      "kind": "run",
+      "revision": "91f5fc9cb720df7f6653f7d0b0c8275f55fa8675",
+      "dirty": true,
+      "recorded": "2026-11-19T14:26:28+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "cargo test -p local-product --test message_review_recipe && cargo test -p local-product --test message_followup_dispatch_reviews"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "21-Postgres-lab-correction-retires-Ready-reply-pres.log"
+      ],
+      "seconds": 12.6,
+      "exit": 0,
+      "ok": true,
+      "superseded": "superseded by clean committed d0f2950ecb runs"
+    },
+    {
+      "id": 22,
+      "claim": "AC3",
+      "label": "wire unit and Postgres ProviderBlocked hold checks",
+      "kind": "run",
+      "revision": "91f5fc9cb720df7f6653f7d0b0c8275f55fa8675",
+      "dirty": true,
+      "recorded": "2026-11-19T14:26:41+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "cargo test -p physician-wire && cargo test -p local-product --test patient_reviews_postgres"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "22-wire-unit-and-Postgres-ProviderBlocked-hold-chec.log"
+      ],
+      "seconds": 7.6,
+      "exit": 0,
+      "ok": true,
+      "superseded": "superseded by clean committed d0f2950ecb runs"
+    },
+    {
+      "id": 23,
+      "claim": "AC4",
+      "label": "Postgres majority outage and physician-app item open copy",
+      "kind": "run",
+      "revision": "91f5fc9cb720df7f6653f7d0b0c8275f55fa8675",
+      "dirty": true,
+      "recorded": "2026-11-19T14:26:49+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "cargo test -p physician-app && cargo test -p local-product --test today_updates_postgres && cargo test -p physician-sample --lib"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "23-Postgres-majority-outage-and-physician-app-item-.log"
+      ],
+      "seconds": 11.6,
+      "exit": 0,
+      "ok": true,
+      "superseded": "superseded by clean committed d0f2950ecb runs"
+    },
+    {
+      "id": 24,
+      "claim": "ALL",
+      "label": "boundaries and workspace fmt/clippy pre-commit gates",
+      "kind": "run",
+      "revision": "91f5fc9cb720df7f6653f7d0b0c8275f55fa8675",
+      "dirty": true,
+      "recorded": "2026-11-19T14:27:00+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "bash .githooks/pre-commit && cargo test -p boundaries"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "24-boundaries-and-workspace-fmt-clippy-pre-commit-g.log"
+      ],
+      "seconds": 86.9,
+      "exit": 0,
+      "ok": true,
+      "superseded": "superseded by clean committed d0f2950ecb runs"
+    },
+    {
+      "id": 25,
+      "claim": "AC4",
+      "label": "Chromium site_today_updates item-open Couldnt load this and retry",
+      "kind": "run",
+      "revision": "d0f2950ecb0997945d5fa225fb92633d2fdff39c",
+      "dirty": false,
+      "recorded": "2026-11-19T14:28:28+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-sample",
+        "--test",
+        "site_today_updates",
+        "ac3_partial_failure_practice_outage_failed_open_retry_and_nothing_needs_you_guard",
+        "--",
+        "--ignored"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "25-Chromium-site_today_updates-item-open-Couldnt-lo.log"
+      ],
+      "seconds": 24.1,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 26,
+      "claim": "ALL",
+      "label": "Chromium physician-sample site suite",
+      "kind": "run",
+      "revision": "d0f2950ecb0997945d5fa225fb92633d2fdff39c",
+      "dirty": false,
+      "recorded": "2026-11-19T14:28:52+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-sample",
+        "--test",
+        "site",
+        "--",
+        "--ignored"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "26-Chromium-physician-sample-site-suite.log"
+      ],
+      "seconds": 266.3,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 27,
+      "claim": "AC1",
+      "label": "unit and Postgres overdue source standing checks",
+      "kind": "run",
+      "revision": "d0f2950ecb0997945d5fa225fb92633d2fdff39c",
+      "dirty": false,
+      "recorded": "2026-11-19T14:34:06+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "cargo test -p patient-work && cargo test -p local-product --lib source_status && cargo test -p local-product --test source_status_and_links && cargo test -p physician-sample --lib chart_load && cargo test -p physician-sample --test source_check_and_reconnect"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "27-unit-and-Postgres-overdue-source-standing-checks.log"
+      ],
+      "seconds": 23.3,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 28,
+      "claim": "AC2",
+      "label": "Postgres lab correction retires Ready reply preserving draft and review recipe ac5/ac7",
+      "kind": "run",
+      "revision": "d0f2950ecb0997945d5fa225fb92633d2fdff39c",
+      "dirty": false,
+      "recorded": "2026-11-19T14:34:29+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "cargo test -p local-product --test message_review_recipe && cargo test -p local-product --test message_followup_dispatch_reviews"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "28-Postgres-lab-correction-retires-Ready-reply-pres.log"
+      ],
+      "seconds": 12.8,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 29,
+      "claim": "AC3",
+      "label": "wire unit and Postgres ProviderBlocked hold checks",
+      "kind": "run",
+      "revision": "d0f2950ecb0997945d5fa225fb92633d2fdff39c",
+      "dirty": false,
+      "recorded": "2026-11-19T14:34:42+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "cargo test -p physician-wire && cargo test -p local-product --test patient_reviews_postgres"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "29-wire-unit-and-Postgres-ProviderBlocked-hold-chec.log"
+      ],
+      "seconds": 7.3,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 30,
+      "claim": "AC4",
+      "label": "Postgres majority outage and physician-app item open copy",
+      "kind": "run",
+      "revision": "d0f2950ecb0997945d5fa225fb92633d2fdff39c",
+      "dirty": false,
+      "recorded": "2026-11-19T14:34:50+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "cargo test -p physician-app && cargo test -p local-product --test today_updates_postgres && cargo test -p physician-sample --lib"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "30-Postgres-majority-outage-and-physician-app-item-.log"
+      ],
+      "seconds": 10.9,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 31,
+      "claim": "ALL",
+      "label": "boundaries and workspace fmt/clippy pre-commit gates",
+      "kind": "run",
+      "revision": "d0f2950ecb0997945d5fa225fb92633d2fdff39c",
+      "dirty": false,
+      "recorded": "2026-11-19T14:35:01+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "bash .githooks/pre-commit && cargo test -p boundaries"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "31-boundaries-and-workspace-fmt-clippy-pre-commit-g.log"
+      ],
+      "seconds": 81.2,
+      "exit": 0,
+      "ok": true
+    }
+  ]
+}
