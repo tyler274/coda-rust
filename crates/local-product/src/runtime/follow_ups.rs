@@ -7,14 +7,16 @@
 //! and appends a single change record to `physician_runtime_follow_up_updates`.
 
 use super::concerns::{ExactRecordReference, SourceWork, WorkspaceAccess};
-use super::{Authority, Scope, Store, conversion_error, error, now, receipt};
+use super::entities::command;
+use super::{Authority, Scope, Store, conversion_error, error, now, persistence_failure, receipt};
+use harness::engine::{self, Invocation, Tool, ToolOutcome};
 use sea_orm::{
     ActiveModelTrait, ColumnTrait, ConnectionTrait, DatabaseTransaction, DbErr, EntityTrait,
     QueryFilter, QueryOrder, QuerySelect, Set, TransactionTrait, Unchanged,
 };
 use serde::{Deserialize, Serialize};
-use serde_json::json;
-use std::collections::BTreeMap;
+use serde_json::{Value, json};
+use std::collections::{BTreeMap, BTreeSet};
 use std::fmt;
 
 pub(super) mod follow_up_entity {
@@ -745,6 +747,21 @@ impl FollowUpUpdateKind {
             Self::WithdrawnWrongPatient => "withdrawn_wrong_patient",
         }
     }
+
+    fn parse(raw: &str) -> Result<Self, DbErr> {
+        match raw {
+            "created" => Ok(Self::Created),
+            "changed" => Ok(Self::Changed),
+            "stopped" => Ok(Self::Stopped),
+            "resumed" => Ok(Self::Resumed),
+            "review_requested_now" => Ok(Self::ReviewRequestedNow),
+            "marked_cannot_restart" => Ok(Self::MarkedCannotRestart),
+            "completed" => Ok(Self::Completed),
+            "cancelled" => Ok(Self::Cancelled),
+            "withdrawn_wrong_patient" => Ok(Self::WithdrawnWrongPatient),
+            other => Err(error(&format!("corrupt follow-up update kind `{other}`"))),
+        }
+    }
 }
 
 /// One append-only `Updates` change record emitted per follow-up mutation.
@@ -910,6 +927,176 @@ pub enum FollowUpReviewOutcome {
     },
 }
 
+/// Injectable commit probe allowing tests to simulate a database commit failure
+/// and verify that [`FOLLOW_UP_TOOL`] reports failure unless the change is durably saved.
+pub trait FollowUpCommitProbe: Send + Sync {
+    /// Invoked immediately before `tx.commit().await` in [`Store::execute_follow_up_tool_with_probe`].
+    fn before_commit(&self) -> Result<(), DbErr> {
+        Ok(())
+    }
+}
+
+/// Default production commit probe performing no fault injection.
+#[derive(Clone, Copy, Debug, Default)]
+pub struct NoopFollowUpCommitProbe;
+
+impl FollowUpCommitProbe for NoopFollowUpCommitProbe {}
+
+/// Parsed call to [`FOLLOW_UP_TOOL`], discriminated by `operation`.
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(tag = "operation", rename_all = "snake_case", deny_unknown_fields)]
+pub enum FollowUpToolCall {
+    /// Create a new follow-up in this patient workspace.
+    Create {
+        /// Follow-up identifier.
+        follow_up_id: FollowUpId,
+        /// Clinical statement of what to watch for.
+        summary: FollowUpSummary,
+        /// Scheduled review Unix timestamp (`> 0`).
+        due_at: i64,
+        /// Exact chart record revisions supporting the follow-up.
+        #[serde(default)]
+        records: Vec<ExactRecordReference>,
+    },
+    /// Revise an open follow-up's summary, due timestamp, or cited records.
+    Change {
+        /// Follow-up identifier.
+        follow_up_id: FollowUpId,
+        /// Updated clinical statement.
+        summary: FollowUpSummary,
+        /// Updated review Unix timestamp (`> 0`).
+        due_at: i64,
+        /// Updated exact chart record revisions.
+        #[serde(default)]
+        records: Vec<ExactRecordReference>,
+        /// Single-line explanation for Updates.
+        note: FollowUpChangeNote,
+    },
+    /// Complete an open follow-up when new clinical evidence resolves it.
+    Complete {
+        /// Follow-up identifier.
+        follow_up_id: FollowUpId,
+        /// Single-line resolution note for Updates.
+        resolution: FollowUpChangeNote,
+    },
+    /// Cancel an open follow-up that is no longer clinically needed.
+    Cancel {
+        /// Follow-up identifier.
+        follow_up_id: FollowUpId,
+        /// Single-line cancellation reason for Updates.
+        reason: FollowUpChangeNote,
+    },
+}
+
+impl FollowUpToolCall {
+    /// Parses and validates tool arguments before touching Postgres.
+    pub fn parse(name: &str, arguments: &Value) -> Result<Self, FollowUpInputError> {
+        if !is_follow_up_tool(name) {
+            return Err(FollowUpInputError::UnknownTool(name.to_owned()));
+        }
+        let call: Self = serde_json::from_value(arguments.clone())
+            .map_err(FollowUpInputError::MalformedArguments)?;
+        match &call {
+            Self::Create {
+                due_at, records, ..
+            }
+            | Self::Change {
+                due_at, records, ..
+            } => {
+                if *due_at <= 0 {
+                    return Err(FollowUpInputError::InvalidDueAt);
+                }
+                normalize_records(records)?;
+            }
+            Self::Complete { .. } | Self::Cancel { .. } => {}
+        }
+        Ok(call)
+    }
+
+    fn target_id(&self) -> &FollowUpId {
+        match self {
+            Self::Create { follow_up_id, .. }
+            | Self::Change { follow_up_id, .. }
+            | Self::Complete { follow_up_id, .. }
+            | Self::Cancel { follow_up_id, .. } => follow_up_id,
+        }
+    }
+}
+
+/// Tool schema offered to background review and chat jobs for managing follow-ups.
+pub fn follow_up_tool() -> Tool {
+    let record_ref = json!({
+        "type": "object",
+        "properties": {
+            "candidate_id": { "type": "string" },
+            "revision": { "type": "string" }
+        },
+        "required": ["candidate_id", "revision"],
+        "additionalProperties": false
+    });
+    Tool {
+        name: FOLLOW_UP_TOOL.into(),
+        description: "Create, revise, complete, or cancel a clinical follow-up for this patient workspace. Supply `due_at` as a positive Unix timestamp when creating or revising, and cite exact `candidate_id` and `revision` pairs for supporting chart records read in this workspace. Completed or cancelled follow-ups are terminal and never reopen.".into(),
+        parameters: json!({
+            "anyOf": [
+                {
+                    "type": "object",
+                    "properties": {
+                        "operation": { "type": "string", "enum": ["create"] },
+                        "follow_up_id": { "type": "string" },
+                        "summary": { "type": "string" },
+                        "due_at": { "type": "integer", "minimum": 1 },
+                        "records": {
+                            "type": "array",
+                            "items": record_ref,
+                            "maxItems": MAX_FOLLOW_UP_RECORDS
+                        }
+                    },
+                    "required": ["operation", "follow_up_id", "summary", "due_at"],
+                    "additionalProperties": false
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "operation": { "type": "string", "enum": ["change"] },
+                        "follow_up_id": { "type": "string" },
+                        "summary": { "type": "string" },
+                        "due_at": { "type": "integer", "minimum": 1 },
+                        "records": {
+                            "type": "array",
+                            "items": record_ref,
+                            "maxItems": MAX_FOLLOW_UP_RECORDS
+                        },
+                        "note": { "type": "string" }
+                    },
+                    "required": ["operation", "follow_up_id", "summary", "due_at", "note"],
+                    "additionalProperties": false
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "operation": { "type": "string", "enum": ["complete"] },
+                        "follow_up_id": { "type": "string" },
+                        "resolution": { "type": "string" }
+                    },
+                    "required": ["operation", "follow_up_id", "resolution"],
+                    "additionalProperties": false
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "operation": { "type": "string", "enum": ["cancel"] },
+                        "follow_up_id": { "type": "string" },
+                        "reason": { "type": "string" }
+                    },
+                    "required": ["operation", "follow_up_id", "reason"],
+                    "additionalProperties": false
+                }
+            ]
+        }),
+    }
+}
+
 fn normalize_records(
     records: &[ExactRecordReference],
 ) -> Result<Vec<ExactRecordReference>, FollowUpInputError> {
@@ -998,6 +1185,36 @@ fn decode_follow_up(row: follow_up_entity::Model) -> Result<FollowUp, DbErr> {
     })
 }
 
+fn decode_follow_up_update(
+    row: follow_up_update_entity::Model,
+) -> Result<FollowUpUpdateEntry, DbErr> {
+    let follow_up_id = FollowUpId::new(row.follow_up_id)
+        .map_err(conversion_error("stored update follow_up_id", "FollowUpId"))?;
+    let version =
+        u64::try_from(row.version).map_err(conversion_error("stored update version", "u64"))?;
+    let kind = FollowUpUpdateKind::parse(&row.kind)?;
+    let summary = FollowUpSummary::new(row.summary)
+        .map_err(conversion_error("stored update summary", "FollowUpSummary"))?;
+    let actor: FollowUpActor = serde_json::from_value(row.actor)
+        .map_err(conversion_error("stored update actor", "FollowUpActor"))?;
+    let records: Vec<ExactRecordReference> = serde_json::from_value(row.records).map_err(
+        conversion_error("stored update records", "ExactRecordReference"),
+    )?;
+    Ok(FollowUpUpdateEntry {
+        practice: row.practice,
+        workspace: row.workspace,
+        follow_up_id,
+        version,
+        kind,
+        summary,
+        detail: row.detail,
+        due_at: row.due_at,
+        actor,
+        records,
+        occurred_at: row.occurred_at,
+    })
+}
+
 async fn load_follow_up(
     tx: &impl ConnectionTrait,
     practice: &str,
@@ -1082,6 +1299,17 @@ async fn verify_physician_access(
     }
     Ok(scope)
 }
+
+fn tool_command_key(
+    work_id: &str,
+    call_id: &str,
+) -> Result<FollowUpCommandKey, FollowUpInputError> {
+    FollowUpCommandKey::new(format!("{}:{}", work_id.trim(), call_id.trim()))
+}
+
+// ============================================================================
+// Wrong-Patient Source Withdrawal Coordinator & Single Fence Owner
+// ============================================================================
 
 /// Single rule owner checking whether a candidate write to durable memory,
 /// patient understanding, concerns, or follow-ups violates a wrong-patient
@@ -2165,5 +2393,423 @@ impl Store {
         };
         tx.commit().await?;
         Ok(result)
+    }
+
+    /// Executes [`FOLLOW_UP_TOOL`] for a Coda background job or chat run, reporting
+    /// success ONLY after the Postgres transaction commits durably.
+    pub async fn execute_follow_up_tool(
+        &self,
+        practice: &str,
+        workspace: &str,
+        source_work: &SourceWork,
+        call: &Invocation<Value>,
+    ) -> Result<ToolOutcome, engine::ProductError> {
+        self.execute_follow_up_tool_with_probe(
+            practice,
+            workspace,
+            source_work,
+            call,
+            &NoopFollowUpCommitProbe,
+        )
+        .await
+    }
+
+    /// Executes [`FOLLOW_UP_TOOL`] with an explicit [`FollowUpCommitProbe`], committing
+    /// the database transaction before constructing [`ToolOutcome::Returned`].
+    pub async fn execute_follow_up_tool_with_probe(
+        &self,
+        practice: &str,
+        workspace: &str,
+        source_work: &SourceWork,
+        call: &Invocation<Value>,
+        probe: &dyn FollowUpCommitProbe,
+    ) -> Result<ToolOutcome, engine::ProductError> {
+        let parsed = match FollowUpToolCall::parse(&call.name, &call.arguments) {
+            Ok(parsed) => parsed,
+            Err(reason) => return Ok(ToolOutcome::refused(reason.to_string())),
+        };
+        let validated_work = match source_work.clone().validate() {
+            Ok(work) => work,
+            Err(reason) => return Err(reason.to_string().into()),
+        };
+        let command_key = match tool_command_key(&validated_work.work_id, &call.id) {
+            Ok(key) => key,
+            Err(reason) => return Err(reason.to_string().into()),
+        };
+        let actor = FollowUpActor::CodaWork {
+            source_work: validated_work,
+        };
+
+        let tx = self.db.begin().await.map_err(persistence_failure)?;
+        let mutation = match parsed {
+            FollowUpToolCall::Create {
+                follow_up_id,
+                summary,
+                due_at,
+                records,
+            } => {
+                create_follow_up_in_tx(
+                    &tx,
+                    &command_key,
+                    &CreateFollowUp {
+                        practice: practice.to_owned(),
+                        workspace: workspace.to_owned(),
+                        id: follow_up_id,
+                        summary,
+                        due_at,
+                        records,
+                        actor,
+                    },
+                )
+                .await
+            }
+            FollowUpToolCall::Change {
+                follow_up_id,
+                summary,
+                due_at,
+                records,
+                note,
+            } => {
+                change_follow_up_in_tx(
+                    &tx,
+                    &command_key,
+                    &ChangeFollowUp {
+                        practice: practice.to_owned(),
+                        workspace: workspace.to_owned(),
+                        id: follow_up_id,
+                        summary,
+                        due_at,
+                        records,
+                        note,
+                        actor,
+                    },
+                )
+                .await
+            }
+            FollowUpToolCall::Complete {
+                follow_up_id,
+                resolution,
+            } => {
+                transition_follow_up_in_tx(
+                    &tx,
+                    practice,
+                    workspace,
+                    &command_key,
+                    &follow_up_id,
+                    &actor,
+                    TransitionSpec::Complete { resolution },
+                )
+                .await
+            }
+            FollowUpToolCall::Cancel {
+                follow_up_id,
+                reason,
+            } => {
+                transition_follow_up_in_tx(
+                    &tx,
+                    practice,
+                    workspace,
+                    &command_key,
+                    &follow_up_id,
+                    &actor,
+                    TransitionSpec::Cancel { reason },
+                )
+                .await
+            }
+        };
+
+        let mutation = match mutation {
+            Ok(mutation) => mutation,
+            Err(
+                cause @ (FollowUpError::InvalidInput(_)
+                | FollowUpError::AlreadyExists { .. }
+                | FollowUpError::NotFound { .. }
+                | FollowUpError::Terminal { .. }
+                | FollowUpError::InvalidTransition { .. }
+                | FollowUpError::UnverifiedRecord { .. }
+                | FollowUpError::IdempotencyCollision { .. }
+                | FollowUpError::WithdrawnFence(_)),
+            ) => {
+                tx.rollback().await.map_err(persistence_failure)?;
+                return Ok(ToolOutcome::refused(cause.to_string()));
+            }
+            Err(FollowUpError::AccessDenied { reason }) => {
+                tx.rollback().await.map_err(persistence_failure)?;
+                return Err(reason.into());
+            }
+            Err(FollowUpError::Database(db_err)) => {
+                let _ = tx.rollback().await;
+                return Err(persistence_failure(db_err));
+            }
+        };
+
+        if let Err(probe_err) = probe.before_commit() {
+            let _ = tx.rollback().await;
+            return Err(persistence_failure(probe_err));
+        }
+
+        // Durability invariant: commit MUST succeed before reporting success to the model.
+        tx.commit().await.map_err(persistence_failure)?;
+
+        Ok(match mutation {
+            FollowUpMutation::Applied(follow_up) => ToolOutcome::Returned(
+                json!({
+                    "outcome": "applied",
+                    "saved": true,
+                    "follow_up": follow_up,
+                })
+                .to_string(),
+            ),
+            FollowUpMutation::Duplicate(follow_up) => ToolOutcome::Returned(
+                json!({
+                    "outcome": "duplicate",
+                    "saved": true,
+                    "follow_up": follow_up,
+                })
+                .to_string(),
+            ),
+        })
+    }
+
+    /// Reconciles an already-committed [`FOLLOW_UP_TOOL`] receipt read-only when an
+    /// attempt was interrupted after `ToolStarted` and before `ToolReturned`.
+    pub async fn saved_follow_up_tool_outcome(
+        &self,
+        practice: &str,
+        workspace: &str,
+        work_id: &str,
+        call: &Invocation,
+    ) -> Result<Option<ToolOutcome>, engine::ProductError> {
+        if !is_follow_up_tool(&call.name) {
+            return Ok(None);
+        }
+        let Ok(arguments) = serde_json::from_str::<Value>(&call.arguments) else {
+            return Ok(None);
+        };
+        let Ok(parsed) = FollowUpToolCall::parse(&call.name, &arguments) else {
+            return Ok(None);
+        };
+        let Ok(command_key) = tool_command_key(work_id, &call.id) else {
+            return Ok(None);
+        };
+        let receipt_row = command::Entity::find_by_id((
+            practice.trim().to_owned(),
+            FOLLOW_UP_RECEIPT_ACTOR.to_owned(),
+            command_key.as_str().to_owned(),
+        ))
+        .one(&self.db)
+        .await
+        .map_err(persistence_failure)?;
+        if receipt_row.is_none() {
+            return Ok(None);
+        }
+        match check_withdrawal_fence_in_tx(
+            &self.db,
+            practice.trim(),
+            workspace.trim(),
+            &[],
+            None,
+            Some(work_id.trim()),
+        )
+        .await
+        {
+            Ok(()) => {}
+            Err(WithdrawalFenceCheckError::Violation(violation)) => {
+                return Ok(Some(ToolOutcome::refused(violation.to_string())));
+            }
+            Err(WithdrawalFenceCheckError::Database(db_err)) => {
+                return Err(persistence_failure(db_err));
+            }
+        }
+        let Some(follow_up) = load_follow_up(
+            &self.db,
+            practice.trim(),
+            workspace.trim(),
+            parsed.target_id(),
+        )
+        .await
+        .map_err(persistence_failure)?
+        else {
+            return Ok(None);
+        };
+        match ensure_not_withdrawn_follow_up(
+            &self.db,
+            practice.trim(),
+            workspace.trim(),
+            &follow_up,
+        )
+        .await
+        {
+            Ok(()) => {}
+            Err(FollowUpError::WithdrawnFence(violation)) => {
+                return Ok(Some(ToolOutcome::refused(violation.to_string())));
+            }
+            Err(FollowUpError::Database(db_err)) => return Err(persistence_failure(db_err)),
+            Err(other) => return Ok(Some(ToolOutcome::refused(other.to_string()))),
+        }
+        Ok(Some(ToolOutcome::Returned(
+            json!({
+                "outcome": "duplicate",
+                "saved": true,
+                "follow_up": follow_up,
+            })
+            .to_string(),
+        )))
+    }
+
+    /// Reads all clinical follow-ups in `(practice, workspace)` for an authorized
+    /// physician, excluding items held back as wrong-patient entries.
+    pub async fn physician_follow_ups(
+        &self,
+        access: &WorkspaceAccess<'_>,
+        authority: &mut dyn Authority,
+    ) -> Result<Vec<FollowUp>, FollowUpError> {
+        let tx = self.db.begin().await?;
+        let scope = match verify_physician_access(&tx, access, authority, false).await {
+            Ok(scope) => scope,
+            Err(err) => {
+                tx.rollback().await?;
+                return Err(err);
+            }
+        };
+        let rows = follow_up_entity::Entity::find()
+            .filter(follow_up_entity::Column::Practice.eq(&scope.practice))
+            .filter(follow_up_entity::Column::Workspace.eq(&scope.workspace))
+            .filter(follow_up_entity::Column::Status.ne("withdrawn_wrong_patient"))
+            .order_by_asc(follow_up_entity::Column::DueAt)
+            .order_by_asc(follow_up_entity::Column::Id)
+            .all(&tx)
+            .await?;
+        tx.commit().await?;
+        let mut out = Vec::with_capacity(rows.len());
+        for row in rows {
+            let item = decode_follow_up(row)?;
+            if !matches!(
+                item.standing,
+                FollowUpStanding::WithdrawnWrongPatient { .. }
+            ) {
+                out.push(item);
+            }
+        }
+        Ok(out)
+    }
+
+    /// Reads all follow-ups in `(practice, workspace)` whose current version is due
+    /// for review at `clinical_now` (`Scheduled { due_at <= clinical_now }` or `DueNow`).
+    /// Excludes `Held`, `CannotRestart`, `Completed`, `Cancelled`, and `WithdrawnWrongPatient`.
+    pub async fn due_follow_ups(
+        &self,
+        practice: &str,
+        workspace: &str,
+        clinical_now: i64,
+    ) -> Result<Vec<FollowUp>, FollowUpError> {
+        let practice = validate_non_empty_field("practice", practice)?;
+        let workspace = validate_non_empty_field("workspace", workspace)?;
+        let rows = follow_up_entity::Entity::find()
+            .filter(follow_up_entity::Column::Practice.eq(practice))
+            .filter(follow_up_entity::Column::Workspace.eq(workspace))
+            .filter(follow_up_entity::Column::Status.eq("active"))
+            .order_by_asc(follow_up_entity::Column::DueAt)
+            .order_by_asc(follow_up_entity::Column::Id)
+            .all(&self.db)
+            .await?;
+        let mut due = Vec::new();
+        for row in rows {
+            let item = decode_follow_up(row)?;
+            if item.standing.is_due_at(clinical_now) {
+                due.push(item);
+            }
+        }
+        Ok(due)
+    }
+
+    /// Reads the physician-facing follow-up `Updates` change log for `(practice, workspace)`
+    /// in ascending `(occurred_at, follow_up_id, version)` order after verifying physician access,
+    /// excluding all change entries belonging to wrong-patient withdrawn follow-ups.
+    pub async fn physician_follow_up_updates(
+        &self,
+        access: &WorkspaceAccess<'_>,
+        authority: &mut dyn Authority,
+    ) -> Result<Vec<FollowUpUpdateEntry>, FollowUpError> {
+        let tx = self.db.begin().await?;
+        let scope = match verify_physician_access(&tx, access, authority, false).await {
+            Ok(scope) => scope,
+            Err(err) => {
+                tx.rollback().await?;
+                return Err(err);
+            }
+        };
+        let withdrawn_rows = follow_up_entity::Entity::find()
+            .filter(follow_up_entity::Column::Practice.eq(&scope.practice))
+            .filter(follow_up_entity::Column::Workspace.eq(&scope.workspace))
+            .filter(follow_up_entity::Column::Status.eq("withdrawn_wrong_patient"))
+            .all(&tx)
+            .await?;
+        let withdrawn_ids: BTreeSet<String> = withdrawn_rows.into_iter().map(|r| r.id).collect();
+        let rows = follow_up_update_entity::Entity::find()
+            .filter(follow_up_update_entity::Column::Practice.eq(&scope.practice))
+            .filter(follow_up_update_entity::Column::Workspace.eq(&scope.workspace))
+            .order_by_asc(follow_up_update_entity::Column::OccurredAt)
+            .order_by_asc(follow_up_update_entity::Column::FollowUpId)
+            .order_by_asc(follow_up_update_entity::Column::Version)
+            .all(&tx)
+            .await?;
+        tx.commit().await?;
+        let mut out = Vec::with_capacity(rows.len());
+        for row in rows {
+            if withdrawn_ids.contains(&row.follow_up_id) {
+                continue;
+            }
+            let entry = decode_follow_up_update(row)?;
+            if entry.kind == FollowUpUpdateKind::WithdrawnWrongPatient {
+                continue;
+            }
+            out.push(entry);
+        }
+        Ok(out)
+    }
+
+    /// Reads the full append-only follow-up `Updates` audit log for `(practice, workspace)`,
+    /// including wrong-patient withdrawal entries retained for compliance audit.
+    pub async fn workspace_follow_up_updates_audit(
+        &self,
+        practice: &str,
+        workspace: &str,
+    ) -> Result<Vec<FollowUpUpdateEntry>, FollowUpError> {
+        let practice = validate_non_empty_field("practice", practice)?;
+        let workspace = validate_non_empty_field("workspace", workspace)?;
+        let rows = follow_up_update_entity::Entity::find()
+            .filter(follow_up_update_entity::Column::Practice.eq(practice))
+            .filter(follow_up_update_entity::Column::Workspace.eq(workspace))
+            .order_by_asc(follow_up_update_entity::Column::OccurredAt)
+            .order_by_asc(follow_up_update_entity::Column::FollowUpId)
+            .order_by_asc(follow_up_update_entity::Column::Version)
+            .all(&self.db)
+            .await?;
+        rows.into_iter()
+            .map(decode_follow_up_update)
+            .collect::<Result<Vec<_>, _>>()
+            .map_err(Into::into)
+    }
+
+    /// Reads all follow-ups in `(practice, workspace)` for internal Coda jobs and audit.
+    pub async fn workspace_follow_ups(
+        &self,
+        practice: &str,
+        workspace: &str,
+    ) -> Result<Vec<FollowUp>, FollowUpError> {
+        let practice = validate_non_empty_field("practice", practice)?;
+        let workspace = validate_non_empty_field("workspace", workspace)?;
+        let rows = follow_up_entity::Entity::find()
+            .filter(follow_up_entity::Column::Practice.eq(practice))
+            .filter(follow_up_entity::Column::Workspace.eq(workspace))
+            .order_by_asc(follow_up_entity::Column::CreatedAt)
+            .order_by_asc(follow_up_entity::Column::Id)
+            .all(&self.db)
+            .await?;
+        rows.into_iter()
+            .map(decode_follow_up)
+            .collect::<Result<Vec<_>, _>>()
+            .map_err(Into::into)
     }
 }

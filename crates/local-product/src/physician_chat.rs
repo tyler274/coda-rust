@@ -156,10 +156,11 @@ of multi-page PDFs, faxes or chart scans with read_document_page. When source cu
 could change clinical judgment or a source pull is stale, call refresh_patient_sources before concluding. \
 When read chart revisions establish, update or resolve an urgent (`now`) or same-day (`today`) clinical \
 concern, record that change with patient_concern grounded in the exact candidate_id and revision values \
-opened in this turn. If chart records are added, corrected or withdrawn before your reply finishes and your \
+opened in this turn. When clinical judgment or physician direction establishes, updates, completes or cancels \
+a dated follow-up item to watch for, record that change with patient_follow_up. If chart records are added, corrected or withdrawn before your reply finishes and your \
 finish is refused with an arrival note, judge whether any added records affect the question, call \
 read_patient_sources on every corrected or withdrawn record you relied on, update any affected memory or \
-concern, and then give your complete updated answer. If any read, refresh, memory or concern call fails or \
+concern, and then give your complete updated answer. If any read, refresh, memory, concern or follow-up call fails or \
 is refused, never treat or describe it as saved.
 
 Name missing, unreadable and unavailable evidence distinctly: `missing` when an expected or requested \
@@ -263,6 +264,7 @@ pub fn tools() -> Vec<Tool> {
     offered.push(crate::runtime::chat_operations::refresh_sources_tool());
     offered.push(crate::runtime::chat_operations::retrieve_patient_work_tool());
     offered.push(crate::runtime::concerns::concern_tool());
+    offered.push(crate::runtime::follow_ups::follow_up_tool());
     offered.extend(crate::initial_understanding::understanding_tools());
     offered.extend(crate::clinical_library::tools());
     offered.push(citations::finish_tool());
@@ -382,6 +384,7 @@ impl ChatTool {
             | crate::runtime::chat_operations::REFRESH_SOURCES_TOOL
             | crate::runtime::chat_operations::RETRIEVE_PATIENT_WORK_TOOL
             | crate::runtime::concerns::CONCERN_TOOL
+            | crate::runtime::follow_ups::FOLLOW_UP_TOOL
             | crate::initial_understanding::READ_UNDERSTANDING_TOOL
             | crate::initial_understanding::SAVE_UNDERSTANDING_TOOL => Some(Self::PatientWorkspace),
             history::LIST | history::READ | history::SEARCH => Some(Self::Conversation),
@@ -966,6 +969,7 @@ mod tests {
             crate::clinical_library::SEARCH_LIBRARY_TOOL,
             crate::clinical_library::READ_LIBRARY_TOOL,
             crate::attachments::READ_DOCUMENT_PAGE_TOOL,
+            crate::runtime::follow_ups::FOLLOW_UP_TOOL,
             citations::FINISH_TOOL,
             "save_working_note",
             "read_tool_result",

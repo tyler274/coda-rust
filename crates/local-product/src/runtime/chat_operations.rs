@@ -1597,6 +1597,29 @@ impl Store {
                 .await;
         }
 
+        if super::follow_ups::is_follow_up_tool(&call.name) {
+            let attempt = state
+                .attempts
+                .iter()
+                .find(|attempt| attempt.id == claim.attempt)
+                .ok_or("missing hosted attempt")?;
+            let source_work = SourceWork::new("physician_chat", &attempt.work, &claim.attempt)
+                .map_err(|cause| cause.to_string())?;
+            let invocation = Invocation {
+                id: call.id.clone(),
+                name: call.name.clone(),
+                arguments,
+            };
+            return self
+                .execute_follow_up_tool(
+                    &claim.scope.practice,
+                    &claim.scope.workspace,
+                    &source_work,
+                    &invocation,
+                )
+                .await;
+        }
+
         if crate::attachments::is_document_page_tool(&call.name) {
             return self
                 .execute_document_page_tool(
@@ -1885,6 +1908,17 @@ impl Store {
         if super::concerns::is_concern_tool(&call.name) {
             return self
                 .saved_concern_tool_outcome(
+                    &claim.scope.practice,
+                    &claim.scope.workspace,
+                    &attempt.work,
+                    call,
+                )
+                .await;
+        }
+
+        if super::follow_ups::is_follow_up_tool(&call.name) {
+            return self
+                .saved_follow_up_tool_outcome(
                     &claim.scope.practice,
                     &claim.scope.workspace,
                     &attempt.work,

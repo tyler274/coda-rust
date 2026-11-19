@@ -672,6 +672,7 @@ pub fn recipe(
     }
     let mut offered = tools();
     offered.push(super::concerns::concern_tool());
+    offered.push(super::follow_ups::follow_up_tool());
     let mut built = RequestRecipe {
         model: background.model.clone(),
         context_window_tokens: background.context_window_tokens,
@@ -1993,18 +1994,20 @@ impl Product for PracticeJobHost<'_> {
         let is_visit_prep = crate::visit_preparation::is_visit_preparation_tool(&call.name);
         let is_refresh = super::refresh::is_refresh_tool(&call.name);
         let is_concern = super::concerns::is_concern_tool(&call.name);
+        let is_follow_up = super::follow_ups::is_follow_up_tool(&call.name);
         let is_memory = super::memory::tools::MemoryTool::named(&call.name).is_some();
         let is_complete_review = call.name == crate::patient_reviews::COMPLETE_PATIENT_REVIEW_TOOL;
         if !is_understanding
             && !is_visit_prep
             && !is_refresh
             && !is_concern
+            && !is_follow_up
             && !is_memory
             && !is_complete_review
         {
             return Box::pin(async { Ok(None) });
         }
-        if (is_concern || is_memory || is_complete_review)
+        if (is_concern || is_follow_up || is_memory || is_complete_review)
             && self.claim.kind != PracticeJobKind::PatientReview
         {
             return Box::pin(async { Ok(None) });
@@ -2037,6 +2040,16 @@ impl Product for PracticeJobHost<'_> {
             if is_concern {
                 return store
                     .saved_concern_tool_outcome(
+                        &claim.scope.practice,
+                        &claim.scope.workspace,
+                        &job.work,
+                        &call,
+                    )
+                    .await;
+            }
+            if is_follow_up {
+                return store
+                    .saved_follow_up_tool_outcome(
                         &claim.scope.practice,
                         &claim.scope.workspace,
                         &job.work,
@@ -2227,6 +2240,39 @@ impl Product for PracticeJobHost<'_> {
                 };
                 return store
                     .execute_concern_tool(
+                        &claim.scope.practice,
+                        &claim.scope.workspace,
+                        &source_work,
+                        &invocation,
+                    )
+                    .await;
+            }
+            if super::follow_ups::is_follow_up_tool(&call.name) {
+                if claim.kind == PracticeJobKind::InitialUnderstanding {
+                    return Ok(ToolOutcome::refused(format!(
+                        "initial understanding job cannot modify follow-ups: {} is refused",
+                        call.name
+                    )));
+                }
+                if claim.kind == PracticeJobKind::VisitPreparation {
+                    return Ok(ToolOutcome::refused(format!(
+                        "visit preparation job cannot invoke {} directly",
+                        call.name
+                    )));
+                }
+                let source_work = super::concerns::SourceWork::new(
+                    claim.kind.as_str(),
+                    &job.work,
+                    &claim.attempt,
+                )
+                .map_err(|cause| -> engine::Cause { Box::new(cause) })?;
+                let invocation = Invocation {
+                    id: call.id.clone(),
+                    name: call.name.clone(),
+                    arguments,
+                };
+                return store
+                    .execute_follow_up_tool(
                         &claim.scope.practice,
                         &claim.scope.workspace,
                         &source_work,

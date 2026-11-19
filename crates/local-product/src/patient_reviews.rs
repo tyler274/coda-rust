@@ -1089,6 +1089,7 @@ pub fn tools() -> Vec<Tool> {
     offered.push(crate::attachments::document_page_tool());
     offered.push(refresh_tool());
     offered.push(concern_tool());
+    offered.push(crate::runtime::follow_ups::follow_up_tool());
     offered.extend(understanding_tools());
     offered.push(read_patient_reviews_tool());
     offered.push(complete_patient_review_tool());
@@ -1323,6 +1324,7 @@ mod tests {
             crate::attachments::READ_DOCUMENT_PAGE_TOOL,
             crate::runtime::refresh::REFRESH_TOOL,
             crate::runtime::concerns::CONCERN_TOOL,
+            crate::runtime::follow_ups::FOLLOW_UP_TOOL,
             "list_patient_memory",
             "read_patient_memory",
             "search_patient_memory",
