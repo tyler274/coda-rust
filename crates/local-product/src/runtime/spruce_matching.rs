@@ -11,7 +11,7 @@
 
 use super::dispatch::ReviewReceiver;
 use super::entities::{schedule_patient_link, source_pull};
-use super::jobs::{PracticeAccessError, PracticeJobError};
+use super::jobs::{PracticeAccessError, PracticeAuthority, PracticeJobError, PracticeScope};
 use super::receipt::{self, Receipt};
 use super::sources::Observation;
 use super::{Store, conversion_error, error};
@@ -1844,6 +1844,31 @@ async fn require_active_physician(
     Ok(())
 }
 
+async fn require_patient_access(
+    auth: &dyn AuthStore,
+    viewer: &PhysicianIdentity,
+    workspace: &str,
+) -> Result<(), SpruceMatchingError> {
+    require_active_physician(auth, viewer).await?;
+    let workspace = require_id(workspace, "workspace")?;
+    let owner = auth.patient_practice(workspace).await?;
+    if owner.as_deref() != Some(viewer.practice_id.as_str()) {
+        return Err(SpruceMatchingError::AccessDenied {
+            practice: viewer.practice_id.clone(),
+            physician: viewer.physician_id.clone(),
+            reason: "patient workspace does not belong to practice",
+        });
+    }
+    if auth.membership(viewer, workspace).await != Membership::Allowed {
+        return Err(SpruceMatchingError::AccessDenied {
+            practice: viewer.practice_id.clone(),
+            physician: viewer.physician_id.clone(),
+            reason: "physician is not allowed to access patient workspace",
+        });
+    }
+    Ok(())
+}
+
 pub(crate) async fn allowed_workspaces_in_practice(
     auth: &dyn AuthStore,
     practice: &str,
@@ -1866,6 +1891,31 @@ pub(crate) async fn allowed_workspaces_in_practice(
         }
     }
     Ok(allowed)
+}
+
+async fn still_open_viewers(
+    auth: &dyn AuthStore,
+    practice: &str,
+    viewers: &BTreeSet<String>,
+    target_workspace: Option<&str>,
+) -> BTreeSet<String> {
+    let Some(workspace) = target_workspace else {
+        return BTreeSet::new();
+    };
+    let mut retained = BTreeSet::new();
+    for physician_id in viewers {
+        let identity = PhysicianIdentity {
+            practice_id: practice.to_owned(),
+            physician_id: physician_id.clone(),
+        };
+        let Some(account) = auth.account_by_identity(&identity).await else {
+            continue;
+        };
+        if account.active && auth.membership(&identity, workspace).await == Membership::Allowed {
+            retained.insert(physician_id.clone());
+        }
+    }
+    retained
 }
 
 fn decode_channel_row(
@@ -4015,4 +4065,1702 @@ impl Store {
         }
         Ok(project_routing_outcome_for_viewer(auth, actor, outcome).await)
     }
+
+    /// Routes every `Deciding` message in `practice` whose 15-minute deadline
+    /// (`kept_at + 900 <= now_ts`) has elapsed (`FifteenMinutesPass`, `Rule 6`),
+    /// isolating per-message/per-patient failures so one failure never blocks others.
+    pub async fn settle_undecided_spruce_messages(
+        &self,
+        auth: &dyn AuthStore,
+        practice: &str,
+        review_receiver: Option<&dyn ReviewReceiver>,
+        now_ts: i64,
+    ) -> Result<BatchStepReport<(String, MessageRoutingOutcome)>, SpruceMatchingError> {
+        let practice = require_id(practice, "practice")?;
+        let registered: BTreeSet<String> = auth
+            .practice_patients(practice)
+            .await?
+            .into_iter()
+            .collect();
+        let allowed = allowed_workspaces_in_practice(auth, practice).await?;
+
+        let deciding_rows = entities::spruce_message::Entity::find()
+            .filter(entities::spruce_message::Column::Practice.eq(practice))
+            .filter(entities::spruce_message::Column::StandingKind.eq("deciding"))
+            .order_by_asc(entities::spruce_message::Column::ChannelPosition)
+            .all(&self.db)
+            .await?;
+
+        let mut succeeded = Vec::new();
+        let mut failures = Vec::new();
+        for row in deciding_rows {
+            let message_id = row.message_id.clone();
+            let decoded = match decode_message_row(row) {
+                Ok(m) => m,
+                Err(err) => {
+                    failures.push(PatientIsolationFailure {
+                        target_id: message_id,
+                        error: SpruceMatchingError::Database(err),
+                    });
+                    continue;
+                }
+            };
+            let MessageStanding::Deciding { deadline_at, .. } = decoded.standing else {
+                continue;
+            };
+            if now_ts < deadline_at {
+                continue;
+            }
+
+            let step = async {
+                let tx = self.db.begin().await?;
+                let locked_row = entities::spruce_message::Entity::find_by_id((
+                    practice.to_owned(),
+                    message_id.clone(),
+                ))
+                .lock_exclusive()
+                .one(&tx)
+                .await?
+                .ok_or_else(|| SpruceMatchingError::NotFound {
+                    practice: practice.to_owned(),
+                    kind: "message",
+                    id: message_id.clone(),
+                })?;
+                let mut msg = decode_message_row(locked_row)?;
+                if !matches!(
+                    msg.standing,
+                    MessageStanding::Deciding { deadline_at, .. } if now_ts >= deadline_at
+                ) {
+                    tx.commit().await?;
+                    return Ok(None);
+                }
+                let mut conv = lock_conversation_in_tx(&tx, practice, &msg.conversation_id)
+                    .await?
+                    .ok_or_else(|| SpruceMatchingError::NotFound {
+                        practice: practice.to_owned(),
+                        kind: "conversation",
+                        id: msg.conversation_id.clone(),
+                    })?;
+                let (outcome, trigger) = route_patient_message_in_tx(
+                    &tx,
+                    &mut conv,
+                    &mut msg,
+                    RoutingOrigin::FifteenMinuteFallback,
+                    None,
+                    &registered,
+                    &allowed,
+                    now_ts,
+                )
+                .await?;
+                tx.commit().await?;
+                if let (Some(trig), Some(receiver)) = (trigger, review_receiver) {
+                    dispatch_single_trigger(self, &trig, receiver, now_ts).await?;
+                }
+                Ok::<Option<MessageRoutingOutcome>, SpruceMatchingError>(Some(outcome))
+            }
+            .await;
+
+            match step {
+                Ok(Some(outcome)) => succeeded.push((message_id, outcome)),
+                Ok(None) => {}
+                Err(error) => failures.push(PatientIsolationFailure {
+                    target_id: message_id,
+                    error,
+                }),
+            }
+        }
+        Ok(BatchStepReport {
+            succeeded,
+            failures,
+        })
+    }
+
+    /// Confirms a `Waiting` message onto `workspace` (`LinkIt` in `MessageMatching.tla`),
+    /// enforcing [`Membership::Allowed`] (`Rule 9`), linking the conversation and
+    /// **all** sibling `Waiting` messages together, and creating **exactly one**
+    /// patient review request across command replays.
+    #[expect(
+        clippy::too_many_arguments,
+        reason = "physician-authorized confirmation takes explicit actor, message, target workspace, sender policy, idempotency key, and review receiver"
+    )]
+    pub async fn confirm_spruce_message_link(
+        &self,
+        auth: &dyn AuthStore,
+        actor: &PhysicianIdentity,
+        message_id: &str,
+        workspace: &str,
+        sender_policy: SenderConfirmationPolicy,
+        command_key: &str,
+        review_receiver: Option<&dyn ReviewReceiver>,
+        now_ts: i64,
+    ) -> Result<ConfirmSpruceLinkOutcome, SpruceMatchingError> {
+        require_patient_access(auth, actor, workspace).await?;
+        let practice = actor.practice_id.as_str();
+        let message_id = require_id(message_id, "message_id")?;
+        let workspace = require_id(workspace, "workspace")?;
+        let command_key = require_id(command_key, "command_key")?;
+        let review_cmd_key = format!("spruce-confirm:{practice}:{command_key}");
+
+        let command_body = json!({
+            "kind": "spruce_confirm_message_link",
+            "practice": practice,
+            "physician": actor.physician_id,
+            "message_id": message_id,
+            "workspace": workspace,
+            "sender_policy": sender_policy,
+        });
+
+        let tx = self.db.begin().await?;
+        match receipt::check(
+            &tx,
+            practice,
+            &actor.physician_id,
+            command_key,
+            &command_body,
+        )
+        .await?
+        {
+            Some(Receipt::Same) => {
+                let msg_row = entities::spruce_message::Entity::find_by_id((
+                    practice.to_owned(),
+                    message_id.to_owned(),
+                ))
+                .one(&tx)
+                .await?
+                .ok_or_else(|| SpruceMatchingError::NotFound {
+                    practice: practice.to_owned(),
+                    kind: "message",
+                    id: message_id.to_owned(),
+                })?;
+                let msg = decode_message_row(msg_row)?;
+                let linked_rows = entities::spruce_message::Entity::find()
+                    .filter(entities::spruce_message::Column::Practice.eq(practice))
+                    .filter(
+                        entities::spruce_message::Column::ConversationId.eq(&msg.conversation_id),
+                    )
+                    .filter(entities::spruce_message::Column::StandingKind.eq("linked"))
+                    .order_by_asc(entities::spruce_message::Column::ChannelPosition)
+                    .all(&tx)
+                    .await?;
+                let linked_ids: Vec<String> =
+                    linked_rows.into_iter().map(|r| r.message_id).collect();
+                let trigger_row = entities::spruce_review_trigger::Entity::find_by_id((
+                    practice.to_owned(),
+                    review_cmd_key.clone(),
+                ))
+                .one(&tx)
+                .await?
+                .map(decode_trigger_row)
+                .transpose()?;
+                tx.commit().await?;
+
+                if let (Some(trig), Some(receiver)) = (trigger_row, review_receiver) {
+                    dispatch_single_trigger(self, &trig, receiver, now_ts).await?;
+                }
+                return Ok(ConfirmSpruceLinkOutcome {
+                    acceptance: LinkCommandAcceptance::Duplicate,
+                    conversation_id: msg.conversation_id,
+                    workspace: workspace.to_owned(),
+                    linked_message_ids: linked_ids,
+                    review_command_key: review_cmd_key,
+                });
+            }
+            Some(Receipt::Different) => {
+                return Err(SpruceMatchingError::IdempotencyCollision {
+                    key: command_key.to_owned(),
+                });
+            }
+            None | Some(Receipt::New) => {}
+        }
+
+        let msg_row = entities::spruce_message::Entity::find_by_id((
+            practice.to_owned(),
+            message_id.to_owned(),
+        ))
+        .lock_exclusive()
+        .one(&tx)
+        .await?
+        .ok_or_else(|| SpruceMatchingError::NotFound {
+            practice: practice.to_owned(),
+            kind: "message",
+            id: message_id.to_owned(),
+        })?;
+        let mut msg = decode_message_row(msg_row)?;
+        if !matches!(msg.standing, MessageStanding::Waiting { .. }) {
+            return Err(SpruceMatchingError::InvalidTransition {
+                id: message_id.to_owned(),
+                current_state: msg.standing.kind_str().to_owned(),
+                action: "confirm_link",
+            });
+        }
+        let mut conv = lock_conversation_in_tx(&tx, practice, &msg.conversation_id)
+            .await?
+            .ok_or_else(|| SpruceMatchingError::NotFound {
+                practice: practice.to_owned(),
+                kind: "conversation",
+                id: msg.conversation_id.clone(),
+            })?;
+        if !matches!(conv.link_state, ConversationLinkState::Unlinked) {
+            return Err(SpruceMatchingError::InvalidTransition {
+                id: conv.conversation_id,
+                current_state: "already_linked".to_owned(),
+                action: "confirm_link",
+            });
+        }
+
+        let joined_ids = join_conversation_to_patient_in_tx(
+            &tx,
+            &mut conv,
+            &mut msg,
+            workspace,
+            LinkOrigin::PhysicianConfirmed {
+                physician_id: actor.physician_id.clone(),
+            },
+            now_ts,
+        )
+        .await?;
+
+        if sender_policy == SenderConfirmationPolicy::ConfirmSenderForPatient
+            && let Some(sender) = &msg.sender_address
+        {
+            entities::spruce_confirmed_sender::Entity::insert(
+                entities::spruce_confirmed_sender::ActiveModel {
+                    practice: Set(practice.to_owned()),
+                    sender_key: Set(sender.as_str().to_owned()),
+                    workspace: Set(workspace.to_owned()),
+                    confirmed_by: Set(actor.physician_id.clone()),
+                    confirmed_at: Set(now_ts),
+                },
+            )
+            .on_conflict(
+                OnConflict::columns([
+                    entities::spruce_confirmed_sender::Column::Practice,
+                    entities::spruce_confirmed_sender::Column::SenderKey,
+                    entities::spruce_confirmed_sender::Column::Workspace,
+                ])
+                .do_nothing()
+                .to_owned(),
+            )
+            .exec_without_returning(&tx)
+            .await?;
+        }
+
+        let trigger = queue_review_trigger_in_tx(
+            &tx,
+            practice,
+            &conv.conversation_id,
+            workspace,
+            &review_cmd_key,
+            SpruceReviewTriggerOrigin::ConfirmedLink {
+                physician_id: actor.physician_id.clone(),
+            },
+            now_ts,
+        )
+        .await?;
+        let _ = receipt::record(
+            &tx,
+            practice,
+            &actor.physician_id,
+            command_key,
+            &command_body,
+        )
+        .await?;
+        tx.commit().await?;
+
+        if let Some(receiver) = review_receiver {
+            dispatch_single_trigger(self, &trigger, receiver, now_ts).await?;
+        }
+        Ok(ConfirmSpruceLinkOutcome {
+            acceptance: LinkCommandAcceptance::New,
+            conversation_id: conv.conversation_id,
+            workspace: workspace.to_owned(),
+            linked_message_ids: joined_ids,
+            review_command_key: review_cmd_key,
+        })
+    }
+
+    /// Leaves a single `Waiting` message unlinked (`LeaveUnlinked` in `MessageMatching.tla`):
+    /// marks **only** that message [`MessageStanding::LeftUnlinked`] so the conversation
+    /// remains `Unlinked` and the next message in that conversation waits again.
+    pub async fn leave_spruce_message_unlinked(
+        &self,
+        auth: &dyn AuthStore,
+        actor: &PhysicianIdentity,
+        message_id: &str,
+        command_key: &str,
+        now_ts: i64,
+    ) -> Result<SavedSpruceMessage, SpruceMatchingError> {
+        require_active_physician(auth, actor).await?;
+        let practice = actor.practice_id.as_str();
+        let message_id = require_id(message_id, "message_id")?;
+        let command_key = require_id(command_key, "command_key")?;
+        let command_body = json!({
+            "kind": "spruce_leave_message_unlinked",
+            "practice": practice,
+            "physician": actor.physician_id,
+            "message_id": message_id,
+        });
+
+        let tx = self.db.begin().await?;
+        match receipt::check(
+            &tx,
+            practice,
+            &actor.physician_id,
+            command_key,
+            &command_body,
+        )
+        .await?
+        {
+            Some(Receipt::Same) => {
+                let row = entities::spruce_message::Entity::find_by_id((
+                    practice.to_owned(),
+                    message_id.to_owned(),
+                ))
+                .one(&tx)
+                .await?
+                .ok_or_else(|| SpruceMatchingError::NotFound {
+                    practice: practice.to_owned(),
+                    kind: "message",
+                    id: message_id.to_owned(),
+                })?;
+                let decoded = decode_message_row(row)?;
+                tx.commit().await?;
+                return Ok(decoded);
+            }
+            Some(Receipt::Different) => {
+                return Err(SpruceMatchingError::IdempotencyCollision {
+                    key: command_key.to_owned(),
+                });
+            }
+            None | Some(Receipt::New) => {}
+        }
+
+        let row = entities::spruce_message::Entity::find_by_id((
+            practice.to_owned(),
+            message_id.to_owned(),
+        ))
+        .lock_exclusive()
+        .one(&tx)
+        .await?
+        .ok_or_else(|| SpruceMatchingError::NotFound {
+            practice: practice.to_owned(),
+            kind: "message",
+            id: message_id.to_owned(),
+        })?;
+        let mut msg = decode_message_row(row)?;
+        if !matches!(msg.standing, MessageStanding::Waiting { .. }) {
+            return Err(SpruceMatchingError::InvalidTransition {
+                id: message_id.to_owned(),
+                current_state: msg.standing.kind_str().to_owned(),
+                action: "leave_unlinked",
+            });
+        }
+        let mut conv = lock_conversation_in_tx(&tx, practice, &msg.conversation_id)
+            .await?
+            .ok_or_else(|| SpruceMatchingError::NotFound {
+                practice: practice.to_owned(),
+                kind: "conversation",
+                id: msg.conversation_id.clone(),
+            })?;
+
+        msg.standing = MessageStanding::LeftUnlinked {
+            left_by: actor.physician_id.clone(),
+            left_at: now_ts,
+        };
+        msg.updated_at = now_ts;
+        save_message_in_tx(&tx, &msg).await?;
+
+        let remaining_waiting = entities::spruce_message::Entity::find()
+            .filter(entities::spruce_message::Column::Practice.eq(practice))
+            .filter(entities::spruce_message::Column::ConversationId.eq(&conv.conversation_id))
+            .filter(entities::spruce_message::Column::StandingKind.eq("waiting"))
+            .one(&tx)
+            .await?
+            .is_some();
+        if !remaining_waiting && conv.active_suggestion.is_some() {
+            conv.active_suggestion = None;
+            conv.updated_at = now_ts;
+            save_conversation_in_tx(&tx, &conv).await?;
+        }
+
+        let _ = receipt::record(
+            &tx,
+            practice,
+            &actor.physician_id,
+            command_key,
+            &command_body,
+        )
+        .await?;
+        tx.commit().await?;
+        Ok(msg)
+    }
+
+    /// Opens a linked Spruce conversation for `viewer` (`OpenIt` in `MessageMatching.tla`),
+    /// enforcing [`Membership::Allowed`] on its linked patient (`Rule 1`).
+    pub async fn open_spruce_conversation(
+        &self,
+        auth: &dyn AuthStore,
+        viewer: &PhysicianIdentity,
+        conversation_id: &str,
+        now_ts: i64,
+    ) -> Result<AuthorizedSpruceConversation, SpruceMatchingError> {
+        require_active_physician(auth, viewer).await?;
+        let practice = viewer.practice_id.as_str();
+        let conversation_id = require_id(conversation_id, "conversation_id")?;
+
+        let tx = self.db.begin().await?;
+        let mut conv = lock_conversation_in_tx(&tx, practice, conversation_id)
+            .await?
+            .ok_or_else(|| SpruceMatchingError::NotFound {
+                practice: practice.to_owned(),
+                kind: "conversation",
+                id: conversation_id.to_owned(),
+            })?;
+        let ConversationLinkState::Linked { workspace, .. } = conv.link_state.clone() else {
+            return Err(SpruceMatchingError::InvalidTransition {
+                id: conversation_id.to_owned(),
+                current_state: "unlinked_or_not_patient".to_owned(),
+                action: "open_conversation",
+            });
+        };
+        require_patient_access(auth, viewer, &workspace).await?;
+
+        conv.open_viewers.insert(viewer.physician_id.clone());
+        conv.updated_at = now_ts;
+        save_conversation_in_tx(&tx, &conv).await?;
+        let messages =
+            linked_messages_for_conversation_in_tx(&tx, practice, conversation_id).await?;
+        tx.commit().await?;
+
+        Ok(AuthorizedSpruceConversation {
+            conversation_id: conv.conversation_id,
+            workspace,
+            messages,
+            move_undo: conv.move_undo.filter(|u| u.is_active_at(now_ts)),
+            is_open_for_viewer: true,
+        })
+    }
+
+    /// Closes an open Spruce conversation for `viewer` (`CloseIt` in `MessageMatching.tla`).
+    pub async fn close_spruce_conversation(
+        &self,
+        auth: &dyn AuthStore,
+        viewer: &PhysicianIdentity,
+        conversation_id: &str,
+        now_ts: i64,
+    ) -> Result<(), SpruceMatchingError> {
+        require_active_physician(auth, viewer).await?;
+        let practice = viewer.practice_id.as_str();
+        let conversation_id = require_id(conversation_id, "conversation_id")?;
+        let tx = self.db.begin().await?;
+        let mut conv = lock_conversation_in_tx(&tx, practice, conversation_id)
+            .await?
+            .ok_or_else(|| SpruceMatchingError::NotFound {
+                practice: practice.to_owned(),
+                kind: "conversation",
+                id: conversation_id.to_owned(),
+            })?;
+        if conv.open_viewers.remove(&viewer.physician_id) {
+            conv.updated_at = now_ts;
+            save_conversation_in_tx(&tx, &conv).await?;
+        }
+        tx.commit().await?;
+        Ok(())
+    }
+
+    /// Moves a linked conversation to another authorized patient or `Not a patient`
+    /// (`Move` in `MessageMatching.tla`, `Rules 1, 5, 7, 8, 9`):
+    /// - Immediately shows only in its new place (`on = {q}`) and drops open viewers
+    ///   lacking access (`StillOpen(q)`).
+    /// - Settles any prior expired `Undo` window (`now_ts >= undo.expires_at`) before
+    ///   starting a new move (`chart-move-again`).
+    /// - Shows `Undo` without acting on the move yet (`acted = false`).
+    /// - Moving again while `Undo` shows preserves `undo.from` and `undo.moved_message_ids`;
+    ///   moving back to `undo.from` ends the move (`undo = None`), doing nothing for the move
+    ///   itself while queueing one review if new messages arrived during `Undo`.
+    pub async fn move_spruce_conversation(
+        &self,
+        auth: &dyn AuthStore,
+        actor: &PhysicianIdentity,
+        command: MoveSpruceConversationCommand,
+        review_receiver: Option<&dyn ReviewReceiver>,
+        now_ts: i64,
+    ) -> Result<SavedSpruceConversation, SpruceMatchingError> {
+        require_active_physician(auth, actor).await?;
+        let practice = actor.practice_id.as_str();
+        let conversation_id = require_id(&command.conversation_id, "conversation_id")?;
+        let command_key = require_id(&command.command_key, "command_key")?;
+        let destination = command.destination;
+        let undo_window_seconds = command.undo_window_seconds;
+        if let MoveDestination::AnotherPatient { workspace } = &destination {
+            require_patient_access(auth, actor, workspace).await?;
+        }
+
+        let command_body = json!({
+            "kind": "spruce_move_conversation",
+            "practice": practice,
+            "physician": actor.physician_id,
+            "conversation_id": conversation_id,
+            "destination": destination,
+        });
+
+        let tx = self.db.begin().await?;
+        match receipt::check(
+            &tx,
+            practice,
+            &actor.physician_id,
+            command_key,
+            &command_body,
+        )
+        .await?
+        {
+            Some(Receipt::Same) => {
+                let conv = lock_conversation_in_tx(&tx, practice, conversation_id)
+                    .await?
+                    .ok_or_else(|| SpruceMatchingError::NotFound {
+                        practice: practice.to_owned(),
+                        kind: "conversation",
+                        id: conversation_id.to_owned(),
+                    })?;
+                let undispatched =
+                    undispatched_triggers_for_conversation_in_tx(&tx, practice, conversation_id)
+                        .await?;
+                tx.commit().await?;
+                dispatch_trigger_list(self, &undispatched, review_receiver, now_ts).await?;
+                return Ok(conv);
+            }
+            Some(Receipt::Different) => {
+                return Err(SpruceMatchingError::IdempotencyCollision {
+                    key: command_key.to_owned(),
+                });
+            }
+            None | Some(Receipt::New) => {}
+        }
+
+        let mut conv = lock_conversation_in_tx(&tx, practice, conversation_id)
+            .await?
+            .ok_or_else(|| SpruceMatchingError::NotFound {
+                practice: practice.to_owned(),
+                kind: "conversation",
+                id: conversation_id.to_owned(),
+            })?;
+        let ConversationLinkState::Linked {
+            workspace: current_workspace,
+            ..
+        } = conv.link_state.clone()
+        else {
+            return Err(SpruceMatchingError::InvalidTransition {
+                id: conversation_id.to_owned(),
+                current_state: "not_linked_to_patient".to_owned(),
+                action: "move_conversation",
+            });
+        };
+        require_patient_access(auth, actor, &current_workspace).await?;
+
+        if let MoveDestination::AnotherPatient { workspace } = &destination
+            && workspace == &current_workspace
+        {
+            return Err(SpruceMatchingError::InvalidTransition {
+                id: conversation_id.to_owned(),
+                current_state: "same_patient".to_owned(),
+                action: "move_conversation",
+            });
+        }
+
+        let mut pending_triggers = Vec::new();
+        if let Some(existing_undo) = conv.move_undo.clone() {
+            if !existing_undo.is_active_at(now_ts) {
+                let settled =
+                    settle_expired_move_in_tx(&tx, &mut conv, &existing_undo, now_ts).await?;
+                pending_triggers.extend(settled);
+            } else if existing_undo.by_physician != actor.physician_id {
+                return Err(SpruceMatchingError::InvalidTransition {
+                    id: conversation_id.to_owned(),
+                    current_state: "move_undo_held_by_other_physician".to_owned(),
+                    action: "move_conversation",
+                });
+            }
+        }
+
+        let current_linked_msgs =
+            linked_messages_for_conversation_in_tx(&tx, practice, conversation_id).await?;
+        let current_linked_ids: BTreeSet<String> = current_linked_msgs
+            .iter()
+            .map(|m| m.message_id.clone())
+            .collect();
+
+        let target_ws_opt = match &destination {
+            MoveDestination::AnotherPatient { workspace } => Some(workspace.as_str()),
+            MoveDestination::NotAPatient => None,
+        };
+        conv.open_viewers =
+            still_open_viewers(auth, practice, &conv.open_viewers, target_ws_opt).await;
+
+        let undo_window = undo_window_seconds.max(1);
+        let active_prior_undo = conv.move_undo.clone();
+        let returned_to_origin = active_prior_undo.as_ref().is_some_and(|u| {
+            u.by_physician == actor.physician_id
+                && matches!(
+                    &destination,
+                    MoveDestination::AnotherPatient { workspace } if workspace == &u.from_workspace
+                )
+        });
+
+        conv.move_undo = if returned_to_origin {
+            None
+        } else if let Some(prior) = &active_prior_undo {
+            Some(PendingMoveUndo {
+                by_physician: actor.physician_id.clone(),
+                from_workspace: prior.from_workspace.clone(),
+                moved_at: now_ts,
+                expires_at: now_ts.saturating_add(undo_window),
+                moved_message_ids: prior.moved_message_ids.clone(),
+            })
+        } else {
+            Some(PendingMoveUndo {
+                by_physician: actor.physician_id.clone(),
+                from_workspace: current_workspace.clone(),
+                moved_at: now_ts,
+                expires_at: now_ts.saturating_add(undo_window),
+                moved_message_ids: current_linked_ids.clone(),
+            })
+        };
+
+        conv.link_state = match &destination {
+            MoveDestination::AnotherPatient { workspace } => ConversationLinkState::Linked {
+                workspace: workspace.clone(),
+                linked_at: now_ts,
+            },
+            MoveDestination::NotAPatient => {
+                ConversationLinkState::MovedNotAPatient { moved_at: now_ts }
+            }
+        };
+        conv.move_count += 1;
+        conv.last_move_acted = false;
+        conv.updated_at = now_ts;
+        save_conversation_in_tx(&tx, &conv).await?;
+
+        if matches!(destination, MoveDestination::NotAPatient) {
+            let msg_rows = entities::spruce_message::Entity::find()
+                .filter(entities::spruce_message::Column::Practice.eq(practice))
+                .filter(entities::spruce_message::Column::ConversationId.eq(conversation_id))
+                .lock_exclusive()
+                .all(&tx)
+                .await?;
+            for row in msg_rows {
+                let mut msg = decode_message_row(row)?;
+                if matches!(msg.standing, MessageStanding::Linked { .. }) {
+                    msg.standing = MessageStanding::NotAPatient { moved_at: now_ts };
+                    msg.updated_at = now_ts;
+                    save_message_in_tx(&tx, &msg).await?;
+                }
+            }
+        } else if returned_to_origin
+            && let Some(prior_undo) = active_prior_undo
+            && current_linked_ids
+                .iter()
+                .any(|id| !prior_undo.moved_message_ids.contains(id))
+        {
+            let arrival_key = format!(
+                "spruce-move-return-arrivals:{practice}:{conversation_id}:move-{}:{}",
+                conv.move_count, prior_undo.from_workspace
+            );
+            pending_triggers.push(
+                queue_review_trigger_in_tx(
+                    &tx,
+                    practice,
+                    conversation_id,
+                    &prior_undo.from_workspace,
+                    &arrival_key,
+                    SpruceReviewTriggerOrigin::LinkedConversationArrival,
+                    now_ts,
+                )
+                .await?,
+            );
+        }
+
+        let _ = receipt::record(
+            &tx,
+            practice,
+            &actor.physician_id,
+            command_key,
+            &command_body,
+        )
+        .await?;
+        tx.commit().await?;
+
+        dispatch_trigger_list(self, &pending_triggers, review_receiver, now_ts).await?;
+        Ok(conv)
+    }
+
+    /// Presses `Undo` on an active move (`UndoIt` in `MessageMatching.tla`, `Rule 7` & `Rule 8`):
+    /// refuses expired `Undo` windows (`now_ts >= undo.expires_at`), restores the conversation
+    /// and every message (including `NotAPatient` messages and messages that arrived while `Undo`
+    /// showed) onto `undo.from`, prunes viewers lacking access to `undo.from`, and triggers one
+    /// patient review on `undo.from` if new messages arrived during `Undo`.
+    pub async fn undo_spruce_conversation_move(
+        &self,
+        auth: &dyn AuthStore,
+        actor: &PhysicianIdentity,
+        conversation_id: &str,
+        command_key: &str,
+        review_receiver: Option<&dyn ReviewReceiver>,
+        now_ts: i64,
+    ) -> Result<SavedSpruceConversation, SpruceMatchingError> {
+        require_active_physician(auth, actor).await?;
+        let practice = actor.practice_id.as_str();
+        let conversation_id = require_id(conversation_id, "conversation_id")?;
+        let command_key = require_id(command_key, "command_key")?;
+        let command_body = json!({
+            "kind": "spruce_undo_conversation_move",
+            "practice": practice,
+            "physician": actor.physician_id,
+            "conversation_id": conversation_id,
+        });
+
+        let tx = self.db.begin().await?;
+        match receipt::check(
+            &tx,
+            practice,
+            &actor.physician_id,
+            command_key,
+            &command_body,
+        )
+        .await?
+        {
+            Some(Receipt::Same) => {
+                let conv = lock_conversation_in_tx(&tx, practice, conversation_id)
+                    .await?
+                    .ok_or_else(|| SpruceMatchingError::NotFound {
+                        practice: practice.to_owned(),
+                        kind: "conversation",
+                        id: conversation_id.to_owned(),
+                    })?;
+                let undispatched =
+                    undispatched_triggers_for_conversation_in_tx(&tx, practice, conversation_id)
+                        .await?;
+                tx.commit().await?;
+                dispatch_trigger_list(self, &undispatched, review_receiver, now_ts).await?;
+                return Ok(conv);
+            }
+            Some(Receipt::Different) => {
+                return Err(SpruceMatchingError::IdempotencyCollision {
+                    key: command_key.to_owned(),
+                });
+            }
+            None | Some(Receipt::New) => {}
+        }
+
+        let mut conv = lock_conversation_in_tx(&tx, practice, conversation_id)
+            .await?
+            .ok_or_else(|| SpruceMatchingError::NotFound {
+                practice: practice.to_owned(),
+                kind: "conversation",
+                id: conversation_id.to_owned(),
+            })?;
+        let Some(undo) = conv.move_undo.clone() else {
+            return Err(SpruceMatchingError::InvalidTransition {
+                id: conversation_id.to_owned(),
+                current_state: "no_active_undo".to_owned(),
+                action: "undo_move",
+            });
+        };
+        if !undo.is_active_at(now_ts) {
+            return Err(SpruceMatchingError::InvalidTransition {
+                id: conversation_id.to_owned(),
+                current_state: "undo_expired".to_owned(),
+                action: "undo_move",
+            });
+        }
+        if undo.by_physician != actor.physician_id {
+            return Err(SpruceMatchingError::AccessDenied {
+                practice: practice.to_owned(),
+                physician: actor.physician_id.clone(),
+                reason: "only the physician who moved the conversation may press Undo",
+            });
+        }
+        require_patient_access(auth, actor, &undo.from_workspace).await?;
+
+        conv.link_state = ConversationLinkState::Linked {
+            workspace: undo.from_workspace.clone(),
+            linked_at: now_ts,
+        };
+        conv.open_viewers = still_open_viewers(
+            auth,
+            practice,
+            &conv.open_viewers,
+            Some(&undo.from_workspace),
+        )
+        .await;
+        conv.move_undo = None;
+        conv.updated_at = now_ts;
+        save_conversation_in_tx(&tx, &conv).await?;
+
+        let msg_rows = entities::spruce_message::Entity::find()
+            .filter(entities::spruce_message::Column::Practice.eq(practice))
+            .filter(entities::spruce_message::Column::ConversationId.eq(conversation_id))
+            .lock_exclusive()
+            .all(&tx)
+            .await?;
+        let mut saw_mid_undo_arrival = false;
+        for row in msg_rows {
+            let mut msg = decode_message_row(row)?;
+            if matches!(msg.standing, MessageStanding::NotAPatient { .. }) {
+                msg.standing = MessageStanding::Linked {
+                    linked_at: now_ts,
+                    origin: LinkOrigin::RestoredByMoveUndo {
+                        physician_id: actor.physician_id.clone(),
+                    },
+                };
+                msg.ever_linked = true;
+                msg.updated_at = now_ts;
+                save_message_in_tx(&tx, &msg).await?;
+            } else if matches!(msg.standing, MessageStanding::Linked { .. }) && !msg.ever_linked {
+                msg.ever_linked = true;
+                msg.updated_at = now_ts;
+                save_message_in_tx(&tx, &msg).await?;
+            }
+            if matches!(msg.standing, MessageStanding::Linked { .. })
+                && !undo.moved_message_ids.contains(&msg.message_id)
+            {
+                saw_mid_undo_arrival = true;
+            }
+        }
+
+        let mut triggers = Vec::new();
+        if saw_mid_undo_arrival {
+            let undo_arrival_key = format!(
+                "spruce-undo-arrivals:{practice}:{conversation_id}:move-{}:{}",
+                conv.move_count, undo.from_workspace
+            );
+            triggers.push(
+                queue_review_trigger_in_tx(
+                    &tx,
+                    practice,
+                    conversation_id,
+                    &undo.from_workspace,
+                    &undo_arrival_key,
+                    SpruceReviewTriggerOrigin::LinkedConversationArrival,
+                    now_ts,
+                )
+                .await?,
+            );
+        }
+
+        let _ = receipt::record(
+            &tx,
+            practice,
+            &actor.physician_id,
+            command_key,
+            &command_body,
+        )
+        .await?;
+        tx.commit().await?;
+
+        dispatch_trigger_list(self, &triggers, review_receiver, now_ts).await?;
+        Ok(conv)
+    }
+
+    /// Settles every conversation in `practice` whose `Undo` window has expired
+    /// (`now_ts >= undo.expires_at` — `UndoGoesAway` in `MessageMatching.tla`, `Rule 8`):
+    /// - Marks moved messages (`undo.moved_message_ids`) entered in error on `undo.from` (never deleting them).
+    /// - Sets `last_move_acted = true` and clears `move_undo`.
+    /// - Starts **one** patient review for each affected patient (`undo.from` and, when
+    ///   moved to another patient, the destination `workspace`), isolating per-patient
+    ///   review failures so one patient's failure never blocks another's.
+    pub async fn settle_expired_spruce_moves(
+        &self,
+        practice: &str,
+        review_receiver: Option<&dyn ReviewReceiver>,
+        now_ts: i64,
+    ) -> Result<BatchStepReport<SavedSpruceConversation>, SpruceMatchingError> {
+        let practice = require_id(practice, "practice")?;
+        let rows = entities::spruce_conversation::Entity::find()
+            .filter(entities::spruce_conversation::Column::Practice.eq(practice))
+            .filter(entities::spruce_conversation::Column::MoveUndo.is_not_null())
+            .all(&self.db)
+            .await?;
+
+        let mut succeeded = Vec::new();
+        let mut failures = Vec::new();
+        for row in rows {
+            let cid = row.conversation_id.clone();
+            let decoded = match decode_conversation_row(row) {
+                Ok(c) => c,
+                Err(err) => {
+                    failures.push(PatientIsolationFailure {
+                        target_id: cid,
+                        error: SpruceMatchingError::Database(err),
+                    });
+                    continue;
+                }
+            };
+            let Some(undo) = decoded.move_undo else {
+                continue;
+            };
+            if undo.is_active_at(now_ts) {
+                continue;
+            }
+            match self
+                .act_on_spruce_conversation_move(practice, &cid, review_receiver, now_ts)
+                .await
+            {
+                Ok(settled) => succeeded.push(settled),
+                Err(error) => failures.push(PatientIsolationFailure {
+                    target_id: cid,
+                    error,
+                }),
+            }
+        }
+        Ok(BatchStepReport {
+            succeeded,
+            failures,
+        })
+    }
+
+    /// Settles `UndoGoesAway` for one conversation (`Rule 8`), refusing early settlement
+    /// while `Undo` is still active (`now_ts < undo.expires_at`), writing permanent
+    /// `entered_in_error` audit rows strictly for `undo.moved_message_ids` on `from_workspace`,
+    /// and submitting one review per affected patient.
+    pub async fn act_on_spruce_conversation_move(
+        &self,
+        practice: &str,
+        conversation_id: &str,
+        review_receiver: Option<&dyn ReviewReceiver>,
+        now_ts: i64,
+    ) -> Result<SavedSpruceConversation, SpruceMatchingError> {
+        let practice = require_id(practice, "practice")?;
+        let conversation_id = require_id(conversation_id, "conversation_id")?;
+
+        let tx = self.db.begin().await?;
+        let mut conv = lock_conversation_in_tx(&tx, practice, conversation_id)
+            .await?
+            .ok_or_else(|| SpruceMatchingError::NotFound {
+                practice: practice.to_owned(),
+                kind: "conversation",
+                id: conversation_id.to_owned(),
+            })?;
+        let Some(undo) = conv.move_undo.clone() else {
+            return Err(SpruceMatchingError::InvalidTransition {
+                id: conversation_id.to_owned(),
+                current_state: "no_active_undo".to_owned(),
+                action: "act_on_move",
+            });
+        };
+        let triggers = settle_expired_move_in_tx(&tx, &mut conv, &undo, now_ts).await?;
+        tx.commit().await?;
+
+        dispatch_trigger_list(self, &triggers, review_receiver, now_ts).await?;
+        Ok(conv)
+    }
+
+    /// Retries any queued Spruce review triggers in `practice` that have not yet
+    /// been accepted by `review_receiver`, isolating per-patient failures.
+    pub async fn dispatch_pending_spruce_reviews(
+        &self,
+        practice: &str,
+        review_receiver: &dyn ReviewReceiver,
+        now_ts: i64,
+    ) -> Result<BatchStepReport<PendingSpruceReviewTrigger>, SpruceMatchingError> {
+        let practice = require_id(practice, "practice")?;
+        let rows = entities::spruce_review_trigger::Entity::find()
+            .filter(entities::spruce_review_trigger::Column::Practice.eq(practice))
+            .filter(entities::spruce_review_trigger::Column::Dispatched.eq(false))
+            .order_by_asc(entities::spruce_review_trigger::Column::CreatedAt)
+            .all(&self.db)
+            .await?;
+
+        let mut succeeded = Vec::new();
+        let mut failures = Vec::new();
+        for row in rows {
+            let key = row.command_key.clone();
+            let ws = row.workspace.clone();
+            let mut trig = match decode_trigger_row(row) {
+                Ok(t) => t,
+                Err(err) => {
+                    failures.push(PatientIsolationFailure {
+                        target_id: key,
+                        error: SpruceMatchingError::Database(err),
+                    });
+                    continue;
+                }
+            };
+            match dispatch_single_trigger(self, &trig, review_receiver, now_ts).await {
+                Ok(()) => {
+                    trig.dispatched = true;
+                    trig.dispatched_at = Some(now_ts);
+                    succeeded.push(trig);
+                }
+                Err(error) => failures.push(PatientIsolationFailure {
+                    target_id: ws,
+                    error,
+                }),
+            }
+        }
+        Ok(BatchStepReport {
+            succeeded,
+            failures,
+        })
+    }
+
+    /// Reads one saved Spruce message in `practice`.
+    pub async fn spruce_message(
+        &self,
+        practice: &str,
+        message_id: &str,
+    ) -> Result<Option<SavedSpruceMessage>, SpruceMatchingError> {
+        let practice = require_id(practice, "practice")?;
+        let message_id = require_id(message_id, "message_id")?;
+        entities::spruce_message::Entity::find_by_id((practice.to_owned(), message_id.to_owned()))
+            .one(&self.db)
+            .await?
+            .map(decode_message_row)
+            .transpose()
+            .map_err(Into::into)
+    }
+
+    /// Reads one saved Spruce conversation in `practice`.
+    pub async fn spruce_conversation(
+        &self,
+        practice: &str,
+        conversation_id: &str,
+    ) -> Result<Option<SavedSpruceConversation>, SpruceMatchingError> {
+        let practice = require_id(practice, "practice")?;
+        let conversation_id = require_id(conversation_id, "conversation_id")?;
+        entities::spruce_conversation::Entity::find_by_id((
+            practice.to_owned(),
+            conversation_id.to_owned(),
+        ))
+        .one(&self.db)
+        .await?
+        .map(decode_conversation_row)
+        .transpose()
+        .map_err(Into::into)
+    }
+
+    /// Projects `"Messages to match"` for `viewer` (`Rules 2, 6`):
+    /// - Urgent rows lead first (`leads_today_as_now == true`), then chronological.
+    /// - Suggestions are filtered through [`project_suggestion_for_viewer`] (`Membership::Allowed` only).
+    /// - Zero numeric confidence scores exist on any row.
+    pub async fn messages_to_match_for_physician(
+        &self,
+        auth: &dyn AuthStore,
+        viewer: &PhysicianIdentity,
+    ) -> Result<Vec<UnmatchedMessageRow>, SpruceMatchingError> {
+        require_active_physician(auth, viewer).await?;
+        let practice = viewer.practice_id.as_str();
+
+        let waiting_rows = entities::spruce_message::Entity::find()
+            .filter(entities::spruce_message::Column::Practice.eq(practice))
+            .filter(entities::spruce_message::Column::StandingKind.eq("waiting"))
+            .order_by_asc(entities::spruce_message::Column::ChannelPosition)
+            .all(&self.db)
+            .await?;
+
+        let conv_ids: BTreeSet<String> = waiting_rows
+            .iter()
+            .map(|r| r.conversation_id.clone())
+            .collect();
+        let mut conv_map = BTreeMap::new();
+        if !conv_ids.is_empty() {
+            let conv_rows = entities::spruce_conversation::Entity::find()
+                .filter(entities::spruce_conversation::Column::Practice.eq(practice))
+                .filter(
+                    entities::spruce_conversation::Column::ConversationId
+                        .is_in(conv_ids.iter().cloned()),
+                )
+                .all(&self.db)
+                .await?;
+            for c_row in conv_rows {
+                let c = decode_conversation_row(c_row)?;
+                conv_map.insert(c.conversation_id.clone(), c);
+            }
+        }
+
+        let mut rows = Vec::with_capacity(waiting_rows.len());
+        for row in waiting_rows {
+            let msg = decode_message_row(row)?;
+            let MessageStanding::Waiting { waiting_since, .. } = msg.standing else {
+                continue;
+            };
+            let raw_suggestion = conv_map
+                .get(&msg.conversation_id)
+                .and_then(|c| c.active_suggestion.as_ref());
+            let suggested_patient =
+                project_suggestion_for_viewer(auth, viewer, raw_suggestion).await;
+            let leads_today_as_now = msg.urgency.is_urgent();
+            rows.push(UnmatchedMessageRow {
+                message_id: msg.message_id,
+                conversation_id: msg.conversation_id,
+                author_name: msg.author_name,
+                sender_address: msg.sender_address,
+                body_text: msg.body_text,
+                attachments: msg.attachments,
+                app_url: msg.app_url,
+                urgency: msg.urgency,
+                leads_today_as_now,
+                suggested_patient,
+                waiting_since,
+            });
+        }
+        rows.sort_by(|a, b| {
+            b.leads_today_as_now
+                .cmp(&a.leads_today_as_now)
+                .then_with(|| a.waiting_since.cmp(&b.waiting_since))
+                .then_with(|| a.message_id.cmp(&b.message_id))
+        });
+        Ok(rows)
+    }
+
+    /// Projects `Filtered` non-patient messages for an active physician in `viewer.practice_id`
+    /// so they can inspect filtered items and click `"This is a patient"`.
+    pub async fn filtered_spruce_messages_for_physician(
+        &self,
+        auth: &dyn AuthStore,
+        viewer: &PhysicianIdentity,
+    ) -> Result<Vec<FilteredMessageRow>, SpruceMatchingError> {
+        require_active_physician(auth, viewer).await?;
+        let practice = viewer.practice_id.as_str();
+        let rows = entities::spruce_message::Entity::find()
+            .filter(entities::spruce_message::Column::Practice.eq(practice))
+            .filter(entities::spruce_message::Column::StandingKind.eq("filtered"))
+            .order_by_asc(entities::spruce_message::Column::ChannelPosition)
+            .all(&self.db)
+            .await?;
+
+        let mut out = Vec::with_capacity(rows.len());
+        for row in rows {
+            let msg = decode_message_row(row)?;
+            if let MessageStanding::Filtered {
+                category,
+                rationale,
+                filtered_at,
+            } = msg.standing
+            {
+                out.push(FilteredMessageRow {
+                    message_id: msg.message_id,
+                    conversation_id: msg.conversation_id,
+                    author_name: msg.author_name,
+                    sender_address: msg.sender_address,
+                    body_text: msg.body_text,
+                    category,
+                    rationale,
+                    filtered_at,
+                });
+            }
+        }
+        Ok(out)
+    }
+
+    /// Projects Today's Spruce channel banner, backlog offer, waiting unmatched rows,
+    /// and unreadable messages for `viewer` (`Rules 2, 6, 10, 13, 14`).
+    pub async fn today_spruce_summary_for_physician(
+        &self,
+        auth: &dyn AuthStore,
+        viewer: &PhysicianIdentity,
+    ) -> Result<TodaySpruceSummary, SpruceMatchingError> {
+        require_active_physician(auth, viewer).await?;
+        let practice = viewer.practice_id.as_str();
+        let (standing, _) = self.spruce_channel_standing(practice).await?;
+        let channel_banner = standing.today_banner();
+        let backlog_offered = matches!(
+            standing,
+            ChannelStanding::Connected {
+                backlog: BacklogStanding::Offered { .. },
+                ..
+            }
+        );
+        let messages_to_match = self.messages_to_match_for_physician(auth, viewer).await?;
+
+        let cant_read_rows = entities::spruce_message::Entity::find()
+            .filter(entities::spruce_message::Column::Practice.eq(practice))
+            .filter(entities::spruce_message::Column::StandingKind.eq("cant_read"))
+            .order_by_asc(entities::spruce_message::Column::ChannelPosition)
+            .all(&self.db)
+            .await?;
+        let mut unreadable_messages = Vec::with_capacity(cant_read_rows.len());
+        for row in cant_read_rows {
+            let msg = decode_message_row(row)?;
+            if let MessageStanding::CantRead {
+                failure_reason,
+                app_url,
+            } = msg.standing
+            {
+                unreadable_messages.push(UnreadableMessageRow {
+                    message_id: msg.message_id,
+                    conversation_id: msg.conversation_id,
+                    failure_reason,
+                    app_url,
+                    kept_at: msg.kept_at,
+                });
+            }
+        }
+
+        Ok(TodaySpruceSummary {
+            channel_banner,
+            backlog_offered,
+            messages_to_match,
+            unreadable_messages,
+        })
+    }
+
+    /// Reads an authorized linked conversation for `viewer` (`Rule 1: OnlyWithAccess` & `Rule 5: RightPatient`).
+    /// Refuses access when the conversation is unlinked, moved to `Not a patient`, or
+    /// linked to a patient `viewer` may not access.
+    pub async fn authorized_spruce_conversation_for_physician(
+        &self,
+        auth: &dyn AuthStore,
+        viewer: &PhysicianIdentity,
+        conversation_id: &str,
+        now_ts: i64,
+    ) -> Result<AuthorizedSpruceConversation, SpruceMatchingError> {
+        require_active_physician(auth, viewer).await?;
+        let practice = viewer.practice_id.as_str();
+        let conversation_id = require_id(conversation_id, "conversation_id")?;
+
+        let conv = self
+            .spruce_conversation(practice, conversation_id)
+            .await?
+            .ok_or_else(|| SpruceMatchingError::NotFound {
+                practice: practice.to_owned(),
+                kind: "conversation",
+                id: conversation_id.to_owned(),
+            })?;
+        let ConversationLinkState::Linked { workspace, .. } = conv.link_state else {
+            return Err(SpruceMatchingError::AccessDenied {
+                practice: practice.to_owned(),
+                physician: viewer.physician_id.clone(),
+                reason: "conversation is not linked to an accessible patient",
+            });
+        };
+        require_patient_access(auth, viewer, &workspace).await?;
+        let messages =
+            linked_messages_for_conversation_in_tx(&self.db, practice, conversation_id).await?;
+        let is_open_for_viewer = conv.open_viewers.contains(&viewer.physician_id);
+        Ok(AuthorizedSpruceConversation {
+            conversation_id: conv.conversation_id,
+            workspace,
+            messages,
+            move_undo: conv.move_undo.filter(|u| u.is_active_at(now_ts)),
+            is_open_for_viewer,
+        })
+    }
+
+    /// Lists conversation IDs currently open for `viewer`, filtering dynamically by
+    /// live [`Membership::Allowed`] so panel revocation closes visibility at once (`Rule 1`).
+    pub async fn open_spruce_conversations_for_physician(
+        &self,
+        auth: &dyn AuthStore,
+        viewer: &PhysicianIdentity,
+        now_ts: i64,
+    ) -> Result<Vec<AuthorizedSpruceConversation>, SpruceMatchingError> {
+        require_active_physician(auth, viewer).await?;
+        let practice = viewer.practice_id.as_str();
+        let rows = entities::spruce_conversation::Entity::find()
+            .filter(entities::spruce_conversation::Column::Practice.eq(practice))
+            .filter(entities::spruce_conversation::Column::LinkKind.eq("linked"))
+            .order_by_asc(entities::spruce_conversation::Column::ConversationId)
+            .all(&self.db)
+            .await?;
+
+        let mut open = Vec::new();
+        for row in rows {
+            let conv = decode_conversation_row(row)?;
+            if !conv.open_viewers.contains(&viewer.physician_id) {
+                continue;
+            }
+            let ConversationLinkState::Linked { workspace, .. } = conv.link_state else {
+                continue;
+            };
+            if auth.membership(viewer, &workspace).await != Membership::Allowed {
+                continue;
+            }
+            let messages =
+                linked_messages_for_conversation_in_tx(&self.db, practice, &conv.conversation_id)
+                    .await?;
+            open.push(AuthorizedSpruceConversation {
+                conversation_id: conv.conversation_id,
+                workspace,
+                messages,
+                move_undo: conv.move_undo.filter(|u| u.is_active_at(now_ts)),
+                is_open_for_viewer: true,
+            });
+        }
+        Ok(open)
+    }
+
+    /// Returns **only** Spruce messages currently `Linked` to `workspace` in `practice`.
+    /// Unlinked, waiting, deciding, filtered, left-unlinked, unreadable, and moved-away
+    /// messages are **excluded** (`Rule 5` & non-TLC review-input rule).
+    pub async fn patient_linked_spruce_messages(
+        &self,
+        practice: &str,
+        workspace: &str,
+    ) -> Result<Vec<SavedSpruceMessage>, SpruceMatchingError> {
+        let practice = require_id(practice, "practice")?;
+        let workspace = require_id(workspace, "workspace")?;
+
+        let linked_convs = entities::spruce_conversation::Entity::find()
+            .filter(entities::spruce_conversation::Column::Practice.eq(practice))
+            .filter(entities::spruce_conversation::Column::LinkKind.eq("linked"))
+            .filter(entities::spruce_conversation::Column::LinkedWorkspace.eq(workspace))
+            .order_by_asc(entities::spruce_conversation::Column::ConversationId)
+            .all(&self.db)
+            .await?;
+        let conv_ids: Vec<String> = linked_convs
+            .into_iter()
+            .map(|c| c.conversation_id)
+            .collect();
+        if conv_ids.is_empty() {
+            return Ok(Vec::new());
+        }
+
+        let rows = entities::spruce_message::Entity::find()
+            .filter(entities::spruce_message::Column::Practice.eq(practice))
+            .filter(entities::spruce_message::Column::ConversationId.is_in(conv_ids))
+            .filter(entities::spruce_message::Column::StandingKind.eq("linked"))
+            .order_by_asc(entities::spruce_message::Column::ChannelPosition)
+            .all(&self.db)
+            .await?;
+
+        let mut messages = Vec::with_capacity(rows.len());
+        for row in rows {
+            let decoded = decode_message_row(row)?;
+            if matches!(decoded.standing, MessageStanding::Linked { .. }) {
+                messages.push(decoded);
+            }
+        }
+        Ok(messages)
+    }
+
+    /// Assembles authorized review inputs for `(practice, workspace)`:
+    /// checks `authority`, reads the retained chart [`Observation`], and attaches
+    /// [`Store::patient_linked_spruce_messages`] so unlinked or moved-away mail
+    /// **never** enters a patient review.
+    pub async fn patient_review_inputs_with_spruce(
+        &self,
+        practice: &str,
+        workspace: &str,
+        authority: &dyn PracticeAuthority,
+    ) -> Result<PatientReviewInputs, SpruceMatchingError> {
+        let practice = require_id(practice, "practice")?;
+        let workspace = require_id(workspace, "workspace")?;
+        authority
+            .check_practice_patient(&PracticeScope {
+                practice: practice.to_owned(),
+                workspace: workspace.to_owned(),
+                job_id: "spruce_review_inputs".to_owned(),
+            })
+            .await?;
+
+        let chart = self.sources(workspace).await?;
+        let linked_spruce_messages = self
+            .patient_linked_spruce_messages(practice, workspace)
+            .await?;
+        Ok(PatientReviewInputs {
+            practice: practice.to_owned(),
+            workspace: workspace.to_owned(),
+            chart,
+            linked_spruce_messages,
+        })
+    }
+
+    /// Reads permanent `entered_in_error` records retained on `from_workspace`
+    /// after wrong-patient conversation moves settled (`README.md` non-TLC rule).
+    pub async fn entered_in_error_spruce_messages(
+        &self,
+        practice: &str,
+        from_workspace: &str,
+    ) -> Result<Vec<SpruceEnteredInErrorRecord>, SpruceMatchingError> {
+        let practice = require_id(practice, "practice")?;
+        let from_workspace = require_id(from_workspace, "from_workspace")?;
+        let rows = entities::spruce_entered_in_error::Entity::find()
+            .filter(entities::spruce_entered_in_error::Column::Practice.eq(practice))
+            .filter(entities::spruce_entered_in_error::Column::FromWorkspace.eq(from_workspace))
+            .order_by_asc(entities::spruce_entered_in_error::Column::MoveOrdinal)
+            .order_by_asc(entities::spruce_entered_in_error::Column::MessageId)
+            .all(&self.db)
+            .await?;
+        let mut out = Vec::with_capacity(rows.len());
+        for row in rows {
+            let destination: MoveDestination = serde_json::from_value(row.destination).map_err(
+                conversion_error("spruce_entered_in_error.destination", "MoveDestination"),
+            )?;
+            let move_ordinal = u64::try_from(row.move_ordinal).map_err(conversion_error(
+                "spruce_entered_in_error.move_ordinal",
+                "u64",
+            ))?;
+            out.push(SpruceEnteredInErrorRecord {
+                practice: row.practice,
+                from_workspace: row.from_workspace,
+                message_id: row.message_id,
+                move_ordinal,
+                conversation_id: row.conversation_id,
+                destination,
+                marked_at: row.marked_at,
+            });
+        }
+        Ok(out)
+    }
+
+    /// Reads queued Spruce review trigger rows for `practice` (for replay/proof inspection).
+    pub async fn spruce_review_triggers(
+        &self,
+        practice: &str,
+    ) -> Result<Vec<PendingSpruceReviewTrigger>, SpruceMatchingError> {
+        let practice = require_id(practice, "practice")?;
+        let rows = entities::spruce_review_trigger::Entity::find()
+            .filter(entities::spruce_review_trigger::Column::Practice.eq(practice))
+            .order_by_asc(entities::spruce_review_trigger::Column::CreatedAt)
+            .order_by_asc(entities::spruce_review_trigger::Column::CommandKey)
+            .all(&self.db)
+            .await?;
+        rows.into_iter()
+            .map(decode_trigger_row)
+            .collect::<Result<Vec<_>, _>>()
+            .map_err(Into::into)
+    }
+
+    /// Builds the authorized practice demographic & contact roster for `patient_lookup`
+    /// during unmatched message classification. Reads **only** registered patient IDs, `source_pull` demographics,
+    /// confirmed sender addresses, and Spruce contact/EHR links — **never** clinical
+    /// chart records, notes, labs, patient understanding, or patient memory.
+    pub async fn authorized_practice_roster_for_matching(
+        &self,
+        auth: &dyn AuthStore,
+        practice: &str,
+    ) -> Result<Vec<MatchingRosterPatient>, SpruceMatchingError> {
+        let practice = require_id(practice, "practice")?;
+        let workspaces = auth.practice_patients(practice).await?;
+        self.practice_roster_for_workspaces(practice, &workspaces)
+            .await
+    }
+
+    pub(crate) async fn practice_roster_for_workspaces(
+        &self,
+        practice: &str,
+        workspaces: &[String],
+    ) -> Result<Vec<MatchingRosterPatient>, SpruceMatchingError> {
+        let practice = require_id(practice, "practice")?;
+        let registered_set: BTreeSet<String> = workspaces.iter().cloned().collect();
+
+        let pulls_by_ws = if workspaces.is_empty() {
+            BTreeMap::new()
+        } else {
+            self.source_pulls(workspaces).await?
+        };
+        let (contacts, ehr_map) =
+            load_practice_channel_evidence_in_tx(&self.db, practice, &registered_set).await?;
+
+        let sender_rows = entities::spruce_confirmed_sender::Entity::find()
+            .filter(entities::spruce_confirmed_sender::Column::Practice.eq(practice))
+            .order_by_asc(entities::spruce_confirmed_sender::Column::SenderKey)
+            .all(&self.db)
+            .await?;
+        let mut senders_by_ws: BTreeMap<String, Vec<SenderAddress>> = BTreeMap::new();
+        for s_row in sender_rows {
+            if let Ok(addr) = SenderAddress::parse(&s_row.sender_key) {
+                senders_by_ws.entry(s_row.workspace).or_default().push(addr);
+            }
+        }
+
+        let mut ehrs_by_ws: BTreeMap<String, Vec<SpruceEhrLink>> = BTreeMap::new();
+        for (ehr, ws_set) in &ehr_map {
+            for ws in ws_set {
+                ehrs_by_ws.entry(ws.clone()).or_default().push(ehr.clone());
+            }
+        }
+
+        let mut contacts_by_ws: BTreeMap<String, BTreeSet<String>> = BTreeMap::new();
+        for (contact_id, patients) in &contacts {
+            for sp in patients {
+                for ehr in &sp.ehr_links {
+                    if let Some(ws_set) = ehr_map.get(ehr) {
+                        for ws in ws_set {
+                            contacts_by_ws
+                                .entry(ws.clone())
+                                .or_default()
+                                .insert(contact_id.clone());
+                        }
+                    }
+                }
+            }
+        }
+
+        let mut roster = Vec::with_capacity(workspaces.len());
+        for ws in workspaces {
+            let demographics = pulls_by_ws
+                .get(ws)
+                .and_then(|pulls| pulls.first())
+                .map(|pull| pull.patient.clone());
+            roster.push(MatchingRosterPatient {
+                demographics,
+                confirmed_senders: senders_by_ws.remove(ws).unwrap_or_default(),
+                linked_spruce_contacts: contacts_by_ws
+                    .remove(ws)
+                    .map(|s| s.into_iter().collect())
+                    .unwrap_or_default(),
+                ehr_links: ehrs_by_ws.remove(ws).unwrap_or_default(),
+                workspace: ws.clone(),
+            });
+        }
+        Ok(roster)
+    }
+}
+
+async fn settle_expired_move_in_tx(
+    tx: &sea_orm::DatabaseTransaction,
+    conv: &mut SavedSpruceConversation,
+    undo: &PendingMoveUndo,
+    now_ts: i64,
+) -> Result<Vec<PendingSpruceReviewTrigger>, SpruceMatchingError> {
+    if undo.is_active_at(now_ts) {
+        return Err(SpruceMatchingError::InvalidTransition {
+            id: conv.conversation_id.clone(),
+            current_state: "undo_still_active".to_owned(),
+            action: "act_on_move",
+        });
+    }
+    let destination = match &conv.link_state {
+        ConversationLinkState::Linked { workspace, .. } => MoveDestination::AnotherPatient {
+            workspace: workspace.clone(),
+        },
+        ConversationLinkState::MovedNotAPatient { .. } => MoveDestination::NotAPatient,
+        ConversationLinkState::Unlinked => {
+            return Err(SpruceMatchingError::InvalidTransition {
+                id: conv.conversation_id.clone(),
+                current_state: "unlinked".to_owned(),
+                action: "act_on_move",
+            });
+        }
+    };
+
+    let move_ordinal =
+        i64::try_from(conv.move_count).map_err(conversion_error("move_count", "i64"))?;
+    let destination_json =
+        serde_json::to_value(&destination).map_err(conversion_error("MoveDestination", "json"))?;
+
+    for message_id in &undo.moved_message_ids {
+        entities::spruce_entered_in_error::Entity::insert(
+            entities::spruce_entered_in_error::ActiveModel {
+                practice: Set(conv.practice.clone()),
+                from_workspace: Set(undo.from_workspace.clone()),
+                message_id: Set(message_id.clone()),
+                move_ordinal: Set(move_ordinal),
+                conversation_id: Set(conv.conversation_id.clone()),
+                destination: Set(destination_json.clone()),
+                marked_at: Set(now_ts),
+            },
+        )
+        .on_conflict(
+            OnConflict::columns([
+                entities::spruce_entered_in_error::Column::Practice,
+                entities::spruce_entered_in_error::Column::FromWorkspace,
+                entities::spruce_entered_in_error::Column::MessageId,
+                entities::spruce_entered_in_error::Column::MoveOrdinal,
+            ])
+            .do_nothing()
+            .to_owned(),
+        )
+        .exec_without_returning(tx)
+        .await?;
+    }
+
+    conv.move_undo = None;
+    conv.last_move_acted = true;
+    conv.updated_at = now_ts;
+    save_conversation_in_tx(tx, conv).await?;
+
+    let mut triggers = Vec::with_capacity(2);
+    let from_key = format!(
+        "spruce-move-settled-from:{}:{}:move-{}:{}",
+        conv.practice, conv.conversation_id, conv.move_count, undo.from_workspace
+    );
+    triggers.push(
+        queue_review_trigger_in_tx(
+            tx,
+            &conv.practice,
+            &conv.conversation_id,
+            &undo.from_workspace,
+            &from_key,
+            SpruceReviewTriggerOrigin::MoveSettledFrom,
+            now_ts,
+        )
+        .await?,
+    );
+
+    if let MoveDestination::AnotherPatient { workspace } = &destination {
+        let to_key = format!(
+            "spruce-move-settled-to:{}:{}:move-{}:{}",
+            conv.practice, conv.conversation_id, conv.move_count, workspace
+        );
+        triggers.push(
+            queue_review_trigger_in_tx(
+                tx,
+                &conv.practice,
+                &conv.conversation_id,
+                workspace,
+                &to_key,
+                SpruceReviewTriggerOrigin::MoveSettledTo,
+                now_ts,
+            )
+            .await?,
+        );
+    }
+
+    Ok(triggers)
+}
+
+async fn undispatched_triggers_for_conversation_in_tx(
+    tx: &impl ConnectionTrait,
+    practice: &str,
+    conversation_id: &str,
+) -> Result<Vec<PendingSpruceReviewTrigger>, DbErr> {
+    let rows = entities::spruce_review_trigger::Entity::find()
+        .filter(entities::spruce_review_trigger::Column::Practice.eq(practice))
+        .filter(entities::spruce_review_trigger::Column::ConversationId.eq(conversation_id))
+        .filter(entities::spruce_review_trigger::Column::Dispatched.eq(false))
+        .order_by_asc(entities::spruce_review_trigger::Column::CreatedAt)
+        .order_by_asc(entities::spruce_review_trigger::Column::CommandKey)
+        .all(tx)
+        .await?;
+    rows.into_iter().map(decode_trigger_row).collect()
+}
+
+async fn dispatch_trigger_list(
+    store: &Store,
+    triggers: &[PendingSpruceReviewTrigger],
+    review_receiver: Option<&dyn ReviewReceiver>,
+    now_ts: i64,
+) -> Result<(), SpruceMatchingError> {
+    let Some(receiver) = review_receiver else {
+        return Ok(());
+    };
+    let mut first_err: Option<SpruceMatchingError> = None;
+    for trig in triggers {
+        if let Err(err) = dispatch_single_trigger(store, trig, receiver, now_ts).await
+            && first_err.is_none()
+        {
+            first_err = Some(err);
+        }
+    }
+    if let Some(err) = first_err {
+        return Err(err);
+    }
+    Ok(())
+}
+
+async fn linked_messages_for_conversation_in_tx(
+    db: &impl ConnectionTrait,
+    practice: &str,
+    conversation_id: &str,
+) -> Result<Vec<SavedSpruceMessage>, DbErr> {
+    let rows = entities::spruce_message::Entity::find()
+        .filter(entities::spruce_message::Column::Practice.eq(practice))
+        .filter(entities::spruce_message::Column::ConversationId.eq(conversation_id))
+        .filter(entities::spruce_message::Column::StandingKind.eq("linked"))
+        .order_by_asc(entities::spruce_message::Column::ChannelPosition)
+        .all(db)
+        .await?;
+    rows.into_iter().map(decode_message_row).collect()
 }
