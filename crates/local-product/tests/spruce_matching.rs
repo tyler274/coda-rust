@@ -1,0 +1,1765 @@
+//! Integration and unit tests for Spruce channel reading, conversation-to-patient
+//! linking, classification storage, confirmation, wrong-patient moves, authorized
+//! projections, and the background unmatched message matching recipe.
+//!
+//! Runs PostgreSQL tests automatically whenever `PHYSICIAN_RUNTIME_TEST_DATABASE_URL`
+//! or `PHYSICIAN_DATABASE_URL` is set; panics if neither is set when
+//! `CODA_REQUIRE_POSTGRES_TESTS=1`.
+
+use local_product::physician_sources::{
+    MedicalRecordNumber, ReadablePart, RecordDate, SourcePatient, SourceRevision,
+};
+use local_product::runtime::dispatch::ReviewReceiver;
+use local_product::runtime::jobs::{PracticeAccessError, PracticeJobError};
+use local_product::runtime::sources::SourcePull;
+use local_product::runtime::spruce_matching::{
+    BacklogStanding, ChannelHealth, ChannelStanding, ChannelStopCause, ChannelTieConflict,
+    ChannelTieEvaluation, FIFTEEN_MINUTES_SECONDS, IncomingSpruceItem, LinkOrigin, MatchAssessment,
+    MatchingDecision, MessageRoutingOutcome, MessageStanding, MessageUrgencyChoice,
+    MoveDestination, MoveSpruceConversationCommand, OutsideParticipant, ReadableSpruceItem,
+    SenderAddress, SenderConfirmationPolicy, SpruceContactPatient, SpruceContactRecord,
+    SpruceEhrLink, SpruceIngestOutcome, SpruceMatchingError, TodayChannelBanner,
+    UnreadableSpruceItem, evaluate_automatic_link, evaluate_channel_tie,
+};
+use local_product::runtime::{Store, async_trait};
+use local_product::sha256_hex;
+use patient_work::{ReviewReason, ReviewRequest};
+use physician_auth::{AuthStore, Membership, PhysicianIdentity, PostgresAuthStore, PracticeClock};
+use serde_json::json;
+use std::collections::{BTreeMap, BTreeSet};
+use std::sync::{Arc, Mutex};
+use uuid::Uuid;
+
+const RECIPE_VERSION: &str = "spruce-matching-v1";
+const GUIDANCE_VERSION: &str = "spruce-matching-guidance-v1";
+
+const SECRET_CHART_SENTINEL: &str = "CONFIDENTIAL_BIOPSY_SENTINEL_NEVER_IN_MATCHING_9941";
+
+fn database_url() -> Option<String> {
+    if let Ok(url) = std::env::var("PHYSICIAN_RUNTIME_TEST_DATABASE_URL")
+        .or_else(|_| std::env::var("PHYSICIAN_DATABASE_URL"))
+    {
+        let trimmed = url.trim().to_owned();
+        if !trimmed.is_empty() {
+            return Some(trimmed);
+        }
+    }
+    assert!(
+        std::env::var("CODA_REQUIRE_POSTGRES_TESTS").as_deref() != Ok("1"),
+        "CODA_REQUIRE_POSTGRES_TESTS=1 requires PHYSICIAN_RUNTIME_TEST_DATABASE_URL or PHYSICIAN_DATABASE_URL"
+    );
+    None
+}
+
+async fn connect_stores(url: &str) -> (Store, Arc<PostgresAuthStore>) {
+    let store = Store::connect(url).await.expect("connect runtime store");
+    store.migrate().await.expect("migrate runtime store");
+    let auth = Arc::new(
+        PostgresAuthStore::connect_with_migrations(url)
+            .await
+            .expect("connect and migrate physician auth store"),
+    );
+    (store, auth)
+}
+
+async fn invite_physician(
+    auth: &PostgresAuthStore,
+    practice: &str,
+    label: &str,
+    now_secs: u64,
+) -> PhysicianIdentity {
+    let email = format!("{label}-{}@codahealth.test", Uuid::new_v4().simple());
+    let invite = auth
+        .invite(practice, &email, label, false, now_secs)
+        .await
+        .expect("create physician invitation");
+    let (identity, _) = auth
+        .redeem_invitation(&email, &invite, now_secs)
+        .await
+        .expect("redeem physician invitation");
+    identity
+}
+
+fn make_patient_demographics(id: &str, name: &str, dob: &str) -> SourcePatient {
+    SourcePatient {
+        source_patient_id: id.to_owned(),
+        display_name: name.to_owned(),
+        birth_date: Some(dob.to_owned()),
+        sex_or_gender: Some("female".to_owned()),
+        medical_record_numbers: vec![MedicalRecordNumber {
+            system: "clinic-mrn".to_owned(),
+            value: format!("MRN-{id}"),
+        }],
+    }
+}
+
+fn make_chart_record(
+    workspace: &str,
+    candidate_id: &str,
+    revision: &str,
+    text: &str,
+) -> SourceRevision {
+    SourceRevision {
+        workspace: workspace.to_owned(),
+        source_id: "clinic-ehr".to_owned(),
+        candidate_id: candidate_id.to_owned(),
+        revision: revision.to_owned(),
+        record_type: "DiagnosticReport".to_owned(),
+        dates: vec![RecordDate {
+            name: "effectiveDateTime".to_owned(),
+            value: "2026-11-01".to_owned(),
+        }],
+        content: text.to_owned(),
+        sha256: sha256_hex(text.as_bytes()),
+        readable_parts: vec![ReadablePart {
+            label: "Report".to_owned(),
+            text: text.to_owned(),
+        }],
+        provenance: json!({
+            "system": "clinic-ehr",
+            "native_id": candidate_id,
+        }),
+        envelope: None,
+    }
+}
+
+#[allow(clippy::too_many_arguments)]
+async fn seed_patient_with_chart(
+    store: &Store,
+    auth: &PostgresAuthStore,
+    practice: &str,
+    workspace: &str,
+    ehr_patient_id: &str,
+    display_name: &str,
+    dob: &str,
+    chart_text: &str,
+    now_ts: i64,
+) {
+    auth.register_patient(practice, workspace)
+        .await
+        .expect("register patient workspace");
+    let record = make_chart_record(workspace, "DiagnosticReport/lab-1", "rev-1", chart_text);
+    let pull = SourcePull {
+        source_id: "clinic-ehr".to_owned(),
+        source_label: "Clinic EHR".to_owned(),
+        patient: make_patient_demographics(ehr_patient_id, display_name, dob),
+        pulled_at: Some(now_ts),
+    };
+    store
+        .record_chart(workspace, &[record], &pull)
+        .await
+        .expect("record patient chart");
+}
+
+fn readable_item(
+    pos: u64,
+    message_id: &str,
+    conversation_id: &str,
+    sender: Option<&str>,
+    author: Option<&str>,
+    body: &str,
+    participants: Vec<OutsideParticipant>,
+) -> IncomingSpruceItem {
+    IncomingSpruceItem::Readable(ReadableSpruceItem {
+        message_id: message_id.to_owned(),
+        conversation_id: conversation_id.to_owned(),
+        channel_position: pos,
+        content_version: format!("ver-{message_id}-{pos}"),
+        sender_address: sender.map(|s| SenderAddress::parse(s).unwrap()),
+        author_name: author.map(str::to_owned),
+        body_text: body.to_owned(),
+        attachments: Vec::new(),
+        app_url: Some(format!(
+            "https://app.sprucehealth.com/conversations/{conversation_id}"
+        )),
+        created_at_spruce: Some("2026-11-12T15:00:00Z".to_owned()),
+        outside_participants: participants,
+    })
+}
+
+/// Captures `ReviewRequest` submissions deduplicated by `(practice_id, command_key)`
+/// just like the production practice review receiver, with optional per-workspace
+/// fault injection to prove per-patient failure isolation.
+#[derive(Default)]
+struct RecordingReviewReceiver {
+    accepted_by_key: Mutex<BTreeMap<(String, String), ReviewRequest>>,
+    all_calls: Mutex<Vec<ReviewRequest>>,
+    failing_workspaces: Mutex<BTreeSet<String>>,
+}
+
+impl RecordingReviewReceiver {
+    fn fail_workspace(&self, workspace: &str) {
+        self.failing_workspaces
+            .lock()
+            .unwrap()
+            .insert(workspace.to_owned());
+    }
+
+    fn clear_failures(&self) {
+        self.failing_workspaces.lock().unwrap().clear();
+    }
+
+    fn accepted_requests(&self) -> Vec<ReviewRequest> {
+        self.accepted_by_key
+            .lock()
+            .unwrap()
+            .values()
+            .cloned()
+            .collect()
+    }
+
+    fn accepted_for_workspace(&self, workspace: &str) -> Vec<ReviewRequest> {
+        self.accepted_by_key
+            .lock()
+            .unwrap()
+            .values()
+            .filter(|r| r.patient_workspace_id == workspace)
+            .cloned()
+            .collect()
+    }
+}
+
+#[async_trait]
+impl ReviewReceiver for RecordingReviewReceiver {
+    async fn submit_review(&self, request: &ReviewRequest) -> Result<(), PracticeJobError> {
+        self.all_calls.lock().unwrap().push(request.clone());
+        if self
+            .failing_workspaces
+            .lock()
+            .unwrap()
+            .contains(&request.patient_workspace_id)
+        {
+            return Err(PracticeJobError::Access(
+                PracticeAccessError::UnregisteredPatient {
+                    practice: request.practice_id.clone(),
+                    workspace: request.patient_workspace_id.clone(),
+                },
+            ));
+        }
+        self.accepted_by_key
+            .lock()
+            .unwrap()
+            .entry((request.practice_id.clone(), request.command_key.clone()))
+            .or_insert_with(|| request.clone());
+        Ok(())
+    }
+}
+
+#[tokio::test]
+async fn rule_4_auto_links_only_on_uncontradicted_unique_identity_and_enforces_access_without_scores()
+ {
+    let Some(url) = database_url() else {
+        return;
+    };
+    let (store, auth) = connect_stores(&url).await;
+    let now_ts: i64 = 1_762_960_000;
+    let practice = format!("practice-r4-{}", Uuid::new_v4().simple());
+    auth.ensure_practice(&practice, PracticeClock::RealTime)
+        .await
+        .unwrap();
+
+    let dr_alpha = invite_physician(&auth, &practice, "DrAlpha", now_ts as u64).await;
+    let dr_beta = invite_physician(&auth, &practice, "DrBeta", now_ts as u64).await;
+
+    let pw_clara = format!("pw-clara-{}", Uuid::new_v4().simple());
+    let pw_danny = format!("pw-danny-{}", Uuid::new_v4().simple());
+    let pw_no_duet = format!("pw-noduet-{}", Uuid::new_v4().simple());
+    let pw_unassigned = format!("pw-unassigned-{}", Uuid::new_v4().simple());
+
+    seed_patient_with_chart(
+        &store,
+        &auth,
+        &practice,
+        &pw_clara,
+        "ehr-clara",
+        "Clara Oswald",
+        "1986-11-23",
+        SECRET_CHART_SENTINEL,
+        now_ts,
+    )
+    .await;
+    seed_patient_with_chart(
+        &store,
+        &auth,
+        &practice,
+        &pw_danny,
+        "ehr-danny",
+        "Danny Pink",
+        "1985-05-14",
+        "Routine annual exam note.",
+        now_ts,
+    )
+    .await;
+    // Patient without Duet (registered in physician practice only, zero Duet connection):
+    seed_patient_with_chart(
+        &store,
+        &auth,
+        &practice,
+        &pw_no_duet,
+        "ehr-noduet",
+        "Martha Jones",
+        "1984-03-09",
+        "Outpatient clinic chart without Duet.",
+        now_ts,
+    )
+    .await;
+    seed_patient_with_chart(
+        &store,
+        &auth,
+        &practice,
+        &pw_unassigned,
+        "ehr-unassigned",
+        "Rory Williams",
+        "1983-08-02",
+        "No physician assigned yet.",
+        now_ts,
+    )
+    .await;
+
+    // Dr. Alpha has access to Clara, Danny, and Martha (no-Duet); Dr. Beta only has access to Danny.
+    for ws in [&pw_clara, &pw_danny, &pw_no_duet] {
+        auth.set_membership(&dr_alpha, ws, Membership::Allowed)
+            .await
+            .unwrap();
+    }
+    auth.set_membership(&dr_beta, &pw_danny, Membership::Allowed)
+        .await
+        .unwrap();
+
+    // Connect practice Spruce channel and acquire single reader lease.
+    store
+        .connect_spruce_channel(auth.as_ref(), &dr_alpha, 0, None, now_ts)
+        .await
+        .unwrap();
+    let lease = store
+        .acquire_spruce_reader_lease(&practice, "worker-a", 120, now_ts)
+        .await
+        .unwrap();
+
+    let receiver = RecordingReviewReceiver::default();
+
+    // --- 1a. Positive Auto-Link via Confirmed Sender -> 1 Patient ---
+    let clara_phone = SenderAddress::parse("(415) 555-0111").unwrap();
+    assert_eq!(clara_phone.as_str(), "+14155550111");
+    store
+        .record_spruce_confirmed_sender(
+            &practice,
+            &clara_phone,
+            &pw_clara,
+            &dr_alpha.physician_id,
+            now_ts,
+        )
+        .await
+        .unwrap();
+
+    store
+        .ingest_spruce_item(
+            &practice,
+            &lease.lease_token,
+            &readable_item(
+                1,
+                "msg-auto-sender",
+                "conv-auto-sender",
+                Some("415-555-0111"),
+                Some("Clara Oswald"),
+                "Checking on my blood pressure log.",
+                vec![OutsideParticipant {
+                    display_name: Some("Clara Oswald".into()),
+                    endpoint_channel: Some("sms".into()),
+                    endpoint_address: Some(clara_phone.clone()),
+                    saved_contact_id: None,
+                }],
+            ),
+            now_ts,
+        )
+        .await
+        .unwrap();
+
+    let outcome_sender = store
+        .record_spruce_message_classification(
+            auth.as_ref(),
+            &practice,
+            "msg-auto-sender",
+            None,
+            RECIPE_VERSION,
+            GUIDANCE_VERSION,
+            MatchingDecision::PatientMail {
+                urgency: MessageUrgencyChoice::Ordinary,
+                assessment: MatchAssessment::SuggestedPatient {
+                    workspace: pw_clara.clone(),
+                    evidence_summary: "Confirmed sender +14155550111 matches Clara Oswald.".into(),
+                },
+                rationale: "Routine patient check-in from confirmed phone.".into(),
+            },
+            Some(&receiver),
+            now_ts + 1,
+        )
+        .await
+        .unwrap();
+    assert!(matches!(
+        outcome_sender,
+        MessageRoutingOutcome::Linked {
+            ref workspace,
+            origin: LinkOrigin::AutomaticRule4,
+            ..
+        } if workspace == &pw_clara
+    ));
+    assert_eq!(receiver.accepted_for_workspace(&pw_clara).len(), 1);
+    assert_eq!(
+        receiver.accepted_for_workspace(&pw_clara)[0].reason,
+        ReviewReason::NewRecords
+    );
+
+    // --- 1b. Positive Auto-Link via 1 -> 1 -> 1 -> 1 Channel Tie on Patient WITHOUT Duet ---
+    store
+        .register_spruce_ehr_patient_link(
+            &practice,
+            "clinic-ehr",
+            "ehr-noduet",
+            &pw_no_duet,
+            now_ts,
+        )
+        .await
+        .unwrap();
+    store
+        .save_spruce_contact_record(
+            &SpruceContactRecord {
+                practice: practice.clone(),
+                contact_id: "contact-martha".into(),
+                spruce_patients: vec![SpruceContactPatient {
+                    spruce_patient_id: "spruce-pt-martha".into(),
+                    ehr_links: vec![SpruceEhrLink {
+                        source_id: "clinic-ehr".into(),
+                        source_patient_id: "ehr-noduet".into(),
+                    }],
+                }],
+            },
+            now_ts,
+        )
+        .await
+        .unwrap();
+
+    store
+        .ingest_spruce_item(
+            &practice,
+            &lease.lease_token,
+            &readable_item(
+                2,
+                "msg-auto-noduet",
+                "conv-auto-noduet",
+                Some("+14155550122"),
+                Some("Martha Jones"),
+                "Following up after yesterday's clinic visit.",
+                vec![OutsideParticipant {
+                    display_name: Some("Martha Jones".into()),
+                    endpoint_channel: Some("sms".into()),
+                    endpoint_address: Some(SenderAddress::parse("+14155550122").unwrap()),
+                    saved_contact_id: Some("contact-martha".into()),
+                }],
+            ),
+            now_ts + 2,
+        )
+        .await
+        .unwrap();
+
+    let outcome_noduet = store
+        .record_spruce_message_classification(
+            auth.as_ref(),
+            &practice,
+            "msg-auto-noduet",
+            None,
+            RECIPE_VERSION,
+            GUIDANCE_VERSION,
+            MatchingDecision::PatientMail {
+                urgency: MessageUrgencyChoice::Ordinary,
+                assessment: MatchAssessment::SuggestedPatient {
+                    workspace: pw_no_duet.clone(),
+                    evidence_summary: "Channel tie uniquely links Martha Jones.".into(),
+                },
+                rationale: "Patient follow-up message.".into(),
+            },
+            Some(&receiver),
+            now_ts + 3,
+        )
+        .await
+        .unwrap();
+    assert!(matches!(
+        outcome_noduet,
+        MessageRoutingOutcome::Linked {
+            ref workspace,
+            origin: LinkOrigin::AutomaticRule4,
+            ..
+        } if workspace == &pw_no_duet
+    ));
+    assert_eq!(receiver.accepted_for_workspace(&pw_no_duet).len(), 1);
+
+    // --- 1c. Every Rule 4 Contradiction & Ambiguity MUST Wait for Confirmation ---
+    // Direct unit checks of the single rule owners (`evaluate_channel_tie` & `evaluate_automatic_link`):
+    let mut contacts_map = BTreeMap::new();
+    contacts_map.insert(
+        "shared-contact".to_owned(),
+        vec![
+            SpruceContactPatient {
+                spruce_patient_id: "sp-1".into(),
+                ehr_links: vec![SpruceEhrLink {
+                    source_id: "clinic-ehr".into(),
+                    source_patient_id: "ehr-clara".into(),
+                }],
+            },
+            SpruceContactPatient {
+                spruce_patient_id: "sp-2".into(),
+                ehr_links: vec![SpruceEhrLink {
+                    source_id: "clinic-ehr".into(),
+                    source_patient_id: "ehr-danny".into(),
+                }],
+            },
+        ],
+    );
+    contacts_map.insert(
+        "multi-ehr-contact".to_owned(),
+        vec![SpruceContactPatient {
+            spruce_patient_id: "sp-multi".into(),
+            ehr_links: vec![
+                SpruceEhrLink {
+                    source_id: "clinic-ehr".into(),
+                    source_patient_id: "ehr-clara".into(),
+                },
+                SpruceEhrLink {
+                    source_id: "clinic-ehr".into(),
+                    source_patient_id: "ehr-danny".into(),
+                },
+            ],
+        }],
+    );
+    contacts_map.insert(
+        "dup-coda-contact".to_owned(),
+        vec![SpruceContactPatient {
+            spruce_patient_id: "sp-dup".into(),
+            ehr_links: vec![SpruceEhrLink {
+                source_id: "clinic-ehr".into(),
+                source_patient_id: "ehr-dup".into(),
+            }],
+        }],
+    );
+    let mut ehr_map: BTreeMap<SpruceEhrLink, BTreeSet<String>> = BTreeMap::new();
+    ehr_map.insert(
+        SpruceEhrLink {
+            source_id: "clinic-ehr".into(),
+            source_patient_id: "ehr-clara".into(),
+        },
+        BTreeSet::from([pw_clara.clone()]),
+    );
+    ehr_map.insert(
+        SpruceEhrLink {
+            source_id: "clinic-ehr".into(),
+            source_patient_id: "ehr-danny".into(),
+        },
+        BTreeSet::from([pw_danny.clone()]),
+    );
+    ehr_map.insert(
+        SpruceEhrLink {
+            source_id: "clinic-ehr".into(),
+            source_patient_id: "ehr-dup".into(),
+        },
+        BTreeSet::from([pw_clara.clone(), pw_danny.clone()]),
+    );
+
+    assert!(matches!(
+        evaluate_channel_tie(
+            &[
+                OutsideParticipant {
+                    display_name: None,
+                    endpoint_channel: None,
+                    endpoint_address: None,
+                    saved_contact_id: Some("shared-contact".into()),
+                },
+                OutsideParticipant {
+                    display_name: None,
+                    endpoint_channel: None,
+                    endpoint_address: None,
+                    saved_contact_id: None,
+                }
+            ],
+            &contacts_map,
+            &ehr_map,
+        ),
+        ChannelTieEvaluation::Contradictory {
+            reason: ChannelTieConflict::MultipleOutsideParticipants,
+            ..
+        }
+    ));
+    assert!(matches!(
+        evaluate_channel_tie(
+            &[OutsideParticipant {
+                display_name: None,
+                endpoint_channel: None,
+                endpoint_address: None,
+                saved_contact_id: Some("shared-contact".into()),
+            }],
+            &contacts_map,
+            &ehr_map,
+        ),
+        ChannelTieEvaluation::Contradictory {
+            reason: ChannelTieConflict::ContactSharedAcrossSprucePatients,
+            ..
+        }
+    ));
+    assert!(matches!(
+        evaluate_channel_tie(
+            &[OutsideParticipant {
+                display_name: None,
+                endpoint_channel: None,
+                endpoint_address: None,
+                saved_contact_id: Some("multi-ehr-contact".into()),
+            }],
+            &contacts_map,
+            &ehr_map,
+        ),
+        ChannelTieEvaluation::Contradictory {
+            reason: ChannelTieConflict::MultipleEhrRecordsOnSprucePatient,
+            ..
+        }
+    ));
+    assert!(matches!(
+        evaluate_channel_tie(
+            &[OutsideParticipant {
+                display_name: None,
+                endpoint_channel: None,
+                endpoint_address: None,
+                saved_contact_id: Some("dup-coda-contact".into()),
+            }],
+            &contacts_map,
+            &ehr_map,
+        ),
+        ChannelTieEvaluation::Contradictory {
+            reason: ChannelTieConflict::MultipleCodaPatientsForEhrRecord,
+            ..
+        }
+    ));
+
+    let allowed_set = BTreeSet::from([pw_clara.clone(), pw_danny.clone(), pw_no_duet.clone()]);
+    // Sender confirmed for Clara while channel ties to Martha -> WaitForConfirmation:
+    assert_eq!(
+        evaluate_automatic_link(
+            &BTreeSet::from([pw_clara.clone()]),
+            &ChannelTieEvaluation::UniquePatient {
+                workspace: pw_no_duet.clone(),
+            },
+            None,
+            &allowed_set,
+        ),
+        local_product::runtime::spruce_matching::AutomaticLinkEvaluation::WaitForConfirmation
+    );
+    // Patient with zero allowed physicians -> WaitForConfirmation:
+    assert_eq!(
+        evaluate_automatic_link(
+            &BTreeSet::from([pw_unassigned.clone()]),
+            &ChannelTieEvaluation::Untied,
+            None,
+            &allowed_set,
+        ),
+        local_product::runtime::spruce_matching::AutomaticLinkEvaluation::WaitForConfirmation
+    );
+
+    // End-to-end DB contradiction: sender confirmed for Clara, but model suggests Clara on an untied
+    // unknown phone (`+14155550199`) -> MUST wait for confirmation (model suggestion alone NEVER auto-links!)
+    store
+        .ingest_spruce_item(
+            &practice,
+            &lease.lease_token,
+            &readable_item(
+                3,
+                "msg-suggest-clara",
+                "conv-suggest-clara",
+                Some("+14155550199"),
+                Some("Clara O."),
+                "Hi doctor, this is Clara texting from my work phone.",
+                vec![OutsideParticipant {
+                    display_name: Some("Clara O.".into()),
+                    endpoint_channel: Some("sms".into()),
+                    endpoint_address: Some(SenderAddress::parse("+14155550199").unwrap()),
+                    saved_contact_id: None,
+                }],
+            ),
+            now_ts + 4,
+        )
+        .await
+        .unwrap();
+
+    let outcome_suggest = store
+        .record_spruce_message_classification(
+            auth.as_ref(),
+            &practice,
+            "msg-suggest-clara",
+            None,
+            RECIPE_VERSION,
+            GUIDANCE_VERSION,
+            MatchingDecision::PatientMail {
+                urgency: MessageUrgencyChoice::Ordinary,
+                assessment: MatchAssessment::SuggestedPatient {
+                    workspace: pw_clara.clone(),
+                    evidence_summary: "Message self-identifies as Clara O., matching Clara Oswald."
+                        .into(),
+                },
+                rationale: "New work phone requires physician confirmation.".into(),
+            },
+            Some(&receiver),
+            now_ts + 5,
+        )
+        .await
+        .unwrap();
+    assert_eq!(
+        outcome_suggest,
+        MessageRoutingOutcome::Waiting {
+            suggested_workspace: Some(pw_clara.clone()),
+        }
+    );
+
+    // --- 1d. Access Enforcement (Rules 1, 2, 9) & Zero Confidence Scores ---
+    // Dr. Alpha (allowed on Clara) sees `suggested_patient == Some(pw_clara)` with zero confidence fields:
+    let alpha_waiting = store
+        .messages_to_match_for_physician(auth.as_ref(), &dr_alpha)
+        .await
+        .unwrap();
+    assert_eq!(alpha_waiting.len(), 1);
+    assert_eq!(
+        alpha_waiting[0]
+            .suggested_patient
+            .as_ref()
+            .map(|s| s.workspace.as_str()),
+        Some(pw_clara.as_str())
+    );
+    let alpha_json = serde_json::to_string(&alpha_waiting[0]).unwrap();
+    assert!(
+        !alpha_json.to_ascii_lowercase().contains("confidence")
+            && !alpha_json.to_ascii_lowercase().contains("score"),
+        "waiting row JSON must contain zero confidence scores: {alpha_json}"
+    );
+
+    // Dr. Beta (NOT allowed on Clara) sees the unmatched message row, but `suggested_patient` is hidden (`None`)!
+    let beta_waiting = store
+        .messages_to_match_for_physician(auth.as_ref(), &dr_beta)
+        .await
+        .unwrap();
+    assert_eq!(beta_waiting.len(), 1);
+    assert!(
+        beta_waiting[0].suggested_patient.is_none(),
+        "Rule 2: viewer without access to suggested patient must see suggested_patient == None"
+    );
+
+    // Dr. Beta cannot confirm onto Clara (`Rule 9`), cannot open Clara's linked conversation (`Rule 1`),
+    // and cannot move Clara's linked conversation (`Rule 9`):
+    assert!(matches!(
+        store
+            .confirm_spruce_message_link(
+                auth.as_ref(),
+                &dr_beta,
+                "msg-suggest-clara",
+                &pw_clara,
+                SenderConfirmationPolicy::ConversationOnly,
+                "cmd-beta-illegal-confirm",
+                Some(&receiver),
+                now_ts + 6,
+            )
+            .await,
+        Err(SpruceMatchingError::AccessDenied { .. })
+    ));
+    assert!(matches!(
+        store
+            .open_spruce_conversation(auth.as_ref(), &dr_beta, "conv-auto-sender", now_ts + 6)
+            .await,
+        Err(SpruceMatchingError::AccessDenied { .. })
+    ));
+    assert!(matches!(
+        store
+            .move_spruce_conversation(
+                auth.as_ref(),
+                &dr_beta,
+                MoveSpruceConversationCommand {
+                    conversation_id: "conv-auto-sender".into(),
+                    destination: MoveDestination::AnotherPatient {
+                        workspace: pw_danny.clone(),
+                    },
+                    undo_window_seconds: 10,
+                    command_key: "cmd-beta-illegal-move".into(),
+                },
+                None,
+                now_ts + 6,
+            )
+            .await,
+        Err(SpruceMatchingError::AccessDenied { .. })
+    ));
+
+    // Dr. Alpha opens `conv-auto-sender`, then Clara's panel access is revoked for Dr. Alpha ->
+    // `open_spruce_conversations_for_physician` and `authorized_spruce_conversation_for_physician`
+    // hide it immediately (`Rule 1`)!
+    let opened = store
+        .open_spruce_conversation(auth.as_ref(), &dr_alpha, "conv-auto-sender", now_ts + 7)
+        .await
+        .unwrap();
+    assert_eq!(opened.messages.len(), 1);
+    assert_eq!(
+        store
+            .open_spruce_conversations_for_physician(auth.as_ref(), &dr_alpha, now_ts + 7)
+            .await
+            .unwrap()
+            .len(),
+        1
+    );
+    auth.set_membership(&dr_alpha, &pw_clara, Membership::ClinicDemographic)
+        .await
+        .unwrap();
+    assert!(
+        store
+            .open_spruce_conversations_for_physician(auth.as_ref(), &dr_alpha, now_ts + 8)
+            .await
+            .unwrap()
+            .is_empty(),
+        "revoking Membership::Allowed must immediately hide open linked conversations"
+    );
+    assert!(matches!(
+        store
+            .authorized_spruce_conversation_for_physician(
+                auth.as_ref(),
+                &dr_alpha,
+                "conv-auto-sender",
+                now_ts + 8,
+            )
+            .await,
+        Err(SpruceMatchingError::AccessDenied { .. })
+    ));
+}
+
+#[tokio::test]
+async fn fifteen_minute_fallback_join_siblings_leave_unlinked_channel_lifecycle_moves_isolation_and_review_inputs()
+ {
+    let Some(url) = database_url() else {
+        return;
+    };
+    let (store, auth) = connect_stores(&url).await;
+    let now_ts: i64 = 1_762_990_000;
+    let practice = format!("practice-lifecycle-{}", Uuid::new_v4().simple());
+    auth.ensure_practice(&practice, PracticeClock::RealTime)
+        .await
+        .unwrap();
+
+    let dr_all = invite_physician(&auth, &practice, "DrAll", now_ts as u64).await;
+    let dr_only_a = invite_physician(&auth, &practice, "DrOnlyA", now_ts as u64).await;
+
+    let pw_a = format!("pw-a-{}", Uuid::new_v4().simple());
+    let pw_b = format!("pw-b-{}", Uuid::new_v4().simple());
+    let pw_c = format!("pw-c-{}", Uuid::new_v4().simple());
+
+    for (ws, ehr_id, name) in [
+        (&pw_a, "ehr-a", "Patient Alpha"),
+        (&pw_b, "ehr-b", "Patient Bravo"),
+        (&pw_c, "ehr-c", "Patient Charlie"),
+    ] {
+        seed_patient_with_chart(
+            &store,
+            &auth,
+            &practice,
+            ws,
+            ehr_id,
+            name,
+            "1980-01-01",
+            "Baseline chart note.",
+            now_ts,
+        )
+        .await;
+        auth.set_membership(&dr_all, ws, Membership::Allowed)
+            .await
+            .unwrap();
+    }
+    auth.set_membership(&dr_only_a, &pw_a, Membership::Allowed)
+        .await
+        .unwrap();
+
+    let receiver = RecordingReviewReceiver::default();
+
+    // --- 1. Connect at `channel_head_position = 5`: Backlog Offer (`Rule 14`) & Single Reader Lease ---
+    let connected = store
+        .connect_spruce_channel(auth.as_ref(), &dr_all, 5, Some("cursor-5".into()), now_ts)
+        .await
+        .unwrap();
+    assert!(matches!(
+        connected,
+        ChannelStanding::Connected {
+            place: 5,
+            start_boundary: 5,
+            backlog: BacklogStanding::Offered { .. },
+            ..
+        }
+    ));
+
+    let _lease_1 = store
+        .acquire_spruce_reader_lease(&practice, "reader-1", 60, now_ts)
+        .await
+        .unwrap();
+    // Second reader while `lease_1` is active is refused (`ReaderLeaseHeld`):
+    assert!(matches!(
+        store
+            .acquire_spruce_reader_lease(&practice, "reader-2", 60, now_ts + 10)
+            .await,
+        Err(SpruceMatchingError::ReaderLeaseHeld { .. })
+    ));
+    // Once `lease_1` expires (`now_ts + 61`), `reader-2` can take over cleanly:
+    let lease = store
+        .acquire_spruce_reader_lease(&practice, "reader-2", 3_600, now_ts + 61)
+        .await
+        .unwrap();
+
+    // Pre-connection item (`pos = 3 <= 5`) is skipped while backlog offer is unaccepted (`Rule 14`):
+    let skipped = store
+        .ingest_spruce_item(
+            &practice,
+            &lease.lease_token,
+            &readable_item(
+                3,
+                "msg-backlog-3",
+                "conv-backlog",
+                Some("+14155550400"),
+                Some("Backlog Patient"),
+                "Pre-connection question from yesterday.",
+                vec![],
+            ),
+            now_ts + 62,
+        )
+        .await
+        .unwrap();
+    assert_eq!(skipped, SpruceIngestOutcome::SkippedPreConnectionBacklog);
+
+    // Physician accepts backlog offer -> `msg-backlog-3` is now kept (`KeptNew`), and backlog offer cannot be accepted twice!
+    store
+        .accept_spruce_backlog(auth.as_ref(), &dr_all, now_ts + 63)
+        .await
+        .unwrap();
+    assert!(matches!(
+        store
+            .accept_spruce_backlog(auth.as_ref(), &dr_all, now_ts + 64)
+            .await,
+        Err(SpruceMatchingError::ChannelStateRefused { .. })
+    ));
+    let kept_backlog = store
+        .ingest_spruce_item(
+            &practice,
+            &lease.lease_token,
+            &readable_item(
+                3,
+                "msg-backlog-3",
+                "conv-backlog",
+                Some("+14155550400"),
+                Some("Backlog Patient"),
+                "Pre-connection question from yesterday.",
+                vec![],
+            ),
+            now_ts + 65,
+        )
+        .await
+        .unwrap();
+    assert!(matches!(kept_backlog, SpruceIngestOutcome::KeptNew { .. }));
+
+    // --- 2. Duplicate Delivery Idempotency & Contiguous `advance_spruce_channel_place` (`Rule 12`) ---
+    // Deliver pos 7 before pos 6: `place` stays at 5 until pos 6 is kept, then advances to 7!
+    let t_base = now_ts + 100;
+    store
+        .ingest_spruce_item(
+            &practice,
+            &lease.lease_token,
+            &readable_item(
+                7,
+                "msg-15min-7",
+                "conv-15min",
+                Some("+14155550407"),
+                Some("Undecided Patient"),
+                "Waiting for 15-minute fallback.",
+                vec![],
+            ),
+            t_base,
+        )
+        .await
+        .unwrap();
+    // Duplicate redelivery of `msg-15min-7` returns `AlreadyKept`:
+    let dup = store
+        .ingest_spruce_item(
+            &practice,
+            &lease.lease_token,
+            &readable_item(
+                7,
+                "msg-15min-7",
+                "conv-15min",
+                Some("+14155550407"),
+                Some("Undecided Patient"),
+                "Waiting for 15-minute fallback.",
+                vec![],
+            ),
+            t_base + 1,
+        )
+        .await
+        .unwrap();
+    assert!(matches!(dup, SpruceIngestOutcome::AlreadyKept { .. }));
+    assert_eq!(
+        store
+            .advance_spruce_channel_place(&practice, &lease.lease_token, None, t_base + 1)
+            .await
+            .unwrap(),
+        5,
+        "place must not advance past missing gap at position 6"
+    );
+
+    // Deliver unreadable item at pos 6 (`Rule 13`):
+    store
+        .ingest_spruce_item(
+            &practice,
+            &lease.lease_token,
+            &IncomingSpruceItem::Unreadable(UnreadableSpruceItem {
+                message_id: "msg-unreadable-6".into(),
+                conversation_id: "conv-unreadable-6".into(),
+                channel_position: 6,
+                content_version: "ver-err-6".into(),
+                failure_reason: "Voicemail audio still transcribing".into(),
+                app_url: Some("https://app.sprucehealth.com/items/6".into()),
+                outside_participants: vec![],
+            }),
+            t_base + 2,
+        )
+        .await
+        .unwrap();
+    assert_eq!(
+        store
+            .advance_spruce_channel_place(
+                &practice,
+                &lease.lease_token,
+                Some("cursor-7".into()),
+                t_base + 3
+            )
+            .await
+            .unwrap(),
+        7,
+        "once position 6 is kept, place advances contiguously through 7"
+    );
+
+    // --- 3. Unreadable Items (`Rule 13`) & Channel Failures (`Rule 10`) ---
+    // Add second unreadable item at pos 8 (`msg-unreadable-8`) to test `Done`, while `msg-unreadable-6` tests `CodaReadsItNow`:
+    store
+        .ingest_spruce_item(
+            &practice,
+            &lease.lease_token,
+            &IncomingSpruceItem::Unreadable(UnreadableSpruceItem {
+                message_id: "msg-unreadable-8".into(),
+                conversation_id: "conv-unreadable-8".into(),
+                channel_position: 8,
+                content_version: "ver-err-8".into(),
+                failure_reason: "Unsupported fax attachment encoding".into(),
+                app_url: Some("https://app.sprucehealth.com/items/8".into()),
+                outside_participants: vec![],
+            }),
+            t_base + 4,
+        )
+        .await
+        .unwrap();
+    let today_unreadable = store
+        .today_spruce_summary_for_physician(auth.as_ref(), &dr_all)
+        .await
+        .unwrap();
+    assert_eq!(today_unreadable.unreadable_messages.len(), 2);
+
+    // `CodaReadsItNow`: `msg-unreadable-6` becomes readable -> `RecoveredUnreadable` (`Deciding`) and leaves `unreadable_messages`!
+    let recovered = store
+        .ingest_spruce_item(
+            &practice,
+            &lease.lease_token,
+            &readable_item(
+                6,
+                "msg-unreadable-6",
+                "conv-unreadable-6",
+                Some("+14155550406"),
+                Some("Recovered Voicemail"),
+                "Transcribed voicemail body.",
+                vec![],
+            ),
+            t_base + 5,
+        )
+        .await
+        .unwrap();
+    assert!(matches!(
+        recovered,
+        SpruceIngestOutcome::RecoveredUnreadable { .. }
+    ));
+
+    // Physician marks `msg-unreadable-8` `Done` -> leaves `unreadable_messages`!
+    let marked_done = store
+        .mark_unreadable_spruce_message_done(
+            auth.as_ref(),
+            &dr_all,
+            "msg-unreadable-8",
+            "cmd-done-8",
+            t_base + 6,
+        )
+        .await
+        .unwrap();
+    assert!(matches!(
+        marked_done.standing,
+        MessageStanding::MarkedDone { .. }
+    ));
+    assert!(
+        store
+            .today_spruce_summary_for_physician(auth.as_ref(), &dr_all)
+            .await
+            .unwrap()
+            .unreadable_messages
+            .is_empty()
+    );
+
+    // Transient failure (`CannotRead`, no `Reconnect`) vs Revoked (`ReconnectRequired` -> `reconnect_spruce_channel` preserving `place == 7`):
+    store
+        .record_spruce_channel_failure(
+            &practice,
+            &lease.lease_token,
+            ChannelStopCause::Transient {
+                reason: "Upstream Spruce 503".into(),
+            },
+            t_base + 7,
+        )
+        .await
+        .unwrap();
+    assert!(matches!(
+        store
+            .today_spruce_summary_for_physician(auth.as_ref(), &dr_all)
+            .await
+            .unwrap()
+            .channel_banner,
+        TodayChannelBanner::CannotRead { .. }
+    ));
+    // `reconnect_spruce_channel` is refused on a transient failure (Coda never asks to reconnect on transient errors!):
+    assert!(matches!(
+        store
+            .reconnect_spruce_channel(auth.as_ref(), &dr_all, t_base + 8)
+            .await,
+        Err(SpruceMatchingError::ChannelStateRefused { .. })
+    ));
+    store
+        .recover_spruce_channel_reading(&practice, &lease.lease_token, t_base + 9)
+        .await
+        .unwrap();
+    assert_eq!(
+        store
+            .today_spruce_summary_for_physician(auth.as_ref(), &dr_all)
+            .await
+            .unwrap()
+            .channel_banner,
+        TodayChannelBanner::Quiet
+    );
+
+    store
+        .record_spruce_channel_failure(
+            &practice,
+            &lease.lease_token,
+            ChannelStopCause::RevokedOrBlocked {
+                reason: "API key revoked in Spruce admin".into(),
+            },
+            t_base + 10,
+        )
+        .await
+        .unwrap();
+    assert!(matches!(
+        store
+            .today_spruce_summary_for_physician(auth.as_ref(), &dr_all)
+            .await
+            .unwrap()
+            .channel_banner,
+        TodayChannelBanner::ReconnectRequired { .. }
+    ));
+    let reconnected = store
+        .reconnect_spruce_channel(auth.as_ref(), &dr_all, t_base + 11)
+        .await
+        .unwrap();
+    assert!(matches!(
+        reconnected,
+        ChannelStanding::Connected {
+            place: 7,
+            health: ChannelHealth::Reading { .. },
+            ..
+        }
+    ));
+
+    // --- 4. 15-Minute Undecided Fallback (`Rule 6`) ---
+    // At `t_base + 899`, `msg-15min-7` (kept at `t_base`) stays `Deciding`; at `t_base + 900`, it routes to `Waiting`!
+    let before_deadline = store
+        .settle_undecided_spruce_messages(
+            auth.as_ref(),
+            &practice,
+            Some(&receiver),
+            t_base + FIFTEEN_MINUTES_SECONDS - 1,
+        )
+        .await
+        .unwrap();
+    assert!(
+        !before_deadline
+            .succeeded
+            .iter()
+            .any(|(id, _)| id == "msg-15min-7"),
+        "msg-15min-7 must remain Deciding before its 15-minute deadline"
+    );
+
+    let at_deadline = store
+        .settle_undecided_spruce_messages(
+            auth.as_ref(),
+            &practice,
+            Some(&receiver),
+            t_base + FIFTEEN_MINUTES_SECONDS,
+        )
+        .await
+        .unwrap();
+    assert!(at_deadline.succeeded.iter().any(
+        |(id, out)| id == "msg-15min-7" && matches!(out, MessageRoutingOutcome::Waiting { .. })
+    ));
+
+    // --- 5. `LeaveUnlinked` vs Sibling `Waiting` Join (`Join`) + Subsequent `Rule 3` Auto-Join ---
+    let t_sib = t_base + 1_000;
+    for (pos, mid, text) in [
+        (9, "msg-sib-1", "First message left unlinked."),
+        (10, "msg-sib-2", "Second message waits again."),
+        (11, "msg-sib-3", "Third message also waits."),
+    ] {
+        store
+            .ingest_spruce_item(
+                &practice,
+                &lease.lease_token,
+                &readable_item(
+                    pos,
+                    mid,
+                    "conv-siblings-join",
+                    Some("+14155550450"),
+                    Some("Alpha Thread"),
+                    text,
+                    vec![],
+                ),
+                t_sib + pos as i64,
+            )
+            .await
+            .unwrap();
+        store
+            .record_spruce_message_classification(
+                auth.as_ref(),
+                &practice,
+                mid,
+                None,
+                RECIPE_VERSION,
+                GUIDANCE_VERSION,
+                MatchingDecision::PatientMail {
+                    urgency: MessageUrgencyChoice::Ordinary,
+                    assessment: MatchAssessment::SuggestedPatient {
+                        workspace: pw_a.clone(),
+                        evidence_summary: "Thread candidate Alpha.".into(),
+                    },
+                    rationale: "Patient message.".into(),
+                },
+                Some(&receiver),
+                t_sib + pos as i64 + 10,
+            )
+            .await
+            .unwrap();
+    }
+
+    // Leave `msg-sib-1` unlinked: `msg-sib-1` becomes `LeftUnlinked`, while `conv-siblings-join` stays `Unlinked`
+    // and `msg-sib-2` + `msg-sib-3` stay `Waiting`!
+    let left_m1 = store
+        .leave_spruce_message_unlinked(
+            auth.as_ref(),
+            &dr_all,
+            "msg-sib-1",
+            "cmd-leave-sib-1",
+            t_sib + 30,
+        )
+        .await
+        .unwrap();
+    assert!(matches!(
+        left_m1.standing,
+        MessageStanding::LeftUnlinked { .. }
+    ));
+
+    // Confirming `msg-sib-2` onto `pw_a` links BOTH waiting siblings (`msg-sib-2` & `msg-sib-3`) together,
+    // while `msg-sib-1` remains `LeftUnlinked` (`ever_linked == false`)!
+    let confirmed_sibs = store
+        .confirm_spruce_message_link(
+            auth.as_ref(),
+            &dr_all,
+            "msg-sib-2",
+            &pw_a,
+            SenderConfirmationPolicy::ConversationOnly,
+            "cmd-confirm-sib-2",
+            Some(&receiver),
+            t_sib + 31,
+        )
+        .await
+        .unwrap();
+    assert_eq!(
+        confirmed_sibs.linked_message_ids,
+        vec!["msg-sib-2", "msg-sib-3"]
+    );
+    assert!(
+        !store
+            .spruce_message(&practice, "msg-sib-1")
+            .await
+            .unwrap()
+            .unwrap()
+            .ever_linked
+    );
+
+    // Later message `msg-sib-4` arriving in `conv-siblings-join` joins `pw_a` automatically (`Rule 3`):
+    store
+        .ingest_spruce_item(
+            &practice,
+            &lease.lease_token,
+            &readable_item(
+                12,
+                "msg-sib-4",
+                "conv-siblings-join",
+                Some("+14155550450"),
+                Some("Alpha Thread"),
+                "Fourth message in already-linked conversation.",
+                vec![],
+            ),
+            t_sib + 32,
+        )
+        .await
+        .unwrap();
+    let sib4_out = store
+        .record_spruce_message_classification(
+            auth.as_ref(),
+            &practice,
+            "msg-sib-4",
+            None,
+            RECIPE_VERSION,
+            GUIDANCE_VERSION,
+            MatchingDecision::PatientMail {
+                urgency: MessageUrgencyChoice::Ordinary,
+                assessment: MatchAssessment::NoMatchFound {
+                    evidence_summary: "Already linked conversation.".into(),
+                },
+                rationale: "Follow-up in linked conversation.".into(),
+            },
+            Some(&receiver),
+            t_sib + 33,
+        )
+        .await
+        .unwrap();
+    assert!(matches!(
+        sib4_out,
+        MessageRoutingOutcome::Linked {
+            ref workspace,
+            origin: LinkOrigin::JoinedExistingConversationLink,
+            ..
+        } if workspace == &pw_a
+    ));
+
+    // --- 6. Wrong-Patient `Move`, Multi-Hop `Undo`, `NotAPatient` + `Undo`, Settlement, & Isolation (`Rules 5, 7, 8`) ---
+    // `dr_only_a` opens `conv-siblings-join` on `pw_a`:
+    store
+        .open_spruce_conversation(auth.as_ref(), &dr_only_a, "conv-siblings-join", t_sib + 40)
+        .await
+        .unwrap();
+
+    // Move `A -> B`: immediately disappears from `pw_a` (`Rule 5`), drops `dr_only_a` from `open_viewers` (`Rule 1`),
+    // shows on `pw_b` with `move_undo.from_workspace == pw_a`, and emits ZERO reviews while `Undo` holds!
+    let reviews_before_move = receiver.accepted_requests().len();
+    let moved_b = store
+        .move_spruce_conversation(
+            auth.as_ref(),
+            &dr_all,
+            MoveSpruceConversationCommand {
+                conversation_id: "conv-siblings-join".into(),
+                destination: MoveDestination::AnotherPatient {
+                    workspace: pw_b.clone(),
+                },
+                undo_window_seconds: 10,
+                command_key: "cmd-move-a-to-b".into(),
+            },
+            Some(&receiver),
+            t_sib + 41,
+        )
+        .await
+        .unwrap();
+    assert_eq!(
+        moved_b
+            .move_undo
+            .as_ref()
+            .map(|u| u.from_workspace.as_str()),
+        Some(pw_a.as_str())
+    );
+    assert!(!moved_b.open_viewers.contains(&dr_only_a.physician_id));
+    assert!(
+        store
+            .patient_linked_spruce_messages(&practice, &pw_a)
+            .await
+            .unwrap()
+            .is_empty(),
+        "Rule 5: moved conversation must vanish from origin patient immediately"
+    );
+    assert_eq!(
+        store
+            .patient_linked_spruce_messages(&practice, &pw_b)
+            .await
+            .unwrap()
+            .len(),
+        3
+    );
+    assert_eq!(receiver.accepted_requests().len(), reviews_before_move);
+
+    // Move again `B -> C` while `Undo` holds: `from_workspace` stays `pw_a`! Then move `C -> A`: `move_undo` clears with ZERO reviews!
+    let moved_c = store
+        .move_spruce_conversation(
+            auth.as_ref(),
+            &dr_all,
+            MoveSpruceConversationCommand {
+                conversation_id: "conv-siblings-join".into(),
+                destination: MoveDestination::AnotherPatient {
+                    workspace: pw_c.clone(),
+                },
+                undo_window_seconds: 10,
+                command_key: "cmd-move-b-to-c".into(),
+            },
+            Some(&receiver),
+            t_sib + 42,
+        )
+        .await
+        .unwrap();
+    assert_eq!(
+        moved_c
+            .move_undo
+            .as_ref()
+            .map(|u| u.from_workspace.as_str()),
+        Some(pw_a.as_str())
+    );
+    let moved_back_a = store
+        .move_spruce_conversation(
+            auth.as_ref(),
+            &dr_all,
+            MoveSpruceConversationCommand {
+                conversation_id: "conv-siblings-join".into(),
+                destination: MoveDestination::AnotherPatient {
+                    workspace: pw_a.clone(),
+                },
+                undo_window_seconds: 10,
+                command_key: "cmd-move-c-to-a".into(),
+            },
+            Some(&receiver),
+            t_sib + 43,
+        )
+        .await
+        .unwrap();
+    assert!(moved_back_a.move_undo.is_none());
+    assert_eq!(receiver.accepted_requests().len(), reviews_before_move);
+
+    // Move `A -> NotAPatient`, receive `msg-sib-5` while `Undo` shows (`NotAPatient`), then press `Undo` ->
+    // ALL messages (`msg-sib-2`, `msg-sib-3`, `msg-sib-4`, AND `msg-sib-5`) restore onto `pw_a` (`Rule 7`),
+    // AND pressing `Undo` queues one review on `pw_a` because `msg-sib-5` arrived during `Undo`!
+    let a_reviews_before_np_undo = receiver.accepted_for_workspace(&pw_a).len();
+    store
+        .move_spruce_conversation(
+            auth.as_ref(),
+            &dr_all,
+            MoveSpruceConversationCommand {
+                conversation_id: "conv-siblings-join".into(),
+                destination: MoveDestination::NotAPatient,
+                undo_window_seconds: 10,
+                command_key: "cmd-move-not-patient".into(),
+            },
+            Some(&receiver),
+            t_sib + 50,
+        )
+        .await
+        .unwrap();
+    assert!(
+        store
+            .patient_linked_spruce_messages(&practice, &pw_a)
+            .await
+            .unwrap()
+            .is_empty()
+    );
+    store
+        .ingest_spruce_item(
+            &practice,
+            &lease.lease_token,
+            &readable_item(
+                13,
+                "msg-sib-5",
+                "conv-siblings-join",
+                Some("+14155550450"),
+                Some("Alpha Thread"),
+                "Arrived during NotAPatient Undo window.",
+                vec![],
+            ),
+            t_sib + 51,
+        )
+        .await
+        .unwrap();
+    store
+        .record_spruce_message_classification(
+            auth.as_ref(),
+            &practice,
+            "msg-sib-5",
+            None,
+            RECIPE_VERSION,
+            GUIDANCE_VERSION,
+            MatchingDecision::PatientMail {
+                urgency: MessageUrgencyChoice::Ordinary,
+                assessment: MatchAssessment::NoMatchFound {
+                    evidence_summary: "Mid-undo arrival.".into(),
+                },
+                rationale: "Patient message.".into(),
+            },
+            Some(&receiver),
+            t_sib + 52,
+        )
+        .await
+        .unwrap();
+    assert_eq!(
+        receiver.accepted_for_workspace(&pw_a).len(),
+        a_reviews_before_np_undo
+    );
+
+    store
+        .undo_spruce_conversation_move(
+            auth.as_ref(),
+            &dr_all,
+            "conv-siblings-join",
+            "cmd-undo-not-patient",
+            Some(&receiver),
+            t_sib + 53,
+        )
+        .await
+        .unwrap();
+    assert_eq!(
+        store
+            .patient_linked_spruce_messages(&practice, &pw_a)
+            .await
+            .unwrap()
+            .len(),
+        4,
+        "Undo must restore every message including mid-Undo arrival back onto pw_a"
+    );
+    assert_eq!(
+        receiver.accepted_for_workspace(&pw_a).len(),
+        a_reviews_before_np_undo + 1,
+        "Undo after mid-Undo arrival must trigger one review on origin patient pw_a"
+    );
+
+    // Now test real `Move` settlement (`A -> B` after `Undo` expires) + per-patient failure isolation (`Rule 8`):
+    // Also create a second conversation on `pw_c` moving `C -> B` so when `pw_c`'s review receiver fails,
+    // `conv-siblings-join` (`A -> B`) STILL settles cleanly without being blocked!
+    store
+        .ingest_spruce_item(
+            &practice,
+            &lease.lease_token,
+            &readable_item(
+                14,
+                "msg-c-1",
+                "conv-c-move",
+                Some("+14155550499"),
+                Some("Charlie Thread"),
+                "Message originally linked to Charlie.",
+                vec![],
+            ),
+            t_sib + 60,
+        )
+        .await
+        .unwrap();
+    store
+        .record_spruce_message_classification(
+            auth.as_ref(),
+            &practice,
+            "msg-c-1",
+            None,
+            RECIPE_VERSION,
+            GUIDANCE_VERSION,
+            MatchingDecision::PatientMail {
+                urgency: MessageUrgencyChoice::Ordinary,
+                assessment: MatchAssessment::NoMatchFound {
+                    evidence_summary: "Wait.".into(),
+                },
+                rationale: "Patient message.".into(),
+            },
+            None,
+            t_sib + 61,
+        )
+        .await
+        .unwrap();
+    store
+        .confirm_spruce_message_link(
+            auth.as_ref(),
+            &dr_all,
+            "msg-c-1",
+            &pw_c,
+            SenderConfirmationPolicy::ConversationOnly,
+            "cmd-link-c",
+            Some(&receiver),
+            t_sib + 62,
+        )
+        .await
+        .unwrap();
+
+    store
+        .move_spruce_conversation(
+            auth.as_ref(),
+            &dr_all,
+            MoveSpruceConversationCommand {
+                conversation_id: "conv-siblings-join".into(),
+                destination: MoveDestination::AnotherPatient {
+                    workspace: pw_b.clone(),
+                },
+                undo_window_seconds: 10,
+                command_key: "cmd-final-move-a-to-b".into(),
+            },
+            Some(&receiver),
+            t_sib + 70,
+        )
+        .await
+        .unwrap();
+    store
+        .move_spruce_conversation(
+            auth.as_ref(),
+            &dr_all,
+            MoveSpruceConversationCommand {
+                conversation_id: "conv-c-move".into(),
+                destination: MoveDestination::NotAPatient,
+                undo_window_seconds: 10,
+                command_key: "cmd-final-move-c-to-np".into(),
+            },
+            Some(&receiver),
+            t_sib + 70,
+        )
+        .await
+        .unwrap();
+
+    // Inject failure on `pw_c` only, then settle expired moves at `t_sib + 85`:
+    let a_reviews_before = receiver.accepted_for_workspace(&pw_a).len();
+    let b_reviews_before = receiver.accepted_for_workspace(&pw_b).len();
+    let c_reviews_before = receiver.accepted_for_workspace(&pw_c).len();
+    receiver.fail_workspace(&pw_c);
+
+    let settle_report = store
+        .settle_expired_spruce_moves(&practice, Some(&receiver), t_sib + 85)
+        .await
+        .unwrap();
+    assert_eq!(
+        settle_report.succeeded.len(),
+        1,
+        "A -> B move settlement must succeed even when pw_c fails"
+    );
+    assert_eq!(settle_report.failures.len(), 1);
+    assert_eq!(
+        receiver.accepted_for_workspace(&pw_a).len(),
+        a_reviews_before + 1,
+        "Rule 8: settling A -> B starts exactly 1 review for origin patient A"
+    );
+    assert_eq!(
+        receiver.accepted_for_workspace(&pw_b).len(),
+        b_reviews_before + 1,
+        "Rule 8: settling A -> B starts exactly 1 review for destination patient B"
+    );
+
+    // Clear `pw_c` failure and retry `dispatch_pending_spruce_reviews` -> `pw_c` review dispatches once!
+    receiver.clear_failures();
+    let retry_report = store
+        .dispatch_pending_spruce_reviews(&practice, &receiver, t_sib + 86)
+        .await
+        .unwrap();
+    assert!(!retry_report.succeeded.is_empty());
+    assert_eq!(
+        receiver.accepted_for_workspace(&pw_c).len(),
+        c_reviews_before + 1
+    );
+
+    // Verify permanent `entered_in_error` records on `pw_a` (`4` ever-linked messages from `conv-siblings-join`):
+    let entered_in_error_a = store
+        .entered_in_error_spruce_messages(&practice, &pw_a)
+        .await
+        .unwrap();
+    assert_eq!(entered_in_error_a.len(), 4);
+
+    // --- 7. `patient_review_inputs_with_spruce` Excludes Every Unlinked / Moved-Away Message ---
+    let inputs_a = store
+        .patient_review_inputs_with_spruce(&practice, &pw_a, auth.as_ref())
+        .await
+        .unwrap();
+    assert!(
+        inputs_a.linked_spruce_messages.is_empty(),
+        "moved-away and left-unlinked messages must never appear in pw_a's review inputs"
+    );
+    let inputs_b = store
+        .patient_review_inputs_with_spruce(&practice, &pw_b, auth.as_ref())
+        .await
+        .unwrap();
+    let b_msg_ids: Vec<&str> = inputs_b
+        .linked_spruce_messages
+        .iter()
+        .map(|m| m.message_id.as_str())
+        .collect();
+    assert_eq!(
+        b_msg_ids,
+        vec!["msg-sib-2", "msg-sib-3", "msg-sib-4", "msg-sib-5"],
+        "pw_b review inputs must include only messages currently Linked to pw_b"
+    );
+
+    // --- 8. Disconnect Channel (`Rule 11`): Deletes `!ever_linked` Messages, Keeps `ever_linked` & `entered_in_error` ---
+    let deleted = store
+        .disconnect_spruce_channel(auth.as_ref(), &dr_all, t_sib + 100)
+        .await
+        .unwrap();
+    assert!(
+        deleted >= 5,
+        "all never-linked messages must be deleted on disconnect"
+    );
+
+    for never_linked_id in [
+        "msg-backlog-3",
+        "msg-unreadable-6",
+        "msg-15min-7",
+        "msg-unreadable-8",
+        "msg-sib-1",
+    ] {
+        assert!(
+            store
+                .spruce_message(&practice, never_linked_id)
+                .await
+                .unwrap()
+                .is_none(),
+            "Rule 11: never-linked message `{never_linked_id}` must be deleted when channel disconnects"
+        );
+    }
+    for ever_linked_id in [
+        "msg-sib-2",
+        "msg-sib-3",
+        "msg-sib-4",
+        "msg-sib-5",
+        "msg-c-1",
+    ] {
+        assert!(
+            store
+                .spruce_message(&practice, ever_linked_id)
+                .await
+                .unwrap()
+                .is_some(),
+            "Rule 11: ever-linked message `{ever_linked_id}` (including moved to NotAPatient) must be retained under record policy"
+        );
+    }
+    assert_eq!(
+        store
+            .entered_in_error_spruce_messages(&practice, &pw_a)
+            .await
+            .unwrap()
+            .len(),
+        4,
+        "entered_in_error audit records must remain after channel disconnect"
+    );
+    assert_eq!(
+        store
+            .today_spruce_summary_for_physician(auth.as_ref(), &dr_all)
+            .await
+            .unwrap()
+            .channel_banner,
+        TodayChannelBanner::Quiet
+    );
+}
