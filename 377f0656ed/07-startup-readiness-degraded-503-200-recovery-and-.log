@@ -1,5 +1,6 @@
-   Compiling physician-sample v0.1.0 (/tmp/pr-e1-fix/crates/physician-sample)
-    Finished `test` profile [unoptimized + debuginfo] target(s) in 32.31s
+    Blocking waiting for file lock on package cache
+   Compiling physician-sample v0.1.0 (/tmp/pr-e1-rebase/crates/physician-sample)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 33.07s
      Running tests/startup_readiness.rs (/tmp/coda-target-integrator/debug/deps/startup_readiness-6c006238b7524359)
 
 running 3 tests
@@ -7,9 +8,9 @@ test invalid_hosted_config_refuses_immediately_without_serving ... ok
 test sample_and_worker_start_serving_degraded_readyz_when_postgres_is_unreachable ... ok
 test sample_and_worker_recover_readyz_from_503_to_200_when_postgres_recovers ... ok
 
-test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.86s
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.84s
 
-    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.73s
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.96s
      Running tests/worker.rs (/tmp/coda-target-integrator/debug/deps/worker-a38024f4a0a2ec53)
 
 running 25 tests
@@ -18,7 +19,7 @@ test a_failed_attempt_is_retried_and_links_to_the_accepting_request ... ok
 test a_hosted_worker_starts_without_push_identity_settings ... ok
 test a_lease_that_runs_out_unannounced_is_taken_at_its_end_not_at_the_next_poll ... ok
 test a_recovered_run_sends_the_memory_it_first_sent ... ok
-test a_rehearsal_turn_marked_to_fail_fails_once_and_its_successor_answers ... ok
+test a_rehearsal_turn_configured_to_fail_fails_once_and_message_markers_are_ignored ... ok
 test a_reply_revision_reads_memory_and_its_notes_come_from_the_instruction ... ok
 test a_request_the_provider_rejects_holds_the_turn_and_is_not_sent_again ... ok
 test a_scripted_finish_cites_the_record_the_worker_read ... ok
@@ -39,5 +40,5 @@ test the_worker_serves_no_work_route ... ok
 test work_resumed_after_a_stopped_worker_died_is_taken_at_its_lease_end ... ok
 test work_that_becomes_due_unannounced_is_found_by_the_poll ... ok
 
-test result: ok. 24 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 112.37s
+test result: ok. 24 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 114.03s
 
