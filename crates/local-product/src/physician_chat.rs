@@ -220,12 +220,14 @@ pub enum Job {
     PatientReview,
     /// Scheduled pre-visit briefing preparation.
     VisitPreparation,
+    /// Inbound Spruce patient message matching and classification.
+    SpruceMatching,
 }
 
 impl Job {
     /// Every Chords job. [`PhysicianSkills::load`] checks each one's start
     /// skills against the package.
-    const ALL: [Self; 7] = [
+    const ALL: [Self; 8] = [
         Self::Chat,
         Self::ReplyRevision,
         Self::PatientRounds,
@@ -233,6 +235,7 @@ impl Job {
         Self::InitialUnderstanding,
         Self::PatientReview,
         Self::VisitPreparation,
+        Self::SpruceMatching,
     ];
 
     /// The skills this job loads at its start, as written beside its instructions.
@@ -244,7 +247,8 @@ impl Job {
             Self::PracticeBackground
             | Self::InitialUnderstanding
             | Self::PatientReview
-            | Self::VisitPreparation => &[],
+            | Self::VisitPreparation
+            | Self::SpruceMatching => &[],
         }
     }
 }
@@ -263,12 +267,19 @@ pub fn tools() -> Vec<Tool> {
     offered
 }
 
+/// Shared harness work tools (`skill_view`, `read_tool_result`, conversation history),
+/// with no patient-scoped tools.
+pub(crate) fn harness_work_tools() -> Vec<Tool> {
+    let mut offered = vec![PhysicianSkills::tool(), harness::engine::results::tool()];
+    offered.extend(harness::engine::history::tools());
+    offered
+}
+
 /// Shared capabilities implemented by durable Chords chat and revision work,
 /// the patient memory tools among them. Each recipe adds the working notes
 /// with their guidance.
 pub fn work_tools() -> Vec<Tool> {
-    let mut offered = vec![PhysicianSkills::tool(), harness::engine::results::tool()];
-    offered.extend(harness::engine::history::tools());
+    let mut offered = harness_work_tools();
     offered.extend(memory::tools());
     offered
 }

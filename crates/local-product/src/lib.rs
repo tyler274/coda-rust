@@ -25,6 +25,8 @@ pub mod physician_sources;
 pub mod runtime;
 /// Practice-scoped source patient links, pull status, and check/reconnect operations.
 pub mod source_status;
+/// Unmatched Spruce message classification and patient-match suggestion recipe.
+pub mod spruce_matching_recipe;
 /// Recipe, context, and tool descriptors for visit selection and visit briefings.
 pub mod visit_preparation;
 

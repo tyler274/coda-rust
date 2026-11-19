@@ -9,13 +9,8 @@
 //! unmatched messages wait for physician confirmation without reading any
 //! patient's clinical chart and never enter patient reviews until linked.
 
-use super::dispatch::ReviewReceiver;
-use super::entities::{schedule_patient_link, source_pull};
-use super::jobs::{PracticeAccessError, PracticeAuthority, PracticeJobError, PracticeScope};
-use super::receipt::{self, Receipt};
-use super::sources::Observation;
-use super::{Store, conversion_error, error};
-use crate::physician_sources::SourcePatient;
+use std::collections::{BTreeMap, BTreeSet};
+
 use patient_work::{ReviewReason, ReviewRequest};
 use physician_auth::{AuthStore, Membership, PhysicianIdentity, StoreUnavailable};
 use sea_orm::{
@@ -24,8 +19,15 @@ use sea_orm::{
 };
 use serde::{Deserialize, Serialize};
 use serde_json::json;
-use std::collections::{BTreeMap, BTreeSet};
 use uuid::Uuid;
+
+use super::dispatch::ReviewReceiver;
+use super::entities::{schedule_patient_link, source_pull};
+use super::jobs::{PracticeAccessError, PracticeAuthority, PracticeJobError, PracticeScope};
+use super::receipt::{self, Receipt};
+use super::sources::Observation;
+use super::{Store, conversion_error, error};
+use crate::physician_sources::SourcePatient;
 
 /// Maximum seconds a kept message may stay in [`MessageStanding::Deciding`]
 /// before routing automatically so no patient message stays invisible (`15` minutes).
@@ -5606,6 +5608,77 @@ impl Store {
         }
         Ok(roster)
     }
+
+    pub(crate) fn spruce_db(&self) -> &sea_orm::DatabaseConnection {
+        &self.db
+    }
+
+    pub(crate) async fn spruce_now(&self) -> Result<i64, DbErr> {
+        super::now(&self.db).await
+    }
+
+    pub(crate) async fn keep_spruce_matching_frozen(
+        &self,
+        tx: &impl ConnectionTrait,
+        practice: &str,
+        binding: &harness::engine::recipe::RequestBinding,
+        skills: &crate::physician_chat::PhysicianSkills,
+    ) -> Result<(super::BindingRef, super::SkillPackageId), DbErr> {
+        let binding_ref =
+            super::frozen::keep_owner_binding(tx, practice, super::jobs::PRACTICE_OWNER, binding)
+                .await?;
+        let skills_id =
+            super::frozen::keep_owner_skills(tx, practice, super::jobs::PRACTICE_OWNER, skills)
+                .await?;
+        Ok((binding_ref, skills_id))
+    }
+
+    pub(crate) async fn load_spruce_matching_frozen(
+        &self,
+        practice: &str,
+        binding_ref: &super::BindingRef,
+        skills_id: &super::SkillPackageId,
+    ) -> Result<
+        (
+            harness::engine::recipe::RequestBinding,
+            crate::physician_chat::PhysicianSkills,
+        ),
+        DbErr,
+    > {
+        let binding = super::frozen::owner_binding(
+            &self.db,
+            practice,
+            super::jobs::PRACTICE_OWNER,
+            binding_ref,
+        )
+        .await?;
+        let skills =
+            super::frozen::owner_skills(&self.db, practice, super::jobs::PRACTICE_OWNER, skills_id)
+                .await?;
+        Ok((binding, skills))
+    }
+
+    pub(crate) async fn evaluate_conversation_identity_for_matching(
+        &self,
+        practice: &str,
+        sender_address: Option<&SenderAddress>,
+        outside_participants: &[OutsideParticipant],
+        registered_workspaces: &BTreeSet<String>,
+    ) -> Result<(BTreeSet<String>, ChannelTieEvaluation), SpruceMatchingError> {
+        let practice = require_id(practice, "practice")?;
+        let confirmed_sender = confirmed_workspaces_for_conversation_in_tx(
+            &self.db,
+            practice,
+            sender_address,
+            outside_participants,
+            registered_workspaces,
+        )
+        .await?;
+        let (contacts, ehr_map) =
+            load_practice_channel_evidence_in_tx(&self.db, practice, registered_workspaces).await?;
+        let channel_tie = evaluate_channel_tie(outside_participants, &contacts, &ehr_map);
+        Ok((confirmed_sender, channel_tie))
+    }
 }
 
 async fn settle_expired_move_in_tx(
@@ -5763,4 +5836,36 @@ async fn linked_messages_for_conversation_in_tx(
         .all(db)
         .await?;
     rows.into_iter().map(decode_message_row).collect()
+}
+
+pub(crate) fn spruce_db_error(message: &str) -> DbErr {
+    error(message)
+}
+
+pub(crate) fn spruce_conversion_error<E>(
+    from: &'static str,
+    to: &'static str,
+) -> impl FnOnce(E) -> DbErr
+where
+    E: std::error::Error + Send + Sync + 'static,
+{
+    conversion_error(from, to)
+}
+
+pub(crate) fn is_spruce_working_note_tool(name: &str) -> bool {
+    super::working_notes::is_tool(name)
+}
+
+pub(crate) fn execute_spruce_working_note<'a>(
+    work: &str,
+    call: &harness::engine::Invocation<serde_json::Value>,
+    records: impl IntoIterator<Item = (&'a str, &'a harness::engine::Event)>,
+) -> Result<Option<harness::engine::ToolOutcome>, harness::engine::Cause> {
+    super::working_notes::execute(work, call, records)
+}
+
+pub(crate) fn spruce_working_note_references<'a>(
+    records: impl IntoIterator<Item = (&'a str, &'a harness::engine::Event)>,
+) -> Result<Vec<String>, harness::engine::Cause> {
+    super::working_notes::references(records)
 }

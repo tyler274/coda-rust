@@ -6,9 +6,20 @@
 //! or `PHYSICIAN_DATABASE_URL` is set; panics if neither is set when
 //! `CODA_REQUIRE_POSTGRES_TESTS=1`.
 
-use local_product::physician_sources::{
-    MedicalRecordNumber, ReadablePart, RecordDate, SourcePatient, SourceRevision,
+use axum::{
+    Json, Router,
+    extract::State,
+    http::{StatusCode, header},
+    response::IntoResponse,
+    routing::post,
 };
+use harness::provider::ResponsesProvider;
+use local_product::physician_chat::{PhysicianSkills, SKILL_VIEW};
+use local_product::physician_sources::{
+    MedicalRecordNumber, READ_TOOL, ReadablePart, RecordDate, SEARCH_TOOL, SourcePatient,
+    SourceRevision,
+};
+use local_product::runtime::concerns::CONCERN_TOOL;
 use local_product::runtime::dispatch::ReviewReceiver;
 use local_product::runtime::jobs::{PracticeAccessError, PracticeJobError};
 use local_product::runtime::sources::SourcePull;
@@ -16,22 +27,31 @@ use local_product::runtime::spruce_matching::{
     BacklogStanding, ChannelHealth, ChannelStanding, ChannelStopCause, ChannelTieConflict,
     ChannelTieEvaluation, FIFTEEN_MINUTES_SECONDS, IncomingSpruceItem, LinkOrigin, MatchAssessment,
     MatchingDecision, MessageRoutingOutcome, MessageStanding, MessageUrgencyChoice,
-    MoveDestination, MoveSpruceConversationCommand, OutsideParticipant, ReadableSpruceItem,
-    SenderAddress, SenderConfirmationPolicy, SpruceContactPatient, SpruceContactRecord,
-    SpruceEhrLink, SpruceIngestOutcome, SpruceMatchingError, TodayChannelBanner,
-    UnreadableSpruceItem, evaluate_automatic_link, evaluate_channel_tie,
+    MoveDestination, MoveSpruceConversationCommand, NonPatientCategory, OutsideParticipant,
+    ReadableSpruceItem, RoutingOrigin, SenderAddress, SenderConfirmationPolicy,
+    SpruceAttachmentSummary, SpruceContactPatient, SpruceContactRecord, SpruceEhrLink,
+    SpruceIngestOutcome, SpruceMatchingError, TodayChannelBanner, UnreadableSpruceItem,
+    evaluate_automatic_link, evaluate_channel_tie,
 };
-use local_product::runtime::{Store, async_trait};
-use local_product::sha256_hex;
+use local_product::runtime::{Store, async_trait, engine};
+use local_product::spruce_matching_recipe::{
+    GUIDANCE_VERSION, INSTRUCTIONS, MatchingInitialLoad, MatchingRunStatus,
+    MatchingStartingContext, PATIENT_LOOKUP_TOOL, RECIPE_VERSION, SUBMIT_CLASSIFICATION_TOOL,
+    ToolDiscoveryDisposition, instructions_sha256, patient_lookup_tool, recipe as matching_recipe,
+    run_spruce_message_matching, submit_classification_tool, tools as matching_tools,
+};
+use local_product::{ModelBinding, ModelRoles, sha256_hex};
 use patient_work::{ReviewReason, ReviewRequest};
 use physician_auth::{AuthStore, Membership, PhysicianIdentity, PostgresAuthStore, PracticeClock};
-use serde_json::json;
-use std::collections::{BTreeMap, BTreeSet};
+use serde_json::{Value, json};
+use std::collections::{BTreeMap, BTreeSet, VecDeque};
+use std::path::PathBuf;
 use std::sync::{Arc, Mutex};
 use uuid::Uuid;
 
-const RECIPE_VERSION: &str = "spruce-matching-v1";
-const GUIDANCE_VERSION: &str = "spruce-matching-guidance-v1";
+#[allow(dead_code)]
+#[path = "../../../verification/model_text.rs"]
+mod model_text;
 
 const SECRET_CHART_SENTINEL: &str = "CONFIDENTIAL_BIOPSY_SENTINEL_NEVER_IN_MATCHING_9941";
 
@@ -49,6 +69,30 @@ fn database_url() -> Option<String> {
         "CODA_REQUIRE_POSTGRES_TESTS=1 requires PHYSICIAN_RUNTIME_TEST_DATABASE_URL or PHYSICIAN_DATABASE_URL"
     );
     None
+}
+
+fn load_skills() -> PhysicianSkills {
+    PhysicianSkills::load(&PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../../skills"))
+        .expect("load physician skills catalog")
+}
+
+fn distinct_roles() -> ModelRoles {
+    ModelRoles {
+        chat: ModelBinding {
+            model: "interactive-chat-lane".into(),
+            effort: "low".into(),
+            context_window_tokens: 128_000,
+            max_input_tokens: 100_000,
+            adapter: "fixture".into(),
+        },
+        background: ModelBinding {
+            model: "background-spruce-matching-lane".into(),
+            effort: "medium".into(),
+            context_window_tokens: 272_000,
+            max_input_tokens: 250_000,
+            adapter: "fixture".into(),
+        },
+    }
 }
 
 async fn connect_stores(url: &str) -> (Store, Arc<PostgresAuthStore>) {
@@ -242,6 +286,144 @@ impl ReviewReceiver for RecordingReviewReceiver {
             .entry((request.practice_id.clone(), request.command_key.clone()))
             .or_insert_with(|| request.clone());
         Ok(())
+    }
+}
+
+struct ScriptedProvider {
+    turns: VecDeque<Result<engine::Turn, String>>,
+    requests: Vec<engine::recipe::Request>,
+}
+
+impl ScriptedProvider {
+    fn new(turns: Vec<Result<engine::Turn, String>>) -> Self {
+        Self {
+            turns: VecDeque::from(turns),
+            requests: Vec::new(),
+        }
+    }
+}
+
+impl engine::recipe::Provider for ScriptedProvider {
+    async fn exchange(
+        &mut self,
+        request: &engine::recipe::Request,
+        _: &engine::Cancellation,
+        _: &engine::RunLimits,
+        _: &mut dyn engine::recipe::Observer,
+    ) -> Result<engine::Turn, engine::Cause> {
+        self.requests.push(request.clone());
+        match self
+            .turns
+            .pop_front()
+            .expect("scripted provider ran out of turns")
+        {
+            Ok(turn) => Ok(turn),
+            Err(err) => Err(err.into()),
+        }
+    }
+}
+
+fn call_turn(id: &str, name: &str, args: Value) -> Result<engine::Turn, String> {
+    Ok(engine::Turn {
+        items: vec![engine::Item::Call(engine::Invocation {
+            id: id.to_owned(),
+            name: name.to_owned(),
+            arguments: serde_json::to_string(&args).unwrap(),
+        })],
+        receipt: json!({ "call_id": id }),
+        usage: Default::default(),
+    })
+}
+
+fn done_turn(text: &str) -> Result<engine::Turn, String> {
+    Ok(engine::Turn {
+        items: vec![engine::Item::assistant(text)],
+        receipt: json!({ "done": true }),
+        usage: Default::default(),
+    })
+}
+
+#[test]
+fn matching_recipe_model_text_is_hygienic_and_excludes_all_chart_and_physician_tools() {
+    model_text::assert_clean_model_text(INSTRUCTIONS);
+
+    let lookup = patient_lookup_tool();
+    let submit = submit_classification_tool();
+    model_text::assert_clean_model_text(&serde_json::to_string(&lookup.function()).unwrap());
+    model_text::assert_clean_model_text(&serde_json::to_string(&submit.function()).unwrap());
+
+    let sample_ctx = MatchingStartingContext {
+        practice: "practice-demo".into(),
+        message_id: "msg-demo-1".into(),
+        conversation_id: "conv-demo-1".into(),
+        content_version: "ver-demo-1".into(),
+        sender_address: Some(SenderAddress::parse("+14155550101").unwrap()),
+        author_name: Some("Clara Oswald".into()),
+        body_text: "Could I refill my blood pressure medication before Friday?".into(),
+        attachments: vec![SpruceAttachmentSummary {
+            kind: "image".into(),
+            title: Some("Bottle label".into()),
+            name: Some("bottle.jpg".into()),
+            mimetype: Some("image/jpeg".into()),
+        }],
+        created_at_spruce: Some("2026-11-12T15:00:00Z".into()),
+        outside_participants: vec![OutsideParticipant {
+            display_name: Some("Clara Oswald".into()),
+            endpoint_channel: Some("sms".into()),
+            endpoint_address: Some(SenderAddress::parse("+14155550101").unwrap()),
+            saved_contact_id: Some("spruce-contact-1".into()),
+        }],
+        confirmed_sender_workspaces: Vec::new(),
+        channel_tie: ChannelTieEvaluation::Untied,
+    };
+    model_text::assert_clean_model_text(&sample_ctx.prompt_text());
+
+    let skills = load_skills();
+    let roles = distinct_roles();
+    let built = matching_recipe(&roles, &skills);
+    assert_eq!(built.model, roles.background.model);
+    assert_eq!(
+        built.context_window_tokens,
+        roles.background.context_window_tokens
+    );
+    assert_eq!(built.max_input_tokens, roles.background.max_input_tokens);
+    assert_eq!(built.options, json!({ "effort": roles.background.effort }));
+
+    let tool_names: BTreeSet<String> = matching_tools().into_iter().map(|t| t.name).collect();
+    assert!(tool_names.contains(PATIENT_LOOKUP_TOOL));
+    assert!(tool_names.contains(SUBMIT_CLASSIFICATION_TOOL));
+    assert!(tool_names.contains(SKILL_VIEW));
+
+    for forbidden in [
+        READ_TOOL,
+        SEARCH_TOOL,
+        CONCERN_TOOL,
+        "list_patient_memory",
+        "read_patient_memory",
+        "search_patient_memory",
+        "add_patient_memory_note",
+        "edit_patient_memory",
+        "read_patient_understanding",
+        "save_patient_understanding",
+        "read_patient_reviews",
+        "complete_patient_review",
+        "refresh_patient_sources",
+        "retrieve_patient_work",
+        "search_clinical_library",
+        "read_clinical_library",
+        "save_visit_briefing",
+        "select_visits_for_preparation",
+        "propose_patient_reply",
+    ] {
+        assert!(
+            !tool_names.contains(forbidden),
+            "matching recipe tools must never include clinical chart or physician tool `{forbidden}`"
+        );
+        let serialized_tools = serde_json::to_string(&built.tools).unwrap();
+        assert!(
+            !serialized_tools.contains(&format!("\"{forbidden}\"")),
+            "built matching RequestRecipe must never advertise `{forbidden}`"
+        );
     }
 }
 
@@ -827,6 +1009,740 @@ async fn rule_4_auto_links_only_on_uncontradicted_unique_identity_and_enforces_a
             )
             .await,
         Err(SpruceMatchingError::AccessDenied { .. })
+    ));
+}
+
+#[tokio::test]
+async fn matching_recipe_runs_on_background_lane_records_provenance_and_handles_synthetic_cases_and_this_is_a_patient()
+ {
+    let Some(url) = database_url() else {
+        return;
+    };
+    let (store, auth) = connect_stores(&url).await;
+    let skills = load_skills();
+    let roles = distinct_roles();
+    let now_ts: i64 = 1_762_970_000;
+    let practice = format!("practice-recipe-{}", Uuid::new_v4().simple());
+    auth.ensure_practice(&practice, PracticeClock::RealTime)
+        .await
+        .unwrap();
+
+    let dr = invite_physician(&auth, &practice, "DrMatcher", now_ts as u64).await;
+    let pw_alice = format!("pw-alice-{}", Uuid::new_v4().simple());
+    let pw_ben_twin = format!("pw-ben-{}", Uuid::new_v4().simple());
+    let pw_maya_twin = format!("pw-maya-{}", Uuid::new_v4().simple());
+    let pw_spouse_husband = format!("pw-husband-{}", Uuid::new_v4().simple());
+    let pw_spouse_wife = format!("pw-wife-{}", Uuid::new_v4().simple());
+
+    for (ws, ehr_id, name, dob) in [
+        (&pw_alice, "ehr-alice", "Alice Nguyen", "1979-02-14"),
+        (&pw_ben_twin, "ehr-ben", "Ben Alvarez", "2018-06-10"),
+        (&pw_maya_twin, "ehr-maya", "Maya Alvarez", "2018-06-10"),
+        (
+            &pw_spouse_husband,
+            "ehr-husband",
+            "David Park",
+            "1972-09-01",
+        ),
+        (&pw_spouse_wife, "ehr-wife", "Hannah Park", "1974-12-19"),
+    ] {
+        seed_patient_with_chart(
+            &store,
+            &auth,
+            &practice,
+            ws,
+            ehr_id,
+            name,
+            dob,
+            SECRET_CHART_SENTINEL,
+            now_ts,
+        )
+        .await;
+        auth.set_membership(&dr, ws, Membership::Allowed)
+            .await
+            .unwrap();
+    }
+
+    // Confirm `+14155550204` for David Park (`pw_spouse_husband`) so we can prove caregiver/spouse
+    // contradiction when David texts from his confirmed phone about his wife Hannah (`pw_spouse_wife`)!
+    let david_phone = SenderAddress::parse("+14155550204").unwrap();
+    store
+        .record_spruce_confirmed_sender(
+            &practice,
+            &david_phone,
+            &pw_spouse_husband,
+            &dr.physician_id,
+            now_ts,
+        )
+        .await
+        .unwrap();
+
+    // Shared parent phone `+14155550202` confirmed for BOTH siblings Ben and Maya Alvarez:
+    let parent_phone = SenderAddress::parse("+14155550202").unwrap();
+    store
+        .record_spruce_confirmed_sender(
+            &practice,
+            &parent_phone,
+            &pw_ben_twin,
+            &dr.physician_id,
+            now_ts,
+        )
+        .await
+        .unwrap();
+    store
+        .record_spruce_confirmed_sender(
+            &practice,
+            &parent_phone,
+            &pw_maya_twin,
+            &dr.physician_id,
+            now_ts,
+        )
+        .await
+        .unwrap();
+
+    store
+        .connect_spruce_channel(auth.as_ref(), &dr, 0, None, now_ts)
+        .await
+        .unwrap();
+    let lease = store
+        .acquire_spruce_reader_lease(&practice, "worker-recipe", 300, now_ts)
+        .await
+        .unwrap();
+    let receiver = RecordingReviewReceiver::default();
+
+    // --- Synthetic Case 1: Unique patient match + provenance, initial_loads, skill_view, patient_lookup, finish barrier ---
+    store
+        .ingest_spruce_item(
+            &practice,
+            &lease.lease_token,
+            &readable_item(
+                1,
+                "msg-syn-unique",
+                "conv-syn-unique",
+                Some("+14155550201"),
+                Some("Alice N."),
+                "Hi, this is Alice Nguyen (DOB 1979-02-14). Could we check whether my lisinopril refill went through?",
+                vec![OutsideParticipant {
+                    display_name: Some("Alice N.".into()),
+                    endpoint_channel: Some("sms".into()),
+                    endpoint_address: Some(SenderAddress::parse("+14155550201").unwrap()),
+                    saved_contact_id: None,
+                }],
+            ),
+            now_ts + 1,
+        )
+        .await
+        .unwrap();
+
+    let first_skill_name = "patient-record-retrieval".to_owned();
+    let mut provider_unique = ScriptedProvider::new(vec![
+        // Turn 1: model attempts to finish prematurely before submitting classification -> Finish::Continue barrier!
+        done_turn("Premature finish before classification."),
+        // Turn 2: model opens a skill via `skill_view` and searches `patient_lookup` for `"Nguyen"`
+        Ok(engine::Turn {
+            items: vec![
+                engine::Item::Call(engine::Invocation {
+                    id: "call-skill-1".into(),
+                    name: SKILL_VIEW.into(),
+                    arguments: json!({ "name": first_skill_name }).to_string(),
+                }),
+                engine::Item::Call(engine::Invocation {
+                    id: "call-lookup-alice".into(),
+                    name: PATIENT_LOOKUP_TOOL.into(),
+                    arguments: json!({ "query": "Nguyen" }).to_string(),
+                }),
+            ],
+            receipt: json!({ "turn": 2 }),
+            usage: Default::default(),
+        }),
+        // Turn 3: model submits `SuggestedPatient` for Alice
+        call_turn(
+            "call-submit-alice",
+            SUBMIT_CLASSIFICATION_TOOL,
+            json!({
+                "classification": "patient_mail",
+                "urgency": "ordinary",
+                "match_outcome": "suggested_patient",
+                "suggested_workspace": pw_alice,
+                "evidence_summary": "Message states full name Alice Nguyen and birth date 1979-02-14 matching roster.",
+                "rationale": "Routine medication refill inquiry from Alice Nguyen on an unconfirmed number."
+            }),
+        ),
+        done_turn("Classified as patient mail with suggested match Alice Nguyen."),
+    ]);
+
+    let completed_unique = run_spruce_message_matching(
+        &store,
+        auth.as_ref(),
+        &practice,
+        "msg-syn-unique",
+        &roles,
+        &skills,
+        &mut provider_unique,
+        Some(&receiver),
+        engine::RunLimits::default(),
+        &engine::Cancellation::default(),
+    )
+    .await
+    .unwrap();
+
+    // Verify background lane binding (never chat lane) & complete provenance:
+    assert_eq!(completed_unique.run.status, MatchingRunStatus::Completed);
+    assert_eq!(
+        completed_unique.run.provenance.model,
+        roles.background.model
+    );
+    assert_ne!(completed_unique.run.provenance.model, roles.chat.model);
+    assert_eq!(
+        completed_unique.run.provenance.effort,
+        roles.background.effort
+    );
+    assert_eq!(
+        completed_unique.run.provenance.context_window_tokens,
+        roles.background.context_window_tokens
+    );
+    assert_eq!(
+        completed_unique.run.provenance.max_input_tokens,
+        roles.background.max_input_tokens
+    );
+    assert_eq!(
+        completed_unique.run.provenance.recipe_version,
+        RECIPE_VERSION
+    );
+    assert_eq!(
+        completed_unique.run.provenance.guidance_version,
+        GUIDANCE_VERSION
+    );
+    assert_eq!(
+        completed_unique.run.provenance.guidance_sha256,
+        instructions_sha256()
+    );
+    assert_eq!(provider_unique.requests[0].model, roles.background.model);
+
+    // Verify StartingContext & patient_lookup never exposed SECRET_CHART_SENTINEL:
+    let all_requests_wire = serde_json::to_string(&provider_unique.requests).unwrap();
+    assert!(
+        !all_requests_wire.contains(SECRET_CHART_SENTINEL),
+        "matching run requests and tool outputs must never contain clinical chart content"
+    );
+    assert!(
+        all_requests_wire.contains("classification_not_submitted"),
+        "premature finish without submit_message_classification must trigger Finish::Continue feedback"
+    );
+
+    // Verify initial_loads & tool_discoveries & events recorded on run:
+    assert_eq!(completed_unique.run.initial_loads.len(), 4);
+    assert!(matches!(
+        &completed_unique.run.initial_loads[0],
+        MatchingInitialLoad::ResidentGuidance { version, .. } if version == GUIDANCE_VERSION
+    ));
+    assert!(matches!(
+        &completed_unique.run.initial_loads[1],
+        MatchingInitialLoad::SkillCatalogMetadata { .. }
+    ));
+    assert!(matches!(
+        &completed_unique.run.initial_loads[2],
+        MatchingInitialLoad::SavedMessageEnvelope { message_id, .. } if message_id == "msg-syn-unique"
+    ));
+    assert!(matches!(
+        &completed_unique.run.initial_loads[3],
+        MatchingInitialLoad::ConversationParticipants {
+            outside_participant_count: 1,
+            ..
+        }
+    ));
+
+    let discovered_tools: Vec<&str> = completed_unique
+        .run
+        .tool_discoveries
+        .iter()
+        .map(|d| d.tool_name.as_str())
+        .collect();
+    assert_eq!(
+        discovered_tools,
+        vec![SKILL_VIEW, PATIENT_LOOKUP_TOOL, SUBMIT_CLASSIFICATION_TOOL]
+    );
+    assert!(
+        completed_unique
+            .run
+            .tool_discoveries
+            .iter()
+            .all(|d| d.disposition == ToolDiscoveryDisposition::Returned)
+    );
+    assert!(!completed_unique.run.events.is_empty());
+
+    // `spruce_matching` retains sole auto-link authority: unconfirmed phone waits with suggestion!
+    assert_eq!(
+        completed_unique.routing_outcome,
+        MessageRoutingOutcome::Waiting {
+            suggested_workspace: Some(pw_alice.clone()),
+        }
+    );
+
+    // --- Synthetic Case 2: Ambiguous sibling match (`AmbiguousCandidates` >= 2) ---
+    store
+        .ingest_spruce_item(
+            &practice,
+            &lease.lease_token,
+            &readable_item(
+                2,
+                "msg-syn-siblings",
+                "conv-syn-siblings",
+                Some("+14155550202"),
+                Some("Alvarez Parent"),
+                "Our child woke up with a mild earache after school; do you have a sick visit tomorrow?",
+                vec![OutsideParticipant {
+                    display_name: Some("Alvarez Parent".into()),
+                    endpoint_channel: Some("sms".into()),
+                    endpoint_address: Some(parent_phone.clone()),
+                    saved_contact_id: None,
+                }],
+            ),
+            now_ts + 2,
+        )
+        .await
+        .unwrap();
+
+    let mut provider_siblings = ScriptedProvider::new(vec![
+        call_turn(
+            "lookup-siblings",
+            PATIENT_LOOKUP_TOOL,
+            json!({ "query": "Alvarez" }),
+        ),
+        call_turn(
+            "submit-siblings",
+            SUBMIT_CLASSIFICATION_TOOL,
+            json!({
+                "classification": "patient_mail",
+                "urgency": "ordinary",
+                "match_outcome": "ambiguous_candidates",
+                "candidate_workspaces": [pw_ben_twin, pw_maya_twin],
+                "evidence_summary": "Parent phone +14155550202 is shared by siblings Ben Alvarez and Maya Alvarez, and the message does not name which child has the earache.",
+                "rationale": "Caregiver message about one of two siblings; withhold single guess."
+            }),
+        ),
+        done_turn("Waiting for physician to choose between Ben Alvarez and Maya Alvarez."),
+    ]);
+    let completed_siblings = run_spruce_message_matching(
+        &store,
+        auth.as_ref(),
+        &practice,
+        "msg-syn-siblings",
+        &roles,
+        &skills,
+        &mut provider_siblings,
+        Some(&receiver),
+        engine::RunLimits::default(),
+        &engine::Cancellation::default(),
+    )
+    .await
+    .unwrap();
+    assert_eq!(
+        completed_siblings.routing_outcome,
+        MessageRoutingOutcome::Waiting {
+            suggested_workspace: None,
+        }
+    );
+
+    // --- Synthetic Case 3: Conflicting caregiver/spouse message from confirmed phone (`ConflictingEvidence`) ---
+    store
+        .ingest_spruce_item(
+            &practice,
+            &lease.lease_token,
+            &readable_item(
+                3,
+                "msg-syn-conflict",
+                "conv-syn-conflict",
+                Some("+14155550204"),
+                Some("David Park"),
+                "Hi doctor, this is David texting for my wife Hannah Park (DOB 1974-12-19) — she is having migraine nausea.",
+                vec![OutsideParticipant {
+                    display_name: Some("David Park".into()),
+                    endpoint_channel: Some("sms".into()),
+                    endpoint_address: Some(david_phone.clone()),
+                    saved_contact_id: None,
+                }],
+            ),
+            now_ts + 3,
+        )
+        .await
+        .unwrap();
+
+    let mut provider_conflict = ScriptedProvider::new(vec![
+        call_turn(
+            "lookup-park",
+            PATIENT_LOOKUP_TOOL,
+            json!({ "query": "Park" }),
+        ),
+        call_turn(
+            "submit-conflict",
+            SUBMIT_CLASSIFICATION_TOOL,
+            json!({
+                "classification": "patient_mail",
+                "urgency": "ordinary",
+                "match_outcome": "conflicting_evidence",
+                "candidate_workspaces": [pw_spouse_husband, pw_spouse_wife],
+                "evidence_summary": "Sender +14155550204 is confirmed for David Park, while the message explicitly concerns Hannah Park (DOB 1974-12-19).",
+                "rationale": "Spouse writing from his own confirmed number about another patient; do not auto-link to David Park."
+            }),
+        ),
+        done_turn("Held for confirmation due to conflicting sender vs named patient."),
+    ]);
+    let completed_conflict = run_spruce_message_matching(
+        &store,
+        auth.as_ref(),
+        &practice,
+        "msg-syn-conflict",
+        &roles,
+        &skills,
+        &mut provider_conflict,
+        Some(&receiver),
+        engine::RunLimits::default(),
+        &engine::Cancellation::default(),
+    )
+    .await
+    .unwrap();
+    // Crucial Rule 4 check: even though `+14155550204` is confirmed for David Park, `ConflictingEvidence`
+    // prevents wrong-patient auto-linking to David Park!
+    assert_eq!(
+        completed_conflict.routing_outcome,
+        MessageRoutingOutcome::Waiting {
+            suggested_workspace: None,
+        }
+    );
+    assert!(
+        receiver
+            .accepted_for_workspace(&pw_spouse_husband)
+            .is_empty()
+    );
+
+    // --- Synthetic Case 4: Unknown sender (`NoMatchFound`) ---
+    store
+        .ingest_spruce_item(
+            &practice,
+            &lease.lease_token,
+            &readable_item(
+                4,
+                "msg-syn-nomatch",
+                "conv-syn-nomatch",
+                Some("+14155550209"),
+                None,
+                "Hi, I am a prospective patient hoping to transfer my records next month.",
+                vec![OutsideParticipant {
+                    display_name: None,
+                    endpoint_channel: Some("sms".into()),
+                    endpoint_address: Some(SenderAddress::parse("+14155550209").unwrap()),
+                    saved_contact_id: None,
+                }],
+            ),
+            now_ts + 4,
+        )
+        .await
+        .unwrap();
+
+    let mut provider_nomatch = ScriptedProvider::new(vec![
+        call_turn("lookup-all", PATIENT_LOOKUP_TOOL, json!({ "query": null })),
+        call_turn(
+            "submit-nomatch",
+            SUBMIT_CLASSIFICATION_TOOL,
+            json!({
+                "classification": "patient_mail",
+                "urgency": "ordinary",
+                "match_outcome": "no_match_found",
+                "evidence_summary": "No registered patient matches +14155550209 and no patient name or birth date is stated.",
+                "rationale": "Patient inquiry with no roster match."
+            }),
+        ),
+        done_turn("Unmatched patient inquiry with no roster match."),
+    ]);
+    let completed_nomatch = run_spruce_message_matching(
+        &store,
+        auth.as_ref(),
+        &practice,
+        "msg-syn-nomatch",
+        &roles,
+        &skills,
+        &mut provider_nomatch,
+        Some(&receiver),
+        engine::RunLimits::default(),
+        &engine::Cancellation::default(),
+    )
+    .await
+    .unwrap();
+    assert_eq!(
+        completed_nomatch.routing_outcome,
+        MessageRoutingOutcome::Waiting {
+            suggested_workspace: None,
+        }
+    );
+
+    // --- Synthetic Case 5: Vendor Fax Spam over Real Local `ResponsesProvider` HTTP SSE Wire + `"This is a patient"` Override ---
+    store
+        .ingest_spruce_item(
+            &practice,
+            &lease.lease_token,
+            &readable_item(
+                5,
+                "msg-syn-spam",
+                "conv-syn-spam",
+                Some("+18005559999"),
+                Some("MedSupply Deals"),
+                "LIMITED TIME FAX PROMO: Save 40% on exam table paper rolls this quarter!",
+                vec![OutsideParticipant {
+                    display_name: Some("MedSupply Deals".into()),
+                    endpoint_channel: Some("fax".into()),
+                    endpoint_address: Some(SenderAddress::parse("+18005559999").unwrap()),
+                    saved_contact_id: None,
+                }],
+            ),
+            now_ts + 5,
+        )
+        .await
+        .unwrap();
+
+    // Spin up a local `axum` SSE server speaking OpenAI `/v1/responses` streaming protocol:
+    #[derive(Clone, Default)]
+    struct MockSseState {
+        bodies: Arc<Mutex<Vec<Value>>>,
+    }
+    let sse_state = MockSseState::default();
+    let app = Router::new()
+        .route(
+            "/v1/responses",
+            post(|State(state): State<MockSseState>, Json(body): Json<Value>| async move {
+                let call_idx = {
+                    let mut guard = state.bodies.lock().unwrap();
+                    guard.push(body);
+                    guard.len()
+                };
+                let (done_item, response_obj) = if call_idx == 1 {
+                    let item = json!({
+                        "type": "function_call",
+                        "status": "completed",
+                        "call_id": "sse-submit-spam",
+                        "name": SUBMIT_CLASSIFICATION_TOOL,
+                        "arguments": json!({
+                            "classification": "not_patient_mail",
+                            "non_patient_category": "vendor_or_spam",
+                            "rationale": "Commercial medical supply fax marketing blast, not from or about a patient."
+                        }).to_string()
+                    });
+                    let resp = json!({
+                        "id": "resp-sse-1",
+                        "model": "background-spruce-matching-lane",
+                        "status": "completed",
+                        "output": [item],
+                        "usage": { "input_tokens": 320, "output_tokens": 45 }
+                    });
+                    (item, resp)
+                } else {
+                    let item = json!({
+                        "type": "message",
+                        "role": "assistant",
+                        "status": "completed",
+                        "content": [{
+                            "type": "output_text",
+                            "text": "Filtered commercial vendor fax blast."
+                        }]
+                    });
+                    let resp = json!({
+                        "id": "resp-sse-2",
+                        "model": "background-spruce-matching-lane",
+                        "status": "completed",
+                        "output": [item],
+                        "usage": { "input_tokens": 380, "output_tokens": 12 }
+                    });
+                    (item, resp)
+                };
+                let sse_payload = format!(
+                    "event: response.output_item.done\ndata: {}\n\nevent: response.completed\ndata: {}\n\n",
+                    json!({
+                        "type": "response.output_item.done",
+                        "output_index": 0,
+                        "item": done_item,
+                    }),
+                    json!({
+                        "type": "response.completed",
+                        "response": response_obj,
+                    })
+                );
+                (
+                    StatusCode::OK,
+                    [(header::CONTENT_TYPE, "text/event-stream")],
+                    sse_payload,
+                )
+                    .into_response()
+            }),
+        )
+        .with_state(sse_state.clone());
+
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let addr = listener.local_addr().unwrap();
+    let server_task = tokio::spawn(async move {
+        axum::serve(listener, app).await.unwrap();
+    });
+
+    let mut wire_provider = ResponsesProvider::new(
+        format!("http://{addr}/v1/responses"),
+        "local-sse-key".into(),
+        Arc::new(store.clone()),
+    )
+    .unwrap();
+
+    let completed_spam = run_spruce_message_matching(
+        &store,
+        auth.as_ref(),
+        &practice,
+        "msg-syn-spam",
+        &roles,
+        &skills,
+        &mut wire_provider,
+        Some(&receiver),
+        engine::RunLimits::default(),
+        &engine::Cancellation::default(),
+    )
+    .await
+    .unwrap();
+    server_task.abort();
+
+    assert_eq!(
+        completed_spam.routing_outcome,
+        MessageRoutingOutcome::Filtered {
+            category: NonPatientCategory::VendorOrSpam,
+        }
+    );
+    assert_eq!(sse_state.bodies.lock().unwrap().len(), 2);
+    assert_eq!(
+        sse_state.bodies.lock().unwrap()[0]["model"],
+        json!(roles.background.model)
+    );
+
+    // Filtered list shows `msg-syn-spam`; physician clicks `"This is a patient"` (`mark_spruce_message_as_patient`) ->
+    // message leaves `Filtered`, records `physician_override`, and routes to `Waiting`!
+    let filtered_before = store
+        .filtered_spruce_messages_for_physician(auth.as_ref(), &dr)
+        .await
+        .unwrap();
+    assert_eq!(filtered_before.len(), 1);
+    assert_eq!(filtered_before[0].message_id, "msg-syn-spam");
+
+    let rerouted = store
+        .mark_spruce_message_as_patient(
+            auth.as_ref(),
+            &dr,
+            "msg-syn-spam",
+            "cmd-this-is-patient-1",
+            Some(&receiver),
+            now_ts + 10,
+        )
+        .await
+        .unwrap();
+    assert_eq!(
+        rerouted,
+        MessageRoutingOutcome::Waiting {
+            suggested_workspace: None,
+        }
+    );
+    // Idempotent replay of `"This is a patient"` with same `command_key` returns same `Waiting` outcome:
+    let rerouted_replay = store
+        .mark_spruce_message_as_patient(
+            auth.as_ref(),
+            &dr,
+            "msg-syn-spam",
+            "cmd-this-is-patient-1",
+            Some(&receiver),
+            now_ts + 11,
+        )
+        .await
+        .unwrap();
+    assert_eq!(rerouted_replay, rerouted);
+
+    assert!(
+        store
+            .filtered_spruce_messages_for_physician(auth.as_ref(), &dr)
+            .await
+            .unwrap()
+            .is_empty()
+    );
+    let saved_rerouted = store
+        .spruce_message(&practice, "msg-syn-spam")
+        .await
+        .unwrap()
+        .unwrap();
+    assert!(matches!(
+        saved_rerouted.standing,
+        MessageStanding::Waiting {
+            origin: RoutingOrigin::PhysicianMarkedPatient { .. },
+            ..
+        }
+    ));
+    assert!(
+        saved_rerouted
+            .saved_classification
+            .as_ref()
+            .and_then(|c| c.physician_override.as_ref())
+            .is_some()
+    );
+
+    // Also verify `"This is a patient"` on a message whose conversation IS uniquely tied via Rule 4
+    // routes straight to `Linked`!
+    store
+        .ingest_spruce_item(
+            &practice,
+            &lease.lease_token,
+            &readable_item(
+                6,
+                "msg-admin-notice",
+                "conv-admin-david",
+                Some("+14155550204"),
+                Some("Payer Directory Bot"),
+                "Automated quarterly fax test for David Park's line.",
+                vec![OutsideParticipant {
+                    display_name: Some("Payer Directory Bot".into()),
+                    endpoint_channel: Some("sms".into()),
+                    endpoint_address: Some(david_phone),
+                    saved_contact_id: None,
+                }],
+            ),
+            now_ts + 12,
+        )
+        .await
+        .unwrap();
+    store
+        .record_spruce_message_classification(
+            auth.as_ref(),
+            &practice,
+            "msg-admin-notice",
+            None,
+            RECIPE_VERSION,
+            GUIDANCE_VERSION,
+            MatchingDecision::NotPatientMail {
+                category: NonPatientCategory::AdministrativeNotice,
+                rationale: "Directory verification notice.".into(),
+            },
+            Some(&receiver),
+            now_ts + 13,
+        )
+        .await
+        .unwrap();
+    let rerouted_linked = store
+        .mark_spruce_message_as_patient(
+            auth.as_ref(),
+            &dr,
+            "msg-admin-notice",
+            "cmd-this-is-patient-david",
+            Some(&receiver),
+            now_ts + 14,
+        )
+        .await
+        .unwrap();
+    assert!(matches!(
+        rerouted_linked,
+        MessageRoutingOutcome::Linked {
+            ref workspace,
+            origin: LinkOrigin::AutomaticRule4,
+            ..
+        } if workspace == &pw_spouse_husband
     ));
 }
 
