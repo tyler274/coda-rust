@@ -29,10 +29,10 @@ use async_trait::async_trait;
 use tokio::sync::watch;
 
 use crate::{
-    Account, AccountCreateOutcome, AccountSetupError, AuthStore, AuthorityFeed, Membership,
-    PanelError, PatientLink, PhysicianIdentity, PracticeClock, PracticeRecord, PracticeSetupError,
-    PracticeSetupOutcome, Session, SessionActivity, SessionError, SessionRenewal, SignInError,
-    StoreUnavailable, token_hash,
+    Account, AccountCreateOutcome, AccountSetupError, AuthStore, AuthorityFeed, ClockUpdateError,
+    Membership, PanelError, PatientLink, PhysicianIdentity, PracticeClock, PracticeRecord,
+    PracticeSetupError, PracticeSetupOutcome, Session, SessionActivity, SessionError,
+    SessionRenewal, SignInError, StoreUnavailable, SyntheticClockUpdate, token_hash,
 };
 
 /// The Postgres channel the authority triggers notify.
@@ -450,6 +450,19 @@ impl AuthStore for CachedAuthStore {
         self.inner.practice_clock(practice_id).await
     }
 
+    async fn set_synthetic_practice_clock(
+        &self,
+        practice_id: &str,
+        update: SyntheticClockUpdate,
+    ) -> Result<PracticeClock, ClockUpdateError> {
+        let updated = self
+            .inner
+            .set_synthetic_practice_clock(practice_id, update)
+            .await;
+        self.invalidate();
+        updated
+    }
+
     async fn register_patient(
         &self,
         practice_id: &str,
@@ -726,6 +739,15 @@ mod tests {
         }
         async fn practice_clock(&self, a: &str) -> Result<PracticeClock, StoreUnavailable> {
             self.inner.practice_clock(a).await
+        }
+        async fn set_synthetic_practice_clock(
+            &self,
+            practice_id: &str,
+            update: SyntheticClockUpdate,
+        ) -> Result<PracticeClock, ClockUpdateError> {
+            self.inner
+                .set_synthetic_practice_clock(practice_id, update)
+                .await
         }
         async fn register_patient(&self, a: &str, b: &str) -> Result<(), StoreUnavailable> {
             self.inner.register_patient(a, b).await

@@ -30,10 +30,13 @@ use base64::Engine as _;
 use harness::engine::{self, Cancellation, RunLimits};
 use harness::provider::ResponsesProvider;
 use local_product::physician_sources::{
-    PatientSource, SourcePatient, SourceRevision, workspace_id,
+    PatientSource, ReadablePart, RecordDate, SourcePatient, SourceRevision, workspace_id,
 };
 use local_product::runtime::briefings::{
     BriefingError, SavedVisitBriefing, ScheduledWakeSummary, VisitPreparationRecord,
+};
+use local_product::runtime::care_plan::{
+    CarePlanError, NewMedicationRecommendation, RecommendationStanding,
 };
 use local_product::runtime::concerns::{Concern, WorkspaceAccess};
 use local_product::runtime::dispatch::{
@@ -53,9 +56,16 @@ use local_product::runtime::schedule::{
     AppointmentWindow, ScheduleDelivery, ScheduleError, ScheduleSource, ScheduleSourceError,
     ScheduleSyncOutcome, SourceAppointment, SourceId as ScheduleSourceId,
 };
+use local_product::runtime::spruce_matching::{
+    ChannelStanding, IncomingSpruceItem, OutsideParticipant, ReadableSpruceItem, SenderAddress,
+    SpruceContactPatient, SpruceContactRecord, SpruceEhrLink, SpruceMatchingError,
+};
 use local_product::runtime::{Authority, PublicationTransaction, Scope, Store};
 use patient_work::CheckedSources;
-use physician_auth::{AuthStore, PostgresAuthStore, SessionError};
+use physician_auth::{
+    AuthStore, ClockUpdateError, PostgresAuthStore, PracticeClock, SessionError,
+    SyntheticClockUpdate,
+};
 use sea_orm::sea_query::{Expr, Iden, Query};
 use sea_orm::{ConnectionTrait, DatabaseConnection, DbErr, TransactionTrait};
 use serde::{Deserialize, Serialize};
@@ -87,6 +97,18 @@ pub const STAGING_SYNTHETIC_ROUTE_MANIFEST: &[PublishedRouteEntry] = &[
         path: "/staging-synthetic/status",
     },
     PublishedRouteEntry {
+        method: "GET",
+        path: "/staging-synthetic/clock",
+    },
+    PublishedRouteEntry {
+        method: "POST",
+        path: "/staging-synthetic/clock",
+    },
+    PublishedRouteEntry {
+        method: "GET",
+        path: "/staging-synthetic/measure",
+    },
+    PublishedRouteEntry {
         method: "POST",
         path: "/staging-synthetic/events",
     },
@@ -108,6 +130,10 @@ pub const STAGING_SYNTHETIC_ROUTE_MANIFEST: &[PublishedRouteEntry] = &[
     },
 ];
 
+/// Stable source identifier for synthetic Duet connected-care updates (distinct
+/// from the EHR `synthetic-charts` source).
+pub const DUET_CONNECTED_CARE_SOURCE_ID: &str = "duet-connected-care";
+
 /// Which synthetic source adapter an operation targets.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
@@ -116,6 +142,10 @@ pub enum SyntheticSourceKind {
     Chart,
     /// Synthetic practice schedule source (`synthetic-practice-calendar`).
     Calendar,
+    /// Synthetic Spruce messaging channel (`spruce`).
+    Spruce,
+    /// Synthetic Duet connected-care patient feed (`duet-connected-care`).
+    Duet,
 }
 
 impl SyntheticSourceKind {
@@ -124,6 +154,8 @@ impl SyntheticSourceKind {
         match self {
             Self::Chart => "Synthetic chart",
             Self::Calendar => schedule::SOURCE_LABEL,
+            Self::Spruce => "Synthetic Spruce",
+            Self::Duet => "Duet connected care",
         }
     }
 }
@@ -142,13 +174,19 @@ pub enum SourceHealthDirective {
     },
 }
 
-/// Current health directives across both synthetic source adapters.
+/// Current health directives across all synthetic source adapters.
 #[derive(Clone, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
 pub struct SourceHealthSnapshot {
     /// Health directive of the synthetic chart source.
     pub chart: SourceHealthDirective,
     /// Health directive of the synthetic calendar source.
     pub calendar: SourceHealthDirective,
+    /// Health directive of the synthetic Spruce messaging source.
+    #[serde(default)]
+    pub spruce: SourceHealthDirective,
+    /// Health directive of the synthetic Duet connected-care source.
+    #[serde(default)]
+    pub duet: SourceHealthDirective,
 }
 
 /// How a synthetic event names its target patient in the synthetic bank.
@@ -260,6 +298,59 @@ pub enum SyntheticEventSpec {
         /// Raw FHIR `Appointment` JSON object.
         resource: Value,
     },
+    /// Synthetic inbound Spruce patient message delivered through the real
+    /// `spruce_matching` ingestion path.
+    SprucePatientMessage {
+        /// Target patient selector.
+        patient: PatientSelector,
+        /// Spruce conversation identifier.
+        conversation_id: String,
+        /// Spruce message identifier.
+        message_id: String,
+        /// Outside sender display name.
+        sender_name: String,
+        /// Outside sender endpoint address (for example `"+15551234567"` or `"alice@example.test"`).
+        sender_contact: String,
+        /// Plain-text patient message body.
+        text: String,
+        /// ISO date or RFC3339 timestamp when the message was sent.
+        sent_at: String,
+    },
+    /// Synthetic Duet connected-care patient update recorded under
+    /// [`DUET_CONNECTED_CARE_SOURCE_ID`] (distinct from EHR `synthetic-charts`).
+    DuetPatientUpdate {
+        /// Target patient selector.
+        patient: PatientSelector,
+        /// Optional deterministic update identifier; generated when omitted.
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        record_id: Option<String>,
+        /// Duet update category (for example `"home_bp"`, `"symptom_log"`, `"medication_check_in"`).
+        category: String,
+        /// Short title for the Duet update.
+        title: String,
+        /// Patient-authored or Duet-shared clinical update text.
+        text: String,
+        /// ISO date or RFC3339 timestamp when the update was recorded in Duet.
+        observed_at: String,
+    },
+    /// Synthetic undecided medication recommendation held outside `active_plan_items`
+    /// until an authorized panel physician explicitly decides it.
+    MedicationRecommendation {
+        /// Target patient selector.
+        patient: PatientSelector,
+        /// Optional deterministic recommendation identifier; generated when omitted.
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        recommendation_id: Option<String>,
+        /// Medication name and dose.
+        medication: String,
+        /// Clinical rationale or context.
+        rationale: String,
+        /// Active-plan detail shown once approved.
+        detail: String,
+        /// Originating note or review label.
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        source_label: Option<String>,
+    },
 }
 
 /// Envelope returned when the synthetic source accepts an event.
@@ -325,6 +416,11 @@ pub enum SyntheticEventRefusal {
         /// Detailed schedule parser / domain rejection reason.
         reason: String,
     },
+    /// Spruce, Duet, or care-plan synthetic event failed payload validation.
+    InvalidEventPayload {
+        /// Detailed payload validation error.
+        reason: String,
+    },
     /// Working bank I/O failed before or during file write.
     StorageIo {
         /// Underlying filesystem error.
@@ -344,6 +440,7 @@ impl SyntheticEventRefusal {
             Self::UnsupportedAttachmentMedia { .. } => "unsupported_attachment_media",
             Self::MalformedFhirResource { .. } => "malformed_fhir_resource",
             Self::InvalidAppointment { .. } => "invalid_appointment",
+            Self::InvalidEventPayload { .. } => "invalid_event_payload",
             Self::StorageIo { .. } => "source_storage_io",
         }
     }
@@ -358,7 +455,8 @@ impl SyntheticEventRefusal {
             | Self::InvalidTimestamp { .. }
             | Self::UnsupportedAttachmentMedia { .. }
             | Self::MalformedFhirResource { .. }
-            | Self::InvalidAppointment { .. } => StatusCode::UNPROCESSABLE_ENTITY,
+            | Self::InvalidAppointment { .. }
+            | Self::InvalidEventPayload { .. } => StatusCode::UNPROCESSABLE_ENTITY,
         }
     }
 }
@@ -387,6 +485,9 @@ impl std::fmt::Display for SyntheticEventRefusal {
             Self::InvalidAppointment { reason } => {
                 write!(f, "synthetic calendar source refused appointment: {reason}")
             }
+            Self::InvalidEventPayload { reason } => {
+                write!(f, "synthetic event payload refused: {reason}")
+            }
             Self::StorageIo { source } => write!(f, "synthetic working bank I/O failed: {source}"),
         }
     }
@@ -403,7 +504,8 @@ impl std::error::Error for SyntheticEventRefusal {
             | Self::InvalidTimestamp { .. }
             | Self::UnsupportedAttachmentMedia { .. }
             | Self::MalformedFhirResource { .. }
-            | Self::InvalidAppointment { .. } => None,
+            | Self::InvalidAppointment { .. }
+            | Self::InvalidEventPayload { .. } => None,
         }
     }
 }
@@ -495,6 +597,8 @@ impl StagingSyntheticSources {
         match source {
             SyntheticSourceKind::Chart => next.chart = directive,
             SyntheticSourceKind::Calendar => next.calendar = directive,
+            SyntheticSourceKind::Spruce => next.spruce = directive,
+            SyntheticSourceKind::Duet => next.duet = directive,
         }
         if self.working_bank_dir.is_dir()
             && let Ok(serialized) = serde_json::to_vec(&next)
@@ -562,9 +666,12 @@ impl StagingSyntheticSources {
     ) -> Result<SavedSyntheticEvent, SyntheticEventRefusal> {
         let target_source = match &spec {
             SyntheticEventSpec::FreeFormChartRecord { .. }
-            | SyntheticEventSpec::RawFhirChartResource { .. } => SyntheticSourceKind::Chart,
+            | SyntheticEventSpec::RawFhirChartResource { .. }
+            | SyntheticEventSpec::MedicationRecommendation { .. } => SyntheticSourceKind::Chart,
             SyntheticEventSpec::VisitChange { .. }
             | SyntheticEventSpec::RawFhirAppointment { .. } => SyntheticSourceKind::Calendar,
+            SyntheticEventSpec::SprucePatientMessage { .. } => SyntheticSourceKind::Spruce,
+            SyntheticEventSpec::DuetPatientUpdate { .. } => SyntheticSourceKind::Duet,
         };
 
         let directive = {
@@ -572,6 +679,8 @@ impl StagingSyntheticSources {
             match target_source {
                 SyntheticSourceKind::Chart => health.chart,
                 SyntheticSourceKind::Calendar => health.calendar,
+                SyntheticSourceKind::Spruce => health.spruce,
+                SyntheticSourceKind::Duet => health.duet,
             }
         };
         if let SourceHealthDirective::Failing { reason } = directive {
@@ -764,6 +873,170 @@ impl StagingSyntheticSources {
                     resolved_workspace_id: Some(resolved.workspace_id),
                     resolved_source_patient_id: resolved.source_patient_id,
                     native_locator: format!("Appointment/{}", parsed.appointment_id()),
+                    event: spec,
+                })
+            }
+            SyntheticEventSpec::SprucePatientMessage {
+                patient,
+                conversation_id,
+                message_id,
+                sender_name,
+                sender_contact,
+                text,
+                sent_at,
+            } => {
+                let resolved = self.resolve_chart_patient(patient).await?;
+                let trimmed_conv = conversation_id.trim().to_owned();
+                let trimmed_msg = message_id.trim().to_owned();
+                let trimmed_name = sender_name.trim().to_owned();
+                let trimmed_contact = sender_contact.trim().to_owned();
+                let trimmed_text = text.trim().to_owned();
+                let trimmed_sent = sent_at.trim().to_owned();
+                if trimmed_conv.is_empty() || trimmed_msg.is_empty() {
+                    return Err(SyntheticEventRefusal::InvalidEventPayload {
+                        reason: "Spruce conversation_id and message_id must not be empty"
+                            .to_owned(),
+                    });
+                }
+                if trimmed_name.is_empty() || trimmed_contact.is_empty() {
+                    return Err(SyntheticEventRefusal::InvalidEventPayload {
+                        reason: "Spruce sender_name and sender_contact must not be empty"
+                            .to_owned(),
+                    });
+                }
+                if trimmed_text.is_empty() {
+                    return Err(SyntheticEventRefusal::EmptyRecordText);
+                }
+                validate_iso_date_or_rfc3339("sent_at", &trimmed_sent)?;
+                SenderAddress::parse(&trimmed_contact).map_err(|err| {
+                    SyntheticEventRefusal::InvalidEventPayload {
+                        reason: format!("invalid Spruce sender_contact: {err}"),
+                    }
+                })?;
+
+                *conversation_id = trimmed_conv.clone();
+                *message_id = trimmed_msg.clone();
+                *sender_name = trimmed_name;
+                *sender_contact = trimmed_contact;
+                *text = trimmed_text;
+                *sent_at = trimmed_sent;
+
+                Ok(SavedSyntheticEvent {
+                    event_id,
+                    accepted_at_unix,
+                    target_source,
+                    resolved_workspace_id: Some(resolved.workspace_id),
+                    resolved_source_patient_id: resolved.source_patient_id,
+                    native_locator: format!("SpruceMessage/{trimmed_conv}/{trimmed_msg}"),
+                    event: spec,
+                })
+            }
+            SyntheticEventSpec::DuetPatientUpdate {
+                patient,
+                record_id,
+                category,
+                title,
+                text,
+                observed_at,
+            } => {
+                let resolved = self.resolve_chart_patient(patient).await?;
+                let trimmed_category = category.trim().to_owned();
+                let trimmed_title = title.trim().to_owned();
+                let trimmed_text = text.trim().to_owned();
+                let trimmed_observed = observed_at.trim().to_owned();
+                if trimmed_category.is_empty() {
+                    return Err(SyntheticEventRefusal::InvalidEventPayload {
+                        reason: "Duet update category must not be empty".to_owned(),
+                    });
+                }
+                if trimmed_title.is_empty() {
+                    return Err(SyntheticEventRefusal::EmptyRecordTitle);
+                }
+                if trimmed_text.is_empty() {
+                    return Err(SyntheticEventRefusal::EmptyRecordText);
+                }
+                validate_iso_date_or_rfc3339("observed_at", &trimmed_observed)?;
+                let assigned_id = match record_id {
+                    Some(explicit) => {
+                        let cleaned = explicit.trim().to_owned();
+                        validate_fhir_id(&cleaned)?;
+                        cleaned
+                    }
+                    None => {
+                        let generated = format!("duet-{seq:04}");
+                        *record_id = Some(generated.clone());
+                        generated
+                    }
+                };
+                *category = trimmed_category;
+                *title = trimmed_title;
+                *text = trimmed_text;
+                *observed_at = trimmed_observed;
+
+                Ok(SavedSyntheticEvent {
+                    event_id,
+                    accepted_at_unix,
+                    target_source,
+                    resolved_workspace_id: Some(resolved.workspace_id),
+                    resolved_source_patient_id: resolved.source_patient_id,
+                    native_locator: format!("DuetUpdate/{assigned_id}"),
+                    event: spec,
+                })
+            }
+            SyntheticEventSpec::MedicationRecommendation {
+                patient,
+                recommendation_id,
+                medication,
+                rationale,
+                detail,
+                source_label,
+            } => {
+                let resolved = self.resolve_chart_patient(patient).await?;
+                let trimmed_med = medication.trim().to_owned();
+                let trimmed_rationale = rationale.trim().to_owned();
+                let trimmed_detail = detail.trim().to_owned();
+                if trimmed_med.is_empty() {
+                    return Err(SyntheticEventRefusal::InvalidEventPayload {
+                        reason: "medication must not be empty".to_owned(),
+                    });
+                }
+                if trimmed_rationale.is_empty() {
+                    return Err(SyntheticEventRefusal::InvalidEventPayload {
+                        reason: "rationale must not be empty".to_owned(),
+                    });
+                }
+                let assigned_id = match recommendation_id {
+                    Some(explicit) => {
+                        let cleaned = explicit.trim().to_owned();
+                        validate_fhir_id(&cleaned)?;
+                        cleaned
+                    }
+                    None => {
+                        let generated = format!("rec-{seq:04}");
+                        *recommendation_id = Some(generated.clone());
+                        generated
+                    }
+                };
+                *medication = trimmed_med;
+                *rationale = trimmed_rationale;
+                *detail = if trimmed_detail.is_empty() {
+                    rationale.clone()
+                } else {
+                    trimmed_detail
+                };
+                *source_label = source_label
+                    .as_deref()
+                    .map(str::trim)
+                    .filter(|s| !s.is_empty())
+                    .map(str::to_owned);
+
+                Ok(SavedSyntheticEvent {
+                    event_id,
+                    accepted_at_unix,
+                    target_source,
+                    resolved_workspace_id: Some(resolved.workspace_id),
+                    resolved_source_patient_id: resolved.source_patient_id,
+                    native_locator: format!("MedicationRecommendation/{assigned_id}"),
                     event: spec,
                 })
             }
@@ -1136,6 +1409,8 @@ pub enum SyntheticControlError {
     ChartLoad(String),
     /// Auth store query failed.
     AuthUnavailable(physician_auth::StoreUnavailable),
+    /// Persisted simulation clock update failed.
+    ClockUpdate(ClockUpdateError),
     /// Runtime database query failed.
     Database(DbErr),
     /// Source refresh failed.
@@ -1148,6 +1423,10 @@ pub enum SyntheticControlError {
     Schedule(ScheduleError),
     /// Visit preparation wake or briefing query failed.
     Briefing(BriefingError),
+    /// Synthetic Spruce channel ingestion failed.
+    Spruce(SpruceMatchingError),
+    /// Synthetic care-plan recommendation operation failed.
+    CarePlan(CarePlanError),
     /// Model provider is not configured on this process.
     ModelUnconfigured,
     /// Model provider initialization failed.
@@ -1163,12 +1442,15 @@ impl std::fmt::Display for SyntheticControlError {
             Self::WorkingBankIo(err) => write!(f, "working bank I/O failed: {err}"),
             Self::ChartLoad(reason) => write!(f, "synthetic chart load failed: {reason}"),
             Self::AuthUnavailable(err) => write!(f, "auth store unavailable: {err}"),
+            Self::ClockUpdate(err) => write!(f, "simulation clock update failed: {err}"),
             Self::Database(err) => write!(f, "runtime database error: {err}"),
             Self::Refresh(err) => write!(f, "source refresh error: {err}"),
             Self::Dispatch(err) => write!(f, "practice dispatch error: {err}"),
             Self::Review(err) => write!(f, "patient review error: {err}"),
             Self::Schedule(err) => write!(f, "schedule sync error: {err}"),
             Self::Briefing(err) => write!(f, "visit preparation error: {err}"),
+            Self::Spruce(err) => write!(f, "spruce matching error: {err}"),
+            Self::CarePlan(err) => write!(f, "care plan error: {err}"),
             Self::ModelUnconfigured => {
                 f.write_str("model execution is not configured for staging synthetic control")
             }
@@ -1186,12 +1468,15 @@ impl std::error::Error for SyntheticControlError {
             Self::EventRefused(err) => Some(err),
             Self::WorkingBankIo(err) => Some(err),
             Self::AuthUnavailable(err) => Some(err),
+            Self::ClockUpdate(err) => Some(err),
             Self::Database(err) => Some(err),
             Self::Refresh(err) => Some(err),
             Self::Dispatch(err) => Some(err),
             Self::Review(err) => Some(err),
             Self::Schedule(err) => Some(err),
             Self::Briefing(err) => Some(err),
+            Self::Spruce(err) => Some(err),
+            Self::CarePlan(err) => Some(err),
             Self::ChartLoad(_)
             | Self::ModelUnconfigured
             | Self::ModelProviderInit(_)
@@ -1212,6 +1497,25 @@ impl IntoResponse for SyntheticControlError {
                 })),
             )
                 .into_response(),
+            Self::ClockUpdate(err) => {
+                let status = match &err {
+                    ClockUpdateError::InvalidAdvance { .. }
+                    | ClockUpdateError::RealTimePractice { .. }
+                    | ClockUpdateError::TimestampOutOfRange { .. } => {
+                        StatusCode::UNPROCESSABLE_ENTITY
+                    }
+                    ClockUpdateError::PracticeNotFound { .. } => StatusCode::NOT_FOUND,
+                    ClockUpdateError::Unavailable(_) => StatusCode::SERVICE_UNAVAILABLE,
+                };
+                (
+                    status,
+                    Json(json!({
+                        "status": "refused",
+                        "detail": err.to_string(),
+                    })),
+                )
+                    .into_response()
+            }
             other => {
                 let status = match &other {
                     Self::ModelUnconfigured
@@ -1225,8 +1529,10 @@ impl IntoResponse for SyntheticControlError {
                     | Self::Review(_)
                     | Self::Schedule(_)
                     | Self::Briefing(_)
+                    | Self::Spruce(_)
+                    | Self::CarePlan(_)
                     | Self::JobExecution(_) => StatusCode::BAD_GATEWAY,
-                    Self::EventRefused(_) => unreachable!(),
+                    Self::EventRefused(_) | Self::ClockUpdate(_) => unreachable!(),
                 };
                 (
                     status,
@@ -1292,13 +1598,119 @@ pub struct PracticeStateCounts {
     pub briefings: usize,
 }
 
+/// Persisted simulation clock snapshot returned by `GET` and `POST /staging-synthetic/clock`.
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub struct SyntheticClockSnapshot {
+    /// Shared staging practice ID (`"roger-synthetic-practice"`).
+    pub practice_id: String,
+    /// Current persisted clinical Unix second.
+    pub unix_seconds: u64,
+    /// Current persisted clinical instant in RFC3339 UTC.
+    pub rfc3339: String,
+    /// Practice-local ISO calendar date (`YYYY-MM-DD`).
+    pub date_iso: String,
+    /// Validated IANA time zone of the practice.
+    pub time_zone: String,
+    /// Baseline Unix second used on initialization and reset.
+    pub baseline_unix_seconds: u64,
+    /// Elapsed simulation seconds since `baseline_unix_seconds`.
+    pub elapsed_seconds: u64,
+}
+
+/// Breakdown of items requiring physician attention across the simulation window.
+#[derive(Clone, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
+pub struct PhysicianTouchedBreakdown {
+    /// Currently open patient concerns waiting for physician clearance.
+    pub open_concerns: usize,
+    /// Ready patient reply proposals awaiting physician review/copy.
+    pub proposed_replies_waiting_for_physician: usize,
+    /// Undecided medication recommendations waiting for explicit physician approval/decline.
+    pub undecided_recommendations: usize,
+    /// Follow-ups in `cannot_restart` requiring physician intervention.
+    pub unhandled_follow_ups: usize,
+    /// Spruce conversations held unmatched or needing physician linking attention.
+    pub unmatched_spruce_conversations: usize,
+    /// Patient source status rows currently reporting a failed check.
+    pub failed_source_statuses: usize,
+}
+
+impl PhysicianTouchedBreakdown {
+    /// Total count of physician-touch items across all surfaced categories.
+    pub const fn total(&self) -> usize {
+        self.open_concerns
+            + self.proposed_replies_waiting_for_physician
+            + self.undecided_recommendations
+            + self.unhandled_follow_ups
+            + self.unmatched_spruce_conversations
+            + self.failed_source_statuses
+    }
+}
+
+/// Necessary-care accounting captured alongside physician-touch rate (`L1.Measure`).
+#[derive(Clone, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
+pub struct NecessaryCareAccounting {
+    /// Total completed patient reviews across the panel.
+    pub total_reviews_completed: usize,
+    /// Completed patient reviews that settled quietly with zero surfaced actions.
+    pub quiet_reviews_completed: usize,
+    /// Completed patient reviews that recorded clinical assessment actions.
+    pub assessed_reviews_completed: usize,
+    /// Total concerns raised (open, cleared, or retired).
+    pub concerns_raised: usize,
+    /// Concerns explicitly cleared or retired.
+    pub concerns_addressed: usize,
+    /// Total follow-ups created across the panel.
+    pub follow_ups_created: usize,
+    /// Follow-ups explicitly completed.
+    pub follow_ups_completed: usize,
+    /// Prepared pre-visit briefings saved across the panel.
+    pub visit_briefings_ready: usize,
+    /// Undecided medication recommendations held out of the active plan.
+    pub undecided_recommendations_held_out_of_plan: usize,
+    /// Medication recommendations explicitly approved into the active plan.
+    pub approved_plan_items: usize,
+    /// Medication recommendations explicitly declined by a physician.
+    pub declined_recommendations: usize,
+    /// Synthetic or live Spruce patient messages persisted.
+    pub spruce_messages_ingested: usize,
+    /// Stale or superseded reply proposals retired instead of kept ready.
+    pub stale_replies_retired: usize,
+    /// Duet connected-care source records persisted separately from EHR charts.
+    pub duet_updates_recorded: usize,
+}
+
+/// L1 simulation measure computed directly from PostgreSQL runtime truth (`L1.Measure`).
+#[derive(Clone, Debug, Default, PartialEq, Serialize, Deserialize)]
+pub struct L1SimulationMeasure {
+    /// Shared staging practice ID (`"roger-synthetic-practice"`).
+    pub practice_id: String,
+    /// Number of registered panel patients.
+    pub panel_size: usize,
+    /// Baseline simulation clock Unix second.
+    pub clock_baseline_unix: u64,
+    /// Current persisted simulation clock Unix second.
+    pub clock_current_unix: u64,
+    /// Elapsed simulation seconds since baseline.
+    pub elapsed_seconds: u64,
+    /// Elapsed simulation weeks (`elapsed_seconds / 604800.0`).
+    pub elapsed_weeks: f64,
+    /// Total physician-touched items across the panel.
+    pub physician_touched_total: usize,
+    /// Physician-touched items per 100 patients per week (`None` before simulation time elapses or with an empty panel).
+    pub physician_touched_per_100_patients_per_week: Option<f64>,
+    /// Per-category breakdown of physician-touched items.
+    pub physician_touched_breakdown: PhysicianTouchedBreakdown,
+    /// Necessary-care accounting ensuring low touch does not hide missed care.
+    pub necessary_care: NecessaryCareAccounting,
+}
+
 /// Full readback of the staging synthetic practice (`GET /staging-synthetic/status`
 /// and `POST /staging-synthetic/reset`).
-#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct PracticeSyntheticStatus {
     /// Shared staging practice ID (`"roger-synthetic-practice"`).
     pub practice_id: String,
-    /// Current simulated health state of the synthetic chart and calendar adapters.
+    /// Current simulated health state of the synthetic chart, calendar, Spruce, and Duet adapters.
     pub source_health: SourceHealthSnapshot,
     /// Aggregate runtime counts in PostgreSQL.
     pub counts: PracticeStateCounts,
@@ -1306,6 +1718,9 @@ pub struct PracticeSyntheticStatus {
     pub patients: Vec<SyntheticPatientSummary>,
     /// Events accepted by the synthetic sources since startup or the last reset.
     pub accepted_events: Vec<SavedSyntheticEvent>,
+    /// L1 simulation measure computed from PostgreSQL runtime tables.
+    #[serde(default)]
+    pub l1_measure: L1SimulationMeasure,
 }
 
 /// Request payload for `POST /staging-synthetic/source-failure`.
@@ -1480,6 +1895,15 @@ impl StagingSyntheticControl {
             }
         }
 
+        // Sync adapter clock to the persisted practice clock so service restarts
+        // resume at the exact same simulated "today".
+        let persisted_clock = deps
+            .auth
+            .practice_clock(STAGING_PRACTICE_ID)
+            .await
+            .map_err(|err| format!("read persisted practice clock: {err}"))?;
+        sources.set_clock_unix(persisted_clock.now(now()));
+
         let initial_events = sources.read_accepted_events();
         Ok(Arc::new(Self {
             sources,
@@ -1514,6 +1938,182 @@ impl StagingSyntheticControl {
         Ok(SyntheticPatientListResponse {
             practice_id: STAGING_PRACTICE_ID.to_owned(),
             patients,
+        })
+    }
+
+    /// Reads the persisted simulation clock for [`STAGING_PRACTICE_ID`].
+    pub async fn clock(&self) -> Result<SyntheticClockSnapshot, SyntheticControlError> {
+        let practice = self
+            .auth
+            .practice(STAGING_PRACTICE_ID)
+            .await
+            .map_err(SyntheticControlError::AuthUnavailable)?;
+        let clock = practice
+            .as_ref()
+            .map(|row| row.clock)
+            .unwrap_or(crate::auth::SYNTHETIC_PRACTICE_CLOCK);
+        let time_zone = practice.map(|row| row.time_zone).unwrap_or_default();
+        let baseline_unix_seconds = match crate::auth::SYNTHETIC_PRACTICE_CLOCK {
+            PracticeClock::Fixed(ts) => ts,
+            PracticeClock::RealTime => now(),
+        };
+        let unix_seconds = clock.now(now());
+        let rfc3339 = chrono::DateTime::from_timestamp(unix_seconds as i64, 0)
+            .map(|ts| ts.to_rfc3339_opts(chrono::SecondsFormat::Secs, true))
+            .unwrap_or_else(|| unix_seconds.to_string());
+        let date_iso = time_zone.calendar_date_iso(unix_seconds);
+        Ok(SyntheticClockSnapshot {
+            practice_id: STAGING_PRACTICE_ID.to_owned(),
+            unix_seconds,
+            rfc3339,
+            date_iso,
+            time_zone: time_zone.as_str().to_owned(),
+            baseline_unix_seconds,
+            elapsed_seconds: unix_seconds.saturating_sub(baseline_unix_seconds),
+        })
+    }
+
+    /// Advances or resets the persisted simulation clock for [`STAGING_PRACTICE_ID`].
+    pub async fn update_clock(
+        &self,
+        update: SyntheticClockUpdate,
+    ) -> Result<SyntheticClockSnapshot, SyntheticControlError> {
+        let updated = self
+            .auth
+            .set_synthetic_practice_clock(STAGING_PRACTICE_ID, update)
+            .await
+            .map_err(SyntheticControlError::ClockUpdate)?;
+        let unix_seconds = updated.now(now());
+        self.sources.set_clock_unix(unix_seconds);
+
+        let workspaces = self
+            .auth
+            .practice_patients(STAGING_PRACTICE_ID)
+            .await
+            .map_err(SyntheticControlError::AuthUnavailable)?;
+        for ws in workspaces {
+            let _ = self
+                .bus
+                .publish(physician_bus::Event::WorkspaceChanged { workspace_id: ws })
+                .await;
+        }
+        self.clock().await
+    }
+
+    /// Computes the L1 simulation measure directly from PostgreSQL runtime tables.
+    pub async fn measure(&self) -> Result<L1SimulationMeasure, SyntheticControlError> {
+        let clock = self.clock().await?;
+        let workspaces = self
+            .auth
+            .practice_patients(STAGING_PRACTICE_ID)
+            .await
+            .map_err(SyntheticControlError::AuthUnavailable)?;
+        let panel_size = workspaces.len();
+
+        let mut total_reviews_completed = 0_usize;
+        let mut quiet_reviews_completed = 0_usize;
+        let mut assessed_reviews_completed = 0_usize;
+        let mut visit_briefings_ready = 0_usize;
+        let mut duet_updates_recorded = 0_usize;
+
+        for ws in &workspaces {
+            let reviews = self
+                .store
+                .patient_reviews(STAGING_PRACTICE_ID, ws, &self.auth)
+                .await
+                .map_err(SyntheticControlError::Review)?;
+            for rev in reviews {
+                if rev.state.status_str() == "completed" {
+                    total_reviews_completed += 1;
+                    if rev.actions.is_empty() {
+                        quiet_reviews_completed += 1;
+                    } else {
+                        assessed_reviews_completed += 1;
+                    }
+                }
+            }
+            visit_briefings_ready += self
+                .store
+                .visit_briefings_for_workspace(STAGING_PRACTICE_ID, ws, &self.auth)
+                .await
+                .map_err(SyntheticControlError::Briefing)?
+                .len();
+            let observation = self
+                .store
+                .sources(ws)
+                .await
+                .map_err(SyntheticControlError::Database)?;
+            duet_updates_recorded += observation
+                .sources
+                .iter()
+                .filter(|rev| rev.source_id == DUET_CONNECTED_CARE_SOURCE_ID)
+                .count();
+        }
+
+        let recs = self
+            .store
+            .practice_care_plan_recommendations(STAGING_PRACTICE_ID)
+            .await
+            .map_err(SyntheticControlError::CarePlan)?;
+        let mut undecided_recommendations = 0_usize;
+        let mut approved_plan_items = 0_usize;
+        let mut declined_recommendations = 0_usize;
+        for rec in recs {
+            match rec.standing {
+                RecommendationStanding::Undecided => undecided_recommendations += 1,
+                RecommendationStanding::ApprovedIntoPlan { .. } => approved_plan_items += 1,
+                RecommendationStanding::Declined { .. } => declined_recommendations += 1,
+            }
+        }
+
+        let db_counts = query_l1_measure_counts(&self.db, STAGING_PRACTICE_ID)
+            .await
+            .map_err(SyntheticControlError::Database)?;
+
+        let breakdown = PhysicianTouchedBreakdown {
+            open_concerns: db_counts.open_concerns,
+            proposed_replies_waiting_for_physician: db_counts.ready_replies,
+            undecided_recommendations,
+            unhandled_follow_ups: db_counts.unhandled_follow_ups,
+            unmatched_spruce_conversations: db_counts.unmatched_spruce_conversations,
+            failed_source_statuses: db_counts.failed_source_statuses,
+        };
+        let physician_touched_total = breakdown.total();
+        let elapsed_weeks = (clock.elapsed_seconds as f64) / (7.0 * 86_400.0);
+        let physician_touched_per_100_patients_per_week = if panel_size > 0
+            && clock.elapsed_seconds > 0
+        {
+            Some((physician_touched_total as f64) * 100.0 / ((panel_size as f64) * elapsed_weeks))
+        } else {
+            None
+        };
+
+        Ok(L1SimulationMeasure {
+            practice_id: STAGING_PRACTICE_ID.to_owned(),
+            panel_size,
+            clock_baseline_unix: clock.baseline_unix_seconds,
+            clock_current_unix: clock.unix_seconds,
+            elapsed_seconds: clock.elapsed_seconds,
+            elapsed_weeks,
+            physician_touched_total,
+            physician_touched_per_100_patients_per_week,
+            physician_touched_breakdown: breakdown,
+            necessary_care: NecessaryCareAccounting {
+                total_reviews_completed,
+                quiet_reviews_completed,
+                assessed_reviews_completed,
+                concerns_raised: db_counts.concerns_raised,
+                concerns_addressed: db_counts.concerns_addressed,
+                follow_ups_created: db_counts.follow_ups_created,
+                follow_ups_completed: db_counts.follow_ups_completed,
+                visit_briefings_ready,
+                undecided_recommendations_held_out_of_plan: undecided_recommendations,
+                approved_plan_items,
+                declined_recommendations,
+                spruce_messages_ingested: db_counts.spruce_messages_ingested,
+                stale_replies_retired: db_counts.stale_replies_retired,
+                duet_updates_recorded,
+            },
         })
     }
 
@@ -1591,6 +2191,7 @@ impl StagingSyntheticControl {
             }
         };
 
+        let l1_measure = self.measure().await?;
         Ok(PracticeSyntheticStatus {
             practice_id: STAGING_PRACTICE_ID.to_owned(),
             source_health: self.sources.health_snapshot(),
@@ -1607,10 +2208,14 @@ impl StagingSyntheticControl {
             },
             patients,
             accepted_events,
+            l1_measure,
         })
     }
 
-    /// Validates and records a synthetic event in `working_bank_dir` without touching PostgreSQL.
+    /// Validates and records a synthetic event: chart and calendar events write
+    /// to `working_bank_dir` without touching PostgreSQL; Spruce messages, Duet
+    /// connected-care updates, and undecided medication recommendations enter
+    /// through their typed PostgreSQL runtime owners.
     pub async fn send_event(
         &self,
         spec: SyntheticEventSpec,
@@ -1626,12 +2231,290 @@ impl StagingSyntheticControl {
             .accept_event(spec, accepted_at)
             .await
             .map_err(SyntheticControlError::EventRefused)?;
+
+        match &saved.event {
+            SyntheticEventSpec::SprucePatientMessage {
+                conversation_id,
+                message_id,
+                sender_name,
+                sender_contact,
+                text,
+                sent_at,
+                ..
+            } => {
+                let workspace_id = saved
+                    .resolved_workspace_id
+                    .as_deref()
+                    .unwrap_or_default()
+                    .to_owned();
+                self.deliver_spruce_message(
+                    &workspace_id,
+                    &saved.resolved_source_patient_id,
+                    conversation_id,
+                    message_id,
+                    sender_name,
+                    sender_contact,
+                    text,
+                    sent_at,
+                    accepted_at as i64,
+                )
+                .await?;
+            }
+            SyntheticEventSpec::DuetPatientUpdate {
+                record_id,
+                category,
+                title,
+                text,
+                observed_at,
+                ..
+            } => {
+                let workspace_id = saved
+                    .resolved_workspace_id
+                    .as_deref()
+                    .unwrap_or_default()
+                    .to_owned();
+                let candidate_id = record_id.clone().unwrap_or_else(|| saved.event_id.clone());
+                self.deliver_duet_update(
+                    &workspace_id,
+                    &candidate_id,
+                    category,
+                    title,
+                    text,
+                    observed_at,
+                )
+                .await?;
+            }
+            SyntheticEventSpec::MedicationRecommendation {
+                recommendation_id,
+                medication,
+                rationale,
+                detail,
+                source_label,
+                ..
+            } => {
+                let workspace_id = saved
+                    .resolved_workspace_id
+                    .as_deref()
+                    .unwrap_or_default()
+                    .to_owned();
+                let rec_id = recommendation_id
+                    .clone()
+                    .unwrap_or_else(|| saved.event_id.clone());
+                self.store
+                    .propose_medication_recommendation(
+                        STAGING_PRACTICE_ID,
+                        &workspace_id,
+                        NewMedicationRecommendation {
+                            recommendation_id: rec_id,
+                            medication: medication.clone(),
+                            rationale: rationale.clone(),
+                            detail: detail.clone(),
+                            source_label: source_label
+                                .clone()
+                                .unwrap_or_else(|| "Patient review".to_owned()),
+                            proposed_at: accepted_at as i64,
+                        },
+                    )
+                    .await
+                    .map_err(SyntheticControlError::CarePlan)?;
+                let _ = self
+                    .bus
+                    .publish(physician_bus::Event::WorkspaceChanged { workspace_id })
+                    .await;
+            }
+            SyntheticEventSpec::FreeFormChartRecord { .. }
+            | SyntheticEventSpec::RawFhirChartResource { .. }
+            | SyntheticEventSpec::VisitChange { .. }
+            | SyntheticEventSpec::RawFhirAppointment { .. } => {}
+        }
+
         let mut guard = self.accepted_events.lock().await;
         self.sources
             .append_accepted_event(&saved)
             .map_err(SyntheticControlError::WorkingBankIo)?;
         guard.push(saved.clone());
         Ok(saved)
+    }
+
+    #[allow(clippy::too_many_arguments)]
+    async fn deliver_spruce_message(
+        &self,
+        workspace_id: &str,
+        source_patient_id: &str,
+        conversation_id: &str,
+        message_id: &str,
+        sender_name: &str,
+        sender_contact: &str,
+        text: &str,
+        sent_at: &str,
+        now_ts: i64,
+    ) -> Result<(), SyntheticControlError> {
+        let (standing, _existing_lease) = self
+            .store
+            .spruce_channel_standing(STAGING_PRACTICE_ID)
+            .await
+            .map_err(SyntheticControlError::Spruce)?;
+        let current_place = match standing {
+            ChannelStanding::Disconnected { .. } => {
+                let panel = crate::auth::staging_panel(&self.auth)
+                    .await
+                    .map_err(SyntheticControlError::AuthUnavailable)?;
+                let actor = panel.into_iter().next().ok_or_else(|| {
+                    SyntheticControlError::JobExecution(
+                        "no active staging physician available to connect synthetic Spruce channel"
+                            .to_owned(),
+                    )
+                })?;
+                self.store
+                    .connect_spruce_channel(&self.auth, &actor, 0, None, now_ts)
+                    .await
+                    .map_err(SyntheticControlError::Spruce)?;
+                0_u64
+            }
+            ChannelStanding::Connected { place, .. } => place,
+        };
+
+        let sender_address =
+            SenderAddress::parse(sender_contact).map_err(SyntheticControlError::Spruce)?;
+        let contact_id = format!("spruce-contact-{source_patient_id}");
+        self.store
+            .register_spruce_ehr_patient_link(
+                STAGING_PRACTICE_ID,
+                synthetic_chart::SOURCE_ID,
+                source_patient_id,
+                workspace_id,
+                now_ts,
+            )
+            .await
+            .map_err(SyntheticControlError::Spruce)?;
+        self.store
+            .save_spruce_contact_record(
+                &SpruceContactRecord {
+                    practice: STAGING_PRACTICE_ID.to_owned(),
+                    contact_id: contact_id.clone(),
+                    spruce_patients: vec![SpruceContactPatient {
+                        spruce_patient_id: format!("spruce-patient-{source_patient_id}"),
+                        ehr_links: vec![SpruceEhrLink {
+                            source_id: synthetic_chart::SOURCE_ID.to_owned(),
+                            source_patient_id: source_patient_id.to_owned(),
+                        }],
+                    }],
+                },
+                now_ts,
+            )
+            .await
+            .map_err(SyntheticControlError::Spruce)?;
+
+        let holder_id = format!(
+            "staging-synthetic-spruce-{}",
+            self.refresh_seq.fetch_add(1, Ordering::SeqCst) + 1
+        );
+        let lease = self
+            .store
+            .acquire_spruce_reader_lease(STAGING_PRACTICE_ID, &holder_id, 60, now_ts)
+            .await
+            .map_err(SyntheticControlError::Spruce)?;
+        let next_position = current_place.saturating_add(1);
+        let content_version = local_product::sha256_hex(
+            format!("{conversation_id}:{message_id}:{text}:{sent_at}").as_bytes(),
+        );
+        let item = IncomingSpruceItem::Readable(ReadableSpruceItem {
+            message_id: message_id.to_owned(),
+            conversation_id: conversation_id.to_owned(),
+            channel_position: next_position,
+            content_version,
+            sender_address: Some(sender_address.clone()),
+            author_name: Some(sender_name.to_owned()),
+            body_text: text.to_owned(),
+            attachments: Vec::new(),
+            app_url: None,
+            created_at_spruce: Some(sent_at.to_owned()),
+            outside_participants: vec![OutsideParticipant {
+                display_name: Some(sender_name.to_owned()),
+                endpoint_channel: Some("sms".to_owned()),
+                endpoint_address: Some(sender_address),
+                saved_contact_id: Some(contact_id),
+            }],
+        });
+        let ingest_res = self
+            .store
+            .ingest_spruce_item(STAGING_PRACTICE_ID, &lease.lease_token, &item, now_ts)
+            .await;
+        if ingest_res.is_ok() {
+            let _ = self
+                .store
+                .advance_spruce_channel_place(STAGING_PRACTICE_ID, &lease.lease_token, None, now_ts)
+                .await;
+        }
+        let _ = self
+            .store
+            .release_spruce_reader_lease(STAGING_PRACTICE_ID, &lease.lease_token, now_ts)
+            .await;
+        ingest_res.map_err(SyntheticControlError::Spruce)?;
+
+        let _ = self
+            .bus
+            .publish(physician_bus::Event::WorkspaceChanged {
+                workspace_id: workspace_id.to_owned(),
+            })
+            .await;
+        Ok(())
+    }
+
+    async fn deliver_duet_update(
+        &self,
+        workspace_id: &str,
+        candidate_id: &str,
+        category: &str,
+        title: &str,
+        text: &str,
+        observed_at: &str,
+    ) -> Result<(), SyntheticControlError> {
+        let content = json!({
+            "source": DUET_CONNECTED_CARE_SOURCE_ID,
+            "category": category,
+            "title": title,
+            "text": text,
+            "observed_at": observed_at,
+        })
+        .to_string();
+        let sha256 = local_product::sha256_hex(content.as_bytes());
+        let revision = SourceRevision {
+            workspace: workspace_id.to_owned(),
+            source_id: DUET_CONNECTED_CARE_SOURCE_ID.to_owned(),
+            candidate_id: format!("duet:{candidate_id}"),
+            revision: format!("duet-rev-{}", &sha256[..12]),
+            record_type: format!("Duet/{category}"),
+            dates: vec![RecordDate {
+                name: "observed".to_owned(),
+                value: observed_at.to_owned(),
+            }],
+            content,
+            sha256,
+            readable_parts: vec![ReadablePart {
+                label: title.to_owned(),
+                text: text.to_owned(),
+            }],
+            provenance: json!({
+                "source_id": DUET_CONNECTED_CARE_SOURCE_ID,
+                "source_label": "Duet connected care",
+                "record_id": candidate_id,
+                "category": category,
+                "observed_at": observed_at,
+            }),
+            envelope: None,
+        };
+        self.store
+            .record_source(&revision)
+            .await
+            .map_err(SyntheticControlError::Database)?;
+        let _ = self
+            .bus
+            .publish(physician_bus::Event::WorkspaceChanged {
+                workspace_id: workspace_id.to_owned(),
+            })
+            .await;
+        Ok(())
     }
 
     /// Injects or clears a source failure on the synthetic chart or calendar adapter
@@ -1707,6 +2590,7 @@ impl StagingSyntheticControl {
                     calendar_sync_error = Some(err.to_string());
                 }
             }
+            SyntheticSourceKind::Spruce | SyntheticSourceKind::Duet => {}
         }
 
         Ok(SourceFailureResponse {
@@ -1726,8 +2610,18 @@ impl StagingSyntheticControl {
     ) -> Result<RoundsExecutionReport, SyntheticControlError> {
         let evaluated_at_unix = match request.now_unix {
             Some(explicit) => explicit,
-            None => self.next_daily_rounds_unix().await?,
+            None => {
+                let clock = self
+                    .auth
+                    .practice_clock(STAGING_PRACTICE_ID)
+                    .await
+                    .map_err(SyntheticControlError::AuthUnavailable)?;
+                clock.now(now()) as i64
+            }
         };
+        if let Ok(unix_u64) = u64::try_from(evaluated_at_unix) {
+            self.sources.set_clock_unix(unix_u64);
+        }
         let skills = self
             .store
             .resolve_worker_skills(self.skills_dir.as_deref())
@@ -1860,6 +2754,9 @@ impl StagingSyntheticControl {
             .await
             .map_err(SyntheticControlError::AuthUnavailable)?;
         let evaluated_at_unix = request.now_unix.unwrap_or_else(|| clock.now(now()) as i64);
+        if let Ok(unix_u64) = u64::try_from(evaluated_at_unix) {
+            self.sources.set_clock_unix(unix_u64);
+        }
 
         let schedule_sync = schedule::sync_synthetic_schedule(
             self.sources.as_ref(),
@@ -1981,6 +2878,19 @@ impl StagingSyntheticControl {
             ));
         }
 
+        // Restore the persisted practice simulation clock back to the synthetic baseline.
+        let baseline_unix = crate::auth::SYNTHETIC_PRACTICE_CLOCK.now(now());
+        auth_target
+            .set_synthetic_practice_clock(
+                STAGING_PRACTICE_ID,
+                SyntheticClockUpdate::ResetToUnix {
+                    unix_seconds: baseline_unix,
+                },
+            )
+            .await
+            .map_err(SyntheticControlError::ClockUpdate)?;
+        self.sources.set_clock_unix(baseline_unix);
+
         let panel_identities = crate::auth::staging_panel(auth_target)
             .await
             .map_err(SyntheticControlError::AuthUnavailable)?;
@@ -2020,29 +2930,6 @@ impl StagingSyntheticControl {
         }
 
         self.status().await
-    }
-
-    async fn next_daily_rounds_unix(&self) -> Result<i64, SyntheticControlError> {
-        let clock = self
-            .auth
-            .practice_clock(STAGING_PRACTICE_ID)
-            .await
-            .map_err(SyntheticControlError::AuthUnavailable)?;
-        let practice_now = clock.now(now()) as i64;
-        let statuses = self
-            .store
-            .practice_dispatch_statuses(&self.auth, STAGING_PRACTICE_ID, practice_now)
-            .await
-            .map_err(SyntheticControlError::Dispatch)?;
-        let mut target = practice_now;
-        for (_, view) in statuses {
-            if let Some(last_success) = view.last_success_at {
-                let next_check =
-                    last_success.saturating_add(view.cadence.check_every_seconds().cast_signed());
-                target = target.max(next_check);
-            }
-        }
-        Ok(target)
     }
 
     async fn collect_patient_summaries(
@@ -2158,6 +3045,11 @@ pub fn router(control: Arc<StagingSyntheticControl>) -> Router {
     Router::new()
         .route("/staging-synthetic/patients", get(list_patients_route))
         .route("/staging-synthetic/status", get(status_route))
+        .route(
+            "/staging-synthetic/clock",
+            get(get_clock_route).post(update_clock_route),
+        )
+        .route("/staging-synthetic/measure", get(measure_route))
         .route("/staging-synthetic/events", post(send_event_route))
         .route(
             "/staging-synthetic/source-failure",
@@ -2267,6 +3159,52 @@ async fn status_route(
     }
     match control.status().await {
         Ok(status) => Json(status).into_response(),
+        Err(err) => err.into_response(),
+    }
+}
+
+async fn get_clock_route(
+    State(control): State<Arc<StagingSyntheticControl>>,
+    request: Request<Body>,
+) -> Response {
+    let (token, auth_ext) = extract_auth_inputs(&request);
+    if let Some(denied) = authorize_staging_request(&control, token, auth_ext).await {
+        return denied;
+    }
+    match control.clock().await {
+        Ok(clock) => Json(clock).into_response(),
+        Err(err) => err.into_response(),
+    }
+}
+
+async fn update_clock_route(
+    State(control): State<Arc<StagingSyntheticControl>>,
+    request: Request<Body>,
+) -> Response {
+    let (token, auth_ext) = extract_auth_inputs(&request);
+    if let Some(denied) = authorize_staging_request(&control, token, auth_ext).await {
+        return denied;
+    }
+    let update: SyntheticClockUpdate = match read_json_body(request).await {
+        Ok(parsed) => parsed,
+        Err(detail) => return bad_request_response(detail),
+    };
+    match control.update_clock(update).await {
+        Ok(clock) => Json(clock).into_response(),
+        Err(err) => err.into_response(),
+    }
+}
+
+async fn measure_route(
+    State(control): State<Arc<StagingSyntheticControl>>,
+    request: Request<Body>,
+) -> Response {
+    let (token, auth_ext) = extract_auth_inputs(&request);
+    if let Some(denied) = authorize_staging_request(&control, token, auth_ext).await {
+        return denied;
+    }
+    match control.measure().await {
+        Ok(measure) => Json(measure).into_response(),
         Err(err) => err.into_response(),
     }
 }
@@ -2783,6 +3721,29 @@ mod runtime_tables {
         RevisionAttempts,
         ReplyRevisions,
         ReplyDrafts,
+        ReplyCopies,
+        ReplyDraftBindings,
+        ReplyReviewCompletions,
+        ReplyProposals,
+        ReplyConversations,
+        SpruceMatchingRuns,
+        SpruceReviewTriggers,
+        SpruceEnteredInError,
+        SpruceMessages,
+        SpruceConversations,
+        SpruceConfirmedSenders,
+        SpruceEhrLinks,
+        SpruceContacts,
+        SpruceChannels,
+        LinkCorrectionWorkspaces,
+        LinkCorrections,
+        FollowUpUpdates,
+        FollowUps,
+        ConcernWithdrawals,
+        UnderstandingWithdrawals,
+        MemoryWithdrawals,
+        SourceWithdrawals,
+        CarePlanRecommendations,
         PracticeJobAttempts,
         PracticeJobs,
         PatientReviews,
@@ -2798,10 +3759,22 @@ mod runtime_tables {
         PatientUnderstanding,
         SourceRefreshReceipts,
         SourceStatuses,
+        PatientSourceStatus,
+        PracticeSourceAccess,
+        ReconnectCommands,
+        SourceAdapterState,
+        SourcePatientLinks,
+        WorkspacePractices,
+        PatientDispatchTriggers,
         PatientDispatch,
         Appointments,
         SchedulePatientLinks,
         ScheduleSources,
+        PanelPreferences,
+        HintCaptures,
+        HintJobs,
+        HintSchedules,
+        HintPairings,
         Commands,
         Recipes,
         SkillPackages,
@@ -2820,6 +3793,29 @@ mod runtime_tables {
                 Self::RevisionAttempts => "physician_runtime_revision_attempts",
                 Self::ReplyRevisions => "physician_runtime_reply_revisions",
                 Self::ReplyDrafts => "physician_runtime_reply_drafts",
+                Self::ReplyCopies => "physician_runtime_reply_copies",
+                Self::ReplyDraftBindings => "physician_runtime_reply_draft_bindings",
+                Self::ReplyReviewCompletions => "physician_runtime_reply_review_completions",
+                Self::ReplyProposals => "physician_runtime_reply_proposals",
+                Self::ReplyConversations => "physician_runtime_reply_conversations",
+                Self::SpruceMatchingRuns => "physician_runtime_spruce_matching_runs",
+                Self::SpruceReviewTriggers => "physician_runtime_spruce_review_triggers",
+                Self::SpruceEnteredInError => "physician_runtime_spruce_entered_in_error",
+                Self::SpruceMessages => "physician_runtime_spruce_messages",
+                Self::SpruceConversations => "physician_runtime_spruce_conversations",
+                Self::SpruceConfirmedSenders => "physician_runtime_spruce_confirmed_senders",
+                Self::SpruceEhrLinks => "physician_runtime_spruce_ehr_links",
+                Self::SpruceContacts => "physician_runtime_spruce_contacts",
+                Self::SpruceChannels => "physician_runtime_spruce_channels",
+                Self::LinkCorrectionWorkspaces => "physician_runtime_link_correction_workspaces",
+                Self::LinkCorrections => "physician_runtime_link_corrections",
+                Self::FollowUpUpdates => "physician_runtime_follow_up_updates",
+                Self::FollowUps => "physician_runtime_follow_ups",
+                Self::ConcernWithdrawals => "physician_runtime_concern_withdrawals",
+                Self::UnderstandingWithdrawals => "physician_runtime_understanding_withdrawals",
+                Self::MemoryWithdrawals => "physician_runtime_memory_withdrawals",
+                Self::SourceWithdrawals => "physician_runtime_source_withdrawals",
+                Self::CarePlanRecommendations => "physician_runtime_care_plan_recommendations",
                 Self::PracticeJobAttempts => "physician_runtime_practice_job_attempts",
                 Self::PracticeJobs => "physician_runtime_practice_jobs",
                 Self::PatientReviews => "physician_runtime_patient_reviews",
@@ -2837,10 +3833,22 @@ mod runtime_tables {
                 Self::PatientUnderstanding => "physician_runtime_patient_understanding",
                 Self::SourceRefreshReceipts => "physician_runtime_source_refresh_receipts",
                 Self::SourceStatuses => "physician_runtime_source_statuses",
+                Self::PatientSourceStatus => "physician_runtime_patient_source_status",
+                Self::PracticeSourceAccess => "physician_runtime_practice_source_access",
+                Self::ReconnectCommands => "physician_runtime_reconnect_commands",
+                Self::SourceAdapterState => "physician_runtime_source_adapter_state",
+                Self::SourcePatientLinks => "physician_runtime_source_patient_links",
+                Self::WorkspacePractices => "physician_runtime_workspace_practices",
+                Self::PatientDispatchTriggers => "physician_runtime_patient_dispatch_triggers",
                 Self::PatientDispatch => "physician_runtime_patient_dispatch",
                 Self::Appointments => "physician_runtime_appointments",
                 Self::SchedulePatientLinks => "physician_runtime_schedule_patient_links",
                 Self::ScheduleSources => "physician_runtime_schedule_sources",
+                Self::PanelPreferences => "physician_runtime_panel_preferences",
+                Self::HintCaptures => "physician_runtime_hint_captures",
+                Self::HintJobs => "physician_runtime_hint_jobs",
+                Self::HintSchedules => "physician_runtime_hint_schedules",
+                Self::HintPairings => "physician_runtime_hint_pairings",
                 Self::Commands => "physician_runtime_commands",
                 Self::Recipes => "physician_runtime_recipes",
                 Self::SkillPackages => "physician_runtime_skill_packages",
@@ -2890,6 +3898,10 @@ mod runtime_tables {
         PracticeId,
         Workspace,
         Chat,
+        Status,
+        ReplyState,
+        LinkKind,
+        Outcome,
     }
 
     impl Iden for RuntimeCol {
@@ -2899,6 +3911,10 @@ mod runtime_tables {
                 Self::PracticeId => "practice_id",
                 Self::Workspace => "workspace",
                 Self::Chat => "chat",
+                Self::Status => "status",
+                Self::ReplyState => "reply_state",
+                Self::LinkKind => "link_kind",
+                Self::Outcome => "outcome",
             }
         }
     }
@@ -2912,6 +3928,29 @@ mod runtime_tables {
         PracticeTable::RevisionAttempts,
         PracticeTable::ReplyRevisions,
         PracticeTable::ReplyDrafts,
+        PracticeTable::ReplyCopies,
+        PracticeTable::ReplyDraftBindings,
+        PracticeTable::ReplyReviewCompletions,
+        PracticeTable::ReplyProposals,
+        PracticeTable::ReplyConversations,
+        PracticeTable::SpruceMatchingRuns,
+        PracticeTable::SpruceReviewTriggers,
+        PracticeTable::SpruceEnteredInError,
+        PracticeTable::SpruceMessages,
+        PracticeTable::SpruceConversations,
+        PracticeTable::SpruceConfirmedSenders,
+        PracticeTable::SpruceEhrLinks,
+        PracticeTable::SpruceContacts,
+        PracticeTable::SpruceChannels,
+        PracticeTable::LinkCorrectionWorkspaces,
+        PracticeTable::LinkCorrections,
+        PracticeTable::FollowUpUpdates,
+        PracticeTable::FollowUps,
+        PracticeTable::ConcernWithdrawals,
+        PracticeTable::UnderstandingWithdrawals,
+        PracticeTable::MemoryWithdrawals,
+        PracticeTable::SourceWithdrawals,
+        PracticeTable::CarePlanRecommendations,
         PracticeTable::PracticeJobAttempts,
         PracticeTable::PracticeJobs,
         PracticeTable::PatientReviews,
@@ -2927,10 +3966,22 @@ mod runtime_tables {
         PracticeTable::PatientUnderstanding,
         PracticeTable::SourceRefreshReceipts,
         PracticeTable::SourceStatuses,
+        PracticeTable::PatientSourceStatus,
+        PracticeTable::PracticeSourceAccess,
+        PracticeTable::ReconnectCommands,
+        PracticeTable::SourceAdapterState,
+        PracticeTable::SourcePatientLinks,
+        PracticeTable::WorkspacePractices,
+        PracticeTable::PatientDispatchTriggers,
         PracticeTable::PatientDispatch,
         PracticeTable::Appointments,
         PracticeTable::SchedulePatientLinks,
         PracticeTable::ScheduleSources,
+        PracticeTable::PanelPreferences,
+        PracticeTable::HintCaptures,
+        PracticeTable::HintJobs,
+        PracticeTable::HintSchedules,
+        PracticeTable::HintPairings,
         PracticeTable::Commands,
         PracticeTable::Recipes,
         PracticeTable::SkillPackages,
@@ -2949,6 +4000,134 @@ mod runtime_tables {
         AuthPracticeTable::Memberships,
         AuthPracticeTable::Patients,
     ];
+}
+
+/// Returns every `physician_runtime_*` table name cleared by
+/// `POST /staging-synthetic/reset` (both practice-scoped and workspace-scoped).
+pub fn reset_covered_runtime_table_names() -> Vec<&'static str> {
+    use runtime_tables::{ALL_PRACTICE_TABLES, ALL_WORKSPACE_TABLES};
+    let mut names: Vec<&'static str> = ALL_PRACTICE_TABLES
+        .iter()
+        .map(Iden::unquoted)
+        .chain(ALL_WORKSPACE_TABLES.iter().map(Iden::unquoted))
+        .collect();
+    names.sort_unstable();
+    names
+}
+
+#[derive(Default)]
+struct L1MeasureDbCounts {
+    open_concerns: usize,
+    concerns_raised: usize,
+    concerns_addressed: usize,
+    ready_replies: usize,
+    stale_replies_retired: usize,
+    follow_ups_created: usize,
+    follow_ups_completed: usize,
+    unhandled_follow_ups: usize,
+    unmatched_spruce_conversations: usize,
+    spruce_messages_ingested: usize,
+    failed_source_statuses: usize,
+}
+
+async fn count_where(
+    db: &DatabaseConnection,
+    select: sea_orm::sea_query::SelectStatement,
+) -> Result<usize, DbErr> {
+    let Some(row) = db.query_one(&select).await? else {
+        return Ok(0);
+    };
+    let count: i64 = row.try_get_by_index(0)?;
+    Ok(usize::try_from(count).unwrap_or(0))
+}
+
+async fn query_l1_measure_counts(
+    db: &DatabaseConnection,
+    practice_id: &str,
+) -> Result<L1MeasureDbCounts, DbErr> {
+    use runtime_tables::{PracticeTable, RuntimeCol};
+    use sea_orm::sea_query::ExprTrait as _;
+
+    let count_all = |table: PracticeTable| {
+        Query::select()
+            .expr(Expr::col(RuntimeCol::Practice).count())
+            .from(table)
+            .and_where(Expr::col(RuntimeCol::Practice).eq(practice_id))
+            .to_owned()
+    };
+
+    let open_concerns = count_where(
+        db,
+        count_all(PracticeTable::Concerns)
+            .and_where(Expr::col(RuntimeCol::Status).eq("open"))
+            .to_owned(),
+    )
+    .await?;
+    let concerns_raised = count_where(db, count_all(PracticeTable::Concerns)).await?;
+    let concerns_addressed = concerns_raised.saturating_sub(open_concerns);
+
+    let ready_replies = count_where(
+        db,
+        count_all(PracticeTable::ReplyConversations)
+            .and_where(Expr::col(RuntimeCol::ReplyState).eq("ready"))
+            .to_owned(),
+    )
+    .await?;
+    let stale_replies_retired = count_where(
+        db,
+        count_all(PracticeTable::ReplyConversations)
+            .and_where(Expr::col(RuntimeCol::ReplyState).eq("withheld"))
+            .to_owned(),
+    )
+    .await?;
+
+    let follow_ups_created = count_where(db, count_all(PracticeTable::FollowUps)).await?;
+    let follow_ups_completed = count_where(
+        db,
+        count_all(PracticeTable::FollowUps)
+            .and_where(Expr::col(RuntimeCol::Status).eq("completed"))
+            .to_owned(),
+    )
+    .await?;
+    let unhandled_follow_ups = count_where(
+        db,
+        count_all(PracticeTable::FollowUps)
+            .and_where(Expr::col(RuntimeCol::Status).eq("cannot_restart"))
+            .to_owned(),
+    )
+    .await?;
+
+    let unmatched_spruce_conversations = count_where(
+        db,
+        count_all(PracticeTable::SpruceConversations)
+            .and_where(Expr::col(RuntimeCol::LinkKind).ne("linked"))
+            .to_owned(),
+    )
+    .await?;
+    let spruce_messages_ingested =
+        count_where(db, count_all(PracticeTable::SpruceMessages)).await?;
+
+    let failed_source_statuses = count_where(
+        db,
+        count_all(PracticeTable::SourceStatuses)
+            .and_where(Expr::col(RuntimeCol::Outcome).eq("failed"))
+            .to_owned(),
+    )
+    .await?;
+
+    Ok(L1MeasureDbCounts {
+        open_concerns,
+        concerns_raised,
+        concerns_addressed,
+        ready_replies,
+        stale_replies_retired,
+        follow_ups_created,
+        follow_ups_completed,
+        unhandled_follow_ups,
+        unmatched_spruce_conversations,
+        spruce_messages_ingested,
+        failed_source_statuses,
+    })
 }
 
 async fn count_practice_conversations(

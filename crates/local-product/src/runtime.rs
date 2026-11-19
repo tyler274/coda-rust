@@ -31,6 +31,8 @@ use uuid::Uuid;
 
 /// Visit preparation selection, saved pre-visit briefings, and visit concern lifecycle.
 pub mod briefings;
+/// Care-plan medication recommendations held undecided until explicit physician decision.
+pub mod care_plan;
 /// Hosted chat drafts: the physician's unsent composer text per chat.
 pub mod chat_draft;
 /// Patient starting context, readability limits, durable memory, source refresh, and chat tool dispatch.

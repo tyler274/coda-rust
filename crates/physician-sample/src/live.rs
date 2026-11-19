@@ -240,8 +240,18 @@ struct QueueSendNowPayload {
     physician_time_zone: String,
 }
 
-/// Accepts chat, Stop/Resume, item.open, and reply-revision commands into the durable owner.
-/// Every other command is rejected.
+#[derive(Deserialize)]
+struct DecideRecommendationPayload {
+    patient_workspace_id: String,
+    recommendation_id: String,
+    #[serde(default)]
+    decision: Option<String>,
+    #[serde(default)]
+    note: Option<String>,
+}
+
+/// Accepts chat, Stop/Resume, item.open, plan.decide_recommendation, and reply-revision commands
+/// into the durable owner. Every other command is rejected.
 pub(crate) async fn submit(
     State(live): State<Arc<Live>>,
     auth_ctx: Option<Extension<AuthContext>>,
@@ -261,6 +271,9 @@ pub(crate) async fn submit(
             body.payload,
         )
         .await;
+    }
+    if body.kind == "plan.decide_recommendation" {
+        return decide_recommendation_durable(live, auth_ctx, body).await;
     }
     if body.kind == "reply.revise" {
         return revise(live, auth_ctx.map(|Extension(ctx)| ctx), body).await;
@@ -765,6 +778,119 @@ async fn stop_durable(
             )
                 .into_response()
         }
+    }
+}
+
+async fn decide_recommendation_durable(
+    live: Arc<Live>,
+    auth_ctx: Option<Extension<AuthContext>>,
+    body: CommandBody,
+) -> Response {
+    use local_product::runtime::care_plan::{CarePlanError, RecommendationDecision};
+    use local_product::runtime::concerns::WorkspaceAccess;
+
+    let Some(Extension(ctx)) = auth_ctx else {
+        return StatusCode::UNAUTHORIZED.into_response();
+    };
+    let Some(payload) = body
+        .payload
+        .and_then(|p| serde_json::from_value::<DecideRecommendationPayload>(p).ok())
+    else {
+        return rejected("plan.decide_recommendation");
+    };
+    if payload.patient_workspace_id.trim().is_empty() || payload.recommendation_id.trim().is_empty()
+    {
+        return rejected("plan.decide_recommendation");
+    }
+    let decision = match payload.decision.as_deref().map(str::trim) {
+        None | Some("" | "approve" | "approved_into_plan" | "decided") => {
+            RecommendationDecision::ApproveIntoPlan { note: payload.note }
+        }
+        Some("decline" | "declined") => RecommendationDecision::Decline { note: payload.note },
+        Some(_) => return rejected("plan.decide_recommendation"),
+    };
+    let Ok(clock) = ctx
+        .auth
+        .store
+        .practice_clock(&ctx.identity.practice_id)
+        .await
+    else {
+        return (
+            StatusCode::SERVICE_UNAVAILABLE,
+            Json(json!({
+                "outcome": "rejected",
+                "message": rejection_message("plan.decide_recommendation"),
+            })),
+        )
+            .into_response();
+    };
+    let decided_at = clock.now(crate::auth::now()) as i64;
+    let session_hash = physician_auth::PostgresAuthStore::session_reference(&ctx.token);
+    let access = WorkspaceAccess {
+        practice: &ctx.identity.practice_id,
+        physician: &ctx.identity.physician_id,
+        workspace: &payload.patient_workspace_id,
+        session_hash: &session_hash,
+    };
+    let mut authority = crate::durable::RuntimeAuthority;
+    match live
+        .chat
+        .store
+        .decide_medication_recommendation_for_physician(
+            &access,
+            &payload.recommendation_id,
+            decision,
+            decided_at,
+            &mut authority,
+        )
+        .await
+    {
+        Ok(updated) => {
+            if live
+                .bus
+                .publish(Event::WorkspaceChanged {
+                    workspace_id: payload.patient_workspace_id.clone(),
+                })
+                .await
+                .is_err()
+            {
+                tracing::warn!("physician workspace invalidation not published");
+            }
+            Json(json!({
+                "outcome": "accepted",
+                "patient_workspace_id": updated.workspace,
+                "recommendation_id": updated.recommendation_id,
+                "standing": updated.standing,
+            }))
+            .into_response()
+        }
+        Err(CarePlanError::NotFound { .. } | CarePlanError::AccessDenied { .. }) => (
+            StatusCode::NOT_FOUND,
+            Json(json!({
+                "outcome": "rejected",
+                "message": "Recommendation not found.",
+            })),
+        )
+            .into_response(),
+        Err(CarePlanError::AlreadyDecided {
+            current_standing, ..
+        }) => (
+            StatusCode::CONFLICT,
+            Json(json!({
+                "outcome": "rejected",
+                "message": format!("Recommendation is already {current_standing}."),
+            })),
+        )
+            .into_response(),
+        Err(CarePlanError::InvalidInput(_)) => rejected("plan.decide_recommendation"),
+        Err(CarePlanError::Database(_) | CarePlanError::CorruptRow { .. }) => (
+            StatusCode::SERVICE_UNAVAILABLE,
+            Json(json!({
+                "outcome": "rejected",
+                "message": rejection_message("plan.decide_recommendation"),
+            })),
+        )
+            .into_response(),
     }
 }
 

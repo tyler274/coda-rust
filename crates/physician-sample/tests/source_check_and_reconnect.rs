@@ -1025,6 +1025,15 @@ impl AuthStore for FailingEnrollmentAuth {
     ) -> Result<PracticeClock, physician_auth::StoreUnavailable> {
         self.inner.practice_clock(practice_id).await
     }
+    async fn set_synthetic_practice_clock(
+        &self,
+        practice_id: &str,
+        update: physician_auth::SyntheticClockUpdate,
+    ) -> Result<PracticeClock, physician_auth::ClockUpdateError> {
+        self.inner
+            .set_synthetic_practice_clock(practice_id, update)
+            .await
+    }
     async fn upsert_practice(
         &self,
         record: &physician_auth::PracticeRecord,

@@ -187,22 +187,120 @@ pub fn staging_accounts(
         .collect()
 }
 
+/// Environment variable configuring harness-level rehearsed failures for
+/// simulation practices (staging-preview only).
+///
+/// Format: comma-separated rules where each entry is either:
+/// - `<K>`: fail the first `K` attempts for every simulation practice,
+/// - `practice:<id>=<K>`: fail the first `K` attempts for simulation practice `<id>`, or
+/// - `scenario:<slug>=<K>`: fail the first `K` attempts for simulation-practice turns
+///   submitted with out-of-band scenario `<slug>`.
+///
+/// Nothing ever reads failure markers from a person's message text.
+pub const PHYSICIAN_REHEARSAL_FAIL_ATTEMPTS_ENV: &str = "PHYSICIAN_REHEARSAL_FAIL_ATTEMPTS";
+
+/// Harness-level failure injection policy for rehearsal/simulation practices.
+#[derive(Clone, Debug, Default, PartialEq, Eq)]
+pub struct RehearsalFailurePolicy {
+    default_attempts: u32,
+    by_practice: std::collections::BTreeMap<String, u32>,
+    by_scenario: std::collections::BTreeMap<String, u32>,
+}
+
+impl RehearsalFailurePolicy {
+    /// Parses `PHYSICIAN_REHEARSAL_FAIL_ATTEMPTS` into a typed policy.
+    pub fn parse(raw: &str) -> Result<Self, String> {
+        let mut policy = Self::default();
+        for entry in raw.split(',').map(str::trim).filter(|s| !s.is_empty()) {
+            if let Some(rest) = entry.strip_prefix("scenario:") {
+                let (slug, count) = rest.split_once('=').ok_or_else(|| {
+                    format!(
+                        "{PHYSICIAN_REHEARSAL_FAIL_ATTEMPTS_ENV}: expected `scenario:<slug>=<count>`, got `{entry}`"
+                    )
+                })?;
+                let slug = slug.trim();
+                if slug.is_empty() {
+                    return Err(format!(
+                        "{PHYSICIAN_REHEARSAL_FAIL_ATTEMPTS_ENV}: empty scenario slug in `{entry}`"
+                    ));
+                }
+                let parsed: u32 = count.trim().parse().map_err(|_| {
+                    format!(
+                        "{PHYSICIAN_REHEARSAL_FAIL_ATTEMPTS_ENV}: invalid failure count in `{entry}`"
+                    )
+                })?;
+                policy.by_scenario.insert(slug.to_owned(), parsed);
+            } else if let Some(rest) = entry.strip_prefix("practice:") {
+                let (practice, count) = rest.split_once('=').ok_or_else(|| {
+                    format!(
+                        "{PHYSICIAN_REHEARSAL_FAIL_ATTEMPTS_ENV}: expected `practice:<id>=<count>`, got `{entry}`"
+                    )
+                })?;
+                let practice = practice.trim();
+                if practice.is_empty() {
+                    return Err(format!(
+                        "{PHYSICIAN_REHEARSAL_FAIL_ATTEMPTS_ENV}: empty practice id in `{entry}`"
+                    ));
+                }
+                let parsed: u32 = count.trim().parse().map_err(|_| {
+                    format!(
+                        "{PHYSICIAN_REHEARSAL_FAIL_ATTEMPTS_ENV}: invalid failure count in `{entry}`"
+                    )
+                })?;
+                policy.by_practice.insert(practice.to_owned(), parsed);
+            } else {
+                let parsed: u32 = entry.parse().map_err(|_| {
+                    format!(
+                        "{PHYSICIAN_REHEARSAL_FAIL_ATTEMPTS_ENV}: expected whole number, `practice:<id>=<count>`, or `scenario:<slug>=<count>`, got `{entry}`"
+                    )
+                })?;
+                policy.default_attempts = parsed;
+            }
+        }
+        Ok(policy)
+    }
+
+    fn planned_failures(&self, practice: &str, scenario: Option<&str>) -> u32 {
+        if let Some(slug) = scenario
+            && let Some(count) = self.by_scenario.get(slug)
+        {
+            return *count;
+        }
+        if let Some(count) = self.by_practice.get(practice) {
+            return *count;
+        }
+        self.default_attempts
+    }
+}
+
 /// Practices whose chat is rehearsal traffic, from
-/// `PHYSICIAN_SIMULATION_PRACTICES` (comma-separated practice ids).
+/// `PHYSICIAN_SIMULATION_PRACTICES` (comma-separated practice ids), together
+/// with optional harness-level failure injection (`PHYSICIAN_REHEARSAL_FAIL_ATTEMPTS`).
 ///
 /// A turn in one of these practices is `simulation` in telemetry and may carry
 /// a scenario id; every other practice is `real` and may not. Only the
 /// staging-preview profile accepts the list, so a production process can never
-/// relabel real traffic. An unset or blank list is empty.
+/// relabel real traffic or inject rehearsed failures. An unset or blank list is
+/// empty.
 #[derive(Clone, Debug, Default, PartialEq, Eq)]
-pub struct SimulationPractices(std::collections::BTreeSet<String>);
+pub struct SimulationPractices {
+    practices: std::collections::BTreeSet<String>,
+    rehearsed_failures: RehearsalFailurePolicy,
+}
 
 impl SimulationPractices {
-    /// Reads `PHYSICIAN_SIMULATION_PRACTICES`, refusing it outside the
+    /// Reads `PHYSICIAN_SIMULATION_PRACTICES` and optional
+    /// `PHYSICIAN_REHEARSAL_FAIL_ATTEMPTS`, refusing either outside the
     /// staging-preview profile.
     pub fn from_env(get: impl Fn(&str) -> Option<String>) -> Result<Self, String> {
         let list = get("PHYSICIAN_SIMULATION_PRACTICES").unwrap_or_default();
+        let raw_failures = get(PHYSICIAN_REHEARSAL_FAIL_ATTEMPTS_ENV).unwrap_or_default();
         if list.trim().is_empty() {
+            if !raw_failures.trim().is_empty() {
+                return Err(format!(
+                    "{PHYSICIAN_REHEARSAL_FAIL_ATTEMPTS_ENV} requires PHYSICIAN_SIMULATION_PRACTICES under CODA_HOSTED_PROFILE={STAGING_PROFILE}"
+                ));
+            }
             return Ok(Self::default());
         }
         if get("CODA_HOSTED_PROFILE").as_deref() != Some(STAGING_PROFILE) {
@@ -210,31 +308,74 @@ impl SimulationPractices {
                 "PHYSICIAN_SIMULATION_PRACTICES is only honoured under CODA_HOSTED_PROFILE={STAGING_PROFILE}"
             ));
         }
-        Ok(Self(
-            list.split(',')
-                .map(str::trim)
-                .filter(|practice| !practice.is_empty())
-                .map(str::to_owned)
-                .collect(),
-        ))
+        let practices: std::collections::BTreeSet<String> = list
+            .split(',')
+            .map(str::trim)
+            .filter(|practice| !practice.is_empty())
+            .map(str::to_owned)
+            .collect();
+        let rehearsed_failures = if raw_failures.trim().is_empty() {
+            RehearsalFailurePolicy::default()
+        } else {
+            RehearsalFailurePolicy::parse(&raw_failures)?
+        };
+        Ok(Self {
+            practices,
+            rehearsed_failures,
+        })
     }
 
     /// The given practices, for tests and in-process composition.
     pub fn of<'a>(practices: impl IntoIterator<Item = &'a str>) -> Self {
-        Self(practices.into_iter().map(str::to_owned).collect())
+        Self {
+            practices: practices.into_iter().map(str::to_owned).collect(),
+            rehearsed_failures: RehearsalFailurePolicy::default(),
+        }
+    }
+
+    /// Configures harness-level rehearsed failure attempts for every practice in
+    /// this set.
+    pub fn with_rehearsed_failures(mut self, attempts: u32) -> Self {
+        self.rehearsed_failures.default_attempts = attempts;
+        self
+    }
+
+    /// Configures harness-level rehearsed failure attempts for turns submitted
+    /// with out-of-band `scenario` in a simulation practice.
+    pub fn with_scenario_rehearsed_failures(
+        mut self,
+        scenario: impl Into<String>,
+        attempts: u32,
+    ) -> Self {
+        self.rehearsed_failures
+            .by_scenario
+            .insert(scenario.into(), attempts);
+        self
     }
 
     /// Whether `practice` is a rehearsal practice.
     pub fn contains(&self, practice: &str) -> bool {
-        self.0.contains(practice)
+        self.practices.contains(practice)
     }
 
-    /// Whether the attempt after `earlier_attempts` on a turn in `practice`
-    /// fails on purpose: only a rehearsal practice honours a `[fail:K]`
-    /// marker in its message (see [`marked_attempt_fails`]). A real practice
-    /// never does, and a production process has no rehearsal practices.
-    pub fn rehearsed_failure(&self, practice: &str, input: &str, earlier_attempts: u32) -> bool {
-        self.contains(practice) && marked_attempt_fails(earlier_attempts, input)
+    /// Whether the attempt after `earlier_attempts` in `practice` (with optional
+    /// out-of-band `scenario`) fails on purpose according to the harness-level
+    /// failure policy.
+    ///
+    /// Only a simulation practice under staging-preview can fail on purpose; a
+    /// real practice never does, a production process has no simulation
+    /// practices, and nothing ever reads markers from the person's message text.
+    pub fn rehearsed_failure(
+        &self,
+        practice: &str,
+        scenario: Option<&str>,
+        earlier_attempts: u32,
+    ) -> bool {
+        if !self.contains(practice) {
+            return false;
+        }
+        let planned = self.rehearsed_failures.planned_failures(practice, scenario);
+        earlier_attempts < planned
     }
 
     /// Admits a scenario id sent by a session in `practice`: only a rehearsal
@@ -273,22 +414,6 @@ impl SimulationPractices {
             (telemetry::genai::Origin::Real, None)
         }
     }
-}
-
-/// Whether the attempt after `earlier_attempts` fails for a message marked
-/// `[fail:K]`: the first K attempts fail. The count is the conversation's
-/// saved attempts on this input, so it survives a worker restart and every
-/// worker instance agrees. Try again keeps the input, so `[fail:5]`
-/// ends the turn failed on its fifth failure and its Try again then succeeds.
-pub fn marked_attempt_fails(earlier_attempts: u32, input: &str) -> bool {
-    marked_failures(input).is_some_and(|failures| earlier_attempts < failures)
-}
-
-/// K from the first `[fail:K]` in `input`, if K is a whole number.
-fn marked_failures(input: &str) -> Option<u32> {
-    let (_, rest) = input.split_once("[fail:")?;
-    let (count, _) = rest.split_once(']')?;
-    count.parse().ok()
 }
 
 /// Why a submitted scenario id was refused.
@@ -1938,44 +2063,111 @@ mod tests {
     }
 
     #[test]
-    fn fail_marker_parses_whole_counts_only() {
-        assert_eq!(marked_failures("Retry [fail:1]"), Some(1));
-        assert_eq!(marked_failures("[fail:5] then text"), Some(5));
-        assert_eq!(marked_failures("Plain turn"), None);
-        assert_eq!(marked_failures("[fail:]"), None);
-        assert_eq!(marked_failures("[fail:-1]"), None);
-        assert_eq!(marked_failures("[fail:2"), None);
-        assert_eq!(marked_failures("[fail:x]"), None);
+    fn rehearsal_failure_policy_parses_and_enforces_staging_only_harness_control() {
+        let read = |pairs: &[(&str, &str)]| {
+            SimulationPractices::from_env(|name| {
+                pairs
+                    .iter()
+                    .find(|(key, _)| *key == name)
+                    .map(|(_, value)| (*value).to_owned())
+            })
+        };
+
+        // Failure policy without simulation practices or outside staging-preview is refused.
+        assert!(read(&[(PHYSICIAN_REHEARSAL_FAIL_ATTEMPTS_ENV, "1")]).is_err());
+        assert!(
+            read(&[
+                ("CODA_HOSTED_PROFILE", "production"),
+                ("PHYSICIAN_SIMULATION_PRACTICES", "coda-rehearsal-practice"),
+                (PHYSICIAN_REHEARSAL_FAIL_ATTEMPTS_ENV, "1"),
+            ])
+            .is_err()
+        );
+        assert!(
+            read(&[
+                ("CODA_HOSTED_PROFILE", STAGING_PROFILE),
+                ("PHYSICIAN_SIMULATION_PRACTICES", "coda-rehearsal-practice"),
+                (PHYSICIAN_REHEARSAL_FAIL_ATTEMPTS_ENV, "not-a-number"),
+            ])
+            .is_err()
+        );
+
+        let configured = read(&[
+            ("CODA_HOSTED_PROFILE", STAGING_PROFILE),
+            (
+                "PHYSICIAN_SIMULATION_PRACTICES",
+                "coda-rehearsal-practice,other-rehearsal",
+            ),
+            (
+                PHYSICIAN_REHEARSAL_FAIL_ATTEMPTS_ENV,
+                "scenario:drill.chat-failure=2,practice:other-rehearsal=1",
+            ),
+        ])
+        .unwrap();
+        assert!(configured.rehearsed_failure(
+            "coda-rehearsal-practice",
+            Some("drill.chat-failure"),
+            0
+        ));
+        assert!(configured.rehearsed_failure(
+            "coda-rehearsal-practice",
+            Some("drill.chat-failure"),
+            1
+        ));
+        assert!(!configured.rehearsed_failure(
+            "coda-rehearsal-practice",
+            Some("drill.chat-failure"),
+            2
+        ));
+        assert!(!configured.rehearsed_failure(
+            "coda-rehearsal-practice",
+            Some("drill.rehearse"),
+            0
+        ));
+        assert!(configured.rehearsed_failure("other-rehearsal", None, 0));
+        assert!(!configured.rehearsed_failure("other-rehearsal", None, 1));
+        assert!(!configured.rehearsed_failure(
+            "roger-synthetic-practice",
+            Some("drill.chat-failure"),
+            0
+        ));
     }
 
     #[test]
-    fn fail_marker_fails_the_first_k_saved_attempts() {
-        // `[fail:2]` fails its first two attempts, then succeeds for good.
-        assert!(marked_attempt_fails(0, "Retry [fail:2]"));
-        assert!(marked_attempt_fails(1, "Retry [fail:2]"));
-        assert!(!marked_attempt_fails(2, "Retry [fail:2]"));
-        assert!(!marked_attempt_fails(3, "Retry [fail:2]"));
-        // An unmarked turn never fails, whatever its history.
-        assert!(!marked_attempt_fails(0, "Plain turn"));
-        assert!(!marked_attempt_fails(4, "Plain turn"));
-        assert!(!marked_attempt_fails(0, "[fail:0]"));
-    }
+    fn only_a_configured_rehearsal_practice_fails_and_no_message_markers_exist() {
+        let unconfigured = SimulationPractices::of(["coda-rehearsal-practice"]);
+        assert!(!unconfigured.rehearsed_failure("coda-rehearsal-practice", None, 0));
 
-    #[test]
-    fn only_a_rehearsal_practice_fails_a_marked_turn() {
-        let practices = SimulationPractices::of(["coda-rehearsal-practice"]);
-        assert!(practices.rehearsed_failure("coda-rehearsal-practice", "Drill [fail:1]", 0));
-        assert!(!practices.rehearsed_failure("coda-rehearsal-practice", "Drill [fail:1]", 1));
-        assert!(!practices.rehearsed_failure("coda-rehearsal-practice", "Plain turn", 0));
-        // A real practice never fails, whatever its message says.
-        assert!(!practices.rehearsed_failure("roger-synthetic-practice", "Drill [fail:1]", 0));
+        let practices = SimulationPractices::of(["coda-rehearsal-practice"])
+            .with_scenario_rehearsed_failures("drill.chat-failure", 1);
+        assert!(practices.rehearsed_failure(
+            "coda-rehearsal-practice",
+            Some("drill.chat-failure"),
+            0
+        ));
+        assert!(!practices.rehearsed_failure(
+            "coda-rehearsal-practice",
+            Some("drill.chat-failure"),
+            1
+        ));
+        assert!(!practices.rehearsed_failure("coda-rehearsal-practice", None, 0));
+        // A real practice never fails, whatever its scenario says.
+        assert!(!practices.rehearsed_failure(
+            "roger-synthetic-practice",
+            Some("drill.chat-failure"),
+            0
+        ));
         // Outside the preview profile there are no rehearsal practices, so
         // nothing fails on purpose.
         let production = SimulationPractices::from_env(|name| {
             (name == "CODA_HOSTED_PROFILE").then(|| "production".to_owned())
         })
         .unwrap();
-        assert!(!production.rehearsed_failure("coda-rehearsal-practice", "Drill [fail:1]", 0));
+        assert!(!production.rehearsed_failure(
+            "coda-rehearsal-practice",
+            Some("drill.chat-failure"),
+            0
+        ));
     }
 
     #[test]

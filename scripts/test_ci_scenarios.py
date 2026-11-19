@@ -80,6 +80,23 @@ class RunnerFailures(unittest.TestCase):
             scenarios.main()
         self.assertEqual(raised.exception.code, 2)
 
+    def test_l1_journey_is_available_and_receipt_keeps_l1_measure(self):
+        self.assertIn("L1", scenarios.AVAILABLE_JOURNEYS)
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "receipt.json"
+            written = scenarios.Receipt(path)
+            written.step("L1", "measure", "actor", True, "rate=16.67")
+            written.data["l1_measure"] = {
+                "panel_size": 2,
+                "elapsed_weeks": 3.0,
+                "physician_touched_per_100_patients_per_week": 16.67,
+            }
+            written.write()
+            loaded = json.loads(path.read_text())
+        self.assertEqual(loaded["outcome"], "complete")
+        self.assertEqual(loaded["l1_measure"]["elapsed_weeks"], 3.0)
+        self.assertAlmostEqual(loaded["l1_measure"]["physician_touched_per_100_patients_per_week"], 16.67)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -41,7 +41,7 @@ pub(super) enum Failure {
     RetryPersist,
     /// The reply revision's execution failed.
     Revision,
-    /// A rehearsal turn's `[fail:K]` marker failed this attempt on purpose.
+    /// The staging simulation harness failed this attempt on purpose.
     Rehearsed,
     /// The run stopped moving and hosting dropped it unsettled.
     Lost,

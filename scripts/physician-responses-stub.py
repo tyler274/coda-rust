@@ -63,11 +63,163 @@ def output_for(body, rounds, reply):
         return [call(identity, "finish_reply_revision", {"text": "Noted.", "review_basis": "Synthetic provider response."})]
     # A chat ends through finish_answer, with the answer also written as text.
     # On a run's final request the harness keeps only the text.
-    if any(tool.get("name") == "finish_answer" for tool in body["tools"]):
+    tool_names = {tool.get("name") for tool in body.get("tools", [])}
+    if "complete_patient_review" in tool_names:
+        return output_for_patient_review(body)
+    if "select_visit_preparations" in tool_names:
+        return output_for_visit_selection(body)
+    if "save_visit_briefing" in tool_names:
+        return output_for_visit_briefing(body)
+    if "finish_answer" in tool_names:
         arguments = finish_arguments(reply)
         return [message(arguments["answer"]),
                 call(f"fixed-finish-{len(body['input'])}", "finish_answer", arguments)]
     return [message(reply)]
+
+
+def tool_outputs_by_name(body):
+    call_names = {}
+    outputs = []
+    for item in body.get("input", []):
+        if item.get("type") == "function_call" and item.get("call_id") and item.get("name"):
+            call_names[item["call_id"]] = item["name"]
+    for item in body.get("input", []):
+        if item.get("type") == "function_call_output":
+            name = call_names.get(item.get("call_id"))
+            if name:
+                raw = item.get("output") or "{}"
+                try:
+                    parsed = json.loads(raw)
+                except ValueError:
+                    parsed = {"raw": raw}
+                outputs.append((name, parsed))
+    return outputs
+
+
+def extract_search_refs(search_val):
+    refs = []
+    for entry in (search_val or {}).get("results") or []:
+        ref = entry.get("reference") or {}
+        cid, rev = ref.get("candidate_id"), ref.get("revision")
+        if cid and rev:
+            refs.append({"candidate_id": cid, "revision": rev})
+    return refs
+
+
+def output_for_patient_review(body):
+    outputs = tool_outputs_by_name(body)
+    seq = len(body.get("input", []))
+    if any(name == "complete_patient_review" for name, _ in outputs):
+        return [message("Completed longitudinal patient review.")]
+    search_out = next((val for name, val in reversed(outputs) if name == "search_patient_information"), None)
+    read_out = next((val for name, val in reversed(outputs) if name == "read_patient_sources"), None)
+    if search_out is None:
+        return [call(f"rev-search-{seq}", "search_patient_information",
+                     {"query": "", "record_type": None, "after": None})]
+    refs = extract_search_refs(search_out)
+    if read_out is None and refs:
+        return [call(f"rev-read-{seq}", "read_patient_sources",
+                     {"references": [r | {"cursor": None} for r in refs[:8]], "max_result_bytes": 32768})]
+    target = next((r for r in refs if "Observation/" in r["candidate_id"]), refs[0] if refs else None)
+    citations = [target] if target else []
+    read_blob = json.dumps(read_out or {}).lower()
+    if "6.1 mmol/l" in read_blob or "hyperkalemia" in read_blob:
+        return [
+            call(f"rev-concern-{seq}", "patient_concern", {
+                "operation": "raise",
+                "concern_id": "critical-potassium-elevated",
+                "urgency": "now",
+                "reason": "Critical potassium 6.1 mmol/L on basic metabolic panel requires prompt repeat electrolyte check and ECG evaluation.",
+                "records": citations,
+            }),
+            call(f"rev-complete-{seq}", "complete_patient_review", {
+                "disposition": "assessed",
+                "summary": "Assessed elevated serum potassium 6.1 mmol/L and raised an immediate concern.",
+                "citations": citations,
+                "basis_and_limitations": "Grounded in connected synthetic chart records.",
+                "unfinished_work": [],
+            }),
+        ]
+    return [call(f"rev-complete-{seq}", "complete_patient_review", {
+        "disposition": "quiet",
+        "explanation": "No clinically significant interval change requiring physician attention.",
+        "citations": citations,
+        "basis_and_limitations": "Grounded in connected synthetic chart records.",
+        "unfinished_work": [],
+    })]
+
+
+def output_for_visit_selection(body):
+    outputs = tool_outputs_by_name(body)
+    seq = len(body.get("input", []))
+    if any(name == "select_visit_preparations" for name, _ in outputs):
+        return [message("Selected upcoming visits for briefing preparation.")]
+    context = {}
+    for item in body.get("input", []):
+        content = item.get("content")
+        texts = [content] if isinstance(content, str) else [
+            part.get("text", "") for part in (content or []) if isinstance(part, dict)
+        ]
+        for text in texts:
+            if "Scheduled visit selection context:\n" in text:
+                _, raw = text.split("Scheduled visit selection context:\n", 1)
+                context = json.loads(raw.strip())
+                break
+    decisions = [{
+        "source_id": cand["source_id"],
+        "appointment_id": cand["appointment_id"],
+        "starts_at_unix": cand["starts_at_unix"],
+        "action": "prepare_now",
+        "reason": "Upcoming scheduled visit warrants immediate pre-visit briefing.",
+    } for cand in context.get("candidates") or []]
+    return [call(f"visit-sel-{seq}", "select_visit_preparations", {"decisions": decisions})]
+
+
+def output_for_visit_briefing(body):
+    outputs = tool_outputs_by_name(body)
+    seq = len(body.get("input", []))
+    if any(name == "save_visit_briefing" for name, _ in outputs):
+        return [message("Saved pre-visit briefing.")]
+    search_out = next((val for name, val in reversed(outputs) if name == "search_patient_information"), None)
+    read_out = next((val for name, val in reversed(outputs) if name == "read_patient_sources"), None)
+    if search_out is None:
+        return [call(f"brief-search-{seq}", "search_patient_information",
+                     {"query": "", "record_type": None, "after": None})]
+    refs = extract_search_refs(search_out)
+    if read_out is None and refs:
+        return [call(f"brief-read-{seq}", "read_patient_sources",
+                     {"references": [r | {"cursor": None} for r in refs[:8]], "max_result_bytes": 32768})]
+    target = next((r for r in refs if "Observation/" in r["candidate_id"]), refs[0] if refs else None)
+    citations = [target] if target else []
+    return [call(f"brief-save-{seq}", "save_visit_briefing", {
+        "visit_card_orientation": "Follow-up visit after elevated potassium; review repeat BMP and lisinopril.",
+        "trajectory": [{
+            "text": "Established hypertension patient on lisinopril 10 mg daily.",
+            "uncertainty": None,
+            "citations": citations,
+        }],
+        "meaningful_changes": [{
+            "text": "Interval lab showed elevated potassium 6.1 mmol/L ahead of the scheduled follow-up.",
+            "uncertainty": None,
+            "citations": citations,
+        }],
+        "unresolved_issues": [{
+            "text": "Repeat non-hemolyzed potassium and ECG confirmation pending.",
+            "uncertainty": None,
+            "citations": citations,
+        }],
+        "visit_decisions": [{
+            "decision": "Review potassium trend and antihypertensive regimen.",
+            "clinical_rationale": "ACE-inhibitor therapy can elevate serum potassium.",
+            "options_or_questions": ["Confirm repeat BMP result and ECG."],
+            "uncertainty": None,
+            "citations": citations,
+        }],
+        "basis_and_limitations": "Prepared from connected synthetic chart records.",
+        "basis_citations": citations,
+        "limits": [],
+        "visit_concern": None,
+    })]
 
 
 def finish_arguments(reply):

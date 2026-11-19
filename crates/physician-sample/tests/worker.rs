@@ -1149,12 +1149,13 @@ fn attempt_statuses(state: &Conversation) -> Vec<String> {
         .collect()
 }
 
-/// A rehearsal practice's `[fail:1]` fails its first attempt on purpose,
-/// before any model call: the attempt span says `rehearsed`, and the retry
-/// completes the same work. A real practice's `[fail:1]` answers on its
-/// first attempt.
+/// A rehearsal practice whose harness failure policy covers its scenario fails
+/// its first attempt on purpose before any model call: the attempt span says
+/// `rehearsed`, and the retry completes the same work. A turn containing literal
+/// `[fail:1]` text without a matching harness policy (whether in a rehearsal
+/// practice or a real practice) answers on its first attempt.
 #[tokio::test]
-async fn a_rehearsal_turn_marked_to_fail_fails_once_and_its_successor_answers() {
+async fn a_rehearsal_turn_configured_to_fail_fails_once_and_message_markers_are_ignored() {
     let _guard = lock().lock().await;
     let collector = TraceCapture::start().await;
     let rehearsal = format!("rehearsal-{}", uuid::Uuid::new_v4().simple());
@@ -1167,6 +1168,10 @@ async fn a_rehearsal_turn_marked_to_fail_fails_once_and_its_successor_answers() 
         &[
             ("CODA_HOSTED_PROFILE", "staging-preview"),
             ("PHYSICIAN_SIMULATION_PRACTICES", rehearsal.as_str()),
+            (
+                "PHYSICIAN_REHEARSAL_FAIL_ATTEMPTS",
+                "scenario:drill.chat-failure=1",
+            ),
             ("OTEL_EXPORTER_OTLP_ENDPOINT", &collector.endpoint),
             ("OTEL_BSP_SCHEDULE_DELAY", "50"),
         ],
@@ -1179,7 +1184,7 @@ async fn a_rehearsal_turn_marked_to_fail_fails_once_and_its_successor_answers() 
     let (scope, _) = accept_in(
         url,
         &running.store,
-        "Drill [fail:1]",
+        "Plain rehearsal turn without any marker",
         Some(&rehearsal),
         Some("drill.chat-failure"),
     )
@@ -1223,12 +1228,29 @@ async fn a_rehearsal_turn_marked_to_fail_fails_once_and_its_successor_answers() 
         Some(failed.work.as_str())
     );
 
+    // Even inside the rehearsal practice, literal `[fail:1]` text in a message
+    // is never parsed as a control marker.
+    let (marker_rehearsal_scope, _) = accept_in(
+        url,
+        &running.store,
+        "Drill [fail:1]",
+        Some(&rehearsal),
+        Some("drill.rehearse"),
+    )
+    .await;
+    let state = wait_assistant(&running.store, &marker_rehearsal_scope, &running.worker).await;
+    assert_eq!(
+        attempt_statuses(&state),
+        ["completed"],
+        "message text markers must never trigger rehearsed failure"
+    );
+
     let (real_scope, _) = accept_in(url, &running.store, "Real [fail:1]", None, None).await;
     let state = wait_assistant(&running.store, &real_scope, &running.worker).await;
     assert_eq!(
         attempt_statuses(&state),
         ["completed"],
-        "a real practice never honours the marker"
+        "a real practice never honours message markers or rehearsal failure controls"
     );
 }
 

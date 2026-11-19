@@ -1530,6 +1530,54 @@ async fn workspace(
         if has_past || has_chats {
             enriched["has_past_work"] = json!(true);
         }
+        if let Some(ctx) = ctx {
+            let Ok(care_plan) = live
+                .chat
+                .store
+                .workspace_care_plan(&ctx.identity.practice_id, &id)
+                .await
+            else {
+                return StatusCode::SERVICE_UNAVAILABLE.into_response();
+            };
+            let active_plan_items: Vec<physician_wire::WorkspacePlanItem> = care_plan
+                .active_plan_items
+                .into_iter()
+                .map(|rec| {
+                    let decided_at = match rec.standing {
+                        local_product::runtime::care_plan::RecommendationStanding::ApprovedIntoPlan {
+                            approved_at,
+                            ..
+                        } => chrono::DateTime::from_timestamp(approved_at, 0)
+                            .map(|ts| ts.to_rfc3339_opts(chrono::SecondsFormat::Secs, true))
+                            .unwrap_or_else(|| approved_at.to_string()),
+                        _ => String::new(),
+                    };
+                    physician_wire::WorkspacePlanItem {
+                        item_id: format!("plan-{}", rec.recommendation_id),
+                        patient_workspace_id: rec.workspace,
+                        title: rec.medication,
+                        detail: rec.detail,
+                        decided_at,
+                        source_recommendation_id: Some(rec.recommendation_id),
+                    }
+                })
+                .collect();
+            let undecided_recommendations: Vec<physician_wire::WorkspaceMedicationRecommendation> =
+                care_plan
+                    .undecided_recommendations
+                    .into_iter()
+                    .map(|rec| physician_wire::WorkspaceMedicationRecommendation {
+                        recommendation_id: rec.recommendation_id,
+                        patient_workspace_id: rec.workspace,
+                        medication: rec.medication,
+                        rationale: rec.rationale,
+                        source_label: rec.source_label,
+                        decision_state: "undecided".to_owned(),
+                    })
+                    .collect();
+            enriched["active_plan_items"] = json!(active_plan_items);
+            enriched["undecided_recommendations"] = json!(undecided_recommendations);
+        }
     } else if let Some(feed) = request.extensions().get::<std::sync::Arc<SampleFeed>>() {
         if let Some(chats) = feed
             .fixture_chats
