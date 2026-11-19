@@ -280,6 +280,9 @@ pub fn need_you_words(count: usize) -> &'static str {
 pub fn connection_lines(connections: &[TodayConnection]) -> Vec<String> {
     let mut lines = Vec::new();
     for connection in connections {
+        if connection.recovery.is_some() {
+            continue;
+        }
         let Some(line) = connection_sentence(connection.channel.as_deref(), &connection.condition)
         else {
             continue;

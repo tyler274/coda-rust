@@ -1473,3 +1473,365 @@ async fn practice_time_zone_and_account_conflict_guards_hold_across_routes() {
 
     srv.abort();
 }
+
+#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+async fn source_setup_persists_across_postgres_restarts_and_gates_simulation_to_synthetic_practices()
+ {
+    let db = DisposableDb::create("source_restart_gate").await;
+    let pg_auth = PostgresAuthStore::connect_without_migrations(&db.url)
+        .await
+        .expect("connect pg auth");
+    let runtime = Store::connect(&db.url).await.expect("connect runtime");
+    let client = reqwest::Client::new();
+
+    // Instance 1: mount site over PostgreSQL.
+    let db_url_1 = db.url.clone();
+    let (router_1, _) = physician_sample::site_router_from_env(move |key| match key {
+        "PHYSICIAN_AUTH" => Some("required".to_owned()),
+        "PHYSICIAN_DATABASE_URL" => Some(db_url_1.clone()),
+        "CODA_STAFF_SETUP_TOKEN" => Some(STAFF_SECRET.to_owned()),
+        _ => None,
+    })
+    .await
+    .expect("build router_1");
+    let (addr_1, srv_1) = spawn_router(router_1).await;
+    let base_1 = format!("http://{addr_1}");
+
+    // Create one synthetic fixed-clock practice and one real-time practice.
+    let synth_practice = client
+        .put(format!(
+            "{base_1}/auth/staff/practices/practice-synth-durable"
+        ))
+        .bearer_auth(STAFF_SECRET)
+        .json(&json!({
+            "clock": { "mode": "fixed", "unix_seconds": FIXED_CLOCK_UNIX },
+            "time_zone": "America/New_York",
+        }))
+        .send()
+        .await
+        .expect("create synth practice");
+    assert_eq!(synth_practice.status(), reqwest::StatusCode::CREATED);
+
+    let live_practice = client
+        .put(format!(
+            "{base_1}/auth/staff/practices/practice-live-assisted"
+        ))
+        .bearer_auth(STAFF_SECRET)
+        .json(&json!({
+            "clock": { "mode": "real_time" },
+            "time_zone": "America/Chicago",
+        }))
+        .send()
+        .await
+        .expect("create live practice");
+    assert_eq!(live_practice.status(), reqwest::StatusCode::CREATED);
+
+    for (practice_id, phys_id, email, name) in [
+        (
+            "practice-synth-durable",
+            "admin-synth",
+            "synth-admin@durable.example",
+            "Dr. Synth Admin",
+        ),
+        (
+            "practice-live-assisted",
+            "admin-live",
+            "live-admin@assisted.example",
+            "Dr. Live Admin",
+        ),
+    ] {
+        let acct = client
+            .post(format!(
+                "{base_1}/auth/staff/practices/{practice_id}/accounts"
+            ))
+            .bearer_auth(STAFF_SECRET)
+            .json(&json!({
+                "physician_id": phys_id,
+                "email": email,
+                "display_name": name,
+                "role": "admin",
+            }))
+            .send()
+            .await
+            .expect("create admin");
+        assert_eq!(acct.status(), reqwest::StatusCode::CREATED);
+    }
+
+    seed_practice_patient(
+        &pg_auth,
+        &runtime,
+        "practice-synth-durable",
+        "pw-durable-001",
+        "Mary Louis",
+        "MRN-DUR-1",
+    )
+    .await;
+    seed_practice_patient(
+        &pg_auth,
+        &runtime,
+        "practice-live-assisted",
+        "pw-live-001",
+        "Hannah Cole",
+        "MRN-LIVE-1",
+    )
+    .await;
+
+    let synth_token = sign_in_proof(&client, &base_1, "synth-admin@durable.example").await;
+    let live_token = sign_in_proof(&client, &base_1, "live-admin@assisted.example").await;
+
+    for (token, phys_id, ws_id) in [
+        (&synth_token, "admin-synth", "pw-durable-001"),
+        (&live_token, "admin-live", "pw-live-001"),
+    ] {
+        let mut ok = false;
+        for _ in 0..40 {
+            let resp = client
+                .put(format!("{base_1}/auth/panels/{phys_id}/{ws_id}"))
+                .bearer_auth(token)
+                .send()
+                .await
+                .expect("assign patient");
+            if resp.status() == reqwest::StatusCode::OK {
+                ok = true;
+                break;
+            }
+            tokio::time::sleep(Duration::from_millis(50)).await;
+        }
+        assert!(ok, "assigned {ws_id}");
+    }
+
+    // Real-time practice gates out SimulatedPractice and fails closed on unverified live connectors.
+    let live_conns: Value = client
+        .get(format!("{base_1}/connections"))
+        .bearer_auth(&live_token)
+        .send()
+        .await
+        .expect("live connections")
+        .json()
+        .await
+        .expect("live connections json");
+    for src in live_conns["sources"].as_array().expect("sources array") {
+        assert_eq!(
+            src["supported_methods"],
+            json!(["coda_assisted"]),
+            "real-time practice must offer only Coda-assisted onboarding until live verifiers land"
+        );
+    }
+
+    let live_sim_endpoint = client
+        .post(format!("{base_1}/connections/spruce/simulate"))
+        .bearer_auth(&live_token)
+        .json(&json!({ "event": "quiet_catch_up" }))
+        .send()
+        .await
+        .expect("live simulate");
+    assert_eq!(live_sim_endpoint.status(), reqwest::StatusCode::NOT_FOUND);
+
+    let live_sim_method = client
+        .post(format!("{base_1}/connections/spruce/connect"))
+        .bearer_auth(&live_token)
+        .json(&json!({
+            "method": "simulated_practice",
+            "account_label": "Fake Sim",
+        }))
+        .send()
+        .await
+        .expect("live simulated_practice connect");
+    assert_eq!(
+        live_sim_method.status(),
+        reqwest::StatusCode::UNPROCESSABLE_ENTITY
+    );
+
+    let live_cred_method = client
+        .post(format!("{base_1}/connections/spruce/connect"))
+        .bearer_auth(&live_token)
+        .json(&json!({
+            "method": "credential_sign_in",
+            "account_label": "Real Clinic Spruce",
+            "secret_or_code": "unverified-token-value-1234",
+        }))
+        .send()
+        .await
+        .expect("live credential connect");
+    assert_eq!(
+        live_cred_method.status(),
+        reqwest::StatusCode::SERVICE_UNAVAILABLE
+    );
+    let live_cred_body: Value = live_cred_method.json().await.expect("live cred body");
+    assert_eq!(live_cred_body["code"], "live_connector_unavailable");
+
+    // Requesting Coda-assisted setup succeeds on the real-time practice and persists.
+    let live_assist = client
+        .post(format!("{base_1}/connections/spruce/assist"))
+        .bearer_auth(&live_token)
+        .json(&json!({
+            "contact_email": "ops@live.example",
+            "notes": "Connect clinic Spruce org",
+        }))
+        .send()
+        .await
+        .expect("live assist");
+    assert_eq!(live_assist.status(), reqwest::StatusCode::OK);
+
+    // Synthetic practice exercises Connect -> Import -> Accept backlog -> AccessLost on Instance 1.
+    let synth_connect = client
+        .post(format!("{base_1}/connections/spruce/connect"))
+        .bearer_auth(&synth_token)
+        .json(&json!({
+            "method": "credential_sign_in",
+            "account_label": "Spruce Synthetic Org",
+            "secret_or_code": "spruce-synth-secret-9999",
+        }))
+        .send()
+        .await
+        .expect("synth connect");
+    assert_eq!(synth_connect.status(), reqwest::StatusCode::OK);
+
+    let synth_import = client
+        .post(format!("{base_1}/connections/spruce/import"))
+        .bearer_auth(&synth_token)
+        .send()
+        .await
+        .expect("synth import");
+    assert_eq!(synth_import.status(), reqwest::StatusCode::OK);
+
+    let synth_backlog = client
+        .post(format!("{base_1}/connections/spruce/accept-backlog"))
+        .bearer_auth(&synth_token)
+        .send()
+        .await
+        .expect("synth backlog");
+    assert_eq!(synth_backlog.status(), reqwest::StatusCode::OK);
+
+    let synth_revoke = client
+        .post(format!("{base_1}/connections/spruce/simulate"))
+        .bearer_auth(&synth_token)
+        .json(&json!({
+            "event": "revoked_grant",
+            "reason": "Spruce token revoked before server restart.",
+        }))
+        .send()
+        .await
+        .expect("synth revoke");
+    assert_eq!(synth_revoke.status(), reqwest::StatusCode::OK);
+
+    // Stop Instance 1 completely, then boot fresh Instance 2 against the same PostgreSQL database.
+    srv_1.abort();
+
+    let db_url_2 = db.url.clone();
+    let (router_2, _) = physician_sample::site_router_from_env(move |key| match key {
+        "PHYSICIAN_AUTH" => Some("required".to_owned()),
+        "PHYSICIAN_DATABASE_URL" => Some(db_url_2.clone()),
+        "CODA_STAFF_SETUP_TOKEN" => Some(STAFF_SECRET.to_owned()),
+        _ => None,
+    })
+    .await
+    .expect("build router_2 after restart");
+    let (addr_2, srv_2) = spawn_router(router_2).await;
+    let base_2 = format!("http://{addr_2}");
+
+    // Verify synthetic practice source standing, backlog, /today recovery notice, and retained chart/drafts survived restart!
+    let after_restart_conns: Value = client
+        .get(format!("{base_2}/connections"))
+        .bearer_auth(&synth_token)
+        .send()
+        .await
+        .expect("connections after restart")
+        .json()
+        .await
+        .expect("connections after restart json");
+    let spruce_after = after_restart_conns["sources"]
+        .as_array()
+        .expect("sources")
+        .iter()
+        .find(|s| s["source_id"] == "spruce")
+        .expect("spruce entry");
+    assert_eq!(spruce_after["standing"]["state"], "access_lost");
+    assert_eq!(spruce_after["standing"]["cause"], "revoked_grant");
+    assert_eq!(spruce_after["backlog"]["state"], "accepted");
+    assert_eq!(spruce_after["backlog"]["imported_message_count"], 3);
+    assert_eq!(spruce_after["retained_linked_records"], 5);
+    assert_eq!(spruce_after["retained_reply_drafts"], 1);
+
+    let today_after: Value = client
+        .get(format!("{base_2}/today"))
+        .bearer_auth(&synth_token)
+        .send()
+        .await
+        .expect("today after restart")
+        .json()
+        .await
+        .expect("today after restart json");
+    let today_conns = today_after["connections"].as_array().expect("connections");
+    assert!(
+        today_conns
+            .iter()
+            .any(|c| { c["source_id"] == "spruce" && c["recovery"] == "reconnect_required" }),
+        "expected durable reconnect_required Today notice after server restart: {today_conns:?}"
+    );
+
+    let ws_after: Value = client
+        .get(format!("{base_2}/patient-workspaces/pw-durable-001"))
+        .bearer_auth(&synth_token)
+        .send()
+        .await
+        .expect("workspace after restart")
+        .json()
+        .await
+        .expect("workspace after restart json");
+    let spruce_ws_src = ws_after["connected_sources"]
+        .as_array()
+        .expect("connected_sources")
+        .iter()
+        .find(|s| s["source_id"] == "spruce")
+        .expect("spruce connected_source");
+    assert_eq!(spruce_ws_src["state"]["state"], "failed");
+    assert!(spruce_ws_src["state"]["usable_snapshot"]["synchronized_at"].is_string());
+    let replies_after = ws_after["replies"].as_array().expect("replies array");
+    assert!(
+        replies_after
+            .iter()
+            .any(|r| r["reply_work_id"] == "spruce-retained-reply-draft"),
+        "expected retained Spruce reply draft after restart: {replies_after:?}"
+    );
+
+    // Reconnect on Instance 2 transitions standing back to UpToDate and clears Today notice.
+    let reconnect_2 = client
+        .post(format!("{base_2}/connections/spruce/reconnect"))
+        .bearer_auth(&synth_token)
+        .json(&json!({
+            "method": "credential_sign_in",
+            "account_label": "Spruce Synthetic Org",
+            "secret_or_code": "spruce-synth-rotated-9999",
+        }))
+        .send()
+        .await
+        .expect("reconnect on instance 2");
+    assert_eq!(reconnect_2.status(), reqwest::StatusCode::OK);
+    let reconnect_2_json: Value = reconnect_2.json().await.expect("reconnect json");
+    assert_eq!(
+        reconnect_2_json["source"]["standing"]["state"],
+        "up_to_date"
+    );
+
+    // Verify real-time practice's Coda-assisted onboarding request also survived restart.
+    let live_after: Value = client
+        .get(format!("{base_2}/connections"))
+        .bearer_auth(&live_token)
+        .send()
+        .await
+        .expect("live connections after restart")
+        .json()
+        .await
+        .expect("live connections after restart json");
+    let live_spruce = live_after["sources"]
+        .as_array()
+        .expect("sources")
+        .iter()
+        .find(|s| s["source_id"] == "spruce")
+        .expect("live spruce");
+    assert_eq!(live_spruce["standing"]["state"], "coda_assisted_requested");
+    assert_eq!(live_spruce["standing"]["contact_email"], "ops@live.example");
+
+    srv_2.abort();
+}
