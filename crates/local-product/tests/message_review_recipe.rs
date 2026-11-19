@@ -4524,6 +4524,7 @@ fn message_review_sanitizes_untrusted_channel_text_without_altering_clinical_thr
             log_days: Vec::new(),
         },
         active_follow_ups: Vec::new(),
+        cancelled_follow_ups: Vec::new(),
         open_concerns: Vec::new(),
     };
     let rendered = ctx.prompt_text();
