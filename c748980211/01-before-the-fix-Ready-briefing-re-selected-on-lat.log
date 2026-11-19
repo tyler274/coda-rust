@@ -1,0 +1,22 @@
+   Compiling local-product v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-gcp-schedule-789fda7b/crates/local-product)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 19.88s
+     Running tests/visit_briefings_postgres.rs (target/debug/deps/visit_briefings_postgres-1e4d074c8f6cab05)
+
+running 1 test
+test later_input_after_ready_briefing_never_reselects_or_rewrites_briefing ... FAILED
+
+failures:
+
+---- later_input_after_ready_briefing_never_reselects_or_rewrites_briefing stdout ----
+
+thread 'later_input_after_ready_briefing_never_reselects_or_rewrites_briefing' (222787) panicked at crates/local-product/tests/visit_briefings_postgres.rs:4983:5:
+Ready briefing must never be re-selected after later chart input
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    later_input_after_ready_briefing_never_reselects_or_rewrites_briefing
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 11 filtered out; finished in 1.00s
+
+error: test failed, to rerun pass `-p local-product --test visit_briefings_postgres`

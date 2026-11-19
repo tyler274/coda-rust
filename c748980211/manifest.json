@@ -1,0 +1,329 @@
+{
+  "branch": "fix-p4-briefing-immutability-and-ehr-schedule-roster",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC1",
+      "label": "before the fix: Ready briefing re-selected on later input",
+      "kind": "run",
+      "revision": "513bd8647381aca33248ae7164eea9e27e127acb",
+      "dirty": true,
+      "recorded": "2026-11-19T11:00:03+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "local-product",
+        "--test",
+        "visit_briefings_postgres",
+        "--",
+        "--exact",
+        "later_input_after_ready_briefing_never_reselects_or_rewrites_briefing"
+      ],
+      "expect": "Ready briefing must never be re-selected after later chart input",
+      "expect_fail": true,
+      "files": [
+        "01-before-the-fix-Ready-briefing-re-selected-on-lat.log"
+      ],
+      "seconds": 21.2,
+      "exit": 101,
+      "expect_matched": true,
+      "ok": true,
+      "kept": {
+        "revision": "c748980211b1e1f7123a095f4d976d8ac8c3d8e2",
+        "reason": "deliberately before the fix"
+      }
+    },
+    {
+      "id": 2,
+      "claim": "AC2",
+      "label": "before the fix: pre-prep does not check sources before starting",
+      "kind": "run",
+      "revision": "513bd8647381aca33248ae7164eea9e27e127acb",
+      "dirty": true,
+      "recorded": "2026-11-19T11:00:24+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "local-product",
+        "--test",
+        "visit_briefings_postgres",
+        "--",
+        "--exact",
+        "pre_preparation_checks_sources_before_starting_and_failed_refresh_does_not_block"
+      ],
+      "expect": "pre-preparation must check configured sources before starting",
+      "expect_fail": true,
+      "files": [
+        "02-before-the-fix-pre-prep-does-not-check-sources-b.log"
+      ],
+      "seconds": 3.8,
+      "exit": 101,
+      "expect_matched": false,
+      "ok": false,
+      "superseded": "refined AC2 pre-fix test to assert source refresh directly instead of exhausting scripted provider"
+    },
+    {
+      "id": 3,
+      "claim": "AC2",
+      "label": "before the fix: pre-prep does not check sources before starting",
+      "kind": "run",
+      "revision": "513bd8647381aca33248ae7164eea9e27e127acb",
+      "dirty": true,
+      "recorded": "2026-11-19T11:01:42+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "local-product",
+        "--test",
+        "visit_briefings_postgres",
+        "--",
+        "--exact",
+        "pre_preparation_checks_sources_before_starting_and_failed_refresh_does_not_block"
+      ],
+      "expect": "pre-preparation must check configured sources before starting",
+      "expect_fail": true,
+      "files": [
+        "03-before-the-fix-pre-prep-does-not-check-sources-b.log"
+      ],
+      "seconds": 22.9,
+      "exit": 101,
+      "expect_matched": true,
+      "ok": true,
+      "kept": {
+        "revision": "c748980211b1e1f7123a095f4d976d8ac8c3d8e2",
+        "reason": "deliberately before the fix"
+      }
+    },
+    {
+      "id": 4,
+      "claim": "AC1",
+      "label": "after the fix: Ready visit briefings immutable on later chart input (visit_briefings_postgres 12/12)",
+      "kind": "run",
+      "revision": "c748980211b1e1f7123a095f4d976d8ac8c3d8e2",
+      "dirty": false,
+      "recorded": "2026-11-19T11:49:30+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "local-product",
+        "--test",
+        "visit_briefings_postgres"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "04-after-the-fix-Ready-visit-briefings-immutable-on.log"
+      ],
+      "seconds": 39.6,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 5,
+      "claim": "AC2",
+      "label": "after the fix: pre-preparation checks sources before starting and failed refresh never blocks",
+      "kind": "run",
+      "revision": "c748980211b1e1f7123a095f4d976d8ac8c3d8e2",
+      "dirty": false,
+      "recorded": "2026-11-19T11:50:09+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "local-product",
+        "--test",
+        "visit_briefings_postgres",
+        "pre_preparation_checks_sources_before_starting_and_failed_refresh_does_not_block"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "05-after-the-fix-pre-preparation-checks-sources-bef.log"
+      ],
+      "seconds": 3.8,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 6,
+      "claim": "AC4",
+      "label": "server-persisted per-physician panel preferences survive sign-out and isolate physicians",
+      "kind": "run",
+      "revision": "c748980211b1e1f7123a095f4d976d8ac8c3d8e2",
+      "dirty": false,
+      "recorded": "2026-11-19T11:50:13+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-sample",
+        "--test",
+        "ehr_schedule_roster_and_panels",
+        "ac4_panel_preferences_persist_across_sessions_and_isolate_physicians"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "06-server-persisted-per-physician-panel-preferences.log"
+      ],
+      "seconds": 59.4,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 7,
+      "claim": "AC5",
+      "label": "Elation FHIR R4 OAuth2 roster/schedule/chart refresh + Hint parsers + AC7 daily re-pull",
+      "kind": "run",
+      "revision": "c748980211b1e1f7123a095f4d976d8ac8c3d8e2",
+      "dirty": false,
+      "recorded": "2026-11-19T11:51:13+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-sample",
+        "--test",
+        "ehr_schedule_roster_and_panels",
+        "ac5_and_ac7_elation_fhir_oauth_roster_schedule_refresh_and_daily_repull"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "07-Elation-FHIR-R4-OAuth2-roster-schedule-chart-ref.log"
+      ],
+      "seconds": 4.1,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 8,
+      "claim": "AC6",
+      "label": "authenticated Hint Chrome connector bridge (X-Coda-Pair, lease/deliver, ChartCapture, roster, appointments, bus)",
+      "kind": "run",
+      "revision": "c748980211b1e1f7123a095f4d976d8ac8c3d8e2",
+      "dirty": false,
+      "recorded": "2026-11-19T11:51:17+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-sample",
+        "--test",
+        "ehr_schedule_roster_and_panels",
+        "ac6_hint_chrome_bridge_pair_lease_capture_roster_appointments_and_auth"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "08-authenticated-Hint-Chrome-connector-bridge-X-Cod.log"
+      ],
+      "seconds": 3.7,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 9,
+      "claim": "AC7",
+      "label": "physician-worker scheduled wakes (RefreshingSourceChecker, VisitPrepWakeHandler Event::Resync) + practice_schedule",
+      "kind": "run",
+      "revision": "c748980211b1e1f7123a095f4d976d8ac8c3d8e2",
+      "dirty": false,
+      "recorded": "2026-11-19T11:51:21+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "cargo test -p physician-sample --bin physician-worker && cargo test -p physician-sample --test practice_schedule && cargo test -p local-product --test practice_schedule_postgres"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "09-physician-worker-scheduled-wakes-RefreshingSourc.log"
+      ],
+      "seconds": 115.2,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 10,
+      "claim": "AC3",
+      "label": "Chromium desktop+phone schedule/briefing checks, live SSE no-focus-steal, and panel collapse persisted across sign-out",
+      "kind": "run",
+      "revision": "c748980211b1e1f7123a095f4d976d8ac8c3d8e2",
+      "dirty": false,
+      "recorded": "2026-11-19T11:53:17+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-sample",
+        "--test",
+        "site_schedule_briefing",
+        "--",
+        "--ignored"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "10-Chromium-desktop-phone-schedule-briefing-checks-.log"
+      ],
+      "seconds": 69.0,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 11,
+      "claim": "AC4",
+      "label": "Desktop screenshot: schedule rail stays collapsed after sign-out and fresh sign-in",
+      "kind": "screenshot",
+      "revision": "c748980211b1e1f7123a095f4d976d8ac8c3d8e2",
+      "dirty": false,
+      "recorded": "2026-11-19T11:54:26+00:00",
+      "files": [
+        "11-briefing-schedule-10-panel-persisted-after-signout.png"
+      ],
+      "source": "target/verification/screenshots/briefing-schedule-10-panel-persisted-after-signout.png",
+      "ok": true
+    },
+    {
+      "id": 12,
+      "claim": "AC3",
+      "label": "Desktop screenshot: background schedule sync updates live via SSE while keeping focus on Find patient and opening no briefing",
+      "kind": "screenshot",
+      "revision": "c748980211b1e1f7123a095f4d976d8ac8c3d8e2",
+      "dirty": false,
+      "recorded": "2026-11-19T11:54:26+00:00",
+      "files": [
+        "12-briefing-schedule-11-background-live-no-focus-steal.png"
+      ],
+      "source": "target/verification/screenshots/briefing-schedule-11-background-live-no-focus-steal.png",
+      "ok": true
+    },
+    {
+      "id": 13,
+      "claim": "AC3",
+      "label": "AGENTS.md required physician-site Chromium regression suite (tests/site -- --ignored) + physician-app/client/wire unit tests",
+      "kind": "run",
+      "revision": "c748980211b1e1f7123a095f4d976d8ac8c3d8e2",
+      "dirty": false,
+      "recorded": "2026-11-19T11:54:26+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "cargo test -p physician-wire -p physician-client -p physician-app --lib && cargo test -p physician-sample --test site -- --ignored"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "13-AGENTS.md-required-physician-site-Chromium-regre.log"
+      ],
+      "seconds": 260.4,
+      "exit": 0,
+      "ok": true
+    }
+  ]
+}

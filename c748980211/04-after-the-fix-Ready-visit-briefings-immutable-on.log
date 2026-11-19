@@ -1,0 +1,21 @@
+   Compiling physician-wire v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-gcp-schedule-789fda7b/crates/physician-wire)
+   Compiling local-product v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-gcp-schedule-789fda7b/crates/local-product)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 36.78s
+     Running tests/visit_briefings_postgres.rs (target/debug/deps/visit_briefings_postgres-1e4d074c8f6cab05)
+
+running 12 tests
+test later_input_after_ready_briefing_never_reselects_or_rewrites_briefing ... ok
+test pre_preparation_checks_sources_before_starting_and_failed_refresh_does_not_block ... ok
+test ac2_save_and_reopen_briefing_across_restart_with_citations_orientation_and_visit_time_binding ... ok
+test ac3_failed_refresh_missing_and_conflicting_evidence_preserve_records_and_refuse_accepted_care ... ok
+test ac1_five_synthetic_visits_select_which_to_prepare_and_when_with_grounded_reasons ... ok
+test ac3_mid_run_record_change_refuses_stale_completion_and_brings_current_evidence_back ... ok
+test ac4_no_preparation_starts_after_visit_ends_and_exhausted_retries_show_could_not_finish ... ok
+test mid_run_withdrawal_recorrection_reselection_and_wake_idempotence ... ok
+test ac3_cancelled_or_moved_visit_ends_unfinished_work_and_retains_completed_briefing_as_history ... ok
+test closed_prior_concern_refusal_and_selection_scope_isolation ... ok
+test ac5_scheduled_wakeup_prepares_tomorrow_visit_over_responses_http_and_recovers_interrupted_run_once ... ok
+test ac6_visit_concern_lifecycle_distinguishes_none_ordinary_today_and_urgent_now ... ok
+
+test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.58s
+

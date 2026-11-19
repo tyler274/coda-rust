@@ -1,0 +1,22 @@
+    Blocking waiting for file lock on package cache
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.73s
+     Running tests/visit_briefings_postgres.rs (target/debug/deps/visit_briefings_postgres-1e4d074c8f6cab05)
+
+running 1 test
+test pre_preparation_checks_sources_before_starting_and_failed_refresh_does_not_block ... FAILED
+
+failures:
+
+---- pre_preparation_checks_sources_before_starting_and_failed_refresh_does_not_block stdout ----
+
+thread 'pre_preparation_checks_sources_before_starting_and_failed_refresh_does_not_block' (223203) panicked at crates/local-product/tests/visit_briefings_postgres.rs:311:14:
+scripted provider ran out of turns
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    pre_preparation_checks_sources_before_starting_and_failed_refresh_does_not_block
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 11 filtered out; finished in 0.86s
+
+error: test failed, to rerun pass `-p local-product --test visit_briefings_postgres`
