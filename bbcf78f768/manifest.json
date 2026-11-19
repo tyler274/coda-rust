@@ -1,0 +1,36 @@
+{
+  "branch": "tyler-eng-271-1-paged-pdf-fax-scan-reader",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC1",
+      "label": "Synthetic patient-bank PDF, fax, and scan fixtures verification",
+      "kind": "run",
+      "revision": "a66bff2d651003ca66834daaba411b48f4bb7c4f",
+      "dirty": false,
+      "recorded": "2026-11-18T23:34:11+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "patient-bank",
+        "--test",
+        "attachments",
+        "--",
+        "--nocapture"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "01-Synthetic-patient-bank-PDF-fax-and-scan-fixtures.log"
+      ],
+      "seconds": 14.1,
+      "exit": 0,
+      "ok": true,
+      "kept": {
+        "revision": "bbcf78f768eabbdc787f3d751ccbcf3ce336f290",
+        "reason": "Rebased cleanly onto PR 60 (e374cd7738); slice diff and behavior unchanged"
+      }
+    }
+  ]
+}
