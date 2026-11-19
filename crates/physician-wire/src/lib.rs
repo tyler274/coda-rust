@@ -7,6 +7,7 @@
 #![deny(missing_docs)]
 
 pub mod briefings;
+pub mod follow_ups;
 pub mod matching_reply;
 pub mod source_setup;
 pub mod today_updates;

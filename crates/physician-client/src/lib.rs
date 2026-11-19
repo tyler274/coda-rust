@@ -3,6 +3,7 @@
 #![deny(missing_docs)]
 
 pub mod briefings;
+pub mod follow_ups;
 pub mod matching_reply;
 mod reviews;
 pub mod source_setup;

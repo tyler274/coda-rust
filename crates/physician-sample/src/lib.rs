@@ -20,6 +20,7 @@ pub mod chart_load;
 mod chat_draft;
 pub mod durable;
 mod feedback;
+pub mod follow_ups;
 mod gmail;
 pub mod hosting;
 mod live;
@@ -455,6 +456,7 @@ where
         .route("/dictation", post(|| async { dictation_unavailable() }))
         .merge(source_setup::routes())
         .merge(matching_reply::routes())
+        .merge(follow_ups::routes())
         .route("/", get(site_index))
         .route("/index.html", get(site_index))
         .route("/assets/coda-health-logo-transparent.png", get(logo))
