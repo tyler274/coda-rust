@@ -15,6 +15,7 @@ pub mod types;
 pub use chart::{
     ChartInputError, ChartRequest, ChartScope, Labels, SEARCH_TOOL, read_tool, search_tool,
 };
+pub(crate) use chart::{MemoryNoteRef, memory_note_candidate_id, parse_memory_notes_markdown};
 /// The chat's typed finish and its citations.
 pub mod citations;
 pub use types::{

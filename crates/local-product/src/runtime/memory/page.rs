@@ -39,7 +39,7 @@ impl Day {
     }
 
     /// The UTC day of `time`: a note's log day.
-    pub(crate) fn of(time: DateTime<Utc>) -> Self {
+    pub fn of(time: DateTime<Utc>) -> Self {
         Self(time.date_naive())
     }
 }

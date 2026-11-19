@@ -27,7 +27,7 @@ use crate::physician_sources::{READ_TOOL, SEARCH_TOOL, citations};
 use crate::runtime::chat_operations::{REFRESH_SOURCES_TOOL, RETRIEVE_PATIENT_WORK_TOOL};
 use crate::runtime::concerns::CONCERN_TOOL;
 use crate::runtime::follow_ups::FOLLOW_UP_TOOL;
-use crate::runtime::memory::tools::MemoryTool;
+use crate::runtime::memory::tools::{MemoryStepKind, MemoryTool};
 use crate::runtime::reply::FINISH_TOOL as REPLY_FINISH_TOOL;
 use crate::runtime::working_notes;
 use crate::spruce_matching_recipe::{PATIENT_LOOKUP_TOOL, SUBMIT_CLASSIFICATION_TOOL};
@@ -264,8 +264,13 @@ pub fn project_tool_step(
         Some(ToolClass::PatientUnderstandingSave) => ("Updated patient summary".to_owned(), None),
         Some(ToolClass::PatientConcern) => ("Updated Today concern".to_owned(), None),
         Some(ToolClass::FollowUp) => ("Updated patient follow-up".to_owned(), None),
-        Some(ToolClass::MemoryRead) => ("Checked patient clinical memory".to_owned(), None),
-        Some(ToolClass::MemoryWrite) => ("Updated patient clinical memory".to_owned(), None),
+        Some(ToolClass::MemoryWrite) => {
+            let label = match MemoryTool::named(name).and_then(MemoryTool::physician_step)? {
+                MemoryStepKind::SavedNote => "Saved note to patient memory",
+                MemoryStepKind::EditedMemory => "Updated patient memory",
+            };
+            (label.to_owned(), None)
+        }
         Some(ToolClass::PriorPatientWork) => {
             ("Checked prior patient conversations".to_owned(), None)
         }
@@ -278,8 +283,10 @@ pub fn project_tool_step(
             ("Checked patient conversation".to_owned(), None)
         }
         Some(ToolClass::SpruceMatching) => ("Reviewed unmatched patient message".to_owned(), None),
+        // Memory reads are Coda's own bookkeeping and never show a step (`Memory.Code.21`).
         Some(
-            ToolClass::Skill
+            ToolClass::MemoryRead
+            | ToolClass::Skill
             | ToolClass::WorkingNote
             | ToolClass::ResultPage
             | ToolClass::ConversationHistory
@@ -493,5 +500,40 @@ mod tests {
             vec!["Checking potassium trend before revising."]
         );
         assert!(reasoning[0].has_encrypted_content);
+    }
+
+    #[test]
+    fn memory_reads_stay_hidden_and_memory_writes_project_distinct_steps() {
+        for read_tool in [
+            "list_patient_memory",
+            "read_patient_memory",
+            "search_patient_memory",
+        ] {
+            assert_eq!(
+                project_tool_step(read_tool, "{}", ProjectedStepState::Done, &|_| None),
+                None,
+                "{read_tool} must not project a physician-facing step (Memory.Code.21)"
+            );
+        }
+
+        let note_step = project_tool_step(
+            "add_patient_memory_note",
+            "{}",
+            ProjectedStepState::Done,
+            &|_| None,
+        )
+        .expect("add_patient_memory_note projects a step");
+        assert_eq!(note_step.label, "Saved note to patient memory");
+        assert_eq!(note_step.detail, None);
+
+        let edit_step = project_tool_step(
+            "edit_patient_memory",
+            "{}",
+            ProjectedStepState::Done,
+            &|_| None,
+        )
+        .expect("edit_patient_memory projects a step");
+        assert_eq!(edit_step.label, "Updated patient memory");
+        assert_eq!(edit_step.detail, None);
     }
 }

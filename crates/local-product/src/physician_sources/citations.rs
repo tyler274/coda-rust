@@ -19,7 +19,10 @@ use harness::engine::{Cause, Event, EventKind, Item, ProductMessage, Tool, Turn,
 use serde::{Deserialize, Serialize};
 use serde_json::json;
 
-use super::chart::{Label, Labels, ReadReceipt, RecordReceipt};
+use super::chart::{
+    Label, Labels, ReadReceipt, RecordReceipt, memory_note_candidate_id,
+    parse_memory_notes_markdown,
+};
 
 /// The tool that ends a chat answer.
 pub const FINISH_TOOL: &str = "finish_answer";
@@ -322,8 +325,79 @@ struct DeliveredVersion {
 }
 
 impl Delivered {
+    fn add_text(&mut self, label: Label, text: String) {
+        if text.is_empty() {
+            return;
+        }
+        match self.0.iter_mut().find(|(known, _)| known == &label) {
+            Some((_, version)) => {
+                let next_part = version.stretches.len();
+                version.stretches.push((next_part, 0, text));
+            }
+            None => self.0.push((
+                label,
+                DeliveredVersion {
+                    stretches: vec![(0, 0, text)],
+                },
+            )),
+        }
+    }
+
     fn of_work(records: &[(Event, bool)], messages: &[ProductMessage]) -> Result<Self, Cause> {
         let mut delivered = Self::default();
+        // Starting memory developer messages and saved memory notes (`N1`, `N2`, ...).
+        let mut note_call_args: std::collections::HashMap<&str, (Option<String>, Option<String>)> =
+            std::collections::HashMap::new();
+        for (event, _) in records {
+            match &event.kind {
+                EventKind::ProviderStarted { request, .. } => {
+                    for item in &request.added {
+                        if let Item::Message { role, text } = item
+                            && role == "developer"
+                        {
+                            for note in parse_memory_notes_markdown(text, None) {
+                                let label = Label(note.label);
+                                if let Some(quote) = note.quote {
+                                    delivered.add_text(label.clone(), quote);
+                                }
+                                delivered.add_text(label, note.body);
+                            }
+                        }
+                    }
+                }
+                EventKind::ToolStarted(call) if call.name == "add_patient_memory_note" => {
+                    if let Ok(val) = serde_json::from_str::<serde_json::Value>(&call.arguments) {
+                        let text = val
+                            .get("text")
+                            .and_then(serde_json::Value::as_str)
+                            .map(str::to_owned);
+                        let quote = val
+                            .get("quote")
+                            .and_then(serde_json::Value::as_str)
+                            .map(str::to_owned);
+                        note_call_args.insert(call.id.as_str(), (text, quote));
+                    }
+                }
+                EventKind::ToolReturned { call_id, result } => {
+                    if let Some(original) = result.original()
+                        && let Ok(val) = serde_json::from_str::<serde_json::Value>(original)
+                        && let Some(note_label) =
+                            val.get("note").and_then(serde_json::Value::as_str)
+                        && memory_note_candidate_id(note_label).is_some()
+                        && let Some((text, quote)) = note_call_args.get(call_id.as_str())
+                    {
+                        let label = Label(note_label.to_owned());
+                        if let Some(quote) = quote {
+                            delivered.add_text(label.clone(), quote.clone());
+                        }
+                        if let Some(text) = text {
+                            delivered.add_text(label, text.clone());
+                        }
+                    }
+                }
+                _ => {}
+            }
+        }
         for output in harness::engine::results::delivered_originals(records, messages)? {
             // Chart read receipts.
             if let Ok(receipt) = serde_json::from_str::<ReadReceipt>(output) {
@@ -338,33 +412,30 @@ impl Delivered {
                 cite_as: Some(label),
             }) = serde_json::from_str::<crate::clinical_library::LibraryReadOutcome>(output)
             {
-                let label = Label(label);
-                match delivered.0.iter_mut().find(|(known, _)| known == &label) {
-                    Some((_, version)) => version.stretches.push((0, 0, passage.text)),
-                    None => delivered.0.push((
-                        label,
-                        DeliveredVersion {
-                            stretches: vec![(0, 0, passage.text)],
-                        },
-                    )),
-                }
+                delivered.add_text(Label(label), passage.text);
                 continue;
             }
             // Document page reads (`D1`, `D2`, ...).
-            if let Ok(val) = serde_json::from_str::<serde_json::Value>(output)
-                && val.get("outcome").and_then(serde_json::Value::as_str) == Some("available")
-                && let Some(label) = val.get("cite_as").and_then(serde_json::Value::as_str)
-                && let Some(text) = val.get("text").and_then(serde_json::Value::as_str)
-            {
-                let label = Label(label.to_owned());
-                match delivered.0.iter_mut().find(|(known, _)| known == &label) {
-                    Some((_, version)) => version.stretches.push((0, 0, text.to_owned())),
-                    None => delivered.0.push((
-                        label,
-                        DeliveredVersion {
-                            stretches: vec![(0, 0, text.to_owned())],
-                        },
-                    )),
+            if let Ok(val) = serde_json::from_str::<serde_json::Value>(output) {
+                if val.get("outcome").and_then(serde_json::Value::as_str) == Some("available")
+                    && let Some(label) = val.get("cite_as").and_then(serde_json::Value::as_str)
+                    && let Some(text) = val.get("text").and_then(serde_json::Value::as_str)
+                {
+                    delivered.add_text(Label(label.to_owned()), text.to_owned());
+                    continue;
+                }
+                // Patient memory log reads (`N1`, `N2`, ...).
+                if let Some(path) = val.get("path").and_then(serde_json::Value::as_str)
+                    && path.starts_with("log/")
+                    && let Some(markdown) = val.get("markdown").and_then(serde_json::Value::as_str)
+                {
+                    for note in parse_memory_notes_markdown(markdown, Some(path)) {
+                        let label = Label(note.label);
+                        if let Some(quote) = note.quote {
+                            delivered.add_text(label.clone(), quote);
+                        }
+                        delivered.add_text(label, note.body);
+                    }
                 }
             }
         }
@@ -773,7 +844,7 @@ fn bracket(bytes: &[u8], open: usize) -> Option<(Vec<std::ops::Range<usize>>, us
     let mut labels = Vec::new();
     let mut at = open + 1;
     loop {
-        if !matches!(bytes.get(at), Some(b'S' | b'L' | b'D')) {
+        if !matches!(bytes.get(at), Some(b'S' | b'L' | b'D' | b'N')) {
             return None;
         }
         let digits = bytes[at + 1..]
@@ -1396,5 +1467,175 @@ mod tests {
         assert!(labels.version(&Label("S01".into())).is_none());
         assert!(labels.version(&Label("L1".into())).is_some());
         assert!(labels.version(&Label("D1".into())).is_some());
+    }
+
+    #[test]
+    fn memory_note_citations_resolve_from_start_memory_log_reads_and_saved_notes() {
+        use harness::engine::results::{ResultView, ToolResult};
+        use harness::engine::{DispatchContext, Invocation, RequestItem, SavedRequest};
+
+        let start_memory_event = (
+            Event {
+                attempt_id: "attempt".into(),
+                sequence: 1,
+                ordinal: 1,
+                kind: EventKind::ProviderStarted {
+                    dispatched_at_unix_ms: 1,
+                    request: SavedRequest {
+                        added: vec![Item::Message {
+                            role: "developer".into(),
+                            text: "\
+This patient's memory as this conversation started. list_patient_memory lists every file, and read_patient_memory reads one.
+
+Notes saved for this patient, newest first:
+
+# Log 2026-11-18
+
+## 14:20:00 UTC, note N1, physician dr-rivera
+
+Quoted: \"She stopped lisinopril last week due to cough.\"
+
+Physician corrected medication list: lisinopril stopped due to cough."
+                                .into(),
+                        }],
+                        items: vec![RequestItem::Event {
+                            attempt: "attempt".into(),
+                            sequence: 1,
+                            index: 0,
+                        }],
+                    },
+                    context: DispatchContext::default(),
+                },
+            },
+            true,
+        );
+
+        let add_note_started = (
+            Event {
+                attempt_id: "attempt".into(),
+                sequence: 2,
+                ordinal: 1,
+                kind: EventKind::ToolStarted(Invocation {
+                    id: "call-n2".into(),
+                    name: "add_patient_memory_note".into(),
+                    arguments: json!({
+                        "text": "Hold ACE inhibitors going forward.",
+                        "quote": "avoid ACE inhibitors"
+                    })
+                    .to_string(),
+                }),
+            },
+            true,
+        );
+        let add_note_output = json!({"note": "N2", "path": "log/2026-11-19.md"}).to_string();
+        let add_note_returned = (
+            Event {
+                attempt_id: "attempt".into(),
+                sequence: 3,
+                ordinal: 1,
+                kind: EventKind::ToolReturned {
+                    call_id: "call-n2".into(),
+                    result: ToolResult::Original(add_note_output.clone()),
+                },
+            },
+            true,
+        );
+
+        let provider_delivered = (
+            Event {
+                attempt_id: "attempt".into(),
+                sequence: 4,
+                ordinal: 2,
+                kind: EventKind::ProviderStarted {
+                    dispatched_at_unix_ms: 4,
+                    request: SavedRequest {
+                        added: vec![Item::Result {
+                            call_id: "call-n2".into(),
+                            output: ResultView::whole("call-n2", &add_note_output),
+                        }],
+                        items: vec![RequestItem::Event {
+                            attempt: "attempt".into(),
+                            sequence: 4,
+                            index: 0,
+                        }],
+                    },
+                    context: DispatchContext::default(),
+                },
+            },
+            true,
+        );
+
+        let turn = Turn {
+            items: vec![Item::Call(Invocation {
+                id: "finish-1".into(),
+                name: FINISH_TOOL.into(),
+                arguments: json!({
+                    "answer": "Lisinopril was stopped due to cough [N1] and ACE inhibitors are held [N2].",
+                    "quotes": [
+                        {"label": "N1", "quote": "She stopped lisinopril last week due to cough."},
+                        {"label": "N2", "quote": "Hold ACE inhibitors going forward."}
+                    ],
+                    "descriptions": [],
+                    "basis": "Based on physician correction notes [N1, N2].",
+                    "cites_none": false
+                })
+                .to_string(),
+            })],
+            receipt: serde_json::json!({}),
+            usage: Default::default(),
+        };
+        let provider_returned = (
+            Event {
+                attempt_id: "attempt".into(),
+                sequence: 5,
+                ordinal: 2,
+                kind: EventKind::ProviderReturned(turn.clone()),
+            },
+            true,
+        );
+
+        let records = [
+            start_memory_event,
+            add_note_started,
+            add_note_returned,
+            provider_delivered,
+            provider_returned,
+        ];
+        let Decision::Save { text, finished } = decide(&turn, &records, &[]).unwrap() else {
+            panic!("expected N1 and N2 citations to resolve cleanly");
+        };
+        assert_eq!(
+            text,
+            "Lisinopril was stopped due to cough and ACE inhibitors are held."
+        );
+        assert_eq!(finished.marks().len(), 2);
+        assert_eq!(finished.marks()[0].source.candidate_id, "memory/note/N1");
+        assert_eq!(finished.marks()[0].source.revision, "log/2026-11-18.md");
+        assert!(finished.marks()[0].place.is_some());
+        assert_eq!(finished.marks()[1].source.candidate_id, "memory/note/N2");
+        assert_eq!(finished.marks()[1].source.revision, "log/2026-11-19.md");
+        assert!(finished.marks()[1].place.is_some());
+
+        // Non-existent note label `[N99]` must be refused.
+        let bad_turn = Turn {
+            items: vec![Item::Call(Invocation {
+                id: "finish-bad".into(),
+                name: FINISH_TOOL.into(),
+                arguments: json!({
+                    "answer": "Uncited note [N99].",
+                    "quotes": [],
+                    "descriptions": [],
+                    "basis": "Unverified [N99].",
+                    "cites_none": false
+                })
+                .to_string(),
+            })],
+            receipt: serde_json::json!({}),
+            usage: Default::default(),
+        };
+        assert!(matches!(
+            decide(&bad_turn, &records, &[]).unwrap(),
+            Decision::Refuse(_)
+        ));
     }
 }

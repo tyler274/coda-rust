@@ -725,3 +725,69 @@ async fn staff_read_feedback_includes_concern_done_evaluation() {
         "expected concern_done evaluation row in {out}"
     );
 }
+
+#[tokio::test]
+#[ignore = "requires explicit local Postgres"]
+async fn staff_feedback_export_includes_physician_reply_draft_edits() {
+    let Some(running) = Running::start("chat-reply-eval").await else {
+        return;
+    };
+    let (a, session) = (&running.hosts[0], &running.session);
+    let workspace = physician_sample::WORKSPACE_IDS[0];
+    let reply_id = "reply-eval-k13";
+    let reply_path = format!("/physician-state/reply-drafts/{workspace}/{reply_id}");
+
+    // Seed an open reply draft in Postgres for the signed-in staging physician,
+    // then edit it through the hosted physician HTTP endpoint.
+    let store = local_product::runtime::Store::connect(&running.database.url)
+        .await
+        .expect("runtime store");
+    let scope = local_product::runtime::Scope {
+        practice: physician_sample::STAGING_PRACTICE_ID.to_owned(),
+        physician: "staging-physician".to_owned(),
+        workspace: workspace.to_owned(),
+        chat: reply_id.to_owned(),
+    };
+    let hash = PostgresAuthStore::session_reference(session);
+    store
+        .open_draft_authorized(
+            &scope,
+            "Initial Coda reply draft.",
+            &hash,
+            &mut physician_sample::durable::RuntimeAuthority,
+        )
+        .await
+        .expect("open seeded reply draft");
+
+    let opened = support::get_json(a, &reply_path, session).await;
+    assert_eq!(opened.0, 200, "{}", opened.1);
+    let rev = opened.1["revision"].as_u64().expect("reply draft revision");
+    let edited = put(
+        a,
+        Some(session),
+        &reply_path,
+        &json!({
+            "revision": rev,
+            "text": "Please come in Tuesday morning for a repeat potassium check."
+        }),
+    )
+    .await;
+    assert_eq!(edited.0, 200, "{}", edited.1);
+
+    let (ok, out, err) = staff_read(&running.database.url, &[]);
+    assert!(ok, "{err}");
+    let rows: Vec<Value> = out
+        .lines()
+        .map(|line| serde_json::from_str(line).expect("one JSON object per line"))
+        .collect();
+    assert!(
+        rows.iter().any(|row| {
+            row["kind"] == "reply_draft_feedback"
+                && row["reply_feedback_kind"] == "physician_draft_edit"
+                && row["reply"] == "reply-eval-k13"
+                && row["edited_text"]
+                    == "Please come in Tuesday morning for a repeat potassium check."
+        }),
+        "physician-migrate feedback missing reply draft edit row:\n{out}"
+    );
+}

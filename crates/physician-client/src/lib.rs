@@ -13,10 +13,11 @@ pub use http::HttpError;
 use physician_wire::{
     ChatSnapshotResponse, ColleagueInvitationResponse, HealthResponse, InviteColleagueRequest,
     InvitePatientRequest, PanelAssignmentResponse, PastWorkResponse, PatientInvitationResponse,
-    PatientSearchResponse, PatientWorkspaceResponse, PatientWorkspacesResponse, PhysicianDraft,
-    PracticeDayResponse, RecentConversationsResponse, ReplyDraftWire, ResponseFeedback, ResponseId,
-    SaveFeedback, SignInResponse, TodayListResponse, UpdatesResponse, VerifyResponse,
-    WhoamiResponse,
+    PatientMemoryResponse, PatientSearchResponse, PatientWorkspaceResponse,
+    PatientWorkspacesResponse, PhysicianDraft, PracticeDayResponse, RecentConversationsResponse,
+    ReplyDraftWire, ResponseFeedback, ResponseId, SaveFeedback, SavePhysicianMemoryEditRequest,
+    SavePhysicianMemoryEditResponse, SignInResponse, TodayListResponse, UpdatesResponse,
+    VerifyResponse, WhoamiResponse,
 };
 use std::sync::Arc;
 
@@ -485,6 +486,48 @@ impl PhysicianClient {
         try_demo!(self, s => s.command(body));
         self.post_as(self.bearer(), "/commands", body, Some(COMMAND_TIME_LIMIT))
             .await
+    }
+
+    /// Reads the physician-facing patient memory (`summary.md` and `direction.md` only).
+    pub async fn patient_memory(
+        &self,
+        workspace_id: &str,
+    ) -> Result<PatientMemoryResponse, http::HttpError> {
+        #[cfg(any(target_arch = "wasm32", test))]
+        if matches!(self.transport, ClientTransport::Demo(_)) {
+            return Ok(PatientMemoryResponse {
+                patient_workspace_id: workspace_id.to_owned(),
+                durable: false,
+                summary: None,
+                direction: None,
+            });
+        }
+        self.get(&format!(
+            "/patient-workspaces/{}/memory",
+            path_escape(workspace_id)
+        ))
+        .await
+    }
+
+    /// Saves a physician's edit to `summary.md` or `direction.md` as a log note
+    /// in their own words so patient rounds fold it in.
+    pub async fn save_patient_memory_edit(
+        &self,
+        workspace_id: &str,
+        request: &SavePhysicianMemoryEditRequest,
+    ) -> Result<SavePhysicianMemoryEditResponse, http::HttpError> {
+        #[cfg(any(target_arch = "wasm32", test))]
+        if matches!(self.transport, ClientTransport::Demo(_)) {
+            return Err(http::HttpError::Status {
+                status: 503,
+                body: "Patient memory edits require the live server.".to_owned(),
+            });
+        }
+        self.post(
+            &format!("/patient-workspaces/{}/memory", path_escape(workspace_id)),
+            request,
+        )
+        .await
     }
 
     /// Reads one chat snapshot.

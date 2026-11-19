@@ -1254,3 +1254,574 @@ async fn a_conversation_starts_with_only_its_own_patients_memory() {
         }
     }
 }
+
+#[tokio::test]
+#[ignore = "requires explicit local Postgres"]
+async fn physician_memory_view_exposes_only_summary_and_direction_and_edits_save_notes_folded_by_rounds()
+ {
+    use chrono::Utc;
+    use serde_json::json;
+
+    use crate::runtime::memory::PhysicianMemoryTarget;
+    use crate::runtime::rounds;
+
+    let store = store().await;
+    let scope = patient();
+    let pkey = key(&scope);
+
+    // Seed summary, direction, person, a subject page, and a log note.
+    store
+        .edit_memory(
+            &pkey,
+            &VersionedFile::Summary,
+            &[create("- CKD stage 3b; eGFR 38.")],
+        )
+        .await
+        .unwrap();
+    store
+        .edit_memory(
+            &pkey,
+            &VersionedFile::Direction,
+            &[create("- Recheck BMP monthly.")],
+        )
+        .await
+        .unwrap();
+    store
+        .edit_memory(
+            &pkey,
+            &VersionedFile::Person,
+            &[create("INTERNAL-PERSON-ONLY")],
+        )
+        .await
+        .unwrap();
+    store
+        .edit_memory(
+            &pkey,
+            &VersionedFile::Page(PageId::parse("ckd").unwrap()),
+            &[create("INTERNAL-PAGE-ONLY")],
+        )
+        .await
+        .unwrap();
+    store
+        .append_note(
+            &scope,
+            &origin("seed-note"),
+            &draft("INTERNAL-LOG-ONLY", None),
+        )
+        .await
+        .unwrap();
+
+    // Memory.Code.20: physician view exposes only summary and direction.
+    let view = store.read_physician_memory(&pkey).await.unwrap();
+    let summary = view.summary.expect("summary present");
+    let direction = view.direction.expect("direction present");
+    assert_eq!(summary.version, 1);
+    assert_eq!(summary.markdown, "- CKD stage 3b; eGFR 38.");
+    assert_eq!(direction.version, 1);
+    assert_eq!(direction.markdown, "- Recheck BMP monthly.");
+
+    // Memory.Code.22: physician edit saves a note in their words without
+    // directly overwriting direction.md.
+    let saved = store
+        .save_physician_memory_edit(
+            &scope,
+            PhysicianMemoryTarget::Direction,
+            "Hold lisinopril until potassium is rechecked next week.",
+            "cmd-mem-edit-1",
+        )
+        .await
+        .unwrap();
+    assert_eq!(saved.number.to_string(), "N2");
+    assert_eq!(
+        saved.physician_words.as_ref().map(|w| w.as_str()),
+        Some("Hold lisinopril until potassium is rechecked next week.")
+    );
+    assert!(
+        saved
+            .text
+            .contains("Hold lisinopril until potassium is rechecked next week.")
+    );
+
+    // Repeating the same idempotency key returns the same note.
+    let repeated = store
+        .save_physician_memory_edit(
+            &scope,
+            PhysicianMemoryTarget::Direction,
+            "Hold lisinopril until potassium is rechecked next week.",
+            "cmd-mem-edit-1",
+        )
+        .await
+        .unwrap();
+    assert_eq!(repeated.id, saved.id);
+    assert_eq!(repeated.number, saved.number);
+
+    // Blank edit is refused.
+    assert!(matches!(
+        store
+            .save_physician_memory_edit(
+                &scope,
+                PhysicianMemoryTarget::Summary,
+                "   \n",
+                "cmd-blank"
+            )
+            .await,
+        Err(MemoryError::Refused(MemoryRefusal::NoWords))
+    ));
+
+    // direction.md is still version 1 until rounds folds the note in.
+    let before_rounds = store.read_physician_memory(&pkey).await.unwrap();
+    assert_eq!(before_rounds.direction.as_ref().unwrap().version, 1);
+    assert_eq!(
+        before_rounds.direction.as_ref().unwrap().markdown,
+        "- Recheck BMP monthly."
+    );
+
+    // Patient rounds reads the log note and folds it into direction.md.
+    let log_path = MemoryPath::Log(crate::runtime::memory::Day::of(saved.time)).to_string();
+    let mut script = super::Script::new([
+        super::calls([(
+            "r1",
+            "read_patient_memory",
+            json!({"path": log_path, "version": null}),
+        )]),
+        super::calls([(
+            "e1",
+            "edit_patient_memory",
+            json!({
+                "path": "direction.md",
+                "edits": [{"append": {"text": "- Hold lisinopril until potassium is rechecked next week [N2]."}}]
+            }),
+        )]),
+        super::says("Folded physician direction note N2."),
+    ]);
+    let run = rounds::run(
+        &store,
+        &mut script,
+        &pkey,
+        Utc::now() + chrono::Duration::seconds(2),
+        &super::test_skills(),
+        &super::test_binding(),
+    )
+    .await;
+    assert!(run.finished(), "{:?}", run.ending);
+
+    let after_rounds = store.read_physician_memory(&pkey).await.unwrap();
+    let folded = after_rounds.direction.expect("direction after rounds");
+    assert_eq!(folded.version, 2);
+    assert!(
+        folded
+            .markdown
+            .contains("Hold lisinopril until potassium is rechecked next week [N2]."),
+        "{}",
+        folded.markdown
+    );
+}
+
+#[tokio::test]
+#[ignore = "requires explicit local Postgres"]
+async fn physician_correction_note_is_cited_with_message_provenance_and_never_approves_earlier_reading()
+ {
+    use harness::engine::{Event, EventKind, Invocation, Item, RequestItem, SavedRequest};
+    use serde_json::json;
+
+    use crate::runtime::concerns::{
+        CommandKey, ConcernId, ConcernStanding, ConcernUrgency, ExactRecordReference, RaiseConcern,
+        SourceWork, WorkspaceAccess,
+    };
+    use crate::runtime::memory::PhysicianMemoryTarget;
+
+    let store = store().await;
+    let scope = patient();
+    let pkey = key(&scope);
+
+    // Seed one chart record so the earlier reading's concern cites a verified revision.
+    let chart_record = crate::physician_sources::adapter::file_fhir_record(
+        &scope.workspace,
+        "fhir-r4",
+        r#"{"resourceType":"MedicationStatement","id":"med-lisinopril","status":"active","medicationCodeableConcept":{"text":"Lisinopril 10 mg"}}"#,
+        None,
+    )
+    .unwrap();
+    store
+        .record_chart_with_receipt(
+            &scope.workspace,
+            std::slice::from_ref(&chart_record),
+            &super::sources::SourcePull {
+                source_id: "fhir-r4".into(),
+                source_label: "FHIR".into(),
+                patient: crate::physician_sources::SourcePatient {
+                    source_patient_id: "p-k12".into(),
+                    display_name: "Elena Rostova".into(),
+                    birth_date: None,
+                    sex_or_gender: None,
+                    medical_record_numbers: vec![],
+                },
+                pulled_at: Some(1_795_000_000),
+            },
+        )
+        .await
+        .unwrap();
+
+    // Seed an open concern (earlier reading awaiting physician decision) and
+    // an unapproved reply draft.
+    let concern_id = ConcernId::new("concern-potassium-1").unwrap();
+    let cmd_key = CommandKey::new("cmd-raise-k12").unwrap();
+    let raised = store
+        .raise_concern(
+            &cmd_key,
+            &RaiseConcern {
+                id: concern_id.clone(),
+                practice: scope.practice.clone(),
+                workspace: scope.workspace.clone(),
+                urgency: ConcernUrgency::Today,
+                reason: "Earlier reading flagged lisinopril continuation.".into(),
+                records: vec![
+                    ExactRecordReference::new(&chart_record.candidate_id, &chart_record.revision)
+                        .unwrap(),
+                ],
+                source_work: SourceWork::new("review-1", "run-1", "attempt-1").unwrap(),
+            },
+        )
+        .await
+        .unwrap();
+    assert_eq!(raised.concern().id, concern_id);
+
+    let reply_scope = Scope {
+        chat: "reply-k12".into(),
+        ..scope.clone()
+    };
+    store
+        .open_draft_authorized(
+            &reply_scope,
+            "Earlier unapproved reply draft recommending lisinopril.",
+            &[0x11; 32],
+            &mut super::OpenAuthority,
+        )
+        .await
+        .unwrap();
+
+    // Physician sends a correction message in chat-1 and Coda saves note N1
+    // linked to that exact message id.
+    let corr_scope = Scope {
+        chat: "chat-correction".into(),
+        ..scope.clone()
+    };
+    let saved_note = store
+        .append_note(
+            &corr_scope,
+            &NoteOrigin {
+                work: "work-corr-1".into(),
+                call: "call-corr-1".into(),
+                message: "msg-physician-corr-1".into(),
+            },
+            &draft(
+                "Physician corrected medication list: patient stopped lisinopril last week due to cough.",
+                Some("She stopped lisinopril last week due to cough."),
+            ),
+        )
+        .await
+        .unwrap();
+    assert_eq!(saved_note.number.to_string(), "N1");
+
+    // Physician also edits direction via memory surface -> saved as note N2.
+    let _edit_note = store
+        .save_physician_memory_edit(
+            &scope,
+            PhysicianMemoryTarget::Direction,
+            "Do not restart ACE inhibitors.",
+            "cmd-k12-dir",
+        )
+        .await
+        .unwrap();
+
+    // K1.12: Neither the chat correction note nor the memory edit note approves
+    // or closes the earlier concern or approves/alters the earlier reply draft.
+    let access = WorkspaceAccess {
+        session_hash: &[0x11; 32],
+        practice: &scope.practice,
+        physician: &scope.physician,
+        workspace: &scope.workspace,
+    };
+    let concerns = store
+        .workspace_concerns(&access, &mut super::OpenAuthority)
+        .await
+        .unwrap();
+    assert_eq!(concerns.len(), 1);
+    assert!(
+        matches!(concerns[0].standing, ConcernStanding::Open),
+        "correction note must never approve or close earlier concern: {:?}",
+        concerns[0]
+    );
+    let draft_after = store.draft(&reply_scope).await.unwrap().unwrap();
+    assert_eq!(draft_after.revision, 1);
+    assert_eq!(
+        draft_after.text,
+        "Earlier unapproved reply draft recommending lisinopril."
+    );
+
+    // K1.11: In a later conversation, starting memory delivers N1, Coda cites
+    // [N1] in finish_answer, and reopen_conversation exposes N1 with the exact
+    // message provenance `msg-physician-corr-1`.
+    let later_scope = Scope {
+        chat: "chat-later".into(),
+        ..scope.clone()
+    };
+    let accepted = super::accept(
+        &store,
+        &later_scope,
+        &super::delivery_input("Should she take lisinopril?"),
+        0,
+    )
+    .await
+    .unwrap();
+    let claim = store.claim(&later_scope, 60).await.unwrap().unwrap();
+    let start_mem = store
+        .memory_at_start(&pkey, ConversationStart(saved_note.time.timestamp() + 2))
+        .await
+        .unwrap();
+    let start_item = start_mem.0.expect("starting memory includes N1");
+    let log_path = MemoryPath::Log(crate::runtime::memory::Day::of(saved_note.time)).to_string();
+
+    let finish_turn = harness::engine::Turn {
+        items: vec![Item::Call(Invocation {
+            id: "finish-k11".into(),
+            name: crate::physician_sources::citations::FINISH_TOOL.into(),
+            arguments: json!({
+                "answer": "No — she stopped lisinopril last week due to cough [N1].",
+                "quotes": [{"label": "N1", "quote": "She stopped lisinopril last week due to cough."}],
+                "descriptions": [],
+                "basis": "Physician correction note [N1].",
+                "cites_none": false
+            })
+            .to_string(),
+        })],
+        receipt: json!({}),
+        usage: Default::default(),
+    };
+    let events = vec![
+        Event {
+            attempt_id: claim.attempt.clone(),
+            sequence: 1,
+            ordinal: 1,
+            kind: EventKind::ProviderStarted {
+                dispatched_at_unix_ms: 1,
+                request: SavedRequest {
+                    added: vec![start_item],
+                    items: vec![RequestItem::Event {
+                        attempt: claim.attempt.clone(),
+                        sequence: 1,
+                        index: 0,
+                    }],
+                },
+                context: harness::engine::DispatchContext::default(),
+            },
+        },
+        Event {
+            attempt_id: claim.attempt.clone(),
+            sequence: 2,
+            ordinal: 1,
+            kind: EventKind::ProviderReturned(finish_turn.clone()),
+        },
+        Event {
+            attempt_id: claim.attempt.clone(),
+            sequence: 3,
+            ordinal: 1,
+            kind: EventKind::Candidate {
+                text: finish_turn.text(),
+            },
+        },
+    ];
+    for event in events {
+        store.persist(&claim, event).await.unwrap();
+    }
+    let committed = store
+        .commit_authorized(&claim, &finish_turn, &mut super::OpenAuthority)
+        .await
+        .unwrap();
+    assert!(matches!(
+        committed,
+        harness::engine::recipe::Finish::Committed
+    ));
+    let _ = accepted;
+
+    let history = store
+        .reopen_conversation(&later_scope)
+        .await
+        .unwrap()
+        .unwrap();
+    let assistant_turn = history
+        .turns
+        .iter()
+        .find(|t| !matches!(t.author, crate::runtime::history::TurnAuthor::Physician))
+        .expect("assistant turn saved");
+    assert_eq!(
+        assistant_turn.raw_text,
+        "No — she stopped lisinopril last week due to cough."
+    );
+    let cited = history
+        .sources
+        .values()
+        .find(|s| s.candidate_id == "memory/note/N1")
+        .expect("N1 citation resolved in chat history");
+    assert_eq!(cited.revision, log_path);
+    assert_eq!(cited.source_id, "patient_memory");
+    assert_eq!(cited.source_label, "Physician note");
+    assert!(
+        cited.title.contains("msg-physician-corr-1"),
+        "title must carry correction message provenance: {}",
+        cited.title
+    );
+    assert!(
+        cited.body.contains("msg-physician-corr-1") && cited.body.contains("chat-correction"),
+        "body must carry correction message provenance: {}",
+        cited.body
+    );
+}
+
+#[tokio::test]
+#[ignore = "requires explicit local Postgres"]
+async fn reply_feedback_for_evaluation_exports_instructions_draft_edits_and_copies() {
+    use crate::runtime::feedback::ReplyFeedbackDetail;
+    use crate::runtime::reply::proposals::{CopiedReplySource, PhysicianDraftKind};
+    use crate::runtime::reply::{RevisionInput, recipe as reply_recipe};
+    use sea_orm::{EntityTrait, Set};
+
+    let store = store().await;
+    let scope = Scope {
+        chat: "reply-eval-1".into(),
+        ..patient()
+    };
+    let session_hash = vec![0x42; 32];
+
+    // 1. Open draft and save a direct physician edit (revision 1 -> 2).
+    store
+        .open_draft_authorized(
+            &scope,
+            "Initial Coda reply draft.",
+            &session_hash,
+            &mut super::OpenAuthority,
+        )
+        .await
+        .unwrap();
+    let rev = store
+        .save_draft(
+            &scope,
+            1,
+            "Physician edited reply draft with gentler phrasing.",
+            &session_hash,
+            &mut super::OpenAuthority,
+        )
+        .await
+        .unwrap();
+    assert_eq!(rev, 2);
+
+    // 2. Submit a "Tell Coda what to change" instruction.
+    let skills = super::test_skills();
+    let binding = super::test_binding();
+    let built_recipe = reply_recipe(&binding, &skills);
+    store
+        .accept_revision(
+            &scope,
+            &RevisionInput {
+                key: "rev-key-1".into(),
+                expected_revision: rev,
+                instruction: "Add potassium lab follow-up next Tuesday.".into(),
+                timezone: "America/Los_Angeles".into(),
+                scenario: None,
+            },
+            session_hash,
+            &skills,
+            &built_recipe,
+            None,
+        )
+        .await
+        .unwrap();
+
+    // 3. Seed a reply proposal and an edited Copy reply row.
+    use crate::runtime::reply::proposals::tables::{reply_copy, reply_proposal};
+    reply_proposal::Entity::insert(reply_proposal::ActiveModel {
+        practice: Set(scope.practice.clone()),
+        conversation_id: Set("conv-eval-1".into()),
+        version: Set(1),
+        reply_id: Set(7),
+        workspace: Set(scope.workspace.clone()),
+        review_id: Set("review-eval-1".into()),
+        run_id: Set("run-eval-1".into()),
+        completion_key: Set("comp-eval-1".into()),
+        conversation_version: Set(1),
+        source_version: Set(1),
+        move_epoch: Set(0),
+        replaced_proposal_version: Set(None),
+        text: Set("Please schedule a lab draw next week.".into()),
+        covered_message_ids: Set(serde_json::json!(["m-1"])),
+        basis: Set(serde_json::json!([])),
+        citations: Set(serde_json::json!([])),
+        proposed_at: Set(1_795_000_000),
+    })
+    .exec_without_returning(&store.db)
+    .await
+    .unwrap();
+    reply_copy::Entity::insert(reply_copy::ActiveModel {
+        practice: Set(scope.practice.clone()),
+        conversation_id: Set("conv-eval-1".into()),
+        copy_id: Set("copy-eval-1".into()),
+        command_key: Set("cmd-copy-eval-1".into()),
+        physician: Set(scope.physician.clone()),
+        workspace: Set(scope.workspace.clone()),
+        reply_id: Set(7),
+        practice_observation_seq: Set(1),
+        copied_source: Set(serde_json::to_value(CopiedReplySource::PhysicianDraft {
+            reply_id: 7,
+            draft_revision: 2,
+            kind: PhysicianDraftKind::YourText,
+        })
+        .unwrap()),
+        copied_text: Set("Please schedule a potassium lab draw on Tuesday morning.".into()),
+        copied_at: Set(1_795_000_100),
+    })
+    .exec_without_returning(&store.db)
+    .await
+    .unwrap();
+
+    let exported: Vec<_> = store
+        .reply_draft_feedback_for_evaluation()
+        .await
+        .unwrap()
+        .into_iter()
+        .filter(|row| row.practice == scope.practice)
+        .collect();
+
+    assert!(
+        exported.iter().any(|row| matches!(
+            &row.detail,
+            ReplyFeedbackDetail::TellCodaWhatToChange { instruction, .. }
+            if instruction == "Add potassium lab follow-up next Tuesday."
+        )),
+        "missing TellCodaWhatToChange row in {exported:?}"
+    );
+    assert!(
+        exported.iter().any(|row| matches!(
+            &row.detail,
+            ReplyFeedbackDetail::PhysicianDraftEdit { draft_revision: 2, edited_text, .. }
+            if edited_text == "Physician edited reply draft with gentler phrasing."
+        )),
+        "missing PhysicianDraftEdit row in {exported:?}"
+    );
+    assert!(
+        exported.iter().any(|row| matches!(
+            &row.detail,
+            ReplyFeedbackDetail::CopiedReply {
+                copy_id,
+                reply_id: 7,
+                proposal_version: Some(1),
+                proposal_text: Some(proposal),
+                copied_text,
+                edited_from_proposal: true,
+                ..
+            } if copy_id == "copy-eval-1"
+                && proposal == "Please schedule a lab draw next week."
+                && copied_text == "Please schedule a potassium lab draw on Tuesday morning."
+        )),
+        "missing edited CopiedReply row in {exported:?}"
+    );
+}

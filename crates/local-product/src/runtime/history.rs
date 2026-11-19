@@ -13,7 +13,7 @@ use serde_json::Value;
 
 use super::citation_layouts::{CitationLayoutSpec, LayoutSourceKey, render_structured_record};
 use super::entities::{
-    conversation, reply_draft, reply_revision, source, source_pull, source_version,
+    conversation, memory_note, reply_draft, reply_revision, source, source_pull, source_version,
 };
 use super::reply::DraftStatus;
 use super::{
@@ -22,7 +22,10 @@ use super::{
 };
 use crate::attachments::READ_DOCUMENT_PAGE_TOOL;
 use crate::physician_sources::citations::{Description, Finished, Mark, Place, SourceVersion};
-use crate::physician_sources::{READ_TOOL, ReadablePart, SEARCH_TOOL, SourceRevision};
+use crate::physician_sources::{
+    MemoryNoteRef, READ_TOOL, ReadablePart, SEARCH_TOOL, SourceRevision, memory_note_candidate_id,
+    parse_memory_notes_markdown,
+};
 
 /// A failure while reading saved conversations or work history.
 #[derive(Debug, thiserror::Error)]
@@ -410,15 +413,66 @@ struct WorkObservation {
     reads: Vec<ObservedRead>,
 }
 
+fn observed_memory_note(note: &MemoryNoteRef) -> ObservedRead {
+    let mut raw_parts = Vec::new();
+    if let Some(quote) = &note.quote {
+        raw_parts.push(format!("Quoted: {quote}"));
+    }
+    if !note.body.is_empty() {
+        raw_parts.push(note.body.clone());
+    }
+    let raw = raw_parts.join("\n\n");
+    let title = format!("Physician note {}", note.label);
+    let body = format_cited_source_body(&title, &[], &raw);
+    let quote = truncate_clean(&body, 220);
+    ObservedRead {
+        candidate_id: note.candidate_id.clone(),
+        revision: note.revision.clone(),
+        quote,
+        fallback_record_type: "patient_memory_note".to_owned(),
+        fallback_body: body,
+        fallback_raw: raw,
+        fallback_readable_parts: Vec::new(),
+        fallback_date: note.log_day.clone(),
+        fallback_provenance: serde_json::json!({
+            "source_id": "patient_memory",
+            "source_label": "Physician note",
+            "title": title,
+            "physician": note.physician,
+            "note_label": note.label,
+        }),
+    }
+}
+
 fn collect_work_observations(attempts: &[Attempt]) -> HashMap<String, WorkObservation> {
     let mut by_work: HashMap<String, WorkObservation> = HashMap::new();
     for attempt in attempts {
         let mut tool_names: HashMap<String, String> = HashMap::new();
+        let mut tool_args: HashMap<String, String> = HashMap::new();
         let entry = by_work.entry(attempt.work.clone()).or_default();
         for event in &attempt.events {
             match &event.kind {
+                engine::EventKind::ProviderStarted { request, .. } => {
+                    for item in &request.added {
+                        if let engine::Item::Message { role, text } = item
+                            && role == "developer"
+                        {
+                            for note in parse_memory_notes_markdown(text, None) {
+                                if !entry.reads.iter().any(|existing| {
+                                    existing.candidate_id == note.candidate_id
+                                        && existing.revision == note.revision
+                                }) {
+                                    entry.reads.push(observed_memory_note(&note));
+                                }
+                            }
+                        }
+                    }
+                }
                 engine::EventKind::ToolStarted(call) => {
                     tool_names.insert(call.id.clone(), call.name.clone());
+                    if call.name == "add_patient_memory_note" {
+                        tool_args.insert(call.id.clone(), call.arguments.clone());
+                    }
                 }
                 engine::EventKind::ToolReturned {
                     call_id,
@@ -595,6 +649,55 @@ fn collect_work_observations(attempts: &[Attempt]) -> HashMap<String, WorkObserv
                                 }),
                             });
                         }
+                    } else if tool_name == "read_patient_memory"
+                        && let Ok(val) = serde_json::from_str::<Value>(output)
+                        && let Some(path) = val.get("path").and_then(Value::as_str)
+                        && path.starts_with("log/")
+                        && let Some(markdown) = val.get("markdown").and_then(Value::as_str)
+                    {
+                        for note in parse_memory_notes_markdown(markdown, Some(path)) {
+                            if !entry.reads.iter().any(|existing| {
+                                existing.candidate_id == note.candidate_id
+                                    && existing.revision == note.revision
+                            }) {
+                                entry.reads.push(observed_memory_note(&note));
+                            }
+                        }
+                    } else if tool_name == "add_patient_memory_note"
+                        && let Ok(val) = serde_json::from_str::<Value>(output)
+                        && let Some(note_label) = val.get("note").and_then(Value::as_str)
+                        && let Some(path) = val.get("path").and_then(Value::as_str)
+                        && let Some(candidate_id) = memory_note_candidate_id(note_label)
+                        && !entry.reads.iter().any(|existing| {
+                            existing.candidate_id == candidate_id && existing.revision == path
+                        })
+                    {
+                        let (body, quote) = tool_args
+                            .get(call_id)
+                            .and_then(|raw| serde_json::from_str::<Value>(raw).ok())
+                            .map(|args| {
+                                (
+                                    args.get("text")
+                                        .and_then(Value::as_str)
+                                        .unwrap_or_default()
+                                        .to_owned(),
+                                    args.get("quote").and_then(Value::as_str).map(str::to_owned),
+                                )
+                            })
+                            .unwrap_or_default();
+                        let log_day = path
+                            .strip_prefix("log/")
+                            .and_then(|s| s.strip_suffix(".md"))
+                            .map(str::to_owned);
+                        entry.reads.push(observed_memory_note(&MemoryNoteRef {
+                            label: note_label.to_owned(),
+                            candidate_id,
+                            revision: path.to_owned(),
+                            physician: String::new(),
+                            log_day,
+                            quote,
+                            body,
+                        }));
                     }
                 }
                 _ => {}
@@ -1440,6 +1543,55 @@ impl Store {
                 version_by_work.insert(work_id.clone(), v);
             }
             reads_by_work.insert(work_id.clone(), map);
+        }
+
+        // Enrich memory note citations (`memory/note/N{n}`) with stored
+        // physician message provenance (`K1.11`) so cited corrections point
+        // directly to the message they came from.
+        let note_rows = memory_note::Entity::find()
+            .filter(memory_note::Column::Practice.eq(scope.practice.as_str()))
+            .filter(memory_note::Column::Workspace.eq(scope.workspace.as_str()))
+            .all(&self.db)
+            .await?;
+        if !note_rows.is_empty() {
+            let mut note_provenance: HashMap<String, memory_note::Model> =
+                HashMap::with_capacity(note_rows.len());
+            for row in note_rows {
+                note_provenance.insert(format!("memory/note/N{}", row.position), row);
+            }
+            for work_map in reads_by_work.values_mut() {
+                for ((candidate_id, _), read) in work_map.iter_mut() {
+                    if let Some(row) = note_provenance.get(candidate_id) {
+                        let label = format!("N{}", row.position);
+                        let title = format!("Physician note {label} · message {}", row.message);
+                        let mut body_parts = vec![format!(
+                            "From physician {} (chat {}, message {})",
+                            row.physician, row.chat, row.message
+                        )];
+                        if let Some(words) = row
+                            .physician_words
+                            .as_deref()
+                            .filter(|w| !w.trim().is_empty())
+                        {
+                            body_parts.push(format!("Quoted: {words}"));
+                        }
+                        body_parts.push(row.text.clone());
+                        let full_body =
+                            format_cited_source_body(&title, &[], &body_parts.join("\n\n"));
+                        read.fallback_body = full_body;
+                        read.fallback_raw = row.text.clone();
+                        read.fallback_provenance = serde_json::json!({
+                            "source_id": "patient_memory",
+                            "source_label": "Physician note",
+                            "title": title,
+                            "physician": row.physician,
+                            "chat_id": row.chat,
+                            "message_id": row.message,
+                            "note_label": label,
+                        });
+                    }
+                }
+            }
         }
 
         let empty_reads: HashMap<(String, String), ObservedRead> = HashMap::new();

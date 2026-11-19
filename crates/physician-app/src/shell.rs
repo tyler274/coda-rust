@@ -1661,6 +1661,8 @@ pub enum ProjectedStepKind {
     Read,
     /// Earlier conversation read step.
     Conversation,
+    /// Patient memory note or edit step.
+    Memory,
 }
 
 /// All projected steps of one chat exchange alongside its summary/live line.
@@ -1865,6 +1867,44 @@ pub fn project_steps(steps: &physician_wire::ExchangeSteps, working: bool) -> Pr
                 .to_owned();
                 ProjectedStep {
                     kind: ProjectedStepKind::Conversation,
+                    label,
+                    detail: None,
+                    state: ui_state,
+                }
+            }
+            physician_wire::Step::SavedMemoryNote { state } => {
+                let ui_state = step_state_from_wire(state);
+                let label = match state {
+                    physician_wire::StepState::Running => "Saving note to patient memory",
+                    physician_wire::StepState::Returned { .. } => "Saved note to patient memory",
+                    physician_wire::StepState::Failed => "Saving patient memory note didn’t finish",
+                    physician_wire::StepState::Stopped => "Stopped saving patient memory note",
+                    physician_wire::StepState::Interrupted => {
+                        "Saving patient memory note was interrupted"
+                    }
+                }
+                .to_owned();
+                ProjectedStep {
+                    kind: ProjectedStepKind::Memory,
+                    label,
+                    detail: None,
+                    state: ui_state,
+                }
+            }
+            physician_wire::Step::EditedMemory { state } => {
+                let ui_state = step_state_from_wire(state);
+                let label = match state {
+                    physician_wire::StepState::Running => "Updating patient memory",
+                    physician_wire::StepState::Returned { .. } => "Updated patient memory",
+                    physician_wire::StepState::Failed => "Updating patient memory didn’t finish",
+                    physician_wire::StepState::Stopped => "Stopped updating patient memory",
+                    physician_wire::StepState::Interrupted => {
+                        "Updating patient memory was interrupted"
+                    }
+                }
+                .to_owned();
+                ProjectedStep {
+                    kind: ProjectedStepKind::Memory,
                     label,
                     detail: None,
                     state: ui_state,
@@ -2845,6 +2885,27 @@ mod tests {
                 revision: String::new(),
             },
             RecordRead::Unavailable,
+        );
+
+        let memory_steps = ExchangeSteps::Read(vec![
+            Step::SavedMemoryNote {
+                state: StepState::Returned { result: () },
+            },
+            Step::EditedMemory {
+                state: StepState::Running,
+            },
+        ]);
+        let projected_mem = project_steps(&memory_steps, true);
+        assert_eq!(projected_mem.steps.len(), 2);
+        assert_eq!(projected_mem.steps[0].kind, ProjectedStepKind::Memory);
+        assert_eq!(projected_mem.steps[0].label, "Saved note to patient memory");
+        assert_eq!(projected_mem.steps[0].state, ui::StepState::Done);
+        assert_eq!(projected_mem.steps[1].kind, ProjectedStepKind::Memory);
+        assert_eq!(projected_mem.steps[1].label, "Updating patient memory");
+        assert_eq!(projected_mem.steps[1].state, ui::StepState::Running);
+        assert_eq!(
+            projected_mem.line_label.as_deref(),
+            Some("Updating patient memory")
         );
     }
 }

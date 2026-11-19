@@ -17,8 +17,12 @@ use sea_orm::{
 };
 use serde::{Deserialize, Serialize};
 
-use super::entities::{conversation, response_feedback};
-use super::{Authority, Conversation, ResponseId, Scope, Store, error, keys, now};
+use super::control;
+use super::entities::{conversation, reply_draft, reply_revision, response_feedback};
+use super::reply::proposals::{CopiedReplySource, tables as reply_tables};
+use super::{
+    Authority, Conversation, ResponseId, Scope, Store, conversion_error, error, keys, now,
+};
 
 /// The longest details text a save accepts, in characters.
 pub const MAX_DETAILS_CHARS: usize = 4000;
@@ -324,4 +328,242 @@ impl Store {
         }
         Ok(evaluated.into_iter().map(|(_, row)| row).collect())
     }
+
+    /// Standalone physician reply draft feedback for evaluation by Coda staff
+    /// (`K1.3`): `"Tell Coda what to change"` instructions (archived and
+    /// current), direct physician edits saved on reply drafts, and copied
+    /// replies compared against Coda's proposals.
+    pub async fn reply_draft_feedback_for_evaluation(
+        &self,
+    ) -> Result<Vec<EvaluatedReplyFeedback>, DbErr> {
+        let mut out = Vec::new();
+
+        // 1. Archived "Tell Coda what to change" instructions.
+        {
+            use reply_revision::Column as R;
+            let rows = reply_revision::Entity::find()
+                .order_by_asc(R::Practice)
+                .order_by_asc(R::Physician)
+                .order_by_asc(R::Workspace)
+                .order_by_asc(R::Reply)
+                .order_by_asc(R::Ordinal)
+                .all(&self.db)
+                .await?;
+            for row in rows {
+                let practice = row.practice.clone();
+                let physician = row.physician.clone();
+                let workspace = row.workspace.clone();
+                let reply = row.reply.clone();
+                let earlier = control::earlier(row, Vec::new())?;
+                out.push(EvaluatedReplyFeedback {
+                    practice,
+                    physician,
+                    workspace,
+                    reply,
+                    detail: ReplyFeedbackDetail::TellCodaWhatToChange {
+                        revision_key: earlier.accepted.input.key,
+                        instruction: earlier.accepted.input.instruction,
+                        base_text: earlier.base_text,
+                        current_text: None,
+                    },
+                });
+            }
+        }
+
+        // 2. Current reply drafts: active/latest revision instructions and
+        // physician-saved text edits.
+        {
+            use reply_draft::Column as D;
+            let rows = reply_draft::Entity::find()
+                .order_by_asc(D::Practice)
+                .order_by_asc(D::Physician)
+                .order_by_asc(D::Workspace)
+                .order_by_asc(D::Reply)
+                .all(&self.db)
+                .await?;
+            for row in rows {
+                let practice = row.practice.clone();
+                let physician = row.physician.clone();
+                let workspace = row.workspace.clone();
+                let reply = row.reply.clone();
+                let draft_revision = row.revision;
+                let draft = control::draft(row, Vec::new())?;
+                if let Some(accepted) = draft.accepted {
+                    out.push(EvaluatedReplyFeedback {
+                        practice: practice.clone(),
+                        physician: physician.clone(),
+                        workspace: workspace.clone(),
+                        reply: reply.clone(),
+                        detail: ReplyFeedbackDetail::TellCodaWhatToChange {
+                            revision_key: accepted.input.key,
+                            instruction: accepted.input.instruction,
+                            base_text: draft.base_text,
+                            current_text: Some(draft.text.clone()),
+                        },
+                    });
+                }
+                if draft_revision > 1 || draft.restore_text.is_some() {
+                    out.push(EvaluatedReplyFeedback {
+                        practice,
+                        physician,
+                        workspace,
+                        reply,
+                        detail: ReplyFeedbackDetail::PhysicianDraftEdit {
+                            draft_revision,
+                            edited_text: draft.text,
+                            restore_text: draft.restore_text,
+                        },
+                    });
+                }
+            }
+        }
+
+        // 3. Copied replies paired with Coda's proposal text.
+        {
+            use reply_tables::reply_copy::{self, Column as C};
+            use reply_tables::reply_proposal;
+            let copies = reply_copy::Entity::find()
+                .order_by_asc(C::Practice)
+                .order_by_asc(C::Physician)
+                .order_by_asc(C::Workspace)
+                .order_by_asc(C::ConversationId)
+                .order_by_asc(C::CopiedAt)
+                .order_by_asc(C::CopyId)
+                .all(&self.db)
+                .await?;
+            if !copies.is_empty() {
+                let proposals = reply_proposal::Entity::find()
+                    .order_by_asc(reply_proposal::Column::Version)
+                    .all(&self.db)
+                    .await?;
+                let mut proposal_by_version: BTreeMap<(String, String, i64), String> =
+                    BTreeMap::new();
+                let mut latest_proposal_for_reply: BTreeMap<(String, String, i64), (u64, String)> =
+                    BTreeMap::new();
+                for proposal in proposals {
+                    let version_u64 = u64::try_from(proposal.version)
+                        .map_err(conversion_error("reply proposal version", "u64"))?;
+                    latest_proposal_for_reply.insert(
+                        (
+                            proposal.practice.clone(),
+                            proposal.conversation_id.clone(),
+                            proposal.reply_id,
+                        ),
+                        (version_u64, proposal.text.clone()),
+                    );
+                    proposal_by_version.insert(
+                        (
+                            proposal.practice,
+                            proposal.conversation_id,
+                            proposal.version,
+                        ),
+                        proposal.text,
+                    );
+                }
+                for copy in copies {
+                    let source: CopiedReplySource = serde_json::from_value(copy.copied_source)
+                        .map_err(conversion_error("reply copy source", "CopiedReplySource"))?;
+                    let (proposal_version, proposal_text) = match source {
+                        CopiedReplySource::CodaProposal { version, .. } => {
+                            let text = i64::try_from(version).ok().and_then(|v| {
+                                proposal_by_version
+                                    .get(&(copy.practice.clone(), copy.conversation_id.clone(), v))
+                                    .cloned()
+                            });
+                            (Some(version), text)
+                        }
+                        CopiedReplySource::PhysicianDraft { .. } => latest_proposal_for_reply
+                            .get(&(
+                                copy.practice.clone(),
+                                copy.conversation_id.clone(),
+                                copy.reply_id,
+                            ))
+                            .map(|(v, text)| (Some(*v), Some(text.clone())))
+                            .unwrap_or((None, None)),
+                    };
+                    let edited_from_proposal = proposal_text
+                        .as_deref()
+                        .is_some_and(|proposal| proposal != copy.copied_text);
+                    let reply_id = u64::try_from(copy.reply_id)
+                        .map_err(conversion_error("reply copy reply_id", "u64"))?;
+                    out.push(EvaluatedReplyFeedback {
+                        practice: copy.practice,
+                        physician: copy.physician,
+                        workspace: copy.workspace,
+                        reply: copy.conversation_id,
+                        detail: ReplyFeedbackDetail::CopiedReply {
+                            copy_id: copy.copy_id,
+                            reply_id,
+                            proposal_version,
+                            proposal_text,
+                            copied_text: copy.copied_text,
+                            edited_from_proposal,
+                            copied_at: copy.copied_at,
+                        },
+                    });
+                }
+            }
+        }
+
+        Ok(out)
+    }
+}
+
+/// Specific physician reply feedback payload exported for evaluation (`K1.3`).
+#[derive(Clone, Debug, PartialEq, Eq, Serialize)]
+#[serde(tag = "reply_feedback_kind", rename_all = "snake_case")]
+pub enum ReplyFeedbackDetail {
+    /// A physician's `"Tell Coda what to change"` revision request.
+    TellCodaWhatToChange {
+        /// The revision command key.
+        revision_key: String,
+        /// The physician's instruction to Coda.
+        instruction: String,
+        /// The draft text before the revision ran.
+        base_text: String,
+        /// Current text of the draft, when exported from the live draft row.
+        current_text: Option<String>,
+    },
+    /// A physician's direct text edit saved on a reply draft.
+    PhysicianDraftEdit {
+        /// Saved revision counter on the draft.
+        draft_revision: i64,
+        /// Physician's edited text.
+        edited_text: String,
+        /// Prior text captured before a revision, if any.
+        restore_text: Option<String>,
+    },
+    /// A physician's copied reply text compared against Coda's proposal.
+    CopiedReply {
+        /// Durable copy identifier.
+        copy_id: String,
+        /// Reply identity copied.
+        reply_id: u64,
+        /// Proposal version the copied text started from, if any.
+        proposal_version: Option<u64>,
+        /// Coda's proposal text for that version, when retained.
+        proposal_text: Option<String>,
+        /// Exact text the physician copied.
+        copied_text: String,
+        /// Whether the copied text differs from Coda's proposal.
+        edited_from_proposal: bool,
+        /// Database-clock Unix second when copied.
+        copied_at: i64,
+    },
+}
+
+/// One reply feedback row returned by [`Store::reply_draft_feedback_for_evaluation`].
+#[derive(Clone, Debug, PartialEq, Eq, Serialize)]
+pub struct EvaluatedReplyFeedback {
+    /// Practice identifier.
+    pub practice: String,
+    /// Physician identifier.
+    pub physician: String,
+    /// Patient workspace identifier.
+    pub workspace: String,
+    /// Reply or conversation identifier.
+    pub reply: String,
+    /// Specific reply feedback detail.
+    #[serde(flatten)]
+    pub detail: ReplyFeedbackDetail,
 }

@@ -198,6 +198,7 @@ async fn print_feedback(url: &str) -> Result<(), FeedbackReadError> {
     for row in rows {
         let details = row.feedback.details.as_ref();
         let line = serde_json::json!({
+            "kind": "response_feedback",
             "practice": row.scope.practice,
             "physician": row.scope.physician,
             "workspace": row.scope.workspace,
@@ -254,6 +255,21 @@ async fn print_feedback(url: &str) -> Result<(), FeedbackReadError> {
             "copied_texts": row.copied_texts,
             "updated_at": row.updated_at,
         });
+        writeln!(out, "{line}").map_err(FeedbackReadError::Print)?;
+    }
+    let reply_draft_rows = store
+        .reply_draft_feedback_for_evaluation()
+        .await
+        .map_err(FeedbackReadError::Read)?;
+    for row in reply_draft_rows {
+        let mut line = serde_json::to_value(&row).map_err(|err| {
+            FeedbackReadError::Print(std::io::Error::other(format!(
+                "serialize reply draft feedback: {err}"
+            )))
+        })?;
+        if let Some(obj) = line.as_object_mut() {
+            obj.insert("kind".to_owned(), serde_json::json!("reply_draft_feedback"));
+        }
         writeln!(out, "{line}").map_err(FeedbackReadError::Print)?;
     }
     Ok(())

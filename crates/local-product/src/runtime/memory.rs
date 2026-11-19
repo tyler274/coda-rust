@@ -513,6 +513,47 @@ pub struct Hit {
     pub text: String,
 }
 
+/// One physician-facing patient memory document (`summary.md` or `direction.md`).
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct PhysicianMemoryDocument {
+    /// The current version number.
+    pub version: u64,
+    /// The UTC day this version was saved.
+    pub saved: Day,
+    /// The document's markdown text.
+    pub markdown: String,
+}
+
+/// The physician-facing memory view (`Memory.Code.20`): only the summary and
+/// the direction. Subject pages, `person.md`, and the dated log are Coda's
+/// working files and are structurally excluded from this type.
+#[derive(Clone, Debug, Default, PartialEq, Eq)]
+pub struct PhysicianMemory {
+    /// Current `summary.md`, when present.
+    pub summary: Option<PhysicianMemoryDocument>,
+    /// Current `direction.md`, when present.
+    pub direction: Option<PhysicianMemoryDocument>,
+}
+
+/// Which physician-facing memory document a physician edited (`Memory.Code.22`).
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum PhysicianMemoryTarget {
+    /// `summary.md`.
+    Summary,
+    /// `direction.md`.
+    Direction,
+}
+
+impl PhysicianMemoryTarget {
+    /// The memory file path this target refers to.
+    pub const fn path(self) -> MemoryPath {
+        match self {
+            Self::Summary => MemoryPath::Summary,
+            Self::Direction => MemoryPath::Direction,
+        }
+    }
+}
+
 /// One saved version of a versioned file.
 struct Version {
     number: u64,
@@ -1149,6 +1190,70 @@ impl Store {
             version: chosen.number,
             markdown: chosen.text.as_str().to_owned(),
         })
+    }
+
+    /// Reads the physician-facing memory view (`Memory.Code.20`): only
+    /// `summary.md` and `direction.md`. Pages, `person.md`, and log files are
+    /// Coda's working files and are never returned here.
+    pub async fn read_physician_memory(&self, key: &PatientKey) -> Result<PhysicianMemory, DbErr> {
+        let tx = self.snapshot().await?;
+        let summary = latest_row(&tx, key, &MemoryPath::Summary)
+            .await?
+            .map(stored_version)
+            .transpose()?
+            .filter(|v| v.text.exists())
+            .map(|v| PhysicianMemoryDocument {
+                version: v.number,
+                saved: v.saved,
+                markdown: v.text.as_str().to_owned(),
+            });
+        let direction = latest_row(&tx, key, &MemoryPath::Direction)
+            .await?
+            .map(stored_version)
+            .transpose()?
+            .filter(|v| v.text.exists())
+            .map(|v| PhysicianMemoryDocument {
+                version: v.number,
+                saved: v.saved,
+                markdown: v.text.as_str().to_owned(),
+            });
+        tx.commit().await?;
+        Ok(PhysicianMemory { summary, direction })
+    }
+
+    /// Saves a physician's own edit of `summary.md` or `direction.md` as a log
+    /// note in their exact words (`Memory.Code.22`). Never overwrites the
+    /// versioned file directly; patient rounds fold the note in.
+    pub async fn save_physician_memory_edit(
+        &self,
+        scope: &Scope,
+        target: PhysicianMemoryTarget,
+        words: &str,
+        command_id: &str,
+    ) -> Result<Note, MemoryError> {
+        let command_id = command_id.trim();
+        if command_id.is_empty() {
+            return Err(MemoryRefusal::NoWords.into());
+        }
+        let quote = OneLine::parse(words)?;
+        let trimmed = words.trim();
+        let target_path = target.path();
+        let edit_scope = Scope {
+            practice: scope.practice.clone(),
+            physician: scope.physician.clone(),
+            workspace: scope.workspace.clone(),
+            chat: format!("physician-memory-edit:{target_path}"),
+        };
+        let origin = NoteOrigin {
+            work: format!("physician-memory-edit:{command_id}"),
+            call: target_path.to_string(),
+            message: format!("physician-memory-edit:{command_id}"),
+        };
+        let draft = NoteDraft {
+            text: format!("Physician edit to {target_path}:\n{trimmed}"),
+            quote: Some(quote),
+        };
+        self.append_note(&edit_scope, &origin, &draft).await
     }
 
     /// The memory a conversation started with, as one developer message:

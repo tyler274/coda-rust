@@ -29,6 +29,11 @@ impl EditTool {
         (name == Self::NAME).then_some(Self)
     }
 
+    /// Whether `arguments` parse as a valid edit request.
+    pub(super) fn accepts_arguments(arguments: &Value) -> bool {
+        EditRequest::parse(arguments).is_ok()
+    }
+
     /// Runs one call of the tool for the patient, from its arguments to its
     /// outcome. Arguments the model can correct come back refused; a
     /// database failure stays an error.
