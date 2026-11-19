@@ -1,0 +1,268 @@
+{
+  "branch": "tyler-eng-313-4-site-matching-reply-suite",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC-MR-SITE-CLIPPY",
+      "label": "Physician-sample matching and reply Chromium suite clippy",
+      "kind": "run",
+      "revision": "0f6fe437d66c946479de32c91b59e6fded39a881",
+      "dirty": false,
+      "recorded": "2026-11-19T02:13:47+00:00",
+      "command": [
+        "cargo",
+        "clippy",
+        "--locked",
+        "-p",
+        "physician-sample",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "01-Physician-sample-matching-and-reply-Chromium-sui.log"
+      ],
+      "seconds": 3.6,
+      "exit": 0,
+      "ok": true,
+      "kept": {
+        "revision": "1319ad720115ca03f01e6fa2f04d48890b7604b7",
+        "reason": "Rebased onto final PR 91 (562055b56d); seam files preserved and full workspace/PG16/Chromium suites verified at PR 104 tip 59829dacb"
+      }
+    },
+    {
+      "id": 2,
+      "claim": "AC-MR-SITE-BOUNDARIES",
+      "label": "Product boundaries including shared_ui stylesheet checks",
+      "kind": "run",
+      "revision": "0f6fe437d66c946479de32c91b59e6fded39a881",
+      "dirty": false,
+      "recorded": "2026-11-19T02:13:51+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "boundaries",
+        "--lib"
+      ],
+      "expect": "test result: ok\\. 25 passed",
+      "expect_fail": false,
+      "files": [
+        "02-Product-boundaries-including-shared_ui-styleshee.log"
+      ],
+      "seconds": 1.9,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true,
+      "kept": {
+        "revision": "1319ad720115ca03f01e6fa2f04d48890b7604b7",
+        "reason": "Rebased onto final PR 91 (562055b56d); seam files preserved and full workspace/PG16/Chromium suites verified at PR 104 tip 59829dacb"
+      }
+    },
+    {
+      "id": 3,
+      "claim": "AC-MR-SITE-CHROMIUM",
+      "label": "Chromium matching screen and reply editor browser suite",
+      "kind": "run",
+      "revision": "0f6fe437d66c946479de32c91b59e6fded39a881",
+      "dirty": false,
+      "recorded": "2026-11-19T02:13:53+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "physician-sample",
+        "--test",
+        "site_matching_reply_followups",
+        "--",
+        "--ignored"
+      ],
+      "expect": "test result: ok\\. 2 passed",
+      "expect_fail": false,
+      "files": [
+        "03-Chromium-matching-screen-and-reply-editor-browse.log"
+      ],
+      "seconds": 100.0,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true,
+      "kept": {
+        "revision": "1319ad720115ca03f01e6fa2f04d48890b7604b7",
+        "reason": "Rebased onto final PR 91 (562055b56d); seam files preserved and full workspace/PG16/Chromium suites verified at PR 104 tip 59829dacb"
+      }
+    },
+    {
+      "id": 4,
+      "claim": "AC-MR-SITE-SCREENSHOT",
+      "label": "Matching and reply browser capture: 01-messages-to-match-desktop",
+      "kind": "screenshot",
+      "revision": "1319ad720115ca03f01e6fa2f04d48890b7604b7",
+      "dirty": false,
+      "recorded": "2026-11-19T03:52:35+00:00",
+      "files": [
+        "04-01-messages-to-match-desktop.png"
+      ],
+      "source": "target/verification/captures/matching-reply-followups/01-messages-to-match-desktop.png",
+      "ok": true
+    },
+    {
+      "id": 5,
+      "claim": "AC-MR-SITE-SCREENSHOT",
+      "label": "Matching and reply browser capture: 02-messages-to-match-phone",
+      "kind": "screenshot",
+      "revision": "1319ad720115ca03f01e6fa2f04d48890b7604b7",
+      "dirty": false,
+      "recorded": "2026-11-19T03:52:35+00:00",
+      "files": [
+        "05-02-messages-to-match-phone.png"
+      ],
+      "source": "target/verification/captures/matching-reply-followups/02-messages-to-match-phone.png",
+      "ok": true
+    },
+    {
+      "id": 6,
+      "claim": "AC-MR-SITE-SCREENSHOT",
+      "label": "Matching and reply browser capture: 03-filtered-messages-desktop",
+      "kind": "screenshot",
+      "revision": "1319ad720115ca03f01e6fa2f04d48890b7604b7",
+      "dirty": false,
+      "recorded": "2026-11-19T03:52:35+00:00",
+      "files": [
+        "06-03-filtered-messages-desktop.png"
+      ],
+      "source": "target/verification/captures/matching-reply-followups/03-filtered-messages-desktop.png",
+      "ok": true
+    },
+    {
+      "id": 7,
+      "claim": "AC-MR-SITE-SCREENSHOT",
+      "label": "Matching and reply browser capture: 04-reply-card-evidence-reader",
+      "kind": "screenshot",
+      "revision": "1319ad720115ca03f01e6fa2f04d48890b7604b7",
+      "dirty": false,
+      "recorded": "2026-11-19T03:52:35+00:00",
+      "files": [
+        "07-04-reply-card-evidence-reader.png"
+      ],
+      "source": "target/verification/captures/matching-reply-followups/04-reply-card-evidence-reader.png",
+      "ok": true
+    },
+    {
+      "id": 8,
+      "claim": "AC-MR-SITE-SCREENSHOT",
+      "label": "Matching and reply browser capture: 05-reply-coda-revision-and-restore",
+      "kind": "screenshot",
+      "revision": "1319ad720115ca03f01e6fa2f04d48890b7604b7",
+      "dirty": false,
+      "recorded": "2026-11-19T03:52:35+00:00",
+      "files": [
+        "08-05-reply-coda-revision-and-restore.png"
+      ],
+      "source": "target/verification/captures/matching-reply-followups/05-reply-coda-revision-and-restore.png",
+      "ok": true
+    },
+    {
+      "id": 9,
+      "claim": "AC-MR-SITE-SCREENSHOT",
+      "label": "Matching and reply browser capture: 06-two-physician-copy-attribution",
+      "kind": "screenshot",
+      "revision": "1319ad720115ca03f01e6fa2f04d48890b7604b7",
+      "dirty": false,
+      "recorded": "2026-11-19T03:52:35+00:00",
+      "files": [
+        "09-06-two-physician-copy-attribution.png"
+      ],
+      "source": "target/verification/captures/matching-reply-followups/06-two-physician-copy-attribution.png",
+      "ok": true
+    },
+    {
+      "id": 10,
+      "claim": "AC-MR-SITE-SCREENSHOT",
+      "label": "Matching and reply browser capture: 07-reply-coda-update-offer",
+      "kind": "screenshot",
+      "revision": "1319ad720115ca03f01e6fa2f04d48890b7604b7",
+      "dirty": false,
+      "recorded": "2026-11-19T03:52:35+00:00",
+      "files": [
+        "10-07-reply-coda-update-offer.png"
+      ],
+      "source": "target/verification/captures/matching-reply-followups/07-reply-coda-update-offer.png",
+      "ok": true
+    },
+    {
+      "id": 11,
+      "claim": "AC-MR-SITE-SCREENSHOT",
+      "label": "Matching and reply browser capture: 08-reply-withheld-after-move",
+      "kind": "screenshot",
+      "revision": "1319ad720115ca03f01e6fa2f04d48890b7604b7",
+      "dirty": false,
+      "recorded": "2026-11-19T03:52:36+00:00",
+      "files": [
+        "11-08-reply-withheld-after-move.png"
+      ],
+      "source": "target/verification/captures/matching-reply-followups/08-reply-withheld-after-move.png",
+      "ok": true
+    },
+    {
+      "id": 12,
+      "claim": "AC-MR-SITE-SCREENSHOT",
+      "label": "Matching and reply browser capture: 09-reply-disconnected-done",
+      "kind": "screenshot",
+      "revision": "1319ad720115ca03f01e6fa2f04d48890b7604b7",
+      "dirty": false,
+      "recorded": "2026-11-19T03:52:36+00:00",
+      "files": [
+        "12-09-reply-disconnected-done.png"
+      ],
+      "source": "target/verification/captures/matching-reply-followups/09-reply-disconnected-done.png",
+      "ok": true
+    },
+    {
+      "id": 13,
+      "claim": "AC-MR-SITE-SCREENSHOT",
+      "label": "Matching and reply browser capture: 10-patient-picker-lookup-failure",
+      "kind": "screenshot",
+      "revision": "1319ad720115ca03f01e6fa2f04d48890b7604b7",
+      "dirty": false,
+      "recorded": "2026-11-19T03:52:36+00:00",
+      "files": [
+        "13-10-patient-picker-lookup-failure.png"
+      ],
+      "source": "target/verification/captures/matching-reply-followups/10-patient-picker-lookup-failure.png",
+      "ok": true
+    },
+    {
+      "id": 14,
+      "claim": "AC-MR-SITE-SCREENSHOT",
+      "label": "Matching and reply browser capture: 11-reply-command-failure-preserves-draft",
+      "kind": "screenshot",
+      "revision": "1319ad720115ca03f01e6fa2f04d48890b7604b7",
+      "dirty": false,
+      "recorded": "2026-11-19T03:52:36+00:00",
+      "files": [
+        "14-11-reply-command-failure-preserves-draft.png"
+      ],
+      "source": "target/verification/captures/matching-reply-followups/11-reply-command-failure-preserves-draft.png",
+      "ok": true
+    },
+    {
+      "id": 15,
+      "claim": "AC-MR-SITE-SCREENSHOT",
+      "label": "Matching and reply browser capture: 12-lost-patient-access-closed",
+      "kind": "screenshot",
+      "revision": "1319ad720115ca03f01e6fa2f04d48890b7604b7",
+      "dirty": false,
+      "recorded": "2026-11-19T03:52:36+00:00",
+      "files": [
+        "15-12-lost-patient-access-closed.png"
+      ],
+      "source": "target/verification/captures/matching-reply-followups/12-lost-patient-access-closed.png",
+      "ok": true
+    }
+  ]
+}
