@@ -1,0 +1,56 @@
+{
+  "branch": "tyler-eng-450-find-patient-empty-search-paging",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC1",
+      "label": "Browser Find patient 25-row alphabetical paging, failure recovery, and practice isolation",
+      "kind": "run",
+      "revision": "765cb3ab5a4413ba78dfb96a7a2c6b07e0fe56df",
+      "dirty": false,
+      "recorded": "2026-11-19T00:52:34+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "physician-sample",
+        "--test",
+        "site_roger_qa_tail",
+        "--",
+        "--ignored",
+        "find_patient_lists_paged_roster_recovers_failures_and_isolates_practices"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "01-Browser-Find-patient-25-row-alphabetical-paging-.log"
+      ],
+      "seconds": 92.1,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 2,
+      "claim": "AC2",
+      "label": "physician-app, physician-demo-db, physician-client, physician-wire, and physician-sample unit tests plus wasm32 clippy",
+      "kind": "run",
+      "revision": "765cb3ab5a4413ba78dfb96a7a2c6b07e0fe56df",
+      "dirty": false,
+      "recorded": "2026-11-19T00:54:06+00:00",
+      "command": [
+        "bash",
+        "-lc",
+        "cargo clippy -p physician-app -p physician-demo-db --target wasm32-unknown-unknown -- -D warnings && cargo test --locked -p physician-demo-db -p physician-client -p physician-wire -p physician-app --lib && cargo test --locked -p physician-sample --lib"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "02-physician-app-physician-demo-db-physician-client.log"
+      ],
+      "seconds": 73.1,
+      "exit": 0,
+      "ok": true
+    }
+  ]
+}
