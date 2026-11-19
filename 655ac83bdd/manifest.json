@@ -1,0 +1,93 @@
+{
+  "branch": "feat-fhir-ocr-team-inspector-and-p1-tests",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "Scope_Now_OcrAttachments",
+      "label": "FHIR inline PDF/PNG/JPEG OCR ingestion, search, [D{N}] citations, and Postgres tests",
+      "kind": "run",
+      "revision": "655ac83bdd3e2881e3afc9642e455a9ddbd10cb9",
+      "dirty": false,
+      "recorded": "2026-11-19T22:22:07+00:00",
+      "command": [
+        "bash",
+        "-lc",
+        "cargo test --locked -p local-product --test attachments && cargo test --locked -p local-product --test attachments -- --ignored && cargo test --locked -p physician-sample --test fhir_table_records"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "01-FHIR-inline-PDF-PNG-JPEG-OCR-ingestion-search-D-.log"
+      ],
+      "seconds": 487.2,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 2,
+      "claim": "Scope_Now_LiveStatus",
+      "label": "Shared step_projection, reviews mapper, rounds inspect, and migrate inspect-runs",
+      "kind": "run",
+      "revision": "655ac83bdd3e2881e3afc9642e455a9ddbd10cb9",
+      "dirty": false,
+      "recorded": "2026-11-19T22:30:15+00:00",
+      "command": [
+        "bash",
+        "-lc",
+        "cargo test --locked -p local-product --lib step_projection && cargo test --locked -p local-product --lib physician_chat::tests && cargo test --locked -p physician-sample --lib reviews && cargo test --locked -p physician-sample --test rounds_command"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "02-Shared-step_projection-reviews-mapper-rounds-ins.log"
+      ],
+      "seconds": 167.9,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 3,
+      "claim": "P1_Evidence_And_Code21",
+      "label": "P1 prompt-injection evidence fence + inspector isolation and Citations Code 21",
+      "kind": "run",
+      "revision": "655ac83bdd3e2881e3afc9642e455a9ddbd10cb9",
+      "dirty": false,
+      "recorded": "2026-11-19T22:33:03+00:00",
+      "command": [
+        "bash",
+        "-lc",
+        "cargo test --locked -p local-product --test physician_chat_recipe -- --ignored prompt_injection_inside_retrieved_ehr_record_stays_evidence_and_triggers_no_override_calls && cargo test --locked -p local-product --test reply_proposals -- --ignored citations_code21_basis_and_limitations_never_appears_in_draft_text_or_copied_reply"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "03-P1-prompt-injection-evidence-fence-inspector-iso.log"
+      ],
+      "seconds": 47.1,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 4,
+      "claim": "Regression_And_Gates",
+      "label": "Unsupported attachment refusal regression, boundaries, fmt, and host+wasm32 clippy",
+      "kind": "run",
+      "revision": "655ac83bdd3e2881e3afc9642e455a9ddbd10cb9",
+      "dirty": false,
+      "recorded": "2026-11-19T22:33:50+00:00",
+      "command": [
+        "bash",
+        "-lc",
+        "cargo test --locked -p physician-sample --test synthetic_staging_control && cargo test --locked -p boundaries && bash .githooks/pre-commit"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "04-Unsupported-attachment-refusal-regression-bounda.log"
+      ],
+      "seconds": 173.5,
+      "exit": 0,
+      "ok": true
+    }
+  ]
+}
