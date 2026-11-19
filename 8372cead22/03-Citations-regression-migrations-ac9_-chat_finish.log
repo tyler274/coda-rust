@@ -1,4 +1,4 @@
-    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.38s
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 4.44s
      Running unittests src/lib.rs (/tmp/coda-target-integrator/debug/deps/local_product-75b90368433a4db7)
 
 running 6 tests
@@ -9,28 +9,42 @@ test runtime::tests::migration_tests::physician_newest_twenty_five_conversations
 test runtime::tests::migration_tests::sending_message_and_publishing_reply_both_advance_activity_column_and_order ... ok
 test runtime::tests::migration_tests::source_pull_missing_candidates_migration_refuses_down_rollback ... ok
 
-test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 205 filtered out; finished in 4.58s
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 205 filtered out; finished in 5.95s
 
-    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.84s
-     Running tests/migrations_postgres.rs (/tmp/coda-target-integrator/debug/deps/migrations_postgres-d1bf81199d2386a1)
+   Compiling agent-skills v0.1.0 (/tmp/pr-b3-rebase2/crates/agent-skills)
+   Compiling patient-work v0.1.0 (/tmp/pr-b3-rebase2/crates/patient-work)
+   Compiling physician-wire v0.1.0 (/tmp/pr-b3-rebase2/crates/physician-wire)
+   Compiling public-site v0.1.0 (/tmp/pr-b3-rebase2/crates/public-site)
+   Compiling physician-bus v0.1.0 (/tmp/pr-b3-rebase2/crates/physician-bus)
+   Compiling spruce v0.1.0 (/tmp/pr-b3-rebase2/crates/spruce)
+   Compiling coda-http v0.1.0 (/tmp/pr-b3-rebase2/crates/http)
+   Compiling gmail v0.1.0 (/tmp/pr-b3-rebase2/crates/gmail)
+   Compiling telemetry v0.1.0 (/tmp/pr-b3-rebase2/crates/telemetry)
+   Compiling physician-auth v0.1.0 (/tmp/pr-b3-rebase2/crates/physician-auth)
+   Compiling front-door v0.1.0 (/tmp/pr-b3-rebase2/crates/front-door)
+   Compiling harness v0.1.0 (/tmp/pr-b3-rebase2/crates/harness)
+   Compiling local-product v0.1.0 (/tmp/pr-b3-rebase2/crates/local-product)
+   Compiling physician-sample v0.1.0 (/tmp/pr-b3-rebase2/crates/physician-sample)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1m 45s
+     Running tests/migrations_postgres.rs (/tmp/coda-target-integrator/debug/deps/migrations_postgres-d92b4e6bcd4e2723)
 
 running 1 test
 test fresh_chains_and_shared_database_are_idempotent ... ok
 
-test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.38s
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.50s
 
-    Blocking waiting for file lock on package cache
-    Blocking waiting for file lock on package cache
-    Blocking waiting for file lock on package cache
-    Finished `test` profile [unoptimized + debuginfo] target(s) in 5.85s
-     Running tests/synthetic_staging_control.rs (/tmp/coda-target-integrator/debug/deps/synthetic_staging_control-f39a71766414c140)
+   Compiling physician-sample v0.1.0 (/tmp/pr-b3-rebase2/crates/physician-sample)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 31.69s
+     Running tests/synthetic_staging_control.rs (/tmp/coda-target-integrator/debug/deps/synthetic_staging_control-e89096a7acc91d7f)
 
 running 1 test
 test ac9_reset_covers_every_physician_runtime_table_in_postgres ... ok
 
-test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 5 filtered out; finished in 0.40s
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 5 filtered out; finished in 0.32s
 
-    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.32s
+    Blocking waiting for file lock on package cache
+   Compiling local-product v0.1.0 (/tmp/pr-b3-rebase2/crates/local-product)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 23.26s
      Running tests/chat_finish.rs (/tmp/coda-target-integrator/debug/deps/chat_finish-6f1cbc4fa0955d8c)
 
 running 26 tests
@@ -61,12 +75,10 @@ test spacing_and_invisible_characters_never_count_in_a_quote ... ok
 test stop_before_an_accepted_finish_saves_nothing ... ok
 test the_third_finish_saves_valid_marks_and_drops_the_bad_one ... ok
 
-test result: ok. 26 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 16.10s
+test result: ok. 26 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 15.60s
 
-    Blocking waiting for file lock on package cache
-    Blocking waiting for file lock on package cache
-    Blocking waiting for file lock on package cache
-    Finished `test` profile [unoptimized + debuginfo] target(s) in 3.25s
+   Compiling local-product v0.1.0 (/tmp/pr-b3-rebase2/crates/local-product)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 21.16s
      Running tests/today_updates_postgres.rs (/tmp/coda-target-integrator/debug/deps/today_updates_postgres-afe25c4ee1ac96f1)
 
 running 5 tests
@@ -76,9 +88,10 @@ test ac3_physician_sees_only_authorized_patients_including_after_access_changes 
 test ac4_majority_source_failure_two_of_three_reports_practice_outage ... ok
 test ac4_partial_producer_failure_practice_source_outage_collapse_and_empty_completeness_rule ... ok
 
-test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.54s
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.36s
 
-    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.37s
+   Compiling local-product v0.1.0 (/tmp/pr-b3-rebase2/crates/local-product)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 22.39s
      Running tests/patient_reviews_postgres.rs (/tmp/coda-target-integrator/debug/deps/patient_reviews_postgres-bccf532642f854b3)
 
 running 12 tests
@@ -95,35 +108,36 @@ test real_tool_operations_persist_across_restart_and_quiet_saves_nothing_to_do .
 test saved_review_records_metadata_keeps_unknown_usage_unknown_and_feeds_later_review_reads ... ok
 test stop_holds_across_restart_resume_and_try_again_refresh_evidence_and_new_input_access_loss_or_correction_block_stale_completion ... ok
 
-test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 18.12s
+test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 18.46s
 
-    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.21s
+   Compiling boundaries v0.1.0 (/tmp/pr-b3-rebase2/crates/boundaries)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 4.34s
      Running unittests src/lib.rs (/tmp/coda-target-integrator/debug/deps/boundaries-94cce9dbaff1c954)
 
 running 25 tests
+test shared_ui::every_table_entry_has_one_row_and_a_reason ... ok
+test shared_ui::a_count_reaching_zero_says_to_remove_the_entry ... ok
 test shared_ui::a_matching_count_passes ... ok
 test shared_ui::a_count_going_down_says_to_lower_the_number ... ok
-test shared_ui::a_count_reaching_zero_says_to_remove_the_entry ... ok
 test shared_ui::a_new_file_counts_as_going_up_from_zero ... ok
-test shared_ui::a_whole_test_file_counts_nothing ... ok
 test shared_ui::a_count_going_up_says_to_use_the_shared_component_or_add_an_exception ... ok
 test tests::shipping_clients_stay_until_the_rust_journeys_match ... ok
 test shared_ui::counts_rsx_held_in_other_macros_and_nested_rsx ... ok
 test tests::duet_screens_do_not_read_device_health_directly ... ok
 test shared_ui::counts_css_rules_naming_control_elements ... ok
-test tests::apps_do_not_import_each_others_clinical_crates ... ok
+test shared_ui::a_whole_test_file_counts_nothing ... ok
 test shared_ui::counts_css_rules_naming_library_classes ... ok
-test shared_ui::counts_card_markup_by_class_family_once_per_element ... ok
+test tests::apps_do_not_import_each_others_clinical_crates ... ok
 test shared_ui::counts_card_classes_set_apart_by_escaped_whitespace ... ok
+test shared_ui::counts_card_markup_by_class_family_once_per_element ... ok
 test shared_ui::ignores_comments_strings_and_lookalikes ... ok
-test shared_ui::every_table_entry_has_one_row_and_a_reason ... ok
 test shared_ui::counts_each_raw_control_inside_rsx ... ok
 test tests::the_clinical_library_is_product_neutral ... ok
 test tests::gmail_and_spruce_are_product_neutral ... ok
 test shared_ui::ignores_test_code_but_not_code_kept_out_of_tests ... ok
+test tests::shared_harness_is_product_neutral_and_has_no_product_store ... ok
 test shared_ui::the_check_reads_the_real_library ... ok
 test tests::every_ui_behaviour_is_run_as_its_kind ... ok
-test tests::shared_harness_is_product_neutral_and_has_no_product_store ... ok
 test tests::the_ui_library_runs_its_browser_behaviour_without_eval ... ok
 test shared_ui::the_apps_match_the_shared_ui_table ... ok
 
