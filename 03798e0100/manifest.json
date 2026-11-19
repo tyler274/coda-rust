@@ -1,0 +1,34 @@
+{
+  "branch": "tyler-eng-441-2-mid-answer-arrivals-suite",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC1",
+      "label": "PostgreSQL mid-answer added, corrected, and withdrawn chart arrivals suite",
+      "kind": "run",
+      "revision": "03798e010062aaddc20efbf34aea432ef3ea4b98",
+      "dirty": false,
+      "recorded": "2026-11-19T00:58:47+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "local-product",
+        "--test",
+        "physician_chat_mid_answer_arrivals",
+        "--",
+        "--ignored",
+        "--test-threads=1"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "01-PostgreSQL-mid-answer-added-corrected-and-withdr.log"
+      ],
+      "seconds": 20.0,
+      "exit": 0,
+      "ok": true
+    }
+  ]
+}
