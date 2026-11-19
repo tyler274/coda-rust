@@ -1,0 +1,17 @@
+   Compiling patient-work v0.1.0 (<workspace>)
+   Compiling local-product v0.1.0 (<workspace>)
+   Compiling physician-sample v0.1.0 (<workspace>)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 40.79s
+     Running unittests src/lib.rs (target/debug/deps/physician_sample-c915132dc198a603)
+
+running 7 tests
+test live_tests::chat_titles_are_one_line_and_cut_at_a_word ... ok
+test hosting::tests::readiness_fails_closed_without_live_stores ... ok
+test live_tests::a_due_beat_goes_out_before_changes_that_are_ready ... ok
+test live_tests::the_change_stream_keeps_alive_on_a_fixed_beat_while_changes_pass_and_ends_with_them ... ok
+test patients::tests::source_delivery_never_reports_usable_without_saved_pull_and_keeps_last_good_time ... ok
+test live::tests::snapshot_body_clears_steps_and_syncs_redacted_text_for_withheld_work ... ok
+test live_tests::a_signed_in_reader_hears_the_beat_while_only_changes_it_may_not_see_pass ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 92 filtered out; finished in 0.02s
+

@@ -1,0 +1,157 @@
+{
+  "branch": "tyler-eng-9-5-site-link-correction-suite",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC1",
+      "label": "Physician sample server live snapshot redaction unit tests",
+      "kind": "run",
+      "revision": "9fc333d3b6b876b016e0d318982d6d0e3f6e68c0",
+      "dirty": false,
+      "recorded": "2026-11-18T23:53:54+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-sample",
+        "--lib",
+        "live"
+      ],
+      "expect": "test result: ok\\. [1-9][0-9]* passed; 0 failed",
+      "expect_fail": false,
+      "files": [
+        "01-Physician-sample-server-live-snapshot-redaction-.log"
+      ],
+      "seconds": 41.1,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true,
+      "kept": {
+        "revision": "88f29d17b74bdcb4ae10c0513793af517de268fc",
+        "reason": "Rebased cleanly onto patched upstream PR 81; the only downstream adjustment in PR 82..91 adds the PHYSICIAN_TEST_DATABASE_URL fallback in link_correction_postgres.rs (PR 84)."
+      }
+    },
+    {
+      "id": 2,
+      "claim": "AC2",
+      "label": "Chromium end-to-end wrong-patient link correction, withholding, undo, and access boundaries",
+      "kind": "run",
+      "revision": "9fc333d3b6b876b016e0d318982d6d0e3f6e68c0",
+      "dirty": false,
+      "recorded": "2026-11-18T23:54:35+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-sample",
+        "--test",
+        "site_link_correction",
+        "--",
+        "--ignored"
+      ],
+      "expect": "test result: ok\\. [1-9][0-9]* passed; 0 failed",
+      "expect_fail": false,
+      "files": [
+        "02-Chromium-end-to-end-wrong-patient-link-correctio.log"
+      ],
+      "seconds": 46.5,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true,
+      "kept": {
+        "revision": "88f29d17b74bdcb4ae10c0513793af517de268fc",
+        "reason": "Rebased cleanly onto patched upstream PR 81; the only downstream adjustment in PR 82..91 adds the PHYSICIAN_TEST_DATABASE_URL fallback in link_correction_postgres.rs (PR 84)."
+      }
+    },
+    {
+      "id": 3,
+      "claim": "AC2",
+      "label": "Chromium link correction proof: 01 desktop withheld open detail and citation",
+      "kind": "screenshot",
+      "revision": "9fc333d3b6b876b016e0d318982d6d0e3f6e68c0",
+      "dirty": false,
+      "recorded": "2026-11-18T23:56:02+00:00",
+      "files": [
+        "03-01-desktop-withheld-open-detail-and-citation.png"
+      ],
+      "source": "target/verification/shots/pr86/01-desktop-withheld-open-detail-and-citation.png",
+      "ok": true,
+      "kept": {
+        "revision": "88f29d17b74bdcb4ae10c0513793af517de268fc",
+        "reason": "Rebased cleanly onto patched upstream PR 81; the only downstream adjustment in PR 82..91 adds the PHYSICIAN_TEST_DATABASE_URL fallback in link_correction_postgres.rs (PR 84)."
+      }
+    },
+    {
+      "id": 4,
+      "claim": "AC2",
+      "label": "Chromium link correction proof: 02 desktop past work unavailable",
+      "kind": "screenshot",
+      "revision": "9fc333d3b6b876b016e0d318982d6d0e3f6e68c0",
+      "dirty": false,
+      "recorded": "2026-11-18T23:56:02+00:00",
+      "files": [
+        "04-02-desktop-past-work-unavailable.png"
+      ],
+      "source": "target/verification/shots/pr86/02-desktop-past-work-unavailable.png",
+      "ok": true,
+      "kept": {
+        "revision": "88f29d17b74bdcb4ae10c0513793af517de268fc",
+        "reason": "Rebased cleanly onto patched upstream PR 81; the only downstream adjustment in PR 82..91 adds the PHYSICIAN_TEST_DATABASE_URL fallback in link_correction_postgres.rs (PR 84)."
+      }
+    },
+    {
+      "id": 5,
+      "claim": "AC2",
+      "label": "Chromium link correction proof: 03 desktop draft detail unavailable",
+      "kind": "screenshot",
+      "revision": "9fc333d3b6b876b016e0d318982d6d0e3f6e68c0",
+      "dirty": false,
+      "recorded": "2026-11-18T23:56:02+00:00",
+      "files": [
+        "05-03-desktop-draft-detail-unavailable.png"
+      ],
+      "source": "target/verification/shots/pr86/03-desktop-draft-detail-unavailable.png",
+      "ok": true,
+      "kept": {
+        "revision": "88f29d17b74bdcb4ae10c0513793af517de268fc",
+        "reason": "Rebased cleanly onto patched upstream PR 81; the only downstream adjustment in PR 82..91 adds the PHYSICIAN_TEST_DATABASE_URL fallback in link_correction_postgres.rs (PR 84)."
+      }
+    },
+    {
+      "id": 6,
+      "claim": "AC2",
+      "label": "Chromium link correction proof: 04 desktop unfinished removal unavailable",
+      "kind": "screenshot",
+      "revision": "9fc333d3b6b876b016e0d318982d6d0e3f6e68c0",
+      "dirty": false,
+      "recorded": "2026-11-18T23:56:02+00:00",
+      "files": [
+        "06-04-desktop-unfinished-removal-unavailable.png"
+      ],
+      "source": "target/verification/shots/pr86/04-desktop-unfinished-removal-unavailable.png",
+      "ok": true,
+      "kept": {
+        "revision": "88f29d17b74bdcb4ae10c0513793af517de268fc",
+        "reason": "Rebased cleanly onto patched upstream PR 81; the only downstream adjustment in PR 82..91 adds the PHYSICIAN_TEST_DATABASE_URL fallback in link_correction_postgres.rs (PR 84)."
+      }
+    },
+    {
+      "id": 7,
+      "claim": "AC2",
+      "label": "Chromium link correction proof: 05 mobile settled unavailable",
+      "kind": "screenshot",
+      "revision": "9fc333d3b6b876b016e0d318982d6d0e3f6e68c0",
+      "dirty": false,
+      "recorded": "2026-11-18T23:56:02+00:00",
+      "files": [
+        "07-05-mobile-settled-unavailable.png"
+      ],
+      "source": "target/verification/shots/pr86/05-mobile-settled-unavailable.png",
+      "ok": true,
+      "kept": {
+        "revision": "88f29d17b74bdcb4ae10c0513793af517de268fc",
+        "reason": "Rebased cleanly onto patched upstream PR 81; the only downstream adjustment in PR 82..91 adds the PHYSICIAN_TEST_DATABASE_URL fallback in link_correction_postgres.rs (PR 84)."
+      }
+    }
+  ]
+}
