@@ -9,13 +9,23 @@
 //! unmatched messages wait for physician confirmation without reading any
 //! patient's clinical chart and never enter patient reviews until linked.
 
+use super::dispatch::ReviewReceiver;
+use super::entities::{schedule_patient_link, source_pull};
 use super::jobs::{PracticeAccessError, PracticeJobError};
+use super::receipt::{self, Receipt};
 use super::sources::Observation;
+use super::{Store, conversion_error, error};
 use crate::physician_sources::SourcePatient;
+use patient_work::{ReviewReason, ReviewRequest};
 use physician_auth::{AuthStore, Membership, PhysicianIdentity, StoreUnavailable};
-use sea_orm::DbErr;
+use sea_orm::{
+    ActiveModelTrait, ColumnTrait, ConnectionTrait, DbErr, EntityTrait, QueryFilter, QueryOrder,
+    QuerySelect, Set, TransactionTrait, sea_query::OnConflict,
+};
 use serde::{Deserialize, Serialize};
+use serde_json::json;
 use std::collections::{BTreeMap, BTreeSet};
+use uuid::Uuid;
 
 /// Maximum seconds a kept message may stay in [`MessageStanding::Deciding`]
 /// before routing automatically so no patient message stays invisible (`15` minutes).
@@ -515,6 +525,13 @@ pub enum TodayChannelBanner {
 }
 
 impl ChannelStanding {
+    pub(super) const fn kind_str(&self) -> &'static str {
+        match self {
+            Self::Disconnected { .. } => "disconnected",
+            Self::Connected { .. } => "connected",
+        }
+    }
+
     /// Single rule owner deriving Today's channel notice from [`ChannelStanding`] (`Rule 10`).
     #[must_use]
     pub fn today_banner(&self) -> TodayChannelBanner {
@@ -751,6 +768,13 @@ pub enum MessageUrgency {
 }
 
 impl MessageUrgency {
+    pub(super) const fn kind_str(&self) -> &'static str {
+        match self {
+            Self::Ordinary => "ordinary",
+            Self::Urgent { .. } => "urgent",
+        }
+    }
+
     /// Whether this message is flagged urgent.
     #[must_use]
     pub const fn is_urgent(&self) -> bool {
@@ -1086,6 +1110,16 @@ pub enum ConversationLinkState {
         /// Unix second when moved.
         moved_at: i64,
     },
+}
+
+impl ConversationLinkState {
+    pub(super) fn kind_and_workspace(&self) -> (&'static str, Option<String>) {
+        match self {
+            Self::Unlinked => ("unlinked", None),
+            Self::Linked { workspace, .. } => ("linked", Some(workspace.clone())),
+            Self::MovedNotAPatient { .. } => ("not_a_patient", None),
+        }
+    }
 }
 
 /// Destination chosen when moving a linked conversation away from its current patient.
@@ -1722,4 +1756,2263 @@ pub enum SpruceMatchingError {
     /// Database error from SeaORM.
     #[error("spruce matching database failure: {0}")]
     Database(#[from] DbErr),
+}
+
+fn require_id<'a>(value: &'a str, field: &'static str) -> Result<&'a str, SpruceMatchingError> {
+    let trimmed = value.trim();
+    if trimmed.is_empty() || trimmed.chars().any(char::is_control) {
+        return Err(SpruceMatchingError::InvalidIdentifier { field });
+    }
+    Ok(trimmed)
+}
+
+fn require_reason_text<'a>(
+    value: &'a str,
+    field: &'static str,
+) -> Result<&'a str, SpruceMatchingError> {
+    let trimmed = value.trim();
+    if trimmed.is_empty() || trimmed.contains('\0') {
+        return Err(SpruceMatchingError::InvalidReasonText { field });
+    }
+    Ok(trimmed)
+}
+
+/// Single rule owner redacting a [`MessageRoutingOutcome`] returned to a physician actor (`Rule 1` & `Rule 2`)
+/// so a physician never sees a patient workspace ID or suggestion for a patient they may not access.
+async fn project_routing_outcome_for_viewer(
+    auth: &dyn AuthStore,
+    viewer: &PhysicianIdentity,
+    outcome: MessageRoutingOutcome,
+) -> MessageRoutingOutcome {
+    match outcome {
+        MessageRoutingOutcome::Linked {
+            workspace,
+            origin,
+            joined_message_ids,
+            review_command_key,
+        } => {
+            if auth.membership(viewer, &workspace).await == Membership::Allowed {
+                MessageRoutingOutcome::Linked {
+                    workspace,
+                    origin,
+                    joined_message_ids,
+                    review_command_key,
+                }
+            } else {
+                MessageRoutingOutcome::LinkedWithoutViewerAccess {
+                    origin,
+                    joined_message_ids,
+                }
+            }
+        }
+        MessageRoutingOutcome::Waiting {
+            suggested_workspace: Some(ws),
+        } => {
+            let suggested_workspace = if auth.membership(viewer, &ws).await == Membership::Allowed {
+                Some(ws)
+            } else {
+                None
+            };
+            MessageRoutingOutcome::Waiting {
+                suggested_workspace,
+            }
+        }
+        other => other,
+    }
+}
+
+async fn require_active_physician(
+    auth: &dyn AuthStore,
+    viewer: &PhysicianIdentity,
+) -> Result<(), SpruceMatchingError> {
+    require_id(&viewer.practice_id, "practice_id")?;
+    require_id(&viewer.physician_id, "physician_id")?;
+    let Some(account) = auth.account_by_identity(viewer).await else {
+        return Err(SpruceMatchingError::AccessDenied {
+            practice: viewer.practice_id.clone(),
+            physician: viewer.physician_id.clone(),
+            reason: "physician account does not exist in practice",
+        });
+    };
+    if !account.active {
+        return Err(SpruceMatchingError::AccessDenied {
+            practice: viewer.practice_id.clone(),
+            physician: viewer.physician_id.clone(),
+            reason: "physician account is inactive",
+        });
+    }
+    Ok(())
+}
+
+pub(crate) async fn allowed_workspaces_in_practice(
+    auth: &dyn AuthStore,
+    practice: &str,
+) -> Result<BTreeSet<String>, SpruceMatchingError> {
+    let registered: BTreeSet<String> = auth
+        .practice_patients(practice)
+        .await?
+        .into_iter()
+        .collect();
+    let accounts = auth.practice_accounts(practice).await?;
+    let mut allowed = BTreeSet::new();
+    for account in accounts {
+        if !account.active {
+            continue;
+        }
+        for ws in auth.panel(&account.identity).await {
+            if registered.contains(&ws) {
+                allowed.insert(ws);
+            }
+        }
+    }
+    Ok(allowed)
+}
+
+fn decode_channel_row(
+    row: entities::spruce_channel::Model,
+) -> Result<(ChannelStanding, Option<ChannelReaderLease>), DbErr> {
+    let standing: ChannelStanding = serde_json::from_value(row.standing).map_err(
+        conversion_error("spruce_channel.standing", "ChannelStanding"),
+    )?;
+    let lease: Option<ChannelReaderLease> = row
+        .reader_lease
+        .map(serde_json::from_value)
+        .transpose()
+        .map_err(conversion_error(
+            "spruce_channel.reader_lease",
+            "ChannelReaderLease",
+        ))?;
+    Ok((standing, lease))
+}
+
+fn decode_conversation_row(
+    row: entities::spruce_conversation::Model,
+) -> Result<SavedSpruceConversation, DbErr> {
+    let link_state: ConversationLinkState = serde_json::from_value(row.link_state).map_err(
+        conversion_error("spruce_conversation.link_state", "ConversationLinkState"),
+    )?;
+    let outside_participants: Vec<OutsideParticipant> =
+        serde_json::from_value(row.outside_participants).map_err(conversion_error(
+            "spruce_conversation.outside_participants",
+            "Vec<OutsideParticipant>",
+        ))?;
+    let active_suggestion: Option<SuggestedPatientMatch> = row
+        .active_suggestion
+        .map(serde_json::from_value)
+        .transpose()
+        .map_err(conversion_error(
+            "spruce_conversation.active_suggestion",
+            "SuggestedPatientMatch",
+        ))?;
+    let open_viewers: BTreeSet<String> = serde_json::from_value(row.open_viewers).map_err(
+        conversion_error("spruce_conversation.open_viewers", "BTreeSet<String>"),
+    )?;
+    let move_undo: Option<PendingMoveUndo> = row
+        .move_undo
+        .map(serde_json::from_value)
+        .transpose()
+        .map_err(conversion_error(
+            "spruce_conversation.move_undo",
+            "PendingMoveUndo",
+        ))?;
+    let move_count = u64::try_from(row.move_count)
+        .map_err(conversion_error("spruce_conversation.move_count", "u64"))?;
+    Ok(SavedSpruceConversation {
+        practice: row.practice,
+        conversation_id: row.conversation_id,
+        link_state,
+        outside_participants,
+        active_suggestion,
+        open_viewers,
+        move_undo,
+        move_count,
+        last_move_acted: row.last_move_acted,
+        updated_at: row.updated_at,
+    })
+}
+
+fn decode_message_row(row: entities::spruce_message::Model) -> Result<SavedSpruceMessage, DbErr> {
+    let channel_position = u64::try_from(row.channel_position)
+        .map_err(conversion_error("spruce_message.channel_position", "u64"))?;
+    let standing: MessageStanding = serde_json::from_value(row.standing).map_err(
+        conversion_error("spruce_message.standing", "MessageStanding"),
+    )?;
+    let urgency: MessageUrgency = serde_json::from_value(row.urgency)
+        .map_err(conversion_error("spruce_message.urgency", "MessageUrgency"))?;
+    let sender_address = row
+        .sender_address
+        .map(|raw| SenderAddress::parse(&raw).map_err(|e| error(&e.to_string())))
+        .transpose()?;
+    let attachments: Vec<SpruceAttachmentSummary> = serde_json::from_value(row.attachments)
+        .map_err(conversion_error(
+            "spruce_message.attachments",
+            "Vec<SpruceAttachmentSummary>",
+        ))?;
+    let saved_classification: Option<SavedMessageClassification> = row
+        .saved_classification
+        .map(serde_json::from_value)
+        .transpose()
+        .map_err(conversion_error(
+            "spruce_message.saved_classification",
+            "SavedMessageClassification",
+        ))?;
+    Ok(SavedSpruceMessage {
+        practice: row.practice,
+        message_id: row.message_id,
+        conversation_id: row.conversation_id,
+        channel_position,
+        content_version: row.content_version,
+        standing,
+        urgency,
+        ever_linked: row.ever_linked,
+        sender_address,
+        author_name: row.author_name,
+        body_text: row.body_text,
+        attachments,
+        app_url: row.app_url,
+        created_at_spruce: row.created_at_spruce,
+        kept_at: row.kept_at,
+        saved_classification,
+        updated_at: row.updated_at,
+    })
+}
+
+fn decode_trigger_row(
+    row: entities::spruce_review_trigger::Model,
+) -> Result<PendingSpruceReviewTrigger, DbErr> {
+    let origin: SpruceReviewTriggerOrigin = serde_json::from_value(row.origin).map_err(
+        conversion_error("spruce_review_trigger.origin", "SpruceReviewTriggerOrigin"),
+    )?;
+    let workspace_version = u64::try_from(row.workspace_version).map_err(conversion_error(
+        "spruce_review_trigger.workspace_version",
+        "u64",
+    ))?;
+    let record_versions: BTreeMap<String, String> = serde_json::from_value(row.record_versions)
+        .map_err(conversion_error(
+            "spruce_review_trigger.record_versions",
+            "BTreeMap<String, String>",
+        ))?;
+    Ok(PendingSpruceReviewTrigger {
+        practice: row.practice,
+        command_key: row.command_key,
+        conversation_id: row.conversation_id,
+        workspace: row.workspace,
+        origin,
+        workspace_version,
+        record_versions,
+        dispatched: row.dispatched,
+        created_at: row.created_at,
+        dispatched_at: row.dispatched_at,
+    })
+}
+
+async fn ensure_channel_row(
+    tx: &impl ConnectionTrait,
+    practice: &str,
+    now_ts: i64,
+) -> Result<(), DbErr> {
+    let default_standing = ChannelStanding::Disconnected {
+        disconnected_at: None,
+    };
+    let standing_json = serde_json::to_value(&default_standing)
+        .map_err(conversion_error("ChannelStanding", "json"))?;
+    entities::spruce_channel::Entity::insert(entities::spruce_channel::ActiveModel {
+        practice: Set(practice.to_owned()),
+        standing_kind: Set(default_standing.kind_str().to_owned()),
+        standing: Set(standing_json),
+        reader_lease: Set(None),
+        updated_at: Set(now_ts),
+    })
+    .on_conflict(
+        OnConflict::column(entities::spruce_channel::Column::Practice)
+            .do_nothing()
+            .to_owned(),
+    )
+    .exec_without_returning(tx)
+    .await?;
+    Ok(())
+}
+
+async fn lock_channel_row(
+    tx: &sea_orm::DatabaseTransaction,
+    practice: &str,
+    now_ts: i64,
+) -> Result<entities::spruce_channel::Model, DbErr> {
+    ensure_channel_row(tx, practice, now_ts).await?;
+    entities::spruce_channel::Entity::find_by_id(practice.to_owned())
+        .lock_exclusive()
+        .one(tx)
+        .await?
+        .ok_or_else(|| error("missing spruce channel row"))
+}
+
+async fn save_channel_state_in_tx(
+    tx: &sea_orm::DatabaseTransaction,
+    practice: &str,
+    standing: &ChannelStanding,
+    lease: Option<&ChannelReaderLease>,
+    now_ts: i64,
+) -> Result<(), DbErr> {
+    let standing_json =
+        serde_json::to_value(standing).map_err(conversion_error("ChannelStanding", "json"))?;
+    let lease_json = lease
+        .map(serde_json::to_value)
+        .transpose()
+        .map_err(conversion_error("ChannelReaderLease", "json"))?;
+    let active = entities::spruce_channel::ActiveModel {
+        practice: Set(practice.to_owned()),
+        standing_kind: Set(standing.kind_str().to_owned()),
+        standing: Set(standing_json),
+        reader_lease: Set(lease_json),
+        updated_at: Set(now_ts),
+    };
+    active.update(tx).await?;
+    Ok(())
+}
+
+async fn ensure_conversation_row(
+    tx: &impl ConnectionTrait,
+    practice: &str,
+    conversation_id: &str,
+    outside_participants: &[OutsideParticipant],
+    now_ts: i64,
+) -> Result<(), DbErr> {
+    let link_state = ConversationLinkState::Unlinked;
+    let link_json = serde_json::to_value(&link_state)
+        .map_err(conversion_error("ConversationLinkState", "json"))?;
+    let participants_json = serde_json::to_value(outside_participants)
+        .map_err(conversion_error("Vec<OutsideParticipant>", "json"))?;
+    entities::spruce_conversation::Entity::insert(entities::spruce_conversation::ActiveModel {
+        practice: Set(practice.to_owned()),
+        conversation_id: Set(conversation_id.to_owned()),
+        link_kind: Set("unlinked".to_owned()),
+        linked_workspace: Set(None),
+        link_state: Set(link_json),
+        outside_participants: Set(participants_json),
+        active_suggestion: Set(None),
+        open_viewers: Set(json!([])),
+        move_undo: Set(None),
+        move_count: Set(0),
+        last_move_acted: Set(false),
+        updated_at: Set(now_ts),
+    })
+    .on_conflict(
+        OnConflict::columns([
+            entities::spruce_conversation::Column::Practice,
+            entities::spruce_conversation::Column::ConversationId,
+        ])
+        .do_nothing()
+        .to_owned(),
+    )
+    .exec_without_returning(tx)
+    .await?;
+    Ok(())
+}
+
+async fn lock_conversation_in_tx(
+    tx: &sea_orm::DatabaseTransaction,
+    practice: &str,
+    conversation_id: &str,
+) -> Result<Option<SavedSpruceConversation>, DbErr> {
+    entities::spruce_conversation::Entity::find_by_id((
+        practice.to_owned(),
+        conversation_id.to_owned(),
+    ))
+    .lock_exclusive()
+    .one(tx)
+    .await?
+    .map(decode_conversation_row)
+    .transpose()
+}
+
+async fn save_conversation_in_tx(
+    tx: &sea_orm::DatabaseTransaction,
+    conv: &SavedSpruceConversation,
+) -> Result<(), DbErr> {
+    let (link_kind, linked_workspace) = conv.link_state.kind_and_workspace();
+    let link_json = serde_json::to_value(&conv.link_state)
+        .map_err(conversion_error("ConversationLinkState", "json"))?;
+    let participants_json = serde_json::to_value(&conv.outside_participants)
+        .map_err(conversion_error("Vec<OutsideParticipant>", "json"))?;
+    let suggestion_json = conv
+        .active_suggestion
+        .as_ref()
+        .map(serde_json::to_value)
+        .transpose()
+        .map_err(conversion_error("SuggestedPatientMatch", "json"))?;
+    let viewers_json = serde_json::to_value(&conv.open_viewers)
+        .map_err(conversion_error("BTreeSet<String>", "json"))?;
+    let undo_json = conv
+        .move_undo
+        .as_ref()
+        .map(serde_json::to_value)
+        .transpose()
+        .map_err(conversion_error("PendingMoveUndo", "json"))?;
+    let move_count =
+        i64::try_from(conv.move_count).map_err(conversion_error("move_count", "i64"))?;
+    entities::spruce_conversation::ActiveModel {
+        practice: Set(conv.practice.clone()),
+        conversation_id: Set(conv.conversation_id.clone()),
+        link_kind: Set(link_kind.to_owned()),
+        linked_workspace: Set(linked_workspace),
+        link_state: Set(link_json),
+        outside_participants: Set(participants_json),
+        active_suggestion: Set(suggestion_json),
+        open_viewers: Set(viewers_json),
+        move_undo: Set(undo_json),
+        move_count: Set(move_count),
+        last_move_acted: Set(conv.last_move_acted),
+        updated_at: Set(conv.updated_at),
+    }
+    .update(tx)
+    .await?;
+    Ok(())
+}
+
+async fn save_message_in_tx(
+    tx: &sea_orm::DatabaseTransaction,
+    msg: &SavedSpruceMessage,
+) -> Result<(), DbErr> {
+    let pos =
+        i64::try_from(msg.channel_position).map_err(conversion_error("channel_position", "i64"))?;
+    let standing_json =
+        serde_json::to_value(&msg.standing).map_err(conversion_error("MessageStanding", "json"))?;
+    let urgency_json =
+        serde_json::to_value(&msg.urgency).map_err(conversion_error("MessageUrgency", "json"))?;
+    let attachments_json = serde_json::to_value(&msg.attachments)
+        .map_err(conversion_error("Vec<SpruceAttachmentSummary>", "json"))?;
+    let classification_json = msg
+        .saved_classification
+        .as_ref()
+        .map(serde_json::to_value)
+        .transpose()
+        .map_err(conversion_error("SavedMessageClassification", "json"))?;
+    let ever_linked = msg.ever_linked || matches!(msg.standing, MessageStanding::Linked { .. });
+    entities::spruce_message::ActiveModel {
+        practice: Set(msg.practice.clone()),
+        message_id: Set(msg.message_id.clone()),
+        conversation_id: Set(msg.conversation_id.clone()),
+        channel_position: Set(pos),
+        content_version: Set(msg.content_version.clone()),
+        standing_kind: Set(msg.standing.kind_str().to_owned()),
+        standing: Set(standing_json),
+        urgency_kind: Set(msg.urgency.kind_str().to_owned()),
+        urgency: Set(urgency_json),
+        ever_linked: Set(ever_linked),
+        sender_address: Set(msg.sender_address.as_ref().map(|a| a.as_str().to_owned())),
+        author_name: Set(msg.author_name.clone()),
+        body_text: Set(msg.body_text.clone()),
+        attachments: Set(attachments_json),
+        app_url: Set(msg.app_url.clone()),
+        created_at_spruce: Set(msg.created_at_spruce.clone()),
+        kept_at: Set(msg.kept_at),
+        saved_classification: Set(classification_json),
+        updated_at: Set(msg.updated_at),
+    }
+    .update(tx)
+    .await?;
+    Ok(())
+}
+
+async fn load_practice_channel_evidence_in_tx(
+    tx: &impl ConnectionTrait,
+    practice: &str,
+    registered_workspaces: &BTreeSet<String>,
+) -> Result<
+    (
+        BTreeMap<String, Vec<SpruceContactPatient>>,
+        BTreeMap<SpruceEhrLink, BTreeSet<String>>,
+    ),
+    DbErr,
+> {
+    let contact_rows = entities::spruce_contact::Entity::find()
+        .filter(entities::spruce_contact::Column::Practice.eq(practice))
+        .all(tx)
+        .await?;
+    let mut contacts = BTreeMap::new();
+    for row in contact_rows {
+        let patients: Vec<SpruceContactPatient> = serde_json::from_value(row.spruce_patients)
+            .map_err(conversion_error(
+                "spruce_contact.spruce_patients",
+                "Vec<SpruceContactPatient>",
+            ))?;
+        contacts.insert(row.contact_id, patients);
+    }
+
+    let mut ehr_map: BTreeMap<SpruceEhrLink, BTreeSet<String>> = BTreeMap::new();
+    let ehr_rows = entities::spruce_ehr_link::Entity::find()
+        .filter(entities::spruce_ehr_link::Column::Practice.eq(practice))
+        .all(tx)
+        .await?;
+    for row in ehr_rows {
+        if registered_workspaces.contains(&row.workspace) {
+            ehr_map
+                .entry(SpruceEhrLink {
+                    source_id: row.source_id,
+                    source_patient_id: row.source_patient_id,
+                })
+                .or_default()
+                .insert(row.workspace);
+        }
+    }
+
+    let schedule_rows = schedule_patient_link::Entity::find()
+        .filter(schedule_patient_link::Column::Practice.eq(practice))
+        .all(tx)
+        .await?;
+    for row in schedule_rows {
+        if registered_workspaces.contains(&row.workspace) {
+            ehr_map
+                .entry(SpruceEhrLink {
+                    source_id: row.source_id,
+                    source_patient_id: row.source_patient_id,
+                })
+                .or_default()
+                .insert(row.workspace);
+        }
+    }
+
+    if !registered_workspaces.is_empty() {
+        let pulls = source_pull::Entity::find()
+            .filter(source_pull::Column::Workspace.is_in(registered_workspaces.iter().cloned()))
+            .all(tx)
+            .await?;
+        for row in pulls {
+            let patient: SourcePatient = serde_json::from_value(row.patient)
+                .map_err(conversion_error("source_pull.patient", "SourcePatient"))?;
+            ehr_map
+                .entry(SpruceEhrLink {
+                    source_id: row.source_id,
+                    source_patient_id: patient.source_patient_id,
+                })
+                .or_default()
+                .insert(row.workspace);
+        }
+    }
+
+    Ok((contacts, ehr_map))
+}
+
+async fn confirmed_workspaces_for_conversation_in_tx(
+    tx: &impl ConnectionTrait,
+    practice: &str,
+    sender: Option<&SenderAddress>,
+    outside_participants: &[OutsideParticipant],
+    registered_workspaces: &BTreeSet<String>,
+) -> Result<BTreeSet<String>, DbErr> {
+    let mut keys = BTreeSet::new();
+    if let Some(addr) = sender {
+        keys.insert(addr.as_str().to_owned());
+    }
+    for participant in outside_participants {
+        if let Some(addr) = &participant.endpoint_address {
+            keys.insert(addr.as_str().to_owned());
+        }
+    }
+    if keys.is_empty() {
+        return Ok(BTreeSet::new());
+    }
+    let rows = entities::spruce_confirmed_sender::Entity::find()
+        .filter(entities::spruce_confirmed_sender::Column::Practice.eq(practice))
+        .filter(entities::spruce_confirmed_sender::Column::SenderKey.is_in(keys))
+        .all(tx)
+        .await?;
+    Ok(rows
+        .into_iter()
+        .map(|row| row.workspace)
+        .filter(|ws| registered_workspaces.contains(ws))
+        .collect())
+}
+
+async fn queue_review_trigger_in_tx(
+    tx: &sea_orm::DatabaseTransaction,
+    practice: &str,
+    conversation_id: &str,
+    workspace: &str,
+    command_key: &str,
+    origin: SpruceReviewTriggerOrigin,
+    now_ts: i64,
+) -> Result<PendingSpruceReviewTrigger, DbErr> {
+    let observation = super::sources::observed(tx, workspace).await?;
+    let workspace_version = observation.version;
+    let mut record_versions: BTreeMap<String, String> = observation
+        .sources
+        .into_iter()
+        .map(|src| (src.candidate_id, src.revision))
+        .collect();
+    let linked_convs = entities::spruce_conversation::Entity::find()
+        .filter(entities::spruce_conversation::Column::Practice.eq(practice))
+        .filter(entities::spruce_conversation::Column::LinkKind.eq("linked"))
+        .filter(entities::spruce_conversation::Column::LinkedWorkspace.eq(workspace))
+        .all(tx)
+        .await?;
+    let linked_conv_ids: Vec<String> = linked_convs
+        .into_iter()
+        .map(|c| c.conversation_id)
+        .collect();
+    if !linked_conv_ids.is_empty() {
+        let linked_msgs = entities::spruce_message::Entity::find()
+            .filter(entities::spruce_message::Column::Practice.eq(practice))
+            .filter(entities::spruce_message::Column::ConversationId.is_in(linked_conv_ids))
+            .filter(entities::spruce_message::Column::StandingKind.eq("linked"))
+            .all(tx)
+            .await?;
+        for m in linked_msgs {
+            record_versions.insert(format!("spruce:{}", m.message_id), m.content_version);
+        }
+    }
+
+    let ws_ver_i64 =
+        i64::try_from(workspace_version).map_err(conversion_error("workspace_version", "i64"))?;
+    let origin_json = serde_json::to_value(&origin)
+        .map_err(conversion_error("SpruceReviewTriggerOrigin", "json"))?;
+    let record_versions_json = serde_json::to_value(&record_versions)
+        .map_err(conversion_error("BTreeMap<String, String>", "json"))?;
+    entities::spruce_review_trigger::Entity::insert(entities::spruce_review_trigger::ActiveModel {
+        practice: Set(practice.to_owned()),
+        command_key: Set(command_key.to_owned()),
+        conversation_id: Set(conversation_id.to_owned()),
+        workspace: Set(workspace.to_owned()),
+        origin: Set(origin_json),
+        workspace_version: Set(ws_ver_i64),
+        record_versions: Set(record_versions_json),
+        dispatched: Set(false),
+        created_at: Set(now_ts),
+        dispatched_at: Set(None),
+    })
+    .on_conflict(
+        OnConflict::columns([
+            entities::spruce_review_trigger::Column::Practice,
+            entities::spruce_review_trigger::Column::CommandKey,
+        ])
+        .do_nothing()
+        .to_owned(),
+    )
+    .exec_without_returning(tx)
+    .await?;
+
+    let saved = entities::spruce_review_trigger::Entity::find_by_id((
+        practice.to_owned(),
+        command_key.to_owned(),
+    ))
+    .one(tx)
+    .await?
+    .ok_or_else(|| error("missing spruce review trigger"))?;
+    decode_trigger_row(saved)
+}
+
+pub(crate) async fn dispatch_single_trigger(
+    store: &Store,
+    trigger: &PendingSpruceReviewTrigger,
+    review_receiver: &dyn ReviewReceiver,
+    now_ts: i64,
+) -> Result<(), SpruceMatchingError> {
+    if trigger.dispatched {
+        return Ok(());
+    }
+    let request = ReviewRequest {
+        practice_id: trigger.practice.clone(),
+        patient_workspace_id: trigger.workspace.clone(),
+        command_key: trigger.command_key.clone(),
+        reason: ReviewReason::NewRecords,
+        workspace_version: trigger.workspace_version,
+        record_versions: trigger.record_versions.clone(),
+    };
+    review_receiver
+        .submit_review(&request)
+        .await
+        .map_err(|source| SpruceMatchingError::ReviewHandoff {
+            workspace: trigger.workspace.clone(),
+            source,
+        })?;
+
+    let tx = store.db.begin().await?;
+    if let Some(row) = entities::spruce_review_trigger::Entity::find_by_id((
+        trigger.practice.clone(),
+        trigger.command_key.clone(),
+    ))
+    .lock_exclusive()
+    .one(&tx)
+    .await?
+        && !row.dispatched
+    {
+        let mut active: entities::spruce_review_trigger::ActiveModel = row.into();
+        active.dispatched = Set(true);
+        active.dispatched_at = Set(Some(now_ts));
+        active.update(&tx).await?;
+    }
+    tx.commit().await?;
+    Ok(())
+}
+
+/// Single rule owner implementing `Join(i, p)` (`MessageMatching.tla` line 162):
+/// links `conv` to `workspace`, links `target_message_id` **and** every sibling
+/// `Waiting` message in `conv` to `workspace`, latches `ever_linked = true` on
+/// each joined message, and clears `conv.active_suggestion`.
+async fn join_conversation_to_patient_in_tx(
+    tx: &sea_orm::DatabaseTransaction,
+    conv: &mut SavedSpruceConversation,
+    target_msg: &mut SavedSpruceMessage,
+    workspace: &str,
+    origin: LinkOrigin,
+    now_ts: i64,
+) -> Result<Vec<String>, DbErr> {
+    conv.link_state = ConversationLinkState::Linked {
+        workspace: workspace.to_owned(),
+        linked_at: now_ts,
+    };
+    conv.active_suggestion = None;
+    conv.updated_at = now_ts;
+    save_conversation_in_tx(tx, conv).await?;
+
+    target_msg.standing = MessageStanding::Linked {
+        linked_at: now_ts,
+        origin: origin.clone(),
+    };
+    target_msg.ever_linked = true;
+    target_msg.updated_at = now_ts;
+    save_message_in_tx(tx, target_msg).await?;
+
+    let mut joined_ids = vec![target_msg.message_id.clone()];
+    let sibling_rows = entities::spruce_message::Entity::find()
+        .filter(entities::spruce_message::Column::Practice.eq(&conv.practice))
+        .filter(entities::spruce_message::Column::ConversationId.eq(&conv.conversation_id))
+        .order_by_asc(entities::spruce_message::Column::ChannelPosition)
+        .lock_exclusive()
+        .all(tx)
+        .await?;
+    for row in sibling_rows {
+        if row.message_id == target_msg.message_id {
+            continue;
+        }
+        let mut sibling = decode_message_row(row)?;
+        if matches!(sibling.standing, MessageStanding::Waiting { .. }) {
+            sibling.standing = MessageStanding::Linked {
+                linked_at: now_ts,
+                origin: origin.clone(),
+            };
+            sibling.ever_linked = true;
+            sibling.updated_at = now_ts;
+            joined_ids.push(sibling.message_id.clone());
+            save_message_in_tx(tx, &sibling).await?;
+        }
+    }
+    Ok(joined_ids)
+}
+
+/// Single rule owner implementing `Route(i, name, who)` (`MessageMatching.tla` line 180)
+/// shared across `CodaDecides`, `FifteenMinutesPass`, and `"This is a patient"`.
+#[expect(
+    clippy::too_many_arguments,
+    reason = "single routing owner takes explicit locked conversation, message, authority sets, and timestamp"
+)]
+async fn route_patient_message_in_tx(
+    tx: &sea_orm::DatabaseTransaction,
+    conv: &mut SavedSpruceConversation,
+    msg: &mut SavedSpruceMessage,
+    routing_origin: RoutingOrigin,
+    model_assessment: Option<&MatchAssessment>,
+    registered_workspaces: &BTreeSet<String>,
+    allowed_workspaces_with_physician: &BTreeSet<String>,
+    now_ts: i64,
+) -> Result<(MessageRoutingOutcome, Option<PendingSpruceReviewTrigger>), DbErr> {
+    match conv.link_state.clone() {
+        ConversationLinkState::Linked { workspace, .. } => {
+            let origin = LinkOrigin::JoinedExistingConversationLink;
+            msg.standing = MessageStanding::Linked {
+                linked_at: now_ts,
+                origin: origin.clone(),
+            };
+            msg.ever_linked = true;
+            msg.updated_at = now_ts;
+            save_message_in_tx(tx, msg).await?;
+
+            let trigger = if !conv
+                .move_undo
+                .as_ref()
+                .is_some_and(|u| u.is_active_at(now_ts))
+            {
+                let cmd_key = format!(
+                    "spruce-arrival:{}:{}:{}:{}",
+                    conv.practice, conv.conversation_id, msg.message_id, workspace
+                );
+                Some(
+                    queue_review_trigger_in_tx(
+                        tx,
+                        &conv.practice,
+                        &conv.conversation_id,
+                        &workspace,
+                        &cmd_key,
+                        SpruceReviewTriggerOrigin::LinkedConversationArrival,
+                        now_ts,
+                    )
+                    .await?,
+                )
+            } else {
+                None
+            };
+            let review_command_key = trigger.as_ref().map(|t| t.command_key.clone());
+            Ok((
+                MessageRoutingOutcome::Linked {
+                    workspace,
+                    origin,
+                    joined_message_ids: vec![msg.message_id.clone()],
+                    review_command_key,
+                },
+                trigger,
+            ))
+        }
+        ConversationLinkState::MovedNotAPatient { .. } => {
+            msg.standing = MessageStanding::NotAPatient { moved_at: now_ts };
+            msg.updated_at = now_ts;
+            save_message_in_tx(tx, msg).await?;
+            Ok((MessageRoutingOutcome::NotAPatient, None))
+        }
+        ConversationLinkState::Unlinked => {
+            let confirmed_sender = confirmed_workspaces_for_conversation_in_tx(
+                tx,
+                &conv.practice,
+                msg.sender_address.as_ref(),
+                &conv.outside_participants,
+                registered_workspaces,
+            )
+            .await?;
+            let (contacts, ehr_map) =
+                load_practice_channel_evidence_in_tx(tx, &conv.practice, registered_workspaces)
+                    .await?;
+            let channel_tie = evaluate_channel_tie(&conv.outside_participants, &contacts, &ehr_map);
+
+            match evaluate_automatic_link(
+                &confirmed_sender,
+                &channel_tie,
+                model_assessment,
+                allowed_workspaces_with_physician,
+            ) {
+                AutomaticLinkEvaluation::LinkAutomatically { workspace } => {
+                    let origin = LinkOrigin::AutomaticRule4;
+                    let joined = join_conversation_to_patient_in_tx(
+                        tx,
+                        conv,
+                        msg,
+                        &workspace,
+                        origin.clone(),
+                        now_ts,
+                    )
+                    .await?;
+                    let cmd_key = format!(
+                        "spruce-autolink:{}:{}:{}:{}",
+                        conv.practice, conv.conversation_id, msg.message_id, workspace
+                    );
+                    let trigger = queue_review_trigger_in_tx(
+                        tx,
+                        &conv.practice,
+                        &conv.conversation_id,
+                        &workspace,
+                        &cmd_key,
+                        SpruceReviewTriggerOrigin::AutomaticLink,
+                        now_ts,
+                    )
+                    .await?;
+                    let review_command_key = Some(trigger.command_key.clone());
+                    Ok((
+                        MessageRoutingOutcome::Linked {
+                            workspace,
+                            origin,
+                            joined_message_ids: joined,
+                            review_command_key,
+                        },
+                        Some(trigger),
+                    ))
+                }
+                AutomaticLinkEvaluation::WaitForConfirmation => {
+                    let already_waiting = entities::spruce_message::Entity::find()
+                        .filter(entities::spruce_message::Column::Practice.eq(&conv.practice))
+                        .filter(
+                            entities::spruce_message::Column::ConversationId
+                                .eq(&conv.conversation_id),
+                        )
+                        .filter(entities::spruce_message::Column::MessageId.ne(&msg.message_id))
+                        .filter(entities::spruce_message::Column::StandingKind.eq("waiting"))
+                        .one(tx)
+                        .await?
+                        .is_some();
+
+                    if (!already_waiting || conv.active_suggestion.is_none())
+                        && let Some(MatchAssessment::SuggestedPatient {
+                            workspace,
+                            evidence_summary,
+                        }) = model_assessment
+                        && registered_workspaces.contains(workspace)
+                    {
+                        conv.active_suggestion = Some(SuggestedPatientMatch {
+                            workspace: workspace.clone(),
+                            evidence_summary: evidence_summary.clone(),
+                            suggested_at: now_ts,
+                        });
+                        conv.updated_at = now_ts;
+                        save_conversation_in_tx(tx, conv).await?;
+                    }
+
+                    msg.standing = MessageStanding::Waiting {
+                        waiting_since: now_ts,
+                        origin: routing_origin,
+                    };
+                    msg.updated_at = now_ts;
+                    save_message_in_tx(tx, msg).await?;
+
+                    let suggested_workspace =
+                        conv.active_suggestion.as_ref().map(|s| s.workspace.clone());
+                    Ok((
+                        MessageRoutingOutcome::Waiting {
+                            suggested_workspace,
+                        },
+                        None,
+                    ))
+                }
+            }
+        }
+    }
+}
+
+impl Store {
+    /// Reads the practice's current [`ChannelStanding`] and optional reader lease.
+    pub async fn spruce_channel_standing(
+        &self,
+        practice: &str,
+    ) -> Result<(ChannelStanding, Option<ChannelReaderLease>), SpruceMatchingError> {
+        let practice = require_id(practice, "practice")?;
+        let row = entities::spruce_channel::Entity::find_by_id(practice.to_owned())
+            .one(&self.db)
+            .await?;
+        match row {
+            Some(model) => Ok(decode_channel_row(model)?),
+            None => Ok((
+                ChannelStanding::Disconnected {
+                    disconnected_at: None,
+                },
+                None,
+            )),
+        }
+    }
+
+    /// Acquires the practice's exclusive Spruce channel reader lease when free
+    /// or expired (`README.md`: *"Each practice's channel has one reader at a time"*).
+    pub async fn acquire_spruce_reader_lease(
+        &self,
+        practice: &str,
+        holder_id: &str,
+        ttl_seconds: i64,
+        now_ts: i64,
+    ) -> Result<ChannelReaderLease, SpruceMatchingError> {
+        let practice = require_id(practice, "practice")?;
+        let holder_id = require_id(holder_id, "holder_id")?;
+        let ttl = ttl_seconds.max(1);
+
+        let tx = self.db.begin().await?;
+        let row = lock_channel_row(&tx, practice, now_ts).await?;
+        let (standing, existing) = decode_channel_row(row)?;
+        if let Some(active) = existing
+            && active.is_active_at(now_ts)
+            && active.holder_id != holder_id
+        {
+            return Err(SpruceMatchingError::ReaderLeaseHeld {
+                practice: practice.to_owned(),
+                holder_id: active.holder_id,
+                expires_at: active.expires_at,
+            });
+        }
+        let lease = ChannelReaderLease {
+            holder_id: holder_id.to_owned(),
+            lease_token: Uuid::new_v4().to_string(),
+            acquired_at: now_ts,
+            expires_at: now_ts.saturating_add(ttl),
+        };
+        save_channel_state_in_tx(&tx, practice, &standing, Some(&lease), now_ts).await?;
+        tx.commit().await?;
+        Ok(lease)
+    }
+
+    /// Releases a held reader lease when `lease_token` matches.
+    pub async fn release_spruce_reader_lease(
+        &self,
+        practice: &str,
+        lease_token: &str,
+        now_ts: i64,
+    ) -> Result<(), SpruceMatchingError> {
+        let practice = require_id(practice, "practice")?;
+        let lease_token = require_id(lease_token, "lease_token")?;
+        let tx = self.db.begin().await?;
+        let row = lock_channel_row(&tx, practice, now_ts).await?;
+        let (standing, existing) = decode_channel_row(row)?;
+        if existing
+            .as_ref()
+            .is_some_and(|l| l.lease_token == lease_token)
+        {
+            save_channel_state_in_tx(&tx, practice, &standing, None, now_ts).await?;
+        }
+        tx.commit().await?;
+        Ok(())
+    }
+
+    /// Connects a disconnected practice Spruce channel (`YouConnect` in `MessageMatching.tla`):
+    /// sets `place = channel_head_position` and `start_boundary = channel_head_position`,
+    /// offering one-time backlog review when `channel_head_position > 0` (`Rule 14`).
+    pub async fn connect_spruce_channel(
+        &self,
+        auth: &dyn AuthStore,
+        actor: &PhysicianIdentity,
+        channel_head_position: u64,
+        spruce_cursor: Option<String>,
+        now_ts: i64,
+    ) -> Result<ChannelStanding, SpruceMatchingError> {
+        require_active_physician(auth, actor).await?;
+        let practice = actor.practice_id.as_str();
+        let tx = self.db.begin().await?;
+        let row = lock_channel_row(&tx, practice, now_ts).await?;
+        let (current, lease) = decode_channel_row(row)?;
+        if !matches!(current, ChannelStanding::Disconnected { .. }) {
+            return Err(SpruceMatchingError::ChannelStateRefused {
+                practice: practice.to_owned(),
+                state: current.kind_str().to_owned(),
+                action: "connect",
+            });
+        }
+        let backlog = if channel_head_position > 0 {
+            BacklogStanding::Offered { offered_at: now_ts }
+        } else {
+            BacklogStanding::NoOffer
+        };
+        let connected = ChannelStanding::Connected {
+            place: channel_head_position,
+            start_boundary: channel_head_position,
+            spruce_cursor,
+            backlog,
+            health: ChannelHealth::Reading {
+                last_read_at: Some(now_ts),
+            },
+        };
+        save_channel_state_in_tx(&tx, practice, &connected, lease.as_ref(), now_ts).await?;
+        tx.commit().await?;
+        Ok(connected)
+    }
+
+    /// Accepts the one-time offer to read messages from before Coda connected (`YouAcceptBacklog`, `Rule 14`).
+    pub async fn accept_spruce_backlog(
+        &self,
+        auth: &dyn AuthStore,
+        actor: &PhysicianIdentity,
+        now_ts: i64,
+    ) -> Result<ChannelStanding, SpruceMatchingError> {
+        require_active_physician(auth, actor).await?;
+        let practice = actor.practice_id.as_str();
+        let tx = self.db.begin().await?;
+        let row = lock_channel_row(&tx, practice, now_ts).await?;
+        let (current, lease) = decode_channel_row(row)?;
+        let ChannelStanding::Connected {
+            place,
+            start_boundary,
+            spruce_cursor,
+            backlog,
+            health,
+        } = current
+        else {
+            return Err(SpruceMatchingError::ChannelStateRefused {
+                practice: practice.to_owned(),
+                state: "disconnected".to_owned(),
+                action: "accept_backlog",
+            });
+        };
+        if !matches!(backlog, BacklogStanding::Offered { .. }) {
+            return Err(SpruceMatchingError::ChannelStateRefused {
+                practice: practice.to_owned(),
+                state: "backlog_not_offered".to_owned(),
+                action: "accept_backlog",
+            });
+        }
+        let updated = ChannelStanding::Connected {
+            place,
+            start_boundary,
+            spruce_cursor,
+            backlog: BacklogStanding::Accepted {
+                accepted_at: now_ts,
+                accepted_by: actor.physician_id.clone(),
+            },
+            health,
+        };
+        save_channel_state_in_tx(&tx, practice, &updated, lease.as_ref(), now_ts).await?;
+        tx.commit().await?;
+        Ok(updated)
+    }
+
+    /// Records a transient read failure (`ChannelStops(Failing)`) or revoked/blocked
+    /// credential (`ChannelStops(Revoked)`) on the practice channel (`Rule 10`).
+    pub async fn record_spruce_channel_failure(
+        &self,
+        practice: &str,
+        lease_token: &str,
+        cause: ChannelStopCause,
+        now_ts: i64,
+    ) -> Result<ChannelStanding, SpruceMatchingError> {
+        let practice = require_id(practice, "practice")?;
+        let lease_token = require_id(lease_token, "lease_token")?;
+        let raw_reason = match &cause {
+            ChannelStopCause::Transient { reason }
+            | ChannelStopCause::RevokedOrBlocked { reason } => reason.as_str(),
+        };
+        let reason = require_reason_text(raw_reason, "reason")?.to_owned();
+
+        let tx = self.db.begin().await?;
+        let row = lock_channel_row(&tx, practice, now_ts).await?;
+        let (current, lease) = decode_channel_row(row)?;
+        let Some(active_lease) = lease
+            .as_ref()
+            .filter(|l| l.is_active_at(now_ts) && l.lease_token == lease_token)
+        else {
+            return Err(SpruceMatchingError::InvalidReaderLease {
+                practice: practice.to_owned(),
+            });
+        };
+        let ChannelStanding::Connected {
+            place,
+            start_boundary,
+            spruce_cursor,
+            backlog,
+            health,
+        } = current
+        else {
+            return Err(SpruceMatchingError::ChannelStateRefused {
+                practice: practice.to_owned(),
+                state: "disconnected".to_owned(),
+                action: "record_channel_failure",
+            });
+        };
+        let previous_last_read = match health {
+            ChannelHealth::Reading { last_read_at }
+            | ChannelHealth::TransientFailure { last_read_at, .. }
+            | ChannelHealth::RevokedOrBlocked { last_read_at, .. } => last_read_at,
+        };
+        let next_health = match cause {
+            ChannelStopCause::RevokedOrBlocked { .. } => ChannelHealth::RevokedOrBlocked {
+                reason,
+                failed_at: now_ts,
+                last_read_at: previous_last_read,
+            },
+            ChannelStopCause::Transient { .. } => ChannelHealth::TransientFailure {
+                reason,
+                failed_at: now_ts,
+                last_read_at: previous_last_read,
+            },
+        };
+        let updated = ChannelStanding::Connected {
+            place,
+            start_boundary,
+            spruce_cursor,
+            backlog,
+            health: next_health,
+        };
+        save_channel_state_in_tx(&tx, practice, &updated, Some(active_lease), now_ts).await?;
+        tx.commit().await?;
+        Ok(updated)
+    }
+
+    /// Clears a transient channel failure when Coda can read the channel again (`ChannelComesBack`, `Rule 10`).
+    pub async fn recover_spruce_channel_reading(
+        &self,
+        practice: &str,
+        lease_token: &str,
+        now_ts: i64,
+    ) -> Result<ChannelStanding, SpruceMatchingError> {
+        let practice = require_id(practice, "practice")?;
+        let lease_token = require_id(lease_token, "lease_token")?;
+        let tx = self.db.begin().await?;
+        let row = lock_channel_row(&tx, practice, now_ts).await?;
+        let (current, lease) = decode_channel_row(row)?;
+        let Some(active_lease) = lease
+            .as_ref()
+            .filter(|l| l.is_active_at(now_ts) && l.lease_token == lease_token)
+        else {
+            return Err(SpruceMatchingError::InvalidReaderLease {
+                practice: practice.to_owned(),
+            });
+        };
+        let ChannelStanding::Connected {
+            place,
+            start_boundary,
+            spruce_cursor,
+            backlog,
+            health,
+        } = current
+        else {
+            return Err(SpruceMatchingError::ChannelStateRefused {
+                practice: practice.to_owned(),
+                state: "disconnected".to_owned(),
+                action: "recover_channel_reading",
+            });
+        };
+        if matches!(health, ChannelHealth::RevokedOrBlocked { .. }) {
+            return Err(SpruceMatchingError::ChannelStateRefused {
+                practice: practice.to_owned(),
+                state: "revoked_or_blocked".to_owned(),
+                action: "recover_channel_reading",
+            });
+        }
+        let updated = ChannelStanding::Connected {
+            place,
+            start_boundary,
+            spruce_cursor,
+            backlog,
+            health: ChannelHealth::Reading {
+                last_read_at: Some(now_ts),
+            },
+        };
+        save_channel_state_in_tx(&tx, practice, &updated, Some(active_lease), now_ts).await?;
+        tx.commit().await?;
+        Ok(updated)
+    }
+
+    /// Reconnects a revoked or blocked channel (`YouReconnect` in `MessageMatching.tla`),
+    /// resuming from Coda's saved `place` without losing or duplicating kept messages (`Rule 10` & `Rule 12`).
+    pub async fn reconnect_spruce_channel(
+        &self,
+        auth: &dyn AuthStore,
+        actor: &PhysicianIdentity,
+        now_ts: i64,
+    ) -> Result<ChannelStanding, SpruceMatchingError> {
+        require_active_physician(auth, actor).await?;
+        let practice = actor.practice_id.as_str();
+        let tx = self.db.begin().await?;
+        let row = lock_channel_row(&tx, practice, now_ts).await?;
+        let (current, lease) = decode_channel_row(row)?;
+        let ChannelStanding::Connected {
+            place,
+            start_boundary,
+            spruce_cursor,
+            backlog,
+            health,
+        } = current
+        else {
+            return Err(SpruceMatchingError::ChannelStateRefused {
+                practice: practice.to_owned(),
+                state: "disconnected".to_owned(),
+                action: "reconnect",
+            });
+        };
+        if !matches!(health, ChannelHealth::RevokedOrBlocked { .. }) {
+            return Err(SpruceMatchingError::ChannelStateRefused {
+                practice: practice.to_owned(),
+                state: "not_revoked_or_blocked".to_owned(),
+                action: "reconnect",
+            });
+        }
+        let updated = ChannelStanding::Connected {
+            place,
+            start_boundary,
+            spruce_cursor,
+            backlog,
+            health: ChannelHealth::Reading {
+                last_read_at: Some(now_ts),
+            },
+        };
+        save_channel_state_in_tx(&tx, practice, &updated, lease.as_ref(), now_ts).await?;
+        tx.commit().await?;
+        Ok(updated)
+    }
+
+    /// Disconnects the practice's Spruce channel (`YouDisconnect`, `Rule 11`):
+    /// deletes **every** message in `practice` that was never linked to a patient
+    /// (`!ever_linked`, along with its matching runs), clears waiting suggestions,
+    /// retains every message ever linked (`ever_linked == true`) and entered-in-error
+    /// records under record policy, and sets Today's channel banner to `Quiet`.
+    pub async fn disconnect_spruce_channel(
+        &self,
+        auth: &dyn AuthStore,
+        actor: &PhysicianIdentity,
+        now_ts: i64,
+    ) -> Result<u64, SpruceMatchingError> {
+        require_active_physician(auth, actor).await?;
+        let practice = actor.practice_id.as_str();
+        let tx = self.db.begin().await?;
+        let row = lock_channel_row(&tx, practice, now_ts).await?;
+        let (current, _) = decode_channel_row(row)?;
+        if matches!(current, ChannelStanding::Disconnected { .. }) {
+            return Err(SpruceMatchingError::ChannelStateRefused {
+                practice: practice.to_owned(),
+                state: "disconnected".to_owned(),
+                action: "disconnect",
+            });
+        }
+
+        let never_linked_rows = entities::spruce_message::Entity::find()
+            .filter(entities::spruce_message::Column::Practice.eq(practice))
+            .filter(entities::spruce_message::Column::EverLinked.eq(false))
+            .lock_exclusive()
+            .all(&tx)
+            .await?;
+        let never_linked_ids: Vec<String> = never_linked_rows
+            .into_iter()
+            .map(|m| m.message_id)
+            .collect();
+        let deleted_count = never_linked_ids.len() as u64;
+
+        if !never_linked_ids.is_empty() {
+            entities::spruce_matching_run::Entity::delete_many()
+                .filter(entities::spruce_matching_run::Column::Practice.eq(practice))
+                .filter(
+                    entities::spruce_matching_run::Column::MessageId
+                        .is_in(never_linked_ids.iter().cloned()),
+                )
+                .exec(&tx)
+                .await?;
+            entities::spruce_message::Entity::delete_many()
+                .filter(entities::spruce_message::Column::Practice.eq(practice))
+                .filter(entities::spruce_message::Column::EverLinked.eq(false))
+                .exec(&tx)
+                .await?;
+        }
+
+        let conv_rows = entities::spruce_conversation::Entity::find()
+            .filter(entities::spruce_conversation::Column::Practice.eq(practice))
+            .lock_exclusive()
+            .all(&tx)
+            .await?;
+        for conv_row in conv_rows {
+            let mut conv = decode_conversation_row(conv_row)?;
+            if conv.active_suggestion.is_some()
+                || (matches!(conv.link_state, ConversationLinkState::Unlinked)
+                    && !conv.open_viewers.is_empty())
+            {
+                conv.active_suggestion = None;
+                if matches!(conv.link_state, ConversationLinkState::Unlinked) {
+                    conv.open_viewers.clear();
+                }
+                conv.updated_at = now_ts;
+                save_conversation_in_tx(&tx, &conv).await?;
+            }
+        }
+
+        let disconnected = ChannelStanding::Disconnected {
+            disconnected_at: Some(now_ts),
+        };
+        save_channel_state_in_tx(&tx, practice, &disconnected, None, now_ts).await?;
+        tx.commit().await?;
+        Ok(deleted_count)
+    }
+
+    /// Saves or updates a Spruce contact record mapping `contact_id` to Spruce patients and EHR links.
+    pub async fn save_spruce_contact_record(
+        &self,
+        record: &SpruceContactRecord,
+        now_ts: i64,
+    ) -> Result<(), SpruceMatchingError> {
+        let practice = require_id(&record.practice, "practice")?;
+        let contact_id = require_id(&record.contact_id, "contact_id")?;
+        let patients_json = serde_json::to_value(&record.spruce_patients)
+            .map_err(conversion_error("Vec<SpruceContactPatient>", "json"))?;
+        entities::spruce_contact::Entity::insert(entities::spruce_contact::ActiveModel {
+            practice: Set(practice.to_owned()),
+            contact_id: Set(contact_id.to_owned()),
+            spruce_patients: Set(patients_json.clone()),
+            updated_at: Set(now_ts),
+        })
+        .on_conflict(
+            OnConflict::columns([
+                entities::spruce_contact::Column::Practice,
+                entities::spruce_contact::Column::ContactId,
+            ])
+            .update_columns([
+                entities::spruce_contact::Column::SprucePatients,
+                entities::spruce_contact::Column::UpdatedAt,
+            ])
+            .to_owned(),
+        )
+        .exec_without_returning(&self.db)
+        .await?;
+        Ok(())
+    }
+
+    /// Registers an EHR patient link `(source_id, source_patient_id) -> workspace` in `practice`.
+    pub async fn register_spruce_ehr_patient_link(
+        &self,
+        practice: &str,
+        source_id: &str,
+        source_patient_id: &str,
+        workspace: &str,
+        now_ts: i64,
+    ) -> Result<(), SpruceMatchingError> {
+        let practice = require_id(practice, "practice")?;
+        let source_id = require_id(source_id, "source_id")?;
+        let source_patient_id = require_id(source_patient_id, "source_patient_id")?;
+        let workspace = require_id(workspace, "workspace")?;
+        entities::spruce_ehr_link::Entity::insert(entities::spruce_ehr_link::ActiveModel {
+            practice: Set(practice.to_owned()),
+            source_id: Set(source_id.to_owned()),
+            source_patient_id: Set(source_patient_id.to_owned()),
+            workspace: Set(workspace.to_owned()),
+            recorded_at: Set(now_ts),
+        })
+        .on_conflict(
+            OnConflict::columns([
+                entities::spruce_ehr_link::Column::Practice,
+                entities::spruce_ehr_link::Column::SourceId,
+                entities::spruce_ehr_link::Column::SourcePatientId,
+                entities::spruce_ehr_link::Column::Workspace,
+            ])
+            .do_nothing()
+            .to_owned(),
+        )
+        .exec_without_returning(&self.db)
+        .await?;
+        Ok(())
+    }
+
+    /// Records a sender address as confirmed for `workspace` in `practice`.
+    pub async fn record_spruce_confirmed_sender(
+        &self,
+        practice: &str,
+        sender: &SenderAddress,
+        workspace: &str,
+        confirmed_by: &str,
+        now_ts: i64,
+    ) -> Result<(), SpruceMatchingError> {
+        let practice = require_id(practice, "practice")?;
+        let workspace = require_id(workspace, "workspace")?;
+        let confirmed_by = require_id(confirmed_by, "confirmed_by")?;
+        entities::spruce_confirmed_sender::Entity::insert(
+            entities::spruce_confirmed_sender::ActiveModel {
+                practice: Set(practice.to_owned()),
+                sender_key: Set(sender.as_str().to_owned()),
+                workspace: Set(workspace.to_owned()),
+                confirmed_by: Set(confirmed_by.to_owned()),
+                confirmed_at: Set(now_ts),
+            },
+        )
+        .on_conflict(
+            OnConflict::columns([
+                entities::spruce_confirmed_sender::Column::Practice,
+                entities::spruce_confirmed_sender::Column::SenderKey,
+                entities::spruce_confirmed_sender::Column::Workspace,
+            ])
+            .do_nothing()
+            .to_owned(),
+        )
+        .exec_without_returning(&self.db)
+        .await?;
+        Ok(())
+    }
+
+    /// Revokes a sender address confirmation for `workspace` in `practice`.
+    pub async fn revoke_spruce_confirmed_sender(
+        &self,
+        practice: &str,
+        sender: &SenderAddress,
+        workspace: &str,
+    ) -> Result<(), SpruceMatchingError> {
+        let practice = require_id(practice, "practice")?;
+        let workspace = require_id(workspace, "workspace")?;
+        entities::spruce_confirmed_sender::Entity::delete_by_id((
+            practice.to_owned(),
+            sender.as_str().to_owned(),
+            workspace.to_owned(),
+        ))
+        .exec(&self.db)
+        .await?;
+        Ok(())
+    }
+
+    /// Ingests one delivered Spruce item under the active channel reader lease
+    /// (`CodaReads` & `CodaReadsItNow` in `MessageMatching.tla`, `Rules 12, 13, 14`).
+    pub async fn ingest_spruce_item(
+        &self,
+        practice: &str,
+        lease_token: &str,
+        item: &IncomingSpruceItem,
+        now_ts: i64,
+    ) -> Result<SpruceIngestOutcome, SpruceMatchingError> {
+        let practice = require_id(practice, "practice")?;
+        let lease_token = require_id(lease_token, "lease_token")?;
+        let message_id = require_id(item.message_id(), "message_id")?;
+        if item.channel_position() == 0 {
+            return Err(SpruceMatchingError::InvalidIdentifier {
+                field: "channel_position",
+            });
+        }
+
+        let tx = self.db.begin().await?;
+        let ch_row = lock_channel_row(&tx, practice, now_ts).await?;
+        let (current_channel, lease) = decode_channel_row(ch_row)?;
+        let Some(active_lease) = lease
+            .as_ref()
+            .filter(|l| l.is_active_at(now_ts) && l.lease_token == lease_token)
+        else {
+            return Err(SpruceMatchingError::InvalidReaderLease {
+                practice: practice.to_owned(),
+            });
+        };
+
+        let ChannelStanding::Connected {
+            place,
+            start_boundary,
+            spruce_cursor,
+            backlog,
+            health: ChannelHealth::Reading { .. },
+        } = &current_channel
+        else {
+            return Err(SpruceMatchingError::ChannelStateRefused {
+                practice: practice.to_owned(),
+                state: current_channel.kind_str().to_owned(),
+                action: "ingest_item",
+            });
+        };
+
+        let pos = item.channel_position();
+        let allowed_by_cursor = pos > *place
+            || (matches!(backlog, BacklogStanding::Accepted { .. }) && pos <= *start_boundary);
+
+        if let Some(existing_row) = entities::spruce_message::Entity::find_by_id((
+            practice.to_owned(),
+            message_id.to_owned(),
+        ))
+        .lock_exclusive()
+        .one(&tx)
+        .await?
+        {
+            let mut existing = decode_message_row(existing_row)?;
+            if matches!(existing.standing, MessageStanding::CantRead { .. })
+                && let IncomingSpruceItem::Readable(readable) = item
+            {
+                let cid = require_id(&readable.conversation_id, "conversation_id")?;
+                let ver = require_id(&readable.content_version, "content_version")?;
+                let previous_cid = existing.conversation_id.clone();
+
+                ensure_conversation_row(&tx, practice, cid, &readable.outside_participants, now_ts)
+                    .await?;
+                if !readable.outside_participants.is_empty()
+                    && let Some(mut conv) = lock_conversation_in_tx(&tx, practice, cid).await?
+                {
+                    conv.outside_participants = readable.outside_participants.clone();
+                    conv.updated_at = now_ts;
+                    save_conversation_in_tx(&tx, &conv).await?;
+                }
+
+                let recovered_standing = MessageStanding::Deciding {
+                    kept_at: now_ts,
+                    deadline_at: now_ts.saturating_add(FIFTEEN_MINUTES_SECONDS),
+                };
+                existing.conversation_id = cid.to_owned();
+                existing.content_version = ver.to_owned();
+                existing.standing = recovered_standing.clone();
+                existing.sender_address = readable.sender_address.clone();
+                existing.author_name = readable.author_name.clone();
+                existing.body_text = readable.body_text.clone();
+                existing.attachments = readable.attachments.clone();
+                existing.app_url = readable.app_url.clone();
+                existing.created_at_spruce = readable.created_at_spruce.clone();
+                existing.updated_at = now_ts;
+                save_message_in_tx(&tx, &existing).await?;
+
+                if previous_cid != cid
+                    && let Some(old_conv) =
+                        lock_conversation_in_tx(&tx, practice, &previous_cid).await?
+                    && matches!(old_conv.link_state, ConversationLinkState::Unlinked)
+                {
+                    let remaining_on_old = entities::spruce_message::Entity::find()
+                        .filter(entities::spruce_message::Column::Practice.eq(practice))
+                        .filter(entities::spruce_message::Column::ConversationId.eq(&previous_cid))
+                        .one(&tx)
+                        .await?
+                        .is_some();
+                    if !remaining_on_old {
+                        entities::spruce_conversation::Entity::delete_by_id((
+                            practice.to_owned(),
+                            previous_cid,
+                        ))
+                        .exec(&tx)
+                        .await?;
+                    }
+                }
+
+                tx.commit().await?;
+                return Ok(SpruceIngestOutcome::RecoveredUnreadable {
+                    standing: recovered_standing,
+                });
+            }
+            tx.commit().await?;
+            return Ok(SpruceIngestOutcome::AlreadyKept {
+                standing: existing.standing,
+            });
+        }
+
+        if !allowed_by_cursor {
+            tx.commit().await?;
+            return Ok(SpruceIngestOutcome::SkippedPreConnectionBacklog);
+        }
+
+        let (
+            conversation_id,
+            content_version,
+            standing,
+            sender_address,
+            author_name,
+            body_text,
+            attachments,
+            app_url,
+            created_at_spruce,
+            outside_participants,
+        ) = match item {
+            IncomingSpruceItem::Readable(r) => {
+                let cid = require_id(&r.conversation_id, "conversation_id")?;
+                let ver = require_id(&r.content_version, "content_version")?;
+                (
+                    cid.to_owned(),
+                    ver.to_owned(),
+                    MessageStanding::Deciding {
+                        kept_at: now_ts,
+                        deadline_at: now_ts.saturating_add(FIFTEEN_MINUTES_SECONDS),
+                    },
+                    r.sender_address.clone(),
+                    r.author_name.clone(),
+                    r.body_text.clone(),
+                    r.attachments.clone(),
+                    r.app_url.clone(),
+                    r.created_at_spruce.clone(),
+                    r.outside_participants.clone(),
+                )
+            }
+            IncomingSpruceItem::Unreadable(u) => {
+                let cid = require_id(&u.conversation_id, "conversation_id")?;
+                let ver = require_id(&u.content_version, "content_version")?;
+                let reason = require_reason_text(&u.failure_reason, "failure_reason")?;
+                (
+                    cid.to_owned(),
+                    ver.to_owned(),
+                    MessageStanding::CantRead {
+                        failure_reason: reason.to_owned(),
+                        app_url: u.app_url.clone(),
+                    },
+                    None,
+                    None,
+                    String::new(),
+                    Vec::new(),
+                    u.app_url.clone(),
+                    None,
+                    u.outside_participants.clone(),
+                )
+            }
+        };
+
+        ensure_conversation_row(
+            &tx,
+            practice,
+            &conversation_id,
+            &outside_participants,
+            now_ts,
+        )
+        .await?;
+        if !outside_participants.is_empty()
+            && let Some(mut conv) = lock_conversation_in_tx(&tx, practice, &conversation_id).await?
+        {
+            conv.outside_participants = outside_participants;
+            conv.updated_at = now_ts;
+            save_conversation_in_tx(&tx, &conv).await?;
+        }
+
+        let pos_i64 = i64::try_from(pos).map_err(conversion_error("channel_position", "i64"))?;
+        let standing_json =
+            serde_json::to_value(&standing).map_err(conversion_error("MessageStanding", "json"))?;
+        let urgency = MessageUrgency::Ordinary;
+        let urgency_json =
+            serde_json::to_value(&urgency).map_err(conversion_error("MessageUrgency", "json"))?;
+        let attachments_json = serde_json::to_value(&attachments)
+            .map_err(conversion_error("Vec<SpruceAttachmentSummary>", "json"))?;
+
+        entities::spruce_message::Entity::insert(entities::spruce_message::ActiveModel {
+            practice: Set(practice.to_owned()),
+            message_id: Set(message_id.to_owned()),
+            conversation_id: Set(conversation_id),
+            channel_position: Set(pos_i64),
+            content_version: Set(content_version),
+            standing_kind: Set(standing.kind_str().to_owned()),
+            standing: Set(standing_json),
+            urgency_kind: Set(urgency.kind_str().to_owned()),
+            urgency: Set(urgency_json),
+            ever_linked: Set(false),
+            sender_address: Set(sender_address.as_ref().map(|a| a.as_str().to_owned())),
+            author_name: Set(author_name),
+            body_text: Set(body_text),
+            attachments: Set(attachments_json),
+            app_url: Set(app_url),
+            created_at_spruce: Set(created_at_spruce),
+            kept_at: Set(now_ts),
+            saved_classification: Set(None),
+            updated_at: Set(now_ts),
+        })
+        .exec_without_returning(&tx)
+        .await?;
+
+        let updated_channel = ChannelStanding::Connected {
+            place: *place,
+            start_boundary: *start_boundary,
+            spruce_cursor: spruce_cursor.clone(),
+            backlog: backlog.clone(),
+            health: ChannelHealth::Reading {
+                last_read_at: Some(now_ts),
+            },
+        };
+        save_channel_state_in_tx(&tx, practice, &updated_channel, Some(active_lease), now_ts)
+            .await?;
+        tx.commit().await?;
+
+        Ok(SpruceIngestOutcome::KeptNew { standing })
+    }
+
+    /// Ingests a batch of Spruce deliveries independently so one malformed or
+    /// failing item never stops other conversations' messages.
+    pub async fn ingest_spruce_batch(
+        &self,
+        practice: &str,
+        lease_token: &str,
+        items: &[IncomingSpruceItem],
+        now_ts: i64,
+    ) -> BatchStepReport<(String, SpruceIngestOutcome)> {
+        let mut succeeded = Vec::new();
+        let mut failures = Vec::new();
+        for item in items {
+            let id = item.message_id().to_owned();
+            match self
+                .ingest_spruce_item(practice, lease_token, item, now_ts)
+                .await
+            {
+                Ok(outcome) => succeeded.push((id, outcome)),
+                Err(error) => failures.push(PatientIsolationFailure {
+                    target_id: id,
+                    error,
+                }),
+            }
+        }
+        BatchStepReport {
+            succeeded,
+            failures,
+        }
+    }
+
+    /// Advances the practice channel's `place` monotonically past contiguous
+    /// durably kept message positions (`CodaMovesOn` in `MessageMatching.tla`, `Rule 12`).
+    pub async fn advance_spruce_channel_place(
+        &self,
+        practice: &str,
+        lease_token: &str,
+        spruce_cursor: Option<String>,
+        now_ts: i64,
+    ) -> Result<u64, SpruceMatchingError> {
+        let practice = require_id(practice, "practice")?;
+        let lease_token = require_id(lease_token, "lease_token")?;
+        let tx = self.db.begin().await?;
+        let row = lock_channel_row(&tx, practice, now_ts).await?;
+        let (current, lease) = decode_channel_row(row)?;
+        let Some(active_lease) = lease
+            .as_ref()
+            .filter(|l| l.is_active_at(now_ts) && l.lease_token == lease_token)
+        else {
+            return Err(SpruceMatchingError::InvalidReaderLease {
+                practice: practice.to_owned(),
+            });
+        };
+        let ChannelStanding::Connected {
+            mut place,
+            start_boundary,
+            spruce_cursor: prev_cursor,
+            backlog,
+            health,
+        } = current
+        else {
+            return Err(SpruceMatchingError::ChannelStateRefused {
+                practice: practice.to_owned(),
+                state: "disconnected".to_owned(),
+                action: "advance_place",
+            });
+        };
+        if !matches!(health, ChannelHealth::Reading { .. }) {
+            return Err(SpruceMatchingError::ChannelStateRefused {
+                practice: practice.to_owned(),
+                state: "not_reading".to_owned(),
+                action: "advance_place",
+            });
+        }
+
+        let kept_positions: BTreeSet<u64> = entities::spruce_message::Entity::find()
+            .filter(entities::spruce_message::Column::Practice.eq(practice))
+            .filter(
+                entities::spruce_message::Column::ChannelPosition
+                    .gt(i64::try_from(place).unwrap_or(i64::MAX)),
+            )
+            .all(&tx)
+            .await?
+            .into_iter()
+            .filter_map(|r| u64::try_from(r.channel_position).ok())
+            .collect();
+        while kept_positions.contains(&(place + 1)) {
+            place += 1;
+        }
+
+        let updated = ChannelStanding::Connected {
+            place,
+            start_boundary,
+            spruce_cursor: spruce_cursor.or(prev_cursor),
+            backlog,
+            health,
+        };
+        save_channel_state_in_tx(&tx, practice, &updated, Some(active_lease), now_ts).await?;
+        tx.commit().await?;
+        Ok(place)
+    }
+
+    /// Marks an unreadable (`CantRead`) message `Done` (`YouMarkDone`, `Rule 13`).
+    pub async fn mark_unreadable_spruce_message_done(
+        &self,
+        auth: &dyn AuthStore,
+        actor: &PhysicianIdentity,
+        message_id: &str,
+        command_key: &str,
+        now_ts: i64,
+    ) -> Result<SavedSpruceMessage, SpruceMatchingError> {
+        require_active_physician(auth, actor).await?;
+        let practice = actor.practice_id.as_str();
+        let message_id = require_id(message_id, "message_id")?;
+        let command_key = require_id(command_key, "command_key")?;
+        let command_body = json!({
+            "kind": "spruce_mark_unreadable_done",
+            "practice": practice,
+            "physician": actor.physician_id,
+            "message_id": message_id,
+        });
+
+        let tx = self.db.begin().await?;
+        match receipt::check(
+            &tx,
+            practice,
+            &actor.physician_id,
+            command_key,
+            &command_body,
+        )
+        .await?
+        {
+            Some(Receipt::Same) => {
+                let row = entities::spruce_message::Entity::find_by_id((
+                    practice.to_owned(),
+                    message_id.to_owned(),
+                ))
+                .one(&tx)
+                .await?
+                .ok_or_else(|| SpruceMatchingError::NotFound {
+                    practice: practice.to_owned(),
+                    kind: "message",
+                    id: message_id.to_owned(),
+                })?;
+                let decoded = decode_message_row(row)?;
+                tx.commit().await?;
+                return Ok(decoded);
+            }
+            Some(Receipt::Different) => {
+                return Err(SpruceMatchingError::IdempotencyCollision {
+                    key: command_key.to_owned(),
+                });
+            }
+            None | Some(Receipt::New) => {}
+        }
+
+        let row = entities::spruce_message::Entity::find_by_id((
+            practice.to_owned(),
+            message_id.to_owned(),
+        ))
+        .lock_exclusive()
+        .one(&tx)
+        .await?
+        .ok_or_else(|| SpruceMatchingError::NotFound {
+            practice: practice.to_owned(),
+            kind: "message",
+            id: message_id.to_owned(),
+        })?;
+        let mut msg = decode_message_row(row)?;
+        let MessageStanding::CantRead {
+            failure_reason,
+            app_url,
+        } = msg.standing
+        else {
+            return Err(SpruceMatchingError::InvalidTransition {
+                id: message_id.to_owned(),
+                current_state: msg.standing.kind_str().to_owned(),
+                action: "mark_done",
+            });
+        };
+        msg.standing = MessageStanding::MarkedDone {
+            failure_reason,
+            app_url,
+            marked_by: actor.physician_id.clone(),
+            marked_at: now_ts,
+        };
+        msg.updated_at = now_ts;
+        save_message_in_tx(&tx, &msg).await?;
+        let _ = receipt::record(
+            &tx,
+            practice,
+            &actor.physician_id,
+            command_key,
+            &command_body,
+        )
+        .await?;
+        tx.commit().await?;
+        Ok(msg)
+    }
+
+    /// Persists Coda's classification and match assessment on a `Deciding` message
+    /// (`CodaDecides` / `CodaFilters` in `MessageMatching.tla`) through explicit
+    /// typed operations, routing patient mail via `Rule 4` and dispatching any
+    /// resulting review request once.
+    #[expect(
+        clippy::too_many_arguments,
+        reason = "persists classification provenance, decision, authority sets, and optional review receiver together"
+    )]
+    pub async fn record_spruce_message_classification(
+        &self,
+        auth: &dyn AuthStore,
+        practice: &str,
+        message_id: &str,
+        run_id: Option<&str>,
+        recipe_version: &str,
+        guidance_version: &str,
+        decision: MatchingDecision,
+        review_receiver: Option<&dyn ReviewReceiver>,
+        now_ts: i64,
+    ) -> Result<MessageRoutingOutcome, SpruceMatchingError> {
+        let practice = require_id(practice, "practice")?;
+        let message_id = require_id(message_id, "message_id")?;
+        let recipe_version = require_id(recipe_version, "recipe_version")?;
+        let guidance_version = require_id(guidance_version, "guidance_version")?;
+
+        let registered: BTreeSet<String> = auth
+            .practice_patients(practice)
+            .await?
+            .into_iter()
+            .collect();
+        let allowed = allowed_workspaces_in_practice(auth, practice).await?;
+
+        let tx = self.db.begin().await?;
+        let (outcome, trigger) = self
+            .apply_classification_in_tx(
+                &tx,
+                practice,
+                message_id,
+                run_id,
+                recipe_version,
+                guidance_version,
+                decision,
+                &registered,
+                &allowed,
+                now_ts,
+            )
+            .await?;
+        tx.commit().await?;
+
+        if let (Some(trig), Some(receiver)) = (trigger, review_receiver) {
+            dispatch_single_trigger(self, &trig, receiver, now_ts).await?;
+        }
+        Ok(outcome)
+    }
+
+    #[expect(
+        clippy::too_many_arguments,
+        reason = "shared transactional helper for live harness commit and direct classification persistence"
+    )]
+    pub(crate) async fn apply_classification_in_tx(
+        &self,
+        tx: &sea_orm::DatabaseTransaction,
+        practice: &str,
+        message_id: &str,
+        run_id: Option<&str>,
+        recipe_version: &str,
+        guidance_version: &str,
+        decision: MatchingDecision,
+        registered_workspaces: &BTreeSet<String>,
+        allowed_workspaces_with_physician: &BTreeSet<String>,
+        now_ts: i64,
+    ) -> Result<(MessageRoutingOutcome, Option<PendingSpruceReviewTrigger>), SpruceMatchingError>
+    {
+        let msg_row = entities::spruce_message::Entity::find_by_id((
+            practice.to_owned(),
+            message_id.to_owned(),
+        ))
+        .lock_exclusive()
+        .one(tx)
+        .await?
+        .ok_or_else(|| SpruceMatchingError::NotFound {
+            practice: practice.to_owned(),
+            kind: "message",
+            id: message_id.to_owned(),
+        })?;
+        let mut msg = decode_message_row(msg_row)?;
+        let mut conv = lock_conversation_in_tx(tx, practice, &msg.conversation_id)
+            .await?
+            .ok_or_else(|| SpruceMatchingError::NotFound {
+                practice: practice.to_owned(),
+                kind: "conversation",
+                id: msg.conversation_id.clone(),
+            })?;
+
+        if !matches!(msg.standing, MessageStanding::Deciding { .. }) {
+            return Err(SpruceMatchingError::InvalidTransition {
+                id: message_id.to_owned(),
+                current_state: msg.standing.kind_str().to_owned(),
+                action: "record_classification",
+            });
+        }
+
+        msg.saved_classification = Some(SavedMessageClassification {
+            run_id: run_id.map(str::to_owned),
+            recipe_version: recipe_version.to_owned(),
+            guidance_version: guidance_version.to_owned(),
+            decision: decision.clone(),
+            decided_at: now_ts,
+            physician_override: None,
+        });
+
+        match decision {
+            MatchingDecision::NotPatientMail {
+                category,
+                rationale,
+            } => {
+                msg.standing = MessageStanding::Filtered {
+                    category,
+                    rationale,
+                    filtered_at: now_ts,
+                };
+                msg.updated_at = now_ts;
+                save_message_in_tx(tx, &msg).await?;
+                Ok((MessageRoutingOutcome::Filtered { category }, None))
+            }
+            MatchingDecision::PatientMail {
+                urgency,
+                assessment,
+                ..
+            } => {
+                msg.urgency = match urgency {
+                    MessageUrgencyChoice::Ordinary => MessageUrgency::Ordinary,
+                    MessageUrgencyChoice::Urgent { reason } => MessageUrgency::Urgent {
+                        reason,
+                        flagged_at: now_ts,
+                    },
+                };
+                let (outcome, trigger) = route_patient_message_in_tx(
+                    tx,
+                    &mut conv,
+                    &mut msg,
+                    RoutingOrigin::ModelClassification,
+                    Some(&assessment),
+                    registered_workspaces,
+                    allowed_workspaces_with_physician,
+                    now_ts,
+                )
+                .await?;
+                Ok((outcome, trigger))
+            }
+        }
+    }
+
+    /// Marks a `Filtered` message `"This is a patient"` (`ThisIsAPatient` in
+    /// `MessageMatching.tla`), returning it to conversation routing.
+    pub async fn mark_spruce_message_as_patient(
+        &self,
+        auth: &dyn AuthStore,
+        actor: &PhysicianIdentity,
+        message_id: &str,
+        command_key: &str,
+        review_receiver: Option<&dyn ReviewReceiver>,
+        now_ts: i64,
+    ) -> Result<MessageRoutingOutcome, SpruceMatchingError> {
+        require_active_physician(auth, actor).await?;
+        let practice = actor.practice_id.as_str();
+        let message_id = require_id(message_id, "message_id")?;
+        let command_key = require_id(command_key, "command_key")?;
+        let command_body = json!({
+            "kind": "spruce_this_is_a_patient",
+            "practice": practice,
+            "physician": actor.physician_id,
+            "message_id": message_id,
+        });
+
+        let registered: BTreeSet<String> = auth
+            .practice_patients(practice)
+            .await?
+            .into_iter()
+            .collect();
+        let allowed = allowed_workspaces_in_practice(auth, practice).await?;
+
+        let tx = self.db.begin().await?;
+        match receipt::check(
+            &tx,
+            practice,
+            &actor.physician_id,
+            command_key,
+            &command_body,
+        )
+        .await?
+        {
+            Some(Receipt::Same) => {
+                let row = entities::spruce_message::Entity::find_by_id((
+                    practice.to_owned(),
+                    message_id.to_owned(),
+                ))
+                .one(&tx)
+                .await?
+                .ok_or_else(|| SpruceMatchingError::NotFound {
+                    practice: practice.to_owned(),
+                    kind: "message",
+                    id: message_id.to_owned(),
+                })?;
+                let msg = decode_message_row(row)?;
+                let conv = lock_conversation_in_tx(&tx, practice, &msg.conversation_id)
+                    .await?
+                    .ok_or_else(|| SpruceMatchingError::NotFound {
+                        practice: practice.to_owned(),
+                        kind: "conversation",
+                        id: msg.conversation_id.clone(),
+                    })?;
+                let (raw_outcome, replay_trigger) = match (&msg.standing, &conv.link_state) {
+                    (
+                        MessageStanding::Linked { origin, .. },
+                        ConversationLinkState::Linked { workspace, .. },
+                    ) => {
+                        let expected_cmd_key = match origin {
+                            LinkOrigin::AutomaticRule4 => format!(
+                                "spruce-autolink:{}:{}:{}:{}",
+                                practice, conv.conversation_id, msg.message_id, workspace
+                            ),
+                            _ => format!(
+                                "spruce-arrival:{}:{}:{}:{}",
+                                practice, conv.conversation_id, msg.message_id, workspace
+                            ),
+                        };
+                        let trig = entities::spruce_review_trigger::Entity::find_by_id((
+                            practice.to_owned(),
+                            expected_cmd_key,
+                        ))
+                        .one(&tx)
+                        .await?
+                        .map(decode_trigger_row)
+                        .transpose()?;
+                        let joined_ids = if matches!(origin, LinkOrigin::AutomaticRule4) {
+                            let linked_rows = entities::spruce_message::Entity::find()
+                                .filter(entities::spruce_message::Column::Practice.eq(practice))
+                                .filter(
+                                    entities::spruce_message::Column::ConversationId
+                                        .eq(&conv.conversation_id),
+                                )
+                                .filter(entities::spruce_message::Column::StandingKind.eq("linked"))
+                                .order_by_asc(entities::spruce_message::Column::ChannelPosition)
+                                .all(&tx)
+                                .await?;
+                            linked_rows.into_iter().map(|r| r.message_id).collect()
+                        } else {
+                            vec![msg.message_id]
+                        };
+                        let review_command_key = trig.as_ref().map(|t| t.command_key.clone());
+                        (
+                            MessageRoutingOutcome::Linked {
+                                workspace: workspace.clone(),
+                                origin: origin.clone(),
+                                joined_message_ids: joined_ids,
+                                review_command_key,
+                            },
+                            trig,
+                        )
+                    }
+                    (MessageStanding::NotAPatient { .. }, _) => {
+                        (MessageRoutingOutcome::NotAPatient, None)
+                    }
+                    _ => (
+                        MessageRoutingOutcome::Waiting {
+                            suggested_workspace: conv
+                                .active_suggestion
+                                .as_ref()
+                                .map(|s| s.workspace.clone()),
+                        },
+                        None,
+                    ),
+                };
+                tx.commit().await?;
+                if let (Some(trig), Some(receiver)) = (replay_trigger, review_receiver) {
+                    dispatch_single_trigger(self, &trig, receiver, now_ts).await?;
+                }
+                return Ok(project_routing_outcome_for_viewer(auth, actor, raw_outcome).await);
+            }
+            Some(Receipt::Different) => {
+                return Err(SpruceMatchingError::IdempotencyCollision {
+                    key: command_key.to_owned(),
+                });
+            }
+            None | Some(Receipt::New) => {}
+        }
+
+        let msg_row = entities::spruce_message::Entity::find_by_id((
+            practice.to_owned(),
+            message_id.to_owned(),
+        ))
+        .lock_exclusive()
+        .one(&tx)
+        .await?
+        .ok_or_else(|| SpruceMatchingError::NotFound {
+            practice: practice.to_owned(),
+            kind: "message",
+            id: message_id.to_owned(),
+        })?;
+        let mut msg = decode_message_row(msg_row)?;
+        if !matches!(msg.standing, MessageStanding::Filtered { .. }) {
+            return Err(SpruceMatchingError::InvalidTransition {
+                id: message_id.to_owned(),
+                current_state: msg.standing.kind_str().to_owned(),
+                action: "this_is_a_patient",
+            });
+        }
+        if let Some(saved) = &mut msg.saved_classification {
+            saved.physician_override = Some(PhysicianPatientOverride {
+                physician_id: actor.physician_id.clone(),
+                overridden_at: now_ts,
+            });
+        }
+
+        let mut conv = lock_conversation_in_tx(&tx, practice, &msg.conversation_id)
+            .await?
+            .ok_or_else(|| SpruceMatchingError::NotFound {
+                practice: practice.to_owned(),
+                kind: "conversation",
+                id: msg.conversation_id.clone(),
+            })?;
+
+        let (outcome, trigger) = route_patient_message_in_tx(
+            &tx,
+            &mut conv,
+            &mut msg,
+            RoutingOrigin::PhysicianMarkedPatient {
+                physician_id: actor.physician_id.clone(),
+            },
+            None,
+            &registered,
+            &allowed,
+            now_ts,
+        )
+        .await?;
+        let _ = receipt::record(
+            &tx,
+            practice,
+            &actor.physician_id,
+            command_key,
+            &command_body,
+        )
+        .await?;
+        tx.commit().await?;
+
+        if let (Some(trig), Some(receiver)) = (trigger, review_receiver) {
+            dispatch_single_trigger(self, &trig, receiver, now_ts).await?;
+        }
+        Ok(project_routing_outcome_for_viewer(auth, actor, outcome).await)
+    }
 }
