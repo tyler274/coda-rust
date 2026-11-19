@@ -421,6 +421,7 @@ fn update_kind_label(kind: UpdateItemKindWire) -> &'static str {
         UpdateItemKindWire::VisitBriefing => "Visit briefing",
         UpdateItemKindWire::PatientSummary => "Patient summary",
         UpdateItemKindWire::EndedNothingToDo => "Skipped",
+        UpdateItemKindWire::FollowUpChanged => "Follow-up",
     }
 }
 
@@ -429,7 +430,8 @@ fn update_kind_tone(kind: UpdateItemKindWire) -> Tone {
         UpdateItemKindWire::ConcernRaised => Tone::Warning,
         UpdateItemKindWire::AssessedReview
         | UpdateItemKindWire::VisitBriefing
-        | UpdateItemKindWire::PatientSummary => Tone::Primary,
+        | UpdateItemKindWire::PatientSummary
+        | UpdateItemKindWire::FollowUpChanged => Tone::Primary,
         UpdateItemKindWire::ConcernRetired
         | UpdateItemKindWire::QuietReview
         | UpdateItemKindWire::EndedNothingToDo => Tone::Neutral,
