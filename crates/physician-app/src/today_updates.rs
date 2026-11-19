@@ -114,6 +114,32 @@ pub(crate) struct OpenItemTarget {
     pub idempotency_key: String,
 }
 
+/// Classification of an item-open failure determining copy and retry eligibility.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub(crate) enum ItemOpenFailureKind {
+    /// Item was deleted or removed from the physician's panel (`403` / `404`).
+    UnavailableOnPanel,
+    /// Transient load or server failure (`Retry` stays available while older content remains).
+    Retryable,
+}
+
+impl ItemOpenFailureKind {
+    /// Maps an HTTP client error when opening a Today/Updates item into its failure kind.
+    pub(crate) const fn from_http_error(error: &physician_client::HttpError) -> Self {
+        if matches!(
+            error,
+            physician_client::HttpError::Status {
+                status: 403 | 404,
+                ..
+            }
+        ) {
+            Self::UnavailableOnPanel
+        } else {
+            Self::Retryable
+        }
+    }
+}
+
 /// Failure state preserved when opening an item fails, keeping existing content on screen.
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub(crate) struct FailedItemOpen {
@@ -123,6 +149,25 @@ pub(crate) struct FailedItemOpen {
     pub message: String,
     /// Whether `Retry` should be offered (`true` for transient/server errors).
     pub retryable: bool,
+}
+
+/// Constructs [`FailedItemOpen`] for the classified failure kind (`P2.Part of Today can't load`).
+pub(crate) fn build_item_open_failure(
+    target: OpenItemTarget,
+    kind: ItemOpenFailureKind,
+) -> FailedItemOpen {
+    match kind {
+        ItemOpenFailureKind::UnavailableOnPanel => FailedItemOpen {
+            target,
+            message: "This item is no longer available on your panel.".to_owned(),
+            retryable: false,
+        },
+        ItemOpenFailureKind::Retryable => FailedItemOpen {
+            target,
+            message: "Couldn’t load this".to_owned(),
+            retryable: true,
+        },
+    }
 }
 
 /// State of an in-flight or failed `Done` action on Today or a patient page.
@@ -807,5 +852,26 @@ mod tests {
             chip.open_uri.as_deref(),
             Some("https://ehr.codahealth.test/chart/obs-bmp-1")
         );
+    }
+
+    #[test]
+    fn item_open_failure_uses_concise_retryable_copy() {
+        let target = OpenItemTarget {
+            workspace_id: "pw-1".to_owned(),
+            item_id: "concern-1".to_owned(),
+            label: "Serum creatinine".to_owned(),
+            idempotency_key: "key-1".to_owned(),
+        };
+        let retryable = build_item_open_failure(target.clone(), ItemOpenFailureKind::Retryable);
+        assert_eq!(retryable.message, "Couldn’t load this");
+        assert!(retryable.retryable);
+        assert_eq!(retryable.target, target);
+
+        let unavailable = build_item_open_failure(target, ItemOpenFailureKind::UnavailableOnPanel);
+        assert_eq!(
+            unavailable.message,
+            "This item is no longer available on your panel."
+        );
+        assert!(!unavailable.retryable);
     }
 }

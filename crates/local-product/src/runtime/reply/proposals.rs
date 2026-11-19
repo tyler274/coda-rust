@@ -35,7 +35,7 @@ use super::super::understanding::{SummaryCitation, build_summary_citation};
 use super::super::{
     Authority, RuntimeError, Scope, Store, control, conversion_error, error, keys, now,
 };
-use super::{Draft, RevisionInput, draft_model};
+use super::{Draft, DraftStatus, RevisionInput, draft_model};
 use crate::physician_sources::SourcePatient;
 
 /// Prefix identifying a [`Scope::chat`] owned by a reply proposal draft.
@@ -853,6 +853,10 @@ pub struct ReplyConversation {
     pub pending_reply_request: Option<PendingPhysicianReplyRequest>,
     /// Current reply standing.
     pub reply_standing: ReplyStanding,
+    /// Open `reply_id` preserved when a cited record change retired a stale `Ready` proposal to `None`,
+    /// so Coda's replacement proposal keeps the same `reply_id` for existing physician drafts.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub retired_stale_reply_id: Option<u64>,
     /// Concerns raised in connection with this conversation (retired only on `NotAPatient` move).
     pub associated_concern_ids: BTreeSet<ConcernId>,
     /// Database-clock Unix second when created.
@@ -1392,6 +1396,8 @@ struct StoredConversationState {
     active_review: Option<ActiveReplyReview>,
     pending_reply_request: Option<PendingPhysicianReplyRequest>,
     reply_standing: StoredReplyStanding,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    retired_stale_reply_id: Option<u64>,
     associated_concern_ids: BTreeSet<ConcernId>,
 }
 
@@ -1844,6 +1850,7 @@ async fn decode_conversation(
         active_review: stored.active_review,
         pending_reply_request: stored.pending_reply_request,
         reply_standing,
+        retired_stale_reply_id: stored.retired_stale_reply_id,
         associated_concern_ids: stored.associated_concern_ids,
         created_at: row.created_at,
         updated_at: row.updated_at,
@@ -1904,6 +1911,7 @@ fn encode_conversation_model(
         active_review: conv.active_review.clone(),
         pending_reply_request: conv.pending_reply_request.clone(),
         reply_standing: stored_standing,
+        retired_stale_reply_id: conv.retired_stale_reply_id,
         associated_concern_ids: conv.associated_concern_ids.clone(),
     })
     .map_err(conversion_error("StoredConversationState", "json"))?;
@@ -2600,6 +2608,77 @@ async fn cancel_running_proposal_draft_revisions_in_tx(
     Ok(())
 }
 
+/// Single-owner rule retiring open [`ReplyStanding::Ready`] proposals in `workspace`
+/// when any chart record cited in `proposal.citations` or `proposal.basis.cited_records`
+/// was corrected to a newer revision (`updated_revisions`) or withdrawn (`withdrawn_candidates`).
+///
+/// Private physician drafts (`reply_draft_binding` / `reply_draft`), closed-with-undo history,
+/// and unrelated conversations stay intact.
+pub(in crate::runtime) async fn retire_stale_ready_replies_in_tx(
+    tx: &impl ConnectionTrait,
+    workspace: &str,
+    updated_revisions: &std::collections::BTreeMap<String, String>,
+    withdrawn_candidates: &std::collections::HashSet<String>,
+) -> Result<(), DbErr> {
+    if updated_revisions.is_empty() && withdrawn_candidates.is_empty() {
+        return Ok(());
+    }
+    let ready_rows = reply_conversation::Entity::find()
+        .filter(reply_conversation::Column::Workspace.eq(workspace))
+        .filter(reply_conversation::Column::ReplyState.eq("ready"))
+        .lock_exclusive()
+        .all(tx)
+        .await?;
+    if ready_rows.is_empty() {
+        return Ok(());
+    }
+    let clock = now(tx).await?;
+    for row in ready_rows {
+        let mut conv = decode_conversation(tx, row).await?;
+        let ReplyStanding::Ready { proposal } = &conv.reply_standing else {
+            continue;
+        };
+        let is_stale = proposal
+            .citations
+            .iter()
+            .map(|citation| &citation.reference)
+            .chain(proposal.basis.cited_records.iter())
+            .any(|reference| {
+                withdrawn_candidates.contains(&reference.candidate_id)
+                    || updated_revisions
+                        .get(&reference.candidate_id)
+                        .is_some_and(|latest_rev| latest_rev != &reference.revision)
+            });
+        if !is_stale {
+            continue;
+        }
+        // If a physician revision job is actively running on this reply, it catches moved
+        // sources before committing rather than retiring the reply out from under the run.
+        let chat_key = format!(
+            "{PROPOSAL_DRAFT_CHAT_PREFIX}{}:{}",
+            conv.conversation_id, proposal.reply_id
+        );
+        let has_running_revision = reply_draft::Entity::find()
+            .filter(reply_draft::Column::Practice.eq(conv.practice.as_str()))
+            .filter(reply_draft::Column::Workspace.eq(workspace))
+            .filter(reply_draft::Column::Reply.eq(chat_key.as_str()))
+            .filter(reply_draft::Column::Status.is_in([DraftStatus::Pending, DraftStatus::Active]))
+            .lock_exclusive()
+            .one(tx)
+            .await?
+            .is_some();
+        if has_running_revision {
+            continue;
+        }
+        conv.retired_stale_reply_id = Some(proposal.reply_id);
+        conv.reply_standing = ReplyStanding::None;
+        conv.conversation_version += 1;
+        conv.updated_at = clock;
+        encode_conversation_model(&conv)?.update(tx).await?;
+    }
+    Ok(())
+}
+
 impl Store {
     /// Registers or re-reads a reply conversation and its initial [`ConversationLink`].
     pub async fn link_reply_conversation(
@@ -2648,6 +2727,7 @@ impl Store {
             active_review: None,
             pending_reply_request: None,
             reply_standing: ReplyStanding::None,
+            retired_stale_reply_id: None,
             associated_concern_ids: BTreeSet::new(),
             created_at: timestamp,
             updated_at: timestamp,
@@ -3475,12 +3555,21 @@ impl Store {
                     }
                 }
 
+                let retired_stale_reply_id = conv.retired_stale_reply_id.take();
                 let (reply_id, replaced_proposal_version) = match &conv.reply_standing {
                     ReplyStanding::Ready { proposal } => {
                         (proposal.reply_id, Some(proposal.version))
                     }
                     ReplyStanding::Withheld { reply_id, .. } => (*reply_id, None),
-                    ReplyStanding::None | ReplyStanding::ClosedWithUndo { .. } => {
+                    ReplyStanding::None => {
+                        if let Some(stale_id) = retired_stale_reply_id {
+                            (stale_id, None)
+                        } else {
+                            conv.last_reply_id += 1;
+                            (conv.last_reply_id, None)
+                        }
+                    }
+                    ReplyStanding::ClosedWithUndo { .. } => {
                         conv.last_reply_id += 1;
                         (conv.last_reply_id, None)
                     }
@@ -3609,6 +3698,7 @@ impl Store {
                     }
                 }
                 conv.reply_standing = ReplyStanding::None;
+                conv.retired_stale_reply_id = None;
                 if let Some(pending) = &conv.pending_reply_request {
                     let request_id = pending.request_id.clone();
                     if let Some(reopened_id) = reopen_latest_needs_no_reply_for_request(&mut conv) {
@@ -3640,6 +3730,7 @@ impl Store {
                     }
                 }
                 conv.reply_standing = ReplyStanding::None;
+                conv.retired_stale_reply_id = None;
                 if let Some(pending) = &conv.pending_reply_request {
                     let request_id = pending.request_id.clone();
                     let _ = reopen_latest_needs_no_reply_for_request(&mut conv);
@@ -3794,6 +3885,7 @@ impl Store {
         conv.conversation_version += 1;
         conv.active_review = None;
         conv.pending_reply_request = None;
+        conv.retired_stale_reply_id = None;
 
         match target {
             ConversationLink::LinkedPatient {

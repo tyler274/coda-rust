@@ -421,7 +421,7 @@ pub struct WakeSummary {
     pub coalesced_inputs: BTreeMap<String, Vec<ReviewDispatchInput>>,
 }
 
-fn decode_dispatch_state(row: patient_dispatch::Model) -> Result<DispatchState, DbErr> {
+pub(super) fn decode_dispatch_state(row: patient_dispatch::Model) -> Result<DispatchState, DbErr> {
     let cadence: Cadence = serde_json::from_value(row.cadence)
         .map_err(conversion_error("patient_dispatch.cadence", "Cadence"))?;
     let last_checked_records: BTreeMap<String, String> =

@@ -525,6 +525,19 @@ impl DispatchState {
         now >= self.next_due_at()
     }
 
+    /// Computes the next Unix second when a scheduled source fetch is due,
+    /// anchored on `source_last_good_read_at` (or `self.last_success_at`),
+    /// or `self.registered_at` before any successful check.
+    #[must_use]
+    pub fn next_source_check_at(&self, source_last_good_read_at: Option<i64>) -> i64 {
+        match source_last_good_read_at.or(self.last_success_at) {
+            None => self.registered_at,
+            Some(last_good) => {
+                last_good.saturating_add(self.cadence.check_every_seconds().cast_signed())
+            }
+        }
+    }
+
     /// Builds the operator inspection projection for `(practice_id, patient_workspace_id)`.
     #[must_use]
     pub fn operator_view(

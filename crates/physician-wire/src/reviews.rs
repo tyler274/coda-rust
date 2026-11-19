@@ -67,13 +67,18 @@ impl ReviewControlActionWire {
 }
 
 /// Why a held patient review awaits physician action.
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub enum ReviewHoldReasonWire {
     /// The physician stopped the review before it finished; `Resume` continues it.
     Stopped,
     /// The review reached a turn or budget limit; `Try again` continues it.
     Limit,
+    /// The model provider refused the request (for example exhausted billing or invalid auth); `Try again` continues it.
+    ProviderBlocked {
+        /// Provider-facing refusal summary preserved for the physician.
+        reason: String,
+    },
 }
 
 /// Why a patient review was started.
@@ -258,7 +263,7 @@ impl PatientReviewStateWire {
                 ..
             } => Some(ReviewControlActionWire::Resume),
             Self::Held {
-                reason: ReviewHoldReasonWire::Limit,
+                reason: ReviewHoldReasonWire::Limit | ReviewHoldReasonWire::ProviderBlocked { .. },
                 ..
             }
             | Self::Failed { .. } => Some(ReviewControlActionWire::TryAgain),
@@ -282,7 +287,7 @@ impl PatientReviewStateWire {
                 ..
             } => "Stopped",
             Self::Held {
-                reason: ReviewHoldReasonWire::Limit,
+                reason: ReviewHoldReasonWire::Limit | ReviewHoldReasonWire::ProviderBlocked { .. },
                 ..
             }
             | Self::Failed { .. } => "Couldn’t finish",
@@ -496,6 +501,21 @@ mod tests {
             .available_control(),
             Some(ReviewControlActionWire::TryAgain)
         );
+        let blocked = PatientReviewStateWire::Held {
+            reason: ReviewHoldReasonWire::ProviderBlocked {
+                reason: "Provider credits exhausted.".into(),
+            },
+            held_at: "2026-08-27T12:01:30Z".into(),
+            partial_text: None,
+        };
+        assert_eq!(
+            blocked.available_control(),
+            Some(ReviewControlActionWire::TryAgain)
+        );
+        assert_eq!(blocked.badge_label(), "Couldn’t finish");
+        let encoded = serde_json::to_string(&blocked).unwrap();
+        let decoded: PatientReviewStateWire = serde_json::from_str(&encoded).unwrap();
+        assert_eq!(decoded, blocked);
         assert_eq!(
             PatientReviewStateWire::Failed {
                 reason: "provider timeout".into(),

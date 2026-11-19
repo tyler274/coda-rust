@@ -232,6 +232,9 @@ async fn load_practice_from_source_inner(
                 | SourceStanding::ReconnectNeeded { reason, .. } => {
                     return Err(reason.clone());
                 }
+                SourceStanding::Overdue { .. } => {
+                    return Err("scheduled source fetch is overdue".to_owned());
+                }
                 SourceStanding::NotYetRead => {
                     return Err("source check produced no records".to_owned());
                 }

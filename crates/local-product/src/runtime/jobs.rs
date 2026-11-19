@@ -1315,7 +1315,9 @@ impl Store {
             Self::sync_review_on_settlement_in_tx(
                 &tx,
                 &job,
-                "abandoned attempt lease expired",
+                super::reviews::SettlementCause::Failed {
+                    reason_label: "abandoned attempt lease expired".to_owned(),
+                },
                 clock,
             )
             .await?;
@@ -1444,7 +1446,7 @@ impl Store {
             return Err(error("unknown practice job attempt").into());
         }
         records::append_for(&tx, &claim.scope.owner_key(), &event, is_current).await?;
-        if is_current && matches!(event.kind, EventKind::ProviderBlocked { .. }) {
+        if is_current && let EventKind::ProviderBlocked { ref reason } = event.kind {
             let attempt = job
                 .attempts
                 .last_mut()
@@ -1465,7 +1467,15 @@ impl Store {
                 .await?;
             }
             job.updated_at = clock;
-            Self::sync_review_on_settlement_in_tx(&tx, &job, "provider blocked", clock).await?;
+            Self::sync_review_on_settlement_in_tx(
+                &tx,
+                &job,
+                super::reviews::SettlementCause::ProviderBlocked {
+                    reason: reason.clone(),
+                },
+                clock,
+            )
+            .await?;
             Self::save_practice_job(tx, &job).await?;
             return Ok(());
         }
@@ -1671,7 +1681,13 @@ impl Store {
                 .await?;
             }
             job.updated_at = clock;
-            Self::sync_review_on_settlement_in_tx(&tx, &job, &format!("{reason:?}"), clock).await?;
+            Self::sync_review_on_settlement_in_tx(
+                &tx,
+                &job,
+                super::reviews::SettlementCause::from_attempt_failure(reason),
+                clock,
+            )
+            .await?;
             Self::save_practice_job(tx, &job).await?;
             Ok(settlement)
         } else {

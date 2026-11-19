@@ -12,7 +12,7 @@ use serde_json::Value;
 use uuid::Uuid;
 
 use super::entities::{
-    command, patient_source_status, practice_source_access, reconnect_command,
+    command, patient_dispatch, patient_source_status, practice_source_access, reconnect_command,
     source_adapter_state, source_patient_link, source_pull, workspace_practice,
 };
 use super::receipt::Receipt;
@@ -24,9 +24,10 @@ use crate::physician_sources::{
 use crate::source_status::{
     AdapterPresence, CompleteDelivery, LinkTarget, PartialDelivery, PatientSourceRecordStatus,
     PracticeSourceReport, PullAttempt, PullDisposition, PullOrderOutcome, PullTicket,
-    ReconnectCommandClaim, ReconnectCommandFence, ReconnectCommandState, SourceAccessState,
-    SourcePatientKey, SourcePatientLink, SourceStanding, SourceStatusError, decide_pull_order,
-    derive_standing, summarize_practice_source, validate_non_empty,
+    ReconnectCommandClaim, ReconnectCommandFence, ReconnectCommandState, ScheduledFetch,
+    SourceAccessState, SourcePatientKey, SourcePatientLink, SourceStanding, SourceStatusError,
+    decide_pull_order, derive_standing_with_schedule, summarize_practice_source,
+    validate_non_empty,
 };
 
 async fn ensure_workspace_practice_tx(
@@ -1382,11 +1383,52 @@ impl Store {
             .collect()
     }
 
+    /// Returns `(workspace -> practice_id)` bindings for the given workspaces.
+    pub async fn workspace_practices(
+        &self,
+        workspaces: &[String],
+    ) -> Result<BTreeMap<String, String>, SourceStatusError> {
+        if workspaces.is_empty() {
+            return Ok(BTreeMap::new());
+        }
+        let bindings = workspace_practice::Entity::find()
+            .filter(workspace_practice::Column::Workspace.is_in(workspaces.iter().cloned()))
+            .all(&self.db)
+            .await?;
+        Ok(bindings
+            .into_iter()
+            .map(|row| (row.workspace, row.practice))
+            .collect())
+    }
+
     /// Derives [`SourceStanding`] per `(workspace_id, source_id)` for a batch of workspaces
-    /// using each workspace's bound practice access and status rows.
+    /// using the database clock to detect missed scheduled fetches.
     pub async fn workspace_source_standings(
         &self,
         workspaces: &[String],
+    ) -> Result<BTreeMap<String, BTreeMap<String, SourceStanding>>, SourceStatusError> {
+        let now_unix = now(&self.db).await?;
+        self.workspace_source_standings_at(workspaces, now_unix)
+            .await
+    }
+
+    /// Derives [`SourceStanding`] per `(workspace_id, source_id)` using an explicit `now_unix`.
+    pub async fn workspace_source_standings_at(
+        &self,
+        workspaces: &[String],
+        now_unix: i64,
+    ) -> Result<BTreeMap<String, BTreeMap<String, SourceStanding>>, SourceStatusError> {
+        self.workspace_source_standings_for_practices(workspaces, &BTreeMap::new(), now_unix)
+            .await
+    }
+
+    /// Derives [`SourceStanding`] per `(workspace_id, source_id)` using per-practice clocks
+    /// (`practice_now`, falling back to `default_now` when absent) to detect missed scheduled fetches.
+    pub async fn workspace_source_standings_for_practices(
+        &self,
+        workspaces: &[String],
+        practice_now: &BTreeMap<String, i64>,
+        default_now: i64,
     ) -> Result<BTreeMap<String, BTreeMap<String, SourceStanding>>, SourceStatusError> {
         if workspaces.is_empty() {
             return Ok(BTreeMap::new());
@@ -1430,11 +1472,22 @@ impl Store {
             .all(&self.db)
             .await?;
         let status_rows = patient_source_status::Entity::find()
-            .filter(patient_source_status::Column::Practice.is_in(practices))
+            .filter(patient_source_status::Column::Practice.is_in(practices.clone()))
             .filter(patient_source_status::Column::Workspace.is_in(workspaces.iter().cloned()))
             .order_by_asc(patient_source_status::Column::SourceId)
             .all(&self.db)
             .await?;
+        let dispatch_rows = patient_dispatch::Entity::find()
+            .filter(patient_dispatch::Column::Practice.is_in(practices))
+            .filter(patient_dispatch::Column::Workspace.is_in(workspaces.iter().cloned()))
+            .all(&self.db)
+            .await?;
+        let mut dispatch_map: HashMap<(String, String), patient_work::DispatchState> =
+            HashMap::new();
+        for row in dispatch_rows {
+            let key = (row.practice.clone(), row.workspace.clone());
+            dispatch_map.insert(key, super::dispatch::decode_dispatch_state(row)?);
+        }
         let mut status_map: HashMap<(String, String, String), PatientSourceRecordStatus> =
             HashMap::new();
         let mut sources_by_workspace: HashMap<String, BTreeSet<String>> = HashMap::new();
@@ -1477,22 +1530,48 @@ impl Store {
             let Some(source_ids) = sources_by_workspace.get(workspace_id) else {
                 continue;
             };
+            let now_unix = practice_now
+                .get(practice_id)
+                .copied()
+                .unwrap_or(default_now);
+            let dispatch = dispatch_map.get(&(practice_id.clone(), workspace_id.clone()));
             let ws_entry = out.entry(workspace_id.clone()).or_default();
             for source_id in source_ids {
                 let access = access_map.get(&(practice_id.clone(), source_id.clone()));
                 let status =
                     status_map.get(&(practice_id.clone(), workspace_id.clone(), source_id.clone()));
-                ws_entry.insert(source_id.clone(), derive_standing(access, status));
+                let schedule = dispatch.map(|state| ScheduledFetch {
+                    next_due_at: state
+                        .next_source_check_at(status.and_then(|row| row.last_good_read_at)),
+                });
+                ws_entry.insert(
+                    source_id.clone(),
+                    derive_standing_with_schedule(access, status, schedule, now_unix),
+                );
             }
         }
         Ok(out)
     }
 
-    /// Builds the authoritative [`PracticeSourceReport`] for `(practice_id, source_id)`.
+    /// Builds the authoritative [`PracticeSourceReport`] for `(practice_id, source_id)`
+    /// using the database clock.
     pub async fn practice_source_report(
         &self,
         practice_id: &str,
         source_id: &str,
+    ) -> Result<PracticeSourceReport, SourceStatusError> {
+        let now_unix = now(&self.db).await?;
+        self.practice_source_report_at(practice_id, source_id, now_unix)
+            .await
+    }
+
+    /// Builds the authoritative [`PracticeSourceReport`] for `(practice_id, source_id)`
+    /// at `now_unix`.
+    pub async fn practice_source_report_at(
+        &self,
+        practice_id: &str,
+        source_id: &str,
+        now_unix: i64,
     ) -> Result<PracticeSourceReport, SourceStatusError> {
         validate_non_empty("practice_id", practice_id)?;
         validate_non_empty("source_id", source_id)?;
@@ -1518,11 +1597,32 @@ impl Store {
             workspaces.insert(ws.clone());
         }
 
+        let mut dispatch_by_ws: HashMap<String, patient_work::DispatchState> = HashMap::new();
+        if !workspaces.is_empty() {
+            let dispatch_rows = patient_dispatch::Entity::find()
+                .filter(patient_dispatch::Column::Practice.eq(practice_id))
+                .filter(patient_dispatch::Column::Workspace.is_in(workspaces.iter().cloned()))
+                .all(&self.db)
+                .await?;
+            for row in dispatch_rows {
+                let ws = row.workspace.clone();
+                dispatch_by_ws.insert(ws, super::dispatch::decode_dispatch_state(row)?);
+            }
+        }
+
         let patients: Vec<(String, SourceStanding)> = workspaces
             .into_iter()
             .map(|workspace_id| {
+                let status = status_by_ws.get(workspace_id.as_str());
+                let schedule =
+                    dispatch_by_ws
+                        .get(workspace_id.as_str())
+                        .map(|state| ScheduledFetch {
+                            next_due_at: state
+                                .next_source_check_at(status.and_then(|row| row.last_good_read_at)),
+                        });
                 let standing =
-                    derive_standing(access.as_ref(), status_by_ws.get(workspace_id.as_str()));
+                    derive_standing_with_schedule(access.as_ref(), status, schedule, now_unix);
                 (workspace_id, standing)
             })
             .collect();
@@ -1538,11 +1638,25 @@ impl Store {
     }
 
     /// Builds [`PracticeSourceReport`] items for every source known to `practice_id`
-    /// (via links, access state, status rows, or `registered_sources`), sorted by `source_id`.
+    /// using the database clock.
     pub async fn practice_all_source_reports(
         &self,
         practice_id: &str,
         registered_sources: &[String],
+    ) -> Result<Vec<PracticeSourceReport>, SourceStatusError> {
+        let now_unix = now(&self.db).await?;
+        self.practice_all_source_reports_at(practice_id, registered_sources, now_unix)
+            .await
+    }
+
+    /// Builds [`PracticeSourceReport`] items for every source known to `practice_id`
+    /// (via links, access state, status rows, or `registered_sources`), sorted by `source_id`,
+    /// evaluated at `now_unix`.
+    pub async fn practice_all_source_reports_at(
+        &self,
+        practice_id: &str,
+        registered_sources: &[String],
+        now_unix: i64,
     ) -> Result<Vec<PracticeSourceReport>, SourceStatusError> {
         validate_non_empty("practice_id", practice_id)?;
 
@@ -1580,7 +1694,10 @@ impl Store {
 
         let mut reports = Vec::with_capacity(source_ids.len());
         for source_id in source_ids {
-            reports.push(self.practice_source_report(practice_id, &source_id).await?);
+            reports.push(
+                self.practice_source_report_at(practice_id, &source_id, now_unix)
+                    .await?,
+            );
         }
         Ok(reports)
     }

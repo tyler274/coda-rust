@@ -2211,27 +2211,16 @@ fn PhysicianShell(
                     }
                     if let Some(refused) = refusal(&error) {
                         session.refused(refused, *shown.peek(), presented);
-                    } else if matches!(
-                        error,
-                        physician_client::HttpError::Status {
-                            status: 403 | 404,
-                            ..
-                        }
-                    ) {
-                        open_item_failure.set(Some(today_updates::FailedItemOpen {
-                            target,
-                            message: "This item is no longer available on your panel.".to_owned(),
-                            retryable: false,
-                        }));
-                        *today_attempt.write() += 1;
-                        *workspace_attempt.write() += 1;
                     } else {
-                        let message = format!("Coda couldn’t open {}.", target.label);
-                        open_item_failure.set(Some(today_updates::FailedItemOpen {
-                            target,
-                            message,
-                            retryable: true,
-                        }));
+                        let kind = today_updates::ItemOpenFailureKind::from_http_error(&error);
+                        let unavailable =
+                            kind == today_updates::ItemOpenFailureKind::UnavailableOnPanel;
+                        open_item_failure
+                            .set(Some(today_updates::build_item_open_failure(target, kind)));
+                        if unavailable {
+                            *today_attempt.write() += 1;
+                            *workspace_attempt.write() += 1;
+                        }
                     }
                 }
             }

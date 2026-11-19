@@ -227,7 +227,29 @@ impl PatientDirectory for Store {
         &self,
         workspaces: &[String],
     ) -> Result<BTreeMap<String, BTreeMap<String, SourceStanding>>, DirectoryError> {
-        Ok(self.workspace_source_standings(workspaces).await?)
+        let wall_now = crate::auth::now();
+        let default_now = i64::try_from(wall_now).unwrap_or(i64::MAX);
+        let practices: std::collections::BTreeSet<String> = self
+            .workspace_practices(workspaces)
+            .await?
+            .into_values()
+            .collect();
+        let mut practice_now = BTreeMap::new();
+        if !practices.is_empty() {
+            let auth =
+                physician_auth::PostgresAuthStore::from_connection(self.connection().clone());
+            for practice_id in practices {
+                if let Ok(clock) =
+                    physician_auth::AuthStore::practice_clock(&auth, &practice_id).await
+                {
+                    let now_sec = i64::try_from(clock.now(wall_now)).unwrap_or(i64::MAX);
+                    practice_now.insert(practice_id, now_sec);
+                }
+            }
+        }
+        Ok(self
+            .workspace_source_standings_for_practices(workspaces, &practice_now, default_now)
+            .await?)
     }
 
     async fn source_records(
@@ -926,6 +948,27 @@ impl Patient {
                         "state": {
                             "state": "failed",
                             "synchronized_at": attempted,
+                            "usable_snapshot": usable_snapshot,
+                        },
+                    })
+                }
+                Some(SourceStanding::Overdue {
+                    last_good_read_at,
+                    scheduled_at,
+                }) => {
+                    let good = last_good_read_at.map(unix_to_rfc3339);
+                    let scheduled = unix_to_rfc3339(*scheduled_at);
+                    let usable_snapshot = good.as_ref().map(|ts| json!({ "synchronized_at": ts }));
+                    json!({
+                        "source_id": source_id,
+                        "source_label": source_label,
+                        "standing": "overdue",
+                        "reconnect_needed": false,
+                        "last_good_read_at": good,
+                        "scheduled_at": scheduled,
+                        "state": {
+                            "state": "failed",
+                            "synchronized_at": scheduled,
                             "usable_snapshot": usable_snapshot,
                         },
                     })

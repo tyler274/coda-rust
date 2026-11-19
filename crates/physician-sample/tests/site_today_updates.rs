@@ -2510,6 +2510,7 @@ async fn ac3_partial_failure_practice_outage_failed_open_retry_and_nothing_needs
         "[data-today-item=\"{item_jake}\"] button.today-row-open"
     ));
     tab_okafor.wait_for_text("Existing content is still shown.", Duration::from_secs(15));
+    tab_okafor.wait_for_text("Couldn’t load this", Duration::from_secs(15));
     assert_eq!(
         tab_okafor.eval("!!document.querySelector('[data-item-open-failure=\"true\"]')"),
         json!(true)
