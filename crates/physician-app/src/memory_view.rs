@@ -39,31 +39,49 @@ fn save_error_message(err: &HttpError) -> String {
 /// note-saving edits.
 #[component]
 pub(crate) fn PatientMemorySection(
-    workspace_id: String,
+    workspace_id: ReadSignal<String>,
     client: Signal<PhysicianClient>,
     workspace_attempt: Signal<u32>,
 ) -> Element {
     let mut local_attempt = use_signal(|| 0_u32);
+    let mut tracked_workspace = use_signal(|| workspace_id.peek().clone());
+    let mut save_generation = use_signal(|| 0_u64);
     let mut editing_target = use_signal(|| None::<MemoryEditTarget>);
     let mut draft_text = use_signal(String::new);
-    let busy = use_signal(|| false);
+    let mut busy = use_signal(|| false);
     let mut saved_notice = use_signal(|| None::<String>);
     let mut error_notice = use_signal(|| None::<String>);
 
-    let ws_for_res = workspace_id.clone();
+    // Reset all editor state and invalidate in-flight saves whenever the open
+    // patient changes so draft PHI and notices can never cross patients.
+    use_effect(move || {
+        let current_ws = workspace_id();
+        if *tracked_workspace.peek() != current_ws {
+            tracked_workspace.set(current_ws);
+            editing_target.set(None);
+            draft_text.set(String::new());
+            busy.set(false);
+            saved_notice.set(None);
+            error_notice.set(None);
+            save_generation += 1;
+        }
+    });
+
     let read_res = use_resource(move || {
-        let ws = ws_for_res.clone();
+        let ws = workspace_id();
         let api = client();
         let _ws_try = workspace_attempt();
         let _local = local_attempt();
         async move { (ws.clone(), api.patient_memory(&ws).await) }
     });
 
+    let current_ws = workspace_id();
+    let same_patient = tracked_workspace() == current_ws;
     let loaded = read_res.read();
     let Some((asked, answer)) = loaded.as_ref() else {
         return rsx! {};
     };
-    if asked != &workspace_id {
+    if asked != &current_ws {
         return rsx! {};
     }
     let response: PatientMemoryResponse = match answer {
@@ -97,7 +115,7 @@ pub(crate) fn PatientMemorySection(
 
     let summary_doc = response.summary.clone();
     let direction_doc = response.direction.clone();
-    let current_edit = editing_target();
+    let current_edit = if same_patient { editing_target() } else { None };
 
     rsx! {
         section {
@@ -105,7 +123,7 @@ pub(crate) fn PatientMemorySection(
             aria_label: "Patient memory",
             "data-patient-memory": "true",
             h2 { "Patient memory" }
-            if let Some(notice) = saved_notice() {
+            if same_patient && let Some(notice) = saved_notice() {
                 div {
                     "data-memory-saved": "true",
                     Notice {
@@ -114,7 +132,7 @@ pub(crate) fn PatientMemorySection(
                     }
                 }
             }
-            if let Some(err) = error_notice() {
+            if same_patient && let Some(err) = error_notice() {
                 div {
                     "data-memory-error": "true",
                     Notice {
@@ -124,7 +142,8 @@ pub(crate) fn PatientMemorySection(
                 }
             }
             MemoryDocumentCard {
-                workspace_id: workspace_id.clone(),
+                workspace_id,
+                save_generation,
                 target: MemoryEditTarget::Summary,
                 heading: "Summary".to_owned(),
                 empty_copy: "No memory summary saved yet.".to_owned(),
@@ -155,7 +174,8 @@ pub(crate) fn PatientMemorySection(
                 },
             }
             MemoryDocumentCard {
-                workspace_id: workspace_id.clone(),
+                workspace_id,
+                save_generation,
                 target: MemoryEditTarget::Direction,
                 heading: "Direction".to_owned(),
                 empty_copy: "No standing direction saved yet.".to_owned(),
@@ -191,7 +211,8 @@ pub(crate) fn PatientMemorySection(
 
 #[component]
 fn MemoryDocumentCard(
-    workspace_id: String,
+    workspace_id: ReadSignal<String>,
+    save_generation: Signal<u64>,
     target: MemoryEditTarget,
     heading: String,
     empty_copy: String,
@@ -262,14 +283,14 @@ fn MemoryDocumentCard(
                                 disabled: busy() || draft_text().trim().is_empty(),
                                 "data-memory-save": "{slug}",
                                 onclick: {
-                                    let ws = workspace_id.clone();
                                     move |_| {
                                         let text = draft_text().trim().to_owned();
                                         if text.is_empty() || busy() {
                                             return;
                                         }
                                         let api = client();
-                                        let ws = ws.clone();
+                                        let ws = workspace_id.peek().clone();
+                                        let expected_gen = *save_generation.peek();
                                         let key = next_edit_key(&ws, target);
                                         busy.set(true);
                                         spawn(async move {
@@ -278,7 +299,15 @@ fn MemoryDocumentCard(
                                                 text,
                                                 idempotency_key: key,
                                             };
-                                            match api.save_patient_memory_edit(&ws, &req).await {
+                                            let outcome =
+                                                api.save_patient_memory_edit(&ws, &req).await;
+                                            // Drop stale completions if the physician switched patients.
+                                            if *save_generation.peek() != expected_gen
+                                                || workspace_id.peek().as_str() != ws.as_str()
+                                            {
+                                                return;
+                                            }
+                                            match outcome {
                                                 Ok(saved) => {
                                                     busy.set(false);
                                                     on_saved.call(format!(
