@@ -1,0 +1,63 @@
+{
+  "branch": "tyler-eng-307-2-patient-reviews-panel",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC1",
+      "label": "Physician app unit suite including PatientReviewsPanel and transcript fixture fix",
+      "kind": "run",
+      "revision": "b1a25aa2095ad4b4867671c3f29e3034671929b3",
+      "dirty": false,
+      "recorded": "2026-11-19T00:14:54+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-app",
+        "--lib"
+      ],
+      "expect": "\\b90 passed; 0 failed\\b",
+      "expect_fail": false,
+      "files": [
+        "01-Physician-app-unit-suite-including-PatientReview.log"
+      ],
+      "seconds": 14.7,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true,
+      "kept": {
+        "revision": "c68303fc08a590604022fcce603b18a2454eee26",
+        "reason": "Clean rebase onto Batch 3 tip (#46, 1a93d374c); workspace and wasm32 clippy and unit checks re-verified"
+      }
+    },
+    {
+      "id": 2,
+      "claim": "AC2",
+      "label": "Product privacy boundary and shared-ui check",
+      "kind": "run",
+      "revision": "b1a25aa2095ad4b4867671c3f29e3034671929b3",
+      "dirty": false,
+      "recorded": "2026-11-19T00:15:09+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "boundaries",
+        "--lib"
+      ],
+      "expect": "\\b25 passed; 0 failed\\b",
+      "expect_fail": false,
+      "files": [
+        "02-Product-privacy-boundary-and-shared-ui-check.log"
+      ],
+      "seconds": 1.8,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true,
+      "kept": {
+        "revision": "c68303fc08a590604022fcce603b18a2454eee26",
+        "reason": "Clean rebase onto Batch 3 tip (#46, 1a93d374c); workspace and wasm32 clippy and unit checks re-verified"
+      }
+    }
+  ]
+}
