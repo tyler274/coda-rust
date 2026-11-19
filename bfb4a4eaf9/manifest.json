@@ -1,0 +1,49 @@
+{
+  "branch": "tyler-eng-456-conversation-activity-index",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC1",
+      "label": "Indexed conversation activity migration, backfill, and Today/Updates PG16 tests",
+      "kind": "run",
+      "revision": "bfb4a4eaf93867a353b8648e37d71dae49cb6e4c",
+      "dirty": false,
+      "recorded": "2026-11-19T00:51:00+00:00",
+      "command": [
+        "bash",
+        "-lc",
+        "cargo test --locked -p local-product --lib runtime::tests::migration -- --include-ignored --test-threads=1 && cargo test --locked -p local-product --test today_updates_postgres -- --test-threads=1"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "01-Indexed-conversation-activity-migration-backfill.log"
+      ],
+      "seconds": 86.5,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 2,
+      "claim": "AC2",
+      "label": "local-product host unit suite and product privacy boundaries",
+      "kind": "run",
+      "revision": "bfb4a4eaf93867a353b8648e37d71dae49cb6e4c",
+      "dirty": false,
+      "recorded": "2026-11-19T00:52:26+00:00",
+      "command": [
+        "bash",
+        "-lc",
+        "cargo test --locked -p local-product --lib && cargo test --locked -p boundaries --lib"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "02-local-product-host-unit-suite-and-product-privac.log"
+      ],
+      "seconds": 4.5,
+      "exit": 0,
+      "ok": true
+    }
+  ]
+}
