@@ -13,41 +13,65 @@
 
 use std::collections::{BTreeMap, BTreeSet};
 
-use harness::engine::recipe::RequestRecipe;
-use harness::engine::{self, Event, EventKind, Tool};
-use sea_orm::{ColumnTrait, DbErr, EntityTrait, QueryFilter, QueryOrder};
+use async_trait::async_trait;
+use harness::engine::recipe::{Finish, Provider, RequestBinding, RequestRecipe};
+use harness::engine::{self, Event, EventKind, Invocation, Item, Product, Tool, ToolOutcome, Turn};
+use sea_orm::{
+    ActiveModelTrait, ColumnTrait, DbErr, EntityTrait, QueryFilter, QueryOrder, QuerySelect, Set,
+    TransactionTrait,
+};
 use serde::{Deserialize, Serialize};
 use serde_json::{Value, json};
 use uuid::Uuid;
 
 use crate::ModelRoles;
-use crate::attachments::{READ_DOCUMENT_PAGE_TOOL, document_page_tool};
-use crate::initial_understanding::{ConnectedSourceBrief, EvidenceScope, understanding_tools};
+use crate::attachments::{READ_DOCUMENT_PAGE_TOOL, document_page_tool, is_document_page_tool};
+use crate::clinical_library::is_library_tool;
+use crate::initial_understanding::{
+    ConnectedSourceBrief, EvidenceScope, SAVE_UNDERSTANDING_TOOL, is_understanding_tool,
+    understanding_tools,
+};
 use crate::message_review_recipe::{
-    MessageReviewRunStatus, PreloadedSkillDigest, RecordedToolDiscovery,
-    deduplicate_and_verify_unique_tools, preload_skills_from_catalog, retain_non_withdrawn_sources,
+    AdmittedPracticePatient, MessageReviewRunStatus, PreloadedSkillDigest, RecordedToolDiscovery,
+    ToolDiscoveryDisposition, deduplicate_and_verify_unique_tools, discoverable_skill_names,
+    load_clean_sources, preload_skills_from_catalog, retain_non_withdrawn_sources,
 };
 use crate::patient_reviews::{
-    PriorPatientReviewSummary, ReviewCitation, ReviewOutcome, ReviewStartingContext, ReviewTrigger,
-    UnfinishedReviewWork, read_patient_reviews_tool,
+    PriorPatientReviewSummary, QuietReviewReason, READ_PATIENT_REVIEWS_TOOL, ReadReviewsCall,
+    ReviewCitation, ReviewOutcome, ReviewStartingContext, ReviewTrigger, UnfinishedReviewWork,
+    read_only_review_tool, read_patient_reviews_tool,
 };
-use crate::physician_chat::{PhysicianSkills, work_tools};
-use crate::physician_sources::{ChartScope, READ_TOOL, SourceRevision, read_tool, search_tool};
-use crate::runtime::chat_operations::{SourceFreshnessSummary, retrieve_patient_work_tool};
-use crate::runtime::concerns::{ExactRecordReference, concern_tool};
+use crate::physician_chat::{PhysicianSkills, SKILL_VIEW, read_only as chat_read_only, work_tools};
+use crate::physician_sources::{
+    ChartScope, READ_TOOL, SEARCH_TOOL, SourceRevision, read_tool, search_tool,
+};
+use crate::runtime::chat_operations::{
+    RETRIEVE_PATIENT_WORK_TOOL, SourceFreshnessSummary, retrieve_patient_work_tool,
+};
+use crate::runtime::concerns::{
+    ConcernUrgency, ExactRecordReference, SourceWork, concern_tool, is_concern_tool,
+};
 use crate::runtime::follow_ups::{
-    FollowUp, FollowUpActor, FollowUpError, FollowUpId, FollowUpStanding, FollowUpUpdateEntry,
-    WorkspaceWithdrawalBoundary, follow_up_tool,
+    FOLLOW_UP_TOOL, FollowUp, FollowUpActor, FollowUpChangeNote, FollowUpCommandKey, FollowUpError,
+    FollowUpId, FollowUpReviewOutcome, FollowUpReviewSchedule, FollowUpStanding, FollowUpSummary,
+    FollowUpToolCall, FollowUpUpdateEntry, WorkspaceWithdrawalBoundary, follow_up_tool,
+    is_follow_up_tool,
 };
 use crate::runtime::jobs::{
-    AssignmentError, PracticeAccessError, PracticeAuthority, PracticeScope,
+    AssignmentError, PracticeAccessError, PracticeAuthority, PracticeScope, is_physician_only_tool,
 };
-use crate::runtime::refresh::refresh_tool;
+use crate::runtime::memory::{NoteOrigin, PatientKey, tools::MemoryTool};
+use crate::runtime::refresh::{is_refresh_tool, refresh_tool};
 use crate::runtime::reviews::{
-    PatientReviewError, RecordedReviewAction, ReviewLifecycleState, ReviewUsage, SavedPatientReview,
+    PatientReviewError, RecordedReviewAction, ReviewLifecycleState, ReviewRecipeVersion,
+    ReviewSkillDigest, ReviewUsage, SavedPatientReview,
 };
-use crate::runtime::spruce_matching::spruce_conversion_error as conversion_error;
-use crate::runtime::{BindingRef, SkillPackageId, Store};
+use crate::runtime::spruce_matching::{
+    execute_spruce_working_note, is_spruce_working_note_tool,
+    spruce_conversion_error as conversion_error, spruce_db_error as error,
+    spruce_working_note_references,
+};
+use crate::runtime::{BindingRef, Scope, SkillPackageId, Store, persistence_failure};
 
 /// Immutable recipe identifier recorded with every follow-up reassessment run.
 pub const FOLLOW_UP_REASSESSMENT_RECIPE_VERSION: &str = "follow-up-reassessment/v1";
@@ -146,6 +170,163 @@ mod runtime_command_record {
     pub enum Relation {}
 
     impl ActiveModelBehavior for ActiveModel {}
+}
+
+mod saved_review_record {
+    use sea_orm::entity::prelude::*;
+
+    #[derive(Clone, Debug, PartialEq, Eq, DeriveEntityModel)]
+    #[sea_orm(table_name = "physician_runtime_patient_reviews")]
+    pub struct Model {
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub practice: String,
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub workspace: String,
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub review_id: String,
+        #[sea_orm(column_type = "Text")]
+        pub command_key: String,
+        #[sea_orm(column_type = "Text")]
+        pub job_id: String,
+        #[sea_orm(column_type = "Text")]
+        pub work_id: String,
+        #[sea_orm(column_type = "Text")]
+        pub status: String,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub patient_snapshot: Option<Json>,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub triggers: Json,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub accepted_inputs: Json,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub recipe_version: Json,
+        pub initial_source_version: i64,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub initial_sources: Json,
+        pub completed_source_version: Option<i64>,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub completed_sources: Option<Json>,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub evidence_read: Json,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub actions: Json,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub unfinished_work: Json,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub state: Json,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub usage: Json,
+        pub duration_ms: Option<i64>,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub staged_completion: Option<Json>,
+        pub queued_at: i64,
+        pub started_at: Option<i64>,
+        pub completed_at: Option<i64>,
+        pub updated_at: i64,
+    }
+
+    #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
+    pub enum Relation {}
+
+    impl ActiveModelBehavior for ActiveModel {}
+}
+
+mod workspace_concern_record {
+    use sea_orm::entity::prelude::*;
+
+    #[derive(Clone, Debug, PartialEq, Eq, DeriveEntityModel)]
+    #[sea_orm(table_name = "physician_runtime_concerns")]
+    pub struct Model {
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub practice: String,
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub workspace: String,
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub id: String,
+        #[sea_orm(column_type = "Text")]
+        pub urgency: String,
+        #[sea_orm(column_type = "Text")]
+        pub status: String,
+        #[sea_orm(column_type = "Text")]
+        pub reason: String,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub records: Json,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub source_work: Json,
+        #[sea_orm(column_type = "Text")]
+        pub cleared_by_physician: Option<String>,
+        pub cleared_at: Option<i64>,
+        pub feedback_revision: Option<i64>,
+        #[sea_orm(column_type = "Text")]
+        pub retirement_reason: Option<String>,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub retired_by_work: Option<Json>,
+        pub retired_at: Option<i64>,
+        pub created_at: i64,
+        pub updated_at: i64,
+        pub revision: i64,
+    }
+
+    #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
+    pub enum Relation {}
+
+    impl ActiveModelBehavior for ActiveModel {}
+}
+
+mod follow_up_record {
+    use sea_orm::entity::prelude::*;
+
+    #[derive(Clone, Debug, PartialEq, Eq, DeriveEntityModel)]
+    #[sea_orm(table_name = "physician_runtime_follow_ups")]
+    pub struct Model {
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub practice: String,
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub workspace: String,
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub id: String,
+        #[sea_orm(column_type = "Text")]
+        pub summary: String,
+        #[sea_orm(column_type = "Text")]
+        pub status: String,
+        pub due_at: i64,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub standing_detail: Json,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub records: Json,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub origin: Json,
+        pub version: i64,
+        pub created_at: i64,
+        pub updated_at: i64,
+    }
+
+    #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
+    pub enum Relation {}
+
+    impl ActiveModelBehavior for ActiveModel {}
+}
+
+#[derive(Debug, thiserror::Error)]
+#[error("follow-up `{follow_up_id}` transitioned to `{standing}` during reassessment")]
+struct MidRunFollowUpIneligible {
+    follow_up_id: FollowUpId,
+    standing: &'static str,
+}
+
+fn extract_mid_run_ineligible(failure: &engine::Failure) -> Option<&MidRunFollowUpIneligible> {
+    match failure {
+        engine::Failure::Host(cause) => cause.downcast_ref::<MidRunFollowUpIneligible>(),
+        engine::Failure::Final(inner) => extract_mid_run_ineligible(inner),
+        engine::Failure::Cancelled
+        | engine::Failure::NotCurrent(_)
+        | engine::Failure::Limit(_)
+        | engine::Failure::ContextRefused
+        | engine::Failure::Protocol(_)
+        | engine::Failure::Provider(_)
+        | engine::Failure::AfterOutput(_)
+        | engine::Failure::Encoding(_) => None,
+    }
 }
 
 /// Closed event that started a follow-up reassessment run.
@@ -861,24 +1042,17 @@ pub fn recipe(
     Ok((built, digests))
 }
 
-/// Deserialized completion barrier arguments.
 #[derive(Debug, Deserialize)]
 #[serde(deny_unknown_fields)]
-pub struct RawCompleteFollowUpReassessmentArgs {
-    /// Disposition chosen by the model.
-    pub decision: SubmittedFollowUpDecision,
-    /// Cited chart record revisions.
-    pub cited_records: Vec<ExactRecordReference>,
-    /// Grounding basis and limitations.
-    pub basis_and_limitations: String,
-    /// Explicit gaps or uncertainty items.
-    pub explicit_uncertainty: Vec<String>,
-    /// Remaining unfinished work.
-    pub unfinished_work: Vec<UnfinishedReviewWork>,
+struct RawCompleteFollowUpReassessmentArgs {
+    decision: SubmittedFollowUpDecision,
+    cited_records: Vec<ExactRecordReference>,
+    basis_and_limitations: String,
+    explicit_uncertainty: Vec<String>,
+    unfinished_work: Vec<UnfinishedReviewWork>,
 }
 
-/// Validates non-empty printable prose within limits.
-pub fn validate_prose_field(field: &'static str, raw: &str) -> Result<String, String> {
+fn validate_prose_field(field: &'static str, raw: &str) -> Result<String, String> {
     let trimmed = raw.trim();
     let count = trimmed.chars().count();
     if !(1..=MAX_REASSESSMENT_TEXT_CHARS).contains(&count)
@@ -893,8 +1067,7 @@ pub fn validate_prose_field(field: &'static str, raw: &str) -> Result<String, St
     Ok(trimmed.to_owned())
 }
 
-/// Rejects completion wording inside `end_without_completion`.
-pub fn ending_reason_falsely_claims_completion(ending_reason: &str) -> bool {
+fn ending_reason_falsely_claims_completion(ending_reason: &str) -> bool {
     let lower = ending_reason.to_ascii_lowercase();
     lower.contains("clinically completed")
         || lower.contains("condition resolved")
@@ -919,6 +1092,15 @@ fn describe_origin(origin: &FollowUpActor, history: &[FollowUpUpdateEntry]) -> S
     } else {
         actor_desc
     }
+}
+
+async fn active_memory_fingerprint_and_correction(
+    store: &Store,
+    practice: &str,
+    workspace: &str,
+) -> Result<(String, bool), DbErr> {
+    let key = PatientKey::for_rounds(practice, workspace)?;
+    store.active_memory_state(&key).await
 }
 
 fn verify_eligibility(
@@ -1136,18 +1318,12 @@ pub async fn build_follow_up_reassessment_starting_context(
     ))
 }
 
-/// Tracks exact chart revisions read during a reassessment run.
 #[derive(Default)]
-pub struct RunReadEvidence {
-    /// `(candidate_id, revision)` pairs read in the run.
-    pub read_revisions: BTreeSet<(String, String)>,
+struct RunReadEvidence {
+    read_revisions: BTreeSet<(String, String)>,
 }
 
-/// Collects chart revisions read from tool return events.
-pub fn collect_read_revisions(
-    events: &[Event],
-    current_sources: &[SourceRevision],
-) -> RunReadEvidence {
+fn collect_read_revisions(events: &[Event], current_sources: &[SourceRevision]) -> RunReadEvidence {
     let mut state = RunReadEvidence::default();
     let mut call_meta: BTreeMap<String, (String, Value)> = BTreeMap::new();
     for event in events {
@@ -1256,8 +1432,7 @@ pub fn collect_read_revisions(
     state
 }
 
-/// Extracts a bounded readable excerpt from a source revision.
-pub fn extract_source_excerpt(source: &SourceRevision) -> String {
+fn extract_source_excerpt(source: &SourceRevision) -> String {
     for part in &source.readable_parts {
         let collapsed = part.text.split_whitespace().collect::<Vec<_>>().join(" ");
         if !collapsed.is_empty() {
@@ -1283,8 +1458,7 @@ pub fn extract_source_excerpt(source: &SourceRevision) -> String {
     source.record_type.clone()
 }
 
-/// Builds a saved patient review citation from a source revision.
-pub fn build_review_citation(
+fn build_review_citation(
     source: &SourceRevision,
     pulls: &[SourceFreshnessSummary],
 ) -> ReviewCitation {
@@ -1314,8 +1488,7 @@ pub fn build_review_citation(
     }
 }
 
-/// Aggregates token usage and elapsed duration across provider turns.
-pub fn compute_usage_and_duration(
+fn compute_usage_and_duration(
     events: &[Event],
     started_at: i64,
     completed_at: i64,
@@ -1420,6 +1593,1910 @@ fn decode_reassessment_run(
     ))
 }
 
+struct FollowUpReassessmentHost<'a> {
+    store: Store,
+    authority: &'a dyn PracticeAuthority,
+    practice: String,
+    workspace: String,
+    follow_up_id: FollowUpId,
+    run_id: String,
+    attempt_id: String,
+    review_id: String,
+    committed: Option<(SavedFollowUpReassessmentOutcome, SavedPatientReview)>,
+}
+
+impl FollowUpReassessmentHost<'_> {
+    fn source_message(ctx: &FollowUpReassessmentStartingContext) -> engine::ProductMessage {
+        engine::ProductMessage {
+            id: format!(
+                "follow-up-reassessment:{}:{}",
+                ctx.follow_up_id(),
+                ctx.review_id
+            ),
+            role: engine::history::Role::User,
+            text: ctx.render_prompt(),
+        }
+    }
+
+    fn practice_scope(&self) -> PracticeScope {
+        PracticeScope {
+            practice: self.practice.clone(),
+            workspace: self.workspace.clone(),
+            job_id: format!("follow-up-reassessment:{}", self.run_id),
+        }
+    }
+
+    fn control_scope(&self) -> Scope {
+        self.practice_scope().as_control_scope()
+    }
+
+    async fn load_run(&self) -> Result<FollowUpReassessmentRunRecord, DbErr> {
+        self.store
+            .follow_up_reassessment_run(&self.practice, &self.run_id)
+            .await?
+            .ok_or_else(|| error("follow-up reassessment run missing"))
+    }
+
+    async fn ensure_target_follow_up_active(&self) -> Result<FollowUp, engine::ProductError> {
+        let current_items = self
+            .store
+            .workspace_follow_ups(&self.practice, &self.workspace)
+            .await
+            .map_err(|err| -> engine::Cause { Box::new(err) })?;
+        let Some(current_item) = current_items
+            .into_iter()
+            .find(|item| item.id == self.follow_up_id)
+        else {
+            return Err(persistence_failure(error(
+                "target follow-up missing during reassessment",
+            )));
+        };
+        if !matches!(current_item.standing, FollowUpStanding::Active { .. }) {
+            let cause: engine::Cause = Box::new(MidRunFollowUpIneligible {
+                follow_up_id: current_item.id,
+                standing: current_item.standing.status_str(),
+            });
+            return Err(cause.into());
+        }
+        Ok(current_item)
+    }
+
+    async fn clear_staged_reassessment(
+        &self,
+        updated_chart_version: Option<u64>,
+    ) -> Result<(), engine::ProductError> {
+        let tx = self
+            .store
+            .spruce_db()
+            .begin()
+            .await
+            .map_err(persistence_failure)?;
+        let locked = runtime_command_record::Entity::find_by_id((
+            self.practice.clone(),
+            FOLLOW_UP_REASSESSMENT_RUN_ACTOR.to_owned(),
+            self.run_id.clone(),
+        ))
+        .lock_exclusive()
+        .one(&tx)
+        .await
+        .map_err(persistence_failure)?
+        .ok_or_else(|| persistence_failure(error("follow-up reassessment run missing")))?;
+        let mut latest = decode_reassessment_run(locked.clone()).map_err(persistence_failure)?;
+        latest.staged = None;
+        if let Some(ver) = updated_chart_version {
+            latest.starting_context.review_context.chart_version = ver;
+        }
+        let mut active: runtime_command_record::ActiveModel = locked.into();
+        active.command = Set(serde_json::to_value(&latest)
+            .map_err(conversion_error("FollowUpReassessmentRunRecord", "json"))
+            .map_err(persistence_failure)?);
+        active.update(&tx).await.map_err(persistence_failure)?;
+        tx.commit().await.map_err(persistence_failure)?;
+        Ok(())
+    }
+
+    async fn open_concerns_for_work(&self) -> Result<Vec<workspace_concern_record::Model>, DbErr> {
+        let rows = workspace_concern_record::Entity::find()
+            .filter(workspace_concern_record::Column::Practice.eq(&self.practice))
+            .filter(workspace_concern_record::Column::Workspace.eq(&self.workspace))
+            .filter(workspace_concern_record::Column::Status.eq("open"))
+            .all(self.store.spruce_db())
+            .await?;
+        let mut out = Vec::new();
+        for row in rows {
+            let sw: SourceWork = serde_json::from_value(row.source_work.clone())
+                .map_err(conversion_error("concern.source_work", "SourceWork"))?;
+            if sw.work_id == self.run_id {
+                out.push(row);
+            }
+        }
+        Ok(out)
+    }
+
+    async fn recorded_actions_for_work(&self) -> Result<Vec<RecordedReviewAction>, DbErr> {
+        let rows = workspace_concern_record::Entity::find()
+            .filter(workspace_concern_record::Column::Practice.eq(&self.practice))
+            .filter(workspace_concern_record::Column::Workspace.eq(&self.workspace))
+            .order_by_asc(workspace_concern_record::Column::UpdatedAt)
+            .order_by_asc(workspace_concern_record::Column::Id)
+            .all(self.store.spruce_db())
+            .await?;
+        let mut actions = Vec::new();
+        for row in rows {
+            let sw: SourceWork = serde_json::from_value(row.source_work)
+                .map_err(conversion_error("concern.source_work", "SourceWork"))?;
+            let rev = u64::try_from(row.revision.max(0)).unwrap_or(0);
+            if row.status == "open" {
+                if sw.work_id != self.run_id {
+                    continue;
+                }
+                let urgency: ConcernUrgency = serde_json::from_value(Value::String(row.urgency))
+                    .map_err(conversion_error("concern.urgency", "ConcernUrgency"))?;
+                let records: Vec<ExactRecordReference> = serde_json::from_value(row.records)
+                    .map_err(conversion_error("concern.records", "ExactRecordReference"))?;
+                actions.push(RecordedReviewAction::ConcernOpen {
+                    concern_id: row.id,
+                    urgency,
+                    reason: row.reason,
+                    revision: rev,
+                    records,
+                });
+            } else if row.status == "retired" {
+                let retired_in_this_run = match row.retired_by_work {
+                    Some(retired_json) => {
+                        let retired_sw: SourceWork = serde_json::from_value(retired_json)
+                            .map_err(conversion_error("concern.retired_by_work", "SourceWork"))?;
+                        retired_sw.work_id == self.run_id
+                    }
+                    None => sw.work_id == self.run_id,
+                };
+                if retired_in_this_run {
+                    actions.push(RecordedReviewAction::ConcernRetired {
+                        concern_id: row.id,
+                        retirement_reason: row.retirement_reason.unwrap_or(row.reason),
+                        revision: rev,
+                    });
+                }
+            }
+        }
+        Ok(actions)
+    }
+
+    async fn stage_reassessment(
+        &self,
+        run: &FollowUpReassessmentRunRecord,
+        call: &Invocation<Value>,
+    ) -> Result<Result<StagedFollowUpReassessment, String>, engine::ProductError> {
+        let parsed: RawCompleteFollowUpReassessmentArgs =
+            match serde_json::from_value(call.arguments.clone()) {
+                Ok(args) => args,
+                Err(err) => {
+                    return Ok(Err(format!(
+                        "invalid `{COMPLETE_FOLLOW_UP_REASSESSMENT_TOOL}` arguments: {err}"
+                    )));
+                }
+            };
+
+        let basis_and_limitations =
+            match validate_prose_field("basis_and_limitations", &parsed.basis_and_limitations) {
+                Ok(v) => v,
+                Err(msg) => return Ok(Err(msg)),
+            };
+
+        let mut explicit_uncertainty = Vec::with_capacity(parsed.explicit_uncertainty.len());
+        for item in &parsed.explicit_uncertainty {
+            let trimmed = item.trim();
+            if trimmed.is_empty() || trimmed.chars().any(char::is_control) {
+                return Ok(Err(
+                    "`explicit_uncertainty` entries must be non-empty single-line strings".into(),
+                ));
+            }
+            explicit_uncertainty.push(trimmed.to_owned());
+        }
+
+        let (current_chart_version, clean_sources, withdrawal_boundary) =
+            load_clean_sources(&self.store, &self.practice, &self.workspace)
+                .await
+                .map_err(persistence_failure)?;
+        let withdrawn_candidates: BTreeSet<&str> = withdrawal_boundary
+            .as_ref()
+            .map(|b| b.candidate_ids.iter().map(String::as_str).collect())
+            .unwrap_or_default();
+        let by_candidate: BTreeMap<&str, &SourceRevision> = clean_sources
+            .iter()
+            .map(|s| (s.candidate_id.as_str(), s))
+            .collect();
+
+        let read_state = collect_read_revisions(&run.events, &clean_sources);
+
+        // Verify every cited record exists in current non-withdrawn sources at the exact cited
+        // revision and was read in this run.
+        let mut normalized_citations = Vec::with_capacity(parsed.cited_records.len());
+        let mut seen_refs = BTreeSet::new();
+        for reference in &parsed.cited_records {
+            let checked =
+                match ExactRecordReference::new(&reference.candidate_id, &reference.revision) {
+                    Ok(c) => c,
+                    Err(err) => return Ok(Err(format!("invalid cited record reference: {err}"))),
+                };
+            if withdrawn_candidates.contains(checked.candidate_id.as_str()) {
+                return Ok(Err(format!(
+                    "cited chart record `{}` was withdrawn from this patient workspace and cannot be cited",
+                    checked.candidate_id
+                )));
+            }
+            let Some(current_src) = by_candidate.get(checked.candidate_id.as_str()).copied() else {
+                return Ok(Err(format!(
+                    "cited chart record `{}` is not present in current retained patient sources",
+                    checked.candidate_id
+                )));
+            };
+            if current_src.revision != checked.revision {
+                return Ok(Err(format!(
+                    "cited revision `{}` for `{}` is superseded; current revision is `{}`. Read `{}` via `read_patient_sources` before completing",
+                    checked.revision,
+                    checked.candidate_id,
+                    current_src.revision,
+                    checked.candidate_id
+                )));
+            }
+            let pair = (checked.candidate_id.clone(), checked.revision.clone());
+            if !read_state.read_revisions.contains(&pair) {
+                return Ok(Err(format!(
+                    "read `{}` at revision `{}` via `read_patient_sources` before citing it in `{COMPLETE_FOLLOW_UP_REASSESSMENT_TOOL}`",
+                    checked.candidate_id, checked.revision
+                )));
+            }
+            if seen_refs.insert(pair) {
+                normalized_citations.push(checked);
+            }
+        }
+
+        // Verify open concerns raised in this run do not cite stale/withdrawn revisions
+        // and do not conflict with a `quiet: true` continuation.
+        let open_work_concerns = self
+            .open_concerns_for_work()
+            .await
+            .map_err(persistence_failure)?;
+        for concern_row in &open_work_concerns {
+            let crefs: Vec<ExactRecordReference> =
+                serde_json::from_value(concern_row.records.clone())
+                    .map_err(conversion_error("concern.records", "ExactRecordReference"))
+                    .map_err(persistence_failure)?;
+            for cref in crefs {
+                match by_candidate.get(cref.candidate_id.as_str()) {
+                    None => {
+                        return Ok(Err(format!(
+                            "open concern `{}` cites withdrawn record `{}`; revise or retire that concern first",
+                            concern_row.id, cref.candidate_id
+                        )));
+                    }
+                    Some(cur) if cur.revision != cref.revision => {
+                        return Ok(Err(format!(
+                            "open concern `{}` cites superseded revision `{}` of `{}` (current `{}`); read and update first",
+                            concern_row.id, cref.revision, cref.candidate_id, cur.revision
+                        )));
+                    }
+                    Some(_) => {}
+                }
+            }
+        }
+
+        let validated_decision = match parsed.decision {
+            SubmittedFollowUpDecision::ContinueUnchanged { rationale, quiet } => {
+                let rationale = match validate_prose_field("rationale", &rationale) {
+                    Ok(v) => v,
+                    Err(msg) => return Ok(Err(msg)),
+                };
+                if quiet && !open_work_concerns.is_empty() {
+                    return Ok(Err(
+                        "this reassessment raised or revised an open patient concern on Today, so `continue_unchanged` cannot set `quiet: true`".into(),
+                    ));
+                }
+                SubmittedFollowUpDecision::ContinueUnchanged { rationale, quiet }
+            }
+            SubmittedFollowUpDecision::ChangeNextReassessment {
+                summary,
+                next_due_at,
+                change_note,
+                rationale,
+            } => {
+                let validated_summary = match FollowUpSummary::new(summary) {
+                    Ok(s) => s,
+                    Err(err) => return Ok(Err(err.to_string())),
+                };
+                if next_due_at <= 0 {
+                    return Ok(Err("`next_due_at` must be a positive Unix timestamp".into()));
+                }
+                let validated_note = match FollowUpChangeNote::new(change_note) {
+                    Ok(n) => n,
+                    Err(err) => return Ok(Err(err.to_string())),
+                };
+                let rationale = match validate_prose_field("rationale", &rationale) {
+                    Ok(v) => v,
+                    Err(msg) => return Ok(Err(msg)),
+                };
+                SubmittedFollowUpDecision::ChangeNextReassessment {
+                    summary: validated_summary.into(),
+                    next_due_at,
+                    change_note: validated_note.into(),
+                    rationale,
+                }
+            }
+            SubmittedFollowUpDecision::Complete {
+                resolution_note,
+                rationale,
+            } => {
+                let validated_note = match FollowUpChangeNote::new(resolution_note) {
+                    Ok(n) => n,
+                    Err(err) => return Ok(Err(err.to_string())),
+                };
+                let rationale = match validate_prose_field("rationale", &rationale) {
+                    Ok(v) => v,
+                    Err(msg) => return Ok(Err(msg)),
+                };
+                // Safety & grounding barrier: patient silence or missing evidence never resolves a follow-up.
+                let (_, has_physician_correction) = active_memory_fingerprint_and_correction(
+                    &self.store,
+                    &self.practice,
+                    &self.workspace,
+                )
+                .await
+                .map_err(persistence_failure)?;
+                if normalized_citations.is_empty() && !has_physician_correction {
+                    return Ok(Err(
+                        "`complete` requires read-verified chart evidence (`cited_records` read via `read_patient_sources`) or an active physician memory correction; patient silence or missing results never resolve a follow-up".into(),
+                    ));
+                }
+                SubmittedFollowUpDecision::Complete {
+                    resolution_note: validated_note.into(),
+                    rationale,
+                }
+            }
+            SubmittedFollowUpDecision::EndWithoutCompletion {
+                ending_reason,
+                rationale,
+            } => {
+                let validated_reason = match FollowUpChangeNote::new(ending_reason) {
+                    Ok(n) => n,
+                    Err(err) => return Ok(Err(err.to_string())),
+                };
+                if ending_reason_falsely_claims_completion(validated_reason.as_str()) {
+                    return Ok(Err(
+                        "`end_without_completion` cancels tracking without clinical completion; state why tracking ended without claiming clinical completion, or use `complete` with verified chart evidence".into(),
+                    ));
+                }
+                let rationale = match validate_prose_field("rationale", &rationale) {
+                    Ok(v) => v,
+                    Err(msg) => return Ok(Err(msg)),
+                };
+                SubmittedFollowUpDecision::EndWithoutCompletion {
+                    ending_reason: validated_reason.into(),
+                    rationale,
+                }
+            }
+        };
+
+        Ok(Ok(StagedFollowUpReassessment {
+            call_id: call.id.clone(),
+            decision: validated_decision,
+            cited_records: normalized_citations,
+            basis_and_limitations,
+            explicit_uncertainty,
+            unfinished_work: parsed.unfinished_work,
+            staged_chart_version: current_chart_version,
+        }))
+    }
+}
+
+impl FollowUpReassessmentStartingContext {
+    fn follow_up_id(&self) -> &FollowUpId {
+        &self.responsibility.follow_up.id
+    }
+}
+
+#[async_trait]
+impl Product for FollowUpReassessmentHost<'_> {
+    async fn message_sources(
+        &mut self,
+    ) -> Result<Option<Vec<engine::ProductMessage>>, engine::ProductError> {
+        let run = self.load_run().await.map_err(persistence_failure)?;
+        Ok(Some(vec![Self::source_message(&run.starting_context)]))
+    }
+
+    async fn admit_binding(&mut self, recipe: &RequestBinding) -> Result<(), engine::ProductError> {
+        self.authority
+            .check_practice_patient(&self.practice_scope())
+            .await?;
+        let run = self.load_run().await.map_err(persistence_failure)?;
+        let (saved_binding, _) = self
+            .store
+            .load_spruce_matching_frozen(
+                &self.practice,
+                &run.provenance.binding,
+                &run.provenance.skills_package,
+            )
+            .await
+            .map_err(persistence_failure)?;
+        if saved_binding != *recipe {
+            return Err(error("follow-up reassessment dispatch changed frozen recipe").into());
+        }
+        Ok(())
+    }
+
+    fn read_only(&self, tool: &str) -> bool {
+        chat_read_only(tool)
+            || read_only_review_tool(tool)
+            || crate::initial_understanding::read_only_understanding_tool(tool)
+            || is_library_tool(tool)
+            || is_document_page_tool(tool)
+            || is_spruce_working_note_tool(tool)
+    }
+
+    fn read_result(&mut self, id: &str) -> engine::recipe::ToolFuture<Option<String>> {
+        let store = self.store.clone();
+        let practice = self.practice.clone();
+        let run_id = self.run_id.clone();
+        let id = id.to_owned();
+        Box::pin(async move {
+            let run = store
+                .follow_up_reassessment_run(&practice, &run_id)
+                .await?
+                .ok_or_else(|| error("follow-up reassessment run missing"))?;
+            let messages = vec![Self::source_message(&run.starting_context)];
+            let admitted: Vec<(Event, bool)> = run.events.into_iter().map(|e| (e, true)).collect();
+            engine::results::resolve(admitted.iter(), &id, &messages).map_err(Into::into)
+        })
+    }
+
+    async fn assert_current(&mut self) -> Result<(), engine::ProductError> {
+        self.authority
+            .check_practice_patient(&self.practice_scope())
+            .await?;
+        let run = self.load_run().await.map_err(persistence_failure)?;
+        if run.attempt_id != self.attempt_id {
+            return Err(engine::ProductError::NotCurrent(engine::NotCurrent::Lost));
+        }
+        if run.status != MessageReviewRunStatus::Running {
+            return Err(engine::ProductError::NotCurrent(
+                engine::NotCurrent::Withdrawn,
+            ));
+        }
+        self.ensure_target_follow_up_active().await?;
+        Ok(())
+    }
+
+    async fn persist(&mut self, event: Event) -> Result<(), engine::ProductError> {
+        if event.attempt_id != self.attempt_id {
+            return Err(error("follow-up reassessment event belongs to another attempt").into());
+        }
+        if event.sequence == 0 {
+            return Err(error("invalid follow-up reassessment event sequence").into());
+        }
+        let clock = self.store.spruce_now().await.map_err(persistence_failure)?;
+        let tx = self
+            .store
+            .spruce_db()
+            .begin()
+            .await
+            .map_err(persistence_failure)?;
+        let row = runtime_command_record::Entity::find_by_id((
+            self.practice.clone(),
+            FOLLOW_UP_REASSESSMENT_RUN_ACTOR.to_owned(),
+            self.run_id.clone(),
+        ))
+        .lock_exclusive()
+        .one(&tx)
+        .await
+        .map_err(persistence_failure)?
+        .ok_or_else(|| error("follow-up reassessment run missing"))?;
+
+        let mut run = decode_reassessment_run(row.clone())?;
+        let is_current =
+            run.status == MessageReviewRunStatus::Running && run.attempt_id == self.attempt_id;
+        if !is_current && !event.kind.survives_loss_of_currency() {
+            let reason = if run.attempt_id != self.attempt_id {
+                engine::NotCurrent::Lost
+            } else {
+                engine::NotCurrent::Withdrawn
+            };
+            return Err(engine::ProductError::NotCurrent(reason));
+        }
+
+        if let Some(saved) = run
+            .events
+            .iter()
+            .find(|prior| prior.attempt_id == event.attempt_id && prior.sequence == event.sequence)
+        {
+            let saved_json =
+                serde_json::to_value(&saved.kind).map_err(conversion_error("EventKind", "json"))?;
+            let incoming_json =
+                serde_json::to_value(&event.kind).map_err(conversion_error("EventKind", "json"))?;
+            if saved.ordinal != event.ordinal || saved_json != incoming_json {
+                return Err(error("follow-up reassessment event collision").into());
+            }
+            tx.commit().await?;
+            return Ok(());
+        }
+
+        let last_seq = run
+            .events
+            .iter()
+            .filter(|prior| prior.attempt_id == event.attempt_id)
+            .map(|prior| prior.sequence)
+            .max();
+        if event.sequence != last_seq.map_or(1, |seq| seq + 1) {
+            return Err(error("follow-up reassessment event sequence gap").into());
+        }
+
+        if let EventKind::ToolReturned { call_id, result } = &event.kind {
+            let (tool_name, discovered_skill_name) = run
+                .events
+                .iter()
+                .rev()
+                .find_map(|prior| match &prior.kind {
+                    EventKind::ToolStarted(call) if call.id == *call_id => {
+                        let skill = (call.name == SKILL_VIEW)
+                            .then(|| {
+                                serde_json::from_str::<Value>(&call.arguments)
+                                    .ok()
+                                    .and_then(|v| {
+                                        v.get("name").and_then(Value::as_str).map(str::to_owned)
+                                    })
+                            })
+                            .flatten();
+                        Some((call.name.clone(), skill))
+                    }
+                    EventKind::ProviderReturned(turn) => {
+                        turn.calls().find(|c| c.id == *call_id).map(|c| {
+                            let skill = (c.name == SKILL_VIEW)
+                                .then(|| {
+                                    serde_json::from_str::<Value>(&c.arguments)
+                                        .ok()
+                                        .and_then(|v| {
+                                            v.get("name").and_then(Value::as_str).map(str::to_owned)
+                                        })
+                                })
+                                .flatten();
+                            (c.name.clone(), skill)
+                        })
+                    }
+                    _ => None,
+                })
+                .unwrap_or_else(|| ("unknown".to_owned(), None));
+            let disposition = match result {
+                engine::results::ToolResult::Refused(refusal) => {
+                    ToolDiscoveryDisposition::Refused {
+                        reason: refusal.reason().to_owned(),
+                    }
+                }
+                engine::results::ToolResult::Original(_)
+                | engine::results::ToolResult::History(_)
+                | engine::results::ToolResult::View(_) => ToolDiscoveryDisposition::Returned,
+            };
+            run.tool_discoveries.push(RecordedToolDiscovery {
+                ordinal: event.ordinal,
+                call_id: call_id.clone(),
+                tool_name,
+                discovered_skill_name,
+                disposition,
+                recorded_at: clock,
+            });
+        }
+
+        run.events.push(event);
+        let mut active: runtime_command_record::ActiveModel = row.into();
+        active.command = Set(serde_json::to_value(&run)
+            .map_err(conversion_error("FollowUpReassessmentRunRecord", "json"))?);
+        active.update(&tx).await?;
+        tx.commit().await?;
+        Ok(())
+    }
+
+    fn saved_outcome(
+        &mut self,
+        call: &Invocation,
+    ) -> engine::recipe::ToolFuture<Option<ToolOutcome>> {
+        let store = self.store.clone();
+        let practice = self.practice.clone();
+        let workspace = self.workspace.clone();
+        let follow_up_id = self.follow_up_id.clone();
+        let run_id = self.run_id.clone();
+        let practice_scope = self.practice_scope();
+        let call = call.clone();
+        Box::pin(async move {
+            if call.name == COMPLETE_FOLLOW_UP_REASSESSMENT_TOOL {
+                let Some(run) = store.follow_up_reassessment_run(&practice, &run_id).await? else {
+                    return Ok(None);
+                };
+                if let Some(staged) = &run.staged
+                    && staged.call_id == call.id
+                {
+                    return Ok(Some(ToolOutcome::Returned(
+                        json!({
+                            "outcome": "staged",
+                            "replayed": true,
+                            "follow_up_id": follow_up_id,
+                        })
+                        .to_string(),
+                    )));
+                }
+                return Ok(None);
+            }
+            if is_refresh_tool(&call.name) {
+                return store
+                    .saved_practice_refresh_outcome(&practice_scope, &run_id, &call)
+                    .await;
+            }
+            if is_concern_tool(&call.name) {
+                return store
+                    .saved_concern_tool_outcome(&practice, &workspace, &run_id, &call)
+                    .await;
+            }
+            if is_follow_up_tool(&call.name) {
+                return store
+                    .saved_follow_up_tool_outcome(&practice, &workspace, &run_id, &call)
+                    .await;
+            }
+            Ok(None)
+        })
+    }
+
+    fn execute(&mut self, call: &Invocation, arguments: Value) -> engine::recipe::ToolFuture {
+        let store = self.store.clone();
+        let practice = self.practice.clone();
+        let workspace = self.workspace.clone();
+        let follow_up_id = self.follow_up_id.clone();
+        let run_id = self.run_id.clone();
+        let attempt_id = self.attempt_id.clone();
+        let review_id = self.review_id.clone();
+        let practice_scope = self.practice_scope();
+        let control_scope = self.control_scope();
+        let call = call.clone();
+        let admitted_authority = AdmittedPracticePatient {
+            practice: practice.clone(),
+            workspace: workspace.clone(),
+        };
+
+        Box::pin(async move {
+            if is_physician_only_tool(&call.name) {
+                return Ok(ToolOutcome::refused(format!(
+                    "follow-up reassessment background run cannot perform physician-only action `{}`",
+                    call.name
+                )));
+            }
+
+            let run = store
+                .follow_up_reassessment_run(&practice, &run_id)
+                .await?
+                .ok_or_else(|| error("follow-up reassessment run missing"))?;
+            let (_, skills) = store
+                .load_spruce_matching_frozen(
+                    &practice,
+                    &run.provenance.binding,
+                    &run.provenance.skills_package,
+                )
+                .await?;
+
+            if is_spruce_working_note_tool(&call.name) {
+                let note_call = Invocation {
+                    id: call.id.clone(),
+                    name: call.name.clone(),
+                    arguments,
+                };
+                return execute_spruce_working_note(
+                    &run.run_id,
+                    &note_call,
+                    run.events.iter().map(|e| (run.run_id.as_str(), e)),
+                )?
+                .ok_or_else(|| "working note tool was not handled".into());
+            }
+
+            if engine::history::is_tool(&call.name) {
+                let src = Self::source_message(&run.starting_context);
+                let messages = vec![engine::history::Message {
+                    id: src.id,
+                    role: src.role,
+                    text: src.text,
+                    metadata: json!({
+                        "practice": practice,
+                        "workspace": workspace,
+                        "follow_up_id": follow_up_id,
+                        "run_id": run_id,
+                    }),
+                }];
+                let admitted: Vec<(Event, bool)> =
+                    run.events.iter().cloned().map(|e| (e, true)).collect();
+                let page = match engine::history::execute(
+                    &call.name,
+                    &arguments,
+                    &messages,
+                    admitted.iter(),
+                ) {
+                    Ok(page) => page,
+                    Err(reason) => return Ok(ToolOutcome::refused(reason)),
+                };
+                return Ok(ToolOutcome::History(page));
+            }
+
+            if call.name == SKILL_VIEW {
+                return Ok(skills.execute(&call.name, &arguments));
+            }
+
+            if matches!(call.name.as_str(), SEARCH_TOOL | READ_TOOL) {
+                if let Some(req_ws) = arguments.get("workspace").and_then(Value::as_str)
+                    && req_ws != workspace
+                {
+                    return Ok(ToolOutcome::refused(
+                        "follow-up reassessment may read only its assigned patient workspace",
+                    ));
+                }
+                return store
+                    .execute_chat_chart_tool(&control_scope, &call.name, &arguments)
+                    .await;
+            }
+
+            if is_document_page_tool(&call.name) {
+                if let Some(req_ws) = arguments.get("workspace").and_then(Value::as_str)
+                    && req_ws != workspace
+                {
+                    return Ok(ToolOutcome::refused(
+                        "follow-up reassessment may read only its assigned patient workspace",
+                    ));
+                }
+                return store
+                    .execute_document_page_tool(&practice, &workspace, &arguments)
+                    .await;
+            }
+
+            if is_refresh_tool(&call.name) {
+                let refresh_inv = Invocation {
+                    id: call.id.clone(),
+                    name: call.name.clone(),
+                    arguments,
+                };
+                return store
+                    .execute_practice_refresh_tool(
+                        &practice_scope,
+                        &admitted_authority,
+                        &run_id,
+                        &refresh_inv,
+                        store.source_refresh(),
+                    )
+                    .await;
+            }
+
+            if let Some(mem_tool) = MemoryTool::named(&call.name) {
+                return mem_tool
+                    .execute_for_practice(&store, &practice_scope, &arguments, || {
+                        Ok(NoteOrigin {
+                            work: run_id.clone(),
+                            call: call.id.clone(),
+                            message: run_id.clone(),
+                        })
+                    })
+                    .await
+                    .map_err(persistence_failure);
+            }
+
+            if call.name == RETRIEVE_PATIENT_WORK_TOOL {
+                let reviews = store
+                    .patient_reviews(&practice, &workspace, &admitted_authority)
+                    .await
+                    .map_err(|err| -> engine::Cause { Box::new(err) })?;
+                return Ok(ToolOutcome::Returned(
+                    json!({
+                        "outcome": "available",
+                        "patient_reviews": reviews,
+                    })
+                    .to_string(),
+                ));
+            }
+
+            if call.name == READ_PATIENT_REVIEWS_TOOL {
+                let parsed = match ReadReviewsCall::parse(&arguments) {
+                    Ok(p) => p,
+                    Err(err) => return Ok(ToolOutcome::refused(err.to_string())),
+                };
+                return match parsed {
+                    ReadReviewsCall::List {
+                        limit,
+                        include_incomplete,
+                    } => {
+                        let reviews = store
+                            .patient_reviews(&practice, &workspace, &admitted_authority)
+                            .await
+                            .map_err(|err| -> engine::Cause { Box::new(err) })?;
+                        let slice: Vec<_> = reviews
+                            .into_iter()
+                            .filter(|r| {
+                                r.review_id != review_id
+                                    && (include_incomplete || r.state.status_str() == "completed")
+                            })
+                            .take(limit)
+                            .collect();
+                        Ok(ToolOutcome::Returned(
+                            json!({
+                                "outcome": "available",
+                                "reviews": slice,
+                            })
+                            .to_string(),
+                        ))
+                    }
+                    ReadReviewsCall::Read { review_id: target } => {
+                        let found = store
+                            .patient_review(&practice, &workspace, &target, &admitted_authority)
+                            .await
+                            .map_err(|err| -> engine::Cause { Box::new(err) })?;
+                        if let Some(found) = found {
+                            Ok(ToolOutcome::Returned(
+                                json!({
+                                    "outcome": "available",
+                                    "review": found,
+                                })
+                                .to_string(),
+                            ))
+                        } else {
+                            Ok(ToolOutcome::Returned(
+                                json!({
+                                    "outcome": "unavailable",
+                                    "limits": [{
+                                        "kind": "missing",
+                                        "subject": target,
+                                        "detail": format!("Saved patient review `{target}` does not exist in this workspace."),
+                                    }],
+                                })
+                                .to_string(),
+                            ))
+                        }
+                    }
+                };
+            }
+
+            if is_concern_tool(&call.name) {
+                let source_work = SourceWork::new("follow_up_reassessment", &run_id, &attempt_id)
+                    .map_err(|err| -> engine::Cause { Box::new(err) })?;
+                let inv = Invocation {
+                    id: call.id.clone(),
+                    name: call.name.clone(),
+                    arguments,
+                };
+                return store
+                    .execute_concern_tool(&practice, &workspace, &source_work, &inv)
+                    .await;
+            }
+
+            if is_follow_up_tool(&call.name) {
+                // Fence target responsibility and sibling follow-ups:
+                // - Target responsibility must go through `complete_follow_up_reassessment`.
+                // - Existing unrelated sibling follow-ups cannot be dropped (`cancel` / `complete`)
+                //   as a side effect of reassessing this item; creating a distinct new follow-up is allowed.
+                let parsed = match FollowUpToolCall::parse(&call.name, &arguments) {
+                    Ok(p) => p,
+                    Err(err) => return Ok(ToolOutcome::refused(err.to_string())),
+                };
+                match &parsed {
+                    FollowUpToolCall::Create {
+                        follow_up_id: req_id,
+                        ..
+                    } => {
+                        if req_id == &follow_up_id {
+                            return Ok(ToolOutcome::refused(format!(
+                                "follow-up `{follow_up_id}` is the responsibility currently under reassessment; submit its outcome via `{COMPLETE_FOLLOW_UP_REASSESSMENT_TOOL}`"
+                            )));
+                        }
+                    }
+                    FollowUpToolCall::Change {
+                        follow_up_id: req_id,
+                        ..
+                    }
+                    | FollowUpToolCall::Complete {
+                        follow_up_id: req_id,
+                        ..
+                    }
+                    | FollowUpToolCall::Cancel {
+                        follow_up_id: req_id,
+                        ..
+                    } => {
+                        if req_id == &follow_up_id {
+                            return Ok(ToolOutcome::refused(format!(
+                                "submit the disposition of target follow-up `{follow_up_id}` via `{COMPLETE_FOLLOW_UP_REASSESSMENT_TOOL}` rather than `{FOLLOW_UP_TOOL}`"
+                            )));
+                        }
+                        return Ok(ToolOutcome::refused(format!(
+                            "reassessing follow-up `{follow_up_id}` must keep unrelated sibling follow-up `{req_id}` intact"
+                        )));
+                    }
+                }
+                let source_work = SourceWork::new("follow_up_reassessment", &run_id, &attempt_id)
+                    .map_err(|err| -> engine::Cause { Box::new(err) })?;
+                let inv = Invocation {
+                    id: call.id.clone(),
+                    name: call.name.clone(),
+                    arguments,
+                };
+                return store
+                    .execute_follow_up_tool(&practice, &workspace, &source_work, &inv)
+                    .await;
+            }
+
+            if is_understanding_tool(&call.name) {
+                if call.name == SAVE_UNDERSTANDING_TOOL {
+                    return Ok(ToolOutcome::refused(
+                        "follow-up reassessment reads saved patient understanding and updates follow-ups, concerns, or patient memory rather than replacing whole-chart initial understanding",
+                    ));
+                }
+                let current = store
+                    .patient_understanding_internal(&practice, &workspace)
+                    .await?;
+                return Ok(ToolOutcome::Returned(
+                    json!({
+                        "outcome": if current.is_some() { "available" } else { "empty" },
+                        "understanding": current,
+                    })
+                    .to_string(),
+                ));
+            }
+
+            if is_library_tool(&call.name) {
+                return Ok(store
+                    .clinical_library()
+                    .execute(&call.name, &arguments)
+                    .await);
+            }
+
+            if call.name == COMPLETE_FOLLOW_UP_REASSESSMENT_TOOL {
+                let stage_host = FollowUpReassessmentHost {
+                    store: store.clone(),
+                    authority: &admitted_authority,
+                    practice: practice.clone(),
+                    workspace: workspace.clone(),
+                    follow_up_id: follow_up_id.clone(),
+                    run_id: run_id.clone(),
+                    attempt_id: attempt_id.clone(),
+                    review_id: review_id.clone(),
+                    committed: None,
+                };
+                let typed_call = Invocation {
+                    id: call.id.clone(),
+                    name: call.name.clone(),
+                    arguments,
+                };
+                let staged = match stage_host.stage_reassessment(&run, &typed_call).await? {
+                    Ok(staged) => staged,
+                    Err(refusal) => return Ok(ToolOutcome::refused(refusal)),
+                };
+                let tx = store
+                    .spruce_db()
+                    .begin()
+                    .await
+                    .map_err(persistence_failure)?;
+                let row = runtime_command_record::Entity::find_by_id((
+                    practice,
+                    FOLLOW_UP_REASSESSMENT_RUN_ACTOR.to_owned(),
+                    run_id,
+                ))
+                .lock_exclusive()
+                .one(&tx)
+                .await
+                .map_err(persistence_failure)?
+                .ok_or_else(|| persistence_failure(error("follow-up reassessment run missing")))?;
+                let mut latest =
+                    decode_reassessment_run(row.clone()).map_err(persistence_failure)?;
+                latest.staged = Some(staged);
+                let mut active: runtime_command_record::ActiveModel = row.into();
+                active.command = Set(serde_json::to_value(&latest)
+                    .map_err(conversion_error("FollowUpReassessmentRunRecord", "json"))
+                    .map_err(persistence_failure)?);
+                active.update(&tx).await.map_err(persistence_failure)?;
+                tx.commit().await.map_err(persistence_failure)?;
+
+                return Ok(ToolOutcome::Returned(
+                    json!({
+                        "outcome": "staged",
+                        "follow_up_id": follow_up_id,
+                        "review_id": review_id,
+                    })
+                    .to_string(),
+                ));
+            }
+
+            Ok(ToolOutcome::refused(format!(
+                "unknown tool `{}` in follow-up reassessment recipe",
+                call.name
+            )))
+        })
+    }
+
+    async fn finish(&mut self, turn: &Turn) -> Result<Finish, engine::ProductError> {
+        self.assert_current().await?;
+        let run = self.load_run().await.map_err(persistence_failure)?;
+        let Some(staged) = run.staged.clone() else {
+            return Ok(Finish::Continue(json!({
+                "outcome": "missing_reassessment_decision",
+                "message": format!(
+                    "Call `{COMPLETE_FOLLOW_UP_REASSESSMENT_TOOL}` with your reassessment decision (`continue_unchanged`, `change_next_reassessment`, `complete`, or `end_without_completion`) before ending the run."
+                ),
+            })));
+        };
+
+        // Re-verify chart currency at commit so mid-run record changes cannot slip past.
+        let (current_chart_version, clean_sources, _) =
+            load_clean_sources(&self.store, &self.practice, &self.workspace)
+                .await
+                .map_err(persistence_failure)?;
+        if current_chart_version != staged.staged_chart_version {
+            self.clear_staged_reassessment(Some(current_chart_version))
+                .await?;
+            return Ok(Finish::Continue(json!({
+                "outcome": "patient_sources_changed",
+                "previous_chart_version": staged.staged_chart_version,
+                "current_chart_version": current_chart_version,
+                "message": "Patient chart sources changed while finalizing this reassessment. Inspect updated records via `search_patient_information` / `read_patient_sources` and call `complete_follow_up_reassessment` again.",
+            })));
+        }
+
+        let source_work = SourceWork::new("follow_up_reassessment", &self.run_id, &self.attempt_id)
+            .map_err(|err| -> engine::Cause { Box::new(err) })?;
+        let outcome_command_key = FollowUpCommandKey::new(format!(
+            "reassess-commit:{}:{}",
+            self.run_id, staged.call_id
+        ))
+        .map_err(|err| -> engine::Cause { Box::new(err) })?;
+
+        let mut is_continue_unchanged = false;
+        let saved_outcome = match &staged.decision {
+            SubmittedFollowUpDecision::ContinueUnchanged { rationale, quiet } => {
+                is_continue_unchanged = true;
+                let mut current_item = self.ensure_target_follow_up_active().await?;
+                if matches!(
+                    current_item.standing,
+                    FollowUpStanding::Active {
+                        schedule: FollowUpReviewSchedule::DueNow { .. },
+                    }
+                ) {
+                    current_item.standing = FollowUpStanding::Active {
+                        schedule: FollowUpReviewSchedule::Scheduled {
+                            due_at: current_item.due_at,
+                        },
+                    };
+                }
+                SavedFollowUpReassessmentOutcome::ContinuedUnchanged {
+                    follow_up: current_item,
+                    rationale: rationale.clone(),
+                    quiet: *quiet,
+                    explicit_uncertainty: staged.explicit_uncertainty.clone(),
+                    review_id: self.review_id.clone(),
+                }
+            }
+            SubmittedFollowUpDecision::ChangeNextReassessment {
+                summary,
+                next_due_at,
+                change_note,
+                rationale,
+            } => {
+                let summary_val = FollowUpSummary::new(summary.clone())
+                    .map_err(|err| -> engine::Cause { Box::new(err) })?;
+                let note_val = FollowUpChangeNote::new(change_note.clone())
+                    .map_err(|err| -> engine::Cause { Box::new(err) })?;
+                let mutation = match self
+                    .store
+                    .apply_follow_up_review_outcome(
+                        &self.practice,
+                        &self.workspace,
+                        &outcome_command_key,
+                        &self.follow_up_id,
+                        source_work,
+                        FollowUpReviewOutcome::Revise {
+                            summary: summary_val,
+                            due_at: *next_due_at,
+                            records: staged.cited_records.clone(),
+                            note: note_val,
+                        },
+                    )
+                    .await
+                {
+                    Ok(m) => m,
+                    Err(FollowUpError::Database(db_err)) => {
+                        return Err(persistence_failure(db_err));
+                    }
+                    Err(other) => {
+                        self.ensure_target_follow_up_active().await?;
+                        self.clear_staged_reassessment(None).await?;
+                        return Ok(Finish::Continue(json!({
+                            "outcome": "follow_up_update_refused",
+                            "reason": other.to_string(),
+                        })));
+                    }
+                };
+                SavedFollowUpReassessmentOutcome::ChangedNextReassessment {
+                    follow_up: mutation.follow_up().clone(),
+                    change_note: change_note.clone(),
+                    rationale: rationale.clone(),
+                    explicit_uncertainty: staged.explicit_uncertainty.clone(),
+                    review_id: self.review_id.clone(),
+                }
+            }
+            SubmittedFollowUpDecision::Complete {
+                resolution_note,
+                rationale,
+            } => {
+                let note_val = FollowUpChangeNote::new(resolution_note.clone())
+                    .map_err(|err| -> engine::Cause { Box::new(err) })?;
+                let mutation = match self
+                    .store
+                    .apply_follow_up_review_outcome(
+                        &self.practice,
+                        &self.workspace,
+                        &outcome_command_key,
+                        &self.follow_up_id,
+                        source_work,
+                        FollowUpReviewOutcome::Resolved {
+                            resolution: note_val,
+                        },
+                    )
+                    .await
+                {
+                    Ok(m) => m,
+                    Err(FollowUpError::Database(db_err)) => {
+                        return Err(persistence_failure(db_err));
+                    }
+                    Err(other) => {
+                        self.ensure_target_follow_up_active().await?;
+                        self.clear_staged_reassessment(None).await?;
+                        return Ok(Finish::Continue(json!({
+                            "outcome": "follow_up_complete_refused",
+                            "reason": other.to_string(),
+                        })));
+                    }
+                };
+                SavedFollowUpReassessmentOutcome::Completed {
+                    follow_up: mutation.follow_up().clone(),
+                    resolution_note: resolution_note.clone(),
+                    rationale: rationale.clone(),
+                    review_id: self.review_id.clone(),
+                }
+            }
+            SubmittedFollowUpDecision::EndWithoutCompletion {
+                ending_reason,
+                rationale,
+            } => {
+                let cancel_call = Invocation {
+                    id: format!("cancel:{}", staged.call_id),
+                    name: FOLLOW_UP_TOOL.to_owned(),
+                    arguments: json!({
+                        "operation": "cancel",
+                        "follow_up_id": self.follow_up_id,
+                        "reason": ending_reason,
+                    }),
+                };
+                let cancel_outcome = self
+                    .store
+                    .execute_follow_up_tool(
+                        &self.practice,
+                        &self.workspace,
+                        &source_work,
+                        &cancel_call,
+                    )
+                    .await?;
+                let ToolOutcome::Returned(raw_cancel) = cancel_outcome else {
+                    self.ensure_target_follow_up_active().await?;
+                    self.clear_staged_reassessment(None).await?;
+                    return Ok(Finish::Continue(json!({
+                        "outcome": "follow_up_cancel_refused",
+                        "reason": format!("{cancel_outcome:?}"),
+                    })));
+                };
+                let parsed_cancel: Value = serde_json::from_str(&raw_cancel)
+                    .map_err(|err| -> engine::Cause { Box::new(err) })?;
+                let cancelled_follow_up: FollowUp =
+                    serde_json::from_value(parsed_cancel.get("follow_up").cloned().ok_or_else(
+                        || -> engine::Cause { "missing follow_up in cancel receipt".into() },
+                    )?)
+                    .map_err(|err| -> engine::Cause { Box::new(err) })?;
+                SavedFollowUpReassessmentOutcome::EndedWithoutCompletion {
+                    follow_up: cancelled_follow_up,
+                    ending_reason: ending_reason.clone(),
+                    rationale: rationale.clone(),
+                    claims_clinical_completion: false,
+                    explicit_uncertainty: staged.explicit_uncertainty.clone(),
+                    review_id: self.review_id.clone(),
+                }
+            }
+        };
+
+        // Build and persist the corresponding SavedPatientReview so `patient_reviews`,
+        // `today_and_updates_for_physician`, and longitudinal `prior_reviews` reflect the reassessment.
+        let clock = self.store.spruce_now().await.map_err(persistence_failure)?;
+        let by_candidate: BTreeMap<&str, &SourceRevision> = clean_sources
+            .iter()
+            .map(|s| (s.candidate_id.as_str(), s))
+            .collect();
+        let review_citations: Vec<ReviewCitation> = staged
+            .cited_records
+            .iter()
+            .filter_map(|r| {
+                by_candidate.get(r.candidate_id.as_str()).map(|src| {
+                    build_review_citation(src, &run.starting_context.review_context.source_pulls)
+                })
+            })
+            .collect();
+
+        let uncertainty_suffix = if staged.explicit_uncertainty.is_empty() {
+            String::new()
+        } else {
+            format!(
+                " Explicit uncertainty: {}",
+                staged.explicit_uncertainty.join("; ")
+            )
+        };
+        let combined_basis = format!("{}{}", staged.basis_and_limitations, uncertainty_suffix);
+
+        let review_outcome = match &saved_outcome {
+            SavedFollowUpReassessmentOutcome::ContinuedUnchanged {
+                rationale,
+                quiet: true,
+                ..
+            } => ReviewOutcome::Quiet {
+                reason: QuietReviewReason::NothingToDo,
+                explanation: format!(
+                    "Follow-up [{}] continuing unchanged: {rationale}",
+                    self.follow_up_id
+                ),
+                citations: review_citations,
+                basis_and_limitations: combined_basis,
+            },
+            SavedFollowUpReassessmentOutcome::ContinuedUnchanged {
+                rationale,
+                quiet: false,
+                ..
+            } => ReviewOutcome::Assessed {
+                summary: format!(
+                    "Follow-up [{}] reassessed and continuing on current schedule: {rationale}",
+                    self.follow_up_id
+                ),
+                citations: review_citations,
+                basis_and_limitations: combined_basis,
+            },
+            SavedFollowUpReassessmentOutcome::ChangedNextReassessment {
+                follow_up,
+                change_note,
+                rationale,
+                ..
+            } => ReviewOutcome::Assessed {
+                summary: format!(
+                    "Follow-up [{}] rescheduled to unix {} ({change_note}): {rationale}",
+                    self.follow_up_id, follow_up.due_at
+                ),
+                citations: review_citations,
+                basis_and_limitations: combined_basis,
+            },
+            SavedFollowUpReassessmentOutcome::Completed {
+                resolution_note,
+                rationale,
+                ..
+            } => ReviewOutcome::Assessed {
+                summary: format!(
+                    "Follow-up [{}] completed ({resolution_note}): {rationale}",
+                    self.follow_up_id
+                ),
+                citations: review_citations,
+                basis_and_limitations: combined_basis,
+            },
+            SavedFollowUpReassessmentOutcome::EndedWithoutCompletion {
+                ending_reason,
+                rationale,
+                ..
+            } => ReviewOutcome::Assessed {
+                summary: format!(
+                    "Follow-up [{}] ended without clinical completion ({ending_reason}): {rationale}",
+                    self.follow_up_id
+                ),
+                citations: review_citations,
+                basis_and_limitations: combined_basis,
+            },
+        };
+
+        let read_state = collect_read_revisions(&run.events, &clean_sources);
+        let evidence_read: Vec<ExactRecordReference> = read_state
+            .read_revisions
+            .into_iter()
+            .filter_map(|(c, r)| ExactRecordReference::new(c, r).ok())
+            .collect();
+        let actions = self
+            .recorded_actions_for_work()
+            .await
+            .map_err(persistence_failure)?;
+        let (usage, duration_ms) = compute_usage_and_duration(&run.events, run.started_at, clock);
+        let binding_val = serde_json::to_value(&run.provenance.binding)
+            .map_err(conversion_error("BindingRef", "json"))
+            .map_err(persistence_failure)?;
+        let binding_sha256 = binding_val
+            .get("id")
+            .and_then(Value::as_str)
+            .unwrap_or_default()
+            .to_owned();
+        let skills_val = serde_json::to_value(&run.provenance.skills_package)
+            .map_err(conversion_error("SkillPackageId", "json"))
+            .map_err(persistence_failure)?;
+        let skills_package_id = skills_val.as_str().unwrap_or_default().to_owned();
+        let recipe_version = ReviewRecipeVersion {
+            model: run.provenance.model.clone(),
+            effort: run.provenance.effort.clone(),
+            context_window_tokens: run.provenance.context_window_tokens,
+            max_input_tokens: run.provenance.max_input_tokens,
+            binding_sha256,
+            skills_package_id,
+            preloaded_skills: run
+                .provenance
+                .preloaded_skills
+                .iter()
+                .map(|s| ReviewSkillDigest {
+                    name: s.name.clone(),
+                    sha256: s.sha256.clone(),
+                })
+                .collect(),
+        };
+        let completed_state = ReviewLifecycleState::Completed {
+            outcome: review_outcome,
+            completed_at: clock,
+            completed_source_version: current_chart_version,
+        };
+        let command_key = format!("follow-up-reassessment:{}", self.run_id);
+        let job_id = format!(
+            "follow-up-reassessment:{}:{}",
+            self.follow_up_id, self.run_id
+        );
+        let triggers_vec = vec![run.starting_context.review_context.trigger.clone()];
+
+        let tx = self
+            .store
+            .spruce_db()
+            .begin()
+            .await
+            .map_err(persistence_failure)?;
+
+        if is_continue_unchanged {
+            let locked_fu = follow_up_record::Entity::find_by_id((
+                self.practice.clone(),
+                self.workspace.clone(),
+                self.follow_up_id.as_str().to_owned(),
+            ))
+            .lock_exclusive()
+            .one(&tx)
+            .await
+            .map_err(persistence_failure)?
+            .ok_or_else(|| {
+                persistence_failure(error("target follow-up missing at reassessment commit"))
+            })?;
+            let current_standing: FollowUpStanding =
+                serde_json::from_value(locked_fu.standing_detail.clone())
+                    .map_err(conversion_error(
+                        "follow_up.standing_detail",
+                        "FollowUpStanding",
+                    ))
+                    .map_err(persistence_failure)?;
+            let FollowUpStanding::Active { schedule } = current_standing else {
+                tx.rollback().await.map_err(persistence_failure)?;
+                return Err(engine::ProductError::Failed(Box::new(
+                    MidRunFollowUpIneligible {
+                        follow_up_id: self.follow_up_id.clone(),
+                        standing: current_standing.status_str(),
+                    },
+                )));
+            };
+            if matches!(schedule, FollowUpReviewSchedule::DueNow { .. }) {
+                let cleared_standing = FollowUpStanding::Active {
+                    schedule: FollowUpReviewSchedule::Scheduled {
+                        due_at: locked_fu.due_at,
+                    },
+                };
+                let due_at = locked_fu.due_at;
+                let mut active_fu: follow_up_record::ActiveModel = locked_fu.into();
+                active_fu.standing_detail = Set(serde_json::to_value(&cleared_standing)
+                    .map_err(conversion_error("FollowUpStanding", "json"))
+                    .map_err(persistence_failure)?);
+                active_fu.due_at = Set(due_at);
+                active_fu.updated_at = Set(clock);
+                active_fu.update(&tx).await.map_err(persistence_failure)?;
+            }
+        }
+
+        if saved_review_record::Entity::find_by_id((
+            self.practice.clone(),
+            self.workspace.clone(),
+            self.review_id.clone(),
+        ))
+        .one(&tx)
+        .await
+        .map_err(persistence_failure)?
+        .is_none()
+        {
+            saved_review_record::ActiveModel {
+                practice: Set(self.practice.clone()),
+                workspace: Set(self.workspace.clone()),
+                review_id: Set(self.review_id.clone()),
+                command_key: Set(command_key.clone()),
+                job_id: Set(job_id.clone()),
+                work_id: Set(self.run_id.clone()),
+                status: Set("completed".to_owned()),
+                patient_snapshot: Set(run
+                    .starting_context
+                    .review_context
+                    .patient
+                    .as_ref()
+                    .map(serde_json::to_value)
+                    .transpose()
+                    .map_err(conversion_error("SourcePatient", "json"))
+                    .map_err(persistence_failure)?),
+                triggers: Set(serde_json::to_value(&triggers_vec)
+                    .map_err(conversion_error("Vec<ReviewTrigger>", "json"))
+                    .map_err(persistence_failure)?),
+                accepted_inputs: Set(json!([])),
+                recipe_version: Set(serde_json::to_value(&recipe_version)
+                    .map_err(conversion_error("ReviewRecipeVersion", "json"))
+                    .map_err(persistence_failure)?),
+                initial_source_version: Set(i64::try_from(run.initial_chart_version)
+                    .map_err(conversion_error("initial_chart_version", "i64"))
+                    .map_err(persistence_failure)?),
+                initial_sources: Set(serde_json::to_value(&run.initial_sources)
+                    .map_err(conversion_error("Vec<SourceRevision>", "json"))
+                    .map_err(persistence_failure)?),
+                completed_source_version: Set(Some(
+                    i64::try_from(current_chart_version)
+                        .map_err(conversion_error("completed_source_version", "i64"))
+                        .map_err(persistence_failure)?,
+                )),
+                completed_sources: Set(Some(
+                    serde_json::to_value(&clean_sources)
+                        .map_err(conversion_error("Vec<SourceRevision>", "json"))
+                        .map_err(persistence_failure)?,
+                )),
+                evidence_read: Set(serde_json::to_value(&evidence_read)
+                    .map_err(conversion_error("Vec<ExactRecordReference>", "json"))
+                    .map_err(persistence_failure)?),
+                actions: Set(serde_json::to_value(&actions)
+                    .map_err(conversion_error("Vec<RecordedReviewAction>", "json"))
+                    .map_err(persistence_failure)?),
+                unfinished_work: Set(serde_json::to_value(&staged.unfinished_work)
+                    .map_err(conversion_error("Vec<UnfinishedReviewWork>", "json"))
+                    .map_err(persistence_failure)?),
+                state: Set(serde_json::to_value(&completed_state)
+                    .map_err(conversion_error("ReviewLifecycleState", "json"))
+                    .map_err(persistence_failure)?),
+                usage: Set(serde_json::to_value(&usage)
+                    .map_err(conversion_error("ReviewUsage", "json"))
+                    .map_err(persistence_failure)?),
+                duration_ms: Set(Some(
+                    i64::try_from(duration_ms)
+                        .map_err(conversion_error("duration_ms", "i64"))
+                        .map_err(persistence_failure)?,
+                )),
+                staged_completion: Set(None),
+                queued_at: Set(run.started_at),
+                started_at: Set(Some(run.started_at)),
+                completed_at: Set(Some(clock)),
+                updated_at: Set(clock),
+            }
+            .insert(&tx)
+            .await
+            .map_err(persistence_failure)?;
+        }
+
+        let locked = runtime_command_record::Entity::find_by_id((
+            self.practice.clone(),
+            FOLLOW_UP_REASSESSMENT_RUN_ACTOR.to_owned(),
+            self.run_id.clone(),
+        ))
+        .lock_exclusive()
+        .one(&tx)
+        .await
+        .map_err(persistence_failure)?
+        .ok_or_else(|| persistence_failure(error("follow-up reassessment run missing")))?;
+        let mut latest = decode_reassessment_run(locked.clone()).map_err(persistence_failure)?;
+        latest.status = MessageReviewRunStatus::Completed;
+        latest.saved_outcome = Some(saved_outcome.clone());
+        latest.final_summary = Some(turn.text());
+        latest.completed_at = Some(clock);
+        let mut active: runtime_command_record::ActiveModel = locked.into();
+        active.command = Set(serde_json::to_value(&latest)
+            .map_err(conversion_error("FollowUpReassessmentRunRecord", "json"))
+            .map_err(persistence_failure)?);
+        active.update(&tx).await.map_err(persistence_failure)?;
+        tx.commit().await.map_err(persistence_failure)?;
+
+        let saved_patient_review = self
+            .store
+            .patient_review(
+                &self.practice,
+                &self.workspace,
+                &self.review_id,
+                self.authority,
+            )
+            .await
+            .map_err(|err| -> engine::Cause { Box::new(err) })?
+            .ok_or_else(|| {
+                persistence_failure(error("saved patient review missing after insert"))
+            })?;
+
+        self.committed = Some((saved_outcome, saved_patient_review));
+        Ok(Finish::Committed)
+    }
+
+    async fn finish_partial(
+        &mut self,
+        turn: &Turn,
+        _backstops: &[engine::LimitBackstop],
+    ) -> Result<(), engine::ProductError> {
+        let clock = self.store.spruce_now().await.map_err(persistence_failure)?;
+        let tx = self
+            .store
+            .spruce_db()
+            .begin()
+            .await
+            .map_err(persistence_failure)?;
+        let locked = runtime_command_record::Entity::find_by_id((
+            self.practice.clone(),
+            FOLLOW_UP_REASSESSMENT_RUN_ACTOR.to_owned(),
+            self.run_id.clone(),
+        ))
+        .lock_exclusive()
+        .one(&tx)
+        .await
+        .map_err(persistence_failure)?
+        .ok_or_else(|| persistence_failure(error("follow-up reassessment run missing")))?;
+        let mut latest = decode_reassessment_run(locked.clone()).map_err(persistence_failure)?;
+        latest.status = MessageReviewRunStatus::Held;
+        latest.final_summary = Some(turn.text());
+        latest.completed_at = Some(clock);
+        let mut active: runtime_command_record::ActiveModel = locked.into();
+        active.command = Set(serde_json::to_value(&latest)
+            .map_err(conversion_error("FollowUpReassessmentRunRecord", "json"))
+            .map_err(persistence_failure)?);
+        active.update(&tx).await.map_err(persistence_failure)?;
+        tx.commit().await.map_err(persistence_failure)?;
+        Ok(())
+    }
+
+    async fn window_seed(&mut self) -> Result<engine::WindowSeed, engine::ProductError> {
+        let run = self.load_run().await.map_err(persistence_failure)?;
+        let src = Self::source_message(&run.starting_context);
+        let note_references =
+            spruce_working_note_references(run.events.iter().map(|e| (run.run_id.as_str(), e)))?;
+        Ok(engine::WindowSeed {
+            items: vec![Item::ProductMessage(src)],
+            note_references,
+        })
+    }
+}
+
+/// Executes the patient follow-up reassessment recipe on `roles.background`
+/// over `provider`, enforcing eligibility (`Active`, and due when `DueWakeup`),
+/// recording `initial_loads` and `tool_discoveries`, applying the 4-way
+/// reassessment outcome, and persisting the saved patient review.
+#[expect(
+    clippy::too_many_arguments,
+    reason = "entry point binds store, authority, request, model roles, skills, provider, run limits, and cancellation"
+)]
+pub async fn run_follow_up_reassessment<P: Provider>(
+    store: &Store,
+    authority: &dyn PracticeAuthority,
+    request: FollowUpReassessmentRequest,
+    roles: &ModelRoles,
+    skills: &PhysicianSkills,
+    provider: &mut P,
+    limits: engine::RunLimits,
+    cancel: &engine::Cancellation,
+) -> Result<CompletedFollowUpReassessment, FollowUpReassessmentError> {
+    let (starting_context, initial_sources) =
+        build_follow_up_reassessment_starting_context(store, authority, &request).await?;
+
+    let (built_recipe, preloaded_digests) = recipe(roles, skills)?;
+    let offered_tools: Vec<String> = built_recipe
+        .tools
+        .iter()
+        .filter_map(|t| t.get("name").and_then(Value::as_str).map(str::to_owned))
+        .collect();
+    let cache_key = harness::PromptCacheKey::scoped(
+        "chords-follow-up-reassessment",
+        &[
+            &starting_context.practice,
+            &starting_context.workspace,
+            starting_context.responsibility.follow_up.id.as_str(),
+            &starting_context.review_id,
+        ],
+    );
+    let bound: RequestBinding = built_recipe.bind(Some(cache_key));
+
+    let started_at = store.spruce_now().await?;
+    let tx = store.spruce_db().begin().await?;
+    let (binding_ref, skills_package) = store
+        .keep_spruce_matching_frozen(&tx, &starting_context.practice, &bound, skills)
+        .await?;
+
+    let discoverable = discoverable_skill_names(skills, &PRELOADED_FOLLOW_UP_REASSESSMENT_SKILLS);
+    let provenance = FollowUpReassessmentProvenance {
+        recipe_version: FOLLOW_UP_REASSESSMENT_RECIPE_VERSION.to_owned(),
+        guidance_version: FOLLOW_UP_REASSESSMENT_GUIDANCE_VERSION.to_owned(),
+        instructions_sha256: follow_up_reassessment_instructions_sha256(),
+        model: roles.background.model.clone(),
+        effort: roles.background.effort.clone(),
+        context_window_tokens: roles.background.context_window_tokens,
+        max_input_tokens: roles.background.max_input_tokens,
+        binding: binding_ref,
+        skills_package,
+        preloaded_skills: preloaded_digests.clone(),
+        discoverable_skills: discoverable,
+        offered_tools,
+    };
+
+    let active_memory_count = starting_context
+        .review_context
+        .memory_standing
+        .active_count();
+    let mut initial_loads: Vec<FollowUpReassessmentInitialLoad> = preloaded_digests
+        .into_iter()
+        .map(|d| FollowUpReassessmentInitialLoad::PreloadedSkill {
+            name: d.name,
+            sha256: d.sha256,
+        })
+        .collect();
+    initial_loads.push(FollowUpReassessmentInitialLoad::TargetResponsibility {
+        follow_up_id: starting_context.responsibility.follow_up.id.clone(),
+        version: starting_context.responsibility.follow_up.version,
+        due_at: starting_context.responsibility.follow_up.due_at,
+        update_history_count: starting_context.responsibility.update_history.len(),
+    });
+    initial_loads.push(FollowUpReassessmentInitialLoad::SiblingResponsibilities {
+        count: starting_context.responsibility.sibling_follow_ups.len(),
+        follow_up_ids: starting_context
+            .responsibility
+            .constraints
+            .sibling_follow_up_ids
+            .clone(),
+    });
+    initial_loads.push(FollowUpReassessmentInitialLoad::SharedReviewContext {
+        chart_version: starting_context.review_context.chart_version,
+        chart_record_count: starting_context.review_context.chart_record_count,
+        understanding_revision: starting_context
+            .review_context
+            .understanding
+            .as_ref()
+            .map(|u| u.revision),
+        active_memory_count,
+        open_concern_count: starting_context.review_context.open_concerns.len(),
+        prior_review_count: starting_context.review_context.prior_reviews.len(),
+    });
+
+    let run_id = format!("fu-run-{}", Uuid::new_v4());
+    let attempt_id = format!("attempt-{}", Uuid::new_v4());
+    let review_id = starting_context.review_id.clone();
+    let practice = starting_context.practice.clone();
+    let workspace = starting_context.workspace.clone();
+    let follow_up_id = starting_context.responsibility.follow_up.id.clone();
+    let initial_follow_up_version = starting_context.responsibility.follow_up.version;
+    let (initial_memory_fingerprint, _) =
+        active_memory_fingerprint_and_correction(store, &practice, &workspace).await?;
+    let initial_chart_version = starting_context.review_context.chart_version;
+
+    let initial_record = FollowUpReassessmentRunRecord {
+        run_id: run_id.clone(),
+        attempt_id: attempt_id.clone(),
+        review_id: review_id.clone(),
+        practice: practice.clone(),
+        workspace: workspace.clone(),
+        follow_up_id: follow_up_id.clone(),
+        initial_follow_up_version,
+        initial_memory_fingerprint,
+        status: MessageReviewRunStatus::Running,
+        provenance,
+        initial_loads,
+        tool_discoveries: Vec::new(),
+        starting_context: starting_context.clone(),
+        initial_chart_version,
+        initial_sources,
+        events: Vec::new(),
+        staged: None,
+        saved_outcome: None,
+        final_summary: None,
+        started_at,
+        completed_at: None,
+    };
+
+    runtime_command_record::Entity::insert(runtime_command_record::ActiveModel {
+        practice: Set(practice.clone()),
+        physician: Set(FOLLOW_UP_REASSESSMENT_RUN_ACTOR.to_owned()),
+        key: Set(run_id.clone()),
+        command: Set(serde_json::to_value(&initial_record)
+            .map_err(conversion_error("FollowUpReassessmentRunRecord", "json"))?),
+        accepted_at: Set(started_at),
+    })
+    .exec_without_returning(&tx)
+    .await?;
+    tx.commit().await?;
+
+    let src_msg = FollowUpReassessmentHost::source_message(&starting_context);
+    let accepted_input = engine::AcceptedInput {
+        id: format!("accept:{run_id}"),
+        items: vec![Item::ProductMessage(src_msg.clone())],
+    };
+    let mut built_request = bound.request(Vec::new());
+    built_request.items.clear();
+
+    let mut host = FollowUpReassessmentHost {
+        store: store.clone(),
+        authority,
+        practice: practice.clone(),
+        workspace: workspace.clone(),
+        follow_up_id,
+        run_id: run_id.clone(),
+        attempt_id: attempt_id.clone(),
+        review_id,
+        committed: None,
+    };
+
+    let run_result = async {
+        let work = built_request.freeze()?.recover(
+            &attempt_id,
+            engine::recovery::Records {
+                events: Vec::new(),
+                allowance_after: 0,
+            },
+            engine::recovery::Messages {
+                sources: &[src_msg],
+                partial: None,
+            },
+            engine::recovery::Inputs {
+                accepted: vec![accepted_input],
+                source_feedback: None,
+            },
+        )?;
+        work.run(provider, &mut host, limits, cancel).await
+    }
+    .await;
+
+    if let Err(err) = run_result {
+        let clock = store.spruce_now().await?;
+        let tx = store.spruce_db().begin().await?;
+        if let Some(row) = runtime_command_record::Entity::find_by_id((
+            practice.clone(),
+            FOLLOW_UP_REASSESSMENT_RUN_ACTOR.to_owned(),
+            run_id.clone(),
+        ))
+        .lock_exclusive()
+        .one(&tx)
+        .await?
+        {
+            let mut rec = decode_reassessment_run(row.clone())?;
+            rec.status = MessageReviewRunStatus::Failed;
+            rec.completed_at = Some(clock);
+            let mut active: runtime_command_record::ActiveModel = row.into();
+            active.command = Set(serde_json::to_value(&rec)
+                .map_err(conversion_error("FollowUpReassessmentRunRecord", "json"))?);
+            active.update(&tx).await?;
+        }
+        tx.commit().await?;
+        if let Some(ineligible) = extract_mid_run_ineligible(&err) {
+            return Err(FollowUpReassessmentError::NotEligible {
+                follow_up_id: ineligible.follow_up_id.clone(),
+                standing: ineligible.standing,
+                trigger: request.trigger.kind_label(),
+            });
+        }
+        return Err(FollowUpReassessmentError::Harness {
+            run_id,
+            source: err,
+        });
+    }
+
+    let final_run = store
+        .follow_up_reassessment_run(&practice, &run_id)
+        .await?
+        .ok_or_else(|| error("follow-up reassessment run missing after completion"))?;
+
+    let Some((outcome, patient_review)) = host.committed else {
+        return Err(FollowUpReassessmentError::Incomplete {
+            run_id,
+            run: Box::new(final_run),
+        });
+    };
+
+    Ok(CompletedFollowUpReassessment {
+        run: final_run,
+        outcome,
+        patient_review,
+    })
+}
+
+/// Sweeps `store.due_follow_ups(practice, workspace, clinical_now)` and runs
+/// follow-up reassessment for each eligible due responsibility whose `(version,
+/// chart_version, memory_fingerprint)` has not already been reassessed on an
+/// unchanged picture, leaving `Held`, `CannotRestart`, `Completed`, `Cancelled`,
+/// `WithdrawnWrongPatient`, and future-scheduled responsibilities untouched.
+#[expect(
+    clippy::too_many_arguments,
+    reason = "sweep binds store, authority, practice, workspace, clinical clock, model roles, skills, provider, limits, and cancellation"
+)]
+pub async fn dispatch_due_follow_up_reassessments<P: Provider>(
+    store: &Store,
+    authority: &dyn PracticeAuthority,
+    practice: &str,
+    workspace: &str,
+    clinical_now: i64,
+    roles: &ModelRoles,
+    skills: &PhysicianSkills,
+    provider: &mut P,
+    limits: engine::RunLimits,
+    cancel: &engine::Cancellation,
+) -> Result<Vec<CompletedFollowUpReassessment>, FollowUpReassessmentError> {
+    let due_items = store
+        .due_follow_ups(practice, workspace, clinical_now)
+        .await?;
+    if due_items.is_empty() {
+        return Ok(Vec::new());
+    }
+
+    let (current_chart_version, _, _) = load_clean_sources(store, practice, workspace).await?;
+    let (current_mem_fp, _) =
+        active_memory_fingerprint_and_correction(store, practice, workspace).await?;
+
+    let mut completed = Vec::new();
+    for item in due_items {
+        let prior_runs = store
+            .follow_up_reassessment_runs_for_item(practice, workspace, &item.id)
+            .await?;
+        let is_due_now_schedule = matches!(
+            item.standing,
+            FollowUpStanding::Active {
+                schedule: FollowUpReviewSchedule::DueNow { .. },
+            }
+        );
+        let already_reassessed_same_state = !is_due_now_schedule
+            && prior_runs.iter().any(|r| {
+                let assessed_at_or_after_due = match &r.starting_context.trigger {
+                    FollowUpReassessmentTrigger::DueWakeup {
+                        clinical_now: prior_now,
+                    } => *prior_now >= item.due_at,
+                    FollowUpReassessmentTrigger::PhysicianReviewNow { .. } => {
+                        r.started_at >= item.due_at
+                    }
+                };
+                r.status == MessageReviewRunStatus::Completed
+                    && assessed_at_or_after_due
+                    && r.initial_follow_up_version == item.version
+                    && r.initial_chart_version == current_chart_version
+                    && r.initial_memory_fingerprint == current_mem_fp
+            });
+        if already_reassessed_same_state {
+            continue;
+        }
+        let res = match run_follow_up_reassessment(
+            store,
+            authority,
+            FollowUpReassessmentRequest {
+                practice: practice.to_owned(),
+                workspace: workspace.to_owned(),
+                follow_up_id: item.id,
+                trigger: FollowUpReassessmentTrigger::DueWakeup { clinical_now },
+                review_id: None,
+            },
+            roles,
+            skills,
+            provider,
+            limits,
+            cancel,
+        )
+        .await
+        {
+            Ok(res) => res,
+            Err(FollowUpReassessmentError::NotEligible { .. }) => continue,
+            Err(err) => return Err(err),
+        };
+        completed.push(res);
+    }
+    Ok(completed)
+}
+
 impl Store {
     /// Reads one durable [`FollowUpReassessmentRunRecord`] by `(practice, run_id)`.
     pub async fn follow_up_reassessment_run(
@@ -1471,14 +3548,10 @@ impl Store {
 
 #[cfg(test)]
 mod tests {
-    use std::collections::BTreeSet;
     use std::path::PathBuf;
 
     use super::*;
     use crate::ModelBinding;
-    use crate::message_review_recipe::discoverable_skill_names;
-    use crate::physician_chat::SKILL_VIEW;
-    use crate::runtime::jobs::is_physician_only_tool;
     use crate::runtime::refresh::REFRESH_TOOL;
 
     fn load_skills() -> PhysicianSkills {
