@@ -1,0 +1,57 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.78s
+     Running unittests src/lib.rs (target/debug/deps/spruce-750c6e50db1a2e2c)
+
+running 14 tests
+test payload::tests::a_page_that_claims_more_without_a_token_is_unreadable ... ok
+test changes::tests::a_cursor_this_module_did_not_write_is_refused ... ok
+test changes::tests::the_checkpoint_never_moves_before_the_floor ... ok
+test payload::tests::a_numeric_phone_raw_value_keeps_its_digits ... ok
+test changes::tests::a_cursor_round_trips ... ok
+test payload::tests::deletion_is_only_the_flag_spruce_sends ... ok
+test payload::tests::one_bad_item_does_not_fail_the_page ... ok
+test reconcile::tests::a_repeated_id_is_read_once ... ok
+test payload::tests::signed_urls_and_recordings_are_not_kept ... ok
+test reconcile::tests::a_flagged_item_is_deleted_and_an_absent_item_is_only_missing ... ok
+test payload::tests::version_is_stable_until_the_content_or_modified_at_changes ... ok
+test reconcile::tests::new_edited_and_unchanged_items_are_separated ... ok
+test api::tests::a_credential_or_base_that_cannot_be_sent_is_refused ... ok
+test api::tests::start_from_and_a_page_token_are_not_sent_together ... ok
+
+test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/live.rs (target/debug/deps/live-78998589356649c5)
+
+running 2 tests
+test access ... ignored, reads the Spruce test organization
+test observe ... ignored, snapshots the Spruce test organization
+
+test result: ok. 0 passed; 0 failed; 2 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/sync.rs (target/debug/deps/sync-502bc22b1b7cbc14)
+
+running 16 tests
+test a_cursor_this_crate_did_not_write_is_refused ... ok
+test an_oversized_body_is_not_a_value ... ok
+test the_first_pass_emits_no_history ... ok
+test a_deleted_item_reads_as_not_found ... ok
+test backlog_page_reads_pre_connection_items_when_requested ... ok
+test a_fractional_activity_time_stays_history ... ok
+test a_refused_credential_asks_for_reconnect ... ok
+test a_new_message_comes_through_and_history_does_not ... ok
+test one_failing_conversation_leaves_the_others ... ok
+test an_edit_is_a_new_version_and_a_deletion_is_missing ... ok
+test transient_attachment_bytes_download_without_keeping_signed_urls_and_isolate_failures ... ok
+test a_duplicate_shows_the_same_version ... ok
+test the_overlap_window_catches_a_delayed_item ... ok
+test a_transcript_is_fetched_and_a_missing_one_keeps_the_item ... ok
+test catch_up_replays_an_unsaved_page_and_resumes_without_loss ... ok
+test an_unfinished_transcript_is_not_a_finished_body ... ok
+
+test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s
+
+   Doc-tests spruce
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

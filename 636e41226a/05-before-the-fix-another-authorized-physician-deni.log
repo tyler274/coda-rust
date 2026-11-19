@@ -1,0 +1,22 @@
+   Compiling local-product v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-jobs-dispatch-f3d95d8e/crates/local-product)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 21.77s
+     Running tests/spruce_matching.rs (target/debug/deps/spruce_matching-719b0d1b091a3aba)
+
+running 1 test
+test wrong_patient_undo_allows_any_authorized_physician ... FAILED
+
+failures:
+
+---- wrong_patient_undo_allows_any_authorized_physician stdout ----
+
+thread 'wrong_patient_undo_allows_any_authorized_physician' (279699) panicked at crates/local-product/tests/spruce_matching.rs:4388:10:
+any authorized physician with access to both patients may Undo: AccessDenied { practice: "practice-undo-peer-d1d5b603a4224cc1aad25a7281798d68", physician: "6b0b6b52741f4d05a8f3cc1372c9de7b", reason: "only the physician who moved the conversation may press Undo" }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    wrong_patient_undo_allows_any_authorized_physician
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 7 filtered out; finished in 0.28s
+
+error: test failed, to rerun pass `-p local-product --test spruce_matching`

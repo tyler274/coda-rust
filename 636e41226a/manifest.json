@@ -1,0 +1,743 @@
+{
+  "branch": "feat-p3-live-spruce-and-rollback-fence",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC5",
+      "label": "before the fix (sanitization missing)",
+      "kind": "run",
+      "revision": "513bd8647381aca33248ae7164eea9e27e127acb",
+      "dirty": true,
+      "recorded": "2026-11-19T11:01:32+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "local-product",
+        "--test",
+        "message_review_recipe",
+        "message_review_sanitizes_untrusted_channel_text_without_altering_clinical_thresholds"
+      ],
+      "expect": "active HTML/script tags must be stripped",
+      "expect_fail": true,
+      "files": [
+        "01-before-the-fix-sanitization-missing.log"
+      ],
+      "seconds": 25.6,
+      "exit": 101,
+      "expect_matched": true,
+      "ok": true,
+      "kept": {
+        "revision": "636e41226a1b93aadcc0ff6e18b894ff57ecaaed",
+        "reason": "deliberately before the fix"
+      }
+    },
+    {
+      "id": 2,
+      "claim": "AC6",
+      "label": "before the fix (lab values + no_reply_would_help skip refresh)",
+      "kind": "run",
+      "revision": "513bd8647381aca33248ae7164eea9e27e127acb",
+      "dirty": true,
+      "recorded": "2026-11-19T11:01:58+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "local-product",
+        "--test",
+        "message_review_recipe",
+        "live_chart_reread_enforced_for_lab_values_and_no_reply_would_help"
+      ],
+      "expect": "refresh_patient_sources",
+      "expect_fail": true,
+      "files": [
+        "02-before-the-fix-lab-values-no_reply_would_help-sk.log"
+      ],
+      "seconds": 4.5,
+      "exit": 101,
+      "expect_matched": false,
+      "ok": false,
+      "superseded": "use exact assertion message in --expect"
+    },
+    {
+      "id": 3,
+      "claim": "AC6",
+      "label": "before the fix (lab values + no_reply_would_help skip refresh)",
+      "kind": "run",
+      "revision": "513bd8647381aca33248ae7164eea9e27e127acb",
+      "dirty": true,
+      "recorded": "2026-11-19T11:02:43+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "local-product",
+        "--test",
+        "message_review_recipe",
+        "live_chart_reread_enforced_for_lab_values_and_no_reply_would_help"
+      ],
+      "expect": "without refresh must be refused",
+      "expect_fail": true,
+      "files": [
+        "03-before-the-fix-lab-values-no_reply_would_help-sk.log"
+      ],
+      "seconds": 4.3,
+      "exit": 101,
+      "expect_matched": true,
+      "ok": true,
+      "kept": {
+        "revision": "636e41226a1b93aadcc0ff6e18b894ff57ecaaed",
+        "reason": "deliberately before the fix"
+      }
+    },
+    {
+      "id": 4,
+      "claim": "AC4",
+      "label": "before the fix (another authorized physician denied Undo)",
+      "kind": "run",
+      "revision": "513bd8647381aca33248ae7164eea9e27e127acb",
+      "dirty": true,
+      "recorded": "2026-11-19T11:02:47+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "local-product",
+        "--test",
+        "spruce_matching",
+        "wrong_patient_undo_allows_any_authorized_physician"
+      ],
+      "expect": "only the physician who moved the conversation may press Undo",
+      "expect_fail": true,
+      "files": [
+        "04-before-the-fix-another-authorized-physician-deni.log"
+      ],
+      "seconds": 19.6,
+      "exit": 101,
+      "expect_matched": false,
+      "ok": false,
+      "superseded": "fix test setup before recording actual Undo restriction failure"
+    },
+    {
+      "id": 5,
+      "claim": "AC4",
+      "label": "before the fix (another authorized physician denied Undo)",
+      "kind": "run",
+      "revision": "513bd8647381aca33248ae7164eea9e27e127acb",
+      "dirty": true,
+      "recorded": "2026-11-19T11:03:57+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "local-product",
+        "--test",
+        "spruce_matching",
+        "wrong_patient_undo_allows_any_authorized_physician"
+      ],
+      "expect": "only the physician who moved the conversation may press Undo",
+      "expect_fail": true,
+      "files": [
+        "05-before-the-fix-another-authorized-physician-deni.log"
+      ],
+      "seconds": 22.3,
+      "exit": 101,
+      "expect_matched": true,
+      "ok": true,
+      "kept": {
+        "revision": "636e41226a1b93aadcc0ff6e18b894ff57ecaaed",
+        "reason": "deliberately before the fix"
+      }
+    },
+    {
+      "id": 6,
+      "claim": "AC1",
+      "label": "spruce unit and sync suite",
+      "kind": "run",
+      "revision": "b3a5bc30b49ab35e0145b287702b123e3c4a7db6",
+      "dirty": false,
+      "recorded": "2026-11-19T12:44:06+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "spruce"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "06-spruce-unit-and-sync-suite.log"
+      ],
+      "seconds": 10.8,
+      "exit": 0,
+      "ok": true,
+      "superseded": "superseded by clean amended HEAD 636e41226a after unique workspace test fix"
+    },
+    {
+      "id": 7,
+      "claim": "AC1",
+      "label": "live FakeSpruce sync pass, attachments, transients, revocation, and outbound",
+      "kind": "run",
+      "revision": "b3a5bc30b49ab35e0145b287702b123e3c4a7db6",
+      "dirty": false,
+      "recorded": "2026-11-19T12:44:17+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "local-product",
+        "--test",
+        "spruce_matching",
+        "live_fake_spruce_sync_handles_attachments_transients_revocation_and_outbound",
+        "--",
+        "--nocapture"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "07-live-FakeSpruce-sync-pass-attachments-transients.log"
+      ],
+      "seconds": 60.5,
+      "exit": 0,
+      "ok": true,
+      "superseded": "superseded by clean amended HEAD 636e41226a after unique workspace test fix"
+    },
+    {
+      "id": 8,
+      "claim": "AC3",
+      "label": "rollback halt fence durability, Today/health surface, and explicit operator resolution",
+      "kind": "run",
+      "revision": "b3a5bc30b49ab35e0145b287702b123e3c4a7db6",
+      "dirty": false,
+      "recorded": "2026-11-19T12:45:18+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "local-product",
+        "--test",
+        "spruce_matching",
+        "spruce_release_fence_halts_filing_on_rollback_until_explicit_resolution",
+        "--",
+        "--nocapture"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "08-rollback-halt-fence-durability-Today-health-surf.log"
+      ],
+      "seconds": 3.6,
+      "exit": 0,
+      "ok": true,
+      "superseded": "superseded by clean amended HEAD 636e41226a after unique workspace test fix"
+    },
+    {
+      "id": 9,
+      "claim": "AC4",
+      "label": "after the fix (any authorized physician with origin and current access can Undo)",
+      "kind": "run",
+      "revision": "b3a5bc30b49ab35e0145b287702b123e3c4a7db6",
+      "dirty": false,
+      "recorded": "2026-11-19T12:45:21+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "local-product",
+        "--test",
+        "spruce_matching",
+        "wrong_patient_undo_allows_any_authorized_physician",
+        "--",
+        "--nocapture"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "09-after-the-fix-any-authorized-physician-with-orig.log"
+      ],
+      "seconds": 2.7,
+      "exit": 0,
+      "ok": true,
+      "superseded": "superseded by clean amended HEAD 636e41226a after unique workspace test fix"
+    },
+    {
+      "id": 10,
+      "claim": "AC4",
+      "label": "full spruce_matching and link_correction_postgres suites",
+      "kind": "run",
+      "revision": "b3a5bc30b49ab35e0145b287702b123e3c4a7db6",
+      "dirty": false,
+      "recorded": "2026-11-19T12:45:24+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "local-product",
+        "--test",
+        "spruce_matching",
+        "--test",
+        "link_correction_postgres"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "10-full-spruce_matching-and-link_correction_postgre.log"
+      ],
+      "seconds": 29.5,
+      "exit": 101,
+      "ok": false,
+      "superseded": "superseded by clean amended HEAD 636e41226a after unique workspace test fix"
+    },
+    {
+      "id": 11,
+      "claim": "AC1",
+      "label": "spruce unit and sync suite",
+      "kind": "run",
+      "revision": "636e41226a1b93aadcc0ff6e18b894ff57ecaaed",
+      "dirty": false,
+      "recorded": "2026-11-19T12:49:07+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "spruce"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "11-spruce-unit-and-sync-suite.log"
+      ],
+      "seconds": 2.2,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 12,
+      "claim": "AC1",
+      "label": "live FakeSpruce sync pass, attachments, transients, revocation, and outbound",
+      "kind": "run",
+      "revision": "636e41226a1b93aadcc0ff6e18b894ff57ecaaed",
+      "dirty": false,
+      "recorded": "2026-11-19T12:49:10+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "local-product",
+        "--test",
+        "spruce_matching",
+        "live_fake_spruce_sync_handles_attachments_transients_revocation_and_outbound",
+        "--",
+        "--nocapture"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "12-live-FakeSpruce-sync-pass-attachments-transients.log"
+      ],
+      "seconds": 21.3,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 13,
+      "claim": "AC3",
+      "label": "rollback halt fence durability, Today/health surface, and explicit operator resolution",
+      "kind": "run",
+      "revision": "636e41226a1b93aadcc0ff6e18b894ff57ecaaed",
+      "dirty": false,
+      "recorded": "2026-11-19T12:49:31+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "local-product",
+        "--test",
+        "spruce_matching",
+        "spruce_release_fence_halts_filing_on_rollback_until_explicit_resolution",
+        "--",
+        "--nocapture"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "13-rollback-halt-fence-durability-Today-health-surf.log"
+      ],
+      "seconds": 2.8,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 14,
+      "claim": "AC4",
+      "label": "after the fix (any authorized physician with origin and current access can Undo)",
+      "kind": "run",
+      "revision": "636e41226a1b93aadcc0ff6e18b894ff57ecaaed",
+      "dirty": false,
+      "recorded": "2026-11-19T12:49:34+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "local-product",
+        "--test",
+        "spruce_matching",
+        "wrong_patient_undo_allows_any_authorized_physician",
+        "--",
+        "--nocapture"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "14-after-the-fix-any-authorized-physician-with-orig.log"
+      ],
+      "seconds": 2.8,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 15,
+      "claim": "AC4",
+      "label": "full spruce_matching and link_correction_postgres suites",
+      "kind": "run",
+      "revision": "636e41226a1b93aadcc0ff6e18b894ff57ecaaed",
+      "dirty": false,
+      "recorded": "2026-11-19T12:49:37+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "local-product",
+        "--test",
+        "spruce_matching",
+        "--test",
+        "link_correction_postgres"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "15-full-spruce_matching-and-link_correction_postgre.log"
+      ],
+      "seconds": 9.5,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 16,
+      "claim": "AC5",
+      "label": "after the fix (strips C0/C1/bidi/active HTML while keeping clinical inequalities)",
+      "kind": "run",
+      "revision": "636e41226a1b93aadcc0ff6e18b894ff57ecaaed",
+      "dirty": false,
+      "recorded": "2026-11-19T12:49:47+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "local-product",
+        "--test",
+        "message_review_recipe",
+        "message_review_sanitizes_untrusted_channel_text_without_altering_clinical_thresholds",
+        "--",
+        "--nocapture"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "16-after-the-fix-strips-C0-C1-bidi-active-HTML-whil.log"
+      ],
+      "seconds": 24.8,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 17,
+      "claim": "AC6",
+      "label": "after the fix (full message_review_recipe suite enforcing live re-read)",
+      "kind": "run",
+      "revision": "636e41226a1b93aadcc0ff6e18b894ff57ecaaed",
+      "dirty": false,
+      "recorded": "2026-11-19T12:50:11+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "local-product",
+        "--test",
+        "message_review_recipe"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "17-after-the-fix-full-message_review_recipe-suite-e.log"
+      ],
+      "seconds": 6.1,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 18,
+      "claim": "AC6",
+      "label": "physician chat enforces live re-read on MedicationRequest",
+      "kind": "run",
+      "revision": "636e41226a1b93aadcc0ff6e18b894ff57ecaaed",
+      "dirty": false,
+      "recorded": "2026-11-19T12:50:18+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "local-product",
+        "--test",
+        "physician_chat_recipe",
+        "live_chart_reread_enforced_in_physician_chat_when_configured",
+        "--",
+        "--ignored",
+        "--nocapture"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "18-physician-chat-enforces-live-re-read-on-Medicati.log"
+      ],
+      "seconds": 21.2,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 19,
+      "claim": "AC2",
+      "label": "HTTP Postgres source setup unification and rollback halt",
+      "kind": "run",
+      "revision": "636e41226a1b93aadcc0ff6e18b894ff57ecaaed",
+      "dirty": false,
+      "recorded": "2026-11-19T12:50:39+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-sample",
+        "--test",
+        "source_check_and_reconnect"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "19-HTTP-Postgres-source-setup-unification-and-rollb.log"
+      ],
+      "seconds": 96.0,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 20,
+      "claim": "AC1",
+      "label": "physician-worker unit and Postgres integration suites",
+      "kind": "run",
+      "revision": "636e41226a1b93aadcc0ff6e18b894ff57ecaaed",
+      "dirty": false,
+      "recorded": "2026-11-19T12:52:15+00:00",
+      "command": [
+        "bash",
+        "-lc",
+        "cargo test -p physician-sample --bin physician-worker && cargo test -p physician-sample --test worker -- --test-threads=4"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "20-physician-worker-unit-and-Postgres-integration-s.log"
+      ],
+      "seconds": 209.1,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 21,
+      "claim": "AC8",
+      "label": "boundaries, patient-work, physician-wire, and physician-auth Postgres suites",
+      "kind": "run",
+      "revision": "636e41226a1b93aadcc0ff6e18b894ff57ecaaed",
+      "dirty": false,
+      "recorded": "2026-11-19T12:55:45+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "boundaries",
+        "-p",
+        "patient-work",
+        "-p",
+        "physician-wire",
+        "-p",
+        "physician-auth"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "21-boundaries-patient-work-physician-wire-and-physi.log"
+      ],
+      "seconds": 28.2,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 22,
+      "claim": "AC8",
+      "label": "local-product unit and Postgres migration_tests suites",
+      "kind": "run",
+      "revision": "636e41226a1b93aadcc0ff6e18b894ff57ecaaed",
+      "dirty": false,
+      "recorded": "2026-11-19T12:56:13+00:00",
+      "command": [
+        "bash",
+        "-lc",
+        "cargo test -p local-product --lib && cargo test -p local-product --lib migration_tests -- --ignored"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "22-local-product-unit-and-Postgres-migration_tests-.log"
+      ],
+      "seconds": 32.6,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 23,
+      "claim": "AC8",
+      "label": "cargo fmt, host clippy -D warnings, and wasm32 clippy -D warnings",
+      "kind": "run",
+      "revision": "636e41226a1b93aadcc0ff6e18b894ff57ecaaed",
+      "dirty": false,
+      "recorded": "2026-11-19T12:56:46+00:00",
+      "command": [
+        "bash",
+        "-lc",
+        "cargo fmt --all --check && cargo clippy --workspace --all-targets --quiet -- -D warnings && cargo clippy -p physician-app -p duet-app -p mobile -p ui-gallery --target wasm32-unknown-unknown --features physician-app/web,duet-app/web,mobile/web,ui-gallery/web --quiet -- -D warnings"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "23-cargo-fmt-host-clippy--D-warnings-and-wasm32-cli.log"
+      ],
+      "seconds": 81.1,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 24,
+      "claim": "AC2",
+      "label": "Chromium desktop/phone source connection, backlog, recovery, and disconnect",
+      "kind": "run",
+      "revision": "636e41226a1b93aadcc0ff6e18b894ff57ecaaed",
+      "dirty": false,
+      "recorded": "2026-11-19T12:58:47+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-sample",
+        "--test",
+        "site_source_setup",
+        "--",
+        "--ignored",
+        "--test-threads=1"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "24-Chromium-desktop-phone-source-connection-backlog.log"
+      ],
+      "seconds": 75.8,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 25,
+      "claim": "AC7",
+      "label": "Chromium matching/reply/follow-ups including Open in Spruce banner link",
+      "kind": "run",
+      "revision": "636e41226a1b93aadcc0ff6e18b894ff57ecaaed",
+      "dirty": false,
+      "recorded": "2026-11-19T13:00:03+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-sample",
+        "--test",
+        "site_matching_reply_followups",
+        "--",
+        "--ignored",
+        "--test-threads=1"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "25-Chromium-matching-reply-follow-ups-including-Ope.log"
+      ],
+      "seconds": 74.4,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 26,
+      "claim": "AC7",
+      "label": "AGENTS.md required Chromium tests/site suite against disposable Postgres (23/23)",
+      "kind": "run",
+      "revision": "636e41226a1b93aadcc0ff6e18b894ff57ecaaed",
+      "dirty": false,
+      "recorded": "2026-11-19T13:01:18+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-sample",
+        "--test",
+        "site",
+        "--",
+        "--ignored",
+        "--test-threads=1"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "26-AGENTS.md-required-Chromium-tests-site-suite-aga.log"
+      ],
+      "seconds": 227.8,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 27,
+      "claim": "AC8",
+      "label": "TLC MessageMatching.tla (144,007 states; all 14 README rules + NoDeadlock)",
+      "kind": "run-dir",
+      "revision": "636e41226a1b93aadcc0ff6e18b894ff57ecaaed",
+      "dirty": false,
+      "recorded": "2026-11-19T13:05:32+00:00",
+      "files": [
+        "27-tlc-message-matching/report.md",
+        "27-tlc-message-matching/tlc.out"
+      ],
+      "source": "target/verification/tlc-message-matching",
+      "ok": true
+    },
+    {
+      "id": 28,
+      "claim": "AC8",
+      "label": "TLC MessageReply.tla (4,135,706 states; all 12 README rules + NoDeadlock)",
+      "kind": "run-dir",
+      "revision": "636e41226a1b93aadcc0ff6e18b894ff57ecaaed",
+      "dirty": false,
+      "recorded": "2026-11-19T13:05:32+00:00",
+      "files": [
+        "28-tlc-message-reply/report.md",
+        "28-tlc-message-reply/tlc.out"
+      ],
+      "source": "target/verification/tlc-message-reply",
+      "ok": true
+    }
+  ]
+}

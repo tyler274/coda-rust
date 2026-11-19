@@ -1,0 +1,22 @@
+   Compiling local-product v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-jobs-dispatch-f3d95d8e/crates/local-product)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 19.26s
+     Running tests/spruce_matching.rs (target/debug/deps/spruce_matching-719b0d1b091a3aba)
+
+running 1 test
+test wrong_patient_undo_allows_any_authorized_physician ... FAILED
+
+failures:
+
+---- wrong_patient_undo_allows_any_authorized_physician stdout ----
+
+thread 'wrong_patient_undo_allows_any_authorized_physician' (239920) panicked at crates/local-product/tests/spruce_matching.rs:4338:10:
+called `Result::unwrap()` on an `Err` value: InvalidTransition { id: "msg-undo-peer-1", current_state: "deciding", action: "confirm_link" }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    wrong_patient_undo_allows_any_authorized_physician
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 7 filtered out; finished in 0.07s
+
+error: test failed, to rerun pass `-p local-product --test spruce_matching`

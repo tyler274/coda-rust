@@ -1,0 +1,34 @@
+TLC2 Version 2.19 of 08 August 2024 (rev: 5a47802)
+Running breadth-first search Model-Checking with fp 0 and seed 4762152071770577072 with 1 worker on 2 cores with 3641MB heap and 64MB offheap memory [pid: 983297] (Linux 7.3.3 amd64, Eclipse Adoptium 25.0.5 x86_64, MSBDiskFPSet, DiskStateQueue).
+Parsing file /home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-jobs-dispatch-f3d95d8e/verification/physician/message-matching/MessageMatching.tla
+Parsing file /tmp/nix-shell.XJEwuj/statechart-LlT9if/statechart-sxpvWb/tmp-verdict-1/Naturals.tla
+Parsing file /tmp/nix-shell.XJEwuj/statechart-LlT9if/statechart-sxpvWb/tmp-verdict-1/Sequences.tla
+Parsing file /tmp/nix-shell.XJEwuj/statechart-LlT9if/statechart-sxpvWb/tmp-verdict-1/FiniteSets.tla
+Parsing file /tmp/nix-shell.XJEwuj/statechart-LlT9if/statechart-sxpvWb/tmp-verdict-1/TLC.tla
+Semantic processing of module Naturals
+Semantic processing of module Sequences
+Semantic processing of module FiniteSets
+Semantic processing of module TLC
+Semantic processing of module MessageMatching
+Starting... (2026-11-19 05:19:25)
+Implied-temporal checking--satisfiability problem has 5 branches.
+Computing initial states...
+Computed 2 initial states...
+Computed 4 initial states...
+Computed 8 initial states...
+Finished computing initial states: 9 distinct states generated at 2026-11-19 05:19:25.
+Progress(8) at 2026-11-19 05:19:28: 52,876 states generated (52,876 s/min), 7,739 distinct states found (7,739 ds/min), 4,400 states left on queue.
+Progress(19) at 2026-11-19 05:20:25: 1,414,956 states generated, 144,007 distinct states found, 0 states left on queue.
+Checking 5 branches of temporal properties for the complete state space with 720035 total distinct states at (2026-11-19 05:20:25)
+Finished checking temporal properties in 10s at 2026-11-19 05:20:35
+Model checking completed. No error has been found.
+  Estimates of the probability that TLC did not check all reachable states
+  because two distinct states had the same fingerprint:
+  calculated (optimistic):  val = 9.9E-9
+  based on the actual fingerprints:  val = 2.5E-9
+1414956 states generated, 144007 distinct states found, 0 states left on queue.
+The depth of the complete state graph search is 19.
+The average outdegree of the complete state graph is 1 (minimum is 0, the maximum 13 and the 95th percentile is 4).
+Finished in 01min 10s at (2026-11-19 05:20:35)
+Picked up JAVA_TOOL_OPTIONS: -Xmx4g -XX:ActiveProcessorCount=2 -XX:+UseParallelGC -XX:ParallelGCThreads=2
+

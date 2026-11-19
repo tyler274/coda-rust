@@ -1,0 +1,42 @@
+TLC2 Version 2.19 of 08 August 2024 (rev: 5a47802)
+Running breadth-first search Model-Checking with fp 0 and seed -4484448598866766816 with 1 worker on 2 cores with 3641MB heap and 64MB offheap memory [pid: 1048352] (Linux 7.3.3 amd64, Eclipse Adoptium 25.0.5 x86_64, MSBDiskFPSet, DiskStateQueue).
+Parsing file /home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-jobs-dispatch-f3d95d8e/verification/physician/message-reply/MessageReply.tla
+Parsing file /tmp/nix-shell.3Hk2nm/statechart-w6a3lU/statechart-jefSYZ/tmp-verdict-1/Naturals.tla
+Parsing file /tmp/nix-shell.3Hk2nm/statechart-w6a3lU/statechart-jefSYZ/tmp-verdict-1/FiniteSets.tla
+Parsing file /tmp/nix-shell.3Hk2nm/statechart-w6a3lU/statechart-jefSYZ/tmp-verdict-1/TLC.tla
+Parsing file /tmp/nix-shell.3Hk2nm/statechart-w6a3lU/statechart-jefSYZ/tmp-verdict-1/Sequences.tla
+Semantic processing of module Naturals
+Semantic processing of module Sequences
+Semantic processing of module FiniteSets
+Semantic processing of module TLC
+Semantic processing of module MessageReply
+Starting... (2026-11-19 05:21:32)
+Implied-temporal checking--satisfiability problem has 3 branches.
+Computing initial states...
+Computed 2 initial states...
+Computed 4 initial states...
+Finished computing initial states: 5 distinct states generated at 2026-11-19 05:21:32.
+Progress(8) at 2026-11-19 05:21:35: 70,268 states generated (70,268 s/min), 31,361 distinct states found (31,361 ds/min), 19,931 states left on queue.
+Progress(12) at 2026-11-19 05:22:35: 2,355,335 states generated (2,285,067 s/min), 635,396 distinct states found (604,035 ds/min), 260,597 states left on queue.
+Progress(13) at 2026-11-19 05:23:35: 4,521,946 states generated (2,166,611 s/min), 1,114,627 distinct states found (479,231 ds/min), 387,170 states left on queue.
+Progress(14) at 2026-11-19 05:24:35: 6,885,321 states generated (2,363,375 s/min), 1,613,299 distinct states found (498,672 ds/min), 485,063 states left on queue.
+Progress(15) at 2026-11-19 05:25:35: 9,263,917 states generated (2,378,596 s/min), 2,090,748 distinct states found (477,449 ds/min), 536,241 states left on queue.
+Progress(16) at 2026-11-19 05:26:35: 11,462,935 states generated (2,199,018 s/min), 2,527,498 distinct states found (436,750 ds/min), 553,482 states left on queue.
+Progress(17) at 2026-11-19 05:27:35: 13,891,603 states generated (2,428,668 s/min), 2,967,229 distinct states found (439,731 ds/min), 548,082 states left on queue.
+Progress(18) at 2026-11-19 05:28:35: 16,222,460 states generated (2,330,857 s/min), 3,356,940 distinct states found (389,711 ds/min), 488,970 states left on queue.
+Progress(19) at 2026-11-19 05:29:35: 18,548,956 states generated (2,326,496 s/min), 3,726,198 distinct states found (369,258 ds/min), 363,625 states left on queue.
+Progress(20) at 2026-11-19 05:30:35: 20,984,576 states generated (2,435,620 s/min), 4,061,876 distinct states found (335,678 ds/min), 138,819 states left on queue.
+Progress(23) at 2026-11-19 05:30:55: 21,804,635 states generated, 4,135,706 distinct states found, 0 states left on queue.
+Checking 3 branches of temporal properties for the complete state space with 12407118 total distinct states at (2026-11-19 05:30:55)
+Finished checking temporal properties in 07min 53s at 2026-11-19 05:38:48
+Model checking completed. No error has been found.
+  Estimates of the probability that TLC did not check all reachable states
+  because two distinct states had the same fingerprint:
+  calculated (optimistic):  val = 4.0E-6
+  based on the actual fingerprints:  val = 7.4E-7
+21804635 states generated, 4135706 distinct states found, 0 states left on queue.
+The depth of the complete state graph search is 23.
+The average outdegree of the complete state graph is 1 (minimum is 0, the maximum 31 and the 95th percentile is 3).
+Finished in 17min 17s at (2026-11-19 05:38:49)
+Picked up JAVA_TOOL_OPTIONS: -Xmx4g -XX:ActiveProcessorCount=2 -XX:+UseParallelGC -XX:ParallelGCThreads=2
+

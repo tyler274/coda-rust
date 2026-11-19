@@ -1,0 +1,21 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.28s
+     Running tests/message_review_recipe.rs (target/debug/deps/message_review_recipe-c5ef70214046d803)
+
+running 1 test
+test live_chart_reread_enforced_for_lab_values_and_no_reply_would_help ... FAILED
+
+failures:
+
+---- live_chart_reread_enforced_for_lab_values_and_no_reply_would_help stdout ----
+
+thread 'live_chart_reread_enforced_for_lab_values_and_no_reply_would_help' (237332) panicked at crates/local-product/tests/message_review_recipe.rs:4735:5:
+lab/value review concluding no_reply_would_help without refresh must be refused: [{"content":"Linked patient message review context (conversation conv-lab-reread, workspace pw-9c55ba945120c1625369a25aaa11f478, conversation version 2, chart version 1)\nPatient identity: Jordan Hale | birth date: 1960-04-19 | MRN: clinic-ehr: MRN-6610\nConversation patient-side messages (chronological):\n- [pm-lab-1] (patient, unix 1795086170, open): Got a notification that my potassium lab was posted, no need to call back unless it changed.\nObserved practice messages on channel: none.\nRetained chart: version 1, 1 active record(s); source pulls: Clinic EHR (clinic-ehr) as of unix 1795086165\nActive patient memory: none.\nActive patient follow-ups: none.\nOpen patient concerns: none.","role":"user"},{"arguments":"{\"max_result_bytes\":16384,\"references\":[{\"candidate_id\":\"lab-bmp-k\",\"cursor\":null,\"revision\":\"rev-1\"}]}","call_id":"call-read-lab","name":"read_patient_sources","type":"function_call"},{"call_id":"call-read-lab","output":"{\"results\":[{\"bucket\":\"results\",\"content\":\"Serum potassium 4.9 mmol/L (reference 3.5-5.1).\",\"dates\":[],\"outcome\":\"available\",\"provenance\":{\"category\":[{\"coding\":[{\"code\":\"laboratory\"}]}],\"code\":{\"text\":\"Potassium\"},\"resourceType\":\"Observation\"},\"read_representation\":\"native_record\",\"readable_parts\":[],\"record_type\":\"Observation\",\"reference\":\"lab-bmp-k\",\"revision\":\"rev-1\",\"sha256\":\"55962d3232bf03e3760abb1c1592646d63275da7eb4355e1a7bbef8a8d7ecd49\",\"source_kind\":{\"category\":\"laboratory\",\"kind\":\"Observation\"},\"status\":\"final\",\"title\":\"Serum potassium\",\"version\":{\"origin\":\"source\",\"value\":\"rev-1\"}}]}","type":"function_call_output"},{"arguments":"{\"answered_closures\":[],\"decision\":{\"basis_summary\":\"Read Observation lab-bmp-k (rev-1) without refreshing.\",\"kind\":\"no_reply_would_help\",\"limitations\":[],\"reason\":\"Potassium 4.9 mmol/L is within normal range and patient asked not to call unless changed.\"},\"raised_concern_ids\":[]}","call_id":"call-nrwh-stale","name":"complete_message_review","type":"function_call"},{"call_id":"call-nrwh-stale","output":"{\"decision\":{\"basis_summary\":\"Read Observation lab-bmp-k (rev-1) without refreshing.\",\"kind\":\"no_reply_would_help\",\"limitations\":[],\"reason\":\"Potassium 4.9 mmol/L is within normal range and patient asked not to call unless changed.\"},\"outcome\":\"staged\",\"review_id\":\"msg-review-9c2e9aed-917f-4d7e-a135-e2933331d124\"}","type":"function_call_output"}]
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    live_chart_reread_enforced_for_lab_values_and_no_reply_would_help
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 14 filtered out; finished in 1.81s
+
+error: test failed, to rerun pass `-p local-product --test message_review_recipe`

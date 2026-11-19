@@ -1,0 +1,45 @@
+   Compiling local-product v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-jobs-dispatch-f3d95d8e/crates/local-product)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 22.78s
+     Running tests/link_correction_postgres.rs (target/debug/deps/link_correction_postgres-b06ff26cbfaaf1b7)
+
+running 8 tests
+test link_correction_types_and_withholding_notices_preserve_causes_and_clean_model_text ... ok
+test ac4_failed_removal_leaves_correction_unfinished_unavailable_with_reason_blocks_restoration_and_recovers_without_duplicate_reviews ... ok
+test ac1_patient_access_enforced_on_link_move_undo_and_direct_reads ... ok
+test ac3_undo_window_returns_to_first_patient_includes_mid_window_arrivals_chains_moves_and_cancels_on_move_back ... ok
+test ac2_move_immediately_withholds_sources_saved_outputs_and_exact_citations_dedupes_commands_and_marks_entered_in_error_without_deletion ... ok
+test ac5_standing_move_withdraws_memory_understanding_concerns_follow_ups_withholds_reply_preserves_draft_identity_and_handled_messages_and_not_a_patient_closes_reply_and_concern ... ok
+test round1_unified_spruce_settlement_inflight_chat_doc_page_and_summary_concern_withholding ... ok
+test today_updates_and_item_reopen_fence_wrong_patient_artifacts_and_tombstones_across_undo_and_settled ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.96s
+
+     Running tests/spruce_matching.rs (target/debug/deps/spruce_matching-e9e56e0df1a33b0f)
+
+running 10 tests
+test live_openai_spruce_matching_smoke_when_authorized ... ok
+test matching_recipe_model_text_is_hygienic_and_excludes_all_chart_and_physician_tools ... ok
+test spruce_release_fence_halts_filing_on_rollback_until_explicit_resolution ... ok
+test live_fake_spruce_sync_handles_attachments_transients_revocation_and_outbound ... FAILED
+test wrong_patient_undo_allows_any_authorized_physician ... ok
+test rule_4_auto_links_only_on_uncontradicted_unique_identity_and_enforces_access_without_scores ... ok
+test fifteen_minute_fallback_join_siblings_leave_unlinked_channel_lifecycle_moves_isolation_and_review_inputs ... ok
+test urgent_unmatched_message_stays_unlinked_cannot_read_charts_and_confirm_replay_emits_one_review ... ok
+test wrong_patient_undo_boundaries_access_redaction_multi_participant_recovery_no_match_and_event_replay ... ok
+test matching_recipe_runs_on_background_lane_records_provenance_and_handles_synthetic_cases_and_this_is_a_patient ... ok
+
+failures:
+
+---- live_fake_spruce_sync_handles_attachments_transients_revocation_and_outbound stdout ----
+
+thread 'live_fake_spruce_sync_handles_attachments_transients_revocation_and_outbound' (1264965) panicked at crates/local-product/tests/spruce_matching.rs:4705:10:
+called `Result::unwrap()` on an `Err` value: AccessDenied { practice: "prac-live-spruce-b8bcaa3288f64abe88db1664439e8a54", physician: "7438585fcba447cb8817ae6d6e92038f", reason: "patient workspace does not belong to practice" }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    live_fake_spruce_sync_handles_attachments_transients_revocation_and_outbound
+
+test result: FAILED. 9 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.48s
+
+error: test failed, to rerun pass `-p local-product --test spruce_matching`
