@@ -1,0 +1,125 @@
+{
+  "branch": "fix-dev-shell-valkey-jemalloc-shim",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC1",
+      "label": "valkey-server --version and PATH shim under .#agent",
+      "kind": "run",
+      "revision": "38d285166948c1319721873e1328aff6e0e304f1",
+      "dirty": false,
+      "recorded": "2026-11-19T11:05:25+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "which valkey-server && cat \"$HOME/.cache/coda-dev/bin/valkey-server\" && valkey-server --version"
+      ],
+      "expect": "malloc=jemalloc-5.3.1",
+      "expect_fail": false,
+      "files": [
+        "01-valkey-server---version-and-PATH-shim-under-.-ag.log"
+      ],
+      "seconds": 0.1,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true,
+      "superseded": "Amended PR #118 with atomic mktemp+mv write and escaped runtime LD_PRELOAD suffix"
+    },
+    {
+      "id": 2,
+      "claim": "AC2",
+      "label": "physician-bus live Valkey pubsub tests under .#agent",
+      "kind": "run",
+      "revision": "38d285166948c1319721873e1328aff6e0e304f1",
+      "dirty": false,
+      "recorded": "2026-11-19T11:05:25+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "physician-bus"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "02-physician-bus-live-Valkey-pubsub-tests-under-.-a.log"
+      ],
+      "seconds": 30.5,
+      "exit": 0,
+      "ok": true,
+      "superseded": "Amended PR #118 with atomic mktemp+mv write and escaped runtime LD_PRELOAD suffix"
+    },
+    {
+      "id": 3,
+      "claim": "AC1",
+      "label": "valkey-server shim preserves LD_PRELOAD and runs under .#agent",
+      "kind": "run",
+      "revision": "4732b995b4540139214840f1cc8e421ccbfa6181",
+      "dirty": false,
+      "recorded": "2026-11-19T11:09:50+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "which valkey-server && cat \"$HOME/.cache/coda-dev/bin/valkey-server\" && valkey-server --version"
+      ],
+      "expect": "${LD_PRELOAD:+:$LD_PRELOAD}",
+      "expect_fail": false,
+      "files": [
+        "03-valkey-server-shim-preserves-LD_PRELOAD-and-runs.log"
+      ],
+      "seconds": 0.0,
+      "exit": 0,
+      "expect_matched": false,
+      "ok": false,
+      "superseded": "Use regex-safe --expect pattern for runtime LD_PRELOAD suffix"
+    },
+    {
+      "id": 4,
+      "claim": "AC1",
+      "label": "valkey-server shim preserves LD_PRELOAD and runs under .#agent",
+      "kind": "run",
+      "revision": "4732b995b4540139214840f1cc8e421ccbfa6181",
+      "dirty": false,
+      "recorded": "2026-11-19T11:11:40+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "which valkey-server && cat \"$HOME/.cache/coda-dev/bin/valkey-server\" && valkey-server --version"
+      ],
+      "expect": "libjemalloc\\.so\\.2\\$\\{LD_PRELOAD",
+      "expect_fail": false,
+      "files": [
+        "04-valkey-server-shim-preserves-LD_PRELOAD-and-runs.log"
+      ],
+      "seconds": 0.0,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true
+    },
+    {
+      "id": 5,
+      "claim": "AC2",
+      "label": "physician-bus live Valkey pubsub tests under .#agent",
+      "kind": "run",
+      "revision": "4732b995b4540139214840f1cc8e421ccbfa6181",
+      "dirty": false,
+      "recorded": "2026-11-19T11:11:40+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "physician-bus"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "05-physician-bus-live-Valkey-pubsub-tests-under-.-a.log"
+      ],
+      "seconds": 7.1,
+      "exit": 0,
+      "ok": true
+    }
+  ]
+}

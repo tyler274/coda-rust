@@ -1,0 +1,4 @@
+/home/luluco/.cache/coda-dev/bin/valkey-server
+#!/bin/sh
+exec env LD_PRELOAD="/nix/store/zbc3ys9xswbj274v652nf0c9xifdi9dw-jemalloc-5.3.1/lib/libjemalloc.so.2${LD_PRELOAD:+:$LD_PRELOAD}" "/nix/store/mmxdi70115ca1dcf0qgbz8wp1c51fa0m-valkey-9.1.2/bin/valkey-server" "$@"
+Valkey server v=9.1.2 sha=00000000:0 malloc=jemalloc-5.3.1 bits=64 build=8d4d0b681eefd9a6
