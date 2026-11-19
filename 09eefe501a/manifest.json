@@ -1,0 +1,61 @@
+{
+  "branch": "tyler-eng-396-1-spruce-matching-recipe",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC1",
+      "label": "Product boundaries and shared harness checks",
+      "kind": "run",
+      "revision": "f5053d9270cd74deaf397db2f1a0f00b4e416e97",
+      "dirty": false,
+      "recorded": "2026-11-18T23:07:47+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "boundaries"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "01-Product-boundaries-and-shared-harness-checks.log"
+      ],
+      "seconds": 3.4,
+      "exit": 0,
+      "ok": true,
+      "kept": {
+        "revision": "09eefe501a4e2608ae9ecf68fce01e1635d633ad",
+        "reason": "Rebased cleanly onto PR 60 (e374cd7738); slice diff and behavior unchanged"
+      }
+    },
+    {
+      "id": 2,
+      "claim": "AC2",
+      "label": "Job::SpruceMatching skill catalog validation",
+      "kind": "run",
+      "revision": "f5053d9270cd74deaf397db2f1a0f00b4e416e97",
+      "dirty": false,
+      "recorded": "2026-11-18T23:07:51+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "local-product",
+        "--lib",
+        "physician_chat::tests"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "02-Job-SpruceMatching-skill-catalog-validation.log"
+      ],
+      "seconds": 80.1,
+      "exit": 0,
+      "ok": true,
+      "kept": {
+        "revision": "09eefe501a4e2608ae9ecf68fce01e1635d633ad",
+        "reason": "Rebased cleanly onto PR 60 (e374cd7738); slice diff and behavior unchanged"
+      }
+    }
+  ]
+}
