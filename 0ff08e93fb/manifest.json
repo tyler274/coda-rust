@@ -27,7 +27,7 @@
       "expect_matched": true,
       "ok": true,
       "kept": {
-        "revision": "6660c86446aa6b24483e37917f0fa050d675a6ae",
+        "revision": "0ff08e93fba9a7e3845ffe60b7411ef464bfd9b8",
         "reason": "Pre-fix failing baselines before filtered-mail chat tools and For my doctor implementation"
       }
     },
@@ -56,7 +56,7 @@
       "expect_matched": true,
       "ok": true,
       "kept": {
-        "revision": "6660c86446aa6b24483e37917f0fa050d675a6ae",
+        "revision": "0ff08e93fba9a7e3845ffe60b7411ef464bfd9b8",
         "reason": "Pre-fix failing baselines before filtered-mail chat tools and For my doctor implementation"
       }
     },
@@ -243,8 +243,8 @@
       "exit": 0,
       "ok": true,
       "kept": {
-        "revision": "6660c86446aa6b24483e37917f0fa050d675a6ae",
-        "reason": "Untouched spruce, review, chat, and Chromium UI browser suites verified cleanly before rebase onto 5fc5f0e00f (which touched only cadence/startup/worker-config)"
+        "revision": "0ff08e93fba9a7e3845ffe60b7411ef464bfd9b8",
+        "reason": "Untouched spruce, review, chat, and Chromium UI browser suites verified cleanly on PR #129 before rebase onto 85c2e0dfd (which touched only citation_layouts)"
       }
     },
     {
@@ -269,8 +269,8 @@
       "exit": 0,
       "ok": true,
       "kept": {
-        "revision": "6660c86446aa6b24483e37917f0fa050d675a6ae",
-        "reason": "Untouched spruce, review, chat, and Chromium UI browser suites verified cleanly before rebase onto 5fc5f0e00f (which touched only cadence/startup/worker-config)"
+        "revision": "0ff08e93fba9a7e3845ffe60b7411ef464bfd9b8",
+        "reason": "Untouched spruce, review, chat, and Chromium UI browser suites verified cleanly on PR #129 before rebase onto 85c2e0dfd (which touched only citation_layouts)"
       }
     },
     {
@@ -295,8 +295,8 @@
       "exit": 0,
       "ok": true,
       "kept": {
-        "revision": "6660c86446aa6b24483e37917f0fa050d675a6ae",
-        "reason": "Untouched spruce, review, chat, and Chromium UI browser suites verified cleanly before rebase onto 5fc5f0e00f (which touched only cadence/startup/worker-config)"
+        "revision": "0ff08e93fba9a7e3845ffe60b7411ef464bfd9b8",
+        "reason": "Untouched spruce, review, chat, and Chromium UI browser suites verified cleanly on PR #129 before rebase onto 85c2e0dfd (which touched only citation_layouts)"
       }
     },
     {
@@ -321,8 +321,8 @@
       "exit": 0,
       "ok": true,
       "kept": {
-        "revision": "6660c86446aa6b24483e37917f0fa050d675a6ae",
-        "reason": "Untouched spruce, review, chat, and Chromium UI browser suites verified cleanly before rebase onto 5fc5f0e00f (which touched only cadence/startup/worker-config)"
+        "revision": "0ff08e93fba9a7e3845ffe60b7411ef464bfd9b8",
+        "reason": "Untouched spruce, review, chat, and Chromium UI browser suites verified cleanly on PR #129 before rebase onto 85c2e0dfd (which touched only citation_layouts)"
       }
     },
     {
@@ -367,6 +367,29 @@
         "15-rebased-onto-5fc5f0e00f-fmt-host-wasm32-clippy-m.log"
       ],
       "seconds": 849.8,
+      "exit": 0,
+      "ok": true,
+      "superseded": "Superseded after rebase onto origin/main 85c2e0dfd"
+    },
+    {
+      "id": 16,
+      "claim": "Rebase_85c2e0dfd",
+      "label": "rebased onto 85c2e0dfd: fmt, bash -n, host+wasm32 clippy, boundaries, migration_tests, migrations_postgres, synthetic_staging_control, connected_care, front-door, physician-worker",
+      "kind": "run",
+      "revision": "0ff08e93fba9a7e3845ffe60b7411ef464bfd9b8",
+      "dirty": false,
+      "recorded": "2026-11-19T23:19:01+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "set -euo pipefail\n    cargo fmt --all --check\n    bash -n scripts/check-postgres.sh\n    cargo clippy --workspace --all-targets --quiet -- -D warnings\n    cargo clippy -p physician-app -p duet-app -p mobile -p ui-gallery --target wasm32-unknown-unknown --features physician-app/web,duet-app/web,mobile/web,ui-gallery/web --quiet -- -D warnings\n    cargo test -p boundaries\n    cargo test -p local-product --lib migration_tests -- --ignored --test-threads=1\n    cargo test -p physician-sample --test migrations_postgres -- --ignored --test-threads=1\n    cargo test -p physician-sample --test synthetic_staging_control\n    cargo test -p local-product --test connected_care_and_filtered_chat\n    cargo test -p front-door\n    cargo test -p physician-sample --bin physician-worker"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "16-rebased-onto-85c2e0dfd-fmt-bash--n-host-wasm32-c.log"
+      ],
+      "seconds": 668.9,
       "exit": 0,
       "ok": true
     }
