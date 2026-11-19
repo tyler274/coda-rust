@@ -29,7 +29,7 @@
       "expect_matched": true,
       "ok": true,
       "kept": {
-        "revision": "0465cddc64de874be1ba69f74947b33d2d2b9fed",
+        "revision": "712157b6fa161101ce1a696204974390db1af8fb",
         "reason": "before-the-fix baselines captured on clean 513bd86473 prior to AC1/AC2 implementation"
       }
     },
@@ -62,7 +62,7 @@
       "expect_matched": true,
       "ok": true,
       "kept": {
-        "revision": "0465cddc64de874be1ba69f74947b33d2d2b9fed",
+        "revision": "712157b6fa161101ce1a696204974390db1af8fb",
         "reason": "before-the-fix baselines captured on clean 513bd86473 prior to AC1/AC2 implementation"
       }
     },
@@ -89,7 +89,8 @@
       ],
       "seconds": 29.9,
       "exit": 0,
-      "ok": true
+      "ok": true,
+      "superseded": "refreshed at amended PR-A2 commit 712157b6f after addressing review findings"
     },
     {
       "id": 4,
@@ -114,7 +115,8 @@
       ],
       "seconds": 33.1,
       "exit": 0,
-      "ok": true
+      "ok": true,
+      "superseded": "refreshed at amended PR-A2 commit 712157b6f after addressing review findings"
     },
     {
       "id": 5,
@@ -136,7 +138,8 @@
       ],
       "seconds": 31.8,
       "exit": 0,
-      "ok": true
+      "ok": true,
+      "superseded": "refreshed at amended PR-A2 commit 712157b6f after addressing review findings"
     },
     {
       "id": 6,
@@ -157,6 +160,98 @@
         "06-clinical-library-nightly-suite-multi-source-inge.log"
       ],
       "seconds": 68.6,
+      "exit": 0,
+      "ok": true,
+      "superseded": "refreshed at amended PR-A2 commit 712157b6f after addressing review findings"
+    },
+    {
+      "id": 7,
+      "claim": "AC1",
+      "label": "cite_as L1/D1 resolution, canonical prefixed_index, and history L1/D1 quote extraction",
+      "kind": "run",
+      "revision": "712157b6fa161101ce1a696204974390db1af8fb",
+      "dirty": false,
+      "recorded": "2026-11-19T12:17:24+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "cargo test -p local-product --lib physician_sources:: && cargo test -p local-product --lib history::unit_tests::"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "07-cite_as-L1-D1-resolution-canonical-prefixed_inde.log"
+      ],
+      "seconds": 6.7,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 8,
+      "claim": "AC2",
+      "label": "adaptive OCR on shifted/scaled scans, fail-closed blank/noise, and PDF page isolation tests",
+      "kind": "run",
+      "revision": "712157b6fa161101ce1a696204974390db1af8fb",
+      "dirty": false,
+      "recorded": "2026-11-19T12:17:31+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "local-product",
+        "--test",
+        "attachments"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "08-adaptive-OCR-on-shifted-scaled-scans-fail-closed.log"
+      ],
+      "seconds": 3.7,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 9,
+      "claim": "AC3",
+      "label": "Postgres freshness SLAs (1d/3d/7d clock tests), ClinicalLibraryClient /v1/freshness, and clinical-library-server bin",
+      "kind": "run",
+      "revision": "712157b6fa161101ce1a696204974390db1af8fb",
+      "dirty": false,
+      "recorded": "2026-11-19T12:17:35+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "export CLINICAL_LIBRARY_TEST_DATABASE_URL=postgres://postgres@127.0.0.1:55432/postgres && cargo test -p clinical-library --test corpus_and_server ac3_ && cargo test -p local-product --test clinical_library freshness_endpoint_reports_honest_standing_or_unavailable"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "09-Postgres-freshness-SLAs-1d-3d-7d-clock-tests-Cli.log"
+      ],
+      "seconds": 6.7,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 10,
+      "claim": "AC4",
+      "label": "clinical-library nightly suite, PMC CC0/CC-BY allowlist, active snapshot HTTP search/read, clinical-library-server bin, and boundaries",
+      "kind": "run",
+      "revision": "712157b6fa161101ce1a696204974390db1af8fb",
+      "dirty": false,
+      "recorded": "2026-11-19T12:17:42+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "export CLINICAL_LIBRARY_TEST_DATABASE_URL=postgres://postgres@127.0.0.1:55432/postgres && cargo test -p clinical-library && cargo build -p clinical-library --bin clinical-library-server && cargo test -p boundaries"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "10-clinical-library-nightly-suite-PMC-CC0-CC-BY-all.log"
+      ],
+      "seconds": 103.4,
       "exit": 0,
       "ok": true
     }

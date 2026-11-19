@@ -1,0 +1,203 @@
+   Compiling clinical-library v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-concerns-library-ec46c93f/crates/clinical-library)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 18.00s
+     Running unittests src/lib.rs (target/debug/deps/clinical_library-c387933286058ca4)
+
+running 41 tests
+test article::tests::our_own_defect_waits_for_a_change_and_tells_a_person_at_once ... ok
+test article::tests::a_stored_retry_must_be_one_a_move_could_make ... ok
+test candidate::tests::a_failed_check_hands_the_version_back ... ok
+test article::tests::the_third_outside_failure_needs_a_person ... ok
+test candidate::tests::version_names_are_bounded ... ok
+test alert::tests::stops_unreadable_owners_and_items_alert ... ok
+test article::tests::every_reachable_move_keeps_the_rules ... ok
+test failure::tests::codes_are_short_stable_names ... ok
+test alert::tests::a_library_that_stops_updating_alerts ... ok
+test night::tests::deferrals_and_failures_are_never_successes ... ok
+test pubmed::refresh::tests::a_new_article_is_admitted_with_its_record ... ok
+test pubmed::record::tests::notices_follow_nlms_link_types ... ok
+test article::tests::invalid_moves_say_what_was_refused ... ok
+test night::tests::only_complete_tallies_succeed ... ok
+test pubmed::refresh::tests::every_code_this_source_records_is_a_failure_code ... ok
+test pubmed::refresh::tests::an_unchanged_record_re_confirms_and_a_changed_one_replaces ... ok
+test slot::tests::unknown_is_never_treated_as_ended ... ok
+test slot::tests::an_unreadable_owner_alerts_on_the_second_night ... ok
+test pubmed::record::tests::pmids_are_positive_digits ... ok
+test pubmed::refresh::tests::an_outside_failure_counts_only_for_an_article_not_yet_admitted ... ok
+test slot::tests::slot_names_are_bounded ... ok
+test runner::tests::failure_detail_keeps_the_head ... ok
+test pubmed::refresh::tests::an_unreadable_record_tells_a_person_and_keeps_the_last_good_status ... ok
+test stop_rule::tests::deferred_nights_that_moved_nothing_count ... ok
+test stop_rule::tests::taken_over_nights_count_as_failures ... ok
+test stop_rule::tests::the_same_failure_twice_stops ... ok
+test stop_rule::tests::stopped_nights_leave_the_streak ... ok
+test stop_rule::tests::three_different_failed_nights_in_a_row_stop ... ok
+test source::tests::item_keys_are_bounded_and_pubmeds_are_pmids ... ok
+test stop_rule::tests::a_resolution_or_a_success_starts_the_count_over ... ok
+test storage::tests::paths_stay_inside_their_folder ... ok
+test stop_rule::tests::live_slot_holders_and_partial_nights ... ok
+test stop_rule::tests::stop_reasons_read_back_and_say_why ... ok
+test pubmed::efetch::tests::a_record_without_publication_types_is_unreadable ... ok
+test pubmed::efetch::tests::deleted_citations_answer_nothing ... ok
+test pubmed::efetch::tests::every_requested_pmid_gets_one_answer_in_order ... ok
+test pubmed::efetch::tests::one_unreadable_record_hides_no_other ... ok
+test pubmed::efetch::tests::a_response_that_answers_the_wrong_question_answers_nothing ... ok
+test pubmed::efetch::tests::the_hash_follows_the_record_bytes ... ok
+test sources::pmc::tests::allowlist_accepts_cc0_and_cc_by_and_rejects_restricted_missing_and_preprints ... ok
+test pubmed::efetch::tests::book_records_answer_their_pmids ... ok
+
+test result: ok. 41 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running unittests src/bin/clinical-library-migrate.rs (target/debug/deps/clinical_library_migrate-b65bdd19094292b2)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/bin/clinical-library-pubmed-status.rs (target/debug/deps/clinical_library_pubmed_status-c4f2dae6bf875df8)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/bin/clinical-library-server.rs (target/debug/deps/clinical_library_server-b1e4479ed3f2c33c)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/corpus_and_server.rs (target/debug/deps/corpus_and_server-a89c366957d8e204)
+
+running 2 tests
+test ac4_multi_source_ingestors_run_through_run_night_and_serve_http_with_pubmed_status ... ok
+test ac3_freshness_report_tracks_unrun_lagging_failed_and_current_states ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.21s
+
+     Running tests/postgres.rs (target/debug/deps/postgres-676d2d08a2cf597a)
+
+running 6 tests
+test item_states_keep_their_rules_in_storage ... ok
+test a_run_that_lost_its_slot_cannot_write ... ok
+test one_checked_version_is_active ... ok
+test each_night_records_one_outcome ... ok
+test migrations_apply_to_a_fresh_database ... ok
+test the_stop_rule_reads_the_stored_history ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.22s
+
+     Running tests/pubmed.rs (target/debug/deps/pubmed-512bfd8c6d5c43cc)
+
+running 10 tests
+test failed_reconfirms_dont_count_against_the_night ... ok
+test an_outage_sets_articles_aside_without_losing_status ... ok
+test an_article_resolved_mid_night_is_the_next_nights ... ok
+test a_refused_request_fails_the_night ... ok
+test a_run_that_lost_its_slot_records_no_status ... ok
+test stored_status_matches_nlm ... ok
+test one_failing_article_is_set_aside_and_the_rest_finish ... ok
+test a_changed_record_replaces_the_stored_status ... ok
+test requests_keep_within_ncbis_rate ... ok
+test throttling_and_server_errors_back_off ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.10s
+
+     Running tests/pubmed_overlap.rs (target/debug/deps/pubmed_overlap-973c4705bc2c7ab7)
+
+running 4 tests
+test a_full_night_finishes_within_an_hour ... ignored, a full night of 6,250 requests takes about a quarter of an hour
+test one_limiter_paces_every_request_in_flight ... ok
+test the_refresh_overlaps_its_requests ... ok
+test a_refusal_stops_the_requests_in_flight ... ok
+
+test result: ok. 3 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 49.86s
+
+     Running tests/runner.rs (target/debug/deps/runner-1c697ab85b30fe84)
+
+running 15 tests
+test content_admitted_after_activation_keeps_the_night_from_succeeding ... ok
+test admitted_content_left_unpublished_is_the_next_nights_to_publish ... ok
+test a_library_that_stops_updating_alerts ... ok
+test a_run_that_lost_its_slot_cannot_replace_the_files_search_serves ... ok
+test a_run_that_wakes_after_losing_its_slot_cannot_touch_the_active_version ... ok
+test a_killed_night_resumes_without_losing_admitted_work ... ok
+test due_work_left_undone_cannot_record_success ... ok
+test the_same_failure_twice_stops_and_says_why ... ok
+test the_store_asks_the_platform_about_the_holder ... ok
+test two_crashes_around_activation_stop_until_resolved ... ok
+test three_failed_nights_in_a_row_stop ... ok
+test an_activation_finishes_only_its_own_night ... ok
+test each_night_records_one_outcome_and_only_complete_nights_succeed ... ok
+test a_crash_at_any_boundary_resumes_and_keeps_the_rules ... ok
+test random_sequences_keep_the_rules ... ok
+
+test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.20s
+
+   Doc-tests clinical_library
+
+running 2 tests
+test crates/clinical-library/src/store.rs - store::Store::activate (line 615) - compile ... ok
+test crates/clinical-library/src/night.rs - night (line 28) ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+
+running 6 tests
+test crates/clinical-library/src/night.rs - night (line 9) - compile fail ... ok
+test crates/clinical-library/src/night.rs - night (line 22) - compile fail ... ok
+test crates/clinical-library/src/candidate.rs - candidate (line 21) - compile fail ... ok
+test crates/clinical-library/src/candidate.rs - candidate (line 8) - compile fail ... ok
+test crates/clinical-library/src/source.rs - source::ItemKey (line 73) - compile fail ... ok
+test crates/clinical-library/src/night.rs - night (line 16) - compile fail ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.97s
+
+all doctests ran in 4.33s; merged doctests compilation took 3.33s
+   Compiling sea-query v1.0.2
+   Compiling tower-http v0.6.11
+   Compiling sqlx-postgres v0.9.0
+   Compiling reqwest v0.12.28
+   Compiling sqlx v0.9.0
+   Compiling sea-query-sqlx v0.9.1
+   Compiling sea-schema v0.18.1
+   Compiling sea-orm v2.0.4
+   Compiling sea-orm-migration v2.0.4
+   Compiling clinical-library v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-concerns-library-ec46c93f/crates/clinical-library)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 23.06s
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.40s
+     Running unittests src/lib.rs (target/debug/deps/boundaries-94cce9dbaff1c954)
+
+running 25 tests
+test shared_ui::a_count_reaching_zero_says_to_remove_the_entry ... ok
+test shared_ui::a_count_going_down_says_to_lower_the_number ... ok
+test shared_ui::a_whole_test_file_counts_nothing ... ok
+test shared_ui::a_count_going_up_says_to_use_the_shared_component_or_add_an_exception ... ok
+test shared_ui::counts_css_rules_naming_library_classes ... ok
+test tests::duet_screens_do_not_read_device_health_directly ... ok
+test shared_ui::a_new_file_counts_as_going_up_from_zero ... ok
+test shared_ui::a_matching_count_passes ... ok
+test tests::shipping_clients_stay_until_the_rust_journeys_match ... ok
+test shared_ui::counts_css_rules_naming_control_elements ... ok
+test shared_ui::counts_card_classes_set_apart_by_escaped_whitespace ... ok
+test shared_ui::every_table_entry_has_one_row_and_a_reason ... ok
+test shared_ui::counts_card_markup_by_class_family_once_per_element ... ok
+test shared_ui::counts_rsx_held_in_other_macros_and_nested_rsx ... ok
+test tests::apps_do_not_import_each_others_clinical_crates ... ok
+test shared_ui::ignores_comments_strings_and_lookalikes ... ok
+test shared_ui::counts_each_raw_control_inside_rsx ... ok
+test tests::the_clinical_library_is_product_neutral ... ok
+test tests::gmail_and_spruce_are_product_neutral ... ok
+test shared_ui::ignores_test_code_but_not_code_kept_out_of_tests ... ok
+test shared_ui::the_check_reads_the_real_library ... ok
+test tests::every_ui_behaviour_is_run_as_its_kind ... ok
+test tests::shared_harness_is_product_neutral_and_has_no_product_store ... ok
+test tests::the_ui_library_runs_its_browser_behaviour_without_eval ... ok
+test shared_ui::the_apps_match_the_shared_ui_table ... ok
+
+test result: ok. 25 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.60s
+
+   Doc-tests boundaries
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
