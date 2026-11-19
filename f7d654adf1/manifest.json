@@ -1,0 +1,38 @@
+{
+  "branch": "tyler-eng-397-4-message-review-suite-part2",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC6-to-AC7-full-suite",
+      "label": "Full PostgreSQL message_review_recipe suite",
+      "kind": "run",
+      "revision": "c2675c5737bec47189fa85ca72a60cb92db559ca",
+      "dirty": false,
+      "recorded": "2026-11-19T00:15:20+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "local-product",
+        "--test",
+        "message_review_recipe",
+        "--",
+        "--test-threads=1"
+      ],
+      "expect": "test result: ok\\. 12 passed",
+      "expect_fail": false,
+      "files": [
+        "01-Full-PostgreSQL-message_review_recipe-suite.log"
+      ],
+      "seconds": 52.5,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true,
+      "kept": {
+        "revision": "f7d654adf19da566d814a07addb7a94bf8932618",
+        "reason": "Rebased onto final PR 91 (562055b56d); seam files preserved and full workspace/PG16/Chromium suites verified at PR 104 tip 59829dacb"
+      }
+    }
+  ]
+}
