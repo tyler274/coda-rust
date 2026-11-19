@@ -1,0 +1,380 @@
+   Compiling serde v1.0.229
+   Compiling opentelemetry v0.33.1
+   Compiling tower-http v0.7.1
+   Compiling tower-http v0.6.11
+   Compiling serde_urlencoded v0.7.1
+   Compiling tracing-serde v0.2.0
+   Compiling chrono v0.4.45
+   Compiling physician-wire v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-integrator-1d35fd3e/crates/physician-wire)
+   Compiling reqwest v0.13.5
+   Compiling tracing-subscriber v0.3.23
+   Compiling opentelemetry_sdk v0.33.1
+   Compiling reqwest v0.12.28
+   Compiling opentelemetry-http v0.33.1
+   Compiling tracing-opentelemetry v0.34.0
+   Compiling opentelemetry-proto v0.33.1
+   Compiling coda-http v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-integrator-1d35fd3e/crates/http)
+   Compiling opentelemetry-otlp v0.33.1
+   Compiling telemetry v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-integrator-1d35fd3e/crates/telemetry)
+   Compiling workspace-tools v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-integrator-1d35fd3e/crates/workspace-tools)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 13.45s
+     Running unittests src/lib.rs (target/debug/deps/telemetry-7c691e3bd438973f)
+
+running 28 tests
+test genai::tests::the_policy_defaults_to_none ... ok
+test tests::datadog_ids_are_the_lower_64_bits_in_decimal ... ok
+test tests::backend_defaults_to_datadog_and_falls_back_on_unknown_values ... ok
+test propagation::tests::nothing_is_injected_without_a_span_context ... ok
+test logs::tests::resource_uses_release_version_or_cloud_run_revision ... ok
+test propagation::tests::a_valid_traceparent_and_its_tracestate_are_extracted ... ok
+test propagation::tests::absent_or_malformed_context_is_none ... ok
+test logs::tests::rejects_dynamic_values_debug_and_exporter_diagnostics ... ok
+test logs::tests::an_email_address_and_a_bearer_token_never_reach_the_log ... ok
+test genai::tests::errors_set_the_status_without_content ... ok
+test propagation::tests::child_link_and_root_relations_never_fabricate_a_parent ... ok
+test tests::http_spans_continue_the_inbound_traceparent_and_mark_server_errors ... ok
+test tests::an_unsampled_inbound_traceparent_still_exports_the_request_and_its_children ... ok
+test genai::tests::generation_spans_carry_the_run_contract ... ok
+test propagation::tests::injection_writes_the_current_span_and_round_trips ... ok
+test logs::tests::privacy_recovery_failures_keep_safe_steps_and_trace_identity ... ok
+test logs::tests::queue_signal_failures_keep_their_event_and_class ... ok
+test logs::tests::init_layer_composition_keeps_trace_context ... ok
+test logs::tests::worker_failures_keep_named_safe_classes_and_trace_identity ... ok
+test genai::tests::content_is_recorded_only_under_the_full_policy ... ok
+test logs::attempt_finished_tests::worker_attempt_finished_keeps_trace_and_safe_fields_without_content ... ok
+test logs::tests::every_http_response_exports_one_record_under_the_default_filter ... ok
+test tests::lines_outside_a_trace_carry_no_ids ... ok
+test tests::grafana_lines_carry_hex_ids_and_no_dd_keys ... ok
+test tests::datadog_lines_carry_hex_ids_and_the_dd_correlation_keys ... ok
+test tests::both_lines_preserve_w3c_and_datadog_correlation ... ok
+test logs::tests::correlated_safe_logs_respect_explicit_current_and_absent_parents ... ok
+test logs::tests::stalled_failed_export_drops_overflow_without_blocking_emitters ... ok
+
+test result: ok. 28 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.09s
+
+     Running unittests src/main.rs (target/debug/deps/workspace_tools-c2806fd15eaa8ddb)
+
+running 196 tests
+test doppler::tests::release_pins_stay_in_sync ... ok
+test doppler::tests::only_release_download_urls_name_an_asset ... ok
+test failure::tests::safe_display_retains_typed_cause ... ok
+test doppler::tests::usage_exits_2 ... ok
+test failure::tests::api_status_projects_only_the_first_allowlisted_token ... ok
+test observability_drill::langfuse::readback::tests::a_datadog_trace_matches_in_decimal_or_full_hex ... ok
+test observability_drill::langfuse::readback::tests::a_canary_anywhere_in_the_trace_fails_isolation ... ok
+test observability_drill::langfuse::readback::tests::an_empty_search_is_never_isolation_proof ... ok
+test observability_drill::langfuse::cluster::tests::the_forwarded_port_is_read_from_kubectl ... ok
+test observability_drill::langfuse::readback::tests::datadog_ids_are_the_low_64_bits ... ok
+test observability_drill::langfuse::readback::tests::a_content_free_datadog_span_is_isolated ... ok
+test observability_drill::langfuse::readback::tests::loki_lines_are_counted ... ok
+test observability_drill::langfuse::readback::tests::a_session_without_its_generation_has_no_turn ... ok
+test observability_drill::langfuse::readback::tests::a_malformed_answer_is_not_an_empty_session ... ok
+test observability_drill::langfuse::readback::tests::attributes_are_found_flat_nested_or_under_containers ... ok
+test observability_drill::langfuse::chat::tests::the_turn_is_a_message_submit_command_on_the_wire ... ok
+test observability_drill::langfuse::readback::tests::a_rehearsal_generation_meets_the_contract ... ok
+test observability_drill::langfuse::readback::tests::a_rehearsed_failure_and_its_successor_share_the_work ... ok
+test migrations::tests::an_unsafe_version_stem_is_refused_before_psql ... ok
+test observability_drill::langfuse::readback::tests::a_wrong_failure_or_a_broken_chain_is_a_gap ... ok
+test observability_drill::langfuse::readback::tests::a_real_or_mislabelled_generation_is_refused ... ok
+test observability_drill::langfuse::readback::tests::an_attempt_must_link_to_the_accepting_request ... ok
+test observability_drill::langfuse::readback::tests::a_failed_generation_is_an_error_of_that_attempt_with_the_canary ... ok
+test observability_drill::langfuse::readback::tests::session_generations_come_newest_first ... ok
+test observability_drill::langfuse::cluster::tests::every_kubectl_call_names_the_staging_context ... ok
+test observability_drill::langfuse::readback::tests::untraced_physician_logs_and_empty_answers_fail_isolation ... ok
+test observability_drill::langfuse::tests::actions_and_flags_parse ... ok
+test observability_drill::langfuse::tests::firing_needs_an_alert_after_the_failure ... ok
+test observability_drill::langfuse::tests::recovery_needs_every_group_ok_and_a_resolution_after_the_restore ... ok
+test observability_drill::langfuse::tests::chat_failure_sends_one_more_turn_than_the_threshold ... ok
+test observability_drill::langfuse::tests::only_the_paging_action_needs_confirmation ... ok
+test observability_drill::langfuse::readback::tests::datadog_logs_need_the_trace_and_no_canary ... ok
+test observability_drill::langfuse::readback::tests::tempo_otlp_attributes_are_read ... ok
+test observability_drill::langfuse::tests::bad_input_is_refused_with_usage ... ok
+test observability_drill::langfuse::watch::tests::a_status_error_ends_the_wait_at_once ... ok
+test observability_drill::langfuse::readback::tests::the_chat_failure_monitor_is_read_by_name_grouped_or_not ... ok
+test observability_drill::langfuse::watch::tests::an_interrupt_or_the_cap_ends_a_wait ... ok
+test observability_drill::langfuse::tests::nonces_differ ... ok
+test observability_drill::tests::command_arguments_reject_unknown_pairs ... ok
+test observability_drill::tests::a_failed_effect_restores_even_when_nothing_was_open ... ok
+test observability_drill::tests::metric_and_loki_bodies_name_the_synthetic_signal ... ok
+test observability_drill::tests::an_unreadable_ledger_still_restores ... ok
+test doppler::tests::a_bad_checksum_is_rejected_without_network ... ok
+test observability_drill::tests::doppler_errors_and_debug_omit_the_secret_value ... ok
+test observability_drill::tests::probe_fails_before_readback_when_the_job_fails ... ok
+test observability_drill::tests::probe_runs_the_current_slot_as_the_probe_identity_and_passes_when_all_targets_answer ... ok
+test observability_drill::tests::each_route_writes_the_checker_route ... ok
+test observability_drill::tests::parse_rejects_an_unknown_route_and_a_reversed_clock ... ok
+test observability_drill::tests::probe_reports_the_read_error_when_no_read_ever_succeeds ... ok
+test observability_drill::tests::fail_records_one_signal_and_does_not_restore ... ok
+test observability_drill::tests::forty_minutes_is_still_inside_the_cap ... ok
+test observability_drill::tests::a_failed_effect_on_an_open_exercise_records_the_restore ... ok
+test observability_drill::tests::a_run_past_forty_minutes_restores_and_does_not_extend_the_failure ... ok
+test observability_drill::tests::probe_names_targets_that_iap_refused ... ok
+test observability_drill::tests::a_third_reminder_is_refused_and_a_run_that_already_has_one_restores ... ok
+test observability_drill::tests::stamps_keep_fractional_seconds ... ok
+test observability_drill::tests::slack_notice_without_a_confirmer_cannot_be_loaded ... ok
+test observability_drill::tests::recover_closes_an_open_exercise_once ... ok
+test observability_drill::tests::scheduler_pause_and_resume_are_idempotent ... ok
+test observability_drill::tests::a_restored_ledger_starts_a_new_exercise ... ok
+test pg_docker::tests::argv0_selects_the_postgres_tool ... ok
+test observability_drill::tests::probe_ignores_other_slots_and_fails_without_a_heartbeat ... ok
+test observability_drill::tests::restore_failure_is_reported_and_not_retried ... ok
+test serving::tests::a_mounted_data_root_skips_mkfs_and_runs_the_pinned_container ... ok
+test pg_docker::tests::a_stopped_helper_is_started_then_execs_the_tool ... ok
+test pg_docker::tests::link_installs_the_three_tool_names ... ok
+test staging_reconcile::tests::raw_process_output_debug_is_redacted ... ok
+test observability_drill::tests::probe_retries_a_transient_read_and_names_each_failing_outcome ... ok
+test staging_reconcile::tests::pre_epoch_clock_error_preserves_its_typed_cause ... ok
+test staging_reconcile::tests::credential_encoding_error_preserves_safe_source_chain ... ok
+test staging_reconcile::tests::cli_requires_explicit_apply_authorization_and_rejects_unknown_flags ... ok
+test doppler::tests::the_doppler_entry_is_written_mode_0755 ... ok
+test staging_reconcile::tests::unsafe_output_paths_and_backends_are_refused ... ok
+test observability_drill::langfuse::tests::the_langfuse_host_is_a_bare_https_origin ... ok
+test staging_release::command::tests::failed_execute_preserves_command_cause_and_is_async ... ok
+test staging_reconcile::tests::plan_failure_retains_private_diagnostics_and_writes_no_manifest ... ok
+test staging_reconcile::tests::unsupported_automatic_inputs_cannot_bypass_configuration_identity ... ok
+test staging_reconcile::tests::expected_settings_follow_the_reviewed_plan_not_a_second_source ... ok
+test staging_reconcile::tests::expected_cpu_follows_the_named_physician_container_beside_the_sidecar ... ok
+test staging_reconcile::tests::credentials_map_each_role_into_one_child_environment_value ... ok
+test staging_reconcile::tests::failed_or_empty_lookup_stops_before_any_opentofu_command_without_leaking ... ok
+test staging_reconcile::tests::exclusive_apply_claim_blocks_a_second_invocation_before_tools ... ok
+test staging_reconcile::tests::interrupted_apply_leaves_started_state_that_refuses_reapply ... ok
+test staging_release::command::tests::mutations_reject_missing_target_images_before_invoking_runner ... ok
+test staging_release::command::tests::direct_describe_absence_requires_structured_api_not_found ... ok
+test staging_reconcile::tests::apply_runs_exactly_the_reviewed_plan_once ... ok
+test staging_release::domain::tests::observed_images_keep_the_existing_permissive_contract ... ok
+test staging_reconcile::tests::verify_lookup_failure_precedes_opentofu ... ok
+test staging_reconcile::tests::plan_saves_private_review_and_identity_and_reports_outcome ... ok
+test staging_reconcile::tests::verify_waits_for_a_settling_rollout ... ok
+test staging_release::domain::tests::execution_and_revision_ids_validate_on_deserialization ... ok
+test staging_release::command::tests::service_and_execution_json_contracts_and_mutation_arguments ... ok
+test staging_release::command::tests::failure_output_names_only_the_allowlisted_api_status ... ok
+test staging_reconcile::tests::verify_passes_with_no_change_plan_and_reviewed_settings ... ok
+test staging_reconcile::tests::failed_or_timed_out_apply_is_uncertain_and_never_retried ... ok
+test staging_release::domain::tests::published_images_validate_repository_and_lowercase_digest ... ok
+test staging_release::command::tests::raw_command_diagnostics_never_enter_receipt_or_summary ... ok
+test staging_release::domain::tests::closed_identities_reject_unknown_spellings ... ok
+test staging_release::shape::tests::new_non_client_label_fails ... ok
+test staging_release::shape::tests::dropped_sidecar_fails ... ok
+test staging_release::shape::tests::cpu_or_scaling_drift_fails ... ok
+test staging_release::shape::tests::image_only_release_passes ... ok
+test staging_release::shape::tests::content_is_a_known_policy ... ok
+test staging_release::shape::tests::first_client_label_on_a_template_without_labels_passes ... ok
+test staging_release::shape::tests::single_container_targets_the_default_container ... ok
+test staging_release::shape::tests::sidecar_without_gateway_or_with_ingress_is_refused ... ok
+test staging_release::shape::tests::sidecar_image_change_fails ... ok
+test staging_release::shape::tests::sidecar_without_telemetry_env_is_refused ... ok
+test staging_release::shape::tests::two_container_service_targets_the_named_product ... ok
+test staging_release::shape::tests::wrong_or_unexpected_containers_are_refused ... ok
+test staging_reconcile::tests::verify_reports_drift_settings_readiness_and_traffic_separately_from_failure ... ok
+test staging_release::tests::a_new_execution_without_conditions_is_pending ... ok
+test staging_release::shape::tests::single_named_container_is_targeted_by_name ... ok
+test staging_release::tests::failed_release_still_writes_its_step_summary ... ok
+test staging_release::tests::failure_message_exposes_receipt_loss_without_raw_diagnostics ... ok
+test staging_release::command::tests::two_container_service_reads_and_updates_the_named_product ... ok
+test staging_reconcile::tests::modified_plans_and_changed_roots_are_refused_before_apply ... ok
+test observability_drill::langfuse::chat::tests::a_finished_answer_names_its_attempt_and_couldnt_finish_names_its_run ... ok
+test staging_release::tests::failed_initial_snapshot_survives_an_unwritable_receipt ... ok
+test staging_release::tests::partial_publication_cannot_start_migrations ... ok
+test staging_release::tests::receipts_only_include_allowlisted_diagnostics_and_summaries ... ok
+test staging_release::tests::finalization_recovers_execution_id_after_interrupted_response ... ok
+test staging_release::tests::failed_migration_keeps_execution_and_stops_all_later_writes ... ok
+test staging_release::tests::propagated_command_failure_records_only_its_api_status ... ok
+test staging_release::tests::failed_summary_identifies_migration_and_sanitized_cause ... ok
+test migrations::tests::an_applied_version_is_skipped ... ok
+test staging_release::tests::receipt_rejects_misassigned_or_invalid_images_and_diagnostics ... ok
+test staging_release::tests::publication_still_requires_matching_tested_bundle_identity ... ok
+test staging_release::tests::failed_migration_survives_an_unwritable_receipt ... ok
+test staging_release::tests::never_ready_rollout_stops_after_bounded_polls ... ok
+test staging_release::tests::unknown_lifecycle_states_fail_deserialization ... ok
+test staging_release::tests::malformed_sidecar_shape_is_refused_before_any_migration ... ok
+test staging_release::tests::fixed_containers_require_every_key_but_allow_null_images ... ok
+test staging_release::tests::rejects_production_and_duplicate_options ... ok
+test staging_release::tests::reviewer_reproduction_failed_migration_with_sixth_save_unwritable ... ok
+test staging_release::command::tests::process_timeout_is_bounded_and_retains_cause ... ok
+test staging_release::tests::applied_update_with_lost_response_keeps_polling_until_ready ... ok
+test staging_release::tests::sidecar_drift_after_rollout_fails_and_stops_later_services ... ok
+test staging_release::tests::final_snapshot_failure_survives_an_unwritable_receipt ... ok
+test staging_release::tests::duet_failure_preserves_successful_physician_and_never_rolls_back ... ok
+test staging_release::tests::refuses_replaying_an_attempted_release ... ok
+test staging_release::tests::slow_rollout_is_polled_until_ready_without_repeating_the_update ... ok
+test staging_release::tests::unidentifiable_execution_is_unknown_and_never_reexecuted ... ok
+test staging_release::tests::final_receipt_failure_keeps_the_operation_error ... ok
+test staging_release::tests::successful_release_has_all_images_migrations_and_service_states ... ok
+test migrations::tests::migrations_apply_in_sorted_order_with_the_default_psql ... ok
+test staging_release::tests::ambiguous_execute_and_update_are_reconciled_without_retries ... ok
+test staging_release::tests::refused_update_that_left_the_old_spec_stops_after_one_confirming_read ... ok
+test staging_restore::tests::installed_sdk_accepts_creation_flags ... ignored, requires the Nix dev shell gcloud SDK
+test staging_release::tests::bootstrap_skip_requires_confirmed_absence ... ok
+test staging_release::tests::receipt_wire_shape_round_trips_without_changing_keys ... ok
+test observability_drill::langfuse::chat::tests::the_rehearsal_sign_in_has_a_length_for_google_front_end ... ok
+test staging_release::tests::unwritable_final_receipt_skips_the_summary_and_keeps_both_errors ... ok
+test staging_restore::tests::creation_command_uses_supported_beta_labels_tls_and_bounded_storage ... ok
+test staging_restore::tests::accepts_only_canonical_network_self_link_or_resource_name ... ok
+test staging_restore::tests::failure_message_names_only_the_allowlisted_api_status ... ok
+test staging_release::tests::unwritable_step_summary_keeps_the_release_result ... ok
+test staging_restore::tests::failed_operation_survives_an_unwritable_operation_record ... ok
+test staging_restore::tests::refuses_all_existing_targets_even_with_plausible_prefix ... ok
+test staging_restore::tests::pending_operation_has_bounded_wait ... ok
+test staging_restore::tests::restore_error_keeps_cleanup_required_and_never_reports_completion ... ok
+test staging_restore::tests::cleanup_retains_lexical_creation_identity_check ... ok
+test staging_restore::tests::preflight_is_read_only_for_both_products ... ok
+test staging_restore::tests::cli_rejects_unknown_duplicate_and_partial_authorization ... ok
+test staging_restore::tests::failure_receipt_persistence_error_keeps_the_operation_error ... ok
+test staging_restore::tests::source_disk_outside_the_drill_bound_is_refused_before_writes ... ok
+test staging_restore::tests::persistence_failure_stops_further_cloud_writes ... ok
+test staging_restore::tests::reviewer_reproduction_failed_restore_with_sixth_save_unwritable ... ok
+test staging_restore::tests::source_backup_and_private_configuration_are_validated ... ok
+test staging_release::tests::worker_failure_leaves_the_physician_site_on_its_revision_and_keeps_the_cause ... ok
+test staging_restore::tests::refuses_managed_and_invalid_targets_before_cloud_reads ... ok
+test staging_restore::tests::selected_operations_reject_unknown_types_statuses_and_invalid_ids ... ok
+test staging_restore::tests::target_types_do_not_restrict_unrelated_instance_listing ... ok
+test staging_restore::tests::validated_ids_preserve_string_identity_and_reject_invalid_input ... ok
+test staging_release::tests::two_container_services_update_only_the_named_product_container ... ok
+test staging_restore::tests::race_and_wrong_operation_fail_closed ... ok
+test staging_release::tests::timed_out_update_that_lands_after_the_first_read_is_still_confirmed ... ok
+test staging_restore::tests::receipts_exclude_provider_diagnostics_codes_and_untrusted_operation_ids ... ok
+test staging_restore::tests::restore_never_qualifies_and_cleanup_is_separate ... ok
+test staging_restore::tests::receipt_v2_round_trip_preserves_strings_and_timestamp_lexemes ... ok
+test staging_restore::tests::malformed_or_truncated_receipts_and_overwrites_are_refused ... ok
+test observability_drill::langfuse::watch::tests::an_answer_after_a_transient_read_is_a_plain_miss ... ok
+test wire::tests::post_edit_rewrites_the_generator_output ... ok
+test staging_restore::tests::cleanup_refuses_replaced_public_or_mislabeled_target ... ok
+test wire::tests::check_fails_when_the_generated_sources_differ ... ok
+test observability_drill::langfuse::watch::tests::a_transient_read_is_one_more_poll ... ok
+test staging_restore::tests::unknown_mutation_status_retains_identity_without_further_mutation ... ok
+test observability_drill::langfuse::watch::tests::polls_that_keep_failing_keep_the_last_cause ... ok
+test staging_release::tests::wrong_ready_digest_and_split_traffic_fail_before_duet ... ok
+test staging_restore::tests::unknown_status_preserves_provider_error_and_identity ... ok
+test wire::tests::check_detects_missing_or_changed_generated_documentation ... ok
+test staging_restore::tests::unknown_mutation_status_does_not_persist_malformed_or_mismatched_identity ... ok
+test observability_drill::tests::qualify_alerts_accepts_the_ledger_and_rejects_a_partial_one_as_incomplete ... ok
+test staging_release::tests::unwritable_checkpoint_never_permits_next_cloud_mutation ... ok
+test staging_reconcile::tests::workflow_through_real_processes_keeps_passwords_out_of_argv ... ok
+test staging_reconcile::tests::process_runner_bounds_a_hung_tool ... ok
+
+test result: ok. 195 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 1.15s
+
+   Doc-tests telemetry
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Compiling telemetry v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-integrator-1d35fd3e/crates/telemetry)
+   Compiling local-product v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-integrator-1d35fd3e/crates/local-product)
+   Compiling physician-sample v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-integrator-1d35fd3e/crates/physician-sample)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1m 03s
+     Running unittests src/lib.rs (target/debug/deps/physician_sample-ce273f2ac2bc0989)
+
+running 98 tests
+test chart_load::tests::enrollment_error_preserves_sea_orm_source_and_describes_auth_store_failures ... ok
+test auth::tests::workspace_resolution_names_only_patient_reads ... ok
+test auth::tests::command_resolution_names_only_bodied_workspaces ... ok
+test gmail::tests::absent_sender_is_proof_mode ... ok
+test auth::tests::a_disallowed_event_split_across_chunks_is_not_forwarded ... ok
+test hosting::tests::a_pool_timeout_does_not_suggest_the_migration_job ... ok
+test hosting::tests::a_false_cloud_marker_is_still_hosted ... ok
+test gmail::tests::relay_needs_no_personal_mailbox_credentials ... ok
+test hosting::tests::clinical_library_config_enforces_https_in_hosted_runs_and_loopback_locally ... ok
+test briefings::tests::generic_part_labels_are_omitted_and_structured_json_renders_key_value_lines ... ok
+test hosting::tests::fail_marker_fails_the_first_k_saved_attempts ... ok
+test hosting::tests::fail_marker_parses_whole_counts_only ... ok
+test hosting::tests::local_runs_start_without_any_profile ... ok
+test hosting::tests::hosted_local_stack_refuses_even_with_complete_profile ... ok
+test gmail::tests::a_sender_address_selects_hosted_mode ... ok
+test hosting::tests::production_and_other_profiles_refuse_even_when_complete ... ok
+test hosting::tests::only_a_rehearsal_practice_fails_a_marked_turn ... ok
+test hosting::tests::origin_follows_the_practice_and_scenarios_need_a_rehearsal_practice ... ok
+test hosting::tests::service_account_email_normalizes_and_rejects_non_service_principals ... ok
+test hosting::tests::simulation_practices_parse_only_under_the_preview_profile ... ok
+test hosting::tests::readiness_fails_closed_without_live_stores ... ok
+test hosting::tests::staging_accounts_refuse_outside_the_preview_profile_and_bad_entries ... ok
+test hosting::tests::staging_accounts_parse_under_the_preview_profile ... ok
+test gmail::tests::a_misconfigured_relay_never_falls_back_to_returning_tokens ... ok
+test hosting::tests::staging_physician_ids_are_stable_and_distinct_per_email ... ok
+test hosting::tests::synthetic_charts_load_only_under_the_preview_profile ... ok
+test hosting::tests::staging_preview_is_the_only_hosted_profile ... ok
+test live_tests::chat_titles_are_one_line_and_cut_at_a_word ... ok
+test hosting::tests::the_rehearsal_sign_in_needs_both_settings_and_the_preview_profile ... ok
+test patients::tests::age_turns_on_the_birthday ... ok
+test auth::tests::event_guard_forwards_resync_frames ... ok
+test live_tests::a_due_beat_goes_out_before_changes_that_are_ready ... ok
+test patients::tests::directory_error_preserves_source_status_cause ... ok
+test live_tests::the_change_stream_keeps_alive_on_a_fixed_beat_while_changes_pass_and_ends_with_them ... ok
+test auth::tests::active_staging_admins_see_the_sample_patients ... ok
+test patients::tests::clinic_demographics_exposes_only_name_dob_and_mrn ... ok
+test patients::tests::connected_sources_projects_pull_less_linked_standings_and_skips_not_yet_read ... ok
+test patients::tests::search_orders_exact_identifier_before_prefix_before_substring ... ok
+test patients::tests::source_delivery_never_reports_usable_without_saved_pull_and_keeps_last_good_time ... ok
+test patients::tests::empty_roster_query_pages_twenty_five_by_name_and_excludes_other_practices ... ok
+test rehearsal::tests::rehearsal_workspaces_never_collide_with_the_staging_panel ... ok
+test live_tests::a_signed_in_reader_hears_the_beat_while_only_changes_it_may_not_see_pass ... ok
+test hosting::tests::clinical_library_down_or_refused_never_masquerades_as_nothing_found ... ok
+test auth::tests::sse_events_filter_to_panel_and_terminate_when_session_or_panel_access_is_revoked ... ok
+test reviews::tests::project_trigger_and_tool_steps_use_physician_language_and_candidate_ids ... ok
+test hosting::tests::clinical_library_enforces_excerpt_rights_unit_id_and_sha256_integrity ... ok
+test auth::tests::health_and_the_signed_out_page_stay_open ... ok
+test reviews::tests::review_version_advances_across_every_state_transition_even_at_same_timestamp ... ok
+test auth::tests::an_unknown_email_never_confirms_an_account ... ok
+test auth::tests::a_sign_in_token_verifies_once ... ok
+test auth::tests::a_non_admin_physician_cannot_invite_and_a_conflict_answers_409 ... ok
+test auth::tests::whoami_names_the_session_physician ... ok
+test synthetic_chart::tests::every_built_chart_reads_in_full ... ignored, requires `cargo run -p patient-bank -- build`
+test auth::tests::a_patient_exists_once_registered_to_the_practice ... ok
+test auth::tests::reads_without_a_session_never_serialize ... ok
+test auth::tests::a_held_link_without_access_says_so_and_a_guessed_one_does_not ... ok
+test hosting::tests::clinical_library_search_and_exact_read_authenticate_and_preserve_passage_metadata ... ok
+test auth::tests::an_unknown_or_expired_token_never_serializes ... ok
+test auth::tests::a_command_into_a_denied_workspace_returns_404 ... ok
+test auth::tests::a_refused_read_says_whether_the_session_ended_or_access_was_removed ... ok
+test synthetic_chart::tests::reconnect_receipts_and_modes_persist_in_postgres_across_separate_bank_directories ... ignored, requires explicit local Postgres
+test auth::tests::a_cross_practice_or_unknown_patient_never_gets_invited ... ok
+test auth::tests::an_admin_invitation_redeems_once_at_the_front_door ... ok
+test auth::tests::same_clinic_physicians_read_basic_demographics_while_clinical_routes_require_panel_membership ... ok
+test auth::tests::the_staging_physician_reads_their_granted_workspaces ... ok
+test auth::tests::clinical_now_follows_the_clock_each_practice_was_created_with ... ok
+test synthetic_reply::tests::the_switch_names_the_patient ... ok
+test auth::tests::clinic_admin_or_secretary_assigns_patient_to_physician_panel_over_http ... ok
+test auth::tests::a_physician_cannot_change_review_cadence ... ok
+test tests::chat_mode_follows_the_switch_and_falls_back_to_the_topic ... ok
+test auth::tests::projection_lists_filter_by_practice_and_panel_without_staging_practice_assumptions ... ok
+test schedule::tests::from_env_prefers_explicit_calendar_and_ignores_chart_only_banks ... ok
+test timestamp::tests::rfc3339_formats_the_unix_epoch ... ok
+test tests::hosted_site_requires_durable_chat ... ok
+test tests::required_sign_in_serves_only_the_practice ... ok
+test synthetic_reply::tests::the_first_draft_is_fixed_non_empty_wording ... ok
+test synthetic_chart::tests::a_chart_reads_as_coda_records_with_its_exact_bytes ... ok
+test synthetic_chart::tests::an_unread_attachment_keeps_its_parent_and_chart_siblings ... ok
+test schedule::tests::synthetic_bank_calendar_parses_appointments_and_names_corrupt_lines ... ok
+test synthetic_chart::tests::controllable_modes_simulate_lapsed_access_partial_outage_and_reconnect ... ok
+test tests::proxy_preserves_long_queries_under_concurrent_http_parsing ... ok
+test auth::tests::hosted_invite_mails_the_redeem_link_and_omits_the_token ... ok
+test auth::tests::hosted_sign_in_mails_the_link_and_omits_the_token ... ok
+test tests::a_registered_patient_no_source_holds_is_not_found ... ok
+test tests::an_unset_upstream_serves_the_site_and_a_set_one_forwards ... ok
+test tests::commands_are_rejected_without_a_model ... ok
+test tests::synthetic_charts_fail_closed_when_patients_folder_is_missing ... ok
+test tests::fixture_snapshot_and_past_work_refuse_off_panel_clinic_demographic_patients ... ok
+test tests::durable_chat_requires_the_physician_database ... ok
+test tests::connected_care_patient_link ... ok
+test rehearsal::tests::without_the_settings_there_is_no_rehearsal_route ... ok
+test rehearsal::tests::the_rehearsal_email_on_another_account_signs_nobody_in ... ok
+test rehearsal::tests::the_rehearsal_session_ends_on_time_however_much_it_is_used ... ok
+test rehearsal::tests::the_rehearsal_session_reaches_only_the_rehearsal_panel ... ok
+test rehearsal::tests::only_a_valid_assertion_for_this_audience_is_considered ... ok
+test rehearsal::tests::only_the_configured_service_account_may_rehearse ... ok
+test auth::tests::a_failed_or_missing_gmail_send_does_not_return_the_token ... ok
+test tests::serves_patients_and_no_work_it_does_not_hold ... ok
+
+test result: ok. 96 passed; 0 failed; 2 ignored; 0 measured; 0 filtered out; finished in 0.21s
+
+   Compiling physician-sample v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-integrator-1d35fd3e/crates/physician-sample)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 48.09s
+     Running unittests src/bin/physician-worker.rs (target/debug/deps/physician_worker-6f0369b1672a0e6e)
+
+running 2 tests
+test tests::developer_plan_refuses_a_workspace_with_sources_outside_the_synthetic_practice ... ok
+test revision::tests::a_revision_host_answers_a_saved_notes_outcome_and_adds_nothing ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 30 filtered out; finished in 0.17s
+

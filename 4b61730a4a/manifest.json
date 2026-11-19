@@ -1,0 +1,75 @@
+{
+  "branch": "tyler-eng-463-worker-attempt-log-drill",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC1",
+      "label": "telemetry, workspace-tools, physician-sample lib, and physician-worker tests",
+      "kind": "run",
+      "revision": "32790f99a57189a75a9855dc98575fed09560c90",
+      "dirty": false,
+      "recorded": "2026-11-19T00:25:14+00:00",
+      "command": [
+        "bash",
+        "-lc",
+        "cargo test --locked -p telemetry -p workspace-tools && cargo test --locked -p physician-sample --lib && cargo test --locked -p physician-sample --bin physician-worker -- --ignored"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "01-telemetry-workspace-tools-physician-sample-lib-a.log"
+      ],
+      "seconds": 128.1,
+      "exit": 0,
+      "ok": true,
+      "kept": {
+        "revision": "4b61730a4a141fb503ae651a6fe05db91b90f3a2",
+        "reason": "Rebased onto fa1ac67bd9; only unrelated upstream files changed outside attempt.rs, telemetry, workspace-tools, and observability.md"
+      }
+    },
+    {
+      "id": 2,
+      "claim": "AC2",
+      "label": "Observability documentation mdbook build",
+      "kind": "run",
+      "revision": "32790f99a57189a75a9855dc98575fed09560c90",
+      "dirty": false,
+      "recorded": "2026-11-19T00:27:23+00:00",
+      "command": [
+        "mdbook",
+        "build",
+        "book",
+        "-d",
+        "/tmp/mdbook-pr56"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "02-Observability-documentation-mdbook-build.log"
+      ],
+      "seconds": 1.9,
+      "exit": 0,
+      "ok": true,
+      "kept": {
+        "revision": "4b61730a4a141fb503ae651a6fe05db91b90f3a2",
+        "reason": "Rebased onto fa1ac67bd9; only unrelated upstream files changed outside attempt.rs, telemetry, workspace-tools, and observability.md"
+      }
+    },
+    {
+      "id": 3,
+      "claim": "AC3",
+      "label": "",
+      "kind": "gap",
+      "revision": "32790f99a57189a75a9855dc98575fed09560c90",
+      "dirty": false,
+      "recorded": "2026-11-19T00:27:25+00:00",
+      "reason": "Live Langfuse staging endpoint readback drill requires external staging credentials",
+      "ok": false,
+      "files": [],
+      "kept": {
+        "revision": "4b61730a4a141fb503ae651a6fe05db91b90f3a2",
+        "reason": "Rebased onto fa1ac67bd9; only unrelated upstream files changed outside attempt.rs, telemetry, workspace-tools, and observability.md"
+      }
+    }
+  ]
+}
