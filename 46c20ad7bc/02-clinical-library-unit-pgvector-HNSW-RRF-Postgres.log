@@ -1,0 +1,223 @@
+   Compiling clinical-library v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-concerns-library-ec46c93f/crates/clinical-library)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 17.43s
+     Running unittests src/lib.rs (/tmp/coda-target-concerns/debug/deps/clinical_library-e8b40287c822f1b8)
+
+running 44 tests
+test article::tests::our_own_defect_waits_for_a_change_and_tells_a_person_at_once ... ok
+test pubmed::refresh::tests::an_unreadable_record_tells_a_person_and_keeps_the_last_good_status ... ok
+test alert::tests::a_library_that_stops_updating_alerts ... ok
+test slot::tests::unknown_is_never_treated_as_ended ... ok
+test slot::tests::an_unreadable_owner_alerts_on_the_second_night ... ok
+test semantic::tests::bge_embedding_validates_dimension_finiteness_and_normalizes ... ok
+test pubmed::record::tests::notices_follow_nlms_link_types ... ok
+test pubmed::record::tests::pmids_are_positive_digits ... ok
+test pubmed::refresh::tests::a_new_article_is_admitted_with_its_record ... ok
+test article::tests::every_reachable_move_keeps_the_rules ... ok
+test pubmed::refresh::tests::an_unchanged_record_re_confirms_and_a_changed_one_replaces ... ok
+test semantic::tests::rrf_places_dual_match_first_and_retains_semantic_only_candidates ... ok
+test article::tests::a_stored_retry_must_be_one_a_move_could_make ... ok
+test night::tests::deferrals_and_failures_are_never_successes ... ok
+test candidate::tests::a_failed_check_hands_the_version_back ... ok
+test source::tests::item_keys_are_bounded_and_pubmeds_are_pmids ... ok
+test pubmed::refresh::tests::every_code_this_source_records_is_a_failure_code ... ok
+test stop_rule::tests::a_resolution_or_a_success_starts_the_count_over ... ok
+test article::tests::the_third_outside_failure_needs_a_person ... ok
+test stop_rule::tests::deferred_nights_that_moved_nothing_count ... ok
+test pubmed::refresh::tests::an_outside_failure_counts_only_for_an_article_not_yet_admitted ... ok
+test candidate::tests::version_names_are_bounded ... ok
+test article::tests::invalid_moves_say_what_was_refused ... ok
+test stop_rule::tests::stopped_nights_leave_the_streak ... ok
+test stop_rule::tests::stop_reasons_read_back_and_say_why ... ok
+test alert::tests::stops_unreadable_owners_and_items_alert ... ok
+test runner::tests::failure_detail_keeps_the_head ... ok
+test stop_rule::tests::live_slot_holders_and_partial_nights ... ok
+test night::tests::only_complete_tallies_succeed ... ok
+test slot::tests::slot_names_are_bounded ... ok
+test failure::tests::codes_are_short_stable_names ... ok
+test stop_rule::tests::taken_over_nights_count_as_failures ... ok
+test pubmed::efetch::tests::every_requested_pmid_gets_one_answer_in_order ... ok
+test stop_rule::tests::three_different_failed_nights_in_a_row_stop ... ok
+test pubmed::efetch::tests::deleted_citations_answer_nothing ... ok
+test pubmed::efetch::tests::one_unreadable_record_hides_no_other ... ok
+test stop_rule::tests::the_same_failure_twice_stops ... ok
+test storage::tests::paths_stay_inside_their_folder ... ok
+test pubmed::efetch::tests::a_record_without_publication_types_is_unreadable ... ok
+test pubmed::efetch::tests::the_hash_follows_the_record_bytes ... ok
+test pubmed::efetch::tests::a_response_that_answers_the_wrong_question_answers_nothing ... ok
+test sources::pmc::tests::allowlist_accepts_cc0_and_cc_by_and_rejects_restricted_missing_and_preprints ... ok
+test pubmed::efetch::tests::book_records_answer_their_pmids ... ok
+test semantic::tests::subprocess_encoder_speaks_duet_protocol_lines ... ok
+
+test result: ok. 44 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+
+     Running unittests src/bin/clinical-library-migrate.rs (/tmp/coda-target-concerns/debug/deps/clinical_library_migrate-7bddb073899f1975)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/bin/clinical-library-pubmed-status.rs (/tmp/coda-target-concerns/debug/deps/clinical_library_pubmed_status-bdf7cd1fc27f3fa3)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/bin/clinical-library-server.rs (/tmp/coda-target-concerns/debug/deps/clinical_library_server-32ab5f4d982dd757)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/corpus_and_server.rs (/tmp/coda-target-concerns/debug/deps/corpus_and_server-881b9187b93b3245)
+
+running 3 tests
+test ac4_bge_semantic_vector_search_ranks_semantically_related_unit_without_keyword_overlap ... ok
+test ac4_multi_source_ingestors_run_through_run_night_and_serve_http_with_pubmed_status ... ok
+test ac3_freshness_report_tracks_unrun_lagging_failed_and_current_states ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.35s
+
+     Running tests/postgres.rs (/tmp/coda-target-concerns/debug/deps/postgres-8e6f2e358ff300e2)
+
+running 6 tests
+test the_stop_rule_reads_the_stored_history ... ok
+test item_states_keep_their_rules_in_storage ... ok
+test each_night_records_one_outcome ... ok
+test a_run_that_lost_its_slot_cannot_write ... ok
+test migrations_apply_to_a_fresh_database ... ok
+test one_checked_version_is_active ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.25s
+
+     Running tests/pubmed.rs (/tmp/coda-target-concerns/debug/deps/pubmed-6a9c9f8c717ffc9a)
+
+running 10 tests
+test an_article_resolved_mid_night_is_the_next_nights ... ok
+test a_refused_request_fails_the_night ... ok
+test stored_status_matches_nlm ... ok
+test failed_reconfirms_dont_count_against_the_night ... ok
+test one_failing_article_is_set_aside_and_the_rest_finish ... ok
+test an_outage_sets_articles_aside_without_losing_status ... ok
+test a_run_that_lost_its_slot_records_no_status ... ok
+test a_changed_record_replaces_the_stored_status ... ok
+test requests_keep_within_ncbis_rate ... ok
+test throttling_and_server_errors_back_off ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.10s
+
+     Running tests/pubmed_overlap.rs (/tmp/coda-target-concerns/debug/deps/pubmed_overlap-e2698f3c0a2ec4de)
+
+running 4 tests
+test a_full_night_finishes_within_an_hour ... ignored, a full night of 6,250 requests takes about a quarter of an hour
+test one_limiter_paces_every_request_in_flight ... ok
+test the_refresh_overlaps_its_requests ... ok
+test a_refusal_stops_the_requests_in_flight ... ok
+
+test result: ok. 3 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 59.78s
+
+     Running tests/runner.rs (/tmp/coda-target-concerns/debug/deps/runner-8a9d1a4b203f2aec)
+
+running 15 tests
+test a_run_that_wakes_after_losing_its_slot_cannot_touch_the_active_version ... ok
+test content_admitted_after_activation_keeps_the_night_from_succeeding ... ok
+test a_run_that_lost_its_slot_cannot_replace_the_files_search_serves ... ok
+test admitted_content_left_unpublished_is_the_next_nights_to_publish ... ok
+test three_failed_nights_in_a_row_stop ... ok
+test the_store_asks_the_platform_about_the_holder ... ok
+test due_work_left_undone_cannot_record_success ... ok
+test each_night_records_one_outcome_and_only_complete_nights_succeed ... ok
+test an_activation_finishes_only_its_own_night ... ok
+test a_library_that_stops_updating_alerts ... ok
+test two_crashes_around_activation_stop_until_resolved ... ok
+test the_same_failure_twice_stops_and_says_why ... ok
+test a_killed_night_resumes_without_losing_admitted_work ... ok
+test a_crash_at_any_boundary_resumes_and_keeps_the_rules ... ok
+test random_sequences_keep_the_rules ... ok
+
+test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.18s
+
+   Doc-tests clinical_library
+
+running 2 tests
+test crates/clinical-library/src/store.rs - store::Store::activate (line 631) - compile ... ok
+test crates/clinical-library/src/night.rs - night (line 28) ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 6 tests
+test crates/clinical-library/src/night.rs - night (line 22) - compile fail ... ok
+test crates/clinical-library/src/night.rs - night (line 9) - compile fail ... ok
+test crates/clinical-library/src/night.rs - night (line 16) - compile fail ... ok
+test crates/clinical-library/src/candidate.rs - candidate (line 21) - compile fail ... ok
+test crates/clinical-library/src/source.rs - source::ItemKey (line 73) - compile fail ... ok
+test crates/clinical-library/src/candidate.rs - candidate (line 8) - compile fail ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.02s
+
+all doctests ran in 3.80s; merged doctests compilation took 2.76s
+   Compiling darling_core v0.20.11
+   Compiling tracing-subscriber v0.3.23
+   Compiling sea-orm-macros v2.0.4
+   Compiling tower-http v0.6.11
+   Compiling sqlx-postgres v0.9.0
+   Compiling reqwest v0.12.28
+   Compiling darling_macro v0.20.11
+   Compiling sqlx v0.9.0
+   Compiling darling v0.20.11
+   Compiling sea-query-derive v1.0.0
+   Compiling sea-query v1.0.2
+   Compiling sea-query-sqlx v0.9.1
+   Compiling sea-schema v0.18.1
+   Compiling sea-orm v2.0.4
+   Compiling sea-orm-migration v2.0.4
+   Compiling clinical-library v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-concerns-library-ec46c93f/crates/clinical-library)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 30.97s
+   Compiling serde_core v1.0.229
+   Compiling winnow v1.0.4
+   Compiling unicode-ident v1.0.27
+   Compiling toml_writer v1.2.0+spec-1.1.0
+   Compiling boundaries v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-concerns-library-ec46c93f/crates/boundaries)
+   Compiling proc-macro2 v1.0.107
+   Compiling toml_parser v1.1.5+spec-1.1.0
+   Compiling serde_spanned v1.1.3
+   Compiling toml_datetime v1.1.3+spec-1.1.0
+   Compiling toml v1.2.1+spec-1.1.0
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 8.44s
+     Running unittests src/lib.rs (/tmp/coda-target-concerns/debug/deps/boundaries-94cce9dbaff1c954)
+
+running 25 tests
+test shared_ui::a_matching_count_passes ... ok
+test shared_ui::a_count_going_up_says_to_use_the_shared_component_or_add_an_exception ... ok
+test tests::duet_screens_do_not_read_device_health_directly ... ok
+test shared_ui::counts_css_rules_naming_library_classes ... ok
+test shared_ui::a_count_going_down_says_to_lower_the_number ... ok
+test shared_ui::a_new_file_counts_as_going_up_from_zero ... ok
+test shared_ui::a_count_reaching_zero_says_to_remove_the_entry ... ok
+test shared_ui::a_whole_test_file_counts_nothing ... ok
+test shared_ui::counts_css_rules_naming_control_elements ... ok
+test shared_ui::counts_rsx_held_in_other_macros_and_nested_rsx ... ok
+test shared_ui::ignores_comments_strings_and_lookalikes ... ok
+test shared_ui::every_table_entry_has_one_row_and_a_reason ... ok
+test shared_ui::counts_card_classes_set_apart_by_escaped_whitespace ... ok
+test tests::shipping_clients_stay_until_the_rust_journeys_match ... ok
+test tests::apps_do_not_import_each_others_clinical_crates ... ok
+test shared_ui::counts_card_markup_by_class_family_once_per_element ... ok
+test shared_ui::counts_each_raw_control_inside_rsx ... ok
+test tests::the_clinical_library_is_product_neutral ... ok
+test tests::gmail_and_spruce_are_product_neutral ... ok
+test shared_ui::ignores_test_code_but_not_code_kept_out_of_tests ... ok
+test shared_ui::the_check_reads_the_real_library ... ok
+test tests::every_ui_behaviour_is_run_as_its_kind ... ok
+test tests::shared_harness_is_product_neutral_and_has_no_product_store ... ok
+test tests::the_ui_library_runs_its_browser_behaviour_without_eval ... ok
+test shared_ui::the_apps_match_the_shared_ui_table ... ok
+
+test result: ok. 25 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.62s
+
+   Doc-tests boundaries
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

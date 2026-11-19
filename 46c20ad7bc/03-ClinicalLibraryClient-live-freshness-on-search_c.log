@@ -1,0 +1,325 @@
+   Compiling local-product v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-concerns-library-ec46c93f/crates/local-product)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 22.23s
+     Running tests/clinical_library.rs (/tmp/coda-target-concerns/debug/deps/clinical_library-cd196c4781e675d9)
+
+running 9 tests
+test chat_question_needing_literature_searches_reads_and_cites_library_passage_with_source_and_date ... ignored, requires explicit local Postgres
+test unavailable_library_still_answers_chart_question_and_states_literature_limitation ... ignored, requires explicit local Postgres
+test freshness_endpoint_reports_honest_standing_or_unavailable ... ok
+test search_clinical_library_attaches_live_freshness_standing ... ok
+test phi_phone_iso_date_notice_relations_and_truncated_scan_behave_closed ... ok
+test search_returns_passages_with_source_date_status_and_attribution_and_refuses_patient_identifiers ... ok
+test exact_read_returns_identical_passage_and_reports_not_found_when_absent ... ok
+test google_metadata_oidc_mints_per_call_jwt_and_surfaces_metadata_failures_as_unavailable ... ok
+test unavailable_library_differs_from_nothing_found_across_failure_modes ... ok
+
+test result: ok. 7 passed; 0 failed; 2 ignored; 0 measured; 0 filtered out; finished in 0.05s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.33s
+     Running tests/clinical_library.rs (/tmp/coda-target-concerns/debug/deps/clinical_library-cd196c4781e675d9)
+
+running 2 tests
+test chat_question_needing_literature_searches_reads_and_cites_library_passage_with_source_and_date ... ok
+test unavailable_library_still_answers_chart_question_and_states_literature_limitation ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 7 filtered out; finished in 0.49s
+
+   Compiling local-product v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-concerns-library-ec46c93f/crates/local-product)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 20.48s
+     Running tests/physician_chat_recipe.rs (/tmp/coda-target-concerns/debug/deps/physician_chat_recipe-c9038a292c27e696)
+
+running 8 tests
+test missing_unreadable_and_unavailable_evidence_produce_distinct_named_limits_without_overclaiming ... ok
+test synthetic_patient_end_to_end_question_saves_answer_and_opens_citations ... ok
+test synthetic_patient_question_starts_chat_recipe_small_and_discovers_skills_and_tools ... ok
+test interrupted_chat_attempt_reconciles_saved_memory_and_concern_receipts_without_unknown_or_reexecution ... ok
+test live_chart_reread_enforced_in_physician_chat_when_configured ... ok
+test later_conversation_uses_earlier_memory_correction_and_retrieves_earlier_work ... ok
+test chat_receives_initial_understanding_triggers_revision_on_refresh_and_updates_patient_summary ... ok
+test chat_operations_execute_persist_refuse_failed_saves_and_enforce_workspace_access ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.31s
+
+   Compiling log v0.4.34
+   Compiling slab v0.4.12
+   Compiling tracing-core v0.1.36
+   Compiling subtle v2.6.1
+   Compiling getrandom v0.2.17
+   Compiling anyhow v1.0.104
+   Compiling zerocopy v0.8.63
+   Compiling serde v1.0.229
+   Compiling thiserror v2.0.21
+   Compiling tokio v1.54.1
+   Compiling zeroize v1.9.1
+   Compiling konst_macro_rules v0.2.19
+   Compiling darling_core v0.20.11
+   Compiling zerofrom v0.1.8
+   Compiling aws-lc-sys v0.46.0
+   Compiling memmap2 v0.9.11
+   Compiling libloading v0.8.9
+   Compiling futures-util v0.3.34
+   Compiling ring v0.17.14
+   Compiling rustc-hash v2.1.3
+   Compiling longest-increasing-subsequence v0.1.0
+   Compiling dioxus-core-types v0.7.10
+   Compiling typenum v1.20.1
+   Compiling rustls-pki-types v1.15.1
+   Compiling pin-project v1.1.13
+   Compiling tracing v0.1.44
+   Compiling yoke v0.8.3
+   Compiling konst v0.2.20
+   Compiling tracing-log v0.2.0
+   Compiling num-integer v0.1.47
+   Compiling getrandom v0.3.4
+   Compiling nu-ansi-term v0.50.3
+   Compiling opentelemetry v0.33.1
+   Compiling async-stream v0.3.6
+   Compiling pem v3.0.6
+   Compiling chrono v0.4.45
+   Compiling rust_decimal v1.43.0
+   Compiling subsecond-types v0.7.10
+   Compiling slotmap v1.1.1
+   Compiling serde_urlencoded v0.7.1
+   Compiling tracing-serde v0.2.0
+   Compiling sea-orm-macros v2.0.4
+   Compiling derive_more v2.1.1
+   Compiling ouroboros v0.18.5
+   Compiling enumset v1.1.14
+   Compiling prost-derive v0.14.6
+   Compiling rand_core v0.6.4
+   Compiling zerovec v0.11.8
+   Compiling zerotrie v0.2.5
+   Compiling webpki-roots v1.0.10
+   Compiling generational-box v0.7.10
+   Compiling const_format v0.2.36
+   Compiling warnings v0.2.1
+   Compiling axum-core v0.5.6
+   Compiling num-bigint v0.4.8
+   Compiling rand_core v0.9.5
+   Compiling generic-array v0.14.7
+   Compiling euclid v0.22.14
+   Compiling keyboard-types v0.7.0
+   Compiling minimal-lexical v0.2.1
+   Compiling unicase v2.10.0
+   Compiling subsecond v0.7.10
+   Compiling alloc-no-stdlib v3.0.0
+   Compiling serde_yaml v0.9.34+deprecated
+   Compiling tracing-subscriber v0.3.23
+   Compiling crc16 v0.4.0
+   Compiling bytes-utils v0.1.4
+   Compiling dioxus-cli-config v0.7.10
+   Compiling simdutf8 v0.1.5
+   Compiling openssl-probe v0.2.1
+   Compiling quoted_printable v0.5.2
+   Compiling cookie-factory v0.3.2
+   Compiling tower-http v0.7.1
+   Compiling tinystr v0.8.4
+   Compiling potential_utf v0.1.6
+   Compiling alloc-stdlib v0.3.0
+   Compiling nom v7.1.3
+   Compiling mime_guess v2.0.5
+   Compiling rustls-native-certs v0.8.5
+   Compiling encoding_rs v0.8.42
+   Compiling float-cmp v0.10.0
+   Compiling block-buffer v0.10.4
+   Compiling crypto-common v0.1.7
+   Compiling arc-swap v1.9.3
+   Compiling socket2 v0.5.10
+   Compiling email-encoding v0.4.3
+   Compiling nom v8.0.0
+   Compiling urlencoding v2.1.3
+   Compiling icu_locale_core v2.3.0
+   Compiling brotli-decompressor v6.2.0
+   Compiling public-site v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-concerns-library-ec46c93f/crates/public-site)
+   Compiling email_address v0.2.9
+   Compiling icu_collections v2.3.0
+   Compiling askama_escape v0.13.0
+   Compiling digest v0.10.7
+   Compiling dioxus-config-macros v0.7.10
+   Compiling semver v1.0.28
+   Compiling simple_asn1 v0.6.4
+   Compiling darling_macro v0.20.11
+   Compiling physician-wire v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-concerns-library-ec46c93f/crates/physician-wire)
+   Compiling dioxus-core v0.7.10
+   Compiling futures-executor v0.3.34
+   Compiling patient-work v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-concerns-library-ec46c93f/crates/patient-work)
+   Compiling data-encoding v2.11.1
+   Compiling agent-skills v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-concerns-library-ec46c93f/crates/agent-skills)
+   Compiling sha2 v0.10.9
+   Compiling tracing-opentelemetry v0.34.0
+   Compiling charset v0.1.5
+   Compiling futures v0.3.34
+   Compiling brotli v9.1.3
+   Compiling mailparse v0.18.0
+   Compiling redis-protocol v6.0.0
+   Compiling dioxus-router-macro v0.7.10
+   Compiling icu_provider v2.3.1
+   Compiling icu_properties v2.3.0
+   Compiling icu_normalizer v2.3.0
+   Compiling hyper v1.12.0
+   Compiling tower v0.5.3
+   Compiling tokio-stream v0.1.19
+   Compiling tokio-util v0.7.20
+   Compiling dioxus-signals v0.7.10
+   Compiling dioxus-history v0.7.10
+   Compiling dioxus-ssr v0.7.10
+   Compiling idna_adapter v1.2.2
+   Compiling idna v1.1.0
+   Compiling hyper-util v0.1.21
+   Compiling url v2.5.8
+   Compiling dioxus-hooks v0.7.10
+   Compiling dioxus-stores v0.7.10
+   Compiling dioxus-html v0.7.10
+   Compiling tower-http v0.6.11
+   Compiling axum v0.8.9
+   Compiling reqwest v0.13.5
+   Compiling opentelemetry-http v0.33.1
+   Compiling ppv-lite86 v0.2.21
+   Compiling prost v0.14.6
+   Compiling rand_chacha v0.9.0
+   Compiling rand_chacha v0.3.1
+   Compiling rand v0.9.5
+   Compiling rand v0.8.8
+   Compiling darling v0.20.11
+   Compiling sea-query-derive v1.0.0
+   Compiling opentelemetry_sdk v0.33.1
+   Compiling dioxus-router v0.7.10
+   Compiling opentelemetry-proto v0.33.1
+   Compiling dioxus v0.7.10
+   Compiling opentelemetry-otlp v0.33.1
+   Compiling sea-query v1.0.2
+   Compiling aws-lc-rs v1.18.2
+   Compiling rustls v0.23.46
+   Compiling rustls-webpki v0.103.16
+   Compiling jsonwebtoken v11.1.0
+   Compiling tokio-rustls v0.26.6
+   Compiling sqlx-core v0.9.0
+   Compiling hyper-rustls v0.27.10
+   Compiling lettre v0.11.24
+   Compiling fred v10.1.0
+   Compiling reqwest v0.12.28
+   Compiling sqlx-postgres v0.9.0
+   Compiling coda-http v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-concerns-library-ec46c93f/crates/http)
+   Compiling harness v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-concerns-library-ec46c93f/crates/harness)
+   Compiling spruce v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-concerns-library-ec46c93f/crates/spruce)
+   Compiling telemetry v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-concerns-library-ec46c93f/crates/telemetry)
+   Compiling gmail v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-concerns-library-ec46c93f/crates/gmail)
+   Compiling sqlx v0.9.0
+   Compiling sea-query-sqlx v0.9.1
+   Compiling sea-schema v0.18.1
+   Compiling sea-orm v2.0.4
+   Compiling physician-bus v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-concerns-library-ec46c93f/crates/physician-bus)
+   Compiling sea-orm-migration v2.0.4
+   Compiling physician-auth v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-concerns-library-ec46c93f/crates/physician-auth)
+   Compiling front-door v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-concerns-library-ec46c93f/crates/front-door)
+   Compiling local-product v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-concerns-library-ec46c93f/crates/local-product)
+   Compiling physician-sample v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-concerns-library-ec46c93f/crates/physician-sample)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2m 19s
+     Running unittests src/lib.rs (/tmp/coda-target-concerns/debug/deps/physician_sample-7ac46b5b53a88029)
+
+running 102 tests
+test auth::tests::workspace_resolution_names_only_patient_reads ... ok
+test chart_load::tests::enrollment_error_preserves_sea_orm_source_and_describes_auth_store_failures ... ok
+test gmail::tests::absent_sender_is_proof_mode ... ok
+test follow_ups::tests::civil_date_and_rfc3339_parse_roundtrip ... ok
+test auth::tests::a_disallowed_event_split_across_chunks_is_not_forwarded ... ok
+test auth::tests::command_resolution_names_only_bodied_workspaces ... ok
+test hosting::tests::a_false_cloud_marker_is_still_hosted ... ok
+test hosting::tests::a_pool_timeout_does_not_suggest_the_migration_job ... ok
+test hosting::tests::clinical_library_config_enforces_https_in_hosted_runs_and_loopback_locally ... ok
+test briefings::tests::generic_part_labels_are_omitted_and_structured_json_renders_key_value_lines ... ok
+test hosting::tests::fail_marker_fails_the_first_k_saved_attempts ... ok
+test hosting::tests::fail_marker_parses_whole_counts_only ... ok
+test gmail::tests::a_misconfigured_relay_never_falls_back_to_returning_tokens ... ok
+test gmail::tests::relay_needs_no_personal_mailbox_credentials ... ok
+test hosting::tests::local_runs_start_without_any_profile ... ok
+test hosting::tests::hosted_local_stack_refuses_even_with_complete_profile ... ok
+test hosting::tests::production_and_other_profiles_refuse_even_when_complete ... ok
+test gmail::tests::a_sender_address_selects_hosted_mode ... ok
+test hosting::tests::readiness_fails_closed_without_live_stores ... ok
+test hosting::tests::only_a_rehearsal_practice_fails_a_marked_turn ... ok
+test hosting::tests::origin_follows_the_practice_and_scenarios_need_a_rehearsal_practice ... ok
+test hosting::tests::service_account_email_normalizes_and_rejects_non_service_principals ... ok
+test hosting::tests::simulation_practices_parse_only_under_the_preview_profile ... ok
+test hosting::tests::staging_accounts_refuse_outside_the_preview_profile_and_bad_entries ... ok
+test hosting::tests::staging_physician_ids_are_stable_and_distinct_per_email ... ok
+test auth::tests::event_guard_forwards_resync_frames ... ok
+test hosting::tests::staging_preview_is_the_only_hosted_profile ... ok
+test hosting::tests::the_rehearsal_sign_in_needs_both_settings_and_the_preview_profile ... ok
+test hosting::tests::staging_accounts_parse_under_the_preview_profile ... ok
+test hosting::tests::synthetic_charts_load_only_under_the_preview_profile ... ok
+test live_tests::chat_titles_are_one_line_and_cut_at_a_word ... ok
+test patients::tests::age_turns_on_the_birthday ... ok
+test auth::tests::active_staging_admins_see_the_sample_patients ... ok
+test live_tests::a_due_beat_goes_out_before_changes_that_are_ready ... ok
+test live_tests::the_change_stream_keeps_alive_on_a_fixed_beat_while_changes_pass_and_ends_with_them ... ok
+test patients::tests::directory_error_preserves_source_status_cause ... ok
+test patients::tests::clinic_demographics_exposes_only_name_dob_and_mrn ... ok
+test patients::tests::connected_sources_projects_pull_less_linked_standings_and_skips_not_yet_read ... ok
+test patients::tests::search_orders_exact_identifier_before_prefix_before_substring ... ok
+test patients::tests::source_delivery_never_reports_usable_without_saved_pull_and_keeps_last_good_time ... ok
+test live::tests::snapshot_body_clears_steps_and_syncs_redacted_text_for_withheld_work ... ok
+test rehearsal::tests::rehearsal_workspaces_never_collide_with_the_staging_panel ... ok
+test auth::tests::sse_events_filter_to_panel_and_terminate_when_session_or_panel_access_is_revoked ... ok
+test hosting::tests::clinical_library_down_or_refused_never_masquerades_as_nothing_found ... ok
+test live_tests::a_signed_in_reader_hears_the_beat_while_only_changes_it_may_not_see_pass ... ok
+test reviews::tests::project_trigger_and_tool_steps_use_physician_language_and_candidate_ids ... ok
+test reviews::tests::review_version_advances_across_every_state_transition_even_at_same_timestamp ... ok
+test patients::tests::empty_roster_query_pages_twenty_five_by_name_and_excludes_other_practices ... ok
+test schedule::tests::from_env_prefers_explicit_calendar_and_ignores_chart_only_banks ... ok
+test hosting::tests::clinical_library_enforces_excerpt_rights_unit_id_and_sha256_integrity ... ok
+test schedule::tests::multiple_patient_participants_degrade_to_unmatched_appointment_and_issue ... ok
+test auth::tests::a_held_link_without_access_says_so_and_a_guessed_one_does_not ... ok
+test auth::tests::an_unknown_email_never_confirms_an_account ... ok
+test schedule::tests::synthetic_bank_calendar_parses_appointments_and_names_corrupt_lines ... ok
+test synthetic_chart::tests::every_built_chart_reads_in_full ... ignored, requires `cargo run -p patient-bank -- build`
+test auth::tests::a_cross_practice_or_unknown_patient_never_gets_invited ... ok
+test synthetic_chart::tests::reconnect_receipts_and_modes_persist_in_postgres_across_separate_bank_directories ... ignored, requires explicit local Postgres
+test auth::tests::a_non_admin_physician_cannot_invite_and_a_conflict_answers_409 ... ok
+test synthetic_reply::tests::the_first_draft_is_fixed_non_empty_wording ... ok
+test synthetic_reply::tests::the_switch_names_the_patient ... ok
+test auth::tests::reads_without_a_session_never_serialize ... ok
+test auth::tests::whoami_names_the_session_physician ... ok
+test auth::tests::an_unknown_or_expired_token_never_serializes ... ok
+test auth::tests::an_admin_invitation_redeems_once_at_the_front_door ... ok
+test synthetic_chart::tests::a_chart_reads_as_coda_records_with_its_exact_bytes ... ok
+test auth::tests::a_sign_in_token_verifies_once ... ok
+test synthetic_chart::tests::an_unread_attachment_keeps_its_parent_and_chart_siblings ... ok
+test auth::tests::a_patient_exists_once_registered_to_the_practice ... ok
+test auth::tests::a_command_into_a_denied_workspace_returns_404 ... ok
+test auth::tests::a_refused_read_says_whether_the_session_ended_or_access_was_removed ... ok
+test auth::tests::health_and_the_signed_out_page_stay_open ... ok
+test hosting::tests::clinical_library_search_and_exact_read_authenticate_and_preserve_passage_metadata ... ok
+test tests::chat_mode_follows_the_switch_and_falls_back_to_the_topic ... ok
+test tests::hosted_site_requires_durable_chat ... ok
+test synthetic_chart::tests::controllable_modes_simulate_lapsed_access_partial_outage_and_reconnect ... ok
+test timestamp::tests::rfc3339_formats_the_unix_epoch ... ok
+test tests::required_sign_in_serves_only_the_practice ... ok
+test auth::tests::hosted_invite_mails_the_redeem_link_and_omits_the_token ... ok
+test auth::tests::hosted_sign_in_mails_the_link_and_omits_the_token ... ok
+test tests::proxy_preserves_long_queries_under_concurrent_http_parsing ... ok
+test auth::tests::same_clinic_physicians_read_basic_demographics_while_clinical_routes_require_panel_membership ... ok
+test auth::tests::a_physician_cannot_change_review_cadence ... ok
+test auth::tests::clinic_admin_or_secretary_assigns_patient_to_physician_panel_over_http ... ok
+test auth::tests::clinical_now_follows_the_clock_each_practice_was_created_with ... ok
+test auth::tests::the_staging_physician_reads_their_granted_workspaces ... ok
+test auth::tests::projection_lists_filter_by_practice_and_panel_without_staging_practice_assumptions ... ok
+test tests::commands_are_rejected_without_a_model ... ok
+test tests::a_registered_patient_no_source_holds_is_not_found ... ok
+test tests::connected_care_patient_link ... ok
+test tests::durable_chat_requires_the_physician_database ... ok
+test tests::fixture_snapshot_and_past_work_refuse_off_panel_clinic_demographic_patients ... ok
+test tests::synthetic_charts_fail_closed_when_patients_folder_is_missing ... ok
+test tests::an_unset_upstream_serves_the_site_and_a_set_one_forwards ... ok
+test auth::tests::a_failed_or_missing_gmail_send_does_not_return_the_token ... ok
+test rehearsal::tests::without_the_settings_there_is_no_rehearsal_route ... ok
+test rehearsal::tests::the_rehearsal_email_on_another_account_signs_nobody_in ... ok
+test rehearsal::tests::the_rehearsal_session_ends_on_time_however_much_it_is_used ... ok
+test rehearsal::tests::only_a_valid_assertion_for_this_audience_is_considered ... ok
+test rehearsal::tests::the_rehearsal_session_reaches_only_the_rehearsal_panel ... ok
+test rehearsal::tests::only_the_configured_service_account_may_rehearse ... ok
+test tests::serves_patients_and_no_work_it_does_not_hold ... ok
+test tests::health_route_reports_clinical_library_freshness_standing ... ok
+
+test result: ok. 100 passed; 0 failed; 2 ignored; 0 measured; 0 filtered out; finished in 0.63s
+

@@ -1,0 +1,120 @@
+{
+  "branch": "feat-clinical-library-tesseract-bge-freshness-ui",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC1",
+      "label": "tesseract binary + eng traineddata in devShell and attachment OCR suite",
+      "kind": "run",
+      "revision": "46c20ad7bc6ef6336bd2eb093989b4f51534a08a",
+      "dirty": false,
+      "recorded": "2026-11-19T20:14:05+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "which tesseract && tesseract --list-langs | grep -qx eng && cargo test -p local-product --test attachments && cargo test -p local-product --test attachments -- --ignored"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "01-tesseract-binary-eng-traineddata-in-devShell-and.log"
+      ],
+      "seconds": 83.1,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 2,
+      "claim": "AC2",
+      "label": "clinical-library unit, pgvector HNSW + RRF Postgres, corpus server, and boundaries",
+      "kind": "run",
+      "revision": "46c20ad7bc6ef6336bd2eb093989b4f51534a08a",
+      "dirty": false,
+      "recorded": "2026-11-19T20:15:28+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "cargo test -p clinical-library && cargo build -p clinical-library --bin clinical-library-server && cargo test -p boundaries"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "02-clinical-library-unit-pgvector-HNSW-RRF-Postgres.log"
+      ],
+      "seconds": 128.2,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 3,
+      "claim": "AC3",
+      "label": "ClinicalLibraryClient live freshness on search_clinical_library, recipes, and /health",
+      "kind": "run",
+      "revision": "46c20ad7bc6ef6336bd2eb093989b4f51534a08a",
+      "dirty": false,
+      "recorded": "2026-11-19T20:17:36+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "cargo test -p local-product --test clinical_library && cargo test -p local-product --test clinical_library -- --ignored && cargo test -p local-product --test physician_chat_recipe -- --ignored && cargo test -p physician-sample --lib"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "03-ClinicalLibraryClient-live-freshness-on-search_c.log"
+      ],
+      "seconds": 188.1,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 4,
+      "claim": "ALL",
+      "label": "workspace fmt, host + wasm32 clippy pre-commit hook, and boundaries",
+      "kind": "run",
+      "revision": "46c20ad7bc6ef6336bd2eb093989b4f51534a08a",
+      "dirty": false,
+      "recorded": "2026-11-19T20:20:45+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "bash .githooks/pre-commit && cargo test -p boundaries"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "04-workspace-fmt-host-wasm32-clippy-pre-commit-hook.log"
+      ],
+      "seconds": 81.6,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 5,
+      "claim": "ALL",
+      "label": "Chromium physician-sample site suite",
+      "kind": "run",
+      "revision": "46c20ad7bc6ef6336bd2eb093989b4f51534a08a",
+      "dirty": false,
+      "recorded": "2026-11-19T20:22:06+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-sample",
+        "--test",
+        "site",
+        "--",
+        "--ignored"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "05-Chromium-physician-sample-site-suite.log"
+      ],
+      "seconds": 333.5,
+      "exit": 0,
+      "ok": true
+    }
+  ]
+}
