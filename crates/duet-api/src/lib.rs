@@ -45,6 +45,7 @@ pub mod journal_gcs;
 )]
 pub mod privacy;
 pub mod privacy_archive;
+mod privacy_entity;
 #[expect(
     clippy::disallowed_methods,
     reason = "converting raw SQL to the typed database API"
