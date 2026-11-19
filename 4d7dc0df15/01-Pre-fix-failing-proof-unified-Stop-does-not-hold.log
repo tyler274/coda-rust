@@ -1,0 +1,19 @@
+   Compiling local-product v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-gcp-schedule-789fda7b/crates/local-product)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 23.36s
+     Running tests/follow_ups_postgres.rs (target/debug/deps/follow_ups_postgres-62bcc8269fe1f481)
+
+running 1 test
+
+thread 'p5_ac1_unified_stop_holds_running_review_and_resume_releases_both' (1124026) panicked at crates/local-product/tests/follow_ups_postgres.rs:1910:5:
+stopping a follow-up must also hold its running patient_review: got Running { attempt_id: "8143c8bf-ddae-406a-a2f4-38809526f380", started_at: 1795091361 }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test p5_ac1_unified_stop_holds_running_review_and_resume_releases_both ... FAILED
+
+failures:
+
+failures:
+    p5_ac1_unified_stop_holds_running_review_and_resume_releases_both
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 8 filtered out; finished in 0.22s
+
+error: test failed, to rerun pass `-p local-product --test follow_ups_postgres`

@@ -1,0 +1,23 @@
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on package cache
+   Compiling physician-wire v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-gcp-schedule-789fda7b/crates/physician-wire)
+   Compiling local-product v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-gcp-schedule-789fda7b/crates/local-product)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1m 16s
+     Running tests/follow_ups_postgres.rs (target/debug/deps/follow_ups_postgres-62bcc8269fe1f481)
+
+running 11 tests
+test review_outcomes_commit_durability_probe_and_unauthorized_physician_refusal ... ok
+test removing_wrong_patient_message_holds_back_derived_follow_ups_and_pending_actions_without_touching_unrelated_follow_ups ... ok
+test stop_holds_follow_up_and_resume_or_review_now_marks_current_version_due ... ok
+test create_through_tool_change_through_operation_restart_and_once_only_idempotency ... ok
+test terminal_follow_ups_never_reopen_and_cannot_restart_offers_physician_choices_without_auto_restart ... ok
+test p5_ac5_concern_done_and_conversation_archive_leave_active_follow_ups_untouched ... ok
+test p5_ac3_starting_contexts_include_active_and_cancelled_and_block_unjustified_recreation ... ok
+test p5_ac1_unified_stop_holds_running_review_and_resume_releases_both ... ok
+test p5_ac2_exhausted_followup_review_marks_cannot_restart_and_done_refuses_silent_dismiss ... ok
+test p5_ac4_chat_follow_up_tools_list_stop_resume_review_now_and_change_supersedes_old_review ... ok
+test production_patient_review_and_physician_chat_hosts_offer_and_execute_follow_up_tool ... ok
+
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 1 filtered out; finished in 1.48s
+

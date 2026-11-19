@@ -1,0 +1,576 @@
+{
+  "branch": "fix-p5-followup-stop-cannot-restart-and-chat-tools",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC1-prefixed-repro",
+      "label": "Pre-fix failing proof: unified Stop does not hold running follow-up review",
+      "kind": "run",
+      "revision": "b8e37e634c329dfab5af4849f9b046045d03aac8",
+      "dirty": true,
+      "recorded": "2026-11-19T12:28:58+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "local-product",
+        "--test",
+        "follow_ups_postgres",
+        "p5_ac1_unified_stop_holds_running_review_and_resume_releases_both",
+        "--",
+        "--ignored",
+        "--exact",
+        "--nocapture"
+      ],
+      "expect": "stopping a follow-up must also hold its running patient_review",
+      "expect_fail": true,
+      "files": [
+        "01-Pre-fix-failing-proof-unified-Stop-does-not-hold.log"
+      ],
+      "seconds": 23.9,
+      "exit": 101,
+      "expect_matched": true,
+      "ok": true,
+      "kept": {
+        "revision": "4d7dc0df15dd8f31198281d34359b143b0d2ca47",
+        "reason": "deliberately before the fix"
+      }
+    },
+    {
+      "id": 2,
+      "claim": "AC2-prefixed-repro",
+      "label": "Pre-fix failing proof: exhausted follow-up review does not transition to CannotRestart",
+      "kind": "run",
+      "revision": "b8e37e634c329dfab5af4849f9b046045d03aac8",
+      "dirty": true,
+      "recorded": "2026-11-19T12:29:22+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "local-product",
+        "--test",
+        "follow_ups_postgres",
+        "p5_ac2_exhausted_followup_review_marks_cannot_restart_and_done_refuses_silent_dismiss",
+        "--",
+        "--ignored",
+        "--exact",
+        "--nocapture"
+      ],
+      "expect": "exhausted follow-up review must transition follow-up to CannotRestart",
+      "expect_fail": true,
+      "files": [
+        "02-Pre-fix-failing-proof-exhausted-follow-up-review.log"
+      ],
+      "seconds": 3.1,
+      "exit": 101,
+      "expect_matched": true,
+      "ok": true,
+      "kept": {
+        "revision": "4d7dc0df15dd8f31198281d34359b143b0d2ca47",
+        "reason": "deliberately before the fix"
+      }
+    },
+    {
+      "id": 3,
+      "claim": "Shared-gates",
+      "label": "Pre-commit quality gate (fmt + host clippy + wasm32 clippy)",
+      "kind": "run",
+      "revision": "601daf7ea6cd824fdb84e90986d92d4f12e9ce91",
+      "dirty": false,
+      "recorded": "2026-11-19T13:30:00+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "cargo fmt --check && cargo clippy --workspace --all-targets -- -D warnings && cargo clippy -p physician-app --target wasm32-unknown-unknown --lib --bins -- -D warnings"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "03-Pre-commit-quality-gate-fmt-host-clippy-wasm32-c.log"
+      ],
+      "seconds": 136.4,
+      "exit": 0,
+      "ok": true,
+      "superseded": "re-recorded on amended HEAD with site.rs load-wait fix"
+    },
+    {
+      "id": 4,
+      "claim": "AC1-AC5-Postgres",
+      "label": "local-product follow_ups_postgres suite (11/11: unified Stop/Resume, CannotRestart settlement, starting contexts & cancel fence, chat tools, concern Done isolation)",
+      "kind": "run",
+      "revision": "601daf7ea6cd824fdb84e90986d92d4f12e9ce91",
+      "dirty": false,
+      "recorded": "2026-11-19T13:32:16+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "local-product",
+        "--test",
+        "follow_ups_postgres",
+        "--",
+        "--ignored"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "04-local-product-follow_ups_postgres-suite-11-11-un.log"
+      ],
+      "seconds": 77.9,
+      "exit": 0,
+      "ok": true,
+      "superseded": "re-recorded on amended HEAD with site.rs load-wait fix"
+    },
+    {
+      "id": 5,
+      "claim": "AC2-Today-Postgres",
+      "label": "local-product today_updates_messages_followups suite (3/3: uncollapsed CannotRestart Today row & Done refusal)",
+      "kind": "run",
+      "revision": "601daf7ea6cd824fdb84e90986d92d4f12e9ce91",
+      "dirty": false,
+      "recorded": "2026-11-19T13:33:34+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "local-product",
+        "--test",
+        "today_updates_messages_followups"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "05-local-product-today_updates_messages_followups-s.log"
+      ],
+      "seconds": 20.8,
+      "exit": 0,
+      "ok": true,
+      "superseded": "re-recorded on amended HEAD with site.rs load-wait fix"
+    },
+    {
+      "id": 6,
+      "claim": "AC1-AC4-Dispatch-Postgres",
+      "label": "local-product message_followup_dispatch_reviews suite (9/9: dispatch, self-supersession guard, Stop/Resume across restart)",
+      "kind": "run",
+      "revision": "601daf7ea6cd824fdb84e90986d92d4f12e9ce91",
+      "dirty": false,
+      "recorded": "2026-11-19T13:33:55+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "local-product",
+        "--test",
+        "message_followup_dispatch_reviews"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "06-local-product-message_followup_dispatch_reviews-.log"
+      ],
+      "seconds": 26.0,
+      "exit": 0,
+      "ok": true,
+      "superseded": "re-recorded on amended HEAD with site.rs load-wait fix"
+    },
+    {
+      "id": 7,
+      "claim": "AC6-Lib-Migrations-Boundaries",
+      "label": "local-product unit tests, migration_tests (6/6), and boundaries (25/25) after retiring follow_up_reassessment.rs",
+      "kind": "run",
+      "revision": "601daf7ea6cd824fdb84e90986d92d4f12e9ce91",
+      "dirty": false,
+      "recorded": "2026-11-19T13:34:21+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "cargo test -p local-product --lib && cargo test -p local-product --lib migration_tests -- --ignored && cargo test -p boundaries"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "07-local-product-unit-tests-migration_tests-6-6-and.log"
+      ],
+      "seconds": 79.4,
+      "exit": 0,
+      "ok": true,
+      "superseded": "re-recorded on amended HEAD with site.rs load-wait fix"
+    },
+    {
+      "id": 8,
+      "claim": "Shared-Unit-Tests",
+      "label": "physician-wire, physician-client, physician-app, and physician-sample unit tests",
+      "kind": "run",
+      "revision": "601daf7ea6cd824fdb84e90986d92d4f12e9ce91",
+      "dirty": false,
+      "recorded": "2026-11-19T13:35:41+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "cargo test -p physician-wire -p physician-client -p physician-app --lib && cargo test -p physician-sample --lib"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "08-physician-wire-physician-client-physician-app-an.log"
+      ],
+      "seconds": 136.2,
+      "exit": 0,
+      "ok": true,
+      "superseded": "re-recorded on amended HEAD with site.rs load-wait fix"
+    },
+    {
+      "id": 9,
+      "claim": "AC1-AC2-AC5-Chromium",
+      "label": "Chromium site_matching_reply_followups suite (4/4: Stop & discuss draft, Cancel follow-up label, Today Done prompt, background SSE focus preservation)",
+      "kind": "run",
+      "revision": "601daf7ea6cd824fdb84e90986d92d4f12e9ce91",
+      "dirty": false,
+      "recorded": "2026-11-19T13:37:57+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-sample",
+        "--test",
+        "site_matching_reply_followups",
+        "--",
+        "--ignored"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "09-Chromium-site_matching_reply_followups-suite-4-4.log"
+      ],
+      "seconds": 121.5,
+      "exit": 0,
+      "ok": true,
+      "superseded": "re-recorded on amended HEAD with site.rs load-wait fix"
+    },
+    {
+      "id": 10,
+      "claim": "AC1-StopAndDiscuss-UI",
+      "label": "Held follow-up card with Review now button and physician-editable Stop-and-discuss draft in composer",
+      "kind": "screenshot",
+      "revision": null,
+      "dirty": false,
+      "recorded": "2026-11-19T13:40:50+00:00",
+      "files": [
+        "10-16-follow-up-stop-and-discuss.png"
+      ],
+      "source": "target/verification/captures/matching-reply-followups/16-follow-up-stop-and-discuss.png",
+      "ok": true,
+      "superseded": "re-recorded on amended HEAD with site.rs load-wait fix"
+    },
+    {
+      "id": 11,
+      "claim": "AC2-CancelLabel-UI",
+      "label": "CannotRestart patient card displaying Cancel follow-up label and three explicit choices",
+      "kind": "screenshot",
+      "revision": null,
+      "dirty": false,
+      "recorded": "2026-11-19T13:40:50+00:00",
+      "files": [
+        "11-17-follow-up-cannot-restart-desktop.png"
+      ],
+      "source": "target/verification/captures/matching-reply-followups/17-follow-up-cannot-restart-desktop.png",
+      "ok": true,
+      "superseded": "re-recorded on amended HEAD with site.rs load-wait fix"
+    },
+    {
+      "id": 12,
+      "claim": "AC2-TodayDonePrompt-UI",
+      "label": "Today Done on CannotRestart follow-up opening Complete / Set a new date / Cancel follow-up prompt",
+      "kind": "screenshot",
+      "revision": null,
+      "dirty": false,
+      "recorded": "2026-11-19T13:40:50+00:00",
+      "files": [
+        "12-19-today-cannot-restart-done-prompt.png"
+      ],
+      "source": "target/verification/captures/matching-reply-followups/19-today-cannot-restart-done-prompt.png",
+      "ok": true,
+      "superseded": "re-recorded on amended HEAD with site.rs load-wait fix"
+    },
+    {
+      "id": 13,
+      "claim": "AC5-BackgroundNoFocus-UI",
+      "label": "Live background follow-up SSE arrival preserving keyboard focus and typed text in composer",
+      "kind": "screenshot",
+      "revision": null,
+      "dirty": false,
+      "recorded": "2026-11-19T13:40:50+00:00",
+      "files": [
+        "13-20-background-followup-preserves-focus.png"
+      ],
+      "source": "target/verification/captures/matching-reply-followups/20-background-followup-preserves-focus.png",
+      "ok": true,
+      "superseded": "re-recorded on amended HEAD with site.rs load-wait fix"
+    },
+    {
+      "id": 14,
+      "claim": "AGENTS-Required-Site-Chromium",
+      "label": "AGENTS.md required Chromium physician-sample tests/site suite",
+      "kind": "run",
+      "revision": "601daf7ea6cd824fdb84e90986d92d4f12e9ce91",
+      "dirty": false,
+      "recorded": "2026-11-19T13:40:50+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-sample",
+        "--test",
+        "site",
+        "--",
+        "--ignored"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "14-AGENTS.md-required-Chromium-physician-sample-tes.log"
+      ],
+      "seconds": 267.9,
+      "exit": 101,
+      "ok": false,
+      "superseded": "re-recorded on amended HEAD with site.rs load-wait fix"
+    },
+    {
+      "id": 15,
+      "claim": "Shared-gates",
+      "label": "Pre-commit quality gate (fmt + host clippy + wasm32 clippy)",
+      "kind": "run",
+      "revision": "4d7dc0df15dd8f31198281d34359b143b0d2ca47",
+      "dirty": false,
+      "recorded": "2026-11-19T13:53:57+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "cargo fmt --check && cargo clippy --workspace --all-targets -- -D warnings && cargo clippy -p physician-app --target wasm32-unknown-unknown --lib --bins -- -D warnings"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "15-Pre-commit-quality-gate-fmt-host-clippy-wasm32-c.log"
+      ],
+      "seconds": 78.8,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 16,
+      "claim": "AC1-AC5-Postgres",
+      "label": "local-product follow_ups_postgres (11/11), today_updates_messages_followups (3/3), message_followup_dispatch_reviews (9/9), and message_review_recipe",
+      "kind": "run",
+      "revision": "4d7dc0df15dd8f31198281d34359b143b0d2ca47",
+      "dirty": false,
+      "recorded": "2026-11-19T13:55:16+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "cargo test -p local-product --test follow_ups_postgres -- --ignored && cargo test -p local-product --test today_updates_messages_followups && cargo test -p local-product --test message_followup_dispatch_reviews && cargo test -p local-product --test message_review_recipe"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "16-local-product-follow_ups_postgres-11-11-today_up.log"
+      ],
+      "seconds": 43.7,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 17,
+      "claim": "AC6-Lib-Migrations-Boundaries",
+      "label": "local-product unit tests, migration_tests (6/6), boundaries (25/25), and physician-{wire,client,app,sample} unit tests",
+      "kind": "run",
+      "revision": "4d7dc0df15dd8f31198281d34359b143b0d2ca47",
+      "dirty": false,
+      "recorded": "2026-11-19T13:56:00+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "cargo test -p local-product --lib && cargo test -p local-product --lib migration_tests -- --ignored && cargo test -p boundaries && cargo test -p physician-wire -p physician-client -p physician-app --lib && cargo test -p physician-sample --lib"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "17-local-product-unit-tests-migration_tests-6-6-bou.log"
+      ],
+      "seconds": 26.6,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 18,
+      "claim": "AC1-AC2-AC5-Chromium",
+      "label": "Chromium site_matching_reply_followups suite (4/4)",
+      "kind": "run",
+      "revision": "4d7dc0df15dd8f31198281d34359b143b0d2ca47",
+      "dirty": false,
+      "recorded": "2026-11-19T13:56:26+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-sample",
+        "--test",
+        "site_matching_reply_followups",
+        "--",
+        "--ignored"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "18-Chromium-site_matching_reply_followups-suite-4-4.log"
+      ],
+      "seconds": 35.8,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 19,
+      "claim": "AC1-StopAndDiscuss-UI",
+      "label": "Held follow-up card with Review now button and physician-editable Stop-and-discuss draft in composer",
+      "kind": "screenshot",
+      "revision": null,
+      "dirty": false,
+      "recorded": "2026-11-19T13:57:02+00:00",
+      "files": [
+        "19-16-follow-up-stop-and-discuss.png"
+      ],
+      "source": "target/verification/captures/matching-reply-followups/16-follow-up-stop-and-discuss.png",
+      "ok": true,
+      "superseded": "re-recorded with explicit --revision"
+    },
+    {
+      "id": 20,
+      "claim": "AC2-CancelLabel-UI",
+      "label": "CannotRestart patient card displaying Cancel follow-up label and three explicit choices",
+      "kind": "screenshot",
+      "revision": null,
+      "dirty": false,
+      "recorded": "2026-11-19T13:57:02+00:00",
+      "files": [
+        "20-17-follow-up-cannot-restart-desktop.png"
+      ],
+      "source": "target/verification/captures/matching-reply-followups/17-follow-up-cannot-restart-desktop.png",
+      "ok": true,
+      "superseded": "re-recorded with explicit --revision"
+    },
+    {
+      "id": 21,
+      "claim": "AC2-TodayDonePrompt-UI",
+      "label": "Today Done on CannotRestart follow-up opening Complete / Set a new date / Cancel follow-up prompt",
+      "kind": "screenshot",
+      "revision": null,
+      "dirty": false,
+      "recorded": "2026-11-19T13:57:03+00:00",
+      "files": [
+        "21-19-today-cannot-restart-done-prompt.png"
+      ],
+      "source": "target/verification/captures/matching-reply-followups/19-today-cannot-restart-done-prompt.png",
+      "ok": true,
+      "superseded": "re-recorded with explicit --revision"
+    },
+    {
+      "id": 22,
+      "claim": "AC5-BackgroundNoFocus-UI",
+      "label": "Live background follow-up SSE arrival preserving keyboard focus and typed text in composer",
+      "kind": "screenshot",
+      "revision": null,
+      "dirty": false,
+      "recorded": "2026-11-19T13:57:03+00:00",
+      "files": [
+        "22-20-background-followup-preserves-focus.png"
+      ],
+      "source": "target/verification/captures/matching-reply-followups/20-background-followup-preserves-focus.png",
+      "ok": true,
+      "superseded": "re-recorded with explicit --revision"
+    },
+    {
+      "id": 23,
+      "claim": "AGENTS-Required-Site-Chromium",
+      "label": "AGENTS.md required Chromium physician-sample tests/site suite (24/24)",
+      "kind": "run",
+      "revision": "4d7dc0df15dd8f31198281d34359b143b0d2ca47",
+      "dirty": false,
+      "recorded": "2026-11-19T13:57:03+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-sample",
+        "--test",
+        "site",
+        "--",
+        "--ignored"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "23-AGENTS.md-required-Chromium-physician-sample-tes.log"
+      ],
+      "seconds": 217.0,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 24,
+      "claim": "AC1-StopAndDiscuss-UI",
+      "label": "Held follow-up card with Review now button and physician-editable Stop-and-discuss draft in composer",
+      "kind": "screenshot",
+      "revision": "4d7dc0df15dd8f31198281d34359b143b0d2ca47",
+      "dirty": false,
+      "recorded": "2026-11-19T14:02:32+00:00",
+      "files": [
+        "24-16-follow-up-stop-and-discuss.png"
+      ],
+      "source": "target/verification/captures/matching-reply-followups/16-follow-up-stop-and-discuss.png",
+      "ok": true
+    },
+    {
+      "id": 25,
+      "claim": "AC2-CancelLabel-UI",
+      "label": "CannotRestart patient card displaying Cancel follow-up label and three explicit choices",
+      "kind": "screenshot",
+      "revision": "4d7dc0df15dd8f31198281d34359b143b0d2ca47",
+      "dirty": false,
+      "recorded": "2026-11-19T14:02:32+00:00",
+      "files": [
+        "25-17-follow-up-cannot-restart-desktop.png"
+      ],
+      "source": "target/verification/captures/matching-reply-followups/17-follow-up-cannot-restart-desktop.png",
+      "ok": true
+    },
+    {
+      "id": 26,
+      "claim": "AC2-TodayDonePrompt-UI",
+      "label": "Today Done on CannotRestart follow-up opening Complete / Set a new date / Cancel follow-up prompt",
+      "kind": "screenshot",
+      "revision": "4d7dc0df15dd8f31198281d34359b143b0d2ca47",
+      "dirty": false,
+      "recorded": "2026-11-19T14:02:32+00:00",
+      "files": [
+        "26-19-today-cannot-restart-done-prompt.png"
+      ],
+      "source": "target/verification/captures/matching-reply-followups/19-today-cannot-restart-done-prompt.png",
+      "ok": true
+    },
+    {
+      "id": 27,
+      "claim": "AC5-BackgroundNoFocus-UI",
+      "label": "Live background follow-up SSE arrival preserving keyboard focus and typed text in composer",
+      "kind": "screenshot",
+      "revision": "4d7dc0df15dd8f31198281d34359b143b0d2ca47",
+      "dirty": false,
+      "recorded": "2026-11-19T14:02:32+00:00",
+      "files": [
+        "27-20-background-followup-preserves-focus.png"
+      ],
+      "source": "target/verification/captures/matching-reply-followups/20-background-followup-preserves-focus.png",
+      "ok": true
+    }
+  ]
+}

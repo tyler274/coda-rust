@@ -1,0 +1,18 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.54s
+     Running tests/follow_ups_postgres.rs (target/debug/deps/follow_ups_postgres-62bcc8269fe1f481)
+
+running 1 test
+
+thread 'p5_ac2_exhausted_followup_review_marks_cannot_restart_and_done_refuses_silent_dismiss' (1124389) panicked at crates/local-product/tests/follow_ups_postgres.rs:2066:5:
+exhausted follow-up review must transition follow-up to CannotRestart: got Active { schedule: Scheduled { due_at: 1795091304 } }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test p5_ac2_exhausted_followup_review_marks_cannot_restart_and_done_refuses_silent_dismiss ... FAILED
+
+failures:
+
+failures:
+    p5_ac2_exhausted_followup_review_marks_cannot_restart_and_done_refuses_silent_dismiss
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 8 filtered out; finished in 0.27s
+
+error: test failed, to rerun pass `-p local-product --test follow_ups_postgres`
