@@ -1,22 +1,24 @@
-//! What the popup says about the connection. The worker owns the connection; this turns its
-//! status reply into one state, said once, and the one action that fits, and decides nothing on
-//! its own.
+//! What the popup says about the connection. The connector worker owns the connection; this turns
+//! its status reply into one state, said once, and the one action that fits, and decides nothing
+//! on its own.
 
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
+use serde_json::Value;
 use ui::{IconName, Task, TaskState, Tone};
 
-/// An instant, in milliseconds since the epoch, as `Date.now` counts it.
-#[derive(Debug, Clone, Copy, Deserialize, PartialEq, PartialOrd)]
-#[serde(transparent)]
-pub struct Millis(pub f64);
-
-/// The worker's reply to `connect`, `stop` or `status`, read as far as the popup says anything
-/// about it; Copy diagnostics carries the rest as sent. A reply missing what the worker always
-/// sends doesn't parse, rather than reading as a state.
+/// The worker's reply to `pair`, `unpair`, `connect`, `stop` or `status`, read as far as the popup
+/// says anything about it; Copy diagnostics carries the rest as sent. A reply missing what the
+/// worker always sends doesn't parse, rather than reading as a state.
 #[derive(Debug, Clone, Deserialize, PartialEq)]
 pub struct Reply {
     ok: bool,
     reason: Option<Refusal>,
+    paired: bool,
+    endpoint: Option<String>,
+    source_label: String,
+    entry_url: String,
+    tab_pattern: Option<String>,
+    hosts: Vec<String>,
     state: Recording,
     run: Option<Run>,
     practice: Option<String>,
@@ -24,7 +26,7 @@ pub struct Reply {
 }
 
 /// What the worker last recorded, of which the popup reads only the code.
-#[derive(Debug, Clone, Copy, Deserialize, PartialEq)]
+#[derive(Debug, Clone, Copy, Deserialize, PartialEq, Eq)]
 struct Recording {
     state: Recorded,
 }
@@ -36,17 +38,17 @@ enum Recorded {
     /// Nothing is under way: never connected, checked but not started, or Disconnected.
     #[serde(rename = "not_prepared", alias = "prepared", alias = "stopped")]
     Idle,
-    /// The last read went through.
+    /// Reads are going through.
     #[serde(rename = "connected")]
     Connected,
-    /// The bridge couldn't be reached; the run goes on and tries again.
+    /// Chords couldn't be reached; the run stays live and tries again.
     #[serde(rename = "bridge_offline")]
     BridgeOffline,
-    /// Hint's sign-in has ended or lapsed, so the physician signs back in.
+    /// The EHR sign-in has ended or lapsed; reading resumes once signed back in.
     #[serde(
         rename = "silent_auth_unavailable",
         alias = "interaction_required",
-        alias = "chart_unauthorized"
+        alias = "unauthorized"
     )]
     SignedOut,
     /// Anything else that stopped the run.
@@ -54,40 +56,55 @@ enum Recorded {
     Stopped(Stop),
 }
 
-/// What stopped a run, other than Hint's sign-in ending.
+/// What stopped a run, other than the EHR sign-in ending.
 #[derive(Debug, Clone, Copy, Deserialize, PartialEq, Eq)]
 pub enum Stop {
-    /// Another Hint account or practice is signed in.
+    /// Another EHR account or practice is signed in.
     #[serde(rename = "auth_identity_changed")]
     IdentityChanged,
-    /// Hint refused this account the chart.
+    /// The EHR refused this account access.
     #[serde(rename = "access_denied")]
     AccessDenied,
     /// Renewing failed for a reason that says nothing about the sign-in.
     #[serde(rename = "auth_failed")]
     RenewalFailed,
-    /// Hint asked Coda to slow down.
+    /// Token renewal was rate-limited.
     #[serde(rename = "rate_limited")]
     RateLimited,
+    /// Host permissions for the reader were revoked.
+    #[serde(rename = "permission_required")]
+    PermissionRevoked,
     /// A code the popup doesn't single out; diagnostics carry the code itself.
     #[serde(other)]
     Unexpected,
 }
 
-/// Why the worker refused an action, among the codes `connect` and `stop` can answer with.
+/// Why the worker refused an action, among the codes `pair`, `unpair`, `connect` and `stop` answer with.
 #[derive(Debug, Clone, Copy, Deserialize, PartialEq, Eq)]
 pub enum Refusal {
-    /// More or fewer than one Hint tab is open.
-    #[serde(rename = "open_exactly_one_sandbox_tab")]
+    /// The extension isn't paired with Chords yet.
+    #[serde(rename = "unpaired")]
+    Unpaired,
+    /// The Chords address isn't a valid URL.
+    #[serde(rename = "invalid_endpoint")]
+    InvalidEndpoint,
+    /// Chords refused the pairing request or code.
+    #[serde(rename = "pair_refused")]
+    PairRefused,
+    /// Chrome host permission was declined.
+    #[serde(rename = "permission_required")]
+    PermissionRequired,
+    /// More or fewer than one EHR tab is open.
+    #[serde(rename = "open_one_source_tab")]
     NotOneTab,
-    /// Hint isn't signed in.
+    /// The EHR isn't signed in.
     #[serde(rename = "sign_in_required")]
     SignInRequired,
-    /// Hint shows another practice.
-    #[serde(rename = "wrong_sandbox")]
-    WrongSandbox,
+    /// The EHR shows an unrecognized or unauthorized practice.
+    #[serde(rename = "other_practice")]
+    WrongPractice,
     /// A run is already under way.
-    #[serde(rename = "stop_before_prepare")]
+    #[serde(rename = "stop_before_prepare", alias = "already_running")]
     AlreadyConnected,
     /// A read kept from the last run couldn't be handed to Coda.
     #[serde(rename = "pending_delivery")]
@@ -97,20 +114,21 @@ pub enum Refusal {
     Unexpected,
 }
 
-/// A bounded reading run.
-#[derive(Debug, Clone, Copy, Deserialize, PartialEq)]
+/// A continuous background reading run.
+#[derive(Debug, Clone, Copy, Deserialize, PartialEq, Eq)]
 struct Run {
-    until: Millis,
     stopped: bool,
+    #[serde(default)]
+    awaiting_auth: bool,
 }
 
-/// How far the physician's Hint is from ready, each step following the one before.
-#[derive(Debug, Clone, Copy, Deserialize, PartialEq, PartialOrd)]
+/// How far the physician's EHR tab is from ready, each step following the one before.
+#[derive(Debug, Clone, Copy, Deserialize, PartialEq, Eq, PartialOrd, Ord)]
 pub enum Readiness {
-    /// No Hint tab is open.
-    #[serde(rename = "hint_closed")]
-    HintClosed,
-    /// Hint is open, and not signed in.
+    /// No EHR tab is open.
+    #[serde(rename = "closed")]
+    Closed,
+    /// The EHR is open, and not signed in.
     #[serde(rename = "signed_out")]
     SignedOut,
     /// Signed in, on a practice Coda doesn't read.
@@ -121,29 +139,25 @@ pub enum Readiness {
     Ready,
 }
 
-/// Where the connection stands at one moment: the worker's code weighed against its run.
-#[derive(Debug, Clone, Copy, PartialEq)]
+/// Where the connection stands: pairing first, then the worker's code weighed against its run.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum Standing {
-    /// Not reading, and how far Hint is from ready when the worker could check it.
+    /// Not yet paired with Chords.
+    Unpaired,
+    /// Paired and not reading, with how far the EHR is from ready when host permissions allow checking it.
     NotConnected(Option<Readiness>),
     /// A run is live and reads are going through.
     Reading,
-    /// A run is live and waiting on the bridge.
+    /// A run is live and waiting on Chords.
     WaitingForBridge,
-    /// The run ran out its time.
-    Paused {
-        /// When it ended.
-        until: Millis,
-    },
-    /// Hint's sign-in ended the run, and how far Hint is from ready when the worker could check it.
+    /// The EHR sign-in lapsed; reading resumes once signed back in.
     SignedOut(Option<Readiness>),
     /// Something else ended the run.
     Stopped(Stop),
 }
 
 impl Reply {
-    /// Why the worker refused the action this answers, if it did. A refusal without a code is
-    /// still a refusal.
+    /// Why the worker refused the action this answers, if it did.
     pub fn refused(&self) -> Option<Refusal> {
         if self.ok {
             return None;
@@ -151,21 +165,48 @@ impl Reply {
         Some(self.reason.unwrap_or(Refusal::Unexpected))
     }
 
-    /// Where the connection stands at `now`.
-    pub fn standing(&self, now: Millis) -> Standing {
-        let phase = match self.run {
-            Some(run) if run.stopped => Phase::Over,
-            Some(run) if now < run.until => Phase::Live,
-            Some(run) => Phase::RanOut(run.until),
-            None => Phase::Over,
-        };
-        match (self.state.state, phase) {
-            (Recorded::Connected, Phase::Live) => Standing::Reading,
-            (Recorded::BridgeOffline, Phase::Live) => Standing::WaitingForBridge,
-            (Recorded::Connected | Recorded::BridgeOffline, Phase::RanOut(until)) => {
-                Standing::Paused { until }
-            }
-            (Recorded::Connected | Recorded::BridgeOffline, Phase::Over) | (Recorded::Idle, _) => {
+    /// Whether the extension is paired with Chords.
+    pub fn is_paired(&self) -> bool {
+        self.paired
+    }
+
+    /// Display name of the active EHR reader.
+    pub fn source_label(&self) -> &str {
+        &self.source_label
+    }
+
+    /// Entry URL of the active EHR reader.
+    pub fn entry_url(&self) -> &str {
+        &self.entry_url
+    }
+
+    /// Tab match pattern of the active EHR reader, if any.
+    pub fn tab_pattern(&self) -> Option<&str> {
+        self.tab_pattern.as_deref()
+    }
+
+    /// Host patterns Chrome requests when connecting the active EHR reader.
+    pub fn hosts(&self) -> &[String] {
+        &self.hosts
+    }
+
+    /// Paired Chords endpoint, when paired.
+    pub fn endpoint(&self) -> Option<&str> {
+        self.endpoint.as_deref()
+    }
+
+    /// Where the connection stands.
+    pub fn standing(&self) -> Standing {
+        if !self.paired {
+            return Standing::Unpaired;
+        }
+        let live = self
+            .run
+            .is_some_and(|run| !run.stopped && !run.awaiting_auth);
+        match (self.state.state, live) {
+            (Recorded::Connected, true) => Standing::Reading,
+            (Recorded::BridgeOffline, true) => Standing::WaitingForBridge,
+            (Recorded::Connected | Recorded::BridgeOffline, false) | (Recorded::Idle, _) => {
                 Standing::NotConnected(self.readiness)
             }
             (Recorded::SignedOut, _) => Standing::SignedOut(self.readiness),
@@ -174,57 +215,76 @@ impl Reply {
     }
 }
 
-/// Where the run stands at one moment. One that was stopped, or never started, is over: what
-/// stopped it is in the worker's code.
-enum Phase {
-    Live,
-    RanOut(Millis),
-    Over,
-}
-
-/// What the popup asks of the worker, each by the name `worker.js` lists it under.
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+/// What the popup asks of the worker, each by the name `connector.js` lists it under.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize)]
+#[serde(tag = "action")]
 pub enum Request {
     /// Where things stand.
+    #[serde(rename = "status")]
     Status,
-    /// Start reading from the signed-in Hint tab.
+    /// Pair the extension with Chords.
+    #[serde(rename = "pair")]
+    Pair {
+        /// Chords base URL.
+        endpoint: String,
+        /// Optional one-time pairing code.
+        #[serde(skip_serializing_if = "Option::is_none")]
+        code: Option<String>,
+    },
+    /// Remove the current Chords pairing while idle.
+    #[serde(rename = "unpair")]
+    Unpair,
+    /// Start reading from the signed-in EHR tab.
+    #[serde(rename = "connect")]
     Connect,
-    /// Stop reading.
+    /// Stop reading and clear the in-memory session.
+    #[serde(rename = "stop")]
     Stop,
 }
 
 impl Request {
-    /// Its name in the worker.
-    pub fn name(self) -> &'static str {
+    /// Its action name in the worker.
+    pub fn name(&self) -> &'static str {
         match self {
             Self::Status => "status",
+            Self::Pair { .. } => "pair",
+            Self::Unpair => "unpair",
             Self::Connect => "connect",
             Self::Stop => "stop",
         }
     }
+
+    /// JSON message sent to the worker.
+    pub fn to_wire(&self) -> Value {
+        serde_json::to_value(self).expect("popup request serializes")
+    }
 }
 
-/// What the popup's one action does.
+/// What the popup's one primary action does.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum Action {
-    /// Bring the physician's Hint tab forward, or open Hint.
-    OpenHint,
-    /// Start reading from the signed-in Hint tab.
+    /// Pair the extension with Chords.
+    Pair,
+    /// Bring the physician's EHR tab forward, or open the EHR.
+    OpenSource,
+    /// Request host permissions if needed and start reading from the signed-in EHR tab.
     Connect,
 }
 
 /// The popup's one action and its words.
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Offer {
     /// What it does.
     pub action: Action,
     /// Its words.
-    pub label: &'static str,
+    pub label: String,
 }
 
 /// The popup's face for one reply.
 #[derive(Debug, Clone, PartialEq)]
 pub struct Face {
+    /// Eyebrow naming the surface or source.
+    pub eyebrow: String,
     /// The state's mark.
     pub icon: IconName,
     /// The state, in one line.
@@ -245,49 +305,42 @@ pub enum Activity {
     /// No run is under way.
     #[default]
     Idle,
-    /// A run is under way, waiting on the bridge. Disconnect would end it.
+    /// A run is under way, waiting on Chords. Disconnect would end it.
     Waiting,
     /// A run is under way and reading. Disconnect would end it.
     Reading,
 }
 
 /// A notice above the state.
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Note {
     /// Its tone.
     pub tone: Tone,
     /// Its title.
     pub title: &'static str,
     /// Its detail.
-    pub detail: &'static str,
+    pub detail: String,
 }
 
-const OPEN_HINT: Offer = Offer {
-    action: Action::OpenHint,
-    label: "Open Hint",
-};
-const GO_TO_HINT: Offer = Offer {
-    action: Action::OpenHint,
-    label: "Go to Hint",
-};
-const CONNECT: Offer = Offer {
-    action: Action::Connect,
-    label: "Connect Hint",
-};
-const RECONNECT: Offer = Offer {
-    action: Action::Connect,
-    label: "Reconnect",
-};
-const TRY_AGAIN: Offer = Offer {
-    action: Action::Connect,
-    label: "Try again",
-};
+fn offer(action: Action, label: impl Into<String>) -> Offer {
+    Offer {
+        action,
+        label: label.into(),
+    }
+}
 
-fn state(icon: IconName, title: &str, detail: &str, offer: Option<Offer>) -> Face {
+fn state(
+    eyebrow: &str,
+    icon: IconName,
+    title: impl Into<String>,
+    detail: impl Into<String>,
+    offer: Option<Offer>,
+) -> Face {
     Face {
+        eyebrow: eyebrow.to_owned(),
         icon,
-        title: title.to_owned(),
-        detail: detail.to_owned(),
+        title: title.into(),
+        detail: detail.into(),
         steps: Vec::new(),
         offer,
         activity: Activity::Idle,
@@ -295,15 +348,18 @@ fn state(icon: IconName, title: &str, detail: &str, offer: Option<Offer>) -> Fac
 }
 
 /// The steps to ready, each done or still to do.
-fn steps(ready: Readiness) -> Vec<Task> {
+fn steps(source: &str, ready: Readiness) -> Vec<Task> {
     [
-        ("Open Hint", ready > Readiness::HintClosed),
-        ("Sign in", ready > Readiness::SignedOut),
-        ("Choose your practice", ready > Readiness::OtherPractice),
+        (format!("Open {source}"), ready > Readiness::Closed),
+        ("Sign in".to_owned(), ready > Readiness::SignedOut),
+        (
+            "Choose your practice".to_owned(),
+            ready > Readiness::OtherPractice,
+        ),
     ]
     .into_iter()
     .map(|(label, done)| Task {
-        label: label.to_owned(),
+        label,
         state: if done {
             TaskState::Done
         } else {
@@ -313,181 +369,253 @@ fn steps(ready: Readiness) -> Vec<Task> {
     .collect()
 }
 
-/// Not reading: the next step to ready when the worker reported it, or else sign in and connect.
-fn not_connected(readiness: Option<Readiness>, practice: Option<&str>) -> Face {
+/// Not reading: the next step to ready when host permissions allowed checking it, or else sign in and connect.
+fn not_connected(source: &str, readiness: Option<Readiness>, practice: Option<&str>) -> Face {
     let Some(ready) = readiness else {
         return state(
+            source,
             IconName::Link,
-            "Connect Hint",
-            "Sign into Hint in one tab, then connect. After that you can close Hint.",
-            Some(CONNECT),
+            format!("Connect {source}"),
+            format!(
+                "Sign into {source} in one tab, then connect. Chrome will ask permission for {source}'s hosts, and after connecting you can close {source}."
+            ),
+            Some(offer(Action::Connect, format!("Connect {source}"))),
         );
     };
-    let face = match ready {
-        Readiness::HintClosed => state(
+    let built = match ready {
+        Readiness::Closed => state(
+            source,
             IconName::Link,
-            "Open Hint to connect",
-            "Coda reads Hint in the background, under your own sign-in.",
-            Some(OPEN_HINT),
+            format!("Open {source} to connect"),
+            format!("Coda reads {source} in the background, under your own sign-in."),
+            Some(offer(Action::OpenSource, format!("Open {source}"))),
         ),
         Readiness::SignedOut => state(
+            source,
             IconName::User,
-            "Sign into Hint",
-            "Use your usual sign-in. Coda never sees your password.",
-            Some(GO_TO_HINT),
+            format!("Sign into {source}"),
+            "Use your usual sign-in. Coda never sees your password.".to_owned(),
+            Some(offer(Action::OpenSource, format!("Go to {source}"))),
         ),
         Readiness::OtherPractice => state(
+            source,
             IconName::Users,
             "Choose your practice",
-            "Switch Hint to the practice Coda reads.",
-            Some(GO_TO_HINT),
+            format!("Switch {source} to the practice Coda reads."),
+            Some(offer(Action::OpenSource, format!("Go to {source}"))),
         ),
         Readiness::Ready => {
-            let practice = practice.unwrap_or("Your Hint practice");
+            let fallback = format!("Your {source} practice");
+            let practice = practice.unwrap_or(&fallback);
             state(
+                source,
                 IconName::Link,
                 "Ready to connect",
-                &format!("{practice}. After connecting you can close Hint."),
-                Some(CONNECT),
+                format!("{practice}. After connecting you can close {source}."),
+                Some(offer(Action::Connect, format!("Connect {source}"))),
             )
         }
     };
     Face {
-        steps: steps(ready),
-        ..face
+        steps: steps(source, ready),
+        ..built
     }
 }
 
-/// Hint's sign-in ended the run: reconnect if the physician is back, or else sign back in.
-fn signed_out(readiness: Option<Readiness>) -> Face {
-    let face = match readiness {
+/// Sign-in ended or paused the run: reconnect or catch up once signed back in.
+fn signed_out(source: &str, readiness: Option<Readiness>) -> Face {
+    let built = match readiness {
         Some(Readiness::OtherPractice | Readiness::Ready) => state(
+            source,
             IconName::Link,
-            "Hint is signed in again",
-            "Reconnect to keep reading. What Coda already read is kept.",
-            Some(RECONNECT),
+            format!("{source} is signed in again"),
+            "Reconnect to resume right away, or wait a moment for background catch-up. What Coda already read is kept.",
+            Some(offer(Action::Connect, "Reconnect")),
         ),
-        Some(Readiness::HintClosed | Readiness::SignedOut) | None => state(
+        Some(Readiness::Closed | Readiness::SignedOut) | None => state(
+            source,
             IconName::Alert,
-            "Sign back into Hint",
-            "Coda lost its access to Hint, usually because Hint signed out. What Coda already read is kept.",
+            format!("Sign back into {source}"),
+            format!(
+                "Coda lost its access to {source}, usually because {source} signed out. Sign back in and Coda catches up where it left off."
+            ),
             Some(if readiness.is_some() {
-                GO_TO_HINT
+                offer(Action::OpenSource, format!("Go to {source}"))
             } else {
-                RECONNECT
+                offer(Action::Connect, "Reconnect")
             }),
         ),
     };
     Face {
-        steps: readiness.map(steps).unwrap_or_default(),
-        ..face
+        steps: readiness.map(|r| steps(source, r)).unwrap_or_default(),
+        ..built
     }
 }
 
-/// The face for `reply` at `now`; `time` words an instant.
-pub fn face(reply: &Reply, now: Millis, time: &dyn Fn(Millis) -> String) -> Face {
-    match reply.standing(now) {
-        Standing::NotConnected(readiness) => not_connected(readiness, reply.practice.as_deref()),
+/// The face for `reply`.
+pub fn face(reply: &Reply) -> Face {
+    let source = reply.source_label.as_str();
+    match reply.standing() {
+        Standing::Unpaired => state(
+            "Chords",
+            IconName::Link,
+            "Pair with Coda",
+            "Enter your Chords address to pair this browser. Sign-in tokens stay in Chrome's memory.",
+            Some(offer(Action::Pair, "Pair extension")),
+        ),
+        Standing::NotConnected(readiness) => {
+            not_connected(source, readiness, reply.practice.as_deref())
+        }
         Standing::Reading => {
             let detail = match &reply.practice {
-                Some(practice) => format!("{practice}. You can close Hint."),
-                None => "You can close Hint and keep working.".to_owned(),
+                Some(practice) => format!("{practice}. You can close {source}."),
+                None => format!("You can close {source} and keep working."),
             };
             Face {
                 activity: Activity::Reading,
-                ..state(IconName::Check, "Coda is reading Hint", &detail, None)
+                ..state(
+                    source,
+                    IconName::Check,
+                    format!("Coda is reading {source}"),
+                    detail,
+                    None,
+                )
             }
         }
         Standing::WaitingForBridge => Face {
             activity: Activity::Waiting,
             ..state(
+                source,
                 IconName::Clock,
                 "Waiting for Coda",
                 "Coda's connection isn't reachable. Reading picks up on its own when it is.",
                 None,
             )
         },
-        Standing::Paused { until } => state(
-            IconName::Clock,
-            "Reading paused",
-            &format!(
-                "Coda read Hint until {}. Connect to read again.",
-                time(until)
-            ),
-            Some(CONNECT),
-        ),
-        Standing::SignedOut(readiness) => signed_out(readiness),
+        Standing::SignedOut(readiness) => signed_out(source, readiness),
         Standing::Stopped(Stop::IdentityChanged) => state(
+            source,
             IconName::Alert,
-            "A different Hint account is signed in",
-            "Hint is signed into another account or practice than the one you connected.",
-            Some(Offer {
-                action: Action::Connect,
-                label: "Connect this account",
-            }),
+            format!("A different {source} account is signed in"),
+            format!(
+                "{source} is signed into another account or practice than the one you connected."
+            ),
+            Some(offer(Action::Connect, "Connect this account")),
         ),
         Standing::Stopped(Stop::AccessDenied) => state(
+            source,
             IconName::Alert,
-            "Hint refused access",
-            "Hint didn't allow this account to read the chart.",
-            Some(TRY_AGAIN),
+            format!("{source} refused access"),
+            format!("{source} didn't allow this account to read the chart."),
+            Some(offer(Action::Connect, "Try again")),
         ),
-        // Any other refusal while renewing, such as Hint's own server failing, says nothing
-        // about whether the physician is still signed in.
         Standing::Stopped(Stop::RenewalFailed) => state(
+            source,
             IconName::Alert,
-            "Coda couldn't renew access to Hint",
-            "Hint didn't answer the way Coda expected. What Coda already read is kept.",
-            Some(TRY_AGAIN),
+            format!("Coda couldn't renew access to {source}"),
+            format!(
+                "{source} didn't answer the way Coda expected. What Coda already read is kept."
+            ),
+            Some(offer(Action::Connect, "Try again")),
         ),
         Standing::Stopped(Stop::RateLimited) => state(
+            source,
             IconName::Clock,
-            "Hint asked Coda to slow down",
+            format!("{source} asked Coda to slow down"),
             "Try again in a few minutes.",
-            Some(TRY_AGAIN),
+            Some(offer(Action::Connect, "Try again")),
+        ),
+        Standing::Stopped(Stop::PermissionRevoked) => state(
+            source,
+            IconName::Alert,
+            format!("Allow access to {source}"),
+            format!(
+                "Chrome no longer grants access to {source}'s hosts. Reconnect to allow them again."
+            ),
+            Some(offer(Action::Connect, format!("Connect {source}"))),
         ),
         Standing::Stopped(Stop::Unexpected) => state(
+            source,
             IconName::Alert,
-            "Coda stopped reading Hint",
+            format!("Coda stopped reading {source}"),
             "Something unexpected happened. Copy diagnostics from the menu to share it.",
-            Some(TRY_AGAIN),
+            Some(offer(Action::Connect, "Try again")),
         ),
     }
 }
 
+/// Origin match pattern (`scheme://host[:port]/*`) for requesting Chrome host permission on Pair.
+pub fn endpoint_origin_pattern(endpoint: &str) -> Option<String> {
+    let trimmed = endpoint.trim();
+    let (scheme, rest) = trimmed
+        .strip_prefix("https://")
+        .map(|r| ("https://", r))
+        .or_else(|| trimmed.strip_prefix("http://").map(|r| ("http://", r)))?;
+    let host_port = rest.split('/').next().unwrap_or_default();
+    if host_port.is_empty()
+        || host_port.contains('@')
+        || host_port.contains('?')
+        || host_port.contains('#')
+    {
+        return None;
+    }
+    Some(format!("{scheme}{host_port}/*"))
+}
+
 /// The notice for an action the worker refused.
-pub fn refusal(reason: Refusal) -> Note {
+pub fn refusal(reason: Refusal, source: &str) -> Note {
     let (tone, title, detail) = match reason {
+        Refusal::Unpaired => (
+            Tone::Warning,
+            "Pair with Coda first",
+            "Enter your Chords address to pair this extension before connecting.".to_owned(),
+        ),
+        Refusal::InvalidEndpoint => (
+            Tone::Warning,
+            "Check the Chords address",
+            "Enter an https:// or http:// address without extra query text.".to_owned(),
+        ),
+        Refusal::PairRefused => (
+            Tone::Error,
+            "Couldn't pair with Coda",
+            "Chords refused the pairing request. Check the address and pairing code, then try again."
+                .to_owned(),
+        ),
+        Refusal::PermissionRequired => (
+            Tone::Warning,
+            "Allow site access in Chrome",
+            format!("Chrome needs host access for {source} and Coda so Coda can read in the background."),
+        ),
         Refusal::NotOneTab => (
             Tone::Warning,
-            "Open Hint in one tab",
-            "Close the extra Hint tabs, then connect.",
+            "Open one EHR tab",
+            format!("Keep {source} open in a single tab, then connect."),
         ),
         Refusal::SignInRequired => (
             Tone::Warning,
-            "Sign into Hint first",
-            "Sign into Hint in its tab, then connect.",
+            "Sign in first",
+            format!("Sign into {source} in its tab, then connect."),
         ),
-        Refusal::WrongSandbox => (
+        Refusal::WrongPractice => (
             Tone::Warning,
-            "Choose the sandbox practice",
-            "Switch Hint to Coda Health Sandbox Practice, then connect.",
+            "Choose your practice",
+            format!("Switch {source} to your practice, then connect."),
         ),
         Refusal::AlreadyConnected => (
             Tone::Neutral,
             "Already connected",
-            "Disconnect from the menu to start over.",
+            "Disconnect from the menu to start over.".to_owned(),
         ),
-        // Connect delivers a read kept from the last run before starting; this is that failing.
         Refusal::PendingDelivery => (
             Tone::Warning,
             "A read is waiting to reach Coda",
-            "Coda kept the last chart section it read but couldn't hand it over. Check Coda's connection is running, then connect again.",
+            "Coda kept the last read in its outbox but couldn't hand it over yet. Check Coda's connection is reachable, then try again."
+                .to_owned(),
         ),
         Refusal::Unexpected => (
             Tone::Error,
-            "Couldn't connect",
-            "Hint didn't respond as expected. Copy diagnostics from the menu to share it.",
+            "Couldn't complete that action",
+            format!("{source} didn't respond as expected. Copy diagnostics from the menu to share it."),
         ),
     };
     Note {
@@ -503,12 +631,16 @@ mod tests {
 
     use super::*;
 
-    const NOW: Millis = Millis(1_000_000.0);
-
     fn reply(state: Recorded, run: Option<Run>) -> Reply {
         Reply {
             ok: true,
             reason: None,
+            paired: true,
+            endpoint: Some("https://chords.example".to_owned()),
+            source_label: "Hint".to_owned(),
+            entry_url: "https://app.hint.com/".to_owned(),
+            tab_pattern: Some("https://app.hint.com/*".to_owned()),
+            hosts: vec!["https://app.hint.com/*".to_owned()],
             state: Recording { state },
             run,
             practice: None,
@@ -516,190 +648,155 @@ mod tests {
         }
     }
 
-    fn run(until: f64, stopped: bool) -> Option<Run> {
+    fn running() -> Option<Run> {
         Some(Run {
-            until: Millis(until),
-            stopped,
+            stopped: false,
+            awaiting_auth: false,
         })
     }
 
-    fn running() -> Option<Run> {
-        run(NOW.0 + 1.0, false)
-    }
-
-    fn word(at: Millis) -> String {
-        format!("@{}", at.0)
+    #[test]
+    fn unpaired_reply_asks_to_pair_first() {
+        let mut unpaired = reply(Recorded::Idle, None);
+        unpaired.paired = false;
+        let shown = face(&unpaired);
+        assert_eq!(shown.title, "Pair with Coda");
+        assert_eq!(shown.offer, Some(offer(Action::Pair, "Pair extension")));
     }
 
     #[test]
     fn a_live_run_reads_quietly_with_disconnect_in_the_menu() {
-        let face = face(&reply(Recorded::Connected, running()), NOW, &word);
-        assert_eq!(face.title, "Coda is reading Hint");
-        assert_eq!(face.activity, Activity::Reading);
-        assert_eq!(face.offer, None);
+        let shown = face(&reply(Recorded::Connected, running()));
+        assert_eq!(shown.title, "Coda is reading Hint");
+        assert_eq!(shown.activity, Activity::Reading);
+        assert_eq!(shown.offer, None);
     }
 
     #[test]
     fn a_connected_state_without_a_live_run_never_claims_reading() {
-        let stopped = run(NOW.0 + 1.0, true);
-        let face_stopped = face(&reply(Recorded::Connected, stopped), NOW, &word);
-        assert_eq!(face_stopped.activity, Activity::Idle);
-        assert_eq!(face_stopped.offer, Some(CONNECT));
-        let ended = run(NOW.0 - 1.0, false);
-        let paused = face(&reply(Recorded::Connected, ended), NOW, &word);
-        assert_eq!(paused.title, "Reading paused");
-        assert_eq!(
-            paused.detail,
-            "Coda read Hint until @999999. Connect to read again."
-        );
+        let stopped = Some(Run {
+            stopped: true,
+            awaiting_auth: false,
+        });
+        let shown = face(&reply(Recorded::Connected, stopped));
+        assert_eq!(shown.activity, Activity::Idle);
+        assert_eq!(shown.offer, Some(offer(Action::Connect, "Connect Hint")));
     }
 
     #[test]
     fn waiting_on_the_bridge_keeps_disconnect_and_never_claims_reading() {
-        let face = face(&reply(Recorded::BridgeOffline, running()), NOW, &word);
-        assert_eq!(face.title, "Waiting for Coda");
-        assert_eq!(face.activity, Activity::Waiting);
+        let shown = face(&reply(Recorded::BridgeOffline, running()));
+        assert_eq!(shown.title, "Waiting for Coda");
+        assert_eq!(shown.activity, Activity::Waiting);
     }
 
     #[test]
     fn without_readiness_the_popup_claims_no_steps() {
-        let face = face(&reply(Recorded::Idle, None), NOW, &word);
-        assert_eq!(face.title, "Connect Hint");
-        assert!(face.steps.is_empty());
+        let shown = face(&reply(Recorded::Idle, None));
+        assert_eq!(shown.title, "Connect Hint");
+        assert!(shown.steps.is_empty());
     }
 
     #[test]
     fn readiness_names_the_next_step_and_its_action() {
         let mut waiting = reply(Recorded::Idle, None);
         waiting.readiness = Some(Readiness::SignedOut);
-        let face_waiting = face(&waiting, NOW, &word);
-        assert_eq!(face_waiting.title, "Sign into Hint");
-        assert_eq!(face_waiting.offer, Some(GO_TO_HINT));
-        let states: Vec<_> = face_waiting.steps.iter().map(|task| task.state).collect();
+        let shown = face(&waiting);
+        assert_eq!(shown.title, "Sign into Hint");
+        assert_eq!(shown.offer, Some(offer(Action::OpenSource, "Go to Hint")));
+        let states: Vec<_> = shown.steps.iter().map(|task| task.state).collect();
         assert_eq!(
             states,
             [TaskState::Done, TaskState::Pending, TaskState::Pending]
         );
         waiting.readiness = Some(Readiness::Ready);
-        assert_eq!(face(&waiting, NOW, &word).offer, Some(CONNECT));
+        assert_eq!(
+            face(&waiting).offer,
+            Some(offer(Action::Connect, "Connect Hint"))
+        );
     }
 
     #[test]
-    fn a_hint_sign_out_asks_for_hint_and_keeps_what_was_read() {
-        let face = face(&reply(Recorded::SignedOut, running()), NOW, &word);
-        assert_eq!(face.title, "Sign back into Hint");
-        assert_eq!(face.offer, Some(RECONNECT));
-    }
-
-    #[test]
-    fn signing_back_into_hint_offers_reconnect() {
-        let mut signed_out = reply(Recorded::SignedOut, running());
-        signed_out.readiness = Some(Readiness::SignedOut);
-        assert_eq!(face(&signed_out, NOW, &word).title, "Sign back into Hint");
-        signed_out.readiness = Some(Readiness::Ready);
-        let back = face(&signed_out, NOW, &word);
+    fn sign_out_and_return_offer_reconnect_and_keep_prior_reads() {
+        let mut lapsed = reply(
+            Recorded::SignedOut,
+            Some(Run {
+                stopped: false,
+                awaiting_auth: true,
+            }),
+        );
+        assert_eq!(face(&lapsed).title, "Sign back into Hint");
+        lapsed.readiness = Some(Readiness::Ready);
+        let back = face(&lapsed);
         assert_eq!(back.title, "Hint is signed in again");
-        assert_eq!(back.offer, Some(RECONNECT));
+        assert_eq!(back.offer, Some(offer(Action::Connect, "Reconnect")));
     }
 
     #[test]
-    fn a_failed_renewal_never_claims_a_sign_out() {
-        let stopped = reply(Recorded::Stopped(Stop::RenewalFailed), None);
-        let face = face(&stopped, NOW, &word);
-        assert_eq!(face.title, "Coda couldn't renew access to Hint");
-        assert_eq!(face.offer, Some(TRY_AGAIN));
-    }
-
-    #[test]
-    fn a_read_that_could_not_be_handed_over_never_sounds_in_progress() {
-        let note = refusal(Refusal::PendingDelivery);
-        assert_eq!(note.title, "A read is waiting to reach Coda");
-        assert_eq!(note.tone, Tone::Warning);
-    }
-
-    #[test]
-    fn a_code_the_popup_does_not_single_out_is_an_error_not_a_connection() {
-        let state: Recorded = serde_json::from_str(r#""read_schema_changed""#).unwrap();
-        assert_eq!(state, Recorded::Stopped(Stop::Unexpected));
-        let face = face(&reply(state, None), NOW, &word);
-        assert_eq!((face.icon, face.offer), (IconName::Alert, Some(TRY_AGAIN)));
-        let reason: Refusal = serde_json::from_str(r#""connector_failed""#).unwrap();
-        assert_eq!(reason, Refusal::Unexpected);
-        assert_eq!(refusal(reason).title, "Couldn't connect");
-    }
-
-    #[test]
-    fn each_code_reads_as_its_group() {
-        for (code, state) in [
-            ("not_prepared", Recorded::Idle),
-            ("prepared", Recorded::Idle),
-            ("stopped", Recorded::Idle),
-            ("connected", Recorded::Connected),
-            ("bridge_offline", Recorded::BridgeOffline),
-            ("chart_unauthorized", Recorded::SignedOut),
-            ("rate_limited", Recorded::Stopped(Stop::RateLimited)),
-        ] {
-            let read: Recorded = serde_json::from_value(serde_json::json!(code)).unwrap();
-            assert_eq!(read, state, "{code}");
-        }
-    }
-
-    #[test]
-    fn a_refusal_without_a_code_is_still_a_refusal() {
-        let refused = Reply {
-            ok: false,
-            ..reply(Recorded::Idle, None)
-        };
-        assert_eq!(refused.refused(), Some(Refusal::Unexpected));
-        assert_eq!(reply(Recorded::Idle, None).refused(), None);
-    }
-
-    #[test]
-    fn a_reply_missing_what_the_worker_always_sends_does_not_parse() {
-        assert!(serde_json::from_str::<Reply>("{}").is_err());
+    fn endpoint_origin_pattern_validates_urls() {
+        assert_eq!(
+            endpoint_origin_pattern("https://chords.coda.example/api"),
+            Some("https://chords.coda.example/*".to_owned())
+        );
+        assert_eq!(
+            endpoint_origin_pattern("http://127.0.0.1:51383"),
+            Some("http://127.0.0.1:51383/*".to_owned())
+        );
+        assert_eq!(endpoint_origin_pattern("ftp://bad"), None);
+        assert_eq!(endpoint_origin_pattern("https://user:pass@bad"), None);
     }
 
     #[test]
     fn the_worker_reply_parses_as_it_sends_it() {
         let parsed: Reply = serde_json::from_str(
-            r#"{"ok":true,"version":"0.3.2","state":{"at":1793456970780,"portal_tab_count":0,
-            "state":"connected","token_exp":1793457870,"token_iat":1793456970},
-            "run":{"id":"3d9a","started":1793456969948,"until":1793459669948,"stopped":false},
-            "pending_delivery":false,"practice":"Coda Health Sandbox Practice",
-            "readiness":"ready"}"#,
+            r#"{"ok":true,"version":"0.4.0","paired":true,"endpoint":"http://127.0.0.1:51383",
+            "source":"hint","source_label":"Hint","entry_url":"https://app.hint.com/",
+            "tab_pattern":"https://app.hint.com/*","hosts":["https://app.hint.com/*"],
+            "state":{"at":1793456970780,"portal_tab_count":0,"state":"connected","token_exp":1793457870,"token_iat":1793456970},
+            "run":{"id":"3d9a","source":"hint","started":1793456969948,"stopped":false,"awaiting_auth":false},
+            "pending_delivery":false,"practice":"Northwind Direct Primary Care",
+            "permissions_granted":true,"readiness":"ready"}"#,
         )
         .unwrap();
-        assert_eq!(parsed.standing(Millis(1793456970780.0)), Standing::Reading);
+        assert_eq!(parsed.standing(), Standing::Reading);
         assert_eq!(
             parsed.practice.as_deref(),
-            Some("Coda Health Sandbox Practice")
+            Some("Northwind Direct Primary Care")
         );
         assert_eq!(parsed.readiness, Some(Readiness::Ready));
     }
 
     #[test]
     fn the_worker_lists_every_request() {
-        let worker = include_str!("../../../extension/chrome/worker.js");
-        let listed = worker
+        let connector = include_str!("../../../extension/chrome/connector.js");
+        let listed = connector
             .split_once("const actions = {")
             .and_then(|(_, rest)| rest.split_once('}'))
-            .expect("worker.js lists its actions")
+            .expect("connector.js lists its actions")
             .0;
-        for request in [Request::Status, Request::Connect, Request::Stop] {
+        for request in [
+            Request::Status,
+            Request::Pair {
+                endpoint: "https://chords.example".to_owned(),
+                code: None,
+            },
+            Request::Unpair,
+            Request::Connect,
+            Request::Stop,
+        ] {
             assert!(
                 listed.split(',').any(|name| name.trim() == request.name()),
-                "worker.js has no {request:?}"
+                "connector.js has no {request:?}"
             );
         }
     }
 
-    /// The codes `worker.js` and `bootstrap.js` can send: what they fault with, record, or report
-    /// of Hint. A category they only read from Hint's answers isn't one.
     fn sent_codes() -> BTreeSet<&'static str> {
         let mut codes = BTreeSet::new();
         for source in [
-            include_str!("../../../extension/chrome/worker.js"),
-            include_str!("../../../extension/chrome/bootstrap.js"),
+            include_str!("../../../extension/chrome/connector.js"),
+            include_str!("../../../extension/chrome/readers/hint.js"),
+            include_str!("../../../extension/chrome/readers/hint-page.js"),
         ] {
             for sends in [
                 "fault(",
@@ -722,14 +819,17 @@ mod tests {
     fn every_code_the_popup_names_is_one_the_worker_sends() {
         let sent = sent_codes();
         for code in [
-            "chart_unauthorized",
+            "unauthorized",
             "read_failed",
             "connector_failed",
             "not_prepared",
+            "permission_required",
+            "unpaired",
         ] {
             assert!(sent.contains(code), "the scan should find {code}: {sent:?}");
         }
         let source = include_str!("face.rs");
+        let allowed_request_tags = ["status", "pair", "unpair", "connect", "stop"];
         let mut named = 0;
         for names in ["rename = \"", "alias = \""] {
             for (at, _) in source.match_indices(names) {
@@ -737,13 +837,67 @@ mod tests {
                     .split('"')
                     .next()
                     .unwrap_or_default();
+                if allowed_request_tags.contains(&code) {
+                    continue;
+                }
                 assert!(sent.contains(code), "the worker never sends {code}");
                 named += 1;
             }
         }
         assert!(
-            named > 15,
+            named >= 18,
             "the scan should find the popup's codes: {named}"
         );
+    }
+
+    #[test]
+    fn connector_files_name_no_ehr_host_patient_or_chart_part() {
+        let face_prod = include_str!("face.rs")
+            .split("#[cfg(test)]")
+            .next()
+            .unwrap_or_default();
+        for (name, content) in [
+            (
+                "options.html",
+                include_str!("../../../extension/chrome/options.html"),
+            ),
+            (
+                "popup.js",
+                include_str!("../../../extension/chrome/popup.js"),
+            ),
+            (
+                "connector.js",
+                include_str!("../../../extension/chrome/connector.js"),
+            ),
+            ("chrome.js", include_str!("../assets/chrome.js")),
+            ("lib.rs", include_str!("lib.rs")),
+            ("main.rs", include_str!("main.rs")),
+            ("face.rs (production)", face_prod),
+        ] {
+            let lower = content.to_ascii_lowercase();
+            for forbidden in [
+                "hint",
+                "frontegg",
+                "127.0.0.1",
+                "localhost",
+                "hint.com",
+                ".com/",
+                ".com\"",
+                ".com'",
+                ".health",
+                "sbx-pat",
+                "diagnoses",
+                "allergies",
+                "medications",
+                "vitals",
+                "vaccines",
+                "surgeries",
+            ] {
+                assert!(
+                    !lower.contains(forbidden),
+                    "{name} must not contain `{forbidden}`"
+                );
+            }
+        }
     }
 }
