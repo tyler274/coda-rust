@@ -902,6 +902,11 @@ fn project_state(
             reason: match reason {
                 ReviewHoldReason::Stopped => ReviewHoldReasonWire::Stopped,
                 ReviewHoldReason::Limit => ReviewHoldReasonWire::Limit,
+                ReviewHoldReason::ProviderBlocked { reason } => {
+                    ReviewHoldReasonWire::ProviderBlocked {
+                        reason: reason.clone(),
+                    }
+                }
             },
             held_at: unix_to_rfc3339(*held_at),
             partial_text: partial_text.clone().filter(|t| !t.trim().is_empty()),
@@ -1280,7 +1285,7 @@ fn extract_steps(
             ..
         } => ReviewStepStateWire::Stopped,
         ReviewLifecycleState::Held {
-            reason: ReviewHoldReason::Limit,
+            reason: ReviewHoldReason::Limit | ReviewHoldReason::ProviderBlocked { .. },
             ..
         }
         | ReviewLifecycleState::Failed { .. }

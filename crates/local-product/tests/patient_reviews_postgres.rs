@@ -6218,3 +6218,99 @@ async fn practice_authority_enforced_on_reads_and_stop_atomic_rearm_steering_fen
         "PracticeJobHost::assert_current must preserve typed PracticeAccessError cause, got: {cause:?}"
     );
 }
+
+#[tokio::test]
+async fn provider_blocked_hold_preserves_refusal_and_reason_instead_of_stopped() {
+    let Some(url) = database_url() else {
+        return;
+    };
+    let (store, auth) = connect_stores(&url).await;
+    let skills = load_skills();
+    let roles = distinct_roles();
+    let practice = format!("prac-blocked-{}", Uuid::new_v4().simple());
+    let ws = format!("pw-blocked-{}", Uuid::new_v4().simple());
+    auth.ensure_practice(&practice, PracticeClock::Fixed(1_790_000_000))
+        .await
+        .unwrap();
+    auth.register_patient(&practice, &ws).await.unwrap();
+
+    let pull = SourcePull {
+        source_id: "clinic-ehr".into(),
+        source_label: "Clinic EHR".into(),
+        patient: source_patient("pt-blk", "Ada Lovelace"),
+        pulled_at: Some(1_790_000_000),
+    };
+    let rec = chart_record(ChartRecordSpec {
+        workspace: &ws,
+        source_id: "clinic-ehr",
+        candidate_id: "Observation/k-1",
+        revision: "rev-1",
+        record_type: "Observation",
+        title: "Serum Potassium",
+        date: "2026-10-17",
+        text: "Serum potassium 4.2 mmol/L.",
+    });
+    store.record_chart(&ws, &[rec], &pull).await.unwrap();
+
+    let AdmittedPatientReview::New { review, .. } = store
+        .admit_patient_review_with_trigger(
+            &practice,
+            &ws,
+            "cmd-blocked-1",
+            local_product::patient_reviews::ReviewTrigger::ChangedRecords {
+                workspace_version: 1,
+                record_versions: std::collections::BTreeMap::from([(
+                    "Observation/k-1".into(),
+                    "rev-1".into(),
+                )]),
+                changed_candidates: vec!["Observation/k-1".into()],
+            },
+            &roles,
+            &skills,
+            auth.as_ref(),
+        )
+        .await
+        .unwrap()
+    else {
+        panic!("expected new admitted patient review");
+    };
+    let scope = review.practice_scope();
+    let claim = store
+        .claim_practice_job(&scope, 60, auth.as_ref())
+        .await
+        .unwrap()
+        .expect("claim review");
+
+    let expected_reason = "Provider credits are exhausted. Restore billing, then retry this work (insufficient_quota).";
+    store
+        .persist_practice_job_event(
+            &claim,
+            engine::Event {
+                attempt_id: claim.attempt.clone(),
+                sequence: 1,
+                ordinal: 1,
+                kind: engine::EventKind::ProviderBlocked {
+                    reason: expected_reason.to_owned(),
+                },
+            },
+        )
+        .await
+        .unwrap();
+
+    let held = store
+        .patient_review(&practice, &ws, &review.review_id, auth.as_ref())
+        .await
+        .unwrap()
+        .expect("patient review exists");
+    assert!(
+        matches!(
+            &held.state,
+            ReviewLifecycleState::Held {
+                reason: ReviewHoldReason::ProviderBlocked { reason },
+                ..
+            } if reason == expected_reason
+        ),
+        "ProviderBlocked hold must preserve refusal and reason, got: {:?}",
+        held.state
+    );
+}

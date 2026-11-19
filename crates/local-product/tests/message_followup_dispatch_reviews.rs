@@ -2960,3 +2960,222 @@ async fn stopped_follow_up_review_remains_held_when_later_patient_inputs_admit_n
         [ReviewTrigger::FollowUp { follow_up_id, .. }] if follow_up_id == "fu-neville-inr"
     ));
 }
+
+#[tokio::test]
+async fn lab_correction_retires_stale_ready_reply_preserving_physician_draft() {
+    use local_product::runtime::reply::proposals::{ExpectedDraftBase, proposal_draft_scope};
+
+    let Some((store, auth, _url, _cluster)) = connect_stores().await else {
+        return;
+    };
+    let skills = load_skills();
+    let roles = distinct_roles();
+    let reg_time = current_unix_i64();
+    let practice = format!("prac-lab-retire-{}", Uuid::new_v4().simple());
+    auth.ensure_practice(&practice, PracticeClock::RealTime)
+        .await
+        .unwrap();
+    let (dr, _token, dr_hash) =
+        invite_and_sign_in(&auth, &practice, "DrRetire", reg_time as u64).await;
+
+    let ws = format!("pw-lab-retire-{}", Uuid::new_v4().simple());
+    seed_patient_with_baseline_chart(
+        &store,
+        &auth,
+        BaselineChartSeed {
+            practice: &practice,
+            workspace: &ws,
+            patient_name: "Hannah Park",
+            candidate_id: "Observation/bmp-1",
+            revision: "rev-1",
+            text: "Serum potassium 4.1 mmol/L (normal).",
+            reg_time,
+        },
+    )
+    .await;
+    auth.set_membership(&dr, &ws, Membership::Allowed)
+        .await
+        .unwrap();
+
+    let checker = StoredObservationChecker::new(store.clone());
+    let receiver = PatientReviewReceiver::new(&store, &roles, &skills, auth.as_ref());
+    let _ = store
+        .wake_practice_dispatch(auth.as_ref(), &practice, reg_time, &checker, &receiver)
+        .await
+        .unwrap();
+    let _ = receiver.take_deliveries().await;
+
+    store
+        .link_reply_conversation(
+            &practice,
+            "conv-lab-retire",
+            ConversationLink::LinkedPatient {
+                workspace: ws.clone(),
+            },
+        )
+        .await
+        .unwrap();
+    store
+        .record_linked_patient_message(&RecordPatientMessage {
+            practice: practice.clone(),
+            conversation_id: "conv-lab-retire".into(),
+            message_id: "pm-retire-1".into(),
+            sender: MessageSender::Patient,
+            text: "Were my potassium labs normal?".into(),
+            sent_at: reg_time + 20,
+        })
+        .await
+        .unwrap();
+
+    store
+        .wake_practice_dispatch(auth.as_ref(), &practice, reg_time + 30, &checker, &receiver)
+        .await
+        .unwrap();
+    let _ = receiver.take_deliveries().await;
+
+    let rev = store
+        .patient_reviews(&practice, &ws, auth.as_ref())
+        .await
+        .unwrap()
+        .into_iter()
+        .find(|r| r.state == ReviewLifecycleState::Pending)
+        .expect("pending message review");
+    let claim = store
+        .claim_practice_job(&rev.practice_scope(), 60, auth.as_ref())
+        .await
+        .unwrap()
+        .expect("claim message review");
+
+    let (sse_state, mut sse_provider, sse_task) = spawn_local_sse_provider(&store).await;
+    sse_state.push_call(
+        "call-read-chart",
+        READ_TOOL,
+        json!({
+            "references": [{ "candidate_id": "Observation/bmp-1", "revision": "rev-1", "cursor": null }],
+            "max_result_bytes": 8192
+        }),
+    );
+    sse_state.push_call(
+        "call-read-conv",
+        READ_PATIENT_CONVERSATION_TOOL,
+        json!({ "conversation_id": "conv-lab-retire" }),
+    );
+    sse_state.push_call(
+        "call-propose",
+        PATIENT_MESSAGE_REPLY_TOOL,
+        json!({
+            "decision": "propose_reply",
+            "conversation_id": "conv-lab-retire",
+            "draft_text": "Your potassium of 4.1 mmol/L is normal.",
+            "basis_summary": "Reviewed Observation/bmp-1 rev-1.",
+            "limits": [],
+            "citations": [{ "candidate_id": "Observation/bmp-1", "revision": "rev-1" }],
+            "answered_closures": [],
+            "raised_concern_ids": []
+        }),
+    );
+    sse_state.push_call(
+        "call-complete",
+        COMPLETE_PATIENT_REVIEW_TOOL,
+        json!({
+            "disposition": "assessed",
+            "summary": "Proposed normal potassium reply.",
+            "citations": [{ "candidate_id": "Observation/bmp-1", "revision": "rev-1" }],
+            "basis_and_limitations": "Observation/bmp-1 rev-1.",
+            "unfinished_work": []
+        }),
+    );
+    sse_state.push_assistant("Done.");
+
+    let mut host = PracticeJobHost {
+        store: store.clone(),
+        claim,
+        authority: auth.as_ref(),
+    };
+    host.run(
+        &mut sse_provider,
+        engine::RunLimits::default(),
+        &engine::Cancellation::default(),
+    )
+    .await
+    .unwrap();
+    sse_task.abort();
+
+    let conv_before = store
+        .reply_conversation(&practice, "conv-lab-retire")
+        .await
+        .unwrap()
+        .unwrap();
+    let ReplyStanding::Ready { proposal } = &conv_before.reply_standing else {
+        panic!(
+            "expected Ready reply before correction, got {:?}",
+            conv_before.reply_standing
+        );
+    };
+    let reply_id = proposal.reply_id;
+
+    let access = WorkspaceAccess {
+        practice: &dr.practice_id,
+        physician: &dr.physician_id,
+        workspace: &ws,
+        session_hash: &dr_hash,
+    };
+    let physician_edit = "Your potassium is 4.1 mmol/L; let's recheck next month.";
+    store
+        .edit_reply_proposal_draft(
+            &access,
+            "conv-lab-retire",
+            ExpectedDraftBase::ProposalVersion(proposal.version),
+            physician_edit,
+            &mut PostgresWorkspaceAuthority,
+        )
+        .await
+        .unwrap();
+
+    // Correct `Observation/bmp-1` from `rev-1` to `rev-2` in `physician_runtime_sources`.
+    let corrected_pull = SourcePull {
+        source_id: "clinic-ehr".to_owned(),
+        source_label: "Clinic EHR".to_owned(),
+        patient: source_patient(&ws, "Hannah Park"),
+        pulled_at: Some(reg_time + 120),
+    };
+    let corrected_lab = chart_record(
+        &ws,
+        "Observation/bmp-1",
+        "rev-2",
+        "Basic Metabolic Panel",
+        "2026-11-12",
+        "CORRECTED: Serum potassium 5.9 mmol/L (critical high; hemolysis excluded).",
+    );
+    store
+        .record_chart(&ws, &[corrected_lab], &corrected_pull)
+        .await
+        .unwrap();
+
+    let conv_after = store
+        .reply_conversation(&practice, "conv-lab-retire")
+        .await
+        .unwrap()
+        .unwrap();
+    assert!(
+        matches!(conv_after.reply_standing, ReplyStanding::None),
+        "correcting cited lab record must automatically retire stale Ready reply to None, got: {:?}",
+        conv_after.reply_standing
+    );
+
+    let draft_scope = proposal_draft_scope(
+        &practice,
+        &dr.physician_id,
+        &ws,
+        "conv-lab-retire",
+        reply_id,
+    );
+    let saved_draft =
+        store.draft(&draft_scope).await.unwrap().expect(
+            "physician private draft must remain preserved after stale proposal retirement",
+        );
+    assert_eq!(
+        saved_draft.text, physician_edit,
+        "physician draft text must remain preserved"
+    );
+}

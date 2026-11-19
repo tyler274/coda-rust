@@ -306,8 +306,9 @@ pub(crate) async fn today_connections_and_outages(
         return Ok((Vec::new(), Vec::new()));
     };
     let practice_id = ConnectedCare::identity(extensions).practice_id;
+    let now_unix = practice_now_seconds(extensions, &practice_id).await?;
     let reports = store
-        .practice_all_source_reports(&practice_id, &registry.registered_source_ids())
+        .practice_all_source_reports_at(&practice_id, &registry.registered_source_ids(), now_unix)
         .await
         .map_err(|_| StatusCode::SERVICE_UNAVAILABLE)?;
 
@@ -358,8 +359,11 @@ pub(crate) async fn get_connections(request: Request<Body>) -> Response {
         .into_response();
     };
 
+    let Ok(now_unix) = practice_now_seconds(extensions, &practice_id).await else {
+        return StatusCode::SERVICE_UNAVAILABLE.into_response();
+    };
     let Ok(reports) = store
-        .practice_all_source_reports(&practice_id, &registry.registered_source_ids())
+        .practice_all_source_reports_at(&practice_id, &registry.registered_source_ids(), now_unix)
         .await
     else {
         return StatusCode::SERVICE_UNAVAILABLE.into_response();
@@ -544,7 +548,9 @@ pub(crate) async fn post_check(Path(source_id): Path<String>, request: Request<B
             }
         }
 
-        let Ok(practice_report) = store.practice_source_report(&practice_id, &source_id).await
+        let Ok(practice_report) = store
+            .practice_source_report_at(&practice_id, &source_id, now)
+            .await
         else {
             return StatusCode::SERVICE_UNAVAILABLE.into_response();
         };
@@ -584,7 +590,10 @@ pub(crate) async fn post_check(Path(source_id): Path<String>, request: Request<B
         return enrollment_failure_response(&practice_id, &source_id, &error);
     }
 
-    let Ok(practice_report) = store.practice_source_report(&practice_id, &source_id).await else {
+    let Ok(practice_report) = store
+        .practice_source_report_at(&practice_id, &source_id, now)
+        .await
+    else {
         return StatusCode::SERVICE_UNAVAILABLE.into_response();
     };
     let panel = panel_workspaces(&parts.extensions, &identity).await;

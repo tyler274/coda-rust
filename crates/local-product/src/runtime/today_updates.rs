@@ -1002,7 +1002,7 @@ fn review_creates_unhandled_today_row(
     match state {
         ReviewLifecycleState::Failed { .. }
         | ReviewLifecycleState::Held {
-            reason: ReviewHoldReason::Limit,
+            reason: ReviewHoldReason::Limit | ReviewHoldReason::ProviderBlocked { .. },
             ..
         } => !unfinished_work.is_empty() || is_physician_requested_review(triggers),
         ReviewLifecycleState::Held {
@@ -2371,6 +2371,9 @@ impl Store {
                             format!("unhandled-review:{}:{}", row.workspace, row.review_id);
                         let reason_label = match reason {
                             ReviewHoldReason::Limit => "reached run limit",
+                            ReviewHoldReason::ProviderBlocked { .. } => {
+                                "was refused by the model provider"
+                            }
                             ReviewHoldReason::Stopped => continue,
                         };
                         let version_id = format!("held:{held_at}:{}", row.updated_at);
@@ -2744,23 +2747,26 @@ impl Store {
 
         let mut outages = Vec::new();
         for (source_id, entries) in by_source {
-            let all_failed =
-                !entries.is_empty() && entries.iter().all(|entry| entry.outcome == "failed");
+            let failed_entries: Vec<_> = entries
+                .iter()
+                .filter(|entry| entry.outcome == "failed")
+                .collect();
+            let majority_failed = !entries.is_empty() && failed_entries.len() * 2 > entries.len();
             let practice_wide_coverage = entries.len() >= 2
                 || (!practice_set.is_empty() && entries.len() >= practice_set.len());
-            let affected_allowed_count = entries
+            let affected_allowed_count = failed_entries
                 .iter()
                 .filter(|entry| allowed_set.contains(entry.workspace.as_str()))
                 .count();
 
-            if all_failed && practice_wide_coverage && affected_allowed_count > 0 {
-                let source_label = entries[0].source_label.clone();
-                let since_unix = entries
+            if majority_failed && practice_wide_coverage && affected_allowed_count > 0 {
+                let source_label = failed_entries[0].source_label.clone();
+                let since_unix = failed_entries
                     .iter()
                     .map(|entry| entry.checked_at)
                     .min()
                     .unwrap_or(ctx.clinical_now_unix);
-                let reason = entries
+                let reason = failed_entries
                     .iter()
                     .find_map(|entry| entry.reason.as_deref())
                     .unwrap_or("source connection unavailable");
@@ -4919,6 +4925,9 @@ impl Store {
                     let reason_label = match reason {
                         ReviewHoldReason::Stopped => "paused",
                         ReviewHoldReason::Limit => "reached run limit",
+                        ReviewHoldReason::ProviderBlocked { .. } => {
+                            "was refused by the model provider"
+                        }
                     };
                     let version_id = format!("held:{held_at}:{}", row.updated_at);
                     let topics: Vec<String> = unfinished
@@ -6614,6 +6623,14 @@ impl Store {
                     format!("held:{held_at}:{}", row.updated_at),
                     "reached run limit".to_owned(),
                 ),
+                ReviewLifecycleState::Held {
+                    reason: ReviewHoldReason::ProviderBlocked { .. },
+                    held_at,
+                    ..
+                } => (
+                    format!("held:{held_at}:{}", row.updated_at),
+                    "was refused by the model provider".to_owned(),
+                ),
                 _ => continue,
             };
             let key_str = format!("unhandled-review:{workspace}:{}", row.review_id);
@@ -6855,7 +6872,8 @@ async fn active_workspace_unhandled_constituents<C: ConnectionTrait>(
                 });
             }
             ReviewLifecycleState::Held {
-                reason: ReviewHoldReason::Limit,
+                reason:
+                    reason @ (ReviewHoldReason::Limit | ReviewHoldReason::ProviderBlocked { .. }),
                 held_at,
                 ..
             } => {
@@ -6864,9 +6882,22 @@ async fn active_workspace_unhandled_constituents<C: ConnectionTrait>(
                 {
                     continue;
                 }
-                let title = "Patient review reached run limit with unhandled items".to_owned();
+                let (title, fallback_detail) = match reason {
+                    ReviewHoldReason::Limit => (
+                        "Patient review reached run limit with unhandled items",
+                        "Requested review reached run limit before finishing.",
+                    ),
+                    ReviewHoldReason::ProviderBlocked { .. } => (
+                        "Patient review was refused by the model provider with unhandled items",
+                        "Requested review was refused by the model provider before finishing.",
+                    ),
+                    ReviewHoldReason::Stopped => {
+                        unreachable!("matched only Limit or ProviderBlocked")
+                    }
+                };
+                let title = title.to_owned();
                 let detail = if topics.is_empty() {
-                    "Requested review reached run limit before finishing.".to_owned()
+                    fallback_detail.to_owned()
                 } else {
                     format!("Unhandled follow-up: {}", topics.join("; "))
                 };

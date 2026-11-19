@@ -263,13 +263,50 @@ impl RecordedReviewAction {
 }
 
 /// Why a patient review was placed on hold.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub enum ReviewHoldReason {
     /// Explicitly stopped; holds across restart until `Resume` or new input.
     Stopped,
     /// Reached a turn or budget backstop; `Try again` rearms with current evidence.
     Limit,
+    /// Model provider refused the request (e.g., exhausted credits or invalid credentials); `Try again` rearms with current evidence.
+    ProviderBlocked {
+        /// Provider refusal reason preserved from the terminal event.
+        reason: String,
+    },
+}
+
+/// Authoritative cause recorded when a background practice job settles out of execution.
+pub(super) enum SettlementCause {
+    /// Run reached a turn or budget backstop.
+    Limit,
+    /// Model provider refused the request with a refusal reason.
+    ProviderBlocked { reason: String },
+    /// Execution failed or abandoned with the given diagnostic label.
+    Failed { reason_label: String },
+}
+
+impl SettlementCause {
+    pub(super) fn from_attempt_failure(failure: super::AttemptFailure) -> Self {
+        match failure {
+            super::AttemptFailure::Limit => Self::Limit,
+            super::AttemptFailure::ProviderBlocked => Self::ProviderBlocked {
+                reason: "The model provider refused this request.".to_owned(),
+            },
+            other => Self::Failed {
+                reason_label: format!("{other:?}"),
+            },
+        }
+    }
+
+    fn failed_reason_label(&self) -> String {
+        match self {
+            Self::Limit => "reached run limit".to_owned(),
+            Self::ProviderBlocked { reason } => reason.clone(),
+            Self::Failed { reason_label } => reason_label.clone(),
+        }
+    }
 }
 
 /// Why an incomplete review result was superseded without completing.
@@ -1562,7 +1599,7 @@ fn rearm_state_eligible(state: &ReviewLifecycleState, rearm_kind: RearmKind) -> 
             RearmKind::Resume,
         ) | (
             ReviewLifecycleState::Held {
-                reason: ReviewHoldReason::Limit,
+                reason: ReviewHoldReason::Limit | ReviewHoldReason::ProviderBlocked { .. },
                 ..
             } | ReviewLifecycleState::Failed { .. },
             RearmKind::TryAgain,
@@ -4513,7 +4550,7 @@ impl Store {
     pub(super) async fn sync_review_on_settlement_in_tx(
         tx: &sea_orm::DatabaseTransaction,
         job: &PracticeJob,
-        reason_label: &str,
+        cause: SettlementCause,
         clock: i64,
     ) -> Result<(), DbErr> {
         let Some(review_ctx) = &job.assignment.review else {
@@ -4542,7 +4579,7 @@ impl Store {
                 )
                 .await?;
                 ReviewLifecycleState::Failed {
-                    reason: reason_label.to_owned(),
+                    reason: cause.failed_reason_label(),
                     failed_at: clock,
                     attempts: job.failures.max(1),
                 }
@@ -4558,8 +4595,15 @@ impl Store {
                     clock,
                 )
                 .await?;
+                let reason = match cause {
+                    SettlementCause::Failed { .. } => ReviewHoldReason::Stopped,
+                    SettlementCause::Limit => ReviewHoldReason::Limit,
+                    SettlementCause::ProviderBlocked { reason } => {
+                        ReviewHoldReason::ProviderBlocked { reason }
+                    }
+                };
                 ReviewLifecycleState::Held {
-                    reason: ReviewHoldReason::Stopped,
+                    reason,
                     held_at: clock,
                     partial_text: None,
                 }

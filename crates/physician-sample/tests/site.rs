@@ -5751,19 +5751,27 @@ async fn p1_composer_queue_stop_steps_retry_and_provenance() {
         "could not open a second patient via Find patient"
     );
     let patient_b_deadline = Instant::now() + Duration::from_secs(10);
-    while tab
-        .eval("document.querySelector('h1.workspace-title')?.innerText ?? ''")
-        .as_str()
-        .unwrap_or("Mary Louis")
-        == "Mary Louis"
-    {
+    while {
+        let title = tab
+            .eval("document.querySelector('h1.workspace-title')?.innerText ?? ''")
+            .as_str()
+            .unwrap_or("")
+            .trim()
+            .to_owned();
+        title.is_empty() || title == "Mary Louis"
+    } {
         assert!(
             Instant::now() < patient_b_deadline,
             "did not switch to second patient"
         );
         tokio::time::sleep(Duration::from_millis(50)).await;
     }
-    tab.eval("(() => { const b = [...document.querySelectorAll('button')].find(x => x.textContent.includes('New conversation')); b?.click(); return true; })()");
+    tab.wait_for_text("New conversation", Duration::from_secs(10));
+    assert_eq!(
+        tab.eval("(() => { const b = [...document.querySelectorAll('button')].find(x => x.textContent.includes('New conversation')); b?.click(); return Boolean(b); })()"),
+        serde_json::json!(true),
+        "New conversation button not found on second patient page"
+    );
     tab.wait_composer("", Duration::from_secs(10));
 
     // Release Patient A's Stop while viewing Patient B.

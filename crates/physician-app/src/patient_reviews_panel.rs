@@ -682,6 +682,25 @@ fn render_outcome_section(
                         }
                     }
                 },
+                PatientReviewStateWire::Held {
+                    reason: ReviewHoldReasonWire::ProviderBlocked { reason },
+                    partial_text,
+                    ..
+                } => rsx! {
+                    p { class: "patient-review-alert-copy",
+                        "Coda couldn’t finish this review because the model provider refused the request."
+                    }
+                    if !reason.trim().is_empty() {
+                        p { class: "patient-review-muted-copy", "{reason}" }
+                    }
+                    if !review.steps.is_empty() || partial_text.is_some() {
+                        WorkTrace {
+                            label: "Steps recorded before the refusal".to_owned(),
+                            working: false,
+                            {render_stopped_steps(&review.steps, partial_text.as_deref())}
+                        }
+                    }
+                },
                 PatientReviewStateWire::Failed { reason, .. } => rsx! {
                     p { class: "patient-review-alert-copy", "Coda couldn’t finish this review." }
                     if !reason.trim().is_empty() {
@@ -1004,7 +1023,7 @@ fn state_tone(state: &PatientReviewStateWire) -> Tone {
             ..
         } => Tone::Neutral,
         PatientReviewStateWire::Held {
-            reason: ReviewHoldReasonWire::Limit,
+            reason: ReviewHoldReasonWire::Limit | ReviewHoldReasonWire::ProviderBlocked { .. },
             ..
         }
         | PatientReviewStateWire::Failed { .. } => Tone::Error,
@@ -1032,6 +1051,10 @@ fn state_slug(state: &PatientReviewStateWire) -> &'static str {
             reason: ReviewHoldReasonWire::Limit,
             ..
         } => "held_limit",
+        PatientReviewStateWire::Held {
+            reason: ReviewHoldReasonWire::ProviderBlocked { .. },
+            ..
+        } => "held_provider_blocked",
         PatientReviewStateWire::Completed {
             outcome: PatientReviewOutcomeWire::Assessed { .. },
             ..
@@ -1114,7 +1137,7 @@ fn row_subtitle(review: &PatientReviewWire, time_zone: &str, server_now: &str) -
             parts.push("You stopped Coda before it finished.".to_owned());
         }
         PatientReviewStateWire::Held {
-            reason: ReviewHoldReasonWire::Limit,
+            reason: ReviewHoldReasonWire::Limit | ReviewHoldReasonWire::ProviderBlocked { .. },
             ..
         }
         | PatientReviewStateWire::Failed { .. } => {

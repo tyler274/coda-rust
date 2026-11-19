@@ -3008,3 +3008,75 @@ async fn pre_reconnect_lapsed_pull_held_across_practice_access_restore_is_supers
         }
     ));
 }
+
+#[tokio::test]
+async fn overdue_scheduled_fetch_reports_couldn_t_update_standing() {
+    use physician_auth::{AuthStore, PostgresAuthStore, PracticeClock};
+
+    let store = migrated_store().await;
+    let auth = PostgresAuthStore::connect_with_migrations(&test_database_url())
+        .await
+        .expect("migrate auth store");
+    let run = Uuid::new_v4().to_string();
+    let practice = format!("practice-overdue-{run}");
+    let source_id = format!("ehr-overdue-{run}");
+    let ws = format!("pw-overdue-{run}");
+    auth.ensure_practice(&practice, PracticeClock::RealTime)
+        .await
+        .unwrap();
+
+    let source = ScriptedSource::new(
+        &source_id,
+        vec![ScriptedPull::Complete {
+            name: "Elena Vance".into(),
+            records: vec![("Patient".into(), "pat-overdue".into(), "Elena Vance".into())],
+        }],
+    );
+    store
+        .set_practice_source_access(
+            &practice,
+            &source_id,
+            &SourceAccessState::Connected {
+                connected_at: 1_000,
+            },
+            1_000,
+        )
+        .await
+        .unwrap();
+    let spid = format!("src-overdue-{run}");
+    let report = SourceCoordinator::check_patient(
+        &store,
+        &*source,
+        &practice,
+        &spid,
+        LinkTarget::ExistingOrDefault(&ws),
+        1_000,
+    )
+    .await
+    .unwrap();
+    assert_eq!(report.workspace_id, ws);
+
+    auth.register_patient(&practice, &ws).await.unwrap();
+    store
+        .register_patient_dispatch(&auth, &practice, &ws, 1_000)
+        .await
+        .unwrap();
+
+    // Daily cadence check_every is 86_400s from last_good_read_at = 1_000 (due at 87_400),
+    // which is long past current wall clock now -> missed scheduled fetch must NOT read UpToDate.
+    let standings = store
+        .workspace_source_standings(std::slice::from_ref(&ws))
+        .await
+        .unwrap();
+    let standing = &standings[&ws][&source_id];
+    assert!(
+        matches!(
+            standing,
+            SourceStanding::Overdue {
+                last_good_read_at: Some(1_000),
+                scheduled_at: 87_400,
+            }
+        ),
+        "overdue scheduled fetch must report couldn't update / overdue with last_good_read_at and scheduled_at, got: {standing:?}"
+    );
+}

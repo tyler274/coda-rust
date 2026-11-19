@@ -229,11 +229,63 @@ pub enum SourceStanding {
         /// Diagnostic access refusal reason.
         reason: String,
     },
+    /// A scheduled fetch was missed (`scheduled_at < now` with no pull since); prior records remain as of `last_good_read_at`.
+    Overdue {
+        /// Timestamp of the last complete good pull, if any.
+        last_good_read_at: Option<i64>,
+        /// Unix second when the missed scheduled fetch was due.
+        scheduled_at: i64,
+    },
+}
+
+/// Next scheduled source fetch timestamp for schedule-aware standing checks.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub struct ScheduledFetch {
+    /// Unix second when the next scheduled fetch is/was due.
+    pub next_due_at: i64,
 }
 
 /// Derives the authoritative [`SourceStanding`] for one patient's source from
 /// practice-level access state and the patient's recorded status row.
 pub fn derive_standing(
+    access: Option<&SourceAccessState>,
+    status: Option<&PatientSourceRecordStatus>,
+) -> SourceStanding {
+    derive_standing_with_schedule(access, status, None, 0)
+}
+
+/// Derives [`SourceStanding`], promoting [`SourceStanding::NotYetRead`] and
+/// [`SourceStanding::UpToDate`] to [`SourceStanding::Overdue`] when a scheduled
+/// fetch was missed (`schedule.next_due_at < now`), with zero age threshold.
+pub fn derive_standing_with_schedule(
+    access: Option<&SourceAccessState>,
+    status: Option<&PatientSourceRecordStatus>,
+    schedule: Option<ScheduledFetch>,
+    now: i64,
+) -> SourceStanding {
+    let base = derive_standing_unscheduled(access, status);
+    let Some(ScheduledFetch { next_due_at }) = schedule else {
+        return base;
+    };
+    if next_due_at >= now {
+        return base;
+    }
+    match base {
+        SourceStanding::NotYetRead => SourceStanding::Overdue {
+            last_good_read_at: None,
+            scheduled_at: next_due_at,
+        },
+        SourceStanding::UpToDate {
+            last_good_read_at, ..
+        } => SourceStanding::Overdue {
+            last_good_read_at: Some(last_good_read_at),
+            scheduled_at: next_due_at,
+        },
+        other => other,
+    }
+}
+
+fn derive_standing_unscheduled(
     access: Option<&SourceAccessState>,
     status: Option<&PatientSourceRecordStatus>,
 ) -> SourceStanding {
@@ -407,7 +459,9 @@ pub fn summarize_practice_source(
     for (workspace_id, standing) in patients {
         match standing {
             SourceStanding::NotYetRead | SourceStanding::UpToDate { .. } => {}
-            SourceStanding::Partial { .. } | SourceStanding::Failed { .. } => {
+            SourceStanding::Partial { .. }
+            | SourceStanding::Failed { .. }
+            | SourceStanding::Overdue { .. } => {
                 issues.push(PatientSourceIssue {
                     workspace_id: workspace_id.clone(),
                     source_id: source_id.to_owned(),
@@ -1010,7 +1064,7 @@ impl SourceCoordinator {
             patients.push(report);
         }
         let snapshot = store
-            .practice_source_report(practice_id, source.source_id())
+            .practice_source_report_at(practice_id, source.source_id(), now)
             .await?;
         Ok(PracticeCheckReport {
             practice_id: practice_id.to_owned(),
@@ -1746,6 +1800,74 @@ mod tests {
         assert_eq!(
             decide_pull_order(None, 4, Some(150), Some(&connected), 2, &ok_attempt),
             PullOrderOutcome::Apply { applied_seq: 5 },
+        );
+    }
+
+    #[test]
+    fn derive_standing_with_schedule_promotes_overdue_fetches_without_age_threshold() {
+        let connected = SourceAccessState::Connected { connected_at: 500 };
+        let good_status = PatientSourceRecordStatus {
+            practice_id: "prac-1".into(),
+            workspace_id: "pw-1".into(),
+            source_id: "ehr".into(),
+            last_good_read_at: Some(1_000),
+            latest_attempt: Some(PullAttempt {
+                attempted_at: 1_000,
+                outcome: PullOutcome::Succeeded {
+                    missing_candidates: Vec::new(),
+                },
+            }),
+        };
+        let schedule = Some(ScheduledFetch {
+            next_due_at: 87_400,
+        });
+        assert_eq!(
+            derive_standing_with_schedule(Some(&connected), Some(&good_status), schedule, 87_400),
+            SourceStanding::UpToDate {
+                last_good_read_at: 1_000,
+                missing_candidates: Vec::new(),
+            }
+        );
+        // Zero age threshold: 1 second past next_due_at marks Overdue while keeping last_good_read_at.
+        let overdue =
+            derive_standing_with_schedule(Some(&connected), Some(&good_status), schedule, 87_401);
+        assert_eq!(
+            overdue,
+            SourceStanding::Overdue {
+                last_good_read_at: Some(1_000),
+                scheduled_at: 87_400,
+            }
+        );
+        // Never pulled yet and missed initial scheduled fetch:
+        assert_eq!(
+            derive_standing_with_schedule(
+                Some(&connected),
+                None,
+                Some(ScheduledFetch { next_due_at: 1_000 }),
+                1_001,
+            ),
+            SourceStanding::Overdue {
+                last_good_read_at: None,
+                scheduled_at: 1_000,
+            }
+        );
+        // Practice summary counts Overdue patients toward PatientIssues / PracticeWideOutage:
+        assert_eq!(
+            summarize_practice_source(
+                "prac-1",
+                "ehr",
+                Some(&connected),
+                &[("pw-1".into(), overdue)],
+            ),
+            PracticeSourceSummary::PracticeWideOutage(PracticeOutage {
+                practice_id: "prac-1".into(),
+                source_id: "ehr".into(),
+                affected_patients: 1,
+                total_patients: 1,
+                kind: PracticeOutageKind::SourceDown {
+                    reason: "source reads are failing across most linked patients".into(),
+                },
+            })
         );
     }
 }

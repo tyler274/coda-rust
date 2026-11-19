@@ -2623,3 +2623,96 @@ async fn ac4_partial_producer_failure_practice_source_outage_collapse_and_empty_
         practice_outage_today.practice_outages[0].failure_detail
     );
 }
+
+#[tokio::test]
+async fn ac4_majority_source_failure_two_of_three_reports_practice_outage() {
+    let Some((store, _db, auth, _url, _cluster)) = connect_stores().await else {
+        return;
+    };
+    let now_u64 = base_now_unix();
+    let now_i64 = now_u64 as i64;
+    let practice = format!("prac-ac4-maj-{}", Uuid::new_v4().simple());
+    auth.ensure_practice(&practice, PracticeClock::Fixed(now_u64))
+        .await
+        .unwrap();
+
+    let (dr, token) = invite_and_sign_in(&auth, &practice, "Dr. Majority", now_u64).await;
+    let ws_1 = format!("pw-m1-{}", Uuid::new_v4().simple());
+    let ws_2 = format!("pw-m2-{}", Uuid::new_v4().simple());
+    let ws_3 = format!("pw-m3-{}", Uuid::new_v4().simple());
+    for ws in [&ws_1, &ws_2, &ws_3] {
+        auth.register_patient(&practice, ws).await.unwrap();
+        auth.set_membership(&dr, ws, Membership::Allowed)
+            .await
+            .unwrap();
+    }
+
+    let quest_id = SourceId::new("quest-labs").unwrap();
+    let checker = FixedSourceCheck::new();
+    for (ws, idx) in [(&ws_1, 1), (&ws_2, 2)] {
+        checker.push_step(
+            &practice,
+            ws,
+            quest_id.clone(),
+            FixedCheckStep::Outcome(SourceCheckOutcome::Failed {
+                source_label: Some("Quest Diagnostics".to_owned()),
+                checked_at: now_i64 - 60,
+                reason: "upstream gateway 503".to_owned(),
+            }),
+        );
+        store
+            .refresh_patient_sources_for_practice(
+                &PracticeScope {
+                    practice: practice.clone(),
+                    workspace: ws.clone(),
+                    job_id: format!("job-maj-{idx}"),
+                },
+                auth.as_ref(),
+                &RefreshRequest::new(
+                    RefreshCommandKey::new(format!("cmd-maj-{idx}")).unwrap(),
+                    RefreshTarget::AllSources,
+                ),
+                &checker,
+            )
+            .await
+            .expect("refresh failed");
+    }
+    checker.push_step(
+        &practice,
+        &ws_3,
+        quest_id,
+        FixedCheckStep::Outcome(SourceCheckOutcome::Updated {
+            source_label: "Quest Diagnostics".to_owned(),
+            patient: make_source_patient(&ws_3, "Patient Three"),
+            pulled_at: now_i64 - 30,
+            records: Vec::new(),
+        }),
+    );
+    store
+        .refresh_patient_sources_for_practice(
+            &PracticeScope {
+                practice: practice.clone(),
+                workspace: ws_3.clone(),
+                job_id: "job-maj-3".to_owned(),
+            },
+            auth.as_ref(),
+            &RefreshRequest::new(
+                RefreshCommandKey::new("cmd-maj-3").unwrap(),
+                RefreshTarget::AllSources,
+            ),
+            &checker,
+        )
+        .await
+        .expect("refresh ws_3");
+
+    let today = store
+        .read_today(auth.as_ref(), &token, now_u64, &BTreeMap::new())
+        .await
+        .unwrap();
+    assert_eq!(
+        today.practice_outages.len(),
+        1,
+        "2 of 3 patients failing (strict majority) must collapse into one practice-wide outage"
+    );
+    assert_eq!(today.practice_outages[0].affected_workspace_count, 2);
+}

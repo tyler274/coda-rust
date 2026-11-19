@@ -244,6 +244,7 @@ pub(super) async fn apply_source_delivery_tx(
     let delivered: HashSet<&str> = records.iter().map(|r| r.candidate_id.as_str()).collect();
     let mut rows = Vec::new();
     let mut reconciled_legacy = HashSet::new();
+    let mut updated_revisions = BTreeMap::new();
     let mut changed_records = 0usize;
     for record in records {
         let identity = (record.candidate_id.clone(), record.revision.clone());
@@ -256,6 +257,7 @@ pub(super) async fn apply_source_delivery_tx(
         let holding = current.get(&record.candidate_id).and_then(Option::as_ref);
         let record_changed = holding.is_none_or(|existing| existing.revision != record.revision);
         if record_changed {
+            updated_revisions.insert(record.candidate_id.clone(), record.revision.clone());
             let value = serde_json::to_value(record)
                 .map_err(conversion_error("SourceRevision", "source revision"))?;
             rows.push(source::ActiveModel {
@@ -323,6 +325,13 @@ pub(super) async fn apply_source_delivery_tx(
         let mut bumped: source_version::ActiveModel = row.into();
         bumped.version = Set(next);
         bumped.update(tx).await?;
+        super::reply::proposals::retire_stale_ready_replies_in_tx(
+            tx,
+            workspace,
+            &updated_revisions,
+            &reconciled_legacy,
+        )
+        .await?;
     }
     Ok(ChartPullReceipt {
         changed: changed_records,
@@ -389,6 +398,14 @@ impl Store {
         let mut bumped: source_version::ActiveModel = row.into();
         bumped.version = Set(next as i64);
         bumped.update(&tx).await?;
+        let updated_revisions = BTreeMap::from([(candidate.to_owned(), incoming.revision.clone())]);
+        super::reply::proposals::retire_stale_ready_replies_in_tx(
+            &tx,
+            workspace,
+            &updated_revisions,
+            &HashSet::new(),
+        )
+        .await?;
         tx.commit().await?;
         Ok(next)
     }
@@ -532,6 +549,14 @@ impl Store {
         let mut bumped: source_version::ActiveModel = row.into();
         bumped.version = Set(next as i64);
         bumped.update(&tx).await?;
+        let withdrawn = HashSet::from([candidate.to_owned()]);
+        super::reply::proposals::retire_stale_ready_replies_in_tx(
+            &tx,
+            workspace,
+            &BTreeMap::new(),
+            &withdrawn,
+        )
+        .await?;
         tx.commit().await?;
         Ok(next)
     }
