@@ -1,0 +1,260 @@
+{
+  "branch": "tyler-eng-287-2-site-today-updates-suite",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC1",
+      "label": "Chromium qualification suite for Today, Updates, open, and Done actions",
+      "kind": "run",
+      "revision": "fa1ac67bd934f298253f1be0a6c44dc6cb2eb4e0",
+      "dirty": false,
+      "recorded": "2026-11-19T00:50:15+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-sample",
+        "--test",
+        "site_today_updates",
+        "--",
+        "--include-ignored",
+        "--test-threads=1"
+      ],
+      "expect": "\\b4 passed; 0 failed\\b",
+      "expect_fail": false,
+      "files": [
+        "01-Chromium-qualification-suite-for-Today-Updates-o.log"
+      ],
+      "seconds": 40.6,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true
+    },
+    {
+      "id": 2,
+      "claim": "AC2",
+      "label": "Chromium qualification suite for patient reviews with restored Today handoff assertion",
+      "kind": "run",
+      "revision": "fa1ac67bd934f298253f1be0a6c44dc6cb2eb4e0",
+      "dirty": false,
+      "recorded": "2026-11-19T00:50:56+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-sample",
+        "--test",
+        "site_patient_reviews",
+        "--",
+        "--include-ignored",
+        "--test-threads=1"
+      ],
+      "expect": "\\b2 passed; 0 failed\\b",
+      "expect_fail": false,
+      "files": [
+        "02-Chromium-qualification-suite-for-patient-reviews.log"
+      ],
+      "seconds": 51.2,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true
+    },
+    {
+      "id": 3,
+      "claim": "AC3",
+      "label": "Synthetic staging control end-to-end browser and CLI qualification suite",
+      "kind": "run",
+      "revision": "fa1ac67bd934f298253f1be0a6c44dc6cb2eb4e0",
+      "dirty": false,
+      "recorded": "2026-11-19T00:51:47+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-sample",
+        "--test",
+        "synthetic_staging_control",
+        "--",
+        "--include-ignored",
+        "--test-threads=1"
+      ],
+      "expect": "\\b4 passed; 0 failed\\b",
+      "expect_fail": false,
+      "files": [
+        "03-Synthetic-staging-control-end-to-end-browser-and.log"
+      ],
+      "seconds": 48.5,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true
+    },
+    {
+      "id": 4,
+      "claim": "AC4",
+      "label": "Non-Valkey physician-sample site browser qualification suite",
+      "kind": "run",
+      "revision": "fa1ac67bd934f298253f1be0a6c44dc6cb2eb4e0",
+      "dirty": false,
+      "recorded": "2026-11-19T00:52:36+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-sample",
+        "--test",
+        "site",
+        "--",
+        "--ignored",
+        "--test-threads=1",
+        "--skip",
+        "a_new_conversation_is_listed_after_a_reload_without_its_address",
+        "--skip",
+        "a_stale_tab_is_not_saved_and_a_save_never_marks_another_chat",
+        "--skip",
+        "a_reloaded_tab_recovers_unsent_text_and_sign_out_forgets_it",
+        "--skip",
+        "keyboard_send_clears_only_the_sent_text_and_a_reload_reasks_the_same_command",
+        "--skip",
+        "the_first_event_connection_reads_changes_after_the_initial_snapshot",
+        "--skip",
+        "a_quiet_page_keeps_its_change_stream_and_a_silent_one_is_dropped_and_read_again",
+        "--skip",
+        "held_limits_and_provider_blocks_render_without_a_partial_answer",
+        "--skip",
+        "a_reply_draws_code_and_a_table_that_scroll_by_key",
+        "--skip",
+        "past_conversations_and_work_reopen_across_restart_mark_newer_records_and_enforce_access"
+      ],
+      "expect": "\\b14 passed; 0 failed\\b",
+      "expect_fail": false,
+      "files": [
+        "04-Non-Valkey-physician-sample-site-browser-qualifi.log"
+      ],
+      "seconds": 91.1,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true
+    },
+    {
+      "id": 5,
+      "claim": "AC5",
+      "label": "Screenshot patient-rows-desktop",
+      "kind": "screenshot",
+      "revision": "fa1ac67bd934f298253f1be0a6c44dc6cb2eb4e0",
+      "dirty": false,
+      "recorded": "2026-11-19T00:54:07+00:00",
+      "files": [
+        "05-patient-rows-desktop.png"
+      ],
+      "source": "target/verification/screenshots/today-updates/patient-rows-desktop.png",
+      "ok": true
+    },
+    {
+      "id": 6,
+      "claim": "AC5",
+      "label": "Screenshot patient-rows-phone",
+      "kind": "screenshot",
+      "revision": "fa1ac67bd934f298253f1be0a6c44dc6cb2eb4e0",
+      "dirty": false,
+      "recorded": "2026-11-19T00:54:07+00:00",
+      "files": [
+        "06-patient-rows-phone.png"
+      ],
+      "source": "target/verification/screenshots/today-updates/patient-rows-phone.png",
+      "ok": true
+    },
+    {
+      "id": 7,
+      "claim": "AC5",
+      "label": "Screenshot today-desktop",
+      "kind": "screenshot",
+      "revision": "fa1ac67bd934f298253f1be0a6c44dc6cb2eb4e0",
+      "dirty": false,
+      "recorded": "2026-11-19T00:54:08+00:00",
+      "files": [
+        "07-today-desktop.png"
+      ],
+      "source": "target/verification/screenshots/today-updates/today-desktop.png",
+      "ok": true
+    },
+    {
+      "id": 8,
+      "claim": "AC5",
+      "label": "Screenshot today-phone",
+      "kind": "screenshot",
+      "revision": "fa1ac67bd934f298253f1be0a6c44dc6cb2eb4e0",
+      "dirty": false,
+      "recorded": "2026-11-19T00:54:08+00:00",
+      "files": [
+        "08-today-phone.png"
+      ],
+      "source": "target/verification/screenshots/today-updates/today-phone.png",
+      "ok": true
+    },
+    {
+      "id": 9,
+      "claim": "AC5",
+      "label": "Screenshot updates-groups-desktop",
+      "kind": "screenshot",
+      "revision": "fa1ac67bd934f298253f1be0a6c44dc6cb2eb4e0",
+      "dirty": false,
+      "recorded": "2026-11-19T00:54:08+00:00",
+      "files": [
+        "09-updates-groups-desktop.png"
+      ],
+      "source": "target/verification/screenshots/today-updates/updates-groups-desktop.png",
+      "ok": true
+    },
+    {
+      "id": 10,
+      "claim": "AC5",
+      "label": "Screenshot updates-groups-phone",
+      "kind": "screenshot",
+      "revision": "fa1ac67bd934f298253f1be0a6c44dc6cb2eb4e0",
+      "dirty": false,
+      "recorded": "2026-11-19T00:54:08+00:00",
+      "files": [
+        "10-updates-groups-phone.png"
+      ],
+      "source": "target/verification/screenshots/today-updates/updates-groups-phone.png",
+      "ok": true
+    },
+    {
+      "id": 11,
+      "claim": "AC6",
+      "label": "Product privacy boundary and shared-ui check",
+      "kind": "run",
+      "revision": "fa1ac67bd934f298253f1be0a6c44dc6cb2eb4e0",
+      "dirty": false,
+      "recorded": "2026-11-19T00:54:08+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "boundaries",
+        "--lib"
+      ],
+      "expect": "\\b25 passed; 0 failed\\b",
+      "expect_fail": false,
+      "files": [
+        "11-Product-privacy-boundary-and-shared-ui-check.log"
+      ],
+      "seconds": 1.8,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true
+    },
+    {
+      "id": 12,
+      "claim": "AC7",
+      "label": "Valkey-backed browser tests deferred to Linux CI",
+      "kind": "gap",
+      "revision": "fa1ac67bd934f298253f1be0a6c44dc6cb2eb4e0",
+      "dirty": false,
+      "recorded": "2026-11-19T00:54:10+00:00",
+      "reason": "Nine Valkey-backed tests in physician-sample --test site skipped on nix host because valkey-server segfaults (exit 139); verified on hosted ubuntu-24.04 CI",
+      "ok": false,
+      "files": []
+    }
+  ]
+}
