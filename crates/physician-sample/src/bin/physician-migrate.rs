@@ -172,7 +172,8 @@ async fn print_feedback(url: &str) -> Result<(), FeedbackReadError> {
     let db = migration_connection(url)
         .await
         .map_err(FeedbackReadError::Connect)?;
-    let rows = local_product::runtime::Store::from_connection(db)
+    let store = local_product::runtime::Store::from_connection(db);
+    let rows = store
         .feedback_for_evaluation()
         .await
         .map_err(FeedbackReadError::Read)?;
@@ -191,6 +192,50 @@ async fn print_feedback(url: &str) -> Result<(), FeedbackReadError> {
             "saved_at": row.feedback.saved_at,
             "revision": row.feedback.revision,
             "response_text": row.response_text,
+        });
+        writeln!(out, "{line}").map_err(FeedbackReadError::Print)?;
+    }
+    let concern_rows = store
+        .concern_feedback_for_evaluation()
+        .await
+        .map_err(FeedbackReadError::Read)?;
+    for row in concern_rows {
+        let line = serde_json::json!({
+            "kind": "concern_done",
+            "practice": row.practice,
+            "workspace": row.workspace,
+            "concern": row.concern_id.as_str(),
+            "physician": row.physician,
+            "action": row.action,
+            "concern_revision": row.concern_revision,
+            "urgency": row.urgency,
+            "concern_reason": row.concern_reason,
+            "records": row.records,
+            "source_work": row.source_work,
+            "saved_at": row.saved_at,
+            "revision": row.revision,
+        });
+        writeln!(out, "{line}").map_err(FeedbackReadError::Print)?;
+    }
+    let reply_rows = store
+        .reply_feedback_for_evaluation()
+        .await
+        .map_err(FeedbackReadError::Read)?;
+    for row in reply_rows {
+        let line = serde_json::json!({
+            "kind": "reply_feedback",
+            "practice": row.practice,
+            "workspace": row.workspace,
+            "conversation_id": row.conversation_id,
+            "physician": row.physician,
+            "reply_id": row.reply_id,
+            "proposed_text": row.proposed_text,
+            "revised_text": row.revised_text,
+            "draft_status": row.draft_status,
+            "draft_revision": row.draft_revision,
+            "revision_instructions": row.revision_instructions,
+            "copied_texts": row.copied_texts,
+            "updated_at": row.updated_at,
         });
         writeln!(out, "{line}").map_err(FeedbackReadError::Print)?;
     }
@@ -391,8 +436,33 @@ async fn manage_cadence(url: &str, args: &[String]) -> Result<(), String> {
             );
             Ok(())
         }
+        Some("set-practice") => {
+            if args.len() != 4 {
+                return Err(
+                    "usage: physician-migrate cadence set-practice <practice_id> <check_every_seconds> <review_every_seconds>"
+                        .to_owned(),
+                );
+            }
+            let check_every = args[2]
+                .parse::<u64>()
+                .map_err(|error| format!("check_every_seconds `{}`: {error}", args[2]))?;
+            let review_every = args[3]
+                .parse::<u64>()
+                .map_err(|error| format!("review_every_seconds `{}`: {error}", args[3]))?;
+            let cadence = patient_work::Cadence::new(check_every, review_every)
+                .map_err(|error| error.to_string())?;
+            let view = runtime
+                .set_practice_cadence(&auth, &args[1], cadence, now_sec)
+                .await
+                .map_err(|error| error.to_string())?;
+            println!(
+                "{}",
+                serde_json::to_string_pretty(&view).map_err(|error| error.to_string())?
+            );
+            Ok(())
+        }
         _ => Err(
-            "usage: physician-migrate cadence <get|set> <practice_id> [patient_workspace_id] [check_every_seconds review_every_seconds]"
+            "usage: physician-migrate cadence <get|set|set-practice> <practice_id> [patient_workspace_id] [check_every_seconds review_every_seconds]"
                 .to_owned(),
         ),
     }

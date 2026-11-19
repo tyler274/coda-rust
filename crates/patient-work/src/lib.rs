@@ -445,6 +445,17 @@ pub struct OperatorCadenceView {
     pub last_success_at: Option<i64>,
 }
 
+/// Operator-facing practice-level cadence default and affected patient views.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct PracticeCadenceView {
+    /// Practice identifier.
+    pub practice_id: String,
+    /// Practice default check and periodic-review cadence.
+    pub cadence: Cadence,
+    /// Updated operator cadence views across registered patients in `practice_id`.
+    pub patients: Vec<OperatorCadenceView>,
+}
+
 /// Saved dispatch state for one registered patient.
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct DispatchState {

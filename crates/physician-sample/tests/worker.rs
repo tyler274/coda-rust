@@ -2633,3 +2633,189 @@ async fn a_scripted_finish_cites_the_record_the_worker_read() {
         })
     );
 }
+
+#[tokio::test]
+async fn revoking_panel_mid_turn_cancels_chat_attempt_promptly() {
+    let _guard = lock().lock().await;
+    let Some(running) = running("revoke_mid_turn", None, Some(15_000)).await else {
+        return;
+    };
+    let auth = PostgresAuthStore::connect_with_migrations(&running.database.url)
+        .await
+        .expect("auth store");
+    let (scope, _) = accept_turn(&running.database.url, &running.store).await;
+
+    // Wait until the worker claims the attempt and enters the 15s delayed model call.
+    let claim_deadline = Instant::now() + Duration::from_secs(5);
+    loop {
+        let state = running
+            .store
+            .read(&scope)
+            .await
+            .expect("read scope")
+            .expect("conversation");
+        if state
+            .attempts
+            .last()
+            .is_some_and(|a| a.status == AttemptStatus::Active)
+        {
+            break;
+        }
+        assert!(
+            Instant::now() < claim_deadline,
+            "turn never started running\n{}",
+            running.worker.tail()
+        );
+        tokio::time::sleep(Duration::from_millis(50)).await;
+    }
+
+    // Revoke panel access while the model call is in flight.
+    auth.set_membership(
+        &physician_auth::PhysicianIdentity {
+            practice_id: scope.practice.clone(),
+            physician_id: scope.physician.clone(),
+        },
+        &scope.workspace,
+        Membership::Denied,
+    )
+    .await
+    .expect("revoke panel membership");
+
+    // Must cancel far earlier than the 15s model delay without saving an assistant answer.
+    let cancel_deadline = Instant::now() + Duration::from_secs(5);
+    loop {
+        let state = running
+            .store
+            .read(&scope)
+            .await
+            .expect("read scope")
+            .expect("conversation");
+        if state
+            .attempts
+            .last()
+            .is_some_and(|a| a.status != AttemptStatus::Active)
+        {
+            assert!(
+                assistant_texts(&state).is_empty(),
+                "cancelled turn must not publish assistant text: {:?}",
+                assistant_texts(&state)
+            );
+            assert_ne!(state.status, WorkStatus::Completed);
+            break;
+        }
+        assert!(
+            Instant::now() < cancel_deadline,
+            "worker did not cancel turn promptly after revocation\n{}",
+            running.worker.tail()
+        );
+        tokio::time::sleep(Duration::from_millis(50)).await;
+    }
+}
+
+#[tokio::test]
+async fn revoking_panel_does_not_cancel_practice_job() {
+    use local_product::runtime::jobs::{Assignment, PracticeJobKind, PracticeScope};
+
+    let _guard = lock().lock().await;
+    let skills_dir = concat!(env!("CARGO_MANIFEST_DIR"), "/../../skills");
+    let Some(running) = running_with(
+        "practice_job_revoked",
+        None,
+        Some(1_500),
+        "[]",
+        support::FIXED_TEXT,
+        &[("PHYSICIAN_SKILLS_DIR", skills_dir)],
+    )
+    .await
+    else {
+        return;
+    };
+    let auth = PostgresAuthStore::connect_with_migrations(&running.database.url)
+        .await
+        .expect("auth store");
+    let (scope, _) = signed_in(&running.database.url, None).await;
+    let skills = PhysicianSkills::load(std::path::Path::new(skills_dir)).expect("skills");
+    let roles = support::models::roles();
+    let job_scope = PracticeScope {
+        practice: scope.practice.clone(),
+        workspace: scope.workspace.clone(),
+        job_id: format!("job-revoke-{}", uuid::Uuid::new_v4().simple()),
+    };
+    let assignment = Assignment::new(
+        PracticeJobKind::PatientReview,
+        format!("key-revoke-{}", uuid::Uuid::new_v4().simple()),
+        "Conduct a periodic chart review for this patient workspace.",
+        &["patient-record-retrieval"],
+        &skills,
+    )
+    .expect("assignment");
+    running
+        .store
+        .accept_practice_job(&job_scope, &assignment, &roles, &skills, &auth)
+        .await
+        .expect("accept practice job");
+
+    // Wait for the worker to start executing the practice job attempt.
+    let start_deadline = Instant::now() + Duration::from_secs(5);
+    loop {
+        let job = running
+            .store
+            .practice_job(&job_scope)
+            .await
+            .expect("read practice job")
+            .expect("practice job exists");
+        if job
+            .attempts
+            .last()
+            .is_some_and(|attempt| attempt.status == AttemptStatus::Active)
+        {
+            break;
+        }
+        assert!(
+            Instant::now() < start_deadline,
+            "practice job never became active\n{}",
+            running.worker.tail()
+        );
+        tokio::time::sleep(Duration::from_millis(50)).await;
+    }
+
+    // Revoking panel membership for a physician must NOT cancel the practice-owned job.
+    auth.set_membership(
+        &physician_auth::PhysicianIdentity {
+            practice_id: scope.practice.clone(),
+            physician_id: scope.physician.clone(),
+        },
+        &scope.workspace,
+        Membership::Denied,
+    )
+    .await
+    .expect("revoke panel membership");
+
+    let finish_deadline = Instant::now() + Duration::from_secs(10);
+    loop {
+        let job = running
+            .store
+            .practice_job(&job_scope)
+            .await
+            .expect("read practice job")
+            .expect("practice job exists");
+        if !job.status.running() {
+            assert_eq!(
+                job.status,
+                WorkStatus::Completed,
+                "practice job must complete despite physician panel revocation: {job:?}"
+            );
+            assert_eq!(
+                job.result.as_ref().map(|r| r.output_text.as_str()),
+                Some(support::FIXED_TEXT)
+            );
+            break;
+        }
+        assert!(
+            Instant::now() < finish_deadline,
+            "practice job did not finish\n{}",
+            running.worker.tail()
+        );
+        tokio::time::sleep(Duration::from_millis(50)).await;
+    }
+}

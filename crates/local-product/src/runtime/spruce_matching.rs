@@ -1256,12 +1256,14 @@ pub async fn project_suggestion_for_viewer(
     auth: &dyn AuthStore,
     viewer: &PhysicianIdentity,
     suggestion: Option<&SuggestedPatientMatch>,
-) -> Option<SuggestedPatientMatch> {
-    let candidate = suggestion?;
-    if auth.membership(viewer, &candidate.workspace).await == Membership::Allowed {
-        Some(candidate.clone())
+) -> Result<Option<SuggestedPatientMatch>, SpruceMatchingError> {
+    let Some(candidate) = suggestion else {
+        return Ok(None);
+    };
+    if auth.try_membership(viewer, &candidate.workspace).await? == Membership::Allowed {
+        Ok(Some(candidate.clone()))
     } else {
-        None
+        Ok(None)
     }
 }
 
@@ -1970,7 +1972,7 @@ async fn project_routing_outcome_for_viewer(
     auth: &dyn AuthStore,
     viewer: &PhysicianIdentity,
     outcome: MessageRoutingOutcome,
-) -> MessageRoutingOutcome {
+) -> Result<MessageRoutingOutcome, SpruceMatchingError> {
     match outcome {
         MessageRoutingOutcome::Linked {
             workspace,
@@ -1978,33 +1980,34 @@ async fn project_routing_outcome_for_viewer(
             joined_message_ids,
             review_command_key,
         } => {
-            if auth.membership(viewer, &workspace).await == Membership::Allowed {
-                MessageRoutingOutcome::Linked {
+            if auth.try_membership(viewer, &workspace).await? == Membership::Allowed {
+                Ok(MessageRoutingOutcome::Linked {
                     workspace,
                     origin,
                     joined_message_ids,
                     review_command_key,
-                }
+                })
             } else {
-                MessageRoutingOutcome::LinkedWithoutViewerAccess {
+                Ok(MessageRoutingOutcome::LinkedWithoutViewerAccess {
                     origin,
                     joined_message_ids,
-                }
+                })
             }
         }
         MessageRoutingOutcome::Waiting {
             suggested_workspace: Some(ws),
         } => {
-            let suggested_workspace = if auth.membership(viewer, &ws).await == Membership::Allowed {
-                Some(ws)
-            } else {
-                None
-            };
-            MessageRoutingOutcome::Waiting {
+            let suggested_workspace =
+                if auth.try_membership(viewer, &ws).await? == Membership::Allowed {
+                    Some(ws)
+                } else {
+                    None
+                };
+            Ok(MessageRoutingOutcome::Waiting {
                 suggested_workspace,
-            }
+            })
         }
-        other => other,
+        other => Ok(other),
     }
 }
 
@@ -2068,7 +2071,7 @@ pub(super) async fn require_patient_access(
             reason: "patient workspace does not belong to practice",
         });
     }
-    if auth.membership(viewer, workspace).await != Membership::Allowed {
+    if auth.try_membership(viewer, workspace).await? != Membership::Allowed {
         return Err(SpruceMatchingError::AccessDenied {
             practice: viewer.practice_id.clone(),
             physician: viewer.physician_id.clone(),
@@ -2093,7 +2096,7 @@ pub(crate) async fn allowed_workspaces_in_practice(
         if !account.active {
             continue;
         }
-        for ws in auth.panel(&account.identity).await {
+        for ws in auth.try_panel(&account.identity).await? {
             if registered.contains(&ws) {
                 allowed.insert(ws);
             }
@@ -2107,9 +2110,9 @@ pub(super) async fn still_open_viewers(
     practice: &str,
     viewers: &BTreeSet<String>,
     target_workspace: Option<&str>,
-) -> BTreeSet<String> {
+) -> Result<BTreeSet<String>, SpruceMatchingError> {
     let Some(workspace) = target_workspace else {
-        return BTreeSet::new();
+        return Ok(BTreeSet::new());
     };
     let mut retained = BTreeSet::new();
     for physician_id in viewers {
@@ -2117,14 +2120,15 @@ pub(super) async fn still_open_viewers(
             practice_id: practice.to_owned(),
             physician_id: physician_id.clone(),
         };
-        let Some(account) = auth.account_by_identity(&identity).await else {
+        let Some(account) = auth.try_account_by_identity(&identity).await? else {
             continue;
         };
-        if account.active && auth.membership(&identity, workspace).await == Membership::Allowed {
+        if account.active && auth.try_membership(&identity, workspace).await? == Membership::Allowed
+        {
             retained.insert(physician_id.clone());
         }
     }
-    retained
+    Ok(retained)
 }
 
 fn decode_channel_row_full(
@@ -4546,7 +4550,7 @@ impl Store {
                 if let (Some(trig), Some(receiver)) = (replay_trigger, review_receiver) {
                     dispatch_single_trigger(self, &trig, receiver, now_ts).await?;
                 }
-                return Ok(project_routing_outcome_for_viewer(auth, actor, raw_outcome).await);
+                return project_routing_outcome_for_viewer(auth, actor, raw_outcome).await;
             }
             Some(Receipt::Different) => {
                 return Err(SpruceMatchingError::IdempotencyCollision {
@@ -4617,7 +4621,7 @@ impl Store {
         if let (Some(trig), Some(receiver)) = (trigger, review_receiver) {
             dispatch_single_trigger(self, &trig, receiver, now_ts).await?;
         }
-        Ok(project_routing_outcome_for_viewer(auth, actor, outcome).await)
+        project_routing_outcome_for_viewer(auth, actor, outcome).await
     }
 
     /// Routes every `Deciding` message in `practice` whose 15-minute deadline
@@ -5290,7 +5294,7 @@ impl Store {
             MoveDestination::NotAPatient => None,
         };
         conv.open_viewers =
-            still_open_viewers(auth, practice, &conv.open_viewers, target_ws_opt).await;
+            still_open_viewers(auth, practice, &conv.open_viewers, target_ws_opt).await?;
 
         let undo_window = undo_window_seconds.max(1);
         let active_prior_undo = conv.move_undo.clone();
@@ -5534,7 +5538,7 @@ impl Store {
             &conv.open_viewers,
             Some(&undo.from_workspace),
         )
-        .await;
+        .await?;
         conv.move_undo = None;
         conv.updated_at = now_ts;
         save_conversation_in_tx(&tx, &conv).await?;
@@ -5955,7 +5959,7 @@ impl Store {
                 .get(&msg.conversation_id)
                 .and_then(|c| c.active_suggestion.as_ref());
             let suggested_patient =
-                project_suggestion_for_viewer(auth, viewer, raw_suggestion).await;
+                project_suggestion_for_viewer(auth, viewer, raw_suggestion).await?;
             let leads_today_as_now = msg.urgency.is_urgent();
             rows.push(UnmatchedMessageRow {
                 message_id: msg.message_id,
@@ -6141,7 +6145,7 @@ impl Store {
             let ConversationLinkState::Linked { workspace, .. } = conv.link_state else {
                 continue;
             };
-            if auth.membership(viewer, &workspace).await != Membership::Allowed {
+            if auth.try_membership(viewer, &workspace).await? != Membership::Allowed {
                 continue;
             }
             let messages =

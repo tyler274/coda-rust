@@ -187,16 +187,24 @@ impl ConnectedCare {
 }
 
 /// Whether `id` is a patient registered to the signed-in practice.
-pub(crate) async fn on_roster(extensions: &axum::http::Extensions, id: &str) -> bool {
+pub(crate) async fn try_on_roster(
+    extensions: &axum::http::Extensions,
+    id: &str,
+) -> Result<bool, axum::http::StatusCode> {
     let Some(care) = extensions.get::<ConnectedCare>() else {
-        return false;
+        return Ok(false);
     };
     let store = care.auth_store(extensions);
     let identity = ConnectedCare::identity(extensions);
-    matches!(
-        store.patient_practice(id).await,
-        Ok(Some(owner)) if owner == identity.practice_id
-    )
+    let owner = store
+        .patient_practice(id)
+        .await
+        .map_err(|_| axum::http::StatusCode::SERVICE_UNAVAILABLE)?;
+    Ok(owner.as_deref() == Some(identity.practice_id.as_str()))
+}
+
+pub(crate) async fn on_roster(extensions: &axum::http::Extensions, id: &str) -> bool {
+    try_on_roster(extensions, id).await.unwrap_or(false)
 }
 
 /// Adds `patient_link` to a patient page.

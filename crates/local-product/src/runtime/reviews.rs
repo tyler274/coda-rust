@@ -2118,7 +2118,12 @@ impl Store {
             });
         }
 
-        let membership = auth.membership(identity, &workspace).await;
+        let membership = auth
+            .try_membership(identity, &workspace)
+            .await
+            .map_err(|err| {
+                PatientReviewError::Access(PracticeAccessError::StoreUnavailable(err))
+            })?;
         if membership != Membership::Allowed {
             return Err(PatientReviewError::PhysicianUnauthorized {
                 practice_id: practice,

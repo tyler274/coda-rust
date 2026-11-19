@@ -2518,7 +2518,7 @@ async fn persist_source_delivery(
 
         if kind == SupportedSourceWire::Spruce
             && let Some(ctx) = extensions.get::<AuthContext>()
-            && ctx.auth.store.membership(&identity, workspace).await == Membership::Allowed
+            && ctx.auth.store.try_membership(&identity, workspace).await == Ok(Membership::Allowed)
         {
             let scope = Scope {
                 practice: identity.practice_id,
@@ -2602,10 +2602,11 @@ impl Authority for SourceDraftAuthority<'_> {
         if resolved.practice_id != scope.practice || resolved.physician_id != scope.physician {
             return Err("session scope mismatch".to_owned());
         }
-        if self.auth.membership(&resolved, &scope.workspace).await != Membership::Allowed {
-            return Err("workspace not on physician panel".to_owned());
+        match self.auth.try_membership(&resolved, &scope.workspace).await {
+            Ok(Membership::Allowed) => Ok(()),
+            Ok(_) => Err("workspace not on physician panel".to_owned()),
+            Err(err) => Err(format!("authority check failed: {err}")),
         }
-        Ok(())
     }
 
     async fn lock_publication(

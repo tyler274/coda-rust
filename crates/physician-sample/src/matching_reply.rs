@@ -501,6 +501,7 @@ async fn map_unmatched_row(
     viewer: &PhysicianIdentity,
     row: &UnmatchedMessageRow,
     identities: &BTreeMap<String, PatientIdentitySummary>,
+    may_be_missing_someone: &mut bool,
 ) -> Result<UnmatchedMessageWire, SpruceMatchingError> {
     let urgency = match &row.urgency {
         MessageUrgency::Ordinary => UnmatchedUrgencyWire::Ordinary,
@@ -534,16 +535,22 @@ async fn map_unmatched_row(
                 } => {
                     let mut candidates = Vec::new();
                     for ws in candidate_workspaces {
-                        if auth_store.membership(viewer, &ws).await == Membership::Allowed {
-                            let info = identities.get(&ws);
-                            candidates.push(CandidatePatientWire {
-                                patient_workspace_id: ws.clone(),
-                                patient_display_name: info
-                                    .map(|i| i.display_name.clone())
-                                    .unwrap_or(ws),
-                                birth_date: info.and_then(|i| i.birth_date.clone()),
-                                mrn: info.and_then(|i| i.mrn.clone()),
-                            });
+                        match auth_store.try_membership(viewer, &ws).await {
+                            Ok(Membership::Allowed) => {
+                                let info = identities.get(&ws);
+                                candidates.push(CandidatePatientWire {
+                                    patient_workspace_id: ws.clone(),
+                                    patient_display_name: info
+                                        .map(|i| i.display_name.clone())
+                                        .unwrap_or(ws),
+                                    birth_date: info.and_then(|i| i.birth_date.clone()),
+                                    mrn: info.and_then(|i| i.mrn.clone()),
+                                });
+                            }
+                            Ok(Membership::ClinicDemographic | Membership::Denied) => {}
+                            Err(_) => {
+                                *may_be_missing_someone = true;
+                            }
                         }
                     }
                     MatchSuggestionWire::NeedsPhysicianChoice {
@@ -558,16 +565,22 @@ async fn map_unmatched_row(
                 } => {
                     let mut candidates = Vec::new();
                     for ws in candidate_workspaces {
-                        if auth_store.membership(viewer, &ws).await == Membership::Allowed {
-                            let info = identities.get(&ws);
-                            candidates.push(CandidatePatientWire {
-                                patient_workspace_id: ws.clone(),
-                                patient_display_name: info
-                                    .map(|i| i.display_name.clone())
-                                    .unwrap_or(ws),
-                                birth_date: info.and_then(|i| i.birth_date.clone()),
-                                mrn: info.and_then(|i| i.mrn.clone()),
-                            });
+                        match auth_store.try_membership(viewer, &ws).await {
+                            Ok(Membership::Allowed) => {
+                                let info = identities.get(&ws);
+                                candidates.push(CandidatePatientWire {
+                                    patient_workspace_id: ws.clone(),
+                                    patient_display_name: info
+                                        .map(|i| i.display_name.clone())
+                                        .unwrap_or(ws),
+                                    birth_date: info.and_then(|i| i.birth_date.clone()),
+                                    mrn: info.and_then(|i| i.mrn.clone()),
+                                });
+                            }
+                            Ok(Membership::ClinicDemographic | Membership::Denied) => {}
+                            Err(_) => {
+                                *may_be_missing_someone = true;
+                            }
                         }
                     }
                     MatchSuggestionWire::NeedsPhysicianChoice {
@@ -639,12 +652,18 @@ async fn list_messages_to_match(
             messages: Vec::new(),
             unreadable_messages: Vec::new(),
             filtered_count: 0,
+            may_be_missing_someone: false,
         })
         .into_response();
     };
     let identity = ConnectedCare::identity(extensions);
     let auth_store = connected.auth_store(extensions);
-    let panel = auth_store.panel(&identity).await;
+    let Ok(raw_panel) = auth_store.try_panel(&identity).await else {
+        return StatusCode::SERVICE_UNAVAILABLE.into_response();
+    };
+    let (allowed_panel, mut may_be_missing_someone) =
+        crate::auth::check_panel_candidates(auth_store.as_ref(), &identity, &raw_panel).await;
+    let panel: Vec<String> = allowed_panel.into_iter().collect();
     let directory = connected.patients(extensions);
     let identities = match authorized_patient_identities(&*directory, &panel).await {
         Ok(identities) => identities,
@@ -672,7 +691,16 @@ async fn list_messages_to_match(
 
     let mut messages = Vec::with_capacity(summary.messages_to_match.len());
     for row in &summary.messages_to_match {
-        match map_unmatched_row(&store, auth_store.as_ref(), &identity, row, &identities).await {
+        match map_unmatched_row(
+            &store,
+            auth_store.as_ref(),
+            &identity,
+            row,
+            &identities,
+            &mut may_be_missing_someone,
+        )
+        .await
+        {
             Ok(wire) => messages.push(wire),
             Err(err) => return spruce_error_response(err),
         }
@@ -694,6 +722,7 @@ async fn list_messages_to_match(
         messages,
         unreadable_messages,
         filtered_count,
+        may_be_missing_someone,
     })
     .into_response()
 }
@@ -918,10 +947,13 @@ async fn confirm_message_link(
         Err(err) => return spruce_error_response(err),
     };
 
-    let panel = auth_store.panel(&identity).await;
-    let directory = connected.patients(extensions);
     // The link is already saved; a failed name read must not make the saved
     // action read as failed, so the response names the workspace instead.
+    let panel = auth_store
+        .try_panel(&identity)
+        .await
+        .unwrap_or_else(|_| vec![outcome.workspace.clone()]);
+    let directory = connected.patients(extensions);
     let identities = authorized_patient_identities(&*directory, &panel)
         .await
         .unwrap_or_default();
@@ -1055,10 +1087,13 @@ async fn mark_message_as_patient(
 
     let wire = match routing {
         MessageRoutingOutcome::Linked { workspace, .. } => {
-            let panel = auth_store.panel(&identity).await;
-            let directory = connected.patients(extensions);
             // The routing is already saved; a failed name read leaves the name absent
             // rather than making the saved action read as failed.
+            let panel = auth_store
+                .try_panel(&identity)
+                .await
+                .unwrap_or_else(|_| vec![workspace.clone()]);
+            let directory = connected.patients(extensions);
             let identities = authorized_patient_identities(&*directory, &panel)
                 .await
                 .unwrap_or_default();
@@ -1866,7 +1901,14 @@ async fn load_conversation_wire_outcome(
     )
     .await;
 
-    let panel = auth_store.panel(&identity).await;
+    let panel = match auth_store.try_panel(&identity).await {
+        Ok(panel) => panel,
+        Err(_) => {
+            return Err(LoadConversationError::Http(Box::new(
+                identities_unavailable_response(),
+            )));
+        }
+    };
     let identities = match authorized_patient_identities(&*directory, &panel).await {
         Ok(identities) => identities,
         Err(_) => {
@@ -2193,8 +2235,10 @@ async fn list_patient_replies(
     request: Request<Body>,
 ) -> Response {
     let extensions = request.extensions();
-    if !crate::on_panel_in_practice(&connected, extensions, &workspace).await {
-        return StatusCode::NOT_FOUND.into_response();
+    if let Err(status) =
+        crate::require_on_panel_in_practice(&connected, extensions, &workspace).await
+    {
+        return status.into_response();
     }
     if is_faulted(extensions, MatchingReplyFollowUpsFault::ReplyRead) {
         return (
@@ -2341,8 +2385,10 @@ async fn get_patient_reply(
     request: Request<Body>,
 ) -> Response {
     let extensions = request.extensions();
-    if !crate::on_panel_in_practice(&connected, extensions, &workspace).await {
-        return StatusCode::NOT_FOUND.into_response();
+    if let Err(status) =
+        crate::require_on_panel_in_practice(&connected, extensions, &workspace).await
+    {
+        return status.into_response();
     }
     if is_faulted(extensions, MatchingReplyFollowUpsFault::ReplyRead) {
         return (
@@ -2396,8 +2442,10 @@ async fn save_reply_draft(
 ) -> Response {
     let (parts, body) = request.into_parts();
     let extensions = &parts.extensions;
-    if !crate::on_panel_in_practice(&connected, extensions, &workspace).await {
-        return StatusCode::NOT_FOUND.into_response();
+    if let Err(status) =
+        crate::require_on_panel_in_practice(&connected, extensions, &workspace).await
+    {
+        return status.into_response();
     }
     if is_faulted(extensions, MatchingReplyFollowUpsFault::ReplyCommand) {
         return (
@@ -2466,8 +2514,10 @@ async fn revise_reply_draft(
 ) -> Response {
     let (parts, body) = request.into_parts();
     let extensions = &parts.extensions;
-    if !crate::on_panel_in_practice(&connected, extensions, &workspace).await {
-        return StatusCode::NOT_FOUND.into_response();
+    if let Err(status) =
+        crate::require_on_panel_in_practice(&connected, extensions, &workspace).await
+    {
+        return status.into_response();
     }
     if is_faulted(extensions, MatchingReplyFollowUpsFault::ReplyCommand) {
         return (
@@ -2624,8 +2674,10 @@ async fn restore_my_version(
 ) -> Response {
     let (parts, body) = request.into_parts();
     let extensions = &parts.extensions;
-    if !crate::on_panel_in_practice(&connected, extensions, &workspace).await {
-        return StatusCode::NOT_FOUND.into_response();
+    if let Err(status) =
+        crate::require_on_panel_in_practice(&connected, extensions, &workspace).await
+    {
+        return status.into_response();
     }
     if is_faulted(extensions, MatchingReplyFollowUpsFault::ReplyCommand) {
         return (
@@ -2697,8 +2749,10 @@ async fn choose_coda_update(
 ) -> Response {
     let (parts, body) = request.into_parts();
     let extensions = &parts.extensions;
-    if !crate::on_panel_in_practice(&connected, extensions, &workspace).await {
-        return StatusCode::NOT_FOUND.into_response();
+    if let Err(status) =
+        crate::require_on_panel_in_practice(&connected, extensions, &workspace).await
+    {
+        return status.into_response();
     }
     if is_faulted(extensions, MatchingReplyFollowUpsFault::ReplyCommand) {
         return (
@@ -2771,8 +2825,10 @@ async fn copy_reply(
 ) -> Response {
     let (parts, body) = request.into_parts();
     let extensions = &parts.extensions;
-    if !crate::on_panel_in_practice(&connected, extensions, &workspace).await {
-        return StatusCode::NOT_FOUND.into_response();
+    if let Err(status) =
+        crate::require_on_panel_in_practice(&connected, extensions, &workspace).await
+    {
+        return status.into_response();
     }
     if is_faulted(extensions, MatchingReplyFollowUpsFault::ReplyCommand) {
         return (
@@ -2856,8 +2912,10 @@ async fn close_no_reply_needed(
 ) -> Response {
     let (parts, body) = request.into_parts();
     let extensions = &parts.extensions;
-    if !crate::on_panel_in_practice(&connected, extensions, &workspace).await {
-        return StatusCode::NOT_FOUND.into_response();
+    if let Err(status) =
+        crate::require_on_panel_in_practice(&connected, extensions, &workspace).await
+    {
+        return status.into_response();
     }
     if is_faulted(extensions, MatchingReplyFollowUpsFault::ReplyCommand) {
         return (
@@ -2930,8 +2988,10 @@ async fn undo_no_reply_needed(
 ) -> Response {
     let (parts, body) = request.into_parts();
     let extensions = &parts.extensions;
-    if !crate::on_panel_in_practice(&connected, extensions, &workspace).await {
-        return StatusCode::NOT_FOUND.into_response();
+    if let Err(status) =
+        crate::require_on_panel_in_practice(&connected, extensions, &workspace).await
+    {
+        return status.into_response();
     }
     if is_faulted(extensions, MatchingReplyFollowUpsFault::ReplyCommand) {
         return (
@@ -2998,8 +3058,10 @@ async fn ask_coda_to_reply(
 ) -> Response {
     let (parts, body) = request.into_parts();
     let extensions = &parts.extensions;
-    if !crate::on_panel_in_practice(&connected, extensions, &workspace).await {
-        return StatusCode::NOT_FOUND.into_response();
+    if let Err(status) =
+        crate::require_on_panel_in_practice(&connected, extensions, &workspace).await
+    {
+        return status.into_response();
     }
     if is_faulted(extensions, MatchingReplyFollowUpsFault::ReplyCommand) {
         return (
@@ -3066,8 +3128,10 @@ async fn move_conversation(
 ) -> Response {
     let (parts, body) = request.into_parts();
     let extensions = &parts.extensions;
-    if !crate::on_panel_in_practice(&connected, extensions, &workspace).await {
-        return StatusCode::NOT_FOUND.into_response();
+    if let Err(status) =
+        crate::require_on_panel_in_practice(&connected, extensions, &workspace).await
+    {
+        return status.into_response();
     }
     if is_faulted(extensions, MatchingReplyFollowUpsFault::ReplyCommand) {
         return (
@@ -3148,8 +3212,10 @@ async fn undo_move_conversation(
 ) -> Response {
     let (parts, body) = request.into_parts();
     let extensions = &parts.extensions;
-    if !crate::on_panel_in_practice(&connected, extensions, &workspace).await {
-        return StatusCode::NOT_FOUND.into_response();
+    if let Err(status) =
+        crate::require_on_panel_in_practice(&connected, extensions, &workspace).await
+    {
+        return status.into_response();
     }
     if is_faulted(extensions, MatchingReplyFollowUpsFault::ReplyCommand) {
         return (
@@ -3211,8 +3277,10 @@ async fn mark_disconnected_done(
 ) -> Response {
     let (parts, body) = request.into_parts();
     let extensions = &parts.extensions;
-    if !crate::on_panel_in_practice(&connected, extensions, &workspace).await {
-        return StatusCode::NOT_FOUND.into_response();
+    if let Err(status) =
+        crate::require_on_panel_in_practice(&connected, extensions, &workspace).await
+    {
+        return status.into_response();
     }
     if is_faulted(extensions, MatchingReplyFollowUpsFault::ReplyCommand) {
         return (
@@ -3318,7 +3386,7 @@ pub(crate) async fn spruce_today_rows_for_physician(
     extensions: &Extensions,
     patient_names: &BTreeMap<String, String>,
     target_workspace: Option<&str>,
-) -> Result<(usize, Vec<serde_json::Value>), FailedProducerWire> {
+) -> Result<(usize, Vec<serde_json::Value>, bool), FailedProducerWire> {
     if is_faulted(extensions, MatchingReplyFollowUpsFault::MatchingRead)
         || is_faulted(extensions, MatchingReplyFollowUpsFault::ReplyRead)
     {
@@ -3335,7 +3403,7 @@ pub(crate) async fn spruce_today_rows_for_physician(
                 disconnected_at: None,
             },
             _,
-        )) => return Ok((0, Vec::new())),
+        )) => return Ok((0, Vec::new(), false)),
         Ok(_) => {}
         Err(err) => return Err(spruce_slice_failed(err)),
     }
@@ -3450,10 +3518,16 @@ pub(crate) async fn spruce_today_rows_for_physician(
 
     let hash = PostgresAuthStore::session_reference(&ctx.token);
     let real_now_unix = auth::now();
+    let mut may_be_missing_someone = false;
 
     for (ws, conv_ids) in convs_by_workspace {
-        if ctx.auth.store.membership(&ctx.identity, &ws).await != Membership::Allowed {
-            continue;
+        match ctx.auth.store.try_membership(&ctx.identity, &ws).await {
+            Ok(Membership::Allowed) => {}
+            Ok(Membership::ClinicDemographic | Membership::Denied) => continue,
+            Err(_) => {
+                may_be_missing_someone = true;
+                continue;
+            }
         }
         let patient_name = patient_names
             .get(&ws)
@@ -3577,5 +3651,5 @@ pub(crate) async fn spruce_today_rows_for_physician(
         }
     }
 
-    Ok((waiting_count, rows))
+    Ok((waiting_count, rows, may_be_missing_someone))
 }

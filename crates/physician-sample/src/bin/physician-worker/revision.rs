@@ -171,12 +171,20 @@ async fn handle(
         .await
     };
     let hosted = tokio::select! {
-        hosted = super::while_owned(
-            claimed.lease,
-            super::STALL,
-            &cancel,
-            || worker.store.renew_revision_claim(&claimed),
-            run.instrument(generation.clone()),
+        hosted = super::run_while_watching(
+            super::while_owned(
+                claimed.lease,
+                super::STALL,
+                &cancel,
+                || worker.store.renew_revision_claim(&claimed),
+                run.instrument(generation.clone()),
+            ),
+            super::watch_turn_access(
+                &worker.auth,
+                worker.bus.as_ref(),
+                &claimed.scope,
+                &cancel,
+            ),
         ) => Some(hosted),
         () = pull::stopping(stop) => None,
     };

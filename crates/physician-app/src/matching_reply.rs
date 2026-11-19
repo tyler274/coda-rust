@@ -610,8 +610,14 @@ pub(crate) fn MessagesToMatchSurface(
                 }
             }
             if let Some(data) = view.content().cloned() {
+                crate::access_notice::MayBeMissingSomeoneNotice {
+                    visible: data.may_be_missing_someone,
+                }
                 SpruceChannelHealthNotice { banner: data.channel_banner }
-                if data.messages.is_empty() && data.unreadable_messages.is_empty() {
+                if data.messages.is_empty()
+                    && data.unreadable_messages.is_empty()
+                    && !data.may_be_missing_someone
+                {
                     EmptyLine { message: "No Spruce messages are waiting to be matched.".to_owned() }
                 } else {
                     div { class: "mr-stack",

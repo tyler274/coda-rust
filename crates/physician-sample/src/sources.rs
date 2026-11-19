@@ -131,9 +131,15 @@ async fn practice_now_seconds(
 async fn panel_workspaces(
     extensions: &Extensions,
     identity: &PhysicianIdentity,
-) -> Option<HashSet<String>> {
-    let auth_store = extensions.get::<Arc<dyn AuthStore>>()?;
-    Some(auth_store.panel(identity).await.into_iter().collect())
+) -> Result<Option<HashSet<String>>, StatusCode> {
+    let Some(auth_store) = extensions.get::<Arc<dyn AuthStore>>() else {
+        return Ok(None);
+    };
+    let panel = auth_store
+        .try_panel(identity)
+        .await
+        .map_err(|_| StatusCode::SERVICE_UNAVAILABLE)?;
+    Ok(Some(panel.into_iter().collect()))
 }
 
 #[derive(Debug)]
@@ -368,7 +374,10 @@ pub(crate) async fn get_connections(request: Request<Body>) -> Response {
     else {
         return StatusCode::SERVICE_UNAVAILABLE.into_response();
     };
-    let panel = panel_workspaces(extensions, &identity).await;
+    let panel = match panel_workspaces(extensions, &identity).await {
+        Ok(panel) => panel,
+        Err(status) => return status.into_response(),
+    };
 
     let mut sources = Vec::with_capacity(reports.len());
     let mut outages = Vec::new();
@@ -432,10 +441,12 @@ pub(crate) async fn post_check(Path(source_id): Path<String>, request: Request<B
     if parsed.patient_workspace_id.is_some() || parsed.source_patient_id.is_some() {
         let resolved = match (&parsed.patient_workspace_id, &parsed.source_patient_id) {
             (Some(ws), spid_opt) => {
-                if let Some(auth_store) = parts.extensions.get::<Arc<dyn AuthStore>>()
-                    && auth_store.membership(&identity, ws).await != Membership::Allowed
-                {
-                    return auth::not_found();
+                if let Some(auth_store) = parts.extensions.get::<Arc<dyn AuthStore>>() {
+                    match auth_store.try_membership(&identity, ws).await {
+                        Ok(Membership::Allowed) => {}
+                        Ok(_) => return auth::not_found(),
+                        Err(_) => return StatusCode::SERVICE_UNAVAILABLE.into_response(),
+                    }
                 }
                 match store
                     .source_link_for_workspace(&practice_id, &source_id, ws)
@@ -490,10 +501,12 @@ pub(crate) async fn post_check(Path(source_id): Path<String>, request: Request<B
                     .as_ref()
                     .map(|link| link.workspace_id.clone())
                     .unwrap_or_else(|| workspace_id(&source_id, spid));
-                if let Some(auth_store) = parts.extensions.get::<Arc<dyn AuthStore>>()
-                    && auth_store.membership(&identity, &target_ws).await != Membership::Allowed
-                {
-                    return auth::not_found();
+                if let Some(auth_store) = parts.extensions.get::<Arc<dyn AuthStore>>() {
+                    match auth_store.try_membership(&identity, &target_ws).await {
+                        Ok(Membership::Allowed) => {}
+                        Ok(_) => return auth::not_found(),
+                        Err(_) => return StatusCode::SERVICE_UNAVAILABLE.into_response(),
+                    }
                 }
                 (spid.clone(), target_ws, existing.is_some())
             }
@@ -554,7 +567,10 @@ pub(crate) async fn post_check(Path(source_id): Path<String>, request: Request<B
         else {
             return StatusCode::SERVICE_UNAVAILABLE.into_response();
         };
-        let panel = panel_workspaces(&parts.extensions, &identity).await;
+        let panel = match panel_workspaces(&parts.extensions, &identity).await {
+            Ok(panel) => panel,
+            Err(status) => return status.into_response(),
+        };
         let (_, outage, issues) = format_report(registry, &practice_report, panel.as_ref());
         let summary = scope_summary_to_panel(&practice_report.summary, panel.as_ref());
 
@@ -596,7 +612,10 @@ pub(crate) async fn post_check(Path(source_id): Path<String>, request: Request<B
     else {
         return StatusCode::SERVICE_UNAVAILABLE.into_response();
     };
-    let panel = panel_workspaces(&parts.extensions, &identity).await;
+    let panel = match panel_workspaces(&parts.extensions, &identity).await {
+        Ok(panel) => panel,
+        Err(status) => return status.into_response(),
+    };
     let (_, outage, issues) = format_report(registry, &practice_report, panel.as_ref());
     let summary = scope_summary_to_panel(&check.summary, panel.as_ref());
 
@@ -707,7 +726,10 @@ pub(crate) async fn post_reconnect(
             {
                 return enrollment_failure_response(&practice_id, &source_id, &error);
             }
-            let panel = panel_workspaces(&parts.extensions, &identity).await;
+            let panel = match panel_workspaces(&parts.extensions, &identity).await {
+                Ok(panel) => panel,
+                Err(status) => return status.into_response(),
+            };
             Json(json!({
                 "outcome": "reconnected",
                 "receipt": receipt,
@@ -827,7 +849,10 @@ pub(crate) async fn intercept_reconnect_command(request: Request<Body>, next: Ne
             {
                 return enrollment_failure_response(&practice_id, source_id, &error);
             }
-            let panel = panel_workspaces(&parts.extensions, &identity).await;
+            let panel = match panel_workspaces(&parts.extensions, &identity).await {
+                Ok(panel) => panel,
+                Err(status) => return status.into_response(),
+            };
             Json(json!({
                 "outcome": "accepted",
                 "type": "reconnect_source",

@@ -22,7 +22,7 @@ use local_product::runtime::concerns::ExactRecordReference;
 use local_product::runtime::history::{
     CitedSourceReadback, HistorySegment, cited_record_title, format_cited_source_body,
 };
-use local_product::runtime::jobs::{PracticeJob, PracticeJobAttempt};
+use local_product::runtime::jobs::{PracticeAccessError, PracticeJob, PracticeJobAttempt};
 use local_product::runtime::memory::tools::MemoryTool;
 use local_product::runtime::reviews::{
     PatientReviewError, PatientReviewTarget, RecordedReviewAction, ReviewHoldReason,
@@ -161,8 +161,10 @@ pub(crate) async fn list_fixture(
         )
         .await;
     }
-    if !crate::on_panel_in_practice(&connected, request.extensions(), &id).await {
-        return StatusCode::NOT_FOUND.into_response();
+    if let Err(status) =
+        crate::require_on_panel_in_practice(&connected, request.extensions(), &id).await
+    {
+        return status.into_response();
     }
     Json(PatientReviewsResponse {
         reviews: Vec::new(),
@@ -186,8 +188,10 @@ pub(crate) async fn get_fixture(
         )
         .await;
     }
-    if !crate::on_panel_in_practice(&connected, request.extensions(), &id).await {
-        return StatusCode::NOT_FOUND.into_response();
+    if let Err(status) =
+        crate::require_on_panel_in_practice(&connected, request.extensions(), &id).await
+    {
+        return status.into_response();
     }
     StatusCode::NOT_FOUND.into_response()
 }
@@ -209,8 +213,10 @@ pub(crate) async fn control_fixture(
         )
         .await;
     }
-    if !crate::on_panel_in_practice(&connected, request.extensions(), &id).await {
-        return StatusCode::NOT_FOUND.into_response();
+    if let Err(status) =
+        crate::require_on_panel_in_practice(&connected, request.extensions(), &id).await
+    {
+        return status.into_response();
     }
     StatusCode::SERVICE_UNAVAILABLE.into_response()
 }
@@ -266,8 +272,8 @@ async fn handle_list(
     request: Request<Body>,
 ) -> Response {
     let extensions = request.extensions();
-    if !crate::on_panel_in_practice(connected, extensions, &id).await {
-        return StatusCode::NOT_FOUND.into_response();
+    if let Err(status) = crate::require_on_panel_in_practice(connected, extensions, &id).await {
+        return status.into_response();
     }
     let identity = ConnectedCare::identity(extensions);
     let auth_store = connected.auth_store(extensions);
@@ -278,6 +284,10 @@ async fn handle_list(
         .await
     {
         Ok(reviews) => reviews,
+        Err(PatientReviewError::Access(PracticeAccessError::StoreUnavailable(error))) => {
+            tracing::error!(%error, "patient reviews authority unavailable");
+            return StatusCode::SERVICE_UNAVAILABLE.into_response();
+        }
         Err(
             PatientReviewError::Access(_)
             | PatientReviewError::PhysicianUnauthorized { .. }
@@ -321,8 +331,8 @@ async fn handle_get(
     request: Request<Body>,
 ) -> Response {
     let extensions = request.extensions();
-    if !crate::on_panel_in_practice(connected, extensions, &id).await {
-        return StatusCode::NOT_FOUND.into_response();
+    if let Err(status) = crate::require_on_panel_in_practice(connected, extensions, &id).await {
+        return status.into_response();
     }
     let identity = ConnectedCare::identity(extensions);
     let auth_store = connected.auth_store(extensions);
@@ -352,8 +362,8 @@ async fn handle_control(
 ) -> Response {
     let (parts, body) = request.into_parts();
     let extensions = &parts.extensions;
-    if !crate::on_panel_in_practice(connected, extensions, &id).await {
-        return StatusCode::NOT_FOUND.into_response();
+    if let Err(status) = crate::require_on_panel_in_practice(connected, extensions, &id).await {
+        return status.into_response();
     }
     let identity = ConnectedCare::identity(extensions);
     let auth_store = connected.auth_store(extensions);
@@ -393,6 +403,10 @@ async fn handle_control(
         .await
     {
         Ok(Some(saved)) => saved,
+        Err(PatientReviewError::Access(PracticeAccessError::StoreUnavailable(error))) => {
+            tracing::error!(%error, "patient review authority unavailable");
+            return StatusCode::SERVICE_UNAVAILABLE.into_response();
+        }
         Ok(None)
         | Err(
             PatientReviewError::Access(_)
@@ -547,6 +561,10 @@ async fn handle_control(
                 latest,
             )
         }
+        Err(PatientReviewError::Access(PracticeAccessError::StoreUnavailable(error))) => {
+            tracing::error!(%error, "patient review control authority unavailable");
+            StatusCode::SERVICE_UNAVAILABLE.into_response()
+        }
         Err(
             PatientReviewError::NotFound { .. }
             | PatientReviewError::Access(_)
@@ -659,6 +677,10 @@ async fn load_projected_review(
     {
         Ok(Some(review)) => review,
         Ok(None) => return Ok(None),
+        Err(PatientReviewError::Access(PracticeAccessError::StoreUnavailable(error))) => {
+            tracing::error!(%error, "patient review authority unavailable");
+            return Err(LoadReviewFailure::Unavailable);
+        }
         Err(
             PatientReviewError::Access(_)
             | PatientReviewError::PhysicianUnauthorized { .. }

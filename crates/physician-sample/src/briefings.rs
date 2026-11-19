@@ -41,8 +41,10 @@ pub(crate) async fn workspace_briefings(
     request: Request<Body>,
 ) -> Response {
     let extensions = request.extensions();
-    if !crate::on_panel_in_practice(&connected, extensions, &workspace).await {
-        return StatusCode::NOT_FOUND.into_response();
+    if let Err(status) =
+        crate::require_on_panel_in_practice(&connected, extensions, &workspace).await
+    {
+        return status.into_response();
     }
     let Some(runtime_store) = extensions.get::<Store>().cloned() else {
         return Json(WorkspaceBriefingsResponse::default()).into_response();
@@ -131,8 +133,10 @@ pub(crate) async fn visit_briefing(
     request: Request<Body>,
 ) -> Response {
     let extensions = request.extensions();
-    if !crate::on_panel_in_practice(&connected, extensions, &workspace).await {
-        return StatusCode::NOT_FOUND.into_response();
+    if let Err(status) =
+        crate::require_on_panel_in_practice(&connected, extensions, &workspace).await
+    {
+        return status.into_response();
     }
     let Some(runtime_store) = extensions.get::<Store>().cloned() else {
         return StatusCode::NOT_FOUND.into_response();

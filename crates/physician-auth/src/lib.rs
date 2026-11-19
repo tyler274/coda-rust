@@ -483,7 +483,26 @@ pub trait AuthStore: Send + Sync {
     /// Reads one account by email.
     async fn account_by_email(&self, email: &str) -> Option<Account>;
     /// Reads one account by its identity.
+    /// Reads the physician account for `identity`, preserving store errors so
+    /// callers can distinguish missing accounts from an unreachable auth store.
+    async fn try_account_by_identity(
+        &self,
+        identity: &PhysicianIdentity,
+    ) -> Result<Option<Account>, StoreUnavailable> {
+        Ok(self.account_by_identity(identity).await)
+    }
+    /// Reads the physician account for `identity`, returning `None` when absent
+    /// or unreachable.
     async fn account_by_identity(&self, identity: &PhysicianIdentity) -> Option<Account>;
+    /// Reads whether the physician may read one patient workspace, preserving
+    /// store errors so cross-patient lists can distinguish denied from unchecked.
+    async fn try_membership(
+        &self,
+        identity: &PhysicianIdentity,
+        patient_workspace_id: &str,
+    ) -> Result<Membership, StoreUnavailable> {
+        Ok(self.membership(identity, patient_workspace_id).await)
+    }
     /// Reads whether the physician may read one patient workspace.
     async fn membership(
         &self,
@@ -504,6 +523,14 @@ pub trait AuthStore: Send + Sync {
         identity: &PhysicianIdentity,
         patient_workspace_id: &str,
     ) -> Result<(), StoreUnavailable>;
+    /// Lists the patient workspaces on one physician's panel, sorted, preserving
+    /// store errors instead of coercing them to an empty panel.
+    async fn try_panel(
+        &self,
+        identity: &PhysicianIdentity,
+    ) -> Result<Vec<String>, StoreUnavailable> {
+        Ok(self.panel(identity).await)
+    }
     /// Lists the patient workspaces on one physician's panel, sorted.
     async fn panel(&self, identity: &PhysicianIdentity) -> Vec<String>;
     /// Assigns or removes a patient workspace on `physician_id`'s panel in

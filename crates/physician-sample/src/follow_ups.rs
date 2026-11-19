@@ -369,8 +369,10 @@ async fn list_patient_follow_ups(
     request: Request<Body>,
 ) -> Response {
     let extensions = request.extensions();
-    if !crate::on_panel_in_practice(&connected, extensions, &workspace).await {
-        return StatusCode::NOT_FOUND.into_response();
+    if let Err(status) =
+        crate::require_on_panel_in_practice(&connected, extensions, &workspace).await
+    {
+        return status.into_response();
     }
     if is_faulted(extensions, MatchingReplyFollowUpsFault::FollowUpRead) {
         return (
@@ -450,8 +452,10 @@ async fn create_patient_follow_up(
 ) -> Response {
     let (parts, body) = request.into_parts();
     let extensions = &parts.extensions;
-    if !crate::on_panel_in_practice(&connected, extensions, &workspace).await {
-        return StatusCode::NOT_FOUND.into_response();
+    if let Err(status) =
+        crate::require_on_panel_in_practice(&connected, extensions, &workspace).await
+    {
+        return status.into_response();
     }
     if is_faulted(extensions, MatchingReplyFollowUpsFault::FollowUpCommand) {
         return (
@@ -550,8 +554,10 @@ async fn update_patient_follow_up(
 ) -> Response {
     let (parts, body) = request.into_parts();
     let extensions = &parts.extensions;
-    if !crate::on_panel_in_practice(&connected, extensions, &workspace).await {
-        return StatusCode::NOT_FOUND.into_response();
+    if let Err(status) =
+        crate::require_on_panel_in_practice(&connected, extensions, &workspace).await
+    {
+        return status.into_response();
     }
     if is_faulted(extensions, MatchingReplyFollowUpsFault::FollowUpCommand) {
         return (
@@ -724,8 +730,10 @@ async fn review_follow_up_now(
 ) -> Response {
     let (parts, body) = request.into_parts();
     let extensions = &parts.extensions;
-    if !crate::on_panel_in_practice(&connected, extensions, &workspace).await {
-        return StatusCode::NOT_FOUND.into_response();
+    if let Err(status) =
+        crate::require_on_panel_in_practice(&connected, extensions, &workspace).await
+    {
+        return status.into_response();
     }
     if is_faulted(extensions, MatchingReplyFollowUpsFault::FollowUpCommand) {
         return (
@@ -819,8 +827,10 @@ async fn stop_follow_up(
 ) -> Response {
     let (parts, body) = request.into_parts();
     let extensions = &parts.extensions;
-    if !crate::on_panel_in_practice(&connected, extensions, &workspace).await {
-        return StatusCode::NOT_FOUND.into_response();
+    if let Err(status) =
+        crate::require_on_panel_in_practice(&connected, extensions, &workspace).await
+    {
+        return status.into_response();
     }
     if is_faulted(extensions, MatchingReplyFollowUpsFault::FollowUpCommand) {
         return (
@@ -904,8 +914,10 @@ async fn stop_and_discuss_follow_up(
 ) -> Response {
     let (parts, body) = request.into_parts();
     let extensions = &parts.extensions;
-    if !crate::on_panel_in_practice(&connected, extensions, &workspace).await {
-        return StatusCode::NOT_FOUND.into_response();
+    if let Err(status) =
+        crate::require_on_panel_in_practice(&connected, extensions, &workspace).await
+    {
+        return status.into_response();
     }
     if is_faulted(extensions, MatchingReplyFollowUpsFault::FollowUpCommand) {
         return (
@@ -1123,8 +1135,10 @@ async fn resume_follow_up(
 ) -> Response {
     let (parts, body) = request.into_parts();
     let extensions = &parts.extensions;
-    if !crate::on_panel_in_practice(&connected, extensions, &workspace).await {
-        return StatusCode::NOT_FOUND.into_response();
+    if let Err(status) =
+        crate::require_on_panel_in_practice(&connected, extensions, &workspace).await
+    {
+        return status.into_response();
     }
     if is_faulted(extensions, MatchingReplyFollowUpsFault::FollowUpCommand) {
         return (
@@ -1220,8 +1234,10 @@ async fn complete_follow_up(
 ) -> Response {
     let (parts, body) = request.into_parts();
     let extensions = &parts.extensions;
-    if !crate::on_panel_in_practice(&connected, extensions, &workspace).await {
-        return StatusCode::NOT_FOUND.into_response();
+    if let Err(status) =
+        crate::require_on_panel_in_practice(&connected, extensions, &workspace).await
+    {
+        return status.into_response();
     }
     if is_faulted(extensions, MatchingReplyFollowUpsFault::FollowUpCommand) {
         return (
@@ -1306,8 +1322,10 @@ async fn cancel_follow_up(
 ) -> Response {
     let (parts, body) = request.into_parts();
     let extensions = &parts.extensions;
-    if !crate::on_panel_in_practice(&connected, extensions, &workspace).await {
-        return StatusCode::NOT_FOUND.into_response();
+    if let Err(status) =
+        crate::require_on_panel_in_practice(&connected, extensions, &workspace).await
+    {
+        return status.into_response();
     }
     if is_faulted(extensions, MatchingReplyFollowUpsFault::FollowUpCommand) {
         return (
@@ -1390,8 +1408,10 @@ async fn resolve_cannot_restart(
 ) -> Response {
     let (parts, body) = request.into_parts();
     let extensions = &parts.extensions;
-    if !crate::on_panel_in_practice(&connected, extensions, &workspace).await {
-        return StatusCode::NOT_FOUND.into_response();
+    if let Err(status) =
+        crate::require_on_panel_in_practice(&connected, extensions, &workspace).await
+    {
+        return status.into_response();
     }
     if is_faulted(extensions, MatchingReplyFollowUpsFault::FollowUpCommand) {
         return (

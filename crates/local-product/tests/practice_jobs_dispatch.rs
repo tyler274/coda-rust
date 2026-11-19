@@ -1914,3 +1914,88 @@ fn practice_job_recipe_keeps_clean_model_text_and_valid_skill_tools() {
     });
     model_text::assert_skill_tools(&preloaded_package, &built.tools, &[]);
 }
+
+#[tokio::test]
+async fn operator_sets_practice_cadence_for_existing_and_new_patients() {
+    let Some(url) = database_url() else {
+        return;
+    };
+    let (store, auth) = connect_stores(&url).await;
+    let practice = format!("practice-cadence-{}", Uuid::new_v4().simple());
+    let existing_a = format!("pw-exist-a-{}", Uuid::new_v4().simple());
+    let existing_b = format!("pw-exist-b-{}", Uuid::new_v4().simple());
+    let newcomer = format!("pw-newcomer-{}", Uuid::new_v4().simple());
+    auth.ensure_practice(&practice, PracticeClock::RealTime)
+        .await
+        .unwrap();
+    auth.register_patient(&practice, &existing_a).await.unwrap();
+    auth.register_patient(&practice, &existing_b).await.unwrap();
+
+    let app = operator_router(DispatchEndpointState {
+        store: store.clone(),
+        auth: auth.clone(),
+        checker: Arc::new(SelectiveFailureChecker {
+            failing_workspace: String::new(),
+            changed_workspace: String::new(),
+        }),
+        receiver: Arc::new(RecordingReceiver::default()),
+    });
+    let t0 = 1_760_300_000_i64;
+
+    // 1. Default practice cadence starts at Cadence::default().
+    let get_default = app
+        .clone()
+        .oneshot(
+            HttpRequest::builder()
+                .method("GET")
+                .uri(format!("/operator/practices/{practice}/cadence"))
+                .body(Body::empty())
+                .unwrap(),
+        )
+        .await
+        .unwrap();
+    assert_eq!(get_default.status(), StatusCode::OK);
+
+    // 2. PUT /operator/practices/{practice_id}/cadence updates all existing patients
+    //    and persists the practice default for future registrations.
+    let put_resp = app
+        .clone()
+        .oneshot(
+            HttpRequest::builder()
+                .method("PUT")
+                .uri(format!("/operator/practices/{practice}/cadence?now={t0}"))
+                .header("content-type", "application/json")
+                .body(Body::from(
+                    serde_json::to_vec(&SetCadenceBody {
+                        check_every_seconds: 1_800,
+                        review_every_seconds: 86_400,
+                    })
+                    .unwrap(),
+                ))
+                .unwrap(),
+        )
+        .await
+        .unwrap();
+    assert_eq!(put_resp.status(), StatusCode::OK);
+    let view: patient_work::PracticeCadenceView =
+        serde_json::from_slice(&to_bytes(put_resp.into_body(), 64 * 1024).await.unwrap()).unwrap();
+    assert_eq!(view.cadence.check_every_seconds(), 1_800);
+    assert_eq!(view.cadence.review_every_seconds(), 86_400);
+    assert_eq!(view.patients.len(), 2);
+    for patient in &view.patients {
+        assert_eq!(patient.cadence, view.cadence);
+    }
+
+    // 3. A patient registered afterward inherits the practice-level cadence automatically.
+    auth.register_patient(&practice, &newcomer).await.unwrap();
+    store
+        .register_patient_dispatch(auth.as_ref(), &practice, &newcomer, t0 + 10)
+        .await
+        .unwrap();
+    let newcomer_view = store
+        .patient_dispatch_status(auth.as_ref(), &practice, &newcomer, t0 + 10)
+        .await
+        .unwrap();
+    assert_eq!(newcomer_view.cadence.check_every_seconds(), 1_800);
+    assert_eq!(newcomer_view.cadence.review_every_seconds(), 86_400);
+}

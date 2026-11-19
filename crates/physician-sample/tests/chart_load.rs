@@ -545,11 +545,11 @@ async fn a_site_with_no_load_is_ready_and_empty_until_a_load_fills_it() {
     let deadline = Instant::now() + Duration::from_secs(60);
     loop {
         assert!(site.0.try_wait().unwrap().is_none(), "the site exited");
-        let health = reqwest::get(format!("http://{address}/health")).await;
-        if health.is_ok_and(|response| response.status().is_success()) {
+        let ready = reqwest::get(format!("http://{address}/readyz")).await;
+        if ready.is_ok_and(|response| response.status().is_success()) {
             break;
         }
-        assert!(Instant::now() < deadline, "the site never answered");
+        assert!(Instant::now() < deadline, "the site never became ready");
         tokio::time::sleep(Duration::from_millis(100)).await;
     }
     let base = format!("http://{address}");
