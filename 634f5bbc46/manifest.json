@@ -1,0 +1,85 @@
+{
+  "branch": "tyler-eng-308-1-follow-ups-wire-and-routes",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC-FU-WIRE-CLIPPY",
+      "label": "Follow-ups wire, client, and sample host and wasm32 clippy",
+      "kind": "run",
+      "revision": "634f5bbc463621e7c214939cac545c482b048567",
+      "dirty": false,
+      "recorded": "2026-11-19T03:42:54+00:00",
+      "command": [
+        "bash",
+        "-lc",
+        "cargo clippy --locked -p physician-wire -p physician-client -p physician-sample --all-targets -- -D warnings && cargo clippy --locked --target wasm32-unknown-unknown -p physician-wire -p physician-client --lib -- -D warnings"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "01-Follow-ups-wire-client-and-sample-host-and-wasm3.log"
+      ],
+      "seconds": 41.0,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 2,
+      "claim": "AC-FU-WIRE-BOUNDARIES",
+      "label": "Follow-ups wire schema, demo store, and product boundaries",
+      "kind": "run",
+      "revision": "634f5bbc463621e7c214939cac545c482b048567",
+      "dirty": false,
+      "recorded": "2026-11-19T03:43:35+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "physician-wire",
+        "-p",
+        "physician-demo-db",
+        "-p",
+        "boundaries",
+        "--lib"
+      ],
+      "expect": "test result: ok\\. 25 passed",
+      "expect_fail": false,
+      "files": [
+        "02-Follow-ups-wire-schema-demo-store-and-product-bo.log"
+      ],
+      "seconds": 7.9,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true
+    },
+    {
+      "id": 3,
+      "claim": "AC-FU-ROUTES-TESTS",
+      "label": "Follow-ups client and sample server unit suite",
+      "kind": "run",
+      "revision": "634f5bbc463621e7c214939cac545c482b048567",
+      "dirty": false,
+      "recorded": "2026-11-19T03:43:43+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "physician-client",
+        "-p",
+        "physician-sample",
+        "--lib"
+      ],
+      "expect": "test result: ok\\. 99 passed; 0 failed; 2 ignored",
+      "expect_fail": false,
+      "files": [
+        "03-Follow-ups-client-and-sample-server-unit-suite.log"
+      ],
+      "seconds": 99.8,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true
+    }
+  ]
+}
