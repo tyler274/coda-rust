@@ -134,7 +134,7 @@ coda-sandbox --config crates/workspace-tools/sandbox/config/cyrene-host.toml wor
 
 `services.coda-sandbox.ci` ([nix/ci.nix](nix/ci.nix)) runs `coda-rust` CI jobs one at a time, each in a disposable Firecracker microVM ([nix/ci-guest.nix](nix/ci-guest.nix)). Every 15 seconds the controller, `coda-sandbox ci-controller` ([src/ci_controller](src/ci_controller/mod.rs)), takes at most one job from two queues, GitHub first:
 
-- **GitHub**: a queued job of `Coda-Health/coda-rust` whose `runs-on` is `cyrene-coda`. The controller registers a just-in-time runner with that label and a unique name. Inside the guest the runner runs in the pinned `catthehacker/ubuntu:rust-24.04` image, which carries rustup and cargo as GitHub's runner image does, so jobs see the same environment as under `act`. The registration is deleted after the job, whatever happened.
+- **GitHub**: a queued job of `tyler274/coda-rust` whose `runs-on` is `cyrene-coda`. The controller registers a just-in-time runner with that label and a unique name. Inside the guest the runner runs in the pinned `catthehacker/ubuntu:rust-24.04` image, which carries rustup and cargo as GitHub's runner image does, so jobs see the same environment as under `act`. The registration is deleted after the job, whatever happened.
 - **Local**: an `act` request in `/agents/coda/ci/spool/requests`. `coda-ci act [<repo-path-or-commit>] [job]` on the host, and `coda-sandbox ci run [--job <job>]` in `coda-agent`, each write a git bundle and a job name there and wait for the result in `spool/results/<id>/{log,status}`. The host copies the bundle without opening it, and the guest runs `act -j <job>` offline, with no secrets and no cache server.
 
 Each job gets a directory under `/agents/coda/ci/jobs/` holding a reflink clone of `seed/work.img` (Docker's images and a scratch area, so a job costs only the blocks it writes) and a read-only inputs disk. The guest has no other host path, no host secret, and the `fc-coda-ci` tap, whose traffic nftables lets out to the internet but not to the host, the LAN, Tailscale or other private ranges. Its output leaves only over the serial console, which ends with `CODA_JOB_EXIT=<status>`. A job has three hours. Whatever happens, the controller removes the job directory, and on its next start it also removes any leftover directory and idle runner registration.
@@ -144,7 +144,7 @@ The guest has 8 vCPUs and 12 GiB. A job starts only when the guest plus `ci.marg
 To enable it:
 
 1. Set `ci.enable = true`, then switch.
-2. Create a fine-grained token for `Coda-Health/coda-rust` with **Administration: write** (to register runners) and **Actions: read** (to see the queue), and store it in your keyring, as yourself:
+2. Create a fine-grained token for `tyler274/coda-rust` with **Administration: write** (to register runners) and **Actions: read** (to see the queue), and store it in your keyring, as yourself:
 
    ```bash
    coda-sandbox broker store github-ci   # paste at the hidden prompt, then Enter

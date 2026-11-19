@@ -6,11 +6,18 @@ use super::fake_github::{Call, FakeGitHub};
 use super::*;
 use crate::ci_controller::github::{JobId, LABEL};
 
-const RUNS: &str = "repos/Coda-Health/coda-rust/actions/runs?status=queued&per_page=50";
-const JITCONFIG: &str = "repos/Coda-Health/coda-rust/actions/runners/generate-jitconfig";
+fn runs() -> String {
+    repo_path("actions/runs?status=queued&per_page=50")
+}
+
+fn jitconfig() -> String {
+    repo_path("actions/runners/generate-jitconfig")
+}
 
 fn jobs_path(run: u64) -> String {
-    format!("repos/Coda-Health/coda-rust/actions/runs/{run}/jobs?filter=latest&per_page=100")
+    repo_path(&format!(
+        "actions/runs/{run}/jobs?filter=latest&per_page=100"
+    ))
 }
 
 fn job(id: u64, status: &str, label: &str) -> Value {
@@ -22,7 +29,7 @@ fn routes_only_jobs_labelled_for_cyrene() {
     let fake = FakeGitHub::builder()
         .route(
             "GET",
-            RUNS,
+            &runs(),
             200,
             json!({"workflow_runs": [
                 {"id": 2, "created_at": "2026-01-02T00:00:00Z"},
@@ -56,7 +63,7 @@ fn no_labelled_job_means_none() {
     let fake = FakeGitHub::builder()
         .route(
             "GET",
-            RUNS,
+            &runs(),
             200,
             json!({"workflow_runs": [{"id": 1, "created_at": "x"}]}),
         )
@@ -73,7 +80,7 @@ fn no_labelled_job_means_none() {
 #[test]
 fn a_failed_queue_read_is_an_error_not_an_empty_queue() {
     let fake = FakeGitHub::builder()
-        .route("GET", RUNS, 500, json!({}))
+        .route("GET", &runs(), 500, json!({}))
         .start();
     assert!(api(&fake.base).next_job().is_err());
 }
@@ -83,7 +90,7 @@ fn registration_uses_the_shared_label_and_a_unique_name() {
     let fake = FakeGitHub::builder()
         .route(
             "POST",
-            JITCONFIG,
+            &jitconfig(),
             201,
             json!({"runner": {"id": 7}, "encoded_jit_config": "jit"}),
         )
@@ -95,7 +102,7 @@ fn registration_uses_the_shared_label_and_a_unique_name() {
     assert!(
         calls
             .iter()
-            .all(|call| call.method == "POST" && call.path == JITCONFIG)
+            .all(|call| call.method == "POST" && call.path == jitconfig())
     );
     let bodies: Vec<&Value> = calls
         .iter()
@@ -127,7 +134,7 @@ fn github_runs_before_local_requests() {
     let fake = FakeGitHub::builder()
         .route(
             "GET",
-            RUNS,
+            &runs(),
             200,
             json!({"workflow_runs": [{"id": 1, "created_at": "x"}]}),
         )
@@ -139,16 +146,11 @@ fn github_runs_before_local_requests() {
         )
         .route(
             "POST",
-            JITCONFIG,
+            &jitconfig(),
             201,
             json!({"runner": {"id": 7}, "encoded_jit_config": "jit"}),
         )
-        .route(
-            "DELETE",
-            "repos/Coda-Health/coda-rust/actions/runners/7",
-            204,
-            Value::Null,
-        )
+        .route("DELETE", &repo_path("actions/runners/7"), 204, Value::Null)
         .start();
     setup
         .controller(&EmptyDisks)

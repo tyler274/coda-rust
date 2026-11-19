@@ -3,7 +3,9 @@ use serde_json::{Value, json};
 use super::fake_github::{Call, FakeGitHub};
 use super::*;
 
-const PAGE_1: &str = "repos/Coda-Health/coda-rust/actions/runners?per_page=100&page=1";
+fn page_1() -> String {
+    repo_path("actions/runners?per_page=100&page=1")
+}
 
 #[test]
 fn removes_owned_idle_runners_and_all_job_directories() {
@@ -15,19 +17,14 @@ fn removes_owned_idle_runners_and_all_job_directories() {
     let fake = FakeGitHub::builder()
         .route(
             "GET",
-            PAGE_1,
+            &page_1(),
             200,
             json!({"runners": [
                 {"id": 1, "name": "cyrene-coda-1-abcdef", "busy": false},
                 {"id": 2, "name": "other", "busy": false},
             ]}),
         )
-        .route(
-            "DELETE",
-            "repos/Coda-Health/coda-rust/actions/runners/1",
-            204,
-            Value::Null,
-        )
+        .route("DELETE", &repo_path("actions/runners/1"), 204, Value::Null)
         .start();
     setup
         .controller(&EmptyDisks)
@@ -36,8 +33,8 @@ fn removes_owned_idle_runners_and_all_job_directories() {
     assert_eq!(
         fake.paths(),
         [
-            Call::new("GET", PAGE_1),
-            Call::new("DELETE", "repos/Coda-Health/coda-rust/actions/runners/1"),
+            Call::new("GET", &page_1()),
+            Call::new("DELETE", &repo_path("actions/runners/1")),
         ]
     );
     assert!(listing(&jobs).is_empty());
@@ -51,7 +48,7 @@ fn busy_runner_prevents_cleanup() {
     let fake = FakeGitHub::builder()
         .route(
             "GET",
-            PAGE_1,
+            &page_1(),
             200,
             json!({"runners": [
                 {"id": 1, "name": "cyrene-coda-1-abcdef", "busy": true},
@@ -72,12 +69,12 @@ fn runners_are_read_page_by_page_and_a_gone_runner_counts_as_deleted() {
     let full: Vec<Value> = (1..=100)
         .map(|id| json!({"id": id, "name": format!("someone-{id}"), "busy": false}))
         .collect();
-    let page_2 = "repos/Coda-Health/coda-rust/actions/runners?per_page=100&page=2";
+    let page_2 = repo_path("actions/runners?per_page=100&page=2");
     let fake = FakeGitHub::builder()
-        .route("GET", PAGE_1, 200, json!({ "runners": full }))
+        .route("GET", &page_1(), 200, json!({ "runners": full }))
         .route(
             "GET",
-            page_2,
+            &page_2,
             200,
             json!({"runners": [
                 {"id": 101, "name": "cyrene-coda-9-0a1b2c", "busy": false},
@@ -91,10 +88,7 @@ fn runners_are_read_page_by_page_and_a_gone_runner_counts_as_deleted() {
         .unwrap();
     assert_eq!(
         fake.paths().last(),
-        Some(&Call::new(
-            "DELETE",
-            "repos/Coda-Health/coda-rust/actions/runners/101"
-        ))
+        Some(&Call::new("DELETE", &repo_path("actions/runners/101")))
     );
 }
 
