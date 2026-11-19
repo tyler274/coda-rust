@@ -1039,7 +1039,15 @@ fn collapse_unhandled_today_rows(
     let mut out = Vec::with_capacity(rows.len());
     let mut unhandled_by_ws: BTreeMap<String, Vec<TodayRow>> = BTreeMap::new();
     for row in rows {
-        if matches!(row.payload, TodayRowPayload::UnhandledWork { .. }) {
+        // Keep `CannotRestart` follow-up rows (`unhandled-followup:{ws}:{id}`) uncollapsed
+        // so Today always exposes their exact follow-up identity and requires an explicit
+        // physician choice (`Complete`, `Set a new date`, or `Cancel follow-up`) instead of
+        // collapsing them under a generic dismissible `unhandled:{ws}` row.
+        if matches!(
+            row.payload,
+            TodayRowPayload::UnhandledWork { work_kind, .. }
+                if work_kind != UnhandledWorkKind::FollowUpReview
+        ) {
             unhandled_by_ws
                 .entry(row.workspace.clone())
                 .or_default()
@@ -6420,6 +6428,24 @@ impl Store {
             });
         }
 
+        if let Some(rest) = key.strip_prefix("unhandled-followup:") {
+            let Some((ws_part, _follow_up_id)) = rest.split_once(':') else {
+                return Err(TodayUpdatesError::CannotMarkDone {
+                    item_key: key.to_owned(),
+                });
+            };
+            if ws_part != workspace {
+                return Err(TodayUpdatesError::NotFound {
+                    workspace: workspace.to_owned(),
+                    item_key: key.to_owned(),
+                });
+            }
+            // A non-restartable follow-up requires an explicit physician resolution
+            // (`Complete`, `Set a new date`, or `Cancel follow-up`) rather than silent dismissal.
+            return Err(TodayUpdatesError::CannotMarkDone {
+                item_key: key.to_owned(),
+            });
+        }
         if !key.starts_with("unhandled:") && !key.starts_with("unhandled-") {
             return Err(TodayUpdatesError::CannotMarkDone {
                 item_key: key.to_owned(),

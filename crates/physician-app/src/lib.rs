@@ -60,9 +60,10 @@ use shell::{
 use shell::{EventRefetch, event_refetch};
 use status::{CommandNotice, CommandStage, ReadNotice, ReadStage};
 use ui::{
-    ActionRow, Author, Button, ButtonVariant, Card, Count, Dialog, DraftConflict, EmptyLine, Icon,
-    IconName, LiveDot, NavigationControl, NavigationRow, Orb, OrbState, PageTitle, ProgressBar,
-    SearchField, StatePill, StatusLine, TextField, TextKind, Tone, WorkingMark,
+    ActionRow, Author, Button, ButtonVariant, Card, Count, DateField, DateKind, Dialog,
+    DraftConflict, EmptyLine, Icon, IconName, LiveDot, NavigationControl, NavigationRow, Orb,
+    OrbState, PageTitle, ProgressBar, SearchField, StatePill, StatusLine, TextField, TextKind,
+    Tone, WorkingMark,
 };
 
 const SHELL_STYLES: &str = include_str!("../assets/shell.css");
@@ -1944,6 +1945,7 @@ fn PhysicianShell(
     let mut open_item_failure = use_signal(|| None::<today_updates::FailedItemOpen>);
     let mut opening_item_busy = use_signal(|| false);
     let mut done_state = use_signal(today_updates::DoneActionState::default);
+    let mut cannot_restart_prompt = use_signal(|| None::<TodayCannotRestartPrompt>);
     let on_panel_workspace = use_memo(move || {
         if place() != Place::Workspace {
             return None;
@@ -2284,6 +2286,7 @@ fn PhysicianShell(
         if line.kind == "drafted_reply"
             || line.item_id.starts_with("spruce-reply:")
             || line.item_id.starts_with("follow-up-cannot-restart:")
+            || line.item_id.starts_with("unhandled-followup:")
         {
             open_item_failure.set(None);
             reading.set(None);
@@ -2311,6 +2314,22 @@ fn PhysicianShell(
     };
     let mut mark_item_done =
         move |(workspace_id, item_id, version_id): (String, String, String)| {
+            if let Some((ws_from_key, follow_up_id)) = parse_unhandled_followup_key(&item_id) {
+                let target_ws = if workspace_id.trim().is_empty() {
+                    ws_from_key
+                } else {
+                    workspace_id
+                };
+                cannot_restart_prompt.set(Some(TodayCannotRestartPrompt {
+                    workspace_id: target_ws,
+                    follow_up_id,
+                    new_date: String::new(),
+                    note: String::new(),
+                    submitting: false,
+                    error: None,
+                }));
+                return;
+            }
             if done_state.peek().is_clearing(&item_id) {
                 return;
             }
@@ -2772,6 +2791,79 @@ fn PhysicianShell(
                     NowBanner {
                         concern,
                         on_open: move |line: TodayLine| open_today_line(line),
+                    }
+                }
+                if let Some(prompt) = cannot_restart_prompt() {
+                    TodayCannotRestartPromptCard {
+                        prompt: prompt.clone(),
+                        default_date: practice_date
+                            .clone()
+                            .filter(|d| d.len() == 10)
+                            .unwrap_or_else(|| "2026-12-01".to_owned()),
+                        on_change_date: move |val: String| {
+                            if let Some(cur) = cannot_restart_prompt.write().as_mut() {
+                                cur.new_date = val;
+                                cur.error = None;
+                            }
+                        },
+                        on_change_note: move |val: String| {
+                            if let Some(cur) = cannot_restart_prompt.write().as_mut() {
+                                cur.note = val;
+                                cur.error = None;
+                            }
+                        },
+                        on_dismiss: move |_| cannot_restart_prompt.set(None),
+                        on_resolve: move |resolution: physician_wire::follow_ups::CannotRestartResolutionWire| {
+                            let Some(cur) = cannot_restart_prompt.peek().clone() else {
+                                return;
+                            };
+                            if cur.submitting {
+                                return;
+                            }
+                            if matches!(
+                                &resolution,
+                                physician_wire::follow_ups::CannotRestartResolutionWire::NewDate { due_date, .. }
+                                if due_date.trim().is_empty()
+                            ) {
+                                if let Some(state) = cannot_restart_prompt.write().as_mut() {
+                                    state.error = Some("Choose a new review date first.".to_owned());
+                                }
+                                return;
+                            }
+                            if let Some(state) = cannot_restart_prompt.write().as_mut() {
+                                state.submitting = true;
+                                state.error = None;
+                            }
+                            let client_val = client.read().clone();
+                            let presented = client_val.session().get();
+                            let key = idempotency_key();
+                            let ws = cur.workspace_id.clone();
+                            let fid = cur.follow_up_id.clone();
+                            spawn(async move {
+                                match client_val
+                                    .resolve_cannot_restart_follow_up(&ws, &fid, resolution, &key)
+                                    .await
+                                {
+                                    Ok(_) => {
+                                        cannot_restart_prompt.set(None);
+                                        *today_attempt.write() += 1;
+                                        *workspace_attempt.write() += 1;
+                                    }
+                                    Err(err) => {
+                                        if let Some(refused) = refusal(&err) {
+                                            cannot_restart_prompt.set(None);
+                                            session.refused(refused, *shown.peek(), presented);
+                                        } else if let Some(state) = cannot_restart_prompt.write().as_mut() {
+                                            state.submitting = false;
+                                            state.error = Some(
+                                                "Not saved. Coda couldn’t resolve that follow-up right now."
+                                                    .to_owned(),
+                                            );
+                                        }
+                                    }
+                                }
+                            });
+                        },
                     }
                 }
                 match place() {
@@ -4397,6 +4489,151 @@ fn RecentRow(conversation: RecentConversation, on_open: EventHandler<(String, St
                 }
                 if let Some(summary) = summary {
                     span { class: "chat-row-summary", "{summary}" }
+                }
+            }
+        }
+    }
+}
+
+#[derive(Clone, Debug, PartialEq, Eq)]
+struct TodayCannotRestartPrompt {
+    workspace_id: String,
+    follow_up_id: String,
+    new_date: String,
+    note: String,
+    submitting: bool,
+    error: Option<String>,
+}
+
+fn parse_unhandled_followup_key(item_id: &str) -> Option<(String, String)> {
+    let rest = item_id.strip_prefix("unhandled-followup:")?;
+    let (ws, fid) = rest.split_once(':')?;
+    let ws = ws.trim();
+    let fid = fid.trim();
+    (!ws.is_empty() && !fid.is_empty()).then(|| (ws.to_owned(), fid.to_owned()))
+}
+
+#[component]
+fn TodayCannotRestartPromptCard(
+    prompt: TodayCannotRestartPrompt,
+    default_date: String,
+    on_change_date: EventHandler<String>,
+    on_change_note: EventHandler<String>,
+    on_dismiss: EventHandler,
+    on_resolve: EventHandler<physician_wire::follow_ups::CannotRestartResolutionWire>,
+) -> Element {
+    let fid = prompt.follow_up_id.clone();
+    let busy = prompt.submitting;
+    let new_date = if prompt.new_date.trim().is_empty() {
+        default_date
+    } else {
+        prompt.new_date.clone()
+    };
+    let note = prompt.note.clone();
+    rsx! {
+        section {
+            class: "today-cannot-restart-prompt",
+            role: "region",
+            aria_label: "Resolve follow-up that could not restart",
+            "data-today-cannot-restart-prompt": "{fid}",
+            Card {
+                ui::Notice {
+                    tone: Tone::Warning,
+                    icon: Some(IconName::Alert),
+                    title: "Choose how to resolve this follow-up.".to_owned(),
+                    detail: Some("Automated review couldn’t restart. Choose Complete, Set a new date, or Cancel follow-up.".to_owned()),
+                }
+                if let Some(err) = &prompt.error {
+                    ui::Notice {
+                        tone: Tone::Error,
+                        icon: Some(IconName::Alert),
+                        title: err.clone(),
+                    }
+                }
+                div { class: "fu-form-stack",
+                    div { "data-today-cr-date": "{fid}",
+                        DateField {
+                            label: "New review date".to_owned(),
+                            kind: DateKind::Date,
+                            value: new_date.clone(),
+                            disabled: busy,
+                            on_change: move |val| on_change_date.call(val),
+                        }
+                    }
+                    div { "data-today-cr-note": "{fid}",
+                        TextField {
+                            label: "Resolution note (optional)".to_owned(),
+                            placeholder: "Optional note for completion, reschedule, or cancellation".to_owned(),
+                            value: note.clone(),
+                            disabled: busy,
+                            on_input: move |val| on_change_note.call(val),
+                            onkeydown: move |ev: KeyboardEvent| ev.stop_propagation(),
+                        }
+                    }
+                    ActionRow {
+                        Button {
+                            compact: true,
+                            variant: ButtonVariant::Primary,
+                            busy,
+                            "data-today-cr-complete": "{fid}",
+                            onclick: {
+                                let note = note.clone();
+                                move |_| {
+                                    on_resolve.call(
+                                        physician_wire::follow_ups::CannotRestartResolutionWire::Complete {
+                                            resolution: note.trim().to_owned(),
+                                        },
+                                    );
+                                }
+                            },
+                            "Complete"
+                        }
+                        Button {
+                            compact: true,
+                            variant: ButtonVariant::Secondary,
+                            disabled: busy,
+                            "data-today-cr-new-date": "{fid}",
+                            onclick: {
+                                let new_date = new_date.clone();
+                                let note = note.clone();
+                                move |_| {
+                                    on_resolve.call(
+                                        physician_wire::follow_ups::CannotRestartResolutionWire::NewDate {
+                                            due_date: new_date.trim().to_owned(),
+                                            note: (!note.trim().is_empty()).then(|| note.trim().to_owned()),
+                                        },
+                                    );
+                                }
+                            },
+                            "Set a new date"
+                        }
+                        Button {
+                            compact: true,
+                            variant: ButtonVariant::Quiet,
+                            danger: true,
+                            disabled: busy,
+                            "data-today-cr-cancel": "{fid}",
+                            onclick: {
+                                let note = note.clone();
+                                move |_| {
+                                    on_resolve.call(
+                                        physician_wire::follow_ups::CannotRestartResolutionWire::Cancel {
+                                            reason: note.trim().to_owned(),
+                                        },
+                                    );
+                                }
+                            },
+                            "Cancel follow-up"
+                        }
+                        Button {
+                            compact: true,
+                            variant: ButtonVariant::Quiet,
+                            disabled: busy,
+                            "data-today-cr-dismiss": "{fid}",
+                            onclick: move |_| on_dismiss.call(()),
+                            "Dismiss"
+                        }
+                    }
                 }
             }
         }

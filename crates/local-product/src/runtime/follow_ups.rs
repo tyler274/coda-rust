@@ -22,8 +22,9 @@ use super::concerns::{
 };
 use super::entities::{
     command, concern, conversation, memory_note, patient_understanding,
-    patient_understanding_revision, practice_job, source, source_version,
+    patient_understanding_revision, practice_job, source, source_pull, source_version,
 };
+use super::reply::proposals::tables::reply_conversation;
 use super::{
     Authority, Scope, Store, WorkStatus, control, conversion_error, error, now,
     persistence_failure, receipt,
@@ -389,6 +390,16 @@ pub enum FollowUpError {
     /// Mutation was blocked by a wrong-patient source withdrawal fence.
     #[error("{0}")]
     WithdrawnFence(#[from] WithdrawalFenceViolation),
+    /// Background job attempted to recreate a cancelled follow-up without new clinical information.
+    #[error(
+        "follow-up `{cancelled_id}` with matching summary was cancelled at unix {cancelled_at}; do not recreate it without genuinely new clinical information"
+    )]
+    CancelledDuplicateWithoutNewInfo {
+        /// Identifier of the previously cancelled follow-up.
+        cancelled_id: FollowUpId,
+        /// Unix timestamp when it was cancelled.
+        cancelled_at: i64,
+    },
     /// Database error from SeaORM.
     #[error("{0}")]
     Database(#[from] DbErr),
@@ -1038,6 +1049,8 @@ impl FollowUpCommitProbe for NoopFollowUpCommitProbe {}
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(tag = "operation", rename_all = "snake_case", deny_unknown_fields)]
 pub enum FollowUpToolCall {
+    /// List follow-ups for this patient workspace (active, held, cannot_restart, completed, cancelled).
+    List,
     /// Create a new follow-up in this patient workspace.
     Create {
         /// Follow-up identifier.
@@ -1063,6 +1076,24 @@ pub enum FollowUpToolCall {
         records: Vec<ExactRecordReference>,
         /// Single-line explanation for Updates.
         note: FollowUpChangeNote,
+    },
+    /// Pause (`Stop`) an open follow-up and hold any running review for it.
+    Stop {
+        /// Follow-up identifier.
+        follow_up_id: FollowUpId,
+        /// Optional single-line note explaining why the follow-up is paused.
+        #[serde(default)]
+        reason: Option<FollowUpChangeNote>,
+    },
+    /// Resume a held follow-up and request review of its current version.
+    Resume {
+        /// Follow-up identifier.
+        follow_up_id: FollowUpId,
+    },
+    /// Mark an open or held follow-up due for immediate review right now.
+    ReviewNow {
+        /// Follow-up identifier.
+        follow_up_id: FollowUpId,
     },
     /// Complete an open follow-up when new clinical evidence resolves it.
     Complete {
@@ -1100,17 +1131,26 @@ impl FollowUpToolCall {
                 }
                 normalize_records(records)?;
             }
-            Self::Complete { .. } | Self::Cancel { .. } => {}
+            Self::List
+            | Self::Stop { .. }
+            | Self::Resume { .. }
+            | Self::ReviewNow { .. }
+            | Self::Complete { .. }
+            | Self::Cancel { .. } => {}
         }
         Ok(call)
     }
 
-    fn target_id(&self) -> &FollowUpId {
+    fn target_id(&self) -> Option<&FollowUpId> {
         match self {
+            Self::List => None,
             Self::Create { follow_up_id, .. }
             | Self::Change { follow_up_id, .. }
+            | Self::Stop { follow_up_id, .. }
+            | Self::Resume { follow_up_id }
+            | Self::ReviewNow { follow_up_id }
             | Self::Complete { follow_up_id, .. }
-            | Self::Cancel { follow_up_id, .. } => follow_up_id,
+            | Self::Cancel { follow_up_id, .. } => Some(follow_up_id),
         }
     }
 }
@@ -1128,9 +1168,17 @@ pub fn follow_up_tool() -> Tool {
     });
     Tool {
         name: FOLLOW_UP_TOOL.into(),
-        description: "Create, revise, complete, or cancel a clinical follow-up for this patient workspace. Supply `due_at` as a positive Unix timestamp when creating or revising, and cite exact `candidate_id` and `revision` pairs for supporting chart records read in this workspace. Completed or cancelled follow-ups are terminal and never reopen.".into(),
+        description: "List, create, revise, stop (pause), resume, review now, complete, or cancel clinical follow-ups for this patient workspace. Supply `due_at` as a positive Unix timestamp when creating or revising, and cite exact `candidate_id` and `revision` pairs for supporting chart records read in this workspace. Completed or cancelled follow-ups are terminal and never reopen; a cancelled follow-up stays cancelled unless genuinely new clinical information arrives.".into(),
         parameters: json!({
             "anyOf": [
+                {
+                    "type": "object",
+                    "properties": {
+                        "operation": { "type": "string", "enum": ["list"] }
+                    },
+                    "required": ["operation"],
+                    "additionalProperties": false
+                },
                 {
                     "type": "object",
                     "properties": {
@@ -1162,6 +1210,34 @@ pub fn follow_up_tool() -> Tool {
                         "note": { "type": "string" }
                     },
                     "required": ["operation", "follow_up_id", "summary", "due_at", "note"],
+                    "additionalProperties": false
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "operation": { "type": "string", "enum": ["stop"] },
+                        "follow_up_id": { "type": "string" },
+                        "reason": { "type": "string" }
+                    },
+                    "required": ["operation", "follow_up_id"],
+                    "additionalProperties": false
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "operation": { "type": "string", "enum": ["resume"] },
+                        "follow_up_id": { "type": "string" }
+                    },
+                    "required": ["operation", "follow_up_id"],
+                    "additionalProperties": false
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "operation": { "type": "string", "enum": ["review_now"] },
+                        "follow_up_id": { "type": "string" }
+                    },
+                    "required": ["operation", "follow_up_id"],
                     "additionalProperties": false
                 },
                 {
@@ -1705,6 +1781,88 @@ pub(super) async fn load_workspace_withdrawal_boundary(
 // Follow-Up Mutations & Queries on Store
 // ============================================================================
 
+fn normalize_follow_up_summary(raw: &str) -> String {
+    raw.split_whitespace()
+        .collect::<Vec<_>>()
+        .join(" ")
+        .trim_end_matches(['.', '!', '?', ';', ':'])
+        .to_ascii_lowercase()
+}
+
+/// Prevents background/Coda jobs from recreating a cancelled follow-up with the
+/// same clinical summary when no newer chart record, source pull, or linked
+/// patient message has arrived since cancellation (`P5.Along.Cancel` / `K1.13`).
+async fn check_cancelled_duplicate_fence_in_tx(
+    tx: &DatabaseTransaction,
+    practice: &str,
+    workspace: &str,
+    summary: &FollowUpSummary,
+    records: &[ExactRecordReference],
+    actor: &FollowUpActor,
+) -> Result<(), FollowUpError> {
+    let is_background_coda = matches!(
+        actor,
+        FollowUpActor::CodaWork { source_work } if source_work.job != "physician_chat"
+    );
+    if !is_background_coda {
+        return Ok(());
+    }
+
+    let candidate_summary = normalize_follow_up_summary(summary.as_str());
+    let cancelled_rows = follow_up_entity::Entity::find()
+        .filter(follow_up_entity::Column::Practice.eq(practice))
+        .filter(follow_up_entity::Column::Workspace.eq(workspace))
+        .filter(follow_up_entity::Column::Status.eq("cancelled"))
+        .all(tx)
+        .await?;
+    if cancelled_rows.is_empty() {
+        return Ok(());
+    }
+
+    let mut matching_cancelled: Vec<(FollowUp, i64)> = Vec::new();
+    for row in cancelled_rows {
+        let item = decode_follow_up(row)?;
+        if let FollowUpStanding::Cancelled { cancelled_at, .. } = item.standing
+            && normalize_follow_up_summary(item.summary.as_str()) == candidate_summary
+        {
+            matching_cancelled.push((item, cancelled_at));
+        }
+    }
+    if matching_cancelled.is_empty() {
+        return Ok(());
+    }
+
+    let latest_pull_at = source_pull::Entity::find()
+        .filter(source_pull::Column::Workspace.eq(workspace))
+        .all(tx)
+        .await?
+        .into_iter()
+        .filter_map(|row| row.pulled_at)
+        .max();
+    let latest_message_at = reply_conversation::Entity::find()
+        .filter(reply_conversation::Column::Practice.eq(practice))
+        .filter(reply_conversation::Column::Workspace.eq(workspace))
+        .all(tx)
+        .await?
+        .into_iter()
+        .map(|row| row.updated_at)
+        .max();
+
+    for (cancelled, cancelled_at) in matching_cancelled {
+        let cites_newer_record = records.iter().any(|rec| !cancelled.records.contains(rec));
+        let has_newer_pull = latest_pull_at.is_some_and(|pulled_at| pulled_at > cancelled_at);
+        let has_newer_message =
+            latest_message_at.is_some_and(|updated_at| updated_at > cancelled_at);
+        if !cites_newer_record && !has_newer_pull && !has_newer_message {
+            return Err(FollowUpError::CancelledDuplicateWithoutNewInfo {
+                cancelled_id: cancelled.id,
+                cancelled_at,
+            });
+        }
+    }
+    Ok(())
+}
+
 async fn create_follow_up_in_tx(
     tx: &DatabaseTransaction,
     command_key: &FollowUpCommandKey,
@@ -1784,6 +1942,16 @@ async fn create_follow_up_in_tx(
             id: input.id.clone(),
         });
     }
+
+    check_cancelled_duplicate_fence_in_tx(
+        tx,
+        &practice,
+        &workspace,
+        &input.summary,
+        &records,
+        &actor,
+    )
+    .await?;
 
     verify_cited_records(tx, &workspace, &records).await?;
     let timestamp = now(tx).await?;
@@ -2013,6 +2181,23 @@ async fn change_follow_up_in_tx(
         FollowUpUpdateKind::Changed,
         input.note.as_str(),
         &actor,
+    )
+    .await?;
+
+    // Supersede any in-flight `pending` or `running` review targeting an older
+    // version of this follow-up so only the latest version is reviewed (`P5.Along.Change`),
+    // while never superseding the currently executing review that made this change.
+    Store::supersede_follow_up_reviews_in_tx(
+        tx,
+        &super::reviews::FollowUpReviewSupersedeFilter {
+            practice: &updated.practice,
+            workspace: &updated.workspace,
+            follow_up_id: updated.id.as_str(),
+            only_older_than_version: Some(updated.version),
+            include_held: false,
+            excluding_work_id: actor.work_id(),
+        },
+        timestamp,
     )
     .await?;
 
@@ -2317,7 +2502,140 @@ async fn transition_follow_up_in_tx(
     };
     append_follow_up_update(tx, &updated, update_kind, &detail, &actor).await?;
 
+    match update_kind {
+        FollowUpUpdateKind::Stopped => {
+            // Unified Stop: hold any pending or running patient review triggered
+            // by this follow-up in the same Postgres transaction (`P5.Along.Stop`).
+            Store::hold_follow_up_reviews_in_tx(
+                tx,
+                &updated.practice,
+                &updated.workspace,
+                updated.id.as_str(),
+                timestamp,
+            )
+            .await?;
+        }
+        FollowUpUpdateKind::Resumed
+        | FollowUpUpdateKind::ReviewRequestedNow
+        | FollowUpUpdateKind::Completed
+        | FollowUpUpdateKind::Cancelled
+        | FollowUpUpdateKind::Changed => {
+            // Release/supersede any held or in-flight review for this follow-up
+            // so no stopped or stale review lingers alongside the current version,
+            // while never superseding the currently executing review itself.
+            Store::supersede_follow_up_reviews_in_tx(
+                tx,
+                &super::reviews::FollowUpReviewSupersedeFilter {
+                    practice: &updated.practice,
+                    workspace: &updated.workspace,
+                    follow_up_id: updated.id.as_str(),
+                    only_older_than_version: None,
+                    include_held: true,
+                    excluding_work_id: actor.work_id(),
+                },
+                timestamp,
+            )
+            .await?;
+        }
+        FollowUpUpdateKind::Created
+        | FollowUpUpdateKind::MarkedCannotRestart
+        | FollowUpUpdateKind::WithdrawnWrongPatient => {}
+    }
+
     Ok(FollowUpMutation::Applied(updated))
+}
+
+/// Transitions a follow-up into [`FollowUpStanding::CannotRestart`] inside an
+/// existing transaction when its backing `patient_review` exhausts automatic
+/// retries (`WorkStatus::Failed`). Skips terminal or already-`CannotRestart`
+/// follow-ups so retries/settlements never reopen completed or cancelled items.
+pub(super) async fn mark_follow_up_cannot_restart_in_tx(
+    tx: &DatabaseTransaction,
+    practice: &str,
+    workspace: &str,
+    follow_up_id_raw: &str,
+    failed_work_id: &str,
+    reason: &str,
+    clock: i64,
+) -> Result<(), DbErr> {
+    let Some(row) = follow_up_entity::Entity::find_by_id((
+        practice.to_owned(),
+        workspace.to_owned(),
+        follow_up_id_raw.to_owned(),
+    ))
+    .lock_exclusive()
+    .one(tx)
+    .await?
+    else {
+        return Ok(());
+    };
+    let current = decode_follow_up(row.clone())?;
+    if current.standing.is_terminal().is_some()
+        || matches!(current.standing, FollowUpStanding::CannotRestart { .. })
+    {
+        return Ok(());
+    }
+
+    let work_trimmed = failed_work_id.trim();
+    let effective_work = if work_trimmed.is_empty() {
+        "patient-review-failed"
+    } else {
+        work_trimmed
+    };
+    let reason_trimmed = reason.trim();
+    let effective_reason = if reason_trimmed.is_empty() {
+        "Follow-up review failed after retries were exhausted"
+    } else {
+        reason_trimmed
+    };
+    let next_standing = FollowUpStanding::CannotRestart {
+        due_at: current.due_at,
+        failed_work_id: effective_work.to_owned(),
+        failed_at: clock,
+        reason: effective_reason.to_owned(),
+    };
+    let next_version = current.version + 1;
+    let next_version_i64 =
+        i64::try_from(next_version).map_err(conversion_error("follow_up.version", "i64"))?;
+    let standing_json = serde_json::to_value(&next_standing)
+        .map_err(conversion_error("FollowUpStanding", "json"))?;
+
+    follow_up_entity::ActiveModel {
+        practice: Unchanged(row.practice),
+        workspace: Unchanged(row.workspace),
+        id: Unchanged(row.id),
+        summary: Unchanged(row.summary),
+        status: Set(next_standing.status_str().to_owned()),
+        due_at: Unchanged(row.due_at),
+        standing_detail: Set(standing_json),
+        records: Unchanged(row.records),
+        origin: Unchanged(row.origin),
+        version: Set(next_version_i64),
+        created_at: Unchanged(row.created_at),
+        updated_at: Set(clock),
+    }
+    .update(tx)
+    .await?;
+
+    let updated = FollowUp {
+        version: next_version,
+        updated_at: clock,
+        standing: next_standing,
+        ..current
+    };
+    let actor = FollowUpActor::CodaWork {
+        source_work: SourceWork::new("patient_review", effective_work, effective_work)
+            .map_err(|err| error(&err.to_string()))?,
+    };
+    append_follow_up_update(
+        tx,
+        &updated,
+        FollowUpUpdateKind::MarkedCannotRestart,
+        effective_reason,
+        &actor,
+    )
+    .await?;
+    Ok(())
 }
 
 impl Store {
@@ -2739,8 +3057,41 @@ impl Store {
             source_work: validated_work,
         };
 
+        if matches!(parsed, FollowUpToolCall::List) {
+            let items = self
+                .workspace_follow_ups(practice, workspace)
+                .await
+                .map_err(|err| match err {
+                    FollowUpError::Database(db_err) => persistence_failure(db_err),
+                    other => engine::ProductError::from(other.to_string()),
+                })?;
+            let withheld = super::link_correction::load_workspace_withheld_state_in_tx(
+                &self.db,
+                workspace.trim(),
+            )
+            .await
+            .map_err(persistence_failure)?;
+            let visible: Vec<FollowUp> = items
+                .into_iter()
+                .filter(|item| {
+                    !matches!(
+                        item.standing,
+                        FollowUpStanding::WithdrawnWrongPatient { .. }
+                    ) && !follow_up_cites_withheld(item, &withheld)
+                })
+                .collect();
+            return Ok(ToolOutcome::Returned(
+                json!({
+                    "outcome": "listed",
+                    "follow_ups": visible,
+                })
+                .to_string(),
+            ));
+        }
+
         let tx = self.db.begin().await.map_err(persistence_failure)?;
         let mutation = match parsed {
+            FollowUpToolCall::List => unreachable!("handled above"),
             FollowUpToolCall::Create {
                 follow_up_id,
                 summary,
@@ -2782,6 +3133,45 @@ impl Store {
                         note,
                         actor,
                     },
+                )
+                .await
+            }
+            FollowUpToolCall::Stop {
+                follow_up_id,
+                reason,
+            } => {
+                transition_follow_up_in_tx(
+                    &tx,
+                    practice,
+                    workspace,
+                    &command_key,
+                    &follow_up_id,
+                    &actor,
+                    TransitionSpec::Stop { reason },
+                )
+                .await
+            }
+            FollowUpToolCall::Resume { follow_up_id } => {
+                transition_follow_up_in_tx(
+                    &tx,
+                    practice,
+                    workspace,
+                    &command_key,
+                    &follow_up_id,
+                    &actor,
+                    TransitionSpec::Resume,
+                )
+                .await
+            }
+            FollowUpToolCall::ReviewNow { follow_up_id } => {
+                transition_follow_up_in_tx(
+                    &tx,
+                    practice,
+                    workspace,
+                    &command_key,
+                    &follow_up_id,
+                    &actor,
+                    TransitionSpec::ReviewNow,
                 )
                 .await
             }
@@ -2827,7 +3217,8 @@ impl Store {
                 | FollowUpError::InvalidTransition { .. }
                 | FollowUpError::UnverifiedRecord { .. }
                 | FollowUpError::IdempotencyCollision { .. }
-                | FollowUpError::WithdrawnFence(_)),
+                | FollowUpError::WithdrawnFence(_)
+                | FollowUpError::CancelledDuplicateWithoutNewInfo { .. }),
             ) => {
                 tx.rollback().await.map_err(persistence_failure)?;
                 return Ok(ToolOutcome::refused(cause.to_string()));
@@ -2920,14 +3311,13 @@ impl Store {
                 return Err(persistence_failure(db_err));
             }
         }
-        let Some(follow_up) = load_follow_up(
-            &self.db,
-            practice.trim(),
-            workspace.trim(),
-            parsed.target_id(),
-        )
-        .await
-        .map_err(persistence_failure)?
+        let Some(target_id) = parsed.target_id() else {
+            return Ok(None);
+        };
+        let Some(follow_up) =
+            load_follow_up(&self.db, practice.trim(), workspace.trim(), target_id)
+                .await
+                .map_err(persistence_failure)?
         else {
             return Ok(None);
         };

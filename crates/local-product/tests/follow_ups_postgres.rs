@@ -1802,3 +1802,1052 @@ async fn production_patient_review_and_physician_chat_hosts_offer_and_execute_fo
     assert!(matches!(updates[0].actor, FollowUpActor::CodaWork { .. }));
     assert!(matches!(updates[1].actor, FollowUpActor::CodaWork { .. }));
 }
+
+#[tokio::test]
+#[ignore = "requires explicit local Postgres"]
+async fn p5_ac1_unified_stop_holds_running_review_and_resume_releases_both() {
+    let url = std::env::var("PHYSICIAN_RUNTIME_TEST_DATABASE_URL").unwrap();
+    let store = Store::connect(&url).await.unwrap();
+    store.migrate().await.unwrap();
+    let auth = PostgresAuthStore::connect_with_migrations(&url)
+        .await
+        .unwrap();
+    let skills =
+        PhysicianSkills::load(&PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../../skills"))
+            .unwrap();
+    let roles = ModelRoles {
+        chat: ModelBinding {
+            model: "chat-lane-stop".into(),
+            effort: "low".into(),
+            context_window_tokens: 128_000,
+            max_input_tokens: 100_000,
+            adapter: "fixture".into(),
+        },
+        background: ModelBinding {
+            model: "bg-lane-stop".into(),
+            effort: "low".into(),
+            context_window_tokens: 128_000,
+            max_input_tokens: 100_000,
+            adapter: "fixture".into(),
+        },
+    };
+    let practice = format!("practice-p5-stop-{}", uuid::Uuid::new_v4().simple());
+    let workspace = format!("pw-p5-stop-{}", uuid::Uuid::new_v4().simple());
+    auth.ensure_practice(&practice, PracticeClock::RealTime)
+        .await
+        .unwrap();
+    let (physician, _token, session_hash) = invite_and_sign_in(&auth, &practice, "dr-stop").await;
+    auth.register_patient(&practice, &workspace).await.unwrap();
+    auth.set_membership(&physician, &workspace, Membership::Allowed)
+        .await
+        .unwrap();
+
+    let reg_time = i64::try_from(unix_seconds()).unwrap() - 3600;
+    store
+        .register_patient_dispatch(&auth, &practice, &workspace, reg_time)
+        .await
+        .unwrap();
+    let access = WorkspaceAccess {
+        practice: &practice,
+        physician: &physician.physician_id,
+        workspace: &workspace,
+        session_hash: &session_hash,
+    };
+    let due_at = i64::try_from(unix_seconds()).unwrap() - 60;
+    let fid = FollowUpId::new("fu-unified-stop").unwrap();
+    store
+        .create_follow_up_for_physician(
+            &access,
+            &FollowUpCommandKey::new("cmd-create-unified-stop").unwrap(),
+            &PhysicianCreateFollowUp {
+                id: fid.clone(),
+                summary: FollowUpSummary::new("Recheck INR after warfarin adjustment").unwrap(),
+                due_at,
+                records: vec![],
+            },
+            &mut PostgresWorkspaceAuthority,
+        )
+        .await
+        .unwrap();
+
+    // Dispatch a due follow-up patient review and claim it so it is actively running.
+    let checker = StoredObservationChecker::new(store.clone());
+    let receiver = PatientReviewReceiver::new(&store, &roles, &skills, &auth);
+    let wake = store
+        .wake_practice_dispatch(&auth, &practice, due_at + 60, &checker, &receiver)
+        .await
+        .unwrap();
+    assert_eq!(wake.started_reviews.len(), 1);
+    let reviews = store
+        .patient_reviews(&practice, &workspace, &auth)
+        .await
+        .unwrap();
+    let review_id = reviews[0].review_id.clone();
+    let review_scope = reviews[0].practice_scope();
+    let _claim = store
+        .claim_practice_job(&review_scope, 120, &auth)
+        .await
+        .unwrap()
+        .expect("claim active follow-up review");
+
+    // One Stop on the follow-up MUST also hold its running patient_review (`P5.Along.Stop`).
+    store
+        .stop_follow_up_for_physician(
+            &access,
+            &FollowUpCommandKey::new("cmd-unified-stop").unwrap(),
+            &fid,
+            Some(FollowUpChangeNote::new("Holding to confirm lab timing").unwrap()),
+            &mut PostgresWorkspaceAuthority,
+        )
+        .await
+        .unwrap();
+
+    let review_after_stop = store
+        .patient_review(&practice, &workspace, &review_id, &auth)
+        .await
+        .unwrap()
+        .expect("review still exists");
+    assert!(
+        matches!(
+            review_after_stop.state,
+            local_product::runtime::reviews::ReviewLifecycleState::Held {
+                reason: local_product::runtime::reviews::ReviewHoldReason::Stopped,
+                ..
+            }
+        ),
+        "stopping a follow-up must also hold its running patient_review: got {:?}",
+        review_after_stop.state
+    );
+
+    // Resume on the follow-up releases both (superseding the held review so none lingers Held).
+    store
+        .resume_follow_up_for_physician(
+            &access,
+            &FollowUpCommandKey::new("cmd-unified-resume").unwrap(),
+            &fid,
+            &mut PostgresWorkspaceAuthority,
+        )
+        .await
+        .unwrap();
+    let review_after_resume = store
+        .patient_review(&practice, &workspace, &review_id, &auth)
+        .await
+        .unwrap()
+        .expect("review still exists after resume");
+    assert!(
+        !matches!(
+            review_after_resume.state,
+            local_product::runtime::reviews::ReviewLifecycleState::Held { .. }
+        ),
+        "resuming a follow-up must release its held review instead of leaving it Held: got {:?}",
+        review_after_resume.state
+    );
+}
+
+#[tokio::test]
+#[ignore = "requires explicit local Postgres"]
+async fn p5_ac2_exhausted_followup_review_marks_cannot_restart_and_done_refuses_silent_dismiss() {
+    let url = std::env::var("PHYSICIAN_RUNTIME_TEST_DATABASE_URL").unwrap();
+    let store = Store::connect(&url).await.unwrap();
+    store.migrate().await.unwrap();
+    let auth = PostgresAuthStore::connect_with_migrations(&url)
+        .await
+        .unwrap();
+    let skills =
+        PhysicianSkills::load(&PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../../skills"))
+            .unwrap();
+    let roles = ModelRoles {
+        chat: ModelBinding {
+            model: "chat-lane-cr".into(),
+            effort: "low".into(),
+            context_window_tokens: 128_000,
+            max_input_tokens: 100_000,
+            adapter: "fixture".into(),
+        },
+        background: ModelBinding {
+            model: "bg-lane-cr".into(),
+            effort: "low".into(),
+            context_window_tokens: 128_000,
+            max_input_tokens: 100_000,
+            adapter: "fixture".into(),
+        },
+    };
+    let practice = format!("practice-p5-cr-{}", uuid::Uuid::new_v4().simple());
+    let workspace = format!("pw-p5-cr-{}", uuid::Uuid::new_v4().simple());
+    auth.ensure_practice(&practice, PracticeClock::RealTime)
+        .await
+        .unwrap();
+    let (physician, token, session_hash) = invite_and_sign_in(&auth, &practice, "dr-cr").await;
+    auth.register_patient(&practice, &workspace).await.unwrap();
+    auth.set_membership(&physician, &workspace, Membership::Allowed)
+        .await
+        .unwrap();
+
+    let reg_time = i64::try_from(unix_seconds()).unwrap() - 3600;
+    store
+        .register_patient_dispatch(&auth, &practice, &workspace, reg_time)
+        .await
+        .unwrap();
+    let access = WorkspaceAccess {
+        practice: &practice,
+        physician: &physician.physician_id,
+        workspace: &workspace,
+        session_hash: &session_hash,
+    };
+    let due_at = i64::try_from(unix_seconds()).unwrap() - 60;
+    let fid = FollowUpId::new("fu-exhaust-cr").unwrap();
+    store
+        .create_follow_up_for_physician(
+            &access,
+            &FollowUpCommandKey::new("cmd-create-cr").unwrap(),
+            &PhysicianCreateFollowUp {
+                id: fid.clone(),
+                summary: FollowUpSummary::new("Recheck thyroid panel").unwrap(),
+                due_at,
+                records: vec![],
+            },
+            &mut PostgresWorkspaceAuthority,
+        )
+        .await
+        .unwrap();
+
+    let checker = StoredObservationChecker::new(store.clone());
+    let receiver = PatientReviewReceiver::new(&store, &roles, &skills, &auth);
+    let wake = store
+        .wake_practice_dispatch(&auth, &practice, due_at + 60, &checker, &receiver)
+        .await
+        .unwrap();
+    assert_eq!(wake.started_reviews.len(), 1);
+    let reviews = store
+        .patient_reviews(&practice, &workspace, &auth)
+        .await
+        .unwrap();
+    let review_scope = reviews[0].practice_scope();
+
+    // Exhaust retries on the follow-up's practice job until `AfterFailure::GaveUp` (`WorkStatus::Failed`).
+    let mut gave_up = false;
+    for _ in 0..10 {
+        let claim = store
+            .claim_practice_job(&review_scope, 60, &auth)
+            .await
+            .unwrap()
+            .expect("claim job to fail");
+        let settled = store
+            .settle_practice_job_attempt(
+                &claim,
+                engine::AttemptFailure::Failed,
+                local_product::runtime::delivery::Backoff::new(0, 0).unwrap(),
+            )
+            .await
+            .unwrap();
+        if matches!(
+            settled,
+            local_product::runtime::delivery::AttemptSettlement::Failed(
+                local_product::runtime::delivery::AfterFailure::GaveUp
+            )
+        ) {
+            gave_up = true;
+            break;
+        }
+    }
+    assert!(
+        gave_up,
+        "expected practice job to reach AfterFailure::GaveUp after exhausting retries"
+    );
+
+    let follow_ups = store
+        .workspace_follow_ups(&practice, &workspace)
+        .await
+        .unwrap();
+    let target = follow_ups
+        .iter()
+        .find(|f| f.id == fid)
+        .expect("follow-up exists");
+    assert!(
+        matches!(target.standing, FollowUpStanding::CannotRestart { .. }),
+        "exhausted follow-up review must transition follow-up to CannotRestart: got {:?}",
+        target.standing
+    );
+
+    // Direct `clear_today_item_done` on an `unhandled-followup:` item must refuse silently dismissing it!
+    let now_u64 = unix_seconds();
+    let today = store
+        .read_today(&auth, &token, now_u64, &std::collections::BTreeMap::new())
+        .await
+        .unwrap();
+    let cr_row = today
+        .rows
+        .iter()
+        .find(|r| r.item_key.as_str() == format!("unhandled-followup:{workspace}:{}", fid.as_str()))
+        .expect("CannotRestart follow-up must appear on Today");
+    let cmd_key =
+        local_product::runtime::concerns::CommandKey::new("cmd-try-silent-dismiss-cr").unwrap();
+    let dismiss_res = store
+        .clear_today_item_done(
+            &auth,
+            &mut PostgresWorkspaceAuthority,
+            &local_product::runtime::today_updates::ClearItemDoneRequest {
+                token: &token,
+                real_now_unix: now_u64,
+                workspace: &workspace,
+                item_key: &cr_row.item_key,
+                version_id: &cr_row.version_id,
+                command_key: &cmd_key,
+            },
+        )
+        .await;
+    assert!(
+        matches!(
+            dismiss_res,
+            Err(local_product::runtime::today_updates::TodayUpdatesError::CannotMarkDone { .. })
+        ),
+        "Today Done must refuse silently dismissing a CannotRestart follow-up without an explicit resolution: got {dismiss_res:?}"
+    );
+}
+
+#[tokio::test]
+#[ignore = "requires explicit local Postgres"]
+async fn p5_ac3_starting_contexts_include_active_and_cancelled_and_block_unjustified_recreation() {
+    let url = std::env::var("PHYSICIAN_RUNTIME_TEST_DATABASE_URL").unwrap();
+    let store = Store::connect(&url).await.unwrap();
+    store.migrate().await.unwrap();
+    let auth = PostgresAuthStore::connect_with_migrations(&url)
+        .await
+        .unwrap();
+
+    let practice = format!("practice-p5-ac3-{}", uuid::Uuid::new_v4().simple());
+    let workspace = format!("pw-p5-ac3-{}", uuid::Uuid::new_v4().simple());
+    auth.ensure_practice(&practice, PracticeClock::RealTime)
+        .await
+        .unwrap();
+    let (physician, _token, session_hash) = invite_and_sign_in(&auth, &practice, "dr-ac3").await;
+    auth.register_patient(&practice, &workspace).await.unwrap();
+    auth.set_membership(&physician, &workspace, Membership::Allowed)
+        .await
+        .unwrap();
+
+    let now_i64 = i64::try_from(unix_seconds()).unwrap();
+    let old_lab = SourceRevision {
+        workspace: workspace.clone(),
+        source_id: "clinic-ehr".into(),
+        candidate_id: "Observation/k-old".into(),
+        revision: "rev-1".into(),
+        record_type: "Observation".into(),
+        dates: vec![RecordDate {
+            name: "effectiveDateTime".into(),
+            value: "2026-11-01".into(),
+        }],
+        content: "Potassium 5.2 mEq/L".into(),
+        sha256: sha256_hex(b"Potassium 5.2 mEq/L"),
+        readable_parts: vec![ReadablePart {
+            label: "Potassium".into(),
+            text: "Potassium 5.2 mEq/L".into(),
+        }],
+        provenance: json!({"title": "Potassium"}),
+        envelope: None,
+    };
+    let pull_old = SourcePull {
+        source_id: "clinic-ehr".into(),
+        source_label: "Clinic EHR".into(),
+        patient: SourcePatient {
+            source_patient_id: "pt-ac3".into(),
+            display_name: "Elena Brooks".into(),
+            birth_date: Some("1970-03-04".into()),
+            sex_or_gender: Some("female".into()),
+            medical_record_numbers: vec![],
+        },
+        pulled_at: Some(now_i64 - 7200),
+    };
+    store
+        .record_chart(&workspace, std::slice::from_ref(&old_lab), &pull_old)
+        .await
+        .unwrap();
+
+    let access = WorkspaceAccess {
+        practice: &practice,
+        physician: &physician.physician_id,
+        workspace: &workspace,
+        session_hash: &session_hash,
+    };
+    // 1. Future-due active follow-up (30 days out, NOT due yet)
+    let fid_future = FollowUpId::new("fu-future-a1c").unwrap();
+    store
+        .create_follow_up_for_physician(
+            &access,
+            &FollowUpCommandKey::new("cmd-ac3-future").unwrap(),
+            &PhysicianCreateFollowUp {
+                id: fid_future.clone(),
+                summary: FollowUpSummary::new("Recheck A1c in 30 days after diet counseling")
+                    .unwrap(),
+                due_at: now_i64 + 30 * 86_400,
+                records: vec![],
+            },
+            &mut PostgresWorkspaceAuthority,
+        )
+        .await
+        .unwrap();
+
+    // 2. Cancelled follow-up citing `old_lab`
+    let fid_cancelled = FollowUpId::new("fu-cancelled-k").unwrap();
+    store
+        .create_follow_up_for_physician(
+            &access,
+            &FollowUpCommandKey::new("cmd-ac3-cancel-create").unwrap(),
+            &PhysicianCreateFollowUp {
+                id: fid_cancelled.clone(),
+                summary: FollowUpSummary::new("Recheck BMP potassium after lisinopril").unwrap(),
+                due_at: now_i64 + 14 * 86_400,
+                records: vec![ExactRecordReference {
+                    candidate_id: "Observation/k-old".into(),
+                    revision: "rev-1".into(),
+                }],
+            },
+            &mut PostgresWorkspaceAuthority,
+        )
+        .await
+        .unwrap();
+    store
+        .cancel_follow_up_for_physician(
+            &access,
+            &FollowUpCommandKey::new("cmd-ac3-cancel").unwrap(),
+            &fid_cancelled,
+            FollowUpChangeNote::new("Lisinopril discontinued permanently").unwrap(),
+            &mut PostgresWorkspaceAuthority,
+        )
+        .await
+        .unwrap();
+
+    // Verify `PatientStartingContext` includes BOTH future active AND cancelled follow-ups!
+    let scope = Scope {
+        practice: practice.clone(),
+        physician: physician.physician_id.clone(),
+        workspace: workspace.clone(),
+        chat: "chat-ac3".into(),
+    };
+    let chat_ctx = store.patient_starting_context(&scope).await.unwrap();
+    assert!(
+        chat_ctx
+            .follow_ups
+            .iter()
+            .any(|f| f.follow_up_id == "fu-future-a1c" && f.status == "active"),
+        "PatientStartingContext must include upcoming active follow-ups: {:?}",
+        chat_ctx.follow_ups
+    );
+    assert!(
+        chat_ctx
+            .follow_ups
+            .iter()
+            .any(|f| f.follow_up_id == "fu-cancelled-k" && f.status == "cancelled"),
+        "PatientStartingContext must include cancelled follow-ups: {:?}",
+        chat_ctx.follow_ups
+    );
+    let dev_text = chat_ctx.developer_text();
+    assert!(dev_text.contains("fu-future-a1c"));
+    assert!(dev_text.contains("fu-cancelled-k"));
+    assert!(dev_text.contains("do not recreate unless new clinical information has arrived"));
+
+    // Verify a real admitted `PatientReview` prompt includes BOTH future active (P5.Along.EvidenceMessage)
+    // AND cancelled follow-ups with non-recreation guidance!
+    let skills =
+        PhysicianSkills::load(&PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../../skills"))
+            .unwrap();
+    let roles = ModelRoles {
+        chat: ModelBinding {
+            model: "chat-lane-ac3".into(),
+            effort: "low".into(),
+            context_window_tokens: 128_000,
+            max_input_tokens: 100_000,
+            adapter: "fixture".into(),
+        },
+        background: ModelBinding {
+            model: "bg-lane-ac3".into(),
+            effort: "low".into(),
+            context_window_tokens: 128_000,
+            max_input_tokens: 100_000,
+            adapter: "fixture".into(),
+        },
+    };
+    let admitted = store
+        .admit_patient_review_with_trigger(
+            &practice,
+            &workspace,
+            "cmd-ac3-periodic-review",
+            local_product::patient_reviews::ReviewTrigger::Periodic {
+                last_reviewed_at: None,
+                workspace_version: 1,
+                record_versions: std::collections::BTreeMap::new(),
+            },
+            &roles,
+            &skills,
+            &auth,
+        )
+        .await
+        .unwrap();
+    let review_job = store
+        .practice_job(&admitted.review().practice_scope())
+        .await
+        .unwrap()
+        .expect("admitted review practice job");
+    let review_prompt = &review_job.assignment.prompt;
+    assert!(
+        review_prompt.contains("fu-future-a1c") && review_prompt.contains("active upcoming"),
+        "review starting prompt must include future-due active follow-ups: {review_prompt}"
+    );
+    assert!(
+        review_prompt.contains("fu-cancelled-k") && review_prompt.contains("stays cancelled"),
+        "review starting prompt must include cancelled follow-ups with non-recreation guidance: {review_prompt}"
+    );
+
+    // Background Coda job trying to recreate the cancelled follow-up with matching normalized summary
+    // and NO new clinical evidence MUST be refused!
+    let bg_work = SourceWork::new("patient_review", "work-bg-recreate", "att-bg-1").unwrap();
+    let refused = store
+        .execute_follow_up_tool(
+            &practice,
+            &workspace,
+            &bg_work,
+            &Invocation {
+                id: "call-recreate-1".into(),
+                name: FOLLOW_UP_TOOL.into(),
+                arguments: json!({
+                    "operation": "create",
+                    "follow_up_id": "fu-recreated-k",
+                    "summary": "  recheck bmp potassium after lisinopril. ",
+                    "due_at": now_i64 + 7 * 86_400,
+                    "records": [{"candidate_id": "Observation/k-old", "revision": "rev-1"}]
+                }),
+            },
+        )
+        .await
+        .unwrap();
+    assert!(
+        matches!(refused, ToolOutcome::Refused(ref r) if format!("{r:?}").contains("fu-cancelled-k") && format!("{r:?}").contains("new clinical information")),
+        "background recreation of cancelled follow-up without new info must be refused: {refused:?}"
+    );
+
+    // Explicit physician chat creation IS allowed!
+    let chat_work = SourceWork::new("physician_chat", "work-chat-recreate", "att-chat-1").unwrap();
+    let chat_allowed = store
+        .execute_follow_up_tool(
+            &practice,
+            &workspace,
+            &chat_work,
+            &Invocation {
+                id: "call-chat-create".into(),
+                name: FOLLOW_UP_TOOL.into(),
+                arguments: json!({
+                    "operation": "create",
+                    "follow_up_id": "fu-chat-explicit-k",
+                    "summary": "Recheck BMP potassium after lisinopril",
+                    "due_at": now_i64 + 7 * 86_400,
+                    "records": []
+                }),
+            },
+        )
+        .await
+        .unwrap();
+    assert!(
+        matches!(chat_allowed, ToolOutcome::Returned(_)),
+        "explicit physician chat creation must be allowed: {chat_allowed:?}"
+    );
+
+    // Background Coda recreation AFTER a genuinely new chart record arrives and is cited IS allowed!
+    let new_lab = SourceRevision {
+        workspace: workspace.clone(),
+        source_id: "clinic-ehr".into(),
+        candidate_id: "Observation/k-new".into(),
+        revision: "rev-1".into(),
+        record_type: "Observation".into(),
+        dates: vec![RecordDate {
+            name: "effectiveDateTime".into(),
+            value: "2026-11-19".into(),
+        }],
+        content: "Repeat potassium 5.6 mEq/L after restarting ACE inhibitor".into(),
+        sha256: sha256_hex(b"Repeat potassium 5.6 mEq/L after restarting ACE inhibitor"),
+        readable_parts: vec![ReadablePart {
+            label: "Potassium".into(),
+            text: "Repeat potassium 5.6 mEq/L after restarting ACE inhibitor".into(),
+        }],
+        provenance: json!({"title": "Potassium"}),
+        envelope: None,
+    };
+    store
+        .record_chart(&workspace, &[old_lab, new_lab], &pull_old)
+        .await
+        .unwrap();
+    let bg_after_new_info = store
+        .execute_follow_up_tool(
+            &practice,
+            &workspace,
+            &bg_work,
+            &Invocation {
+                id: "call-recreate-after-new-lab".into(),
+                name: FOLLOW_UP_TOOL.into(),
+                arguments: json!({
+                    "operation": "create",
+                    "follow_up_id": "fu-recreated-after-new-lab",
+                    "summary": "Recheck BMP potassium after lisinopril",
+                    "due_at": now_i64 + 7 * 86_400,
+                    "records": [{"candidate_id": "Observation/k-new", "revision": "rev-1"}]
+                }),
+            },
+        )
+        .await
+        .unwrap();
+    assert!(
+        matches!(bg_after_new_info, ToolOutcome::Returned(_)),
+        "background recreation citing new chart record must be allowed: {bg_after_new_info:?}"
+    );
+}
+
+#[tokio::test]
+#[ignore = "requires explicit local Postgres"]
+async fn p5_ac4_chat_follow_up_tools_list_stop_resume_review_now_and_change_supersedes_old_review()
+{
+    let url = std::env::var("PHYSICIAN_RUNTIME_TEST_DATABASE_URL").unwrap();
+    let store = Store::connect(&url).await.unwrap();
+    store.migrate().await.unwrap();
+    let auth = PostgresAuthStore::connect_with_migrations(&url)
+        .await
+        .unwrap();
+    let skills =
+        PhysicianSkills::load(&PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../../skills"))
+            .unwrap();
+    let chat_binding = ModelBinding {
+        model: "chat-lane-ac4".into(),
+        effort: "medium".into(),
+        context_window_tokens: 192_000,
+        max_input_tokens: 160_000,
+        adapter: "fixture".into(),
+    };
+
+    let practice = format!("practice-p5-ac4-{}", uuid::Uuid::new_v4().simple());
+    let workspace = format!("pw-p5-ac4-{}", uuid::Uuid::new_v4().simple());
+    auth.ensure_practice(&practice, PracticeClock::RealTime)
+        .await
+        .unwrap();
+    let (physician, _token, session_hash) = invite_and_sign_in(&auth, &practice, "dr-ac4").await;
+    auth.register_patient(&practice, &workspace).await.unwrap();
+    auth.set_membership(&physician, &workspace, Membership::Allowed)
+        .await
+        .unwrap();
+
+    let scope = Scope {
+        practice: practice.clone(),
+        physician: physician.physician_id.clone(),
+        workspace: workspace.clone(),
+        chat: "chat-ac4-tools".into(),
+    };
+    let recipe = store
+        .chat_recipe_with_understanding(
+            &chat_binding,
+            local_product::physician_chat::INSTRUCTIONS,
+            &skills,
+            &practice,
+            &workspace,
+        )
+        .await
+        .unwrap();
+    store
+        .start_chat_authorized(
+            &scope,
+            &Input {
+                key: "turn-ac4-1".into(),
+                text: "Manage follow-ups for this patient".into(),
+                timezone: "America/New_York".into(),
+                scenario: None,
+            },
+            session_hash.clone(),
+            &skills,
+            &recipe,
+            &mut PostgresWorkspaceAuthority,
+        )
+        .await
+        .unwrap();
+    let claim = store.claim(&scope, 120).await.unwrap().expect("claim chat");
+    let conv = store.conversation(&scope).await.unwrap();
+    let due_ts = i64::try_from(unix_seconds()).unwrap() + 14 * 86_400;
+
+    // 1. Create via chat tool
+    let create_out = store
+        .execute_chat_tool(
+            &claim,
+            &conv,
+            &[],
+            &Invocation {
+                id: "call-create".into(),
+                name: FOLLOW_UP_TOOL.into(),
+                arguments: String::new(),
+            },
+            json!({
+                "operation": "create",
+                "follow_up_id": "fu-chat-ac4",
+                "summary": "Check repeat lipid panel in 6 weeks",
+                "due_at": due_ts
+            }),
+        )
+        .await
+        .unwrap();
+    assert!(matches!(create_out, ToolOutcome::Returned(_)));
+
+    // 2. List via chat tool
+    let ToolOutcome::Returned(list_raw) = store
+        .execute_chat_tool(
+            &claim,
+            &conv,
+            &[],
+            &Invocation {
+                id: "call-list".into(),
+                name: FOLLOW_UP_TOOL.into(),
+                arguments: String::new(),
+            },
+            json!({ "operation": "list" }),
+        )
+        .await
+        .unwrap()
+    else {
+        panic!("list must return Returned");
+    };
+    let list_json: Value = serde_json::from_str(&list_raw).unwrap();
+    assert_eq!(list_json["outcome"], "listed");
+    assert_eq!(list_json["follow_ups"].as_array().unwrap().len(), 1);
+    assert_eq!(list_json["follow_ups"][0]["id"], "fu-chat-ac4");
+
+    // 3. ReviewNow via chat tool -> marks DueNow AND admits a PatientReview!
+    let ToolOutcome::Returned(rev_now_raw) = store
+        .execute_chat_tool(
+            &claim,
+            &conv,
+            &[],
+            &Invocation {
+                id: "call-review-now-1".into(),
+                name: FOLLOW_UP_TOOL.into(),
+                arguments: String::new(),
+            },
+            json!({
+                "operation": "review_now",
+                "follow_up_id": "fu-chat-ac4"
+            }),
+        )
+        .await
+        .unwrap()
+    else {
+        panic!("review_now must return Returned");
+    };
+    let rev_now_json: Value = serde_json::from_str(&rev_now_raw).unwrap();
+    assert_eq!(rev_now_json["review_started"], true);
+    let rev1_id = rev_now_json["review_id"].as_str().unwrap().to_owned();
+
+    // 4. Change via chat tool -> bumps version AND supersedes the older in-flight review!
+    let change_out = store
+        .execute_chat_tool(
+            &claim,
+            &conv,
+            &[],
+            &Invocation {
+                id: "call-change-1".into(),
+                name: FOLLOW_UP_TOOL.into(),
+                arguments: String::new(),
+            },
+            json!({
+                "operation": "change",
+                "follow_up_id": "fu-chat-ac4",
+                "summary": "Check repeat lipid panel and LFTs in 8 weeks",
+                "due_at": due_ts + 14 * 86_400,
+                "note": "Extended window to 8 weeks with LFTs"
+            }),
+        )
+        .await
+        .unwrap();
+    assert!(matches!(change_out, ToolOutcome::Returned(_)));
+    let rev1_after_change = store
+        .patient_review(&practice, &workspace, &rev1_id, &auth)
+        .await
+        .unwrap()
+        .expect("rev1 exists");
+    assert!(
+        matches!(
+            rev1_after_change.state,
+            local_product::runtime::reviews::ReviewLifecycleState::Superseded { .. }
+        ),
+        "changing a follow-up must supersede in-flight review targeting older version: got {:?}",
+        rev1_after_change.state
+    );
+
+    // 5. ReviewNow again, claim it so it's Running, then Stop via chat tool -> holds BOTH!
+    let ToolOutcome::Returned(rev_now_2_raw) = store
+        .execute_chat_tool(
+            &claim,
+            &conv,
+            &[],
+            &Invocation {
+                id: "call-review-now-2".into(),
+                name: FOLLOW_UP_TOOL.into(),
+                arguments: String::new(),
+            },
+            json!({
+                "operation": "review_now",
+                "follow_up_id": "fu-chat-ac4"
+            }),
+        )
+        .await
+        .unwrap()
+    else {
+        panic!("second review_now must return Returned");
+    };
+    let rev2_id = serde_json::from_str::<Value>(&rev_now_2_raw).unwrap()["review_id"]
+        .as_str()
+        .unwrap()
+        .to_owned();
+    let rev2 = store
+        .patient_review(&practice, &workspace, &rev2_id, &auth)
+        .await
+        .unwrap()
+        .unwrap();
+    let _rev2_claim = store
+        .claim_practice_job(&rev2.practice_scope(), 60, &auth)
+        .await
+        .unwrap()
+        .expect("claim rev2");
+
+    let stop_out = store
+        .execute_chat_tool(
+            &claim,
+            &conv,
+            &[],
+            &Invocation {
+                id: "call-stop-1".into(),
+                name: FOLLOW_UP_TOOL.into(),
+                arguments: String::new(),
+            },
+            json!({
+                "operation": "stop",
+                "follow_up_id": "fu-chat-ac4",
+                "reason": "Pausing during statin holiday"
+            }),
+        )
+        .await
+        .unwrap();
+    assert!(matches!(stop_out, ToolOutcome::Returned(_)));
+    let rev2_after_stop = store
+        .patient_review(&practice, &workspace, &rev2_id, &auth)
+        .await
+        .unwrap()
+        .unwrap();
+    assert!(matches!(
+        rev2_after_stop.state,
+        local_product::runtime::reviews::ReviewLifecycleState::Held {
+            reason: local_product::runtime::reviews::ReviewHoldReason::Stopped,
+            ..
+        }
+    ));
+
+    // 6. Resume via chat tool -> releases held rev2 AND admits fresh rev3!
+    let ToolOutcome::Returned(resume_raw) = store
+        .execute_chat_tool(
+            &claim,
+            &conv,
+            &[],
+            &Invocation {
+                id: "call-resume-1".into(),
+                name: FOLLOW_UP_TOOL.into(),
+                arguments: String::new(),
+            },
+            json!({
+                "operation": "resume",
+                "follow_up_id": "fu-chat-ac4"
+            }),
+        )
+        .await
+        .unwrap()
+    else {
+        panic!("resume must return Returned");
+    };
+    let resume_json: Value = serde_json::from_str(&resume_raw).unwrap();
+    assert_eq!(resume_json["review_started"], true);
+    let rev3_id = resume_json["review_id"].as_str().unwrap().to_owned();
+    assert_ne!(rev3_id, rev2_id);
+    let rev2_after_resume = store
+        .patient_review(&practice, &workspace, &rev2_id, &auth)
+        .await
+        .unwrap()
+        .unwrap();
+    assert!(matches!(
+        rev2_after_resume.state,
+        local_product::runtime::reviews::ReviewLifecycleState::Superseded { .. }
+    ));
+}
+
+#[tokio::test]
+#[ignore = "requires explicit local Postgres"]
+async fn p5_ac5_concern_done_and_conversation_archive_leave_active_follow_ups_untouched() {
+    let url = std::env::var("PHYSICIAN_RUNTIME_TEST_DATABASE_URL").unwrap();
+    let store = Store::connect(&url).await.unwrap();
+    store.migrate().await.unwrap();
+    let auth = PostgresAuthStore::connect_with_migrations(&url)
+        .await
+        .unwrap();
+
+    let practice = format!("practice-p5-ac5-{}", uuid::Uuid::new_v4().simple());
+    let workspace = format!("pw-p5-ac5-{}", uuid::Uuid::new_v4().simple());
+    auth.ensure_practice(&practice, PracticeClock::RealTime)
+        .await
+        .unwrap();
+    let (physician, token, session_hash) = invite_and_sign_in(&auth, &practice, "dr-ac5").await;
+    auth.register_patient(&practice, &workspace).await.unwrap();
+    auth.set_membership(&physician, &workspace, Membership::Allowed)
+        .await
+        .unwrap();
+
+    let now_i64 = i64::try_from(unix_seconds()).unwrap();
+    let access = WorkspaceAccess {
+        practice: &practice,
+        physician: &physician.physician_id,
+        workspace: &workspace,
+        session_hash: &session_hash,
+    };
+    let fid_active = FollowUpId::new("fu-ac5-active").unwrap();
+    let fid_held = FollowUpId::new("fu-ac5-held").unwrap();
+    store
+        .create_follow_up_for_physician(
+            &access,
+            &FollowUpCommandKey::new("cmd-ac5-f1").unwrap(),
+            &PhysicianCreateFollowUp {
+                id: fid_active.clone(),
+                summary: FollowUpSummary::new("Recheck BNP in 2 weeks").unwrap(),
+                due_at: now_i64 + 14 * 86_400,
+                records: vec![],
+            },
+            &mut PostgresWorkspaceAuthority,
+        )
+        .await
+        .unwrap();
+    store
+        .create_follow_up_for_physician(
+            &access,
+            &FollowUpCommandKey::new("cmd-ac5-f2").unwrap(),
+            &PhysicianCreateFollowUp {
+                id: fid_held.clone(),
+                summary: FollowUpSummary::new("Check cardiology consult note").unwrap(),
+                due_at: now_i64 + 21 * 86_400,
+                records: vec![],
+            },
+            &mut PostgresWorkspaceAuthority,
+        )
+        .await
+        .unwrap();
+    store
+        .stop_follow_up_for_physician(
+            &access,
+            &FollowUpCommandKey::new("cmd-ac5-f2-stop").unwrap(),
+            &fid_held,
+            None,
+            &mut PostgresWorkspaceAuthority,
+        )
+        .await
+        .unwrap();
+
+    // Record a chart BP observation, raise a patient concern on Today, and mark it Done (`P5.Rule.ConcernDoneVsFollowUp`).
+    let bp_obs = SourceRevision {
+        workspace: workspace.clone(),
+        source_id: "clinic-ehr".into(),
+        candidate_id: "Observation/bp-ac5".into(),
+        revision: "rev-1".into(),
+        record_type: "Observation".into(),
+        dates: vec![RecordDate {
+            name: "effectiveDateTime".into(),
+            value: "2026-11-19".into(),
+        }],
+        content: "Home BP 168/98 mmHg".into(),
+        sha256: sha256_hex(b"Home BP 168/98 mmHg"),
+        readable_parts: vec![ReadablePart {
+            label: "Blood Pressure".into(),
+            text: "Home BP 168/98 mmHg".into(),
+        }],
+        provenance: json!({"title": "Blood Pressure"}),
+        envelope: None,
+    };
+    let bp_pull = SourcePull {
+        source_id: "clinic-ehr".into(),
+        source_label: "Clinic EHR".into(),
+        patient: SourcePatient {
+            source_patient_id: "pt-ac5".into(),
+            display_name: "Marcus Chen".into(),
+            birth_date: Some("1965-05-10".into()),
+            sex_or_gender: Some("male".into()),
+            medical_record_numbers: vec![],
+        },
+        pulled_at: Some(now_i64),
+    };
+    store
+        .record_chart(&workspace, std::slice::from_ref(&bp_obs), &bp_pull)
+        .await
+        .unwrap();
+    let concern_id = local_product::runtime::concerns::ConcernId::new("concern-ac5-bp").unwrap();
+    store
+        .raise_concern(
+            &local_product::runtime::concerns::CommandKey::new("cmd-ac5-raise-concern").unwrap(),
+            &local_product::runtime::concerns::RaiseConcern {
+                practice: practice.clone(),
+                workspace: workspace.clone(),
+                id: concern_id.clone(),
+                urgency: local_product::runtime::concerns::ConcernUrgency::Today,
+                reason: "Elevated home blood pressure reading".into(),
+                records: vec![ExactRecordReference {
+                    candidate_id: "Observation/bp-ac5".into(),
+                    revision: "rev-1".into(),
+                }],
+                source_work: SourceWork::new("patient_review", "work-ac5-concern", "att-ac5")
+                    .unwrap(),
+            },
+        )
+        .await
+        .unwrap();
+    let now_u64 = unix_seconds();
+    let today = store
+        .read_today(&auth, &token, now_u64, &std::collections::BTreeMap::new())
+        .await
+        .unwrap();
+    let concern_row = today
+        .rows
+        .iter()
+        .find(|r| r.workspace == workspace)
+        .expect("concern on Today");
+    let done = store
+        .clear_today_item_done(
+            &auth,
+            &mut PostgresWorkspaceAuthority,
+            &local_product::runtime::today_updates::ClearItemDoneRequest {
+                token: &token,
+                real_now_unix: now_u64,
+                workspace: &workspace,
+                item_key: &concern_row.item_key,
+                version_id: &concern_row.version_id,
+                command_key: &local_product::runtime::concerns::CommandKey::new(
+                    "cmd-ac5-concern-done",
+                )
+                .unwrap(),
+            },
+        )
+        .await
+        .unwrap();
+    assert!(matches!(
+        done,
+        local_product::runtime::today_updates::TodayDoneResult::Cleared { .. }
+    ));
+
+    // Verify BOTH active and held follow-ups remain completely untouched!
+    let after = store
+        .physician_follow_ups(&access, &mut PostgresWorkspaceAuthority)
+        .await
+        .unwrap();
+    let active_after = after.iter().find(|f| f.id == fid_active).unwrap();
+    let held_after = after.iter().find(|f| f.id == fid_held).unwrap();
+    assert!(matches!(
+        active_after.standing,
+        FollowUpStanding::Active { .. }
+    ));
+    assert_eq!(active_after.version, 1);
+    assert!(matches!(held_after.standing, FollowUpStanding::Held { .. }));
+    assert_eq!(held_after.version, 2);
+}

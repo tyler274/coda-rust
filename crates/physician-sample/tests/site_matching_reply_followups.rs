@@ -3027,15 +3027,31 @@ async fn follow_ups_restart_controls_faults_cannot_restart_and_responsive_layout
         Duration::from_secs(15),
     );
 
-    // AC2: `Stop and discuss` holds the follow-up AND opens a durable patient conversation seeded with its context!
+    // AC2: `Stop and discuss` holds the follow-up AND opens a discussion conversation
+    // with a physician-editable draft in the composer (no canned auto-sent AI turn)!
     tab.click(&format!("[data-follow-up-stop-discuss=\"{fid1}\"]"));
     tab.wait_for_selector(
         &format!("[data-follow-up-card=\"{fid1}\"][data-follow-up-standing=\"held\"]"),
         Duration::from_secs(15),
     );
-    tab.wait_for_text(
-        "Let's discuss held follow-up \"Recheck BMP potassium and creatinine after lisinopril 20 mg\"",
-        Duration::from_secs(20),
+    tab.wait_for_selector("textarea.composer-input", Duration::from_secs(15));
+    let expected_draft = "Regarding held follow-up \"Recheck BMP potassium and creatinine after lisinopril 20 mg\": ";
+    let deadline = std::time::Instant::now() + Duration::from_secs(15);
+    let mut composer_draft = String::new();
+    while std::time::Instant::now() < deadline {
+        composer_draft = tab
+            .eval("document.querySelector('textarea.composer-input')?.value ?? ''")
+            .as_str()
+            .unwrap_or_default()
+            .to_owned();
+        if composer_draft == expected_draft {
+            break;
+        }
+        std::thread::sleep(Duration::from_millis(100));
+    }
+    assert_eq!(
+        composer_draft, expected_draft,
+        "Stop and discuss without a note must open a physician-editable draft in the composer"
     );
     let stored_fu_after_discuss = harness
         .store
@@ -3173,7 +3189,7 @@ async fn follow_ups_restart_controls_faults_cannot_restart_and_responsive_layout
         .as_str()
         .unwrap_or_default()
         .to_owned();
-    assert_eq!(cr_cancel_label, "Cancel");
+    assert_eq!(cr_cancel_label, "Cancel follow-up");
     tab.wait_for_text("Can't restart", Duration::from_secs(10));
 
     // Desktop (1440x960) layout check + screenshot
@@ -3207,4 +3223,156 @@ async fn follow_ups_restart_controls_faults_cannot_restart_and_responsive_layout
         &format!("[data-follow-up-card=\"{fid3}\"][data-follow-up-standing=\"scheduled\"]"),
         Duration::from_secs(15),
     );
+
+    // P5.Along.CantRestart: Today `Done` on a `CannotRestart` follow-up row must open
+    // an explicit choice prompt (`Complete`, `Set a new date`, `Cancel follow-up`)
+    // instead of silently dismissing it!
+    harness
+        .store
+        .apply_follow_up_review_outcome(
+            STAGING_PRACTICE_ID,
+            ws_elena,
+            &FollowUpCommandKey::new("cmd-mark-cannot-restart-today").expect("valid cmd key"),
+            &FollowUpId::new(&fid3).expect("valid fid3"),
+            SourceWork::new("patient_review", "work-fu-cr-today", "att-fu-cr-today")
+                .expect("source work"),
+            FollowUpReviewOutcome::CannotRestart {
+                failed_work_id: "work-fu-cr-today".to_owned(),
+                reason: "A1c follow-up exhausted automatic retries.".to_owned(),
+            },
+        )
+        .await
+        .expect("mark follow-up CannotRestart for Today Done prompt");
+    tab.click("button[aria-label=\"Open Today\"]");
+    let today_cr_done_sel = format!("[data-today-done=\"unhandled-followup:{ws_elena}:{fid3}\"]");
+    tab.wait_for_selector(&today_cr_done_sel, Duration::from_secs(15));
+    tab.click(&today_cr_done_sel);
+    tab.wait_for_selector(
+        &format!("[data-today-cannot-restart-prompt=\"{fid3}\"]"),
+        Duration::from_secs(10),
+    );
+    tab.wait_for_selector(
+        &format!("[data-today-cr-complete=\"{fid3}\"]"),
+        Duration::from_secs(10),
+    );
+    tab.wait_for_selector(
+        &format!("[data-today-cr-new-date=\"{fid3}\"]"),
+        Duration::from_secs(10),
+    );
+    tab.wait_for_selector(
+        &format!("[data-today-cr-cancel=\"{fid3}\"]"),
+        Duration::from_secs(10),
+    );
+    tab.save_screenshot("19-today-cannot-restart-done-prompt");
+    tab.click(&format!("[data-today-cr-complete=\"{fid3}\"]"));
+    let cr_done_deadline = std::time::Instant::now() + Duration::from_secs(15);
+    while std::time::Instant::now() < cr_done_deadline {
+        let prompt_gone = tab
+            .eval(&format!(
+                "!document.querySelector('[data-today-cannot-restart-prompt=\"{fid3}\"]') && !document.querySelector('{today_cr_done_sel}')"
+            ))
+            .as_bool()
+            .unwrap_or(false);
+        if prompt_gone {
+            break;
+        }
+        std::thread::sleep(Duration::from_millis(100));
+    }
+    let resolved_fu3 = harness
+        .store
+        .workspace_follow_ups(STAGING_PRACTICE_ID, ws_elena)
+        .await
+        .expect("read workspace follow-ups")
+        .into_iter()
+        .find(|f| f.id.as_str() == fid3)
+        .expect("fid3 exists");
+    assert!(
+        matches!(resolved_fu3.standing, FollowUpStanding::Completed { .. }),
+        "resolving CannotRestart via Today Done Complete must mark it Completed: got {:?}",
+        resolved_fu3.standing
+    );
+
+    // P5.Rule.BackgroundNoFocus: a live background follow-up update arriving over SSE
+    // while the physician is typing in the chat composer must render without stealing
+    // keyboard focus or clobbering the typed text!
+    let bg_now = real_now_unix();
+    let bg_invite = harness
+        .auth
+        .invite(
+            STAGING_PRACTICE_ID,
+            "dr.bg-sse@codahealth.test",
+            "Dr. Background",
+            true,
+            bg_now,
+        )
+        .await
+        .expect("invite background colleague");
+    let (bg_identity, bg_token) = harness
+        .auth
+        .redeem_invitation("dr.bg-sse@codahealth.test", &bg_invite, bg_now)
+        .await
+        .expect("redeem colleague invitation");
+    harness
+        .auth
+        .set_membership(&bg_identity, ws_elena, Membership::Allowed)
+        .await
+        .expect("grant colleague panel access");
+
+    tab.navigate(&format!("http://{}/?patient={ws_elena}", harness.address));
+    tab.wait_for_selector(
+        "[data-patient-follow-ups-section=\"true\"]",
+        Duration::from_secs(15),
+    );
+    tab.click("section[aria-label=\"Conversation\"] button");
+    tab.wait_for_selector("textarea.composer-input", Duration::from_secs(15));
+    tab.eval(
+        "(() => { const el = document.querySelector('textarea.composer-input'); el.focus(); return true; })()",
+    );
+    tab.type_into("textarea.composer-input", "Checking potassium trend");
+    let before_active = tab
+        .eval("document.activeElement === document.querySelector('textarea.composer-input')")
+        .as_bool()
+        .unwrap_or(false);
+    assert!(
+        before_active,
+        "composer textarea must be focused before background update"
+    );
+
+    // Create a background follow-up through the server HTTP API so a real SSE Resync fires.
+    let bg_summary = "Background SSE check: repeat BNP in 10 days";
+    let http_client = reqwest::Client::new();
+    let bg_resp = http_client
+        .post(format!(
+            "http://{}/patient-workspaces/{ws_elena}/follow-ups",
+            harness.address
+        ))
+        .header("authorization", format!("Bearer {bg_token}"))
+        .json(&serde_json::json!({
+            "summary": bg_summary,
+            "due_date": "2026-10-20",
+            "idempotency_key": "cmd-bg-sse-focus-check"
+        }))
+        .send()
+        .await
+        .expect("create background follow-up via HTTP");
+    assert_eq!(bg_resp.status(), reqwest::StatusCode::OK);
+    tab.wait_for_text(bg_summary, Duration::from_secs(15));
+    let after_active = tab
+        .eval("document.activeElement === document.querySelector('textarea.composer-input')")
+        .as_bool()
+        .unwrap_or(false);
+    let after_value = tab
+        .eval("document.querySelector('textarea.composer-input')?.value ?? ''")
+        .as_str()
+        .unwrap_or_default()
+        .to_owned();
+    assert!(
+        after_active,
+        "background follow-up SSE update must NOT steal keyboard focus from the composer"
+    );
+    assert!(
+        after_value.contains("Checking potassium trend"),
+        "background follow-up SSE update must NOT clobber typed text: got {after_value:?}"
+    );
+    tab.save_screenshot("20-background-followup-preserves-focus");
 }

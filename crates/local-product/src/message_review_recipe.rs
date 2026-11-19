@@ -582,6 +582,9 @@ pub struct MessageReviewStartingContext {
     /// Active follow-up responsibilities in this workspace.
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub active_follow_ups: Vec<FollowUp>,
+    /// Cancelled follow-ups in this workspace (must stay cancelled unless new clinical info arrives).
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub cancelled_follow_ups: Vec<FollowUp>,
     /// Open clinical concerns currently active for this patient.
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub open_concerns: Vec<OpenConcernSummary>,
@@ -798,6 +801,28 @@ impl MessageReviewStartingContext {
                     item.due_at,
                     item.summary.as_str()
                 ));
+            }
+        }
+        if !self.cancelled_follow_ups.is_empty() {
+            lines.push(
+                "Cancelled patient follow-ups (stay cancelled; do not recreate unless genuinely new clinical information has arrived):"
+                    .to_owned(),
+            );
+            for item in &self.cancelled_follow_ups {
+                if let FollowUpStanding::Cancelled {
+                    reason,
+                    cancelled_at,
+                    ..
+                } = &item.standing
+                {
+                    lines.push(format!(
+                        "- [{}] cancelled at unix {} (reason: {}): {}",
+                        item.id,
+                        cancelled_at,
+                        reason.as_str(),
+                        item.summary.as_str()
+                    ));
+                }
             }
         }
 
@@ -2159,6 +2184,9 @@ pub(crate) async fn load_practice_patient_starting_context(
     let understanding = store
         .patient_understanding_internal(practice, workspace)
         .await?;
+    let follow_ups = store
+        .load_follow_up_context_summaries_for_workspace(practice, workspace)
+        .await?;
 
     Ok(PatientStartingContext {
         workspace: workspace.to_owned(),
@@ -2171,6 +2199,7 @@ pub(crate) async fn load_practice_patient_starting_context(
         withdrawal_boundary,
         memory_standing,
         open_concerns,
+        follow_ups,
         recent_work,
     })
 }
@@ -2214,10 +2243,18 @@ pub async fn build_message_review_starting_context(
     let patient_ctx = load_practice_patient_starting_context(store, practice, &workspace).await?;
     let refresh_statuses = store.saved_source_statuses(practice, &workspace).await?;
     let all_follow_ups = store.workspace_follow_ups(practice, &workspace).await?;
-    let active_follow_ups: Vec<FollowUp> = all_follow_ups
-        .into_iter()
-        .filter(|item| matches!(item.standing, FollowUpStanding::Active { .. }))
-        .collect();
+    let mut active_follow_ups = Vec::new();
+    let mut cancelled_follow_ups = Vec::new();
+    for item in all_follow_ups {
+        match item.standing {
+            FollowUpStanding::Active { .. } => active_follow_ups.push(item),
+            FollowUpStanding::Cancelled { .. } => cancelled_follow_ups.push(item),
+            FollowUpStanding::Held { .. }
+            | FollowUpStanding::CannotRestart { .. }
+            | FollowUpStanding::Completed { .. }
+            | FollowUpStanding::WithdrawnWrongPatient { .. } => {}
+        }
+    }
 
     let saw_physician_reply_request = match &snapshot.review.read_state {
         ReviewReadState::Current {
@@ -2337,6 +2374,7 @@ pub async fn build_message_review_starting_context(
         withdrawal_boundary: patient_ctx.withdrawal_boundary,
         memory_standing: patient_ctx.memory_standing,
         active_follow_ups,
+        cancelled_follow_ups,
         open_concerns: patient_ctx.open_concerns,
     };
 

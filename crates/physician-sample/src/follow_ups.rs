@@ -19,7 +19,7 @@ use local_product::runtime::follow_ups::{
     FollowUpError, FollowUpId, FollowUpReviewSchedule, FollowUpStanding, FollowUpSummary,
     FollowUpUpdateEntry, FollowUpUpdateKind, PhysicianChangeFollowUp, PhysicianCreateFollowUp,
 };
-use local_product::runtime::reviews::AdmittedPatientReview;
+use local_product::runtime::reviews::{AdmittedPatientReview, PatientReviewError};
 use local_product::runtime::{Input, Scope, Store};
 use physician_auth::PostgresAuthStore;
 use physician_bus::Event;
@@ -226,7 +226,8 @@ fn follow_up_error_response(err: FollowUpError) -> Response {
         | FollowUpError::InvalidTransition { .. }
         | FollowUpError::UnverifiedRecord { .. }
         | FollowUpError::IdempotencyCollision { .. }
-        | FollowUpError::WithdrawnFence(_) => (
+        | FollowUpError::WithdrawnFence(_)
+        | FollowUpError::CancelledDuplicateWithoutNewInfo { .. } => (
             StatusCode::CONFLICT,
             Json(json!({ "detail": format!("Not saved: {err}") })),
         )
@@ -671,7 +672,7 @@ async fn queue_physician_follow_up_review(
     workspace: &str,
     follow_up: &FollowUp,
     idempotency_key: &str,
-) -> bool {
+) -> Result<bool, PatientReviewError> {
     let identity = ConnectedCare::identity(extensions);
     let auth_store = connected.auth_store(extensions);
     let (roles, skills) = with_review_receiver_setup(store, extensions).await;
@@ -685,14 +686,13 @@ async fn queue_physician_follow_up_review(
             idempotency_key
         ),
     );
-    let request_text = format!("Review follow-up: {}", follow_up.summary.as_str());
     match store
-        .submit_physician_patient_review(
+        .submit_physician_follow_up_review(
             auth_store.as_ref(),
             &identity,
             workspace,
             &review_cmd_key,
-            &request_text,
+            follow_up,
             &roles,
             &skills,
         )
@@ -707,12 +707,12 @@ async fn queue_physician_follow_up_review(
                     })
                     .await;
             }
-            true
+            Ok(true)
         }
-        Ok(AdmittedPatientReview::Duplicate { .. }) => true,
+        Ok(AdmittedPatientReview::Duplicate { .. }) => Ok(true),
         Err(err) => {
-            tracing::warn!(%err, "physician follow-up review submission skipped");
-            false
+            tracing::warn!(%err, "physician follow-up review submission failed");
+            Err(err)
         }
     }
 }
@@ -778,7 +778,7 @@ async fn review_follow_up_now(
     };
 
     let saved = outcome.follow_up().clone();
-    let review_started = queue_physician_follow_up_review(
+    let review_started = match queue_physician_follow_up_review(
         &store,
         &connected,
         extensions,
@@ -786,7 +786,22 @@ async fn review_follow_up_now(
         &saved,
         &payload.idempotency_key,
     )
-    .await;
+    .await
+    {
+        Ok(started) => started,
+        Err(err) => {
+            publish_bus_resync(extensions).await;
+            return (
+                StatusCode::SERVICE_UNAVAILABLE,
+                Json(json!({
+                    "detail": format!(
+                        "Follow-up was marked due for immediate review, but Coda could not start the review right now ({err})."
+                    )
+                })),
+            )
+                .into_response();
+        }
+    };
     publish_bus_resync(extensions).await;
 
     Json(FollowUpMutationResponseWire {
@@ -966,85 +981,113 @@ async fn stop_and_discuss_follow_up(
             payload.idempotency_key
         ),
     );
-    let seeded_question = match &reason {
-        Some(r) => format!(
-            "Let's discuss held follow-up \"{}\": {}",
-            saved.summary.as_str(),
-            r.as_str()
-        ),
-        None => format!(
-            "Let's discuss held follow-up \"{}\".",
-            saved.summary.as_str()
-        ),
-    };
-    let timezone = payload
-        .physician_time_zone
-        .as_deref()
-        .map(str::trim)
-        .filter(|tz| !tz.is_empty())
-        .unwrap_or("America/Los_Angeles")
-        .to_owned();
     let scope = Scope {
         practice: req_ctx.practice_id.clone(),
         physician: req_ctx.physician_id.clone(),
         workspace: workspace.clone(),
         chat: chat_id.clone(),
     };
-    let turn_input = Input {
-        key: format!("fudisc-turn:{}", payload.idempotency_key),
-        text: seeded_question,
-        timezone,
-        scenario: None,
-    };
 
     let accepted_chat_result: Result<String, String> =
         if is_faulted(extensions, MatchingReplyFollowUpsFault::StopAndDiscussChat) {
             Err("discussion chat unavailable".to_owned())
-        } else if let Some(live) = extensions.get::<Arc<Live>>() {
-            match live
-                .chat
-                .accept(&scope, &turn_input, req_ctx.session_hash.clone())
-                .await
+        } else if let Some(physician_question) = &reason {
+            // Physician composed an explicit question/note: start the discussion
+            // conversation with the physician's own words and practice timezone.
+            let timezone = match payload
+                .physician_time_zone
+                .as_deref()
+                .map(str::trim)
+                .filter(|tz| !tz.is_empty())
             {
-                Ok(_) => {
-                    let _ = live
-                        .bus
-                        .publish(Event::WorkspaceChanged {
-                            workspace_id: workspace.clone(),
-                        })
-                        .await;
-                    Ok(chat_id)
+                Some(tz) => tz.to_owned(),
+                None => match connected.practice_moment(extensions).await {
+                    Ok(moment) => moment.time_zone.as_str().to_owned(),
+                    Err(_) => "UTC".to_owned(),
+                },
+            };
+            let turn_input = Input {
+                key: format!("fudisc-turn:{}", payload.idempotency_key),
+                text: physician_question.as_str().to_owned(),
+                timezone,
+                scenario: None,
+            };
+            if let Some(live) = extensions.get::<Arc<Live>>() {
+                match live
+                    .chat
+                    .accept(&scope, &turn_input, req_ctx.session_hash.clone())
+                    .await
+                {
+                    Ok(_) => {
+                        let _ = live
+                            .bus
+                            .publish(Event::WorkspaceChanged {
+                                workspace_id: workspace.clone(),
+                            })
+                            .await;
+                        Ok(chat_id)
+                    }
+                    Err(err) => {
+                        tracing::warn!(%err, "follow-up discuss chat accept failed");
+                        Err(err.to_string())
+                    }
                 }
-                Err(err) => {
-                    tracing::warn!(%err, "follow-up discuss chat accept failed");
-                    Err(err.to_string())
+            } else {
+                let (roles, skills) = with_review_receiver_setup(&store, extensions).await;
+                match store
+                    .chat_recipe_with_understanding(
+                        &roles.chat,
+                        local_product::physician_chat::INSTRUCTIONS,
+                        &skills,
+                        &scope.practice,
+                        &scope.workspace,
+                    )
+                    .await
+                {
+                    Ok(recipe) => store
+                        .accept_authorized(
+                            &scope,
+                            &turn_input,
+                            req_ctx.session_hash.clone(),
+                            &skills,
+                            &recipe,
+                            crate::durable::request_context(),
+                        )
+                        .await
+                        .map(|_| chat_id)
+                        .map_err(|err| err.to_string()),
+                    Err(err) => Err(err.to_string()),
                 }
             }
         } else {
-            let (roles, skills) = with_review_receiver_setup(&store, extensions).await;
+            // No physician message supplied yet: open a fresh discussion composer
+            // with an editable draft instead of auto-sending a canned AI turn.
+            let draft_text = format!("Regarding held follow-up \"{}\": ", saved.summary.as_str());
             match store
-                .chat_recipe_with_understanding(
-                    &roles.chat,
-                    local_product::physician_chat::INSTRUCTIONS,
-                    &skills,
-                    &scope.practice,
-                    &scope.workspace,
+                .save_chat_draft(
+                    &scope,
+                    0,
+                    &draft_text,
+                    &req_ctx.session_hash,
+                    &mut authority,
                 )
                 .await
             {
-                Ok(recipe) => store
-                    .accept_authorized(
-                        &scope,
-                        &turn_input,
-                        req_ctx.session_hash.clone(),
-                        &skills,
-                        &recipe,
-                        crate::durable::request_context(),
-                    )
-                    .await
-                    .map(|_| chat_id)
-                    .map_err(|err| err.to_string()),
-                Err(err) => Err(err.to_string()),
+                Ok(_) => {
+                    if let Some(live) = extensions.get::<Arc<Live>>() {
+                        let _ = live
+                            .bus
+                            .publish(Event::WorkspaceChanged {
+                                workspace_id: workspace.clone(),
+                            })
+                            .await;
+                    }
+                    Ok(chat_id)
+                }
+                Err(err) => {
+                    tracing::warn!(%err, "follow-up discuss draft save failed");
+                    Err(err.to_string())
+                }
             }
         };
 
@@ -1133,7 +1176,7 @@ async fn resume_follow_up(
         Err(err) => return follow_up_error_response(err),
     };
     let saved = outcome.follow_up().clone();
-    let review_started = queue_physician_follow_up_review(
+    let review_started = match queue_physician_follow_up_review(
         &store,
         &connected,
         extensions,
@@ -1141,7 +1184,22 @@ async fn resume_follow_up(
         &saved,
         &payload.idempotency_key,
     )
-    .await;
+    .await
+    {
+        Ok(started) => started,
+        Err(err) => {
+            publish_bus_resync(extensions).await;
+            return (
+                StatusCode::SERVICE_UNAVAILABLE,
+                Json(json!({
+                    "detail": format!(
+                        "Follow-up was resumed, but Coda could not start the review right now ({err})."
+                    )
+                })),
+            )
+                .into_response();
+        }
+    };
     publish_bus_resync(extensions).await;
 
     Json(FollowUpMutationResponseWire {

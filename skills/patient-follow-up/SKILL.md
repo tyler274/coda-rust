@@ -57,6 +57,8 @@ material limits:
   for example, the medication being monitored was discontinued before testing, care transferred
   permanently elsewhere, or a physician correction superseded the premise. State why the
   responsibility ended and never describe an ended or cancelled follow-up as clinically completed.
+  A cancelled follow-up stays cancelled and must not be recreated unless genuinely new clinical
+  information arrives that warrants watching for it again.
 
 ## Missing Evidence, Silence, Overdue Work, and Conflicting Records
 

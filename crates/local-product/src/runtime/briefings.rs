@@ -1652,6 +1652,12 @@ impl Store {
         let understanding = self
             .patient_understanding_internal(practice, workspace)
             .await?;
+        let withheld =
+            super::link_correction::load_workspace_withheld_state_in_tx(&self.db, workspace)
+                .await?;
+        let follow_ups = self
+            .load_follow_up_context_summaries(practice, workspace, &withheld)
+            .await?;
 
         Ok(PatientStartingContext {
             workspace: workspace.to_owned(),
@@ -1664,6 +1670,7 @@ impl Store {
             withdrawal_boundary,
             memory_standing,
             open_concerns,
+            follow_ups,
             recent_work,
         })
     }

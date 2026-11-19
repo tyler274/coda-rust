@@ -156,8 +156,8 @@ of multi-page PDFs, faxes or chart scans with read_document_page. When source cu
 could change clinical judgment or a source pull is stale, call refresh_patient_sources before concluding. \
 When read chart revisions establish, update or resolve an urgent (`now`) or same-day (`today`) clinical \
 concern, record that change with patient_concern grounded in the exact candidate_id and revision values \
-opened in this turn. When clinical judgment or physician direction establishes, updates, completes or cancels \
-a dated follow-up item to watch for, record that change with patient_follow_up. If chart records are added, corrected or withdrawn before your reply finishes and your \
+opened in this turn. When clinical judgment or physician direction lists, creates, updates, stops (pauses), resumes, requests immediate review of, completes or cancels \
+a dated follow-up item to watch for, record or inspect that change with patient_follow_up. A cancelled follow-up stays cancelled; never recreate it unless genuinely new clinical information arrives. If chart records are added, corrected or withdrawn before your reply finishes and your \
 finish is refused with an arrival note, judge whether any added records affect the question, call \
 read_patient_sources on every corrected or withdrawn record you relied on, update any affected memory or \
 concern, and then give your complete updated answer. If any read, refresh, memory, concern or follow-up call fails or \
@@ -948,6 +948,7 @@ mod tests {
                 log_days: Vec::new(),
             },
             open_concerns: Vec::new(),
+            follow_ups: Vec::new(),
             recent_work: Vec::new(),
         };
         let assignment = ChatAssignment::for_patient(scope, starting_context);
@@ -1073,11 +1074,6 @@ mod tests {
         offered.extend(crate::patient_reviews::tools().iter().map(Tool::function));
         offered.extend(
             crate::visit_preparation::all_tools()
-                .iter()
-                .map(Tool::function),
-        );
-        offered.extend(
-            crate::follow_up_reassessment::tools()
                 .iter()
                 .map(Tool::function),
         );
