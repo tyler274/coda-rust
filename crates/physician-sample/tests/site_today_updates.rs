@@ -2043,22 +2043,22 @@ async fn ac1_every_producer_kind_flat_order_and_open_lands_on_work_and_evidence(
     tab.click("[data-citation-candidate=\"obs-k-elena\"] button");
     tab.wait_for_text("TAIL_MARKER_BEYOND_320_CHARS", Duration::from_secs(10));
     let reader_snapshot = tab.eval(
-        "({text: document.querySelector('.citation-inspection')?.innerText ?? '', \
-           href: document.querySelector('.citation-inspection a.citation-open')?.getAttribute('href') ?? '', \
-           linkText: document.querySelector('.citation-inspection a.citation-open')?.textContent?.trim() ?? ''})",
+        "({text: document.querySelector('.source-reading-pane')?.innerText ?? '', \
+           href: document.querySelector('.source-reading-pane a.source-original')?.getAttribute('href') ?? '', \
+           linkText: document.querySelector('.source-reading-pane a.source-original')?.textContent?.trim() ?? ''})",
     );
     let reader_text = reader_snapshot["text"].as_str().unwrap_or_default();
     assert!(
         reader_text.contains("TAIL_MARKER_BEYOND_320_CHARS")
             && !reader_text.lines().any(|line| line.trim() == "attachment"),
-        "ReaderDialog must render full untruncated record text without raw `attachment` label:\n{reader_text}"
+        "source reading pane must render full untruncated record text without raw `attachment` label:\n{reader_text}"
     );
     assert_eq!(
         reader_snapshot["href"],
         json!("https://ehr.codahealth.test/chart/obs-k-elena")
     );
     assert_eq!(reader_snapshot["linkText"], json!("Open in Regional EHR"));
-    tab.click(".citation-inspection button[aria-label=\"Close\"]");
+    tab.click(".source-reading-pane button[aria-label=\"Close\"]");
     tab.wait_until_absent("TAIL_MARKER_BEYOND_320_CHARS", Duration::from_secs(10));
 
     // Navigate to Updates -> verify every producer kind reached Updates with clean non-duplicated headlines!

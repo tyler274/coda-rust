@@ -217,10 +217,22 @@ pub(crate) fn item_citation_to_chip(index: usize, citation: &ItemCitationWire) -
     };
     SourceChip {
         index,
+        source_key: None,
         open: true,
         label: citation.label.clone(),
+        target: if citation.excerpt.trim().is_empty() {
+            physician_wire::CitationTargetKind::WholeRecord
+        } else {
+            physician_wire::CitationTargetKind::Passage
+        },
+        quote: citation.excerpt.clone(),
         as_of: citation.as_of.clone().unwrap_or_default(),
         preview: full_record,
+        record_kind: None,
+        record_status: None,
+        readable_parts: Vec::new(),
+        fields: Vec::new(),
+        raw_content: None,
         open_label,
         open_uri: citation.native_uri.clone(),
         origin: physician_wire::CitationOrigin::SourceRecord,

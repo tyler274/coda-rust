@@ -293,6 +293,15 @@ pub(crate) async fn submit(
     if body.kind == "message.queue_send_now" {
         return queue_send_now_durable(live, auth_ctx, body).await;
     }
+    if body.kind == "conversation.archive" {
+        return archive_durable(live, auth_ctx, body).await;
+    }
+    if body.kind == "conversation.restore" {
+        return restore_durable(live, auth_ctx, body).await;
+    }
+    if body.kind == "discussion.open" {
+        return discuss_durable(live, auth_ctx, body).await;
+    }
     if body.kind != "message.submit" {
         return Json(json!({
             "outcome": "rejected",
@@ -389,6 +398,41 @@ pub(crate) async fn snapshot(
         chat,
     )
     .await
+}
+
+/// Authoritative cited source record readback for a single source key in an open chat.
+pub(crate) async fn cited_source(
+    State(live): State<Arc<Live>>,
+    auth_ctx: Option<Extension<AuthContext>>,
+    Path((workspace, chat, source_key)): Path<(String, String, String)>,
+) -> Response {
+    let Some(Extension(ctx)) = auth_ctx else {
+        return StatusCode::UNAUTHORIZED.into_response();
+    };
+    let scope = local_product::runtime::Scope {
+        practice: ctx.identity.practice_id,
+        physician: ctx.identity.physician_id,
+        workspace,
+        chat,
+    };
+    let readback = match live.chat.store.reopen_conversation(&scope).await {
+        Ok(Some(readback)) => readback,
+        Ok(None) => return StatusCode::NOT_FOUND.into_response(),
+        Err(error) => {
+            tracing::error!(%error, "physician cited source readback failed");
+            return StatusCode::SERVICE_UNAVAILABLE.into_response();
+        }
+    };
+    let Some(src) = readback.sources.get(&source_key) else {
+        return StatusCode::NOT_FOUND.into_response();
+    };
+    if src.source_id == "unavailable" {
+        return (StatusCode::NOT_FOUND, Json(json!({ "detail": src.body }))).into_response();
+    }
+    Json(physician_wire::CitedSourceResponse {
+        source: wire_cited_source(src),
+    })
+    .into_response()
 }
 
 async fn accept_durable(
@@ -521,6 +565,7 @@ enum SnapshotFeedback {
 
 fn wire_segment(
     segment: &local_product::runtime::history::HistorySegment,
+    target: physician_wire::CitationTargetKind,
 ) -> physician_wire::MessageSegment {
     match segment {
         local_product::runtime::history::HistorySegment::Text { text } => {
@@ -536,7 +581,49 @@ fn wire_segment(
             number: *number,
             label: label.clone(),
             quote: quote.clone(),
+            target,
         },
+    }
+}
+
+fn wire_segments_with_targets(
+    segments: &[local_product::runtime::history::HistorySegment],
+    targets: &[physician_wire::CitationTargetKind],
+) -> Vec<physician_wire::MessageSegment> {
+    let mut target_idx = 0usize;
+    segments
+        .iter()
+        .map(|segment| match segment {
+            local_product::runtime::history::HistorySegment::Text { .. } => {
+                wire_segment(segment, Default::default())
+            }
+            local_product::runtime::history::HistorySegment::Citation { .. } => {
+                let target = targets.get(target_idx).copied().unwrap_or_default();
+                target_idx += 1;
+                wire_segment(segment, target)
+            }
+        })
+        .collect()
+}
+
+fn wire_cited_source(
+    src: &local_product::runtime::history::CitedSourceReadback,
+) -> physician_wire::CitedSourceWire {
+    physician_wire::CitedSourceWire {
+        source_key: src.source_key.clone(),
+        number: src.number,
+        source_label: src.source_label.clone(),
+        title: src.title.clone(),
+        record_type: (!src.record_type.is_empty()).then(|| src.record_type.clone()),
+        recorded_at: src.recorded_at.clone(),
+        record_status: src.record_status.clone(),
+        quote: src.quote.clone(),
+        body: src.body.clone(),
+        readable_parts: src.readable_parts.clone(),
+        fields: src.fields.clone(),
+        raw_content: (!src.raw_content.is_empty()).then(|| src.raw_content.clone()),
+        external_url: src.external_url.clone(),
+        origin: src.origin,
     }
 }
 
@@ -560,24 +647,7 @@ fn snapshot_body(
         sources = readback
             .sources
             .iter()
-            .map(|(key, src)| {
-                (
-                    key.clone(),
-                    physician_wire::CitedSourceWire {
-                        source_key: src.source_key.clone(),
-                        number: src.number,
-                        source_label: src.source_label.clone(),
-                        title: src.title.clone(),
-                        record_type: (!src.record_type.is_empty()).then(|| src.record_type.clone()),
-                        recorded_at: src.recorded_at.clone(),
-                        quote: src.quote.clone(),
-                        body: src.body.clone(),
-                        raw_content: (!src.raw_content.is_empty()).then(|| src.raw_content.clone()),
-                        external_url: src.external_url.clone(),
-                        origin: src.origin,
-                    },
-                )
-            })
+            .map(|(key, src)| (key.clone(), wire_cited_source(src)))
             .collect();
         let assistant_turns: BTreeMap<&str, &local_product::runtime::history::SavedTurnReadback> =
             readback
@@ -610,11 +680,11 @@ fn snapshot_body(
                 && let Some(turn) = assistant_turns.get(response_id.as_str())
             {
                 *text = turn.raw_text.clone();
-                *segments = turn.segments.iter().map(wire_segment).collect();
+                *segments = wire_segments_with_targets(&turn.segments, &turn.segment_targets);
                 *basis = turn
                     .basis
                     .as_ref()
-                    .map(|items| items.iter().map(wire_segment).collect())
+                    .map(|items| wire_segments_with_targets(items, &turn.basis_targets))
                     .filter(|items: &Vec<_>| !items.is_empty());
                 *newer_records = turn.newer_records;
             }
@@ -627,11 +697,13 @@ fn snapshot_body(
     let queued = conversation
         .map(local_product::runtime::Conversation::queued_messages)
         .unwrap_or_default();
+    let archived = conversation.is_some_and(|conv| conv.archived);
     Ok(ChatSnapshot {
         transcript,
         feedback,
         sources,
         queued,
+        archived,
     })
 }
 
@@ -892,6 +964,236 @@ async fn decide_recommendation_durable(
         )
             .into_response(),
     }
+}
+
+#[derive(Deserialize)]
+struct ArchivePayload {
+    patient_workspace_id: String,
+    chat_id: String,
+}
+
+#[derive(Deserialize)]
+struct DiscussPayload {
+    patient_workspace_id: String,
+    chat_id: String,
+    #[serde(default)]
+    work_item_id: Option<String>,
+}
+
+async fn archive_durable(
+    live: Arc<Live>,
+    auth_ctx: Option<Extension<AuthContext>>,
+    body: CommandBody,
+) -> Response {
+    let Some(Extension(ctx)) = auth_ctx else {
+        return StatusCode::UNAUTHORIZED.into_response();
+    };
+    let Some(payload) = body
+        .payload
+        .and_then(|value| serde_json::from_value::<ArchivePayload>(value).ok())
+    else {
+        return rejected("conversation.archive");
+    };
+    let Some(key) = body.idempotency_key.filter(|k| !k.trim().is_empty()) else {
+        return rejected("conversation.archive");
+    };
+    let scope = local_product::runtime::Scope {
+        practice: ctx.identity.practice_id.clone(),
+        physician: ctx.identity.physician_id.clone(),
+        workspace: payload.patient_workspace_id.clone(),
+        chat: payload.chat_id.clone(),
+    };
+    let session_hash = physician_auth::PostgresAuthStore::session_reference(&ctx.token);
+    match live
+        .chat
+        .archive_conversation(&scope, &key, session_hash)
+        .await
+    {
+        Ok(local_product::runtime::ArchiveOutcome::RefusedBusyOrInvalid) => {
+            rejected("conversation.archive")
+        }
+        Ok(outcome) => {
+            if outcome == local_product::runtime::ArchiveOutcome::Archived
+                && live
+                    .bus
+                    .publish(Event::WorkspaceChanged {
+                        workspace_id: payload.patient_workspace_id.clone(),
+                    })
+                    .await
+                    .is_err()
+            {
+                tracing::warn!("physician workspace invalidation not published");
+            }
+            Json(json!({
+                "outcome": "accepted",
+                "patient_workspace_id": payload.patient_workspace_id,
+                "chat_id": payload.chat_id,
+            }))
+            .into_response()
+        }
+        Err(_) => (
+            StatusCode::SERVICE_UNAVAILABLE,
+            Json(json!({
+                "outcome": "rejected",
+                "message": rejection_message("conversation.archive"),
+            })),
+        )
+            .into_response(),
+    }
+}
+
+async fn restore_durable(
+    live: Arc<Live>,
+    auth_ctx: Option<Extension<AuthContext>>,
+    body: CommandBody,
+) -> Response {
+    let Some(Extension(ctx)) = auth_ctx else {
+        return StatusCode::UNAUTHORIZED.into_response();
+    };
+    let Some(payload) = body
+        .payload
+        .and_then(|value| serde_json::from_value::<ArchivePayload>(value).ok())
+    else {
+        return rejected("conversation.restore");
+    };
+    let Some(key) = body.idempotency_key.filter(|k| !k.trim().is_empty()) else {
+        return rejected("conversation.restore");
+    };
+    let scope = local_product::runtime::Scope {
+        practice: ctx.identity.practice_id.clone(),
+        physician: ctx.identity.physician_id.clone(),
+        workspace: payload.patient_workspace_id.clone(),
+        chat: payload.chat_id.clone(),
+    };
+    let session_hash = physician_auth::PostgresAuthStore::session_reference(&ctx.token);
+    match live
+        .chat
+        .restore_conversation(&scope, &key, session_hash)
+        .await
+    {
+        Ok(local_product::runtime::RestoreOutcome::Refused) => rejected("conversation.restore"),
+        Ok(outcome) => {
+            if outcome == local_product::runtime::RestoreOutcome::Restored
+                && live
+                    .bus
+                    .publish(Event::WorkspaceChanged {
+                        workspace_id: payload.patient_workspace_id.clone(),
+                    })
+                    .await
+                    .is_err()
+            {
+                tracing::warn!("physician workspace invalidation not published");
+            }
+            Json(json!({
+                "outcome": "accepted",
+                "patient_workspace_id": payload.patient_workspace_id,
+                "chat_id": payload.chat_id,
+            }))
+            .into_response()
+        }
+        Err(_) => (
+            StatusCode::SERVICE_UNAVAILABLE,
+            Json(json!({
+                "outcome": "rejected",
+                "message": rejection_message("conversation.restore"),
+            })),
+        )
+            .into_response(),
+    }
+}
+
+async fn discuss_durable(
+    live: Arc<Live>,
+    auth_ctx: Option<Extension<AuthContext>>,
+    body: CommandBody,
+) -> Response {
+    let Some(Extension(ctx)) = auth_ctx else {
+        return StatusCode::UNAUTHORIZED.into_response();
+    };
+    let Some(payload) = body
+        .payload
+        .and_then(|value| serde_json::from_value::<DiscussPayload>(value).ok())
+    else {
+        return rejected("discussion.open");
+    };
+    if payload.patient_workspace_id.trim().is_empty() || payload.chat_id.trim().is_empty() {
+        return rejected("discussion.open");
+    }
+    let Some(key) = body.idempotency_key.filter(|k| !k.trim().is_empty()) else {
+        return rejected("discussion.open");
+    };
+    let scope = local_product::runtime::Scope {
+        practice: ctx.identity.practice_id.clone(),
+        physician: ctx.identity.physician_id.clone(),
+        workspace: payload.patient_workspace_id.clone(),
+        chat: payload.chat_id.clone(),
+    };
+    let mut returned_messages = Vec::new();
+    let work_to_stop = match payload
+        .work_item_id
+        .as_deref()
+        .map(str::trim)
+        .filter(|s| !s.is_empty())
+    {
+        Some(work) => Some(work.to_owned()),
+        None => match live.chat.store.read(&scope).await {
+            Ok(Some(conv)) if conv.status.running() && !conv.work.trim().is_empty() => {
+                Some(conv.work)
+            }
+            Ok(Some(_)) => None,
+            Ok(None) => return rejected("discussion.open"),
+            Err(_) => {
+                return (
+                    StatusCode::SERVICE_UNAVAILABLE,
+                    Json(json!({
+                        "outcome": "rejected",
+                        "message": rejection_message("discussion.open"),
+                    })),
+                )
+                    .into_response();
+            }
+        },
+    };
+    if let Some(work_item_id) = work_to_stop {
+        let session_hash = physician_auth::PostgresAuthStore::session_reference(&ctx.token);
+        match live
+            .chat
+            .stop_chat(&scope, &key, session_hash, &work_item_id)
+            .await
+        {
+            Ok(stopped) => {
+                returned_messages = stopped.returned_messages;
+                if stopped.outcome == local_product::runtime::Stopped::Held
+                    && live
+                        .bus
+                        .publish(Event::WorkspaceChanged {
+                            workspace_id: payload.patient_workspace_id.clone(),
+                        })
+                        .await
+                        .is_err()
+                {
+                    tracing::warn!("physician workspace invalidation not published");
+                }
+            }
+            Err(_) => {
+                return (
+                    StatusCode::SERVICE_UNAVAILABLE,
+                    Json(json!({
+                        "outcome": "rejected",
+                        "message": rejection_message("discussion.open"),
+                    })),
+                )
+                    .into_response();
+            }
+        }
+    }
+    Json(json!({
+        "outcome": "accepted",
+        "patient_workspace_id": payload.patient_workspace_id,
+        "chat_id": payload.chat_id,
+        "returned_messages": returned_messages,
+    }))
+    .into_response()
 }
 
 async fn queue_mutation_response(
@@ -1297,6 +1599,7 @@ mod tests {
             scenario: None,
             queued: Vec::new(),
             stopped_queue: None,
+            archived: false,
         };
 
         let redacted =
@@ -1313,7 +1616,9 @@ mod tests {
                     segments: vec![HistorySegment::Text {
                         text: redacted.clone(),
                     }],
+                    segment_targets: Vec::new(),
                     basis: None,
+                    basis_targets: Vec::new(),
                     newer_records: false,
                 },
                 SavedTurnReadback {
@@ -1323,7 +1628,9 @@ mod tests {
                     segments: vec![HistorySegment::Text {
                         text: "Clean answer".into(),
                     }],
+                    segment_targets: Vec::new(),
                     basis: None,
+                    basis_targets: Vec::new(),
                     newer_records: false,
                 },
             ],

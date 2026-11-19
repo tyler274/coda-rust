@@ -101,6 +101,7 @@ impl RosterCursor {
 pub(crate) struct RosterPage {
     pub(crate) patients: Vec<Patient>,
     pub(crate) next_after: Option<String>,
+    pub(crate) match_mode: physician_wire::SearchMatchMode,
 }
 
 /// Failure reading or paging the practice's patient roster.
@@ -708,6 +709,36 @@ impl Patient {
         })
     }
 
+    fn keyword_match_count(&self, words: &[String]) -> usize {
+        let patient = self.holder();
+        let birth_iso = patient
+            .birth_date
+            .as_deref()
+            .map(str::trim)
+            .filter(|value| !value.is_empty());
+        let birth_slash = birth_iso.and_then(slash_birth_date);
+        let birth_words = birth_iso.and_then(spoken_birth_date);
+        let mrn_joined: String = patient
+            .medical_record_numbers
+            .iter()
+            .map(|mrn| mrn.value.as_str())
+            .collect::<Vec<_>>()
+            .join(" ");
+        let haystack = format!(
+            "{} {} {} {} {}",
+            patient.display_name,
+            birth_iso.unwrap_or_default(),
+            birth_slash.as_deref().unwrap_or_default(),
+            birth_words.as_deref().unwrap_or_default(),
+            mrn_joined,
+        )
+        .to_lowercase();
+        words
+            .iter()
+            .filter(|word| word.len() >= 2 && haystack.contains(word.as_str()))
+            .count()
+    }
+
     fn search_rank(&self, normalized_query: &str, words: &[String]) -> Option<SearchRank> {
         let patient = self.holder();
         let birth_iso = patient
@@ -1169,36 +1200,76 @@ pub(crate) async fn read_patient(
 }
 
 /// Searches `workspaces` deterministically across display name, DOB, and MRN:
-/// exact MRN or DOB matches first, then name prefixes, then substrings.
+/// exact MRN or DOB matches first, then name prefixes, then substrings, falling
+/// back to keyword matching when all-words substring finds no one.
 /// A blank query finds no one.
+pub(crate) async fn search_with_mode(
+    directory: &dyn PatientDirectory,
+    workspaces: &[String],
+    query: &str,
+) -> Result<(Vec<Patient>, physician_wire::SearchMatchMode), DirectoryError> {
+    let words: Vec<String> = query.split_whitespace().map(str::to_lowercase).collect();
+    if words.is_empty() {
+        return Ok((Vec::new(), physician_wire::SearchMatchMode::ExactOrPrefix));
+    }
+    let normalized = words.join(" ");
+    let patients = read_patients(directory, workspaces).await?;
+    let mut ranked: Vec<(SearchRank, Patient)> = patients
+        .iter()
+        .filter_map(|patient| {
+            let rank = patient.search_rank(&normalized, &words)?;
+            Some((rank, patient.clone()))
+        })
+        .collect();
+    if !ranked.is_empty() {
+        ranked.sort_by(|(left_rank, left), (right_rank, right)| {
+            left_rank
+                .cmp(right_rank)
+                .then_with(|| left.sort_key().cmp(&right.sort_key()))
+        });
+        return Ok((
+            ranked
+                .into_iter()
+                .take(SEARCH_LIMIT)
+                .map(|(_, patient)| patient)
+                .collect(),
+            physician_wire::SearchMatchMode::ExactOrPrefix,
+        ));
+    }
+    let mut fallback: Vec<(usize, Patient)> = patients
+        .into_iter()
+        .filter_map(|patient| {
+            let hits = patient.keyword_match_count(&words);
+            (hits > 0).then_some((hits, patient))
+        })
+        .collect();
+    if fallback.is_empty() {
+        return Ok((Vec::new(), physician_wire::SearchMatchMode::ExactOrPrefix));
+    }
+    fallback.sort_by(|(left_hits, left), (right_hits, right)| {
+        right_hits
+            .cmp(left_hits)
+            .then_with(|| left.sort_key().cmp(&right.sort_key()))
+    });
+    Ok((
+        fallback
+            .into_iter()
+            .take(SEARCH_LIMIT)
+            .map(|(_, patient)| patient)
+            .collect(),
+        physician_wire::SearchMatchMode::KeywordFallback,
+    ))
+}
+
+#[cfg(test)]
 pub(crate) async fn search(
     directory: &dyn PatientDirectory,
     workspaces: &[String],
     query: &str,
 ) -> Result<Vec<Patient>, DirectoryError> {
-    let words: Vec<String> = query.split_whitespace().map(str::to_lowercase).collect();
-    if words.is_empty() {
-        return Ok(Vec::new());
-    }
-    let normalized = words.join(" ");
-    let patients = read_patients(directory, workspaces).await?;
-    let mut ranked: Vec<(SearchRank, Patient)> = patients
-        .into_iter()
-        .filter_map(|patient| {
-            let rank = patient.search_rank(&normalized, &words)?;
-            Some((rank, patient))
-        })
-        .collect();
-    ranked.sort_by(|(left_rank, left), (right_rank, right)| {
-        left_rank
-            .cmp(right_rank)
-            .then_with(|| left.sort_key().cmp(&right.sort_key()))
-    });
-    Ok(ranked
-        .into_iter()
-        .take(SEARCH_LIMIT)
-        .map(|(_, patient)| patient)
-        .collect())
+    search_with_mode(directory, workspaces, query)
+        .await
+        .map(|(patients, _)| patients)
 }
 
 /// Lists or searches `workspaces`: an empty query returns patients ordered by
@@ -1212,10 +1283,11 @@ pub(crate) async fn roster_page(
 ) -> Result<RosterPage, RosterSearchError> {
     let words: Vec<String> = query.split_whitespace().map(str::to_lowercase).collect();
     if !words.is_empty() {
-        let patients = search(directory, workspaces, query).await?;
+        let (patients, match_mode) = search_with_mode(directory, workspaces, query).await?;
         return Ok(RosterPage {
             patients,
             next_after: None,
+            match_mode,
         });
     }
     let cursor = match after.map(str::trim).filter(|raw| !raw.is_empty()) {
@@ -1242,6 +1314,7 @@ pub(crate) async fn roster_page(
     Ok(RosterPage {
         patients: page,
         next_after,
+        match_mode: physician_wire::SearchMatchMode::ExactOrPrefix,
     })
 }
 

@@ -39,7 +39,7 @@ mod devtools;
 #[path = "scale/mod.rs"]
 mod scale;
 
-use devtools::{Browser, Key};
+use devtools::Browser;
 
 static TEST_MUTEX: OnceLock<Mutex<()>> = OnceLock::new();
 static BUILT_SITE: OnceLock<PathBuf> = OnceLock::new();
@@ -1240,13 +1240,13 @@ async fn patient_page_reviews_controls_reload_access_and_viewports() {
         Duration::from_secs(10),
     );
 
-    // Click citation chip in Evidence -> ReaderDialog opens with the cited record quote!
+    // Click citation chip in Evidence -> side panel opens with the cited record quote!
     tab.click("[data-review-evidence=\"true\"] button[aria-label*=\"Source 1:\"]");
     tab.wait_for_text(
         "Persistent atrial fibrillation anticoagulated with apixaban 5 mg twice daily.",
         Duration::from_secs(10),
     );
-    tab.press_key(Key::ESCAPE);
+    tab.click(".source-reading-pane button[aria-label=\"Close\"]");
     std::thread::sleep(Duration::from_millis(250));
 
     tab.scroll_into_view("[data-selected-review-id]");
@@ -1736,10 +1736,6 @@ impl Tab {
 
     fn click_named(&mut self, selector: &str, words: &str) {
         self.step("clickNamed", serde_json::json!([selector, words]));
-    }
-
-    fn press_key(&mut self, key: Key) {
-        self.browser.press_key(key);
     }
 
     fn request_sign_in(&mut self, email: &str) {

@@ -266,6 +266,32 @@ impl DurableChat {
             .map_err(|error| error.to_string())
     }
 
+    /// Archives an idle conversation with no queued messages.
+    pub async fn archive_conversation(
+        &self,
+        scope: &Scope,
+        key: &str,
+        session_hash: Vec<u8>,
+    ) -> Result<local_product::runtime::ArchiveOutcome, String> {
+        self.store
+            .archive_conversation_authorized(scope, key, session_hash)
+            .await
+            .map_err(|error| error.to_string())
+    }
+
+    /// Restores an archived conversation to active/recent lists.
+    pub async fn restore_conversation(
+        &self,
+        scope: &Scope,
+        key: &str,
+        session_hash: Vec<u8>,
+    ) -> Result<local_product::runtime::RestoreOutcome, String> {
+        self.store
+            .restore_conversation_authorized(scope, key, session_hash)
+            .await
+            .map_err(|error| error.to_string())
+    }
+
     /// Reads only the scoped durable conversation; caller authenticates current
     /// read authority separately (the accepted session may since have expired).
     pub async fn snapshot(&self, scope: &Scope) -> Result<Conversation, String> {

@@ -313,6 +313,29 @@ impl Composer {
         self.said = Some(words);
     }
 
+    /// Appends transcribed dictation into `current`'s composer draft so the physician
+    /// can review and edit before sending. Never auto-sends.
+    pub(crate) fn insert_dictation(
+        &mut self,
+        current: Option<&DraftTarget>,
+        dictated: &str,
+    ) -> String {
+        self.said = None;
+        let trimmed = dictated.trim();
+        let existing = self.text(current);
+        let next = if trimmed.is_empty() {
+            existing
+        } else if existing.is_empty() {
+            trimmed.to_owned()
+        } else if existing.ends_with(char::is_whitespace) {
+            format!("{existing}{trimmed}")
+        } else {
+            format!("{existing} {trimmed}")
+        };
+        self.edit(current, next.clone());
+        next
+    }
+
     /// The server's saved draft for `target` arrived. It never replaces
     /// typing or a newer revision this page saved itself; a newer, different
     /// revision beside unsaved text is a conflict the physician resolves.

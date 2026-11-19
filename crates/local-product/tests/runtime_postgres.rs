@@ -2241,3 +2241,122 @@ async fn a_starting_fresh_window_can_open_an_earlier_runs_note() {
         "Continued from the earlier run's exact note."
     );
 }
+
+#[tokio::test]
+#[ignore = "requires explicit local Postgres"]
+async fn archive_restore_busy_refusal_and_auto_unarchive_in_postgres() {
+    use local_product::runtime::{ArchiveOutcome, RestoreOutcome};
+
+    let s = store().await;
+    let mut s_scope = scope();
+    s_scope.chat = format!("chat-archive-{}", uuid::Uuid::new_v4());
+    accept(&s, &s_scope, &input()).await.unwrap();
+
+    // Busy (Working): archive must be refused without altering state.
+    assert_eq!(
+        s.archive_conversation_authorized(&s_scope, "archive-while-working", vec![7; 32])
+            .await
+            .unwrap(),
+        ArchiveOutcome::RefusedBusyOrInvalid
+    );
+    assert!(!s.conversation(&s_scope).await.unwrap().archived);
+
+    // Complete turn cleanly -> now idle and empty queue.
+    let claim = s.claim(&s_scope, 60).await.unwrap().unwrap();
+    let answer = turn("Potassium is 5.4 mmol/L.");
+    s.persist(
+        &claim,
+        engine::Event {
+            attempt_id: claim.attempt.clone(),
+            ordinal: 1,
+            sequence: 1,
+            kind: engine::EventKind::ProviderReturned(answer.clone()),
+        },
+    )
+    .await
+    .unwrap();
+    s.persist(
+        &claim,
+        engine::Event {
+            attempt_id: claim.attempt.clone(),
+            ordinal: 1,
+            sequence: 2,
+            kind: engine::EventKind::Candidate {
+                text: answer.text(),
+            },
+        },
+    )
+    .await
+    .unwrap();
+    s.commit_authorized(&claim, &answer, &mut Allowed)
+        .await
+        .unwrap();
+
+    // Archiving when idle succeeds and removes from default chats & recent conversations.
+    assert_eq!(
+        s.archive_conversation_authorized(&s_scope, "archive-idle-1", vec![7; 32])
+            .await
+            .unwrap(),
+        ArchiveOutcome::Archived
+    );
+    assert!(s.conversation(&s_scope).await.unwrap().archived);
+    assert!(
+        s.chats(&s_scope.practice, &s_scope.physician, &s_scope.workspace)
+            .await
+            .unwrap()
+            .is_empty(),
+        "archived conversation must stay out of default workspace chats"
+    );
+    let recents = s
+        .recent_conversations(
+            &s_scope.practice,
+            &s_scope.physician,
+            &[s_scope.workspace.clone()],
+            20,
+        )
+        .await
+        .unwrap();
+    assert!(
+        !recents.iter().any(|item| item.chat == s_scope.chat),
+        "archived conversation must stay out of default recent_conversations"
+    );
+
+    // Undo / restore returns it to active lists cleanly.
+    assert_eq!(
+        s.restore_conversation_authorized(&s_scope, "restore-1", vec![7; 32])
+            .await
+            .unwrap(),
+        RestoreOutcome::Restored
+    );
+    assert!(!s.conversation(&s_scope).await.unwrap().archived);
+    assert_eq!(
+        s.chats(&s_scope.practice, &s_scope.physician, &s_scope.workspace)
+            .await
+            .unwrap()
+            .len(),
+        1
+    );
+
+    // Re-archive, then submit a new message -> auto-unarchives atomically.
+    assert_eq!(
+        s.archive_conversation_authorized(&s_scope, "archive-idle-2", vec![7; 32])
+            .await
+            .unwrap(),
+        ArchiveOutcome::Archived
+    );
+    let mut follow_up = input();
+    follow_up.key = "follow-up-unarchive".into();
+    follow_up.text = "Follow-up after archive".into();
+    accept(&s, &s_scope, &follow_up).await.unwrap();
+    assert!(
+        !s.conversation(&s_scope).await.unwrap().archived,
+        "sending a new message to an archived chat must auto-unarchive it"
+    );
+    assert_eq!(
+        s.chats(&s_scope.practice, &s_scope.physician, &s_scope.workspace)
+            .await
+            .unwrap()
+            .len(),
+        1
+    );
+}

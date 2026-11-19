@@ -3998,8 +3998,8 @@ async fn past_conversations_and_work_reopen_across_restart_mark_newer_records_an
         std::thread::sleep(Duration::from_millis(40));
     }
 
-    // Expand Basis and open citation [1] in ReaderDialog; compare against saved record!
-    browser.click_named(".basis-disclosure button", "Basis and limitations");
+    // Expand Basis and open citation [1] in the citation side panel; compare against saved record!
+    browser.click_named("button.answer-control", "Basis and limitations");
     browser.wait_for_text(
         "Based on Regional Lab Basic metabolic panel",
         Duration::from_secs(10),
@@ -4009,31 +4009,47 @@ async fn past_conversations_and_work_reopen_across_restart_mark_newer_records_an
         "Potassium 5.4 mmol/L (reference 3.5-5.0 mmol/L), collected Tuesday morning.",
         Duration::from_secs(10),
     );
-    let citation_dialog = browser.dialog_text();
+    let citation_heading = browser
+        .eval("document.querySelector('.source-reading-pane .source-pane-heading h2')?.innerText ?? ''")
+        .as_str()
+        .unwrap_or_default()
+        .to_owned();
+    let readable_body = browser
+        .eval("document.querySelector('.source-reading-pane .source-record-body')?.innerText ?? ''")
+        .as_str()
+        .unwrap_or_default()
+        .to_owned();
+    let raw_disclosure = browser.eval(
+        "({ state: document.querySelector('.source-reading-pane .disclosure')?.getAttribute('data-state') ?? '', height: document.querySelector('.source-reading-pane .disclosure-region')?.getBoundingClientRect().height ?? -1 })",
+    );
     assert_eq!(
-        citation_dialog
+        readable_body
             .matches("Potassium 5.4 mmol/L (reference 3.5-5.0 mmol/L), collected Tuesday morning.")
             .count(),
         1,
-        "citation dialog must render the cited passage once without duplication:\n{citation_dialog}"
-    );
-    assert_eq!(
-        citation_dialog.matches("Basic metabolic panel").count(),
-        1,
-        "citation dialog must not repeat the record title inside readable parts:\n{citation_dialog}"
+        "citation side panel must render the cited passage once without duplication:\n{readable_body}"
     );
     assert!(
-        !citation_dialog.contains('{'),
-        "citation dialog must never show raw JSON:\n{citation_dialog}"
+        citation_heading == "Basic metabolic panel"
+            && !readable_body.contains("Basic metabolic panel"),
+        "citation side panel must not repeat the record title inside readable parts: heading={citation_heading:?}, body:\n{readable_body}"
+    );
+    assert!(
+        !readable_body.contains('{')
+            && raw_disclosure["state"] == serde_json::json!("closed")
+            && raw_disclosure["height"] == serde_json::json!(0),
+        "citation side panel must keep raw JSON collapsed under Technical details ({raw_disclosure}):\n{readable_body}"
     );
     std::thread::sleep(Duration::from_millis(250));
     browser.save_picture("history-reopened-answer-basis-citation");
-    browser.click("dialog.citation-inspection button[aria-label=\"Close\"]");
+    browser.click(".source-reading-pane button[aria-label=\"Close\"]");
     let cite_close_deadline = Instant::now() + Duration::from_secs(5);
-    while !browser.dialog_text().is_empty() {
+    while browser.eval("document.querySelector('.source-reading-pane') !== null")
+        == serde_json::json!(true)
+    {
         assert!(
             Instant::now() < cite_close_deadline,
-            "citation ReaderDialog did not finish closing"
+            "citation side panel did not finish closing"
         );
         std::thread::sleep(Duration::from_millis(40));
     }
@@ -5400,10 +5416,19 @@ async fn first_source_path_renders_saved_patient_summary_and_evidence_without_pr
 
     // Click citation chip 1 inside Patient summary -> side-panel source inspection opens!
     browser.click("section[aria-label=\"Patient summary\"] button[aria-label*=\"Source 1:\"]");
-    browser.wait_for_text("As of 2026-08-20", Duration::from_secs(10));
+    browser.wait_for_text("2026-08-20", Duration::from_secs(10));
     browser.wait_for_text(
         "CONSULTATION NOTE (2026-08-20): Persistent atrial fibrillation",
         Duration::from_secs(10),
+    );
+    let source_pane_text = browser
+        .eval("document.querySelector('.source-reading-pane')?.innerText ?? ''")
+        .as_str()
+        .unwrap_or_default()
+        .to_owned();
+    assert!(
+        !source_pane_text.contains("Prepared by Coda"),
+        "native source record must not say Prepared by Coda:\n{source_pane_text}"
     );
     std::thread::sleep(Duration::from_millis(300));
     browser.save_picture("ac5-patient-summary-citation-open");
@@ -5798,4 +5823,843 @@ async fn p1_composer_queue_stop_steps_retry_and_provenance() {
         !patient_b_dom.contains("Check again"),
         "Patient A slot notice leaked onto Patient B page:\n{patient_b_dom}"
     );
+}
+
+#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+#[ignore = "browser and disposable Postgres qualification; run explicitly with --ignored"]
+async fn p1_citations_panel_archive_discuss_dictation_and_finder() {
+    use local_product::physician_sources::{
+        MedicalRecordNumber, READ_TOOL, ReadablePart, RecordDate, SEARCH_TOOL, SourcePatient,
+        SourceRevision,
+    };
+    use local_product::runtime::sources::SourcePull;
+    use local_product::runtime::{Input, PhysicianHost, Scope, ShownSteps, Store, engine};
+    use physician_auth::PostgresAuthStore;
+
+    enum TurnBehavior {
+        Uncited {
+            text: &'static str,
+        },
+        TwoSources {
+            candidate_a: String,
+            candidate_b: String,
+            round: usize,
+        },
+    }
+
+    impl engine::recipe::Provider for TurnBehavior {
+        async fn exchange(
+            &mut self,
+            _: &engine::recipe::Request,
+            _: &engine::Cancellation,
+            _: &engine::RunLimits,
+            _: &mut dyn engine::recipe::Observer,
+        ) -> Result<engine::Turn, engine::Cause> {
+            let items = match self {
+                TurnBehavior::Uncited { text } => vec![engine::Item::Call(engine::Invocation {
+                    id: "call-finish-uncited".to_owned(),
+                    name: local_product::physician_sources::citations::FINISH_TOOL.to_owned(),
+                    arguments: serde_json::json!({
+                        "answer": text,
+                        "quotes": [],
+                        "descriptions": [],
+                        "basis": "Based on intake history.",
+                        "cites_none": true,
+                    })
+                    .to_string(),
+                })],
+                TurnBehavior::TwoSources {
+                    candidate_a,
+                    candidate_b,
+                    round,
+                } => {
+                    if *round == 0 {
+                        *round += 1;
+                        vec![
+                            engine::Item::Call(engine::Invocation {
+                                id: "call-search-two".to_owned(),
+                                name: SEARCH_TOOL.to_owned(),
+                                arguments: serde_json::json!({
+                                    "query": "potassium echocardiogram",
+                                    "record_type": null,
+                                    "after": null,
+                                })
+                                .to_string(),
+                            }),
+                            engine::Item::Call(engine::Invocation {
+                                id: "call-read-two".to_owned(),
+                                name: READ_TOOL.to_owned(),
+                                arguments: serde_json::json!({
+                                    "references": [
+                                        {"candidate_id": candidate_a, "revision": "rev-1", "cursor": null},
+                                        {"candidate_id": candidate_b, "revision": "rev-2", "cursor": null},
+                                    ],
+                                    "max_result_bytes": 16_384,
+                                })
+                                .to_string(),
+                            }),
+                        ]
+                    } else {
+                        vec![engine::Item::Call(engine::Invocation {
+                            id: "call-finish-two".to_owned(),
+                            name: local_product::physician_sources::citations::FINISH_TOOL
+                                .to_owned(),
+                            arguments: serde_json::json!({
+                                "answer": "Potassium is 5.4 mmol/L [S1] and LVEF is 55% [S2].",
+                                "quotes": [
+                                    {"label": "S1", "quote": "Potassium 5.4 mmol/L"},
+                                    {"label": "S2", "quote": "Left ventricular ejection fraction 55%"},
+                                ],
+                                "descriptions": [],
+                                "basis": "Based on Regional Lab BMP [S1] and preliminary Echocardiogram [S2].",
+                                "cites_none": false,
+                            })
+                            .to_string(),
+                        })]
+                    }
+                }
+            };
+            Ok(engine::Turn {
+                items,
+                receipt: serde_json::Value::Null,
+                usage: Default::default(),
+            })
+        }
+    }
+
+    struct TestOpenAuthority;
+
+    #[local_product::runtime::async_trait]
+    impl local_product::runtime::Authority for TestOpenAuthority {
+        async fn check(
+            &mut self,
+            _: &local_product::runtime::PublicationTransaction,
+            _: &Scope,
+            _: Option<&[u8]>,
+        ) -> Result<(), String> {
+            Ok(())
+        }
+
+        async fn lock_publication(
+            &mut self,
+            _: &local_product::runtime::PublicationTransaction,
+            _: &Scope,
+            _: Option<&[u8]>,
+        ) -> Result<(), String> {
+            Ok(())
+        }
+    }
+
+    let _guard = test_lock().lock().await;
+    let database = scale::Database::create("p1_b2_shell_browser")
+        .await
+        .expect("browser database");
+    let site = build_site();
+    unsafe {
+        env::set_var("PHYSICIAN_SITE_DIR", &site);
+        env::set_var("PHYSICIAN_AUTH", "required");
+        env::set_var("PHYSICIAN_AUTH_PROOF_TOKENS", "1");
+        env::remove_var("PHYSICIAN_UPSTREAM");
+    }
+    scale::staging_account(&database.url).await;
+
+    let patient_a = physician_sample::WORKSPACE_IDS[0];
+    let patient_b = physician_sample::WORKSPACE_IDS[1];
+    let store = Store::connect(&database.url).await.expect("runtime store");
+
+    let raw_lab = r#"{"test":"Basic metabolic panel","potassium_mmol_l":5.4,"status":"final"}"#;
+    let raw_echo = r#"{"study":"Echocardiogram","lvef_percent":55,"status":"preliminary"}"#;
+    let pull = SourcePull {
+        source_id: "fixture-chart".to_owned(),
+        source_label: "Regional Lab".to_owned(),
+        patient: SourcePatient {
+            source_patient_id: patient_a.to_owned(),
+            display_name: "Tanvir Chowdhury".to_owned(),
+            birth_date: Some("1964-11-02".to_owned()),
+            sex_or_gender: Some("Male".to_owned()),
+            medical_record_numbers: vec![MedicalRecordNumber {
+                system: "Practice MRN".to_owned(),
+                value: "00000003".to_owned(),
+            }],
+        },
+        pulled_at: Some(1_787_846_400),
+    };
+    let rev_lab = SourceRevision {
+        workspace: patient_a.to_owned(),
+        source_id: "fixture-chart".to_owned(),
+        candidate_id: "bmp-cite-v1".to_owned(),
+        revision: "rev-1".to_owned(),
+        record_type: "Laboratory result".to_owned(),
+        dates: vec![RecordDate {
+            name: "Collected".to_owned(),
+            value: "2026-08-27".to_owned(),
+        }],
+        content: raw_lab.to_owned(),
+        sha256: local_product::sha256_hex(raw_lab.as_bytes()),
+        readable_parts: vec![ReadablePart {
+            label: "Basic metabolic panel".to_owned(),
+            text: "Potassium 5.4 mmol/L (reference 3.5-5.0 mmol/L), collected Tuesday morning."
+                .to_owned(),
+        }],
+        provenance: serde_json::json!({
+            "source_label": "Regional Lab",
+            "title": "Basic metabolic panel",
+            "status": "final",
+        }),
+        envelope: None,
+    };
+    let rev_echo = SourceRevision {
+        workspace: patient_a.to_owned(),
+        source_id: "fixture-chart".to_owned(),
+        candidate_id: "echo-flagged-v1".to_owned(),
+        revision: "rev-2".to_owned(),
+        record_type: "Echocardiogram".to_owned(),
+        dates: vec![RecordDate {
+            name: "Recorded".to_owned(),
+            value: "2026-08-26".to_owned(),
+        }],
+        content: raw_echo.to_owned(),
+        sha256: local_product::sha256_hex(raw_echo.as_bytes()),
+        readable_parts: vec![ReadablePart {
+            label: "Findings".to_owned(),
+            text: "Left ventricular ejection fraction 55%, mild concentric LVH.".to_owned(),
+        }],
+        provenance: serde_json::json!({
+            "source_label": "Regional Lab",
+            "title": "Echocardiogram",
+            "status": "preliminary",
+        }),
+        envelope: None,
+    };
+    store
+        .record_chart(patient_a, &[rev_lab, rev_echo], &pull)
+        .await
+        .expect("record clinical fixtures");
+
+    let skills = local_product::physician_chat::PhysicianSkills::configured(None, false).unwrap();
+    let chat_cited = "chat-p1b2-cited";
+    let scope_cited = Scope {
+        practice: physician_sample::STAGING_PRACTICE_ID.into(),
+        physician: "staging-physician".into(),
+        workspace: patient_a.into(),
+        chat: chat_cited.into(),
+    };
+    // Turn 1: uncited (verifies Sources pill hides when answer cites zero sources).
+    store
+        .accept_authorized(
+            &scope_cited,
+            &Input {
+                key: "turn-uncited-1".into(),
+                text: "Any recent vitals check?".into(),
+                timezone: "America/New_York".into(),
+                scenario: None,
+            },
+            vec![7; 32],
+            &skills,
+            &scale::models::chat_recipe(),
+            None,
+        )
+        .await
+        .unwrap();
+    let claim_1 = store.claim(&scope_cited, 60).await.unwrap().unwrap();
+    PhysicianHost {
+        store: store.clone(),
+        claim: claim_1,
+        authority: TestOpenAuthority,
+        shown_steps: ShownSteps::new(()),
+    }
+    .run(
+        &mut TurnBehavior::Uncited {
+            text: "Routine vital signs are within expected limits.",
+        },
+        engine::RunLimits::default(),
+        &engine::Cancellation::default(),
+    )
+    .await
+    .unwrap();
+
+    // Turn 2: cited across 2 sources (matched BMP + flagged preliminary Echocardiogram w/ unmatched quote).
+    store
+        .accept_authorized(
+            &scope_cited,
+            &Input {
+                key: "turn-cited-2".into(),
+                text: "Review potassium and echo results.".into(),
+                timezone: "America/New_York".into(),
+                scenario: None,
+            },
+            vec![7; 32],
+            &skills,
+            &scale::models::chat_recipe(),
+            None,
+        )
+        .await
+        .unwrap();
+    let claim_2 = store.claim(&scope_cited, 60).await.unwrap().unwrap();
+    PhysicianHost {
+        store: store.clone(),
+        claim: claim_2,
+        authority: TestOpenAuthority,
+        shown_steps: ShownSteps::new(()),
+    }
+    .run(
+        &mut TurnBehavior::TwoSources {
+            candidate_a: "bmp-cite-v1".to_owned(),
+            candidate_b: "echo-flagged-v1".to_owned(),
+            round: 0,
+        },
+        engine::RunLimits::default(),
+        &engine::Cancellation::default(),
+    )
+    .await
+    .unwrap();
+
+    // Seed idle conversation on patient_b for AC2 Archive + Undo test.
+    let chat_archive = "chat-p1b2-archive";
+    let scope_archive = Scope {
+        practice: physician_sample::STAGING_PRACTICE_ID.into(),
+        physician: "staging-physician".into(),
+        workspace: patient_b.into(),
+        chat: chat_archive.into(),
+    };
+    store
+        .accept_authorized(
+            &scope_archive,
+            &Input {
+                key: "turn-archive-1".into(),
+                text: "Archive candidate renal follow-up".into(),
+                timezone: "America/New_York".into(),
+                scenario: None,
+            },
+            vec![7; 32],
+            &skills,
+            &scale::models::chat_recipe(),
+            None,
+        )
+        .await
+        .unwrap();
+    let claim_arch = store.claim(&scope_archive, 60).await.unwrap().unwrap();
+    PhysicianHost {
+        store: store.clone(),
+        claim: claim_arch,
+        authority: TestOpenAuthority,
+        shown_steps: ShownSteps::new(()),
+    }
+    .run(
+        &mut TurnBehavior::Uncited {
+            text: "Creatinine remains stable at 1.1 mg/dL.",
+        },
+        engine::RunLimits::default(),
+        &engine::Cancellation::default(),
+    )
+    .await
+    .unwrap();
+
+    let valkey = scale::Valkey::start().await;
+    let redis_url = valkey.url();
+    let bus: Arc<dyn physician_bus::Bus> = Arc::new(
+        physician_bus::RedisBus::connect(&redis_url, None)
+            .await
+            .unwrap(),
+    );
+    let chat = Arc::new(physician_sample::durable::DurableChat::new(
+        store,
+        skills,
+        &scale::models::roles(),
+    ));
+    let auth = Arc::new(
+        PostgresAuthStore::connect_without_migrations(&database.url)
+            .await
+            .unwrap(),
+    );
+    let front = Arc::new(
+        front_door::PostgresFrontDoorStore::connect_without_migrations(&database.url)
+            .await
+            .unwrap(),
+    );
+    let app = physician_sample::authed_router_on(
+        physician_sample::durable_site(chat, bus.clone()),
+        auth.clone(),
+        front,
+    )
+    .await;
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let addr = listener.local_addr().unwrap();
+    let server = tokio::spawn(async move { axum::serve(listener, app).await.unwrap() });
+    wait_until_ready(addr).await;
+
+    let base_url = format!("http://{addr}/");
+    let mut tab = Tab::open(&format!("{base_url}?patient={patient_a}&chat={chat_cited}"));
+    tab.set_viewport(1280, 800, false);
+    tab.wait_for_text("Work email", Duration::from_secs(20));
+    tab.request_sign_in("physician@codahealth.test");
+    tab.wait_for_text("Potassium is 5.4 mmol/L", Duration::from_secs(20));
+    tab.wait_for_text("Basis and limitations", Duration::from_secs(20));
+    tab.wait_for_text(
+        "Routine vital signs are within expected limits.",
+        Duration::from_secs(10),
+    );
+
+    // AC1: Only cited turns show the `Sources` pill beside collapsed `Basis and limitations`.
+    let sources_btn_count = tab.eval("document.querySelectorAll('button.sources-button').length");
+    assert_eq!(
+        sources_btn_count,
+        serde_json::json!(1),
+        "expected Sources pill strictly on cited answer turn (hidden on uncited turn); stage={}",
+        tab.eval("document.querySelector('.glass-stage')?.innerText ?? ''")
+    );
+    assert!(
+        tab.eval("document.querySelectorAll('.answer-ending').length")
+            .as_u64()
+            == Some(2)
+    );
+
+    // AC1: Hover citation [1] shows CitationPreview popover (`role="dialog"`) with quote (`Citations Code 6, 8`).
+    let rect = tab.eval(
+        "(() => { const b = document.querySelector('button.citation-chip'); const r = b.getBoundingClientRect(); return { x: r.left + r.width / 2, y: r.top + r.height / 2 }; })()",
+    );
+    tab.call(
+        "Input.dispatchMouseEvent",
+        serde_json::json!({
+            "type": "mouseMoved",
+            "pointerType": "mouse",
+            "x": rect["x"].as_f64().unwrap_or(0.0),
+            "y": rect["y"].as_f64().unwrap_or(0.0),
+        }),
+    );
+    tab.wait_for_text("Potassium 5.4 mmol/L", Duration::from_secs(10));
+    let preview_visible =
+        tab.eval("document.querySelector('.citation-preview[role=\"dialog\"]')?.innerText ?? ''");
+    assert!(
+        preview_visible
+            .as_str()
+            .unwrap_or_default()
+            .contains("Potassium 5.4 mmol/L"),
+        "hover CitationPreview did not show quote: {preview_visible}"
+    );
+    tab.save_picture("p1b2-hover-preview-and-sources");
+
+    // AC1: Click `Sources` popover -> click first source -> force 503 then retry -> verify `<mark>`, collapsed Technical details, desktop side-by-side layout.
+    tab.click("button.sources-button");
+    tab.wait_for_text("Echocardiogram", Duration::from_secs(10));
+    tab.call(
+        "Fetch.enable",
+        serde_json::json!({ "patterns": [{ "urlPattern": "*/sources/*", "requestStage": "Request" }] }),
+    );
+    assert_eq!(
+        tab.eval("(() => { const b = document.querySelector('ol.sources-index button'); b?.click(); return Boolean(b); })()"),
+        serde_json::json!(true),
+        "first row button missing in Sources popover"
+    );
+    let failed_source_req = tab.held_request("GET");
+    tab.call(
+        "Fetch.fulfillRequest",
+        serde_json::json!({
+            "requestId": failed_source_req["requestId"],
+            "responseCode": 503,
+            "responseHeaders": [{"name": "content-type", "value": "text/plain"}],
+            "body": base64::engine::general_purpose::STANDARD.encode("source temporarily unavailable"),
+        }),
+    );
+    tab.call("Fetch.disable", serde_json::json!({}));
+    tab.release_all();
+    tab.wait_for_text("Try again", Duration::from_secs(10));
+    tab.click_named(".source-reading-pane button", "Try again");
+    tab.wait_for_text(
+        "Potassium 5.4 mmol/L (reference 3.5-5.0 mmol/L), collected Tuesday morning.",
+        Duration::from_secs(10),
+    );
+    assert_eq!(
+        tab.eval("document.querySelector('.source-reading-pane mark')?.textContent ?? ''"),
+        serde_json::json!("Potassium 5.4 mmol/L"),
+        "passage highlight mark missing inside open source pane"
+    );
+    let pane_collapsed_json = tab
+        .eval("document.querySelector('.source-reading-pane')?.innerText ?? ''")
+        .as_str()
+        .unwrap_or_default()
+        .to_owned();
+    let raw_disclosure_state = tab.eval(
+        "({ state: document.querySelector('.source-reading-pane .disclosure')?.getAttribute('data-state') ?? '', height: document.querySelector('.source-reading-pane .disclosure-region')?.getBoundingClientRect().height ?? -1, opacity: getComputedStyle(document.querySelector('.source-reading-pane .disclosure-region')).opacity })",
+    );
+    assert!(
+        raw_disclosure_state["state"] == serde_json::json!("closed")
+            && raw_disclosure_state["height"] == serde_json::json!(0)
+            && raw_disclosure_state["opacity"] == serde_json::json!("0")
+            && pane_collapsed_json.contains("Technical details"),
+        "raw JSON must stay behind collapsed Technical details disclosure ({raw_disclosure_state}):\n{pane_collapsed_json}"
+    );
+    assert!(
+        tab.eval("document.querySelector('.glass-stage')?.innerText.includes('Potassium is 5.4 mmol/L') ?? false")
+            == serde_json::json!(true),
+        "desktop side panel must keep open conversation visible beside it"
+    );
+    tab.save_picture("p1b2-citations-panel-desktop");
+
+    // AC1: Stale response drop (`[1]` held in flight while `[2]` completes first -> `[2]` stays!).
+    tab.click(".source-reading-pane button[aria-label=\"Close\"]");
+    let close_wait = Instant::now() + Duration::from_secs(5);
+    while tab.eval("Boolean(document.querySelector('.source-reading-pane'))")
+        == serde_json::json!(true)
+    {
+        assert!(Instant::now() < close_wait, "source panel did not close");
+        tokio::time::sleep(Duration::from_millis(30)).await;
+    }
+    tab.call(
+        "Fetch.enable",
+        serde_json::json!({ "patterns": [{ "urlPattern": "*/sources/*", "requestStage": "Request" }] }),
+    );
+    assert_eq!(
+        tab.eval("(() => { const b = document.querySelectorAll('button.citation-chip')[0]; b?.click(); return Boolean(b); })()"),
+        serde_json::json!(true)
+    );
+    let held_s1 = tab.held_request("GET");
+    assert_eq!(
+        tab.eval("(() => { const b = document.querySelectorAll('button.citation-chip')[1]; b?.click(); return Boolean(b); })()"),
+        serde_json::json!(true)
+    );
+    let held_s2 = tab.held_request("GET");
+    let modified_s2 = serde_json::json!({
+        "source": {
+            "source_key": "turn-cited-2:echo-flagged-v1:rev-2",
+            "number": 2,
+            "source_label": "Regional Lab",
+            "title": "Echocardiogram",
+            "record_type": "Echocardiogram",
+            "recorded_at": "2026-08-26",
+            "record_status": "preliminary",
+            "quote": "Left ventricular ejection fraction 55%",
+            "body": "Amended note: systolic assessment pending final sign-off.",
+            "readable_parts": [{
+                "label": "Findings",
+                "text": "Amended note: systolic assessment pending final sign-off."
+            }],
+            "fields": [],
+            "raw_content": raw_echo,
+            "external_url": null,
+            "origin": "source_record"
+        }
+    });
+    tab.call(
+        "Fetch.fulfillRequest",
+        serde_json::json!({
+            "requestId": held_s2["requestId"],
+            "responseCode": 200,
+            "responseHeaders": [{"name": "content-type", "value": "application/json"}],
+            "body": base64::engine::general_purpose::STANDARD.encode(modified_s2.to_string()),
+        }),
+    );
+    tab.wait_for_text("preliminary", Duration::from_secs(10));
+    tab.wait_for_text(
+        "Cited passage could not be matched",
+        Duration::from_secs(10),
+    );
+    tab.release(&held_s1);
+    tab.call("Fetch.disable", serde_json::json!({}));
+    tab.release_all();
+    tokio::time::sleep(Duration::from_millis(350)).await;
+    let after_stale = tab
+        .eval("document.querySelector('.source-reading-pane')?.innerText ?? ''")
+        .as_str()
+        .unwrap_or_default()
+        .to_owned();
+    assert!(
+        after_stale.contains("Echocardiogram")
+            && after_stale.contains("preliminary")
+            && after_stale.contains("Cited passage could not be matched"),
+        "stale delayed response overwrote newer citation panel:\n{after_stale}"
+    );
+
+    // AC1: Phone viewport (<900px) renders Back control cleanly, then closes panel.
+    tab.set_viewport(390, 844, true);
+    tokio::time::sleep(Duration::from_millis(250)).await;
+    tab.wait_for_text("Back", Duration::from_secs(5));
+    tab.save_picture("p1b2-citations-panel-phone");
+    tab.click(".source-pane-back");
+    let phone_close = Instant::now() + Duration::from_secs(5);
+    while tab.eval("Boolean(document.querySelector('.source-reading-pane'))")
+        == serde_json::json!(true)
+    {
+        assert!(
+            Instant::now() < phone_close,
+            "phone source panel Back failed"
+        );
+        tokio::time::sleep(Duration::from_millis(30)).await;
+    }
+    tab.set_viewport(1280, 800, false);
+
+    // AC1: Removing panel access while citation side panel is open transitions it to Unavailable.
+    assert_eq!(
+        tab.eval("(() => { const b = document.querySelectorAll('button.citation-chip')[0]; b?.click(); return Boolean(b); })()"),
+        serde_json::json!(true)
+    );
+    tab.wait_for_text(
+        "Potassium 5.4 mmol/L (reference 3.5-5.0 mmol/L)",
+        Duration::from_secs(10),
+    );
+    let staging_identity = PhysicianIdentity {
+        practice_id: physician_sample::STAGING_PRACTICE_ID.to_owned(),
+        physician_id: "staging-physician".to_owned(),
+    };
+    auth.set_membership(&staging_identity, patient_a, Membership::Denied)
+        .await
+        .expect("remove patient_a panel assignment");
+    bus.publish(physician_bus::Event::WorkspaceChanged {
+        workspace_id: patient_a.to_owned(),
+    })
+    .await
+    .expect("publish WorkspaceChanged");
+    tab.wait_for_text(
+        "Panel access is required to view this patient’s records.",
+        Duration::from_secs(15),
+    );
+    tab.save_picture("p1b2-citations-panel-revoked");
+
+    // AC2: Archive idle conversation + Undo banner + reload persistence.
+    tab.navigate(&format!(
+        "{base_url}?patient={patient_b}&chat={chat_archive}"
+    ));
+    tab.wait_for_text(
+        "Creatinine remains stable at 1.1 mg/dL.",
+        Duration::from_secs(20),
+    );
+    let arch_deadline = Instant::now() + Duration::from_secs(15);
+    while tab.eval("Boolean(document.querySelector('button[data-archive-conversation=\"true\"]'))")
+        != serde_json::json!(true)
+    {
+        assert!(
+            Instant::now() < arch_deadline,
+            "Archive button never rendered"
+        );
+        tokio::time::sleep(Duration::from_millis(40)).await;
+    }
+    tab.click("button[data-archive-conversation=\"true\"]");
+    tab.wait_for_text("Undo", Duration::from_secs(10));
+    tab.save_picture("p1b2-archive-undo-banner");
+    let sidebar_after_archive = tab
+        .eval("document.querySelector('.sidebar-recent')?.innerText ?? ''")
+        .as_str()
+        .unwrap_or_default()
+        .to_owned();
+    assert!(
+        !sidebar_after_archive.contains("Archive candidate renal follow-up"),
+        "archived chat remained in Recent conversations:\n{sidebar_after_archive}"
+    );
+    tab.click_named("button", "Undo");
+    tab.wait_for_text("Archive candidate renal follow-up", Duration::from_secs(10));
+
+    // Re-archive and reload -> stays hidden after reload.
+    let rearch_deadline = Instant::now() + Duration::from_secs(15);
+    while tab.eval("Boolean(document.querySelector('button[data-archive-conversation=\"true\"]:not(:disabled)'))")
+        != serde_json::json!(true)
+    {
+        assert!(Instant::now() < rearch_deadline, "Archive button not ready after Undo");
+        tokio::time::sleep(Duration::from_millis(40)).await;
+    }
+    tab.click("button[data-archive-conversation=\"true\"]");
+    tab.wait_for_text("Undo", Duration::from_secs(10));
+    tab.navigate(&format!("{base_url}?patient={patient_b}"));
+    tab.wait_for_text("Past work", Duration::from_secs(20));
+    tokio::time::sleep(Duration::from_millis(300)).await;
+    let sidebar_after_reload = tab
+        .eval("document.querySelector('.sidebar-recent')?.innerText ?? ''")
+        .as_str()
+        .unwrap_or_default()
+        .to_owned();
+    assert!(
+        !sidebar_after_reload.contains("Archive candidate renal follow-up"),
+        "archived chat reappeared after reload:\n{sidebar_after_reload}"
+    );
+
+    // AC5: Shared Find patient component shows KeywordFallback notice on broad keyword fallback.
+    assert_eq!(
+        tab.eval("(() => { const b = [...document.querySelectorAll('button')].find(x => x.textContent.includes('Find patient')); b?.click(); return Boolean(b); })()"),
+        serde_json::json!(true),
+        "Find patient button not found"
+    );
+    tab.wait_for_text("Dan Cohen", Duration::from_secs(10));
+    tab.call(
+        "Fetch.enable",
+        serde_json::json!({ "patterns": [{ "urlPattern": "*/patient-roster*", "requestStage": "Request" }] }),
+    );
+    tab.search_for("fallbackcheck");
+    let held_search = tab.held_request("GET");
+    let fallback_body = serde_json::json!({
+        "patients": [{
+            "patient_workspace_id": patient_b,
+            "patient_display_name": "Jake Smith",
+            "birth_date": "1950-03-12",
+            "mrn": "00000001",
+            "duet_linked": false,
+            "sharing_consented": false,
+            "membership": "physician_panel"
+        }],
+        "next_after": null,
+        "match_mode": "keyword_fallback"
+    });
+    tab.call(
+        "Fetch.fulfillRequest",
+        serde_json::json!({
+            "requestId": held_search["requestId"],
+            "responseCode": 200,
+            "responseHeaders": [{"name": "content-type", "value": "application/json"}],
+            "body": base64::engine::general_purpose::STANDARD.encode(fallback_body.to_string()),
+        }),
+    );
+    tab.call("Fetch.disable", serde_json::json!({}));
+    tab.release_all();
+    tab.wait_for_text(
+        "No exact or prefix match — showing keyword matches.",
+        Duration::from_secs(10),
+    );
+    tab.save_picture("p1b2-find-patient-fallback");
+
+    drop(tab);
+    server.abort();
+
+    // AC3 (`Discuss`) & AC4 (`Dictation`: Ctrl+Shift+Space hold/release + Dictate click + 503 failure notice).
+    let chat_server = serve_chat_browser_with_stub(&site, 5_000, "[]", scale::FIXED_TEXT).await;
+    let chat_base = format!("http://{}/", chat_server.address);
+    let mut tab2 = Tab::open("about:blank");
+    tab2.browser.watch_page_errors();
+    tab2.set_viewport(1280, 800, false);
+    tab2.call(
+        "Page.addScriptToEvaluateOnNewDocument",
+        serde_json::json!({
+            "source": r#"
+(() => {
+  const bytes = new TextEncoder().encode("TEXT:Repeat basic metabolic panel in the morning.");
+  class FakeRecorder {
+    constructor(stream) {
+      this.stream = stream;
+      this.mimeType = 'audio/webm';
+      this.state = 'inactive';
+      this.ondataavailable = null;
+      this.listeners = {};
+    }
+    addEventListener(type, fn) { (this.listeners[type] ||= []).push(fn); }
+    start() {
+      this.state = 'recording';
+    }
+    stop() {
+      this.state = 'inactive';
+      if (this.ondataavailable) {
+        this.ondataavailable({ data: new Blob([bytes], { type: 'audio/webm' }) });
+      }
+      (this.listeners['stop'] || []).forEach(fn => fn());
+    }
+  }
+  window.MediaRecorder = FakeRecorder;
+  window.AudioContext = class FakeAudioContext {
+    createMediaStreamSource() { return { connect() {} }; }
+    createAnalyser() {
+      return {
+        fftSize: 256,
+        frequencyBinCount: 16,
+        getByteTimeDomainData(buf) { for (let i = 0; i < buf.length; i++) buf[i] = 160; },
+      };
+    }
+    close() { return Promise.resolve(); }
+  };
+  Object.defineProperty(navigator, 'mediaDevices', {
+    configurable: true,
+    value: {
+      getUserMedia: async () => ({ getTracks: () => [{ stop() {} }] }),
+    },
+  });
+})();
+"#
+        }),
+    );
+    tab2.navigate(&chat_base);
+    tab2.wait_for_text("Work email", Duration::from_secs(20));
+    tab2.request_sign_in("physician@codahealth.test");
+    tab2.wait_for_text("Nothing needs you right now.", Duration::from_secs(20));
+    tab2.navigate(&format!(
+        "{chat_base}?patient={patient_b}&chat=chat-p1b2-discuss-dictate"
+    ));
+    tab2.wait_for_text(
+        "What would you like Coda to review?",
+        Duration::from_secs(20),
+    );
+
+    // AC4: Hold Ctrl+Shift+Space (CDP modifiers: Ctrl=2 | Shift=8 = 10) while focused in composer,
+    // wait for active dictation wave, release -> inserts into composer without sending!
+    tab2.step("focusEnd", serde_json::json!(["textarea.composer-input"]));
+    tab2.call(
+        "Input.dispatchKeyEvent",
+        serde_json::json!({
+            "type": "keyDown",
+            "key": " ",
+            "code": "Space",
+            "windowsVirtualKeyCode": 32,
+            "nativeVirtualKeyCode": 32,
+            "modifiers": 10
+        }),
+    );
+    tab2.wait_for_text("Listening", Duration::from_secs(10));
+    tokio::time::sleep(Duration::from_millis(120)).await;
+    tab2.call(
+        "Input.dispatchKeyEvent",
+        serde_json::json!({
+            "type": "keyUp",
+            "key": " ",
+            "code": "Space",
+            "windowsVirtualKeyCode": 32,
+            "nativeVirtualKeyCode": 32,
+            "modifiers": 10
+        }),
+    );
+    let started_wait = Instant::now();
+    while tab2.composer().0 != "Repeat basic metabolic panel in the morning." {
+        if started_wait.elapsed() >= Duration::from_secs(10) {
+            let html = tab2.eval("document.querySelector('.composer')?.outerHTML ?? ''");
+            let errors = tab2.browser.take_page_errors();
+            panic!(
+                "dictation did not insert transcript; composer={:?}, errors={errors:?}, html={html}",
+                tab2.composer()
+            );
+        }
+        tokio::time::sleep(Duration::from_millis(50)).await;
+    }
+    tab2.save_picture("p1b2-dictation-transcribed");
+
+    // AC4: Failure on POST /dictation renders honest unavailability notice and keeps existing composer text.
+    tab2.call(
+        "Fetch.enable",
+        serde_json::json!({ "patterns": [{ "urlPattern": "*/dictation", "requestStage": "Request" }] }),
+    );
+    tab2.click_named(".composer button", "Dictate");
+    tab2.wait_for_text("Listening", Duration::from_secs(10));
+    tab2.click(".dictation button[aria-label=\"Finish dictation\"]");
+    let held_dictation = tab2.held_request("POST");
+    tab2.call(
+        "Fetch.fulfillRequest",
+        serde_json::json!({
+            "requestId": held_dictation["requestId"],
+            "responseCode": 503,
+            "responseHeaders": [{"name": "content-type", "value": "text/plain"}],
+            "body": base64::engine::general_purpose::STANDARD.encode("unavailable"),
+        }),
+    );
+    tab2.call("Fetch.disable", serde_json::json!({}));
+    tab2.release_all();
+    tab2.wait_for_text("Dictation is unavailable", Duration::from_secs(10));
+    assert_eq!(
+        tab2.composer().0,
+        "Repeat basic metabolic panel in the morning.",
+        "failed dictation must preserve existing composer draft"
+    );
+
+    // AC3: Start active turn + queue follow-up -> click Discuss -> stops active turn & restores queued item to composer.
+    tab2.type_composer("Active run before discuss");
+    tab2.click_named(".composer-toolbar button", "Send");
+    tab2.wait_for_text("Send next", Duration::from_secs(15));
+    tab2.type_composer("Queued item restored on discuss");
+    tab2.click_named(".composer-toolbar button", "Send next");
+    tab2.wait_for_text("Queued item restored on discuss", Duration::from_secs(10));
+    tab2.click_named("button", "Discuss");
+    tab2.wait_composer("Queued item restored on discuss", Duration::from_secs(15));
+    tab2.wait_for_text("Coda stopped this response.", Duration::from_secs(10));
+    tab2.save_picture("p1b2-discuss-stopped-restored");
 }

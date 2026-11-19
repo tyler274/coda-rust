@@ -422,7 +422,12 @@ fn send(feedback: Feedback, save: Save) {
 /// the snapshot couldn't read feedback and this page saved or read none, the thumbs
 /// are disabled and say the rating couldn't be loaded; the chat stays usable.
 #[component]
-pub(crate) fn ResponseRating(chat: ChatKey, response: ResponseId, read: Read) -> Element {
+pub(crate) fn ResponseRating(
+    chat: ChatKey,
+    response: ResponseId,
+    read: Read,
+    #[props(default)] extra: Option<Element>,
+) -> Element {
     let feedback = use_context::<Feedback>();
     let mut desk = feedback.desk;
     let key = (chat, response);
@@ -483,6 +488,9 @@ pub(crate) fn ResponseRating(chat: ChatKey, response: ResponseId, read: Read) ->
             }
             if let Some(notice) = notice {
                 span { class: "quiet-line feedback-notice", role: "status", "{notice}" }
+            }
+            if let Some(extra) = extra {
+                {extra}
             }
         }
         if let (true, Some(state)) = (open, state) {
