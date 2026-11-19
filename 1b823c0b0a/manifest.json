@@ -1,0 +1,69 @@
+{
+  "branch": "tyler-eng-399-2-follow-up-host-and-suite-part1",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC-FU-HOST-PG",
+      "label": "Follow-up reassessment recipe guidance, library discovery, and AC1 in PostgreSQL",
+      "kind": "run",
+      "revision": "de5a140976e608b7fee40f37a2f67f6d3d6dcb4c",
+      "dirty": false,
+      "recorded": "2026-11-19T01:17:18+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "local-product",
+        "--test",
+        "follow_up_reassessment_postgres",
+        "--",
+        "--test-threads=1"
+      ],
+      "expect": "test result: ok\\. 2 passed",
+      "expect_fail": false,
+      "files": [
+        "01-Follow-up-reassessment-recipe-guidance-library-d.log"
+      ],
+      "seconds": 60.0,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true,
+      "kept": {
+        "revision": "1b823c0b0ab188c0dd8cf773593a3cbe7249b6ee",
+        "reason": "Rebased onto final PR 91 (562055b56d); seam files preserved and full workspace/PG16/Chromium suites verified at PR 104 tip 59829dacb"
+      }
+    },
+    {
+      "id": 2,
+      "claim": "AC-FU-HOST-LIB",
+      "label": "Follow-up reassessment unit tests",
+      "kind": "run",
+      "revision": "de5a140976e608b7fee40f37a2f67f6d3d6dcb4c",
+      "dirty": false,
+      "recorded": "2026-11-19T01:18:45+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "local-product",
+        "--lib",
+        "follow_up_reassessment"
+      ],
+      "expect": "test result: ok\\. 1 passed",
+      "expect_fail": false,
+      "files": [
+        "02-Follow-up-reassessment-unit-tests.log"
+      ],
+      "seconds": 49.3,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true,
+      "kept": {
+        "revision": "1b823c0b0ab188c0dd8cf773593a3cbe7249b6ee",
+        "reason": "Rebased onto final PR 91 (562055b56d); seam files preserved and full workspace/PG16/Chromium suites verified at PR 104 tip 59829dacb"
+      }
+    }
+  ]
+}
