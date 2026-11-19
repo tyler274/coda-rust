@@ -1,0 +1,39 @@
+{
+  "branch": "tyler-eng-64-2-hint-reader-and-unit-suite",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC1",
+      "label": "Chrome Hint reader JS syntax checks and Hint persisted-record tests in local-product",
+      "kind": "run",
+      "revision": "958c18c6071b173bb5a13aab0d99d731fd43926a",
+      "dirty": false,
+      "recorded": "2026-11-19T00:59:42+00:00",
+      "command": [
+        "bash",
+        "-lc",
+        "node --check extension/chrome/readers/hint.js && node --check extension/chrome/readers/hint-page.js && node --check extension/chrome/readers/index.js && cargo test --locked -p local-product --lib physician_sources"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "01-Chrome-Hint-reader-JS-syntax-checks-and-Hint-per.log"
+      ],
+      "seconds": 2.6,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 2,
+      "claim": "AC2",
+      "label": "",
+      "kind": "gap",
+      "revision": "958c18c6071b173bb5a13aab0d99d731fd43926a",
+      "dirty": false,
+      "recorded": "2026-11-19T00:59:45+00:00",
+      "reason": "scripts/check-record-adapters.sh requires external SOURCE_REPLAY_ROOT and HINT_CAPTURE_ROOT archives not present locally",
+      "ok": false,
+      "files": []
+    }
+  ]
+}
