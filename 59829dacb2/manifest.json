@@ -1,0 +1,265 @@
+{
+  "branch": "tyler-eng-308-2-follow-ups-ui-and-site-suite",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC-FU-CLIPPY",
+      "label": "Full workspace host clippy and wasm32 clippy",
+      "kind": "run",
+      "revision": "59829dacb23dc407a6eba3afdbcb0c6c4f6a8e7b",
+      "dirty": false,
+      "recorded": "2026-11-19T03:45:23+00:00",
+      "command": [
+        "bash",
+        "-lc",
+        "cargo clippy --locked --workspace --all-targets -- -D warnings && cargo clippy --locked --target wasm32-unknown-unknown -p physician-app -p duet-app -p extension-popup -p physician-demo-db --lib -- -D warnings"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "01-Full-workspace-host-clippy-and-wasm32-clippy.log"
+      ],
+      "seconds": 24.0,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 2,
+      "claim": "AC-FU-UNIT",
+      "label": "Boundaries, demo-db, physician-app, and physician-sample unit tests",
+      "kind": "run",
+      "revision": "59829dacb23dc407a6eba3afdbcb0c6c4f6a8e7b",
+      "dirty": false,
+      "recorded": "2026-11-19T03:45:48+00:00",
+      "command": [
+        "bash",
+        "-lc",
+        "cargo test --locked -p boundaries -p physician-demo-db --lib && cargo test --locked -p physician-app -p physician-sample --lib"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "02-Boundaries-demo-db-physician-app-and-physician-s.log"
+      ],
+      "seconds": 41.1,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 3,
+      "claim": "AC-FU-MDBOOK",
+      "label": "Book documentation build check",
+      "kind": "run",
+      "revision": "59829dacb23dc407a6eba3afdbcb0c6c4f6a8e7b",
+      "dirty": false,
+      "recorded": "2026-11-19T03:46:29+00:00",
+      "command": [
+        "mdbook",
+        "build",
+        "book"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "03-Book-documentation-build-check.log"
+      ],
+      "seconds": 1.9,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 4,
+      "claim": "AC-FU-CHROMIUM-SUITE",
+      "label": "Chromium matching, reply, failed-commands, and Follow-ups browser suite",
+      "kind": "run",
+      "revision": "59829dacb23dc407a6eba3afdbcb0c6c4f6a8e7b",
+      "dirty": false,
+      "recorded": "2026-11-19T03:46:31+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "physician-sample",
+        "--test",
+        "site_matching_reply_followups",
+        "--",
+        "--ignored"
+      ],
+      "expect": "test result: ok\\. 4 passed",
+      "expect_fail": false,
+      "files": [
+        "04-Chromium-matching-reply-failed-commands-and-Foll.log"
+      ],
+      "seconds": 64.6,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true
+    },
+    {
+      "id": 5,
+      "claim": "AC-FU-SITE-NONVALKEY",
+      "label": "Physician-sample Chromium site regression suite (14 non-Valkey tests)",
+      "kind": "run",
+      "revision": "59829dacb23dc407a6eba3afdbcb0c6c4f6a8e7b",
+      "dirty": false,
+      "recorded": "2026-11-19T03:47:35+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "physician-sample",
+        "--test",
+        "site",
+        "--",
+        "--ignored",
+        "--skip",
+        "a_new_conversation_is_listed_after_a_reload_without_its_address",
+        "--skip",
+        "a_quiet_page_keeps_its_change_stream_and_a_silent_one_is_dropped_and_read_again",
+        "--skip",
+        "a_reloaded_tab_recovers_unsent_text_and_sign_out_forgets_it",
+        "--skip",
+        "a_reply_draws_code_and_a_table_that_scroll_by_key",
+        "--skip",
+        "a_stale_tab_is_not_saved_and_a_save_never_marks_another_chat",
+        "--skip",
+        "held_limits_and_provider_blocks_render_without_a_partial_answer",
+        "--skip",
+        "keyboard_send_clears_only_the_sent_text_and_a_reload_reasks_the_same_command",
+        "--skip",
+        "past_conversations_and_work_reopen_across_restart_mark_newer_records_and_enforce_access",
+        "--skip",
+        "the_first_event_connection_reads_changes_after_the_initial_snapshot"
+      ],
+      "expect": "test result: ok\\. 14 passed",
+      "expect_fail": false,
+      "files": [
+        "05-Physician-sample-Chromium-site-regression-suite-.log"
+      ],
+      "seconds": 92.0,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true
+    },
+    {
+      "id": 6,
+      "claim": "AC-FU-SITE-VALKEY",
+      "label": "9 Valkey-backed site tests require Valkey server (exited 1 in sandbox); exercised in CI",
+      "kind": "gap",
+      "revision": "59829dacb23dc407a6eba3afdbcb0c6c4f6a8e7b",
+      "dirty": false,
+      "recorded": "2026-11-19T03:49:08+00:00",
+      "reason": "Sandbox cannot run valkey-server; 14 non-Valkey site tests and all 4 matching/reply/follow-ups browser tests passed against live PG16 + Chromium",
+      "ok": false,
+      "files": []
+    },
+    {
+      "id": 7,
+      "claim": "AC-FU-PG-RECIPES",
+      "label": "PG16 initial understanding (7), message review recipe (12), and follow-up reassessment (10) suites",
+      "kind": "run",
+      "revision": "59829dacb23dc407a6eba3afdbcb0c6c4f6a8e7b",
+      "dirty": false,
+      "recorded": "2026-11-19T03:49:08+00:00",
+      "command": [
+        "bash",
+        "-lc",
+        "cargo test --locked -p local-product --test initial_understanding_postgres && cargo test --locked -p local-product --test message_review_recipe && cargo test --locked -p local-product --test follow_up_reassessment_postgres"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "07-PG16-initial-understanding-7-message-review-reci.log"
+      ],
+      "seconds": 70.1,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 8,
+      "claim": "AC-FU-SCREENSHOT",
+      "label": "Follow-ups browser capture: 13-follow-up-persisted-after-restart",
+      "kind": "screenshot",
+      "revision": "59829dacb23dc407a6eba3afdbcb0c6c4f6a8e7b",
+      "dirty": false,
+      "recorded": "2026-11-19T03:50:18+00:00",
+      "files": [
+        "08-13-follow-up-persisted-after-restart.png"
+      ],
+      "source": "target/verification/captures/matching-reply-followups/13-follow-up-persisted-after-restart.png",
+      "ok": true
+    },
+    {
+      "id": 9,
+      "claim": "AC-FU-SCREENSHOT",
+      "label": "Follow-ups browser capture: 14-follow-up-review-now",
+      "kind": "screenshot",
+      "revision": "59829dacb23dc407a6eba3afdbcb0c6c4f6a8e7b",
+      "dirty": false,
+      "recorded": "2026-11-19T03:50:18+00:00",
+      "files": [
+        "09-14-follow-up-review-now.png"
+      ],
+      "source": "target/verification/captures/matching-reply-followups/14-follow-up-review-now.png",
+      "ok": true
+    },
+    {
+      "id": 10,
+      "claim": "AC-FU-SCREENSHOT",
+      "label": "Follow-ups browser capture: 15-follow-up-failure-not-saved",
+      "kind": "screenshot",
+      "revision": "59829dacb23dc407a6eba3afdbcb0c6c4f6a8e7b",
+      "dirty": false,
+      "recorded": "2026-11-19T03:50:18+00:00",
+      "files": [
+        "10-15-follow-up-failure-not-saved.png"
+      ],
+      "source": "target/verification/captures/matching-reply-followups/15-follow-up-failure-not-saved.png",
+      "ok": true
+    },
+    {
+      "id": 11,
+      "claim": "AC-FU-SCREENSHOT",
+      "label": "Follow-ups browser capture: 16-follow-up-stop-and-discuss",
+      "kind": "screenshot",
+      "revision": "59829dacb23dc407a6eba3afdbcb0c6c4f6a8e7b",
+      "dirty": false,
+      "recorded": "2026-11-19T03:50:18+00:00",
+      "files": [
+        "11-16-follow-up-stop-and-discuss.png"
+      ],
+      "source": "target/verification/captures/matching-reply-followups/16-follow-up-stop-and-discuss.png",
+      "ok": true
+    },
+    {
+      "id": 12,
+      "claim": "AC-FU-SCREENSHOT",
+      "label": "Follow-ups browser capture: 17-follow-up-cannot-restart-desktop",
+      "kind": "screenshot",
+      "revision": "59829dacb23dc407a6eba3afdbcb0c6c4f6a8e7b",
+      "dirty": false,
+      "recorded": "2026-11-19T03:50:19+00:00",
+      "files": [
+        "12-17-follow-up-cannot-restart-desktop.png"
+      ],
+      "source": "target/verification/captures/matching-reply-followups/17-follow-up-cannot-restart-desktop.png",
+      "ok": true
+    },
+    {
+      "id": 13,
+      "claim": "AC-FU-SCREENSHOT",
+      "label": "Follow-ups browser capture: 18-follow-up-cannot-restart-phone",
+      "kind": "screenshot",
+      "revision": "59829dacb23dc407a6eba3afdbcb0c6c4f6a8e7b",
+      "dirty": false,
+      "recorded": "2026-11-19T03:50:19+00:00",
+      "files": [
+        "13-18-follow-up-cannot-restart-phone.png"
+      ],
+      "source": "target/verification/captures/matching-reply-followups/18-follow-up-cannot-restart-phone.png",
+      "ok": true
+    }
+  ]
+}

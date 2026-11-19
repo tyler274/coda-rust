@@ -1,0 +1,56 @@
+   Compiling physician-wire v0.1.0 (<worktree>/crates/physician-wire)
+   Compiling local-product v0.1.0 (<worktree>/crates/local-product)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 25.42s
+     Running tests/initial_understanding_postgres.rs (target/debug/deps/initial_understanding_postgres-9175daea105bad5e)
+
+running 7 tests
+test recipe_instructions_tools_and_skill_catalog_pass_model_text_audit ... ok
+test ac5_physician_projections_enforce_panel_access_and_exclude_private_operating_index ... ok
+test ac1_new_patient_link_starts_intended_assignment_with_model_settings_guidance_and_capabilities ... ok
+test stale_work_source_version_is_refused_with_revision_conflict ... ok
+test ac4_failed_first_attempt_retries_before_failed_standing_and_idempotency_prevents_duplicates ... ok
+test ac2_synthetic_chart_saves_verified_memory_and_summary_with_material_gaps_and_duet_only_scope ... ok
+test ac3_later_source_and_chat_correction_update_same_patient_and_inform_subsequent_question ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.38s
+
+   Compiling local-product v0.1.0 (<worktree>/crates/local-product)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 17.98s
+     Running tests/message_review_recipe.rs (target/debug/deps/message_review_recipe-209a6537ed38e4cb)
+
+running 13 tests
+test live_openai_message_review_smoke ... ignored, requires CODA_ALLOW_MODEL_CALLS=1, live OPENAI_API_KEY, and PHYSICIAN_RUNTIME_TEST_DATABASE_URL
+test recipe_and_reply_revision_guidance_are_clean_and_enforce_tool_boundaries ... ok
+test ac1_linked_message_and_coalesced_result_runs_on_background_lane_with_preloads_and_discoveries ... ok
+test round1_reply_revision_includes_linked_conversation_reconsiders_new_messages_and_records_tool_names ... ok
+test round1_withdrawn_wrong_patient_candidates_excluded_from_message_review_and_reply_revision ... ok
+test round1_failed_or_held_default_review_id_restarts_cleanly_on_retry ... ok
+test ac5_physician_reply_revision_reconsiders_moved_sources_preserves_concurrent_physician_edit_and_fences_tools ... ok
+test ac2_multimodal_photo_paged_pdf_fax_unreadable_limit_and_medication_refresh_discipline ... ok
+test ac4_longitudinal_memory_and_follow_up_updates_carry_into_later_run_preserving_siblings_and_no_change ... ok
+test round1_mid_run_conversation_and_source_updates_keep_product_message_id_and_clear_refused_staged_submission ... ok
+test ac6_already_handled_automatic_vs_real_partial_closures_ask_coda_copy_and_close_orthogonality ... ok
+test ac7_end_to_end_synthetic_spruce_webhook_match_link_review_surfaces_evidence_reopen_and_later_update ... ok
+test ac3_four_clinical_cases_routine_nonurgent_concern_urgent_emergency_and_no_reply ... ok
+
+test result: ok. 12 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 3.34s
+
+   Compiling local-product v0.1.0 (<worktree>/crates/local-product)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 17.06s
+     Running tests/follow_up_reassessment_postgres.rs (target/debug/deps/follow_up_reassessment_postgres-3c19b368f3ec9ddb)
+
+running 11 tests
+test live_openai_follow_up_reassessment_smoke ... ignored, requires CODA_ALLOW_MODEL_CALLS=1, live OPENAI_API_KEY, and PHYSICIAN_RUNTIME_TEST_DATABASE_URL
+test recipe_guidance_and_tool_surface_are_clean_and_background_bound ... ok
+test round1_withdrawn_wrong_patient_candidates_excluded_from_reassessment_context_and_staging ... ok
+test ac1_reassessment_run_carries_responsibility_origin_constraints_history_preloads_and_discovers_library ... ok
+test round1_review_now_continue_unchanged_clears_due_now_back_to_scheduled_until_due_at ... ok
+test ac5_due_wakeup_and_review_now_dispatch_surfaces_and_stopped_completed_cancelled_fences ... ok
+test round1_mid_run_physician_stop_terminal_fences_and_source_change_clears_staged ... ok
+test round1_complete_citing_unread_understanding_anchor_is_refused_until_read_in_run ... ok
+test ac4_longitudinal_three_run_sequence_no_duplicate_concerns_memory_correction_and_sibling_isolation ... ok
+test ac3_silence_missing_results_overdue_high_stakes_concern_and_conflicting_dated_records ... ok
+test ac2_four_clinical_dispositions_continue_change_complete_and_end_without_completion_with_guards ... ok
+
+test result: ok. 10 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 4.15s
+
