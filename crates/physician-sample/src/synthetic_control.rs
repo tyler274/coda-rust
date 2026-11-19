@@ -3781,6 +3781,8 @@ mod runtime_tables {
         SkillPackages,
         TodayUpdatesSeen,
         TodayWorkDismissals,
+        ConnectedCareConsent,
+        ConnectedCareIntake,
     }
 
     impl Iden for PracticeTable {
@@ -3856,6 +3858,8 @@ mod runtime_tables {
                 Self::SkillPackages => "physician_runtime_skill_packages",
                 Self::TodayUpdatesSeen => "physician_runtime_today_updates_seen",
                 Self::TodayWorkDismissals => "physician_runtime_today_work_dismissals",
+                Self::ConnectedCareConsent => "physician_runtime_connected_care_consent",
+                Self::ConnectedCareIntake => "physician_runtime_connected_care_intake",
             }
         }
     }
@@ -3955,6 +3959,8 @@ mod runtime_tables {
         PracticeTable::CarePlanRecommendations,
         PracticeTable::PracticeJobAttempts,
         PracticeTable::PracticeJobs,
+        PracticeTable::ConnectedCareIntake,
+        PracticeTable::ConnectedCareConsent,
         PracticeTable::PatientReviews,
         PracticeTable::VisitConcerns,
         PracticeTable::VisitBriefings,

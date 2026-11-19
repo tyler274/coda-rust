@@ -13,14 +13,15 @@ use axum::Router;
 use axum::extract::State;
 use axum::http::{HeaderMap, StatusCode};
 use axum::response::{IntoResponse, Response};
-use axum::routing::{get, post};
+use axum::routing::{get, post, put};
 use serde::Deserialize;
 use serde_json::json;
 use uuid::Uuid;
 
 use crate::{
-    Account, Consent, FrontDoorStore, Invitation, InviteError, LinkError, Premium, RosterPatient,
-    SessionError, SignInError,
+    Account, Consent, ForMyDoctorError, ForMyDoctorSendRequest, ForMyDoctorShare,
+    ForMyDoctorShareStatus, FrontDoorStore, Invitation, InviteError, LinkError, Premium,
+    RosterPatient, SessionError, SharedPatientRecordInput, SignInError,
 };
 
 /// Why a route answered with an error status.
@@ -32,6 +33,12 @@ pub enum ApiError {
     Invalid,
     /// The practice already invited this email, or the email holds an account.
     Conflict,
+    /// A `"For my doctor"` share key was reused with different content.
+    ShareConflict,
+    /// Sharing consent is missing or withdrawn.
+    ConsentRequired,
+    /// Supplied connected-care share/record payload is malformed.
+    InvalidInput,
     /// The account carries no link to a roster patient.
     Unlinked,
     /// The store failed; the caller cannot fix it by retrying differently.
@@ -49,6 +56,18 @@ impl IntoResponse for ApiError {
             Self::Conflict => (
                 StatusCode::CONFLICT,
                 "That email is already invited or has an account.",
+            ),
+            Self::ShareConflict => (
+                StatusCode::CONFLICT,
+                "That For my doctor share key already exists with different content.",
+            ),
+            Self::ConsentRequired => (
+                StatusCode::PRECONDITION_REQUIRED,
+                "Turn on sharing consent before sending to your doctor.",
+            ),
+            Self::InvalidInput => (
+                StatusCode::UNPROCESSABLE_ENTITY,
+                "Supply non-empty share details.",
             ),
             Self::Unlinked => (StatusCode::NOT_FOUND, "No linked patient for this account."),
             Self::Storage => (
@@ -88,6 +107,18 @@ impl From<LinkError> for ApiError {
     fn from(error: LinkError) -> Self {
         match error {
             LinkError::Unlinked => Self::Unlinked,
+        }
+    }
+}
+
+impl From<ForMyDoctorError> for ApiError {
+    fn from(error: ForMyDoctorError) -> Self {
+        match error {
+            ForMyDoctorError::Unlinked | ForMyDoctorError::NotFound => Self::Unlinked,
+            ForMyDoctorError::ConsentRequired => Self::ConsentRequired,
+            ForMyDoctorError::InvalidInput(_) => Self::InvalidInput,
+            ForMyDoctorError::Conflict => Self::ShareConflict,
+            ForMyDoctorError::Storage(_) => Self::Storage,
         }
     }
 }
@@ -256,6 +287,11 @@ pub fn router_with(state: FrontDoorState, require_auth: bool) -> Router {
             get(consent).post(grant_consent).delete(withdraw_consent),
         )
         .route("/front-door/premium", get(premium))
+        .route(
+            "/front-door/for-my-doctor",
+            post(send_for_my_doctor).get(list_for_my_doctor),
+        )
+        .route("/front-door/shared-records", put(upsert_shared_records))
         .with_state((state, require_auth))
 }
 
@@ -415,6 +451,75 @@ async fn premium(
     let account_id = account_id(&state, require_auth, &headers).await?;
     let patient = state.store.link(account_id).await?;
     Ok(Json(state.store.premium(&patient).await))
+}
+
+#[derive(serde::Serialize)]
+struct ForMyDoctorShareView {
+    share_id: String,
+    share_key: String,
+    title: String,
+    summary_text: String,
+    origin_label: String,
+    sent_at: u64,
+    #[serde(flatten)]
+    standing: ForMyDoctorShareStatus,
+}
+
+impl From<ForMyDoctorShare> for ForMyDoctorShareView {
+    fn from(share: ForMyDoctorShare) -> Self {
+        Self {
+            share_id: share.share_id,
+            share_key: share.share_key,
+            title: share.title,
+            summary_text: share.summary_text,
+            origin_label: share.origin_label,
+            sent_at: share.sent_at,
+            standing: share.standing,
+        }
+    }
+}
+
+#[derive(Deserialize)]
+struct UpsertSharedRecordsBody {
+    records: Vec<SharedPatientRecordInput>,
+}
+
+async fn send_for_my_doctor(
+    State((state, require_auth)): State<(FrontDoorState, bool)>,
+    headers: HeaderMap,
+    Json(body): Json<ForMyDoctorSendRequest>,
+) -> Result<Json<ForMyDoctorShareView>, ApiError> {
+    let account_id = account_id(&state, require_auth, &headers).await?;
+    let share = state
+        .store
+        .send_for_my_doctor(account_id, body, (state.now)())
+        .await?;
+    Ok(Json(share.into()))
+}
+
+async fn list_for_my_doctor(
+    State((state, require_auth)): State<(FrontDoorState, bool)>,
+    headers: HeaderMap,
+) -> Result<Json<Vec<ForMyDoctorShareView>>, ApiError> {
+    let account_id = account_id(&state, require_auth, &headers).await?;
+    let shares = state
+        .store
+        .for_my_doctor_shares_for_account(account_id)
+        .await?;
+    Ok(Json(shares.into_iter().map(Into::into).collect()))
+}
+
+async fn upsert_shared_records(
+    State((state, require_auth)): State<(FrontDoorState, bool)>,
+    headers: HeaderMap,
+    Json(body): Json<UpsertSharedRecordsBody>,
+) -> Result<StatusCode, ApiError> {
+    let account_id = account_id(&state, require_auth, &headers).await?;
+    state
+        .store
+        .upsert_shared_records(account_id, &body.records, (state.now)())
+        .await?;
+    Ok(StatusCode::NO_CONTENT)
 }
 
 #[cfg(test)]
@@ -758,5 +863,116 @@ mod tests {
             StatusCode::UNAUTHORIZED,
             "a verified token never verifies again"
         );
+    }
+
+    #[tokio::test]
+    async fn for_my_doctor_route_requires_consent_and_tracks_sent_status() {
+        let (state, store) = state(MemoryFrontDoorStore::new());
+        let app = router_with(state, true);
+        let session = invited_session(&app, &store).await;
+        let denied = app
+            .clone()
+            .oneshot(
+                Request::builder()
+                    .method("POST")
+                    .uri("/front-door/for-my-doctor")
+                    .header("content-type", "application/json")
+                    .header("authorization", format!("Bearer {session}"))
+                    .body(Body::from(
+                        json!({
+                            "share_key": "share-1",
+                            "title": "Pre-visit summary",
+                            "summary_text": "Home blood pressure averages 138/86."
+                        })
+                        .to_string(),
+                    ))
+                    .unwrap(),
+            )
+            .await
+            .unwrap();
+        assert_eq!(denied.status(), StatusCode::PRECONDITION_REQUIRED);
+
+        // Grant consent -> send works -> idempotent resend -> status shows "sent" -> practice marks "received".
+        let consent_resp = app
+            .clone()
+            .oneshot(
+                Request::builder()
+                    .method("POST")
+                    .uri("/front-door/consent")
+                    .header("authorization", format!("Bearer {session}"))
+                    .body(Body::empty())
+                    .unwrap(),
+            )
+            .await
+            .unwrap();
+        assert_eq!(consent_resp.status(), StatusCode::NO_CONTENT);
+
+        let payload = json!({
+            "share_key": "share-1",
+            "title": "Pre-visit summary",
+            "summary_text": "Home blood pressure averages 138/86."
+        });
+        let send1 = app
+            .clone()
+            .oneshot(
+                Request::builder()
+                    .method("POST")
+                    .uri("/front-door/for-my-doctor")
+                    .header("content-type", "application/json")
+                    .header("authorization", format!("Bearer {session}"))
+                    .body(Body::from(payload.to_string()))
+                    .unwrap(),
+            )
+            .await
+            .unwrap();
+        assert_eq!(send1.status(), StatusCode::OK);
+        let share1: serde_json::Value = serde_json::from_slice(
+            &axum::body::to_bytes(send1.into_body(), usize::MAX)
+                .await
+                .unwrap(),
+        )
+        .unwrap();
+        assert_eq!(share1["status"], "sent");
+        let share_id = share1["share_id"].as_str().unwrap().to_owned();
+
+        let send2 = app
+            .clone()
+            .oneshot(
+                Request::builder()
+                    .method("POST")
+                    .uri("/front-door/for-my-doctor")
+                    .header("content-type", "application/json")
+                    .header("authorization", format!("Bearer {session}"))
+                    .body(Body::from(payload.to_string()))
+                    .unwrap(),
+            )
+            .await
+            .unwrap();
+        assert_eq!(send2.status(), StatusCode::OK);
+        let share2: serde_json::Value = serde_json::from_slice(
+            &axum::body::to_bytes(send2.into_body(), usize::MAX)
+                .await
+                .unwrap(),
+        )
+        .unwrap();
+        assert_eq!(share2["share_id"], share_id);
+
+        store
+            .mark_for_my_doctor_received("practice", &share_id, NOW + 5)
+            .await
+            .unwrap();
+        let list_resp = get(&app, "/front-door/for-my-doctor", &session).await;
+        assert_eq!(list_resp.status(), StatusCode::OK);
+        let list_body: serde_json::Value = serde_json::from_slice(
+            &axum::body::to_bytes(list_resp.into_body(), usize::MAX)
+                .await
+                .unwrap(),
+        )
+        .unwrap();
+        let item = &list_body[0];
+        assert_eq!(item["status"], "received");
+        assert_eq!(item["received_at"], NOW + 5);
+        assert!(item.get("physician_looked").is_none());
+        assert!(item.get("looked_at").is_none());
     }
 }

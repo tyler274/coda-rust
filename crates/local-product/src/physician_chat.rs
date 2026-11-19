@@ -157,7 +157,10 @@ could change clinical judgment or a source pull is stale, call refresh_patient_s
 When read chart revisions establish, update or resolve an urgent (`now`) or same-day (`today`) clinical \
 concern, record that change with patient_concern grounded in the exact candidate_id and revision values \
 opened in this turn. When clinical judgment or physician direction lists, creates, updates, stops (pauses), resumes, requests immediate review of, completes or cancels \
-a dated follow-up item to watch for, record or inspect that change with patient_follow_up. A cancelled follow-up stays cancelled; never recreate it unless genuinely new clinical information arrives. If chart records are added, corrected or withdrawn before your reply finishes and your \
+a dated follow-up item to watch for, record or inspect that change with patient_follow_up. A cancelled follow-up stays cancelled; never recreate it unless genuinely new clinical information arrives. When a physician asks \
+in plain words whether an incoming message was filtered out (such as from an unknown sender or non-patient \
+category), inspect filtered messages with list_filtered_messages; when asked to restore a filtered message \
+as patient mail, call restore_filtered_message with its message_id. If chart records are added, corrected or withdrawn before your reply finishes and your \
 finish is refused with an arrival note, judge whether any added records affect the question, call \
 read_patient_sources on every corrected or withdrawn record you relied on, update any affected memory or \
 concern, and then give your complete updated answer. If any read, refresh, memory, concern or follow-up call fails or \
@@ -263,6 +266,21 @@ impl Job {
     }
 }
 
+/// Tool listing practice messages currently held in the filtered queue so the physician can check them by name or topic.
+pub const LIST_FILTERED_MESSAGES_TOOL: &str = "list_filtered_messages";
+
+/// Tool restoring one filtered message back into patient mail routing (`mark_spruce_message_as_patient`).
+pub const RESTORE_FILTERED_MESSAGE_TOOL: &str = "restore_filtered_message";
+
+/// Whether `name` names one of the filtered-mail chat tools.
+#[must_use]
+pub fn is_filtered_mail_tool(name: &str) -> bool {
+    matches!(
+        name,
+        LIST_FILTERED_MESSAGES_TOOL | RESTORE_FILTERED_MESSAGE_TOOL
+    )
+}
+
 /// Capabilities shared by every ordinary Chords chat request: the work
 /// tools, the chart tools and the finish tool.
 pub fn tools() -> Vec<Tool> {
@@ -273,10 +291,40 @@ pub fn tools() -> Vec<Tool> {
     offered.push(crate::runtime::chat_operations::retrieve_patient_work_tool());
     offered.push(crate::runtime::concerns::concern_tool());
     offered.push(crate::runtime::follow_ups::follow_up_tool());
+    offered.extend(filtered_mail_tools());
     offered.extend(crate::initial_understanding::understanding_tools());
     offered.extend(crate::clinical_library::tools());
     offered.push(citations::finish_tool());
     offered
+}
+
+fn filtered_mail_tools() -> [Tool; 2] {
+    [
+        Tool {
+            name: LIST_FILTERED_MESSAGES_TOOL.into(),
+            description: "List practice messages currently in the filtered queue (non-patient or unlinked spam/marketing/specialist notices) so the physician can check whether a message from a sender or topic was filtered out. Supply `query` to match sender name, contact, text, or filter reason, or `null` to list all filtered messages.".into(),
+            parameters: serde_json::json!({
+                "type": "object",
+                "properties": {
+                    "query": { "type": ["string", "null"], "maxLength": 200 }
+                },
+                "required": ["query"],
+                "additionalProperties": false
+            }),
+        },
+        Tool {
+            name: RESTORE_FILTERED_MESSAGE_TOOL.into(),
+            description: "Put a filtered message back as patient mail so it returns to patient conversation matching/routing for the physician's practice. Supply the exact `message_id` returned by `list_filtered_messages`.".into(),
+            parameters: serde_json::json!({
+                "type": "object",
+                "properties": {
+                    "message_id": { "type": "string", "minLength": 1, "maxLength": 256 }
+                },
+                "required": ["message_id"],
+                "additionalProperties": false
+            }),
+        },
+    ]
 }
 
 /// Shared harness work tools (`skill_view`, `read_tool_result`, conversation history),
@@ -307,6 +355,7 @@ pub fn read_only(name: &str) -> bool {
             | crate::clinical_library::READ_LIBRARY_TOOL
             | crate::runtime::chat_operations::RETRIEVE_PATIENT_WORK_TOOL
             | crate::initial_understanding::READ_UNDERSTANDING_TOOL
+            | LIST_FILTERED_MESSAGES_TOOL
     ) || memory::MemoryTool::named(name).is_some_and(memory::MemoryTool::reads)
 }
 
@@ -392,7 +441,9 @@ impl ChatTool {
             | ToolClass::PatientConcern
             | ToolClass::FollowUp
             | ToolClass::PatientUnderstandingRead
-            | ToolClass::PatientUnderstandingSave => Some(Self::PatientWorkspace),
+            | ToolClass::PatientUnderstandingSave
+            | ToolClass::FilteredMessagesRead
+            | ToolClass::FilteredMessagesRestore => Some(Self::PatientWorkspace),
             ToolClass::ConversationHistory => Some(Self::Conversation),
             ToolClass::Skill => Some(Self::Skill),
             ToolClass::ResultPage => Some(Self::ResultPage),
@@ -1090,5 +1141,20 @@ mod tests {
             PhysicianSkills::bundled_fallback().unwrap(),
             PhysicianSkills::configured(None, false).unwrap()
         );
+    }
+
+    #[test]
+    fn filtered_mail_chat_tools_are_offered_and_read_only_checked() {
+        let offered = tools();
+        assert!(
+            offered.iter().any(|t| t.name == "list_filtered_messages"),
+            "chat must offer list_filtered_messages"
+        );
+        assert!(
+            offered.iter().any(|t| t.name == "restore_filtered_message"),
+            "chat must offer restore_filtered_message"
+        );
+        assert!(read_only("list_filtered_messages"));
+        assert!(!read_only("restore_filtered_message"));
     }
 }

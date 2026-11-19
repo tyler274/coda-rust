@@ -448,7 +448,7 @@ async fn chat_attempt(
     let mut host = PhysicianHost {
         store: worker.store.clone(),
         claim,
-        authority: WorkerAuthority::of(&worker.model),
+        authority: WorkerAuthority::for_chat(worker),
         shown_steps: ShownSteps::new(notice),
     };
     let cancel = Cancellation::default();
@@ -1000,6 +1000,8 @@ struct Worker {
     origin: genai::Origin,
     /// Practices whose turns are rehearsal traffic in telemetry.
     simulation_practices: SimulationPractices,
+    /// Pre-validated physician skill package used to dispatch restored filtered-message reviews.
+    skills: Option<local_product::physician_chat::PhysicianSkills>,
 }
 
 struct WorkerConfig {
@@ -1163,6 +1165,7 @@ impl Worker {
             practice: config.elation_practice.clone(),
             client,
         });
+        let skills = wake_skills.as_ref().ok().cloned();
         let wake = Arc::new(WakeService {
             auth: config.schedule_auth.clone(),
             mode: config.wake_mode,
@@ -1196,6 +1199,7 @@ impl Worker {
             wake,
             origin: config.origin,
             simulation_practices: config.simulation_practices.clone(),
+            skills,
         })
     }
 
@@ -1277,6 +1281,73 @@ impl Worker {
         let config = WorkerConfig::from_env(get)?;
         Self::from_config(&config).await
     }
+
+    /// Synchronizes consented Duet records, join/rejoin consent wakes, and `"For my doctor"`
+    /// shares from the shared front-door tables across known practices.
+    async fn poll_connected_care(&self) {
+        use physician_auth::AuthStore as _;
+        let Some(skills) = self.skills.as_ref() else {
+            return;
+        };
+        let front_door =
+            front_door::PostgresFrontDoorStore::from_connection(self.store.connection().clone());
+        let front_door_ready = front_door.check_schema().await.is_ok();
+        if !front_door_ready {
+            return;
+        }
+        let Ok(practices) =
+            connected_care_target_practices(&self.store, &front_door, front_door_ready).await
+        else {
+            return;
+        };
+        let real_now = std::time::SystemTime::now()
+            .duration_since(std::time::UNIX_EPOCH)
+            .map_or(0, |d| d.as_secs());
+        for practice in practices {
+            let now_ts = self
+                .auth
+                .practice_clock(&practice)
+                .await
+                .map_or(real_now as i64, |clock| clock.now(real_now) as i64);
+            if let Err(error) = self
+                .store
+                .sync_connected_care_from_front_door(
+                    &self.auth,
+                    &front_door,
+                    &practice,
+                    &self.model.roles,
+                    skills,
+                    &self.auth,
+                    now_ts,
+                )
+                .await
+            {
+                tracing::warn!(practice = %practice, %error, "connected-care intake poll failed");
+            }
+        }
+    }
+}
+
+async fn connected_care_target_practices(
+    store: &Store,
+    front_door: &front_door::PostgresFrontDoorStore,
+    front_door_ready: bool,
+) -> Result<Vec<String>, sea_orm::DbErr> {
+    use front_door::FrontDoorStore as _;
+    let mut all: std::collections::BTreeSet<String> = store
+        .registered_dispatch_practices()
+        .await?
+        .into_iter()
+        .collect();
+    if front_door_ready {
+        match front_door.connected_care_practices().await {
+            Ok(fd_practices) => all.extend(fd_practices),
+            Err(error) => {
+                tracing::warn!(%error, "connected-care practice discovery failed");
+            }
+        }
+    }
+    Ok(all.into_iter().collect())
 }
 
 /// Shared state for `POST /schedule/wake`.
@@ -1484,9 +1555,10 @@ impl StoreWakeHandler {
         &self,
         now_unix: i64,
     ) -> Result<(usize, usize), WakeError> {
-        let practices = self
-            .store
-            .registered_dispatch_practices()
+        let front_door =
+            front_door::PostgresFrontDoorStore::from_connection(self.store.connection().clone());
+        let front_door_ready = front_door.check_schema().await.is_ok();
+        let practices = connected_care_target_practices(&self.store, &front_door, front_door_ready)
             .await
             .map_err(WakeError::RuntimeStore)?;
         if practices.is_empty() {
@@ -1512,6 +1584,22 @@ impl StoreWakeHandler {
         let mut due_patients_checked = 0_usize;
         let mut reviews_started = 0_usize;
         for practice in practices {
+            if front_door_ready
+                && let Err(error) = self
+                    .store
+                    .sync_connected_care_from_front_door(
+                        &self.auth,
+                        &front_door,
+                        &practice,
+                        &self.roles,
+                        skills,
+                        &self.auth,
+                        now_unix,
+                    )
+                    .await
+            {
+                tracing::warn!(practice = %practice, %error, "connected-care sync skipped during wake");
+            }
             let receiver = local_product::runtime::reviews::PatientReviewReceiver::new(
                 &self.store,
                 &self.roles,
@@ -2214,6 +2302,7 @@ fn listen_addr(get: &impl Fn(&str) -> Option<String>) -> String {
 struct WorkerAuthority {
     inner: RuntimeAuthority,
     synthetic_only: bool,
+    spruce: Option<local_product::runtime::SpruceChatContext>,
 }
 
 impl WorkerAuthority {
@@ -2222,6 +2311,32 @@ impl WorkerAuthority {
         Self {
             inner: RuntimeAuthority,
             synthetic_only: model.synthetic_only(),
+            spruce: None,
+        }
+    }
+
+    /// Chat-turn authority carrying practice auth and review dispatch context for filtered-mail tools.
+    fn for_chat(worker: &Worker) -> Self {
+        let auth: Arc<dyn physician_auth::AuthStore> = Arc::new(worker.auth.clone());
+        let review_receiver = worker.skills.as_ref().map(|skills| {
+            let practice_auth: Arc<dyn local_product::runtime::jobs::PracticeAuthority> =
+                Arc::new(worker.auth.clone());
+            Arc::new(
+                local_product::runtime::reviews::OwnedPatientReviewReceiver::new(
+                    worker.store.clone(),
+                    worker.model.roles.clone(),
+                    skills.clone(),
+                    practice_auth,
+                ),
+            ) as Arc<dyn local_product::runtime::dispatch::ReviewReceiver>
+        });
+        Self {
+            inner: RuntimeAuthority,
+            synthetic_only: worker.model.synthetic_only(),
+            spruce: Some(local_product::runtime::SpruceChatContext {
+                auth,
+                review_receiver,
+            }),
         }
     }
 }
@@ -2246,6 +2361,10 @@ impl local_product::runtime::Authority for WorkerAuthority {
     ) -> Result<(), String> {
         self.check_source_boundary(tx, scope).await?;
         self.inner.lock_publication(tx, scope, hash).await
+    }
+
+    fn spruce_chat_context(&self) -> Option<local_product::runtime::SpruceChatContext> {
+        self.spruce.clone()
     }
 }
 

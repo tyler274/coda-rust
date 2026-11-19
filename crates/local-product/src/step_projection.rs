@@ -22,7 +22,9 @@ use crate::patient_reviews::{
     COMPLETE_PATIENT_REVIEW_TOOL, PATIENT_MESSAGE_REPLY_TOOL, READ_PATIENT_CONVERSATION_TOOL,
     READ_PATIENT_REVIEWS_TOOL,
 };
-use crate::physician_chat::SKILL_VIEW;
+use crate::physician_chat::{
+    LIST_FILTERED_MESSAGES_TOOL, RESTORE_FILTERED_MESSAGE_TOOL, SKILL_VIEW,
+};
 use crate::physician_sources::{READ_TOOL, SEARCH_TOOL, citations};
 use crate::runtime::chat_operations::{REFRESH_SOURCES_TOOL, RETRIEVE_PATIENT_WORK_TOOL};
 use crate::runtime::concerns::CONCERN_TOOL;
@@ -60,6 +62,10 @@ pub enum ToolClass {
     PatientReviewComplete,
     /// Patient messaging conversation read (`read_patient_conversation`).
     PatientConversationRead,
+    /// Filtered patient messages inspection (`list_filtered_messages`).
+    FilteredMessagesRead,
+    /// Filtered patient message restoration (`restore_filtered_message`).
+    FilteredMessagesRestore,
     /// Message review reply proposal or disposition (`patient_message_reply`, `complete_message_review`).
     MessageReply,
     /// Patient reply revision completion (`finish_reply_revision`).
@@ -103,6 +109,8 @@ pub fn classify_tool(name: &str) -> Option<ToolClass> {
         READ_PATIENT_REVIEWS_TOOL => Some(ToolClass::PatientReviewsRead),
         COMPLETE_PATIENT_REVIEW_TOOL => Some(ToolClass::PatientReviewComplete),
         READ_PATIENT_CONVERSATION_TOOL => Some(ToolClass::PatientConversationRead),
+        LIST_FILTERED_MESSAGES_TOOL => Some(ToolClass::FilteredMessagesRead),
+        RESTORE_FILTERED_MESSAGE_TOOL => Some(ToolClass::FilteredMessagesRestore),
         PATIENT_MESSAGE_REPLY_TOOL | COMPLETE_MESSAGE_REVIEW_TOOL => Some(ToolClass::MessageReply),
         REPLY_FINISH_TOOL => Some(ToolClass::ReplyRevision),
         SELECT_VISITS_TOOL | SAVE_BRIEFING_TOOL => Some(ToolClass::VisitPreparation),
@@ -276,6 +284,12 @@ pub fn project_tool_step(
         }
         Some(ToolClass::PatientConversationRead) => {
             ("Checked patient conversation".to_owned(), None)
+        }
+        Some(ToolClass::FilteredMessagesRead) => {
+            ("Checked filtered patient messages".to_owned(), None)
+        }
+        Some(ToolClass::FilteredMessagesRestore) => {
+            ("Restored filtered patient message".to_owned(), None)
         }
         Some(ToolClass::SpruceMatching) => ("Reviewed unmatched patient message".to_owned(), None),
         Some(

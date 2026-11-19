@@ -703,7 +703,9 @@ async fn record_settled_dispatch_triggers(
                 .exec_without_returning(tx)
                 .await?;
             }
-            ReviewDispatchInput::ChangedRecords { .. } | ReviewDispatchInput::Periodic { .. } => {}
+            ReviewDispatchInput::ChangedRecords { .. }
+            | ReviewDispatchInput::Periodic { .. }
+            | ReviewDispatchInput::ForMyDoctor(_) => {}
         }
     }
 

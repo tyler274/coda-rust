@@ -789,6 +789,49 @@ impl ReviewReceiver for PatientReviewReceiver<'_> {
     }
 }
 
+/// Owned [`ReviewReceiver`] dispatching admitted `PatientReview` jobs without lifetime borrows.
+pub struct OwnedPatientReviewReceiver {
+    store: Store,
+    roles: ModelRoles,
+    skills: PhysicianSkills,
+    authority: std::sync::Arc<dyn PracticeAuthority>,
+}
+
+impl OwnedPatientReviewReceiver {
+    /// Creates an owned [`ReviewReceiver`] bound to `store`, `roles`, `skills`, and `authority`.
+    #[must_use]
+    pub fn new(
+        store: Store,
+        roles: ModelRoles,
+        skills: PhysicianSkills,
+        authority: std::sync::Arc<dyn PracticeAuthority>,
+    ) -> Self {
+        Self {
+            store,
+            roles,
+            skills,
+            authority,
+        }
+    }
+}
+
+#[async_trait]
+impl ReviewReceiver for OwnedPatientReviewReceiver {
+    async fn submit_review(&self, request: &ReviewRequest) -> Result<(), PracticeJobError> {
+        self.submit_coalesced_review(request, &[]).await
+    }
+
+    async fn submit_coalesced_review(
+        &self,
+        request: &ReviewRequest,
+        inputs: &[ReviewDispatchInput],
+    ) -> Result<(), PracticeJobError> {
+        let receiver =
+            PatientReviewReceiver::new(&self.store, &self.roles, &self.skills, &*self.authority);
+        receiver.submit_coalesced_review(request, inputs).await
+    }
+}
+
 pub(super) struct VerifiedPracticePatient;
 
 #[async_trait]
@@ -2066,7 +2109,9 @@ impl Store {
                             ));
                         }
                     }
-                    ReviewReason::NewRecords | ReviewReason::Periodic => {}
+                    ReviewReason::NewRecords
+                    | ReviewReason::Periodic
+                    | ReviewReason::ForMyDoctor => {}
                 }
             }
         }
@@ -2347,11 +2392,18 @@ impl Store {
                 .await?;
         }
 
+        let is_priority = command_key.starts_with("connected-care-join:")
+            || triggers
+                .iter()
+                .any(|trigger| matches!(trigger, ReviewTrigger::ForMyDoctor { .. }));
         let (starting_context, observation) = self
             .review_starting_context(&practice, &workspace, &review_id, &triggers, Vec::new())
             .await?;
         let patient_snapshot = starting_context.patient.clone();
-        let assignment = build_review_assignment(&command_key, starting_context, skills)?;
+        let mut assignment = build_review_assignment(&command_key, starting_context, skills)?;
+        if is_priority {
+            assignment = assignment.with_priority(super::jobs::JobPriority::Priority);
+        }
         let job_accept = self
             .accept_practice_job(&scope, &assignment, roles, skills, &VerifiedPracticePatient)
             .await

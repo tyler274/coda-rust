@@ -91,6 +91,9 @@ pub enum ReviewReason {
     /// A patient follow-up responsibility came due at its current version.
     #[serde(rename = "follow-up")]
     FollowUp,
+    /// Patient sent a `"For my doctor"` share from Duet awaiting priority review.
+    #[serde(rename = "for my doctor")]
+    ForMyDoctor,
 }
 
 impl ReviewReason {
@@ -102,6 +105,7 @@ impl ReviewReason {
             Self::Periodic => "periodic",
             Self::Message => "message",
             Self::FollowUp => "follow-up",
+            Self::ForMyDoctor => "for my doctor",
         }
     }
 
@@ -113,6 +117,7 @@ impl ReviewReason {
             "periodic" => Some(Self::Periodic),
             "message" => Some(Self::Message),
             "follow-up" => Some(Self::FollowUp),
+            "for my doctor" => Some(Self::ForMyDoctor),
             _ => None,
         }
     }
@@ -120,6 +125,12 @@ impl ReviewReason {
     /// Deterministically selects the primary headline reason from coalesced dispatch inputs.
     #[must_use]
     pub fn select_primary(inputs: &[ReviewDispatchInput]) -> Option<Self> {
+        if inputs
+            .iter()
+            .any(|input| matches!(input, ReviewDispatchInput::ForMyDoctor(_)))
+        {
+            return Some(Self::ForMyDoctor);
+        }
         if inputs
             .iter()
             .any(|input| matches!(input, ReviewDispatchInput::LinkedMessage(_)))
@@ -269,6 +280,21 @@ pub struct DueFollowUpTrigger {
     pub due_at: i64,
 }
 
+/// Patient-prepared `"For my doctor"` share input triggering priority review.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct ForMyDoctorTrigger {
+    /// Stable front-door share identifier.
+    pub share_id: String,
+    /// Concise share headline.
+    pub title: String,
+    /// Explicit patient-prepared origin description.
+    pub origin_label: String,
+    /// Unix timestamp when the patient sent the share.
+    pub sent_at: i64,
+    /// Candidate record identifier filed in the patient's chart.
+    pub candidate_id: String,
+}
+
 /// Typed motivating input carried inside a single coalesced patient review.
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(tag = "kind", rename_all = "snake_case")]
@@ -291,6 +317,8 @@ pub enum ReviewDispatchInput {
     LinkedMessage(LinkedMessageTrigger),
     /// A patient follow-up came due at its current version.
     DueFollowUp(DueFollowUpTrigger),
+    /// Patient sent a `"For my doctor"` share from Duet.
+    ForMyDoctor(ForMyDoctorTrigger),
 }
 
 /// How source records were observed during a patient dispatch wake-up.
@@ -641,7 +669,10 @@ impl DispatchState {
                             last_reviewed_at: self.last_reviewed_at,
                         });
                     }
-                    Some(ReviewReason::Message | ReviewReason::FollowUp) | None => {}
+                    Some(
+                        ReviewReason::Message | ReviewReason::FollowUp | ReviewReason::ForMyDoctor,
+                    )
+                    | None => {}
                 }
             }
             WakeSourceObservation::EventDrivenSnapshot(checked) => {
@@ -739,7 +770,8 @@ impl DispatchState {
                         *entry = (*entry).max(follow_up.version);
                     }
                     ReviewDispatchInput::ChangedRecords { .. }
-                    | ReviewDispatchInput::Periodic { .. } => {}
+                    | ReviewDispatchInput::Periodic { .. }
+                    | ReviewDispatchInput::ForMyDoctor(_) => {}
                 }
             }
             if updates_chart_anchor {
@@ -856,6 +888,18 @@ fn merge_dispatch_input(target: &mut Vec<ReviewDispatchInput>, candidate: Review
                 }
             } else {
                 target.push(ReviewDispatchInput::DueFollowUp(follow_up));
+            }
+        }
+        ReviewDispatchInput::ForMyDoctor(share) => {
+            let duplicate = target.iter().any(|item| {
+                matches!(
+                    item,
+                    ReviewDispatchInput::ForMyDoctor(existing)
+                        if existing.share_id == share.share_id
+                )
+            });
+            if !duplicate {
+                target.push(ReviewDispatchInput::ForMyDoctor(share));
             }
         }
     }

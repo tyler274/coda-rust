@@ -1796,6 +1796,7 @@ impl Store {
 
     /// Executes one chat tool invocation (`refresh`, `memory`, `retrieve_patient_work`,
     /// `patient_concern`, `clinical_library`, `chart`, or `skill_view`) under `claim`.
+    /// Runs one patient-workspace chat tool call without Spruce filtered-mail context.
     pub async fn execute_chat_tool(
         &self,
         claim: &super::Claim,
@@ -1803,6 +1804,21 @@ impl Store {
         records: &[(engine::Event, bool)],
         call: &Invocation,
         arguments: Value,
+    ) -> Result<ToolOutcome, engine::ProductError> {
+        self.execute_chat_tool_with_spruce(claim, state, records, call, arguments, None)
+            .await
+    }
+
+    /// Runs one patient-workspace chat tool call with optional [`super::SpruceChatContext`]
+    /// so filtered-mail tools can authorize and restore filtered messages into linked reviews.
+    pub async fn execute_chat_tool_with_spruce(
+        &self,
+        claim: &super::Claim,
+        state: &Conversation,
+        records: &[(engine::Event, bool)],
+        call: &Invocation,
+        arguments: Value,
+        spruce_ctx: Option<&super::SpruceChatContext>,
     ) -> Result<ToolOutcome, engine::ProductError> {
         if matches!(call.name.as_str(), SEARCH_TOOL | READ_TOOL) {
             let labels = crate::physician_sources::Labels::of_work(records);
@@ -2028,8 +2044,208 @@ impl Store {
             return Ok(outcome);
         }
 
+        if crate::physician_chat::is_filtered_mail_tool(&call.name) {
+            return self
+                .execute_filtered_mail_tool(claim, call, arguments, spruce_ctx)
+                .await;
+        }
+
         let skills = self.frozen_skills(&claim.scope, &state.skills).await?;
         Ok(skills.execute(&call.name, &arguments))
+    }
+
+    async fn execute_filtered_mail_tool(
+        &self,
+        claim: &super::Claim,
+        call: &Invocation,
+        arguments: Value,
+        spruce_ctx: Option<&super::SpruceChatContext>,
+    ) -> Result<ToolOutcome, engine::ProductError> {
+        #[derive(Deserialize)]
+        #[serde(deny_unknown_fields)]
+        struct ListArgs {
+            query: Option<String>,
+        }
+
+        #[derive(Deserialize)]
+        #[serde(deny_unknown_fields)]
+        struct RestoreArgs {
+            message_id: String,
+        }
+
+        let Some(ctx) = spruce_ctx else {
+            return Ok(ToolOutcome::refused(
+                "Filtered message tools require an active physician session context.",
+            ));
+        };
+        let actor = physician_auth::PhysicianIdentity {
+            practice_id: claim.scope.practice.clone(),
+            physician_id: claim.scope.physician.clone(),
+        };
+        match call.name.as_str() {
+            crate::physician_chat::LIST_FILTERED_MESSAGES_TOOL => {
+                let parsed: ListArgs = match serde_json::from_value(arguments) {
+                    Ok(args) => args,
+                    Err(cause) => {
+                        return Ok(ToolOutcome::refused(format!(
+                            "Supply `query` (string or null) to list filtered messages ({cause})."
+                        )));
+                    }
+                };
+                let rows = match self
+                    .filtered_spruce_messages_for_physician(ctx.auth.as_ref(), &actor)
+                    .await
+                {
+                    Ok(rows) => rows,
+                    Err(super::spruce_matching::SpruceMatchingError::Database(db_err)) => {
+                        return Err(persistence_failure(db_err));
+                    }
+                    Err(other) => return Ok(ToolOutcome::refused(other.to_string())),
+                };
+                let needle = parsed
+                    .query
+                    .as_deref()
+                    .map(str::trim)
+                    .filter(|s| !s.is_empty())
+                    .map(str::to_lowercase);
+                let items: Vec<Value> = rows
+                    .into_iter()
+                    .filter(|row| {
+                        let Some(q) = needle.as_deref() else {
+                            return true;
+                        };
+                        let category = match row.category {
+                            super::spruce_matching::NonPatientCategory::VendorOrSpam => {
+                                "vendor or spam"
+                            }
+                            super::spruce_matching::NonPatientCategory::AdministrativeNotice => {
+                                "administrative notice"
+                            }
+                            super::spruce_matching::NonPatientCategory::NonPatientOutreach => {
+                                "non patient outreach"
+                            }
+                        };
+                        [
+                            row.author_name.as_deref().unwrap_or(""),
+                            row.sender_address
+                                .as_ref()
+                                .map(|addr| addr.as_str())
+                                .unwrap_or(""),
+                            &row.body_text,
+                            &row.rationale,
+                            category,
+                            &row.message_id,
+                        ]
+                        .iter()
+                        .any(|field| field.to_lowercase().contains(q))
+                    })
+                    .map(|row| {
+                        json!({
+                            "message_id": row.message_id,
+                            "conversation_id": row.conversation_id,
+                            "author_name": row.author_name,
+                            "sender_address": row.sender_address,
+                            "body_text": row.body_text,
+                            "category": row.category,
+                            "rationale": row.rationale,
+                            "filtered_at": row.filtered_at,
+                            "next_step": "Call restore_filtered_message with message_id if the physician asks to treat this as patient mail."
+                        })
+                    })
+                    .collect();
+                Ok(ToolOutcome::Returned(
+                    json!({
+                        "count": items.len(),
+                        "filtered_messages": items,
+                    })
+                    .to_string(),
+                ))
+            }
+            crate::physician_chat::RESTORE_FILTERED_MESSAGE_TOOL => {
+                let parsed: RestoreArgs = match serde_json::from_value(arguments) {
+                    Ok(args) => args,
+                    Err(cause) => {
+                        return Ok(ToolOutcome::refused(format!(
+                            "Supply non-empty `message_id` to restore a filtered message ({cause})."
+                        )));
+                    }
+                };
+                let wall_now = std::time::SystemTime::now()
+                    .duration_since(std::time::UNIX_EPOCH)
+                    .map(|d| d.as_secs())
+                    .unwrap_or_default();
+                let now_ts = ctx
+                    .auth
+                    .practice_clock(&claim.scope.practice)
+                    .await
+                    .map_or(wall_now as i64, |clock| clock.now(wall_now) as i64);
+                let command_key = format!(
+                    "chat-restore-filtered:{}:{}:{}",
+                    claim.attempt,
+                    call.id,
+                    parsed.message_id.trim()
+                );
+                let outcome = match self
+                    .mark_spruce_message_as_patient(
+                        ctx.auth.as_ref(),
+                        &actor,
+                        &parsed.message_id,
+                        &command_key,
+                        ctx.review_receiver.as_deref(),
+                        now_ts,
+                    )
+                    .await
+                {
+                    Ok(outcome) => outcome,
+                    Err(super::spruce_matching::SpruceMatchingError::Database(db_err)) => {
+                        return Err(persistence_failure(db_err));
+                    }
+                    Err(other) => return Ok(ToolOutcome::refused(other.to_string())),
+                };
+                let payload = match outcome {
+                    super::spruce_matching::MessageRoutingOutcome::Linked {
+                        origin,
+                        joined_message_ids,
+                        review_command_key,
+                        ..
+                    } => json!({
+                        "message_id": parsed.message_id,
+                        "restored_standing": "linked_patient",
+                        "origin": origin,
+                        "joined_message_count": joined_message_ids.len(),
+                        "review_started": review_command_key.is_some(),
+                    }),
+                    super::spruce_matching::MessageRoutingOutcome::LinkedWithoutViewerAccess {
+                        origin,
+                        joined_message_ids,
+                    } => json!({
+                        "message_id": parsed.message_id,
+                        "restored_standing": "linked_without_viewer_access",
+                        "origin": origin,
+                        "joined_message_count": joined_message_ids.len(),
+                        "review_started": false,
+                    }),
+                    super::spruce_matching::MessageRoutingOutcome::Waiting { .. } => json!({
+                        "message_id": parsed.message_id,
+                        "restored_standing": "waiting_for_match",
+                        "review_started": false,
+                    }),
+                    super::spruce_matching::MessageRoutingOutcome::Filtered { category } => json!({
+                        "message_id": parsed.message_id,
+                        "restored_standing": "filtered",
+                        "category": category,
+                        "review_started": false,
+                    }),
+                    super::spruce_matching::MessageRoutingOutcome::NotAPatient => json!({
+                        "message_id": parsed.message_id,
+                        "restored_standing": "not_a_patient",
+                        "review_started": false,
+                    }),
+                };
+                Ok(ToolOutcome::Returned(payload.to_string()))
+            }
+            _ => unreachable!("is_filtered_mail_tool checked"),
+        }
     }
 
     async fn execute_retrieve_work_tool(

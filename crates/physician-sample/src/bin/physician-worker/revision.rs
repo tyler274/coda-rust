@@ -329,6 +329,7 @@ impl Product for RevisionOwner {
             let mut authority = WorkerAuthority {
                 inner: super::RuntimeAuthority,
                 synthetic_only,
+                spruce: None,
             };
             store
                 .authorize_revision(&claim.scope, &mut authority)
@@ -401,6 +402,7 @@ impl Product for RevisionOwner {
             let mut authority = WorkerAuthority {
                 inner: super::RuntimeAuthority,
                 synthetic_only,
+                spruce: None,
             };
             store
                 .authorize_revision(&claim.scope, &mut authority)
@@ -643,6 +645,7 @@ mod tests {
             authority: WorkerAuthority {
                 inner: super::super::RuntimeAuthority,
                 synthetic_only: false,
+                spruce: None,
             },
             usage: Tally::default(),
         };
