@@ -4,15 +4,6 @@
 //! across memory, patient understanding, concerns, follow-ups, reply proposals,
 //! private reply drafts, and once-per-affected-patient review requests.
 
-#![expect(
-    dead_code,
-    reason = "Today/Updates wrong-patient reopen test lands after message/follow-up projection"
-)]
-#![expect(
-    unused_imports,
-    reason = "Today/Updates test imports are exercised in companion Today/Updates slice"
-)]
-
 use std::collections::{BTreeMap, BTreeSet};
 use std::env;
 use std::error::Error as _;
@@ -4790,6 +4781,825 @@ async fn round1_unified_spruce_settlement_inflight_chat_doc_page_and_summary_con
     assert!(
         matches!(reply_conv.reply_standing, ReplyStanding::Withheld { .. }),
         "Step 3 via settle_expired_spruce_moves must withhold origin patient's reply proposal"
+    );
+
+    db.cleanup().await;
+}
+
+#[tokio::test]
+async fn today_updates_and_item_reopen_fence_wrong_patient_artifacts_and_tombstones_across_undo_and_settled()
+ {
+    let db = DisposableDb::create("today_updates_fence").await;
+    let (store, auth) = connect_stores(&db.url).await;
+    let practice = format!("prac-tu-{}", Uuid::new_v4().simple());
+    let ws_a = format!("pw-tu-a-{}", Uuid::new_v4().simple());
+    let ws_b = format!("pw-tu-b-{}", Uuid::new_v4().simple());
+    let now_u64 = unix_seconds();
+    let t0 = now_u64 as i64;
+
+    let email = format!("dr-tu-{}@codahealth.test", Uuid::new_v4().simple());
+    let invite = auth
+        .invite(&practice, &email, "dr-tu", true, now_u64)
+        .await
+        .unwrap();
+    let (dr, dr_token) = auth
+        .redeem_invitation(&email, &invite, now_u64)
+        .await
+        .unwrap();
+    for ws in [&ws_a, &ws_b] {
+        auth.register_patient(&practice, ws).await.unwrap();
+        auth.set_membership(&dr, ws, Membership::Allowed)
+            .await
+            .unwrap();
+    }
+
+    let skills = load_skills();
+    let model_roles = roles();
+    store
+        .connect_spruce_channel(auth.as_ref(), &dr, 0, None, t0)
+        .await
+        .unwrap();
+    let lease = store
+        .acquire_spruce_reader_lease(&practice, "worker-tu", 3_600, t0)
+        .await
+        .unwrap();
+    let receiver = RecordingReviewReceiver::default();
+
+    let wrong_secret = "WRONG-TU-SECRET: Elena troponin 0.42 ng/mL at St. Jude.";
+    let clean_text = "Clara Morales baseline A1c 5.6% and lisinopril 10 mg daily.";
+
+    // 1. Seed clean baseline chart + clean Revision 1 understanding on `ws_a`.
+    let clean_rec = chart_record_with_provenance(
+        &ws_a,
+        "clinic-ehr",
+        "cand-tu-clean",
+        "rev-1",
+        "2026-11-10",
+        "Primary Care Note",
+        clean_text,
+        json!({}),
+    );
+    store
+        .record_chart(
+            &ws_a,
+            std::slice::from_ref(&clean_rec),
+            &source_pull("clinic-ehr", "Clinic EHR", "pt-tu-a", "Clara Morales", t0),
+        )
+        .await
+        .unwrap();
+    let UnderstandingTriggerOutcome::Started { scope: u_v1, .. } = store
+        .trigger_patient_understanding(&practice, &ws_a, &model_roles, &skills, auth.as_ref())
+        .await
+        .unwrap()
+    else {
+        panic!("expected understanding v1 Started");
+    };
+    run_understanding_save_job(
+        &store,
+        auth.as_ref(),
+        &u_v1,
+        vec![("cand-tu-clean", "rev-1")],
+        make_save_args(
+            0,
+            clean_text,
+            "clinic-ehr",
+            "cand-tu-clean",
+            "rev-1",
+            clean_text,
+        ),
+    )
+    .await;
+
+    // 2. Link wrong-patient conversation `conv-tu-wrong` to `ws_a` and record `cand-tu-wrong`.
+    ingest_waiting_patient_message(
+        &store,
+        auth.as_ref(),
+        &practice,
+        &lease.lease_token,
+        1,
+        "msg-tu-1",
+        "conv-tu-wrong",
+        "+14155550911",
+        "Elena Vance",
+        wrong_secret,
+        &ws_a,
+        &receiver,
+        t0 + 1,
+    )
+    .await;
+    store
+        .link_conversation_to_patient(
+            auth.as_ref(),
+            &dr,
+            LinkConversationCommand {
+                command_key: "link-tu-a".into(),
+                practice: practice.clone(),
+                conversation_id: "conv-tu-wrong".into(),
+                workspace: ws_a.clone(),
+                sender_policy: SenderConfirmationPolicy::ConversationOnly,
+                now_ts: t0 + 2,
+            },
+            Some(&receiver),
+        )
+        .await
+        .unwrap();
+    let wrong_rec = chart_record_with_provenance(
+        &ws_a,
+        "spruce",
+        "cand-tu-wrong",
+        "rev-w1",
+        "2026-11-12",
+        "Inbound Spruce Message",
+        wrong_secret,
+        json!({
+            "conversation_id": "conv-tu-wrong",
+            "message_id": "msg-tu-1",
+        }),
+    );
+    store
+        .record_chart(
+            &ws_a,
+            std::slice::from_ref(&wrong_rec),
+            &source_pull("spruce", "Spruce", "pt-tu-a", "Clara Morales", t0 + 3),
+        )
+        .await
+        .unwrap();
+
+    // 3. Seed tainted Revision 2 understanding, linked reply + reply proposal,
+    //    `CannotRestart` follow-up (`unhandled-followup:` + `followup-update:...:1/:2`),
+    //    and completed `Assessed` patient review (`review:`) on `ws_a`.
+    let UnderstandingTriggerOutcome::Started { scope: u_v2, .. } = store
+        .trigger_patient_understanding(&practice, &ws_a, &model_roles, &skills, auth.as_ref())
+        .await
+        .unwrap()
+    else {
+        panic!("expected understanding v2 Started");
+    };
+    run_understanding_save_job(
+        &store,
+        auth.as_ref(),
+        &u_v2,
+        vec![("cand-tu-clean", "rev-1"), ("cand-tu-wrong", "rev-w1")],
+        make_save_args(
+            1,
+            wrong_secret,
+            "spruce",
+            "cand-tu-wrong",
+            "rev-w1",
+            &format!("Summary tainted by {wrong_secret}"),
+        ),
+    )
+    .await;
+
+    store
+        .link_reply_conversation(
+            &practice,
+            "conv-tu-wrong",
+            ConversationLink::LinkedPatient {
+                workspace: ws_a.clone(),
+            },
+        )
+        .await
+        .unwrap();
+    store
+        .record_linked_patient_message(&RecordPatientMessage {
+            practice: practice.clone(),
+            conversation_id: "conv-tu-wrong".into(),
+            message_id: "msg-tu-1".into(),
+            sender: MessageSender::Patient,
+            text: wrong_secret.into(),
+            sent_at: t0 + 4,
+        })
+        .await
+        .unwrap();
+    store
+        .start_or_read_reply_review(
+            &practice,
+            "conv-tu-wrong",
+            "rev-tu-reply-1",
+            "run-tu-reply-1",
+        )
+        .await
+        .unwrap();
+    store
+        .complete_reply_review(&CompleteReplyReview {
+            practice: practice.clone(),
+            conversation_id: "conv-tu-wrong".into(),
+            review_id: "rev-tu-reply-1".into(),
+            run_id: "run-tu-reply-1".into(),
+            completion_key: "comp-tu-reply-1".into(),
+            answered_closures: vec![],
+            decision: ReplyReviewDecision::ProposeReply(ReplyProposalInput {
+                text: format!("Reply citing {wrong_secret}"),
+                basis: ReplyProposalBasisInput {
+                    summary: "Inbound review".into(),
+                    limits: vec![],
+                    cited_records: vec![
+                        ExactRecordReference::new("cand-tu-wrong", "rev-w1").unwrap(),
+                    ],
+                },
+                cited_records: vec![ExactRecordReference::new("cand-tu-wrong", "rev-w1").unwrap()],
+            }),
+            raised_concern_ids: vec![],
+        })
+        .await
+        .unwrap();
+
+    create_job_follow_up(
+        &store,
+        &practice,
+        &ws_a,
+        SourceWork::new("patient_review", "work-tu-fu", "att-1").unwrap(),
+        wrong_rec.clone(),
+        "fu-tu-wrong",
+        wrong_secret,
+        t0 + 3_600,
+    )
+    .await;
+    store
+        .apply_follow_up_review_outcome(
+            &practice,
+            &ws_a,
+            &FollowUpCommandKey::new("cmd-tu-fu-cannot-restart").unwrap(),
+            &FollowUpId::new("fu-tu-wrong").unwrap(),
+            SourceWork::new("follow_up_review", "work-tu-fu-rev", "att-1").unwrap(),
+            FollowUpReviewOutcome::CannotRestart {
+                failed_work_id: "work-tu-fu-rev".into(),
+                reason: format!("Follow-up review failed after reading {wrong_secret}"),
+            },
+        )
+        .await
+        .unwrap();
+
+    let AdmittedPatientReview::New {
+        review: admitted_review,
+        ..
+    } = store
+        .admit_patient_review_with_trigger(
+            &practice,
+            &ws_a,
+            "cmd-tu-patient-review",
+            ReviewTrigger::ChangedRecords {
+                workspace_version: 2,
+                record_versions: BTreeMap::from([(
+                    "cand-tu-wrong".to_owned(),
+                    "rev-w1".to_owned(),
+                )]),
+                changed_candidates: vec!["cand-tu-wrong".to_owned()],
+            },
+            &model_roles,
+            &skills,
+            auth.as_ref(),
+        )
+        .await
+        .unwrap()
+    else {
+        panic!("expected new admitted patient review");
+    };
+    let review_id = admitted_review.review_id.clone();
+    let review_scope = admitted_review.practice_scope();
+    {
+        struct CompleteWrongReviewProvider {
+            turn: usize,
+            wrong_secret: String,
+        }
+        impl Provider for CompleteWrongReviewProvider {
+            async fn exchange(
+                &mut self,
+                _request: &Request,
+                _cancel: &engine::Cancellation,
+                _limits: &engine::RunLimits,
+                _observer: &mut dyn Observer,
+            ) -> Result<Turn, engine::Cause> {
+                self.turn += 1;
+                match self.turn {
+                    1 => Ok(Turn {
+                        items: vec![Item::Call(Invocation {
+                            id: "read-wrong".into(),
+                            name: READ_TOOL.into(),
+                            arguments: json!({
+                                "references": [{
+                                    "candidate_id": "cand-tu-wrong",
+                                    "revision": "rev-w1",
+                                    "cursor": null
+                                }],
+                                "max_result_bytes": 16_384
+                            })
+                            .to_string(),
+                        })],
+                        receipt: json!({"turn": 1}),
+                        usage: Default::default(),
+                    }),
+                    2 => {
+                        let complete = CompleteReviewArgs {
+                            disposition: CompleteReviewDisposition::Assessed {
+                                summary: format!("Assessed review citing {}", self.wrong_secret),
+                            },
+                            citations: vec![
+                                ExactRecordReference::new("cand-tu-wrong", "rev-w1").unwrap(),
+                            ],
+                            basis_and_limitations: format!("Basis from {}", self.wrong_secret),
+                            unfinished_work: vec![],
+                        };
+                        Ok(Turn {
+                            items: vec![Item::Call(Invocation {
+                                id: "complete-wrong-rev".into(),
+                                name: COMPLETE_PATIENT_REVIEW_TOOL.into(),
+                                arguments: serde_json::to_string(&complete).unwrap(),
+                            })],
+                            receipt: json!({"turn": 2}),
+                            usage: Default::default(),
+                        })
+                    }
+                    3 => Ok(Turn {
+                        items: vec![Item::assistant("Completed review.")],
+                        receipt: json!({"turn": 3}),
+                        usage: Default::default(),
+                    }),
+                    other => panic!("unexpected review turn {other}"),
+                }
+            }
+        }
+        let claim = store
+            .claim_practice_job(&review_scope, 60, auth.as_ref())
+            .await
+            .unwrap()
+            .expect("claim admitted patient review");
+        let mut host = PracticeJobHost {
+            store: store.clone(),
+            claim,
+            authority: auth.as_ref(),
+        };
+        let mut provider = CompleteWrongReviewProvider {
+            turn: 0,
+            wrong_secret: wrong_secret.to_owned(),
+        };
+        host.run(
+            &mut provider,
+            engine::RunLimits::default(),
+            &engine::Cancellation::default(),
+        )
+        .await
+        .unwrap();
+    }
+
+    let empty_names = BTreeMap::new();
+    let dr_hash = PostgresAuthStore::session_reference(&dr_token);
+    let chat_scope_a = Scope {
+        practice: practice.clone(),
+        physician: dr.physician_id.clone(),
+        workspace: ws_a.clone(),
+        chat: "chat-tu-wrong".into(),
+    };
+    run_chat_citing_source(
+        &store,
+        &chat_scope_a,
+        &dr_hash,
+        "What did the Spruce message report?",
+        "cand-tu-wrong",
+        "rev-w1",
+        &format!("Spruce message reported: {wrong_secret} [1]"),
+    )
+    .await;
+    let _follow_up_work_id = run_chat_direct_answer(
+        &store,
+        &chat_scope_a,
+        &dr_hash,
+        "Repeat the summary without re-reading.",
+        &format!("Follow-up turn repeating: {wrong_secret}"),
+    )
+    .await;
+
+    let fenced_keys = [
+        format!("reply:{ws_a}:conv-tu-wrong"),
+        format!("reply-proposal:{ws_a}:conv-tu-wrong:1"),
+        format!("unhandled-followup:{ws_a}:fu-tu-wrong"),
+        format!("followup-update:{ws_a}:fu-tu-wrong:1"),
+        format!("followup-update:{ws_a}:fu-tu-wrong:2"),
+        format!("review:{ws_a}:{review_id}"),
+    ];
+
+    // Pre-correction baseline: Today, Updates, and direct item reopen expose all 6 seeded items.
+    let pre_now = (t0 + 5) as u64;
+    let pre_today = store
+        .read_today(auth.as_ref(), &dr_token, pre_now, &empty_names)
+        .await
+        .unwrap();
+    let pre_updates = store
+        .read_updates(auth.as_ref(), &dr_token, pre_now, &empty_names)
+        .await
+        .unwrap();
+    assert!(
+        serde_json::to_string(&pre_today)
+            .unwrap()
+            .contains("WRONG-TU-SECRET")
+    );
+    assert!(
+        serde_json::to_string(&pre_updates)
+            .unwrap()
+            .contains("WRONG-TU-SECRET")
+    );
+    for (idx, raw_key) in fenced_keys.iter().enumerate() {
+        let key = SeenItemKey::new(raw_key.clone()).unwrap();
+        let cmd = CommandKey::new(format!("pre-open-{idx}")).unwrap();
+        let opened = store
+            .open_today_or_update_item(
+                auth.as_ref(),
+                &mut PostgresWorkspaceAuthority,
+                &OpenItemRequest {
+                    token: &dr_token,
+                    real_now_unix: pre_now,
+                    workspace: &ws_a,
+                    item_key: &key,
+                    command_key: &cmd,
+                    patient_names: &empty_names,
+                },
+            )
+            .await
+            .unwrap_or_else(|err| panic!("expected {raw_key} to open pre-correction: {err}"));
+        assert!(
+            serde_json::to_string(&opened)
+                .unwrap()
+                .contains("WRONG-TU-SECRET"),
+            "expected pre-correction {raw_key} to carry wrong_secret"
+        );
+    }
+
+    // 4. Move `conv-tu-wrong` away from `ws_a` (`NotAPatient`, 30s Undo window).
+    store
+        .correct_patient_link(
+            auth.as_ref(),
+            &dr,
+            CorrectPatientLinkCommand {
+                command_key: "corr-tu-not-patient".into(),
+                practice: practice.clone(),
+                conversation_id: "conv-tu-wrong".into(),
+                destination: CorrectionDestination::NotAPatient,
+                undo_window_seconds: 30,
+                now_ts: t0 + 10,
+            },
+            Some(&receiver),
+        )
+        .await
+        .unwrap();
+
+    // Shared assertion checking Today, Updates, and direct item reopen across a correction phase.
+    let assert_phase_fenced = |phase_label: &'static str, read_now: u64| {
+        let store = &store;
+        let auth = &auth;
+        let dr_token = &dr_token;
+        let ws_a = &ws_a;
+        let empty_names = &empty_names;
+        let fenced_keys = &fenced_keys;
+        let chat_scope_a = &chat_scope_a;
+        async move {
+            let today = store
+                .read_today(auth.as_ref(), dr_token, read_now, empty_names)
+                .await
+                .unwrap();
+            let today_json = serde_json::to_string(&today).unwrap();
+            assert!(
+                !today_json.contains("WRONG-TU-SECRET"),
+                "[{phase_label}] read_today leaked wrong-patient content: {today_json}"
+            );
+
+            let updates = store
+                .read_updates(auth.as_ref(), dr_token, read_now, empty_names)
+                .await
+                .unwrap();
+            let updates_json = serde_json::to_string(&updates).unwrap();
+            assert!(
+                !updates_json.contains("WRONG-TU-SECRET"),
+                "[{phase_label}] read_updates leaked wrong-patient content: {updates_json}"
+            );
+
+            for (idx, raw_key) in fenced_keys.iter().enumerate() {
+                let key = SeenItemKey::new(raw_key.clone()).unwrap();
+                let cmd = CommandKey::new(format!("open-{phase_label}-{idx}")).unwrap();
+                let res = store
+                    .open_today_or_update_item(
+                        auth.as_ref(),
+                        &mut PostgresWorkspaceAuthority,
+                        &OpenItemRequest {
+                            token: dr_token,
+                            real_now_unix: read_now,
+                            workspace: ws_a,
+                            item_key: &key,
+                            command_key: &cmd,
+                            patient_names: empty_names,
+                        },
+                    )
+                    .await;
+                assert!(
+                    matches!(res, Err(TodayUpdatesError::NotFound { .. })),
+                    "[{phase_label}] expected NotFound when reopening fenced item {raw_key}, got {res:?}"
+                );
+            }
+
+            let summary_key = SeenItemKey::new(format!("summary:{ws_a}")).unwrap();
+            let summary_cmd = CommandKey::new(format!("open-summary-{phase_label}")).unwrap();
+            let summary_detail = store
+                .open_today_or_update_item(
+                    auth.as_ref(),
+                    &mut PostgresWorkspaceAuthority,
+                    &OpenItemRequest {
+                        token: dr_token,
+                        real_now_unix: read_now,
+                        workspace: ws_a,
+                        item_key: &summary_key,
+                        command_key: &summary_cmd,
+                        patient_names: empty_names,
+                    },
+                )
+                .await
+                .expect("clean v1 summary remains openable");
+            assert_eq!(summary_detail.version_id, "rev:1");
+            let summary_json = serde_json::to_string(&summary_detail).unwrap();
+            assert!(summary_json.contains(clean_text));
+            assert!(
+                !summary_json.contains("WRONG-TU-SECRET"),
+                "[{phase_label}] summary:{ws_a} leaked wrong-patient content: {summary_json}"
+            );
+
+            let conv_display = store.conversation(chat_scope_a).await.unwrap();
+            for msg in &conv_display.messages {
+                assert!(
+                    !msg.text.contains("WRONG-TU-SECRET"),
+                    "[{phase_label}] Store::conversation leaked wrong-patient text: {:?}",
+                    msg.text
+                );
+            }
+            let reopened = store
+                .reopen_conversation(chat_scope_a)
+                .await
+                .unwrap()
+                .expect("reopen chat-tu-wrong");
+            let reopened_json = serde_json::to_string(&reopened).unwrap();
+            assert!(
+                !reopened_json.contains("WRONG-TU-SECRET"),
+                "[{phase_label}] Store::reopen_conversation leaked wrong-patient content: {reopened_json}"
+            );
+            assert!(
+                reopened.chat_withheld,
+                "[{phase_label}] expected chat_withheld=true on reopened wrong-patient chat"
+            );
+            assert!(
+                !reopened.withheld_work_ids.is_empty(),
+                "[{phase_label}] expected non-empty withheld_work_ids on reopened wrong-patient chat"
+            );
+        }
+    };
+
+    // Phase A: Active `UndoWindow` (`t0 + 15 < t0 + 40`).
+    assert_phase_fenced("undo-window", (t0 + 15) as u64).await;
+
+    // Phase B: `SettlingFailed` (`WithdrawOriginEffects` fails on first settlement pass).
+    let fail_probe = StepFailureProbe::new(
+        LinkCorrectionStep::WithdrawOriginEffects,
+        "injected step-2 failure for today/updates fence check",
+    );
+    let failed_batch = store
+        .settle_expired_link_corrections_with_probe(
+            &practice,
+            Some(&receiver),
+            &fail_probe,
+            t0 + 45,
+        )
+        .await
+        .unwrap();
+    assert_eq!(failed_batch.failed.len(), 1);
+    assert_phase_fenced("settling-failed", (t0 + 46) as u64).await;
+
+    // Phase C: `Settled` (probe cleared; permanent `source_withdrawal` + durable effect withdrawal committed).
+    fail_probe.clear();
+    let settled_batch = store
+        .settle_expired_link_corrections(&practice, Some(&receiver), t0 + 47)
+        .await
+        .unwrap();
+    assert_eq!(settled_batch.settled.len(), 1);
+    assert_phase_fenced("settled", (t0 + 48) as u64).await;
+
+    // 5. Direct `Store::withdraw_source` (`revision: None` tombstone at latest `ObservedAtVersion`
+    //    WITHOUT any `source_withdrawal` row) on `ws_b`: verify neither `resolve_exact_record_citations`
+    //    (`concern:`) nor `enrich_citations_from_store` (`summary:`) falls through to older revisions!
+    let tombstone_secret = "TOMBSTONE-ONLY-SECRET: withdrawn outside pathology body.";
+    let tombstone_rec = chart_record_with_provenance(
+        &ws_b,
+        "outside-lab",
+        "cand-b-tombstone",
+        "rev-t1",
+        "2026-11-11",
+        "Outside Pathology Attachment",
+        tombstone_secret,
+        json!({}),
+    );
+    store
+        .record_chart(
+            &ws_b,
+            std::slice::from_ref(&tombstone_rec),
+            &source_pull(
+                "outside-lab",
+                "Outside Lab",
+                "pt-tu-b",
+                "Ben Carter",
+                t0 + 50,
+            ),
+        )
+        .await
+        .unwrap();
+    let UnderstandingTriggerOutcome::Started { scope: u_b1, .. } = store
+        .trigger_patient_understanding(&practice, &ws_b, &model_roles, &skills, auth.as_ref())
+        .await
+        .unwrap()
+    else {
+        panic!("expected understanding b1 Started");
+    };
+    run_understanding_save_job(
+        &store,
+        auth.as_ref(),
+        &u_b1,
+        vec![("cand-b-tombstone", "rev-t1")],
+        make_save_args(
+            0,
+            "Ben Carter longitudinal overview.",
+            "outside-lab",
+            "cand-b-tombstone",
+            "rev-t1",
+            "Outside attachment reviewed.",
+        ),
+    )
+    .await;
+    store
+        .raise_concern(
+            &CommandKey::new("cmd-b-tombstone-concern").unwrap(),
+            &RaiseConcern {
+                practice: practice.clone(),
+                workspace: ws_b.clone(),
+                id: ConcernId::new("concern-b-tombstone").unwrap(),
+                urgency: ConcernUrgency::Today,
+                reason: "Verify outside attachment provenance.".into(),
+                records: vec![ExactRecordReference::new("cand-b-tombstone", "rev-t1").unwrap()],
+                source_work: SourceWork::new("patient_review", "work-b-clean", "att-1").unwrap(),
+            },
+        )
+        .await
+        .unwrap();
+
+    // Append a `revision: None` tombstone directly via `Store::withdraw_source` AFTER a chat read it.
+    let chat_b_tombstone = Scope {
+        practice: practice.clone(),
+        physician: dr.physician_id.clone(),
+        workspace: ws_b.clone(),
+        chat: "chat-b-tombstone".into(),
+    };
+    run_chat_citing_source(
+        &store,
+        &chat_b_tombstone,
+        &dr_hash,
+        "Summarize the outside pathology attachment.",
+        "cand-b-tombstone",
+        "rev-t1",
+        "Outside pathology reviewed [1].",
+    )
+    .await;
+
+    // Also verify a standalone work_id fenced via `withdraw_wrong_patient_source` (`fenced_work_ids`)
+    // without `scope.chat` in `fenced_work_ids` and without any `READ_TOOL` call stays redacted.
+    let chat_b_fenced_work_only = Scope {
+        practice: practice.clone(),
+        physician: dr.physician_id.clone(),
+        workspace: ws_b.clone(),
+        chat: "chat-b-fenced-work-only".into(),
+    };
+    let standalone_fenced_work = run_chat_direct_answer(
+        &store,
+        &chat_b_fenced_work_only,
+        &dr_hash,
+        "Quick question.",
+        "FENCED-WORK-ONLY-SECRET: direct answer without tool call.",
+    )
+    .await;
+    store
+        .withdraw_wrong_patient_source(
+            &local_product::runtime::follow_ups::WithdrawWrongPatientRequest {
+                practice: practice.clone(),
+                workspace: ws_b.clone(),
+                withdrawal_id: "wd-b-work-only".into(),
+                candidate_ids: vec!["cand-b-unrelated".into()],
+                message_id: None,
+                fenced_work_ids: vec![standalone_fenced_work.clone()],
+                reason: "Standalone fenced work test.".into(),
+                actor: dr.physician_id.clone(),
+            },
+        )
+        .await
+        .unwrap();
+    let conv_work_only = store.conversation(&chat_b_fenced_work_only).await.unwrap();
+    for msg in &conv_work_only.messages {
+        assert!(
+            !msg.text.contains("FENCED-WORK-ONLY-SECRET"),
+            "Store::conversation must redact standalone fenced_work_ids turn: {:?}",
+            msg.text
+        );
+    }
+    let reopened_work_only = store
+        .reopen_conversation(&chat_b_fenced_work_only)
+        .await
+        .unwrap()
+        .expect("reopen chat-b-fenced-work-only");
+    assert!(
+        !serde_json::to_string(&reopened_work_only)
+            .unwrap()
+            .contains("FENCED-WORK-ONLY-SECRET"),
+        "Store::reopen_conversation must redact standalone fenced_work_ids turn"
+    );
+    assert!(!reopened_work_only.chat_withheld);
+    assert!(
+        reopened_work_only
+            .withheld_work_ids
+            .contains(&standalone_fenced_work)
+    );
+
+    store
+        .withdraw_source(&ws_b, "cand-b-tombstone")
+        .await
+        .unwrap();
+
+    let reopened_b_tomb = store
+        .reopen_conversation(&chat_b_tombstone)
+        .await
+        .unwrap()
+        .expect("reopen chat-b-tombstone");
+    let tomb_src = reopened_b_tomb
+        .sources
+        .values()
+        .next()
+        .expect("cited source entry");
+    assert_eq!(tomb_src.source_id, "unavailable");
+    assert_eq!(tomb_src.title, "Unavailable · Withdrawn chart record");
+    assert!(tomb_src.raw_content.is_empty());
+    assert!(
+        !serde_json::to_string(&reopened_b_tomb)
+            .unwrap()
+            .contains("TOMBSTONE-ONLY-SECRET"),
+        "reopen_conversation must NOT fall through past revision=None tombstone"
+    );
+
+    let tomb_now = (t0 + 55) as u64;
+    let concern_b_detail = store
+        .open_today_or_update_item(
+            auth.as_ref(),
+            &mut PostgresWorkspaceAuthority,
+            &OpenItemRequest {
+                token: &dr_token,
+                real_now_unix: tomb_now,
+                workspace: &ws_b,
+                item_key: &SeenItemKey::new(format!("concern:{ws_b}:concern-b-tombstone")).unwrap(),
+                command_key: &CommandKey::new("open-b-tombstone-concern").unwrap(),
+                patient_names: &empty_names,
+            },
+        )
+        .await
+        .unwrap();
+    assert_eq!(concern_b_detail.citations.len(), 1);
+    assert_eq!(concern_b_detail.citations[0].source_id, "unavailable");
+    assert_eq!(
+        concern_b_detail.citations[0].display_label,
+        "Unavailable · Withdrawn chart record"
+    );
+    assert!(
+        !serde_json::to_string(&concern_b_detail)
+            .unwrap()
+            .contains("TOMBSTONE-ONLY-SECRET"),
+        "resolve_exact_record_citations must NOT fall through past revision=None tombstone"
+    );
+
+    let summary_b_detail = store
+        .open_today_or_update_item(
+            auth.as_ref(),
+            &mut PostgresWorkspaceAuthority,
+            &OpenItemRequest {
+                token: &dr_token,
+                real_now_unix: tomb_now,
+                workspace: &ws_b,
+                item_key: &SeenItemKey::new(format!("summary:{ws_b}")).unwrap(),
+                command_key: &CommandKey::new("open-b-tombstone-summary").unwrap(),
+                patient_names: &empty_names,
+            },
+        )
+        .await
+        .unwrap();
+    assert_eq!(summary_b_detail.citations.len(), 1);
+    assert_eq!(summary_b_detail.citations[0].source_id, "unavailable");
+    assert_eq!(
+        summary_b_detail.citations[0].display_label,
+        "Unavailable · Withdrawn chart record"
+    );
+    assert!(
+        !serde_json::to_string(&summary_b_detail)
+            .unwrap()
+            .contains("TOMBSTONE-ONLY-SECRET"),
+        "enrich_citations_from_store must NOT fall through past revision=None tombstone"
     );
 
     db.cleanup().await;
