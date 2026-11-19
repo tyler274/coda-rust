@@ -1,0 +1,277 @@
+{
+  "branch": "tyler-eng-319-2-source-setup-ui-and-site-suite",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC1-postgres-persistence-and-simulation-gate",
+      "label": "",
+      "kind": "run",
+      "revision": "98f42b663b96a4a6f95ad6bb9b040e20af6af231",
+      "dirty": false,
+      "recorded": "2026-11-19T01:47:18+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-sample",
+        "--test",
+        "staff_practice_accounts",
+        "source_setup_persists_across_postgres_restarts"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "01-cargo.log"
+      ],
+      "seconds": 71.8,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 2,
+      "claim": "AC2-chromium-source-setup-desktop-and-phone",
+      "label": "",
+      "kind": "run",
+      "revision": "98f42b663b96a4a6f95ad6bb9b040e20af6af231",
+      "dirty": false,
+      "recorded": "2026-11-19T01:48:30+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-sample",
+        "--test",
+        "site_source_setup",
+        "--",
+        "--ignored"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "02-cargo.log"
+      ],
+      "seconds": 64.6,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 3,
+      "claim": "AC3-chromium-physician-site-qualification",
+      "label": "",
+      "kind": "run",
+      "revision": "98f42b663b96a4a6f95ad6bb9b040e20af6af231",
+      "dirty": false,
+      "recorded": "2026-11-19T01:49:35+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-sample",
+        "--test",
+        "site",
+        "--",
+        "--ignored",
+        "--skip",
+        "a_new_conversation_is_listed_after_a_reload_without_its_address",
+        "--skip",
+        "a_stale_tab_is_not_saved_and_a_save_never_marks_another_chat",
+        "--skip",
+        "a_reloaded_tab_recovers_unsent_text_and_sign_out_forgets_it",
+        "--skip",
+        "keyboard_send_clears_only_the_sent_text_and_a_reload_reasks_the_same_command",
+        "--skip",
+        "the_first_event_connection_reads_changes_after_the_initial_snapshot",
+        "--skip",
+        "a_quiet_page_keeps_its_change_stream_and_a_silent_one_is_dropped_and_read_again",
+        "--skip",
+        "held_limits_and_provider_blocks_render_without_a_partial_answer",
+        "--skip",
+        "a_reply_draws_code_and_a_table_that_scroll_by_key",
+        "--skip",
+        "past_conversations_and_work_reopen_across_restart_mark_newer_records_and_enforce_access"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "03-cargo.log"
+      ],
+      "seconds": 91.4,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 4,
+      "claim": "AC3b-chromium-physician-site-valkey-tests",
+      "label": "",
+      "kind": "gap",
+      "revision": "98f42b663b96a4a6f95ad6bb9b040e20af6af231",
+      "dirty": false,
+      "recorded": "2026-11-19T01:51:07+00:00",
+      "reason": "valkey-server --version fails/segfaults under nix develop on this Linux host; 14 non-Valkey site tests passed and full hosted browser qualification runs in CI",
+      "ok": false,
+      "files": []
+    },
+    {
+      "id": 5,
+      "claim": "AC4-boundaries-and-shared-ui",
+      "label": "",
+      "kind": "run",
+      "revision": "98f42b663b96a4a6f95ad6bb9b040e20af6af231",
+      "dirty": false,
+      "recorded": "2026-11-19T01:51:07+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "boundaries"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "05-cargo.log"
+      ],
+      "seconds": 2.0,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 6,
+      "claim": "AC5-docs-mdbook",
+      "label": "",
+      "kind": "run",
+      "revision": "98f42b663b96a4a6f95ad6bb9b040e20af6af231",
+      "dirty": false,
+      "recorded": "2026-11-19T01:51:09+00:00",
+      "command": [
+        "mdbook",
+        "build",
+        "book"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "06-mdbook.log"
+      ],
+      "seconds": 2.0,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 7,
+      "claim": "AC6-physician-app-unit-suite",
+      "label": "",
+      "kind": "run",
+      "revision": "98f42b663b96a4a6f95ad6bb9b040e20af6af231",
+      "dirty": false,
+      "recorded": "2026-11-19T01:51:11+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-app",
+        "--lib"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "07-cargo.log"
+      ],
+      "seconds": 10.4,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 8,
+      "claim": "AC7-physician-demo-db",
+      "label": "",
+      "kind": "run",
+      "revision": "98f42b663b96a4a6f95ad6bb9b040e20af6af231",
+      "dirty": false,
+      "recorded": "2026-11-19T01:51:22+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-demo-db"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "08-cargo.log"
+      ],
+      "seconds": 8.0,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 9,
+      "claim": "AC2-chromium-source-setup-desktop-and-phone",
+      "label": "Desktop Connections: Spruce records imported with pre-connection backlog held",
+      "kind": "screenshot",
+      "revision": "98f42b663b96a4a6f95ad6bb9b040e20af6af231",
+      "dirty": false,
+      "recorded": "2026-11-19T01:51:30+00:00",
+      "files": [
+        "09-desktop-04-spruce-imported-backlog-held.png"
+      ],
+      "source": "target/verification/captures/eng-317-319/desktop-04-spruce-imported-backlog-held.png",
+      "ok": true
+    },
+    {
+      "id": 10,
+      "claim": "AC2-chromium-source-setup-desktop-and-phone",
+      "label": "Desktop Today: transient ReadFailed notice offers Inspect source without Reconnect",
+      "kind": "screenshot",
+      "revision": "98f42b663b96a4a6f95ad6bb9b040e20af6af231",
+      "dirty": false,
+      "recorded": "2026-11-19T01:51:30+00:00",
+      "files": [
+        "10-desktop-06-today-read-failed.png"
+      ],
+      "source": "target/verification/captures/eng-317-319/desktop-06-today-read-failed.png",
+      "ok": true
+    },
+    {
+      "id": 11,
+      "claim": "AC2-chromium-source-setup-desktop-and-phone",
+      "label": "Desktop Connections: AccessLost state with retained counts and Reconnect form",
+      "kind": "screenshot",
+      "revision": "98f42b663b96a4a6f95ad6bb9b040e20af6af231",
+      "dirty": false,
+      "recorded": "2026-11-19T01:51:30+00:00",
+      "files": [
+        "11-desktop-10-connections-access-lost.png"
+      ],
+      "source": "target/verification/captures/eng-317-319/desktop-10-connections-access-lost.png",
+      "ok": true
+    },
+    {
+      "id": 12,
+      "claim": "AC2-chromium-source-setup-desktop-and-phone",
+      "label": "Phone 390px Connections: Spruce backlog gate layout",
+      "kind": "screenshot",
+      "revision": "98f42b663b96a4a6f95ad6bb9b040e20af6af231",
+      "dirty": false,
+      "recorded": "2026-11-19T01:51:30+00:00",
+      "files": [
+        "12-phone-04-spruce-imported-backlog-held.png"
+      ],
+      "source": "target/verification/captures/eng-317-319/phone-04-spruce-imported-backlog-held.png",
+      "ok": true
+    },
+    {
+      "id": 13,
+      "claim": "AC2-chromium-source-setup-desktop-and-phone",
+      "label": "Phone 390px Today: AccessLost recovery banner",
+      "kind": "screenshot",
+      "revision": "98f42b663b96a4a6f95ad6bb9b040e20af6af231",
+      "dirty": false,
+      "recorded": "2026-11-19T01:51:30+00:00",
+      "files": [
+        "13-phone-09-today-access-lost.png"
+      ],
+      "source": "target/verification/captures/eng-317-319/phone-09-today-access-lost.png",
+      "ok": true
+    }
+  ]
+}
