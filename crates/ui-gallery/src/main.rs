@@ -35,10 +35,11 @@ use ui::{
     RecordBody, RecordField, RecordStatus, RowFrame, RowGroup, RunningChart, Screen, ScreenFrame,
     SearchField, SectionHeader, Segmented, Select, SeriesChart, SeriesPoint, SeriesShape,
     SortOrder, SourceLink, SourcePane, SourceReading, SourceRecord, SourceState, SourceSummary,
-    SourcesButton, Sparkline, Spinner, StatePill, StatusLine, StepState, Suggestion, TabBar, Table,
-    TableRow, Task, TaskList, TaskState, TaskWords, TextField, TextKind, TextPart, Toast,
-    ToggleChip, ToggleRow, ToggleState, Tone, Tooltip, TopBar, TryAgain, Value, VersionSwitch,
-    WorkStep, WorkTrace, WorkingMark, WorkingPresence, use_live_rows, use_screen_stack,
+    SourcesButton, SourcesPopover, Sparkline, Spinner, StatePill, StatusLine, StepState,
+    Suggestion, TabBar, Table, TableRow, Task, TaskList, TaskState, TaskWords, TextField, TextKind,
+    TextPart, Toast, ToggleChip, ToggleRow, ToggleState, Tone, Tooltip, TopBar, TryAgain, Value,
+    VersionSwitch, WorkStep, WorkTrace, WorkingMark, WorkingPresence, use_live_rows,
+    use_screen_stack,
 };
 #[cfg(feature = "web")]
 use wasm_bindgen::{JsCast, closure::Closure};
@@ -2362,6 +2363,18 @@ fn AnswerEndingDemo() -> Element {
                         }
                         AnswerEnding { ending }
                     }
+                }
+            }
+            Message { author: Author::Assistant, by: "Coda",
+                p { "Her potassium was 4.0 mmol/L on the morning of discharge." }
+                SourcesPopover {
+                    answer: "Sources-only example".to_owned(),
+                    sources: AnswerSources {
+                        label: "Sources".to_owned(),
+                        sources: [Cited::Discharge, Cited::Panel]
+                            .map(Cited::indexed)
+                            .to_vec(),
+                    },
                 }
             }
             Button {

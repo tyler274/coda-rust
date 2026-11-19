@@ -6216,7 +6216,7 @@ async fn p1_citations_panel_archive_discuss_dictation_and_finder() {
 
     // AC1: Hover citation [1] shows CitationPreview popover (`role="dialog"`) with quote (`Citations Code 6, 8`).
     let rect = tab.eval(
-        "(() => { const b = document.querySelector('button.citation-chip'); const r = b.getBoundingClientRect(); return { x: r.left + r.width / 2, y: r.top + r.height / 2 }; })()",
+        "(() => { const b = document.querySelector('button.citation-chip'); b.scrollIntoView({ block: 'center', inline: 'center' }); const r = b.getBoundingClientRect(); return { x: r.left + r.width / 2, y: r.top + r.height / 2 }; })()",
     );
     tab.call(
         "Input.dispatchMouseEvent",
@@ -6237,6 +6237,7 @@ async fn p1_citations_panel_archive_discuss_dictation_and_finder() {
             .contains("Potassium 5.4 mmol/L"),
         "hover CitationPreview did not show quote: {preview_visible}"
     );
+    tokio::time::sleep(Duration::from_millis(240)).await;
     tab.save_picture("p1b2-hover-preview-and-sources");
 
     // AC1: Click `Sources` popover -> click first source -> force 503 then retry -> verify `<mark>`, collapsed Technical details, desktop side-by-side layout.
@@ -6388,7 +6389,45 @@ async fn p1_citations_panel_archive_discuss_dictation_and_finder() {
     }
     tab.set_viewport(1280, 800, false);
 
+    // AC1: Cross-patient SPA navigation resets open source panel so Patient A's PHI never bleeds onto Patient B.
+    assert_eq!(
+        tab.eval("(() => { const b = document.querySelectorAll('button.citation-chip')[0]; b?.click(); return Boolean(b); })()"),
+        serde_json::json!(true)
+    );
+    tab.wait_for_text(
+        "Potassium 5.4 mmol/L (reference 3.5-5.0 mmol/L)",
+        Duration::from_secs(10),
+    );
+    assert_eq!(
+        tab.eval("(() => { const b = [...document.querySelectorAll('button')].find(x => x.textContent.includes('Find patient')); b?.click(); return Boolean(b); })()"),
+        serde_json::json!(true),
+        "Find patient button not found for cross-patient switch"
+    );
+    tab.wait_for_text("Jake Smith", Duration::from_secs(10));
+    assert_eq!(
+        tab.eval("(() => { const b = [...document.querySelectorAll('dialog button')].find(x => x.innerText.includes('Jake Smith')); b?.click(); return Boolean(b); })()"),
+        serde_json::json!(true),
+        "Jake Smith row missing in Find patient dialog"
+    );
+    tab.wait_for_text("Archive candidate renal follow-up", Duration::from_secs(15));
+    assert_eq!(
+        tab.eval("Boolean(document.querySelector('.source-reading-pane'))"),
+        serde_json::json!(false),
+        "Patient A source reading pane remained visible after SPA navigation to Patient B"
+    );
+
     // AC1: Removing panel access while citation side panel is open transitions it to Unavailable.
+    tab.navigate(&format!("{base_url}?patient={patient_a}&chat={chat_cited}"));
+    let chip_deadline = Instant::now() + Duration::from_secs(20);
+    while tab.eval("Boolean(document.querySelector('button.citation-chip'))")
+        != serde_json::json!(true)
+    {
+        assert!(
+            Instant::now() < chip_deadline,
+            "citation chip did not render after returning to patient_a"
+        );
+        tokio::time::sleep(Duration::from_millis(40)).await;
+    }
     assert_eq!(
         tab.eval("(() => { const b = document.querySelectorAll('button.citation-chip')[0]; b?.click(); return Boolean(b); })()"),
         serde_json::json!(true)
@@ -6435,16 +6474,27 @@ async fn p1_citations_panel_archive_discuss_dictation_and_finder() {
     }
     tab.click("button[data-archive-conversation=\"true\"]");
     tab.wait_for_text("Undo", Duration::from_secs(10));
-    tab.save_picture("p1b2-archive-undo-banner");
-    let sidebar_after_archive = tab
-        .eval("document.querySelector('.sidebar-recent')?.innerText ?? ''")
-        .as_str()
-        .unwrap_or_default()
-        .to_owned();
+    let sidebar_hide_deadline = Instant::now() + Duration::from_secs(10);
+    let sidebar_after_archive = loop {
+        let text = tab
+            .eval("document.querySelector('.sidebar-patient-context')?.innerText ?? ''")
+            .as_str()
+            .unwrap_or_default()
+            .to_owned();
+        if !text.is_empty() && !text.contains("Archive candidate renal follow-up") {
+            break text;
+        }
+        assert!(
+            Instant::now() < sidebar_hide_deadline,
+            "archived chat remained in patient sidebar context:\n{text}"
+        );
+        tokio::time::sleep(Duration::from_millis(40)).await;
+    };
     assert!(
         !sidebar_after_archive.contains("Archive candidate renal follow-up"),
-        "archived chat remained in Recent conversations:\n{sidebar_after_archive}"
+        "archived chat remained in patient sidebar context:\n{sidebar_after_archive}"
     );
+    tab.save_picture("p1b2-archive-undo-banner");
     tab.click_named("button", "Undo");
     tab.wait_for_text("Archive candidate renal follow-up", Duration::from_secs(10));
 
@@ -6462,13 +6512,14 @@ async fn p1_citations_panel_archive_discuss_dictation_and_finder() {
     tab.wait_for_text("Past work", Duration::from_secs(20));
     tokio::time::sleep(Duration::from_millis(300)).await;
     let sidebar_after_reload = tab
-        .eval("document.querySelector('.sidebar-recent')?.innerText ?? ''")
+        .eval("document.querySelector('.sidebar-patient-context')?.innerText ?? ''")
         .as_str()
         .unwrap_or_default()
         .to_owned();
     assert!(
-        !sidebar_after_reload.contains("Archive candidate renal follow-up"),
-        "archived chat reappeared after reload:\n{sidebar_after_reload}"
+        !sidebar_after_reload.is_empty()
+            && !sidebar_after_reload.contains("Archive candidate renal follow-up"),
+        "archived chat reappeared in patient sidebar context after reload:\n{sidebar_after_reload}"
     );
 
     // AC5: Shared Find patient component shows KeywordFallback notice on broad keyword fallback.
@@ -6651,15 +6702,193 @@ async fn p1_citations_panel_archive_discuss_dictation_and_finder() {
         "failed dictation must preserve existing composer draft"
     );
 
-    // AC3: Start active turn + queue follow-up -> click Discuss -> stops active turn & restores queued item to composer.
+    // AC4 cancel-during-transcribing race: clicking Cancel dictation while POST /dictation is in flight
+    // must discard any late transcript resolution without mutating the composer.
+    tab2.call(
+        "Fetch.enable",
+        serde_json::json!({ "patterns": [{ "urlPattern": "*/dictation", "requestStage": "Request" }] }),
+    );
+    tab2.click_named(".composer button", "Dictate");
+    tab2.wait_for_text("Listening", Duration::from_secs(10));
+    tab2.click(".dictation button[aria-label=\"Finish dictation\"]");
+    let held_cancel_dictation = tab2.held_request("POST");
+    tab2.wait_for_text("Transcribing", Duration::from_secs(10));
+    tab2.click(".dictation button[aria-label=\"Cancel dictation\"]");
+    let cancel_wait = Instant::now() + Duration::from_secs(5);
+    while tab2.eval("Boolean(document.querySelector('.dictation'))") == serde_json::json!(true) {
+        assert!(Instant::now() < cancel_wait, "dictation bar did not cancel");
+        tokio::time::sleep(Duration::from_millis(30)).await;
+    }
+    // Cancelling during Transcribing aborts the in-flight Task / fetch and clears the dictation bar.
+    let _ = held_cancel_dictation;
+    tab2.call("Fetch.disable", serde_json::json!({}));
+    tab2.release_all();
+    tokio::time::sleep(Duration::from_millis(200)).await;
+    assert_eq!(
+        tab2.composer().0,
+        "Repeat basic metabolic panel in the morning.",
+        "cancelled in-flight dictation must never insert transcript into composer"
+    );
+
+    // AC3: Start active turn + queue follow-up -> verify Stopped::Refused on wrong work_item_id ->
+    // click Discuss on working bar -> stops active turn & restores queued item to composer.
     tab2.type_composer("Active run before discuss");
     tab2.click_named(".composer-toolbar button", "Send");
     tab2.wait_for_text("Send next", Duration::from_secs(15));
     tab2.type_composer("Queued item restored on discuss");
     tab2.click_named(".composer-toolbar button", "Send next");
     tab2.wait_for_text("Queued item restored on discuss", Duration::from_secs(10));
+    let refused_eval = tab2.call(
+        "Runtime.evaluate",
+        serde_json::json!({
+            "awaitPromise": true,
+            "returnByValue": true,
+            "expression": format!(
+                r#"(async () => {{
+                    const token = localStorage.getItem('coda.physician.session') || '';
+                    const r = await fetch('/commands', {{
+                        method: 'POST',
+                        headers: {{
+                            'content-type': 'application/json',
+                            'authorization': 'Bearer ' + token
+                        }},
+                        body: JSON.stringify({{
+                            type: 'discussion.open',
+                            idempotency_key: 'discuss-wrong-work-id-1',
+                            payload: {{
+                                patient_workspace_id: '{patient_b}',
+                                chat_id: 'chat-p1b2-discuss-dictate',
+                                work_item_id: 'wrong-work-id'
+                            }}
+                        }})
+                    }});
+                    return r.status + ':' + (await r.text());
+                }})()"#
+            ),
+        }),
+    );
+    let refused_text = refused_eval["result"]["result"]["value"]
+        .as_str()
+        .or_else(|| refused_eval["result"]["value"].as_str())
+        .unwrap_or_default();
+    assert!(
+        refused_text.contains("\"outcome\":\"rejected\""),
+        "discussion.open must reject mismatched work_item_id while running: {refused_eval}"
+    );
     tab2.click_named("button", "Discuss");
     tab2.wait_composer("Queued item restored on discuss", Duration::from_secs(15));
     tab2.wait_for_text("Coda stopped this response.", Duration::from_secs(10));
     tab2.save_picture("p1b2-discuss-stopped-restored");
+
+    // K1.6 & K1.7: Discuss on finished response opens a new chat, repeat returns same chat,
+    // and deliberate Discuss after sending in it opens a fresh chat.
+    tab2.type_composer("Finished turn for discuss topic");
+    tab2.click_named(".composer-toolbar button", "Send");
+    tab2.wait_for_text(scale::FIXED_TEXT, Duration::from_secs(20));
+    let discuss_ready = Instant::now() + Duration::from_secs(15);
+    while tab2.eval("Boolean(document.querySelector('.answer-ending button[data-discuss-response=\"true\"]:not(:disabled)'))")
+        != serde_json::json!(true)
+    {
+        assert!(
+            Instant::now() < discuss_ready,
+            "Finished Discuss button never rendered; stage={}",
+            tab2.eval("document.querySelector('.glass-stage')?.innerHTML ?? ''")
+        );
+        tokio::time::sleep(Duration::from_millis(40)).await;
+    }
+    tab2.click(".answer-ending button[data-discuss-response=\"true\"]");
+    let d1_wait = Instant::now() + Duration::from_secs(10);
+    let d1_url = loop {
+        let href = tab2
+            .eval("window.location.href")
+            .as_str()
+            .unwrap_or_default()
+            .to_owned();
+        if href.contains("chat=") && !href.contains("chat=chat-p1b2-discuss-dictate") {
+            break href;
+        }
+        assert!(
+            Instant::now() < d1_wait,
+            "Discuss did not open a new chat: {href}; notices={}; buttons={}; errors={:?}",
+            tab2.eval("[...document.querySelectorAll('.notice, [role=\"status\"]')].map(e => e.textContent)"),
+            tab2.eval("[...document.querySelectorAll('button[data-discuss-response]')].map(b => ({disabled: b.disabled, text: b.textContent}))"),
+            tab2.browser.take_page_errors()
+        );
+        tokio::time::sleep(Duration::from_millis(40)).await;
+    };
+    tab2.wait_for_text("Active run before discuss", Duration::from_secs(15));
+    assert_eq!(
+        tab2.eval("(() => { const b = [...document.querySelectorAll('.sidebar-conversation-link')].find(x => x.innerText.includes('Active run before discuss')); b?.click(); return Boolean(b); })()"),
+        serde_json::json!(true),
+        "could not click back to source conversation in sidebar"
+    );
+    tab2.wait_for_text(scale::FIXED_TEXT, Duration::from_secs(15));
+    let discuss_repeat_ready = Instant::now() + Duration::from_secs(10);
+    while tab2.eval("Boolean(document.querySelector('.answer-ending button[data-discuss-response=\"true\"]:not(:disabled)'))")
+        != serde_json::json!(true)
+    {
+        assert!(
+            Instant::now() < discuss_repeat_ready,
+            "Finished Discuss button missing after returning to chat; stage={}",
+            tab2.eval("document.querySelector('.glass-stage')?.innerHTML ?? ''")
+        );
+        tokio::time::sleep(Duration::from_millis(40)).await;
+    }
+    tab2.click(".answer-ending button[data-discuss-response=\"true\"]");
+    let d1_repeat_wait = Instant::now() + Duration::from_secs(10);
+    loop {
+        let href = tab2
+            .eval("window.location.href")
+            .as_str()
+            .unwrap_or_default()
+            .to_owned();
+        if href == d1_url {
+            break;
+        }
+        assert!(
+            Instant::now() < d1_repeat_wait,
+            "Repeating Discuss did not return same unused chat ({d1_url} vs {href})"
+        );
+        tokio::time::sleep(Duration::from_millis(40)).await;
+    }
+    tab2.type_composer("Discuss follow-up turn 1");
+    tab2.click_named(".composer-toolbar button", "Send");
+    tab2.wait_for_text("Discuss follow-up turn 1", Duration::from_secs(15));
+    assert_eq!(
+        tab2.eval("(() => { const b = [...document.querySelectorAll('.sidebar-conversation-link')].find(x => x.innerText.includes('Active run before discuss')); b?.click(); return Boolean(b); })()"),
+        serde_json::json!(true),
+        "could not click back to source conversation in sidebar after sending"
+    );
+    tab2.wait_for_text(scale::FIXED_TEXT, Duration::from_secs(15));
+    let discuss_d2_ready = Instant::now() + Duration::from_secs(10);
+    while tab2.eval("Boolean(document.querySelector('.answer-ending button[data-discuss-response=\"true\"]:not(:disabled)'))")
+        != serde_json::json!(true)
+    {
+        assert!(
+            Instant::now() < discuss_d2_ready,
+            "Finished Discuss button missing before d2; stage={}",
+            tab2.eval("document.querySelector('.glass-stage')?.innerHTML ?? ''")
+        );
+        tokio::time::sleep(Duration::from_millis(40)).await;
+    }
+    tab2.click(".answer-ending button[data-discuss-response=\"true\"]");
+    let d2_wait = Instant::now() + Duration::from_secs(10);
+    loop {
+        let href = tab2
+            .eval("window.location.href")
+            .as_str()
+            .unwrap_or_default()
+            .to_owned();
+        if href.contains("chat=")
+            && !href.contains("chat=chat-p1b2-discuss-dictate")
+            && href != d1_url
+        {
+            break;
+        }
+        assert!(
+            Instant::now() < d2_wait,
+            "Deliberate later Discuss did not open fresh chat (still {href}, d1={d1_url})"
+        );
+        tokio::time::sleep(Duration::from_millis(40)).await;
+    }
 }

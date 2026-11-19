@@ -2359,4 +2359,85 @@ async fn archive_restore_busy_refusal_and_auto_unarchive_in_postgres() {
             .len(),
         1
     );
+
+    // Archived newer conversations must be filtered in Postgres before `.limit(...)` so
+    // they cannot starve older active chats in either `recent_conversations` or `chats`.
+    let active_old = Scope {
+        practice: s_scope.practice.clone(),
+        physician: s_scope.physician.clone(),
+        workspace: "ws-starve-test".into(),
+        chat: "chat-active-old".into(),
+    };
+    let mut old_input = input();
+    old_input.key = "starve-active-old".into();
+    old_input.text = "Exact input older active clinical follow-up".into();
+    accept(&s, &active_old, &old_input).await.unwrap();
+    let old_claim = s.claim(&active_old, 60).await.unwrap().unwrap();
+    let mut old_host = PhysicianHost {
+        store: s.clone(),
+        claim: old_claim,
+        authority: Allowed,
+        shown_steps: local_product::runtime::ShownSteps::new(()),
+    };
+    old_host
+        .run(&mut Provider, limits(), &engine::Cancellation::default())
+        .await
+        .unwrap();
+
+    // Create >50 (55) newer archived conversations for `recent_conversations(limit=50)` and `chats`.
+    for idx in 0..55 {
+        let archived_scope = Scope {
+            practice: active_old.practice.clone(),
+            physician: active_old.physician.clone(),
+            workspace: active_old.workspace.clone(),
+            chat: format!("chat-archived-{idx:03}"),
+        };
+        let mut msg = input();
+        msg.key = format!("starve-archived-{idx}");
+        msg.text = format!("Exact input archived note {idx}");
+        accept(&s, &archived_scope, &msg).await.unwrap();
+        let claim = s.claim(&archived_scope, 60).await.unwrap().unwrap();
+        let mut host = PhysicianHost {
+            store: s.clone(),
+            claim,
+            authority: Allowed,
+            shown_steps: local_product::runtime::ShownSteps::new(()),
+        };
+        host.run(&mut Provider, limits(), &engine::Cancellation::default())
+            .await
+            .unwrap();
+        assert_eq!(
+            s.archive_conversation_authorized(
+                &archived_scope,
+                &format!("starve-archive-cmd-{idx}"),
+                vec![7; 32],
+            )
+            .await
+            .unwrap(),
+            ArchiveOutcome::Archived
+        );
+    }
+
+    let recent_non_starved = s
+        .recent_conversations(
+            &active_old.practice,
+            &active_old.physician,
+            std::slice::from_ref(&active_old.workspace),
+            50,
+        )
+        .await
+        .unwrap();
+    assert_eq!(recent_non_starved.len(), 1);
+    assert_eq!(recent_non_starved[0].chat, active_old.chat);
+
+    let ws_non_starved = s
+        .chats(
+            &active_old.practice,
+            &active_old.physician,
+            &active_old.workspace,
+        )
+        .await
+        .unwrap();
+    assert_eq!(ws_non_starved.len(), 1);
+    assert_eq!(ws_non_starved[0].chat, active_old.chat);
 }

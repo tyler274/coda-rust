@@ -173,6 +173,7 @@ pub(crate) fn PatientReviewsPanel(
     time_zone: String,
     context: PatientReviewsContext,
     on_open_source: EventHandler<SourceChip>,
+    #[props(default)] on_discuss_review: Option<EventHandler<PatientReviewWire>>,
 ) -> Element {
     let mut current_ws = use_signal(|| workspace_id.clone());
     if *current_ws.peek() != workspace_id {
@@ -503,29 +504,46 @@ pub(crate) fn PatientReviewsPanel(
                             },
                             title: card_title,
                             detail: card_detail,
-                            if let Some(action) = available_action {
+                            if available_action.is_some() || on_discuss_review.is_some() {
                                 ActionRow {
-                                    Button {
-                                        compact: true,
-                                        variant: if action == ReviewControlActionWire::Resume {
-                                            ButtonVariant::Primary
-                                        } else {
-                                            ButtonVariant::Secondary
-                                        },
-                                        busy: is_busy,
-                                        disabled: is_busy,
-                                        pending_label: action.pending_message().to_owned(),
-                                        "data-review-control": "{control_slug(action)}",
-                                        onclick: move |_| {
-                                            let request = ReviewControlRequest {
-                                                review_id: rev_id_for_action.clone(),
-                                                version: rev_version_for_action.clone(),
-                                                action,
-                                                idempotency_key: crate::idempotency_key(),
-                                            };
-                                            send_control(ws_for_action.clone(), request);
-                                        },
-                                        "{action.button_label()}"
+                                    if let Some(action) = available_action {
+                                        Button {
+                                            compact: true,
+                                            variant: if action == ReviewControlActionWire::Resume {
+                                                ButtonVariant::Primary
+                                            } else {
+                                                ButtonVariant::Secondary
+                                            },
+                                            busy: is_busy,
+                                            disabled: is_busy,
+                                            pending_label: action.pending_message().to_owned(),
+                                            "data-review-control": "{control_slug(action)}",
+                                            onclick: move |_| {
+                                                let request = ReviewControlRequest {
+                                                    review_id: rev_id_for_action.clone(),
+                                                    version: rev_version_for_action.clone(),
+                                                    action,
+                                                    idempotency_key: crate::idempotency_key(),
+                                                };
+                                                send_control(ws_for_action.clone(), request);
+                                            },
+                                            "{action.button_label()}"
+                                        }
+                                    }
+                                    if let Some(on_discuss) = on_discuss_review {
+                                        {
+                                            let review_for_discuss = review.clone();
+                                            let discuss_id = review.review_id.clone();
+                                            rsx! {
+                                                Button {
+                                                    compact: true,
+                                                    variant: ButtonVariant::Quiet,
+                                                    "data-review-discuss": "{discuss_id}",
+                                                    onclick: move |_| on_discuss.call(review_for_discuss.clone()),
+                                                    "Discuss"
+                                                }
+                                            }
+                                        }
                                     }
                                 }
                             }
